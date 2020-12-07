@@ -26,7 +26,9 @@ package com.github.chainmailstudios.astromine.technologies.client.rei.alloysmelt
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.resources.ResourceLocation;
+
+import net.minecraft.util.Identifier;
+
 import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.technologies.client.rei.SimpleTransferRecipeDisplay;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.AlloySmeltingRecipe;
@@ -45,14 +47,14 @@ public class AlloySmeltingDisplay extends SimpleTransferRecipeDisplay {
 	private final List<EntryStack> outputs;
 	private final int timeRequired;
 	private final double energyRequired;
-	private final ResourceLocation recipeId;
+	private final Identifier recipeId;
 
 	public AlloySmeltingDisplay(AlloySmeltingRecipe recipe) {
 		this(Lists.newArrayList(EntryStack.ofItemStacks(Arrays.asList(recipe.getFirstInput().getMatchingStacks())), EntryStack.ofItemStacks(Arrays.asList(recipe.getSecondInput().getMatchingStacks()))), Collections.singletonList(EntryStack.create(recipe.getFirstOutput())), recipe
 			.getTime(), recipe.getEnergyInput(), recipe.getId());
 	}
 
-	public AlloySmeltingDisplay(List<List<EntryStack>> inputs, List<EntryStack> outputs, int timeRequired, double energyRequired, ResourceLocation recipeId) {
+	public AlloySmeltingDisplay(List<List<EntryStack>> inputs, List<EntryStack> outputs, int timeRequired, double energyRequired, Identifier recipeId) {
 		super(1, 2);
 		this.inputs = inputs;
 		this.outputs = outputs;
@@ -85,12 +87,12 @@ public class AlloySmeltingDisplay extends SimpleTransferRecipeDisplay {
 	}
 
 	@Override
-	public ResourceLocation getRecipeCategory() {
+	public Identifier getRecipeCategory() {
 		return AstromineTechnologiesRoughlyEnoughItemsPlugin.ALLOY_SMELTING;
 	}
 
 	@Override
-	public Optional<ResourceLocation> getRecipeLocation() {
+	public Optional<Identifier> getRecipeLocation() {
 		return Optional.ofNullable(this.recipeId);
 	}
 }

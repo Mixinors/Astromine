@@ -38,6 +38,9 @@ project.ext.setDefaultApis = {
     // RoughlyEnoughItems
     useAsApiOptionally("me.shedaniel:RoughlyEnoughItems:${rei_version}")
 
+    // LibStructure
+    useAsApi("net.earthcomputer:libstructure:${libstructure_version}")
+
     // Magna
     useAsApi("com.github.Draylar:magna:${magna_version}")
 

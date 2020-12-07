@@ -24,14 +24,15 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base.block;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.util.math.BlockPos;
+
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.widget.blade.EnergyVerticalBarWidget;
 import com.github.chainmailstudios.astromine.common.widget.blade.FluidVerticalBarWidget;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.MenuType;
 
 /**
  * A {@link ComponentBlockEntityScreenHandler}
@@ -46,10 +47,10 @@ public class ComponentBlockEntityEnergyFluidScreenHandler extends ComponentBlock
 
 	/** Instantiates a {@link ComponentBlockEntityItemScreenHandler},
 	 * obtaining the {@link ComponentEnergyFluidBlockEntity}. */
-	public ComponentBlockEntityEnergyFluidScreenHandler(MenuType<?> type, int syncId, Player player, BlockPos position) {
+	public ComponentBlockEntityEnergyFluidScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
 
-		blockEntity = (ComponentEnergyFluidBlockEntity) player.level.getBlockEntity(position);
+		blockEntity = (ComponentEnergyFluidBlockEntity) player.world.getBlockEntity(position);
 	}
 
 	/** Override behavior to add energy and fluid bars. */

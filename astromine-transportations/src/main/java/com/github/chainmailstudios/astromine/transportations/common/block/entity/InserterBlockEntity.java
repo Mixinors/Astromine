@@ -29,33 +29,35 @@ import com.github.chainmailstudios.astromine.common.component.general.SimpleItem
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
+
+import net.minecraft.block.AbstractFurnaceBlock;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.ComposterBlock;
+import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.Container;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.AbstractFurnaceBlock;
-import net.minecraft.world.level.block.ComposterBlock;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.state.property.Properties;
+import net.minecraft.util.Tickable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
+
 import com.github.chainmailstudios.astromine.transportations.common.block.InserterBlock;
 import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class InserterBlockEntity extends BlockEntity implements BlockEntityClientSerializable, RenderAttachmentBlockEntity, TickableBlockEntity {
+public class InserterBlockEntity extends BlockEntity implements BlockEntityClientSerializable, RenderAttachmentBlockEntity, Tickable {
 	protected int position = 0;
 	protected int prevPosition = 0;
 
@@ -79,8 +81,8 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityClien
 				return super.removeStack(slot);
 			}
 		}.withListener((inventory) -> {
-			if (level != null && !level.isClientSide) {
-				sendPacket((ServerLevel) level, save(new CompoundTag()));
+			if (world != null && !world.isClient) {
+				sendPacket((ServerWorld) world, toTag(new CompoundTag()));
 			}
 		});
 	}
@@ -91,17 +93,17 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityClien
 
 	@Override
 	public void tick() {
-		Direction facing = getBlockState().getValue(HorizontalDirectionalBlock.FACING);
+		Direction facing = getCachedState().get(HorizontalFacingBlock.FACING);
 
-		boolean powered = getBlockState().getValue(BlockStateProperties.POWERED);
+		boolean powered = getCachedState().get(Properties.POWERED);
 
-		int speed = ((InserterBlock) getBlockState().getBlock()).getSpeed();
+		int speed = ((InserterBlock) getCachedState().getBlock()).getSpeed();
 
 		if (!powered) {
 			if (getItemComponent().isEmpty()) {
-				BlockState behindState = level.getBlockState(getBlockPos().relative(facing.getOpposite()));
+				BlockState behindState = world.getBlockState(getPos().offset(facing.getOpposite()));
 
-				ItemComponent extractableItemComponent = ItemComponent.get(level.getBlockEntity(getBlockPos().relative(facing.getOpposite())));
+				ItemComponent extractableItemComponent = ItemComponent.get(world.getBlockEntity(getPos().offset(facing.getOpposite())));
 
 				if (extractableItemComponent != null && !extractableItemComponent.isEmpty()) {
 					ItemStack stack = extractableItemComponent.getFirstExtractableStack(facing);
@@ -112,12 +114,12 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityClien
 						setPosition(getPosition() - 1);
 					}
 				} else {
-					BlockPos offsetPos = getBlockPos().relative(facing.getOpposite());
+					BlockPos offsetPos = getPos().offset(facing.getOpposite());
 
-					List<Container> entityInventories = getLevel().getEntitiesOfClass(Entity.class, new AABB(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1), (entity) -> !(entity instanceof Player) && (entity instanceof Container)).stream().map(it -> (Container) it).collect(Collectors.toList());
+					List<Inventory> entityInventories = getWorld().getEntitiesByClass(Entity.class, new Box(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1), (entity) -> !(entity instanceof PlayerEntity) && (entity instanceof Inventory)).stream().map(it -> (Inventory) it).collect(Collectors.toList());
 
 					if (position == 0 && entityInventories.size() >= 1) {
-						Container entityInventory = entityInventories.get(0);
+						Inventory entityInventory = entityInventories.get(0);
 
 						extractableItemComponent = ItemComponent.get(entityInventory);
 
@@ -126,22 +128,22 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityClien
 						if (position == 0 && !stack.isEmpty()) {
 							extractableItemComponent.into(getItemComponent(), AstromineConfig.get().inserterStackSize, facing);
 
-							entityInventory.setChanged();
+							entityInventory.markDirty();
 						}
 					} else if (position > 0) {
 						setPosition(getPosition() - 1);
 					}
 				}
 			} else if (!getItemComponent().isEmpty()) {
-				BlockState aheadState = getLevel().getBlockState(getBlockPos().relative(facing));
+				BlockState aheadState = getWorld().getBlockState(getPos().offset(facing));
 
-				ItemComponent insertableItemComponent = ItemComponent.get(level.getBlockEntity(getBlockPos().relative(facing)));
+				ItemComponent insertableItemComponent = ItemComponent.get(world.getBlockEntity(getPos().offset(facing)));
 
 				Direction insertionDirection = facing.getOpposite();
 
 				if (aheadState.getBlock() instanceof ComposterBlock) {
 					insertionDirection = Direction.DOWN;
-				} else if (aheadState.getBlock() instanceof AbstractFurnaceBlock && !AbstractFurnaceBlockEntity.isFuel(getItemComponent().getFirst())) {
+				} else if (aheadState.getBlock() instanceof AbstractFurnaceBlock && !AbstractFurnaceBlockEntity.canUseAsFuel(getItemComponent().getFirst())) {
 					insertionDirection = Direction.DOWN;
 				}
 
@@ -154,19 +156,19 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityClien
 					if (stack != null) {
 						if (position < speed) {
 							setPosition(getPosition() + 1);
-						} else if (!level.isClientSide) {
+						} else if (!world.isClient) {
 							getItemComponent().into(insertableItemComponent, AstromineConfig.get().inserterStackSize, facing, insertionDirection);
 						}
 					} else if (position > 0) {
 						setPosition(getPosition() - 1);
 					}
 				} else {
-					BlockPos offsetPos = getBlockPos().relative(facing);
+					BlockPos offsetPos = getPos().offset(facing);
 
-					List<Container> entityInventories = getLevel().getEntitiesOfClass(Entity.class, new AABB(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1), (entity) -> !(entity instanceof Player) && (entity instanceof Container)).stream().map(it -> (Container) it).collect(Collectors.toList());
+					List<Inventory> entityInventories = getWorld().getEntitiesByClass(Entity.class, new Box(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1), (entity) -> !(entity instanceof PlayerEntity) && (entity instanceof Inventory)).stream().map(it -> (Inventory) it).collect(Collectors.toList());
 
 					if (entityInventories.size() >= 1) {
-						Container entityInventory = entityInventories.get(0);
+						Inventory entityInventory = entityInventories.get(0);
 
 						insertableItemComponent = ItemComponent.get(entityInventory);
 
@@ -174,10 +176,10 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityClien
 
 						if (position < speed && (stack.isEmpty() || stack.getCount() != getItemComponent().getFirst().getCount())) {
 							setPosition(getPosition() + 1);
-						} else if (!level.isClientSide && (stack.isEmpty() || stack.getCount() != getItemComponent().getFirst().getCount())) {
+						} else if (!world.isClient && (stack.isEmpty() || stack.getCount() != getItemComponent().getFirst().getCount())) {
 							getItemComponent().into(insertableItemComponent, AstromineConfig.get().inserterStackSize, facing, insertionDirection);
 
-							entityInventory.setChanged();
+							entityInventory.markDirty();
 						}
 					} else if (position > 0) {
 						setPosition(getPosition() - 1);
@@ -211,50 +213,50 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityClien
 		return prevPosition;
 	}
 
-	protected void sendPacket(ServerLevel w, CompoundTag tag) {
-		tag.putString("id", BlockEntityType.getKey(getType()).toString());
-		sendPacket(w, new ClientboundBlockEntityDataPacket(getBlockPos(), 127, tag));
+	protected void sendPacket(ServerWorld w, CompoundTag tag) {
+		tag.putString("id", BlockEntityType.getId(getType()).toString());
+		sendPacket(w, new BlockEntityUpdateS2CPacket(getPos(), 127, tag));
 	}
 
-	protected void sendPacket(ServerLevel w, ClientboundBlockEntityDataPacket packet) {
-		w.getPlayers(player -> player.distanceToSqr(Vec3.atLowerCornerOf(getBlockPos())) < 40 * 40).forEach(player -> player.connection.send(packet));
-	}
-
-	@Override
-	public void setChanged() {
-		super.setChanged();
+	protected void sendPacket(ServerWorld w, BlockEntityUpdateS2CPacket packet) {
+		w.getPlayers(player -> player.squaredDistanceTo(Vec3d.of(getPos())) < 40 * 40).forEach(player -> player.networkHandler.sendPacket(packet));
 	}
 
 	@Override
-	public void load(BlockState state, CompoundTag compoundTag) {
-		super.load(state, compoundTag);
+	public void markDirty() {
+		super.markDirty();
+	}
 
-		getItemComponent().setFirst(ItemStack.of(compoundTag.getCompound("stack")));
+	@Override
+	public void fromTag(BlockState state, CompoundTag compoundTag) {
+		super.fromTag(state, compoundTag);
+
+		getItemComponent().setFirst(ItemStack.fromTag(compoundTag.getCompound("stack")));
 
 		position = compoundTag.getInt("position");
 	}
 
 	@Override
 	public void fromClientTag(CompoundTag compoundTag) {
-		load(getBlockState(), compoundTag);
+		fromTag(getCachedState(), compoundTag);
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag compoundTag) {
-		compoundTag.put("stack", getItemComponent().getFirst().save(new CompoundTag()));
+	public CompoundTag toTag(CompoundTag compoundTag) {
+		compoundTag.put("stack", getItemComponent().getFirst().toTag(new CompoundTag()));
 
 		compoundTag.putInt("position", position);
 
-		return super.save(compoundTag);
+		return super.toTag(compoundTag);
 	}
 
 	@Override
-	public CompoundTag getUpdateTag() {
-		return save(new CompoundTag());
+	public CompoundTag toInitialChunkDataTag() {
+		return toTag(new CompoundTag());
 	}
 
 	@Override
 	public CompoundTag toClientTag(CompoundTag compoundTag) {
-		return save(compoundTag);
+		return toTag(compoundTag);
 	}
 }

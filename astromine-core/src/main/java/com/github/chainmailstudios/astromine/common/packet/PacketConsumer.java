@@ -25,15 +25,16 @@
 package com.github.chainmailstudios.astromine.common.packet;
 
 import net.fabricmc.fabric.api.network.PacketContext;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.util.Identifier;
 
 /**
  * An object
  * which consumes packets identified by
- * an {@link ResourceLocation}.
+ * an {@link Identifier}.
  */
 public interface PacketConsumer {
 	/** Consumes the packet. */
-	void consumePacket(ResourceLocation identifier, FriendlyByteBuf buffer, PacketContext context);
+	void consumePacket(Identifier identifier, PacketByteBuf buffer, PacketContext context);
 }

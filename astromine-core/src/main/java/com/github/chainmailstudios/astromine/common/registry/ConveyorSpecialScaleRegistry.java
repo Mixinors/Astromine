@@ -24,19 +24,20 @@
 
 package com.github.chainmailstudios.astromine.common.registry;
 
+import net.minecraft.item.Item;
+import net.minecraft.util.Pair;
+
 import com.github.chainmailstudios.astromine.common.registry.base.UniRegistry;
-import net.minecraft.util.Tuple;
-import net.minecraft.world.item.Item;
 
 /**
  * An {@link UniRegistry} for registration of
- * {@link Item}s to {@link Tuple}s
+ * {@link Item}s to {@link Pair}s
  * of {@link Float} and {@link Boolean}.
  *
  * When an item on this list appears in a conveyor,
  * its scale is overridden by the registered value.
  */
-public class ConveyorSpecialScaleRegistry extends UniRegistry<Item, Tuple<Float, Boolean>> {
+public class ConveyorSpecialScaleRegistry extends UniRegistry<Item, Pair<Float, Boolean>> {
 	public static final ConveyorSpecialScaleRegistry INSTANCE = new ConveyorSpecialScaleRegistry();
 
 	/** We only want one instance of this. */

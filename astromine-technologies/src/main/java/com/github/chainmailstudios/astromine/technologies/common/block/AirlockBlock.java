@@ -26,90 +26,92 @@ package com.github.chainmailstudios.astromine.technologies.common.block;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DoublePlantBlock;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.PushReaction;
-import net.minecraft.world.level.pathfinder.PathComputationType;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.block.ShapeContext;
+import net.minecraft.block.TallPlantBlock;
+import net.minecraft.block.Waterloggable;
+import net.minecraft.block.enums.DoubleBlockHalf;
+import net.minecraft.block.piston.PistonBehavior;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.pathing.NavigationType;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.state.property.EnumProperty;
+import net.minecraft.state.property.Properties;
+import net.minecraft.util.BlockMirror;
+import net.minecraft.util.BlockRotation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
+import net.minecraft.world.WorldView;
+
 import com.github.chainmailstudios.astromine.common.utilities.VoxelShapeUtilities;
 
 import javax.annotation.Nullable;
 
-public class AirlockBlock extends Block implements SimpleWaterloggedBlock {
-	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-	public static final BooleanProperty LEFT = BooleanProperty.create("left");
-	public static final BooleanProperty RIGHT = BooleanProperty.create("right");
+public class AirlockBlock extends Block implements Waterloggable {
+	public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
+	public static final BooleanProperty POWERED = Properties.POWERED;
+	public static final BooleanProperty LEFT = BooleanProperty.of("left");
+	public static final BooleanProperty RIGHT = BooleanProperty.of("right");
 
-	public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
+	public static final EnumProperty<DoubleBlockHalf> HALF = Properties.DOUBLE_BLOCK_HALF;
 
-	public static final VoxelShape LEFT_SHAPE = Block.box(0, 0, 6, 1, 16, 10);
-	public static final VoxelShape RIGHT_SHAPE = Block.box(15, 0, 6, 16, 16, 10);
-	public static final VoxelShape DOOR_SHAPE = Block.box(1, 0, 7, 15, 16, 9);
-	public static final VoxelShape BOTTOM_SHAPE = Block.box(0, 0, 5, 16, 1, 11);
-	public static final VoxelShape TOP_SHAPE = Block.box(0, 15, 6, 16, 16, 10);
+	public static final VoxelShape LEFT_SHAPE = Block.createCuboidShape(0, 0, 6, 1, 16, 10);
+	public static final VoxelShape RIGHT_SHAPE = Block.createCuboidShape(15, 0, 6, 16, 16, 10);
+	public static final VoxelShape DOOR_SHAPE = Block.createCuboidShape(1, 0, 7, 15, 16, 9);
+	public static final VoxelShape BOTTOM_SHAPE = Block.createCuboidShape(0, 0, 5, 16, 1, 11);
+	public static final VoxelShape TOP_SHAPE = Block.createCuboidShape(0, 15, 6, 16, 16, 10);
 
 	private static final VoxelShape[] SHAPE_CACHE = new VoxelShape[64];
 
-	public AirlockBlock(Properties settings) {
+	public AirlockBlock(Settings settings) {
 		super(settings);
 
-		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(HALF, DoubleBlockHalf.LOWER).setValue(LEFT, false).setValue(RIGHT, false).setValue(BlockStateProperties.WATERLOGGED, false));
+		this.setDefaultState(this.getStateManager().getDefaultState().with(FACING, Direction.NORTH).with(POWERED, false).with(HALF, DoubleBlockHalf.LOWER).with(LEFT, false).with(RIGHT, false).with(Properties.WATERLOGGED, false));
 	}
 
 	@Override
 	public FluidState getFluidState(BlockState state) {
-		return (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) ? Fluids.WATER.defaultFluidState() : super.getFluidState(state);
+		return (state.contains(Properties.WATERLOGGED) && state.get(Properties.WATERLOGGED)) ? Fluids.WATER.getDefaultState() : super.getFluidState(state);
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-		Direction facing = state.getValue(FACING);
+	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+		Direction facing = state.get(FACING);
 
-		int id = facing.get3DDataValue() + (state.getValue(HALF) == DoubleBlockHalf.LOWER ? 1 : 2) + (!state.getValue(LEFT) ? 4 : 8) + (!state.getValue(RIGHT) ? 16: 32);
+		int id = facing.getId() + (state.get(HALF) == DoubleBlockHalf.LOWER ? 1 : 2) + (!state.get(LEFT) ? 4 : 8) + (!state.get(RIGHT) ? 16: 32);
 
 		if (SHAPE_CACHE[id] == null) {
-			VoxelShape shape = Shapes.or(Shapes.empty(), VoxelShapeUtilities.rotate(facing, DOOR_SHAPE));
+			VoxelShape shape = VoxelShapes.union(VoxelShapes.empty(), VoxelShapeUtilities.rotate(facing, DOOR_SHAPE));
 
-			if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
-				shape = Shapes.or(shape, VoxelShapeUtilities.rotate(facing, BOTTOM_SHAPE));
+			if (state.get(HALF) == DoubleBlockHalf.LOWER) {
+				shape = VoxelShapes.union(shape, VoxelShapeUtilities.rotate(facing, BOTTOM_SHAPE));
 			} else {
-				shape = Shapes.or(shape, VoxelShapeUtilities.rotate(facing, TOP_SHAPE));
+				shape = VoxelShapes.union(shape, VoxelShapeUtilities.rotate(facing, TOP_SHAPE));
 			}
 
-			if (!state.getValue(LEFT)) {
-				shape = Shapes.or(shape, VoxelShapeUtilities.rotate(facing, LEFT_SHAPE));
+			if (!state.get(LEFT)) {
+				shape = VoxelShapes.union(shape, VoxelShapeUtilities.rotate(facing, LEFT_SHAPE));
 			}
 
-			if (!state.getValue(RIGHT)) {
-				shape = Shapes.or(shape, VoxelShapeUtilities.rotate(facing, RIGHT_SHAPE));
+			if (!state.get(RIGHT)) {
+				shape = VoxelShapes.union(shape, VoxelShapeUtilities.rotate(facing, RIGHT_SHAPE));
 			}
 
 			SHAPE_CACHE[id] = shape;
@@ -119,73 +121,73 @@ public class AirlockBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-		VoxelShape shape = Shapes.empty();
-		Direction facing = state.getValue(FACING);
+	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+		VoxelShape shape = VoxelShapes.empty();
+		Direction facing = state.get(FACING);
 
-		if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
-			shape = Shapes.or(shape, VoxelShapeUtilities.rotate(facing, BOTTOM_SHAPE));
+		if (state.get(HALF) == DoubleBlockHalf.LOWER) {
+			shape = VoxelShapes.union(shape, VoxelShapeUtilities.rotate(facing, BOTTOM_SHAPE));
 		} else {
-			shape = Shapes.or(shape, VoxelShapeUtilities.rotate(facing, TOP_SHAPE));
+			shape = VoxelShapes.union(shape, VoxelShapeUtilities.rotate(facing, TOP_SHAPE));
 		}
 
-		if (!state.getValue(LEFT)) {
-			shape = Shapes.or(shape, VoxelShapeUtilities.rotate(facing, LEFT_SHAPE));
+		if (!state.get(LEFT)) {
+			shape = VoxelShapes.union(shape, VoxelShapeUtilities.rotate(facing, LEFT_SHAPE));
 		}
 
-		if (!state.getValue(RIGHT)) {
-			shape = Shapes.or(shape, VoxelShapeUtilities.rotate(facing, RIGHT_SHAPE));
+		if (!state.get(RIGHT)) {
+			shape = VoxelShapes.union(shape, VoxelShapeUtilities.rotate(facing, RIGHT_SHAPE));
 		}
 
-		if (!state.getValue(POWERED)) {
-			shape = Shapes.or(shape, VoxelShapeUtilities.rotate(facing, DOOR_SHAPE));
+		if (!state.get(POWERED)) {
+			shape = VoxelShapes.union(shape, VoxelShapeUtilities.rotate(facing, DOOR_SHAPE));
 		}
 
 		return shape;
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction direction, BlockState newState, LevelAccessor world, BlockPos pos, BlockPos posFrom) {
-		DoubleBlockHalf doubleBlockHalf = state.getValue(HALF);
-		Direction facing = state.getValue(FACING);
+	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState newState, WorldAccess world, BlockPos pos, BlockPos posFrom) {
+		DoubleBlockHalf doubleBlockHalf = state.get(HALF);
+		Direction facing = state.get(FACING);
 		BlockState changedState = state;
 
-		if (direction == facing.getClockWise() || direction == facing.getCounterClockWise()) {
-			if (newState.is(this) && (newState.getValue(FACING) == facing || newState.getValue(FACING) == facing.getOpposite())) {
-				if (direction == facing.getCounterClockWise()) {
-					changedState = changedState.setValue(LEFT, true);
-				} else if (direction == facing.getClockWise()) {
-					changedState = changedState.setValue(RIGHT, true);
+		if (direction == facing.rotateYClockwise() || direction == facing.rotateYCounterclockwise()) {
+			if (newState.isOf(this) && (newState.get(FACING) == facing || newState.get(FACING) == facing.getOpposite())) {
+				if (direction == facing.rotateYCounterclockwise()) {
+					changedState = changedState.with(LEFT, true);
+				} else if (direction == facing.rotateYClockwise()) {
+					changedState = changedState.with(RIGHT, true);
 				}
-			} else if (direction == facing.getCounterClockWise()) {
-				changedState = changedState.setValue(LEFT, false);
-			} else if (direction == facing.getClockWise()) {
-				changedState = changedState.setValue(RIGHT, false);
+			} else if (direction == facing.rotateYCounterclockwise()) {
+				changedState = changedState.with(LEFT, false);
+			} else if (direction == facing.rotateYClockwise()) {
+				changedState = changedState.with(RIGHT, false);
 			}
 		}
 
 		if (direction.getAxis() == Direction.Axis.Y && doubleBlockHalf == DoubleBlockHalf.LOWER == (direction == Direction.UP)) {
-			return newState.is(this) && newState.getValue(HALF) != doubleBlockHalf ? changedState.setValue(FACING, newState.getValue(FACING)).setValue(POWERED, newState.getValue(POWERED)) : Blocks.AIR.defaultBlockState();
+			return newState.isOf(this) && newState.get(HALF) != doubleBlockHalf ? changedState.with(FACING, newState.get(FACING)).with(POWERED, newState.get(POWERED)) : Blocks.AIR.getDefaultState();
 		} else {
-			return doubleBlockHalf == DoubleBlockHalf.LOWER && direction == Direction.DOWN && !changedState.canSurvive(world, pos) ? Blocks.AIR.defaultBlockState() : changedState;
+			return doubleBlockHalf == DoubleBlockHalf.LOWER && direction == Direction.DOWN && !changedState.canPlaceAt(world, pos) ? Blocks.AIR.getDefaultState() : changedState;
 		}
 	}
 
 	@Override
-	public void playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
-		if (!world.isClientSide && player.isCreative()) {
-			DoublePlantBlock.preventCreativeDropFromBottomPart(world, pos, state, player);
+	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+		if (!world.isClient && player.isCreative()) {
+			TallPlantBlock.onBreakInCreative(world, pos, state, player);
 		}
 
-		super.playerWillDestroy(world, pos, state, player);
+		super.onBreak(world, pos, state, player);
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, BlockGetter world, BlockPos pos, PathComputationType type) {
+	public boolean canPathfindThrough(BlockState state, BlockView world, BlockPos pos, NavigationType type) {
 		switch (type) {
 			case LAND:
 			case AIR:
-				return state.getValue(POWERED);
+				return state.get(POWERED);
 			default:
 				return false;
 		}
@@ -200,79 +202,79 @@ public class AirlockBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	@Nullable
-	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-		BlockPos blockPos = ctx.getClickedPos();
-		if (blockPos.getY() < 255 && ctx.getLevel().getBlockState(blockPos.above()).canBeReplaced(ctx)) {
-			Level world = ctx.getLevel();
-			boolean bl = world.hasNeighborSignal(blockPos) || world.hasNeighborSignal(blockPos.above());
-			return this.defaultBlockState().setValue(FACING, ctx.getHorizontalDirection()).setValue(POWERED, bl).setValue(HALF, DoubleBlockHalf.LOWER).setValue(BlockStateProperties.WATERLOGGED, world.getBlockState(blockPos).getBlock() == Blocks.WATER);
+	public BlockState getPlacementState(ItemPlacementContext ctx) {
+		BlockPos blockPos = ctx.getBlockPos();
+		if (blockPos.getY() < 255 && ctx.getWorld().getBlockState(blockPos.up()).canReplace(ctx)) {
+			World world = ctx.getWorld();
+			boolean bl = world.isReceivingRedstonePower(blockPos) || world.isReceivingRedstonePower(blockPos.up());
+			return this.getDefaultState().with(FACING, ctx.getPlayerFacing()).with(POWERED, bl).with(HALF, DoubleBlockHalf.LOWER).with(Properties.WATERLOGGED, world.getBlockState(blockPos).getBlock() == Blocks.WATER);
 		} else {
 			return null;
 		}
 	}
 
 	@Override
-	public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		world.setBlock(pos.above(), state.setValue(HALF, DoubleBlockHalf.UPPER), 3);
+	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		world.setBlockState(pos.up(), state.with(HALF, DoubleBlockHalf.UPPER), 3);
 	}
 
 	public boolean method_30841(BlockState blockState) {
-		return blockState.getValue(POWERED);
+		return blockState.get(POWERED);
 	}
 
-	public void setOpen(Level world, BlockState blockState, BlockPos blockPos, boolean bl) {
-		if (blockState.is(this) && blockState.getValue(POWERED) != bl) {
-			world.setBlock(blockPos, blockState.setValue(POWERED, bl), 10);
+	public void setOpen(World world, BlockState blockState, BlockPos blockPos, boolean bl) {
+		if (blockState.isOf(this) && blockState.get(POWERED) != bl) {
+			world.setBlockState(blockPos, blockState.with(POWERED, bl), 10);
 			this.playOpenCloseSound(world, blockPos, bl);
 		}
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
-		boolean bl = world.hasNeighborSignal(pos) || world.hasNeighborSignal(pos.relative(state.getValue(HALF) == DoubleBlockHalf.LOWER ? Direction.UP : Direction.DOWN));
-		if (block != this && bl != state.getValue(POWERED)) {
-			if (bl != state.getValue(POWERED)) {
+	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
+		boolean bl = world.isReceivingRedstonePower(pos) || world.isReceivingRedstonePower(pos.offset(state.get(HALF) == DoubleBlockHalf.LOWER ? Direction.UP : Direction.DOWN));
+		if (block != this && bl != state.get(POWERED)) {
+			if (bl != state.get(POWERED)) {
 				this.playOpenCloseSound(world, pos, bl);
 			}
 
-			world.setBlock(pos, state.setValue(POWERED, bl), 2);
+			world.setBlockState(pos, state.with(POWERED, bl), 2);
 		}
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
-		BlockPos blockPos = pos.below();
+	public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
+		BlockPos blockPos = pos.down();
 		BlockState blockState = world.getBlockState(blockPos);
-		return state.getValue(HALF) == DoubleBlockHalf.LOWER ? blockState.isFaceSturdy(world, blockPos, Direction.UP) : blockState.is(this);
+		return state.get(HALF) == DoubleBlockHalf.LOWER ? blockState.isSideSolidFullSquare(world, blockPos, Direction.UP) : blockState.isOf(this);
 	}
 
-	private void playOpenCloseSound(Level world, BlockPos pos, boolean open) {
-		world.levelEvent(null, open ? this.getCloseSoundEventId() : this.getOpenSoundEventId(), pos, 0);
-	}
-
-	@Override
-	public PushReaction getPistonPushReaction(BlockState state) {
-		return PushReaction.DESTROY;
+	private void playOpenCloseSound(World world, BlockPos pos, boolean open) {
+		world.syncWorldEvent(null, open ? this.getCloseSoundEventId() : this.getOpenSoundEventId(), pos, 0);
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, Rotation rotation) {
-		return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
+	public PistonBehavior getPistonBehavior(BlockState state) {
+		return PistonBehavior.DESTROY;
 	}
 
 	@Override
-	public BlockState mirror(BlockState state, Mirror mirror) {
-		return mirror == Mirror.NONE ? state : state.rotate(mirror.getRotation(state.getValue(FACING)));
+	public BlockState rotate(BlockState state, BlockRotation rotation) {
+		return state.with(FACING, rotation.rotate(state.get(FACING)));
+	}
+
+	@Override
+	public BlockState mirror(BlockState state, BlockMirror mirror) {
+		return mirror == BlockMirror.NONE ? state : state.rotate(mirror.getRotation(state.get(FACING)));
 	}
 
 	@Environment(EnvType.CLIENT)
 	@Override
-	public long getSeed(BlockState state, BlockPos pos) {
-		return Mth.getSeed(pos.getX(), pos.below(state.getValue(HALF) == DoubleBlockHalf.LOWER ? 0 : 1).getY(), pos.getZ());
+	public long getRenderingSeed(BlockState state, BlockPos pos) {
+		return MathHelper.hashCode(pos.getX(), pos.down(state.get(HALF) == DoubleBlockHalf.LOWER ? 0 : 1).getY(), pos.getZ());
 	}
 
 	@Override
-	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		builder.add(HALF, FACING, POWERED, LEFT, RIGHT, BlockStateProperties.WATERLOGGED);
+	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+		builder.add(HALF, FACING, POWERED, LEFT, RIGHT, Properties.WATERLOGGED);
 	}
 }

@@ -24,11 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.registry;
 
+import net.minecraft.entity.EntityType;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.tag.Tag;
+
 import com.github.chainmailstudios.astromine.common.registry.base.MultiRegistry;
 import com.github.chainmailstudios.astromine.mixin.LivingEntityMixin;
-import net.minecraft.tags.Tag;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.material.Fluid;
 
 /**
  * A {@link MultiRegistry} for registration of

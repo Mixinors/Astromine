@@ -25,13 +25,15 @@
 package com.github.chainmailstudios.astromine.technologies.registry.client;
 
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
-import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.util.Tuple;
-import net.minecraft.world.level.Level;
+
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
+import net.minecraft.util.Pair;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.World;
+
 import com.github.chainmailstudios.astromine.registry.client.AstromineClientCallbacks;
 import com.github.chainmailstudios.astromine.technologies.common.item.HolographicConnectorItem;
 
@@ -39,10 +41,10 @@ public class AstromineTechnologiesClientCallbacks extends AstromineClientCallbac
 	public static void initialize() {
 		ItemTooltipCallback.EVENT.register(((stack, context, tooltip) -> {
 			if (stack.getItem() instanceof HolographicConnectorItem) {
-				Tuple<ResourceKey<Level>, BlockPos> pair = ((HolographicConnectorItem) stack.getItem()).readBlock(stack);
+				Pair<RegistryKey<World>, BlockPos> pair = ((HolographicConnectorItem) stack.getItem()).readBlock(stack);
 				if (pair != null) {
-					tooltip.add(Component.nullToEmpty(null));
-					tooltip.add(new TranslatableComponent("text.astromine.selected.dimension.pos", pair.getA().location(), pair.getB().getX(), pair.getB().getY(), pair.getB().getZ()).withStyle(ChatFormatting.GRAY));
+					tooltip.add(Text.of(null));
+					tooltip.add(new TranslatableText("text.astromine.selected.dimension.pos", pair.getLeft().getValue(), pair.getRight().getX(), pair.getRight().getY(), pair.getRight().getZ()).formatted(Formatting.GRAY));
 				}
 			}
 		}));

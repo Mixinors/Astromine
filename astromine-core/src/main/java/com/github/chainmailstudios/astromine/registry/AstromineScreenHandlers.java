@@ -22,15 +22,17 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine. registry;
+package com.github.chainmailstudios.astromine.registry;
+
+import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
+
+import net.minecraft.screen.ScreenHandlerType;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.screenhandler.RecipeCreatorScreenHandler;
-import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
-import net.minecraft.world.inventory.MenuType;
 
 public class AstromineScreenHandlers {
-	public static final MenuType<RecipeCreatorScreenHandler> RECIPE_CREATOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("recipe_creator"), ((syncId, inventory, buffer) -> {
+	public static final ScreenHandlerType<RecipeCreatorScreenHandler> RECIPE_CREATOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("recipe_creator"), ((syncId, inventory, buffer) -> {
 		return new RecipeCreatorScreenHandler(syncId, inventory.player);
 	}));
 

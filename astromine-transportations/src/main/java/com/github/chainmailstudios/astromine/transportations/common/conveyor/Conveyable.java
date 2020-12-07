@@ -24,8 +24,8 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.conveyor;
 
-import net.minecraft.core.Direction;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.Direction;
 
 public interface Conveyable {
 	/**

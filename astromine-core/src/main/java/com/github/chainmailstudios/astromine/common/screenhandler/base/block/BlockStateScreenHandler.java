@@ -24,18 +24,19 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base.block;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerContext;
+import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.util.math.BlockPos;
+
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * This class represents a {@link AbstractContainerMenu} with an associated
+ * This class represents a {@link ScreenHandler} with an associated
  * {@link BlockPos}, {@link Block} and {@link BlockState}
  */
 public abstract class BlockStateScreenHandler extends BaseScreenHandler {
@@ -44,19 +45,19 @@ public abstract class BlockStateScreenHandler extends BaseScreenHandler {
 	protected BlockState state;
 
 	/** Instantiates a {@link BlockStateScreenHandler}. */
-	public BlockStateScreenHandler(MenuType<?> type, int syncId, Player player, BlockPos position) {
+	public BlockStateScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player);
 
-		this.state = player.level.getBlockState(position);
+		this.state = player.world.getBlockState(position);
 		this.originalBlock = state.getBlock();
 		this.position = position;
 	}
 
-	/** Override behavior to only allow the {@link AbstractContainerMenu} to be open
+	/** Override behavior to only allow the {@link ScreenHandler} to be open
 	 * when possible, and while the associated {@link BlockState} has not
 	 * changed. */
 	@Override
-	public boolean stillValid(@Nullable Player player) {
-		return stillValid(ContainerLevelAccess.create(player.level, position), player, originalBlock);
+	public boolean canUse(@Nullable PlayerEntity player) {
+		return canUse(ScreenHandlerContext.create(player.world, position), player, originalBlock);
 	}
 }

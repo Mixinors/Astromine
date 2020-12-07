@@ -26,7 +26,7 @@ package com.github.chainmailstudios.astromine.common.volume.fraction;
 
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.PacketByteBuf;
 
 import io.netty.buffer.ByteBuf;
 
@@ -49,7 +49,7 @@ import java.util.regex.Pattern;
  * - {@link String) - through {@link #toString()}} and {@link #fromString(String)}.
  * - {@link CompoundTag} - through {@link #toTag()} and {@link #fromTag(CompoundTag)}.
  * - {@link JsonElement} - through {@link #toJson()} and {@link #fromJson(JsonElement)}.
- * - {@link ByteBuf} - through {@link #toPacket(FriendlyByteBuf)} and {@link #fromPacket(FriendlyByteBuf)}.
+ * - {@link ByteBuf} - through {@link #toPacket(PacketByteBuf)} and {@link #fromPacket(PacketByteBuf)}.
  */
 public final class Fraction extends Number implements Comparable<Fraction> {
 	public static final DecimalFormat FORMAT = new DecimalFormat("###.###");
@@ -408,14 +408,14 @@ public final class Fraction extends Number implements Comparable<Fraction> {
 	}
 
 	/** Deserializes a fraction from a {@link ByteBuf}. */
-	public static Fraction fromPacket(FriendlyByteBuf buffer) {
+	public static Fraction fromPacket(PacketByteBuf buffer) {
 		long numerator = buffer.readLong();
 		long denominator = buffer.readLong();
 		return of(numerator, denominator);
 	}
 
 	/** Serializes this fraction to a {@link ByteBuf}. */
-	public void toPacket(FriendlyByteBuf buffer) {
+	public void toPacket(PacketByteBuf buffer) {
 		buffer.writeLong(numerator);
 		buffer.writeLong(denominator);
 	}

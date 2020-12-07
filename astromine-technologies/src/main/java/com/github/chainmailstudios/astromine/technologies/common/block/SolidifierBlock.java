@@ -24,28 +24,29 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block;
 
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingTieredBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.redstone.ComparatorMode;
 import com.github.chainmailstudios.astromine.common.network.NetworkBlock;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.SolidifierBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.SolidifierScreenHandler;
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class SolidifierBlock extends WrenchableHorizontalFacingTieredBlockWithEntity implements NetworkBlock.FluidRequester {
-	public SolidifierBlock(Properties settings) {
+	public SolidifierBlock(Settings settings) {
 		super(settings);
 	}
 
 	public abstract static class Base extends SolidifierBlock {
-		public Base(Properties settings) {
+		public Base(Settings settings) {
 			super(settings);
 		}
 
@@ -55,12 +56,12 @@ public abstract class SolidifierBlock extends WrenchableHorizontalFacingTieredBl
 		}
 
 		@Override
-		public AbstractContainerMenu createScreenHandler(BlockState state, Level world, BlockPos pos, int syncId, Inventory playerInventory, Player player) {
+		public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
 			return new SolidifierScreenHandler(syncId, playerInventory.player, pos);
 		}
 
 		@Override
-		public void populateScreenHandlerBuffer(BlockState state, Level world, BlockPos pos, ServerPlayer player, FriendlyByteBuf buffer) {
+		public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
 			buffer.writeBlockPos(pos);
 		}
 
@@ -71,7 +72,7 @@ public abstract class SolidifierBlock extends WrenchableHorizontalFacingTieredBl
 	}
 
 	public static class Primitive extends SolidifierBlock.Base {
-		public Primitive(Properties settings) {
+		public Primitive(Settings settings) {
 			super(settings);
 		}
 
@@ -82,7 +83,7 @@ public abstract class SolidifierBlock extends WrenchableHorizontalFacingTieredBl
 	}
 
 	public static class Basic extends SolidifierBlock.Base {
-		public Basic(Properties settings) {
+		public Basic(Settings settings) {
 			super(settings);
 		}
 
@@ -93,7 +94,7 @@ public abstract class SolidifierBlock extends WrenchableHorizontalFacingTieredBl
 	}
 
 	public static class Advanced extends SolidifierBlock.Base {
-		public Advanced(Properties settings) {
+		public Advanced(Settings settings) {
 			super(settings);
 		}
 
@@ -104,7 +105,7 @@ public abstract class SolidifierBlock extends WrenchableHorizontalFacingTieredBl
 	}
 
 	public static class Elite extends SolidifierBlock.Base {
-		public Elite(Properties settings) {
+		public Elite(Settings settings) {
 			super(settings);
 		}
 

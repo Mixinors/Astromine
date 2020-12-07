@@ -24,63 +24,64 @@
 
 package com.github.chainmailstudios.astromine.advancement;
 
+import net.minecraft.advancement.criterion.AbstractCriterion;
+import net.minecraft.advancement.criterion.AbstractCriterionConditions;
+import net.minecraft.advancement.criterion.Criterion;
+import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
+import net.minecraft.predicate.entity.EntityPredicate;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Identifier;
+
 import com.github.chainmailstudios.astromine.registry.AstromineCriteria;
 
 import com.google.gson.JsonObject;
-import net.minecraft.advancements.CriterionTrigger;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
-import net.minecraft.advancements.critereon.DeserializationContext;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 
 /**
- * A {@link CriterionTrigger} for tricking piglins by
+ * A {@link Criterion} for tricking piglins by
  * giving them a gold-like substance, which is not,
  * in fact, gold.
  */
-public class TrickedPiglinCriterion extends SimpleCriterionTrigger<TrickedPiglinCriterion.Conditions> {
-	public final ResourceLocation id;
+public class TrickedPiglinCriterion extends AbstractCriterion<TrickedPiglinCriterion.Conditions> {
+	public final Identifier id;
 
 	/** Instantiates a {@link TrickedPiglinCriterion}. */
-	public TrickedPiglinCriterion(ResourceLocation id) {
+	public TrickedPiglinCriterion(Identifier id) {
 		this.id = id;
 	}
 
 	/** Reads {@link Conditions} from a {@link JsonObject}. */;
 	@Override
-	protected TrickedPiglinCriterion.Conditions createInstance(JsonObject obj, EntityPredicate.Composite playerPredicate, DeserializationContext predicateDeserializer) {
+	protected TrickedPiglinCriterion.Conditions conditionsFromJson(JsonObject obj, EntityPredicate.Extended playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
 		if (obj.has("successful"))
 			return new Conditions(this.id, playerPredicate, obj.get("successful").getAsBoolean());
 		else return new Conditions(this.id, playerPredicate);
 	}
 
-	/** Returns this {@link CriterionTrigger}'s ID. */
+	/** Returns this {@link Criterion}'s ID. */
 	@Override
-	public ResourceLocation getId() {
+	public Identifier getId() {
 		return id;
 	}
 
-	/** Triggers this {@link CriterionTrigger} for the given player with the given parameter. */
-	public void trigger(ServerPlayer player, boolean successful) {
-		this.trigger(player, conditions -> conditions.matches(successful));
+	/** Triggers this {@link Criterion} for the given player with the given parameter. */
+	public void trigger(ServerPlayerEntity player, boolean successful) {
+		this.test(player, conditions -> conditions.matches(successful));
 	}
 
 	/**
-	 * Conditions for {@link #trigger(ServerPlayer, boolean)}.
+	 * Conditions for {@link #trigger(ServerPlayerEntity, boolean)}.
 	 */
-	public static class Conditions extends AbstractCriterionTriggerInstance {
+	public static class Conditions extends AbstractCriterionConditions {
 		private final Boolean successful;
 
 		/** Instantiates {@link Conditions}. */
-		public Conditions(ResourceLocation id, EntityPredicate.Composite playerPredicate, Boolean successful) {
+		public Conditions(Identifier id, EntityPredicate.Extended playerPredicate, Boolean successful) {
 			super(id, playerPredicate);
 			this.successful = successful;
 		}
 
 		/** Instantiates {@link Conditions}. */
-		public Conditions(ResourceLocation id, EntityPredicate.Composite playerPredicate) {
+		public Conditions(Identifier id, EntityPredicate.Extended playerPredicate) {
 			super(id, playerPredicate);
 			this.successful = null;
 		}
@@ -97,12 +98,12 @@ public class TrickedPiglinCriterion extends SimpleCriterionTrigger<TrickedPiglin
 
 		/** Instantiates {@link Conditions}. */
 		public static Conditions create(boolean successful) {
-			return new Conditions(AstromineCriteria.TRICKED_PIGLIN.getId(), EntityPredicate.Composite.ANY, successful);
+			return new Conditions(AstromineCriteria.TRICKED_PIGLIN.getId(), EntityPredicate.Extended.EMPTY, successful);
 		}
 
 		/** Instantiates {@link Conditions}. */
 		public static Conditions create() {
-			return new Conditions(AstromineCriteria.TRICKED_PIGLIN.getId(), EntityPredicate.Composite.ANY);
+			return new Conditions(AstromineCriteria.TRICKED_PIGLIN.getId(), EntityPredicate.Extended.EMPTY);
 		}
 	}
 }

@@ -24,8 +24,9 @@
 
 package com.github.chainmailstudios.astromine.transportations.registry;
 
+import net.minecraft.sound.SoundEvent;
+
 import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
-import net.minecraft.sounds.SoundEvent;
 
 public class AstromineTransportationsSoundEvents extends AstromineSoundEvents {
 	public static final SoundEvent MACHINE_CLICK = register("block.machine.click");

@@ -24,14 +24,13 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import net.minecraft.core.Direction;
-import net.minecraft.util.Tuple;;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
+import com.mojang.datafixers.util.Pair;
 
 import com.google.common.collect.Lists;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
-
 import java.util.Collection;
 
 /**
@@ -51,31 +50,31 @@ public class VoxelShapeUtilities {
 
 	/** Returns an union of all the given {@link VoxelShape}s. */
 	public static VoxelShape union(Collection<VoxelShape> shapes) {
-		VoxelShape collision = Shapes.empty();
+		VoxelShape collision = VoxelShapes.empty();
 		for (VoxelShape shape : shapes) {
-			collision = Shapes.or(shape, collision);
+			collision = VoxelShapes.union(shape, collision);
 		}
 		return collision;
 	}
 
 	/** Returns the given {@link VoxelShape} rotated the supplied radians in the specified {@link Direction.Axis}. */
 	public static VoxelShape rotate(Direction.Axis axis, double radians, VoxelShape shape) {
-		VoxelShape collision = Shapes.empty();
+		VoxelShape collision = VoxelShapes.empty();
 
-		for (AABB box : shape.toAabbs()) {
-			Tuple<Double, Double> min = axis == Direction.Axis.X ? rotatePoint(box.minY, box.minZ, radians) : (axis == Direction.Axis.Z ? rotatePoint(box.minX, box.minY, radians) : rotatePoint(box.minX, box.minZ, radians));
-			Tuple<Double, Double> max = axis == Direction.Axis.X ? rotatePoint(box.maxY, box.maxZ, radians) : (axis == Direction.Axis.Z ? rotatePoint(box.maxX, box.maxY, radians) : rotatePoint(box.maxX, box.maxZ, radians));
-			collision = Shapes.or(collision, axis == Direction.Axis.X ? Shapes.box(box.minX, min.getA(), min.getB(), box.maxX, max.getA(), max.getB()) : (axis == Direction.Axis.Z ? Shapes.box(min.getA(), min.getB(), box.minZ, max
-				.getA(), max.getB(), box.maxZ) : Shapes.box(min.getA(), box.minY, min.getB(), max.getA(), box.maxY, max.getB())));
+		for (Box box : shape.getBoundingBoxes()) {
+			Pair<Double, Double> min = axis == Direction.Axis.X ? rotatePoint(box.minY, box.minZ, radians) : (axis == Direction.Axis.Z ? rotatePoint(box.minX, box.minY, radians) : rotatePoint(box.minX, box.minZ, radians));
+			Pair<Double, Double> max = axis == Direction.Axis.X ? rotatePoint(box.maxY, box.maxZ, radians) : (axis == Direction.Axis.Z ? rotatePoint(box.maxX, box.maxY, radians) : rotatePoint(box.maxX, box.maxZ, radians));
+			collision = VoxelShapes.union(collision, axis == Direction.Axis.X ? VoxelShapes.cuboid(box.minX, min.getFirst(), min.getSecond(), box.maxX, max.getFirst(), max.getSecond()) : (axis == Direction.Axis.Z ? VoxelShapes.cuboid(min.getFirst(), min.getSecond(), box.minZ, max
+				.getFirst(), max.getSecond(), box.maxZ) : VoxelShapes.cuboid(min.getFirst(), box.minY, min.getSecond(), max.getFirst(), box.maxY, max.getSecond())));
 		}
 		return collision;
 	}
 
 	/** Returns the given {@link VoxelShape}s rotated the supplied radians in the specified {@link Direction.Axis}. */
 	public static VoxelShape rotate(Direction.Axis axis, double radians, Collection<VoxelShape> shapes) {
-		VoxelShape collision = Shapes.empty();
+		VoxelShape collision = VoxelShapes.empty();
 		for (VoxelShape shape : shapes) {
-			collision = Shapes.or(collision, rotate(axis, radians, shape));
+			collision = VoxelShapes.union(collision, rotate(axis, radians, shape));
 		}
 		return collision;
 	}
@@ -98,13 +97,13 @@ public class VoxelShapeUtilities {
 	}
 
 	/** Rotates the given points according to the specified rotation. */
-	private static Tuple<Double, Double> rotatePoint(double p1, double p2, double rotation) {
+	private static Pair<Double, Double> rotatePoint(double p1, double p2, double rotation) {
 		return rotatePoint(p1, p2, rotation, CENTER);
 	}
 
 	/** Rotates the given points according to the specified rotation. */
-	private static Tuple<Double, Double> rotatePoint(double p1, double p2, double rotation, double center) {
-		return new Tuple<>(((p1 - center) * Math.cos(rotation) - ((p2 - center) * Math.sin(rotation))) + center, ((p1 - center) * Math.sin(rotation)) + ((p2 - center) * Math.cos(rotation)) + center);
+	private static Pair<Double, Double> rotatePoint(double p1, double p2, double rotation, double center) {
+		return Pair.of(((p1 - center) * Math.cos(rotation) - ((p2 - center) * Math.sin(rotation))) + center, ((p1 - center) * Math.sin(rotation)) + ((p2 - center) * Math.cos(rotation)) + center);
 	}
 
 	/** Returns the given {@link VoxelShape}s rotated 90 degrees in the specified {@link Direction.Axis}. */

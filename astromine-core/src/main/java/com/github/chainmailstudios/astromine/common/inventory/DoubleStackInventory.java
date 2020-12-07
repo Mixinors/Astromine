@@ -24,45 +24,46 @@
 
 package com.github.chainmailstudios.astromine.common.inventory;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventories;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.collection.DefaultedList;
+
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import net.minecraft.core.NonNullList;
-import net.minecraft.world.Container;
-import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 
 /**
- * A simple {@link Container} with helper methods
+ * A simple {@link Inventory} with helper methods
  * for a left and a right stack.
  *
  * Originally by {@author Juuz}.
  */
-public interface DoubleStackInventory extends Container {
+public interface DoubleStackInventory extends Inventory {
 	/** Instantiates a {@link DoubleStackInventory}. */
-	static DoubleStackInventory of(NonNullList<ItemStack> items) {
+	static DoubleStackInventory of(DefaultedList<ItemStack> items) {
 		return new DoubleStackInventoryImpl(items);
 	}
 
 	/** Instantiates a {@link DoubleStackInventory}. */
 	static DoubleStackInventory ofSize(int size) {
-		return of(NonNullList.withSize(size, ItemStack.EMPTY));
+		return of(DefaultedList.ofSize(size, ItemStack.EMPTY));
 	}
 
 	/** Returns this inventory's {@link ItemStack}s. */
-	NonNullList<ItemStack> getItems();
+	DefaultedList<ItemStack> getItems();
 
 	/** Returns this inventory's size. */
 	@Override
-	default int getContainerSize() {
+	default int size() {
 		return getItems().size();
 	}
 
 	/** Asserts whether this inventory's {@link ItemStack}s are all empty or not. */
 	@Override
 	default boolean isEmpty() {
-		for (int i = 0; i < getContainerSize(); i++) {
-			ItemStack stack = getItem(i);
+		for (int i = 0; i < size(); i++) {
+			ItemStack stack = getStack(i);
 			if (!stack.isEmpty()) {
 				return false;
 			}
@@ -72,50 +73,50 @@ public interface DoubleStackInventory extends Container {
 
 	/** Returns the {@link ItemStack} at the given slot. */
 	@Override
-	default ItemStack getItem(int slot) {
+	default ItemStack getStack(int slot) {
 		return getItems().get(slot);
 	}
 
 	/** Sets the {@link ItemStack} at the given slot to the specified value.
 	 * If the count is bigger than this inventory allows, it is set to the maximum allowed. */
 	@Override
-	default void setItem(int slot, ItemStack stack) {
+	default void setStack(int slot, ItemStack stack) {
 		getItems().set(slot, stack);
 
-		if (stack.getCount() > getMaxStackSize()) {
-			stack.setCount(getMaxStackSize());
+		if (stack.getCount() > getMaxCountPerStack()) {
+			stack.setCount(getMaxCountPerStack());
 		}
 
-		setChanged();
+		markDirty();
 	}
 	
 	/** Returns the {@link ItemStack} at the first slot. */
 	default ItemStack getFirst() {
-		return getItem(0);
+		return getStack(0);
 	}
 
 	/** Sets the {@link ItemStack} at the first slot to the specified value. */
 	default void setFirst(ItemStack stack) {
-		setItem(0, stack);
+		setStack(0, stack);
 	}
 
 	/** Returns the {@link ItemStack} at the second slot. */
 	default ItemStack getSecond() {
-		return getItem(1);
+		return getStack(1);
 	}
 
 	/** Sets the {@link ItemStack} at the second slot to the specified value. */
 	default void setSecond(ItemStack stack) {
-		setItem(1, stack);
+		setStack(1, stack);
 	}
 
 	/** Removes the {@link ItemStack} at the given slot,
 	 * or a part of it as per the specified count, and returns it. */
 	@Override
-	default ItemStack removeItem(int slot, int count) {
-		ItemStack result = ContainerHelper.removeItem(getItems(), slot, count);
+	default ItemStack removeStack(int slot, int count) {
+		ItemStack result = Inventories.splitStack(getItems(), slot, count);
 		if (!result.isEmpty()) {
-			setChanged();
+			markDirty();
 		}
 		return result;
 	}
@@ -123,52 +124,52 @@ public interface DoubleStackInventory extends Container {
 	/** Removes the {@link ItemStack} at the given slot
 	 * and returns it. */
 	@Override
-	default ItemStack removeItemNoUpdate(int slot) {
-		ItemStack stack = ContainerHelper.takeItem(getItems(), slot);
-		setChanged();
+	default ItemStack removeStack(int slot) {
+		ItemStack stack = Inventories.removeStack(getItems(), slot);
+		markDirty();
 		return stack;
 	}
 
 	/** Removes the {@link ItemStack} at the first slot. */
 	default ItemStack removeLeftStack() {
-		return removeItemNoUpdate(0);
+		return removeStack(0);
 	}
 
 	/** Removes the {@link ItemStack} at the second slot. */
 	default ItemStack removeRightStack() {
-		return removeItemNoUpdate(1);
+		return removeStack(1);
 	}
 
 	/**
 	 * Clears {@linkplain #getItems() the item list}}.
 	 */
 	@Override
-	default void clearContent() {
+	default void clear() {
 		getItems().clear();
-		setChanged();
+		markDirty();
 	}
 
 	/** Override to do nothing. */
 	@Override
-	default void setChanged() {}
+	default void markDirty() {}
 
 	/** Allow the player to use this inventory by default. */
 	@Override
-	default boolean stillValid(Player player) {
+	default boolean canPlayerUse(PlayerEntity player) {
 		return true;
 	}
 
 	class DoubleStackInventoryImpl implements DoubleStackInventory {
-		private final NonNullList<ItemStack> items;
+		private final DefaultedList<ItemStack> items;
 
 		/** Instantiates a {@link DoubleStackInventoryImpl}. */
-		private DoubleStackInventoryImpl(NonNullList<ItemStack> items) {
+		private DoubleStackInventoryImpl(DefaultedList<ItemStack> items) {
 			this.items = items;
 		}
 
 		/** Returns this inventory's {@link ItemStack}s. */
 		@Override
-		public NonNullList<ItemStack> getItems() {
+		public DefaultedList<ItemStack> getItems() {
 			return items;
 		}
 

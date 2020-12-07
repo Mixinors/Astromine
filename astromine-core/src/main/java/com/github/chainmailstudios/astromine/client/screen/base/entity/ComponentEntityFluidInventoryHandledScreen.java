@@ -24,10 +24,11 @@
 
 package com.github.chainmailstudios.astromine.client.screen.base.entity;
 
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.text.Text;
+
 import com.github.chainmailstudios.astromine.common.screenhandler.base.entity.ComponentEntityFluidItemScreenHandler;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.player.Inventory;
 
 /**
  * A {@link ComponentEntityHandledScreen} used by
@@ -35,7 +36,7 @@ import net.minecraft.world.entity.player.Inventory;
  */
 public abstract class ComponentEntityFluidInventoryHandledScreen<T extends ComponentEntityFluidItemScreenHandler> extends ComponentEntityHandledScreen<T> {
 	/** Instantiates a {@link ComponentEntityFluidInventoryHandledScreen}. */
-	public ComponentEntityFluidInventoryHandledScreen(BaseScreenHandler handler, Inventory inventory, Component title) {
+	public ComponentEntityFluidInventoryHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 	}
 }

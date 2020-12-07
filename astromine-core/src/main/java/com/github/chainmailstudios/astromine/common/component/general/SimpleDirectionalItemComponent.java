@@ -2,11 +2,11 @@ package com.github.chainmailstudios.astromine.common.component.general;
 
 import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
-import net.minecraft.core.Direction;
-import net.minecraft.world.item.ItemStack;
 
 /**
  * An {@link ItemComponent} which bases insertion and

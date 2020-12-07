@@ -25,18 +25,18 @@
 package com.github.chainmailstudios.astromine.common.widget.blade;
 
 import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.client.BaseRenderer;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
@@ -74,8 +74,8 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 		return component.get(type).get(direction).name().toLowerCase(Locale.ROOT);
 	}
 
-	/** Returns the {@link ResourceLocation} of this widget's texture, based on its {@link TransferType}. */
-	private ResourceLocation getTexture() {
+	/** Returns the {@link Identifier} of this widget's texture, based on its {@link TransferType}. */
+	private Identifier getTexture() {
 		return component.get(type).get(direction).texture();
 	}
 
@@ -148,14 +148,14 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 	public void onMouseReleased(float mouseX, float mouseY, int mouseButton) {
 		if (getFocused() && !getHidden() && wasClicked) {
 			if (getHandler().getClient()) {
-				FriendlyByteBuf buffer = new FriendlyByteBuf(Unpooled.buffer());
+				PacketByteBuf buffer = new PacketByteBuf(Unpooled.buffer());
 
 				buffer.writeBlockPos(getBlockPos());
-				buffer.writeResourceLocation(ComponentBlockEntity.TRANSFER_UPDATE_PACKET);
+				buffer.writeIdentifier(ComponentBlockEntity.TRANSFER_UPDATE_PACKET);
 
-				buffer.writeResourceLocation(type.getId());
-				buffer.writeEnum(direction);
-				buffer.writeEnum(component.get(type).get(direction).next());
+				buffer.writeIdentifier(type.getId());
+				buffer.writeEnumConstant(direction);
+				buffer.writeEnumConstant(component.get(type).get(direction).next());
 
 				ClientSidePacketRegistry.INSTANCE.sendToServer(AstromineCommonPackets.BLOCK_ENTITY_UPDATE_PACKET, buffer);
 			}
@@ -168,15 +168,15 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 	/** Returns this widget's tooltip. */
 	@Environment(EnvType.CLIENT)
 	@Override
-	public @NotNull List<Component> getTooltip() {
+	public @NotNull List<Text> getTooltip() {
 		Direction offset = MirrorUtilities.rotate(direction, rotation);
-		return Arrays.asList(new TranslatableComponent("text.astromine.siding." + offset.getName()), new TranslatableComponent("text.astromine.siding." + getSideName()));
+		return Arrays.asList(new TranslatableText("text.astromine.siding." + offset.getName()), new TranslatableText("text.astromine.siding." + getSideName()));
 	}
 
 	/** Renders this widget. */
 	@Environment(EnvType.CLIENT)
 	@Override
-	public void drawWidget(@NotNull PoseStack matrices, @NotNull MultiBufferSource provider) {
+	public void drawWidget(@NotNull MatrixStack matrices, @NotNull VertexConsumerProvider provider) {
 		if (getHidden())
 			return;
 

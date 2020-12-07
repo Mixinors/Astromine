@@ -24,18 +24,22 @@
 
 package com.github.chainmailstudios.astromine.common.widget.blade;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.core.Registry;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.OverlayTexture;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.item.ItemStack;
+import net.minecraft.screen.PlayerScreenHandler;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.client.BaseRenderer;
@@ -45,10 +49,6 @@ import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.TextUtilities;
 import com.github.vini2003.blade.client.utilities.Layers;
 import com.github.vini2003.blade.common.widget.base.ButtonWidget;
-import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -67,7 +67,7 @@ import java.util.function.Supplier;
  * {@link #fluidConsumer} to update the related object.
  */
 public class FluidFilterWidget extends ButtonWidget {
-	private static final ResourceLocation FLUID_BACKGROUND = AstromineCommon.identifier("textures/widget/fluid_filter_background.png");
+	private static final Identifier FLUID_BACKGROUND = AstromineCommon.identifier("textures/widget/fluid_filter_background.png");
 
 	private Supplier<Fluid> fluidSupplier = () -> Fluids.EMPTY;
 
@@ -99,7 +99,7 @@ public class FluidFilterWidget extends ButtonWidget {
 	public void onMouseClicked(float x, float y, int button) {
 		super.onMouseClicked(x, y, button);
 
-		ItemStack stack = getHandler().getPlayer().inventory.getCarried();
+		ItemStack stack = getHandler().getPlayer().inventory.getCursorStack();
 
 		if (isWithin(x, y)) {
 			if (!stack.isEmpty()) {
@@ -117,16 +117,16 @@ public class FluidFilterWidget extends ButtonWidget {
 	/** Returns this widget's tooltip. */
 	@NotNull
 	@Override
-	public List<Component> getTooltip() {
-		ResourceLocation fluidId = Registry.FLUID.getKey(fluidSupplier.get());
+	public List<Text> getTooltip() {
+		Identifier fluidId = Registry.FLUID.getId(fluidSupplier.get());
 
-		return Collections.singletonList(new TranslatableComponent("text.astromine.filter", TextUtilities.getFluid(fluidId)));
+		return Collections.singletonList(new TranslatableText("text.astromine.filter", TextUtilities.getFluid(fluidId)));
 	}
 
 	/** Renders this widget. */
 	@Environment(EnvType.CLIENT)
 	@Override
-		public void drawWidget(@NotNull PoseStack matrices, @NotNull MultiBufferSource provider) {
+	public void drawWidget(@NotNull MatrixStack matrices, @NotNull VertexConsumerProvider provider) {
 		if (getHidden()) {
 			return;
 		}
@@ -137,22 +137,17 @@ public class FluidFilterWidget extends ButtonWidget {
 		float sX = getSize().getWidth();
 		float sY = getSize().getHeight();
 
-		RenderType layer = Layers.get(FLUID_BACKGROUND);
+		RenderLayer layer = Layers.get(FLUID_BACKGROUND);
 
 		BaseRenderer.drawTexturedQuad(matrices, provider, layer, x, y, getSize().getWidth(), getSize().getHeight(), FLUID_BACKGROUND);
 
 		if (fluidSupplier.get() != Fluids.EMPTY) {
 			SpriteRenderer
 					.beginPass()
-					.setup(provider, RenderType.SOLID)
+					.setup(provider, RenderLayer.getSolid())
 					.sprite(FluidUtilities.getSprite(fluidSupplier.get()))
-					.color(FluidUtilities.getColor(Minecraft.getInstance().player, fluidSupplier.get()))
-					.light(0x00f000f0)
-					.overlay(OverlayTexture.NO_OVERLAY)
-					.alpha(0xff)
-					.normal(matrices.last().normal(), 0, 0, 0)
-					.position(matrices.last().pose(), x + 1, y + 1, x + sX - 1, y + sY - 1, 0F)
-					.next(InventoryMenu.BLOCK_ATLAS);
+					.color(FluidUtilities.getColor(MinecraftClient.getInstance().player, fluidSupplier.get())).light(0x00f000f0).overlay(OverlayTexture.DEFAULT_UV).alpha(
+				0xff).normal(matrices.peek().getNormal(), 0, 0, 0).position(matrices.peek().getModel(), x + 1, y + 1, x + sX - 1, y + sY - 1, 0F).next(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
 		}
 	}
 }

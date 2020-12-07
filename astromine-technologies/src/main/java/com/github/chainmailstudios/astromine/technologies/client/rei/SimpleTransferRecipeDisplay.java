@@ -24,10 +24,12 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.rei;
 
+import net.minecraft.screen.ScreenHandler;
+
 import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.TransferRecipeDisplay;
 import me.shedaniel.rei.server.ContainerInfo;
-import net.minecraft.world.inventory.AbstractContainerMenu;
+
 import java.util.List;
 
 public abstract class SimpleTransferRecipeDisplay implements TransferRecipeDisplay {
@@ -50,7 +52,7 @@ public abstract class SimpleTransferRecipeDisplay implements TransferRecipeDispl
 	}
 
 	@Override
-	public List<List<EntryStack>> getOrganisedInputEntries(ContainerInfo<AbstractContainerMenu> containerInfo, AbstractContainerMenu container) {
+	public List<List<EntryStack>> getOrganisedInputEntries(ContainerInfo<ScreenHandler> containerInfo, ScreenHandler container) {
 		return getInputEntries();
 	}
 }

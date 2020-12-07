@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.datagen.generator.recipe.set;
 
-import net.minecraft.world.item.Item;
+import net.minecraft.item.Item;
 
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.base.CookingSetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;

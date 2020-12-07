@@ -24,40 +24,41 @@
 
 package com.github.chainmailstudios.astromine.common.inventory;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventories;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.InventoryChangedListener;
+import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.RecipeFinder;
+import net.minecraft.recipe.RecipeInputProvider;
+import net.minecraft.util.collection.DefaultedList;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import net.minecraft.core.NonNullList;
-import net.minecraft.world.Container;
-import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.ContainerListener;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.StackedContents;
-import net.minecraft.world.inventory.StackedContentsCompatible;
-import net.minecraft.world.item.ItemStack;
 
 /**
- * A standard implementation of an {@link Container}.
+ * A standard implementation of an {@link Inventory}.
  */
-public class BaseInventory implements Container, StackedContentsCompatible {
+public class BaseInventory implements Inventory, RecipeInputProvider {
 	private final int size;
 
-	private final NonNullList<ItemStack> stacks;
+	private final DefaultedList<ItemStack> stacks;
 
-	private final List<ContainerListener> listeners = new ArrayList<>();
+	private final List<InventoryChangedListener> listeners = new ArrayList<>();
 
 	/** Instantiates a {@link BaseInventory}. */
 	private BaseInventory(int size) {
 		this.size = size;
-		this.stacks = NonNullList.withSize(size, ItemStack.EMPTY);
+		this.stacks = DefaultedList.ofSize(size, ItemStack.EMPTY);
 	}
 
 	/** Instantiates a {@link BaseInventory}. */
 	private BaseInventory(ItemStack... items) {
 		this.size = items.length;
-		this.stacks = NonNullList.of(ItemStack.EMPTY, items);
+		this.stacks = DefaultedList.copyOf(ItemStack.EMPTY, items);
 	}
 
 	/** Instantiates a {@link BaseInventory}. */
@@ -70,19 +71,19 @@ public class BaseInventory implements Container, StackedContentsCompatible {
 		return new BaseInventory(items);
 	}
 
-	/** Adds an {@link ContainerListener} to this inventory. */
-	public void addListener(ContainerListener... listeners) {
+	/** Adds an {@link InventoryChangedListener} to this inventory. */
+	public void addListener(InventoryChangedListener... listeners) {
 		this.listeners.addAll(Arrays.asList(listeners));
 	}
 
-	/** Removes an {@link ContainerListener} from this inventory. */
-	public void removeListener(ContainerListener... listeners) {
+	/** Removes an {@link InventoryChangedListener} from this inventory. */
+	public void removeListener(InventoryChangedListener... listeners) {
 		this.listeners.removeAll(Arrays.asList(listeners));
 	}
 
 	/** Returns this inventory's size. */
 	@Override
-	public int getContainerSize() {
+	public int size() {
 		return this.size;
 	}
 
@@ -94,7 +95,7 @@ public class BaseInventory implements Container, StackedContentsCompatible {
 
 	/** Returns the {@link ItemStack} at the given slot. */
 	@Override
-	public ItemStack getItem(int slot) {
+	public ItemStack getStack(int slot) {
 		if (slot >= 0 && slot < size) {
 			return stacks.get(slot);
 		} else {
@@ -105,24 +106,24 @@ public class BaseInventory implements Container, StackedContentsCompatible {
 	/** Sets the {@link ItemStack} at the given slot to the specified value.
 	 * If the count is bigger than this inventory allows, it is set to the maximum allowed. */
 	@Override
-	public void setItem(int slot, ItemStack stack) {
+	public void setStack(int slot, ItemStack stack) {
 		stacks.set(slot, stack);
 
-		if (stack.getCount() > getMaxStackSize()) {
-			stack.setCount(getMaxStackSize());
+		if (stack.getCount() > getMaxCountPerStack()) {
+			stack.setCount(getMaxCountPerStack());
 		}
 
-		setChanged();
+		markDirty();
 	}
 
 	/** Removes the {@link ItemStack} at the given slot,
 	 * or a part of it as per the specified count, and returns it. */
 	@Override
-	public ItemStack removeItem(int slot, int amount) {
-		ItemStack stack = ContainerHelper.removeItem(this.stacks, slot, amount);
+	public ItemStack removeStack(int slot, int amount) {
+		ItemStack stack = Inventories.splitStack(this.stacks, slot, amount);
 
 		if (!stack.isEmpty()) {
-			this.setChanged();
+			this.markDirty();
 		}
 
 		return stack;
@@ -131,7 +132,7 @@ public class BaseInventory implements Container, StackedContentsCompatible {
 	/** Removes the {@link ItemStack} at the given slot
 	 * and returns it. */
 	@Override
-	public ItemStack removeItemNoUpdate(int slot) {
+	public ItemStack removeStack(int slot) {
 		ItemStack stack = stacks.get(slot);
 
 		if (stack.isEmpty()) {
@@ -139,39 +140,39 @@ public class BaseInventory implements Container, StackedContentsCompatible {
 		} else {
 			stacks.set(slot, ItemStack.EMPTY);
 
-			setChanged();
+			markDirty();
 
 			return stack;
 		}
 	}
 
-	/** Triggers this inventory's {@link ContainerListener}s. */
+	/** Triggers this inventory's {@link InventoryChangedListener}s. */
 	@Override
-	public void setChanged() {
-		for (ContainerListener listener : listeners) {
-			listener.containerChanged(this);
+	public void markDirty() {
+		for (InventoryChangedListener listener : listeners) {
+			listener.onInventoryChanged(this);
 		}
 	}
 
 	/** Allow the player to use this inventory by default. */
 	@Override
-	public boolean stillValid(Player player) {
+	public boolean canPlayerUse(PlayerEntity player) {
 		return true;
 	}
 
 	/** Clear this inventory's contents. */
 	@Override
-	public void clearContent() {
+	public void clear() {
 		for (int slot = 0; slot < size; ++slot) {
-			setItem(slot, ItemStack.EMPTY);
+			setStack(slot, ItemStack.EMPTY);
 		}
 
-		setChanged();
+		markDirty();
 	}
 
 	/** Override behavior to do nothing. */
 	@Override
-	public void fillStackedContents(StackedContents recipeFinder) {}
+	public void provideRecipeInputs(RecipeFinder recipeFinder) {}
 
 	/** Returns this inventory's string representation. */
 	public String toString() {

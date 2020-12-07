@@ -26,19 +26,21 @@ package com.github.chainmailstudios.astromine.technologies.common.item;
 
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
-import net.minecraft.core.BlockPos;
-import net.minecraft.tags.Tag;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.Vanishable;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
+
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ToolMaterial;
+import net.minecraft.item.Vanishable;
+import net.minecraft.tag.Tag;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+
 import com.github.chainmailstudios.astromine.common.item.EnchantableToolItem;
 import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
@@ -51,31 +53,31 @@ import com.google.common.collect.Multimap;
 
 public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool, Vanishable, MagnaTool, EnchantableToolItem {
 	private final int radius;
-	private final Tier material;
-	private final Multimap<Attribute, AttributeModifier> attributeModifiers;
+	private final ToolMaterial material;
+	private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
 
-	public DrillItem(Tier material, float attackDamage, float attackSpeed, int radius, double size, Properties settings) {
+	public DrillItem(ToolMaterial material, float attackDamage, float attackSpeed, int radius, double size, Settings settings) {
 		super(settings, size);
 
 		this.radius = radius;
 		this.material = material;
 
-		ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+		ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
 
-		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", attackDamage, AttributeModifier.Operation.ADDITION));
-		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", attackSpeed, AttributeModifier.Operation.ADDITION));
+		builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Tool modifier", attackDamage, EntityAttributeModifier.Operation.ADDITION));
+		builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Tool modifier", attackSpeed, EntityAttributeModifier.Operation.ADDITION));
 
 		this.attributeModifiers = builder.build();
 	}
 
 	@Override
-	public int getEnchantmentValue() {
-		return material.getEnchantmentValue();
+	public int getEnchantability() {
+		return material.getEnchantability();
 	}
 
 	@Override
-	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		if (!target.level.isClientSide) {
+	public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+		if (!target.world.isClient) {
 			EnergyHandler energy = Energy.of(stack);
 			energy.use(getEnergy() * AstromineConfig.get().drillEntityHitMultiplier);
 		}
@@ -84,8 +86,8 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 	}
 
 	@Override
-	public boolean mineBlock(ItemStack stack, Level world, BlockState state, BlockPos pos, LivingEntity miner) {
-		if (!world.isClientSide && state.getDestroySpeed(world, pos) != 0.0F) {
+	public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
+		if (!world.isClient && state.getHardness(world, pos) != 0.0F) {
 			EnergyHandler energy = Energy.of(stack);
 			energy.use(getEnergy());
 		}
@@ -94,18 +96,18 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 	}
 
 	@Override
-	public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
-		return slot == EquipmentSlot.MAINHAND ? this.attributeModifiers : super.getDefaultAttributeModifiers(slot);
+	public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot) {
+		return slot == EquipmentSlot.MAINHAND ? this.attributeModifiers : super.getAttributeModifiers(slot);
 	}
 
 	@Override
 	public float getMiningSpeedMultiplier(Tag<Item> tag, BlockState state, ItemStack stack, LivingEntity user) {
-		return material.getSpeed();
+		return material.getMiningSpeedMultiplier();
 	}
 
 	@Override
 	public int getMiningLevel(Tag<Item> tag, BlockState state, ItemStack stack, LivingEntity user) {
-		return material.getLevel();
+		return material.getMiningLevel();
 	}
 
 	@Override
@@ -114,12 +116,12 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 	}
 
 	@Override
-	public float getDestroySpeed(ItemStack stack, BlockState state) {
+	public float getMiningSpeedMultiplier(ItemStack stack, BlockState state) {
 		return 0F; // Disallow vanilla from overriding our #postProcessMiningSpeed
 	}
 
 	public double getEnergy() {
-		return AstromineConfig.get().drillConsumed * material.getSpeed();
+		return AstromineConfig.get().drillConsumed * material.getMiningSpeedMultiplier();
 	}
 
 	@Override

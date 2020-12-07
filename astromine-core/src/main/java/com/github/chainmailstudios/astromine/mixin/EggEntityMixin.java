@@ -24,15 +24,17 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
-import net.minecraft.world.entity.projectile.ThrownEgg;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
-@Mixin(ThrownEgg.class)
+import net.minecraft.entity.projectile.thrown.EggEntity;
+
+import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
+
+@Mixin(EggEntity.class)
 public abstract class EggEntityMixin implements GravityEntity {
-	@ModifyConstant(method = "handleEntityEvent", constant = @Constant(doubleValue = 0.08D))
+	@ModifyConstant(method = "handleStatus(B)V", constant = @Constant(doubleValue = 0.08D))
 	double getGravity(double original) {
 		return this.astromine_getGravity();
 	}

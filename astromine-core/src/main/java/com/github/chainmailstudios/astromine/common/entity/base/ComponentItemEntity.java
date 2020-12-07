@@ -24,16 +24,17 @@
 
 package com.github.chainmailstudios.astromine.common.entity.base;
 
+import net.minecraft.entity.EntityType;
+import net.minecraft.world.World;
+
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.Level;
 
 /**
  * A {@link ComponentEntity} with an attached {@link ItemComponent}.
  */
 public abstract class ComponentItemEntity extends ComponentEntity {
 	/** Instantiates a {@link ComponentItemEntity}. */
-	public ComponentItemEntity(EntityType<?> type, Level world) {
+	public ComponentItemEntity(EntityType<?> type, World world) {
 		super(type, world);
 	}
 

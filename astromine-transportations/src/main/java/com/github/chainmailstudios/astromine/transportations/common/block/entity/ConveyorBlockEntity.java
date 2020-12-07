@@ -34,26 +34,29 @@ import com.github.chainmailstudios.astromine.common.utilities.capability.invento
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
-import net.minecraft.client.Minecraft;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
+
+import net.minecraft.block.BlockState;
+import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Tuple;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Pair;
+import net.minecraft.util.Tickable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
+
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.Conveyable;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.Conveyor;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorConveyable;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorTypes;
 import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;
+import org.apache.logging.log4j.core.jmx.Server;
 
-public class ConveyorBlockEntity extends ComponentBlockEntity implements ItemComponentProvider, ComponentInventoryProvider, ConveyorConveyable, BlockEntityClientSerializable, RenderAttachmentBlockEntity, TickableBlockEntity {
+public class ConveyorBlockEntity extends ComponentBlockEntity implements ItemComponentProvider, ComponentInventoryProvider, ConveyorConveyable, BlockEntityClientSerializable, RenderAttachmentBlockEntity, Tickable {
 	protected boolean front = false;
 	protected boolean down = false;
 	protected boolean across = false;
@@ -86,8 +89,8 @@ public class ConveyorBlockEntity extends ComponentBlockEntity implements ItemCom
 					prevPosition = -1;
 				}
 
-				if (level != null && !level.isClientSide) {
-					sendPacket((ServerLevel) level, save(new CompoundTag()));
+				if (world != null && !world.isClient) {
+					sendPacket((ServerWorld) world, ConveyorBlockEntity.this.toTag(new CompoundTag()));
 				}
 			}
 
@@ -98,8 +101,8 @@ public class ConveyorBlockEntity extends ComponentBlockEntity implements ItemCom
 				position = 0;
 				prevPosition = 0;
 
-				if (level != null && !level.isClientSide) {
-					sendPacket((ServerLevel) level, save(new CompoundTag()));
+				if (world != null && !world.isClient) {
+					sendPacket((ServerWorld) world, ConveyorBlockEntity.this.toTag(new CompoundTag()));
 				}
 
 				return stack;
@@ -109,8 +112,8 @@ public class ConveyorBlockEntity extends ComponentBlockEntity implements ItemCom
 			public void clear() {
 				super.clear();
 
-				if (level != null && !level.isClientSide) {
-					sendPacket((ServerLevel) level, save(new CompoundTag()));
+				if (world != null && !world.isClient) {
+					sendPacket((ServerWorld) world, ConveyorBlockEntity.this.toTag(new CompoundTag()));
 				}
 			}
 		}.withInsertPredicate(((direction, stack, slot) -> {
@@ -125,33 +128,33 @@ public class ConveyorBlockEntity extends ComponentBlockEntity implements ItemCom
 
 	@Override
 	public void tick() {
-		Direction direction = getBlockState().getValue(HorizontalDirectionalBlock.FACING);
-		int speed = ((Conveyor) getBlockState().getBlock()).getSpeed();
+		Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
+		int speed = ((Conveyor) getCachedState().getBlock()).getSpeed();
 
 		if (!getItemComponent().isEmpty()) {
 			if (across) {
-				BlockPos frontPos = getBlockPos().relative(direction);
-				BlockPos frontAcrossPos = frontPos.relative(direction);
+				BlockPos frontPos = getPos().offset(direction);
+				BlockPos frontAcrossPos = frontPos.offset(direction);
 
-				if (getLevel().getBlockEntity(frontPos) instanceof ConveyorConveyable && getLevel().getBlockEntity(frontAcrossPos) instanceof ConveyorConveyable) {
-					Conveyable conveyable = (Conveyable) getLevel().getBlockEntity(frontPos);
-					Conveyable acrossConveyable = (Conveyable) getLevel().getBlockEntity(frontAcrossPos);
+				if (getWorld().getBlockEntity(frontPos) instanceof ConveyorConveyable && getWorld().getBlockEntity(frontAcrossPos) instanceof ConveyorConveyable) {
+					Conveyable conveyable = (Conveyable) getWorld().getBlockEntity(frontPos);
+					Conveyable acrossConveyable = (Conveyable) getWorld().getBlockEntity(frontAcrossPos);
 
 					handleMovementAcross(conveyable, acrossConveyable, speed, true);
 				}
 			} else if (front) {
-				BlockPos frontPos = getBlockPos().relative(direction);
+				BlockPos frontPos = getPos().offset(direction);
 
-				if (getLevel().getBlockEntity(frontPos) instanceof Conveyable) {
-					Conveyable conveyable = (Conveyable) getLevel().getBlockEntity(frontPos);
+				if (getWorld().getBlockEntity(frontPos) instanceof Conveyable) {
+					Conveyable conveyable = (Conveyable) getWorld().getBlockEntity(frontPos);
 
 					handleMovement(conveyable, speed, true);
 				}
 			} else if (down) {
-				BlockPos downPos = getBlockPos().relative(direction).below();
+				BlockPos downPos = getPos().offset(direction).down();
 
-				if (getLevel().getBlockEntity(downPos) instanceof Conveyable) {
-					Conveyable conveyable = (Conveyable) getLevel().getBlockEntity(downPos);
+				if (getWorld().getBlockEntity(downPos) instanceof Conveyable) {
+					Conveyable conveyable = (Conveyable) getWorld().getBlockEntity(downPos);
 
 					handleMovement(conveyable, speed, true);
 				}
@@ -174,7 +177,7 @@ public class ConveyorBlockEntity extends ComponentBlockEntity implements ItemCom
 
 				conveyable.give(given);
 
-				if (!level.isClientSide || level.isClientSide && Minecraft.getInstance().player.distanceToSqr(Vec3.atCenterOf(getBlockPos())) > 40 * 40) {
+				if (!world.isClient || world.isClient && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.ofCenter(getPos())) > 40 * 40) {
 					getItemComponent().setFirst(ItemStack.EMPTY);
 				}
 			}
@@ -213,7 +216,7 @@ public class ConveyorBlockEntity extends ComponentBlockEntity implements ItemCom
 
 				conveyable.give(given);
 
-				if (!level.isClientSide || level.isClientSide && Minecraft.getInstance().player.distanceToSqr(Vec3.atCenterOf(getBlockPos())) > 40 * 40) {
+				if (!world.isClient || world.isClient && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.ofCenter(getPos())) > 40 * 40) {
 					getItemComponent().setFirst(ItemStack.EMPTY);
 				}
 			}
@@ -235,7 +238,7 @@ public class ConveyorBlockEntity extends ComponentBlockEntity implements ItemCom
 
 	@Override
 	public ConveyorTypes getConveyorType() {
-		return ((Conveyor) getBlockState().getBlock()).getType();
+		return ((Conveyor) getCachedState().getBlock()).getType();
 	}
 
 	@Override
@@ -245,19 +248,19 @@ public class ConveyorBlockEntity extends ComponentBlockEntity implements ItemCom
 
 	@Override
 	public boolean canInsert(Direction direction) {
-		return direction != getBlockState().getValue(HorizontalDirectionalBlock.FACING) && direction != Direction.UP && direction != Direction.DOWN;
+		return direction != getCachedState().get(HorizontalFacingBlock.FACING) && direction != Direction.UP && direction != Direction.DOWN;
 	}
 
 	@Override
 	public boolean canExtract(Direction direction, ConveyorTypes type) {
-		return getBlockState().getValue(HorizontalDirectionalBlock.FACING) == direction;
+		return getCachedState().get(HorizontalFacingBlock.FACING) == direction;
 	}
 
 	@Override
 	public void give(ItemStack stack) {
-		if (!level.isClientSide) {
-			Tuple<ItemStack, ItemStack> merge = StackUtilities.merge(stack, getItemComponent().getFirst());
-			getItemComponent().setFirst(merge.getB());
+		if (!world.isClient) {
+			Pair<ItemStack, ItemStack> merge = StackUtilities.merge(stack, getItemComponent().getFirst());
+			getItemComponent().setFirst(merge.getRight());
 		}
 	}
 
@@ -274,10 +277,10 @@ public class ConveyorBlockEntity extends ComponentBlockEntity implements ItemCom
 	public void setFront(boolean front) {
 		this.front = front;
 
-		setChanged();
+		markDirty();
 
-		if (!level.isClientSide) {
-			sendPacket((ServerLevel) level, save(new CompoundTag()));
+		if (!world.isClient) {
+			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
 		}
 	}
 
@@ -288,10 +291,10 @@ public class ConveyorBlockEntity extends ComponentBlockEntity implements ItemCom
 	public void setDown(boolean down) {
 		this.down = down;
 
-		setChanged();
+		markDirty();
 
-		if (!level.isClientSide) {
-			sendPacket((ServerLevel) level, save(new CompoundTag()));
+		if (!world.isClient) {
+			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
 		}
 	}
 
@@ -302,10 +305,10 @@ public class ConveyorBlockEntity extends ComponentBlockEntity implements ItemCom
 	public void setAcross(boolean across) {
 		this.across = across;
 
-		setChanged();
+		markDirty();
 
-		if (!level.isClientSide) {
-			sendPacket((ServerLevel) level, save(new CompoundTag()));
+		if (!world.isClient) {
+			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
 		}
 	}
 
@@ -329,18 +332,18 @@ public class ConveyorBlockEntity extends ComponentBlockEntity implements ItemCom
 		return prevPosition;
 	}
 
-	protected void sendPacket(ServerLevel w, CompoundTag tag) {
-		tag.putString("id", BlockEntityType.getKey(getType()).toString());
-		sendPacket(w, new ClientboundBlockEntityDataPacket(getBlockPos(), 127, tag));
+	protected void sendPacket(ServerWorld w, CompoundTag tag) {
+		tag.putString("id", BlockEntityType.getId(getType()).toString());
+		sendPacket(w, new BlockEntityUpdateS2CPacket(getPos(), 127, tag));
 	}
 
-	protected void sendPacket(ServerLevel world, ClientboundBlockEntityDataPacket packet) {
-		world.getPlayers(player -> player.distanceToSqr(Vec3.atLowerCornerOf(getBlockPos())) < 40 * 40).forEach(player -> player.connection.send(packet));
+	protected void sendPacket(ServerWorld world, BlockEntityUpdateS2CPacket packet) {
+		world.getPlayers(player -> player.squaredDistanceTo(Vec3d.of(getPos())) < 40 * 40).forEach(player -> player.networkHandler.sendPacket(packet));
 	}
 
 	@Override
-	public void load(BlockState state, CompoundTag compoundTag) {
-		super.load(state, compoundTag);
+	public void fromTag(BlockState state, CompoundTag compoundTag) {
+		super.fromTag(state, compoundTag);
 
 		front = compoundTag.getBoolean("front");
 		down = compoundTag.getBoolean("down");
@@ -349,11 +352,11 @@ public class ConveyorBlockEntity extends ComponentBlockEntity implements ItemCom
 		position = compoundTag.getInt("position");
 		prevPosition = compoundTag.getInt("prevPosition");
 
-		getItemComponent().setFirst(ItemStack.of(compoundTag.getCompound("stack")));
+		getItemComponent().setFirst(ItemStack.fromTag(compoundTag.getCompound("stack")));
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag compoundTag) {
+	public CompoundTag toTag(CompoundTag compoundTag) {
 		compoundTag.putBoolean("front", front);
 		compoundTag.putBoolean("down", down);
 		compoundTag.putBoolean("across", across);
@@ -361,23 +364,23 @@ public class ConveyorBlockEntity extends ComponentBlockEntity implements ItemCom
 		compoundTag.putInt("position", position);
 		compoundTag.putInt("prevPosition", prevPosition);
 
-		compoundTag.put("stack", getItemComponent().getFirst().save(new CompoundTag()));
+		compoundTag.put("stack", getItemComponent().getFirst().toTag(new CompoundTag()));
 
-		return super.save(compoundTag);
+		return super.toTag(compoundTag);
 	}
 
 	@Override
-	public CompoundTag getUpdateTag() {
-		return save(new CompoundTag());
+	public CompoundTag toInitialChunkDataTag() {
+		return toTag(new CompoundTag());
 	}
 
 	@Override
 	public void fromClientTag(CompoundTag compoundTag) {
-		load(getBlockState(), compoundTag);
+		fromTag(getCachedState(), compoundTag);
 	}
 
 	@Override
 	public CompoundTag toClientTag(CompoundTag compoundTag) {
-		return save(compoundTag);
+		return toTag(compoundTag);
 	}
 }

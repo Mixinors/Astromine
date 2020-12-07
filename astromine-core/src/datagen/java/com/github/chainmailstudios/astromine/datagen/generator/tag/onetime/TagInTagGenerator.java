@@ -1,14 +1,14 @@
 package com.github.chainmailstudios.astromine.datagen.generator.tag.onetime;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Identifier;
 
 import me.shedaniel.cloth.api.datagen.v1.TagData;
 
 public class TagInTagGenerator implements OneTimeTagGenerator {
-	private final ResourceLocation parentTag;
-	private final ResourceLocation childTag;
+	private final Identifier parentTag;
+	private final Identifier childTag;
 
-	public TagInTagGenerator(ResourceLocation parentTag, ResourceLocation childTag) {
+	public TagInTagGenerator(Identifier parentTag, Identifier childTag) {
 		this.parentTag = parentTag;
 		this.childTag = childTag;
 	}

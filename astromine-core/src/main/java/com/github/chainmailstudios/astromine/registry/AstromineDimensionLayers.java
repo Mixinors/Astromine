@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine. registry;
+package com.github.chainmailstudios.astromine.registry;
 
 public class AstromineDimensionLayers {
 	public static void initialize() {

@@ -26,39 +26,40 @@ package com.github.chainmailstudios.astromine.common.utilities;
 
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.material.Fluid;
+
+import net.minecraft.client.texture.Sprite;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
 
 public class FluidUtilities {
 	/**
 	 * Returns the color of the specified fluid at the given player's position.
 	 */
-	public static int getColor(Player player, Fluid fluid) {
+	public static int getColor(PlayerEntity player, Fluid fluid) {
 		FluidRenderHandler handler = FluidRenderHandlerRegistry.INSTANCE.get(fluid);
 		if (handler == null) {
-			throw new NullPointerException("No fluid renderer for " + Registry.FLUID.getKey(fluid));
+			throw new NullPointerException("No fluid renderer for " + Registry.FLUID.getId(fluid));
 		}
-		return handler.getFluidColor(player.getCommandSenderWorld(), BlockPos.ZERO, fluid.defaultFluidState());
+		return handler.getFluidColor(player.getEntityWorld(), BlockPos.ORIGIN, fluid.getDefaultState());
 	}
 
 	/**
 	 * Returns the sprites of the specified fluid.
 	 */
-	public static TextureAtlasSprite[] getSprites(Fluid fluid) {
+	public static Sprite[] getSprites(Fluid fluid) {
 		FluidRenderHandler handler = FluidRenderHandlerRegistry.INSTANCE.get(fluid);
 		if (handler == null) {
-			throw new NullPointerException("No fluid renderer for " + Registry.FLUID.getKey(fluid));
+			throw new NullPointerException("No fluid renderer for " + Registry.FLUID.getId(fluid));
 		}
-		return handler.getFluidSprites(null, null, fluid.defaultFluidState());
+		return handler.getFluidSprites(null, null, fluid.getDefaultState());
 	}
 
 	/**
 	 * Returns the first sprite of the specified fluid.
 	 */
-	public static TextureAtlasSprite getSprite(Fluid fluid) {
+	public static Sprite getSprite(Fluid fluid) {
 		return getSprites(fluid)[0];
 	}
 }

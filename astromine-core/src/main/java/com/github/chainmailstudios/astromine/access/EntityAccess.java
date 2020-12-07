@@ -24,7 +24,7 @@
 
 package com.github.chainmailstudios.astromine.access;
 
-import com.github.chainmailstudios.astromine.mixin.*;
+import com.github.chainmailstudios.astromine.mixin.EntityNavigationMixin;
 
 /**
  * A mixin helper class, used by {@link EntityNavigationMixin}.

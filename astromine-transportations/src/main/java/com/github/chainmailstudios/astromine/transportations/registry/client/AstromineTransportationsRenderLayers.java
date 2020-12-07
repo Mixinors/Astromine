@@ -24,14 +24,15 @@
 
 package com.github.chainmailstudios.astromine.transportations.registry.client;
 
+import net.minecraft.client.render.RenderLayer;
+
 import com.github.chainmailstudios.astromine.registry.client.AstromineRenderLayers;
 import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlocks;
-import net.minecraft.client.renderer.RenderType;
 
 public class AstromineTransportationsRenderLayers extends AstromineRenderLayers {
 	public static void initialize() {
-		register(AstromineTransportationsBlocks.ALTERNATOR, RenderType.cutout());
-		register(AstromineTransportationsBlocks.SPLITTER, RenderType.cutout());
-		register(AstromineTransportationsBlocks.SHREDDER, RenderType.cutout());
+		register(AstromineTransportationsBlocks.ALTERNATOR, RenderLayer.getCutout());
+		register(AstromineTransportationsBlocks.SPLITTER, RenderLayer.getCutout());
+		register(AstromineTransportationsBlocks.SHREDDER, RenderLayer.getCutout());
 	}
 }

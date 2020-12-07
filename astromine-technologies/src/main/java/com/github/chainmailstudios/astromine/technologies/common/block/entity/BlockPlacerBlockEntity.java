@@ -27,13 +27,14 @@ package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 import com.github.chainmailstudios.astromine.common.component.general.*;
 import com.github.chainmailstudios.astromine.common.component.general.base.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
@@ -80,7 +81,7 @@ public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity imple
 	public void tick() {
 		super.tick();
 
-		if (level == null || level.isClientSide || !tickRedstone())
+		if (world == null || world.isClient || !tickRedstone())
 			return;
 
 		ItemComponent itemComponent = getItemComponent();
@@ -104,18 +105,18 @@ public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity imple
 
 					ItemStack stored = itemComponent.getFirst();
 
-					Direction direction = getBlockState().getValue(HorizontalDirectionalBlock.FACING);
+					Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
 
-					BlockPos targetPos = worldPosition.relative(direction);
+					BlockPos targetPos = pos.offset(direction);
 
-					BlockState targetState = level.getBlockState(targetPos);
+					BlockState targetState = world.getBlockState(targetPos);
 
 					if (stored.getItem() instanceof BlockItem && targetState.isAir()) {
-						BlockState newState = ((BlockItem) stored.getItem()).getBlock().defaultBlockState();
+						BlockState newState = ((BlockItem) stored.getItem()).getBlock().getDefaultState();
 
-						level.setBlockAndUpdate(targetPos, newState);
+						world.setBlockState(targetPos, newState);
 
-						stored.shrink(1);
+						stored.decrement(1);
 
 						energyVolume.take(getEnergyConsumed());
 					}
@@ -125,14 +126,14 @@ public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity imple
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag) {
+	public CompoundTag toTag(CompoundTag tag) {
 		tag.put("cooldown", cooldown.toTag());
-		return super.save(tag);
+		return super.toTag(tag);
 	}
 
 	@Override
-	public void load(BlockState state, @NotNull CompoundTag tag) {
+	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
 		cooldown = Fraction.fromTag(tag.getCompound("cooldown"));
-		super.load(state, tag);
+		super.fromTag(state, tag);
 	}
 }

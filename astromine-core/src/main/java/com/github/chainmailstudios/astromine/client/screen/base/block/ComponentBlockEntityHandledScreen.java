@@ -24,11 +24,12 @@
 
 package com.github.chainmailstudios.astromine.client.screen.base.block;
 
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.text.Text;
+
 import com.github.chainmailstudios.astromine.client.screen.base.CustomForegroundBaseHandledScreen;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityScreenHandler;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.player.Inventory;
 
 /**
  * A {@link CustomForegroundBaseHandledScreen} used by
@@ -36,7 +37,7 @@ import net.minecraft.world.entity.player.Inventory;
  */
 public class ComponentBlockEntityHandledScreen<T extends ComponentBlockEntityScreenHandler> extends CustomForegroundBaseHandledScreen<T> {
 	/** Instantiates a {@link ComponentBlockEntityHandledScreen}. */
-	public ComponentBlockEntityHandledScreen(BaseScreenHandler handler, Inventory inventory, Component title) {
+	public ComponentBlockEntityHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 	}
 }

@@ -26,9 +26,11 @@ package com.github.chainmailstudios.astromine.technologies.client.rei.solidgener
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.resources.language.I18n;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
+
+import net.minecraft.client.resource.language.I18n;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Identifier;
+
 import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.technologies.client.rei.generating.AbstractEnergyGeneratingCategory;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
@@ -44,13 +46,13 @@ import java.util.List;
 @Environment(EnvType.CLIENT)
 public class SolidGeneratingCategory extends AbstractEnergyGeneratingCategory<SolidGeneratingDisplay> {
 	@Override
-	public ResourceLocation getIdentifier() {
+	public Identifier getIdentifier() {
 		return AstromineTechnologiesRoughlyEnoughItemsPlugin.SOLID_GENERATING;
 	}
 
 	@Override
 	public String getCategoryName() {
-		return I18n.get("category.astromine.solid_generating");
+		return I18n.translate("category.astromine.solid_generating");
 	}
 
 	@Override
@@ -64,7 +66,7 @@ public class SolidGeneratingCategory extends AbstractEnergyGeneratingCategory<So
 		List<Widget> widgets = super.setupDisplay(recipeDisplay, bounds);
 		Rectangle innerBounds = new Rectangle(bounds.getCenterX() - 55, bounds.y, 110, bounds.height);
 		widgets.add(Widgets.createSlot(new Point(innerBounds.getX() + 20, innerBounds.getY() + 26)).entries(recipeDisplay.getInputEntries().get(0)).markInput());
-		widgets.add(Widgets.createLabel(new Point(innerBounds.x + 5, innerBounds.y + 5), new TranslatableComponent("category.astromine.cooking.time", df.format(recipeDisplay.getTime()))).noShadow().leftAligned().color(0xFF404040, 0xFFBBBBBB));
+		widgets.add(Widgets.createLabel(new Point(innerBounds.x + 5, innerBounds.y + 5), new TranslatableText("category.astromine.cooking.time", df.format(recipeDisplay.getTime()))).noShadow().leftAligned().color(0xFF404040, 0xFFBBBBBB));
 		widgets.add(Widgets.createArrow(new Point(innerBounds.getX() + 45, innerBounds.getY() + 26)));
 		return widgets;
 	}

@@ -24,10 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.entity.base;
 
+import net.minecraft.entity.EntityType;
+import net.minecraft.world.World;
+
 import com.github.chainmailstudios.astromine.common.component.general.base.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.Level;
 
 /**
  * A {@link ComponentEntity} with an attached {@link EnergyComponent}
@@ -35,7 +36,7 @@ import net.minecraft.world.level.Level;
  */
 public abstract class ComponentEnergyFluidEntity extends ComponentEntity {
 	/** Instantiates a {@link ComponentEnergyFluidEntity}. */
-	public ComponentEnergyFluidEntity(EntityType<?> type, Level world) {
+	public ComponentEnergyFluidEntity(EntityType<?> type, World world) {
 		super(type, world);
 	}
 

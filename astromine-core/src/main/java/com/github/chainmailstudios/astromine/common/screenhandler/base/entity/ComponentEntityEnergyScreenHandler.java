@@ -24,12 +24,13 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base.entity;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.screen.ScreenHandlerType;
+
 import com.github.chainmailstudios.astromine.common.entity.base.ComponentEnergyEntity;
 import com.github.chainmailstudios.astromine.common.widget.blade.EnergyVerticalBarWidget;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.MenuType;
 
 /**
  * A {@link ComponentEntityScreenHandler}
@@ -41,10 +42,10 @@ public abstract class ComponentEntityEnergyScreenHandler extends ComponentEntity
 	public EnergyVerticalBarWidget energyBar;
 
 	/** Instantiates a {@link ComponentEntityEnergyScreenHandler}. */
-	public ComponentEntityEnergyScreenHandler(MenuType<?> type, int syncId, Player player, int entityId) {
+	public ComponentEntityEnergyScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, int entityId) {
 		super(type, syncId, player, entityId);
 
-		entity = (ComponentEnergyEntity) player.level.getEntity(entityId);
+		entity = (ComponentEnergyEntity) player.world.getEntityById(entityId);
 	}
 
 	/** Override behavior to add a energy bar. */

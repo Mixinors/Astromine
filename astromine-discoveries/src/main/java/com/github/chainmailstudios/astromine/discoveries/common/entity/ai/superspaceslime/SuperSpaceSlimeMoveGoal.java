@@ -24,10 +24,11 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.entity.ai.superspaceslime;
 
+import net.minecraft.entity.ai.goal.Goal;
+
 import com.github.chainmailstudios.astromine.discoveries.common.entity.SuperSpaceSlimeEntity;
 
 import java.util.EnumSet;
-import net.minecraft.world.entity.ai.goal.Goal;
 
 public class SuperSpaceSlimeMoveGoal extends Goal {
 
@@ -35,12 +36,12 @@ public class SuperSpaceSlimeMoveGoal extends Goal {
 
 	public SuperSpaceSlimeMoveGoal(SuperSpaceSlimeEntity slime) {
 		this.slime = slime;
-		this.setFlags(EnumSet.of(Goal.Flag.JUMP, Goal.Flag.MOVE));
+		this.setControls(EnumSet.of(Goal.Control.JUMP, Goal.Control.MOVE));
 	}
 
 	@Override
-	public boolean canUse() {
-		return !this.slime.isPassenger();
+	public boolean canStart() {
+		return !this.slime.hasVehicle();
 	}
 
 	@Override

@@ -22,19 +22,19 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine. registry;
+package com.github.chainmailstudios.astromine.registry;
 
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.gen.chunk.ChunkGenerator;
 import com.mojang.serialization.Codec;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 
 public class AstromineChunkGenerators {
 	public static void initialize() {
 
 	}
 
-	public static void register(ResourceLocation id, Codec<? extends ChunkGenerator> codec) {
+	public static void register(Identifier id, Codec<? extends ChunkGenerator> codec) {
 		Registry.register(Registry.CHUNK_GENERATOR, id, codec);
 	}
 }

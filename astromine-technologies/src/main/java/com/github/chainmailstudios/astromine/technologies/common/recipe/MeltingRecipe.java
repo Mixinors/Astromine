@@ -24,6 +24,14 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.recipe;
 
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.util.Identifier;
+import net.minecraft.world.World;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
@@ -43,24 +51,17 @@ import com.google.gson.annotations.SerializedName;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.Level;
 
-public final class MeltingRecipe implements EnergyConsumingRecipe<Container> {
-	private final ResourceLocation identifier;
+public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
+	private final Identifier identifier;
 	private final ItemIngredient firstInput;
 	private final FluidVolume firstOutput;
 	private final double energyInput;
 	private final int time;
 
-	private static final Map<Level, MeltingRecipe[]> RECIPE_CACHE = new HashMap<>();
+	private static final Map<World, MeltingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public MeltingRecipe(ResourceLocation identifier, ItemIngredient firstInput, FluidVolume firstOutput, double energyInput, int time) {
+	public MeltingRecipe(Identifier identifier, ItemIngredient firstInput, FluidVolume firstOutput, double energyInput, int time) {
 		this.identifier = identifier;
 		this.firstInput = firstInput;
 		this.firstOutput = firstOutput;
@@ -68,9 +69,9 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Container> {
 		this.time = time;
 	}
 
-	public static boolean allows(Level world, ItemComponent itemComponent) {
+	public static boolean allows(World world, ItemComponent itemComponent) {
 		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().byType(Type.INSTANCE).values().stream().map(it -> (MeltingRecipe) it).toArray(MeltingRecipe[]::new));
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (MeltingRecipe) it).toArray(MeltingRecipe[]::new));
 		}
 
 		for (MeltingRecipe recipe : RECIPE_CACHE.get(world)) {
@@ -82,9 +83,9 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Container> {
 		return false;
 	}
 
-	public static Optional<MeltingRecipe> matching(Level world, ItemComponent itemComponent, FluidComponent fluidComponent) {
+	public static Optional<MeltingRecipe> matching(World world, ItemComponent itemComponent, FluidComponent fluidComponent) {
 		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().byType(Type.INSTANCE).values().stream().map(it -> (MeltingRecipe) it).toArray(MeltingRecipe[]::new));
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (MeltingRecipe) it).toArray(MeltingRecipe[]::new));
 		}
 
 		for (MeltingRecipe recipe : RECIPE_CACHE.get(world)) {
@@ -121,27 +122,27 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Container> {
 	}
 
 	@Override
-	public boolean matches(Container inventory, Level world) {
+	public boolean matches(Inventory inventory, World world) {
 		return false;
 	}
 
 	@Override
-	public ItemStack assemble(Container inventory) {
+	public ItemStack craft(Inventory inventory) {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public boolean canCraftInDimensions(int width, int height) {
+	public boolean fits(int width, int height) {
 		return false;
 	}
 
 	@Override
-	public ItemStack getResultItem() {
+	public ItemStack getOutput() {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public ResourceLocation getId() {
+	public Identifier getId() {
 		return identifier;
 	}
 
@@ -156,11 +157,11 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Container> {
 	}
 
 	@Override
-	public ItemStack getToastSymbol() {
+	public ItemStack getRecipeKindIcon() {
 		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_FLUID_GENERATOR);
 	}
 
-	public ResourceLocation getIdentifier() {
+	public Identifier getIdentifier() {
 		return identifier;
 	}
 
@@ -182,14 +183,14 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Container> {
 	}
 
 	public static final class Serializer implements RecipeSerializer<MeltingRecipe> {
-		public static final ResourceLocation ID = AstromineCommon.identifier("melting");
+		public static final Identifier ID = AstromineCommon.identifier("melting");
 
 		public static final Serializer INSTANCE = new Serializer();
 
 		private Serializer() {}
 
 		@Override
-		public MeltingRecipe fromJson(ResourceLocation identifier, JsonObject object) {
+		public MeltingRecipe read(Identifier identifier, JsonObject object) {
 			MeltingRecipe.Format format = new Gson().fromJson(object, MeltingRecipe.Format.class);
 
 			return new MeltingRecipe(
@@ -202,7 +203,7 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Container> {
 		}
 
 		@Override
-		public MeltingRecipe fromNetwork(ResourceLocation identifier, FriendlyByteBuf buffer) {
+		public MeltingRecipe read(Identifier identifier, PacketByteBuf buffer) {
 			return new MeltingRecipe(
 					identifier,
 					ItemIngredient.fromPacket(buffer),
@@ -213,7 +214,7 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Container> {
 		}
 
 		@Override
-		public void toNetwork(FriendlyByteBuf buffer, MeltingRecipe recipe) {
+		public void write(PacketByteBuf buffer, MeltingRecipe recipe) {
 			recipe.firstInput.toPacket(buffer);
 			recipe.firstOutput.toPacket(buffer);
 			DoubleUtilities.toPacket(buffer, recipe.energyInput);

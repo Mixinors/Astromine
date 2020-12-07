@@ -22,25 +22,26 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine. registry;
+package com.github.chainmailstudios.astromine.registry;
+
+import net.minecraft.item.ToolMaterial;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.util.Lazy;
 
 import java.util.function.Supplier;
-import net.minecraft.util.LazyLoadedValue;
-import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.crafting.Ingredient;
 
 public class AstromineToolMaterials {
-	public static Tier register(int miningLevel, int itemDurability, float miningSpeed, float attackDamage, int enchantibility, Supplier<Ingredient> repairIngredient) {
+	public static ToolMaterial register(int miningLevel, int itemDurability, float miningSpeed, float attackDamage, int enchantibility, Supplier<Ingredient> repairIngredient) {
 		return new AstromineToolMaterial(miningLevel, itemDurability, miningSpeed, attackDamage, enchantibility, repairIngredient);
 	}
 
-	public static class AstromineToolMaterial implements Tier {
+	public static class AstromineToolMaterial implements ToolMaterial {
 		private final int miningLevel;
 		private final int itemDurability;
 		private final float miningSpeed;
 		private final float attackDamage;
 		private final int enchantability;
-		private final LazyLoadedValue<Ingredient> repairIngredient;
+		private final Lazy<Ingredient> repairIngredient;
 
 		AstromineToolMaterial(int miningLevel, int itemDurability, float miningSpeed, float attackDamage, int enchantibility, Supplier<Ingredient> repairIngredient) {
 			this.miningLevel = miningLevel;
@@ -48,31 +49,31 @@ public class AstromineToolMaterials {
 			this.miningSpeed = miningSpeed;
 			this.attackDamage = attackDamage;
 			this.enchantability = enchantibility;
-			this.repairIngredient = new LazyLoadedValue(repairIngredient);
+			this.repairIngredient = new Lazy(repairIngredient);
 		}
 
 		@Override
-		public int getUses() {
+		public int getDurability() {
 			return this.itemDurability;
 		}
 
 		@Override
-		public float getSpeed() {
+		public float getMiningSpeedMultiplier() {
 			return this.miningSpeed;
 		}
 
 		@Override
-		public float getAttackDamageBonus() {
+		public float getAttackDamage() {
 			return this.attackDamage;
 		}
 
 		@Override
-		public int getLevel() {
+		public int getMiningLevel() {
 			return this.miningLevel;
 		}
 
 		@Override
-		public int getEnchantmentValue() {
+		public int getEnchantability() {
 			return this.enchantability;
 		}
 

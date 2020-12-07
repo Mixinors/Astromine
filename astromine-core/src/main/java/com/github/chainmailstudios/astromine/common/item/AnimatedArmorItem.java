@@ -26,20 +26,21 @@ package com.github.chainmailstudios.astromine.common.item;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderStateShard;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.texture.AbstractTexture;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.renderer.texture.Tickable;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.Resource;
-import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
-import com.mojang.blaze3d.platform.NativeImage;
-import com.mojang.blaze3d.platform.TextureUtil;
+
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderPhase;
+import net.minecraft.client.texture.AbstractTexture;
+import net.minecraft.client.texture.NativeImage;
+import net.minecraft.client.texture.TextureManager;
+import net.minecraft.client.texture.TextureTickListener;
+import net.minecraft.client.texture.TextureUtil;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.item.ArmorItem;
+import net.minecraft.item.ArmorMaterial;
+import net.minecraft.resource.Resource;
+import net.minecraft.resource.ResourceManager;
+import net.minecraft.util.Identifier;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import org.apache.logging.log4j.LogManager;
@@ -51,7 +52,7 @@ import java.util.Optional;
  * An {@link ArmorItem} with an animated texture.
  *
  * Specifically, a {@link AnimatedTexturePhase} is used when
- * drawing a {@link RenderType}. That {@link AnimatedTexturePhase}
+ * drawing a {@link RenderLayer}. That {@link AnimatedTexturePhase}
  * then binds an {@link AnimatedTexturePhase.AnimatedTexture},
  * which then handles the texture animation.
  */
@@ -59,7 +60,7 @@ public class AnimatedArmorItem extends ArmorItem {
 	private final int frames;
 
 	/** Instantiates an {@link AnimatedArmorItem}s. */
-	public AnimatedArmorItem(ArmorMaterial material, EquipmentSlot slot, Properties settings, int frames) {
+	public AnimatedArmorItem(ArmorMaterial material, EquipmentSlot slot, Settings settings, int frames) {
 		super(material, slot, settings);
 
 		this.frames = frames;
@@ -71,18 +72,18 @@ public class AnimatedArmorItem extends ArmorItem {
 	}
 
 	/**
-	 * A {@link RenderStateShard.TextureStateShard} which uses an {@link AnimatedTexture}.
+	 * A {@link RenderPhase.Texture} which uses an {@link AnimatedTexture}.
 	 */
 	@Environment(EnvType.CLIENT)
-	public static final class AnimatedTexturePhase extends RenderStateShard.TextureStateShard {
-		private final Optional<ResourceLocation> id;
+	public static final class AnimatedTexturePhase extends RenderPhase.Texture {
+		private final Optional<Identifier> id;
 
-		/** Instantiates a {@link TextureStateShard}. */
-		public AnimatedTexturePhase(ResourceLocation id, int frames) {
-			setupState = () -> {
+		/** Instantiates a {@link Texture}. */
+		public AnimatedTexturePhase(Identifier id, int frames) {
+			beginAction = () -> {
 				RenderSystem.enableTexture();
 
-				TextureManager textureManager = Minecraft.getInstance().getTextureManager();
+				TextureManager textureManager = MinecraftClient.getInstance().getTextureManager();
 
 				AbstractTexture texture = textureManager.getTexture(id);
 
@@ -94,25 +95,25 @@ public class AnimatedArmorItem extends ArmorItem {
 							LogManager.getLogger().warn("Failed to close texture {}", id, e);
 						}
 
-						texture.releaseId();
+						texture.clearGlId();
 					}
 
 					texture = new AnimatedTexture(id, frames);
 
-					textureManager.register(id, texture);
+					textureManager.registerTexture(id, texture);
 				}
 
-				texture.bind();
+				texture.bindTexture();
 			};
 
-			clearState = () -> {};
+			endAction = () -> {};
 
 			this.id = Optional.of(id);
 		}
 
 		/** Override behavior to return our own ID. */
 		@Override
-		protected Optional<ResourceLocation> texture() {
+		protected Optional<Identifier> getId() {
 			return this.id;
 		}
 
@@ -154,8 +155,8 @@ public class AnimatedArmorItem extends ArmorItem {
 		 *
 		 * The placeholder is the one rendered.
 		 */
-		private static final class AnimatedTexture extends AbstractTexture implements Tickable {
-			private final ResourceLocation id;
+		private static final class AnimatedTexture extends AbstractTexture implements TextureTickListener {
+			private final Identifier id;
 
 			private final int frames;
 
@@ -166,7 +167,7 @@ public class AnimatedArmorItem extends ArmorItem {
 			private NativeImage placeholderTexture;
 
 			/** Instantiates an {@link AnimatedTexture}s. */
-			public AnimatedTexture(ResourceLocation id, int frames) {
+			public AnimatedTexture(Identifier id, int frames) {
 				this.id = id;
 				this.frames = frames;
 			}
@@ -180,9 +181,9 @@ public class AnimatedArmorItem extends ArmorItem {
 					image = NativeImage.read(resource.getInputStream());
 				}
 
-				this.placeholderTexture = new NativeImage(this.image.format(), image.getWidth(), image.getHeight() / frames, false);
+				this.placeholderTexture = new NativeImage(this.image.getFormat(), image.getWidth(), image.getHeight() / frames, false);
 
-				TextureUtil.prepareImage(this.getId(), placeholderTexture.getWidth(), placeholderTexture.getHeight());
+				TextureUtil.allocate(this.getGlId(), placeholderTexture.getWidth(), placeholderTexture.getHeight());
 			}
 
 			/** Closes this texture. */
@@ -193,7 +194,7 @@ public class AnimatedArmorItem extends ArmorItem {
 				if (this.image != null) {
 					this.image.close();
 
-					this.releaseId();
+					this.clearGlId();
 
 					this.image = null;
 				}
@@ -219,13 +220,13 @@ public class AnimatedArmorItem extends ArmorItem {
 			private void tickAnimation() {
 				++tick;
 
-				bind();
+				bindTexture();
 
 				int yOffset = (tick % frames) * placeholderTexture.getHeight();
 
 				for (int x = 0; x < placeholderTexture.getWidth(); x++) {
 					for (int y = 0; y < placeholderTexture.getHeight(); y++) {
-						placeholderTexture.setPixelRGBA(x, y, image.getPixelRGBA(x, y + yOffset));
+						placeholderTexture.setPixelColor(x, y, image.getPixelColor(x, y + yOffset));
 					}
 				}
 

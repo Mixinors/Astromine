@@ -26,8 +26,10 @@ package com.github.chainmailstudios.astromine.technologies.client.rei.electricsm
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.crafting.AbstractCookingRecipe;
+
+import net.minecraft.recipe.AbstractCookingRecipe;
+import net.minecraft.util.Identifier;
+
 import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import me.shedaniel.rei.plugin.cooking.DefaultCookingDisplay;
 
@@ -41,7 +43,7 @@ public class ElectricSmeltingDisplay extends DefaultCookingDisplay {
 	}
 
 	@Override
-	public ResourceLocation getRecipeCategory() {
+	public Identifier getRecipeCategory() {
 		return AstromineTechnologiesRoughlyEnoughItemsPlugin.ELECTRIC_SMELTING;
 	}
 

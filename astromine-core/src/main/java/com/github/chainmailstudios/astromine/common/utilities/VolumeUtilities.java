@@ -24,25 +24,24 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import net.minecraft.util.Tuple;;
+import net.minecraft.item.BucketItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import net.minecraft.util.Tuple;
-import net.minecraft.world.item.BucketItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.util.Pair;
 
 public class VolumeUtilities {
-	/** Attempts to merge two {@link FluidVolume}s, returning a {@link Tuple}
+	/** Attempts to merge two {@link FluidVolume}s, returning a {@link Pair}
 	 * with the results.
 	 *
 	 * The amount transferred is the {@link Fraction#minimum(Fraction, Fraction)} between
 	 * their available space, our amount, and the specified amount.
 	 * */
-	public static Tuple<FluidVolume, FluidVolume> merge(FluidVolume source, FluidVolume target) {
+	public static Pair<FluidVolume, FluidVolume> merge(FluidVolume source, FluidVolume target) {
 		Fraction targetMax = target.getSize();
 
 		if (source.test(target)) {
@@ -54,7 +53,7 @@ public class VolumeUtilities {
 			target.take(source, Fraction.minimum(sourceCount, targetAvailable));
 		}
 
-		return new Tuple<>(source, target);
+		return new Pair<>(source, target);
 	}
 
 	/** Inserts fluids from the first stack into the first fluid volume.
@@ -94,7 +93,7 @@ public class VolumeUtilities {
 								if (ourVolume.hasStored(Fraction.BUCKET)) {
 									ourVolume.give(stackVolume, Fraction.BUCKET);
 
-                                        itemComponent.setStack(secondStackSlot, new ItemStack(stackVolume.getFluid().getBucket()));
+                                        itemComponent.setStack(secondStackSlot, new ItemStack(stackVolume.getFluid().getBucketItem()));
                                     }
                                 }
                             } else {

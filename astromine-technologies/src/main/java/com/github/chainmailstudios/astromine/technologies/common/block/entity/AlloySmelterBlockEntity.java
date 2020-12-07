@@ -27,10 +27,11 @@ package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 import com.github.chainmailstudios.astromine.common.component.general.*;
 import com.github.chainmailstudios.astromine.common.component.general.base.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
+
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
@@ -76,7 +77,7 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 				return false;
 			}
 
-			return AlloySmeltingRecipe.allows(level, ItemComponent.of(stack, getItemComponent().getSecond())) || AlloySmeltingRecipe.allows(level, ItemComponent.of(getItemComponent().getFirst(), stack));
+			return AlloySmeltingRecipe.allows(world, ItemComponent.of(stack, getItemComponent().getSecond())) || AlloySmeltingRecipe.allows(world, ItemComponent.of(getItemComponent().getFirst(), stack));
 		}).withExtractPredicate(((direction, stack, slot) -> {
 			if (!getTransferComponent().getItem(direction).canExtract()) {
 				return false;
@@ -108,7 +109,7 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 	public void tick() {
 		super.tick();
 
-		if (level == null || level.isClientSide || !tickRedstone())
+		if (world == null || world.isClient || !tickRedstone())
 			return;
 
 		ItemComponent itemComponent = getItemComponent();
@@ -119,7 +120,7 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 			EnergyVolume energyVolume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = AlloySmeltingRecipe.matching(level, itemComponent);
+				optionalRecipe = AlloySmeltingRecipe.matching(world, itemComponent);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -146,11 +147,11 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 						ItemStack second = itemComponent.getSecond();
 
 						if (recipe.getFirstInput().test(first) && recipe.getSecondInput().test(second)) {
-							first.shrink(recipe.getFirstInput().testMatching(first).getCount());
-							second.shrink(recipe.getSecondInput().testMatching(second).getCount());
+							first.decrement(recipe.getFirstInput().testMatching(first).getCount());
+							second.decrement(recipe.getSecondInput().testMatching(second).getCount());
 						} else if (recipe.getFirstInput().test(second) && recipe.getSecondInput().test(first)) {
-							second.shrink(recipe.getFirstInput().testMatching(second).getCount());
-							first.shrink(recipe.getSecondInput().testMatching(first).getCount());
+							second.decrement(recipe.getFirstInput().testMatching(second).getCount());
+							first.decrement(recipe.getSecondInput().testMatching(first).getCount());
 						}
 
 						itemComponent.setThird(StackUtilities.into(itemComponent.getThird(), recipe.getFirstOutput()));
@@ -171,17 +172,17 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag) {
+	public CompoundTag toTag(CompoundTag tag) {
 		tag.putDouble("progress", progress);
 		tag.putInt("limit", limit);
-		return super.save(tag);
+		return super.toTag(tag);
 	}
 
 	@Override
-	public void load(BlockState state, @NotNull CompoundTag tag) {
+	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
 		progress = tag.getDouble("progress");
 		limit = tag.getInt("limit");
-		super.load(state, tag);
+		super.fromTag(state, tag);
 	}
 
 	public static class Primitive extends AlloySmelterBlockEntity {

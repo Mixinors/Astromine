@@ -3,10 +3,10 @@ package com.github.chainmailstudios.astromine.common.component.general;
 import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
-import net.minecraft.core.Direction;
 
 /**
  * A {@link FluidComponent} which bases insertion and

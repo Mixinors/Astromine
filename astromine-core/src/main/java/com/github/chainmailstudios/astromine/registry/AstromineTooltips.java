@@ -1,12 +1,16 @@
-package com.github.chainmailstudios.astromine. registry;
+package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.common.utilities.ClientUtilities;
+import com.github.vini2003.blade.client.utilities.Texts;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.StringSplitter;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.TextColor;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.item.Item;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextHandler;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.item.Item;
+import net.minecraft.text.*;
+import net.minecraft.util.Formatting;
+
+import javax.swing.*;
 import java.util.*;
 
 public class AstromineTooltips {
@@ -19,22 +23,22 @@ public class AstromineTooltips {
 
     public static final Map<Item, String> DESCRIPTION = new HashMap<>();
 
-    public static final TextColor PRIMITIVE_COLOR = TextColor.parseColor("#7A7A7A");
-    public static final TextColor BASIC_COLOR = TextColor.parseColor("#72C65F");
-    public static final TextColor ADVANCED_COLOR = TextColor.parseColor("#C9594C");
-    public static final TextColor ELITE_COLOR = TextColor.parseColor("#6295D1");
-    public static final TextColor CREATIVE_COLOR = TextColor.parseColor("#CE76D3");
-    public static final TextColor SPECIAL_COLOR = TextColor.parseColor("#D3BE43");
+    public static final TextColor PRIMITIVE_COLOR = TextColor.parse("#7A7A7A");
+    public static final TextColor BASIC_COLOR = TextColor.parse("#72C65F");
+    public static final TextColor ADVANCED_COLOR = TextColor.parse("#C9594C");
+    public static final TextColor ELITE_COLOR = TextColor.parse("#6295D1");
+    public static final TextColor CREATIVE_COLOR = TextColor.parse("#CE76D3");
+    public static final TextColor SPECIAL_COLOR = TextColor.parse("#D3BE43");
 
-    private static final StringSplitter HANDLER = new StringSplitter((a, b) -> 0);
+    private static final TextHandler HANDLER = new TextHandler((a, b) -> 0);
 
     public static void initialize() {
         ItemTooltipCallback.EVENT.register((stack, context, list) -> {
             if (DESCRIPTION.containsKey(stack.getItem())) {
                 if (!Screen.hasShiftDown()) {
-                    list.add(1, new TranslatableComponent("text.astromine.tooltip.shift_for_information").withStyle(ChatFormatting.ITALIC));
+                    list.add(1, new TranslatableText("text.astromine.tooltip.shift_for_information").formatted(Formatting.ITALIC));
                 } else {
-                    list.add(1, new TranslatableComponent(DESCRIPTION.get(stack.getItem())));
+                    list.add(1, new TranslatableText(DESCRIPTION.get(stack.getItem())));
                 }
             }
         });

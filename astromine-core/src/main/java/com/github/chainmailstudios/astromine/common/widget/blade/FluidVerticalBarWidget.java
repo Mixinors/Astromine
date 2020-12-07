@@ -24,16 +24,18 @@
 
 package com.github.chainmailstudios.astromine.common.widget.blade;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.OverlayTexture;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.screen.PlayerScreenHandler;
+import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.client.BaseRenderer;
@@ -48,9 +50,6 @@ import com.github.vini2003.blade.common.utilities.Networks;
 import com.github.vini2003.blade.common.widget.base.AbstractWidget;
 
 import com.google.common.collect.Lists;
-import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.world.level.material.Fluids;
-
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -63,7 +62,7 @@ import java.util.function.Supplier;
  * are queried from.
  */
 public class FluidVerticalBarWidget extends AbstractWidget {
-	private final ResourceLocation FLUID_BACKGROUND = AstromineCommon.identifier("textures/widget/fluid_volume_fractional_vertical_bar_background.png");
+	private final Identifier FLUID_BACKGROUND = AstromineCommon.identifier("textures/widget/fluid_volume_fractional_vertical_bar_background.png");
 
 	private Supplier<FluidVolume> volumeSupplier;
 
@@ -98,8 +97,8 @@ public class FluidVerticalBarWidget extends AbstractWidget {
 	/** Returns this widget's tooltip. */
 	@Environment(EnvType.CLIENT)
 	@Override
-	public List<Component> getTooltip() {
-		ResourceLocation fluidId = volumeSupplier.get().getFluidId();
+	public List<Text> getTooltip() {
+		Identifier fluidId = volumeSupplier.get().getFluidId();
 
 		return Lists.newArrayList(
 				TextUtilities.getFluid(fluidId),
@@ -112,7 +111,7 @@ public class FluidVerticalBarWidget extends AbstractWidget {
 	/** Renders this widget. */
 	@Environment(EnvType.CLIENT)
 	@Override
-	public void drawWidget(PoseStack matrices, MultiBufferSource provider) {
+	public void drawWidget(MatrixStack matrices, VertexConsumerProvider provider) {
 		if (getHidden()) {
 			return;
 		}
@@ -125,22 +124,22 @@ public class FluidVerticalBarWidget extends AbstractWidget {
 
 		float sBGY = (((sY / volumeSupplier.get().getSize().floatValue()) * volumeSupplier.get().getAmount().floatValue()));
 
-		RenderType layer = Layers.get(FLUID_BACKGROUND);
+		RenderLayer layer = Layers.get(FLUID_BACKGROUND);
 
 		BaseRenderer.drawTexturedQuad(matrices, provider, layer, x, y, getSize().getWidth(), getSize().getHeight(), FLUID_BACKGROUND);
 
 		if (volumeSupplier.get().getFluid() != Fluids.EMPTY) {
 			SpriteRenderer
 					.beginPass()
-					.setup(provider, RenderType.SOLID)
+					.setup(provider, RenderLayer.getSolid())
 					.sprite(FluidUtilities.getSprite(volumeSupplier.get().getFluid()))
-					.color(FluidUtilities.getColor(Minecraft.getInstance().player, volumeSupplier.get().getFluid()))
+					.color(FluidUtilities.getColor(MinecraftClient.getInstance().player, volumeSupplier.get().getFluid()))
 					.light(0x00f000f0)
-					.overlay(OverlayTexture.NO_OVERLAY)
+					.overlay(OverlayTexture.DEFAULT_UV)
 					.alpha(0xff)
-					.normal(matrices.last().normal(), 0, 0, 0)
-					.position(matrices.last().pose(), x + 1, y + 1 + Math.max(0, sY - ((int) (sBGY) + 1)), x + sX - 1, y + sY - 1, 0F)
-					.next(InventoryMenu.BLOCK_ATLAS);
+					.normal(matrices.peek().getNormal(), 0, 0, 0)
+					.position(matrices.peek().getModel(), x + 1, y + 1 + Math.max(0, sY - ((int) (sBGY) + 1)), x + sX - 1, y + sY - 1, 0F)
+					.next(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
 		}
 	}
 }

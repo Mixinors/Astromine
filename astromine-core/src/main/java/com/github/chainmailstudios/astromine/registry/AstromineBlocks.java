@@ -22,20 +22,21 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine. registry;
+package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.Material;
+import net.minecraft.block.MaterialColor;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
+import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
 
 public class AstromineBlocks {
 	public static void initialize() {
@@ -52,7 +53,7 @@ public class AstromineBlocks {
 	 *
 	 * @return Block instance registered
 	 */
-	public static <T extends Block> T register(String name, T block, Item.Properties settings) {
+	public static <T extends Block> T register(String name, T block, Item.Settings settings) {
 		return register(name, block, new BlockItem(block, settings));
 	}
 
@@ -69,7 +70,7 @@ public class AstromineBlocks {
 	public static <T extends Block> T register(String name, T block, BlockItem item) {
 		T b = register(AstromineCommon.identifier(name), block);
 		if (item != null) {
-			Item.BY_BLOCK.put(block, item);
+			Item.BLOCK_ITEMS.put(block, item);
 			AstromineItems.register(name, item);
 		}
 		return b;
@@ -89,33 +90,33 @@ public class AstromineBlocks {
 
 	/**
 	 * @param name
-	 *        ResourceLocation of block instance to be registered
+	 *        Identifier of block instance to be registered
 	 * @param block
 	 *        Block instance to be registered
 	 *
 	 * @return Block instance registered
 	 */
-	public static <T extends Block> T register(ResourceLocation name, T block) {
+	public static <T extends Block> T register(Identifier name, T block) {
 		return Registry.register(Registry.BLOCK, name, block);
 	}
 
-	public static BlockBehaviour.Properties getPrimitiveSettings() {
-		return FabricBlockSettings.of(Material.METAL, MaterialColor.COLOR_ORANGE).breakByTool(FabricToolTags.PICKAXES, 1).requiresCorrectToolForDrops().strength(4, 6).sound(SoundType.METAL);
+	public static FabricBlockSettings getPrimitiveSettings() {
+		return FabricBlockSettings.of(Material.METAL, MaterialColor.ORANGE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 1).strength(4, 6).sounds(BlockSoundGroup.METAL);
 	}
 
-	public static BlockBehaviour.Properties getBasicSettings() {
-		return FabricBlockSettings.of(Material.METAL, MaterialColor.TERRACOTTA_ORANGE).breakByTool(FabricToolTags.PICKAXES, 2).requiresCorrectToolForDrops().strength(6, 6).sound(SoundType.METAL);
+	public static FabricBlockSettings getBasicSettings() {
+		return FabricBlockSettings.of(Material.METAL, MaterialColor.ORANGE_TERRACOTTA).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(6, 6).sounds(BlockSoundGroup.METAL);
 	}
 
-	public static BlockBehaviour.Properties getAdvancedSettings() {
-		return FabricBlockSettings.of(Material.METAL, MaterialColor.COLOR_GRAY).breakByTool(FabricToolTags.PICKAXES, 2).requiresCorrectToolForDrops().strength(8, 6).sound(SoundType.METAL);
+	public static FabricBlockSettings getAdvancedSettings() {
+		return FabricBlockSettings.of(Material.METAL, MaterialColor.GRAY).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(8, 6).sounds(BlockSoundGroup.METAL);
 	}
 
-	public static BlockBehaviour.Properties getEliteSettings() {
-		return FabricBlockSettings.of(Material.METAL, MaterialColor.COLOR_PINK).breakByTool(FabricToolTags.PICKAXES, 4).requiresCorrectToolForDrops().strength(8, 100).sound(SoundType.METAL);
+	public static FabricBlockSettings getEliteSettings() {
+		return FabricBlockSettings.of(Material.METAL, MaterialColor.PINK).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(8, 100).sounds(BlockSoundGroup.METAL);
 	}
 
-	public static BlockBehaviour.Properties getCreativeSettings() {
-		return FabricBlockSettings.of(Material.METAL, MaterialColor.COLOR_LIGHT_GREEN).noDrops().strength(-1.0F, 3600000.8F).sound(SoundType.METAL);
+	public static FabricBlockSettings getCreativeSettings() {
+		return FabricBlockSettings.of(Material.METAL, MaterialColor.LIME).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.METAL);
 	}
 }

@@ -24,6 +24,14 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import net.minecraft.block.Blocks;
+import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.general.base.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
@@ -37,13 +45,6 @@ import com.github.chainmailstudios.astromine.technologies.common.block.entity.ma
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.material.FluidState;
 
 public class FluidCollectorBlockEntity extends ComponentEnergyFluidBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
 	private Fraction cooldown = Fraction.EMPTY;
@@ -83,7 +84,7 @@ public class FluidCollectorBlockEntity extends ComponentEnergyFluidBlockEntity i
 	public void tick() {
 		super.tick();
 
-		if (level == null || level.isClientSide || !tickRedstone())
+		if (world == null || world.isClient || !tickRedstone())
 			return;
 
 		FluidComponent fluidComponent = getFluidComponent();
@@ -107,22 +108,22 @@ public class FluidCollectorBlockEntity extends ComponentEnergyFluidBlockEntity i
 
 					FluidVolume fluidVolume = fluidComponent.getFirst();
 
-					Direction direction = getBlockState().getValue(HorizontalDirectionalBlock.FACING);
+					Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
 
-					BlockPos targetPos = worldPosition.relative(direction);
+					BlockPos targetPos = pos.offset(direction);
 
-					FluidState targetFluidState = level.getFluidState(targetPos);
+					FluidState targetFluidState = world.getFluidState(targetPos);
 
-					if (targetFluidState.isSource()) {
-						FluidVolume toInsert = FluidVolume.of(Fraction.BUCKET, targetFluidState.getType());
+					if (targetFluidState.isStill()) {
+						FluidVolume toInsert = FluidVolume.of(Fraction.BUCKET, targetFluidState.getFluid());
 
 						if (toInsert.test(fluidVolume)) {
 							fluidVolume.take(toInsert, toInsert.getAmount());
 
 							energyVolume.take(getEnergyConsumed());
 
-							level.setBlockAndUpdate(targetPos, Blocks.AIR.defaultBlockState());
-							level.playSound(null, worldPosition, SoundEvents.BUCKET_FILL, SoundSource.BLOCKS, 1, 1);
+							world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
+							world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);
 						}
 					}
 				}

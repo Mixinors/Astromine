@@ -24,6 +24,15 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.recipe;
 
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.Recipe;
+import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.util.Identifier;
+import net.minecraft.world.World;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
 import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
@@ -42,26 +51,18 @@ import com.google.gson.annotations.SerializedName;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.Level;
 
-public final class FluidMixingRecipe implements Recipe<Container>, EnergyConsumingRecipe<Container> {
-	private final ResourceLocation identifier;
+public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<Inventory> {
+	private final Identifier identifier;
 	private final FluidIngredient firstInput;
 	private final FluidIngredient secondInput;
 	private final FluidVolume firstOutput;
 	private final double energyInput;
 	private final int time;
 
-	private static final Map<Level, FluidMixingRecipe[]> RECIPE_CACHE = new HashMap<>();
+	private static final Map<World, FluidMixingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public FluidMixingRecipe(ResourceLocation identifier, FluidIngredient firstInput, FluidIngredient secondIngredient, FluidVolume firstOutput, double energyInput, int time) {
+	public FluidMixingRecipe(Identifier identifier, FluidIngredient firstInput, FluidIngredient secondIngredient, FluidVolume firstOutput, double energyInput, int time) {
 		this.identifier = identifier;
 		this.firstInput = firstInput;
 		this.secondInput = secondIngredient;
@@ -70,9 +71,9 @@ public final class FluidMixingRecipe implements Recipe<Container>, EnergyConsumi
 		this.time = time;
 	}
 
-	public static boolean allows(Level world, FluidComponent fluidComponent) {
+	public static boolean allows(World world, FluidComponent fluidComponent) {
 		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().byType(Type.INSTANCE).values().stream().map(it -> (FluidMixingRecipe) it).toArray(FluidMixingRecipe[]::new));
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidMixingRecipe) it).toArray(FluidMixingRecipe[]::new));
 		}
 
 		for (FluidMixingRecipe recipe : RECIPE_CACHE.get(world)) {
@@ -84,9 +85,9 @@ public final class FluidMixingRecipe implements Recipe<Container>, EnergyConsumi
 		return false;
 	}
 
-	public static Optional<FluidMixingRecipe> matching(Level world, FluidComponent fluidComponent) {
+	public static Optional<FluidMixingRecipe> matching(World world, FluidComponent fluidComponent) {
 		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().byType(Type.INSTANCE).values().stream().map(it -> (FluidMixingRecipe) it).toArray(FluidMixingRecipe[]::new));
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidMixingRecipe) it).toArray(FluidMixingRecipe[]::new));
 		}
 
 		for (FluidMixingRecipe recipe : RECIPE_CACHE.get(world)) {
@@ -127,7 +128,7 @@ public final class FluidMixingRecipe implements Recipe<Container>, EnergyConsumi
 	}
 
 	@Override
-	public ResourceLocation getId() {
+	public Identifier getId() {
 		return identifier;
 	}
 
@@ -142,31 +143,31 @@ public final class FluidMixingRecipe implements Recipe<Container>, EnergyConsumi
 	}
 
 	@Override
-	public boolean matches(Container inventory, Level world) {
+	public boolean matches(Inventory inventory, World world) {
 		return false;
 	}
 
 	@Override
-	public ItemStack assemble(Container inventory) {
+	public ItemStack craft(Inventory inventory) {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public boolean canCraftInDimensions(int width, int height) {
+	public boolean fits(int width, int height) {
 		return false;
 	}
 
 	@Override
-	public ItemStack getResultItem() {
+	public ItemStack getOutput() {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public ItemStack getToastSymbol() {
+	public ItemStack getRecipeKindIcon() {
 		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_FLUID_MIXER);
 	}
 
-	public ResourceLocation getIdentifier() {
+	public Identifier getIdentifier() {
 		return identifier;
 	}
 
@@ -192,14 +193,14 @@ public final class FluidMixingRecipe implements Recipe<Container>, EnergyConsumi
 	}
 
 	public static final class Serializer implements RecipeSerializer<FluidMixingRecipe> {
-		public static final ResourceLocation ID = AstromineCommon.identifier("fluid_mixing");
+		public static final Identifier ID = AstromineCommon.identifier("fluid_mixing");
 
 		public static final Serializer INSTANCE = new Serializer();
 
 		private Serializer() {}
 
 		@Override
-		public FluidMixingRecipe fromJson(ResourceLocation identifier, JsonObject object) {
+		public FluidMixingRecipe read(Identifier identifier, JsonObject object) {
 			FluidMixingRecipe.Format format = new Gson().fromJson(object, FluidMixingRecipe.Format.class);
 
 			return new FluidMixingRecipe(identifier, FluidIngredient.fromJson(format.firstInput), FluidIngredient.fromJson(format.secondInput), FluidVolume.fromJson(format.firstOutput), DoubleUtilities.fromJson(
@@ -208,7 +209,7 @@ public final class FluidMixingRecipe implements Recipe<Container>, EnergyConsumi
 		}
 
 		@Override
-		public FluidMixingRecipe fromNetwork(ResourceLocation identifier, FriendlyByteBuf buffer) {
+		public FluidMixingRecipe read(Identifier identifier, PacketByteBuf buffer) {
 			return new FluidMixingRecipe(
 					identifier,
 					FluidIngredient.fromPacket(buffer),
@@ -220,7 +221,7 @@ public final class FluidMixingRecipe implements Recipe<Container>, EnergyConsumi
 		}
 
 		@Override
-		public void toNetwork(FriendlyByteBuf buffer, FluidMixingRecipe recipe) {
+		public void write(PacketByteBuf buffer, FluidMixingRecipe recipe) {
 			recipe.firstInput.toPacket(buffer);
 			recipe.secondInput.toPacket(buffer);
 			recipe.firstOutput.toPacket(buffer);

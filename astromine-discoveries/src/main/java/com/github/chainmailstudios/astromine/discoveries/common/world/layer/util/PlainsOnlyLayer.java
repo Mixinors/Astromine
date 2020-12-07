@@ -24,15 +24,15 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.world.layer.util;
 
-import net.minecraft.world.level.newbiome.context.Context;
-import net.minecraft.world.level.newbiome.layer.traits.AreaTransformer0;
-import net.minecraft.world.level.newbiome.layer.traits.DimensionOffset0Transformer;
+import net.minecraft.world.biome.layer.type.InitLayer;
+import net.minecraft.world.biome.layer.util.IdentityCoordinateTransformer;
+import net.minecraft.world.biome.layer.util.LayerRandomnessSource;
 
-public enum PlainsOnlyLayer implements AreaTransformer0, DimensionOffset0Transformer {
+public enum PlainsOnlyLayer implements InitLayer, IdentityCoordinateTransformer {
 	INSTANCE;
 
 	@Override
-	public int applyPixel(Context context, int x, int y) {
+	public int sample(LayerRandomnessSource context, int x, int y) {
 		return 1;
 	}
 }

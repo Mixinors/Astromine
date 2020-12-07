@@ -24,6 +24,17 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.world.generation.mars;
 
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryLookupCodec;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.layer.ScaleLayer;
+import net.minecraft.world.biome.layer.SimpleLandNoiseLayer;
+import net.minecraft.world.biome.layer.util.CachingLayerContext;
+import net.minecraft.world.biome.layer.util.LayerFactory;
+import net.minecraft.world.biome.layer.util.LayerSampleContext;
+import net.minecraft.world.biome.layer.util.LayerSampler;
+import net.minecraft.world.biome.source.BiomeLayerSampler;
+import net.minecraft.world.biome.source.BiomeSource;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
@@ -33,24 +44,13 @@ import com.github.chainmailstudios.astromine.discoveries.common.world.layer.util
 
 import com.google.common.collect.ImmutableList;
 import java.util.function.LongFunction;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.RegistryLookupCodec;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.BiomeSource;
-import net.minecraft.world.level.newbiome.area.Area;
-import net.minecraft.world.level.newbiome.area.AreaFactory;
-import net.minecraft.world.level.newbiome.context.BigContext;
-import net.minecraft.world.level.newbiome.context.LazyAreaContext;
-import net.minecraft.world.level.newbiome.layer.Layer;
-import net.minecraft.world.level.newbiome.layer.RiverInitLayer;
-import net.minecraft.world.level.newbiome.layer.ZoomLayer;
 
 public class MarsBiomeSource extends BiomeSource {
-	public static final Codec<MarsBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.LONG.fieldOf("seed").stable().forGetter(source -> source.seed), RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(source -> source.biomeRegistry)).apply(instance,
+	public static final Codec<MarsBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.LONG.fieldOf("seed").stable().forGetter(source -> source.seed), RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry)).apply(instance,
 		instance.stable(MarsBiomeSource::new)));
 	private final long seed;
 	private final Registry<Biome> biomeRegistry;
-	private final Layer sampler;
+	private final BiomeLayerSampler sampler;
 
 	public MarsBiomeSource(long seed, Registry<Biome> biomeRegistry) {
 		super(ImmutableList.of());
@@ -60,7 +60,7 @@ public class MarsBiomeSource extends BiomeSource {
 	}
 
 	@Override
-	protected Codec<? extends BiomeSource> codec() {
+	protected Codec<? extends BiomeSource> getCodec() {
 		return CODEC;
 	}
 
@@ -70,26 +70,26 @@ public class MarsBiomeSource extends BiomeSource {
 	}
 
 	@Override
-	public Biome getNoiseBiome(int biomeX, int biomeY, int biomeZ) {
-		return sampler.get(biomeRegistry, biomeX, biomeZ);
+	public Biome getBiomeForNoiseGen(int biomeX, int biomeY, int biomeZ) {
+		return sampler.sample(biomeRegistry, biomeX, biomeZ);
 	}
 
-	public Layer build(long seed) {
-		return new Layer(build((salt) -> new LazyAreaContext(25, seed, salt)));
+	public BiomeLayerSampler build(long seed) {
+		return new BiomeLayerSampler(build((salt) -> new CachingLayerContext(25, seed, salt)));
 	}
 
-	private <T extends Area, C extends BigContext<T>> AreaFactory<T> build(LongFunction<C> contextProvider) {
-		AreaFactory<T> mainLayer = RiverInitLayer.INSTANCE.run(contextProvider.apply(432L), PlainsOnlyLayer.INSTANCE.run(contextProvider.apply(543L)));
+	private <T extends LayerSampler, C extends LayerSampleContext<T>> LayerFactory<T> build(LongFunction<C> contextProvider) {
+		LayerFactory<T> mainLayer = SimpleLandNoiseLayer.INSTANCE.create(contextProvider.apply(432L), PlainsOnlyLayer.INSTANCE.create(contextProvider.apply(543L)));
 		for (int i = 0; i < 7; i++) {
-			mainLayer = ZoomLayer.NORMAL.run(contextProvider.apply(43 + i), mainLayer);
+			mainLayer = ScaleLayer.NORMAL.create(contextProvider.apply(43 + i), mainLayer);
 		}
 
-		mainLayer = new MarsRiverLayer(biomeRegistry).run(contextProvider.apply(56L), mainLayer);
+		mainLayer = new MarsRiverLayer(biomeRegistry).create(contextProvider.apply(56L), mainLayer);
 		for (int i = 0; i < 2; i++) {
-			mainLayer = ZoomLayer.NORMAL.run(contextProvider.apply(473 + i), mainLayer);
+			mainLayer = ScaleLayer.NORMAL.create(contextProvider.apply(473 + i), mainLayer);
 		}
 
-		mainLayer = new MarsBiomeLayer(biomeRegistry).run(contextProvider.apply(721), mainLayer);
+		mainLayer = new MarsBiomeLayer(biomeRegistry).create(contextProvider.apply(721), mainLayer);
 
 		return mainLayer;
 	}

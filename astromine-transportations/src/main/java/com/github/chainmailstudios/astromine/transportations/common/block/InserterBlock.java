@@ -24,47 +24,48 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockEntityProvider;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.block.ShapeContext;
+import net.minecraft.block.Waterloggable;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.Properties;
+import net.minecraft.util.ItemScatterer;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
+
 import com.github.chainmailstudios.astromine.common.utilities.capability.block.FacingBlockWrenchable;
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.InserterBlockEntity;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyableBlock;
 
 import java.util.Random;
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.Containers;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class InserterBlock extends HorizontalDirectionalBlock implements EntityBlock, ConveyableBlock, FacingBlockWrenchable, SimpleWaterloggedBlock {
-	private static final VoxelShape SHAPE = Shapes.box(0, 0, 0, 1, (1 / 16F), 1);;
+public class InserterBlock extends HorizontalFacingBlock implements BlockEntityProvider, ConveyableBlock, FacingBlockWrenchable, Waterloggable {
+	private static final VoxelShape SHAPE = VoxelShapes.cuboid(0, 0, 0, 1, (1 / 16F), 1);;
 
 	private final String type;
 
 	private final int speed;
 
-	public InserterBlock(String type, int speed, Properties settings) {
+	public InserterBlock(String type, int speed, Settings settings) {
 		super(settings);
 
 		this.type = type;
 
 		this.speed = speed;
 
-		registerDefaultState(defaultBlockState().setValue(BlockStateProperties.WATERLOGGED, false));
+		setDefaultState(getDefaultState().with(Properties.WATERLOGGED, false));
 	}
 
 	public String getType() {
@@ -76,70 +77,70 @@ public class InserterBlock extends HorizontalDirectionalBlock implements EntityB
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(BlockGetter world) {
+	public BlockEntity createBlockEntity(BlockView world) {
 		return new InserterBlockEntity();
 	}
 
 	@Override
-	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateManagerBuilder) {
-		stateManagerBuilder.add(FACING, BlockStateProperties.POWERED, BlockStateProperties.WATERLOGGED);
+	protected void appendProperties(StateManager.Builder<Block, BlockState> stateManagerBuilder) {
+		stateManagerBuilder.add(FACING, Properties.POWERED, Properties.WATERLOGGED);
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		return this.defaultBlockState().setValue(BlockStateProperties.POWERED, false).setValue(FACING, context.getPlayer().isShiftKeyDown() ? context.getHorizontalDirection().getOpposite() : context.getHorizontalDirection()).setValue(BlockStateProperties.WATERLOGGED, context.getLevel().getBlockState(context.getClickedPos()).getBlock() == Blocks.WATER);
+	public BlockState getPlacementState(ItemPlacementContext context) {
+		return this.getDefaultState().with(Properties.POWERED, false).with(FACING, context.getPlayer().isSneaking() ? context.getPlayerFacing().getOpposite() : context.getPlayerFacing()).with(Properties.WATERLOGGED, context.getWorld().getBlockState(context.getBlockPos()).getBlock() == Blocks.WATER);
 	}
 
 	@Override
 	public FluidState getFluidState(BlockState state) {
-		return (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) ? Fluids.WATER.defaultFluidState() : super.getFluidState(state);
+		return (state.contains(Properties.WATERLOGGED) && state.get(Properties.WATERLOGGED)) ? Fluids.WATER.getDefaultState() : super.getFluidState(state);
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
-		if (!world.isClientSide) {
-			boolean powered = state.getValue(BlockStateProperties.POWERED);
+	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
+		if (!world.isClient) {
+			boolean powered = state.get(Properties.POWERED);
 
-			if (powered != world.hasNeighborSignal(pos)) {
+			if (powered != world.isReceivingRedstonePower(pos)) {
 				if (powered) {
-					world.getBlockTicks().scheduleTick(pos, this, 4);
+					world.getBlockTickScheduler().schedule(pos, this, 4);
 				} else {
-					world.setBlock(pos, state.cycle(BlockStateProperties.POWERED), 2);
+					world.setBlockState(pos, state.cycle(Properties.POWERED), 2);
 				}
 			}
 		}
 	}
 
 	@Override
-	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
-		if (state.getValue(BlockStateProperties.POWERED) && !world.hasNeighborSignal(pos)) {
-			world.setBlock(pos, state.cycle(BlockStateProperties.POWERED), 2);
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+		if (state.get(Properties.POWERED) && !world.isReceivingRedstonePower(pos)) {
+			world.setBlockState(pos, state.cycle(Properties.POWERED), 2);
 		}
 	}
 
 
 	@Override
-	public void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean notify) {
+	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
 		updateDiagonals(world, this, pos);
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean moved) {
+	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
 		if (state.getBlock() != newState.getBlock()) {
 			BlockEntity blockEntity = world.getBlockEntity(pos);
 
 			if (blockEntity instanceof InserterBlockEntity) {
-				Containers.dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), ((InserterBlockEntity) blockEntity).getItemComponent().getFirst());
+				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), ((InserterBlockEntity) blockEntity).getItemComponent().getFirst());
 			}
 
-			super.onRemove(state, world, pos, newState, moved);
+			super.onStateReplaced(state, world, pos, newState, moved);
 		}
 
 		updateDiagonals(world, this, pos);
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
 		return SHAPE;
 	}
 }

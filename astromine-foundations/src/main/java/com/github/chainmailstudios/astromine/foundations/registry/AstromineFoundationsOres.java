@@ -29,38 +29,38 @@ import net.fabricmc.fabric.api.biome.v1.BiomeModification;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.GenerationStep;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
 
 import java.util.function.Predicate;
 
 public class AstromineFoundationsOres {
-	public static final ResourceLocation FOUNDATIONS_ORES_ID = AstromineCommon.identifier("foundations_ores");
-	public static final ResourceLocation TIN_ORE_ID = AstromineCommon.identifier("tin_ore");
-	public static final ResourceKey<ConfiguredFeature<?, ?>> TIN_ORE_KEY = ResourceKey.create(Registry.CONFIGURED_FEATURE_REGISTRY, TIN_ORE_ID);
+	public static final Identifier FOUNDATIONS_ORES_ID = AstromineCommon.identifier("foundations_ores");
+	public static final Identifier TIN_ORE_ID = AstromineCommon.identifier("tin_ore");
+	public static final RegistryKey<ConfiguredFeature<?, ?>> TIN_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, TIN_ORE_ID);
 
-	public static final ResourceLocation COPPER_ORE_ID = AstromineCommon.identifier("copper_ore");
-	public static final ResourceKey<ConfiguredFeature<?, ?>> COPPER_ORE_KEY = ResourceKey.create(Registry.CONFIGURED_FEATURE_REGISTRY, COPPER_ORE_ID);
+	public static final Identifier COPPER_ORE_ID = AstromineCommon.identifier("copper_ore");
+	public static final RegistryKey<ConfiguredFeature<?, ?>> COPPER_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, COPPER_ORE_ID);
 
-	public static final ResourceLocation LEAD_ORE_ID = AstromineCommon.identifier("lead_ore");
-	public static final ResourceKey<ConfiguredFeature<?, ?>> LEAD_ORE_KEY = ResourceKey.create(Registry.CONFIGURED_FEATURE_REGISTRY, LEAD_ORE_ID);
+	public static final Identifier LEAD_ORE_ID = AstromineCommon.identifier("lead_ore");
+	public static final RegistryKey<ConfiguredFeature<?, ?>> LEAD_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, LEAD_ORE_ID);
 
 	@SuppressWarnings("deprecation")
 	public static void initialize() {
 		BiomeModification modification = BiomeModifications.create(FOUNDATIONS_ORES_ID);
-		Predicate<BiomeSelectionContext> baseOverworldOreContext = context -> context.getBiome().getBiomeCategory() != Biome.BiomeCategory.NETHER && context.getBiome().getBiomeCategory() != Biome.BiomeCategory.THEEND;
+		Predicate<BiomeSelectionContext> baseOverworldOreContext = context -> context.getBiome().getCategory() != Biome.Category.NETHER && context.getBiome().getCategory() != Biome.Category.THEEND;
 		modification.add(ModificationPhase.ADDITIONS, baseOverworldOreContext.and(context -> AstromineFoundationsConfig.get().overworldTinOre), context -> {
-			context.getGenerationSettings().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TIN_ORE_KEY);
+			context.getGenerationSettings().addFeature(GenerationStep.Feature.UNDERGROUND_ORES, TIN_ORE_KEY);
 		});
 		modification.add(ModificationPhase.ADDITIONS, baseOverworldOreContext.and(context -> AstromineFoundationsConfig.get().overworldCopperOre), context -> {
-			context.getGenerationSettings().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, COPPER_ORE_KEY);
+			context.getGenerationSettings().addFeature(GenerationStep.Feature.UNDERGROUND_ORES, COPPER_ORE_KEY);
 		});
 		modification.add(ModificationPhase.ADDITIONS, baseOverworldOreContext.and(context -> AstromineFoundationsConfig.get().overworldLeadOre), context -> {
-			context.getGenerationSettings().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, LEAD_ORE_KEY);
+			context.getGenerationSettings().addFeature(GenerationStep.Feature.UNDERGROUND_ORES, LEAD_ORE_KEY);
 		});
 	}
 }

@@ -24,14 +24,15 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.screen;
 
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.text.Text;
+
 import com.github.chainmailstudios.astromine.client.screen.base.block.ComponentBlockEntityEnergyItemHandledScreen;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.BlockBreakerScreenHandler;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.player.Inventory;
 
 public class BlockBreakerHandledScreen extends ComponentBlockEntityEnergyItemHandledScreen<BlockBreakerScreenHandler> {
-	public BlockBreakerHandledScreen(BaseScreenHandler handler, Inventory inventory, Component title) {
+	public BlockBreakerHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 	}
 }

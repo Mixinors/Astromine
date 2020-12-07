@@ -24,6 +24,10 @@
 
 package com.github.chainmailstudios.astromine.common.registry;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.util.math.Direction;
+
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
@@ -36,9 +40,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 
 /**
  * A specialized registry for registration of
@@ -69,7 +70,7 @@ public class NetworkMemberRegistry {
 
 	/** Returns the {@link NetworkMember} at the given {@link BlockEntity}'s position. */
 	public static NetworkMember get(@Nullable BlockEntity blockEntity, @Nullable Direction direction) {
-		return blockEntity != null ? get(WorldPos.of(blockEntity.getLevel(), blockEntity.getBlockPos()), direction) : get((WorldPos) null, direction);
+		return blockEntity != null ? get(WorldPos.of(blockEntity.getWorld(), blockEntity.getPos()), direction) : get((WorldPos) null, direction);
 	}
 
 	/**

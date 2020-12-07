@@ -24,19 +24,20 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.world.layer.mars;
 
-import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBiomes;
-import net.minecraft.core.Registry;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.newbiome.context.Context;
-import net.minecraft.world.level.newbiome.layer.traits.CastleTransformer;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.layer.type.CrossSamplingLayer;
+import net.minecraft.world.biome.layer.util.LayerRandomnessSource;
 
-public class MarsRiverLayer implements CastleTransformer {
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBiomes;
+
+public class MarsRiverLayer implements CrossSamplingLayer {
 	private final Registry<Biome> biomeRegistry;
 	private final int riverId;
 
 	public MarsRiverLayer(Registry<Biome> biomeRegistry) {
 		this.biomeRegistry = biomeRegistry;
-		this.riverId = biomeRegistry.getId(biomeRegistry.get(AstromineDiscoveriesBiomes.MARTIAN_RIVERBED));
+		this.riverId = biomeRegistry.getRawId(biomeRegistry.get(AstromineDiscoveriesBiomes.MARTIAN_RIVERBED));
 	}
 
 	private static int isValidForRiver(int value) {
@@ -44,7 +45,7 @@ public class MarsRiverLayer implements CastleTransformer {
 	}
 
 	@Override
-	public int apply(Context context, int n, int e, int s, int w, int center) {
+	public int sample(LayerRandomnessSource context, int n, int e, int s, int w, int center) {
 		int i = isValidForRiver(center);
 		return i == isValidForRiver(w) && i == isValidForRiver(n) && i == isValidForRiver(e) && i == isValidForRiver(s) ? -1 : riverId;
 	}

@@ -24,29 +24,30 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block;
 
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingTieredBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.redstone.ComparatorMode;
 import com.github.chainmailstudios.astromine.common.network.NetworkBlock;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.TankBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.TankScreenHandler;
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class TankBlock extends WrenchableHorizontalFacingTieredBlockWithEntity implements NetworkBlock.FluidBuffer {
-	public TankBlock(Properties settings) {
+	public TankBlock(Settings settings) {
 		super(settings);
 	}
 
 	public abstract static class Base extends TankBlock {
-		public Base(Properties settings) {
+		public Base(Settings settings) {
 			super(settings);
 		}
 
@@ -56,12 +57,12 @@ public abstract class TankBlock extends WrenchableHorizontalFacingTieredBlockWit
 		}
 
 		@Override
-		public AbstractContainerMenu createScreenHandler(BlockState state, Level world, BlockPos pos, int syncId, Inventory playerInventory, Player player) {
+		public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
 			return new TankScreenHandler(syncId, playerInventory.player, pos);
 		}
 
 		@Override
-		public void populateScreenHandlerBuffer(BlockState state, Level world, BlockPos pos, ServerPlayer player, FriendlyByteBuf buffer) {
+		public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
 			buffer.writeBlockPos(pos);
 		}
 
@@ -72,7 +73,7 @@ public abstract class TankBlock extends WrenchableHorizontalFacingTieredBlockWit
 	}
 
 	public static class Primitive extends TankBlock.Base {
-		public Primitive(Properties settings) {
+		public Primitive(Settings settings) {
 			super(settings);
 		}
 
@@ -83,7 +84,7 @@ public abstract class TankBlock extends WrenchableHorizontalFacingTieredBlockWit
 	}
 
 	public static class Basic extends TankBlock.Base {
-		public Basic(Properties settings) {
+		public Basic(Settings settings) {
 			super(settings);
 		}
 
@@ -94,7 +95,7 @@ public abstract class TankBlock extends WrenchableHorizontalFacingTieredBlockWit
 	}
 
 	public static class Advanced extends TankBlock.Base {
-		public Advanced(Properties settings) {
+		public Advanced(Settings settings) {
 			super(settings);
 		}
 
@@ -105,7 +106,7 @@ public abstract class TankBlock extends WrenchableHorizontalFacingTieredBlockWit
 	}
 
 	public static class Elite extends TankBlock.Base {
-		public Elite(Properties settings) {
+		public Elite(Settings settings) {
 			super(settings);
 		}
 
@@ -116,7 +117,7 @@ public abstract class TankBlock extends WrenchableHorizontalFacingTieredBlockWit
 	}
 
 	public static class Creative extends TankBlock.Base {
-		public Creative(Properties settings) {
+		public Creative(Settings settings) {
 			super(settings);
 		}
 

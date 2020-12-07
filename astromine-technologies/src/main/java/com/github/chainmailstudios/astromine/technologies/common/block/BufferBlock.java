@@ -24,26 +24,27 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block;
 
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingTieredBlockWithEntity;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.BufferBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.BufferScreenHandler;
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class BufferBlock extends WrenchableHorizontalFacingTieredBlockWithEntity {
-	public BufferBlock(Properties settings) {
+	public BufferBlock(Settings settings) {
 		super(settings);
 	}
 
 	public abstract static class Base extends BufferBlock {
-		public Base(Properties settings) {
+		public Base(Settings settings) {
 			super(settings);
 		}
 
@@ -53,18 +54,18 @@ public abstract class BufferBlock extends WrenchableHorizontalFacingTieredBlockW
 		}
 
 		@Override
-		public AbstractContainerMenu createScreenHandler(BlockState state, Level world, BlockPos pos, int syncId, Inventory playerInventory, Player player) {
+		public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
 			return new BufferScreenHandler(syncId, playerInventory.player, pos);
 		}
 
 		@Override
-		public void populateScreenHandlerBuffer(BlockState state, Level world, BlockPos pos, ServerPlayer player, FriendlyByteBuf buffer) {
+		public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
 			buffer.writeBlockPos(pos);
 		}
 	}
 
 	public static class Primitive extends BufferBlock.Base {
-		public Primitive(Properties settings) {
+		public Primitive(Settings settings) {
 			super(settings);
 		}
 
@@ -75,7 +76,7 @@ public abstract class BufferBlock extends WrenchableHorizontalFacingTieredBlockW
 	}
 
 	public static class Basic extends BufferBlock.Base {
-		public Basic(Properties settings) {
+		public Basic(Settings settings) {
 			super(settings);
 		}
 
@@ -86,7 +87,7 @@ public abstract class BufferBlock extends WrenchableHorizontalFacingTieredBlockW
 	}
 
 	public static class Advanced extends BufferBlock.Base {
-		public Advanced(Properties settings) {
+		public Advanced(Settings settings) {
 			super(settings);
 		}
 
@@ -97,7 +98,7 @@ public abstract class BufferBlock extends WrenchableHorizontalFacingTieredBlockW
 	}
 
 	public static class Elite extends BufferBlock.Base {
-		public Elite(Properties settings) {
+		public Elite(Settings settings) {
 			super(settings);
 		}
 
@@ -108,7 +109,7 @@ public abstract class BufferBlock extends WrenchableHorizontalFacingTieredBlockW
 	}
 
 	public static class Creative extends BufferBlock.Base {
-		public Creative(Properties settings) {
+		public Creative(Settings settings) {
 			super(settings);
 		}
 

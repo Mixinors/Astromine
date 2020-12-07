@@ -24,12 +24,14 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.Ingredient;
+
 import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.chainmailstudios.astromine.common.recipe.ingredient.ItemIngredient;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
+
 import com.google.gson.JsonElement;
 
 public class IngredientUtilities {
@@ -39,13 +41,13 @@ public class IngredientUtilities {
 	}
 
 	/** Deserializes an {@link Ingredient} from a {@link ByteBuf}. */
-	public static Ingredient fromIngredientPacket(FriendlyByteBuf buffer) {
-		return Ingredient.fromNetwork(buffer);
+	public static Ingredient fromIngredientPacket(PacketByteBuf buffer) {
+		return Ingredient.fromPacket(buffer);
 	}
 
 	/** Serializes an {@link Ingredient} to a {@link ByteBuf}. */
-	public static void toIngredientPacket(FriendlyByteBuf buffer, Ingredient ingredient) {
-		ingredient.toNetwork(buffer);
+	public static void toIngredientPacket(PacketByteBuf buffer, Ingredient ingredient) {
+		ingredient.write(buffer);
 	}
 
 	/** Returns an {@link ItemStack} from the specified {@link Ingredient}
@@ -56,8 +58,8 @@ public class IngredientUtilities {
 	 * */
 	public static ItemStack testMatching(Ingredient input, ItemStack stack) {
 		if (stack != null) {
-			if (input.getItems().length != 0) {
-				for (ItemStack matching : input.getItems()) {
+			if (input.matchingStacks.length != 0) {
+				for (ItemStack matching : input.matchingStacks) {
 					if (matching.getItem() == stack.getItem()) {
 						return matching;
 					}

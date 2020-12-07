@@ -22,27 +22,29 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine. registry;
+package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
+import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
+import net.fabricmc.loader.api.FabricLoader;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.InventoryProvider;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
+
 import com.github.chainmailstudios.astromine.common.network.NetworkBlock;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
-import com.google.common.collect.Maps;
-import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.WorldlyContainerHolder;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.EnergyStorage;
 
+import com.google.common.collect.Maps;
 import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -70,7 +72,7 @@ public class AstromineNetworkMembers {
 			public Collection<NetworkMemberType> get(WorldPos pos, @Nullable Direction direction) {
 				if (!this.types.containsKey(pos.getBlock())) {
 					BlockEntity blockEntity = pos.getBlockEntity();
-					if (blockEntity instanceof WorldlyContainerHolder) {
+					if (blockEntity instanceof InventoryProvider) {
 						return NetworkMember.REQUESTER_PROVIDER;
 					}
 				}
@@ -101,13 +103,13 @@ public class AstromineNetworkMembers {
 
 		FabricLoader.getInstance().getEntrypoints("astromine-network-members", Runnable.class).forEach(Runnable::run);
 
-		Registry.BLOCK.entrySet().forEach(entry -> acceptBlock(entry.getKey(), entry.getValue()));
+		Registry.BLOCK.getEntries().forEach(entry -> acceptBlock(entry.getKey(), entry.getValue()));
 
-		RegistryEntryAddedCallback.event(Registry.BLOCK).register((index, identifier, block) -> acceptBlock(ResourceKey.create(Registry.BLOCK_REGISTRY, identifier), block));
+		RegistryEntryAddedCallback.event(Registry.BLOCK).register((index, identifier, block) -> acceptBlock(RegistryKey.of(Registry.BLOCK_KEY, identifier), block));
 	}
 
-	public static void acceptBlock(ResourceKey<Block> id, Block block) {
-		if (id.location().getNamespace().equals("astromine")) {
+	public static void acceptBlock(RegistryKey<Block> id, Block block) {
+		if (id.getValue().getNamespace().equals("astromine")) {
 			for (Map.Entry<Predicate<Block>, Consumer<Block>> blockConsumerEntry : BLOCK_CONSUMER.entrySet()) {
 				if (blockConsumerEntry.getKey().test(block)) {
 					blockConsumerEntry.getValue().accept(block);

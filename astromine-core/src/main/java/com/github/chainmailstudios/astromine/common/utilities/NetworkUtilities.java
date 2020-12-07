@@ -24,8 +24,14 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
+import net.minecraft.block.BlockState;
+import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.World;
+
 import com.github.chainmailstudios.astromine.common.block.base.CableBlock;
 import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
@@ -37,11 +43,6 @@ import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegist
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.ArrayDeque;
 import java.util.Collections;
@@ -57,7 +58,7 @@ public class NetworkUtilities {
 		 * Interconnected networks will be merged if necessary.
 		 */
 		public static void trace(NetworkType type, WorldPos initialPosition) {
-			Level world = initialPosition.getWorld();
+			World world = initialPosition.getWorld();
 
 			WorldNetworkComponent networkComponent = WorldNetworkComponent.get(world);
 
@@ -85,7 +86,7 @@ public class NetworkUtilities {
 				WorldPos initialObject = WorldPos.of(world, position);
 
 				for (Direction direction : Direction.values()) {
-					BlockPos offsetPosition = position.relative(direction);
+					BlockPos offsetPosition = position.offset(direction);
 					long offsetPositionLong = offsetPosition.asLong();
 
 					if (tracedPositions.contains(offsetPositionLong)) {
@@ -141,21 +142,21 @@ public class NetworkUtilities {
 			int i = 0;
 
 			for (Map.Entry<Direction, BooleanProperty> property : CableBlock.PROPERTIES.entrySet()) {
-				if (blockState.getValue(property.getValue())) {
-					i |= 1 << property.getKey().get3DDataValue();
+				if (blockState.get(property.getValue())) {
+					i |= 1 << property.getKey().getId();
 				}
 			}
 
 			return i;
 		}
 
-		public static Set<Direction> of(NetworkType type, BlockPos initialPosition, Level world) {
+		public static Set<Direction> of(NetworkType type, BlockPos initialPosition, World world) {
 			Set<Direction> directions = EnumSet.noneOf(Direction.class);
 
 			WorldPos initialObject = WorldPos.of(world, initialPosition);
 
 			for (Direction direction : Direction.values()) {
-				WorldPos pos = WorldPos.of(world, initialPosition.relative(direction));
+				WorldPos pos = WorldPos.of(world, initialPosition.offset(direction));
 
 				NetworkMember offsetMember = NetworkMemberRegistry.get(pos, direction.getOpposite());
 
@@ -173,7 +174,7 @@ public class NetworkUtilities {
 			if (!(state.getBlock() instanceof CableBlock))
 				return state;
 			for (Direction direction : Direction.values()) {
-				state = state.setValue(CableBlock.PROPERTIES.get(direction), directions.contains(direction));
+				state = state.with(CableBlock.PROPERTIES.get(direction), directions.contains(direction));
 			}
 			return state;
 		}
@@ -182,8 +183,8 @@ public class NetworkUtilities {
 		 * as {@link CableBlock} shapes. */
 		private static VoxelShape toVoxelShape(int directions, VoxelShape shape) {
 			for (Direction direction : Direction.values()) {
-				if ((directions & (0x1 << direction.get3DDataValue())) != 0) {
-					shape = Shapes.or(shape, CableBlock.SHAPE_MAP.get(CableBlock.PROPERTIES.get(direction)));
+				if ((directions & (0x1 << direction.getId())) != 0) {
+					shape = VoxelShapes.union(shape, CableBlock.SHAPE_MAP.get(CableBlock.PROPERTIES.get(direction)));
 				}
 			}
 			return shape;
@@ -195,7 +196,7 @@ public class NetworkUtilities {
 			int i = 0;
 
 			for (Direction direction : directions) {
-				i |= 1 << direction.get3DDataValue();
+				i |= 1 << direction.getId();
 			}
 			
 			return getVoxelShape(i);

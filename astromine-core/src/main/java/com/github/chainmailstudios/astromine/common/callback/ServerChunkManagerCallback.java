@@ -26,10 +26,11 @@ package com.github.chainmailstudios.astromine.common.callback;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.server.level.ServerChunkCache;
+
+import net.minecraft.server.world.ServerChunkManager;
 
 /**
- * A callback called when initializing a {@link ServerChunkCache}.
+ * A callback called when initializing a {@link ServerChunkManager}.
  */
 public interface ServerChunkManagerCallback {
 	Event<ServerChunkManagerCallback> EVENT = EventFactory.createArrayBacked(ServerChunkManagerCallback.class, (listeners) -> (manager) -> {
@@ -38,6 +39,6 @@ public interface ServerChunkManagerCallback {
 		}
 	});
 
-	/** Handle the {@link ServerChunkCache}. */
-	void handle(ServerChunkCache manager);
+	/** Handle the {@link ServerChunkManager}. */
+	void handle(ServerChunkManager manager);
 }

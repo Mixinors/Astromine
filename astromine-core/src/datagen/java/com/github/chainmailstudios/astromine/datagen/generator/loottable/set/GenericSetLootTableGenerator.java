@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.datagen.generator.loottable.set;
 
-import net.minecraft.world.level.block.Block;
+import net.minecraft.block.Block;
 
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;

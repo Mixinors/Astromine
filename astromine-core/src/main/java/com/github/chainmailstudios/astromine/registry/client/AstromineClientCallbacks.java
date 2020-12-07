@@ -22,15 +22,17 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine. registry.client;
+package com.github.chainmailstudios.astromine.registry.client;
+
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+
+import net.minecraft.text.*;
+import net.minecraft.util.Formatting;
 
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
 import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
-import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import com.github.chainmailstudios.astromine.common.utilities.NumberUtilities;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
@@ -44,7 +46,7 @@ public class AstromineClientCallbacks {
 
 				if (fluidComponent != null) {
 					fluidComponent.forEachIndexed((slot, volume) -> {
-						MutableComponent text = new TextComponent(shorten(volume.getAmount().doubleValue()) + "/" + shorten(volume.getSize().doubleValue()) + " " + new TranslatableComponent(String.format("block.%s.%s", volume.getFluidId().getNamespace(), volume.getFluidId().getPath())).getString());
+						MutableText text = new LiteralText(shorten(volume.getAmount().doubleValue()) + "/" + shorten(volume.getSize().doubleValue()) + " " + new TranslatableText(String.format("block.%s.%s", volume.getFluidId().getNamespace(), volume.getFluidId().getPath())).getString());
 
 						tooltip.add(1, text);
 					});
@@ -56,7 +58,7 @@ public class AstromineClientCallbacks {
 			if (stack.getItem() instanceof EnergyVolumeItem) {
 				EnergyHandler handler = Energy.of(stack);
 
-				MutableComponent text = new TextComponent(shorten(handler.getEnergy()) + "/" + shorten(((EnergyVolumeItem) stack.getItem()).getMaxStoredPower()) + " E");
+				MutableText text = new LiteralText(shorten(handler.getEnergy()) + "/" + shorten(((EnergyVolumeItem) stack.getItem()).getMaxStoredPower()) + " E");
 
 				tooltip.add(1, text);
 			}

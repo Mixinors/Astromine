@@ -24,10 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.entity.base;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.World;
+
 import dev.onyxstudios.cca.api.v3.component.Component;
 
 /**
@@ -35,17 +36,17 @@ import dev.onyxstudios.cca.api.v3.component.Component;
  */
 public abstract class ComponentEntity extends Entity {
 	/** Instantiates a {@link ComponentEntity}. */
-	public ComponentEntity(EntityType<?> type, Level world) {
+	public ComponentEntity(EntityType<?> type, World world) {
 		super(type, world);
 	}
 
 	/** Override behavior to do nothing, as synchronize themselves. */
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tag) {
+	protected void writeCustomDataToTag(CompoundTag tag) {
 
 	}
 
 	/** Override behavior to do nothing, as synchronize themselves. */
 	@Override
-	protected void readAdditionalSaveData(CompoundTag tag) {}
+	protected void readCustomDataFromTag(CompoundTag tag) {}
 }

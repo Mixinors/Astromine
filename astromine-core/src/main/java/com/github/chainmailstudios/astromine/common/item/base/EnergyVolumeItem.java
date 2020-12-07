@@ -24,12 +24,13 @@
 
 package com.github.chainmailstudios.astromine.common.item.base;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.collection.DefaultedList;
+
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import me.shedaniel.cloth.api.durability.bar.DurabilityBarItem;
-import net.minecraft.core.NonNullList;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHolder;
 import team.reborn.energy.EnergyTier;
@@ -41,19 +42,19 @@ public class EnergyVolumeItem extends Item implements EnergyHolder, DurabilityBa
 	private final double size;
 
 	/** Instantiates an {@link EnergyVolumeItem}s. */
-	protected EnergyVolumeItem(Item.Properties settings, double size) {
+	protected EnergyVolumeItem(Item.Settings settings, double size) {
 		super(settings);
 
 		this.size = size;
 	}
 
 	/** Instantiates an {@link EnergyVolumeItem}. */
-	public static EnergyVolumeItem ofCreative(Item.Properties settings) {
+	public static EnergyVolumeItem ofCreative(Item.Settings settings) {
 		return new EnergyVolumeItem(settings, Double.MAX_VALUE);
 	}
 
 	/** Instantiates an {@link EnergyVolumeItem}s. */
-	public static EnergyVolumeItem of(Properties settings, double size) {
+	public static EnergyVolumeItem of(Settings settings, double size) {
 		return new EnergyVolumeItem(settings, size);
 	}
 
@@ -95,12 +96,12 @@ public class EnergyVolumeItem extends Item implements EnergyHolder, DurabilityBa
 	}
 
 	/** Override behavior to add instances of {@link EnergyVolumeItem}
-	 * as {@link ItemStack}s to {@link CreativeModeTab}s with full energy. */
+	 * as {@link ItemStack}s to {@link ItemGroup}s with full energy. */
 	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> stacks) {
-		super.fillItemCategory(group, stacks);
+	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
+		super.appendStacks(group, stacks);
 
-		if (this.allowdedIn(group)) {
+		if (this.isIn(group)) {
 			ItemStack stack = new ItemStack(this);
 
 			Energy.of(stack).set(getMaxStoredPower());

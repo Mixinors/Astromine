@@ -1,7 +1,7 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.LivingEntity;
 
 public class EntityUtilities {
 	/** Gets the amount of air the given {@link LivingEntity} should have

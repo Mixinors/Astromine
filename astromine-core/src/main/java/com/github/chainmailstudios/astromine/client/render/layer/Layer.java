@@ -24,42 +24,43 @@
 
 package com.github.chainmailstudios.astromine.client.render.layer;
 
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderPhase;
+import net.minecraft.client.render.VertexFormat;
+import net.minecraft.client.render.VertexFormats;
+import net.minecraft.util.Identifier;
+
 import java.util.HashMap;
 import java.util.Map;
-import net.minecraft.client.renderer.RenderStateShard;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
 
-public class Layer extends RenderType {
-	private static final Map<ResourceLocation, RenderType> CACHE = new HashMap<>();
+public class Layer extends RenderLayer {
+	private static final Map<Identifier, RenderLayer> CACHE = new HashMap<>();
 
-	private static final RenderType HOLOGRAPHIC_BRIDGE = create("holographic_bridge", DefaultVertexFormat.POSITION_COLOR_LIGHTMAP, 7, 256, false, true, RenderType.CompositeState.builder().setCullState(NO_CULL).setLightmapState(LIGHTMAP).setShadeModelState(SMOOTH_SHADE).setTransparencyState(
-		TRANSLUCENT_TRANSPARENCY).setAlphaState(DEFAULT_ALPHA).setLayeringState(VIEW_OFFSET_Z_LAYERING).createCompositeState(false));
+	private static final RenderLayer HOLOGRAPHIC_BRIDGE = of("holographic_bridge", VertexFormats.POSITION_COLOR_LIGHT, 7, 256, false, true, RenderLayer.MultiPhaseParameters.builder().cull(DISABLE_CULLING).lightmap(ENABLE_LIGHTMAP).shadeModel(SMOOTH_SHADE_MODEL).transparency(
+		TRANSLUCENT_TRANSPARENCY).alpha(ONE_TENTH_ALPHA).layering(VIEW_OFFSET_Z_LAYERING).build(false));
 
-	private static final RenderType GAS = create("gas", DefaultVertexFormat.POSITION_COLOR_LIGHTMAP, 7, 2097152, true, true, RenderType.CompositeState.builder().setCullState(NO_CULL).setLayeringState(VIEW_OFFSET_Z_LAYERING).setShadeModelState(SMOOTH_SHADE).setTransparencyState(TRANSLUCENT_TRANSPARENCY)
-		.createCompositeState(true));
+	private static final RenderLayer GAS = of("gas", VertexFormats.POSITION_COLOR_LIGHT, 7, 2097152, true, true, RenderLayer.MultiPhaseParameters.builder().cull(DISABLE_CULLING).layering(VIEW_OFFSET_Z_LAYERING).shadeModel(SMOOTH_SHADE_MODEL).transparency(TRANSLUCENT_TRANSPARENCY)
+		.build(true));
 
 	/** Instantiates a {@link Layer}. */
 	public Layer(String name, VertexFormat vertexFormat, int drawMode, int expectedBufferSize, boolean hasCrumbling, boolean translucent, Runnable startAction, Runnable endAction) {
 		super(name, vertexFormat, drawMode, expectedBufferSize, hasCrumbling, translucent, startAction, endAction);
 	}
 
-	/** Returns the {@link RenderType} for the given texture. */
-	public static RenderType get(ResourceLocation texture) {
-		CACHE.computeIfAbsent(texture, (key) -> create("entity_cutout", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, 7, 256, true, true, RenderType.CompositeState.builder().setTextureState(new RenderStateShard.TextureStateShard(texture, false, false)).setTransparencyState(TRANSLUCENT_TRANSPARENCY)
-			.setDiffuseLightingState(NO_DIFFUSE_LIGHTING).setAlphaState(DEFAULT_ALPHA).setLightmapState(NO_LIGHTMAP).setOverlayState(NO_OVERLAY).createCompositeState(true)));
+	/** Returns the {@link RenderLayer} for the given texture. */
+	public static RenderLayer get(Identifier texture) {
+		CACHE.computeIfAbsent(texture, (key) -> of("entity_cutout", VertexFormats.POSITION_COLOR_TEXTURE_LIGHT, 7, 256, true, true, RenderLayer.MultiPhaseParameters.builder().texture(new RenderPhase.Texture(texture, false, false)).transparency(TRANSLUCENT_TRANSPARENCY)
+			.diffuseLighting(DISABLE_DIFFUSE_LIGHTING).alpha(ONE_TENTH_ALPHA).lightmap(DISABLE_LIGHTMAP).overlay(DISABLE_OVERLAY_COLOR).build(true)));
 		return CACHE.get(texture);
 	}
 
-	/** Returns the Holographic Bridge {@link RenderType}. */
-	public static RenderType getHolographicBridge() {
+	/** Returns the Holographic Bridge {@link RenderLayer}. */
+	public static RenderLayer getHolographicBridge() {
 		return HOLOGRAPHIC_BRIDGE;
 	}
 
-	/** Returns the Gas {@link RenderType}. */
-	public static RenderType getGas() {
+	/** Returns the Gas {@link RenderLayer}. */
+	public static RenderLayer getGas() {
 		return GAS;
 	}
 }

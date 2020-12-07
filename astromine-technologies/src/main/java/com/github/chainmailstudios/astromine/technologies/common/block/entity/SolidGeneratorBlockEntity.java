@@ -28,11 +28,13 @@ import com.github.chainmailstudios.astromine.common.component.general.*;
 import com.github.chainmailstudios.astromine.common.component.general.base.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
+
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.item.BucketItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.item.BucketItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
+
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
@@ -91,7 +93,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 	public void tick() {
 		super.tick();
 
-		if (level == null || level.isClientSide || !tickRedstone())
+		if (world == null || world.isClient || !tickRedstone())
 			return;
 
 		ItemComponent itemComponent = getItemComponent();
@@ -137,7 +139,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 						limit = value;
 						progress = 0;
 
-						burnStack.shrink(1);
+						burnStack.decrement(1);
 					}
 
 					if (isFuel || progress != 0) {
@@ -153,19 +155,19 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag) {
+	public CompoundTag toTag(CompoundTag tag) {
 		tag.putDouble("progress", progress);
 		tag.putInt("limit", limit);
 		tag.putDouble("available", available);
-		return super.save(tag);
+		return super.toTag(tag);
 	}
 
 	@Override
-	public void load(BlockState state, @NotNull CompoundTag tag) {
+	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
 		progress = tag.getDouble("progress");
 		limit = tag.getInt("limit");
 		available = tag.getDouble("available");
-		super.load(state, tag);
+		super.fromTag(state, tag);
 	}
 
 	public static class Primitive extends SolidGeneratorBlockEntity {

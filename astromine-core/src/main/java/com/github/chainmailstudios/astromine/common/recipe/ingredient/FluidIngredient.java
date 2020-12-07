@@ -24,7 +24,13 @@
 
 package com.github.chainmailstudios.astromine.common.recipe.ingredient;
 
-import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient.Entry;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.tag.ServerTagManagerHolder;
+import net.minecraft.tag.Tag;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+
 import com.github.chainmailstudios.astromine.common.utilities.StringUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
@@ -41,12 +47,6 @@ import java.util.Collections;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import net.minecraft.core.Registry;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.SerializationTags;
-import net.minecraft.tags.Tag;
-import net.minecraft.world.level.material.Fluid;
 
 /**
  * A recipe ingredient consisting of (a) {@link Fluid}(s) and its
@@ -54,7 +54,7 @@ import net.minecraft.world.level.material.Fluid;
  *
  * Serialization and deserialization methods are provided for:
  * - {@link JsonElement} - through {@link #toJson()} and {@link #fromJson(JsonElement)}.
- * - {@link ByteBuf} - through {@link #toPacket(FriendlyByteBuf)} and {@link #fromPacket(FriendlyByteBuf)}.
+ * - {@link ByteBuf} - through {@link #toPacket(PacketByteBuf)} and {@link #fromPacket(PacketByteBuf)}.
  */
 public final class FluidIngredient implements Predicate<FluidVolume> {
 	private final Entry[] entries;
@@ -95,7 +95,7 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 					return ofEntries(StreamSupport.stream(jsonArray.spliterator(), false).map((jsonElement) -> Entry.fromJson(jsonElement.getAsJsonObject().get("fluid"))));
 				}
 			} else if (json.isJsonPrimitive() && json.getAsJsonPrimitive().isString()) {
-				return ofEntries(Stream.generate(() -> new SimpleEntry(FluidVolume.of(Fraction.BUCKET, Registry.FLUID.get(new ResourceLocation(json.getAsString()))))).limit(1));
+				return ofEntries(Stream.generate(() -> new SimpleEntry(FluidVolume.of(Fraction.BUCKET, Registry.FLUID.get(new Identifier(json.getAsString()))))).limit(1));
 			} else {
 				throw new JsonSyntaxException("Expected fluid to be object or array of objects");
 			}
@@ -109,7 +109,7 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 		if (entries.length == 1 && entries[0] instanceof TagEntry) {
 			JsonObject jsonObject = new JsonObject();
 
-			jsonObject.addProperty("tag", SerializationTags.getInstance().getFluids().getIdOrThrow(((TagEntry) entries[0]).tag).toString());
+			jsonObject.addProperty("tag", ServerTagManagerHolder.getTagManager().getFluids().getTagId(((TagEntry) entries[0]).tag).toString());
 			jsonObject.add("amount", ((TagEntry) entries[0]).amount.toJson());
 
 			return jsonObject;
@@ -127,13 +127,13 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 	}
 
 	/** Deserializes a {@link FluidIngredient} from a {@link ByteBuf}. */
-	public static FluidIngredient fromPacket(FriendlyByteBuf buffer) {
+	public static FluidIngredient fromPacket(PacketByteBuf buffer) {
 		int size = buffer.readVarInt();
 		return ofEntries(Stream.generate(() -> new SimpleEntry(FluidVolume.fromPacket(buffer))).limit(size));
 	}
 
 	/** Serializes a {@link ItemIngredient} to a {@link ByteBuf}. */
-	public FriendlyByteBuf toPacket(FriendlyByteBuf buffer) {
+	public PacketByteBuf toPacket(PacketByteBuf buffer) {
 		this.cacheMatchingVolumes();
 
 		buffer.writeVarInt(this.matchingVolumes.length);
@@ -219,15 +219,15 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 				}
 
 				if (jsonObject.has("fluid")) {
-					ResourceLocation fluidId = new ResourceLocation(StringUtilities.fromJson(jsonObject.get("fluid")));
+					Identifier fluidId = new Identifier(StringUtilities.fromJson(jsonObject.get("fluid")));
 
-					Fluid fluid = Registry.FLUID.getOptional(fluidId).orElseThrow(() -> new JsonSyntaxException("Unknown fluid '" + fluidId + "'!"));
+					Fluid fluid = Registry.FLUID.getOrEmpty(fluidId).orElseThrow(() -> new JsonSyntaxException("Unknown fluid '" + fluidId + "'!"));
 
 					return new SimpleEntry(FluidVolume.of(amount, fluid));
 				} else if (jsonObject.has("tag")) {
-					ResourceLocation tagId = new ResourceLocation(StringUtilities.fromJson(jsonObject.get("tag")));
+					Identifier tagId = new Identifier(StringUtilities.fromJson(jsonObject.get("tag")));
 
-					Tag<Fluid> tag = SerializationTags.getInstance().getFluids().getTag(tagId);
+					Tag<Fluid> tag = ServerTagManagerHolder.getTagManager().getFluids().getTag(tagId);
 
 					if (tag == null) {
 						throw new JsonSyntaxException("Unknown fluid tag '" + tagId + "'!");
@@ -281,7 +281,7 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 		/** Returns the volumes of this entry. */
 		@Override
 		public Stream<FluidVolume> getVolumes() {
-			return this.tag.getValues().stream().map(fluid -> FluidVolume.of(amount, fluid));
+			return this.tag.values().stream().map(fluid -> FluidVolume.of(amount, fluid));
 		}
 	}
 }

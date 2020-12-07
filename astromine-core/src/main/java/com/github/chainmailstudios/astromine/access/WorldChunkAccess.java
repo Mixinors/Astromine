@@ -24,8 +24,9 @@
 
 package com.github.chainmailstudios.astromine.access;
 
+import net.minecraft.world.chunk.WorldChunk;
+
 import com.github.chainmailstudios.astromine.mixin.WorldChunkMixin;
-import net.minecraft.world.level.chunk.LevelChunk;
 
 /**
  * A mixin helper class, used by {@link WorldChunkMixin}.
@@ -35,21 +36,21 @@ public interface WorldChunkAccess {
 
 	void astromine_runUnloadListeners();
 
-	void astromine_attachEast(LevelChunk chunk);
+	void astromine_attachEast(WorldChunk chunk);
 
-	void astromine_attachWest(LevelChunk chunk);
+	void astromine_attachWest(WorldChunk chunk);
 
-	void astromine_attachNorth(LevelChunk chunk);
+	void astromine_attachNorth(WorldChunk chunk);
 
-	void astromine_attachSouth(LevelChunk chunk);
+	void astromine_attachSouth(WorldChunk chunk);
 
 	void astromine_removeSubchunk(int subchunk);
 
-	LevelChunk astromine_east();
+	WorldChunk astromine_east();
 
-	LevelChunk astromine_west();
+	WorldChunk astromine_west();
 
-	LevelChunk astromine_north();
+	WorldChunk astromine_north();
 
-	LevelChunk astromine_south();
+	WorldChunk astromine_south();
 }

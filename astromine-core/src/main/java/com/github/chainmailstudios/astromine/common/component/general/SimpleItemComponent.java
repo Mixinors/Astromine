@@ -25,6 +25,9 @@
 package com.github.chainmailstudios.astromine.common.component.general;
 
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.Direction;
+
 import com.github.chainmailstudios.astromine.common.utilities.data.predicate.TriPredicate;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import org.jetbrains.annotations.Nullable;
@@ -34,8 +37,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import net.minecraft.core.Direction;
-import net.minecraft.world.item.ItemStack;
 
 public class SimpleItemComponent implements ItemComponent {
 	private final Int2ObjectOpenHashMap<ItemStack> contents = new Int2ObjectOpenHashMap<>();

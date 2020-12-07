@@ -24,11 +24,12 @@
 
 package com.github.chainmailstudios.astromine.transportations.registry;
 
+import net.minecraft.block.entity.BlockEntityType;
+
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.transportations.common.block.FluidFilterBlock;
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.*;
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.base.AbstractConveyableBlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public class AstromineTransportationsBlockEntityTypes extends AstromineBlockEntityTypes {
 	public static final BlockEntityType<AbstractConveyableBlockEntity> ALTERNATOR = register("alternator", AlternatorBlockEntity::new, AstromineTransportationsBlocks.ALTERNATOR);

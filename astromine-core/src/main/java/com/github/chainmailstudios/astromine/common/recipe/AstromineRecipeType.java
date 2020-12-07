@@ -24,9 +24,10 @@
 
 package com.github.chainmailstudios.astromine.common.recipe;
 
+import net.minecraft.recipe.Recipe;
+import net.minecraft.recipe.RecipeType;
+
 import com.github.chainmailstudios.astromine.mixin.ClientRecipeBookMixin;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeType;
 
 /**
  * Our generic {@link RecipeType}, used in {@link ClientRecipeBookMixin}.

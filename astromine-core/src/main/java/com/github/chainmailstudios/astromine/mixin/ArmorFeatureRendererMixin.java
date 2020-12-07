@@ -24,20 +24,6 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.common.item.AnimatedArmorItem;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
-import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ArmorItem;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -45,32 +31,48 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(HumanoidArmorLayer.class)
+import net.minecraft.client.render.OverlayTexture;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.entity.feature.ArmorFeatureRenderer;
+import net.minecraft.client.render.entity.model.BipedEntityModel;
+import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ArmorItem;
+import net.minecraft.util.Identifier;
+
+import com.github.chainmailstudios.astromine.common.item.AnimatedArmorItem;
+import org.jetbrains.annotations.Nullable;
+
+@Mixin(ArmorFeatureRenderer.class)
 public abstract class ArmorFeatureRendererMixin {
 	@Shadow
-	protected abstract ResourceLocation getArmorLocation(ArmorItem armorItem, boolean bl, @Nullable String string);
+	protected abstract Identifier getArmorTexture(ArmorItem armorItem, boolean bl, @Nullable String string);
 
-	@Inject(method = "renderModel", at = @At("HEAD"), cancellable = true)
-	private void renderArmorParts(PoseStack matrixStack, MultiBufferSource vertexConsumerProvider, int i, ArmorItem armorItem, boolean bl, HumanoidModel<LivingEntity> bipedEntityModel, boolean bl2, float f, float g, float h, @Nullable String string, CallbackInfo ci) {
+	@Inject(method = "renderArmorParts", at = @At("HEAD"), cancellable = true)
+	private void renderArmorParts(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, ArmorItem armorItem, boolean bl, BipedEntityModel<LivingEntity> bipedEntityModel, boolean bl2, float f, float g, float h, @Nullable String string, CallbackInfo ci) {
 		if (armorItem instanceof AnimatedArmorItem) {
-			VertexConsumer vertexConsumer = ItemRenderer.getArmorFoilBuffer(vertexConsumerProvider, getArmorCutoutNoCull(this.getArmorLocation(armorItem, bl2, string), ((AnimatedArmorItem) armorItem).getFrames()), false, bl);
-			bipedEntityModel.renderToBuffer(matrixStack, vertexConsumer, i, OverlayTexture.NO_OVERLAY, f, g, h, 1.0F);
+			VertexConsumer vertexConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider, getArmorCutoutNoCull(this.getArmorTexture(armorItem, bl2, string), ((AnimatedArmorItem) armorItem).getFrames()), false, bl);
+			bipedEntityModel.render(matrixStack, vertexConsumer, i, OverlayTexture.DEFAULT_UV, f, g, h, 1.0F);
 			ci.cancel();
 		}
 	}
 
 	@Unique
-	private static RenderType getArmorCutoutNoCull(ResourceLocation texture, int frames) {
-		RenderType.CompositeState multiPhaseParameters = RenderType.CompositeState.builder()
-			.setTextureState(new AnimatedArmorItem.AnimatedTexturePhase(texture, frames))
-			.setTransparencyState(RenderType.NO_TRANSPARENCY)
-			.setDiffuseLightingState(RenderType.DIFFUSE_LIGHTING)
-			.setAlphaState(RenderType.DEFAULT_ALPHA)
-			.setCullState(RenderType.NO_CULL)
-			.setLightmapState(RenderType.LIGHTMAP)
-			.setOverlayState(RenderType.OVERLAY)
-			.setLayeringState(RenderType.VIEW_OFFSET_Z_LAYERING)
-			.createCompositeState(true);
-		return RenderType.create("astromine:armor_cutout_no_cull", DefaultVertexFormat.NEW_ENTITY, 7, 256, true, false, multiPhaseParameters);
+	private static RenderLayer getArmorCutoutNoCull(Identifier texture, int frames) {
+		RenderLayer.MultiPhaseParameters multiPhaseParameters = RenderLayer.MultiPhaseParameters.builder()
+			.texture(new AnimatedArmorItem.AnimatedTexturePhase(texture, frames))
+			.transparency(RenderLayer.NO_TRANSPARENCY)
+			.diffuseLighting(RenderLayer.ENABLE_DIFFUSE_LIGHTING)
+			.alpha(RenderLayer.ONE_TENTH_ALPHA)
+			.cull(RenderLayer.DISABLE_CULLING)
+			.lightmap(RenderLayer.ENABLE_LIGHTMAP)
+			.overlay(RenderLayer.ENABLE_OVERLAY_COLOR)
+			.layering(RenderLayer.VIEW_OFFSET_Z_LAYERING)
+			.build(true);
+		return RenderLayer.of("astromine:armor_cutout_no_cull", VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL, 7, 256, true, false, multiPhaseParameters);
 	}
 }

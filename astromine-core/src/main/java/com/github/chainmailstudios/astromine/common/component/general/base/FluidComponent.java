@@ -35,19 +35,19 @@ import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import com.google.common.collect.UnmodifiableIterator;
-import net.minecraft.core.Direction;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.item.BucketItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.PotionItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.util.Tuple;
-import net.minecraft.world.item.BucketItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.PotionItem;
-import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraft.world.item.alchemy.Potions;
-import net.minecraft.world.level.material.Fluids;
+import net.minecraft.potion.PotionUtil;
+import net.minecraft.potion.Potions;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Pair;
+import net.minecraft.util.math.Direction;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import org.jetbrains.annotations.Nullable;
 
@@ -103,9 +103,9 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 		return AstromineItems.FLUID.asItem();
 	}
 
-	/** Returns this component's {@link Component} name. */
-	default Component getName() {
-		return new TranslatableComponent("text.astromine.fluid");
+	/** Returns this component's {@link Text} name. */
+	default Text getName() {
+		return new TranslatableText("text.astromine.fluid");
 	}
 
 	/** Returns this component's size. */
@@ -228,11 +228,11 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 						Fraction insertionCount = insertionVolume.getAmount();
 
 						if (target.canInsert(insertionDirection, insertionVolume, targetSlot)) {
-							Tuple<FluidVolume, FluidVolume> merge = VolumeUtilities.merge(insertionVolume, targetVolume);
+							Pair<FluidVolume, FluidVolume> merge = VolumeUtilities.merge(insertionVolume, targetVolume);
 
-							sourceVolume.take(insertionCount.subtract(merge.getA().getAmount()));
+							sourceVolume.take(insertionCount.subtract(merge.getLeft().getAmount()));
 							setVolume(sourceSlot, sourceVolume);
-							target.setVolume(targetSlot, merge.getB());
+							target.setVolume(targetSlot, merge.getRight());
 						}
 					} else {
 						break;
@@ -369,9 +369,9 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 				if (item instanceof BucketItem) {
 					BucketItem bucket = (BucketItem) item;
 
-					return SimpleFluidComponent.of(FluidVolume.of(Fraction.BUCKET, bucket.content));
+					return SimpleFluidComponent.of(FluidVolume.of(Fraction.BUCKET, bucket.fluid));
 				}// else if (item instanceof PotionItem) {
-				//	if (PotionUtils.getPotion(stack).equals(Potions.WATER)) {
+				//	if (PotionUtil.getPotion(stack).equals(Potions.WATER)) {
 				//		return SimpleFluidComponent.of(FluidVolume.of(Fraction.BOTTLE, Fluids.WATER));
 				//	}
 				//}
@@ -395,9 +395,8 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 
 	/** Applies the given action to all of this component's contents. */
 	default void forEachIndexed(BiConsumer<Integer, ? super FluidVolume> action) {
-		getContents().entrySet().forEach(pair -> action.accept(pair.getKey(), pair.getValue()));
+		getContents().forEach(action);
 	}
-
 
 	/** Returns the first volume in this component. */
 	default FluidVolume getFirst() {

@@ -24,9 +24,10 @@
 
 package com.github.chainmailstudios.astromine.common.network;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+
 import com.google.common.base.Objects;
 
 /**
@@ -86,7 +87,7 @@ public final class NetworkMemberNode {
 
 	/** Returns this node's {@link BlockPos} from its long representation. */
 	public BlockPos getBlockPosition() {
-		return BlockPos.of(this.pos);
+		return BlockPos.fromLong(this.pos);
 	}
 
 	/** Sets this node's {@link BlockPos} to the long representation of the specified value. */
@@ -96,12 +97,12 @@ public final class NetworkMemberNode {
 
 	/** Returns this node's {@link Direction} from its ID. */
 	public Direction getDirection() {
-		return Direction.from3DDataValue(directionId);
+		return Direction.byId(directionId);
 	}
 
 	/** Sets this node's {@link Direction} ID to the ID of the specified value. */
 	public void setDirection(Direction direction) {
-		this.directionId = direction.get3DDataValue();
+		this.directionId = direction.getId();
 	}
 
 	/** Returns this node's {@link BlockPos} long representation. */
@@ -151,7 +152,7 @@ public final class NetworkMemberNode {
 	 * For example, it may be "[273, 98, -479], NORTH" */
 	@Override
 	public String toString() {
-		return String.format("[%s, %s, %s], %s", getBlockPosition().getX(), getBlockPosition().getY(), getBlockPosition().getY(), getDirection().getSerializedName().toUpperCase());
+		return String.format("[%s, %s, %s], %s", getBlockPosition().getX(), getBlockPosition().getY(), getBlockPosition().getY(), getDirection().asString().toUpperCase());
 	}
 
 	/** Deserializes a {@link NetworkMemberNode} from a {@link CompoundTag}. */

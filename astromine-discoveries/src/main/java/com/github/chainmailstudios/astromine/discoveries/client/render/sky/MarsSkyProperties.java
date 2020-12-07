@@ -26,12 +26,13 @@ package com.github.chainmailstudios.astromine.discoveries.client.render.sky;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.DimensionSpecialEffects;
-import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
+
+import net.minecraft.client.render.SkyProperties;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 
 @Environment(EnvType.CLIENT)
-public class MarsSkyProperties extends DimensionSpecialEffects {
+public class MarsSkyProperties extends SkyProperties {
 	private final float[] rgba = new float[4];
 
 	public MarsSkyProperties() {
@@ -39,22 +40,22 @@ public class MarsSkyProperties extends DimensionSpecialEffects {
 	}
 
 	@Override
-	public Vec3 getBrightnessDependentFogColor(Vec3 color, float sunHeight) {
-		return new Vec3(0.8, 0.5, 0.08);
+	public Vec3d adjustFogColor(Vec3d color, float sunHeight) {
+		return new Vec3d(0.8, 0.5, 0.08);
 	}
 
 	@Override
-	public boolean isFoggyAt(int camX, int camY) {
+	public boolean useThickFog(int camX, int camY) {
 		return false;
 	}
 
 	@Override
-	public float[] getSunriseColor(float skyAngle, float tickDelta) {
+	public float[] getFogColorOverride(float skyAngle, float tickDelta) {
 		// Help me, how in the world does this work
-		float g = Mth.cos(skyAngle * 6.2831855F) - 0.0F;
+		float g = MathHelper.cos(skyAngle * 6.2831855F) - 0.0F;
 		if (g >= -0.4F && g <= 0.4F) {
 			float i = (g - -0.0F) / 0.4F * 0.5F + 0.5F;
-			float j = 1.0F - (1.0F - Mth.sin(i * 3.1415927F)) * 0.99F;
+			float j = 1.0F - (1.0F - MathHelper.sin(i * 3.1415927F)) * 0.99F;
 			j *= j;
 			this.rgba[0] = i * 0.1F + 1.2F;
 			this.rgba[1] = i * i * 0.7F + 0.2F;

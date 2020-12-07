@@ -8,12 +8,13 @@ import me.shedaniel.rei.api.BuiltinPlugin;
 import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeHelper;
 import me.shedaniel.rei.plugin.crafting.DefaultCustomDisplay;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Identifier;
+
 import java.util.Collections;
 
 public class AstromineFoundationsRoughlyEnoughItemsPlugin extends AstromineRoughlyEnoughItemsPlugin {
 	@Override
-	public ResourceLocation getPluginIdentifier() {
+	public Identifier getPluginIdentifier() {
 		return AstromineCommon.identifier("discoveries_rei_plugin");
 	}
 
@@ -22,7 +23,7 @@ public class AstromineFoundationsRoughlyEnoughItemsPlugin extends AstromineRough
 		recipeHelper.registerRecipes(BuiltinPlugin.CRAFTING, WireCuttingRecipe.class, recipe -> {
 			return new DefaultCustomDisplay(recipe,
 				EntryStack.ofIngredients(ImmutableList.of(recipe.getInput(), recipe.getTool())),
-				Collections.singletonList(EntryStack.create(recipe.getResultItem())));
+				Collections.singletonList(EntryStack.create(recipe.getOutput())));
 		});
 	}
 }

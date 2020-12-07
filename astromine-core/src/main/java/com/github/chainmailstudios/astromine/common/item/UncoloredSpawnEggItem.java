@@ -24,16 +24,16 @@
 
 package com.github.chainmailstudios.astromine.common.item;
 
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.entity.EntityType;
+import net.minecraft.item.Item;
+import net.minecraft.item.SpawnEggItem;
 
 /**
  * A {@link SpawnEggItem} with no color of its own.
  */
 public class UncoloredSpawnEggItem extends SpawnEggItem {
 	/** Instantiates an {@link UncoloredSpawnEggItem}s. */
-	public UncoloredSpawnEggItem(EntityType<?> type, Item.Properties settings) {
+	public UncoloredSpawnEggItem(EntityType<?> type, Item.Settings settings) {
 		super(type, 0xFFFFFFFF, 0xFFFFFFFF, settings);
 	}
 }

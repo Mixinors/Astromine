@@ -24,43 +24,44 @@
 
 package com.github.chainmailstudios.astromine.common.inventory;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.collection.DefaultedList;
+
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import net.minecraft.core.NonNullList;
-import net.minecraft.world.Container;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 
 /**
- * A simple {@link Container} with helper
+ * A simple {@link Inventory} with helper
  * methods for a single stack.
  *
  * Originally by {@author Juuz}.
  */
-public interface SingularStackInventory extends Container {
+public interface SingularStackInventory extends Inventory {
 	/** Instantiates a {@link SingularStackInventory}. */
-	static SingularStackInventory of(NonNullList<ItemStack> items) {
+	static SingularStackInventory of(DefaultedList<ItemStack> items) {
 		return new SingularStackInventoryImpl(items);
 	}
 
 	/** Returns this inventory's {@link ItemStack}s. */
-	NonNullList<ItemStack> getItems();
+	DefaultedList<ItemStack> getItems();
 
 	/** Returns this inventory's size. */
 	@Override
-	default int getContainerSize() {
+	default int size() {
 		return 1;
 	}
 
 	/** Asserts whether this inventory's {@link ItemStack} is empty. */
 	@Override
 	default boolean isEmpty() {
-		return getItem(0).isEmpty();
+		return getStack(0).isEmpty();
 	}
 
 	/** Returns the {@link ItemStack} at the given slot. */
 	@Override
-	default ItemStack getItem(int slot) {
+	default ItemStack getStack(int slot) {
 		if (slot != 0) {
 			throw new ArrayIndexOutOfBoundsException("Cannot access slot bigger than inventory size");
 		} else {
@@ -70,18 +71,18 @@ public interface SingularStackInventory extends Container {
 
 	/** Returns this inventory's {@link ItemStack}. */
 	default ItemStack getStack() {
-		return getItem(0);
+		return getStack(0);
 	}
 
 	/** Sets this inventory's {@link ItemStack} to the specified value. */
 	default void setStack(ItemStack stack) {
-		setItem(0, stack);
+		setStack(0, stack);
 	}
 
 	/** Removes the {@link ItemStack} at the given slot,
 	 * or a part of it as per the specified count, and returns it. */
 	@Override
-	default ItemStack removeItem(int slot, int count) {
+	default ItemStack removeStack(int slot, int count) {
 		if (slot != 0) {
 			throw new ArrayIndexOutOfBoundsException("Cannot access slot bigger than inventory size");
 		}
@@ -92,7 +93,7 @@ public interface SingularStackInventory extends Container {
 			setStack(ItemStack.EMPTY);
 			return stack;
 		} else {
-			stack.shrink(count);
+			stack.decrement(count);
 
 			ItemStack copy = stack.copy();
 
@@ -105,69 +106,69 @@ public interface SingularStackInventory extends Container {
 	/** Removes the {@link ItemStack} at the given slot
 	 * and returns it. */
 	@Override
-	default ItemStack removeItemNoUpdate(int slot) {
+	default ItemStack removeStack(int slot) {
 		if (slot != 0) {
 			throw new ArrayIndexOutOfBoundsException("Cannot access slot bigger than inventory size");
 		}
 
 		ItemStack stack = getStack();
 
-		setChanged();
+		markDirty();
 
 		return stack;
 	}
 
 	/** Removes this inventory's {@link ItemStack} and returns it. */
 	default ItemStack removeStack() {
-		return removeItemNoUpdate(0);
+		return removeStack(0);
 	}
 
 	/** Sets the {@link ItemStack} at the given slot to the specified value.
 	 * If the count is bigger than this inventory allows, it is set to the maximum allowed. */
 	@Override
-	default void setItem(int slot, ItemStack stack) {
+	default void setStack(int slot, ItemStack stack) {
 		if (slot != 0) {
 			throw new ArrayIndexOutOfBoundsException("Cannot access slot bigger than inventory size");
 		}
 
 		getItems().set(slot, stack);
 
-		if (stack.getCount() > getMaxStackSize()) {
-			stack.setCount(getMaxStackSize());
+		if (stack.getCount() > getMaxCountPerStack()) {
+			stack.setCount(getMaxCountPerStack());
 		}
 
-		setChanged();
+		markDirty();
 	}
 
 	/** Clear this inventory's content. */
 	@Override
-	default void clearContent() {
-		setItem(0, ItemStack.EMPTY);
+	default void clear() {
+		setStack(0, ItemStack.EMPTY);
 
-		setChanged();
+		markDirty();
 	}
 
 	/** Override to do nothing. */
 	@Override
-	default void setChanged() {}
+	default void markDirty() {}
 
 	/** Allow the player to use this inventory by default. */
 	@Override
-	default boolean stillValid(Player player) {
+	default boolean canPlayerUse(PlayerEntity player) {
 		return true;
 	}
 
 	class SingularStackInventoryImpl implements SingularStackInventory {
-		private final NonNullList<ItemStack> items;
+		private final DefaultedList<ItemStack> items;
 
 		/** Instantiates a {@link SingularStackInventory}. */
-		private SingularStackInventoryImpl(NonNullList<ItemStack> items) {
+		private SingularStackInventoryImpl(DefaultedList<ItemStack> items) {
 			this.items = items;
 		}
 
 		/** Returns this inventory's {@link ItemStack}s. */
 		@Override
-		public NonNullList<ItemStack> getItems() {
+		public DefaultedList<ItemStack> getItems() {
 			return items;
 		}
 

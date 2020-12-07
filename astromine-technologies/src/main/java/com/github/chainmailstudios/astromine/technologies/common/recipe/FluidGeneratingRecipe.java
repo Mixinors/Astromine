@@ -24,6 +24,15 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.recipe;
 
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.Recipe;
+import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.util.Identifier;
+import net.minecraft.world.World;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
 import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
@@ -41,33 +50,25 @@ import com.google.gson.annotations.SerializedName;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.Level;
 
-public final class FluidGeneratingRecipe implements Recipe<Container>, EnergyGeneratingRecipe<Container> {
-	private final ResourceLocation identifier;
+public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGeneratingRecipe<Inventory> {
+	private final Identifier identifier;
 	private final FluidIngredient firstInput;
 	private final double energyOutput;
 	private final int time;
 
-	private static final Map<Level, FluidGeneratingRecipe[]> RECIPE_CACHE = new HashMap<>();
+	private static final Map<World, FluidGeneratingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public FluidGeneratingRecipe(ResourceLocation identifier, FluidIngredient firstInput, double energyOutput, int time) {
+	public FluidGeneratingRecipe(Identifier identifier, FluidIngredient firstInput, double energyOutput, int time) {
 		this.identifier = identifier;
 		this.firstInput = firstInput;
 		this.energyOutput = energyOutput;
 		this.time = time;
 	}
 
-	public static boolean allows(Level world, FluidComponent fluidComponent) {
+	public static boolean allows(World world, FluidComponent fluidComponent) {
 		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().byType(Type.INSTANCE).values().stream().map(it -> (FluidGeneratingRecipe) it).toArray(FluidGeneratingRecipe[]::new));
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidGeneratingRecipe) it).toArray(FluidGeneratingRecipe[]::new));
 		}
 
 		for (FluidGeneratingRecipe recipe : RECIPE_CACHE.get(world)) {
@@ -79,9 +80,9 @@ public final class FluidGeneratingRecipe implements Recipe<Container>, EnergyGen
 		return false;
 	}
 
-	public static Optional<FluidGeneratingRecipe> matching(Level world, FluidComponent fluidComponent) {
+	public static Optional<FluidGeneratingRecipe> matching(World world, FluidComponent fluidComponent) {
 		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().byType(Type.INSTANCE).values().stream().map(it -> (FluidGeneratingRecipe) it).toArray(FluidGeneratingRecipe[]::new));
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidGeneratingRecipe) it).toArray(FluidGeneratingRecipe[]::new));
 		}
 
 		for (FluidGeneratingRecipe recipe : RECIPE_CACHE.get(world)) {
@@ -110,27 +111,27 @@ public final class FluidGeneratingRecipe implements Recipe<Container>, EnergyGen
 	}
 
 	@Override
-	public boolean matches(Container inventory, Level world) {
+	public boolean matches(Inventory inventory, World world) {
 		return false;
 	}
 
 	@Override
-	public ItemStack assemble(Container inventory) {
+	public ItemStack craft(Inventory inventory) {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public boolean canCraftInDimensions(int width, int height) {
+	public boolean fits(int width, int height) {
 		return false;
 	}
 
 	@Override
-	public ItemStack getResultItem() {
+	public ItemStack getOutput() {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public ResourceLocation getId() {
+	public Identifier getId() {
 		return identifier;
 	}
 
@@ -145,7 +146,7 @@ public final class FluidGeneratingRecipe implements Recipe<Container>, EnergyGen
 	}
 
 	@Override
-	public ItemStack getToastSymbol() {
+	public ItemStack getRecipeKindIcon() {
 		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_FLUID_GENERATOR);
 	}
 
@@ -163,14 +164,14 @@ public final class FluidGeneratingRecipe implements Recipe<Container>, EnergyGen
 	}
 
 	public static final class Serializer implements RecipeSerializer<FluidGeneratingRecipe> {
-		public static final ResourceLocation ID = AstromineCommon.identifier("fluid_generating");
+		public static final Identifier ID = AstromineCommon.identifier("fluid_generating");
 
 		public static final Serializer INSTANCE = new Serializer();
 
 		private Serializer() {}
 
 		@Override
-		public FluidGeneratingRecipe fromJson(ResourceLocation identifier, JsonObject object) {
+		public FluidGeneratingRecipe read(Identifier identifier, JsonObject object) {
 			FluidGeneratingRecipe.Format format = new Gson().fromJson(object, FluidGeneratingRecipe.Format.class);
 
 			return new FluidGeneratingRecipe(identifier, FluidIngredient.fromJson(format.firstInput), DoubleUtilities.fromJson(format.energyOutput), IntegerUtilities.fromJson(format.time)
@@ -178,7 +179,7 @@ public final class FluidGeneratingRecipe implements Recipe<Container>, EnergyGen
 		}
 
 		@Override
-		public FluidGeneratingRecipe fromNetwork(ResourceLocation identifier, FriendlyByteBuf buffer) {
+		public FluidGeneratingRecipe read(Identifier identifier, PacketByteBuf buffer) {
 			return new FluidGeneratingRecipe(
 					identifier,
 					FluidIngredient.fromPacket(buffer),
@@ -188,7 +189,7 @@ public final class FluidGeneratingRecipe implements Recipe<Container>, EnergyGen
 		}
 
 		@Override
-		public void toNetwork(FriendlyByteBuf buffer, FluidGeneratingRecipe recipe) {
+		public void write(PacketByteBuf buffer, FluidGeneratingRecipe recipe) {
 			recipe.firstInput.toPacket(buffer);
 			DoubleUtilities.toPacket(buffer, recipe.energyOutput);
 			IntegerUtilities.toPacket(buffer, recipe.time);

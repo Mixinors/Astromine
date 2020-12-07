@@ -24,17 +24,9 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.client.gui.components.BossHealthOverlay;
-import net.minecraft.client.gui.components.LerpingBossEvent;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.BossEvent;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -42,35 +34,46 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.hud.BossBarHud;
+import net.minecraft.client.gui.hud.ClientBossBar;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.boss.BossBar;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Identifier;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+
 @Environment(EnvType.CLIENT)
-@Mixin(BossHealthOverlay.class)
-public abstract class BossBarHudMixin extends GuiComponent {
+@Mixin(BossBarHud.class)
+public abstract class BossBarHudMixin extends DrawableHelper {
 
-	private static final ResourceLocation CUSTOM_BAR_TEX = AstromineCommon.identifier("textures/gui/bars.png");
+	private static final Identifier CUSTOM_BAR_TEX = AstromineCommon.identifier("textures/gui/bars.png");
 	@Shadow
 	@Final
-	private static ResourceLocation GUI_BARS_LOCATION;
+	private static Identifier BARS_TEXTURE;
 	@Shadow
 	@Final
-	private Minecraft minecraft;
+	private MinecraftClient client;
 
-	@Inject(method = "drawBar", at = @At("HEAD"), cancellable = true)
-	private void astromine_renderCustomBossBar(PoseStack matrices, int i, int j, BossEvent bossBar, CallbackInfo ci) {
-		if (bossBar instanceof LerpingBossEvent && bossBar.getName() instanceof TranslatableComponent && ((TranslatableComponent) bossBar.getName()).getKey().contains("super_space_slim")) {
-			this.minecraft.getTextureManager().bind(CUSTOM_BAR_TEX);
+	@Inject(method = "renderBossBar", at = @At("HEAD"), cancellable = true)
+	private void astromine_renderCustomBossBar(MatrixStack matrices, int i, int j, BossBar bossBar, CallbackInfo ci) {
+		if (bossBar instanceof ClientBossBar && bossBar.getName() instanceof TranslatableText && ((TranslatableText) bossBar.getName()).getKey().contains("super_space_slim")) {
+			this.client.getTextureManager().bindTexture(CUSTOM_BAR_TEX);
 
 			// draw empty background bar
-			this.blit(matrices, i, j, 0, 0, 185, 12);
+			this.drawTexture(matrices, i, j, 0, 0, 185, 12);
 
 			// percentage -> texture width
 			int overlayBarWidth = (int) (bossBar.getPercent() * 185.0F);
 
 			// draw overlay
-			this.blit(matrices, i, j, 0, 12, overlayBarWidth, 12);
+			this.drawTexture(matrices, i, j, 0, 12, overlayBarWidth, 12);
 
 			ci.cancel();
 
-			this.minecraft.getTextureManager().bind(GUI_BARS_LOCATION);
+			this.client.getTextureManager().bindTexture(BARS_TEXTURE);
 		}
 	}
 }

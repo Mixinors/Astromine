@@ -26,7 +26,9 @@ package com.github.chainmailstudios.astromine.technologies.client.rei.electrolyz
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.resources.ResourceLocation;
+
+import net.minecraft.util.Identifier;
+
 import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
@@ -49,9 +51,9 @@ public class ElectrolyzingDisplay implements RecipeDisplay {
 	private final FluidIngredient input;
 	private final FluidVolume firstOutput;
 	private final FluidVolume secondOutput;
-	private final ResourceLocation id;
+	private final Identifier id;
 
-	public ElectrolyzingDisplay(double energy, FluidIngredient input, FluidVolume firstOutput, FluidVolume secondOutput, ResourceLocation id) {
+	public ElectrolyzingDisplay(double energy, FluidIngredient input, FluidVolume firstOutput, FluidVolume secondOutput, Identifier id) {
 		this.energy = energy;
 		this.input = input;
 		this.firstOutput = firstOutput;
@@ -64,7 +66,7 @@ public class ElectrolyzingDisplay implements RecipeDisplay {
 	}
 
 	@Override
-	public Optional<ResourceLocation> getRecipeLocation() {
+	public Optional<Identifier> getRecipeLocation() {
 		return Optional.ofNullable(id);
 	}
 
@@ -79,7 +81,7 @@ public class ElectrolyzingDisplay implements RecipeDisplay {
 	}
 
 	@Override
-	public ResourceLocation getRecipeCategory() {
+	public Identifier getRecipeCategory() {
 		return AstromineTechnologiesRoughlyEnoughItemsPlugin.ELECTROLYZING;
 	}
 

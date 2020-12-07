@@ -1,11 +1,12 @@
 package com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime;
 
+import net.minecraft.advancement.criterion.ImpossibleCriterion;
+import net.minecraft.data.server.recipe.ShapelessRecipeJsonFactory;
+import net.minecraft.item.ItemConvertible;
+import net.minecraft.recipe.Ingredient;
+
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.base.OneTimeRecipeGenerator;
 import me.shedaniel.cloth.api.datagen.v1.RecipeData;
-import net.minecraft.advancements.critereon.ImpossibleTrigger;
-import net.minecraft.data.recipes.ShapelessRecipeBuilder;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.ItemLike;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,22 +14,22 @@ import java.util.List;
 public class ShapelessCraftingRecipeGenerator extends OneTimeRecipeGenerator {
 	public final List<Ingredient> ingredients;
 
-	public ShapelessCraftingRecipeGenerator(ItemLike output, int outputCount, Ingredient... inputs) {
+	public ShapelessCraftingRecipeGenerator(ItemConvertible output, int outputCount, Ingredient... inputs) {
 		super(output, outputCount);
 		this.ingredients = Arrays.asList(inputs.clone());
 	}
 
-	public ShapelessCraftingRecipeGenerator(ItemLike output, Ingredient... inputs) {
+	public ShapelessCraftingRecipeGenerator(ItemConvertible output, Ingredient... inputs) {
 		this(output, 1, inputs);
 	}
 
 	@Override
 	public void generate(RecipeData recipes) {
-		ShapelessRecipeBuilder factory = ShapelessRecipeBuilder
-			.shapeless(output, outputCount)
-			.unlockedBy("impossible", new ImpossibleTrigger.TriggerInstance());
-		ingredients.forEach((factory::requires));
-		factory.save(recipes, getRecipeId());
+		ShapelessRecipeJsonFactory factory = ShapelessRecipeJsonFactory
+				.create(output, outputCount)
+				.criterion("impossible", new ImpossibleCriterion.Conditions());
+		ingredients.forEach((factory::input));
+		factory.offerTo(recipes, getRecipeId());
 	}
 
 	@Override

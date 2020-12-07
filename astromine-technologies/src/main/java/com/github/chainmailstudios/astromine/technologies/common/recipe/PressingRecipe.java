@@ -24,6 +24,14 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.recipe;
 
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.util.Identifier;
+import net.minecraft.world.World;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
 import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
@@ -42,24 +50,17 @@ import com.google.gson.annotations.SerializedName;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.Level;
 
-public final class PressingRecipe implements EnergyConsumingRecipe<Container> {
-	private final ResourceLocation identifier;
+public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
+	private final Identifier identifier;
 	private final ItemIngredient firstInput;
 	private final ItemStack firstOutput;
 	private final double energyInput;
 	private final int time;
 
-	private static final Map<Level, PressingRecipe[]> RECIPE_CACHE = new HashMap<>();
+	private static final Map<World, PressingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public PressingRecipe(ResourceLocation identifier, ItemIngredient firstInput, ItemStack output, double energy, int time) {
+	public PressingRecipe(Identifier identifier, ItemIngredient firstInput, ItemStack output, double energy, int time) {
 		this.identifier = identifier;
 		this.firstInput = firstInput;
 		this.firstOutput = output;
@@ -67,9 +68,9 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Container> {
 		this.time = time;
 	}
 
-	public static boolean allows(Level world, ItemComponent itemComponent) {
+	public static boolean allows(World world, ItemComponent itemComponent) {
 		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().byType(Type.INSTANCE).values().stream().map(it -> (PressingRecipe) it).toArray(PressingRecipe[]::new));
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (PressingRecipe) it).toArray(PressingRecipe[]::new));
 		}
 
 		for (PressingRecipe recipe : RECIPE_CACHE.get(world)) {
@@ -81,9 +82,9 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Container> {
 		return false;
 	}
 
-	public static Optional<PressingRecipe> matching(Level world, ItemComponent itemComponent) {
+	public static Optional<PressingRecipe> matching(World world, ItemComponent itemComponent) {
 		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().byType(Type.INSTANCE).values().stream().map(it -> (PressingRecipe) it).toArray(PressingRecipe[]::new));
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (PressingRecipe) it).toArray(PressingRecipe[]::new));
 		}
 
 		for (PressingRecipe recipe : RECIPE_CACHE.get(world)) {
@@ -116,27 +117,27 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Container> {
 	}
 
 	@Override
-	public boolean matches(Container inventory, Level world) {
+	public boolean matches(Inventory inventory, World world) {
 		return false;
 	}
 
 	@Override
-	public ItemStack assemble(Container inventory) {
+	public ItemStack craft(Inventory inventory) {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public boolean canCraftInDimensions(int width, int height) {
+	public boolean fits(int width, int height) {
 		return false;
 	}
 
 	@Override
-	public ItemStack getResultItem() {
+	public ItemStack getOutput() {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public ResourceLocation getId() {
+	public Identifier getId() {
 		return identifier;
 	}
 
@@ -151,11 +152,11 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Container> {
 	}
 
 	@Override
-	public ItemStack getToastSymbol() {
+	public ItemStack getRecipeKindIcon() {
 		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_PRESS);
 	}
 
-	public ResourceLocation getIdentifier() {
+	public Identifier getIdentifier() {
 		return identifier;
 	}
 
@@ -177,14 +178,14 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Container> {
 	}
 
 	public static final class Serializer implements RecipeSerializer<PressingRecipe> {
-		public static final ResourceLocation ID = AstromineCommon.identifier("pressing");
+		public static final Identifier ID = AstromineCommon.identifier("pressing");
 
 		public static final Serializer INSTANCE = new Serializer();
 
 		private Serializer() {}
 
 		@Override
-		public PressingRecipe fromJson(ResourceLocation identifier, JsonObject object) {
+		public PressingRecipe read(Identifier identifier, JsonObject object) {
 			PressingRecipe.Format format = new Gson().fromJson(object, PressingRecipe.Format.class);
 
 			return new PressingRecipe(
@@ -197,7 +198,7 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Container> {
 		}
 
 		@Override
-		public PressingRecipe fromNetwork(ResourceLocation identifier, FriendlyByteBuf buffer) {
+		public PressingRecipe read(Identifier identifier, PacketByteBuf buffer) {
 			return new PressingRecipe(
 					identifier,
 					ItemIngredient.fromPacket(buffer),
@@ -208,7 +209,7 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Container> {
 		}
 
 		@Override
-		public void toNetwork(FriendlyByteBuf buffer, PressingRecipe recipe) {
+		public void write(PacketByteBuf buffer, PressingRecipe recipe) {
 			recipe.firstInput.toPacket(buffer);
 			StackUtilities.toPacket(buffer, recipe.firstOutput);
 			DoubleUtilities.toPacket(buffer, recipe.energyInput);

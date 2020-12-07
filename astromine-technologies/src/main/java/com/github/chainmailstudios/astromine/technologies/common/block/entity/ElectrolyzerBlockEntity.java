@@ -25,9 +25,10 @@
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.component.general.SimpleDirectionalFluidComponent;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
+
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.general.base.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
@@ -74,7 +75,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 				return false;
 			}
 
-			return ElectrolyzingRecipe.allows(level, FluidComponent.of(volume, getFluidComponent().getSecond().copy(), getFluidComponent().getThird().copy()));
+			return ElectrolyzingRecipe.allows(world, FluidComponent.of(volume, getFluidComponent().getSecond().copy(), getFluidComponent().getThird().copy()));
 		}).withExtractPredicate((direction, volume, slot) -> {
 			return slot == 1 || slot == 2;
 		}).withListener((inventory) -> {
@@ -91,7 +92,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 	public void tick() {
 		super.tick();
 
-		if (level == null || level.isClientSide || !tickRedstone())
+		if (world == null || world.isClient || !tickRedstone())
 			return;
 
 		FluidComponent fluidComponent = getFluidComponent();
@@ -102,7 +103,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 			EnergyVolume volume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = ElectrolyzingRecipe.matching(level, fluidComponent);
+				optionalRecipe = ElectrolyzingRecipe.matching(world, fluidComponent);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -145,17 +146,17 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag) {
+	public CompoundTag toTag(CompoundTag tag) {
 		tag.putDouble("progress", progress);
 		tag.putInt("limit", limit);
-		return super.save(tag);
+		return super.toTag(tag);
 	}
 
 	@Override
-	public void load(BlockState state, @NotNull CompoundTag tag) {
+	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
 		progress = tag.getDouble("progress");
 		limit = tag.getInt("limit");
-		super.load(state, tag);
+		super.fromTag(state, tag);
 	}
 
 	public static class Primitive extends ElectrolyzerBlockEntity {

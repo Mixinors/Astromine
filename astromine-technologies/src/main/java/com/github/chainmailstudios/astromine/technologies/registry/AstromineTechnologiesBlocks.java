@@ -26,16 +26,18 @@ package com.github.chainmailstudios.astromine.technologies.registry;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
-import net.minecraft.world.item.DoubleHighBlockItem;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.material.Material;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.Material;
+import net.minecraft.item.TallBlockItem;
+import net.minecraft.sound.BlockSoundGroup;
+
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.technologies.common.block.*;
 
 public class AstromineTechnologiesBlocks extends AstromineBlocks {
 	public static final Block HOLOGRAPHIC_BRIDGE_PROJECTOR = register("holographic_bridge_projector", new HolographicBridgeProjectorBlock(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
-	public static final Block HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK = register("holographic_bridge_invisible", new HolographicBridgeInvisibleBlock(FabricBlockSettings.of(HolographicBridgeInvisibleBlock.MATERIAL).noDrops().strength(-1.0F, 3600000.8F).noOcclusion().lightLevel((blockState) -> 15).isValidSpawn((a, b, c, d) -> false)));
+	public static final Block HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK = register("holographic_bridge_invisible", new HolographicBridgeInvisibleBlock(FabricBlockSettings.of(HolographicBridgeInvisibleBlock.MATERIAL).dropsNothing().strength(-1.0F, 3600000.8F).nonOpaque().lightLevel(15).allowsSpawning((a, b, c, d) -> false)));
 
 	public static final Block VENT = register("vent", new VentBlock(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
 
@@ -116,7 +118,7 @@ public class AstromineTechnologiesBlocks extends AstromineBlocks {
 	public static final Block BLOCK_BREAKER = register("block_breaker", new BlockBreakerBlock(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
 	public static final Block BLOCK_PLACER = register("block_placer", new BlockPlacerBlock(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
 
-	public static final Block NUCLEAR_WARHEAD = register("nuclear_warhead", new NuclearWarheadBlock(FabricBlockSettings.of(Material.METAL).breakByTool(FabricToolTags.PICKAXES, 5).requiresCorrectToolForDrops().strength(1F, 4F).sound(SoundType.METAL)), AstromineTechnologiesItems
+	public static final Block NUCLEAR_WARHEAD = register("nuclear_warhead", new NuclearWarheadBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 5).strength(1F, 4F).sounds(BlockSoundGroup.METAL)), AstromineTechnologiesItems
 		.getBasicSettings());
 
 	public static final Block PRIMITIVE_CAPACITOR = register("primitive_capacitor", new CapacitorBlock.Primitive(getPrimitiveSettings()), AstromineTechnologiesItems.getBasicSettings());
@@ -128,6 +130,6 @@ public class AstromineTechnologiesBlocks extends AstromineBlocks {
 	public static final Block AIRLOCK = new AirlockBlock(getBasicSettings());
 
 	public static void initialize() {
-		register("airlock", AIRLOCK, new DoubleHighBlockItem(AIRLOCK, AstromineTechnologiesItems.getBasicSettings()));
+		register("airlock", AIRLOCK, new TallBlockItem(AIRLOCK, AstromineTechnologiesItems.getBasicSettings()));
 	}
 }

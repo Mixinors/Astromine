@@ -24,6 +24,9 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.screenhandler;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.BlockPos;
+
 import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyItemScreenHandler;
 import com.github.chainmailstudios.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.chainmailstudios.astromine.common.widget.vanilla.ExtractionSlot;
@@ -32,13 +35,11 @@ import com.github.chainmailstudios.astromine.technologies.registry.AstromineTech
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.player.Player;
 
 public class ElectricFurnaceScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
 	private ElectricFurnaceBlockEntity smelter;
 
-	public ElectricFurnaceScreenHandler(int syncId, Player player, BlockPos position) {
+	public ElectricFurnaceScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AstromineTechnologiesScreenHandlers.ELECTRIC_FURNACE, syncId, player, position);
 
 		smelter = (ElectricFurnaceBlockEntity) blockEntity;

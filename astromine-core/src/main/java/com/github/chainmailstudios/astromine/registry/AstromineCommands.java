@@ -22,37 +22,39 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine. registry;
+package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.common.screenhandler.RecipeCreatorScreenHandler;
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
+
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+
+import com.github.chainmailstudios.astromine.common.screenhandler.RecipeCreatorScreenHandler;
 import org.jetbrains.annotations.NotNull;
 
 public class AstromineCommands {
 	public static void initialize() {
 		CommandRegistrationCallback.EVENT.register((dispatcher, ignored) -> {
-			dispatcher.register(LiteralArgumentBuilder.<CommandSourceStack> literal("recipe").then(LiteralArgumentBuilder.<CommandSourceStack> literal("creator").executes((context) -> {
-				context.getSource().getPlayerOrException().openMenu(new ExtendedScreenHandlerFactory() {
+			dispatcher.register(LiteralArgumentBuilder.<ServerCommandSource> literal("recipe").then(LiteralArgumentBuilder.<ServerCommandSource> literal("creator").executes((context) -> {
+				context.getSource().getPlayer().openHandledScreen(new ExtendedScreenHandlerFactory() {
 					@Override
-					public void writeScreenOpeningData(ServerPlayer serverPlayerEntity, FriendlyByteBuf FriendlyByteBuf) {}
+					public void writeScreenOpeningData(ServerPlayerEntity serverPlayerEntity, PacketByteBuf packetByteBuf) {}
 
 					@Override
-					public Component getDisplayName() {
-						return new TextComponent("Recipe Creator");
+					public Text getDisplayName() {
+						return new LiteralText("Recipe Creator");
 					}
 
 					@Override
-					public @NotNull AbstractContainerMenu createMenu(int syncId, Inventory inv, Player player) {
+					public @NotNull ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
 						return new RecipeCreatorScreenHandler(syncId, player);
 					}
 				});

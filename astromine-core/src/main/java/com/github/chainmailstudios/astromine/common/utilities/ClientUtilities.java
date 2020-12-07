@@ -31,16 +31,18 @@ import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry
 import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.world.level.BlockAndTintGetter;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.FluidState;
+
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.texture.Sprite;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.resource.ResourceManager;
+import net.minecraft.resource.ResourceType;
+import net.minecraft.screen.PlayerScreenHandler;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.BlockRenderView;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.fluid.ExtendedFluid;
 
@@ -50,39 +52,39 @@ public class ClientUtilities {
 	/** Registers the necessary data for an {@link ExtendedFluid} on the client side. */
 	@Environment(EnvType.CLIENT)
 	public static void registerExtendedFluid(String name, int tint, Fluid still, Fluid flowing) {
-		ResourceLocation stillSpriteResourceLocation = new ResourceLocation("block/water_still");
-		ResourceLocation flowingSpriteResourceLocation = new ResourceLocation("block/water_flow");
-		ResourceLocation listenerResourceLocation = AstromineCommon.identifier(name + "_reload_listener");
+		Identifier stillSpriteIdentifier = new Identifier("block/water_still");
+		Identifier flowingSpriteIdentifier = new Identifier("block/water_flow");
+		Identifier listenerIdentifier = AstromineCommon.identifier(name + "_reload_listener");
 
-		TextureAtlasSprite[] fluidSprites = { null, null };
+		Sprite[] fluidSprites = { null, null };
 
-		ClientSpriteRegistryCallback.event(InventoryMenu.BLOCK_ATLAS).register((atlasTexture, registry) -> {
-			registry.register(stillSpriteResourceLocation);
-			registry.register(flowingSpriteResourceLocation);
+		ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> {
+			registry.register(stillSpriteIdentifier);
+			registry.register(flowingSpriteIdentifier);
 		});
 
-		ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
+		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
 			@Override
-			public ResourceLocation getFabricId() {
-				return listenerResourceLocation;
+			public Identifier getFabricId() {
+				return listenerIdentifier;
 			}
 
 			@Override
-			public void onResourceManagerReload(ResourceManager resourceManager) {
-				final Function<ResourceLocation, TextureAtlasSprite> atlas = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS);
-				fluidSprites[0] = atlas.apply(stillSpriteResourceLocation);
-				fluidSprites[1] = atlas.apply(flowingSpriteResourceLocation);
+			public void apply(ResourceManager resourceManager) {
+				final Function<Identifier, Sprite> atlas = MinecraftClient.getInstance().getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
+				fluidSprites[0] = atlas.apply(stillSpriteIdentifier);
+				fluidSprites[1] = atlas.apply(flowingSpriteIdentifier);
 			}
 		});
 
 		final FluidRenderHandler handler = new FluidRenderHandler() {
 			@Override
-			public TextureAtlasSprite[] getFluidSprites(BlockAndTintGetter view, BlockPos pos, FluidState state) {
+			public Sprite[] getFluidSprites(BlockRenderView view, BlockPos pos, FluidState state) {
 				return fluidSprites;
 			}
 
 			@Override
-			public int getFluidColor(BlockAndTintGetter view, BlockPos pos, FluidState state) {
+			public int getFluidColor(BlockRenderView view, BlockPos pos, FluidState state) {
 				return tint;
 			}
 		};

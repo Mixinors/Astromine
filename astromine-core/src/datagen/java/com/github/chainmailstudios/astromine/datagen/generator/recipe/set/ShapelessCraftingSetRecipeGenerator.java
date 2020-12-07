@@ -1,12 +1,13 @@
 package com.github.chainmailstudios.astromine.datagen.generator.recipe.set;
 
+import net.minecraft.advancement.criterion.ImpossibleCriterion;
+import net.minecraft.data.server.recipe.ShapelessRecipeJsonFactory;
+import net.minecraft.recipe.Ingredient;
+
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.base.CraftingSetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 import me.shedaniel.cloth.api.datagen.v1.RecipeData;
-import net.minecraft.advancements.critereon.ImpossibleTrigger;
-import net.minecraft.data.recipes.ShapelessRecipeBuilder;
-import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,13 +44,13 @@ public class ShapelessCraftingSetRecipeGenerator extends CraftingSetRecipeGenera
 
 	@Override
 	public void generate(RecipeData recipes, MaterialSet set) {
-		ShapelessRecipeBuilder factory = ShapelessRecipeBuilder
-				.shapeless(set.getItem(output), outputCount)
-				.unlockedBy("impossible", new ImpossibleTrigger.TriggerInstance())
-				.requires(set.getIngredient(input));
-		ingredients.forEach(factory::requires);
-		types.forEach(type -> factory.requires(set.getIngredient(type)));
-		factory.save(recipes, getRecipeId(set));
+		ShapelessRecipeJsonFactory factory = ShapelessRecipeJsonFactory
+				.create(set.getItem(output), outputCount)
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.input(set.getIngredient(input));
+		ingredients.forEach(factory::input);
+		types.forEach(type -> factory.input(set.getIngredient(type)));
+		factory.offerTo(recipes, getRecipeId(set));
 	}
 
 	@Override

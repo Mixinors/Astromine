@@ -22,27 +22,29 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine. registry;
+package com.github.chainmailstudios.astromine.registry;
+
+import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
-import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class AstromineCommonPackets {
-	public static final ResourceLocation BLOCK_ENTITY_UPDATE_PACKET = AstromineCommon.identifier("block_entity_update");
+	public static final Identifier BLOCK_ENTITY_UPDATE_PACKET = AstromineCommon.identifier("block_entity_update");
 
 	public static void initialize() {
 		ServerSidePacketRegistry.INSTANCE.register(BLOCK_ENTITY_UPDATE_PACKET, (((context, buffer) -> {
 			BlockPos blockPos = buffer.readBlockPos();
-			ResourceLocation identifier = buffer.readResourceLocation();
-			FriendlyByteBuf storedBuffer = new FriendlyByteBuf(buffer.copy());
+			Identifier identifier = buffer.readIdentifier();
+			PacketByteBuf storedBuffer = new PacketByteBuf(buffer.copy());
 
 			context.getTaskQueue().execute(() -> {
-				BlockEntity blockEntity = context.getPlayer().getCommandSenderWorld().getBlockEntity(blockPos);
+				BlockEntity blockEntity = context.getPlayer().getEntityWorld().getBlockEntity(blockPos);
 
 				if (blockEntity instanceof ComponentBlockEntity) {
 					((ComponentBlockEntity) blockEntity).consumePacket(identifier, storedBuffer, context);

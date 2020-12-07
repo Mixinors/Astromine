@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine. registry.client;
+package com.github.chainmailstudios.astromine.registry.client;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

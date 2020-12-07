@@ -24,25 +24,26 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
+
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.ConveyorBlockEntity;
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.DownVerticalConveyorBlockEntity;
 import com.github.chainmailstudios.astromine.transportations.common.block.property.ConveyorProperties;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.Conveyable;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorTypes;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 
 public class DownwardVerticalConveyorBlock extends VerticalConveyorBlock {
-	public DownwardVerticalConveyorBlock(Properties settings, int speed) {
+	public DownwardVerticalConveyorBlock(Settings settings, int speed) {
 		super(settings, speed);
 
-		registerDefaultState(defaultBlockState().setValue(ConveyorProperties.FRONT, false).setValue(ConveyorProperties.CONVEYOR, false));
+		setDefaultState(getDefaultState().with(ConveyorProperties.FRONT, false).with(ConveyorProperties.CONVEYOR, false));
 	}
 
 	@Override
@@ -51,48 +52,48 @@ public class DownwardVerticalConveyorBlock extends VerticalConveyorBlock {
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(BlockGetter blockView) {
+	public BlockEntity createBlockEntity(BlockView blockView) {
 		return new DownVerticalConveyorBlockEntity();
 	}
 
 	@Override
-	public void onPlace(BlockState blockState, Level world, BlockPos blockPos, BlockState blockState2, boolean boolean_1) {
-		updateDiagonals(world, this, blockPos.above());
+	public void onBlockAdded(BlockState blockState, World world, BlockPos blockPos, BlockState blockState2, boolean boolean_1) {
+		updateDiagonals(world, this, blockPos.up());
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction fromDirection, BlockState fromState, LevelAccessor world, BlockPos blockPos, BlockPos fromPos) {
-		Direction direction = state.getValue(FACING);
+	public BlockState getStateForNeighborUpdate(BlockState state, Direction fromDirection, BlockState fromState, WorldAccess world, BlockPos blockPos, BlockPos fromPos) {
+		Direction direction = state.get(FACING);
 
-		BlockPos frontPos = blockPos.relative(direction.getOpposite());
-		BlockPos conveyorPos = blockPos.relative(direction).above();
+		BlockPos frontPos = blockPos.offset(direction.getOpposite());
+		BlockPos conveyorPos = blockPos.offset(direction).up();
 
 		BlockEntity frontBlockEntity = world.getBlockEntity(frontPos);
 
 		if (frontBlockEntity instanceof Conveyable && ((Conveyable) frontBlockEntity).canInsert(direction)) {
-			state = state.setValue(ConveyorProperties.FRONT, true);
+			state = state.with(ConveyorProperties.FRONT, true);
 		} else {
-			state = state.setValue(ConveyorProperties.FRONT, false);
+			state = state.with(ConveyorProperties.FRONT, false);
 		}
 
 		BlockEntity conveyorBlockEntity = world.getBlockEntity(conveyorPos);
 
-		if (world.isEmptyBlock(blockPos.above()) && conveyorBlockEntity instanceof Conveyable && !conveyorBlockEntity.isRemoved() && ((Conveyable) conveyorBlockEntity).canExtract(direction.getOpposite(), getType())) {
-			state = state.setValue(ConveyorProperties.CONVEYOR, true);
+		if (world.isAir(blockPos.up()) && conveyorBlockEntity instanceof Conveyable && !conveyorBlockEntity.isRemoved() && ((Conveyable) conveyorBlockEntity).canExtract(direction.getOpposite(), getType())) {
+			state = state.with(ConveyorProperties.CONVEYOR, true);
 		} else {
-			state = state.setValue(ConveyorProperties.CONVEYOR, false);
+			state = state.with(ConveyorProperties.CONVEYOR, false);
 		}
 
 		return state;
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
-		Direction direction = state.getValue(FACING);
+	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
+		Direction direction = state.get(FACING);
 		ConveyorBlockEntity blockEntity = (ConveyorBlockEntity) world.getBlockEntity(pos);
 
-		BlockPos downPos = pos.below(1);
-		BlockPos conveyorPos = pos.relative(direction).above();
+		BlockPos downPos = pos.down(1);
+		BlockPos conveyorPos = pos.offset(direction).up();
 
 		BlockEntity downBlockEntity = world.getBlockEntity(downPos);
 
@@ -100,17 +101,17 @@ public class DownwardVerticalConveyorBlock extends VerticalConveyorBlock {
 
 		BlockEntity conveyorBlockEntity = world.getBlockEntity(conveyorPos);
 
-		checkForConveyor(world, state, conveyorBlockEntity, direction, pos, pos.above());
+		checkForConveyor(world, state, conveyorBlockEntity, direction, pos, pos.up());
 	}
 
 	@Override
-	public void checkForConveyor(Level world, BlockState state, BlockEntity conveyorBlockEntity, Direction direction, BlockPos pos, BlockPos upPos) {
-		if (world.isEmptyBlock(upPos) && conveyorBlockEntity instanceof Conveyable && !conveyorBlockEntity.isRemoved() && ((Conveyable) conveyorBlockEntity).canExtract(direction.getOpposite(), getType())) {
-			state = state.setValue(ConveyorProperties.CONVEYOR, true);
+	public void checkForConveyor(World world, BlockState state, BlockEntity conveyorBlockEntity, Direction direction, BlockPos pos, BlockPos upPos) {
+		if (world.isAir(upPos) && conveyorBlockEntity instanceof Conveyable && !conveyorBlockEntity.isRemoved() && ((Conveyable) conveyorBlockEntity).canExtract(direction.getOpposite(), getType())) {
+			state = state.with(ConveyorProperties.CONVEYOR, true);
 		} else {
-			state = state.setValue(ConveyorProperties.CONVEYOR, false);
+			state = state.with(ConveyorProperties.CONVEYOR, false);
 		}
 
-		world.setBlock(pos, state, 8);
+		world.setBlockState(pos, state, 8);
 	}
 }

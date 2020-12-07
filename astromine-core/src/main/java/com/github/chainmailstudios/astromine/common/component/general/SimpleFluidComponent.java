@@ -28,6 +28,7 @@ import com.github.chainmailstudios.astromine.common.component.general.base.Fluid
 
 import com.github.chainmailstudios.astromine.common.utilities.data.predicate.TriPredicate;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import net.minecraft.util.math.Direction;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -37,7 +38,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import net.minecraft.core.Direction;
 
 public class SimpleFluidComponent implements FluidComponent {
 	private final Int2ObjectOpenHashMap<FluidVolume> contents = new Int2ObjectOpenHashMap<>();

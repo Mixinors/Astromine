@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime;
 
-import net.minecraft.world.item.Item;
+import net.minecraft.item.Item;
 
 import me.shedaniel.cloth.api.datagen.v1.ModelStateData;
 

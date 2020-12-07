@@ -24,49 +24,50 @@
 
 package com.github.chainmailstudios.astromine.discoveries.client.render.entity;
 
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.entity.EntityRenderDispatcher;
+import net.minecraft.client.render.entity.MobEntityRenderer;
+import net.minecraft.client.render.entity.feature.SlimeOverlayFeatureRenderer;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.util.math.Vector3f;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.discoveries.client.model.SpaceSlimeEntityModel;
 import com.github.chainmailstudios.astromine.discoveries.common.entity.SpaceSlimeEntity;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
-import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.layers.SlimeOuterLayer;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 
-public class SpaceSlimeEntityRenderer extends MobRenderer<SpaceSlimeEntity, SpaceSlimeEntityModel> {
-	private static final ResourceLocation TEXTURE = AstromineCommon.identifier("textures/entity/space_slime/space_slime.png");
+public class SpaceSlimeEntityRenderer extends MobEntityRenderer<SpaceSlimeEntity, SpaceSlimeEntityModel> {
+	private static final Identifier TEXTURE = AstromineCommon.identifier("textures/entity/space_slime/space_slime.png");
 
 	public SpaceSlimeEntityRenderer(EntityRenderDispatcher entityRenderDispatcher) {
 		super(entityRenderDispatcher, new SpaceSlimeEntityModel(16), 0.25F);
-		this.addLayer(new SlimeOuterLayer(this));
+		this.addFeature(new SlimeOverlayFeatureRenderer(this));
 	}
 
 	@Override
-	public void render(SpaceSlimeEntity slimeEntity, float f, float g, PoseStack matrices, MultiBufferSource vertexConsumerProvider, int i) {
+	public void render(SpaceSlimeEntity slimeEntity, float f, float g, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int i) {
 		this.shadowRadius = 0.25F * (float) slimeEntity.getSize();
 
 		// if the slime is floating, we rotate it around the x axis for 1 full rotation
 		// todo: random axis rotation
 		if (slimeEntity.isFloating()) {
 			float progress = slimeEntity.getFloatingProgress() / 200f;
-			matrices.mulPose(Vector3f.XP.rotationDegrees(progress * 360));
+			matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(progress * 360));
 		}
 
 		super.render(slimeEntity, f, g, matrices, vertexConsumerProvider, i);
 	}
 
 	@Override
-	public void scale(SpaceSlimeEntity slimeEntity, PoseStack matrices, float f) {
+	public void scale(SpaceSlimeEntity slimeEntity, MatrixStack matrices, float f) {
 		float scale = 0.999F;
 		matrices.scale(scale, scale, scale);
 		matrices.translate(0.0D, -0.125D, 0.0D);
 
 		// calculate stretch slime size
 		float slimeSize = (float) slimeEntity.getSize();
-		float i = Mth.lerp(f, slimeEntity.oSquish, slimeEntity.squish) / (slimeSize * 0.5F + 1.0F);
+		float i = MathHelper.lerp(f, slimeEntity.lastStretch, slimeEntity.stretch) / (slimeSize * 0.5F + 1.0F);
 		float j = 1.0F / (i + 1.0F);
 
 		// scale matrix based on slime size
@@ -74,7 +75,7 @@ public class SpaceSlimeEntityRenderer extends MobRenderer<SpaceSlimeEntity, Spac
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(SpaceSlimeEntity slimeEntity) {
+	public Identifier getTexture(SpaceSlimeEntity slimeEntity) {
 		return TEXTURE;
 	}
 }

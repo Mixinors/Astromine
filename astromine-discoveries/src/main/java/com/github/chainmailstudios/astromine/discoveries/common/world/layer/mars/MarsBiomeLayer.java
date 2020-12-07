@@ -24,28 +24,29 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.world.layer.mars;
 
-import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBiomes;
-import net.minecraft.core.Registry;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.newbiome.area.Area;
-import net.minecraft.world.level.newbiome.context.BigContext;
-import net.minecraft.world.level.newbiome.layer.traits.AreaTransformer1;
-import net.minecraft.world.level.newbiome.layer.traits.DimensionOffset0Transformer;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.layer.type.ParentedLayer;
+import net.minecraft.world.biome.layer.util.IdentityCoordinateTransformer;
+import net.minecraft.world.biome.layer.util.LayerSampleContext;
+import net.minecraft.world.biome.layer.util.LayerSampler;
 
-public class MarsBiomeLayer implements AreaTransformer1, DimensionOffset0Transformer {
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBiomes;
+
+public class MarsBiomeLayer implements ParentedLayer, IdentityCoordinateTransformer {
 	private final Registry<Biome> biomeRegistry;
 	private final int riverId;
 	private final int marsId;
 
 	public MarsBiomeLayer(Registry<Biome> biomeRegistry) {
 		this.biomeRegistry = biomeRegistry;
-		this.riverId = biomeRegistry.getId(biomeRegistry.get(AstromineDiscoveriesBiomes.MARTIAN_RIVERBED));
-		this.marsId = biomeRegistry.getId(biomeRegistry.get(AstromineDiscoveriesBiomes.MARTIAN_PLAINS));
+		this.riverId = biomeRegistry.getRawId(biomeRegistry.get(AstromineDiscoveriesBiomes.MARTIAN_RIVERBED));
+		this.marsId = biomeRegistry.getRawId(biomeRegistry.get(AstromineDiscoveriesBiomes.MARTIAN_PLAINS));
 	}
 
 	@Override
-	public int applyPixel(BigContext<?> context, Area parent, int x, int z) {
-		int sample = parent.get(x, z);
+	public int sample(LayerSampleContext<?> context, LayerSampler parent, int x, int z) {
+		int sample = parent.sample(x, z);
 		if (sample == riverId) {
 			return riverId;
 		}

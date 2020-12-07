@@ -1,7 +1,7 @@
 package com.github.chainmailstudios.astromine.common.component.general;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.item.ItemStack;
 
 /**
  * A {@link SimpleItemComponent} that synchronizes itself

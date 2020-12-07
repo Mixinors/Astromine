@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.datagen.generator.loottable.onetime;
 
-import net.minecraft.world.level.block.Block;
+import net.minecraft.block.Block;
 
 import me.shedaniel.cloth.api.datagen.v1.LootTableData;
 

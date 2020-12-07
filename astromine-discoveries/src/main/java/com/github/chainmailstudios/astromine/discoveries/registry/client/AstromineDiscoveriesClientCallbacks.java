@@ -26,10 +26,12 @@ package com.github.chainmailstudios.astromine.discoveries.registry.client;
 
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
+
 import com.github.chainmailstudios.astromine.common.callback.SkyPropertiesCallback;
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
 import com.github.chainmailstudios.astromine.discoveries.client.render.sky.MarsSkyProperties;
@@ -59,7 +61,7 @@ public class AstromineDiscoveriesClientCallbacks extends AstromineClientCallback
 					FluidComponent fluidComponent = FluidComponent.get(stack);
 
 					fluidComponent.forEachIndexed((slot, volume) -> {
-						tooltip.add(new TextComponent(volume.getAmount().toString() + " | " + new TranslatableComponent(volume.getFluid().defaultFluidState().createLegacyBlock().getBlock().getDescriptionId()).getString()).withStyle(ChatFormatting.GRAY));
+						tooltip.add(new LiteralText(volume.getAmount().toString() + " | " + new TranslatableText(volume.getFluid().getDefaultState().getBlockState().getBlock().getTranslationKey()).getString()).formatted(Formatting.GRAY));
 					});
 				}
 			}
@@ -69,18 +71,18 @@ public class AstromineDiscoveriesClientCallbacks extends AstromineClientCallback
 			double x = buffer.readDouble();
 			double y = buffer.readDouble();
 			double z = buffer.readDouble();
-			UUID uuid = buffer.readUUID();
+			UUID uuid = buffer.readUuid();
 			int id = buffer.readInt();
 
 			context.getTaskQueue().execute(() -> {
-				PrimitiveRocketEntity rocketEntity = AstromineDiscoveriesEntityTypes.PRIMITIVE_ROCKET.create(Minecraft.getInstance().level);
+				PrimitiveRocketEntity rocketEntity = AstromineDiscoveriesEntityTypes.PRIMITIVE_ROCKET.create(MinecraftClient.getInstance().world);
 
-				rocketEntity.setUUID(uuid);
-				rocketEntity.setId(id);
-				rocketEntity.setPos(x, y, z);
-				rocketEntity.setPacketCoordinates(x, y, z);
+				rocketEntity.setUuid(uuid);
+				rocketEntity.setEntityId(id);
+				rocketEntity.updatePosition(x, y, z);
+				rocketEntity.updateTrackedPosition(x, y, z);
 
-				Minecraft.getInstance().level.putNonPlayerEntity(id, rocketEntity);
+				MinecraftClient.getInstance().world.addEntity(id, rocketEntity);
 			});
 		});
 	}

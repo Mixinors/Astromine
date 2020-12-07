@@ -24,9 +24,9 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 
 public class MovementUtilities {
 	/** Pushes the specified {@link Entity} per the given values. */
@@ -36,19 +36,19 @@ public class MovementUtilities {
 
 	/** Pushes the specified {@link Entity} per the given values. */
 	public static void pushEntity(Entity entity, BlockPos pos, float speed, Direction facing, boolean shouldCenter) {
-		double motionX = entity.getDeltaMovement().x();
-		double motionZ = entity.getDeltaMovement().z();
+		double motionX = entity.getVelocity().getX();
+		double motionZ = entity.getVelocity().getZ();
 
-		if (speed * facing.getStepX() > 0 && motionX < speed) {
-			entity.push(speed / 2, 0, 0);
-		} else if (speed * facing.getStepX() < 0 && motionX > -speed) {
-			entity.push(-speed / 2, 0, 0);
+		if (speed * facing.getOffsetX() > 0 && motionX < speed) {
+			entity.addVelocity(speed / 2, 0, 0);
+		} else if (speed * facing.getOffsetX() < 0 && motionX > -speed) {
+			entity.addVelocity(-speed / 2, 0, 0);
 		}
 
-		if (speed * facing.getStepZ() > 0 && motionZ < speed) {
-			entity.push(0, 0, speed / 2);
-		} else if (speed * facing.getStepZ() < 0 && motionZ > -speed) {
-			entity.push(0, 0, -speed / 2);
+		if (speed * facing.getOffsetZ() > 0 && motionZ < speed) {
+			entity.addVelocity(0, 0, speed / 2);
+		} else if (speed * facing.getOffsetZ() < 0 && motionZ > -speed) {
+			entity.addVelocity(0, 0, -speed / 2);
 		}
 
 		if (shouldCenter) {
@@ -58,11 +58,11 @@ public class MovementUtilities {
 
 	/** Centers the specified {@link Entity} on the X and Z axis per the given values. */
 	private static void centerEntity(Entity entity, BlockPos pos, float speed, Direction facing) {
-		if (speed * facing.getStepX() > 0 || speed * facing.getStepX() < 0) {
+		if (speed * facing.getOffsetX() > 0 || speed * facing.getOffsetX() < 0) {
 			centerZ(entity, pos);
 		}
 
-		if (speed * facing.getStepZ() > 0 || speed * facing.getStepZ() < 0) {
+		if (speed * facing.getOffsetZ() > 0 || speed * facing.getOffsetZ() < 0) {
 			centerX(entity, pos);
 		}
 	}
@@ -70,22 +70,22 @@ public class MovementUtilities {
 	/** Centers the specified {@link Entity} on the Z axis per the given values. */
 	private static void centerZ(Entity entity, BlockPos pos) {
 		if (entity.getZ() > pos.getZ() + .55) {
-			entity.push(0, 0, -0.1F);
+			entity.addVelocity(0, 0, -0.1F);
 		} else if (entity.getZ() < pos.getZ() + .45) {
-			entity.push(0, 0, 0.1F);
+			entity.addVelocity(0, 0, 0.1F);
 		} else {
-			entity.setDeltaMovement(entity.getDeltaMovement().x(), entity.getDeltaMovement().y(), 0);
+			entity.setVelocity(entity.getVelocity().getX(), entity.getVelocity().getY(), 0);
 		}
 	}
 
 	/** Centers the specified {@link Entity} on the X axis per the given values. */
 	private static void centerX(Entity entity, BlockPos pos) {
 		if (entity.getX() > pos.getX() + .55) {
-			entity.push(-0.1F, 0, 0);
+			entity.addVelocity(-0.1F, 0, 0);
 		} else if (entity.getX() < pos.getX() + .45) {
-			entity.push(0.1F, 0, 0);
+			entity.addVelocity(0.1F, 0, 0);
 		} else {
-			entity.setDeltaMovement(0, entity.getDeltaMovement().y(), entity.getDeltaMovement().z());
+			entity.setVelocity(0, entity.getVelocity().getY(), entity.getVelocity().getZ());
 		}
 	}
 }

@@ -22,24 +22,25 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine. registry;
+package com.github.chainmailstudios.astromine.registry;
+
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 
 import java.util.HashSet;
 import java.util.Set;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 
 public class AstromineDimensions {
-	private static final Set<ResourceKey<?>> KEYS = new HashSet<>();
+	private static final Set<RegistryKey<?>> KEYS = new HashSet<>();
 
-	public static <T> ResourceKey<T> register(ResourceKey<Registry<T>> registry, ResourceLocation identifier) {
-		ResourceKey<T> key = ResourceKey.create(registry, identifier);
+	public static <T> RegistryKey<T> register(RegistryKey<Registry<T>> registry, Identifier identifier) {
+		RegistryKey<T> key = RegistryKey.of(registry, identifier);
 		KEYS.add(key);
 		return key;
 	}
 
-	public static boolean isAstromine(ResourceKey<?> key) {
+	public static boolean isAstromine(RegistryKey<?> key) {
 		return KEYS.contains(key);
 	}
 

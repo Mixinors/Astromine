@@ -24,6 +24,15 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.recipe;
 
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.Recipe;
+import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.util.Identifier;
+import net.minecraft.world.World;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
 import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
@@ -42,26 +51,18 @@ import com.google.gson.annotations.SerializedName;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.Level;
 
-public final class ElectrolyzingRecipe implements Recipe<Container>, EnergyConsumingRecipe<Container> {
-	private final ResourceLocation identifier;
+public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<Inventory> {
+	private final Identifier identifier;
 	private final FluidIngredient firstInput;
 	private final FluidVolume firstOutput;
 	private final FluidVolume secondOutput;
 	private final double energyInput;
 	private final int time;
 
-	private static final Map<Level, ElectrolyzingRecipe[]> RECIPE_CACHE = new HashMap<>();
+	private static final Map<World, ElectrolyzingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public ElectrolyzingRecipe(ResourceLocation identifier, FluidIngredient firstInput, FluidVolume firstOutput, FluidVolume secondOutput, double energyInput, int time) {
+	public ElectrolyzingRecipe(Identifier identifier, FluidIngredient firstInput, FluidVolume firstOutput, FluidVolume secondOutput, double energyInput, int time) {
 		this.identifier = identifier;
 		this.firstInput = firstInput;
 		this.firstOutput = firstOutput;
@@ -70,9 +71,9 @@ public final class ElectrolyzingRecipe implements Recipe<Container>, EnergyConsu
 		this.time = time;
 	}
 
-	public static boolean allows(Level world, FluidComponent fluidComponent) {
+	public static boolean allows(World world, FluidComponent fluidComponent) {
 		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().byType(Type.INSTANCE).values().stream().map(it -> (ElectrolyzingRecipe) it).toArray(ElectrolyzingRecipe[]::new));
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (ElectrolyzingRecipe) it).toArray(ElectrolyzingRecipe[]::new));
 		}
 
 		for (ElectrolyzingRecipe recipe : RECIPE_CACHE.get(world)) {
@@ -84,9 +85,9 @@ public final class ElectrolyzingRecipe implements Recipe<Container>, EnergyConsu
 		return false;
 	}
 
-	public static Optional<ElectrolyzingRecipe> matching(Level world, FluidComponent fluidComponent) {
+	public static Optional<ElectrolyzingRecipe> matching(World world, FluidComponent fluidComponent) {
 		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().byType(Type.INSTANCE).values().stream().map(it -> (ElectrolyzingRecipe) it).toArray(ElectrolyzingRecipe[]::new));
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (ElectrolyzingRecipe) it).toArray(ElectrolyzingRecipe[]::new));
 		}
 
 		for (ElectrolyzingRecipe recipe : RECIPE_CACHE.get(world)) {
@@ -124,7 +125,7 @@ public final class ElectrolyzingRecipe implements Recipe<Container>, EnergyConsu
 
 
 	@Override
-	public ResourceLocation getId() {
+	public Identifier getId() {
 		return identifier;
 	}
 
@@ -139,31 +140,31 @@ public final class ElectrolyzingRecipe implements Recipe<Container>, EnergyConsu
 	}
 
 	@Override
-	public boolean matches(Container inventory, Level world) {
+	public boolean matches(Inventory inventory, World world) {
 		return false;
 	}
 
 	@Override
-	public ItemStack assemble(Container inventory) {
+	public ItemStack craft(Inventory inventory) {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public boolean canCraftInDimensions(int width, int height) {
+	public boolean fits(int width, int height) {
 		return false;
 	}
 
 	@Override
-	public ItemStack getResultItem() {
+	public ItemStack getOutput() {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public ItemStack getToastSymbol() {
+	public ItemStack getRecipeKindIcon() {
 		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_ELECTROLYZER);
 	}
 
-	public ResourceLocation getIdentifier() {
+	public Identifier getIdentifier() {
 		return identifier;
 	}
 
@@ -189,14 +190,14 @@ public final class ElectrolyzingRecipe implements Recipe<Container>, EnergyConsu
 	}
 
 	public static final class Serializer implements RecipeSerializer<ElectrolyzingRecipe> {
-		public static final ResourceLocation ID = AstromineCommon.identifier("electrolyzing");
+		public static final Identifier ID = AstromineCommon.identifier("electrolyzing");
 
 		public static final Serializer INSTANCE = new Serializer();
 
 		private Serializer() {}
 
 		@Override
-		public ElectrolyzingRecipe fromJson(ResourceLocation identifier, JsonObject object) {
+		public ElectrolyzingRecipe read(Identifier identifier, JsonObject object) {
 			ElectrolyzingRecipe.Format format = new Gson().fromJson(object, ElectrolyzingRecipe.Format.class);
 
 			return new ElectrolyzingRecipe(
@@ -210,7 +211,7 @@ public final class ElectrolyzingRecipe implements Recipe<Container>, EnergyConsu
 		}
 
 		@Override
-		public ElectrolyzingRecipe fromNetwork(ResourceLocation identifier, FriendlyByteBuf buffer) {
+		public ElectrolyzingRecipe read(Identifier identifier, PacketByteBuf buffer) {
 			return new ElectrolyzingRecipe(
 					identifier,
 					FluidIngredient.fromPacket(buffer),
@@ -222,7 +223,7 @@ public final class ElectrolyzingRecipe implements Recipe<Container>, EnergyConsu
 		}
 
 		@Override
-		public void toNetwork(FriendlyByteBuf buffer, ElectrolyzingRecipe recipe) {
+		public void write(PacketByteBuf buffer, ElectrolyzingRecipe recipe) {
 			recipe.firstInput.toPacket(buffer);
 			recipe.firstOutput.toPacket(buffer);
 			recipe.secondOutput.toPacket(buffer);

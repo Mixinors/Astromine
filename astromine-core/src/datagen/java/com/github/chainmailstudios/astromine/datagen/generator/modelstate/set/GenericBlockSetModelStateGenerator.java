@@ -1,9 +1,10 @@
 package com.github.chainmailstudios.astromine.datagen.generator.modelstate.set;
 
+import net.minecraft.block.Block;
+
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 import me.shedaniel.cloth.api.datagen.v1.ModelStateData;
-import net.minecraft.world.level.block.Block;
 
 public class GenericBlockSetModelStateGenerator extends GenericItemSetModelGenerator {
 

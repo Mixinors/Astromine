@@ -24,6 +24,10 @@
 
 package com.github.chainmailstudios.astromine.common.network;
 
+import net.minecraft.util.Tickable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
@@ -34,23 +38,20 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Sets;
 import java.util.Set;
 import java.util.stream.Collectors;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
 
 /**
  * A collection of {@link NetworkNode}s
  * and {@link NetworkMemberNode}s, representing a simple
  * network structure.
  */
-public final class NetworkInstance implements TickableBlockEntity {
+public final class NetworkInstance implements Tickable {
 	public static final NetworkInstance EMPTY = new NetworkInstance();
 
 	public final Set<NetworkMemberNode> members = Sets.newConcurrentHashSet();
 
 	public final Set<NetworkNode> nodes = Sets.newConcurrentHashSet();
 
-	private final Level world;
+	private final World world;
 
 	private final NetworkType type;
 
@@ -61,7 +62,7 @@ public final class NetworkInstance implements TickableBlockEntity {
 	}
 
 	/** Instantiates a {@link NetworkInstance}. */
-	public NetworkInstance(Level world, NetworkType type) {
+	public NetworkInstance(World world, NetworkType type) {
 		this.type = type;
 		this.world = world;
 	}
@@ -106,7 +107,7 @@ public final class NetworkInstance implements TickableBlockEntity {
 	}
 
 	/** Returns this instance's world. */
-	public Level getWorld() {
+	public World getWorld() {
 		return world;
 	}
 
@@ -165,7 +166,7 @@ public final class NetworkInstance implements TickableBlockEntity {
 		return String.format(
 				"%s, %s,\n%s,\n%s",
 				NetworkTypeRegistry.INSTANCE.getKey(type),
-				world.dimension().location(),
+				world.getRegistryKey().getValue(),
 				members.stream().map(NetworkMemberNode::toString).collect(Collectors.joining("\n")),
 				nodes.stream().map(NetworkNode::toString).collect(Collectors.joining("\n"))
 		);

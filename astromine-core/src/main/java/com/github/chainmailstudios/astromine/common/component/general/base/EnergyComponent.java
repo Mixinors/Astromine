@@ -30,10 +30,12 @@ import com.github.chainmailstudios.astromine.common.component.general.SimpleEner
 import com.github.chainmailstudios.astromine.common.component.general.compatibility.EnergyComponentFromEnergyStorage;
 import com.github.chainmailstudios.astromine.common.component.general.provider.EnergyComponentProvider;
 import net.fabricmc.fabric.api.util.NbtType;
+
+import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.item.Item;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
@@ -82,9 +84,9 @@ public interface EnergyComponent extends IdentifiableComponent {
 		return AstromineItems.ENERGY.asItem();
 	}
 
-	/** Returns this component's {@link Component} name. */
-	default Component getName() {
-		return new TranslatableComponent("text.astromine.energy");
+	/** Returns this component's {@link Text} name. */
+	default Text getName() {
+		return new TranslatableText("text.astromine.energy");
 	}
 
 	/** Returns this component's listeners. */

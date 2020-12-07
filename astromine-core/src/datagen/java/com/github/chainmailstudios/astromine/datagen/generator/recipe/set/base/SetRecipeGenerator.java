@@ -1,5 +1,7 @@
 package com.github.chainmailstudios.astromine.datagen.generator.recipe.set.base;
 
+import net.minecraft.util.Identifier;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.datagen.generator.SetGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.RecipeGenerator;
@@ -7,7 +9,6 @@ import com.github.chainmailstudios.astromine.datagen.material.MaterialEntry;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 import me.shedaniel.cloth.api.datagen.v1.RecipeData;
-import net.minecraft.resources.ResourceLocation;
 
 public interface SetRecipeGenerator extends SetGenerator<RecipeData>, RecipeGenerator {
 	MaterialItemType getOutput();
@@ -20,7 +21,7 @@ public interface SetRecipeGenerator extends SetGenerator<RecipeData>, RecipeGene
 		return getOutput(set).getName();
 	}
 
-	default ResourceLocation getRecipeId(MaterialSet set) {
+	default Identifier getRecipeId(MaterialSet set) {
 		return AstromineCommon.identifier(getRecipeName(set));
 	}
 

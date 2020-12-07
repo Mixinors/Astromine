@@ -134,7 +134,7 @@ allprojects {
         }
 
         minecraft group: 'com.mojang', name: 'minecraft', version: minecraft_version
-        mappings loom.officialMojangMappings()
+        mappings group: 'net.fabricmc', name: 'yarn', version: mappings_version, classifier: 'v2'
         modImplementation "net.fabricmc:fabric-loader:$loader_version"
         useAsApiOptionally "net.fabricmc.fabric-api:fabric-api:$api_version"
         modImplementation "com.google.code.findbugs:jsr305:3.0.2"

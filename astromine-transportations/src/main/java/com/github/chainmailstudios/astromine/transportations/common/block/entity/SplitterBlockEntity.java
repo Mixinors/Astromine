@@ -25,17 +25,17 @@
 package com.github.chainmailstudios.astromine.transportations.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
-import com.github.chainmailstudios.astromine.transportations.common.conveyor.Conveyable;
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.base.AbstractConveyableBlockEntity;
+import com.github.chainmailstudios.astromine.transportations.common.conveyor.Conveyable;
 import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;
 import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsSoundEvents;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.item.ItemStack;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 
 public class SplitterBlockEntity extends AbstractConveyableBlockEntity {
 	public SplitterBlockEntity() {
@@ -48,20 +48,20 @@ public class SplitterBlockEntity extends AbstractConveyableBlockEntity {
 
 	@Override
 	public boolean accepts(ItemStack stack) {
-		Direction facing = getBlockState().getValue(HorizontalDirectionalBlock.FACING);
+		Direction facing = getCachedState().get(HorizontalFacingBlock.FACING);
 
-		BlockPos leftPos = getBlockPos().relative(facing.getCounterClockWise());
-		BlockPos rightPos = getBlockPos().relative(facing.getClockWise());
+		BlockPos leftPos = getPos().offset(facing.rotateYCounterclockwise());
+		BlockPos rightPos = getPos().offset(facing.rotateYClockwise());
 
-		BlockEntity leftBlockEntity = level.getBlockEntity(leftPos);
-		BlockEntity rightBlockEntity = level.getBlockEntity(rightPos);
+		BlockEntity leftBlockEntity = world.getBlockEntity(leftPos);
+		BlockEntity rightBlockEntity = world.getBlockEntity(rightPos);
 
 		if (leftBlockEntity instanceof Conveyable && ((Conveyable) leftBlockEntity).accepts(stack)) {
-			return getItemComponent().getFirst().isEmpty() || getItemComponent().getFirst().getMaxStackSize() - getItemComponent().getFirst().getCount() >= stack.getCount() && StackUtilities.areItemsAndTagsEqual(getItemComponent().getFirst(), stack);
+			return getItemComponent().getFirst().isEmpty() || getItemComponent().getFirst().getMaxCount() - getItemComponent().getFirst().getCount() >= stack.getCount() && StackUtilities.areItemsAndTagsEqual(getItemComponent().getFirst(), stack);
 		}
 
 		if (rightBlockEntity instanceof Conveyable && ((Conveyable) rightBlockEntity).accepts(stack)) {
-			return getItemComponent().getSecond().isEmpty() || getItemComponent().getSecond().getMaxStackSize() - getItemComponent().getSecond().getCount() >= stack.getCount() && StackUtilities.areItemsAndTagsEqual(getItemComponent().getSecond(), stack);
+			return getItemComponent().getSecond().isEmpty() || getItemComponent().getSecond().getMaxCount() - getItemComponent().getSecond().getCount() >= stack.getCount() && StackUtilities.areItemsAndTagsEqual(getItemComponent().getSecond(), stack);
 		}
 
 		return false;
@@ -69,13 +69,13 @@ public class SplitterBlockEntity extends AbstractConveyableBlockEntity {
 
 	@Override
 	public void give(ItemStack stack) {
-		Direction facing = getBlockState().getValue(HorizontalDirectionalBlock.FACING);
+		Direction facing = getCachedState().get(HorizontalFacingBlock.FACING);
 
-		BlockPos leftPos = getBlockPos().relative(facing.getCounterClockWise());
-		BlockPos rightPos = getBlockPos().relative(facing.getClockWise());
+		BlockPos leftPos = getPos().offset(facing.rotateYCounterclockwise());
+		BlockPos rightPos = getPos().offset(facing.rotateYClockwise());
 
-		BlockEntity leftBlockEntity = level.getBlockEntity(leftPos);
-		BlockEntity rightBlockEntity = level.getBlockEntity(rightPos);
+		BlockEntity leftBlockEntity = world.getBlockEntity(leftPos);
+		BlockEntity rightBlockEntity = world.getBlockEntity(rightPos);
 
 		boolean allowsLeft = false;
 		boolean allowsRight = false;
@@ -114,6 +114,6 @@ public class SplitterBlockEntity extends AbstractConveyableBlockEntity {
 		if (largeStack.getCount() > 0)
 			getItemComponent().setSecond(largeStack);
 
-		level.playSound(null, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), AstromineTransportationsSoundEvents.MACHINE_CLICK, SoundSource.BLOCKS, 1.0F, 1.0F);
+		world.playSound(null, getPos().getX(), getPos().getY(), getPos().getZ(), AstromineTransportationsSoundEvents.MACHINE_CLICK, SoundCategory.BLOCKS, 1.0F, 1.0F);
 	}
 }

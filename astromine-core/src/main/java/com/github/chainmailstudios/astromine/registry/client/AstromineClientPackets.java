@@ -22,12 +22,13 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine. registry.client;
+package com.github.chainmailstudios.astromine.registry.client;
 
-import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
+
+import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
 
 @Environment(EnvType.CLIENT)
 public class AstromineClientPackets {
@@ -36,7 +37,7 @@ public class AstromineClientPackets {
 		// TODO: 08/08/2020 - 11:00:51
 		// TODO: 27/08/2020 - 21:15:05
 		// ClientSidePacketRegistry.INSTANCE.register(AstromineCommonPackets.PRESSURE_UPDATE, ((context, buffer) -> {
-		// ResourceLocation identifier = buffer.readResourceLocation();
+		// Identifier identifier = buffer.readIdentifier();
 		//
 		// AstromineScreens.GAS_IMAGE.setTexture(AstromineCommon.identifier("textures/symbol/" + identifier.getPath() + ".png"));
 		// }));

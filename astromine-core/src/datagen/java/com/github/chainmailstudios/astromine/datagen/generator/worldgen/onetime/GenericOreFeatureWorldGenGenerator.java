@@ -1,30 +1,30 @@
 package com.github.chainmailstudios.astromine.datagen.generator.worldgen.onetime;
 
-import net.minecraft.core.Registry;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.RangeDecoratorConfiguration;
-import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
-import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.structure.rule.RuleTest;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.gen.decorator.Decorator;
+import net.minecraft.world.gen.decorator.RangeDecoratorConfig;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.OreFeatureConfig;
 
 public class GenericOreFeatureWorldGenGenerator extends GenericFeatureWorldGenGenerator {
 	public GenericOreFeatureWorldGenGenerator(Block oreBlock, int bottomOffset, int topOffset, int maximum, int count, int size) {
-		this(oreBlock, new RangeDecoratorConfiguration(bottomOffset, topOffset, maximum), count, size, OreConfiguration.Predicates.NATURAL_STONE);
+		this(oreBlock, new RangeDecoratorConfig(bottomOffset, topOffset, maximum), count, size, OreFeatureConfig.Rules.BASE_STONE_OVERWORLD);
 	}
 
-	public GenericOreFeatureWorldGenGenerator(Block oreBlock, RangeDecoratorConfiguration range, int count, int size) {
-		this(oreBlock, range, count, size, OreConfiguration.Predicates.NATURAL_STONE);
+	public GenericOreFeatureWorldGenGenerator(Block oreBlock, RangeDecoratorConfig range, int count, int size) {
+		this(oreBlock, range, count, size, OreFeatureConfig.Rules.BASE_STONE_OVERWORLD);
 	}
 
-	public GenericOreFeatureWorldGenGenerator(Block oreBlock, RangeDecoratorConfiguration range, int count, int size, RuleTest ruleTest) {
-		this(oreBlock.defaultBlockState(), range, count, size, ruleTest);
+	public GenericOreFeatureWorldGenGenerator(Block oreBlock, RangeDecoratorConfig range, int count, int size, RuleTest ruleTest) {
+		this(oreBlock.getDefaultState(), range, count, size, ruleTest);
 	}
 
-	public GenericOreFeatureWorldGenGenerator(BlockState oreBlockState, RangeDecoratorConfiguration range, int count, int size, RuleTest ruleTest) {
-		super(Registry.BLOCK.getKey(oreBlockState.getBlock()), Feature.ORE.configured(new OreConfiguration(ruleTest, oreBlockState, size))
-			.decorated(FeatureDecorator.RANGE.configured(range)).squared().count(count));
+	public GenericOreFeatureWorldGenGenerator(BlockState oreBlockState, RangeDecoratorConfig range, int count, int size, RuleTest ruleTest) {
+		super(Registry.BLOCK.getId(oreBlockState.getBlock()), Feature.ORE.configure(new OreFeatureConfig(ruleTest, oreBlockState, size))
+				.decorate(Decorator.RANGE.configure(range)).spreadHorizontally().repeat(count));
 	}
 
 	@Override

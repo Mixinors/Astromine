@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine. registry.client;
+package com.github.chainmailstudios.astromine.registry.client;
 
 public class AstromineEntityRenderers {
 	public static void initialize() {

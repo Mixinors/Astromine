@@ -24,11 +24,12 @@
 
 package com.github.chainmailstudios.astromine.technologies.registry;
 
+import net.minecraft.item.ItemGroup;
+
 import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
-import net.minecraft.world.item.CreativeModeTab;
 
 public class AstromineTechnologiesItemGroups extends AstromineItemGroups {
-	public static final CreativeModeTab TECHNOLOGIES = register("technologies", () -> AstromineTechnologiesItems.ADVANCED_CIRCUIT);
+	public static final ItemGroup TECHNOLOGIES = register("technologies", () -> AstromineTechnologiesItems.ADVANCED_CIRCUIT);
 
 	public static void initialize() {
 

@@ -24,13 +24,15 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
-@Mixin(AbstractMinecart.class)
+import net.minecraft.entity.vehicle.AbstractMinecartEntity;
+
+import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
+
+@Mixin(AbstractMinecartEntity.class)
 public abstract class AbstractMinecartEntityMixin implements GravityEntity {
 	@ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = -0.04D))
 	double getGravity(double original) {

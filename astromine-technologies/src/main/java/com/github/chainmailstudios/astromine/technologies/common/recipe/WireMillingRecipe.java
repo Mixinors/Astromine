@@ -24,6 +24,14 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.recipe;
 
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.util.Identifier;
+import net.minecraft.world.World;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
 import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
@@ -42,24 +50,17 @@ import com.google.gson.annotations.SerializedName;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.Level;
 
-public final class WireMillingRecipe implements EnergyConsumingRecipe<Container> {
-	private final ResourceLocation identifier;
+public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory> {
+	private final Identifier identifier;
 	private final ItemIngredient firstInput;
 	private final ItemStack firstOutput;
 	private final double energyInput;
 	private final int time;
 
-	private static final Map<Level, WireMillingRecipe[]> RECIPE_CACHE = new HashMap<>();
+	private static final Map<World, WireMillingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public WireMillingRecipe(ResourceLocation identifier, ItemIngredient firstInput, ItemStack firstOutput, double energyInput, int time) {
+	public WireMillingRecipe(Identifier identifier, ItemIngredient firstInput, ItemStack firstOutput, double energyInput, int time) {
 		this.identifier = identifier;
 		this.firstInput = firstInput;
 		this.firstOutput = firstOutput;
@@ -67,9 +68,9 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Container>
 		this.time = time;
 	}
 
-	public static boolean allows(Level world, ItemComponent itemComponent) {
+	public static boolean allows(World world, ItemComponent itemComponent) {
 		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().byType(Type.INSTANCE).values().stream().map(it -> (WireMillingRecipe) it).toArray(WireMillingRecipe[]::new));
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (WireMillingRecipe) it).toArray(WireMillingRecipe[]::new));
 		}
 
 		for (WireMillingRecipe recipe : RECIPE_CACHE.get(world)) {
@@ -81,9 +82,9 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Container>
 		return false;
 	}
 
-	public static Optional<WireMillingRecipe> matching(Level world, ItemComponent itemComponent) {
+	public static Optional<WireMillingRecipe> matching(World world, ItemComponent itemComponent) {
 		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().byType(Type.INSTANCE).values().stream().map(it -> (WireMillingRecipe) it).toArray(WireMillingRecipe[]::new));
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (WireMillingRecipe) it).toArray(WireMillingRecipe[]::new));
 		}
 
 		for (WireMillingRecipe recipe : RECIPE_CACHE.get(world)) {
@@ -116,27 +117,27 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Container>
 	}
 
 	@Override
-	public boolean matches(Container inv, Level world) {
+	public boolean matches(Inventory inv, World world) {
 		return false;
 	}
 
 	@Override
-	public ItemStack assemble(Container inventory) {
+	public ItemStack craft(Inventory inventory) {
 		return firstOutput.copy();
 	}
 
 	@Override
-	public boolean canCraftInDimensions(int width, int height) {
+	public boolean fits(int width, int height) {
 		return false;
 	}
 
 	@Override
-	public ItemStack getResultItem() {
+	public ItemStack getOutput() {
 		return firstOutput.copy();
 	}
 
 	@Override
-	public ResourceLocation getId() {
+	public Identifier getId() {
 		return identifier;
 	}
 
@@ -151,11 +152,11 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Container>
 	}
 
 	@Override
-	public ItemStack getToastSymbol() {
+	public ItemStack getRecipeKindIcon() {
 		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_WIRE_MILL);
 	}
 
-	public ResourceLocation getIdentifier() {
+	public Identifier getIdentifier() {
 		return identifier;
 	}
 
@@ -177,14 +178,14 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Container>
 	}
 
 	public static final class Serializer implements RecipeSerializer<WireMillingRecipe> {
-		public static final ResourceLocation ID = AstromineCommon.identifier("wire_milling");
+		public static final Identifier ID = AstromineCommon.identifier("wire_milling");
 
 		public static final Serializer INSTANCE = new Serializer();
 
 		private Serializer() {}
 
 		@Override
-		public WireMillingRecipe fromJson(ResourceLocation identifier, JsonObject object) {
+		public WireMillingRecipe read(Identifier identifier, JsonObject object) {
 			WireMillingRecipe.Format format = new Gson().fromJson(object, WireMillingRecipe.Format.class);
 
 			return new WireMillingRecipe(identifier,
@@ -196,7 +197,7 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Container>
 		}
 
 		@Override
-		public WireMillingRecipe fromNetwork(ResourceLocation identifier, FriendlyByteBuf buffer) {
+		public WireMillingRecipe read(Identifier identifier, PacketByteBuf buffer) {
 			return new WireMillingRecipe(
 					identifier,
 					ItemIngredient.fromPacket(buffer),
@@ -207,7 +208,7 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Container>
 		}
 
 		@Override
-		public void toNetwork(FriendlyByteBuf buffer, WireMillingRecipe recipe) {
+		public void write(PacketByteBuf buffer, WireMillingRecipe recipe) {
 			recipe.firstInput.toPacket(buffer);
 			StackUtilities.toPacket(buffer, recipe.firstOutput);
 			DoubleUtilities.toPacket(buffer, recipe.energyInput);

@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.foundations.datagen.generators.tag;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.datagen.generator.tag.set.GenericSetTagGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
@@ -8,7 +8,7 @@ import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 
 public class PiglinNuggetTagGenerator extends GenericSetTagGenerator {
 	public PiglinNuggetTagGenerator(MaterialItemType type) {
-		super("piglin_nugget", new ResourceLocation("piglib", "piglin_loved_nuggets"), type);
+		super("piglin_nugget", new Identifier("piglib", "piglin_loved_nuggets"), type);
 	}
 
 	@Override

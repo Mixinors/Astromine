@@ -24,7 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import net.minecraft.core.Direction;
+import net.minecraft.util.math.Direction;
 
 public class DirectionUtilities {
 	/** Returns the {@link Direction} corresponding to the given name or ordinal. */
@@ -43,7 +43,7 @@ public class DirectionUtilities {
 			case "east":
 				return Direction.EAST;
 			default:
-				return Direction.from3DDataValue(Integer.parseInt(nameOrOrdinal));
+				return Direction.byId(Integer.parseInt(nameOrOrdinal));
 		}
 	}
 }

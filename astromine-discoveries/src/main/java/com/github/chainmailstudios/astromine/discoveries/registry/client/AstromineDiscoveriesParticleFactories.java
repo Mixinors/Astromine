@@ -25,8 +25,10 @@
 package com.github.chainmailstudios.astromine.discoveries.registry.client;
 
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
-import net.minecraft.client.particle.BreakingItemParticle;
-import net.minecraft.world.item.ItemStack;
+
+import net.minecraft.client.particle.CrackParticle;
+import net.minecraft.item.ItemStack;
+
 import com.github.chainmailstudios.astromine.discoveries.client.particle.MarsDustParticle;
 import com.github.chainmailstudios.astromine.discoveries.client.particle.RocketFlameParticle;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesItems;
@@ -35,14 +37,13 @@ import com.github.chainmailstudios.astromine.registry.client.AstromineParticleFa
 
 public class AstromineDiscoveriesParticleFactories extends AstromineParticleFactories {
 	public static void initialize() {
-		// TODO: Fix this fuck.
-		//ParticleFactoryRegistry.getInstance().register(AstromineDiscoveriesParticles.SPACE_SLIME, (parameters, world, x, y, z, velocityX, velocityY, velocityZ) -> new BreakingItemParticle(world, x, y, z, new ItemStack(AstromineDiscoveriesItems.SPACE_SLIME_BALL)));
+		ParticleFactoryRegistry.getInstance().register(AstromineDiscoveriesParticles.SPACE_SLIME, (parameters, world, x, y, z, velocityX, velocityY, velocityZ) -> new CrackParticle(world, x, y, z, new ItemStack(AstromineDiscoveriesItems.SPACE_SLIME_BALL)));
 
 		ParticleFactoryRegistry.getInstance().register(AstromineDiscoveriesParticles.MARS_DUST, MarsDustParticle.Factory::new);
 
 		ParticleFactoryRegistry.getInstance().register(AstromineDiscoveriesParticles.ROCKET_FLAME, provider -> (parameters, world, x, y, z, velocityX, velocityY, velocityZ) -> {
 			RocketFlameParticle particle = new RocketFlameParticle(world, x, y, z, velocityX, velocityY, velocityZ);
-			particle.pickSprite(provider);
+			particle.setSprite(provider);
 			return particle;
 		});
 	}

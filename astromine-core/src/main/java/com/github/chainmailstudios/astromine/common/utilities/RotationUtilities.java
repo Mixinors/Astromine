@@ -24,31 +24,31 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import net.minecraft.core.Direction;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 
 public class RotationUtilities {
-	/** Returns the given {@link AABB} rotated towards the specified {@link Direction}. */
-	public static AABB getRotatedBoundingBox(AABB box, Direction facing) {
-		box.move(-0.5, -0.5, -0.5);
+	/** Returns the given {@link Box} rotated towards the specified {@link Direction}. */
+	public static Box getRotatedBoundingBox(Box box, Direction facing) {
+		box.offset(-0.5, -0.5, -0.5);
 		switch (facing) {
 			case SOUTH:
-				box = new AABB(box.minZ, box.minY, (box.maxX * -1) + 1, box.maxZ, box.maxY, (box.minX * -1) + 1);
+				box = new Box(box.minZ, box.minY, (box.maxX * -1) + 1, box.maxZ, box.maxY, (box.minX * -1) + 1);
 			case WEST:
-				box = new AABB((box.maxX * -1) + 1, box.minY, (box.maxZ * -1) + 1, (box.minX * -1) + 1, box.maxY, (box.minZ * -1) + 1);
+				box = new Box((box.maxX * -1) + 1, box.minY, (box.maxZ * -1) + 1, (box.minX * -1) + 1, box.maxY, (box.minZ * -1) + 1);
 			case EAST:
-				box = new AABB((box.maxZ * -1) + 1, box.minY, box.minX, (box.minZ * -1) + 1, box.maxY, box.maxX);
+				box = new Box((box.maxZ * -1) + 1, box.minY, box.minX, (box.minZ * -1) + 1, box.maxY, box.maxX);
 			default:
 
 		}
-		box.move(0.5, 0.5, 0.5);
+		box.offset(0.5, 0.5, 0.5);
 		return box;
 	}
 
-	/** Returns the given {@link AABB} rotated towards the specified {@link Direction} as a {@link VoxelShape}. */
-	public static VoxelShape getRotatedShape(AABB def, Direction facing) {
-		return Shapes.create(getRotatedBoundingBox(def, facing));
+	/** Returns the given {@link Box} rotated towards the specified {@link Direction} as a {@link VoxelShape}. */
+	public static VoxelShape getRotatedShape(Box def, Direction facing) {
+		return VoxelShapes.cuboid(getRotatedBoundingBox(def, facing));
 	}
 }

@@ -24,11 +24,12 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.entity.ai.superspaceslime;
 
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.effect.StatusEffects;
+
 import com.github.chainmailstudios.astromine.discoveries.common.entity.SuperSpaceSlimeEntity;
 
 import java.util.EnumSet;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.ai.goal.Goal;
 
 public class SuperSpaceSlimeRandomLookGoal extends Goal {
 
@@ -38,13 +39,13 @@ public class SuperSpaceSlimeRandomLookGoal extends Goal {
 
 	public SuperSpaceSlimeRandomLookGoal(SuperSpaceSlimeEntity slime) {
 		this.slime = slime;
-		this.setFlags(EnumSet.of(Goal.Flag.LOOK));
+		this.setControls(EnumSet.of(Goal.Control.LOOK));
 	}
 
 	@Override
-	public boolean canUse() {
+	public boolean canStart() {
 		boolean validTarget = this.slime.getTarget() == null;
-		boolean validState = this.slime.isOnGround() || this.slime.isInWater() || this.slime.isInLava() || this.slime.hasEffect(MobEffects.LEVITATION);
+		boolean validState = this.slime.isOnGround() || this.slime.isTouchingWater() || this.slime.isInLava() || this.slime.hasStatusEffect(StatusEffects.LEVITATION);
 		boolean hasSlimeMoveControls = this.slime.getMoveControl() instanceof SuperSpaceSlimeMoveControl;
 
 		return validTarget && validState && hasSlimeMoveControls;

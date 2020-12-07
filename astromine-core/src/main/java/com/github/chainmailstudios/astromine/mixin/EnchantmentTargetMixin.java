@@ -24,12 +24,14 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.common.item.EnchantableToolItem;
-import net.minecraft.world.item.Item;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import net.minecraft.item.Item;
+
+import com.github.chainmailstudios.astromine.common.item.EnchantableToolItem;
 
 /**
  * for future reference, the inner class numbers of the EnchantmentTarget enum: 1 = armor 2 = breakable 3 = bow 4 =
@@ -37,9 +39,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  * leggings 10 = helmet 11 = sword 12 = digger 13 = fishing rod 14 = trident Note that these are for some reason in a
  * different order to what they appear in the class itself...
  */
-@Mixin(targets = { "net/minecraft/world/item/enchantment/EnchantmentCategory$6" })
+@Mixin(targets = { "net/minecraft/world/item/enchantment/EnchantmentTarget$12" })
 public class EnchantmentTargetMixin {
-	@Inject(at = @At("HEAD"), method = "canEnchant(Lnet/minecraft/world/item/Item;)Z", cancellable = true)
+	@Inject(at = @At("HEAD"), method = "isAcceptableItem(Lnet/minecraft/item/Item;)Z", cancellable = true)
 	public void astromine_makeMultiToolEnchantable(Item item, CallbackInfoReturnable<Boolean> cir) {
 		if (item instanceof EnchantableToolItem)
 			cir.setReturnValue(true);

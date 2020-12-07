@@ -24,37 +24,37 @@
 
 package com.github.chainmailstudios.astromine.common.utilities.data.position;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
 
 /**
- * A {@link BlockPos} with an associated {@link Level}.
+ * A {@link BlockPos} with an associated {@link World}.
  */
 public final class WorldPos {
-	private final Level world;
+	private final World world;
 
 	private final BlockPos pos;
 
 	private BlockState blockState;
 
 	/** Instantiates a {@link WorldPos}. */
-	private WorldPos(Level world, BlockPos pos) {
+	private WorldPos(World world, BlockPos pos) {
 		this.world = world;
 		this.pos = pos;
 	}
 
 	/** Instantiates a {@link WorldPos}. */
-	public static WorldPos of(Level world, BlockPos pos) {
+	public static WorldPos of(World world, BlockPos pos) {
 		return new WorldPos(world, pos);
 	}
 
 	/** Returns a position offset to this one by the given {@link Direction}. */
 	public WorldPos offset(Direction direction) {
-		return of(world, getBlockPos().relative(direction));
+		return of(world, getBlockPos().offset(direction));
 	}
 
 	/** Returns the {@link Block} at this position's {@link BlockPos}. */
@@ -76,8 +76,8 @@ public final class WorldPos {
 		return world.getBlockEntity(pos);
 	}
 
-	/** Returns this position's {@link Level}. */
-	public Level getWorld() {
+	/** Returns this position's {@link World}. */
+	public World getWorld() {
 		return world;
 	}
 

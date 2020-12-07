@@ -24,8 +24,9 @@
 
 package com.github.chainmailstudios.astromine.common.block.transfer;
 
+import net.minecraft.util.Identifier;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import net.minecraft.resources.ResourceLocation;
 
 /**
  * An enum representing a side's transfer information.
@@ -36,10 +37,10 @@ public enum TransferType {
 	OUTPUT(AstromineCommon.identifier("textures/widget/output.png")),
 	INPUT_OUTPUT(AstromineCommon.identifier("textures/widget/input_output.png"));
 
-	private final ResourceLocation texture;
+	private final Identifier texture;
 
 	/** Instantiates a {@link TransferType}. */
-	TransferType(ResourceLocation texture) {
+	TransferType(Identifier texture) {
 		this.texture = texture;
 	}
 
@@ -51,7 +52,7 @@ public enum TransferType {
 	}
 
 	/** Returns the texture of this type. */
-	public ResourceLocation texture() {
+	public Identifier texture() {
 		return texture;
 	}
 

@@ -24,38 +24,38 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import net.minecraft.util.Tuple;;
-import net.minecraft.core.Registry;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.ShapedRecipe;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.Pair;
+import net.minecraft.util.registry.Registry;
 
 import io.netty.buffer.ByteBuf;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.ShapedRecipe;
 
 public class StackUtilities {
-	/** Attempts to merge two {@link ItemStack}s, returning a {@link Tuple}
+	/** Attempts to merge two {@link ItemStack}s, returning a {@link Pair}
 	 * with the results.
 	 *
 	 * The amount transferred is the {@link Math#min(int, int)} between
 	 * their available space, our amount, and the specified amount.
 	 * */
-	public static Tuple<ItemStack, ItemStack> merge(ItemStack source, ItemStack target) {
-		int targetMax = target.getMaxStackSize();
+	public static Pair<ItemStack, ItemStack> merge(ItemStack source, ItemStack target) {
+		int targetMax = target.getMaxCount();
 
-		if (ItemStack.isSameIgnoreDurability(source, target) && ItemStack.tagMatches(source, target)) {
+		if (ItemStack.areItemsEqual(source, target) && ItemStack.areTagsEqual(source, target)) {
 			int sourceCount = source.getCount();
 			int targetCount = target.getCount();
 
 			int targetAvailable = Math.max(0, targetMax - targetCount);
 
-			target.grow(Math.min(sourceCount, targetAvailable));
+			target.increment(Math.min(sourceCount, targetAvailable));
 			source.setCount(Math.max(sourceCount - targetAvailable, 0));
 		} else {
 			if (target.isEmpty() && !source.isEmpty()) {
@@ -66,18 +66,18 @@ public class StackUtilities {
 
 				target = source.copy();
 				target.setCount(Math.min(sourceCount, targetAvailable));
-				source.shrink(Math.min(sourceCount, targetAvailable));
+				source.decrement(Math.min(sourceCount, targetAvailable));
 			}
 		}
 
-		return new Tuple<>(source, target);
+		return new Pair<>(source, target);
 	}
 
 	/** Asserts whether the source {@link ItemStack} matches the second,
 	 * and whether the target can fit the source, or not.
 	 */
 	public static boolean test(ItemStack source, ItemStack target) {
-		return target.isEmpty() || ItemStack.isSameIgnoreDurability(source, target) && ItemStack.tagMatches(source, target) && target.getMaxStackSize() - target.getCount() >= source.getCount();
+		return target.isEmpty() || ItemStack.areItemsEqual(source, target) && ItemStack.areTagsEqual(source, target) && target.getMaxCount() - target.getCount() >= source.getCount();
 	}
 
 	/** Weakly merges an {@link ItemStack} into another, returning the resulting target. */
@@ -86,14 +86,14 @@ public class StackUtilities {
 			return source.copy();
 		} else {
 			target = target.copy();
-			target.grow(source.getCount());
+			target.increment(source.getCount());
 			return target;
 		}
 	}
 
 	/** Asserts equality of {@link ItemStack} {@link CompoundTag} and {@link Item}. */
 	public static boolean areItemsAndTagsEqual(ItemStack left, ItemStack right) {
-		return ItemStack.isSameIgnoreDurability(left, right) && ItemStack.tagMatches(left, right);
+		return ItemStack.areItemsEqual(left, right) && ItemStack.areTagsEqual(left, right);
 	}
 
 	/** Deserializes an {@link ItemStack} from a {@link JsonElement}. */
@@ -103,7 +103,7 @@ public class StackUtilities {
 				JsonPrimitive primitive = jsonElement.getAsJsonPrimitive();
 
 				if (primitive.isString()) {
-					return new ItemStack(Registry.ITEM.get(new ResourceLocation(primitive.getAsString())));
+					return new ItemStack(Registry.ITEM.get(new Identifier(primitive.getAsString())));
 				} else {
 					return ItemStack.EMPTY;
 				}
@@ -111,25 +111,25 @@ public class StackUtilities {
 				return ItemStack.EMPTY;
 			}
 		} else {
-			return ShapedRecipe.itemFromJson(jsonElement.getAsJsonObject());
+			return ShapedRecipe.getItemStack(jsonElement.getAsJsonObject());
 		}
 	}
 
 	/** Serializes the given {@link ItemStack} to a {@link JsonElement}. */
 	public static JsonElement toJson(ItemStack stack) {
 		JsonObject object = new JsonObject();
-		object.addProperty("item", Registry.ITEM.getKey(stack.getItem()).toString());
+		object.addProperty("item", Registry.ITEM.getId(stack.getItem()).toString());
 		object.addProperty("count", stack.getCount());
 		return object;
 	}
 
 	/** Deserializes an {@link ItemStack} from a {@link ByteBuf}. */
-	public static ItemStack fromPacket(FriendlyByteBuf buffer) {
-		return buffer.readItem();
+	public static ItemStack fromPacket(PacketByteBuf buffer) {
+		return buffer.readItemStack();
 	}
 
 	/** Serializes the given {@link ItemStack} to a {@link ByteBuf}. */
-	public static void toPacket(FriendlyByteBuf buffer, ItemStack stack) {
-		buffer.writeItem(stack);
+	public static void toPacket(PacketByteBuf buffer, ItemStack stack) {
+		buffer.writeItemStack(stack);
 	}
 }

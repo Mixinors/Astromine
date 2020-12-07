@@ -24,14 +24,15 @@
 
 package com.github.chainmailstudios.astromine.transportations.client.render.block;
 
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
+import net.minecraft.client.render.block.entity.BlockEntityRenderer;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.ItemStack;
+
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.VerticalConveyorBlockEntity;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.Conveyor;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorTypes;
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.world.item.ItemStack;
 
 public class VerticalConveyorBlockEntityRenderer extends BlockEntityRenderer<VerticalConveyorBlockEntity> implements ConveyorRenderer<VerticalConveyorBlockEntity> {
 	public VerticalConveyorBlockEntityRenderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher) {
@@ -39,11 +40,11 @@ public class VerticalConveyorBlockEntityRenderer extends BlockEntityRenderer<Ver
 	}
 
 	@Override
-	public void render(VerticalConveyorBlockEntity blockEntity, float partialTicks, PoseStack matrixStack, MultiBufferSource vertexConsumerProvider, int i, int i1) {
-		int speed = ((Conveyor) blockEntity.getBlockState().getBlock()).getSpeed();
-		ConveyorTypes type = ((Conveyor) blockEntity.getBlockState().getBlock()).getType();
+	public void render(VerticalConveyorBlockEntity blockEntity, float partialTicks, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int i1) {
+		int speed = ((Conveyor) blockEntity.getCachedState().getBlock()).getSpeed();
+		ConveyorTypes type = ((Conveyor) blockEntity.getCachedState().getBlock()).getType();
 
-		if (!blockEntity.getLevel().getBlockState(blockEntity.getBlockPos()).isAir() && !blockEntity.getItemComponent().isEmpty()) {
+		if (!blockEntity.getWorld().getBlockState(blockEntity.getPos()).isAir() && !blockEntity.getItemComponent().isEmpty()) {
 			ItemStack stack = blockEntity.getItemComponent().getFirst();
 			float position = blockEntity.getRenderAttachmentData()[1] + (blockEntity.getRenderAttachmentData()[0] - blockEntity.getRenderAttachmentData()[1]) * partialTicks;
 			float horizontalPosition = blockEntity.getRenderAttachmentData()[3] + (blockEntity.getRenderAttachmentData()[2] - blockEntity.getRenderAttachmentData()[3]) * partialTicks;

@@ -24,14 +24,15 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.screen;
 
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.text.Text;
+
 import com.github.chainmailstudios.astromine.client.screen.base.block.ComponentBlockEntityEnergyFluidHandledScreen;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.FluidGeneratorScreenHandler;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.player.Inventory;
 
 public class FluidGeneratorHandledScreen extends ComponentBlockEntityEnergyFluidHandledScreen<FluidGeneratorScreenHandler> {
-	public FluidGeneratorHandledScreen(BaseScreenHandler handler, Inventory inventory, Component title) {
+	public FluidGeneratorHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 	}
 }

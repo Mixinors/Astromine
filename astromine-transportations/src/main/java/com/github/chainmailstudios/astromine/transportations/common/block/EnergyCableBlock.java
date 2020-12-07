@@ -33,7 +33,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 public class EnergyCableBlock extends CableBlock implements EnergyNetworkType.NodeSpeedProvider, NetworkBlock.EnergyNode {
 	private final double cableSpeed;
 
-	public EnergyCableBlock(double cableSpeed, Properties settings) {
+	public EnergyCableBlock(double cableSpeed, Settings settings) {
 		super(settings);
 		this.cableSpeed = cableSpeed;
 	}

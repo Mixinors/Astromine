@@ -24,14 +24,15 @@
 
 package com.github.chainmailstudios.astromine.common.entity;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.world.World;
+
 import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 
 /**
  * An interface meant to be implemented by mixins
  * to {@link Entity}-ies, which provides a method
- * to query the gravity of its {@link Level}.
+ * to query the gravity of its {@link World}.
  */
 public interface GravityEntity {
 	/** Returns this entity's gravity multiplier,
@@ -45,7 +46,7 @@ public interface GravityEntity {
 	double astromine_getGravity();
 
 	/** Returns the given world's gravity. */
-	default double astromine_getGravity(Level world) {
-		return GravityRegistry.INSTANCE.get(world.dimension()) * astromine_getGravityMultiplier();
+	default double astromine_getGravity(World world) {
+		return GravityRegistry.INSTANCE.get(world.getRegistryKey()) * astromine_getGravityMultiplier();
 	}
 }

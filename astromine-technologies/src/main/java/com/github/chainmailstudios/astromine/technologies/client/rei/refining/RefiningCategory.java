@@ -26,8 +26,10 @@ package com.github.chainmailstudios.astromine.technologies.client.rei.refining;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.resources.language.I18n;
-import net.minecraft.resources.ResourceLocation;
+
+import net.minecraft.client.resource.language.I18n;
+import net.minecraft.util.Identifier;
+
 import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
@@ -41,24 +43,24 @@ import java.util.List;
 
 @Environment(EnvType.CLIENT)
 public class RefiningCategory implements RecipeCategory<RefiningDisplay> {
-	private final ResourceLocation id;
+	private final Identifier id;
 	private final String translationKey;
 	private final EntryStack logo;
 
-	public RefiningCategory(ResourceLocation id, String translationKey, EntryStack logo) {
+	public RefiningCategory(Identifier id, String translationKey, EntryStack logo) {
 		this.id = id;
 		this.translationKey = translationKey;
 		this.logo = logo;
 	}
 
 	@Override
-	public ResourceLocation getIdentifier() {
+	public Identifier getIdentifier() {
 		return id;
 	}
 
 	@Override
 	public String getCategoryName() {
-		return I18n.get(translationKey);
+		return I18n.translate(translationKey);
 	}
 
 	@Override

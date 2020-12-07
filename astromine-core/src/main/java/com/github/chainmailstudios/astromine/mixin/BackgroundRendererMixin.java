@@ -24,21 +24,23 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine. registry.AstromineTags;
-import net.minecraft.client.renderer.FogRenderer;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-@Mixin(FogRenderer.class)
+import net.minecraft.client.render.BackgroundRenderer;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
+
+import com.github.chainmailstudios.astromine.registry.AstromineTags;
+
+@Mixin(BackgroundRenderer.class)
 public abstract class BackgroundRendererMixin {
-	@ModifyVariable(method = "setupColor", at = @At(value = "STORE", ordinal = 0))
+	@ModifyVariable(method = "render", at = @At(value = "STORE", ordinal = 0))
 	private static FluidState astromine_renderIndustrialFluidBackground(FluidState submergedFluidState) {
-		if (AstromineTags.INDUSTRIAL_FLUID.contains(submergedFluidState.getType())) {
+		if (AstromineTags.INDUSTRIAL_FLUID.contains(submergedFluidState.getFluid())) {
 			// steal the water background rendering
-			return Fluids.WATER.defaultFluidState();
+			return Fluids.WATER.getDefaultState();
 		}
 		return submergedFluidState;
 	}

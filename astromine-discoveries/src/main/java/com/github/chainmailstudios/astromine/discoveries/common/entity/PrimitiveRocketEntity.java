@@ -29,19 +29,21 @@ import com.github.chainmailstudios.astromine.common.component.general.base.Fluid
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
+
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.Packet;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.chainmailstudios.astromine.common.utilities.VolumeUtilities;
@@ -61,13 +63,13 @@ import javax.annotation.Nullable;
 import java.util.Collection;
 
 public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScreenHandlerFactory {
-	public static final ResourceLocation PRIMITIVE_ROCKET_SPAWN = AstromineCommon.identifier("primitive_rocket_spawn");
+	public static final Identifier PRIMITIVE_ROCKET_SPAWN = AstromineCommon.identifier("primitive_rocket_spawn");
 
 	private static final FluidIngredient KEROSENE_INGREDIENT = FluidIngredient.ofFluidVolumes(FluidVolume.of(Fraction.ofDecimal(0.288D), AstromineFoundationsFluids.KEROSENE));
 
 	private static final FluidIngredient OXYGEN_INGREDIENT = FluidIngredient.ofFluidVolumes(FluidVolume.of(Fraction.ofDecimal(0.112D), AstromineFoundationsFluids.OXYGEN));
 
-	public PrimitiveRocketEntity(EntityType<?> type, Level world) {
+	public PrimitiveRocketEntity(EntityType<?> type, World world) {
 		super(type, world);
 	}
 
@@ -111,22 +113,22 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 	}
 
 	@Override
-	public void openInventory(Player player) {
-		player.openMenu(this);
+	public void openInventory(PlayerEntity player) {
+		player.openHandledScreen(this);
 	}
 
 	@Override
-	public boolean isPickable() {
+	public boolean collides() {
 		return !this.removed;
 	}
 
 	@Override
-	public InteractionResult interactAt(Player player, Vec3 hitPos, InteractionHand hand) {
-		if (player.level.isClientSide) {
-			return InteractionResult.CONSUME;
+	public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
+		if (player.world.isClient) {
+			return ActionResult.CONSUME;
 		}
 
-		if (player.isShiftKeyDown()) {
+		if (player.isSneaking()) {
 			this.openInventory(player);
 		} else {
 			player.startRiding(this);
@@ -136,35 +138,35 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 	}
 
 	@Override
-	public Packet<?> getAddEntityPacket() {
-		FriendlyByteBuf packet = new FriendlyByteBuf(Unpooled.buffer());
+	public Packet<?> createSpawnPacket() {
+		PacketByteBuf packet = new PacketByteBuf(Unpooled.buffer());
 
 		packet.writeDouble(this.getX());
 		packet.writeDouble(this.getY());
 		packet.writeDouble(this.getZ());
-		packet.writeUUID(this.getUUID());
-		packet.writeInt(this.getId());
+		packet.writeUuid(this.getUuid());
+		packet.writeInt(this.getEntityId());
 
 		return ServerSidePacketRegistry.INSTANCE.toPacket(PRIMITIVE_ROCKET_SPAWN, packet);
 	}
 
 	@Override
-	public void writeScreenOpeningData(ServerPlayer serverPlayerEntity, FriendlyByteBuf buffer) {
-		buffer.writeInt(this.getId());
+	public void writeScreenOpeningData(ServerPlayerEntity serverPlayerEntity, PacketByteBuf buffer) {
+		buffer.writeInt(this.getEntityId());
 	}
 
 	@Nullable
 	@Override
-	public AbstractContainerMenu createMenu(int syncId, Inventory inventory, Player player) {
-		return new PrimitiveRocketScreenHandler(syncId, player, getId());
+	public ScreenHandler createMenu(int syncId, PlayerInventory inventory, PlayerEntity player) {
+		return new PrimitiveRocketScreenHandler(syncId, player, getEntityId());
 	}
 
 	@Override
 	public void tick() {
-		if (level.dimension().equals(AstromineDiscoveriesDimensions.EARTH_SPACE_WORLD)) {
-			setDeltaMovement(0, 0, 0);
+		if (world.getRegistryKey().equals(AstromineDiscoveriesDimensions.EARTH_SPACE_WORLD)) {
+			setVelocity(0, 0, 0);
 
-			getEntityData().set(IS_RUNNING, false);
+			getDataTracker().set(IS_RUNNING, false);
 		}
 
 		VolumeUtilities.transferBetween(getItemComponent(), getFluidComponent(), 0, 1, 0);

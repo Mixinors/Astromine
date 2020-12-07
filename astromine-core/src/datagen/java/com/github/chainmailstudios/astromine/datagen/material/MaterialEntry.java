@@ -2,38 +2,38 @@ package com.github.chainmailstudios.astromine.datagen.material;
 
 import net.fabricmc.fabric.api.tag.TagRegistry;
 
-import net.minecraft.ResourceLocationException;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.Tag;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemConvertible;
+import net.minecraft.item.Items;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.tag.Tag;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.InvalidIdentifierException;
+import net.minecraft.util.registry.Registry;
 
 import java.util.Optional;
 
-public class MaterialEntry implements ItemLike {
-	private final ResourceLocation itemId;
-	private final Optional<ResourceLocation> itemTagId;
+public class MaterialEntry implements ItemConvertible {
+	private final Identifier itemId;
+	private final Optional<Identifier> itemTagId;
 
-	public MaterialEntry(ResourceLocation itemId) {
+	public MaterialEntry(Identifier itemId) {
 		this.itemId = itemId;
 		this.itemTagId = Optional.empty();
 	}
 
-	public MaterialEntry(ResourceLocation itemId, ResourceLocation itemTagId) {
+	public MaterialEntry(Identifier itemId, Identifier itemTagId) {
 		this.itemId = itemId;
 		this.itemTagId = Optional.of(itemTagId);
 	}
 
-	public MaterialEntry(ResourceLocation itemId, String itemTagId) {
-		this(itemId, new ResourceLocation("c", itemTagId));
+	public MaterialEntry(Identifier itemId, String itemTagId) {
+		this(itemId, new Identifier("c", itemTagId));
 	}
 
-	public ResourceLocation getItemId() {
+	public Identifier getItemId() {
 		return itemId;
 	}
 
@@ -49,20 +49,20 @@ public class MaterialEntry implements ItemLike {
 		return asBlock() != Blocks.AIR;
 	}
 
-	public ResourceLocation getItemTagId() {
+	public Identifier getItemTagId() {
 		return itemTagId.get();
 	}
 
 	public Ingredient asIngredient() {
-		if (hasItemTag()) return Ingredient.of(asItemTag());
-		else return Ingredient.of(asItem());
+		if (hasItemTag()) return Ingredient.fromTag(asItemTag());
+		else return Ingredient.ofItems(asItem());
 	}
 
 	@Override
 	public Item asItem() {
 		Item item = Registry.ITEM.get(itemId);
 		if (item.equals(Items.AIR))
-			throw new ResourceLocationException("oh fuck entry " + this.getItemId() + " returned air");
+			throw new InvalidIdentifierException("oh fuck entry " + this.getItemId() + " returned air");
 		return item;
 	}
 

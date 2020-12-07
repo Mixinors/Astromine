@@ -25,6 +25,8 @@
 package com.github.chainmailstudios.astromine.common.network.type;
 
 import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
+import net.minecraft.block.entity.BlockEntity;
+
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
@@ -44,7 +46,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import net.minecraft.world.level.block.entity.BlockEntity;
 
 /**
  * A {@link NetworkType} for energy.

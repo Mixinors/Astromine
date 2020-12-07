@@ -27,12 +27,12 @@ package com.github.chainmailstudios.astromine.transportations.client.render.bloc
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.ConveyorBlockEntity;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.Conveyor;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorTypes;
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.util.Mth;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
+import net.minecraft.client.render.block.entity.BlockEntityRenderer;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 
 public class ConveyorBlockEntityRenderer extends BlockEntityRenderer<ConveyorBlockEntity> implements ConveyorRenderer<ConveyorBlockEntity> {
 	public ConveyorBlockEntityRenderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher) {
@@ -40,14 +40,14 @@ public class ConveyorBlockEntityRenderer extends BlockEntityRenderer<ConveyorBlo
 	}
 
 	@Override
-	public void render(ConveyorBlockEntity blockEntity, float partialTicks, PoseStack matrixStack, MultiBufferSource vertexConsumerProvider, int i, int i1) {
-		int speed = ((Conveyor) blockEntity.getBlockState().getBlock()).getSpeed();
-		ConveyorTypes type = ((Conveyor) blockEntity.getBlockState().getBlock()).getType();
+	public void render(ConveyorBlockEntity blockEntity, float partialTicks, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int i1) {
+		int speed = ((Conveyor) blockEntity.getCachedState().getBlock()).getSpeed();
+		ConveyorTypes type = ((Conveyor) blockEntity.getCachedState().getBlock()).getType();
 
-		if (!blockEntity.getLevel().getBlockState(blockEntity.getBlockPos()).isAir() && !blockEntity.getItemComponent().isEmpty()) {
+		if (!blockEntity.getWorld().getBlockState(blockEntity.getPos()).isAir() && !blockEntity.getItemComponent().isEmpty()) {
 			ItemStack stack = blockEntity.getItemComponent().getFirst();
 
-			float position = Mth.lerp(partialTicks, blockEntity.getRenderAttachmentData()[0], blockEntity.getRenderAttachmentData()[1]);
+			float position = MathHelper.lerp(partialTicks, blockEntity.getRenderAttachmentData()[0], blockEntity.getRenderAttachmentData()[1]);
 
 			renderItem(blockEntity, stack, position, speed, 0, type, matrixStack, vertexConsumerProvider);
 		}

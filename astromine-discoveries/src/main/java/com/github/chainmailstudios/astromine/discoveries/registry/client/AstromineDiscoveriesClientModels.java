@@ -24,26 +24,27 @@
 
 package com.github.chainmailstudios.astromine.discoveries.registry.client;
 
-import com.mojang.datafixers.util.Pair;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemOverrides;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.BuiltInModel;
-import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.client.resources.model.ModelState;
-import net.minecraft.client.resources.model.UnbakedModel;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.util.Tuple;;
-import com.mojang.math.Vector3f;
+
+import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.render.model.BakedModel;
+import net.minecraft.client.render.model.BuiltinBakedModel;
+import net.minecraft.client.render.model.ModelBakeSettings;
+import net.minecraft.client.render.model.ModelLoader;
+import net.minecraft.client.render.model.UnbakedModel;
+import net.minecraft.client.render.model.json.ModelOverrideList;
+import net.minecraft.client.render.model.json.ModelTransformation;
+import net.minecraft.client.texture.Sprite;
+import net.minecraft.client.util.ModelIdentifier;
+import net.minecraft.client.util.SpriteIdentifier;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.util.math.Vector3f;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Identifier;
+import com.mojang.datafixers.util.Pair;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.discoveries.client.model.PrimitiveRocketEntityModel;
 import com.github.chainmailstudios.astromine.discoveries.client.render.entity.PrimitiveRocketEntityRenderer;
@@ -56,23 +57,23 @@ import java.util.function.Function;
 
 public class AstromineDiscoveriesClientModels extends AstromineClientModels {
 	public static void initialize() {
-		ModelResourceLocation rocketItemId = new ModelResourceLocation(AstromineCommon.identifier("rocket"), "inventory");
-		ModelLoadingRegistry.INSTANCE.registerVariantProvider(resourceManager -> (modelResourceLocation, modelProviderContext) -> {
-			if (modelResourceLocation.equals(rocketItemId)) {
+		ModelIdentifier rocketItemId = new ModelIdentifier(AstromineCommon.identifier("rocket"), "inventory");
+		ModelLoadingRegistry.INSTANCE.registerVariantProvider(resourceManager -> (modelIdentifier, modelProviderContext) -> {
+			if (modelIdentifier.equals(rocketItemId)) {
 				return new UnbakedModel() {
 					@Override
-					public Collection<ResourceLocation> getDependencies() {
+					public Collection<Identifier> getModelDependencies() {
 						return Collections.emptyList();
 					}
 
 					@Override
-					public Collection<Material> getMaterials(Function<ResourceLocation, UnbakedModel> function, Set<Pair<String, String>> set) {
+					public Collection<SpriteIdentifier> getTextureDependencies(Function<Identifier, UnbakedModel> unbakedModelGetter, Set<Pair<String, String>> unresolvedTextureReferences) {
 						return Collections.emptyList();
 					}
 
 					@Override
-					public BakedModel bake(ModelBakery loader, Function<Material, TextureAtlasSprite> textureGetter, ModelState rotationContainer, ResourceLocation modelId) {
-						return new BuiltInModel(ITEM_HANDHELD.get(), ItemOverrides.EMPTY, null, true);
+					public BakedModel bake(ModelLoader loader, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings rotationContainer, Identifier modelId) {
+						return new BuiltinBakedModel(ITEM_HANDHELD.get(), ModelOverrideList.EMPTY, null, true);
 					}
 				};
 			}
@@ -80,23 +81,23 @@ public class AstromineDiscoveriesClientModels extends AstromineClientModels {
 		});
 	}
 
-	public static void renderRocket(PrimitiveRocketEntityModel primitiveRocketEntityModel, ItemStack stack, ItemTransforms.TransformType mode, PoseStack matrices, MultiBufferSource vertexConsumerProvider, int i, int j) {
-		matrices.pushPose();
-		if (mode == ItemTransforms.TransformType.GUI) {
+	public static void renderRocket(PrimitiveRocketEntityModel primitiveRocketEntityModel, ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
+		matrices.push();
+		if (mode == ModelTransformation.Mode.GUI) {
 			matrices.translate(0.66F, 0.22F, 0F);
 		}
 		matrices.scale(1.0F, -1.0F, -1.0F);
-		if (mode == ItemTransforms.TransformType.GUI) {
+		if (mode == ModelTransformation.Mode.GUI) {
 			matrices.scale(0.09F, 0.09F, 0.09F);
-			matrices.mulPose(Vector3f.YP.rotationDegrees(45));
-			matrices.mulPose(Vector3f.XP.rotationDegrees(45));
+			matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(45));
+			matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(45));
 		} else {
 			matrices.scale(0.3F, 0.3F, 0.3F);
-			matrices.mulPose(Vector3f.YP.rotationDegrees(45));
-			matrices.mulPose(Vector3f.XP.rotationDegrees(45));
+			matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(45));
+			matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(45));
 		}
-		VertexConsumer vertexConsumer2 = ItemRenderer.getFoilBufferDirect(vertexConsumerProvider, primitiveRocketEntityModel.renderType(PrimitiveRocketEntityRenderer.ID), false, stack.hasFoil());
-		primitiveRocketEntityModel.renderToBuffer(matrices, vertexConsumer2, i, j, 1.0F, 1.0F, 1.0F, 1.0F);
-		matrices.popPose();
+		VertexConsumer vertexConsumer2 = ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, primitiveRocketEntityModel.getLayer(PrimitiveRocketEntityRenderer.ID), false, stack.hasGlint());
+		primitiveRocketEntityModel.render(matrices, vertexConsumer2, i, j, 1.0F, 1.0F, 1.0F, 1.0F);
+		matrices.pop();
 	}
 }

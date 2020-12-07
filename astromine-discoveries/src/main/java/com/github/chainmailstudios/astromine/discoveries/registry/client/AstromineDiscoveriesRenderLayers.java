@@ -26,10 +26,10 @@ package com.github.chainmailstudios.astromine.discoveries.registry.client;
 
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlocks;
 import com.github.chainmailstudios.astromine.registry.client.AstromineRenderLayers;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.render.RenderLayer;
 
 public class AstromineDiscoveriesRenderLayers {
 	public static void initialize() {
-		AstromineRenderLayers.register(AstromineDiscoveriesBlocks.SPACE_SLIME_BLOCK, RenderType.translucent());
+		AstromineRenderLayers.register(AstromineDiscoveriesBlocks.SPACE_SLIME_BLOCK, RenderLayer.getTranslucent());
 	}
 }

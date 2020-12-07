@@ -22,31 +22,32 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine. registry;
+package com.github.chainmailstudios.astromine.registry;
+
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffectUtil;
+import net.minecraft.fluid.Fluids;
 
 import com.github.chainmailstudios.astromine.common.registry.FluidEffectRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.EntityUtilities;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectUtil;
-import net.minecraft.world.level.material.Fluids;
 
 public class AstromineFluidEffects {
 	public static void initialize() {
 		/** Makes attempting to breathe lava through a vent or space suit set you on fire. */
 		FluidEffectRegistry.INSTANCE.register(Fluids.LAVA, (submerged, entity) -> {
-			if(!submerged && !entity.fireImmune()) {
-				entity.setSecondsOnFire(15);
+			if(!submerged && !entity.isFireImmune()) {
+				entity.setOnFireFor(15);
 			}
 		});
 
 		/** Makes attempting to breathe water through a vent or space suit cause drowning. */
 		FluidEffectRegistry.INSTANCE.register(Fluids.WATER, (submerged, entity) -> {
 			if(!submerged) {
-				if(!entity.canBreatheUnderwater() && !MobEffectUtil.hasWaterBreathing(entity)) {
-					entity.setAirSupply(EntityUtilities.getNextAirUnderwater(entity, entity.getAirSupply()));
+				if(!entity.canBreatheInWater() && !StatusEffectUtil.hasWaterBreathing(entity)) {
+					entity.setAir(EntityUtilities.getNextAirUnderwater(entity, entity.getAir()));
 				}
-				if(entity.isSensitiveToWater()) {
-					entity.hurt(DamageSource.DROWN, 1.0F);
+				if(entity.hurtByWater()) {
+					entity.damage(DamageSource.DROWN, 1.0F);
 				}
 			}
 		});

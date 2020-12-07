@@ -26,11 +26,13 @@ package com.github.chainmailstudios.astromine.technologies.client.rei;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BucketItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.crafting.SmeltingRecipe;
-import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
+
+import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.item.BucketItem;
+import net.minecraft.item.Item;
+import net.minecraft.recipe.SmeltingRecipe;
+import net.minecraft.util.Identifier;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.technologies.client.rei.alloysmelting.AlloySmeltingCategory;
@@ -74,20 +76,20 @@ import java.util.Map;
 
 @Environment(EnvType.CLIENT)
 public class AstromineTechnologiesRoughlyEnoughItemsPlugin extends AstromineRoughlyEnoughItemsPlugin {
-	public static final ResourceLocation TRITURATING = AstromineCommon.identifier("triturating");
-	public static final ResourceLocation ELECTRIC_SMELTING = AstromineCommon.identifier("electric_smelting");
-	public static final ResourceLocation LIQUID_GENERATING = AstromineCommon.identifier("fluid_generating");
-	public static final ResourceLocation SOLID_GENERATING = AstromineCommon.identifier("solid_generating");
-	public static final ResourceLocation FLUID_MIXING = AstromineCommon.identifier("fluid_mixing");
-	public static final ResourceLocation ELECTROLYZING = AstromineCommon.identifier("electrolyzing");
-	public static final ResourceLocation REFINING = AstromineCommon.identifier("refining");
-	public static final ResourceLocation PRESSING = AstromineCommon.identifier("pressing");
-	public static final ResourceLocation WIRE_MILLING = AstromineCommon.identifier("wire_milling");
-	public static final ResourceLocation ALLOY_SMELTING = AstromineCommon.identifier("alloy_smelting");
-	public static final ResourceLocation SOLIDIFYING = AstromineCommon.identifier("solidifying");
+	public static final Identifier TRITURATING = AstromineCommon.identifier("triturating");
+	public static final Identifier ELECTRIC_SMELTING = AstromineCommon.identifier("electric_smelting");
+	public static final Identifier LIQUID_GENERATING = AstromineCommon.identifier("fluid_generating");
+	public static final Identifier SOLID_GENERATING = AstromineCommon.identifier("solid_generating");
+	public static final Identifier FLUID_MIXING = AstromineCommon.identifier("fluid_mixing");
+	public static final Identifier ELECTROLYZING = AstromineCommon.identifier("electrolyzing");
+	public static final Identifier REFINING = AstromineCommon.identifier("refining");
+	public static final Identifier PRESSING = AstromineCommon.identifier("pressing");
+	public static final Identifier WIRE_MILLING = AstromineCommon.identifier("wire_milling");
+	public static final Identifier ALLOY_SMELTING = AstromineCommon.identifier("alloy_smelting");
+	public static final Identifier SOLIDIFYING = AstromineCommon.identifier("solidifying");
 
 	@Override
-	public ResourceLocation getPluginIdentifier() {
+	public Identifier getPluginIdentifier() {
 		return AstromineCommon.identifier("technologies_rei_plugin");
 	}
 
@@ -111,7 +113,7 @@ public class AstromineTechnologiesRoughlyEnoughItemsPlugin extends AstromineRoug
 		recipeHelper.registerRecipes(ALLOY_SMELTING, AlloySmeltingRecipe.class, AlloySmeltingDisplay::new);
 		recipeHelper.registerRecipes(SOLIDIFYING, SolidifyingRecipe.class, SolidifyingDisplay::new);
 
-		for (Map.Entry<Item, Integer> entry : AbstractFurnaceBlockEntity.getFuel().entrySet()) {
+		for (Map.Entry<Item, Integer> entry : AbstractFurnaceBlockEntity.createFuelTimeMap().entrySet()) {
 			if (!(entry.getKey() instanceof BucketItem) && entry != null && entry.getValue() > 0) {
 				recipeHelper.registerDisplay(new SolidGeneratingDisplay((entry.getValue() / 2F * 5) / (entry.getValue() / 2F) * 6, Collections.singletonList(EntryStack.create(entry.getKey())), null, (entry.getValue() / 2) / 6.0));
 			}
