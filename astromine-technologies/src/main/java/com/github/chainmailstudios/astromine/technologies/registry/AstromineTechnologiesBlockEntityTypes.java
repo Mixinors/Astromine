@@ -113,6 +113,7 @@ public class AstromineTechnologiesBlockEntityTypes extends AstromineBlockEntityT
 	public static final BlockEntityType<CapacitorBlockEntity.Creative> CREATIVE_CAPACITOR = register("creative_capacitor", CapacitorBlockEntity.Creative::new, AstromineTechnologiesBlocks.CREATIVE_CAPACITOR);
 
 	public static final BlockEntityType<FluidCollectorBlockEntity> FLUID_EXTRACTOR = register("fluid_collector", FluidCollectorBlockEntity::new, AstromineTechnologiesBlocks.FLUID_EXTRACTOR);
+	public static final BlockEntityType<FluidPumpBlockEntity> FLUID_PUMP = register("fluid_pump", FluidPumpBlockEntity::new, AstromineTechnologiesBlocks.FLUID_PUMP);
 	public static final BlockEntityType<FluidPlacerBlockEntity> FLUID_INSERTER = register("fluid_placer", FluidPlacerBlockEntity::new, AstromineTechnologiesBlocks.FLUID_INSERTER);
 
 	public static final BlockEntityType<BlockBreakerBlockEntity> BLOCK_BREAKER = register("block_breaker", BlockBreakerBlockEntity::new, AstromineTechnologiesBlocks.BLOCK_BREAKER);

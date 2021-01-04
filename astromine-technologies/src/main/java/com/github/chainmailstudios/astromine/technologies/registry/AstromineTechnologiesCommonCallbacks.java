@@ -25,9 +25,21 @@
 package com.github.chainmailstudios.astromine.technologies.registry;
 
 import com.github.chainmailstudios.astromine.registry.AstromineCommonCallbacks;
+import com.github.chainmailstudios.astromine.technologies.common.block.FluidPumpBlock;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.FluidPumpBlockEntity;
+import me.shedaniel.cloth.api.common.events.v1.BlockBreakCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerBlockEntityEvents;
+import net.minecraft.block.Block;
+import net.minecraft.block.entity.BlockEntity;
+
+import java.util.logging.Logger;
 
 public class AstromineTechnologiesCommonCallbacks extends AstromineCommonCallbacks {
 	public static void initialize() {
-
+		ServerBlockEntityEvents.BLOCK_ENTITY_UNLOAD.register((blockEntity, world) -> {
+			if (blockEntity instanceof FluidPumpBlockEntity) {
+				((FluidPumpBlockEntity) blockEntity).removePipe();
+			}
+		});
 	}
 }

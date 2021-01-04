@@ -151,6 +151,7 @@
   "block.astromine.creative_tank": "创造模式液体罐",
   "block.astromine.fluid_collector": "液体抽取机",
   "block.astromine.fluid_placer": "液体放置机",
+  "block.astromine.fluid_pump": "液体泵",
   "block.astromine.block_breaker": "方块粉碎机",
   "block.astromine.block_placer": "方块放置机",
   "block.astromine.nuclear_warhead": "核弹头",
