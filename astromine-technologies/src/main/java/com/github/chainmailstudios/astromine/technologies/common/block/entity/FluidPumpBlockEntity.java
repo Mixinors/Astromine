@@ -37,33 +37,32 @@ import com.github.chainmailstudios.astromine.technologies.common.block.entity.ma
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.*;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.Entity;
+import net.minecraft.block.AirBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.FluidDrainable;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.Packet;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.Set;
+
+import static com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks.PUMP_PIPE;
 
 public class FluidPumpBlockEntity extends ComponentEnergyFluidBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
 	private Fraction cooldown = Fraction.EMPTY;
 	private BlockPos pumpPos = null;
 	private Deque<BlockPos> fluidsToDrain;
-	private Block pipe = null;
+	private Block pipe = PUMP_PIPE;
 
 	public FluidPumpBlockEntity() {
 		super(AstromineTechnologiesBlockEntityTypes.FLUID_PUMP);
-		pipe = Blocks.NETHER_BRICK_FENCE;
 	}
 
 	@Override
