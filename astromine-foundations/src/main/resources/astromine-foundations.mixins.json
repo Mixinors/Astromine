@@ -4,10 +4,11 @@
   "package": "com.github.chainmailstudios.astromine.foundations.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+	"FluidBlockMixin"
   ],
   "client": [
   ],
   "injectors": {
-    "defaultRequire": 1
+	"defaultRequire": 1
   }
 }
