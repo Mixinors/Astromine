@@ -10,7 +10,7 @@ project.ext.setDefaultApis = {
     useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-util:${cardinal_components_version}")
 
     // Shapes
-    useAsApi("com.terraformersmc:shapes:${shapes_version}")
+    useAsApi("com.terraformersmc.terraform-api:terraform-shapes-api-v1:${shapes_version}")
 
     // Blade
     useAsApi("com.github.vini2003:blade:${blade_version}")
@@ -34,7 +34,6 @@ project.ext.setDefaultApis = {
 
     // Cloth API
     useAsApi("me.shedaniel.cloth.api:cloth-durability-bar-api-v1:${cloth_api_version}")
-    useAsApi("me.shedaniel.cloth.api:cloth-dynamic-registry-api-v1:${cloth_api_version}")
     useAsApi("me.shedaniel.cloth.api:cloth-datagen-api-v1:${cloth_api_version}")
 
     // Cloth Config
@@ -42,9 +41,6 @@ project.ext.setDefaultApis = {
 
     // RoughlyEnoughItems
     useAsApiOptionally("me.shedaniel:RoughlyEnoughItems:${rei_version}")
-
-    // LibStructure
-    useAsApi("net.earthcomputer:libstructure:${libstructure_version}")
 
     // Magna
     useAsApi("com.github.Draylar:magna:${magna_version}")
@@ -65,6 +61,9 @@ project.ext.setDefaultApis = {
 
     // Piglib
     useAsApi("com.github.Shnupbups:Piglib:${piglib_version}")
+    
+    // Fermion Mod Keys
+    useAsApi("grondag:fermion-modkeys-mc116:${fermion_version}")
 }
 
 project.ext.setRuntimeTestMods = {

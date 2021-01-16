@@ -26,7 +26,6 @@ package com.github.chainmailstudios.astromine.discoveries.client.render.sky;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
 import net.minecraft.client.render.SkyProperties;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -40,7 +39,7 @@ public class MarsSkyProperties extends SkyProperties {
 	}
 
 	@Override
-	public Vec3d adjustSkyColor(Vec3d color, float sunHeight) {
+	public Vec3d adjustFogColor(Vec3d color, float sunHeight) {
 		return new Vec3d(0.8, 0.5, 0.08);
 	}
 
@@ -50,7 +49,7 @@ public class MarsSkyProperties extends SkyProperties {
 	}
 
 	@Override
-	public float[] getSkyColor(float skyAngle, float tickDelta) {
+	public float[] getFogColorOverride(float skyAngle, float tickDelta) {
 		// Help me, how in the world does this work
 		float g = MathHelper.cos(skyAngle * 6.2831855F) - 0.0F;
 		if (g >= -0.4F && g <= 0.4F) {

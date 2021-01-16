@@ -26,7 +26,6 @@ package com.github.chainmailstudios.astromine.discoveries.client.render.sky;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
 import net.minecraft.client.render.SkyProperties;
 import net.minecraft.util.math.Vec3d;
 
@@ -37,7 +36,7 @@ public class SpaceSkyProperties extends SkyProperties {
 	}
 
 	@Override
-	public Vec3d adjustSkyColor(Vec3d color, float sunHeight) {
+	public Vec3d adjustFogColor(Vec3d color, float sunHeight) {
 		return color.multiply(0.15000000596046448D);
 	}
 
