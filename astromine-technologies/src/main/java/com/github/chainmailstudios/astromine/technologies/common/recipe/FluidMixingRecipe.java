@@ -87,11 +87,26 @@ public class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumingReci
 		this.time = time;
 	}
 
-	public static boolean allows(World world, Fluid inserting, Fluid existing) {
+	public static boolean allows(World world, Fluid inserting, Fluid firstExisting, Fluid secondExisting, int slot) {
 		return world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().anyMatch(it -> {
 			FluidMixingRecipe recipe = ((FluidMixingRecipe) it);
 
-			return (existing == inserting || existing == Fluids.EMPTY) && (recipe.firstInputFluid.get() == inserting || recipe.secondInputFluid.get() == inserting);
+			if (firstExisting == inserting && recipe.firstInputFluid.get() == inserting && slot == 0) {
+				return true;
+			}
+
+			if (firstExisting == Fluids.EMPTY && recipe.firstInputFluid.get() == inserting && slot == 0) {
+				return true;
+			}
+
+			if (secondExisting == inserting && recipe.secondInputFluid.get() == inserting && slot == 1) {
+				return true;
+			}
+
+			if (secondExisting == Fluids.EMPTY && recipe.secondInputFluid.get() == inserting && slot == 1) {
+				return true;
+			}
+			return false;
 		});
 	}
 
