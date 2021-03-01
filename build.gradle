@@ -50,20 +50,14 @@ allprojects {
             }
         }
         maven {
-            name = "BuildCraft"
-            url = "https://mod-buildcraft.com/maven"
-            content {
-                includeGroup "alexiil.mc.lib"
-            }
-        }
-        maven {
             name = "Ladysnake Libs"
-            url = 'https://dl.bintray.com/ladysnake/libs'
+            url = 'https://ladysnake.jfrog.io/artifactory/mods'
             content {
                 includeGroup "io.github.onyxstudios.Cardinal-Components-API"
             }
         }
         maven {
+            // TODO Rehost this on somewhere that is not bintray
             name = "Wrenchable"
             url = "https://dl.bintray.com/zundrel/wrenchable"
             content {
@@ -80,13 +74,6 @@ allprojects {
         maven {
             name = "TerraFormersMC"
             url = "https://maven.terraformersmc.com/releases/"
-        }
-        maven {
-            name = "Earthcomputer"
-            url = "https://dl.bintray.com/earthcomputer/mods"
-            content {
-                includeGroup "net.earthcomputer"
-            }
         }
         maven {
             name = "BlameJared"
