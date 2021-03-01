@@ -5,7 +5,6 @@ plugins {
     id 'maven-publish'
     id 'fabric-loom' version '0.6-SNAPSHOT'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
-    id("net.corda.plugins.jar-filter") version("5.0.8") apply false
 }
 
 apply from: 'dependencies.gradle'
@@ -20,11 +19,21 @@ allprojects {
     apply plugin: 'maven-publish'
     apply plugin: 'fabric-loom'
     apply plugin: 'com.matthewprenger.cursegradle'
-    apply plugin: 'net.corda.plugins.jar-filter'
 
+    ext {
+        isSnapshot = System.getenv("PR_NUM") != null || true
+    }
+
+    def runNumber = (System.getenv("GITHUB_RUN_NUMBER") == null ? "9999" : System.getenv("GITHUB_RUN_NUMBER"))
     archivesBaseName = project.mod_name
-    group = rootProject.mod_group
-    version = rootProject.mod_version + "+" + project.version_meta
+
+    if (isSnapshot) {
+        group = rootProject.mod_group + "-snapshot"
+        version = rootProject.mod_version + "+" + project.version_meta + '.' + runNumber
+    } else {
+        group = rootProject.mod_group
+        version = rootProject.mod_version + "+" + project.version_meta
+    }
 
     ext {
         shouldGenerateData = false
@@ -176,7 +185,7 @@ subprojects {
     }
 
     remapJar {
-        input.set(file("${project.buildDir}/filtered-libs/$archivesBaseName-${version}-dev-filtered.jar"))
+        input.set(jar.archiveFile)
         classifier(null)
     }
 
@@ -184,24 +193,6 @@ subprojects {
         dev file: file("${project.buildDir}/libs/$archivesBaseName-${version}-dev.jar"), type: "jar", builtBy: jar
         remapped file: file("${project.buildDir}/libs/$archivesBaseName-${version}.jar"), type: "jar", builtBy: remapJar
     }
-
-    task jarFilter(type: net.corda.gradle.jarfilter.JarFilterTask) {
-        jars jar
-        annotations {
-            forRemove = [
-                    "org.jetbrains.annotations.NotNull",
-                    "org.jetbrains.annotations.Nullable",
-                    "org.jetbrains.annotations.ApiStatus\$Experimental",
-                    "org.jetbrains.annotations.ApiStatus\$Internal",
-                    "org.jetbrains.annotations.ApiStatus\$ScheduledForRemoval",
-                    "org.jetbrains.annotations.ApiStatus\$AvailableSince",
-                    "org.jetbrains.annotations.ApiStatus\$NonExtendable",
-                    "org.jetbrains.annotations.ApiStatus\$OverrideOnly"
-            ]
-        }
-    }
-
-    remapJar.dependsOn("jarFilter")
 
     afterEvaluate {
         if (shouldGenerateData) {
@@ -331,12 +322,12 @@ sourceSets {
 }
 
 dependencies {
-        subprojects.each {
-            compile project(path: ":${it.path}", configuration: "dev")
-            if (!it.isRunningGenerateDataTask) {
-                include project(path: ":${it.path}", configuration: "remapped")
-            }
+    subprojects.each {
+        compile project(path: ":${it.path}", configuration: "dev")
+        if (!it.isRunningGenerateDataTask) {
+            include project(path: ":${it.path}", configuration: "remapped")
         }
+    }
 
     modRuntime "net.fabricmc:dev-launch-injector:+"
     tap(rootProject.ext.setRuntimeTestMods)
@@ -362,6 +353,15 @@ publishing {
                         depNode.appendNode("scope", "compile")
                     }
                 }
+            }
+        }
+    }
+    if (System.getenv("MAVEN_PASS") != null) {
+        maven {
+            url = "https://deploy.shedaniel.me/"
+            credentials {
+                username = "shedaniel"
+                password = System.getenv("MAVEN_PASS")
             }
         }
     }
