@@ -3,7 +3,7 @@ import net.fabricmc.loom.task.RunClientTask
 
 plugins {
     id 'maven-publish'
-    id 'fabric-loom' version '0.5-SNAPSHOT'
+    id 'fabric-loom' version '0.6-SNAPSHOT'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
     id("net.corda.plugins.jar-filter") version("5.0.8") apply false
 }
@@ -33,7 +33,7 @@ allprojects {
     }
 
     loom {
-        shareCaches = true
+//        shareCaches = true
     }
 
     java {
@@ -42,7 +42,6 @@ allprojects {
     }
 
     repositories {
-        mavenLocal()
         maven {
             name = "JitPack"
             url = "https://jitpack.io"
@@ -72,11 +71,15 @@ allprojects {
             }
         }
         maven {
-            name = "Cloth"
-            url = "https://dl.bintray.com/shedaniel/cloth"
+            name = "shedaniel"
+            url = "https://maven.shedaniel.me"
             content {
-                includeGroup "me.shedaniel.cloth.api"
+                includeGroupByRegex "me.shedaniel(?:.\\w+)*"
             }
+        }
+        maven {
+            name = "TerraFormersMC"
+            url = "https://maven.terraformersmc.com/releases/"
         }
         maven {
             name = "Earthcomputer"
@@ -105,9 +108,12 @@ allprojects {
                     exclude group: "net.fabricmc.fabric-api"
                 }
                 exclude group: "net.fabricmc"
+                exclude group: "com.jamieswhiteshirt"
                 if (!dep.contains("me.shedaniel")) {
                     exclude group: "me.shedaniel"
                 }
+                exclude group: "me.shedaniel.cloth", module: "cloth-config"
+                exclude group: "io.github.prospector", module: "modmenu"
             }
         }
         dependencies.ext.useAsApi = { dep ->
@@ -121,9 +127,12 @@ allprojects {
                     exclude group: "net.fabricmc.fabric-api"
                 }
                 exclude group: "net.fabricmc"
+                exclude group: "com.jamieswhiteshirt"
                 if (!dep.contains("me.shedaniel")) {
                     exclude group: "me.shedaniel"
                 }
+                exclude group: "me.shedaniel.cloth", module: "cloth-config"
+                exclude group: "io.github.prospector", module: "modmenu"
             }
         }
 
@@ -335,14 +344,12 @@ sourceSets {
 }
 
 dependencies {
-    afterEvaluate {
         subprojects.each {
             compile project(path: ":${it.path}", configuration: "dev")
             if (!it.isRunningGenerateDataTask) {
                 include project(path: ":${it.path}", configuration: "remapped")
             }
         }
-    }
 
     modRuntime "net.fabricmc:dev-launch-injector:+"
     tap(rootProject.ext.setRuntimeTestMods)

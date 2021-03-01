@@ -24,6 +24,14 @@
 
 package com.github.chainmailstudios.astromine.foundations.common.world.feature;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsFluids;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import com.mojang.serialization.Codec;
+import com.terraformersmc.terraform.shapes.api.Position;
+import com.terraformersmc.terraform.shapes.impl.Shapes;
+import com.terraformersmc.terraform.shapes.impl.layer.transform.NoiseTranslateLayer;
+import com.terraformersmc.terraform.shapes.impl.layer.transform.TranslateLayer;
 import net.minecraft.block.Block;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.util.Lazy;
@@ -35,15 +43,6 @@ import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
-import com.mojang.serialization.Codec;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsFluids;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import com.terraformersmc.shapes.api.Position;
-import com.terraformersmc.shapes.impl.Shapes;
-import com.terraformersmc.shapes.impl.layer.transform.NoiseTranslateLayer;
-import com.terraformersmc.shapes.impl.layer.transform.TranslateLayer;
 
 import java.util.Random;
 

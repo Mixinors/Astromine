@@ -24,30 +24,29 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.foundations.AstromineFoundationsCommon;
+import com.github.chainmailstudios.astromine.foundations.common.world.feature.CrudeOilFeature;
+import com.github.chainmailstudios.astromine.foundations.common.world.feature.MeteorFeature;
+import com.github.chainmailstudios.astromine.foundations.common.world.feature.MeteorGenerator;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import com.github.chainmailstudios.astromine.registry.AstromineFeatures;
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
+import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
+import net.fabricmc.fabric.api.structure.v1.FabricStructureBuilder;
 import net.minecraft.structure.StructurePieceType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.chunk.StructureConfig;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.ConfiguredStructureFeature;
-import net.minecraft.world.gen.feature.DefaultFeatureConfig;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.StructureFeature;
+import net.minecraft.world.gen.feature.*;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.foundations.common.world.feature.CrudeOilFeature;
-import com.github.chainmailstudios.astromine.foundations.common.world.feature.MeteorFeature;
-import com.github.chainmailstudios.astromine.foundations.common.world.feature.MeteorGenerator;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import com.github.chainmailstudios.astromine.registry.AstromineFeatures;
-import me.shedaniel.cloth.api.dynamic.registry.v1.BiomesRegistry;
-import me.shedaniel.cloth.api.dynamic.registry.v1.DynamicRegistryCallback;
-import net.earthcomputer.libstructure.LibStructure;
+import java.util.function.Predicate;
 
 public class AstromineFoundationsFeatures extends AstromineFeatures {
+	public static final Identifier ASTROMINE_FOUNDATIONS_MODIFICATIONS_FEATURES = AstromineFoundationsCommon.identifier("foundations_odifications_features");
 	public static final Identifier METEOR_ID = AstromineCommon.identifier("meteor");
 	public static final StructurePieceType METEOR_STRUCTURE = register(MeteorGenerator::new, METEOR_ID);
 	public static final RegistryKey<ConfiguredStructureFeature<?, ?>> METEOR_KEY = RegistryKey.of(Registry.CONFIGURED_STRUCTURE_FEATURE_WORLDGEN, METEOR_ID);
@@ -57,24 +56,32 @@ public class AstromineFoundationsFeatures extends AstromineFeatures {
 	public static final RegistryKey<ConfiguredFeature<?, ?>> CRUDE_OIL_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, CRUDE_OIL_ID);
 
 	public static void initialize() {
-		if (AstromineConfig.get().meteorGeneration) {
-			MeteorFeature meteor = new MeteorFeature(DefaultFeatureConfig.CODEC);
-			ConfiguredStructureFeature<DefaultFeatureConfig, ? extends StructureFeature<DefaultFeatureConfig>> meteorStructure = meteor.configure(new DefaultFeatureConfig());
-			LibStructure.registerStructure(METEOR_ID, meteor, GenerationStep.Feature.RAW_GENERATION, new StructureConfig(32, 8, 12345), meteorStructure);
+		MeteorFeature meteor = new MeteorFeature(DefaultFeatureConfig.CODEC);
+		ConfiguredStructureFeature<DefaultFeatureConfig, ? extends StructureFeature<DefaultFeatureConfig>> meteorStructure = meteor.configure(new DefaultFeatureConfig());
+		FabricStructureBuilder.create(METEOR_ID, meteor)
+			.step(GenerationStep.Feature.SURFACE_STRUCTURES)
+			.defaultConfig(32, 8, 12345)
+			.superflatFeature(meteorStructure)
+			.register();
 
-			DynamicRegistryCallback.callback(Registry.BIOME_KEY).register((manager, key, biome) -> {
-				if ((AstromineConfig.get().netherMeteorGeneration || biome.getCategory() != Biome.Category.NETHER) && (AstromineConfig.get().endMeteorGeneration || biome.getCategory() != Biome.Category.THEEND)) {
-					BiomesRegistry.registerStructure(manager, biome, () -> meteorStructure);
+		BiomeModifications.create(ASTROMINE_FOUNDATIONS_MODIFICATIONS_FEATURES)
+			.add(ModificationPhase.ADDITIONS, overworldPredicate(), context -> {
+				if (AstromineConfig.get().meteorGeneration) {
+					context.getGenerationSettings().addStructure(METEOR_KEY);
+				}
+			})
+			.add(ModificationPhase.ADDITIONS, oceanPredicate(), context -> {
+				if (AstromineConfig.get().crudeOilWells) {
+					context.getGenerationSettings().addFeature(GenerationStep.Feature.LAKES, CRUDE_OIL_KEY);
 				}
 			});
-		}
+	}
 
-		if (AstromineConfig.get().crudeOilWells) {
-			DynamicRegistryCallback.callback(Registry.BIOME_KEY).register((manager, key, biome) -> {
-				if ((biome.getCategory() == Biome.Category.OCEAN && AstromineConfig.get().oceanicCrudeOilWells) || (biome.getCategory() == Biome.Category.DESERT && AstromineConfig.get().desertCrudeOilWells)) {
-					BiomesRegistry.registerFeature(manager, biome, GenerationStep.Feature.LAKES, CRUDE_OIL_KEY);
-				}
-			});
-		}
+	private static Predicate<BiomeSelectionContext> overworldPredicate() {
+		return context -> context.getBiome().getCategory() != Biome.Category.NETHER && context.getBiome().getCategory() != Biome.Category.THEEND;
+	}
+
+	private static Predicate<BiomeSelectionContext> oceanPredicate() {
+		return context -> context.getBiome().getCategory() == Biome.Category.OCEAN;
 	}
 }
