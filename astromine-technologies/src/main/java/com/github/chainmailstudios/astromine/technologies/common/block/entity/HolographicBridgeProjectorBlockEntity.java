@@ -24,8 +24,13 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.component.world.WorldBridgeComponent;
+import com.github.chainmailstudios.astromine.common.utilities.LineUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.VectorUtilities;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
+import com.github.vini2003.blade.common.miscellaneous.Color;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -36,13 +41,6 @@ import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
-
-import com.github.chainmailstudios.astromine.common.component.world.WorldBridgeComponent;
-import com.github.chainmailstudios.astromine.common.utilities.LineUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.VectorUtilities;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
-import com.github.vini2003.blade.common.miscellaneous.Color;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -101,6 +99,41 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 		}
 	}
 
+	public boolean attemptToBuildBridge(HolographicBridgeProjectorBlockEntity child) {
+		BlockPos bCP = child.getPos();
+		BlockPos bOP = this.getPos();
+
+		BlockPos nCP = bCP;
+
+		Direction cD = child.getCachedState().get(HorizontalFacingBlock.FACING);
+
+		if (cD == Direction.EAST) {
+			nCP = nCP.add(1, 0, 0);
+		} else if (cD == Direction.SOUTH) {
+			nCP = nCP.add(0, 0, 1);
+		}
+
+		int distance = (int) Math.sqrt(this.getPos().getSquaredDistance(child.getPos()));
+
+		if (distance == 0) {
+			return false;
+		}
+
+		ArrayList<Vector3f> segments = (ArrayList<Vector3f>) LineUtilities.getBresenhamSegments(VectorUtilities.toVector3f(bOP.offset(Direction.UP)), VectorUtilities.toVector3f(nCP.offset(Direction.UP)), 32);
+
+		for (Vector3f v : segments) {
+			BlockPos nP = new BlockPos(v.getX(), v.getY(), v.getZ());
+
+			if ((nP.getX() != bCP.getX() && nP.getX() != bOP.getX()) || (nP.getZ() != bCP.getZ() && nP.getZ() != bOP.getZ())) {
+				if (!this.world.getBlockState(nP).isAir()) {
+					return false;
+				}
+			}
+		}
+		
+		return true;
+	}
+	
 	public void buildBridge() {
 		if (this.child == null || this.world == null) {
 			return;
@@ -126,16 +159,17 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 		}
 
 		this.segments = (ArrayList<Vector3f>) LineUtilities.getBresenhamSegments(VectorUtilities.toVector3f(bOP.offset(Direction.UP)), VectorUtilities.toVector3f(nCP.offset(Direction.UP)), 32);
+		WorldBridgeComponent bridgeComponent = WorldBridgeComponent.get(world);
 
 		for (Vector3f v : this.segments) {
 			BlockPos nP = new BlockPos(v.getX(), v.getY(), v.getZ());
 
 			if ((nP.getX() != bCP.getX() && nP.getX() != bOP.getX()) || (nP.getZ() != bCP.getZ() && nP.getZ() != bOP.getZ())) {
-				this.world.setBlockState(nP, AstromineTechnologiesBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.getDefaultState());
+				if (this.world.getBlockState(nP).isAir()) {
+					this.world.setBlockState(nP, AstromineTechnologiesBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.getDefaultState());
+				}
 			}
-
-			WorldBridgeComponent bridgeComponent = WorldBridgeComponent.get(world);
-
+			
 			bridgeComponent.add(nP, new Vec3i((v.getX() - (int) v.getX()) * 16f, (v.getY() - (int) v.getY()) * 16f, (v.getZ() - (int) v.getZ()) * 16f));
 		}
 	}
