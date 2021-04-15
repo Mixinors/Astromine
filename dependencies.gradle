@@ -46,9 +46,6 @@ project.ext.setDefaultApis = {
     useAsApi("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${project.kotlin_version}")
     useAsApi("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${project.kotlin_version}")
 
-    // JOML
-    useAsApi("org.joml:joml:${joml_version}")
-
     // Maybe Data
     useAsApi("com.github.Draylar:maybe-data:${maybe_data_version}")
 

@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.entity.base;
 
+import net.minecraft.client.util.math.Vector3d;
+import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -47,8 +49,6 @@ import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidIt
 import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesCriteria;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesParticles;
-import org.joml.Vector3d;
-import org.joml.Vector3f;
 
 import java.util.Collection;
 
@@ -80,7 +80,7 @@ public abstract class RocketEntity extends ComponentFluidItemEntity {
 	public void updatePassengerPosition(Entity passenger) {
 		if (this.hasPassenger(passenger)) {
 			Vector3f position = getPassengerPosition();
-			passenger.updatePosition(getX() + position.x, getY() + position.y, getZ() + position.z);
+			passenger.updatePosition(getX() + position.getX(), getY() + position.getY(), getZ() + position.getZ());
 		}
 	}
 

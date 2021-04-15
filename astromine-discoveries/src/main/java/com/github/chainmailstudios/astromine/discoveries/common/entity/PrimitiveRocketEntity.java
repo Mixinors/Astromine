@@ -30,6 +30,8 @@ import com.github.chainmailstudios.astromine.common.component.general.base.ItemC
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 
+import net.minecraft.client.util.math.Vector3d;
+import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -54,10 +56,9 @@ import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDisco
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesItems;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsFluids;
 import io.netty.buffer.Unpooled;
-import org.joml.Vector3d;
-import org.joml.Vector3f;
 
 import com.google.common.collect.Lists;
+
 import javax.annotation.Nullable;
 import java.util.Collection;
 
