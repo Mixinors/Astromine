@@ -5,6 +5,7 @@ plugins {
     id 'maven-publish'
     id 'forgified-fabric-loom' version '0.6-SNAPSHOT'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
+    id "org.cadixdev.licenser" version "0.5.0"
 }
 
 apply from: 'dependencies.gradle'
@@ -284,6 +285,16 @@ subprojects {
     build.finalizedBy(copyBuiltToMain)
 }
 
+allprojects {
+    apply plugin: 'org.cadixdev.licenser'
+
+    license {
+        header = rootProject.file("LICENSE")
+
+        ignoreFailures = true
+    }
+}
+
 task generateDataAll
 subprojects.forEach {
     if (it.isRunningGenerateDataTask) {
@@ -391,3 +402,6 @@ curseforge {
         javaVersionAutoDetect = false
     }
 }
+
+task licenseFormatAll
+subprojects { p -> licenseFormatAll.dependsOn("${p.path}:licenseFormat") }
