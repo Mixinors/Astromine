@@ -30,7 +30,7 @@ allprojects {
 
     if (isSnapshot) {
         group = rootProject.mod_group + "-snapshot"
-        version = rootProject.mod_version + "+" + project.version_meta + '.' + runNumber
+        version = rootProject.mod_version + '-alpha.' + runNumber + "+" + project.version_meta
     } else {
         group = rootProject.mod_group
         version = rootProject.mod_version + "+" + project.version_meta
