@@ -25,6 +25,7 @@
 package com.github.chainmailstudios.astromine.common.volume.fluid;
 
 import com.github.chainmailstudios.astromine.common.utilities.NumberUtilities;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundTag;
@@ -35,7 +36,6 @@ import net.minecraft.util.registry.Registry;
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
 import com.github.chainmailstudios.astromine.common.component.general.SimpleFluidComponent;
 import com.github.chainmailstudios.astromine.common.volume.base.Volume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import io.netty.buffer.ByteBuf;
 
 import com.google.common.base.Objects;
@@ -46,7 +46,7 @@ import java.text.DecimalFormat;
 
 /**
  * A {@link Volume} of {@link Fluid}s, whose amount
- * and size are represented by a {@link Fraction}
+ * and size are represented by a {@link Long}
  *
  * It is not an inventory, thus it is recommended to use a {@link FluidComponent},
  * most commonly via its implementation, {@link SimpleFluidComponent}.
@@ -57,19 +57,19 @@ import java.text.DecimalFormat;
  *
  * - {@link #ofEmpty(Runnable)}, returning an empty volume, with an a listener.
  *
- * - {@link #of(Fraction, Fluid)}, returning a volume with the specified
- * amount as a {@link Fraction}, and the given {@link Fluid}.
+ * - {@link #of(long, Fluid)}, returning a volume with the specified
+ * amount as a {@link long}, and the given {@link Fluid}.
  *
- * - {@link #of(Fraction, Fluid, Runnable)}, returning a volume with the
- * specified amount as a {@link Fraction}, the given {@link Fluid},
+ * - {@link #of(long, Fluid, Runnable)}, returning a volume with the
+ * specified amount as a {@link long}, the given {@link Fluid},
  * and a listener as a {@link Runnable}.
  *
- * - {@link #of(Fraction, Fraction, Fluid)}, returning a volume with the
- * specified amount as a {@link Fraction}, size as a {@link Fraction},
+ * - {@link #of(long, long, Fluid)}, returning a volume with the
+ * specified amount as a {@link long}, size as a {@link long},
  * and the given {@link Fluid}.
  *
- *- {@link #of(Fraction, Fraction, Fluid, Runnable)}, returning a value with
- * the specified amount as a {@link Fraction}, size as a {@link Fraction},
+ *- {@link #of(long, long, Fluid, Runnable)}, returning a value with
+ * the specified amount as a {@link long}, size as a {@link long},
  * the given {@link Fluid}, and a listener as a {@link Runnable}.
  *
  * It is recommended that you always set the volume's listener to
@@ -80,50 +80,56 @@ import java.text.DecimalFormat;
  * - {@link JsonElement} - through {@link #toJson()} and {@link #fromJson(JsonElement)}.
  * - {@link ByteBuf} - through {@link #toPacket(PacketByteBuf)} and {@link #fromPacket(PacketByteBuf)}.
  */
-public class FluidVolume extends Volume<Fraction> {
+public class FluidVolume extends Volume<Long> {
+	public static final long BUCKET = 81000;
+	public static final long BOTTLE = BUCKET / 3L;
 	public static final DecimalFormat FORMAT = new DecimalFormat("#0.00");
+
+	public static long getTransfer() {
+		return AstromineConfig.get().fluidTransfer;
+	}
 
 	private Fluid fluid;
 
 	/** Instantiates a {@link FluidVolume}. */
-	protected FluidVolume(Fraction amount, Fraction size, Fluid fluid) {
+	protected FluidVolume(long amount, long size, Fluid fluid) {
 		super(amount, size);
 		this.fluid = fluid;
 	}
 
 	/** Instantiates a {@link FluidVolume} and a listener. */
-	protected FluidVolume(Fraction amount, Fraction size, Fluid fluid, Runnable runnable) {
+	protected FluidVolume(long amount, long size, Fluid fluid, Runnable runnable) {
 		super(amount, size, runnable);
 		this.fluid = fluid;
 	}
 
 	/** Instantiates an empty {@link FluidVolume}. */
 	public static FluidVolume ofEmpty() {
-		return new FluidVolume(Fraction.EMPTY, Fraction.MAX_VALUE, Fluids.EMPTY);
+		return new FluidVolume(0L, Long.MAX_VALUE, Fluids.EMPTY);
 	}
 
 	/** Instantiates an empty {@link FluidVolume} with a listener. */
 	public static FluidVolume ofEmpty(Runnable runnable) {
-		return new FluidVolume(Fraction.EMPTY, Fraction.MAX_VALUE, Fluids.EMPTY, runnable);
+		return new FluidVolume(0L, Long.MAX_VALUE, Fluids.EMPTY, runnable);
 	}
 
 	/** Instantiates a {@link FluidVolume}. */
-	public static FluidVolume of(Fraction amount, Fluid fluid) {
-		return new FluidVolume(amount, Fraction.MAX_VALUE, fluid);
+	public static FluidVolume of(long amount, Fluid fluid) {
+		return new FluidVolume(amount, Long.MAX_VALUE, fluid);
 	}
 
 	/** Instantiates a {@link FluidVolume} and a listener. */
-	public static FluidVolume of(Fraction amount, Fluid fluid, Runnable runnable) {
-		return new FluidVolume(amount, Fraction.MAX_VALUE, fluid, runnable);
+	public static FluidVolume of(long amount, Fluid fluid, Runnable runnable) {
+		return new FluidVolume(amount, Long.MAX_VALUE, fluid, runnable);
 	}
 
 	/** Instantiates a {@link FluidVolume}. */
-	public static FluidVolume of(Fraction amount, Fraction size, Fluid fluid) {
+	public static FluidVolume of(long amount, long size, Fluid fluid) {
 		return new FluidVolume(amount, size, fluid);
 	}
 
 	/** Instantiates a {@link FluidVolume} and a listener. */
-	public static FluidVolume of(Fraction amount, Fraction size, Fluid fluid, Runnable runnable) {
+	public static FluidVolume of(long amount, long size, Fluid fluid, Runnable runnable) {
 		return new FluidVolume(amount, size, fluid, runnable);
 	}
 
@@ -169,7 +175,7 @@ public class FluidVolume extends Volume<Fraction> {
 	}
 
 	/**
-	 * Attempts to give the given {@link V} volume a {@link Fraction} of this
+	 * Attempts to give the given {@link V} volume a {@link Long} of this
 	 * volume's content.
 	 *
 	 * If we both have the same fluid, the target receives as much as possible.
@@ -181,11 +187,11 @@ public class FluidVolume extends Volume<Fraction> {
 	 * If our fluids not the same, and theirs is not {@link Fluids#EMPTY},
 	 * do nothing.
 	 *
-	 * The amount transferred is the {@link Fraction#minimum(Fraction, Fraction)} between
+	 * The amount transferred is the {@link Math#min(long, long)} between
 	 * the target's available space, our amount, and the specified amount.
 	 */
 	@Override
-	public <V extends Volume<Fraction>> void give(V volume, Fraction fraction) {
+	public <V extends Volume<Long>> void give(V volume, Long l) {
 		if (!(volume instanceof FluidVolume))
 			return;
 
@@ -197,30 +203,28 @@ public class FluidVolume extends Volume<Fraction> {
 			}
 		}
 
-		Fraction amount = Fraction.minimum(volume.getSize().subtract(volume.getAmount()), Fraction.minimum(getAmount(), fraction));
+		long amount = Math.min(volume.getSize() - volume.getAmount(), Math.min(getAmount(), l));
 
-		if (amount.biggerThan(Fraction.EMPTY)) {
-			volume.setAmount(volume.getAmount().add(amount));
-			setAmount(getAmount().subtract(amount));
+		if (amount > 0) {
+			volume.setAmount(volume.getAmount() + amount);
+			setAmount(getAmount() - amount);
 		}
 
 		if (isEmpty()) {
 			setFluid(Fluids.EMPTY);
-			setAmount(Fraction.EMPTY);
+			setAmount(0L);
 		}
 	}
 
 	/** Gives this volume the minimum between the available amount and the
 	 * specified amount. */
 	@Override
-	public void give(Fraction fraction) {
-		Fraction amount = Fraction.minimum(getSize().subtract(getAmount()), fraction);
-
-		setAmount(Fraction.add(getAmount(), amount));
+	public void give(Long l) {
+		setAmount(Math.min(getSize(), getAmount() + l));
 	}
 
 	/**
-	 * Attempts to take the given {@link Fraction} from a {@link V}
+	 * Attempts to take the given {@link Long} from a {@link V}
 	 * volume's content.
 	 *
 	 * If we both have the same fluid, we receive as much as possible.
@@ -232,11 +236,11 @@ public class FluidVolume extends Volume<Fraction> {
 	 * If our fluids not the same, and ours is not {@link Fluids#EMPTY},
 	 * do nothing.
 	 *
-	 * The amount transferred is the {@link Fraction#minimum(Fraction, Fraction)} between
+	 * The amount transferred is the {@link Math#min(long, long)} between
 	 * the our available space, their amount, and the specified amount.
 	 */
 	@Override
-	public <V extends Volume<Fraction>> void take(V volume, Fraction amount) {
+	public <V extends Volume<Long>> void take(V volume, Long amount) {
 		if (!(volume instanceof FluidVolume))
 			return;
 
@@ -254,15 +258,13 @@ public class FluidVolume extends Volume<Fraction> {
 	/** Takes the minimum between the stored amount and the
 	 * specified amount from this volume. */
 	@Override
-	public void take(Fraction fraction) {
-		Fraction amount = Fraction.minimum(getAmount(), fraction);
-
-		setAmount(Fraction.subtract(getAmount(), amount));
+	public void take(Long fraction) {
+		setAmount(Math.max(0, getAmount() - fraction));
 	}
 
 	/** Returns a copy of this volume. */
 	@Override
-	public <V extends Volume<Fraction>> V copy() {
+	public <V extends Volume<Long>> V copy() {
 		return (V) of(getAmount(), getSize(), getFluid());
 	}
 
@@ -298,15 +300,15 @@ public class FluidVolume extends Volume<Fraction> {
 
 	/** Deserializes a volume from a {@link CompoundTag}. */
 	public static FluidVolume fromTag(CompoundTag tag) {
-		return of(Fraction.fromTag(tag.getCompound("amount")), Fraction.fromTag(tag.getCompound("size")), Registry.FLUID.get(new Identifier(tag.getString("fluid"))));
+		return of(tag.getLong("amount"), tag.getLong("size"), Registry.FLUID.get(new Identifier(tag.getString("fluid"))));
 	}
 
 	/** Serializes this volume to a {@link CompoundTag}. */
 	@Override
 	public CompoundTag toTag() {
 		CompoundTag tag = new CompoundTag();
-		tag.put("amount", getAmount().toTag());
-		tag.put("size", getSize().toTag());
+		tag.putLong("amount", getAmount());
+		tag.putLong("size", getSize());
 		tag.putString("fluid", Registry.FLUID.getId(getFluid()).toString());
 		return tag;
 	}
@@ -318,7 +320,7 @@ public class FluidVolume extends Volume<Fraction> {
 				JsonPrimitive jsonPrimitive = jsonElement.getAsJsonPrimitive();
 
 				if (jsonPrimitive.isString()) {
-					return of(Fraction.BUCKET, Registry.FLUID.get(new Identifier(jsonPrimitive.getAsString())));
+					return of(BUCKET, Registry.FLUID.get(new Identifier(jsonPrimitive.getAsString())));
 				} else {
 					return null;
 				}
@@ -330,9 +332,9 @@ public class FluidVolume extends Volume<Fraction> {
 
 			if (!jsonObject.has("fluid")) return null;
 			if (!jsonObject.has("amount")) {
-				return of(Fraction.BUCKET, Registry.FLUID.get(new Identifier(jsonObject.get("fluid").getAsString())));
+				return of(BUCKET, Registry.FLUID.get(new Identifier(jsonObject.get("fluid").getAsString())));
 			} else {
-				return of(Fraction.fromJson(jsonObject.get("amount")), Registry.FLUID.get(new Identifier(jsonObject.get("fluid").getAsString())));
+				return of(jsonObject.get("amount").getAsLong(), Registry.FLUID.get(new Identifier(jsonObject.get("fluid").getAsString())));
 			}
 		}
 	}
@@ -341,8 +343,8 @@ public class FluidVolume extends Volume<Fraction> {
 	public JsonElement toJson() {
 		JsonObject object = new JsonObject();
 		object.addProperty("fluid", Registry.FLUID.getId(getFluid()).toString());
-		object.add("amount", getAmount().toJson());
-		object.add("size", getSize().toJson());
+		object.addProperty("amount", getAmount());
+		object.addProperty("size", getSize());
 		return object;
 	}
 
@@ -353,8 +355,8 @@ public class FluidVolume extends Volume<Fraction> {
 		} else {
 			int id = buffer.readVarInt();
 
-			Fraction amount = Fraction.fromPacket(buffer);
-			Fraction size = Fraction.fromPacket(buffer);
+			long amount = buffer.readVarLong();
+			long size = buffer.readVarLong();
 
 			return of(amount, size, Registry.FLUID.get(id));
 		}
@@ -369,8 +371,8 @@ public class FluidVolume extends Volume<Fraction> {
 
 			buffer.writeVarInt(Registry.FLUID.getRawId(getFluid()));
 
-			getAmount().toPacket(buffer);
-			getSize().toPacket(buffer);
+			buffer.writeVarLong(getAmount());
+			buffer.writeVarLong(getSize());
 		}
 
 		return buffer;

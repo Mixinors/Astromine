@@ -36,8 +36,8 @@ import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.technologies.common.block.*;
 
 public class AstromineTechnologiesBlocks extends AstromineBlocks {
-	public static final Block HOLOGRAPHIC_BRIDGE_PROJECTOR = register("holographic_bridge_projector", new HolographicBridgeProjectorBlock(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
-	public static final Block HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK = register("holographic_bridge_invisible", new HolographicBridgeInvisibleBlock(FabricBlockSettings.of(HolographicBridgeInvisibleBlock.MATERIAL).dropsNothing().strength(-1.0F, 3600000.8F).nonOpaque().lightLevel(15).allowsSpawning((a, b, c, d) -> false)));
+	public static final Block HOLOGRAPHIC_BRIDGE_PROJECTOR = register("holographic_bridge_projector", new HoloBridgeProjectorBlock(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK = register("holographic_bridge_invisible", new HoloBridgeInvisibleBlock(FabricBlockSettings.of(HoloBridgeInvisibleBlock.MATERIAL).dropsNothing().strength(-1.0F, 3600000.8F).nonOpaque().lightLevel(15).allowsSpawning((a, b, c, d) -> false)));
 
 	public static final Block VENT = register("vent", new VentBlock(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
 

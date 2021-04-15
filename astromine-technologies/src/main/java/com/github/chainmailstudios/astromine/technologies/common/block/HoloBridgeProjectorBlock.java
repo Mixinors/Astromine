@@ -41,11 +41,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingBlockWithEntity;
-import com.github.chainmailstudios.astromine.technologies.common.block.entity.HolographicBridgeProjectorBlockEntity;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.HoloBridgeProjectorBlockEntity;
 import com.github.vini2003.blade.common.miscellaneous.Color;
 
-public class HolographicBridgeProjectorBlock extends WrenchableHorizontalFacingBlockWithEntity {
-	public HolographicBridgeProjectorBlock(AbstractBlock.Settings settings) {
+public class HoloBridgeProjectorBlock extends WrenchableHorizontalFacingBlockWithEntity {
+	public HoloBridgeProjectorBlock(AbstractBlock.Settings settings) {
 		super(settings);
 	}
 
@@ -56,9 +56,9 @@ public class HolographicBridgeProjectorBlock extends WrenchableHorizontalFacingB
 		if (stack.getItem() instanceof DyeItem) {
 			DyeItem dye = (DyeItem) stack.getItem();
 
-			HolographicBridgeProjectorBlockEntity originalEntity = (HolographicBridgeProjectorBlockEntity) world.getBlockEntity(position);
+			HoloBridgeProjectorBlockEntity originalEntity = (HoloBridgeProjectorBlockEntity) world.getBlockEntity(position);
 
-			for (HolographicBridgeProjectorBlockEntity entity : new HolographicBridgeProjectorBlockEntity[] {originalEntity.getChild(), originalEntity, originalEntity.getParent()}) {
+			for (HoloBridgeProjectorBlockEntity entity : new HoloBridgeProjectorBlockEntity[] {originalEntity.getChild(), originalEntity, originalEntity.getParent()}) {
 				if (entity != null) {
 					int color = dye.getColor().color;
 
@@ -98,7 +98,7 @@ public class HolographicBridgeProjectorBlock extends WrenchableHorizontalFacingB
 
 	@Override
 	public BlockEntity createBlockEntity() {
-		return new HolographicBridgeProjectorBlockEntity();
+		return new HoloBridgeProjectorBlockEntity();
 	}
 
 	@Override

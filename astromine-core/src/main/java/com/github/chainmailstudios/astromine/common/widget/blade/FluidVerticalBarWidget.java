@@ -44,7 +44,6 @@ import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.TextUtilities;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.vini2003.blade.client.utilities.Layers;
 import com.github.vini2003.blade.common.utilities.Networks;
 import com.github.vini2003.blade.common.widget.base.AbstractWidget;
@@ -88,8 +87,8 @@ public class FluidVerticalBarWidget extends AbstractWidget {
 		super.onMouseClicked(x, y, button);
 
 		if (isWithin(x, y) && !getHidden() && button == 2) {
-			volumeSupplier.get().setAmount(Fraction.EMPTY);
-			volumeSupplier.get().setSize(Fraction.EMPTY);
+			volumeSupplier.get().setAmount(0L);
+			volumeSupplier.get().setSize(0L);
 			volumeSupplier.get().setFluid(Fluids.EMPTY);
 		}
 	}
@@ -98,12 +97,13 @@ public class FluidVerticalBarWidget extends AbstractWidget {
 	@Environment(EnvType.CLIENT)
 	@Override
 	public List<Text> getTooltip() {
-		Identifier fluidId = volumeSupplier.get().getFluidId();
+		FluidVolume volume = volumeSupplier.get();
+		Identifier fluidId = volume.getFluidId();
 
 		return Lists.newArrayList(
 				TextUtilities.getFluid(fluidId),
 				TextUtilities.getIdentifier(fluidId),
-				TextUtilities.getVolume(volumeSupplier.get()),
+				TextUtilities.getVolume(FluidVolume.of(volume.getAmount() / 81L, volume.getSize() / 81L, volume.getFluid())),
 				TextUtilities.getMod(fluidId)
 		);
 	}

@@ -37,7 +37,6 @@ import com.github.chainmailstudios.astromine.common.component.general.SimpleFlui
 import com.github.chainmailstudios.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergyConsumedProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
@@ -49,7 +48,7 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 	public VentBlockEntity() {
 		super(AstromineTechnologiesBlockEntityTypes.VENT);
 
-		getFluidComponent().getFirst().setSize(Fraction.of(AstromineConfig.get().ventFluid, 1));
+		getFluidComponent().getFirst().setSize(AstromineConfig.get().ventFluid);
 	}
 
 	@Override
@@ -70,8 +69,8 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 	}
 
 	@Override
-	public Fraction getFluidSize() {
-		return Fraction.of(AstromineConfig.get().ventFluid, 1);
+	public long getFluidSize() {
+		return AstromineConfig.get().ventFluid;
 	}
 
 	@Override
@@ -95,7 +94,7 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 
 		if (fluidComponent != null) {
 			EnergyVolume energyVolume = getEnergyComponent().getVolume();
-			if (energyVolume.hasStored(Fraction.of(1, 8))) {
+			if (energyVolume.hasStored(128)) {
 				BlockPos position = getPos();
 
 				Direction direction = world.getBlockState(position).get(FacingBlock.FACING);
@@ -111,7 +110,7 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 						FluidVolume sideVolume = atmosphereComponent.get(output);
 
 						if ((sideVolume.test(centerVolume.getFluid())) && sideVolume.smallerThan(centerVolume.getAmount())) {
-							centerVolume.give(sideVolume, Fraction.of(1, 8));
+							centerVolume.give(sideVolume, FluidVolume.BUCKET / 9L);
 
 							atmosphereComponent.add(output, sideVolume);
 
@@ -129,7 +128,7 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 						FluidVolume sideVolume = neighborAtmosphereComponent.get(output);
 
 						if ((centerVolume.test(sideVolume.getFluid())) && sideVolume.smallerThan(centerVolume.getAmount())) {
-							centerVolume.give(sideVolume, Fraction.of(1, 8));
+							centerVolume.give(sideVolume, FluidVolume.BUCKET / 9L);
 
 							neighborAtmosphereComponent.add(output, sideVolume);
 

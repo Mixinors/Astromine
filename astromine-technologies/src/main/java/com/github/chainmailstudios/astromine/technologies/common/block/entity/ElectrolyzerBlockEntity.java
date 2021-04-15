@@ -35,7 +35,6 @@ import com.github.chainmailstudios.astromine.common.component.general.SimpleEner
 import com.github.chainmailstudios.astromine.common.component.general.SimpleFluidComponent;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.FluidSizeProvider;
@@ -164,8 +163,8 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(AstromineConfig.get().primitiveElectrolyzerFluid, 1);
+		public long getFluidSize() {
+			return AstromineConfig.get().primitiveElectrolyzerFluid;
 		}
 
 		@Override
@@ -190,8 +189,8 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(AstromineConfig.get().basicElectrolyzerFluid, 1);
+		public long getFluidSize() {
+			return AstromineConfig.get().basicElectrolyzerFluid;
 		}
 
 		@Override
@@ -216,8 +215,8 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(AstromineConfig.get().advancedElectrolyzerFluid, 1);
+		public long getFluidSize() {
+			return AstromineConfig.get().advancedElectrolyzerFluid;
 		}
 
 		@Override
@@ -242,8 +241,8 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(AstromineConfig.get().eliteElectrolyzerFluid, 1);
+		public long getFluidSize() {
+			return AstromineConfig.get().eliteElectrolyzerFluid;
 		}
 
 		@Override

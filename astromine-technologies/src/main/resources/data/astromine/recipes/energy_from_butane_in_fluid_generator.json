@@ -2,10 +2,7 @@
   "type": "astromine:fluid_generating",
   "input": {
     "tag": "c:butane",
-    "amount": {
-      "numerator": 1,
-      "denominator": 160
-    }
+    "amount": 500
   },
   "energy_output": 256,
   "time": 1

@@ -26,6 +26,7 @@ package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -38,15 +39,15 @@ import com.github.chainmailstudios.astromine.common.component.general.SimpleEner
 import com.github.chainmailstudios.astromine.common.component.general.SimpleFluidComponent;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergyConsumedProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import org.jetbrains.annotations.NotNull;
 
 public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
-	private Fraction cooldown = Fraction.EMPTY;
+	private long cooldown = 0L;
 
 	public FluidPlacerBlockEntity() {
 		super(AstromineTechnologiesBlockEntityTypes.FLUID_INSERTER);
@@ -55,7 +56,7 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 	@Override
 	public FluidComponent createFluidComponent() {
 		FluidComponent fluidComponent = SimpleFluidComponent.of(1);
-		fluidComponent.getFirst().setSize(Fraction.of(8));
+		fluidComponent.getFirst().setSize(FluidVolume.BOTTLE * 8L);
 		return fluidComponent;
 	}
 
@@ -94,16 +95,16 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 			EnergyVolume energyVolume = energyComponent.getVolume();
 
 			if (energyVolume.getAmount() < getEnergyConsumed()) {
-				cooldown = Fraction.EMPTY;
+				cooldown = 0L;
 
 				tickInactive();
 			} else {
 				tickActive();
 
-				cooldown = cooldown.add(Fraction.ofDecimal(1.0D / getMachineSpeed()));
+				cooldown++;
 
-				if (cooldown.biggerOrEqualThan(Fraction.of(1))) {
-					cooldown = Fraction.EMPTY;
+				if (cooldown >= getMachineSpeed()) {
+					cooldown = 0L;
 
 					FluidVolume fluidVolume = fluidComponent.getFirst();
 
@@ -114,10 +115,10 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 					BlockState targetState = world.getBlockState(targetPos);
 
 					if (targetState.isAir()) {
-						if (fluidVolume.hasStored(Fraction.BUCKET)) {
-							FluidVolume toInsert = FluidVolume.of(Fraction.BUCKET, fluidVolume.getFluid());
+						if (fluidVolume.hasStored(FluidVolume.BUCKET)) {
+							FluidVolume toInsert = FluidVolume.of(FluidVolume.BUCKET, fluidVolume.getFluid());
 
-							fluidVolume.take(Fraction.BUCKET);
+							fluidVolume.take(FluidVolume.BUCKET);
 
 							energyVolume.take(getEnergyConsumed());
 
@@ -128,5 +129,17 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 				}
 			}
 		}
+	}
+
+	@Override
+	public CompoundTag toTag(CompoundTag tag) {
+		tag.putLong("cooldown", cooldown);
+		return super.toTag(tag);
+	}
+
+	@Override
+	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+		cooldown = tag.getLong("cooldown");
+		super.fromTag(state, tag);
 	}
 }

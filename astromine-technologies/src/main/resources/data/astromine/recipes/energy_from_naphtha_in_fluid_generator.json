@@ -2,10 +2,7 @@
   "type": "astromine:fluid_generating",
   "input": {
     "tag": "c:naphtha",
-    "amount": {
-      "numerator": 1,
-      "denominator": 440
-    }
+    "amount": 180
   },
   "energy_output": 93,
   "time": 1

@@ -74,7 +74,7 @@ public class TankScreenHandler extends ComponentBlockEntityFluidItemScreenHandle
 			ItemStack stack = blockEntity.getItemComponent().getFirst();
 
 			if (stack.getItem() instanceof FluidVolumeItem) {
-				return (((FluidVolumeItem) stack.getItem()).getSize().intValue());
+				return (int) ((FluidVolumeItem) stack.getItem()).getSize();
 			} else {
 				return 0;
 			}
@@ -96,7 +96,7 @@ public class TankScreenHandler extends ComponentBlockEntityFluidItemScreenHandle
 			ItemStack stack = blockEntity.getItemComponent().getSecond();
 
 			if (stack.getItem() instanceof FluidVolumeItem) {
-				return (((FluidVolumeItem) stack.getItem()).getSize().intValue());
+				return (int) ((FluidVolumeItem) stack.getItem()).getSize();
 			} else {
 				return 0;
 			}

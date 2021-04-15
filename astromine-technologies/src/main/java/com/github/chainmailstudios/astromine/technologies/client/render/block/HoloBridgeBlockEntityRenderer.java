@@ -37,19 +37,19 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 
 import com.github.chainmailstudios.astromine.client.render.layer.Layer;
-import com.github.chainmailstudios.astromine.technologies.common.block.HolographicBridgeProjectorBlock;
-import com.github.chainmailstudios.astromine.technologies.common.block.entity.HolographicBridgeProjectorBlockEntity;
+import com.github.chainmailstudios.astromine.technologies.common.block.HoloBridgeProjectorBlock;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.HoloBridgeProjectorBlockEntity;
 
-public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<HolographicBridgeProjectorBlockEntity> {
-	public HolographicBridgeBlockEntityRenderer(BlockEntityRenderDispatcher dispatcher) {
+public class HoloBridgeBlockEntityRenderer extends BlockEntityRenderer<HoloBridgeProjectorBlockEntity> {
+	public HoloBridgeBlockEntityRenderer(BlockEntityRenderDispatcher dispatcher) {
 		super(dispatcher);
 	}
 
 	@Override
-	public void render(HolographicBridgeProjectorBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider provider, int light, int overlay) {
+	public void render(HoloBridgeProjectorBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider provider, int light, int overlay) {
 		BlockState state = entity.getWorld().getBlockState(entity.getPos());
 
-		if (!(state.getBlock() instanceof HolographicBridgeProjectorBlock)) {
+		if (!(state.getBlock() instanceof HoloBridgeProjectorBlock)) {
 			return;
 		}
 
@@ -93,7 +93,7 @@ public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<Ho
 	}
 
 	@Override
-	public boolean rendersOutsideBoundingBox(HolographicBridgeProjectorBlockEntity blockEntity) {
+	public boolean rendersOutsideBoundingBox(HoloBridgeProjectorBlockEntity blockEntity) {
 		return true;
 	}
 }

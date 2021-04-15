@@ -38,7 +38,6 @@ import net.minecraft.util.registry.Registry;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentFluidItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.utilities.VolumeUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.FluidSizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
@@ -114,8 +113,8 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(AstromineConfig.get().primitiveTankFluid, 1);
+		public long getFluidSize() {
+			return AstromineConfig.get().primitiveTankFluid;
 		}
 
 		@Override
@@ -135,8 +134,8 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(AstromineConfig.get().basicTankFluid, 1);
+		public long getFluidSize() {
+			return AstromineConfig.get().basicTankFluid;
 		}
 
 		@Override
@@ -156,8 +155,8 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(AstromineConfig.get().advancedTankFluid, 1);
+		public long getFluidSize() {
+			return AstromineConfig.get().advancedTankFluid;
 		}
 
 		@Override
@@ -177,8 +176,8 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(AstromineConfig.get().eliteTankFluid, 1);
+		public long getFluidSize() {
+			return AstromineConfig.get().eliteTankFluid;
 		}
 
 		@Override
@@ -198,8 +197,8 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(Long.MAX_VALUE);
+		public long getFluidSize() {
+			return Long.MAX_VALUE;
 		}
 
 		@Override
@@ -211,8 +210,8 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 		public void tick() {
 			super.tick();
 
-			getFluidComponent().getFirst().setAmount(Fraction.of(Long.MAX_VALUE));
-			getFluidComponent().getFirst().setSize(Fraction.of(Long.MAX_VALUE));
+			getFluidComponent().getFirst().setAmount(Long.MAX_VALUE);
+			getFluidComponent().getFirst().setSize(Long.MAX_VALUE);
 		}
 	}
 }

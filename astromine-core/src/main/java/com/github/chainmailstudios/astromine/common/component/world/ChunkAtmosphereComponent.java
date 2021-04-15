@@ -39,7 +39,6 @@ import net.minecraft.world.chunk.WorldChunk;
 
 import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import dev.onyxstudios.cca.api.v3.component.Component;
@@ -202,7 +201,7 @@ public final class ChunkAtmosphereComponent implements Component, ServerTickingC
 		return !(Registry.BLOCK.getId(sideState.getBlock()).toString().equals("astromine:airlock") && !sideState.get(Properties.POWERED))
 		       && (sideState.isAir() || !sideState.isSideSolidFullSquare(world, sidePos, direction.getOpposite()))
 		       && (centerState.isAir() || !centerState.isSideSolidFullSquare(world, centerPos, direction)) && (sideVolume.isEmpty() || sideVolume.test(centerVolume.getFluid()))
-		       && (centerVolume.hasStored(Fraction.BOTTLE) && !sideState.isOpaqueFullCube(world, centerPos))
+		       && (centerVolume.hasStored(FluidVolume.BOTTLE) && !sideState.isOpaqueFullCube(world, centerPos))
 		       && sideVolume.smallerThan(centerVolume.getAmount());
 	}
 
@@ -254,7 +253,7 @@ public final class ChunkAtmosphereComponent implements Component, ServerTickingC
 
 			FluidVolume centerVolume = pair.getValue();
 
-			centerVolume.take(Fraction.of(AstromineConfig.get().gasDecayNumerator, AstromineConfig.get().gasDecayDenominator));
+			centerVolume.take(AstromineConfig.get().gasDecayAmount);
 
 			if (centerVolume.isEmpty()) {
 				remove(centerPos);
@@ -273,9 +272,9 @@ public final class ChunkAtmosphereComponent implements Component, ServerTickingC
 
 					if (isTraversableForPropagation(centerState, centerPos, sideState, sidePos, centerVolume, sideVolume, direction)) {
 						if (world.isAir(centerPos)) {
-							centerVolume.give(sideVolume, Fraction.BOTTLE);
+							centerVolume.give(sideVolume, FluidVolume.BOTTLE);
 						} else if (!centerState.isSideSolidFullSquare(world, centerPos, direction)) {
-							centerVolume.give(sideVolume, Fraction.BOTTLE);
+							centerVolume.give(sideVolume, FluidVolume.BOTTLE);
 						} else {
 							centerVolume.give(sideVolume, centerVolume.getAmount());
 						}
@@ -294,9 +293,9 @@ public final class ChunkAtmosphereComponent implements Component, ServerTickingC
 
 					if (isTraversableForPropagation(centerState, centerPos, sideState, sidePos, centerVolume, sideVolume, direction)) {
 						if (world.isAir(centerPos)) {
-							centerVolume.give(sideVolume, Fraction.BOTTLE);
+							centerVolume.give(sideVolume, FluidVolume.BOTTLE);
 						} else if (!world.getBlockState(centerPos).isSideSolidFullSquare(world, centerPos, direction)) {
-							centerVolume.give(sideVolume, Fraction.BOTTLE);
+							centerVolume.give(sideVolume, FluidVolume.BOTTLE);
 						} else {
 							centerVolume.give(sideVolume, centerVolume.getAmount());
 						}

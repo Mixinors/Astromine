@@ -35,7 +35,6 @@ import com.github.chainmailstudios.astromine.common.component.general.SimpleEner
 import com.github.chainmailstudios.astromine.common.component.general.SimpleFluidComponent;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.FluidSizeProvider;
@@ -165,8 +164,8 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(AstromineConfig.get().primitiveFluidMixerFluid, 1);
+		public long getFluidSize() {
+			return AstromineConfig.get().primitiveFluidMixerFluid;
 		}
 
 		@Override
@@ -191,8 +190,8 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(AstromineConfig.get().basicFluidMixerFluid, 1);
+		public long getFluidSize() {
+			return AstromineConfig.get().basicFluidMixerFluid;
 		}
 
 		@Override
@@ -217,8 +216,8 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(AstromineConfig.get().advancedFluidMixerFluid, 1);
+		public long getFluidSize() {
+			return AstromineConfig.get().advancedFluidMixerFluid;
 		}
 
 		@Override
@@ -243,8 +242,8 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(AstromineConfig.get().eliteFluidMixerFluid, 1);
+		public long getFluidSize() {
+			return AstromineConfig.get().eliteFluidMixerFluid;
 		}
 
 		@Override

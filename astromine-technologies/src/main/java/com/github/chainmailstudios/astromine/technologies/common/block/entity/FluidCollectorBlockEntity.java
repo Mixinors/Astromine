@@ -30,6 +30,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.FluidDrainable;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.fluid.FluidState;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -42,15 +43,15 @@ import com.github.chainmailstudios.astromine.common.component.general.SimpleEner
 import com.github.chainmailstudios.astromine.common.component.general.SimpleFluidComponent;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergyConsumedProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import org.jetbrains.annotations.NotNull;
 
 public class FluidCollectorBlockEntity extends ComponentEnergyFluidBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
-	private Fraction cooldown = Fraction.EMPTY;
+	private long cooldown = 0L;
 
 	public FluidCollectorBlockEntity() {
 		super(AstromineTechnologiesBlockEntityTypes.FLUID_EXTRACTOR);
@@ -59,7 +60,7 @@ public class FluidCollectorBlockEntity extends ComponentEnergyFluidBlockEntity i
 	@Override
 	public FluidComponent createFluidComponent() {
 		FluidComponent fluidComponent = SimpleFluidComponent.of(1);
-		fluidComponent.getFirst().setSize(Fraction.of(8));
+		fluidComponent.getFirst().setSize(FluidVolume.BUCKET * 8);
 		return fluidComponent;
 	}
 
@@ -98,16 +99,16 @@ public class FluidCollectorBlockEntity extends ComponentEnergyFluidBlockEntity i
 			EnergyVolume energyVolume = energyComponent.getVolume();
 
 			if (energyVolume.getAmount() < getEnergyConsumed()) {
-				cooldown = Fraction.EMPTY;
+				cooldown = 0L;
 
 				tickInactive();
 			} else {
 				tickActive();
 
-				cooldown = cooldown.add(Fraction.ofDecimal(1.0D / getMachineSpeed()));
+				cooldown = cooldown++;
 
-				if (cooldown.biggerOrEqualThan(Fraction.of(1))) {
-					cooldown = Fraction.EMPTY;
+				if (cooldown >= getMachineSpeed()) {
+					cooldown = 0L;
 
 					FluidVolume fluidVolume = fluidComponent.getFirst();
 
@@ -121,7 +122,7 @@ public class FluidCollectorBlockEntity extends ComponentEnergyFluidBlockEntity i
 					Block targetBlock = targetBlockState.getBlock();
 
 					if (targetBlock instanceof FluidDrainable && targetFluidState.isStill()) {
-						FluidVolume toInsert = FluidVolume.of(Fraction.BUCKET, targetFluidState.getFluid());
+						FluidVolume toInsert = FluidVolume.of(FluidVolume.BUCKET, targetFluidState.getFluid());
 
 						if (toInsert.test(fluidVolume)) {
 							fluidVolume.take(toInsert, toInsert.getAmount());
@@ -135,5 +136,17 @@ public class FluidCollectorBlockEntity extends ComponentEnergyFluidBlockEntity i
 				}
 			}
 		}
+	}
+
+	@Override
+	public CompoundTag toTag(CompoundTag tag) {
+		tag.putLong("cooldown", cooldown);
+		return super.toTag(tag);
+	}
+
+	@Override
+	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+		cooldown = tag.getLong("cooldown");
+		super.fromTag(state, tag);
 	}
 }

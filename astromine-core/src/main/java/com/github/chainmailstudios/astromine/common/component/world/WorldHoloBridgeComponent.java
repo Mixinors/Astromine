@@ -24,8 +24,10 @@
 
 package com.github.chainmailstudios.astromine.common.component.world;
 
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.Block;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
@@ -59,15 +61,15 @@ import java.util.Set;
  * Serialization and deserialization methods are provided for:
  * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
  */
-public final class WorldBridgeComponent implements Component {
+public final class WorldHoloBridgeComponent implements Component {
 	private final Long2ObjectArrayMap<Set<Vec3i>> entries = new Long2ObjectArrayMap<>();
 
 	private final Long2ObjectArrayMap<VoxelShape> cache = new Long2ObjectArrayMap<>();
 
 	private final World world;
 
-	/** Instantiates a {@link WorldBridgeComponent}. */
-	public WorldBridgeComponent(World world) {
+	/** Instantiates a {@link WorldHoloBridgeComponent}. */
+	public WorldHoloBridgeComponent(World world) {
 		this.world = world;
 	}
 
@@ -158,57 +160,48 @@ public final class WorldBridgeComponent implements Component {
 		return shape;
 	}
 
-	/** Serializes this {@link WorldBridgeComponent} to a {@link CompoundTag}. */
+	/** Serializes this {@link WorldHoloBridgeComponent} to a {@link CompoundTag}. */
 	@Override
 	public void writeToNbt(CompoundTag tag) {
-		CompoundTag dataTag = new CompoundTag();
+		ListTag dataTag = new ListTag();
 
-		int k = 0;
-
-		for (Map.Entry<Long, Set<Vec3i>> entry : entries.entrySet()) {
+		for (Long2ObjectMap.Entry<Set<Vec3i>> entry : entries.long2ObjectEntrySet()) {
 			CompoundTag pointTag = new CompoundTag();
-			CompoundTag vecTag = new CompoundTag();
-
-			pointTag.putLong("pos", entry.getKey());
-
+			long[] vecs = new long[entry.getValue().size()];
+			
 			int i = 0;
-
 			for (Vec3i vec : entry.getValue()) {
-				vecTag.putLong(String.valueOf(i), BlockPos.asLong(vec.getX(), vec.getY(), vec.getZ()));
-
-				++i;
+				vecs[i++] = BlockPos.asLong(vec.getX(), vec.getY(), vec.getZ());
 			}
 
-			pointTag.put("vecs", vecTag);
+			pointTag.putLong("pos", entry.getLongKey());
+			pointTag.put("vecs", new LongArrayTag(vecs));
 
-			dataTag.put(String.valueOf(k), pointTag);
-
-			++k;
+			dataTag.add(pointTag);
 		}
 
 		tag.put("data", dataTag);
 	}
 
-	/** Deserializes this {@link WorldBridgeComponent} from a {@link CompoundTag}. */
+	/** Deserializes this {@link WorldHoloBridgeComponent} from a {@link CompoundTag}. */
 	@Override
 	public void readFromNbt(CompoundTag tag) {
-		CompoundTag dataTag = tag.getCompound("data");
+		ListTag dataTag = tag.getList("data", NbtType.COMPOUND);
 
-		for (String key : dataTag.getKeys()) {
-			CompoundTag pointTag = dataTag.getCompound(key);
-			CompoundTag vecTag = pointTag.getCompound("vecs");
+		for (Tag pointTag : dataTag) {
+			long[] vecs = ((CompoundTag) pointTag).getLongArray("vecs");
 
-			long pos = pointTag.getLong("pos");
+			long pos = ((CompoundTag) pointTag).getLong("pos");
 
-			for (String vecKey : vecTag.getKeys()) {
-				add(pos, BlockPos.fromLong(vecTag.getLong(vecKey)));
+			for (long vec : vecs) {
+				add(pos, BlockPos.fromLong(vec));
 			}
 		}
 	}
 
-	/** Returns the {@link WorldBridgeComponent} of the given {@link V}. */
+	/** Returns the {@link WorldHoloBridgeComponent} of the given {@link V}. */
 	@Nullable
-	public static <V> WorldBridgeComponent get(V v) {
+	public static <V> WorldHoloBridgeComponent get(V v) {
 		try {
 			return AstromineComponents.WORLD_BRIDGE_COMPONENT.get(v);
 		} catch (Exception justShutUpAlready) {

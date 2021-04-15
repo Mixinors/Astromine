@@ -35,7 +35,6 @@ import com.github.chainmailstudios.astromine.common.component.general.SimpleEner
 import com.github.chainmailstudios.astromine.common.component.general.SimpleFluidComponent;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.FluidSizeProvider;
@@ -161,8 +160,8 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(AstromineConfig.get().primitiveFluidGeneratorFluid, 1);
+		public long getFluidSize() {
+			return AstromineConfig.get().primitiveFluidGeneratorFluid;
 		}
 
 		@Override
@@ -187,8 +186,8 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(AstromineConfig.get().basicFluidGeneratorFluid, 1);
+		public long getFluidSize() {
+			return AstromineConfig.get().basicFluidGeneratorFluid;
 		}
 
 		@Override
@@ -213,8 +212,8 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(AstromineConfig.get().advancedFluidGeneratorFluid, 1);
+		public long getFluidSize() {
+			return AstromineConfig.get().advancedFluidGeneratorFluid;
 		}
 
 		@Override
@@ -239,8 +238,8 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(AstromineConfig.get().eliteFluidGeneratorFluid, 1);
+		public long getFluidSize() {
+			return AstromineConfig.get().eliteFluidGeneratorFluid;
 		}
 
 		@Override

@@ -32,7 +32,6 @@ import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentF
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
 import com.github.chainmailstudios.astromine.common.component.general.SimpleFluidComponent;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;
 
@@ -51,7 +50,7 @@ public class DrainBlockEntity extends ComponentFluidBlockEntity implements Ticka
 			return tickRedstone();
 		});
 
-		fluidComponent.getFirst().setSize(Fraction.of(Long.MAX_VALUE));
+		fluidComponent.getFirst().setSize(Long.MAX_VALUE);
 
 		return fluidComponent;
 	}
@@ -62,6 +61,6 @@ public class DrainBlockEntity extends ComponentFluidBlockEntity implements Ticka
 			return;
 
 		getFluidComponent().getFirst().setFluid(Fluids.EMPTY);
-		getFluidComponent().getFirst().setAmount(Fraction.EMPTY);
+		getFluidComponent().getFirst().setAmount(0L);
 	}
 }

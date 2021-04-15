@@ -28,7 +28,6 @@ import net.minecraft.fluid.Fluids;
 
 import com.github.chainmailstudios.astromine.common.component.general.SimpleFluidComponent;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import dev.onyxstudios.cca.api.v3.item.ItemComponentFactoryRegistry;
@@ -37,6 +36,6 @@ import dev.onyxstudios.cca.api.v3.item.ItemComponentInitializer;
 public class AstromineDiscoveriesComponents implements ItemComponentInitializer {
 	@Override
 	public void registerItemComponentFactories(ItemComponentFactoryRegistry registry) {
-		registry.registerFor(item -> item == AstromineDiscoveriesItems.SPACE_SUIT_CHESTPLATE, AstromineComponents.FLUID_INVENTORY_COMPONENT, stack -> SimpleFluidComponent.of(FluidVolume.of(Fraction.of(AstromineConfig.get().spaceSuitFluid), Fluids.EMPTY)));
+		registry.registerFor(item -> item == AstromineDiscoveriesItems.SPACE_SUIT_CHESTPLATE, AstromineComponents.FLUID_INVENTORY_COMPONENT, stack -> SimpleFluidComponent.of(FluidVolume.of(AstromineConfig.get().spaceSuitFluid, Fluids.EMPTY)));
 	}
 }

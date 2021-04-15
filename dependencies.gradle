@@ -13,7 +13,7 @@ project.ext.setDefaultApis = {
     useAsApi("com.terraformersmc.terraform-api:terraform-shapes-api-v1:${shapes_version}")
 
     // Blade
-    useAsApi("com.github.vini2003:blade:${blade_version}")
+    useAsApi("com.github.vini2003:Blade:${blade_version}")
 
     // Patchouli
     useAsApi("vazkii.patchouli:Patchouli:${patchouli_version}")

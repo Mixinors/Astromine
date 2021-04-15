@@ -34,7 +34,6 @@ import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentE
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.FluidSizeProvider;
@@ -178,8 +177,8 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(AstromineConfig.get().primitiveSolidifierFluid, 1);
+		public long getFluidSize() {
+			return AstromineConfig.get().primitiveSolidifierFluid;
 		}
 
 		@Override
@@ -204,8 +203,8 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(AstromineConfig.get().basicSolidifierFluid, 1);
+		public long getFluidSize() {
+			return AstromineConfig.get().basicSolidifierFluid;
 		}
 
 		@Override
@@ -230,8 +229,8 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(AstromineConfig.get().advancedSolidifierFluid, 1);
+		public long getFluidSize() {
+			return AstromineConfig.get().advancedSolidifierFluid;
 		}
 
 		@Override
@@ -256,8 +255,8 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(AstromineConfig.get().eliteSolidifierFluid, 1);
+		public long getFluidSize() {
+			return AstromineConfig.get().eliteSolidifierFluid;
 		}
 
 		@Override

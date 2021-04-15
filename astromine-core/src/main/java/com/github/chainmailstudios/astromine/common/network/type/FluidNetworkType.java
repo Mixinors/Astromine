@@ -26,7 +26,7 @@ package com.github.chainmailstudios.astromine.common.network.type;
 
 import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import net.minecraft.block.entity.BlockEntity;
 
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
@@ -86,7 +86,7 @@ public final class FluidNetworkType implements NetworkType {
 
 		for (Pair<FluidComponent, Direction> provider : providers) {
 			for (Pair<FluidComponent, Direction> requester : requesters) {
-				provider.getLeft().into(requester.getLeft(), Fraction.TRANSFER, requester.getRight());
+				provider.getLeft().into(requester.getLeft(), FluidVolume.getTransfer(), requester.getRight());
 			}
 		}
 	}

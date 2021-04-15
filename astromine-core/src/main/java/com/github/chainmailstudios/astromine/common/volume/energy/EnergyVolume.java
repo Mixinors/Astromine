@@ -32,7 +32,6 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.general.base.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.general.SimpleEnergyComponent;
 import com.github.chainmailstudios.astromine.common.volume.base.Volume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import io.netty.buffer.ByteBuf;
 
 import com.google.gson.JsonElement;
@@ -145,7 +144,7 @@ public class EnergyVolume extends Volume<Double> {
 	 * Attempts to take the given {@link Double} amount from a {@link V}
 	 * volume's content.
 	 *
-	 * The amount transferred is the {@link Fraction#minimum(Fraction, Fraction)} between
+	 * The amount transferred is the {@link Math#min(long, long)} between
 	 * our available space, their amount, and the specified amount.
 	 */
 	@Override

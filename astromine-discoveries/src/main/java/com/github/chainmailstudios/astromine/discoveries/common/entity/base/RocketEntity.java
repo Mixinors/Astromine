@@ -45,7 +45,6 @@ import net.minecraft.world.explosion.Explosion;
 
 import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidItemEntity;
 import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesCriteria;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesParticles;
 import org.joml.Vector3d;
@@ -164,7 +163,7 @@ public abstract class RocketEntity extends ComponentFluidItemEntity {
 	public abstract void openInventory(PlayerEntity player);
 
 	public void tryLaunch(PlayerEntity launcher) {
-		if (this.getFluidComponent().getFirst().biggerThan(Fraction.EMPTY)) {
+		if (this.getFluidComponent().getFirst().biggerThan(0L)) {
 			this.getDataTracker().set(RocketEntity.IS_RUNNING, true);
 			if (launcher instanceof ServerPlayerEntity) {
 				AstromineDiscoveriesCriteria.LAUNCH_ROCKET.trigger((ServerPlayerEntity) launcher);

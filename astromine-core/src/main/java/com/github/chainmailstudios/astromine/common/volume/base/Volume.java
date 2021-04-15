@@ -27,7 +27,6 @@ package com.github.chainmailstudios.astromine.common.volume.base;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
 
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import io.netty.buffer.ByteBuf;
 
 import com.google.gson.JsonElement;
@@ -184,7 +183,7 @@ public abstract class Volume<N extends Number> {
 	}
 
 	/**
-	 * Attempts to give the given {@link V} volume a {@link Fraction} of this
+	 * Attempts to give the given {@link V} volume a {@link long} of this
 	 * volume's content.
 	 */
 	public abstract <V extends Volume<N>> void give(V volume, N amount);

@@ -32,7 +32,6 @@ import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.technologies.client.rei.generating.AbstractEnergyGeneratingDisplay;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.FluidGeneratingRecipe;
@@ -74,7 +73,7 @@ public class LiquidGeneratingDisplay extends AbstractEnergyGeneratingDisplay {
 		return input.getMatchingVolumes()[0].getFluid();
 	}
 
-	public Fraction getAmount() {
+	public long getAmount() {
 		return input.getMatchingVolumes()[0].getAmount();
 	}
 

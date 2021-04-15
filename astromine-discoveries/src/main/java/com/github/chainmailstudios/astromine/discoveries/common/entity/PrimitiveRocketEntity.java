@@ -48,7 +48,6 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.chainmailstudios.astromine.common.utilities.VolumeUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.discoveries.common.entity.base.RocketEntity;
 import com.github.chainmailstudios.astromine.discoveries.common.screenhandler.PrimitiveRocketScreenHandler;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesDimensions;
@@ -65,9 +64,9 @@ import java.util.Collection;
 public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScreenHandlerFactory {
 	public static final Identifier PRIMITIVE_ROCKET_SPAWN = AstromineCommon.identifier("primitive_rocket_spawn");
 
-	private static final FluidIngredient KEROSENE_INGREDIENT = FluidIngredient.ofFluidVolumes(FluidVolume.of(Fraction.ofDecimal(0.288D), AstromineFoundationsFluids.KEROSENE));
+	private static final FluidIngredient KEROSENE_INGREDIENT = FluidIngredient.ofFluidVolumes(FluidVolume.of(FluidVolume.BUCKET / 9L, AstromineFoundationsFluids.KEROSENE));
 
-	private static final FluidIngredient OXYGEN_INGREDIENT = FluidIngredient.ofFluidVolumes(FluidVolume.of(Fraction.ofDecimal(0.112D), AstromineFoundationsFluids.OXYGEN));
+	private static final FluidIngredient OXYGEN_INGREDIENT = FluidIngredient.ofFluidVolumes(FluidVolume.of(FluidVolume.BUCKET / 27L, AstromineFoundationsFluids.OXYGEN));
 
 	public PrimitiveRocketEntity(EntityType<?> type, World world) {
 		super(type, world);
@@ -76,8 +75,8 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 	@Override
 	public FluidComponent createFluidComponent() {
 		FluidComponent fluidComponent = SimpleAutoSyncedFluidComponent.of(2);
-		fluidComponent.getFirst().setSize(Fraction.of(1024L));
-		fluidComponent.getSecond().setSize(Fraction.of(1024L));
+		fluidComponent.getFirst().setSize(FluidVolume.BUCKET * 16L);
+		fluidComponent.getSecond().setSize(FluidVolume.BUCKET * 16L);
 		return fluidComponent;
 	}
 

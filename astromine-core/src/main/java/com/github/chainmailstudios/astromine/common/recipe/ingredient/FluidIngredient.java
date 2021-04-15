@@ -33,7 +33,6 @@ import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.common.utilities.StringUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import io.netty.buffer.ByteBuf;
 
 import com.google.gson.JsonArray;
@@ -50,7 +49,7 @@ import java.util.stream.StreamSupport;
 
 /**
  * A recipe ingredient consisting of (a) {@link Fluid}(s) and its
- * {@link Fraction}(s) fractional amount(s).
+ * {@link long}(s) fractional amount(s).
  *
  * Serialization and deserialization methods are provided for:
  * - {@link JsonElement} - through {@link #toJson()} and {@link #fromJson(JsonElement)}.
@@ -95,7 +94,7 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 					return ofEntries(StreamSupport.stream(jsonArray.spliterator(), false).map((jsonElement) -> Entry.fromJson(jsonElement.getAsJsonObject().get("fluid"))));
 				}
 			} else if (json.isJsonPrimitive() && json.getAsJsonPrimitive().isString()) {
-				return ofEntries(Stream.generate(() -> new SimpleEntry(FluidVolume.of(Fraction.BUCKET, Registry.FLUID.get(new Identifier(json.getAsString()))))).limit(1));
+				return ofEntries(Stream.generate(() -> new SimpleEntry(FluidVolume.of(FluidVolume.BUCKET, Registry.FLUID.get(new Identifier(json.getAsString()))))).limit(1));
 			} else {
 				throw new JsonSyntaxException("Expected fluid to be object or array of objects");
 			}
@@ -110,7 +109,7 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 			JsonObject jsonObject = new JsonObject();
 
 			jsonObject.addProperty("tag", ServerTagManagerHolder.getTagManager().getFluids().getTagId(((TagEntry) entries[0]).tag).toString());
-			jsonObject.add("amount", ((TagEntry) entries[0]).amount.toJson());
+			jsonObject.addProperty("amount", ((TagEntry) entries[0]).amount);
 
 			return jsonObject;
 		} else if (entries.length >= 1) {
@@ -189,7 +188,7 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 		if (this.matchingVolumes.length == 0)
 			return null;
 		for (FluidVolume matchingVolume : matchingVolumes) {
-			if (FluidVolume.fluidsEqual(matchingVolume, volume) && volume.getAmount().biggerOrEqualThan(matchingVolume.getAmount()))
+			if (FluidVolume.fluidsEqual(matchingVolume, volume) && volume.getAmount() >= matchingVolume.getAmount())
 				return matchingVolume.copy();
 		}
 		return null;
@@ -212,10 +211,10 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 			if (jsonObject.has("fluid") && jsonObject.has("tag")) {
 				throw new JsonParseException("A fluid ingredient entry is either a tag or a fluid, not both!");
 			} else {
-				Fraction amount = Fraction.BUCKET;
+				long amount = FluidVolume.BUCKET;
 
 				if (jsonObject.has("amount")) {
-					amount = Fraction.fromJson(jsonObject.get("amount"));
+					amount = jsonObject.get("amount").getAsLong();
 				}
 
 				if (jsonObject.has("fluid")) {
@@ -270,10 +269,10 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 	 */
 	private static class TagEntry implements Entry {
 		private final Tag<Fluid> tag;
-		private final Fraction amount;
+		private final long amount;
 
 		/** Instantiates a {@link TagEntry}. */
-		private TagEntry(Tag<Fluid> tag, Fraction amount) {
+		private TagEntry(Tag<Fluid> tag, long amount) {
 			this.tag = tag;
 			this.amount = amount;
 		}

@@ -32,23 +32,28 @@ import com.github.chainmailstudios.astromine.common.component.general.base.Energ
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.function.Function;
+import java.util.function.ToLongFunction;
 
 /**
  * A handler of {@link ComparatorBlockEntity}
  * output levels.
  */
 public class ComparatorOutput {
-	/** Returns the output level for a {@link BlockEntity} with an {@link ItemComponent}. */
-    public static int forItems(@Nullable BlockEntity entity) {
-        return ScreenHandler.calculateComparatorOutput(entity);
-    }
+	/**
+	 * Returns the output level for a {@link BlockEntity} with an {@link ItemComponent}.
+	 */
+	public static int forItems(@Nullable BlockEntity entity) {
+		return ScreenHandler.calculateComparatorOutput(entity);
+	}
 
-    /** Returns the output level for a {@link BlockEntity} with an {@link EnergyComponent}. */public static int forEnergy(@Nullable BlockEntity entity) {
+	/**
+	 * Returns the output level for a {@link BlockEntity} with an {@link EnergyComponent}.
+	 */
+	public static int forEnergy(@Nullable BlockEntity entity) {
 		if (entity == null) {
 			return 0;
 		}
@@ -60,13 +65,16 @@ public class ComparatorOutput {
 		}
 
 		if (component.getAmount() <= 0.0001) {
-            return 0;
-        }
+			return 0;
+		}
 
-        return 1 + (int) (component.getAmount() / component.getSize() * 14.0);
+		return 1 + (int) (component.getAmount() / component.getSize() * 14.0);
 	}
 
-	/** Returns the output level for a {@link BlockEntity} with a {@link FluidComponent}. */public static int forFluids(@Nullable BlockEntity entity) {
+	/**
+	 * Returns the output level for a {@link BlockEntity} with a {@link FluidComponent}.
+	 */
+	public static int forFluids(@Nullable BlockEntity entity) {
 		if (entity == null) {
 			return 0;
 		}
@@ -78,22 +86,24 @@ public class ComparatorOutput {
 		}
 
 		Collection<FluidVolume> contents = fluidComponent.getContents().values();
-		Fraction amounts = sumBy(contents, FluidVolume::getAmount);
+		long amounts = sumBy(contents, FluidVolume::getAmount);
 
-		if (amounts.getNumerator() == 0) {
+		if (amounts == 0) {
 			return 0;
 		}
 
-		Fraction sizes = sumBy(contents, FluidVolume::getSize);
-		Fraction ratio = amounts.divide(sizes);
-		return 1 + (int) (ratio.floatValue() * 14.0f);
+		long sizes = sumBy(contents, FluidVolume::getSize);
+		return 1 + (int) (amounts * 14.0f / sizes);
 	}
 
-	/** Sums collection of {@link T} into a {@link Fraction} by the given {@link Function}. */private static <T> Fraction sumBy(Collection<T> ts, Function<? super T, Fraction> extractor) {
-		Fraction result = Fraction.EMPTY;
+	/**
+	 * Sums collection of {@link T} into a {@link long} by the given {@link Function}.
+	 */
+	private static <T> long sumBy(Collection<T> ts, ToLongFunction<? super T> extractor) {
+		long result = 0;
 
 		for (T t : ts) {
-			result = result.add(extractor.apply(t));
+			result += extractor.applyAsLong(t);
 		}
 
 		return result;

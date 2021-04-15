@@ -41,12 +41,12 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.component.world.WorldBridgeComponent;
+import com.github.chainmailstudios.astromine.common.component.world.WorldHoloBridgeComponent;
 
-public class HolographicBridgeInvisibleBlock extends Block {
+public class HoloBridgeInvisibleBlock extends Block {
 	public static final Material MATERIAL = new Material.Builder(MaterialColor.CLEAR).build();
 
-	public HolographicBridgeInvisibleBlock(AbstractBlock.Settings settings) {
+	public HoloBridgeInvisibleBlock(AbstractBlock.Settings settings) {
 		super(settings);
 	}
 
@@ -76,7 +76,7 @@ public class HolographicBridgeInvisibleBlock extends Block {
 		if (!(world instanceof World)) {
 			return VoxelShapes.empty();
 		} else {
-			WorldBridgeComponent bridgeComponent = WorldBridgeComponent.get(world);
+			WorldHoloBridgeComponent bridgeComponent = WorldHoloBridgeComponent.get(world);
 
 			return bridgeComponent.getShape(position);
 		}

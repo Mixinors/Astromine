@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.client.rei;
 
+import me.shedaniel.rei.api.fractions.Fraction;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -46,7 +47,6 @@ import com.github.chainmailstudios.astromine.client.render.sprite.SpriteRenderer
 import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.NumberUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.EntryStack;
@@ -65,8 +65,8 @@ public abstract class AstromineRoughlyEnoughItemsPlugin implements REIPluginV0 {
 	private static final Identifier ENERGY_BACKGROUND = AstromineCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_background_thin.png");
 	private static final Identifier ENERGY_FOREGROUND = AstromineCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_foreground_thin.png");
 
-	public static me.shedaniel.rei.api.fractions.Fraction convertA2R(Fraction fraction) {
-		return me.shedaniel.rei.api.fractions.Fraction.of(fraction.getNumerator(), fraction.getDenominator());
+	public static Fraction convertA2R(long fraction) {
+		return Fraction.ofWhole(fraction);
 	}
 
 	public static EntryStack convertA2R(FluidVolume volume) {
@@ -155,7 +155,7 @@ public abstract class AstromineRoughlyEnoughItemsPlugin implements REIPluginV0 {
 				VertexConsumerProvider.Immediate consumers = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
 				SpriteRenderer.beginPass().setup(consumers, RenderLayer.getSolid()).sprite(FluidUtilities.getSprites(entry.getFluid())[0]).color(FluidUtilities.getColor(MinecraftClient.getInstance().player, entry.getFluid())).light(0x00f000f0).overlay(OverlayTexture.DEFAULT_UV).alpha(
 					0xff).normal(matrices.peek().getNormal(), 0, 0, 0).position(matrices.peek().getModel(), bounds.x + 1, bounds.y + bounds.height - height + 1, bounds.x + bounds.width - 1, bounds.y + bounds.height - 1, getZOffset() + 1).next(
-						PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
+					PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
 				consumers.draw();
 			}
 		}

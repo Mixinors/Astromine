@@ -37,7 +37,6 @@ import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergyConsumedProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
@@ -46,7 +45,7 @@ import com.github.chainmailstudios.astromine.technologies.registry.AstromineTech
 import org.jetbrains.annotations.NotNull;
 
 public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
-	private Fraction cooldown = Fraction.EMPTY;
+	private long cooldown = 0L;
 
 	public BlockPlacerBlockEntity() {
 		super(AstromineTechnologiesBlockEntityTypes.BLOCK_PLACER);
@@ -92,16 +91,16 @@ public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity imple
 			EnergyVolume energyVolume = energyComponent.getVolume();
 
 			if (energyVolume.getAmount() < getEnergyConsumed()) {
-				cooldown = Fraction.EMPTY;
+				cooldown = 0L;
 
 				tickInactive();
 			} else {
 				tickActive();
 
-				cooldown = cooldown.add(Fraction.ofDecimal(1.0D / getMachineSpeed()));
+				cooldown = cooldown++;
 
-				if (cooldown.biggerOrEqualThan(Fraction.of(1))) {
-					cooldown = Fraction.EMPTY;
+				if (cooldown >= getMachineSpeed()) {
+					cooldown = 0L;
 
 					ItemStack stored = itemComponent.getFirst();
 
@@ -127,13 +126,13 @@ public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity imple
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.put("cooldown", cooldown.toTag());
+		tag.putLong("cooldown", cooldown);
 		return super.toTag(tag);
 	}
 
 	@Override
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		cooldown = Fraction.fromTag(tag.getCompound("cooldown"));
+		cooldown = tag.getLong("cooldown");
 		super.fromTag(state, tag);
 	}
 }

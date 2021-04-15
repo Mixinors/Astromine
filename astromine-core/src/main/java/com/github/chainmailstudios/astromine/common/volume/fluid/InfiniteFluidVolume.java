@@ -27,38 +27,47 @@ package com.github.chainmailstudios.astromine.common.volume.fluid;
 import net.minecraft.fluid.Fluid;
 
 import com.github.chainmailstudios.astromine.common.volume.base.Volume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 
 /**
  * A variation of {@link FluidVolume}, with infinite
  * {@link #getAmount()} and {@link #getSize()}.
  */
 public final class InfiniteFluidVolume extends FluidVolume {
-	/** Instantiates an {@link InfiniteFluidVolume}s. */
+	/**
+	 * Instantiates an {@link InfiniteFluidVolume}s.
+	 */
 	private InfiniteFluidVolume(Fluid fluid) {
-		super(Fraction.of(Long.MAX_VALUE), Fraction.of(Long.MAX_VALUE), fluid);
+		super(Long.MAX_VALUE, Long.MAX_VALUE, fluid);
 	}
 
-	/** Instantiates an {@link InfiniteFluidVolume}s. */
+	/**
+	 * Instantiates an {@link InfiniteFluidVolume}s.
+	 */
 	public static InfiniteFluidVolume of(Fluid fluid) {
 		return new InfiniteFluidVolume(fluid);
 	}
 
-	/** Always return {@link Fraction#MAX_VALUE}. */
+	/**
+	 * Always return {@link Long#MAX_VALUE}.
+	 */
 	@Override
-	public Fraction getAmount() {
-		return Fraction.of(Long.MAX_VALUE);
+	public Long getAmount() {
+		return Long.MAX_VALUE;
 	}
 
-	/** Always return {@link Fraction#MAX_VALUE}. */
+	/**
+	 * Always return {@link Long#MAX_VALUE}.
+	 */
 	@Override
-	public Fraction getSize() {
-		return Fraction.of(Long.MAX_VALUE);
+	public Long getSize() {
+		return Long.MAX_VALUE;
 	}
 
-	/** Returns a copy of this volume. */
+	/**
+	 * Returns a copy of this volume.
+	 */
 	@Override
-	public <V extends Volume<Fraction>> V copy() {
+	public <V extends Volume<Long>> V copy() {
 		return (V) of(getFluid());
 	}
 }

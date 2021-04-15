@@ -35,7 +35,6 @@ import com.github.chainmailstudios.astromine.common.component.general.SimpleEner
 import com.github.chainmailstudios.astromine.common.component.general.SimpleFluidComponent;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.FluidSizeProvider;
@@ -119,7 +118,7 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 				double speed = Math.min(getMachineSpeed(), limit - progress);
 				double consumed = recipe.getEnergyInput() * speed / limit;
 
-				if (volume.hasStored(consumed)) {
+				if (volume.hasStored(consumed) && recipe.matches(fluidComponent)) {
 					volume.take(consumed);
 
 					if (progress + speed >= limit) {
@@ -169,8 +168,8 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(AstromineConfig.get().primitiveRefineryFluid, 1);
+		public long getFluidSize() {
+			return AstromineConfig.get().primitiveRefineryFluid;
 		}
 
 		@Override
@@ -195,8 +194,8 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(AstromineConfig.get().basicRefineryFluid, 1);
+		public long getFluidSize() {
+			return AstromineConfig.get().basicRefineryFluid;
 		}
 
 		@Override
@@ -221,8 +220,8 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(AstromineConfig.get().advancedRefineryFluid, 1);
+		public long getFluidSize() {
+			return AstromineConfig.get().advancedRefineryFluid;
 		}
 
 		@Override
@@ -247,8 +246,8 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(AstromineConfig.get().eliteRefineryFluid, 1);
+		public long getFluidSize() {
+			return AstromineConfig.get().eliteRefineryFluid;
 		}
 
 		@Override

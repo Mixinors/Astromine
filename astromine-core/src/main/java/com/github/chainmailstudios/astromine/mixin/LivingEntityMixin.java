@@ -60,7 +60,6 @@ import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
 import com.github.chainmailstudios.astromine.common.registry.BreathableRegistry;
 import com.github.chainmailstudios.astromine.common.registry.FluidEffectRegistry;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineAttributes;
 import com.github.chainmailstudios.astromine.registry.AstromineDimensions;
 import com.github.chainmailstudios.astromine.registry.AstromineTags;
@@ -108,7 +107,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 					atmosphereVolume = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));
 
 					if (atmosphereVolume.isEmpty()) {
-						atmosphereVolume = FluidVolume.of(Fraction.BUCKET, Registry.FLUID.get(AstromineCommon.identifier("oxygen")));
+						atmosphereVolume = FluidVolume.of(FluidVolume.BUCKET, Registry.FLUID.get(AstromineCommon.identifier("oxygen")));
 					}
 				} else {
 					atmosphereVolume = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));

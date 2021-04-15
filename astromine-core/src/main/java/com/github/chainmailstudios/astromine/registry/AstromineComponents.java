@@ -36,7 +36,7 @@ import com.github.chainmailstudios.astromine.common.component.general.base.Fluid
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
 import com.github.chainmailstudios.astromine.common.component.general.SimpleFluidComponent;
 import com.github.chainmailstudios.astromine.common.component.world.ChunkAtmosphereComponent;
-import com.github.chainmailstudios.astromine.common.component.world.WorldBridgeComponent;
+import com.github.chainmailstudios.astromine.common.component.world.WorldHoloBridgeComponent;
 import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
 import com.github.chainmailstudios.astromine.common.entity.base.ComponentEnergyEntity;
 import com.github.chainmailstudios.astromine.common.entity.base.ComponentEnergyItemEntity;
@@ -45,7 +45,6 @@ import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidIt
 import com.github.chainmailstudios.astromine.common.entity.base.ComponentItemEntity;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import dev.onyxstudios.cca.api.v3.block.BlockComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.block.BlockComponentInitializer;
 import dev.onyxstudios.cca.api.v3.chunk.ChunkComponentFactoryRegistry;
@@ -62,7 +61,7 @@ import dev.onyxstudios.cca.api.v3.world.WorldComponentInitializer;
 public class AstromineComponents implements WorldComponentInitializer, ChunkComponentInitializer, ItemComponentInitializer, EntityComponentInitializer, BlockComponentInitializer {
 	public static final ComponentKey<WorldNetworkComponent> WORLD_NETWORK_COMPONENT = ComponentRegistry.getOrCreate(AstromineCommon.identifier("world_network_component"), WorldNetworkComponent.class);
 	public static final ComponentKey<ChunkAtmosphereComponent> CHUNK_ATMOSPHERE_COMPONENT = ComponentRegistry.getOrCreate(AstromineCommon.identifier("chunk_atmosphere_component"), ChunkAtmosphereComponent.class);
-	public static final ComponentKey<WorldBridgeComponent> WORLD_BRIDGE_COMPONENT = ComponentRegistry.getOrCreate(AstromineCommon.identifier("world_bridge_component"), WorldBridgeComponent.class);
+	public static final ComponentKey<WorldHoloBridgeComponent> WORLD_BRIDGE_COMPONENT = ComponentRegistry.getOrCreate(AstromineCommon.identifier("world_holo_bridge_component"), WorldHoloBridgeComponent.class);
 
 	public static final ComponentKey<ItemComponent> ITEM_INVENTORY_COMPONENT = ComponentRegistry.getOrCreate(AstromineCommon.identifier("item_inventory_component"), ItemComponent.class);
 	public static final ComponentKey<FluidComponent> FLUID_INVENTORY_COMPONENT = ComponentRegistry.getOrCreate(AstromineCommon.identifier("fluid_inventory_component"), FluidComponent.class);
@@ -78,7 +77,7 @@ public class AstromineComponents implements WorldComponentInitializer, ChunkComp
 	@Override
 	public void registerWorldComponentFactories(WorldComponentFactoryRegistry registry) {
 		registry.register(WORLD_NETWORK_COMPONENT, WorldNetworkComponent::new);
-		registry.register(WORLD_BRIDGE_COMPONENT, WorldBridgeComponent::new);
+		registry.register(WORLD_BRIDGE_COMPONENT, WorldHoloBridgeComponent::new);
 	}
 
 	@Override
@@ -91,7 +90,7 @@ public class AstromineComponents implements WorldComponentInitializer, ChunkComp
 		registry.registerFor(
 				item -> item instanceof FluidVolumeItem,
 				FLUID_INVENTORY_COMPONENT,
-				stack -> SimpleFluidComponent.of(FluidVolume.of(Fraction.EMPTY, ((FluidVolumeItem) stack.getItem()).getSize(), Fluids.EMPTY))
+				stack -> SimpleFluidComponent.of(FluidVolume.of(0L, ((FluidVolumeItem) stack.getItem()).getSize(), Fluids.EMPTY))
 		);
 	}
 

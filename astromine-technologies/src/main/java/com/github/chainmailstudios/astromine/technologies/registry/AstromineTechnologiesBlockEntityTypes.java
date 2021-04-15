@@ -30,7 +30,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.*;
 
 public class AstromineTechnologiesBlockEntityTypes extends AstromineBlockEntityTypes {
-	public static final BlockEntityType<HolographicBridgeProjectorBlockEntity> HOLOGRAPHIC_BRIDGE = register("holographic_bridge", HolographicBridgeProjectorBlockEntity::new, AstromineTechnologiesBlocks.HOLOGRAPHIC_BRIDGE_PROJECTOR);
+	public static final BlockEntityType<HoloBridgeProjectorBlockEntity> HOLOGRAPHIC_BRIDGE = register("holographic_bridge", HoloBridgeProjectorBlockEntity::new, AstromineTechnologiesBlocks.HOLOGRAPHIC_BRIDGE_PROJECTOR);
 
 	public static final BlockEntityType<VentBlockEntity> VENT = register("vent", VentBlockEntity::new, AstromineTechnologiesBlocks.VENT);
 

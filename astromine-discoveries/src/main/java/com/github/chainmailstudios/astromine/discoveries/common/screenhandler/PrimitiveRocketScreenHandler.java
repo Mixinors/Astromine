@@ -30,7 +30,6 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
 import com.github.chainmailstudios.astromine.common.screenhandler.base.entity.ComponentEntityFluidItemScreenHandler;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.widget.blade.FluidVerticalBarWidget;
 import com.github.chainmailstudios.astromine.discoveries.common.entity.base.RocketEntity;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesItems;
@@ -63,7 +62,7 @@ public class PrimitiveRocketScreenHandler extends ComponentEntityFluidItemScreen
 		launchButtonWidget.setPosition(Position.of(mainTab, 3 + 4, 11));
 		launchButtonWidget.setSize(Size.of(48, 18));
 		launchButtonWidget.setLabel(new TranslatableText("text.astromine.rocket.launch"));
-		launchButtonWidget.setDisabled(() -> entity.getDataTracker().get(RocketEntity.IS_RUNNING) || (entity.getFluidComponent().getFirst().smallerOrEqualThan(Fraction.EMPTY) && entity.getFluidComponent().getSecond().smallerOrEqualThan(Fraction.EMPTY)));
+		launchButtonWidget.setDisabled(() -> entity.getDataTracker().get(RocketEntity.IS_RUNNING) || (entity.getFluidComponent().getFirst().smallerOrEqualThan(0L) && entity.getFluidComponent().getSecond().smallerOrEqualThan(0L)));
 
 		ButtonWidget abortButtonWidget = new ButtonWidget(() -> {
 			((RocketEntity) entity).tryDisassemble(true);

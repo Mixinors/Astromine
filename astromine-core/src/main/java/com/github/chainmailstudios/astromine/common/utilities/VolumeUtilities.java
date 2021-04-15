@@ -31,26 +31,25 @@ import net.minecraft.item.Items;
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import net.minecraft.util.Pair;
 
 public class VolumeUtilities {
 	/** Attempts to merge two {@link FluidVolume}s, returning a {@link Pair}
 	 * with the results.
 	 *
-	 * The amount transferred is the {@link Fraction#minimum(Fraction, Fraction)} between
+	 * The amount transferred is the {@link Math#min(long, long)}  between
 	 * their available space, our amount, and the specified amount.
 	 * */
 	public static Pair<FluidVolume, FluidVolume> merge(FluidVolume source, FluidVolume target) {
-		Fraction targetMax = target.getSize();
+		long targetMax = target.getSize();
 
 		if (source.test(target)) {
-			Fraction sourceCount = source.getAmount();
-			Fraction targetCount = target.getAmount();
+			long sourceCount = source.getAmount();
+			long targetCount = target.getAmount();
 
-			Fraction targetAvailable = Fraction.maximum(Fraction.EMPTY, targetMax.subtract(targetCount));
+			long targetAvailable = Math.max(0, targetMax - targetCount);
 
-			target.take(source, Fraction.minimum(sourceCount, targetAvailable));
+			target.take(source, Math.min(sourceCount, targetAvailable));
 		}
 
 		return new Pair<>(source, target);
@@ -69,14 +68,14 @@ public class VolumeUtilities {
 					firstStackFluidComponent.forEach(stackVolume -> {if (ourVolume.test(stackVolume.getFluid())) {
 						if (itemComponent.getStack(firstStackSlot).getItem() instanceof BucketItem) {
 							if (itemComponent.getStack(firstStackSlot).getItem() != Items.BUCKET && itemComponent.getStack(firstStackSlot).getCount() == 1) {
-								if (ourVolume.hasAvailable(Fraction.BUCKET) || ourVolume.isEmpty()) {
-									ourVolume.take(stackVolume, Fraction.BUCKET);
+								if (ourVolume.hasAvailable(FluidVolume.BUCKET) || ourVolume.isEmpty()) {
+									ourVolume.take(stackVolume, FluidVolume.BUCKET);
 
                                         itemComponent.setStack(firstStackSlot, new ItemStack(Items.BUCKET));
                                     }
                                 }
                             } else {
-                                ourVolume.take(stackVolume, Fraction.BUCKET);
+                                ourVolume.take(stackVolume, FluidVolume.BUCKET);
                             }
                         }
                     });
@@ -90,14 +89,14 @@ public class VolumeUtilities {
 					secondStackFluidComponent.forEach(stackVolume -> {if (stackVolume.test(ourVolume.getFluid())) {
 						if (itemComponent.getStack(secondStackSlot).getItem() instanceof BucketItem) {
 							if (itemComponent.getStack(secondStackSlot).getItem() == Items.BUCKET && itemComponent.getStack(secondStackSlot).getCount() == 1) {
-								if (ourVolume.hasStored(Fraction.BUCKET)) {
-									ourVolume.give(stackVolume, Fraction.BUCKET);
+								if (ourVolume.hasStored(FluidVolume.BUCKET)) {
+									ourVolume.give(stackVolume, FluidVolume.BUCKET);
 
                                         itemComponent.setStack(secondStackSlot, new ItemStack(stackVolume.getFluid().getBucketItem()));
                                     }
                                 }
                             } else {
-                                ourVolume.give(stackVolume, Fraction.BUCKET);
+                                ourVolume.give(stackVolume, FluidVolume.BUCKET);
                             }
                         }
                     });

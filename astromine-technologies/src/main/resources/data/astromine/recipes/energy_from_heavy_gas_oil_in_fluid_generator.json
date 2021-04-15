@@ -2,10 +2,7 @@
   "type": "astromine:fluid_generating",
   "input": {
     "tag": "c:heavy_gas_oil",
-    "amount": {
-      "numerator": 1,
-      "denominator": 540
-    }
+    "amount": 150
   },
   "energy_output": 73,
   "time": 1

@@ -24,12 +24,15 @@
 
 package com.github.chainmailstudios.astromine.common.component.general.base;
 
-import com.github.chainmailstudios.astromine.common.component.general.miscellaneous.IdentifiableComponent;
 import com.github.chainmailstudios.astromine.common.component.general.SimpleAutoSyncedFluidComponent;
 import com.github.chainmailstudios.astromine.common.component.general.SimpleDirectionalFluidComponent;
 import com.github.chainmailstudios.astromine.common.component.general.SimpleFluidComponent;
+import com.github.chainmailstudios.astromine.common.component.general.miscellaneous.IdentifiableComponent;
 import com.github.chainmailstudios.astromine.common.component.general.provider.FluidComponentProvider;
 import com.github.chainmailstudios.astromine.common.utilities.VolumeUtilities;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
+import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
@@ -43,11 +46,6 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.Direction;
-
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
-import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
@@ -58,7 +56,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static com.github.chainmailstudios.astromine.common.volume.fraction.Fraction.minimum;
+import static java.lang.Math.min;
 
 /**
  * A {@link IdentifiableComponent} representing a fluid reserve.
@@ -212,7 +210,7 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 
 	/** Transfers all transferable content from this component
 	 * to the target component. */
-	default void into(FluidComponent target, Fraction count, Direction extractionDirection, Direction insertionDirection) {
+	default void into(FluidComponent target, long count, Direction extractionDirection, Direction insertionDirection) {
 		for (int sourceSlot = 0; sourceSlot < getSize(); ++sourceSlot) {
 			FluidVolume sourceVolume = getVolume(sourceSlot);
 
@@ -220,16 +218,16 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 				for (int targetSlot = 0; targetSlot < target.getSize(); ++targetSlot) {
 					FluidVolume targetVolume = target.getVolume(targetSlot);
 
-					if (!sourceVolume.isEmpty() && count.biggerThan(Fraction.EMPTY)) {
+					if (!sourceVolume.isEmpty() && count > 0) {
 						FluidVolume insertionVolume = sourceVolume.copy();
-						insertionVolume.setAmount(minimum(minimum(count, insertionVolume.getAmount()), targetVolume.getSize().subtract(targetVolume.getAmount())));
+						insertionVolume.setAmount(min(min(count, insertionVolume.getAmount()), targetVolume.getSize() - targetVolume.getAmount()));
 
-						Fraction insertionCount = insertionVolume.getAmount();
+						long insertionCount = insertionVolume.getAmount();
 
 						if (target.canInsert(insertionDirection, insertionVolume, targetSlot)) {
 							Pair<FluidVolume, FluidVolume> merge = VolumeUtilities.merge(insertionVolume, targetVolume);
 
-							sourceVolume.take(insertionCount.subtract(merge.getLeft().getAmount()));
+							sourceVolume.take(insertionCount - merge.getLeft().getAmount());
 							setVolume(sourceSlot, sourceVolume);
 							target.setVolume(targetSlot, merge.getRight());
 						}
@@ -243,20 +241,20 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 
 	/** Transfers all transferable content from this component
 	 * to the target component. */
-	default void into(FluidComponent target, Fraction count, Direction direction) {
+	default void into(FluidComponent target, long count, Direction direction) {
 		into(target, count, direction, direction.getOpposite());
 	}
 
 	/** Transfers all transferable content from this component
 	 * to the target component. */
-	default void into(FluidComponent target, Fraction count) {
+	default void into(FluidComponent target, long count) {
 		into(target, count, null, null);
 	}
 
 	/** Transfers all transferable content from this component
 	 * to the target component. */
 	default void into(FluidComponent target) {
-		into(target, Fraction.BUCKET, null, null);
+		into(target, FluidVolume.BUCKET, null, null);
 	}
 
 	/** Asserts whether the given volume can be inserted through the specified
@@ -311,7 +309,7 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 	 /** Clears this component's contents. */
 	default void clear() {
 		this.getContents().forEach((slot, volume) -> {
-			volume.setAmount(Fraction.EMPTY);
+			volume.setAmount(0L);
 			volume.setFluid(Fluids.EMPTY);
 		});
 	}
@@ -368,10 +366,10 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 				if (item instanceof BucketItem) {
 					BucketItem bucket = (BucketItem) item;
 
-					return SimpleFluidComponent.of(FluidVolume.of(Fraction.BUCKET, bucket.fluid));
+					return SimpleFluidComponent.of(FluidVolume.of(FluidVolume.BUCKET, bucket.fluid));
 				} else if (item instanceof PotionItem) {
 					if(PotionUtil.getPotion(stack).equals(Potions.WATER))
-						return SimpleFluidComponent.of(FluidVolume.of(Fraction.BOTTLE, Fluids.WATER));
+						return SimpleFluidComponent.of(FluidVolume.of(FluidVolume.BOTTLE, Fluids.WATER));
 				}
 			}
 

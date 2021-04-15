@@ -49,7 +49,6 @@ import com.github.chainmailstudios.astromine.common.component.block.entity.Trans
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 
 @Mixin(AbstractBlock.class)
 public class AbstractBlockMixin {
@@ -96,38 +95,38 @@ public class AbstractBlockMixin {
 						FluidVolume extractable = blockEntityFluidComponent.getFirstExtractableVolume(result.getSide());
 
 						if (isBucket && extractable != null) {
-							if (extractable.hasStored(Fraction.BUCKET)) {
+							if (extractable.hasStored(FluidVolume.BUCKET)) {
 								if (stack.getCount() == 1 || (player.inventory.getEmptySlot() == -1 && stack.getCount() == 1)) {
-									stackVolume.take(extractable, Fraction.BUCKET);
+									stackVolume.take(extractable, FluidVolume.BUCKET);
 									player.setStackInHand(hand, new ItemStack(stackVolume.getFluid().getBucketItem()));
 								} else if (player.inventory.getEmptySlot() != -1 && stack.getCount() > 1) {
-									stackVolume.take(extractable, Fraction.BUCKET);
+									stackVolume.take(extractable, FluidVolume.BUCKET);
 									stack.decrement(1);
 									player.giveItemStack(new ItemStack(stackVolume.getFluid().getBucketItem()));
 								}
 							}
 						} else if (extractable != null) {
-							stackVolume.take(extractable, Fraction.BUCKET);
+							stackVolume.take(extractable, FluidVolume.BUCKET);
 						}
 					} else {
 						FluidVolume insertable = blockEntityFluidComponent.getFirstInsertableVolume(result.getSide(), stackVolume);
 
 						if (isBucket && insertable != null) {
-							if (insertable.hasAvailable(Fraction.BUCKET)) {
+							if (insertable.hasAvailable(FluidVolume.BUCKET)) {
 								if (stack.getCount() == 1 || (player.inventory.getEmptySlot() == -1 && stack.getCount() == 1)) {
-									insertable.take(stackVolume, Fraction.BUCKET);
+									insertable.take(stackVolume, FluidVolume.BUCKET);
 									if (!player.isCreative()) {
 										player.setStackInHand(hand, new ItemStack(Items.BUCKET));
 									}
 								} else if (player.inventory.getEmptySlot() != -1 && stack.getCount() > 1) {
-									insertable.take(stackVolume, Fraction.BUCKET);
+									insertable.take(stackVolume, FluidVolume.BUCKET);
 									if (!player.isCreative()) {
 										stack.decrement(1);
 										player.giveItemStack(new ItemStack(Items.BUCKET));
 									}
 								}
 							} else if (insertable != null) {
-								insertable.take(stackVolume, Fraction.BUCKET);
+								insertable.take(stackVolume, FluidVolume.BUCKET);
 							}
 						} else {}
 					}

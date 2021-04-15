@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
@@ -76,10 +77,10 @@ public class AstromineConfig implements ConfigData {
 	public double eliteBatteryEnergy = 64000;
 
 	@Comment("Fluid for the Large Portable Tank.")
-	public long largePortableTankFluid = 16L;
+	public long largePortableTankFluid = FluidVolume.BUCKET * 16L;
 
 	@Comment("Fluid for the Portable Tank.")
-	public long portableTankFluid = 8L;
+	public long portableTankFluid = FluidVolume.BUCKET * 8L;
 
 	@Comment("Fluid for the Primitive Tank.")
 	public long primitiveTankFluid = largePortableTankFluid * 4L;
@@ -424,7 +425,7 @@ public class AstromineConfig implements ConfigData {
 	public double ventEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Fluid for the Vent.")
-	public long ventFluid = 16L;
+	public long ventFluid = FluidVolume.BUCKET * 16L;
 
 	@Comment("Speed for the Primitive Capacitor.")
 	public double primitiveCapacitorSpeed = 0.5D;
@@ -498,11 +499,8 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Tick rate for gas movement in the atmosphere. This is inversely correlated to gas movement speed - higher means slower. Lower numbers are also less performant, so choose wisely.")
 	public int gasTickRate = 10;
 
-	@Comment("Numerator for the gas decay rate fraction. It will decay gases by this fraction every gas tick.")
-	public int gasDecayNumerator = 5;
-
-	@Comment("Denominator for the gas decay rate fraction. It will decay gases by this fraction every gas tick.")
-	public int gasDecayDenominator = 1024;
+	@Comment("Amount for the gas decay rate fraction. It will decay gases by this fraction every gas tick.")
+	public long gasDecayAmount = 40L;
 
 	@Comment("Noise threshold for Asteroid generation.")
 	public float asteroidNoiseThreshold = 0.545F;
@@ -576,11 +574,8 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Whether AK9 should asphyxiate.")
 	public boolean asphyxiateAK9 = true;
 
-	@Comment("Fluid numerator for the Fluid Pipe and inter-machine transfer.")
-	public long fluidTransferNumerator = 1L;
-
-	@Comment("Fluid denominator for the Fluid Pipe and inter-machine transfer.")
-	public long fluidTransferDenominator = 5L;
+	@Comment("Fluid amount for the Fluid Pipe and inter-machine transfer.")
+	public long fluidTransfer = FluidVolume.BUCKET * 4;
 
 	@Comment("Fluid for the Primitive Melter.")
 	public long primitiveMelterFluid = largePortableTankFluid;

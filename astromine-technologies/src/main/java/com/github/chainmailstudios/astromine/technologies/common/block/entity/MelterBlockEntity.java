@@ -34,7 +34,6 @@ import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentE
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.FluidSizeProvider;
@@ -179,8 +178,8 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(AstromineConfig.get().primitiveMelterFluid, 1);
+		public long getFluidSize() {
+			return AstromineConfig.get().primitiveMelterFluid;
 		}
 
 		@Override
@@ -205,8 +204,8 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(AstromineConfig.get().basicMelterFluid, 1);
+		public long getFluidSize() {
+			return AstromineConfig.get().basicMelterFluid;
 		}
 
 		@Override
@@ -231,8 +230,8 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(AstromineConfig.get().advancedMelterFluid, 1);
+		public long getFluidSize() {
+			return AstromineConfig.get().advancedMelterFluid;
 		}
 
 		@Override
@@ -257,8 +256,8 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 		}
 
 		@Override
-		public Fraction getFluidSize() {
-			return Fraction.of(AstromineConfig.get().eliteMelterFluid, 1);
+		public long getFluidSize() {
+			return AstromineConfig.get().eliteMelterFluid;
 		}
 
 		@Override

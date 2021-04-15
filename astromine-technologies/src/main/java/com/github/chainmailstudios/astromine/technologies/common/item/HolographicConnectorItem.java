@@ -41,8 +41,8 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.technologies.common.block.HolographicBridgeProjectorBlock;
-import com.github.chainmailstudios.astromine.technologies.common.block.entity.HolographicBridgeProjectorBlockEntity;
+import com.github.chainmailstudios.astromine.technologies.common.block.HoloBridgeProjectorBlock;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.HoloBridgeProjectorBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesSoundEvents;
 
 public class HolographicConnectorItem extends Item {
@@ -59,8 +59,8 @@ public class HolographicConnectorItem extends Item {
 		if (context.shouldCancelInteraction())
 			return super.useOnBlock(context);
 
-		if (world.getBlockState(position).getBlock() instanceof HolographicBridgeProjectorBlock) {
-			HolographicBridgeProjectorBlockEntity entity = (HolographicBridgeProjectorBlockEntity) world.getBlockEntity(position);
+		if (world.getBlockState(position).getBlock() instanceof HoloBridgeProjectorBlock) {
+			HoloBridgeProjectorBlockEntity entity = (HoloBridgeProjectorBlockEntity) world.getBlockEntity(position);
 
 			Pair<RegistryKey<World>, BlockPos> pair = readBlock(context.getStack());
 			if (pair == null || !pair.getLeft().getValue().equals(world.getRegistryKey().getValue())) {
@@ -72,7 +72,7 @@ public class HolographicConnectorItem extends Item {
 				}
 			} else {
 				BlockEntity blockEntity = world.getBlockEntity(pair.getRight());
-				if (!(blockEntity instanceof HolographicBridgeProjectorBlockEntity)) {
+				if (!(blockEntity instanceof HoloBridgeProjectorBlockEntity)) {
 					if (!world.isClient) {
 						context.getPlayer().setStackInHand(context.getHand(), selectBlock(context.getStack(), entity.getWorld().getRegistryKey(), entity.getPos()));
 					} else {
@@ -81,13 +81,13 @@ public class HolographicConnectorItem extends Item {
 					}
 					return ActionResult.SUCCESS;
 				}
-				HolographicBridgeProjectorBlockEntity parent = (HolographicBridgeProjectorBlockEntity) blockEntity;
+				HoloBridgeProjectorBlockEntity parent = (HoloBridgeProjectorBlockEntity) blockEntity;
 
 				BlockPos nP = entity.getPos();
 				BlockPos oP = parent.getPos();
 
 				if (parent.getPos().getZ() < entity.getPos().getZ() || parent.getPos().getX() < entity.getPos().getX()) {
-					HolographicBridgeProjectorBlockEntity temporary = parent;
+					HoloBridgeProjectorBlockEntity temporary = parent;
 					parent = entity;
 					entity = temporary;
 				}

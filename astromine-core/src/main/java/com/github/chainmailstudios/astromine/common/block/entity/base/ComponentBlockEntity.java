@@ -30,7 +30,7 @@ import com.github.chainmailstudios.astromine.common.component.general.base.Fluid
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
 import com.github.chainmailstudios.astromine.common.component.general.provider.RedstoneComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.general.provider.TransferComponentProvider;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.network.PacketContext;
 
@@ -221,8 +221,8 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 					FluidComponent theirComponent = FluidComponent.get(neighborBlockEntity);
 
 					if (theirComponent != null) {
-						theirComponent.into(ourComponent, Fraction.TRANSFER, neighborDirection, offsetDirection);
-						ourComponent.into(theirComponent, Fraction.TRANSFER, offsetDirection, neighborDirection);
+						theirComponent.into(ourComponent, FluidVolume.getTransfer(), neighborDirection, offsetDirection);
+						ourComponent.into(theirComponent, FluidVolume.getTransfer(), offsetDirection, neighborDirection);
 					}
 				}
 			}

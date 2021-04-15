@@ -57,7 +57,7 @@
     "cardinal-components": [
       "astromine:world_network_component",
       "astromine:chunk_atmosphere_component",
-      "astromine:world_bridge_component",
+      "astromine:world_holo_bridge_component",
       "astromine:item_inventory_component",
       "astromine:fluid_inventory_component",
       "astromine:energy_inventory_component",
