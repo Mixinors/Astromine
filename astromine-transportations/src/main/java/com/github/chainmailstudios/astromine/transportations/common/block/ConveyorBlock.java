@@ -55,7 +55,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
 import com.github.chainmailstudios.astromine.common.utilities.MovementUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.capability.block.FacingBlockWrenchable;
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.ConveyorBlockEntity;
 import com.github.chainmailstudios.astromine.transportations.common.block.property.ConveyorProperties;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.Conveyable;
@@ -64,7 +63,7 @@ import com.github.chainmailstudios.astromine.transportations.common.conveyor.Con
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorTypes;
 import org.jetbrains.annotations.Nullable;
 
-public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityProvider, Conveyor, FacingBlockWrenchable, Waterloggable {
+public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityProvider, Conveyor, Waterloggable {
 	private static final VoxelShape SHAPE = VoxelShapes.cuboid(0, 0, 0, 1, (4F / 16F), 1);
 
 	private final int speed;

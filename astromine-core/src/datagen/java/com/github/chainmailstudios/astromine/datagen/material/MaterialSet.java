@@ -346,10 +346,6 @@ public class MaterialSet {
 			return addType(BOOTS);
 		}
 
-		public Builder wrench() {
-			return addType(WRENCH);
-		}
-
 		public Builder apple() {
 			return addType(APPLE, new Identifier("c", name + "_apples"));
 		}

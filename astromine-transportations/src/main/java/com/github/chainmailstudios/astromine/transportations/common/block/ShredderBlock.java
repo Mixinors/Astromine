@@ -37,14 +37,12 @@ import net.minecraft.state.StateManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-
-import com.github.chainmailstudios.astromine.common.utilities.capability.block.FacingBlockWrenchable;
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.ShredderBlockEntity;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyableBlock;
 
 import java.util.Random;
 
-public class ShredderBlock extends HorizontalFacingBlock implements BlockEntityProvider, ConveyableBlock, FacingBlockWrenchable {
+public class ShredderBlock extends HorizontalFacingBlock implements BlockEntityProvider, ConveyableBlock {
 	public ShredderBlock(Settings settings) {
 		super(settings);
 	}

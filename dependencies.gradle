@@ -38,9 +38,6 @@ project.ext.setDefaultApis = {
     // Magna
     useAsApi("com.github.Draylar:magna:${magna_version}")
 
-    // Wrenchable
-    useAsApi("com.zundrel:wrenchable:${wrenchable_version}")
-
     // Kotlin
     useAsApi("org.jetbrains.kotlin:kotlin-stdlib:${project.kotlin_version}")
     useAsApi("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${project.kotlin_version}")

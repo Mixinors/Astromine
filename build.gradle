@@ -67,14 +67,6 @@ allprojects {
             }
         }
         maven {
-            // TODO Rehost this on somewhere that is not bintray
-            name = "Wrenchable"
-            url = "https://dl.bintray.com/zundrel/wrenchable"
-            content {
-                includeGroup "com.zundrel"
-            }
-        }
-        maven {
             name = "shedaniel"
             url = "https://maven.shedaniel.me"
         }

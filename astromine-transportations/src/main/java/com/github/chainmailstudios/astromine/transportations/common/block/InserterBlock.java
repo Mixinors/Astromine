@@ -45,13 +45,12 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.utilities.capability.block.FacingBlockWrenchable;
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.InserterBlockEntity;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyableBlock;
 
 import java.util.Random;
 
-public class InserterBlock extends HorizontalFacingBlock implements BlockEntityProvider, ConveyableBlock, FacingBlockWrenchable, Waterloggable {
+public class InserterBlock extends HorizontalFacingBlock implements BlockEntityProvider, ConveyableBlock, Waterloggable {
 	private static final VoxelShape SHAPE = VoxelShapes.cuboid(0, 0, 0, 1, (1 / 16F), 1);;
 
 	private final String type;

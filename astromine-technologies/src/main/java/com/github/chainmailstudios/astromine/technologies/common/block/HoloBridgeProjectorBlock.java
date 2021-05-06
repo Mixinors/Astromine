@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block;
 
+import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -40,11 +41,10 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.HoloBridgeProjectorBlockEntity;
 import com.github.vini2003.blade.common.miscellaneous.Color;
 
-public class HoloBridgeProjectorBlock extends WrenchableHorizontalFacingBlockWithEntity {
+public class HoloBridgeProjectorBlock extends HorizontalFacingBlockWithEntity {
 	public HoloBridgeProjectorBlock(AbstractBlock.Settings settings) {
 		super(settings);
 	}

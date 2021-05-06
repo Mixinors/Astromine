@@ -49,7 +49,6 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.NetworkUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.capability.block.CableWrenchable;
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
 
 import com.google.common.collect.ImmutableMap;
@@ -65,7 +64,7 @@ import java.util.Set;
  * It will search and trace a network of {@link #getNetworkType()} on
  * {@link BlockState} change, placement or removal.
  */
-public abstract class CableBlock extends Block implements Waterloggable, CableWrenchable {
+public abstract class CableBlock extends Block implements Waterloggable {
 	public static final BooleanProperty EAST = BooleanProperty.of("east");
 	public static final BooleanProperty WEST = BooleanProperty.of("west");
 	public static final BooleanProperty NORTH = BooleanProperty.of("north");

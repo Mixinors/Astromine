@@ -53,8 +53,8 @@ import java.util.Random;
 /**
  * A {@link HorizontalFacingBlockWithEntity} with wrenching behavior.
  */
-public abstract class WrenchableHorizontalFacingTieredBlockWithEntity extends WrenchableHorizontalFacingBlockWithEntity {
-	public WrenchableHorizontalFacingTieredBlockWithEntity(Settings settings) {
+public abstract class HorizontalFacingTieredBlockWithEntity extends HorizontalFacingBlockWithEntity {
+	public HorizontalFacingTieredBlockWithEntity(Settings settings) {
 		super(settings);
 	}
 

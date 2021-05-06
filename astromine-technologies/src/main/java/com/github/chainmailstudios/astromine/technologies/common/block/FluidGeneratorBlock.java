@@ -34,13 +34,13 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingTieredBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.redstone.ComparatorMode;
 import com.github.chainmailstudios.astromine.common.network.NetworkBlock;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.FluidGeneratorBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.FluidGeneratorScreenHandler;
 
-public abstract class FluidGeneratorBlock extends WrenchableHorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyProvider, NetworkBlock.FluidRequester {
+public abstract class FluidGeneratorBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyProvider, NetworkBlock.FluidRequester {
 	public FluidGeneratorBlock(Settings settings) {
 		super(settings);
 	}

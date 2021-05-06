@@ -48,13 +48,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
 import com.github.chainmailstudios.astromine.transportations.common.block.property.ConveyorProperties;
-import com.zundrel.wrenchable.WrenchableUtilities;
-import com.zundrel.wrenchable.block.BlockWrenchable;
 import grondag.fermion.modkeys.api.ModKeys;
 
 import javax.annotation.Nullable;
 
-public class CatwalkBlock extends Block implements BlockWrenchable, Waterloggable {
+public class CatwalkBlock extends Block implements Waterloggable {
 	private static final VoxelShape BOTTOM = VoxelShapes.cuboid(0, 0, 0, 1, (1F / 16F), 1);
 	private static final VoxelShape NORTH = VoxelShapes.cuboid(0, 0, 0, 1, 1, (1F / 16F));
 	private static final VoxelShape EAST = VoxelShapes.cuboid((15F / 16F), 0, 0, 1, 1, 1);
@@ -87,22 +85,6 @@ public class CatwalkBlock extends Block implements BlockWrenchable, Waterloggabl
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		builder.add(ConveyorProperties.NO_FLOOR, Properties.NORTH, Properties.EAST, Properties.SOUTH, Properties.WEST, Properties.WATERLOGGED);
-	}
-
-	@Override
-	public void onWrenched(World world, PlayerEntity playerEntity, BlockHitResult blockHitResult) {
-		BlockPos pos = blockHitResult.getBlockPos();
-
-		if (ModKeys.isControlPressed(playerEntity)) {
-			world.setBlockState(pos, world.getBlockState(pos).cycle(ConveyorProperties.NO_FLOOR));
-			return;
-		}
-
-		if (blockHitResult.getSide().getAxis().isHorizontal()) {
-			world.setBlockState(pos, world.getBlockState(pos).cycle(getPropertyFromDirection(blockHitResult.getSide())));
-		} else if (blockHitResult.getSide().getAxis().isVertical()) {
-			world.setBlockState(pos, world.getBlockState(pos).cycle(getPropertyFromDirection(playerEntity.getHorizontalFacing().getOpposite())));
-		}
 	}
 
 	public BooleanProperty getPropertyFromDirection(Direction direction) {
@@ -138,14 +120,6 @@ public class CatwalkBlock extends Block implements BlockWrenchable, Waterloggabl
 
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext context) {
-		if (context instanceof EntityShapeContext) {
-			Item heldItem = ((EntityShapeContext) context).heldItem;
-
-			if (WrenchableUtilities.isWrench(heldItem)) {
-				return FULL;
-			}
-		}
-
 		return getCollisionShape(state, view, pos, context);
 	}
 

@@ -34,12 +34,12 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingTieredBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.network.NetworkBlock;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.AlloySmelterBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.AlloySmelterScreenHandler;
 
-public abstract class AlloySmelterBlock extends WrenchableHorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester {
+public abstract class AlloySmelterBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester {
 	public AlloySmelterBlock(Settings settings) {
 		super(settings);
 	}

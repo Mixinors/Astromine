@@ -34,13 +34,13 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingTieredBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.redstone.ComparatorMode;
 import com.github.chainmailstudios.astromine.common.network.NetworkBlock;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.MelterBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.MelterScreenHandler;
 
-public abstract class MelterBlock extends WrenchableHorizontalFacingTieredBlockWithEntity implements NetworkBlock.FluidRequester {
+public abstract class MelterBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.FluidRequester {
 	public MelterBlock(Settings settings) {
 		super(settings);
 	}

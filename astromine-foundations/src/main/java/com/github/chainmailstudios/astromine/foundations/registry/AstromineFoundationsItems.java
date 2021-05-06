@@ -34,7 +34,6 @@ import net.minecraft.util.Rarity;
 
 import com.github.chainmailstudios.astromine.common.item.AnimatedArmorItem;
 import com.github.chainmailstudios.astromine.common.item.DynamicToolItemItem;
-import com.github.chainmailstudios.astromine.common.item.WrenchItem;
 import com.github.chainmailstudios.astromine.foundations.common.item.FireExtinguisherItem;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import draylar.magna.item.ExcavatorItem;
@@ -488,10 +487,6 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item METEORIC_STEEL_BOOTS = register("meteoric_steel_boots", new ArmorItem(AstromineFoundationsArmorMaterials.METEORIC_STEEL, EquipmentSlot.FEET, AstromineFoundationsItems.getBasicSettings()));
 
 	public static final Item METEOR_METITE_CLUSTER = register("meteor_metite_cluster", new Item(AstromineFoundationsItems.getBasicSettings()));
-
-	public static final Item COPPER_WRENCH = register("copper_wrench", new WrenchItem(AstromineFoundationsToolMaterials.COPPER, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item BRONZE_WRENCH = register("bronze_wrench", new WrenchItem(AstromineFoundationsToolMaterials.BRONZE, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item STEEL_WRENCH = register("steel_wrench", new WrenchItem(AstromineFoundationsToolMaterials.STEEL, AstromineFoundationsItems.getBasicSettings()));
 
 	public static final Item FIRE_EXTINGUISHER = register("fire_extinguisher", new FireExtinguisherItem(AstromineFoundationsItems.getBasicSettings().maxCount(1)));
 
