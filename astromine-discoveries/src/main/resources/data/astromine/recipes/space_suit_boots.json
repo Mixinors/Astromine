@@ -1,18 +1,1 @@
-{
-  "type": "minecraft:crafting_shaped",
-  "pattern": ["121", "3 3"],
-  "key": {
-    "1": {
-      "item": "minecraft:white_wool"
-    },
-    "2": {
-      "tag": "c:metite_dusts"
-    },
-    "3": {
-      "item": "minecraft:obsidian"
-    }
-  },
-  "result": {
-    "item": "astromine:space_suit_boots"
-  }
-}
+{"type":"minecraft:crafting_shaped","pattern":["222","5 5","   "],"key":{"2":{"item":"minecraft:white_wool"},"5":{"tag":"c:steel_plates"}},"result":{"item":"astromine:space_suit_boots","count":1}}

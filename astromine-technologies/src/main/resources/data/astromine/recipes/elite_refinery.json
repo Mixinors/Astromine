@@ -1,7 +1,1 @@
-{
-  "type": "minecraft:crafting_shaped", "pattern": ["212", "343", "676"], "key": {
-  "1": {"item": "astromine:elite_circuit"}, "2": {"item": "astromine:blades"}, "3": {"item": "minecraft:blaze_powder"},
-  "4": {"item": "astromine:elite_machine_chassis"}, "6": {"item": "astromine:elite_tank"},
-  "7": {"item": "astromine:elite_battery_pack"}
-}, "result": {"item": "astromine:elite_refinery", "count": 1}
-}
+{"type":"minecraft:crafting_shaped","pattern":["616","343","616"],"key":{"1":{"item":"minecraft:diamond"},"3":{"item":"astromine:elite_circuit"},"4":{"item":"astromine:advanced_refinery"},"6":{"item":"astromine:elite_plating"}},"result":{"item":"astromine:elite_refinery","count":1}}

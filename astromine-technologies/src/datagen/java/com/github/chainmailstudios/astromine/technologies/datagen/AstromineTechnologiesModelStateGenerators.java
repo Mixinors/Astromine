@@ -112,10 +112,14 @@ public class AstromineTechnologiesModelStateGenerators extends AstromineModelSta
 	));
 
 	public final ModelStateGenerator MACHINE_CHASSIS = register(new GenericItemModelGenerator(
-			AstromineTechnologiesItems.PRIMITIVE_MACHINE_CHASSIS,
-			AstromineTechnologiesItems.BASIC_MACHINE_CHASSIS,
-			AstromineTechnologiesItems.ADVANCED_MACHINE_CHASSIS,
-			AstromineTechnologiesItems.ELITE_MACHINE_CHASSIS
+			AstromineTechnologiesItems.MACHINE_CHASSIS
+	));
+	
+	public final ModelStateGenerator PLATINGS = register(new GenericItemModelGenerator(
+			AstromineTechnologiesItems.PRIMITIVE_PLATING,
+			AstromineTechnologiesItems.BASIC_PLATING,
+			AstromineTechnologiesItems.ADVANCED_PLATING,
+			AstromineTechnologiesItems.ELITE_PLATING
 	));
 
 	public final ModelStateGenerator UPGRADE_KIT = register(new GenericItemModelGenerator(

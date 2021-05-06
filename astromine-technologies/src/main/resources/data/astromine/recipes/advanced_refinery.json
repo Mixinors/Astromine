@@ -1,7 +1,1 @@
-{
-  "type": "minecraft:crafting_shaped", "pattern": ["212", "343", "676"], "key": {
-  "1": {"item": "astromine:advanced_circuit"}, "2": {"item": "astromine:blades"},
-  "3": {"item": "minecraft:blaze_powder"}, "4": {"item": "astromine:advanced_machine_chassis"},
-  "6": {"item": "astromine:advanced_tank"}, "7": {"item": "astromine:advanced_battery_pack"}
-}, "result": {"item": "astromine:advanced_refinery", "count": 1}
-}
+{"type":"minecraft:crafting_shaped","pattern":["616","343","616"],"key":{"1":{"tag":"c:gold_ingots"},"3":{"item":"astromine:advanced_circuit"},"4":{"item":"astromine:basic_refinery"},"6":{"item":"astromine:advanced_plating"}},"result":{"item":"astromine:advanced_refinery","count":1}}

@@ -1,1 +1,1 @@
-{"type":"minecraft:crafting_shaped","pattern":["070","7 7","070"],"key":{"0":{"tag":"c:lead_plates"},"7":{"item":"minecraft:iron_bars"}},"result":{"item":"astromine:drain","count":1}}
+{"type":"minecraft:crafting_shaped","pattern":["818","141","818"],"key":{"1":{"item":"astromine:fluid_pipe"},"4":{"item":"minecraft:iron_bars"},"8":{"tag":"c:iron_ingots"}},"result":{"item":"astromine:drain","count":1}}

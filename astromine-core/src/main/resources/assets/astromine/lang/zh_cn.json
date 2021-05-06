@@ -52,7 +52,7 @@
   "tooltip.astromine.work_when_off": "机器仅在接收红石信号时运作。",
   "tooltip.astromine.work_when_on": "机器仅在未接收红石信号时运作。",
   "tooltip.astromine.work_always": "机器总是运作，无视红石信号。",
-  "item.astromine.primitive_machine_chassis": "原始机械外壳",
+  "item.astromine.machine_chassis": "原始机械外壳",
   "item.astromine.basic_machine_chassis": "基础机械外壳",
   "item.astromine.advanced_machine_chassis": "高级机械外壳",
   "item.astromine.elite_machine_chassis": "精良机械外壳",

@@ -64,7 +64,7 @@
   "tooltip.astromine.work_when_off": "The machine will work when not powered.",
   "tooltip.astromine.work_when_on": "The machine will work when powered.",
   "tooltip.astromine.work_always": "The machine will always work.",
-  "item.astromine.primitive_machine_chassis": "Primitive Machine Chassis",
+  "item.astromine.machine_chassis": "Machine Chassis",
   "item.astromine.basic_machine_chassis": "Basic Machine Chassis",
   "item.astromine.advanced_machine_chassis": "Advanced Machine Chassis",
   "item.astromine.elite_machine_chassis": "Elite Machine Chassis",

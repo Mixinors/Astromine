@@ -1,7 +1,1 @@
-{
-  "type": "minecraft:crafting_shaped", "pattern": ["010", "343", "070"], "key": {
-  "0": {"tag": "c:lead_plates"}, "1": {"item": "astromine:primitive_circuit"},
-  "3": {"item": "astromine:primitive_electric_furnace"}, "4": {"item": "astromine:primitive_machine_chassis"},
-  "7": {"item": "astromine:primitive_battery_pack"}
-}, "result": {"item": "astromine:primitive_alloy_smelter", "count": 1}
-}
+{"type":"minecraft:crafting_shaped","pattern":["818","343","878"],"key":{"1":{"item":"astromine:primitive_circuit"},"3":{"item":"minecraft:cauldron"},"4":{"item":"astromine:machine_chassis"},"7":{"item":"astromine:primitive_battery_pack"},"8":{"item":"minecraft:nether_brick"}},"result":{"item":"astromine:primitive_alloy_smelter","count":1}}

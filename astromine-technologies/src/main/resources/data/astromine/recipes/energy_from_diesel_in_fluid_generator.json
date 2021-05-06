@@ -2,7 +2,7 @@
   "type": "astromine:fluid_generating",
   "input": {
     "tag": "c:diesel",
-    "amount": 180
+    "amount": 480
   },
   "energy_output": 85,
   "time": 1

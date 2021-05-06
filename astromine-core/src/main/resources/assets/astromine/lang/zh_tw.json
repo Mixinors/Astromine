@@ -40,7 +40,7 @@
   "text.astromine.rocket.launch": "發射",
   "text.astromine.rocket.destroy": "§c摧毀！！",
   "text.astromine.rocket.fuel_status": "燃料可供飛行時長：%s",
-  "item.astromine.primitive_machine_chassis": "原始機械外殼",
+  "item.astromine.machine_chassis": "原始機械外殼",
   "item.astromine.basic_machine_chassis": "基礎機械外殼",
   "item.astromine.advanced_machine_chassis": "高階機械外殼",
   "item.astromine.elite_machine_chassis": "精良機械外殼",

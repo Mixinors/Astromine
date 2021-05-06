@@ -41,7 +41,7 @@
   "text.astromine.rocket.launch": "Start",
   "text.astromine.rocket.destroy": "Zerstören!",
   "text.astromine.rocket.fuel_status": "Treibstoff ausreichend für %s Flugzeit.",
-  "item.astromine.primitive_machine_chassis": "Primitives Maschienengehäuse",
+  "item.astromine.machine_chassis": "Primitives Maschienengehäuse",
   "item.astromine.basic_machine_chassis": "Maschienengehäuse",
   "item.astromine.advanced_machine_chassis": "Verbessertes Maschienengehäuse",
   "item.astromine.elite_machine_chassis": "Elitäres Maschienengehäuse",

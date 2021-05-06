@@ -1,7 +1,1 @@
-{
-  "type": "minecraft:crafting_shaped", "pattern": ["212", "545", "676"], "key": {
-  "1": {"item": "astromine:basic_circuit"}, "2": {"tag": "c:steel_plates"},
-  "4": {"item": "astromine:basic_machine_chassis"}, "5": {"item": "minecraft:iron_bars"},
-  "6": {"item": "minecraft:piston"}, "7": {"item": "astromine:basic_battery_pack"}
-}, "result": {"item": "astromine:basic_triturator", "count": 1}
-}
+{"type":"minecraft:crafting_shaped","pattern":["616","343","616"],"key":{"1":{"tag":"c:bronze_ingots"},"3":{"item":"astromine:basic_circuit"},"4":{"item":"astromine:primitive_triturator"},"6":{"item":"astromine:basic_plating"}},"result":{"item":"astromine:basic_triturator","count":1}}

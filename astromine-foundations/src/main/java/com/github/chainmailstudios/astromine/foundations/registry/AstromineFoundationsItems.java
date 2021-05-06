@@ -186,8 +186,6 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item GOLD_PLATE = register("gold_plate", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item NETHERITE_PLATE = register("netherite_plate", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
 
-	public static final Item STONE_PLATE = register("stone_plate", new Item(AstromineFoundationsItems.getBasicSettings()));
-
 	// Materials - Gears
 	public static final Item METITE_GEAR = register("metite_gear", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item STELLUM_GEAR = register("stellum_gear", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));

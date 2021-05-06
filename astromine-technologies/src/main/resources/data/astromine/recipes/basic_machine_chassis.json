@@ -1,5 +1,0 @@
-{
-  "type": "minecraft:crafting_shaped", "pattern": ["818", "141", "818"],
-  "key": {"1": {"tag": "c:copper_gears"}, "4": {"tag": "c:emerald_dusts"}, "8": {"tag": "c:iron_plates"}},
-  "result": {"item": "astromine:basic_machine_chassis", "count": 1}
-}

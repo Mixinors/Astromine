@@ -2,7 +2,7 @@
   "type": "astromine:fluid_generating",
   "input": {
     "tag": "c:residual_fuel_oil",
-    "amount": 150
+    "amount": 540
   },
   "energy_output": 76,
   "time": 1

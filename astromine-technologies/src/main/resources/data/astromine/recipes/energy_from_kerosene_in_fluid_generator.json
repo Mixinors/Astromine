@@ -2,7 +2,7 @@
   "type": "astromine:fluid_generating",
   "input": {
     "tag": "c:kerosene",
-    "amount": 75
+    "amount": 1080
   },
   "energy_output": 37,
   "time": 1

@@ -41,7 +41,7 @@
   "text.astromine.rocket.launch": "Запустить",
   "text.astromine.rocket.destroy": "Уничтожить!",
   "text.astromine.rocket.fuel_status": "Топлива хватет на %s полётного времени.",
-  "item.astromine.primitive_machine_chassis": "Примитивный корпус машины",
+  "item.astromine.machine_chassis": "Примитивный корпус машины",
   "item.astromine.basic_machine_chassis": "Базовый корпус машины",
   "item.astromine.advanced_machine_chassis": "Продвинутый корпус машины",
   "item.astromine.elite_machine_chassis": "Элитный корпус машины",

@@ -86,8 +86,6 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 
 	protected boolean skipInventory = true;
 
-	protected int redstoneMode = 0;
-
 	/** Instantiates a {@link ComponentBlockEntity}. */
 	public ComponentBlockEntity(BlockEntityType<?> type) {
 		super(type);

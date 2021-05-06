@@ -2,7 +2,7 @@
   "parent": "astromine:astromine/get_plate",
   "display": {
     "icon": {
-      "item": "astromine:primitive_machine_chassis"
+      "item": "astromine:machine_chassis"
     },
     "title": {
       "translate": "advancements.astromine.get_chassis.title"

@@ -78,8 +78,6 @@ public class AstromineFoundationsModelStateGenerators extends AstromineModelStat
 	public final ModelStateGenerator LEGGINGS = register(new GenericItemSetModelGenerator(MaterialItemType.LEGGINGS));
 	public final ModelStateGenerator BOOTS = register(new GenericItemSetModelGenerator(MaterialItemType.BOOTS));
 
-	public final ModelStateGenerator WRENCH = register(new HandheldItemSetModelGenerator(MaterialItemType.WRENCH));
-
 	public final ModelStateGenerator APPLE = register(new GenericItemSetModelGenerator(MaterialItemType.APPLE));
 
 	public final ModelStateGenerator STANDARD_BLOCKS = register(new GenericBlockModelStateGenerator(
@@ -99,11 +97,7 @@ public class AstromineFoundationsModelStateGenerators extends AstromineModelStat
 			AstromineFoundationsBlocks.METEOR_STONE_BRICK_SLAB,
 			AstromineFoundationsBlocks.METEOR_STONE_BRICK_STAIRS
 	));
-
-	public final ModelStateGenerator EXTRA_PLATES = register(new GenericItemModelGenerator(
-			AstromineFoundationsItems.STONE_PLATE
-	));
-
+	
 	public final ModelStateGenerator BLADES = register(new HandheldItemModelGenerator(
 			AstromineFoundationsItems.BLADES
 	));

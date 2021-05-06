@@ -1,18 +1,1 @@
-{
-  "type": "minecraft:crafting_shaped",
-  "pattern": ["111", "323", " 3 "],
-  "key": {
-    "1": {
-      "item": "minecraft:white_wool"
-    },
-    "2": {
-      "tag": "c:metite_dusts"
-    },
-    "3": {
-      "item": "minecraft:obsidian"
-    }
-  },
-  "result": {
-    "item": "astromine:space_suit_helmet"
-  }
-}
+{"type":"minecraft:crafting_shaped","pattern":["212","525","   "],"key":{"1":{"item":"minecraft:glass"},"2":{"item":"minecraft:white_wool"},"5":{"tag":"c:steel_plates"}},"result":{"item":"astromine:space_suit_helmet","count":1}}

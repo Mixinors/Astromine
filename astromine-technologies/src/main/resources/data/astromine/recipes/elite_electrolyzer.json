@@ -1,7 +1,1 @@
-{
-  "type": "minecraft:crafting_shaped", "pattern": ["010", "343", "878"], "key": {
-  "0": {"item": "astromine:blades"}, "1": {"item": "astromine:elite_circuit"},
-  "3": {"item": "minecraft:prismarine_crystals"}, "4": {"item": "astromine:elite_machine_chassis"},
-  "7": {"item": "astromine:elite_battery_pack"}, "8": {"item": "astromine:large_portable_tank"}
-}, "result": {"item": "astromine:elite_electrolyzer", "count": 1}
-}
+{"type":"minecraft:crafting_shaped","pattern":["616","343","616"],"key":{"1":{"item":"minecraft:diamond"},"3":{"item":"astromine:elite_circuit"},"4":{"item":"astromine:advanced_electrolyzer"},"6":{"item":"astromine:elite_plating"}},"result":{"item":"astromine:elite_electrolyzer","count":1}}
