@@ -258,7 +258,7 @@ public class AstromineFoundationsMaterialSets extends AstromineMaterialSets {
 	);
 	public static final MaterialSet COPPER = register(
 			new MaterialSet.Builder("copper")
-					.basics().metal().ore().asteroid().wire().allTools().armor().wrench()
+					.basics().metal().ore().asteroid().wire().allTools().armor()
 					.build()
 	);
 	public static final MaterialSet SILVER = register(
@@ -274,12 +274,12 @@ public class AstromineFoundationsMaterialSets extends AstromineMaterialSets {
 	);
 	public static final MaterialSet STEEL = register(
 			new MaterialSet.Builder("steel")
-					.basics().metal().allTools().armor().wrench()
+					.basics().metal().allTools().armor()
 					.build()
 	);
 	public static final MaterialSet BRONZE = register(
 			new MaterialSet.Builder("bronze")
-					.basics().metal().allTools().armor().wrench()
+					.basics().metal().allTools().armor()
 					.build()
 	);
 	public static final MaterialSet ELECTRUM = register(

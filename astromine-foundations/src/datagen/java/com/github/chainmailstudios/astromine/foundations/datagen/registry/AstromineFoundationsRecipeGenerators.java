@@ -158,8 +158,6 @@ public class AstromineFoundationsRecipeGenerators extends AstromineRecipeGenerat
 	public final RecipeGenerator SALVAGE_BLASTING_TO_NUGGET = register(new SalvageBlastingRecipeGenerator(NUGGET));
 	public final RecipeGenerator SALVAGE_BLASTING_TO_FRAGMENT = register(new SalvageBlastingRecipeGenerator(FRAGMENT));
 
-	public final RecipeGenerator WRENCH = register(new WrenchCraftingRecipeGenerator());
-
 	public final RecipeGenerator APPLE = register(new AppleCraftingRecipeGenerator());
 
 	public final RecipeGenerator SMOOTH_METEOR_STONE = register(new SmeltingRecipeGenerator(Ingredient.ofItems(AstromineFoundationsBlocks.METEOR_STONE), AstromineFoundationsBlocks.SMOOTH_METEOR_STONE));

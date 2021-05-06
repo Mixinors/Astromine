@@ -57,8 +57,6 @@ public class AstromineFoundationsTagGenerators extends AstromineTagGenerators {
 	public final SetTagGenerator EXCAVATORS = register(new GenericSetTagGenerator("excavators", AstromineCommon.identifier("excavators"), MaterialItemType.EXCAVATOR));
 	public final OneTimeTagGenerator EXCAVATORS_SHOVELS = register(new TagInTagGenerator(new Identifier("fabric", "shovels"), AstromineCommon.identifier("excavators")));
 
-	public final SetTagGenerator WRENCHES = register(new GenericSetTagGenerator("wrenches", new Identifier("c", "wrenches"), MaterialItemType.WRENCH));
-
 	public final SetTagGenerator BEACON_BASE_BLOCKS = register(new BeaconBaseTagGenerator());
 
 	public final SetTagGenerator BEACON_PAYMENT_INGOTS = register(new BeaconPaymentTagGenerator(MaterialItemType.INGOT));
