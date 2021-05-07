@@ -22,7 +22,7 @@ project.ext.setDefaultApis = {
     useAsApiOptionally("com.terraformersmc:modmenu:${modmenu_version}")
 
     // Tech Reborn Energy
-    useAsApi("teamreborn:energy:${tr_energy_version}")
+    useAsApi("teamreborn:energy:${tech_reborn_energy_version}")
 
     // Cloth API
     useAsApi("me.shedaniel.cloth.api:cloth-common-events-v1:${cloth_api_version}")
@@ -30,10 +30,10 @@ project.ext.setDefaultApis = {
     useAsApi("me.shedaniel.cloth.api:cloth-datagen-api-v1:${cloth_api_version}")
 
     // Cloth Config
-    useAsApi("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}")
+    useAsApi("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_api_version}")
 
     // RoughlyEnoughItems
-    useAsApiOptionally("me.shedaniel:RoughlyEnoughItems:${rei_version}")
+    useAsApiOptionally("me.shedaniel:RoughlyEnoughItems:${roughly_enough_items_version}")
 
     // Magna
     useAsApi("com.github.Draylar:magna:${magna_version}")
@@ -48,9 +48,6 @@ project.ext.setDefaultApis = {
 
     // Piglib
     useAsApi("com.github.Shnupbups:Piglib:${piglib_version}")
-
-    // Fermion Mod Keys
-    useAsApi("grondag:fermion-modkeys-mc116:${fermion_version}")
 }
 
 project.ext.setRuntimeTestMods = {

@@ -17,35 +17,26 @@
     "AK9"
   ],
   "contact": {
-    "sources": "https://github.com/Chainmail-Studios/Astromine",
-    "issues": "https://github.com/Chainmail-Studios/Astromine/issues",
-    "homepage": "https://www.curseforge.com/minecraft/mc-mods/astromine-core"
+    "sources": "https://github.com/Mixinors/Astromine",
+    "issues": "https://github.com/Mixinors/Astromine/issues",
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/astromine-fabric"
   },
   "license": "MIT",
   "icon": "assets/astromine/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.github.chainmailstudios.astromine.AstromineCommon",
-      "com.github.chainmailstudios.astromine.discoveries.AstromineDiscoveriesCommon",
-      "com.github.chainmailstudios.astromine.foundations.AstromineFoundationsCommon",
-      "com.github.chainmailstudios.astromine.technologies.AstromineTechnologiesCommon",
-      "com.github.chainmailstudios.astromine.transportations.AstromineTransportationsCommon"
+      "com.github.chainmailstudios.astromine.AstromineCommon"
     ],
     "client": [
-      "com.github.chainmailstudios.astromine.AstromineClient",
-      "com.github.chainmailstudios.astromine.discoveries.AstromineDiscoveriesClient",
-      "com.github.chainmailstudios.astromine.foundations.AstromineFoundationsClient",
-      "com.github.chainmailstudios.astromine.technologies.AstromineTechnologiesClient",
-      "com.github.chainmailstudios.astromine.transportations.AstromineTransportationsClient"
+      "com.github.chainmailstudios.astromine.AstromineClient"
     ],
     "server": [
-      "com.github.chainmailstudios.astromine.AstromineDedicated",
-      "com.github.chainmailstudios.astromine.discoveries.AstromineDiscoveriesDedicated",
-      "com.github.chainmailstudios.astromine.technologies.AstromineTechnologiesDedicated",
-      "com.github.chainmailstudios.astromine.transportations.AstromineTransportationsDedicated"
+      "com.github.chainmailstudios.astromine.AstromineDedicated"
     ],
-    "modmenu": ["com.github.chainmailstudios.astromine.client.modmenu.AstromineModMenuSupport"],
+    "modmenu": [
+      "com.github.chainmailstudios.astromine.client.modmenu.AstromineModMenuSupport"
+    ],
     "cardinal-components-item": [
       "com.github.chainmailstudios.astromine.registry.AstromineComponents"
     ],
@@ -62,22 +53,18 @@
       "com.github.chainmailstudios.astromine.registry.AstromineComponents"
     ],
     "rei_plugins": [
-      "com.github.chainmailstudios.astromine.discoveries.client.rei.AstromineDiscoveriesRoughlyEnoughItemsPlugin",
-      "com.github.chainmailstudios.astromine.foundations.client.rei.AstromineFoundationsRoughlyEnoughItemsPlugin",
-      "com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin"
+      "com.github.chainmailstudios.astromine.client.rei.AstromineDiscoveriesRoughlyEnoughItemsPlugin",
+      "com.github.chainmailstudios.astromine.client.rei.AstromineFoundationsRoughlyEnoughItemsPlugin",
+      "com.github.chainmailstudios.astromine.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin"
     ],
     "rei_containers": [
-      "com.github.chainmailstudios.astromine.technologies.common.rei.AstromineTechnologiesServerContainerPlugin"
+      "com.github.chainmailstudios.astromine.common.rei.AstromineTechnologiesServerContainerPlugin"
     ]
   },
   "mixins": [
-    "astromine.mixins.json",
-    "astromine-discoveries.mixins.json",
-    "astromine-foundations.mixins.json",
-    "astromine-technologies.mixins.json",
-    "astromine-transportations.mixins.json"
+    "astromine.mixins.json"
   ],
-  "accessWidener": "astromine-core.accesswidener",
+  "accessWidener": "astromine.accesswidener",
   "depends": {
     "fabricloader": ">=0.9.2",
     "fabric": ">=0.21.0",

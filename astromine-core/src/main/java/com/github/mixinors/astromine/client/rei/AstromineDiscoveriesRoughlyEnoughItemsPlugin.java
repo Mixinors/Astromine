@@ -1,0 +1,59 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2020, 2021 Mixinors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+package com.github.mixinors.astromine.client.rei;
+
+import net.minecraft.util.Identifier;
+
+import com.github.mixinors.astromine.AstromineCommon;
+import com.github.mixinors.astromine.client.rei.infusing.InfusingCategory;
+import com.github.mixinors.astromine.client.rei.infusing.InfusingDisplay;
+import com.github.mixinors.astromine.common.recipe.AltarRecipe;
+import com.github.mixinors.astromine.registry.AstromineDiscoveriesBlocks;
+import me.shedaniel.rei.api.EntryStack;
+import me.shedaniel.rei.api.RecipeHelper;
+
+public class AstromineDiscoveriesRoughlyEnoughItemsPlugin extends AstromineRoughlyEnoughItemsPlugin {
+	public static final Identifier INFUSING = AstromineCommon.identifier("infusing");
+
+	@Override
+	public Identifier getPluginIdentifier() {
+		return AstromineCommon.identifier("discoveries_rei_plugin");
+	}
+
+	@Override
+	public void registerPluginCategories(RecipeHelper recipeHelper) {
+		recipeHelper.registerCategories(new InfusingCategory());
+	}
+
+	@Override
+	public void registerRecipeDisplays(RecipeHelper recipeHelper) {
+		recipeHelper.registerRecipes(INFUSING, AltarRecipe.class, InfusingDisplay::new);
+	}
+
+	@Override
+	public void registerOthers(RecipeHelper recipeHelper) {
+		recipeHelper.registerWorkingStations(INFUSING, EntryStack.create(AstromineDiscoveriesBlocks.ALTAR));
+	}
+}

@@ -30,10 +30,10 @@ allprojects {
 
     if (isSnapshot) {
         group = rootProject.mod_group + "-snapshot"
-        version = rootProject.mod_version + '-alpha.' + runNumber + "+" + project.version_meta
+        version = rootProject.mod_version + '-alpha.' + runNumber + "+" + project.minecraft_version
     } else {
-        group = rootProject.mod_group
-        version = rootProject.mod_version + "+" + project.version_meta
+        group = project.mod_group
+        version = project.mod_version + "+" + project.minecraft_version
     }
 
     ext {
@@ -123,9 +123,9 @@ allprojects {
         }
 
         minecraft group: 'com.mojang', name: 'minecraft', version: minecraft_version
-        mappings group: 'net.fabricmc', name: 'yarn', version: mappings_version, classifier: 'v2'
-        modImplementation "net.fabricmc:fabric-loader:$loader_version"
-        useAsApiOptionally "net.fabricmc.fabric-api:fabric-api:$api_version"
+        mappings group: 'net.fabricmc', name: 'yarn', version: yarn_version, classifier: 'v2'
+        modImplementation "net.fabricmc:fabric-loader:$fabric_loader_version"
+        useAsApiOptionally "net.fabricmc.fabric-api:fabric-api:$fabric_api_version"
         modImplementation "com.google.code.findbugs:jsr305:3.0.2"
 
         tap(rootProject.ext.setDefaultApis)

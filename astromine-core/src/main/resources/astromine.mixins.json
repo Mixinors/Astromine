@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.github.chainmailstudios.astromine.mixin",
+  "package": "com.github.mixinors.astromine.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "AbstractBlockMixin",
@@ -25,7 +25,9 @@
     "StepAndDestroyBlockGoalMixin",
     "SwimGoalAccess",
     "SwimGoalMixin",
-    "WorldChunkMixin"
+    "WorldChunkMixin",
+    "PistonHandlerMixin",
+    "ServerPlayNetworkHandlerMixin"
   ],
   "client": [
     "ArmorFeatureRendererMixin",
@@ -36,7 +38,9 @@
     "EggEntityMixin",
     "InGameOverlayRendererMixin",
     "SkyPropertiesMixin",
-    "WorldRendererMixin"
+    "WorldRendererMixin",
+    "BuiltinModelItemRendererMixin",
+    "ClientPlayerInteractionManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
