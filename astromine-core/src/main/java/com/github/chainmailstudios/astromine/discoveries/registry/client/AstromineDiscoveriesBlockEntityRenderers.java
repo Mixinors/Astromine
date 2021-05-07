@@ -22,21 +22,27 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.registry.client;
-
-import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
+package com.github.chainmailstudios.astromine.discoveries.registry.client;
 
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 
+import com.github.chainmailstudios.astromine.discoveries.client.render.block.AltarBlockEntityRenderer;
+import com.github.chainmailstudios.astromine.discoveries.client.render.block.AltarPedestalBlockEntityRenderer;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.client.AstromineBlockEntityRenderers;
+
 import java.util.function.Function;
 
-public class AstromineBlockEntityRenderers {
-	public static void initialize() {}
+public class AstromineDiscoveriesBlockEntityRenderers {
+	public static void initialize() {
+		register(AstromineDiscoveriesBlockEntityTypes.ALTAR_PEDESTAL, AltarPedestalBlockEntityRenderer::new);
+		register(AstromineDiscoveriesBlockEntityTypes.ALTAR, AltarBlockEntityRenderer::new);
+	}
 
 	public static <B extends BlockEntity, C extends BlockEntityType<B>> void register(C c, Function<BlockEntityRenderDispatcher, BlockEntityRenderer<? super B>> b) {
-		BlockEntityRendererRegistry.INSTANCE.register(c, b);
+		AstromineBlockEntityRenderers.register(c, b);
 	}
 }

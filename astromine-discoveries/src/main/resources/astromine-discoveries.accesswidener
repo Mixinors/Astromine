@@ -1,7 +1,0 @@
-accessWidener v1 named
-
-accessible field net/minecraft/server/world/ServerChunkManager chunkGenerator Lnet/minecraft/world/gen/chunk/ChunkGenerator;
-mutable field net/minecraft/server/world/ServerChunkManager chunkGenerator Lnet/minecraft/world/gen/chunk/ChunkGenerator;
-accessible method net/minecraft/block/StairsBlock <init> (Lnet/minecraft/block/BlockState;Lnet/minecraft/block/AbstractBlock$Settings;)V
-accessible method net/minecraft/entity/SpawnRestriction register (Lnet/minecraft/entity/EntityType;Lnet/minecraft/entity/SpawnRestriction$Location;Lnet/minecraft/world/Heightmap$Type;Lnet/minecraft/entity/SpawnRestriction$SpawnPredicate;)V
-accessible method net/minecraft/client/particle/CrackParticle <init> (Lnet/minecraft/client/world/ClientWorld;DDDLnet/minecraft/item/ItemStack;)V

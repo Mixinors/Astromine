@@ -45,6 +45,7 @@ import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidIt
 import com.github.chainmailstudios.astromine.common.entity.base.ComponentItemEntity;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesItems;
 import dev.onyxstudios.cca.api.v3.block.BlockComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.block.BlockComponentInitializer;
 import dev.onyxstudios.cca.api.v3.chunk.ChunkComponentFactoryRegistry;
@@ -91,6 +92,12 @@ public class AstromineComponents implements WorldComponentInitializer, ChunkComp
 				item -> item instanceof FluidVolumeItem,
 				FLUID_INVENTORY_COMPONENT,
 				stack -> SimpleFluidComponent.of(FluidVolume.of(0L, ((FluidVolumeItem) stack.getItem()).getSize(), Fluids.EMPTY))
+		);
+
+		registry.registerFor(
+			item -> item == AstromineDiscoveriesItems.SPACE_SUIT_CHESTPLATE,
+			AstromineComponents.FLUID_INVENTORY_COMPONENT,
+			stack -> SimpleFluidComponent.of(FluidVolume.of(AstromineConfig.get().spaceSuitFluid, Fluids.EMPTY))
 		);
 	}
 

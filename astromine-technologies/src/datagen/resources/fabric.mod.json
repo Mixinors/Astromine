@@ -1,8 +1,0 @@
-{
-  "schemaVersion": 1,
-  "id": "astromine-technologies-datagen",
-  "version": "${version}",
-  "entrypoints": {
-    "astromine_datagen": ["com.github.chainmailstudios.astromine.technologies.datagen.AstromineTechnologiesDatagen"]
-  }
-}

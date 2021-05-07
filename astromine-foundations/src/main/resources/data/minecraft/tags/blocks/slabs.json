@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "astromine:meteor_stone_slab",
-    "astromine:smooth_meteor_stone_slab",
-    "astromine:polished_meteor_stone_slab",
-    "astromine:meteor_stone_brick_slab"
-  ]
-}
