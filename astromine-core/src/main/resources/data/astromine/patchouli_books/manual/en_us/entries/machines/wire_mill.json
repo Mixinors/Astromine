@@ -11,19 +11,13 @@
     },
     {
       "type": "crafting",
-      "recipe": "astromine:primitive_wire_mill"
+      "recipe": "astromine:primitive_wire_mill",
+      "recipe2": "astromine:basic_wire_mill"
     },
     {
       "type": "crafting",
-      "recipe": "astromine:basic_wire_mill"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:advanced_wire_mill"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:elite_wire_mill"
+      "recipe": "astromine:advanced_wire_mill",
+      "recipe2": "astromine:elite_wire_mill"
     }
   ]
 }

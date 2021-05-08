@@ -11,19 +11,13 @@
     },
     {
       "type": "crafting",
-      "recipe": "astromine:primitive_tank"
+      "recipe": "astromine:primitive_tank",
+      "recipe2": "astromine:basic_tank"
     },
     {
       "type": "crafting",
-      "recipe": "astromine:basic_tank"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:advanced_tank"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:elite_tank"
+      "recipe": "astromine:advanced_tank",
+      "recipe2": "astromine:elite_tank"
     }
   ]
 }

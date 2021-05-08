@@ -11,37 +11,23 @@
     },
     {
       "type": "crafting",
-      "recipe": "astromine:primitive_battery"
+      "recipe": "astromine:primitive_battery",
+      "recipe2": "astromine:basic_battery"
     },
     {
       "type": "crafting",
-      "recipe": "astromine:basic_battery"
+      "recipe": "astromine:advanced_battery",
+      "recipe2": "astromine:elite_battery"
     },
     {
       "type": "crafting",
-      "recipe": "astromine:advanced_battery"
-    },
-
-    {
-      "type": "crafting",
-      "recipe": "astromine:elite_battery"
+      "recipe": "astromine:primitive_battery_pack",
+      "recipe2": "astromine:basic_battery_pack"
     },
     {
       "type": "crafting",
-      "recipe": "astromine:primitive_battery_pack"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:basic_battery_pack"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:advanced_battery_pack"
-    },
-
-    {
-      "type": "crafting",
-      "recipe": "astromine:elite_battery_pack"
+      "recipe": "astromine:advanced_battery_pack",
+      "recipe2": "astromine:elite_battery_pack"
     }
   ]
 }

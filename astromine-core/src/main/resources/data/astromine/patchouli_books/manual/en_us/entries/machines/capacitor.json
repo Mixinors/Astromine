@@ -11,19 +11,13 @@
     },
     {
       "type": "crafting",
-      "recipe": "astromine:primitive_capacitor"
+      "recipe": "astromine:primitive_capacitor",
+      "recipe2": "astromine:basic_capacitor"
     },
     {
       "type": "crafting",
-      "recipe": "astromine:basic_capacitor"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:advanced_capacitor"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:elite_capacitor"
+      "recipe": "astromine:advanced_capacitor",
+      "recipe2": "astromine:elite_capacitor"
     }
   ]
 }

@@ -11,19 +11,13 @@
     },
     {
       "type": "crafting",
-      "recipe": "astromine:primitive_electric_furnace"
+      "recipe": "astromine:primitive_electric_furnace",
+      "recipe2": "astromine:basic_electric_furnace"
     },
     {
       "type": "crafting",
-      "recipe": "astromine:basic_electric_furnace"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:advanced_electric_furnace"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:elite_electric_furnace"
+      "recipe": "astromine:advanced_electric_furnace",
+      "recipe2": "astromine:elite_electric_furnace"
     }
   ]
 }

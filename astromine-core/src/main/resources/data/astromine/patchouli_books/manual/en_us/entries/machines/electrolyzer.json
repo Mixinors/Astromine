@@ -11,19 +11,13 @@
     },
     {
       "type": "crafting",
-      "recipe": "astromine:primitive_electrolyzer"
+      "recipe": "astromine:primitive_electrolyzer",
+      "recipe2": "astromine:basic_electrolyzer"
     },
     {
       "type": "crafting",
-      "recipe": "astromine:basic_electrolyzer"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:advanced_electrolyzer"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:elite_electrolyzer"
+      "recipe": "astromine:advanced_electrolyzer",
+      "recipe2": "astromine:elite_electrolyzer"
     }
   ]
 }

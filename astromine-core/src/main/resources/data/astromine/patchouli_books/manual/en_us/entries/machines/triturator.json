@@ -11,19 +11,13 @@
     },
     {
       "type": "crafting",
-      "recipe": "astromine:primitive_triturator"
+      "recipe": "astromine:primitive_triturator",
+      "recipe2": "astromine:basic_triturator"
     },
     {
       "type": "crafting",
-      "recipe": "astromine:basic_triturator"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:advanced_triturator"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:elite_triturator"
+      "recipe": "astromine:advanced_triturator",
+      "recipe2": "astromine:elite_triturator"
     }
   ]
 }

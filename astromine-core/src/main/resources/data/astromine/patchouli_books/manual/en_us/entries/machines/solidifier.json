@@ -11,19 +11,13 @@
     },
     {
       "type": "crafting",
-      "recipe": "astromine:primitive_solidifier"
+      "recipe": "astromine:primitive_solidifier",
+      "recipe2": "astromine:basic_solidifier"
     },
     {
       "type": "crafting",
-      "recipe": "astromine:basic_solidifier"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:advanced_solidifier"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:elite_solidifier"
+      "recipe": "astromine:advanced_solidifier",
+      "recipe2": "astromine:elite_solidifier"
     }
   ]
 }

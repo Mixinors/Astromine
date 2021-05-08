@@ -7,24 +7,17 @@
     {
       "type": "spotlight",
       "item": "astromine:primitive_drill",
-      "text": "A $(thing)Drill() mines a 3x3 area with electrical energy."
+      "text": "A $(thing)Drill$() mines a 3x3 area with electrical energy."
     },
     {
       "type": "crafting",
-      "recipe": "astromine:primitive_drill"
+      "recipe": "astromine:primitive_drill",
+      "recipe2": "astromine:basic_drill"
     },
     {
       "type": "crafting",
-      "recipe": "astromine:basic_drill"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:advanced_drill"
-    },
-
-    {
-      "type": "crafting",
-      "recipe": "astromine:elite_drill"
+      "recipe": "astromine:advanced_drill",
+      "recipe2": "astromine:elite_drill"
     }
   ]
 }

@@ -11,19 +11,13 @@
     },
     {
       "type": "crafting",
-      "recipe": "astromine:primitive_energy_cable"
+      "recipe": "astromine:primitive_energy_cable",
+      "recipe2": "astromine:basic_energy_cable"
     },
     {
       "type": "crafting",
-      "recipe": "astromine:basic_energy_cable"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:advanced_energy_cable"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:elite_energy_cable"
+      "recipe": "astromine:advanced_energy_cable",
+      "recipe2": "astromine:elite_energy_cable"
     }
   ]
 }

@@ -11,19 +11,13 @@
     },
     {
       "type": "crafting",
-      "recipe": "astromine:primitive_solid_generator"
+      "recipe": "astromine:primitive_solid_generator",
+      "recipe2": "astromine:basic_solid_generator"
     },
     {
       "type": "crafting",
-      "recipe": "astromine:basic_solid_generator"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:advanced_solid_generator"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:elite_solid_generator"
+      "recipe": "astromine:advanced_solid_generator",
+      "recipe2": "astromine:elite_solid_generator"
     }
   ]
 }

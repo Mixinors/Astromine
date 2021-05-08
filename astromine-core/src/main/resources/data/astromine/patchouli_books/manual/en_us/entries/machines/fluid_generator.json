@@ -11,19 +11,13 @@
     },
     {
       "type": "crafting",
-      "recipe": "astromine:primitive_fluid_generator"
+      "recipe": "astromine:primitive_fluid_generator",
+      "recipe2": "astromine:basic_fluid_generator"
     },
     {
       "type": "crafting",
-      "recipe": "astromine:basic_fluid_generator"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:advanced_fluid_generator"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:elite_fluid_generator"
+      "recipe": "astromine:advanced_fluid_generator",
+      "recipe2": "astromine:elite_fluid_generator"
     }
   ]
 }

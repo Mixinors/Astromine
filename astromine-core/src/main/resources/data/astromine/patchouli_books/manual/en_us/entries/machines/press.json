@@ -11,19 +11,13 @@
     },
     {
       "type": "crafting",
-      "recipe": "astromine:primitive_press"
+      "recipe": "astromine:primitive_press",
+      "recipe2": "astromine:basic_press"
     },
     {
       "type": "crafting",
-      "recipe": "astromine:basic_press"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:advanced_press"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:elite_press"
+      "recipe": "astromine:advanced_press",
+      "recipe2": "astromine:elite_press"
     }
   ]
 }

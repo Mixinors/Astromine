@@ -7,7 +7,7 @@
     {
       "type": "entity",
       "entity": "astromine:space_slime",
-      "text": "A $(thing)Space Slime$() is a curious creature that inhabits the depths of $(thing)Space$()."
+      "text": "A $(thing)Space Slime$() is a curious creature that inhabits the depths of $(thing)space$()."
     }
   ]
 }

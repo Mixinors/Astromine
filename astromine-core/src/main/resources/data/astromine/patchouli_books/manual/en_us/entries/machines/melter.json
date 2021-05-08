@@ -11,19 +11,13 @@
     },
     {
       "type": "crafting",
-      "recipe": "astromine:primitive_melter"
+      "recipe": "astromine:primitive_melter",
+      "recipe2": "astromine:basic_melter"
     },
     {
       "type": "crafting",
-      "recipe": "astromine:basic_melter"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:advanced_melter"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:elite_melter"
+      "recipe": "astromine:advanced_melter",
+      "recipe2": "astromine:elite_melter"
     }
   ]
 }

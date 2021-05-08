@@ -11,19 +11,13 @@
     },
     {
       "type": "crafting",
-      "recipe": "astromine:primitive_fluid_mixer"
+      "recipe": "astromine:primitive_fluid_mixer",
+      "recipe2": "astromine:basic_fluid_mixer"
     },
     {
       "type": "crafting",
-      "recipe": "astromine:basic_fluid_mixer"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:advanced_fluid_mixer"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:elite_fluid_mixer"
+      "recipe": "astromine:advanced_fluid_mixer",
+      "recipe2": "astromine:elite_fluid_mixer"
     }
   ]
 }

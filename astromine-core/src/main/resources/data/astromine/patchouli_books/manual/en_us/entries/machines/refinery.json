@@ -11,19 +11,13 @@
     },
     {
       "type": "crafting",
-      "recipe": "astromine:primitive_refinery"
+      "recipe": "astromine:primitive_refinery",
+      "recipe2": "astromine:basic_refinery"
     },
     {
       "type": "crafting",
-      "recipe": "astromine:basic_refinery"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:advanced_refinery"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:elite_refinery"
+      "recipe": "astromine:advanced_refinery",
+      "recipe2": "astromine:elite_refinery"
     }
   ]
 }

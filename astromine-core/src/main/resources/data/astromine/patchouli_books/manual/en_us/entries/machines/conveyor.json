@@ -11,11 +11,8 @@
     },
     {
       "type": "crafting",
-      "recipe": "astromine:basic_conveyor"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:advanced_conveyor"
+      "recipe": "astromine:basic_conveyor",
+      "recipe2": "astromine:advanced_conveyor"
     },
     {
       "type": "crafting",

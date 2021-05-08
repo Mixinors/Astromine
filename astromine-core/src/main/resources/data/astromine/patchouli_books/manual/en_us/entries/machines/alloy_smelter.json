@@ -11,19 +11,13 @@
     },
     {
       "type": "crafting",
-      "recipe": "astromine:primitive_alloy_smelter"
+      "recipe": "astromine:primitive_alloy_smelter",
+      "recipe2": "astromine:basic_alloy_smelter"
     },
     {
       "type": "crafting",
-      "recipe": "astromine:basic_alloy_smelter"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:advanced_alloy_smelter"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:elite_alloy_smelter"
+      "recipe": "astromine:advanced_alloy_smelter",
+      "recipe2": "astromine:elite_alloy_smelter"
     }
   ]
 }
