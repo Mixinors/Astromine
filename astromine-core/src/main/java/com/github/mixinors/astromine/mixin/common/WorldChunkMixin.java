@@ -36,10 +36,10 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.chunk.WorldChunk;
 
-import com.github.mixinors.astromine.common.access.WorldChunkAccess;
+import com.github.mixinors.astromine.common.access.WorldChunkAccessor;
 
 @Mixin(WorldChunk.class)
-public class WorldChunkMixin implements WorldChunkAccess {
+public class WorldChunkMixin implements WorldChunkAccessor {
 	@Shadow
 	@Final
 	private World world;
@@ -80,25 +80,25 @@ public class WorldChunkMixin implements WorldChunkAccess {
 	@Override
 	public void astromine_attachEast(WorldChunk chunk) {
 		this.astromine_east = chunk;
-		((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.astromine_east = null);
+		((WorldChunkAccessor) chunk).astromine_addUnloadListener(() -> this.astromine_east = null);
 	}
 
 	@Override
 	public void astromine_attachWest(WorldChunk chunk) {
 		this.astromine_west = chunk;
-		((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.astromine_west = null);
+		((WorldChunkAccessor) chunk).astromine_addUnloadListener(() -> this.astromine_west = null);
 	}
 
 	@Override
 	public void astromine_attachNorth(WorldChunk chunk) {
 		this.astromine_north = chunk;
-		((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.astromine_north = null);
+		((WorldChunkAccessor) chunk).astromine_addUnloadListener(() -> this.astromine_north = null);
 	}
 
 	@Override
 	public void astromine_attachSouth(WorldChunk chunk) {
 		this.astromine_south = chunk;
-		((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.astromine_south = null);
+		((WorldChunkAccessor) chunk).astromine_addUnloadListener(() -> this.astromine_south = null);
 	}
 
 	@Override
@@ -113,8 +113,8 @@ public class WorldChunkMixin implements WorldChunkAccess {
 		if (chunk == null) {
 			ChunkPos pos = this.pos;
 			chunk = this.astromine_east = this.world.getChunk(pos.x + 1, pos.z);
-			((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.astromine_east = null);
-			((WorldChunkAccess) chunk).astromine_attachWest((WorldChunk) (Object) this);
+			((WorldChunkAccessor) chunk).astromine_addUnloadListener(() -> this.astromine_east = null);
+			((WorldChunkAccessor) chunk).astromine_attachWest((WorldChunk) (Object) this);
 		}
 
 		return chunk;
@@ -126,8 +126,8 @@ public class WorldChunkMixin implements WorldChunkAccess {
 		if (chunk == null) {
 			ChunkPos pos = this.pos;
 			chunk = this.astromine_west = this.world.getChunk(pos.x - 1, pos.z);
-			((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.astromine_west = null);
-			((WorldChunkAccess) chunk).astromine_attachEast((WorldChunk) (Object) this);
+			((WorldChunkAccessor) chunk).astromine_addUnloadListener(() -> this.astromine_west = null);
+			((WorldChunkAccessor) chunk).astromine_attachEast((WorldChunk) (Object) this);
 		}
 
 		return chunk;
@@ -139,8 +139,8 @@ public class WorldChunkMixin implements WorldChunkAccess {
 		if (chunk == null) {
 			ChunkPos pos = this.pos;
 			chunk = this.astromine_north = this.world.getChunk(pos.x, pos.z - 1);
-			((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.astromine_north = null);
-			((WorldChunkAccess) chunk).astromine_attachSouth((WorldChunk) (Object) this);
+			((WorldChunkAccessor) chunk).astromine_addUnloadListener(() -> this.astromine_north = null);
+			((WorldChunkAccessor) chunk).astromine_attachSouth((WorldChunk) (Object) this);
 		}
 
 		return chunk;
@@ -152,8 +152,8 @@ public class WorldChunkMixin implements WorldChunkAccess {
 		if (chunk == null) {
 			ChunkPos pos = this.pos;
 			chunk = this.astromine_south = this.world.getChunk(pos.x, pos.z + 1);
-			((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.astromine_south = null);
-			((WorldChunkAccess) chunk).astromine_attachNorth((WorldChunk) (Object) this);
+			((WorldChunkAccessor) chunk).astromine_addUnloadListener(() -> this.astromine_south = null);
+			((WorldChunkAccessor) chunk).astromine_attachNorth((WorldChunk) (Object) this);
 		}
 
 		return chunk;

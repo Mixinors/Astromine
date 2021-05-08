@@ -48,12 +48,23 @@ allprojects {
 
     repositories {
         maven {
+            name = "Architectury"
+            url = "https://maven.architectury.dev"
+        }
+
+        maven {
+            name = "TerraFormersMC"
+            url = "https://maven.terraformersmc.com/releases/"
+        }
+
+        maven {
             name = "JitPack"
             url = "https://jitpack.io"
             content {
                 includeGroupByRegex "com.github.\\w+"
             }
         }
+
         maven {
             name = "Ladysnake Libs"
             url = 'https://ladysnake.jfrog.io/artifactory/mods'
@@ -61,24 +72,13 @@ allprojects {
                 includeGroup "io.github.onyxstudios.Cardinal-Components-API"
             }
         }
-        maven {
-            name = "architectury"
-            url = "https://maven.architectury.dev"
-        }
-        maven {
-            name = "TerraFormersMC"
-            url = "https://maven.terraformersmc.com/releases/"
-        }
+
         maven {
             name = "BlameJared"
             url = "https://maven.blamejared.com"
             content {
                 includeGroup "vazkii.patchouli"
             }
-        }
-        maven {
-            name = "dblsaiko"
-            url = "https://maven.dblsaiko.net/"
         }
     }
 

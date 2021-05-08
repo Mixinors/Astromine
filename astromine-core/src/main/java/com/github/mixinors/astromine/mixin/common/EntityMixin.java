@@ -47,7 +47,7 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.access.EntityAccess;
+import com.github.mixinors.astromine.common.access.EntityAccessor;
 import com.github.mixinors.astromine.client.atmosphere.ClientAtmosphereManager;
 import com.github.mixinors.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.mixinors.astromine.common.entity.GravityEntity;
@@ -59,7 +59,7 @@ import com.google.common.collect.Lists;
 import java.util.List;
 
 @Mixin(Entity.class)
-public abstract class EntityMixin implements GravityEntity, EntityAccess {
+public abstract class EntityMixin implements GravityEntity, EntityAccessor {
 	@Shadow
 	public World world;
 	@Shadow

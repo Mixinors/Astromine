@@ -33,13 +33,13 @@ import net.minecraft.entity.ai.brain.task.StayAboveWaterTask;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.server.world.ServerWorld;
 
-import com.github.mixinors.astromine.common.access.EntityAccess;
+import com.github.mixinors.astromine.common.access.EntityAccessor;
 
 @Mixin(StayAboveWaterTask.class)
 public abstract class StayAboveWaterTaskMixin {
 	@Inject(method = "shouldRun", at = @At("RETURN"), cancellable = true)
 	private void shouldRun(ServerWorld serverWorld, MobEntity mobEntity, CallbackInfoReturnable<Boolean> cir) {
-		if (!cir.getReturnValueZ() && ((EntityAccess) mobEntity).astromine_isInIndustrialFluid()) {
+		if (!cir.getReturnValueZ() && ((EntityAccessor) mobEntity).astromine_isInIndustrialFluid()) {
 			cir.setReturnValue(true);
 		}
 	}

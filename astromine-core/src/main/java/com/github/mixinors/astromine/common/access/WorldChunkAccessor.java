@@ -31,7 +31,7 @@ import com.github.mixinors.astromine.mixin.common.WorldChunkMixin;
 /**
  * A mixin helper class, used by {@link WorldChunkMixin}.
  */
-public interface WorldChunkAccess {
+public interface WorldChunkAccessor {
 	void astromine_addUnloadListener(Runnable runnable);
 
 	void astromine_runUnloadListeners();

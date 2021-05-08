@@ -34,7 +34,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import net.minecraft.entity.ai.pathing.EntityNavigation;
 import net.minecraft.entity.mob.MobEntity;
 
-import com.github.mixinors.astromine.common.access.EntityAccess;
+import com.github.mixinors.astromine.common.access.EntityAccessor;
 
 @Mixin(EntityNavigation.class)
 public abstract class EntityNavigationMixin {
@@ -44,7 +44,7 @@ public abstract class EntityNavigationMixin {
 
 	@Inject(method = "isInLiquid", at = @At("RETURN"), cancellable = true)
 	private void astromine_isInLiquid(CallbackInfoReturnable<Boolean> cir) {
-		if (!cir.getReturnValueZ() && ((EntityAccess) this.entity).astromine_isInIndustrialFluid()) {
+		if (!cir.getReturnValueZ() && ((EntityAccessor) this.entity).astromine_isInIndustrialFluid()) {
 			cir.setReturnValue(true);
 		}
 	}

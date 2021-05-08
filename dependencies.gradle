@@ -5,9 +5,7 @@ project.ext.setDefaultApis = {
     useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:${cardinal_components_version}")
     useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${cardinal_components_version}")
     useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-item:${cardinal_components_version}")
-    useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-level:${cardinal_components_version}")
     useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-world:${cardinal_components_version}")
-    useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-util:${cardinal_components_version}")
 
     // Shapes
     useAsApi("com.terraformersmc.terraform-api:terraform-shapes-api-v1:${shapes_version}")
@@ -43,12 +41,10 @@ project.ext.setDefaultApis = {
     useAsApi("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${project.kotlin_version}")
     useAsApi("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${project.kotlin_version}")
 
-    // Maybe Data
-    useAsApi("com.github.Draylar:maybe-data:${maybe_data_version}")
-
     // Piglib
     useAsApi("com.github.Shnupbups:Piglib:${piglib_version}")
 
+    // Architectury API
     useAsApi("me.shedaniel:architectury-fabric:${architectury_api_version}")
 }
 

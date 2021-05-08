@@ -29,6 +29,6 @@ import com.github.mixinors.astromine.mixin.common.EntityNavigationMixin;
 /**
  * A mixin helper class, used by {@link EntityNavigationMixin}.
  */
-public interface EntityAccess {
+public interface EntityAccessor {
 	boolean astromine_isInIndustrialFluid();
 }
