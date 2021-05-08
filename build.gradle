@@ -1,9 +1,8 @@
-import net.fabricmc.loom.task.RemapJarTask
 import net.fabricmc.loom.task.RunClientTask
 
 plugins {
     id 'maven-publish'
-    id 'forgified-fabric-loom' version '0.6-SNAPSHOT'
+    id 'dev.architectury.loom' version '0.7.1-SNAPSHOT'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
     id "org.cadixdev.licenser" version "0.5.0"
 }
@@ -18,7 +17,7 @@ allprojects {
     }
 
     apply plugin: 'maven-publish'
-    apply plugin: 'forgified-fabric-loom'
+    apply plugin: 'dev.architectury.loom'
     apply plugin: 'com.matthewprenger.cursegradle'
 
     ext {
@@ -42,10 +41,6 @@ allprojects {
         isRunningGenerateDataTask = path == ":astromine-datagen-initializer"
     }
 
-    loom {
-//        shareCaches = true
-    }
-
     java {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -67,8 +62,8 @@ allprojects {
             }
         }
         maven {
-            name = "shedaniel"
-            url = "https://maven.shedaniel.me"
+            name = "architectury"
+            url = "https://maven.architectury.dev"
         }
         maven {
             name = "TerraFormersMC"
@@ -155,14 +150,6 @@ subprojects {
 
     ext {
         cfProjectId = -1
-    }
-
-    task remapMavenJar(type: Copy, dependsOn: remapJar) {
-        afterEvaluate {
-            from("${project.buildDir}/libs/$archivesBaseName-${version}.jar")
-            into("${project.buildDir}/libs/")
-            rename { String fn -> "$archivesBaseName-${version}-maven.jar" }
-        }
     }
 
     configurations {
@@ -258,8 +245,8 @@ subprojects {
         publications {
             create("${archivesBaseName}_mavenJava", MavenPublication) {
                 afterEvaluate {
-                    artifact(file("${project.buildDir}/libs/$archivesBaseName-${version}-maven.jar")) {
-                        builtBy remapMavenJar
+                    artifact(jar) {
+                        builtBy remapJar
                     }
                     artifact(sourcesJar) {
                         builtBy remapSourcesJar
@@ -309,14 +296,6 @@ releaseOnCf.dependsOn(":curseforge")
 subprojects { releaseOnCf.dependsOn("${it.path}:curseforge") }
 subprojects { rootProject.remapJar.dependsOn("${it.path}:remapJar") }
 
-task remapMavenJar(type: RemapJarTask, dependsOn: jar) {
-    afterEvaluate {
-        input.set(file("${project.buildDir}/libs/${archivesBaseName}-${version}-dev.jar"))
-        archiveName = "${archivesBaseName}-${version}-maven.jar"
-        addNestedDependencies.set(false)
-    }
-}
-
 sourceSets {
     datagen
 }
@@ -336,8 +315,8 @@ dependencies {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifact(file("${project.buildDir}/libs/$archivesBaseName-${project.version}-maven.jar")) {
-                builtBy remapMavenJar
+            artifact(jar) {
+                builtBy remapJar
             }
             artifact(sourcesJar) {
                 builtBy remapSourcesJar
@@ -375,7 +354,7 @@ curseforge {
         project {
             id = "391739"
             releaseType = rootProject.release_cycle
-            changelog = "View the changelog at https://github.com/Chainmail-Studios/Astromine"
+            changelog = "View the changelog at https://github.com/Mixinors/Astromine"
             ((String) rootProject.tagged_versions).split(",").each {
                 addGameVersion it
             }
