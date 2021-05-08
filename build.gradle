@@ -123,6 +123,8 @@ allprojects {
         useAsApiOptionally "net.fabricmc.fabric-api:fabric-api:$fabric_api_version"
         modImplementation "com.google.code.findbugs:jsr305:3.0.2"
 
+        annotationProcessor "com.github.bsideup.jabel:jabel-javac-plugin:$jabel_version"
+
         tap(rootProject.ext.setDefaultApis)
     }
 
@@ -137,6 +139,23 @@ allprojects {
 
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
+    }
+
+    sourceCompatibility = 14
+
+    tasks.withType(JavaCompile).all {
+        options.compilerArgs = [
+                "--release", "8",
+                '--enable-preview',
+        ]
+
+        options.compilerArgs << '-Xplugin:jabel'
+
+        doFirst {
+            options.compilerArgs = options.compilerArgs.findAll {
+                it != '--enable-preview'
+            }
+        }
     }
 
     task sourcesJar(type: Jar, dependsOn: classes) {
