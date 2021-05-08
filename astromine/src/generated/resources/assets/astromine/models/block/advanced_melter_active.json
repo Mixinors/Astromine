@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "north": "astromine:block/melter/active/advanced_melter_front",
+    "south": "astromine:block/melter/active/advanced_melter_back",
+    "east": "astromine:block/melter/active/advanced_melter_left",
+    "west": "astromine:block/melter/active/advanced_melter_right",
+    "up": "astromine:block/melter/active/advanced_melter_top",
+    "down": "astromine:block/melter/active/advanced_melter_bottom",
+    "particle": "astromine:block/machine/generic_machine_top"
+  }
+}

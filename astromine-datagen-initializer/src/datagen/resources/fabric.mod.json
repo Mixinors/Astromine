@@ -3,6 +3,8 @@
   "id": "astromine-datagen-initializer",
   "version": "${version}",
   "entrypoints": {
-    "preLaunch": ["com.github.chainmailstudios.astromine.datagen.AstromineDatagenInitializer"]
+    "preLaunch": [
+      "com.github.mixinors.astromine.datagen.AMDatagenInitializer"
+    ]
   }
 }

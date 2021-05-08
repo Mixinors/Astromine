@@ -25,12 +25,12 @@
 package com.github.mixinors.astromine.datagen.entrypoint;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.datagen.registry.AstromineLootTableGenerators;
-import com.github.mixinors.astromine.datagen.registry.AstromineMaterialSets;
-import com.github.mixinors.astromine.datagen.registry.AstromineModelStateGenerators;
-import com.github.mixinors.astromine.datagen.registry.AstromineRecipeGenerators;
-import com.github.mixinors.astromine.datagen.registry.AstromineTagGenerators;
-import com.github.mixinors.astromine.datagen.registry.AstromineWorldGenGenerators;
+import com.github.mixinors.astromine.datagen.registry.AMLootTableGenerators;
+import com.github.mixinors.astromine.datagen.registry.AMMaterialSets;
+import com.github.mixinors.astromine.datagen.registry.AMModelStateGenerators;
+import com.github.mixinors.astromine.datagen.registry.AMRecipeGenerators;
+import com.github.mixinors.astromine.datagen.registry.AMTagGenerators;
+import com.github.mixinors.astromine.datagen.registry.AMWorldGenGenerators;
 import me.shedaniel.cloth.api.datagen.v1.DataGeneratorHandler;
 import me.shedaniel.cloth.api.datagen.v1.LootTableData;
 import me.shedaniel.cloth.api.datagen.v1.ModelStateData;
@@ -52,7 +52,7 @@ public interface DatagenInitializer {
 
 	String getModuleId();
 
-	AstromineMaterialSets getMaterialSets();
+	AMMaterialSets getMaterialSets();
 
 	default void registerData() {
 		AMCommon.LOGGER.info("Initializing data generation for " + getModuleId() + ".");
@@ -95,13 +95,13 @@ public interface DatagenInitializer {
 		}
 	}
 
-	AstromineLootTableGenerators getLootTableGenerators();
+	AMLootTableGenerators getLootTableGenerators();
 
-	AstromineRecipeGenerators getRecipeGenerators();
+	AMRecipeGenerators getRecipeGenerators();
 
-	AstromineTagGenerators getTagGenerators();
+	AMTagGenerators getTagGenerators();
 
-	AstromineModelStateGenerators getModelStateGenerators();
+	AMModelStateGenerators getModelStateGenerators();
 
-	AstromineWorldGenGenerators getWorldGenGenerators();
+	AMWorldGenGenerators getWorldGenGenerators();
 }

@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "north": "astromine:block/electrolyzer/inactive/elite_electrolyzer_front",
+    "south": "astromine:block/electrolyzer/inactive/elite_electrolyzer_back",
+    "east": "astromine:block/electrolyzer/inactive/elite_electrolyzer_left",
+    "west": "astromine:block/electrolyzer/inactive/elite_electrolyzer_right",
+    "up": "astromine:block/electrolyzer/inactive/elite_electrolyzer_top",
+    "down": "astromine:block/electrolyzer/inactive/elite_electrolyzer_bottom",
+    "particle": "astromine:block/machine/generic_machine_top"
+  }
+}

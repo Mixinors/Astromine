@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "astromine:meteor_stone"
+    }
+  },
+  "result": {
+    "item": "astromine:meteor_stone_slab",
+    "count": 6
+  }
+}

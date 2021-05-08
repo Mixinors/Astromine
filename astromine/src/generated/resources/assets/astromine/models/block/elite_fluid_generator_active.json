@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "north": "astromine:block/fluid_generator/active/elite_fluid_generator_front",
+    "south": "astromine:block/fluid_generator/active/elite_fluid_generator_back",
+    "east": "astromine:block/fluid_generator/active/elite_fluid_generator_left",
+    "west": "astromine:block/fluid_generator/active/elite_fluid_generator_right",
+    "up": "astromine:block/fluid_generator/active/elite_fluid_generator_top",
+    "down": "astromine:block/fluid_generator/active/elite_fluid_generator_bottom",
+    "particle": "astromine:block/machine/generic_machine_top"
+  }
+}

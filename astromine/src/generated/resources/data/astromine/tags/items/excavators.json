@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "astromine:bronze_excavator",
+    "astromine:steel_excavator",
+    "astromine:metite_excavator",
+    "astromine:asterite_excavator",
+    "astromine:stellum_excavator",
+    "astromine:galaxium_excavator",
+    "astromine:univite_excavator",
+    "astromine:meteoric_steel_excavator"
+  ]
+}

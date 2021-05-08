@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "north": "astromine:block/triturator/inactive/primitive_triturator_front",
+    "south": "astromine:block/triturator/inactive/primitive_triturator_back",
+    "east": "astromine:block/triturator/inactive/primitive_triturator_left",
+    "west": "astromine:block/triturator/inactive/primitive_triturator_right",
+    "up": "astromine:block/triturator/inactive/primitive_triturator_top",
+    "down": "astromine:block/triturator/inactive/primitive_triturator_bottom",
+    "particle": "astromine:block/machine/generic_machine_top"
+  }
+}

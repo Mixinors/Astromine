@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:wooden_pickaxe",
+    "minecraft:stone_pickaxe",
+    "minecraft:golden_pickaxe",
+    "minecraft:iron_pickaxe",
+    "minecraft:diamond_pickaxe",
+    "minecraft:netherite_pickaxe",
+    "astromine:bronze_pickaxe",
+    "astromine:steel_pickaxe",
+    "astromine:metite_pickaxe",
+    "astromine:asterite_pickaxe",
+    "astromine:stellum_pickaxe",
+    "astromine:galaxium_pickaxe",
+    "astromine:univite_pickaxe",
+    "astromine:meteoric_steel_pickaxe",
+    "#astromine:hammers",
+    "#astromine:mining_tools"
+  ]
+}
