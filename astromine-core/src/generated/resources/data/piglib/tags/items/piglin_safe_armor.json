@@ -4,6 +4,10 @@
     "minecraft:golden_helmet",
     "minecraft:golden_chestplate",
     "minecraft:golden_leggings",
-    "minecraft:golden_boots"
+    "minecraft:golden_boots",
+    "astromine:fools_gold_helmet",
+    "astromine:fools_gold_chestplate",
+    "astromine:fools_gold_leggings",
+    "astromine:fools_gold_boots"
   ]
 }

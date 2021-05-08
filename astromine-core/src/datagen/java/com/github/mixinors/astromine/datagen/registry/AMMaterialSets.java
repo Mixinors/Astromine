@@ -339,7 +339,7 @@ public class AMMaterialSets {
 	
 	public static final MaterialSet FOOLS_GOLD = register(
 			new MaterialSet.Builder("fools_gold")
-					.basics().metal()
+					.basics().metal().armor()
 					.piglinLoved().apple()
 					.build()
 	);
