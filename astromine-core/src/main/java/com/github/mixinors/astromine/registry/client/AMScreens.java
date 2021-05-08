@@ -24,66 +24,54 @@
 
 package com.github.mixinors.astromine.registry.client;
 
-import com.github.mixinors.astromine.client.screen.*;
+import com.github.mixinors.astromine.client.screen.RecipeCreatorHandledScreen;
+import com.github.mixinors.astromine.client.screen.base.CustomForegroundBaseHandledScreen;
+import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
+import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
-
-import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerType;
 
 @Environment(EnvType.CLIENT)
 public class AMScreens {
 	public static void init() {
-		ScreenRegistry.register(AMScreenHandlers.RECIPE_CREATOR, RecipeCreatorHandledScreen::new);
-		
-		ScreenRegistry.register(AMScreenHandlers.ROCKET, RocketHandledScreen::new);
-		
-		ScreenRegistry.register(AMScreenHandlers.FLUID_EXTRACTOR, FluidCollectorHandledScreen::new);
-		
-		ScreenRegistry.register(AMScreenHandlers.FLUID_INSERTER, FluidPlacerHandledScreen::new);
-		
-		ScreenRegistry.register(AMScreenHandlers.BLOCK_BREAKER, BlockBreakerHandledScreen::new);
-		
-		ScreenRegistry.register(AMScreenHandlers.BLOCK_PLACER, BlockPlacerHandledScreen::new);
-		
-		ScreenRegistry.register(AMScreenHandlers.LIQUID_GENERATOR, FluidGeneratorHandledScreen::new);
-		
-		ScreenRegistry.register(AMScreenHandlers.SOLID_GENERATOR, SolidGeneratorHandledScreen::new);
-		
-		ScreenRegistry.register(AMScreenHandlers.VENT, VentHandledScreen::new);
-		
-		ScreenRegistry.register(AMScreenHandlers.TANK, TankHandledScreen::new);
-		
-		ScreenRegistry.register(AMScreenHandlers.NUCLEAR_WARHEAD, NuclearWarheadHandledScreen::new);
-		
-		ScreenRegistry.register(AMScreenHandlers.CAPACITOR, CapacitorHandledScreen::new);
-		
-		ScreenRegistry.register(AMScreenHandlers.CREATIVE_CAPACITOR, CreativeCapacitorHandledScreen::new);
-		
-		ScreenRegistry.register(AMScreenHandlers.CREATIVE_TANK, CreativeTankHandledScreen::new);
-		
-		ScreenRegistry.register(AMScreenHandlers.CREATIVE_BUFFER, CreativeBufferHandledScreen::new);
-		
-		ScreenRegistry.register(AMScreenHandlers.BUFFER, BufferHandledScreen::new);
-		
-		ScreenRegistry.register(AMScreenHandlers.TRITURATOR, TrituratorHandledScreen::new);
-		
-		ScreenRegistry.register(AMScreenHandlers.PRESSER, PressHandledScreen::new);
-		
-		ScreenRegistry.register(AMScreenHandlers.WIREMILL, WireMillHandledScreen::new);
-		
-		ScreenRegistry.register(AMScreenHandlers.ELECTRIC_FURNACE, ElectricFurnaceHandledScreen::new);
-		
-		ScreenRegistry.register(AMScreenHandlers.ELECTROLYZER, ElectrolyzerHandledScreen::new);
-		
-		ScreenRegistry.register(AMScreenHandlers.REFINERY, RefineryHandledScreen::new);
-		
-		ScreenRegistry.register(AMScreenHandlers.FLUID_MIXER, FluidMixerHandledScreen::new);
-		
-		ScreenRegistry.register(AMScreenHandlers.ALLOY_SMELTER, AlloySmelterHandledScreen::new);
-		
-		ScreenRegistry.register(AMScreenHandlers.SOLIDIFIER, SolidifierHandledScreen::new);
-		
-		ScreenRegistry.register(AMScreenHandlers.MELTER, MelterHandledScreen::new);
+		register(AMScreenHandlers.RECIPE_CREATOR, RecipeCreatorHandledScreen::new);
+		registerSimple(AMScreenHandlers.ROCKET);
+		registerSimple(AMScreenHandlers.FLUID_EXTRACTOR);
+		registerSimple(AMScreenHandlers.FLUID_INSERTER);
+		registerSimple(AMScreenHandlers.BLOCK_BREAKER);
+		registerSimple(AMScreenHandlers.BLOCK_PLACER);
+		registerSimple(AMScreenHandlers.LIQUID_GENERATOR);
+		registerSimple(AMScreenHandlers.SOLID_GENERATOR);
+		registerSimple(AMScreenHandlers.VENT);
+		registerSimple(AMScreenHandlers.TANK);
+		registerSimple(AMScreenHandlers.NUCLEAR_WARHEAD);
+		registerSimple(AMScreenHandlers.CAPACITOR);
+		registerSimple(AMScreenHandlers.CREATIVE_CAPACITOR);
+		registerSimple(AMScreenHandlers.CREATIVE_TANK);
+		registerSimple(AMScreenHandlers.CREATIVE_BUFFER);
+		registerSimple(AMScreenHandlers.BUFFER);
+		registerSimple(AMScreenHandlers.TRITURATOR);
+		registerSimple(AMScreenHandlers.PRESSER);
+		registerSimple(AMScreenHandlers.WIREMILL);
+		registerSimple(AMScreenHandlers.ELECTRIC_FURNACE);
+		registerSimple(AMScreenHandlers.ELECTROLYZER);
+		registerSimple(AMScreenHandlers.REFINERY);
+		registerSimple(AMScreenHandlers.FLUID_MIXER);
+		registerSimple(AMScreenHandlers.ALLOY_SMELTER);
+		registerSimple(AMScreenHandlers.SOLIDIFIER);
+		registerSimple(AMScreenHandlers.MELTER);
+	}
+
+	public static <H extends BaseScreenHandler> void registerSimple(ScreenHandlerType<? extends H> type) {
+		AMScreens.<H, CustomForegroundBaseHandledScreen<H>>register(type, CustomForegroundBaseHandledScreen::new);
+	}
+
+	public static <H extends ScreenHandler, S extends Screen & ScreenHandlerProvider<H>> void register(ScreenHandlerType<? extends H> type, ScreenRegistry.Factory<H, S> screenFactory) {
+		ScreenRegistry.register(type, screenFactory);
 	}
 }

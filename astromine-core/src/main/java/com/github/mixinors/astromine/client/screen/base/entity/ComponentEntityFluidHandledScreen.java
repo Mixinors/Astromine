@@ -35,7 +35,7 @@ import com.github.vini2003.blade.common.handler.BaseScreenHandler;
  * A {@link ComponentEntityHandledScreen} used by
  * {@link ComponentEntityFluidItemScreenHandler}.
  */
-public abstract class ComponentEntityFluidHandledScreen<T extends ComponentEntityFluidScreenHandler> extends ComponentEntityHandledScreen<T> {
+public class ComponentEntityFluidHandledScreen<T extends ComponentEntityFluidScreenHandler> extends ComponentEntityHandledScreen<T> {
 	/** Instantiates a {@link ComponentEntityFluidHandledScreen}. */
 	public ComponentEntityFluidHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
