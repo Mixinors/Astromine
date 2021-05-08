@@ -25,8 +25,8 @@
 package com.github.mixinors.astromine.common.world.feature;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.registry.AMConfig;
-import com.github.mixinors.astromine.registry.AMFluids;
+import com.github.mixinors.astromine.registry.common.AMConfig;
+import com.github.mixinors.astromine.registry.common.AMFluids;
 import com.mojang.serialization.Codec;
 import com.terraformersmc.terraform.shapes.api.Position;
 import com.terraformersmc.terraform.shapes.impl.Shapes;

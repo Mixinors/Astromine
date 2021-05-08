@@ -33,7 +33,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 import com.github.mixinors.astromine.common.inventory.BaseInventory;
-import com.github.mixinors.astromine.registry.AMScreenHandlers;
+import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;

@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.component.general.*;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
+import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 
 import net.minecraft.block.BlockState;
@@ -40,7 +40,7 @@ import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyIte
 import com.github.mixinors.astromine.common.util.StackUtils;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
-import com.github.mixinors.astromine.registry.AMConfig;
+import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;

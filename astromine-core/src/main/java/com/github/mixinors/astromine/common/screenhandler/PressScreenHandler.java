@@ -28,7 +28,7 @@ import com.github.mixinors.astromine.common.block.entity.PressBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyItemScreenHandler;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
-import com.github.mixinors.astromine.registry.AMScreenHandlers;
+import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;

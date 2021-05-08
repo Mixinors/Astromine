@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.common.block;
 import com.github.mixinors.astromine.common.block.base.CableBlock;
 import com.github.mixinors.astromine.common.network.NetworkBlock;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
-import com.github.mixinors.astromine.registry.AMNetworkTypes;
+import com.github.mixinors.astromine.registry.common.AMNetworkTypes;
 
 public class FluidPipeBlock extends CableBlock implements NetworkBlock.FluidNode {
 	public FluidPipeBlock(Settings settings) {

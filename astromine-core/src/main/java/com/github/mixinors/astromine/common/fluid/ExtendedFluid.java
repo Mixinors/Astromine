@@ -52,9 +52,9 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 
 import com.github.mixinors.astromine.common.util.ClientUtils;
-import com.github.mixinors.astromine.registry.AMBlocks;
-import com.github.mixinors.astromine.registry.AMFluids;
-import com.github.mixinors.astromine.registry.AMItems;
+import com.github.mixinors.astromine.registry.common.AMBlocks;
+import com.github.mixinors.astromine.registry.common.AMFluids;
+import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.vini2003.blade.common.miscellaneous.Color;
 import org.jetbrains.annotations.Nullable;
 

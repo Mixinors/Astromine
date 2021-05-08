@@ -24,12 +24,11 @@
 
 package com.github.mixinors.astromine;
 
+import com.github.mixinors.astromine.registry.common.*;
 import net.fabricmc.api.ModInitializer;
 
 import net.minecraft.util.Identifier;
 
-import blue.endless.jankson.Jankson;
-import com.github.mixinors.astromine.registry.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

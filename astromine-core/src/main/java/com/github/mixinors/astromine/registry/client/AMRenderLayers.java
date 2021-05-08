@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.registry.client;
 
-import com.github.mixinors.astromine.registry.AMBlocks;
+import com.github.mixinors.astromine.registry.common.AMBlocks;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 
 import net.minecraft.block.Block;

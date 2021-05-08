@@ -36,7 +36,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.util.VoxelShapeUtils;
-import com.github.mixinors.astromine.registry.AMComponents;
+import com.github.mixinors.astromine.registry.common.AMComponents;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
 import org.jetbrains.annotations.Nullable;

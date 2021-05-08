@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.client.modmenu;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import com.github.mixinors.astromine.registry.AMConfig;
+import com.github.mixinors.astromine.registry.common.AMConfig;
 import io.github.prospector.modmenu.api.ConfigScreenFactory;
 import io.github.prospector.modmenu.api.ModMenuApi;
 import me.shedaniel.autoconfig.AutoConfig;

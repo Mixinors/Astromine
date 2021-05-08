@@ -32,7 +32,7 @@ import com.github.mixinors.astromine.common.component.general.base.ItemComponent
 import com.github.mixinors.astromine.common.component.general.provider.RedstoneComponentProvider;
 import com.github.mixinors.astromine.common.component.general.provider.TransferComponentProvider;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
-import com.github.mixinors.astromine.registry.AMComponents;
+import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 
 import net.minecraft.block.BlockState;

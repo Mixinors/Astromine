@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.volume.fluid;
 
 import com.github.mixinors.astromine.common.util.NumberUtils;
-import com.github.mixinors.astromine.registry.AMConfig;
+import com.github.mixinors.astromine.registry.common.AMConfig;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundTag;

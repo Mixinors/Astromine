@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.common.block;
 
-import com.github.mixinors.astromine.registry.AMBlocks;
-import com.github.mixinors.astromine.registry.AMCriteria;
+import com.github.mixinors.astromine.registry.common.AMBlocks;
+import com.github.mixinors.astromine.registry.common.AMCriteria;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;

@@ -30,7 +30,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.MiningToolItem;
 
-import com.github.mixinors.astromine.registry.AMItems;
+import com.github.mixinors.astromine.registry.common.AMItems;
 
 import java.util.UUID;
 

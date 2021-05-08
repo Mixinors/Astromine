@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
-import com.github.mixinors.astromine.registry.AMSoundEvents;
+import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+import com.github.mixinors.astromine.registry.common.AMSoundEvents;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;

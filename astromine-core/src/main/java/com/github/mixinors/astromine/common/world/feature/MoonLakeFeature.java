@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.world.feature;
 
-import com.github.mixinors.astromine.registry.AMBlocks;
+import com.github.mixinors.astromine.registry.common.AMBlocks;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.StructureWorldAccess;

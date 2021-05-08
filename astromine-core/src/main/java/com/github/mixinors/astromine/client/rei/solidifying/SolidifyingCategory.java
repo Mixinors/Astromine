@@ -24,14 +24,14 @@
 
 package com.github.mixinors.astromine.client.rei.solidifying;
 
-import com.github.mixinors.astromine.registry.AMBlocks;
+import com.github.mixinors.astromine.registry.common.AMBlocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.client.rei.AMREIPlugin;
+import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.EntryStack;
@@ -47,7 +47,7 @@ import java.util.List;
 public class SolidifyingCategory implements RecipeCategory<SolidifyingDisplay> {
 	@Override
 	public Identifier getIdentifier() {
-		return AMREIPlugin.SOLIDIFYING;
+		return AMRoughlyEnoughItemsPlugin.SOLIDIFYING;
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class SolidifyingCategory implements RecipeCategory<SolidifyingDisplay> {
 	public List<Widget> setupDisplay(SolidifyingDisplay display, Rectangle bounds) {
 		List<Widget> widgets = new ArrayList<>();
 		Rectangle innerBounds = new Rectangle(bounds.getCenterX() - 55, bounds.y, 110, bounds.height);
-		widgets.addAll(AMREIPlugin.createFluidDisplay(new Rectangle(innerBounds.getX() + 24, innerBounds.getCenterY() - 23, 12, 48), Collections.singletonList(EntryStack.create(display.getFluid(), AMREIPlugin.convertToFraction(
+		widgets.addAll(AMRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getX() + 24, innerBounds.getCenterY() - 23, 12, 48), Collections.singletonList(EntryStack.create(display.getFluid(), AMRoughlyEnoughItemsPlugin.convertToFraction(
 			display.getAmount()))), false, 5000));
 		widgets.add(Widgets.createArrow(new Point(innerBounds.getX() + 45, innerBounds.getY() + 26)));
 		widgets.add(Widgets.createSlot(new Point(innerBounds.getX() + 61, innerBounds.getY() + 19)).entries(display.getResultingEntries().get(0)).disableBackground().markOutput());

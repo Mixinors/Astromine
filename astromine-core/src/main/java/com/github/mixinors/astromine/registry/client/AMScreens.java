@@ -29,7 +29,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 
-import com.github.mixinors.astromine.registry.AMScreenHandlers;
+import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 
 @Environment(EnvType.CLIENT)
 public class AMScreens {

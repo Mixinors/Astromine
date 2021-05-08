@@ -26,8 +26,8 @@ package com.github.mixinors.astromine.common.world.feature;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.noise.OpenSimplexNoise;
-import com.github.mixinors.astromine.registry.AMBlocks;
-import com.github.mixinors.astromine.registry.AMFeatures;
+import com.github.mixinors.astromine.registry.common.AMBlocks;
+import com.github.mixinors.astromine.registry.common.AMFeatures;
 import com.terraformersmc.terraform.shapes.api.Position;
 import com.terraformersmc.terraform.shapes.api.Quaternion;
 import com.terraformersmc.terraform.shapes.api.Shape;

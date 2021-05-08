@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.client.rei.solidgenerating;
 
-import com.github.mixinors.astromine.registry.AMBlocks;
+import com.github.mixinors.astromine.registry.common.AMBlocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -32,7 +32,7 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.client.rei.AMREIPlugin;
+import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.client.rei.generating.AbstractEnergyGeneratingCategory;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
@@ -47,7 +47,7 @@ import java.util.List;
 public class SolidGeneratingCategory extends AbstractEnergyGeneratingCategory<SolidGeneratingDisplay> {
 	@Override
 	public Identifier getIdentifier() {
-		return AMREIPlugin.SOLID_GENERATING;
+		return AMRoughlyEnoughItemsPlugin.SOLID_GENERATING;
 	}
 
 	@Override

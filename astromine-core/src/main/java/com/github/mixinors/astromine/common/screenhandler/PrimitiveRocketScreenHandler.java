@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
-import com.github.mixinors.astromine.registry.AMItems;
-import com.github.mixinors.astromine.registry.AMScreenHandlers;
+import com.github.mixinors.astromine.registry.common.AMItems;
+import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.TranslatableText;

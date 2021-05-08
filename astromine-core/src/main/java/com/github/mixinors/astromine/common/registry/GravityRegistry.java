@@ -24,12 +24,12 @@
 
 package com.github.mixinors.astromine.common.registry;
 
+import com.github.mixinors.astromine.mixin.common.*;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.registry.base.BiRegistry;
-import com.github.mixinors.astromine.mixin.*;
-import com.github.mixinors.astromine.registry.AMConfig;
+import com.github.mixinors.astromine.registry.common.AMConfig;
 
 import java.util.Optional;
 

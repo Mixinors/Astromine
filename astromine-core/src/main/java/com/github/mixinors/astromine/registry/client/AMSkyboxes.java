@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.registry.client;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.registry.SkyboxRegistry;
 import com.github.mixinors.astromine.client.render.sky.skybox.SpaceSkybox;
-import com.github.mixinors.astromine.registry.AMDimensions;
+import com.github.mixinors.astromine.registry.common.AMDimensions;
 
 public class AMSkyboxes {
 	public static void init() {

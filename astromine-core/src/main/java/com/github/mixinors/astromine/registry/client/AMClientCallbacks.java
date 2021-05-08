@@ -32,8 +32,8 @@ import com.github.mixinors.astromine.common.callback.SkyPropertiesCallback;
 import com.github.mixinors.astromine.common.item.HolographicConnectorItem;
 import com.github.mixinors.astromine.common.item.SpaceSuitItem;
 import com.github.mixinors.astromine.common.network.type.EnergyNetworkType;
-import com.github.mixinors.astromine.registry.AMDimensions;
-import com.github.mixinors.astromine.registry.AMItems;
+import com.github.mixinors.astromine.registry.common.AMDimensions;
+import com.github.mixinors.astromine.registry.common.AMItems;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 
 import net.minecraft.item.BlockItem;

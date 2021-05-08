@@ -31,8 +31,8 @@ import com.github.mixinors.astromine.common.component.general.miscellaneous.Iden
 import com.github.mixinors.astromine.common.component.general.provider.FluidComponentProvider;
 import com.github.mixinors.astromine.common.util.VolumeUtils;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
-import com.github.mixinors.astromine.registry.AMComponents;
-import com.github.mixinors.astromine.registry.AMItems;
+import com.github.mixinors.astromine.registry.common.AMComponents;
+import com.github.mixinors.astromine.registry.common.AMItems;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;

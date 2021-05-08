@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.block;
 
-import com.github.mixinors.astromine.registry.AMBlocks;
+import com.github.mixinors.astromine.registry.common.AMBlocks;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.Random;

@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.client.rei.infusing;
 
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.client.rei.AMREIPlugin;
+import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.common.recipe.AltarRecipe;
 import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeDisplay;
@@ -67,6 +67,6 @@ public class InfusingDisplay implements RecipeDisplay {
 
 	@Override
 	public Identifier getRecipeCategory() {
-		return AMREIPlugin.INFUSING;
+		return AMRoughlyEnoughItemsPlugin.INFUSING;
 	}
 }

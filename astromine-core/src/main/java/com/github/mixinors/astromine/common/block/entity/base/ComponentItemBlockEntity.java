@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.block.entity.base;
 
 import com.github.mixinors.astromine.common.component.general.provider.ItemComponentProvider;
-import com.github.mixinors.astromine.registry.AMComponents;
+import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;

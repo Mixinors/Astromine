@@ -29,7 +29,7 @@ import net.fabricmc.api.Environment;
 
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.client.rei.AMREIPlugin;
+import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.client.rei.generating.AbstractEnergyGeneratingDisplay;
 import me.shedaniel.rei.api.EntryStack;
 
@@ -62,7 +62,7 @@ public class SolidGeneratingDisplay extends AbstractEnergyGeneratingDisplay {
 
 	@Override
 	public Identifier getRecipeCategory() {
-		return AMREIPlugin.SOLID_GENERATING;
+		return AMRoughlyEnoughItemsPlugin.SOLID_GENERATING;
 	}
 
 	@Override

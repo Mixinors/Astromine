@@ -24,12 +24,12 @@
 
 package com.github.mixinors.astromine.client.rei.infusing;
 
-import com.github.mixinors.astromine.registry.AMBlocks;
+import com.github.mixinors.astromine.registry.common.AMBlocks;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
-import com.github.mixinors.astromine.client.rei.AMREIPlugin;
+import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.EntryStack;
@@ -43,7 +43,7 @@ import java.util.List;
 public class InfusingCategory implements RecipeCategory<InfusingDisplay> {
 	@Override
 	public Identifier getIdentifier() {
-		return AMREIPlugin.INFUSING;
+		return AMRoughlyEnoughItemsPlugin.INFUSING;
 	}
 
 	@Override

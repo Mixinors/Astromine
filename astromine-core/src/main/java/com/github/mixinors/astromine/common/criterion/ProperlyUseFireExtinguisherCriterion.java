@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.criterion;
 
-import com.github.mixinors.astromine.registry.AMCriteria;
+import com.github.mixinors.astromine.registry.common.AMCriteria;
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;

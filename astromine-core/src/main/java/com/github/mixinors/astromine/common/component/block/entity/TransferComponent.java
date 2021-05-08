@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.component.block.entity;
 
 import com.github.mixinors.astromine.common.component.general.provider.TransferComponentProvider;
-import com.github.mixinors.astromine.registry.AMComponents;
+import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;

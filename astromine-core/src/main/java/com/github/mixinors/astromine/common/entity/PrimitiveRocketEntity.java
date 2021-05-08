@@ -28,10 +28,10 @@ import com.github.mixinors.astromine.common.component.general.*;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.entity.base.RocketEntity;
-import com.github.mixinors.astromine.registry.AMDimensions;
-import com.github.mixinors.astromine.registry.AMFluids;
-import com.github.mixinors.astromine.registry.AMItems;
-import com.github.mixinors.astromine.registry.AMNetworks;
+import com.github.mixinors.astromine.registry.common.AMDimensions;
+import com.github.mixinors.astromine.registry.common.AMFluids;
+import com.github.mixinors.astromine.registry.common.AMItems;
+import com.github.mixinors.astromine.registry.common.AMNetworks;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 

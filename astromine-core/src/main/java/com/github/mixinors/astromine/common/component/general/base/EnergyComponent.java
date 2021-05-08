@@ -29,7 +29,7 @@ import com.github.mixinors.astromine.common.component.general.SimpleAutoSyncedEn
 import com.github.mixinors.astromine.common.component.general.SimpleEnergyComponent;
 import com.github.mixinors.astromine.common.component.general.compatibility.EnergyComponentFromEnergyStorage;
 import com.github.mixinors.astromine.common.component.general.provider.EnergyComponentProvider;
-import com.github.mixinors.astromine.registry.AMComponents;
+import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.fabricmc.fabric.api.util.NbtType;
 
 import net.minecraft.item.Item;
@@ -38,7 +38,7 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
-import com.github.mixinors.astromine.registry.AMItems;
+import com.github.mixinors.astromine.registry.common.AMItems;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.EnergyStorage;
 

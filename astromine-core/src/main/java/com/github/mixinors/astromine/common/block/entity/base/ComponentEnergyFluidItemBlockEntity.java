@@ -30,7 +30,7 @@ import com.github.mixinors.astromine.common.component.general.base.ItemComponent
 import com.github.mixinors.astromine.common.component.general.provider.EnergyComponentProvider;
 import com.github.mixinors.astromine.common.component.general.provider.FluidComponentProvider;
 import com.github.mixinors.astromine.common.component.general.provider.ItemComponentProvider;
-import com.github.mixinors.astromine.registry.AMComponents;
+import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.mixinors.astromine.common.util.capability.energy.ComponentEnergyProvider;

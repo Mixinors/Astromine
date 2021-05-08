@@ -34,7 +34,7 @@ import com.github.mixinors.astromine.datagen.generator.modelstate.set.GenericBlo
 import com.github.mixinors.astromine.datagen.generator.modelstate.set.GenericItemSetModelGenerator;
 import com.github.mixinors.astromine.datagen.generator.modelstate.set.HandheldItemSetModelGenerator;
 import com.github.mixinors.astromine.datagen.material.MaterialItemType;
-import com.github.mixinors.astromine.registry.AMItems;
+import com.github.mixinors.astromine.registry.common.AMItems;
 
 public class AstromineModelStateGenerators extends AstromineModelStateGenerators {
 	public final ModelStateGenerator INGOT = register(new GenericItemSetModelGenerator(MaterialItemType.INGOT));

@@ -30,8 +30,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
 
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.registry.AMComponents;
-import com.github.mixinors.astromine.registry.AMConfig;
+import com.github.mixinors.astromine.registry.common.AMComponents;
+import com.github.mixinors.astromine.registry.common.AMConfig;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import org.jetbrains.annotations.Nullable;
 

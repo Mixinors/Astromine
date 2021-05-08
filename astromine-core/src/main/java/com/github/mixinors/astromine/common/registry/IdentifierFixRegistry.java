@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.common.registry;
 import net.minecraft.util.Identifier;
 
 import com.github.mixinors.astromine.common.registry.base.UniRegistry;
-import com.github.mixinors.astromine.mixin.IdentifierMixin;
+import com.github.mixinors.astromine.mixin.common.IdentifierMixin;
 
 import java.util.Optional;
 

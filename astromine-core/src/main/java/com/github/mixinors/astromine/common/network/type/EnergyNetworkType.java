@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.network.type;
 
 import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
-import com.github.mixinors.astromine.registry.AMComponents;
+import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.minecraft.block.entity.BlockEntity;
 
 import com.github.mixinors.astromine.common.block.transfer.TransferType;

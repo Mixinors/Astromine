@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.common.entity;
 
-import com.github.mixinors.astromine.registry.AMEntityTypes;
-import com.github.mixinors.astromine.registry.AMParticles;
+import com.github.mixinors.astromine.registry.common.AMEntityTypes;
+import com.github.mixinors.astromine.registry.common.AMParticles;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityPose;

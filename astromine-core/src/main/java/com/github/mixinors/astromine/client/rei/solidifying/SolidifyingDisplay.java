@@ -31,7 +31,7 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.client.rei.AMREIPlugin;
+import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.client.rei.generating.AbstractEnergyGeneratingDisplay;
 import com.github.mixinors.astromine.common.recipe.SolidifyingRecipe;
@@ -58,7 +58,7 @@ public class SolidifyingDisplay extends AbstractEnergyGeneratingDisplay {
 
 	@Override
 	public List<List<EntryStack>> getInputEntries() {
-		return Collections.singletonList(Arrays.stream(input.getMatchingVolumes()).map(AMREIPlugin::convertToEntryStack).collect(Collectors.toList()));
+		return Collections.singletonList(Arrays.stream(input.getMatchingVolumes()).map(AMRoughlyEnoughItemsPlugin::convertToEntryStack).collect(Collectors.toList()));
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class SolidifyingDisplay extends AbstractEnergyGeneratingDisplay {
 
 	@Override
 	public Identifier getRecipeCategory() {
-		return AMREIPlugin.SOLID_GENERATING;
+		return AMRoughlyEnoughItemsPlugin.SOLID_GENERATING;
 	}
 
 	public Fluid getFluid() {

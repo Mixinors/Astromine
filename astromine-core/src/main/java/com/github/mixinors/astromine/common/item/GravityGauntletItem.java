@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.item;
 
-import com.github.mixinors.astromine.registry.AMItems;
+import com.github.mixinors.astromine.registry.common.AMItems;
 import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
 
 import net.minecraft.entity.EquipmentSlot;
@@ -40,7 +40,7 @@ import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.item.base.EnergyVolumeItem;
-import com.github.mixinors.astromine.registry.AMConfig;
+import com.github.mixinors.astromine.registry.common.AMConfig;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 

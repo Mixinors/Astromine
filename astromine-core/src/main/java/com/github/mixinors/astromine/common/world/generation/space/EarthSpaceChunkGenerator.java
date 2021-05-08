@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.world.generation.space;
 
-import com.github.mixinors.astromine.registry.AMBlocks;
+import com.github.mixinors.astromine.registry.common.AMBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -46,7 +46,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import com.github.mixinors.astromine.common.noise.OctaveNoiseSampler;
 import com.github.mixinors.astromine.common.noise.OpenSimplexNoise;
-import com.github.mixinors.astromine.registry.AMConfig;
+import com.github.mixinors.astromine.registry.common.AMConfig;
 
 import java.util.Arrays;
 import java.util.Random;

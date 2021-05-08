@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "id": "astromine-core",
   "version": "${version}",
-  "name": "Astromine: Core",
-  "description": "The core dependencies and utilities required for all other Astromine modules.",
+  "name": "Astromine",
+  "description": "A space-themed tech mod with exploration and progression in mind.",
   "authors": [
     "vini2003",
     "Shnupbups",
@@ -38,25 +38,25 @@
       "com.github.mixinors.astromine.client.modmenu.AstromineModMenuSupport"
     ],
     "cardinal-components-item": [
-      "com.github.mixinors.astromine.registry.AMComponents"
+      "com.github.mixinors.astromine.registry.common.AMComponents"
     ],
     "cardinal-components-entity": [
-      "com.github.mixinors.astromine.registry.AMComponents"
+      "com.github.mixinors.astromine.registry.common.AMComponents"
     ],
     "cardinal-components-world": [
-      "com.github.mixinors.astromine.registry.AMComponents"
+      "com.github.mixinors.astromine.registry.common.AMComponents"
     ],
     "cardinal-components-chunk": [
-      "com.github.mixinors.astromine.registry.AMComponents"
+      "com.github.mixinors.astromine.registry.common.AMComponents"
     ],
     "cardinal-components-block": [
-      "com.github.mixinors.astromine.registry.AMComponents"
+      "com.github.mixinors.astromine.registry.common.AMComponents"
     ],
     "rei_plugins": [
-      "com.github.mixinors.astromine.client.rei.AMREIPlugin"
+      "com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin"
     ],
     "rei_containers": [
-      "com.github.mixinors.astromine.common.rei.AstromineServerContainerPlugin"
+      "com.github.mixinors.astromine.registry.common.AMContainersInfoHandlers"
     ]
   },
   "mixins": [

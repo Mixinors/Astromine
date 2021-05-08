@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.common.network;
 import net.minecraft.block.Block;
 
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
-import com.github.mixinors.astromine.registry.AMNetworkTypes;
+import com.github.mixinors.astromine.registry.common.AMNetworkTypes;
 
 /**
  * A {@link Block} which

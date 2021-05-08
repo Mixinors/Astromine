@@ -44,8 +44,8 @@ import net.minecraft.util.Pair;
 import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.component.general.compatibility.InventoryFromItemComponent;
-import com.github.mixinors.astromine.registry.AMComponents;
-import com.github.mixinors.astromine.registry.AMItems;
+import com.github.mixinors.astromine.registry.common.AMComponents;
+import com.github.mixinors.astromine.registry.common.AMItems;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;

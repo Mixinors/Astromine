@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.component.block.entity;
 
 import com.github.mixinors.astromine.common.component.general.provider.RedstoneComponentProvider;
-import com.github.mixinors.astromine.registry.AMComponents;
+import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.minecraft.nbt.CompoundTag;
 
 import com.github.mixinors.astromine.common.block.redstone.RedstoneType;

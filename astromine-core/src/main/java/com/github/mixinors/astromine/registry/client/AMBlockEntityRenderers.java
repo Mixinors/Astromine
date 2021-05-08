@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.client.render.block.*;
-import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
+import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
 
 import net.minecraft.block.entity.BlockEntity;

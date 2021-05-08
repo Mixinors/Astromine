@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.common.item;
 
 import net.minecraft.item.ToolItem;
 
-import com.github.mixinors.astromine.mixin.EnchantmentTargetMixin;
+import com.github.mixinors.astromine.mixin.common.EnchantmentTargetMixin;
 
 /**
  * A {@link ToolItem}

@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
-import com.github.mixinors.astromine.registry.AMComponents;
+import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.Direction;

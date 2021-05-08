@@ -29,7 +29,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.layer.type.CrossSamplingLayer;
 import net.minecraft.world.biome.layer.util.LayerRandomnessSource;
 
-import com.github.mixinors.astromine.registry.AMBiomes;
+import com.github.mixinors.astromine.registry.common.AMBiomes;
 
 public class MarsRiverLayer implements CrossSamplingLayer {
 	private final Registry<Biome> biomeRegistry;

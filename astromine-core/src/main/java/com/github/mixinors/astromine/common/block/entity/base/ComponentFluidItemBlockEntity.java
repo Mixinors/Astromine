@@ -31,7 +31,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.util.capability.inventory.ComponentInventoryProvider;
-import com.github.mixinors.astromine.registry.AMComponents;
+import com.github.mixinors.astromine.registry.common.AMComponents;
 
 /**
  * A {@link ComponentBlockEntity} with an attached

@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.common.entity.base;
 
-import com.github.mixinors.astromine.registry.AMCriteria;
-import com.github.mixinors.astromine.registry.AMParticles;
+import com.github.mixinors.astromine.registry.common.AMCriteria;
+import com.github.mixinors.astromine.registry.common.AMParticles;
 import net.minecraft.client.util.math.Vector3d;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.Entity;

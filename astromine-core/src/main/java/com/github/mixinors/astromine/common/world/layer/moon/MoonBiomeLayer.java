@@ -30,7 +30,7 @@ import net.minecraft.world.biome.layer.type.InitLayer;
 import net.minecraft.world.biome.layer.util.IdentityCoordinateTransformer;
 import net.minecraft.world.biome.layer.util.LayerRandomnessSource;
 
-import com.github.mixinors.astromine.registry.AMBiomes;
+import com.github.mixinors.astromine.registry.common.AMBiomes;
 
 public class MoonBiomeLayer implements InitLayer, IdentityCoordinateTransformer {
 	private final Registry<Biome> biomeRegistry;

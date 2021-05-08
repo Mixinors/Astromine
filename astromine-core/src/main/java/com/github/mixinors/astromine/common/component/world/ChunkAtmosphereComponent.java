@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.common.component.world;
 
-import com.github.mixinors.astromine.registry.AMComponents;
-import com.github.mixinors.astromine.registry.AMNetworks;
+import com.github.mixinors.astromine.registry.common.AMComponents;
+import com.github.mixinors.astromine.registry.common.AMNetworks;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
@@ -40,9 +40,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.WorldChunk;
 
-import com.github.mixinors.astromine.client.cca.ClientAtmosphereManager;
+import com.github.mixinors.astromine.client.atmosphere.ClientAtmosphereManager;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
-import com.github.mixinors.astromine.registry.AMConfig;
+import com.github.mixinors.astromine.registry.common.AMConfig;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
 import org.jetbrains.annotations.Nullable;

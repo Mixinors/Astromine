@@ -29,7 +29,7 @@ import net.fabricmc.api.Environment;
 
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.client.rei.AMREIPlugin;
+import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import com.github.mixinors.astromine.common.recipe.FluidMixingRecipe;
@@ -60,7 +60,7 @@ public class FluidMixingDisplay implements RecipeDisplay {
 
 	@Override
 	public Identifier getRecipeCategory() {
-		return AMREIPlugin.FLUID_MIXING;
+		return AMRoughlyEnoughItemsPlugin.FLUID_MIXING;
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class FluidMixingDisplay implements RecipeDisplay {
 
 	@Override
 	public List<List<EntryStack>> getInputEntries() {
-		return Arrays.asList(Arrays.stream(firstIngredient.getMatchingVolumes()).map(AMREIPlugin::convertToEntryStack).collect(Collectors.toList()), Arrays.stream(secondIngredient.getMatchingVolumes()).map(AMREIPlugin::convertToEntryStack).collect(
+		return Arrays.asList(Arrays.stream(firstIngredient.getMatchingVolumes()).map(AMRoughlyEnoughItemsPlugin::convertToEntryStack).collect(Collectors.toList()), Arrays.stream(secondIngredient.getMatchingVolumes()).map(AMRoughlyEnoughItemsPlugin::convertToEntryStack).collect(
 			Collectors.toList()));
 	}
 
@@ -81,7 +81,7 @@ public class FluidMixingDisplay implements RecipeDisplay {
 
 	@Override
 	public List<List<EntryStack>> getResultingEntries() {
-		return Collections.singletonList(Collections.singletonList(AMREIPlugin.convertToEntryStack(output)));
+		return Collections.singletonList(Collections.singletonList(AMRoughlyEnoughItemsPlugin.convertToEntryStack(output)));
 	}
 
 	public double getEnergy() {

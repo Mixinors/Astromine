@@ -40,7 +40,7 @@ import com.github.mixinors.astromine.common.network.NetworkMemberNode;
 import com.github.mixinors.astromine.common.network.NetworkNode;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.registry.NetworkTypeRegistry;
-import com.github.mixinors.astromine.registry.AMComponents;
+import com.github.mixinors.astromine.registry.common.AMComponents;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import org.jetbrains.annotations.Nullable;
 

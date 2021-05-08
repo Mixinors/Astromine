@@ -26,8 +26,8 @@ package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.client.particle.MarsDustParticle;
 import com.github.mixinors.astromine.client.particle.RocketFlameParticle;
-import com.github.mixinors.astromine.registry.AMItems;
-import com.github.mixinors.astromine.registry.AMParticles;
+import com.github.mixinors.astromine.registry.common.AMItems;
+import com.github.mixinors.astromine.registry.common.AMParticles;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
