@@ -45,17 +45,17 @@ public class AMFeatures {
 	public static final Feature<DefaultFeatureConfig> ASTEROID_ORES = register(new AsteroidOreFeature(DefaultFeatureConfig.CODEC), ASTEROID_ORES_ID);
 	public static final RegistryKey<ConfiguredFeature<?, ?>> ASTEROID_ORES_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, ASTEROID_ORES_ID);
 	
-	public static final Identifier MOON_CRATER_ID = AMCommon.id("moon_crater");
-	public static final Feature<DefaultFeatureConfig> MOON_CRATER = register(new MoonCraterFeature(DefaultFeatureConfig.CODEC), MOON_CRATER_ID);
-	public static final RegistryKey<ConfiguredFeature<?, ?>> MOON_CRATER_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, MOON_CRATER_ID);
-	
-	public static final Identifier MOON_LAKE_ID = AMCommon.id("moon_lake");
-	public static final Feature<DefaultFeatureConfig> MOON_LAKE = register(new MoonLakeFeature(DefaultFeatureConfig.CODEC), MOON_LAKE_ID);
-	public static final RegistryKey<ConfiguredFeature<?, ?>> MOON_LAKE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, MOON_LAKE_ID);
-	
-	public static final Identifier MOON_ORE_ID = AMCommon.id("moon_ore");
-	public static final Feature<DefaultFeatureConfig> MOON_ORE = register(new MoonOreFeature(DefaultFeatureConfig.CODEC), MOON_ORE_ID);
-	public static final RegistryKey<ConfiguredFeature<?, ?>> MOON_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, MOON_ORE_ID);
+	// public static final Identifier MOON_CRATER_ID = AMCommon.id("moon_crater");
+	// public static final Feature<DefaultFeatureConfig> MOON_CRATER = register(new MoonCraterFeature(DefaultFeatureConfig.CODEC), MOON_CRATER_ID);
+	// public static final RegistryKey<ConfiguredFeature<?, ?>> MOON_CRATER_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, MOON_CRATER_ID);
+	//
+	// public static final Identifier MOON_LAKE_ID = AMCommon.id("moon_lake");
+	// public static final Feature<DefaultFeatureConfig> MOON_LAKE = register(new MoonLakeFeature(DefaultFeatureConfig.CODEC), MOON_LAKE_ID);
+	// public static final RegistryKey<ConfiguredFeature<?, ?>> MOON_LAKE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, MOON_LAKE_ID);
+	//
+	// public static final Identifier MOON_ORE_ID = AMCommon.id("moon_ore");
+	// public static final Feature<DefaultFeatureConfig> MOON_ORE = register(new MoonOreFeature(DefaultFeatureConfig.CODEC), MOON_ORE_ID);
+	// public static final RegistryKey<ConfiguredFeature<?, ?>> MOON_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, MOON_ORE_ID);
 	
 	public static final Identifier METEOR_ID = AMCommon.id("meteor");
 	public static final StructurePieceType METEOR_STRUCTURE = register(MeteorGenerator::new, METEOR_ID);

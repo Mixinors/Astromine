@@ -25,11 +25,13 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.common.callback.ServerChunkManagerCallback;
-import com.github.mixinors.astromine.common.world.generation.glacios.GlaciosChunkGenerator;
-import com.github.mixinors.astromine.common.world.generation.mars.MarsChunkGenerator;
-import com.github.mixinors.astromine.common.world.generation.moon.MoonChunkGenerator;
+
+// import com.github.mixinors.astromine.common.world.generation.glacios.GlaciosChunkGenerator;
+// import com.github.mixinors.astromine.common.world.generation.mars.MarsChunkGenerator;
+// import com.github.mixinors.astromine.common.world.generation.moon.MoonChunkGenerator;
+// import com.github.mixinors.astromine.common.world.generation.vulcan.VulcanChunkGenerator;
+
 import com.github.mixinors.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
-import com.github.mixinors.astromine.common.world.generation.vulcan.VulcanChunkGenerator;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
 import net.minecraft.block.BlockState;
@@ -127,28 +129,28 @@ public class AMCallbacks {
 			}
 		});
 		
-		ServerChunkManagerCallback.EVENT.register(manager -> {
-			if (manager.chunkGenerator instanceof MoonChunkGenerator) {
-				manager.chunkGenerator = ((MoonChunkGenerator) manager.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
-			}
-		});
-		
-		ServerChunkManagerCallback.EVENT.register(manager -> {
-			if (manager.chunkGenerator instanceof MarsChunkGenerator) {
-				manager.chunkGenerator = ((MarsChunkGenerator) manager.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
-			}
-		});
-		
-		ServerChunkManagerCallback.EVENT.register(manager -> {
-			if (manager.chunkGenerator instanceof VulcanChunkGenerator) {
-				manager.chunkGenerator = ((VulcanChunkGenerator) manager.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
-			}
-		});
-		
-		ServerChunkManagerCallback.EVENT.register(manager -> {
-			if (manager.chunkGenerator instanceof GlaciosChunkGenerator) {
-				manager.chunkGenerator = ((GlaciosChunkGenerator) manager.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
-			}
-		});
+		// ServerChunkManagerCallback.EVENT.register(manager -> {
+		// 	if (manager.chunkGenerator instanceof MoonChunkGenerator) {
+		// 		manager.chunkGenerator = ((MoonChunkGenerator) manager.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
+		// 	}
+		// });
+		//
+		// ServerChunkManagerCallback.EVENT.register(manager -> {
+		// 	if (manager.chunkGenerator instanceof MarsChunkGenerator) {
+		// 		manager.chunkGenerator = ((MarsChunkGenerator) manager.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
+		// 	}
+		// });
+		//
+		// ServerChunkManagerCallback.EVENT.register(manager -> {
+		// 	if (manager.chunkGenerator instanceof VulcanChunkGenerator) {
+		// 		manager.chunkGenerator = ((VulcanChunkGenerator) manager.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
+		// 	}
+		// });
+		//
+		// ServerChunkManagerCallback.EVENT.register(manager -> {
+		// 	if (manager.chunkGenerator instanceof GlaciosChunkGenerator) {
+		// 		manager.chunkGenerator = ((GlaciosChunkGenerator) manager.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
+		// 	}
+		// });
 	}
 }

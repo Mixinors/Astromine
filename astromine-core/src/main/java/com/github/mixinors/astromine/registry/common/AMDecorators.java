@@ -30,10 +30,10 @@ import net.minecraft.world.gen.CountConfig;
 import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.decorator.DecoratorConfig;
 
-import com.github.mixinors.astromine.common.world.decorator.MoonOreDecorator;
+// import com.github.mixinors.astromine.common.world.decorator.MoonOreDecorator;
 
 public class AMDecorators {
-	public static Decorator<CountConfig> MOON_ORE = register("moon_ore_decorator", new MoonOreDecorator(CountConfig.CODEC));
+	// public static Decorator<CountConfig> MOON_ORE = register("moon_ore_decorator", new MoonOreDecorator(CountConfig.CODEC));
 
 	public static void init() {
 

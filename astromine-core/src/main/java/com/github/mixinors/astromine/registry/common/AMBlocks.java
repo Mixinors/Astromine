@@ -123,7 +123,7 @@ public class AMBlocks {
 	public static final Block ASTEROID_DIAMOND_ORE = register("asteroid_diamond_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getBasicSettings().fireproof());
 	public static final Block ASTEROID_EMERALD_ORE = register("asteroid_emerald_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getBasicSettings().fireproof());
 	
-	public static final Block MOON_LUNUM_ORE = register("moon_lunum_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(5, 10).sounds(BlockSoundGroup.STONE)), AMItems.getBasicSettings());
+	// public static final Block MOON_LUNUM_ORE = register("moon_lunum_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(5, 10).sounds(BlockSoundGroup.STONE)), AMItems.getBasicSettings());
 	
 	public static final Block ALTAR_PEDESTAL = register("altar_pedestal", new AltarPedestalBlock(FabricBlockSettings.of(Material.METAL, MaterialColor.GOLD).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5, 6).sounds(BlockSoundGroup.METAL).nonOpaque()), AMItems.getBasicSettings());
 	public static final Block ALTAR = register("altar", new AltarBlock(FabricBlockSettings.of(Material.METAL, MaterialColor.GOLD).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5, 6).sounds(BlockSoundGroup.METAL).nonOpaque()), AMItems.getBasicSettings());
@@ -142,7 +142,8 @@ public class AMBlocks {
 	public static final Block STELLUM_BLOCK = register("stellum_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.ORANGE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(10, 80).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings().fireproof());
 	public static final Block GALAXIUM_BLOCK = register("galaxium_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.PURPLE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 5).strength(50, 1300).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
 	public static final Block UNIVITE_BLOCK = register("univite_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.WHITE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 6).strength(80, 2000).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings().fireproof());
-	public static final Block LUNUM_BLOCK = register("lunum_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.WHITE_TERRACOTTA).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(10, 75).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
+	
+	// public static final Block LUNUM_BLOCK = register("lunum_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.WHITE_TERRACOTTA).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(10, 75).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
 	
 	public static final Block COPPER_BLOCK = register("copper_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.ORANGE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 1).strength(4, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
 	public static final Block TIN_BLOCK = register("tin_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.LIGHT_GRAY).requiresTool().breakByTool(FabricToolTags.PICKAXES, 1).strength(4, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());

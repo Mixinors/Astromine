@@ -24,11 +24,12 @@
 
 package com.github.mixinors.astromine.registry.common;
 
-import com.github.mixinors.astromine.common.world.generation.glacios.GlaciosChunkGenerator;
-import com.github.mixinors.astromine.common.world.generation.mars.MarsChunkGenerator;
-import com.github.mixinors.astromine.common.world.generation.moon.MoonChunkGenerator;
+// import com.github.mixinors.astromine.common.world.generation.glacios.GlaciosChunkGenerator;
+// import com.github.mixinors.astromine.common.world.generation.mars.MarsChunkGenerator;
+// import com.github.mixinors.astromine.common.world.generation.moon.MoonChunkGenerator;
+// import com.github.mixinors.astromine.common.world.generation.vulcan.VulcanChunkGenerator;
+
 import com.github.mixinors.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
-import com.github.mixinors.astromine.common.world.generation.vulcan.VulcanChunkGenerator;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
@@ -37,10 +38,11 @@ import com.mojang.serialization.Codec;
 public class AMChunkGenerators {
 	public static void init() {
 		register(AMDimensions.EARTH_SPACE_ID, EarthSpaceChunkGenerator.CODEC);
-		register(AMDimensions.MOON_ID, MoonChunkGenerator.CODEC);
-		register(AMDimensions.MARS_ID, MarsChunkGenerator.CODEC);
-		register(AMDimensions.VULCAN_ID, VulcanChunkGenerator.CODEC);
-		register(AMDimensions.GLACIOS_ID, GlaciosChunkGenerator.CODEC);
+		
+		// register(AMDimensions.MOON_ID, MoonChunkGenerator.CODEC);
+		// register(AMDimensions.MARS_ID, MarsChunkGenerator.CODEC);
+		// register(AMDimensions.VULCAN_ID, VulcanChunkGenerator.CODEC);
+		// register(AMDimensions.GLACIOS_ID, GlaciosChunkGenerator.CODEC);
 	}
 
 	public static void register(Identifier id, Codec<? extends ChunkGenerator> codec) {

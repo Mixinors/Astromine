@@ -48,19 +48,19 @@ public class MoonOreFeature extends Feature<DefaultFeatureConfig> {
 
 	@Override
 	public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random random, BlockPos pos, DefaultFeatureConfig featureConfig) {
-		Shape vein = Shapes.ellipsoid(random.nextFloat() * 6, random.nextFloat() * 6, random.nextFloat() * 6).applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true))).applyLayer(TranslateLayer.of(Position.of(
-			pos)));
-
-		for (Position streamPosition : vein.stream().collect(Collectors.toSet())) {
-			BlockPos orePos = streamPosition.toBlockPos();
-
-			if (world.getBlockState(orePos).getBlock() == AMBlocks.MOON_STONE) {
-				if (random.nextInt(24) == 0) {
-					world.setBlockState(orePos, AMBlocks.MOON_LUNUM_ORE.getDefaultState(), 0b0110100);
-				}
-			}
-		}
-
-		return false;
+		//Shape vein = Shapes.ellipsoid(random.nextFloat() * 6, random.nextFloat() * 6, random.nextFloat() * 6).applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true))).applyLayer(TranslateLayer.of(Position.of(
+		//	pos)));
+//
+		//for (Position streamPosition : vein.stream().collect(Collectors.toSet())) {
+		//	BlockPos orePos = streamPosition.toBlockPos();
+//
+		//	if (world.getBlockState(orePos).getBlock() == AMBlocks.MOON_STONE) {
+		//		if (random.nextInt(24) == 0) {
+		//			world.setBlockState(orePos, AMBlocks.MOON_LUNUM_ORE.getDefaultState(), 0b0110100);
+		//		}
+		//	}
+		//}
+//
+		//return false;
 	}
 }
