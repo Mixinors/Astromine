@@ -324,19 +324,6 @@ public class AMMaterialSets {
 					.build()
 	);
 	
-	public static final MaterialSet ROSE_GOLD = register(
-			new MaterialSet.Builder("rose_gold")
-					.basics().metal()
-					.piglinLoved().apple()
-					.build()
-	);
-	
-	public static final MaterialSet STERLING_SILVER = register(
-			new MaterialSet.Builder("sterling_silver")
-					.basics().metal()
-					.build()
-	);
-	
 	public static final MaterialSet FOOLS_GOLD = register(
 			new MaterialSet.Builder("fools_gold")
 					.basics().metal().armor()
