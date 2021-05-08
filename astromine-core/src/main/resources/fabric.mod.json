@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "astromine-core",
+  "id": "astromine",
   "version": "${version}",
   "name": "Astromine",
   "description": "A space-themed tech mod with exploration and progression in mind.",
@@ -22,7 +22,7 @@
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/astromine-fabric"
   },
   "license": "MIT",
-  "icon": "assets/astromine/icon.png",
+  "icon": "icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -66,10 +66,9 @@
   "depends": {
     "fabricloader": ">=0.9.2",
     "fabric": ">=0.21.0",
-    "minecraft": "~1.16.2"
+    "minecraft": "~1.16.5"
   },
   "custom": {
-    "modmenu:parent": "astromine",
     "cardinal-components": [
       "astromine:world_network_component",
       "astromine:chunk_atmosphere_component",

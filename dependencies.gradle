@@ -48,6 +48,8 @@ project.ext.setDefaultApis = {
 
     // Piglib
     useAsApi("com.github.Shnupbups:Piglib:${piglib_version}")
+
+    useAsApi("me.shedaniel:architectury-fabric:${architectury_api_version}")
 }
 
 project.ext.setRuntimeTestMods = {

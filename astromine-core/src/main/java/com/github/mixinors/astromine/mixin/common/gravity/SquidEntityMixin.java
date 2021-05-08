@@ -22,27 +22,20 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.mixin.client;
+package com.github.mixinors.astromine.mixin.common.gravity;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
-import net.minecraft.client.particle.CurrentDownParticle;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.passive.SquidEntity;
 
-import com.github.mixinors.astromine.common.registry.GravityRegistry;
+import com.github.mixinors.astromine.common.entity.GravityEntity;
 
-@Mixin(CurrentDownParticle.class)
-public abstract class CurrentDownParticleMixin extends Particle {
-	public CurrentDownParticleMixin(ClientWorld world, double x, double y, double z) {
-		super(world, x, y, z);
-		throw new UnsupportedOperationException("Cannot instantiate Mixin class!");
-	}
-
-	@ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = 0.08D))
+@Mixin(SquidEntity.class)
+public abstract class SquidEntityMixin implements GravityEntity {
+	@ModifyConstant(method = "tickMovement()V", constant = @Constant(doubleValue = 0.08D))
 	double getGravity(double original) {
-		return GravityRegistry.INSTANCE.get(world.getRegistryKey());
+		return this.astromine_getGravity();
 	}
 }
