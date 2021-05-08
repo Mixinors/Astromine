@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "astromine:smooth_vulcan_stone"
-  },
-  "result": "astromine:vulcan_stone_brick_slab",
-  "count": 2
-}

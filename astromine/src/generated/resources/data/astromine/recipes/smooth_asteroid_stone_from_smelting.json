@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "ingredient": {
-    "item": "astromine:asteroid_stone"
-  },
-  "result": "astromine:smooth_asteroid_stone",
-  "experience": 0.1,
-  "cookingtime": 200
-}

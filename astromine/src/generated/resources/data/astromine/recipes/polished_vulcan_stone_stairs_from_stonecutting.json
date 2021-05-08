@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "astromine:polished_vulcan_stone"
-  },
-  "result": "astromine:polished_vulcan_stone_stairs",
-  "count": 1
-}

@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "astromine:martian_stone"
-  },
-  "result": "astromine:martian_stone_wall",
-  "count": 1
-}

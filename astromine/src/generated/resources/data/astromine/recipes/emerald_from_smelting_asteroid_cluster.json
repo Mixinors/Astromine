@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "ingredient": {
-    "tag": "c:asteroid_emerald_clusters"
-  },
-  "result": "minecraft:emerald",
-  "experience": 0.1,
-  "cookingtime": 200
-}

@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "astromine:smooth_martian_stone"
-  },
-  "result": "astromine:martian_stone_brick_slab",
-  "count": 2
-}

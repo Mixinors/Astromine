@@ -18,10 +18,6 @@
       "id": "astromine:asteroid_gold_cluster",
       "required": false
     },
-    {
-      "id": "astromine:asteroid_gold_ore",
-      "required": false
-    },
     "astromine:gold_wire",
     "astromine:rose_gold_ingot",
     "astromine:fools_gold_ingot",
@@ -42,6 +38,10 @@
     "astromine:fools_gold_boots",
     "astromine:rose_gold_apple",
     "astromine:fools_gold_apple",
+    {
+      "id": "astromine:asteroid_gold_ore",
+      "required": false
+    },
     "astromine:rose_gold_block",
     "astromine:fools_gold_block"
   ]

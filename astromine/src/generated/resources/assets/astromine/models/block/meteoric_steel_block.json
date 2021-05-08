@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "astromine:block/meteoric_steel_block"
-  }
-}

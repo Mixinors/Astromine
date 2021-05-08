@@ -6,7 +6,7 @@ import com.github.mixinors.astromine.datagen.registry.*;
 public class AMDatagen implements DatagenInitializer {
 	@Override
 	public String getModuleId() {
-		return "astromine";
+		return "astromine-core";
 	}
 	
 	@Override
