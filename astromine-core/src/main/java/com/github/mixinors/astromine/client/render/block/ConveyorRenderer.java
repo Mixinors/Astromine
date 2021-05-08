@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.client.render.block;
 
 import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.common.block.ConveyorBlock;
 import com.github.mixinors.astromine.common.util.ClientUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -52,7 +53,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.LightType;
 
 import com.github.mixinors.astromine.common.registry.ConveyorSpecialScaleRegistry;
-import com.github.mixinors.astromine.common.block.property.ConveyorProperties;
 import com.github.mixinors.astromine.common.conveyor.ConveyorTypes;
 import com.github.mixinors.astromine.common.conveyor.PositionalConveyable;
 
@@ -85,7 +85,7 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 
 		matrixStack.translate(-0.5F, -1.001F, -0.5F);
 
-		if (type == ConveyorTypes.VERTICAL && blockEntity.getCachedState().get(ConveyorProperties.CONVEYOR) && conveyor.getPosition() == 16)
+		if (type == ConveyorTypes.VERTICAL && blockEntity.getCachedState().get(ConveyorBlock.CONVEYOR) && conveyor.getPosition() == 16)
 			matrixStack.translate(0, -1F / 16F, 0);
 
 		if (type == ConveyorTypes.NORMAL) {
@@ -93,7 +93,7 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 		} else if (type == ConveyorTypes.VERTICAL) {
 			matrixStack.translate(0, position / speed, horizontalPosition / speed);
 		} else if (type == ConveyorTypes.DOWN_VERTICAL) {
-			matrixStack.translate(0, (position / (speed)) + (blockEntity.getCachedState().get(ConveyorProperties.CONVEYOR) ? 1 : 0), horizontalPosition / speed);
+			matrixStack.translate(0, (position / (speed)) + (blockEntity.getCachedState().get(ConveyorBlock.CONVEYOR) ? 1 : 0), horizontalPosition / speed);
 		}
 
 		ClientUtils.getInstance().getTextureManager().bindTexture(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
@@ -147,7 +147,7 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 				} else if (type == ConveyorTypes.VERTICAL) {
 					matrixStack.translate(0, position / speed, horizontalPosition / speed);
 				} else if (type == ConveyorTypes.DOWN_VERTICAL) {
-					matrixStack.translate(0, (position / (speed)) + (blockEntity.getCachedState().get(ConveyorProperties.CONVEYOR) ? 1 : 0), horizontalPosition / speed);
+					matrixStack.translate(0, (position / (speed)) + (blockEntity.getCachedState().get(ConveyorBlock.CONVEYOR) ? 1 : 0), horizontalPosition / speed);
 				}
 				matrixStack.scale(0.5F, 0.5F, 0.5F);
 				matrixStack.translate(-0.5F, 0, -0.5F);
@@ -193,7 +193,7 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 			} else if (type == ConveyorTypes.VERTICAL) {
 				matrixStack.translate(0, horizontalPosition / speed, -position / speed);
 			} else if (type == ConveyorTypes.DOWN_VERTICAL) {
-				matrixStack.translate(0, horizontalPosition / speed, -(position / (speed)) + (blockEntity.getCachedState().get(ConveyorProperties.CONVEYOR) ? -1 : 0));
+				matrixStack.translate(0, horizontalPosition / speed, -(position / (speed)) + (blockEntity.getCachedState().get(ConveyorBlock.CONVEYOR) ? -1 : 0));
 			}
 
 			if (ConveyorSpecialScaleRegistry.INSTANCE.containsKey(stack.getItem())) {
@@ -271,7 +271,7 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 				} else if (type == ConveyorTypes.VERTICAL) {
 					matrixStack.translate(0, position / speed, horizontalPosition / speed);
 				} else if (type == ConveyorTypes.DOWN_VERTICAL) {
-					matrixStack.translate(0, (position / (speed)) + (blockEntity.getCachedState().get(ConveyorProperties.CONVEYOR) ? 1 : 0), horizontalPosition / speed);
+					matrixStack.translate(0, (position / (speed)) + (blockEntity.getCachedState().get(ConveyorBlock.CONVEYOR) ? 1 : 0), horizontalPosition / speed);
 				}
 				matrixStack.scale(0.5F, 0.5F, 0.5F);
 				matrixStack.translate(-0.5F, 0, -0.5F);
@@ -317,7 +317,7 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 			} else if (type == ConveyorTypes.VERTICAL) {
 				matrixStack.translate(0, horizontalPosition / speed, -position / speed);
 			} else if (type == ConveyorTypes.DOWN_VERTICAL) {
-				matrixStack.translate(0, horizontalPosition / speed, -(position / (speed)) + (blockEntity.getCachedState().get(ConveyorProperties.CONVEYOR) ? -1 : 0));
+				matrixStack.translate(0, horizontalPosition / speed, -(position / (speed)) + (blockEntity.getCachedState().get(ConveyorBlock.CONVEYOR) ? -1 : 0));
 			}
 
 			if (ConveyorSpecialScaleRegistry.INSTANCE.containsKey(stack.getItem())) {

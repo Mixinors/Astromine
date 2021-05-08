@@ -43,8 +43,6 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.WorldAccess;
 
-import com.github.mixinors.astromine.common.block.property.ConveyorProperties;
-
 public class CatwalkStairsBlock extends HorizontalFacingBlock implements Waterloggable {
 	private static final VoxelShape FIRST_STEP = VoxelShapes.cuboid(0, 0, (12F / 16F), 1, (3F / 16F), 1);
 	private static final VoxelShape SECOND_STEP = VoxelShapes.cuboid(0, 0, (8F / 16F), 1, (7F / 16F), (12F / 16F));
@@ -56,12 +54,12 @@ public class CatwalkStairsBlock extends HorizontalFacingBlock implements Waterlo
 	public CatwalkStairsBlock(Settings settings) {
 		super(settings);
 
-		this.setDefaultState(this.getDefaultState().with(FACING, Direction.NORTH).with(ConveyorProperties.LEFT, false).with(ConveyorProperties.RIGHT, false).with(Properties.WATERLOGGED, false));
+		this.setDefaultState(this.getDefaultState().with(FACING, Direction.NORTH).with(ConveyorBlock.LEFT, false).with(ConveyorBlock.RIGHT, false).with(Properties.WATERLOGGED, false));
 	}
 
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(FACING, ConveyorProperties.LEFT, ConveyorProperties.RIGHT, Properties.WATERLOGGED);
+		builder.add(FACING, ConveyorBlock.LEFT, ConveyorBlock.RIGHT, Properties.WATERLOGGED);
 	}
 
 	@Override
@@ -86,7 +84,7 @@ public class CatwalkStairsBlock extends HorizontalFacingBlock implements Waterlo
 
 	@Override
 	public BlockState getStateForNeighborUpdate(BlockState state, Direction facing, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
-		return state.with(ConveyorProperties.RIGHT, this.isAdjacentBlockOfMyType(world, pos, state.get(FACING).rotateYClockwise())).with(ConveyorProperties.LEFT, this.isAdjacentBlockOfMyType(world, pos, state.get(FACING).rotateYCounterclockwise()));
+		return state.with(ConveyorBlock.RIGHT, this.isAdjacentBlockOfMyType(world, pos, state.get(FACING).rotateYClockwise())).with(ConveyorBlock.LEFT, this.isAdjacentBlockOfMyType(world, pos, state.get(FACING).rotateYCounterclockwise()));
 	}
 
 	@Override

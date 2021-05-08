@@ -44,7 +44,7 @@ import net.minecraft.world.gen.chunk.VerticalBlockSample;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import com.github.mixinors.astromine.common.miscellaneous.BiomeGeneratorCache;
+import com.github.mixinors.astromine.common.biome.BiomeGeneratorCache;
 import com.github.mixinors.astromine.common.noise.OpenSimplexNoise;
 
 import java.util.Arrays;

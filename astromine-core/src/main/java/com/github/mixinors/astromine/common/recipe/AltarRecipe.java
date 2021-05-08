@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.recipe;
 
 import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -153,7 +154,7 @@ public class AltarRecipe implements Recipe<AltarBlockEntity> {
 		}
 	}
 
-	public static final class Type implements AstromineRecipeType<AltarRecipe> {
+	public static final class Type implements AMRecipeType<AltarRecipe> {
 		public static final Type INSTANCE = new Type();
 
 		private Type() {}

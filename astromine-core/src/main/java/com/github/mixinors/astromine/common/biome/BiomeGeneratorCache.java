@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.common.miscellaneous;
+package com.github.mixinors.astromine.common.biome;
 
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.biome.Biome;

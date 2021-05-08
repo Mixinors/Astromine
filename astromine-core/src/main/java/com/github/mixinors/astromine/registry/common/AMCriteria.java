@@ -25,8 +25,8 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.advancement.DestroyRocketCriterion;
-import com.github.mixinors.astromine.common.advancement.LaunchRocketCriterion;
+import com.github.mixinors.astromine.common.criterion.DestroyRocketCriterion;
+import com.github.mixinors.astromine.common.criterion.LaunchRocketCriterion;
 import com.github.mixinors.astromine.common.criterion.MetiteOreUnderestimationCriterion;
 import com.github.mixinors.astromine.common.criterion.ProperlyUseFireExtinguisherCriterion;
 import com.github.mixinors.astromine.common.criterion.UseFireExtinguisherCriterion;
@@ -34,7 +34,7 @@ import net.fabricmc.fabric.api.object.builder.v1.advancement.CriterionRegistry;
 
 import net.minecraft.advancement.criterion.Criterion;
 
-import com.github.mixinors.astromine.common.advancement.TrickedPiglinCriterion;
+import com.github.mixinors.astromine.common.criterion.TrickedPiglinCriterion;
 
 public class AMCriteria {
 	public static final TrickedPiglinCriterion TRICKED_PIGLIN = register(new TrickedPiglinCriterion(AMCommon.id("tricked_piglin")));

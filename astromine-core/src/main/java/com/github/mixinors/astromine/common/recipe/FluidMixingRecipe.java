@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.recipe;
 
+import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -229,7 +230,7 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 		}
 	}
 
-	public static final class Type implements AstromineRecipeType<FluidMixingRecipe> {
+	public static final class Type implements AMRecipeType<FluidMixingRecipe> {
 		public static final Type INSTANCE = new Type();
 
 		private Type() {}

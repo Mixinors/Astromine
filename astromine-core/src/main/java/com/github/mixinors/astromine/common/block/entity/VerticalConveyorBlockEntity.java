@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import com.github.mixinors.astromine.common.block.ConveyorBlock;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.component.general.SimpleItemComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
@@ -36,7 +37,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-import com.github.mixinors.astromine.common.block.property.ConveyorProperties;
 import com.github.mixinors.astromine.common.conveyor.Conveyable;
 import com.github.mixinors.astromine.common.conveyor.Conveyor;
 import com.github.mixinors.astromine.common.conveyor.ConveyorConveyable;
@@ -82,7 +82,7 @@ public class VerticalConveyorBlockEntity extends ConveyorBlockEntity {
 		int speed = ((Conveyor) getCachedState().getBlock()).getSpeed();
 
 		if (!isEmpty()) {
-			if (getCachedState().get(ConveyorProperties.CONVEYOR)) {
+			if (getCachedState().get(ConveyorBlock.CONVEYOR)) {
 				BlockPos conveyorPos = getPos().offset(direction).up();
 				if (getWorld().getBlockEntity(conveyorPos) instanceof Conveyable) {
 					Conveyable conveyable = (Conveyable) getWorld().getBlockEntity(conveyorPos);
@@ -135,7 +135,7 @@ public class VerticalConveyorBlockEntity extends ConveyorBlockEntity {
 
 	@Override
 	public boolean canInsert(Direction direction) {
-		return !getCachedState().get(ConveyorProperties.FRONT) && direction == Direction.DOWN || direction == getCachedState().get(HorizontalFacingBlock.FACING).getOpposite();
+		return !getCachedState().get(ConveyorBlock.FRONT) && direction == Direction.DOWN || direction == getCachedState().get(HorizontalFacingBlock.FACING).getOpposite();
 	}
 
 	@Override

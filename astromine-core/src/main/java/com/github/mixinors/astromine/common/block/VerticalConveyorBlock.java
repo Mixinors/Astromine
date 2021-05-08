@@ -54,7 +54,6 @@ import net.minecraft.world.WorldAccess;
 
 import com.github.mixinors.astromine.common.block.entity.ConveyorBlockEntity;
 import com.github.mixinors.astromine.common.block.entity.VerticalConveyorBlockEntity;
-import com.github.mixinors.astromine.common.block.property.ConveyorProperties;
 import com.github.mixinors.astromine.common.conveyor.Conveyable;
 import com.github.mixinors.astromine.common.conveyor.Conveyor;
 import com.github.mixinors.astromine.common.conveyor.ConveyorTypes;
@@ -72,7 +71,7 @@ public class VerticalConveyorBlock extends HorizontalFacingBlock implements Bloc
 
 		this.speed = speed;
 
-		setDefaultState(getDefaultState().with(ConveyorProperties.FRONT, false).with(ConveyorProperties.CONVEYOR, false).with(Properties.WATERLOGGED, false));
+		setDefaultState(getDefaultState().with(ConveyorBlock.FRONT, false).with(ConveyorBlock.CONVEYOR, false).with(Properties.WATERLOGGED, false));
 	}
 
 	@Override
@@ -157,17 +156,17 @@ public class VerticalConveyorBlock extends HorizontalFacingBlock implements Bloc
 		BlockEntity frontBlockEntity = world.getBlockEntity(frontPos);
 
 		if (frontBlockEntity instanceof Conveyable && ((Conveyable) frontBlockEntity).canExtract(facing, getType())) {
-			state = state.with(ConveyorProperties.FRONT, true);
+			state = state.with(ConveyorBlock.FRONT, true);
 		} else {
-			state = state.with(ConveyorProperties.FRONT, false);
+			state = state.with(ConveyorBlock.FRONT, false);
 		}
 
 		BlockEntity conveyorBlockEntity = world.getBlockEntity(conveyorPos);
 
 		if (world.isAir(upPos) && conveyorBlockEntity instanceof Conveyable && !conveyorBlockEntity.isRemoved() && ((Conveyable) conveyorBlockEntity).canInsert(facing.getOpposite())) {
-			state = state.with(ConveyorProperties.CONVEYOR, true);
+			state = state.with(ConveyorBlock.CONVEYOR, true);
 		} else {
-			state = state.with(ConveyorProperties.CONVEYOR, false);
+			state = state.with(ConveyorBlock.CONVEYOR, false);
 		}
 
 		return state;
@@ -197,9 +196,9 @@ public class VerticalConveyorBlock extends HorizontalFacingBlock implements Bloc
 		BlockState newState = state;
 
 		if (world.isAir(upPos) && conveyorBlockEntity instanceof Conveyable && !conveyorBlockEntity.isRemoved() && ((Conveyable) conveyorBlockEntity).canInsert(direction.getOpposite())) {
-			newState = newState.with(ConveyorProperties.CONVEYOR, true);
+			newState = newState.with(ConveyorBlock.CONVEYOR, true);
 		} else {
-			newState = newState.with(ConveyorProperties.CONVEYOR, false);
+			newState = newState.with(ConveyorBlock.CONVEYOR, false);
 		}
 
 		world.setBlockState(pos, newState, 8);
@@ -217,7 +216,7 @@ public class VerticalConveyorBlock extends HorizontalFacingBlock implements Bloc
 
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> stateManagerBuilder) {
-		stateManagerBuilder.add(FACING, ConveyorProperties.FRONT, ConveyorProperties.CONVEYOR, Properties.WATERLOGGED);
+		stateManagerBuilder.add(FACING, ConveyorBlock.FRONT, ConveyorBlock.CONVEYOR, Properties.WATERLOGGED);
 	}
 
 	@Override
@@ -242,13 +241,13 @@ public class VerticalConveyorBlock extends HorizontalFacingBlock implements Bloc
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
 		Direction facing = state.get(FACING);
 
-		int id = facing.getId() + (state.get(ConveyorProperties.FRONT) ? 6 : 0);
+		int id = facing.getId() + (state.get(ConveyorBlock.FRONT) ? 6 : 0);
 
 		if (SHAPE_CACHE[id] == null) {
 			VoxelShape firstShape = VoxelShapeUtils.rotate(facing, FIRST_SHAPE);
 			VoxelShape secondShape = VoxelShapeUtils.rotate(facing, SECOND_SHAPE);
 
-			if (state.get(ConveyorProperties.FRONT)) {
+			if (state.get(ConveyorBlock.FRONT)) {
 				SHAPE_CACHE[id] = VoxelShapes.union(firstShape, secondShape);
 			} else {
 				SHAPE_CACHE[id] = firstShape;

@@ -35,7 +35,6 @@ import net.minecraft.world.WorldAccess;
 
 import com.github.mixinors.astromine.common.block.entity.ConveyorBlockEntity;
 import com.github.mixinors.astromine.common.block.entity.DownVerticalConveyorBlockEntity;
-import com.github.mixinors.astromine.common.block.property.ConveyorProperties;
 import com.github.mixinors.astromine.common.conveyor.Conveyable;
 import com.github.mixinors.astromine.common.conveyor.ConveyorTypes;
 
@@ -43,7 +42,7 @@ public class DownwardVerticalConveyorBlock extends VerticalConveyorBlock {
 	public DownwardVerticalConveyorBlock(Settings settings, int speed) {
 		super(settings, speed);
 
-		setDefaultState(getDefaultState().with(ConveyorProperties.FRONT, false).with(ConveyorProperties.CONVEYOR, false));
+		setDefaultState(getDefaultState().with(ConveyorBlock.FRONT, false).with(ConveyorBlock.CONVEYOR, false));
 	}
 
 	@Override
@@ -71,17 +70,17 @@ public class DownwardVerticalConveyorBlock extends VerticalConveyorBlock {
 		BlockEntity frontBlockEntity = world.getBlockEntity(frontPos);
 
 		if (frontBlockEntity instanceof Conveyable && ((Conveyable) frontBlockEntity).canInsert(direction)) {
-			state = state.with(ConveyorProperties.FRONT, true);
+			state = state.with(ConveyorBlock.FRONT, true);
 		} else {
-			state = state.with(ConveyorProperties.FRONT, false);
+			state = state.with(ConveyorBlock.FRONT, false);
 		}
 
 		BlockEntity conveyorBlockEntity = world.getBlockEntity(conveyorPos);
 
 		if (world.isAir(blockPos.up()) && conveyorBlockEntity instanceof Conveyable && !conveyorBlockEntity.isRemoved() && ((Conveyable) conveyorBlockEntity).canExtract(direction.getOpposite(), getType())) {
-			state = state.with(ConveyorProperties.CONVEYOR, true);
+			state = state.with(ConveyorBlock.CONVEYOR, true);
 		} else {
-			state = state.with(ConveyorProperties.CONVEYOR, false);
+			state = state.with(ConveyorBlock.CONVEYOR, false);
 		}
 
 		return state;
@@ -107,9 +106,9 @@ public class DownwardVerticalConveyorBlock extends VerticalConveyorBlock {
 	@Override
 	public void checkForConveyor(World world, BlockState state, BlockEntity conveyorBlockEntity, Direction direction, BlockPos pos, BlockPos upPos) {
 		if (world.isAir(upPos) && conveyorBlockEntity instanceof Conveyable && !conveyorBlockEntity.isRemoved() && ((Conveyable) conveyorBlockEntity).canExtract(direction.getOpposite(), getType())) {
-			state = state.with(ConveyorProperties.CONVEYOR, true);
+			state = state.with(ConveyorBlock.CONVEYOR, true);
 		} else {
-			state = state.with(ConveyorProperties.CONVEYOR, false);
+			state = state.with(ConveyorBlock.CONVEYOR, false);
 		}
 
 		world.setBlockState(pos, state, 8);

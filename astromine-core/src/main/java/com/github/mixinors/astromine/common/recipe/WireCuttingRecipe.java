@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.recipe;
 
 import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
 import com.github.mixinors.astromine.common.util.IngredientUtils;
 import com.github.mixinors.astromine.common.util.StackUtils;
 import com.google.gson.Gson;
@@ -163,7 +164,7 @@ public class WireCuttingRecipe extends SpecialCraftingRecipe {
 		}
 	}
 
-	public static final class Type implements AstromineRecipeType<WireCuttingRecipe> {
+	public static final class Type implements AMRecipeType<WireCuttingRecipe> {
 		public static final Type INSTANCE = new Type();
 
 		private Type() {}

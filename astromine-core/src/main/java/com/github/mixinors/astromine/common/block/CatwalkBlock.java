@@ -42,8 +42,6 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.WorldAccess;
 
-import com.github.mixinors.astromine.common.block.property.ConveyorProperties;
-
 import javax.annotation.Nullable;
 
 public class CatwalkBlock extends Block implements Waterloggable {
@@ -57,12 +55,12 @@ public class CatwalkBlock extends Block implements Waterloggable {
 
 	protected static final VoxelShape[] SHAPE_CACHE = new VoxelShape[256];
 
-	protected static final BooleanProperty[] PROPERTIES = new BooleanProperty[] { ConveyorProperties.NO_FLOOR, Properties.NORTH, Properties.EAST, Properties.SOUTH, Properties.WEST };
+	protected static final BooleanProperty[] PROPERTIES = new BooleanProperty[] { ConveyorBlock.NO_FLOOR, Properties.NORTH, Properties.EAST, Properties.SOUTH, Properties.WEST };
 
 	public CatwalkBlock(Settings settings) {
 		super(settings);
 
-		setDefaultState(this.getDefaultState().with(ConveyorProperties.NO_FLOOR, false).with(Properties.NORTH, false).with(Properties.EAST, false).with(Properties.SOUTH, false).with(Properties.WEST, false).with(Properties.WATERLOGGED, false));
+		setDefaultState(this.getDefaultState().with(ConveyorBlock.NO_FLOOR, false).with(Properties.NORTH, false).with(Properties.EAST, false).with(Properties.SOUTH, false).with(Properties.WEST, false).with(Properties.WATERLOGGED, false));
 	}
 
 	@Nullable
@@ -78,7 +76,7 @@ public class CatwalkBlock extends Block implements Waterloggable {
 
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(ConveyorProperties.NO_FLOOR, Properties.NORTH, Properties.EAST, Properties.SOUTH, Properties.WEST, Properties.WATERLOGGED);
+		builder.add(ConveyorBlock.NO_FLOOR, Properties.NORTH, Properties.EAST, Properties.SOUTH, Properties.WEST, Properties.WATERLOGGED);
 	}
 
 	public BooleanProperty getPropertyFromDirection(Direction direction) {
@@ -128,7 +126,7 @@ public class CatwalkBlock extends Block implements Waterloggable {
 		if (SHAPE_CACHE[id] == null) {
 			VoxelShape shape = VoxelShapes.empty();
 
-			if (!state.get(ConveyorProperties.NO_FLOOR)) {
+			if (!state.get(ConveyorBlock.NO_FLOOR)) {
 				shape = VoxelShapes.union(shape, BOTTOM);
 			}
 

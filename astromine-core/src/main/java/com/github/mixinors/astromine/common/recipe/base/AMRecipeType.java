@@ -22,19 +22,14 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.common.packet;
+package com.github.mixinors.astromine.common.recipe.base;
 
-import net.fabricmc.fabric.api.network.PacketContext;
+import net.minecraft.recipe.Recipe;
+import net.minecraft.recipe.RecipeType;
 
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.Identifier;
+import com.github.mixinors.astromine.mixin.client.ClientRecipeBookMixin;
 
 /**
- * An object
- * which consumes packets identified by
- * an {@link Identifier}.
+ * Our generic {@link RecipeType}, used in {@link ClientRecipeBookMixin}.
  */
-public interface PacketConsumer {
-	/** Consumes the packet. */
-	void consumePacket(Identifier identifier, PacketByteBuf buffer, PacketContext context);
-}
+public interface AMRecipeType<T extends Recipe<?>> extends RecipeType<T> {}

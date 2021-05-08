@@ -53,7 +53,7 @@ import java.util.function.Function;
 public class ClientUtils {
 	/** Returns Minecraft's client's instance. */
 	public static MinecraftClient getInstance() {
-		return ClientUtils.getInstance();
+		return MinecraftClient.getInstance();
 	}
 	
 	/** Returns Minecraft's client's player. */

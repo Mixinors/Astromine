@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.client.render.block;
 
+import com.github.mixinors.astromine.common.block.ConveyorBlock;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
@@ -33,7 +34,6 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.block.entity.DownVerticalConveyorBlockEntity;
-import com.github.mixinors.astromine.common.block.property.ConveyorProperties;
 import com.github.mixinors.astromine.common.conveyor.Conveyor;
 import com.github.mixinors.astromine.common.conveyor.ConveyorTypes;
 
@@ -46,8 +46,8 @@ public class DownwardVerticalConveyorBlockEntityRenderer extends BlockEntityRend
 	public void render(DownVerticalConveyorBlockEntity blockEntity, float partialTicks, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int i1) {
 		int speed = ((Conveyor) blockEntity.getCachedState().getBlock()).getSpeed();
 		ConveyorTypes type = ((Conveyor) blockEntity.getCachedState().getBlock()).getType();
-		boolean conveyor = blockEntity.getCachedState().get(ConveyorProperties.CONVEYOR);
-		boolean front = blockEntity.getCachedState().get(ConveyorProperties.FRONT);
+		boolean conveyor = blockEntity.getCachedState().get(ConveyorBlock.CONVEYOR);
+		boolean front = blockEntity.getCachedState().get(ConveyorBlock.FRONT);
 
 		Direction direction = blockEntity.getCachedState().get(Properties.HORIZONTAL_FACING);
 

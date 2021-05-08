@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import com.github.mixinors.astromine.common.block.ConveyorBlock;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.component.general.SimpleItemComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
@@ -35,7 +36,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-import com.github.mixinors.astromine.common.block.property.ConveyorProperties;
 import com.github.mixinors.astromine.common.conveyor.Conveyable;
 import com.github.mixinors.astromine.common.conveyor.Conveyor;
 import com.github.mixinors.astromine.common.conveyor.ConveyorConveyable;
@@ -77,13 +77,13 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 		int speed = ((Conveyor) getCachedState().getBlock()).getSpeed();
 
 		if (!isEmpty()) {
-			if (getCachedState().get(ConveyorProperties.FRONT)) {
+			if (getCachedState().get(ConveyorBlock.FRONT)) {
 				BlockPos frontPos = getPos().offset(direction.getOpposite());
 
 				if (getWorld().getBlockEntity(frontPos) instanceof Conveyable) {
 					Conveyable conveyable = (Conveyable) getWorld().getBlockEntity(frontPos);
 
-					if (getCachedState().get(ConveyorProperties.CONVEYOR)) {
+					if (getCachedState().get(ConveyorBlock.CONVEYOR)) {
 						if (position < speed) {
 							handleMovement(conveyable, speed, false);
 						} else {
@@ -101,7 +101,7 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 				if (getWorld().getBlockEntity(downPos) instanceof Conveyable) {
 					Conveyable conveyable = (Conveyable) getWorld().getBlockEntity(downPos);
 
-					if (getCachedState().get(ConveyorProperties.CONVEYOR)) {
+					if (getCachedState().get(ConveyorBlock.CONVEYOR)) {
 						handleMovement(conveyable, speed * 2, true);
 					} else {
 						handleMovement(conveyable, speed, true);

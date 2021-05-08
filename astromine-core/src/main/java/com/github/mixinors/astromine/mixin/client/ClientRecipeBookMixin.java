@@ -33,7 +33,7 @@ import net.minecraft.client.recipebook.ClientRecipeBook;
 import net.minecraft.client.recipebook.RecipeBookGroup;
 import net.minecraft.recipe.Recipe;
 
-import com.github.mixinors.astromine.common.recipe.AstromineRecipeType;
+import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
 
 @Mixin(ClientRecipeBook.class)
 public class ClientRecipeBookMixin {
@@ -42,7 +42,7 @@ public class ClientRecipeBookMixin {
 	 */
 	@Inject(method = "getGroupForRecipe", cancellable = true, at = @At("HEAD"))
 	private static void astromine_getGroupForRecipe(Recipe<?> recipe, CallbackInfoReturnable<RecipeBookGroup> cir) {
-		if (recipe.getType() instanceof AstromineRecipeType)
+		if (recipe.getType() instanceof AMRecipeType)
 			cir.setReturnValue(RecipeBookGroup.UNKNOWN);
 	}
 }
