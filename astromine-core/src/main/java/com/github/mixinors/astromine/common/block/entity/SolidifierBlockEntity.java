@@ -59,7 +59,7 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 
 	@Override
 	public FluidComponent createFluidComponent() {
-		FluidComponent fluidComponent = SimpleFluidComponent.of(1).withInsertPredicate((direction, volume, slot) -> {
+		FluidComponent fluidComponent = SimpleDirectionalFluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
 			if (slot != 0) {
 				return false;
 			}

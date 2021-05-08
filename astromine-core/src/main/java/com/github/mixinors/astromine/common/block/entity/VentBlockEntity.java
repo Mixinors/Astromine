@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import com.github.mixinors.astromine.common.component.general.SimpleDirectionalFluidComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.util.math.BlockPos;
@@ -53,7 +54,7 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 
 	@Override
 	public FluidComponent createFluidComponent() {
-		FluidComponent fluidComponent = SimpleFluidComponent.of(1);
+		FluidComponent fluidComponent = SimpleDirectionalFluidComponent.of(this, 1);
 		fluidComponent.getFirst().setSize(getFluidSize());
 		return fluidComponent;
 	}

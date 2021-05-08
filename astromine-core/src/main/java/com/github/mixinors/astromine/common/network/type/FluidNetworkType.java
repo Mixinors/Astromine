@@ -86,7 +86,7 @@ public final class FluidNetworkType implements NetworkType {
 
 		for (Pair<FluidComponent, Direction> provider : providers) {
 			for (Pair<FluidComponent, Direction> requester : requesters) {
-				provider.getLeft().into(requester.getLeft(), FluidVolume.getTransfer(), requester.getRight());
+				provider.getLeft().into(requester.getLeft(), FluidVolume.getTransfer(), requester.getRight().getOpposite());
 			}
 		}
 	}

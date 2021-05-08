@@ -45,7 +45,7 @@ public class NumberUtils {
 	 * > 1,000,000,000,000,000,000,000,000,000 has the "∞" suffix.
 	 */
 	public static String shorten(long value, String unit) {
-		if (value < 1000000) {
+		if (value < 1000) {
 			return String.valueOf(value);
 		}
 

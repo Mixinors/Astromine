@@ -59,7 +59,7 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 
 	@Override
 	public FluidComponent createFluidComponent() {
-		FluidComponent fluidComponent = SimpleFluidComponent.of(1).withInsertPredicate((direction, volume, slot) -> {
+		FluidComponent fluidComponent = SimpleDirectionalFluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
 			return false;
 		}).withExtractPredicate((direction, volume, slot) -> {
 			return slot == 0;
