@@ -25,9 +25,10 @@
 package com.github.mixinors.astromine.common.widget.blade;
 
 import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
+import com.github.mixinors.astromine.registry.AMNetworks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
@@ -41,8 +42,7 @@ import net.minecraft.util.math.Direction;
 import com.github.mixinors.astromine.client.BaseRenderer;
 import com.github.mixinors.astromine.common.block.entity.base.ComponentBlockEntity;
 import com.github.mixinors.astromine.common.block.transfer.TransferType;
-import com.github.mixinors.astromine.common.utilities.MirrorUtilities;
-import com.github.mixinors.astromine.registry.AstromineCommonPackets;
+import com.github.mixinors.astromine.common.util.MirrorUtils;
 import com.github.vini2003.blade.common.widget.base.AbstractWidget;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import io.netty.buffer.Unpooled;
@@ -148,18 +148,19 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 	public void onMouseReleased(float mouseX, float mouseY, int mouseButton) {
 		if (getFocused() && !getHidden() && wasClicked) {
 			if (getHandler().getClient()) {
-				PacketByteBuf buffer = new PacketByteBuf(Unpooled.buffer());
+				PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
 
-				buffer.writeBlockPos(getBlockPos());
-				buffer.writeIdentifier(ComponentBlockEntity.TRANSFER_UPDATE_PACKET);
+				buf.writeBlockPos(getBlockPos());
+				buf.writeIdentifier(ComponentBlockEntity.TRANSFER_UPDATE_PACKET);
 
-				buffer.writeIdentifier(type.getId());
-				buffer.writeEnumConstant(direction);
-				buffer.writeEnumConstant(component.get(type).get(direction).next());
-
-				ClientSidePacketRegistry.INSTANCE.sendToServer(AstromineCommonPackets.BLOCK_ENTITY_UPDATE_PACKET, buffer);
+				buf.writeIdentifier(type.getId());
+				buf.writeEnumConstant(direction);
+				buf.writeEnumConstant(component.get(type).get(direction).next());
+				
+				ClientPlayNetworking.send(AMNetworks.BLOCK_ENTITY_UPDATE_PACKET, buf);
 			}
 		}
+		
 		wasClicked = false;
 
 		super.onMouseReleased(mouseX, mouseY, mouseButton);
@@ -169,7 +170,7 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 	@Environment(EnvType.CLIENT)
 	@Override
 	public @NotNull List<Text> getTooltip() {
-		Direction offset = MirrorUtilities.rotate(direction, rotation);
+		Direction offset = MirrorUtils.rotate(direction, rotation);
 		return Arrays.asList(new TranslatableText("text.astromine.siding." + offset.getName()), new TranslatableText("text.astromine.siding." + getSideName()));
 	}
 

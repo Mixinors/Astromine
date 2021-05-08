@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.datagen.registry;
 
-import com.github.mixinors.astromine.AstromineCommon;
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.datagen.generator.modelstate.onetime.OneTimeModelStateGenerator;
 import com.github.mixinors.astromine.datagen.generator.modelstate.set.SetModelStateGenerator;
 import com.github.mixinors.astromine.datagen.material.MaterialSet;
@@ -57,11 +57,11 @@ public abstract class AstromineModelStateGenerators {
 			try {
 				if (set.shouldGenerate(generator)) {
 					generator.generate(modelStates, set);
-					AstromineCommon.LOGGER.info("Model/State generation of " + set.getName() + " succeeded, with generator " + generator.getGeneratorName() + ".");
+					AMCommon.LOGGER.info("Model/State generation of " + set.getName() + " succeeded, with generator " + generator.getGeneratorName() + ".");
 				}
 			} catch (Exception exception) {
-				AstromineCommon.LOGGER.error("Model/State generation of " + set.getName() + " failed, with generator " + generator.getGeneratorName() + ".");
-				AstromineCommon.LOGGER.error(exception.getMessage());
+				AMCommon.LOGGER.error("Model/State generation of " + set.getName() + " failed, with generator " + generator.getGeneratorName() + ".");
+				AMCommon.LOGGER.error(exception.getMessage());
 			}
 		});
 	}

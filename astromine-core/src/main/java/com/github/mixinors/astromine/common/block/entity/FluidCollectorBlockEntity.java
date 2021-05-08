@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidDrainable;
@@ -43,7 +43,7 @@ import com.github.mixinors.astromine.common.component.general.SimpleEnergyCompon
 import com.github.mixinors.astromine.common.component.general.SimpleFluidComponent;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.registry.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergyConsumedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
@@ -53,7 +53,7 @@ public class FluidCollectorBlockEntity extends ComponentEnergyFluidBlockEntity i
 	private long cooldown = 0L;
 
 	public FluidCollectorBlockEntity() {
-		super(AstromineBlockEntityTypes.FLUID_EXTRACTOR);
+		super(AMBlockEntityTypes.FLUID_EXTRACTOR);
 	}
 
 	@Override
@@ -70,17 +70,17 @@ public class FluidCollectorBlockEntity extends ComponentEnergyFluidBlockEntity i
 
 	@Override
 	public double getEnergyConsumed() {
-		return AstromineConfig.get().fluidCollectorEnergyConsumed;
+		return AMConfig.get().fluidCollectorEnergyConsumed;
 	}
 
 	@Override
 	public double getEnergySize() {
-		return AstromineConfig.get().fluidCollectorEnergy;
+		return AMConfig.get().fluidCollectorEnergy;
 	}
 
 	@Override
 	public double getMachineSpeed() {
-		return AstromineConfig.get().fluidCollectorSpeed;
+		return AMConfig.get().fluidCollectorSpeed;
 	}
 
 	@Override

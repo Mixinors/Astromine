@@ -24,13 +24,14 @@
 
 package com.github.mixinors.astromine.client.render.block;
 
+import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.common.util.ClientUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.enums.DoubleBlockHalf;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
@@ -50,7 +51,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.LightType;
 
-import com.github.mixinors.astromine.AstromineCommon;
 import com.github.mixinors.astromine.common.registry.ConveyorSpecialScaleRegistry;
 import com.github.mixinors.astromine.common.block.property.ConveyorProperties;
 import com.github.mixinors.astromine.common.conveyor.ConveyorTypes;
@@ -96,12 +96,12 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 			matrixStack.translate(0, (position / (speed)) + (blockEntity.getCachedState().get(ConveyorProperties.CONVEYOR) ? 1 : 0), horizontalPosition / speed);
 		}
 
-		MinecraftClient.getInstance().getTextureManager().bindTexture(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
+		ClientUtils.getInstance().getTextureManager().bindTexture(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
 
-		BakedModel model = MinecraftClient.getInstance().getBakedModelManager().getModel(new ModelIdentifier(new Identifier(AstromineCommon.MOD_ID, "conveyor_supports"), ""));
+		BakedModel model = ClientUtils.getInstance().getBakedModelManager().getModel(new ModelIdentifier(new Identifier(AMCommon.MOD_ID, "conveyor_supports"), ""));
 
 		int light = LightmapTextureManager.pack(blockEntity.getWorld().getLightLevel(LightType.BLOCK, blockEntity.getPos()), blockEntity.getWorld().getLightLevel(LightType.SKY, blockEntity.getPos()));
-		MinecraftClient.getInstance().getBlockRenderManager().getModelRenderer().render(matrixStack.peek(), vertexConsumerProvider.getBuffer(RenderLayer.getCutout()), null, model, blockEntity.getPos().getX(), blockEntity.getPos().getY(), blockEntity.getPos().getZ(), light,
+		ClientUtils.getInstance().getBlockRenderManager().getModelRenderer().render(matrixStack.peek(), vertexConsumerProvider.getBuffer(RenderLayer.getCutout()), null, model, blockEntity.getPos().getX(), blockEntity.getPos().getY(), blockEntity.getPos().getZ(), light,
 			OverlayTexture.DEFAULT_UV);
 
 		matrixStack.pop();
@@ -159,10 +159,10 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 					matrixStack.translate(x * 2, y * 0.5F, z * 2);
 				}
 
-				MinecraftClient.getInstance().getBlockRenderManager().renderBlockAsEntity(block.getDefaultState(), matrixStack, vertexConsumerProvider, light, OverlayTexture.DEFAULT_UV);
+				ClientUtils.getInstance().getBlockRenderManager().renderBlockAsEntity(block.getDefaultState(), matrixStack, vertexConsumerProvider, light, OverlayTexture.DEFAULT_UV);
 				if (stack.getItem() instanceof TallBlockItem) {
 					matrixStack.translate(0, 1, 0);
-					MinecraftClient.getInstance().getBlockRenderManager().renderBlockAsEntity(block.getDefaultState().with(Properties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER), matrixStack, vertexConsumerProvider, light, OverlayTexture.DEFAULT_UV);
+					ClientUtils.getInstance().getBlockRenderManager().renderBlockAsEntity(block.getDefaultState().with(Properties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER), matrixStack, vertexConsumerProvider, light, OverlayTexture.DEFAULT_UV);
 				}
 
 				matrixStack.pop();
@@ -208,14 +208,14 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 						float z = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
 						matrixStack.translate(x, z, y * 0.5F);
 					}
-					MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
+					ClientUtils.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
 					matrixStack.pop();
 				}
 			} else {
 				matrixStack.scale(0.8F, 0.8F, 0.8F);
 			}
 
-			MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
+			ClientUtils.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
 			matrixStack.pop();
 		}
 	}
@@ -227,7 +227,7 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 			matrixStack.push();
 			if (!(stack.getItem() instanceof BlockItem))
 				matrixStack.scale(0.8F, 0.8F, 0.8F);
-			MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
+			ClientUtils.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
 			matrixStack.pop();
 		}
 	}
@@ -283,10 +283,10 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 					matrixStack.translate(x * 2, y * 0.5F, z * 2);
 				}
 
-				MinecraftClient.getInstance().getBlockRenderManager().renderBlockAsEntity(block.getDefaultState(), matrixStack, vertexConsumerProvider, light, OverlayTexture.DEFAULT_UV);
+				ClientUtils.getInstance().getBlockRenderManager().renderBlockAsEntity(block.getDefaultState(), matrixStack, vertexConsumerProvider, light, OverlayTexture.DEFAULT_UV);
 				if (stack.getItem() instanceof TallBlockItem) {
 					matrixStack.translate(0, 1, 0);
-					MinecraftClient.getInstance().getBlockRenderManager().renderBlockAsEntity(block.getDefaultState().with(Properties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER), matrixStack, vertexConsumerProvider, light, OverlayTexture.DEFAULT_UV);
+					ClientUtils.getInstance().getBlockRenderManager().renderBlockAsEntity(block.getDefaultState().with(Properties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER), matrixStack, vertexConsumerProvider, light, OverlayTexture.DEFAULT_UV);
 				}
 
 				matrixStack.pop();
@@ -332,14 +332,14 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 						float z = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
 						matrixStack.translate(x, z, y * 0.5F);
 					}
-					MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
+					ClientUtils.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
 					matrixStack.pop();
 				}
 			} else {
 				matrixStack.scale(0.8F, 0.8F, 0.8F);
 			}
 
-			MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
+			ClientUtils.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
 			matrixStack.pop();
 		}
 	}

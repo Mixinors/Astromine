@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.client.rei.liquidgenerating;
 
-import com.github.mixinors.astromine.registry.AstromineBlocks;
+import com.github.mixinors.astromine.registry.AMBlocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -56,7 +56,7 @@ public class LiquidGeneratingCategory extends AbstractEnergyGeneratingCategory<L
 
 	@Override
 	public EntryStack getLogo() {
-		return EntryStack.create(AstromineBlocks.ADVANCED_LIQUID_GENERATOR);
+		return EntryStack.create(AMBlocks.ADVANCED_LIQUID_GENERATOR);
 	}
 
 	@Override

@@ -24,7 +24,8 @@
 
 package com.github.mixinors.astromine.common.recipe;
 
-import com.github.mixinors.astromine.registry.AstromineBlocks;
+import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.registry.AMBlocks;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -33,13 +34,12 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.AstromineCommon;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.ItemIngredient;
-import com.github.mixinors.astromine.common.utilities.DoubleUtilities;
-import com.github.mixinors.astromine.common.utilities.IntegerUtilities;
+import com.github.mixinors.astromine.common.util.DoubleUtils;
+import com.github.mixinors.astromine.common.util.IntegerUtils;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 
 import com.google.gson.Gson;
@@ -157,7 +157,7 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineBlocks.ADVANCED_LIQUID_GENERATOR);
+		return new ItemStack(AMBlocks.ADVANCED_LIQUID_GENERATOR);
 	}
 
 	public Identifier getIdentifier() {
@@ -182,7 +182,7 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 	}
 
 	public static final class Serializer implements RecipeSerializer<MeltingRecipe> {
-		public static final Identifier ID = AstromineCommon.identifier("melting");
+		public static final Identifier ID = AMCommon.identifier("melting");
 
 		public static final Serializer INSTANCE = new Serializer();
 
@@ -196,8 +196,8 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 					identifier,
 					ItemIngredient.fromJson(format.firstInput),
 					FluidVolume.fromJson(format.firstOutput),
-					DoubleUtilities.fromJson(format.energyInput),
-					IntegerUtilities.fromJson(format.time)
+					DoubleUtils.fromJson(format.energyInput),
+					IntegerUtils.fromJson(format.time)
 			);
 		}
 
@@ -207,8 +207,8 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 					identifier,
 					ItemIngredient.fromPacket(buffer),
 					FluidVolume.fromPacket(buffer),
-					DoubleUtilities.fromPacket(buffer),
-					IntegerUtilities.fromPacket(buffer)
+					DoubleUtils.fromPacket(buffer),
+					IntegerUtils.fromPacket(buffer)
 			);
 		}
 
@@ -216,8 +216,8 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 		public void write(PacketByteBuf buffer, MeltingRecipe recipe) {
 			recipe.firstInput.toPacket(buffer);
 			recipe.firstOutput.toPacket(buffer);
-			DoubleUtilities.toPacket(buffer, recipe.energyInput);
-			IntegerUtilities.toPacket(buffer, recipe.time);
+			DoubleUtils.toPacket(buffer, recipe.energyInput);
+			IntegerUtils.toPacket(buffer, recipe.time);
 		}
 	}
 

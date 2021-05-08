@@ -28,11 +28,11 @@ import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.AstromineCommon;
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.registry.NetworkMemberRegistry;
 import com.github.mixinors.astromine.common.registry.NetworkTypeRegistry;
-import com.github.mixinors.astromine.common.utilities.data.position.WorldPos;
+import com.github.mixinors.astromine.common.util.data.position.WorldPos;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.Sets;
@@ -120,7 +120,7 @@ public final class NetworkInstance implements Tickable {
 	public boolean isEmpty() {
 		this.nodes.removeIf(node -> !NetworkMemberRegistry.get(WorldPos.of(world, node.getBlockPosition()), null).isNode(getType()));
 		if (this.nodes.isEmpty()) {
-			AstromineCommon.LOGGER.error("Network is empty! " + toString());
+			AMCommon.LOGGER.error("Network is empty! " + toString());
 			return true;
 		}
 		return false;

@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
-import com.github.mixinors.astromine.registry.AstromineScreenHandlers;
+import com.github.mixinors.astromine.registry.AMScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
@@ -36,7 +36,7 @@ import com.github.vini2003.blade.common.widget.base.SlotWidget;
 
 public class CreativeBufferScreenHandler extends ComponentBlockEntityItemScreenHandler {
 	public CreativeBufferScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AstromineScreenHandlers.CREATIVE_BUFFER, syncId, player, position);
+		super(AMScreenHandlers.CREATIVE_BUFFER, syncId, player, position);
 	}
 
 	@Override

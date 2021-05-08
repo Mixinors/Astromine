@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.world.feature;
 
-import com.github.mixinors.astromine.registry.AstromineBlocks;
+import com.github.mixinors.astromine.registry.AMBlocks;
 import com.mojang.serialization.Codec;
 import com.terraformersmc.terraform.shapes.api.Position;
 import com.terraformersmc.terraform.shapes.api.Quaternion;
@@ -54,9 +54,9 @@ public class MoonOreFeature extends Feature<DefaultFeatureConfig> {
 		for (Position streamPosition : vein.stream().collect(Collectors.toSet())) {
 			BlockPos orePos = streamPosition.toBlockPos();
 
-			if (world.getBlockState(orePos).getBlock() == AstromineBlocks.MOON_STONE) {
+			if (world.getBlockState(orePos).getBlock() == AMBlocks.MOON_STONE) {
 				if (random.nextInt(24) == 0) {
-					world.setBlockState(orePos, AstromineBlocks.MOON_LUNUM_ORE.getDefaultState(), 0b0110100);
+					world.setBlockState(orePos, AMBlocks.MOON_LUNUM_ORE.getDefaultState(), 0b0110100);
 				}
 			}
 		}

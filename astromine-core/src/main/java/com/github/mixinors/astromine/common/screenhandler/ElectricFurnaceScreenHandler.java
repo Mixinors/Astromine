@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
-import com.github.mixinors.astromine.registry.AstromineScreenHandlers;
+import com.github.mixinors.astromine.registry.AMScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
@@ -40,7 +40,7 @@ public class ElectricFurnaceScreenHandler extends ComponentBlockEntityEnergyItem
 	private ElectricFurnaceBlockEntity smelter;
 
 	public ElectricFurnaceScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AstromineScreenHandlers.ELECTRIC_FURNACE, syncId, player, position);
+		super(AMScreenHandlers.ELECTRIC_FURNACE, syncId, player, position);
 
 		smelter = (ElectricFurnaceBlockEntity) blockEntity;
 	}

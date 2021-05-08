@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.technologies.datagen.generators.recipe.set;
 
-import com.github.mixinors.astromine.common.utilities.GeneratorUtilities;
+import com.github.mixinors.astromine.common.util.GeneratorUtils;
 import com.github.mixinors.astromine.datagen.generator.recipe.set.base.EnergyProcessingSetRecipeGenerator;
 import com.github.mixinors.astromine.datagen.material.MaterialItemType;
 import com.github.mixinors.astromine.datagen.material.MaterialSet;
@@ -54,7 +54,7 @@ public class PressingSetRecipeGenerator extends EnergyProcessingSetRecipeGenerat
 
 	@Override
 	public void generate(RecipeData recipes, MaterialSet set) {
-		recipes.accept(GeneratorUtilities.Providers.createProvider(PressingRecipe.Serializer.INSTANCE, getRecipeId(set), json -> {
+		recipes.accept(GeneratorUtils.Providers.createProvider(PressingRecipe.Serializer.INSTANCE, getRecipeId(set), json -> {
 			JsonElement inputJson = set.getIngredient(input).toJson();
 			if (inputJson.isJsonObject()) {
 				inputJson.getAsJsonObject().addProperty("count", inputCount);

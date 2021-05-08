@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
-import com.github.mixinors.astromine.registry.AstromineScreenHandlers;
+import com.github.mixinors.astromine.registry.AMScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
@@ -39,7 +39,7 @@ public class ElectrolyzerScreenHandler extends ComponentBlockEntityEnergyFluidSc
 	private ElectrolyzerBlockEntity electrolyzer;
 
 	public ElectrolyzerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AstromineScreenHandlers.ELECTROLYZER, syncId, player, position);
+		super(AMScreenHandlers.ELECTROLYZER, syncId, player, position);
 
 		electrolyzer = (ElectrolyzerBlockEntity) blockEntity;
 	}

@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.component.general.*;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.fluid.Fluid;
@@ -37,9 +37,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentFluidItemBlockEntity;
-import com.github.mixinors.astromine.common.utilities.VolumeUtilities;
-import com.github.mixinors.astromine.common.utilities.tier.MachineTier;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.common.util.VolumeUtils;
+import com.github.mixinors.astromine.common.util.tier.MachineTier;
+import com.github.mixinors.astromine.registry.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
@@ -86,7 +86,7 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		VolumeUtilities.transferBetween(getItemComponent(), getFluidComponent(), 0, 1, 0);
+		VolumeUtils.transferBetween(getItemComponent(), getFluidComponent(), 0, 1, 0);
 	}
 
 	@Override
@@ -104,17 +104,17 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 
 	public static class Primitive extends TankBlockEntity {
 		public Primitive() {
-			super(AstromineBlockEntityTypes.PRIMITIVE_TANK);
+			super(AMBlockEntityTypes.PRIMITIVE_TANK);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().primitiveTankSpeed;
+			return AMConfig.get().primitiveTankSpeed;
 		}
 
 		@Override
 		public long getFluidSize() {
-			return AstromineConfig.get().primitiveTankFluid;
+			return AMConfig.get().primitiveTankFluid;
 		}
 
 		@Override
@@ -125,17 +125,17 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 
 	public static class Basic extends TankBlockEntity {
 		public Basic() {
-			super(AstromineBlockEntityTypes.BASIC_TANK);
+			super(AMBlockEntityTypes.BASIC_TANK);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().basicTankSpeed;
+			return AMConfig.get().basicTankSpeed;
 		}
 
 		@Override
 		public long getFluidSize() {
-			return AstromineConfig.get().basicTankFluid;
+			return AMConfig.get().basicTankFluid;
 		}
 
 		@Override
@@ -146,17 +146,17 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 
 	public static class Advanced extends TankBlockEntity {
 		public Advanced() {
-			super(AstromineBlockEntityTypes.ADVANCED_TANK);
+			super(AMBlockEntityTypes.ADVANCED_TANK);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().advancedTankSpeed;
+			return AMConfig.get().advancedTankSpeed;
 		}
 
 		@Override
 		public long getFluidSize() {
-			return AstromineConfig.get().advancedTankFluid;
+			return AMConfig.get().advancedTankFluid;
 		}
 
 		@Override
@@ -167,17 +167,17 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 
 	public static class Elite extends TankBlockEntity {
 		public Elite() {
-			super(AstromineBlockEntityTypes.ELITE_TANK);
+			super(AMBlockEntityTypes.ELITE_TANK);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().eliteTankSpeed;
+			return AMConfig.get().eliteTankSpeed;
 		}
 
 		@Override
 		public long getFluidSize() {
-			return AstromineConfig.get().eliteTankFluid;
+			return AMConfig.get().eliteTankFluid;
 		}
 
 		@Override
@@ -188,7 +188,7 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 
 	public static class Creative extends TankBlockEntity {
 		public Creative() {
-			super(AstromineBlockEntityTypes.CREATIVE_TANK);
+			super(AMBlockEntityTypes.CREATIVE_TANK);
 		}
 
 		@Override

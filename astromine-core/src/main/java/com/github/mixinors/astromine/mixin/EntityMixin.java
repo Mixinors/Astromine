@@ -24,8 +24,9 @@
 
 package com.github.mixinors.astromine.mixin;
 
-import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+import com.github.mixinors.astromine.registry.AMNetworks;
 
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -36,7 +37,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -52,7 +52,7 @@ import com.github.mixinors.astromine.client.cca.ClientAtmosphereManager;
 import com.github.mixinors.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.mixinors.astromine.common.entity.GravityEntity;
 import com.github.mixinors.astromine.common.registry.DimensionLayerRegistry;
-import com.github.mixinors.astromine.registry.AstromineTags;
+import com.github.mixinors.astromine.registry.AMTags;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 
 import com.google.common.collect.Lists;
@@ -96,7 +96,7 @@ public abstract class EntityMixin implements GravityEntity, EntityAccess {
 
 	@Override
 	public boolean astromine_isInIndustrialFluid() {
-		return !this.firstUpdate && this.fluidHeight.getDouble(AstromineTags.INDUSTRIAL_FLUID) > 0.0D;
+		return !this.firstUpdate && this.fluidHeight.getDouble(AMTags.INDUSTRIAL_FLUID) > 0.0D;
 	}
 
 	@Inject(at = @At("HEAD"), method = "tickNetherPortal()V")
@@ -163,20 +163,20 @@ public abstract class EntityMixin implements GravityEntity, EntityAccess {
 		// TODO Make this sync all visible chunks around the player.
 		if (((Entity) (Object) this) instanceof ServerPlayerEntity && world != astromine_lastWorld) {
 			astromine_lastWorld = world;
-
-			ServerSidePacketRegistry.INSTANCE.sendToPlayer(((PlayerEntity) (Object) this), ClientAtmosphereManager.GAS_ERASED, ClientAtmosphereManager.ofGasErased());
+			
+			ServerPlayNetworking.send((ServerPlayerEntity) (Object) this, AMNetworks.GAS_ERASED, ClientAtmosphereManager.ofGasErased());
 
 			ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(getBlockPos()));
 
 			atmosphereComponent.getVolumes().forEach(((blockPos, volume) -> {
-				ServerSidePacketRegistry.INSTANCE.sendToPlayer(((PlayerEntity) (Object) this), ClientAtmosphereManager.GAS_ADDED, ClientAtmosphereManager.ofGasAdded(blockPos, volume));
+				ServerPlayNetworking.send((ServerPlayerEntity) (Object) this, AMNetworks.GAS_ADDED, ClientAtmosphereManager.ofGasAdded(blockPos, volume));
 			}));
 		}
 	}
 
 	@Inject(method = "updateWaterState", at = @At("RETURN"), cancellable = true)
 	private void astromine_updateIndustrialFluidState(CallbackInfoReturnable<Boolean> cir) {
-		if (this.updateMovementInFluid(AstromineTags.INDUSTRIAL_FLUID, 0.014)) {
+		if (this.updateMovementInFluid(AMTags.INDUSTRIAL_FLUID, 0.014)) {
 			cir.setReturnValue(true);
 		}
 	}

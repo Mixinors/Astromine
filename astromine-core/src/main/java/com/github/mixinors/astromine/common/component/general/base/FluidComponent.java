@@ -29,10 +29,10 @@ import com.github.mixinors.astromine.common.component.general.SimpleDirectionalF
 import com.github.mixinors.astromine.common.component.general.SimpleFluidComponent;
 import com.github.mixinors.astromine.common.component.general.miscellaneous.IdentifiableComponent;
 import com.github.mixinors.astromine.common.component.general.provider.FluidComponentProvider;
-import com.github.mixinors.astromine.common.utilities.VolumeUtilities;
+import com.github.mixinors.astromine.common.util.VolumeUtils;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
-import com.github.mixinors.astromine.registry.AstromineComponents;
-import com.github.mixinors.astromine.registry.AstromineItems;
+import com.github.mixinors.astromine.registry.AMComponents;
+import com.github.mixinors.astromine.registry.AMItems;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
@@ -97,7 +97,7 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 
 	/** Returns this component's {@link Item} symbol. */
 	default Item getSymbol() {
-		return AstromineItems.FLUID.asItem();
+		return AMItems.FLUID.asItem();
 	}
 
 	/** Returns this component's {@link Text} name. */
@@ -225,7 +225,7 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 						long insertionCount = insertionVolume.getAmount();
 
 						if (target.canInsert(insertionDirection, insertionVolume, targetSlot)) {
-							Pair<FluidVolume, FluidVolume> merge = VolumeUtilities.merge(insertionVolume, targetVolume);
+							Pair<FluidVolume, FluidVolume> merge = VolumeUtils.merge(insertionVolume, targetVolume);
 
 							sourceVolume.take(insertionCount - merge.getLeft().getAmount());
 							setVolume(sourceSlot, sourceVolume);
@@ -330,13 +330,13 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 		dataTag.putInt("size", getSize());
 		dataTag.put("volumes", listTag);
 
-		tag.put(AstromineComponents.FLUID_INVENTORY_COMPONENT.getId().toString(), dataTag);
+		tag.put(AMComponents.FLUID_INVENTORY_COMPONENT.getId().toString(), dataTag);
 	}
 
 	/** Deserializes this {@link FluidComponent} from a {@link CompoundTag}. */
 	@Override
 	default void readFromNbt(CompoundTag tag) {
-		CompoundTag dataTag = tag.getCompound(AstromineComponents.FLUID_INVENTORY_COMPONENT.getId().toString());
+		CompoundTag dataTag = tag.getCompound(AMComponents.FLUID_INVENTORY_COMPONENT.getId().toString());
 
 		int size = dataTag.getInt("size");
 
@@ -356,8 +356,8 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 			return ((FluidComponentProvider) v).getFluidComponent();
 		}
 
-		if (v != null && AstromineComponents.FLUID_INVENTORY_COMPONENT.isProvidedBy(v)) {
-			return AstromineComponents.FLUID_INVENTORY_COMPONENT.get(v);
+		if (v != null && AMComponents.FLUID_INVENTORY_COMPONENT.isProvidedBy(v)) {
+			return AMComponents.FLUID_INVENTORY_COMPONENT.get(v);
 		} else {
 			if (v instanceof ItemStack) {
 				ItemStack stack = (ItemStack) v;

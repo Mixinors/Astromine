@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.block;
 
-import com.github.mixinors.astromine.common.utilities.VoxelShapeUtilities;
+import com.github.mixinors.astromine.common.util.VoxelShapeUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
@@ -245,8 +245,8 @@ public class VerticalConveyorBlock extends HorizontalFacingBlock implements Bloc
 		int id = facing.getId() + (state.get(ConveyorProperties.FRONT) ? 6 : 0);
 
 		if (SHAPE_CACHE[id] == null) {
-			VoxelShape firstShape = VoxelShapeUtilities.rotate(facing, FIRST_SHAPE);
-			VoxelShape secondShape = VoxelShapeUtilities.rotate(facing, SECOND_SHAPE);
+			VoxelShape firstShape = VoxelShapeUtils.rotate(facing, FIRST_SHAPE);
+			VoxelShape secondShape = VoxelShapeUtils.rotate(facing, SECOND_SHAPE);
 
 			if (state.get(ConveyorProperties.FRONT)) {
 				SHAPE_CACHE[id] = VoxelShapes.union(firstShape, secondShape);

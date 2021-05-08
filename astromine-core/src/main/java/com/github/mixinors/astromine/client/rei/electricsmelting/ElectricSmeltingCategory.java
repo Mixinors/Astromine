@@ -24,14 +24,13 @@
 
 package com.github.mixinors.astromine.client.rei.electricsmelting;
 
-import com.github.mixinors.astromine.registry.AstromineBlocks;
+import com.github.mixinors.astromine.registry.AMBlocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.TranslatableText;
 
-import com.github.mixinors.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
 import it.unimi.dsi.fastutil.ints.IntList;
 import me.shedaniel.math.Point;
@@ -49,7 +48,7 @@ import java.util.List;
 @Environment(EnvType.CLIENT)
 public class ElectricSmeltingCategory extends DefaultCookingCategory {
 	public ElectricSmeltingCategory() {
-		super(AstromineRoughlyEnoughItemsPlugin.ELECTRIC_SMELTING, EntryStack.create(AstromineBlocks.ADVANCED_ELECTRIC_FURNACE), "category.astromine.electric_smelting");
+		super(AstromineRoughlyEnoughItemsPlugin.ELECTRIC_SMELTING, EntryStack.create(AMBlocks.ADVANCED_ELECTRIC_FURNACE), "category.astromine.electric_smelting");
 	}
 
 	@Override

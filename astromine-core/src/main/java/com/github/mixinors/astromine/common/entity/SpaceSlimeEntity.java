@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.entity;
 
-import com.github.mixinors.astromine.registry.AstromineParticles;
+import com.github.mixinors.astromine.registry.AMParticles;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.data.DataTracker;
@@ -83,7 +83,7 @@ public class SpaceSlimeEntity extends SlimeEntity {
 
 	@Override
 	protected ParticleEffect getParticles() {
-		return AstromineParticles.SPACE_SLIME;
+		return AMParticles.SPACE_SLIME;
 	}
 
 	@Override

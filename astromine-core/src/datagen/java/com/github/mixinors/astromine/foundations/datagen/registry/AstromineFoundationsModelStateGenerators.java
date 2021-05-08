@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.foundations.datagen.registry;
 
-import com.github.mixinors.astromine.AstromineCommon;
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.datagen.generator.modelstate.ModelStateGenerator;
 import com.github.mixinors.astromine.datagen.generator.modelstate.onetime.GenericBlockModelStateGenerator;
 import com.github.mixinors.astromine.datagen.generator.modelstate.onetime.HandheldItemModelGenerator;
@@ -34,8 +34,7 @@ import com.github.mixinors.astromine.datagen.generator.modelstate.set.GenericBlo
 import com.github.mixinors.astromine.datagen.generator.modelstate.set.GenericItemSetModelGenerator;
 import com.github.mixinors.astromine.datagen.generator.modelstate.set.HandheldItemSetModelGenerator;
 import com.github.mixinors.astromine.datagen.material.MaterialItemType;
-import com.github.mixinors.astromine.datagen.registry.AstromineModelStateGenerators;
-import com.github.mixinors.astromine.registry.AstromineItems;
+import com.github.mixinors.astromine.registry.AMItems;
 
 public class AstromineModelStateGenerators extends AstromineModelStateGenerators {
 	public final ModelStateGenerator INGOT = register(new GenericItemSetModelGenerator(MaterialItemType.INGOT));
@@ -48,7 +47,7 @@ public class AstromineModelStateGenerators extends AstromineModelStateGenerators
 	public final ModelStateGenerator BLOCK = register(new GenericBlockSetModelStateGenerator(MaterialItemType.BLOCK));
 	public final ModelStateGenerator ORE = register(new GenericBlockSetModelStateGenerator(MaterialItemType.ORE));
 
-	public final ModelStateGenerator METEOR_ORE = register(new ColumnBlockSetModelStateGenerator(MaterialItemType.METEOR_ORE, AstromineCommon.identifier("block/meteor_stone")));
+	public final ModelStateGenerator METEOR_ORE = register(new ColumnBlockSetModelStateGenerator(MaterialItemType.METEOR_ORE, AMCommon.identifier("block/meteor_stone")));
 
 	public final ModelStateGenerator METEOR_CLUSTER = register(new GenericItemSetModelGenerator(MaterialItemType.METEOR_CLUSTER));
 
@@ -97,6 +96,6 @@ public class AstromineModelStateGenerators extends AstromineModelStateGenerators
 	));
 	
 	public final ModelStateGenerator BLADES = register(new HandheldItemModelGenerator(
-			AstromineItems.BLADES
+			AMItems.BLADES
 	));
 }

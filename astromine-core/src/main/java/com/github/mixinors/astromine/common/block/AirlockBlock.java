@@ -60,7 +60,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 
-import com.github.mixinors.astromine.common.utilities.VoxelShapeUtilities;
+import com.github.mixinors.astromine.common.util.VoxelShapeUtils;
 
 import javax.annotation.Nullable;
 
@@ -98,20 +98,20 @@ public class AirlockBlock extends Block implements Waterloggable {
 		int id = facing.getId() + (state.get(HALF) == DoubleBlockHalf.LOWER ? 1 : 2) + (!state.get(LEFT) ? 4 : 8) + (!state.get(RIGHT) ? 16: 32);
 
 		if (SHAPE_CACHE[id] == null) {
-			VoxelShape shape = VoxelShapes.union(VoxelShapes.empty(), VoxelShapeUtilities.rotate(facing, DOOR_SHAPE));
+			VoxelShape shape = VoxelShapes.union(VoxelShapes.empty(), VoxelShapeUtils.rotate(facing, DOOR_SHAPE));
 
 			if (state.get(HALF) == DoubleBlockHalf.LOWER) {
-				shape = VoxelShapes.union(shape, VoxelShapeUtilities.rotate(facing, BOTTOM_SHAPE));
+				shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, BOTTOM_SHAPE));
 			} else {
-				shape = VoxelShapes.union(shape, VoxelShapeUtilities.rotate(facing, TOP_SHAPE));
+				shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, TOP_SHAPE));
 			}
 
 			if (!state.get(LEFT)) {
-				shape = VoxelShapes.union(shape, VoxelShapeUtilities.rotate(facing, LEFT_SHAPE));
+				shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, LEFT_SHAPE));
 			}
 
 			if (!state.get(RIGHT)) {
-				shape = VoxelShapes.union(shape, VoxelShapeUtilities.rotate(facing, RIGHT_SHAPE));
+				shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, RIGHT_SHAPE));
 			}
 
 			SHAPE_CACHE[id] = shape;
@@ -126,21 +126,21 @@ public class AirlockBlock extends Block implements Waterloggable {
 		Direction facing = state.get(FACING);
 
 		if (state.get(HALF) == DoubleBlockHalf.LOWER) {
-			shape = VoxelShapes.union(shape, VoxelShapeUtilities.rotate(facing, BOTTOM_SHAPE));
+			shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, BOTTOM_SHAPE));
 		} else {
-			shape = VoxelShapes.union(shape, VoxelShapeUtilities.rotate(facing, TOP_SHAPE));
+			shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, TOP_SHAPE));
 		}
 
 		if (!state.get(LEFT)) {
-			shape = VoxelShapes.union(shape, VoxelShapeUtilities.rotate(facing, LEFT_SHAPE));
+			shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, LEFT_SHAPE));
 		}
 
 		if (!state.get(RIGHT)) {
-			shape = VoxelShapes.union(shape, VoxelShapeUtilities.rotate(facing, RIGHT_SHAPE));
+			shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, RIGHT_SHAPE));
 		}
 
 		if (!state.get(POWERED)) {
-			shape = VoxelShapes.union(shape, VoxelShapeUtilities.rotate(facing, DOOR_SHAPE));
+			shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, DOOR_SHAPE));
 		}
 
 		return shape;

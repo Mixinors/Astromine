@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.component.general.*;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 
 import net.minecraft.block.BlockState;
@@ -37,10 +37,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
-import com.github.mixinors.astromine.common.utilities.StackUtilities;
-import com.github.mixinors.astromine.common.utilities.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.StackUtils;
+import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.registry.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
@@ -64,7 +64,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 				return false;
 			}
 
-			if (!StackUtilities.test(stack, getItemComponent().getFirst())) {
+			if (!StackUtils.test(stack, getItemComponent().getFirst())) {
 				return false;
 			}
 
@@ -172,17 +172,17 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 
 	public static class Primitive extends SolidGeneratorBlockEntity {
 		public Primitive() {
-			super(AstromineBlockEntityTypes.PRIMITIVE_SOLID_GENERATOR);
+			super(AMBlockEntityTypes.PRIMITIVE_SOLID_GENERATOR);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().primitiveSolidGeneratorSpeed;
+			return AMConfig.get().primitiveSolidGeneratorSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().primitiveSolidGeneratorEnergy;
+			return AMConfig.get().primitiveSolidGeneratorEnergy;
 		}
 
 		@Override
@@ -193,17 +193,17 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 
 	public static class Basic extends SolidGeneratorBlockEntity {
 		public Basic() {
-			super(AstromineBlockEntityTypes.BASIC_SOLID_GENERATOR);
+			super(AMBlockEntityTypes.BASIC_SOLID_GENERATOR);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().basicSolidGeneratorSpeed;
+			return AMConfig.get().basicSolidGeneratorSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().basicSolidGeneratorEnergy;
+			return AMConfig.get().basicSolidGeneratorEnergy;
 		}
 
 		@Override
@@ -214,17 +214,17 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 
 	public static class Advanced extends SolidGeneratorBlockEntity {
 		public Advanced() {
-			super(AstromineBlockEntityTypes.ADVANCED_SOLID_GENERATOR);
+			super(AMBlockEntityTypes.ADVANCED_SOLID_GENERATOR);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().advancedSolidGeneratorSpeed;
+			return AMConfig.get().advancedSolidGeneratorSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().advancedSolidGeneratorEnergy;
+			return AMConfig.get().advancedSolidGeneratorEnergy;
 		}
 
 		@Override
@@ -235,17 +235,17 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 
 	public static class Elite extends SolidGeneratorBlockEntity {
 		public Elite() {
-			super(AstromineBlockEntityTypes.ELITE_SOLID_GENERATOR);
+			super(AMBlockEntityTypes.ELITE_SOLID_GENERATOR);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().eliteSolidGeneratorSpeed;
+			return AMConfig.get().eliteSolidGeneratorSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().eliteSolidGeneratorEnergy;
+			return AMConfig.get().eliteSolidGeneratorEnergy;
 		}
 
 		@Override

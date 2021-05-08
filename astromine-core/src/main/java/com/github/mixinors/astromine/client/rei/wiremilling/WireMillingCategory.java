@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.client.rei.wiremilling;
 
-import com.github.mixinors.astromine.registry.AstromineBlocks;
+import com.github.mixinors.astromine.registry.AMBlocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -32,7 +32,6 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
@@ -59,7 +58,7 @@ public class WireMillingCategory implements RecipeCategory<WireMillingDisplay> {
 
 	@Override
 	public EntryStack getLogo() {
-		return EntryStack.create(AstromineBlocks.ADVANCED_WIREMILL);
+		return EntryStack.create(AMBlocks.ADVANCED_WIREMILL);
 	}
 
 	@Override

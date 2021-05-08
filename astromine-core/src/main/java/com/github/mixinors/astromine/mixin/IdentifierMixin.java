@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.mixin;
 
+import com.github.mixinors.astromine.AMCommon;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -34,9 +35,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.AstromineCommon;
 import com.github.mixinors.astromine.common.registry.IdentifierFixRegistry;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.registry.AMConfig;
 
 @Mixin(Identifier.class)
 public class IdentifierMixin {
@@ -50,10 +50,10 @@ public class IdentifierMixin {
 
 	@Inject(method = "<init>([Ljava/lang/String;)V", at = @At("RETURN"))
 	private void init(String[] strings, CallbackInfo ci) {
-		if (namespace.equals(AstromineCommon.MOD_ID) && AstromineConfig.get().compatibilityMode && IdentifierFixRegistry.INSTANCE.containsKey(path)) {
+		if (namespace.equals(AMCommon.MOD_ID) && AMConfig.get().compatibilityMode && IdentifierFixRegistry.INSTANCE.containsKey(path)) {
 			String oldPath = path;
 			path = IdentifierFixRegistry.INSTANCE.get(path);
-			AstromineCommon.LOGGER.info("Fixed identifier path from " + oldPath + " to " + path);
+			AMCommon.LOGGER.info("Fixed identifier path from " + oldPath + " to " + path);
 		}
 	}
 }

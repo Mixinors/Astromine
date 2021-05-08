@@ -28,14 +28,14 @@ import com.github.mixinors.astromine.common.component.general.*;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyFluidItemBlockEntity;
-import com.github.mixinors.astromine.common.utilities.StackUtilities;
-import com.github.mixinors.astromine.common.utilities.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.StackUtils;
+import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.registry.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
@@ -76,7 +76,7 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 				return false;
 			}
 
-			if (!StackUtilities.test(stack, getItemComponent().getFirst())) {
+			if (!StackUtils.test(stack, getItemComponent().getFirst())) {
 				return false;
 			}
 
@@ -164,22 +164,22 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 
 	public static class Primitive extends MelterBlockEntity {
 		public Primitive() {
-			super(AstromineBlockEntityTypes.PRIMITIVE_MELTER);
+			super(AMBlockEntityTypes.PRIMITIVE_MELTER);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().primitiveMelterSpeed;
+			return AMConfig.get().primitiveMelterSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().primitiveMelterEnergy;
+			return AMConfig.get().primitiveMelterEnergy;
 		}
 
 		@Override
 		public long getFluidSize() {
-			return AstromineConfig.get().primitiveMelterFluid;
+			return AMConfig.get().primitiveMelterFluid;
 		}
 
 		@Override
@@ -190,22 +190,22 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 
 	public static class Basic extends MelterBlockEntity {
 		public Basic() {
-			super(AstromineBlockEntityTypes.BASIC_MELTER);
+			super(AMBlockEntityTypes.BASIC_MELTER);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().basicMelterSpeed;
+			return AMConfig.get().basicMelterSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().basicMelterEnergy;
+			return AMConfig.get().basicMelterEnergy;
 		}
 
 		@Override
 		public long getFluidSize() {
-			return AstromineConfig.get().basicMelterFluid;
+			return AMConfig.get().basicMelterFluid;
 		}
 
 		@Override
@@ -216,22 +216,22 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 
 	public static class Advanced extends MelterBlockEntity {
 		public Advanced() {
-			super(AstromineBlockEntityTypes.ADVANCED_MELTER);
+			super(AMBlockEntityTypes.ADVANCED_MELTER);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().advancedMelterSpeed;
+			return AMConfig.get().advancedMelterSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().advancedMelterEnergy;
+			return AMConfig.get().advancedMelterEnergy;
 		}
 
 		@Override
 		public long getFluidSize() {
-			return AstromineConfig.get().advancedMelterFluid;
+			return AMConfig.get().advancedMelterFluid;
 		}
 
 		@Override
@@ -242,22 +242,22 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 
 	public static class Elite extends MelterBlockEntity {
 		public Elite() {
-			super(AstromineBlockEntityTypes.ELITE_MELTER);
+			super(AMBlockEntityTypes.ELITE_MELTER);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().eliteMelterSpeed;
+			return AMConfig.get().eliteMelterSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().eliteMelterEnergy;
+			return AMConfig.get().eliteMelterEnergy;
 		}
 
 		@Override
 		public long getFluidSize() {
-			return AstromineConfig.get().eliteMelterFluid;
+			return AMConfig.get().eliteMelterFluid;
 		}
 
 		@Override

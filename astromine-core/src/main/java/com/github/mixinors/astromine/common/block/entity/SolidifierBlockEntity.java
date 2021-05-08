@@ -28,14 +28,14 @@ import com.github.mixinors.astromine.common.component.general.*;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyFluidItemBlockEntity;
-import com.github.mixinors.astromine.common.utilities.StackUtilities;
-import com.github.mixinors.astromine.common.utilities.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.StackUtils;
+import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.registry.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
@@ -144,7 +144,7 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 						optionalRecipe = Optional.empty();
 
 						fluidComponent.getFirst().take(recipe.getFirstInput().testMatching(fluidComponent.getFirst()).getAmount());
-						itemComponent.setFirst(StackUtilities.into(itemComponent.getFirst(), recipe.getFirstOutput()));
+						itemComponent.setFirst(StackUtils.into(itemComponent.getFirst(), recipe.getFirstOutput()));
 
 						progress = 0;
 					} else {
@@ -163,22 +163,22 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 
 	public static class Primitive extends SolidifierBlockEntity {
 		public Primitive() {
-			super(AstromineBlockEntityTypes.PRIMITIVE_SOLIDIFIER);
+			super(AMBlockEntityTypes.PRIMITIVE_SOLIDIFIER);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().primitiveSolidifierSpeed;
+			return AMConfig.get().primitiveSolidifierSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().primitiveSolidifierEnergy;
+			return AMConfig.get().primitiveSolidifierEnergy;
 		}
 
 		@Override
 		public long getFluidSize() {
-			return AstromineConfig.get().primitiveSolidifierFluid;
+			return AMConfig.get().primitiveSolidifierFluid;
 		}
 
 		@Override
@@ -189,22 +189,22 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 
 	public static class Basic extends SolidifierBlockEntity {
 		public Basic() {
-			super(AstromineBlockEntityTypes.BASIC_SOLIDIFIER);
+			super(AMBlockEntityTypes.BASIC_SOLIDIFIER);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().basicSolidifierSpeed;
+			return AMConfig.get().basicSolidifierSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().basicSolidifierEnergy;
+			return AMConfig.get().basicSolidifierEnergy;
 		}
 
 		@Override
 		public long getFluidSize() {
-			return AstromineConfig.get().basicSolidifierFluid;
+			return AMConfig.get().basicSolidifierFluid;
 		}
 
 		@Override
@@ -215,22 +215,22 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 
 	public static class Advanced extends SolidifierBlockEntity {
 		public Advanced() {
-			super(AstromineBlockEntityTypes.ADVANCED_SOLIDIFIER);
+			super(AMBlockEntityTypes.ADVANCED_SOLIDIFIER);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().advancedSolidifierSpeed;
+			return AMConfig.get().advancedSolidifierSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().advancedSolidifierEnergy;
+			return AMConfig.get().advancedSolidifierEnergy;
 		}
 
 		@Override
 		public long getFluidSize() {
-			return AstromineConfig.get().advancedSolidifierFluid;
+			return AMConfig.get().advancedSolidifierFluid;
 		}
 
 		@Override
@@ -241,22 +241,22 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 
 	public static class Elite extends SolidifierBlockEntity {
 		public Elite() {
-			super(AstromineBlockEntityTypes.ELITE_SOLIDIFIER);
+			super(AMBlockEntityTypes.ELITE_SOLIDIFIER);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().eliteSolidifierSpeed;
+			return AMConfig.get().eliteSolidifierSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().eliteSolidifierEnergy;
+			return AMConfig.get().eliteSolidifierEnergy;
 		}
 
 		@Override
 		public long getFluidSize() {
-			return AstromineConfig.get().eliteSolidifierFluid;
+			return AMConfig.get().eliteSolidifierFluid;
 		}
 
 		@Override

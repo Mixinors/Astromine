@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.datagen.entrypoint;
 
-import com.github.mixinors.astromine.AstromineCommon;
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.datagen.registry.AstromineLootTableGenerators;
 import com.github.mixinors.astromine.datagen.registry.AstromineMaterialSets;
 import com.github.mixinors.astromine.datagen.registry.AstromineModelStateGenerators;
@@ -55,7 +55,7 @@ public interface DatagenInitializer {
 	AstromineMaterialSets getMaterialSets();
 
 	default void registerData() {
-		AstromineCommon.LOGGER.info("Initializing data generation for " + getModuleId() + ".");
+		AMCommon.LOGGER.info("Initializing data generation for " + getModuleId() + ".");
 		DataGeneratorHandler handler = createHandler();
 		registerLootTables(handler.getLootTables());
 		registerRecipes(handler.getRecipes());

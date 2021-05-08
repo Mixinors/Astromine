@@ -31,7 +31,7 @@ import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-import com.github.mixinors.astromine.common.utilities.StringUtilities;
+import com.github.mixinors.astromine.common.util.StringUtils;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import io.netty.buffer.ByteBuf;
 
@@ -218,13 +218,13 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 				}
 
 				if (jsonObject.has("fluid")) {
-					Identifier fluidId = new Identifier(StringUtilities.fromJson(jsonObject.get("fluid")));
+					Identifier fluidId = new Identifier(StringUtils.fromJson(jsonObject.get("fluid")));
 
 					Fluid fluid = Registry.FLUID.getOrEmpty(fluidId).orElseThrow(() -> new JsonSyntaxException("Unknown fluid '" + fluidId + "'!"));
 
 					return new SimpleEntry(FluidVolume.of(amount, fluid));
 				} else if (jsonObject.has("tag")) {
-					Identifier tagId = new Identifier(StringUtilities.fromJson(jsonObject.get("tag")));
+					Identifier tagId = new Identifier(StringUtils.fromJson(jsonObject.get("tag")));
 
 					Tag<Fluid> tag = ServerTagManagerHolder.getTagManager().getFluids().getTag(tagId);
 

@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.mixin;
 
+import com.github.mixinors.astromine.common.util.ClientUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -99,7 +100,7 @@ public abstract class WorldRendererMixin {
 
 		VertexConsumer consumer = immediate.getBuffer(Layer.getGas());
 
-		Vec3d playerPos = MinecraftClient.getInstance().player.getPos();
+		Vec3d playerPos = ClientUtils.getPlayer().getPos();
 
 		for (Long2ObjectMap.Entry<FluidVolume> entry : ClientAtmosphereManager.getVolumes().long2ObjectEntrySet()) {
 			long blockPos = entry.getLongKey();

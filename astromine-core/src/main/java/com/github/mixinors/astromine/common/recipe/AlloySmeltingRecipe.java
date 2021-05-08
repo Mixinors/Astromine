@@ -24,7 +24,8 @@
 
 package com.github.mixinors.astromine.common.recipe;
 
-import com.github.mixinors.astromine.registry.AstromineBlocks;
+import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.registry.AMBlocks;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -33,13 +34,12 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.AstromineCommon;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.ItemIngredient;
-import com.github.mixinors.astromine.common.utilities.DoubleUtilities;
-import com.github.mixinors.astromine.common.utilities.IntegerUtilities;
-import com.github.mixinors.astromine.common.utilities.StackUtilities;
+import com.github.mixinors.astromine.common.util.DoubleUtils;
+import com.github.mixinors.astromine.common.util.IntegerUtils;
+import com.github.mixinors.astromine.common.util.StackUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -111,7 +111,7 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 			return false;
 		}
 
-		return StackUtilities.test(firstOutput, itemComponent.getThird());
+		return StackUtils.test(firstOutput, itemComponent.getThird());
 	}
 
 	public boolean allows(ItemComponent itemComponent) {
@@ -164,7 +164,7 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineBlocks.ADVANCED_ALLOY_SMELTER);
+		return new ItemStack(AMBlocks.ADVANCED_ALLOY_SMELTER);
 	}
 
 	public Identifier getIdentifier() {
@@ -192,7 +192,7 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 	}
 
 	public static final class Serializer implements RecipeSerializer<AlloySmeltingRecipe> {
-		public static final Identifier ID = AstromineCommon.identifier("alloy_smelting");
+		public static final Identifier ID = AMCommon.identifier("alloy_smelting");
 
 		public static final Serializer INSTANCE = new Serializer();
 
@@ -206,9 +206,9 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 					identifier,
 					ItemIngredient.fromJson(format.firstInput),
 					ItemIngredient.fromJson(format.secondInput),
-					StackUtilities.fromJson(format.output.getAsJsonObject()),
-					DoubleUtilities.fromJson(format.energyInput),
-					IntegerUtilities.fromJson(format.time)
+					StackUtils.fromJson(format.output.getAsJsonObject()),
+					DoubleUtils.fromJson(format.energyInput),
+					IntegerUtils.fromJson(format.time)
 			);
 		}
 
@@ -218,9 +218,9 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 					identifier,
 					ItemIngredient.fromPacket(buffer),
 					ItemIngredient.fromPacket(buffer),
-					StackUtilities.fromPacket(buffer),
-					DoubleUtilities.fromPacket(buffer),
-					IntegerUtilities.fromPacket(buffer)
+					StackUtils.fromPacket(buffer),
+					DoubleUtils.fromPacket(buffer),
+					IntegerUtils.fromPacket(buffer)
 			);
 		}
 
@@ -228,9 +228,9 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 		public void write(PacketByteBuf buffer, AlloySmeltingRecipe recipe) {
 			recipe.firstInput.toPacket(buffer);
 			recipe.secondInput.toPacket(buffer);
-			StackUtilities.toPacket(buffer, recipe.firstOutput);
-			DoubleUtilities.toPacket(buffer, recipe.energyInput);
-			IntegerUtilities.toPacket(buffer, recipe.time);
+			StackUtils.toPacket(buffer, recipe.firstOutput);
+			DoubleUtils.toPacket(buffer, recipe.energyInput);
+			IntegerUtils.toPacket(buffer, recipe.time);
 		}
 	}
 

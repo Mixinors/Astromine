@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.widget.blade;
 
+import com.github.mixinors.astromine.AMCommon;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -32,9 +33,8 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.AstromineCommon;
 import com.github.mixinors.astromine.client.BaseRenderer;
-import com.github.mixinors.astromine.common.utilities.TextUtilities;
+import com.github.mixinors.astromine.common.util.TextUtils;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.vini2003.blade.client.utilities.Instances;
 import com.github.vini2003.blade.client.utilities.Layers;
@@ -55,8 +55,8 @@ import java.util.function.Supplier;
  * are queried from.
  */
 public class EnergyVerticalBarWidget extends AbstractWidget {
-	private static final Identifier ENERGY_BACKGROUND = AstromineCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_background.png");
-	private static final Identifier ENERGY_FOREGROUND = AstromineCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_foreground.png");
+	private static final Identifier ENERGY_BACKGROUND = AMCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_background.png");
+	private static final Identifier ENERGY_FOREGROUND = AMCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_foreground.png");
 
 	private Supplier<EnergyVolume> volumeSupplier;
 
@@ -75,9 +75,9 @@ public class EnergyVerticalBarWidget extends AbstractWidget {
 	@Override
 	public @NotNull List<Text> getTooltip() {
 		return Lists.newArrayList(
-				TextUtilities.getEnergy(),
-				TextUtilities.getVolume(volumeSupplier.get()),
-				TextUtilities.getAstromine()
+				TextUtils.getEnergy(),
+				TextUtils.getVolume(volumeSupplier.get()),
+				TextUtils.getAstromine()
 		);
 	}
 

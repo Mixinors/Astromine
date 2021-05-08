@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
-import com.github.mixinors.astromine.registry.AstromineSoundEvents;
+import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AMSoundEvents;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.util.NbtType;
 
@@ -77,7 +77,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 	});
 
 	public AltarBlockEntity() {
-		super(AstromineBlockEntityTypes.ALTAR);
+		super(AMBlockEntityTypes.ALTAR);
 	}
 
 	@Override
@@ -129,7 +129,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 					entity.refreshPositionAfterTeleport(pos.getX() + 0.5, pos.getY() + 1 + HEIGHT_OFFSET, pos.getZ() + 0.5);
 					entity.setCosmetic(true);
 					world.spawnEntity(entity);
-					world.playSound(null, getPos(), AstromineSoundEvents.ALTAR_FINISH, SoundCategory.BLOCKS, 1.5F, 1);
+					world.playSound(null, getPos(), AMSoundEvents.ALTAR_FINISH, SoundCategory.BLOCKS, 1.5F, 1);
 				}
 				if (craftingTicks >= CRAFTING_TIME + CRAFTING_TIME_SPIN + CRAFTING_TIME_FALL) {
 					onRemove();
@@ -195,7 +195,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 				child.get().sync();
 			}
 
-			world.playSound(null, getPos(), AstromineSoundEvents.ALTAR_START, SoundCategory.BLOCKS, 1, 1);
+			world.playSound(null, getPos(), AMSoundEvents.ALTAR_START, SoundCategory.BLOCKS, 1, 1);
 
 			return true;
 		} else {

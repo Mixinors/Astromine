@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.common.block.entity.base;
 
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.component.general.SimpleItemComponent;
-import com.github.mixinors.astromine.common.utilities.StackUtilities;
+import com.github.mixinors.astromine.common.util.StackUtils;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
 
 import net.minecraft.block.BlockState;
@@ -239,9 +239,9 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 
 	@Override
 	public int accepts(ItemStack stack) {
-		if (getItemComponent().getFirst().isEmpty() || StackUtilities.areItemsAndTagsEqual(stack, getItemComponent().getFirst())) {
+		if (getItemComponent().getFirst().isEmpty() || StackUtils.areItemsAndTagsEqual(stack, getItemComponent().getFirst())) {
 			return getItemComponent().getFirst().getMaxCount() - getItemComponent().getFirst().getCount();
-		} else if (getItemComponent().getSecond().isEmpty() || StackUtilities.areItemsAndTagsEqual(stack, getItemComponent().getSecond())) {
+		} else if (getItemComponent().getSecond().isEmpty() || StackUtils.areItemsAndTagsEqual(stack, getItemComponent().getSecond())) {
 			return getItemComponent().getSecond().getMaxCount() - getItemComponent().getSecond().getCount();
 		} else {
 			return 0;

@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
@@ -34,9 +34,9 @@ import com.github.mixinors.astromine.common.component.general.base.EnergyCompone
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.SimpleEnergyComponent;
 import com.github.mixinors.astromine.common.component.general.SimpleFluidComponent;
-import com.github.mixinors.astromine.common.utilities.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.registry.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
@@ -159,22 +159,22 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 
 	public static class Primitive extends ElectrolyzerBlockEntity {
 		public Primitive() {
-			super(AstromineBlockEntityTypes.PRIMITIVE_ELECTROLYZER);
+			super(AMBlockEntityTypes.PRIMITIVE_ELECTROLYZER);
 		}
 
 		@Override
 		public long getFluidSize() {
-			return AstromineConfig.get().primitiveElectrolyzerFluid;
+			return AMConfig.get().primitiveElectrolyzerFluid;
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().primitiveElectrolyzerSpeed;
+			return AMConfig.get().primitiveElectrolyzerSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().primitiveElectrolyzerEnergy;
+			return AMConfig.get().primitiveElectrolyzerEnergy;
 		}
 
 		@Override
@@ -185,22 +185,22 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 
 	public static class Basic extends ElectrolyzerBlockEntity {
 		public Basic() {
-			super(AstromineBlockEntityTypes.BASIC_ELECTROLYZER);
+			super(AMBlockEntityTypes.BASIC_ELECTROLYZER);
 		}
 
 		@Override
 		public long getFluidSize() {
-			return AstromineConfig.get().basicElectrolyzerFluid;
+			return AMConfig.get().basicElectrolyzerFluid;
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().basicElectrolyzerSpeed;
+			return AMConfig.get().basicElectrolyzerSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().basicElectrolyzerEnergy;
+			return AMConfig.get().basicElectrolyzerEnergy;
 		}
 
 		@Override
@@ -211,22 +211,22 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 
 	public static class Advanced extends ElectrolyzerBlockEntity {
 		public Advanced() {
-			super(AstromineBlockEntityTypes.ADVANCED_ELECTROLYZER);
+			super(AMBlockEntityTypes.ADVANCED_ELECTROLYZER);
 		}
 
 		@Override
 		public long getFluidSize() {
-			return AstromineConfig.get().advancedElectrolyzerFluid;
+			return AMConfig.get().advancedElectrolyzerFluid;
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().advancedElectrolyzerSpeed;
+			return AMConfig.get().advancedElectrolyzerSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().advancedElectrolyzerEnergy;
+			return AMConfig.get().advancedElectrolyzerEnergy;
 		}
 
 		@Override
@@ -237,22 +237,22 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 
 	public static class Elite extends ElectrolyzerBlockEntity {
 		public Elite() {
-			super(AstromineBlockEntityTypes.ELITE_ELECTROLYZER);
+			super(AMBlockEntityTypes.ELITE_ELECTROLYZER);
 		}
 
 		@Override
 		public long getFluidSize() {
-			return AstromineConfig.get().eliteElectrolyzerFluid;
+			return AMConfig.get().eliteElectrolyzerFluid;
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().eliteElectrolyzerSpeed;
+			return AMConfig.get().eliteElectrolyzerSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().eliteElectrolyzerEnergy;
+			return AMConfig.get().eliteElectrolyzerEnergy;
 		}
 
 		@Override

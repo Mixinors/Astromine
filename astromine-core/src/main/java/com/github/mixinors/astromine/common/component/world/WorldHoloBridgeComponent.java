@@ -35,8 +35,8 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.utilities.VoxelShapeUtilities;
-import com.github.mixinors.astromine.registry.AstromineComponents;
+import com.github.mixinors.astromine.common.util.VoxelShapeUtils;
+import com.github.mixinors.astromine.registry.AMComponents;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
 import org.jetbrains.annotations.Nullable;
@@ -154,7 +154,7 @@ public final class WorldHoloBridgeComponent implements Component {
 		}
 
 		if (c || d) {
-			return VoxelShapeUtilities.rotate(Direction.Axis.Y, Math.toRadians(180), shape);
+			return VoxelShapeUtils.rotate(Direction.Axis.Y, Math.toRadians(180), shape);
 		}
 
 		return shape;
@@ -203,7 +203,7 @@ public final class WorldHoloBridgeComponent implements Component {
 	@Nullable
 	public static <V> WorldHoloBridgeComponent get(V v) {
 		try {
-			return AstromineComponents.WORLD_BRIDGE_COMPONENT.get(v);
+			return AMComponents.WORLD_BRIDGE_COMPONENT.get(v);
 		} catch (Exception justShutUpAlready) {
 			return null;
 		}

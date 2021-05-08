@@ -28,7 +28,7 @@ import com.github.mixinors.astromine.common.component.block.entity.TransferCompo
 import com.github.mixinors.astromine.common.component.general.provider.EnergyComponentProvider;
 import com.github.mixinors.astromine.common.component.general.provider.FluidComponentProvider;
 import com.github.mixinors.astromine.common.component.general.provider.ItemComponentProvider;
-import com.github.mixinors.astromine.registry.AstromineComponents;
+import com.github.mixinors.astromine.registry.AMComponents;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
@@ -41,7 +41,7 @@ import net.minecraft.util.math.Direction;
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.mixinors.astromine.common.block.entity.base.ComponentBlockEntity;
 import com.github.mixinors.astromine.common.component.general.miscellaneous.IdentifiableComponent;
-import com.github.mixinors.astromine.common.utilities.WidgetUtilities;
+import com.github.mixinors.astromine.common.util.WidgetUtils;
 import com.github.mixinors.astromine.common.widget.blade.RedstoneWidget;
 import com.github.vini2003.blade.common.collection.TabWidgetCollection;
 import com.github.vini2003.blade.common.miscellaneous.Position;
@@ -157,7 +157,7 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 
 		BiConsumer<IdentifiableComponent, ComponentKey<? extends IdentifiableComponent>> tabAdder = (identifiableComponent, key) -> {
 			TabWidgetCollection current = (TabWidgetCollection) tabs.addTab(identifiableComponent.getSymbol(), () -> Collections.singletonList(identifiableComponent.getName()));
-			WidgetUtilities.createTransferTab(current, Position.of(tabs, tabs.getWidth() / 2 - 38, getTabWidgetExtendedHeight() / 2), finalRotation, transferComponent, blockEntity.getPos(), key);
+			WidgetUtils.createTransferTab(current, Position.of(tabs, tabs.getWidth() / 2 - 38, getTabWidgetExtendedHeight() / 2), finalRotation, transferComponent, blockEntity.getPos(), key);
 			TextWidget invTabTitle = new TextWidget();
 			invTabTitle.setPosition(Position.of(invPos, 0, -10));
 			invTabTitle.setText(getPlayer().inventory.getName());
@@ -173,15 +173,15 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 		};
 
 		if (blockEntity instanceof ItemComponentProvider) {
-			tabAdder.accept(((ItemComponentProvider) blockEntity).getItemComponent(), AstromineComponents.ITEM_INVENTORY_COMPONENT);
+			tabAdder.accept(((ItemComponentProvider) blockEntity).getItemComponent(), AMComponents.ITEM_INVENTORY_COMPONENT);
 		}
 
 		if (blockEntity instanceof FluidComponentProvider) {
-			tabAdder.accept(((FluidComponentProvider) blockEntity).getFluidComponent(), AstromineComponents.FLUID_INVENTORY_COMPONENT);
+			tabAdder.accept(((FluidComponentProvider) blockEntity).getFluidComponent(), AMComponents.FLUID_INVENTORY_COMPONENT);
 		}
 
 		if (blockEntity instanceof EnergyComponentProvider) {
-			tabAdder.accept(((EnergyComponentProvider) blockEntity).getEnergyComponent(), AstromineComponents.ENERGY_INVENTORY_COMPONENT);
+			tabAdder.accept(((EnergyComponentProvider) blockEntity).getEnergyComponent(), AMComponents.ENERGY_INVENTORY_COMPONENT);
 		}
 	}
 }

@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.component.general.*;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
@@ -37,9 +37,9 @@ import net.minecraft.recipe.SmeltingRecipe;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
 import com.github.mixinors.astromine.common.inventory.BaseInventory;
-import com.github.mixinors.astromine.common.utilities.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.registry.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
@@ -209,17 +209,17 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 
 	public static class Primitive extends ElectricFurnaceBlockEntity {
 		public Primitive() {
-			super(AstromineBlockEntityTypes.PRIMITIVE_ELECTRIC_FURNACE);
+			super(AMBlockEntityTypes.PRIMITIVE_ELECTRIC_FURNACE);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().primitiveElectricFurnaceSpeed;
+			return AMConfig.get().primitiveElectricFurnaceSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().primitiveElectricFurnaceEnergy;
+			return AMConfig.get().primitiveElectricFurnaceEnergy;
 		}
 
 		@Override
@@ -230,17 +230,17 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 
 	public static class Basic extends ElectricFurnaceBlockEntity {
 		public Basic() {
-			super(AstromineBlockEntityTypes.BASIC_ELECTRIC_FURNACE);
+			super(AMBlockEntityTypes.BASIC_ELECTRIC_FURNACE);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().basicElectricFurnaceSpeed;
+			return AMConfig.get().basicElectricFurnaceSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().basicElectricFurnaceEnergy;
+			return AMConfig.get().basicElectricFurnaceEnergy;
 		}
 
 		@Override
@@ -251,17 +251,17 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 
 	public static class Advanced extends ElectricFurnaceBlockEntity {
 		public Advanced() {
-			super(AstromineBlockEntityTypes.ADVANCED_ELECTRIC_FURNACE);
+			super(AMBlockEntityTypes.ADVANCED_ELECTRIC_FURNACE);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().advancedElectricFurnaceSpeed;
+			return AMConfig.get().advancedElectricFurnaceSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().advancedElectricFurnaceEnergy;
+			return AMConfig.get().advancedElectricFurnaceEnergy;
 		}
 
 		@Override
@@ -272,17 +272,17 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 
 	public static class Elite extends ElectricFurnaceBlockEntity {
 		public Elite() {
-			super(AstromineBlockEntityTypes.ELITE_ELECTRIC_FURNACE);
+			super(AMBlockEntityTypes.ELITE_ELECTRIC_FURNACE);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().eliteElectricFurnaceSpeed;
+			return AMConfig.get().eliteElectricFurnaceSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().eliteElectricFurnaceEnergy;
+			return AMConfig.get().eliteElectricFurnaceEnergy;
 		}
 
 		@Override

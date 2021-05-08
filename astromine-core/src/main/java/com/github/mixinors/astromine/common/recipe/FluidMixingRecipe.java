@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.recipe;
 
-import com.github.mixinors.astromine.registry.AstromineBlocks;
+import com.github.mixinors.astromine.registry.AMBlocks;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -34,12 +34,12 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.AstromineCommon;
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
-import com.github.mixinors.astromine.common.utilities.DoubleUtilities;
-import com.github.mixinors.astromine.common.utilities.IntegerUtilities;
+import com.github.mixinors.astromine.common.util.DoubleUtils;
+import com.github.mixinors.astromine.common.util.IntegerUtils;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 
 import com.google.gson.Gson;
@@ -163,7 +163,7 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineBlocks.ADVANCED_FLUID_MIXER);
+		return new ItemStack(AMBlocks.ADVANCED_FLUID_MIXER);
 	}
 
 	public Identifier getIdentifier() {
@@ -192,7 +192,7 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 	}
 
 	public static final class Serializer implements RecipeSerializer<FluidMixingRecipe> {
-		public static final Identifier ID = AstromineCommon.identifier("fluid_mixing");
+		public static final Identifier ID = AMCommon.identifier("fluid_mixing");
 
 		public static final Serializer INSTANCE = new Serializer();
 
@@ -202,8 +202,8 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 		public FluidMixingRecipe read(Identifier identifier, JsonObject object) {
 			FluidMixingRecipe.Format format = new Gson().fromJson(object, FluidMixingRecipe.Format.class);
 
-			return new FluidMixingRecipe(identifier, FluidIngredient.fromJson(format.firstInput), FluidIngredient.fromJson(format.secondInput), FluidVolume.fromJson(format.firstOutput), DoubleUtilities.fromJson(
-				format.energyInput), IntegerUtilities.fromJson(format.time)
+			return new FluidMixingRecipe(identifier, FluidIngredient.fromJson(format.firstInput), FluidIngredient.fromJson(format.secondInput), FluidVolume.fromJson(format.firstOutput), DoubleUtils.fromJson(
+				format.energyInput), IntegerUtils.fromJson(format.time)
 			);
 		}
 
@@ -214,8 +214,8 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 					FluidIngredient.fromPacket(buffer),
 					FluidIngredient.fromPacket(buffer),
 					FluidVolume.fromPacket(buffer),
-					DoubleUtilities.fromPacket(buffer),
-					IntegerUtilities.fromPacket(buffer)
+					DoubleUtils.fromPacket(buffer),
+					IntegerUtils.fromPacket(buffer)
 			);
 		}
 
@@ -224,8 +224,8 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 			recipe.firstInput.toPacket(buffer);
 			recipe.secondInput.toPacket(buffer);
 			recipe.firstOutput.toPacket(buffer);
-			DoubleUtilities.toPacket(buffer, recipe.energyInput);
-			IntegerUtilities.toPacket(buffer, recipe.time);
+			DoubleUtils.toPacket(buffer, recipe.energyInput);
+			IntegerUtils.toPacket(buffer, recipe.time);
 		}
 	}
 

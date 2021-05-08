@@ -43,7 +43,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.utilities.ToolUtilities;
+import com.github.mixinors.astromine.common.util.ToolUtils;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
@@ -61,8 +61,8 @@ public class DynamicToolItemItem extends Item implements DynamicAttributeTool, V
 		this.second = second;
 		this.material = material;
 		ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-		builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Tool modifier", ToolUtilities.getAttackDamage(first, second), EntityAttributeModifier.Operation.ADDITION));
-		builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Tool modifier", ToolUtilities.getAttackSpeed(first, second), EntityAttributeModifier.Operation.ADDITION));
+		builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Tool modifier", ToolUtils.getAttackDamage(first, second), EntityAttributeModifier.Operation.ADDITION));
+		builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Tool modifier", ToolUtils.getAttackSpeed(first, second), EntityAttributeModifier.Operation.ADDITION));
 		this.attributeModifiers = builder.build();
 	}
 

@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
-import com.github.mixinors.astromine.registry.AstromineScreenHandlers;
+import com.github.mixinors.astromine.registry.AMScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
@@ -44,7 +44,7 @@ public class TankScreenHandler extends ComponentBlockEntityFluidItemScreenHandle
 	private TankBlockEntity tank;
 
 	public TankScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AstromineScreenHandlers.TANK, syncId, player, position);
+		super(AMScreenHandlers.TANK, syncId, player, position);
 		tank = (TankBlockEntity) blockEntity;
 	}
 

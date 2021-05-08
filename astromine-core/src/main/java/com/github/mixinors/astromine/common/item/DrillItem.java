@@ -41,7 +41,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.item.base.EnergyVolumeItem;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.registry.AMConfig;
 import draylar.magna.api.MagnaTool;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
@@ -77,7 +77,7 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 	public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		if (!target.world.isClient) {
 			EnergyHandler energy = Energy.of(stack);
-			energy.use(getEnergy() * AstromineConfig.get().drillEntityHitMultiplier);
+			energy.use(getEnergy() * AMConfig.get().drillEntityHitMultiplier);
 		}
 
 		return true;
@@ -119,7 +119,7 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 	}
 
 	public double getEnergy() {
-		return AstromineConfig.get().drillConsumed * material.getMiningSpeedMultiplier();
+		return AMConfig.get().drillConsumed * material.getMiningSpeedMultiplier();
 	}
 
 	@Override

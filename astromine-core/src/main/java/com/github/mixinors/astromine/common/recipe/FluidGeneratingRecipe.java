@@ -24,7 +24,8 @@
 
 package com.github.mixinors.astromine.common.recipe;
 
-import com.github.mixinors.astromine.registry.AstromineBlocks;
+import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.registry.AMBlocks;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -34,12 +35,11 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.AstromineCommon;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.recipe.base.EnergyGeneratingRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
-import com.github.mixinors.astromine.common.utilities.DoubleUtilities;
-import com.github.mixinors.astromine.common.utilities.IntegerUtilities;
+import com.github.mixinors.astromine.common.util.DoubleUtils;
+import com.github.mixinors.astromine.common.util.IntegerUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -146,7 +146,7 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineBlocks.ADVANCED_LIQUID_GENERATOR);
+		return new ItemStack(AMBlocks.ADVANCED_LIQUID_GENERATOR);
 	}
 
 	public FluidIngredient getFirstInput() {
@@ -163,7 +163,7 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 	}
 
 	public static final class Serializer implements RecipeSerializer<FluidGeneratingRecipe> {
-		public static final Identifier ID = AstromineCommon.identifier("fluid_generating");
+		public static final Identifier ID = AMCommon.identifier("fluid_generating");
 
 		public static final Serializer INSTANCE = new Serializer();
 
@@ -173,7 +173,7 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 		public FluidGeneratingRecipe read(Identifier identifier, JsonObject object) {
 			FluidGeneratingRecipe.Format format = new Gson().fromJson(object, FluidGeneratingRecipe.Format.class);
 
-			return new FluidGeneratingRecipe(identifier, FluidIngredient.fromJson(format.firstInput), DoubleUtilities.fromJson(format.energyOutput), IntegerUtilities.fromJson(format.time)
+			return new FluidGeneratingRecipe(identifier, FluidIngredient.fromJson(format.firstInput), DoubleUtils.fromJson(format.energyOutput), IntegerUtils.fromJson(format.time)
 			);
 		}
 
@@ -182,16 +182,16 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 			return new FluidGeneratingRecipe(
 					identifier,
 					FluidIngredient.fromPacket(buffer),
-					DoubleUtilities.fromPacket(buffer),
-					IntegerUtilities.fromPacket(buffer)
+					DoubleUtils.fromPacket(buffer),
+					IntegerUtils.fromPacket(buffer)
 			);
 		}
 
 		@Override
 		public void write(PacketByteBuf buffer, FluidGeneratingRecipe recipe) {
 			recipe.firstInput.toPacket(buffer);
-			DoubleUtilities.toPacket(buffer, recipe.energyOutput);
-			IntegerUtilities.toPacket(buffer, recipe.time);
+			DoubleUtils.toPacket(buffer, recipe.energyOutput);
+			IntegerUtils.toPacket(buffer, recipe.time);
 		}
 	}
 

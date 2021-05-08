@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
-import com.github.mixinors.astromine.registry.AstromineScreenHandlers;
+import com.github.mixinors.astromine.registry.AMScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
@@ -40,7 +40,7 @@ import team.reborn.energy.EnergyHandler;
 
 public class CapacitorScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
 	public CapacitorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AstromineScreenHandlers.CAPACITOR, syncId, player, position);
+		super(AMScreenHandlers.CAPACITOR, syncId, player, position);
 	}
 
 	public CapacitorScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {

@@ -37,7 +37,7 @@ import net.minecraft.util.JsonHelper;
 import net.minecraft.util.registry.Registry;
 import com.mojang.serialization.JsonOps;
 
-import com.github.mixinors.astromine.common.utilities.StackUtilities;
+import com.github.mixinors.astromine.common.util.StackUtils;
 import io.netty.buffer.ByteBuf;
 
 import com.google.gson.JsonArray;
@@ -122,7 +122,7 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 			JsonArray jsonArray = new JsonArray();
 
 			for (Entry entry : entries) {
-				jsonArray.add(StackUtilities.toJson(((SimpleEntry) entry).stacks.iterator().next()));
+				jsonArray.add(StackUtils.toJson(((SimpleEntry) entry).stacks.iterator().next()));
 			}
 
 			return jsonArray;

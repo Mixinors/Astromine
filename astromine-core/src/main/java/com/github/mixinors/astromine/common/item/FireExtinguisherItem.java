@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.item;
 
-import com.github.mixinors.astromine.registry.AstromineCriteria;
+import com.github.mixinors.astromine.registry.AMCriteria;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CampfireBlock;
@@ -46,8 +46,8 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.registry.AstromineSoundEvents;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.registry.AMSoundEvents;
+import com.github.mixinors.astromine.registry.AMConfig;
 
 public class FireExtinguisherItem extends Item {
 	public FireExtinguisherItem(Item.Settings settings) {
@@ -80,11 +80,11 @@ public class FireExtinguisherItem extends Item {
 			user.addVelocity(thrustVec.x, thrustVec.y, thrustVec.z);
 			if (user instanceof ServerPlayerEntity) {
 				((ServerPlayerEntity) user).networkHandler.floatingTicks = 0;
-				AstromineCriteria.USE_FIRE_EXTINGUISHER.trigger((ServerPlayerEntity) user);
+				AMCriteria.USE_FIRE_EXTINGUISHER.trigger((ServerPlayerEntity) user);
 			}
-			user.getItemCooldownManager().set(this, AstromineConfig.get().fireExtinguisherStandingDelay);
+			user.getItemCooldownManager().set(this, AMConfig.get().fireExtinguisherStandingDelay);
 		} else {
-			user.getItemCooldownManager().set(this, AstromineConfig.get().fireExtinguisherSneakingDelay);
+			user.getItemCooldownManager().set(this, AMConfig.get().fireExtinguisherSneakingDelay);
 		}
 
 		BlockHitResult result = (BlockHitResult) user.raycast(6, 0, false);
@@ -104,13 +104,13 @@ public class FireExtinguisherItem extends Item {
 			if (entity.isOnFire()) {
 				entity.setFireTicks(0);
 				if (user instanceof ServerPlayerEntity) {
-					AstromineCriteria.PROPERLY_USE_FIRE_EXTINGUISHER.trigger((ServerPlayerEntity) user);
+					AMCriteria.PROPERLY_USE_FIRE_EXTINGUISHER.trigger((ServerPlayerEntity) user);
 				}
 			}
 		});
 
 		if (world.isClient) {
-			world.playSound(user, user.getBlockPos(), AstromineSoundEvents.FIRE_EXTINGUISHER_OPEN, SoundCategory.PLAYERS, 1f, 1f);
+			world.playSound(user, user.getBlockPos(), AMSoundEvents.FIRE_EXTINGUISHER_OPEN, SoundCategory.PLAYERS, 1f, 1f);
 		}
 
 		return super.use(world, user, hand);

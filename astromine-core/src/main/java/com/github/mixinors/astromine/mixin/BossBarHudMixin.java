@@ -43,13 +43,13 @@ import net.minecraft.entity.boss.BossBar;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.AstromineCommon;
+import com.github.mixinors.astromine.AMCommon;
 
 @Environment(EnvType.CLIENT)
 @Mixin(BossBarHud.class)
 public abstract class BossBarHudMixin extends DrawableHelper {
 
-	private static final Identifier CUSTOM_BAR_TEX = AstromineCommon.identifier("textures/gui/bars.png");
+	private static final Identifier CUSTOM_BAR_TEX = AMCommon.identifier("textures/gui/bars.png");
 	@Shadow
 	@Final
 	private static Identifier BARS_TEXTURE;

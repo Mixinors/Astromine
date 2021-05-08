@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.world.feature;
 
-import com.github.mixinors.astromine.registry.AstromineBlocks;
+import com.github.mixinors.astromine.registry.AMBlocks;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.StructureWorldAccess;
@@ -47,7 +47,7 @@ public class MoonLakeFeature extends Feature<DefaultFeatureConfig> {
 		for (int x = -4; x <= 4; x++) {
 			for (int z = -4; z <= 4; z++) {
 				for (int y = -4; y <= 4; y++) {
-					if (!world.getBlockState(mutable.set(pos, x, y, z)).isOf(AstromineBlocks.MOON_STONE)) {
+					if (!world.getBlockState(mutable.set(pos, x, y, z)).isOf(AMBlocks.MOON_STONE)) {
 						return false;
 					}
 				}

@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.component.general.*;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -41,9 +41,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
-import com.github.mixinors.astromine.common.utilities.StackUtilities;
+import com.github.mixinors.astromine.common.util.StackUtils;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.registry.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergyConsumedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
@@ -56,7 +56,7 @@ public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity impl
 	private long cooldown = 0L;
 
 	public BlockBreakerBlockEntity() {
-		super(AstromineBlockEntityTypes.BLOCK_BREAKER);
+		super(AMBlockEntityTypes.BLOCK_BREAKER);
 	}
 
 	@Override
@@ -71,17 +71,17 @@ public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity impl
 
 	@Override
 	public double getEnergySize() {
-		return AstromineConfig.get().blockBreakerEnergy;
+		return AMConfig.get().blockBreakerEnergy;
 	}
 
 	@Override
 	public double getEnergyConsumed() {
-		return AstromineConfig.get().blockBreakerEnergyConsumed;
+		return AMConfig.get().blockBreakerEnergyConsumed;
 	}
 
 	@Override
 	public double getMachineSpeed() {
-		return AstromineConfig.get().blockBreakerSpeed;
+		return AMConfig.get().blockBreakerSpeed;
 	}
 
 	@Override
@@ -127,10 +127,10 @@ public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity impl
 
 						ItemStack storedCopy = stored.copy();
 
-						Optional<ItemStack> matching = drops.stream().filter(stack -> storedCopy.isEmpty() || StackUtilities.areItemsAndTagsEqual(stack, storedCopy)).findFirst();
+						Optional<ItemStack> matching = drops.stream().filter(stack -> storedCopy.isEmpty() || StackUtils.areItemsAndTagsEqual(stack, storedCopy)).findFirst();
 
 						matching.ifPresent(match -> {
-							Pair<ItemStack, ItemStack> pair = StackUtilities.merge(match, stored);
+							Pair<ItemStack, ItemStack> pair = StackUtils.merge(match, stored);
 							itemComponent.setFirst(pair.getRight());
 							drops.remove(match);
 							drops.add(pair.getLeft());

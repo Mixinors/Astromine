@@ -31,7 +31,7 @@ import com.github.mixinors.astromine.common.component.general.SimpleItemComponen
 import com.github.mixinors.astromine.common.component.general.compatibility.ItemComponentFromInventory;
 import com.github.mixinors.astromine.common.component.general.compatibility.ItemComponentFromSidedInventory;
 import com.github.mixinors.astromine.common.component.general.provider.ItemComponentProvider;
-import com.github.mixinors.astromine.common.utilities.StackUtilities;
+import com.github.mixinors.astromine.common.util.StackUtils;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.Item;
@@ -44,8 +44,8 @@ import net.minecraft.util.Pair;
 import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.component.general.compatibility.InventoryFromItemComponent;
-import com.github.mixinors.astromine.registry.AstromineComponents;
-import com.github.mixinors.astromine.registry.AstromineItems;
+import com.github.mixinors.astromine.registry.AMComponents;
+import com.github.mixinors.astromine.registry.AMItems;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
@@ -97,7 +97,7 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 
 	/** Returns this component's {@link Item} symbol. */
 	default Item getSymbol() {
-		return AstromineItems.ITEM;
+		return AMItems.ITEM;
 	}
 
 	/** Returns this component's {@link Text} name. */
@@ -225,7 +225,7 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 						int insertionCount = insertionStack.getCount();
 
 						if (target.canInsert(insertionDirection, insertionStack, targetSlot)) {
-							Pair<ItemStack, ItemStack> merge = StackUtilities.merge(insertionStack, targetStack);
+							Pair<ItemStack, ItemStack> merge = StackUtils.merge(insertionStack, targetStack);
 
 							sourceStack.decrement(insertionCount - merge.getLeft().getCount());
 							setStack(sourceSlot, sourceStack);
@@ -327,13 +327,13 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 		dataTag.putInt("size", getSize());
 		dataTag.put("stacks", listTag);
 
-		tag.put(AstromineComponents.ITEM_INVENTORY_COMPONENT.getId().toString(), dataTag);
+		tag.put(AMComponents.ITEM_INVENTORY_COMPONENT.getId().toString(), dataTag);
 	}
 
 	/** Deserializes this {@link ItemComponent} from  a {@link CompoundTag}. */
 	@Override
 	default void readFromNbt(CompoundTag tag) {
-		CompoundTag dataTag = tag.getCompound(AstromineComponents.ITEM_INVENTORY_COMPONENT.getId().toString());
+		CompoundTag dataTag = tag.getCompound(AMComponents.ITEM_INVENTORY_COMPONENT.getId().toString());
 
 		int size = dataTag.getInt("size");
 
@@ -353,8 +353,8 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 			return ((ItemComponentProvider) v).getItemComponent();
 		}
 
-		if (v != null && AstromineComponents.ITEM_INVENTORY_COMPONENT.isProvidedBy(v)) {
-			return AstromineComponents.ITEM_INVENTORY_COMPONENT.get(v);
+		if (v != null && AMComponents.ITEM_INVENTORY_COMPONENT.isProvidedBy(v)) {
+			return AMComponents.ITEM_INVENTORY_COMPONENT.get(v);
 		} else {
 			if (v instanceof SidedInventory) {
 				return ItemComponentFromSidedInventory.of((SidedInventory) v);

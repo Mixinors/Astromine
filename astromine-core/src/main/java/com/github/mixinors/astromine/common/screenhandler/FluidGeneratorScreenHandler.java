@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
-import com.github.mixinors.astromine.registry.AstromineScreenHandlers;
+import com.github.mixinors.astromine.registry.AMScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
@@ -38,7 +38,7 @@ public class FluidGeneratorScreenHandler extends ComponentBlockEntityEnergyFluid
 	private FluidGeneratorBlockEntity generator;
 
 	public FluidGeneratorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AstromineScreenHandlers.LIQUID_GENERATOR, syncId, player, position);
+		super(AMScreenHandlers.LIQUID_GENERATOR, syncId, player, position);
 
 		generator = (FluidGeneratorBlockEntity) blockEntity;
 	}

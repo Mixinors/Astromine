@@ -40,7 +40,7 @@ import com.github.mixinors.astromine.common.network.NetworkMemberNode;
 import com.github.mixinors.astromine.common.network.NetworkNode;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.registry.NetworkTypeRegistry;
-import com.github.mixinors.astromine.registry.AstromineComponents;
+import com.github.mixinors.astromine.registry.AMComponents;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import org.jetbrains.annotations.Nullable;
 
@@ -155,7 +155,7 @@ public final class WorldNetworkComponent implements Component, Tickable {
 	@Nullable
 	public static <V> WorldNetworkComponent get(V v) {
 		try {
-			return AstromineComponents.WORLD_NETWORK_COMPONENT.get(v);
+			return AMComponents.WORLD_NETWORK_COMPONENT.get(v);
 		} catch (Exception justShutUpAlready) {
 			return null;
 		}

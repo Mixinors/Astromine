@@ -24,10 +24,10 @@
 
 package com.github.mixinors.astromine.common.world.feature;
 
-import com.github.mixinors.astromine.AstromineCommon;
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.noise.OpenSimplexNoise;
-import com.github.mixinors.astromine.registry.AstromineBlocks;
-import com.github.mixinors.astromine.registry.AstromineFeatures;
+import com.github.mixinors.astromine.registry.AMBlocks;
+import com.github.mixinors.astromine.registry.AMFeatures;
 import com.terraformersmc.terraform.shapes.api.Position;
 import com.terraformersmc.terraform.shapes.api.Quaternion;
 import com.terraformersmc.terraform.shapes.api.Shape;
@@ -60,11 +60,11 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 	private static OpenSimplexNoise noise;
 
 	public MeteorGenerator(Random random, int x, int z) {
-		super(AstromineFeatures.METEOR_STRUCTURE, random, x, 64, z, 16, 16, 16);
+		super(AMFeatures.METEOR_STRUCTURE, random, x, 64, z, 16, 16, 16);
 	}
 
 	public MeteorGenerator(StructureManager manager, CompoundTag tag) {
-		super(AstromineFeatures.METEOR_STRUCTURE, tag);
+		super(AMFeatures.METEOR_STRUCTURE, tag);
 	}
 
 	public static void buildSphere(StructureWorldAccess world, BlockPos originPos, int radius, BlockState state) {
@@ -99,16 +99,16 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 				return Blocks.AIR.getDefaultState();
 			}
 		}, state -> Blocks.COBBLESTONE.getDefaultState());
-		buildSphere(world, originPos, 8, AstromineBlocks.METEOR_STONE.getDefaultState());
+		buildSphere(world, originPos, 8, AMBlocks.METEOR_STONE.getDefaultState());
 
 		Shape vein = Shapes.ellipsoid((float) 4, (float) 4, (float) 4).applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true))).applyLayer(TranslateLayer.of(Position.of(originPos)));
 
-		Block metiteOre = Registry.BLOCK.getOrEmpty(AstromineCommon.identifier("meteor_metite_ore")).orElse(null);
+		Block metiteOre = Registry.BLOCK.getOrEmpty(AMCommon.identifier("meteor_metite_ore")).orElse(null);
 		if (metiteOre != null) {
 			for (Position streamPosition : vein.stream().collect(Collectors.toSet())) {
 				BlockPos orePosition = streamPosition.toBlockPos();
 
-				if (world.getBlockState(orePosition).getBlock() == AstromineBlocks.METEOR_STONE) {
+				if (world.getBlockState(orePosition).getBlock() == AMBlocks.METEOR_STONE) {
 					world.setBlockState(orePosition, metiteOre.getDefaultState(), 0b0110100);
 				}
 			}

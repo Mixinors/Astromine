@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.technologies.datagen.generators.modelstate;
 
+import com.github.mixinors.astromine.AMCommon;
 import net.minecraft.block.Block;
 import net.minecraft.data.client.model.BlockStateVariant;
 import net.minecraft.data.client.model.BlockStateVariantMap;
@@ -39,7 +40,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 
-import com.github.mixinors.astromine.AstromineCommon;
 import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
 import com.github.mixinors.astromine.datagen.generator.modelstate.onetime.GenericBlockModelStateGenerator;
 import me.shedaniel.cloth.api.datagen.v1.ModelStateData;
@@ -93,13 +93,13 @@ public class MachineModelStateGenerator extends GenericBlockModelStateGenerator 
 
 	public Texture getTexture(Block block, boolean active) {
 		return new Texture()
-				.put(TextureKey.SOUTH, AstromineCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_back"))
-				.put(TextureKey.NORTH, AstromineCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_front"))
-				.put(TextureKey.WEST, AstromineCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_right"))
-				.put(TextureKey.EAST, AstromineCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_left"))
-				.put(TextureKey.UP, AstromineCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_top"))
-				.put(TextureKey.DOWN, AstromineCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_bottom"))
-				.put(TextureKey.PARTICLE, AstromineCommon.identifier("block/machine/generic_machine_top"));
+				.put(TextureKey.SOUTH, AMCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_back"))
+				.put(TextureKey.NORTH, AMCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_front"))
+				.put(TextureKey.WEST, AMCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_right"))
+				.put(TextureKey.EAST, AMCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_left"))
+				.put(TextureKey.UP, AMCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_top"))
+				.put(TextureKey.DOWN, AMCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_bottom"))
+				.put(TextureKey.PARTICLE, AMCommon.identifier("block/machine/generic_machine_top"));
 	}
 
 	@Override

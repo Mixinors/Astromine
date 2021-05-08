@@ -25,10 +25,10 @@
 package com.github.mixinors.astromine.common.component.block.entity;
 
 import com.github.mixinors.astromine.common.component.general.provider.RedstoneComponentProvider;
+import com.github.mixinors.astromine.registry.AMComponents;
 import net.minecraft.nbt.CompoundTag;
 
 import com.github.mixinors.astromine.common.block.redstone.RedstoneType;
-import com.github.mixinors.astromine.registry.AstromineComponents;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import org.jetbrains.annotations.Nullable;
 
@@ -78,7 +78,7 @@ public class RedstoneComponent implements Component {
 		}
 
 		try {
-			return AstromineComponents.BLOCK_ENTITY_REDSTONE_COMPONENT.get(v);
+			return AMComponents.BLOCK_ENTITY_REDSTONE_COMPONENT.get(v);
 		} catch (Exception justShutUpAlready) {
 			return null;
 		}

@@ -34,7 +34,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameOverlayRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 
-import com.github.mixinors.astromine.registry.AstromineTags;
+import com.github.mixinors.astromine.registry.AMTags;
 
 @Mixin(InGameOverlayRenderer.class)
 public abstract class InGameOverlayRendererMixin {
@@ -43,7 +43,7 @@ public abstract class InGameOverlayRendererMixin {
 
 	@Inject(method = "renderOverlays", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isSubmergedIn(Lnet/minecraft/tag/Tag;)Z"))
 	private static void astromine_renderFluidOverlay(MinecraftClient client, MatrixStack matrixStack, CallbackInfo ci) {
-		if (client.player.isSubmergedIn(AstromineTags.INDUSTRIAL_FLUID)) {
+		if (client.player.isSubmergedIn(AMTags.INDUSTRIAL_FLUID)) {
 			renderUnderwaterOverlay(client, matrixStack);
 		}
 	}

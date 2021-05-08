@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
-import com.github.mixinors.astromine.registry.AstromineSoundEvents;
+import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AMSoundEvents;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
@@ -36,7 +36,7 @@ public class AlternatorBlockEntity extends AbstractConveyableBlockEntity {
 	public boolean right = false;
 
 	public AlternatorBlockEntity() {
-		super(AstromineBlockEntityTypes.ALTERNATOR);
+		super(AMBlockEntityTypes.ALTERNATOR);
 	}
 
 	public AlternatorBlockEntity(BlockEntityType type) {
@@ -60,6 +60,6 @@ public class AlternatorBlockEntity extends AbstractConveyableBlockEntity {
 			getItemComponent().setFirst(stack);
 		}
 
-		getWorld().playSound(null, getPos().getX(), getPos().getY(), getPos().getZ(), AstromineSoundEvents.MACHINE_CLICK, SoundCategory.BLOCKS, 1.0F, 1.0F);
+		getWorld().playSound(null, getPos().getX(), getPos().getY(), getPos().getZ(), AMSoundEvents.MACHINE_CLICK, SoundCategory.BLOCKS, 1.0F, 1.0F);
 	}
 }

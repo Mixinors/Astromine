@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.world.generation.mars;
 
-import com.github.mixinors.astromine.registry.AstromineBlocks;
+import com.github.mixinors.astromine.registry.AMBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -142,7 +142,7 @@ public class MarsChunkGenerator extends ChunkGenerator {
 				int height = (int) (depth + (noise * scale));
 				for (int y = 0; y <= height; ++y) {
 					mutable.setY(y);
-					chunk.setBlockState(mutable, y == height ? AstromineBlocks.MARTIAN_SOIL.getDefaultState() : AstromineBlocks.MARTIAN_STONE.getDefaultState(), false);
+					chunk.setBlockState(mutable, y == height ? AMBlocks.MARTIAN_SOIL.getDefaultState() : AMBlocks.MARTIAN_STONE.getDefaultState(), false);
 					if (y <= 5) {
 						if (chunkRandom.nextInt(y + 1) == 0) {
 							chunk.setBlockState(mutable, Blocks.BEDROCK.getDefaultState(), false);

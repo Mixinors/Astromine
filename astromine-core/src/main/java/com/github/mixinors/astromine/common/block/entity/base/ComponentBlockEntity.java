@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.entity.base;
 
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
@@ -31,8 +32,8 @@ import com.github.mixinors.astromine.common.component.general.base.ItemComponent
 import com.github.mixinors.astromine.common.component.general.provider.RedstoneComponentProvider;
 import com.github.mixinors.astromine.common.component.general.provider.TransferComponentProvider;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
+import com.github.mixinors.astromine.registry.AMComponents;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
-import net.fabricmc.fabric.api.network.PacketContext;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -45,11 +46,9 @@ import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-import com.github.mixinors.astromine.AstromineCommon;
 import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
 import com.github.mixinors.astromine.common.block.transfer.TransferType;
 import com.github.mixinors.astromine.common.component.block.entity.RedstoneComponent;
-import com.github.mixinors.astromine.registry.AstromineComponents;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
@@ -62,6 +61,7 @@ import com.google.common.collect.Maps;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * A {@link BlockEntity} which is synchronized to the client
@@ -70,7 +70,7 @@ import java.util.function.BiConsumer;
  * its activity, and handles redstone behavior.
  */
 public abstract class ComponentBlockEntity extends BlockEntity implements BlockEntityClientSerializable, Tickable, TransferComponentProvider, RedstoneComponentProvider {
-	public static final Identifier TRANSFER_UPDATE_PACKET = AstromineCommon.identifier("transfer_update_packet");
+	public static final Identifier TRANSFER_UPDATE_PACKET = AMCommon.identifier("transfer_update_packet");
 
 	private final TransferComponent transferComponent = createTransferComponent();
 
@@ -78,7 +78,7 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 
 	protected final Map<ComponentKey<?>, Component> allComponents = Maps.newHashMap();
 
-	protected final Map<Identifier, BiConsumer<PacketByteBuf, PacketContext>> allHandlers = Maps.newHashMap();
+	protected final Map<Identifier, Consumer<PacketByteBuf>> allHandlers = Maps.newHashMap();
 
 	private boolean isActive = false;
 
@@ -90,10 +90,10 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 	public ComponentBlockEntity(BlockEntityType<?> type) {
 		super(type);
 
-		addPacketConsumer(TRANSFER_UPDATE_PACKET, ((buffer, context) -> {
-			Identifier packetIdentifier = buffer.readIdentifier();
-			Direction packetDirection = buffer.readEnumConstant(Direction.class);
-			TransferType packetTransferType = buffer.readEnumConstant(TransferType.class);
+		addPacketConsumer(TRANSFER_UPDATE_PACKET, ((buf) -> {
+			Identifier packetIdentifier = buf.readIdentifier();
+			Direction packetDirection = buf.readEnumConstant(Direction.class);
+			TransferType packetTransferType = buf.readEnumConstant(TransferType.class);
 
 			getTransferComponent().get(ComponentRegistry.get(packetIdentifier)).set(packetDirection, packetTransferType);
 			markDirty();
@@ -138,14 +138,14 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 
 	/** Adds a {@link BiConsumer} that handles a {@link PacketByteBuf}
 	 * whose header is the given {@link Identifier}. */
-	public void addPacketConsumer(Identifier identifier, BiConsumer<PacketByteBuf, PacketContext> consumer) {
+	public void addPacketConsumer(Identifier identifier, Consumer<PacketByteBuf> consumer) {
 		allHandlers.put(identifier, consumer);
 	}
 
 	/** Consumes a {@link PacketByteBuf}, with the read header {@link Identifier},
 	 * repassing it to the matching {@link BiConsumer}. */
-	public void consumePacket(Identifier identifier, PacketByteBuf buffer, PacketContext context) {
-		allHandlers.get(identifier).accept(buffer, context);
+	public void consumePacket(Identifier identifier, PacketByteBuf buf) {
+		allHandlers.get(identifier).accept(buf);
 	}
 
 	/** Sets this machine as active. */
@@ -296,7 +296,7 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 	public CompoundTag toClientTag(CompoundTag compoundTag) {
 		compoundTag = toTag(compoundTag);
 		if (skipInventory) {
-			compoundTag.remove(AstromineComponents.ITEM_INVENTORY_COMPONENT.getId().toString());
+			compoundTag.remove(AMComponents.ITEM_INVENTORY_COMPONENT.getId().toString());
 		} else {
 			skipInventory = true;
 		}

@@ -26,13 +26,13 @@ package com.github.mixinors.astromine.common.block.entity.base;
 
 import com.github.mixinors.astromine.common.component.general.provider.EnergyComponentProvider;
 import com.github.mixinors.astromine.common.component.general.provider.ItemComponentProvider;
+import com.github.mixinors.astromine.registry.AMComponents;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.utilities.capability.energy.ComponentEnergyProvider;
-import com.github.mixinors.astromine.common.utilities.capability.inventory.ComponentInventoryProvider;
-import com.github.mixinors.astromine.registry.AstromineComponents;
+import com.github.mixinors.astromine.common.util.capability.energy.ComponentEnergyProvider;
+import com.github.mixinors.astromine.common.util.capability.inventory.ComponentInventoryProvider;
 
 /**
  * A {@link ComponentBlockEntity} with an attached
@@ -47,10 +47,10 @@ public abstract class ComponentEnergyItemBlockEntity extends ComponentBlockEntit
 	public ComponentEnergyItemBlockEntity(BlockEntityType<?> type) {
 		super(type);
 
-		addComponent(AstromineComponents.ENERGY_INVENTORY_COMPONENT, getEnergyComponent());
+		addComponent(AMComponents.ENERGY_INVENTORY_COMPONENT, getEnergyComponent());
 		getEnergyComponent().updateListeners();
 
-		addComponent(AstromineComponents.ITEM_INVENTORY_COMPONENT, getItemComponent());
+		addComponent(AMComponents.ITEM_INVENTORY_COMPONENT, getItemComponent());
 		getItemComponent().updateListeners();
 	}
 

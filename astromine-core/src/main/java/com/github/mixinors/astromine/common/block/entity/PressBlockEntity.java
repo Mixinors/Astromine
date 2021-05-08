@@ -27,16 +27,16 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.component.general.*;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
-import com.github.mixinors.astromine.common.utilities.StackUtilities;
-import com.github.mixinors.astromine.common.utilities.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.StackUtils;
+import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.registry.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
@@ -65,7 +65,7 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 				return false;
 			}
 
-			if (!StackUtilities.test(stack, getItemComponent().getSecond())) {
+			if (!StackUtils.test(stack, getItemComponent().getSecond())) {
 				return false;
 			}
 
@@ -133,7 +133,7 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 
 						itemComponent.getSecond().decrement(recipe.getFirstInput().testMatching(itemComponent.getSecond()).getCount());
 
-						itemComponent.setFirst(StackUtilities.into(itemComponent.getFirst(), recipe.getFirstOutput()));
+						itemComponent.setFirst(StackUtils.into(itemComponent.getFirst(), recipe.getFirstOutput()));
 
 						progress = 0;
 					} else {
@@ -166,17 +166,17 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 
 	public static class Primitive extends PressBlockEntity {
 		public Primitive() {
-			super(AstromineBlockEntityTypes.PRIMITIVE_PRESSER);
+			super(AMBlockEntityTypes.PRIMITIVE_PRESSER);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().primitivePressSpeed;
+			return AMConfig.get().primitivePressSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().primitivePressEnergy;
+			return AMConfig.get().primitivePressEnergy;
 		}
 
 		@Override
@@ -187,17 +187,17 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 
 	public static class Basic extends PressBlockEntity {
 		public Basic() {
-			super(AstromineBlockEntityTypes.BASIC_PRESSER);
+			super(AMBlockEntityTypes.BASIC_PRESSER);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().basicPressSpeed;
+			return AMConfig.get().basicPressSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().basicPressEnergy;
+			return AMConfig.get().basicPressEnergy;
 		}
 
 		@Override
@@ -208,17 +208,17 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 
 	public static class Advanced extends PressBlockEntity {
 		public Advanced() {
-			super(AstromineBlockEntityTypes.ADVANCED_PRESSER);
+			super(AMBlockEntityTypes.ADVANCED_PRESSER);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().advancedPressSpeed;
+			return AMConfig.get().advancedPressSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().advancedPressEnergy;
+			return AMConfig.get().advancedPressEnergy;
 		}
 
 		@Override
@@ -229,17 +229,17 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 
 	public static class Elite extends PressBlockEntity {
 		public Elite() {
-			super(AstromineBlockEntityTypes.ELITE_PRESSER);
+			super(AMBlockEntityTypes.ELITE_PRESSER);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().elitePressSpeed;
+			return AMConfig.get().elitePressSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().elitePressEnergy;
+			return AMConfig.get().elitePressEnergy;
 		}
 
 		@Override

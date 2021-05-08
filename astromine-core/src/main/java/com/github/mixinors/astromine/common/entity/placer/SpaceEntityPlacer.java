@@ -28,11 +28,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.TeleportTarget;
 
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.registry.AMConfig;
 
 public class SpaceEntityPlacer implements EntityPlacer {
-	public static final SpaceEntityPlacer TO_PLANET = new SpaceEntityPlacer(AstromineConfig.get().overworldSpawnYLevel);
-	public static final SpaceEntityPlacer TO_SPACE = new SpaceEntityPlacer(AstromineConfig.get().spaceSpawnYLevel);
+	public static final SpaceEntityPlacer TO_PLANET = new SpaceEntityPlacer(AMConfig.get().overworldSpawnYLevel);
+	public static final SpaceEntityPlacer TO_SPACE = new SpaceEntityPlacer(AMConfig.get().spaceSpawnYLevel);
 
 	public final int y;
 

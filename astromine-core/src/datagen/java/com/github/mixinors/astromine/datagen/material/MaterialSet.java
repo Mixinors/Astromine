@@ -24,13 +24,13 @@
 
 package com.github.mixinors.astromine.datagen.material;
 
+import com.github.mixinors.astromine.AMCommon;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-import com.github.mixinors.astromine.AstromineCommon;
 import com.github.mixinors.astromine.datagen.generator.SetGenerator;
 import me.shedaniel.cloth.api.datagen.v1.TagData;
 
@@ -152,11 +152,11 @@ public class MaterialSet {
 		}
 
 		public Builder addType(MaterialItemType type, Identifier tagId) {
-			return setType(type, AstromineCommon.identifier(type.getItemId(name)), tagId);
+			return setType(type, AMCommon.identifier(type.getItemId(name)), tagId);
 		}
 
 		public Builder addType(MaterialItemType type) {
-			return setType(type, AstromineCommon.identifier(type.getItemId(name)));
+			return setType(type, AMCommon.identifier(type.getItemId(name)));
 		}
 
 		public Builder basics() {

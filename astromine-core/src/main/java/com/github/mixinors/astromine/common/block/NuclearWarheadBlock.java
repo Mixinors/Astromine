@@ -29,8 +29,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.utilities.ExplosionUtilities;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.common.util.ExplosionUtils;
+import com.github.mixinors.astromine.registry.AMConfig;
 
 public class NuclearWarheadBlock extends Block {
 	public NuclearWarheadBlock(Settings settings) {
@@ -51,8 +51,8 @@ public class NuclearWarheadBlock extends Block {
 		if (world.isClient)
 			return;
 		if (world.isReceivingRedstonePower(pos)) {
-			if (AstromineConfig.get().nuclearWarheadEnabled) {
-				ExplosionUtilities.attemptExplosion(world, pos.getX(), pos.getY(), pos.getZ(), 128);
+			if (AMConfig.get().nuclearWarheadEnabled) {
+				ExplosionUtils.attemptExplosion(world, pos.getX(), pos.getY(), pos.getZ(), 128);
 			} else {
 				world.breakBlock(pos, true);
 			}

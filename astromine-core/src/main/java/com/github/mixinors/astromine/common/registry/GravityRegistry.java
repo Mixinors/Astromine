@@ -29,7 +29,7 @@ import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.registry.base.BiRegistry;
 import com.github.mixinors.astromine.mixin.*;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.registry.AMConfig;
 
 import java.util.Optional;
 
@@ -60,6 +60,6 @@ public class GravityRegistry extends BiRegistry<RegistryKey<World>, Double> {
 	/** Returns the gravity for the given registry key, or the default value. */
 	@Override
 	public Double get(RegistryKey<World> worldRegistryKey) {
-		return Optional.ofNullable(super.get(worldRegistryKey)).orElse(AstromineConfig.get().defaultGravity);
+		return Optional.ofNullable(super.get(worldRegistryKey)).orElse(AMConfig.get().defaultGravity);
 	}
 }

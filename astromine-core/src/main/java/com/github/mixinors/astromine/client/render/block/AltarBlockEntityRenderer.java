@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.client.render.block;
 
+import com.github.mixinors.astromine.common.util.ClientUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -43,7 +44,7 @@ import com.github.mixinors.astromine.common.block.entity.AltarBlockEntity;
 import java.util.Random;
 
 public class AltarBlockEntityRenderer extends BlockEntityRenderer<AltarBlockEntity> {
-	private final ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
+	private final ItemRenderer itemRenderer = ClientUtils.getInstance().getItemRenderer();
 	private final Random random = new Random();
 
 	public AltarBlockEntityRenderer(BlockEntityRenderDispatcher dispatcher) {

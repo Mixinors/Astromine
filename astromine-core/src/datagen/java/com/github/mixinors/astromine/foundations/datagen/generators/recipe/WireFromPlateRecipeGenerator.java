@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.foundations.datagen.generators.recipe;
 
-import com.github.mixinors.astromine.common.utilities.GeneratorUtilities;
+import com.github.mixinors.astromine.common.util.GeneratorUtils;
 import com.github.mixinors.astromine.datagen.generator.recipe.set.base.SetRecipeGenerator;
 import com.github.mixinors.astromine.datagen.material.MaterialItemType;
 import com.github.mixinors.astromine.datagen.material.MaterialSet;
@@ -59,7 +59,7 @@ public class WireFromPlateRecipeGenerator implements SetRecipeGenerator {
 
 	@Override
 	public void generate(RecipeData recipes, MaterialSet set) {
-		recipes.accept(GeneratorUtilities.Providers.createProvider(WireCuttingRecipe.Serializer.INSTANCE, getRecipeId(set), json -> {
+		recipes.accept(GeneratorUtils.Providers.createProvider(WireCuttingRecipe.Serializer.INSTANCE, getRecipeId(set), json -> {
 			json.add("input", set.getIngredient(input).toJson());
 			json.add("tool", tool.toJson());
 

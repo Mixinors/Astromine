@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
@@ -34,9 +34,9 @@ import com.github.mixinors.astromine.common.component.general.base.EnergyCompone
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.SimpleEnergyComponent;
 import com.github.mixinors.astromine.common.component.general.SimpleFluidComponent;
-import com.github.mixinors.astromine.common.utilities.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.registry.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
@@ -156,22 +156,22 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 
 	public static class Primitive extends FluidGeneratorBlockEntity {
 		public Primitive() {
-			super(AstromineBlockEntityTypes.PRIMITIVE_LIQUID_GENERATOR);
+			super(AMBlockEntityTypes.PRIMITIVE_LIQUID_GENERATOR);
 		}
 
 		@Override
 		public long getFluidSize() {
-			return AstromineConfig.get().primitiveFluidGeneratorFluid;
+			return AMConfig.get().primitiveFluidGeneratorFluid;
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().primitiveFluidGeneratorSpeed;
+			return AMConfig.get().primitiveFluidGeneratorSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().primitiveFluidGeneratorEnergy;
+			return AMConfig.get().primitiveFluidGeneratorEnergy;
 		}
 
 		@Override
@@ -182,22 +182,22 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 
 	public static class Basic extends FluidGeneratorBlockEntity {
 		public Basic() {
-			super(AstromineBlockEntityTypes.BASIC_LIQUID_GENERATOR);
+			super(AMBlockEntityTypes.BASIC_LIQUID_GENERATOR);
 		}
 
 		@Override
 		public long getFluidSize() {
-			return AstromineConfig.get().basicFluidGeneratorFluid;
+			return AMConfig.get().basicFluidGeneratorFluid;
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().basicFluidGeneratorSpeed;
+			return AMConfig.get().basicFluidGeneratorSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().basicFluidGeneratorEnergy;
+			return AMConfig.get().basicFluidGeneratorEnergy;
 		}
 
 		@Override
@@ -208,22 +208,22 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 
 	public static class Advanced extends FluidGeneratorBlockEntity {
 		public Advanced() {
-			super(AstromineBlockEntityTypes.ADVANCED_LIQUID_GENERATOR);
+			super(AMBlockEntityTypes.ADVANCED_LIQUID_GENERATOR);
 		}
 
 		@Override
 		public long getFluidSize() {
-			return AstromineConfig.get().advancedFluidGeneratorFluid;
+			return AMConfig.get().advancedFluidGeneratorFluid;
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().advancedFluidGeneratorSpeed;
+			return AMConfig.get().advancedFluidGeneratorSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().advancedFluidGeneratorEnergy;
+			return AMConfig.get().advancedFluidGeneratorEnergy;
 		}
 
 		@Override
@@ -234,22 +234,22 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 
 	public static class Elite extends FluidGeneratorBlockEntity {
 		public Elite() {
-			super(AstromineBlockEntityTypes.ELITE_LIQUID_GENERATOR);
+			super(AMBlockEntityTypes.ELITE_LIQUID_GENERATOR);
 		}
 
 		@Override
 		public long getFluidSize() {
-			return AstromineConfig.get().eliteFluidGeneratorFluid;
+			return AMConfig.get().eliteFluidGeneratorFluid;
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().eliteFluidGeneratorSpeed;
+			return AMConfig.get().eliteFluidGeneratorSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().eliteFluidGeneratorEnergy;
+			return AMConfig.get().eliteFluidGeneratorEnergy;
 		}
 
 		@Override

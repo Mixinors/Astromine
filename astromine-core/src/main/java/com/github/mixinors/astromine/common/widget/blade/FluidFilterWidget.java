@@ -24,10 +24,11 @@
 
 package com.github.mixinors.astromine.common.widget.blade;
 
+import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.common.util.ClientUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -41,12 +42,11 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-import com.github.mixinors.astromine.AstromineCommon;
 import com.github.mixinors.astromine.client.BaseRenderer;
 import com.github.mixinors.astromine.client.render.sprite.SpriteRenderer;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.common.utilities.FluidUtilities;
-import com.github.mixinors.astromine.common.utilities.TextUtilities;
+import com.github.mixinors.astromine.common.util.FluidUtils;
+import com.github.mixinors.astromine.common.util.TextUtils;
 import com.github.vini2003.blade.client.utilities.Layers;
 import com.github.vini2003.blade.common.widget.base.ButtonWidget;
 import org.jetbrains.annotations.NotNull;
@@ -67,7 +67,7 @@ import java.util.function.Supplier;
  * {@link #fluidConsumer} to update the related object.
  */
 public class FluidFilterWidget extends ButtonWidget {
-	private static final Identifier FLUID_BACKGROUND = AstromineCommon.identifier("textures/widget/fluid_filter_background.png");
+	private static final Identifier FLUID_BACKGROUND = AMCommon.identifier("textures/widget/fluid_filter_background.png");
 
 	private Supplier<Fluid> fluidSupplier = () -> Fluids.EMPTY;
 
@@ -120,7 +120,7 @@ public class FluidFilterWidget extends ButtonWidget {
 	public List<Text> getTooltip() {
 		Identifier fluidId = Registry.FLUID.getId(fluidSupplier.get());
 
-		return Collections.singletonList(new TranslatableText("text.astromine.filter", TextUtilities.getFluid(fluidId)));
+		return Collections.singletonList(new TranslatableText("text.astromine.filter", TextUtils.getFluid(fluidId)));
 	}
 
 	/** Renders this widget. */
@@ -145,8 +145,8 @@ public class FluidFilterWidget extends ButtonWidget {
 			SpriteRenderer
 					.beginPass()
 					.setup(provider, RenderLayer.getSolid())
-					.sprite(FluidUtilities.getSprite(fluidSupplier.get()))
-					.color(FluidUtilities.getColor(MinecraftClient.getInstance().player, fluidSupplier.get())).light(0x00f000f0).overlay(OverlayTexture.DEFAULT_UV).alpha(
+					.sprite(FluidUtils.getSprite(fluidSupplier.get()))
+					.color(FluidUtils.getColor(ClientUtils.getPlayer(), fluidSupplier.get())).light(0x00f000f0).overlay(OverlayTexture.DEFAULT_UV).alpha(
 				0xff).normal(matrices.peek().getNormal(), 0, 0, 0).position(matrices.peek().getModel(), x + 1, y + 1, x + sX - 1, y + sY - 1, 0F).next(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
 		}
 	}

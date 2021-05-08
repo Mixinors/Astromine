@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.world.generation.vulcan;
 
-import com.github.mixinors.astromine.registry.AstromineBlocks;
+import com.github.mixinors.astromine.registry.AMBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -161,7 +161,7 @@ public class VulcanChunkGenerator extends ChunkGenerator {
 								chunk.setBlockState(mutable, Blocks.LAVA.getDefaultState(), false);
 							}
 						} else {
-							chunk.setBlockState(mutable, AstromineBlocks.VULCAN_STONE.getDefaultState(), false);
+							chunk.setBlockState(mutable, AMBlocks.VULCAN_STONE.getDefaultState(), false);
 						}
 					}
 

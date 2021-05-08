@@ -27,16 +27,16 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.component.general.*;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
-import com.github.mixinors.astromine.common.utilities.StackUtilities;
-import com.github.mixinors.astromine.common.utilities.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.StackUtils;
+import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.registry.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
@@ -65,7 +65,7 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 				return false;
 			}
 
-			if (!StackUtilities.test(stack, getItemComponent().getSecond())) {
+			if (!StackUtils.test(stack, getItemComponent().getSecond())) {
 				return false;
 			}
 
@@ -132,7 +132,7 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 						optionalRecipe = Optional.empty();
 
 						itemComponent.getSecond().decrement(recipe.getFirstInput().testMatching(itemComponent.getSecond()).getCount());
-						itemComponent.setFirst(StackUtilities.into(itemComponent.getFirst(), recipe.getFirstOutput()));
+						itemComponent.setFirst(StackUtils.into(itemComponent.getFirst(), recipe.getFirstOutput()));
 
 						progress = 0;
 					} else {
@@ -165,17 +165,17 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 
 	public static class Primitive extends TrituratorBlockEntity {
 		public Primitive() {
-			super(AstromineBlockEntityTypes.PRIMITIVE_TRITURATOR);
+			super(AMBlockEntityTypes.PRIMITIVE_TRITURATOR);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().primitiveTrituratorSpeed;
+			return AMConfig.get().primitiveTrituratorSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().primitiveTrituratorEnergy;
+			return AMConfig.get().primitiveTrituratorEnergy;
 		}
 
 		@Override
@@ -186,17 +186,17 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 
 	public static class Basic extends TrituratorBlockEntity {
 		public Basic() {
-			super(AstromineBlockEntityTypes.BASIC_TRITURATOR);
+			super(AMBlockEntityTypes.BASIC_TRITURATOR);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().basicTrituratorSpeed;
+			return AMConfig.get().basicTrituratorSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().basicTrituratorEnergy;
+			return AMConfig.get().basicTrituratorEnergy;
 		}
 
 		@Override
@@ -207,17 +207,17 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 
 	public static class Advanced extends TrituratorBlockEntity {
 		public Advanced() {
-			super(AstromineBlockEntityTypes.ADVANCED_TRITURATOR);
+			super(AMBlockEntityTypes.ADVANCED_TRITURATOR);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().advancedTrituratorSpeed;
+			return AMConfig.get().advancedTrituratorSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().advancedTrituratorEnergy;
+			return AMConfig.get().advancedTrituratorEnergy;
 		}
 
 		@Override
@@ -228,17 +228,17 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 
 	public static class Elite extends TrituratorBlockEntity {
 		public Elite() {
-			super(AstromineBlockEntityTypes.ELITE_TRITURATOR);
+			super(AMBlockEntityTypes.ELITE_TRITURATOR);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().eliteTrituratorSpeed;
+			return AMConfig.get().eliteTrituratorSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().eliteTrituratorEnergy;
+			return AMConfig.get().eliteTrituratorEnergy;
 		}
 
 		@Override

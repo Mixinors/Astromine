@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.mixin;
 
-import com.github.mixinors.astromine.registry.AstromineItems;
+import com.github.mixinors.astromine.registry.AMItems;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -38,7 +38,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 
 import com.github.mixinors.astromine.client.model.PrimitiveRocketEntityModel;
-import com.github.mixinors.astromine.registry.client.AstromineClientModels;
+import com.github.mixinors.astromine.registry.client.AMClientModels;
 
 @Mixin(BuiltinModelItemRenderer.class)
 public class BuiltinModelItemRendererMixin {
@@ -47,9 +47,9 @@ public class BuiltinModelItemRendererMixin {
 
 	@Inject(method = "render", at = @At("HEAD"), cancellable = true)
 	private void render(ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int i, int j, CallbackInfo ci) {
-		if (stack.getItem() == AstromineItems.PRIMITIVE_ROCKET) {
+		if (stack.getItem() == AMItems.PRIMITIVE_ROCKET) {
 			ci.cancel();
-			AstromineClientModels.renderRocket(primitiveRocketEntityModel, stack, mode, matrices, vertexConsumerProvider, i, j);
+			AMClientModels.renderRocket(primitiveRocketEntityModel, stack, mode, matrices, vertexConsumerProvider, i, j);
 		}
 	}
 }

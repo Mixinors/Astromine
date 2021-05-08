@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.datagen.registry;
 
-import com.github.mixinors.astromine.AstromineCommon;
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.datagen.material.MaterialSet;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public abstract class AstromineMaterialSets {
 
 	public static MaterialSet register(MaterialSet set) {
 		MATERIAL_SETS.add(set);
-		AstromineCommon.LOGGER.info("Registered " + set.getName() + ".");
+		AMCommon.LOGGER.info("Registered " + set.getName() + ".");
 		return set;
 	}
 

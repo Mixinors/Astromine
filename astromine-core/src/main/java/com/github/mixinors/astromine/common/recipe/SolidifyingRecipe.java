@@ -24,7 +24,8 @@
 
 package com.github.mixinors.astromine.common.recipe;
 
-import com.github.mixinors.astromine.registry.AstromineBlocks;
+import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.registry.AMBlocks;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -35,14 +36,13 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.AstromineCommon;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
-import com.github.mixinors.astromine.common.utilities.DoubleUtilities;
-import com.github.mixinors.astromine.common.utilities.IntegerUtilities;
-import com.github.mixinors.astromine.common.utilities.StackUtilities;
+import com.github.mixinors.astromine.common.util.DoubleUtils;
+import com.github.mixinors.astromine.common.util.IntegerUtils;
+import com.github.mixinors.astromine.common.util.StackUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -111,7 +111,7 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 			return false;
 		}
 
-		return StackUtilities.test(firstOutput, itemComponent.getFirst()) ;
+		return StackUtils.test(firstOutput, itemComponent.getFirst()) ;
 	}
 
 	public boolean allows(FluidComponent fluidComponent) {
@@ -164,7 +164,7 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineBlocks.ADVANCED_LIQUID_GENERATOR);
+		return new ItemStack(AMBlocks.ADVANCED_LIQUID_GENERATOR);
 	}
 
 	public Identifier getIdentifier() {
@@ -189,7 +189,7 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 	}
 
 	public static final class Serializer implements RecipeSerializer<SolidifyingRecipe> {
-		public static final Identifier ID = AstromineCommon.identifier("solidifying");
+		public static final Identifier ID = AMCommon.identifier("solidifying");
 
 		public static final Serializer INSTANCE = new Serializer();
 
@@ -202,9 +202,9 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 			return new SolidifyingRecipe(
 					identifier,
 					FluidIngredient.fromJson(format.firstInput),
-					StackUtilities.fromJson(format.firstOutput),
-					DoubleUtilities.fromJson(format.energyInput),
-					IntegerUtilities.fromJson(format.time)
+					StackUtils.fromJson(format.firstOutput),
+					DoubleUtils.fromJson(format.energyInput),
+					IntegerUtils.fromJson(format.time)
 			);
 		}
 
@@ -213,18 +213,18 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 			return new SolidifyingRecipe(
 					identifier,
 					FluidIngredient.fromPacket(buffer),
-					StackUtilities.fromPacket(buffer),
-					DoubleUtilities.fromPacket(buffer),
-					IntegerUtilities.fromPacket(buffer)
+					StackUtils.fromPacket(buffer),
+					DoubleUtils.fromPacket(buffer),
+					IntegerUtils.fromPacket(buffer)
 			);
 		}
 
 		@Override
 		public void write(PacketByteBuf buffer, SolidifyingRecipe recipe) {
 			recipe.firstInput.toPacket(buffer);
-			StackUtilities.toPacket(buffer, recipe.getFirstOutput());
-			DoubleUtilities.toPacket(buffer, recipe.energyInput);
-			IntegerUtilities.toPacket(buffer, recipe.time);
+			StackUtils.toPacket(buffer, recipe.getFirstOutput());
+			DoubleUtils.toPacket(buffer, recipe.energyInput);
+			IntegerUtils.toPacket(buffer, recipe.time);
 		}
 	}
 

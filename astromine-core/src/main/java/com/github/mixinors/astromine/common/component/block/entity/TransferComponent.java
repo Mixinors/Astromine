@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.component.block.entity;
 
 import com.github.mixinors.astromine.common.component.general.provider.TransferComponentProvider;
+import com.github.mixinors.astromine.registry.AMComponents;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
@@ -35,8 +36,7 @@ import com.github.mixinors.astromine.common.callback.TransferEntryCallback;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.utilities.DirectionUtilities;
-import com.github.mixinors.astromine.registry.AstromineComponents;
+import com.github.mixinors.astromine.common.util.DirectionUtils;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
@@ -62,7 +62,7 @@ public class TransferComponent implements Component {
 		}
 
 		try {
-			return AstromineComponents.BLOCK_ENTITY_TRANSFER_COMPONENT.get(v);
+			return AMComponents.BLOCK_ENTITY_TRANSFER_COMPONENT.get(v);
 		} catch (Exception justShutUpAlready) {
 			return null;
 		}
@@ -89,34 +89,34 @@ public class TransferComponent implements Component {
 	/** Asserts whether this component's siding contains
 	 * data for {@link ItemComponent} or not. */
 	public boolean hasItem() {
-		return components.containsKey(AstromineComponents.ITEM_INVENTORY_COMPONENT);
+		return components.containsKey(AMComponents.ITEM_INVENTORY_COMPONENT);
 	}
 
 	/** Asserts whether this component's siding contains
 	 * data for {@link FluidComponent} or not. */
 	public boolean hasFluid() {
-		return components.containsKey(AstromineComponents.FLUID_INVENTORY_COMPONENT);
+		return components.containsKey(AMComponents.FLUID_INVENTORY_COMPONENT);
 	}
 
 	/** Asserts whether this component's siding contains
 	 * data for {@link EnergyComponent} or not. */
 	public boolean hasEnergy() {
-		return components.containsKey(AstromineComponents.ENERGY_INVENTORY_COMPONENT);
+		return components.containsKey(AMComponents.ENERGY_INVENTORY_COMPONENT);
 	}
 
 	/** Returns this component's {@link TransferType} for {@link ItemComponent}'s key at the given {@link Direction}. */
 	public TransferType getItem(Direction direction) {
-		return components.get(AstromineComponents.ITEM_INVENTORY_COMPONENT).get(direction);
+		return components.get(AMComponents.ITEM_INVENTORY_COMPONENT).get(direction);
 	}
 
 	/** Returns this component's {@link TransferType} for {@link FluidComponent}'s key at the given {@link Direction}. */
 	public TransferType getFluid(Direction direction) {
-		return components.get(AstromineComponents.FLUID_INVENTORY_COMPONENT).get(direction);
+		return components.get(AMComponents.FLUID_INVENTORY_COMPONENT).get(direction);
 	}
 
 	/** Returns this component's {@link TransferType} for {@link EnergyComponent}'s key at the given {@link Direction}. */
 	public TransferType getEnergy(Direction direction) {
-		return components.get(AstromineComponents.ENERGY_INVENTORY_COMPONENT).get(direction);
+		return components.get(AMComponents.ENERGY_INVENTORY_COMPONENT).get(direction);
 	}
 
 	/** Serializes this {@link TransferComponent} to a {@link CompoundTag}. */
@@ -186,7 +186,7 @@ public class TransferComponent implements Component {
 		public void fromTag(CompoundTag tag) {
 			for (String directionKey : tag.getKeys()) {
 				if (tag.contains(directionKey)) {
-					types.put(DirectionUtilities.byNameOrId(directionKey), TransferType.valueOf(tag.getString(directionKey)));
+					types.put(DirectionUtils.byNameOrId(directionKey), TransferType.valueOf(tag.getString(directionKey)));
 				}
 			}
 		}

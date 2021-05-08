@@ -30,8 +30,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
 
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.registry.AstromineComponents;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.registry.AMComponents;
+import com.github.mixinors.astromine.registry.AMConfig;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,7 +58,7 @@ public final class EntityOxygenComponent implements Component {
 	@Nullable
 	public static <V> EntityOxygenComponent get(V v) {
 		try {
-			return AstromineComponents.ENTITY_OXYGEN_COMPONENT.get(v);
+			return AMComponents.ENTITY_OXYGEN_COMPONENT.get(v);
 		} catch (Exception justShutUpAlready) {
 			return null;
 		}
@@ -88,7 +88,7 @@ public final class EntityOxygenComponent implements Component {
 				isAK9 = ((PlayerEntity) entity).getGameProfile().getId().toString().equals("38113444-0bc0-4502-9a4c-17903067907c");
 			}
 
-			if (!isAK9 || AstromineConfig.get().asphyxiateAK9) {
+			if (!isAK9 || AMConfig.get().asphyxiateAK9) {
 				entity.damage(DamageSource.DROWN, 1.0F);
 			}
 		}

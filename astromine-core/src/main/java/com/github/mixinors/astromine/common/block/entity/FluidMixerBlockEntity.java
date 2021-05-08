@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
@@ -34,9 +34,9 @@ import com.github.mixinors.astromine.common.component.general.base.EnergyCompone
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.SimpleEnergyComponent;
 import com.github.mixinors.astromine.common.component.general.SimpleFluidComponent;
-import com.github.mixinors.astromine.common.utilities.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.registry.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
@@ -160,22 +160,22 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 
 	public static class Primitive extends FluidMixerBlockEntity {
 		public Primitive() {
-			super(AstromineBlockEntityTypes.PRIMITIVE_FLUID_MIXER);
+			super(AMBlockEntityTypes.PRIMITIVE_FLUID_MIXER);
 		}
 
 		@Override
 		public long getFluidSize() {
-			return AstromineConfig.get().primitiveFluidMixerFluid;
+			return AMConfig.get().primitiveFluidMixerFluid;
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().primitiveFluidMixerSpeed;
+			return AMConfig.get().primitiveFluidMixerSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().primitiveFluidMixerEnergy;
+			return AMConfig.get().primitiveFluidMixerEnergy;
 		}
 
 		@Override
@@ -186,22 +186,22 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 
 	public static class Basic extends FluidMixerBlockEntity {
 		public Basic() {
-			super(AstromineBlockEntityTypes.BASIC_FLUID_MIXER);
+			super(AMBlockEntityTypes.BASIC_FLUID_MIXER);
 		}
 
 		@Override
 		public long getFluidSize() {
-			return AstromineConfig.get().basicFluidMixerFluid;
+			return AMConfig.get().basicFluidMixerFluid;
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().basicFluidMixerSpeed;
+			return AMConfig.get().basicFluidMixerSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().basicFluidMixerEnergy;
+			return AMConfig.get().basicFluidMixerEnergy;
 		}
 
 		@Override
@@ -212,22 +212,22 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 
 	public static class Advanced extends FluidMixerBlockEntity {
 		public Advanced() {
-			super(AstromineBlockEntityTypes.ADVANCED_FLUID_MIXER);
+			super(AMBlockEntityTypes.ADVANCED_FLUID_MIXER);
 		}
 
 		@Override
 		public long getFluidSize() {
-			return AstromineConfig.get().advancedFluidMixerFluid;
+			return AMConfig.get().advancedFluidMixerFluid;
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().advancedFluidMixerSpeed;
+			return AMConfig.get().advancedFluidMixerSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().advancedFluidMixerEnergy;
+			return AMConfig.get().advancedFluidMixerEnergy;
 		}
 
 		@Override
@@ -238,22 +238,22 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 
 	public static class Elite extends FluidMixerBlockEntity {
 		public Elite() {
-			super(AstromineBlockEntityTypes.ELITE_FLUID_MIXER);
+			super(AMBlockEntityTypes.ELITE_FLUID_MIXER);
 		}
 
 		@Override
 		public long getFluidSize() {
-			return AstromineConfig.get().eliteFluidMixerFluid;
+			return AMConfig.get().eliteFluidMixerFluid;
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().eliteFluidMixerSpeed;
+			return AMConfig.get().eliteFluidMixerSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().eliteFluidMixerEnergy;
+			return AMConfig.get().eliteFluidMixerEnergy;
 		}
 
 		@Override

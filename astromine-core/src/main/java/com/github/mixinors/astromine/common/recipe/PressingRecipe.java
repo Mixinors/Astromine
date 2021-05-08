@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.recipe;
 
-import com.github.mixinors.astromine.registry.AstromineBlocks;
+import com.github.mixinors.astromine.registry.AMBlocks;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -33,13 +33,13 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.AstromineCommon;
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.ItemIngredient;
-import com.github.mixinors.astromine.common.utilities.DoubleUtilities;
-import com.github.mixinors.astromine.common.utilities.IntegerUtilities;
-import com.github.mixinors.astromine.common.utilities.StackUtilities;
+import com.github.mixinors.astromine.common.util.DoubleUtils;
+import com.github.mixinors.astromine.common.util.IntegerUtils;
+import com.github.mixinors.astromine.common.util.StackUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -104,7 +104,7 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 			return false;
 		}
 
-		return StackUtilities.test(firstOutput, itemComponent.getFirst());
+		return StackUtils.test(firstOutput, itemComponent.getFirst());
 	}
 
 	public boolean allows(ItemComponent itemComponent) {
@@ -152,7 +152,7 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineBlocks.ADVANCED_PRESSER);
+		return new ItemStack(AMBlocks.ADVANCED_PRESSER);
 	}
 
 	public Identifier getIdentifier() {
@@ -177,7 +177,7 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 	}
 
 	public static final class Serializer implements RecipeSerializer<PressingRecipe> {
-		public static final Identifier ID = AstromineCommon.identifier("pressing");
+		public static final Identifier ID = AMCommon.identifier("pressing");
 
 		public static final Serializer INSTANCE = new Serializer();
 
@@ -190,9 +190,9 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 			return new PressingRecipe(
 					identifier,
 					ItemIngredient.fromJson(format.firstInput),
-					StackUtilities.fromJson(format.firstOutput),
-					DoubleUtilities.fromJson(format.energyInput),
-					IntegerUtilities.fromJson(format.time)
+					StackUtils.fromJson(format.firstOutput),
+					DoubleUtils.fromJson(format.energyInput),
+					IntegerUtils.fromJson(format.time)
 			);
 		}
 
@@ -201,18 +201,18 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 			return new PressingRecipe(
 					identifier,
 					ItemIngredient.fromPacket(buffer),
-					StackUtilities.fromPacket(buffer),
-					DoubleUtilities.fromPacket(buffer),
-					IntegerUtilities.fromPacket(buffer)
+					StackUtils.fromPacket(buffer),
+					DoubleUtils.fromPacket(buffer),
+					IntegerUtils.fromPacket(buffer)
 			);
 		}
 
 		@Override
 		public void write(PacketByteBuf buffer, PressingRecipe recipe) {
 			recipe.firstInput.toPacket(buffer);
-			StackUtilities.toPacket(buffer, recipe.firstOutput);
-			DoubleUtilities.toPacket(buffer, recipe.energyInput);
-			IntegerUtilities.toPacket(buffer, recipe.time);
+			StackUtils.toPacket(buffer, recipe.firstOutput);
+			DoubleUtils.toPacket(buffer, recipe.energyInput);
+			IntegerUtils.toPacket(buffer, recipe.time);
 		}
 	}
 

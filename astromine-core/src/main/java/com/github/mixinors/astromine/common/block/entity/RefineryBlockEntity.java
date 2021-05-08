@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
@@ -34,9 +34,9 @@ import com.github.mixinors.astromine.common.component.general.base.EnergyCompone
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.SimpleEnergyComponent;
 import com.github.mixinors.astromine.common.component.general.SimpleFluidComponent;
-import com.github.mixinors.astromine.common.utilities.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.registry.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
@@ -164,22 +164,22 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 
 	public static class Primitive extends RefineryBlockEntity {
 		public Primitive() {
-			super(AstromineBlockEntityTypes.PRIMITIVE_REFINERY);
+			super(AMBlockEntityTypes.PRIMITIVE_REFINERY);
 		}
 
 		@Override
 		public long getFluidSize() {
-			return AstromineConfig.get().primitiveRefineryFluid;
+			return AMConfig.get().primitiveRefineryFluid;
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().primitiveRefinerySpeed;
+			return AMConfig.get().primitiveRefinerySpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().primitiveRefineryEnergy;
+			return AMConfig.get().primitiveRefineryEnergy;
 		}
 
 		@Override
@@ -190,22 +190,22 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 
 	public static class Basic extends RefineryBlockEntity {
 		public Basic() {
-			super(AstromineBlockEntityTypes.BASIC_REFINERY);
+			super(AMBlockEntityTypes.BASIC_REFINERY);
 		}
 
 		@Override
 		public long getFluidSize() {
-			return AstromineConfig.get().basicRefineryFluid;
+			return AMConfig.get().basicRefineryFluid;
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().basicRefinerySpeed;
+			return AMConfig.get().basicRefinerySpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().basicRefineryEnergy;
+			return AMConfig.get().basicRefineryEnergy;
 		}
 
 		@Override
@@ -216,22 +216,22 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 
 	public static class Advanced extends RefineryBlockEntity {
 		public Advanced() {
-			super(AstromineBlockEntityTypes.ADVANCED_REFINERY);
+			super(AMBlockEntityTypes.ADVANCED_REFINERY);
 		}
 
 		@Override
 		public long getFluidSize() {
-			return AstromineConfig.get().advancedRefineryFluid;
+			return AMConfig.get().advancedRefineryFluid;
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().advancedRefinerySpeed;
+			return AMConfig.get().advancedRefinerySpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().advancedRefineryEnergy;
+			return AMConfig.get().advancedRefineryEnergy;
 		}
 
 		@Override
@@ -242,22 +242,22 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 
 	public static class Elite extends RefineryBlockEntity {
 		public Elite() {
-			super(AstromineBlockEntityTypes.ELITE_REFINERY);
+			super(AMBlockEntityTypes.ELITE_REFINERY);
 		}
 
 		@Override
 		public long getFluidSize() {
-			return AstromineConfig.get().eliteRefineryFluid;
+			return AMConfig.get().eliteRefineryFluid;
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().eliteRefinerySpeed;
+			return AMConfig.get().eliteRefinerySpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().eliteRefineryEnergy;
+			return AMConfig.get().eliteRefineryEnergy;
 		}
 
 		@Override

@@ -28,7 +28,7 @@ import com.github.mixinors.astromine.common.component.general.base.ItemComponent
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
 
-import com.github.mixinors.astromine.common.utilities.data.predicate.TriPredicate;
+import com.github.mixinors.astromine.common.util.data.predicate.TriPredicate;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import org.jetbrains.annotations.Nullable;
 

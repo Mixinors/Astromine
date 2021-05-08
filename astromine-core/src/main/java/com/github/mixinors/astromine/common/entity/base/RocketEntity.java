@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.common.entity.base;
 
-import com.github.mixinors.astromine.registry.AstromineCriteria;
-import com.github.mixinors.astromine.registry.AstromineParticles;
+import com.github.mixinors.astromine.registry.AMCriteria;
+import com.github.mixinors.astromine.registry.AMParticles;
 import net.minecraft.client.util.math.Vector3d;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.Entity;
@@ -103,7 +103,7 @@ public abstract class RocketEntity extends ComponentFluidItemEntity {
 
 					for (double x = box.minX; x < box.maxX; x += 0.0625) {
 						for (double z = box.minZ; z < box.maxZ; z += 0.0625) {
-							((ServerWorld) world).spawnParticles(AstromineParticles.ROCKET_FLAME, x, y, z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
+							((ServerWorld) world).spawnParticles(AMParticles.ROCKET_FLAME, x, y, z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
 						}
 					}
 				}
@@ -137,7 +137,7 @@ public abstract class RocketEntity extends ComponentFluidItemEntity {
 
 		for (Entity passenger : passengers) {
 			if (passenger instanceof ServerPlayerEntity) {
-				AstromineCriteria.DESTROY_ROCKET.trigger((ServerPlayerEntity) passenger, intentional);
+				AMCriteria.DESTROY_ROCKET.trigger((ServerPlayerEntity) passenger, intentional);
 			}
 
 			passenger.stopRiding();
@@ -165,7 +165,7 @@ public abstract class RocketEntity extends ComponentFluidItemEntity {
 		if (this.getFluidComponent().getFirst().biggerThan(0L)) {
 			this.getDataTracker().set(RocketEntity.IS_RUNNING, true);
 			if (launcher instanceof ServerPlayerEntity) {
-				AstromineCriteria.LAUNCH_ROCKET.trigger((ServerPlayerEntity) launcher);
+				AMCriteria.LAUNCH_ROCKET.trigger((ServerPlayerEntity) launcher);
 			}
 		}
 	}

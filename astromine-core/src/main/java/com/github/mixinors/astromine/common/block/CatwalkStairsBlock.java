@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.block;
 
-import com.github.mixinors.astromine.common.utilities.VoxelShapeUtilities;
+import com.github.mixinors.astromine.common.util.VoxelShapeUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -94,7 +94,7 @@ public class CatwalkStairsBlock extends HorizontalFacingBlock implements Waterlo
 		Direction facing = state.get(FACING);
 
 		if (SHAPE_CACHE[facing.getId()] == null) {
-			SHAPE_CACHE[facing.getId()] = VoxelShapes.union(VoxelShapeUtilities.rotate(facing, FIRST_STEP), VoxelShapeUtilities.rotate(facing, SECOND_STEP), VoxelShapeUtilities.rotate(facing, THIRD_STEP), VoxelShapeUtilities.rotate(facing, FOURTH_STEP));
+			SHAPE_CACHE[facing.getId()] = VoxelShapes.union(VoxelShapeUtils.rotate(facing, FIRST_STEP), VoxelShapeUtils.rotate(facing, SECOND_STEP), VoxelShapeUtils.rotate(facing, THIRD_STEP), VoxelShapeUtils.rotate(facing, FOURTH_STEP));
 		}
 
 		return SHAPE_CACHE[facing.getId()];

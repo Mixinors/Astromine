@@ -25,10 +25,10 @@
 package com.github.mixinors.astromine.common.block.entity.base;
 
 import com.github.mixinors.astromine.common.component.general.provider.FluidComponentProvider;
+import com.github.mixinors.astromine.registry.AMComponents;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.registry.AstromineComponents;
 
 /**
  * A {@link ComponentBlockEntity} with an attached
@@ -41,7 +41,7 @@ public abstract class ComponentFluidBlockEntity extends ComponentBlockEntity imp
 	public ComponentFluidBlockEntity(BlockEntityType<?> type) {
 		super(type);
 
-		addComponent(AstromineComponents.FLUID_INVENTORY_COMPONENT, getFluidComponent());
+		addComponent(AMComponents.FLUID_INVENTORY_COMPONENT, getFluidComponent());
 		getFluidComponent().updateListeners();
 	}
 

@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.client.rei;
 
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.rei.alloysmelting.AlloySmeltingCategory;
 import com.github.mixinors.astromine.client.rei.alloysmelting.AlloySmeltingDisplay;
 import com.github.mixinors.astromine.client.rei.electricsmelting.ElectricSmeltingCategory;
@@ -49,7 +50,8 @@ import com.github.mixinors.astromine.client.rei.triturating.TrituratingDisplay;
 import com.github.mixinors.astromine.client.rei.wiremilling.WireMillingCategory;
 import com.github.mixinors.astromine.client.rei.wiremilling.WireMillingDisplay;
 import com.github.mixinors.astromine.common.recipe.*;
-import com.github.mixinors.astromine.registry.AstromineBlocks;
+import com.github.mixinors.astromine.common.util.ClientUtils;
+import com.github.mixinors.astromine.registry.AMBlocks;
 import com.google.common.collect.ImmutableList;
 import me.shedaniel.rei.api.BuiltinPlugin;
 import me.shedaniel.rei.api.RecipeHelper;
@@ -59,7 +61,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
@@ -76,10 +77,9 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
-import com.github.mixinors.astromine.AstromineCommon;
 import com.github.mixinors.astromine.client.render.sprite.SpriteRenderer;
-import com.github.mixinors.astromine.common.utilities.FluidUtilities;
-import com.github.mixinors.astromine.common.utilities.NumberUtilities;
+import com.github.mixinors.astromine.common.util.FluidUtils;
+import com.github.mixinors.astromine.common.util.NumberUtils;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
@@ -97,32 +97,32 @@ import java.util.Map;
 
 @Environment(EnvType.CLIENT)
 public class AstromineRoughlyEnoughItemsPlugin implements REIPluginV0 {
-	private static final Identifier ENERGY_BACKGROUND = AstromineCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_background_thin.png");
-	private static final Identifier ENERGY_FOREGROUND = AstromineCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_foreground_thin.png");
+	private static final Identifier ENERGY_BACKGROUND = AMCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_background_thin.png");
+	private static final Identifier ENERGY_FOREGROUND = AMCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_foreground_thin.png");
 	
-	public static final Identifier INFUSING = AstromineCommon.identifier("infusing");
-	public static final Identifier TRITURATING = AstromineCommon.identifier("triturating");
-	public static final Identifier ELECTRIC_SMELTING = AstromineCommon.identifier("electric_smelting");
-	public static final Identifier LIQUID_GENERATING = AstromineCommon.identifier("fluid_generating");
-	public static final Identifier SOLID_GENERATING = AstromineCommon.identifier("solid_generating");
-	public static final Identifier FLUID_MIXING = AstromineCommon.identifier("fluid_mixing");
-	public static final Identifier ELECTROLYZING = AstromineCommon.identifier("electrolyzing");
-	public static final Identifier REFINING = AstromineCommon.identifier("refining");
-	public static final Identifier PRESSING = AstromineCommon.identifier("pressing");
-	public static final Identifier WIREMILLING = AstromineCommon.identifier("wire_milling");
-	public static final Identifier ALLOY_SMELTING = AstromineCommon.identifier("alloy_smelting");
-	public static final Identifier SOLIDIFYING = AstromineCommon.identifier("solidifying");
+	public static final Identifier INFUSING = AMCommon.identifier("infusing");
+	public static final Identifier TRITURATING = AMCommon.identifier("triturating");
+	public static final Identifier ELECTRIC_SMELTING = AMCommon.identifier("electric_smelting");
+	public static final Identifier LIQUID_GENERATING = AMCommon.identifier("fluid_generating");
+	public static final Identifier SOLID_GENERATING = AMCommon.identifier("solid_generating");
+	public static final Identifier FLUID_MIXING = AMCommon.identifier("fluid_mixing");
+	public static final Identifier ELECTROLYZING = AMCommon.identifier("electrolyzing");
+	public static final Identifier REFINING = AMCommon.identifier("refining");
+	public static final Identifier PRESSING = AMCommon.identifier("pressing");
+	public static final Identifier WIREMILLING = AMCommon.identifier("wire_milling");
+	public static final Identifier ALLOY_SMELTING = AMCommon.identifier("alloy_smelting");
+	public static final Identifier SOLIDIFYING = AMCommon.identifier("solidifying");
 	
 	
 	@Override
 	public Identifier getPluginIdentifier() {
-		return AstromineCommon.identifier(AstromineCommon.MOD_ID);
+		return AMCommon.identifier(AMCommon.MOD_ID);
 	}
 	
 	@Override
 	public void registerPluginCategories(RecipeHelper recipeHelper) {
 		recipeHelper.registerCategories(new InfusingCategory());
-		recipeHelper.registerCategories(new SolidifyingCategory(), new TrituratingCategory(), new ElectricSmeltingCategory(), new LiquidGeneratingCategory(), new SolidGeneratingCategory(), new PressingCategory(), new WireMillingCategory(), new AlloySmeltingCategory(), new FluidMixingCategory(FLUID_MIXING, "category.astromine.fluid_mixing", EntryStack.create(AstromineBlocks.ADVANCED_FLUID_MIXER)), new ElectrolyzingCategory(ELECTROLYZING, "category.astromine.electrolyzing", EntryStack.create(AstromineBlocks.ADVANCED_ELECTROLYZER)), new RefiningCategory(REFINING, "category.astromine.refining", EntryStack.create(AstromineBlocks.ADVANCED_REFINERY)));
+		recipeHelper.registerCategories(new SolidifyingCategory(), new TrituratingCategory(), new ElectricSmeltingCategory(), new LiquidGeneratingCategory(), new SolidGeneratingCategory(), new PressingCategory(), new WireMillingCategory(), new AlloySmeltingCategory(), new FluidMixingCategory(FLUID_MIXING, "category.astromine.fluid_mixing", EntryStack.create(AMBlocks.ADVANCED_FLUID_MIXER)), new ElectrolyzingCategory(ELECTROLYZING, "category.astromine.electrolyzing", EntryStack.create(AMBlocks.ADVANCED_ELECTROLYZER)), new RefiningCategory(REFINING, "category.astromine.refining", EntryStack.create(AMBlocks.ADVANCED_REFINERY)));
 	}
 	
 	@Override
@@ -152,18 +152,18 @@ public class AstromineRoughlyEnoughItemsPlugin implements REIPluginV0 {
 	
 	@Override
 	public void registerOthers(RecipeHelper recipeHelper) {
-		recipeHelper.registerWorkingStations(INFUSING, EntryStack.create(AstromineBlocks.ALTAR));
-		recipeHelper.registerWorkingStations(TRITURATING, EntryStack.create(AstromineBlocks.PRIMITIVE_TRITURATOR), EntryStack.create(AstromineBlocks.BASIC_TRITURATOR), EntryStack.create(AstromineBlocks.ADVANCED_TRITURATOR), EntryStack.create(AstromineBlocks.ELITE_TRITURATOR));
-		recipeHelper.registerWorkingStations(ELECTRIC_SMELTING, EntryStack.create(AstromineBlocks.PRIMITIVE_ELECTRIC_FURNACE), EntryStack.create(AstromineBlocks.BASIC_ELECTRIC_FURNACE), EntryStack.create(AstromineBlocks.ADVANCED_ELECTRIC_FURNACE), EntryStack.create(AstromineBlocks.ELITE_ELECTRIC_FURNACE));
-		recipeHelper.registerWorkingStations(LIQUID_GENERATING, EntryStack.create(AstromineBlocks.PRIMITIVE_LIQUID_GENERATOR), EntryStack.create(AstromineBlocks.BASIC_LIQUID_GENERATOR), EntryStack.create(AstromineBlocks.ADVANCED_LIQUID_GENERATOR), EntryStack.create(AstromineBlocks.ELITE_LIQUID_GENERATOR));
-		recipeHelper.registerWorkingStations(SOLID_GENERATING, EntryStack.create(AstromineBlocks.PRIMITIVE_SOLID_GENERATOR), EntryStack.create(AstromineBlocks.BASIC_SOLID_GENERATOR), EntryStack.create(AstromineBlocks.ADVANCED_SOLID_GENERATOR), EntryStack.create(AstromineBlocks.ELITE_SOLID_GENERATOR));
-		recipeHelper.registerWorkingStations(FLUID_MIXING, EntryStack.create(AstromineBlocks.PRIMITIVE_FLUID_MIXER), EntryStack.create(AstromineBlocks.BASIC_FLUID_MIXER), EntryStack.create(AstromineBlocks.ADVANCED_FLUID_MIXER), EntryStack.create(AstromineBlocks.ELITE_FLUID_MIXER));
-		recipeHelper.registerWorkingStations(ELECTROLYZING, EntryStack.create(AstromineBlocks.PRIMITIVE_ELECTROLYZER), EntryStack.create(AstromineBlocks.BASIC_ELECTROLYZER), EntryStack.create(AstromineBlocks.ADVANCED_ELECTROLYZER), EntryStack.create(AstromineBlocks.ELITE_ELECTROLYZER));
-		recipeHelper.registerWorkingStations(REFINING, EntryStack.create(AstromineBlocks.PRIMITIVE_REFINERY), EntryStack.create(AstromineBlocks.BASIC_REFINERY), EntryStack.create(AstromineBlocks.ADVANCED_REFINERY), EntryStack.create(AstromineBlocks.ELITE_REFINERY));
-		recipeHelper.registerWorkingStations(PRESSING, EntryStack.create(AstromineBlocks.PRIMITIVE_PRESSER), EntryStack.create(AstromineBlocks.BASIC_PRESSER), EntryStack.create(AstromineBlocks.ADVANCED_PRESSER), EntryStack.create(AstromineBlocks.ELITE_PRESSER));
-		recipeHelper.registerWorkingStations(WIREMILLING, EntryStack.create(AstromineBlocks.PRIMITIVE_WIREMILL), EntryStack.create(AstromineBlocks.BASIC_WIREMILL), EntryStack.create(AstromineBlocks.ADVANCED_WIREMILL), EntryStack.create(AstromineBlocks.ELITE_WIREMILL));
-		recipeHelper.registerWorkingStations(ALLOY_SMELTING, EntryStack.create(AstromineBlocks.PRIMITIVE_ALLOY_SMELTER), EntryStack.create(AstromineBlocks.BASIC_ALLOY_SMELTER), EntryStack.create(AstromineBlocks.ADVANCED_ALLOY_SMELTER), EntryStack.create(AstromineBlocks.ELITE_ALLOY_SMELTER));
-		recipeHelper.registerWorkingStations(SOLIDIFYING, EntryStack.create(AstromineBlocks.PRIMITIVE_SOLIDIFIER), EntryStack.create(AstromineBlocks.BASIC_SOLIDIFIER), EntryStack.create(AstromineBlocks.ADVANCED_SOLIDIFIER), EntryStack.create(AstromineBlocks.ELITE_SOLIDIFIER));
+		recipeHelper.registerWorkingStations(INFUSING, EntryStack.create(AMBlocks.ALTAR));
+		recipeHelper.registerWorkingStations(TRITURATING, EntryStack.create(AMBlocks.PRIMITIVE_TRITURATOR), EntryStack.create(AMBlocks.BASIC_TRITURATOR), EntryStack.create(AMBlocks.ADVANCED_TRITURATOR), EntryStack.create(AMBlocks.ELITE_TRITURATOR));
+		recipeHelper.registerWorkingStations(ELECTRIC_SMELTING, EntryStack.create(AMBlocks.PRIMITIVE_ELECTRIC_FURNACE), EntryStack.create(AMBlocks.BASIC_ELECTRIC_FURNACE), EntryStack.create(AMBlocks.ADVANCED_ELECTRIC_FURNACE), EntryStack.create(AMBlocks.ELITE_ELECTRIC_FURNACE));
+		recipeHelper.registerWorkingStations(LIQUID_GENERATING, EntryStack.create(AMBlocks.PRIMITIVE_LIQUID_GENERATOR), EntryStack.create(AMBlocks.BASIC_LIQUID_GENERATOR), EntryStack.create(AMBlocks.ADVANCED_LIQUID_GENERATOR), EntryStack.create(AMBlocks.ELITE_LIQUID_GENERATOR));
+		recipeHelper.registerWorkingStations(SOLID_GENERATING, EntryStack.create(AMBlocks.PRIMITIVE_SOLID_GENERATOR), EntryStack.create(AMBlocks.BASIC_SOLID_GENERATOR), EntryStack.create(AMBlocks.ADVANCED_SOLID_GENERATOR), EntryStack.create(AMBlocks.ELITE_SOLID_GENERATOR));
+		recipeHelper.registerWorkingStations(FLUID_MIXING, EntryStack.create(AMBlocks.PRIMITIVE_FLUID_MIXER), EntryStack.create(AMBlocks.BASIC_FLUID_MIXER), EntryStack.create(AMBlocks.ADVANCED_FLUID_MIXER), EntryStack.create(AMBlocks.ELITE_FLUID_MIXER));
+		recipeHelper.registerWorkingStations(ELECTROLYZING, EntryStack.create(AMBlocks.PRIMITIVE_ELECTROLYZER), EntryStack.create(AMBlocks.BASIC_ELECTROLYZER), EntryStack.create(AMBlocks.ADVANCED_ELECTROLYZER), EntryStack.create(AMBlocks.ELITE_ELECTROLYZER));
+		recipeHelper.registerWorkingStations(REFINING, EntryStack.create(AMBlocks.PRIMITIVE_REFINERY), EntryStack.create(AMBlocks.BASIC_REFINERY), EntryStack.create(AMBlocks.ADVANCED_REFINERY), EntryStack.create(AMBlocks.ELITE_REFINERY));
+		recipeHelper.registerWorkingStations(PRESSING, EntryStack.create(AMBlocks.PRIMITIVE_PRESSER), EntryStack.create(AMBlocks.BASIC_PRESSER), EntryStack.create(AMBlocks.ADVANCED_PRESSER), EntryStack.create(AMBlocks.ELITE_PRESSER));
+		recipeHelper.registerWorkingStations(WIREMILLING, EntryStack.create(AMBlocks.PRIMITIVE_WIREMILL), EntryStack.create(AMBlocks.BASIC_WIREMILL), EntryStack.create(AMBlocks.ADVANCED_WIREMILL), EntryStack.create(AMBlocks.ELITE_WIREMILL));
+		recipeHelper.registerWorkingStations(ALLOY_SMELTING, EntryStack.create(AMBlocks.PRIMITIVE_ALLOY_SMELTER), EntryStack.create(AMBlocks.BASIC_ALLOY_SMELTER), EntryStack.create(AMBlocks.ADVANCED_ALLOY_SMELTER), EntryStack.create(AMBlocks.ELITE_ALLOY_SMELTER));
+		recipeHelper.registerWorkingStations(SOLIDIFYING, EntryStack.create(AMBlocks.PRIMITIVE_SOLIDIFIER), EntryStack.create(AMBlocks.BASIC_SOLIDIFIER), EntryStack.create(AMBlocks.ADVANCED_SOLIDIFIER), EntryStack.create(AMBlocks.ELITE_SOLIDIFIER));
 		
 		recipeHelper.registerAutoCraftButtonArea(LIQUID_GENERATING, bounds -> new Rectangle(0, 0, 0, 0));
 		recipeHelper.registerAutoCraftButtonArea(SOLID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
@@ -187,7 +187,7 @@ public class AstromineRoughlyEnoughItemsPlugin implements REIPluginV0 {
 
 			@Override
 			public @Nullable Tooltip getTooltip(Point mouse) {
-				return Tooltip.create(mouse, new TranslatableText("text.astromine.energy"), new LiteralText(NumberUtilities.shorten(energy, "") + "E").formatted(Formatting.GRAY), new LiteralText("Astromine").formatted(Formatting.BLUE, Formatting.ITALIC));
+				return Tooltip.create(mouse, new TranslatableText("text.astromine.energy"), new LiteralText(NumberUtils.shorten(energy, "") + "E").formatted(Formatting.GRAY), new LiteralText("Astromine").formatted(Formatting.BLUE, Formatting.ITALIC));
 			}
 		}).notFavoritesInteractable());
 	}
@@ -215,9 +215,9 @@ public class AstromineRoughlyEnoughItemsPlugin implements REIPluginV0 {
 		protected void drawBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 			if (background) {
 				Rectangle bounds = getBounds();
-				MinecraftClient.getInstance().getTextureManager().bindTexture(ENERGY_BACKGROUND);
+				ClientUtils.getInstance().getTextureManager().bindTexture(ENERGY_BACKGROUND);
 				DrawableHelper.drawTexture(matrices, bounds.x, bounds.y, 0, 0, bounds.width, bounds.height, bounds.width, bounds.height);
-				MinecraftClient.getInstance().getTextureManager().bindTexture(ENERGY_FOREGROUND);
+				ClientUtils.getInstance().getTextureManager().bindTexture(ENERGY_FOREGROUND);
 				int height;
 				if (generating)
 					height = bounds.height - MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
@@ -245,7 +245,7 @@ public class AstromineRoughlyEnoughItemsPlugin implements REIPluginV0 {
 		protected void drawBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 			if (background) {
 				Rectangle bounds = getBounds();
-				MinecraftClient.getInstance().getTextureManager().bindTexture(ENERGY_BACKGROUND);
+				ClientUtils.getInstance().getTextureManager().bindTexture(ENERGY_BACKGROUND);
 				DrawableHelper.drawTexture(matrices, bounds.x, bounds.y, 0, 0, bounds.width, bounds.height, bounds.width, bounds.height);
 			}
 		}
@@ -259,8 +259,8 @@ public class AstromineRoughlyEnoughItemsPlugin implements REIPluginV0 {
 				if (!generating)
 					height = bounds.height - MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
 				else height = MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
-				VertexConsumerProvider.Immediate consumers = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
-				SpriteRenderer.beginPass().setup(consumers, RenderLayer.getSolid()).sprite(FluidUtilities.getSprites(entry.getFluid())[0]).color(FluidUtilities.getColor(MinecraftClient.getInstance().player, entry.getFluid())).light(0x00f000f0).overlay(OverlayTexture.DEFAULT_UV).alpha(
+				VertexConsumerProvider.Immediate consumers = ClientUtils.getInstance().getBufferBuilders().getEntityVertexConsumers();
+				SpriteRenderer.beginPass().setup(consumers, RenderLayer.getSolid()).sprite(FluidUtils.getSprites(entry.getFluid())[0]).color(FluidUtils.getColor(ClientUtils.getPlayer(), entry.getFluid())).light(0x00f000f0).overlay(OverlayTexture.DEFAULT_UV).alpha(
 					0xff).normal(matrices.peek().getNormal(), 0, 0, 0).position(matrices.peek().getModel(), bounds.x + 1, bounds.y + bounds.height - height + 1, bounds.x + bounds.width - 1, bounds.y + bounds.height - 1, getZOffset() + 1).next(
 					PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
 				consumers.draw();

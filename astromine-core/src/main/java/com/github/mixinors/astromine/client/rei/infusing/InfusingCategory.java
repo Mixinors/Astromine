@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.client.rei.infusing;
 
-import com.github.mixinors.astromine.registry.AstromineBlocks;
+import com.github.mixinors.astromine.registry.AMBlocks;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
@@ -53,7 +53,7 @@ public class InfusingCategory implements RecipeCategory<InfusingDisplay> {
 
 	@Override
 	public EntryStack getLogo() {
-		return EntryStack.create(AstromineBlocks.ALTAR);
+		return EntryStack.create(AMBlocks.ALTAR);
 	}
 
 	@Override
@@ -68,11 +68,11 @@ public class InfusingCategory implements RecipeCategory<InfusingDisplay> {
 			List<EntryStack> stacks = display.getInputEntries().get(i);
 			int x = (int) (radius * 1.05f * MathHelper.cos(degrees * i * 0.0174532925F));
 			int y = (int) (radius * MathHelper.sin(degrees * i * 0.0174532925F));
-			widgets.add(Widgets.createSlot(new Point(bounds.x + 65 + x, bounds.y + 54 + y + 15)).entry(EntryStack.create(AstromineBlocks.ALTAR_PEDESTAL)).noFavoritesInteractable().noInteractable().disableHighlight().disableTooltips().disableBackground());
+			widgets.add(Widgets.createSlot(new Point(bounds.x + 65 + x, bounds.y + 54 + y + 15)).entry(EntryStack.create(AMBlocks.ALTAR_PEDESTAL)).noFavoritesInteractable().noInteractable().disableHighlight().disableTooltips().disableBackground());
 			widgets.add(Widgets.createSlot(new Point(bounds.x + 65 + x, bounds.y + 54 + y)).entries(stacks).disableBackground().markInput());
 		}
 
-		widgets.add(Widgets.createSlot(new Point(bounds.x + 65, bounds.y + 54 + 15)).entry(EntryStack.create(AstromineBlocks.ALTAR)).noFavoritesInteractable().noInteractable().disableHighlight().disableTooltips().disableBackground());
+		widgets.add(Widgets.createSlot(new Point(bounds.x + 65, bounds.y + 54 + 15)).entry(EntryStack.create(AMBlocks.ALTAR)).noFavoritesInteractable().noInteractable().disableHighlight().disableTooltips().disableBackground());
 		widgets.add(Widgets.createSlot(new Point(bounds.x + 65, bounds.y + 54)).entries(display.getResultingEntries().get(0)).disableBackground().markOutput());
 		return widgets;
 	}

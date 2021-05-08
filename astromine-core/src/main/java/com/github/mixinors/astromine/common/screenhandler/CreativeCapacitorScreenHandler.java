@@ -24,12 +24,12 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
-import com.github.mixinors.astromine.registry.AstromineScreenHandlers;
+import com.github.mixinors.astromine.registry.AMScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 public class CreativeCapacitorScreenHandler extends CapacitorScreenHandler {
 	public CreativeCapacitorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AstromineScreenHandlers.CREATIVE_CAPACITOR, syncId, player, position);
+		super(AMScreenHandlers.CREATIVE_CAPACITOR, syncId, player, position);
 	}
 }

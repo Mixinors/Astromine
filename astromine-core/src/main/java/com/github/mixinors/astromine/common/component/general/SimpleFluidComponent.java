@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.common.component.general;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import net.minecraft.util.math.Direction;
 
-import com.github.mixinors.astromine.common.utilities.data.predicate.TriPredicate;
+import com.github.mixinors.astromine.common.util.data.predicate.TriPredicate;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import org.jetbrains.annotations.NotNull;

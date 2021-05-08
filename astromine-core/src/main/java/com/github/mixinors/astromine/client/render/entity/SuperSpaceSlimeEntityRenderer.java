@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.client.render.entity;
 
+import com.github.mixinors.astromine.AMCommon;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.MobEntityRenderer;
@@ -32,14 +33,13 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
-import com.github.mixinors.astromine.AstromineCommon;
 import com.github.mixinors.astromine.client.model.SuperSpaceSlimeEntityModel;
 import com.github.mixinors.astromine.common.entity.SuperSpaceSlimeEntity;
 
 public class SuperSpaceSlimeEntityRenderer extends MobEntityRenderer<SuperSpaceSlimeEntity, SuperSpaceSlimeEntityModel> {
 
-	private static final Identifier TEXTURE = AstromineCommon.identifier("textures/entity/space_slime/space_slime.png");
-	private static final Identifier EXPLODING_TEXTURE = AstromineCommon.identifier("textures/entity/space_slime/space_slime_exploding.png");
+	private static final Identifier TEXTURE = AMCommon.identifier("textures/entity/space_slime/space_slime.png");
+	private static final Identifier EXPLODING_TEXTURE = AMCommon.identifier("textures/entity/space_slime/space_slime_exploding.png");
 
 	public SuperSpaceSlimeEntityRenderer(EntityRenderDispatcher entityRenderDispatcher) {
 		super(entityRenderDispatcher, new SuperSpaceSlimeEntityModel(16), 0.25F);

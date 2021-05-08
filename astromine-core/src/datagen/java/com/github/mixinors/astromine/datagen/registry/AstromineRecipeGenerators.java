@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.datagen.registry;
 
-import com.github.mixinors.astromine.AstromineCommon;
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.datagen.generator.recipe.onetime.base.OneTimeRecipeGenerator;
 import com.github.mixinors.astromine.datagen.generator.recipe.set.base.SetRecipeGenerator;
 import com.github.mixinors.astromine.datagen.material.MaterialSet;
@@ -57,11 +57,11 @@ public abstract class AstromineRecipeGenerators {
 			try {
 				if (set.shouldGenerate(generator)) {
 					generator.generate(recipes, set);
-					AstromineCommon.LOGGER.info("Recipe generation of " + set.getName() + " succeeded, with generator " + generator.getGeneratorName() + ".");
+					AMCommon.LOGGER.info("Recipe generation of " + set.getName() + " succeeded, with generator " + generator.getGeneratorName() + ".");
 				}
 			} catch (Exception exception) {
-				AstromineCommon.LOGGER.error("Recipe generation of " + set.getName() + " failed, with generator " + generator.getGeneratorName() + ".");
-				AstromineCommon.LOGGER.error(exception.getMessage());
+				AMCommon.LOGGER.error("Recipe generation of " + set.getName() + " failed, with generator " + generator.getGeneratorName() + ".");
+				AMCommon.LOGGER.error(exception.getMessage());
 			}
 		});
 	}
@@ -71,8 +71,8 @@ public abstract class AstromineRecipeGenerators {
 			try {
 				generator.generate(recipes);
 			} catch (Exception exception) {
-				AstromineCommon.LOGGER.error("Recipe generation failed, with generator " + generator.getGeneratorName() + ".");
-				AstromineCommon.LOGGER.error(exception.getMessage());
+				AMCommon.LOGGER.error("Recipe generation failed, with generator " + generator.getGeneratorName() + ".");
+				AMCommon.LOGGER.error(exception.getMessage());
 			}
 		});
 	}

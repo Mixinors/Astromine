@@ -48,8 +48,8 @@ import com.github.mixinors.astromine.common.component.world.WorldNetworkComponen
 import com.github.mixinors.astromine.common.network.NetworkMember;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.registry.NetworkMemberRegistry;
-import com.github.mixinors.astromine.common.utilities.NetworkUtilities;
-import com.github.mixinors.astromine.common.utilities.data.position.WorldPos;
+import com.github.mixinors.astromine.common.util.NetworkUtils;
+import com.github.mixinors.astromine.common.util.data.position.WorldPos;
 
 import com.google.common.collect.ImmutableMap;
 import javax.annotation.Nullable;
@@ -116,11 +116,11 @@ public abstract class CableBlock extends Block implements Waterloggable {
 	public void onPlaced(World world, BlockPos position, BlockState stateA, LivingEntity placer, ItemStack stack) {
 		super.onPlaced(world, position, stateA, placer, stack);
 
-		NetworkUtilities.Tracer.trace(getNetworkType(), WorldPos.of(world, position));
+		NetworkUtils.Tracer.trace(getNetworkType(), WorldPos.of(world, position));
 
-		Set<Direction> set = NetworkUtilities.Modeller.of(getNetworkType(), position, world);
+		Set<Direction> set = NetworkUtils.Modeller.of(getNetworkType(), position, world);
 
-		world.setBlockState(position, NetworkUtilities.Modeller.toBlockState(set, stateA));
+		world.setBlockState(position, NetworkUtils.Modeller.toBlockState(set, stateA));
 
 		for (Direction direction : Direction.values()) {
 			BlockPos offsetPos = position.offset(direction);
@@ -132,9 +132,9 @@ public abstract class CableBlock extends Block implements Waterloggable {
 			if (member.acceptsType(getNetworkType()))
 				continue;
 
-			Set<Direction> directions = NetworkUtilities.Modeller.of(((CableBlock) offsetBlock.getBlock()).getNetworkType(), offsetPos, world);
+			Set<Direction> directions = NetworkUtils.Modeller.of(((CableBlock) offsetBlock.getBlock()).getNetworkType(), offsetPos, world);
 
-			world.setBlockState(offsetPos, NetworkUtilities.Modeller.toBlockState(directions, world.getBlockState(offsetPos)));
+			world.setBlockState(offsetPos, NetworkUtils.Modeller.toBlockState(directions, world.getBlockState(offsetPos)));
 		}
 	}
 
@@ -162,10 +162,10 @@ public abstract class CableBlock extends Block implements Waterloggable {
 			if (((CableBlock) offsetBlock).getNetworkType() != getNetworkType())
 				continue;
 
-			NetworkUtilities.Tracer.trace(getNetworkType(), WorldPos.of(world, offsetPos));
+			NetworkUtils.Tracer.trace(getNetworkType(), WorldPos.of(world, offsetPos));
 
-			Set<Direction> directions = NetworkUtilities.Modeller.of(getNetworkType(), offsetPos, world);
-			world.setBlockState(offsetPos, NetworkUtilities.Modeller.toBlockState(directions, world.getBlockState(offsetPos)));
+			Set<Direction> directions = NetworkUtils.Modeller.of(getNetworkType(), offsetPos, world);
+			world.setBlockState(offsetPos, NetworkUtils.Modeller.toBlockState(directions, world.getBlockState(offsetPos)));
 		}
 	}
 
@@ -180,10 +180,10 @@ public abstract class CableBlock extends Block implements Waterloggable {
 		WorldNetworkComponent networkComponent = WorldNetworkComponent.get(world);
 
 		networkComponent.remove(networkComponent.get(getNetworkType(), position));
-		NetworkUtilities.Tracer.trace(getNetworkType(), WorldPos.of(world, position));
+		NetworkUtils.Tracer.trace(getNetworkType(), WorldPos.of(world, position));
 
-		Set<Direction> directions = NetworkUtilities.Modeller.of(getNetworkType(), position, world);
-		world.setBlockState(position, NetworkUtilities.Modeller.toBlockState(directions, world.getBlockState(position)));
+		Set<Direction> directions = NetworkUtils.Modeller.of(getNetworkType(), position, world);
+		world.setBlockState(position, NetworkUtils.Modeller.toBlockState(directions, world.getBlockState(position)));
 	}
 
 	/**
@@ -201,7 +201,7 @@ public abstract class CableBlock extends Block implements Waterloggable {
 	 */
 	@Override
 	public VoxelShape getOutlineShape(BlockState blockState, BlockView world, BlockPos position, ShapeContext entityContext) {
-		return NetworkUtilities.Modeller.getVoxelShape(NetworkUtilities.Modeller.of(blockState));
+		return NetworkUtils.Modeller.getVoxelShape(NetworkUtils.Modeller.of(blockState));
 	}
 
 	/**

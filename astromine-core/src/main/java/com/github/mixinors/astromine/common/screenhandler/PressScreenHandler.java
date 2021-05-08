@@ -28,7 +28,7 @@ import com.github.mixinors.astromine.common.block.entity.PressBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyItemScreenHandler;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
-import com.github.mixinors.astromine.registry.AstromineScreenHandlers;
+import com.github.mixinors.astromine.registry.AMScreenHandlers;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
@@ -39,7 +39,7 @@ public class PressScreenHandler extends ComponentBlockEntityEnergyItemScreenHand
 	private final PressBlockEntity press;
 	
 	public PressScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AstromineScreenHandlers.PRESSER, syncId, player, position);
+		super(AMScreenHandlers.PRESSER, syncId, player, position);
 		
 		press = (PressBlockEntity) blockEntity;
 	}

@@ -24,18 +24,17 @@
 
 package com.github.mixinors.astromine.common.block.transfer;
 
+import com.github.mixinors.astromine.AMCommon;
 import net.minecraft.util.Identifier;
-
-import com.github.mixinors.astromine.AstromineCommon;
 
 /**
  * An enum representing a side's transfer information.
  */
 public enum TransferType {
-	NONE(AstromineCommon.identifier("textures/widget/none.png")),
-	INPUT(AstromineCommon.identifier("textures/widget/input.png")),
-	OUTPUT(AstromineCommon.identifier("textures/widget/output.png")),
-	INPUT_OUTPUT(AstromineCommon.identifier("textures/widget/input_output.png"));
+	NONE(AMCommon.identifier("textures/widget/none.png")),
+	INPUT(AMCommon.identifier("textures/widget/input.png")),
+	OUTPUT(AMCommon.identifier("textures/widget/output.png")),
+	INPUT_OUTPUT(AMCommon.identifier("textures/widget/input_output.png"));
 
 	private final Identifier texture;
 

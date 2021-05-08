@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.criterion;
 
-import com.github.mixinors.astromine.registry.AstromineCriteria;
+import com.github.mixinors.astromine.registry.AMCriteria;
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
@@ -61,7 +61,7 @@ public class UseFireExtinguisherCriterion extends AbstractCriterion<UseFireExtin
 		}
 
 		public static Conditions create() {
-			return new Conditions(AstromineCriteria.USE_FIRE_EXTINGUISHER.id, EntityPredicate.Extended.EMPTY);
+			return new Conditions(AMCriteria.USE_FIRE_EXTINGUISHER.id, EntityPredicate.Extended.EMPTY);
 		}
 	}
 }

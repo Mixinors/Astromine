@@ -27,9 +27,9 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.block.entity.base.ComponentItemBlockEntity;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.component.general.SimpleItemComponent;
-import com.github.mixinors.astromine.common.utilities.StackUtilities;
-import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.common.util.StackUtils;
+import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AMConfig;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
 
@@ -60,7 +60,7 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 	protected int prevPosition = 0;
 
 	public ConveyorBlockEntity() {
-		super(AstromineBlockEntityTypes.CONVEYOR);
+		super(AMBlockEntityTypes.CONVEYOR);
 	}
 
 	public ConveyorBlockEntity(BlockEntityType type) {
@@ -201,7 +201,7 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 
 	@Override
 	public int accepts(ItemStack stack) {
-		if (getItemComponent().getFirst().isEmpty() || (AstromineConfig.get().conveyorsMergeStacks && StackUtilities.areItemsAndTagsEqual(stack, getItemComponent().getFirst()))) {
+		if (getItemComponent().getFirst().isEmpty() || (AMConfig.get().conveyorsMergeStacks && StackUtils.areItemsAndTagsEqual(stack, getItemComponent().getFirst()))) {
 			return getItemComponent().getFirst().getMaxCount() - getItemComponent().getFirst().getCount();
 		} else {
 			return 0;
@@ -225,7 +225,7 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 		}
 
 		if (!world.isClient) {
-			Pair<ItemStack, ItemStack> merge = StackUtilities.merge(stack, getItemComponent().getFirst());
+			Pair<ItemStack, ItemStack> merge = StackUtils.merge(stack, getItemComponent().getFirst());
 			getItemComponent().setFirst(merge.getRight());
 		}
 	}

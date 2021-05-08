@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.common.volume.fluid;
 
-import com.github.mixinors.astromine.common.utilities.NumberUtilities;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.common.util.NumberUtils;
+import com.github.mixinors.astromine.registry.AMConfig;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundTag;
@@ -86,7 +86,7 @@ public class FluidVolume extends Volume<Long> {
 	public static final DecimalFormat FORMAT = new DecimalFormat("#0.00");
 
 	public static long getTransfer() {
-		return AstromineConfig.get().fluidTransfer;
+		return AMConfig.get().fluidTransfer;
 	}
 
 	private Fluid fluid;
@@ -295,7 +295,7 @@ public class FluidVolume extends Volume<Long> {
 	 * For example, it may be "minecraft:water, 16.50 of 32.00 Buckets" */
 	@Override
 	public String toString() {
-		return getFluidId().toString() + ", " + NumberUtilities.shorten(getAmount().doubleValue(), "") + "/" + NumberUtilities.shorten(getSize().doubleValue(), "") + " Buckets";
+		return getFluidId().toString() + ", " + NumberUtils.shorten(getAmount().doubleValue(), "") + "/" + NumberUtils.shorten(getSize().doubleValue(), "") + " Buckets";
 	}
 
 	/** Deserializes a volume from a {@link CompoundTag}. */

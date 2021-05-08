@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.component.general.*;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.item.BlockItem;
@@ -38,7 +38,7 @@ import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.registry.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergyConsumedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
@@ -48,7 +48,7 @@ public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity imple
 	private long cooldown = 0L;
 
 	public BlockPlacerBlockEntity() {
-		super(AstromineBlockEntityTypes.BLOCK_PLACER);
+		super(AMBlockEntityTypes.BLOCK_PLACER);
 	}
 
 	@Override
@@ -63,17 +63,17 @@ public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity imple
 
 	@Override
 	public double getEnergySize() {
-		return AstromineConfig.get().blockPlacerEnergy;
+		return AMConfig.get().blockPlacerEnergy;
 	}
 
 	@Override
 	public double getEnergyConsumed() {
-		return AstromineConfig.get().blockPlacerEnergyConsumed;
+		return AMConfig.get().blockPlacerEnergyConsumed;
 	}
 
 	@Override
 	public double getMachineSpeed() {
-		return AstromineConfig.get().blockPlacerSpeed;
+		return AMConfig.get().blockPlacerSpeed;
 	}
 
 	@Override

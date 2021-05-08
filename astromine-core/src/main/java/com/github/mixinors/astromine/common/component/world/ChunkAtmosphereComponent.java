@@ -24,10 +24,13 @@
 
 package com.github.mixinors.astromine.common.component.world;
 
-import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+import com.github.mixinors.astromine.registry.AMComponents;
+import com.github.mixinors.astromine.registry.AMNetworks;
 
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -39,8 +42,7 @@ import net.minecraft.world.chunk.WorldChunk;
 
 import com.github.mixinors.astromine.client.cca.ClientAtmosphereManager;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
-import com.github.mixinors.astromine.registry.AstromineComponents;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.registry.AMConfig;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
 import org.jetbrains.annotations.Nullable;
@@ -124,7 +126,7 @@ public final class ChunkAtmosphereComponent implements Component, ServerTickingC
 
 		if (!world.isClient) {
 			world.getPlayers().forEach((player) -> {
-				ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, ClientAtmosphereManager.GAS_REMOVED, ClientAtmosphereManager.ofGasRemoved(blockPos));
+				ServerPlayNetworking.send((ServerPlayerEntity) player, AMNetworks.GAS_REMOVED, ClientAtmosphereManager.ofGasRemoved(blockPos));
 			});
 		}
 	}
@@ -139,7 +141,7 @@ public final class ChunkAtmosphereComponent implements Component, ServerTickingC
 
 		if (!world.isClient) {
 			world.getPlayers().forEach((player) -> {
-				ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, ClientAtmosphereManager.GAS_ADDED, ClientAtmosphereManager.ofGasAdded(blockPos, volume));
+				ServerPlayNetworking.send((ServerPlayerEntity) player, AMNetworks.GAS_ADDED, ClientAtmosphereManager.ofGasAdded(blockPos, volume));
 			});
 		}
 	}
@@ -239,13 +241,13 @@ public final class ChunkAtmosphereComponent implements Component, ServerTickingC
 		if (world == null)
 			return;
 
-		if (atmosphereTickCounter < AstromineConfig.get().gasTickRate) {
+		if (atmosphereTickCounter < AMConfig.get().gasTickRate) {
 			atmosphereTickCounter++;
 		} else {
 			atmosphereTickCounter = 0;
 		}
 
-		if (!(atmosphereTickCounter == AstromineConfig.get().gasTickRate && world.isChunkLoaded(chunk.getPos().x, chunk.getPos().z)))
+		if (!(atmosphereTickCounter == AMConfig.get().gasTickRate && world.isChunkLoaded(chunk.getPos().x, chunk.getPos().z)))
 			return;
 
 		for (Map.Entry<BlockPos, FluidVolume> pair : volumes.entrySet()) {
@@ -253,7 +255,7 @@ public final class ChunkAtmosphereComponent implements Component, ServerTickingC
 
 			FluidVolume centerVolume = pair.getValue();
 
-			centerVolume.take(AstromineConfig.get().gasDecayAmount);
+			centerVolume.take(AMConfig.get().gasDecayAmount);
 
 			if (centerVolume.isEmpty()) {
 				remove(centerPos);
@@ -284,7 +286,7 @@ public final class ChunkAtmosphereComponent implements Component, ServerTickingC
 				} else {
 					ChunkPos neighborPos = getNeighborFromPos(sidePos);
 
-					ChunkAtmosphereComponent chunkAtmosphereComponent = AstromineComponents.CHUNK_ATMOSPHERE_COMPONENT.get(world.getChunk(neighborPos.x, neighborPos.z));
+					ChunkAtmosphereComponent chunkAtmosphereComponent = AMComponents.CHUNK_ATMOSPHERE_COMPONENT.get(world.getChunk(neighborPos.x, neighborPos.z));
 
 					FluidVolume sideVolume = chunkAtmosphereComponent.get(sidePos);
 
@@ -354,7 +356,7 @@ public final class ChunkAtmosphereComponent implements Component, ServerTickingC
 	@Nullable
 	public static <V> ChunkAtmosphereComponent get(V v) {
 		try {
-			return AstromineComponents.CHUNK_ATMOSPHERE_COMPONENT.get(v);
+			return AMComponents.CHUNK_ATMOSPHERE_COMPONENT.get(v);
 		} catch (Exception justShutUpAlready) {
 			return null;
 		}

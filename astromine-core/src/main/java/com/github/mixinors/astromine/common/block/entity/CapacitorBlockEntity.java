@@ -27,14 +27,14 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.component.general.*;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
-import com.github.mixinors.astromine.common.utilities.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.common.volume.energy.InfiniteEnergyVolume;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.registry.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
@@ -84,17 +84,17 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 
 	public static class Primitive extends CapacitorBlockEntity {
 		public Primitive() {
-			super(AstromineBlockEntityTypes.PRIMITIVE_CAPACITOR);
+			super(AMBlockEntityTypes.PRIMITIVE_CAPACITOR);
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().primitiveCapacitorEnergy;
+			return AMConfig.get().primitiveCapacitorEnergy;
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().primitiveCapacitorSpeed;
+			return AMConfig.get().primitiveCapacitorSpeed;
 		}
 
 		@Override
@@ -105,17 +105,17 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 
 	public static class Basic extends CapacitorBlockEntity {
 		public Basic() {
-			super(AstromineBlockEntityTypes.BASIC_CAPACITOR);
+			super(AMBlockEntityTypes.BASIC_CAPACITOR);
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().basicCapacitorEnergy;
+			return AMConfig.get().basicCapacitorEnergy;
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().basicCapacitorSpeed;
+			return AMConfig.get().basicCapacitorSpeed;
 		}
 
 		@Override
@@ -126,17 +126,17 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 
 	public static class Advanced extends CapacitorBlockEntity {
 		public Advanced() {
-			super(AstromineBlockEntityTypes.ADVANCED_CAPACITOR);
+			super(AMBlockEntityTypes.ADVANCED_CAPACITOR);
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().advancedCapacitorEnergy;
+			return AMConfig.get().advancedCapacitorEnergy;
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().advancedCapacitorSpeed;
+			return AMConfig.get().advancedCapacitorSpeed;
 		}
 
 		@Override
@@ -147,17 +147,17 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 
 	public static class Elite extends CapacitorBlockEntity {
 		public Elite() {
-			super(AstromineBlockEntityTypes.ELITE_CAPACITOR);
+			super(AMBlockEntityTypes.ELITE_CAPACITOR);
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().eliteCapacitorEnergy;
+			return AMConfig.get().eliteCapacitorEnergy;
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().eliteCapacitorSpeed;
+			return AMConfig.get().eliteCapacitorSpeed;
 		}
 
 		@Override
@@ -168,7 +168,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 
 	public static class Creative extends CapacitorBlockEntity {
 		public Creative() {
-			super(AstromineBlockEntityTypes.CREATIVE_CAPACITOR);
+			super(AMBlockEntityTypes.CREATIVE_CAPACITOR);
 		}
 
 		@Override

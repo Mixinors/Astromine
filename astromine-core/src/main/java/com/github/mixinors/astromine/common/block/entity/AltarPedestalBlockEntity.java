@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 
 import net.minecraft.block.BlockState;
@@ -53,7 +53,7 @@ public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFr
 	});
 
 	public AltarPedestalBlockEntity() {
-		super(AstromineBlockEntityTypes.ALTAR_PEDESTAL);
+		super(AMBlockEntityTypes.ALTAR_PEDESTAL);
 	}
 
 	@Override

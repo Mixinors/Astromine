@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
-import com.github.mixinors.astromine.registry.AstromineSoundEvents;
+import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AMSoundEvents;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
@@ -34,7 +34,7 @@ import com.github.mixinors.astromine.common.block.entity.base.AbstractConveyable
 
 public class SplitterBlockEntity extends AbstractConveyableBlockEntity {
 	public SplitterBlockEntity() {
-		super(AstromineBlockEntityTypes.SPLITTER);
+		super(AMBlockEntityTypes.SPLITTER);
 	}
 
 	public SplitterBlockEntity(BlockEntityType type) {
@@ -65,6 +65,6 @@ public class SplitterBlockEntity extends AbstractConveyableBlockEntity {
 			getItemComponent().setFirst(stack);
 		}
 
-		world.playSound(null, getPos().getX(), getPos().getY(), getPos().getZ(), AstromineSoundEvents.MACHINE_CLICK, SoundCategory.BLOCKS, 1.0F, 1.0F);
+		world.playSound(null, getPos().getX(), getPos().getY(), getPos().getZ(), AMSoundEvents.MACHINE_CLICK, SoundCategory.BLOCKS, 1.0F, 1.0F);
 	}
 }

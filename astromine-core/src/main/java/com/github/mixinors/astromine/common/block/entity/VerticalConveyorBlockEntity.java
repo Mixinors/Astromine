@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.component.general.SimpleItemComponent;
-import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntityType;
@@ -49,7 +49,7 @@ public class VerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	protected int prevHorizontalPosition;
 
 	public VerticalConveyorBlockEntity() {
-		super(AstromineBlockEntityTypes.VERTICAL_CONVEYOR);
+		super(AMBlockEntityTypes.VERTICAL_CONVEYOR);
 	}
 
 	public VerticalConveyorBlockEntity(BlockEntityType type) {

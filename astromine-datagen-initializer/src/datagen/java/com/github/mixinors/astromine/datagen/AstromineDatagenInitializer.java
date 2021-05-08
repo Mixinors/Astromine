@@ -24,11 +24,11 @@
 
 package com.github.mixinors.astromine.datagen;
 
+import com.github.mixinors.astromine.AMCommon;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 
-import com.github.mixinors.astromine.AstromineCommon;
 import com.github.mixinors.astromine.datagen.entrypoint.DatagenInitializer;
 
 public class AstromineDatagenInitializer implements PreLaunchEntrypoint {
@@ -39,8 +39,8 @@ public class AstromineDatagenInitializer implements PreLaunchEntrypoint {
 			FabricLoader.getInstance().getEntrypoints("astromine_datagen", DatagenInitializer.class).forEach(DatagenInitializer::getMaterialSets); // Ensures Material Sets are registered
 			FabricLoader.getInstance().getEntrypoints("astromine_datagen", DatagenInitializer.class).forEach(DatagenInitializer::registerData);
 		} catch (Exception e) {
-			AstromineCommon.LOGGER.error("Data generation failed.");
-			AstromineCommon.LOGGER.error(e.getMessage(), e);
+			AMCommon.LOGGER.error("Data generation failed.");
+			AMCommon.LOGGER.error(e.getMessage(), e);
 			System.exit(1);
 		}
 		System.exit(0);

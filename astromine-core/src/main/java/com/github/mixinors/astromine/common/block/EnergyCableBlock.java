@@ -28,7 +28,7 @@ import com.github.mixinors.astromine.common.block.base.CableBlock;
 import com.github.mixinors.astromine.common.network.NetworkBlock;
 import com.github.mixinors.astromine.common.network.type.EnergyNetworkType;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
-import com.github.mixinors.astromine.registry.AstromineNetworkTypes;
+import com.github.mixinors.astromine.registry.AMNetworkTypes;
 
 public class EnergyCableBlock extends CableBlock implements EnergyNetworkType.NodeSpeedProvider, NetworkBlock.EnergyNode {
 	private final double cableSpeed;
@@ -40,7 +40,7 @@ public class EnergyCableBlock extends CableBlock implements EnergyNetworkType.No
 
 	@Override
 	public <T extends NetworkType> T getNetworkType() {
-		return (T) AstromineNetworkTypes.ENERGY;
+		return (T) AMNetworkTypes.ENERGY;
 	}
 
 	@Override

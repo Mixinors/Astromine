@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.datagen.registry;
 
-import com.github.mixinors.astromine.AstromineCommon;
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.datagen.generator.tag.onetime.OneTimeTagGenerator;
 import com.github.mixinors.astromine.datagen.generator.tag.set.SetTagGenerator;
 import com.github.mixinors.astromine.datagen.material.MaterialSet;
@@ -58,11 +58,11 @@ public abstract class AstromineTagGenerators {
 			try {
 				if (set.shouldGenerate(generator)) {
 					generator.generate(tags, set);
-					AstromineCommon.LOGGER.info("Tag generation of " + set.getName() + " succeeded, with generator " + generator.getGeneratorName() + ".");
+					AMCommon.LOGGER.info("Tag generation of " + set.getName() + " succeeded, with generator " + generator.getGeneratorName() + ".");
 				}
 			} catch (Exception exception) {
-				AstromineCommon.LOGGER.error("Tag generation of " + set.getName() + " failed, with generator " + generator.getGeneratorName() + ".");
-				AstromineCommon.LOGGER.error(exception.getMessage());
+				AMCommon.LOGGER.error("Tag generation of " + set.getName() + " failed, with generator " + generator.getGeneratorName() + ".");
+				AMCommon.LOGGER.error(exception.getMessage());
 			}
 		});
 	}

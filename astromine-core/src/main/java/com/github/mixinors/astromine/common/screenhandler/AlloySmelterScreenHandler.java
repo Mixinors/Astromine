@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
-import com.github.mixinors.astromine.registry.AstromineScreenHandlers;
+import com.github.mixinors.astromine.registry.AMScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
@@ -40,7 +40,7 @@ public class AlloySmelterScreenHandler extends ComponentBlockEntityEnergyItemScr
 	private AlloySmelterBlockEntity smelter;
 
 	public AlloySmelterScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AstromineScreenHandlers.ALLOY_SMELTER, syncId, player, position);
+		super(AMScreenHandlers.ALLOY_SMELTER, syncId, player, position);
 
 		smelter = (AlloySmelterBlockEntity) blockEntity;
 	}

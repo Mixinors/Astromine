@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.world.generation.space;
 
-import com.github.mixinors.astromine.registry.AstromineBlocks;
+import com.github.mixinors.astromine.registry.AMBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -46,7 +46,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import com.github.mixinors.astromine.common.noise.OctaveNoiseSampler;
 import com.github.mixinors.astromine.common.noise.OpenSimplexNoise;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.registry.AMConfig;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -106,9 +106,9 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 					double noise = this.noise.sample(x, y, z);
 					noise -= computeNoiseFalloff(y);
 
-					if (noise > AstromineConfig.get().asteroidNoiseThreshold) {
+					if (noise > AMConfig.get().asteroidNoiseThreshold) {
 						if (random.nextInt(64) != 0) {
-							chunk.setBlockState(mutable.set(x, y, z), AstromineBlocks.ASTEROID_STONE.getDefaultState(), false);
+							chunk.setBlockState(mutable.set(x, y, z), AMBlocks.ASTEROID_STONE.getDefaultState(), false);
 						}
 					}
 				}

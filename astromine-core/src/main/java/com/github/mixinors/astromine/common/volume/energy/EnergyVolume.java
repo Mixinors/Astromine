@@ -24,11 +24,11 @@
 
 package com.github.mixinors.astromine.common.volume.energy;
 
+import com.github.mixinors.astromine.AMCommon;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.AstromineCommon;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.SimpleEnergyComponent;
 import com.github.mixinors.astromine.common.volume.base.Volume;
@@ -69,7 +69,7 @@ import com.google.gson.JsonObject;
  * - {@link ByteBuf} - through {@link #toPacket(PacketByteBuf)} and {@link #fromPacket(PacketByteBuf)}.
  */
 public class EnergyVolume extends Volume<Double> {
-	public static final Identifier ID = AstromineCommon.identifier("energy");
+	public static final Identifier ID = AMCommon.identifier("energy");
 
 	/** Instantiates an {@link EnergyVolume} with. */
 	protected EnergyVolume(double amount, double size) {

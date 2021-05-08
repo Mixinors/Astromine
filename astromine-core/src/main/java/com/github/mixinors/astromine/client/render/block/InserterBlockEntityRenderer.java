@@ -34,7 +34,7 @@ import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
-import com.github.mixinors.astromine.AstromineCommon;
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.model.InserterArmModel;
 import com.github.mixinors.astromine.common.block.InserterBlock;
 import com.github.mixinors.astromine.common.block.entity.InserterBlockEntity;
@@ -78,7 +78,7 @@ public class InserterBlockEntityRenderer extends BlockEntityRenderer<InserterBlo
 			modelInserterArm.getMiddleArm().pitch = (float) Math.toRadians(20);
 		}
 
-		modelInserterArm.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntitySolid(new Identifier(AstromineCommon.MOD_ID + ":textures/block/" + type + "_inserter.png"))), light, overlay, 1, 1, 1, 1);
+		modelInserterArm.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntitySolid(new Identifier(AMCommon.MOD_ID + ":textures/block/" + type + "_inserter.png"))), light, overlay, 1, 1, 1, 1);
 		matrices.pop();
 
 		if (!blockEntity.getItemComponent().isEmpty()) {

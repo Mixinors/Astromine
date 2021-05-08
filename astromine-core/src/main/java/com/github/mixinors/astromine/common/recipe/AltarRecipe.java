@@ -24,7 +24,8 @@
 
 package com.github.mixinors.astromine.common.recipe;
 
-import com.github.mixinors.astromine.registry.AstromineBlocks;
+import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.registry.AMBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
@@ -35,9 +36,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.AstromineCommon;
-import com.github.mixinors.astromine.common.utilities.IngredientUtilities;
-import com.github.mixinors.astromine.common.utilities.StackUtilities;
+import com.github.mixinors.astromine.common.util.IngredientUtils;
+import com.github.mixinors.astromine.common.util.StackUtils;
 import com.github.mixinors.astromine.common.block.entity.AltarBlockEntity;
 
 import com.google.common.collect.Lists;
@@ -96,7 +96,7 @@ public class AltarRecipe implements Recipe<AltarBlockEntity> {
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineBlocks.ALTAR);
+		return new ItemStack(AMBlocks.ALTAR);
 	}
 
 	@Override
@@ -120,7 +120,7 @@ public class AltarRecipe implements Recipe<AltarBlockEntity> {
 	}
 
 	public static final class Serializer implements RecipeSerializer<AltarRecipe> {
-		public static final Identifier ID = AstromineCommon.identifier("altar");
+		public static final Identifier ID = AMCommon.identifier("altar");
 
 		public static final Serializer INSTANCE = new Serializer();
 
@@ -130,7 +130,7 @@ public class AltarRecipe implements Recipe<AltarBlockEntity> {
 		public AltarRecipe read(Identifier identifier, JsonObject object) {
 			AltarRecipe.Format format = new Gson().fromJson(object, AltarRecipe.Format.class);
 
-			return new AltarRecipe(identifier, format.inputs.stream().map(IngredientUtilities::fromIngredientJson).collect(Collectors.toList()), StackUtilities.fromJson(format.output));
+			return new AltarRecipe(identifier, format.inputs.stream().map(IngredientUtils::fromIngredientJson).collect(Collectors.toList()), StackUtils.fromJson(format.output));
 		}
 
 		@Override
@@ -138,18 +138,18 @@ public class AltarRecipe implements Recipe<AltarBlockEntity> {
 			int size = buffer.readInt();
 			List<Ingredient> inputs = new ArrayList<>(size);
 			for (int i = 0; i < size; i++) {
-				inputs.add(IngredientUtilities.fromIngredientPacket(buffer));
+				inputs.add(IngredientUtils.fromIngredientPacket(buffer));
 			}
-			return new AltarRecipe(identifier, inputs, StackUtilities.fromPacket(buffer));
+			return new AltarRecipe(identifier, inputs, StackUtils.fromPacket(buffer));
 		}
 
 		@Override
 		public void write(PacketByteBuf buffer, AltarRecipe recipe) {
 			buffer.writeInt(recipe.ingredients.size());
 			for (Ingredient ingredient : recipe.ingredients) {
-				IngredientUtilities.toIngredientPacket(buffer, ingredient);
+				IngredientUtils.toIngredientPacket(buffer, ingredient);
 			}
-			StackUtilities.toPacket(buffer, recipe.output);
+			StackUtils.toPacket(buffer, recipe.output);
 		}
 	}
 

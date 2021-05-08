@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.base;
 
+import com.github.mixinors.astromine.AMCommon;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -41,8 +42,6 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
-
-import com.github.mixinors.astromine.AstromineCommon;
 
 import java.util.Locale;
 import java.util.Optional;
@@ -75,7 +74,7 @@ public abstract class HorizontalFacingTieredBlockWithEntity extends HorizontalFa
 
 			Identifier itemId = Registry.ITEM.getId(stack.getItem());
 
-			if (itemId.getNamespace().equals(AstromineCommon.MOD_ID) && itemId.getPath().endsWith("_machine_upgrade_kit")) {
+			if (itemId.getNamespace().equals(AMCommon.MOD_ID) && itemId.getPath().endsWith("_machine_upgrade_kit")) {
 				Tier itemTier = Tier.fromId(itemId);
 
 				if (itemTier != null && itemTier.ordinal() != 0 && Tier.values()[itemTier.ordinal() - 1] == blockTier) {

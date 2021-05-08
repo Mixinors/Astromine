@@ -32,7 +32,7 @@ import net.minecraft.predicate.entity.EntityPredicate;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.registry.AstromineCriteria;
+import com.github.mixinors.astromine.registry.AMCriteria;
 
 import com.google.gson.JsonObject;
 
@@ -98,12 +98,12 @@ public class TrickedPiglinCriterion extends AbstractCriterion<TrickedPiglinCrite
 
 		/** Instantiates {@link Conditions}. */
 		public static Conditions create(boolean successful) {
-			return new Conditions(AstromineCriteria.TRICKED_PIGLIN.getId(), EntityPredicate.Extended.EMPTY, successful);
+			return new Conditions(AMCriteria.TRICKED_PIGLIN.getId(), EntityPredicate.Extended.EMPTY, successful);
 		}
 
 		/** Instantiates {@link Conditions}. */
 		public static Conditions create() {
-			return new Conditions(AstromineCriteria.TRICKED_PIGLIN.getId(), EntityPredicate.Extended.EMPTY);
+			return new Conditions(AMCriteria.TRICKED_PIGLIN.getId(), EntityPredicate.Extended.EMPTY);
 		}
 	}
 }

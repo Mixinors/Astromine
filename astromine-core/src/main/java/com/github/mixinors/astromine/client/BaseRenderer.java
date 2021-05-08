@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.client;
 
+import com.github.mixinors.astromine.common.util.ClientUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.OverlayTexture;
@@ -183,16 +184,16 @@ public class BaseRenderer {
 
 	/** Returns the game's {@link TextureManager}. */
 	public static TextureManager getTextureManager() {
-		return MinecraftClient.getInstance().getTextureManager();
+		return ClientUtils.getInstance().getTextureManager();
 	}
 
 	/** Returns the game's {@link TextureManager}. */
 	public static ItemRenderer getDefaultItemRenderer() {
-		return MinecraftClient.getInstance().getItemRenderer();
+		return ClientUtils.getInstance().getItemRenderer();
 	}
 
 	/** Returns the game's {@link TextRenderer}. */
 	public static TextRenderer getDefaultTextRenderer() {
-		return MinecraftClient.getInstance().textRenderer;
+		return ClientUtils.getInstance().textRenderer;
 	}
 }

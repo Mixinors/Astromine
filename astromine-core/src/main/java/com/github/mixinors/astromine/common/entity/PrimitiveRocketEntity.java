@@ -28,10 +28,11 @@ import com.github.mixinors.astromine.common.component.general.*;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.entity.base.RocketEntity;
-import com.github.mixinors.astromine.registry.AstromineDimensions;
-import com.github.mixinors.astromine.registry.AstromineFluids;
-import com.github.mixinors.astromine.registry.AstromineItems;
-import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+import com.github.mixinors.astromine.registry.AMDimensions;
+import com.github.mixinors.astromine.registry.AMFluids;
+import com.github.mixinors.astromine.registry.AMItems;
+import com.github.mixinors.astromine.registry.AMNetworks;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 
 import net.minecraft.client.util.math.Vector3d;
@@ -46,13 +47,11 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.AstromineCommon;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
-import com.github.mixinors.astromine.common.utilities.VolumeUtilities;
+import com.github.mixinors.astromine.common.util.VolumeUtils;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import com.github.mixinors.astromine.common.screenhandler.PrimitiveRocketScreenHandler;
 import io.netty.buffer.Unpooled;
@@ -63,11 +62,9 @@ import javax.annotation.Nullable;
 import java.util.Collection;
 
 public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScreenHandlerFactory {
-	public static final Identifier PRIMITIVE_ROCKET_SPAWN = AstromineCommon.identifier("primitive_rocket_spawn");
+	private static final FluidIngredient KEROSENE_INGREDIENT = FluidIngredient.ofFluidVolumes(FluidVolume.of(FluidVolume.BUCKET / 9L, AMFluids.KEROSENE));
 
-	private static final FluidIngredient KEROSENE_INGREDIENT = FluidIngredient.ofFluidVolumes(FluidVolume.of(FluidVolume.BUCKET / 9L, AstromineFluids.KEROSENE));
-
-	private static final FluidIngredient OXYGEN_INGREDIENT = FluidIngredient.ofFluidVolumes(FluidVolume.of(FluidVolume.BUCKET / 27L, AstromineFluids.OXYGEN));
+	private static final FluidIngredient OXYGEN_INGREDIENT = FluidIngredient.ofFluidVolumes(FluidVolume.of(FluidVolume.BUCKET / 27L, AMFluids.OXYGEN));
 
 	public PrimitiveRocketEntity(EntityType<?> type, World world) {
 		super(type, world);
@@ -109,7 +106,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 
 	@Override
 	protected Collection<ItemStack> getDroppedStacks() {
-		return Lists.newArrayList(new ItemStack(AstromineItems.PRIMITIVE_ROCKET_BOOSTER), new ItemStack(AstromineItems.PRIMITIVE_ROCKET_HULL), new ItemStack(AstromineItems.PRIMITIVE_ROCKET_PLATING, 2));
+		return Lists.newArrayList(new ItemStack(AMItems.PRIMITIVE_ROCKET_BOOSTER), new ItemStack(AMItems.PRIMITIVE_ROCKET_HULL), new ItemStack(AMItems.PRIMITIVE_ROCKET_PLATING, 2));
 	}
 
 	@Override
@@ -147,7 +144,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 		packet.writeUuid(this.getUuid());
 		packet.writeInt(this.getEntityId());
 
-		return ServerSidePacketRegistry.INSTANCE.toPacket(PRIMITIVE_ROCKET_SPAWN, packet);
+		return ServerPlayNetworking.createS2CPacket(AMNetworks.PRIMITIVE_ROCKET_SPAWN, packet);
 	}
 
 	@Override
@@ -163,14 +160,14 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 
 	@Override
 	public void tick() {
-		if (world.getRegistryKey().equals(AstromineDimensions.EARTH_SPACE_WORLD)) {
+		if (world.getRegistryKey().equals(AMDimensions.EARTH_SPACE_WORLD)) {
 			setVelocity(0, 0, 0);
 
 			getDataTracker().set(IS_RUNNING, false);
 		}
 
-		VolumeUtilities.transferBetween(getItemComponent(), getFluidComponent(), 0, 1, 0);
-		VolumeUtilities.transferBetween(getItemComponent(), getFluidComponent(), 2, 3, 1);
+		VolumeUtils.transferBetween(getItemComponent(), getFluidComponent(), 0, 1, 0);
+		VolumeUtils.transferBetween(getItemComponent(), getFluidComponent(), 2, 3, 1);
 
 		super.tick();
 	}

@@ -25,10 +25,10 @@
 package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.component.world.WorldHoloBridgeComponent;
-import com.github.mixinors.astromine.common.utilities.LineUtilities;
-import com.github.mixinors.astromine.common.utilities.VectorUtilities;
-import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
-import com.github.mixinors.astromine.registry.AstromineBlocks;
+import com.github.mixinors.astromine.common.util.LineUtils;
+import com.github.mixinors.astromine.common.util.VectorUtils;
+import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AMBlocks;
 import com.github.vini2003.blade.common.miscellaneous.Color;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
@@ -60,7 +60,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	private boolean hasCheckedParent = false;
 
 	public HoloBridgeProjectorBlockEntity() {
-		super(AstromineBlockEntityTypes.HOLOGRAPHIC_BRIDGE);
+		super(AMBlockEntityTypes.HOLOGRAPHIC_BRIDGE);
 	}
 
 	public boolean hasChild() {
@@ -119,7 +119,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			return false;
 		}
 
-		ArrayList<Vector3f> segments = (ArrayList<Vector3f>) LineUtilities.getBresenhamSegments(VectorUtilities.toVector3f(bOP.offset(Direction.UP)), VectorUtilities.toVector3f(nCP.offset(Direction.UP)), 32);
+		ArrayList<Vector3f> segments = (ArrayList<Vector3f>) LineUtils.getBresenhamSegments(VectorUtils.toVector3f(bOP.offset(Direction.UP)), VectorUtils.toVector3f(nCP.offset(Direction.UP)), 32);
 
 		for (Vector3f v : segments) {
 			BlockPos nP = new BlockPos(v.getX(), v.getY(), v.getZ());
@@ -158,7 +158,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			return;
 		}
 
-		this.segments = (ArrayList<Vector3f>) LineUtilities.getBresenhamSegments(VectorUtilities.toVector3f(bOP.offset(Direction.UP)), VectorUtilities.toVector3f(nCP.offset(Direction.UP)), 32);
+		this.segments = (ArrayList<Vector3f>) LineUtils.getBresenhamSegments(VectorUtils.toVector3f(bOP.offset(Direction.UP)), VectorUtils.toVector3f(nCP.offset(Direction.UP)), 32);
 		WorldHoloBridgeComponent bridgeComponent = WorldHoloBridgeComponent.get(world);
 
 		for (Vector3f v : this.segments) {
@@ -166,7 +166,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 
 			if ((nP.getX() != bCP.getX() && nP.getX() != bOP.getX()) || (nP.getZ() != bCP.getZ() && nP.getZ() != bOP.getZ())) {
 				if (this.world.getBlockState(nP).isAir()) {
-					this.world.setBlockState(nP, AstromineBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.getDefaultState());
+					this.world.setBlockState(nP, AMBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.getDefaultState());
 				}
 			}
 			

@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
-import com.github.mixinors.astromine.registry.AstromineItems;
-import com.github.mixinors.astromine.registry.AstromineScreenHandlers;
+import com.github.mixinors.astromine.registry.AMItems;
+import com.github.mixinors.astromine.registry.AMScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.TranslatableText;
@@ -41,12 +41,12 @@ import com.github.vini2003.blade.common.widget.base.SlotWidget;
 
 public class PrimitiveRocketScreenHandler extends ComponentEntityFluidItemScreenHandler {
 	public PrimitiveRocketScreenHandler(int syncId, PlayerEntity player, int entityId) {
-		super(AstromineScreenHandlers.ROCKET, syncId, player, entityId);
+		super(AMScreenHandlers.ROCKET, syncId, player, entityId);
 	}
 
 	@Override
 	public ItemStack getSymbol() {
-		return new ItemStack(AstromineItems.PRIMITIVE_ROCKET);
+		return new ItemStack(AMItems.PRIMITIVE_ROCKET);
 	}
 
 	@Override

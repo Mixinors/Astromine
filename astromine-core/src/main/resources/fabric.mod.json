@@ -26,31 +26,31 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.github.mixinors.astromine.AstromineCommon"
+      "com.github.mixinors.astromine.AMCommon"
     ],
     "client": [
-      "com.github.mixinors.astromine.AstromineClient"
+      "com.github.mixinors.astromine.AMClient"
     ],
     "server": [
-      "com.github.mixinors.astromine.AstromineDedicated"
+      "com.github.mixinors.astromine.AMDedicated"
     ],
     "modmenu": [
       "com.github.mixinors.astromine.client.modmenu.AstromineModMenuSupport"
     ],
     "cardinal-components-item": [
-      "com.github.mixinors.astromine.registry.AstromineComponents"
+      "com.github.mixinors.astromine.registry.AMComponents"
     ],
     "cardinal-components-entity": [
-      "com.github.mixinors.astromine.registry.AstromineComponents"
+      "com.github.mixinors.astromine.registry.AMComponents"
     ],
     "cardinal-components-world": [
-      "com.github.mixinors.astromine.registry.AstromineComponents"
+      "com.github.mixinors.astromine.registry.AMComponents"
     ],
     "cardinal-components-chunk": [
-      "com.github.mixinors.astromine.registry.AstromineComponents"
+      "com.github.mixinors.astromine.registry.AMComponents"
     ],
     "cardinal-components-block": [
-      "com.github.mixinors.astromine.registry.AstromineComponents"
+      "com.github.mixinors.astromine.registry.AMComponents"
     ],
     "rei_plugins": [
       "com.github.mixinors.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin"

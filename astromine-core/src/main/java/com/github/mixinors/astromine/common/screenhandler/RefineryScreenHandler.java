@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
-import com.github.mixinors.astromine.registry.AstromineScreenHandlers;
+import com.github.mixinors.astromine.registry.AMScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
@@ -39,7 +39,7 @@ public class RefineryScreenHandler extends ComponentBlockEntityEnergyFluidScreen
 	private RefineryBlockEntity refinery;
 
 	public RefineryScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AstromineScreenHandlers.REFINERY, syncId, player, position);
+		super(AMScreenHandlers.REFINERY, syncId, player, position);
 
 		refinery = (RefineryBlockEntity) blockEntity;
 	}

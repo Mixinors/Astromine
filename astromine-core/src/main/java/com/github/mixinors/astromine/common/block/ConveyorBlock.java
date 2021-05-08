@@ -53,7 +53,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
-import com.github.mixinors.astromine.common.utilities.MovementUtilities;
+import com.github.mixinors.astromine.common.util.MovementUtils;
 import com.github.mixinors.astromine.common.block.entity.ConveyorBlockEntity;
 import com.github.mixinors.astromine.common.block.property.ConveyorProperties;
 import com.github.mixinors.astromine.common.conveyor.Conveyable;
@@ -121,7 +121,7 @@ public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityP
 				entity.remove();
 			}
 		} else if (!(entity instanceof ItemEntity)) {
-			MovementUtilities.pushEntity(entity, pos, 2.0F / getSpeed(), direction);
+			MovementUtils.pushEntity(entity, pos, 2.0F / getSpeed(), direction);
 		}
 	}
 

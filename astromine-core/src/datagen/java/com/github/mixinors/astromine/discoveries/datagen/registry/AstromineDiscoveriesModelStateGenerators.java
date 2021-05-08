@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.discoveries.datagen.registry;
 
-import com.github.mixinors.astromine.AstromineCommon;
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.datagen.generator.modelstate.ModelStateGenerator;
 import com.github.mixinors.astromine.datagen.generator.modelstate.onetime.GenericBlockModelStateGenerator;
 import com.github.mixinors.astromine.datagen.generator.modelstate.onetime.GenericItemModelGenerator;
@@ -34,10 +34,9 @@ import com.github.mixinors.astromine.datagen.generator.modelstate.set.ColumnBloc
 import com.github.mixinors.astromine.datagen.generator.modelstate.set.GenericBlockSetModelStateGenerator;
 import com.github.mixinors.astromine.datagen.generator.modelstate.set.GenericItemSetModelGenerator;
 import com.github.mixinors.astromine.datagen.material.MaterialItemType;
-import com.github.mixinors.astromine.datagen.registry.AstromineModelStateGenerators;
 
 public class AstromineModelStateGenerators extends AstromineModelStateGenerators {
-	public final ModelStateGenerator ASTEROID_ORE = register(new ColumnBlockSetModelStateGenerator(MaterialItemType.ASTEROID_ORE, AstromineCommon.identifier("block/asteroid_stone")));
+	public final ModelStateGenerator ASTEROID_ORE = register(new ColumnBlockSetModelStateGenerator(MaterialItemType.ASTEROID_ORE, AMCommon.identifier("block/asteroid_stone")));
 
 	public final ModelStateGenerator ASTEROID_CLUSTER = register(new GenericItemSetModelGenerator(MaterialItemType.ASTEROID_CLUSTER));
 

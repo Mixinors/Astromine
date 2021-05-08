@@ -24,9 +24,9 @@
 
 package com.github.mixinors.astromine.datagen.generator.recipe.set.base;
 
+import com.github.mixinors.astromine.AMCommon;
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.AstromineCommon;
 import com.github.mixinors.astromine.datagen.generator.SetGenerator;
 import com.github.mixinors.astromine.datagen.generator.recipe.RecipeGenerator;
 import com.github.mixinors.astromine.datagen.material.MaterialEntry;
@@ -46,7 +46,7 @@ public interface SetRecipeGenerator extends SetGenerator<RecipeData>, RecipeGene
 	}
 
 	default Identifier getRecipeId(MaterialSet set) {
-		return AstromineCommon.identifier(getRecipeName(set));
+		return AMCommon.identifier(getRecipeName(set));
 	}
 
 	default String getString() {

@@ -24,16 +24,15 @@
 
 package com.github.mixinors.astromine.foundations.datagen.registry;
 
+import com.github.mixinors.astromine.AMCommon;
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.AstromineCommon;
 import com.github.mixinors.astromine.datagen.generator.tag.onetime.ItemInTagGenerator;
 import com.github.mixinors.astromine.datagen.generator.tag.onetime.OneTimeTagGenerator;
 import com.github.mixinors.astromine.datagen.generator.tag.onetime.TagInTagGenerator;
 import com.github.mixinors.astromine.datagen.generator.tag.set.GenericSetTagGenerator;
 import com.github.mixinors.astromine.datagen.generator.tag.set.SetTagGenerator;
 import com.github.mixinors.astromine.datagen.material.MaterialItemType;
-import com.github.mixinors.astromine.datagen.registry.AstromineTagGenerators;
 import com.github.mixinors.astromine.foundations.datagen.generators.tag.*;
 
 public class AstromineTagGenerators extends AstromineTagGenerators {
@@ -43,19 +42,19 @@ public class AstromineTagGenerators extends AstromineTagGenerators {
 	public final SetTagGenerator SHOVELS = register(new GenericSetTagGenerator("shovels", new Identifier("fabric", "shovels"), MaterialItemType.SHOVEL));
 	public final SetTagGenerator HOES = register(new GenericSetTagGenerator("hoes", new Identifier("fabric", "hoes"), MaterialItemType.HOE));
 
-	public final SetTagGenerator MINING_TOOLS = register(new GenericSetTagGenerator("mining_tools", AstromineCommon.identifier("mining_tools"), MaterialItemType.MINING_TOOL));
-	public final OneTimeTagGenerator MINING_TOOLS_PICKAXES = register(new TagInTagGenerator(new Identifier("fabric", "pickaxes"), AstromineCommon.identifier("mining_tools")));
-	public final OneTimeTagGenerator MINING_TOOLS_SHOVELS = register(new TagInTagGenerator(new Identifier("fabric", "shovels"), AstromineCommon.identifier("mining_tools")));
+	public final SetTagGenerator MINING_TOOLS = register(new GenericSetTagGenerator("mining_tools", AMCommon.identifier("mining_tools"), MaterialItemType.MINING_TOOL));
+	public final OneTimeTagGenerator MINING_TOOLS_PICKAXES = register(new TagInTagGenerator(new Identifier("fabric", "pickaxes"), AMCommon.identifier("mining_tools")));
+	public final OneTimeTagGenerator MINING_TOOLS_SHOVELS = register(new TagInTagGenerator(new Identifier("fabric", "shovels"), AMCommon.identifier("mining_tools")));
 
-	public final SetTagGenerator MATTOCKS = register(new GenericSetTagGenerator("mattocks", AstromineCommon.identifier("mattocks"), MaterialItemType.MATTOCK));
-	public final OneTimeTagGenerator MATTOCK_AXES = register(new TagInTagGenerator(new Identifier("fabric", "axes"), AstromineCommon.identifier("mattocks")));
-	public final OneTimeTagGenerator MATTOCK_HOES = register(new TagInTagGenerator(new Identifier("fabric", "hoes"), AstromineCommon.identifier("mattocks")));
+	public final SetTagGenerator MATTOCKS = register(new GenericSetTagGenerator("mattocks", AMCommon.identifier("mattocks"), MaterialItemType.MATTOCK));
+	public final OneTimeTagGenerator MATTOCK_AXES = register(new TagInTagGenerator(new Identifier("fabric", "axes"), AMCommon.identifier("mattocks")));
+	public final OneTimeTagGenerator MATTOCK_HOES = register(new TagInTagGenerator(new Identifier("fabric", "hoes"), AMCommon.identifier("mattocks")));
 
-	public final SetTagGenerator HAMMERS = register(new GenericSetTagGenerator("hammers", AstromineCommon.identifier("hammers"), MaterialItemType.HAMMER));
-	public final OneTimeTagGenerator HAMMERS_PICKAXES = register(new TagInTagGenerator(new Identifier("fabric", "pickaxes"), AstromineCommon.identifier("hammers")));
+	public final SetTagGenerator HAMMERS = register(new GenericSetTagGenerator("hammers", AMCommon.identifier("hammers"), MaterialItemType.HAMMER));
+	public final OneTimeTagGenerator HAMMERS_PICKAXES = register(new TagInTagGenerator(new Identifier("fabric", "pickaxes"), AMCommon.identifier("hammers")));
 
-	public final SetTagGenerator EXCAVATORS = register(new GenericSetTagGenerator("excavators", AstromineCommon.identifier("excavators"), MaterialItemType.EXCAVATOR));
-	public final OneTimeTagGenerator EXCAVATORS_SHOVELS = register(new TagInTagGenerator(new Identifier("fabric", "shovels"), AstromineCommon.identifier("excavators")));
+	public final SetTagGenerator EXCAVATORS = register(new GenericSetTagGenerator("excavators", AMCommon.identifier("excavators"), MaterialItemType.EXCAVATOR));
+	public final OneTimeTagGenerator EXCAVATORS_SHOVELS = register(new TagInTagGenerator(new Identifier("fabric", "shovels"), AMCommon.identifier("excavators")));
 
 	public final SetTagGenerator BEACON_BASE_BLOCKS = register(new BeaconBaseTagGenerator());
 
@@ -112,6 +111,6 @@ public class AstromineTagGenerators extends AstromineTagGenerators {
 	public final OneTimeTagGenerator STICK = register(new ItemInTagGenerator(new Identifier("c", "wood_sticks"), new Identifier("stick")));
 	public final OneTimeTagGenerator ENCHANTED_GOLDEN_APPLE = register(new ItemInTagGenerator(new Identifier("c", "golden_apples"), new Identifier("enchanted_golden_apple")));
 
-	public final SetTagGenerator GEARS = register(new GenericSetTagGenerator("gears", AstromineCommon.identifier("gears"), MaterialItemType.GEAR));
-	public final SetTagGenerator METAL_PLATES = register(new GenericSetTagGenerator("metal_plates", AstromineCommon.identifier("metal_plates"), MaterialItemType.PLATE));
+	public final SetTagGenerator GEARS = register(new GenericSetTagGenerator("gears", AMCommon.identifier("gears"), MaterialItemType.GEAR));
+	public final SetTagGenerator METAL_PLATES = register(new GenericSetTagGenerator("metal_plates", AMCommon.identifier("metal_plates"), MaterialItemType.PLATE));
 }

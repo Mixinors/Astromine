@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.common.network;
 import net.minecraft.block.Block;
 
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
-import com.github.mixinors.astromine.registry.AstromineNetworkTypes;
+import com.github.mixinors.astromine.registry.AMNetworkTypes;
 
 /**
  * A {@link Block} which
@@ -135,28 +135,28 @@ public interface NetworkBlock {
 	 * {@link NetworkType}, or {@link NetworkMemberType#NODE}
 	 * if the type is unknown. */
 	default NetworkMemberType getMemberType(NetworkType type) {
-		if (type.equals(AstromineNetworkTypes.ENERGY)) {
+		if (type.equals(AMNetworkTypes.ENERGY)) {
 			return getEnergyNetworkMemberType();
-		} else if (type.equals(AstromineNetworkTypes.FLUID)) {
+		} else if (type.equals(AMNetworkTypes.FLUID)) {
 			return getFluidNetworkMemberType();
-		} else if (type.equals(AstromineNetworkTypes.ITEM)) {
+		} else if (type.equals(AMNetworkTypes.ITEM)) {
 			return getItemNetworkMemberType();
 		}
 
 		return NetworkMemberType.NODE;
 	}
 
-	/** Returns the default {@link NetworkMemberType} for {@link AstromineNetworkTypes#FLUID}. */
+	/** Returns the default {@link NetworkMemberType} for {@link AMNetworkTypes#FLUID}. */
 	default NetworkMemberType getFluidNetworkMemberType() {
 		return NetworkMemberType.NONE;
 	}
 
-	/** Returns the default {@link NetworkMemberType} for {@link AstromineNetworkTypes#ENERGY}. */
+	/** Returns the default {@link NetworkMemberType} for {@link AMNetworkTypes#ENERGY}. */
 	default NetworkMemberType getEnergyNetworkMemberType() {
 		return NetworkMemberType.NONE;
 	}
 
-	/** Returns the default {@link NetworkMemberType} for {@link AstromineNetworkTypes#ITEM}. */
+	/** Returns the default {@link NetworkMemberType} for {@link AMNetworkTypes#ITEM}. */
 	default NetworkMemberType getItemNetworkMemberType() {
 		return NetworkMemberType.NONE;
 	}

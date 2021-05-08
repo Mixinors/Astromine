@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.component.general.SimpleDirectionalItemComponent;
-import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentItemBlockEntity;
@@ -38,7 +38,7 @@ public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 
 	public static class Primitive extends BufferBlockEntity {
 		public Primitive() {
-			super(AstromineBlockEntityTypes.PRIMITIVE_BUFFER);
+			super(AMBlockEntityTypes.PRIMITIVE_BUFFER);
 		}
 
 		@Override
@@ -49,7 +49,7 @@ public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 
 	public static class Basic extends BufferBlockEntity {
 		public Basic() {
-			super(AstromineBlockEntityTypes.BASIC_BUFFER);
+			super(AMBlockEntityTypes.BASIC_BUFFER);
 		}
 
 		@Override
@@ -60,7 +60,7 @@ public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 
 	public static class Advanced extends BufferBlockEntity {
 		public Advanced() {
-			super(AstromineBlockEntityTypes.ADVANCED_BUFFER);
+			super(AMBlockEntityTypes.ADVANCED_BUFFER);
 		}
 
 		@Override
@@ -71,7 +71,7 @@ public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 
 	public static class Elite extends BufferBlockEntity {
 		public Elite() {
-			super(AstromineBlockEntityTypes.ELITE_BUFFER);
+			super(AMBlockEntityTypes.ELITE_BUFFER);
 		}
 
 		@Override
@@ -82,7 +82,7 @@ public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 
 	public static class Creative extends BufferBlockEntity {
 		public Creative() {
-			super(AstromineBlockEntityTypes.CREATIVE_BUFFER);
+			super(AMBlockEntityTypes.CREATIVE_BUFFER);
 		}
 
 		@Override

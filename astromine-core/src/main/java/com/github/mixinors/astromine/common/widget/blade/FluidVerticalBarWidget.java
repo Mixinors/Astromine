@@ -24,10 +24,11 @@
 
 package com.github.mixinors.astromine.common.widget.blade;
 
+import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.common.util.ClientUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -37,11 +38,10 @@ import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.AstromineCommon;
 import com.github.mixinors.astromine.client.BaseRenderer;
 import com.github.mixinors.astromine.client.render.sprite.SpriteRenderer;
-import com.github.mixinors.astromine.common.utilities.FluidUtilities;
-import com.github.mixinors.astromine.common.utilities.TextUtilities;
+import com.github.mixinors.astromine.common.util.FluidUtils;
+import com.github.mixinors.astromine.common.util.TextUtils;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import com.github.vini2003.blade.client.utilities.Layers;
@@ -61,7 +61,7 @@ import java.util.function.Supplier;
  * are queried from.
  */
 public class FluidVerticalBarWidget extends AbstractWidget {
-	private final Identifier FLUID_BACKGROUND = AstromineCommon.identifier("textures/widget/fluid_volume_fractional_vertical_bar_background.png");
+	private final Identifier FLUID_BACKGROUND = AMCommon.identifier("textures/widget/fluid_volume_fractional_vertical_bar_background.png");
 
 	private Supplier<FluidVolume> volumeSupplier;
 
@@ -101,10 +101,10 @@ public class FluidVerticalBarWidget extends AbstractWidget {
 		Identifier fluidId = volume.getFluidId();
 
 		return Lists.newArrayList(
-				TextUtilities.getFluid(fluidId),
-				TextUtilities.getIdentifier(fluidId),
-				TextUtilities.getVolume(FluidVolume.of(volume.getAmount() / 81L, volume.getSize() / 81L, volume.getFluid())),
-				TextUtilities.getMod(fluidId)
+				TextUtils.getFluid(fluidId),
+				TextUtils.getIdentifier(fluidId),
+				TextUtils.getVolume(FluidVolume.of(volume.getAmount() / 81L, volume.getSize() / 81L, volume.getFluid())),
+				TextUtils.getMod(fluidId)
 		);
 	}
 
@@ -132,8 +132,8 @@ public class FluidVerticalBarWidget extends AbstractWidget {
 			SpriteRenderer
 					.beginPass()
 					.setup(provider, RenderLayer.getSolid())
-					.sprite(FluidUtilities.getSprite(volumeSupplier.get().getFluid()))
-					.color(FluidUtilities.getColor(MinecraftClient.getInstance().player, volumeSupplier.get().getFluid()))
+					.sprite(FluidUtils.getSprite(volumeSupplier.get().getFluid()))
+					.color(FluidUtils.getColor(ClientUtils.getPlayer(), volumeSupplier.get().getFluid()))
 					.light(0x00f000f0)
 					.overlay(OverlayTexture.DEFAULT_UV)
 					.alpha(0xff)

@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.item;
 
-import com.github.mixinors.astromine.registry.AstromineItems;
+import com.github.mixinors.astromine.registry.AMItems;
 import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
 
 import net.minecraft.entity.EquipmentSlot;
@@ -40,7 +40,7 @@ import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.item.base.EnergyVolumeItem;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.registry.AMConfig;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
@@ -64,10 +64,10 @@ public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttr
 		if (hand == Hand.OFF_HAND)
 			return TypedActionResult.pass(stack);
 		ItemStack offStack = user.getStackInHand(Hand.OFF_HAND);
-		if (offStack.getItem() == AstromineItems.GRAVITY_GAUNTLET) {
+		if (offStack.getItem() == AMItems.GRAVITY_GAUNTLET) {
 			EnergyHandler selfHandler = Energy.of(stack);
 			EnergyHandler otherHandler = Energy.of(offStack);
-			if (selfHandler.getEnergy() > AstromineConfig.get().gravityGauntletConsumed && otherHandler.getEnergy() > AstromineConfig.get().gravityGauntletConsumed) {
+			if (selfHandler.getEnergy() > AMConfig.get().gravityGauntletConsumed && otherHandler.getEnergy() > AMConfig.get().gravityGauntletConsumed) {
 				user.setCurrentHand(hand);
 				return TypedActionResult.success(stack);
 			}
@@ -80,12 +80,12 @@ public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttr
 		if (world.isClient)
 			return stack;
 		ItemStack offStack = user.getStackInHand(Hand.OFF_HAND);
-		if (offStack.getItem() == AstromineItems.GRAVITY_GAUNTLET) {
+		if (offStack.getItem() == AMItems.GRAVITY_GAUNTLET) {
 			EnergyHandler selfHandler = Energy.of(stack);
 			EnergyHandler otherHandler = Energy.of(offStack);
-			if (selfHandler.getEnergy() > AstromineConfig.get().gravityGauntletConsumed && otherHandler.getEnergy() > AstromineConfig.get().gravityGauntletConsumed) {
-				selfHandler.extract(AstromineConfig.get().gravityGauntletConsumed);
-				otherHandler.extract(AstromineConfig.get().gravityGauntletConsumed);
+			if (selfHandler.getEnergy() > AMConfig.get().gravityGauntletConsumed && otherHandler.getEnergy() > AMConfig.get().gravityGauntletConsumed) {
+				selfHandler.extract(AMConfig.get().gravityGauntletConsumed);
+				otherHandler.extract(AMConfig.get().gravityGauntletConsumed);
 				stack.getOrCreateTag().putBoolean("Charged", true);
 				offStack.getOrCreateTag().putBoolean("Charged", true);
 				return stack;
@@ -109,7 +109,7 @@ public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttr
 		if (attacker.world.isClient)
 			return super.postHit(stack, target, attacker);
 		ItemStack offStack = attacker.getStackInHand(Hand.OFF_HAND);
-		if (offStack.getItem() == AstromineItems.GRAVITY_GAUNTLET) {
+		if (offStack.getItem() == AMItems.GRAVITY_GAUNTLET) {
 			if (stack.getOrCreateTag().getBoolean("Charged") && offStack.getOrCreateTag().getBoolean("Charged")) {
 				target.takeKnockback(1, attacker.getX() - target.getX(), attacker.getZ() - target.getZ());
 				target.addVelocity(0f, 0.5f, 0f);

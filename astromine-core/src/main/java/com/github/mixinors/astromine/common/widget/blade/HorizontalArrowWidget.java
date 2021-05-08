@@ -24,18 +24,18 @@
 
 package com.github.mixinors.astromine.common.widget.blade;
 
-import com.github.mixinors.astromine.common.utilities.TextUtilities;
+import com.github.mixinors.astromine.common.util.ClientUtils;
+import com.github.mixinors.astromine.common.util.TextUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.AstromineCommon;
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.BaseRenderer;
 import com.github.vini2003.blade.client.utilities.Layers;
 import com.github.vini2003.blade.client.utilities.Scissors;
@@ -52,8 +52,8 @@ import java.util.function.IntSupplier;
  * to the {@link #limitSupplier}.
  */
 public class HorizontalArrowWidget extends AbstractWidget {
-	private static final Identifier BACKGROUND = AstromineCommon.identifier("textures/widget/horizontal_arrow_background.png");
-	private static final Identifier FOREGROUND = AstromineCommon.identifier("textures/widget/horizontal_arrow_foreground.png");
+	private static final Identifier BACKGROUND = AMCommon.identifier("textures/widget/horizontal_arrow_background.png");
+	private static final Identifier FOREGROUND = AMCommon.identifier("textures/widget/horizontal_arrow_foreground.png");
 
 	private IntSupplier progressSupplier = () -> 0;
 	private IntSupplier limitSupplier = () -> 100;
@@ -82,7 +82,7 @@ public class HorizontalArrowWidget extends AbstractWidget {
 	@NotNull
 	@Override
 	public List<Text> getTooltip() {
-		return Collections.singletonList(TextUtilities.getRatio(progressSupplier.getAsInt(), limitSupplier.getAsInt()));
+		return Collections.singletonList(TextUtils.getRatio(progressSupplier.getAsInt(), limitSupplier.getAsInt()));
 	}
 
 	/** Renders this widget. */
@@ -99,8 +99,8 @@ public class HorizontalArrowWidget extends AbstractWidget {
 		float sX = getSize().getWidth();
 		float sY = getSize().getHeight();
 
-		float rawHeight = MinecraftClient.getInstance().getWindow().getHeight();
-		float scale = (float) MinecraftClient.getInstance().getWindow().getScaleFactor();
+		float rawHeight = ClientUtils.getInstance().getWindow().getHeight();
+		float scale = (float) ClientUtils.getInstance().getWindow().getScaleFactor();
 
 		float sBGX = (int) (((sX / limitSupplier.getAsInt()) * progressSupplier.getAsInt()));
 

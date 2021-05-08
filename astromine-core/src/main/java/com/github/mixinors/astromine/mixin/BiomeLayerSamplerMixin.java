@@ -37,7 +37,7 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeLayerSampler;
 
-import com.github.mixinors.astromine.AstromineCommon;
+import com.github.mixinors.astromine.AMCommon;
 
 @Mixin(BiomeLayerSampler.class)
 public class BiomeLayerSamplerMixin {
@@ -59,7 +59,7 @@ public class BiomeLayerSamplerMixin {
 		Biome biome = registry.get(storedLastBiomeId);
 		if (biome == null)
 			return original;
-		return registry.getKey(biome).filter(key -> key.getValue().getNamespace().equals(AstromineCommon.MOD_ID)).orElse(original);
+		return registry.getKey(biome).filter(key -> key.getValue().getNamespace().equals(AMCommon.MOD_ID)).orElse(original);
 	}
 
 	@Inject(method = "sample", at = @At("RETURN"))

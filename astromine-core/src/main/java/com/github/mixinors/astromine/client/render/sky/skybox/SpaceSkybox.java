@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.client.render.sky.skybox;
 
+import com.github.mixinors.astromine.common.util.ClientUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.options.Option;
@@ -68,7 +69,7 @@ public class SpaceSkybox extends Skybox {
 
 	@Override
 	public void render(MatrixStack matrices, float tickDelta) {
-		MinecraftClient client = MinecraftClient.getInstance();
+		MinecraftClient client = ClientUtils.getInstance();
 
 		TextureManager textureManager = client.getTextureManager();
 
@@ -143,7 +144,7 @@ public class SpaceSkybox extends Skybox {
 
 			buffer.begin(7, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT);
 
-			GameOptions options = MinecraftClient.getInstance().options;
+			GameOptions options = ClientUtils.getInstance().options;
 
 			float distance = 16F * (float) Option.RENDER_DISTANCE.get(options) - 8F;
 

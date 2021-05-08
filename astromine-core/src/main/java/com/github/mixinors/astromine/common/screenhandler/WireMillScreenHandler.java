@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
-import com.github.mixinors.astromine.registry.AstromineScreenHandlers;
+import com.github.mixinors.astromine.registry.AMScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
@@ -40,7 +40,7 @@ public class WireMillScreenHandler extends ComponentBlockEntityEnergyItemScreenH
 	private WireMillBlockEntity wiremill;
 
 	public WireMillScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AstromineScreenHandlers.WIREMILL, syncId, player, position);
+		super(AMScreenHandlers.WIREMILL, syncId, player, position);
 
 		wiremill = (WireMillBlockEntity) blockEntity;
 	}

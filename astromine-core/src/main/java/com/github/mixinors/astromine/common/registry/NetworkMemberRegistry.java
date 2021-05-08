@@ -31,7 +31,7 @@ import net.minecraft.util.math.Direction;
 import com.github.mixinors.astromine.common.network.NetworkMember;
 import com.github.mixinors.astromine.common.network.NetworkMemberType;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
-import com.github.mixinors.astromine.common.utilities.data.position.WorldPos;
+import com.github.mixinors.astromine.common.util.data.position.WorldPos;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import org.jetbrains.annotations.Nullable;
 

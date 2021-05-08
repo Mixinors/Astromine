@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.client.render.sprite;
 
+import com.github.mixinors.astromine.common.util.ClientUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -273,7 +274,7 @@ public class SpriteRenderer {
 			float sX = sprite.getWidth();
 			float sY = sprite.getHeight();
 
-			MinecraftClient.getInstance().getTextureManager().bindTexture(texture);
+			ClientUtils.getInstance().getTextureManager().bindTexture(texture);
 
 			for (float y = y1; y < y2; y += Math.min(y2 - y, sY)) {
 				for (float x = x1; x < x2; x += Math.min(x2 - x, sX)) {

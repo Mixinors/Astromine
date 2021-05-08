@@ -24,13 +24,12 @@
 
 package com.github.mixinors.astromine.foundations.datagen.registry;
 
+import com.github.mixinors.astromine.AMCommon;
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.AstromineCommon;
 import com.github.mixinors.astromine.datagen.material.MaterialEntry;
 import com.github.mixinors.astromine.datagen.material.MaterialItemType;
 import com.github.mixinors.astromine.datagen.material.MaterialSet;
-import com.github.mixinors.astromine.datagen.registry.AstromineMaterialSets;
 
 public class AstromineMaterialSets extends AstromineMaterialSets {
 	public static final MaterialSet WOOD = register(
@@ -38,7 +37,7 @@ public class AstromineMaterialSets extends AstromineMaterialSets {
 					.setType(MaterialItemType.MISC_RESOURCE, new MaterialEntry(new Identifier("oak_planks"), new Identifier("planks")))
 					.setType(MaterialItemType.PICKAXE, new Identifier("wooden_pickaxe")).setType(MaterialItemType.AXE, new Identifier("wooden_axe")).setType(MaterialItemType.SHOVEL, new Identifier("wooden_shovel"))
 					.setType(MaterialItemType.SWORD, new Identifier("wooden_sword")).setType(MaterialItemType.HOE, new Identifier("wooden_hoe"))
-					.mattock(AstromineCommon.identifier("wooden_mattock")).miningTool(AstromineCommon.identifier("wooden_mining_tool"))
+					.mattock(AMCommon.identifier("wooden_mattock")).miningTool(AMCommon.identifier("wooden_mining_tool"))
 					.build()
 	);
 	public static final MaterialSet STONE = register(
@@ -84,7 +83,7 @@ public class AstromineMaterialSets extends AstromineMaterialSets {
 					.setType(MaterialItemType.APPLE, new MaterialEntry(new Identifier("golden_apple"), "golden_apples"))
 					.dusts().asteroid()
 					.gear().plate().wire()
-					.mattock(AstromineCommon.identifier("golden_mattock")).miningTool(AstromineCommon.identifier("golden_mining_tool"))
+					.mattock(AMCommon.identifier("golden_mattock")).miningTool(AMCommon.identifier("golden_mining_tool"))
 					.piglinLoved()
 					.build()
 	);

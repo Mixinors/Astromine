@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.client.rei.solidgenerating;
 
-import com.github.mixinors.astromine.registry.AstromineBlocks;
+import com.github.mixinors.astromine.registry.AMBlocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -57,7 +57,7 @@ public class SolidGeneratingCategory extends AbstractEnergyGeneratingCategory<So
 
 	@Override
 	public EntryStack getLogo() {
-		return EntryStack.create(AstromineBlocks.ADVANCED_SOLID_GENERATOR);
+		return EntryStack.create(AMBlocks.ADVANCED_SOLID_GENERATOR);
 	}
 
 	@Override

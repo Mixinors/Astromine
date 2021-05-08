@@ -24,9 +24,9 @@
 
 package com.github.mixinors.astromine.common.world.feature;
 
-import com.github.mixinors.astromine.AstromineCommon;
-import com.github.mixinors.astromine.registry.AstromineConfig;
-import com.github.mixinors.astromine.registry.AstromineFluids;
+import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.registry.AMConfig;
+import com.github.mixinors.astromine.registry.AMFluids;
 import com.mojang.serialization.Codec;
 import com.terraformersmc.terraform.shapes.api.Position;
 import com.terraformersmc.terraform.shapes.impl.Shapes;
@@ -47,7 +47,7 @@ import net.minecraft.world.gen.feature.Feature;
 import java.util.Random;
 
 public class CrudeOilFeature extends Feature<DefaultFeatureConfig> {
-	private static final Lazy<Block> CRUDE_OIL_BLOCK = new Lazy<>(() -> Registry.BLOCK.get(AstromineCommon.identifier("crude_oil")));
+	private static final Lazy<Block> CRUDE_OIL_BLOCK = new Lazy<>(() -> Registry.BLOCK.get(AMCommon.identifier("crude_oil")));
 
 	public CrudeOilFeature(Codec<DefaultFeatureConfig> configCodec) {
 		super(configCodec);
@@ -55,7 +55,7 @@ public class CrudeOilFeature extends Feature<DefaultFeatureConfig> {
 
 	@Override
 	public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random random, BlockPos pos, DefaultFeatureConfig config) {
-		if (random.nextInt(AstromineConfig.get().crudeOilThreshold) > 1)
+		if (random.nextInt(AMConfig.get().crudeOilThreshold) > 1)
 			return false;
 
 		int offsetY = MathHelper.clamp(random.nextInt(20), 8, 20);
@@ -79,7 +79,7 @@ public class CrudeOilFeature extends Feature<DefaultFeatureConfig> {
 				world.removeBlock(pos.offset(Direction.UP, y).offset(direction), false);
 			}
 
-			world.getFluidTickScheduler().schedule(pos.offset(Direction.UP, y), AstromineFluids.CRUDE_OIL, 0);
+			world.getFluidTickScheduler().schedule(pos.offset(Direction.UP, y), AMFluids.CRUDE_OIL, 0);
 		}
 
 		return true;

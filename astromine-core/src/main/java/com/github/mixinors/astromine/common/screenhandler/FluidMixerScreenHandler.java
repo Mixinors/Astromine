@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
-import com.github.mixinors.astromine.registry.AstromineScreenHandlers;
+import com.github.mixinors.astromine.registry.AMScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
@@ -39,7 +39,7 @@ public class FluidMixerScreenHandler extends ComponentBlockEntityEnergyFluidScre
 	private FluidMixerBlockEntity mixer;
 
 	public FluidMixerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AstromineScreenHandlers.FLUID_MIXER, syncId, player, position);
+		super(AMScreenHandlers.FLUID_MIXER, syncId, player, position);
 
 		mixer = (FluidMixerBlockEntity) blockEntity;
 	}

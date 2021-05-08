@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.client.registry;
 import net.minecraft.block.Block;
 import net.minecraft.util.Pair;
 
-import com.github.mixinors.astromine.common.utilities.data.Range;
+import com.github.mixinors.astromine.common.util.data.Range;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import org.jetbrains.annotations.Nullable;

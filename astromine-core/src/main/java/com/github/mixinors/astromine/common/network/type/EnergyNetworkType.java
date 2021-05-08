@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.network.type;
 
 import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
+import com.github.mixinors.astromine.registry.AMComponents;
 import net.minecraft.block.entity.BlockEntity;
 
 import com.github.mixinors.astromine.common.block.transfer.TransferType;
@@ -34,8 +35,7 @@ import com.github.mixinors.astromine.common.network.NetworkMemberNode;
 import com.github.mixinors.astromine.common.network.NetworkNode;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.registry.NetworkMemberRegistry;
-import com.github.mixinors.astromine.common.utilities.data.position.WorldPos;
-import com.github.mixinors.astromine.registry.AstromineComponents;
+import com.github.mixinors.astromine.common.util.data.position.WorldPos;
 import it.unimi.dsi.fastutil.objects.Reference2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Reference2DoubleOpenHashMap;
 import team.reborn.energy.Energy;
@@ -79,7 +79,7 @@ public final class EnergyNetworkType implements NetworkType {
 
 				TransferComponent transferComponent = TransferComponent.get(blockEntity);
 
-				if (transferComponent != null && transferComponent.get(AstromineComponents.ENERGY_INVENTORY_COMPONENT) != null) {
+				if (transferComponent != null && transferComponent.get(AMComponents.ENERGY_INVENTORY_COMPONENT) != null) {
 					type = transferComponent.getEnergy(memberNode.getDirection());
 				}
 

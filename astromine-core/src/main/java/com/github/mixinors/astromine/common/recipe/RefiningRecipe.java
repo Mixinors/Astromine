@@ -24,7 +24,8 @@
 
 package com.github.mixinors.astromine.common.recipe;
 
-import com.github.mixinors.astromine.registry.AstromineBlocks;
+import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.registry.AMBlocks;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -34,12 +35,11 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.AstromineCommon;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
-import com.github.mixinors.astromine.common.utilities.DoubleUtilities;
-import com.github.mixinors.astromine.common.utilities.IntegerUtilities;
+import com.github.mixinors.astromine.common.util.DoubleUtils;
+import com.github.mixinors.astromine.common.util.IntegerUtils;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 
 import com.google.gson.Gson;
@@ -190,7 +190,7 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineBlocks.ADVANCED_ELECTROLYZER);
+		return new ItemStack(AMBlocks.ADVANCED_ELECTROLYZER);
 	}
 
 	public Identifier getIdentifier() {
@@ -239,7 +239,7 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 	}
 
 	public static final class Serializer implements RecipeSerializer<RefiningRecipe> {
-		public static final Identifier ID = AstromineCommon.identifier("refining");
+		public static final Identifier ID = AMCommon.identifier("refining");
 
 		public static final Serializer INSTANCE = new Serializer();
 
@@ -259,8 +259,8 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 					FluidVolume.fromJson(format.fifthOutput),
 					FluidVolume.fromJson(format.sixthOutput),
 					FluidVolume.fromJson(format.seventhOutput),
-					DoubleUtilities.fromJson(format.energyInput),
-					IntegerUtilities.fromJson(format.time)
+					DoubleUtils.fromJson(format.energyInput),
+					IntegerUtils.fromJson(format.time)
 			);
 		}
 
@@ -276,8 +276,8 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 					FluidVolume.fromPacket(buffer),
 					FluidVolume.fromPacket(buffer),
 					FluidVolume.fromPacket(buffer),
-					DoubleUtilities.fromPacket(buffer),
-					IntegerUtilities.fromPacket(buffer)
+					DoubleUtils.fromPacket(buffer),
+					IntegerUtils.fromPacket(buffer)
 			);
 		}
 
@@ -291,8 +291,8 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 			recipe.fifthOutput.toPacket(buffer);
 			recipe.sixthOutput.toPacket(buffer);
 			recipe.seventhOutput.toPacket(buffer);
-			DoubleUtilities.toPacket(buffer, recipe.energyInput);
-			IntegerUtilities.toPacket(buffer, recipe.time);
+			DoubleUtils.toPacket(buffer, recipe.energyInput);
+			IntegerUtils.toPacket(buffer, recipe.time);
 		}
 	}
 

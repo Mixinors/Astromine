@@ -24,7 +24,8 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AMComponents;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.Direction;
@@ -33,14 +34,13 @@ import com.github.mixinors.astromine.common.block.entity.base.ComponentFluidBloc
 import com.github.mixinors.astromine.common.block.transfer.TransferType;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.SimpleFluidComponent;
-import com.github.mixinors.astromine.registry.AstromineComponents;
 
 public class DrainBlockEntity extends ComponentFluidBlockEntity implements Tickable {
 	public DrainBlockEntity() {
-		super(AstromineBlockEntityTypes.DRAIN);
+		super(AMBlockEntityTypes.DRAIN);
 
 		for (Direction direction : Direction.values()) {
-			getTransferComponent().get(AstromineComponents.FLUID_INVENTORY_COMPONENT).set(direction, TransferType.INPUT);
+			getTransferComponent().get(AMComponents.FLUID_INVENTORY_COMPONENT).set(direction, TransferType.INPUT);
 		}
 	}
 

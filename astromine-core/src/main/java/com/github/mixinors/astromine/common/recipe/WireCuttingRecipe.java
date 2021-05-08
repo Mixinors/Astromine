@@ -24,9 +24,9 @@
 
 package com.github.mixinors.astromine.common.recipe;
 
-import com.github.mixinors.astromine.AstromineCommon;
-import com.github.mixinors.astromine.common.utilities.IngredientUtilities;
-import com.github.mixinors.astromine.common.utilities.StackUtilities;
+import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.common.util.IngredientUtils;
+import com.github.mixinors.astromine.common.util.StackUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import net.minecraft.inventory.CraftingInventory;
@@ -131,7 +131,7 @@ public class WireCuttingRecipe extends SpecialCraftingRecipe {
 	}
 
 	public static final class Serializer implements RecipeSerializer<WireCuttingRecipe> {
-		public static final Identifier ID = AstromineCommon.identifier("wire_cutting");
+		public static final Identifier ID = AMCommon.identifier("wire_cutting");
 
 		public static final Serializer INSTANCE = new Serializer();
 
@@ -142,24 +142,24 @@ public class WireCuttingRecipe extends SpecialCraftingRecipe {
 			WireCuttingRecipe.Format format = new Gson().fromJson(object, WireCuttingRecipe.Format.class);
 
 			return new WireCuttingRecipe(identifier,
-				IngredientUtilities.fromIngredientJson(format.input),
-				IngredientUtilities.fromIngredientJson(format.tool),
-				StackUtilities.fromJson(format.output));
+				IngredientUtils.fromIngredientJson(format.input),
+				IngredientUtils.fromIngredientJson(format.tool),
+				StackUtils.fromJson(format.output));
 		}
 
 		@Override
 		public WireCuttingRecipe read(Identifier identifier, PacketByteBuf buffer) {
 			return new WireCuttingRecipe(identifier,
-				IngredientUtilities.fromIngredientPacket(buffer),
-				IngredientUtilities.fromIngredientPacket(buffer),
-				StackUtilities.fromPacket(buffer));
+				IngredientUtils.fromIngredientPacket(buffer),
+				IngredientUtils.fromIngredientPacket(buffer),
+				StackUtils.fromPacket(buffer));
 		}
 
 		@Override
 		public void write(PacketByteBuf buffer, WireCuttingRecipe recipe) {
-			IngredientUtilities.toIngredientPacket(buffer, recipe.input);
-			IngredientUtilities.toIngredientPacket(buffer, recipe.tool);
-			StackUtilities.toPacket(buffer, recipe.output);
+			IngredientUtils.toIngredientPacket(buffer, recipe.input);
+			IngredientUtils.toIngredientPacket(buffer, recipe.tool);
+			StackUtils.toPacket(buffer, recipe.output);
 		}
 	}
 

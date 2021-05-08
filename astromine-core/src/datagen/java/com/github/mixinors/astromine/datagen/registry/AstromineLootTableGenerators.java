@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.datagen.registry;
 
-import com.github.mixinors.astromine.AstromineCommon;
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.datagen.generator.loottable.onetime.OneTimeLootTableGenerator;
 import com.github.mixinors.astromine.datagen.generator.loottable.set.SetLootTableGenerator;
 import com.github.mixinors.astromine.datagen.material.MaterialSet;
@@ -57,11 +57,11 @@ public abstract class AstromineLootTableGenerators {
 			try {
 				if (set.shouldGenerate(generator)) {
 					generator.generate(lootTables, set);
-					AstromineCommon.LOGGER.info("Loot table generation of " + set.getName() + " succeeded, with generator " + generator.getGeneratorName() + ".");
+					AMCommon.LOGGER.info("Loot table generation of " + set.getName() + " succeeded, with generator " + generator.getGeneratorName() + ".");
 				}
 			} catch (Exception exception) {
-				AstromineCommon.LOGGER.error("Loot table generation of " + set.getName() + " failed, with generator " + generator.getGeneratorName() + ".");
-				AstromineCommon.LOGGER.error(exception.getMessage());
+				AMCommon.LOGGER.error("Loot table generation of " + set.getName() + " failed, with generator " + generator.getGeneratorName() + ".");
+				AMCommon.LOGGER.error(exception.getMessage());
 			}
 		});
 	}

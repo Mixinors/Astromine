@@ -29,6 +29,7 @@ import com.github.mixinors.astromine.common.component.general.SimpleAutoSyncedEn
 import com.github.mixinors.astromine.common.component.general.SimpleEnergyComponent;
 import com.github.mixinors.astromine.common.component.general.compatibility.EnergyComponentFromEnergyStorage;
 import com.github.mixinors.astromine.common.component.general.provider.EnergyComponentProvider;
+import com.github.mixinors.astromine.registry.AMComponents;
 import net.fabricmc.fabric.api.util.NbtType;
 
 import net.minecraft.item.Item;
@@ -37,8 +38,7 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
-import com.github.mixinors.astromine.registry.AstromineComponents;
-import com.github.mixinors.astromine.registry.AstromineItems;
+import com.github.mixinors.astromine.registry.AMItems;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.EnergyStorage;
 
@@ -81,7 +81,7 @@ public interface EnergyComponent extends IdentifiableComponent {
 
 	/** Returns this component's {@link Item} symbol. */
 	default Item getSymbol() {
-		return AstromineItems.ENERGY.asItem();
+		return AMItems.ENERGY.asItem();
 	}
 
 	/** Returns this component's {@link Text} name. */
@@ -173,13 +173,13 @@ public interface EnergyComponent extends IdentifiableComponent {
 
 		dataTag.putDouble("energy", getVolume().getAmount());
 
-		tag.put(AstromineComponents.ENERGY_INVENTORY_COMPONENT.getId().toString(), dataTag);
+		tag.put(AMComponents.ENERGY_INVENTORY_COMPONENT.getId().toString(), dataTag);
 	}
 
 	/** Deserializes this {@link EnergyComponent} from a {@link CompoundTag}. */
 	@Override
 	default void readFromNbt(CompoundTag tag) {
-		CompoundTag dataTag = tag.getCompound(AstromineComponents.ENERGY_INVENTORY_COMPONENT.getId().toString());
+		CompoundTag dataTag = tag.getCompound(AMComponents.ENERGY_INVENTORY_COMPONENT.getId().toString());
 
 		EnergyVolume volume = getVolume();
 
@@ -199,8 +199,8 @@ public interface EnergyComponent extends IdentifiableComponent {
 			return ((EnergyComponentProvider) v).getEnergyComponent();
 		}
 
-		if (v != null && AstromineComponents.ENERGY_INVENTORY_COMPONENT.isProvidedBy(v)) {
-			return AstromineComponents.ENERGY_INVENTORY_COMPONENT.get(v);
+		if (v != null && AMComponents.ENERGY_INVENTORY_COMPONENT.isProvidedBy(v)) {
+			return AMComponents.ENERGY_INVENTORY_COMPONENT.get(v);
 		} else {
 			if (v instanceof EnergyStorage) {
 				return of((EnergyStorage) v);

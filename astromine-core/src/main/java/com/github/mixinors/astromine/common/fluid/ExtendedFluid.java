@@ -51,10 +51,10 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 
-import com.github.mixinors.astromine.common.utilities.ClientUtilities;
-import com.github.mixinors.astromine.registry.AstromineBlocks;
-import com.github.mixinors.astromine.registry.AstromineFluids;
-import com.github.mixinors.astromine.registry.AstromineItems;
+import com.github.mixinors.astromine.common.util.ClientUtils;
+import com.github.mixinors.astromine.registry.AMBlocks;
+import com.github.mixinors.astromine.registry.AMFluids;
+import com.github.mixinors.astromine.registry.AMItems;
 import com.github.vini2003.blade.common.miscellaneous.Color;
 import org.jetbrains.annotations.Nullable;
 
@@ -268,11 +268,11 @@ public abstract class ExtendedFluid extends FlowableFluid {
 
 		/** Builds this builder's fluid.
 		 * Part of the process is delegated to
-		 * {@link ClientUtilities#registerExtendedFluid(String, int, Fluid, Fluid)},
+		 * {@link ClientUtils#registerExtendedFluid(String, int, Fluid, Fluid)},
 		 * since rendering registration cannot be done on the server side. */
 		public Fluid build() {
-			ExtendedFluid flowing = AstromineFluids.register(name + "_flowing", new Flowing(fog, tint, isInfinite, source));
-			ExtendedFluid still = AstromineFluids.register(name, new Still(fog, tint, isInfinite, source));
+			ExtendedFluid flowing = AMFluids.register(name + "_flowing", new Flowing(fog, tint, isInfinite, source));
+			ExtendedFluid still = AMFluids.register(name, new Still(fog, tint, isInfinite, source));
 
 			flowing.flowing = flowing;
 			still.flowing = flowing;
@@ -282,9 +282,9 @@ public abstract class ExtendedFluid extends FlowableFluid {
 			still.still = still;
 			this.still = still;
 
-			Block block = AstromineBlocks.register(name, new FluidBlock(still, AbstractBlock.Settings.of(INDUSTRIAL_FLUID_MATERIAL).noCollision().strength(100.0F).dropsNothing()));
+			Block block = AMBlocks.register(name, new FluidBlock(still, AbstractBlock.Settings.of(INDUSTRIAL_FLUID_MATERIAL).noCollision().strength(100.0F).dropsNothing()));
 
-			Item bucket = AstromineItems.register(name + "_bucket", new BucketItem(still, (new Item.Settings()).recipeRemainder(Items.BUCKET).maxCount(1).group(group)));
+			Item bucket = AMItems.register(name + "_bucket", new BucketItem(still, (new Item.Settings()).recipeRemainder(Items.BUCKET).maxCount(1).group(group)));
 
 			flowing.block = block;
 			still.block = block;
@@ -295,7 +295,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 			this.bucket = bucket;
 
 			if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
-				ClientUtilities.registerExtendedFluid(name, tint, still, flowing);
+				ClientUtils.registerExtendedFluid(name, tint, still, flowing);
 			}
 
 			return still;

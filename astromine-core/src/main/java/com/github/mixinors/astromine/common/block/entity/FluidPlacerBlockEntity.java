@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.nbt.CompoundTag;
@@ -40,7 +40,7 @@ import com.github.mixinors.astromine.common.component.general.SimpleEnergyCompon
 import com.github.mixinors.astromine.common.component.general.SimpleFluidComponent;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.registry.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergyConsumedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
@@ -50,7 +50,7 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 	private long cooldown = 0L;
 
 	public FluidPlacerBlockEntity() {
-		super(AstromineBlockEntityTypes.FLUID_INSERTER);
+		super(AMBlockEntityTypes.FLUID_INSERTER);
 	}
 
 	@Override
@@ -67,17 +67,17 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 
 	@Override
 	public double getEnergyConsumed() {
-		return AstromineConfig.get().fluidPlacerEnergyConsumed;
+		return AMConfig.get().fluidPlacerEnergyConsumed;
 	}
 
 	@Override
 	public double getEnergySize() {
-		return AstromineConfig.get().fluidPlacerEnergy;
+		return AMConfig.get().fluidPlacerEnergy;
 	}
 
 	@Override
 	public double getMachineSpeed() {
-		return AstromineConfig.get().fluidPlacerSpeed;
+		return AMConfig.get().fluidPlacerSpeed;
 	}
 
 	@Override

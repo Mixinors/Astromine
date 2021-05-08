@@ -35,7 +35,7 @@ import com.github.mixinors.astromine.common.network.NetworkMember;
 import com.github.mixinors.astromine.common.network.NetworkMemberNode;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.registry.NetworkMemberRegistry;
-import com.github.mixinors.astromine.common.utilities.data.position.WorldPos;
+import com.github.mixinors.astromine.common.util.data.position.WorldPos;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.Direction;
 

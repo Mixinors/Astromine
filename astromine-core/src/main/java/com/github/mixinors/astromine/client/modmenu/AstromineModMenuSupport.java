@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.client.modmenu;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.registry.AMConfig;
 import io.github.prospector.modmenu.api.ConfigScreenFactory;
 import io.github.prospector.modmenu.api.ModMenuApi;
 import me.shedaniel.autoconfig.AutoConfig;
@@ -39,7 +39,7 @@ public class AstromineModMenuSupport implements ModMenuApi {
 	@Override
 	public ConfigScreenFactory<?> getModConfigScreenFactory() {
 		return screen -> {
-			ConfigScreenProvider<AstromineConfig> configScreen = (ConfigScreenProvider<AstromineConfig>) AutoConfig.getConfigScreen(AstromineConfig.class, screen);
+			ConfigScreenProvider<AMConfig> configScreen = (ConfigScreenProvider<AMConfig>) AutoConfig.getConfigScreen(AMConfig.class, screen);
 			configScreen.setOptionFunction((s, field) -> field.getName());
 			return configScreen.get();
 		};

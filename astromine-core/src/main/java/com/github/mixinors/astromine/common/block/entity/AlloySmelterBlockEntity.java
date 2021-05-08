@@ -27,17 +27,17 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.component.general.*;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
-import com.github.mixinors.astromine.common.utilities.StackUtilities;
-import com.github.mixinors.astromine.common.utilities.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.StackUtils;
+import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.registry.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
@@ -73,7 +73,7 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 				return false;
 			}
 
-			if (!StackUtilities.test(stack, getItemComponent().getFirst()) && !StackUtilities.test(stack, getItemComponent().getSecond())) {
+			if (!StackUtils.test(stack, getItemComponent().getFirst()) && !StackUtils.test(stack, getItemComponent().getSecond())) {
 				return false;
 			}
 
@@ -154,7 +154,7 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 							first.decrement(recipe.getSecondInput().testMatching(first).getCount());
 						}
 
-						itemComponent.setThird(StackUtilities.into(itemComponent.getThird(), recipe.getFirstOutput()));
+						itemComponent.setThird(StackUtils.into(itemComponent.getThird(), recipe.getFirstOutput()));
 
 						progress = 0;
 					} else {
@@ -187,17 +187,17 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 
 	public static class Primitive extends AlloySmelterBlockEntity {
 		public Primitive() {
-			super(AstromineBlockEntityTypes.PRIMITIVE_ALLOY_SMELTER);
+			super(AMBlockEntityTypes.PRIMITIVE_ALLOY_SMELTER);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().primitiveAlloySmelterSpeed;
+			return AMConfig.get().primitiveAlloySmelterSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().primitiveAlloySmelterEnergy;
+			return AMConfig.get().primitiveAlloySmelterEnergy;
 		}
 
 		@Override
@@ -208,17 +208,17 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 
 	public static class Basic extends AlloySmelterBlockEntity {
 		public Basic() {
-			super(AstromineBlockEntityTypes.BASIC_ALLOY_SMELTER);
+			super(AMBlockEntityTypes.BASIC_ALLOY_SMELTER);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().basicAlloySmelterSpeed;
+			return AMConfig.get().basicAlloySmelterSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().basicAlloySmelterEnergy;
+			return AMConfig.get().basicAlloySmelterEnergy;
 		}
 
 		@Override
@@ -229,17 +229,17 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 
 	public static class Advanced extends AlloySmelterBlockEntity {
 		public Advanced() {
-			super(AstromineBlockEntityTypes.ADVANCED_ALLOY_SMELTER);
+			super(AMBlockEntityTypes.ADVANCED_ALLOY_SMELTER);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().advancedAlloySmelterSpeed;
+			return AMConfig.get().advancedAlloySmelterSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().advancedAlloySmelterEnergy;
+			return AMConfig.get().advancedAlloySmelterEnergy;
 		}
 
 		@Override
@@ -250,17 +250,17 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 
 	public static class Elite extends AlloySmelterBlockEntity {
 		public Elite() {
-			super(AstromineBlockEntityTypes.ELITE_ALLOY_SMELTER);
+			super(AMBlockEntityTypes.ELITE_ALLOY_SMELTER);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().eliteAlloySmelterSpeed;
+			return AMConfig.get().eliteAlloySmelterSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().eliteAlloySmelterEnergy;
+			return AMConfig.get().eliteAlloySmelterEnergy;
 		}
 
 		@Override

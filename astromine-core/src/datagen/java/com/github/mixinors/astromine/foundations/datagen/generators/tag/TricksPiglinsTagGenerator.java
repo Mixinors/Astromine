@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.foundations.datagen.generators.tag;
 
-import com.github.mixinors.astromine.AstromineCommon;
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.datagen.generator.tag.set.SetTagGenerator;
 import com.github.mixinors.astromine.datagen.material.MaterialSet;
 import com.github.mixinors.astromine.foundations.datagen.registry.AstromineMaterialSets;
@@ -34,7 +34,7 @@ public class TricksPiglinsTagGenerator implements SetTagGenerator {
 	@Override
 	public void generate(TagData tags, MaterialSet set) {
 		set.getItems().forEach((type, entry) -> {
-			tags.item(AstromineCommon.identifier("tricks_piglins")).append(entry.getItemId());
+			tags.item(AMCommon.identifier("tricks_piglins")).append(entry.getItemId());
 		});
 	}
 

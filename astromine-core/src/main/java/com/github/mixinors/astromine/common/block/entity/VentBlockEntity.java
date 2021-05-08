@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AMBlockEntityTypes;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -38,7 +38,7 @@ import com.github.mixinors.astromine.common.component.general.SimpleFluidCompone
 import com.github.mixinors.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
-import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.registry.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergyConsumedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvider;
@@ -46,9 +46,9 @@ import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 
 public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements FluidSizeProvider, EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
 	public VentBlockEntity() {
-		super(AstromineBlockEntityTypes.VENT);
+		super(AMBlockEntityTypes.VENT);
 
-		getFluidComponent().getFirst().setSize(AstromineConfig.get().ventFluid);
+		getFluidComponent().getFirst().setSize(AMConfig.get().ventFluid);
 	}
 
 	@Override
@@ -65,22 +65,22 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 
 	@Override
 	public double getEnergySize() {
-		return AstromineConfig.get().ventEnergy;
+		return AMConfig.get().ventEnergy;
 	}
 
 	@Override
 	public long getFluidSize() {
-		return AstromineConfig.get().ventFluid;
+		return AMConfig.get().ventFluid;
 	}
 
 	@Override
 	public double getMachineSpeed() {
-		return AstromineConfig.get().ventSpeed;
+		return AMConfig.get().ventSpeed;
 	}
 
 	@Override
 	public double getEnergyConsumed() {
-		return AstromineConfig.get().ventEnergyConsumed;
+		return AMConfig.get().ventEnergyConsumed;
 	}
 
 	@Override

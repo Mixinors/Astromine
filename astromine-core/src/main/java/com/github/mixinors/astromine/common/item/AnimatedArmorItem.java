@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.item;
 
+import com.github.mixinors.astromine.common.util.ClientUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -83,7 +84,7 @@ public class AnimatedArmorItem extends ArmorItem {
 			beginAction = () -> {
 				RenderSystem.enableTexture();
 
-				TextureManager textureManager = MinecraftClient.getInstance().getTextureManager();
+				TextureManager textureManager = ClientUtils.getInstance().getTextureManager();
 
 				AbstractTexture texture = textureManager.getTexture(id);
 

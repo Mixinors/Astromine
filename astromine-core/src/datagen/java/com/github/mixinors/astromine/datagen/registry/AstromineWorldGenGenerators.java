@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.datagen.registry;
 
-import com.github.mixinors.astromine.AstromineCommon;
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.datagen.generator.worldgen.onetime.OneTimeWorldGenGenerator;
 import com.github.mixinors.astromine.datagen.generator.worldgen.set.SetWorldGenGenerator;
 import com.github.mixinors.astromine.datagen.material.MaterialSet;
@@ -57,11 +57,11 @@ public abstract class AstromineWorldGenGenerators {
 			try {
 				if (set.shouldGenerate(generator)) {
 					generator.generate(worldGen, set);
-					AstromineCommon.LOGGER.info("World generation of " + set.getName() + " succeeded, with generator " + generator.getGeneratorName() + ".");
+					AMCommon.LOGGER.info("World generation of " + set.getName() + " succeeded, with generator " + generator.getGeneratorName() + ".");
 				}
 			} catch (Exception exception) {
-				AstromineCommon.LOGGER.error("World generation of " + set.getName() + " failed, with generator " + generator.getGeneratorName() + ".");
-				AstromineCommon.LOGGER.error(exception.getMessage());
+				AMCommon.LOGGER.error("World generation of " + set.getName() + " failed, with generator " + generator.getGeneratorName() + ".");
+				AMCommon.LOGGER.error(exception.getMessage());
 			}
 		});
 	}

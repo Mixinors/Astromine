@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
-import com.github.mixinors.astromine.registry.AstromineScreenHandlers;
+import com.github.mixinors.astromine.registry.AMScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
@@ -32,7 +32,7 @@ import com.github.mixinors.astromine.common.screenhandler.base.block.BlockStateS
 
 public class NuclearWarheadScreenHandler extends BlockStateScreenHandler {
 	public NuclearWarheadScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AstromineScreenHandlers.NUCLEAR_WARHEAD, syncId, player, position);
+		super(AMScreenHandlers.NUCLEAR_WARHEAD, syncId, player, position);
 	}
 
 	@Override

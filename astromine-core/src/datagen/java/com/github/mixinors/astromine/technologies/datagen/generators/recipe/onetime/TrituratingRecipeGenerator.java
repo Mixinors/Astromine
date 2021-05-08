@@ -29,8 +29,8 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-import com.github.mixinors.astromine.AstromineCommon;
-import com.github.mixinors.astromine.common.utilities.GeneratorUtilities;
+import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.common.util.GeneratorUtils;
 import com.github.mixinors.astromine.datagen.generator.recipe.onetime.base.EnergyProcessingRecipeGenerator;
 import com.github.mixinors.astromine.common.recipe.TrituratingRecipe;
 import me.shedaniel.cloth.api.datagen.v1.RecipeData;
@@ -56,12 +56,12 @@ public class TrituratingRecipeGenerator extends EnergyProcessingRecipeGenerator 
 
 	@Override
 	public Identifier getRecipeId() {
-		return AstromineCommon.identifier(name);
+		return AMCommon.identifier(name);
 	}
 
 	@Override
 	public void generate(RecipeData recipes) {
-		recipes.accept(GeneratorUtilities.Providers.createProvider(TrituratingRecipe.Serializer.INSTANCE, getRecipeId(), json -> {
+		recipes.accept(GeneratorUtils.Providers.createProvider(TrituratingRecipe.Serializer.INSTANCE, getRecipeId(), json -> {
 			JsonElement inputJson = input.toJson();
 			if (inputJson.isJsonObject()) {
 				inputJson.getAsJsonObject().addProperty("count", inputCount);

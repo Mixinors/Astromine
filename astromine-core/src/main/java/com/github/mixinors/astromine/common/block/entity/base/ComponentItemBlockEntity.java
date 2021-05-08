@@ -25,11 +25,11 @@
 package com.github.mixinors.astromine.common.block.entity.base;
 
 import com.github.mixinors.astromine.common.component.general.provider.ItemComponentProvider;
+import com.github.mixinors.astromine.registry.AMComponents;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.utilities.capability.inventory.ComponentInventoryProvider;
-import com.github.mixinors.astromine.registry.AstromineComponents;
+import com.github.mixinors.astromine.common.util.capability.inventory.ComponentInventoryProvider;
 
 /**
  * A {@link ComponentBlockEntity} with an attached
@@ -42,7 +42,7 @@ public abstract class ComponentItemBlockEntity extends ComponentBlockEntity impl
 	public ComponentItemBlockEntity(BlockEntityType<?> type) {
 		super(type);
 
-		addComponent(AstromineComponents.ITEM_INVENTORY_COMPONENT, getItemComponent());
+		addComponent(AMComponents.ITEM_INVENTORY_COMPONENT, getItemComponent());
 		getItemComponent().updateListeners();
 	}
 

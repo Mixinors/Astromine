@@ -26,10 +26,8 @@ package com.github.mixinors.astromine.client.cca;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.mixinors.astromine.AstromineCommon;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import io.netty.buffer.Unpooled;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
@@ -39,12 +37,6 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
  * A manager for gasses on the client side.
  */
 public class ClientAtmosphereManager {
-	public static final Identifier GAS_ADDED = AstromineCommon.identifier("gas_added");
-
-	public static final Identifier GAS_REMOVED = AstromineCommon.identifier("gas_removed");
-
-	public static final Identifier GAS_ERASED = AstromineCommon.identifier("gas_erased");
-
 	private static final Long2ObjectMap<FluidVolume> VOLUMES = new Long2ObjectOpenHashMap<>();
 
 	/** Returns this manager's contents. */
@@ -80,12 +72,12 @@ public class ClientAtmosphereManager {
 		return gasBuffer;
 	}
 
-	/** Handles {@link #GAS_ERASED} {@link PacketByteBuf}s. */
+	/** Handles gas erasure {@link PacketByteBuf}s. */
 	public static void onGasErased(PacketByteBuf gasBuffer) {
 		VOLUMES.clear();
 	}
 
-	/** Handles {@link #GAS_ADDED} {@link PacketByteBuf}s. */
+	/** Handles gas addition {@link PacketByteBuf}s. */
 	public static void onGasAdded(PacketByteBuf gasBuffer) {
 		CompoundTag gasPayload = gasBuffer.readCompoundTag();
 		long gasPosition = gasPayload.getLong("gasPosition");
@@ -95,7 +87,7 @@ public class ClientAtmosphereManager {
 		VOLUMES.put(gasPosition, gasVolume);
 	}
 
-	/** Handles {@link #GAS_REMOVED} {@link PacketByteBuf}s. */
+	/** Handles gas removal {@link PacketByteBuf}s. */
 	public static void onGasRemoved(PacketByteBuf gasBuffer) {
 		CompoundTag gasPayload = gasBuffer.readCompoundTag();
 		long gasPosition = gasPayload.getLong("gasPosition");
