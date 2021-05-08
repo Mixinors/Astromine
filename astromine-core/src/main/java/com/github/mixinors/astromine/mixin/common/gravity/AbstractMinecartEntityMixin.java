@@ -22,20 +22,25 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.mixin.common;
+package com.github.mixinors.astromine.mixin.common.gravity;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
-import net.minecraft.entity.projectile.FishingBobberEntity;
+import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 
 import com.github.mixinors.astromine.common.entity.GravityEntity;
 
-@Mixin(FishingBobberEntity.class)
-public abstract class FishingBobberEntityMixin implements GravityEntity {
-	@ModifyConstant(method = "use(Lnet/minecraft/item/ItemStack;)I", constant = @Constant(doubleValue = 0.08D))
+@Mixin(AbstractMinecartEntity.class)
+public abstract class AbstractMinecartEntityMixin implements GravityEntity {
+	@ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = -0.04D))
 	double getGravity(double original) {
-		return this.astromine_getGravity();
+		return -this.astromine_getGravity();
+	}
+
+	@Override
+	public double astromine_getGravityMultiplier() {
+		return 0.5;
 	}
 }

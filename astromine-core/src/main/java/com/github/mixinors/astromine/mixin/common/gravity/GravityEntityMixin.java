@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.mixin.common;
+package com.github.mixinors.astromine.mixin.common.gravity;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;

@@ -22,22 +22,20 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.mixin.common;
+package com.github.mixinors.astromine.mixin.common.gravity;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
-import net.minecraft.block.HoneyBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.entity.projectile.FishingBobberEntity;
 
 import com.github.mixinors.astromine.common.entity.GravityEntity;
 
-@Mixin(HoneyBlock.class)
-public class HoneyBlockMixin {
-	@ModifyConstant(method = "isSliding(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/entity/Entity;)Z", constant = @Constant(doubleValue = -0.08D))
-	double getGravity(double original, BlockPos pos, Entity entity) {
-		return -((GravityEntity) entity).astromine_getGravity();
+@Mixin(FishingBobberEntity.class)
+public abstract class FishingBobberEntityMixin implements GravityEntity {
+	@ModifyConstant(method = "use(Lnet/minecraft/item/ItemStack;)I", constant = @Constant(doubleValue = 0.08D))
+	double getGravity(double original) {
+		return this.astromine_getGravity();
 	}
 }

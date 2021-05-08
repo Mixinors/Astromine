@@ -22,20 +22,27 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.mixin.common;
+package com.github.mixinors.astromine.mixin.common.gravity;
 
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
-import net.minecraft.entity.passive.SquidEntity;
+import net.minecraft.entity.ai.goal.StepAndDestroyBlockGoal;
+import net.minecraft.entity.mob.MobEntity;
 
 import com.github.mixinors.astromine.common.entity.GravityEntity;
 
-@Mixin(SquidEntity.class)
-public abstract class SquidEntityMixin implements GravityEntity {
-	@ModifyConstant(method = "tickMovement()V", constant = @Constant(doubleValue = 0.08D))
+@Mixin(StepAndDestroyBlockGoal.class)
+public class StepAndDestroyBlockGoalMixin {
+	@Shadow
+	@Final
+	private MobEntity stepAndDestroyMob;
+
+	@ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = 0.08D))
 	double getGravity(double original) {
-		return this.astromine_getGravity();
+		return ((GravityEntity) stepAndDestroyMob).astromine_getGravity();
 	}
 }

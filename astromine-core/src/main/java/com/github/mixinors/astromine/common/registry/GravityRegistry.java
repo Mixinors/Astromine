@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.registry;
 
 import com.github.mixinors.astromine.mixin.common.*;
+import com.github.mixinors.astromine.mixin.common.gravity.*;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
