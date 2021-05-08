@@ -16,7 +16,8 @@ import net.minecraft.world.gen.feature.ConfiguredFeature;
 import java.util.function.Predicate;
 
 public class AMOres {
-	public static final Identifier ASTROMINE_FOUNDATIONS_MODIFICATIONS_ORES = AMCommon.id("foundations_odifications_ores");
+	public static final Identifier ASTROMINE_FOUNDATIONS_MODIFICATIONS_ORES = AMCommon.id("modifications_ores");
+	
 	public static final Identifier TIN_ORE_ID = AMCommon.id("tin_ore");
 	public static final RegistryKey<ConfiguredFeature<?, ?>> TIN_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, TIN_ORE_ID);
 	

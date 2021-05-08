@@ -13,14 +13,14 @@
     "astromine:fools_gold_boots",
     "astromine:fools_gold_apple",
     "astromine:fools_gold_block",
-    "astromine:fools_gold_sword",
+    "astromine:fools_gold_excavator",
     "astromine:fools_gold_shovel",
     "astromine:fools_gold_axe",
-    "astromine:fools_gold_mattock",
     "astromine:fools_gold_hammer",
-    "astromine:fools_gold_excavator",
-    "astromine:fools_gold_mining_tool",
     "astromine:fools_gold_pickaxe",
-    "astromine:fools_gold_hoe"
+    "astromine:fools_gold_mattock",
+    "astromine:fools_gold_hoe",
+    "astromine:fools_gold_mining_tool",
+    "astromine:fools_gold_sword"
   ]
 }
