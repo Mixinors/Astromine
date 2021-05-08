@@ -75,9 +75,6 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 
 			return FluidGeneratingRecipe.allows(world, FluidComponent.of(volume, getFluidComponent().getFirst().copy()));
 		}).withExtractPredicate((direction, volume, slot) -> false).withListener((inventory) -> {
-			if (world != null && !world.isClient) {
-				System.out.println("");
-			}
 			shouldTry = true;
 			optionalRecipe = Optional.empty();
 		});

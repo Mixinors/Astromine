@@ -3,7 +3,7 @@ import net.fabricmc.loom.task.RunClientTask
 
 plugins {
     id 'maven-publish'
-    id 'forgified-fabric-loom' version '0.6-SNAPSHOT'
+    id 'dev.architectury.loom' version '0.7.1-SNAPSHOT'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
     id "org.cadixdev.licenser" version "0.5.0"
 }
@@ -18,7 +18,7 @@ allprojects {
     }
 
     apply plugin: 'maven-publish'
-    apply plugin: 'forgified-fabric-loom'
+    apply plugin: 'dev.architectury.loom'
     apply plugin: 'com.matthewprenger.cursegradle'
 
     ext {
@@ -42,10 +42,6 @@ allprojects {
         isRunningGenerateDataTask = path == ":astromine-datagen-initializer"
     }
 
-    loom {
-//        shareCaches = true
-    }
-
     java {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -67,8 +63,8 @@ allprojects {
             }
         }
         maven {
-            name = "shedaniel"
-            url = "https://maven.shedaniel.me"
+            name = "architectury"
+            url = "https://maven.architectury.dev"
         }
         maven {
             name = "TerraFormersMC"
