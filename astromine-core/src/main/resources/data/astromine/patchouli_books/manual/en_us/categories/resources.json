@@ -1,6 +1,5 @@
 {
-  "name": "text.astromine.patchouli.resources.title",
-  "description": "text.astromine.patchouli.resources.description",
-  "icon": "astromine:metite_ingot",
+  "name": "Resources",
+  "icon": "astromine:steel_ingot",
   "sortnum": 1
 }

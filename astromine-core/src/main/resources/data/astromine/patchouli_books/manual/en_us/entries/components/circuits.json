@@ -1,41 +1,29 @@
 {
-  "name": "text.astromine.components.circuits.title",
-  "icon": "astromine:basic_circuit",
+  "name": "Circuits",
+  "icon": "astromine:primitive_circuit",
   "category": "components",
-  "sortnum": 0,
+  "sortnum": 3,
   "pages": [
     {
       "type": "spotlight",
-      "item": "astromine:basic_circuit",
-      "title": "text.astromine.components.circuits.page_one.title",
-      "text": "text.astromine.components.circuits.page_one.text"
+      "item": "astromine:primitive_circuit",
+      "text": "$(item)Circuits$() are important components of tools and machines."
     },
     {
       "type": "crafting",
-      "recipe": "astromine:basic_circuit",
-      "title": "text.astromine.components.circuits.page_two.title"
-    },
-    {
-      "type": "spotlight",
-      "item": "astromine:advanced_circuit",
-      "title": "text.astromine.components.circuits.page_three.title",
-      "text": "text.astromine.components.circuits.page_three.text"
+      "recipe": "astromine:primitive_circuit"
     },
     {
       "type": "crafting",
-      "recipe": "astromine:advanced_circuit",
-      "title": "text.astromine.components.circuits.page_four.title"
-    },
-    {
-      "type": "spotlight",
-      "item": "astromine:elite_circuit",
-      "title": "text.astromine.components.circuits.page_five.title",
-      "text": "text.astromine.components.circuits.page_five.text"
+      "recipe": "astromine:basic_circuit"
     },
     {
       "type": "crafting",
-      "recipe": "astromine:elite_circuit",
-      "title": "text.astromine.components.circuits.page_six.title"
+      "recipe": "astromine:advanced_circuit"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:elite_circuit"
     }
   ]
 }

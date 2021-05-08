@@ -1,5 +1,5 @@
 {
-  "name": "text.astromine.world.meteors.title",
+  "name": "Meteors",
   "icon": "astromine:meteor_stone",
   "category": "world",
   "sortnum": 0,
@@ -7,8 +7,7 @@
     {
       "type": "spotlight",
       "item": "astromine:meteor_stone",
-      "title": "text.astromine.world.meteors.page_one.title",
-      "text": "text.astromine.world.meteors.page_one.text"
+      "text": "$(thing)Meteors$() are found in the $(thing)world$()."
     }
   ]
 }

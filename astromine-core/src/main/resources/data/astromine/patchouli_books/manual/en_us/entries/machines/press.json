@@ -1,0 +1,29 @@
+{
+  "name": "Press",
+  "icon": "astromine:primitive_press",
+  "category": "machines",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:primitive_press",
+      "text": "A $(item)Press$() compacts items, with electrical energy."
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:primitive_press"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:basic_press"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:advanced_press"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:elite_press"
+    }
+  ]
+}

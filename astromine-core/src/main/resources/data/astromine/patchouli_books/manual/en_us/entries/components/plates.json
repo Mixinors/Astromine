@@ -1,20 +1,13 @@
 {
-  "name": "text.astromine.components.plates.title",
+  "name": "Plates",
   "icon": "astromine:iron_plate",
   "category": "components",
-  "sortnum": 0,
+  "sortnum": 1,
   "pages": [
     {
       "type": "spotlight",
       "item": "astromine:iron_plate",
-      "title": "text.astromine.components.plates.page_one.title",
-      "text": "text.astromine.components.plates.page_one.text"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:iron_plates_from_ingot",
-      "title": "text.astromine.components.plates.page_two.title",
-      "text": "text.astromine.components.plates.page_two.text"
+      "text": "$(item)Plates$() are important components of tools and machines."
     }
   ]
 }

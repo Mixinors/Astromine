@@ -1,0 +1,17 @@
+{
+  "name": "Drain",
+  "icon": "astromine:drain",
+  "category": "machines",
+  "sortnum": 11,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:drain",
+      "text": "A $(item)Drain$() voids fluids."
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:drain"
+    }
+  ]
+}

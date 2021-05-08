@@ -1,6 +1,5 @@
 {
-  "name": "text.astromine.patchouli.astronautics.title",
-  "description": "text.astromine.patchouli.astronautics.description",
+  "name": "Astronautics",
   "icon": "astromine:space_suit_helmet",
   "sortnum": 5
 }

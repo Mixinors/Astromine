@@ -55,6 +55,7 @@ public class AMFluidEffects {
 			}
 		});
 		
+		/** Makes attempting to walk on oil be dangerous. */
 		AMFluids.OIL_DERIVATIVES.forEach(fluid -> {
 			FluidEffectRegistry.INSTANCE.register(fluid, (submerged, entity) -> {
 				if(entity.isAlive() && !entity.isSpectator() && (!(entity instanceof PlayerEntity) || !((PlayerEntity)entity).isCreative())) {

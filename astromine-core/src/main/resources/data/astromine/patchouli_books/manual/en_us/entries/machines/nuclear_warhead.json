@@ -1,0 +1,17 @@
+{
+  "name": "Nuclear Warhead",
+  "icon": "astromine:nuclear_warhead",
+  "category": "machines",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:nuclear_warhead",
+      "text": "A $(item)Nuclear Warhead$() explodes very powerfully."
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:nuclear_warhead"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Energy Cable",
+  "icon": "astromine:primitive_energy_cable",
+  "category": "machines",
+  "sortnum": 15,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:primitive_energy_cable",
+      "text": "An $(item)Energy Cable$() moves electrical energy."
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:primitive_energy_cable"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:basic_energy_cable"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:advanced_energy_cable"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:elite_energy_cable"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "name": "text.astromine.world.asteroids.title",
+  "name": "Asteroids",
   "icon": "astromine:asteroid_stone",
   "category": "world",
   "sortnum": 0,
@@ -7,8 +7,7 @@
     {
       "type": "spotlight",
       "item": "astromine:asteroid_stone",
-      "title": "text.astromine.world.asteroids.page_one.title",
-      "text": "text.astromine.world.asteroids.page_one.text"
+      "text": "$(thing)Asteroids$() are found in $(thing)space$()."
     }
   ]
 }

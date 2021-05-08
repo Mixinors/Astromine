@@ -1,0 +1,17 @@
+{
+  "name": "Shredder",
+  "icon": "astromine:shredder",
+  "category": "machines",
+  "sortnum": 10,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:shredder",
+      "text": "A $(item)Shredder$() voids items."
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:shredder"
+    }
+  ]
+}

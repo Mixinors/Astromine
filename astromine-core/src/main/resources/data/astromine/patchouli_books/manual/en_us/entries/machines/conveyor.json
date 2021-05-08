@@ -1,0 +1,25 @@
+{
+  "name": "Conveyor",
+  "icon": "astromine:basic_conveyor",
+  "category": "machines",
+  "sortnum": 13,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:basic_conveyor",
+      "text": "A $(item)Conveyor$() moves items."
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:basic_conveyor"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:advanced_conveyor"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:elite_conveyor"
+    }
+  ]
+}

@@ -1,13 +1,12 @@
 {
-  "name": "text.astromine.world.asteroid_ores.title",
+  "name": "Asteroid Ores",
   "icon": "astromine:asteroid_diamond_ore",
   "category": "world",
   "sortnum": 0,
   "pages": [
     {
       "type": "text",
-      "title": "text.astromine.world.asteroid_ores.page_one.title",
-      "text": "text.astromine.world.asteroid_ores.page_one.text"
+      "text": "$(thing)Asteroid Ores$() are found in $(thing)asteroids$() in $(thing)space$()."
     }
   ]
 }

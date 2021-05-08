@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.item;
 
+import com.github.mixinors.astromine.AMCommon;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -48,7 +49,7 @@ public class ManualItem extends Item {
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		if (!world.isClient && user instanceof ServerPlayerEntity) {
-			PatchouliAPI.instance.openBookGUI((ServerPlayerEntity) user, new Identifier("astromine-core:manual"));
+			PatchouliAPI.get().openBookGUI((ServerPlayerEntity) user, AMCommon.id("manual"));
 
 			return TypedActionResult.success(user.getStackInHand(hand));
 		} else {

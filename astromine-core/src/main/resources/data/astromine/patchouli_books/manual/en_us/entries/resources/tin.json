@@ -1,30 +1,7 @@
 {
-  "name": "text.astromine.resources.tin.title",
+  "name": "Tin",
   "icon": "astromine:tin_ingot",
   "category": "resources",
-  "sortnum": 1,
-  "pages": [
-    {
-      "type": "spotlight",
-      "item": "astromine:tin_ingot",
-      "title": "text.astromine.resources.tin.page_one.title",
-      "text": "text.astromine.resources.tin.page_one.text"
-    },
-    {
-      "type": "smelting",
-      "recipe": "astromine:tin_ingot_from_smelting_ore",
-      "title": "text.astromine.resources.tin.page_two.title",
-      "text": "text.astromine.resources.tin.page_two.text"
-    },
-    {
-      "type": "text",
-      "title": "text.astromine.resources.tin.page_three.title",
-      "text": "text.astromine.resources.tin.page_three.text"
-    },
-    {
-      "type": "text",
-      "title": "text.astromine.resources.tin.page_four.title",
-      "text": "text.astromine.resources.tin.page_four.text"
-    }
-  ]
+  "sortnum": 4,
+  "pages": []
 }

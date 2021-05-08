@@ -1,0 +1,47 @@
+{
+  "name": "Battery",
+  "icon": "astromine:primitive_battery",
+  "category": "gadgets",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:primitive_battery",
+      "text": "A $(thing)Battery$() holds electrical energy."
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:primitive_battery"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:basic_battery"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:advanced_battery"
+    },
+
+    {
+      "type": "crafting",
+      "recipe": "astromine:elite_battery"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:primitive_battery_pack"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:basic_battery_pack"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:advanced_battery_pack"
+    },
+
+    {
+      "type": "crafting",
+      "recipe": "astromine:elite_battery_pack"
+    }
+  ]
+}

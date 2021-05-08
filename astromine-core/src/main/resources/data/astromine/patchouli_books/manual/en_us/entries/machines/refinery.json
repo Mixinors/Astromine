@@ -1,0 +1,29 @@
+{
+  "name": "Refinery",
+  "icon": "astromine:primitive_refinery",
+  "category": "machines",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:primitive_refinery",
+      "text": "A $(item)Refinery$() distills $(thing)Crude Oil$() into $(thing)oil byproducts(), with electrical energy."
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:primitive_refinery"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:basic_refinery"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:advanced_refinery"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:elite_refinery"
+    }
+  ]
+}

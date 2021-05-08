@@ -1,20 +1,13 @@
 {
-  "name": "text.astromine.components.gears.title",
+  "name": "Gears",
   "icon": "astromine:iron_gear",
   "category": "components",
-  "sortnum": 0,
+  "sortnum": 2,
   "pages": [
     {
       "type": "spotlight",
       "item": "astromine:iron_gear",
-      "title": "text.astromine.components.gears.page_one.title",
-      "text": "text.astromine.components.gears.page_one.text"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:iron_gear_from_ingot",
-      "title": "text.astromine.components.gears.page_two.title",
-      "text": "text.astromine.components.gears.page_two.text"
+      "text": "$(item)Gears$() are important components of tools and machines."
     }
   ]
 }

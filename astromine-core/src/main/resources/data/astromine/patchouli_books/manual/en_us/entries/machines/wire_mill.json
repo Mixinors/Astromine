@@ -1,0 +1,29 @@
+{
+  "name": "Wire Mill",
+  "icon": "astromine:primitive_wire_mill",
+  "category": "machines",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:primitive_wire_mill",
+      "text": "A $(item)Wire Mill$() mills items into wires, with electrical energy."
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:primitive_wire_mill"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:basic_wire_mill"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:advanced_wire_mill"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:elite_wire_mill"
+    }
+  ]
+}

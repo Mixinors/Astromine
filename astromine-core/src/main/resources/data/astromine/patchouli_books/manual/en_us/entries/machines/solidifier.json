@@ -1,0 +1,29 @@
+{
+  "name": "Solidifier",
+  "icon": "astromine:primitive_solidifier",
+  "category": "machines",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:primitive_solidifier",
+      "text": "A $(item)Solidifier$() solidifies fluids, with electrical energy."
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:primitive_solidifier"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:basic_solidifier"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:advanced_solidifier"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:elite_solidifier"
+    }
+  ]
+}

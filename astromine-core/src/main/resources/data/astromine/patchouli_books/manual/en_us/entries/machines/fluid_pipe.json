@@ -1,0 +1,17 @@
+{
+  "name": "Fluid Pipe",
+  "icon": "astromine:fluid_pipe",
+  "category": "machines",
+  "sortnum": 14,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:fluid_pipe",
+      "text": "A $(item)Fluid Pipe$() moves fluids."
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:fluid_pipe"
+    }
+  ]
+}

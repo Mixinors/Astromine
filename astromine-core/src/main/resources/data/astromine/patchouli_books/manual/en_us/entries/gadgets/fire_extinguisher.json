@@ -1,19 +1,17 @@
 {
-  "name": "text.astromine.gadgets.fire_extinguisher.title",
+  "name": "Fire Extinguisher",
   "icon": "astromine:fire_extinguisher",
   "category": "gadgets",
-  "sortnum": 0,
+  "sortnum": 4,
   "pages": [
     {
       "type": "spotlight",
       "item": "astromine:fire_extinguisher",
-      "title": "text.astromine.gadgets.fire_extinguisher.page_one.title",
-      "text": "text.astromine.gadgets.fire_extinguisher.page_one.text"
+      "text": "A $(thing)Fire Extinguisher$() will extinguish flames and send you flying away."
     },
     {
       "type": "crafting",
-      "recipe": "astromine:fire_extinguisher",
-      "title": "text.astromine.gadgets.fire_extinguisher.page_two.title"
+      "recipe": "astromine:fire_extinguisher"
     }
   ]
 }

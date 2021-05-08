@@ -1,0 +1,29 @@
+{
+  "name": "Electric Furnace",
+  "icon": "astromine:primitive_electric_furnace",
+  "category": "machines",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:primitive_electric_furnace",
+      "text": "An $(item)Electric Furnace$() smelts items, with electrical energy."
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:primitive_electric_furnace"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:basic_electric_furnace"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:advanced_electric_furnace"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:elite_electric_furnace"
+    }
+  ]
+}

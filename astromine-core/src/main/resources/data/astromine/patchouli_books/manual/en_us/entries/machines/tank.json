@@ -1,0 +1,29 @@
+{
+  "name": "Tank",
+  "icon": "astromine:primitive_tank",
+  "category": "machines",
+  "sortnum": 7,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:primitive_tank",
+      "text": "A $(item)Tank$() holds liquids and gasses."
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:primitive_tank"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:basic_tank"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:advanced_tank"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:elite_tank"
+    }
+  ]
+}

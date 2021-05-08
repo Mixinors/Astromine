@@ -1,6 +1,5 @@
 {
-  "name": "text.astromine.patchouli.gadgets.title",
-  "description": "text.astromine.patchouli.gadgets.description",
+  "name": "Gadgets",
   "icon": "astromine:fire_extinguisher",
   "sortnum": 4
 }

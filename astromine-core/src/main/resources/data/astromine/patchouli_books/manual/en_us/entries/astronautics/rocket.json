@@ -1,20 +1,13 @@
 {
-  "name": "text.astromine.astronautics.rocket.title",
+  "name": "Rocket",
   "icon": "astromine:rocket",
   "category": "astronautics",
-  "sortnum": 0,
+  "sortnum": 2,
   "pages": [
     {
       "type": "entity",
       "entity": "astromine:primitive_rocket",
-      "name": "text.astromine.astronautics.rocket.page_one.title",
-      "text": "text.astromine.astronautics.rocket.page_one.text"
-    },
-    {
-      "type": "crafting",
-      "recipe": "astromine:rocket",
-      "title": "text.astromine.astronautics.rocket.page_two.title",
-      "text": "text.astromine.astronautics.rocket.page_two.text"
+      "text": "A $(thing)Rocket$() will get you to space, but it won't be coming back, when provided with $(thing)Oxygen$() and $(thing)Kerosene$()."
     }
   ]
 }

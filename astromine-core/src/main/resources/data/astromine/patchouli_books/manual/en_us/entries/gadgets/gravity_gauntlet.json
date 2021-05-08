@@ -1,19 +1,17 @@
 {
-  "name": "text.astromine.gadgets.gravity_gauntlet.title",
+  "name": "Gravity Gauntlet",
   "icon": "astromine:gravity_gauntlet",
   "category": "gadgets",
-  "sortnum": 0,
+  "sortnum": 5,
   "pages": [
     {
       "type": "spotlight",
       "item": "astromine:gravity_gauntlet",
-      "title": "text.astromine.gadgets.gravity_gauntlet.page_one.title",
-      "text": "text.astromine.gadgets.gravity_gauntlet.page_one.text"
+      "text": "A $(thing)Gravity Gauntlet$() will send others flying away from you."
     },
     {
       "type": "crafting",
-      "recipe": "astromine:gravity_gauntlet",
-      "title": "text.astromine.gadgets.gravity_gauntlet.page_two.title"
+      "recipe": "astromine:gravity_gauntlet"
     }
   ]
 }

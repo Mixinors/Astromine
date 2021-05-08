@@ -1,0 +1,17 @@
+{
+  "name": "Vent",
+  "icon": "astromine:vent",
+  "category": "machines",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:vent",
+      "text": "A $(item)Vent$() vents gasses from its tanks to the outside world."
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:vent"
+    }
+  ]
+}

@@ -648,7 +648,7 @@
   "subtitles.astromine.empty_magazine": "Magazine is empty",
   "subtitles.astromine.altar_start": "Altar begins infusing",
   "subtitles.astromine.altar_finish": "Altar finishes infusing",
-  "text.astromine.manual.landing": "Your guide to the stars!",
+  "text.astromine.manual.landing": "Welcome to Astromine!$(br)You can now build factories, go to space, and explore!",
   "category.astromine.fluid_generating": "Fluid Generating",
   "category.astromine.solid_generating": "Solid Generating",
   "category.astromine.electric_smelting": "Electric Smelting",

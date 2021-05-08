@@ -1,0 +1,29 @@
+{
+  "name": "Melter",
+  "icon": "astromine:primitive_melter",
+  "category": "machines",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:primitive_melter",
+      "text": "A $(item)Melter$() melts items, with electrical energy."
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:primitive_melter"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:basic_melter"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:advanced_melter"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:elite_melter"
+    }
+  ]
+}

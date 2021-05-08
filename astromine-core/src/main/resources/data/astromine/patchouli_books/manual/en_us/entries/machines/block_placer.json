@@ -1,0 +1,17 @@
+{
+  "name": "Block Placer",
+  "icon": "astromine:block_placer",
+  "category": "machines",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:block_placer",
+      "text": "A $(item)Block Places$() places blocks in front of itself."
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:block_placer"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "Inserter",
+  "icon": "astromine:inserter",
+  "category": "machines",
+  "sortnum": 12,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:inserter",
+      "text": "An $(item)Inserter$() collects items from behind and inserts them forward."
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:inserter"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:fast_inserter"
+    }
+  ]
+}
