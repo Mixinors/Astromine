@@ -1,7 +1,0 @@
-{
-  "type": "minecraft:crafting_shaped", "pattern": ["212", "343", "616"], "key": {
-  "1": {"item": "astromine:primitive_rocket_hull"}, "2": {"item": "astromine:primitive_rocket_plating"},
-  "3": {"item": "astromine:primitive_rocket_fuel_tank"}, "4": {"item": "minecraft:nether_star"},
-  "6": {"item": "astromine:primitive_rocket_booster"}
-}, "result": {"item": "astromine:rocket", "count": 1}
-}
