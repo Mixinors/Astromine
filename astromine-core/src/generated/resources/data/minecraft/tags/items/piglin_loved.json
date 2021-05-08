@@ -28,6 +28,10 @@
     "astromine:gold_gear",
     "astromine:golden_mining_tool",
     "astromine:golden_mattock",
+    "astromine:fools_gold_helmet",
+    "astromine:fools_gold_chestplate",
+    "astromine:fools_gold_leggings",
+    "astromine:fools_gold_boots",
     "astromine:fools_gold_apple",
     {
       "id": "astromine:asteroid_gold_ore",

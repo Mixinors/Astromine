@@ -116,7 +116,7 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 				double speed = Math.min(getMachineSpeed(), limit - progress);
 				double generated = recipe.getEnergyOutput() * speed / limit;
 
-				if (energyVolume.hasAvailable(generated)) {
+				if (energyVolume.hasAvailable(generated) && optionalRecipe.get().matches(fluidComponent)) {
 					if (progress + speed >= limit) {
 						optionalRecipe = Optional.empty();
 
