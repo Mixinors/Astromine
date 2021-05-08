@@ -283,25 +283,25 @@ public class AMMaterialSets {
 	
 	public static final MaterialSet TIN = register(
 			new MaterialSet.Builder("tin")
-					.basics().metal().ore().asteroid().wire().allTools().armor()
+					.basics().metal().ore().asteroid().wire()
 					.build()
 	);
 	
 	public static final MaterialSet COPPER = register(
 			new MaterialSet.Builder("copper")
-					.basics().metal().ore().asteroid().wire().allTools().armor()
+					.basics().metal().ore().asteroid().wire()
 					.build()
 	);
 	
 	public static final MaterialSet SILVER = register(
 			new MaterialSet.Builder("silver")
-					.basics().metal().ore().asteroid().wire().allTools().armor()
+					.basics().metal().ore().asteroid().wire()
 					.build()
 	);
 	
 	public static final MaterialSet LEAD = register(
 			new MaterialSet.Builder("lead")
-					.basics().metal().ore().asteroid().allTools().armor()
+					.basics().metal().ore().asteroid()
 					.apple()
 					.build()
 	);
@@ -320,26 +320,26 @@ public class AMMaterialSets {
 	
 	public static final MaterialSet ELECTRUM = register(
 			new MaterialSet.Builder("electrum")
-					.basics().metal().wire().allTools().armor()
+					.basics().metal().wire()
 					.build()
 	);
 	
 	public static final MaterialSet ROSE_GOLD = register(
 			new MaterialSet.Builder("rose_gold")
-					.basics().metal().allTools().armor()
+					.basics().metal()
 					.piglinLoved().apple()
 					.build()
 	);
 	
 	public static final MaterialSet STERLING_SILVER = register(
 			new MaterialSet.Builder("sterling_silver")
-					.basics().metal().allTools().armor()
+					.basics().metal()
 					.build()
 	);
 	
 	public static final MaterialSet FOOLS_GOLD = register(
 			new MaterialSet.Builder("fools_gold")
-					.basics().metal().allTools().armor()
+					.basics().metal()
 					.piglinLoved().apple()
 					.build()
 	);
