@@ -40,6 +40,6 @@ public class AMDecorators {
 	}
 
 	private static <T extends DecoratorConfig, G extends Decorator<T>> G register(String name, G decorator) {
-		return Registry.register(Registry.DECORATOR, AMCommon.identifier(name), decorator);
+		return Registry.register(Registry.DECORATOR, AMCommon.id(name), decorator);
 	}
 }

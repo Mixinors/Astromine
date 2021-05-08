@@ -29,7 +29,7 @@ import net.fabricmc.api.Environment;
 
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
+import com.github.mixinors.astromine.client.rei.AMREIPlugin;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import com.github.mixinors.astromine.common.recipe.ElectrolyzingRecipe;
@@ -69,7 +69,7 @@ public class ElectrolyzingDisplay implements RecipeDisplay {
 
 	@Override
 	public List<List<EntryStack>> getInputEntries() {
-		return Collections.singletonList(Arrays.stream(input.getMatchingVolumes()).map(AstromineRoughlyEnoughItemsPlugin::convertToEntryStack).collect(Collectors.toList()));
+		return Collections.singletonList(Arrays.stream(input.getMatchingVolumes()).map(AMREIPlugin::convertToEntryStack).collect(Collectors.toList()));
 	}
 
 	@Override
@@ -79,12 +79,12 @@ public class ElectrolyzingDisplay implements RecipeDisplay {
 
 	@Override
 	public Identifier getRecipeCategory() {
-		return AstromineRoughlyEnoughItemsPlugin.ELECTROLYZING;
+		return AMREIPlugin.ELECTROLYZING;
 	}
 
 	@Override
 	public List<List<EntryStack>> getResultingEntries() {
-		return Arrays.asList(Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertToEntryStack(firstOutput)), Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertToEntryStack(secondOutput)));
+		return Arrays.asList(Collections.singletonList(AMREIPlugin.convertToEntryStack(firstOutput)), Collections.singletonList(AMREIPlugin.convertToEntryStack(secondOutput)));
 	}
 
 	public double getEnergy() {

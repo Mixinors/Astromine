@@ -177,7 +177,7 @@ public final class TrituratingRecipe implements EnergyConsumingRecipe<Inventory>
 	}
 
 	public static final class Serializer implements RecipeSerializer<TrituratingRecipe> {
-		public static final Identifier ID = AMCommon.identifier("triturating");
+		public static final Identifier ID = AMCommon.id("triturating");
 
 		public static final Serializer INSTANCE = new Serializer();
 

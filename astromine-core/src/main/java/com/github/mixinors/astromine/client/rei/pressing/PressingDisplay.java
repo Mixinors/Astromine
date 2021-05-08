@@ -29,7 +29,7 @@ import net.fabricmc.api.Environment;
 
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
+import com.github.mixinors.astromine.client.rei.AMREIPlugin;
 import com.github.mixinors.astromine.common.recipe.PressingRecipe;
 import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeDisplay;
@@ -84,7 +84,7 @@ public class PressingDisplay implements RecipeDisplay {
 
 	@Override
 	public Identifier getRecipeCategory() {
-		return AstromineRoughlyEnoughItemsPlugin.PRESSING;
+		return AMREIPlugin.PRESSING;
 	}
 
 	@Override

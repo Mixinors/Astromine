@@ -163,7 +163,7 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 	}
 
 	public static final class Serializer implements RecipeSerializer<FluidGeneratingRecipe> {
-		public static final Identifier ID = AMCommon.identifier("fluid_generating");
+		public static final Identifier ID = AMCommon.id("fluid_generating");
 
 		public static final Serializer INSTANCE = new Serializer();
 

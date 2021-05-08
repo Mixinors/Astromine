@@ -29,7 +29,7 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
-import com.github.mixinors.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
+import com.github.mixinors.astromine.client.rei.AMREIPlugin;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.EntryStack;
@@ -43,7 +43,7 @@ import java.util.List;
 public class InfusingCategory implements RecipeCategory<InfusingDisplay> {
 	@Override
 	public Identifier getIdentifier() {
-		return AstromineRoughlyEnoughItemsPlugin.INFUSING;
+		return AMREIPlugin.INFUSING;
 	}
 
 	@Override

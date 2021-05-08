@@ -37,7 +37,7 @@ public class AstromineMaterialSets extends AstromineMaterialSets {
 					.setType(MaterialItemType.MISC_RESOURCE, new MaterialEntry(new Identifier("oak_planks"), new Identifier("planks")))
 					.setType(MaterialItemType.PICKAXE, new Identifier("wooden_pickaxe")).setType(MaterialItemType.AXE, new Identifier("wooden_axe")).setType(MaterialItemType.SHOVEL, new Identifier("wooden_shovel"))
 					.setType(MaterialItemType.SWORD, new Identifier("wooden_sword")).setType(MaterialItemType.HOE, new Identifier("wooden_hoe"))
-					.mattock(AMCommon.identifier("wooden_mattock")).miningTool(AMCommon.identifier("wooden_mining_tool"))
+					.mattock(AMCommon.id("wooden_mattock")).miningTool(AMCommon.id("wooden_mining_tool"))
 					.build()
 	);
 	public static final MaterialSet STONE = register(
@@ -83,7 +83,7 @@ public class AstromineMaterialSets extends AstromineMaterialSets {
 					.setType(MaterialItemType.APPLE, new MaterialEntry(new Identifier("golden_apple"), "golden_apples"))
 					.dusts().asteroid()
 					.gear().plate().wire()
-					.mattock(AMCommon.identifier("golden_mattock")).miningTool(AMCommon.identifier("golden_mining_tool"))
+					.mattock(AMCommon.id("golden_mattock")).miningTool(AMCommon.id("golden_mining_tool"))
 					.piglinLoved()
 					.build()
 	);

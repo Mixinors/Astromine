@@ -38,7 +38,7 @@ import com.github.mixinors.astromine.client.model.PrimitiveRocketEntityModel;
 import com.github.mixinors.astromine.common.entity.PrimitiveRocketEntity;
 
 public class PrimitiveRocketEntityRenderer extends EntityRenderer<PrimitiveRocketEntity> {
-	public static final Identifier ID = AMCommon.identifier("textures/entity/rocket/primitive_rocket.png");
+	public static final Identifier ID = AMCommon.id("textures/entity/rocket/primitive_rocket.png");
 
 	private final PrimitiveRocketEntityModel model = new PrimitiveRocketEntityModel();
 

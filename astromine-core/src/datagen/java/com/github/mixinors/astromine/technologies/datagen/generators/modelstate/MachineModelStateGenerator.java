@@ -93,13 +93,13 @@ public class MachineModelStateGenerator extends GenericBlockModelStateGenerator 
 
 	public Texture getTexture(Block block, boolean active) {
 		return new Texture()
-				.put(TextureKey.SOUTH, AMCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_back"))
-				.put(TextureKey.NORTH, AMCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_front"))
-				.put(TextureKey.WEST, AMCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_right"))
-				.put(TextureKey.EAST, AMCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_left"))
-				.put(TextureKey.UP, AMCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_top"))
-				.put(TextureKey.DOWN, AMCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_bottom"))
-				.put(TextureKey.PARTICLE, AMCommon.identifier("block/machine/generic_machine_top"));
+				.put(TextureKey.SOUTH, AMCommon.id("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_back"))
+				.put(TextureKey.NORTH, AMCommon.id("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_front"))
+				.put(TextureKey.WEST, AMCommon.id("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_right"))
+				.put(TextureKey.EAST, AMCommon.id("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_left"))
+				.put(TextureKey.UP, AMCommon.id("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_top"))
+				.put(TextureKey.DOWN, AMCommon.id("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_bottom"))
+				.put(TextureKey.PARTICLE, AMCommon.id("block/machine/generic_machine_top"));
 	}
 
 	@Override

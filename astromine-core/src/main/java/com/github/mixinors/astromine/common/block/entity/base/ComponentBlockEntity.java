@@ -70,7 +70,7 @@ import java.util.function.Consumer;
  * its activity, and handles redstone behavior.
  */
 public abstract class ComponentBlockEntity extends BlockEntity implements BlockEntityClientSerializable, Tickable, TransferComponentProvider, RedstoneComponentProvider {
-	public static final Identifier TRANSFER_UPDATE_PACKET = AMCommon.identifier("transfer_update_packet");
+	public static final Identifier TRANSFER_UPDATE_PACKET = AMCommon.id("transfer_update_packet");
 
 	private final TransferComponent transferComponent = createTransferComponent();
 

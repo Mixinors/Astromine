@@ -34,6 +34,6 @@ public class AMAttributes {
 	public static final EntityAttribute GRAVITY_MULTIPLIER = new ClampedEntityAttribute("attribute.name.generic.astromine.gravity_multiplier", 1d, -100d, 100d);
 
 	public static void init() {
-		Registry.register(Registry.ATTRIBUTE, AMCommon.identifier("gravity_multiplier"), GRAVITY_MULTIPLIER);
+		Registry.register(Registry.ATTRIBUTE, AMCommon.id("gravity_multiplier"), GRAVITY_MULTIPLIER);
 	}
 }

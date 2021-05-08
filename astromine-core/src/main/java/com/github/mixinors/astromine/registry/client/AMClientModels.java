@@ -57,7 +57,11 @@ import java.util.Set;
 import java.util.function.Function;
 
 public class AMClientModels {
-	public static final Lazy<ModelTransformation> ITEM_HANDHELD = new Lazy<>(() -> {
+	public static final ModelIdentifier CONVEYOR_SUPPORTS = new ModelIdentifier(AMCommon.id("conveyor_supports"), "");
+	
+	public static final ModelIdentifier ROCKET_INVENTORY = new ModelIdentifier(AMCommon.id("rocket"), "inventory");
+	
+	public static final Lazy<ModelTransformation> ITEM_HANDHELD_TRANSFORMATION = new Lazy<>(() -> {
 		try {
 			Resource resource = ClientUtils.getInstance().getResourceManager().getResource(new Identifier("minecraft:models/item/handheld.json"));
 			InputStream stream = resource.getInputStream();
@@ -68,16 +72,14 @@ public class AMClientModels {
 			throw new RuntimeException(throwable);
 		}
 	});
-
+	
 	public static void init() {
-		ModelLoadingRegistry.INSTANCE.registerAppender((resourceManager, consumer) -> {
-			consumer.accept(new ModelIdentifier(new Identifier(AMCommon.MOD_ID, "conveyor_supports"), ""));
+		ModelLoadingRegistry.INSTANCE.registerModelProvider((resourceManager, consumer) -> {
+			consumer.accept(CONVEYOR_SUPPORTS);
 		});
-
-		ModelIdentifier rocketItemId = new ModelIdentifier(AMCommon.identifier("rocket"), "inventory");
 		
 		ModelLoadingRegistry.INSTANCE.registerVariantProvider(resourceManager -> (modelIdentifier, modelProviderContext) -> {
-			if (modelIdentifier.equals(rocketItemId)) {
+			if (modelIdentifier.equals(ROCKET_INVENTORY)) {
 				return new UnbakedModel() {
 					@Override
 					public Collection<Identifier> getModelDependencies() {
@@ -91,31 +93,11 @@ public class AMClientModels {
 					
 					@Override
 					public BakedModel bake(ModelLoader loader, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings rotationContainer, Identifier modelId) {
-						return new BuiltinBakedModel(ITEM_HANDHELD.get(), ModelOverrideList.EMPTY, null, true);
+						return new BuiltinBakedModel(ITEM_HANDHELD_TRANSFORMATION.get(), ModelOverrideList.EMPTY, null, true);
 					}
 				};
 			}
 			return null;
 		});
-	}
-	
-	public static void renderRocket(PrimitiveRocketEntityModel primitiveRocketEntityModel, ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
-		matrices.push();
-		if (mode == ModelTransformation.Mode.GUI) {
-			matrices.translate(0.66F, 0.22F, 0F);
-		}
-		matrices.scale(1.0F, -1.0F, -1.0F);
-		if (mode == ModelTransformation.Mode.GUI) {
-			matrices.scale(0.09F, 0.09F, 0.09F);
-			matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(45));
-			matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(45));
-		} else {
-			matrices.scale(0.3F, 0.3F, 0.3F);
-			matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(45));
-			matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(45));
-		}
-		VertexConsumer vertexConsumer2 = ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, primitiveRocketEntityModel.getLayer(PrimitiveRocketEntityRenderer.ID), false, stack.hasGlint());
-		primitiveRocketEntityModel.render(matrices, vertexConsumer2, i, j, 1.0F, 1.0F, 1.0F, 1.0F);
-		matrices.pop();
 	}
 }

@@ -36,8 +36,8 @@ import vazkii.patchouli.client.book.ClientBookRegistry;
 public class AMPatchouliPages {
 	@Environment(EnvType.CLIENT)
 	public static void init() {
-		ClientBookRegistry.INSTANCE.pageTypes.put(AMCommon.identifier("triturating"), TrituratingPage.class);
-		ClientBookRegistry.INSTANCE.pageTypes.put(AMCommon.identifier("pressing"), PressingPage.class);
-		ClientBookRegistry.INSTANCE.pageTypes.put(AMCommon.identifier("alloy_smelting"), AlloySmeltingPage.class);
+		ClientBookRegistry.INSTANCE.pageTypes.put(AMCommon.id("triturating"), TrituratingPage.class);
+		ClientBookRegistry.INSTANCE.pageTypes.put(AMCommon.id("pressing"), PressingPage.class);
+		ClientBookRegistry.INSTANCE.pageTypes.put(AMCommon.id("alloy_smelting"), AlloySmeltingPage.class);
 	}
 }

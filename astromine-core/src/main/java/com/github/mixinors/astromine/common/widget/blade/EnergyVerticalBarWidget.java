@@ -55,8 +55,8 @@ import java.util.function.Supplier;
  * are queried from.
  */
 public class EnergyVerticalBarWidget extends AbstractWidget {
-	private static final Identifier ENERGY_BACKGROUND = AMCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_background.png");
-	private static final Identifier ENERGY_FOREGROUND = AMCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_foreground.png");
+	private static final Identifier ENERGY_BACKGROUND = AMCommon.id("textures/widget/energy_volume_fractional_vertical_bar_background.png");
+	private static final Identifier ENERGY_FOREGROUND = AMCommon.id("textures/widget/energy_volume_fractional_vertical_bar_foreground.png");
 
 	private Supplier<EnergyVolume> volumeSupplier;
 

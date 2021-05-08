@@ -41,31 +41,31 @@ import net.minecraft.world.gen.feature.*;
 import java.util.function.Predicate;
 
 public class AMFeatures {
-	public static final Identifier ASTEROID_ORES_ID = AMCommon.identifier("asteroid_ores");
+	public static final Identifier ASTEROID_ORES_ID = AMCommon.id("asteroid_ores");
 	public static final Feature<DefaultFeatureConfig> ASTEROID_ORES = register(new AsteroidOreFeature(DefaultFeatureConfig.CODEC), ASTEROID_ORES_ID);
 	public static final RegistryKey<ConfiguredFeature<?, ?>> ASTEROID_ORES_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, ASTEROID_ORES_ID);
 	
-	public static final Identifier MOON_CRATER_ID = AMCommon.identifier("moon_crater");
+	public static final Identifier MOON_CRATER_ID = AMCommon.id("moon_crater");
 	public static final Feature<DefaultFeatureConfig> MOON_CRATER = register(new MoonCraterFeature(DefaultFeatureConfig.CODEC), MOON_CRATER_ID);
 	public static final RegistryKey<ConfiguredFeature<?, ?>> MOON_CRATER_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, MOON_CRATER_ID);
 	
-	public static final Identifier MOON_LAKE_ID = AMCommon.identifier("moon_lake");
+	public static final Identifier MOON_LAKE_ID = AMCommon.id("moon_lake");
 	public static final Feature<DefaultFeatureConfig> MOON_LAKE = register(new MoonLakeFeature(DefaultFeatureConfig.CODEC), MOON_LAKE_ID);
 	public static final RegistryKey<ConfiguredFeature<?, ?>> MOON_LAKE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, MOON_LAKE_ID);
 	
-	public static final Identifier MOON_ORE_ID = AMCommon.identifier("moon_ore");
+	public static final Identifier MOON_ORE_ID = AMCommon.id("moon_ore");
 	public static final Feature<DefaultFeatureConfig> MOON_ORE = register(new MoonOreFeature(DefaultFeatureConfig.CODEC), MOON_ORE_ID);
 	public static final RegistryKey<ConfiguredFeature<?, ?>> MOON_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, MOON_ORE_ID);
 	
-	public static final Identifier METEOR_ID = AMCommon.identifier("meteor");
+	public static final Identifier METEOR_ID = AMCommon.id("meteor");
 	public static final StructurePieceType METEOR_STRUCTURE = register(MeteorGenerator::new, METEOR_ID);
 	public static final RegistryKey<ConfiguredStructureFeature<?, ?>> METEOR_KEY = RegistryKey.of(Registry.CONFIGURED_STRUCTURE_FEATURE_WORLDGEN, METEOR_ID);
 	
-	public static final Identifier CRUDE_OIL_ID = AMCommon.identifier("crude_oil");
+	public static final Identifier CRUDE_OIL_ID = AMCommon.id("crude_oil");
 	public static final Feature<DefaultFeatureConfig> CRUDE_OIL = register(new CrudeOilFeature(DefaultFeatureConfig.CODEC), CRUDE_OIL_ID);
 	public static final RegistryKey<ConfiguredFeature<?, ?>> CRUDE_OIL_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, CRUDE_OIL_ID);
 	
-	public static final Identifier ASTROMINE_BIOME_MODIFICATIONS = AMCommon.identifier("biome_modifications");
+	public static final Identifier ASTROMINE_BIOME_MODIFICATIONS = AMCommon.id("biome_modifications");
 	
 	public static void init() {
 		MeteorFeature meteor = new MeteorFeature(DefaultFeatureConfig.CODEC);

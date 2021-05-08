@@ -189,7 +189,7 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsu
 	}
 
 	public static final class Serializer implements RecipeSerializer<ElectrolyzingRecipe> {
-		public static final Identifier ID = AMCommon.identifier("electrolyzing");
+		public static final Identifier ID = AMCommon.id("electrolyzing");
 
 		public static final Serializer INSTANCE = new Serializer();
 

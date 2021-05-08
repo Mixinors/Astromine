@@ -46,10 +46,10 @@ public class BuiltinModelItemRendererMixin {
 	private final PrimitiveRocketEntityModel primitiveRocketEntityModel = new PrimitiveRocketEntityModel();
 
 	@Inject(method = "render", at = @At("HEAD"), cancellable = true)
-	private void render(ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int i, int j, CallbackInfo ci) {
+	private void render(ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, CallbackInfo ci) {
 		if (stack.getItem() == AMItems.PRIMITIVE_ROCKET) {
 			ci.cancel();
-			AMClientModels.renderRocket(primitiveRocketEntityModel, stack, mode, matrices, vertexConsumerProvider, i, j);
+			PrimitiveRocketEntityModel.renderItem(primitiveRocketEntityModel, stack, mode, matrices, vertexConsumers, light, overlay);
 		}
 	}
 }

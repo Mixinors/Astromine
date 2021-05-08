@@ -31,8 +31,8 @@ import com.github.mixinors.astromine.registry.AMDimensions;
 
 public class AMSkyboxes {
 	public static void init() {
-		SkyboxRegistry.INSTANCE.register(AMDimensions.EARTH_SPACE_WORLD, new SpaceSkybox.Builder().up(AMCommon.identifier("textures/skybox/earth_space_up.png")).down(AMCommon.identifier("textures/skybox/earth_space_down.png")).north(AMCommon
-				.identifier("textures/skybox/earth_space_north.png")).south(AMCommon.identifier("textures/skybox/earth_space_south.png")).west(AMCommon.identifier("textures/skybox/earth_space_west.png")).east(AMCommon.identifier(
-				"textures/skybox/earth_space_east.png")).planet(AMCommon.identifier("textures/skybox/earth.png")).cloud(AMCommon.identifier("textures/skybox/earth_cloud.png")).build());
+		SkyboxRegistry.INSTANCE.register(AMDimensions.EARTH_SPACE_WORLD, new SpaceSkybox.Builder().up(AMCommon.id("textures/skybox/earth_space_up.png")).down(AMCommon.id("textures/skybox/earth_space_down.png")).north(AMCommon
+				.id("textures/skybox/earth_space_north.png")).south(AMCommon.id("textures/skybox/earth_space_south.png")).west(AMCommon.id("textures/skybox/earth_space_west.png")).east(AMCommon.id(
+				"textures/skybox/earth_space_east.png")).planet(AMCommon.id("textures/skybox/earth.png")).cloud(AMCommon.id("textures/skybox/earth_cloud.png")).build());
 	}
 }

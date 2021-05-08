@@ -192,7 +192,7 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 	}
 
 	public static final class Serializer implements RecipeSerializer<AlloySmeltingRecipe> {
-		public static final Identifier ID = AMCommon.identifier("alloy_smelting");
+		public static final Identifier ID = AMCommon.id("alloy_smelting");
 
 		public static final Serializer INSTANCE = new Serializer();
 

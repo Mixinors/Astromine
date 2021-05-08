@@ -43,7 +43,7 @@ public class AMCommon implements ModInitializer {
 
 	public static final Logger LOGGER = LogManager.getLogger(LOG_ID);
 
-	public static Identifier identifier(String name) {
+	public static Identifier id(String name) {
 		if (name.indexOf(':') >= 0)
 			return new Identifier(name);
 		return new Identifier(MOD_ID, name);

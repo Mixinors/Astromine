@@ -46,7 +46,7 @@ public interface SetRecipeGenerator extends SetGenerator<RecipeData>, RecipeGene
 	}
 
 	default Identifier getRecipeId(MaterialSet set) {
-		return AMCommon.identifier(getRecipeName(set));
+		return AMCommon.id(getRecipeName(set));
 	}
 
 	default String getString() {

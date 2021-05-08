@@ -56,7 +56,7 @@ public class TrituratingRecipeGenerator extends EnergyProcessingRecipeGenerator 
 
 	@Override
 	public Identifier getRecipeId() {
-		return AMCommon.identifier(name);
+		return AMCommon.id(name);
 	}
 
 	@Override

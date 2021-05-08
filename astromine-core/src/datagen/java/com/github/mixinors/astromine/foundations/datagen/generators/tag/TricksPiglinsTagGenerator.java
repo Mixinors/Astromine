@@ -34,7 +34,7 @@ public class TricksPiglinsTagGenerator implements SetTagGenerator {
 	@Override
 	public void generate(TagData tags, MaterialSet set) {
 		set.getItems().forEach((type, entry) -> {
-			tags.item(AMCommon.identifier("tricks_piglins")).append(entry.getItemId());
+			tags.item(AMCommon.id("tricks_piglins")).append(entry.getItemId());
 		});
 	}
 

@@ -53,7 +53,7 @@
       "com.github.mixinors.astromine.registry.AMComponents"
     ],
     "rei_plugins": [
-      "com.github.mixinors.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin"
+      "com.github.mixinors.astromine.client.rei.AMREIPlugin"
     ],
     "rei_containers": [
       "com.github.mixinors.astromine.common.rei.AstromineServerContainerPlugin"

@@ -32,7 +32,7 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
+import com.github.mixinors.astromine.client.rei.AMREIPlugin;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.EntryStack;
@@ -48,7 +48,7 @@ import java.util.List;
 public class AlloySmeltingCategory implements RecipeCategory<AlloySmeltingDisplay> {
 	@Override
 	public Identifier getIdentifier() {
-		return AstromineRoughlyEnoughItemsPlugin.ALLOY_SMELTING;
+		return AMREIPlugin.ALLOY_SMELTING;
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class AlloySmeltingCategory implements RecipeCategory<AlloySmeltingDispla
 		DecimalFormat df = new DecimalFormat("###.##");
 		List<Widget> widgets = Lists.newArrayList();
 		widgets.add(Widgets.createRecipeBase(bounds));
-		widgets.addAll(AstromineRoughlyEnoughItemsPlugin.createEnergyDisplay(new Rectangle(bounds.getX() + 10, bounds.getCenterY() - 23, 12, 48), display.getEnergyRequired(), false, display.getTimeRequired() * 500));
+		widgets.addAll(AMREIPlugin.createEnergyDisplay(new Rectangle(bounds.getX() + 10, bounds.getCenterY() - 23, 12, 48), display.getEnergyRequired(), false, display.getTimeRequired() * 500));
 		widgets.add(Widgets.createLabel(new Point(bounds.x + bounds.width - 5, bounds.y + 5), new TranslatableText("category.astromine.cooking.time", df.format(display.getTimeRequired() / 20d))).noShadow().rightAligned().color(0xFF404040, 0xFFBBBBBB));
 		widgets.add(Widgets.createArrow(new Point(startPoint.x + 27, startPoint.y + 18)).animationDurationTicks(display.getTimeRequired()));
 		widgets.add(Widgets.createResultSlotBackground(new Point(startPoint.x + 61, startPoint.y + 19)));

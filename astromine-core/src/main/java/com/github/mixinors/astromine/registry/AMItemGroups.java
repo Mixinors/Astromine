@@ -42,6 +42,6 @@ public class AMItemGroups {
 	}
 
 	public static ItemGroup register(String id, Supplier<ItemConvertible> icon) {
-		return FabricItemGroupBuilder.build(AMCommon.identifier(id), () -> new ItemStack(icon.get()));
+		return FabricItemGroupBuilder.build(AMCommon.id(id), () -> new ItemStack(icon.get()));
 	}
 }

@@ -120,7 +120,7 @@ public class AltarRecipe implements Recipe<AltarBlockEntity> {
 	}
 
 	public static final class Serializer implements RecipeSerializer<AltarRecipe> {
-		public static final Identifier ID = AMCommon.identifier("altar");
+		public static final Identifier ID = AMCommon.id("altar");
 
 		public static final Serializer INSTANCE = new Serializer();
 

@@ -31,10 +31,10 @@ import net.minecraft.util.Identifier;
  * An enum representing a side's transfer information.
  */
 public enum TransferType {
-	NONE(AMCommon.identifier("textures/widget/none.png")),
-	INPUT(AMCommon.identifier("textures/widget/input.png")),
-	OUTPUT(AMCommon.identifier("textures/widget/output.png")),
-	INPUT_OUTPUT(AMCommon.identifier("textures/widget/input_output.png"));
+	NONE(AMCommon.id("textures/widget/none.png")),
+	INPUT(AMCommon.id("textures/widget/input.png")),
+	OUTPUT(AMCommon.id("textures/widget/output.png")),
+	INPUT_OUTPUT(AMCommon.id("textures/widget/input_output.png"));
 
 	private final Identifier texture;
 

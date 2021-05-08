@@ -46,6 +46,6 @@ public class AMParticles {
 	 * @return Registered {@link DefaultParticleType}
 	 */
 	public static DefaultParticleType register(String name, boolean alwaysShow) {
-		return Registry.register(Registry.PARTICLE_TYPE, AMCommon.identifier(name), FabricParticleTypes.simple(alwaysShow));
+		return Registry.register(Registry.PARTICLE_TYPE, AMCommon.id(name), FabricParticleTypes.simple(alwaysShow));
 	}
 }

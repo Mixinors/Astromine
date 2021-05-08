@@ -107,7 +107,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 					atmosphereVolume = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));
 
 					if (atmosphereVolume.isEmpty()) {
-						atmosphereVolume = FluidVolume.of(FluidVolume.BUCKET, Registry.FLUID.get(AMCommon.identifier("oxygen")));
+						atmosphereVolume = FluidVolume.of(FluidVolume.BUCKET, Registry.FLUID.get(AMCommon.id("oxygen")));
 					}
 				} else {
 					atmosphereVolume = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));

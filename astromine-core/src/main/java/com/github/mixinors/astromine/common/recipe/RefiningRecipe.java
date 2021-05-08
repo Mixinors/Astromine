@@ -239,7 +239,7 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 	}
 
 	public static final class Serializer implements RecipeSerializer<RefiningRecipe> {
-		public static final Identifier ID = AMCommon.identifier("refining");
+		public static final Identifier ID = AMCommon.id("refining");
 
 		public static final Serializer INSTANCE = new Serializer();
 

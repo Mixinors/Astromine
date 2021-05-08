@@ -36,7 +36,7 @@ import com.github.mixinors.astromine.datagen.generator.modelstate.set.GenericIte
 import com.github.mixinors.astromine.datagen.material.MaterialItemType;
 
 public class AstromineModelStateGenerators extends AstromineModelStateGenerators {
-	public final ModelStateGenerator ASTEROID_ORE = register(new ColumnBlockSetModelStateGenerator(MaterialItemType.ASTEROID_ORE, AMCommon.identifier("block/asteroid_stone")));
+	public final ModelStateGenerator ASTEROID_ORE = register(new ColumnBlockSetModelStateGenerator(MaterialItemType.ASTEROID_ORE, AMCommon.id("block/asteroid_stone")));
 
 	public final ModelStateGenerator ASTEROID_CLUSTER = register(new GenericItemSetModelGenerator(MaterialItemType.ASTEROID_CLUSTER));
 

@@ -29,7 +29,7 @@ import net.fabricmc.api.Environment;
 
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
+import com.github.mixinors.astromine.client.rei.AMREIPlugin;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import com.github.mixinors.astromine.common.recipe.RefiningRecipe;
@@ -80,7 +80,7 @@ public class RefiningDisplay implements RecipeDisplay {
 
 	@Override
 	public List<List<EntryStack>> getInputEntries() {
-		return Collections.singletonList(Arrays.stream(input.getMatchingVolumes()).map(AstromineRoughlyEnoughItemsPlugin::convertToEntryStack).collect(Collectors.toList()));
+		return Collections.singletonList(Arrays.stream(input.getMatchingVolumes()).map(AMREIPlugin::convertToEntryStack).collect(Collectors.toList()));
 	}
 
 	@Override
@@ -90,14 +90,14 @@ public class RefiningDisplay implements RecipeDisplay {
 
 	@Override
 	public Identifier getRecipeCategory() {
-		return AstromineRoughlyEnoughItemsPlugin.REFINING;
+		return AMREIPlugin.REFINING;
 	}
 
 	@Override
 	public List<List<EntryStack>> getResultingEntries() {
-		return Arrays.asList(Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertToEntryStack(firstOutput)), Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertToEntryStack(secondOutput)), Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertToEntryStack(
-			thirdOutput)), Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertToEntryStack(fourthOutput)), Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertToEntryStack(fifthOutput)), Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertToEntryStack(
-				sixthOutput)), Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertToEntryStack(seventhOutput)));
+		return Arrays.asList(Collections.singletonList(AMREIPlugin.convertToEntryStack(firstOutput)), Collections.singletonList(AMREIPlugin.convertToEntryStack(secondOutput)), Collections.singletonList(AMREIPlugin.convertToEntryStack(
+			thirdOutput)), Collections.singletonList(AMREIPlugin.convertToEntryStack(fourthOutput)), Collections.singletonList(AMREIPlugin.convertToEntryStack(fifthOutput)), Collections.singletonList(AMREIPlugin.convertToEntryStack(
+				sixthOutput)), Collections.singletonList(AMREIPlugin.convertToEntryStack(seventhOutput)));
 	}
 
 	public double getEnergy() {

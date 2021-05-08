@@ -31,7 +31,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
+import com.github.mixinors.astromine.client.rei.AMREIPlugin;
 import com.github.mixinors.astromine.client.rei.generating.AbstractEnergyGeneratingCategory;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
@@ -46,7 +46,7 @@ import java.util.List;
 public class LiquidGeneratingCategory extends AbstractEnergyGeneratingCategory<LiquidGeneratingDisplay> {
 	@Override
 	public Identifier getIdentifier() {
-		return AstromineRoughlyEnoughItemsPlugin.LIQUID_GENERATING;
+		return AMREIPlugin.LIQUID_GENERATING;
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class LiquidGeneratingCategory extends AbstractEnergyGeneratingCategory<L
 	public List<Widget> setupDisplay(LiquidGeneratingDisplay recipeDisplay, Rectangle bounds) {
 		List<Widget> widgets = super.setupDisplay(recipeDisplay, bounds);
 		Rectangle innerBounds = new Rectangle(bounds.getCenterX() - 55, bounds.y, 110, bounds.height);
-		widgets.addAll(AstromineRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getX() + 24, innerBounds.getCenterY() - 23, 12, 48), Collections.singletonList(EntryStack.create(recipeDisplay.getFluid(), AstromineRoughlyEnoughItemsPlugin.convertToFraction(
+		widgets.addAll(AMREIPlugin.createFluidDisplay(new Rectangle(innerBounds.getX() + 24, innerBounds.getCenterY() - 23, 12, 48), Collections.singletonList(EntryStack.create(recipeDisplay.getFluid(), AMREIPlugin.convertToFraction(
 			recipeDisplay.getAmount()))), false, 5000));
 		widgets.add(Widgets.createArrow(new Point(innerBounds.getX() + 45, innerBounds.getY() + 26)));
 		return widgets;

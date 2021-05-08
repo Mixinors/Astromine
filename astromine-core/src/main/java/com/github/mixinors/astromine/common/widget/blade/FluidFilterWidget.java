@@ -67,7 +67,7 @@ import java.util.function.Supplier;
  * {@link #fluidConsumer} to update the related object.
  */
 public class FluidFilterWidget extends ButtonWidget {
-	private static final Identifier FLUID_BACKGROUND = AMCommon.identifier("textures/widget/fluid_filter_background.png");
+	private static final Identifier FLUID_BACKGROUND = AMCommon.id("textures/widget/fluid_filter_background.png");
 
 	private Supplier<Fluid> fluidSupplier = () -> Fluids.EMPTY;
 

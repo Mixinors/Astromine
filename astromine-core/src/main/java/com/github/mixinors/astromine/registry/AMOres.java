@@ -16,17 +16,17 @@ import net.minecraft.world.gen.feature.ConfiguredFeature;
 import java.util.function.Predicate;
 
 public class AMOres {
-	public static final Identifier ASTROMINE_FOUNDATIONS_MODIFICATIONS_ORES = AMCommon.identifier("foundations_odifications_ores");
-	public static final Identifier TIN_ORE_ID = AMCommon.identifier("tin_ore");
+	public static final Identifier ASTROMINE_FOUNDATIONS_MODIFICATIONS_ORES = AMCommon.id("foundations_odifications_ores");
+	public static final Identifier TIN_ORE_ID = AMCommon.id("tin_ore");
 	public static final RegistryKey<ConfiguredFeature<?, ?>> TIN_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, TIN_ORE_ID);
 	
-	public static final Identifier COPPER_ORE_ID = AMCommon.identifier("copper_ore");
+	public static final Identifier COPPER_ORE_ID = AMCommon.id("copper_ore");
 	public static final RegistryKey<ConfiguredFeature<?, ?>> COPPER_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, COPPER_ORE_ID);
 	
-	public static final Identifier SILVER_ORE_ID = AMCommon.identifier("silver_ore");
+	public static final Identifier SILVER_ORE_ID = AMCommon.id("silver_ore");
 	public static final RegistryKey<ConfiguredFeature<?, ?>> SILVER_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, SILVER_ORE_ID);
 	
-	public static final Identifier LEAD_ORE_ID = AMCommon.identifier("lead_ore");
+	public static final Identifier LEAD_ORE_ID = AMCommon.id("lead_ore");
 	public static final RegistryKey<ConfiguredFeature<?, ?>> LEAD_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, LEAD_ORE_ID);
 	
 	

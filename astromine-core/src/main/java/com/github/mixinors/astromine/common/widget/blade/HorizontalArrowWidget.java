@@ -52,8 +52,8 @@ import java.util.function.IntSupplier;
  * to the {@link #limitSupplier}.
  */
 public class HorizontalArrowWidget extends AbstractWidget {
-	private static final Identifier BACKGROUND = AMCommon.identifier("textures/widget/horizontal_arrow_background.png");
-	private static final Identifier FOREGROUND = AMCommon.identifier("textures/widget/horizontal_arrow_foreground.png");
+	private static final Identifier BACKGROUND = AMCommon.id("textures/widget/horizontal_arrow_background.png");
+	private static final Identifier FOREGROUND = AMCommon.id("textures/widget/horizontal_arrow_foreground.png");
 
 	private IntSupplier progressSupplier = () -> 0;
 	private IntSupplier limitSupplier = () -> 100;

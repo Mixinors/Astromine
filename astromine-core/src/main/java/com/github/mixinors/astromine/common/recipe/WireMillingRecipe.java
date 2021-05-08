@@ -177,7 +177,7 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 	}
 
 	public static final class Serializer implements RecipeSerializer<WireMillingRecipe> {
-		public static final Identifier ID = AMCommon.identifier("wire_milling");
+		public static final Identifier ID = AMCommon.id("wire_milling");
 
 		public static final Serializer INSTANCE = new Serializer();
 

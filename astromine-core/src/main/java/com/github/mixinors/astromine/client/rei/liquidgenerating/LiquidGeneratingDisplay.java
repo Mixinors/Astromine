@@ -30,7 +30,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
+import com.github.mixinors.astromine.client.rei.AMREIPlugin;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.client.rei.generating.AbstractEnergyGeneratingDisplay;
 import com.github.mixinors.astromine.common.recipe.FluidGeneratingRecipe;
@@ -55,7 +55,7 @@ public class LiquidGeneratingDisplay extends AbstractEnergyGeneratingDisplay {
 
 	@Override
 	public List<List<EntryStack>> getInputEntries() {
-		return Collections.singletonList(Arrays.stream(input.getMatchingVolumes()).map(AstromineRoughlyEnoughItemsPlugin::convertToEntryStack).collect(Collectors.toList()));
+		return Collections.singletonList(Arrays.stream(input.getMatchingVolumes()).map(AMREIPlugin::convertToEntryStack).collect(Collectors.toList()));
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class LiquidGeneratingDisplay extends AbstractEnergyGeneratingDisplay {
 
 	@Override
 	public Identifier getRecipeCategory() {
-		return AstromineRoughlyEnoughItemsPlugin.LIQUID_GENERATING;
+		return AMREIPlugin.LIQUID_GENERATING;
 	}
 
 	public Fluid getFluid() {

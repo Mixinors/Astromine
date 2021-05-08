@@ -131,7 +131,7 @@ public class WireCuttingRecipe extends SpecialCraftingRecipe {
 	}
 
 	public static final class Serializer implements RecipeSerializer<WireCuttingRecipe> {
-		public static final Identifier ID = AMCommon.identifier("wire_cutting");
+		public static final Identifier ID = AMCommon.id("wire_cutting");
 
 		public static final Serializer INSTANCE = new Serializer();
 

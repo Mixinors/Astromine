@@ -61,6 +61,6 @@ public class AMFluids {
 	}
 
 	public static <T extends Fluid> T register(String name, T fluid) {
-		return Registry.register(Registry.FLUID, AMCommon.identifier(name), fluid);
+		return Registry.register(Registry.FLUID, AMCommon.id(name), fluid);
 	}
 }

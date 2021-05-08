@@ -38,7 +38,7 @@ import com.github.mixinors.astromine.client.model.SpaceSlimeEntityModel;
 import com.github.mixinors.astromine.common.entity.SpaceSlimeEntity;
 
 public class SpaceSlimeEntityRenderer extends MobEntityRenderer<SpaceSlimeEntity, SpaceSlimeEntityModel> {
-	private static final Identifier TEXTURE = AMCommon.identifier("textures/entity/space_slime/space_slime.png");
+	private static final Identifier TEXTURE = AMCommon.id("textures/entity/space_slime/space_slime.png");
 
 	public SpaceSlimeEntityRenderer(EntityRenderDispatcher entityRenderDispatcher) {
 		super(entityRenderDispatcher, new SpaceSlimeEntityModel(16), 0.25F);

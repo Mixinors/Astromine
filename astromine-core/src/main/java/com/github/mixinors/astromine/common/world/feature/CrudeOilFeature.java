@@ -47,7 +47,7 @@ import net.minecraft.world.gen.feature.Feature;
 import java.util.Random;
 
 public class CrudeOilFeature extends Feature<DefaultFeatureConfig> {
-	private static final Lazy<Block> CRUDE_OIL_BLOCK = new Lazy<>(() -> Registry.BLOCK.get(AMCommon.identifier("crude_oil")));
+	private static final Lazy<Block> CRUDE_OIL_BLOCK = new Lazy<>(() -> Registry.BLOCK.get(AMCommon.id("crude_oil")));
 
 	public CrudeOilFeature(Codec<DefaultFeatureConfig> configCodec) {
 		super(configCodec);

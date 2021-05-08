@@ -192,7 +192,7 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 	}
 
 	public static final class Serializer implements RecipeSerializer<FluidMixingRecipe> {
-		public static final Identifier ID = AMCommon.identifier("fluid_mixing");
+		public static final Identifier ID = AMCommon.id("fluid_mixing");
 
 		public static final Serializer INSTANCE = new Serializer();
 

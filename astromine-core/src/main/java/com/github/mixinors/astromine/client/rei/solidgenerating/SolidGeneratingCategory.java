@@ -32,7 +32,7 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
+import com.github.mixinors.astromine.client.rei.AMREIPlugin;
 import com.github.mixinors.astromine.client.rei.generating.AbstractEnergyGeneratingCategory;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
@@ -47,7 +47,7 @@ import java.util.List;
 public class SolidGeneratingCategory extends AbstractEnergyGeneratingCategory<SolidGeneratingDisplay> {
 	@Override
 	public Identifier getIdentifier() {
-		return AstromineRoughlyEnoughItemsPlugin.SOLID_GENERATING;
+		return AMREIPlugin.SOLID_GENERATING;
 	}
 
 	@Override

@@ -66,7 +66,7 @@ public class AMEntityTypes {
 	}
 
 	public static <T extends Entity> EntityType<T> register(String id, EntityType.Builder<T> builder) {
-		return register(AMCommon.identifier(id), builder);
+		return register(AMCommon.id(id), builder);
 	}
 
 	public static <T extends Entity> EntityType<T> register(Identifier id, EntityType.Builder<T> builder) {
@@ -82,7 +82,7 @@ public class AMEntityTypes {
 	 * @return Registered EntityType
 	 */
 	public static <T extends Entity> EntityType<T> register(String id, EntityType<T> type) {
-		return register(AMCommon.identifier(id), type);
+		return register(AMCommon.id(id), type);
 	}
 
 	public static <T extends Entity> EntityType<T> register(Identifier id, EntityType<T> type) {

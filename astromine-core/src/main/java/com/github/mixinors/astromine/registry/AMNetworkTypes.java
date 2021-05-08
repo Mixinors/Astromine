@@ -44,6 +44,6 @@ public class AMNetworkTypes {
 	}
 
 	public static <T extends NetworkType> T register(String name, T type) {
-		return (T) NetworkTypeRegistry.INSTANCE.register(AMCommon.identifier(name), type);
+		return (T) NetworkTypeRegistry.INSTANCE.register(AMCommon.id(name), type);
 	}
 }

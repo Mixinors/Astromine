@@ -42,19 +42,19 @@ public class AstromineTagGenerators extends AstromineTagGenerators {
 	public final SetTagGenerator SHOVELS = register(new GenericSetTagGenerator("shovels", new Identifier("fabric", "shovels"), MaterialItemType.SHOVEL));
 	public final SetTagGenerator HOES = register(new GenericSetTagGenerator("hoes", new Identifier("fabric", "hoes"), MaterialItemType.HOE));
 
-	public final SetTagGenerator MINING_TOOLS = register(new GenericSetTagGenerator("mining_tools", AMCommon.identifier("mining_tools"), MaterialItemType.MINING_TOOL));
-	public final OneTimeTagGenerator MINING_TOOLS_PICKAXES = register(new TagInTagGenerator(new Identifier("fabric", "pickaxes"), AMCommon.identifier("mining_tools")));
-	public final OneTimeTagGenerator MINING_TOOLS_SHOVELS = register(new TagInTagGenerator(new Identifier("fabric", "shovels"), AMCommon.identifier("mining_tools")));
+	public final SetTagGenerator MINING_TOOLS = register(new GenericSetTagGenerator("mining_tools", AMCommon.id("mining_tools"), MaterialItemType.MINING_TOOL));
+	public final OneTimeTagGenerator MINING_TOOLS_PICKAXES = register(new TagInTagGenerator(new Identifier("fabric", "pickaxes"), AMCommon.id("mining_tools")));
+	public final OneTimeTagGenerator MINING_TOOLS_SHOVELS = register(new TagInTagGenerator(new Identifier("fabric", "shovels"), AMCommon.id("mining_tools")));
 
-	public final SetTagGenerator MATTOCKS = register(new GenericSetTagGenerator("mattocks", AMCommon.identifier("mattocks"), MaterialItemType.MATTOCK));
-	public final OneTimeTagGenerator MATTOCK_AXES = register(new TagInTagGenerator(new Identifier("fabric", "axes"), AMCommon.identifier("mattocks")));
-	public final OneTimeTagGenerator MATTOCK_HOES = register(new TagInTagGenerator(new Identifier("fabric", "hoes"), AMCommon.identifier("mattocks")));
+	public final SetTagGenerator MATTOCKS = register(new GenericSetTagGenerator("mattocks", AMCommon.id("mattocks"), MaterialItemType.MATTOCK));
+	public final OneTimeTagGenerator MATTOCK_AXES = register(new TagInTagGenerator(new Identifier("fabric", "axes"), AMCommon.id("mattocks")));
+	public final OneTimeTagGenerator MATTOCK_HOES = register(new TagInTagGenerator(new Identifier("fabric", "hoes"), AMCommon.id("mattocks")));
 
-	public final SetTagGenerator HAMMERS = register(new GenericSetTagGenerator("hammers", AMCommon.identifier("hammers"), MaterialItemType.HAMMER));
-	public final OneTimeTagGenerator HAMMERS_PICKAXES = register(new TagInTagGenerator(new Identifier("fabric", "pickaxes"), AMCommon.identifier("hammers")));
+	public final SetTagGenerator HAMMERS = register(new GenericSetTagGenerator("hammers", AMCommon.id("hammers"), MaterialItemType.HAMMER));
+	public final OneTimeTagGenerator HAMMERS_PICKAXES = register(new TagInTagGenerator(new Identifier("fabric", "pickaxes"), AMCommon.id("hammers")));
 
-	public final SetTagGenerator EXCAVATORS = register(new GenericSetTagGenerator("excavators", AMCommon.identifier("excavators"), MaterialItemType.EXCAVATOR));
-	public final OneTimeTagGenerator EXCAVATORS_SHOVELS = register(new TagInTagGenerator(new Identifier("fabric", "shovels"), AMCommon.identifier("excavators")));
+	public final SetTagGenerator EXCAVATORS = register(new GenericSetTagGenerator("excavators", AMCommon.id("excavators"), MaterialItemType.EXCAVATOR));
+	public final OneTimeTagGenerator EXCAVATORS_SHOVELS = register(new TagInTagGenerator(new Identifier("fabric", "shovels"), AMCommon.id("excavators")));
 
 	public final SetTagGenerator BEACON_BASE_BLOCKS = register(new BeaconBaseTagGenerator());
 
@@ -111,6 +111,6 @@ public class AstromineTagGenerators extends AstromineTagGenerators {
 	public final OneTimeTagGenerator STICK = register(new ItemInTagGenerator(new Identifier("c", "wood_sticks"), new Identifier("stick")));
 	public final OneTimeTagGenerator ENCHANTED_GOLDEN_APPLE = register(new ItemInTagGenerator(new Identifier("c", "golden_apples"), new Identifier("enchanted_golden_apple")));
 
-	public final SetTagGenerator GEARS = register(new GenericSetTagGenerator("gears", AMCommon.identifier("gears"), MaterialItemType.GEAR));
-	public final SetTagGenerator METAL_PLATES = register(new GenericSetTagGenerator("metal_plates", AMCommon.identifier("metal_plates"), MaterialItemType.PLATE));
+	public final SetTagGenerator GEARS = register(new GenericSetTagGenerator("gears", AMCommon.id("gears"), MaterialItemType.GEAR));
+	public final SetTagGenerator METAL_PLATES = register(new GenericSetTagGenerator("metal_plates", AMCommon.id("metal_plates"), MaterialItemType.PLATE));
 }

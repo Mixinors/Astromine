@@ -24,12 +24,18 @@
 
 package com.github.mixinors.astromine.client.model;
 
+import com.github.mixinors.astromine.client.render.entity.PrimitiveRocketEntityRenderer;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.model.EntityModel;
+import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
 
 import com.github.mixinors.astromine.common.entity.PrimitiveRocketEntity;
+import net.minecraft.client.util.math.Vector3f;
+import net.minecraft.item.ItemStack;
 
 public class PrimitiveRocketEntityModel extends EntityModel<PrimitiveRocketEntity> {
 	private final ModelPart model;
@@ -73,5 +79,28 @@ public class PrimitiveRocketEntityModel extends EntityModel<PrimitiveRocketEntit
 	@Override
 	public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha) {
 		model.render(matrices, vertices, light, overlay);
+	}
+	
+	public static void renderItem(PrimitiveRocketEntityModel primitiveRocketEntityModel, ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
+		matrices.push();
+		
+		if (mode == ModelTransformation.Mode.GUI) {
+			matrices.translate(0.66F, 0.22F, 0F);
+		}
+		
+		matrices.scale(1.0F, -1.0F, -1.0F);
+		
+		if (mode == ModelTransformation.Mode.GUI) {
+			matrices.scale(0.09F, 0.09F, 0.09F);
+		} else {
+			matrices.scale(0.3F, 0.3F, 0.3F);
+		}
+		
+		matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(45));
+		matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(45));
+		
+		VertexConsumer glintConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, primitiveRocketEntityModel.getLayer(PrimitiveRocketEntityRenderer.ID), false, stack.hasGlint());
+		primitiveRocketEntityModel.render(matrices, glintConsumer, i, j, 1.0F, 1.0F, 1.0F, 1.0F);
+		matrices.pop();
 	}
 }

@@ -29,7 +29,7 @@ import net.fabricmc.api.Environment;
 
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
+import com.github.mixinors.astromine.client.rei.AMREIPlugin;
 import com.github.mixinors.astromine.client.rei.SimpleTransferRecipeDisplay;
 import com.github.mixinors.astromine.common.recipe.AlloySmeltingRecipe;
 import me.shedaniel.rei.api.EntryStack;
@@ -88,7 +88,7 @@ public class AlloySmeltingDisplay extends SimpleTransferRecipeDisplay {
 
 	@Override
 	public Identifier getRecipeCategory() {
-		return AstromineRoughlyEnoughItemsPlugin.ALLOY_SMELTING;
+		return AMREIPlugin.ALLOY_SMELTING;
 	}
 
 	@Override

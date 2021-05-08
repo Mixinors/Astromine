@@ -96,27 +96,27 @@ import java.util.List;
 import java.util.Map;
 
 @Environment(EnvType.CLIENT)
-public class AstromineRoughlyEnoughItemsPlugin implements REIPluginV0 {
-	private static final Identifier ENERGY_BACKGROUND = AMCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_background_thin.png");
-	private static final Identifier ENERGY_FOREGROUND = AMCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_foreground_thin.png");
+public class AMREIPlugin implements REIPluginV0 {
+	private static final Identifier ENERGY_BACKGROUND = AMCommon.id("textures/widget/energy_volume_fractional_vertical_bar_background_thin.png");
+	private static final Identifier ENERGY_FOREGROUND = AMCommon.id("textures/widget/energy_volume_fractional_vertical_bar_foreground_thin.png");
 	
-	public static final Identifier INFUSING = AMCommon.identifier("infusing");
-	public static final Identifier TRITURATING = AMCommon.identifier("triturating");
-	public static final Identifier ELECTRIC_SMELTING = AMCommon.identifier("electric_smelting");
-	public static final Identifier LIQUID_GENERATING = AMCommon.identifier("fluid_generating");
-	public static final Identifier SOLID_GENERATING = AMCommon.identifier("solid_generating");
-	public static final Identifier FLUID_MIXING = AMCommon.identifier("fluid_mixing");
-	public static final Identifier ELECTROLYZING = AMCommon.identifier("electrolyzing");
-	public static final Identifier REFINING = AMCommon.identifier("refining");
-	public static final Identifier PRESSING = AMCommon.identifier("pressing");
-	public static final Identifier WIREMILLING = AMCommon.identifier("wire_milling");
-	public static final Identifier ALLOY_SMELTING = AMCommon.identifier("alloy_smelting");
-	public static final Identifier SOLIDIFYING = AMCommon.identifier("solidifying");
+	public static final Identifier INFUSING = AMCommon.id("infusing");
+	public static final Identifier TRITURATING = AMCommon.id("triturating");
+	public static final Identifier ELECTRIC_SMELTING = AMCommon.id("electric_smelting");
+	public static final Identifier LIQUID_GENERATING = AMCommon.id("fluid_generating");
+	public static final Identifier SOLID_GENERATING = AMCommon.id("solid_generating");
+	public static final Identifier FLUID_MIXING = AMCommon.id("fluid_mixing");
+	public static final Identifier ELECTROLYZING = AMCommon.id("electrolyzing");
+	public static final Identifier REFINING = AMCommon.id("refining");
+	public static final Identifier PRESSING = AMCommon.id("pressing");
+	public static final Identifier WIREMILLING = AMCommon.id("wire_milling");
+	public static final Identifier ALLOY_SMELTING = AMCommon.id("alloy_smelting");
+	public static final Identifier SOLIDIFYING = AMCommon.id("solidifying");
 	
 	
 	@Override
 	public Identifier getPluginIdentifier() {
-		return AMCommon.identifier(AMCommon.MOD_ID);
+		return AMCommon.id(AMCommon.MOD_ID);
 	}
 	
 	@Override

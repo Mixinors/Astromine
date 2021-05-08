@@ -29,7 +29,7 @@ import com.github.mixinors.astromine.common.network.NetworkInstance;
 import com.github.mixinors.astromine.common.registry.NetworkTypeRegistry;
 
 public interface NetworkType {
-	NetworkType EMPTY = NetworkTypeRegistry.INSTANCE.register(AMCommon.identifier("empty_network"), new NetworkType() {
+	NetworkType EMPTY = NetworkTypeRegistry.INSTANCE.register(AMCommon.id("empty_network"), new NetworkType() {
 		/** Override behavior to do nothing. */
 		@Override
 		public void tick(NetworkInstance instance) {}

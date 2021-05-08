@@ -49,7 +49,7 @@ import com.github.mixinors.astromine.AMCommon;
 @Mixin(BossBarHud.class)
 public abstract class BossBarHudMixin extends DrawableHelper {
 
-	private static final Identifier CUSTOM_BAR_TEX = AMCommon.identifier("textures/gui/bars.png");
+	private static final Identifier CUSTOM_BAR_TEX = AMCommon.id("textures/gui/bars.png");
 	@Shadow
 	@Final
 	private static Identifier BARS_TEXTURE;

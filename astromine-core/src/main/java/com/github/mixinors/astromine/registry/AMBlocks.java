@@ -326,7 +326,7 @@ public class AMBlocks {
 	 * @return Block instance registered
 	 */
 	public static <T extends Block> T register(String name, T block, BlockItem item) {
-		T b = register(AMCommon.identifier(name), block);
+		T b = register(AMCommon.id(name), block);
 		if (item != null) {
 			Item.BLOCK_ITEMS.put(block, item);
 			AMItems.register(name, item);
@@ -343,7 +343,7 @@ public class AMBlocks {
 	 * @return Block instance registered
 	 */
 	public static <T extends Block> T register(String name, T block) {
-		return register(AMCommon.identifier(name), block);
+		return register(AMCommon.id(name), block);
 	}
 
 	/**

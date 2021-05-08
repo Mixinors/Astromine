@@ -69,7 +69,7 @@ import com.google.gson.JsonObject;
  * - {@link ByteBuf} - through {@link #toPacket(PacketByteBuf)} and {@link #fromPacket(PacketByteBuf)}.
  */
 public class EnergyVolume extends Volume<Double> {
-	public static final Identifier ID = AMCommon.identifier("energy");
+	public static final Identifier ID = AMCommon.id("energy");
 
 	/** Instantiates an {@link EnergyVolume} with. */
 	protected EnergyVolume(double amount, double size) {

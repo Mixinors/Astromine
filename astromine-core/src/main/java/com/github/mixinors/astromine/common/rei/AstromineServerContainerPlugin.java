@@ -47,11 +47,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AstromineServerContainerPlugin implements Runnable {
-	public static final Identifier TRITURATING = AMCommon.identifier("triturating");
-	public static final Identifier ELECTRIC_SMELTING = AMCommon.identifier("electric_smelting");
-	public static final Identifier SOLID_GENERATING = AMCommon.identifier("solid_generating");
-	public static final Identifier PRESSING = AMCommon.identifier("pressing");
-	public static final Identifier ALLOY_SMELTING = AMCommon.identifier("alloy_smelting");
+	public static final Identifier TRITURATING = AMCommon.id("triturating");
+	public static final Identifier ELECTRIC_SMELTING = AMCommon.id("electric_smelting");
+	public static final Identifier SOLID_GENERATING = AMCommon.id("solid_generating");
+	public static final Identifier PRESSING = AMCommon.id("pressing");
+	public static final Identifier ALLOY_SMELTING = AMCommon.id("alloy_smelting");
 
 	@Override
 	public void run() {

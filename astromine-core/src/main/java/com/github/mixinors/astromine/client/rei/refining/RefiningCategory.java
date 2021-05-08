@@ -30,7 +30,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
+import com.github.mixinors.astromine.client.rei.AMREIPlugin;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.EntryStack;
@@ -73,16 +73,16 @@ public class RefiningCategory implements RecipeCategory<RefiningDisplay> {
 		List<Widget> widgets = Lists.newArrayList();
 		Rectangle innerBounds = new Rectangle(bounds.getCenterX() - 55 - 35, bounds.y, 110 + 57 + 7 + 6, bounds.height);
 		widgets.add(Widgets.createRecipeBase(innerBounds));
-		widgets.addAll(AstromineRoughlyEnoughItemsPlugin.createEnergyDisplay(new Rectangle(innerBounds.x + 10, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getEnergy(), false, 12500));
-		widgets.addAll(AstromineRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.x + 24, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getInputEntries().get(0), false, 5000));
+		widgets.addAll(AMREIPlugin.createEnergyDisplay(new Rectangle(innerBounds.x + 10, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getEnergy(), false, 12500));
+		widgets.addAll(AMREIPlugin.createFluidDisplay(new Rectangle(innerBounds.x + 24, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getInputEntries().get(0), false, 5000));
 		widgets.add(Widgets.createArrow(new Point(innerBounds.getX() + 45, innerBounds.getY() + 26)));
-		widgets.addAll(AstromineRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 70 - 32, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getResultingEntries().get(0), true, 5000));
-		widgets.addAll(AstromineRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 70 - 32 + 14, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getResultingEntries().get(1), true, 5000));
-		widgets.addAll(AstromineRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 70 - 32 + 14 * 2, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getResultingEntries().get(2), true, 5000));
-		widgets.addAll(AstromineRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 70 - 32 + 14 * 3, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getResultingEntries().get(3), true, 5000));
-		widgets.addAll(AstromineRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 70 - 32 + 14 * 4, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getResultingEntries().get(4), true, 5000));
-		widgets.addAll(AstromineRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 70 - 32 + 14 * 5, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getResultingEntries().get(5), true, 5000));
-		widgets.addAll(AstromineRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 70 - 32 + 14 * 6, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getResultingEntries().get(6), true, 5000));
+		widgets.addAll(AMREIPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 70 - 32, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getResultingEntries().get(0), true, 5000));
+		widgets.addAll(AMREIPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 70 - 32 + 14, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getResultingEntries().get(1), true, 5000));
+		widgets.addAll(AMREIPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 70 - 32 + 14 * 2, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getResultingEntries().get(2), true, 5000));
+		widgets.addAll(AMREIPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 70 - 32 + 14 * 3, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getResultingEntries().get(3), true, 5000));
+		widgets.addAll(AMREIPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 70 - 32 + 14 * 4, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getResultingEntries().get(4), true, 5000));
+		widgets.addAll(AMREIPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 70 - 32 + 14 * 5, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getResultingEntries().get(5), true, 5000));
+		widgets.addAll(AMREIPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 70 - 32 + 14 * 6, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getResultingEntries().get(6), true, 5000));
 		return widgets;
 	}
 }

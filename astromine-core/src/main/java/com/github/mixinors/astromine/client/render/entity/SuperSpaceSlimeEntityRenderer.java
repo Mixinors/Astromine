@@ -38,8 +38,8 @@ import com.github.mixinors.astromine.common.entity.SuperSpaceSlimeEntity;
 
 public class SuperSpaceSlimeEntityRenderer extends MobEntityRenderer<SuperSpaceSlimeEntity, SuperSpaceSlimeEntityModel> {
 
-	private static final Identifier TEXTURE = AMCommon.identifier("textures/entity/space_slime/space_slime.png");
-	private static final Identifier EXPLODING_TEXTURE = AMCommon.identifier("textures/entity/space_slime/space_slime_exploding.png");
+	private static final Identifier TEXTURE = AMCommon.id("textures/entity/space_slime/space_slime.png");
+	private static final Identifier EXPLODING_TEXTURE = AMCommon.id("textures/entity/space_slime/space_slime_exploding.png");
 
 	public SuperSpaceSlimeEntityRenderer(EntityRenderDispatcher entityRenderDispatcher) {
 		super(entityRenderDispatcher, new SuperSpaceSlimeEntityModel(16), 0.25F);

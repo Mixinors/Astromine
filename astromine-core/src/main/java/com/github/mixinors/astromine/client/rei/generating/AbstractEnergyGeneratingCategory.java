@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.client.rei.generating;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import com.github.mixinors.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
+import com.github.mixinors.astromine.client.rei.AMREIPlugin;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.RecipeCategory;
 import me.shedaniel.rei.api.widgets.Widgets;
@@ -43,7 +43,7 @@ public abstract class AbstractEnergyGeneratingCategory<T extends AbstractEnergyG
 		List<Widget> widgets = Lists.newArrayList();
 		Rectangle innerBounds = new Rectangle(bounds.getCenterX() - 55, bounds.y, 110, bounds.height);
 		widgets.add(Widgets.createRecipeBase(innerBounds));
-		widgets.addAll(AstromineRoughlyEnoughItemsPlugin.createEnergyDisplay(new Rectangle(innerBounds.getMaxX() - 32, innerBounds.getCenterY() - 23, 12, 48), recipeDisplay.getEnergyGeneratedPerTick(), true, 5000));
+		widgets.addAll(AMREIPlugin.createEnergyDisplay(new Rectangle(innerBounds.getMaxX() - 32, innerBounds.getCenterY() - 23, 12, 48), recipeDisplay.getEnergyGeneratedPerTick(), true, 5000));
 		return widgets;
 	}
 }

@@ -474,7 +474,7 @@ public class AMItems {
 	 * @return Item instance registered
 	 */
 	public static <T extends Item> T register(String name, T item) {
-		return register(AMCommon.identifier(name), item);
+		return register(AMCommon.id(name), item);
 	}
 
 	/**

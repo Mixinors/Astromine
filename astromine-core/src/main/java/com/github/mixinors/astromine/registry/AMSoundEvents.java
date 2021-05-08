@@ -60,6 +60,6 @@ public class AMSoundEvents {
 	}
 	
 	public static SoundEvent register(String id) {
-		return Registry.register(Registry.SOUND_EVENT, AMCommon.identifier(id), new SoundEvent(AMCommon.identifier(id)));
+		return Registry.register(Registry.SOUND_EVENT, AMCommon.id(id), new SoundEvent(AMCommon.id(id)));
 	}
 }

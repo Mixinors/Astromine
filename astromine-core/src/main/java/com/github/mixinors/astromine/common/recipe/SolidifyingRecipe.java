@@ -189,7 +189,7 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 	}
 
 	public static final class Serializer implements RecipeSerializer<SolidifyingRecipe> {
-		public static final Identifier ID = AMCommon.identifier("solidifying");
+		public static final Identifier ID = AMCommon.id("solidifying");
 
 		public static final Serializer INSTANCE = new Serializer();
 

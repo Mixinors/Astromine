@@ -152,11 +152,11 @@ public class MaterialSet {
 		}
 
 		public Builder addType(MaterialItemType type, Identifier tagId) {
-			return setType(type, AMCommon.identifier(type.getItemId(name)), tagId);
+			return setType(type, AMCommon.id(type.getItemId(name)), tagId);
 		}
 
 		public Builder addType(MaterialItemType type) {
-			return setType(type, AMCommon.identifier(type.getItemId(name)));
+			return setType(type, AMCommon.id(type.getItemId(name)));
 		}
 
 		public Builder basics() {

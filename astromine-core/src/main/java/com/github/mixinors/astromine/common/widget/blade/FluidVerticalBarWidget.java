@@ -61,7 +61,7 @@ import java.util.function.Supplier;
  * are queried from.
  */
 public class FluidVerticalBarWidget extends AbstractWidget {
-	private final Identifier FLUID_BACKGROUND = AMCommon.identifier("textures/widget/fluid_volume_fractional_vertical_bar_background.png");
+	private final Identifier FLUID_BACKGROUND = AMCommon.id("textures/widget/fluid_volume_fractional_vertical_bar_background.png");
 
 	private Supplier<FluidVolume> volumeSupplier;
 

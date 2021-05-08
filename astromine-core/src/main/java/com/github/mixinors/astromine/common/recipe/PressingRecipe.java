@@ -177,7 +177,7 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 	}
 
 	public static final class Serializer implements RecipeSerializer<PressingRecipe> {
-		public static final Identifier ID = AMCommon.identifier("pressing");
+		public static final Identifier ID = AMCommon.id("pressing");
 
 		public static final Serializer INSTANCE = new Serializer();
 
