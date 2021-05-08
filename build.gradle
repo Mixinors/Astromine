@@ -99,8 +99,6 @@ allprojects {
         }
         dependencies.ext.useAsApi = { dep ->
             useAsApiOptionally(dep)
-            if (project.name == "astromine-core")
-                include(dep)
         }
         dependencies.ext.useAsRuntime = { dep ->
             modRuntime(dep) {
@@ -303,9 +301,6 @@ sourceSets {
 dependencies {
     subprojects.each {
         compile project(path: ":${it.path}", configuration: "dev")
-        if (!it.isRunningGenerateDataTask) {
-            include project(path: ":${it.path}", configuration: "remapped")
-        }
     }
 
     modRuntime "net.fabricmc:dev-launch-injector:+"
