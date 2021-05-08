@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/inner_stairs",
-  "textures": {
-    "bottom": "astromine:block/polished_martian_stone",
-    "top": "astromine:block/polished_martian_stone",
-    "side": "astromine:block/polished_martian_stone"
-  }
-}

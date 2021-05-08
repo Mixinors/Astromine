@@ -24,7 +24,6 @@
 
 package com.github.mixinors.astromine.registry.client;
 
-import com.github.mixinors.astromine.client.particle.MarsDustParticle;
 import com.github.mixinors.astromine.client.particle.RocketFlameParticle;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMParticles;
@@ -38,8 +37,6 @@ import net.minecraft.item.ItemStack;
 public class AMParticleFactories {
 	public static void init() {
 		ParticleFactoryRegistry.getInstance().register(AMParticles.SPACE_SLIME, (parameters, world, x, y, z, velocityX, velocityY, velocityZ) -> new CrackParticle(world, x, y, z, new ItemStack(AMItems.SPACE_SLIME_BALL)));
-		
-		ParticleFactoryRegistry.getInstance().register(AMParticles.MARS_DUST, MarsDustParticle.Factory::new);
 		
 		ParticleFactoryRegistry.getInstance().register(AMParticles.ROCKET_FLAME, provider -> (parameters, world, x, y, z, velocityX, velocityY, velocityZ) -> {
 			RocketFlameParticle particle = new RocketFlameParticle(world, x, y, z, velocityX, velocityY, velocityZ);

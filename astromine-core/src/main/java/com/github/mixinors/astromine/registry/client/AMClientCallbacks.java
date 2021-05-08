@@ -104,9 +104,6 @@ public class AMClientCallbacks {
 			}
 		}));
 		
-		SkyPropertiesCallback.EVENT.register((properties) -> properties.put(AMDimensions.MOON_ID, new MoonSkyProperties()));
-		SkyPropertiesCallback.EVENT.register((properties) -> properties.put(AMDimensions.MARS_ID, new MarsSkyProperties()));
-		SkyPropertiesCallback.EVENT.register((properties) -> properties.put(AMDimensions.VULCAN_ID, new VulcanSkyProperties()));
-		SkyPropertiesCallback.EVENT.register((properties) -> properties.put(AMDimensions.GLACIOS_ID, new SpaceSkyProperties()));
+		SkyPropertiesCallback.EVENT.register((properties) -> properties.put(AMDimensions.EARTH_SPACE_ID, new SpaceSkyProperties()));
 	}
 }
