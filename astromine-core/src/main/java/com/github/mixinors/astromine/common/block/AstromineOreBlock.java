@@ -24,6 +24,8 @@
 
 package com.github.mixinors.astromine.common.block;
 
+import com.github.mixinors.astromine.registry.AstromineBlocks;
+import com.github.mixinors.astromine.registry.AstromineCriteria;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -36,9 +38,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.registry.AstromineFoundationsBlocks;
-import com.github.mixinors.astromine.registry.AstromineFoundationsCriteria;
-
 import java.util.Random;
 
 public class AstromineOreBlock extends OreBlock {
@@ -48,7 +47,7 @@ public class AstromineOreBlock extends OreBlock {
 
 	@Override
 	protected int getExperienceWhenMined(Random random) {
-		if (this == AstromineFoundationsBlocks.METEOR_METITE_ORE) {
+		if (this == AstromineBlocks.METEOR_METITE_ORE) {
 			return MathHelper.nextInt(random, 2, 3);
 		} else {
 			return 0;
@@ -58,10 +57,10 @@ public class AstromineOreBlock extends OreBlock {
 	@Override
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		super.onBreak(world, pos, state, player);
-		if (this == AstromineFoundationsBlocks.METEOR_METITE_ORE && player instanceof ServerPlayerEntity) {
+		if (this == AstromineBlocks.METEOR_METITE_ORE && player instanceof ServerPlayerEntity) {
 			ItemStack stack = player.getStackInHand(Hand.MAIN_HAND);
 			if (!stack.isEffectiveOn(state) && stack.isEffectiveOn(Blocks.STONE.getDefaultState())) {
-				AstromineFoundationsCriteria.UNDERESTIMATE_METITE.trigger((ServerPlayerEntity) player);
+				AstromineCriteria.UNDERESTIMATE_METITE.trigger((ServerPlayerEntity) player);
 			}
 		}
 	}

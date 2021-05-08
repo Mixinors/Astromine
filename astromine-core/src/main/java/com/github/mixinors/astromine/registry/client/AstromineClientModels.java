@@ -24,14 +24,27 @@
 
 package com.github.mixinors.astromine.registry.client;
 
+import com.github.mixinors.astromine.client.model.PrimitiveRocketEntityModel;
+import com.github.mixinors.astromine.client.render.entity.PrimitiveRocketEntityRenderer;
+import com.mojang.datafixers.util.Pair;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.render.model.*;
 import net.minecraft.client.render.model.json.JsonUnbakedModel;
+import net.minecraft.client.render.model.json.ModelOverrideList;
 import net.minecraft.client.render.model.json.ModelTransformation;
+import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.ModelIdentifier;
+import net.minecraft.client.util.SpriteIdentifier;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.util.math.Vector3f;
+import net.minecraft.item.ItemStack;
 import net.minecraft.resource.Resource;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Lazy;
@@ -41,6 +54,10 @@ import com.github.mixinors.astromine.AstromineCommon;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
+import java.util.function.Function;
 
 @Environment(EnvType.CLIENT)
 public class AstromineClientModels {
@@ -60,5 +77,49 @@ public class AstromineClientModels {
 		ModelLoadingRegistry.INSTANCE.registerAppender((resourceManager, consumer) -> {
 			consumer.accept(new ModelIdentifier(new Identifier(AstromineCommon.MOD_ID, "conveyor_supports"), ""));
 		});
+
+		ModelIdentifier rocketItemId = new ModelIdentifier(AstromineCommon.identifier("rocket"), "inventory");
+		
+		ModelLoadingRegistry.INSTANCE.registerVariantProvider(resourceManager -> (modelIdentifier, modelProviderContext) -> {
+			if (modelIdentifier.equals(rocketItemId)) {
+				return new UnbakedModel() {
+					@Override
+					public Collection<Identifier> getModelDependencies() {
+						return Collections.emptyList();
+					}
+					
+					@Override
+					public Collection<SpriteIdentifier> getTextureDependencies(Function<Identifier, UnbakedModel> unbakedModelGetter, Set<Pair<String, String>> unresolvedTextureReferences) {
+						return Collections.emptyList();
+					}
+					
+					@Override
+					public BakedModel bake(ModelLoader loader, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings rotationContainer, Identifier modelId) {
+						return new BuiltinBakedModel(ITEM_HANDHELD.get(), ModelOverrideList.EMPTY, null, true);
+					}
+				};
+			}
+			return null;
+		});
+	}
+	
+	public static void renderRocket(PrimitiveRocketEntityModel primitiveRocketEntityModel, ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
+		matrices.push();
+		if (mode == ModelTransformation.Mode.GUI) {
+			matrices.translate(0.66F, 0.22F, 0F);
+		}
+		matrices.scale(1.0F, -1.0F, -1.0F);
+		if (mode == ModelTransformation.Mode.GUI) {
+			matrices.scale(0.09F, 0.09F, 0.09F);
+			matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(45));
+			matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(45));
+		} else {
+			matrices.scale(0.3F, 0.3F, 0.3F);
+			matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(45));
+			matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(45));
+		}
+		VertexConsumer vertexConsumer2 = ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, primitiveRocketEntityModel.getLayer(PrimitiveRocketEntityRenderer.ID), false, stack.hasGlint());
+		primitiveRocketEntityModel.render(matrices, vertexConsumer2, i, j, 1.0F, 1.0F, 1.0F, 1.0F);
+		matrices.pop();
 	}
 }

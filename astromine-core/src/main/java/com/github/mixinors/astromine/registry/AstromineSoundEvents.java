@@ -30,11 +30,36 @@ import net.minecraft.util.registry.Registry;
 import com.github.mixinors.astromine.AstromineCommon;
 
 public class AstromineSoundEvents {
-	public static SoundEvent register(String id) {
-		return Registry.register(Registry.SOUND_EVENT, AstromineCommon.identifier(id), new SoundEvent(AstromineCommon.identifier(id)));
-	}
-
+	public static final SoundEvent SPACE_SUIT_EQUIPPED = register("item.armor.equip_space_suit");
+	
+	public static final SoundEvent ALTAR_START = register("block.altar.start");
+	public static final SoundEvent ALTAR_FINISH = register("block.altar.finish");
+	
+	public static final SoundEvent FIRE_EXTINGUISHER_OPEN = register("fire_extinguisher_open");
+	
+	public static final SoundEvent BRONZE_ARMOR_EQUIPPED = register("item.armor.equip_bronze");
+	public static final SoundEvent STEEL_ARMOR_EQUIPPED = register("item.armor.equip_steel");
+	public static final SoundEvent FOOLS_GOLD_ARMOR_EQUIPPED = register("item.armor.equip_fools_gold");
+	
+	public static final SoundEvent METITE_ARMOR_EQUIPPED = register("item.armor.equip_metite");
+	public static final SoundEvent ASTERITE_ARMOR_EQUIPPED = register("item.armor.equip_asterite");
+	public static final SoundEvent STELLUM_ARMOR_EQUIPPED = register("item.armor.equip_stellum");
+	public static final SoundEvent GALAXIUM_ARMOR_EQUIPPED = register("item.armor.equip_galaxium");
+	public static final SoundEvent UNIVITE_ARMOR_EQUIPPED = register("item.armor.equip_univite");
+	public static final SoundEvent LUNUM_ARMOR_EQUIPPED = register("item.armor.equip_lunum");
+	
+	public static final SoundEvent METEORIC_STEEL_ARMOR_EQUIPPED = register("item.armor.equip_meteoric_steel");
+	
+	public static final SoundEvent HOLOGRAPHIC_CONNECTOR_CLICK = register("holographic_connector_click");
+	
+	public static final SoundEvent MACHINE_CLICK = register("block.machine.click");
+	public static final SoundEvent INCINERATE = register("block.shredder.incinerate");
+	
 	public static void initialize() {
 
+	}
+	
+	public static SoundEvent register(String id) {
+		return Registry.register(Registry.SOUND_EVENT, AstromineCommon.identifier(id), new SoundEvent(AstromineCommon.identifier(id)));
 	}
 }

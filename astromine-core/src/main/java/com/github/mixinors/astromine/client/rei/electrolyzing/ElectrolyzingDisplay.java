@@ -32,7 +32,6 @@ import net.minecraft.util.Identifier;
 import com.github.mixinors.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
-import com.github.mixinors.astromine.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.common.recipe.ElectrolyzingRecipe;
 import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeDisplay;
@@ -42,8 +41,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static com.github.mixinors.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin.convertA2R;
 
 @Environment(EnvType.CLIENT)
 public class ElectrolyzingDisplay implements RecipeDisplay {
@@ -72,7 +69,7 @@ public class ElectrolyzingDisplay implements RecipeDisplay {
 
 	@Override
 	public List<List<EntryStack>> getInputEntries() {
-		return Collections.singletonList(Arrays.stream(input.getMatchingVolumes()).map(AstromineRoughlyEnoughItemsPlugin::convertA2R).collect(Collectors.toList()));
+		return Collections.singletonList(Arrays.stream(input.getMatchingVolumes()).map(AstromineRoughlyEnoughItemsPlugin::convertToEntryStack).collect(Collectors.toList()));
 	}
 
 	@Override
@@ -82,12 +79,12 @@ public class ElectrolyzingDisplay implements RecipeDisplay {
 
 	@Override
 	public Identifier getRecipeCategory() {
-		return AstromineTechnologiesRoughlyEnoughItemsPlugin.ELECTROLYZING;
+		return AstromineRoughlyEnoughItemsPlugin.ELECTROLYZING;
 	}
 
 	@Override
 	public List<List<EntryStack>> getResultingEntries() {
-		return Arrays.asList(Collections.singletonList(convertA2R(firstOutput)), Collections.singletonList(convertA2R(secondOutput)));
+		return Arrays.asList(Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertToEntryStack(firstOutput)), Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertToEntryStack(secondOutput)));
 	}
 
 	public double getEnergy() {

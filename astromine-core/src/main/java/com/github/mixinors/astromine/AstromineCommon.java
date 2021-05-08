@@ -24,7 +24,6 @@
 
 package com.github.mixinors.astromine;
 
-import com.github.mixinors.astromine.registry.client.AstromineTransportationsItemGroups;
 import net.fabricmc.api.ModInitializer;
 
 import net.minecraft.util.Identifier;
@@ -81,56 +80,10 @@ public class AstromineCommon implements ModInitializer {
 		AstromineFluidEffects.initialize();
 		AstromineAttributes.initialize();
 		
-		AstromineDiscoveriesDecorators.initialize();
-		AstromineDiscoveriesBiomes.initialize();
-		AstromineDiscoveriesBiomeSources.initialize();
-		AstromineDiscoveriesChunkGenerators.initialize();
-		AstromineDiscoveriesCommonCallbacks.initialize();
-		AstromineDiscoveriesDimensionLayers.initialize();
-		AstromineDiscoveriesOres.initialize();
-		AstromineDiscoveriesGravities.initialize();
-		AstromineDiscoveriesBlocks.initialize();
-		AstromineDiscoveriesBlockEntityTypes.initialize();
-		AstromineDiscoveriesItems.initialize();
-		AstromineDiscoveriesItemGroups.initialize();
-		AstromineDiscoveriesAtmospheres.initialize();
-		AstromineDiscoveriesDimensions.initialize();
-		AstromineDiscoveriesFeatures.initialize();
-		AstromineDiscoveriesEntityTypes.initialize();
-		AstromineDiscoveriesArmorMaterials.initialize();
-		AstromineDiscoveriesCriteria.initialize();
-		AstromineDiscoveriesSoundEvents.initialize();
-		AstromineDiscoveriesRecipeSerializers.initialize();
-		AstromineDiscoveriesScreenHandlers.initialize();
-		AstromineDiscoveriesParticles.initialize();
+		AstromineDecorators.initialize();
 		
-		AstromineFoundationsBlocks.initialize();
-		AstromineFoundationsItems.initialize();
-		AstromineFoundationsOres.initialize();
-		AstromineFoundationsFluids.initialize();
-		AstromineFoundationsCriteria.initialize();
-		AstromineFoundationsFluidEffects.initialize();
-		AstromineFoundationsFeatures.initialize();
-		AstromineFoundationsIdentifierFixes.initialize();
-		AstromineFoundationsRecipeSerializers.initialize();
-		
-		AstromineTechnologiesBlockEntityTypes.initialize();
-		AstromineTechnologiesBlocks.initialize();
-		AstromineTechnologiesItems.initialize();
-		AstromineTechnologiesItemGroups.initialize();
-		AstromineTechnologiesRecipeSerializers.initialize();
-		AstromineTechnologiesScreenHandlers.initialize();
-		AstromineTechnologiesToolMaterials.initialize();
-		AstromineTechnologiesCommonCallbacks.initialize();
-		AstromineTechnologiesEntityTypes.initialize();
-		AstromineTechnologiesCommonPackets.initialize();
-		AstromineTechnologiesIdentifierFixes.initialize();
-		
-		AstromineTransportationsIdentifierFixes.initialize();
-		AstromineTransportationsBlocks.initialize();
-		AstromineTransportationsItems.initialize();
-		AstromineTransportationsItemGroups.initialize();
-		AstromineTransportationsBlockEntityTypes.initialize();
-		AstromineTransportationsSoundEvents.initialize();
+		AstromineOres.initialize();
+		AstromineToolMaterials.initialize();
+		AstromineItemGroups.initialize();
 	}
 }

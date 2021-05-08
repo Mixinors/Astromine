@@ -24,12 +24,38 @@
 
 package com.github.mixinors.astromine.registry;
 
+import com.github.mixinors.astromine.common.fluid.ExtendedFluid;
+import com.google.common.collect.Lists;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.registry.Registry;
 
 import com.github.mixinors.astromine.AstromineCommon;
 
+import java.util.List;
+
 public class AstromineFluids {
+	public static final Fluid CRUDE_OIL = ExtendedFluid.builder().fog(0x7e675005).tint(0x7e675005).damage(0).toxic(false).infinite(false).name("crude_oil").group(AstromineItemGroups.ASTROMINE).build();
+	
+	public static final Fluid RESIDUAL_FUEL_OIL = ExtendedFluid.builder().fog(0x7e675005).tint(0x7e675005).damage(0).toxic(false).infinite(false).name("residual_fuel_oil").group(AstromineItemGroups.ASTROMINE).build();
+	
+	public static final Fluid HEAVY_GAS_OIL = ExtendedFluid.builder().fog(0x7e675005).tint(0x7e675005).damage(0).toxic(false).infinite(false).name("heavy_gas_oil").group(AstromineItemGroups.ASTROMINE).build();
+	
+	public static final Fluid DIESEL = ExtendedFluid.builder().fog(0x7e7B6522).tint(0x7e7B6522).damage(0).toxic(false).infinite(false).name("diesel").group(AstromineItemGroups.ASTROMINE).build();
+	
+	public static final Fluid KEROSENE = ExtendedFluid.builder().fog(0x7e968048).tint(0x7e968048).damage(0).toxic(false).infinite(false).name("kerosene").group(AstromineItemGroups.ASTROMINE).build();
+	
+	public static final Fluid NAPHTHA = ExtendedFluid.builder().fog(0x7eB19D6F).tint(0x7eB19D6F).damage(0).toxic(false).infinite(false).name("naphtha").group(AstromineItemGroups.ASTROMINE).build();
+	
+	public static final Fluid GASOLINE = ExtendedFluid.builder().fog(0x7eCBB794).tint(0x7eCBB794).damage(0).toxic(false).infinite(false).name("gasoline").group(AstromineItemGroups.ASTROMINE).build();
+	
+	public static final Fluid BUTANE = ExtendedFluid.builder().fog(0x7eE4D2B9).tint(0x7eE4D2B9).damage(0).toxic(false).infinite(false).name("butane").group(AstromineItemGroups.ASTROMINE).build();
+	
+	public static final List<Fluid> OIL_DERIVATIVES = Lists.newArrayList(CRUDE_OIL, RESIDUAL_FUEL_OIL, HEAVY_GAS_OIL, DIESEL, KEROSENE, NAPHTHA, GASOLINE, BUTANE);
+	
+	public static final Fluid OXYGEN = ExtendedFluid.builder().fog(0x7e159ef9).tint(0xff159ef9).damage(0).toxic(false).infinite(false).name("oxygen").group(AstromineItemGroups.ASTROMINE).build();
+	
+	public static final Fluid HYDROGEN = ExtendedFluid.builder().fog(0x7eff0019).tint(0xffff0019).damage(0).toxic(false).infinite(false).name("hydrogen").group(AstromineItemGroups.ASTROMINE).build();
+	
 	public static void initialize() {
 
 	}

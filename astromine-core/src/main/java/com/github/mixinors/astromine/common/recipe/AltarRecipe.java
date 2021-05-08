@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.recipe;
 
+import com.github.mixinors.astromine.registry.AstromineBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
@@ -38,7 +39,6 @@ import com.github.mixinors.astromine.AstromineCommon;
 import com.github.mixinors.astromine.common.utilities.IngredientUtilities;
 import com.github.mixinors.astromine.common.utilities.StackUtilities;
 import com.github.mixinors.astromine.common.block.entity.AltarBlockEntity;
-import com.github.mixinors.astromine.registry.AstromineDiscoveriesBlocks;
 
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
@@ -96,7 +96,7 @@ public class AltarRecipe implements Recipe<AltarBlockEntity> {
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineDiscoveriesBlocks.ALTAR);
+		return new ItemStack(AstromineBlocks.ALTAR);
 	}
 
 	@Override

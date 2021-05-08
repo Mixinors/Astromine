@@ -42,9 +42,11 @@ public class AstromineTags {
 	public static final Tag<Fluid> NORMAL_BREATHABLE = TagRegistry.fluid(AstromineCommon.identifier("normal_breathable"));
 	public static final Tag<Fluid> WATER_BREATHABLE = TagRegistry.fluid(AstromineCommon.identifier("water_breathable"));
 	public static final Tag<Fluid> LAVA_BREATHABLE = TagRegistry.fluid(AstromineCommon.identifier("lava_breathable"));
-
+	
+	public static final Tag<Fluid> ROCKET_FUELS = TagRegistry.fluid(AstromineCommon.identifier("rocket_fuels"));
+	
 	public static final Tag<EntityType<?>> DOES_NOT_BREATHE = TagRegistry.entityType(AstromineCommon.identifier("does_not_breathe"));
-
+	
 	private static Tag.Identified<Fluid> registerRequired(String path) {
 		return FluidTagsAccess.invokeRegister(AstromineCommon.MOD_ID + ":" + path);
 	}

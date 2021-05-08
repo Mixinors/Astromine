@@ -46,7 +46,7 @@ import me.shedaniel.rei.server.StackAccessor;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AstromineTechnologiesServerContainerPlugin implements Runnable {
+public class AstromineServerContainerPlugin implements Runnable {
 	public static final Identifier TRITURATING = AstromineCommon.identifier("triturating");
 	public static final Identifier ELECTRIC_SMELTING = AstromineCommon.identifier("electric_smelting");
 	public static final Identifier SOLID_GENERATING = AstromineCommon.identifier("solid_generating");

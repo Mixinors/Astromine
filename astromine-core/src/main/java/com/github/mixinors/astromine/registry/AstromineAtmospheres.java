@@ -24,6 +24,13 @@
 
 package com.github.mixinors.astromine.registry;
 
+import com.github.mixinors.astromine.common.registry.AtmosphereRegistry;
+
 public class AstromineAtmospheres {
-	public static void initialize() {}
+	public static void initialize() {
+		AtmosphereRegistry.INSTANCE.register(AstromineDimensions.EARTH_SPACE_WORLD, true);
+		AtmosphereRegistry.INSTANCE.register(AstromineDimensions.MOON_WORLD, true);
+		AtmosphereRegistry.INSTANCE.register(AstromineDimensions.MARS_WORLD, true);
+		AtmosphereRegistry.INSTANCE.register(AstromineDimensions.VULCAN_WORLD, true);
+	}
 }

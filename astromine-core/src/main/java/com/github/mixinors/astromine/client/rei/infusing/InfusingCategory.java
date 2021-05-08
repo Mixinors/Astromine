@@ -24,12 +24,12 @@
 
 package com.github.mixinors.astromine.client.rei.infusing;
 
+import com.github.mixinors.astromine.registry.AstromineBlocks;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
-import com.github.mixinors.astromine.client.rei.AstromineDiscoveriesRoughlyEnoughItemsPlugin;
-import com.github.mixinors.astromine.registry.AstromineDiscoveriesBlocks;
+import com.github.mixinors.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.EntryStack;
@@ -43,7 +43,7 @@ import java.util.List;
 public class InfusingCategory implements RecipeCategory<InfusingDisplay> {
 	@Override
 	public Identifier getIdentifier() {
-		return AstromineDiscoveriesRoughlyEnoughItemsPlugin.INFUSING;
+		return AstromineRoughlyEnoughItemsPlugin.INFUSING;
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class InfusingCategory implements RecipeCategory<InfusingDisplay> {
 
 	@Override
 	public EntryStack getLogo() {
-		return EntryStack.create(AstromineDiscoveriesBlocks.ALTAR);
+		return EntryStack.create(AstromineBlocks.ALTAR);
 	}
 
 	@Override
@@ -68,11 +68,11 @@ public class InfusingCategory implements RecipeCategory<InfusingDisplay> {
 			List<EntryStack> stacks = display.getInputEntries().get(i);
 			int x = (int) (radius * 1.05f * MathHelper.cos(degrees * i * 0.0174532925F));
 			int y = (int) (radius * MathHelper.sin(degrees * i * 0.0174532925F));
-			widgets.add(Widgets.createSlot(new Point(bounds.x + 65 + x, bounds.y + 54 + y + 15)).entry(EntryStack.create(AstromineDiscoveriesBlocks.ALTAR_PEDESTAL)).noFavoritesInteractable().noInteractable().disableHighlight().disableTooltips().disableBackground());
+			widgets.add(Widgets.createSlot(new Point(bounds.x + 65 + x, bounds.y + 54 + y + 15)).entry(EntryStack.create(AstromineBlocks.ALTAR_PEDESTAL)).noFavoritesInteractable().noInteractable().disableHighlight().disableTooltips().disableBackground());
 			widgets.add(Widgets.createSlot(new Point(bounds.x + 65 + x, bounds.y + 54 + y)).entries(stacks).disableBackground().markInput());
 		}
 
-		widgets.add(Widgets.createSlot(new Point(bounds.x + 65, bounds.y + 54 + 15)).entry(EntryStack.create(AstromineDiscoveriesBlocks.ALTAR)).noFavoritesInteractable().noInteractable().disableHighlight().disableTooltips().disableBackground());
+		widgets.add(Widgets.createSlot(new Point(bounds.x + 65, bounds.y + 54 + 15)).entry(EntryStack.create(AstromineBlocks.ALTAR)).noFavoritesInteractable().noInteractable().disableHighlight().disableTooltips().disableBackground());
 		widgets.add(Widgets.createSlot(new Point(bounds.x + 65, bounds.y + 54)).entries(display.getResultingEntries().get(0)).disableBackground().markOutput());
 		return widgets;
 	}

@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.component.general.*;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
+import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.fluid.Fluid;
@@ -42,7 +43,6 @@ import com.github.mixinors.astromine.registry.AstromineConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesBlockEntityTypes;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity implements TierProvider, FluidSizeProvider, SpeedProvider {
@@ -104,7 +104,7 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 
 	public static class Primitive extends TankBlockEntity {
 		public Primitive() {
-			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_TANK);
+			super(AstromineBlockEntityTypes.PRIMITIVE_TANK);
 		}
 
 		@Override
@@ -125,7 +125,7 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 
 	public static class Basic extends TankBlockEntity {
 		public Basic() {
-			super(AstromineTechnologiesBlockEntityTypes.BASIC_TANK);
+			super(AstromineBlockEntityTypes.BASIC_TANK);
 		}
 
 		@Override
@@ -146,7 +146,7 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 
 	public static class Advanced extends TankBlockEntity {
 		public Advanced() {
-			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_TANK);
+			super(AstromineBlockEntityTypes.ADVANCED_TANK);
 		}
 
 		@Override
@@ -167,7 +167,7 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 
 	public static class Elite extends TankBlockEntity {
 		public Elite() {
-			super(AstromineTechnologiesBlockEntityTypes.ELITE_TANK);
+			super(AstromineBlockEntityTypes.ELITE_TANK);
 		}
 
 		@Override
@@ -188,7 +188,7 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 
 	public static class Creative extends TankBlockEntity {
 		public Creative() {
-			super(AstromineTechnologiesBlockEntityTypes.CREATIVE_TANK);
+			super(AstromineBlockEntityTypes.CREATIVE_TANK);
 		}
 
 		@Override

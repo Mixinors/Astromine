@@ -24,16 +24,49 @@
 
 package com.github.mixinors.astromine.registry;
 
+import com.github.mixinors.astromine.AstromineCommon;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionOptions;
+import net.minecraft.world.dimension.DimensionType;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class AstromineDimensions {
 	private static final Set<RegistryKey<?>> KEYS = new HashSet<>();
-
+	
+	public static final Identifier EARTH_SPACE_ID = AstromineCommon.identifier("earth_space");
+	public static final RegistryKey<DimensionOptions> EARTH_SPACE_OPTIONS = register(Registry.DIMENSION_OPTIONS, EARTH_SPACE_ID);
+	public static final RegistryKey<DimensionType> EARTH_SPACE_TYPE_KEY = register(Registry.DIMENSION_TYPE_KEY, EARTH_SPACE_ID);
+	public static final RegistryKey<World> EARTH_SPACE_WORLD = register(Registry.DIMENSION, EARTH_SPACE_ID);
+	
+	public static final Identifier MOON_ID = AstromineCommon.identifier("moon");
+	public static final RegistryKey<DimensionOptions> MOON_OPTIONS = register(Registry.DIMENSION_OPTIONS, MOON_ID);
+	public static final RegistryKey<DimensionType> MOON_TYPE_KEY = register(Registry.DIMENSION_TYPE_KEY, MOON_ID);
+	public static final RegistryKey<World> MOON_WORLD = register(Registry.DIMENSION, MOON_ID);
+	
+	public static final Identifier MARS_ID = AstromineCommon.identifier("mars");
+	public static final RegistryKey<DimensionOptions> MARS_OPTIONS = register(Registry.DIMENSION_OPTIONS, MARS_ID);
+	public static final RegistryKey<DimensionType> MARS_TYPE_KEY = register(Registry.DIMENSION_TYPE_KEY, MARS_ID);
+	public static final RegistryKey<World> MARS_WORLD = register(Registry.DIMENSION, MARS_ID);
+	
+	public static final Identifier VULCAN_ID = AstromineCommon.identifier("vulcan");
+	public static final RegistryKey<DimensionOptions> VULCAN_OPTIONS = register(Registry.DIMENSION_OPTIONS, VULCAN_ID);
+	public static final RegistryKey<DimensionType> VULCAN_TYPE_KEY = register(Registry.DIMENSION_TYPE_KEY, VULCAN_ID);
+	public static final RegistryKey<World> VULCAN_WORLD = register(Registry.DIMENSION, VULCAN_ID);
+	
+	public static final Identifier GLACIOS_ID = AstromineCommon.identifier("glacios");
+	public static final RegistryKey<DimensionOptions> GLACIOS_OPTIONS = register(Registry.DIMENSION_OPTIONS, GLACIOS_ID);
+	public static final RegistryKey<DimensionType> GLACIOS_TYPE_KEY = register(Registry.DIMENSION_TYPE_KEY, GLACIOS_ID);
+	public static final RegistryKey<World> GLACIOS_WORLD = register(Registry.DIMENSION, GLACIOS_ID);
+	
+	public static void initialize() {
+	
+	}
+	
 	public static <T> RegistryKey<T> register(RegistryKey<Registry<T>> registry, Identifier identifier) {
 		RegistryKey<T> key = RegistryKey.of(registry, identifier);
 		KEYS.add(key);
@@ -42,9 +75,5 @@ public class AstromineDimensions {
 
 	public static boolean isAstromine(RegistryKey<?> key) {
 		return KEYS.contains(key);
-	}
-
-	public static void initialize() {
-
 	}
 }

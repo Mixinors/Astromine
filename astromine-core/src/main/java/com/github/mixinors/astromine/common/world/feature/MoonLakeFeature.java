@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.world.feature;
 
+import com.github.mixinors.astromine.registry.AstromineBlocks;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.StructureWorldAccess;
@@ -31,8 +32,6 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import com.mojang.serialization.Codec;
-
-import com.github.mixinors.astromine.registry.AstromineDiscoveriesBlocks;
 
 import java.util.Random;
 
@@ -48,7 +47,7 @@ public class MoonLakeFeature extends Feature<DefaultFeatureConfig> {
 		for (int x = -4; x <= 4; x++) {
 			for (int z = -4; z <= 4; z++) {
 				for (int y = -4; y <= 4; y++) {
-					if (!world.getBlockState(mutable.set(pos, x, y, z)).isOf(AstromineDiscoveriesBlocks.MOON_STONE)) {
+					if (!world.getBlockState(mutable.set(pos, x, y, z)).isOf(AstromineBlocks.MOON_STONE)) {
 						return false;
 					}
 				}

@@ -24,10 +24,9 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
+import com.github.mixinors.astromine.registry.AstromineScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
-
-import com.github.mixinors.astromine.registry.AstromineTechnologiesScreenHandlers;
 
 // TODO! - 07/08/2020 - 17:13:28
 // TODO! - 21/08/2020 - 17:31:08
@@ -35,6 +34,6 @@ import com.github.mixinors.astromine.registry.AstromineTechnologiesScreenHandler
 // DONE? - 20/11/2020 - 05:47:47
 public class CreativeTankScreenHandler extends TankScreenHandler {
 	public CreativeTankScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AstromineTechnologiesScreenHandlers.CREATIVE_TANK, syncId, player, position);
+		super(AstromineScreenHandlers.CREATIVE_TANK, syncId, player, position);
 	}
 }

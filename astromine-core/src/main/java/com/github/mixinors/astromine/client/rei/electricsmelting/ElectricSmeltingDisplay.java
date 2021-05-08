@@ -30,7 +30,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.recipe.AbstractCookingRecipe;
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
+import com.github.mixinors.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
 import me.shedaniel.rei.plugin.cooking.DefaultCookingDisplay;
 
 @Environment(EnvType.CLIENT)
@@ -44,7 +44,7 @@ public class ElectricSmeltingDisplay extends DefaultCookingDisplay {
 
 	@Override
 	public Identifier getRecipeCategory() {
-		return AstromineTechnologiesRoughlyEnoughItemsPlugin.ELECTRIC_SMELTING;
+		return AstromineRoughlyEnoughItemsPlugin.ELECTRIC_SMELTING;
 	}
 
 	public double getEnergyRequired() {

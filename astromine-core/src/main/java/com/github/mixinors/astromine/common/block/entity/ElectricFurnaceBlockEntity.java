@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.component.general.*;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
+import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
@@ -42,7 +43,6 @@ import com.github.mixinors.astromine.registry.AstromineConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesBlockEntityTypes;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
 import net.minecraft.world.World;
@@ -209,7 +209,7 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 
 	public static class Primitive extends ElectricFurnaceBlockEntity {
 		public Primitive() {
-			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_ELECTRIC_FURNACE);
+			super(AstromineBlockEntityTypes.PRIMITIVE_ELECTRIC_FURNACE);
 		}
 
 		@Override
@@ -230,7 +230,7 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 
 	public static class Basic extends ElectricFurnaceBlockEntity {
 		public Basic() {
-			super(AstromineTechnologiesBlockEntityTypes.BASIC_ELECTRIC_FURNACE);
+			super(AstromineBlockEntityTypes.BASIC_ELECTRIC_FURNACE);
 		}
 
 		@Override
@@ -251,7 +251,7 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 
 	public static class Advanced extends ElectricFurnaceBlockEntity {
 		public Advanced() {
-			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_ELECTRIC_FURNACE);
+			super(AstromineBlockEntityTypes.ADVANCED_ELECTRIC_FURNACE);
 		}
 
 		@Override
@@ -272,7 +272,7 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 
 	public static class Elite extends ElectricFurnaceBlockEntity {
 		public Elite() {
-			super(AstromineTechnologiesBlockEntityTypes.ELITE_ELECTRIC_FURNACE);
+			super(AstromineBlockEntityTypes.ELITE_ELECTRIC_FURNACE);
 		}
 
 		@Override

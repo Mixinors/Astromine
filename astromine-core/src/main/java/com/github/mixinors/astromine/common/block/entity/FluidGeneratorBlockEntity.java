@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
@@ -41,7 +42,6 @@ import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvid
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.FluidGeneratingRecipe;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesBlockEntityTypes;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -156,7 +156,7 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 
 	public static class Primitive extends FluidGeneratorBlockEntity {
 		public Primitive() {
-			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_LIQUID_GENERATOR);
+			super(AstromineBlockEntityTypes.PRIMITIVE_LIQUID_GENERATOR);
 		}
 
 		@Override
@@ -182,7 +182,7 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 
 	public static class Basic extends FluidGeneratorBlockEntity {
 		public Basic() {
-			super(AstromineTechnologiesBlockEntityTypes.BASIC_LIQUID_GENERATOR);
+			super(AstromineBlockEntityTypes.BASIC_LIQUID_GENERATOR);
 		}
 
 		@Override
@@ -208,7 +208,7 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 
 	public static class Advanced extends FluidGeneratorBlockEntity {
 		public Advanced() {
-			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_LIQUID_GENERATOR);
+			super(AstromineBlockEntityTypes.ADVANCED_LIQUID_GENERATOR);
 		}
 
 		@Override
@@ -234,7 +234,7 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 
 	public static class Elite extends FluidGeneratorBlockEntity {
 		public Elite() {
-			super(AstromineTechnologiesBlockEntityTypes.ELITE_LIQUID_GENERATOR);
+			super(AstromineBlockEntityTypes.ELITE_LIQUID_GENERATOR);
 		}
 
 		@Override

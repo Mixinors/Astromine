@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.recipe;
 
+import com.github.mixinors.astromine.registry.AstromineBlocks;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -40,7 +41,6 @@ import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.utilities.DoubleUtilities;
 import com.github.mixinors.astromine.common.utilities.IntegerUtilities;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesBlocks;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -190,7 +190,7 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_ELECTROLYZER);
+		return new ItemStack(AstromineBlocks.ADVANCED_ELECTROLYZER);
 	}
 
 	public Identifier getIdentifier() {

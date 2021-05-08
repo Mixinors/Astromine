@@ -24,8 +24,12 @@
 
 package com.github.mixinors.astromine.registry;
 
+import com.github.mixinors.astromine.common.registry.GravityRegistry;
+
 public class AstromineGravities {
 	public static void initialize() {
-
+		GravityRegistry.INSTANCE.register(AstromineDimensions.EARTH_SPACE_WORLD, AstromineConfig.get().spaceGravity);
+		GravityRegistry.INSTANCE.register(AstromineDimensions.MOON_WORLD, AstromineConfig.get().moonGravity);
+		GravityRegistry.INSTANCE.register(AstromineDimensions.MARS_WORLD, AstromineConfig.get().marsGravity);
 	}
 }

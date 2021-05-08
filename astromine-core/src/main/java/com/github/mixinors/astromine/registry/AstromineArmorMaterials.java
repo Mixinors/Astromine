@@ -27,14 +27,31 @@ package com.github.mixinors.astromine.registry;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
+import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.Identifier;
 
 import java.util.function.Supplier;
 
 public class AstromineArmorMaterials {
+	public static final ArmorMaterial SPACE_SUIT = register("space_suit", 50, new int[]{ 1, 2, 3, 1 }, 2, AstromineSoundEvents.SPACE_SUIT_EQUIPPED, 0.0f, 0.0f, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:metite_ingots"))));
+	
+	public static final ArmorMaterial BRONZE = register("bronze", 20, new int[]{ 2, 5, 6, 2 }, 16, AstromineSoundEvents.BRONZE_ARMOR_EQUIPPED, 0.7f, 0.0f, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:bronze_ingots"))));
+	public static final ArmorMaterial STEEL = register("steel", 24, new int[]{ 3, 5, 7, 2 }, 12, AstromineSoundEvents.STEEL_ARMOR_EQUIPPED, 0.6f, 0.0f, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:steel_ingots"))));
+	public static final ArmorMaterial FOOLS_GOLD = register("fools_gold", 15, new int[]{ 2, 5, 6, 2 }, 10, AstromineSoundEvents.FOOLS_GOLD_ARMOR_EQUIPPED, 0.0F, 0.0F, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:fools_gold_ingots"))));
+	
+	public static final ArmorMaterial METITE = register("metite", 15, new int[]{ 2, 4, 6, 2 }, 7, AstromineSoundEvents.METITE_ARMOR_EQUIPPED, 0.0f, 0.0f, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:metite_ingots"))));
+	public static final ArmorMaterial ASTERITE = register("asterite", 35, new int[]{ 4, 7, 8, 4 }, 20, AstromineSoundEvents.ASTERITE_ARMOR_EQUIPPED, 4.0f, 0.1f, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:asterites"))));
+	public static final ArmorMaterial STELLUM = register("stellum", 41, new int[]{ 3, 5, 6, 2 }, 15, AstromineSoundEvents.STELLUM_ARMOR_EQUIPPED, 6.0f, 0.2f, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:stellum_ingots"))));
+	public static final ArmorMaterial GALAXIUM = register("galaxium", 44, new int[]{ 4, 8, 9, 4 }, 18, AstromineSoundEvents.GALAXIUM_ARMOR_EQUIPPED, 4.5f, 0.1f, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:galaxiums"))));
+	public static final ArmorMaterial UNIVITE = register("univite", 47, new int[]{ 5, 8, 9, 5 }, 22, AstromineSoundEvents.UNIVITE_ARMOR_EQUIPPED, 5.0f, 0.1f, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:univite_ingots"))));
+	public static final ArmorMaterial LUNUM = register("lunum", 30, new int[]{ 4, 7, 8, 4 }, 18, AstromineSoundEvents.LUNUM_ARMOR_EQUIPPED, 1.0f, 0.1f, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:lunum_ingots"))));
+	
+	public static final ArmorMaterial METEORIC_STEEL = register("meteoric_steel", 20, new int[]{ 3, 5, 7, 2 }, 10, AstromineSoundEvents.METEORIC_STEEL_ARMOR_EQUIPPED, 0.4f, 0.0f, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:meteoric_steel_ingots"))));
+	
 	public static ArmorMaterial register(String name, int durabilityMultiplier, int[] protectionAmounts, int enchantability, SoundEvent equipSound, float toughness, float knockbackResistance, Supplier<Ingredient> supplier) {
 		return new AstromineArmorMaterial(name, durabilityMultiplier, protectionAmounts, enchantability, equipSound, toughness, knockbackResistance, supplier);
 	}

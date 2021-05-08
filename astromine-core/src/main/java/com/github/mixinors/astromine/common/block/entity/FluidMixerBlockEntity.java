@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
@@ -41,7 +42,6 @@ import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvid
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.FluidMixingRecipe;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesBlockEntityTypes;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -160,7 +160,7 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 
 	public static class Primitive extends FluidMixerBlockEntity {
 		public Primitive() {
-			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_FLUID_MIXER);
+			super(AstromineBlockEntityTypes.PRIMITIVE_FLUID_MIXER);
 		}
 
 		@Override
@@ -186,7 +186,7 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 
 	public static class Basic extends FluidMixerBlockEntity {
 		public Basic() {
-			super(AstromineTechnologiesBlockEntityTypes.BASIC_FLUID_MIXER);
+			super(AstromineBlockEntityTypes.BASIC_FLUID_MIXER);
 		}
 
 		@Override
@@ -212,7 +212,7 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 
 	public static class Advanced extends FluidMixerBlockEntity {
 		public Advanced() {
-			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_FLUID_MIXER);
+			super(AstromineBlockEntityTypes.ADVANCED_FLUID_MIXER);
 		}
 
 		@Override
@@ -238,7 +238,7 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 
 	public static class Elite extends FluidMixerBlockEntity {
 		public Elite() {
-			super(AstromineTechnologiesBlockEntityTypes.ELITE_FLUID_MIXER);
+			super(AstromineBlockEntityTypes.ELITE_FLUID_MIXER);
 		}
 
 		@Override

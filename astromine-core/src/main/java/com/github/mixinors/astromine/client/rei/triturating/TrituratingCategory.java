@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.client.rei.triturating;
 
+import com.github.mixinors.astromine.registry.AstromineBlocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -32,8 +33,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
 import com.github.mixinors.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
-import com.github.mixinors.astromine.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesBlocks;
+import com.github.mixinors.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.EntryStack;
@@ -49,7 +49,7 @@ import java.util.List;
 public class TrituratingCategory implements RecipeCategory<TrituratingDisplay> {
 	@Override
 	public Identifier getIdentifier() {
-		return AstromineTechnologiesRoughlyEnoughItemsPlugin.TRITURATING;
+		return AstromineRoughlyEnoughItemsPlugin.TRITURATING;
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class TrituratingCategory implements RecipeCategory<TrituratingDisplay> {
 
 	@Override
 	public EntryStack getLogo() {
-		return EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_TRITURATOR);
+		return EntryStack.create(AstromineBlocks.ADVANCED_TRITURATOR);
 	}
 
 	@Override

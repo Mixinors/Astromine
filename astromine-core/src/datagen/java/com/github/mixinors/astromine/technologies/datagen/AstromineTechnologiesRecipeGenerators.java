@@ -51,7 +51,7 @@ import static com.github.mixinors.astromine.datagen.material.MaterialItemType.TI
 import static com.github.mixinors.astromine.datagen.material.MaterialItemType.WIRE;
 
 
-public class AstromineTechnologiesRecipeGenerators extends AstromineRecipeGenerators {
+public class AstromineRecipeGenerators extends AstromineRecipeGenerators {
 	public final RecipeGenerator BLOCK_TO_DUSTS = register(new TrituratingSetRecipeGenerator(BLOCK, DUST, 9, 240, 540));
 	public final RecipeGenerator BLOCK_2x2_TO_DUSTS = register(new TrituratingSetRecipeGenerator(BLOCK_2x2, DUST, 4, 160, 480));
 	public final RecipeGenerator BLOCK_2x2_TO_MISC = register(new TrituratingSetRecipeGenerator(BLOCK_2x2, MISC_RESOURCE, 4, 120, 340));

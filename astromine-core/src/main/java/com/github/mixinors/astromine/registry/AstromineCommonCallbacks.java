@@ -24,10 +24,17 @@
 
 package com.github.mixinors.astromine.registry;
 
+import com.github.mixinors.astromine.common.callback.ServerChunkManagerCallback;
+import com.github.mixinors.astromine.common.world.generation.glacios.GlaciosChunkGenerator;
+import com.github.mixinors.astromine.common.world.generation.mars.MarsChunkGenerator;
+import com.github.mixinors.astromine.common.world.generation.moon.MoonChunkGenerator;
+import com.github.mixinors.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
+import com.github.mixinors.astromine.common.world.generation.vulcan.VulcanChunkGenerator;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -111,6 +118,36 @@ public class AstromineCommonCallbacks {
 				for (Direction direction : Direction.values()) {
 					entry.set(direction, TransferType.INPUT_OUTPUT);
 				}
+			}
+		});
+		
+		ServerChunkManagerCallback.EVENT.register(manager -> {
+			if (manager.chunkGenerator instanceof EarthSpaceChunkGenerator) {
+				manager.chunkGenerator = ((EarthSpaceChunkGenerator) manager.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
+			}
+		});
+		
+		ServerChunkManagerCallback.EVENT.register(manager -> {
+			if (manager.chunkGenerator instanceof MoonChunkGenerator) {
+				manager.chunkGenerator = ((MoonChunkGenerator) manager.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
+			}
+		});
+		
+		ServerChunkManagerCallback.EVENT.register(manager -> {
+			if (manager.chunkGenerator instanceof MarsChunkGenerator) {
+				manager.chunkGenerator = ((MarsChunkGenerator) manager.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
+			}
+		});
+		
+		ServerChunkManagerCallback.EVENT.register(manager -> {
+			if (manager.chunkGenerator instanceof VulcanChunkGenerator) {
+				manager.chunkGenerator = ((VulcanChunkGenerator) manager.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
+			}
+		});
+		
+		ServerChunkManagerCallback.EVENT.register(manager -> {
+			if (manager.chunkGenerator instanceof GlaciosChunkGenerator) {
+				manager.chunkGenerator = ((GlaciosChunkGenerator) manager.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
 			}
 		});
 	}

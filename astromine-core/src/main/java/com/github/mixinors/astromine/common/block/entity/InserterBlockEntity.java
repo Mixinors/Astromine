@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.component.general.SimpleItemComponent;
+import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
 import com.github.mixinors.astromine.registry.AstromineConfig;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
@@ -52,7 +53,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
 import com.github.mixinors.astromine.common.block.InserterBlock;
-import com.github.mixinors.astromine.registry.AstromineTransportationsBlockEntityTypes;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -64,7 +64,7 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityClien
 	private final ItemComponent itemComponent = createItemComponent();
 
 	public InserterBlockEntity() {
-		super(AstromineTransportationsBlockEntityTypes.INSERTER);
+		super(AstromineBlockEntityTypes.INSERTER);
 	}
 
 	public InserterBlockEntity(BlockEntityType type) {

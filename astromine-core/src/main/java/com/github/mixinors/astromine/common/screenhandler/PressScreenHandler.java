@@ -24,50 +24,49 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
-
+import com.github.mixinors.astromine.common.block.entity.PressBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyItemScreenHandler;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
-import com.github.mixinors.astromine.common.block.entity.PressBlockEntity;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesScreenHandlers;
+import com.github.mixinors.astromine.registry.AstromineScreenHandlers;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.BlockPos;
 
 public class PressScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
-	private PressBlockEntity press;
-
+	private final PressBlockEntity press;
+	
 	public PressScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AstromineTechnologiesScreenHandlers.PRESSER, syncId, player, position);
-
+		super(AstromineScreenHandlers.PRESSER, syncId, player, position);
+		
 		press = (PressBlockEntity) blockEntity;
 	}
-
+	
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
-
+		
 		SlotWidget output = new SlotWidget(0, blockEntity, ExtractionSlot::new);
 		output.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
 		output.setSize(Size.of(18, 18));
-
+		
 		SlotWidget input = new SlotWidget(1, blockEntity);
 		input.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
 		input.setSize(Size.of(18, 18));
-
+		
 		output.setPosition(Position.of(width / 2F - output.getWidth() / 2F, output.getY()));
 		output.setPosition(Position.of(output.getX() + 27, output.getY() + 15));
-
+		
 		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(output.getX() - 31, output.getY()));
 		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> press.limit);
 		arrow.setProgressSupplier(() -> (int) press.progress);
-
+		
 		input.setPosition(Position.of(arrow.getX() - 27, arrow.getY()));
-
+		
 		mainTab.addWidget(input);
 		mainTab.addWidget(output);
 		mainTab.addWidget(arrow);

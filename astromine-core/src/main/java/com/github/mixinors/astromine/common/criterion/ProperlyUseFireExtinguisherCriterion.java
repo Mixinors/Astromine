@@ -24,14 +24,13 @@
 
 package com.github.mixinors.astromine.common.criterion;
 
+import com.github.mixinors.astromine.registry.AstromineCriteria;
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
 import net.minecraft.predicate.entity.EntityPredicate;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
-
-import com.github.mixinors.astromine.registry.AstromineFoundationsCriteria;
 
 import com.google.gson.JsonObject;
 
@@ -62,7 +61,7 @@ public class ProperlyUseFireExtinguisherCriterion extends AbstractCriterion<Prop
 		}
 
 		public static Conditions create() {
-			return new Conditions(AstromineFoundationsCriteria.PROPERLY_USE_FIRE_EXTINGUISHER.id, EntityPredicate.Extended.EMPTY);
+			return new Conditions(AstromineCriteria.PROPERLY_USE_FIRE_EXTINGUISHER.id, EntityPredicate.Extended.EMPTY);
 		}
 	}
 }

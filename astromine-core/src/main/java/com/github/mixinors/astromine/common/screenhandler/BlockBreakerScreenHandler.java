@@ -24,18 +24,18 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
+import com.github.mixinors.astromine.registry.AstromineScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyItemScreenHandler;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesScreenHandlers;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 
 public class BlockBreakerScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
 	public BlockBreakerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AstromineTechnologiesScreenHandlers.BLOCK_BREAKER, syncId, player, position);
+		super(AstromineScreenHandlers.BLOCK_BREAKER, syncId, player, position);
 	}
 
 	@Override

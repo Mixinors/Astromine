@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
+import com.github.mixinors.astromine.registry.AstromineScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
@@ -31,7 +32,6 @@ import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyItemScreenHandler;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesScreenHandlers;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
@@ -40,7 +40,7 @@ import team.reborn.energy.EnergyHandler;
 
 public class CapacitorScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
 	public CapacitorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AstromineTechnologiesScreenHandlers.CAPACITOR, syncId, player, position);
+		super(AstromineScreenHandlers.CAPACITOR, syncId, player, position);
 	}
 
 	public CapacitorScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {

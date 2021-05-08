@@ -28,7 +28,7 @@ import net.minecraft.util.Identifier;
 
 import com.github.mixinors.astromine.datagen.generator.tag.set.SetTagGenerator;
 import com.github.mixinors.astromine.datagen.material.MaterialSet;
-import com.github.mixinors.astromine.foundations.datagen.registry.AstromineFoundationsMaterialSets;
+import com.github.mixinors.astromine.foundations.datagen.registry.AstromineMaterialSets;
 import me.shedaniel.cloth.api.datagen.v1.TagData;
 
 public class PyriteTagGenerator implements SetTagGenerator {
@@ -49,7 +49,7 @@ public class PyriteTagGenerator implements SetTagGenerator {
 
 	@Override
 	public boolean shouldGenerate(MaterialSet set) {
-		return set.equals(AstromineFoundationsMaterialSets.FOOLS_GOLD);
+		return set.equals(AstromineMaterialSets.FOOLS_GOLD);
 	}
 
 	@Override

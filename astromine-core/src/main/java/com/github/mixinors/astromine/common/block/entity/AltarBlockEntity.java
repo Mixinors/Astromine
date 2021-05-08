@@ -24,6 +24,8 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AstromineSoundEvents;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.util.NbtType;
 
@@ -47,8 +49,6 @@ import com.github.mixinors.astromine.common.component.general.base.ItemComponent
 import com.github.mixinors.astromine.common.component.general.SimpleItemComponent;
 import com.github.mixinors.astromine.common.component.general.compatibility.InventoryFromItemComponent;
 import com.github.mixinors.astromine.common.recipe.AltarRecipe;
-import com.github.mixinors.astromine.registry.AstromineDiscoveriesBlockEntityTypes;
-import com.github.mixinors.astromine.registry.AstromineDiscoveriesSoundEvents;
 
 import com.google.common.collect.Lists;
 import java.util.Iterator;
@@ -77,7 +77,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 	});
 
 	public AltarBlockEntity() {
-		super(AstromineDiscoveriesBlockEntityTypes.ALTAR);
+		super(AstromineBlockEntityTypes.ALTAR);
 	}
 
 	@Override
@@ -129,7 +129,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 					entity.refreshPositionAfterTeleport(pos.getX() + 0.5, pos.getY() + 1 + HEIGHT_OFFSET, pos.getZ() + 0.5);
 					entity.setCosmetic(true);
 					world.spawnEntity(entity);
-					world.playSound(null, getPos(), AstromineDiscoveriesSoundEvents.ALTAR_FINISH, SoundCategory.BLOCKS, 1.5F, 1);
+					world.playSound(null, getPos(), AstromineSoundEvents.ALTAR_FINISH, SoundCategory.BLOCKS, 1.5F, 1);
 				}
 				if (craftingTicks >= CRAFTING_TIME + CRAFTING_TIME_SPIN + CRAFTING_TIME_FALL) {
 					onRemove();
@@ -195,7 +195,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 				child.get().sync();
 			}
 
-			world.playSound(null, getPos(), AstromineDiscoveriesSoundEvents.ALTAR_START, SoundCategory.BLOCKS, 1, 1);
+			world.playSound(null, getPos(), AstromineSoundEvents.ALTAR_START, SoundCategory.BLOCKS, 1, 1);
 
 			return true;
 		} else {
@@ -222,7 +222,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 	@Override
 	public void fromTag(BlockState state, CompoundTag tag) {
 		super.fromTag(state, tag);
-		inventory.fromTag(tag);
+		inventory.readFromNbt(tag);
 		craftingTicks = tag.getInt("craftingTicks");
 		if (craftingTicksDelta == 0 || craftingTicks == 0 || craftingTicks == 1)
 			craftingTicksDelta = craftingTicks;
@@ -237,7 +237,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		inventory.toTag(tag);
+		inventory.writeToNbt(tag);
 		tag.putInt("craftingTicks", craftingTicks);
 		ListTag childrenTag = new ListTag();
 		for (Supplier<AltarPedestalBlockEntity> child : children) {

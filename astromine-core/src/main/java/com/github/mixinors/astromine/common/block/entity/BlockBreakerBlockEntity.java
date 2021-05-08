@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.component.general.*;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
+import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -46,7 +47,6 @@ import com.github.mixinors.astromine.registry.AstromineConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergyConsumedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesBlockEntityTypes;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -56,7 +56,7 @@ public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity impl
 	private long cooldown = 0L;
 
 	public BlockBreakerBlockEntity() {
-		super(AstromineTechnologiesBlockEntityTypes.BLOCK_BREAKER);
+		super(AstromineBlockEntityTypes.BLOCK_BREAKER);
 	}
 
 	@Override

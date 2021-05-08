@@ -29,152 +29,150 @@ import com.github.mixinors.astromine.datagen.generator.modelstate.onetime.Generi
 import com.github.mixinors.astromine.datagen.generator.modelstate.onetime.HandheldItemModelGenerator;
 import com.github.mixinors.astromine.datagen.registry.AstromineModelStateGenerators;
 import com.github.mixinors.astromine.technologies.datagen.generators.modelstate.MachineModelStateGenerator;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesBlocks;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesItems;
 
-public class AstromineTechnologiesModelStateGenerators extends AstromineModelStateGenerators {
+public class AstromineModelStateGenerators extends AstromineModelStateGenerators {
 	public final ModelStateGenerator PRIMITIVE_MACHINES = register(new MachineModelStateGenerator(
-			AstromineTechnologiesBlocks.PRIMITIVE_ALLOY_SMELTER,
-			AstromineTechnologiesBlocks.PRIMITIVE_ELECTRIC_FURNACE,
-			AstromineTechnologiesBlocks.PRIMITIVE_ELECTROLYZER,
-			AstromineTechnologiesBlocks.PRIMITIVE_REFINERY,
-			AstromineTechnologiesBlocks.PRIMITIVE_FLUID_MIXER,
-			AstromineTechnologiesBlocks.PRIMITIVE_LIQUID_GENERATOR,
-			AstromineTechnologiesBlocks.PRIMITIVE_PRESSER,
-			AstromineTechnologiesBlocks.PRIMITIVE_SOLID_GENERATOR,
-			AstromineTechnologiesBlocks.PRIMITIVE_TRITURATOR,
-			AstromineTechnologiesBlocks.PRIMITIVE_WIREMILL,
-			AstromineTechnologiesBlocks.PRIMITIVE_SOLIDIFIER,
-			AstromineTechnologiesBlocks.PRIMITIVE_MELTER,
-			AstromineTechnologiesBlocks.PRIMITIVE_BUFFER,
-			AstromineTechnologiesBlocks.PRIMITIVE_CAPACITOR,
-			AstromineTechnologiesBlocks.PRIMITIVE_TANK
+			AstromineBlocks.PRIMITIVE_ALLOY_SMELTER,
+			AstromineBlocks.PRIMITIVE_ELECTRIC_FURNACE,
+			AstromineBlocks.PRIMITIVE_ELECTROLYZER,
+			AstromineBlocks.PRIMITIVE_REFINERY,
+			AstromineBlocks.PRIMITIVE_FLUID_MIXER,
+			AstromineBlocks.PRIMITIVE_LIQUID_GENERATOR,
+			AstromineBlocks.PRIMITIVE_PRESSER,
+			AstromineBlocks.PRIMITIVE_SOLID_GENERATOR,
+			AstromineBlocks.PRIMITIVE_TRITURATOR,
+			AstromineBlocks.PRIMITIVE_WIREMILL,
+			AstromineBlocks.PRIMITIVE_SOLIDIFIER,
+			AstromineBlocks.PRIMITIVE_MELTER,
+			AstromineBlocks.PRIMITIVE_BUFFER,
+			AstromineBlocks.PRIMITIVE_CAPACITOR,
+			AstromineBlocks.PRIMITIVE_TANK
 	));
 
 	public final ModelStateGenerator BASIC_MACHINES = register(new MachineModelStateGenerator(
-			AstromineTechnologiesBlocks.BASIC_ALLOY_SMELTER,
-			AstromineTechnologiesBlocks.BASIC_ELECTRIC_FURNACE,
-			AstromineTechnologiesBlocks.BASIC_ELECTROLYZER,
-			AstromineTechnologiesBlocks.BASIC_REFINERY,
-			AstromineTechnologiesBlocks.BASIC_FLUID_MIXER,
-			AstromineTechnologiesBlocks.BASIC_LIQUID_GENERATOR,
-			AstromineTechnologiesBlocks.BASIC_PRESSER,
-			AstromineTechnologiesBlocks.BASIC_SOLID_GENERATOR,
-			AstromineTechnologiesBlocks.BASIC_TRITURATOR,
-			AstromineTechnologiesBlocks.BASIC_WIREMILL,
-			AstromineTechnologiesBlocks.BASIC_SOLIDIFIER,
-			AstromineTechnologiesBlocks.BASIC_MELTER,
-			AstromineTechnologiesBlocks.BASIC_BUFFER,
-			AstromineTechnologiesBlocks.BASIC_CAPACITOR,
-			AstromineTechnologiesBlocks.BASIC_TANK
+			AstromineBlocks.BASIC_ALLOY_SMELTER,
+			AstromineBlocks.BASIC_ELECTRIC_FURNACE,
+			AstromineBlocks.BASIC_ELECTROLYZER,
+			AstromineBlocks.BASIC_REFINERY,
+			AstromineBlocks.BASIC_FLUID_MIXER,
+			AstromineBlocks.BASIC_LIQUID_GENERATOR,
+			AstromineBlocks.BASIC_PRESSER,
+			AstromineBlocks.BASIC_SOLID_GENERATOR,
+			AstromineBlocks.BASIC_TRITURATOR,
+			AstromineBlocks.BASIC_WIREMILL,
+			AstromineBlocks.BASIC_SOLIDIFIER,
+			AstromineBlocks.BASIC_MELTER,
+			AstromineBlocks.BASIC_BUFFER,
+			AstromineBlocks.BASIC_CAPACITOR,
+			AstromineBlocks.BASIC_TANK
 			));
 
 	public final ModelStateGenerator ADVANCED_MACHINES = register(new MachineModelStateGenerator(
-			AstromineTechnologiesBlocks.ADVANCED_ALLOY_SMELTER,
-			AstromineTechnologiesBlocks.ADVANCED_ELECTRIC_FURNACE,
-			AstromineTechnologiesBlocks.ADVANCED_ELECTROLYZER,
-			AstromineTechnologiesBlocks.ADVANCED_REFINERY,
-			AstromineTechnologiesBlocks.ADVANCED_FLUID_MIXER,
-			AstromineTechnologiesBlocks.ADVANCED_LIQUID_GENERATOR,
-			AstromineTechnologiesBlocks.ADVANCED_PRESSER,
-			AstromineTechnologiesBlocks.ADVANCED_SOLID_GENERATOR,
-			AstromineTechnologiesBlocks.ADVANCED_TRITURATOR,
-			AstromineTechnologiesBlocks.ADVANCED_WIREMILL,
-			AstromineTechnologiesBlocks.ADVANCED_SOLIDIFIER,
-			AstromineTechnologiesBlocks.ADVANCED_MELTER,
-			AstromineTechnologiesBlocks.ADVANCED_BUFFER,
-			AstromineTechnologiesBlocks.ADVANCED_CAPACITOR,
-			AstromineTechnologiesBlocks.ADVANCED_TANK
+			AstromineBlocks.ADVANCED_ALLOY_SMELTER,
+			AstromineBlocks.ADVANCED_ELECTRIC_FURNACE,
+			AstromineBlocks.ADVANCED_ELECTROLYZER,
+			AstromineBlocks.ADVANCED_REFINERY,
+			AstromineBlocks.ADVANCED_FLUID_MIXER,
+			AstromineBlocks.ADVANCED_LIQUID_GENERATOR,
+			AstromineBlocks.ADVANCED_PRESSER,
+			AstromineBlocks.ADVANCED_SOLID_GENERATOR,
+			AstromineBlocks.ADVANCED_TRITURATOR,
+			AstromineBlocks.ADVANCED_WIREMILL,
+			AstromineBlocks.ADVANCED_SOLIDIFIER,
+			AstromineBlocks.ADVANCED_MELTER,
+			AstromineBlocks.ADVANCED_BUFFER,
+			AstromineBlocks.ADVANCED_CAPACITOR,
+			AstromineBlocks.ADVANCED_TANK
 	));
 
 	public final ModelStateGenerator ELITE_MACHINES = register(new MachineModelStateGenerator(
-			AstromineTechnologiesBlocks.ELITE_ALLOY_SMELTER,
-			AstromineTechnologiesBlocks.ELITE_ELECTRIC_FURNACE,
-			AstromineTechnologiesBlocks.ELITE_ELECTROLYZER,
-			AstromineTechnologiesBlocks.ELITE_REFINERY,
-			AstromineTechnologiesBlocks.ELITE_FLUID_MIXER,
-			AstromineTechnologiesBlocks.ELITE_LIQUID_GENERATOR,
-			AstromineTechnologiesBlocks.ELITE_PRESSER,
-			AstromineTechnologiesBlocks.ELITE_SOLID_GENERATOR,
-			AstromineTechnologiesBlocks.ELITE_TRITURATOR,
-			AstromineTechnologiesBlocks.ELITE_WIREMILL,
-			AstromineTechnologiesBlocks.ELITE_SOLIDIFIER,
-			AstromineTechnologiesBlocks.ELITE_MELTER,
-			AstromineTechnologiesBlocks.ELITE_BUFFER,
-			AstromineTechnologiesBlocks.ELITE_CAPACITOR,
-			AstromineTechnologiesBlocks.ELITE_TANK
+			AstromineBlocks.ELITE_ALLOY_SMELTER,
+			AstromineBlocks.ELITE_ELECTRIC_FURNACE,
+			AstromineBlocks.ELITE_ELECTROLYZER,
+			AstromineBlocks.ELITE_REFINERY,
+			AstromineBlocks.ELITE_FLUID_MIXER,
+			AstromineBlocks.ELITE_LIQUID_GENERATOR,
+			AstromineBlocks.ELITE_PRESSER,
+			AstromineBlocks.ELITE_SOLID_GENERATOR,
+			AstromineBlocks.ELITE_TRITURATOR,
+			AstromineBlocks.ELITE_WIREMILL,
+			AstromineBlocks.ELITE_SOLIDIFIER,
+			AstromineBlocks.ELITE_MELTER,
+			AstromineBlocks.ELITE_BUFFER,
+			AstromineBlocks.ELITE_CAPACITOR,
+			AstromineBlocks.ELITE_TANK
 	));
 
 	public final ModelStateGenerator CREATIVE_MACHINES = register(new MachineModelStateGenerator(
-			AstromineTechnologiesBlocks.CREATIVE_BUFFER,
-			AstromineTechnologiesBlocks.CREATIVE_CAPACITOR,
-			AstromineTechnologiesBlocks.CREATIVE_TANK
+			AstromineBlocks.CREATIVE_BUFFER,
+			AstromineBlocks.CREATIVE_CAPACITOR,
+			AstromineBlocks.CREATIVE_TANK
 	));
 
 	public final ModelStateGenerator MACHINE_CHASSIS = register(new GenericItemModelGenerator(
-			AstromineTechnologiesItems.MACHINE_CHASSIS
+			AstromineItems.MACHINE_CHASSIS
 	));
 	
 	public final ModelStateGenerator PLATINGS = register(new GenericItemModelGenerator(
-			AstromineTechnologiesItems.PRIMITIVE_PLATING,
-			AstromineTechnologiesItems.BASIC_PLATING,
-			AstromineTechnologiesItems.ADVANCED_PLATING,
-			AstromineTechnologiesItems.ELITE_PLATING
+			AstromineItems.PRIMITIVE_PLATING,
+			AstromineItems.BASIC_PLATING,
+			AstromineItems.ADVANCED_PLATING,
+			AstromineItems.ELITE_PLATING
 	));
 
 	public final ModelStateGenerator UPGRADE_KIT = register(new GenericItemModelGenerator(
-			AstromineTechnologiesItems.BASIC_MACHINE_UPGRADE_KIT,
-			AstromineTechnologiesItems.ADVANCED_MACHINE_UPGRADE_KIT,
-			AstromineTechnologiesItems.ELITE_MACHINE_UPGRADE_KIT
+			AstromineItems.BASIC_MACHINE_UPGRADE_KIT,
+			AstromineItems.ADVANCED_MACHINE_UPGRADE_KIT,
+			AstromineItems.ELITE_MACHINE_UPGRADE_KIT
 	));
 
 	public final ModelStateGenerator CANISTERS = register(new GenericItemModelGenerator(
-			AstromineTechnologiesItems.LARGE_PORTABLE_TANK,
-			AstromineTechnologiesItems.PORTABLE_TANK
+			AstromineItems.LARGE_PORTABLE_TANK,
+			AstromineItems.PORTABLE_TANK
 	));
 
 	public final ModelStateGenerator CIRCUITS = register(new GenericItemModelGenerator(
-			AstromineTechnologiesItems.PRIMITIVE_CIRCUIT,
-			AstromineTechnologiesItems.BASIC_CIRCUIT,
-			AstromineTechnologiesItems.ADVANCED_CIRCUIT,
-			AstromineTechnologiesItems.ELITE_CIRCUIT
+			AstromineItems.PRIMITIVE_CIRCUIT,
+			AstromineItems.BASIC_CIRCUIT,
+			AstromineItems.ADVANCED_CIRCUIT,
+			AstromineItems.ELITE_CIRCUIT
 	));
 
 	public final ModelStateGenerator BATTERIES = register(new GenericItemModelGenerator(
-			AstromineTechnologiesItems.PRIMITIVE_BATTERY,
-			AstromineTechnologiesItems.BASIC_BATTERY,
-			AstromineTechnologiesItems.ADVANCED_BATTERY,
-			AstromineTechnologiesItems.ELITE_BATTERY,
-			AstromineTechnologiesItems.CREATIVE_BATTERY
+			AstromineItems.PRIMITIVE_BATTERY,
+			AstromineItems.BASIC_BATTERY,
+			AstromineItems.ADVANCED_BATTERY,
+			AstromineItems.ELITE_BATTERY,
+			AstromineItems.CREATIVE_BATTERY
 	));
 
 	public final ModelStateGenerator BATTERY_PACKS = register(new GenericItemModelGenerator(
-			AstromineTechnologiesItems.PRIMITIVE_BATTERY_PACK,
-			AstromineTechnologiesItems.BASIC_BATTERY_PACK,
-			AstromineTechnologiesItems.ADVANCED_BATTERY_PACK,
-			AstromineTechnologiesItems.ELITE_BATTERY_PACK,
-			AstromineTechnologiesItems.CREATIVE_BATTERY_PACK
+			AstromineItems.PRIMITIVE_BATTERY_PACK,
+			AstromineItems.BASIC_BATTERY_PACK,
+			AstromineItems.ADVANCED_BATTERY_PACK,
+			AstromineItems.ELITE_BATTERY_PACK,
+			AstromineItems.CREATIVE_BATTERY_PACK
 	));
 
 	public final ModelStateGenerator DRILLS = register(new HandheldItemModelGenerator(
-			AstromineTechnologiesItems.PRIMITIVE_DRILL,
-			AstromineTechnologiesItems.BASIC_DRILL,
-			AstromineTechnologiesItems.ADVANCED_DRILL,
-			AstromineTechnologiesItems.ELITE_DRILL
+			AstromineItems.PRIMITIVE_DRILL,
+			AstromineItems.BASIC_DRILL,
+			AstromineItems.ADVANCED_DRILL,
+			AstromineItems.ELITE_DRILL
 	));
 
 	public final ModelStateGenerator DRILL_HEADS = register(new HandheldItemModelGenerator(
-			AstromineTechnologiesItems.PRIMITIVE_DRILL_BASE,
-			AstromineTechnologiesItems.BASIC_DRILL_BASE,
-			AstromineTechnologiesItems.ADVANCED_DRILL_BASE,
-			AstromineTechnologiesItems.ELITE_DRILL_BASE
+			AstromineItems.PRIMITIVE_DRILL_BASE,
+			AstromineItems.BASIC_DRILL_BASE,
+			AstromineItems.ADVANCED_DRILL_BASE,
+			AstromineItems.ELITE_DRILL_BASE
 	));
 
 	public final ModelStateGenerator DRILL_HEAD = register(new HandheldItemModelGenerator(
-			AstromineTechnologiesItems.DRILL_HEAD
+			AstromineItems.DRILL_HEAD
 	));
 
 	public final ModelStateGenerator HOLOGRAPHIC_CONNECTOR = register(new HandheldItemModelGenerator(
-			AstromineTechnologiesItems.HOLOGRAPHIC_CONNECTOR
+			AstromineItems.HOLOGRAPHIC_CONNECTOR
 	));
 }

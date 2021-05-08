@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.nbt.CompoundTag;
@@ -43,14 +44,13 @@ import com.github.mixinors.astromine.registry.AstromineConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergyConsumedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesBlockEntityTypes;
 import org.jetbrains.annotations.NotNull;
 
 public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
 	private long cooldown = 0L;
 
 	public FluidPlacerBlockEntity() {
-		super(AstromineTechnologiesBlockEntityTypes.FLUID_INSERTER);
+		super(AstromineBlockEntityTypes.FLUID_INSERTER);
 	}
 
 	@Override

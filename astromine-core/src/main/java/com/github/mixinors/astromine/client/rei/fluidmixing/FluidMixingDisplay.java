@@ -32,7 +32,6 @@ import net.minecraft.util.Identifier;
 import com.github.mixinors.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
-import com.github.mixinors.astromine.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.common.recipe.FluidMixingRecipe;
 import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeDisplay;
@@ -61,7 +60,7 @@ public class FluidMixingDisplay implements RecipeDisplay {
 
 	@Override
 	public Identifier getRecipeCategory() {
-		return AstromineTechnologiesRoughlyEnoughItemsPlugin.FLUID_MIXING;
+		return AstromineRoughlyEnoughItemsPlugin.FLUID_MIXING;
 	}
 
 	@Override
@@ -71,7 +70,7 @@ public class FluidMixingDisplay implements RecipeDisplay {
 
 	@Override
 	public List<List<EntryStack>> getInputEntries() {
-		return Arrays.asList(Arrays.stream(firstIngredient.getMatchingVolumes()).map(AstromineRoughlyEnoughItemsPlugin::convertA2R).collect(Collectors.toList()), Arrays.stream(secondIngredient.getMatchingVolumes()).map(AstromineRoughlyEnoughItemsPlugin::convertA2R).collect(
+		return Arrays.asList(Arrays.stream(firstIngredient.getMatchingVolumes()).map(AstromineRoughlyEnoughItemsPlugin::convertToEntryStack).collect(Collectors.toList()), Arrays.stream(secondIngredient.getMatchingVolumes()).map(AstromineRoughlyEnoughItemsPlugin::convertToEntryStack).collect(
 			Collectors.toList()));
 	}
 
@@ -82,7 +81,7 @@ public class FluidMixingDisplay implements RecipeDisplay {
 
 	@Override
 	public List<List<EntryStack>> getResultingEntries() {
-		return Collections.singletonList(Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertA2R(output)));
+		return Collections.singletonList(Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertToEntryStack(output)));
 	}
 
 	public double getEnergy() {

@@ -4,9 +4,9 @@
   "version": "${version}",
   "entrypoints": {
     "astromine_datagen": [
-      "com.github.chainmailstudios.astromine.discoveries.datagen.AstromineDiscoveriesDatagen",
-      "com.github.chainmailstudios.astromine.foundations.datagen.AstromineFoundationsDatagen",
-      "com.github.chainmailstudios.astromine.technologies.datagen.AstromineTechnologiesDatagen"
+      "com.github.chainmailstudios.astromine.discoveries.datagen.AstromineDatagen",
+      "com.github.chainmailstudios.astromine.foundations.datagen.AstromineDatagen",
+      "com.github.chainmailstudios.astromine.technologies.datagen.AstromineDatagen"
     ]
   }
 }

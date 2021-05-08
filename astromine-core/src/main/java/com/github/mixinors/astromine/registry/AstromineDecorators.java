@@ -24,8 +24,22 @@
 
 package com.github.mixinors.astromine.registry;
 
-public class AstromineTechnologiesEntityTypes extends AstromineEntityTypes {
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.gen.CountConfig;
+import net.minecraft.world.gen.decorator.Decorator;
+import net.minecraft.world.gen.decorator.DecoratorConfig;
+
+import com.github.mixinors.astromine.AstromineCommon;
+import com.github.mixinors.astromine.common.world.decorator.MoonOreDecorator;
+
+public class AstromineDecorators {
+	public static Decorator<CountConfig> MOON_ORE = register("moon_ore_decorator", new MoonOreDecorator(CountConfig.CODEC));
+
 	public static void initialize() {
 
+	}
+
+	private static <T extends DecoratorConfig, G extends Decorator<T>> G register(String name, G decorator) {
+		return Registry.register(Registry.DECORATOR, AstromineCommon.identifier(name), decorator);
 	}
 }

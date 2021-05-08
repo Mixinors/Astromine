@@ -35,10 +35,8 @@ import com.github.mixinors.astromine.datagen.generator.modelstate.set.GenericBlo
 import com.github.mixinors.astromine.datagen.generator.modelstate.set.GenericItemSetModelGenerator;
 import com.github.mixinors.astromine.datagen.material.MaterialItemType;
 import com.github.mixinors.astromine.datagen.registry.AstromineModelStateGenerators;
-import com.github.mixinors.astromine.registry.AstromineDiscoveriesBlocks;
-import com.github.mixinors.astromine.registry.AstromineDiscoveriesItems;
 
-public class AstromineDiscoveriesModelStateGenerators extends AstromineModelStateGenerators {
+public class AstromineModelStateGenerators extends AstromineModelStateGenerators {
 	public final ModelStateGenerator ASTEROID_ORE = register(new ColumnBlockSetModelStateGenerator(MaterialItemType.ASTEROID_ORE, AstromineCommon.identifier("block/asteroid_stone")));
 
 	public final ModelStateGenerator ASTEROID_CLUSTER = register(new GenericItemSetModelGenerator(MaterialItemType.ASTEROID_CLUSTER));
@@ -46,69 +44,69 @@ public class AstromineDiscoveriesModelStateGenerators extends AstromineModelStat
 	public final ModelStateGenerator MOON_ORE = register(new GenericBlockSetModelStateGenerator(MaterialItemType.MOON_ORE));
 
 	public final ModelStateGenerator STANDARD_ITEMS = register(new GenericItemModelGenerator(
-			AstromineDiscoveriesItems.SPACE_SUIT_HELMET,
-			AstromineDiscoveriesItems.SPACE_SUIT_CHESTPLATE,
-			AstromineDiscoveriesItems.SPACE_SUIT_LEGGINGS,
-			AstromineDiscoveriesItems.SPACE_SUIT_BOOTS,
-			AstromineDiscoveriesItems.SPACE_SLIME_BALL,
-			AstromineDiscoveriesItems.SPACE_SLIME_SPAWN_EGG,
-			AstromineDiscoveriesItems.PRIMITIVE_ROCKET_BOOSTER,
-			AstromineDiscoveriesItems.PRIMITIVE_ROCKET_FUEL_TANK,
-			AstromineDiscoveriesItems.PRIMITIVE_ROCKET_HULL,
-			AstromineDiscoveriesItems.PRIMITIVE_ROCKET_PLATING
+			AstromineItems.SPACE_SUIT_HELMET,
+			AstromineItems.SPACE_SUIT_CHESTPLATE,
+			AstromineItems.SPACE_SUIT_LEGGINGS,
+			AstromineItems.SPACE_SUIT_BOOTS,
+			AstromineItems.SPACE_SLIME_BALL,
+			AstromineItems.SPACE_SLIME_SPAWN_EGG,
+			AstromineItems.PRIMITIVE_ROCKET_BOOSTER,
+			AstromineItems.PRIMITIVE_ROCKET_FUEL_TANK,
+			AstromineItems.PRIMITIVE_ROCKET_HULL,
+			AstromineItems.PRIMITIVE_ROCKET_PLATING
 	));
 
 	public final ModelStateGenerator STANDARD_BLOCKS = register(new GenericBlockModelStateGenerator(
-			AstromineDiscoveriesBlocks.ASTEROID_STONE,
-			AstromineDiscoveriesBlocks.SMOOTH_ASTEROID_STONE,
-			AstromineDiscoveriesBlocks.POLISHED_ASTEROID_STONE,
-			AstromineDiscoveriesBlocks.ASTEROID_STONE_BRICKS,
-			AstromineDiscoveriesBlocks.BLAZING_ASTEROID_STONE,
-			AstromineDiscoveriesBlocks.MOON_STONE,
-			AstromineDiscoveriesBlocks.POLISHED_MARTIAN_STONE,
-			AstromineDiscoveriesBlocks.MARTIAN_STONE_BRICKS,
-			AstromineDiscoveriesBlocks.VULCAN_STONE,
-			AstromineDiscoveriesBlocks.SMOOTH_VULCAN_STONE,
-			AstromineDiscoveriesBlocks.POLISHED_VULCAN_STONE,
-			AstromineDiscoveriesBlocks.VULCAN_STONE_BRICKS
+			AstromineBlocks.ASTEROID_STONE,
+			AstromineBlocks.SMOOTH_ASTEROID_STONE,
+			AstromineBlocks.POLISHED_ASTEROID_STONE,
+			AstromineBlocks.ASTEROID_STONE_BRICKS,
+			AstromineBlocks.BLAZING_ASTEROID_STONE,
+			AstromineBlocks.MOON_STONE,
+			AstromineBlocks.POLISHED_MARTIAN_STONE,
+			AstromineBlocks.MARTIAN_STONE_BRICKS,
+			AstromineBlocks.VULCAN_STONE,
+			AstromineBlocks.SMOOTH_VULCAN_STONE,
+			AstromineBlocks.POLISHED_VULCAN_STONE,
+			AstromineBlocks.VULCAN_STONE_BRICKS
 	));
 
 	public final ModelStateGenerator CUSTOM_MODEL_BLOCKS = register(new SimpleBlockItemModelStateGenerator(
-			AstromineDiscoveriesBlocks.ALTAR,
-			AstromineDiscoveriesBlocks.ALTAR_PEDESTAL,
-			AstromineDiscoveriesBlocks.MARTIAN_SOIL,
-			AstromineDiscoveriesBlocks.MARTIAN_STONE,
-			AstromineDiscoveriesBlocks.SMOOTH_MARTIAN_STONE,
-			AstromineDiscoveriesBlocks.SPACE_SLIME_BLOCK
+			AstromineBlocks.ALTAR,
+			AstromineBlocks.ALTAR_PEDESTAL,
+			AstromineBlocks.MARTIAN_SOIL,
+			AstromineBlocks.MARTIAN_STONE,
+			AstromineBlocks.SMOOTH_MARTIAN_STONE,
+			AstromineBlocks.SPACE_SLIME_BLOCK
 	));
 
 	public final ModelStateGenerator CUSTOM_MODEL_AND_STATE_BLOCKS = register(new SimpleBlockItemModelGenerator(
-			AstromineDiscoveriesBlocks.ASTEROID_STONE_SLAB,
-			AstromineDiscoveriesBlocks.ASTEROID_STONE_STAIRS,
-			AstromineDiscoveriesBlocks.SMOOTH_ASTEROID_STONE_SLAB,
-			AstromineDiscoveriesBlocks.SMOOTH_ASTEROID_STONE_STAIRS,
-			AstromineDiscoveriesBlocks.POLISHED_ASTEROID_STONE_SLAB,
-			AstromineDiscoveriesBlocks.POLISHED_ASTEROID_STONE_STAIRS,
-			AstromineDiscoveriesBlocks.ASTEROID_STONE_BRICK_SLAB,
-			AstromineDiscoveriesBlocks.ASTEROID_STONE_BRICK_STAIRS,
-			AstromineDiscoveriesBlocks.MOON_STONE_SLAB,
-			AstromineDiscoveriesBlocks.MOON_STONE_STAIRS,
-			AstromineDiscoveriesBlocks.MARTIAN_STONE_SLAB,
-			AstromineDiscoveriesBlocks.MARTIAN_STONE_STAIRS,
-			AstromineDiscoveriesBlocks.SMOOTH_MARTIAN_STONE_SLAB,
-			AstromineDiscoveriesBlocks.SMOOTH_MARTIAN_STONE_STAIRS,
-			AstromineDiscoveriesBlocks.POLISHED_MARTIAN_STONE_SLAB,
-			AstromineDiscoveriesBlocks.POLISHED_MARTIAN_STONE_STAIRS,
-			AstromineDiscoveriesBlocks.MARTIAN_STONE_BRICK_SLAB,
-			AstromineDiscoveriesBlocks.MARTIAN_STONE_BRICK_STAIRS,
-			AstromineDiscoveriesBlocks.VULCAN_STONE_SLAB,
-			AstromineDiscoveriesBlocks.VULCAN_STONE_STAIRS,
-			AstromineDiscoveriesBlocks.SMOOTH_VULCAN_STONE_SLAB,
-			AstromineDiscoveriesBlocks.SMOOTH_VULCAN_STONE_STAIRS,
-			AstromineDiscoveriesBlocks.POLISHED_VULCAN_STONE_SLAB,
-			AstromineDiscoveriesBlocks.POLISHED_VULCAN_STONE_STAIRS,
-			AstromineDiscoveriesBlocks.VULCAN_STONE_BRICK_SLAB,
-			AstromineDiscoveriesBlocks.VULCAN_STONE_BRICK_STAIRS
+			AstromineBlocks.ASTEROID_STONE_SLAB,
+			AstromineBlocks.ASTEROID_STONE_STAIRS,
+			AstromineBlocks.SMOOTH_ASTEROID_STONE_SLAB,
+			AstromineBlocks.SMOOTH_ASTEROID_STONE_STAIRS,
+			AstromineBlocks.POLISHED_ASTEROID_STONE_SLAB,
+			AstromineBlocks.POLISHED_ASTEROID_STONE_STAIRS,
+			AstromineBlocks.ASTEROID_STONE_BRICK_SLAB,
+			AstromineBlocks.ASTEROID_STONE_BRICK_STAIRS,
+			AstromineBlocks.MOON_STONE_SLAB,
+			AstromineBlocks.MOON_STONE_STAIRS,
+			AstromineBlocks.MARTIAN_STONE_SLAB,
+			AstromineBlocks.MARTIAN_STONE_STAIRS,
+			AstromineBlocks.SMOOTH_MARTIAN_STONE_SLAB,
+			AstromineBlocks.SMOOTH_MARTIAN_STONE_STAIRS,
+			AstromineBlocks.POLISHED_MARTIAN_STONE_SLAB,
+			AstromineBlocks.POLISHED_MARTIAN_STONE_STAIRS,
+			AstromineBlocks.MARTIAN_STONE_BRICK_SLAB,
+			AstromineBlocks.MARTIAN_STONE_BRICK_STAIRS,
+			AstromineBlocks.VULCAN_STONE_SLAB,
+			AstromineBlocks.VULCAN_STONE_STAIRS,
+			AstromineBlocks.SMOOTH_VULCAN_STONE_SLAB,
+			AstromineBlocks.SMOOTH_VULCAN_STONE_STAIRS,
+			AstromineBlocks.POLISHED_VULCAN_STONE_SLAB,
+			AstromineBlocks.POLISHED_VULCAN_STONE_STAIRS,
+			AstromineBlocks.VULCAN_STONE_BRICK_SLAB,
+			AstromineBlocks.VULCAN_STONE_BRICK_STAIRS
 	));
 
 	public static void initialize() {

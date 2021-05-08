@@ -25,7 +25,10 @@
 package com.github.mixinors.astromine.registry;
 
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffectUtil;
+import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
 
 import com.github.mixinors.astromine.common.registry.FluidEffectRegistry;
@@ -50,6 +53,17 @@ public class AstromineFluidEffects {
 					entity.damage(DamageSource.DROWN, 1.0F);
 				}
 			}
+		});
+		
+		AstromineFluids.OIL_DERIVATIVES.forEach(fluid -> {
+			FluidEffectRegistry.INSTANCE.register(fluid, (submerged, entity) -> {
+				if(entity.isAlive() && !entity.isSpectator() && (!(entity instanceof PlayerEntity) || !((PlayerEntity)entity).isCreative())) {
+					entity.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 30 * 20, 3));
+					entity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 30 * 20, 3));
+					entity.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 30 * 20, 1));
+					entity.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 30 * 20, 1));
+				}
+			});
 		});
 	}
 }

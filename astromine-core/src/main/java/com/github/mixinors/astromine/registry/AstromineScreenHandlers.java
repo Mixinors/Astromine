@@ -24,18 +24,118 @@
 
 package com.github.mixinors.astromine.registry;
 
+import com.github.mixinors.astromine.common.screenhandler.*;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 
 import net.minecraft.screen.ScreenHandlerType;
 
 import com.github.mixinors.astromine.AstromineCommon;
-import com.github.mixinors.astromine.common.screenhandler.RecipeCreatorScreenHandler;
 
 public class AstromineScreenHandlers {
 	public static final ScreenHandlerType<RecipeCreatorScreenHandler> RECIPE_CREATOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("recipe_creator"), ((syncId, inventory, buffer) -> {
 		return new RecipeCreatorScreenHandler(syncId, inventory.player);
 	}));
-
+	
+	public static final ScreenHandlerType<PrimitiveRocketScreenHandler> ROCKET = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("rocket"), ((syncId, inventory, buffer) -> {
+		return new PrimitiveRocketScreenHandler(syncId, inventory.player, buffer.readInt());
+	}));
+	
+	public static final ScreenHandlerType<FluidCollectorScreenHandler> FLUID_EXTRACTOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("fluid_collector"), ((syncId, inventory, buffer) -> {
+		return new FluidCollectorScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+	
+	public static final ScreenHandlerType<FluidPlacerScreenHandler> FLUID_INSERTER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("fluid_placer"), ((syncId, inventory, buffer) -> {
+		return new FluidPlacerScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+	
+	public static final ScreenHandlerType<BlockBreakerScreenHandler> BLOCK_BREAKER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("block_breaker"), ((syncId, inventory, buffer) -> {
+		return new BlockBreakerScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+	
+	public static final ScreenHandlerType<BlockPlacerScreenHandler> BLOCK_PLACER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("block_placer"), ((syncId, inventory, buffer) -> {
+		return new BlockPlacerScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+	
+	public static final ScreenHandlerType<FluidGeneratorScreenHandler> LIQUID_GENERATOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("fluid_generator"), ((syncId, inventory, buffer) -> {
+		return new FluidGeneratorScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+	
+	public static final ScreenHandlerType<SolidGeneratorScreenHandler> SOLID_GENERATOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("solid_generator"), ((syncId, inventory, buffer) -> {
+		return new SolidGeneratorScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+	
+	public static final ScreenHandlerType<VentScreenHandler> VENT = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("vent"), ((syncId, inventory, buffer) -> {
+		return new VentScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+	
+	public static final ScreenHandlerType<TankScreenHandler> TANK = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("tank"), ((syncId, inventory, buffer) -> {
+		return new TankScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+	
+	public static final ScreenHandlerType<NuclearWarheadScreenHandler> NUCLEAR_WARHEAD = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("nuclear_warhead"), ((syncId, inventory, buffer) -> {
+		return new NuclearWarheadScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+	
+	public static final ScreenHandlerType<CapacitorScreenHandler> CAPACITOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("capacitor"), ((syncId, inventory, buffer) -> {
+		return new CapacitorScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+	
+	public static final ScreenHandlerType<CreativeCapacitorScreenHandler> CREATIVE_CAPACITOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("creative_capacitor"), ((syncId, inventory, buffer) -> {
+		return new CreativeCapacitorScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+	
+	public static final ScreenHandlerType<CreativeTankScreenHandler> CREATIVE_TANK = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("creative_tank"), ((syncId, inventory, buffer) -> {
+		return new CreativeTankScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+	
+	public static final ScreenHandlerType<CreativeBufferScreenHandler> CREATIVE_BUFFER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("creative_buffer"), ((syncId, inventory, buffer) -> {
+		return new CreativeBufferScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+	
+	public static final ScreenHandlerType<BufferScreenHandler> BUFFER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("buffer"), ((syncId, inventory, buffer) -> {
+		return new BufferScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+	
+	public static final ScreenHandlerType<TrituratorScreenHandler> TRITURATOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("triturator"), ((syncId, inventory, buffer) -> {
+		return new TrituratorScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+	
+	public static final ScreenHandlerType<PressScreenHandler> PRESSER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("press"), ((syncId, inventory, buffer) -> {
+		return new PressScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+	
+	public static final ScreenHandlerType<WireMillScreenHandler> WIREMILL = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("wire_mill"), ((syncId, inventory, buffer) -> {
+		return new WireMillScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+	
+	public static final ScreenHandlerType<ElectricFurnaceScreenHandler> ELECTRIC_FURNACE = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("electric_furnace"), ((syncId, inventory, buffer) -> {
+		return new ElectricFurnaceScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+	
+	public static final ScreenHandlerType<ElectrolyzerScreenHandler> ELECTROLYZER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("electrolyzer"), ((syncId, inventory, buffer) -> {
+		return new ElectrolyzerScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+	
+	public static final ScreenHandlerType<RefineryScreenHandler> REFINERY = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("refinery"), ((syncId, inventory, buffer) -> {
+		return new RefineryScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+	
+	public static final ScreenHandlerType<FluidMixerScreenHandler> FLUID_MIXER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("fluid_mixer"), ((syncId, inventory, buffer) -> {
+		return new FluidMixerScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+	
+	public static final ScreenHandlerType<AlloySmelterScreenHandler> ALLOY_SMELTER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("alloy_smelter"), ((syncId, inventory, buffer) -> {
+		return new AlloySmelterScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+	
+	public static final ScreenHandlerType<SolidifierScreenHandler> SOLIDIFIER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("solidifier"), ((syncId, inventory, buffer) -> {
+		return new SolidifierScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+	
+	public static final ScreenHandlerType<MelterScreenHandler> MELTER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("melter"), ((syncId, inventory, buffer) -> {
+		return new MelterScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+	
 	public static void initialize() {
 
 	}

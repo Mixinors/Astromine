@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.recipe;
 
+import com.github.mixinors.astromine.registry.AstromineBlocks;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -39,7 +40,6 @@ import com.github.mixinors.astromine.common.recipe.ingredient.ItemIngredient;
 import com.github.mixinors.astromine.common.utilities.DoubleUtilities;
 import com.github.mixinors.astromine.common.utilities.IntegerUtilities;
 import com.github.mixinors.astromine.common.utilities.StackUtilities;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesBlocks;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -152,7 +152,7 @@ public final class TrituratingRecipe implements EnergyConsumingRecipe<Inventory>
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_TRITURATOR);
+		return new ItemStack(AstromineBlocks.ADVANCED_TRITURATOR);
 	}
 
 	public Identifier getIdentifier() {

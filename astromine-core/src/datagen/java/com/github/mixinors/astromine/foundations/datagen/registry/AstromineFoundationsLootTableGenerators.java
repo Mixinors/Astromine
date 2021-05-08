@@ -33,31 +33,30 @@ import com.github.mixinors.astromine.datagen.generator.loottable.set.DropSelfSet
 import com.github.mixinors.astromine.datagen.generator.loottable.set.FortuneMultiOreSetLootTableGenerator;
 import com.github.mixinors.astromine.datagen.material.MaterialItemType;
 import com.github.mixinors.astromine.datagen.registry.AstromineLootTableGenerators;
-import com.github.mixinors.astromine.registry.AstromineFoundationsBlocks;
 
-public class AstromineFoundationsLootTableGenerators extends AstromineLootTableGenerators {
+public class AstromineLootTableGenerators extends AstromineLootTableGenerators {
 	public final LootTableGenerator BLOCK = register(new DropSelfSetLootTableGenerator(MaterialItemType.BLOCK));
 	public final LootTableGenerator ORE = register(new DropSelfSetLootTableGenerator(MaterialItemType.ORE));
 
 	public final LootTableGenerator DROP_SELF = register(new DropSelfLootTableGenerator(
-			AstromineFoundationsBlocks.METEOR_STONE,
-			AstromineFoundationsBlocks.METEOR_STONE_STAIRS,
-			AstromineFoundationsBlocks.METEOR_STONE_WALL,
-			AstromineFoundationsBlocks.SMOOTH_METEOR_STONE,
-			AstromineFoundationsBlocks.SMOOTH_METEOR_STONE_STAIRS,
-			AstromineFoundationsBlocks.SMOOTH_METEOR_STONE_WALL,
-			AstromineFoundationsBlocks.POLISHED_METEOR_STONE,
-			AstromineFoundationsBlocks.POLISHED_METEOR_STONE_STAIRS,
-			AstromineFoundationsBlocks.METEOR_STONE_BRICKS,
-			AstromineFoundationsBlocks.METEOR_STONE_BRICK_STAIRS,
-			AstromineFoundationsBlocks.METEOR_STONE_BRICK_WALL
+			AstromineBlocks.METEOR_STONE,
+			AstromineBlocks.METEOR_STONE_STAIRS,
+			AstromineBlocks.METEOR_STONE_WALL,
+			AstromineBlocks.SMOOTH_METEOR_STONE,
+			AstromineBlocks.SMOOTH_METEOR_STONE_STAIRS,
+			AstromineBlocks.SMOOTH_METEOR_STONE_WALL,
+			AstromineBlocks.POLISHED_METEOR_STONE,
+			AstromineBlocks.POLISHED_METEOR_STONE_STAIRS,
+			AstromineBlocks.METEOR_STONE_BRICKS,
+			AstromineBlocks.METEOR_STONE_BRICK_STAIRS,
+			AstromineBlocks.METEOR_STONE_BRICK_WALL
 	));
 
 	public final LootTableGenerator SLABS = register(new SlabLootTableGenerator(
-			AstromineFoundationsBlocks.METEOR_STONE_SLAB,
-			AstromineFoundationsBlocks.SMOOTH_METEOR_STONE_SLAB,
-			AstromineFoundationsBlocks.POLISHED_METEOR_STONE_SLAB,
-			AstromineFoundationsBlocks.METEOR_STONE_BRICK_SLAB
+			AstromineBlocks.METEOR_STONE_SLAB,
+			AstromineBlocks.SMOOTH_METEOR_STONE_SLAB,
+			AstromineBlocks.POLISHED_METEOR_STONE_SLAB,
+			AstromineBlocks.METEOR_STONE_BRICK_SLAB
 	));
 
 	public final LootTableGenerator METEOR_ORE = register(new FortuneMultiOreSetLootTableGenerator(MaterialItemType.METEOR_ORE, MaterialItemType.METEOR_CLUSTER, new UniformLootTableRange(2)));

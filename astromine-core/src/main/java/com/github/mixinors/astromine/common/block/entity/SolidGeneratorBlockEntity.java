@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.component.general.*;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
+import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 
 import net.minecraft.block.BlockState;
@@ -43,7 +44,6 @@ import com.github.mixinors.astromine.registry.AstromineConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesBlockEntityTypes;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
 import org.jetbrains.annotations.NotNull;
@@ -172,7 +172,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 
 	public static class Primitive extends SolidGeneratorBlockEntity {
 		public Primitive() {
-			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_SOLID_GENERATOR);
+			super(AstromineBlockEntityTypes.PRIMITIVE_SOLID_GENERATOR);
 		}
 
 		@Override
@@ -193,7 +193,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 
 	public static class Basic extends SolidGeneratorBlockEntity {
 		public Basic() {
-			super(AstromineTechnologiesBlockEntityTypes.BASIC_SOLID_GENERATOR);
+			super(AstromineBlockEntityTypes.BASIC_SOLID_GENERATOR);
 		}
 
 		@Override
@@ -214,7 +214,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 
 	public static class Advanced extends SolidGeneratorBlockEntity {
 		public Advanced() {
-			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_SOLID_GENERATOR);
+			super(AstromineBlockEntityTypes.ADVANCED_SOLID_GENERATOR);
 		}
 
 		@Override
@@ -235,7 +235,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 
 	public static class Elite extends SolidGeneratorBlockEntity {
 		public Elite() {
-			super(AstromineTechnologiesBlockEntityTypes.ELITE_SOLID_GENERATOR);
+			super(AstromineBlockEntityTypes.ELITE_SOLID_GENERATOR);
 		}
 
 		@Override

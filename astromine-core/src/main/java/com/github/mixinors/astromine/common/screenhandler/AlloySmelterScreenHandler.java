@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
+import com.github.mixinors.astromine.registry.AstromineScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
@@ -31,7 +32,6 @@ import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBl
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
 import com.github.mixinors.astromine.common.block.entity.AlloySmelterBlockEntity;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesScreenHandlers;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
@@ -40,7 +40,7 @@ public class AlloySmelterScreenHandler extends ComponentBlockEntityEnergyItemScr
 	private AlloySmelterBlockEntity smelter;
 
 	public AlloySmelterScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AstromineTechnologiesScreenHandlers.ALLOY_SMELTER, syncId, player, position);
+		super(AstromineScreenHandlers.ALLOY_SMELTER, syncId, player, position);
 
 		smelter = (AlloySmelterBlockEntity) blockEntity;
 	}

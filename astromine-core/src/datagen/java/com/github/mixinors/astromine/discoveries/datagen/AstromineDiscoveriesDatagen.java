@@ -31,12 +31,12 @@ import com.github.mixinors.astromine.datagen.registry.AstromineModelStateGenerat
 import com.github.mixinors.astromine.datagen.registry.AstromineRecipeGenerators;
 import com.github.mixinors.astromine.datagen.registry.AstromineTagGenerators;
 import com.github.mixinors.astromine.datagen.registry.AstromineWorldGenGenerators;
-import com.github.mixinors.astromine.discoveries.datagen.registry.AstromineDiscoveriesLootTableGenerators;
-import com.github.mixinors.astromine.discoveries.datagen.registry.AstromineDiscoveriesModelStateGenerators;
-import com.github.mixinors.astromine.discoveries.datagen.registry.AstromineDiscoveriesRecipeGenerators;
-import com.github.mixinors.astromine.discoveries.datagen.registry.AstromineDiscoveriesTagGenerators;
+import com.github.mixinors.astromine.discoveries.datagen.registry.AstromineLootTableGenerators;
+import com.github.mixinors.astromine.discoveries.datagen.registry.AstromineModelStateGenerators;
+import com.github.mixinors.astromine.discoveries.datagen.registry.AstromineRecipeGenerators;
+import com.github.mixinors.astromine.discoveries.datagen.registry.AstromineTagGenerators;
 
-public class AstromineDiscoveriesDatagen implements DatagenInitializer {
+public class AstromineDatagen implements DatagenInitializer {
 	@Override
 	public String getModuleId() {
 		return "astromine-discoveries";
@@ -49,22 +49,22 @@ public class AstromineDiscoveriesDatagen implements DatagenInitializer {
 
 	@Override
 	public AstromineLootTableGenerators getLootTableGenerators() {
-		return new AstromineDiscoveriesLootTableGenerators();
+		return new AstromineLootTableGenerators();
 	}
 
 	@Override
 	public AstromineRecipeGenerators getRecipeGenerators() {
-		return new AstromineDiscoveriesRecipeGenerators();
+		return new AstromineRecipeGenerators();
 	}
 
 	@Override
 	public AstromineTagGenerators getTagGenerators() {
-		return new AstromineDiscoveriesTagGenerators();
+		return new AstromineTagGenerators();
 	}
 
 	@Override
 	public AstromineModelStateGenerators getModelStateGenerators() {
-		return new AstromineDiscoveriesModelStateGenerators();
+		return new AstromineModelStateGenerators();
 	}
 
 	@Override

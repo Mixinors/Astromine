@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
@@ -41,7 +42,6 @@ import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvid
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.ElectrolyzingRecipe;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesBlockEntityTypes;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -159,7 +159,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 
 	public static class Primitive extends ElectrolyzerBlockEntity {
 		public Primitive() {
-			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_ELECTROLYZER);
+			super(AstromineBlockEntityTypes.PRIMITIVE_ELECTROLYZER);
 		}
 
 		@Override
@@ -185,7 +185,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 
 	public static class Basic extends ElectrolyzerBlockEntity {
 		public Basic() {
-			super(AstromineTechnologiesBlockEntityTypes.BASIC_ELECTROLYZER);
+			super(AstromineBlockEntityTypes.BASIC_ELECTROLYZER);
 		}
 
 		@Override
@@ -211,7 +211,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 
 	public static class Advanced extends ElectrolyzerBlockEntity {
 		public Advanced() {
-			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_ELECTROLYZER);
+			super(AstromineBlockEntityTypes.ADVANCED_ELECTROLYZER);
 		}
 
 		@Override
@@ -237,7 +237,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 
 	public static class Elite extends ElectrolyzerBlockEntity {
 		public Elite() {
-			super(AstromineTechnologiesBlockEntityTypes.ELITE_ELECTROLYZER);
+			super(AstromineBlockEntityTypes.ELITE_ELECTROLYZER);
 		}
 
 		@Override

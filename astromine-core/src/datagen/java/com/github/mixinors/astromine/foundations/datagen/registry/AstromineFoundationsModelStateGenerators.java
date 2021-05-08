@@ -35,10 +35,9 @@ import com.github.mixinors.astromine.datagen.generator.modelstate.set.GenericIte
 import com.github.mixinors.astromine.datagen.generator.modelstate.set.HandheldItemSetModelGenerator;
 import com.github.mixinors.astromine.datagen.material.MaterialItemType;
 import com.github.mixinors.astromine.datagen.registry.AstromineModelStateGenerators;
-import com.github.mixinors.astromine.registry.AstromineFoundationsBlocks;
-import com.github.mixinors.astromine.registry.AstromineFoundationsItems;
+import com.github.mixinors.astromine.registry.AstromineItems;
 
-public class AstromineFoundationsModelStateGenerators extends AstromineModelStateGenerators {
+public class AstromineModelStateGenerators extends AstromineModelStateGenerators {
 	public final ModelStateGenerator INGOT = register(new GenericItemSetModelGenerator(MaterialItemType.INGOT));
 	public final ModelStateGenerator GEM = register(new GenericItemSetModelGenerator(MaterialItemType.GEM));
 	public final ModelStateGenerator MISC_RESOURCE = register(new GenericItemSetModelGenerator(MaterialItemType.MISC_RESOURCE));
@@ -80,24 +79,24 @@ public class AstromineFoundationsModelStateGenerators extends AstromineModelStat
 	public final ModelStateGenerator APPLE = register(new GenericItemSetModelGenerator(MaterialItemType.APPLE));
 
 	public final ModelStateGenerator STANDARD_BLOCKS = register(new GenericBlockModelStateGenerator(
-			AstromineFoundationsBlocks.METEOR_STONE,
-			AstromineFoundationsBlocks.SMOOTH_METEOR_STONE,
-			AstromineFoundationsBlocks.POLISHED_METEOR_STONE,
-			AstromineFoundationsBlocks.METEOR_STONE_BRICKS
+			AstromineBlocks.METEOR_STONE,
+			AstromineBlocks.SMOOTH_METEOR_STONE,
+			AstromineBlocks.POLISHED_METEOR_STONE,
+			AstromineBlocks.METEOR_STONE_BRICKS
 	));
 
 	public final ModelStateGenerator CUSTOM_MODEL_AND_STATE_BLOCKS = register(new SimpleBlockItemModelGenerator(
-			AstromineFoundationsBlocks.METEOR_STONE_SLAB,
-			AstromineFoundationsBlocks.METEOR_STONE_STAIRS,
-			AstromineFoundationsBlocks.SMOOTH_METEOR_STONE_SLAB,
-			AstromineFoundationsBlocks.SMOOTH_METEOR_STONE_STAIRS,
-			AstromineFoundationsBlocks.POLISHED_METEOR_STONE_SLAB,
-			AstromineFoundationsBlocks.POLISHED_METEOR_STONE_STAIRS,
-			AstromineFoundationsBlocks.METEOR_STONE_BRICK_SLAB,
-			AstromineFoundationsBlocks.METEOR_STONE_BRICK_STAIRS
+			AstromineBlocks.METEOR_STONE_SLAB,
+			AstromineBlocks.METEOR_STONE_STAIRS,
+			AstromineBlocks.SMOOTH_METEOR_STONE_SLAB,
+			AstromineBlocks.SMOOTH_METEOR_STONE_STAIRS,
+			AstromineBlocks.POLISHED_METEOR_STONE_SLAB,
+			AstromineBlocks.POLISHED_METEOR_STONE_STAIRS,
+			AstromineBlocks.METEOR_STONE_BRICK_SLAB,
+			AstromineBlocks.METEOR_STONE_BRICK_STAIRS
 	));
 	
 	public final ModelStateGenerator BLADES = register(new HandheldItemModelGenerator(
-			AstromineFoundationsItems.BLADES
+			AstromineItems.BLADES
 	));
 }

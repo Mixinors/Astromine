@@ -25,8 +25,8 @@
 package com.github.mixinors.astromine.common.world.feature;
 
 import com.github.mixinors.astromine.AstromineCommon;
-import com.github.mixinors.astromine.registry.AstromineFoundationsFluids;
 import com.github.mixinors.astromine.registry.AstromineConfig;
+import com.github.mixinors.astromine.registry.AstromineFluids;
 import com.mojang.serialization.Codec;
 import com.terraformersmc.terraform.shapes.api.Position;
 import com.terraformersmc.terraform.shapes.impl.Shapes;
@@ -79,7 +79,7 @@ public class CrudeOilFeature extends Feature<DefaultFeatureConfig> {
 				world.removeBlock(pos.offset(Direction.UP, y).offset(direction), false);
 			}
 
-			world.getFluidTickScheduler().schedule(pos.offset(Direction.UP, y), AstromineFoundationsFluids.CRUDE_OIL, 0);
+			world.getFluidTickScheduler().schedule(pos.offset(Direction.UP, y), AstromineFluids.CRUDE_OIL, 0);
 		}
 
 		return true;

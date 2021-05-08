@@ -32,6 +32,10 @@ import net.minecraft.util.registry.Registry;
 import com.github.mixinors.astromine.AstromineCommon;
 
 public class AstromineParticles {
+	public static final DefaultParticleType SPACE_SLIME = register("space_slime", false);
+	public static final DefaultParticleType ROCKET_FLAME = register("rocket_flame", true);
+	public static final DefaultParticleType MARS_DUST = register("mars_dust", false);
+	
 	/**
 	 * Registers a new {@link DefaultParticleType} instance under the given name.
 	 *

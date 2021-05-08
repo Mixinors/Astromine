@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.component.general.*;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
+import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 
@@ -37,7 +38,6 @@ import com.github.mixinors.astromine.registry.AstromineConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesBlockEntityTypes;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
@@ -84,7 +84,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 
 	public static class Primitive extends CapacitorBlockEntity {
 		public Primitive() {
-			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_CAPACITOR);
+			super(AstromineBlockEntityTypes.PRIMITIVE_CAPACITOR);
 		}
 
 		@Override
@@ -105,7 +105,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 
 	public static class Basic extends CapacitorBlockEntity {
 		public Basic() {
-			super(AstromineTechnologiesBlockEntityTypes.BASIC_CAPACITOR);
+			super(AstromineBlockEntityTypes.BASIC_CAPACITOR);
 		}
 
 		@Override
@@ -126,7 +126,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 
 	public static class Advanced extends CapacitorBlockEntity {
 		public Advanced() {
-			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_CAPACITOR);
+			super(AstromineBlockEntityTypes.ADVANCED_CAPACITOR);
 		}
 
 		@Override
@@ -147,7 +147,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 
 	public static class Elite extends CapacitorBlockEntity {
 		public Elite() {
-			super(AstromineTechnologiesBlockEntityTypes.ELITE_CAPACITOR);
+			super(AstromineBlockEntityTypes.ELITE_CAPACITOR);
 		}
 
 		@Override
@@ -168,7 +168,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 
 	public static class Creative extends CapacitorBlockEntity {
 		public Creative() {
-			super(AstromineTechnologiesBlockEntityTypes.CREATIVE_CAPACITOR);
+			super(AstromineBlockEntityTypes.CREATIVE_CAPACITOR);
 		}
 
 		@Override

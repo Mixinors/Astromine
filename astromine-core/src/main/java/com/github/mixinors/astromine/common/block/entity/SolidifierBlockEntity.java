@@ -28,6 +28,7 @@ import com.github.mixinors.astromine.common.component.general.*;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
+import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyFluidItemBlockEntity;
@@ -40,7 +41,6 @@ import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvid
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.SolidifyingRecipe;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesBlockEntityTypes;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
 
@@ -163,7 +163,7 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 
 	public static class Primitive extends SolidifierBlockEntity {
 		public Primitive() {
-			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_SOLIDIFIER);
+			super(AstromineBlockEntityTypes.PRIMITIVE_SOLIDIFIER);
 		}
 
 		@Override
@@ -189,7 +189,7 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 
 	public static class Basic extends SolidifierBlockEntity {
 		public Basic() {
-			super(AstromineTechnologiesBlockEntityTypes.BASIC_SOLIDIFIER);
+			super(AstromineBlockEntityTypes.BASIC_SOLIDIFIER);
 		}
 
 		@Override
@@ -215,7 +215,7 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 
 	public static class Advanced extends SolidifierBlockEntity {
 		public Advanced() {
-			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_SOLIDIFIER);
+			super(AstromineBlockEntityTypes.ADVANCED_SOLIDIFIER);
 		}
 
 		@Override
@@ -241,7 +241,7 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 
 	public static class Elite extends SolidifierBlockEntity {
 		public Elite() {
-			super(AstromineTechnologiesBlockEntityTypes.ELITE_SOLIDIFIER);
+			super(AstromineBlockEntityTypes.ELITE_SOLIDIFIER);
 		}
 
 		@Override

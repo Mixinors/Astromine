@@ -24,6 +24,8 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
+import com.github.mixinors.astromine.registry.AstromineItems;
+import com.github.mixinors.astromine.registry.AstromineScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.TranslatableText;
@@ -32,8 +34,6 @@ import net.minecraft.util.Formatting;
 import com.github.mixinors.astromine.common.screenhandler.base.entity.ComponentEntityFluidItemScreenHandler;
 import com.github.mixinors.astromine.common.widget.blade.FluidVerticalBarWidget;
 import com.github.mixinors.astromine.common.entity.base.RocketEntity;
-import com.github.mixinors.astromine.registry.AstromineDiscoveriesItems;
-import com.github.mixinors.astromine.registry.AstromineDiscoveriesScreenHandlers;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.widget.base.ButtonWidget;
@@ -41,12 +41,12 @@ import com.github.vini2003.blade.common.widget.base.SlotWidget;
 
 public class PrimitiveRocketScreenHandler extends ComponentEntityFluidItemScreenHandler {
 	public PrimitiveRocketScreenHandler(int syncId, PlayerEntity player, int entityId) {
-		super(AstromineDiscoveriesScreenHandlers.ROCKET, syncId, player, entityId);
+		super(AstromineScreenHandlers.ROCKET, syncId, player, entityId);
 	}
 
 	@Override
 	public ItemStack getSymbol() {
-		return new ItemStack(AstromineDiscoveriesItems.PRIMITIVE_ROCKET);
+		return new ItemStack(AstromineItems.PRIMITIVE_ROCKET);
 	}
 
 	@Override

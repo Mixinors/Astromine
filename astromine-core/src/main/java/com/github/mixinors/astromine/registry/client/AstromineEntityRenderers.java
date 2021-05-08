@@ -24,8 +24,16 @@
 
 package com.github.mixinors.astromine.registry.client;
 
+import com.github.mixinors.astromine.client.render.entity.PrimitiveRocketEntityRenderer;
+import com.github.mixinors.astromine.client.render.entity.SpaceSlimeEntityRenderer;
+import com.github.mixinors.astromine.client.render.entity.SuperSpaceSlimeEntityRenderer;
+import com.github.mixinors.astromine.registry.AstromineEntityTypes;
+import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
+
 public class AstromineEntityRenderers {
 	public static void initialize() {
-
+		EntityRendererRegistry.INSTANCE.register(AstromineEntityTypes.PRIMITIVE_ROCKET, (dispatcher, context) -> new PrimitiveRocketEntityRenderer(dispatcher));
+		EntityRendererRegistry.INSTANCE.register(AstromineEntityTypes.SPACE_SLIME, (dispatcher, context) -> new SpaceSlimeEntityRenderer(dispatcher));
+		EntityRendererRegistry.INSTANCE.register(AstromineEntityTypes.SUPER_SPACE_SLIME, (dispatcher, context) -> new SuperSpaceSlimeEntityRenderer(dispatcher));
 	}
 }

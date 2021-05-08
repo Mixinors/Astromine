@@ -24,8 +24,13 @@
 
 package com.github.mixinors.astromine.registry;
 
+import com.github.mixinors.astromine.common.entity.placer.SpaceEntityPlacer;
+import com.github.mixinors.astromine.common.registry.DimensionLayerRegistry;
+import net.minecraft.world.World;
+
 public class AstromineDimensionLayers {
 	public static void initialize() {
-
+		DimensionLayerRegistry.INSTANCE.register(DimensionLayerRegistry.Type.BOTTOM, AstromineDimensions.EARTH_SPACE_WORLD, AstromineConfig.get().overworldTravelYLevel, World.OVERWORLD, SpaceEntityPlacer.TO_PLANET);
+		DimensionLayerRegistry.INSTANCE.register(DimensionLayerRegistry.Type.TOP, World.OVERWORLD, AstromineConfig.get().spaceTravelYLevel, AstromineDimensions.EARTH_SPACE_WORLD, SpaceEntityPlacer.TO_SPACE);
 	}
 }

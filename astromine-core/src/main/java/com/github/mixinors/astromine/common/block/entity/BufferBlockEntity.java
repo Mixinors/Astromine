@@ -25,11 +25,11 @@
 package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.component.general.SimpleDirectionalItemComponent;
+import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentItemBlockEntity;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesBlockEntityTypes;
 
 public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 	public BufferBlockEntity(BlockEntityType<?> type) {
@@ -38,7 +38,7 @@ public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 
 	public static class Primitive extends BufferBlockEntity {
 		public Primitive() {
-			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_BUFFER);
+			super(AstromineBlockEntityTypes.PRIMITIVE_BUFFER);
 		}
 
 		@Override
@@ -49,7 +49,7 @@ public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 
 	public static class Basic extends BufferBlockEntity {
 		public Basic() {
-			super(AstromineTechnologiesBlockEntityTypes.BASIC_BUFFER);
+			super(AstromineBlockEntityTypes.BASIC_BUFFER);
 		}
 
 		@Override
@@ -60,7 +60,7 @@ public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 
 	public static class Advanced extends BufferBlockEntity {
 		public Advanced() {
-			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_BUFFER);
+			super(AstromineBlockEntityTypes.ADVANCED_BUFFER);
 		}
 
 		@Override
@@ -71,7 +71,7 @@ public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 
 	public static class Elite extends BufferBlockEntity {
 		public Elite() {
-			super(AstromineTechnologiesBlockEntityTypes.ELITE_BUFFER);
+			super(AstromineBlockEntityTypes.ELITE_BUFFER);
 		}
 
 		@Override
@@ -82,7 +82,7 @@ public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 
 	public static class Creative extends BufferBlockEntity {
 		public Creative() {
-			super(AstromineTechnologiesBlockEntityTypes.CREATIVE_BUFFER);
+			super(AstromineBlockEntityTypes.CREATIVE_BUFFER);
 		}
 
 		@Override

@@ -29,7 +29,7 @@ import com.github.mixinors.astromine.datagen.material.MaterialItemType;
 import com.github.mixinors.astromine.datagen.registry.AstromineTagGenerators;
 import com.github.mixinors.astromine.foundations.datagen.generators.tag.OreTagGenerator;
 
-public class AstromineDiscoveriesTagGenerators extends AstromineTagGenerators {
+public class AstromineTagGenerators extends AstromineTagGenerators {
 	public final SetTagGenerator ASTEROID_ORES = register(new OreTagGenerator(MaterialItemType.ASTEROID_ORE));
 	public final SetTagGenerator MOON_ORES = register(new OreTagGenerator(MaterialItemType.MOON_ORE));
 }

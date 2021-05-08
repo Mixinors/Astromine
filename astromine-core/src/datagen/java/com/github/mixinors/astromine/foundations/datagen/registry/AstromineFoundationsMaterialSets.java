@@ -32,7 +32,7 @@ import com.github.mixinors.astromine.datagen.material.MaterialItemType;
 import com.github.mixinors.astromine.datagen.material.MaterialSet;
 import com.github.mixinors.astromine.datagen.registry.AstromineMaterialSets;
 
-public class AstromineFoundationsMaterialSets extends AstromineMaterialSets {
+public class AstromineMaterialSets extends AstromineMaterialSets {
 	public static final MaterialSet WOOD = register(
 			new MaterialSet.Builder("wood")
 					.setType(MaterialItemType.MISC_RESOURCE, new MaterialEntry(new Identifier("oak_planks"), new Identifier("planks")))

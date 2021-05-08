@@ -47,24 +47,5 @@ public class AstromineClient implements ClientModInitializer {
 		AstromineRenderLayers.initialize();
 		AstrominePatchouliPages.initialize();
 		AstromineKeybinds.initialize();
-		
-		AstromineDiscoveriesSkyboxes.initialize();
-		AstromineDiscoveriesEntityRenderers.initialize();
-		AstromineDiscoveriesParticleFactories.initialize();
-		AstromineDiscoveriesBlockEntityRenderers.initialize();
-		AstromineDiscoveriesRenderLayers.initialize();
-		AstromineDiscoveriesScreens.initialize();
-		AstromineDiscoveriesClientCallbacks.initialize();
-		AstromineDiscoveriesClientModels.initialize();
-		
-		AstromineTechnologiesBlockEntityRenderers.initialize();
-		AstromineTechnologiesPatchouliPages.initialize();
-		AstromineTechnologiesScreens.initialize();
-		AstromineTechnologiesClientCallbacks.initialize();
-		AstromineTechnologiesRenderLayers.initialize();
-		
-		AstromineTransportationsBlockEntityRenderers.initialize();
-		AstromineTransportationsClientCallbacks.initialize();
-		AstromineTransportationsRenderLayers.initialize();
 	}
 }

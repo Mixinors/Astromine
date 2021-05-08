@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.world.generation.moon;
 
+import com.github.mixinors.astromine.registry.AstromineBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -45,7 +46,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import com.github.mixinors.astromine.common.miscellaneous.BiomeGeneratorCache;
 import com.github.mixinors.astromine.common.noise.OpenSimplexNoise;
-import com.github.mixinors.astromine.registry.AstromineDiscoveriesBlocks;
 
 import java.util.Arrays;
 
@@ -147,7 +147,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 					double caveExtent = caveNoise.sample(x * SCALE, y / 32.0, z * SCALE) + computeNoiseFalloff(y);
 
 					if (caveExtent > -0.575) {
-						chunk.setBlockState(mutable, AstromineDiscoveriesBlocks.MOON_STONE.getDefaultState(), false);
+						chunk.setBlockState(mutable, AstromineBlocks.MOON_STONE.getDefaultState(), false);
 					}
 
 					if (y <= 5) {

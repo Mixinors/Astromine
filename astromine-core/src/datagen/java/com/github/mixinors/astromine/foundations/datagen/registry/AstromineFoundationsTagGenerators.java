@@ -36,7 +36,7 @@ import com.github.mixinors.astromine.datagen.material.MaterialItemType;
 import com.github.mixinors.astromine.datagen.registry.AstromineTagGenerators;
 import com.github.mixinors.astromine.foundations.datagen.generators.tag.*;
 
-public class AstromineFoundationsTagGenerators extends AstromineTagGenerators {
+public class AstromineTagGenerators extends AstromineTagGenerators {
 	public final SetTagGenerator PICKAXES = register(new GenericSetTagGenerator("pickaxes", new Identifier("fabric", "pickaxes"), MaterialItemType.PICKAXE));
 	public final SetTagGenerator AXES = register(new GenericSetTagGenerator("axes", new Identifier("fabric", "axes"), MaterialItemType.AXE));
 	public final SetTagGenerator SWORDS = register(new GenericSetTagGenerator("swords", new Identifier("fabric", "swords"), MaterialItemType.SWORD));

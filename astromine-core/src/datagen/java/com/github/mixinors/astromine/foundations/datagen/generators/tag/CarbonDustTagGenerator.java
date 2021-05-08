@@ -29,7 +29,7 @@ import net.minecraft.util.Identifier;
 import com.github.mixinors.astromine.datagen.generator.tag.set.SetTagGenerator;
 import com.github.mixinors.astromine.datagen.material.MaterialItemType;
 import com.github.mixinors.astromine.datagen.material.MaterialSet;
-import com.github.mixinors.astromine.foundations.datagen.registry.AstromineFoundationsMaterialSets;
+import com.github.mixinors.astromine.foundations.datagen.registry.AstromineMaterialSets;
 import me.shedaniel.cloth.api.datagen.v1.TagData;
 
 public class CarbonDustTagGenerator implements SetTagGenerator {
@@ -40,7 +40,7 @@ public class CarbonDustTagGenerator implements SetTagGenerator {
 
 	@Override
 	public boolean shouldGenerate(MaterialSet set) {
-		return (set.equals(AstromineFoundationsMaterialSets.COAL) || set.equals(AstromineFoundationsMaterialSets.CHARCOAL)) && set.hasType(MaterialItemType.DUST);
+		return (set.equals(AstromineMaterialSets.COAL) || set.equals(AstromineMaterialSets.CHARCOAL)) && set.hasType(MaterialItemType.DUST);
 	}
 
 	@Override

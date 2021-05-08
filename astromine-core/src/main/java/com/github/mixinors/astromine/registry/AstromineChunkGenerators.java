@@ -24,6 +24,11 @@
 
 package com.github.mixinors.astromine.registry;
 
+import com.github.mixinors.astromine.common.world.generation.glacios.GlaciosChunkGenerator;
+import com.github.mixinors.astromine.common.world.generation.mars.MarsChunkGenerator;
+import com.github.mixinors.astromine.common.world.generation.moon.MoonChunkGenerator;
+import com.github.mixinors.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
+import com.github.mixinors.astromine.common.world.generation.vulcan.VulcanChunkGenerator;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
@@ -31,7 +36,11 @@ import com.mojang.serialization.Codec;
 
 public class AstromineChunkGenerators {
 	public static void initialize() {
-
+		register(AstromineDimensions.EARTH_SPACE_ID, EarthSpaceChunkGenerator.CODEC);
+		register(AstromineDimensions.MOON_ID, MoonChunkGenerator.CODEC);
+		register(AstromineDimensions.MARS_ID, MarsChunkGenerator.CODEC);
+		register(AstromineDimensions.VULCAN_ID, VulcanChunkGenerator.CODEC);
+		register(AstromineDimensions.GLACIOS_ID, GlaciosChunkGenerator.CODEC);
 	}
 
 	public static void register(Identifier id, Codec<? extends ChunkGenerator> codec) {

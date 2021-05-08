@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.client.rei.solidgenerating;
 
+import com.github.mixinors.astromine.registry.AstromineBlocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -31,9 +32,8 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
+import com.github.mixinors.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.client.rei.generating.AbstractEnergyGeneratingCategory;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesBlocks;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.EntryStack;
@@ -47,7 +47,7 @@ import java.util.List;
 public class SolidGeneratingCategory extends AbstractEnergyGeneratingCategory<SolidGeneratingDisplay> {
 	@Override
 	public Identifier getIdentifier() {
-		return AstromineTechnologiesRoughlyEnoughItemsPlugin.SOLID_GENERATING;
+		return AstromineRoughlyEnoughItemsPlugin.SOLID_GENERATING;
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class SolidGeneratingCategory extends AbstractEnergyGeneratingCategory<So
 
 	@Override
 	public EntryStack getLogo() {
-		return EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_SOLID_GENERATOR);
+		return EntryStack.create(AstromineBlocks.ADVANCED_SOLID_GENERATOR);
 	}
 
 	@Override

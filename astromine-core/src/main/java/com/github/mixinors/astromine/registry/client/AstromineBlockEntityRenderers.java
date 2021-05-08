@@ -24,6 +24,8 @@
 
 package com.github.mixinors.astromine.registry.client;
 
+import com.github.mixinors.astromine.client.render.block.*;
+import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
 
 import net.minecraft.block.entity.BlockEntity;
@@ -34,7 +36,20 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import java.util.function.Function;
 
 public class AstromineBlockEntityRenderers {
-	public static void initialize() {}
+	public static void initialize() {
+		register(AstromineBlockEntityTypes.ALTAR_PEDESTAL, AltarPedestalBlockEntityRenderer::new);
+		register(AstromineBlockEntityTypes.ALTAR, AltarBlockEntityRenderer::new);
+		
+		register(AstromineBlockEntityTypes.HOLOGRAPHIC_BRIDGE, HoloBridgeBlockEntityRenderer::new);
+		
+		register(AstromineBlockEntityTypes.ALTERNATOR, AbstractConveyableBlockEntityRenderer::new);
+		register(AstromineBlockEntityTypes.SPLITTER, AbstractConveyableBlockEntityRenderer::new);
+		register(AstromineBlockEntityTypes.INSERTER, InserterBlockEntityRenderer::new);
+		
+		register(AstromineBlockEntityTypes.CONVEYOR, ConveyorBlockEntityRenderer::new);
+		register(AstromineBlockEntityTypes.VERTICAL_CONVEYOR, VerticalConveyorBlockEntityRenderer::new);
+		register(AstromineBlockEntityTypes.DOWNWARD_VERTICAL_CONVEYOR, DownwardVerticalConveyorBlockEntityRenderer::new);
+	}
 
 	public static <B extends BlockEntity, C extends BlockEntityType<B>> void register(C c, Function<BlockEntityRenderDispatcher, BlockEntityRenderer<? super B>> b) {
 		BlockEntityRendererRegistry.INSTANCE.register(c, b);

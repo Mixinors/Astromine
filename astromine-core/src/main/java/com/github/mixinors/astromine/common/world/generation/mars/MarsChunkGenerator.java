@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.world.generation.mars;
 
+import com.github.mixinors.astromine.registry.AstromineBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -47,7 +48,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.github.mixinors.astromine.common.miscellaneous.BiomeGeneratorCache;
 import com.github.mixinors.astromine.common.noise.OctaveNoiseSampler;
 import com.github.mixinors.astromine.common.noise.OpenSimplexNoise;
-import com.github.mixinors.astromine.registry.AstromineDiscoveriesBlocks;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -142,7 +142,7 @@ public class MarsChunkGenerator extends ChunkGenerator {
 				int height = (int) (depth + (noise * scale));
 				for (int y = 0; y <= height; ++y) {
 					mutable.setY(y);
-					chunk.setBlockState(mutable, y == height ? AstromineDiscoveriesBlocks.MARTIAN_SOIL.getDefaultState() : AstromineDiscoveriesBlocks.MARTIAN_STONE.getDefaultState(), false);
+					chunk.setBlockState(mutable, y == height ? AstromineBlocks.MARTIAN_SOIL.getDefaultState() : AstromineBlocks.MARTIAN_STONE.getDefaultState(), false);
 					if (y <= 5) {
 						if (chunkRandom.nextInt(y + 1) == 0) {
 							chunk.setBlockState(mutable, Blocks.BEDROCK.getDefaultState(), false);

@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 
 import net.minecraft.block.BlockState;
@@ -38,7 +39,6 @@ import net.minecraft.util.math.BlockPos;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.component.general.SimpleItemComponent;
 import com.github.mixinors.astromine.common.component.general.compatibility.InventoryFromItemComponent;
-import com.github.mixinors.astromine.registry.AstromineDiscoveriesBlockEntityTypes;
 
 public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFromItemComponent, Tickable, BlockEntityClientSerializable {
 	public BlockPos parentPos;
@@ -53,7 +53,7 @@ public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFr
 	});
 
 	public AltarPedestalBlockEntity() {
-		super(AstromineDiscoveriesBlockEntityTypes.ALTAR_PEDESTAL);
+		super(AstromineBlockEntityTypes.ALTAR_PEDESTAL);
 	}
 
 	@Override
@@ -119,7 +119,7 @@ public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFr
 	@Override
 	public void fromTag(BlockState state, CompoundTag tag) {
 		super.fromTag(state, tag);
-		inventory.fromTag(tag);
+		inventory.readFromNbt(tag);
 		if (tag.contains("parent"))
 			parentPos = BlockPos.fromLong(tag.getLong("parent"));
 		else parentPos = null;
@@ -127,7 +127,7 @@ public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFr
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		inventory.toTag(tag);
+		inventory.writeToNbt(tag);
 		if (parentPos != null)
 			tag.putLong("parent", parentPos.asLong());
 		return super.toTag(tag);

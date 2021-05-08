@@ -29,7 +29,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.layer.type.CrossSamplingLayer;
 import net.minecraft.world.biome.layer.util.LayerRandomnessSource;
 
-import com.github.mixinors.astromine.registry.AstromineDiscoveriesBiomes;
+import com.github.mixinors.astromine.registry.AstromineBiomes;
 
 public class MarsRiverLayer implements CrossSamplingLayer {
 	private final Registry<Biome> biomeRegistry;
@@ -37,7 +37,7 @@ public class MarsRiverLayer implements CrossSamplingLayer {
 
 	public MarsRiverLayer(Registry<Biome> biomeRegistry) {
 		this.biomeRegistry = biomeRegistry;
-		this.riverId = biomeRegistry.getRawId(biomeRegistry.get(AstromineDiscoveriesBiomes.MARTIAN_RIVERBED));
+		this.riverId = biomeRegistry.getRawId(biomeRegistry.get(AstromineBiomes.MARTIAN_RIVERBED));
 	}
 
 	private static int isValidForRiver(int value) {

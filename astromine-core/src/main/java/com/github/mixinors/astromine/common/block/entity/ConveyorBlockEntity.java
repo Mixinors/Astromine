@@ -28,6 +28,7 @@ import com.github.mixinors.astromine.common.block.entity.base.ComponentItemBlock
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.component.general.SimpleItemComponent;
 import com.github.mixinors.astromine.common.utilities.StackUtilities;
+import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
 import com.github.mixinors.astromine.registry.AstromineConfig;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
@@ -49,7 +50,6 @@ import com.github.mixinors.astromine.common.conveyor.Conveyable;
 import com.github.mixinors.astromine.common.conveyor.Conveyor;
 import com.github.mixinors.astromine.common.conveyor.ConveyorConveyable;
 import com.github.mixinors.astromine.common.conveyor.ConveyorTypes;
-import com.github.mixinors.astromine.registry.AstromineTransportationsBlockEntityTypes;
 
 public class ConveyorBlockEntity extends ComponentItemBlockEntity implements ConveyorConveyable, BlockEntityClientSerializable, RenderAttachmentBlockEntity, Tickable {
 	protected boolean front = false;
@@ -60,7 +60,7 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 	protected int prevPosition = 0;
 
 	public ConveyorBlockEntity() {
-		super(AstromineTransportationsBlockEntityTypes.CONVEYOR);
+		super(AstromineBlockEntityTypes.CONVEYOR);
 	}
 
 	public ConveyorBlockEntity(BlockEntityType type) {

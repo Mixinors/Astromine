@@ -27,8 +27,8 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.component.world.WorldHoloBridgeComponent;
 import com.github.mixinors.astromine.common.utilities.LineUtilities;
 import com.github.mixinors.astromine.common.utilities.VectorUtilities;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesBlockEntityTypes;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesBlocks;
+import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AstromineBlocks;
 import com.github.vini2003.blade.common.miscellaneous.Color;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
@@ -60,7 +60,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	private boolean hasCheckedParent = false;
 
 	public HoloBridgeProjectorBlockEntity() {
-		super(AstromineTechnologiesBlockEntityTypes.HOLOGRAPHIC_BRIDGE);
+		super(AstromineBlockEntityTypes.HOLOGRAPHIC_BRIDGE);
 	}
 
 	public boolean hasChild() {
@@ -166,7 +166,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 
 			if ((nP.getX() != bCP.getX() && nP.getX() != bOP.getX()) || (nP.getZ() != bCP.getZ() && nP.getZ() != bOP.getZ())) {
 				if (this.world.getBlockState(nP).isAir()) {
-					this.world.setBlockState(nP, AstromineTechnologiesBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.getDefaultState());
+					this.world.setBlockState(nP, AstromineBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.getDefaultState());
 				}
 			}
 			

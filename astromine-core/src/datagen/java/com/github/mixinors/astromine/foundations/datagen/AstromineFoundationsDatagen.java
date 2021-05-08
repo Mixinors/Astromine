@@ -31,14 +31,14 @@ import com.github.mixinors.astromine.datagen.registry.AstromineModelStateGenerat
 import com.github.mixinors.astromine.datagen.registry.AstromineRecipeGenerators;
 import com.github.mixinors.astromine.datagen.registry.AstromineTagGenerators;
 import com.github.mixinors.astromine.datagen.registry.AstromineWorldGenGenerators;
-import com.github.mixinors.astromine.foundations.datagen.registry.AstromineFoundationsLootTableGenerators;
-import com.github.mixinors.astromine.foundations.datagen.registry.AstromineFoundationsMaterialSets;
-import com.github.mixinors.astromine.foundations.datagen.registry.AstromineFoundationsModelStateGenerators;
-import com.github.mixinors.astromine.foundations.datagen.registry.AstromineFoundationsRecipeGenerators;
-import com.github.mixinors.astromine.foundations.datagen.registry.AstromineFoundationsTagGenerators;
-import com.github.mixinors.astromine.foundations.datagen.registry.AstromineFoundationsWorldGenGenerators;
+import com.github.mixinors.astromine.foundations.datagen.registry.AstromineLootTableGenerators;
+import com.github.mixinors.astromine.foundations.datagen.registry.AstromineMaterialSets;
+import com.github.mixinors.astromine.foundations.datagen.registry.AstromineModelStateGenerators;
+import com.github.mixinors.astromine.foundations.datagen.registry.AstromineRecipeGenerators;
+import com.github.mixinors.astromine.foundations.datagen.registry.AstromineTagGenerators;
+import com.github.mixinors.astromine.foundations.datagen.registry.AstromineWorldGenGenerators;
 
-public class AstromineFoundationsDatagen implements DatagenInitializer {
+public class AstromineDatagen implements DatagenInitializer {
 	@Override
 	public String getModuleId() {
 		return "astromine-foundations";
@@ -46,31 +46,31 @@ public class AstromineFoundationsDatagen implements DatagenInitializer {
 
 	@Override
 	public AstromineMaterialSets getMaterialSets() {
-		return new AstromineFoundationsMaterialSets();
+		return new AstromineMaterialSets();
 	}
 
 	@Override
 	public AstromineLootTableGenerators getLootTableGenerators() {
-		return new AstromineFoundationsLootTableGenerators();
+		return new AstromineLootTableGenerators();
 	}
 
 	@Override
 	public AstromineRecipeGenerators getRecipeGenerators() {
-		return new AstromineFoundationsRecipeGenerators();
+		return new AstromineRecipeGenerators();
 	}
 
 	@Override
 	public AstromineTagGenerators getTagGenerators() {
-		return new AstromineFoundationsTagGenerators();
+		return new AstromineTagGenerators();
 	}
 
 	@Override
 	public AstromineModelStateGenerators getModelStateGenerators() {
-		return new AstromineFoundationsModelStateGenerators();
+		return new AstromineModelStateGenerators();
 	}
 
 	@Override
 	public AstromineWorldGenGenerators getWorldGenGenerators() {
-		return new AstromineFoundationsWorldGenGenerators();
+		return new AstromineWorldGenGenerators();
 	}
 }

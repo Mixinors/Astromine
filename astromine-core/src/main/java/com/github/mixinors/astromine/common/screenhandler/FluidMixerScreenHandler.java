@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
+import com.github.mixinors.astromine.registry.AstromineScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
@@ -31,7 +32,6 @@ import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBl
 import com.github.mixinors.astromine.common.widget.blade.FluidVerticalBarWidget;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.block.entity.FluidMixerBlockEntity;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesScreenHandlers;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 
@@ -39,7 +39,7 @@ public class FluidMixerScreenHandler extends ComponentBlockEntityEnergyFluidScre
 	private FluidMixerBlockEntity mixer;
 
 	public FluidMixerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AstromineTechnologiesScreenHandlers.FLUID_MIXER, syncId, player, position);
+		super(AstromineScreenHandlers.FLUID_MIXER, syncId, player, position);
 
 		mixer = (FluidMixerBlockEntity) blockEntity;
 	}

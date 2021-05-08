@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.world.generation.vulcan;
 
+import com.github.mixinors.astromine.registry.AstromineBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -47,7 +48,6 @@ import com.github.mixinors.astromine.common.miscellaneous.BiomeGeneratorCache;
 import com.github.mixinors.astromine.common.noise.FastNoise;
 import com.github.mixinors.astromine.common.noise.OctaveNoiseSampler;
 import com.github.mixinors.astromine.common.noise.OpenSimplexNoise;
-import com.github.mixinors.astromine.registry.AstromineDiscoveriesBlocks;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -161,7 +161,7 @@ public class VulcanChunkGenerator extends ChunkGenerator {
 								chunk.setBlockState(mutable, Blocks.LAVA.getDefaultState(), false);
 							}
 						} else {
-							chunk.setBlockState(mutable, AstromineDiscoveriesBlocks.VULCAN_STONE.getDefaultState(), false);
+							chunk.setBlockState(mutable, AstromineBlocks.VULCAN_STONE.getDefaultState(), false);
 						}
 					}
 

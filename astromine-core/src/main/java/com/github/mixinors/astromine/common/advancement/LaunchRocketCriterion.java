@@ -24,14 +24,13 @@
 
 package com.github.mixinors.astromine.common.advancement;
 
+import com.github.mixinors.astromine.registry.AstromineCriteria;
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
 import net.minecraft.predicate.entity.EntityPredicate;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
-
-import com.github.mixinors.astromine.registry.AstromineDiscoveriesCriteria;
 
 import com.google.gson.JsonObject;
 
@@ -62,7 +61,7 @@ public class LaunchRocketCriterion extends AbstractCriterion<LaunchRocketCriteri
 		}
 
 		public static Conditions create() {
-			return new Conditions(AstromineDiscoveriesCriteria.LAUNCH_ROCKET.getId(), EntityPredicate.Extended.EMPTY);
+			return new Conditions(AstromineCriteria.LAUNCH_ROCKET.getId(), EntityPredicate.Extended.EMPTY);
 		}
 	}
 }

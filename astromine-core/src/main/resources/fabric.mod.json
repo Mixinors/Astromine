@@ -26,39 +26,37 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.github.chainmailstudios.astromine.AstromineCommon"
+      "com.github.mixinors.astromine.AstromineCommon"
     ],
     "client": [
-      "com.github.chainmailstudios.astromine.AstromineClient"
+      "com.github.mixinors.astromine.AstromineClient"
     ],
     "server": [
-      "com.github.chainmailstudios.astromine.AstromineDedicated"
+      "com.github.mixinors.astromine.AstromineDedicated"
     ],
     "modmenu": [
-      "com.github.chainmailstudios.astromine.client.modmenu.AstromineModMenuSupport"
+      "com.github.mixinors.astromine.client.modmenu.AstromineModMenuSupport"
     ],
     "cardinal-components-item": [
-      "com.github.chainmailstudios.astromine.registry.AstromineComponents"
+      "com.github.mixinors.astromine.registry.AstromineComponents"
     ],
     "cardinal-components-entity": [
-      "com.github.chainmailstudios.astromine.registry.AstromineComponents"
+      "com.github.mixinors.astromine.registry.AstromineComponents"
     ],
     "cardinal-components-world": [
-      "com.github.chainmailstudios.astromine.registry.AstromineComponents"
+      "com.github.mixinors.astromine.registry.AstromineComponents"
     ],
     "cardinal-components-chunk": [
-      "com.github.chainmailstudios.astromine.registry.AstromineComponents"
+      "com.github.mixinors.astromine.registry.AstromineComponents"
     ],
     "cardinal-components-block": [
-      "com.github.chainmailstudios.astromine.registry.AstromineComponents"
+      "com.github.mixinors.astromine.registry.AstromineComponents"
     ],
     "rei_plugins": [
-      "com.github.chainmailstudios.astromine.client.rei.AstromineDiscoveriesRoughlyEnoughItemsPlugin",
-      "com.github.chainmailstudios.astromine.client.rei.AstromineFoundationsRoughlyEnoughItemsPlugin",
-      "com.github.chainmailstudios.astromine.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin"
+      "com.github.mixinors.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin"
     ],
     "rei_containers": [
-      "com.github.chainmailstudios.astromine.common.rei.AstromineTechnologiesServerContainerPlugin"
+      "com.github.mixinors.astromine.common.rei.AstromineServerContainerPlugin"
     ]
   },
   "mixins": [

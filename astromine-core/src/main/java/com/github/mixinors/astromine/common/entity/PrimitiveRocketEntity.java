@@ -27,6 +27,10 @@ package com.github.mixinors.astromine.common.entity;
 import com.github.mixinors.astromine.common.component.general.*;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
+import com.github.mixinors.astromine.common.entity.base.RocketEntity;
+import com.github.mixinors.astromine.registry.AstromineDimensions;
+import com.github.mixinors.astromine.registry.AstromineFluids;
+import com.github.mixinors.astromine.registry.AstromineItems;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 
@@ -50,11 +54,7 @@ import com.github.mixinors.astromine.AstromineCommon;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.utilities.VolumeUtilities;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
-import com.github.mixinors.astromine.common.entity.base.RocketEntity;
 import com.github.mixinors.astromine.common.screenhandler.PrimitiveRocketScreenHandler;
-import com.github.mixinors.astromine.registry.AstromineDiscoveriesDimensions;
-import com.github.mixinors.astromine.registry.AstromineDiscoveriesItems;
-import com.github.mixinors.astromine.registry.AstromineFoundationsFluids;
 import io.netty.buffer.Unpooled;
 
 import com.google.common.collect.Lists;
@@ -65,9 +65,9 @@ import java.util.Collection;
 public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScreenHandlerFactory {
 	public static final Identifier PRIMITIVE_ROCKET_SPAWN = AstromineCommon.identifier("primitive_rocket_spawn");
 
-	private static final FluidIngredient KEROSENE_INGREDIENT = FluidIngredient.ofFluidVolumes(FluidVolume.of(FluidVolume.BUCKET / 9L, AstromineFoundationsFluids.KEROSENE));
+	private static final FluidIngredient KEROSENE_INGREDIENT = FluidIngredient.ofFluidVolumes(FluidVolume.of(FluidVolume.BUCKET / 9L, AstromineFluids.KEROSENE));
 
-	private static final FluidIngredient OXYGEN_INGREDIENT = FluidIngredient.ofFluidVolumes(FluidVolume.of(FluidVolume.BUCKET / 27L, AstromineFoundationsFluids.OXYGEN));
+	private static final FluidIngredient OXYGEN_INGREDIENT = FluidIngredient.ofFluidVolumes(FluidVolume.of(FluidVolume.BUCKET / 27L, AstromineFluids.OXYGEN));
 
 	public PrimitiveRocketEntity(EntityType<?> type, World world) {
 		super(type, world);
@@ -109,7 +109,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 
 	@Override
 	protected Collection<ItemStack> getDroppedStacks() {
-		return Lists.newArrayList(new ItemStack(AstromineDiscoveriesItems.PRIMITIVE_ROCKET_BOOSTER), new ItemStack(AstromineDiscoveriesItems.PRIMITIVE_ROCKET_HULL), new ItemStack(AstromineDiscoveriesItems.PRIMITIVE_ROCKET_PLATING, 2));
+		return Lists.newArrayList(new ItemStack(AstromineItems.PRIMITIVE_ROCKET_BOOSTER), new ItemStack(AstromineItems.PRIMITIVE_ROCKET_HULL), new ItemStack(AstromineItems.PRIMITIVE_ROCKET_PLATING, 2));
 	}
 
 	@Override
@@ -163,7 +163,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 
 	@Override
 	public void tick() {
-		if (world.getRegistryKey().equals(AstromineDiscoveriesDimensions.EARTH_SPACE_WORLD)) {
+		if (world.getRegistryKey().equals(AstromineDimensions.EARTH_SPACE_WORLD)) {
 			setVelocity(0, 0, 0);
 
 			getDataTracker().set(IS_RUNNING, false);

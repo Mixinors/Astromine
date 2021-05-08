@@ -32,7 +32,7 @@ import com.github.mixinors.astromine.datagen.registry.AstromineRecipeGenerators;
 import com.github.mixinors.astromine.datagen.registry.AstromineTagGenerators;
 import com.github.mixinors.astromine.datagen.registry.AstromineWorldGenGenerators;
 
-public class AstromineTechnologiesDatagen implements DatagenInitializer {
+public class AstromineDatagen implements DatagenInitializer {
 	@Override
 	public String getModuleId() {
 		return "astromine-technologies";
@@ -45,12 +45,12 @@ public class AstromineTechnologiesDatagen implements DatagenInitializer {
 
 	@Override
 	public AstromineLootTableGenerators getLootTableGenerators() {
-		return new AstromineTechnologiesLootTableGenerators();
+		return new AstromineLootTableGenerators();
 	}
 
 	@Override
 	public AstromineRecipeGenerators getRecipeGenerators() {
-		return new AstromineTechnologiesRecipeGenerators();
+		return new AstromineRecipeGenerators();
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class AstromineTechnologiesDatagen implements DatagenInitializer {
 
 	@Override
 	public AstromineModelStateGenerators getModelStateGenerators() {
-		return new AstromineTechnologiesModelStateGenerators();
+		return new AstromineModelStateGenerators();
 	}
 
 	@Override

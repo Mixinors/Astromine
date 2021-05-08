@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.item;
 
+import com.github.mixinors.astromine.registry.AstromineCriteria;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CampfireBlock;
@@ -45,8 +46,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.registry.AstromineFoundationsCriteria;
-import com.github.mixinors.astromine.registry.AstromineFoundationsSoundEvents;
+import com.github.mixinors.astromine.registry.AstromineSoundEvents;
 import com.github.mixinors.astromine.registry.AstromineConfig;
 
 public class FireExtinguisherItem extends Item {
@@ -80,7 +80,7 @@ public class FireExtinguisherItem extends Item {
 			user.addVelocity(thrustVec.x, thrustVec.y, thrustVec.z);
 			if (user instanceof ServerPlayerEntity) {
 				((ServerPlayerEntity) user).networkHandler.floatingTicks = 0;
-				AstromineFoundationsCriteria.USE_FIRE_EXTINGUISHER.trigger((ServerPlayerEntity) user);
+				AstromineCriteria.USE_FIRE_EXTINGUISHER.trigger((ServerPlayerEntity) user);
 			}
 			user.getItemCooldownManager().set(this, AstromineConfig.get().fireExtinguisherStandingDelay);
 		} else {
@@ -104,13 +104,13 @@ public class FireExtinguisherItem extends Item {
 			if (entity.isOnFire()) {
 				entity.setFireTicks(0);
 				if (user instanceof ServerPlayerEntity) {
-					AstromineFoundationsCriteria.PROPERLY_USE_FIRE_EXTINGUISHER.trigger((ServerPlayerEntity) user);
+					AstromineCriteria.PROPERLY_USE_FIRE_EXTINGUISHER.trigger((ServerPlayerEntity) user);
 				}
 			}
 		});
 
 		if (world.isClient) {
-			world.playSound(user, user.getBlockPos(), AstromineFoundationsSoundEvents.FIRE_EXTINGUISHER_OPEN, SoundCategory.PLAYERS, 1f, 1f);
+			world.playSound(user, user.getBlockPos(), AstromineSoundEvents.FIRE_EXTINGUISHER_OPEN, SoundCategory.PLAYERS, 1f, 1f);
 		}
 
 		return super.use(world, user, hand);

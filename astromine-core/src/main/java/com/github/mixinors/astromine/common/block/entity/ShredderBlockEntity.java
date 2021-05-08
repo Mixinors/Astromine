@@ -24,6 +24,8 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
+import com.github.mixinors.astromine.registry.AstromineSoundEvents;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
@@ -32,12 +34,10 @@ import net.minecraft.util.math.Direction;
 import com.github.mixinors.astromine.common.block.entity.base.ComponentBlockEntity;
 import com.github.mixinors.astromine.common.conveyor.Conveyable;
 import com.github.mixinors.astromine.common.conveyor.ConveyorTypes;
-import com.github.mixinors.astromine.registry.AstromineTransportationsBlockEntityTypes;
-import com.github.mixinors.astromine.registry.AstromineTransportationsSoundEvents;
 
 public class ShredderBlockEntity extends ComponentBlockEntity implements Conveyable {
 	public ShredderBlockEntity() {
-		super(AstromineTransportationsBlockEntityTypes.INCINERATOR);
+		super(AstromineBlockEntityTypes.INCINERATOR);
 	}
 
 	public ShredderBlockEntity(BlockEntityType type) {
@@ -69,6 +69,6 @@ public class ShredderBlockEntity extends ComponentBlockEntity implements Conveya
 		float max = 0.4F;
 		float random = min + ((float) Math.random()) * (max - min);
 		random = random - (random / 2);
-		world.playSound(null, getPos().getX(), getPos().getY(), getPos().getZ(), AstromineTransportationsSoundEvents.INCINERATE, SoundCategory.BLOCKS, 0.25F, 1.0F + random);
+		world.playSound(null, getPos().getX(), getPos().getY(), getPos().getZ(), AstromineSoundEvents.INCINERATE, SoundCategory.BLOCKS, 0.25F, 1.0F + random);
 	}
 }

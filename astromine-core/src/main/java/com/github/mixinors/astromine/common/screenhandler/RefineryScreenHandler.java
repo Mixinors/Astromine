@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
+import com.github.mixinors.astromine.registry.AstromineScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
@@ -31,7 +32,6 @@ import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBl
 import com.github.mixinors.astromine.common.widget.blade.FluidVerticalBarWidget;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.block.entity.RefineryBlockEntity;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesScreenHandlers;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 
@@ -39,7 +39,7 @@ public class RefineryScreenHandler extends ComponentBlockEntityEnergyFluidScreen
 	private RefineryBlockEntity refinery;
 
 	public RefineryScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AstromineTechnologiesScreenHandlers.REFINERY, syncId, player, position);
+		super(AstromineScreenHandlers.REFINERY, syncId, player, position);
 
 		refinery = (RefineryBlockEntity) blockEntity;
 	}

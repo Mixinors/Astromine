@@ -32,7 +32,6 @@ import net.minecraft.util.Identifier;
 
 import com.github.mixinors.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
-import com.github.mixinors.astromine.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.client.rei.generating.AbstractEnergyGeneratingDisplay;
 import com.github.mixinors.astromine.common.recipe.FluidGeneratingRecipe;
 import me.shedaniel.rei.api.EntryStack;
@@ -56,7 +55,7 @@ public class LiquidGeneratingDisplay extends AbstractEnergyGeneratingDisplay {
 
 	@Override
 	public List<List<EntryStack>> getInputEntries() {
-		return Collections.singletonList(Arrays.stream(input.getMatchingVolumes()).map(AstromineRoughlyEnoughItemsPlugin::convertA2R).collect(Collectors.toList()));
+		return Collections.singletonList(Arrays.stream(input.getMatchingVolumes()).map(AstromineRoughlyEnoughItemsPlugin::convertToEntryStack).collect(Collectors.toList()));
 	}
 
 	@Override
@@ -66,7 +65,7 @@ public class LiquidGeneratingDisplay extends AbstractEnergyGeneratingDisplay {
 
 	@Override
 	public Identifier getRecipeCategory() {
-		return AstromineTechnologiesRoughlyEnoughItemsPlugin.LIQUID_GENERATING;
+		return AstromineRoughlyEnoughItemsPlugin.LIQUID_GENERATING;
 	}
 
 	public Fluid getFluid() {

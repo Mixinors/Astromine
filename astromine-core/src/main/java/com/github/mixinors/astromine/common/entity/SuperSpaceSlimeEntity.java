@@ -24,6 +24,8 @@
 
 package com.github.mixinors.astromine.common.entity;
 
+import com.github.mixinors.astromine.registry.AstromineEntityTypes;
+import com.github.mixinors.astromine.registry.AstromineParticles;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityPose;
@@ -59,8 +61,6 @@ import com.github.mixinors.astromine.common.entity.ai.superspaceslime.SuperSpace
 import com.github.mixinors.astromine.common.entity.ai.superspaceslime.SuperSpaceSlimeMoveGoal;
 import com.github.mixinors.astromine.common.entity.ai.superspaceslime.SuperSpaceSlimeRandomLookGoal;
 import com.github.mixinors.astromine.common.entity.ai.superspaceslime.SuperSpaceSlimeSwimmingGoal;
-import com.github.mixinors.astromine.registry.AstromineDiscoveriesEntityTypes;
-import com.github.mixinors.astromine.registry.AstromineDiscoveriesParticles;
 
 public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 
@@ -170,7 +170,7 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 	}
 
 	protected ParticleEffect getParticles() {
-		return AstromineDiscoveriesParticles.SPACE_SLIME;
+		return AstromineParticles.SPACE_SLIME;
 	}
 
 	protected SoundEvent getSquishSound() {
@@ -189,7 +189,7 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 	 */
 	public void explode() {
 		for (int i = 0; i < 50; i++) {
-			SpaceSlimeEntity spaceSlime = AstromineDiscoveriesEntityTypes.SPACE_SLIME.create(this.world);
+			SpaceSlimeEntity spaceSlime = AstromineEntityTypes.SPACE_SLIME.create(this.world);
 			spaceSlime.initialize((ServerWorldAccess) this.world, this.world.getLocalDifficulty(this.getBlockPos()), SpawnReason.NATURAL, null, null);
 			this.world.spawnEntity(spaceSlime);
 			spaceSlime.requestTeleport(this.getX(), this.getY(), this.getZ());

@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.component.general.*;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
+import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
@@ -40,7 +41,6 @@ import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvi
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.TrituratingRecipe;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesBlockEntityTypes;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
 import org.jetbrains.annotations.NotNull;
@@ -165,7 +165,7 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 
 	public static class Primitive extends TrituratorBlockEntity {
 		public Primitive() {
-			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_TRITURATOR);
+			super(AstromineBlockEntityTypes.PRIMITIVE_TRITURATOR);
 		}
 
 		@Override
@@ -186,7 +186,7 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 
 	public static class Basic extends TrituratorBlockEntity {
 		public Basic() {
-			super(AstromineTechnologiesBlockEntityTypes.BASIC_TRITURATOR);
+			super(AstromineBlockEntityTypes.BASIC_TRITURATOR);
 		}
 
 		@Override
@@ -207,7 +207,7 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 
 	public static class Advanced extends TrituratorBlockEntity {
 		public Advanced() {
-			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_TRITURATOR);
+			super(AstromineBlockEntityTypes.ADVANCED_TRITURATOR);
 		}
 
 		@Override
@@ -228,7 +228,7 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 
 	public static class Elite extends TrituratorBlockEntity {
 		public Elite() {
-			super(AstromineTechnologiesBlockEntityTypes.ELITE_TRITURATOR);
+			super(AstromineBlockEntityTypes.ELITE_TRITURATOR);
 		}
 
 		@Override

@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.entity;
 
+import com.github.mixinors.astromine.registry.AstromineParticles;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.data.DataTracker;
@@ -41,7 +42,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
 import com.github.mixinors.astromine.common.entity.ai.superspaceslime.SpaceSlimeJumpHoverGoal;
-import com.github.mixinors.astromine.registry.AstromineDiscoveriesParticles;
 
 import java.util.Random;
 
@@ -83,7 +83,7 @@ public class SpaceSlimeEntity extends SlimeEntity {
 
 	@Override
 	protected ParticleEffect getParticles() {
-		return AstromineDiscoveriesParticles.SPACE_SLIME;
+		return AstromineParticles.SPACE_SLIME;
 	}
 
 	@Override

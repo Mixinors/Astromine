@@ -94,7 +94,7 @@ public class AstromineComponents implements WorldComponentInitializer, ChunkComp
 		);
 
 		registry.registerFor(
-			item -> item == AstromineDiscoveriesItems.SPACE_SUIT_CHESTPLATE,
+			item -> item == AstromineItems.SPACE_SUIT_CHESTPLATE,
 			AstromineComponents.FLUID_INVENTORY_COMPONENT,
 			stack -> SimpleFluidComponent.of(FluidVolume.of(AstromineConfig.get().spaceSuitFluid, Fluids.EMPTY))
 		);

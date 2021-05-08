@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.component.general.*;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
+import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
@@ -40,7 +41,6 @@ import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvi
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.WireMillingRecipe;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesBlockEntityTypes;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
 import org.jetbrains.annotations.NotNull;
@@ -165,7 +165,7 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 
 	public static class Primitive extends WireMillBlockEntity {
 		public Primitive() {
-			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_WIREMILL);
+			super(AstromineBlockEntityTypes.PRIMITIVE_WIREMILL);
 		}
 
 		@Override
@@ -186,7 +186,7 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 
 	public static class Basic extends WireMillBlockEntity {
 		public Basic() {
-			super(AstromineTechnologiesBlockEntityTypes.BASIC_WIREMILL);
+			super(AstromineBlockEntityTypes.BASIC_WIREMILL);
 		}
 
 		@Override
@@ -207,7 +207,7 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 
 	public static class Advanced extends WireMillBlockEntity {
 		public Advanced() {
-			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_WIREMILL);
+			super(AstromineBlockEntityTypes.ADVANCED_WIREMILL);
 		}
 
 		@Override
@@ -228,7 +228,7 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 
 	public static class Elite extends WireMillBlockEntity {
 		public Elite() {
-			super(AstromineTechnologiesBlockEntityTypes.ELITE_WIREMILL);
+			super(AstromineBlockEntityTypes.ELITE_WIREMILL);
 		}
 
 		@Override

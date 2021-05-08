@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.component.general.*;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
+import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
@@ -40,7 +41,6 @@ import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvi
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.PressingRecipe;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesBlockEntityTypes;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
 import org.jetbrains.annotations.NotNull;
@@ -166,7 +166,7 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 
 	public static class Primitive extends PressBlockEntity {
 		public Primitive() {
-			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_PRESSER);
+			super(AstromineBlockEntityTypes.PRIMITIVE_PRESSER);
 		}
 
 		@Override
@@ -187,7 +187,7 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 
 	public static class Basic extends PressBlockEntity {
 		public Basic() {
-			super(AstromineTechnologiesBlockEntityTypes.BASIC_PRESSER);
+			super(AstromineBlockEntityTypes.BASIC_PRESSER);
 		}
 
 		@Override
@@ -208,7 +208,7 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 
 	public static class Advanced extends PressBlockEntity {
 		public Advanced() {
-			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_PRESSER);
+			super(AstromineBlockEntityTypes.ADVANCED_PRESSER);
 		}
 
 		@Override
@@ -229,7 +229,7 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 
 	public static class Elite extends PressBlockEntity {
 		public Elite() {
-			super(AstromineTechnologiesBlockEntityTypes.ELITE_PRESSER);
+			super(AstromineBlockEntityTypes.ELITE_PRESSER);
 		}
 
 		@Override

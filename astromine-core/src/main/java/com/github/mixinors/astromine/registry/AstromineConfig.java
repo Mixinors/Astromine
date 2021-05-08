@@ -660,6 +660,198 @@ public class AstromineConfig implements ConfigData {
 
 	@Comment("Whether Conveyors should merge their contents with others or not.")
 	public boolean conveyorsMergeStacks = false;
+	
+	@Comment("Whether generation of Copper Ore in the Overworld is enabled.")
+	public boolean overworldCopperOre = true;
+	
+	@Comment("Whether generation of Tin Ore in the Overworld is enabled.")
+	public boolean overworldTinOre = true;
+	
+	@Comment("Whether generation of Silver Ore in the Overworld is enabled.")
+	public boolean overworldSilverOre = true;
+	
+	@Comment("Whether generation of Lead Ore in the Overworld is enabled.")
+	public boolean overworldLeadOre = true;
+	
+	@Comment("Minimum range of Asteroid Coal Ore weight.")
+	public int asteroidCoalOreMinimumRange = 0;
+	
+	@Comment("Maximum range of Asteroid Coal Ore weight.")
+	public int asteroidCoalOreMaximumRange = 100;
+	
+	@Comment("Minimum size of Asteroid Coal Ore veins.")
+	public int asteroidCoalOreMinimumSize = 8;
+	
+	@Comment("Maximum Size of Asteroid Coal Ore veins.")
+	public int asteroidCoalOreMaximumSize = 48;
+	
+	@Comment("Minimum range of Asteroid Iron Ore weight.")
+	public int asteroidIronOreMinimumRange = 0;
+	
+	@Comment("Maximum range of Asteroid Iron Ore weight.")
+	public int asteroidIronOreMaximumRange = 100;
+	
+	@Comment("Minimum size of Asteroid Iron Ore veins.")
+	public int asteroidIronOreMinimumSize = 8;
+	
+	@Comment("Maximum Size of Asteroid Iron Ore veins.")
+	public int asteroidIronOreMaximumSize = 48;
+	
+	@Comment("Minimum range of Asteroid Gold Ore weight.")
+	public int asteroidGoldOreMinimumRange = 0;
+	
+	@Comment("Maximum range of Asteroid Gold Ore weight.")
+	public int asteroidGoldOreMaximumRange = 100;
+	
+	@Comment("Minimum size of Asteroid Gold Ore veins.")
+	public int asteroidGoldOreMinimumSize = 8;
+	
+	@Comment("Maximum Size of Asteroid Gold Ore veins.")
+	public int asteroidGoldOreMaximumSize = 48;
+	
+	@Comment("Minimum range of Asteroid Copper Ore weight.")
+	public int asteroidCopperOreMinimumRange = 0;
+	
+	@Comment("Maximum range of Asteroid Copper Ore weight.")
+	public int asteroidCopperOreMaximumRange = 100;
+	
+	@Comment("Minimum size of Asteroid Copper Ore veins.")
+	public int asteroidCopperOreMinimumSize = 8;
+	
+	@Comment("Maximum Size of Asteroid Copper Ore veins.")
+	public int asteroidCopperOreMaximumSize = 48;
+	
+	@Comment("Minimum range of Asteroid Tin Ore weight.")
+	public int asteroidTinOreMinimumRange = 0;
+	
+	@Comment("Maximum range of Asteroid Tin Ore weight.")
+	public int asteroidTinOreMaximumRange = 100;
+	
+	@Comment("Minimum size of Asteroid Tin Ore veins.")
+	public int asteroidTinOreMinimumSize = 8;
+	
+	@Comment("Maximum Size of Asteroid Tin Ore veins.")
+	public int asteroidTinOreMaximumSize = 48;
+	
+	@Comment("Minimum range of Asteroid Silver Ore weight.")
+	public int asteroidSilverOreMinimumRange = 0;
+	
+	@Comment("Maximum range of Asteroid Silver Ore weight.")
+	public int asteroidSilverOreMaximumRange = 100;
+	
+	@Comment("Minimum size of Asteroid Silver Ore veins.")
+	public int asteroidSilverOreMinimumSize = 8;
+	
+	@Comment("Maximum Size of Asteroid Silver Ore veins.")
+	public int asteroidSilverOreMaximumSize = 48;
+	
+	@Comment("Minimum range of Asteroid Lead Ore weight.")
+	public int asteroidLeadOreMinimumRange = 0;
+	
+	@Comment("Maximum range of Asteroid Lead Ore weight.")
+	public int asteroidLeadOreMaximumRange = 100;
+	
+	@Comment("Minimum size of Asteroid Lead Ore veins.")
+	public int asteroidLeadOreMinimumSize = 8;
+	
+	@Comment("Maximum Size of Asteroid Lead Ore veins.")
+	public int asteroidLeadOreMaximumSize = 48;
+	
+	@Comment("Minimum range of Asteroid Redstone Ore weight.")
+	public int asteroidRedstoneOreMinimumRange = 0;
+	
+	@Comment("Maximum range of Asteroid Redstone Ore weight.")
+	public int asteroidRedstoneOreMaximumRange = 40;
+	
+	@Comment("Minimum size of Asteroid Redstone Ore veins.")
+	public int asteroidRedstoneOreMinimumSize = 8;
+	
+	@Comment("Maximum Size of Asteroid Redstone Ore veins.")
+	public int asteroidRedstoneOreMaximumSize = 48;
+	
+	@Comment("Minimum range of Asteroid Lapis Ore weight.")
+	public int asteroidLapisOreMinimumRange = 0;
+	
+	@Comment("Maximum range of Asteroid Lapis Ore weight.")
+	public int asteroidLapisOreMaximumRange = 40;
+	
+	@Comment("Minimum size of Asteroid Lapis Ore veins.")
+	public int asteroidLapisOreMinimumSize = 8;
+	
+	@Comment("Maximum Size of Asteroid Lapis Ore veins.")
+	public int asteroidLapisOreMaximumSize = 48;
+	
+	@Comment("Minimum range of Asteroid Diamond Ore weight.")
+	public int asteroidDiamondOreMinimumRange = 0;
+	
+	@Comment("Maximum range of Asteroid Diamond Ore weight.")
+	public int asteroidDiamondOreMaximumRange = 50;
+	
+	@Comment("Minimum size of Asteroid Diamond Ore veins.")
+	public int asteroidDiamondOreMinimumSize = 8;
+	
+	@Comment("Maximum Size of Asteroid Diamond Ore veins.")
+	public int asteroidDiamondOreMaximumSize = 48;
+	
+	@Comment("Minimum range of Asteroid Emerald Ore weight.")
+	public int asteroidEmeraldOreMinimumRange = 0;
+	
+	@Comment("Maximum range of Asteroid Emerald Ore weight.")
+	public int asteroidEmeraldOreMaximumRange = 50;
+	
+	@Comment("Minimum size of Asteroid Emerald Ore veins.")
+	public int asteroidEmeraldOreMinimumSize = 8;
+	
+	@Comment("Maximum Size of Asteroid Emerald Ore veins.")
+	public int asteroidEmeraldOreMaximumSize = 48;
+	
+	@Comment("Minimum range of Asteroid Metite Ore weight.")
+	public int asteroidMetiteOreMinimumRange = 0;
+	
+	@Comment("Maximum range of Asteroid Metite Ore weight.")
+	public int asteroidMetiteOreMaximumRange = 50;
+	
+	@Comment("Minimum size of Asteroid Metite Ore veins.")
+	public int asteroidMetiteOreMinimumSize = 8;
+	
+	@Comment("Maximum Size of Asteroid Metite Ore veins.")
+	public int asteroidMetiteOreMaximumSize = 48;
+	
+	@Comment("Minimum range of Asteroid Asterite Ore weight.")
+	public int asteroidAsteriteOreMinimumRange = 0;
+	
+	@Comment("Maximum range of Asteroid Asterite Ore weight.")
+	public int asteroidAsteriteOreMaximumRange = 40;
+	
+	@Comment("Minimum size of Asteroid Asterite Ore veins.")
+	public int asteroidAsteriteOreMinimumSize = 8;
+	
+	@Comment("Maximum Size of Asteroid Asterite Ore veins.")
+	public int asteroidAsteriteOreMaximumSize = 48;
+	
+	@Comment("Minimum range of Asteroid Stellum Ore weight.")
+	public int asteroidStellumOreMinimumRange = 0;
+	
+	@Comment("Maximum range of Asteroid Stellum Ore weight.")
+	public int asteroidStellumOreMaximumRange = 30;
+	
+	@Comment("Minimum size of Asteroid Stellum Ore veins.")
+	public int asteroidStellumOreMinimumSize = 8;
+	
+	@Comment("Maximum Size of Asteroid Stellum Ore veins.")
+	public int asteroidStellumOreMaximumSize = 48;
+	
+	@Comment("Minimum range of Asteroid Galaxium Ore weight.")
+	public int asteroidGalaxiumOreMinimumRange = 0;
+	
+	@Comment("Maximum range of Asteroid Galaxium Ore weight.")
+	public int asteroidGalaxiumOreMaximumRange = 20;
+	
+	@Comment("Minimum size of Asteroid Galaxium Ore veins.")
+	public int asteroidGalaxiumOreMinimumSize = 8;
+	
+	@Comment("Maximum Size of Asteroid Galaxium Ore veins.")
+	public int asteroidGalaxiumOreMaximumSize = 48;
 
 	public static AstromineConfig get() {
 		if (INSTANCE == null) {

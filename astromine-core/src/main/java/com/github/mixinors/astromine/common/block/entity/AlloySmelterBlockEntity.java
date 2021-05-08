@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.component.general.*;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
+import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
@@ -41,7 +42,6 @@ import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvi
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.AlloySmeltingRecipe;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesBlockEntityTypes;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
@@ -187,7 +187,7 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 
 	public static class Primitive extends AlloySmelterBlockEntity {
 		public Primitive() {
-			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_ALLOY_SMELTER);
+			super(AstromineBlockEntityTypes.PRIMITIVE_ALLOY_SMELTER);
 		}
 
 		@Override
@@ -208,7 +208,7 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 
 	public static class Basic extends AlloySmelterBlockEntity {
 		public Basic() {
-			super(AstromineTechnologiesBlockEntityTypes.BASIC_ALLOY_SMELTER);
+			super(AstromineBlockEntityTypes.BASIC_ALLOY_SMELTER);
 		}
 
 		@Override
@@ -229,7 +229,7 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 
 	public static class Advanced extends AlloySmelterBlockEntity {
 		public Advanced() {
-			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_ALLOY_SMELTER);
+			super(AstromineBlockEntityTypes.ADVANCED_ALLOY_SMELTER);
 		}
 
 		@Override
@@ -250,7 +250,7 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 
 	public static class Elite extends AlloySmelterBlockEntity {
 		public Elite() {
-			super(AstromineTechnologiesBlockEntityTypes.ELITE_ALLOY_SMELTER);
+			super(AstromineBlockEntityTypes.ELITE_ALLOY_SMELTER);
 		}
 
 		@Override

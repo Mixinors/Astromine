@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.common.world.feature;
 
 import com.github.mixinors.astromine.common.utilities.data.Range;
 import com.github.mixinors.astromine.client.registry.AsteroidOreRegistry;
-import com.github.mixinors.astromine.registry.AstromineDiscoveriesBlocks;
+import com.github.mixinors.astromine.registry.AstromineBlocks;
 import com.github.mixinors.astromine.registry.AstromineConfig;
 import com.mojang.serialization.Codec;
 import com.terraformersmc.terraform.shapes.api.Position;
@@ -84,7 +84,7 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 			for (Position streamPosition : vein.stream().collect(Collectors.toSet())) {
 				BlockPos orePosition = streamPosition.toBlockPos();
 
-				if (world.getBlockState(orePosition).getBlock() == AstromineDiscoveriesBlocks.ASTEROID_STONE) {
+				if (world.getBlockState(orePosition).getBlock() == AstromineBlocks.ASTEROID_STONE) {
 					if (random.nextInt(AstromineConfig.get().asteroidOreThreshold) == 0) {
 						world.setBlockState(orePosition, ore.getDefaultState(), 0b0110100);
 					}

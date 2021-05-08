@@ -28,6 +28,7 @@ import com.github.mixinors.astromine.common.component.general.*;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
+import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyFluidItemBlockEntity;
@@ -40,7 +41,6 @@ import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvid
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.MeltingRecipe;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesBlockEntityTypes;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
 
@@ -164,7 +164,7 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 
 	public static class Primitive extends MelterBlockEntity {
 		public Primitive() {
-			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_MELTER);
+			super(AstromineBlockEntityTypes.PRIMITIVE_MELTER);
 		}
 
 		@Override
@@ -190,7 +190,7 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 
 	public static class Basic extends MelterBlockEntity {
 		public Basic() {
-			super(AstromineTechnologiesBlockEntityTypes.BASIC_MELTER);
+			super(AstromineBlockEntityTypes.BASIC_MELTER);
 		}
 
 		@Override
@@ -216,7 +216,7 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 
 	public static class Advanced extends MelterBlockEntity {
 		public Advanced() {
-			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_MELTER);
+			super(AstromineBlockEntityTypes.ADVANCED_MELTER);
 		}
 
 		@Override
@@ -242,7 +242,7 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 
 	public static class Elite extends MelterBlockEntity {
 		public Elite() {
-			super(AstromineTechnologiesBlockEntityTypes.ELITE_MELTER);
+			super(AstromineBlockEntityTypes.ELITE_MELTER);
 		}
 
 		@Override

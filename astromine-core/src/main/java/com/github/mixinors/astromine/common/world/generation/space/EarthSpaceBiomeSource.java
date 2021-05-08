@@ -24,14 +24,13 @@
 
 package com.github.mixinors.astromine.common.world.generation.space;
 
+import com.github.mixinors.astromine.registry.AstromineBiomes;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryLookupCodec;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-
-import com.github.mixinors.astromine.registry.AstromineDiscoveriesBiomes;
 
 import com.google.common.collect.ImmutableList;
 
@@ -59,6 +58,6 @@ public class EarthSpaceBiomeSource extends BiomeSource {
 
 	@Override
 	public Biome getBiomeForNoiseGen(int biomeX, int biomeY, int biomeZ) {
-		return registry.get(AstromineDiscoveriesBiomes.ASTEROID_BELT);
+		return registry.get(AstromineBiomes.ASTEROID_BELT);
 	}
 }

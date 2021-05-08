@@ -24,14 +24,13 @@
 
 package com.github.mixinors.astromine.common.world.layer.mars;
 
+import com.github.mixinors.astromine.registry.AstromineBiomes;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.layer.type.ParentedLayer;
 import net.minecraft.world.biome.layer.util.IdentityCoordinateTransformer;
 import net.minecraft.world.biome.layer.util.LayerSampleContext;
 import net.minecraft.world.biome.layer.util.LayerSampler;
-
-import com.github.mixinors.astromine.registry.AstromineDiscoveriesBiomes;
 
 public class MarsBiomeLayer implements ParentedLayer, IdentityCoordinateTransformer {
 	private final Registry<Biome> biomeRegistry;
@@ -40,8 +39,8 @@ public class MarsBiomeLayer implements ParentedLayer, IdentityCoordinateTransfor
 
 	public MarsBiomeLayer(Registry<Biome> biomeRegistry) {
 		this.biomeRegistry = biomeRegistry;
-		this.riverId = biomeRegistry.getRawId(biomeRegistry.get(AstromineDiscoveriesBiomes.MARTIAN_RIVERBED));
-		this.marsId = biomeRegistry.getRawId(biomeRegistry.get(AstromineDiscoveriesBiomes.MARTIAN_PLAINS));
+		this.riverId = biomeRegistry.getRawId(biomeRegistry.get(AstromineBiomes.MARTIAN_RIVERBED));
+		this.marsId = biomeRegistry.getRawId(biomeRegistry.get(AstromineBiomes.MARTIAN_PLAINS));
 	}
 
 	@Override

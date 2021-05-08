@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import com.github.mixinors.astromine.registry.AstromineBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
@@ -41,7 +42,6 @@ import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvid
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.RefiningRecipe;
-import com.github.mixinors.astromine.registry.AstromineTechnologiesBlockEntityTypes;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -164,7 +164,7 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 
 	public static class Primitive extends RefineryBlockEntity {
 		public Primitive() {
-			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_REFINERY);
+			super(AstromineBlockEntityTypes.PRIMITIVE_REFINERY);
 		}
 
 		@Override
@@ -190,7 +190,7 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 
 	public static class Basic extends RefineryBlockEntity {
 		public Basic() {
-			super(AstromineTechnologiesBlockEntityTypes.BASIC_REFINERY);
+			super(AstromineBlockEntityTypes.BASIC_REFINERY);
 		}
 
 		@Override
@@ -216,7 +216,7 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 
 	public static class Advanced extends RefineryBlockEntity {
 		public Advanced() {
-			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_REFINERY);
+			super(AstromineBlockEntityTypes.ADVANCED_REFINERY);
 		}
 
 		@Override
@@ -242,7 +242,7 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 
 	public static class Elite extends RefineryBlockEntity {
 		public Elite() {
-			super(AstromineTechnologiesBlockEntityTypes.ELITE_REFINERY);
+			super(AstromineBlockEntityTypes.ELITE_REFINERY);
 		}
 
 		@Override

@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.registry.client;
 
+import com.github.mixinors.astromine.registry.AstromineBlocks;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 
 import net.minecraft.block.Block;
@@ -31,7 +32,15 @@ import net.minecraft.client.render.RenderLayer;
 
 public class AstromineRenderLayers {
 	public static void initialize() {
-
+		register(AstromineBlocks.AIRLOCK, RenderLayer.getTranslucent());
+		
+		register(AstromineBlocks.ALTAR, RenderLayer.getCutout());
+		register(AstromineBlocks.ALTAR_PEDESTAL, RenderLayer.getCutout());
+		register(AstromineBlocks.SPACE_SLIME_BLOCK, RenderLayer.getTranslucent());
+		
+		register(AstromineBlocks.ALTERNATOR, RenderLayer.getCutout());
+		register(AstromineBlocks.SPLITTER, RenderLayer.getCutout());
+		register(AstromineBlocks.SHREDDER, RenderLayer.getCutout());
 	}
 
 	/**
