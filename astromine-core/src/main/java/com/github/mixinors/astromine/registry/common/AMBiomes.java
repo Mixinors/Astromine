@@ -39,23 +39,9 @@ public class AMBiomes {
 	public static final Identifier ASTEROID_BELT_ID = AMCommon.id("asteroid_belt");
 	public static final RegistryKey<Biome> ASTEROID_BELT = register(Registry.BIOME_KEY, ASTEROID_BELT_ID);
 	
-	public static final Identifier VULCAN_PLAINS_ID = AMCommon.id("vulcan_plains");
-	public static final RegistryKey<Biome> VULCAN_PLAINS = register(Registry.BIOME_KEY, VULCAN_PLAINS_ID);
 	
-	public static final Identifier LUNAR_PLAINS_ID = AMCommon.id("lunar_plains");
-	public static final RegistryKey<Biome> LUNAR_PLAINS = register(Registry.BIOME_KEY, LUNAR_PLAINS_ID);
-	public static final Identifier LUNAR_HILLS_ID = AMCommon.id("lunar_hills");
-	public static final RegistryKey<Biome> LUNAR_HILLS = register(Registry.BIOME_KEY, LUNAR_HILLS_ID);
-	public static final Identifier LUNAR_LOWLANDS_ID = AMCommon.id("lunar_lowlands");
-	public static final RegistryKey<Biome> LUNAR_LOWLANDS = register(Registry.BIOME_KEY, LUNAR_LOWLANDS_ID);
 	
-	public static final Identifier MARTIAN_PLAINS_ID = AMCommon.id("martian_plains");
-	public static final RegistryKey<Biome> MARTIAN_PLAINS = register(Registry.BIOME_KEY, MARTIAN_PLAINS_ID);
-	public static final Identifier MARTIAN_RIVERBED_ID = AMCommon.id("martian_riverbed");
-	public static final RegistryKey<Biome> MARTIAN_RIVERBED = register(Registry.BIOME_KEY, MARTIAN_RIVERBED_ID);
 	
-	public static final Identifier GLACIOS_ID = AMCommon.id("glacios");
-	public static final RegistryKey<Biome> GLACIOS = register(Registry.BIOME_KEY, GLACIOS_ID);
 	
 	public static void init() {
 	

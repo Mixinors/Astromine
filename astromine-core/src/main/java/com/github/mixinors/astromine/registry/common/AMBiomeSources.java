@@ -24,10 +24,6 @@
 
 package com.github.mixinors.astromine.registry.common;
 
-// import com.github.mixinors.astromine.common.world.generation.glacios.GlaciosBiomeSource;
-// import com.github.mixinors.astromine.common.world.generation.mars.MarsBiomeSource;
-// import com.github.mixinors.astromine.common.world.generation.moon.MoonBiomeSource;
-// import com.github.mixinors.astromine.common.world.generation.vulcan.VulcanBiomeSource;
 
 import com.github.mixinors.astromine.common.world.generation.space.EarthSpaceBiomeSource;
 import net.minecraft.util.registry.Registry;
@@ -36,9 +32,5 @@ public class AMBiomeSources {
 	public static void init() {
 		Registry.register(Registry.BIOME_SOURCE, AMDimensions.EARTH_SPACE_ID, EarthSpaceBiomeSource.CODEC);
 		
-		// Registry.register(Registry.BIOME_SOURCE, AMDimensions.MOON_ID, MoonBiomeSource.CODEC);
-		// Registry.register(Registry.BIOME_SOURCE, AMDimensions.MARS_ID, MarsBiomeSource.CODEC);
-		// Registry.register(Registry.BIOME_SOURCE, AMDimensions.VULCAN_ID, VulcanBiomeSource.CODEC);
-		// Registry.register(Registry.BIOME_SOURCE, AMDimensions.GLACIOS_ID, GlaciosBiomeSource.CODEC);
 	}
 }

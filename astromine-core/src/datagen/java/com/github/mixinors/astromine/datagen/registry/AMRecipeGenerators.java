@@ -233,9 +233,6 @@ public class AMRecipeGenerators {
 	public final RecipeGenerator ASTEROID_CLUSTER_TO_GEM = register(new SmeltingSetRecipeGenerator(ASTEROID_CLUSTER, GEM));
 	public final RecipeGenerator ASTEROID_CLUSTER_TO_MISC = register(new SmeltingSetRecipeGenerator(ASTEROID_CLUSTER, MISC_RESOURCE));
 	
-	public final RecipeGenerator MOON_ORE_TO_INGOT = register(new SmeltingSetRecipeGenerator(MOON_ORE, INGOT));
-	public final RecipeGenerator MOON_ORE_TO_GEM = register(new SmeltingSetRecipeGenerator(MOON_ORE, GEM));
-	public final RecipeGenerator MOON_ORE_TO_MISC = register(new SmeltingSetRecipeGenerator(MOON_ORE, MISC_RESOURCE));
 	
 	public final RecipeGenerator ASTEROID_ORE_TO_INGOT_BLASTING = register(new BlastingSetRecipeGenerator(ASTEROID_ORE, INGOT));
 	public final RecipeGenerator ASTEROID_ORE_TO_GEM_BLASTING = register(new BlastingSetRecipeGenerator(ASTEROID_ORE, GEM));
@@ -244,152 +241,76 @@ public class AMRecipeGenerators {
 	public final RecipeGenerator ASTEROID_CLUSTER_TO_GEM_BLASTING = register(new BlastingSetRecipeGenerator(ASTEROID_CLUSTER, GEM));
 	public final RecipeGenerator ASTEROID_CLUSTER_TO_MISC_BLASTING = register(new BlastingSetRecipeGenerator(ASTEROID_CLUSTER, MISC_RESOURCE));
 	
-	public final RecipeGenerator MOON_ORE_TO_INGOT_BLASTING = register(new BlastingSetRecipeGenerator(MOON_ORE, INGOT));
-	public final RecipeGenerator MOON_ORE_TO_GEM_BLASTING = register(new BlastingSetRecipeGenerator(MOON_ORE, GEM));
-	public final RecipeGenerator MOON_ORE_TO_MISC_BLASTING = register(new BlastingSetRecipeGenerator(MOON_ORE, MISC_RESOURCE));
 	
 	public final RecipeGenerator ASTEROID_ORE_TO_DUSTS = register(new com.github.mixinors.astromine.datagen.generator.recipe.TrituratingRecipeGenerator(ASTEROID_ORE, DUST, 2, 90, 340));
 	public final RecipeGenerator ASTEROID_CLUSTER_TO_DUSTS = register(new com.github.mixinors.astromine.datagen.generator.recipe.TrituratingRecipeGenerator(ASTEROID_CLUSTER, DUST, 2, 90, 340));
 	
-	public final RecipeGenerator MOON_ORE_TO_DUSTS = register(new com.github.mixinors.astromine.datagen.generator.recipe.TrituratingRecipeGenerator(MOON_ORE, DUST, 2, 90, 340));
 	
 	public final RecipeGenerator SMOOTH_ASTEROID_STONE = register(new SmeltingRecipeGenerator(Ingredient.ofItems(AMBlocks.ASTEROID_STONE), AMBlocks.SMOOTH_ASTEROID_STONE));
-	public final RecipeGenerator SMOOTH_MARTIAN_STONE = register(new SmeltingRecipeGenerator(Ingredient.ofItems(AMBlocks.MARTIAN_STONE), AMBlocks.SMOOTH_MARTIAN_STONE));
-	public final RecipeGenerator SMOOTH_VULCAN_STONE = register(new SmeltingRecipeGenerator(Ingredient.ofItems(AMBlocks.VULCAN_STONE), AMBlocks.SMOOTH_VULCAN_STONE));
 	
 	public final RecipeGenerator POLISHED_ASTEROID_STONE = register(new Crafting2x2RecipeGenerator(AMBlocks.POLISHED_ASTEROID_STONE, Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE), 4));
-	public final RecipeGenerator POLISHED_MARTIAN_STONE = register(new Crafting2x2RecipeGenerator(AMBlocks.POLISHED_MARTIAN_STONE, Ingredient.ofItems(AMBlocks.SMOOTH_MARTIAN_STONE), 4));
-	public final RecipeGenerator POLISHED_VULCAN_STONE = register(new Crafting2x2RecipeGenerator(AMBlocks.POLISHED_VULCAN_STONE, Ingredient.ofItems(AMBlocks.SMOOTH_VULCAN_STONE), 4));
 	
 	public final RecipeGenerator ASTEROID_STONE_BRICKS = register(new Crafting2x2RecipeGenerator(AMBlocks.ASTEROID_STONE_BRICKS, Ingredient.ofItems(AMBlocks.POLISHED_ASTEROID_STONE), 4));
-	public final RecipeGenerator MARTIAN_STONE_BRICKS = register(new Crafting2x2RecipeGenerator(AMBlocks.MARTIAN_STONE_BRICKS, Ingredient.ofItems(AMBlocks.POLISHED_MARTIAN_STONE), 4));
-	public final RecipeGenerator VULCAN_STONE_BRICKS = register(new Crafting2x2RecipeGenerator(AMBlocks.VULCAN_STONE_BRICKS, Ingredient.ofItems(AMBlocks.POLISHED_VULCAN_STONE), 4));
 	
 	public final RecipeGenerator ASTEROID_STONE_SLAB = register(new SlabCraftingRecipeGenerator(AMBlocks.ASTEROID_STONE_SLAB, Ingredient.ofItems(AMBlocks.ASTEROID_STONE)));
-	public final RecipeGenerator MOON_STONE_SLAB = register(new SlabCraftingRecipeGenerator(AMBlocks.MOON_STONE_SLAB, Ingredient.ofItems(AMBlocks.MOON_STONE)));
-	public final RecipeGenerator MARTIAN_STONE_SLAB = register(new SlabCraftingRecipeGenerator(AMBlocks.MARTIAN_STONE_SLAB, Ingredient.ofItems(AMBlocks.MARTIAN_STONE)));
-	public final RecipeGenerator VULCAN_STONE_SLAB = register(new SlabCraftingRecipeGenerator(AMBlocks.VULCAN_STONE_SLAB, Ingredient.ofItems(AMBlocks.VULCAN_STONE)));
 	
 	public final RecipeGenerator ASTEROID_STONE_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.ASTEROID_STONE_STAIRS, Ingredient.ofItems(AMBlocks.ASTEROID_STONE)));
-	public final RecipeGenerator MOON_STONE_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.MOON_STONE_STAIRS, Ingredient.ofItems(AMBlocks.MOON_STONE)));
-	public final RecipeGenerator MARTIAN_STONE_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.MARTIAN_STONE_STAIRS, Ingredient.ofItems(AMBlocks.MARTIAN_STONE)));
-	public final RecipeGenerator VULCAN_STONE_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.VULCAN_STONE_STAIRS, Ingredient.ofItems(AMBlocks.VULCAN_STONE)));
 	
 	public final RecipeGenerator SMOOTH_ASTEROID_STONE_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.SMOOTH_ASTEROID_STONE_STAIRS, Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE)));
-	public final RecipeGenerator SMOOTH_MARTIAN_STONE_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.SMOOTH_MARTIAN_STONE_STAIRS, Ingredient.ofItems(AMBlocks.SMOOTH_MARTIAN_STONE)));
-	public final RecipeGenerator SMOOTH_VULCAN_STONE_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.SMOOTH_VULCAN_STONE_STAIRS, Ingredient.ofItems(AMBlocks.SMOOTH_VULCAN_STONE)));
 	
 	public final RecipeGenerator POLISHED_ASTEROID_STONE_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.POLISHED_ASTEROID_STONE_STAIRS, Ingredient.ofItems(AMBlocks.POLISHED_ASTEROID_STONE)));
-	public final RecipeGenerator POLISHED_MARTIAN_STONE_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.POLISHED_MARTIAN_STONE_STAIRS, Ingredient.ofItems(AMBlocks.POLISHED_MARTIAN_STONE)));
-	public final RecipeGenerator POLISHED_VULCAN_STONE_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.POLISHED_VULCAN_STONE_STAIRS, Ingredient.ofItems(AMBlocks.POLISHED_VULCAN_STONE)));
 	
 	public final RecipeGenerator ASTEROID_STONE_BRICK_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_STAIRS, Ingredient.ofItems(AMBlocks.ASTEROID_STONE_BRICKS)));
-	public final RecipeGenerator MARTIAN_STONE_BRICK_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.MARTIAN_STONE_BRICK_STAIRS, Ingredient.ofItems(AMBlocks.MARTIAN_STONE_BRICKS)));
-	public final RecipeGenerator VULCAN_STONE_BRICK_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.VULCAN_STONE_BRICK_STAIRS, Ingredient.ofItems(AMBlocks.VULCAN_STONE_BRICKS)));
 	
 	public final RecipeGenerator ASTEROID_STONE_WALL = register(new WallCraftingRecipeGenerator(AMBlocks.ASTEROID_STONE_WALL, Ingredient.ofItems(AMBlocks.ASTEROID_STONE)));
-	public final RecipeGenerator MOON_STONE_WALL = register(new WallCraftingRecipeGenerator(AMBlocks.MOON_STONE_WALL, Ingredient.ofItems(AMBlocks.MOON_STONE)));
-	public final RecipeGenerator MARTIAN_STONE_WALL = register(new WallCraftingRecipeGenerator(AMBlocks.MARTIAN_STONE_WALL, Ingredient.ofItems(AMBlocks.MARTIAN_STONE)));
-	public final RecipeGenerator VULCAN_STONE_WALL = register(new WallCraftingRecipeGenerator(AMBlocks.VULCAN_STONE_WALL, Ingredient.ofItems(AMBlocks.VULCAN_STONE)));
 	
 	public final RecipeGenerator SMOOTH_ASTEROID_STONE_WALL = register(new WallCraftingRecipeGenerator(AMBlocks.SMOOTH_ASTEROID_STONE_WALL, Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE)));
-	public final RecipeGenerator SMOOTH_MARTIAN_STONE_WALL = register(new WallCraftingRecipeGenerator(AMBlocks.SMOOTH_MARTIAN_STONE_WALL, Ingredient.ofItems(AMBlocks.SMOOTH_MARTIAN_STONE)));
-	public final RecipeGenerator SMOOTH_VULCAN_STONE_WALL = register(new WallCraftingRecipeGenerator(AMBlocks.SMOOTH_VULCAN_STONE_WALL, Ingredient.ofItems(AMBlocks.SMOOTH_VULCAN_STONE)));
 	
 	public final RecipeGenerator ASTEROID_STONE_BRICK_WALL = register(new WallCraftingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_WALL, Ingredient.ofItems(AMBlocks.ASTEROID_STONE_BRICKS)));
-	public final RecipeGenerator MARTIAN_STONE_BRICK_WALL = register(new WallCraftingRecipeGenerator(AMBlocks.MARTIAN_STONE_BRICK_WALL, Ingredient.ofItems(AMBlocks.MARTIAN_STONE_BRICKS)));
-	public final RecipeGenerator VULCAN_STONE_BRICK_WALL = register(new WallCraftingRecipeGenerator(AMBlocks.VULCAN_STONE_BRICK_WALL, Ingredient.ofItems(AMBlocks.VULCAN_STONE_BRICKS)));
 	
 	public final RecipeGenerator POLISHED_ASTEROID_STONE_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_ASTEROID_STONE, Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE)));
-	public final RecipeGenerator POLISHED_MARTIAN_STONE_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_MARTIAN_STONE, Ingredient.ofItems(AMBlocks.SMOOTH_MARTIAN_STONE)));
-	public final RecipeGenerator POLISHED_VULCAN_STONE_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_VULCAN_STONE, Ingredient.ofItems(AMBlocks.SMOOTH_VULCAN_STONE)));
 	
 	public final RecipeGenerator ASTEROID_STONE_BRICKS_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICKS, Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE), "smooth"));
-	public final RecipeGenerator MARTIAN_STONE_BRICKS_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.MARTIAN_STONE_BRICKS, Ingredient.ofItems(AMBlocks.SMOOTH_MARTIAN_STONE), "smooth"));
-	public final RecipeGenerator VULCAN_STONE_BRICKS_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.VULCAN_STONE_BRICKS, Ingredient.ofItems(AMBlocks.SMOOTH_VULCAN_STONE), "smooth"));
 	
 	public final RecipeGenerator ASTEROID_STONE_BRICKS_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICKS, Ingredient.ofItems(AMBlocks.POLISHED_ASTEROID_STONE), "polished"));
-	public final RecipeGenerator MARTIAN_STONE_BRICKS_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.MARTIAN_STONE_BRICKS, Ingredient.ofItems(AMBlocks.POLISHED_MARTIAN_STONE), "polished"));
-	public final RecipeGenerator VULCAN_STONE_BRICKS_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.VULCAN_STONE_BRICKS, Ingredient.ofItems(AMBlocks.POLISHED_VULCAN_STONE), "polished"));
 	
 	public final RecipeGenerator ASTEROID_STONE_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_SLAB, Ingredient.ofItems(AMBlocks.ASTEROID_STONE), 2));
-	public final RecipeGenerator MOON_STONE_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.MOON_STONE_SLAB, Ingredient.ofItems(AMBlocks.MOON_STONE), 2));
-	public final RecipeGenerator MARTIAN_STONE_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.MARTIAN_STONE_SLAB, Ingredient.ofItems(AMBlocks.MARTIAN_STONE), 2));
-	public final RecipeGenerator VULCAN_STONE_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.VULCAN_STONE_SLAB, Ingredient.ofItems(AMBlocks.VULCAN_STONE), 2));
 	
 	public final RecipeGenerator SMOOTH_ASTEROID_STONE_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.SMOOTH_ASTEROID_STONE_SLAB, Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE), 2));
-	public final RecipeGenerator SMOOTH_MARTIAN_STONE_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.SMOOTH_MARTIAN_STONE_SLAB, Ingredient.ofItems(AMBlocks.SMOOTH_MARTIAN_STONE), 2));
-	public final RecipeGenerator SMOOTH_VULCAN_STONE_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.SMOOTH_VULCAN_STONE_SLAB, Ingredient.ofItems(AMBlocks.SMOOTH_VULCAN_STONE), 2));
 	
 	public final RecipeGenerator POLISHED_ASTEROID_STONE_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_ASTEROID_STONE_SLAB, Ingredient.ofItems(AMBlocks.POLISHED_ASTEROID_STONE), 2));
-	public final RecipeGenerator POLISHED_MARTIAN_STONE_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_MARTIAN_STONE_SLAB, Ingredient.ofItems(AMBlocks.POLISHED_MARTIAN_STONE), 2));
-	public final RecipeGenerator POLISHED_VULCAN_STONE_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_VULCAN_STONE_SLAB, Ingredient.ofItems(AMBlocks.POLISHED_VULCAN_STONE), 2));
 	
 	public final RecipeGenerator POLISHED_ASTEROID_STONE_SLAB_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_ASTEROID_STONE_SLAB, Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE), 2, "smooth"));
-	public final RecipeGenerator POLISHED_MARTIAN_STONE_SLAB_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_MARTIAN_STONE_SLAB, Ingredient.ofItems(AMBlocks.SMOOTH_MARTIAN_STONE), 2, "smooth"));
-	public final RecipeGenerator POLISHED_VULCAN_STONE_SLAB_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_VULCAN_STONE_SLAB, Ingredient.ofItems(AMBlocks.SMOOTH_VULCAN_STONE), 2, "smooth"));
 	
 	public final RecipeGenerator ASTEROID_STONE_BRICK_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_SLAB, Ingredient.ofItems(AMBlocks.ASTEROID_STONE_BRICKS), 2));
-	public final RecipeGenerator MARTIAN_STONE_BRICK_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.MARTIAN_STONE_BRICK_SLAB, Ingredient.ofItems(AMBlocks.MARTIAN_STONE_BRICKS), 2));
-	public final RecipeGenerator VULCAN_STONE_BRICK_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.VULCAN_STONE_BRICK_SLAB, Ingredient.ofItems(AMBlocks.VULCAN_STONE_BRICKS), 2));
 	
 	public final RecipeGenerator ASTEROID_STONE_BRICK_SLAB_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_SLAB, Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE), 2, "smooth"));
-	public final RecipeGenerator MARTIAN_STONE_BRICK_SLAB_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.MARTIAN_STONE_BRICK_SLAB, Ingredient.ofItems(AMBlocks.SMOOTH_MARTIAN_STONE), 2, "smooth"));
-	public final RecipeGenerator VULCAN_STONE_BRICK_SLAB_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.VULCAN_STONE_BRICK_SLAB, Ingredient.ofItems(AMBlocks.SMOOTH_VULCAN_STONE), 2, "smooth"));
 	
 	public final RecipeGenerator ASTEROID_STONE_BRICK_SLAB_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_SLAB, Ingredient.ofItems(AMBlocks.POLISHED_ASTEROID_STONE), 2, "polished"));
-	public final RecipeGenerator MARTIAN_STONE_BRICK_SLAB_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.MARTIAN_STONE_BRICK_SLAB, Ingredient.ofItems(AMBlocks.POLISHED_MARTIAN_STONE), 2, "polished"));
-	public final RecipeGenerator VULCAN_STONE_BRICK_SLAB_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.VULCAN_STONE_BRICK_SLAB, Ingredient.ofItems(AMBlocks.POLISHED_VULCAN_STONE), 2, "polished"));
 	
 	public final RecipeGenerator ASTEROID_STONE_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_STAIRS, Ingredient.ofItems(AMBlocks.ASTEROID_STONE)));
-	public final RecipeGenerator MOON_STONE_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.MOON_STONE_STAIRS, Ingredient.ofItems(AMBlocks.MOON_STONE)));
-	public final RecipeGenerator MARTIAN_STONE_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.MARTIAN_STONE_STAIRS, Ingredient.ofItems(AMBlocks.MARTIAN_STONE)));
-	public final RecipeGenerator VULCAN_STONE_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.VULCAN_STONE_STAIRS, Ingredient.ofItems(AMBlocks.VULCAN_STONE)));
 	
 	public final RecipeGenerator SMOOTH_ASTEROID_STONE_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.SMOOTH_ASTEROID_STONE_STAIRS, Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE)));
-	public final RecipeGenerator SMOOTH_MARTIAN_STONE_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.SMOOTH_MARTIAN_STONE_STAIRS, Ingredient.ofItems(AMBlocks.SMOOTH_MARTIAN_STONE)));
-	public final RecipeGenerator SMOOTH_VULCAN_STONE_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.SMOOTH_VULCAN_STONE_STAIRS, Ingredient.ofItems(AMBlocks.SMOOTH_VULCAN_STONE)));
 	
 	public final RecipeGenerator POLISHED_ASTEROID_STONE_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_ASTEROID_STONE_STAIRS, Ingredient.ofItems(AMBlocks.POLISHED_ASTEROID_STONE)));
-	public final RecipeGenerator POLISHED_MARTIAN_STONE_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_MARTIAN_STONE_STAIRS, Ingredient.ofItems(AMBlocks.POLISHED_MARTIAN_STONE)));
-	public final RecipeGenerator POLISHED_VULCAN_STONE_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_VULCAN_STONE_STAIRS, Ingredient.ofItems(AMBlocks.POLISHED_VULCAN_STONE)));
 	
 	public final RecipeGenerator POLISHED_ASTEROID_STONE_STAIRS_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_ASTEROID_STONE_STAIRS, Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE), "smooth"));
-	public final RecipeGenerator POLISHED_MARTIAN_STONE_STAIRS_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_MARTIAN_STONE_STAIRS, Ingredient.ofItems(AMBlocks.SMOOTH_MARTIAN_STONE), "smooth"));
-	public final RecipeGenerator POLISHED_VULCAN_STONE_STAIRS_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_VULCAN_STONE_STAIRS, Ingredient.ofItems(AMBlocks.SMOOTH_VULCAN_STONE), "smooth"));
 	
 	public final RecipeGenerator ASTEROID_STONE_BRICK_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_STAIRS, Ingredient.ofItems(AMBlocks.ASTEROID_STONE_BRICKS)));
-	public final RecipeGenerator MARTIAN_STONE_BRICK_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.MARTIAN_STONE_BRICK_STAIRS, Ingredient.ofItems(AMBlocks.MARTIAN_STONE_BRICKS)));
-	public final RecipeGenerator VULCAN_STONE_BRICK_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.VULCAN_STONE_BRICK_STAIRS, Ingredient.ofItems(AMBlocks.VULCAN_STONE_BRICKS)));
 	
 	public final RecipeGenerator ASTEROID_STONE_BRICK_STAIRS_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_STAIRS, Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE), "smooth"));
-	public final RecipeGenerator MARTIAN_STONE_BRICK_STAIRS_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.MARTIAN_STONE_BRICK_STAIRS, Ingredient.ofItems(AMBlocks.SMOOTH_MARTIAN_STONE), "smooth"));
-	public final RecipeGenerator VULCAN_STONE_BRICK_STAIRS_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.VULCAN_STONE_BRICK_STAIRS, Ingredient.ofItems(AMBlocks.SMOOTH_VULCAN_STONE), "smooth"));
 	
 	public final RecipeGenerator ASTEROID_STONE_BRICK_STAIRS_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_STAIRS, Ingredient.ofItems(AMBlocks.POLISHED_ASTEROID_STONE), "polished"));
-	public final RecipeGenerator MARTIAN_STONE_BRICK_STAIRS_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.MARTIAN_STONE_BRICK_STAIRS, Ingredient.ofItems(AMBlocks.POLISHED_MARTIAN_STONE), "polished"));
-	public final RecipeGenerator VULCAN_STONE_BRICK_STAIRS_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.VULCAN_STONE_BRICK_STAIRS, Ingredient.ofItems(AMBlocks.POLISHED_VULCAN_STONE), "polished"));
 	
 	public final RecipeGenerator ASTEROID_STONE_WALL_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_WALL, Ingredient.ofItems(AMBlocks.ASTEROID_STONE)));
-	public final RecipeGenerator MOON_STONE_WALL_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.MOON_STONE_WALL, Ingredient.ofItems(AMBlocks.MOON_STONE)));
-	public final RecipeGenerator MARTIAN_STONE_WALL_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.MARTIAN_STONE_WALL, Ingredient.ofItems(AMBlocks.MARTIAN_STONE)));
-	public final RecipeGenerator VULCAN_STONE_WALL_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.VULCAN_STONE_WALL, Ingredient.ofItems(AMBlocks.VULCAN_STONE)));
 	
 	public final RecipeGenerator SMOOTH_ASTEROID_STONE_WALL_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.SMOOTH_ASTEROID_STONE_WALL, Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE)));
-	public final RecipeGenerator SMOOTH_MARTIAN_STONE_WALL_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.SMOOTH_MARTIAN_STONE_WALL, Ingredient.ofItems(AMBlocks.SMOOTH_MARTIAN_STONE)));
-	public final RecipeGenerator SMOOTH_VULCAN_STONE_WALL_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.SMOOTH_VULCAN_STONE_WALL, Ingredient.ofItems(AMBlocks.SMOOTH_VULCAN_STONE)));
 	
 	public final RecipeGenerator ASTEROID_STONE_BRICK_WALL_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_WALL, Ingredient.ofItems(AMBlocks.ASTEROID_STONE_BRICKS)));
-	public final RecipeGenerator MARTIAN_STONE_BRICK_WALL_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.MARTIAN_STONE_BRICK_WALL, Ingredient.ofItems(AMBlocks.MARTIAN_STONE_BRICKS)));
-	public final RecipeGenerator VULCAN_STONE_BRICK_WALL_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.VULCAN_STONE_BRICK_WALL, Ingredient.ofItems(AMBlocks.VULCAN_STONE_BRICKS)));
 	
 	public final RecipeGenerator ASTEROID_STONE_BRICK_WALL_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_WALL, Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE), "smooth"));
-	public final RecipeGenerator MARTIAN_STONE_BRICK_WALL_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.MARTIAN_STONE_BRICK_WALL, Ingredient.ofItems(AMBlocks.SMOOTH_MARTIAN_STONE), "smooth"));
-	public final RecipeGenerator VULCAN_STONE_BRICK_WALL_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.VULCAN_STONE_BRICK_WALL, Ingredient.ofItems(AMBlocks.SMOOTH_VULCAN_STONE), "smooth"));
 	
 	public final RecipeGenerator ASTEROID_STONE_BRICK_WALL_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_WALL, Ingredient.ofItems(AMBlocks.POLISHED_ASTEROID_STONE), "polished"));
-	public final RecipeGenerator MARTIAN_STONE_BRICK_WALL_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.MARTIAN_STONE_BRICK_WALL, Ingredient.ofItems(AMBlocks.POLISHED_MARTIAN_STONE), "polished"));
-	public final RecipeGenerator VULCAN_STONE_BRICK_WALL_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.VULCAN_STONE_BRICK_WALL, Ingredient.ofItems(AMBlocks.POLISHED_VULCAN_STONE), "polished"));
 	
 	public final RecipeGenerator SPACE_SLIME_BLOCK = register(new Crafting3x3RecipeGenerator(AMBlocks.SPACE_SLIME_BLOCK, Ingredient.ofItems(AMItems.SPACE_SLIME_BALL)));
 	

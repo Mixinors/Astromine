@@ -22,7 +22,6 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.common.world.generation.glacios;
 
 import com.github.mixinors.astromine.registry.common.AMBiomes;
 import net.minecraft.util.registry.Registry;
@@ -34,13 +33,9 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import com.google.common.collect.ImmutableList;
 
-public class GlaciosBiomeSource extends BiomeSource {
-	public static final Codec<GlaciosBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter((biomeSource) -> biomeSource.registry), Codec.LONG.fieldOf("seed").stable().forGetter((
-		biomeSource) -> biomeSource.seed)).apply(instance, instance.stable(GlaciosBiomeSource::new)));
 	private final long seed;
 	private final Registry<Biome> registry;
 
-	public GlaciosBiomeSource(Registry<Biome> registry, long seed) {
 		super(ImmutableList.of());
 		this.seed = seed;
 		this.registry = registry;
@@ -53,11 +48,9 @@ public class GlaciosBiomeSource extends BiomeSource {
 
 	@Override
 	public BiomeSource withSeed(long seed) {
-		return new GlaciosBiomeSource(registry, seed);
 	}
 
 	@Override
 	public Biome getBiomeForNoiseGen(int biomeX, int biomeY, int biomeZ) {
-		return registry.get(AMBiomes.GLACIOS);
 	}
 }

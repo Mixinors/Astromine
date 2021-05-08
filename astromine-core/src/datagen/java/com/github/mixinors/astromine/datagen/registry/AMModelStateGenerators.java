@@ -46,7 +46,6 @@ public class AMModelStateGenerators {
 	
 	public final ModelStateGenerator ASTEROID_CLUSTER = register(new GenericItemSetModelGenerator(MaterialItemType.ASTEROID_CLUSTER));
 	
-	public final ModelStateGenerator MOON_ORE = register(new GenericBlockSetModelStateGenerator(MaterialItemType.MOON_ORE));
 	
 	public final ModelStateGenerator STANDARD_ITEMS = register(new GenericItemModelGenerator(
 			AMItems.SPACE_SUIT_HELMET,
@@ -67,13 +66,6 @@ public class AMModelStateGenerators {
 			AMBlocks.POLISHED_ASTEROID_STONE,
 			AMBlocks.ASTEROID_STONE_BRICKS,
 			AMBlocks.BLAZING_ASTEROID_STONE,
-			AMBlocks.MOON_STONE,
-			AMBlocks.POLISHED_MARTIAN_STONE,
-			AMBlocks.MARTIAN_STONE_BRICKS,
-			AMBlocks.VULCAN_STONE,
-			AMBlocks.SMOOTH_VULCAN_STONE,
-			AMBlocks.POLISHED_VULCAN_STONE,
-			AMBlocks.VULCAN_STONE_BRICKS,
 			AMBlocks.METEOR_STONE,
 			AMBlocks.SMOOTH_METEOR_STONE,
 			AMBlocks.POLISHED_METEOR_STONE,
@@ -83,9 +75,6 @@ public class AMModelStateGenerators {
 	public final ModelStateGenerator CUSTOM_MODEL_BLOCKS = register(new SimpleBlockItemModelStateGenerator(
 			AMBlocks.ALTAR,
 			AMBlocks.ALTAR_PEDESTAL,
-			AMBlocks.MARTIAN_SOIL,
-			AMBlocks.MARTIAN_STONE,
-			AMBlocks.SMOOTH_MARTIAN_STONE,
 			AMBlocks.SPACE_SLIME_BLOCK
 	));
 	
@@ -98,24 +87,6 @@ public class AMModelStateGenerators {
 			AMBlocks.POLISHED_ASTEROID_STONE_STAIRS,
 			AMBlocks.ASTEROID_STONE_BRICK_SLAB,
 			AMBlocks.ASTEROID_STONE_BRICK_STAIRS,
-			AMBlocks.MOON_STONE_SLAB,
-			AMBlocks.MOON_STONE_STAIRS,
-			AMBlocks.MARTIAN_STONE_SLAB,
-			AMBlocks.MARTIAN_STONE_STAIRS,
-			AMBlocks.SMOOTH_MARTIAN_STONE_SLAB,
-			AMBlocks.SMOOTH_MARTIAN_STONE_STAIRS,
-			AMBlocks.POLISHED_MARTIAN_STONE_SLAB,
-			AMBlocks.POLISHED_MARTIAN_STONE_STAIRS,
-			AMBlocks.MARTIAN_STONE_BRICK_SLAB,
-			AMBlocks.MARTIAN_STONE_BRICK_STAIRS,
-			AMBlocks.VULCAN_STONE_SLAB,
-			AMBlocks.VULCAN_STONE_STAIRS,
-			AMBlocks.SMOOTH_VULCAN_STONE_SLAB,
-			AMBlocks.SMOOTH_VULCAN_STONE_STAIRS,
-			AMBlocks.POLISHED_VULCAN_STONE_SLAB,
-			AMBlocks.POLISHED_VULCAN_STONE_STAIRS,
-			AMBlocks.VULCAN_STONE_BRICK_SLAB,
-			AMBlocks.VULCAN_STONE_BRICK_STAIRS,
 			AMBlocks.METEOR_STONE_SLAB,
 			AMBlocks.METEOR_STONE_STAIRS,
 			AMBlocks.SMOOTH_METEOR_STONE_SLAB,

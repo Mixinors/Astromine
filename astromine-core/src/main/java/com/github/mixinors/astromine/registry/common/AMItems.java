@@ -84,7 +84,6 @@ public class AMItems {
 	public static final Item STELLUM_NUGGET = register("stellum_nugget", new Item(AMItems.getBasicSettings().fireproof()));
 	public static final Item UNIVITE_NUGGET = register("univite_nugget", new Item(AMItems.getBasicSettings().fireproof()));
 	
-	// public static final Item LUNUM_NUGGET = register("lunum_nugget", new Item(AMItems.getBasicSettings()));
 	
 	public static final Item COPPER_NUGGET = register("copper_nugget", new Item(AMItems.getBasicSettings()));
 	public static final Item TIN_NUGGET = register("tin_nugget", new Item(AMItems.getBasicSettings()));
@@ -94,8 +93,6 @@ public class AMItems {
 	public static final Item STEEL_NUGGET = register("steel_nugget", new Item(AMItems.getBasicSettings()));
 	public static final Item BRONZE_NUGGET = register("bronze_nugget", new Item(AMItems.getBasicSettings()));
 	public static final Item ELECTRUM_NUGGET = register("electrum_nugget", new Item(AMItems.getBasicSettings()));
-	public static final Item ROSE_GOLD_NUGGET = register("rose_gold_nugget", new Item(AMItems.getBasicSettings()));
-	public static final Item STERLING_SILVER_NUGGET = register("sterling_silver_nugget", new Item(AMItems.getBasicSettings()));
 	public static final Item FOOLS_GOLD_NUGGET = register("fools_gold_nugget", new Item(AMItems.getBasicSettings()));
 	public static final Item METEORIC_STEEL_NUGGET = register("meteoric_steel_nugget", new Item(AMItems.getBasicSettings()));
 	
@@ -120,7 +117,6 @@ public class AMItems {
 	public static final Item STELLUM_INGOT = register("stellum_ingot", new Item(AMItems.getBasicSettings().fireproof()));
 	public static final Item UNIVITE_INGOT = register("univite_ingot", new Item(AMItems.getBasicSettings().fireproof()));
 	
-	// public static final Item LUNUM_INGOT = register("lunum_ingot", new Item(AMItems.getBasicSettings()));
 	
 	public static final Item COPPER_INGOT = register("copper_ingot", new Item(AMItems.getBasicSettings()));
 	public static final Item TIN_INGOT = register("tin_ingot", new Item(AMItems.getBasicSettings()));
@@ -130,8 +126,6 @@ public class AMItems {
 	public static final Item BRONZE_INGOT = register("bronze_ingot", new Item(AMItems.getBasicSettings()));
 	public static final Item STEEL_INGOT = register("steel_ingot", new Item(AMItems.getBasicSettings()));
 	public static final Item ELECTRUM_INGOT = register("electrum_ingot", new Item(AMItems.getBasicSettings()));
-	public static final Item ROSE_GOLD_INGOT = register("rose_gold_ingot", new Item(AMItems.getBasicSettings()));
-	public static final Item STERLING_SILVER_INGOT = register("sterling_silver_ingot", new Item(AMItems.getBasicSettings()));
 	public static final Item FOOLS_GOLD_INGOT = register("fools_gold_ingot", new Item(AMItems.getBasicSettings()));
 	public static final Item METEORIC_STEEL_INGOT = register("meteoric_steel_ingot", new Item(AMItems.getBasicSettings()));
 	
@@ -141,7 +135,6 @@ public class AMItems {
 	public static final Item GALAXIUM_DUST = register("galaxium_dust", new Item(AMItems.getBasicSettings()));
 	public static final Item UNIVITE_DUST = register("univite_dust", new Item(AMItems.getBasicSettings().fireproof()));
 	
-	// public static final Item LUNUM_DUST = register("lunum_dust", new Item(AMItems.getBasicSettings()));
 	
 	public static final Item COPPER_DUST = register("copper_dust", new Item(AMItems.getBasicSettings()));
 	public static final Item TIN_DUST = register("tin_dust", new Item(AMItems.getBasicSettings()));
@@ -151,8 +144,6 @@ public class AMItems {
 	public static final Item STEEL_DUST = register("steel_dust", new Item(AMItems.getBasicSettings()));
 	public static final Item BRONZE_DUST = register("bronze_dust", new Item(AMItems.getBasicSettings()));
 	public static final Item ELECTRUM_DUST = register("electrum_dust", new Item(AMItems.getBasicSettings()));
-	public static final Item ROSE_GOLD_DUST = register("rose_gold_dust", new Item(AMItems.getBasicSettings()));
-	public static final Item STERLING_SILVER_DUST = register("sterling_silver_dust", new Item(AMItems.getBasicSettings()));
 	public static final Item FOOLS_GOLD_DUST = register("fools_gold_dust", new Item(AMItems.getBasicSettings()));
 	public static final Item METEORIC_STEEL_DUST = register("meteoric_steel_dust", new Item(AMItems.getBasicSettings()));
 	
@@ -173,7 +164,6 @@ public class AMItems {
 	public static final Item GALAXIUM_TINY_DUST = register("galaxium_tiny_dust", new Item(AMItems.getBasicSettings()));
 	public static final Item UNIVITE_TINY_DUST = register("univite_tiny_dust", new Item(AMItems.getBasicSettings().fireproof()));
 	
-	// public static final Item LUNUM_TINY_DUST = register("lunum_tiny_dust", new Item(AMItems.getBasicSettings()));
 	
 	public static final Item COPPER_TINY_DUST = register("copper_tiny_dust", new Item(AMItems.getBasicSettings()));
 	public static final Item TIN_TINY_DUST = register("tin_tiny_dust", new Item(AMItems.getBasicSettings()));
@@ -183,8 +173,6 @@ public class AMItems {
 	public static final Item STEEL_TINY_DUST = register("steel_tiny_dust", new Item(AMItems.getBasicSettings()));
 	public static final Item BRONZE_TINY_DUST = register("bronze_tiny_dust", new Item(AMItems.getBasicSettings()));
 	public static final Item ELECTRUM_TINY_DUST = register("electrum_tiny_dust", new Item(AMItems.getBasicSettings()));
-	public static final Item ROSE_GOLD_TINY_DUST = register("rose_gold_tiny_dust", new Item(AMItems.getBasicSettings()));
-	public static final Item STERLING_SILVER_TINY_DUST = register("sterling_silver_tiny_dust", new Item(AMItems.getBasicSettings()));
 	public static final Item FOOLS_GOLD_TINY_DUST = register("fools_gold_tiny_dust", new Item(AMItems.getBasicSettings()));
 	public static final Item METEORIC_STEEL_TINY_DUST = register("meteoric_steel_tiny_dust", new Item(AMItems.getBasicSettings()));
 	
@@ -205,7 +193,6 @@ public class AMItems {
 	public static final Item STELLUM_PLATE = register("stellum_plate", new Item(AMItems.getBasicSettings().fireproof()));
 	public static final Item UNIVITE_PLATE = register("univite_plate", new Item(AMItems.getBasicSettings().fireproof()));
 	
-	// public static final Item LUNUM_PLATE = register("lunum_plate", new Item(AMItems.getBasicSettings()));
 	
 	public static final Item COPPER_PLATE = register("copper_plate", new Item(AMItems.getBasicSettings()));
 	public static final Item TIN_PLATE = register("tin_plate", new Item(AMItems.getBasicSettings()));
@@ -215,8 +202,6 @@ public class AMItems {
 	public static final Item STEEL_PLATE = register("steel_plate", new Item(AMItems.getBasicSettings()));
 	public static final Item BRONZE_PLATE = register("bronze_plate", new Item(AMItems.getBasicSettings()));
 	public static final Item ELECTRUM_PLATE = register("electrum_plate", new Item(AMItems.getBasicSettings()));
-	public static final Item ROSE_GOLD_PLATE = register("rose_gold_plate", new Item(AMItems.getBasicSettings()));
-	public static final Item STERLING_SILVER_PLATE = register("sterling_silver_plate", new Item(AMItems.getBasicSettings()));
 	public static final Item FOOLS_GOLD_PLATE = register("fools_gold_plate", new Item(AMItems.getBasicSettings()));
 	public static final Item METEORIC_STEEL_PLATE = register("meteoric_steel_plate", new Item(AMItems.getBasicSettings()));
 	
@@ -228,7 +213,6 @@ public class AMItems {
 	public static final Item STELLUM_GEAR = register("stellum_gear", new Item(AMItems.getBasicSettings().fireproof()));
 	public static final Item UNIVITE_GEAR = register("univite_gear", new Item(AMItems.getBasicSettings().fireproof()));
 	
-	// public static final Item LUNUM_GEAR = register("lunum_gear", new Item(AMItems.getBasicSettings()));
 	
 	public static final Item COPPER_GEAR = register("copper_gear", new Item(AMItems.getBasicSettings()));
 	public static final Item TIN_GEAR = register("tin_gear", new Item(AMItems.getBasicSettings()));
@@ -238,8 +222,6 @@ public class AMItems {
 	public static final Item STEEL_GEAR = register("steel_gear", new Item(AMItems.getBasicSettings()));
 	public static final Item BRONZE_GEAR = register("bronze_gear", new Item(AMItems.getBasicSettings()));
 	public static final Item ELECTRUM_GEAR = register("electrum_gear", new Item(AMItems.getBasicSettings()));
-	public static final Item ROSE_GOLD_GEAR = register("rose_gold_gear", new Item(AMItems.getBasicSettings()));
-	public static final Item STERLING_SILVER_GEAR = register("sterling_silver_gear", new Item(AMItems.getBasicSettings()));
 	public static final Item FOOLS_GOLD_GEAR = register("fools_gold_gear", new Item(AMItems.getBasicSettings()));
 	public static final Item METEORIC_STEEL_GEAR = register("meteoric_steel_gear", new Item(AMItems.getBasicSettings()));
 	
@@ -335,15 +317,6 @@ public class AMItems {
 	public static final Item UNIVITE_HAMMER = register("univite_hammer", new HammerItem(AMToolMaterials.UNIVITE, 1, -2.8f, AMItems.getBasicSettings().fireproof()));
 	public static final Item UNIVITE_EXCAVATOR = register("univite_excavator", new ExcavatorItem(AMToolMaterials.UNIVITE, 1, -2.8f, AMItems.getBasicSettings().fireproof()));
 	
-	// public static final PickaxeItem LUNUM_PICKAXE = register("lunum_pickaxe", new PickaxeItem(AMToolMaterials.LUNUM, 1, -2.8f, AMItems.getBasicSettings()));
-	// public static final AxeItem LUNUM_AXE = register("lunum_axe", new AxeItem(AMToolMaterials.LUNUM, 5f, -3.0f, AMItems.getBasicSettings()));
-	// public static final ShovelItem LUNUM_SHOVEL = register("lunum_shovel", new ShovelItem(AMToolMaterials.LUNUM, 1.5f, -3.0f, AMItems.getBasicSettings()));
-	// public static final HoeItem LUNUM_HOE = register("lunum_hoe", new HoeItem(AMToolMaterials.LUNUM, -5, 0f, AMItems.getBasicSettings()));
-	// public static final Item LUNUM_SWORD = register("lunum_sword", new SwordItem(AMToolMaterials.LUNUM, 3, -2.4f, AMItems.getBasicSettings()));
-	// public static final Item LUNUM_MINING_TOOL = register("lunum_mining_tool", new DynamicToolItemItem(LUNUM_SHOVEL, LUNUM_PICKAXE, AMToolMaterials.LUNUM, AMItems.getBasicSettings()));
-	// public static final Item LUNUM_MATTOCK = register("lunum_mattock", new DynamicToolItemItem(LUNUM_HOE, LUNUM_AXE, AMToolMaterials.LUNUM, AMItems.getBasicSettings()));
-	// public static final Item LUNUM_HAMMER = register("lunum_hammer", new HammerItem(AMToolMaterials.LUNUM, 1, -2.8f, AMItems.getBasicSettings()));
-	// public static final Item LUNUM_EXCAVATOR = register("lunum_excavator", new ExcavatorItem(AMToolMaterials.LUNUM, 1, -2.8f, AMItems.getBasicSettings()));
 	
 	public static final PickaxeItem METEORIC_STEEL_PICKAXE = register("meteoric_steel_pickaxe", new PickaxeItem(AMToolMaterials.METEORIC_STEEL, 1, -2.8f, AMItems.getBasicSettings()));
 	public static final AxeItem METEORIC_STEEL_AXE = register("meteoric_steel_axe", new AxeItem(AMToolMaterials.METEORIC_STEEL, 5f, -3.0f, AMItems.getBasicSettings()));
@@ -395,10 +368,6 @@ public class AMItems {
 	public static final Item UNIVITE_LEGGINGS = register("univite_leggings", new ArmorItem(AMArmorMaterials.UNIVITE, EquipmentSlot.LEGS, AMItems.getBasicSettings().fireproof()));
 	public static final Item UNIVITE_BOOTS = register("univite_boots", new AnimatedArmorItem(AMArmorMaterials.UNIVITE, EquipmentSlot.FEET, AMItems.getBasicSettings().fireproof(), 18));
 	
-	// public static final Item LUNUM_HELMET = register("lunum_helmet", new ArmorItem(AMArmorMaterials.LUNUM, EquipmentSlot.HEAD, AMItems.getBasicSettings()));
-	// public static final Item LUNUM_CHESTPLATE = register("lunum_chestplate", new ArmorItem(AMArmorMaterials.LUNUM, EquipmentSlot.CHEST, AMItems.getBasicSettings()));
-	// public static final Item LUNUM_LEGGINGS = register("lunum_leggings", new ArmorItem(AMArmorMaterials.LUNUM, EquipmentSlot.LEGS, AMItems.getBasicSettings()));
-	// public static final Item LUNUM_BOOTS = register("lunum_boots", new ArmorItem(AMArmorMaterials.LUNUM, EquipmentSlot.FEET, AMItems.getBasicSettings()));
 	
 	public static final Item METEORIC_STEEL_HELMET = register("meteoric_steel_helmet", new ArmorItem(AMArmorMaterials.METEORIC_STEEL, EquipmentSlot.HEAD, AMItems.getBasicSettings()));
 	public static final Item METEORIC_STEEL_CHESTPLATE = register("meteoric_steel_chestplate", new ArmorItem(AMArmorMaterials.METEORIC_STEEL, EquipmentSlot.CHEST, AMItems.getBasicSettings()));
@@ -409,8 +378,6 @@ public class AMItems {
 	
 	public static final Item FIRE_EXTINGUISHER = register("fire_extinguisher", new FireExtinguisherItem(AMItems.getBasicSettings().maxCount(1)));
 	
-	public static final FoodComponent ROSE_GOLD_APPLE_COMPONENT = new FoodComponent.Builder().hunger(4).saturationModifier(1.4F).statusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 140, 1), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, 1200, 1), 1.0F).alwaysEdible().build();
-	public static final Item ROSE_GOLD_APPLE = register("rose_gold_apple", new Item(AMItems.getBasicSettings().food(ROSE_GOLD_APPLE_COMPONENT).rarity(Rarity.RARE)));
 	public static final FoodComponent FOOLS_GOLD_APPLE_COMPONENT = new FoodComponent.Builder().hunger(2).saturationModifier(0.4F).statusEffect(new StatusEffectInstance(StatusEffects.HASTE, 400, 1), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.LUCK, 4800, 0), 1.0F).alwaysEdible().build();
 	public static final Item FOOLS_GOLD_APPLE = register("fools_gold_apple", new Item(AMItems.getBasicSettings().food(FOOLS_GOLD_APPLE_COMPONENT).rarity(Rarity.RARE)));
 	public static final FoodComponent LEAD_APPLE_COMPONENT = new FoodComponent.Builder().hunger(2).saturationModifier(0.4F).statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 40, 1), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 1000, 2), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.POISON, 500, 1), 1.0F).alwaysEdible().build();

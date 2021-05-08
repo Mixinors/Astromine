@@ -362,9 +362,6 @@ public class AMMaterialSets {
 					.build()
 	);
 	
-	// public static final MaterialSet LUNUM = register(
-	// 		new MaterialSet.Builder("lunum")
-	// 				.basics().metal().moonOre().allTools().armor()
 	// 				.build()
 	// );
 	

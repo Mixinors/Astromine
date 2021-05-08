@@ -24,10 +24,7 @@
 
 package com.github.mixinors.astromine.registry.client;
 
-import com.github.mixinors.astromine.client.render.sky.MarsSkyProperties;
-import com.github.mixinors.astromine.client.render.sky.MoonSkyProperties;
 import com.github.mixinors.astromine.client.render.sky.SpaceSkyProperties;
-import com.github.mixinors.astromine.client.render.sky.VulcanSkyProperties;
 import com.github.mixinors.astromine.common.callback.SkyPropertiesCallback;
 import com.github.mixinors.astromine.common.item.HolographicConnectorItem;
 import com.github.mixinors.astromine.common.item.SpaceSuitItem;

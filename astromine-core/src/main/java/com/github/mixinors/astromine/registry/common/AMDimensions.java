@@ -43,25 +43,9 @@ public class AMDimensions {
 	public static final RegistryKey<DimensionType> EARTH_SPACE_TYPE_KEY = register(Registry.DIMENSION_TYPE_KEY, EARTH_SPACE_ID);
 	public static final RegistryKey<World> EARTH_SPACE_WORLD = register(Registry.DIMENSION, EARTH_SPACE_ID);
 	
-	public static final Identifier MOON_ID = AMCommon.id("moon");
-	public static final RegistryKey<DimensionOptions> MOON_OPTIONS = register(Registry.DIMENSION_OPTIONS, MOON_ID);
-	public static final RegistryKey<DimensionType> MOON_TYPE_KEY = register(Registry.DIMENSION_TYPE_KEY, MOON_ID);
-	public static final RegistryKey<World> MOON_WORLD = register(Registry.DIMENSION, MOON_ID);
 	
-	public static final Identifier MARS_ID = AMCommon.id("mars");
-	public static final RegistryKey<DimensionOptions> MARS_OPTIONS = register(Registry.DIMENSION_OPTIONS, MARS_ID);
-	public static final RegistryKey<DimensionType> MARS_TYPE_KEY = register(Registry.DIMENSION_TYPE_KEY, MARS_ID);
-	public static final RegistryKey<World> MARS_WORLD = register(Registry.DIMENSION, MARS_ID);
 	
-	public static final Identifier VULCAN_ID = AMCommon.id("vulcan");
-	public static final RegistryKey<DimensionOptions> VULCAN_OPTIONS = register(Registry.DIMENSION_OPTIONS, VULCAN_ID);
-	public static final RegistryKey<DimensionType> VULCAN_TYPE_KEY = register(Registry.DIMENSION_TYPE_KEY, VULCAN_ID);
-	public static final RegistryKey<World> VULCAN_WORLD = register(Registry.DIMENSION, VULCAN_ID);
 	
-	public static final Identifier GLACIOS_ID = AMCommon.id("glacios");
-	public static final RegistryKey<DimensionOptions> GLACIOS_OPTIONS = register(Registry.DIMENSION_OPTIONS, GLACIOS_ID);
-	public static final RegistryKey<DimensionType> GLACIOS_TYPE_KEY = register(Registry.DIMENSION_TYPE_KEY, GLACIOS_ID);
-	public static final RegistryKey<World> GLACIOS_WORLD = register(Registry.DIMENSION, GLACIOS_ID);
 	
 	public static void init() {
 	

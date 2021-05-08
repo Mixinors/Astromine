@@ -22,7 +22,6 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.common.world.generation.glacios;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -47,9 +46,6 @@ import com.github.mixinors.astromine.common.noise.OpenSimplexNoise;
 
 import java.util.Random;
 
-public class GlaciosChunkGenerator extends ChunkGenerator {
-	public static Codec<GlaciosChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed), RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry)).apply(instance,
-		GlaciosChunkGenerator::new));
 	private final long seed;
 	private final Registry<Biome> biomeRegistry;
 
@@ -57,8 +53,6 @@ public class GlaciosChunkGenerator extends ChunkGenerator {
 	private final OctaveNoiseSampler<OpenSimplexNoise> ceilingNoise;
 	private final FastNoise fastNoise;
 
-	public GlaciosChunkGenerator(long seed, Registry<Biome> biomeRegistry) {
-		super(new GlaciosBiomeSource(biomeRegistry, seed), new StructuresConfig(false));
 		this.seed = seed;
 		this.biomeRegistry = biomeRegistry;
 
@@ -85,7 +79,6 @@ public class GlaciosChunkGenerator extends ChunkGenerator {
 	}
 
 	public ChunkGenerator withSeedCommon(long seed) {
-		return new GlaciosChunkGenerator(seed, biomeRegistry);
 	}
 
 	@Override

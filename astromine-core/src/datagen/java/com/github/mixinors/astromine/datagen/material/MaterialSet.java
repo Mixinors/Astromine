@@ -218,10 +218,6 @@ public class MaterialSet {
 			return addType(METEOR_ORE, new Identifier("c", "meteor_" + name + "_ores"));
 		}
 
-		public Builder moonOre() {
-			return addType(MOON_ORE, new Identifier("c", "moon_" + name + "_ores"));
-		}
-
 		public Builder asteroidCluster() {
 			return addType(ASTEROID_CLUSTER, new Identifier("c", "asteroid_" + name + "_clusters"));
 		}

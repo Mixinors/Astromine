@@ -1,7 +1,5 @@
 {
   "generator": {
-    "type": "astromine:glacios",
     "seed": -1
   },
-  "type": "astromine:glacios"
 }

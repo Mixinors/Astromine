@@ -29,7 +29,5 @@ import com.github.mixinors.astromine.common.registry.GravityRegistry;
 public class AMGravities {
 	public static void init() {
 		GravityRegistry.INSTANCE.register(AMDimensions.EARTH_SPACE_WORLD, AMConfig.get().spaceGravity);
-		GravityRegistry.INSTANCE.register(AMDimensions.MOON_WORLD, AMConfig.get().moonGravity);
-		GravityRegistry.INSTANCE.register(AMDimensions.MARS_WORLD, AMConfig.get().marsGravity);
 	}
 }

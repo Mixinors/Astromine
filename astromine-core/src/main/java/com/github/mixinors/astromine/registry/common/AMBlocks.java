@@ -40,70 +40,35 @@ import com.github.mixinors.astromine.AMCommon;
 
 public class AMBlocks {
 	public static final Block ASTEROID_STONE = register("asteroid_stone", new Block(FabricBlockSettings.of(Material.STONE, MaterialColor.GRAY).requiresTool().breakByTool(FabricToolTags.PICKAXES, 3).strength(1.5F, 3F)), AMItems.getBasicSettings().fireproof());
-	public static final Block MOON_STONE = register("moon_stone", new Block(FabricBlockSettings.of(Material.STONE, MaterialColor.GRAY).requiresTool().breakByTool(FabricToolTags.PICKAXES, 0).strength(1, 3)), AMItems.getBasicSettings());
-	public static final Block VULCAN_STONE = register("vulcan_stone", new Block(FabricBlockSettings.of(Material.STONE, MaterialColor.GRAY).requiresTool().breakByTool(FabricToolTags.PICKAXES, 1).strength(3, 4)), AMItems.getBasicSettings());
-	public static final Block MARTIAN_SOIL = register("martian_soil", new Block(FabricBlockSettings.of(Material.SOIL, MaterialColor.RED).requiresTool().breakByTool(FabricToolTags.SHOVELS, 0).strength(0.5f, 0.75f)), AMItems.getBasicSettings());
-	public static final Block MARTIAN_STONE = register("martian_stone", new Block(FabricBlockSettings.of(Material.STONE, MaterialColor.RED).requiresTool().breakByTool(FabricToolTags.PICKAXES, 0).strength(1.5f, 6.0f)), AMItems.getBasicSettings());
 	public static final Block BLAZING_ASTEROID_STONE = register("blazing_asteroid_stone", new MagmaBlock(FabricBlockSettings.of(Material.STONE, MaterialColor.GRAY).requiresTool().breakByTool(FabricToolTags.PICKAXES, 3).strength(50, 1500).lightLevel((state) -> 3).ticksRandomly().allowsSpawning((state, world, pos, entityType) -> entityType.isFireImmune()).postProcess((state, world, pos) -> true).emissiveLighting((state, world, pos) -> true)), AMItems.getBasicSettings().fireproof());
 	
 	public static final Block SMOOTH_ASTEROID_STONE = register("smooth_asteroid_stone", new Block(FabricBlockSettings.copyOf(ASTEROID_STONE)), AMItems.getBasicSettings().fireproof());
-	public static final Block SMOOTH_VULCAN_STONE = register("smooth_vulcan_stone", new Block(FabricBlockSettings.copyOf(VULCAN_STONE)), AMItems.getBasicSettings());
-	public static final Block SMOOTH_MARTIAN_STONE = register("smooth_martian_stone", new Block(FabricBlockSettings.copyOf(MARTIAN_STONE)), AMItems.getBasicSettings());
 	
 	public static final Block POLISHED_ASTEROID_STONE = register("polished_asteroid_stone", new Block(FabricBlockSettings.copyOf(ASTEROID_STONE)), AMItems.getBasicSettings().fireproof());
-	public static final Block POLISHED_VULCAN_STONE = register("polished_vulcan_stone", new Block(FabricBlockSettings.copyOf(VULCAN_STONE)), AMItems.getBasicSettings());
-	public static final Block POLISHED_MARTIAN_STONE = register("polished_martian_stone", new Block(FabricBlockSettings.copyOf(MARTIAN_STONE)), AMItems.getBasicSettings());
 	
 	public static final Block ASTEROID_STONE_BRICKS = register("asteroid_stone_bricks", new Block(FabricBlockSettings.copyOf(ASTEROID_STONE)), AMItems.getBasicSettings().fireproof());
-	public static final Block VULCAN_STONE_BRICKS = register("vulcan_stone_bricks", new Block(FabricBlockSettings.copyOf(VULCAN_STONE)), AMItems.getBasicSettings());
-	public static final Block MARTIAN_STONE_BRICKS = register("martian_stone_bricks", new Block(FabricBlockSettings.copyOf(MARTIAN_STONE)), AMItems.getBasicSettings());
 	
 	public static final Block ASTEROID_STONE_SLAB = register("asteroid_stone_slab", new SlabBlock(FabricBlockSettings.copyOf(ASTEROID_STONE)), AMItems.getBasicSettings().fireproof());
-	public static final Block MOON_STONE_SLAB = register("moon_stone_slab", new SlabBlock(FabricBlockSettings.copyOf(MOON_STONE)), AMItems.getBasicSettings());
-	public static final Block VULCAN_STONE_SLAB = register("vulcan_stone_slab", new SlabBlock(FabricBlockSettings.copyOf(VULCAN_STONE)), AMItems.getBasicSettings());
-	public static final Block MARTIAN_STONE_SLAB = register("martian_stone_slab", new SlabBlock(FabricBlockSettings.copyOf(MARTIAN_STONE)), AMItems.getBasicSettings());
 	
 	public static final Block SMOOTH_ASTEROID_STONE_SLAB = register("smooth_asteroid_stone_slab", new SlabBlock(FabricBlockSettings.copyOf(SMOOTH_ASTEROID_STONE)), AMItems.getBasicSettings().fireproof());
-	public static final Block SMOOTH_VULCAN_STONE_SLAB = register("smooth_vulcan_stone_slab", new SlabBlock(FabricBlockSettings.copyOf(SMOOTH_VULCAN_STONE)), AMItems.getBasicSettings());
-	public static final Block SMOOTH_MARTIAN_STONE_SLAB = register("smooth_martian_stone_slab", new SlabBlock(FabricBlockSettings.copyOf(SMOOTH_MARTIAN_STONE)), AMItems.getBasicSettings());
 	
 	public static final Block POLISHED_ASTEROID_STONE_SLAB = register("polished_asteroid_stone_slab", new SlabBlock(FabricBlockSettings.copyOf(POLISHED_ASTEROID_STONE)), AMItems.getBasicSettings().fireproof());
-	public static final Block POLISHED_VULCAN_STONE_SLAB = register("polished_vulcan_stone_slab", new SlabBlock(FabricBlockSettings.copyOf(POLISHED_VULCAN_STONE)), AMItems.getBasicSettings());
-	public static final Block POLISHED_MARTIAN_STONE_SLAB = register("polished_martian_stone_slab", new SlabBlock(FabricBlockSettings.copyOf(POLISHED_MARTIAN_STONE)), AMItems.getBasicSettings());
 	
 	public static final Block ASTEROID_STONE_BRICK_SLAB = register("asteroid_stone_brick_slab", new SlabBlock(FabricBlockSettings.copyOf(ASTEROID_STONE_BRICKS)), AMItems.getBasicSettings().fireproof());
-	public static final Block VULCAN_STONE_BRICK_SLAB = register("vulcan_stone_brick_slab", new SlabBlock(FabricBlockSettings.copyOf(VULCAN_STONE_BRICKS)), AMItems.getBasicSettings());
-	public static final Block MARTIAN_STONE_BRICK_SLAB = register("martian_stone_brick_slab", new SlabBlock(FabricBlockSettings.copyOf(MARTIAN_STONE_BRICKS)), AMItems.getBasicSettings());
 	
 	public static final Block ASTEROID_STONE_STAIRS = register("asteroid_stone_stairs", new StairsBlock(ASTEROID_STONE.getDefaultState(), FabricBlockSettings.copyOf(ASTEROID_STONE)), AMItems.getBasicSettings().fireproof());
-	public static final Block MOON_STONE_STAIRS = register("moon_stone_stairs", new StairsBlock(MOON_STONE.getDefaultState(), FabricBlockSettings.copyOf(MOON_STONE)), AMItems.getBasicSettings());
-	public static final Block VULCAN_STONE_STAIRS = register("vulcan_stone_stairs", new StairsBlock(VULCAN_STONE.getDefaultState(), FabricBlockSettings.copyOf(VULCAN_STONE)), AMItems.getBasicSettings());
-	public static final Block MARTIAN_STONE_STAIRS = register("martian_stone_stairs", new StairsBlock(MARTIAN_STONE.getDefaultState(), FabricBlockSettings.copyOf(MARTIAN_STONE)), AMItems.getBasicSettings());
 	
 	public static final Block SMOOTH_ASTEROID_STONE_STAIRS = register("smooth_asteroid_stone_stairs", new StairsBlock(SMOOTH_ASTEROID_STONE.getDefaultState(), FabricBlockSettings.copyOf(SMOOTH_ASTEROID_STONE)), AMItems.getBasicSettings().fireproof());
-	public static final Block SMOOTH_VULCAN_STONE_STAIRS = register("smooth_vulcan_stone_stairs", new StairsBlock(SMOOTH_VULCAN_STONE.getDefaultState(), FabricBlockSettings.copyOf(SMOOTH_VULCAN_STONE)), AMItems.getBasicSettings());
-	public static final Block SMOOTH_MARTIAN_STONE_STAIRS = register("smooth_martian_stone_stairs", new StairsBlock(SMOOTH_MARTIAN_STONE.getDefaultState(), FabricBlockSettings.copyOf(SMOOTH_MARTIAN_STONE)), AMItems.getBasicSettings());
 	
 	public static final Block POLISHED_ASTEROID_STONE_STAIRS = register("polished_asteroid_stone_stairs", new StairsBlock(POLISHED_ASTEROID_STONE.getDefaultState(), FabricBlockSettings.copyOf(POLISHED_ASTEROID_STONE)), AMItems.getBasicSettings().fireproof());
-	public static final Block POLISHED_VULCAN_STONE_STAIRS = register("polished_vulcan_stone_stairs", new StairsBlock(POLISHED_VULCAN_STONE.getDefaultState(), FabricBlockSettings.copyOf(POLISHED_VULCAN_STONE)), AMItems.getBasicSettings());
-	public static final Block POLISHED_MARTIAN_STONE_STAIRS = register("polished_martian_stone_stairs", new StairsBlock(POLISHED_MARTIAN_STONE.getDefaultState(), FabricBlockSettings.copyOf(POLISHED_MARTIAN_STONE)), AMItems.getBasicSettings());
 	
 	public static final Block ASTEROID_STONE_BRICK_STAIRS = register("asteroid_stone_brick_stairs", new StairsBlock(ASTEROID_STONE_BRICKS.getDefaultState(), FabricBlockSettings.copyOf(ASTEROID_STONE_BRICKS)), AMItems.getBasicSettings().fireproof());
-	public static final Block VULCAN_STONE_BRICK_STAIRS = register("vulcan_stone_brick_stairs", new StairsBlock(VULCAN_STONE_BRICKS.getDefaultState(), FabricBlockSettings.copyOf(VULCAN_STONE_BRICKS)), AMItems.getBasicSettings());
-	public static final Block MARTIAN_STONE_BRICK_STAIRS = register("martian_stone_brick_stairs", new StairsBlock(MARTIAN_STONE_BRICKS.getDefaultState(), FabricBlockSettings.copyOf(MARTIAN_STONE_BRICKS)), AMItems.getBasicSettings());
 	
 	public static final Block ASTEROID_STONE_WALL = register("asteroid_stone_wall", new WallBlock(FabricBlockSettings.copyOf(ASTEROID_STONE)), AMItems.getBasicSettings().fireproof());
-	public static final Block MOON_STONE_WALL = register("moon_stone_wall", new WallBlock(FabricBlockSettings.copyOf(MOON_STONE)), AMItems.getBasicSettings());
-	public static final Block VULCAN_STONE_WALL = register("vulcan_stone_wall", new WallBlock(FabricBlockSettings.copyOf(VULCAN_STONE)), AMItems.getBasicSettings());
-	public static final Block MARTIAN_STONE_WALL = register("martian_stone_wall", new WallBlock(FabricBlockSettings.copyOf(MARTIAN_STONE)), AMItems.getBasicSettings());
 	
 	public static final Block SMOOTH_ASTEROID_STONE_WALL = register("smooth_asteroid_stone_wall", new WallBlock(FabricBlockSettings.copyOf(SMOOTH_ASTEROID_STONE)), AMItems.getBasicSettings().fireproof());
-	public static final Block SMOOTH_VULCAN_STONE_WALL = register("smooth_vulcan_stone_wall", new WallBlock(FabricBlockSettings.copyOf(SMOOTH_VULCAN_STONE)), AMItems.getBasicSettings());
-	public static final Block SMOOTH_MARTIAN_STONE_WALL = register("smooth_martian_stone_wall", new WallBlock(FabricBlockSettings.copyOf(SMOOTH_MARTIAN_STONE)), AMItems.getBasicSettings());
 	
 	public static final Block ASTEROID_STONE_BRICK_WALL = register("asteroid_stone_brick_wall", new WallBlock(FabricBlockSettings.copyOf(ASTEROID_STONE_BRICKS)), AMItems.getBasicSettings().fireproof());
-	public static final Block VULCAN_STONE_BRICK_WALL = register("vulcan_stone_brick_wall", new WallBlock(FabricBlockSettings.copyOf(VULCAN_STONE_BRICKS)), AMItems.getBasicSettings());
-	public static final Block MARTIAN_STONE_BRICK_WALL = register("martian_stone_brick_wall", new WallBlock(FabricBlockSettings.copyOf(MARTIAN_STONE_BRICKS)), AMItems.getBasicSettings());
 	
 	public static final Block ASTEROID_METITE_ORE = register("asteroid_metite_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getBasicSettings().fireproof());
 	public static final Block ASTEROID_ASTERITE_ORE = register("asteroid_asterite_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(40, 1000).sounds(BlockSoundGroup.STONE)), AMItems.getBasicSettings().fireproof());
@@ -123,7 +88,6 @@ public class AMBlocks {
 	public static final Block ASTEROID_DIAMOND_ORE = register("asteroid_diamond_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getBasicSettings().fireproof());
 	public static final Block ASTEROID_EMERALD_ORE = register("asteroid_emerald_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getBasicSettings().fireproof());
 	
-	// public static final Block MOON_LUNUM_ORE = register("moon_lunum_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(5, 10).sounds(BlockSoundGroup.STONE)), AMItems.getBasicSettings());
 	
 	public static final Block ALTAR_PEDESTAL = register("altar_pedestal", new AltarPedestalBlock(FabricBlockSettings.of(Material.METAL, MaterialColor.GOLD).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5, 6).sounds(BlockSoundGroup.METAL).nonOpaque()), AMItems.getBasicSettings());
 	public static final Block ALTAR = register("altar", new AltarBlock(FabricBlockSettings.of(Material.METAL, MaterialColor.GOLD).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5, 6).sounds(BlockSoundGroup.METAL).nonOpaque()), AMItems.getBasicSettings());
@@ -143,7 +107,6 @@ public class AMBlocks {
 	public static final Block GALAXIUM_BLOCK = register("galaxium_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.PURPLE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 5).strength(50, 1300).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
 	public static final Block UNIVITE_BLOCK = register("univite_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.WHITE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 6).strength(80, 2000).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings().fireproof());
 	
-	// public static final Block LUNUM_BLOCK = register("lunum_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.WHITE_TERRACOTTA).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(10, 75).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
 	
 	public static final Block COPPER_BLOCK = register("copper_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.ORANGE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 1).strength(4, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
 	public static final Block TIN_BLOCK = register("tin_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.LIGHT_GRAY).requiresTool().breakByTool(FabricToolTags.PICKAXES, 1).strength(4, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
@@ -153,8 +116,6 @@ public class AMBlocks {
 	public static final Block BRONZE_BLOCK = register("bronze_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.ORANGE_TERRACOTTA).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(6, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
 	public static final Block STEEL_BLOCK = register("steel_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.GRAY).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(8, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
 	public static final Block ELECTRUM_BLOCK = register("electrum_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.YELLOW).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(6, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
-	public static final Block ROSE_GOLD_BLOCK = register("rose_gold_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.RED).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(3, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
-	public static final Block STERLING_SILVER_BLOCK = register("sterling_silver_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.LIGHT_GRAY).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(6, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
 	public static final Block FOOLS_GOLD_BLOCK = register("fools_gold_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.GOLD).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
 	public static final Block METEORIC_STEEL_BLOCK = register("meteoric_steel_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.GOLD).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
 	
