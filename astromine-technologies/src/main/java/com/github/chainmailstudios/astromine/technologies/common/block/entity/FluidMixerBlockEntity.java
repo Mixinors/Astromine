@@ -81,7 +81,7 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 
 			Fluid inserting = volume.getFluid();
 
-			return FluidMixingRecipe.allows(world, inserting, firstExisting, secondExisting, slot);
+			return FluidMixingRecipe.allows(world, inserting, firstExisting) || FluidMixingRecipe.allows(world, inserting, secondExisting);
 		}).withExtractPredicate((direction, volume, slot) -> {
 			return slot == 2;
 		}).withListener((inventory) -> {
