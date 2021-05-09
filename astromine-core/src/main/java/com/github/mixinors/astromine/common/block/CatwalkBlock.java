@@ -111,7 +111,7 @@ public class CatwalkBlock extends Block implements Waterloggable {
 			state = state.with(Properties.WEST, true);
 		if(direction == Direction.DOWN || (direction == null)) {
 			if(newState == null) newState = world.getBlockState(pos.offset(Direction.DOWN));
-			state = state.with(ConveyorBlock.NO_FLOOR, newState.isSideSolidFullSquare(world, pos, Direction.UP));
+			state = state.with(ConveyorBlock.NO_FLOOR, !newState.isSideSolidFullSquare(world, pos, Direction.UP));
 		}
 
 		return state;
@@ -128,7 +128,7 @@ public class CatwalkBlock extends Block implements Waterloggable {
 		if (SHAPE_CACHE[id] == null) {
 			VoxelShape shape = VoxelShapes.empty();
 
-			if (!state.get(ConveyorBlock.NO_FLOOR)) {
+			if (state.get(ConveyorBlock.NO_FLOOR)) {
 				shape = VoxelShapes.union(shape, BOTTOM);
 			}
 
