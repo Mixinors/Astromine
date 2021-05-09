@@ -61,12 +61,7 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 
 		WeightedList<Block> ores = new WeightedList<>();
 
-		for (Map.Entry<Block, @Nullable Pair<Range<Integer>, Range<Integer>>> entry : AsteroidOreRegistry.INSTANCE.diameters.reference2ReferenceEntrySet()) {
-			Pair<Range<Integer>, Range<Integer>> pair = entry.getValue();
-			if (pair != null) {
-				ores.add(entry.getKey(), (int) ((pair.getLeft().getMaximum() - pair.getLeft().getMinimum()) * Objects.requireNonNull(random, "random").nextFloat() + pair.getLeft().getMinimum()));
-			}
-		}
+		chances(random, ores);
 
 		if (ores.isEmpty()) {
 			return true;
@@ -79,19 +74,33 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 		double zSize = AsteroidOreRegistry.INSTANCE.getDiameter(random, ore);
 
 		if (xSize > 0 && ySize > 0 && zSize > 0) {
-			Shape vein = Shapes.ellipsoid((float) xSize, (float) ySize, (float) zSize).applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true))).applyLayer(TranslateLayer.of(Position.of(featurePosition)));
-
-			for (Position streamPosition : vein.stream().collect(Collectors.toSet())) {
-				BlockPos orePosition = streamPosition.toBlockPos();
-
-				if (world.getBlockState(orePosition).getBlock() == AMBlocks.ASTEROID_STONE) {
-					if (random.nextInt(AMConfig.get().asteroidOreThreshold) == 0) {
-						world.setBlockState(orePosition, ore.getDefaultState(), 0b0110100);
-					}
-				}
-			}
+			this.place(world, random, featurePosition, ore, (float) xSize, (float) ySize, (float) zSize);
 		}
 
 		return true;
+	}
+
+	private void chances(Random random, WeightedList<Block> ores) {
+		for (Map.Entry<Block, @Nullable Pair<Range<Integer>, Range<Integer>>> entry : AsteroidOreRegistry.INSTANCE.diameters.reference2ReferenceEntrySet()) {
+			Pair<Range<Integer>, Range<Integer>> pair = entry.getValue();
+			if (pair != null) {
+				ores.add(entry.getKey(), (int) ((pair.getLeft().getMaximum() - pair.getLeft().getMinimum()) * Objects.requireNonNull(random, "random").nextFloat() + pair.getLeft().getMinimum()));
+			}
+		}
+	}
+
+	private void place(StructureWorldAccess world, Random random, BlockPos featurePosition, Block ore, float xSize, float ySize, float zSize) {
+		Shape vein = Shapes.ellipsoid(xSize, ySize, zSize).applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true))).applyLayer(TranslateLayer.of(Position.of(
+				featurePosition)));
+
+		for (Position streamPosition : vein.stream().collect(Collectors.toSet())) {
+			BlockPos orePosition = streamPosition.toBlockPos();
+
+			if (world.getBlockState(orePosition).getBlock() == AMBlocks.ASTEROID_STONE) {
+				if (random.nextInt(AMConfig.get().asteroidOreThreshold) == 0) {
+					world.setBlockState(orePosition, ore.getDefaultState(), 0b0110100);
+				}
+			}
+		}
 	}
 }
