@@ -60,14 +60,14 @@ import java.util.function.Supplier;
  * {@link EnergyVolume#getAmount()} and {@link EnergyVolume#getSize()}
  * are queried from.
  */
-public class FluidVerticalBarWidget extends AbstractWidget {
+public class VerticalFluidBarWidget extends AbstractWidget {
 	private final Identifier FLUID_BACKGROUND = AMCommon.id("textures/widget/fluid_volume_fractional_vertical_bar_background.png");
 
 	private Supplier<FluidVolume> volumeSupplier;
 
-	/** Instantiates a {@link FluidVerticalBarWidget}, adding the
+	/** Instantiates a {@link VerticalFluidBarWidget}, adding the
 	 * mouse click event to the synchronization list. */
-	public FluidVerticalBarWidget() {
+	public VerticalFluidBarWidget() {
 		getSynchronize().add(Networks.getMOUSE_CLICK());
 	}
 
@@ -103,7 +103,7 @@ public class FluidVerticalBarWidget extends AbstractWidget {
 		return Lists.newArrayList(
 				TextUtils.getFluid(fluidId),
 				TextUtils.getIdentifier(fluidId),
-				TextUtils.getVolume(FluidVolume.of(volume.getAmount() / 81L, volume.getSize() / 81L, volume.getFluid())),
+				TextUtils.getFluidVolume(FluidVolume.of(volume.getAmount() / 81L, volume.getSize() / 81L, volume.getFluid())),
 				TextUtils.getMod(fluidId)
 		);
 	}

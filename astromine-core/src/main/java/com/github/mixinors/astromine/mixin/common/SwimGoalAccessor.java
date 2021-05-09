@@ -31,7 +31,7 @@ import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.mob.MobEntity;
 
 @Mixin(SwimGoal.class)
-public interface SwimGoalAccess {
+public interface SwimGoalAccessor {
 	@Accessor
 	MobEntity getMob();
 }

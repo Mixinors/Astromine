@@ -29,7 +29,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyFluidScreenHandler;
-import com.github.mixinors.astromine.common.widget.blade.FluidVerticalBarWidget;
+import com.github.mixinors.astromine.common.widget.blade.VerticalFluidBarWidget;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.block.entity.ElectrolyzerBlockEntity;
 import com.github.vini2003.blade.common.miscellaneous.Position;
@@ -48,11 +48,11 @@ public class ElectrolyzerScreenHandler extends ComponentBlockEntityEnergyFluidSc
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		FluidVerticalBarWidget firstOutputFluidBar = new FluidVerticalBarWidget();
+		VerticalFluidBarWidget firstOutputFluidBar = new VerticalFluidBarWidget();
 		firstOutputFluidBar.setSize(Size.absolute(fluidBar));
 		firstOutputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getSecond());
 
-		FluidVerticalBarWidget secondOutputFluidBar = new FluidVerticalBarWidget();
+		VerticalFluidBarWidget secondOutputFluidBar = new VerticalFluidBarWidget();
 		secondOutputFluidBar.setSize(Size.absolute(fluidBar));
 
 		secondOutputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getThird());

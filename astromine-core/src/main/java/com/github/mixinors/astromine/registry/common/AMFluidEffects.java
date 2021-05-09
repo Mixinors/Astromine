@@ -56,15 +56,13 @@ public class AMFluidEffects {
 		});
 		
 		/** Makes attempting to walk on oil be dangerous. */
-		AMFluids.OIL_DERIVATIVES.forEach(fluid -> {
-			FluidEffectRegistry.INSTANCE.register(fluid, (submerged, entity) -> {
-				if(entity.isAlive() && !entity.isSpectator() && (!(entity instanceof PlayerEntity) || !((PlayerEntity)entity).isCreative())) {
-					entity.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 30 * 20, 3));
-					entity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 30 * 20, 3));
-					entity.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 30 * 20, 1));
-					entity.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 30 * 20, 1));
-				}
-			});
+		FluidEffectRegistry.INSTANCE.register(AMFluids.OIL, (submerged, entity) -> {
+			if(entity.isAlive() && !entity.isSpectator() && (!(entity instanceof PlayerEntity) || !((PlayerEntity)entity).isCreative())) {
+				entity.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 30 * 20, 3));
+				entity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 30 * 20, 3));
+				entity.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 30 * 20, 1));
+				entity.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 30 * 20, 1));
+			}
 		});
 	}
 }

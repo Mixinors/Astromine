@@ -179,7 +179,7 @@ public abstract class Volume<N extends Number> {
 	 * For example, it may be "8.00 of 32.00" */
 	@Override
 	public String toString() {
-		return String.format("%s of %s", getAmount(), getSize());
+		return String.format("%s / %s", getAmount(), getSize());
 	}
 
 	/**

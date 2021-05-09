@@ -62,7 +62,7 @@ import javax.annotation.Nullable;
 import java.util.Collection;
 
 public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScreenHandlerFactory {
-	private static final FluidIngredient KEROSENE_INGREDIENT = FluidIngredient.ofFluidVolumes(FluidVolume.of(FluidVolume.BUCKET / 9L, AMFluids.KEROSENE));
+	private static final FluidIngredient KEROSENE_INGREDIENT = FluidIngredient.ofFluidVolumes(FluidVolume.of(FluidVolume.BUCKET / 9L, AMFluids.FUEL));
 
 	private static final FluidIngredient OXYGEN_INGREDIENT = FluidIngredient.ofFluidVolumes(FluidVolume.of(FluidVolume.BUCKET / 27L, AMFluids.OXYGEN));
 

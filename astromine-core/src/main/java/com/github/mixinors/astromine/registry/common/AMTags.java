@@ -32,11 +32,11 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.tag.Tag;
 
-import com.github.mixinors.astromine.mixin.common.FluidTagsAccess;
+import com.github.mixinors.astromine.mixin.common.FluidTagsAccessor;
 
 public class AMTags {
 	public static final Tag<Item> TRICKS_PIGLINS = TagRegistry.item(AMCommon.id("tricks_piglins"));
-
+	
 	public static final Tag<Fluid> INDUSTRIAL_FLUID = registerRequired("industrial_fluid");
 
 	public static final Tag<Fluid> NORMAL_BREATHABLE = TagRegistry.fluid(AMCommon.id("normal_breathable"));
@@ -48,6 +48,6 @@ public class AMTags {
 	public static final Tag<EntityType<?>> DOES_NOT_BREATHE = TagRegistry.entityType(AMCommon.id("does_not_breathe"));
 	
 	private static Tag.Identified<Fluid> registerRequired(String path) {
-		return FluidTagsAccess.invokeRegister(AMCommon.MOD_ID + ":" + path);
+		return FluidTagsAccessor.invokeRegister(AMCommon.MOD_ID + ":" + path);
 	}
 }

@@ -1,0 +1,24 @@
+{
+  "replace": false,
+  "values": [
+    "#minecraft:tall_flowers",
+    "#minecraft:flowers",
+    "#minecraft:saplings",
+    "minecraft:porkchop",
+    "minecraft:cooked_porkchop",
+    "minecraft:beef",
+    "minecraft:cooked_beef",
+    "minecraft:chicken",
+    "minecraft:cooked_chicken",
+    "minecraft:rotten_flesh",
+    "minecraft:spider_eye",
+    "minecraft:fermented_spider_eye",
+    "minecraft:rabbit",
+    "minecraft:cooked_rabbit",
+    "minecraft:mutton",
+    "minecraft:cooked_mutton",
+    "minecraft:cactus",
+    "minecraft:tall_grass",
+    "minecraft:large_fern"
+  ]
+}

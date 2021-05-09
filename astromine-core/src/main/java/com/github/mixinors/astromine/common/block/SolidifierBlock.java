@@ -40,7 +40,7 @@ import com.github.mixinors.astromine.common.network.NetworkBlock;
 import com.github.mixinors.astromine.common.block.entity.SolidifierBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.SolidifierScreenHandler;
 
-public abstract class SolidifierBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.FluidRequester {
+public abstract class SolidifierBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.FluidRequester {
 	public SolidifierBlock(Settings settings) {
 		super(settings);
 	}

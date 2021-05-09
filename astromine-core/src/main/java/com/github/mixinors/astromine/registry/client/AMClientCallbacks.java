@@ -29,12 +29,18 @@ import com.github.mixinors.astromine.common.callback.SkyPropertiesCallback;
 import com.github.mixinors.astromine.common.item.HolographicConnectorItem;
 import com.github.mixinors.astromine.common.item.SpaceSuitItem;
 import com.github.mixinors.astromine.common.network.type.EnergyNetworkType;
+import com.github.mixinors.astromine.common.util.TextUtils;
+import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
+import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
+import com.github.mixinors.astromine.common.widget.blade.VerticalEnergyBarWidget;
 import com.github.mixinors.astromine.registry.common.AMDimensions;
 import com.github.mixinors.astromine.registry.common.AMItems;
+import com.google.common.collect.Lists;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 
 import net.minecraft.item.BlockItem;
 import net.minecraft.text.LiteralText;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
@@ -43,6 +49,7 @@ import com.github.mixinors.astromine.common.component.general.base.FluidComponen
 import com.github.mixinors.astromine.common.item.base.EnergyVolumeItem;
 import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
 import com.github.mixinors.astromine.common.util.NumberUtils;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.RegistryKey;
@@ -55,12 +62,13 @@ public class AMClientCallbacks {
 		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
 			if (stack.getItem() instanceof FluidVolumeItem) {
 				FluidComponent fluidComponent = FluidComponent.get(stack);
-
-				if (fluidComponent != null) {
-					fluidComponent.forEachIndexed((slot, volume) -> {
-						tooltip.add(new LiteralText(slot + " - " + NumberUtils.shorten(volume.getAmount().doubleValue(), "") + "/" + NumberUtils.shorten(volume.getSize().doubleValue(), "") + " " + new TranslatableText(String.format("block.%s.%s", volume.getFluidId().getNamespace(), volume.getFluidId().getPath())).getString()).formatted(Formatting.GRAY));
-					});
-				}
+				
+				FluidVolume volume = fluidComponent.getFirst();
+				Identifier fluidId = volume.getFluidId();
+				
+				tooltip.addAll(Math.min(tooltip.size(), 1), Lists.newArrayList(
+						((MutableText) TextUtils.getFluidVolume(FluidVolume.of(volume.getAmount() / 81L, volume.getSize() / 81L, volume.getFluid()))).append(new LiteralText(" ")).append(
+								((MutableText) TextUtils.getFluid(fluidId)).formatted(Formatting.GRAY))));
 			}
 		});
 
@@ -68,7 +76,9 @@ public class AMClientCallbacks {
 			if (stack.getItem() instanceof EnergyVolumeItem) {
 				EnergyHandler handler = Energy.of(stack);
 				
-				tooltip.add(Math.min(tooltip.size(), 1), new LiteralText(NumberUtils.shorten(handler.getEnergy(), "") + "/" + NumberUtils.shorten(((EnergyVolumeItem) stack.getItem()).getMaxStoredPower(), "")).formatted(Formatting.GRAY));
+				tooltip.addAll(Math.min(tooltip.size(), 1), Lists.newArrayList(
+						TextUtils.getEnergyVolume(EnergyVolume.of(handler.getEnergy(), handler.getMaxStored()))
+				));
 			}
 		});
 		
@@ -95,7 +105,7 @@ public class AMClientCallbacks {
 					FluidComponent fluidComponent = FluidComponent.get(stack);
 					
 					fluidComponent.forEachIndexed((slot, volume) -> {
-						tooltip.add(new LiteralText(volume.getAmount().toString() + " | " + new TranslatableText(volume.getFluid().getDefaultState().getBlockState().getBlock().getTranslationKey()).getString()).formatted(Formatting.GRAY));
+						tooltip.add(((MutableText) TextUtils.getFluidVolume(volume)).append(new LiteralText(" ")).append(((MutableText) TextUtils.getFluid(volume.getFluidId())).formatted(Formatting.GRAY)));
 					});
 				}
 			}

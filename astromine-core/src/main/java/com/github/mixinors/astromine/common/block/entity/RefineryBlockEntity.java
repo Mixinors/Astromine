@@ -34,7 +34,6 @@ import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyFlu
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.SimpleEnergyComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleFluidComponent;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
@@ -65,7 +64,7 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 
 	@Override
 	public FluidComponent createFluidComponent() {
-		FluidComponent fluidComponent = SimpleDirectionalFluidComponent.of(this, 8).withInsertPredicate((direction, volume, slot) -> {
+		FluidComponent fluidComponent = SimpleDirectionalFluidComponent.of(this, 2).withInsertPredicate((direction, volume, slot) -> {
 			if (slot != 0) {
 				return false;
 			}
@@ -74,9 +73,9 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 				return false;
 			}
 
-			return RefiningRecipe.allows(world, FluidComponent.of(volume, getFluidComponent().getSecond(), getFluidComponent().getThird(), getFluidComponent().getFourth(), getFluidComponent().getFifth(), getFluidComponent().getSixth(), getFluidComponent().getSeventh(), getFluidComponent().getEighth()));
+			return RefiningRecipe.allows(world, FluidComponent.of(volume));
 		}).withExtractPredicate((direction, volume, slot) -> {
-			return slot == 1 || slot == 2 || slot == 3 || slot == 4 || slot == 5 || slot == 6 || slot == 7;
+			return slot == 1;
 		}).withListener((inventory) -> {
 			shouldTry = true;
 			optionalRecipe = Optional.empty();
@@ -126,13 +125,7 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 						optionalRecipe = Optional.empty();
 
 						fluidComponent.getFirst().take(recipe.getIngredient().testMatching(fluidComponent.getFirst()).getAmount());
-						fluidComponent.getSecond().take(recipe.getFirstOutputVolume());
-						fluidComponent.getThird().take(recipe.getSecondOutputVolume());
-						fluidComponent.getFourth().take(recipe.getThirdOutputVolume());
-						fluidComponent.getFifth().take(recipe.getFourthOutputVolume());
-						fluidComponent.getSixth().take(recipe.getFifthOutputVolume());
-						fluidComponent.getSeventh().take(recipe.getSixthOutputVolume());
-						fluidComponent.getEighth().take(recipe.getSeventhOutputVolume());
+						fluidComponent.getSecond().take(recipe.getFirstOutput());
 
 						progress = 0;
 					} else {

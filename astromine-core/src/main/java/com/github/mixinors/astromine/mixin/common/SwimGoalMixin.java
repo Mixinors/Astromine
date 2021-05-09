@@ -34,7 +34,7 @@ import net.minecraft.entity.ai.goal.SwimGoal;
 import com.github.mixinors.astromine.common.access.EntityAccessor;
 
 @Mixin(value = { SwimGoal.class }, targets = { "net.minecraft.entity.passive.FoxEntity$FoxSwimGoal" })
-public abstract class SwimGoalMixin implements SwimGoalAccess {
+public abstract class SwimGoalMixin implements SwimGoalAccessor {
 	@Inject(method = "canStart()Z", at = @At("RETURN"), cancellable = true)
 	private void shouldRun(CallbackInfoReturnable<Boolean> cir) {
 		if (!cir.getReturnValueZ() && ((EntityAccessor) this.getMob()).astromine_isInIndustrialFluid()) {

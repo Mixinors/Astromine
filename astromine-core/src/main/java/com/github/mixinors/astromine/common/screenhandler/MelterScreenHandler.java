@@ -24,8 +24,10 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
+import com.github.mixinors.astromine.common.widget.vanilla.InsertionSlot;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyFluidItemScreenHandler;
@@ -49,19 +51,20 @@ public class MelterScreenHandler extends ComponentBlockEntityEnergyFluidItemScre
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		SlotWidget output = new SlotWidget(0, melter, ExtractionSlot::new);
-		output.setSize(Size.of(18, 18));
-		output.setPosition(Position.of(fluidBar, 102, 15));
+		SlotWidget input = new SlotWidget(0, melter, Slot::new);
+		input.setSize(Size.of(18, 18));
 
+		fluidBar.setPosition(Position.of(energyBar, 102, 0));
+		
 		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
-		arrow.setPosition(Position.of(output, -31, 0));
+		arrow.setPosition(Position.of(fluidBar, -31, fluidBar.getHeight() / 2 - 16 / 2));
 		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> melter.limit);
 		arrow.setProgressSupplier(() -> (int) melter.progress);
-
-		fluidBar.setPosition(Position.of(arrow, -27 - 6, -fluidBar.getHeight() / 2 + output.getHeight() / 2));
-
-		mainTab.addWidget(output);
+		
+		input.setPosition(Position.of(arrow, -27, 0));
+		
+		mainTab.addWidget(input);
 		mainTab.addWidget(arrow);
 	}
 }

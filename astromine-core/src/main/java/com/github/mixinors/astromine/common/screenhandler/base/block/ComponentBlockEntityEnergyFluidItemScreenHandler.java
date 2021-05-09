@@ -29,8 +29,8 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyFluidItemBlockEntity;
-import com.github.mixinors.astromine.common.widget.blade.EnergyVerticalBarWidget;
-import com.github.mixinors.astromine.common.widget.blade.FluidVerticalBarWidget;
+import com.github.mixinors.astromine.common.widget.blade.VerticalEnergyBarWidget;
+import com.github.mixinors.astromine.common.widget.blade.VerticalFluidBarWidget;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 
@@ -41,9 +41,9 @@ import com.github.vini2003.blade.common.miscellaneous.Size;
 public class ComponentBlockEntityEnergyFluidItemScreenHandler extends ComponentBlockEntityScreenHandler {
 	public ComponentEnergyFluidItemBlockEntity blockEntity;
 
-	public EnergyVerticalBarWidget energyBar;
+	public VerticalEnergyBarWidget energyBar;
 
-	public FluidVerticalBarWidget fluidBar;
+	public VerticalFluidBarWidget fluidBar;
 
 	/** Instantiates a {@link ComponentBlockEntityItemScreenHandler},
 	 * obtaining the {@link ComponentEnergyFluidItemBlockEntity}. */
@@ -58,12 +58,12 @@ public class ComponentBlockEntityEnergyFluidItemScreenHandler extends ComponentB
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		energyBar = new EnergyVerticalBarWidget();
+		energyBar = new VerticalEnergyBarWidget();
 		energyBar.setPosition(Position.of(mainTab, 7, 11));
 		energyBar.setSize(Size.of(24, 48));
 		energyBar.setVolumeSupplier(() -> blockEntity.getEnergyComponent().getVolume());
 
-		fluidBar = new FluidVerticalBarWidget();
+		fluidBar = new VerticalFluidBarWidget();
 		fluidBar.setPosition(Position.of(energyBar, 7, 0));
 		fluidBar.setSize(Size.of(24F, 48F));
 		fluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getFirst());

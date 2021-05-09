@@ -32,7 +32,7 @@ import net.minecraft.tag.FluidTags;
 import net.minecraft.tag.Tag;
 
 @Mixin(FluidTags.class)
-public interface FluidTagsAccess {
+public interface FluidTagsAccessor {
 	@Invoker
 	static Tag.Identified<Fluid> invokeRegister(String id) {
 		throw new IllegalStateException(id);

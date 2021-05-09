@@ -28,7 +28,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 
 import com.github.mixinors.astromine.common.entity.base.ComponentEnergyEntity;
-import com.github.mixinors.astromine.common.widget.blade.EnergyVerticalBarWidget;
+import com.github.mixinors.astromine.common.widget.blade.VerticalEnergyBarWidget;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 
@@ -39,7 +39,7 @@ import com.github.vini2003.blade.common.miscellaneous.Size;
 public abstract class ComponentEntityEnergyScreenHandler extends ComponentEntityScreenHandler {
 	public ComponentEnergyEntity entity;
 
-	public EnergyVerticalBarWidget energyBar;
+	public VerticalEnergyBarWidget energyBar;
 
 	/** Instantiates a {@link ComponentEntityEnergyScreenHandler}. */
 	public ComponentEntityEnergyScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, int entityId) {
@@ -53,7 +53,7 @@ public abstract class ComponentEntityEnergyScreenHandler extends ComponentEntity
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		energyBar = new EnergyVerticalBarWidget();
+		energyBar = new VerticalEnergyBarWidget();
 		energyBar.setPosition(Position.of(mainTab, 7F, 11));
 		energyBar.setSize(Size.of(24F, 48F));
 		energyBar.setVolumeSupplier(() -> entity.getEnergyComponent().getVolume());

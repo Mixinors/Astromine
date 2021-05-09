@@ -29,6 +29,7 @@ import com.github.mixinors.astromine.common.component.general.base.EnergyCompone
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyFluidItemBlockEntity;
@@ -43,6 +44,8 @@ import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.SolidifyingRecipe;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
+import net.minecraft.nbt.CompoundTag;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -160,7 +163,21 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 			}
 		}
 	}
-
+	
+	@Override
+	public CompoundTag toTag(CompoundTag tag) {
+		tag.putDouble("progress", progress);
+		tag.putInt("limit", limit);
+		return super.toTag(tag);
+	}
+	
+	@Override
+	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+		progress = tag.getDouble("progress");
+		limit = tag.getInt("limit");
+		super.fromTag(state, tag);
+	}
+	
 	public static class Primitive extends SolidifierBlockEntity {
 		public Primitive() {
 			super(AMBlockEntityTypes.PRIMITIVE_SOLIDIFIER);

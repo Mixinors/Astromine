@@ -46,31 +46,18 @@ import java.util.stream.Collectors;
 public class RefiningDisplay implements RecipeDisplay {
 	private final double energy;
 	private final FluidIngredient input;
-	private final FluidVolume firstOutput;
-	private final FluidVolume secondOutput;
-	private final FluidVolume thirdOutput;
-	private final FluidVolume fourthOutput;
-	private final FluidVolume fifthOutput;
-	private final FluidVolume sixthOutput;
-	private final FluidVolume seventhOutput;
+	private final FluidVolume output;
 	private final Identifier id;
 
-	public RefiningDisplay(double energy, FluidIngredient input, FluidVolume firstOutput, FluidVolume secondOutput, FluidVolume thirdOutput, FluidVolume fourthOutput, FluidVolume fifthOutput, FluidVolume sixthOutput, FluidVolume seventhOutput, Identifier id) {
+	public RefiningDisplay(double energy, FluidIngredient input, FluidVolume output, Identifier id) {
 		this.energy = energy;
 		this.input = input;
-		this.firstOutput = firstOutput;
-		this.secondOutput = secondOutput;
-		this.thirdOutput = thirdOutput;
-		this.fourthOutput = fourthOutput;
-		this.fifthOutput = fifthOutput;
-		this.sixthOutput = sixthOutput;
-		this.seventhOutput = seventhOutput;
+		this.output = output;
 		this.id = id;
 	}
 
 	public RefiningDisplay(RefiningRecipe recipe) {
-		this(recipe.getEnergyInput(), recipe.getIngredient(), recipe.getFirstOutputVolume(), recipe.getSecondOutputVolume(), recipe.getThirdOutputVolume(), recipe.getFourthOutputVolume(), recipe.getFifthOutputVolume(), recipe.getSixthOutputVolume(), recipe.getSeventhOutputVolume(),
-			recipe.getId());
+		this(recipe.getEnergyInput(), recipe.getIngredient(), recipe.getFirstOutput(), recipe.getId());
 	}
 
 	@Override
@@ -95,9 +82,7 @@ public class RefiningDisplay implements RecipeDisplay {
 
 	@Override
 	public List<List<EntryStack>> getResultingEntries() {
-		return Arrays.asList(Collections.singletonList(AMRoughlyEnoughItemsPlugin.convertToEntryStack(firstOutput)), Collections.singletonList(AMRoughlyEnoughItemsPlugin.convertToEntryStack(secondOutput)), Collections.singletonList(AMRoughlyEnoughItemsPlugin.convertToEntryStack(
-			thirdOutput)), Collections.singletonList(AMRoughlyEnoughItemsPlugin.convertToEntryStack(fourthOutput)), Collections.singletonList(AMRoughlyEnoughItemsPlugin.convertToEntryStack(fifthOutput)), Collections.singletonList(AMRoughlyEnoughItemsPlugin.convertToEntryStack(
-				sixthOutput)), Collections.singletonList(AMRoughlyEnoughItemsPlugin.convertToEntryStack(seventhOutput)));
+		return Arrays.asList(Collections.singletonList(AMRoughlyEnoughItemsPlugin.convertToEntryStack(output)));
 	}
 
 	public double getEnergy() {

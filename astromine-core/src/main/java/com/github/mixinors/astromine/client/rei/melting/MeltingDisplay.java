@@ -22,19 +22,19 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.client.rei.liquidgenerating;
-
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
-import net.minecraft.fluid.Fluid;
-import net.minecraft.util.Identifier;
+package com.github.mixinors.astromine.client.rei.melting;
 
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
+import com.github.mixinors.astromine.common.recipe.MeltingRecipe;
+import com.github.mixinors.astromine.common.recipe.PressingRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
-import com.github.mixinors.astromine.client.rei.generating.AbstractEnergyGeneratingDisplay;
-import com.github.mixinors.astromine.common.recipe.FluidGeneratingRecipe;
+import com.github.mixinors.astromine.common.recipe.ingredient.ItemIngredient;
+import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import me.shedaniel.rei.api.EntryStack;
+import me.shedaniel.rei.api.RecipeDisplay;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.util.Identifier;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -43,19 +43,28 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Environment(EnvType.CLIENT)
-public class LiquidGeneratingDisplay extends AbstractEnergyGeneratingDisplay {
-	private final FluidIngredient input;
-	private final Identifier id;
+public class MeltingDisplay implements RecipeDisplay {
+	private final ItemIngredient input;
+	private final FluidVolume output;
+	private final int timeRequired;
+	private final double energyRequired;
+	private final Identifier recipeId;
 
-	public LiquidGeneratingDisplay(FluidGeneratingRecipe recipe) {
-		super(recipe.getEnergyOutput());
-		this.input = recipe.getFirstInput();
-		this.id = recipe.getId();
+	public MeltingDisplay(MeltingRecipe recipe) {
+		this(recipe.getFirstInput(), recipe.getFirstOutput(), recipe.getTime(), recipe.getEnergyInput(), recipe.getId());
 	}
-
+	
+	public MeltingDisplay(ItemIngredient input, FluidVolume output, int timeRequired, double energyRequired, Identifier recipeId) {
+		this.input = input;
+		this.output = output;
+		this.timeRequired = timeRequired;
+		this.energyRequired = energyRequired;
+		this.recipeId = recipeId;
+	}
+	
 	@Override
 	public List<List<EntryStack>> getInputEntries() {
-		return Collections.singletonList(Arrays.stream(input.getMatchingVolumes()).map(AMRoughlyEnoughItemsPlugin::convertToEntryStack).collect(Collectors.toList()));
+		return Collections.singletonList(Arrays.stream(input.getMatchingStacks()).map(EntryStack::create).collect(Collectors.toList()));
 	}
 
 	@Override
@@ -64,20 +73,25 @@ public class LiquidGeneratingDisplay extends AbstractEnergyGeneratingDisplay {
 	}
 
 	@Override
+	public List<EntryStack> getOutputEntries() {
+		return Collections.singletonList(AMRoughlyEnoughItemsPlugin.convertToEntryStack(output));
+	}
+
+	public int getTimeRequired() {
+		return timeRequired;
+	}
+
+	public double getEnergyRequired() {
+		return energyRequired;
+	}
+
+	@Override
 	public Identifier getRecipeCategory() {
-		return AMRoughlyEnoughItemsPlugin.LIQUID_GENERATING;
-	}
-
-	public Fluid getFluid() {
-		return input.getMatchingVolumes()[0].getFluid();
-	}
-
-	public long getAmount() {
-		return input.getMatchingVolumes()[0].getAmount();
+		return AMRoughlyEnoughItemsPlugin.PRESSING;
 	}
 
 	@Override
 	public Optional<Identifier> getRecipeLocation() {
-		return Optional.ofNullable(this.id);
+		return Optional.ofNullable(this.recipeId);
 	}
 }

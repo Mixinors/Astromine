@@ -29,7 +29,7 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentFluidItemBlockEntity;
-import com.github.mixinors.astromine.common.widget.blade.FluidVerticalBarWidget;
+import com.github.mixinors.astromine.common.widget.blade.VerticalFluidBarWidget;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 
@@ -40,7 +40,7 @@ import com.github.vini2003.blade.common.miscellaneous.Size;
 public class ComponentBlockEntityFluidItemScreenHandler extends ComponentBlockEntityScreenHandler {
 	public ComponentFluidItemBlockEntity blockEntity;
 
-	public FluidVerticalBarWidget fluidBar;
+	public VerticalFluidBarWidget fluidBar;
 
 	/** Instantiates a {@link ComponentBlockEntityItemScreenHandler},
 	 * obtaining the {@link ComponentFluidItemBlockEntity}. */
@@ -55,7 +55,7 @@ public class ComponentBlockEntityFluidItemScreenHandler extends ComponentBlockEn
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		fluidBar = new FluidVerticalBarWidget();
+		fluidBar = new VerticalFluidBarWidget();
 		fluidBar.setPosition(Position.of(mainTab, 7, 11));
 		fluidBar.setSize(Size.of(24F, 48F));
 		fluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getFirst());

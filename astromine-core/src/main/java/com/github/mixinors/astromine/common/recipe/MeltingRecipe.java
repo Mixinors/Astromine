@@ -170,7 +170,7 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 	}
 
 	public FluidVolume getFirstOutput() {
-		return firstOutput;
+		return firstOutput.copy();
 	}
 
 	public int getTime() {

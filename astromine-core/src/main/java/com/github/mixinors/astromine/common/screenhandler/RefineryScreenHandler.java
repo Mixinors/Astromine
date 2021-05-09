@@ -29,7 +29,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyFluidScreenHandler;
-import com.github.mixinors.astromine.common.widget.blade.FluidVerticalBarWidget;
+import com.github.mixinors.astromine.common.widget.blade.VerticalFluidBarWidget;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.block.entity.RefineryBlockEntity;
 import com.github.vini2003.blade.common.miscellaneous.Position;
@@ -45,46 +45,12 @@ public class RefineryScreenHandler extends ComponentBlockEntityEnergyFluidScreen
 	}
 
 	@Override
-	public Size getTabsSize(int width, int height) {
-		return Size.of(317, super.getTabsSize(width, height).getHeight());
-	}
-
-	@Override
-	public Position getTabsPosition(int width, int height) {
-		return super.getTabsPosition(width, height).offset(-(317 / 2 - tabs.getWidth() / 2), 0);
-	}
-
-	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		FluidVerticalBarWidget firstOutputFluidBar = new FluidVerticalBarWidget();
-		firstOutputFluidBar.setSize(Size.absolute(fluidBar));
-		firstOutputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getSecond());
-
-		FluidVerticalBarWidget secondOutputFluidBar = new FluidVerticalBarWidget();
-		secondOutputFluidBar.setSize(Size.absolute(fluidBar));
-		secondOutputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getThird());
-
-		FluidVerticalBarWidget thirdOutputFluidBar = new FluidVerticalBarWidget();
-		thirdOutputFluidBar.setSize(Size.absolute(fluidBar));
-		thirdOutputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getFourth());
-
-		FluidVerticalBarWidget fourthOutputFluidBar = new FluidVerticalBarWidget();
-		fourthOutputFluidBar.setSize(Size.absolute(fluidBar));
-		fourthOutputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getFifth());
-
-		FluidVerticalBarWidget fifthOutputFluidBar = new FluidVerticalBarWidget();
-		fifthOutputFluidBar.setSize(Size.absolute(fluidBar));
-		fifthOutputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getSixth());
-
-		FluidVerticalBarWidget sixthOutputFluidBar = new FluidVerticalBarWidget();
-		sixthOutputFluidBar.setSize(Size.absolute(fluidBar));
-		sixthOutputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getSeventh());
-
-		FluidVerticalBarWidget seventhOutputFluidBar = new FluidVerticalBarWidget();
-		seventhOutputFluidBar.setSize(Size.absolute(fluidBar));
-		seventhOutputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getEighth());
+		VerticalFluidBarWidget outputFluidBar = new VerticalFluidBarWidget();
+		outputFluidBar.setSize(Size.absolute(fluidBar));
+		outputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getSecond());
 
 		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(fluidBar, fluidBar.getWidth() + 7, fluidBar.getHeight() / 2 - 8));
@@ -92,21 +58,8 @@ public class RefineryScreenHandler extends ComponentBlockEntityEnergyFluidScreen
 		arrow.setLimitSupplier(() -> refinery.limit);
 		arrow.setProgressSupplier(() -> (int) refinery.progress);
 
-		firstOutputFluidBar.setPosition(Position.of(arrow.getPosition(), 7 + fluidBar.getWidth(), -fluidBar.getHeight() / 2F + arrow.getHeight() / 2F));
-		secondOutputFluidBar.setPosition(Position.of(arrow.getPosition(), 7 + fluidBar.getWidth() + 7 + fluidBar.getWidth(), -fluidBar.getHeight() / 2F + arrow.getHeight() / 2F));
-		thirdOutputFluidBar.setPosition(Position.of(arrow.getPosition(), 7 + fluidBar.getWidth() * 2 + 7 * 2 + fluidBar.getWidth(), -fluidBar.getHeight() / 2F + arrow.getHeight() / 2F));
-		fourthOutputFluidBar.setPosition(Position.of(arrow.getPosition(), 7 + fluidBar.getWidth() * 3 + 7 * 3 + fluidBar.getWidth(), -fluidBar.getHeight() / 2F + arrow.getHeight() / 2F));
-		fifthOutputFluidBar.setPosition(Position.of(arrow.getPosition(), 7 + fluidBar.getWidth() * 4 + 7 * 4 + fluidBar.getWidth(), -fluidBar.getHeight() / 2F + arrow.getHeight() / 2F));
-		sixthOutputFluidBar.setPosition(Position.of(arrow.getPosition(), 7 + fluidBar.getWidth() * 5 + 7 * 5 + fluidBar.getWidth(), -fluidBar.getHeight() / 2F + arrow.getHeight() / 2F));
-		seventhOutputFluidBar.setPosition(Position.of(arrow.getPosition(), 7 + fluidBar.getWidth() * 6 + 7 * 6 + fluidBar.getWidth(), -fluidBar.getHeight() / 2F + arrow.getHeight() / 2F));
-
-		mainTab.addWidget(firstOutputFluidBar);
-		mainTab.addWidget(secondOutputFluidBar);
-		mainTab.addWidget(thirdOutputFluidBar);
-		mainTab.addWidget(fourthOutputFluidBar);
-		mainTab.addWidget(fifthOutputFluidBar);
-		mainTab.addWidget(sixthOutputFluidBar);
-		mainTab.addWidget(seventhOutputFluidBar);
+		outputFluidBar.setPosition(Position.of(arrow.getPosition(), 7 + fluidBar.getWidth(), -fluidBar.getHeight() / 2F + arrow.getHeight() / 2F));
+		mainTab.addWidget(outputFluidBar);
 		mainTab.addWidget(arrow);
 	}
 }

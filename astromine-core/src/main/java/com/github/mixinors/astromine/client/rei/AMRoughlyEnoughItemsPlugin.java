@@ -35,8 +35,10 @@ import com.github.mixinors.astromine.client.rei.fluidmixing.FluidMixingCategory;
 import com.github.mixinors.astromine.client.rei.fluidmixing.FluidMixingDisplay;
 import com.github.mixinors.astromine.client.rei.infusing.InfusingCategory;
 import com.github.mixinors.astromine.client.rei.infusing.InfusingDisplay;
-import com.github.mixinors.astromine.client.rei.liquidgenerating.LiquidGeneratingCategory;
-import com.github.mixinors.astromine.client.rei.liquidgenerating.LiquidGeneratingDisplay;
+import com.github.mixinors.astromine.client.rei.fluidgenerating.FluidGeneratingCategory;
+import com.github.mixinors.astromine.client.rei.fluidgenerating.FluidGeneratingDisplay;
+import com.github.mixinors.astromine.client.rei.melting.MeltingCategory;
+import com.github.mixinors.astromine.client.rei.melting.MeltingDisplay;
 import com.github.mixinors.astromine.client.rei.pressing.PressingCategory;
 import com.github.mixinors.astromine.client.rei.pressing.PressingDisplay;
 import com.github.mixinors.astromine.client.rei.refining.RefiningCategory;
@@ -109,6 +111,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIPluginV0 {
 	public static final Identifier ELECTROLYZING = AMCommon.id("electrolyzing");
 	public static final Identifier REFINING = AMCommon.id("refining");
 	public static final Identifier PRESSING = AMCommon.id("pressing");
+	public static final Identifier MELTING = AMCommon.id("melting");
 	public static final Identifier WIREMILLING = AMCommon.id("wire_milling");
 	public static final Identifier ALLOY_SMELTING = AMCommon.id("alloy_smelting");
 	public static final Identifier SOLIDIFYING = AMCommon.id("solidifying");
@@ -122,7 +125,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIPluginV0 {
 	@Override
 	public void registerPluginCategories(RecipeHelper recipeHelper) {
 		recipeHelper.registerCategories(new InfusingCategory());
-		recipeHelper.registerCategories(new SolidifyingCategory(), new TrituratingCategory(), new ElectricSmeltingCategory(), new LiquidGeneratingCategory(), new SolidGeneratingCategory(), new PressingCategory(), new WireMillingCategory(), new AlloySmeltingCategory(), new FluidMixingCategory(FLUID_MIXING, "category.astromine.fluid_mixing", EntryStack.create(AMBlocks.ADVANCED_FLUID_MIXER)), new ElectrolyzingCategory(ELECTROLYZING, "category.astromine.electrolyzing", EntryStack.create(AMBlocks.ADVANCED_ELECTROLYZER)), new RefiningCategory(REFINING, "category.astromine.refining", EntryStack.create(AMBlocks.ADVANCED_REFINERY)));
+		recipeHelper.registerCategories(new SolidifyingCategory(), new TrituratingCategory(), new ElectricSmeltingCategory(), new FluidGeneratingCategory(), new SolidGeneratingCategory(), new PressingCategory(), new MeltingCategory(), new WireMillingCategory(), new AlloySmeltingCategory(), new FluidMixingCategory(FLUID_MIXING, "category.astromine.fluid_mixing", EntryStack.create(AMBlocks.ADVANCED_FLUID_MIXER)), new ElectrolyzingCategory(ELECTROLYZING, "category.astromine.electrolyzing", EntryStack.create(AMBlocks.ADVANCED_ELECTROLYZER)), new RefiningCategory(REFINING, "category.astromine.refining", EntryStack.create(AMBlocks.ADVANCED_REFINERY)));
 	}
 	
 	@Override
@@ -130,11 +133,12 @@ public class AMRoughlyEnoughItemsPlugin implements REIPluginV0 {
 		recipeHelper.registerRecipes(INFUSING, AltarRecipe.class, InfusingDisplay::new);
 		recipeHelper.registerRecipes(TRITURATING, TrituratingRecipe.class, TrituratingDisplay::new);
 		recipeHelper.registerRecipes(ELECTRIC_SMELTING, SmeltingRecipe.class, ElectricSmeltingDisplay::new);
-		recipeHelper.registerRecipes(LIQUID_GENERATING, FluidGeneratingRecipe.class, LiquidGeneratingDisplay::new);
+		recipeHelper.registerRecipes(LIQUID_GENERATING, FluidGeneratingRecipe.class, FluidGeneratingDisplay::new);
 		recipeHelper.registerRecipes(FLUID_MIXING, FluidMixingRecipe.class, FluidMixingDisplay::new);
 		recipeHelper.registerRecipes(ELECTROLYZING, ElectrolyzingRecipe.class, ElectrolyzingDisplay::new);
 		recipeHelper.registerRecipes(REFINING, RefiningRecipe.class, RefiningDisplay::new);
 		recipeHelper.registerRecipes(PRESSING, PressingRecipe.class, PressingDisplay::new);
+		recipeHelper.registerRecipes(MELTING, MeltingRecipe.class, MeltingDisplay::new);
 		recipeHelper.registerRecipes(WIREMILLING, WireMillingRecipe.class, WireMillingDisplay::new);
 		recipeHelper.registerRecipes(ALLOY_SMELTING, AlloySmeltingRecipe.class, AlloySmeltingDisplay::new);
 		recipeHelper.registerRecipes(SOLIDIFYING, SolidifyingRecipe.class, SolidifyingDisplay::new);
@@ -161,6 +165,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIPluginV0 {
 		recipeHelper.registerWorkingStations(ELECTROLYZING, EntryStack.create(AMBlocks.PRIMITIVE_ELECTROLYZER), EntryStack.create(AMBlocks.BASIC_ELECTROLYZER), EntryStack.create(AMBlocks.ADVANCED_ELECTROLYZER), EntryStack.create(AMBlocks.ELITE_ELECTROLYZER));
 		recipeHelper.registerWorkingStations(REFINING, EntryStack.create(AMBlocks.PRIMITIVE_REFINERY), EntryStack.create(AMBlocks.BASIC_REFINERY), EntryStack.create(AMBlocks.ADVANCED_REFINERY), EntryStack.create(AMBlocks.ELITE_REFINERY));
 		recipeHelper.registerWorkingStations(PRESSING, EntryStack.create(AMBlocks.PRIMITIVE_PRESSER), EntryStack.create(AMBlocks.BASIC_PRESSER), EntryStack.create(AMBlocks.ADVANCED_PRESSER), EntryStack.create(AMBlocks.ELITE_PRESSER));
+		recipeHelper.registerWorkingStations(MELTING, EntryStack.create(AMBlocks.PRIMITIVE_MELTER), EntryStack.create(AMBlocks.BASIC_MELTER), EntryStack.create(AMBlocks.ADVANCED_MELTER), EntryStack.create(AMBlocks.ELITE_MELTER));
 		recipeHelper.registerWorkingStations(WIREMILLING, EntryStack.create(AMBlocks.PRIMITIVE_WIREMILL), EntryStack.create(AMBlocks.BASIC_WIREMILL), EntryStack.create(AMBlocks.ADVANCED_WIREMILL), EntryStack.create(AMBlocks.ELITE_WIREMILL));
 		recipeHelper.registerWorkingStations(ALLOY_SMELTING, EntryStack.create(AMBlocks.PRIMITIVE_ALLOY_SMELTER), EntryStack.create(AMBlocks.BASIC_ALLOY_SMELTER), EntryStack.create(AMBlocks.ADVANCED_ALLOY_SMELTER), EntryStack.create(AMBlocks.ELITE_ALLOY_SMELTER));
 		recipeHelper.registerWorkingStations(SOLIDIFYING, EntryStack.create(AMBlocks.PRIMITIVE_SOLIDIFIER), EntryStack.create(AMBlocks.BASIC_SOLIDIFIER), EntryStack.create(AMBlocks.ADVANCED_SOLIDIFIER), EntryStack.create(AMBlocks.ELITE_SOLIDIFIER));

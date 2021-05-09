@@ -45,8 +45,8 @@ public class NumberUtils {
 	 * > 1,000,000,000,000,000,000,000,000,000 has the "∞" suffix.
 	 */
 	public static String shorten(long value, String unit) {
-		if (value < 9999) {
-			return String.valueOf(value);
+		if (value < 1000) {
+			return value + unit;
 		}
 
 		int exponent = 0;
@@ -75,8 +75,8 @@ public class NumberUtils {
 	 */
 	public static String shorten(double value, String unit) {
 		if (value == Math.round(value)) return shorten((long) value, unit);
-		if (value < 1000000) {
-			return FluidVolume.FORMAT.format(value);
+		if (value < 1000) {
+			return FluidVolume.FORMAT.format(value) + unit;
 		}
 
 		int exponent = 0;

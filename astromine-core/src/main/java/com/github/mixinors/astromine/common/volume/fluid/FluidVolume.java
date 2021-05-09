@@ -295,7 +295,7 @@ public class FluidVolume extends Volume<Long> {
 	 * For example, it may be "minecraft:water, 16.50 of 32.00 Buckets" */
 	@Override
 	public String toString() {
-		return getFluidId().toString() + ", " + NumberUtils.shorten(getAmount().doubleValue(), "") + "/" + NumberUtils.shorten(getSize().doubleValue(), "") + " Buckets";
+		return getFluidId().toString() + ", " + NumberUtils.shorten(getAmount().doubleValue(), "U") + " / " + NumberUtils.shorten(getSize().doubleValue(), "U");
 	}
 
 	/** Deserializes a volume from a {@link CompoundTag}. */

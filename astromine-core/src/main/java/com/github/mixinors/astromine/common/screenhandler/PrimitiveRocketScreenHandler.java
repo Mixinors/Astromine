@@ -32,7 +32,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
 import com.github.mixinors.astromine.common.screenhandler.base.entity.ComponentEntityFluidItemScreenHandler;
-import com.github.mixinors.astromine.common.widget.blade.FluidVerticalBarWidget;
+import com.github.mixinors.astromine.common.widget.blade.VerticalFluidBarWidget;
 import com.github.mixinors.astromine.common.entity.base.RocketEntity;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
@@ -84,7 +84,7 @@ public class PrimitiveRocketScreenHandler extends ComponentEntityFluidItemScreen
 		firstOutput.setPosition(Position.of(fluidBar, -18 - 3, fluidBar.getHeight() - 18));
 		firstOutput.setSize(Size.of(18, 18));
 
-		FluidVerticalBarWidget secondFluidBar = new FluidVerticalBarWidget();
+		VerticalFluidBarWidget secondFluidBar = new VerticalFluidBarWidget();
 		secondFluidBar.setPosition(Position.of(fluidBar, 24 + 18 + 3 + 3, 0));
 		secondFluidBar.setSize(Size.of(24F, 48F));
 		secondFluidBar.setVolumeSupplier(() -> entity.getFluidComponent().getSecond());

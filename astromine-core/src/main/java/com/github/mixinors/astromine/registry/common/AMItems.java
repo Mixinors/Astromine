@@ -385,6 +385,8 @@ public class AMItems {
 	
 	public static final Item BLADES = register("blades", new Item(getBasicSettings()));
 	
+	public static final Item BIOFUEL = register("biofuel", new Item(getBasicSettings()));
+	
 	public static final Item MACHINE_CHASSIS = register("machine_chassis", new Item(getBasicSettings()));
 	
 	public static final Item BASIC_MACHINE_UPGRADE_KIT = register("basic_machine_upgrade_kit", new Item(getBasicSettings()));

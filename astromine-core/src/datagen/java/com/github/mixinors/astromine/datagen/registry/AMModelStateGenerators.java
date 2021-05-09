@@ -137,9 +137,9 @@ public class AMModelStateGenerators {
 	
 	public final ModelStateGenerator APPLE = register(new GenericItemSetModelGenerator(MaterialItemType.APPLE));
 	
-	public final ModelStateGenerator BLADES = register(new HandheldItemModelGenerator(
-			AMItems.BLADES
-	));
+	public final ModelStateGenerator BLADES = register(new HandheldItemModelGenerator(AMItems.BLADES));
+	
+	public final ModelStateGenerator BIOFUEL = register(new GenericItemModelGenerator(AMItems.BIOFUEL));
 	
 	public final ModelStateGenerator PRIMITIVE_MACHINES = register(new MachineModelStateGenerator(
 			AMBlocks.PRIMITIVE_ALLOY_SMELTER,

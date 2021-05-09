@@ -40,7 +40,7 @@ import com.github.mixinors.astromine.common.network.NetworkBlock;
 import com.github.mixinors.astromine.common.block.entity.MelterBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.MelterScreenHandler;
 
-public abstract class MelterBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.FluidRequester {
+public abstract class MelterBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.FluidBuffer{
 	public MelterBlock(Settings settings) {
 		super(settings);
 	}

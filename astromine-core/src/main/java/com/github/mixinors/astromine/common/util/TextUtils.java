@@ -24,12 +24,12 @@
 
 package com.github.mixinors.astromine.common.util;
 
+import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
+import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import net.fabricmc.loader.api.FabricLoader;
 
 import net.minecraft.fluid.Fluid;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -48,9 +48,21 @@ public class TextUtils {
         return new TranslatableText("text.astromine.energy");
     }
 
-    /** Returns the "16k/32k" text. */
+    /** Returns the "16k / 32k" text. */
     public static Text getVolume(Volume<?> volume) {
-        return new LiteralText(NumberUtils.shorten(volume.getAmount().doubleValue(), "") + "/" + NumberUtils.shorten(volume.getSize().doubleValue(), "")).formatted(Formatting.GRAY);
+        String unit = volume instanceof EnergyVolume ? "E" : volume instanceof FluidVolume ? "U" : "";
+        return new LiteralText(NumberUtils.shorten(volume.getAmount().doubleValue(), unit) + " / " + NumberUtils.shorten(volume.getSize().doubleValue(), unit)).formatted(Formatting.GRAY);
+    }
+    
+    /** Returns the "16kE / 32kE" text. */
+    public static Text getEnergyVolume(EnergyVolume volume) {
+        return new LiteralText(NumberUtils.shorten(volume.getAmount(), "E")).formatted(Formatting.GREEN).append(new LiteralText(" / ").formatted(Formatting.GRAY)).append(new LiteralText(NumberUtils.shorten(volume.getSize(), "E")).formatted(Formatting.GREEN));
+    }
+    
+    /** Returns the "16kU / 32kU" text. */
+    public static Text getFluidVolume(FluidVolume volume) {
+        Style style = Style.EMPTY.withColor(TextColor.fromRgb(FluidUtils.getColor(ClientUtils.getPlayer(), volume.getFluid())));
+        return new LiteralText(NumberUtils.shorten(volume.getAmount(), "U")).fillStyle(style).append(new LiteralText(" / ").formatted(Formatting.GRAY)).append(new LiteralText(NumberUtils.shorten(volume.getSize(), "U")).fillStyle(style));
     }
 
     /** Returns the "Water" / "Lava" / "Hydrogen" / ... text. */

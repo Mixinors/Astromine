@@ -77,12 +77,6 @@ public class RefiningCategory implements RecipeCategory<RefiningDisplay> {
 		widgets.addAll(AMRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.x + 24, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getInputEntries().get(0), false, 5000));
 		widgets.add(Widgets.createArrow(new Point(innerBounds.getX() + 45, innerBounds.getY() + 26)));
 		widgets.addAll(AMRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 70 - 32, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getResultingEntries().get(0), true, 5000));
-		widgets.addAll(AMRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 70 - 32 + 14, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getResultingEntries().get(1), true, 5000));
-		widgets.addAll(AMRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 70 - 32 + 14 * 2, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getResultingEntries().get(2), true, 5000));
-		widgets.addAll(AMRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 70 - 32 + 14 * 3, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getResultingEntries().get(3), true, 5000));
-		widgets.addAll(AMRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 70 - 32 + 14 * 4, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getResultingEntries().get(4), true, 5000));
-		widgets.addAll(AMRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 70 - 32 + 14 * 5, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getResultingEntries().get(5), true, 5000));
-		widgets.addAll(AMRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 70 - 32 + 14 * 6, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getResultingEntries().get(6), true, 5000));
 		return widgets;
 	}
 }

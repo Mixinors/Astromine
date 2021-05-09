@@ -54,7 +54,7 @@ import java.util.function.Supplier;
  * {@link EnergyVolume#getAmount()} and {@link EnergyVolume#getSize()}
  * are queried from.
  */
-public class EnergyVerticalBarWidget extends AbstractWidget {
+public class VerticalEnergyBarWidget extends AbstractWidget {
 	private static final Identifier ENERGY_BACKGROUND = AMCommon.id("textures/widget/energy_volume_fractional_vertical_bar_background.png");
 	private static final Identifier ENERGY_FOREGROUND = AMCommon.id("textures/widget/energy_volume_fractional_vertical_bar_foreground.png");
 
@@ -76,7 +76,7 @@ public class EnergyVerticalBarWidget extends AbstractWidget {
 	public @NotNull List<Text> getTooltip() {
 		return Lists.newArrayList(
 				TextUtils.getEnergy(),
-				TextUtils.getVolume(volumeSupplier.get()),
+				TextUtils.getEnergyVolume(volumeSupplier.get()),
 				TextUtils.getAstromine()
 		);
 	}

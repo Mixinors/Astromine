@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.client.rei.liquidgenerating;
+package com.github.mixinors.astromine.client.rei.fluidgenerating;
 
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import net.fabricmc.api.EnvType;
@@ -43,7 +43,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class LiquidGeneratingCategory extends AbstractEnergyGeneratingCategory<LiquidGeneratingDisplay> {
+public class FluidGeneratingCategory extends AbstractEnergyGeneratingCategory<FluidGeneratingDisplay> {
 	@Override
 	public Identifier getIdentifier() {
 		return AMRoughlyEnoughItemsPlugin.LIQUID_GENERATING;
@@ -60,7 +60,7 @@ public class LiquidGeneratingCategory extends AbstractEnergyGeneratingCategory<L
 	}
 
 	@Override
-	public List<Widget> setupDisplay(LiquidGeneratingDisplay recipeDisplay, Rectangle bounds) {
+	public List<Widget> setupDisplay(FluidGeneratingDisplay recipeDisplay, Rectangle bounds) {
 		List<Widget> widgets = super.setupDisplay(recipeDisplay, bounds);
 		Rectangle innerBounds = new Rectangle(bounds.getCenterX() - 55, bounds.y, 110, bounds.height);
 		widgets.addAll(AMRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getX() + 24, innerBounds.getCenterY() - 23, 12, 48), Collections.singletonList(EntryStack.create(recipeDisplay.getFluid(), AMRoughlyEnoughItemsPlugin.convertToFraction(

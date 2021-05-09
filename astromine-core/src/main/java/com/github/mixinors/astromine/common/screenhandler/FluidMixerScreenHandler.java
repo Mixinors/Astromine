@@ -29,7 +29,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyFluidScreenHandler;
-import com.github.mixinors.astromine.common.widget.blade.FluidVerticalBarWidget;
+import com.github.mixinors.astromine.common.widget.blade.VerticalFluidBarWidget;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.block.entity.FluidMixerBlockEntity;
 import com.github.vini2003.blade.common.miscellaneous.Position;
@@ -48,7 +48,7 @@ public class FluidMixerScreenHandler extends ComponentBlockEntityEnergyFluidScre
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		FluidVerticalBarWidget secondInputFluidBar = new FluidVerticalBarWidget();
+		VerticalFluidBarWidget secondInputFluidBar = new VerticalFluidBarWidget();
 		secondInputFluidBar.setPosition(Position.of(fluidBar, fluidBar.getWidth() + 7, 0));
 		secondInputFluidBar.setSize(Size.absolute(fluidBar));
 		secondInputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getSecond());
@@ -59,7 +59,7 @@ public class FluidMixerScreenHandler extends ComponentBlockEntityEnergyFluidScre
 		arrow.setLimitSupplier(() -> mixer.limit);
 		arrow.setProgressSupplier(() -> (int) mixer.progress);
 
-		FluidVerticalBarWidget outputFluidBar = new FluidVerticalBarWidget();
+		VerticalFluidBarWidget outputFluidBar = new VerticalFluidBarWidget();
 		outputFluidBar.setPosition(Position.of(secondInputFluidBar, secondInputFluidBar.getWidth() + 9 + arrow.getWidth() + 7, 0));
 		outputFluidBar.setSize(Size.absolute(fluidBar));
 		outputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getThird());
