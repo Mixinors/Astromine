@@ -1,5 +1,0 @@
-{
-  "type": "minecraft:crafting_shaped", "pattern": ["111", "141", "111"],
-  "key": {"1": {"item": "minecraft:white_wool"}, "4": {"item": "minecraft:glass"}},
-  "result": {"item": "astromine:space_suit_helmet", "count": 1}
-}

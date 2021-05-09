@@ -1,6 +1,0 @@
-{
-  "type": "minecraft:crafting_shaped", "pattern": ["6 6", "343", "666"], "key": {
-  "3": {"tag": "c:meteoric_steel_plates"}, "4": {"item": "astromine:portable_tank"},
-  "6": {"item": "minecraft:white_wool"}
-}, "result": {"item": "astromine:space_suit_chestplate", "count": 1}
-}
