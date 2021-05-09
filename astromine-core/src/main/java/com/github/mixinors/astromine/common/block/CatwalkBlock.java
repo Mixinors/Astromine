@@ -98,14 +98,14 @@ public class CatwalkBlock extends Block implements Waterloggable {
 	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState newState, WorldAccess world, BlockPos pos, BlockPos posFrom) {
 		boolean newStateSameType = newState.getBlock() instanceof CatwalkBlock;
 
-		if (direction == Direction.NORTH)
-			newState = newState.with(Properties.NORTH, newStateSameType);
-		if (direction == Direction.EAST)
-			newState = newState.with(Properties.EAST, newStateSameType);
-		if (direction == Direction.SOUTH)
-			newState = newState.with(Properties.SOUTH, newStateSameType);
-		if (direction == Direction.WEST)
-			newState = newState.with(Properties.WEST, newStateSameType);
+		if (direction == Direction.NORTH && newStateSameType)
+			newState = newState.with(Properties.NORTH, true);
+		if (direction == Direction.EAST && newStateSameType)
+			newState = newState.with(Properties.EAST, true);
+		if (direction == Direction.SOUTH && newStateSameType)
+			newState = newState.with(Properties.SOUTH, true);
+		if (direction == Direction.WEST && newStateSameType)
+			newState = newState.with(Properties.WEST, true);
 
 		return newState;
 	}
