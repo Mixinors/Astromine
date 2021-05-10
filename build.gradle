@@ -1,8 +1,14 @@
 import net.fabricmc.loom.task.RunClientTask
 
+buildscript {
+    configurations.classpath {
+        resolutionStrategy.cacheChangingModulesFor 5, 'minutes'
+    }
+}
+
 plugins {
     id 'maven-publish'
-    id 'dev.architectury.loom' version '0.7.1-SNAPSHOT'
+    id 'dev.architectury.loom' version '0.7.2-SNAPSHOT'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
     id "org.cadixdev.licenser" version "0.5.0"
 }
@@ -83,6 +89,20 @@ allprojects {
     }
 
     dependencies {
+        dependencies.ext.useAsCompileOnly = { dep ->
+            modCompileOnly(dep) {
+                if (!dep.contains("net.fabricmc.fabric-api")) {
+                    exclude group: "net.fabricmc.fabric-api"
+                }
+                exclude group: "net.fabricmc"
+                exclude group: "com.jamieswhiteshirt"
+                if (!dep.contains("me.shedaniel")) {
+                    exclude group: "me.shedaniel"
+                }
+                exclude group: "me.shedaniel.cloth", module: "cloth-config"
+                exclude group: "io.github.prospector", module: "modmenu"
+            }
+        }
         dependencies.ext.useAsApiOptionally = { dep ->
             modApi(dep) {
                 if (!dep.contains("net.fabricmc.fabric-api")) {
@@ -99,6 +119,7 @@ allprojects {
         }
         dependencies.ext.useAsApi = { dep ->
             useAsApiOptionally(dep)
+            include(dep)
         }
         dependencies.ext.useAsRuntime = { dep ->
             modRuntime(dep) {

@@ -28,6 +28,7 @@ import com.github.mixinors.astromine.common.callback.ServerChunkManagerCallback;
 
 
 import com.github.mixinors.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
+import me.shedaniel.architectury.event.events.BlockEvent;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
 import net.minecraft.block.BlockState;
@@ -43,7 +44,6 @@ import com.github.mixinors.astromine.common.component.world.ChunkAtmosphereCompo
 import com.github.mixinors.astromine.common.component.world.WorldNetworkComponent;
 import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
-import me.shedaniel.cloth.api.common.events.v1.BlockPlaceCallback;
 
 import com.google.common.collect.Lists;
 import java.util.Collections;
@@ -51,7 +51,7 @@ import java.util.List;
 
 public class AMCallbacks {
 	public static void init() {
-		BlockPlaceCallback.EVENT.register(((world, pos, state, entity, stack) -> {
+		BlockEvent.PLACE.register((world, pos, blockState, entity) -> {
 			ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(pos));
 
 			if (atmosphereComponent != null) {
@@ -88,7 +88,7 @@ public class AMCallbacks {
 			}
 
 			return ActionResult.PASS;
-		}));
+		});
 
 		ServerTickEvents.START_SERVER_TICK.register((server) -> {
 			for (PlayerEntity playerEntity : server.getPlayerManager().getPlayerList()) {

@@ -11,7 +11,9 @@ project.ext.setDefaultApis = {
     useAsApi("com.terraformersmc.terraform-api:terraform-shapes-api-v1:${shapes_version}")
 
     // Blade
-    useAsApi("com.github.vini2003:Blade:${blade_version}")
+    useAsCompileOnly("com.github.vini2003:blade:${blade_version}")
+    useAsRuntime("com.github.vini2003:blade-fabric:${blade_version}")
+    include("com.github.vini2003:blade-fabric:${blade_version}")
 
     // Patchouli
     useAsApi("vazkii.patchouli:Patchouli:${patchouli_version}")
@@ -23,12 +25,12 @@ project.ext.setDefaultApis = {
     useAsApi("teamreborn:energy:${tech_reborn_energy_version}")
 
     // Cloth API
-    useAsApi("me.shedaniel.cloth.api:cloth-common-events-v1:${cloth_api_version}")
     useAsApi("me.shedaniel.cloth.api:cloth-durability-bar-api-v1:${cloth_api_version}")
-    useAsApi("me.shedaniel.cloth.api:cloth-datagen-api-v1:${cloth_api_version}")
+    useAsApiOptionally("me.shedaniel.cloth.api:cloth-datagen-api-v1:${cloth_api_version}")
 
     // Cloth Config
-    useAsApi("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_api_version}")
+    useAsCompileOnly("me.shedaniel.cloth:cloth-config:${cloth_config_api_version}")
+    useAsRuntime("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_api_version}")
 
     // RoughlyEnoughItems
     useAsApiOptionally("me.shedaniel:RoughlyEnoughItems:${roughly_enough_items_version}")

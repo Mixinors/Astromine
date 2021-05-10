@@ -39,7 +39,6 @@ import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.item.base.EnergyVolumeItem;
 import com.github.mixinors.astromine.registry.common.AMConfig;
-import draylar.magna.api.MagnaTool;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
