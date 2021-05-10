@@ -119,7 +119,9 @@ allprojects {
         }
         dependencies.ext.useAsApi = { dep ->
             useAsApiOptionally(dep)
-            include(dep)
+            if (!isRunningGenerateDataTask) {
+                include(dep)
+            }
         }
         dependencies.ext.useAsRuntime = { dep ->
             modRuntime(dep) {
