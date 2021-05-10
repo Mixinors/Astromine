@@ -4,7 +4,7 @@ import com.github.mixinors.astromine.client.atmosphere.ClientAtmosphereManager;
 import com.github.mixinors.astromine.common.entity.PrimitiveRocketEntity;
 import com.github.mixinors.astromine.common.util.ClientUtils;
 import com.github.mixinors.astromine.registry.common.AMEntityTypes;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import me.shedaniel.architectury.networking.NetworkManager;
 
 import java.util.UUID;
 
@@ -12,14 +12,14 @@ import static com.github.mixinors.astromine.registry.common.AMNetworks.*;
 
 public class AMClientNetworks {
 	public static void init() {
-		ClientPlayNetworking.registerGlobalReceiver(PRIMITIVE_ROCKET_SPAWN, ((client, handler, buf, responseSender) -> {
+		NetworkManager.registerReceiver(NetworkManager.s2c(), PRIMITIVE_ROCKET_SPAWN, ((buf, context) -> {
 			double x = buf.readDouble();
 			double y = buf.readDouble();
 			double z = buf.readDouble();
 			UUID uuid = buf.readUuid();
 			int id = buf.readInt();
-			
-			client.execute(() -> {
+
+			context.queue(() -> {
 				PrimitiveRocketEntity rocketEntity = AMEntityTypes.PRIMITIVE_ROCKET.create(ClientUtils.getWorld());
 				
 				rocketEntity.setUuid(uuid);
@@ -30,27 +30,27 @@ public class AMClientNetworks {
 				ClientUtils.getWorld().addEntity(id, rocketEntity);
 			});
 		}));
-		
-		ClientPlayNetworking.registerGlobalReceiver(GAS_ERASED, ((client, handler, buf, responseSender) -> {
+
+		NetworkManager.registerReceiver(NetworkManager.s2c(), GAS_ERASED, ((buf, context) -> {
 			buf.retain();
 			
-			client.execute(() -> {
+			context.queue(() -> {
 				ClientAtmosphereManager.onGasErased(buf);
 			});
 		}));
-		
-		ClientPlayNetworking.registerGlobalReceiver(GAS_ADDED, ((client, handler, buf, responseSender) -> {
+
+		NetworkManager.registerReceiver(NetworkManager.s2c(), GAS_ADDED, ((buf, context) -> {
 			buf.retain();
-			
-			client.execute(() -> {
+
+			context.queue(() -> {
 				ClientAtmosphereManager.onGasAdded(buf);
 			});
 		}));
-		
-		ClientPlayNetworking.registerGlobalReceiver(GAS_REMOVED, ((client, handler, buf, responseSender) -> {
+
+		NetworkManager.registerReceiver(NetworkManager.s2c(), GAS_REMOVED, ((buf, context) -> {
 			buf.retain();
-			
-			client.execute(() -> {
+
+			context.queue(() -> {
 				ClientAtmosphereManager.onGasRemoved(buf);
 			});
 		}));

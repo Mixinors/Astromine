@@ -25,22 +25,25 @@
 package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import me.shedaniel.architectury.event.events.client.ClientLifecycleEvent;
+import me.shedaniel.architectury.registry.RenderTypes;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.render.RenderLayer;
 
 public class AMRenderLayers {
 	public static void init() {
-		register(AMBlocks.AIRLOCK, RenderLayer.getTranslucent());
-		
-		register(AMBlocks.ALTAR, RenderLayer.getCutout());
-		register(AMBlocks.ALTAR_PEDESTAL, RenderLayer.getCutout());
-		register(AMBlocks.SPACE_SLIME_BLOCK, RenderLayer.getTranslucent());
-		
-		register(AMBlocks.ALTERNATOR, RenderLayer.getCutout());
-		register(AMBlocks.SPLITTER, RenderLayer.getCutout());
-		register(AMBlocks.SHREDDER, RenderLayer.getCutout());
+		ClientLifecycleEvent.CLIENT_SETUP.register(client -> {
+			register(AMBlocks.AIRLOCK, RenderLayer.getTranslucent());
+
+			register(AMBlocks.ALTAR, RenderLayer.getCutout());
+			register(AMBlocks.ALTAR_PEDESTAL, RenderLayer.getCutout());
+			register(AMBlocks.SPACE_SLIME_BLOCK, RenderLayer.getTranslucent());
+
+			register(AMBlocks.ALTERNATOR, RenderLayer.getCutout());
+			register(AMBlocks.SPLITTER, RenderLayer.getCutout());
+			register(AMBlocks.SHREDDER, RenderLayer.getCutout());
+		});
 	}
 
 	/**
@@ -52,7 +55,7 @@ public class AMRenderLayers {
 	 * @return Block instance registered
 	 */
 	public static <T extends Block> T register(T block, RenderLayer renderLayer) {
-		BlockRenderLayerMap.INSTANCE.putBlock(block, renderLayer);
+		RenderTypes.register(renderLayer, block);
 		return block;
 	}
 }

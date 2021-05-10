@@ -25,15 +25,10 @@
 package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.client.model.PrimitiveRocketEntityModel;
-import com.github.mixinors.astromine.client.render.entity.PrimitiveRocketEntityRenderer;
 import com.github.mixinors.astromine.common.util.ClientUtils;
 import com.mojang.datafixers.util.Pair;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.*;
 import net.minecraft.client.render.model.json.JsonUnbakedModel;
 import net.minecraft.client.render.model.json.ModelOverrideList;
@@ -41,9 +36,6 @@ import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.SpriteIdentifier;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
-import net.minecraft.item.ItemStack;
 import net.minecraft.resource.Resource;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Lazy;

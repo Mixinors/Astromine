@@ -32,7 +32,7 @@ import com.github.mixinors.astromine.registry.common.AMDimensions;
 import com.github.mixinors.astromine.registry.common.AMFluids;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMNetworks;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import me.shedaniel.architectury.networking.NetworkManager;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 
 import net.minecraft.client.util.math.Vector3d;
@@ -144,7 +144,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 		packet.writeUuid(this.getUuid());
 		packet.writeInt(this.getEntityId());
 
-		return ServerPlayNetworking.createS2CPacket(AMNetworks.PRIMITIVE_ROCKET_SPAWN, packet);
+		return NetworkManager.toPacket(NetworkManager.s2c(), AMNetworks.PRIMITIVE_ROCKET_SPAWN, packet);
 	}
 
 	@Override

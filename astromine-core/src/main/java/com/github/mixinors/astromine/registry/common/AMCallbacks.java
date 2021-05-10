@@ -29,7 +29,7 @@ import com.github.mixinors.astromine.common.callback.ServerChunkManagerCallback;
 
 import com.github.mixinors.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
 import me.shedaniel.architectury.event.events.BlockEvent;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import me.shedaniel.architectury.event.events.TickEvent;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -90,20 +90,20 @@ public class AMCallbacks {
 			return ActionResult.PASS;
 		});
 
-		ServerTickEvents.START_SERVER_TICK.register((server) -> {
+		TickEvent.SERVER_PRE.register((server) -> {
 			for (PlayerEntity playerEntity : server.getPlayerManager().getPlayerList()) {
 				if (playerEntity.currentScreenHandler instanceof ComponentBlockEntityScreenHandler) {
 					ComponentBlockEntityScreenHandler screenHandler = (ComponentBlockEntityScreenHandler) playerEntity.currentScreenHandler;
 
 					if (screenHandler.getBlockEntity() != null) {
-						screenHandler.getBlockEntity().sync();
+						screenHandler.getBlockEntity().syncData();
 						break;
 					}
 				}
 			}
 		});
 
-		ServerTickEvents.START_WORLD_TICK.register((world -> {
+		TickEvent.SERVER_WORLD_PRE.register((world -> {
 			WorldNetworkComponent component = WorldNetworkComponent.get(world);
 
 			if (component != null) {

@@ -28,7 +28,7 @@ import com.github.mixinors.astromine.common.component.general.base.ItemComponent
 import com.github.mixinors.astromine.common.component.general.SimpleItemComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMConfig;
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
+import me.shedaniel.architectury.extensions.BlockEntityExtension;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
 
 import net.minecraft.block.AbstractFurnaceBlock;
@@ -57,7 +57,7 @@ import com.github.mixinors.astromine.common.block.InserterBlock;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class InserterBlockEntity extends BlockEntity implements BlockEntityClientSerializable, RenderAttachmentBlockEntity, Tickable {
+public class InserterBlockEntity extends BlockEntity implements BlockEntityExtension, RenderAttachmentBlockEntity, Tickable {
 	protected int position = 0;
 	protected int prevPosition = 0;
 
@@ -237,8 +237,8 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityClien
 	}
 
 	@Override
-	public void fromClientTag(CompoundTag compoundTag) {
-		fromTag(getCachedState(), compoundTag);
+	public void loadClientData(BlockState state, CompoundTag compoundTag) {
+		fromTag(state, compoundTag);
 	}
 
 	@Override
@@ -256,7 +256,7 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityClien
 	}
 
 	@Override
-	public CompoundTag toClientTag(CompoundTag compoundTag) {
+	public CompoundTag saveClientData(CompoundTag compoundTag) {
 		return toTag(compoundTag);
 	}
 }

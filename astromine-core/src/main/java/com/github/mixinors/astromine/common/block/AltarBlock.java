@@ -111,7 +111,7 @@ public class AltarBlock extends BlockWithEntity {
 
 				player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, .6F, 1);
 
-				blockEntity.sync();
+				blockEntity.syncData();
 
 				return ActionResult.SUCCESS;
 			} else if (stackInHand.isEmpty()) {
@@ -121,7 +121,7 @@ public class AltarBlock extends BlockWithEntity {
 
 				player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, .6F, 1);
 
-				blockEntity.sync();
+				blockEntity.syncData();
 
 				return ActionResult.SUCCESS;
 			} else {

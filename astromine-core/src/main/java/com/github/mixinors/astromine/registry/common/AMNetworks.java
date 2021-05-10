@@ -2,7 +2,7 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.block.entity.base.ComponentBlockEntity;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import me.shedaniel.architectury.networking.NetworkManager;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -19,14 +19,14 @@ public class AMNetworks {
 	public static final Identifier GAS_ERASED = AMCommon.id("gas_erased");
 	
 	public static void init() {
-		ServerPlayNetworking.registerGlobalReceiver(BLOCK_ENTITY_UPDATE_PACKET, ((server, player, handler, buf, responseSender) -> {
+		NetworkManager.registerReceiver(NetworkManager.c2s(), BLOCK_ENTITY_UPDATE_PACKET, ((buf, context) -> {
 			buf.retain();
 			
 			BlockPos blockPos = buf.readBlockPos();
 			Identifier identifier = buf.readIdentifier();
-			
-			server.execute(() -> {
-				BlockEntity blockEntity = player.world.getBlockEntity(blockPos);
+
+			context.queue(() -> {
+				BlockEntity blockEntity = context.getPlayer().world.getBlockEntity(blockPos);
 				
 				if (blockEntity instanceof ComponentBlockEntity) {
 					((ComponentBlockEntity) blockEntity).consumePacket(identifier, buf);

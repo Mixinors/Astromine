@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.datagen.material;
 
-import net.fabricmc.fabric.api.tag.TagRegistry;
+import me.shedaniel.architectury.hooks.TagHooks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -95,7 +95,7 @@ public class MaterialEntry implements ItemConvertible {
 	}
 
 	private Tag<Item> asItemTag() {
-		return TagRegistry.item(getItemTagId());
+		return TagHooks.getItemOptional(getItemTagId());
 	}
 
 	public boolean isFromVanilla() {

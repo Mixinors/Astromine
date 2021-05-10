@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.component.world;
 
-import net.fabricmc.fabric.api.util.NbtType;
+import me.shedaniel.architectury.utils.NbtType;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;

@@ -24,20 +24,15 @@
 
 package com.github.mixinors.astromine.common.callback;
 
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
-
+import me.shedaniel.architectury.event.Event;
+import me.shedaniel.architectury.event.EventFactory;
 import net.minecraft.server.world.ServerChunkManager;
 
 /**
  * A callback called when initializing a {@link ServerChunkManager}.
  */
 public interface ServerChunkManagerCallback {
-	Event<ServerChunkManagerCallback> EVENT = EventFactory.createArrayBacked(ServerChunkManagerCallback.class, (listeners) -> (manager) -> {
-		for (ServerChunkManagerCallback listener : listeners) {
-			listener.handle(manager);
-		}
-	});
+	Event<ServerChunkManagerCallback> EVENT = EventFactory.createLoop();
 
 	/** Handle the {@link ServerChunkManager}. */
 	void handle(ServerChunkManager manager);

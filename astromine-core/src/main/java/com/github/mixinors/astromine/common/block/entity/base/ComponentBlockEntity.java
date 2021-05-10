@@ -33,8 +33,8 @@ import com.github.mixinors.astromine.common.component.general.provider.RedstoneC
 import com.github.mixinors.astromine.common.component.general.provider.TransferComponentProvider;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import com.github.mixinors.astromine.registry.common.AMComponents;
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 
+import me.shedaniel.architectury.extensions.BlockEntityExtension;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -65,11 +65,11 @@ import java.util.function.Consumer;
 
 /**
  * A {@link BlockEntity} which is synchronized to the client
- * through {@link BlockEntityClientSerializable}, which is
+ * through {@link BlockEntityExtension}, which is
  * {@link Tickable}, updates its {@link BlockState} based on
  * its activity, and handles redstone behavior.
  */
-public abstract class ComponentBlockEntity extends BlockEntity implements BlockEntityClientSerializable, Tickable, TransferComponentProvider, RedstoneComponentProvider {
+public abstract class ComponentBlockEntity extends BlockEntity implements BlockEntityExtension, Tickable, TransferComponentProvider, RedstoneComponentProvider {
 	public static final Identifier TRANSFER_UPDATE_PACKET = AMCommon.id("transfer_update_packet");
 
 	private final TransferComponent transferComponent = createTransferComponent();
@@ -97,7 +97,7 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 
 			getTransferComponent().get(ComponentRegistry.get(packetIdentifier)).set(packetDirection, packetTransferType);
 			markDirty();
-			sync();
+			syncData();
 		}));
 	}
 
@@ -293,7 +293,7 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 	/** Serializes this {@link ComponentBlockEntity} to a {@link CompoundTag},
 	 * for synchronization usage. */
 	@Override
-	public CompoundTag toClientTag(CompoundTag compoundTag) {
+	public CompoundTag saveClientData(CompoundTag compoundTag) {
 		compoundTag = toTag(compoundTag);
 		if (skipInventory) {
 			compoundTag.remove(AMComponents.ITEM_INVENTORY_COMPONENT.getId().toString());
@@ -306,7 +306,7 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 	/** Deserializes this {@link ComponentBlockEntity} from a {@link CompoundTag},
 	 * for synchronization usage. */
 	@Override
-	public void fromClientTag(CompoundTag compoundTag) {
-		fromTag(null, compoundTag);
+	public void loadClientData(BlockState state, CompoundTag compoundTag) {
+		fromTag(state, compoundTag);
 	}
 }

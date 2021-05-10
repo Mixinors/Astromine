@@ -30,7 +30,7 @@ import com.github.mixinors.astromine.common.util.VectorUtils;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.vini2003.blade.common.miscellaneous.Color;
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
+import me.shedaniel.architectury.extensions.BlockEntityExtension;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -45,7 +45,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Tickable, BlockEntityClientSerializable {
+public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Tickable, BlockEntityExtension {
 	public ArrayList<Vector3f> segments = null;
 
 	public Color color = Color.of("0x7e80cad4");
@@ -213,7 +213,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			this.setChild(null);
 
 			if (!world.isClient) {
-				this.sync();
+				this.syncData();
 			}
 		}
 
@@ -223,7 +223,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			this.parent.setChild(null);
 
 			if (!world.isClient) {
-				this.parent.sync();
+				this.parent.syncData();
 			}
 		}
 
@@ -292,8 +292,8 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	}
 
 	@Override
-	public void fromClientTag(CompoundTag tag) {
-		this.fromTag(null, tag);
+	public void loadClientData(BlockState state, CompoundTag tag) {
+		this.fromTag(state, tag);
 
 		this.destroyBridge();
 
@@ -305,7 +305,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	}
 
 	@Override
-	public CompoundTag toClientTag(CompoundTag compoundTag) {
+	public CompoundTag saveClientData(CompoundTag compoundTag) {
 		return this.toTag(compoundTag);
 	}
 }

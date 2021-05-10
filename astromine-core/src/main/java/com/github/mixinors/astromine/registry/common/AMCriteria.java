@@ -30,7 +30,7 @@ import com.github.mixinors.astromine.common.criterion.LaunchRocketCriterion;
 import com.github.mixinors.astromine.common.criterion.MetiteOreUnderestimationCriterion;
 import com.github.mixinors.astromine.common.criterion.ProperlyUseFireExtinguisherCriterion;
 import com.github.mixinors.astromine.common.criterion.UseFireExtinguisherCriterion;
-import net.fabricmc.fabric.api.object.builder.v1.advancement.CriterionRegistry;
+import me.shedaniel.architectury.registry.CriteriaTriggersRegistry;
 
 import net.minecraft.advancement.criterion.Criterion;
 
@@ -51,6 +51,6 @@ public class AMCriteria {
 	}
 
 	public static <T extends Criterion<?>> T register(Criterion<?> criterion) {
-		return (T) CriterionRegistry.register(criterion);
+		return (T) CriteriaTriggersRegistry.register(criterion);
 	}
 }

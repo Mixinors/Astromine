@@ -32,11 +32,10 @@ import com.github.mixinors.astromine.common.network.type.EnergyNetworkType;
 import com.github.mixinors.astromine.common.util.TextUtils;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
-import com.github.mixinors.astromine.common.widget.blade.VerticalEnergyBarWidget;
 import com.github.mixinors.astromine.registry.common.AMDimensions;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.google.common.collect.Lists;
-import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import me.shedaniel.architectury.event.events.TooltipEvent;
 
 import net.minecraft.item.BlockItem;
 import net.minecraft.text.LiteralText;
@@ -48,7 +47,6 @@ import net.minecraft.util.Formatting;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.item.base.EnergyVolumeItem;
 import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
-import com.github.mixinors.astromine.common.util.NumberUtils;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
@@ -59,7 +57,7 @@ import team.reborn.energy.EnergyHandler;
 
 public class AMClientCallbacks {
 	public static void init() {
-		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
+		TooltipEvent.ITEM.register((stack, tooltip, context) -> {
 			if (stack.getItem() instanceof FluidVolumeItem) {
 				FluidComponent fluidComponent = FluidComponent.get(stack);
 				
@@ -72,7 +70,7 @@ public class AMClientCallbacks {
 			}
 		});
 
-		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
+		TooltipEvent.ITEM.register((stack, tooltip, context) -> {
 			if (stack.getItem() instanceof EnergyVolumeItem) {
 				EnergyHandler handler = Energy.of(stack);
 				
@@ -81,8 +79,8 @@ public class AMClientCallbacks {
 				));
 			}
 		});
-		
-		ItemTooltipCallback.EVENT.register(((stack, context, tooltip) -> {
+
+		TooltipEvent.ITEM.register((stack, tooltip, context) -> {
 			if (stack.getItem() instanceof HolographicConnectorItem) {
 				Pair<RegistryKey<World>, BlockPos> pair = ((HolographicConnectorItem) stack.getItem()).readBlock(stack);
 				
@@ -91,15 +89,15 @@ public class AMClientCallbacks {
 					tooltip.add(new TranslatableText("text.astromine.selected.dimension.pos", pair.getLeft().getValue(), pair.getRight().getX(), pair.getRight().getY(), pair.getRight().getZ()).formatted(Formatting.GRAY));
 				}
 			}
-		}));
-		
-		ItemTooltipCallback.EVENT.register(((stack, context, tooltip) -> {
+		});
+
+		TooltipEvent.ITEM.register((stack, tooltip, context) -> {
 			if (stack.getItem() instanceof BlockItem && ((BlockItem) stack.getItem()).getBlock() instanceof EnergyNetworkType.NodeSpeedProvider) {
 				tooltip.add(new TranslatableText("text.astromine.tooltip.cable.speed", ((EnergyNetworkType.NodeSpeedProvider) ((BlockItem) stack.getItem()).getBlock()).getNodeSpeed()).formatted(Formatting.GRAY));
 			}
-		}));
-		
-		ItemTooltipCallback.EVENT.register(((stack, context, tooltip) -> {
+		});
+
+		TooltipEvent.ITEM.register((stack, tooltip, context) -> {
 			if (stack.getItem() instanceof SpaceSuitItem) {
 				if (stack.getItem() == AMItems.SPACE_SUIT_CHESTPLATE) {
 					FluidComponent fluidComponent = FluidComponent.get(stack);
@@ -109,7 +107,7 @@ public class AMClientCallbacks {
 					});
 				}
 			}
-		}));
+		});
 		
 		SkyPropertiesCallback.EVENT.register((properties) -> properties.put(AMDimensions.EARTH_SPACE_ID, new SpaceSkyProperties()));
 	}

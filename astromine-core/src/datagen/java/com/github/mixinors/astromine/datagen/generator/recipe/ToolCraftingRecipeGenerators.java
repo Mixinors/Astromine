@@ -24,8 +24,7 @@
 
 package com.github.mixinors.astromine.datagen.generator.recipe;
 
-import net.fabricmc.fabric.api.tag.TagRegistry;
-
+import me.shedaniel.architectury.hooks.TagHooks;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
 
@@ -36,7 +35,7 @@ import com.github.mixinors.astromine.datagen.material.MaterialSet;
 public abstract class ToolCraftingRecipeGenerators extends ShapedCraftingSetRecipeGenerator {
 	public ToolCraftingRecipeGenerators(MaterialItemType input, MaterialItemType output, String... pattern) {
 		super(input, output, pattern);
-		this.addIngredient('s', Ingredient.fromTag(TagRegistry.item(new Identifier("c", "wood_sticks"))));
+		this.addIngredient('s', Ingredient.fromTag(TagHooks.getItemOptional(new Identifier("c", "wood_sticks"))));
 	}
 
 	@Override

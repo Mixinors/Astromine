@@ -26,9 +26,9 @@ package com.github.mixinors.astromine.common.widget.blade;
 
 import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
 import com.github.mixinors.astromine.registry.common.AMNetworks;
+import me.shedaniel.architectury.networking.NetworkManager;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
@@ -157,7 +157,7 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 				buf.writeEnumConstant(direction);
 				buf.writeEnumConstant(component.get(type).get(direction).next());
 				
-				ClientPlayNetworking.send(AMNetworks.BLOCK_ENTITY_UPDATE_PACKET, buf);
+				NetworkManager.sendToServer(AMNetworks.BLOCK_ENTITY_UPDATE_PACKET, buf);
 			}
 		}
 		

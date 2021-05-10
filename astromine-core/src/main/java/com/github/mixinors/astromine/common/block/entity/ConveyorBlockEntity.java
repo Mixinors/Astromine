@@ -30,7 +30,7 @@ import com.github.mixinors.astromine.common.component.general.SimpleItemComponen
 import com.github.mixinors.astromine.common.util.StackUtils;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMConfig;
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
+import me.shedaniel.architectury.extensions.BlockEntityExtension;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
 
 import net.minecraft.block.BlockState;
@@ -51,7 +51,7 @@ import com.github.mixinors.astromine.common.conveyor.Conveyor;
 import com.github.mixinors.astromine.common.conveyor.ConveyorConveyable;
 import com.github.mixinors.astromine.common.conveyor.ConveyorTypes;
 
-public class ConveyorBlockEntity extends ComponentItemBlockEntity implements ConveyorConveyable, BlockEntityClientSerializable, RenderAttachmentBlockEntity, Tickable {
+public class ConveyorBlockEntity extends ComponentItemBlockEntity implements ConveyorConveyable, BlockEntityExtension, RenderAttachmentBlockEntity, Tickable {
 	protected boolean front = false;
 	protected boolean down = false;
 	protected boolean across = false;
@@ -341,12 +341,12 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 	}
 
 	@Override
-	public void fromClientTag(CompoundTag compoundTag) {
-		fromTag(getCachedState(), compoundTag);
+	public void loadClientData(BlockState state, CompoundTag compoundTag) {
+		fromTag(state, compoundTag);
 	}
 
 	@Override
-	public CompoundTag toClientTag(CompoundTag compoundTag) {
+	public CompoundTag saveClientData(CompoundTag compoundTag) {
 		return toTag(compoundTag);
 	}
 }

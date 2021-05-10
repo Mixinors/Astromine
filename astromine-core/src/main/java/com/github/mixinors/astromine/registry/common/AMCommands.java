@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.registry.common;
 
-import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import me.shedaniel.architectury.event.events.CommandRegistrationEvent;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 
 import net.minecraft.entity.player.PlayerEntity;
@@ -42,7 +42,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class AMCommands {
 	public static void init() {
-		CommandRegistrationCallback.EVENT.register((dispatcher, ignored) -> {
+		CommandRegistrationEvent.EVENT.register((dispatcher, environment) -> {
 			dispatcher.register(LiteralArgumentBuilder.<ServerCommandSource> literal("recipe").then(LiteralArgumentBuilder.<ServerCommandSource> literal("creator").executes((context) -> {
 				context.getSource().getPlayer().openHandledScreen(new ExtendedScreenHandlerFactory() {
 					@Override

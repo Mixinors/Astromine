@@ -30,7 +30,7 @@ import com.github.mixinors.astromine.common.item.base.EnergyVolumeItem;
 import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
 import draylar.magna.item.ExcavatorItem;
 import draylar.magna.item.HammerItem;
-import net.fabricmc.fabric.impl.content.registry.FuelRegistryImpl;
+import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -435,8 +435,8 @@ public class AMItems {
 	public static final Item GRAVITY_GAUNTLET = register("gravity_gauntlet", new GravityGauntletItem(getBasicSettings().maxCount(1), AMConfig.get().gravityGauntletEnergy));
 	
 	public static void init() {
-		FuelRegistryImpl.INSTANCE.add(WOODEN_MATTOCK, 200);
-		FuelRegistryImpl.INSTANCE.add(WOODEN_MINING_TOOL, 200);
+		FuelRegistry.INSTANCE.add(WOODEN_MATTOCK, 200);
+		FuelRegistry.INSTANCE.add(WOODEN_MINING_TOOL, 200);
 	}
 
 	/**

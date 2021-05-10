@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.mixin.common;
 
 import com.github.mixinors.astromine.registry.common.AMNetworks;
 
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import me.shedaniel.architectury.networking.NetworkManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -164,12 +164,12 @@ public abstract class EntityMixin implements GravityEntity, EntityAccessor {
 		if (((Entity) (Object) this) instanceof ServerPlayerEntity && world != astromine_lastWorld) {
 			astromine_lastWorld = world;
 			
-			ServerPlayNetworking.send((ServerPlayerEntity) (Object) this, AMNetworks.GAS_ERASED, ClientAtmosphereManager.ofGasErased());
+			NetworkManager.sendToPlayer((ServerPlayerEntity) (Object) this, AMNetworks.GAS_ERASED, ClientAtmosphereManager.ofGasErased());
 
 			ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(getBlockPos()));
 
 			atmosphereComponent.getVolumes().forEach(((blockPos, volume) -> {
-				ServerPlayNetworking.send((ServerPlayerEntity) (Object) this, AMNetworks.GAS_ADDED, ClientAtmosphereManager.ofGasAdded(blockPos, volume));
+				NetworkManager.sendToPlayer((ServerPlayerEntity) (Object) this, AMNetworks.GAS_ADDED, ClientAtmosphereManager.ofGasAdded(blockPos, volume));
 			}));
 		}
 	}

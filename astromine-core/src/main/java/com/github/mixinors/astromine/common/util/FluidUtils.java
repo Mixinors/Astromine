@@ -24,16 +24,13 @@
 
 package com.github.mixinors.astromine.common.util;
 
-import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
-import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
+import me.shedaniel.architectury.hooks.FluidStackHooks;
 
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
 
 public class FluidUtils {
 	/**
@@ -43,31 +40,14 @@ public class FluidUtils {
 		if (fluid == Fluids.EMPTY) {
 			return 0xffaaaaaa;
 		} else {
-			FluidRenderHandler handler = FluidRenderHandlerRegistry.INSTANCE.get(fluid);
-			
-			if (handler == null) {
-				throw new NullPointerException("No fluid renderer for " + Registry.FLUID.getId(fluid));
-			}
-			
-			return handler.getFluidColor(player.getEntityWorld(), BlockPos.ORIGIN, fluid.getDefaultState());
+			return FluidStackHooks.getColor(player.getEntityWorld(), BlockPos.ORIGIN, fluid.getDefaultState());
 		}
-	}
-
-	/**
-	 * Returns the sprites of the specified fluid.
-	 */
-	public static Sprite[] getSprites(Fluid fluid) {
-		FluidRenderHandler handler = FluidRenderHandlerRegistry.INSTANCE.get(fluid);
-		if (handler == null) {
-			throw new NullPointerException("No fluid renderer for " + Registry.FLUID.getId(fluid));
-		}
-		return handler.getFluidSprites(null, null, fluid.getDefaultState());
 	}
 
 	/**
 	 * Returns the first sprite of the specified fluid.
 	 */
 	public static Sprite getSprite(Fluid fluid) {
-		return getSprites(fluid)[0];
+		return FluidStackHooks.getStillTexture(fluid);
 	}
 }

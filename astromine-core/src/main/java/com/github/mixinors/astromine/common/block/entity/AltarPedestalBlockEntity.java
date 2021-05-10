@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
+import me.shedaniel.architectury.extensions.BlockEntityExtension;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -40,14 +40,14 @@ import com.github.mixinors.astromine.common.component.general.base.ItemComponent
 import com.github.mixinors.astromine.common.component.general.SimpleItemComponent;
 import com.github.mixinors.astromine.common.component.general.compatibility.InventoryFromItemComponent;
 
-public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFromItemComponent, Tickable, BlockEntityClientSerializable {
+public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFromItemComponent, Tickable, BlockEntityExtension {
 	public BlockPos parentPos;
 	private int spinAge;
 	private int lastSpinAddition;
 	private int yAge;
 	private ItemComponent inventory = SimpleItemComponent.of(1).withListener(inventory -> {
 		if (hasWorld() && !world.isClient) {
-			sync();
+			syncData();
 			world.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1, 1);
 		}
 	});
@@ -69,7 +69,7 @@ public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFr
 	@Override
 	public void markDirty() {
 		super.markDirty();
-		sync();
+		syncData();
 	}
 
 	@Override
@@ -107,12 +107,12 @@ public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFr
 	}
 
 	@Override
-	public void fromClientTag(CompoundTag compoundTag) {
+	public void loadClientData(BlockState blockState, CompoundTag compoundTag) {
 		fromTag(null, compoundTag);
 	}
 
 	@Override
-	public CompoundTag toClientTag(CompoundTag compoundTag) {
+	public CompoundTag saveClientData(CompoundTag compoundTag) {
 		return toTag(compoundTag);
 	}
 

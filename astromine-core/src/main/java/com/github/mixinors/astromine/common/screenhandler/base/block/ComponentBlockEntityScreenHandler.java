@@ -78,7 +78,7 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 
 		if (!player.world.isClient) {
 			blockEntity.doNotSkipInventory();
-			blockEntity.sync();
+			blockEntity.syncData();
 		}
 	}
 

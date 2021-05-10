@@ -132,7 +132,7 @@ public class HolographicConnectorItem extends Item {
 					}
 
 					parent.buildBridge();
-					parent.sync();
+					parent.syncData();
 					context.getPlayer().setStackInHand(context.getHand(), unselect(context.getStack()));
 				}
 			}

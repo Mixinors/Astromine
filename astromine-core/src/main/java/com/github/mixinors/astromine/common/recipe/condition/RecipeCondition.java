@@ -1,6 +1,6 @@
 package com.github.mixinors.astromine.common.recipe.condition;
 
-import net.fabricmc.loader.api.FabricLoader;
+import me.shedaniel.architectury.platform.Platform;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -15,7 +15,7 @@ public class RecipeCondition {
 	
 	public boolean isAllowed() {
 		if (!modId.isEmpty()) {
-			return FabricLoader.getInstance().isModLoaded(modId);
+			return Platform.isModLoaded(modId);
 		}
 		
 		if (!itemId.isEmpty()) {

@@ -26,8 +26,8 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMSoundEvents;
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
-import net.fabricmc.fabric.api.util.NbtType;
+import me.shedaniel.architectury.extensions.BlockEntityExtension;
+import me.shedaniel.architectury.utils.NbtType;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -58,7 +58,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class AltarBlockEntity extends BlockEntity implements InventoryFromItemComponent, Tickable, BlockEntityClientSerializable {
+public class AltarBlockEntity extends BlockEntity implements InventoryFromItemComponent, Tickable, BlockEntityExtension {
 	public static final int CRAFTING_TIME = 100;
 	public static final int CRAFTING_TIME_SPIN = 80;
 	public static final int CRAFTING_TIME_FALL = 60;
@@ -73,7 +73,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 	public List<Supplier<AltarPedestalBlockEntity>> children = Lists.newArrayList();
 	private ItemComponent inventory = SimpleItemComponent.of(1).withListener(inventory -> {
 		if (hasWorld() && !world.isClient)
-			sync();
+			syncData();
 	});
 
 	public AltarBlockEntity() {
@@ -112,7 +112,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 		if (craftingTicks > 0) {
 			craftingTicks++;
 			if (!world.isClient) {
-				sync();
+				syncData();
 
 				if (craftingTicks == CRAFTING_TIME + CRAFTING_TIME_SPIN / 2 && recipe != null) {
 					inventory.setStack(0, recipe.getOutput().copy());
@@ -120,7 +120,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 					for (Supplier<AltarPedestalBlockEntity> child : children) {
 						child.get().setStack(0, ItemStack.EMPTY);
 						child.get().parentPos = null;
-						child.get().sync();
+						child.get().syncData();
 						spinAge = child.get().getSpinAge();
 					}
 
@@ -192,7 +192,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 			craftingTicks = 1;
 			craftingTicksDelta = 1;
 			for (Supplier<AltarPedestalBlockEntity> child : children) {
-				child.get().sync();
+				child.get().syncData();
 			}
 
 			world.playSound(null, getPos(), AMSoundEvents.ALTAR_START, SoundCategory.BLOCKS, 1, 1);
@@ -210,12 +210,12 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 	}
 
 	@Override
-	public void fromClientTag(CompoundTag compoundTag) {
-		fromTag(null, compoundTag);
+	public void loadClientData(BlockState state, CompoundTag compoundTag) {
+		fromTag(state, compoundTag);
 	}
 
 	@Override
-	public CompoundTag toClientTag(CompoundTag compoundTag) {
+	public CompoundTag saveClientData(CompoundTag compoundTag) {
 		return toTag(compoundTag);
 	}
 
@@ -255,7 +255,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 		for (Supplier<AltarPedestalBlockEntity> child : children) {
 			child.get().parentPos = null;
 			if (!world.isClient)
-				child.get().sync();
+				child.get().syncData();
 		}
 
 		children.clear();

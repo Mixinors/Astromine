@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.common.component.world;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import com.github.mixinors.astromine.registry.common.AMNetworks;
 
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import me.shedaniel.architectury.networking.NetworkManager;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -125,9 +125,7 @@ public final class ChunkAtmosphereComponent implements Component, ServerTickingC
 		volumes.remove(blockPos);
 
 		if (!world.isClient) {
-			world.getPlayers().forEach((player) -> {
-				ServerPlayNetworking.send((ServerPlayerEntity) player, AMNetworks.GAS_REMOVED, ClientAtmosphereManager.ofGasRemoved(blockPos));
-			});
+			NetworkManager.sendToPlayers((Iterable<ServerPlayerEntity>) world.getPlayers(), AMNetworks.GAS_REMOVED, ClientAtmosphereManager.ofGasRemoved(blockPos));
 		}
 	}
 
@@ -140,9 +138,7 @@ public final class ChunkAtmosphereComponent implements Component, ServerTickingC
 		volumes.put(blockPos, volume);
 
 		if (!world.isClient) {
-			world.getPlayers().forEach((player) -> {
-				ServerPlayNetworking.send((ServerPlayerEntity) player, AMNetworks.GAS_ADDED, ClientAtmosphereManager.ofGasAdded(blockPos, volume));
-			});
+			NetworkManager.sendToPlayers((Iterable<ServerPlayerEntity>) world.getPlayers(), AMNetworks.GAS_ADDED, ClientAtmosphereManager.ofGasAdded(blockPos, volume));
 		}
 	}
 

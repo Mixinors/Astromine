@@ -107,7 +107,7 @@ public class AltarPedestalBlock extends BlockWithEntity {
 				} else if (pedestalBlockEntity.getStack(0).isEmpty()) {
 					if (!stackInHand.isEmpty()) {
 						pedestalBlockEntity.setStack(0, stackInHand.split(1));
-						pedestalBlockEntity.sync();
+						pedestalBlockEntity.syncData();
 						return ActionResult.SUCCESS;
 					}
 					return ActionResult.CONSUME;
@@ -117,12 +117,12 @@ public class AltarPedestalBlock extends BlockWithEntity {
 					player.setStackInHand(hand, copy);
 					pedestalBlockEntity.setStack(0, ItemStack.EMPTY);
 					player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, .6F, 1);
-					pedestalBlockEntity.sync();
+					pedestalBlockEntity.syncData();
 				} else if (stackInHand.isEmpty()) {
 					player.setStackInHand(hand, pedestalBlockEntity.getStack(0).copy());
 					pedestalBlockEntity.setStack(0, ItemStack.EMPTY);
 					player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, .6F, 1);
-					pedestalBlockEntity.sync();
+					pedestalBlockEntity.syncData();
 				} else {
 					return ActionResult.CONSUME;
 				}

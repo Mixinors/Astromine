@@ -69,7 +69,7 @@ public class HoloBridgeProjectorBlock extends HorizontalFacingBlockWithEntity {
 					entity.markDirty();
 
 					if (!world.isClient)
-						entity.sync();
+						entity.syncData();
 
 					if (entity.hasChild()) {
 						entity.getChild().color = colorColor;
@@ -77,7 +77,7 @@ public class HoloBridgeProjectorBlock extends HorizontalFacingBlockWithEntity {
 						entity.getChild().markDirty();
 
 						if (!world.isClient) {
-							entity.getChild().sync();
+							entity.getChild().syncData();
 						}
 					}
 

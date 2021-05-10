@@ -309,12 +309,12 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 	}
 
 	@Override
-	public void fromClientTag(CompoundTag compoundTag) {
-		fromTag(getCachedState(), compoundTag);
+	public void loadClientData(BlockState state, CompoundTag compoundTag) {
+		fromTag(state, compoundTag);
 	}
 
 	@Override
-	public CompoundTag toClientTag(CompoundTag compoundTag) {
+	public CompoundTag saveClientData(CompoundTag compoundTag) {
 		return toTag(compoundTag);
 	}
 

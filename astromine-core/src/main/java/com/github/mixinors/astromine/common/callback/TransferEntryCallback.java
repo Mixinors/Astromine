@@ -25,16 +25,14 @@
 package com.github.mixinors.astromine.common.callback;
 
 import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
+import me.shedaniel.architectury.event.Event;
+import me.shedaniel.architectury.event.EventFactory;
 
 public interface TransferEntryCallback {
-	Event<TransferEntryCallback> EVENT = EventFactory.createArrayBacked(TransferEntryCallback.class, (listeners) -> (entry) -> {
-		for (TransferEntryCallback listener : listeners) {
-			listener.handle(entry);
-		}
-	});
+	Event<TransferEntryCallback> EVENT = EventFactory.createLoop();
 
-	/** Handle the added {@link TransferComponent.TransferEntry}. */
-    void handle(TransferComponent.TransferEntry entry);
+	/**
+	 * Handle the added {@link TransferComponent.TransferEntry}.
+	 */
+	void handle(TransferComponent.TransferEntry entry);
 }

@@ -24,9 +24,9 @@
 
 package com.github.mixinors.astromine.common.fluid;
 
+import me.shedaniel.architectury.platform.Platform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricMaterialBuilder;
-import net.fabricmc.loader.api.FabricLoader;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -294,7 +294,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 			still.bucket = bucket;
 			this.bucket = bucket;
 
-			if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+			if (Platform.getEnv() == EnvType.CLIENT) {
 				ClientUtils.registerExtendedFluid(name, tint, still, flowing);
 			}
 

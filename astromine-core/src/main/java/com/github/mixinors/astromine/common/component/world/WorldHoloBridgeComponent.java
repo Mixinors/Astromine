@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.component.world;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
-import net.fabricmc.fabric.api.util.NbtType;
+import me.shedaniel.architectury.utils.NbtType;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.*;
 import net.minecraft.util.math.BlockPos;
