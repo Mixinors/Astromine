@@ -368,7 +368,7 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 
 					return SimpleFluidComponent.of(FluidVolume.of(FluidVolume.BUCKET, bucket.fluid));
 				} else if (item instanceof PotionItem) {
-					if(PotionUtil.getPotion(stack).equals(Potions.WATER))
+					if (PotionUtil.getPotion(stack).equals(Potions.WATER))
 						return SimpleFluidComponent.of(FluidVolume.of(FluidVolume.BOTTLE, Fluids.WATER));
 				}
 			}

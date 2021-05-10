@@ -148,9 +148,9 @@ public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFr
 	}
 
 	public AltarBlockEntity getParent() {
-		if(hasWorld() && parentPos != null) {
+		if (hasWorld() && parentPos != null) {
 			BlockEntity be = world.getBlockEntity(parentPos);
-			if(be instanceof AltarBlockEntity) {
+			if (be instanceof AltarBlockEntity) {
 				return (AltarBlockEntity)be;
 			}
 		}

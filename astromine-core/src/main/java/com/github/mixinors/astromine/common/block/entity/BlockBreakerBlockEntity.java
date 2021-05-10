@@ -127,7 +127,7 @@ public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity impl
 
 						ItemStack storedCopy = stored.copy();
 
-						Optional<ItemStack> matching = drops.stream().filter(stack -> storedCopy.isEmpty() || StackUtils.areItemsAndTagsEqual(stack, storedCopy)).findFirst();
+						Optional<ItemStack> matching = drops.stream().filter(stack -> storedCopy.isEmpty() || (StackUtils.areItemsAndTagsEqual(stack, storedCopy) && storedCopy.getMaxCount() - storedCopy.getCount() > stack.getCount())).findFirst();
 
 						matching.ifPresent(match -> {
 							Pair<ItemStack, ItemStack> pair = StackUtils.merge(match, stored);

@@ -20,7 +20,7 @@
   "item.astromine.elite_drill_base": "Elite Drill Base",
   "entity.astromine.primitive_rocket": "Primitive Rocket",
   "item.astromine.primitive_drill": "Primitive Drill",
-  "item.astromine.stone_plate": "Stone Plate",
+  "text.astromine.damage_source.freeze": "%1$s froze to death!",
   "text.astromine.message.holographic_connection_successful": "Connected %s with projector at %s.",
   "text.astromine.message.holographic_connection_failed": "Failed to connect projector at %s with projector at %s.",
   "text.astromine.message.holographic_connection_clear": "Cleared selected projectors!",

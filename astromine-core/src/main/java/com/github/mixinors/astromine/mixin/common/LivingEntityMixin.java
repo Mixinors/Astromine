@@ -24,7 +24,8 @@
 
 package com.github.mixinors.astromine.mixin.common;
 
-import com.github.mixinors.astromine.mixin.common.EntityMixin;
+import com.github.mixinors.astromine.registry.common.*;
+import net.minecraft.entity.damage.DamageSource;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -59,11 +60,7 @@ import com.github.mixinors.astromine.common.component.general.base.FluidComponen
 import com.github.mixinors.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.mixinors.astromine.common.entity.GravityEntity;
 import com.github.mixinors.astromine.common.registry.BreathableRegistry;
-import com.github.mixinors.astromine.common.registry.FluidEffectRegistry;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
-import com.github.mixinors.astromine.registry.common.AMAttributes;
-import com.github.mixinors.astromine.registry.common.AMDimensions;
-import com.github.mixinors.astromine.registry.common.AMTags;
 
 import java.util.Optional;
 
@@ -78,9 +75,6 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 	}
 
 	@Shadow
-	public abstract double getAttributeValue(EntityAttribute attribute);
-
-	@Shadow
 	public abstract Iterable<ItemStack> getArmorItems();
 
 	@ModifyConstant(method = "travel(Lnet/minecraft/util/math/Vec3d;)V", constant = @Constant(doubleValue = 0.08D, ordinal = 0))
@@ -88,13 +82,10 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 		return astromine_getGravity();
 	}
 
-	public double getGravityMultiplier() {
-		return getAttributeValue(AMAttributes.GRAVITY_MULTIPLIER);
-	}
-
 	@Inject(at = @At("HEAD"), method = "tick()V")
 	void onTick(CallbackInfo callbackInformation) {
 		Entity entity = (Entity) (Object) this;
+		
 		if (entity.world.isClient)
 			return;
 
@@ -102,104 +93,46 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 			ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(entity.world.getChunk(entity.getBlockPos()));
 
 			if (atmosphereComponent != null) {
-				FluidVolume atmosphereVolume;
+				FluidVolume breathingVolume;
 
 				if (!AMDimensions.isAstromine(entity.world.getRegistryKey())) {
-					atmosphereVolume = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));
+					breathingVolume = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));
 
-					if (atmosphereVolume.isEmpty()) {
-						atmosphereVolume = FluidVolume.of(FluidVolume.BUCKET, Registry.FLUID.get(AMCommon.id("oxygen")));
+					if (breathingVolume.isEmpty()) {
+						breathingVolume = FluidVolume.of(FluidVolume.BUCKET, AMFluids.OXYGEN);
 					}
 				} else {
-					atmosphereVolume = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));
+					breathingVolume = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));
 				}
+				
+				EntityOxygenComponent oxygenComponent = EntityOxygenComponent.get(entity);
+				
+				if (oxygenComponent != null) {
+					ItemStack helmetStack = ItemStack.EMPTY;
+					ItemStack chestplateStack = ItemStack.EMPTY;
+					ItemStack leggingsStack = ItemStack.EMPTY;
+					ItemStack bootsStack = ItemStack.EMPTY;
 
-				boolean isSubmerged = false;
-
-				Box collisionBox = entity.getBoundingBox();
-
-				for (BlockPos blockPos : (Iterable<BlockPos>) () -> BlockPos.stream(collisionBox).iterator()) {
-					BlockState blockState = entity.world.getBlockState(blockPos);
-
-					if (blockState.getBlock() instanceof FluidBlock) {
-						isSubmerged = true;
-
-						Optional.ofNullable(FluidEffectRegistry.INSTANCE.get(blockState.getFluidState().getFluid())).ifPresent(it -> it.accept(true, (LivingEntity) (Object) this));
+					for (ItemStack stack : getArmorItems()) {
+						if (stack.getItem() == AMItems.SPACE_SUIT_HELMET) helmetStack = stack;
+						if (stack.getItem() == AMItems.SPACE_SUIT_CHESTPLATE) chestplateStack = stack;
+						if (stack.getItem() == AMItems.SPACE_SUIT_LEGGINGS) leggingsStack = stack;
+						if (stack.getItem() == AMItems.SPACE_SUIT_BOOTS) bootsStack = stack;
 					}
-				}
 
-				if (!isSubmerged) {
-					boolean isBreathing = true;
-
-					EntityOxygenComponent oxygenComponent = EntityOxygenComponent.get(entity);
-
-					if (oxygenComponent != null) {
-						boolean hasHelmet = false;
-						boolean hasChestplate = false;
-						boolean hasLeggings = false;
-						boolean hasBoots = false;
-
-						for (ItemStack stack : getArmorItems()) {
-							if (!stack.isEmpty()) {
-								if (Registry.ITEM.getId(stack.getItem()).toString().equals("astromine:space_suit_helmet")) {
-									hasHelmet = true;
-								}
-								if (Registry.ITEM.getId(stack.getItem()).toString().equals("astromine:space_suit_chestplate")) {
-									hasChestplate = true;
-								}
-								if (Registry.ITEM.getId(stack.getItem()).toString().equals("astromine:space_suit_leggings")) {
-									hasLeggings = true;
-								}
-								if (Registry.ITEM.getId(stack.getItem()).toString().equals("astromine:space_suit_boots")) {
-									hasBoots = true;
-								}
-							}
-						}
-
-						boolean hasSuit = hasHelmet && hasChestplate && hasLeggings && hasBoots;
-
-						for (ItemStack stack : getArmorItems()) {
-							if (!stack.isEmpty()) {
-								if (Registry.ITEM.getId(stack.getItem()).toString().equals("astromine:space_suit_chestplate")) { // TODO: Properly verify for Space Suit.
-									FluidComponent fluidComponent = FluidComponent.get(stack);
-
-									if (fluidComponent != null) {
-										FluidVolume volume = fluidComponent.getFirst();
-
-										if (volume != null) {
-											boolean canBreathe = BreathableRegistry.INSTANCE.canBreathe(entity.getType(), volume.getFluid());
-
-											if ((volume.isEmpty() || !canBreathe) && hasSuit) { // TODO: Check if can breathe!
-												isBreathing = false;
-											}
-
-											if (!canBreathe) {
-												if (FluidEffectRegistry.INSTANCE.containsKey(volume.getFluid())) {
-													FluidEffectRegistry.INSTANCE.get(volume.getFluid()).accept(false, (LivingEntity) entity);
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-
-						if (!hasSuit && FluidEffectRegistry.INSTANCE.containsKey(atmosphereVolume.getFluid())) {
-							FluidEffectRegistry.INSTANCE.get(atmosphereVolume.getFluid()).accept(false, (LivingEntity) entity);
-						}
-
-						if (!isBreathing) {
-							oxygenComponent.simulate(false);
-						} else {
-							if (!hasSuit && BreathableRegistry.INSTANCE.containsKey(entity.getType())) {
-								if (!BreathableRegistry.INSTANCE.canBreathe(entity.getType(), atmosphereVolume.getFluid())) {
-									isBreathing = false;
-								}
-							}
-
-							oxygenComponent.simulate(isBreathing);
+					boolean hasSuit = !helmetStack.isEmpty() && !chestplateStack.isEmpty() && !leggingsStack.isEmpty() && !bootsStack.isEmpty();
+					
+					if (hasSuit) {
+						FluidComponent fluidComponent = FluidComponent.get(helmetStack);
+						
+						if (fluidComponent != null) {
+							breathingVolume = fluidComponent.getFirst();
 						}
 					}
+					
+					boolean isBreathing = BreathableRegistry.INSTANCE.canBreathe(entity.getType(), breathingVolume.getFluid());
+					
+					oxygenComponent.simulate(isBreathing);
 				}
 			}
 		}

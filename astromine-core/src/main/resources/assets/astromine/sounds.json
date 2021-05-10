@@ -184,11 +184,11 @@
     "sounds": ["astromine:holographic_connector_click"],
     "subtitle": "subtitles.astromine.holographic_connector_click"
   },
-  "block.shredder.incinerate": {
+  "block.shredder.shred": {
     "sounds": [
       "mob/ghast/fireball4"
     ],
-    "subtitle": "subtitle.astromine.shredder.incinerate"
+    "subtitle": "subtitle.astromine.shredder.shred"
   },
   "block.machine.click": {
     "sounds": [

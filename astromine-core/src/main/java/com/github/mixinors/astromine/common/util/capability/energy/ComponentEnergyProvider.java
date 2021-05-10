@@ -64,7 +64,7 @@ ComponentEnergyProvider extends EnergyStorage {
 	default double getMaxInput(EnergySide side) {
 		boolean allow = false;
 
-		if(side.equals(EnergySide.UNKNOWN)) {
+		if (side.equals(EnergySide.UNKNOWN)) {
 			allow = true;
 		} else {
 			TransferComponent transferComponent = TransferComponent.get(this);
@@ -89,7 +89,7 @@ ComponentEnergyProvider extends EnergyStorage {
 	default double getMaxOutput(EnergySide side) {
 		boolean allow = false;
 
-		if(side.equals(EnergySide.UNKNOWN)) {
+		if (side.equals(EnergySide.UNKNOWN)) {
 			allow = true;
 		} else {
 			TransferComponent transferComponent = TransferComponent.get(this);

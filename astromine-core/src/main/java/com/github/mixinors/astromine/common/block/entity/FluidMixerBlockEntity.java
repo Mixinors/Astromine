@@ -56,7 +56,6 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 
 	public FluidMixerBlockEntity(BlockEntityType<?> type) {
 		super(type);
-		getFluidComponent().addListener(() -> shouldTry = true);
 	}
 
 	@Override

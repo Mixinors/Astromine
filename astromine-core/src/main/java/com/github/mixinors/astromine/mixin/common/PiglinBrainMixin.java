@@ -53,7 +53,7 @@ public abstract class PiglinBrainMixin {
 			if (optional.isPresent() && optional.get() instanceof ServerPlayerEntity) {
 				boolean noticed = entity.getRandom().nextInt(AMConfig.get().piglinAngerChance) == 0;
 				AMCriteria.TRICKED_PIGLIN.trigger((ServerPlayerEntity) optional.get(), !noticed);
-				if(noticed) {
+				if (noticed) {
 					entity.playSound(SoundEvents.ENTITY_PIGLIN_ANGRY, 1.0f, 1.0f);
 					PiglinBrain.becomeAngryWith(entity, optional.get());
 					ci.cancel();

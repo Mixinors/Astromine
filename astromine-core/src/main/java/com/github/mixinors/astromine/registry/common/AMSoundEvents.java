@@ -53,7 +53,7 @@ public class AMSoundEvents {
 	public static final SoundEvent HOLOGRAPHIC_CONNECTOR_CLICK = register("holographic_connector_click");
 	
 	public static final SoundEvent MACHINE_CLICK = register("block.machine.click");
-	public static final SoundEvent INCINERATE = register("block.shredder.incinerate");
+	public static final SoundEvent INCINERATE = register("block.shredder.shred");
 	
 	public static void init() {
 

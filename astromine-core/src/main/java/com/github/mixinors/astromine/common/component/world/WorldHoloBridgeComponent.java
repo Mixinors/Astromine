@@ -122,12 +122,12 @@ public final class WorldHoloBridgeComponent implements Component {
 	public VoxelShape getShape(long pos) {
 		if (cache.containsKey(pos)) return cache.get(pos);
 
-		Set<Vec3i> vecs = get(pos);
+		Set<Vec3i> vectors = get(pos);
 
-		if (vecs == null)
+		if (vectors == null)
 			return VoxelShapes.fullCube();
 
-		VoxelShape shape = getShape(vecs);
+		VoxelShape shape = getShape(vectors);
 
 		cache.put(pos, shape);
 
@@ -174,24 +174,24 @@ public final class WorldHoloBridgeComponent implements Component {
 				vecs[i++] = BlockPos.asLong(vec.getX(), vec.getY(), vec.getZ());
 			}
 
-			pointTag.putLong("pos", entry.getLongKey());
-			pointTag.put("vecs", new LongArrayTag(vecs));
+			pointTag.putLong("Positions", entry.getLongKey());
+			pointTag.put("Vectors", new LongArrayTag(vecs));
 
 			dataTag.add(pointTag);
 		}
 
-		tag.put("data", dataTag);
+		tag.put("Data", dataTag);
 	}
 
 	/** Deserializes this {@link WorldHoloBridgeComponent} from a {@link CompoundTag}. */
 	@Override
 	public void readFromNbt(CompoundTag tag) {
-		ListTag dataTag = tag.getList("data", NbtType.COMPOUND);
+		ListTag dataTag = tag.getList("Data", NbtType.COMPOUND);
 
 		for (Tag pointTag : dataTag) {
-			long[] vecs = ((CompoundTag) pointTag).getLongArray("vecs");
+			long[] vecs = ((CompoundTag) pointTag).getLongArray("Vectors");
 
-			long pos = ((CompoundTag) pointTag).getLong("pos");
+			long pos = ((CompoundTag) pointTag).getLong("Position");
 
 			for (long vec : vecs) {
 				add(pos, BlockPos.fromLong(vec));
