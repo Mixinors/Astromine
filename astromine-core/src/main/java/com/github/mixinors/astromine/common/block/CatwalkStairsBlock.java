@@ -48,6 +48,7 @@ public class CatwalkStairsBlock extends HorizontalFacingBlock implements Waterlo
 	private static final VoxelShape SECOND_STEP = VoxelShapes.cuboid(0, 0, (8F / 16F), 1, (7F / 16F), (12F / 16F));
 	private static final VoxelShape THIRD_STEP = VoxelShapes.cuboid(0, 0, (4F / 16F), 1, (11F / 16F), (8F / 16F));
 	private static final VoxelShape FOURTH_STEP = VoxelShapes.cuboid(0, 0, 0, 1, (15F / 16F), (4F / 16F));
+	private static final VoxelShape SIDE_WALL = VoxelShapes.cuboid(0, 0, 0, 1f/16f, 1.75f, 1);
 
 	private static final VoxelShape[] SHAPE_CACHE = new VoxelShape[6];
 
@@ -92,7 +93,13 @@ public class CatwalkStairsBlock extends HorizontalFacingBlock implements Waterlo
 		Direction facing = state.get(FACING);
 
 		if (SHAPE_CACHE[facing.getId()] == null) {
-			SHAPE_CACHE[facing.getId()] = VoxelShapes.union(VoxelShapeUtils.rotate(facing, FIRST_STEP), VoxelShapeUtils.rotate(facing, SECOND_STEP), VoxelShapeUtils.rotate(facing, THIRD_STEP), VoxelShapeUtils.rotate(facing, FOURTH_STEP));
+			SHAPE_CACHE[facing.getId()] = VoxelShapes.union(
+					VoxelShapeUtils.rotate(facing, FIRST_STEP),
+					VoxelShapeUtils.rotate(facing, SECOND_STEP),
+					VoxelShapeUtils.rotate(facing, THIRD_STEP),
+					VoxelShapeUtils.rotate(facing, FOURTH_STEP),
+					VoxelShapeUtils.rotate(facing, SIDE_WALL),
+					VoxelShapeUtils.rotate(facing.getOpposite(), SIDE_WALL));
 		}
 
 		return SHAPE_CACHE[facing.getId()];

@@ -42,16 +42,13 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.WorldAccess;
 
-import javax.annotation.Nullable;
+
+import com.github.mixinors.astromine.common.util.VoxelShapeUtils;
+import org.jetbrains.annotations.Nullable;
 
 public class CatwalkBlock extends Block implements Waterloggable {
 	private static final VoxelShape BOTTOM = VoxelShapes.cuboid(0, 0, 0, 1, (1F / 16F), 1);
-	private static final VoxelShape NORTH = VoxelShapes.cuboid(0, 0, 0, 1, 1, (1F / 16F));
-	private static final VoxelShape EAST = VoxelShapes.cuboid((15F / 16F), 0, 0, 1, 1, 1);
-	private static final VoxelShape SOUTH = VoxelShapes.cuboid(0, 0, (15F / 16F), 1, 1, 1);
-	private static final VoxelShape WEST = VoxelShapes.cuboid(0, 0, 0, (1F / 16F), 1, 1);
-
-	private static final VoxelShape FULL = VoxelShapes.union(BOTTOM, NORTH, EAST, SOUTH, WEST);
+	private static final VoxelShape SIDE_WALL = VoxelShapes.cuboid(0, 0, 0, 1, 1, (1F / 16F));
 
 	protected static final VoxelShape[] SHAPE_CACHE = new VoxelShape[256];
 
@@ -66,7 +63,7 @@ public class CatwalkBlock extends Block implements Waterloggable {
 	@Nullable
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
-		return super.getPlacementState(context).with(Properties.WATERLOGGED, context.getWorld().getBlockState(context.getBlockPos()).getBlock() == Blocks.WATER);
+		return getStateForNeighborUpdate(this.getDefaultState(), null, null, context.getWorld(), context.getBlockPos(), null).with(Properties.WATERLOGGED, context.getWorld().getBlockState(context.getBlockPos()).getBlock() == Blocks.WATER);
 	}
 
 	@Override
@@ -95,24 +92,29 @@ public class CatwalkBlock extends Block implements Waterloggable {
 	}
 
 	@Override
-	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState newState, WorldAccess world, BlockPos pos, BlockPos posFrom) {
-		boolean newStateSameType = newState.getBlock() instanceof CatwalkBlock;
-
-		if (direction == Direction.NORTH)
-			newState = newState.with(Properties.NORTH, newStateSameType);
-		if (direction == Direction.EAST)
-			newState = newState.with(Properties.EAST, newStateSameType);
-		if (direction == Direction.SOUTH)
-			newState = newState.with(Properties.SOUTH, newStateSameType);
-		if (direction == Direction.WEST)
-			newState = newState.with(Properties.WEST, newStateSameType);
-
-		return newState;
+	public void onBroken(WorldAccess world, BlockPos pos, BlockState state) {
+		super.onBroken(world, pos, state);
+		state.updateNeighbors(world, pos, 3, 2);
 	}
 
 	@Override
-	public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext context) {
-		return getCollisionShape(state, view, pos, context);
+	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, @Nullable BlockState newState, WorldAccess world, BlockPos pos, BlockPos posFrom) {
+		boolean newStateSameType = newState != null && newState.getBlock() instanceof CatwalkBlock;
+
+		if ((direction == Direction.NORTH && newStateSameType) || (direction == null && world.getBlockState(pos.offset(Direction.NORTH)).getBlock() instanceof CatwalkBlock))
+			state = state.with(Properties.NORTH, true);
+		if ((direction == Direction.EAST && newStateSameType)|| (direction == null && world.getBlockState(pos.offset(Direction.EAST)).getBlock() instanceof CatwalkBlock))
+			state = state.with(Properties.EAST, true);
+		if ((direction == Direction.SOUTH && newStateSameType)|| (direction == null && world.getBlockState(pos.offset(Direction.SOUTH)).getBlock() instanceof CatwalkBlock))
+			state = state.with(Properties.SOUTH, true);
+		if ((direction == Direction.WEST && newStateSameType)|| (direction == null && world.getBlockState(pos.offset(Direction.WEST)).getBlock() instanceof CatwalkBlock))
+			state = state.with(Properties.WEST, true);
+		if(direction == Direction.DOWN || (direction == null)) {
+			if(newState == null) newState = world.getBlockState(pos.offset(Direction.DOWN));
+			state = state.with(ConveyorBlock.NO_FLOOR, newState.isSideSolidFullSquare(world, pos, Direction.UP));
+		}
+
+		return state;
 	}
 
 	@Override
@@ -120,7 +122,7 @@ public class CatwalkBlock extends Block implements Waterloggable {
 		int id = 0;
 
 		for (BooleanProperty property : PROPERTIES) {
-			id += id * (state.get(property) ? 1 : -1);
+			id = (id * 2) + (state.get(property) ? 1 : 0);
 		}
 
 		if (SHAPE_CACHE[id] == null) {
@@ -131,19 +133,19 @@ public class CatwalkBlock extends Block implements Waterloggable {
 			}
 
 			if (!state.get(Properties.NORTH)) {
-				shape = VoxelShapes.union(shape, NORTH);
+				shape = VoxelShapes.union(shape, SIDE_WALL);
 			}
 
 			if (!state.get(Properties.EAST)) {
-				shape = VoxelShapes.union(shape, EAST);
+				shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(Direction.EAST, SIDE_WALL));
 			}
 
 			if (!state.get(Properties.SOUTH)) {
-				shape = VoxelShapes.union(shape, SOUTH);
+				shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(Direction.SOUTH, SIDE_WALL));
 			}
 
 			if (!state.get(Properties.WEST)) {
-				shape = VoxelShapes.union(shape, WEST);
+				shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(Direction.WEST, SIDE_WALL));
 			}
 
 			SHAPE_CACHE[id] = shape;
