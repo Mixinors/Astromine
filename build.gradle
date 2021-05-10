@@ -119,9 +119,7 @@ allprojects {
         }
         dependencies.ext.useAsApi = { dep ->
             useAsApiOptionally(dep)
-            if (!isRunningGenerateDataTask) {
-                include(dep)
-            }
+            include(dep)
         }
         dependencies.ext.useAsRuntime = { dep ->
             modRuntime(dep) {
@@ -163,6 +161,12 @@ allprojects {
     task sourcesJar(type: Jar, dependsOn: classes) {
         classifier("sources")
         from sourceSets.main.allSource
+    }
+    
+    afterEvaluate {
+        remapJar {
+            addNestedDependencies = project.rootProject != project && !isRunningGenerateDataTask
+        }
     }
 }
 
