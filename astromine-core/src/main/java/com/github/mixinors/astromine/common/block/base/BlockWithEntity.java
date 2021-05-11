@@ -26,7 +26,6 @@ package com.github.mixinors.astromine.common.block.base;
 
 import me.shedaniel.architectury.registry.MenuRegistry;
 import me.shedaniel.architectury.registry.menu.ExtendedMenuProvider;
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -114,7 +113,7 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 	public abstract ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player);
 
 	/** Populates the {@link PacketByteBuf} which will be
-	 * passed onto {@link ExtendedScreenHandlerFactory#writeScreenOpeningData(ServerPlayerEntity, PacketByteBuf)}. */
+	 * passed onto {@link ExtendedMenuProvider#saveExtraData(PacketByteBuf)}. */
 	public abstract void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer);
 
 	/** Returns the {@link BlockEntity} this {@link Block}

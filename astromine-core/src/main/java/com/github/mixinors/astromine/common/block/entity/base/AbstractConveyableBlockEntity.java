@@ -27,7 +27,6 @@ package com.github.mixinors.astromine.common.block.entity.base;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.component.general.SimpleItemComponent;
 import com.github.mixinors.astromine.common.util.StackUtils;
-import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -46,7 +45,7 @@ import com.github.mixinors.astromine.common.conveyor.ConveyorTypes;
 
 import java.util.function.Supplier;
 
-public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEntity implements Conveyable, RenderAttachmentBlockEntity {
+public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEntity implements Conveyable {
 	int leftPosition = 0;
 	int prevLeftPosition = 0;
 	
@@ -260,7 +259,6 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 		return getCachedState().get(HorizontalFacingBlock.FACING).rotateYCounterclockwise() == direction || getCachedState().get(HorizontalFacingBlock.FACING).rotateYClockwise() == direction;
 	}
 
-	@Override
 	public int[] getRenderAttachmentData() {
 		return new int[] { leftPosition, prevLeftPosition, rightPosition, prevRightPosition };
 	}

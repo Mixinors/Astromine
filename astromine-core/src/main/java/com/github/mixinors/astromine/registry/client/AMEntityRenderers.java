@@ -28,12 +28,12 @@ import com.github.mixinors.astromine.client.render.entity.PrimitiveRocketEntityR
 import com.github.mixinors.astromine.client.render.entity.SpaceSlimeEntityRenderer;
 import com.github.mixinors.astromine.client.render.entity.SuperSpaceSlimeEntityRenderer;
 import com.github.mixinors.astromine.registry.common.AMEntityTypes;
-import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
+import me.shedaniel.architectury.registry.entity.EntityRenderers;
 
 public class AMEntityRenderers {
 	public static void init() {
-		EntityRendererRegistry.INSTANCE.register(AMEntityTypes.PRIMITIVE_ROCKET, (dispatcher, context) -> new PrimitiveRocketEntityRenderer(dispatcher));
-		EntityRendererRegistry.INSTANCE.register(AMEntityTypes.SPACE_SLIME, (dispatcher, context) -> new SpaceSlimeEntityRenderer(dispatcher));
-		EntityRendererRegistry.INSTANCE.register(AMEntityTypes.SUPER_SPACE_SLIME, (dispatcher, context) -> new SuperSpaceSlimeEntityRenderer(dispatcher));
+		EntityRenderers.register(AMEntityTypes.PRIMITIVE_ROCKET, PrimitiveRocketEntityRenderer::new);
+		EntityRenderers.register(AMEntityTypes.SPACE_SLIME, SpaceSlimeEntityRenderer::new);
+		EntityRenderers.register(AMEntityTypes.SUPER_SPACE_SLIME, SuperSpaceSlimeEntityRenderer::new);
 	}
 }

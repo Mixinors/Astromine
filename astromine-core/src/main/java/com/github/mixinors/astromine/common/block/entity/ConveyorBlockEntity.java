@@ -31,7 +31,6 @@ import com.github.mixinors.astromine.common.util.StackUtils;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import me.shedaniel.architectury.extensions.BlockEntityExtension;
-import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -53,7 +52,7 @@ import com.github.mixinors.astromine.common.conveyor.ConveyorTypes;
 
 import java.util.function.Supplier;
 
-public class ConveyorBlockEntity extends ComponentItemBlockEntity implements ConveyorConveyable, BlockEntityExtension, RenderAttachmentBlockEntity, Tickable {
+public class ConveyorBlockEntity extends ComponentItemBlockEntity implements ConveyorConveyable, BlockEntityExtension, Tickable {
 	protected boolean front = false;
 	protected boolean down = false;
 	protected boolean across = false;
@@ -233,7 +232,6 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 	}
 
 
-	@Override
 	public int[] getRenderAttachmentData() {
 		return new int[]{ position, prevPosition };
 	}

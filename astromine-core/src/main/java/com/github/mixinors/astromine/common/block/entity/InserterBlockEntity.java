@@ -29,7 +29,6 @@ import com.github.mixinors.astromine.common.component.general.SimpleItemComponen
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import me.shedaniel.architectury.extensions.BlockEntityExtension;
-import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
 
 import net.minecraft.block.AbstractFurnaceBlock;
 import net.minecraft.block.BlockState;
@@ -58,7 +57,7 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class InserterBlockEntity extends BlockEntity implements BlockEntityExtension, RenderAttachmentBlockEntity, Tickable {
+public class InserterBlockEntity extends BlockEntity implements BlockEntityExtension, Tickable {
 	protected int position = 0;
 	protected int prevPosition = 0;
 
@@ -194,7 +193,6 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityExten
 		}
 	}
 
-	@Override
 	public int[] getRenderAttachmentData() {
 		return new int[]{ position, prevPosition };
 	}
