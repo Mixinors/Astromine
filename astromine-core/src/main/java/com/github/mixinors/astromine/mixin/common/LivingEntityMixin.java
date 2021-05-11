@@ -140,6 +140,12 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 						}
 					}
 					
+					EntityAccessor entityAccessor = (EntityAccessor) this;
+					
+					if (entityAccessor.getField_25599() != null && breathingVolume.isEmpty()) {
+						breathingVolume = FluidVolume.of(FluidVolume.BUCKET, entityAccessor.getField_25599().values().get(0));
+					}
+					
 					boolean isBreathing = BreathableRegistry.INSTANCE.canBreathe(entity.getType(), breathingVolume.getFluid());
 					
 					if (isBreathing && fluidComponent != null && age % 5 == 0) {

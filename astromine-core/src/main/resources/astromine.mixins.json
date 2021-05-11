@@ -7,6 +7,7 @@
     "common.AbstractBlockMixin",
     "common.BiomeLayerSamplerMixin",
     "common.EnchantmentTargetMixin",
+    "common.EntityAccessor",
     "common.EntityMixin",
     "common.EntityNavigationMixin",
     "common.FluidTagsAccessor",
