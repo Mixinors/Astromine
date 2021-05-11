@@ -31,8 +31,10 @@ import net.minecraft.block.entity.BlockEntityType;
 import com.github.mixinors.astromine.common.block.entity.base.ComponentItemBlockEntity;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 
+import java.util.function.Supplier;
+
 public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
-	public BufferBlockEntity(BlockEntityType<?> type) {
+	public BufferBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 	}
 

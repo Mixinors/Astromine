@@ -34,6 +34,8 @@ import com.github.mixinors.astromine.common.component.general.base.ItemComponent
 import com.github.mixinors.astromine.common.util.capability.energy.ComponentEnergyProvider;
 import com.github.mixinors.astromine.common.util.capability.inventory.ComponentInventoryProvider;
 
+import java.util.function.Supplier;
+
 /**
  * A {@link ComponentBlockEntity} with an attached
  * {@link EnergyComponent} and {@link ItemComponent}.
@@ -44,7 +46,7 @@ public abstract class ComponentEnergyItemBlockEntity extends ComponentBlockEntit
 	private final ItemComponent itemComponent = createItemComponent();
 
 	/** Instantiates a {@link ComponentEnergyItemBlockEntity}. */
-	public ComponentEnergyItemBlockEntity(BlockEntityType<?> type) {
+	public ComponentEnergyItemBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 
 		addComponent(AMComponents.ENERGY_INVENTORY_COMPONENT, getEnergyComponent());

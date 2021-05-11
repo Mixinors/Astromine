@@ -46,6 +46,7 @@ import com.github.mixinors.astromine.common.recipe.FluidGeneratingRecipe;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider, FluidSizeProvider {
 	public double progress = 0;
@@ -54,7 +55,7 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 
 	private Optional<FluidGeneratingRecipe> optionalRecipe = Optional.empty();
 
-	public FluidGeneratorBlockEntity(BlockEntityType<?> type) {
+	public FluidGeneratorBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 	}
 

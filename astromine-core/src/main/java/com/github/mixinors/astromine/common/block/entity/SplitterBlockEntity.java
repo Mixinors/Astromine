@@ -32,12 +32,14 @@ import net.minecraft.sound.SoundCategory;
 
 import com.github.mixinors.astromine.common.block.entity.base.AbstractConveyableBlockEntity;
 
+import java.util.function.Supplier;
+
 public class SplitterBlockEntity extends AbstractConveyableBlockEntity {
 	public SplitterBlockEntity() {
 		super(AMBlockEntityTypes.SPLITTER);
 	}
 
-	public SplitterBlockEntity(BlockEntityType type) {
+	public SplitterBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 	}
 

@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.client.render.block.*;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
+import me.shedaniel.architectury.registry.BlockEntityRenderers;
 
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -34,6 +34,7 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class AMBlockEntityRenderers {
 	public static void init() {
@@ -51,7 +52,7 @@ public class AMBlockEntityRenderers {
 		register(AMBlockEntityTypes.ALTAR, AltarBlockEntityRenderer::new);
 	}
 
-	public static <B extends BlockEntity, C extends BlockEntityType<B>> void register(C c, Function<BlockEntityRenderDispatcher, BlockEntityRenderer<? super B>> b) {
-		BlockEntityRendererRegistry.INSTANCE.register(c, b);
+	public static <B extends BlockEntity, C extends BlockEntityType<B>> void register(Supplier<C> c, Function<BlockEntityRenderDispatcher, BlockEntityRenderer<B>> b) {
+		BlockEntityRenderers.registerRenderer(c.get(), b);
 	}
 }

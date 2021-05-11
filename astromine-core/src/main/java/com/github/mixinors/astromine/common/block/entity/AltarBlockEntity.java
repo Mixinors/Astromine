@@ -77,7 +77,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 	});
 
 	public AltarBlockEntity() {
-		super(AMBlockEntityTypes.ALTAR);
+		super(AMBlockEntityTypes.ALTAR.get());
 	}
 
 	@Override

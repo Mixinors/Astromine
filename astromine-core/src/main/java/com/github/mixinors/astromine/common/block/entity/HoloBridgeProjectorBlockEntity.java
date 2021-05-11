@@ -60,7 +60,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	private boolean hasCheckedParent = false;
 
 	public HoloBridgeProjectorBlockEntity() {
-		super(AMBlockEntityTypes.HOLOGRAPHIC_BRIDGE);
+		super(AMBlockEntityTypes.HOLOGRAPHIC_BRIDGE.get());
 	}
 
 	public boolean hasChild() {

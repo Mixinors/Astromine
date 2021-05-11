@@ -35,6 +35,8 @@ import net.minecraft.util.math.BlockPos;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.Supplier;
+
 /**
  * This class represents a {@link ScreenHandler} with an associated
  * {@link BlockPos}, {@link Block} and {@link BlockState}
@@ -45,8 +47,8 @@ public abstract class BlockStateScreenHandler extends BaseScreenHandler {
 	protected BlockState state;
 
 	/** Instantiates a {@link BlockStateScreenHandler}. */
-	public BlockStateScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
-		super(type, syncId, player);
+	public BlockStateScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
+		super(type.get(), syncId, player);
 
 		this.state = player.world.getBlockState(position);
 		this.originalBlock = state.getBlock();

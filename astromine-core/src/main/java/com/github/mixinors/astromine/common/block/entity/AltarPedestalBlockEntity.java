@@ -53,7 +53,7 @@ public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFr
 	});
 
 	public AltarPedestalBlockEntity() {
-		super(AMBlockEntityTypes.ALTAR_PEDESTAL);
+		super(AMBlockEntityTypes.ALTAR_PEDESTAL.get());
 	}
 
 	@Override

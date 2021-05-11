@@ -45,6 +45,7 @@ import com.github.mixinors.astromine.common.recipe.RefiningRecipe;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider, FluidSizeProvider {
 	public double progress = 0;
@@ -53,7 +54,7 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 
 	private Optional<RefiningRecipe> optionalRecipe = Optional.empty();
 
-	public RefineryBlockEntity(BlockEntityType<?> type) {
+	public RefineryBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 	}
 

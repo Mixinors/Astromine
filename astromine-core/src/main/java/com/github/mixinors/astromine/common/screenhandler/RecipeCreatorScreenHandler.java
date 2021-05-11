@@ -69,7 +69,7 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 	}
 
 	public RecipeCreatorScreenHandler(int syncId, @NotNull PlayerEntity player) {
-		super(AMScreenHandlers.RECIPE_CREATOR, syncId, player);
+		super(AMScreenHandlers.RECIPE_CREATOR.get(), syncId, player);
 	}
 
 	@Override

@@ -48,6 +48,7 @@ import it.unimi.dsi.fastutil.ints.IntSets;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import static java.lang.Math.min;
 
@@ -58,7 +59,7 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 
 	private Optional<AlloySmeltingRecipe> optionalRecipe = Optional.empty();
 
-	public AlloySmelterBlockEntity(BlockEntityType<?> type) {
+	public AlloySmelterBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 	}
 

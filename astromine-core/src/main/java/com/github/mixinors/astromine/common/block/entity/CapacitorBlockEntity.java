@@ -41,8 +41,10 @@ import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
+import java.util.function.Supplier;
+
 public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
-	public CapacitorBlockEntity(BlockEntityType<?> type) {
+	public CapacitorBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 	}
 

@@ -30,6 +30,8 @@ import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentItemBlockEntity;
 
+import java.util.function.Supplier;
+
 /**
  * A {@link ComponentBlockEntityScreenHandler}
  * with an attached {@link ComponentItemBlockEntity}.
@@ -39,7 +41,7 @@ public class ComponentBlockEntityItemScreenHandler extends ComponentBlockEntityS
 
 	/** Instantiates a {@link ComponentBlockEntityItemScreenHandler},
 	 * obtaining the {@link ComponentItemBlockEntity}. */
-	public ComponentBlockEntityItemScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
+	public ComponentBlockEntityItemScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
 
 		blockEntity = (ComponentItemBlockEntity) player.world.getBlockEntity(position);

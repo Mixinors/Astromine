@@ -44,6 +44,7 @@ import com.github.vini2003.blade.common.widget.base.TextWidget;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.function.Supplier;
 
 /**
  * A {@link BlockStateScreenHandler} with an attached
@@ -60,8 +61,8 @@ public abstract class ComponentEntityScreenHandler extends BaseScreenHandler {
 
 	/** Instantiates a {@link ComponentEntityScreenHandler},
 	 * synchronizing its attached {@link ComponentEntity}. */
-	public ComponentEntityScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, int entityId) {
-		super(type, syncId, player);
+	public ComponentEntityScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, int entityId) {
+		super(type.get(), syncId, player);
 
 		entity = (ComponentEntity) player.world.getEntityById(entityId);
 	}

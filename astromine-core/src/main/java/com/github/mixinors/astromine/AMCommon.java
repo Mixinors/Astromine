@@ -25,10 +25,14 @@
 package com.github.mixinors.astromine;
 
 import com.github.mixinors.astromine.registry.common.*;
+import me.shedaniel.architectury.registry.Registries;
+import me.shedaniel.architectury.registry.Registry;
 import net.fabricmc.api.ModInitializer;
 
 import net.minecraft.util.Identifier;
 
+import net.minecraft.util.Lazy;
+import net.minecraft.util.registry.RegistryKey;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -41,11 +45,17 @@ public class AMCommon implements ModInitializer {
 	public static final Gson GSON = new Gson();
 
 	public static final Logger LOGGER = LogManager.getLogger(LOG_ID);
+	
+	public static final Lazy<Registries> REGISTRIES = new Lazy<>(() -> Registries.get(MOD_ID));
 
 	public static Identifier id(String name) {
 		if (name.indexOf(':') >= 0)
 			return new Identifier(name);
 		return new Identifier(MOD_ID, name);
+	}
+	
+	public static <T> Registry<T> registry(RegistryKey<net.minecraft.util.registry.Registry<T>> key) {
+		return REGISTRIES.get().get(key);
 	}
 
 	@Override

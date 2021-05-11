@@ -31,6 +31,8 @@ import net.minecraft.block.entity.BlockEntityType;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.util.capability.inventory.ComponentInventoryProvider;
 
+import java.util.function.Supplier;
+
 /**
  * A {@link ComponentBlockEntity} with an attached
  * {@link ItemComponent}.
@@ -39,7 +41,7 @@ public abstract class ComponentItemBlockEntity extends ComponentBlockEntity impl
 	private final ItemComponent itemComponent = createItemComponent();
 
 	/** Instantiates a {@link ComponentItemBlockEntity}. */
-	public ComponentItemBlockEntity(BlockEntityType<?> type) {
+	public ComponentItemBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 
 		addComponent(AMComponents.ITEM_INVENTORY_COMPONENT, getItemComponent());

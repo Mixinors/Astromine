@@ -30,6 +30,8 @@ import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 
+import java.util.function.Supplier;
+
 /**
  * A {@link ComponentBlockEntity} with an attached
  * {@link FluidComponent}.
@@ -38,7 +40,7 @@ public abstract class ComponentFluidBlockEntity extends ComponentBlockEntity imp
 	private final FluidComponent fluidComponent = createFluidComponent();
 
 	/** Instantiates a {@link ComponentFluidBlockEntity}. */
-	public ComponentFluidBlockEntity(BlockEntityType<?> type) {
+	public ComponentFluidBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 
 		addComponent(AMComponents.FLUID_INVENTORY_COMPONENT, getFluidComponent());

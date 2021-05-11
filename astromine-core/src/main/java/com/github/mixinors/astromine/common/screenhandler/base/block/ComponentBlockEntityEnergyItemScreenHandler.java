@@ -33,6 +33,8 @@ import com.github.mixinors.astromine.common.widget.blade.VerticalEnergyBarWidget
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 
+import java.util.function.Supplier;
+
 /**
  *A {@link ComponentBlockEntityScreenHandler}
  * with an attached {@link ComponentEnergyItemBlockEntity}.
@@ -44,7 +46,7 @@ public class ComponentBlockEntityEnergyItemScreenHandler extends ComponentBlockE
 
 	/** Instantiates a {@link ComponentBlockEntityItemScreenHandler},
 	 * obtaining the {@link ComponentEnergyItemBlockEntity}. */
-	public ComponentBlockEntityEnergyItemScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
+	public ComponentBlockEntityEnergyItemScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
 
 		blockEntity = (ComponentEnergyItemBlockEntity) player.world.getBlockEntity(position);

@@ -71,7 +71,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 
 	@Inject(at = @At("RETURN"), method = "createLivingAttributes()Lnet/minecraft/entity/attribute/DefaultAttributeContainer$Builder;")
 	private static void createLivingAttributesInject(CallbackInfoReturnable<DefaultAttributeContainer.Builder> cir) {
-		cir.getReturnValue().add(AMAttributes.GRAVITY_MULTIPLIER);
+		cir.getReturnValue().add(AMAttributes.GRAVITY_MULTIPLIER.get());
 	}
 
 	@Shadow
