@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.component.entity;
 
+import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
@@ -41,7 +42,7 @@ import org.jetbrains.annotations.Nullable;
  * Serialization and deserialization methods are provided for:
  * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
  */
-public final class EntityOxygenComponent implements Component {
+public final class EntityOxygenComponent implements AutoSyncedComponent {
 	int oxygen = 0;
 
 	int minimumOxygen = -20;

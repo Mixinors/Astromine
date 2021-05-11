@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.mixin.common;
 
 import com.github.mixinors.astromine.registry.common.*;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -148,7 +149,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 					
 					boolean isBreathing = BreathableRegistry.INSTANCE.canBreathe(entity.getType(), breathingVolume.getFluid());
 					
-					if (isBreathing && fluidComponent != null && age % 5 == 0) {
+					if ((!(entity instanceof PlayerEntity) || (entity instanceof PlayerEntity && !entity.isSpectator() &&!((PlayerEntity) entity).isCreative())) && isBreathing && fluidComponent != null && age % 5 == 0) {
 						fluidComponent.getFirst().take(81L);
 					}
 					
