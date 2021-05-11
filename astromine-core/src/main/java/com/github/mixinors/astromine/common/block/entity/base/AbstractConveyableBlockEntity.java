@@ -44,6 +44,8 @@ import com.github.mixinors.astromine.common.conveyor.Conveyable;
 import com.github.mixinors.astromine.common.conveyor.ConveyorConveyable;
 import com.github.mixinors.astromine.common.conveyor.ConveyorTypes;
 
+import java.util.function.Supplier;
+
 public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEntity implements Conveyable, RenderAttachmentBlockEntity {
 	int leftPosition = 0;
 	int prevLeftPosition = 0;
@@ -54,7 +56,7 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 	boolean left = false;
 	boolean right = false;
 	
-	public AbstractConveyableBlockEntity(BlockEntityType type) {
+	public AbstractConveyableBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 	}
 

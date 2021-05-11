@@ -35,12 +35,14 @@ import com.github.mixinors.astromine.common.block.entity.base.ComponentBlockEnti
 import com.github.mixinors.astromine.common.conveyor.Conveyable;
 import com.github.mixinors.astromine.common.conveyor.ConveyorTypes;
 
+import java.util.function.Supplier;
+
 public class ShredderBlockEntity extends ComponentBlockEntity implements Conveyable {
 	public ShredderBlockEntity() {
 		super(AMBlockEntityTypes.INCINERATOR);
 	}
 
-	public ShredderBlockEntity(BlockEntityType type) {
+	public ShredderBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 	}
 

@@ -46,6 +46,7 @@ import it.unimi.dsi.fastutil.ints.IntSets;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
 	public double progress = 0;
@@ -54,7 +55,7 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 
 	private Optional<PressingRecipe> optionalRecipe = Optional.empty();
 
-	public PressBlockEntity(BlockEntityType<?> type) {
+	public PressBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 	}
 

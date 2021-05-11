@@ -46,6 +46,7 @@ import it.unimi.dsi.fastutil.ints.IntSets;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
 	public double progress = 0;
@@ -54,7 +55,7 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 
 	private Optional<WireMillingRecipe> optionalRecipe = Optional.empty();
 
-	public WireMillBlockEntity(BlockEntityType<?> type) {
+	public WireMillBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 	}
 

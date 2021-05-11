@@ -33,6 +33,8 @@ import com.github.mixinors.astromine.common.component.general.base.ItemComponent
 import com.github.mixinors.astromine.common.util.capability.inventory.ComponentInventoryProvider;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 
+import java.util.function.Supplier;
+
 /**
  * A {@link ComponentBlockEntity} with an attached
  * {@link FluidComponent} and {@link ItemComponent}.
@@ -43,7 +45,7 @@ public abstract class ComponentFluidItemBlockEntity extends ComponentBlockEntity
 	private final ItemComponent itemComponent = createItemComponent();
 
 	/** Instantiates a {@link ComponentFluidItemBlockEntity}. */
-	public ComponentFluidItemBlockEntity(BlockEntityType<?> type) {
+	public ComponentFluidItemBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 
 		addComponent(AMComponents.FLUID_INVENTORY_COMPONENT, getFluidComponent());

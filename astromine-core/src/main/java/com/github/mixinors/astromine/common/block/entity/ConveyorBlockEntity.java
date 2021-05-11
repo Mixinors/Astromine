@@ -51,6 +51,8 @@ import com.github.mixinors.astromine.common.conveyor.Conveyor;
 import com.github.mixinors.astromine.common.conveyor.ConveyorConveyable;
 import com.github.mixinors.astromine.common.conveyor.ConveyorTypes;
 
+import java.util.function.Supplier;
+
 public class ConveyorBlockEntity extends ComponentItemBlockEntity implements ConveyorConveyable, BlockEntityExtension, RenderAttachmentBlockEntity, Tickable {
 	protected boolean front = false;
 	protected boolean down = false;
@@ -63,7 +65,7 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 		super(AMBlockEntityTypes.CONVEYOR);
 	}
 
-	public ConveyorBlockEntity(BlockEntityType type) {
+	public ConveyorBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 	}
 

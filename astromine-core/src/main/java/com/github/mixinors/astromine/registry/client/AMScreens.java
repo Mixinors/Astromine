@@ -28,9 +28,11 @@ import com.github.mixinors.astromine.client.screen.RecipeCreatorHandledScreen;
 import com.github.mixinors.astromine.client.screen.base.CustomForegroundBaseHandledScreen;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
+import me.shedaniel.architectury.event.events.client.ClientLifecycleEvent;
+import me.shedaniel.architectury.registry.MenuRegistry;
+import me.shedaniel.architectury.registry.RegistrySupplier;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.screen.ScreenHandler;
@@ -39,39 +41,41 @@ import net.minecraft.screen.ScreenHandlerType;
 @Environment(EnvType.CLIENT)
 public class AMScreens {
 	public static void init() {
-		register(AMScreenHandlers.RECIPE_CREATOR, RecipeCreatorHandledScreen::new);
-		registerSimple(AMScreenHandlers.ROCKET);
-		registerSimple(AMScreenHandlers.FLUID_EXTRACTOR);
-		registerSimple(AMScreenHandlers.FLUID_INSERTER);
-		registerSimple(AMScreenHandlers.BLOCK_BREAKER);
-		registerSimple(AMScreenHandlers.BLOCK_PLACER);
-		registerSimple(AMScreenHandlers.LIQUID_GENERATOR);
-		registerSimple(AMScreenHandlers.SOLID_GENERATOR);
-		registerSimple(AMScreenHandlers.VENT);
-		registerSimple(AMScreenHandlers.TANK);
-		registerSimple(AMScreenHandlers.NUCLEAR_WARHEAD);
-		registerSimple(AMScreenHandlers.CAPACITOR);
-		registerSimple(AMScreenHandlers.CREATIVE_CAPACITOR);
-		registerSimple(AMScreenHandlers.CREATIVE_TANK);
-		registerSimple(AMScreenHandlers.CREATIVE_BUFFER);
-		registerSimple(AMScreenHandlers.BUFFER);
-		registerSimple(AMScreenHandlers.TRITURATOR);
-		registerSimple(AMScreenHandlers.PRESSER);
-		registerSimple(AMScreenHandlers.WIREMILL);
-		registerSimple(AMScreenHandlers.ELECTRIC_FURNACE);
-		registerSimple(AMScreenHandlers.ELECTROLYZER);
-		registerSimple(AMScreenHandlers.REFINERY);
-		registerSimple(AMScreenHandlers.FLUID_MIXER);
-		registerSimple(AMScreenHandlers.ALLOY_SMELTER);
-		registerSimple(AMScreenHandlers.SOLIDIFIER);
-		registerSimple(AMScreenHandlers.MELTER);
+		ClientLifecycleEvent.CLIENT_SETUP.register(client -> {
+			register(AMScreenHandlers.RECIPE_CREATOR, RecipeCreatorHandledScreen::new);
+			registerSimple(AMScreenHandlers.ROCKET);
+			registerSimple(AMScreenHandlers.FLUID_EXTRACTOR);
+			registerSimple(AMScreenHandlers.FLUID_INSERTER);
+			registerSimple(AMScreenHandlers.BLOCK_BREAKER);
+			registerSimple(AMScreenHandlers.BLOCK_PLACER);
+			registerSimple(AMScreenHandlers.LIQUID_GENERATOR);
+			registerSimple(AMScreenHandlers.SOLID_GENERATOR);
+			registerSimple(AMScreenHandlers.VENT);
+			registerSimple(AMScreenHandlers.TANK);
+			registerSimple(AMScreenHandlers.NUCLEAR_WARHEAD);
+			registerSimple(AMScreenHandlers.CAPACITOR);
+			registerSimple(AMScreenHandlers.CREATIVE_CAPACITOR);
+			registerSimple(AMScreenHandlers.CREATIVE_TANK);
+			registerSimple(AMScreenHandlers.CREATIVE_BUFFER);
+			registerSimple(AMScreenHandlers.BUFFER);
+			registerSimple(AMScreenHandlers.TRITURATOR);
+			registerSimple(AMScreenHandlers.PRESSER);
+			registerSimple(AMScreenHandlers.WIREMILL);
+			registerSimple(AMScreenHandlers.ELECTRIC_FURNACE);
+			registerSimple(AMScreenHandlers.ELECTROLYZER);
+			registerSimple(AMScreenHandlers.REFINERY);
+			registerSimple(AMScreenHandlers.FLUID_MIXER);
+			registerSimple(AMScreenHandlers.ALLOY_SMELTER);
+			registerSimple(AMScreenHandlers.SOLIDIFIER);
+			registerSimple(AMScreenHandlers.MELTER);
+		});
 	}
 
-	public static <H extends BaseScreenHandler> void registerSimple(ScreenHandlerType<? extends H> type) {
+	public static <H extends BaseScreenHandler> void registerSimple(RegistrySupplier<? extends ScreenHandlerType<? extends H>> type) {
 		AMScreens.<H, CustomForegroundBaseHandledScreen<H>>register(type, CustomForegroundBaseHandledScreen::new);
 	}
 
-	public static <H extends ScreenHandler, S extends Screen & ScreenHandlerProvider<H>> void register(ScreenHandlerType<? extends H> type, ScreenRegistry.Factory<H, S> screenFactory) {
-		ScreenRegistry.register(type, screenFactory);
+	public static <H extends ScreenHandler, S extends Screen & ScreenHandlerProvider<H>> void register(RegistrySupplier<? extends ScreenHandlerType<? extends H>> type, MenuRegistry.ScreenFactory<H, S> screenFactory) {
+		MenuRegistry.registerScreenFactory(type.get(), screenFactory);
 	}
 }

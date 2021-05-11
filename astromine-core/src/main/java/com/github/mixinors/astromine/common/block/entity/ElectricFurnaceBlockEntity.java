@@ -51,6 +51,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
 	public double progress = 0;
@@ -61,7 +62,7 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 
 	private static final Map<World, SmeltingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public ElectricFurnaceBlockEntity(BlockEntityType<?> type) {
+	public ElectricFurnaceBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 	}
 

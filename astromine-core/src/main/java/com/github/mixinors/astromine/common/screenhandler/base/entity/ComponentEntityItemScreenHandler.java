@@ -29,6 +29,8 @@ import net.minecraft.screen.ScreenHandlerType;
 
 import com.github.mixinors.astromine.common.entity.base.ComponentItemEntity;
 
+import java.util.function.Supplier;
+
 /**
  * A {@link ComponentEntityScreenHandler}
  * with an attached {@link ComponentItemEntity}.
@@ -37,7 +39,7 @@ public abstract class ComponentEntityItemScreenHandler extends ComponentEntitySc
 	protected ComponentItemEntity entity;
 
 	/** Instantiates a {@link ComponentEntityScreenHandler}. */
-	public ComponentEntityItemScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, int entityId) {
+	public ComponentEntityItemScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, int entityId) {
 		super(type, syncId, player, entityId);
 
 		entity = (ComponentItemEntity) player.world.getEntityById(entityId);

@@ -38,12 +38,14 @@ import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
+import java.util.function.Supplier;
+
 public class CapacitorScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
 	public CapacitorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.CAPACITOR, syncId, player, position);
 	}
 
-	public CapacitorScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
+	public CapacitorScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
 	}
 

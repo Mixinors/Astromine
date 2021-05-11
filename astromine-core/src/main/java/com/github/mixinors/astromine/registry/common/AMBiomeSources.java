@@ -31,6 +31,5 @@ import net.minecraft.util.registry.Registry;
 public class AMBiomeSources {
 	public static void init() {
 		Registry.register(Registry.BIOME_SOURCE, AMDimensions.EARTH_SPACE_ID, EarthSpaceBiomeSource.CODEC);
-		
 	}
 }

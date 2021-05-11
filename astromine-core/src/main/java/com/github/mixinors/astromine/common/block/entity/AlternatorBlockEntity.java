@@ -32,6 +32,8 @@ import net.minecraft.sound.SoundCategory;
 
 import com.github.mixinors.astromine.common.block.entity.base.AbstractConveyableBlockEntity;
 
+import java.util.function.Supplier;
+
 public class AlternatorBlockEntity extends AbstractConveyableBlockEntity {
 	public boolean right = false;
 
@@ -39,7 +41,7 @@ public class AlternatorBlockEntity extends AbstractConveyableBlockEntity {
 		super(AMBlockEntityTypes.ALTERNATOR);
 	}
 
-	public AlternatorBlockEntity(BlockEntityType type) {
+	public AlternatorBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 	}
 

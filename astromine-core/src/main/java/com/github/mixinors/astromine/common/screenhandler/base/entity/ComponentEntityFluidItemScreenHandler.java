@@ -32,6 +32,8 @@ import com.github.mixinors.astromine.common.widget.blade.VerticalFluidBarWidget;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 
+import java.util.function.Supplier;
+
 /**
  * A {@link ComponentEntityScreenHandler}
  * with an attached {@link ComponentFluidItemEntity}.
@@ -42,7 +44,7 @@ public abstract class ComponentEntityFluidItemScreenHandler extends ComponentEnt
 	public VerticalFluidBarWidget fluidBar;
 
 	/** Instantiates a {@link ComponentEntityFluidScreenHandler}. */
-	public ComponentEntityFluidItemScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, int entityId) {
+	public ComponentEntityFluidItemScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, int entityId) {
 		super(type, syncId, player, entityId);
 
 		entity = (ComponentFluidItemEntity) player.world.getEntityById(entityId);

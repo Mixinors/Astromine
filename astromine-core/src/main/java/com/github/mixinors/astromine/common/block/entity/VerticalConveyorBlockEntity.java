@@ -42,6 +42,8 @@ import com.github.mixinors.astromine.common.conveyor.Conveyor;
 import com.github.mixinors.astromine.common.conveyor.ConveyorConveyable;
 import com.github.mixinors.astromine.common.conveyor.ConveyorTypes;
 
+import java.util.function.Supplier;
+
 public class VerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	protected boolean up = false;
 
@@ -52,7 +54,7 @@ public class VerticalConveyorBlockEntity extends ConveyorBlockEntity {
 		super(AMBlockEntityTypes.VERTICAL_CONVEYOR);
 	}
 
-	public VerticalConveyorBlockEntity(BlockEntityType type) {
+	public VerticalConveyorBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 	}
 

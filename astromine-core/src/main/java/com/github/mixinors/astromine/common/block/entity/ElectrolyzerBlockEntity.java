@@ -46,6 +46,7 @@ import com.github.mixinors.astromine.common.recipe.ElectrolyzingRecipe;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider, FluidSizeProvider {
 	public double progress = 0;
@@ -54,7 +55,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 
 	private Optional<ElectrolyzingRecipe> optionalRecipe = Optional.empty();
 
-	public ElectrolyzerBlockEntity(BlockEntityType<?> type) {
+	public ElectrolyzerBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 	}
 

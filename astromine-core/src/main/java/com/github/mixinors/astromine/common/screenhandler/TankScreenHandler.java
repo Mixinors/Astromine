@@ -40,6 +40,8 @@ import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 
+import java.util.function.Supplier;
+
 public class TankScreenHandler extends ComponentBlockEntityFluidItemScreenHandler {
 	private TankBlockEntity tank;
 
@@ -48,7 +50,7 @@ public class TankScreenHandler extends ComponentBlockEntityFluidItemScreenHandle
 		tank = (TankBlockEntity) blockEntity;
 	}
 
-	public TankScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
+	public TankScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
 		tank = (TankBlockEntity) blockEntity;
 	}

@@ -48,12 +48,14 @@ import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.Supplier;
+
 public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
 	public double available = 0;
 	public double progress = 0;
 	public int limit = 100;
 
-	public SolidGeneratorBlockEntity(BlockEntityType<?> type) {
+	public SolidGeneratorBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 	}
 

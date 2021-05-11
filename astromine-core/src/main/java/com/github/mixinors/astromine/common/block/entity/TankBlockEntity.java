@@ -45,8 +45,10 @@ import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.Supplier;
+
 public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity implements TierProvider, FluidSizeProvider, SpeedProvider {
-	public TankBlockEntity(BlockEntityType<?> type) {
+	public TankBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 	}
 

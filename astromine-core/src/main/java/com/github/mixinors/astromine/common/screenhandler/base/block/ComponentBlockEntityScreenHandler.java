@@ -55,6 +55,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 
 /**
  * A {@link BlockStateScreenHandler}with an attached
@@ -71,7 +72,7 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 
 	/** Instantiates a {@link ComponentBlockEntityScreenHandler},
 	 * synchronizing its attached {@link ComponentBlockEntity}. */
-	public ComponentBlockEntityScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
+	public ComponentBlockEntityScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
 
 		this.blockEntity = (ComponentBlockEntity) player.world.getBlockEntity(position);

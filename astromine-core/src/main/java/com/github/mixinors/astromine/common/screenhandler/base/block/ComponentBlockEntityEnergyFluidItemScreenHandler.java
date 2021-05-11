@@ -34,6 +34,8 @@ import com.github.mixinors.astromine.common.widget.blade.VerticalFluidBarWidget;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 
+import java.util.function.Supplier;
+
 /**
  * A {@link ComponentBlockEntityScreenHandler}
  * with an attached {@link ComponentEnergyFluidItemBlockEntity}.
@@ -47,7 +49,7 @@ public class ComponentBlockEntityEnergyFluidItemScreenHandler extends ComponentB
 
 	/** Instantiates a {@link ComponentBlockEntityItemScreenHandler},
 	 * obtaining the {@link ComponentEnergyFluidItemBlockEntity}. */
-	public ComponentBlockEntityEnergyFluidItemScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
+	public ComponentBlockEntityEnergyFluidItemScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
 
 		blockEntity = (ComponentEnergyFluidItemBlockEntity) player.world.getBlockEntity(position);

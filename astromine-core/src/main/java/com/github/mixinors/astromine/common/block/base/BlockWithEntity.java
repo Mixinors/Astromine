@@ -24,6 +24,8 @@
 
 package com.github.mixinors.astromine.common.block.base;
 
+import me.shedaniel.architectury.registry.MenuRegistry;
+import me.shedaniel.architectury.registry.menu.ExtendedMenuProvider;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 
 import net.minecraft.block.AbstractBlock;
@@ -41,7 +43,6 @@ import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerFactory;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -90,7 +91,7 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (!world.isClient && (!(player.getStackInHand(hand).getItem() instanceof BucketItem) && !(player.getStackInHand(hand).getItem() instanceof EnergyVolumeItem) && !(player.getStackInHand(hand).getItem() instanceof FluidVolumeItem)) && hasScreenHandler()) {
-			player.openHandledScreen(state.createScreenHandlerFactory(world, pos));
+			MenuRegistry.openExtendedMenu((ServerPlayerEntity) player, createScreenHandlerFactory((ServerPlayerEntity) player, state, world, pos));
 
 			return ActionResult.CONSUME;
 		} else if (player.getStackInHand(hand).getItem() instanceof BucketItem) {
@@ -125,13 +126,12 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 
 	/** Returns the {@link ScreenHandlerFactory} this {@link Block}
 	 * will use. */
-	@Override
-	public NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
-		return new ExtendedScreenHandlerFactory() {
+	public ExtendedMenuProvider createScreenHandlerFactory(ServerPlayerEntity player, BlockState state, World world, BlockPos pos) {
+		return new ExtendedMenuProvider() {
 			/** Writes data from {@link BlockWithEntity#populateScreenHandlerBuffer(BlockState, World, BlockPos, ServerPlayerEntity, PacketByteBuf)}
 			 * to the given {@link PacketByteBuf}. */
 			@Override
-			public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buffer) {
+			public void saveExtraData(PacketByteBuf buffer) {
 				populateScreenHandlerBuffer(state, world, pos, player, buffer);
 			}
 

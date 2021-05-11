@@ -48,6 +48,7 @@ import net.minecraft.nbt.CompoundTag;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBlockEntity implements TierProvider, EnergySizeProvider, FluidSizeProvider, SpeedProvider {
 	public double progress = 0;
@@ -56,7 +57,7 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 
 	private Optional<SolidifyingRecipe> optionalRecipe = Optional.empty();
 
-	public SolidifierBlockEntity(BlockEntityType<?> type) {
+	public SolidifierBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 	}
 

@@ -55,6 +55,7 @@ import net.minecraft.util.math.Vec3d;
 import com.github.mixinors.astromine.common.block.InserterBlock;
 
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class InserterBlockEntity extends BlockEntity implements BlockEntityExtension, RenderAttachmentBlockEntity, Tickable {
@@ -64,11 +65,11 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityExten
 	private final ItemComponent itemComponent = createItemComponent();
 
 	public InserterBlockEntity() {
-		super(AMBlockEntityTypes.INSERTER);
+		super(AMBlockEntityTypes.INSERTER.get());
 	}
 
-	public InserterBlockEntity(BlockEntityType type) {
-		super(type);
+	public InserterBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
+		super(type.get());
 	}
 
 	public ItemComponent createItemComponent() {
