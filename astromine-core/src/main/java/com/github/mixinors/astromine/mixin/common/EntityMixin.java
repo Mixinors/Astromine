@@ -82,7 +82,9 @@ public abstract class EntityMixin implements GravityEntity, EntityAccessor {
 
 	@Shadow
 	public abstract boolean isSubmergedIn(Tag<Fluid> tag);
-
+	
+	@Shadow public int age;
+	
 	@ModifyVariable(at = @At("HEAD"), method = "handleFallDamage(FF)Z", index = 1)
 	float getDamageMultiplier(float damageMultiplier) {
 		return (float) (damageMultiplier * astromine_getGravity() * astromine_getGravity());

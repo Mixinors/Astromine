@@ -93,8 +93,9 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 	void onTick(CallbackInfo callbackInformation) {
 		Entity entity = (Entity) (Object) this;
 		
-		if (entity.world.isClient)
+		if (entity.world.isClient) {
 			return;
+		}
 
 		if (!entity.getType().isIn(AMTags.DOES_NOT_BREATHE)) {
 			ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(entity.world.getChunk(entity.getBlockPos()));
@@ -129,8 +130,10 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 
 					boolean hasSuit = !helmetStack.isEmpty() && !chestplateStack.isEmpty() && !leggingsStack.isEmpty() && !bootsStack.isEmpty();
 					
+					FluidComponent fluidComponent = null;
+					
 					if (hasSuit) {
-						FluidComponent fluidComponent = FluidComponent.get(helmetStack);
+						fluidComponent = FluidComponent.get(chestplateStack);
 						
 						if (fluidComponent != null) {
 							breathingVolume = fluidComponent.getFirst();
@@ -138,6 +141,10 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 					}
 					
 					boolean isBreathing = BreathableRegistry.INSTANCE.canBreathe(entity.getType(), breathingVolume.getFluid());
+					
+					if (isBreathing && fluidComponent != null && age % 5 == 0) {
+						fluidComponent.getFirst().take(81L);
+					}
 					
 					oxygenComponent.simulate(isBreathing);
 				}

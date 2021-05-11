@@ -55,6 +55,6 @@ public class BreathableRegistry extends MultiRegistry<EntityType<?>, Tag<Fluid>>
 
 	/** Asserts whether the given {@link EntityType} can breathe in the specified {@link Fluid}, or not. */
 	public boolean canBreathe(EntityType<?> type, Fluid fluid) {
-		return get(type).stream().anyMatch(tag -> tag.contains(fluid));
+		return get(type).stream().anyMatch(tag -> tag.contains(fluid)) || get(type).isEmpty();
 	}
 }
