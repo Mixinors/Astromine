@@ -24,42 +24,43 @@
 
 package com.github.mixinors.astromine.registry.common;
 
+import me.shedaniel.architectury.registry.RegistrySupplier;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.registry.Registry;
 
 import com.github.mixinors.astromine.AMCommon;
 
 public class AMSoundEvents {
-	public static final SoundEvent SPACE_SUIT_EQUIPPED = register("item.armor.equip_space_suit");
+	public static final RegistrySupplier<SoundEvent> SPACE_SUIT_EQUIPPED = register("item.armor.equip_space_suit");
 	
-	public static final SoundEvent ALTAR_START = register("block.altar.start");
-	public static final SoundEvent ALTAR_FINISH = register("block.altar.finish");
+	public static final RegistrySupplier<SoundEvent> ALTAR_START = register("block.altar.start");
+	public static final RegistrySupplier<SoundEvent> ALTAR_FINISH = register("block.altar.finish");
 	
-	public static final SoundEvent FIRE_EXTINGUISHER_OPEN = register("fire_extinguisher_open");
+	public static final RegistrySupplier<SoundEvent> FIRE_EXTINGUISHER_OPEN = register("fire_extinguisher_open");
 	
-	public static final SoundEvent BRONZE_ARMOR_EQUIPPED = register("item.armor.equip_bronze");
-	public static final SoundEvent STEEL_ARMOR_EQUIPPED = register("item.armor.equip_steel");
-	public static final SoundEvent FOOLS_GOLD_ARMOR_EQUIPPED = register("item.armor.equip_fools_gold");
+	public static final RegistrySupplier<SoundEvent> BRONZE_ARMOR_EQUIPPED = register("item.armor.equip_bronze");
+	public static final RegistrySupplier<SoundEvent> STEEL_ARMOR_EQUIPPED = register("item.armor.equip_steel");
+	public static final RegistrySupplier<SoundEvent> FOOLS_GOLD_ARMOR_EQUIPPED = register("item.armor.equip_fools_gold");
 	
-	public static final SoundEvent METITE_ARMOR_EQUIPPED = register("item.armor.equip_metite");
-	public static final SoundEvent ASTERITE_ARMOR_EQUIPPED = register("item.armor.equip_asterite");
-	public static final SoundEvent STELLUM_ARMOR_EQUIPPED = register("item.armor.equip_stellum");
-	public static final SoundEvent GALAXIUM_ARMOR_EQUIPPED = register("item.armor.equip_galaxium");
-	public static final SoundEvent UNIVITE_ARMOR_EQUIPPED = register("item.armor.equip_univite");
+	public static final RegistrySupplier<SoundEvent> METITE_ARMOR_EQUIPPED = register("item.armor.equip_metite");
+	public static final RegistrySupplier<SoundEvent> ASTERITE_ARMOR_EQUIPPED = register("item.armor.equip_asterite");
+	public static final RegistrySupplier<SoundEvent> STELLUM_ARMOR_EQUIPPED = register("item.armor.equip_stellum");
+	public static final RegistrySupplier<SoundEvent> GALAXIUM_ARMOR_EQUIPPED = register("item.armor.equip_galaxium");
+	public static final RegistrySupplier<SoundEvent> UNIVITE_ARMOR_EQUIPPED = register("item.armor.equip_univite");
 	
 	
-	public static final SoundEvent METEORIC_STEEL_ARMOR_EQUIPPED = register("item.armor.equip_meteoric_steel");
+	public static final RegistrySupplier<SoundEvent> METEORIC_STEEL_ARMOR_EQUIPPED = register("item.armor.equip_meteoric_steel");
 	
-	public static final SoundEvent HOLOGRAPHIC_CONNECTOR_CLICK = register("holographic_connector_click");
+	public static final RegistrySupplier<SoundEvent> HOLOGRAPHIC_CONNECTOR_CLICK = register("holographic_connector_click");
 	
-	public static final SoundEvent MACHINE_CLICK = register("block.machine.click");
-	public static final SoundEvent INCINERATE = register("block.shredder.shred");
+	public static final RegistrySupplier<SoundEvent> MACHINE_CLICK = register("block.machine.click");
+	public static final RegistrySupplier<SoundEvent> INCINERATE = register("block.shredder.shred");
 	
 	public static void init() {
 
 	}
 	
-	public static SoundEvent register(String id) {
-		return Registry.register(Registry.SOUND_EVENT, AMCommon.id(id), new SoundEvent(AMCommon.id(id)));
+	public static RegistrySupplier<SoundEvent> register(String id) {
+		return AMCommon.registry(Registry.SOUND_EVENT_KEY).registerSupplied(AMCommon.id(id), () -> new SoundEvent(AMCommon.id(id)));
 	}
 }

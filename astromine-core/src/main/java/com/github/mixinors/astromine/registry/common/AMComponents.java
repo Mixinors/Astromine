@@ -94,7 +94,7 @@ public class AMComponents implements WorldComponentInitializer, ChunkComponentIn
 		);
 
 		registry.registerFor(
-			item -> item == AMItems.SPACE_SUIT_CHESTPLATE,
+			item -> item == AMItems.SPACE_SUIT_CHESTPLATE.get(),
 			AMComponents.FLUID_INVENTORY_COMPONENT,
 			stack -> SimpleFluidComponent.of(FluidVolume.of(AMConfig.get().spaceSuitFluid, Fluids.EMPTY))
 		);

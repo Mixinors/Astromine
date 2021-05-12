@@ -58,7 +58,7 @@ public class TrituratingCategory implements RecipeCategory<TrituratingDisplay> {
 
 	@Override
 	public EntryStack getLogo() {
-		return EntryStack.create(AMBlocks.ADVANCED_TRITURATOR);
+		return EntryStack.create(AMBlocks.ADVANCED_TRITURATOR.get());
 	}
 
 	@Override

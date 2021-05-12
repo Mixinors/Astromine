@@ -99,7 +99,7 @@ public class AMClientCallbacks {
 
 		TooltipEvent.ITEM.register((stack, tooltip, context) -> {
 			if (stack.getItem() instanceof SpaceSuitItem) {
-				if (stack.getItem() == AMItems.SPACE_SUIT_CHESTPLATE) {
+				if (stack.getItem() == AMItems.SPACE_SUIT_CHESTPLATE.get()) {
 					FluidComponent fluidComponent = FluidComponent.get(stack);
 					
 					fluidComponent.forEachIndexed((slot, volume) -> {

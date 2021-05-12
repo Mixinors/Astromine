@@ -48,7 +48,7 @@ import java.util.List;
 @Environment(EnvType.CLIENT)
 public class ElectricSmeltingCategory extends DefaultCookingCategory {
 	public ElectricSmeltingCategory() {
-		super(AMRoughlyEnoughItemsPlugin.ELECTRIC_SMELTING, EntryStack.create(AMBlocks.ADVANCED_ELECTRIC_FURNACE), "category.astromine.electric_smelting");
+		super(AMRoughlyEnoughItemsPlugin.ELECTRIC_SMELTING, EntryStack.create(AMBlocks.ADVANCED_ELECTRIC_FURNACE.get()), "category.astromine.electric_smelting");
 	}
 
 	@Override

@@ -176,55 +176,55 @@ public class AMRecipeGenerators {
 	
 	public final RecipeGenerator APPLE = register(new AppleCraftingRecipeGenerator());
 	
-	public final RecipeGenerator SMOOTH_METEOR_STONE = register(new SmeltingRecipeGenerator(Ingredient.ofItems(AMBlocks.METEOR_STONE), AMBlocks.SMOOTH_METEOR_STONE));
+	public final RecipeGenerator SMOOTH_METEOR_STONE = register(new SmeltingRecipeGenerator(Ingredient.ofItems(AMBlocks.METEOR_STONE.get()), AMBlocks.SMOOTH_METEOR_STONE.get()));
 	
-	public final RecipeGenerator POLISHED_METEOR_STONE = register(new Crafting2x2RecipeGenerator(AMBlocks.POLISHED_METEOR_STONE, Ingredient.ofItems(AMBlocks.SMOOTH_METEOR_STONE), 4));
-	public final RecipeGenerator METEOR_STONE_BRICKS = register(new Crafting2x2RecipeGenerator(AMBlocks.METEOR_STONE_BRICKS, Ingredient.ofItems(AMBlocks.POLISHED_METEOR_STONE), 4));
+	public final RecipeGenerator POLISHED_METEOR_STONE = register(new Crafting2x2RecipeGenerator(AMBlocks.POLISHED_METEOR_STONE.get(), Ingredient.ofItems(AMBlocks.SMOOTH_METEOR_STONE.get()), 4));
+	public final RecipeGenerator METEOR_STONE_BRICKS = register(new Crafting2x2RecipeGenerator(AMBlocks.METEOR_STONE_BRICKS.get(), Ingredient.ofItems(AMBlocks.POLISHED_METEOR_STONE.get()), 4));
 	
-	public final RecipeGenerator POLISHED_METEOR_STONE_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_METEOR_STONE, Ingredient.ofItems(AMBlocks.SMOOTH_METEOR_STONE)));
-	public final RecipeGenerator METEOR_STONE_BRICKS_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.METEOR_STONE_BRICKS, Ingredient.ofItems(AMBlocks.SMOOTH_METEOR_STONE), "smooth"));
-	public final RecipeGenerator METEOR_STONE_BRICKS_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.METEOR_STONE_BRICKS, Ingredient.ofItems(AMBlocks.POLISHED_METEOR_STONE), "polished"));
+	public final RecipeGenerator POLISHED_METEOR_STONE_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_METEOR_STONE.get(), Ingredient.ofItems(AMBlocks.SMOOTH_METEOR_STONE.get())));
+	public final RecipeGenerator METEOR_STONE_BRICKS_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.METEOR_STONE_BRICKS.get(), Ingredient.ofItems(AMBlocks.SMOOTH_METEOR_STONE.get()), "smooth"));
+	public final RecipeGenerator METEOR_STONE_BRICKS_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.METEOR_STONE_BRICKS.get(), Ingredient.ofItems(AMBlocks.POLISHED_METEOR_STONE.get()), "polished"));
 	
-	public final RecipeGenerator METEOR_STONE_SLAB = register(new SlabCraftingRecipeGenerator(AMBlocks.METEOR_STONE_SLAB, Ingredient.ofItems(AMBlocks.METEOR_STONE)));
-	public final RecipeGenerator METEOR_STONE_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.METEOR_STONE_STAIRS, Ingredient.ofItems(AMBlocks.METEOR_STONE)));
-	public final RecipeGenerator METEOR_STONE_WALL = register(new WallCraftingRecipeGenerator(AMBlocks.METEOR_STONE_WALL, Ingredient.ofItems(AMBlocks.METEOR_STONE)));
+	public final RecipeGenerator METEOR_STONE_SLAB = register(new SlabCraftingRecipeGenerator(AMBlocks.METEOR_STONE_SLAB.get(), Ingredient.ofItems(AMBlocks.METEOR_STONE.get())));
+	public final RecipeGenerator METEOR_STONE_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.METEOR_STONE_STAIRS.get(), Ingredient.ofItems(AMBlocks.METEOR_STONE.get())));
+	public final RecipeGenerator METEOR_STONE_WALL = register(new WallCraftingRecipeGenerator(AMBlocks.METEOR_STONE_WALL.get(), Ingredient.ofItems(AMBlocks.METEOR_STONE.get())));
 	
-	public final RecipeGenerator SMOOTH_METEOR_STONE_SLAB = register(new SlabCraftingRecipeGenerator(AMBlocks.SMOOTH_METEOR_STONE_SLAB, Ingredient.ofItems(AMBlocks.SMOOTH_METEOR_STONE)));
-	public final RecipeGenerator SMOOTH_METEOR_STONE_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.SMOOTH_METEOR_STONE_STAIRS, Ingredient.ofItems(AMBlocks.SMOOTH_METEOR_STONE)));
-	public final RecipeGenerator SMOOTH_METEOR_STONE_WALL = register(new WallCraftingRecipeGenerator(AMBlocks.SMOOTH_METEOR_STONE_WALL, Ingredient.ofItems(AMBlocks.SMOOTH_METEOR_STONE)));
+	public final RecipeGenerator SMOOTH_METEOR_STONE_SLAB = register(new SlabCraftingRecipeGenerator(AMBlocks.SMOOTH_METEOR_STONE_SLAB.get(), Ingredient.ofItems(AMBlocks.SMOOTH_METEOR_STONE.get())));
+	public final RecipeGenerator SMOOTH_METEOR_STONE_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.SMOOTH_METEOR_STONE_STAIRS.get(), Ingredient.ofItems(AMBlocks.SMOOTH_METEOR_STONE.get())));
+	public final RecipeGenerator SMOOTH_METEOR_STONE_WALL = register(new WallCraftingRecipeGenerator(AMBlocks.SMOOTH_METEOR_STONE_WALL.get(), Ingredient.ofItems(AMBlocks.SMOOTH_METEOR_STONE.get())));
 	
-	public final RecipeGenerator POLISHED_METEOR_STONE_SLAB = register(new SlabCraftingRecipeGenerator(AMBlocks.POLISHED_METEOR_STONE_SLAB, Ingredient.ofItems(AMBlocks.POLISHED_METEOR_STONE)));
-	public final RecipeGenerator POLISHED_METEOR_STONE_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.POLISHED_METEOR_STONE_STAIRS, Ingredient.ofItems(AMBlocks.POLISHED_METEOR_STONE)));
+	public final RecipeGenerator POLISHED_METEOR_STONE_SLAB = register(new SlabCraftingRecipeGenerator(AMBlocks.POLISHED_METEOR_STONE_SLAB.get(), Ingredient.ofItems(AMBlocks.POLISHED_METEOR_STONE.get())));
+	public final RecipeGenerator POLISHED_METEOR_STONE_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.POLISHED_METEOR_STONE_STAIRS.get(), Ingredient.ofItems(AMBlocks.POLISHED_METEOR_STONE.get())));
 	
-	public final RecipeGenerator METEOR_STONE_BRICK_SLAB = register(new SlabCraftingRecipeGenerator(AMBlocks.METEOR_STONE_BRICK_SLAB, Ingredient.ofItems(AMBlocks.METEOR_STONE_BRICKS)));
-	public final RecipeGenerator METEOR_STONE_BRICK_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.METEOR_STONE_BRICK_STAIRS, Ingredient.ofItems(AMBlocks.METEOR_STONE_BRICKS)));
-	public final RecipeGenerator METEOR_STONE_BRICK_WALL = register(new WallCraftingRecipeGenerator(AMBlocks.METEOR_STONE_BRICK_WALL, Ingredient.ofItems(AMBlocks.METEOR_STONE_BRICKS)));
+	public final RecipeGenerator METEOR_STONE_BRICK_SLAB = register(new SlabCraftingRecipeGenerator(AMBlocks.METEOR_STONE_BRICK_SLAB.get(), Ingredient.ofItems(AMBlocks.METEOR_STONE_BRICKS.get())));
+	public final RecipeGenerator METEOR_STONE_BRICK_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.METEOR_STONE_BRICK_STAIRS.get(), Ingredient.ofItems(AMBlocks.METEOR_STONE_BRICKS.get())));
+	public final RecipeGenerator METEOR_STONE_BRICK_WALL = register(new WallCraftingRecipeGenerator(AMBlocks.METEOR_STONE_BRICK_WALL.get(), Ingredient.ofItems(AMBlocks.METEOR_STONE_BRICKS.get())));
 	
-	public final RecipeGenerator METEOR_STONE_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.METEOR_STONE_SLAB, Ingredient.ofItems(AMBlocks.METEOR_STONE), 2));
-	public final RecipeGenerator METEOR_STONE_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.METEOR_STONE_STAIRS, Ingredient.ofItems(AMBlocks.METEOR_STONE)));
-	public final RecipeGenerator METEOR_STONE_WALL_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.METEOR_STONE_WALL, Ingredient.ofItems(AMBlocks.METEOR_STONE)));
+	public final RecipeGenerator METEOR_STONE_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.METEOR_STONE_SLAB.get(), Ingredient.ofItems(AMBlocks.METEOR_STONE.get()), 2));
+	public final RecipeGenerator METEOR_STONE_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.METEOR_STONE_STAIRS.get(), Ingredient.ofItems(AMBlocks.METEOR_STONE.get())));
+	public final RecipeGenerator METEOR_STONE_WALL_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.METEOR_STONE_WALL.get(), Ingredient.ofItems(AMBlocks.METEOR_STONE.get())));
 	
-	public final RecipeGenerator SMOOTH_METEOR_STONE_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.SMOOTH_METEOR_STONE_SLAB, Ingredient.ofItems(AMBlocks.SMOOTH_METEOR_STONE), 2));
-	public final RecipeGenerator SMOOTH_METEOR_STONE_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.SMOOTH_METEOR_STONE_STAIRS, Ingredient.ofItems(AMBlocks.SMOOTH_METEOR_STONE)));
-	public final RecipeGenerator SMOOTH_METEOR_STONE_WALL_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.SMOOTH_METEOR_STONE_WALL, Ingredient.ofItems(AMBlocks.SMOOTH_METEOR_STONE)));
+	public final RecipeGenerator SMOOTH_METEOR_STONE_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.SMOOTH_METEOR_STONE_SLAB.get(), Ingredient.ofItems(AMBlocks.SMOOTH_METEOR_STONE.get()), 2));
+	public final RecipeGenerator SMOOTH_METEOR_STONE_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.SMOOTH_METEOR_STONE_STAIRS.get(), Ingredient.ofItems(AMBlocks.SMOOTH_METEOR_STONE.get())));
+	public final RecipeGenerator SMOOTH_METEOR_STONE_WALL_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.SMOOTH_METEOR_STONE_WALL.get(), Ingredient.ofItems(AMBlocks.SMOOTH_METEOR_STONE.get())));
 	
-	public final RecipeGenerator POLISHED_METEOR_STONE_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_METEOR_STONE_SLAB, Ingredient.ofItems(AMBlocks.POLISHED_METEOR_STONE), 2));
-	public final RecipeGenerator POLISHED_METEOR_STONE_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_METEOR_STONE_STAIRS, Ingredient.ofItems(AMBlocks.POLISHED_METEOR_STONE)));
+	public final RecipeGenerator POLISHED_METEOR_STONE_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_METEOR_STONE_SLAB.get(), Ingredient.ofItems(AMBlocks.POLISHED_METEOR_STONE.get()), 2));
+	public final RecipeGenerator POLISHED_METEOR_STONE_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_METEOR_STONE_STAIRS.get(), Ingredient.ofItems(AMBlocks.POLISHED_METEOR_STONE.get())));
 	
-	public final RecipeGenerator POLISHED_METEOR_STONE_SLAB_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_METEOR_STONE_SLAB, Ingredient.ofItems(AMBlocks.SMOOTH_METEOR_STONE), 2, "smooth"));
-	public final RecipeGenerator POLISHED_METEOR_STONE_STAIRS_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_METEOR_STONE_STAIRS, Ingredient.ofItems(AMBlocks.SMOOTH_METEOR_STONE), "smooth"));
+	public final RecipeGenerator POLISHED_METEOR_STONE_SLAB_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_METEOR_STONE_SLAB.get(), Ingredient.ofItems(AMBlocks.SMOOTH_METEOR_STONE.get()), 2, "smooth"));
+	public final RecipeGenerator POLISHED_METEOR_STONE_STAIRS_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_METEOR_STONE_STAIRS.get(), Ingredient.ofItems(AMBlocks.SMOOTH_METEOR_STONE.get()), "smooth"));
 	
-	public final RecipeGenerator METEOR_STONE_BRICK_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.METEOR_STONE_BRICK_SLAB, Ingredient.ofItems(AMBlocks.METEOR_STONE_BRICKS), 2));
-	public final RecipeGenerator METEOR_STONE_BRICK_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.METEOR_STONE_BRICK_STAIRS, Ingredient.ofItems(AMBlocks.METEOR_STONE_BRICKS)));
-	public final RecipeGenerator METEOR_STONE_BRICK_WALL_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.METEOR_STONE_BRICK_WALL, Ingredient.ofItems(AMBlocks.METEOR_STONE_BRICKS)));
+	public final RecipeGenerator METEOR_STONE_BRICK_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.METEOR_STONE_BRICK_SLAB.get(), Ingredient.ofItems(AMBlocks.METEOR_STONE_BRICKS.get()), 2));
+	public final RecipeGenerator METEOR_STONE_BRICK_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.METEOR_STONE_BRICK_STAIRS.get(), Ingredient.ofItems(AMBlocks.METEOR_STONE_BRICKS.get())));
+	public final RecipeGenerator METEOR_STONE_BRICK_WALL_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.METEOR_STONE_BRICK_WALL.get(), Ingredient.ofItems(AMBlocks.METEOR_STONE_BRICKS.get())));
 	
-	public final RecipeGenerator METEOR_STONE_BRICK_SLAB_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.METEOR_STONE_BRICK_SLAB, Ingredient.ofItems(AMBlocks.SMOOTH_METEOR_STONE), 2, "smooth"));
-	public final RecipeGenerator METEOR_STONE_BRICK_STAIRS_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.METEOR_STONE_BRICK_STAIRS, Ingredient.ofItems(AMBlocks.SMOOTH_METEOR_STONE), "smooth"));
-	public final RecipeGenerator METEOR_STONE_BRICK_WALL_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.METEOR_STONE_BRICK_WALL, Ingredient.ofItems(AMBlocks.SMOOTH_METEOR_STONE), "smooth"));
+	public final RecipeGenerator METEOR_STONE_BRICK_SLAB_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.METEOR_STONE_BRICK_SLAB.get(), Ingredient.ofItems(AMBlocks.SMOOTH_METEOR_STONE.get()), 2, "smooth"));
+	public final RecipeGenerator METEOR_STONE_BRICK_STAIRS_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.METEOR_STONE_BRICK_STAIRS.get(), Ingredient.ofItems(AMBlocks.SMOOTH_METEOR_STONE.get()), "smooth"));
+	public final RecipeGenerator METEOR_STONE_BRICK_WALL_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.METEOR_STONE_BRICK_WALL.get(), Ingredient.ofItems(AMBlocks.SMOOTH_METEOR_STONE.get()), "smooth"));
 	
-	public final RecipeGenerator METEOR_STONE_BRICK_SLAB_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.METEOR_STONE_BRICK_SLAB, Ingredient.ofItems(AMBlocks.POLISHED_METEOR_STONE), 2, "polished"));
-	public final RecipeGenerator METEOR_STONE_BRICK_STAIRS_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.METEOR_STONE_BRICK_STAIRS, Ingredient.ofItems(AMBlocks.POLISHED_METEOR_STONE), "polished"));
-	public final RecipeGenerator METEOR_STONE_BRICK_WALL_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.METEOR_STONE_BRICK_WALL, Ingredient.ofItems(AMBlocks.POLISHED_METEOR_STONE), "polished"));
+	public final RecipeGenerator METEOR_STONE_BRICK_SLAB_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.METEOR_STONE_BRICK_SLAB.get(), Ingredient.ofItems(AMBlocks.POLISHED_METEOR_STONE.get()), 2, "polished"));
+	public final RecipeGenerator METEOR_STONE_BRICK_STAIRS_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.METEOR_STONE_BRICK_STAIRS.get(), Ingredient.ofItems(AMBlocks.POLISHED_METEOR_STONE.get()), "polished"));
+	public final RecipeGenerator METEOR_STONE_BRICK_WALL_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.METEOR_STONE_BRICK_WALL.get(), Ingredient.ofItems(AMBlocks.POLISHED_METEOR_STONE.get()), "polished"));
 	
 	public final RecipeGenerator ASTEROID_ORE_TO_INGOT = register(new SmeltingSetRecipeGenerator(ASTEROID_ORE, INGOT));
 	public final RecipeGenerator ASTEROID_ORE_TO_GEM = register(new SmeltingSetRecipeGenerator(ASTEROID_ORE, GEM));
@@ -246,73 +246,73 @@ public class AMRecipeGenerators {
 	public final RecipeGenerator ASTEROID_CLUSTER_TO_DUSTS = register(new com.github.mixinors.astromine.datagen.generator.recipe.TrituratingRecipeGenerator(ASTEROID_CLUSTER, DUST, 2, 90, 340));
 	
 	
-	public final RecipeGenerator SMOOTH_ASTEROID_STONE = register(new SmeltingRecipeGenerator(Ingredient.ofItems(AMBlocks.ASTEROID_STONE), AMBlocks.SMOOTH_ASTEROID_STONE));
+	public final RecipeGenerator SMOOTH_ASTEROID_STONE = register(new SmeltingRecipeGenerator(Ingredient.ofItems(AMBlocks.ASTEROID_STONE.get()), AMBlocks.SMOOTH_ASTEROID_STONE.get()));
 	
-	public final RecipeGenerator POLISHED_ASTEROID_STONE = register(new Crafting2x2RecipeGenerator(AMBlocks.POLISHED_ASTEROID_STONE, Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE), 4));
+	public final RecipeGenerator POLISHED_ASTEROID_STONE = register(new Crafting2x2RecipeGenerator(AMBlocks.POLISHED_ASTEROID_STONE.get(), Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE.get()), 4));
 	
-	public final RecipeGenerator ASTEROID_STONE_BRICKS = register(new Crafting2x2RecipeGenerator(AMBlocks.ASTEROID_STONE_BRICKS, Ingredient.ofItems(AMBlocks.POLISHED_ASTEROID_STONE), 4));
+	public final RecipeGenerator ASTEROID_STONE_BRICKS = register(new Crafting2x2RecipeGenerator(AMBlocks.ASTEROID_STONE_BRICKS.get(), Ingredient.ofItems(AMBlocks.POLISHED_ASTEROID_STONE.get()), 4));
 	
-	public final RecipeGenerator ASTEROID_STONE_SLAB = register(new SlabCraftingRecipeGenerator(AMBlocks.ASTEROID_STONE_SLAB, Ingredient.ofItems(AMBlocks.ASTEROID_STONE)));
+	public final RecipeGenerator ASTEROID_STONE_SLAB = register(new SlabCraftingRecipeGenerator(AMBlocks.ASTEROID_STONE_SLAB.get(), Ingredient.ofItems(AMBlocks.ASTEROID_STONE.get())));
 	
-	public final RecipeGenerator ASTEROID_STONE_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.ASTEROID_STONE_STAIRS, Ingredient.ofItems(AMBlocks.ASTEROID_STONE)));
+	public final RecipeGenerator ASTEROID_STONE_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.ASTEROID_STONE_STAIRS.get(), Ingredient.ofItems(AMBlocks.ASTEROID_STONE.get())));
 	
-	public final RecipeGenerator SMOOTH_ASTEROID_STONE_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.SMOOTH_ASTEROID_STONE_STAIRS, Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE)));
+	public final RecipeGenerator SMOOTH_ASTEROID_STONE_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.SMOOTH_ASTEROID_STONE_STAIRS.get(), Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE.get())));
 	
-	public final RecipeGenerator POLISHED_ASTEROID_STONE_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.POLISHED_ASTEROID_STONE_STAIRS, Ingredient.ofItems(AMBlocks.POLISHED_ASTEROID_STONE)));
+	public final RecipeGenerator POLISHED_ASTEROID_STONE_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.POLISHED_ASTEROID_STONE_STAIRS.get(), Ingredient.ofItems(AMBlocks.POLISHED_ASTEROID_STONE.get())));
 	
-	public final RecipeGenerator ASTEROID_STONE_BRICK_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_STAIRS, Ingredient.ofItems(AMBlocks.ASTEROID_STONE_BRICKS)));
+	public final RecipeGenerator ASTEROID_STONE_BRICK_STAIRS = register(new StairsCraftingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_STAIRS.get(), Ingredient.ofItems(AMBlocks.ASTEROID_STONE_BRICKS.get())));
 	
-	public final RecipeGenerator ASTEROID_STONE_WALL = register(new WallCraftingRecipeGenerator(AMBlocks.ASTEROID_STONE_WALL, Ingredient.ofItems(AMBlocks.ASTEROID_STONE)));
+	public final RecipeGenerator ASTEROID_STONE_WALL = register(new WallCraftingRecipeGenerator(AMBlocks.ASTEROID_STONE_WALL.get(), Ingredient.ofItems(AMBlocks.ASTEROID_STONE.get())));
 	
-	public final RecipeGenerator SMOOTH_ASTEROID_STONE_WALL = register(new WallCraftingRecipeGenerator(AMBlocks.SMOOTH_ASTEROID_STONE_WALL, Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE)));
+	public final RecipeGenerator SMOOTH_ASTEROID_STONE_WALL = register(new WallCraftingRecipeGenerator(AMBlocks.SMOOTH_ASTEROID_STONE_WALL.get(), Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE.get())));
 	
-	public final RecipeGenerator ASTEROID_STONE_BRICK_WALL = register(new WallCraftingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_WALL, Ingredient.ofItems(AMBlocks.ASTEROID_STONE_BRICKS)));
+	public final RecipeGenerator ASTEROID_STONE_BRICK_WALL = register(new WallCraftingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_WALL.get(), Ingredient.ofItems(AMBlocks.ASTEROID_STONE_BRICKS.get())));
 	
-	public final RecipeGenerator POLISHED_ASTEROID_STONE_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_ASTEROID_STONE, Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE)));
+	public final RecipeGenerator POLISHED_ASTEROID_STONE_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_ASTEROID_STONE.get(), Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE.get())));
 	
-	public final RecipeGenerator ASTEROID_STONE_BRICKS_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICKS, Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE), "smooth"));
+	public final RecipeGenerator ASTEROID_STONE_BRICKS_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICKS.get(), Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE.get()), "smooth"));
 	
-	public final RecipeGenerator ASTEROID_STONE_BRICKS_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICKS, Ingredient.ofItems(AMBlocks.POLISHED_ASTEROID_STONE), "polished"));
+	public final RecipeGenerator ASTEROID_STONE_BRICKS_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICKS.get(), Ingredient.ofItems(AMBlocks.POLISHED_ASTEROID_STONE.get()), "polished"));
 	
-	public final RecipeGenerator ASTEROID_STONE_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_SLAB, Ingredient.ofItems(AMBlocks.ASTEROID_STONE), 2));
+	public final RecipeGenerator ASTEROID_STONE_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_SLAB.get(), Ingredient.ofItems(AMBlocks.ASTEROID_STONE.get()), 2));
 	
-	public final RecipeGenerator SMOOTH_ASTEROID_STONE_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.SMOOTH_ASTEROID_STONE_SLAB, Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE), 2));
+	public final RecipeGenerator SMOOTH_ASTEROID_STONE_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.SMOOTH_ASTEROID_STONE_SLAB.get(), Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE.get()), 2));
 	
-	public final RecipeGenerator POLISHED_ASTEROID_STONE_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_ASTEROID_STONE_SLAB, Ingredient.ofItems(AMBlocks.POLISHED_ASTEROID_STONE), 2));
+	public final RecipeGenerator POLISHED_ASTEROID_STONE_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_ASTEROID_STONE_SLAB.get(), Ingredient.ofItems(AMBlocks.POLISHED_ASTEROID_STONE.get()), 2));
 	
-	public final RecipeGenerator POLISHED_ASTEROID_STONE_SLAB_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_ASTEROID_STONE_SLAB, Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE), 2, "smooth"));
+	public final RecipeGenerator POLISHED_ASTEROID_STONE_SLAB_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_ASTEROID_STONE_SLAB.get(), Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE.get()), 2, "smooth"));
 	
-	public final RecipeGenerator ASTEROID_STONE_BRICK_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_SLAB, Ingredient.ofItems(AMBlocks.ASTEROID_STONE_BRICKS), 2));
+	public final RecipeGenerator ASTEROID_STONE_BRICK_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_SLAB.get(), Ingredient.ofItems(AMBlocks.ASTEROID_STONE_BRICKS.get()), 2));
 	
-	public final RecipeGenerator ASTEROID_STONE_BRICK_SLAB_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_SLAB, Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE), 2, "smooth"));
+	public final RecipeGenerator ASTEROID_STONE_BRICK_SLAB_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_SLAB.get(), Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE.get()), 2, "smooth"));
 	
-	public final RecipeGenerator ASTEROID_STONE_BRICK_SLAB_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_SLAB, Ingredient.ofItems(AMBlocks.POLISHED_ASTEROID_STONE), 2, "polished"));
+	public final RecipeGenerator ASTEROID_STONE_BRICK_SLAB_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_SLAB.get(), Ingredient.ofItems(AMBlocks.POLISHED_ASTEROID_STONE.get()), 2, "polished"));
 	
-	public final RecipeGenerator ASTEROID_STONE_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_STAIRS, Ingredient.ofItems(AMBlocks.ASTEROID_STONE)));
+	public final RecipeGenerator ASTEROID_STONE_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_STAIRS.get(), Ingredient.ofItems(AMBlocks.ASTEROID_STONE.get())));
 	
-	public final RecipeGenerator SMOOTH_ASTEROID_STONE_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.SMOOTH_ASTEROID_STONE_STAIRS, Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE)));
+	public final RecipeGenerator SMOOTH_ASTEROID_STONE_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.SMOOTH_ASTEROID_STONE_STAIRS.get(), Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE.get())));
 	
-	public final RecipeGenerator POLISHED_ASTEROID_STONE_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_ASTEROID_STONE_STAIRS, Ingredient.ofItems(AMBlocks.POLISHED_ASTEROID_STONE)));
+	public final RecipeGenerator POLISHED_ASTEROID_STONE_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_ASTEROID_STONE_STAIRS.get(), Ingredient.ofItems(AMBlocks.POLISHED_ASTEROID_STONE.get())));
 	
-	public final RecipeGenerator POLISHED_ASTEROID_STONE_STAIRS_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_ASTEROID_STONE_STAIRS, Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE), "smooth"));
+	public final RecipeGenerator POLISHED_ASTEROID_STONE_STAIRS_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.POLISHED_ASTEROID_STONE_STAIRS.get(), Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE.get()), "smooth"));
 	
-	public final RecipeGenerator ASTEROID_STONE_BRICK_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_STAIRS, Ingredient.ofItems(AMBlocks.ASTEROID_STONE_BRICKS)));
+	public final RecipeGenerator ASTEROID_STONE_BRICK_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_STAIRS.get(), Ingredient.ofItems(AMBlocks.ASTEROID_STONE_BRICKS.get())));
 	
-	public final RecipeGenerator ASTEROID_STONE_BRICK_STAIRS_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_STAIRS, Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE), "smooth"));
+	public final RecipeGenerator ASTEROID_STONE_BRICK_STAIRS_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_STAIRS.get(), Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE.get()), "smooth"));
 	
-	public final RecipeGenerator ASTEROID_STONE_BRICK_STAIRS_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_STAIRS, Ingredient.ofItems(AMBlocks.POLISHED_ASTEROID_STONE), "polished"));
+	public final RecipeGenerator ASTEROID_STONE_BRICK_STAIRS_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_STAIRS.get(), Ingredient.ofItems(AMBlocks.POLISHED_ASTEROID_STONE.get()), "polished"));
 	
-	public final RecipeGenerator ASTEROID_STONE_WALL_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_WALL, Ingredient.ofItems(AMBlocks.ASTEROID_STONE)));
+	public final RecipeGenerator ASTEROID_STONE_WALL_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_WALL.get(), Ingredient.ofItems(AMBlocks.ASTEROID_STONE.get())));
 	
-	public final RecipeGenerator SMOOTH_ASTEROID_STONE_WALL_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.SMOOTH_ASTEROID_STONE_WALL, Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE)));
+	public final RecipeGenerator SMOOTH_ASTEROID_STONE_WALL_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.SMOOTH_ASTEROID_STONE_WALL.get(), Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE.get())));
 	
-	public final RecipeGenerator ASTEROID_STONE_BRICK_WALL_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_WALL, Ingredient.ofItems(AMBlocks.ASTEROID_STONE_BRICKS)));
+	public final RecipeGenerator ASTEROID_STONE_BRICK_WALL_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_WALL.get(), Ingredient.ofItems(AMBlocks.ASTEROID_STONE_BRICKS.get())));
 	
-	public final RecipeGenerator ASTEROID_STONE_BRICK_WALL_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_WALL, Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE), "smooth"));
+	public final RecipeGenerator ASTEROID_STONE_BRICK_WALL_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_WALL.get(), Ingredient.ofItems(AMBlocks.SMOOTH_ASTEROID_STONE.get()), "smooth"));
 	
-	public final RecipeGenerator ASTEROID_STONE_BRICK_WALL_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_WALL, Ingredient.ofItems(AMBlocks.POLISHED_ASTEROID_STONE), "polished"));
+	public final RecipeGenerator ASTEROID_STONE_BRICK_WALL_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AMBlocks.ASTEROID_STONE_BRICK_WALL.get(), Ingredient.ofItems(AMBlocks.POLISHED_ASTEROID_STONE.get()), "polished"));
 	
-	public final RecipeGenerator SPACE_SLIME_BLOCK = register(new Crafting3x3RecipeGenerator(AMBlocks.SPACE_SLIME_BLOCK, Ingredient.ofItems(AMItems.SPACE_SLIME_BALL)));
+	public final RecipeGenerator SPACE_SLIME_BLOCK = register(new Crafting3x3RecipeGenerator(AMBlocks.SPACE_SLIME_BLOCK.get(), Ingredient.ofItems(AMItems.SPACE_SLIME_BALL.get())));
 	
 	public final RecipeGenerator BLOCK_TO_DUSTS = register(new TrituratingSetRecipeGenerator(BLOCK, DUST, 9, 240, 540));
 	public final RecipeGenerator BLOCK_2x2_TO_DUSTS = register(new TrituratingSetRecipeGenerator(BLOCK_2x2, DUST, 4, 160, 480));

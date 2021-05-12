@@ -50,7 +50,7 @@ public class AMCriteria {
 
 	}
 
-	public static <T extends Criterion<?>> T register(Criterion<?> criterion) {
-		return (T) CriteriaTriggersRegistry.register(criterion);
+	public static <T extends Criterion<?>> T register(T criterion) {
+		return CriteriaTriggersRegistry.register(criterion);
 	}
 }

@@ -52,6 +52,6 @@ public class ToolUtils {
 
 	/** Returns an {@link ItemStack} of our manual. */
 	public static ItemStack getAstromineBook() {
-		return new ItemStack(AMItems.MANUAL);
+		return new ItemStack(AMItems.MANUAL.get());
 	}
 }

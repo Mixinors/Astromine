@@ -110,7 +110,7 @@ public class FireExtinguisherItem extends Item {
 		});
 
 		if (world.isClient) {
-			world.playSound(user, user.getBlockPos(), AMSoundEvents.FIRE_EXTINGUISHER_OPEN, SoundCategory.PLAYERS, 1f, 1f);
+			world.playSound(user, user.getBlockPos(), AMSoundEvents.FIRE_EXTINGUISHER_OPEN.get(), SoundCategory.PLAYERS, 1f, 1f);
 		}
 
 		return super.use(world, user, hand);

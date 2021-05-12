@@ -34,13 +34,13 @@ import com.github.mixinors.astromine.AMCommon;
 import java.util.function.Supplier;
 
 public class AMItemGroups {
-	public static final ItemGroup ASTROMINE = register("astromine", () -> AMItems.ITEM);
+	public static final ItemGroup ASTROMINE = register("astromine", AMItems.ITEM);
 
 	public static void init() {
 
 	}
 
-	public static ItemGroup register(String id, Supplier<ItemConvertible> icon) {
+	public static ItemGroup register(String id, Supplier<? extends ItemConvertible> icon) {
 		return CreativeTabs.create(AMCommon.id(id), () -> new ItemStack(icon.get()));
 	}
 }

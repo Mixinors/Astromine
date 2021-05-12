@@ -58,7 +58,7 @@ public class PressingCategory implements RecipeCategory<PressingDisplay> {
 
 	@Override
 	public EntryStack getLogo() {
-		return EntryStack.create(AMBlocks.ADVANCED_PRESSER);
+		return EntryStack.create(AMBlocks.ADVANCED_PRESSER.get());
 	}
 
 	@Override

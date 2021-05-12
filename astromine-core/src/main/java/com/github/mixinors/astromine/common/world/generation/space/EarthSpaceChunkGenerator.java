@@ -108,7 +108,7 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 
 					if (noise > AMConfig.get().asteroidNoiseThreshold) {
 						if (random.nextInt(64) != 0) {
-							chunk.setBlockState(mutable.set(x, y, z), AMBlocks.ASTEROID_STONE.getDefaultState(), false);
+							chunk.setBlockState(mutable.set(x, y, z), AMBlocks.ASTEROID_STONE.get().getDefaultState(), false);
 						}
 					}
 				}

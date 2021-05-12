@@ -129,7 +129,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 					entity.refreshPositionAfterTeleport(pos.getX() + 0.5, pos.getY() + 1 + HEIGHT_OFFSET, pos.getZ() + 0.5);
 					entity.setCosmetic(true);
 					world.spawnEntity(entity);
-					world.playSound(null, getPos(), AMSoundEvents.ALTAR_FINISH, SoundCategory.BLOCKS, 1.5F, 1);
+					world.playSound(null, getPos(), AMSoundEvents.ALTAR_FINISH.get(), SoundCategory.BLOCKS, 1.5F, 1);
 				}
 				if (craftingTicks >= CRAFTING_TIME + CRAFTING_TIME_SPIN + CRAFTING_TIME_FALL) {
 					onRemove();
@@ -195,7 +195,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 				child.get().syncData();
 			}
 
-			world.playSound(null, getPos(), AMSoundEvents.ALTAR_START, SoundCategory.BLOCKS, 1, 1);
+			world.playSound(null, getPos(), AMSoundEvents.ALTAR_START.get(), SoundCategory.BLOCKS, 1, 1);
 
 			return true;
 		} else {

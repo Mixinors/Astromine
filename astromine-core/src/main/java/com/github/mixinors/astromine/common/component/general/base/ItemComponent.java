@@ -97,7 +97,7 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 
 	/** Returns this component's {@link Item} symbol. */
 	default Item getSymbol() {
-		return AMItems.ITEM;
+		return AMItems.ITEM.get();
 	}
 
 	/** Returns this component's {@link Text} name. */

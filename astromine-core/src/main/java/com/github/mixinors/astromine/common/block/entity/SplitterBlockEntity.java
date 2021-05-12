@@ -67,6 +67,6 @@ public class SplitterBlockEntity extends AbstractConveyableBlockEntity {
 			getItemComponent().setFirst(stack);
 		}
 
-		world.playSound(null, getPos().getX(), getPos().getY(), getPos().getZ(), AMSoundEvents.MACHINE_CLICK, SoundCategory.BLOCKS, 1.0F, 1.0F);
+		world.playSound(null, getPos().getX(), getPos().getY(), getPos().getZ(), AMSoundEvents.MACHINE_CLICK.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
 	}
 }

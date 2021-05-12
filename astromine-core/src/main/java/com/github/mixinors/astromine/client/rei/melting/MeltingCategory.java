@@ -56,7 +56,7 @@ public class MeltingCategory implements RecipeCategory<MeltingDisplay> {
 
 	@Override
 	public EntryStack getLogo() {
-		return EntryStack.create(AMBlocks.ADVANCED_MELTER);
+		return EntryStack.create(AMBlocks.ADVANCED_MELTER.get());
 	}
 
 	@Override

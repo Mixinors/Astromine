@@ -44,15 +44,15 @@ public abstract class PistonHandlerMixin {
 
 	@Inject(method = "isBlockSticky(Lnet/minecraft/block/Block;)Z", at = @At("HEAD"), cancellable = true)
 	private static void isBlockStickyInject(Block block, CallbackInfoReturnable<Boolean> cir) {
-		if (block.is(AMBlocks.SPACE_SLIME_BLOCK))
+		if (block.is(AMBlocks.SPACE_SLIME_BLOCK.get()))
 			cir.setReturnValue(true);
 	}
 
 	@Inject(method = "isAdjacentBlockStuck(Lnet/minecraft/block/Block;Lnet/minecraft/block/Block;)Z", at = @At("HEAD"), cancellable = true)
 	private static void isAdjacentBlockStuckInject(Block block, Block block2, CallbackInfoReturnable<Boolean> cir) {
-		if (block.is(AMBlocks.SPACE_SLIME_BLOCK) && !isBlockSticky(block2))
+		if (block.is(AMBlocks.SPACE_SLIME_BLOCK.get()) && !isBlockSticky(block2))
 			cir.setReturnValue(false);
-		else if (block2.is(AMBlocks.SPACE_SLIME_BLOCK) && !isBlockSticky(block))
+		else if (block2.is(AMBlocks.SPACE_SLIME_BLOCK.get()) && !isBlockSticky(block))
 			cir.setReturnValue(false);
 	}
 }

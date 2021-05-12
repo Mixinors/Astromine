@@ -48,53 +48,53 @@ public class AMModelStateGenerators {
 	
 	
 	public final ModelStateGenerator STANDARD_ITEMS = register(new GenericItemModelGenerator(
-			AMItems.SPACE_SUIT_HELMET,
-			AMItems.SPACE_SUIT_CHESTPLATE,
-			AMItems.SPACE_SUIT_LEGGINGS,
-			AMItems.SPACE_SUIT_BOOTS,
-			AMItems.SPACE_SLIME_BALL,
-			AMItems.SPACE_SLIME_SPAWN_EGG,
-			AMItems.PRIMITIVE_ROCKET_BOOSTER,
-			AMItems.PRIMITIVE_ROCKET_FUEL_TANK,
-			AMItems.PRIMITIVE_ROCKET_HULL,
-			AMItems.PRIMITIVE_ROCKET_PLATING
+			AMItems.SPACE_SUIT_HELMET.get(),
+			AMItems.SPACE_SUIT_CHESTPLATE.get(),
+			AMItems.SPACE_SUIT_LEGGINGS.get(),
+			AMItems.SPACE_SUIT_BOOTS.get(),
+			AMItems.SPACE_SLIME_BALL.get(),
+			AMItems.SPACE_SLIME_SPAWN_EGG.get(),
+			AMItems.PRIMITIVE_ROCKET_BOOSTER.get(),
+			AMItems.PRIMITIVE_ROCKET_FUEL_TANK.get(),
+			AMItems.PRIMITIVE_ROCKET_HULL.get(),
+			AMItems.PRIMITIVE_ROCKET_PLATING.get()
 	));
 	
 	public final ModelStateGenerator STANDARD_BLOCKS = register(new GenericBlockModelStateGenerator(
-			AMBlocks.ASTEROID_STONE,
-			AMBlocks.SMOOTH_ASTEROID_STONE,
-			AMBlocks.POLISHED_ASTEROID_STONE,
-			AMBlocks.ASTEROID_STONE_BRICKS,
-			AMBlocks.BLAZING_ASTEROID_STONE,
-			AMBlocks.METEOR_STONE,
-			AMBlocks.SMOOTH_METEOR_STONE,
-			AMBlocks.POLISHED_METEOR_STONE,
-			AMBlocks.METEOR_STONE_BRICKS
+			AMBlocks.ASTEROID_STONE.get(),
+			AMBlocks.SMOOTH_ASTEROID_STONE.get(),
+			AMBlocks.POLISHED_ASTEROID_STONE.get(),
+			AMBlocks.ASTEROID_STONE_BRICKS.get(),
+			AMBlocks.BLAZING_ASTEROID_STONE.get(),
+			AMBlocks.METEOR_STONE.get(),
+			AMBlocks.SMOOTH_METEOR_STONE.get(),
+			AMBlocks.POLISHED_METEOR_STONE.get(),
+			AMBlocks.METEOR_STONE_BRICKS.get()
 	));
 	
 	public final ModelStateGenerator CUSTOM_MODEL_BLOCKS = register(new SimpleBlockItemModelStateGenerator(
-			AMBlocks.ALTAR,
-			AMBlocks.ALTAR_PEDESTAL,
-			AMBlocks.SPACE_SLIME_BLOCK
+			AMBlocks.ALTAR.get(),
+			AMBlocks.ALTAR_PEDESTAL.get(),
+			AMBlocks.SPACE_SLIME_BLOCK.get()
 	));
 	
 	public final ModelStateGenerator CUSTOM_MODEL_AND_STATE_BLOCKS = register(new SimpleBlockItemModelGenerator(
-			AMBlocks.ASTEROID_STONE_SLAB,
-			AMBlocks.ASTEROID_STONE_STAIRS,
-			AMBlocks.SMOOTH_ASTEROID_STONE_SLAB,
-			AMBlocks.SMOOTH_ASTEROID_STONE_STAIRS,
-			AMBlocks.POLISHED_ASTEROID_STONE_SLAB,
-			AMBlocks.POLISHED_ASTEROID_STONE_STAIRS,
-			AMBlocks.ASTEROID_STONE_BRICK_SLAB,
-			AMBlocks.ASTEROID_STONE_BRICK_STAIRS,
-			AMBlocks.METEOR_STONE_SLAB,
-			AMBlocks.METEOR_STONE_STAIRS,
-			AMBlocks.SMOOTH_METEOR_STONE_SLAB,
-			AMBlocks.SMOOTH_METEOR_STONE_STAIRS,
-			AMBlocks.POLISHED_METEOR_STONE_SLAB,
-			AMBlocks.POLISHED_METEOR_STONE_STAIRS,
-			AMBlocks.METEOR_STONE_BRICK_SLAB,
-			AMBlocks.METEOR_STONE_BRICK_STAIRS
+			AMBlocks.ASTEROID_STONE_SLAB.get(),
+			AMBlocks.ASTEROID_STONE_STAIRS.get(),
+			AMBlocks.SMOOTH_ASTEROID_STONE_SLAB.get(),
+			AMBlocks.SMOOTH_ASTEROID_STONE_STAIRS.get(),
+			AMBlocks.POLISHED_ASTEROID_STONE_SLAB.get(),
+			AMBlocks.POLISHED_ASTEROID_STONE_STAIRS.get(),
+			AMBlocks.ASTEROID_STONE_BRICK_SLAB.get(),
+			AMBlocks.ASTEROID_STONE_BRICK_STAIRS.get(),
+			AMBlocks.METEOR_STONE_SLAB.get(),
+			AMBlocks.METEOR_STONE_STAIRS.get(),
+			AMBlocks.SMOOTH_METEOR_STONE_SLAB.get(),
+			AMBlocks.SMOOTH_METEOR_STONE_STAIRS.get(),
+			AMBlocks.POLISHED_METEOR_STONE_SLAB.get(),
+			AMBlocks.POLISHED_METEOR_STONE_STAIRS.get(),
+			AMBlocks.METEOR_STONE_BRICK_SLAB.get(),
+			AMBlocks.METEOR_STONE_BRICK_STAIRS.get()
 	));
 	
 	public final ModelStateGenerator INGOT = register(new GenericItemSetModelGenerator(MaterialItemType.INGOT));
@@ -137,153 +137,153 @@ public class AMModelStateGenerators {
 	
 	public final ModelStateGenerator APPLE = register(new GenericItemSetModelGenerator(MaterialItemType.APPLE));
 	
-	public final ModelStateGenerator BLADES = register(new HandheldItemModelGenerator(AMItems.BLADES));
+	public final ModelStateGenerator BLADES = register(new HandheldItemModelGenerator(AMItems.BLADES.get()));
 	
-	public final ModelStateGenerator BIOFUEL = register(new GenericItemModelGenerator(AMItems.BIOFUEL));
+	public final ModelStateGenerator BIOFUEL = register(new GenericItemModelGenerator(AMItems.BIOFUEL.get()));
 	
 	public final ModelStateGenerator PRIMITIVE_MACHINES = register(new MachineModelStateGenerator(
-			AMBlocks.PRIMITIVE_ALLOY_SMELTER,
-			AMBlocks.PRIMITIVE_ELECTRIC_FURNACE,
-			AMBlocks.PRIMITIVE_ELECTROLYZER,
-			AMBlocks.PRIMITIVE_REFINERY,
-			AMBlocks.PRIMITIVE_FLUID_MIXER,
-			AMBlocks.PRIMITIVE_LIQUID_GENERATOR,
-			AMBlocks.PRIMITIVE_PRESSER,
-			AMBlocks.PRIMITIVE_SOLID_GENERATOR,
-			AMBlocks.PRIMITIVE_TRITURATOR,
-			AMBlocks.PRIMITIVE_WIREMILL,
-			AMBlocks.PRIMITIVE_SOLIDIFIER,
-			AMBlocks.PRIMITIVE_MELTER,
-			AMBlocks.PRIMITIVE_BUFFER,
-			AMBlocks.PRIMITIVE_CAPACITOR,
-			AMBlocks.PRIMITIVE_TANK
+			AMBlocks.PRIMITIVE_ALLOY_SMELTER.get(),
+			AMBlocks.PRIMITIVE_ELECTRIC_FURNACE.get(),
+			AMBlocks.PRIMITIVE_ELECTROLYZER.get(),
+			AMBlocks.PRIMITIVE_REFINERY.get(),
+			AMBlocks.PRIMITIVE_FLUID_MIXER.get(),
+			AMBlocks.PRIMITIVE_LIQUID_GENERATOR.get(),
+			AMBlocks.PRIMITIVE_PRESSER.get(),
+			AMBlocks.PRIMITIVE_SOLID_GENERATOR.get(),
+			AMBlocks.PRIMITIVE_TRITURATOR.get(),
+			AMBlocks.PRIMITIVE_WIREMILL.get(),
+			AMBlocks.PRIMITIVE_SOLIDIFIER.get(),
+			AMBlocks.PRIMITIVE_MELTER.get(),
+			AMBlocks.PRIMITIVE_BUFFER.get(),
+			AMBlocks.PRIMITIVE_CAPACITOR.get(),
+			AMBlocks.PRIMITIVE_TANK.get()
 	));
 	
 	public final ModelStateGenerator BASIC_MACHINES = register(new MachineModelStateGenerator(
-			AMBlocks.BASIC_ALLOY_SMELTER,
-			AMBlocks.BASIC_ELECTRIC_FURNACE,
-			AMBlocks.BASIC_ELECTROLYZER,
-			AMBlocks.BASIC_REFINERY,
-			AMBlocks.BASIC_FLUID_MIXER,
-			AMBlocks.BASIC_LIQUID_GENERATOR,
-			AMBlocks.BASIC_PRESSER,
-			AMBlocks.BASIC_SOLID_GENERATOR,
-			AMBlocks.BASIC_TRITURATOR,
-			AMBlocks.BASIC_WIREMILL,
-			AMBlocks.BASIC_SOLIDIFIER,
-			AMBlocks.BASIC_MELTER,
-			AMBlocks.BASIC_BUFFER,
-			AMBlocks.BASIC_CAPACITOR,
-			AMBlocks.BASIC_TANK
+			AMBlocks.BASIC_ALLOY_SMELTER.get(),
+			AMBlocks.BASIC_ELECTRIC_FURNACE.get(),
+			AMBlocks.BASIC_ELECTROLYZER.get(),
+			AMBlocks.BASIC_REFINERY.get(),
+			AMBlocks.BASIC_FLUID_MIXER.get(),
+			AMBlocks.BASIC_LIQUID_GENERATOR.get(),
+			AMBlocks.BASIC_PRESSER.get(),
+			AMBlocks.BASIC_SOLID_GENERATOR.get(),
+			AMBlocks.BASIC_TRITURATOR.get(),
+			AMBlocks.BASIC_WIREMILL.get(),
+			AMBlocks.BASIC_SOLIDIFIER.get(),
+			AMBlocks.BASIC_MELTER.get(),
+			AMBlocks.BASIC_BUFFER.get(),
+			AMBlocks.BASIC_CAPACITOR.get(),
+			AMBlocks.BASIC_TANK.get()
 	));
 	
 	public final ModelStateGenerator ADVANCED_MACHINES = register(new MachineModelStateGenerator(
-			AMBlocks.ADVANCED_ALLOY_SMELTER,
-			AMBlocks.ADVANCED_ELECTRIC_FURNACE,
-			AMBlocks.ADVANCED_ELECTROLYZER,
-			AMBlocks.ADVANCED_REFINERY,
-			AMBlocks.ADVANCED_FLUID_MIXER,
-			AMBlocks.ADVANCED_LIQUID_GENERATOR,
-			AMBlocks.ADVANCED_PRESSER,
-			AMBlocks.ADVANCED_SOLID_GENERATOR,
-			AMBlocks.ADVANCED_TRITURATOR,
-			AMBlocks.ADVANCED_WIREMILL,
-			AMBlocks.ADVANCED_SOLIDIFIER,
-			AMBlocks.ADVANCED_MELTER,
-			AMBlocks.ADVANCED_BUFFER,
-			AMBlocks.ADVANCED_CAPACITOR,
-			AMBlocks.ADVANCED_TANK
+			AMBlocks.ADVANCED_ALLOY_SMELTER.get(),
+			AMBlocks.ADVANCED_ELECTRIC_FURNACE.get(),
+			AMBlocks.ADVANCED_ELECTROLYZER.get(),
+			AMBlocks.ADVANCED_REFINERY.get(),
+			AMBlocks.ADVANCED_FLUID_MIXER.get(),
+			AMBlocks.ADVANCED_LIQUID_GENERATOR.get(),
+			AMBlocks.ADVANCED_PRESSER.get(),
+			AMBlocks.ADVANCED_SOLID_GENERATOR.get(),
+			AMBlocks.ADVANCED_TRITURATOR.get(),
+			AMBlocks.ADVANCED_WIREMILL.get(),
+			AMBlocks.ADVANCED_SOLIDIFIER.get(),
+			AMBlocks.ADVANCED_MELTER.get(),
+			AMBlocks.ADVANCED_BUFFER.get(),
+			AMBlocks.ADVANCED_CAPACITOR.get(),
+			AMBlocks.ADVANCED_TANK.get()
 	));
 	
 	public final ModelStateGenerator ELITE_MACHINES = register(new MachineModelStateGenerator(
-			AMBlocks.ELITE_ALLOY_SMELTER,
-			AMBlocks.ELITE_ELECTRIC_FURNACE,
-			AMBlocks.ELITE_ELECTROLYZER,
-			AMBlocks.ELITE_REFINERY,
-			AMBlocks.ELITE_FLUID_MIXER,
-			AMBlocks.ELITE_LIQUID_GENERATOR,
-			AMBlocks.ELITE_PRESSER,
-			AMBlocks.ELITE_SOLID_GENERATOR,
-			AMBlocks.ELITE_TRITURATOR,
-			AMBlocks.ELITE_WIREMILL,
-			AMBlocks.ELITE_SOLIDIFIER,
-			AMBlocks.ELITE_MELTER,
-			AMBlocks.ELITE_BUFFER,
-			AMBlocks.ELITE_CAPACITOR,
-			AMBlocks.ELITE_TANK
+			AMBlocks.ELITE_ALLOY_SMELTER.get(),
+			AMBlocks.ELITE_ELECTRIC_FURNACE.get(),
+			AMBlocks.ELITE_ELECTROLYZER.get(),
+			AMBlocks.ELITE_REFINERY.get(),
+			AMBlocks.ELITE_FLUID_MIXER.get(),
+			AMBlocks.ELITE_LIQUID_GENERATOR.get(),
+			AMBlocks.ELITE_PRESSER.get(),
+			AMBlocks.ELITE_SOLID_GENERATOR.get(),
+			AMBlocks.ELITE_TRITURATOR.get(),
+			AMBlocks.ELITE_WIREMILL.get(),
+			AMBlocks.ELITE_SOLIDIFIER.get(),
+			AMBlocks.ELITE_MELTER.get(),
+			AMBlocks.ELITE_BUFFER.get(),
+			AMBlocks.ELITE_CAPACITOR.get(),
+			AMBlocks.ELITE_TANK.get()
 	));
 	
 	public final ModelStateGenerator CREATIVE_MACHINES = register(new MachineModelStateGenerator(
-			AMBlocks.CREATIVE_BUFFER,
-			AMBlocks.CREATIVE_CAPACITOR,
-			AMBlocks.CREATIVE_TANK
+			AMBlocks.CREATIVE_BUFFER.get(),
+			AMBlocks.CREATIVE_CAPACITOR.get(),
+			AMBlocks.CREATIVE_TANK.get()
 	));
 	
 	public final ModelStateGenerator MACHINE_CHASSIS = register(new GenericItemModelGenerator(
-			AMItems.MACHINE_CHASSIS
+			AMItems.MACHINE_CHASSIS.get()
 	));
 	
 	public final ModelStateGenerator PLATINGS = register(new GenericItemModelGenerator(
-			AMItems.PRIMITIVE_PLATING,
-			AMItems.BASIC_PLATING,
-			AMItems.ADVANCED_PLATING,
-			AMItems.ELITE_PLATING
+			AMItems.PRIMITIVE_PLATING.get(),
+			AMItems.BASIC_PLATING.get(),
+			AMItems.ADVANCED_PLATING.get(),
+			AMItems.ELITE_PLATING.get()
 	));
 	
 	public final ModelStateGenerator UPGRADE_KIT = register(new GenericItemModelGenerator(
-			AMItems.BASIC_MACHINE_UPGRADE_KIT,
-			AMItems.ADVANCED_MACHINE_UPGRADE_KIT,
-			AMItems.ELITE_MACHINE_UPGRADE_KIT
+			AMItems.BASIC_MACHINE_UPGRADE_KIT.get(),
+			AMItems.ADVANCED_MACHINE_UPGRADE_KIT.get(),
+			AMItems.ELITE_MACHINE_UPGRADE_KIT.get()
 	));
 	
 	public final ModelStateGenerator CANISTERS = register(new GenericItemModelGenerator(
-			AMItems.LARGE_PORTABLE_TANK,
-			AMItems.PORTABLE_TANK
+			AMItems.LARGE_PORTABLE_TANK.get(),
+			AMItems.PORTABLE_TANK.get()
 	));
 	
 	public final ModelStateGenerator CIRCUITS = register(new GenericItemModelGenerator(
-			AMItems.PRIMITIVE_CIRCUIT,
-			AMItems.BASIC_CIRCUIT,
-			AMItems.ADVANCED_CIRCUIT,
-			AMItems.ELITE_CIRCUIT
+			AMItems.PRIMITIVE_CIRCUIT.get(),
+			AMItems.BASIC_CIRCUIT.get(),
+			AMItems.ADVANCED_CIRCUIT.get(),
+			AMItems.ELITE_CIRCUIT.get()
 	));
 	
 	public final ModelStateGenerator BATTERIES = register(new GenericItemModelGenerator(
-			AMItems.PRIMITIVE_BATTERY,
-			AMItems.BASIC_BATTERY,
-			AMItems.ADVANCED_BATTERY,
-			AMItems.ELITE_BATTERY,
-			AMItems.CREATIVE_BATTERY
+			AMItems.PRIMITIVE_BATTERY.get(),
+			AMItems.BASIC_BATTERY.get(),
+			AMItems.ADVANCED_BATTERY.get(),
+			AMItems.ELITE_BATTERY.get(),
+			AMItems.CREATIVE_BATTERY.get()
 	));
 	
 	public final ModelStateGenerator BATTERY_PACKS = register(new GenericItemModelGenerator(
-			AMItems.PRIMITIVE_BATTERY_PACK,
-			AMItems.BASIC_BATTERY_PACK,
-			AMItems.ADVANCED_BATTERY_PACK,
-			AMItems.ELITE_BATTERY_PACK,
-			AMItems.CREATIVE_BATTERY_PACK
+			AMItems.PRIMITIVE_BATTERY_PACK.get(),
+			AMItems.BASIC_BATTERY_PACK.get(),
+			AMItems.ADVANCED_BATTERY_PACK.get(),
+			AMItems.ELITE_BATTERY_PACK.get(),
+			AMItems.CREATIVE_BATTERY_PACK.get()
 	));
 	
 	public final ModelStateGenerator DRILLS = register(new HandheldItemModelGenerator(
-			AMItems.PRIMITIVE_DRILL,
-			AMItems.BASIC_DRILL,
-			AMItems.ADVANCED_DRILL,
-			AMItems.ELITE_DRILL
+			AMItems.PRIMITIVE_DRILL.get(),
+			AMItems.BASIC_DRILL.get(),
+			AMItems.ADVANCED_DRILL.get(),
+			AMItems.ELITE_DRILL.get()
 	));
 	
 	public final ModelStateGenerator DRILL_HEADS = register(new HandheldItemModelGenerator(
-			AMItems.PRIMITIVE_DRILL_BASE,
-			AMItems.BASIC_DRILL_BASE,
-			AMItems.ADVANCED_DRILL_BASE,
-			AMItems.ELITE_DRILL_BASE
+			AMItems.PRIMITIVE_DRILL_BASE.get(),
+			AMItems.BASIC_DRILL_BASE.get(),
+			AMItems.ADVANCED_DRILL_BASE.get(),
+			AMItems.ELITE_DRILL_BASE.get()
 	));
 	
 	public final ModelStateGenerator DRILL_HEAD = register(new HandheldItemModelGenerator(
-			AMItems.DRILL_HEAD
+			AMItems.DRILL_HEAD.get()
 	));
 	
 	public final ModelStateGenerator HOLOGRAPHIC_CONNECTOR = register(new HandheldItemModelGenerator(
-			AMItems.HOLOGRAPHIC_CONNECTOR
+			AMItems.HOLOGRAPHIC_CONNECTOR.get()
 	));
 
 	public SetModelStateGenerator register(SetModelStateGenerator generator) {

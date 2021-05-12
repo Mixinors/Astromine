@@ -58,7 +58,7 @@ public class WireMillingCategory implements RecipeCategory<WireMillingDisplay> {
 
 	@Override
 	public EntryStack getLogo() {
-		return EntryStack.create(AMBlocks.ADVANCED_WIREMILL);
+		return EntryStack.create(AMBlocks.ADVANCED_WIREMILL.get());
 	}
 
 	@Override

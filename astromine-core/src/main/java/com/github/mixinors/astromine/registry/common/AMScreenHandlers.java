@@ -144,7 +144,6 @@ public class AMScreenHandlers {
 	}
 
 	public static <T extends ScreenHandler> RegistrySupplier<ScreenHandlerType<T>> registerExtended(Identifier id, MenuRegistry.ExtendedMenuTypeFactory<T> factory) {
-		return (RegistrySupplier<ScreenHandlerType<T>>) (RegistrySupplier<? extends ScreenHandlerType<?>>)
-			AMCommon.registry(Registry.MENU_KEY).registerSupplied(id, () -> MenuRegistry.ofExtended(factory));
+		return AMCommon.registry(Registry.MENU_KEY).registerSupplied(id, () -> MenuRegistry.ofExtended(factory));
 	}
 }

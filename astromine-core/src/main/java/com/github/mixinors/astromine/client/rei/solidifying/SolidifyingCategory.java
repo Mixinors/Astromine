@@ -57,7 +57,7 @@ public class SolidifyingCategory implements RecipeCategory<SolidifyingDisplay> {
 
 	@Override
 	public EntryStack getLogo() {
-		return EntryStack.create(AMBlocks.ADVANCED_SOLIDIFIER);
+		return EntryStack.create(AMBlocks.ADVANCED_SOLIDIFIER.get());
 	}
 
 	@Override

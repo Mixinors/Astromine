@@ -46,7 +46,7 @@ public class PrimitiveRocketScreenHandler extends ComponentEntityFluidItemScreen
 
 	@Override
 	public ItemStack getSymbol() {
-		return new ItemStack(AMItems.PRIMITIVE_ROCKET);
+		return new ItemStack(AMItems.PRIMITIVE_ROCKET.get());
 	}
 
 	@Override

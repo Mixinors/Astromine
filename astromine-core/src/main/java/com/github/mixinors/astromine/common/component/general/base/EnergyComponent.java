@@ -81,7 +81,7 @@ public interface EnergyComponent extends IdentifiableComponent {
 
 	/** Returns this component's {@link Item} symbol. */
 	default Item getSymbol() {
-		return AMItems.ENERGY.asItem();
+		return AMItems.ENERGY.get().asItem();
 	}
 
 	/** Returns this component's {@link Text} name. */

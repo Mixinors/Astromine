@@ -57,7 +57,7 @@ public class SolidGeneratingCategory extends AbstractEnergyGeneratingCategory<So
 
 	@Override
 	public EntryStack getLogo() {
-		return EntryStack.create(AMBlocks.ADVANCED_SOLID_GENERATOR);
+		return EntryStack.create(AMBlocks.ADVANCED_SOLID_GENERATOR.get());
 	}
 
 	@Override

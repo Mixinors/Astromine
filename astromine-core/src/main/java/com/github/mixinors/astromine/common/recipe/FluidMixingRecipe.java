@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.recipe;
 
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
+import me.shedaniel.architectury.core.AbstractRecipeSerializer;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -164,7 +165,7 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AMBlocks.ADVANCED_FLUID_MIXER);
+		return new ItemStack(AMBlocks.ADVANCED_FLUID_MIXER.get());
 	}
 
 	public Identifier getIdentifier() {
@@ -192,7 +193,7 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 		return energyInput;
 	}
 
-	public static final class Serializer implements RecipeSerializer<FluidMixingRecipe> {
+	public static final class Serializer extends AbstractRecipeSerializer<FluidMixingRecipe> {
 		public static final Identifier ID = AMCommon.id("fluid_mixing");
 
 		public static final Serializer INSTANCE = new Serializer();

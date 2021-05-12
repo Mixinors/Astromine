@@ -153,8 +153,16 @@ public class AMBlockEntityTypes {
 	 *
 	 * @return Registered BlockEntityType
 	 */
-	public static <B extends BlockEntity> RegistrySupplier<BlockEntityType<B>> register(String name, Supplier<B> supplier, Block... supportedBlocks) {
-		return (RegistrySupplier<BlockEntityType<B>>) (RegistrySupplier<? extends BlockEntityType<?>>)
-			AMCommon.registry(Registry.BLOCK_ENTITY_TYPE_KEY).registerSupplied(AMCommon.id(name), () -> BlockEntityType.Builder.create(supplier, supportedBlocks).build(null));
+	@SafeVarargs
+	public static <B extends BlockEntity> RegistrySupplier<BlockEntityType<B>> register(String name, Supplier<B> supplier, Supplier<Block>... supportedBlocks) {
+		return AMCommon.registry(Registry.BLOCK_ENTITY_TYPE_KEY).registerSupplied(AMCommon.id(name), () -> BlockEntityType.Builder.create(supplier, resolveBlocks(supportedBlocks)).build(null));
+	}
+
+	private static Block[] resolveBlocks(Supplier<Block>[] supportedBlocks) {
+		Block[] blocks = new Block[supportedBlocks.length];
+		for (int i = 0; i < supportedBlocks.length; i++) {
+			blocks[i] = supportedBlocks[i].get();
+		}
+		return blocks;
 	}
 }

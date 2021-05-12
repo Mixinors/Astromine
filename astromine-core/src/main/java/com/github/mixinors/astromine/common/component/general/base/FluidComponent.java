@@ -97,7 +97,7 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 
 	/** Returns this component's {@link Item} symbol. */
 	default Item getSymbol() {
-		return AMItems.FLUID.asItem();
+		return AMItems.FLUID.get().asItem();
 	}
 
 	/** Returns this component's {@link Text} name. */

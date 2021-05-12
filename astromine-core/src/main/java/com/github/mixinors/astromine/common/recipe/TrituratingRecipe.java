@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.recipe;
 
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
+import me.shedaniel.architectury.core.AbstractRecipeSerializer;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -153,7 +154,7 @@ public final class TrituratingRecipe implements EnergyConsumingRecipe<Inventory>
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AMBlocks.ADVANCED_TRITURATOR);
+		return new ItemStack(AMBlocks.ADVANCED_TRITURATOR.get());
 	}
 
 	public Identifier getIdentifier() {
@@ -177,7 +178,7 @@ public final class TrituratingRecipe implements EnergyConsumingRecipe<Inventory>
 		return energyInput;
 	}
 
-	public static final class Serializer implements RecipeSerializer<TrituratingRecipe> {
+	public static final class Serializer extends AbstractRecipeSerializer<TrituratingRecipe> {
 		public static final Identifier ID = AMCommon.id("triturating");
 
 		public static final Serializer INSTANCE = new Serializer();

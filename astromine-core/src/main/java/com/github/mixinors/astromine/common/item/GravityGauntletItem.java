@@ -64,7 +64,7 @@ public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttr
 		if (hand == Hand.OFF_HAND)
 			return TypedActionResult.pass(stack);
 		ItemStack offStack = user.getStackInHand(Hand.OFF_HAND);
-		if (offStack.getItem() == AMItems.GRAVITY_GAUNTLET) {
+		if (offStack.getItem() == AMItems.GRAVITY_GAUNTLET.get()) {
 			EnergyHandler selfHandler = Energy.of(stack);
 			EnergyHandler otherHandler = Energy.of(offStack);
 			if (selfHandler.getEnergy() > AMConfig.get().gravityGauntletConsumed && otherHandler.getEnergy() > AMConfig.get().gravityGauntletConsumed) {
@@ -80,7 +80,7 @@ public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttr
 		if (world.isClient)
 			return stack;
 		ItemStack offStack = user.getStackInHand(Hand.OFF_HAND);
-		if (offStack.getItem() == AMItems.GRAVITY_GAUNTLET) {
+		if (offStack.getItem() == AMItems.GRAVITY_GAUNTLET.get()) {
 			EnergyHandler selfHandler = Energy.of(stack);
 			EnergyHandler otherHandler = Energy.of(offStack);
 			if (selfHandler.getEnergy() > AMConfig.get().gravityGauntletConsumed && otherHandler.getEnergy() > AMConfig.get().gravityGauntletConsumed) {
@@ -109,7 +109,7 @@ public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttr
 		if (attacker.world.isClient)
 			return super.postHit(stack, target, attacker);
 		ItemStack offStack = attacker.getStackInHand(Hand.OFF_HAND);
-		if (offStack.getItem() == AMItems.GRAVITY_GAUNTLET) {
+		if (offStack.getItem() == AMItems.GRAVITY_GAUNTLET.get()) {
 			if (stack.getOrCreateTag().getBoolean("Charged") && offStack.getOrCreateTag().getBoolean("Charged")) {
 				target.takeKnockback(1, attacker.getX() - target.getX(), attacker.getZ() - target.getZ());
 				target.addVelocity(0f, 0.5f, 0f);

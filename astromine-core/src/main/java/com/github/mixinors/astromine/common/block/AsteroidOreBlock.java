@@ -36,23 +36,23 @@ public class AsteroidOreBlock extends AstromineOreBlock {
 
 	@Override
 	protected int getExperienceWhenMined(Random random) {
-		if (this == AMBlocks.ASTEROID_ASTERITE_ORE) {
+		if (this == AMBlocks.ASTEROID_ASTERITE_ORE.get()) {
 			return MathHelper.nextInt(random, 5, 8);
-		} else if (this == AMBlocks.ASTEROID_GALAXIUM_ORE || this == AMBlocks.ASTEROID_STELLUM_ORE) {
+		} else if (this == AMBlocks.ASTEROID_GALAXIUM_ORE.get() || this == AMBlocks.ASTEROID_STELLUM_ORE.get()) {
 			return MathHelper.nextInt(random, 6, 9);
-		} else if (this == AMBlocks.ASTEROID_METITE_ORE) {
+		} else if (this == AMBlocks.ASTEROID_METITE_ORE.get()) {
 			return MathHelper.nextInt(random, 4, 7);
-		} else if (this == AMBlocks.ASTEROID_COAL_ORE) {
+		} else if (this == AMBlocks.ASTEROID_COAL_ORE.get()) {
 			return MathHelper.nextInt(random, 0, 2);
-		} else if (this == AMBlocks.ASTEROID_TIN_ORE || this == AMBlocks.ASTEROID_COPPER_ORE) {
+		} else if (this == AMBlocks.ASTEROID_TIN_ORE.get() || this == AMBlocks.ASTEROID_COPPER_ORE.get()) {
 			return MathHelper.nextInt(random, 1, 2);
-		} else if (this == AMBlocks.ASTEROID_IRON_ORE) {
+		} else if (this == AMBlocks.ASTEROID_IRON_ORE.get()) {
 			return MathHelper.nextInt(random, 1, 3);
-		} else if (this == AMBlocks.ASTEROID_GOLD_ORE) {
+		} else if (this == AMBlocks.ASTEROID_GOLD_ORE.get()) {
 			return MathHelper.nextInt(random, 2, 3);
-		} else if (this == AMBlocks.ASTEROID_DIAMOND_ORE || this == AMBlocks.ASTEROID_EMERALD_ORE) {
+		} else if (this == AMBlocks.ASTEROID_DIAMOND_ORE.get() || this == AMBlocks.ASTEROID_EMERALD_ORE.get()) {
 			return MathHelper.nextInt(random, 3, 7);
-		} else if (this == AMBlocks.ASTEROID_LAPIS_ORE || this == AMBlocks.ASTEROID_REDSTONE_ORE) {
+		} else if (this == AMBlocks.ASTEROID_LAPIS_ORE.get() || this == AMBlocks.ASTEROID_REDSTONE_ORE.get()) {
 			return MathHelper.nextInt(random, 2, 5);
 		} else {
 			return 0;

@@ -71,6 +71,6 @@ public class ShredderBlockEntity extends ComponentBlockEntity implements Conveya
 		float max = 0.4F;
 		float random = min + ((float) Math.random()) * (max - min);
 		random = random - (random / 2);
-		world.playSound(null, getPos().getX(), getPos().getY(), getPos().getZ(), AMSoundEvents.INCINERATE, SoundCategory.BLOCKS, 0.25F, 1.0F + random);
+		world.playSound(null, getPos().getX(), getPos().getY(), getPos().getZ(), AMSoundEvents.INCINERATE.get(), SoundCategory.BLOCKS, 0.25F, 1.0F + random);
 	}
 }

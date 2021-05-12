@@ -58,7 +58,7 @@ public class AlloySmeltingCategory implements RecipeCategory<AlloySmeltingDispla
 
 	@Override
 	public EntryStack getLogo() {
-		return EntryStack.create(AMBlocks.ADVANCED_ALLOY_SMELTER);
+		return EntryStack.create(AMBlocks.ADVANCED_ALLOY_SMELTER.get());
 	}
 
 	@Override

@@ -52,7 +52,7 @@ public class AMBlockEntityRenderers {
 		register(AMBlockEntityTypes.ALTAR, AltarBlockEntityRenderer::new);
 	}
 
-	public static <B extends BlockEntity, C extends BlockEntityType<B>> void register(Supplier<C> c, Function<BlockEntityRenderDispatcher, BlockEntityRenderer<B>> b) {
+	public static <B extends BlockEntity, C extends BlockEntityType<B>> void register(Supplier<C> c, Function<BlockEntityRenderDispatcher, BlockEntityRenderer<? super B>> b) {
 		BlockEntityRenderers.registerRenderer(c.get(), b);
 	}
 }

@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.recipe;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
+import me.shedaniel.architectury.core.AbstractRecipeSerializer;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -165,7 +166,7 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AMBlocks.ADVANCED_LIQUID_GENERATOR);
+		return new ItemStack(AMBlocks.ADVANCED_LIQUID_GENERATOR.get());
 	}
 
 	public Identifier getIdentifier() {
@@ -189,7 +190,7 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 		return time;
 	}
 
-	public static final class Serializer implements RecipeSerializer<SolidifyingRecipe> {
+	public static final class Serializer extends AbstractRecipeSerializer<SolidifyingRecipe> {
 		public static final Identifier ID = AMCommon.id("solidifying");
 
 		public static final Serializer INSTANCE = new Serializer();

@@ -47,7 +47,7 @@ public class AstromineOreBlock extends OreBlock {
 
 	@Override
 	protected int getExperienceWhenMined(Random random) {
-		if (this == AMBlocks.METEOR_METITE_ORE) {
+		if (this == AMBlocks.METEOR_METITE_ORE.get()) {
 			return MathHelper.nextInt(random, 2, 3);
 		} else {
 			return 0;
@@ -57,7 +57,7 @@ public class AstromineOreBlock extends OreBlock {
 	@Override
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		super.onBreak(world, pos, state, player);
-		if (this == AMBlocks.METEOR_METITE_ORE && player instanceof ServerPlayerEntity) {
+		if (this == AMBlocks.METEOR_METITE_ORE.get() && player instanceof ServerPlayerEntity) {
 			ItemStack stack = player.getStackInHand(Hand.MAIN_HAND);
 			if (!stack.isEffectiveOn(state) && stack.isEffectiveOn(Blocks.STONE.getDefaultState())) {
 				AMCriteria.UNDERESTIMATE_METITE.trigger((ServerPlayerEntity) player);

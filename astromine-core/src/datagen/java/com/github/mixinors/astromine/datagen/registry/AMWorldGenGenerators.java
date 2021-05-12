@@ -40,10 +40,10 @@ public class AMWorldGenGenerators {
 	private final List<SetWorldGenGenerator> SET_GENERATORS = new ArrayList<>();
 	private final List<OneTimeWorldGenGenerator> ONE_TIME_GENERATORS = new ArrayList<>();
 	
-	public final WorldGenGenerator COPPER_ORE = register(new GenericOreFeatureWorldGenGenerator(AMBlocks.COPPER_ORE, 0, 0, 64, 18, 11));
-	public final WorldGenGenerator LEAD_ORE = register(new GenericOreFeatureWorldGenGenerator(AMBlocks.LEAD_ORE, 0, 0, 48, 8, 6));
-	public final WorldGenGenerator SILVER_ORE = register(new GenericOreFeatureWorldGenGenerator(AMBlocks.SILVER_ORE, 0, 0, 32, 3, 9));
-	public final WorldGenGenerator TIN_ORE = register(new GenericOreFeatureWorldGenGenerator(AMBlocks.TIN_ORE, 0, 0, 64, 16, 9));
+	public final WorldGenGenerator COPPER_ORE = register(new GenericOreFeatureWorldGenGenerator(AMBlocks.COPPER_ORE.get(), 0, 0, 64, 18, 11));
+	public final WorldGenGenerator LEAD_ORE = register(new GenericOreFeatureWorldGenGenerator(AMBlocks.LEAD_ORE.get(), 0, 0, 48, 8, 6));
+	public final WorldGenGenerator SILVER_ORE = register(new GenericOreFeatureWorldGenGenerator(AMBlocks.SILVER_ORE.get(), 0, 0, 32, 3, 9));
+	public final WorldGenGenerator TIN_ORE = register(new GenericOreFeatureWorldGenGenerator(AMBlocks.TIN_ORE.get(), 0, 0, 64, 16, 9));
 	
 	public SetWorldGenGenerator register(SetWorldGenGenerator generator) {
 		SET_GENERATORS.add(generator);

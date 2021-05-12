@@ -99,7 +99,7 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 				return Blocks.AIR.getDefaultState();
 			}
 		}, state -> Blocks.COBBLESTONE.getDefaultState());
-		buildSphere(world, originPos, 8, AMBlocks.METEOR_STONE.getDefaultState());
+		buildSphere(world, originPos, 8, AMBlocks.METEOR_STONE.get().getDefaultState());
 
 		Shape vein = Shapes.ellipsoid((float) 4, (float) 4, (float) 4).applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true))).applyLayer(TranslateLayer.of(Position.of(originPos)));
 
@@ -108,7 +108,7 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 			for (Position streamPosition : vein.stream().collect(Collectors.toSet())) {
 				BlockPos orePosition = streamPosition.toBlockPos();
 
-				if (world.getBlockState(orePosition).getBlock() == AMBlocks.METEOR_STONE) {
+				if (world.getBlockState(orePosition).getBlock() == AMBlocks.METEOR_STONE.get()) {
 					world.setBlockState(orePosition, metiteOre.getDefaultState(), 0b0110100);
 				}
 			}

@@ -56,7 +56,7 @@ public class FluidGeneratingCategory extends AbstractEnergyGeneratingCategory<Fl
 
 	@Override
 	public EntryStack getLogo() {
-		return EntryStack.create(AMBlocks.ADVANCED_LIQUID_GENERATOR);
+		return EntryStack.create(AMBlocks.ADVANCED_LIQUID_GENERATOR.get());
 	}
 
 	@Override

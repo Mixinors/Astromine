@@ -36,13 +36,13 @@ public class AMRenderLayers {
 		ClientLifecycleEvent.CLIENT_SETUP.register(client -> {
 			register(AMBlocks.AIRLOCK, RenderLayer.getTranslucent());
 
-			register(AMBlocks.ALTAR, RenderLayer.getCutout());
-			register(AMBlocks.ALTAR_PEDESTAL, RenderLayer.getCutout());
-			register(AMBlocks.SPACE_SLIME_BLOCK, RenderLayer.getTranslucent());
+			register(AMBlocks.ALTAR.get(), RenderLayer.getCutout());
+			register(AMBlocks.ALTAR_PEDESTAL.get(), RenderLayer.getCutout());
+			register(AMBlocks.SPACE_SLIME_BLOCK.get(), RenderLayer.getTranslucent());
 
-			register(AMBlocks.ALTERNATOR, RenderLayer.getCutout());
-			register(AMBlocks.SPLITTER, RenderLayer.getCutout());
-			register(AMBlocks.SHREDDER, RenderLayer.getCutout());
+			register(AMBlocks.ALTERNATOR.get(), RenderLayer.getCutout());
+			register(AMBlocks.SPLITTER.get(), RenderLayer.getCutout());
+			register(AMBlocks.SHREDDER.get(), RenderLayer.getCutout());
 		});
 	}
 

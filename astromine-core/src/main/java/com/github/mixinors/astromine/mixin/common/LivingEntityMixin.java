@@ -123,10 +123,10 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 					ItemStack bootsStack = ItemStack.EMPTY;
 
 					for (ItemStack stack : getArmorItems()) {
-						if (stack.getItem() == AMItems.SPACE_SUIT_HELMET) helmetStack = stack;
-						if (stack.getItem() == AMItems.SPACE_SUIT_CHESTPLATE) chestplateStack = stack;
-						if (stack.getItem() == AMItems.SPACE_SUIT_LEGGINGS) leggingsStack = stack;
-						if (stack.getItem() == AMItems.SPACE_SUIT_BOOTS) bootsStack = stack;
+						if (stack.getItem() == AMItems.SPACE_SUIT_HELMET.get()) helmetStack = stack;
+						if (stack.getItem() == AMItems.SPACE_SUIT_CHESTPLATE.get()) chestplateStack = stack;
+						if (stack.getItem() == AMItems.SPACE_SUIT_LEGGINGS.get()) leggingsStack = stack;
+						if (stack.getItem() == AMItems.SPACE_SUIT_BOOTS.get()) bootsStack = stack;
 					}
 
 					boolean hasSuit = !helmetStack.isEmpty() && !chestplateStack.isEmpty() && !leggingsStack.isEmpty() && !bootsStack.isEmpty();

@@ -106,7 +106,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 
 	@Override
 	protected Collection<ItemStack> getDroppedStacks() {
-		return Lists.newArrayList(new ItemStack(AMItems.PRIMITIVE_ROCKET_BOOSTER), new ItemStack(AMItems.PRIMITIVE_ROCKET_HULL), new ItemStack(AMItems.PRIMITIVE_ROCKET_PLATING, 2));
+		return Lists.newArrayList(new ItemStack(AMItems.PRIMITIVE_ROCKET_BOOSTER.get()), new ItemStack(AMItems.PRIMITIVE_ROCKET_HULL.get()), new ItemStack(AMItems.PRIMITIVE_ROCKET_PLATING.get(), 2));
 	}
 
 	@Override

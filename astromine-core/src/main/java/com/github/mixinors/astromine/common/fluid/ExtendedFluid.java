@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.fluid;
 
 import me.shedaniel.architectury.platform.Platform;
+import me.shedaniel.architectury.registry.RegistrySupplier;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricMaterialBuilder;
 
@@ -75,12 +76,12 @@ public abstract class ExtendedFluid extends FlowableFluid {
 
 	private final boolean isInfinite;
 
-	private Block block;
+	private RegistrySupplier<Block> block;
 
 	private Fluid flowing;
 	private Fluid still;
 
-	private Item bucket;
+	private RegistrySupplier<Item> bucket;
 
 	private final DamageSource source;
 
@@ -133,7 +134,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 
 	/** Returns this fluid's block. */
 	public Block getBlock() {
-		return block;
+		return block.get();
 	}
 
 	/** Override behavior to mimic {@link WaterFluid}. */
@@ -165,7 +166,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 	/** Returns this fluid's {@link Item} representation. */
 	@Override
 	public Item getBucketItem() {
-		return bucket;
+		return bucket.get();
 	}
 
 	/** Override behavior to mimic {@link WaterFluid}. */
@@ -189,7 +190,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 	/** Returns this fluid's {@link BlockState} representation. */
 	@Override
 	protected BlockState toBlockState(FluidState state) {
-		return block.getDefaultState().with(FluidBlock.LEVEL, method_15741(state));
+		return block.get().getDefaultState().with(FluidBlock.LEVEL, method_15741(state));
 	}
 
 	/** A builder for {@link ExtendedFluid}s. */
@@ -203,12 +204,12 @@ public abstract class ExtendedFluid extends FlowableFluid {
 
 		String name = "";
 
-		Block block;
+		RegistrySupplier<Block> block;
 
 		Fluid flowing;
 		Fluid still;
 
-		Item bucket;
+		RegistrySupplier<Item> bucket;
 
 		DamageSource source;
 
@@ -282,9 +283,9 @@ public abstract class ExtendedFluid extends FlowableFluid {
 			still.still = still;
 			this.still = still;
 
-			Block block = AMBlocks.register(name, new FluidBlock(still, AbstractBlock.Settings.of(INDUSTRIAL_FLUID_MATERIAL).noCollision().strength(100.0F).dropsNothing()));
+			RegistrySupplier<Block> block = AMBlocks.register(name, () -> new FluidBlock(still, AbstractBlock.Settings.of(INDUSTRIAL_FLUID_MATERIAL).noCollision().strength(100.0F).dropsNothing()));
 
-			Item bucket = AMItems.register(name + "_bucket", new BucketItem(still, (new Item.Settings()).recipeRemainder(Items.BUCKET).maxCount(1).group(group)));
+			RegistrySupplier<Item> bucket = AMItems.register(name + "_bucket", () -> new BucketItem(still, (new Item.Settings()).recipeRemainder(Items.BUCKET).maxCount(1).group(group)));
 
 			flowing.block = block;
 			still.block = block;

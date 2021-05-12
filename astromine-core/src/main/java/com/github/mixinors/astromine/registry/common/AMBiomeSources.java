@@ -25,11 +25,12 @@
 package com.github.mixinors.astromine.registry.common;
 
 
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.world.generation.space.EarthSpaceBiomeSource;
 import net.minecraft.util.registry.Registry;
 
 public class AMBiomeSources {
 	public static void init() {
-		Registry.register(Registry.BIOME_SOURCE, AMDimensions.EARTH_SPACE_ID, EarthSpaceBiomeSource.CODEC);
+		AMCommon.registry(Registry.BIOME_SOURCE_KEY).register(AMDimensions.EARTH_SPACE_ID, () -> EarthSpaceBiomeSource.CODEC);
 	}
 }

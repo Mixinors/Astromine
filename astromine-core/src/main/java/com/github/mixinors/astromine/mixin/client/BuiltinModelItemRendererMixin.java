@@ -46,7 +46,7 @@ public class BuiltinModelItemRendererMixin {
 
 	@Inject(method = "render", at = @At("HEAD"), cancellable = true)
 	private void render(ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, CallbackInfo ci) {
-		if (stack.getItem() == AMItems.PRIMITIVE_ROCKET) {
+		if (stack.getItem() == AMItems.PRIMITIVE_ROCKET.get()) {
 			ci.cancel();
 			PrimitiveRocketEntityModel.renderItem(primitiveRocketEntityModel, stack, mode, matrices, vertexConsumers, light, overlay);
 		}
