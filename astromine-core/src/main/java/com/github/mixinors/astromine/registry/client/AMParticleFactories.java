@@ -36,9 +36,9 @@ import net.minecraft.item.ItemStack;
 @Environment(EnvType.CLIENT)
 public class AMParticleFactories {
 	public static void init() {
-		ParticleFactoryRegistry.getInstance().register(AMParticles.SPACE_SLIME, (parameters, world, x, y, z, velocityX, velocityY, velocityZ) -> new CrackParticle(world, x, y, z, new ItemStack(AMItems.SPACE_SLIME_BALL.get())));
+		ParticleFactoryRegistry.getInstance().register(AMParticles.SPACE_SLIME.get(), (parameters, world, x, y, z, velocityX, velocityY, velocityZ) -> new CrackParticle(world, x, y, z, new ItemStack(AMItems.SPACE_SLIME_BALL.get())));
 		
-		ParticleFactoryRegistry.getInstance().register(AMParticles.ROCKET_FLAME, provider -> (parameters, world, x, y, z, velocityX, velocityY, velocityZ) -> {
+		ParticleFactoryRegistry.getInstance().register(AMParticles.ROCKET_FLAME.get(), provider -> (parameters, world, x, y, z, velocityX, velocityY, velocityZ) -> {
 			RocketFlameParticle particle = new RocketFlameParticle(world, x, y, z, velocityX, velocityY, velocityZ);
 			particle.setSprite(provider);
 			return particle;

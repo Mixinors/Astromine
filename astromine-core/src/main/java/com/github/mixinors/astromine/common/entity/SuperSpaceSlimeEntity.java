@@ -170,7 +170,7 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 	}
 
 	protected ParticleEffect getParticles() {
-		return AMParticles.SPACE_SLIME;
+		return AMParticles.SPACE_SLIME.get();
 	}
 
 	protected SoundEvent getSquishSound() {
@@ -189,7 +189,7 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 	 */
 	public void explode() {
 		for (int i = 0; i < 50; i++) {
-			SpaceSlimeEntity spaceSlime = AMEntityTypes.SPACE_SLIME.create(this.world);
+			SpaceSlimeEntity spaceSlime = AMEntityTypes.SPACE_SLIME.get().create(this.world);
 			spaceSlime.initialize((ServerWorldAccess) this.world, this.world.getLocalDifficulty(this.getBlockPos()), SpawnReason.NATURAL, null, null);
 			this.world.spawnEntity(spaceSlime);
 			spaceSlime.requestTeleport(this.getX(), this.getY(), this.getZ());

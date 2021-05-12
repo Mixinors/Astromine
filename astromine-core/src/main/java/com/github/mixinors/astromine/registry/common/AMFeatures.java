@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.world.feature.*;
+import me.shedaniel.architectury.registry.RegistrySupplier;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
@@ -39,21 +40,22 @@ import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.*;
 
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class AMFeatures {
 	public static final Identifier ASTEROID_ORES_ID = AMCommon.id("asteroid_ores");
-	public static final Feature<DefaultFeatureConfig> ASTEROID_ORES = register(new AsteroidOreFeature(DefaultFeatureConfig.CODEC), ASTEROID_ORES_ID);
+	public static final RegistrySupplier<Feature<DefaultFeatureConfig>> ASTEROID_ORES = registerFeature(ASTEROID_ORES_ID, () -> new AsteroidOreFeature(DefaultFeatureConfig.CODEC));
 	public static final RegistryKey<ConfiguredFeature<?, ?>> ASTEROID_ORES_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, ASTEROID_ORES_ID);
 	
 	//
 	//
 	
 	public static final Identifier METEOR_ID = AMCommon.id("meteor");
-	public static final StructurePieceType METEOR_STRUCTURE = register(MeteorGenerator::new, METEOR_ID);
+	public static final RegistrySupplier<StructurePieceType> METEOR_STRUCTURE = registerStructurePiece(METEOR_ID, () -> MeteorGenerator::new);
 	public static final RegistryKey<ConfiguredStructureFeature<?, ?>> METEOR_KEY = RegistryKey.of(Registry.CONFIGURED_STRUCTURE_FEATURE_WORLDGEN, METEOR_ID);
 	
 	public static final Identifier CRUDE_OIL_ID = AMCommon.id("crude_oil");
-	public static final Feature<DefaultFeatureConfig> CRUDE_OIL = register(new CrudeOilFeature(DefaultFeatureConfig.CODEC), CRUDE_OIL_ID);
+	public static final RegistrySupplier<Feature<DefaultFeatureConfig>> CRUDE_OIL = registerFeature(CRUDE_OIL_ID, () -> new CrudeOilFeature(DefaultFeatureConfig.CODEC));
 	public static final RegistryKey<ConfiguredFeature<?, ?>> CRUDE_OIL_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, CRUDE_OIL_ID);
 	
 	public static final Identifier ASTROMINE_BIOME_MODIFICATIONS = AMCommon.id("biome_modifications");
@@ -80,12 +82,12 @@ public class AMFeatures {
 				});
 	}
 	
-	public static <T extends FeatureConfig> Feature<T> register(Feature<T> feature, Identifier id) {
-		return Registry.register(Registry.FEATURE, id, feature);
+	public static <T extends FeatureConfig> RegistrySupplier<Feature<T>> registerFeature(Identifier id, Supplier<Feature<T>> feature) {
+		return AMCommon.registry(Registry.FEATURE_KEY).registerSupplied(id, feature);
 	}
 
-	public static StructurePieceType register(StructurePieceType pieceType, Identifier id) {
-		return Registry.register(Registry.STRUCTURE_PIECE, id, pieceType);
+	public static <T extends StructurePieceType> RegistrySupplier<T> registerStructurePiece( Identifier id, Supplier<T> pieceType) {
+		return AMCommon.registry(Registry.STRUCTURE_PIECE_KEY).registerSupplied(id, pieceType);
 	}
 	
 	private static Predicate<BiomeSelectionContext> overworldPredicate() {

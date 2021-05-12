@@ -25,10 +25,13 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
+import me.shedaniel.architectury.registry.RegistrySupplier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.CountConfig;
 import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.decorator.DecoratorConfig;
+
+import java.util.function.Supplier;
 
 
 public class AMDecorators {
@@ -37,7 +40,7 @@ public class AMDecorators {
 
 	}
 
-	private static <T extends DecoratorConfig, G extends Decorator<T>> G register(String name, G decorator) {
-		return Registry.register(Registry.DECORATOR, AMCommon.id(name), decorator);
+	private static <T extends DecoratorConfig, G extends Decorator<T>> RegistrySupplier<G> register(String name, Supplier<G> decorator) {
+		return AMCommon.registry(Registry.DECORATOR_KEY).registerSupplied(AMCommon.id(name), decorator);
 	}
 }

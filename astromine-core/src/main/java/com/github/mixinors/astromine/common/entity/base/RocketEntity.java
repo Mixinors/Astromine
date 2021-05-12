@@ -103,7 +103,7 @@ public abstract class RocketEntity extends ComponentFluidItemEntity {
 
 					for (double x = box.minX; x < box.maxX; x += 0.0625) {
 						for (double z = box.minZ; z < box.maxZ; z += 0.0625) {
-							((ServerWorld) world).spawnParticles(AMParticles.ROCKET_FLAME, x, y, z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
+							((ServerWorld) world).spawnParticles(AMParticles.ROCKET_FLAME.get(), x, y, z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
 						}
 					}
 				}

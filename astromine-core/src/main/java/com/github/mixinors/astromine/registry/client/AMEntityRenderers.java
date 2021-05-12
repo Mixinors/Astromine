@@ -32,8 +32,8 @@ import me.shedaniel.architectury.registry.entity.EntityRenderers;
 
 public class AMEntityRenderers {
 	public static void init() {
-		EntityRenderers.register(AMEntityTypes.PRIMITIVE_ROCKET, PrimitiveRocketEntityRenderer::new);
-		EntityRenderers.register(AMEntityTypes.SPACE_SLIME, SpaceSlimeEntityRenderer::new);
-		EntityRenderers.register(AMEntityTypes.SUPER_SPACE_SLIME, SuperSpaceSlimeEntityRenderer::new);
+		EntityRenderers.register(AMEntityTypes.PRIMITIVE_ROCKET.get(), PrimitiveRocketEntityRenderer::new);
+		EntityRenderers.register(AMEntityTypes.SPACE_SLIME.get(), SpaceSlimeEntityRenderer::new);
+		EntityRenderers.register(AMEntityTypes.SUPER_SPACE_SLIME.get(), SuperSpaceSlimeEntityRenderer::new);
 	}
 }

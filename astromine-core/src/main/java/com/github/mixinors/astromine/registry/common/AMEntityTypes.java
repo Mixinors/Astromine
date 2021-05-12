@@ -28,6 +28,7 @@ import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.entity.PrimitiveRocketEntity;
 import com.github.mixinors.astromine.common.entity.SpaceSlimeEntity;
 import com.github.mixinors.astromine.common.entity.SuperSpaceSlimeEntity;
+import me.shedaniel.architectury.registry.RegistrySupplier;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
@@ -39,21 +40,23 @@ import net.minecraft.util.registry.Registry;
 
 import net.minecraft.world.Heightmap;
 
+import java.util.function.Supplier;
+
 public class AMEntityTypes {
-	public static final EntityType<PrimitiveRocketEntity> PRIMITIVE_ROCKET = register("primitive_rocket", FabricEntityTypeBuilder.create(SpawnGroup.MISC, PrimitiveRocketEntity::new).dimensions(EntityDimensions.changing(1.5f, 22.5f)).trackable(256, 4).build());
+	public static final RegistrySupplier<EntityType<PrimitiveRocketEntity>> PRIMITIVE_ROCKET = register("primitive_rocket", () -> FabricEntityTypeBuilder.create(SpawnGroup.MISC, PrimitiveRocketEntity::new).dimensions(EntityDimensions.changing(1.5f, 22.5f)).trackable(256, 4).build());
 	
-	public static final EntityType<SpaceSlimeEntity> SPACE_SLIME = register("space_slime", FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, SpaceSlimeEntity::new).dimensions(EntityDimensions.changing(2.04F, 2.04F)).trackable(128, 4).build());
+	public static final RegistrySupplier<EntityType<SpaceSlimeEntity>> SPACE_SLIME = register("space_slime", () -> FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, SpaceSlimeEntity::new).dimensions(EntityDimensions.changing(2.04F, 2.04F)).trackable(128, 4).build());
 	
-	public static final EntityType<SuperSpaceSlimeEntity> SUPER_SPACE_SLIME = register("super_space_slime", FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, SuperSpaceSlimeEntity::new).dimensions(EntityDimensions.changing(6.125F, 6.125F)).trackable(128, 4).build());
+	public static final RegistrySupplier<EntityType<SuperSpaceSlimeEntity>> SUPER_SPACE_SLIME = register("super_space_slime", () -> FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, SuperSpaceSlimeEntity::new).dimensions(EntityDimensions.changing(6.125F, 6.125F)).trackable(128, 4).build());
 	
 	public static void init() {
-		FabricDefaultAttributeRegistry.register(SPACE_SLIME, HostileEntity.createHostileAttributes());
-		FabricDefaultAttributeRegistry.register(SUPER_SPACE_SLIME, SuperSpaceSlimeEntity.createAttributes());
+		FabricDefaultAttributeRegistry.register(SPACE_SLIME.get(), HostileEntity.createHostileAttributes());
+		FabricDefaultAttributeRegistry.register(SUPER_SPACE_SLIME.get(), SuperSpaceSlimeEntity.createAttributes());
 		
 		AttackEntityCallback.EVENT.register((playerEntity, world, hand, entity, entityHitResult) -> {
 			if (entity instanceof SuperSpaceSlimeEntity) {
 				if (world.random.nextInt(10) == 0) {
-					SpaceSlimeEntity spaceSlimeEntity = AMEntityTypes.SPACE_SLIME.create(world);
+					SpaceSlimeEntity spaceSlimeEntity = AMEntityTypes.SPACE_SLIME.get().create(world);
 					spaceSlimeEntity.setPos(entity.getX(), entity.getY(), entity.getZ());
 					world.spawnEntity(spaceSlimeEntity);
 				}
@@ -62,15 +65,15 @@ public class AMEntityTypes {
 			return ActionResult.PASS;
 		});
 		
-		SpawnRestriction.register(AMEntityTypes.SPACE_SLIME, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, SpaceSlimeEntity::canSpawnInDark);
+		SpawnRestriction.register(AMEntityTypes.SPACE_SLIME.get(), SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, SpaceSlimeEntity::canSpawnInDark);
 	}
 
-	public static <T extends Entity> EntityType<T> register(String id, EntityType.Builder<T> builder) {
-		return register(AMCommon.id(id), builder);
+	public static <T extends Entity> RegistrySupplier<EntityType<T>> registerBuilder(String id, Supplier<EntityType.Builder<T>> builder) {
+		return registerBuilder(AMCommon.id(id), builder);
 	}
 
-	public static <T extends Entity> EntityType<T> register(Identifier id, EntityType.Builder<T> builder) {
-		return Registry.register(Registry.ENTITY_TYPE, id, builder.build(id.getPath()));
+	public static <T extends Entity> RegistrySupplier<EntityType<T>> registerBuilder(Identifier id, Supplier<EntityType.Builder<T>> builder) {
+		return register(id, () -> builder.get().build(id.getPath()));
 	}
 
 	/**
@@ -81,11 +84,11 @@ public class AMEntityTypes {
 	 *
 	 * @return Registered EntityType
 	 */
-	public static <T extends Entity> EntityType<T> register(String id, EntityType<T> type) {
+	public static <T extends Entity> RegistrySupplier<EntityType<T>> register(String id, Supplier<EntityType<T>> type) {
 		return register(AMCommon.id(id), type);
 	}
 
-	public static <T extends Entity> EntityType<T> register(Identifier id, EntityType<T> type) {
-		return Registry.register(Registry.ENTITY_TYPE, id, type);
+	public static <T extends Entity> RegistrySupplier<EntityType<T>> register(Identifier id, Supplier<EntityType<T>> type) {
+		return AMCommon.registry(Registry.ENTITY_TYPE_KEY).registerSupplied( id, type);
 	}
 }

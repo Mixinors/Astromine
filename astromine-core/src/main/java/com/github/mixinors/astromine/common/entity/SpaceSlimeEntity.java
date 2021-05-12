@@ -83,7 +83,7 @@ public class SpaceSlimeEntity extends SlimeEntity {
 
 	@Override
 	protected ParticleEffect getParticles() {
-		return AMParticles.SPACE_SLIME;
+		return AMParticles.SPACE_SLIME.get();
 	}
 
 	@Override

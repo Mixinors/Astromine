@@ -60,11 +60,11 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 	private static OpenSimplexNoise noise;
 
 	public MeteorGenerator(Random random, int x, int z) {
-		super(AMFeatures.METEOR_STRUCTURE, random, x, 64, z, 16, 16, 16);
+		super(AMFeatures.METEOR_STRUCTURE.get(), random, x, 64, z, 16, 16, 16);
 	}
 
 	public MeteorGenerator(StructureManager manager, CompoundTag tag) {
-		super(AMFeatures.METEOR_STRUCTURE, tag);
+		super(AMFeatures.METEOR_STRUCTURE.get(), tag);
 	}
 
 	public static void buildSphere(StructureWorldAccess world, BlockPos originPos, int radius, BlockState state) {

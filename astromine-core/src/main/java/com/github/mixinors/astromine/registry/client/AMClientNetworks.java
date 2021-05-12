@@ -20,7 +20,7 @@ public class AMClientNetworks {
 			int id = buf.readInt();
 
 			context.queue(() -> {
-				PrimitiveRocketEntity rocketEntity = AMEntityTypes.PRIMITIVE_ROCKET.create(ClientUtils.getWorld());
+				PrimitiveRocketEntity rocketEntity = AMEntityTypes.PRIMITIVE_ROCKET.get().create(ClientUtils.getWorld());
 				
 				rocketEntity.setUuid(uuid);
 				rocketEntity.setEntityId(id);
