@@ -86,8 +86,6 @@ allprojects {
                 includeGroup "vazkii.patchouli"
             }
         }
-        
-        mavenLocal()
     }
 
     dependencies {
