@@ -33,6 +33,8 @@ import com.github.mixinors.astromine.registry.common.AMFluids;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMNetworks;
 import me.shedaniel.architectury.networking.NetworkManager;
+import me.shedaniel.architectury.registry.MenuRegistry;
+import me.shedaniel.architectury.registry.menu.ExtendedMenuProvider;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 
 import net.minecraft.client.util.math.Vector3d;
@@ -43,6 +45,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
@@ -61,7 +64,7 @@ import com.google.common.collect.Lists;
 import javax.annotation.Nullable;
 import java.util.Collection;
 
-public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScreenHandlerFactory {
+public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuProvider {
 	private static final FluidIngredient KEROSENE_INGREDIENT = FluidIngredient.ofFluidVolumes(FluidVolume.of(FluidVolume.BUCKET / 9L, AMFluids.FUEL));
 
 	private static final FluidIngredient OXYGEN_INGREDIENT = FluidIngredient.ofFluidVolumes(FluidVolume.of(FluidVolume.BUCKET / 27L, AMFluids.OXYGEN));
@@ -111,7 +114,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 
 	@Override
 	public void openInventory(PlayerEntity player) {
-		player.openHandledScreen(this);
+		MenuRegistry.openExtendedMenu((ServerPlayerEntity) player, this);
 	}
 
 	@Override
@@ -146,10 +149,10 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 
 		return NetworkManager.toPacket(NetworkManager.s2c(), AMNetworks.PRIMITIVE_ROCKET_SPAWN, packet);
 	}
-
+	
 	@Override
-	public void writeScreenOpeningData(ServerPlayerEntity serverPlayerEntity, PacketByteBuf buffer) {
-		buffer.writeInt(this.getEntityId());
+	public void saveExtraData(PacketByteBuf buf) {
+		buf.writeInt(this.getEntityId());
 	}
 
 	@Nullable
