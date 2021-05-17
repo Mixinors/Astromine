@@ -1,0 +1,173 @@
+plugins {
+    id "com.github.johnrengelman.shadow" version "5.0.0"
+}
+
+configurations {
+    shadowCommon
+}
+
+architectury {
+    platformSetupLoomIde()
+    fabric()
+}
+
+repositories {
+    maven {
+        name = "Architectury"
+        url = "https://maven.architectury.dev"
+    }
+
+    maven {
+        name = "TerraFormersMC"
+        url = "https://maven.terraformersmc.com/releases/"
+    }
+
+    maven {
+        name = "JitPack"
+        url = "https://jitpack.io"
+        content {
+            includeGroupByRegex "com.github.\\w+"
+        }
+    }
+
+    maven {
+        name = "Ladysnake Libs"
+        url = 'https://ladysnake.jfrog.io/artifactory/mods'
+        content {
+            includeGroup "io.github.onyxstudios.Cardinal-Components-API"
+        }
+    }
+
+    maven {
+        name = "BlameJared"
+        url = "https://maven.blamejared.com"
+        content {
+            includeGroup "vazkii.patchouli"
+        }
+    }
+
+    mavenCentral()
+}
+
+dependencies {
+    // Fabric Loader
+    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+
+    // Fabric API
+    modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
+
+    // Architectury
+    modApi "me.shedaniel:architectury-fabric:${rootProject.architectury_version}"
+
+    // Cardinal-Components API
+    implementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${project.cardinal_components_version}"
+    implementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-block:${project.cardinal_components_version}"
+    implementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:${project.cardinal_components_version}"
+    implementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${project.cardinal_components_version}"
+    implementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-item:${project.cardinal_components_version}"
+    implementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-world:${project.cardinal_components_version}"
+
+    // Shapes
+    implementation "com.terraformersmc.terraform-api:terraform-shapes-api-v1:${project.shapes_version}"
+
+    // Blade
+    implementation "com.github.vini2003:blade:${project.blade_version}"
+    implementation "com.github.vini2003:blade-fabric:${project.blade_version}"
+
+    // Patchouli
+    implementation "vazkii.patchouli:Patchouli:${project.patchouli_version}"
+
+    // ModMenu
+    implementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
+
+    // Tech Reborn Energy
+    implementation "teamreborn:energy:${project.tech_reborn_energy_version}"
+
+    // Cloth API
+    implementation "me.shedaniel.cloth.api:cloth-durability-bar-api-v1:${project.cloth_api_version}"
+
+    // Cloth Config
+    implementation "me.shedaniel.cloth:cloth-config:${project.cloth_config_api_version}"
+    implementation "me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_api_version}"
+
+    // RoughlyEnoughItems
+    implementation "me.shedaniel:RoughlyEnoughItems:${project.roughly_enough_items_version}"
+
+    //// Magna
+    //implementation "com.github.Draylar:magna:${project.magna_version}"
+
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:${project.kotlin_version}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${project.kotlin_version}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${project.kotlin_version}"
+
+    // Piglib
+    implementation "com.github.Shnupbups:Piglib:${project.piglib_version}"
+
+    // DataBreaker
+    implementation "com.github.SuperCoder7979:databreaker:${project.databreaker_version}"
+
+    implementation(project(path: ":common")) {
+        transitive = false
+    }
+
+    developmentFabric(project(path: ":common")) {
+        transitive = false
+    }
+
+    shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) {
+        transitive = false
+    }
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}
+
+shadowJar {
+    configurations = [project.configurations.shadowCommon]
+    classifier "dev-shadow"
+}
+
+remapJar {
+    input.set shadowJar.archiveFile
+    dependsOn shadowJar
+    classifier "fabric"
+}
+
+jar {
+    classifier "dev"
+}
+
+java {
+    withSourcesJar()
+}
+
+sourcesJar {
+    def commonSources = project(":common").remapSourcesJar
+    dependsOn commonSources
+    from zipTree(commonSources.output)
+}
+
+publishing {
+    publications {
+        mavenFabric(MavenPublication) {
+            artifactId = rootProject.mod_name + "-" + project.name
+
+            artifact(remapJar) {
+                classifier null
+            }
+            artifact(sourcesJar) {
+                builtBy remapSourcesJar
+            }
+        }
+    }
+
+    repositories {
+
+    }
+}

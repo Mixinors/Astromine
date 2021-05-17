@@ -1,56 +1,9 @@
 project.ext.setDefaultApis = {
-    // Cardinal-Components API
-    useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${cardinal_components_version}")
-    useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-block:${cardinal_components_version}")
-    useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:${cardinal_components_version}")
-    useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${cardinal_components_version}")
-    useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-item:${cardinal_components_version}")
-    useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-world:${cardinal_components_version}")
 
-    // Shapes
-    useAsApi("com.terraformersmc.terraform-api:terraform-shapes-api-v1:${shapes_version}")
 
-    // Blade
-    useAsCompileOnly("com.github.vini2003:blade:${blade_version}")
-    useAsRuntime("com.github.vini2003:blade-fabric:${blade_version}")
-    include("com.github.vini2003:blade-fabric:${blade_version}")
 
-    // Patchouli
-    useAsApi("vazkii.patchouli:Patchouli:${patchouli_version}")
-
-    // ModMenu
-    useAsApiOptionally("com.terraformersmc:modmenu:${modmenu_version}")
-
-    // Tech Reborn Energy
-    useAsApi("teamreborn:energy:${tech_reborn_energy_version}")
-
-    // Cloth API
-    useAsApi("me.shedaniel.cloth.api:cloth-durability-bar-api-v1:${cloth_api_version}")
-    useAsApiOptionally("me.shedaniel.cloth.api:cloth-datagen-api-v1:${cloth_api_version}")
-
-    // Cloth Config
-    useAsCompileOnly("me.shedaniel.cloth:cloth-config:${cloth_config_api_version}")
-    useAsRuntime("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_api_version}")
-
-    // RoughlyEnoughItems
-    useAsApiOptionally("me.shedaniel:RoughlyEnoughItems:${roughly_enough_items_version}")
-
-    // Magna
-    useAsApi("com.github.Draylar:magna:${magna_version}")
-
-    // Kotlin
-    useAsApi("org.jetbrains.kotlin:kotlin-stdlib:${project.kotlin_version}")
-    useAsApi("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${project.kotlin_version}")
-    useAsApi("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${project.kotlin_version}")
-
-    // Piglib
-    useAsApi("com.github.Shnupbups:Piglib:${piglib_version}")
-
-    // Architectury API
-    useAsApi("me.shedaniel:architectury-fabric:${architectury_api_version}")
 }
 
 project.ext.setRuntimeTestMods = {
-    // DataBreaker
-    useAsRuntime("com.github.SuperCoder7979:databreaker:${databreaker_version}")
+
 }

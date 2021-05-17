@@ -1,13 +1,16 @@
+
 pluginManagement {
     repositories {
         maven { url "https://maven.fabricmc.net/" }
-        maven { url "https://maven.architectury.dev/" }
+        maven { url "https://maven.shedaniel.me/" }
         maven { url "https://files.minecraftforge.net/maven/" }
         gradlePluginPortal()
     }
 }
 
-rootProject.name = "astromine"
+include("common")
+include("fabric")
+include("forge")
+include("astromine-datagen-initializer")
 
-include 'astromine-core'
-include 'astromine-datagen-initializer'
+rootProject.name = "astromine"

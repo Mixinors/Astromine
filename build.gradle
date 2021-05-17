@@ -1,56 +1,43 @@
-import net.fabricmc.loom.task.RunClientTask
-
 buildscript {
-    configurations.classpath {
-        resolutionStrategy.cacheChangingModulesFor 5, 'minutes'
+    repositories {
+        mavenCentral()
     }
 }
 
 plugins {
-    id 'maven-publish'
-    id 'dev.architectury.loom' version '0.7.2-SNAPSHOT'
-    id 'com.matthewprenger.cursegradle' version '1.4.0'
-    id "org.cadixdev.licenser" version "0.5.0"
+    id "maven-publish"
+    id "architectury-plugin" version "3.0-SNAPSHOT"
+    id "forgified-fabric-loom" version "0.6-SNAPSHOT" apply false
 }
 
-apply from: 'dependencies.gradle'
+architectury {
+    minecraft = rootProject.minecraft_version
+}
+
+subprojects {
+    apply plugin: "forgified-fabric-loom"
+
+    loom {
+        silentMojangMappingsLicense()
+    }
+
+    dependencies {
+        // Minecraft
+        minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
+
+        // Yarn
+        mappings "net.fabricmc:yarn:${rootProject.yarn_version}"
+    }
+}
 
 allprojects {
-    gradle.projectsEvaluated {
-        tasks.withType(JavaCompile) {
-            options.compilerArgs << "-Xmaxerrs" << "4096"
-        }
-    }
+    apply plugin: "java"
+    apply plugin: "architectury-plugin"
+    apply plugin: "maven-publish"
 
-    apply plugin: 'maven-publish'
-    apply plugin: 'dev.architectury.loom'
-    apply plugin: 'com.matthewprenger.cursegradle'
-
-    ext {
-        isSnapshot = System.getenv("PR_NUM") != null || true
-    }
-
-    def runNumber = System.getenv("GITHUB_RUN_NUMBER") ?: "9999"
-    archivesBaseName = project.mod_name
-
-    if (isSnapshot) {
-        group = rootProject.mod_group + "-snapshot"
-        version = rootProject.mod_version + '-alpha.' + runNumber + "+" + project.minecraft_version
-    } else {
-        group = project.mod_group
-        version = project.mod_version + "+" + project.minecraft_version
-    }
-
-    ext {
-        shouldGenerateData = false
-        // A special flag to disable this module to go into production jar and mark this moudle to be running the datagen task.
-        isRunningGenerateDataTask = path == ":astromine-datagen-initializer"
-    }
-
-    java {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
+    archivesBaseName = rootProject.mod_name
+    version = rootProject.mod_version
+    group = rootProject.mod_group
 
     repositories {
         maven {
@@ -66,6 +53,7 @@ allprojects {
         maven {
             name = "JitPack"
             url = "https://jitpack.io"
+            
             content {
                 includeGroupByRegex "com.github.\\w+"
             }
@@ -73,7 +61,8 @@ allprojects {
 
         maven {
             name = "Ladysnake Libs"
-            url = 'https://ladysnake.jfrog.io/artifactory/mods'
+            url = "https://ladysnake.jfrog.io/artifactory/mods"
+            
             content {
                 includeGroup "io.github.onyxstudios.Cardinal-Components-API"
             }
@@ -82,6 +71,7 @@ allprojects {
         maven {
             name = "BlameJared"
             url = "https://maven.blamejared.com"
+            
             content {
                 includeGroup "vazkii.patchouli"
             }
@@ -89,314 +79,15 @@ allprojects {
     }
 
     dependencies {
-        dependencies.ext.useAsCompileOnly = { dep ->
-            modCompileOnly(dep) {
-                if (!dep.contains("net.fabricmc.fabric-api")) {
-                    exclude group: "net.fabricmc.fabric-api"
-                }
-                exclude group: "net.fabricmc"
-                exclude group: "com.jamieswhiteshirt"
-                if (!dep.contains("me.shedaniel")) {
-                    exclude group: "me.shedaniel"
-                }
-                exclude group: "me.shedaniel.cloth", module: "cloth-config"
-                exclude group: "io.github.prospector", module: "modmenu"
-            }
-        }
-        dependencies.ext.useAsApiOptionally = { dep ->
-            modApi(dep) {
-                if (!dep.contains("net.fabricmc.fabric-api")) {
-                    exclude group: "net.fabricmc.fabric-api"
-                }
-                exclude group: "net.fabricmc"
-                exclude group: "com.jamieswhiteshirt"
-                if (!dep.contains("me.shedaniel")) {
-                    exclude group: "me.shedaniel"
-                }
-                exclude group: "me.shedaniel.cloth", module: "cloth-config"
-                exclude group: "io.github.prospector", module: "modmenu"
-            }
-        }
-        dependencies.ext.useAsApi = { dep ->
-            useAsApiOptionally(dep)
-            include(dep)
-        }
-        dependencies.ext.useAsRuntime = { dep ->
-            modRuntime(dep) {
-                if (!dep.contains("net.fabricmc.fabric-api")) {
-                    exclude group: "net.fabricmc.fabric-api"
-                }
-                exclude group: "net.fabricmc"
-                exclude group: "com.jamieswhiteshirt"
-                if (!dep.contains("me.shedaniel")) {
-                    exclude group: "me.shedaniel"
-                }
-                exclude group: "me.shedaniel.cloth", module: "cloth-config"
-                exclude group: "io.github.prospector", module: "modmenu"
-            }
-        }
-
-        minecraft group: 'com.mojang', name: 'minecraft', version: minecraft_version
-        mappings group: 'net.fabricmc', name: 'yarn', version: yarn_version, classifier: 'v2'
-        modImplementation "net.fabricmc:fabric-loader:$fabric_loader_version"
-        useAsApiOptionally "net.fabricmc.fabric-api:fabric-api:$fabric_api_version"
-        modImplementation "com.google.code.findbugs:jsr305:3.0.2"
-
-        tap(rootProject.ext.setDefaultApis)
-    }
-
-    afterEvaluate {
-        processResources {
-            filesMatching('fabric.mod.json') {
-                expand 'version': project.version
-            }
-            inputs.property "version", project.version
-        }
+        // Find Bugs
+        implementation "com.google.code.findbugs:jsr305:3.0.2"
     }
 
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
     }
 
-    task sourcesJar(type: Jar, dependsOn: classes) {
-        classifier("sources")
-        from sourceSets.main.allSource
-    }
-    
-    afterEvaluate {
-        remapJar {
-            addNestedDependencies = project.rootProject != project && !isRunningGenerateDataTask
-        }
+    java {
+        withSourcesJar()
     }
 }
-
-subprojects {
-    archivesBaseName = project.name
-
-    ext {
-        cfProjectId = -1
-    }
-
-    configurations {
-        dev
-        remapped
-    }
-
-    jar {
-        classifier("dev")
-    }
-
-    remapJar {
-        input.set(jar.archiveFile)
-        classifier(null)
-    }
-
-    artifacts {
-        dev file: file("${project.buildDir}/libs/$archivesBaseName-${version}-dev.jar"), type: "jar", builtBy: jar
-        remapped file: file("${project.buildDir}/libs/$archivesBaseName-${version}.jar"), type: "jar", builtBy: remapJar
-    }
-
-    afterEvaluate {
-        if (shouldGenerateData) {
-            sourceSets {
-                main {
-                    resources {
-                        srcDir 'src/generated/resources'
-                    }
-                }
-                datagen {
-                    compileClasspath += main.compileClasspath
-                    runtimeClasspath += main.runtimeClasspath
-                }
-            }
-
-            task datagenJar(type: Jar) {
-                classifier("datagen")
-                from sourceSets.datagen.output
-            }
-
-            configurations {
-                datagenDev
-                datagenCompile.extendsFrom(compileClasspath)
-            }
-
-            dependencies {
-                datagenCompile sourceSets.main.output
-            }
-
-            artifacts {
-                datagenDev file: file("${project.buildDir}/libs/$archivesBaseName-${version}-datagen.jar"), type: 'jar', builtBy: datagenJar
-            }
-
-            if (isRunningGenerateDataTask) {
-                task generateData(type: RunClientTask, dependsOn: downloadAssets) {
-                    classpath = configurations.runtimeClasspath
-                    classpath sourceSets.datagen.runtimeClasspath
-                    classpath sourceSets.main.output
-                    classpath sourceSets.datagen.output
-                }
-            }
-        }
-
-        curseforge {
-            if ((project.hasProperty('curse_api_key') || System.getenv('curse_api_key') != null) && cfProjectId >= 0) {
-                project {
-                    id = cfProjectId.toString()
-                    releaseType = rootProject.release_cycle
-                    changelog = "View the changelog at https://github.com/Chainmail-Studios/Astromine"
-                    ((String) rootProject.tagged_versions).split(",").each {
-                        addGameVersion it
-                    }
-                    relations {
-                        requiredDependency "fabric-api"
-                        embeddedLibrary "cloth-api"
-                        embeddedLibrary "cloth-config"
-                        embeddedLibrary "auto-config-updated-api"
-                        embeddedLibrary "cardinal-components"
-                        embeddedLibrary "libblockattributes"
-                        embeddedLibrary "patchouli-fabric"
-                    }
-                    mainArtifact(file("${project.buildDir}/libs/${project.archivesBaseName}-${project.version}.jar"))
-                }
-            }
-            options {
-                forgeGradleIntegration = false
-                javaVersionAutoDetect = false
-            }
-        }
-    }
-
-    publishing {
-        publications {
-            create("${archivesBaseName}_mavenJava", MavenPublication) {
-                afterEvaluate {
-                    artifact(jar) {
-                        builtBy remapJar
-                    }
-                    artifact(sourcesJar) {
-                        builtBy remapSourcesJar
-                    }
-                }
-            }
-        }
-    }
-
-    task copyBuiltToMain(type: Copy) {
-        from "${project.buildDir}/libs/"
-        into "${rootProject.buildDir}/libs/"
-        include "*.jar"
-    }
-    build.finalizedBy(copyBuiltToMain)
-}
-
-allprojects {
-    apply plugin: 'org.cadixdev.licenser'
-
-    license {
-        header = rootProject.file("LICENSE")
-
-        ignoreFailures = true
-    }
-}
-
-task generateDataAll
-subprojects.forEach {
-    if (it.isRunningGenerateDataTask) {
-        generateDataAll.dependsOn("${it.path}:generateData")
-    }
-}
-
-task deleteBuildFolderAll {
-    doLast {
-        allprojects {
-            delete it.buildDir
-            mkdir "${it.buildDir}/libs"
-        }
-    }
-}
-build.mustRunAfter(deleteBuildFolderAll)
-
-task releaseOnCf
-releaseOnCf.dependsOn(":curseforge")
-subprojects { releaseOnCf.dependsOn("${it.path}:curseforge") }
-subprojects { rootProject.remapJar.dependsOn("${it.path}:remapJar") }
-
-sourceSets {
-    datagen
-}
-
-dependencies {
-    subprojects.each {
-        compile project(path: ":${it.path}", configuration: "dev")
-    }
-
-    modRuntime "net.fabricmc:dev-launch-injector:+"
-    tap(rootProject.ext.setRuntimeTestMods)
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifact(jar) {
-                builtBy remapJar
-            }
-            artifact(sourcesJar) {
-                builtBy remapSourcesJar
-            }
-            pom.withXml {
-                def depsNode = asNode().appendNode("dependencies")
-                subprojects.each {
-                    if (!it.isRunningGenerateDataTask) {
-                        def depNode = depsNode.appendNode("dependency")
-                        depNode.appendNode("groupId", it.group)
-                        depNode.appendNode("artifactId", it.name)
-                        depNode.appendNode("version", it.version)
-                        depNode.appendNode("scope", "compile")
-                    }
-                }
-            }
-        }
-    }
-    repositories {
-        if (System.getenv("MAVEN_PASS") != null) {
-            maven {
-                url = "https://deploy.shedaniel.me/"
-                credentials {
-                    username = "shedaniel"
-                    password = System.getenv("MAVEN_PASS")
-                }
-            }
-        }
-    }
-}
-
-curseforge {
-    if (project.hasProperty('curse_api_key') || System.getenv('curse_api_key') != null) {
-        apiKey = project.hasProperty('curse_api_key') ? project.property('curse_api_key') : System.getenv('curse_api_key')
-        project {
-            id = "391739"
-            releaseType = rootProject.release_cycle
-            changelog = "View the changelog at https://github.com/Mixinors/Astromine"
-            ((String) rootProject.tagged_versions).split(",").each {
-                addGameVersion it
-            }
-            relations {
-                requiredDependency "fabric-api"
-                embeddedLibrary "cloth-api"
-                embeddedLibrary "cloth-config"
-                embeddedLibrary "auto-config-updated-api"
-                embeddedLibrary "cardinal-components"
-                embeddedLibrary "libblockattributes"
-                embeddedLibrary "patchouli-fabric"
-            }
-            mainArtifact(file("${project.buildDir}/libs/${project.archivesBaseName}-${project.version}.jar"))
-        }
-    }
-    options {
-        forgeGradleIntegration = false
-        javaVersionAutoDetect = false
-    }
-}
-
-task licenseFormatAll
-subprojects { p -> licenseFormatAll.dependsOn("${p.path}:licenseFormat") }
