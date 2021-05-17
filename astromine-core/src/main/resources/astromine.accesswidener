@@ -29,6 +29,7 @@ accessible method net/minecraft/item/HoeItem <init> (Lnet/minecraft/item/ToolMat
 accessible method net/minecraft/item/Item rayTrace (Lnet/minecraft/world/World;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/world/RayTraceContext$FluidHandling;)Lnet/minecraft/util/hit/BlockHitResult
 accessible method net/minecraft/item/PickaxeItem <init> (Lnet/minecraft/item/ToolMaterial;IFLnet/minecraft/item/Item$Settings;)V
 accessible method net/minecraft/recipe/RecipeManager getAllOfType (Lnet/minecraft/recipe/RecipeType;)Ljava/util/Map;
+accessible method net/minecraft/particle/DefaultParticleType <init> (Z)V
 mutable field net/minecraft/client/render/RenderPhase beginAction Ljava/lang/Runnable;
 mutable field net/minecraft/client/render/RenderPhase endAction Ljava/lang/Runnable;
 mutable field net/minecraft/server/network/ServerPlayNetworkHandler floatingTicks I
