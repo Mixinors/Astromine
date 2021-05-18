@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.registry.common;
 
-import com.github.mixinors.astromine.common.callback.ServerChunkManagerCallback;
+import com.github.mixinors.astromine.common.callback.ServerChunkManagerEvents;
 
 
 import com.github.mixinors.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
@@ -39,7 +39,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.block.transfer.TransferType;
-import com.github.mixinors.astromine.common.callback.TransferEntryCallback;
 import com.github.mixinors.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.mixinors.astromine.common.component.world.WorldNetworkComponent;
 import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityScreenHandler;
@@ -111,7 +110,7 @@ public class AMCallbacks {
 			}
 		}));
 
-		TransferEntryCallback.EVENT.register((entry) -> {
+		TransferEntryEvents.EVENT.register((entry) -> {
 			if (entry.getComponentKey() == AMComponents.ENERGY_INVENTORY_COMPONENT) {
 				for (Direction direction : Direction.values()) {
 					entry.set(direction, TransferType.INPUT_OUTPUT);
@@ -119,7 +118,7 @@ public class AMCallbacks {
 			}
 		});
 		
-		ServerChunkManagerCallback.EVENT.register(manager -> {
+		ServerChunkManagerEvents.INITIALIZATION.register(manager -> {
 			if (manager.chunkGenerator instanceof EarthSpaceChunkGenerator) {
 				manager.chunkGenerator = ((EarthSpaceChunkGenerator) manager.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
 			}

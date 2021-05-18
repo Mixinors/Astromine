@@ -24,14 +24,14 @@
 
 package com.github.mixinors.astromine.common.component.general;
 
+import com.github.mixinors.astromine.common.component.ProtoAutoSyncedComponent;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 
 /**
  * A {@link SimpleFluidComponent} that synchronizes itself
  * automatically.
  */
-public class SimpleAutoSyncedFluidComponent extends SimpleFluidComponent implements AutoSyncedComponent {
+public class SimpleAutoSyncedFluidComponent extends SimpleFluidComponent implements ProtoAutoSyncedComponent {
     /** Instantiates a {@link SimpleAutoSyncedItemComponent}. */
     protected SimpleAutoSyncedFluidComponent(int size) {
         super(size);

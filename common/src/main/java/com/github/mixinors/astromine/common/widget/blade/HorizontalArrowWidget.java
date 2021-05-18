@@ -82,32 +82,33 @@ public class HorizontalArrowWidget extends AbstractWidget {
 	@NotNull
 	@Override
 	public List<Text> getTooltip() {
-		return Collections.singletonList(TextUtils.getRatio(progressSupplier.getAsInt(), limitSupplier.getAsInt()));
+		return List.of(
+				TextUtils.getRatio(progressSupplier.getAsInt(), limitSupplier.getAsInt())
+		);
 	}
 
 	/** Renders this widget. */
 	@Environment(EnvType.CLIENT)
 	@Override
 	public void drawWidget(MatrixStack matrices, VertexConsumerProvider provider) {
-		if (getHidden()) {
+		if (getHidden())
 			return;
-		}
 
-		float x = getPosition().getX();
-		float y = getPosition().getY();
+		var x = getPosition().getX();
+		var y = getPosition().getY();
 
-		float sX = getSize().getWidth();
-		float sY = getSize().getHeight();
+		var sX = getSize().getWidth();
+		var sY = getSize().getHeight();
 
-		float rawHeight = ClientUtils.getInstance().getWindow().getHeight();
-		float scale = (float) ClientUtils.getInstance().getWindow().getScaleFactor();
+		var rawHeight = ClientUtils.getInstance().getWindow().getHeight();
+		var scale = (float) ClientUtils.getInstance().getWindow().getScaleFactor();
 
-		float sBGX = (int) (((sX / limitSupplier.getAsInt()) * progressSupplier.getAsInt()));
+		var sBGX = (int) (((sX / limitSupplier.getAsInt()) * progressSupplier.getAsInt()));
 
-		RenderLayer backgroundLayer = Layers.get(BACKGROUND);
-		RenderLayer foregroundLayer = Layers.get(FOREGROUND);
+		var backgroundLayer = Layers.get(BACKGROUND);
+		var foregroundLayer = Layers.get(FOREGROUND);
 
-		Scissors area = new Scissors(provider, (int) (x * scale), (int) (rawHeight - ((y + sY) * scale)), (int) (sX * scale), (int) (sY * scale));
+		var area = new Scissors(provider, (int) (x * scale), (int) (rawHeight - ((y + sY) * scale)), (int) (sX * scale), (int) (sY * scale));
 
 		BaseRenderer.drawTexturedQuad(matrices, provider, backgroundLayer, getPosition().getX(), getPosition().getY(), getSize().getWidth(), getSize().getHeight(), BACKGROUND);
 

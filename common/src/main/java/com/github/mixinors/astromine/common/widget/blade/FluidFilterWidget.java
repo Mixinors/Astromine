@@ -99,11 +99,11 @@ public class FluidFilterWidget extends ButtonWidget {
 	public void onMouseClicked(float x, float y, int button) {
 		super.onMouseClicked(x, y, button);
 
-		ItemStack stack = getHandler().getPlayer().inventory.getCursorStack();
+		var stack = getHandler().getPlayer().inventory.getCursorStack();
 
 		if (isWithin(x, y)) {
 			if (!stack.isEmpty()) {
-				FluidComponent fluidComponent = FluidComponent.get(stack);
+				var fluidComponent = FluidComponent.get(stack);
 
 				fluidSupplier = () -> fluidComponent.getFirst().getFluid();
 				fluidConsumer.accept(fluidSupplier.get());
@@ -118,26 +118,25 @@ public class FluidFilterWidget extends ButtonWidget {
 	@NotNull
 	@Override
 	public List<Text> getTooltip() {
-		Identifier fluidId = Registry.FLUID.getId(fluidSupplier.get());
+		var fluidId = Registry.FLUID.getId(fluidSupplier.get());
 
-		return Collections.singletonList(new TranslatableText("text.astromine.filter", TextUtils.getFluid(fluidId)));
+		return List.of(new TranslatableText("text.astromine.filter", TextUtils.getFluid(fluidId)));
 	}
 
 	/** Renders this widget. */
 	@Environment(EnvType.CLIENT)
 	@Override
 	public void drawWidget(@NotNull MatrixStack matrices, @NotNull VertexConsumerProvider provider) {
-		if (getHidden()) {
+		if (getHidden())
 			return;
-		}
 
-		float x = getPosition().getX();
-		float y = getPosition().getY();
+		var x = getPosition().getX();
+		var y = getPosition().getY();
 
-		float sX = getSize().getWidth();
-		float sY = getSize().getHeight();
+		var sX = getSize().getWidth();
+		var sY = getSize().getHeight();
 
-		RenderLayer layer = Layers.get(FLUID_BACKGROUND);
+		var layer = Layers.get(FLUID_BACKGROUND);
 
 		BaseRenderer.drawTexturedQuad(matrices, provider, layer, x, y, getSize().getWidth(), getSize().getHeight(), FLUID_BACKGROUND);
 
@@ -146,8 +145,13 @@ public class FluidFilterWidget extends ButtonWidget {
 					.beginPass()
 					.setup(provider, RenderLayer.getSolid())
 					.sprite(FluidUtils.getSprite(fluidSupplier.get()))
-					.color(FluidUtils.getColor(ClientUtils.getPlayer(), fluidSupplier.get())).light(0x00f000f0).overlay(OverlayTexture.DEFAULT_UV).alpha(
-				0xff).normal(matrices.peek().getNormal(), 0, 0, 0).position(matrices.peek().getModel(), x + 1, y + 1, x + sX - 1, y + sY - 1, 0F).next(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
+					.color(FluidUtils.getColor(ClientUtils.getPlayer(), fluidSupplier.get()))
+					.light(0x00f000f0)
+					.overlay(OverlayTexture.DEFAULT_UV)
+					.alpha(0xFF)
+					.normal(matrices.peek().getNormal(), 0.0F, 0.0F, 0.0F)
+					.position(matrices.peek().getModel(), x + 1.0F, y + 1.0F, x + sX - 1.0F, y + sY - 1.0F, 0F)
+					.next(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
 		}
 	}
 }

@@ -123,7 +123,7 @@ public class EnergyVolume extends Volume<Double> {
 		if (!(volume instanceof EnergyVolume))
 			return;
 
-		double amount = Math.min(volume.getSize() - volume.getAmount(), Math.min(getAmount(), doubleA));
+		var amount = Math.min(volume.getSize() - volume.getAmount(), Math.min(getAmount(), doubleA));
 
 		if (amount > 0.0D) {
 			volume.setAmount(volume.getAmount() + amount);
@@ -135,7 +135,7 @@ public class EnergyVolume extends Volume<Double> {
 	 * specified amount. */
 	@Override
 	public void give(Double aDouble) {
-		double amount = Math.min(getSize() - getAmount(), aDouble);
+		var amount = Math.min(getSize() - getAmount(), aDouble);
 
 		setAmount(getAmount() + amount);
 	}
@@ -159,7 +159,7 @@ public class EnergyVolume extends Volume<Double> {
 	 * specified amount from this volume. */
 	@Override
 	public void take(Double doubleA) {
-		double amount = Math.min(getAmount(), doubleA);
+		var amount = Math.min(getAmount(), doubleA);
 
 		setAmount(getAmount() - amount);
 	}
@@ -179,15 +179,20 @@ public class EnergyVolume extends Volume<Double> {
 
 	/** Deserializes a volume from a {@link CompoundTag}. */
 	public static EnergyVolume fromTag(CompoundTag tag) {
-		return of(tag.getDouble("amount"), tag.getDouble("size"));
+		return of(
+				tag.getDouble("Amount"),
+				tag.getDouble("Size")
+		);
 	}
 
 	/** Serializes this volume to a {@link CompoundTag}. */
 	@Override
 	public CompoundTag toTag() {
-		CompoundTag tag = new CompoundTag();
-		tag.putDouble("amount", getAmount());
-		tag.putDouble("size", getSize());
+		var tag = new CompoundTag();
+		
+		tag.putDouble("Amount", getAmount());
+		tag.putDouble("Size", getSize());
+		
 		return tag;
 	}
 
@@ -195,7 +200,7 @@ public class EnergyVolume extends Volume<Double> {
 	public static EnergyVolume fromJson(JsonElement jsonElement) {
 		if (!jsonElement.isJsonObject()) return EnergyVolume.of(jsonElement.getAsDouble());
 		else {
-			JsonObject jsonObject = jsonElement.getAsJsonObject();
+			var jsonObject = jsonElement.getAsJsonObject();
 
 			if (!jsonObject.has("amount")) {
 				return null;
@@ -211,9 +216,11 @@ public class EnergyVolume extends Volume<Double> {
 
 	/** Serializes this volume to a {@link JsonElement}. */
 	public JsonElement toJson() {
-		JsonObject object = new JsonObject();
+		var object = new JsonObject();
+		
 		object.addProperty("amount", getAmount());
 		object.addProperty("size", getSize());
+		
 		return object;
 	}
 

@@ -39,12 +39,16 @@ import java.util.Set;
 public class AsteroidOreRegistry {
 	public static final AsteroidOreRegistry INSTANCE = new AsteroidOreRegistry();
 
-	public final Reference2ReferenceMap<Block, @Nullable Pair<Range<Integer>, Range<Integer>>> diameters = new Reference2ReferenceOpenHashMap<>();
+	private final Reference2ReferenceMap<Block, @Nullable Pair<Range<Integer>, Range<Integer>>> diameters = new Reference2ReferenceOpenHashMap<>();
 
 	private AsteroidOreRegistry() {
 		// Locked.
 	}
-
+	
+	public Reference2ReferenceMap<Block, Pair<Range<Integer>, Range<Integer>>> getDiameters() {
+		return diameters;
+	}
+	
 	public void register(Range<Integer> weightRange, Range<Integer> sizeRange, Block block) {
 		if (weightRange.getMinimum() > weightRange.getMaximum()) {
 			weightRange = Range.of(weightRange.getMaximum(), weightRange.getMinimum());

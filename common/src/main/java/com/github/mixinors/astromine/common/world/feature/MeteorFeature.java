@@ -51,7 +51,8 @@ public class MeteorFeature extends StructureFeature<DefaultFeatureConfig> {
 		}
 
 		public void init(DynamicRegistryManager drm, ChunkGenerator chunkGenerator, StructureManager structureManager, int i, int j, Biome biome, DefaultFeatureConfig defaultFeatureConfig) {
-			MeteorGenerator meteorGenerator = new MeteorGenerator(this.random, i * 16, j * 16);
+			var meteorGenerator = new MeteorGenerator(this.random, i * 16, j * 16);
+			
 			this.children.add(meteorGenerator);
 			this.setBoundingBoxFromChildren();
 		}

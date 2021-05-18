@@ -83,27 +83,28 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 
 	@Override
 	public void buildSurface(ChunkRegion region, Chunk chunk) {
-
+	
 	}
 
 	@Override
 	public void populateNoise(WorldAccess world, StructureAccessor accessor, Chunk chunk) {
-		BlockPos.Mutable mutable = new BlockPos.Mutable();
-		int x1 = chunk.getPos().getStartX();
-		int z1 = chunk.getPos().getStartZ();
-		int y1 = 0;
+		var mutable = new BlockPos.Mutable();
+		
+		var x1 = chunk.getPos().getStartX();
+		var z1 = chunk.getPos().getStartZ();
+		var y1 = 0;
 
-		int x2 = chunk.getPos().getEndX();
-		int z2 = chunk.getPos().getEndZ();
-		int y2 = 256;
+		var x2 = chunk.getPos().getEndX();
+		var z2 = chunk.getPos().getEndZ();
+		var y2 = 256;
 
-		ChunkRandom random = new ChunkRandom();
+		var random = new ChunkRandom();
 		random.setPopulationSeed(this.seed, x1, z1);
 
 		for (int x = x1; x <= x2; ++x) {
 			for (int z = z1; z <= z2; ++z) {
 				for (int y = y1; y <= y2; ++y) {
-					double noise = this.noise.sample(x, y, z);
+					var noise = this.noise.sample(x, y, z);
 					noise -= computeNoiseFalloff(y);
 
 					if (noise > AMConfig.get().asteroidNoiseThreshold) {
@@ -119,7 +120,7 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 	// Desmos: \frac{10}{x+1}-\frac{10}{x-257}-0.155
 	// It should actually be 10/y - 10/(y - 256) but i don't want to divide by 0 today
 	private double computeNoiseFalloff(int y) {
-		return (10.0 / (y + 1.0)) - (10.0 / (y - 257.0)) - 0.155;
+		return (10.0D / (y + 1.0D)) - (10.0D / (y - 257.0D)) - 0.155D;
 	}
 
 	@Override
@@ -129,8 +130,10 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 
 	@Override
 	public BlockView getColumnSample(int x, int z) {
-		BlockState[] states = new BlockState[256];
+		var states = new BlockState[256];
+		
 		Arrays.fill(states, Blocks.AIR.getDefaultState());
+		
 		return new VerticalBlockSample(states);
 	}
 }

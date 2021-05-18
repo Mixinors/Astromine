@@ -5,7 +5,7 @@ import com.github.mixinors.astromine.common.component.block.entity.RedstoneCompo
 import net.minecraft.nbt.CompoundTag;
 
 public interface ProtoComponent {
-	void writeToNbt(CompoundTag tag);
+	void toTag(CompoundTag tag);
 	
-	void readFromNbt(CompoundTag tag);
+	void fromTag(CompoundTag tag);
 }

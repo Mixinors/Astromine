@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.redstone;
 
+import com.github.mixinors.astromine.common.block.transfer.TransferType;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
@@ -57,42 +58,8 @@ public enum RedstoneType {
         }
     }
 
-    /** Returns this type as a number. */
-    public int asNumber() {
-        switch (this) {
-			case WORK_WHEN_ON: {
-				return 1;
-			}
-
-			case WORK_ALWAYS: {
-				return 2;
-			}
-
-			default: {
-				return 0;
-			}
-		}
-	}
-
-    /** Returns the type corresponding to the given number. */
-    public static RedstoneType byNumber(int number) {
-        switch (number) {
-            case 1: {
-                return WORK_WHEN_ON;
-            }
-
-            case 2: {
-                return WORK_ALWAYS;
-            }
-
-            default: {
-                return WORK_WHEN_OFF;
-            }
-        }
-    }
-
     /** Returns the next type on this enum. */
-    public RedstoneType next() {
+    public RedstoneType getNext() {
         switch (this) {
             case WORK_ALWAYS: {
                 return WORK_WHEN_OFF;
@@ -107,24 +74,13 @@ public enum RedstoneType {
 			}
 		}
 	}
-
-	public boolean shouldWork(boolean powered) {
-		switch(this) {
-			case WORK_WHEN_OFF: {
-				return !powered;
-			}
-
-			case WORK_WHEN_ON: {
-				return powered;
-			}
-
-			case WORK_ALWAYS: {
-				return true;
-			}
-
-			default: {
-				return false;
-			}
-		}
+	
+	public static RedstoneType fromString(String string) {
+		return string.equals("WorkAlways") ? WORK_ALWAYS : string.equals("WorkWhenOn") ? WORK_WHEN_ON : string.equals("WorkWhenOff") ? WORK_WHEN_OFF : null;
+	}
+	
+	@Override
+	public String toString() {
+		return this == WORK_ALWAYS ? "WorkAlways" : this == WORK_WHEN_ON ? "WorkWhenOn" : this == WORK_WHEN_OFF ? "WorkWhenOff" : null;
 	}
 }

@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.client.render.sky.SpaceSkyProperties;
-import com.github.mixinors.astromine.common.callback.SkyPropertiesCallback;
+import com.github.mixinors.astromine.common.callback.SkyPropertiesEvents;
 import com.github.mixinors.astromine.common.item.HolographicConnectorItem;
 import com.github.mixinors.astromine.common.item.SpaceSuitItem;
 import com.github.mixinors.astromine.common.network.type.EnergyNetworkType;
@@ -109,6 +109,6 @@ public class AMClientCallbacks {
 			}
 		});
 		
-		SkyPropertiesCallback.EVENT.register((properties) -> properties.put(AMDimensions.EARTH_SPACE_ID, new SpaceSkyProperties()));
+		SkyPropertiesEvents.EVENT.register((properties) -> properties.put(AMDimensions.EARTH_SPACE_ID, new SpaceSkyProperties()));
 	}
 }

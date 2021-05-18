@@ -22,17 +22,28 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.common.world.layer.util;
+package com.github.mixinors.astromine.common.callback;
 
-import net.minecraft.world.biome.layer.type.InitLayer;
-import net.minecraft.world.biome.layer.util.IdentityCoordinateTransformer;
-import net.minecraft.world.biome.layer.util.LayerRandomnessSource;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import me.shedaniel.architectury.event.Event;
+import me.shedaniel.architectury.event.EventFactory;
+import net.minecraft.client.render.SkyProperties;
+import net.minecraft.server.world.ServerChunkManager;
+import net.minecraft.util.Identifier;
 
-public enum PlainsOnlyLayer implements InitLayer, IdentityCoordinateTransformer {
-	INSTANCE;
-
-	@Override
-	public int sample(LayerRandomnessSource context, int x, int y) {
-		return 1;
+/**
+ * Events related to {@link SkyProperties}.
+ */
+public interface SkyPropertiesEvents {
+	Event<Initialization> EVENT = EventFactory.createLoop();
+	
+	/**
+	 * A callback called when initializing {@link SkyProperties}
+	 * statically and adding new properties for custom
+	 * dimensions.
+	 */
+	interface Initialization {
+		/** Handle the properties. */
+		void handle(Object2ObjectMap<Identifier, SkyProperties> properties);
 	}
 }

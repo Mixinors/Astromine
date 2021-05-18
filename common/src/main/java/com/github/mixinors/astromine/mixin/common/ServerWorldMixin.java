@@ -32,8 +32,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.chunk.WorldChunk;
 
-import com.github.mixinors.astromine.common.callback.ServerChunkTickCallback;
-
 @Mixin(ServerWorld.class)
 public class ServerWorldMixin {
 	@Inject(method = "tickChunk", at = @At("HEAD"))

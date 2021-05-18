@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.block.transfer;
 
 import com.github.mixinors.astromine.AMCommon;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
 
 /**
@@ -68,5 +69,14 @@ public enum TransferType {
 	/** Asserts whether this type is none or not. */
 	public boolean isNone() {
 		return this == NONE;
+	}
+	
+	public static TransferType fromString(String string) {
+		return string.equals("None") ? NONE : string.equals("Input") ? INPUT : string.equals("Output") ? OUTPUT : string.equals("InputOutput") ? INPUT_OUTPUT : null;
+	}
+	
+	@Override
+	public String toString() {
+		return this == NONE ? "None" : this == INPUT ? "Input" : this == OUTPUT ? "Output" : this == INPUT_OUTPUT ? "InputOutput" : null;
 	}
 }

@@ -6,6 +6,7 @@
   "mixins": [
     "common.AbstractBlockMixin",
     "common.BiomeLayerSamplerMixin",
+    "common.BucketItemAccessor",
     "common.EnchantmentTargetMixin",
     "common.EntityAccessor",
     "common.EntityMixin",
@@ -24,6 +25,7 @@
     "common.StayAboveWaterTaskMixin",
     "common.SwimGoalAccessor",
     "common.SwimGoalMixin",
+    "common.TallPlantBlockAccessor",
     "common.WorldChunkMixin",
     "common.gravity.AbstractMinecartEntityMixin",
     "common.gravity.EggEntityMixin",

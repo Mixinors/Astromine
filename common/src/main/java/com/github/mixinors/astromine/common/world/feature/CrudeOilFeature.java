@@ -54,32 +54,38 @@ public class CrudeOilFeature extends Feature<DefaultFeatureConfig> {
 	}
 
 	@Override
-	public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random random, BlockPos pos, DefaultFeatureConfig config) {
-		if (random.nextInt(AMConfig.get().crudeOilThreshold) > 1)
+	public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random random, BlockPos spawnPos, DefaultFeatureConfig config) {
+		if (random.nextInt(AMConfig.get().crudeOilThreshold) > 1) {
 			return false;
+		}
 
-		int offsetY = MathHelper.clamp(random.nextInt(20), 8, 20);
+		var offsetY = MathHelper.clamp(random.nextInt(20), 8, 20);
 
-		Shapes.ellipsoid(8, 8, 8).applyLayer(TranslateLayer.of(Position.of(pos.offset(Direction.UP, offsetY)))).stream().forEach(position -> {
-			world.setBlockState(position.toBlockPos(), CRUDE_OIL_BLOCK.get().getDefaultState(), 0);
-		});
+		Shapes.ellipsoid(8, 8, 8)
+				.applyLayer(
+						TranslateLayer.of(Position.of(spawnPos.offset(Direction.UP, offsetY)))
+				).stream()
+				.forEach(pos -> world.setBlockState(pos.toBlockPos(), CRUDE_OIL_BLOCK.get().getDefaultState(), 0));
 
-		Shapes.ellipsoid(12, 12, 4).applyLayer(TranslateLayer.of(Position.of(pos.offset(Direction.UP, 64)))).applyLayer(NoiseTranslateLayer.of(8, random)).stream().forEach(position -> {
-			if (world.getBlockState(position.toBlockPos()).getBlock() instanceof FluidBlock) {
-				world.setBlockState(position.toBlockPos(), CRUDE_OIL_BLOCK.get().getDefaultState(), 0);
-			}
-		});
+		Shapes.ellipsoid(12, 12, 4)
+				.applyLayer(
+						TranslateLayer.of(Position.of(spawnPos.offset(Direction.UP, 64)))
+				).applyLayer(
+						NoiseTranslateLayer.of(8, random)
+				).stream()
+				.filter(pos -> !world.getBlockState(pos.toBlockPos()).getFluidState().isEmpty())
+				.forEach(pos -> world.setBlockState(pos.toBlockPos(), CRUDE_OIL_BLOCK.get().getDefaultState(), 0));
 
-		int airBlocks = 0;
+		var airBlocks = 0;
 
-		for (int y = pos.getY() + offsetY; !world.getBlockState(pos.offset(Direction.UP, y)).isAir() || (world.getBlockState(pos.offset(Direction.UP, y)).isAir() && ++airBlocks < offsetY); ++y) {
-			world.setBlockState(pos.offset(Direction.UP, y), CRUDE_OIL_BLOCK.get().getDefaultState(), 0);
+		for (int y = spawnPos.getY() + offsetY; !world.getBlockState(spawnPos.offset(Direction.UP, y)).isAir() || (world.getBlockState(spawnPos.offset(Direction.UP, y)).isAir() && ++airBlocks < offsetY); ++y) {
+			world.setBlockState(spawnPos.offset(Direction.UP, y), CRUDE_OIL_BLOCK.get().getDefaultState(), 0);
 
 			for (Direction direction : new Direction[]{ Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST }) {
-				world.removeBlock(pos.offset(Direction.UP, y).offset(direction), false);
+				world.removeBlock(spawnPos.offset(Direction.UP, y).offset(direction), false);
 			}
 
-			world.getFluidTickScheduler().schedule(pos.offset(Direction.UP, y), AMFluids.OIL, 0);
+			world.getFluidTickScheduler().schedule(spawnPos.offset(Direction.UP, y), AMFluids.OIL, 0);
 		}
 
 		return true;

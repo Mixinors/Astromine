@@ -44,7 +44,6 @@ import net.minecraft.util.Pair;
 import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.component.general.compatibility.InventoryFromItemComponent;
-import com.github.mixinors.astromine.registry.common.AMComponents;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import org.jetbrains.annotations.Nullable;
 
@@ -313,7 +312,7 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 
 	/** Serializes this {@link ItemComponent} to a {@link CompoundTag}. */
 	@Override
-	default void writeToNbt(CompoundTag tag) {
+	default void toTag(CompoundTag tag) {
 		ListTag listTag = new ListTag();
 
 		for (int i = 0; i < getSize(); ++i) {
@@ -327,13 +326,13 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 		dataTag.putInt("size", getSize());
 		dataTag.put("stacks", listTag);
 
-		tag.put(AMComponents.ITEM_INVENTORY_COMPONENT.getId().toString(), dataTag);
+		tag.put("ItemComponent", dataTag);
 	}
 
 	/** Deserializes this {@link ItemComponent} from  a {@link CompoundTag}. */
 	@Override
-	default void readFromNbt(CompoundTag tag) {
-		CompoundTag dataTag = tag.getCompound(AMComponents.ITEM_INVENTORY_COMPONENT.getId().toString());
+	default void fromTag(CompoundTag tag) {
+		CompoundTag dataTag = tag.getCompound("ItemComponent");
 
 		int size = dataTag.getInt("size");
 
@@ -351,21 +350,17 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 	static <V> ItemComponent get(V v) {
 		if (v instanceof ItemComponentProvider) {
 			return ((ItemComponentProvider) v).getItemComponent();
-		}
-
-		if (v != null && AMComponents.ITEM_INVENTORY_COMPONENT.isProvidedBy(v)) {
-			return AMComponents.ITEM_INVENTORY_COMPONENT.get(v);
 		} else {
 			if (v instanceof SidedInventory) {
 				return ItemComponentFromSidedInventory.of((SidedInventory) v);
 			}
-
+			
 			if (v instanceof Inventory) {
 				return ItemComponentFromInventory.of((Inventory) v);
 			}
-
-			return null;
 		}
+		
+		return null;
 	}
 
 	/** Returns an iterator of this component's contents. */

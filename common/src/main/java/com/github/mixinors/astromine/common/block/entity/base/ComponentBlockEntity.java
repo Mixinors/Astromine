@@ -258,7 +258,7 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
 		CompoundTag transferTag = new CompoundTag();
-		getTransferComponent().writeToNbt(transferTag);
+		getTransferComponent().toTag(transferTag);
 
 		CompoundTag redstoneTag = new CompoundTag();
 		getRedstoneComponent().writeToNbt(redstoneTag);
@@ -279,7 +279,7 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 	/** Deserializes this {@link ComponentBlockEntity} from a {@link CompoundTag}. */
 	@Override
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		getTransferComponent().readFromNbt(tag.getCompound("transfer"));
+		getTransferComponent().fromTag(tag.getCompound("transfer"));
 		getRedstoneComponent().readFromNbt(tag.getCompound("redstone"));
 
 		allComponents.forEach((type, component) -> {

@@ -74,7 +74,7 @@ public class VerticalEnergyBarWidget extends AbstractWidget {
 	@Environment(EnvType.CLIENT)
 	@Override
 	public @NotNull List<Text> getTooltip() {
-		return Lists.newArrayList(
+		return List.of(
 				TextUtils.getEnergy(),
 				TextUtils.getEnergyVolume(volumeSupplier.get()),
 				TextUtils.getAstromine()
@@ -85,23 +85,24 @@ public class VerticalEnergyBarWidget extends AbstractWidget {
 	@Environment(EnvType.CLIENT)
 	@Override
 	public void drawWidget(@NotNull MatrixStack matrices, @NotNull VertexConsumerProvider provider) {
-		if (getHidden())
+		if (getHidden()) {
 			return;
+		}
 
-		float x = getPosition().getX();
-		float y = getPosition().getY();
-
-		float sX = getSize().getWidth();
-		float sY = getSize().getHeight();
-
-		float rawHeight = Instances.client().getWindow().getHeight();
-		float scale = (float) Instances.client().getWindow().getScaleFactor();
-
-		EnergyVolume volume = volumeSupplier.get();
-
-		float sBGY = (float) (sY / volume.getSize() * volume.getAmount());
-
-		Scissors area = new Scissors(provider, (int) (x * scale), (int) (rawHeight - (y + sY) * scale), (int) (sX * scale), (int) (sY * scale));
+		var x = getPosition().getX();
+		var y = getPosition().getY();
+		
+		var sX = getSize().getWidth();
+		var sY = getSize().getHeight();
+		
+		var rawHeight = Instances.client().getWindow().getHeight();
+		var scale = (float) Instances.client().getWindow().getScaleFactor();
+		
+		var volume = volumeSupplier.get();
+		
+		var sBGY = (float) (sY / volume.getSize() * volume.getAmount());
+		
+		var area = new Scissors(provider, (int) (x * scale), (int) (rawHeight - (y + sY) * scale), (int) (sX * scale), (int) (sY * scale));
 
 		BaseRenderer.drawTexturedQuad(matrices, provider, Layers.get(ENERGY_BACKGROUND), x, y, sX, sY, ENERGY_BACKGROUND);
 

@@ -41,6 +41,7 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.structure.StructureManager;
 import net.minecraft.structure.StructurePieceWithDimensions;
+import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.*;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.Heightmap;
@@ -66,109 +67,64 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 	public MeteorGenerator(StructureManager manager, CompoundTag tag) {
 		super(AMFeatures.METEOR_STRUCTURE.get(), tag);
 	}
-
-	public static void buildSphere(StructureWorldAccess world, BlockPos originPos, int radius, BlockState state) {
-		for (int x = -radius; x <= radius; x++) {
-			for (int z = -radius; z <= radius; z++) {
-				for (int y = -radius; y <= radius; y++) {
-					double distance = Math.sqrt(Math.pow(x, 2) + Math.pow(z, 2) + Math.pow(y, 2));
-
-					// place blocks within spherical radius
-					if (distance <= radius - ((radius * 1f / 3f) * noise.sample((originPos.getX() + x) / 10f, (originPos.getY() + y) / 10f, (originPos.getZ() + z) / 10f))) {
-						world.setBlockState(originPos.add(x, y, z), state, 3);
-					}
-				}
-			}
-		}
-	}
-
+	
 	@Override
 	public boolean generate(StructureWorldAccess world, StructureAccessor structureAccessor, ChunkGenerator chunkGenerator, Random random, BlockBox boundingBox, ChunkPos chunkPos, BlockPos blockPos) {
-		return generate(world, chunkPos, random, blockPos);
-	}
-
-	public boolean generate(StructureWorldAccess world, ChunkPos chunkPos, Random random, BlockPos blockPos) {
-		if (!world.toServerWorld().getRegistryKey().equals(World.OVERWORLD))
+		if (!world.toServerWorld().getRegistryKey().equals(World.OVERWORLD)) {
 			return false;
-		noise = new OpenSimplexNoise(world.getSeed());
-		BlockPos originPos = world.getTopPosition(Heightmap.Type.OCEAN_FLOOR_WG, new BlockPos(chunkPos.getStartX() + 8, 0, chunkPos.getStartZ() + 8));
-		originPos = emptySphere(world, originPos, 16, state -> {
-			if (world.getRandom().nextInt(10) == 0) {
-				return Blocks.FIRE.getDefaultState();
-			} else {
-				return Blocks.AIR.getDefaultState();
-			}
-		}, state -> Blocks.COBBLESTONE.getDefaultState());
-		buildSphere(world, originPos, 8, AMBlocks.METEOR_STONE.get().getDefaultState());
-
-		Shape vein = Shapes.ellipsoid((float) 4, (float) 4, (float) 4).applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true))).applyLayer(TranslateLayer.of(Position.of(originPos)));
-
-		Block metiteOre = Registry.BLOCK.getOrEmpty(AMCommon.id("meteor_metite_ore")).orElse(null);
-		if (metiteOre != null) {
-			for (Position streamPosition : vein.stream().collect(Collectors.toSet())) {
-				BlockPos orePosition = streamPosition.toBlockPos();
-
-				if (world.getBlockState(orePosition).getBlock() == AMBlocks.METEOR_STONE.get()) {
-					world.setBlockState(orePosition, metiteOre.getDefaultState(), 0b0110100);
-				}
-			}
 		}
+		
+		noise = new OpenSimplexNoise(world.getSeed());
+		
+		var topCenterPos = world.getTopPosition(Heightmap.Type.OCEAN_FLOOR_WG, new BlockPos(chunkPos.getStartX() + 8, 0, chunkPos.getStartZ() + 8));
+		
+		var ref = new Object() {
+			boolean hasWater = false;
+		};
+		
+		// Generate the impact region.
+		var centerPos = Shapes.ellipsoid(16.0D, 16.0D, 16.0D)
+				.applyLayer(
+						TranslateLayer.of(Position.of(topCenterPos))
+				).stream()
+				.filter(pos -> Math.sqrt(topCenterPos.getSquaredDistance(pos.getX(), pos.getY(), pos.getZ(), false)) <= 16.0F + (5 * noise.sample(pos.getX() / 10.0F, pos.getZ() / 10.0F)))
+				.peek(pos -> {
+					if (!ref.hasWater && world.getFluidState(pos.toBlockPos()).isIn(FluidTags.WATER)) {
+						ref.hasWater = true;
+					}
+					
+					world.setBlockState(pos.toBlockPos(), Blocks.AIR.getDefaultState(), 0b011);
+					world.setBlockState(pos.toBlockPos(), ref.hasWater && pos.getY() < world.getSeaLevel() ? Fluids.WATER.getStill().getDefaultState().getBlockState() : Blocks.AIR.getDefaultState(), 0b011);
+					
+					if (world.getBlockState(pos.toBlockPos()).isAir() && world.getBlockState(pos.toBlockPos().down()).isSolidBlock(world, pos.toBlockPos())) {
+						world.setBlockState(pos.toBlockPos(), ref.hasWater && pos.toBlockPos().getY() < world.getSeaLevel() ? Fluids.WATER.getStill().getDefaultState().getBlockState() : world.getRandom().nextInt(10) == 0 ? Blocks.FIRE.getDefaultState() : Blocks.AIR.getDefaultState(), 0b011);
+						world.setBlockState(pos.toBlockPos().down(), Blocks.COBBLESTONE.getDefaultState(), 0b011);
+					}
+				})
+				.filter(pos -> pos.getX() == topCenterPos.getX() && pos.getZ() == topCenterPos.getZ())
+				.min(Comparator.comparingDouble(Position::getY))
+				.orElse(Position.of(topCenterPos))
+				.toBlockPos()
+				.down();
+
+		// Generate the meteor body.
+		Shapes.ellipsoid(16.0D, 16.0D, 16.0D)
+				.applyLayer(
+						TranslateLayer.of(Position.of(centerPos))
+				).stream()
+				.filter(pos -> Math.sqrt(centerPos.getSquaredDistance(pos.getX(), pos.getY(), pos.getZ(), false)) <= 16.0F - ((16.0F / 3.0F) * noise.sample(pos.getX() / 10.0F, pos.getY() / 10.0F, pos.getZ() / 10.0F)))
+				.forEach(pos -> world.setBlockState(pos.toBlockPos(), AMBlocks.METEOR_STONE.get().getDefaultState(), 0b011));
+
+		// Generate the ore inside the meteor.
+		Shapes.ellipsoid(4.0D, 4.0D, 4.0D)
+			.applyLayer(
+					RotateLayer.of(Quaternion.of(random.nextDouble() * 360.0D, random.nextDouble() * 360.0D, random.nextDouble() * 360.0D, true))
+			).applyLayer(
+					TranslateLayer.of(Position.of(centerPos))
+			).stream()
+			.filter(pos -> world.getBlockState(pos.toBlockPos()).getBlock() == AMBlocks.METEOR_STONE.get())
+			.forEach(pos -> world.setBlockState(pos.toBlockPos(), AMBlocks.METEOR_METITE_ORE.get().getDefaultState(), 0b0110100));
 
 		return true;
-	}
-
-	private BlockPos emptySphere(StructureWorldAccess world, BlockPos originPos, int radius, GroundManipulator bottom, GroundManipulator underneath) {
-		boolean hasWater = false;
-		List<BlockPos> placedPositions = new ArrayList<>();
-
-		for (int x = -radius; x <= radius; x++) {
-			for (int z = -radius; z <= radius; z++) {
-				for (int y = -radius; y <= radius; y++) {
-					double distance = Math.sqrt(Math.pow(x, 2) + Math.pow(z, 2) + Math.pow(y * 1.3, 2));
-
-					// place blocks within spherical radius
-					if (distance <= radius + (5 * noise.sample((originPos.getX() + x) / 10f, (originPos.getZ() + z) / 10f))) {
-						BlockPos offsetPos = originPos.add(x, y, z);
-						if (!hasWater && world.getFluidState(offsetPos).getFluid().matchesType(Fluids.WATER)) {
-							hasWater = true;
-						}
-
-						world.setBlockState(offsetPos, Blocks.AIR.getDefaultState(), 3);
-
-						placedPositions.add(offsetPos);
-					}
-				}
-			}
-		}
-
-		for (BlockPos placedPosition : placedPositions) {
-			world.setBlockState(placedPosition, hasWater && placedPosition.getY() < world.getSeaLevel() ? Fluids.WATER.getStill().getDefaultState().getBlockState() : Blocks.AIR.getDefaultState(), 3);
-		}
-
-		List<BlockPos> bottomPositions = new ArrayList<>();
-		List<BlockPos> underneathPositions = new ArrayList<>();
-
-		for (BlockPos pos : placedPositions) {
-			// store bottom block
-			if (world.getBlockState(pos).isAir() && world.getBlockState(pos.down()).isSolidBlock(world, pos)) {
-				bottomPositions.add(pos);
-				underneathPositions.add(pos.down());
-			}
-		}
-
-		for (BlockPos pos : bottomPositions) {
-			world.setBlockState(pos, hasWater && pos.getY() < world.getSeaLevel() ? Fluids.WATER.getStill().getDefaultState().getBlockState() : world.getRandom().nextInt(10) == 0 ? Blocks.FIRE.getDefaultState() : Blocks.AIR.getDefaultState(), 3);
-		}
-
-		for (BlockPos pos : underneathPositions) {
-			world.setBlockState(pos, underneath.manipulate(world.getBlockState(pos)), 3);
-		}
-
-		return placedPositions.stream().filter(pos -> pos.getX() == originPos.getX() && pos.getZ() == originPos.getZ()).min(Comparator.comparingInt(Vec3i::getY)).orElse(originPos).offset(Direction.DOWN);
-	}
-
-	@FunctionalInterface
-	public interface GroundManipulator {
-		BlockState manipulate(BlockState state);
 	}
 }

@@ -24,126 +24,119 @@
 
 package com.github.mixinors.astromine.common.component.block.entity;
 
+import com.github.mixinors.astromine.common.component.ProtoComponent;
 import com.github.mixinors.astromine.common.component.general.provider.TransferComponentProvider;
-import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.block.transfer.TransferType;
-import com.github.mixinors.astromine.common.callback.TransferEntryCallback;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.util.DirectionUtils;
-import dev.onyxstudios.cca.api.v3.component.Component;
-import dev.onyxstudios.cca.api.v3.component.ComponentKey;
-import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
-import it.unimi.dsi.fastutil.objects.Reference2ReferenceMap;
-import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 
 import java.util.Map;
 
 /**
- * A {@link Component} representing a {@link BlockEntity}'s
+ * A {@link ProtoComponent} representing a {@link BlockEntity}'s
  * siding information.
  *
  * Serialization and deserialization methods are provided for:
- * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
+ * - {@link CompoundTag} - through {@link #toTag(CompoundTag)} and {@link #fromTag(CompoundTag)}.
  */
-public class TransferComponent implements Component {
-	private final Reference2ReferenceMap<ComponentKey<?>, TransferEntry> components = new Reference2ReferenceOpenHashMap<>();
+public class TransferComponent implements ProtoComponent {
+	private TransferEntry itemComponentTransferEntry = null;
+	private TransferEntry fluidComponentTransferEntry = null;
+	private TransferEntry energyComponentTransferEntry = null;
 
-	/** Returns this component's {@link Map} of {@link ComponentKey}s to {@link TransferEntry}-ies. */
+	/** Returns this component's {@link Map} of {@link Identifier}s to {@link TransferEntry}-ies. */
 	public static <V> TransferComponent get(V v) {
 		if (v instanceof TransferComponentProvider) {
 			return ((TransferComponentProvider) v).getTransferComponent();
 		}
 
-		try {
-			return AMComponents.BLOCK_ENTITY_TRANSFER_COMPONENT.get(v);
-		} catch (Exception justShutUpAlready) {
-			return null;
-		}
+		return null;
 	}
-
-	/** Returns this component's {@link TransferEntry} for the given {@link ComponentKey}. */
-	public TransferEntry get(ComponentKey<?> type) {
-		return components.getOrDefault(type, null);
+	
+	/** Adds an item {@link TransferEntry} to this component. */
+	public void addItem() {
+		itemComponentTransferEntry = new TransferEntry();
 	}
-
-	public Map<ComponentKey<?>, TransferEntry> getComponents() {
-		return components;
+	
+	/** Adds a fluid {@link TransferEntry} to this component. */
+	public void addFluid() {
+		fluidComponentTransferEntry = new TransferEntry();
 	}
-
-	/** Adds a {@link TransferEntry} to this component for the given {@link ComponentKey}. */
-	public void add(ComponentKey<?> type) {
-		TransferEntry entry = new TransferEntry(type);
-
-		TransferEntryCallback.EVENT.invoker().handle(entry);
-
-		components.put(type, entry);
+	
+	/** Adds an energy {@link TransferEntry} to this component. */
+	public void addEnergy() {
+		energyComponentTransferEntry = new TransferEntry();
 	}
 
 	/** Asserts whether this component's siding contains
 	 * data for {@link ItemComponent} or not. */
 	public boolean hasItem() {
-		return components.containsKey(AMComponents.ITEM_INVENTORY_COMPONENT);
+		return itemComponentTransferEntry != null;
 	}
 
 	/** Asserts whether this component's siding contains
 	 * data for {@link FluidComponent} or not. */
 	public boolean hasFluid() {
-		return components.containsKey(AMComponents.FLUID_INVENTORY_COMPONENT);
+		return fluidComponentTransferEntry != null;
 	}
 
 	/** Asserts whether this component's siding contains
 	 * data for {@link EnergyComponent} or not. */
 	public boolean hasEnergy() {
-		return components.containsKey(AMComponents.ENERGY_INVENTORY_COMPONENT);
+		return energyComponentTransferEntry != null;
 	}
 
 	/** Returns this component's {@link TransferType} for {@link ItemComponent}'s key at the given {@link Direction}. */
 	public TransferType getItem(Direction direction) {
-		return components.get(AMComponents.ITEM_INVENTORY_COMPONENT).get(direction);
+		return itemComponentTransferEntry.get(direction);
 	}
 
 	/** Returns this component's {@link TransferType} for {@link FluidComponent}'s key at the given {@link Direction}. */
 	public TransferType getFluid(Direction direction) {
-		return components.get(AMComponents.FLUID_INVENTORY_COMPONENT).get(direction);
+		return fluidComponentTransferEntry.get(direction);
 	}
 
 	/** Returns this component's {@link TransferType} for {@link EnergyComponent}'s key at the given {@link Direction}. */
 	public TransferType getEnergy(Direction direction) {
-		return components.get(AMComponents.ENERGY_INVENTORY_COMPONENT).get(direction);
+		return energyComponentTransferEntry.get(direction);
 	}
 
 	/** Serializes this {@link TransferComponent} to a {@link CompoundTag}. */
 	@Override
-	public void writeToNbt(CompoundTag tag) {
+	public void toTag(CompoundTag tag) {
 		CompoundTag dataTag = new CompoundTag();
+		
+		dataTag.put("Item", itemComponentTransferEntry.toTag());
+		dataTag.put("Fluid", fluidComponentTransferEntry.toTag());
+		dataTag.put("Energy", energyComponentTransferEntry.toTag());
 
-		for (Map.Entry<ComponentKey<?>, TransferEntry> entry : components.entrySet()) {
-			dataTag.put(entry.getKey().getId().toString(), entry.getValue().toTag());
-		}
-
-		tag.put("data", dataTag);
+		tag.put("Data", dataTag);
 	}
 
 	/** Deserializes this {@link TransferComponent} from a {@link CompoundTag}. */
 	@Override
-	public void readFromNbt(CompoundTag tag) {
-		CompoundTag dataTag = tag.getCompound("data");
-
-		for (String key : dataTag.getKeys()) {
-			Identifier keyId = new Identifier(key);
-
-			TransferEntry entry = new TransferEntry(ComponentRegistry.get(keyId));
-
-			entry.fromTag(dataTag.getCompound(key));
-
-			components.put(ComponentRegistry.get(keyId), entry);
+	public void fromTag(CompoundTag tag) {
+		CompoundTag dataTag = tag.getCompound("Data");
+		
+		if (dataTag.contains("Item")) {
+			itemComponentTransferEntry = new TransferEntry();
+			itemComponentTransferEntry.fromTag(dataTag.getCompound("Item"));
+		}
+		
+		if (dataTag.contains("Fluid")) {
+			fluidComponentTransferEntry = new TransferEntry();
+			fluidComponentTransferEntry.fromTag(dataTag.getCompound("Fluid"));
+		}
+		
+		if (dataTag.contains("Energy")) {
+			energyComponentTransferEntry = new TransferEntry();
+			energyComponentTransferEntry.fromTag(dataTag.getCompound("Energy"));
 		}
 	}
 
@@ -154,51 +147,80 @@ public class TransferComponent implements Component {
 	 * - {@link CompoundTag} - through {@link #toTag()} and {@link #fromTag(CompoundTag)}.
 	 */
 	public static class TransferEntry {
-		private final Reference2ReferenceMap<Direction, TransferType> types = new Reference2ReferenceOpenHashMap<>(6, 1);
-
-		private final ComponentKey<?> componentKey;
-
-		public TransferEntry(ComponentKey<?> componentKey) {
-			for (Direction direction : Direction.values()) {
-				this.set(direction, TransferType.NONE);
-			}
-
-			this.componentKey = componentKey;
-		}
-
-		/** Returns this entry's {@link ComponentKey}. */
-		public ComponentKey<?> getComponentKey() {
-			return componentKey;
-		}
+		private TransferType up = TransferType.NONE;
+		private TransferType down = TransferType.NONE;
+		private TransferType north = TransferType.NONE;
+		private TransferType south = TransferType.NONE;
+		private TransferType east = TransferType.NONE;
+		private TransferType west = TransferType.NONE;
 
 		/** Sets the {@link TransferType} of the given {@link Direction}
 		 * to the specified value. */
 		public void set(Direction direction, TransferType type) {
-			types.put(direction, type);
+			switch (direction) {
+				case UP: {
+					up = type;
+					return;
+				}
+				
+				case DOWN: {
+					down = type;
+					return;
+				}
+				
+				case NORTH: {
+					north = type;
+					return;
+				}
+				
+				case SOUTH: {
+					south = type;
+					return;
+				}
+				
+				case EAST: {
+					east = type;
+					return;
+				}
+				
+				default: {
+					west = type;
+				}
+			}
 		}
 
 		/** Returns the {@link TransferType} of the given {@link Direction}. */
 		public TransferType get(Direction origin) {
-			return types.get(origin);
+			switch (origin) {
+				case UP: return up;
+				case DOWN: return down;
+				case NORTH: return north;
+				case SOUTH: return south;
+				case EAST: return east;
+				default: return west;
+			}
 		}
 
 		/** Deserializes this {@link TransferEntry} from a {@link CompoundTag}. */
 		public void fromTag(CompoundTag tag) {
-			for (String directionKey : tag.getKeys()) {
-				if (tag.contains(directionKey)) {
-					types.put(DirectionUtils.byNameOrId(directionKey), TransferType.valueOf(tag.getString(directionKey)));
-				}
-			}
+			up = TransferType.fromString(tag.getString("Up"));
+			down = TransferType.fromString(tag.getString("Down"));
+			north = TransferType.fromString(tag.getString("North"));
+			south = TransferType.fromString(tag.getString("South"));
+			east = TransferType.fromString(tag.getString("East"));
+			west = TransferType.fromString(tag.getString("West"));
 		}
 
 		/** Serializes this {@link TransferEntry} to a {@link CompoundTag}. */
 		public CompoundTag toTag() {
 			CompoundTag tag = new CompoundTag();
-
-			for (Map.Entry<Direction, TransferType> entry : types.entrySet()) {
-				if (entry.getValue() != TransferType.NONE)
-					tag.putString(String.valueOf(entry.getKey().getName()), entry.getValue().toString());
-			}
+			
+			tag.putString("Up", up.toString());
+			tag.putString("Down", down.toString());
+			tag.putString("North", north.toString());
+			tag.putString("South", south.toString());
+			tag.putString("East", east.toString());
+			tag.putString("West", west.toString());
 
 			return tag;
 		}

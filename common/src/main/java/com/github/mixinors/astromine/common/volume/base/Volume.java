@@ -158,21 +158,19 @@ public abstract class Volume<N extends Number> {
 		if (this == object)
 			return true;
 
-		if (!(object instanceof Volume))
+		if (!(object instanceof Volume<?> volume))
+			return false;
+		
+		if (!amount.equals(volume.amount))
 			return false;
 
-		Volume<?> volume = (Volume<?>) object;
-
-		if (!Objects.equals(amount, volume.amount))
-			return false;
-
-		return Objects.equals(size, volume.size);
+		return size.equals(volume.size);
 	}
 
 	/** Returns the hash for this volume. */
 	@Override
 	public int hashCode() {
-		return com.google.common.base.Objects.hashCode(amount, size, runnable);
+		return Objects.hash(amount, size, runnable);
 	}
 
 	/** Returns this volume's string representation.

@@ -24,7 +24,8 @@
 
 package com.github.mixinors.astromine.common.component.world;
 
-import com.github.mixinors.astromine.registry.common.AMComponents;
+import com.github.mixinors.astromine.common.component.ProtoComponent;
+import com.github.mixinors.astromine.common.component.ProtoServerTickingComponent;
 import com.github.mixinors.astromine.registry.common.AMNetworks;
 
 import me.shedaniel.architectury.networking.NetworkManager;
@@ -43,8 +44,6 @@ import net.minecraft.world.chunk.WorldChunk;
 import com.github.mixinors.astromine.client.atmosphere.ClientAtmosphereManager;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
-import dev.onyxstudios.cca.api.v3.component.Component;
-import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.Lists;
@@ -54,13 +53,13 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * A {@link Component} which stores information about
+ * A {@link ProtoComponent} which stores information about
  * a {@link Chunk}'s atmosphere.
  * <p>
  * Serialization and deserialization methods are provided for:
- * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
+ * - {@link CompoundTag} - through {@link #toTag(CompoundTag)} and {@link #fromTag(CompoundTag)}.
  */
-public final class ChunkAtmosphereComponent implements Component, ServerTickingComponent {
+public final class ChunkAtmosphereComponent implements ProtoComponent, ProtoServerTickingComponent {
 	private final List<Direction> directions = Lists.newArrayList(Direction.values());
 
 	private final Map<BlockPos, FluidVolume> volumes = new ConcurrentHashMap<>();
@@ -282,7 +281,7 @@ public final class ChunkAtmosphereComponent implements Component, ServerTickingC
 				} else {
 					ChunkPos neighborPos = getNeighborFromPos(sidePos);
 
-					ChunkAtmosphereComponent chunkAtmosphereComponent = AMComponents.CHUNK_ATMOSPHERE_COMPONENT.get(world.getChunk(neighborPos.x, neighborPos.z));
+					ChunkAtmosphereComponent chunkAtmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(neighborPos.x, neighborPos.z));
 
 					FluidVolume sideVolume = chunkAtmosphereComponent.get(sidePos);
 
@@ -309,7 +308,7 @@ public final class ChunkAtmosphereComponent implements Component, ServerTickingC
 	 * Serializes this {@link ChunkAtmosphereComponent} to a {@link CompoundTag}.
 	 */
 	@Override
-	public void writeToNbt(CompoundTag tag) {
+	public void toTag(CompoundTag tag) {
 		if (world == null)
 			return;
 
@@ -333,7 +332,7 @@ public final class ChunkAtmosphereComponent implements Component, ServerTickingC
 	 * Deserializes this {@link ChunkAtmosphereComponent} from a {@link CompoundTag}.
 	 */
 	@Override
-	public void readFromNbt(CompoundTag tag) {
+	public void fromTag(CompoundTag tag) {
 		if (world == null)
 			return;
 
@@ -351,10 +350,6 @@ public final class ChunkAtmosphereComponent implements Component, ServerTickingC
 	 */
 	@Nullable
 	public static <V> ChunkAtmosphereComponent get(V v) {
-		try {
-			return AMComponents.CHUNK_ATMOSPHERE_COMPONENT.get(v);
-		} catch (Exception justShutUpAlready) {
-			return null;
-		}
+		throw new UnsupportedOperationException("This method belongs to the common module, and must be overwritten!");
 	}
 }

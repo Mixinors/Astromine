@@ -97,10 +97,10 @@ public class VerticalFluidBarWidget extends AbstractWidget {
 	@Environment(EnvType.CLIENT)
 	@Override
 	public List<Text> getTooltip() {
-		FluidVolume volume = volumeSupplier.get();
-		Identifier fluidId = volume.getFluidId();
+		var volume = volumeSupplier.get();
+		var fluidId = volume.getFluidId();
 
-		return Lists.newArrayList(
+		return List.of(
 				TextUtils.getFluid(fluidId),
 				TextUtils.getIdentifier(fluidId),
 				TextUtils.getFluidVolume(FluidVolume.of(volume.getAmount() / 81L, volume.getSize() / 81L, volume.getFluid())),
@@ -116,15 +116,15 @@ public class VerticalFluidBarWidget extends AbstractWidget {
 			return;
 		}
 
-		float x = getPosition().getX();
-		float y = getPosition().getY();
+		var x = getPosition().getX();
+		var y = getPosition().getY();
 
-		float sX = getSize().getWidth();
-		float sY = getSize().getHeight();
+		var sX = getSize().getWidth();
+		var sY = getSize().getHeight();
 
-		float sBGY = (((sY / volumeSupplier.get().getSize().floatValue()) * volumeSupplier.get().getAmount().floatValue()));
+		var sBGY = (((sY / volumeSupplier.get().getSize().floatValue()) * volumeSupplier.get().getAmount().floatValue()));
 
-		RenderLayer layer = Layers.get(FLUID_BACKGROUND);
+		var layer = Layers.get(FLUID_BACKGROUND);
 
 		BaseRenderer.drawTexturedQuad(matrices, provider, layer, x, y, getSize().getWidth(), getSize().getHeight(), FLUID_BACKGROUND);
 
@@ -137,8 +137,8 @@ public class VerticalFluidBarWidget extends AbstractWidget {
 					.light(0x00f000f0)
 					.overlay(OverlayTexture.DEFAULT_UV)
 					.alpha(0xff)
-					.normal(matrices.peek().getNormal(), 0, 0, 0)
-					.position(matrices.peek().getModel(), x + 1, y + 1 + Math.max(0, sY - ((int) (sBGY) + 1)), x + sX - 1, y + sY - 1, 0F)
+					.normal(matrices.peek().getNormal(), 0.0F, 0.0F, 0.0F)
+					.position(matrices.peek().getModel(), x + 1.0F, y + 1.0F + Math.max(0.0F, sY - ((int) (sBGY) + 1.0F)), x + sX - 1.0F, y + sY - 1.0F, 0.0F)
 					.next(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
 		}
 	}

@@ -56,12 +56,12 @@ public class RedstoneWidget extends ButtonWidget {
 
     private final ItemStack GUNPOWDER = new ItemStack(Items.GUNPOWDER);
 
-    public static final PartitionedTexture TEXTURE = new PartitionedTexture(Blade.identifier("textures/widget/panel.png"), 18F, 18F, 0.25F, 0.25F, 0.25F, 0.25F);
+    public static final PartitionedTexture TEXTURE = new PartitionedTexture(Blade.identifier("textures/widget/panel.png"), 18.0F, 18.0F, 0.25F, 0.25F, 0.25F, 0.25F);
 
     public RedstoneWidget() {
         setClickAction(() -> {
             if (!getHidden()) {
-                blockEntity.getRedstoneComponent().setType(blockEntity.getRedstoneComponent().getType().next());
+                blockEntity.getRedstoneComponent().setType(blockEntity.getRedstoneComponent().getType().getNext());
             }
 
             return null;
@@ -82,52 +82,33 @@ public class RedstoneWidget extends ButtonWidget {
     @NotNull
     @Override
     public List<Text> getTooltip() {
-        switch (blockEntity.getRedstoneComponent().getType()) {
-            case WORK_WHEN_ON: {
-                return Collections.singletonList(new TranslatableText("tooltip.astromine.work_when_on").formatted(Formatting.GREEN));
-            }
-            case WORK_WHEN_OFF: {
-                return Collections.singletonList(new TranslatableText("tooltip.astromine.work_when_off").formatted(Formatting.RED));
-            }
-            case WORK_ALWAYS: {
-                return Collections.singletonList(new TranslatableText("tooltip.astromine.work_always").formatted(Formatting.YELLOW));
-            }
-            default: {
-                return Collections.emptyList();
-            }
-        }
+        return List.of(
+                new TranslatableText("tooltip.astromine." + switch (blockEntity.getRedstoneComponent().getType()) {
+                    case WORK_ALWAYS -> "work_always";
+                    case WORK_WHEN_ON -> "work_when_on";
+                    case WORK_WHEN_OFF -> "work_when_off";
+                })
+        );
     }
 
     /** Renders this widget. */
     @Override
     public void drawWidget(@NotNull MatrixStack matrices, @NotNull VertexConsumerProvider provider) {
-        if (getHidden()) {
+        if (getHidden())
             return;
-        }
 
-        float x = getPosition().getX();
-        float y = getPosition().getY();
+        var x = getPosition().getX();
+        var y = getPosition().getY();
 
-        float sX = getSize().getWidth();
-        float sY = getSize().getHeight();
+        var sX = getSize().getWidth();
+        var sY = getSize().getHeight();
 
         TEXTURE.draw(matrices, provider, x, y, sX, sY);
-
-        switch (blockEntity.getRedstoneComponent().getType()) {
-            case WORK_WHEN_ON: {
-                BaseRenderer.getDefaultItemRenderer().renderGuiItemIcon(REDSTONE, (int) x + (int) Math.max((sX - 16) / 2, 0), (int) y + (int) Math.max((sY - 16) / 2, 0));
-                break;
-            }
-
-            case WORK_WHEN_OFF: {
-                BaseRenderer.getDefaultItemRenderer().renderGuiItemIcon(GUNPOWDER, (int) x + (int) Math.max((sX - 16) / 2, 0), (int) y + (int) Math.max((sY - 16) / 2, 0));
-                break;
-            }
-
-            case WORK_ALWAYS: {
-                BaseRenderer.getDefaultItemRenderer().renderGuiItemIcon(GLOWSTONE, (int) x + (int) Math.max((sX - 16) / 2, 0), (int) y + (int) Math.max((sY - 16) / 2, 0));
-                break;
-            }
-        }
+    
+        BaseRenderer.getDefaultItemRenderer().renderGuiItemIcon(switch (blockEntity.getRedstoneComponent().getType()) {
+            case WORK_ALWAYS -> GLOWSTONE;
+            case WORK_WHEN_ON -> REDSTONE;
+            case WORK_WHEN_OFF -> GUNPOWDER;
+        }, (int) x + (int) Math.max((sX - 16.0F) / 2.0F, 0.0F), (int) y + (int) Math.max((sY - 16.0F) / 2.0F, 0.0F));
     }
 }

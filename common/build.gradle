@@ -1,0 +1,47 @@
+
+dependencies {
+    // Fabric Loader
+    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+
+    // Architectury
+    modApi "me.shedaniel:architectury:${rootProject.architectury_version}"
+
+    // Blade
+    modImplementation "com.github.vini2003:blade:${rootProject.blade_version}"
+
+    // Shapes
+    modImplementation "com.terraformersmc.terraform-api:terraform-shapes-api-v1:${rootProject.shapes_version}"
+}
+
+architectury {
+    common()
+}
+
+java {
+    withSourcesJar()
+}
+
+loom {
+    mixinConfig "astromine.mixins.json"
+}
+
+publishing {
+    publications {
+        mavenCommon(MavenPublication) {
+            artifactId = rootProject.mod_name
+
+            artifact remapJar
+            artifact(sourcesJar) {
+                builtBy remapSourcesJar
+            }
+        }
+    }
+
+    repositories {
+
+    }
+}
+
+repositories {
+    mavenCentral()
+}

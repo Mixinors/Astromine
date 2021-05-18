@@ -24,31 +24,30 @@
 
 package com.github.mixinors.astromine.common.component.entity;
 
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
+import com.github.mixinors.astromine.common.component.ProtoAutoSyncedComponent;
+import com.github.mixinors.astromine.common.component.ProtoComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
 
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.registry.common.AMComponents;
 import com.github.mixinors.astromine.registry.common.AMConfig;
-import dev.onyxstudios.cca.api.v3.component.Component;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A {@link Component} containing oxygen levels for an entity.
+ * A {@link ProtoComponent} containing oxygen levels for an entity.
  *
  * Serialization and deserialization methods are provided for:
- * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
+ * - {@link CompoundTag} - through {@link #toTag(CompoundTag)} and {@link #fromTag(CompoundTag)}.
  */
-public final class EntityOxygenComponent implements AutoSyncedComponent {
-	int oxygen = 0;
+public final class EntityOxygenComponent implements ProtoAutoSyncedComponent {
+	private int oxygen = 0;
 
-	int minimumOxygen = -20;
-	int maximumOxygen = 180;
-
-	Entity entity;
+	private int minimumOxygen = -20;
+	private int maximumOxygen = 180;
+	
+	private Entity entity;
 
 	/** Instantiates an {@link EntityOxygenComponent}. */
 	private EntityOxygenComponent(Entity entity) {
@@ -58,11 +57,7 @@ public final class EntityOxygenComponent implements AutoSyncedComponent {
 	/** Returns the {@link EntityOxygenComponent} of the given {@link V}. */
 	@Nullable
 	public static <V> EntityOxygenComponent get(V v) {
-		try {
-			return AMComponents.ENTITY_OXYGEN_COMPONENT.get(v);
-		} catch (Exception justShutUpAlready) {
-			return null;
-		}
+		return null;
 	}
 
 	/** Instantiates an {@link EntityOxygenComponent}. */
@@ -132,7 +127,7 @@ public final class EntityOxygenComponent implements AutoSyncedComponent {
 		this.maximumOxygen = maximumOxygen;
 	}
 
-	/** Returns this componetn's entity. */
+	/** Returns this component's entity. */
 	public Entity getEntity() {
 		return entity;
 	}
@@ -144,13 +139,13 @@ public final class EntityOxygenComponent implements AutoSyncedComponent {
 
 	/** Serializes this {@link FluidComponent} to a {@link CompoundTag}. */
 	@Override
-	public void writeToNbt(CompoundTag tag) {
+	public void toTag(CompoundTag tag) {
 		tag.putInt("oxygen", oxygen);
 	}
 
 	/** Deserializes this {@link FluidComponent} from a {@link CompoundTag}. */
 	@Override
-	public void readFromNbt(CompoundTag tag) {
+	public void fromTag(CompoundTag tag) {
 		this.oxygen = tag.getInt("oxygen");
 	}
 }

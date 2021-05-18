@@ -119,7 +119,7 @@ public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFr
 	@Override
 	public void fromTag(BlockState state, CompoundTag tag) {
 		super.fromTag(state, tag);
-		inventory.readFromNbt(tag);
+		inventory.fromTag(tag);
 		if (tag.contains("parent"))
 			parentPos = BlockPos.fromLong(tag.getLong("parent"));
 		else parentPos = null;
@@ -127,7 +127,7 @@ public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFr
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		inventory.writeToNbt(tag);
+		inventory.toTag(tag);
 		if (parentPos != null)
 			tag.putLong("parent", parentPos.asLong());
 		return super.toTag(tag);

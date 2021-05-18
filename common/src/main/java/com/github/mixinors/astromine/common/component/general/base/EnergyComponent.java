@@ -27,9 +27,7 @@ package com.github.mixinors.astromine.common.component.general.base;
 import com.github.mixinors.astromine.common.component.general.miscellaneous.IdentifiableComponent;
 import com.github.mixinors.astromine.common.component.general.SimpleAutoSyncedEnergyComponent;
 import com.github.mixinors.astromine.common.component.general.SimpleEnergyComponent;
-import com.github.mixinors.astromine.common.component.general.compatibility.EnergyComponentFromEnergyStorage;
 import com.github.mixinors.astromine.common.component.general.provider.EnergyComponentProvider;
-import com.github.mixinors.astromine.registry.common.AMComponents;
 import me.shedaniel.architectury.utils.NbtType;
 
 import net.minecraft.item.Item;
@@ -40,7 +38,6 @@ import net.minecraft.text.TranslatableText;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import org.jetbrains.annotations.Nullable;
-import team.reborn.energy.EnergyStorage;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -62,11 +59,6 @@ public interface EnergyComponent extends IdentifiableComponent {
 	/** Instantiates an {@link EnergyComponent}. */
 	static EnergyComponent of(EnergyVolume volume) {
 		return SimpleEnergyComponent.of(volume);
-	}
-
-	/** Instantiates an {@link EnergyComponent}. */
-	static EnergyComponent of(EnergyStorage storage) {
-		return EnergyComponentFromEnergyStorage.of(storage);
 	}
 
 	/** Instantiates an {@link EnergyComponent} and synchronization. */
@@ -168,18 +160,18 @@ public interface EnergyComponent extends IdentifiableComponent {
 
 	/** Serializes this {@link EnergyComponent} to a {@link CompoundTag}. */
 	@Override
-	default void writeToNbt(CompoundTag tag) {
+	default void toTag(CompoundTag tag) {
 		CompoundTag dataTag = new CompoundTag();
 
 		dataTag.putDouble("energy", getVolume().getAmount());
 
-		tag.put(AMComponents.ENERGY_INVENTORY_COMPONENT.getId().toString(), dataTag);
+		tag.put("EnergyComponent", dataTag);
 	}
 
 	/** Deserializes this {@link EnergyComponent} from a {@link CompoundTag}. */
 	@Override
-	default void readFromNbt(CompoundTag tag) {
-		CompoundTag dataTag = tag.getCompound(AMComponents.ENERGY_INVENTORY_COMPONENT.getId().toString());
+	default void fromTag(CompoundTag tag) {
+		CompoundTag dataTag = tag.getCompound("EnergyComponent");
 
 		EnergyVolume volume = getVolume();
 
@@ -198,15 +190,7 @@ public interface EnergyComponent extends IdentifiableComponent {
 		if (v instanceof EnergyComponentProvider) {
 			return ((EnergyComponentProvider) v).getEnergyComponent();
 		}
-
-		if (v != null && AMComponents.ENERGY_INVENTORY_COMPONENT.isProvidedBy(v)) {
-			return AMComponents.ENERGY_INVENTORY_COMPONENT.get(v);
-		} else {
-			if (v instanceof EnergyStorage) {
-				return of((EnergyStorage) v);
-			}
-
-			return null;
-		}
+		
+		return null;
 	}
 }

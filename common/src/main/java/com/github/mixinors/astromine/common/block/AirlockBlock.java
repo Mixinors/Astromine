@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.block;
 
+import com.github.mixinors.astromine.mixin.common.TallPlantBlockAccessor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -176,7 +177,7 @@ public class AirlockBlock extends Block implements Waterloggable {
 	@Override
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		if (!world.isClient && player.isCreative()) {
-			TallPlantBlock.onBreakInCreative(world, pos, state, player);
+			TallPlantBlockAccessor.onBreakInCreative(world, pos, state, player);
 		}
 
 		super.onBreak(world, pos, state, player);

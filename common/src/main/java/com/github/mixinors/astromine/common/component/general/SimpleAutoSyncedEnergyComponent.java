@@ -24,14 +24,14 @@
 
 package com.github.mixinors.astromine.common.component.general;
 
+import com.github.mixinors.astromine.common.component.ProtoAutoSyncedComponent;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 
 /**
  * A {@link SimpleEnergyComponent} that synchronizes itself
  * automatically.
  */
-public class SimpleAutoSyncedEnergyComponent extends SimpleEnergyComponent implements AutoSyncedComponent {
+public class SimpleAutoSyncedEnergyComponent extends SimpleEnergyComponent implements ProtoAutoSyncedComponent {
     /** Instantiates a {@link SimpleAutoSyncedEnergyComponent}. */
     protected SimpleAutoSyncedEnergyComponent(double size) {
         super(size);

@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.component.world;
 
+import com.github.mixinors.astromine.common.component.ProtoComponent;
 import me.shedaniel.architectury.utils.NbtType;
 
 import net.minecraft.nbt.CompoundTag;
@@ -40,21 +41,19 @@ import com.github.mixinors.astromine.common.network.NetworkMemberNode;
 import com.github.mixinors.astromine.common.network.NetworkNode;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.registry.NetworkTypeRegistry;
-import com.github.mixinors.astromine.registry.common.AMComponents;
-import dev.onyxstudios.cca.api.v3.component.Component;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.Sets;
 import java.util.Set;
 
 /**
- * A {@link Component} which stores information about
+ * A {@link ProtoComponent} which stores information about
  * a {@link World}'s networks.
  *
  * Serialization and deserialization methods are provided for:
- * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
+ * - {@link CompoundTag} - through {@link #toTag(CompoundTag)} and {@link #fromTag(CompoundTag)}.
  */
-public final class WorldNetworkComponent implements Component, Tickable {
+public final class WorldNetworkComponent implements ProtoComponent, Tickable {
 	private final Set<NetworkInstance> instances = Sets.newConcurrentHashSet();
 
 	private final World world;
@@ -101,7 +100,7 @@ public final class WorldNetworkComponent implements Component, Tickable {
 
 	/** Serializes this {@link WorldNetworkComponent} to a {@link CompoundTag}. */
 	@Override
-	public void writeToNbt(CompoundTag tag) {
+	public void toTag(CompoundTag tag) {
 		ListTag instanceTags = new ListTag();
 
 		for (NetworkInstance instance : instances) {
@@ -129,7 +128,7 @@ public final class WorldNetworkComponent implements Component, Tickable {
 
 	/** Deserializes this {@link WorldNetworkComponent} from a {@link CompoundTag}. */
 	@Override
-	public void readFromNbt(CompoundTag tag) {
+	public void fromTag(CompoundTag tag) {
 		ListTag instanceTags = tag.getList("instanceTags", NbtType.COMPOUND);
 		for (Tag instanceTag : instanceTags) {
 			CompoundTag dataTag = (CompoundTag) instanceTag;
@@ -154,10 +153,6 @@ public final class WorldNetworkComponent implements Component, Tickable {
 	/** Returns the {@link WorldNetworkComponent} of the given {@link V}. */
 	@Nullable
 	public static <V> WorldNetworkComponent get(V v) {
-		try {
-			return AMComponents.WORLD_NETWORK_COMPONENT.get(v);
-		} catch (Exception justShutUpAlready) {
-			return null;
-		}
+		throw new UnsupportedOperationException("This method belongs to the common module, and must be overwritten!");
 	}
 }

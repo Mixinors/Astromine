@@ -24,22 +24,22 @@
 
 package com.github.mixinors.astromine.common.component.block.entity;
 
+import com.github.mixinors.astromine.common.component.ProtoComponent;
 import com.github.mixinors.astromine.common.component.general.provider.RedstoneComponentProvider;
-import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.block.entity.BlockEntity;
 
 import com.github.mixinors.astromine.common.block.redstone.RedstoneType;
-import dev.onyxstudios.cca.api.v3.component.Component;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A {@link Component} representing a {@link BlockEntity}'s
+ * A {@link ProtoComponent} representing a {@link BlockEntity}'s
  * redstone information.
  *
  * Serialization and deserialization methods are provided for:
- * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
+ * - {@link CompoundTag} - through {@link #toTag(CompoundTag)} and {@link #fromTag(CompoundTag)}.
  */
-public class RedstoneComponent implements Component {
+public class RedstoneComponent implements ProtoComponent {
 	private RedstoneType type = RedstoneType.WORK_WHEN_OFF;
 
 	/** Returns this component's {@link RedstoneType}. */
@@ -54,20 +54,20 @@ public class RedstoneComponent implements Component {
 
 	/** Serializes this {@link RedstoneComponent} to a {@link CompoundTag}. */
 	@Override
-	public void writeToNbt(CompoundTag tag) {
+	public void toTag(CompoundTag tag) {
 		CompoundTag dataTag = new CompoundTag();
-
-		dataTag.putInt("number", type.asNumber());
-
-		tag.put("data", dataTag);
+		
+		dataTag.putString("Type", type.toString());
+		
+		tag.put("Data", dataTag);
 	}
 
 	/** Deserializes this {@link RedstoneComponent} from a {@link CompoundTag}. */
 	@Override
-	public void readFromNbt(CompoundTag tag) {
-		CompoundTag dataTag = tag.getCompound("data");
+	public void fromTag(CompoundTag tag) {
+		CompoundTag dataTag = tag.getCompound("Data");
 
-		type = RedstoneType.byNumber(dataTag.getInt("number"));
+		type = RedstoneType.fromString(dataTag.getString("Type"));
 	}
 
 	/** Returns the {@link RedstoneComponent} of the given {@link V}. */
@@ -76,11 +76,7 @@ public class RedstoneComponent implements Component {
 		if (v instanceof RedstoneComponentProvider) {
 			return ((RedstoneComponentProvider) v).getRedstoneComponent();
 		}
-
-		try {
-			return AMComponents.BLOCK_ENTITY_REDSTONE_COMPONENT.get(v);
-		} catch (Exception justShutUpAlready) {
-			return null;
-		}
+		
+		return null;
 	}
 }

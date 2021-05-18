@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.component.world;
 
+import com.github.mixinors.astromine.common.component.ProtoComponent;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import me.shedaniel.architectury.utils.NbtType;
 import net.minecraft.block.Block;
@@ -36,8 +37,6 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.util.VoxelShapeUtils;
-import com.github.mixinors.astromine.registry.common.AMComponents;
-import dev.onyxstudios.cca.api.v3.component.Component;
 import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,7 +45,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * A {@link Component} which stores information about
+ * A {@link ProtoComponent} which stores information about
  * a {@link World}'s holographic bridges.
  *
  * It is important to understand how information is stored here.
@@ -59,9 +58,9 @@ import java.util.Set;
  * which will be used to build the block's {@link VoxelShape}.
  *
  * Serialization and deserialization methods are provided for:
- * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
+ * - {@link CompoundTag} - through {@link #toTag(CompoundTag)} and {@link #fromTag(CompoundTag)}.
  */
-public final class WorldHoloBridgeComponent implements Component {
+public final class WorldHoloBridgeComponent implements ProtoComponent {
 	private final Long2ObjectArrayMap<Set<Vec3i>> entries = new Long2ObjectArrayMap<>();
 
 	private final Long2ObjectArrayMap<VoxelShape> cache = new Long2ObjectArrayMap<>();
@@ -162,7 +161,7 @@ public final class WorldHoloBridgeComponent implements Component {
 
 	/** Serializes this {@link WorldHoloBridgeComponent} to a {@link CompoundTag}. */
 	@Override
-	public void writeToNbt(CompoundTag tag) {
+	public void toTag(CompoundTag tag) {
 		ListTag dataTag = new ListTag();
 
 		for (Long2ObjectMap.Entry<Set<Vec3i>> entry : entries.long2ObjectEntrySet()) {
@@ -185,7 +184,7 @@ public final class WorldHoloBridgeComponent implements Component {
 
 	/** Deserializes this {@link WorldHoloBridgeComponent} from a {@link CompoundTag}. */
 	@Override
-	public void readFromNbt(CompoundTag tag) {
+	public void fromTag(CompoundTag tag) {
 		ListTag dataTag = tag.getList("Data", NbtType.COMPOUND);
 
 		for (Tag pointTag : dataTag) {
@@ -202,10 +201,6 @@ public final class WorldHoloBridgeComponent implements Component {
 	/** Returns the {@link WorldHoloBridgeComponent} of the given {@link V}. */
 	@Nullable
 	public static <V> WorldHoloBridgeComponent get(V v) {
-		try {
-			return AMComponents.WORLD_BRIDGE_COMPONENT.get(v);
-		} catch (Exception justShutUpAlready) {
-			return null;
-		}
+		throw new UnsupportedOperationException("This method belongs to the common module, and must be overwritten!");
 	}
 }

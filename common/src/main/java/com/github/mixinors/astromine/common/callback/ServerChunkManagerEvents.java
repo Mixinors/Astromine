@@ -24,20 +24,20 @@
 
 package com.github.mixinors.astromine.common.callback;
 
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import me.shedaniel.architectury.event.Event;
 import me.shedaniel.architectury.event.EventFactory;
-import net.minecraft.client.render.SkyProperties;
-import net.minecraft.util.Identifier;
+import net.minecraft.server.world.ServerChunkManager;
 
 /**
- * A callback called when initializing {@link SkyProperties}
- * statically and adding new properties for custom
- * dimensions.
+ * Events related to {@link ServerChunkManager}.
  */
-public interface SkyPropertiesCallback {
-	Event<SkyPropertiesCallback> EVENT = EventFactory.createLoop();
-
-	/** Handle the properties. */
-	void handle(Object2ObjectMap<Identifier, SkyProperties> properties);
+public interface ServerChunkManagerEvents {
+	Event<Initialization> INITIALIZATION = EventFactory.createLoop();
+	
+	/**
+	 * A callback called when initializing a {@link ServerChunkManager}.
+	 */
+	interface Initialization {
+		void handle(ServerChunkManager manager);
+	}
 }

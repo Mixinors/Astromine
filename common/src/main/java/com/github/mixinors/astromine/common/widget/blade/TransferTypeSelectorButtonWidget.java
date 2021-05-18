@@ -136,6 +136,7 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 	@Override
 	public void onMouseClicked(float mouseX, float mouseY, int mouseButton) {
 		super.onMouseClicked(mouseX, mouseY, mouseButton);
+		
 		if (getFocused() && getHandler().getClient()) {
 			wasClicked = true;
 		}
@@ -148,7 +149,7 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 	public void onMouseReleased(float mouseX, float mouseY, int mouseButton) {
 		if (getFocused() && !getHidden() && wasClicked) {
 			if (getHandler().getClient()) {
-				PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
+				var buf = new PacketByteBuf(Unpooled.buffer());
 
 				buf.writeBlockPos(getBlockPos());
 				buf.writeIdentifier(ComponentBlockEntity.TRANSFER_UPDATE_PACKET);
@@ -170,8 +171,10 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 	@Environment(EnvType.CLIENT)
 	@Override
 	public @NotNull List<Text> getTooltip() {
-		Direction offset = MirrorUtils.rotate(direction, rotation);
-		return Arrays.asList(new TranslatableText("text.astromine.siding." + offset.getName()), new TranslatableText("text.astromine.siding." + getSideName()));
+		return List.of(
+				new TranslatableText("text.astromine.siding." + MirrorUtils.rotate(direction, rotation).getName()),
+				new TranslatableText("text.astromine.siding." + getSideName())
+		);
 	}
 
 	/** Renders this widget. */

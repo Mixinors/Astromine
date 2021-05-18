@@ -24,14 +24,14 @@
 
 package com.github.mixinors.astromine.common.component.general;
 
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
+import com.github.mixinors.astromine.common.component.ProtoAutoSyncedComponent;
 import net.minecraft.item.ItemStack;
 
 /**
  * A {@link SimpleItemComponent} that synchronizes itself
  * automatically.
  */
-public class SimpleAutoSyncedItemComponent extends SimpleItemComponent implements AutoSyncedComponent {
+public class SimpleAutoSyncedItemComponent extends SimpleItemComponent implements ProtoAutoSyncedComponent {
     /** Instantiates a {@link SimpleAutoSyncedItemComponent}. */
     protected SimpleAutoSyncedItemComponent(int size) {
         super(size);

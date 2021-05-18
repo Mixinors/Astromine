@@ -31,7 +31,7 @@ import com.github.mixinors.astromine.common.component.general.miscellaneous.Iden
 import com.github.mixinors.astromine.common.component.general.provider.FluidComponentProvider;
 import com.github.mixinors.astromine.common.util.VolumeUtils;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
-import com.github.mixinors.astromine.registry.common.AMComponents;
+import com.github.mixinors.astromine.mixin.common.BucketItemAccessor;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;
@@ -316,7 +316,7 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 
 	/** Serializes this {@link FluidComponent} to a {@link CompoundTag}. */
 	@Override
-	default void writeToNbt(CompoundTag tag) {
+	default void toTag(CompoundTag tag) {
 		ListTag listTag = new ListTag();
 
 		for (int i = 0; i < getSize(); ++i) {
@@ -330,13 +330,13 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 		dataTag.putInt("size", getSize());
 		dataTag.put("volumes", listTag);
 
-		tag.put(AMComponents.FLUID_INVENTORY_COMPONENT.getId().toString(), dataTag);
+		tag.put("FluidComponent", dataTag);
 	}
 
 	/** Deserializes this {@link FluidComponent} from a {@link CompoundTag}. */
 	@Override
-	default void readFromNbt(CompoundTag tag) {
-		CompoundTag dataTag = tag.getCompound(AMComponents.FLUID_INVENTORY_COMPONENT.getId().toString());
+	default void fromTag(CompoundTag tag) {
+		CompoundTag dataTag = tag.getCompound("FluidComponent");
 
 		int size = dataTag.getInt("size");
 
@@ -354,27 +354,21 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 	static <V> FluidComponent get(V v) {
 		if (v instanceof FluidComponentProvider) {
 			return ((FluidComponentProvider) v).getFluidComponent();
-		}
+		} else if (v instanceof ItemStack) {
+			ItemStack stack = (ItemStack) v;
+			Item item = stack.getItem();
 
-		if (v != null && AMComponents.FLUID_INVENTORY_COMPONENT.isProvidedBy(v)) {
-			return AMComponents.FLUID_INVENTORY_COMPONENT.get(v);
-		} else {
-			if (v instanceof ItemStack) {
-				ItemStack stack = (ItemStack) v;
-				Item item = stack.getItem();
+			if (item instanceof BucketItem) {
+				BucketItem bucket = (BucketItem) item;
 
-				if (item instanceof BucketItem) {
-					BucketItem bucket = (BucketItem) item;
-
-					return SimpleFluidComponent.of(FluidVolume.of(FluidVolume.BUCKET, bucket.fluid));
-				} else if (item instanceof PotionItem) {
-					if (PotionUtil.getPotion(stack).equals(Potions.WATER))
-						return SimpleFluidComponent.of(FluidVolume.of(FluidVolume.BOTTLE, Fluids.WATER));
-				}
+				return SimpleFluidComponent.of(FluidVolume.of(FluidVolume.BUCKET, ((BucketItemAccessor) bucket).getFluid()));
+			} else if (item instanceof PotionItem) {
+				if (PotionUtil.getPotion(stack).equals(Potions.WATER))
+					return SimpleFluidComponent.of(FluidVolume.of(FluidVolume.BOTTLE, Fluids.WATER));
 			}
-
-			return null;
 		}
+		
+		return null;
 	}
 
 	/** Returns an iterator of this component's contents. */

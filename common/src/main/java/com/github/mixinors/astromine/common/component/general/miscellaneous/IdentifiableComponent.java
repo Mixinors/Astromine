@@ -24,18 +24,17 @@
 
 package com.github.mixinors.astromine.common.component.general.miscellaneous;
 
+import com.github.mixinors.astromine.common.component.ProtoComponent;
 import net.minecraft.item.Item;
 import net.minecraft.text.Text;
 
-import dev.onyxstudios.cca.api.v3.component.Component;
-
 /**
  * An interface which should be implemented
- * by {@link Component}s which require
+ * by {@link ProtoComponent}s which require
  * an {@link Item} symbol and
  * {@link Text} name.
  */
-public interface IdentifiableComponent extends Component {
+public interface IdentifiableComponent extends ProtoComponent {
 	/** Returns this component's {@link Item} symbol. */
 	Item getSymbol();
 
