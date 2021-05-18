@@ -28,6 +28,8 @@ import com.github.mixinors.astromine.common.component.block.entity.TransferCompo
 import com.github.mixinors.astromine.common.component.general.provider.EnergyComponentProvider;
 import com.github.mixinors.astromine.common.component.general.provider.FluidComponentProvider;
 import com.github.mixinors.astromine.common.component.general.provider.ItemComponentProvider;
+import com.github.mixinors.astromine.common.util.MirrorUtils;
+import com.github.mixinors.astromine.common.widget.blade.TransferTypeSelectorButtonWidget;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
@@ -39,8 +41,7 @@ import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.mixinors.astromine.common.block.entity.base.ComponentBlockEntity;
-import com.github.mixinors.astromine.common.component.general.miscellaneous.IdentifiableComponent;
-import com.github.mixinors.astromine.common.util.WidgetUtils;
+import com.github.mixinors.astromine.common.component.general.miscellaneous.NamedComponent;
 import com.github.mixinors.astromine.common.widget.blade.RedstoneWidget;
 import com.github.vini2003.blade.common.collection.TabWidgetCollection;
 import com.github.vini2003.blade.common.miscellaneous.Position;
@@ -50,10 +51,7 @@ import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import com.github.vini2003.blade.common.widget.base.TabWidget;
 import com.github.vini2003.blade.common.widget.base.TextWidget;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
@@ -116,81 +114,111 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 		tabs.setSize(getTabsSize(width, height));
 		tabs.setPosition(getTabsPosition(width, height));
 
-		addWidget(tabs);
+		this.addWidget(tabs);
 
 		mainTab = (TabWidgetCollection) tabs.addTab(blockEntity.getCachedState().getBlock().asItem(), () -> Collections.singletonList(new TranslatableText(blockEntity.getCachedState().getBlock().getTranslationKey())));
 		mainTab.setPosition(Position.of(tabs, 0, 25F + 7F));
 		mainTab.setSize(Size.of(176F, 184F));
 
-		var title = new TextWidget();
-		title.setPosition(Position.of(mainTab, 8, 0));
-		title.setText(new TranslatableText(blockEntity.getCachedState().getBlock().asItem().getTranslationKey()));
-		title.setColor(4210752);
+		var mainTabTitle = new TextWidget();
+		mainTabTitle.setPosition(Position.of(mainTab, 8, 0));
+		mainTabTitle.setText(new TranslatableText(blockEntity.getCachedState().getBlock().asItem().getTranslationKey()));
+		mainTabTitle.setColor(4210752);
 		
-		mainTab.addWidget(title);
+		mainTab.addWidget(mainTabTitle);
 
-		var inventoryPos = Position.of(tabs, 7F + (tabs.getWidth() / 2 - ((9 * 18F) / 2) - 7F), 25F + 7F + (184 - 18 - 18 - (18 * 4) - 3 + getTabWidgetExtendedHeight()));
+		var inventoryTitlePos = Position.of(tabs, 7F + (tabs.getWidth() / 2 - ((9 * 18F) / 2) - 7F), 25F + 7F + (184 - 18 - 18 - (18 * 4) - 3 + getTabWidgetExtendedHeight()));
 		var inventoryTitle = new TextWidget();
-		inventoryTitle.setPosition(Position.of(inventoryPos, 0, -10));
+		inventoryTitle.setPosition(Position.of(inventoryTitlePos, 0, -10));
 		inventoryTitle.setText(getPlayer().inventory.getName());
 		inventoryTitle.setColor(4210752);
 		
 		mainTab.addWidget(inventoryTitle);
 		
-		playerSlots = Slots.addPlayerInventory(inventoryPos, Size.of(18F, 18F), mainTab, getPlayer().inventory);
+		playerSlots = Slots.addPlayerInventory(inventoryTitlePos, Size.of(18F, 18F), mainTab, getPlayer().inventory);
+		
+		var ref = new Object() {
+			Direction rotation = Direction.NORTH;
+		};
 
-		var rotation = Direction.NORTH;
-		var block = blockEntity.getCachedState().getBlock();
-
-		if (block instanceof HorizontalFacingBlockWithEntity facingBlock) {
-			DirectionProperty property = facingBlock.getDirectionProperty();
+		if (blockEntity.getCachedState().getBlock() instanceof HorizontalFacingBlockWithEntity facingBlock) {
+			var property = facingBlock.getDirectionProperty();
+			
 			if (property != null)
-				rotation = blockEntity.getCachedState().get(property);
+				ref.rotation = blockEntity.getCachedState().get(property);
 		}
-
-		var finalRotation = rotation;
 
 		var redstoneWidget = new RedstoneWidget();
 		redstoneWidget.setPosition(Position.of(tabs, tabs.getWidth() - 20, 0));
 		redstoneWidget.setSize(Size.of(20, 19));
 		redstoneWidget.setBlockEntity(blockEntity);
 
-		addWidget(redstoneWidget);
+		this.addWidget(redstoneWidget);
 
 		var transferComponent = TransferComponent.get(blockEntity);
+		
+		var tabComponents = new HashMap<NamedComponent, Identifier>();
+		
+		if (blockEntity instanceof ItemComponentProvider provider) {
+			transferComponent.addItem();
+			tabComponents.put(provider.getItemComponent(), AMComponents.ITEM_INVENTORY_COMPONENT);
+		}
+		
+		if (blockEntity instanceof FluidComponentProvider provider) {
+			transferComponent.addFluid();
+			tabComponents.put(provider.getFluidComponent(), AMComponents.FLUID_INVENTORY_COMPONENT);
+		}
+		
+		if (blockEntity instanceof EnergyComponentProvider provider) {
+			transferComponent.addEnergy();
+			tabComponents.put(provider.getEnergyComponent(), AMComponents.ENERGY_INVENTORY_COMPONENT);
+		}
+		
+		tabComponents.forEach((tabComponent, id) -> {
+			var symbol = tabComponent.getSymbol();
+			var name = tabComponent.getName();
+			
+			var tab = (TabWidgetCollection) tabs.addTab(symbol, () -> List.of(name));
+			var anchor = Position.of(tabs, tabs.getWidth() / 2.0F - 38.0F, getTabWidgetExtendedHeight() / 2.0F);
 
-		BiConsumer<IdentifiableComponent, Identifier> tabAdder = (identifiableComponent, key) -> {
-			var current = (TabWidgetCollection) tabs.addTab(identifiableComponent.getSymbol(), () -> List.of(identifiableComponent.getName()));
+			var positions = Map.of(
+					Direction.NORTH, Position.of(anchor, 7.0F + 22.0F, 31.0F + 22.0F),
+					Direction.SOUTH, Position.of(anchor, 7.0F + 0.0F, 31.0F + 44.0F),
+					Direction.WEST, Position.of(anchor, 7.0F + 44.0F, 31.0F + 22.0F),
+					Direction.EAST, Position.of(anchor, 7.0F + 0.0F, 31.0F + 22.0F),
+					Direction.UP, Position.of(anchor, 7.0F + 22.0F, 31.0F + 0.0F),
+					Direction.DOWN, Position.of(anchor, 7.0F + 22.0F, 31.0F + 44.0F)
+			);
 			
-			WidgetUtils.createTransferTab(current, Position.of(tabs, tabs.getWidth() / 2 - 38, getTabWidgetExtendedHeight() / 2), finalRotation, transferComponent, blockEntity.getPos(), key);
+			for (var direction : Direction.values()) {
+				var button = new TransferTypeSelectorButtonWidget();
+				
+				button.setPosition(positions.get(MirrorUtils.rotate(direction, ref.rotation)));
+				button.setSize(Size.of(18.0F, 18.0F));
+				button.setComponent(transferComponent);
+				button.setId(id);
+				button.setRotation(ref.rotation);
+				button.setDirection(direction);
+				button.setBlockPos(blockEntity.getPos());
+				
+				tab.addWidget(button);
+			}
 			
-			var inventoryTabTitle = new TextWidget();
-			inventoryTabTitle.setPosition(Position.of(inventoryPos, 0, -10));
-			inventoryTabTitle.setText(getPlayer().inventory.getName());
-			inventoryTabTitle.setColor(4210752);
+			var tabInventoryTitle = new TextWidget();
+			tabInventoryTitle.setPosition(Position.of(inventoryTitlePos, 0, -10));
+			tabInventoryTitle.setText(getPlayer().inventory.getName());
+			tabInventoryTitle.setColor(4210752);
 			
-			current.addWidget(inventoryTabTitle);
+			tab.addWidget(tabInventoryTitle);
 			
-			playerSlots.addAll(Slots.addPlayerInventory(inventoryPos, Size.of(18, 18), current, getPlayer().inventory));
-
 			var tabTitle = new TextWidget();
 			tabTitle.setPosition(Position.of(mainTab, 8, 0));
-			tabTitle.setText(identifiableComponent.getName());
+			tabTitle.setText(tabComponent.getName());
 			tabTitle.setColor(4210752);
 			
-			current.addWidget(tabTitle);
-		};
-
-		if (blockEntity instanceof ItemComponentProvider provider) {
-			tabAdder.accept(provider.getItemComponent(), AMComponents.ITEM_INVENTORY_COMPONENT);
-		}
-
-		if (blockEntity instanceof FluidComponentProvider provider) {
-			tabAdder.accept(provider.getFluidComponent(), AMComponents.FLUID_INVENTORY_COMPONENT);
-		}
-
-		if (blockEntity instanceof EnergyComponentProvider provider) {
-			tabAdder.accept(provider.getEnergyComponent(), AMComponents.ENERGY_INVENTORY_COMPONENT);
-		}
+			tab.addWidget(tabTitle);
+			
+			playerSlots.addAll(Slots.addPlayerInventory(inventoryTitlePos, Size.of(18, 18), tab, getPlayer().inventory));
+		});
 	}
 }

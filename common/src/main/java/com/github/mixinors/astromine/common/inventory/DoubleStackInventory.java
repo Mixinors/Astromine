@@ -63,7 +63,8 @@ public interface DoubleStackInventory extends Inventory {
 	@Override
 	default boolean isEmpty() {
 		for (int i = 0; i < size(); i++) {
-			ItemStack stack = getStack(i);
+			var stack = getStack(i);
+			
 			if (!stack.isEmpty()) {
 				return false;
 			}
@@ -114,7 +115,8 @@ public interface DoubleStackInventory extends Inventory {
 	 * or a part of it as per the specified count, and returns it. */
 	@Override
 	default ItemStack removeStack(int slot, int count) {
-		ItemStack result = Inventories.splitStack(getItems(), slot, count);
+		var result = Inventories.splitStack(getItems(), slot, count);
+		
 		if (!result.isEmpty()) {
 			markDirty();
 		}
@@ -125,8 +127,10 @@ public interface DoubleStackInventory extends Inventory {
 	 * and returns it. */
 	@Override
 	default ItemStack removeStack(int slot) {
-		ItemStack stack = Inventories.removeStack(getItems(), slot);
+		var stack = Inventories.removeStack(getItems(), slot);
+		
 		markDirty();
+		
 		return stack;
 	}
 
@@ -176,7 +180,7 @@ public interface DoubleStackInventory extends Inventory {
 		/** Returns this inventory's string representation. */
 		@Override
 		public String toString() {
-			AtomicInteger slot = new AtomicInteger(0);
+			var slot = new AtomicInteger(0);
 
 			return getItems().stream().map(stack -> String.format("%s - [%s]", slot.getAndIncrement(), stack.toString())).collect(Collectors.joining(", "));
 		}

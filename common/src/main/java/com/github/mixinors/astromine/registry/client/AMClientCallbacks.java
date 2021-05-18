@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.client.render.sky.SpaceSkyProperties;
-import com.github.mixinors.astromine.common.callback.SkyPropertiesEvents;
+import com.github.mixinors.astromine.common.event.SkyPropertiesEvents;
 import com.github.mixinors.astromine.common.item.HolographicConnectorItem;
 import com.github.mixinors.astromine.common.item.SpaceSuitItem;
 import com.github.mixinors.astromine.common.network.type.EnergyNetworkType;

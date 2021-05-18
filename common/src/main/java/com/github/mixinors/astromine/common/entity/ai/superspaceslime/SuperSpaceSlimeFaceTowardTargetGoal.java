@@ -42,25 +42,26 @@ public class SuperSpaceSlimeFaceTowardTargetGoal extends Goal {
 
 	public SuperSpaceSlimeFaceTowardTargetGoal(SuperSpaceSlimeEntity slime) {
 		this.slime = slime;
+		
 		this.setControls(EnumSet.of(Goal.Control.LOOK));
 	}
 
 	@Override
 	public boolean canStart() {
-		LivingEntity livingEntity = this.slime.getTarget();
+		var livingEntity = this.slime.getTarget();
 
 		if (livingEntity == null) {
 			return false;
 		} else if (!livingEntity.isAlive()) {
 			return false;
 		} else {
-			return (!(livingEntity instanceof PlayerEntity) || !((PlayerEntity) livingEntity).abilities.invulnerable) && this.slime.getMoveControl() instanceof SuperSpaceSlimeMoveControl;
+			return (!(livingEntity instanceof PlayerEntity playerEntity) || !playerEntity.abilities.invulnerable) && this.slime.getMoveControl() instanceof SuperSpaceSlimeMoveControl;
 		}
 	}
 
 	@Override
 	public boolean shouldContinue() {
-		LivingEntity livingEntity = this.slime.getTarget();
+		var livingEntity = this.slime.getTarget();
 
 		if (livingEntity == null) {
 			return false;
@@ -76,6 +77,7 @@ public class SuperSpaceSlimeFaceTowardTargetGoal extends Goal {
 	@Override
 	public void start() {
 		this.ticksLeft = 300;
+		
 		super.start();
 	}
 

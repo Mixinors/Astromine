@@ -30,7 +30,6 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import com.github.mixinors.astromine.common.entity.SuperSpaceSlimeEntity;
 
 public class SuperSpaceSlimeMoveControl extends MoveControl {
-
 	private final SuperSpaceSlimeEntity slime;
 	private float targetYaw;
 	private int ticksUntilJump;
@@ -55,6 +54,7 @@ public class SuperSpaceSlimeMoveControl extends MoveControl {
 
 			if (this.entity.isOnGround()) {
 				this.entity.setMovementSpeed((float) (this.speed * this.entity.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED)));
+				
 				if (this.ticksUntilJump-- <= 0) {
 					this.ticksUntilJump = this.slime.getTicksUntilNextJump();
 

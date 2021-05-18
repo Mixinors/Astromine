@@ -33,7 +33,6 @@ import com.github.mixinors.astromine.common.entity.SpaceSlimeEntity;
 import java.util.EnumSet;
 
 public class SpaceSlimeJumpHoverGoal extends Goal {
-
 	private final SpaceSlimeEntity slime;
 	private int ticksLeft;
 
@@ -44,7 +43,7 @@ public class SpaceSlimeJumpHoverGoal extends Goal {
 
 	@Override
 	public boolean canStart() {
-		// todo: ensure slime has space
+		// TODO: Ensure slime has enough available space.
 		return this.slime.getFloatingCooldown() <= 0 && this.slime.world.random.nextInt(10) == 0;
 	}
 
@@ -55,8 +54,9 @@ public class SpaceSlimeJumpHoverGoal extends Goal {
 
 	@Override
 	public void start() {
+		this.ticksLeft = 200;
 		this.slime.setFloating(true);
-		this.ticksLeft = 20 * 10;
+		
 		super.start();
 	}
 
@@ -65,12 +65,12 @@ public class SpaceSlimeJumpHoverGoal extends Goal {
 		this.slime.setFloating(false);
 		this.slime.setFloatingCooldown(500);
 		this.slime.setFloatingProgress(0);
+		
 		super.stop();
 	}
 
 	@Override
 	public void tick() {
-		// wait till slime is on ground
 		if (this.slime.isOnGround()) {
 			this.slime.move(MovementType.SELF, new Vec3d(0, 0.1, 0));
 		}

@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.common.component.world;
 
-import com.github.mixinors.astromine.common.component.ProtoComponent;
-import com.github.mixinors.astromine.common.component.ProtoServerTickingComponent;
+import com.github.mixinors.astromine.common.component.Component;
+import com.github.mixinors.astromine.common.component.ServerTickingComponent;
 import com.github.mixinors.astromine.registry.common.AMNetworks;
 
 import me.shedaniel.architectury.networking.NetworkManager;
@@ -53,13 +53,13 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * A {@link ProtoComponent} which stores information about
+ * A {@link Component} which stores information about
  * a {@link Chunk}'s atmosphere.
  * <p>
  * Serialization and deserialization methods are provided for:
  * - {@link CompoundTag} - through {@link #toTag(CompoundTag)} and {@link #fromTag(CompoundTag)}.
  */
-public final class ChunkAtmosphereComponent implements ProtoComponent, ProtoServerTickingComponent {
+public final class ChunkAtmosphereComponent implements Component, ServerTickingComponent {
 	private final List<Direction> directions = Lists.newArrayList(Direction.values());
 
 	private final Map<BlockPos, FluidVolume> volumes = new ConcurrentHashMap<>();

@@ -24,14 +24,13 @@
 
 package com.github.mixinors.astromine.common.component.general.base;
 
-import com.github.mixinors.astromine.common.component.general.miscellaneous.IdentifiableComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleAutoSyncedItemComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleDirectionalItemComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleItemComponent;
+import com.github.mixinors.astromine.common.component.general.miscellaneous.NamedComponent;
+import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
 import com.github.mixinors.astromine.common.component.general.compatibility.ItemComponentFromInventory;
 import com.github.mixinors.astromine.common.component.general.compatibility.ItemComponentFromSidedInventory;
 import com.github.mixinors.astromine.common.component.general.provider.ItemComponentProvider;
 import com.github.mixinors.astromine.common.util.StackUtils;
+import me.shedaniel.architectury.utils.NbtType;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.Item;
@@ -40,7 +39,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Pair;
 import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.component.general.compatibility.InventoryFromItemComponent;
@@ -58,40 +56,52 @@ import java.util.stream.Collectors;
 import static java.lang.Integer.min;
 
 /**
- * A {@link IdentifiableComponent} representing an item reserve.
+ * A {@link NamedComponent} representing an item reserve.
  *
  * Serialization and deserialization methods are provided for:
  * - {@link CompoundTag} - through {@link #toTag(CompoundTag)} and {@link #fromTag(CompoundTag)}.
  */
-public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponent {
+public interface ItemComponent extends Iterable<ItemStack>, NamedComponent {
 	/** Instantiates an {@link ItemComponent}. */
 	static ItemComponent of(int size) {
-		return SimpleItemComponent.of(size);
+		return new SimpleItemComponent(size);
 	}
 
 	/** Instantiates an {@link ItemComponent}. */
 	static ItemComponent of(ItemStack... stacks) {
-		return SimpleItemComponent.of(stacks);
+		return new SimpleItemComponent(stacks);
 	}
-
-	/** Instantiates an {@link ItemComponent} with autoamtic synchronization. */
+	
+	/** Instantiates an {@link ItemComponent} associated with a {@link TransferComponent} provider. */
+	static <V> ItemComponent of(V v, int size) {
+		return new SimpleDirectionalItemComponent(v, size);
+	}
+	
+	/** Instantiates an {@link ItemComponent} associated with a {@link TransferComponent} provider. */
+	public static <V> ItemComponent of(V v, ItemStack... stacks) {
+		return new SimpleDirectionalItemComponent(v, stacks);
+	}
+	
+	/** Instantiates an {@link ItemComponent} with automatic synchronization. */
 	static ItemComponent ofSynced(int size) {
-		return SimpleAutoSyncedItemComponent.of(size);
+		return new SimpleAutoSyncedItemComponent(size);
 	}
-
+	
 	/** Instantiates an {@link ItemComponent} with automatic synchronization. */
 	static ItemComponent ofSynced(ItemStack... stacks) {
-		return SimpleAutoSyncedItemComponent.of(stacks);
+		return new SimpleAutoSyncedItemComponent(stacks);
 	}
-
-	/** Instantiates an {@link ItemComponent} with directional insertion and extraction. */
-	static <V> ItemComponent ofDirectional(V v, int size) {
-		return SimpleDirectionalItemComponent.of(v, size);
+	
+	/** Instantiates an {@link ItemComponent} associated with a {@link TransferComponent} provider,
+	 *  with automatic synchronization. */
+	static <V> ItemComponent ofSynced(V v, int size) {
+		return new SimpleAutoSyncedDirectionalItemComponent(v, size);
 	}
-
-	/** Instantiates an {@link ItemComponent} with directional insertion and extraction. */
-	static <V> ItemComponent ofDirectional(V v, ItemStack... stacks) {
-		return SimpleDirectionalItemComponent.of(v, stacks);
+	
+	/** Instantiates an {@link ItemComponent} associated with a {@link TransferComponent} provider,
+	 *  with automatic synchronization. */
+	static <V> ItemComponent ofSynced(V v, ItemStack... stacks) {
+		return new SimpleAutoSyncedDirectionalItemComponent(v, stacks);
 	}
 
 	/** Returns this component's {@link Item} symbol. */
@@ -170,7 +180,8 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 	/** Returns the first stack extractable through the given direction. */
 	@Nullable
 	default ItemStack getFirstExtractableStack(@Nullable Direction direction) {
-		List<ItemStack> stacks = getExtractableStacks(direction);
+		var stacks = getExtractableStacks(direction);
+		
 		stacks.removeIf(ItemStack::isEmpty);
 		if (!stacks.isEmpty())
 			return stacks.get(0);
@@ -181,7 +192,8 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 	 * extractable through the specified direction. */
 	@Nullable
 	default ItemStack getFirstExtractableStack(@Nullable Direction direction, Predicate<ItemStack> predicate) {
-		List<ItemStack> stacks = getExtractableStacks(direction, predicate);
+		var stacks = getExtractableStacks(direction, predicate);
+		
 		if (!stacks.isEmpty())
 			return stacks.get(0);
 		else return null;
@@ -191,7 +203,8 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 	 * which accepts the specified volume. */
 	@Nullable
 	default ItemStack getFirstInsertableStack(@Nullable Direction direction, ItemStack Stack) {
-		List<ItemStack> stacks = getInsertableStacks(direction, Stack);
+		var stacks = getInsertableStacks(direction, Stack);
+		
 		if (!stacks.isEmpty())
 			return stacks.get(0);
 		else return null;
@@ -201,30 +214,31 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 	 * insertable through the specified direction which accepts the supplied stack. */
 	@Nullable
 	default ItemStack getFirstInsertableStack(@Nullable Direction direction, ItemStack Stack, Predicate<ItemStack> predicate) {
-		List<ItemStack> Stacks = getInsertableStacks(direction, Stack, predicate);
-		if (!Stacks.isEmpty())
-			return Stacks.get(0);
+		var stacks = getInsertableStacks(direction, Stack, predicate);
+		
+		if (!stacks.isEmpty())
+			return stacks.get(0);
 		else return null;
 	}
 
 	/** Transfers all transferable content from this component
 	 * to the target component. */
 	default void into(ItemComponent target, int count, Direction extractionDirection, Direction insertionDirection) {
-		for (int sourceSlot = 0; sourceSlot < getSize(); ++sourceSlot) {
-			ItemStack sourceStack = getStack(sourceSlot);
+		for (var sourceSlot = 0; sourceSlot < getSize(); ++sourceSlot) {
+			var sourceStack = getStack(sourceSlot);
 
 			if (canExtract(extractionDirection, sourceStack, sourceSlot)) {
-				for (int targetSlot = 0; targetSlot < target.getSize(); ++targetSlot) {
-					ItemStack targetStack = target.getStack(targetSlot);
+				for (var targetSlot = 0; targetSlot < target.getSize(); ++targetSlot) {
+					var targetStack = target.getStack(targetSlot);
 
 					if (!sourceStack.isEmpty() && count > 0) {
-						ItemStack insertionStack = sourceStack.copy();
+						var insertionStack = sourceStack.copy();
 						insertionStack.setCount(min(min(count, insertionStack.getCount()), targetStack.getMaxCount() - targetStack.getCount()));
 
 						int insertionCount = insertionStack.getCount();
 
 						if (target.canInsert(insertionDirection, insertionStack, targetSlot)) {
-							Pair<ItemStack, ItemStack> merge = StackUtils.merge(insertionStack, targetStack);
+							var merge = StackUtils.merge(insertionStack, targetStack);
 
 							sourceStack.decrement(insertionCount - merge.getLeft().getCount());
 							setStack(sourceSlot, sourceStack);
@@ -283,7 +297,7 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 
 	/** Removes the {@link ItemStack} at the given slot, returning it. */
 	default ItemStack removeStack(int slot) {
-		ItemStack stack = getContents().remove(slot);
+		var stack = getContents().remove(slot);
 
 		updateListeners();
 
@@ -313,18 +327,18 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 	/** Serializes this {@link ItemComponent} to a {@link CompoundTag}. */
 	@Override
 	default void toTag(CompoundTag tag) {
-		ListTag listTag = new ListTag();
+		var listTag = new ListTag();
 
-		for (int i = 0; i < getSize(); ++i) {
-			ItemStack stack = getStack(i);
+		for (var i = 0; i < getSize(); ++i) {
+			var stack = getStack(i);
 
 			listTag.add(i, stack.toTag(new CompoundTag()));
 		}
 
-		CompoundTag dataTag = new CompoundTag();
+		var dataTag = new CompoundTag();
 
-		dataTag.putInt("size", getSize());
-		dataTag.put("stacks", listTag);
+		dataTag.putInt("Size", getSize());
+		dataTag.put("Stacks", listTag);
 
 		tag.put("ItemComponent", dataTag);
 	}
@@ -332,14 +346,14 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 	/** Deserializes this {@link ItemComponent} from  a {@link CompoundTag}. */
 	@Override
 	default void fromTag(CompoundTag tag) {
-		CompoundTag dataTag = tag.getCompound("ItemComponent");
+		var dataTag = tag.getCompound("ItemComponent");
 
-		int size = dataTag.getInt("size");
+		var size = dataTag.getInt("Size");
 
-		ListTag stacksTag = dataTag.getList("stacks", 10);
+		var stacksTag = dataTag.getList("Stacks", NbtType.COMPOUND);
 
-		for (int i = 0; i < size; ++i) {
-			CompoundTag stackTag = stacksTag.getCompound(i);
+		for (var i = 0; i < size; ++i) {
+			var stackTag = stacksTag.getCompound(i);
 
 			setStack(i, ItemStack.fromTag(stackTag));
 		}

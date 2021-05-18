@@ -38,7 +38,7 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.level.storage.LevelStorage;
 import com.mojang.datafixers.DataFixer;
 
-import com.github.mixinors.astromine.common.callback.ServerChunkManagerEvents;
+import com.github.mixinors.astromine.common.event.ServerChunkManagerEvents;
 
 import java.util.concurrent.Executor;
 import java.util.function.Supplier;

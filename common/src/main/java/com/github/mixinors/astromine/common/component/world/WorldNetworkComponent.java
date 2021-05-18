@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.component.world;
 
-import com.github.mixinors.astromine.common.component.ProtoComponent;
+import com.github.mixinors.astromine.common.component.Component;
 import me.shedaniel.architectury.utils.NbtType;
 
 import net.minecraft.nbt.CompoundTag;
@@ -47,13 +47,13 @@ import com.google.common.collect.Sets;
 import java.util.Set;
 
 /**
- * A {@link ProtoComponent} which stores information about
+ * A {@link Component} which stores information about
  * a {@link World}'s networks.
  *
  * Serialization and deserialization methods are provided for:
  * - {@link CompoundTag} - through {@link #toTag(CompoundTag)} and {@link #fromTag(CompoundTag)}.
  */
-public final class WorldNetworkComponent implements ProtoComponent, Tickable {
+public final class WorldNetworkComponent implements Component, Tickable {
 	private final Set<NetworkInstance> instances = Sets.newConcurrentHashSet();
 
 	private final World world;

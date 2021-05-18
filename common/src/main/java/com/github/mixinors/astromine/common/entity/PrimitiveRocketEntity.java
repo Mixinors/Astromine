@@ -24,9 +24,10 @@
 
 package com.github.mixinors.astromine.common.entity;
 
-import com.github.mixinors.astromine.common.component.general.*;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
+import com.github.mixinors.astromine.common.component.general.base.synced.SimpleAutoSyncedFluidComponent;
+import com.github.mixinors.astromine.common.component.general.base.synced.SimpleAutoSyncedItemComponent;
 import com.github.mixinors.astromine.common.entity.base.RocketEntity;
 import com.github.mixinors.astromine.registry.common.AMDimensions;
 import com.github.mixinors.astromine.registry.common.AMFluids;
@@ -73,7 +74,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 
 	@Override
 	public FluidComponent createFluidComponent() {
-		FluidComponent fluidComponent = SimpleAutoSyncedFluidComponent.of(2);
+		var fluidComponent = FluidComponent.ofSynced(2);
 		fluidComponent.getFirst().setSize(FluidVolume.BUCKET * 16L);
 		fluidComponent.getSecond().setSize(FluidVolume.BUCKET * 16L);
 		return fluidComponent;
@@ -81,7 +82,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 
 	@Override
 	public ItemComponent createItemComponent() {
-		return SimpleAutoSyncedItemComponent.of(4);
+		return ItemComponent.ofSynced(4);
 	}
 
 	@Override
@@ -137,7 +138,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 
 	@Override
 	public Packet<?> createSpawnPacket() {
-		PacketByteBuf packet = new PacketByteBuf(Unpooled.buffer());
+		var packet = new PacketByteBuf(Unpooled.buffer());
 
 		packet.writeDouble(this.getX());
 		packet.writeDouble(this.getY());

@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.item;
 
 import com.github.mixinors.astromine.common.util.ClientUtils;
+import com.github.mixinors.astromine.mixin.common.RenderPhaseAccessor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -80,12 +81,14 @@ public class AnimatedArmorItem extends ArmorItem {
 
 		/** Instantiates a {@link Texture}. */
 		public AnimatedTexturePhase(Identifier id, int frames) {
-			beginAction = () -> {
+			var accesor = (RenderPhaseAccessor) (Object) this;
+			
+			accesor.setBeginAction(() -> {
 				RenderSystem.enableTexture();
 
-				TextureManager textureManager = ClientUtils.getInstance().getTextureManager();
+				var textureManager = ClientUtils.getInstance().getTextureManager();
 
-				AbstractTexture texture = textureManager.getTexture(id);
+				var texture = textureManager.getTexture(id);
 
 				if (!(texture instanceof AnimatedTexture)) {
 					if (texture != null) {
@@ -104,9 +107,9 @@ public class AnimatedArmorItem extends ArmorItem {
 				}
 
 				texture.bindTexture();
-			};
-
-			endAction = () -> {};
+			});
+			
+			accesor.setEndAction(() -> {});
 
 			this.id = Optional.of(id);
 		}
@@ -123,7 +126,7 @@ public class AnimatedArmorItem extends ArmorItem {
 			if (this == object) {
 				return true;
 			} else if (object != null && this.getClass() == object.getClass()) {
-				AnimatedTexturePhase animatedTexturePhase = (AnimatedTexturePhase) object;
+				var animatedTexturePhase = (AnimatedTexturePhase) object;
 
 				return this.id.equals(animatedTexturePhase.id);
 			} else {
@@ -177,7 +180,7 @@ public class AnimatedArmorItem extends ArmorItem {
 			public void load(ResourceManager manager) throws IOException {
 				close();
 
-				try (Resource resource = manager.getResource(id)) {
+				try (var resource = manager.getResource(id)) {
 					image = NativeImage.read(resource.getInputStream());
 				}
 
@@ -224,8 +227,8 @@ public class AnimatedArmorItem extends ArmorItem {
 
 				int yOffset = (tick % frames) * placeholderTexture.getHeight();
 
-				for (int x = 0; x < placeholderTexture.getWidth(); x++) {
-					for (int y = 0; y < placeholderTexture.getHeight(); y++) {
+				for (var x = 0; x < placeholderTexture.getWidth(); x++) {
+					for (var y = 0; y < placeholderTexture.getHeight(); y++) {
 						placeholderTexture.setPixelColor(x, y, image.getPixelColor(x, y + yOffset));
 					}
 				}

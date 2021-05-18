@@ -24,15 +24,14 @@
 
 package com.github.mixinors.astromine.common.component.general.base;
 
-import com.github.mixinors.astromine.common.component.general.SimpleAutoSyncedFluidComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleDirectionalFluidComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleFluidComponent;
-import com.github.mixinors.astromine.common.component.general.miscellaneous.IdentifiableComponent;
+import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
+import com.github.mixinors.astromine.common.component.general.miscellaneous.NamedComponent;
 import com.github.mixinors.astromine.common.component.general.provider.FluidComponentProvider;
 import com.github.mixinors.astromine.common.util.VolumeUtils;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import com.github.mixinors.astromine.mixin.common.BucketItemAccessor;
 import com.github.mixinors.astromine.registry.common.AMItems;
+import me.shedaniel.architectury.utils.NbtType;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
@@ -44,7 +43,6 @@ import net.minecraft.potion.PotionUtil;
 import net.minecraft.potion.Potions;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Pair;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 
@@ -59,40 +57,52 @@ import java.util.stream.Collectors;
 import static java.lang.Math.min;
 
 /**
- * A {@link IdentifiableComponent} representing a fluid reserve.
+ * A {@link NamedComponent} representing a fluid reserve.
  *
  * Serialization and deserialization methods are provided for:
  * - {@link CompoundTag} - through {@link #toTag(CompoundTag)} and {@link #fromTag(CompoundTag)}.
  */
-public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableComponent {
+public interface FluidComponent extends Iterable<FluidVolume>, NamedComponent {
 	/** Instantiates a {@link FluidComponent}. */
 	static FluidComponent of(int size) {
-		return SimpleFluidComponent.of(size);
+		return new SimpleFluidComponent(size);
 	}
-
+	
 	/** Instantiates a {@link FluidComponent}. */
 	static FluidComponent of(FluidVolume... volumes) {
-		return SimpleFluidComponent.of(volumes);
+		return new SimpleFluidComponent(volumes);
 	}
-
+	
+	/** Instantiates a {@link FluidComponent} associated with a {@link TransferComponent} provider. */
+	static <V> FluidComponent of(V v, int size) {
+		return new SimpleDirectionalFluidComponent(v, size);
+	}
+	
+	/** Instantiates a {@link FluidComponent} associated with a {@link TransferComponent} provider. */
+	public static <V> FluidComponent of(V v, FluidVolume... volumes) {
+		return new SimpleDirectionalFluidComponent(v, volumes);
+	}
+	
 	/** Instantiates a {@link FluidComponent} with automatic synchronization. */
 	static FluidComponent ofSynced(int size) {
-		return SimpleAutoSyncedFluidComponent.of(size);
+		return new SimpleAutoSyncedFluidComponent(size);
 	}
-
+	
 	/** Instantiates a {@link FluidComponent} with automatic synchronization. */
 	static FluidComponent ofSynced(FluidVolume... volumes) {
-		return SimpleAutoSyncedFluidComponent.of(volumes);
+		return new SimpleAutoSyncedFluidComponent(volumes);
 	}
-
-	/** Instantiates a {@link FluidComponent} with directional insertion and extraction. */
-	static <V> FluidComponent ofDirectional(V v, int size) {
-		return SimpleDirectionalFluidComponent.of(v, size);
+	
+	/** Instantiates a {@link FluidComponent} associated with a {@link TransferComponent} provider,
+	 *  with automatic synchronization. */
+	static <V> FluidComponent ofSynced(V v, int size) {
+		return new SimpleAutoSyncedDirectionalFluidComponent(v, size);
 	}
-
-	/** Instantiates a {@link FluidComponent} with directional insertion and extraction. */
-	static <V> FluidComponent ofDirectional(V v, FluidVolume... volumes) {
-		return SimpleDirectionalFluidComponent.of(v, volumes);
+	
+	/** Instantiates a {@link FluidComponent} associated with a {@link TransferComponent} provider,
+	 *  with automatic synchronization. */
+	static <V> FluidComponent ofSynced(V v, FluidVolume... volumes) {
+		return new SimpleAutoSyncedDirectionalFluidComponent(v, volumes);
 	}
 
 	/** Returns this component's {@link Item} symbol. */
@@ -171,7 +181,8 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 	/** Returns the first volume extractable through the given direction. */
 	@Nullable
 	default FluidVolume getFirstExtractableVolume(@Nullable Direction direction) {
-		List<FluidVolume> volumes = getExtractableVolumes(direction);
+		var volumes = getExtractableVolumes(direction);
+		
 		volumes.removeIf(FluidVolume::isEmpty);
 		if (!volumes.isEmpty())
 			return volumes.get(0);
@@ -182,7 +193,8 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 	 * extractable through the specified direction. */
 	@Nullable
 	default FluidVolume getFirstExtractableVolume(@Nullable Direction direction, Predicate<FluidVolume> predicate) {
-		List<FluidVolume> volumes = getExtractableVolumes(direction, predicate);
+		var volumes = getExtractableVolumes(direction, predicate);
+		
 		if (!volumes.isEmpty())
 			return volumes.get(0);
 		else return null;
@@ -192,7 +204,8 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 	 * which accepts the specified volume. */
 	@Nullable
 	default FluidVolume getFirstInsertableVolume(@Nullable Direction direction, FluidVolume volume) {
-		List<FluidVolume> volumes = getInsertableVolumes(direction, volume);
+		var volumes = getInsertableVolumes(direction, volume);
+		
 		if (!volumes.isEmpty())
 			return volumes.get(0);
 		else return null;
@@ -202,7 +215,8 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 	 * insertable through the specified direction which accepts the supplied volume. */
 	@Nullable
 	default FluidVolume getFirstInsertableVolume(Direction direction, FluidVolume volume, Predicate<FluidVolume> predicate) {
-		List<FluidVolume> volumes = getInsertableVolumes(direction, volume, predicate);
+		var volumes = getInsertableVolumes(direction, volume, predicate);
+		
 		if (!volumes.isEmpty())
 			return volumes.get(0);
 		else return null;
@@ -211,21 +225,21 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 	/** Transfers all transferable content from this component
 	 * to the target component. */
 	default void into(FluidComponent target, long count, Direction extractionDirection, Direction insertionDirection) {
-		for (int sourceSlot = 0; sourceSlot < getSize(); ++sourceSlot) {
-			FluidVolume sourceVolume = getVolume(sourceSlot);
+		for (var sourceSlot = 0; sourceSlot < getSize(); ++sourceSlot) {
+			var sourceVolume = getVolume(sourceSlot);
 
 			if (canExtract(extractionDirection, sourceVolume, sourceSlot)) {
-				for (int targetSlot = 0; targetSlot < target.getSize(); ++targetSlot) {
-					FluidVolume targetVolume = target.getVolume(targetSlot);
+				for (var targetSlot = 0; targetSlot < target.getSize(); ++targetSlot) {
+					var targetVolume = target.getVolume(targetSlot);
 
 					if (!sourceVolume.isEmpty() && count > 0) {
-						FluidVolume insertionVolume = sourceVolume.copy();
+						var insertionVolume = (FluidVolume) sourceVolume.copy();
 						insertionVolume.setAmount(min(min(count, insertionVolume.getAmount()), targetVolume.getSize() - targetVolume.getAmount()));
 
-						long insertionCount = insertionVolume.getAmount();
+						var insertionCount = insertionVolume.getAmount();
 
 						if (target.canInsert(insertionDirection, insertionVolume, targetSlot)) {
-							Pair<FluidVolume, FluidVolume> merge = VolumeUtils.merge(insertionVolume, targetVolume);
+							var merge = VolumeUtils.merge(insertionVolume, targetVolume);
 
 							sourceVolume.take(insertionCount - merge.getLeft().getAmount());
 							setVolume(sourceSlot, sourceVolume);
@@ -289,7 +303,7 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 
 	/** Removes the volume at the given slot, returning it. */
 	default FluidVolume removeVolume(int slot) {
-		FluidVolume volume = getVolume(slot);
+		var volume = getVolume(slot);
 
 		setVolume(slot, FluidVolume.ofEmpty());
 
@@ -317,18 +331,18 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 	/** Serializes this {@link FluidComponent} to a {@link CompoundTag}. */
 	@Override
 	default void toTag(CompoundTag tag) {
-		ListTag listTag = new ListTag();
+		var listTag = new ListTag();
 
-		for (int i = 0; i < getSize(); ++i) {
+		for (var i = 0; i < getSize(); ++i) {
 			FluidVolume volume = getVolume(i);
 
 			listTag.add(i, volume.toTag());
 		}
 
-		CompoundTag dataTag = new CompoundTag();
+		var dataTag = new CompoundTag();
 
-		dataTag.putInt("size", getSize());
-		dataTag.put("volumes", listTag);
+		dataTag.putInt("Size", getSize());
+		dataTag.put("Volumes", listTag);
 
 		tag.put("FluidComponent", dataTag);
 	}
@@ -336,14 +350,14 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 	/** Deserializes this {@link FluidComponent} from a {@link CompoundTag}. */
 	@Override
 	default void fromTag(CompoundTag tag) {
-		CompoundTag dataTag = tag.getCompound("FluidComponent");
+		var dataTag = tag.getCompound("FluidComponent");
 
-		int size = dataTag.getInt("size");
+		var size = dataTag.getInt("Size");
 
-		ListTag volumesTag = dataTag.getList("volumes", 10);
+		var volumesTag = dataTag.getList("Volumes", NbtType.COMPOUND);
 
-		for (int i = 0; i < size; ++i) {
-			CompoundTag volumeTag = volumesTag.getCompound(i);
+		for (var i = 0; i < size; ++i) {
+			var volumeTag = volumesTag.getCompound(i);
 
 			setVolume(i, FluidVolume.fromTag(volumeTag));
 		}
@@ -354,17 +368,14 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 	static <V> FluidComponent get(V v) {
 		if (v instanceof FluidComponentProvider) {
 			return ((FluidComponentProvider) v).getFluidComponent();
-		} else if (v instanceof ItemStack) {
-			ItemStack stack = (ItemStack) v;
-			Item item = stack.getItem();
+		} else if (v instanceof ItemStack stack) {
+			var item = stack.getItem();
 
-			if (item instanceof BucketItem) {
-				BucketItem bucket = (BucketItem) item;
-
-				return SimpleFluidComponent.of(FluidVolume.of(FluidVolume.BUCKET, ((BucketItemAccessor) bucket).getFluid()));
+			if (item instanceof BucketItem bucket) {
+				return of(FluidVolume.of(FluidVolume.BUCKET, ((BucketItemAccessor) bucket).getFluid()));
 			} else if (item instanceof PotionItem) {
 				if (PotionUtil.getPotion(stack).equals(Potions.WATER))
-					return SimpleFluidComponent.of(FluidVolume.of(FluidVolume.BOTTLE, Fluids.WATER));
+					return of(FluidVolume.of(FluidVolume.BOTTLE, Fluids.WATER));
 			}
 		}
 		

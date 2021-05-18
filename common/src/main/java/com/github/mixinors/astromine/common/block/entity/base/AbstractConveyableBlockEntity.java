@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.block.entity.base;
 
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleItemComponent;
+import com.github.mixinors.astromine.common.component.general.base.SimpleItemComponent;
 import com.github.mixinors.astromine.common.util.StackUtils;
 
 import net.minecraft.block.BlockState;

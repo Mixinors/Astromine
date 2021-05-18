@@ -26,8 +26,6 @@ package com.github.mixinors.astromine.common.item;
 
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.registry.common.AMItems;
-import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
-
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -42,18 +40,15 @@ import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.item.base.EnergyVolumeItem;
 import com.github.mixinors.astromine.registry.common.AMConfig;
-import team.reborn.energy.Energy;
-import team.reborn.energy.EnergyHandler;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
-
-public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttributeTool {
-	private static final Multimap<EntityAttribute, EntityAttributeModifier> EAMS = HashMultimap.create();
+public class GravityGauntletItem extends EnergyVolumeItem {
+	private static final Multimap<EntityAttribute, EntityAttributeModifier> ENTITY_ATTRIBUTE_MODIFIERS = HashMultimap.create();
 
 	static {
-		EAMS.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "attack", 4f, EntityAttributeModifier.Operation.ADDITION));
+		ENTITY_ATTRIBUTE_MODIFIERS.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "attack", 4f, EntityAttributeModifier.Operation.ADDITION));
 	}
 
 	public GravityGauntletItem(Settings settings, double size) {
@@ -62,44 +57,48 @@ public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttr
 
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-		/** Reimplementation must use {@link EnergyComponent}. */
-		throw new UnsupportedOperationException("Pending re-implementation!");
+		var stack = user.getStackInHand(hand);
 		
-		// ItemStack stack = user.getStackInHand(hand);
-		// if (hand == Hand.OFF_HAND)
-		// 	return TypedActionResult.pass(stack);
-		// ItemStack offStack = user.getStackInHand(Hand.OFF_HAND);
-		// if (offStack.getItem() == AMItems.GRAVITY_GAUNTLET.get()) {
-		// 	EnergyHandler selfHandler = Energy.of(stack);
-		// 	EnergyHandler otherHandler = Energy.of(offStack);
-		// 	if (selfHandler.getEnergy() > AMConfig.get().gravityGauntletConsumed && otherHandler.getEnergy() > AMConfig.get().gravityGauntletConsumed) {
-		// 		user.setCurrentHand(hand);
-		// 		return TypedActionResult.success(stack);
-		// 	}
-		// }
-		// return super.use(world, user, hand);
+		if (hand == Hand.OFF_HAND)
+			return TypedActionResult.pass(stack);
+		
+		var offStack = user.getStackInHand(Hand.OFF_HAND);
+		
+		if (offStack.getItem() == AMItems.GRAVITY_GAUNTLET.get()) {
+			var ourEnergyComponent = EnergyComponent.get(stack);
+			var theirEnergyComponent = EnergyComponent.get(offStack);
+			
+			if (ourEnergyComponent.getAmount() > AMConfig.get().gravityGauntletConsumed && theirEnergyComponent.getAmount() > AMConfig.get().gravityGauntletConsumed) {
+				user.setCurrentHand(hand);
+				return TypedActionResult.success(stack);
+			}
+		}
+		return super.use(world, user, hand);
 	}
 
 	@Override
 	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
-		/** Reimplementation must use {@link EnergyComponent}. */
-		throw new UnsupportedOperationException("Pending re-implementation!");
+		if (world.isClient)
+			return stack;
 		
-		// if (world.isClient)
-		// 	return stack;
-		// ItemStack offStack = user.getStackInHand(Hand.OFF_HAND);
-		// if (offStack.getItem() == AMItems.GRAVITY_GAUNTLET.get()) {
-		// 	EnergyHandler selfHandler = Energy.of(stack);
-		// 	EnergyHandler otherHandler = Energy.of(offStack);
-		// 	if (selfHandler.getEnergy() > AMConfig.get().gravityGauntletConsumed && otherHandler.getEnergy() > AMConfig.get().gravityGauntletConsumed) {
-		// 		selfHandler.extract(AMConfig.get().gravityGauntletConsumed);
-		// 		otherHandler.extract(AMConfig.get().gravityGauntletConsumed);
-		// 		stack.getOrCreateTag().putBoolean("Charged", true);
-		// 		offStack.getOrCreateTag().putBoolean("Charged", true);
-		// 		return stack;
-		// 	}
-		// }
-		// return super.finishUsing(stack, world, user);
+		var offStack = user.getStackInHand(Hand.OFF_HAND);
+		
+		if (offStack.getItem() == AMItems.GRAVITY_GAUNTLET.get()) {
+			var ourEnergyComponent = EnergyComponent.get(stack);
+			var theirEnergyComponent = EnergyComponent.get(offStack);
+			
+			if (ourEnergyComponent.getAmount() > AMConfig.get().gravityGauntletConsumed && theirEnergyComponent.getAmount() > AMConfig.get().gravityGauntletConsumed) {
+				ourEnergyComponent.take(AMConfig.get().gravityGauntletConsumed);
+				theirEnergyComponent.take(AMConfig.get().gravityGauntletConsumed);
+				
+				stack.getOrCreateTag().putBoolean("Charged", true);
+				offStack.getOrCreateTag().putBoolean("Charged", true);
+				
+				return stack;
+			}
+		}
+		
+		return super.finishUsing(stack, world, user);
 	}
 
 	@Override
@@ -121,10 +120,13 @@ public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttr
 		
 		if (offStack.getItem() == AMItems.GRAVITY_GAUNTLET.get()) {
 			if (stack.getOrCreateTag().getBoolean("Charged") && offStack.getOrCreateTag().getBoolean("Charged")) {
-				target.takeKnockback(1, attacker.getX() - target.getX(), attacker.getZ() - target.getZ());
-				target.addVelocity(0f, 0.5f, 0f);
+				target.takeKnockback(1.0F, attacker.getX() - target.getX(), attacker.getZ() - target.getZ());
+				
+				target.addVelocity(0.0F, 0.5F, 0.0F);
+				
 				stack.getOrCreateTag().putBoolean("Charged", false);
 				offStack.getOrCreateTag().putBoolean("Charged", false);
+				
 				return true;
 			}
 		}
@@ -142,7 +144,7 @@ public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttr
 	@Override
 	public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot) {
 		if (slot == EquipmentSlot.MAINHAND) {
-			return EAMS;
+			return ENTITY_ATTRIBUTE_MODIFIERS;
 		}
 		
 		return super.getAttributeModifiers(slot);

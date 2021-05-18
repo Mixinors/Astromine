@@ -24,7 +24,8 @@
 
 package com.github.mixinors.astromine.common.item;
 
-import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
+import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
+import com.github.mixinors.astromine.mixin.common.PickaxeItemAccessor;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EquipmentSlot;
@@ -33,36 +34,31 @@ import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.*;
-import net.minecraft.tag.Tag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.item.base.EnergyVolumeItem;
 import com.github.mixinors.astromine.registry.common.AMConfig;
-import team.reborn.energy.Energy;
-import team.reborn.energy.EnergyHandler;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
-public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool, Vanishable, EnchantableToolItem {
-	private final int radius;
+public class DrillItem extends EnergyVolumeItem implements Vanishable, EnchantableToolItem {
 	private final ToolMaterial material;
 	private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
 	
 	private final PickaxeItem pickaxe;
 	private final ShovelItem shovel;
 
-	public DrillItem(ToolMaterial material, float attackDamage, float attackSpeed, int radius, double size, Settings settings) {
+	public DrillItem(ToolMaterial material, float attackDamage, float attackSpeed, double size, Settings settings) {
 		super(settings, size);
 		
-		this.pickaxe = new PickaxeItem(material, (int) attackDamage, attackSpeed, settings);
+		this.pickaxe = PickaxeItemAccessor.init(material, (int) attackDamage, attackSpeed, settings);
 		this.shovel = new ShovelItem(material, attackDamage, attackSpeed, settings);
 		
-		this.radius = radius;
 		this.material = material;
 
-		ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
+		var builder = ImmutableMultimap.<EntityAttribute, EntityAttributeModifier>builder();
 
 		builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Tool modifier", attackDamage, EntityAttributeModifier.Operation.ADDITION));
 		builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Tool modifier", attackSpeed, EntityAttributeModifier.Operation.ADDITION));
@@ -78,8 +74,8 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 	@Override
 	public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		if (!target.world.isClient) {
-			EnergyHandler energy = Energy.of(stack);
-			energy.use(getEnergy() * AMConfig.get().drillEntityHitMultiplier);
+			var energyComponent = EnergyComponent.get(stack);
+			energyComponent.take(getEnergyConsumed() * AMConfig.get().drillEntityHitMultiplier);
 		}
 
 		return true;
@@ -88,8 +84,8 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 	@Override
 	public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
 		if (!world.isClient && state.getHardness(world, pos) != 0.0F) {
-			EnergyHandler energy = Energy.of(stack);
-			energy.use(getEnergy());
+			var energyComponent = EnergyComponent.get(stack);
+			energyComponent.take(getEnergyConsumed());
 		}
 
 		return true;
@@ -99,16 +95,6 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 	public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot) {
 		return slot == EquipmentSlot.MAINHAND ? this.attributeModifiers : super.getAttributeModifiers(slot);
 	}
-
-	@Override
-	public float getMiningSpeedMultiplier(Tag<Item> tag, BlockState state, ItemStack stack, LivingEntity user) {
-		return material.getMiningSpeedMultiplier();
-	}
-
-	@Override
-	public int getMiningLevel(Tag<Item> tag, BlockState state, ItemStack stack, LivingEntity user) {
-		return material.getMiningLevel();
-	}
 	
 	@Override
 	public boolean isEffectiveOn(BlockState state) {
@@ -116,11 +102,6 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 		float shovelSpeed = shovel.getMiningSpeedMultiplier(ItemStack.EMPTY, state);
 		
 		return pickaxeSpeed > 1.0F || shovelSpeed > 1.0F;
-	}
-	
-	@Override
-	public float postProcessMiningSpeed(Tag<Item> tag, BlockState state, ItemStack stack, LivingEntity user, float currentSpeed, boolean isEffective) {
-		return Energy.of(stack).getEnergy() <= getEnergy() ? 0F : currentSpeed;
 	}
 
 	@Override
@@ -130,8 +111,25 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 		
 		return Math.max(pickaxeSpeed, shovelSpeed);
 	}
-
-	public double getEnergy() {
+	
+	private double getEnergyConsumed() {
 		return AMConfig.get().drillConsumed * material.getMiningSpeedMultiplier();
 	}
+	
+	// TODO: Reimplement this on Fabric module!
+	
+//	@Override
+//	public float postProcessMiningSpeed(Tag<Item> tag, BlockState state, ItemStack stack, LivingEntity user, float currentSpeed, boolean isEffective) {
+//		return Energy.of(stack).getEnergy() <= getEnergy() ? 0F : currentSpeed;
+//	}
+//
+//	@Override
+//	public float getMiningSpeedMultiplier(Tag<Item> tag, BlockState state, ItemStack stack, LivingEntity user) {
+//		return material.getMiningSpeedMultiplier();
+//	}
+//
+//	@Override
+//	public int getMiningLevel(Tag<Item> tag, BlockState state, ItemStack stack, LivingEntity user) {
+//		return material.getMiningLevel();
+//	}
 }

@@ -36,14 +36,16 @@ public class SuperSpaceSlimeSwimmingGoal extends Goal {
 
 	public SuperSpaceSlimeSwimmingGoal(SuperSpaceSlimeEntity slime) {
 		this.slime = slime;
+		
 		this.setControls(EnumSet.of(Goal.Control.JUMP, Goal.Control.MOVE));
+		
 		slime.getNavigation().setCanSwim(true);
 	}
 
 	@Override
 	public boolean canStart() {
-		boolean validState = this.slime.isTouchingWater() || this.slime.isInLava();
-		boolean hasSlimeMoveControls = this.slime.getMoveControl() instanceof SuperSpaceSlimeMoveControl;
+		var validState = this.slime.isTouchingWater() || this.slime.isInLava();
+		var hasSlimeMoveControls = this.slime.getMoveControl() instanceof SuperSpaceSlimeMoveControl;
 
 		return validState && hasSlimeMoveControls;
 	}

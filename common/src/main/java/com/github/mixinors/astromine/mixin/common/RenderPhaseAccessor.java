@@ -1,0 +1,20 @@
+package com.github.mixinors.astromine.mixin.common;
+
+import net.minecraft.client.render.RenderPhase;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
+
+@Mixin(RenderPhase.class)
+public interface RenderPhaseAccessor {
+	@Accessor
+	Runnable getBeginAction();
+	
+	@Accessor
+	void setBeginAction(Runnable beginAction);
+	
+	@Accessor
+	Runnable getEndAction();
+	
+	@Accessor
+	void setEndAction(Runnable endAction);
+}

@@ -24,8 +24,6 @@
 
 package com.github.mixinors.astromine.common.item;
 
-import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -38,7 +36,6 @@ import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.MiningToolItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.item.Vanishable;
-import net.minecraft.tag.Tag;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -49,7 +46,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
 // TODO: Document this.
-public class DynamicToolItemItem extends Item implements DynamicAttributeTool, Vanishable, EnchantableToolItem {
+public class DynamicToolItemItem extends Item implements Vanishable, EnchantableToolItem {
 	public final MiningToolItem first;
 	public final MiningToolItem second;
 	private final ToolMaterial material;
@@ -96,7 +93,7 @@ public class DynamicToolItemItem extends Item implements DynamicAttributeTool, V
 
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
-		ActionResult result = first.useOnBlock(context);
+		var result = first.useOnBlock(context);
 		return result.isAccepted() ? result : second.useOnBlock(context);
 	}
 
@@ -104,18 +101,20 @@ public class DynamicToolItemItem extends Item implements DynamicAttributeTool, V
 	public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot) {
 		return slot == EquipmentSlot.MAINHAND ? this.attributeModifiers : super.getAttributeModifiers(slot);
 	}
-
-	@Override
-	public float getMiningSpeedMultiplier(Tag<Item> tag, BlockState state, ItemStack stack, LivingEntity user) {
-		if (first.isIn(tag) || second.isIn(tag))
-			return material.getMiningSpeedMultiplier();
-		return 1;
-	}
-
-	@Override
-	public int getMiningLevel(Tag<Item> tag, BlockState state, ItemStack stack, LivingEntity user) {
-		if (first.isIn(tag) || second.isIn(tag))
-			return material.getMiningLevel();
-		return 0;
-	}
+	
+	// TODO: Reimplement this on Fabric module!
+	
+//	@Override
+//	public float getMiningSpeedMultiplier(Tag<Item> tag, BlockState state, ItemStack stack, LivingEntity user) {
+//		if (first.isIn(tag) || second.isIn(tag))
+//			return material.getMiningSpeedMultiplier();
+//		return 1;
+//	}
+//
+//	@Override
+//	public int getMiningLevel(Tag<Item> tag, BlockState state, ItemStack stack, LivingEntity user) {
+//		if (first.isIn(tag) || second.isIn(tag))
+//			return material.getMiningLevel();
+//		return 0;
+//	}
 }

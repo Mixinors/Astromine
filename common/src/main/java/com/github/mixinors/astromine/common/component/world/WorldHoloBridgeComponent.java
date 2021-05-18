@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.component.world;
 
-import com.github.mixinors.astromine.common.component.ProtoComponent;
+import com.github.mixinors.astromine.common.component.Component;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import me.shedaniel.architectury.utils.NbtType;
 import net.minecraft.block.Block;
@@ -45,7 +45,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * A {@link ProtoComponent} which stores information about
+ * A {@link Component} which stores information about
  * a {@link World}'s holographic bridges.
  *
  * It is important to understand how information is stored here.
@@ -60,7 +60,7 @@ import java.util.Set;
  * Serialization and deserialization methods are provided for:
  * - {@link CompoundTag} - through {@link #toTag(CompoundTag)} and {@link #fromTag(CompoundTag)}.
  */
-public final class WorldHoloBridgeComponent implements ProtoComponent {
+public final class WorldHoloBridgeComponent implements Component {
 	private final Long2ObjectArrayMap<Set<Vec3i>> entries = new Long2ObjectArrayMap<>();
 
 	private final Long2ObjectArrayMap<VoxelShape> cache = new Long2ObjectArrayMap<>();

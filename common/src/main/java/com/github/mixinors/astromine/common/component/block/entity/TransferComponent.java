@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.component.block.entity;
 
-import com.github.mixinors.astromine.common.component.ProtoComponent;
+import com.github.mixinors.astromine.common.component.Component;
 import com.github.mixinors.astromine.common.component.general.provider.TransferComponentProvider;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.minecraft.block.entity.BlockEntity;
@@ -40,19 +40,15 @@ import com.github.mixinors.astromine.common.component.general.base.ItemComponent
 import java.util.Map;
 
 /**
- * A {@link ProtoComponent} representing a {@link BlockEntity}'s
+ * A {@link Component} representing a {@link BlockEntity}'s
  * siding information.
  *
  * Serialization and deserialization methods are provided for:
  * - {@link CompoundTag} - through {@link #toTag(CompoundTag)} and {@link #fromTag(CompoundTag)}.
  */
-public class TransferComponent implements ProtoComponent {
-	private TransferEntry itemComponentTransferEntry = null;
-	private TransferEntry fluidComponentTransferEntry = null;
-	private TransferEntry energyComponentTransferEntry = null;
-
+public interface TransferComponent extends Component {
 	/** Returns this component's {@link Map} of {@link Identifier}s to {@link TransferEntry}-ies. */
-	public static <V> TransferComponent get(V v) {
+	static <V> TransferComponent get(V v) {
 		if (v instanceof TransferComponentProvider) {
 			return ((TransferComponentProvider) v).getTransferComponent();
 		}
@@ -60,59 +56,56 @@ public class TransferComponent implements ProtoComponent {
 		return null;
 	}
 	
+	/** Returns this {@link TransferComponent}'s item {@link TransferEntry}. */
+	TransferEntry getItemEntry();
+	
+	/** Returns this {@link TransferComponent}'s fluid {@link TransferEntry}. */
+	TransferEntry getFluidEntry();
+	
+	/** Returns this {@link TransferComponent}'s energy {@link TransferEntry}. */
+	TransferEntry getEnergyEntry();
+	
 	/** Adds an item {@link TransferEntry} to this component. */
-	public void addItem() {
-		itemComponentTransferEntry = new TransferEntry();
-	}
+	void addItem();
 	
 	/** Adds a fluid {@link TransferEntry} to this component. */
-	public void addFluid() {
-		fluidComponentTransferEntry = new TransferEntry();
-	}
+	void addFluid();
 	
 	/** Adds an energy {@link TransferEntry} to this component. */
-	public void addEnergy() {
-		energyComponentTransferEntry = new TransferEntry();
-	}
+	void addEnergy();
 
 	/** Asserts whether this component's siding contains
 	 * data for {@link ItemComponent} or not. */
-	public boolean hasItem() {
-		return itemComponentTransferEntry != null;
-	}
+	boolean hasItem();
 
 	/** Asserts whether this component's siding contains
 	 * data for {@link FluidComponent} or not. */
-	public boolean hasFluid() {
-		return fluidComponentTransferEntry != null;
-	}
+	boolean hasFluid();
 
 	/** Asserts whether this component's siding contains
 	 * data for {@link EnergyComponent} or not. */
-	public boolean hasEnergy() {
-		return energyComponentTransferEntry != null;
-	}
+	public boolean hasEnergy();
 
 	/** Returns this component's {@link TransferType} for {@link ItemComponent}'s key at the given {@link Direction}. */
-	public TransferType getItem(Direction direction) {
-		return itemComponentTransferEntry.get(direction);
+	default TransferType getItem(Direction direction) {
+		return getItemEntry().get(direction);
 	}
 
 	/** Returns this component's {@link TransferType} for {@link FluidComponent}'s key at the given {@link Direction}. */
-	public TransferType getFluid(Direction direction) {
-		return fluidComponentTransferEntry.get(direction);
+	default TransferType getFluid(Direction direction) {
+		return getFluidEntry().get(direction);
 	}
 
 	/** Returns this component's {@link TransferType} for {@link EnergyComponent}'s key at the given {@link Direction}. */
-	public TransferType getEnergy(Direction direction) {
-		return energyComponentTransferEntry.get(direction);
+	default TransferType getEnergy(Direction direction) {
+		return getEnergyEntry().get(direction);
 	}
 	
 	/** Returns this component's {@link TransferEntry} for the given component {@link Identifier}. */
 	public TransferEntry get(Identifier id) {
-		if (id.equals(AMComponents.ITEM_INVENTORY_COMPONENT)) return itemComponentTransferEntry;
-		if (id.equals(AMComponents.FLUID_INVENTORY_COMPONENT)) return fluidComponentTransferEntry;
-		if (id.equals(AMComponents.ENERGY_INVENTORY_COMPONENT)) return energyComponentTransferEntry;
+		if (id.equals(AMComponents.ITEM_INVENTORY_COMPONENT)) return getItemEntry();
+		if (id.equals(AMComponents.FLUID_INVENTORY_COMPONENT)) return getFluidEntry();
+		if (id.equals(AMComponents.ENERGY_INVENTORY_COMPONENT)) return getEnergyEntry();
 		return null;
 	}
 

@@ -25,7 +25,6 @@
 package com.github.mixinors.astromine.common.component.general.compatibility;
 
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleItemComponent;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
@@ -40,14 +39,13 @@ import java.util.Map;
 /**
  * An {@link ItemComponent} wrapped over an {@link SidedInventory}.
  */
-public class ItemComponentFromSidedInventory extends SimpleItemComponent {
+public class ItemComponentFromSidedInventory implements ItemComponent {
 	SidedInventory inventory;
 
 	List<Runnable> listeners = new ArrayList<>();
 
 	/** Instantiates an {@link ItemComponentFromSidedInventory}. */
 	private ItemComponentFromSidedInventory(SidedInventory inventory) {
-		super(inventory.size());
 		this.inventory = inventory;
 	}
 
@@ -90,7 +88,7 @@ public class ItemComponentFromSidedInventory extends SimpleItemComponent {
 	 * direction from the supplied slot. */
 	@Override
 	public boolean canExtract(@Nullable Direction direction, ItemStack stack, int slot) {
-		return super.canExtract(direction, stack, slot) && Arrays.stream(this.inventory.getAvailableSlots(direction)).anyMatch(it -> it == slot);
+		return Arrays.stream(this.inventory.getAvailableSlots(direction)).anyMatch(it -> it == slot);
 	}
 
 	/* Returns the {@link ItemStack} at the given slot. */

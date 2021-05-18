@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.recipe;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
+import com.github.mixinors.astromine.common.recipe.type.HiddenRecipeType;
 import com.github.mixinors.astromine.mixin.common.RecipeManagerAccessor;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import me.shedaniel.architectury.core.AbstractRecipeSerializer;
@@ -241,7 +241,7 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 		}
 	}
 
-	public static final class Type implements AMRecipeType<SolidifyingRecipe> {
+	public static final class Type implements HiddenRecipeType<SolidifyingRecipe> {
 		public static final Type INSTANCE = new Type();
 
 		private Type() {}

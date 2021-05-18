@@ -72,25 +72,23 @@ public abstract class CableBlock extends Block implements Waterloggable {
 	public static final BooleanProperty UP = BooleanProperty.of("up");
 	public static final BooleanProperty DOWN = BooleanProperty.of("down");
 
-	public static final Map<Direction, BooleanProperty> PROPERTIES = new HashMap<Direction, BooleanProperty>() {
-		{
-			put(Direction.EAST, EAST);
-			put(Direction.WEST, WEST);
-			put(Direction.NORTH, NORTH);
-			put(Direction.SOUTH, SOUTH);
-			put(Direction.UP, UP);
-			put(Direction.DOWN, DOWN);
-		}
-	};
+	public static final Map<Direction, BooleanProperty> PROPERTIES = Map.of(
+			Direction.EAST, EAST,
+			Direction.WEST, WEST,
+			Direction.NORTH, NORTH,
+			Direction.SOUTH, SOUTH,
+			Direction.UP, UP,
+			Direction.DOWN, DOWN
+	);
 
-	public static final Map<BooleanProperty, VoxelShape> SHAPE_MAP = ImmutableMap.<BooleanProperty, VoxelShape>builder()
-		.put(UP, Block.createCuboidShape(6D, 10D, 6D, 10D, 16D, 10D))
-		.put(DOWN, Block.createCuboidShape(6D, 0D, 6D, 10D, 6D, 10D))
-		.put(NORTH, Block.createCuboidShape(6D, 6D, 0D, 10D, 10D, 6D))
-		.put(SOUTH, Block.createCuboidShape(6D, 6D, 10D, 10D, 10D, 16D))
-		.put(EAST, Block.createCuboidShape(10D, 6D, 6D, 16D, 10D, 10D))
-		.put(WEST, Block.createCuboidShape(0D, 6D, 6D, 6D, 10D, 10D))
-		.build();
+	public static final Map<BooleanProperty, VoxelShape> SHAPE_MAP = Map.of(
+			UP, Block.createCuboidShape(6.0D, 10.0D, 6.0D, 10.0D, 16.0D, 10.0D),
+			DOWN, Block.createCuboidShape(6.0D, 0.0D, 6.0D, 10.0D, 6.0D, 10.0D),
+			NORTH, Block.createCuboidShape(6.0D, 6.0D, 0.0D, 10.0D, 10.0D, 6.0D),
+			SOUTH, Block.createCuboidShape(6.0D, 6.0D, 10.0D, 10.0D, 10.0D, 16.0D),
+			EAST, Block.createCuboidShape(10.0D, 6.0D, 6.0D, 16.0D, 10.0D, 10.0D),
+			WEST, Block.createCuboidShape(0.0D, 6.0D, 6.0D, 6.0D, 10.0D, 10.0D)
+	);
 
 	public static final VoxelShape CENTER_SHAPE = Block.createCuboidShape(6.0D, 6.0D, 6.0D, 10.0D, 10.0D, 10.0D);
 
@@ -118,21 +116,23 @@ public abstract class CableBlock extends Block implements Waterloggable {
 
 		NetworkUtils.Tracer.trace(getNetworkType(), WorldPos.of(world, position));
 
-		Set<Direction> set = NetworkUtils.Modeller.of(getNetworkType(), position, world);
+		var set = NetworkUtils.Modeller.of(getNetworkType(), position, world);
 
 		world.setBlockState(position, NetworkUtils.Modeller.toBlockState(set, stateA));
 
-		for (Direction direction : Direction.values()) {
-			BlockPos offsetPos = position.offset(direction);
-			WorldPos offsetBlock = WorldPos.of(world, offsetPos);
+		for (var direction : Direction.values()) {
+			var offsetPos = position.offset(direction);
+			var offsetBlock = WorldPos.of(world, offsetPos);
 
-			if (!(offsetBlock.getBlock() instanceof CableBlock))
+			if (!(offsetBlock.getBlock() instanceof CableBlock cableBlock))
 				continue;
-			NetworkMember member = NetworkMemberRegistry.get(offsetBlock, direction.getOpposite());
+			
+			var member = NetworkMemberRegistry.get(offsetBlock, direction.getOpposite());
+			
 			if (member.acceptsType(getNetworkType()))
 				continue;
 
-			Set<Direction> directions = NetworkUtils.Modeller.of(((CableBlock) offsetBlock.getBlock()).getNetworkType(), offsetPos, world);
+			var directions = NetworkUtils.Modeller.of(cableBlock.getNetworkType(), offsetPos, world);
 
 			world.setBlockState(offsetPos, NetworkUtils.Modeller.toBlockState(directions, world.getBlockState(offsetPos)));
 		}
@@ -149,22 +149,21 @@ public abstract class CableBlock extends Block implements Waterloggable {
 		if (state.getBlock() == newState.getBlock())
 			return;
 
-		WorldNetworkComponent networkComponent = WorldNetworkComponent.get(world);
+		var networkComponent = WorldNetworkComponent.get(world);
 
 		networkComponent.remove(networkComponent.get(getNetworkType(), position));
 
-		for (Direction directionA : Direction.values()) {
-			BlockPos offsetPos = position.offset(directionA);
-			Block offsetBlock = world.getBlockState(offsetPos).getBlock();
+		for (var directionA : Direction.values()) {
+			var offsetPos = position.offset(directionA);
+			var offsetBlock = world.getBlockState(offsetPos).getBlock();
 
-			if (!(offsetBlock instanceof CableBlock))
-				continue;
-			if (((CableBlock) offsetBlock).getNetworkType() != getNetworkType())
+			if (!(offsetBlock instanceof CableBlock cableBlock) || cableBlock.getNetworkType() != getNetworkType())
 				continue;
 
 			NetworkUtils.Tracer.trace(getNetworkType(), WorldPos.of(world, offsetPos));
 
-			Set<Direction> directions = NetworkUtils.Modeller.of(getNetworkType(), offsetPos, world);
+			var directions = NetworkUtils.Modeller.of(getNetworkType(), offsetPos, world);
+			
 			world.setBlockState(offsetPos, NetworkUtils.Modeller.toBlockState(directions, world.getBlockState(offsetPos)));
 		}
 	}
@@ -177,12 +176,14 @@ public abstract class CableBlock extends Block implements Waterloggable {
 	public void neighborUpdate(BlockState state, World world, BlockPos position, Block block, BlockPos neighborPosition, boolean moved) {
 		super.neighborUpdate(state, world, position, block, neighborPosition, moved);
 
-		WorldNetworkComponent networkComponent = WorldNetworkComponent.get(world);
+		var networkComponent = WorldNetworkComponent.get(world);
 
 		networkComponent.remove(networkComponent.get(getNetworkType(), position));
+		
 		NetworkUtils.Tracer.trace(getNetworkType(), WorldPos.of(world, position));
 
-		Set<Direction> directions = NetworkUtils.Modeller.of(getNetworkType(), position, world);
+		var directions = NetworkUtils.Modeller.of(getNetworkType(), position, world);
+		
 		world.setBlockState(position, NetworkUtils.Modeller.toBlockState(directions, world.getBlockState(position)));
 	}
 

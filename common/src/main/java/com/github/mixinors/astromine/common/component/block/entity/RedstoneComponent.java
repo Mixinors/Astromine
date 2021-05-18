@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.component.block.entity;
 
-import com.github.mixinors.astromine.common.component.ProtoComponent;
+import com.github.mixinors.astromine.common.component.Component;
 import com.github.mixinors.astromine.common.component.general.provider.RedstoneComponentProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.block.entity.BlockEntity;
@@ -33,46 +33,45 @@ import com.github.mixinors.astromine.common.block.redstone.RedstoneType;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A {@link ProtoComponent} representing a {@link BlockEntity}'s
+ * A {@link Component} representing a {@link BlockEntity}'s
  * redstone information.
  *
  * Serialization and deserialization methods are provided for:
  * - {@link CompoundTag} - through {@link #toTag(CompoundTag)} and {@link #fromTag(CompoundTag)}.
  */
-public class RedstoneComponent implements ProtoComponent {
-	private RedstoneType type = RedstoneType.WORK_WHEN_OFF;
+public interface RedstoneComponent extends Component {
+	/** Instantiates a new {@link RedstoneComponent}. */
+	static RedstoneComponent of() {
+		return new SimpleRedstoneComponent();
+	}
 
 	/** Returns this component's {@link RedstoneType}. */
-	public RedstoneType getType() {
-		return type;
-	}
+	RedstoneType getType();
 
 	/** Sets this component's {@link RedstoneType} to the specified value. */
-	public void setType(RedstoneType type) {
-		this.type = type;
-	}
+	void setType(RedstoneType type);
 
 	/** Serializes this {@link RedstoneComponent} to a {@link CompoundTag}. */
 	@Override
-	public void toTag(CompoundTag tag) {
-		CompoundTag dataTag = new CompoundTag();
+	default void toTag(CompoundTag tag) {
+		var dataTag = new CompoundTag();
 		
-		dataTag.putString("Type", type.toString());
+		dataTag.putString("Type", getType().toString());
 		
 		tag.put("Data", dataTag);
 	}
 
 	/** Deserializes this {@link RedstoneComponent} from a {@link CompoundTag}. */
 	@Override
-	public void fromTag(CompoundTag tag) {
-		CompoundTag dataTag = tag.getCompound("Data");
+	default void fromTag(CompoundTag tag) {
+		var dataTag = tag.getCompound("Data");
 
-		type = RedstoneType.fromString(dataTag.getString("Type"));
+		setType(RedstoneType.fromString(dataTag.getString("Type")));
 	}
 
 	/** Returns the {@link RedstoneComponent} of the given {@link V}. */
 	@Nullable
-	public static <V> RedstoneComponent get(V v) {
+	static <V> RedstoneComponent get(V v) {
 		if (v instanceof RedstoneComponentProvider) {
 			return ((RedstoneComponentProvider) v).getRedstoneComponent();
 		}

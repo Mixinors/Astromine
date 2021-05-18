@@ -31,12 +31,12 @@ import com.github.mixinors.astromine.common.entity.SuperSpaceSlimeEntity;
 import java.util.EnumSet;
 
 public class SuperSpaceSlimeExplosionGoal extends Goal {
-
 	private final SuperSpaceSlimeEntity slime;
 	private int ticksLeft = 0;
 
 	public SuperSpaceSlimeExplosionGoal(SuperSpaceSlimeEntity slime) {
 		this.slime = slime;
+		
 		this.setControls(EnumSet.of(Control.MOVE, Control.JUMP));
 	}
 
@@ -63,9 +63,10 @@ public class SuperSpaceSlimeExplosionGoal extends Goal {
 
 	@Override
 	public void start() {
-		this.slime.setExploding(true);
 		this.ticksLeft = 100;
+		this.slime.setExploding(true);
 		this.slime.setExplodingProgress(100);
+		
 		super.start();
 	}
 
@@ -83,6 +84,7 @@ public class SuperSpaceSlimeExplosionGoal extends Goal {
 	public void tick() {
 		this.ticksLeft--;
 		this.slime.setExplodingProgress(this.ticksLeft);
+		
 		super.tick();
 	}
 }

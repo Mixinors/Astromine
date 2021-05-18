@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.registry.common;
 
-import com.github.mixinors.astromine.common.callback.ServerChunkManagerEvents;
+import com.github.mixinors.astromine.common.event.ServerChunkManagerEvents;
 
 
 import com.github.mixinors.astromine.common.world.generation.space.EarthSpaceChunkGenerator;

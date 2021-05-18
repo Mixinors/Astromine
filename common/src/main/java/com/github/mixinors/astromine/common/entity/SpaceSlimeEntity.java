@@ -52,31 +52,37 @@ public class SpaceSlimeEntity extends SlimeEntity {
 
 	public SpaceSlimeEntity(EntityType<? extends SlimeEntity> entityType, World world) {
 		super(entityType, world);
-		this.floatingCooldown = world.random.nextInt(200);
+		
+		this.floatingCooldown = random.nextInt(200);
 	}
 
 	public static boolean canSpawnInDark(EntityType<? extends SpaceSlimeEntity> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random) {
-		return world.getDifficulty() != Difficulty.PEACEFUL && isSpawnDark(world, pos, random) && canMobSpawn(type, world, spawnReason, pos, random) && random.nextDouble() <= .15;
+		return world.getDifficulty() != Difficulty.PEACEFUL && isSpawnDark(world, pos, random) && canMobSpawn(type, world, spawnReason, pos, random) && random.nextDouble() <= 0.15D;
 	}
 
-	public static boolean isSpawnDark(WorldAccess world, BlockPos pos, Random random) {
+	public static boolean isSpawnDark(WorldAccess access, BlockPos pos, Random random) {
+		var world = (ServerWorld) access;
+		
 		if (world.getLightLevel(LightType.SKY, pos) > random.nextInt(32)) {
 			return false;
 		} else {
-			int i = ((ServerWorld) world).isThundering() ? world.getLightLevel(pos, 10) : world.getLightLevel(pos);
-			return i <= random.nextInt(8);
+			var lightLevel = world.isThundering() ? world.getLightLevel(pos, 10) : world.getLightLevel(pos);
+			
+			return lightLevel <= random.nextInt(8);
 		}
 	}
 
 	@Override
 	public void initGoals() {
 		super.initGoals();
+		
 		this.goalSelector.add(3, new SpaceSlimeJumpHoverGoal(this));
 	}
 
 	@Override
 	public void initDataTracker() {
 		super.initDataTracker();
+		
 		this.dataTracker.startTracking(FLOATING, false);
 		this.dataTracker.startTracking(FLOATING_PROGRESS, 0);
 	}
@@ -104,7 +110,12 @@ public class SpaceSlimeEntity extends SlimeEntity {
 	public boolean hasNoGravity() {
 		return this.dataTracker.get(FLOATING);
 	}
-
+	
+	@Override
+	public SoundEvent getSquishSound() {
+		return SoundEvents.BLOCK_GLASS_BREAK;
+	}
+	
 	public int getFloatingCooldown() {
 		return this.floatingCooldown;
 	}
@@ -127,10 +138,5 @@ public class SpaceSlimeEntity extends SlimeEntity {
 
 	public void setFloatingProgress(int progress) {
 		this.dataTracker.set(FLOATING_PROGRESS, progress);
-	}
-
-	@Override
-	public SoundEvent getSquishSound() {
-		return SoundEvents.BLOCK_GLASS_BREAK;
 	}
 }

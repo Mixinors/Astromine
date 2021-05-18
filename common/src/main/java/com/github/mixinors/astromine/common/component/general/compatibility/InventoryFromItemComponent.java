@@ -65,9 +65,9 @@ public interface InventoryFromItemComponent extends Inventory {
 	 * or a part of it as per the specified count, and returns it. */
 	@Override
 	default ItemStack removeStack(int slot, int count) {
-		ItemStack removed = getItemComponent().removeStack(slot);
+		var removed = getItemComponent().removeStack(slot);
 
-		ItemStack returned = removed.copy();
+		var returned = removed.copy();
 
 		returned.setCount(min(count, removed.getCount()));
 

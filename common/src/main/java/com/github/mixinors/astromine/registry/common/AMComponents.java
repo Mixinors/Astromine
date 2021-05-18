@@ -25,16 +25,11 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.Fluids;
 
-import com.github.mixinors.astromine.common.component.block.entity.RedstoneComponent;
 import com.github.mixinors.astromine.common.component.entity.EntityOxygenComponent;
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleFluidComponent;
+import com.github.mixinors.astromine.common.component.general.base.SimpleFluidComponent;
 import com.github.mixinors.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.mixinors.astromine.common.component.world.WorldHoloBridgeComponent;
 import com.github.mixinors.astromine.common.component.world.WorldNetworkComponent;

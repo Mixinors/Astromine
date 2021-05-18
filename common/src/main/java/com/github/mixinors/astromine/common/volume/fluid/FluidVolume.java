@@ -34,13 +34,12 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleFluidComponent;
 import com.github.mixinors.astromine.common.volume.base.Volume;
 import io.netty.buffer.ByteBuf;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
+
 import java.text.DecimalFormat;
 import java.util.Objects;
 
@@ -48,8 +47,7 @@ import java.util.Objects;
  * A {@link Volume} of {@link Fluid}s, whose amount
  * and size are represented by a {@link Long}
  *
- * It is not an inventory, thus it is recommended to use a {@link FluidComponent},
- * most commonly via its implementation, {@link SimpleFluidComponent}.
+ * It is not an inventory, thus it is recommended to use a {@link FluidComponent}.
  *
  * A few utility methods for instantiation are provided, that being:
  *

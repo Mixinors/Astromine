@@ -46,7 +46,7 @@ import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleItemComponent;
+import com.github.mixinors.astromine.common.component.general.base.SimpleItemComponent;
 import com.github.mixinors.astromine.common.component.general.compatibility.InventoryFromItemComponent;
 import com.github.mixinors.astromine.common.recipe.AltarRecipe;
 

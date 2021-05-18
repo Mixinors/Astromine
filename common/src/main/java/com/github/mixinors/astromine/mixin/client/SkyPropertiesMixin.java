@@ -37,7 +37,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.client.render.SkyProperties;
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.common.callback.SkyPropertiesEvents;
+import com.github.mixinors.astromine.common.event.SkyPropertiesEvents;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 
 @Environment(EnvType.CLIENT)

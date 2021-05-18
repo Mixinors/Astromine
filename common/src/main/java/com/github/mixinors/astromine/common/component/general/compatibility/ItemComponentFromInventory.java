@@ -29,7 +29,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleItemComponent;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,14 +39,13 @@ import java.util.Map;
 /**
  * An {@link ItemComponent} wrapped over an {@link Inventory}.
  */
-public class ItemComponentFromInventory extends SimpleItemComponent {
+public class ItemComponentFromInventory implements ItemComponent {
 	Inventory inventory;
 
 	List<Runnable> listeners = new ArrayList<>();
 
 	/** Instantiates an {@link ItemComponentFromInventory}. */
 	private ItemComponentFromInventory(Inventory inventory) {
-		super(inventory.size());
 		this.inventory = inventory;
 	}
 
@@ -71,11 +69,14 @@ public class ItemComponentFromInventory extends SimpleItemComponent {
 	/** Returns this component's contents. */
 	@Override
 	public Map<Integer, ItemStack> getContents() {
-		Int2ObjectArrayMap<ItemStack> contents = new Int2ObjectArrayMap<>();
+		var contents = new Int2ObjectArrayMap<ItemStack>();
+		
 		for (int i = 0; i < this.inventory.size(); ++i) {
 			contents.put(i, this.inventory.getStack(i));
 		}
+		
 		contents.defaultReturnValue(ItemStack.EMPTY);
+		
 		return contents;
 	}
 

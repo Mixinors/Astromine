@@ -63,16 +63,16 @@ import com.github.mixinors.astromine.common.entity.ai.superspaceslime.SuperSpace
 import com.github.mixinors.astromine.common.entity.ai.superspaceslime.SuperSpaceSlimeSwimmingGoal;
 
 public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
-
-	// data for slime explosion mechanic
 	private static final TrackedData<Integer> EXPLOSION_PROGRESS = DataTracker.registerData(SpaceSlimeEntity.class, TrackedDataHandlerRegistry.INTEGER);
 	private static final TrackedData<Boolean> IS_EXPLODING = DataTracker.registerData(SpaceSlimeEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	private static final TrackedData<Boolean> HAS_EXPLODED = DataTracker.registerData(SpaceSlimeEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 
 	private final ServerBossBar bossBar;
+	
 	public float targetStretch;
 	public float stretch;
 	public float lastStretch;
+	
 	private boolean onGroundLastTick;
 
 	public SuperSpaceSlimeEntity(EntityType<? extends SuperSpaceSlimeEntity> entityType, World world) {
@@ -113,46 +113,50 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 
 	@Override
 	public void tick() {
+		super.tick();
+		
 		this.stretch += (this.targetStretch - this.stretch) * 0.5F;
 		this.lastStretch = this.stretch;
-
-		super.tick();
-
+		
 		if (this.onGround && !this.onGroundLastTick) {
-			int size = 10;
+			var size = 10;
 
-			// spawn random landing particles around this entity's hitbox base
-			for (int j = 0; j < size * 8; ++j) {
-				float f = this.random.nextFloat() * 6.2831855F;
-				float g = this.random.nextFloat() * 0.5F + 0.5F;
-				float particleX = MathHelper.sin(f) * (float) size * 0.5F * g;
-				float particleZ = MathHelper.cos(f) * (float) size * 0.5F * g;
-				this.world.addParticle(this.getParticles(), this.getX() + (double) particleX, this.getY(), this.getZ() + (double) particleZ, 0.0D, 0.0D, 0.0D);
+			// Spawn random landing particles around the bottom of this entity's collision box.
+			for (var j = 0; j < size * 8; ++j) {
+				var f = random.nextFloat() * 6.2831855F;
+				var g = random.nextFloat() * 0.5F + 0.5F;
+				
+				var particleX = MathHelper.sin(f) * (float) size * 0.5F * g;
+				var particleZ = MathHelper.cos(f) * (float) size * 0.5F * g;
+				
+				world.addParticle(AMParticles.SPACE_SLIME.get(), this.getX() + (double) particleX, this.getY(), this.getZ() + (double) particleZ, 0.0D, 0.0D, 0.0D);
 			}
 
-			this.playSound(this.getSquishSound(), this.getSoundVolume(), ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) / 0.8F);
-			this.playSound(SoundEvents.BLOCK_GLASS_BREAK, this.getSoundVolume(), ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) / 0.8F);
+			this.playSound(SoundEvents.ENTITY_SLIME_SQUISH, getSoundVolume(), ((random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F) / 0.8F);
+			this.playSound(SoundEvents.BLOCK_GLASS_BREAK, getSoundVolume(), ((random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F) / 0.8F);
+			
 			this.targetStretch = -0.5F;
 		} else if (!this.onGround && this.onGroundLastTick) {
 			this.targetStretch = 1.0F;
 		}
 
 		this.onGroundLastTick = this.onGround;
-		this.updateStretch();
+		
+		this.targetStretch *= 0.6F;
 	}
 
 	@Override
 	public void writeCustomDataToTag(CompoundTag tag) {
 		super.writeCustomDataToTag(tag);
-		tag.putBoolean("hasExploded", this.hasExploded());
-		tag.putBoolean("wasOnGround", this.onGroundLastTick);
+		tag.putBoolean("HasExploded", this.hasExploded());
+		tag.putBoolean("WasOnGround", this.wasOnGroundLastTick());
 	}
 
 	@Override
 	public void readCustomDataFromTag(CompoundTag tag) {
 		super.readCustomDataFromTag(tag);
-		this.setHasExploded(tag.getBoolean("hasExploded"));
-		this.onGroundLastTick = tag.getBoolean("wasOnGround");
+		this.setHasExploded(tag.getBoolean("HasExploded"));
+		this.setOnGroundLastTick(tag.getBoolean("WasOnGround"));
 	}
 
 	@Override
@@ -168,19 +172,15 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 	public boolean hasExploded() {
 		return this.dataTracker.get(HAS_EXPLODED);
 	}
-
-	protected ParticleEffect getParticles() {
-		return AMParticles.SPACE_SLIME.get();
+	
+	public boolean wasOnGroundLastTick() {
+		return onGroundLastTick;
 	}
-
-	protected SoundEvent getSquishSound() {
-		return SoundEvents.ENTITY_SLIME_SQUISH;
+	
+	public void setOnGroundLastTick(boolean onGroundLastTick) {
+		this.onGroundLastTick = onGroundLastTick;
 	}
-
-	protected void updateStretch() {
-		this.targetStretch *= 0.6F;
-	}
-
+	
 	/**
 	 * Called at the end of {@link SuperSpaceSlimeExplosionGoal}.
 	 * <p>
@@ -189,7 +189,7 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 	 */
 	public void explode() {
 		for (int i = 0; i < 50; i++) {
-			SpaceSlimeEntity spaceSlime = AMEntityTypes.SPACE_SLIME.get().create(this.world);
+			var spaceSlime = AMEntityTypes.SPACE_SLIME.get().create(this.world);
 			spaceSlime.initialize((ServerWorldAccess) this.world, this.world.getLocalDifficulty(this.getBlockPos()), SpawnReason.NATURAL, null, null);
 			this.world.spawnEntity(spaceSlime);
 			spaceSlime.requestTeleport(this.getX(), this.getY(), this.getZ());
@@ -232,8 +232,8 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 	public void pushAwayFrom(Entity entity) {
 		super.pushAwayFrom(entity);
 
-		if (entity instanceof IronGolemEntity) {
-			this.damage((LivingEntity) entity);
+		if (entity instanceof IronGolemEntity golemEntity) {
+			this.damage(golemEntity);
 		}
 	}
 
@@ -254,7 +254,7 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 
 	@Override
 	public void jump() {
-		Vec3d vec3d = this.getVelocity();
+		var vec3d = this.getVelocity();
 		this.setVelocity(vec3d.x, this.getJumpVelocity(), vec3d.z);
 		this.velocityDirty = true;
 	}

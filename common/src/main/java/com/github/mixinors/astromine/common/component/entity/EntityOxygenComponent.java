@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.common.component.entity;
 
-import com.github.mixinors.astromine.common.component.ProtoAutoSyncedComponent;
-import com.github.mixinors.astromine.common.component.ProtoComponent;
+import com.github.mixinors.astromine.common.component.AutoSyncedComponent;
+import com.github.mixinors.astromine.common.component.Component;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
@@ -36,12 +36,12 @@ import com.github.mixinors.astromine.registry.common.AMConfig;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A {@link ProtoComponent} containing oxygen levels for an entity.
+ * A {@link Component} containing oxygen levels for an entity.
  *
  * Serialization and deserialization methods are provided for:
  * - {@link CompoundTag} - through {@link #toTag(CompoundTag)} and {@link #fromTag(CompoundTag)}.
  */
-public final class EntityOxygenComponent implements ProtoAutoSyncedComponent {
+public final class EntityOxygenComponent implements AutoSyncedComponent {
 	private int oxygen = 0;
 
 	private int minimumOxygen = -20;

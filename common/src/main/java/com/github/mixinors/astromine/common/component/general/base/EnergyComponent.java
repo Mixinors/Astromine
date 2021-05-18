@@ -24,9 +24,7 @@
 
 package com.github.mixinors.astromine.common.component.general.base;
 
-import com.github.mixinors.astromine.common.component.general.miscellaneous.IdentifiableComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleAutoSyncedEnergyComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleEnergyComponent;
+import com.github.mixinors.astromine.common.component.general.miscellaneous.NamedComponent;
 import com.github.mixinors.astromine.common.component.general.provider.EnergyComponentProvider;
 import me.shedaniel.architectury.utils.NbtType;
 
@@ -45,32 +43,32 @@ import java.util.function.Consumer;
 import static java.lang.Math.min;
 
 /**
- * A {@link IdentifiableComponent} representing an energy reserve.
+ * A {@link NamedComponent} representing an energy reserve.
  *
  * Serialization and deserialization methods are provided for:
  * - {@link CompoundTag} - through {@link #toTag(CompoundTag)} and {@link #fromTag(CompoundTag)}.
  */
-public interface EnergyComponent extends IdentifiableComponent {
+public interface EnergyComponent extends NamedComponent {
 	/** Instantiates an {@link EnergyComponent}. */
 	static EnergyComponent of(double size) {
-		return SimpleEnergyComponent.of(size);
+		return new SimpleEnergyComponent(size);
 	}
 
 	/** Instantiates an {@link EnergyComponent}. */
 	static EnergyComponent of(EnergyVolume volume) {
-		return SimpleEnergyComponent.of(volume);
+		return new SimpleEnergyComponent(volume);
 	}
 
 	/** Instantiates an {@link EnergyComponent} and synchronization. */
 	static EnergyComponent ofSynced(double size) {
-		return SimpleAutoSyncedEnergyComponent.of(size);
+		return new SimpleAutoSyncedEnergyComponent(size);
 	}
 
 	/** Instantiates an {@link EnergyComponent} and synchronization. */
 	static EnergyComponent ofSynced(EnergyVolume volume) {
-		return SimpleAutoSyncedEnergyComponent.of(volume);
+		return new SimpleAutoSyncedEnergyComponent(volume);
 	}
-
+	
 	/** Returns this component's {@link Item} symbol. */
 	default Item getSymbol() {
 		return AMItems.ENERGY.get().asItem();
@@ -149,21 +147,32 @@ public interface EnergyComponent extends IdentifiableComponent {
 		this.getVolume().setAmount(0.0);
 	}
 
+	/** Transfers the specified amount of energy from this component to another. */
 	default void into(EnergyComponent component, double amount) {
-		EnergyVolume ourVolume = getVolume();
-		EnergyVolume theirVolume = component.getVolume();
+		var ourVolume = getVolume();
+		var theirVolume = component.getVolume();
 
-		double transferable = min(theirVolume.getSize() - theirVolume.getAmount(), amount);
+		var transferable = min(theirVolume.getSize() - theirVolume.getAmount(), amount);
 
 		ourVolume.give(theirVolume, transferable);
+	}
+	
+	/** Takes the specified amount of energy from this component's volume. */
+	default void take(double amount) {
+		getVolume().take(amount);
+	}
+	
+	/** Gives the specified amount of energy to this component's volume. */
+	default void give(double amount) {
+		getVolume().give(amount);
 	}
 
 	/** Serializes this {@link EnergyComponent} to a {@link CompoundTag}. */
 	@Override
 	default void toTag(CompoundTag tag) {
-		CompoundTag dataTag = new CompoundTag();
+		var dataTag = new CompoundTag();
 
-		dataTag.putDouble("energy", getVolume().getAmount());
+		dataTag.putDouble("Energy", getVolume().getAmount());
 
 		tag.put("EnergyComponent", dataTag);
 	}
@@ -171,15 +180,15 @@ public interface EnergyComponent extends IdentifiableComponent {
 	/** Deserializes this {@link EnergyComponent} from a {@link CompoundTag}. */
 	@Override
 	default void fromTag(CompoundTag tag) {
-		CompoundTag dataTag = tag.getCompound("EnergyComponent");
+		var dataTag = tag.getCompound("EnergyComponent");
 
-		EnergyVolume volume = getVolume();
+		var volume = getVolume();
 
-		if (dataTag.contains("energy", NbtType.COMPOUND)) {
-			EnergyVolume energy = EnergyVolume.fromTag(dataTag.getCompound("energy"));
+		if (dataTag.contains("Energy", NbtType.COMPOUND)) {
+			var energy = EnergyVolume.fromTag(dataTag.getCompound("Energy"));
 			volume.setAmount(energy.getAmount());
-		} else if (dataTag.contains("energy", NbtType.DOUBLE)) {
-			double energy = dataTag.getDouble("energy");
+		} else if (dataTag.contains("Energy", NbtType.DOUBLE)) {
+			double energy = dataTag.getDouble("Energy");
 			volume.setAmount(energy);
 		}
 	}
@@ -189,8 +198,8 @@ public interface EnergyComponent extends IdentifiableComponent {
 	static <V> EnergyComponent get(V v) {
 		if (v instanceof EnergyComponentProvider) {
 			return ((EnergyComponentProvider) v).getEnergyComponent();
+		} else {
+			return null;
 		}
-		
-		return null;
 	}
 }

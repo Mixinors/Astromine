@@ -24,13 +24,10 @@
 
 package com.github.mixinors.astromine.common.volume.energy;
 
-import com.github.mixinors.astromine.AMCommon;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.Identifier;
 
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleEnergyComponent;
 import com.github.mixinors.astromine.common.volume.base.Volume;
 import io.netty.buffer.ByteBuf;
 
@@ -41,8 +38,7 @@ import com.google.gson.JsonObject;
  * A {@link Volume} of energy, whose amount and size
  * are represented by {@link Double}.
  *
- * It is not an inventory, thus it is recommended to use a {@link EnergyComponent},
- * most commonly via its implementation, {@link SimpleEnergyComponent}.
+ * It is not an inventory, thus it is recommended to use an {@link EnergyComponent}.
  *
  * A few utility methods for instantiation are provided, that being:
  * - {@link #ofEmpty()}, returning an empty volume.
