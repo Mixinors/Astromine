@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.recipe;
 
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
+import com.github.mixinors.astromine.mixin.common.RecipeManagerAccessor;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import me.shedaniel.architectury.core.AbstractRecipeSerializer;
 import net.minecraft.inventory.Inventory;
@@ -73,11 +74,16 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 	}
 
 	public static boolean allows(World world, FluidComponent fluidComponent) {
-		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidMixingRecipe) it).toArray(FluidMixingRecipe[]::new));
+		if (RECIPE_CACHE.get(world) == null && world.getRecipeManager() instanceof RecipeManagerAccessor accessor) {
+			RECIPE_CACHE.put(world,
+					accessor.getAllOfType(Type.INSTANCE)
+							.values()
+							.stream()
+							.map(FluidMixingRecipe.class::cast)
+							.toArray(FluidMixingRecipe[]::new));
 		}
 
-		for (FluidMixingRecipe recipe : RECIPE_CACHE.get(world)) {
+		for (var recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.allows(fluidComponent)) {
 				return true;
 			}
@@ -87,11 +93,16 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 	}
 
 	public static Optional<FluidMixingRecipe> matching(World world, FluidComponent fluidComponent) {
-		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidMixingRecipe) it).toArray(FluidMixingRecipe[]::new));
+		if (RECIPE_CACHE.get(world) == null && world.getRecipeManager() instanceof RecipeManagerAccessor accessor) {
+			RECIPE_CACHE.put(world,
+					accessor.getAllOfType(Type.INSTANCE)
+							.values()
+							.stream()
+							.map(FluidMixingRecipe.class::cast)
+							.toArray(FluidMixingRecipe[]::new));
 		}
-
-		for (FluidMixingRecipe recipe : RECIPE_CACHE.get(world)) {
+		
+		for (var recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.allows(fluidComponent)) {
 				return Optional.of(recipe);
 			}
@@ -204,8 +215,13 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 		public FluidMixingRecipe read(Identifier identifier, JsonObject object) {
 			FluidMixingRecipe.Format format = new Gson().fromJson(object, FluidMixingRecipe.Format.class);
 
-			return new FluidMixingRecipe(identifier, FluidIngredient.fromJson(format.firstInput), FluidIngredient.fromJson(format.secondInput), FluidVolume.fromJson(format.firstOutput), DoubleUtils.fromJson(
-				format.energyInput), IntegerUtils.fromJson(format.time)
+			return new FluidMixingRecipe(
+					identifier,
+					FluidIngredient.fromJson(format.firstInput),
+					FluidIngredient.fromJson(format.secondInput),
+					FluidVolume.fromJson(format.firstOutput),
+					DoubleUtils.fromJson(format.energyInput),
+					IntegerUtils.fromJson(format.time)
 			);
 		}
 

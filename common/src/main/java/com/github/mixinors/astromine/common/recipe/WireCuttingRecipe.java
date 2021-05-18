@@ -113,18 +113,21 @@ public class WireCuttingRecipe extends SpecialCraftingRecipe {
 
 	@Override
 	public DefaultedList<ItemStack> getRemainingStacks(CraftingInventory inv) {
-		DefaultedList<ItemStack> remainingStacks = DefaultedList.ofSize(inv.size(), ItemStack.EMPTY);
+		var remainingStacks = DefaultedList.ofSize(inv.size(), ItemStack.EMPTY);
 
-		for (int i = 0; i < remainingStacks.size(); ++i) {
-			ItemStack itemStack = inv.getStack(i);
+		for (var i = 0; i < remainingStacks.size(); ++i) {
+			var itemStack = inv.getStack(i);
+			
 			if (itemStack.getItem().hasRecipeRemainder()) {
 				remainingStacks.set(i, new ItemStack(itemStack.getItem().getRecipeRemainder()));
 			} else if (tool.test(itemStack)) {
-				ItemStack remainingTool = itemStack.copy();
+				var remainingTool = itemStack.copy();
 				remainingTool.setCount(1);
+				
 				if (!remainingTool.damage(1, RANDOM, null)) {
 					remainingStacks.set(i, remainingTool);
 				}
+				
 				break;
 			}
 		}
@@ -143,18 +146,20 @@ public class WireCuttingRecipe extends SpecialCraftingRecipe {
 		public WireCuttingRecipe read(Identifier identifier, JsonObject object) {
 			WireCuttingRecipe.Format format = new Gson().fromJson(object, WireCuttingRecipe.Format.class);
 
-			return new WireCuttingRecipe(identifier,
-				IngredientUtils.fromIngredientJson(format.input),
-				IngredientUtils.fromIngredientJson(format.tool),
-				StackUtils.fromJson(format.output));
+			return new WireCuttingRecipe(
+					identifier,
+					IngredientUtils.fromIngredientJson(format.input),
+					IngredientUtils.fromIngredientJson(format.tool),
+					StackUtils.fromJson(format.output));
 		}
 
 		@Override
 		public WireCuttingRecipe read(Identifier identifier, PacketByteBuf buffer) {
-			return new WireCuttingRecipe(identifier,
-				IngredientUtils.fromIngredientPacket(buffer),
-				IngredientUtils.fromIngredientPacket(buffer),
-				StackUtils.fromPacket(buffer));
+			return new WireCuttingRecipe(
+					identifier,
+					IngredientUtils.fromIngredientPacket(buffer),
+					IngredientUtils.fromIngredientPacket(buffer),
+					StackUtils.fromPacket(buffer));
 		}
 
 		@Override

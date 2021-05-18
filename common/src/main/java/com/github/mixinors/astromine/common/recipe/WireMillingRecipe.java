@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.recipe;
 
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
+import com.github.mixinors.astromine.mixin.common.RecipeManagerAccessor;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import me.shedaniel.architectury.core.AbstractRecipeSerializer;
 import net.minecraft.inventory.Inventory;
@@ -70,11 +71,16 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 	}
 
 	public static boolean allows(World world, ItemComponent itemComponent) {
-		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (WireMillingRecipe) it).toArray(WireMillingRecipe[]::new));
+		if (RECIPE_CACHE.get(world) == null && world.getRecipeManager() instanceof RecipeManagerAccessor accessor) {
+			RECIPE_CACHE.put(world,
+					accessor.getAllOfType(Type.INSTANCE)
+							.values()
+							.stream()
+							.map(WireMillingRecipe.class::cast)
+							.toArray(WireMillingRecipe[]::new));
 		}
 
-		for (WireMillingRecipe recipe : RECIPE_CACHE.get(world)) {
+		for (var recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.allows(itemComponent)) {
 				return true;
 			}
@@ -84,11 +90,16 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 	}
 
 	public static Optional<WireMillingRecipe> matching(World world, ItemComponent itemComponent) {
-		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (WireMillingRecipe) it).toArray(WireMillingRecipe[]::new));
+		if (RECIPE_CACHE.get(world) == null && world.getRecipeManager() instanceof RecipeManagerAccessor accessor) {
+			RECIPE_CACHE.put(world,
+					accessor.getAllOfType(Type.INSTANCE)
+							.values()
+							.stream()
+							.map(WireMillingRecipe.class::cast)
+							.toArray(WireMillingRecipe[]::new));
 		}
 
-		for (WireMillingRecipe recipe : RECIPE_CACHE.get(world)) {
+		for (var recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.matches(itemComponent)) {
 				return Optional.of(recipe);
 			}

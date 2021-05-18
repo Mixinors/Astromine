@@ -41,13 +41,13 @@ public class VolumeUtils {
 	 * their available space, our amount, and the specified amount.
 	 * */
 	public static Pair<FluidVolume, FluidVolume> merge(FluidVolume source, FluidVolume target) {
-		long targetMax = target.getSize();
+		var targetMax = target.getSize();
 
 		if (source.test(target)) {
-			long sourceCount = source.getAmount();
-			long targetCount = target.getAmount();
+			var sourceCount = source.getAmount();
+			var targetCount = target.getAmount();
 
-			long targetAvailable = Math.max(0, targetMax - targetCount);
+			var targetAvailable = Math.max(0, targetMax - targetCount);
 
 			target.take(source, Math.min(sourceCount, targetAvailable));
 		}
@@ -60,17 +60,17 @@ public class VolumeUtils {
 	public static void transferBetween(ItemComponent itemComponent, FluidComponent fluidComponent, int firstStackSlot, int secondStackSlot, int volumeSlot) {
 		if (fluidComponent != null) {
 			if (itemComponent != null) {
-				FluidComponent firstStackFluidComponent = FluidComponent.get(itemComponent.getStack(firstStackSlot));
+				var firstStackFluidComponent = FluidComponent.get(itemComponent.getStack(firstStackSlot));
 
 				if (firstStackFluidComponent != null) {
-					FluidVolume ourVolume = fluidComponent.getVolume(volumeSlot);
+					var ourVolume = fluidComponent.getVolume(volumeSlot);
 
 					firstStackFluidComponent.forEach(stackVolume -> {if (ourVolume.test(stackVolume.getFluid())) {
 						if (itemComponent.getStack(firstStackSlot).getItem() instanceof BucketItem) {
 							if (itemComponent.getStack(firstStackSlot).getItem() != Items.BUCKET && itemComponent.getStack(firstStackSlot).getCount() == 1) {
 								if (ourVolume.hasAvailable(FluidVolume.BUCKET) || ourVolume.isEmpty()) {
-									ourVolume.take(stackVolume, FluidVolume.BUCKET);
-
+										ourVolume.take(stackVolume, FluidVolume.BUCKET);
+										
                                         itemComponent.setStack(firstStackSlot, new ItemStack(Items.BUCKET));
                                     }
                                 }
@@ -81,16 +81,16 @@ public class VolumeUtils {
                     });
                 }
 
-				FluidComponent secondStackFluidComponent = FluidComponent.get(itemComponent.getStack(secondStackSlot));
+				var secondStackFluidComponent = FluidComponent.get(itemComponent.getStack(secondStackSlot));
 
 				if (secondStackFluidComponent != null) {
-					FluidVolume ourVolume = fluidComponent.getVolume(volumeSlot);
+					var ourVolume = fluidComponent.getVolume(volumeSlot);
 
 					secondStackFluidComponent.forEach(stackVolume -> {if (stackVolume.test(ourVolume.getFluid())) {
 						if (itemComponent.getStack(secondStackSlot).getItem() instanceof BucketItem) {
 							if (itemComponent.getStack(secondStackSlot).getItem() == Items.BUCKET && itemComponent.getStack(secondStackSlot).getCount() == 1) {
 								if (ourVolume.hasStored(FluidVolume.BUCKET)) {
-									ourVolume.give(stackVolume, FluidVolume.BUCKET);
+										ourVolume.give(stackVolume, FluidVolume.BUCKET);
 
                                         itemComponent.setStack(secondStackSlot, new ItemStack(stackVolume.getFluid().getBucketItem()));
                                     }

@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.recipe;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
+import com.github.mixinors.astromine.mixin.common.RecipeManagerAccessor;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import me.shedaniel.architectury.core.AbstractRecipeSerializer;
 import net.minecraft.inventory.Inventory;
@@ -71,13 +72,17 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 		this.time = time;
 	}
 
-
 	public static boolean allows(World world, ItemComponent itemComponent) {
-		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (AlloySmeltingRecipe) it).toArray(AlloySmeltingRecipe[]::new));
+		if (RECIPE_CACHE.get(world) == null && world.getRecipeManager() instanceof RecipeManagerAccessor accessor) {
+			RECIPE_CACHE.put(world,
+					accessor.getAllOfType(Type.INSTANCE)
+							.values()
+							.stream()
+							.map(AlloySmeltingRecipe.class::cast)
+							.toArray(AlloySmeltingRecipe[]::new));
 		}
 
-		for (AlloySmeltingRecipe recipe : RECIPE_CACHE.get(world)) {
+		for (var recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.allows(itemComponent)) {
 				return true;
 			}
@@ -87,11 +92,16 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 	}
 
 	public static Optional<AlloySmeltingRecipe> matching(World world, ItemComponent itemComponent) {
-		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (AlloySmeltingRecipe) it).toArray(AlloySmeltingRecipe[]::new));
+		if (RECIPE_CACHE.get(world) == null && world.getRecipeManager() instanceof RecipeManagerAccessor accessor) {
+			RECIPE_CACHE.put(world,
+					accessor.getAllOfType(Type.INSTANCE)
+							.values()
+							.stream()
+							.map(AlloySmeltingRecipe.class::cast)
+							.toArray(AlloySmeltingRecipe[]::new));
 		}
 
-		for (AlloySmeltingRecipe recipe : RECIPE_CACHE.get(world)) {
+		for (var recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.matches(itemComponent)) {
 				return Optional.of(recipe);
 			}

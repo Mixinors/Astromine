@@ -36,33 +36,33 @@ import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 
 public class FluidMixerScreenHandler extends ComponentBlockEntityEnergyFluidScreenHandler {
-	private FluidMixerBlockEntity mixer;
+	private final FluidMixerBlockEntity mixer;
 
 	public FluidMixerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.FLUID_MIXER, syncId, player, position);
 
-		mixer = (FluidMixerBlockEntity) blockEntity;
+		mixer = (FluidMixerBlockEntity) energyFluidBlockEntity;
 	}
 
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		VerticalFluidBarWidget secondInputFluidBar = new VerticalFluidBarWidget();
+		var secondInputFluidBar = new VerticalFluidBarWidget();
 		secondInputFluidBar.setPosition(Position.of(fluidBar, fluidBar.getWidth() + 7, 0));
 		secondInputFluidBar.setSize(Size.absolute(fluidBar));
-		secondInputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getSecond());
+		secondInputFluidBar.setVolumeSupplier(() -> energyFluidBlockEntity.getFluidComponent().getSecond());
 
-		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
-		arrow.setPosition(Position.of(secondInputFluidBar, secondInputFluidBar.getWidth() + 9, secondInputFluidBar.getHeight() / 2F - 8));
+		var arrow = new HorizontalArrowWidget();
+		arrow.setPosition(Position.of(secondInputFluidBar, secondInputFluidBar.getWidth() + 9, secondInputFluidBar.getHeight()/ 2.0F - 8));
 		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> mixer.limit);
 		arrow.setProgressSupplier(() -> (int) mixer.progress);
 
-		VerticalFluidBarWidget outputFluidBar = new VerticalFluidBarWidget();
+		var outputFluidBar = new VerticalFluidBarWidget();
 		outputFluidBar.setPosition(Position.of(secondInputFluidBar, secondInputFluidBar.getWidth() + 9 + arrow.getWidth() + 7, 0));
 		outputFluidBar.setSize(Size.absolute(fluidBar));
-		outputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getThird());
+		outputFluidBar.setVolumeSupplier(() -> energyFluidBlockEntity.getFluidComponent().getThird());
 
 		mainTab.addWidget(secondInputFluidBar);
 		mainTab.addWidget(arrow);

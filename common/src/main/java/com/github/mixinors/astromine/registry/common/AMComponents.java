@@ -57,20 +57,21 @@ import dev.onyxstudios.cca.api.v3.item.ItemComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.item.ItemComponentInitializer;
 import dev.onyxstudios.cca.api.v3.world.WorldComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.world.WorldComponentInitializer;
+import net.minecraft.util.Identifier;
 
 public class AMComponents implements WorldComponentInitializer, ChunkComponentInitializer, ItemComponentInitializer, EntityComponentInitializer, BlockComponentInitializer {
-	public static final ComponentKey<WorldNetworkComponent> WORLD_NETWORK_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("world_network_component"), WorldNetworkComponent.class);
-	public static final ComponentKey<ChunkAtmosphereComponent> CHUNK_ATMOSPHERE_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("chunk_atmosphere_component"), ChunkAtmosphereComponent.class);
-	public static final ComponentKey<WorldHoloBridgeComponent> WORLD_BRIDGE_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("world_holo_bridge_component"), WorldHoloBridgeComponent.class);
+	public static final Identifier WORLD_NETWORK_COMPONENT = AMCommon.id("world_network_component");
+	public static final Identifier CHUNK_ATMOSPHERE_COMPONENT = AMCommon.id("chunk_atmosphere_component");
+	public static final Identifier WORLD_BRIDGE_COMPONENT = AMCommon.id("world_holo_bridge_component");
 
-	public static final ComponentKey<ItemComponent> ITEM_INVENTORY_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("item_inventory_component"), ItemComponent.class);
-	public static final ComponentKey<FluidComponent> FLUID_INVENTORY_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("fluid_inventory_component"), FluidComponent.class);
-	public static final ComponentKey<EnergyComponent> ENERGY_INVENTORY_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("energy_inventory_component"), EnergyComponent.class);
+	public static final Identifier ITEM_INVENTORY_COMPONENT = AMCommon.id("item_inventory_component");
+	public static final Identifier FLUID_INVENTORY_COMPONENT = AMCommon.id("fluid_inventory_component");
+	public static final Identifier ENERGY_INVENTORY_COMPONENT = AMCommon.id("energy_inventory_component");
 
-	public static final ComponentKey<TransferComponent> BLOCK_ENTITY_TRANSFER_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("block_entity_transfer_component"), TransferComponent.class);
-	public static final ComponentKey<RedstoneComponent> BLOCK_ENTITY_REDSTONE_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("block_entity_redstone_component"), RedstoneComponent.class);
+	public static final Identifier BLOCK_ENTITY_TRANSFER_COMPONENT = AMCommon.id("block_entity_transfer_component");
+	public static final Identifier BLOCK_ENTITY_REDSTONE_COMPONENT = AMCommon.id("block_entity_redstone_component");
 
-	public static final ComponentKey<EntityOxygenComponent> ENTITY_OXYGEN_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("entity_oxygen_component"), EntityOxygenComponent.class);
+	public static final Identifier ENTITY_OXYGEN_COMPONENT = AMCommon.id("entity_oxygen_component");
 
 	public static void initialize() {}
 

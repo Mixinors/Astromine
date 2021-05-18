@@ -34,18 +34,18 @@ import com.google.gson.JsonPrimitive;
 
 public class LongUtils {
     /** Serializes the given long to a {@link ByteBuf}. */
-    public static void toPacket(PacketByteBuf buffer, long number) {
-        buffer.writeLong(number);
+    public static void toPacket(PacketByteBuf buf, long val) {
+        buf.writeLong(val);
     }
 
     /** Deserializes a long from a {@link ByteBuf}. */
-    public static long fromPacket(PacketByteBuf buffer) {
-        return buffer.readLong();
+    public static long fromPacket(PacketByteBuf buf) {
+        return buf.readLong();
     }
 
     /** Serializes the given long to a {@link JsonElement}. */
-    public static JsonElement toJson(long number) {
-        return new JsonPrimitive(number);
+    public static JsonElement toJson(long val) {
+        return new JsonPrimitive(val);
     }
 
     /** Deserializes a long from a {@link JsonElement}. */

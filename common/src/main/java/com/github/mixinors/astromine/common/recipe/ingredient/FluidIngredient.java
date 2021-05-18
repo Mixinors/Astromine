@@ -82,7 +82,7 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 			if (json.isJsonObject()) {
 				return ofEntries(Stream.of(Entry.fromJson(json)));
 			} else if (json.isJsonArray()) {
-				JsonArray jsonArray = json.getAsJsonArray();
+				var jsonArray = json.getAsJsonArray();
 
 				if (jsonArray.size() == 0) {
 					throw new JsonSyntaxException("Fluid array cannot be empty, at least one fluid must be defined");
@@ -102,16 +102,16 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 	/** Serializes this {@link FluidIngredient} to a {@link JsonElement}. */
 	public JsonElement toJson() {
 		if (entries.length == 1 && entries[0] instanceof TagEntry) {
-			JsonObject jsonObject = new JsonObject();
+			var jsonObject = new JsonObject();
 
 			jsonObject.addProperty("tag", ServerTagManagerHolder.getTagManager().getFluids().getTagId(((TagEntry) entries[0]).tag).toString());
 			jsonObject.addProperty("amount", ((TagEntry) entries[0]).amount);
 
 			return jsonObject;
 		} else if (entries.length >= 1) {
-			JsonArray jsonArray = new JsonArray();
+			var jsonArray = new JsonArray();
 
-			for (Entry entry : entries) {
+			for (var entry : entries) {
 				jsonArray.add(((SimpleEntry) entry).volumes.iterator().next().toJson());
 			}
 
@@ -133,7 +133,7 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 
 		buffer.writeVarInt(this.matchingVolumes.length);
 
-		for (FluidVolume matchingVolume : this.matchingVolumes) {
+		for (var matchingVolume : this.matchingVolumes) {
 			matchingVolume.toPacket(buffer);
 		}
 
@@ -164,13 +164,16 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 	/** Asserts whether the given {@link Fluid} has the same fluid
 	 * as any of the volumes of this ingredient or not. */
 	public boolean testWeak(FluidVolume volume) {
-		FluidVolume[] matchingVolumes = getMatchingVolumes();
+		var matchingVolumes = getMatchingVolumes();
+		
 		if (this.matchingVolumes.length == 0)
 			return false;
-		for (FluidVolume matchingVolume : matchingVolumes) {
+		
+		for (var matchingVolume : matchingVolumes) {
 			if (matchingVolume.getFluid().equals(volume.getFluid()))
 				return true;
 		}
+		
 		return false;
 	}
 
@@ -180,13 +183,17 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 	public FluidVolume testMatching(FluidVolume volume) {
 		if (volume == null)
 			return null;
-		FluidVolume[] matchingVolumes = getMatchingVolumes();
+		
+		var matchingVolumes = getMatchingVolumes();
+		
 		if (this.matchingVolumes.length == 0)
 			return null;
-		for (FluidVolume matchingVolume : matchingVolumes) {
+		
+		for (var matchingVolume : matchingVolumes) {
 			if (FluidVolume.fluidsEqual(matchingVolume, volume) && volume.getAmount() >= matchingVolume.getAmount())
 				return matchingVolume.copy();
 		}
+		
 		return null;
 	}
 
@@ -202,27 +209,27 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 		static Entry fromJson(JsonElement jsonElement) {
 			if (!jsonElement.isJsonObject()) throw new JsonParseException("A fluid ingredient entry must be an object");
 
-			JsonObject jsonObject = jsonElement.getAsJsonObject();
+			var jsonObject = jsonElement.getAsJsonObject();
 
 			if (jsonObject.has("fluid") && jsonObject.has("tag")) {
 				throw new JsonParseException("A fluid ingredient entry is either a tag or a fluid, not both!");
 			} else {
-				long amount = FluidVolume.BUCKET;
+				var amount = FluidVolume.BUCKET;
 
 				if (jsonObject.has("amount")) {
 					amount = jsonObject.get("amount").getAsLong();
 				}
 
 				if (jsonObject.has("fluid")) {
-					Identifier fluidId = new Identifier(StringUtils.fromJson(jsonObject.get("fluid")));
+					var fluidId = new Identifier(StringUtils.fromJson(jsonObject.get("fluid")));
 
-					Fluid fluid = Registry.FLUID.getOrEmpty(fluidId).orElseThrow(() -> new JsonSyntaxException("Unknown fluid '" + fluidId + "'!"));
+					var fluid = Registry.FLUID.getOrEmpty(fluidId).orElseThrow(() -> new JsonSyntaxException("Unknown fluid '" + fluidId + "'!"));
 
 					return new SimpleEntry(FluidVolume.of(amount, fluid));
 				} else if (jsonObject.has("tag")) {
-					Identifier tagId = new Identifier(StringUtils.fromJson(jsonObject.get("tag")));
+					var tagId = new Identifier(StringUtils.fromJson(jsonObject.get("tag")));
 
-					Tag<Fluid> tag = ServerTagManagerHolder.getTagManager().getFluids().getTag(tagId);
+					var tag = ServerTagManagerHolder.getTagManager().getFluids().getTag(tagId);
 
 					if (tag == null) {
 						throw new JsonSyntaxException("Unknown fluid tag '" + tagId + "'!");

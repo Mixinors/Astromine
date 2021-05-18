@@ -162,7 +162,7 @@ public final class NetworkMemberNode {
 
 	/** Serializes a {@link NetworkMemberNode} to a {@link CompoundTag}. */
 	public CompoundTag toTag() {
-		CompoundTag tag = new CompoundTag();
+		var tag = new CompoundTag();
 
 		tag.putLong("pos", pos);
 		tag.putInt("dir", directionId);

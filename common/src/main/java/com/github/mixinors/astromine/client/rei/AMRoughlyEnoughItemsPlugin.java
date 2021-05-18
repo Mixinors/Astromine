@@ -149,7 +149,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIPluginV0 {
 		
 		for (Map.Entry<Item, Integer> entry : AbstractFurnaceBlockEntity.createFuelTimeMap().entrySet()) {
 			if (!(entry.getKey() instanceof BucketItem) && entry != null && entry.getValue() > 0) {
-				recipeHelper.registerDisplay(new SolidGeneratingDisplay((entry.getValue() / 2F * 5) / (entry.getValue() / 2F) * 6, Collections.singletonList(EntryStack.create(entry.getKey())), null, (entry.getValue() / 2) / 6.0));
+				recipeHelper.registerDisplay(new SolidGeneratingDisplay((entry.getValue()/ 2.0F * 5) / (entry.getValue()/ 2.0F) * 6, Collections.singletonList(EntryStack.create(entry.getKey())), null, (entry.getValue() / 2) / 6.0));
 			}
 		}
 	}

@@ -46,30 +46,36 @@ public class ExplosionUtils {
 	/** Attempts to explode at specified position with the given power. */
 	public static void attemptExplosion(World world, int x, int y, int z, int power) {
 		if (!world.isClient) {
-			long start = System.currentTimeMillis();
-			long blocks = explode(world, x, y, z, power);
-			long end = System.currentTimeMillis();
+			var start = System.currentTimeMillis();
+			var blocks = explode(world, x, y, z, power);
+			var end = System.currentTimeMillis();
+			
 			AMCommon.LOGGER.info(String.format("Took %dms to destroy %d blocks from explosion with power %d.", end - start, blocks, power));
 		}
 	}
 
 	/** Explodes at specified position with the given power. */
 	private static long explode(World access, int x, int y, int z, int radius) {
-		int cr = radius >> 4;
-		long blocks = 0;
+		var cr = radius >> 4;
+		var blocks = 0L;
+		
 		for (int cox = -cr; cox <= cr + 1; cox++) {
 			for (int coz = -cr; coz <= cr + 1; coz++) {
 				int box = cox * 16, boz = coz * 16;
 				if (touchesOrIsIn(box, 0, boz, box + 15, 255, boz + 15, radius)) {
-					int cx = (x >> 4) + cox, cz = (z >> 4) + coz;
-					WorldChunk chunk = access.getChunk(cx, cz);
+					var cx = (x >> 4) + cox;
+					var cz = (z >> 4) + coz;
+					
+					var chunk = access.getChunk(cx, cz);
 					blocks += forSubchunks(chunk, box, boz, x, y, z, radius);
 					chunk.markDirty();
-					ServerChunkManager manager = (ServerChunkManager) access.getChunkManager();
+					
+					var manager = (ServerChunkManager) access.getChunkManager();
 					manager.threadedAnvilChunkStorage.getPlayersWatchingChunk(new ChunkPos(cx, cz), false).forEach(s -> s.networkHandler.sendPacket(new ChunkDataS2CPacket(chunk, 65535)));
 				}
 			}
 		}
+		
 		return blocks;
 	}
 
@@ -77,7 +83,7 @@ public class ExplosionUtils {
 	 * Asserts whether a certain point is inside a given sphere or not.
 	 * Originally from {@see https://stackoverflow.com/a/4579069/9773993}, adapted to Java. */
 	private static boolean touchesOrIsIn(int x1, int y1, int z1, int x2, int y2, int z2, int radius) {
-		int squared = radius * radius;
+		var squared = radius * radius;
 
 		// Assume C1 and C2 are element-wise sorted. If not, sort them now.
 		if (0 < x1) {
@@ -85,34 +91,40 @@ public class ExplosionUtils {
 		} else if (0 > x2) {
 			squared -= x2 * x2;
 		}
+		
 		if (0 < y1) {
 			squared -= y1 * y1;
 		} else if (0 > y2) {
 			squared -= y2 * y2;
 		}
+		
 		if (0 < z1) {
 			squared -= z1 * z1;
 		} else if (0 > z2) {
 			squared -= z2 * z2;
 		}
+		
 		return squared > 0;
 	}
 
 	/** Explodes all subchunks in the given sphere. */
 	private static long forSubchunks(WorldChunk chunk, int bx, int bz, int x, int y, int z, int radius) {
-		int scr = radius >> 4;
-		int sc = y >> 4;
-		long destroyed = 0;
-		ChunkSection[] sections = chunk.getSectionArray();
+		var scr = radius >> 4;
+		var sc = y >> 4;
+		var destroyed = 0;
+		var sections = chunk.getSectionArray();
+		
 		for (int i = -scr; i <= scr; i++) {
-			int by = i * 16;
-			int val = i + sc;
+			var by = i * 16;
+			var val = i + sc;
+			
 			if (val >= 0 && val < 16) {
-				ChunkSection section = sections[val];
+				var section = sections[val];
+				
 				if (section != null) {
-					for (int ox = 0; ox < 16; ox++) {
-						for (int oy = 0; oy < 16; oy++) {
-							for (int oz = 0; oz < 16; oz++) {
+					for (var ox = 0; ox < 16; ox++) {
+						for (var oy = 0; oy < 16; oy++) {
+							for (var oz = 0; oz < 16; oz++) {
 								if (in(bx + ox, by + oy, bz + oz, radius)) {
 									if (section.getBlockState(ox, oy, oz).getHardness(chunk, BlockPos.ORIGIN) != -1) {
 										section.setBlockState(ox, oy, oz, AIR);
@@ -122,10 +134,12 @@ public class ExplosionUtils {
 							}
 						}
 					}
+					
 					chunk.getLightingProvider().setSectionStatus(ChunkSectionPos.from(bx >> 4, i, bz >> 4), false);
 				}
 			}
 		}
+		
 		return destroyed;
 	}
 

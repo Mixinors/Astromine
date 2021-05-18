@@ -38,7 +38,7 @@ public class FluidUtils {
 	 */
 	public static int getColor(PlayerEntity player, Fluid fluid) {
 		if (fluid == Fluids.EMPTY) {
-			return 0xffaaaaaa;
+			return 0xFFAAAAAA;
 		} else {
 			return FluidStackHooks.getColor(player.getEntityWorld(), BlockPos.ORIGIN, fluid.getDefaultState());
 		}

@@ -33,17 +33,23 @@ public class RotationUtils {
 	/** Returns the given {@link Box} rotated towards the specified {@link Direction}. */
 	public static Box getRotatedBoundingBox(Box box, Direction facing) {
 		box.offset(-0.5, -0.5, -0.5);
+		
 		switch (facing) {
 			case SOUTH:
 				box = new Box(box.minZ, box.minY, (box.maxX * -1) + 1, box.maxZ, box.maxY, (box.minX * -1) + 1);
+				break;
 			case WEST:
 				box = new Box((box.maxX * -1) + 1, box.minY, (box.maxZ * -1) + 1, (box.minX * -1) + 1, box.maxY, (box.minZ * -1) + 1);
+				break;
 			case EAST:
 				box = new Box((box.maxZ * -1) + 1, box.minY, box.minX, (box.minZ * -1) + 1, box.maxY, box.maxX);
+				break;
 			default:
-
+				break;
 		}
+		
 		box.offset(0.5, 0.5, 0.5);
+		
 		return box;
 	}
 

@@ -34,18 +34,18 @@ import com.google.gson.JsonPrimitive;
 
 public class BooleanUtils {
     /** Serializes the given boolean to a {@link ByteBuf}. */
-    public static void toPacket(PacketByteBuf buffer, boolean value) {
-        buffer.writeBoolean(value);
+    public static void toPacket(PacketByteBuf buf, boolean val) {
+        buf.writeBoolean(val);
     }
 
     /** Deserializes a boolean from a {@link ByteBuf}. */
-    public static boolean fromPacket(PacketByteBuf buffer) {
-        return buffer.readBoolean();
+    public static boolean fromPacket(PacketByteBuf buf) {
+        return buf.readBoolean();
     }
 
     /** Serializes the given boolean to a {@link JsonElement}. */
-    public static JsonElement toJson(long number) {
-        return new JsonPrimitive(number);
+    public static JsonElement toJson(boolean val) {
+        return new JsonPrimitive(val);
     }
 
     /** Deserializes a boolean from a {@link JsonElement}. */

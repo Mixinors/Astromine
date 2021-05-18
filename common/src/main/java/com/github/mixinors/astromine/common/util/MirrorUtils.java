@@ -34,57 +34,37 @@ import static net.minecraft.util.math.Direction.WEST;
 public class MirrorUtils {
 	public static Direction rotate(Direction origin, Direction rotation) {
 		if (rotation == NORTH) {
-			switch (origin) {
-				case NORTH:
-					return NORTH;
-				case SOUTH:
-					return SOUTH;
-				case WEST:
-					return WEST;
-				case EAST:
-					return EAST;
-				default:
-					return origin;
-			}
+			return switch (origin) {
+				case NORTH -> NORTH;
+				case SOUTH -> SOUTH;
+				case WEST -> WEST;
+				case EAST -> EAST;
+				default -> origin;
+			};
 		} else if (rotation == SOUTH) {
-			switch (origin) {
-				case NORTH:
-					return SOUTH;
-				case SOUTH:
-					return NORTH;
-				case WEST:
-					return EAST;
-				case EAST:
-					return WEST;
-				default:
-					return origin;
-			}
+			return switch (origin) {
+				case NORTH -> SOUTH;
+				case SOUTH -> NORTH;
+				case WEST -> EAST;
+				case EAST -> WEST;
+				default -> origin;
+			};
 		} else if (rotation == WEST) {
-			switch (origin) {
-				case NORTH:
-					return EAST;
-				case SOUTH:
-					return WEST;
-				case EAST:
-					return SOUTH;
-				case WEST:
-					return NORTH;
-				default:
-					return origin;
-			}
+			return switch (origin) {
+				case NORTH -> EAST;
+				case SOUTH -> WEST;
+				case EAST -> SOUTH;
+				case WEST -> NORTH;
+				default -> origin;
+			};
 		} else if (rotation == EAST) {
-			switch (origin) {
-				case NORTH:
-					return WEST;
-				case SOUTH:
-					return EAST;
-				case EAST:
-					return NORTH;
-				case WEST:
-					return SOUTH;
-				default:
-					return origin;
-			}
+			return switch (origin) {
+				case NORTH -> WEST;
+				case SOUTH -> EAST;
+				case EAST -> NORTH;
+				case WEST -> SOUTH;
+				default -> origin;
+			};
 		} else {
 			return origin; /* TODO: {@link Direction#UP} and {@link Direction#DOWN}. */
 		}

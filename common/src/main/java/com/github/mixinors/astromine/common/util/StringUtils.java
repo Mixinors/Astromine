@@ -34,18 +34,18 @@ import com.google.gson.JsonPrimitive;
 
 public class StringUtils {
     /** Serializes the given {@link String} to a {@link ByteBuf}. */
-    public static void toPacket(PacketByteBuf buffer, String string) {
-        buffer.writeString(string);
+    public static void toPacket(PacketByteBuf buf, String val) {
+        buf.writeString(val);
     }
 
     /** Deserializes a {@link String} from a {@link ByteBuf}. */
-    public static String fromPacket(PacketByteBuf buffer) {
-        return buffer.readString();
+    public static String fromPacket(PacketByteBuf buf) {
+        return buf.readString();
     }
 
     /** Serializes the given {@link String} to a {@link JsonElement}. */
-    public static JsonElement toJson(String string) {
-        return new JsonPrimitive(string);
+    public static JsonElement toJson(String val) {
+        return new JsonPrimitive(val);
     }
 
     /** Deserializes a {@link String} from a {@link JsonElement}. */

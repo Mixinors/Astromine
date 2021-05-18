@@ -26,7 +26,6 @@ package com.github.mixinors.astromine.common.screenhandler;
 
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
@@ -43,83 +42,69 @@ import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import java.util.function.Supplier;
 
 public class TankScreenHandler extends ComponentBlockEntityFluidItemScreenHandler {
-	private TankBlockEntity tank;
+	private final TankBlockEntity tank;
 
 	public TankScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.TANK, syncId, player, position);
-		tank = (TankBlockEntity) blockEntity;
+		tank = (TankBlockEntity) fluidItemBlockEntity;
 	}
 
 	public TankScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
-		tank = (TankBlockEntity) blockEntity;
+		tank = (TankBlockEntity) fluidItemBlockEntity;
 	}
 
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		fluidBar.setPosition(Position.of(width / 2F - fluidBar.getWidth() / 2F, fluidBar.getY()));
+		fluidBar.setPosition(Position.of(width/ 2.0F - fluidBar.getWidth()/ 2.0F, fluidBar.getY()));
 
-		SlotWidget input = new SlotWidget(0, blockEntity);
+		var input = new SlotWidget(0, fluidItemBlockEntity);
 		input.setPosition(Position.of(fluidBar, -18 - 3, 0));
 		input.setSize(Size.of(18, 18));
 
-		SlotWidget output = new SlotWidget(1, blockEntity);
+		var output = new SlotWidget(1, fluidItemBlockEntity);
 		output.setPosition(Position.of(fluidBar, -18 - 3, fluidBar.getHeight() - 18));
 		output.setSize(Size.of(18, 18));
 
-		HorizontalArrowWidget leftArrow = new HorizontalArrowWidget();
+		var leftArrow = new HorizontalArrowWidget();
 		leftArrow.setPosition(Position.of(input, 28, 0));
 		leftArrow.setSize(Size.of(22, 16));
 		leftArrow.setLimitSupplier(() -> {
-			ItemStack stack = blockEntity.getItemComponent().getFirst();
-
-			if (stack.getItem() instanceof FluidVolumeItem) {
-				return (int) ((FluidVolumeItem) stack.getItem()).getSize();
-			} else {
-				return 0;
-			}
+			var stack = fluidItemBlockEntity.getItemComponent().getFirst();
+			var item = stack.getItem();
+			
+			return item instanceof FluidVolumeItem volumeItem ? (int) volumeItem.getSize() : 0;
  		});
 		leftArrow.setProgressSupplier(() -> {
-			ItemStack stack = blockEntity.getItemComponent().getFirst();
-
-			if (stack.getItem() instanceof FluidVolumeItem) {
-				return FluidComponent.get(stack.getItem()).getFirst().getAmount().intValue();
-			} else {
-				return 0;
-			}
+			var stack = fluidItemBlockEntity.getItemComponent().getFirst();
+			var item = stack.getItem();
+			
+			return item instanceof FluidVolumeItem ? FluidComponent.get(stack).getFirst().getAmount().intValue() : 0;
 		});
 
-		HorizontalArrowWidget rightArrow = new HorizontalArrowWidget();
+		var rightArrow = new HorizontalArrowWidget();
 		rightArrow.setPosition(Position.of(output, -34, 0));
 		rightArrow.setSize(Size.of(22, 16));
 		rightArrow.setLimitSupplier(() -> {
-			ItemStack stack = blockEntity.getItemComponent().getSecond();
-
-			if (stack.getItem() instanceof FluidVolumeItem) {
-				return (int) ((FluidVolumeItem) stack.getItem()).getSize();
-			} else {
-				return 0;
-			}
+			var stack = fluidItemBlockEntity.getItemComponent().getSecond();
+			var item = stack.getItem();
+			
+			return item instanceof FluidVolumeItem volumeItem ? (int) volumeItem.getSize() : 0;
 		});
 		rightArrow.setProgressSupplier(() -> {
-			ItemStack stack = blockEntity.getItemComponent().getSecond();
-
-			if (stack.getItem() instanceof FluidVolumeItem) {
-				return FluidComponent.get(stack.getItem()).getFirst().getAmount().intValue();
-			} else {
-				return 0;
-			}
+			var stack = fluidItemBlockEntity.getItemComponent().getSecond();
+			var item = stack.getItem();
+			
+			return item instanceof FluidVolumeItem ? FluidComponent.get(stack).getFirst().getAmount().intValue() : 0;
 		});
 
-		FluidFilterWidget filter = new FluidFilterWidget();
+		var filter = new FluidFilterWidget();
 		filter.setPosition(Position.of(input, 5F, 18F + 2F));
 		filter.setSize(Size.of(8, 8));
-		filter.setFluidConsumer(fluid -> {
-			tank.setFilter(fluid);
-		});
-		filter.setFluidSupplier(() -> tank.getFilter());
+		filter.setFluidConsumer(tank::setFilter);
+		filter.setFluidSupplier(tank::getFilter);
 
 		mainTab.addWidget(input);
 		mainTab.addWidget(output);

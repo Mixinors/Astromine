@@ -26,10 +26,14 @@ package com.github.mixinors.astromine.common.screenhandler;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.CraftingRecipe;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Pair;
 import net.minecraft.util.registry.Registry;
 
 import com.github.mixinors.astromine.common.inventory.BaseInventory;
@@ -55,6 +59,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * A {@link BaseScreenHandler}
@@ -69,37 +74,24 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 	}
 
 	public RecipeCreatorScreenHandler(int syncId, @NotNull PlayerEntity player) {
-		super(AMScreenHandlers.RECIPE_CREATOR.get(), syncId, player);
+		super((ScreenHandlerType<? extends ScreenHandler>) AMScreenHandlers.RECIPE_CREATOR.get(), syncId, player);
 	}
 
 	@Override
 	public void initialize(int width, int height) {
-		final List<String> TYPES = new ArrayList<String>() {
-            {
-                add("nugget");
-                add("wire");
-                add("ingot");
-                add("dust");
-                add("tiny_dust");
-                add("plate");
-                add("gear");
-            }
-        };
+		var types = List.of("nugget", "wire", "ingot", "dust", "tiny_dust", "plate", "gear");
 
-        final Map<String, String> TAGS = new HashMap<String, String>() {
-            {
-                Registry.ITEM.forEach((item) -> {
-                    Identifier id = Registry.ITEM.getId(item);
-
-                    TYPES.forEach((type) -> {
-                        if (id.getPath().contains(type)) {
-                            put(id.toString(), "c:" + id.getPath() + "s");
-                        }
-                    });
-                });
-            }
-        };
-        PanelWidget panel = new PanelWidget();
+        var tags = Registry.ITEM.getEntries()
+		        .stream()
+		        .filter(entry -> types.stream().anyMatch(type -> entry.getKey().getValue().getPath().contains(type)))
+		        .collect(
+				        Collectors.toMap(
+				        		entry -> entry.getKey().getValue().toString(),
+						        entry -> String.format("c:%ss", entry.getKey().getValue().getPath())
+				        )
+		        );
+        
+        var panel = new PanelWidget();
 		panel.setPosition(Position.of(width / 2 - 88.5, height / 2 - 92));
 		panel.setSize(Size.of(93 + 84, 100 + 84));
 
@@ -107,30 +99,30 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 
 		Slots.addPlayerInventory(Position.of(panel.getX() + 7, panel.getY() + 7 + 9 + 18 + 18 + 18 + 7 + 18 + 7), Size.of(18, 18), this, getPlayer().inventory);
 
-		List<SlotWidget> inputSlots = Lists.newArrayList(Slots.addArray(Position.of(panel.getX() + 7, panel.getY() + 7 + 9), Size.of(18, 18), panel, 0, 3, 3, getInventory()));
+		var inputSlots = Slots.addArray(Position.of(panel.getX() + 7, panel.getY() + 7 + 9), Size.of(18, 18), panel, 0, 3, 3, getInventory());
 
-		SlotWidget outputSlot = new SlotWidget(9, getInventory());
+		var outputSlot = new SlotWidget(9, getInventory());
 		outputSlot.setPosition(Position.of(panel.getX() + 7 + 18 * 3 + 7, panel.getY() + 7 + 18 + 9));
 		outputSlot.setSize(Size.of(18, 18));
 
 		panel.addWidget(outputSlot);
 
-		ButtonWidget saveButton = new ButtonWidget();
+		var saveButton = new ButtonWidget();
 		saveButton.setPosition(Position.of(panel.getX() + 7, panel.getY() + 7 + 14 + 18 * 3));
 		saveButton.setSize(Size.of(18 * 3, 18));
 		saveButton.setLabel(new LiteralText("Save"));
 		saveButton.setClickAction(() -> {
-			Map<Integer, String> table = new HashMap<>();
-			Map<String, Integer> inverseTable = new HashMap<>();
-			Map<Integer, String> grid = new HashMap<>();
+			var table = new HashMap<Integer, String>();
+			var inverseTable = new HashMap<String, Integer>();
+			var grid = new HashMap<Integer, String>();
 
 			inputSlots.forEach((it) -> {
-				int slot = it.getSlot();
+				var slot = it.getSlot();
 
-				ItemStack stack = it.getBackendSlot().getStack();
+				var stack = it.getBackendSlot().getStack();
 
 				if (!stack.isEmpty()) {
-					String name = Registry.ITEM.getId(stack.getItem()).toString();
+					var name = Registry.ITEM.getId(stack.getItem()).toString();
 
 					if (inverseTable.containsKey(name)) {
 						grid.put(slot, Integer.toString(inverseTable.get(name)));
@@ -144,15 +136,15 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 				}
 			});
 
-			ItemStack outputStack = outputSlot.getBackendSlot().getStack();
+			var outputStack = outputSlot.getBackendSlot().getStack();
 
-			String outputName = Registry.ITEM.getId(outputStack.getItem()).toString();
+			var outputName = Registry.ITEM.getId(outputStack.getItem()).toString();
 
-			JsonObject recipeJson = new JsonObject();
+			var recipeJson = new JsonObject();
 
 			recipeJson.addProperty("type", "minecraft:crafting_shaped");
 
-			JsonArray patternJson = new JsonArray();
+			var patternJson = new JsonArray();
 
 			patternJson.add(grid.get(0) + grid.get(1) + grid.get(2));
 			patternJson.add(grid.get(3) + grid.get(4) + grid.get(5));
@@ -160,13 +152,13 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 
 			recipeJson.add("pattern", patternJson);
 
-			JsonObject keyJson = new JsonObject();
+			var keyJson = new JsonObject();
 
 			table.forEach((slot, name) -> {
-				JsonObject entry = new JsonObject();
+				var entry = new JsonObject();
 
-				if (TAGS.containsKey(name)) {
-					entry.addProperty("tag", TAGS.get(name));
+				if (tags.containsKey(name)) {
+					entry.addProperty("tag", tags.get(name));
 				} else {
 					entry.addProperty("item", name);
 				}
@@ -176,18 +168,18 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 
 			recipeJson.add("key", keyJson);
 
-			JsonObject resultJson = new JsonObject();
+			var resultJson = new JsonObject();
 
 			resultJson.addProperty("item", outputName);
             resultJson.addProperty("count", outputStack.getCount());
 
 			recipeJson.add("result", resultJson);
 
-			File generatedFile = new File("generated");
+			var generatedFile = new File("generated");
 
 			generatedFile.mkdir();
 
-			File outputFile = new File("generated/" + outputName.replace(":", "_").replace("/", "_").replace("astromine_", "") + ".json");
+			var outputFile = new File("generated/" + outputName.replace(":", "_").replace("/", "_").replace("astromine_", "") + ".json");
 
 			try {
 				outputFile.createNewFile();

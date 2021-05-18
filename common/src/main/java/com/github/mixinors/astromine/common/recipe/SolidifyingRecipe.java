@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.recipe;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
+import com.github.mixinors.astromine.mixin.common.RecipeManagerAccessor;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import me.shedaniel.architectury.core.AbstractRecipeSerializer;
 import net.minecraft.inventory.Inventory;
@@ -73,11 +74,16 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 	}
 
 	public static boolean allows(World world, FluidComponent fluidComponent) {
-		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (SolidifyingRecipe) it).toArray(SolidifyingRecipe[]::new));
+		if (RECIPE_CACHE.get(world) == null && world.getRecipeManager() instanceof RecipeManagerAccessor accessor) {
+			RECIPE_CACHE.put(world,
+					accessor.getAllOfType(Type.INSTANCE)
+							.values()
+							.stream()
+							.map(SolidifyingRecipe.class::cast)
+							.toArray(SolidifyingRecipe[]::new));
 		}
 
-		for (SolidifyingRecipe recipe : RECIPE_CACHE.get(world)) {
+		for (var recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.allows(fluidComponent)) {
 				return true;
 			}
@@ -87,11 +93,16 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 	}
 
 	public static Optional<SolidifyingRecipe> matching(World world, ItemComponent itemComponent, FluidComponent fluidComponent) {
-		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (SolidifyingRecipe) it).toArray(SolidifyingRecipe[]::new));
+		if (RECIPE_CACHE.get(world) == null && world.getRecipeManager() instanceof RecipeManagerAccessor accessor) {
+			RECIPE_CACHE.put(world,
+					accessor.getAllOfType(Type.INSTANCE)
+							.values()
+							.stream()
+							.map(SolidifyingRecipe.class::cast)
+							.toArray(SolidifyingRecipe[]::new));
 		}
-
-		for (SolidifyingRecipe recipe : RECIPE_CACHE.get(world)) {
+		
+		for (var recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.matches(itemComponent, fluidComponent)) {
 				return Optional.of(recipe);
 			}

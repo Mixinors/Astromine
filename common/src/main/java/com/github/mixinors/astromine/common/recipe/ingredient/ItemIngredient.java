@@ -92,7 +92,7 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 			if (json.isJsonObject()) {
 				return ofEntries(Stream.of(Entry.fromJson(json.getAsJsonObject())));
 			} else if (json.isJsonArray()) {
-				JsonArray jsonArray = json.getAsJsonArray();
+				var jsonArray = json.getAsJsonArray();
 
 				if (jsonArray.size() == 0) {
 					throw new JsonSyntaxException("Item array cannot be empty, at least one item must be defined");
@@ -112,16 +112,16 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 	/** Serializes this {@link ItemIngredient} to a {@link JsonElement}. */
 	public JsonElement toJson() {
 		if (entries.length == 1 && entries[0] instanceof TagEntry) {
-			JsonObject jsonObject = new JsonObject();
+			var jsonObject = new JsonObject();
 
 			jsonObject.addProperty("tag", ServerTagManagerHolder.getTagManager().getItems().getTagId(((TagEntry) entries[0]).tag).toString());
 			jsonObject.addProperty("amount", ((TagEntry) entries[0]).count);
 
 			return jsonObject;
 		} else if (entries.length >= 1) {
-			JsonArray jsonArray = new JsonArray();
+			var jsonArray = new JsonArray();
 
-			for (Entry entry : entries) {
+			for (var entry : entries) {
 				jsonArray.add(StackUtils.toJson(((SimpleEntry) entry).stacks.iterator().next()));
 			}
 
@@ -133,7 +133,7 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 
 	/** Deserializes an {@link ItemIngredient} from a {@link ByteBuf}. */
 	public static ItemIngredient fromPacket(PacketByteBuf buffer) {
-		int size = buffer.readVarInt();
+		var size = buffer.readVarInt();
 		return ofEntries(Stream.generate(() -> new SimpleEntry(buffer.readItemStack())).limit(size));
 	}
 
@@ -165,6 +165,7 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 		if (ingredient == null) {
 			ingredient = Ingredient.ofStacks(Stream.of(getMatchingStacks()));
 		}
+		
 		return ingredient;
 	}
 
@@ -179,12 +180,15 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 	/** Asserts whether the given {@link ItemStack} has the same item and tag (if present)
 	 * as any of the {@link ItemStack}s of this ingredient or not. */
 	public boolean testWeak(ItemStack stack) {
-		ItemStack[] matchingStacks = getMatchingStacks();
+		var matchingStacks = getMatchingStacks();
+		
 		if (this.matchingStacks.length == 0)
 			return false;
-		for (ItemStack matchingStack : matchingStacks) {
+		
+		for (var matchingStack : matchingStacks) {
 			if (ItemStack.areItemsEqual(stack, matchingStack) && (!matchingStack.hasTag() || ItemStack.areTagsEqual(stack, matchingStack))) return true;
 		}
+		
 		return false;
 	}
 
@@ -194,13 +198,17 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 	public ItemStack testMatching(ItemStack stack) {
 		if (stack == null)
 			return ItemStack.EMPTY;
-		ItemStack[] matchingStacks = getMatchingStacks();
+		
+		var matchingStacks = getMatchingStacks();
+		
 		if (this.matchingStacks.length == 0)
 			return ItemStack.EMPTY;
-		for (ItemStack matchingStack : matchingStacks) {
+		
+		for (var matchingStack : matchingStacks) {
 			if (ItemStack.areItemsEqual(matchingStack, stack) && (!matchingStack.hasTag() || ItemStack.areTagsEqual(matchingStack, stack)) && stack.getCount() >= matchingStack.getCount())
 				return matchingStack.copy();
 		}
+		
 		return ItemStack.EMPTY;
 	}
 
@@ -216,14 +224,14 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 		static Entry fromJson(JsonElement jsonElement) {
 			if (!jsonElement.isJsonObject()) throw new JsonParseException("An item ingredient entry must be an object");
 
-			JsonObject jsonObject = jsonElement.getAsJsonObject();
+			var jsonObject = jsonElement.getAsJsonObject();
 
 			if (jsonObject.has("item") && jsonObject.has("tag")) {
 				throw new JsonParseException("An item ingredient entry is either a tag or an item, not both");
 			} else {
-				int count = 1;
+				var count = 1;
 
-				CompoundTag stackTag = null;
+				var stackTag = new CompoundTag();
 
 				if (jsonObject.has("count")) {
 					count = JsonHelper.getInt(jsonObject, "count");
@@ -234,21 +242,21 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 						stackTag = (CompoundTag) JsonOps.INSTANCE.convertTo(NbtOps.INSTANCE, jsonObject.get("nbt"));
 					}
 
-					Identifier itemId = new Identifier(JsonHelper.getString(jsonObject, "item"));
+					var itemId = new Identifier(JsonHelper.getString(jsonObject, "item"));
 
-					Item item = Registry.ITEM.getOrEmpty(itemId).orElseThrow(() -> new JsonSyntaxException("Unknown item '" + itemId + "'"));
+					var item = Registry.ITEM.getOrEmpty(itemId).orElseThrow(() -> new JsonSyntaxException("Unknown item '" + itemId + "'"));
 
-					ItemStack stack = new ItemStack(item, count);
+					var stack = new ItemStack(item, count);
 
-					if (stackTag != null) {
+					if (!stackTag.isEmpty()) {
 						stack.setTag(stackTag);
 					}
 
 					return new SimpleEntry(stack);
 				} else if (jsonObject.has("tag")) {
-					Identifier tagId = new Identifier(JsonHelper.getString(jsonObject, "tag"));
+					var tagId = new Identifier(JsonHelper.getString(jsonObject, "tag"));
 
-					Tag<Item> tag = ServerTagManagerHolder.getTagManager().getItems().getTag(tagId);
+					var tag = ServerTagManagerHolder.getTagManager().getItems().getTag(tagId);
 
 					if (tag == null) {
 						throw new JsonSyntaxException("Unknown item tag '" + tagId + "'");

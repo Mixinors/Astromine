@@ -36,29 +36,29 @@ import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 
 public class RefineryScreenHandler extends ComponentBlockEntityEnergyFluidScreenHandler {
-	private RefineryBlockEntity refinery;
+	private final RefineryBlockEntity refinery;
 
 	public RefineryScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.REFINERY, syncId, player, position);
 
-		refinery = (RefineryBlockEntity) blockEntity;
+		refinery = (RefineryBlockEntity) energyFluidBlockEntity;
 	}
 
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		VerticalFluidBarWidget outputFluidBar = new VerticalFluidBarWidget();
+		var outputFluidBar = new VerticalFluidBarWidget();
 		outputFluidBar.setSize(Size.absolute(fluidBar));
-		outputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getSecond());
+		outputFluidBar.setVolumeSupplier(() -> energyFluidBlockEntity.getFluidComponent().getSecond());
 
-		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
-		arrow.setPosition(Position.of(fluidBar, fluidBar.getWidth() + 7, fluidBar.getHeight() / 2 - 8));
+		var arrow = new HorizontalArrowWidget();
+		arrow.setPosition(Position.of(fluidBar, fluidBar.getWidth() + 7, fluidBar.getHeight() / 2.0F - 8));
 		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> refinery.limit);
 		arrow.setProgressSupplier(() -> (int) refinery.progress);
 
-		outputFluidBar.setPosition(Position.of(arrow.getPosition(), 7 + fluidBar.getWidth(), -fluidBar.getHeight() / 2F + arrow.getHeight() / 2F));
+		outputFluidBar.setPosition(Position.of(arrow.getPosition(), 7 + fluidBar.getWidth(), -fluidBar.getHeight()/ 2.0F + arrow.getHeight()/ 2.0F));
 		mainTab.addWidget(outputFluidBar);
 		mainTab.addWidget(arrow);
 	}

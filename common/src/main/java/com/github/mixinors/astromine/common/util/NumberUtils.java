@@ -45,13 +45,14 @@ public class NumberUtils {
 	 * > 1,000,000,000,000,000,000,000,000,000 has the "∞" suffix.
 	 */
 	public static String shorten(long value, String unit) {
-		if (value < 1000) {
+		if (value < 1000)
 			return value + unit;
-		}
-
-		int exponent = 0;
+		
+		var exponent = 0;
+		
 		while (value >= 1000) {
 			value /= 1000;
+			
 			++exponent;
 		}
 
@@ -74,14 +75,17 @@ public class NumberUtils {
 	 * > 1,000,000,000,000,000,000,000,000,000 has the "∞" suffix.
 	 */
 	public static String shorten(double value, String unit) {
-		if (value == Math.round(value)) return shorten((long) value, unit);
-		if (value < 1000) {
+		if (value == Math.round(value))
+			return shorten((long) value, unit);
+		
+		if (value < 1000)
 			return FluidVolume.FORMAT.format(value) + unit;
-		}
 
-		int exponent = 0;
+		var exponent = 0;
+		
 		while (value >= 1000) {
 			value /= 1000;
+			
 			++exponent;
 		}
 

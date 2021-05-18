@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.recipe;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
+import com.github.mixinors.astromine.mixin.common.RecipeManagerAccessor;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import me.shedaniel.architectury.core.AbstractRecipeSerializer;
 import net.minecraft.inventory.Inventory;
@@ -68,11 +69,16 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 	}
 
 	public static boolean allows(World world, FluidComponent fluidComponent) {
-		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidGeneratingRecipe) it).toArray(FluidGeneratingRecipe[]::new));
+		if (RECIPE_CACHE.get(world) == null && world.getRecipeManager() instanceof RecipeManagerAccessor accessor) {
+			RECIPE_CACHE.put(world,
+					accessor.getAllOfType(Type.INSTANCE)
+							.values()
+							.stream()
+							.map(FluidGeneratingRecipe.class::cast)
+							.toArray(FluidGeneratingRecipe[]::new));
 		}
 
-		for (FluidGeneratingRecipe recipe : RECIPE_CACHE.get(world)) {
+		for (var recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.allows(fluidComponent)) {
 				return true;
 			}
@@ -82,11 +88,16 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 	}
 
 	public static Optional<FluidGeneratingRecipe> matching(World world, FluidComponent fluidComponent) {
-		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidGeneratingRecipe) it).toArray(FluidGeneratingRecipe[]::new));
+		if (RECIPE_CACHE.get(world) == null && world.getRecipeManager() instanceof RecipeManagerAccessor accessor) {
+			RECIPE_CACHE.put(world,
+					accessor.getAllOfType(Type.INSTANCE)
+							.values()
+							.stream()
+							.map(FluidGeneratingRecipe.class::cast)
+							.toArray(FluidGeneratingRecipe[]::new));
 		}
 
-		for (FluidGeneratingRecipe recipe : RECIPE_CACHE.get(world)) {
+		for (var recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.allows(fluidComponent)) {
 				return Optional.of(recipe);
 			}
@@ -175,7 +186,11 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 		public FluidGeneratingRecipe read(Identifier identifier, JsonObject object) {
 			FluidGeneratingRecipe.Format format = new Gson().fromJson(object, FluidGeneratingRecipe.Format.class);
 
-			return new FluidGeneratingRecipe(identifier, FluidIngredient.fromJson(format.firstInput), DoubleUtils.fromJson(format.energyOutput), IntegerUtils.fromJson(format.time)
+			return new FluidGeneratingRecipe(
+					identifier,
+					FluidIngredient.fromJson(format.firstInput),
+					DoubleUtils.fromJson(format.energyOutput),
+					IntegerUtils.fromJson(format.time)
 			);
 		}
 

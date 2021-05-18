@@ -37,24 +37,24 @@ import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 
 public class MelterScreenHandler extends ComponentBlockEntityEnergyFluidItemScreenHandler {
-	private MelterBlockEntity melter;
+	private final MelterBlockEntity melter;
 
 	public MelterScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.MELTER, syncId, player, position);
 
-		melter = (MelterBlockEntity) blockEntity;
+		melter = (MelterBlockEntity) energyFluidItemBlockEntity;
 	}
 
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		SlotWidget input = new SlotWidget(0, melter, Slot::new);
+		var input = new SlotWidget(0, melter, Slot::new);
 		input.setSize(Size.of(18, 18));
 
 		fluidBar.setPosition(Position.of(energyBar, 102, 0));
 		
-		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
+		var arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(fluidBar, -31, fluidBar.getHeight() / 2 - 16 / 2));
 		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> melter.limit);

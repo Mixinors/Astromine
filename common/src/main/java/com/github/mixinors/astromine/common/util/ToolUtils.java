@@ -37,21 +37,16 @@ import java.util.UUID;
 public class ToolUtils {
 	/** Returns half of the sum of the attack damage of two {@link MiningToolItem}s. */
 	public static float getAttackDamage(MiningToolItem first, MiningToolItem second) {
-		return (first.getAttackDamage() + second.getAttackDamage()) / 2F;
+		return (first.getAttackDamage() + second.getAttackDamage()) / 2.0F;
 	}
 
 	/** Returns a third of the sum of the attack speed of two {@link MiningToolItem}s. */
 	public static float getAttackSpeed(MiningToolItem first, MiningToolItem second) {
-		return (getAttackSpeed(first) + getAttackSpeed(second)) / 3F;
+		return (getAttackSpeed(first) + getAttackSpeed(second)) / 3.0F;
 	}
 
 	/** Returns the attack speed of a {@link MiningToolItem}. */
 	private static float getAttackSpeed(MiningToolItem item) {
 		return item.getAttributeModifiers(EquipmentSlot.MAINHAND).get(EntityAttributes.GENERIC_ATTACK_SPEED).stream().filter((EntityAttributeModifier modifier) -> modifier.getId().equals(UUID.fromString("FA233E1C-4180-4865-B01B-BCCE9785ACA3"))).map(EntityAttributeModifier::getValue).findFirst().orElse(0d).floatValue();
-	}
-
-	/** Returns an {@link ItemStack} of our manual. */
-	public static ItemStack getAstromineBook() {
-		return new ItemStack(AMItems.MANUAL.get());
 	}
 }

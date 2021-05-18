@@ -36,10 +36,8 @@ import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.Sets;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
+
+import java.util.*;
 
 /**
  * A specialized registry for registration of
@@ -106,13 +104,13 @@ public class NetworkMemberRegistry {
 		/** Override behavior to use our {@link Map}. */
 		@Override
 		public void register(Block block, NetworkMemberType... types) {
-			this.types.computeIfAbsent(block, id -> Sets.newHashSet()).addAll(Arrays.asList(types));
+			this.types.computeIfAbsent(block, id -> new HashSet<>()).addAll(List.of(types));
 		}
 
 		/** Override behavior to use our {@link Map}. */
 		@Override
 		public Collection<NetworkMemberType> get(WorldPos pos, Direction direction) {
-			return this.types.getOrDefault(pos.getBlock(), Collections.emptySet());
+			return this.types.getOrDefault(pos.getBlock(), Set.of());
 		}
 	}
 

@@ -36,12 +36,12 @@ import java.util.function.Supplier;
  * with an attached {@link ComponentItemEntity}.
  */
 public abstract class ComponentEntityItemScreenHandler extends ComponentEntityScreenHandler {
-	protected ComponentItemEntity entity;
+	protected ComponentItemEntity itemEntity;
 
 	/** Instantiates a {@link ComponentEntityScreenHandler}. */
 	public ComponentEntityItemScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, int entityId) {
 		super(type, syncId, player, entityId);
 
-		entity = (ComponentItemEntity) player.world.getEntityById(entityId);
+		itemEntity = (ComponentItemEntity) player.world.getEntityById(entityId);
 	}
 }

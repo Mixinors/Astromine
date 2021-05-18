@@ -69,8 +69,6 @@ import com.google.gson.JsonObject;
  * - {@link ByteBuf} - through {@link #toPacket(PacketByteBuf)} and {@link #fromPacket(PacketByteBuf)}.
  */
 public class EnergyVolume extends Volume<Double> {
-	public static final Identifier ID = AMCommon.id("energy");
-
 	/** Instantiates an {@link EnergyVolume} with. */
 	protected EnergyVolume(double amount, double size) {
 		super(amount, size);
@@ -179,10 +177,7 @@ public class EnergyVolume extends Volume<Double> {
 
 	/** Deserializes a volume from a {@link CompoundTag}. */
 	public static EnergyVolume fromTag(CompoundTag tag) {
-		return of(
-				tag.getDouble("Amount"),
-				tag.getDouble("Size")
-		);
+		return of(tag.getDouble("Amount"), tag.getDouble("Size"));
 	}
 
 	/** Serializes this volume to a {@link CompoundTag}. */

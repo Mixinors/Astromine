@@ -39,7 +39,7 @@ import java.util.function.Supplier;
  * with an attached {@link ComponentFluidItemEntity}.
  */
 public abstract class ComponentEntityFluidItemScreenHandler extends ComponentEntityScreenHandler {
-	public ComponentFluidItemEntity entity;
+	public ComponentFluidItemEntity fluidItemEntity;
 
 	public VerticalFluidBarWidget fluidBar;
 
@@ -47,7 +47,7 @@ public abstract class ComponentEntityFluidItemScreenHandler extends ComponentEnt
 	public ComponentEntityFluidItemScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, int entityId) {
 		super(type, syncId, player, entityId);
 
-		entity = (ComponentFluidItemEntity) player.world.getEntityById(entityId);
+		fluidItemEntity = (ComponentFluidItemEntity) player.world.getEntityById(entityId);
 	}
 
 	/** Override behavior to add a fluid bar. */
@@ -58,7 +58,7 @@ public abstract class ComponentEntityFluidItemScreenHandler extends ComponentEnt
 		fluidBar = new VerticalFluidBarWidget();
 		fluidBar.setPosition(Position.of(mainTab, 7, 11));
 		fluidBar.setSize(Size.of(24F, 48F));
-		fluidBar.setVolumeSupplier(() -> entity.getFluidComponent().getFirst());
+		fluidBar.setVolumeSupplier(() -> fluidItemEntity.getFluidComponent().getFirst());
 
 		mainTab.addWidget(fluidBar);
 	}

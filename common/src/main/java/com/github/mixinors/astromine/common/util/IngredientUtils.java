@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.util;
 
+import com.github.mixinors.astromine.mixin.common.IngredientAccessor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
@@ -36,18 +37,18 @@ import com.google.gson.JsonElement;
 
 public class IngredientUtils {
 	/** Deserializes an {@link Ingredient} from a {@link JsonElement}. */
-	public static Ingredient fromIngredientJson(JsonElement jsonElement) {
-		return Ingredient.fromJson(jsonElement);
+	public static Ingredient fromIngredientJson(JsonElement json) {
+		return Ingredient.fromJson(json);
 	}
 
 	/** Deserializes an {@link Ingredient} from a {@link ByteBuf}. */
-	public static Ingredient fromIngredientPacket(PacketByteBuf buffer) {
-		return Ingredient.fromPacket(buffer);
+	public static Ingredient fromIngredientPacket(PacketByteBuf buf) {
+		return Ingredient.fromPacket(buf);
 	}
 
 	/** Serializes an {@link Ingredient} to a {@link ByteBuf}. */
-	public static void toIngredientPacket(PacketByteBuf buffer, Ingredient ingredient) {
-		ingredient.write(buffer);
+	public static void toIngredientPacket(PacketByteBuf buf, Ingredient val) {
+		val.write(buf);
 	}
 
 	/** Returns an {@link ItemStack} from the specified {@link Ingredient}
@@ -58,8 +59,8 @@ public class IngredientUtils {
 	 * */
 	public static ItemStack testMatching(Ingredient input, ItemStack stack) {
 		if (stack != null) {
-			if (input.matchingStacks.length != 0) {
-				for (ItemStack matching : input.matchingStacks) {
+			if (((IngredientAccessor) (Object) input).getMatchingStacks().length != 0) {
+				for (ItemStack matching : ((IngredientAccessor) (Object) input).getMatchingStacks()) {
 					if (matching.getItem() == stack.getItem()) {
 						return matching;
 					}

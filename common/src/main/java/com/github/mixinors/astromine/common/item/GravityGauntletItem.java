@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.item;
 
+import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
 
@@ -47,6 +48,7 @@ import team.reborn.energy.EnergyHandler;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
+
 public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttributeTool {
 	private static final Multimap<EntityAttribute, EntityAttributeModifier> EAMS = HashMultimap.create();
 
@@ -60,38 +62,44 @@ public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttr
 
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-		ItemStack stack = user.getStackInHand(hand);
-		if (hand == Hand.OFF_HAND)
-			return TypedActionResult.pass(stack);
-		ItemStack offStack = user.getStackInHand(Hand.OFF_HAND);
-		if (offStack.getItem() == AMItems.GRAVITY_GAUNTLET.get()) {
-			EnergyHandler selfHandler = Energy.of(stack);
-			EnergyHandler otherHandler = Energy.of(offStack);
-			if (selfHandler.getEnergy() > AMConfig.get().gravityGauntletConsumed && otherHandler.getEnergy() > AMConfig.get().gravityGauntletConsumed) {
-				user.setCurrentHand(hand);
-				return TypedActionResult.success(stack);
-			}
-		}
-		return super.use(world, user, hand);
+		/** Reimplementation must use {@link EnergyComponent}. */
+		throw new UnsupportedOperationException("Pending re-implementation!");
+		
+		// ItemStack stack = user.getStackInHand(hand);
+		// if (hand == Hand.OFF_HAND)
+		// 	return TypedActionResult.pass(stack);
+		// ItemStack offStack = user.getStackInHand(Hand.OFF_HAND);
+		// if (offStack.getItem() == AMItems.GRAVITY_GAUNTLET.get()) {
+		// 	EnergyHandler selfHandler = Energy.of(stack);
+		// 	EnergyHandler otherHandler = Energy.of(offStack);
+		// 	if (selfHandler.getEnergy() > AMConfig.get().gravityGauntletConsumed && otherHandler.getEnergy() > AMConfig.get().gravityGauntletConsumed) {
+		// 		user.setCurrentHand(hand);
+		// 		return TypedActionResult.success(stack);
+		// 	}
+		// }
+		// return super.use(world, user, hand);
 	}
 
 	@Override
 	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
-		if (world.isClient)
-			return stack;
-		ItemStack offStack = user.getStackInHand(Hand.OFF_HAND);
-		if (offStack.getItem() == AMItems.GRAVITY_GAUNTLET.get()) {
-			EnergyHandler selfHandler = Energy.of(stack);
-			EnergyHandler otherHandler = Energy.of(offStack);
-			if (selfHandler.getEnergy() > AMConfig.get().gravityGauntletConsumed && otherHandler.getEnergy() > AMConfig.get().gravityGauntletConsumed) {
-				selfHandler.extract(AMConfig.get().gravityGauntletConsumed);
-				otherHandler.extract(AMConfig.get().gravityGauntletConsumed);
-				stack.getOrCreateTag().putBoolean("Charged", true);
-				offStack.getOrCreateTag().putBoolean("Charged", true);
-				return stack;
-			}
-		}
-		return super.finishUsing(stack, world, user);
+		/** Reimplementation must use {@link EnergyComponent}. */
+		throw new UnsupportedOperationException("Pending re-implementation!");
+		
+		// if (world.isClient)
+		// 	return stack;
+		// ItemStack offStack = user.getStackInHand(Hand.OFF_HAND);
+		// if (offStack.getItem() == AMItems.GRAVITY_GAUNTLET.get()) {
+		// 	EnergyHandler selfHandler = Energy.of(stack);
+		// 	EnergyHandler otherHandler = Energy.of(offStack);
+		// 	if (selfHandler.getEnergy() > AMConfig.get().gravityGauntletConsumed && otherHandler.getEnergy() > AMConfig.get().gravityGauntletConsumed) {
+		// 		selfHandler.extract(AMConfig.get().gravityGauntletConsumed);
+		// 		otherHandler.extract(AMConfig.get().gravityGauntletConsumed);
+		// 		stack.getOrCreateTag().putBoolean("Charged", true);
+		// 		offStack.getOrCreateTag().putBoolean("Charged", true);
+		// 		return stack;
+		// 	}
+		// }
+		// return super.finishUsing(stack, world, user);
 	}
 
 	@Override
@@ -108,7 +116,9 @@ public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttr
 	public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		if (attacker.world.isClient)
 			return super.postHit(stack, target, attacker);
-		ItemStack offStack = attacker.getStackInHand(Hand.OFF_HAND);
+		
+		var offStack = attacker.getStackInHand(Hand.OFF_HAND);
+		
 		if (offStack.getItem() == AMItems.GRAVITY_GAUNTLET.get()) {
 			if (stack.getOrCreateTag().getBoolean("Charged") && offStack.getOrCreateTag().getBoolean("Charged")) {
 				target.takeKnockback(1, attacker.getX() - target.getX(), attacker.getZ() - target.getZ());
@@ -118,6 +128,7 @@ public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttr
 				return true;
 			}
 		}
+		
 		return super.postHit(stack, target, attacker);
 	}
 
@@ -127,11 +138,13 @@ public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttr
 	}
 
 	// TODO: dynamic once not broken so only provide when charged
+	// What? - 18/05/2021 - 18:05:27
 	@Override
 	public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot) {
 		if (slot == EquipmentSlot.MAINHAND) {
 			return EAMS;
 		}
+		
 		return super.getAttributeModifiers(slot);
 	}
 }

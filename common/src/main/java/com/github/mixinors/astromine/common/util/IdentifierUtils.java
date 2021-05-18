@@ -35,18 +35,18 @@ import com.google.gson.JsonPrimitive;
 
 public class IdentifierUtils {
     /** Serializes the given {@link Identifier} to a {@link ByteBuf}. */
-    public static void toPacket(PacketByteBuf buffer, Identifier identifier) {
-        buffer.writeIdentifier(identifier);
+    public static void toPacket(PacketByteBuf buf, Identifier val) {
+        buf.writeIdentifier(val);
     }
 
     /** Deserializes an {@link Identifier} from a {@link ByteBuf}. */
-    public static Identifier fromPacket(PacketByteBuf buffer) {
-        return buffer.readIdentifier();
+    public static Identifier fromPacket(PacketByteBuf buf) {
+        return buf.readIdentifier();
     }
 
     /** Serializes the given {@link Identifier} to a {@link JsonElement}. */
-    public static JsonElement toJson(Identifier identifier) {
-        return new JsonPrimitive(identifier.toString());
+    public static JsonElement toJson(Identifier val) {
+        return new JsonPrimitive(val.toString());
     }
 
     /** Deserializes an {@link Identifier} from a {@link JsonElement}. */

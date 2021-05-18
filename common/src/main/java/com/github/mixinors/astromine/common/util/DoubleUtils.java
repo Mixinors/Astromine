@@ -34,18 +34,18 @@ import com.google.gson.JsonPrimitive;
 
 public class DoubleUtils {
     /** Serializes the given double to a {@link ByteBuf}. */
-    public static void toPacket(PacketByteBuf buffer, double number) {
-        buffer.writeDouble(number);
+    public static void toPacket(PacketByteBuf buf, double val) {
+        buf.writeDouble(val);
     }
 
     /** Deserializes a double from a {@link ByteBuf}. */
-    public static double fromPacket(PacketByteBuf buffer) {
-        return buffer.readDouble();
+    public static double fromPacket(PacketByteBuf buf) {
+        return buf.readDouble();
     }
 
     /** Serializes the given double to a {@link JsonElement}. */
-    public static JsonElement toJson(double number) {
-        return new JsonPrimitive(number);
+    public static JsonElement toJson(double val) {
+        return new JsonPrimitive(val);
     }
 
     /** Deserializes a double from a {@link JsonElement}. */

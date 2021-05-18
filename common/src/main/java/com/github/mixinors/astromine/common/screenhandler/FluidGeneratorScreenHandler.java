@@ -35,12 +35,12 @@ import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 
 public class FluidGeneratorScreenHandler extends ComponentBlockEntityEnergyFluidScreenHandler {
-	private FluidGeneratorBlockEntity generator;
+	private final FluidGeneratorBlockEntity generator;
 
 	public FluidGeneratorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.LIQUID_GENERATOR, syncId, player, position);
 
-		generator = (FluidGeneratorBlockEntity) blockEntity;
+		generator = (FluidGeneratorBlockEntity) energyFluidBlockEntity;
 	}
 
 	@Override
@@ -50,8 +50,8 @@ public class FluidGeneratorScreenHandler extends ComponentBlockEntityEnergyFluid
 		energyBar.setPosition(Position.of(mainTab, 68, 11));
 		fluidBar.setPosition(Position.of(mainTab, 7, 11));
 
-		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
-		arrow.setPosition(Position.of(fluidBar, fluidBar.getWidth() + 7, fluidBar.getHeight() / 2F - 8));
+		var arrow = new HorizontalArrowWidget();
+		arrow.setPosition(Position.of(fluidBar, fluidBar.getWidth() + 7, fluidBar.getHeight()/ 2.0F - 8));
 		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> generator.limit);
 		arrow.setProgressSupplier(() -> (int) generator.progress);

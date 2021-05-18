@@ -32,7 +32,7 @@ import com.github.mixinors.astromine.common.component.general.provider.FluidComp
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.minecraft.block.entity.BlockEntityType;
 
-import com.github.mixinors.astromine.common.util.capability.energy.ComponentEnergyProvider;
+import com.github.mixinors.astromine.common.util.capability.energy.EnergyStorageEnergyComponentProvider;
 
 import java.util.function.Supplier;
 
@@ -40,7 +40,7 @@ import java.util.function.Supplier;
  * A {@link ComponentBlockEntity} with an attached
  * {@link EnergyComponent} and {@link ItemComponent}.
  */
-public abstract class ComponentEnergyFluidBlockEntity extends ComponentBlockEntity implements ComponentEnergyProvider, EnergyComponentProvider, FluidComponentProvider {
+public abstract class ComponentEnergyFluidBlockEntity extends ComponentBlockEntity implements EnergyStorageEnergyComponentProvider, EnergyComponentProvider, FluidComponentProvider {
 	private final EnergyComponent energyComponent = createEnergyComponent();
 
 	private final FluidComponent fluidComponent = createFluidComponent();

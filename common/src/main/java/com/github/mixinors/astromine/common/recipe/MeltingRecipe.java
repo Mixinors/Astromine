@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.recipe;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
+import com.github.mixinors.astromine.mixin.common.RecipeManagerAccessor;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import me.shedaniel.architectury.core.AbstractRecipeSerializer;
 import net.minecraft.inventory.Inventory;
@@ -71,11 +72,16 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 	}
 
 	public static boolean allows(World world, ItemComponent itemComponent) {
-		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (MeltingRecipe) it).toArray(MeltingRecipe[]::new));
+		if (RECIPE_CACHE.get(world) == null && world.getRecipeManager() instanceof RecipeManagerAccessor accessor) {
+			RECIPE_CACHE.put(world,
+					accessor.getAllOfType(Type.INSTANCE)
+							.values()
+							.stream()
+							.map(MeltingRecipe.class::cast)
+							.toArray(MeltingRecipe[]::new));
 		}
 
-		for (MeltingRecipe recipe : RECIPE_CACHE.get(world)) {
+		for (var recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.allows(itemComponent)) {
 				return true;
 			}
@@ -85,11 +91,16 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 	}
 
 	public static Optional<MeltingRecipe> matching(World world, ItemComponent itemComponent, FluidComponent fluidComponent) {
-		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (MeltingRecipe) it).toArray(MeltingRecipe[]::new));
+		if (RECIPE_CACHE.get(world) == null && world.getRecipeManager() instanceof RecipeManagerAccessor accessor) {
+			RECIPE_CACHE.put(world,
+					accessor.getAllOfType(Type.INSTANCE)
+							.values()
+							.stream()
+							.map(MeltingRecipe.class::cast)
+							.toArray(MeltingRecipe[]::new));
 		}
 
-		for (MeltingRecipe recipe : RECIPE_CACHE.get(world)) {
+		for (var recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.matches(itemComponent, fluidComponent)) {
 				return Optional.of(recipe);
 			}

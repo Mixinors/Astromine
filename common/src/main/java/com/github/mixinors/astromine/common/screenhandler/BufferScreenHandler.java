@@ -43,13 +43,13 @@ public class BufferScreenHandler extends ComponentBlockEntityItemScreenHandler {
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		int slotWidth = 9 * 18;
-		int slotHeight = 6 * 18;
+		var slotWidth = 9 * 18;
+		var slotHeight = 6 * 18;
 
-		int leftPadding = 7;
-		int topPadding = 10;
+		var leftPadding = 7;
+		var topPadding = 10;
 
-		SlotListWidget slotList = new SlotListWidget(InventoryFromItemComponent.of(blockEntity.getItemComponent()), slotWidth, slotHeight, 0);
+		var slotList = new SlotListWidget(InventoryFromItemComponent.of(itemBlockEntity.getItemComponent()), slotWidth, slotHeight, 0);
 		slotList.setPosition(Position.of(mainTab.getX() + leftPadding, mainTab.getY() + topPadding));
 		slotList.setSize(Size.of(slotWidth, slotHeight));
 

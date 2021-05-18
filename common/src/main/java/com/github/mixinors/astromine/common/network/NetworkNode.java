@@ -84,10 +84,10 @@ public final class NetworkNode {
 	public boolean equals(Object object) {
 		if (this == object)
 			return true;
-		if (!(object instanceof NetworkNode))
+		
+		if (!(object instanceof NetworkNode that))
 			return false;
-
-		NetworkNode that = (NetworkNode) object;
+		
 		return this.pos == that.pos;
 	}
 
@@ -111,7 +111,7 @@ public final class NetworkNode {
 
 	/** Serializes a {@link NetworkNode} to a {@link CompoundTag}. */
 	public CompoundTag toTag() {
-		CompoundTag tag = new CompoundTag();
+		var tag = new CompoundTag();
 
 		tag.putLong("pos", pos);
 

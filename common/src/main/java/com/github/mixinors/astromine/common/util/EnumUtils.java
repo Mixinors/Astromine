@@ -30,12 +30,12 @@ import io.netty.buffer.ByteBuf;
 
 public class EnumUtils {
     /** Serializes the given {@link Enum} to a {@link ByteBuf}. */
-    public static void toPacket(PacketByteBuf buffer, Enum<?> _enum) {
-        buffer.writeEnumConstant(_enum);
+    public static void toPacket(PacketByteBuf buf, Enum<?> val) {
+        buf.writeEnumConstant(val);
     }
 
     /** Deserializes an {@link Enum} from a {@link ByteBuf}. */
-    public static <T extends Enum<T>> Enum<T> fromPacket(PacketByteBuf buffer, Class<T> _class) {
-        return buffer.readEnumConstant(_class);
+    public static <T extends Enum<T>> Enum<T> fromPacket(PacketByteBuf buf, Class<T> val) {
+        return buf.readEnumConstant(val);
     }
 }

@@ -37,23 +37,23 @@ import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 
 public class SolidifierScreenHandler extends ComponentBlockEntityEnergyFluidItemScreenHandler {
-	private SolidifierBlockEntity solidifier;
+	private final SolidifierBlockEntity solidifier;
 
 	public SolidifierScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.SOLIDIFIER, syncId, player, position);
 
-		solidifier = (SolidifierBlockEntity) blockEntity;
+		solidifier = (SolidifierBlockEntity) energyFluidItemBlockEntity;
 	}
 
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		SlotWidget output = new SlotWidget(0, solidifier, ExtractionSlot::new);
+		var output = new SlotWidget(0, solidifier, ExtractionSlot::new);
 		output.setSize(Size.of(18, 18));
 		output.setPosition(Position.of(fluidBar, 102, 15));
 
-		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
+		var arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(output, -31, 0));
 		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> solidifier.limit);

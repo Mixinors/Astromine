@@ -34,7 +34,7 @@ import com.google.common.collect.Lists;
 import java.util.Collection;
 
 /**
- * Originally from {@see https://www.youtube.com/watch?v=I9Qn_oIx6Oo}, adapted to Fabric.
+ * Originally from {@see https://www.youtube.com/watch?v=I9Qn_oIx6Oo}.
  */
 public class VoxelShapeUtils {
 	private static final double CENTER = 0.5;
@@ -50,32 +50,52 @@ public class VoxelShapeUtils {
 
 	/** Returns an union of all the given {@link VoxelShape}s. */
 	public static VoxelShape union(Collection<VoxelShape> shapes) {
-		VoxelShape collision = VoxelShapes.empty();
-		for (VoxelShape shape : shapes) {
+		var collision = VoxelShapes.empty();
+		
+		for (var shape : shapes) {
 			collision = VoxelShapes.union(shape, collision);
 		}
+		
 		return collision;
 	}
 
 	/** Returns the given {@link VoxelShape} rotated the supplied radians in the specified {@link Direction.Axis}. */
 	public static VoxelShape rotate(Direction.Axis axis, double radians, VoxelShape shape) {
-		VoxelShape collision = VoxelShapes.empty();
+		var collision = VoxelShapes.empty();
 
-		for (Box box : shape.getBoundingBoxes()) {
-			Pair<Double, Double> min = axis == Direction.Axis.X ? rotatePoint(box.minY, box.minZ, radians) : (axis == Direction.Axis.Z ? rotatePoint(box.minX, box.minY, radians) : rotatePoint(box.minX, box.minZ, radians));
-			Pair<Double, Double> max = axis == Direction.Axis.X ? rotatePoint(box.maxY, box.maxZ, radians) : (axis == Direction.Axis.Z ? rotatePoint(box.maxX, box.maxY, radians) : rotatePoint(box.maxX, box.maxZ, radians));
-			collision = VoxelShapes.union(collision, axis == Direction.Axis.X ? VoxelShapes.cuboid(box.minX, min.getFirst(), min.getSecond(), box.maxX, max.getFirst(), max.getSecond()) : (axis == Direction.Axis.Z ? VoxelShapes.cuboid(min.getFirst(), min.getSecond(), box.minZ, max
-				.getFirst(), max.getSecond(), box.maxZ) : VoxelShapes.cuboid(min.getFirst(), box.minY, min.getSecond(), max.getFirst(), box.maxY, max.getSecond())));
+		for (var box : shape.getBoundingBoxes()) {
+			var min = switch (axis) {
+				case X -> rotatePoint(box.minY, box.minZ, radians);
+				case Z -> rotatePoint(box.minX, box.minY, radians);
+				default -> rotatePoint(box.minX, box.minZ, radians);
+			};
+			
+			var max = switch (axis) {
+				case X -> rotatePoint(box.maxY, box.maxZ, radians);
+				case Z -> rotatePoint(box.maxX, box.maxY, radians);
+				default -> rotatePoint(box.maxX, box.maxZ, radians);
+			};
+			
+			collision = VoxelShapes.union(
+					collision,
+					switch (axis) {
+						case X -> VoxelShapes.cuboid(box.minX, min.getFirst(), min.getSecond(), box.maxX, max.getFirst(), max.getSecond());
+						case Z -> VoxelShapes.cuboid(min.getFirst(), min.getSecond(), box.minZ, max.getFirst(), max.getSecond(), box.maxZ);
+						default -> VoxelShapes.cuboid(min.getFirst(), box.minY, min.getSecond(), max.getFirst(), box.maxY, max.getSecond());
+					});
 		}
+		
 		return collision;
 	}
 
 	/** Returns the given {@link VoxelShape}s rotated the supplied radians in the specified {@link Direction.Axis}. */
 	public static VoxelShape rotate(Direction.Axis axis, double radians, Collection<VoxelShape> shapes) {
-		VoxelShape collision = VoxelShapes.empty();
-		for (VoxelShape shape : shapes) {
+		var collision = VoxelShapes.empty();
+		
+		for (var shape : shapes) {
 			collision = VoxelShapes.union(collision, rotate(axis, radians, shape));
 		}
+		
 		return collision;
 	}
 
@@ -86,14 +106,12 @@ public class VoxelShapeUtils {
 
 	/** Returns the given {@link VoxelShape} rotated towards the specified {@link Direction}. */
 	public static VoxelShape rotate(Direction direction, VoxelShape shape) {
-		if (direction == Direction.EAST)
-			return rotateNinety(Direction.Axis.Y, shape);
-		else if (direction == Direction.SOUTH)
-			return rotateOneHundredAndEighty(Direction.Axis.Y, shape);
-		else if (direction == Direction.WEST)
-			return rotateTwoHundredAndSeventy(Direction.Axis.Y, shape);
-
-		return shape;
+		return switch (direction) {
+			case EAST -> rotateNinety(Direction.Axis.Y, shape);
+			case SOUTH -> rotateOneHundredAndEighty(Direction.Axis.Y, shape);
+			case WEST -> rotateTwoHundredAndSeventy(Direction.Axis.Y, shape);
+			default -> shape;
+		};
 	}
 
 	/** Rotates the given points according to the specified rotation. */

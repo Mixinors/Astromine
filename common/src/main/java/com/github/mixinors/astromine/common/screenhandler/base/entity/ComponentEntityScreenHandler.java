@@ -91,7 +91,7 @@ public abstract class ComponentEntityScreenHandler extends BaseScreenHandler {
 	public void initialize(int width, int height) {
 		tabs = new TabWidget();
 		tabs.setSize(Size.of(176F, 188F + getTabWidgetExtendedHeight()));
-		tabs.setPosition(Position.of(width / 2 - tabs.getWidth() / 2, height / 2 - tabs.getHeight() / 2));
+		tabs.setPosition(Position.of(width / 2 - tabs.getWidth()/ 2.0F, height / 2 - tabs.getHeight() / 2));
 
 		addWidget(tabs);
 
@@ -99,18 +99,21 @@ public abstract class ComponentEntityScreenHandler extends BaseScreenHandler {
 		mainTab.setPosition(Position.of(tabs, 0, 25F + 7F));
 		mainTab.setSize(Size.of(176F, 184F));
 
-		TextWidget title = new TextWidget();
+		var title = new TextWidget();
 		title.setPosition(Position.of(mainTab, 8, 0));
 		title.setText(entity.getDisplayName());
 		title.setColor(4210752);
+		
 		mainTab.addWidget(title);
 
-		Position invPos = Position.of(tabs, 7F, 25F + 7F + (184 - 18 - 18 - (18 * 4) - 3 + getTabWidgetExtendedHeight()));
-		TextWidget invTitle = new TextWidget();
-		invTitle.setPosition(Position.of(invPos, 0, -10));
-		invTitle.setText(getPlayer().inventory.getName());
-		invTitle.setColor(4210752);
-		mainTab.addWidget(invTitle);
-		playerSlots = Slots.addPlayerInventory(invPos, Size.of(18F, 18F), mainTab, getPlayer().inventory);
+		var inventoryPos = Position.of(tabs, 7F, 25F + 7F + (184 - 18 - 18 - (18 * 4) - 3 + getTabWidgetExtendedHeight()));
+		var inventoryTitle = new TextWidget();
+		inventoryTitle.setPosition(Position.of(inventoryPos, 0, -10));
+		inventoryTitle.setText(getPlayer().inventory.getName());
+		inventoryTitle.setColor(4210752);
+		
+		mainTab.addWidget(inventoryTitle);
+		
+		playerSlots = Slots.addPlayerInventory(inventoryPos, Size.of(18F, 18F), mainTab, getPlayer().inventory);
 	}
 }

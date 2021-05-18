@@ -25,6 +25,8 @@
 package com.github.mixinors.astromine.common.network.type;
 
 import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
+import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
+import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.minecraft.block.entity.BlockEntity;
 
@@ -38,8 +40,8 @@ import com.github.mixinors.astromine.common.registry.NetworkMemberRegistry;
 import com.github.mixinors.astromine.common.util.data.position.WorldPos;
 import it.unimi.dsi.fastutil.objects.Reference2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Reference2DoubleOpenHashMap;
-import team.reborn.energy.Energy;
-import team.reborn.energy.EnergyHandler;
+import net.minecraft.util.Pair;
+import net.minecraft.util.math.Direction;
 
 import com.google.common.collect.Lists;
 import java.util.Arrays;
@@ -51,77 +53,14 @@ import java.util.List;
  * A {@link NetworkType} for energy.
  */
 public final class EnergyNetworkType implements NetworkType {
-	/** Override behavior to handle attached {@link EnergyHandler}s,
-	 * transferring energy between them.
+	/** Override behavior to handle attached {@link EnergyComponent}s.
 	 *
 	 * Performance is dubious at best.
-	 *
-	 * Transfer is done through {@link Energy}. */
+	 */
 	@Override
 	public void tick(NetworkInstance instance) {
-		Reference2DoubleMap<EnergyHandler> providers = new Reference2DoubleOpenHashMap<>();
-		Reference2DoubleMap<EnergyHandler> requesters = new Reference2DoubleOpenHashMap<>();
-
-		for (NetworkMemberNode memberNode : instance.members) {
-			WorldPos memberPos = WorldPos.of(instance.getWorld(), memberNode.getBlockPosition());
-			NetworkMember networkMember = NetworkMemberRegistry.get(memberPos, memberNode.getDirection());
-			BlockEntity blockEntity = memberPos.getBlockEntity();
-
-			WorldPos nodePosition = memberPos.offset(memberNode.getDirection());
-
-			double speed = nodePosition.getBlock() instanceof NodeSpeedProvider ? ((NodeSpeedProvider) nodePosition.getBlock()).getNodeSpeed() : 0.0D;
-
-			if (speed <= 0)
-				continue;
-
-			if (networkMember.acceptsType(this)) {
-				TransferType type = TransferType.NONE;
-
-				TransferComponent transferComponent = TransferComponent.get(blockEntity);
-
-				if (transferComponent != null && transferComponent.get(AMComponents.ENERGY_INVENTORY_COMPONENT) != null) {
-					type = transferComponent.getEnergy(memberNode.getDirection());
-				}
-
-				EnergyHandler volume = Energy.of(blockEntity).side(memberNode.getDirection());
-
-				if (!type.isNone()) {
-					if (type.canExtract() && (networkMember.isProvider(this) || networkMember.isBuffer(this))) {
-						providers.put(volume, speed);
-					}
-
-					if (type.canInsert() && (networkMember.isRequester(this) || networkMember.isBuffer(this))) {
-						requesters.put(volume, speed);
-					}
-				}
-			}
-		}
-
-		List<EnergyHandler> requesterKeys = Lists.newArrayList(requesters.keySet());
-		requesterKeys.sort(Comparator.comparingDouble(EnergyHandler::getEnergy));
-
-		for (Reference2DoubleMap.Entry<EnergyHandler> inputEntry : providers.reference2DoubleEntrySet()) {
-			EnergyHandler input = inputEntry.getKey();
-
-			double inputSpeed = inputEntry.getDoubleValue();
-
-			for (int i = requesterKeys.size() - 1; i >= 0; i--) {
-				EnergyHandler output = requesterKeys.get(i);
-
-				double outputSpeed = requesters.getOrDefault(output, 0.0D);
-
-				double a = inputSpeed / requesters.size();
-				double b = outputSpeed / requesters.size();
-				double c = input.getEnergy() / (i + 1);
-				double d = output.getMaxStored() - output.getEnergy();
-				double e = input.getMaxOutput();
-				double f = output.getMaxInput();
-
-				double speed = Collections.min(Arrays.asList(a, b, c, d, e, f));
-
-				input.into(output).move(speed);
-			}
-		}
+		/** Reimplementation must use {@link EnergyComponent}. */
+		throw new UnsupportedOperationException("Pending re-implementation!");
 	}
 
 	/** Returns this type's string representation.

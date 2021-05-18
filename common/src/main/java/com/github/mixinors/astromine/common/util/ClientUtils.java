@@ -69,11 +69,11 @@ public class ClientUtils {
 	/** Registers the necessary data for an {@link ExtendedFluid} on the client side. */
 	@Environment(EnvType.CLIENT)
 	public static void registerExtendedFluid(String name, int tint, Fluid still, Fluid flowing) {
-		Identifier stillSpriteIdentifier = new Identifier("block/water_still");
-		Identifier flowingSpriteIdentifier = new Identifier("block/water_flow");
-		Identifier listenerIdentifier = AMCommon.id(name + "_reload_listener");
+		var stillSpriteIdentifier = new Identifier("block/water_still");
+		var flowingSpriteIdentifier = new Identifier("block/water_flow");
+		var listenerIdentifier = AMCommon.id(name + "_reload_listener");
 
-		Sprite[] fluidSprites = { null, null };
+		var fluidSprites = new Sprite[] { null, null };
 
 		ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> {
 			registry.register(stillSpriteIdentifier);

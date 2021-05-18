@@ -37,27 +37,27 @@ import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 
 public class ElectricFurnaceScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
-	private ElectricFurnaceBlockEntity smelter;
+	private final ElectricFurnaceBlockEntity smelter;
 
 	public ElectricFurnaceScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.ELECTRIC_FURNACE, syncId, player, position);
 
-		smelter = (ElectricFurnaceBlockEntity) blockEntity;
+		smelter = (ElectricFurnaceBlockEntity) energyItemBlockEntity;
 	}
 
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		SlotWidget output = new SlotWidget(0, smelter, ExtractionSlot::new);
+		var output = new SlotWidget(0, smelter, ExtractionSlot::new);
 		output.setSize(Size.of(18, 18));
 
-		SlotWidget input = new SlotWidget(1, smelter);
+		var input = new SlotWidget(1, smelter);
 		input.setSize(Size.of(18, 18));
 
 		output.setPosition(Position.of(energyBar, 102, 15));
 
-		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
+		var arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(output, -31, 0));
 		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> smelter.limit);

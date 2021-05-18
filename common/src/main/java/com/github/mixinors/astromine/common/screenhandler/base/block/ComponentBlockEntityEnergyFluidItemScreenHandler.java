@@ -41,7 +41,7 @@ import java.util.function.Supplier;
  * with an attached {@link ComponentEnergyFluidItemBlockEntity}.
  */
 public class ComponentBlockEntityEnergyFluidItemScreenHandler extends ComponentBlockEntityScreenHandler {
-	public ComponentEnergyFluidItemBlockEntity blockEntity;
+	public ComponentEnergyFluidItemBlockEntity energyFluidItemBlockEntity;
 
 	public VerticalEnergyBarWidget energyBar;
 
@@ -52,7 +52,7 @@ public class ComponentBlockEntityEnergyFluidItemScreenHandler extends ComponentB
 	public ComponentBlockEntityEnergyFluidItemScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
 
-		blockEntity = (ComponentEnergyFluidItemBlockEntity) player.world.getBlockEntity(position);
+		energyFluidItemBlockEntity = (ComponentEnergyFluidItemBlockEntity) player.world.getBlockEntity(position);
 	}
 
 	/** Override behavior to add energy and fluid bars. */
@@ -63,12 +63,12 @@ public class ComponentBlockEntityEnergyFluidItemScreenHandler extends ComponentB
 		energyBar = new VerticalEnergyBarWidget();
 		energyBar.setPosition(Position.of(mainTab, 7, 11));
 		energyBar.setSize(Size.of(24, 48));
-		energyBar.setVolumeSupplier(() -> blockEntity.getEnergyComponent().getVolume());
+		energyBar.setVolumeSupplier(() -> energyFluidItemBlockEntity.getEnergyComponent().getVolume());
 
 		fluidBar = new VerticalFluidBarWidget();
 		fluidBar.setPosition(Position.of(energyBar, 7, 0));
 		fluidBar.setSize(Size.of(24F, 48F));
-		fluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getFirst());
+		fluidBar.setVolumeSupplier(() -> energyFluidItemBlockEntity.getFluidComponent().getFirst());
 
 		mainTab.addWidget(energyBar);
 		mainTab.addWidget(fluidBar);

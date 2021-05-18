@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.component.block.entity;
 
 import com.github.mixinors.astromine.common.component.ProtoComponent;
 import com.github.mixinors.astromine.common.component.general.provider.TransferComponentProvider;
+import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
@@ -105,6 +106,14 @@ public class TransferComponent implements ProtoComponent {
 	/** Returns this component's {@link TransferType} for {@link EnergyComponent}'s key at the given {@link Direction}. */
 	public TransferType getEnergy(Direction direction) {
 		return energyComponentTransferEntry.get(direction);
+	}
+	
+	/** Returns this component's {@link TransferEntry} for the given component {@link Identifier}. */
+	public TransferEntry get(Identifier id) {
+		if (id.equals(AMComponents.ITEM_INVENTORY_COMPONENT)) return itemComponentTransferEntry;
+		if (id.equals(AMComponents.FLUID_INVENTORY_COMPONENT)) return fluidComponentTransferEntry;
+		if (id.equals(AMComponents.ENERGY_INVENTORY_COMPONENT)) return energyComponentTransferEntry;
+		return null;
 	}
 
 	/** Serializes this {@link TransferComponent} to a {@link CompoundTag}. */

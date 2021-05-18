@@ -32,8 +32,7 @@ import team.reborn.energy.EnergySide;
 import team.reborn.energy.EnergyStorage;
 import team.reborn.energy.EnergyTier;
 
-public interface
-ComponentEnergyProvider extends EnergyStorage {
+public interface EnergyStorageEnergyComponentProvider extends EnergyStorage {
 	/** Override behavior to redirect calls to this provider's {@link EnergyComponent}. */
 	@Override
 	default double getStored(EnergySide side) {

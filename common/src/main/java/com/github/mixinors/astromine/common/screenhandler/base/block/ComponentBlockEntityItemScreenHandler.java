@@ -37,13 +37,13 @@ import java.util.function.Supplier;
  * with an attached {@link ComponentItemBlockEntity}.
  */
 public class ComponentBlockEntityItemScreenHandler extends ComponentBlockEntityScreenHandler {
-	public ComponentItemBlockEntity blockEntity;
+	public ComponentItemBlockEntity itemBlockEntity;
 
 	/** Instantiates a {@link ComponentBlockEntityItemScreenHandler},
 	 * obtaining the {@link ComponentItemBlockEntity}. */
 	public ComponentBlockEntityItemScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
 
-		blockEntity = (ComponentItemBlockEntity) player.world.getBlockEntity(position);
+		itemBlockEntity = (ComponentItemBlockEntity) player.world.getBlockEntity(position);
 	}
 }

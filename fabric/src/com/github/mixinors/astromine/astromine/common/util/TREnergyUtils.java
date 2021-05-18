@@ -26,24 +26,62 @@ package com.github.mixinors.astromine.common.util;
 
 import net.minecraft.util.math.Direction;
 
-public class DirectionUtils {
-	/** Returns the {@link Direction} corresponding to the given name or ordinal. */
-	public static Direction byNameOrId(String nameOrOrdinal) {
-		switch (nameOrOrdinal) {
-			case "down":
-				return Direction.DOWN;
-			case "up":
-				return Direction.UP;
-			case "north":
+import org.jetbrains.annotations.Nullable;
+import team.reborn.energy.EnergySide;
+
+public class TREnergyUtils {
+	/** Returns the {@link Direction} corresponding to the specified {@link EnergySide}. */
+	@Nullable
+	public static Direction toDirection(EnergySide side) {
+		switch (side) {
+			case NORTH: {
 				return Direction.NORTH;
-			case "south":
+			}
+			case SOUTH: {
 				return Direction.SOUTH;
-			case "west":
+			}
+			case WEST: {
 				return Direction.WEST;
-			case "east":
+			}
+			case EAST: {
 				return Direction.EAST;
-			default:
-				return Direction.byId(Integer.parseInt(nameOrOrdinal));
+			}
+			case UP: {
+				return Direction.UP;
+			}
+			case DOWN: {
+				return Direction.DOWN;
+			}
+			default: {
+				return null;
+			}
+		}
+	}
+
+	/** Returns the {@link EnergySide} corresponding to the specified {@link Direction}. */
+	public static EnergySide toSide(Direction direction) {
+		switch (direction) {
+			case NORTH: {
+				return EnergySide.NORTH;
+			}
+			case SOUTH: {
+				return EnergySide.SOUTH;
+			}
+			case WEST: {
+				return EnergySide.WEST;
+			}
+			case EAST: {
+				return EnergySide.EAST;
+			}
+			case UP: {
+				return EnergySide.UP;
+			}
+			case DOWN: {
+				return EnergySide.DOWN;
+			}
+			default: {
+				return EnergySide.UNKNOWN;
+			}
 		}
 	}
 }

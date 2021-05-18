@@ -40,7 +40,7 @@ import it.unimi.dsi.fastutil.ints.IntSet;
 
 import java.util.stream.IntStream;
 
-public interface ComponentInventoryProvider extends InventoryProvider, SidedInventory, InventoryFromItemComponent {
+public interface InventoryItemComponentProvider extends InventoryProvider, SidedInventory, InventoryFromItemComponent {
 	/** Returns this inventory. */
 	@Override
 	default SidedInventory getInventory(BlockState state, WorldAccess world, BlockPos pos) {
@@ -61,7 +61,7 @@ public interface ComponentInventoryProvider extends InventoryProvider, SidedInve
 	 * {@link TransferComponent}, if present. */
 	@Override
 	default boolean canInsert(int slot, ItemStack stack, Direction direction) {
-		TransferComponent transferComponent = TransferComponent.get(this);
+		var transferComponent = TransferComponent.get(this);
 		
 		if (transferComponent != null) {
 			return transferComponent.hasItem() && transferComponent.getItem(direction).canInsert() && getItemComponent().canInsert(direction, stack, slot);
@@ -74,7 +74,7 @@ public interface ComponentInventoryProvider extends InventoryProvider, SidedInve
 	 * {@link TransferComponent}, if present. */
 	@Override
 	default boolean canExtract(int slot, ItemStack stack, Direction direction) {
-		TransferComponent transferComponent = TransferComponent.get(this);
+		var transferComponent = TransferComponent.get(this);
 
 		if (transferComponent != null) {
 			return transferComponent.hasItem() && transferComponent.getItem(direction).canExtract() && getItemComponent().canExtract(direction, stack, slot);
@@ -87,7 +87,7 @@ public interface ComponentInventoryProvider extends InventoryProvider, SidedInve
 	 * {@link TransferComponent}, if present. */
 	@Override
 	default int[] getAvailableSlots(Direction direction) {
-		TransferComponent transferComponent = TransferComponent.get(this);
+		var transferComponent = TransferComponent.get(this);
 
 		if (transferComponent != null) {
 			if (transferComponent.hasItem()) {

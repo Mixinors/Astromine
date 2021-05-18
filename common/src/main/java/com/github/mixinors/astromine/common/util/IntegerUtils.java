@@ -34,18 +34,18 @@ import com.google.gson.JsonPrimitive;
 
 public class IntegerUtils {
     /** Serializes the given integer to a {@link ByteBuf}. */
-    public static void toPacket(PacketByteBuf buffer, int number) {
-        buffer.writeInt(number);
+    public static void toPacket(PacketByteBuf buf, int val) {
+        buf.writeInt(val);
     }
 
     /** Deserializes an integer from a {@link ByteBuf}. */
-    public static int fromPacket(PacketByteBuf buffer) {
-        return buffer.readInt();
+    public static int fromPacket(PacketByteBuf buf) {
+        return buf.readInt();
     }
 
     /** Serializes the given integer to a {@link JsonElement}. */
-    public static JsonElement toJson(int number) {
-        return new JsonPrimitive(number);
+    public static JsonElement toJson(int val) {
+        return new JsonPrimitive(val);
     }
 
     /** Deserializes an integer from a {@link JsonElement}. */

@@ -61,7 +61,7 @@ public class TextUtils {
     
     /** Returns the "16kU / 32kU" text. */
     public static Text getFluidVolume(FluidVolume volume) {
-        Style style = Style.EMPTY.withColor(TextColor.fromRgb(FluidUtils.getColor(ClientUtils.getPlayer(), volume.getFluid())));
+        var style = Style.EMPTY.withColor(TextColor.fromRgb(FluidUtils.getColor(ClientUtils.getPlayer(), volume.getFluid())));
         return new LiteralText(NumberUtils.shorten(volume.getAmount(), "U")).fillStyle(style).append(new LiteralText(" / ").formatted(Formatting.GRAY)).append(new LiteralText(NumberUtils.shorten(volume.getSize(), "U")).fillStyle(style));
     }
 
@@ -87,6 +87,6 @@ public class TextUtils {
 
     /** Returns the "75%" text. */
     public static Text getRatio(int progress, int limit) {
-        return new LiteralText("" + (int) ((float) progress / (float) limit * 100) + "%");
+        return new LiteralText("" + (int) ((float) progress / (float) limit * 100.0F) + "%");
     }
 }

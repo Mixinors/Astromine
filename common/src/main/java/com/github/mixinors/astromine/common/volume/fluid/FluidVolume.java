@@ -38,11 +38,11 @@ import com.github.mixinors.astromine.common.component.general.SimpleFluidCompone
 import com.github.mixinors.astromine.common.volume.base.Volume;
 import io.netty.buffer.ByteBuf;
 
-import com.google.common.base.Objects;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import java.text.DecimalFormat;
+import java.util.Objects;
 
 /**
  * A {@link Volume} of {@link Fluid}s, whose amount
@@ -83,6 +83,7 @@ import java.text.DecimalFormat;
 public class FluidVolume extends Volume<Long> {
 	public static final long BUCKET = 81000;
 	public static final long BOTTLE = BUCKET / 3L;
+	
 	public static final DecimalFormat FORMAT = new DecimalFormat("#0.00");
 
 	public static long getTransfer() {
@@ -135,12 +136,12 @@ public class FluidVolume extends Volume<Long> {
 
 	/** Asserts the equality of the volume's fluids. */
 	public static boolean fluidsEqual(FluidVolume first, FluidVolume second) {
-		return Objects.equal(first.getFluid(), second.getFluid());
+		return first.getFluid().equals(second.getFluid());
 	}
 
 	/** Asserts the equality of the volume's fluids. */
 	public boolean fluidEquals(FluidVolume volume) {
-		return Objects.equal(getFluid(), volume.getFluid());
+		return getFluid().equals(volume.getFluid());
 	}
 
 	/** Returns the volume's fluid. */
@@ -203,9 +204,9 @@ public class FluidVolume extends Volume<Long> {
 			}
 		}
 
-		long amount = Math.min(volume.getSize() - volume.getAmount(), Math.min(getAmount(), l));
+		var amount = Math.min(volume.getSize() - volume.getAmount(), Math.min(getAmount(), l));
 
-		if (amount > 0) {
+		if (amount > 0L) {
 			volume.setAmount(volume.getAmount() + amount);
 			setAmount(getAmount() - amount);
 		}
@@ -274,42 +275,42 @@ public class FluidVolume extends Volume<Long> {
 		if (this == object)
 			return true;
 
-		if (!(object instanceof FluidVolume))
+		if (!(object instanceof FluidVolume volume))
 			return false;
 
 		if (!super.equals(object))
 			return false;
-
-		FluidVolume volume = (FluidVolume) object;
-
+		
 		return FluidVolume.fluidsEqual(this, volume);
 	}
 
 	/** Returns the hash for this volume. */
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(super.hashCode(), getAmount(), getSize(), fluid);
+		return Objects.hash(super.hashCode(), getAmount(), getSize(), fluid);
 	}
 
 	/** Returns this volume's string representation.
 	 * For example, it may be "minecraft:water, 16.50 of 32.00 Buckets" */
 	@Override
 	public String toString() {
-		return getFluidId().toString() + ", " + NumberUtils.shorten(getAmount().doubleValue(), "U") + " / " + NumberUtils.shorten(getSize().doubleValue(), "U");
+		return String.format("%s, %s / %s", getFluidId(), NumberUtils.shorten(getAmount().doubleValue(), "U"), NumberUtils.shorten(getSize().doubleValue(), "U"));
 	}
 
 	/** Deserializes a volume from a {@link CompoundTag}. */
 	public static FluidVolume fromTag(CompoundTag tag) {
-		return of(tag.getLong("amount"), tag.getLong("size"), Registry.FLUID.get(new Identifier(tag.getString("fluid"))));
+		return of(tag.getLong("Amount"), tag.getLong("Size"), Registry.FLUID.get(new Identifier(tag.getString("Fluid"))));
 	}
 
 	/** Serializes this volume to a {@link CompoundTag}. */
 	@Override
 	public CompoundTag toTag() {
-		CompoundTag tag = new CompoundTag();
-		tag.putLong("amount", getAmount());
-		tag.putLong("size", getSize());
-		tag.putString("fluid", Registry.FLUID.getId(getFluid()).toString());
+		var tag = new CompoundTag();
+		
+		tag.putLong("Amount", getAmount());
+		tag.putLong("Size", getSize());
+		tag.putString("Fluid", Registry.FLUID.getId(getFluid()).toString());
+		
 		return tag;
 	}
 
@@ -317,7 +318,7 @@ public class FluidVolume extends Volume<Long> {
 	public static FluidVolume fromJson(JsonElement jsonElement) {
 		if (!(jsonElement instanceof JsonObject)) {
 			if (jsonElement.isJsonPrimitive()) {
-				JsonPrimitive jsonPrimitive = jsonElement.getAsJsonPrimitive();
+				var jsonPrimitive = jsonElement.getAsJsonPrimitive();
 
 				if (jsonPrimitive.isString()) {
 					return of(BUCKET, Registry.FLUID.get(new Identifier(jsonPrimitive.getAsString())));
@@ -328,7 +329,7 @@ public class FluidVolume extends Volume<Long> {
 				return null;
 			}
 		} else {
-			JsonObject jsonObject = jsonElement.getAsJsonObject();
+			var jsonObject = jsonElement.getAsJsonObject();
 
 			if (!jsonObject.has("fluid")) return null;
 			if (!jsonObject.has("amount")) {
@@ -341,10 +342,12 @@ public class FluidVolume extends Volume<Long> {
 
 	/** Serializes this volume to a {@link JsonElement}. */
 	public JsonElement toJson() {
-		JsonObject object = new JsonObject();
+		var object = new JsonObject();
+		
 		object.addProperty("fluid", Registry.FLUID.getId(getFluid()).toString());
 		object.addProperty("amount", getAmount());
 		object.addProperty("size", getSize());
+		
 		return object;
 	}
 
@@ -353,10 +356,10 @@ public class FluidVolume extends Volume<Long> {
 		if (!buffer.readBoolean()) {
 			return ofEmpty();
 		} else {
-			int id = buffer.readVarInt();
+			var id = buffer.readVarInt();
 
-			long amount = buffer.readVarLong();
-			long size = buffer.readVarLong();
+			var amount = buffer.readVarLong();
+			var size = buffer.readVarLong();
 
 			return of(amount, size, Registry.FLUID.get(id));
 		}

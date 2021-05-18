@@ -36,13 +36,13 @@ public class MovementUtils {
 
 	/** Pushes the specified {@link Entity} per the given values. */
 	public static void pushEntity(Entity entity, BlockPos pos, float speed, Direction facing, boolean shouldCenter) {
-		double motionX = entity.getVelocity().getX();
-		double motionZ = entity.getVelocity().getZ();
+		var motionX = entity.getVelocity().getX();
+		var motionZ = entity.getVelocity().getZ();
 
 		if (speed * facing.getOffsetX() > 0 && motionX < speed) {
-			entity.addVelocity(speed / 2, 0, 0);
+			entity.addVelocity(speed/ 2.0F, 0, 0);
 		} else if (speed * facing.getOffsetX() < 0 && motionX > -speed) {
-			entity.addVelocity(-speed / 2, 0, 0);
+			entity.addVelocity(-speed/ 2.0F, 0, 0);
 		}
 
 		if (speed * facing.getOffsetZ() > 0 && motionZ < speed) {

@@ -31,8 +31,8 @@ import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.util.capability.energy.ComponentEnergyProvider;
-import com.github.mixinors.astromine.common.util.capability.inventory.ComponentInventoryProvider;
+import com.github.mixinors.astromine.common.util.capability.energy.EnergyStorageEnergyComponentProvider;
+import com.github.mixinors.astromine.common.util.capability.inventory.InventoryItemComponentProvider;
 
 import java.util.function.Supplier;
 
@@ -40,7 +40,7 @@ import java.util.function.Supplier;
  * A {@link ComponentBlockEntity} with an attached
  * {@link EnergyComponent} and {@link ItemComponent}.
  */
-public abstract class ComponentEnergyItemBlockEntity extends ComponentBlockEntity implements ComponentEnergyProvider, ComponentInventoryProvider, EnergyComponentProvider, ItemComponentProvider {
+public abstract class ComponentEnergyItemBlockEntity extends ComponentBlockEntity implements EnergyStorageEnergyComponentProvider, InventoryItemComponentProvider, EnergyComponentProvider, ItemComponentProvider {
 	private final EnergyComponent energyComponent = createEnergyComponent();
 
 	private final ItemComponent itemComponent = createItemComponent();

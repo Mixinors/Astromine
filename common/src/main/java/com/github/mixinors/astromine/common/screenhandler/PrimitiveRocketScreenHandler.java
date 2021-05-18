@@ -53,8 +53,8 @@ public class PrimitiveRocketScreenHandler extends ComponentEntityFluidItemScreen
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		ButtonWidget launchButtonWidget = new ButtonWidget(() -> {
-			((RocketEntity) entity).tryLaunch(this.getPlayer());
+		var launchButtonWidget = new ButtonWidget(() -> {
+			((RocketEntity) fluidItemEntity).tryLaunch(this.getPlayer());
 
 			return null;
 		});
@@ -62,10 +62,10 @@ public class PrimitiveRocketScreenHandler extends ComponentEntityFluidItemScreen
 		launchButtonWidget.setPosition(Position.of(mainTab, 3 + 4, 11));
 		launchButtonWidget.setSize(Size.of(48, 18));
 		launchButtonWidget.setLabel(new TranslatableText("text.astromine.rocket.launch"));
-		launchButtonWidget.setDisabled(() -> entity.getDataTracker().get(RocketEntity.IS_RUNNING) || (entity.getFluidComponent().getFirst().smallerOrEqualThan(0L) && entity.getFluidComponent().getSecond().smallerOrEqualThan(0L)));
+		launchButtonWidget.setDisabled(() -> fluidItemEntity.getDataTracker().get(RocketEntity.IS_RUNNING) || (fluidItemEntity.getFluidComponent().getFirst().smallerOrEqualThan(0L) && fluidItemEntity.getFluidComponent().getSecond().smallerOrEqualThan(0L)));
 
-		ButtonWidget abortButtonWidget = new ButtonWidget(() -> {
-			((RocketEntity) entity).tryDisassemble(true);
+		var abortButtonWidget = new ButtonWidget(() -> {
+			((RocketEntity) fluidItemEntity).tryDisassemble(true);
 
 			return null;
 		});
@@ -74,26 +74,26 @@ public class PrimitiveRocketScreenHandler extends ComponentEntityFluidItemScreen
 		abortButtonWidget.setSize(Size.of(48, 18));
 		abortButtonWidget.setLabel(new TranslatableText("text.astromine.rocket.destroy").formatted(Formatting.RED));
 
-		fluidBar.setPosition(Position.of(width / 2F - fluidBar.getWidth() / 2F + 2, fluidBar.getY()));
+		fluidBar.setPosition(Position.of(width/ 2.0F - fluidBar.getWidth()/ 2.0F + 2, fluidBar.getY()));
 
-		SlotWidget firstInput = new SlotWidget(0, entity);
+		var firstInput = new SlotWidget(0, fluidItemEntity);
 		firstInput.setPosition(Position.of(fluidBar, -18 - 3, 0));
 		firstInput.setSize(Size.of(18, 18));
 
-		SlotWidget firstOutput = new SlotWidget(1, entity);
+		var firstOutput = new SlotWidget(1, fluidItemEntity);
 		firstOutput.setPosition(Position.of(fluidBar, -18 - 3, fluidBar.getHeight() - 18));
 		firstOutput.setSize(Size.of(18, 18));
 
-		VerticalFluidBarWidget secondFluidBar = new VerticalFluidBarWidget();
+		var secondFluidBar = new VerticalFluidBarWidget();
 		secondFluidBar.setPosition(Position.of(fluidBar, 24 + 18 + 3 + 3, 0));
 		secondFluidBar.setSize(Size.of(24F, 48F));
-		secondFluidBar.setVolumeSupplier(() -> entity.getFluidComponent().getSecond());
+		secondFluidBar.setVolumeSupplier(() -> fluidItemEntity.getFluidComponent().getSecond());
 
-		SlotWidget secondInput = new SlotWidget(2, entity);
+		var secondInput = new SlotWidget(2, fluidItemEntity);
 		secondInput.setPosition(Position.of(secondFluidBar, -18 - 3, 0));
 		secondInput.setSize(Size.of(18, 18));
 
-		SlotWidget secondOutput = new SlotWidget(3, entity);
+		var secondOutput = new SlotWidget(3, fluidItemEntity);
 		secondOutput.setPosition(Position.of(secondFluidBar, -18 - 3, secondFluidBar.getHeight() - 18));
 		secondOutput.setSize(Size.of(18, 18));
 

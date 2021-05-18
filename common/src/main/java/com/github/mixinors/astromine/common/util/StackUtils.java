@@ -47,22 +47,22 @@ public class StackUtils {
 	 * their available space, our amount, and the specified amount.
 	 * */
 	public static Pair<ItemStack, ItemStack> merge(ItemStack source, ItemStack target) {
-		int targetMax = target.getMaxCount();
+		var targetMax = target.getMaxCount();
 
 		if (ItemStack.areItemsEqual(source, target) && ItemStack.areTagsEqual(source, target)) {
-			int sourceCount = source.getCount();
-			int targetCount = target.getCount();
-
-			int targetAvailable = Math.max(0, targetMax - targetCount);
+			var sourceCount = source.getCount();
+			var targetCount = target.getCount();
+			
+			var targetAvailable = Math.max(0, targetMax - targetCount);
 
 			target.increment(Math.min(sourceCount, targetAvailable));
 			source.setCount(Math.max(sourceCount - targetAvailable, 0));
 		} else {
 			if (target.isEmpty() && !source.isEmpty()) {
-				int targetCount = target.getCount();
-				int targetAvailable = targetMax - targetCount;
-
-				int sourceCount = source.getCount();
+				var targetCount = target.getCount();
+				var targetAvailable = targetMax - targetCount;
+				
+				var sourceCount = source.getCount();
 
 				target = source.copy();
 				target.setCount(Math.min(sourceCount, targetAvailable));
@@ -97,10 +97,10 @@ public class StackUtils {
 	}
 
 	/** Deserializes an {@link ItemStack} from a {@link JsonElement}. */
-	public static ItemStack fromJson(JsonElement jsonElement) {
-		if (!jsonElement.isJsonObject()) {
-			if (jsonElement.isJsonPrimitive()) {
-				JsonPrimitive primitive = jsonElement.getAsJsonPrimitive();
+	public static ItemStack fromJson(JsonElement json) {
+		if (!json.isJsonObject()) {
+			if (json.isJsonPrimitive()) {
+				var primitive = json.getAsJsonPrimitive();
 
 				if (primitive.isString()) {
 					return new ItemStack(Registry.ITEM.get(new Identifier(primitive.getAsString())));
@@ -111,25 +111,26 @@ public class StackUtils {
 				return ItemStack.EMPTY;
 			}
 		} else {
-			return ShapedRecipe.getItemStack(jsonElement.getAsJsonObject());
+			return ShapedRecipe.getItemStack(json.getAsJsonObject());
 		}
 	}
 
 	/** Serializes the given {@link ItemStack} to a {@link JsonElement}. */
-	public static JsonElement toJson(ItemStack stack) {
+	public static JsonElement toJson(ItemStack val) {
 		JsonObject object = new JsonObject();
-		object.addProperty("item", Registry.ITEM.getId(stack.getItem()).toString());
-		object.addProperty("count", stack.getCount());
+		object.addProperty("item", Registry.ITEM.getId(val.getItem()).toString());
+		object.addProperty("count", val.getCount());
+		
 		return object;
 	}
 
 	/** Deserializes an {@link ItemStack} from a {@link ByteBuf}. */
-	public static ItemStack fromPacket(PacketByteBuf buffer) {
-		return buffer.readItemStack();
+	public static ItemStack fromPacket(PacketByteBuf val) {
+		return val.readItemStack();
 	}
 
 	/** Serializes the given {@link ItemStack} to a {@link ByteBuf}. */
-	public static void toPacket(PacketByteBuf buffer, ItemStack stack) {
-		buffer.writeItemStack(stack);
+	public static void toPacket(PacketByteBuf buf, ItemStack val) {
+		buf.writeItemStack(val);
 	}
 }

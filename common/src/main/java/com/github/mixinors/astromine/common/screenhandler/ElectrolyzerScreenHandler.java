@@ -36,35 +36,35 @@ import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 
 public class ElectrolyzerScreenHandler extends ComponentBlockEntityEnergyFluidScreenHandler {
-	private ElectrolyzerBlockEntity electrolyzer;
+	private final ElectrolyzerBlockEntity electrolyzer;
 
 	public ElectrolyzerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.ELECTROLYZER, syncId, player, position);
 
-		electrolyzer = (ElectrolyzerBlockEntity) blockEntity;
+		electrolyzer = (ElectrolyzerBlockEntity) energyFluidBlockEntity;
 	}
 
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		VerticalFluidBarWidget firstOutputFluidBar = new VerticalFluidBarWidget();
+		var firstOutputFluidBar = new VerticalFluidBarWidget();
 		firstOutputFluidBar.setSize(Size.absolute(fluidBar));
-		firstOutputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getSecond());
+		firstOutputFluidBar.setVolumeSupplier(() -> energyFluidBlockEntity.getFluidComponent().getSecond());
 
-		VerticalFluidBarWidget secondOutputFluidBar = new VerticalFluidBarWidget();
+		var secondOutputFluidBar = new VerticalFluidBarWidget();
 		secondOutputFluidBar.setSize(Size.absolute(fluidBar));
 
-		secondOutputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getThird());
+		secondOutputFluidBar.setVolumeSupplier(() -> energyFluidBlockEntity.getFluidComponent().getThird());
 
-		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
+		var arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(fluidBar, fluidBar.getWidth() + 7, fluidBar.getHeight() / 2 - 8));
 		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> electrolyzer.limit);
 		arrow.setProgressSupplier(() -> (int) electrolyzer.progress);
 
-		firstOutputFluidBar.setPosition(Position.of(arrow.getPosition(), 7 + fluidBar.getWidth(), -fluidBar.getHeight() / 2F + arrow.getHeight() / 2F)); // fluidBar.getX() + fluidBar.getWidth() + 4 + 18 + 18, fluidBar.getY()));
-		secondOutputFluidBar.setPosition(Position.of(arrow.getPosition(), 7 + fluidBar.getWidth() + 7 + fluidBar.getWidth(), -fluidBar.getHeight() / 2F + arrow.getHeight() / 2F));
+		firstOutputFluidBar.setPosition(Position.of(arrow.getPosition(), 7 + fluidBar.getWidth(), -fluidBar.getHeight()/ 2.0F + arrow.getHeight()/ 2.0F)); // fluidBar.getX() + fluidBar.getWidth() + 4 + 18 + 18, fluidBar.getY()));
+		secondOutputFluidBar.setPosition(Position.of(arrow.getPosition(), 7 + fluidBar.getWidth() + 7 + fluidBar.getWidth(), -fluidBar.getHeight()/ 2.0F + arrow.getHeight()/ 2.0F));
 
 		mainTab.addWidget(firstOutputFluidBar);
 		mainTab.addWidget(secondOutputFluidBar);

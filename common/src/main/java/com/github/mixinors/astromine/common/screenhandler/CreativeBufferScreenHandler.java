@@ -43,7 +43,7 @@ public class CreativeBufferScreenHandler extends ComponentBlockEntityItemScreenH
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		SlotWidget slot = new SlotWidget(0, InventoryFromItemComponent.of(blockEntity.getItemComponent()));
+		var slot = new SlotWidget(0, InventoryFromItemComponent.of(itemBlockEntity.getItemComponent()));
 		slot.setPosition(Position.of(mainTab, 70, 20));
 		slot.setSize(Size.of(36, 36));
 

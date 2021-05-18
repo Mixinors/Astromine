@@ -44,13 +44,13 @@ public class AlloySmeltingPage extends PageDoubleRecipeRegistry<AlloySmeltingRec
 		mc.getTextureManager().bindTexture(book.craftingTexture);
 		RenderSystem.enableBlend();
 		DrawableHelper.drawTexture(ms, recipeX, recipeY, 11, 135, 96, 43, 128, 256);
-		parent.drawCenteredStringNoShadow(ms, getTitle(second).asOrderedText(), GuiBook.PAGE_WIDTH / 2, recipeY - 10, book.headerColor);
+		parent.drawCenteredStringNoShadow(ms, getTitle(second).asOrderedText(), GuiBook.PAGE_WIDTH/ 2.0F, recipeY - 10, book.headerColor);
 
 		parent.renderIngredient(ms, recipeX + 4, recipeY + 4, mouseX, mouseY, recipe.getFirstInput().asIngredient());
 		parent.renderIngredient(ms, recipeX + 4, recipeY + 23, mouseX, mouseY, recipe.getSecondInput().asIngredient());
 		parent.renderItemStack(ms, recipeX + 40, recipeY + 13, mouseX, mouseY, recipe.getRecipeKindIcon());
 		parent.renderItemStack(ms, recipeX + 76, recipeY + 13, mouseX, mouseY, recipe.getOutput());
-		parent.drawCenteredStringNoShadow(ms, new TranslatableText("category.astromine.consuming.energy", "" + recipe.getEnergyInput()).asOrderedText(), GuiBook.PAGE_WIDTH / 2, recipeY + 45, BasicEnergyConsumingPage.ENERGY_CONSUMED_TEXT_COLOR);
+		parent.drawCenteredStringNoShadow(ms, new TranslatableText("category.astromine.consuming.energy", "" + recipe.getEnergyInput()).asOrderedText(), GuiBook.PAGE_WIDTH/ 2.0F, recipeY + 45, BasicEnergyConsumingPage.ENERGY_CONSUMED_TEXT_COLOR);
 	}
 
 	@Override

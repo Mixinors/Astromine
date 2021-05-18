@@ -34,18 +34,18 @@ import com.google.gson.JsonPrimitive;
 
 public class FloatUtils {
     /** Serializes the given float to a {@link ByteBuf}. */
-    public static void toPacket(PacketByteBuf buffer, float number) {
-        buffer.writeFloat(number);
+    public static void toPacket(PacketByteBuf buf, float val) {
+        buf.writeFloat(val);
     }
 
     /** Deserializes a float from a {@link ByteBuf}. */
-    public static double fromPacket(PacketByteBuf buffer) {
-        return buffer.readFloat();
+    public static double fromPacket(PacketByteBuf buf) {
+        return buf.readFloat();
     }
 
     /** Serializes the given float to a {@link JsonElement}. */
-    public static JsonElement toJson(float number) {
-        return new JsonPrimitive(number);
+    public static JsonElement toJson(float val) {
+        return new JsonPrimitive(val);
     }
 
     /** Deserializes a float from a {@link JsonElement}. */

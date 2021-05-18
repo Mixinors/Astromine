@@ -44,11 +44,9 @@ import com.github.mixinors.astromine.common.block.entity.base.ComponentBlockEnti
 import com.github.mixinors.astromine.common.block.transfer.TransferType;
 import com.github.mixinors.astromine.common.util.MirrorUtils;
 import com.github.vini2003.blade.common.widget.base.AbstractWidget;
-import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import io.netty.buffer.Unpooled;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -59,7 +57,7 @@ import java.util.Locale;
 public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 	private TransferComponent component;
 
-	private ComponentKey<?> type;
+	private Identifier id;
 
 	private Direction direction;
 
@@ -71,12 +69,12 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 
 	/** Returns the name of this widget's side's {@link TransferType}. */
 	private String getSideName() {
-		return component.get(type).get(direction).name().toLowerCase(Locale.ROOT);
+		return component.get(id).get(direction).name().toLowerCase(Locale.ROOT);
 	}
 
 	/** Returns the {@link Identifier} of this widget's texture, based on its {@link TransferType}. */
 	private Identifier getTexture() {
-		return component.get(type).get(direction).texture();
+		return component.get(id).get(direction).texture();
 	}
 
 	/** Returns this widget's {@link TransferComponent}. */
@@ -110,14 +108,14 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 
 	}
 
-	/** Retrieve this widget's {@link ComponentKey}. */
-	public ComponentKey<?> getType() {
-		return type;
+	/** Retrieve this widget's component {@link Identifier}. */
+	public Identifier getId() {
+		return id;
 	}
 
-	/** Set this widget's {@link ComponentKey} to the specified one. */
-	public void setType(ComponentKey<?> type) {
-		this.type = type;
+	/** Set this widget's component {@link Identifier} to the specified one. */
+	public void setId(Identifier type) {
+		this.id = type;
 
 	}
 
@@ -154,9 +152,9 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 				buf.writeBlockPos(getBlockPos());
 				buf.writeIdentifier(ComponentBlockEntity.TRANSFER_UPDATE_PACKET);
 
-				buf.writeIdentifier(type.getId());
+				buf.writeIdentifier(id);
 				buf.writeEnumConstant(direction);
-				buf.writeEnumConstant(component.get(type).get(direction).next());
+				buf.writeEnumConstant(component.get(id).get(direction).next());
 				
 				NetworkManager.sendToServer(AMNetworks.BLOCK_ENTITY_UPDATE_PACKET, buf);
 			}

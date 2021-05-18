@@ -36,25 +36,25 @@ import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 
 public class SolidGeneratorScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
-	private SolidGeneratorBlockEntity generator;
+	private final SolidGeneratorBlockEntity generator;
 
 	public SolidGeneratorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.SOLID_GENERATOR, syncId, player, position);
 
-		generator = (SolidGeneratorBlockEntity) blockEntity;
+		generator = (SolidGeneratorBlockEntity) energyItemBlockEntity;
 	}
 
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
-		arrow.setPosition(Position.of(Position.of(energyBar), energyBar.getWidth() + 3, energyBar.getHeight() / 2F - 8));
+		var arrow = new HorizontalArrowWidget();
+		arrow.setPosition(Position.of(Position.of(energyBar), energyBar.getWidth() + 3, energyBar.getHeight()/ 2.0F - 8));
 		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> generator.limit);
 		arrow.setProgressSupplier(() -> (int) generator.progress);
 
-		SlotWidget input = new SlotWidget(0, blockEntity);
+		var input = new SlotWidget(0, energyItemBlockEntity);
 		input.setPosition(Position.of(arrow, -26, 0));
 		input.setSize(Size.of(18, 18));
 

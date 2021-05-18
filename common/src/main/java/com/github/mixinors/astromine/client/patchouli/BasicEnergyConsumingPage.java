@@ -42,7 +42,7 @@ public abstract class BasicEnergyConsumingPage<T extends EnergyConsumingRecipe<?
 	@Override
 	public void drawRecipe(MatrixStack ms, T recipe, int recipeX, int recipeY, int mouseX, int mouseY, boolean second) {
 		super.drawRecipe(ms, recipe, recipeX, recipeY, mouseX, mouseY, second);
-		parent.drawCenteredStringNoShadow(ms, new TranslatableText("category.astromine.consuming.energy", "" + recipe.getEnergyInput()).asOrderedText(), GuiBook.PAGE_WIDTH / 2, recipeY + 25, ENERGY_CONSUMED_TEXT_COLOR);
+		parent.drawCenteredStringNoShadow(ms, new TranslatableText("category.astromine.consuming.energy", "" + recipe.getEnergyInput()).asOrderedText(), GuiBook.PAGE_WIDTH/ 2.0F, recipeY + 25, ENERGY_CONSUMED_TEXT_COLOR);
 	}
 
 	@Override

@@ -29,7 +29,7 @@ import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.util.capability.inventory.ComponentInventoryProvider;
+import com.github.mixinors.astromine.common.util.capability.inventory.InventoryItemComponentProvider;
 
 import java.util.function.Supplier;
 
@@ -37,7 +37,7 @@ import java.util.function.Supplier;
  * A {@link ComponentBlockEntity} with an attached
  * {@link ItemComponent}.
  */
-public abstract class ComponentItemBlockEntity extends ComponentBlockEntity implements ComponentInventoryProvider, ItemComponentProvider {
+public abstract class ComponentItemBlockEntity extends ComponentBlockEntity implements InventoryItemComponentProvider, ItemComponentProvider {
 	private final ItemComponent itemComponent = createItemComponent();
 
 	/** Instantiates a {@link ComponentItemBlockEntity}. */

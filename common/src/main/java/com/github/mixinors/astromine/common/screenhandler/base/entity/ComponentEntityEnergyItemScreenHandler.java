@@ -39,7 +39,7 @@ import java.util.function.Supplier;
  * with an attached {@link ComponentEnergyItemEntity}.
  */
 public abstract class ComponentEntityEnergyItemScreenHandler extends ComponentEntityScreenHandler {
-	public ComponentEnergyItemEntity entity;
+	public ComponentEnergyItemEntity energyItemEntity;
 
 	public VerticalEnergyBarWidget energyBar;
 
@@ -47,7 +47,7 @@ public abstract class ComponentEntityEnergyItemScreenHandler extends ComponentEn
 	public ComponentEntityEnergyItemScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, int entityId) {
 		super(type, syncId, player, entityId);
 
-		entity = (ComponentEnergyItemEntity) player.world.getEntityById(entityId);
+		energyItemEntity = (ComponentEnergyItemEntity) player.world.getEntityById(entityId);
 	}
 
 	/** Override behavior to add a energy bar. */
@@ -58,7 +58,7 @@ public abstract class ComponentEntityEnergyItemScreenHandler extends ComponentEn
 		energyBar = new VerticalEnergyBarWidget();
 		energyBar.setPosition(Position.of(mainTab, 7F, 11));
 		energyBar.setSize(Size.of(24F, 48F));
-		energyBar.setVolumeSupplier(() -> entity.getEnergyComponent().getVolume());
+		energyBar.setVolumeSupplier(() -> energyItemEntity.getEnergyComponent().getVolume());
 
 		mainTab.addWidget(energyBar);
 	}

@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.util;
 
 import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
@@ -32,17 +33,14 @@ import com.github.mixinors.astromine.common.widget.blade.TransferTypeSelectorBut
 import com.github.vini2003.blade.common.collection.TabWidgetCollection;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
-import dev.onyxstudios.cca.api.v3.component.ComponentKey;
-
-import com.google.common.collect.ImmutableMap;
 
 import java.util.Map;
 
 public class WidgetUtils {
 	/** Populates a {@link TabWidgetCollection} widgets corresponding to
-	 * the specified {@link TransferComponent} and {@link ComponentKey}.
+	 * the specified {@link TransferComponent} and {@link Identifier}.
 	 */
-	public static void createTransferTab(TabWidgetCollection tab, Position anchor, Direction rotation, TransferComponent component, BlockPos blockPos, ComponentKey<?> type) {
+	public static void createTransferTab(TabWidgetCollection tab, Position anchor, Direction rotation, TransferComponent component, BlockPos blockPos, Identifier id) {
 		var north = Position.of(anchor, 7.0F + 22.0F, 31.0F + 22.0F);
 		var south = Position.of(anchor, 7.0F + 0.0F, 31.0F + 44.0F);
 		var up = Position.of(anchor, 7.0F + 22.0F, 31.0F + 0.0F);
@@ -59,13 +57,13 @@ public class WidgetUtils {
 				Direction.DOWN, down
 		);
 
-		for (Direction direction : Direction.values()) {
-			TransferTypeSelectorButtonWidget button = new TransferTypeSelectorButtonWidget();
+		for (var direction : Direction.values()) {
+			var button = new TransferTypeSelectorButtonWidget();
 			
 			button.setPosition(positions.get(MirrorUtils.rotate(direction, rotation)));
 			button.setSize(Size.of(18.0F, 18.0F));
 			button.setComponent(component);
-			button.setType(type);
+			button.setId(id);
 			button.setRotation(rotation);
 			button.setDirection(direction);
 			button.setBlockPos(blockPos);

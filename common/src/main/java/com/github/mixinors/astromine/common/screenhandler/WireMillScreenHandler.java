@@ -37,30 +37,30 @@ import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 
 public class WireMillScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
-	private WireMillBlockEntity wiremill;
+	private final WireMillBlockEntity wiremill;
 
 	public WireMillScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.WIREMILL, syncId, player, position);
 
-		wiremill = (WireMillBlockEntity) blockEntity;
+		wiremill = (WireMillBlockEntity) energyItemBlockEntity;
 	}
 
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		SlotWidget output = new SlotWidget(0, blockEntity, ExtractionSlot::new);
+		var output = new SlotWidget(0, energyItemBlockEntity, ExtractionSlot::new);
 		output.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
 		output.setSize(Size.of(18, 18));
 
-		SlotWidget input = new SlotWidget(1, blockEntity);
+		var input = new SlotWidget(1, energyItemBlockEntity);
 		input.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
 		input.setSize(Size.of(18, 18));
 
-		output.setPosition(Position.of(width / 2F - output.getWidth() / 2F, output.getY()));
+		output.setPosition(Position.of(width/ 2.0F - output.getWidth()/ 2.0F, output.getY()));
 		output.setPosition(Position.of(output.getX() + 27, output.getY() + 15));
 
-		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
+		var arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(output.getX() - 31, output.getY()));
 		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> wiremill.limit);

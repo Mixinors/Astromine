@@ -42,8 +42,8 @@ public class BlockPlacerScreenHandler extends ComponentBlockEntityEnergyItemScre
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		SlotWidget slot = new SlotWidget(0, blockEntity);
-		slot.setPosition(Position.of(mainTab, mainTab.getWidth() / 2F - 9F, 26));
+		var slot = new SlotWidget(0, energyItemBlockEntity);
+		slot.setPosition(Position.of(mainTab, mainTab.getWidth()/ 2.0F - 9F, 26));
 		slot.setSize(Size.of(18, 18));
 
 		mainTab.addWidget(slot);

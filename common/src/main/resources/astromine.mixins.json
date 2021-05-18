@@ -13,6 +13,7 @@
     "common.EntityNavigationMixin",
     "common.FluidTagsAccessor",
     "common.IdentifierMixin",
+    "common.IngredientAccessor",
     "common.JsonDataLoaderMixin",
     "common.LivingEntityMixin",
     "common.PiglinBrainMixin",
