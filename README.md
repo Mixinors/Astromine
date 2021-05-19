@@ -1,8 +1,7 @@
 # Astromine
 [![Staging Build](https://github.com/Chainmail-Studios/Astromine/workflows/Staging%20Build/badge.svg)](https://github.com/Chainmail-Studios/Astromine/actions?query=workflow%3A%22Staging+Build%22)
 
-A technological space content mod for Fabric.
-Explore the space, witness the space, die in the space!
+Explore space; witness space; die in space.
 
 ### How to Download
 You may find release builds at [CurseForge](https://www.curseforge.com/minecraft/mc-mods/astromine-fabric).
