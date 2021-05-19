@@ -3,7 +3,7 @@
 
 Explore space; witness space; die in space.
 
-### Downloading
+### How to Download
 You may find release builds at [CurseForge](https://www.curseforge.com/minecraft/mc-mods/astromine-fabric).
 
 ### Building From Source
