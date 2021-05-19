@@ -27,7 +27,6 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.component.general.base.SimpleDirectionalFluidComponent;
-import com.github.mixinors.astromine.common.component.general.base.SimpleDirectionalItemComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -43,7 +42,6 @@ import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
@@ -67,7 +65,7 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 
 	@Override
 	public ItemComponent createItemComponent() {
-		return SimpleDirectionalItemComponent.of(this, 2).withInsertPredicate((direction, stack, slot) -> {
+		return ItemComponent.of(this, 2).withInsertPredicate((direction, stack, slot) -> {
 			return slot == 0;
 		}).withExtractPredicate((direction, stack, slot) -> {
 			return slot == 1;

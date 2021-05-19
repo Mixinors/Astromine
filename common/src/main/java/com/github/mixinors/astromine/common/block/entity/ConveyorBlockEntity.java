@@ -87,8 +87,8 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 
 	@Override
 	public void tick() {
-		Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
-		int speed = ((Conveyor) getCachedState().getBlock()).getSpeed();
+		var direction = getCachedState().get(HorizontalFacingBlock.FACING);
+		var speed = ((Conveyor) getCachedState().getBlock()).getSpeed();
 
 		if (!isEmpty()) {
 			if (across) {
@@ -96,7 +96,7 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 				BlockPos frontAcrossPos = frontPos.offset(direction);
 
 				if (getWorld().getBlockEntity(frontPos) instanceof ConveyorConveyable && getWorld().getBlockEntity(frontAcrossPos) instanceof ConveyorConveyable) {
-					Conveyable conveyable = (Conveyable) getWorld().getBlockEntity(frontPos);
+					var conveyable = (Conveyable) getWorld().getBlockEntity(frontPos);
 					Conveyable acrossConveyable = (Conveyable) getWorld().getBlockEntity(frontAcrossPos);
 
 					handleMovementAcross(conveyable, acrossConveyable, speed, true);
@@ -105,7 +105,7 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 				BlockPos frontPos = getPos().offset(direction);
 
 				if (getWorld().getBlockEntity(frontPos) instanceof Conveyable) {
-					Conveyable conveyable = (Conveyable) getWorld().getBlockEntity(frontPos);
+					var conveyable = (Conveyable) getWorld().getBlockEntity(frontPos);
 
 					handleMovement(conveyable, speed, true);
 				}
@@ -113,7 +113,7 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 				BlockPos downPos = getPos().offset(direction).down();
 
 				if (getWorld().getBlockEntity(downPos) instanceof Conveyable) {
-					Conveyable conveyable = (Conveyable) getWorld().getBlockEntity(downPos);
+					var conveyable = (Conveyable) getWorld().getBlockEntity(downPos);
 
 					handleMovement(conveyable, speed, true);
 				}
@@ -132,7 +132,7 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 			if (position < speed) {
 				setPosition(getPosition() + 1);
 			} else if (transition && position == speed) {
-				ItemStack split = getItemComponent().getFirst().copy();
+				var split = getItemComponent().getFirst().copy();
 				split.setCount(Math.min(accepted, split.getCount()));
 
 				getItemComponent().getFirst().decrement(accepted);
@@ -141,7 +141,7 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 				conveyable.give(split);
 			}
 		} else if (conveyable instanceof ConveyorConveyable) {
-			ConveyorConveyable conveyor = (ConveyorConveyable) conveyable;
+			var conveyor = (ConveyorConveyable) conveyable;
 
 			if (position < speed && position + 1 < conveyor.getPosition() && conveyor.getPosition() > 1) {
 				setPosition(getPosition() + 1);
@@ -161,7 +161,7 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 		if (accepted > 0) {
 			if (position < speed) {
 				if (conveyable instanceof ConveyorConveyable && acrossConveyable instanceof ConveyorConveyable) {
-					ConveyorConveyable conveyor = (ConveyorConveyable) conveyable;
+					var conveyor = (ConveyorConveyable) conveyable;
 					ConveyorConveyable acrossConveyor = (ConveyorConveyable) acrossConveyable;
 
 					if (position < speed && acrossConveyor.getPosition() == 0) {
@@ -171,7 +171,7 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 					}
 				}
 			} else if (transition && position == speed) {
-				ItemStack split = getItemComponent().getFirst().copy();
+				var split = getItemComponent().getFirst().copy();
 				split.setCount(Math.min(accepted, split.getCount()));
 
 				getItemComponent().getFirst().decrement(accepted);
@@ -180,7 +180,7 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 				conveyable.give(split);
 			}
 		} else if (conveyable instanceof ConveyorConveyable && acrossConveyable instanceof ConveyorConveyable) {
-			ConveyorConveyable conveyor = (ConveyorConveyable) conveyable;
+			var conveyor = (ConveyorConveyable) conveyable;
 			ConveyorConveyable acrossConveyor = (ConveyorConveyable) acrossConveyable;
 
 			if (position < speed && acrossConveyor.getPosition() == 0 && position + 1 < conveyor.getPosition() && conveyor.getPosition() > 1) {

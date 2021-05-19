@@ -33,18 +33,18 @@ import java.util.List;
 /**
  * A simple implementation of {@link EnergyComponent}.
  */
-class SimpleEnergyComponent implements EnergyComponent {
+public class SimpleEnergyComponent implements EnergyComponent {
 	private final EnergyVolume content;
 
 	private final List<Runnable> listeners = new ArrayList<>();
 
 	/** Instantiates a {@link SimpleEnergyComponent}. */
-	protected SimpleEnergyComponent(double size) {
+	SimpleEnergyComponent(double size) {
 		this.content = EnergyVolume.of(size, this::updateListeners);
 	}
 
 	/** Instantiates a {@link SimpleEnergyComponent}. */
-	protected SimpleEnergyComponent(EnergyVolume volume) {
+	SimpleEnergyComponent(EnergyVolume volume) {
 		this.content = volume;
 		this.content.setRunnable(this::updateListeners);
 	}

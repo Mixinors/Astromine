@@ -24,12 +24,14 @@
 
 package com.github.mixinors.astromine.common.component.general.base;
 
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.component.general.miscellaneous.NamedComponent;
 import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
 import com.github.mixinors.astromine.common.component.general.compatibility.ItemComponentFromInventory;
 import com.github.mixinors.astromine.common.component.general.compatibility.ItemComponentFromSidedInventory;
 import com.github.mixinors.astromine.common.component.general.provider.ItemComponentProvider;
 import com.github.mixinors.astromine.common.util.StackUtils;
+import com.github.mixinors.astromine.registry.common.AMComponents;
 import me.shedaniel.architectury.utils.NbtType;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
@@ -39,6 +41,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.component.general.compatibility.InventoryFromItemComponent;
@@ -63,44 +66,44 @@ import static java.lang.Integer.min;
  */
 public interface ItemComponent extends Iterable<ItemStack>, NamedComponent {
 	/** Instantiates an {@link ItemComponent}. */
-	static ItemComponent of(int size) {
+	static SimpleItemComponent of(int size) {
 		return new SimpleItemComponent(size);
 	}
 
 	/** Instantiates an {@link ItemComponent}. */
-	static ItemComponent of(ItemStack... stacks) {
+	static SimpleItemComponent of(ItemStack... stacks) {
 		return new SimpleItemComponent(stacks);
 	}
 	
 	/** Instantiates an {@link ItemComponent} associated with a {@link TransferComponent} provider. */
-	static <V> ItemComponent of(V v, int size) {
+	static <V> SimpleDirectionalItemComponent of(V v, int size) {
 		return new SimpleDirectionalItemComponent(v, size);
 	}
 	
 	/** Instantiates an {@link ItemComponent} associated with a {@link TransferComponent} provider. */
-	public static <V> ItemComponent of(V v, ItemStack... stacks) {
+	public static <V> SimpleDirectionalItemComponent of(V v, ItemStack... stacks) {
 		return new SimpleDirectionalItemComponent(v, stacks);
 	}
 	
 	/** Instantiates an {@link ItemComponent} with automatic synchronization. */
-	static ItemComponent ofSynced(int size) {
+	static SimpleAutoSyncedItemComponent ofSynced(int size) {
 		return new SimpleAutoSyncedItemComponent(size);
 	}
 	
 	/** Instantiates an {@link ItemComponent} with automatic synchronization. */
-	static ItemComponent ofSynced(ItemStack... stacks) {
+	static SimpleAutoSyncedItemComponent ofSynced(ItemStack... stacks) {
 		return new SimpleAutoSyncedItemComponent(stacks);
 	}
 	
 	/** Instantiates an {@link ItemComponent} associated with a {@link TransferComponent} provider,
 	 *  with automatic synchronization. */
-	static <V> ItemComponent ofSynced(V v, int size) {
+	static <V> SimpleAutoSyncedDirectionalItemComponent ofSynced(V v, int size) {
 		return new SimpleAutoSyncedDirectionalItemComponent(v, size);
 	}
 	
 	/** Instantiates an {@link ItemComponent} associated with a {@link TransferComponent} provider,
 	 *  with automatic synchronization. */
-	static <V> ItemComponent ofSynced(V v, ItemStack... stacks) {
+	static <V> SimpleAutoSyncedDirectionalItemComponent ofSynced(V v, ItemStack... stacks) {
 		return new SimpleAutoSyncedDirectionalItemComponent(v, stacks);
 	}
 
@@ -110,7 +113,7 @@ public interface ItemComponent extends Iterable<ItemStack>, NamedComponent {
 	}
 
 	/** Returns this component's {@link Text} name. */
-	default Text getName() {
+	default Text getText() {
 		return new TranslatableText("text.astromine.item");
 	}
 
@@ -482,5 +485,11 @@ public interface ItemComponent extends Iterable<ItemStack>, NamedComponent {
 	/** Sets the ninth stack in this component to the specified value. */
 	default void setNinth(ItemStack stack) {
 		setStack(8, stack);
+	}
+	
+	/** Returns this component's {@link Identifier}. */
+	@Override
+	default Identifier getId() {
+		return AMComponents.ITEM;
 	}
 }

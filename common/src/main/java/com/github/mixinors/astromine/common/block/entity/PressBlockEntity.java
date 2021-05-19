@@ -26,8 +26,6 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.base.SimpleDirectionalItemComponent;
-import com.github.mixinors.astromine.common.component.general.base.SimpleEnergyComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -40,7 +38,6 @@ import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.PressingRecipe;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
@@ -62,7 +59,7 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 
 	@Override
 	public ItemComponent createItemComponent() {
-		return SimpleDirectionalItemComponent.of(this, 2).withInsertPredicate((direction, stack, slot) -> {
+		return ItemComponent.of(this, 2).withInsertPredicate((direction, stack, slot) -> {
 			if (slot != 1) {
 				return false;
 			}
@@ -82,7 +79,7 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 
 	@Override
 	public EnergyComponent createEnergyComponent() {
-		return SimpleEnergyComponent.of(getEnergySize());
+		return EnergyComponent.of(getEnergySize());
 	}
 
 	@Override
@@ -102,9 +99,9 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		ItemComponent itemComponent = getItemComponent();
+		var itemComponent = getItemComponent();
 
-		EnergyComponent energyComponent = getEnergyComponent();
+		var energyComponent = getEnergyComponent();
 
 		if (itemComponent != null && energyComponent != null) {
 			EnergyVolume volume = energyComponent.getVolume();

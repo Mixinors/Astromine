@@ -37,7 +37,6 @@ import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.MeltingRecipe;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
@@ -72,7 +71,7 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 
 	@Override
 	public ItemComponent createItemComponent() {
-		return SimpleDirectionalItemComponent.of(this, 1).withInsertPredicate((direction, stack, slot) -> {
+		return ItemComponent.of(this, 1).withInsertPredicate((direction, stack, slot) -> {
 			if (slot != 0) {
 				return false;
 			}
@@ -92,7 +91,7 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 
 	@Override
 	public EnergyComponent createEnergyComponent() {
-		return SimpleEnergyComponent.of(getEnergySize());
+		return EnergyComponent.of(getEnergySize());
 	}
 
 	@Override
@@ -112,14 +111,14 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		ItemComponent itemComponent = getItemComponent();
+		var itemComponent = getItemComponent();
 
 		FluidComponent fluidComponent = getFluidComponent();
 
-		EnergyComponent energyComponent = getEnergyComponent();
+		var energyComponent = getEnergyComponent();
 
 		if (itemComponent != null && fluidComponent != null && energyComponent != null) {
-			EnergyVolume energyVolume = energyComponent.getVolume();
+			var energyVolume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
 				optionalRecipe = MeltingRecipe.matching(world, itemComponent, fluidComponent);

@@ -7,14 +7,14 @@ import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
  * A {@link SimpleDirectionalFluidComponent} that synchronizes itself
  * automatically.
  */
-class SimpleAutoSyncedDirectionalFluidComponent extends SimpleDirectionalFluidComponent implements AutoSyncedComponent {
+public class SimpleAutoSyncedDirectionalFluidComponent extends SimpleDirectionalFluidComponent implements AutoSyncedComponent {
 	/** Instantiates a {@link SimpleDirectionalFluidComponent}. */
-	public <V> SimpleAutoSyncedDirectionalFluidComponent(V v, int size) {
+	<V> SimpleAutoSyncedDirectionalFluidComponent(V v, int size) {
 		super(v, size);
 	}
 	
 	/** Instantiates a {@link SimpleDirectionalFluidComponent}. */
-	public <V> SimpleAutoSyncedDirectionalFluidComponent(V v, FluidVolume... volumes) {
+	<V> SimpleAutoSyncedDirectionalFluidComponent(V v, FluidVolume... volumes) {
 		super(v, volumes);
 	}
 }

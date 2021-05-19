@@ -24,8 +24,10 @@
 
 package com.github.mixinors.astromine.common.component.general.base;
 
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.component.general.miscellaneous.NamedComponent;
 import com.github.mixinors.astromine.common.component.general.provider.EnergyComponentProvider;
+import com.github.mixinors.astromine.registry.common.AMComponents;
 import me.shedaniel.architectury.utils.NbtType;
 
 import net.minecraft.item.Item;
@@ -35,6 +37,7 @@ import net.minecraft.text.TranslatableText;
 
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMItems;
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -50,22 +53,22 @@ import static java.lang.Math.min;
  */
 public interface EnergyComponent extends NamedComponent {
 	/** Instantiates an {@link EnergyComponent}. */
-	static EnergyComponent of(double size) {
+	static SimpleEnergyComponent of(double size) {
 		return new SimpleEnergyComponent(size);
 	}
 
 	/** Instantiates an {@link EnergyComponent}. */
-	static EnergyComponent of(EnergyVolume volume) {
+	static SimpleEnergyComponent of(EnergyVolume volume) {
 		return new SimpleEnergyComponent(volume);
 	}
 
 	/** Instantiates an {@link EnergyComponent} and synchronization. */
-	static EnergyComponent ofSynced(double size) {
+	static SimpleAutoSyncedEnergyComponent ofSynced(double size) {
 		return new SimpleAutoSyncedEnergyComponent(size);
 	}
 
 	/** Instantiates an {@link EnergyComponent} and synchronization. */
-	static EnergyComponent ofSynced(EnergyVolume volume) {
+	static SimpleAutoSyncedEnergyComponent ofSynced(EnergyVolume volume) {
 		return new SimpleAutoSyncedEnergyComponent(volume);
 	}
 	
@@ -75,7 +78,7 @@ public interface EnergyComponent extends NamedComponent {
 	}
 
 	/** Returns this component's {@link Text} name. */
-	default Text getName() {
+	default Text getText() {
 		return new TranslatableText("text.astromine.energy");
 	}
 
@@ -201,5 +204,11 @@ public interface EnergyComponent extends NamedComponent {
 		} else {
 			return null;
 		}
+	}
+	
+	/** Returns this component's {@link Identifier}. */
+	@Override
+	default Identifier getId() {
+		return AMComponents.ENERGY;
 	}
 }

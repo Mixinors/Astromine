@@ -47,6 +47,11 @@ import java.util.Map;
  * - {@link CompoundTag} - through {@link #toTag(CompoundTag)} and {@link #fromTag(CompoundTag)}.
  */
 public interface TransferComponent extends Component {
+	/** Instantiates a {@link TransferComponent}. */
+	static TransferComponent of() {
+		return new SimpleTransferComponent();
+	}
+	
 	/** Returns this component's {@link Map} of {@link Identifier}s to {@link TransferEntry}-ies. */
 	static <V> TransferComponent get(V v) {
 		if (v instanceof TransferComponentProvider) {
@@ -102,43 +107,50 @@ public interface TransferComponent extends Component {
 	}
 	
 	/** Returns this component's {@link TransferEntry} for the given component {@link Identifier}. */
-	public TransferEntry get(Identifier id) {
-		if (id.equals(AMComponents.ITEM_INVENTORY_COMPONENT)) return getItemEntry();
-		if (id.equals(AMComponents.FLUID_INVENTORY_COMPONENT)) return getFluidEntry();
-		if (id.equals(AMComponents.ENERGY_INVENTORY_COMPONENT)) return getEnergyEntry();
+	default TransferEntry get(Identifier id) {
+		if (id.equals(AMComponents.ITEM)) return getItemEntry();
+		if (id.equals(AMComponents.FLUID)) return getFluidEntry();
+		if (id.equals(AMComponents.ENERGY)) return getEnergyEntry();
 		return null;
 	}
 
+	/** Adds a {@link TransferEntry} for the given {@link Identifier} to this component. */
+	default void add(Identifier id) {
+		if (id.equals(AMComponents.ITEM)) addItem();
+		if (id.equals(AMComponents.FLUID)) addFluid();
+		if (id.equals(AMComponents.ENERGY)) addEnergy();
+	}
+	
 	/** Serializes this {@link TransferComponent} to a {@link CompoundTag}. */
 	@Override
-	public void toTag(CompoundTag tag) {
+	default void toTag(CompoundTag tag) {
 		CompoundTag dataTag = new CompoundTag();
 		
-		dataTag.put("Item", itemComponentTransferEntry.toTag());
-		dataTag.put("Fluid", fluidComponentTransferEntry.toTag());
-		dataTag.put("Energy", energyComponentTransferEntry.toTag());
+		dataTag.put("Item", getItemEntry().toTag());
+		dataTag.put("Fluid", getFluidEntry().toTag());
+		dataTag.put("Energy", getEnergyEntry().toTag());
 
 		tag.put("Data", dataTag);
 	}
 
 	/** Deserializes this {@link TransferComponent} from a {@link CompoundTag}. */
 	@Override
-	public void fromTag(CompoundTag tag) {
+	default void fromTag(CompoundTag tag) {
 		CompoundTag dataTag = tag.getCompound("Data");
 		
 		if (dataTag.contains("Item")) {
-			itemComponentTransferEntry = new TransferEntry();
-			itemComponentTransferEntry.fromTag(dataTag.getCompound("Item"));
+			addItem();
+			getItemEntry().fromTag(dataTag.getCompound("Item"));
 		}
 		
 		if (dataTag.contains("Fluid")) {
-			fluidComponentTransferEntry = new TransferEntry();
-			fluidComponentTransferEntry.fromTag(dataTag.getCompound("Fluid"));
+			addFluid();
+			getFluidEntry().fromTag(dataTag.getCompound("Fluid"));
 		}
 		
 		if (dataTag.contains("Energy")) {
-			energyComponentTransferEntry = new TransferEntry();
-			energyComponentTransferEntry.fromTag(dataTag.getCompound("Energy"));
+			addEnergy();
+			getEnergyEntry().fromTag(dataTag.getCompound("Energy"));
 		}
 	}
 
@@ -148,59 +160,39 @@ public interface TransferComponent extends Component {
 	 * Serialization and deserialization methods are provided for:
 	 * - {@link CompoundTag} - through {@link #toTag()} and {@link #fromTag(CompoundTag)}.
 	 */
-	public static class TransferEntry {
+	class TransferEntry {
 		private TransferType up = TransferType.NONE;
 		private TransferType down = TransferType.NONE;
 		private TransferType north = TransferType.NONE;
 		private TransferType south = TransferType.NONE;
 		private TransferType east = TransferType.NONE;
 		private TransferType west = TransferType.NONE;
+		
+		public static final TransferEntry NONE = new TransferEntry();
 
 		/** Sets the {@link TransferType} of the given {@link Direction}
 		 * to the specified value. */
 		public void set(Direction direction, TransferType type) {
 			switch (direction) {
-				case UP: {
-					up = type;
-					return;
-				}
-				
-				case DOWN: {
-					down = type;
-					return;
-				}
-				
-				case NORTH: {
-					north = type;
-					return;
-				}
-				
-				case SOUTH: {
-					south = type;
-					return;
-				}
-				
-				case EAST: {
-					east = type;
-					return;
-				}
-				
-				default: {
-					west = type;
-				}
+				case UP -> up = type;
+				case DOWN -> down = type;
+				case NORTH -> north = type;
+				case SOUTH -> south = type;
+				case EAST -> east = type;
+				default -> west = type;
 			}
 		}
 
 		/** Returns the {@link TransferType} of the given {@link Direction}. */
 		public TransferType get(Direction origin) {
-			switch (origin) {
-				case UP: return up;
-				case DOWN: return down;
-				case NORTH: return north;
-				case SOUTH: return south;
-				case EAST: return east;
-				default: return west;
-			}
+			return switch (origin) {
+				case UP -> up;
+				case DOWN -> down;
+				case NORTH -> north;
+				case SOUTH -> south;
+				case EAST -> east;
+				default -> west;
+			};
 		}
 
 		/** Deserializes this {@link TransferEntry} from a {@link CompoundTag}. */
@@ -226,5 +218,11 @@ public interface TransferComponent extends Component {
 
 			return tag;
 		}
+	}
+	
+	/** Returns this component's {@link Identifier}. */
+	@Override
+	default Identifier getId() {
+		return AMComponents.TRANSFER;
 	}
 }

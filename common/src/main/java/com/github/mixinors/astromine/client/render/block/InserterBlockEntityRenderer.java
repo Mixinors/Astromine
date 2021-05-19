@@ -46,9 +46,9 @@ public class InserterBlockEntityRenderer extends BlockEntityRenderer<InserterBlo
 
 	@Override
 	public void render(InserterBlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-		Direction direction = blockEntity.getCachedState().get(HorizontalFacingBlock.FACING);
+		var direction = blockEntity.getCachedState().get(HorizontalFacingBlock.FACING);
 		String type = ((InserterBlock) blockEntity.getCachedState().getBlock()).getType();
-		int speed = ((InserterBlock) blockEntity.getCachedState().getBlock()).getSpeed();
+		var speed = ((InserterBlock) blockEntity.getCachedState().getBlock()).getSpeed();
 		InserterArmModel modelInserterArm = new InserterArmModel();
 
 		float position = blockEntity.getRenderAttachmentData()[1] + (blockEntity.getRenderAttachmentData()[0] - blockEntity.getRenderAttachmentData()[1]) * tickDelta;

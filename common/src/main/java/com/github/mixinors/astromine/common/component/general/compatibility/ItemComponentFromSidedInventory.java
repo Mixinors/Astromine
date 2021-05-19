@@ -70,7 +70,7 @@ public class ItemComponentFromSidedInventory implements ItemComponent {
 	@Override
 	public Map<Integer, ItemStack> getContents() {
 		Int2ObjectArrayMap<ItemStack> contents = new Int2ObjectArrayMap<>();
-		for (int i = 0; i < this.inventory.size(); ++i) {
+		for (var i = 0; i < this.inventory.size(); ++i) {
 			contents.put(i, this.inventory.getStack(i));
 		}
 		contents.defaultReturnValue(ItemStack.EMPTY);

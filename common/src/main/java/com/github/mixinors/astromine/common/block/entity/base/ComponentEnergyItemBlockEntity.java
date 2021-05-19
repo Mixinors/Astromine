@@ -26,12 +26,10 @@ package com.github.mixinors.astromine.common.block.entity.base;
 
 import com.github.mixinors.astromine.common.component.general.provider.EnergyComponentProvider;
 import com.github.mixinors.astromine.common.component.general.provider.ItemComponentProvider;
-import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.util.capability.energy.EnergyStorageEnergyComponentProvider;
 import com.github.mixinors.astromine.common.util.capability.inventory.InventoryItemComponentProvider;
 
 import java.util.function.Supplier;
@@ -40,7 +38,7 @@ import java.util.function.Supplier;
  * A {@link ComponentBlockEntity} with an attached
  * {@link EnergyComponent} and {@link ItemComponent}.
  */
-public abstract class ComponentEnergyItemBlockEntity extends ComponentBlockEntity implements EnergyStorageEnergyComponentProvider, InventoryItemComponentProvider, EnergyComponentProvider, ItemComponentProvider {
+public abstract class ComponentEnergyItemBlockEntity extends ComponentBlockEntity implements InventoryItemComponentProvider, EnergyComponentProvider, ItemComponentProvider {
 	private final EnergyComponent energyComponent = createEnergyComponent();
 
 	private final ItemComponent itemComponent = createItemComponent();
@@ -49,10 +47,7 @@ public abstract class ComponentEnergyItemBlockEntity extends ComponentBlockEntit
 	public ComponentEnergyItemBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 
-		addComponent(AMComponents.ENERGY_INVENTORY_COMPONENT, getEnergyComponent());
 		getEnergyComponent().updateListeners();
-
-		addComponent(AMComponents.ITEM_INVENTORY_COMPONENT, getItemComponent());
 		getItemComponent().updateListeners();
 	}
 

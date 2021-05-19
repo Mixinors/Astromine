@@ -72,16 +72,16 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 
 	@Override
 	public void tick() {
-		Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
+		var direction = getCachedState().get(HorizontalFacingBlock.FACING);
 
-		int speed = ((Conveyor) getCachedState().getBlock()).getSpeed();
+		var speed = ((Conveyor) getCachedState().getBlock()).getSpeed();
 
 		if (!isEmpty()) {
 			if (getCachedState().get(ConveyorBlock.FRONT)) {
 				BlockPos frontPos = getPos().offset(direction.getOpposite());
 
 				if (getWorld().getBlockEntity(frontPos) instanceof Conveyable) {
-					Conveyable conveyable = (Conveyable) getWorld().getBlockEntity(frontPos);
+					var conveyable = (Conveyable) getWorld().getBlockEntity(frontPos);
 
 					if (getCachedState().get(ConveyorBlock.CONVEYOR)) {
 						if (position < speed) {
@@ -99,7 +99,7 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 				BlockPos downPos = getPos().down();
 
 				if (getWorld().getBlockEntity(downPos) instanceof Conveyable) {
-					Conveyable conveyable = (Conveyable) getWorld().getBlockEntity(downPos);
+					var conveyable = (Conveyable) getWorld().getBlockEntity(downPos);
 
 					if (getCachedState().get(ConveyorBlock.CONVEYOR)) {
 						handleMovement(conveyable, speed * 2, true);
@@ -122,7 +122,7 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 			if (horizontalPosition < speed) {
 				setHorizontalPosition(getHorizontalPosition() + 1);
 			} else if (transition && horizontalPosition >= speed) {
-				ItemStack split = getItemComponent().getFirst().copy();
+				var split = getItemComponent().getFirst().copy();
 				split.setCount(Math.min(accepted, split.getCount()));
 
 				getItemComponent().getFirst().decrement(accepted);
@@ -131,7 +131,7 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 				conveyable.give(split);
 			}
 		} else if (conveyable instanceof ConveyorConveyable) {
-			ConveyorConveyable conveyor = (ConveyorConveyable) conveyable;
+			var conveyor = (ConveyorConveyable) conveyable;
 
 			if (horizontalPosition < speed && horizontalPosition + 4 < conveyor.getPosition() && conveyor.getPosition() > 4) {
 				setHorizontalPosition(getHorizontalPosition() + 1);

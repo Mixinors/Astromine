@@ -26,8 +26,6 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.base.SimpleDirectionalItemComponent;
-import com.github.mixinors.astromine.common.component.general.base.SimpleEnergyComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -36,12 +34,10 @@ import net.minecraft.nbt.CompoundTag;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
 import com.github.mixinors.astromine.common.util.StackUtils;
-import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.AlloySmeltingRecipe;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntSet;
@@ -53,7 +49,7 @@ import java.util.function.Supplier;
 
 import static java.lang.Math.min;
 
-public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
+public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, SpeedProvider {
 	public double progress = 0;
 	public int limit = 100;
 	public boolean shouldTry = false;
@@ -66,7 +62,7 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 
 	@Override
 	public ItemComponent createItemComponent() {
-		return SimpleDirectionalItemComponent.of(this, 3).withInsertPredicate((direction, stack, slot) -> {
+		return ItemComponent.of(this, 3).withInsertPredicate((direction, stack, slot) -> {
 			if (slot != 0 && slot != 1) {
 				return false;
 			}
@@ -94,7 +90,7 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 
 	@Override
 	public EnergyComponent createEnergyComponent() {
-		return SimpleEnergyComponent.of(getEnergySize());
+		return EnergyComponent.of(getEnergySize());
 	}
 
 	@Override
@@ -114,12 +110,12 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		ItemComponent itemComponent = getItemComponent();
+		var itemComponent = getItemComponent();
 
-		EnergyComponent energyComponent = getEnergyComponent();
+		var energyComponent = getEnergyComponent();
 
 		if (itemComponent != null && energyComponent != null) {
-			EnergyVolume energyVolume = energyComponent.getVolume();
+			var energyVolume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
 				optionalRecipe = AlloySmeltingRecipe.matching(world, itemComponent);
@@ -132,12 +128,12 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 			}
 
 			if (optionalRecipe.isPresent()) {
-				AlloySmeltingRecipe recipe = optionalRecipe.get();
+				var recipe = optionalRecipe.get();
 
 				limit = recipe.getTime();
 
-				double speed = min(getMachineSpeed(), limit - progress);
-				double consumed = recipe.getEnergyInput() * speed / limit;
+				var speed = min(getMachineSpeed(), limit - progress);
+				var consumed = recipe.getEnergyInput() * speed / limit;
 
 				if (energyVolume.hasStored(consumed)) {
 					energyVolume.take(consumed);
@@ -145,8 +141,8 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 					if (progress + speed >= limit) {
 						optionalRecipe = Optional.empty();
 
-						ItemStack first = itemComponent.getFirst();
-						ItemStack second = itemComponent.getSecond();
+						var first = itemComponent.getFirst();
+						var second = itemComponent.getSecond();
 
 						if (recipe.getFirstInput().test(first) && recipe.getSecondInput().test(second)) {
 							first.decrement(recipe.getFirstInput().testMatching(first).getCount());
@@ -201,11 +197,6 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 		public double getEnergySize() {
 			return AMConfig.get().primitiveAlloySmelterEnergy;
 		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.PRIMITIVE;
-		}
 	}
 
 	public static class Basic extends AlloySmelterBlockEntity {
@@ -221,11 +212,6 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 		@Override
 		public double getEnergySize() {
 			return AMConfig.get().basicAlloySmelterEnergy;
-		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.BASIC;
 		}
 	}
 
@@ -243,11 +229,6 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 		public double getEnergySize() {
 			return AMConfig.get().advancedAlloySmelterEnergy;
 		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.ADVANCED;
-		}
 	}
 
 	public static class Elite extends AlloySmelterBlockEntity {
@@ -263,11 +244,6 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 		@Override
 		public double getEnergySize() {
 			return AMConfig.get().eliteAlloySmelterEnergy;
-		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.ELITE;
 		}
 	}
 }

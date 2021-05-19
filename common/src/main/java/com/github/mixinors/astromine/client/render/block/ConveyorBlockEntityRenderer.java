@@ -41,7 +41,7 @@ public class ConveyorBlockEntityRenderer extends BlockEntityRenderer<ConveyorBlo
 
 	@Override
 	public void render(ConveyorBlockEntity blockEntity, float partialTicks, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int i1) {
-		int speed = ((Conveyor) blockEntity.getCachedState().getBlock()).getSpeed();
+		var speed = ((Conveyor) blockEntity.getCachedState().getBlock()).getSpeed();
 		ConveyorTypes type = ((Conveyor) blockEntity.getCachedState().getBlock()).getType();
 
 		if (!blockEntity.getWorld().getBlockState(blockEntity.getPos()).isAir() && !blockEntity.isEmpty()) {

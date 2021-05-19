@@ -47,7 +47,7 @@ public class AlternatorBlockEntity extends AbstractConveyableBlockEntity {
 
 	@Override
 	public void give(ItemStack stack) {
-		ItemStack copyStack = stack.copy();
+		var copyStack = stack.copy();
 
 		if (isEmpty()) {
 			if (right) {

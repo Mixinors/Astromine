@@ -31,14 +31,14 @@ import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
  * A {@link SimpleFluidComponent} that synchronizes itself
  * automatically.
  */
-class SimpleAutoSyncedFluidComponent extends SimpleFluidComponent implements AutoSyncedComponent {
+public class SimpleAutoSyncedFluidComponent extends SimpleFluidComponent implements AutoSyncedComponent {
     /** Instantiates a {@link SimpleAutoSyncedItemComponent}. */
-    protected SimpleAutoSyncedFluidComponent(int size) {
+    SimpleAutoSyncedFluidComponent(int size) {
         super(size);
     }
 
     /** Instantiates a {@link SimpleAutoSyncedItemComponent}. */
-    protected SimpleAutoSyncedFluidComponent(FluidVolume... volumes) {
+    SimpleAutoSyncedFluidComponent(FluidVolume... volumes) {
         super(volumes);
     }
 }

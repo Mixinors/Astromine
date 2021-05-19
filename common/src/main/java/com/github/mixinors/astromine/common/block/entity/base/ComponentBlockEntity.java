@@ -24,44 +24,25 @@
 
 package com.github.mixinors.astromine.common.block.entity.base;
 
-import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.provider.RedstoneComponentProvider;
-import com.github.mixinors.astromine.common.component.general.provider.TransferComponentProvider;
+import com.github.mixinors.astromine.common.component.general.provider.*;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
-import com.github.mixinors.astromine.registry.common.AMComponents;
 
 import me.shedaniel.architectury.extensions.BlockEntityExtension;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Pair;
 import net.minecraft.util.Tickable;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
-import com.github.mixinors.astromine.common.block.transfer.TransferType;
 import com.github.mixinors.astromine.common.component.block.entity.RedstoneComponent;
-import dev.onyxstudios.cca.api.v3.component.Component;
-import dev.onyxstudios.cca.api.v3.component.ComponentKey;
-import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
 import org.jetbrains.annotations.NotNull;
-import team.reborn.energy.EnergyHandler;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
-import java.util.List;
-import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
@@ -71,15 +52,9 @@ import java.util.function.Supplier;
  * its activity, and handles redstone behavior.
  */
 public abstract class ComponentBlockEntity extends BlockEntity implements BlockEntityExtension, Tickable, TransferComponentProvider, RedstoneComponentProvider {
-	public static final Identifier TRANSFER_UPDATE_PACKET = AMCommon.id("transfer_update_packet");
-
 	private final TransferComponent transferComponent = createTransferComponent();
 
 	private final RedstoneComponent redstoneComponent = createRedstoneComponent();
-
-	protected final Map<ComponentKey<?>, Component> allComponents = Maps.newHashMap();
-
-	protected final Map<Identifier, Consumer<PacketByteBuf>> allHandlers = Maps.newHashMap();
 
 	private boolean isActive = false;
 
@@ -90,21 +65,11 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 	/** Instantiates a {@link ComponentBlockEntity}. */
 	public ComponentBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type.get());
-
-		addPacketConsumer(TRANSFER_UPDATE_PACKET, ((buf) -> {
-			Identifier packetIdentifier = buf.readIdentifier();
-			Direction packetDirection = buf.readEnumConstant(Direction.class);
-			TransferType packetTransferType = buf.readEnumConstant(TransferType.class);
-
-			getTransferComponent().get(ComponentRegistry.get(packetIdentifier)).set(packetDirection, packetTransferType);
-			markDirty();
-			syncData();
-		}));
 	}
 
 	/** Returns the {@link TransferComponent} to be attached. */
 	public TransferComponent createTransferComponent() {
-		return new TransferComponent();
+		return TransferComponent.of();
 	}
 
 	/** Returns the attached {@link TransferComponent}. */
@@ -115,7 +80,7 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 
 	/** Returns the {@link RedstoneComponent} to be attached. */
 	public RedstoneComponent createRedstoneComponent() {
-		return new RedstoneComponent();
+		return RedstoneComponent.of();
 	}
 
 	/** Returns the attached {@link RedstoneComponent}. */
@@ -128,25 +93,6 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 	 * its full inventory contents on the next {@link #tick()}. */
 	public void doNotSkipInventory() {
 		this.skipInventory = false;
-	}
-
-	/** Adds a {@link Component} to this {@link ComponentBlockEntity},
-	 * appropriately adding an entry to {@link #getTransferComponent()}. */
-	public void addComponent(ComponentKey<?> type, Component component) {
-		allComponents.put(type, component);
-		getTransferComponent().add(type);
-	}
-
-	/** Adds a {@link BiConsumer} that handles a {@link PacketByteBuf}
-	 * whose header is the given {@link Identifier}. */
-	public void addPacketConsumer(Identifier identifier, Consumer<PacketByteBuf> consumer) {
-		allHandlers.put(identifier, consumer);
-	}
-
-	/** Consumes a {@link PacketByteBuf}, with the read header {@link Identifier},
-	 * repassing it to the matching {@link BiConsumer}. */
-	public void consumePacket(Identifier identifier, PacketByteBuf buf) {
-		allHandlers.get(identifier).accept(buf);
 	}
 
 	/** Sets this machine as active. */
@@ -162,20 +108,20 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 	/** Ticks this {@link ComponentBlockEntity}'s redstone behavior,
 	 * returning whether it should work or not. */
 	public boolean tickRedstone() {
-		boolean powered = world.getReceivedRedstonePower(getPos()) > 0;
-
+		var powered = world.getReceivedRedstonePower(getPos()) > 0;
+		
 		switch (getRedstoneComponent().getType()) {
-			case WORK_WHEN_ON: {
-				if (powered) tickActive(); else tickInactive();
+			case WORK_WHEN_ON -> {
+				if (powered) tickActive();
+				else tickInactive();
 				return powered;
 			}
-
-			case WORK_WHEN_OFF: {
-				if (!powered) tickActive(); else tickInactive();
+			case WORK_WHEN_OFF -> {
+				if (!powered) tickActive();
+				else tickInactive();
 				return !powered;
 			}
-
-			default: {
+			default -> {
 				tickActive();
 				return true;
 			}
@@ -190,21 +136,19 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 	public void tick() {
 		if (!hasWorld() || world.isClient)
 			return;
+		
+		for (var offsetDirection : Direction.values()) {
+			var neighborDirection = offsetDirection.getOpposite();
 
-		List<Pair<EnergyHandler, EnergyHandler>> energyTransfers = Lists.newArrayList();
+			var neighborPos = getPos().offset(offsetDirection);
 
-		for (Direction offsetDirection : Direction.values()) {
-			Direction neighborDirection = offsetDirection.getOpposite();
-
-			BlockPos neighborPos = getPos().offset(offsetDirection);
-
-			BlockEntity neighborBlockEntity = world.getBlockEntity(neighborPos);
+			var neighborBlockEntity = world.getBlockEntity(neighborPos);
 
 			if (getTransferComponent().hasItem()) {
-				ItemComponent ourComponent = ItemComponent.get(this);
+				var ourComponent = ItemComponent.get(this);
 
 				if (ourComponent != null) {
-					ItemComponent theirComponent = ItemComponent.get(neighborBlockEntity);
+					var theirComponent = ItemComponent.get(neighborBlockEntity);
 
 					if (theirComponent != null) {
 						theirComponent.into(ourComponent, 1, neighborDirection, offsetDirection);
@@ -214,10 +158,10 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 			}
 
 			if (getTransferComponent().hasFluid()) {
-				FluidComponent ourComponent = FluidComponent.get(this);
+				var ourComponent = FluidComponent.get(this);
 
 				if (ourComponent != null) {
-					FluidComponent theirComponent = FluidComponent.get(neighborBlockEntity);
+					var theirComponent = FluidComponent.get(neighborBlockEntity);
 
 					if (theirComponent != null) {
 						theirComponent.into(ourComponent, FluidVolume.getTransfer(), neighborDirection, offsetDirection);
@@ -227,10 +171,10 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 			}
 
 			if (getTransferComponent().hasEnergy()) {
-				EnergyComponent ourComponent = EnergyComponent.get(this);
+				var ourComponent = EnergyComponent.get(this);
 
 				if (ourComponent != null) {
-					EnergyComponent theirComponent = EnergyComponent.get(neighborBlockEntity);
+					var theirComponent = EnergyComponent.get(neighborBlockEntity);
 
 					if (theirComponent != null) {
 						theirComponent.into(ourComponent, 1024D);
@@ -257,38 +201,56 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 	/** Serializes this {@link ComponentBlockEntity} to a {@link CompoundTag}. */
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		CompoundTag transferTag = new CompoundTag();
+		var transferTag = new CompoundTag();
 		getTransferComponent().toTag(transferTag);
-
-		CompoundTag redstoneTag = new CompoundTag();
-		getRedstoneComponent().writeToNbt(redstoneTag);
-
-		tag.put("transfer", transferTag);
-		tag.put("redstone", redstoneTag);
-
-		allComponents.forEach((type, component) -> {
-			CompoundTag componentTag = new CompoundTag();
-			component.writeToNbt(componentTag);
-
-			tag.put(type.getId().toString(), componentTag);
-		});
-
+		
+		tag.put("TransferComponent", transferTag);
+		
+		var redstoneTag = new CompoundTag();
+		getRedstoneComponent().toTag(redstoneTag);
+		
+		tag.put("RedstoneComponent", redstoneTag);
+		
+		if (this instanceof EnergyComponentProvider provider) {
+			var energyTag = new CompoundTag();
+			provider.getEnergyComponent().toTag(energyTag);
+			
+			tag.put("EnergyComponent", energyTag);
+		}
+		
+		if (this instanceof FluidComponentProvider provider) {
+			var fluidTag = new CompoundTag();
+			provider.getFluidComponent().toTag(fluidTag);
+			
+			tag.put("FluidComponent", fluidTag);
+		}
+		
+		if (this instanceof ItemComponentProvider provider) {
+			var itemTag = new CompoundTag();
+			provider.getItemComponent().toTag(itemTag);
+			
+			tag.put("ItemComponent", itemTag);
+		}
+		
 		return super.toTag(tag);
 	}
 
 	/** Deserializes this {@link ComponentBlockEntity} from a {@link CompoundTag}. */
 	@Override
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		getTransferComponent().fromTag(tag.getCompound("transfer"));
-		getRedstoneComponent().readFromNbt(tag.getCompound("redstone"));
-
-		allComponents.forEach((type, component) -> {
-			if (tag.contains(type.getId().toString())) {
-				component.readFromNbt(tag.getCompound(type.getId().toString()));
-			}
-		});
-
-		this.pos = new BlockPos(tag.getInt("x"), tag.getInt("y"), tag.getInt("z"));
+		getTransferComponent().fromTag(tag.getCompound("TransferComponent"));
+		getRedstoneComponent().fromTag(tag.getCompound("RedstoneComponent"));
+		
+		if (this instanceof EnergyComponentProvider provider)
+			provider.getEnergyComponent().fromTag(tag.getCompound("EnergyComponent"));
+		
+		if (this instanceof FluidComponentProvider provider)
+			provider.getFluidComponent().fromTag(tag.getCompound("FluidComponent"));
+		
+		if (this instanceof ItemComponentProvider provider)
+			provider.getItemComponent().fromTag(tag.getCompound("ItemComponent"));
+		
+		super.fromTag(state, tag);
 	}
 
 	/** Serializes this {@link ComponentBlockEntity} to a {@link CompoundTag},
@@ -297,7 +259,7 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 	public CompoundTag saveClientData(CompoundTag compoundTag) {
 		compoundTag = toTag(compoundTag);
 		if (skipInventory) {
-			compoundTag.remove(AMComponents.ITEM_INVENTORY_COMPONENT.getId().toString());
+			compoundTag.remove("ItemComponent");
 		} else {
 			skipInventory = true;
 		}

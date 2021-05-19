@@ -59,8 +59,8 @@ public class ExplosionUtils {
 		var cr = radius >> 4;
 		var blocks = 0L;
 		
-		for (int cox = -cr; cox <= cr + 1; cox++) {
-			for (int coz = -cr; coz <= cr + 1; coz++) {
+		for (var cox = -cr; cox <= cr + 1; cox++) {
+			for (var coz = -cr; coz <= cr + 1; coz++) {
 				int box = cox * 16, boz = coz * 16;
 				if (touchesOrIsIn(box, 0, boz, box + 15, 255, boz + 15, radius)) {
 					var cx = (x >> 4) + cox;
@@ -114,7 +114,7 @@ public class ExplosionUtils {
 		var destroyed = 0;
 		var sections = chunk.getSectionArray();
 		
-		for (int i = -scr; i <= scr; i++) {
+		for (var i = -scr; i <= scr; i++) {
 			var by = i * 16;
 			var val = i + sc;
 			

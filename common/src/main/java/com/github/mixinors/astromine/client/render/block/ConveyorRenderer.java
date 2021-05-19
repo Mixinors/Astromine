@@ -62,7 +62,7 @@ import java.util.Random;
 public interface ConveyorRenderer<T extends BlockEntity> {
 	default void renderSupport(T blockEntity, ConveyorTypes type, float position, float speed, float horizontalPosition, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider) {
 		PositionalConveyable conveyor = (PositionalConveyable) blockEntity;
-		Direction direction = blockEntity.getCachedState().get(Properties.HORIZONTAL_FACING);
+		var direction = blockEntity.getCachedState().get(Properties.HORIZONTAL_FACING);
 		int rotation = type == ConveyorTypes.DOWN_VERTICAL ? -90 : 90;
 
 		matrixStack.push();
@@ -109,7 +109,7 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 
 	default void renderItem(T blockEntity, ItemStack stack, float position, int speed, float horizontalPosition, ConveyorTypes type, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider) {
 		Random random = new Random();
-		Direction direction = blockEntity.getCachedState().get(Properties.HORIZONTAL_FACING);
+		var direction = blockEntity.getCachedState().get(Properties.HORIZONTAL_FACING);
 		int rotation = type == ConveyorTypes.DOWN_VERTICAL ? -90 : 90;
 		int int_1 = 1;
 		if (stack.getCount() > 48) {
@@ -129,7 +129,7 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 			int light = LightmapTextureManager.pack(blockEntity.getWorld().getLightLevel(LightType.BLOCK, blockEntity.getPos()), blockEntity.getWorld().getLightLevel(LightType.SKY, blockEntity.getPos()));
 			Block block = ((BlockItem) stack.getItem()).getBlock();
 
-			for (int i = 0; i < int_1; i++) {
+			for (var i = 0; i < int_1; i++) {
 				matrixStack.push();
 				matrixStack.translate(0.5F, 4F / 16F, 0.5F);
 				if (direction == Direction.NORTH && rotation == 90) {
@@ -200,7 +200,7 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 				float scale = ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getLeft();
 				matrixStack.scale(scale, scale, scale);
 
-				for (int i = 1; i < int_1; i++) {
+				for (var i = 1; i < int_1; i++) {
 					matrixStack.push();
 					if (ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getRight()) {
 						float x = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
@@ -253,7 +253,7 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 			int light = LightmapTextureManager.pack(blockEntity.getWorld().getLightLevel(LightType.BLOCK, blockEntity.getPos().offset(direction)), blockEntity.getWorld().getLightLevel(LightType.SKY, blockEntity.getPos().offset(direction)));
 			Block block = ((BlockItem) stack.getItem()).getBlock();
 
-			for (int i = 0; i < int_1; i++) {
+			for (var i = 0; i < int_1; i++) {
 				matrixStack.push();
 				matrixStack.translate(0.5F, 4F / 16F, 0.5F);
 				if (direction == Direction.NORTH && rotation == 90) {
@@ -324,7 +324,7 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 				float scale = ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getLeft();
 				matrixStack.scale(scale, scale, scale);
 
-				for (int i = 1; i < int_1; i++) {
+				for (var i = 1; i < int_1; i++) {
 					matrixStack.push();
 					if (ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getRight()) {
 						float x = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;

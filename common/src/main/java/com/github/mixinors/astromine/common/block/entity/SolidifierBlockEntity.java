@@ -37,7 +37,6 @@ import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.SolidifyingRecipe;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
@@ -79,7 +78,7 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 
 	@Override
 	public ItemComponent createItemComponent() {
-		return SimpleDirectionalItemComponent.of(this, 1).withInsertPredicate((direction, stack, slot) -> {
+		return ItemComponent.of(this, 1).withInsertPredicate((direction, stack, slot) -> {
 			return false;
 		}).withExtractPredicate((direction, stack, slot) -> {
 			return slot == 0;
@@ -91,7 +90,7 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 
 	@Override
 	public EnergyComponent createEnergyComponent() {
-		return SimpleEnergyComponent.of(getEnergySize());
+		return EnergyComponent.of(getEnergySize());
 	}
 
 	@Override
@@ -111,14 +110,14 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		ItemComponent itemComponent = getItemComponent();
+		var itemComponent = getItemComponent();
 
 		FluidComponent fluidComponent = getFluidComponent();
 
-		EnergyComponent energyComponent = getEnergyComponent();
+		var energyComponent = getEnergyComponent();
 
 		if (fluidComponent != null) {
-			EnergyVolume energyVolume = energyComponent.getVolume();
+			var energyVolume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
 				optionalRecipe = SolidifyingRecipe.matching(world, itemComponent, fluidComponent);

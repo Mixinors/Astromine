@@ -35,20 +35,20 @@ import java.util.function.Supplier;
  * A {@link FluidComponent} which bases insertion and
  * extraction on a {@link TransferComponent}.
  */
-class SimpleDirectionalFluidComponent extends SimpleFluidComponent {
+public class SimpleDirectionalFluidComponent extends SimpleFluidComponent {
     private TransferComponent transferComponent;
 
     private Supplier<TransferComponent> transferComponentSupplier;
 
     /** Instantiates a {@link SimpleDirectionalFluidComponent}. */
-    protected <V> SimpleDirectionalFluidComponent(V v, int size) {
+    <V> SimpleDirectionalFluidComponent(V v, int size) {
         super(size);
 
         transferComponentSupplier = () -> TransferComponent.get(v);
     }
 
     /** Instantiates a {@link SimpleDirectionalFluidComponent}. */
-    protected  <V> SimpleDirectionalFluidComponent(V v, FluidVolume... volumes) {
+    <V> SimpleDirectionalFluidComponent(V v, FluidVolume... volumes) {
         super(volumes);
 
         transferComponentSupplier = () -> TransferComponent.get(v);

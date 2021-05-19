@@ -86,12 +86,12 @@ public class SplitterBlock extends HorizontalFacingBlock implements BlockEntityP
 
 	@Override
 	public void neighborUpdate(BlockState blockState, World world, BlockPos blockPos, Block block, BlockPos blockPos2, boolean boolean_1) {
-		Direction direction = blockState.get(FACING);
+		var direction = blockState.get(FACING);
 
 		AbstractConveyableBlockEntity machineBlockEntity = (AbstractConveyableBlockEntity) world.getBlockEntity(blockPos);
 
-		BlockPos leftPos = blockPos.offset(direction.rotateYCounterclockwise());
-		BlockPos rightPos = blockPos.offset(direction.rotateYClockwise());
+		var leftPos = blockPos.offset(direction.rotateYCounterclockwise());
+		var rightPos = blockPos.offset(direction.rotateYClockwise());
 
 		BlockEntity leftBlockEntity = world.getBlockEntity(leftPos);
 

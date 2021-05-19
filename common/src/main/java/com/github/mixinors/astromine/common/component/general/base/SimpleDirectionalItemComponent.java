@@ -35,20 +35,20 @@ import java.util.function.Supplier;
  * An {@link ItemComponent} which bases insertion and
  * extraction on a {@link TransferComponent}.
  */
-class SimpleDirectionalItemComponent extends SimpleItemComponent {
+public class SimpleDirectionalItemComponent extends SimpleItemComponent {
     private TransferComponent transferComponent;
 
     private Supplier<TransferComponent> transferComponentSupplier;
 
     /** Instantiates a {@link SimpleDirectionalItemComponent}. */
-    protected <V> SimpleDirectionalItemComponent(V v, int size) {
+    <V> SimpleDirectionalItemComponent(V v, int size) {
         super(size);
 
         transferComponentSupplier = () -> TransferComponent.get(v);
     }
 
     /** Instantiates a {@link SimpleDirectionalItemComponent}. */
-    protected  <V> SimpleDirectionalItemComponent(V v, ItemStack... stacks) {
+    <V> SimpleDirectionalItemComponent(V v, ItemStack... stacks) {
         super(stacks);
 
         transferComponentSupplier = () -> TransferComponent.get(v);

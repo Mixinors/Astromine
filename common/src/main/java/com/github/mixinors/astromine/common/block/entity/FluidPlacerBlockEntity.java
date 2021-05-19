@@ -62,7 +62,7 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 
 	@Override
 	public EnergyComponent createEnergyComponent() {
-		return SimpleEnergyComponent.of(getEnergySize());
+		return EnergyComponent.of(getEnergySize());
 	}
 
 	@Override
@@ -89,10 +89,10 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 
 		FluidComponent fluidComponent = getFluidComponent();
 
-		EnergyComponent energyComponent = getEnergyComponent();
+		var energyComponent = getEnergyComponent();
 
 		if (fluidComponent != null && energyComponent != null) {
-			EnergyVolume energyVolume = energyComponent.getVolume();
+			var energyVolume = energyComponent.getVolume();
 
 			if (energyVolume.getAmount() < getEnergyConsumed()) {
 				cooldown = 0L;
@@ -108,7 +108,7 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 
 					FluidVolume fluidVolume = fluidComponent.getFirst();
 
-					Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
+					var direction = getCachedState().get(HorizontalFacingBlock.FACING);
 
 					BlockPos targetPos = pos.offset(direction);
 

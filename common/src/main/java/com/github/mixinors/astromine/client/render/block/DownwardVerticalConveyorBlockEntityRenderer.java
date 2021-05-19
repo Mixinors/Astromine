@@ -44,12 +44,12 @@ public class DownwardVerticalConveyorBlockEntityRenderer extends BlockEntityRend
 
 	@Override
 	public void render(DownVerticalConveyorBlockEntity blockEntity, float partialTicks, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int i1) {
-		int speed = ((Conveyor) blockEntity.getCachedState().getBlock()).getSpeed();
+		var speed = ((Conveyor) blockEntity.getCachedState().getBlock()).getSpeed();
 		ConveyorTypes type = ((Conveyor) blockEntity.getCachedState().getBlock()).getType();
 		boolean conveyor = blockEntity.getCachedState().get(ConveyorBlock.CONVEYOR);
 		boolean front = blockEntity.getCachedState().get(ConveyorBlock.FRONT);
 
-		Direction direction = blockEntity.getCachedState().get(Properties.HORIZONTAL_FACING);
+		var direction = blockEntity.getCachedState().get(Properties.HORIZONTAL_FACING);
 
 		if (conveyor && blockEntity.isEmpty()) {
 			matrixStack.push();

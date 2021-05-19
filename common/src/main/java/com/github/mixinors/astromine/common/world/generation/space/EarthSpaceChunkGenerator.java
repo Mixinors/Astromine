@@ -101,9 +101,9 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 		var random = new ChunkRandom();
 		random.setPopulationSeed(this.seed, x1, z1);
 
-		for (int x = x1; x <= x2; ++x) {
-			for (int z = z1; z <= z2; ++z) {
-				for (int y = y1; y <= y2; ++y) {
+		for (var x = x1; x <= x2; ++x) {
+			for (var z = z1; z <= z2; ++z) {
+				for (var y = y1; y <= y2; ++y) {
 					var noise = this.noise.sample(x, y, z);
 					noise -= computeNoiseFalloff(y);
 

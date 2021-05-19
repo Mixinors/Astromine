@@ -54,12 +54,12 @@ public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity imple
 
 	@Override
 	public ItemComponent createItemComponent() {
-		return SimpleDirectionalItemComponent.of(this, 1);
+		return ItemComponent.of(this, 1);
 	}
 
 	@Override
 	public EnergyComponent createEnergyComponent() {
-		return SimpleEnergyComponent.of(getEnergySize());
+		return EnergyComponent.of(getEnergySize());
 	}
 
 	@Override
@@ -84,12 +84,12 @@ public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity imple
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		ItemComponent itemComponent = getItemComponent();
+		var itemComponent = getItemComponent();
 
-		EnergyComponent energyComponent = getEnergyComponent();
+		var energyComponent = getEnergyComponent();
 
 		if (itemComponent != null && energyComponent != null) {
-			EnergyVolume energyVolume = energyComponent.getVolume();
+			var energyVolume = energyComponent.getVolume();
 
 			if (energyVolume.getAmount() < getEnergyConsumed()) {
 				cooldown = 0L;
@@ -103,16 +103,16 @@ public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity imple
 				if (cooldown >= getMachineSpeed()) {
 					cooldown = 0L;
 
-					ItemStack stored = itemComponent.getFirst();
+					var stored = itemComponent.getFirst();
 
-					Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
+					var direction = getCachedState().get(HorizontalFacingBlock.FACING);
 
-					BlockPos targetPos = pos.offset(direction);
+					var targetPos = pos.offset(direction);
 
-					BlockState targetState = world.getBlockState(targetPos);
+					var targetState = world.getBlockState(targetPos);
 
-					if (stored.getItem() instanceof BlockItem && targetState.isAir()) {
-						BlockState newState = ((BlockItem) stored.getItem()).getBlock().getDefaultState();
+					if (stored.getItem() instanceof BlockItem storedBlockItem && targetState.isAir()) {
+						var newState = storedBlockItem.getBlock().getDefaultState();
 
 						world.setBlockState(targetPos, newState);
 

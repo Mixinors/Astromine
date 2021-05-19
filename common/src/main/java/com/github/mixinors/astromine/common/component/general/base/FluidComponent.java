@@ -24,12 +24,14 @@
 
 package com.github.mixinors.astromine.common.component.general.base;
 
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
 import com.github.mixinors.astromine.common.component.general.miscellaneous.NamedComponent;
 import com.github.mixinors.astromine.common.component.general.provider.FluidComponentProvider;
 import com.github.mixinors.astromine.common.util.VolumeUtils;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import com.github.mixinors.astromine.mixin.common.BucketItemAccessor;
+import com.github.mixinors.astromine.registry.common.AMComponents;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import me.shedaniel.architectury.utils.NbtType;
 import net.minecraft.fluid.Fluids;
@@ -43,6 +45,7 @@ import net.minecraft.potion.PotionUtil;
 import net.minecraft.potion.Potions;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 
@@ -64,44 +67,44 @@ import static java.lang.Math.min;
  */
 public interface FluidComponent extends Iterable<FluidVolume>, NamedComponent {
 	/** Instantiates a {@link FluidComponent}. */
-	static FluidComponent of(int size) {
+	static SimpleFluidComponent of(int size) {
 		return new SimpleFluidComponent(size);
 	}
 	
 	/** Instantiates a {@link FluidComponent}. */
-	static FluidComponent of(FluidVolume... volumes) {
+	static SimpleFluidComponent of(FluidVolume... volumes) {
 		return new SimpleFluidComponent(volumes);
 	}
 	
 	/** Instantiates a {@link FluidComponent} associated with a {@link TransferComponent} provider. */
-	static <V> FluidComponent of(V v, int size) {
+	static <V> SimpleDirectionalFluidComponent of(V v, int size) {
 		return new SimpleDirectionalFluidComponent(v, size);
 	}
 	
 	/** Instantiates a {@link FluidComponent} associated with a {@link TransferComponent} provider. */
-	public static <V> FluidComponent of(V v, FluidVolume... volumes) {
+	public static <V> SimpleDirectionalFluidComponent of(V v, FluidVolume... volumes) {
 		return new SimpleDirectionalFluidComponent(v, volumes);
 	}
 	
 	/** Instantiates a {@link FluidComponent} with automatic synchronization. */
-	static FluidComponent ofSynced(int size) {
+	static SimpleAutoSyncedFluidComponent ofSynced(int size) {
 		return new SimpleAutoSyncedFluidComponent(size);
 	}
 	
 	/** Instantiates a {@link FluidComponent} with automatic synchronization. */
-	static FluidComponent ofSynced(FluidVolume... volumes) {
+	static SimpleAutoSyncedFluidComponent ofSynced(FluidVolume... volumes) {
 		return new SimpleAutoSyncedFluidComponent(volumes);
 	}
 	
 	/** Instantiates a {@link FluidComponent} associated with a {@link TransferComponent} provider,
 	 *  with automatic synchronization. */
-	static <V> FluidComponent ofSynced(V v, int size) {
+	static <V> SimpleAutoSyncedDirectionalFluidComponent ofSynced(V v, int size) {
 		return new SimpleAutoSyncedDirectionalFluidComponent(v, size);
 	}
 	
 	/** Instantiates a {@link FluidComponent} associated with a {@link TransferComponent} provider,
 	 *  with automatic synchronization. */
-	static <V> FluidComponent ofSynced(V v, FluidVolume... volumes) {
+	static <V> SimpleAutoSyncedDirectionalFluidComponent ofSynced(V v, FluidVolume... volumes) {
 		return new SimpleAutoSyncedDirectionalFluidComponent(v, volumes);
 	}
 
@@ -111,7 +114,7 @@ public interface FluidComponent extends Iterable<FluidVolume>, NamedComponent {
 	}
 
 	/** Returns this component's {@link Text} name. */
-	default Text getName() {
+	default Text getText() {
 		return new TranslatableText("text.astromine.fluid");
 	}
 
@@ -487,5 +490,11 @@ public interface FluidComponent extends Iterable<FluidVolume>, NamedComponent {
 	/** Sets the ninth volume in this component to the specified value. */
 	default void setNinth(FluidVolume volume) {
 		setVolume(8, volume);
+	}
+	
+	/** Returns this component's {@link Identifier}. */
+	@Override
+	default Identifier getId() {
+		return AMComponents.FLUID;
 	}
 }

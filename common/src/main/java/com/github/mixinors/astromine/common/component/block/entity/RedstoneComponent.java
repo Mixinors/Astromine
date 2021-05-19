@@ -26,10 +26,12 @@ package com.github.mixinors.astromine.common.component.block.entity;
 
 import com.github.mixinors.astromine.common.component.Component;
 import com.github.mixinors.astromine.common.component.general.provider.RedstoneComponentProvider;
+import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.block.entity.BlockEntity;
 
 import com.github.mixinors.astromine.common.block.redstone.RedstoneType;
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -77,5 +79,11 @@ public interface RedstoneComponent extends Component {
 		}
 		
 		return null;
+	}
+	
+	/** Returns this component's {@link Identifier}. */
+	@Override
+	default Identifier getId() {
+		return AMComponents.REDSTONE;
 	}
 }

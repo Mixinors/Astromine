@@ -26,8 +26,6 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.base.SimpleDirectionalItemComponent;
-import com.github.mixinors.astromine.common.component.general.base.SimpleEnergyComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
@@ -38,7 +36,6 @@ import com.github.mixinors.astromine.common.volume.energy.InfiniteEnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
@@ -51,7 +48,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 
 	@Override
 	public ItemComponent createItemComponent() {
-		return SimpleDirectionalItemComponent.of(this, 2).withInsertPredicate((direction, stack, slot) -> {
+		return ItemComponent.of(this, 2).withInsertPredicate((direction, stack, slot) -> {
 			return slot == 0;
 		}).withExtractPredicate((direction, stack, slot) -> {
 			return slot == 1;
@@ -60,7 +57,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 
 	@Override
 	public EnergyComponent createEnergyComponent() {
-		return SimpleEnergyComponent.of(getEnergySize());
+		return EnergyComponent.of(getEnergySize());
 	}
 
 	@Override
@@ -70,7 +67,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		ItemComponent itemComponent = getItemComponent();
+		var itemComponent = getItemComponent();
 
 		ItemStack inputStack = itemComponent.getFirst();
 		if (Energy.valid(inputStack)) {
@@ -176,7 +173,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 
 		@Override
 		public EnergyComponent createEnergyComponent() {
-			return SimpleEnergyComponent.of(InfiniteEnergyVolume.of());
+			return EnergyComponent.of(InfiniteEnergyVolume.of());
 		}
 
 		@Override

@@ -26,8 +26,6 @@ package com.github.mixinors.astromine.common.entity;
 
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.base.synced.SimpleAutoSyncedFluidComponent;
-import com.github.mixinors.astromine.common.component.general.base.synced.SimpleAutoSyncedItemComponent;
 import com.github.mixinors.astromine.common.entity.base.RocketEntity;
 import com.github.mixinors.astromine.registry.common.AMDimensions;
 import com.github.mixinors.astromine.registry.common.AMFluids;

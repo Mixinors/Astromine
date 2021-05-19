@@ -258,7 +258,7 @@ public final class ChunkAtmosphereComponent implements Component, ServerTickingC
 
 			Collections.shuffle(directions);
 
-			for (Direction direction : directions) {
+			for (var direction : directions) {
 				BlockPos sidePos = centerPos.offset(direction);
 
 				if (isInChunk(sidePos)) {

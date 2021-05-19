@@ -33,7 +33,6 @@ import com.github.mixinors.astromine.common.widget.blade.TransferTypeSelectorBut
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -52,7 +51,6 @@ import com.github.vini2003.blade.common.widget.base.TabWidget;
 import com.github.vini2003.blade.common.widget.base.TextWidget;
 
 import java.util.*;
-import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 /**
@@ -161,22 +159,22 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 		
 		if (blockEntity instanceof ItemComponentProvider provider) {
 			transferComponent.addItem();
-			tabComponents.put(provider.getItemComponent(), AMComponents.ITEM_INVENTORY_COMPONENT);
+			tabComponents.put(provider.getItemComponent(), AMComponents.ITEM);
 		}
 		
 		if (blockEntity instanceof FluidComponentProvider provider) {
 			transferComponent.addFluid();
-			tabComponents.put(provider.getFluidComponent(), AMComponents.FLUID_INVENTORY_COMPONENT);
+			tabComponents.put(provider.getFluidComponent(), AMComponents.FLUID);
 		}
 		
 		if (blockEntity instanceof EnergyComponentProvider provider) {
 			transferComponent.addEnergy();
-			tabComponents.put(provider.getEnergyComponent(), AMComponents.ENERGY_INVENTORY_COMPONENT);
+			tabComponents.put(provider.getEnergyComponent(), AMComponents.ENERGY);
 		}
 		
 		tabComponents.forEach((tabComponent, id) -> {
 			var symbol = tabComponent.getSymbol();
-			var name = tabComponent.getName();
+			var name = tabComponent.getText();
 			
 			var tab = (TabWidgetCollection) tabs.addTab(symbol, () -> List.of(name));
 			var anchor = Position.of(tabs, tabs.getWidth() / 2.0F - 38.0F, getTabWidgetExtendedHeight() / 2.0F);
@@ -213,7 +211,7 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 			
 			var tabTitle = new TextWidget();
 			tabTitle.setPosition(Position.of(mainTab, 8, 0));
-			tabTitle.setText(tabComponent.getName());
+			tabTitle.setText(tabComponent.getText());
 			tabTitle.setColor(4210752);
 			
 			tab.addWidget(tabTitle);

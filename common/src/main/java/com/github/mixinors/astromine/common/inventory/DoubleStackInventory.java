@@ -62,7 +62,7 @@ public interface DoubleStackInventory extends Inventory {
 	/** Asserts whether this inventory's {@link ItemStack}s are all empty or not. */
 	@Override
 	default boolean isEmpty() {
-		for (int i = 0; i < size(); i++) {
+		for (var i = 0; i < size(); i++) {
 			var stack = getStack(i);
 			
 			if (!stack.isEmpty()) {

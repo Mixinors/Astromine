@@ -86,7 +86,7 @@ public class OpenSimplexNoise extends Noise {
 		seed = seed * 6364136223846793005l + 1442695040888963407l;
 		seed = seed * 6364136223846793005l + 1442695040888963407l;
 		seed = seed * 6364136223846793005l + 1442695040888963407l;
-		for (int i = 255; i >= 0; i--) {
+		for (var i = 255; i >= 0; i--) {
 			seed = seed * 6364136223846793005l + 1442695040888963407l;
 			int r = (int) ((seed + 31) % (i + 1));
 			if (r < 0)

@@ -91,7 +91,7 @@ public class AltarPedestalBlockEntityRenderer extends BlockEntityRenderer<AltarP
 			matrices.translate(r, v, w);
 		}
 
-		for (int u = 0; u < k; ++u) {
+		for (var u = 0; u < k; ++u) {
 			matrices.push();
 			if (u > 0) {
 				if (bl) {

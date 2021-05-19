@@ -31,14 +31,14 @@ import net.minecraft.item.ItemStack;
  * A {@link SimpleItemComponent} that synchronizes itself
  * automatically.
  */
-class SimpleAutoSyncedItemComponent extends SimpleItemComponent implements AutoSyncedComponent {
+public class SimpleAutoSyncedItemComponent extends SimpleItemComponent implements AutoSyncedComponent {
     /** Instantiates a {@link SimpleAutoSyncedItemComponent}. */
-    protected SimpleAutoSyncedItemComponent(int size) {
+    SimpleAutoSyncedItemComponent(int size) {
         super(size);
     }
 
     /** Instantiates a {@link SimpleAutoSyncedItemComponent}. */
-    protected SimpleAutoSyncedItemComponent(ItemStack... stacks) {
+    SimpleAutoSyncedItemComponent(ItemStack... stacks) {
         super(stacks);
     }
 }

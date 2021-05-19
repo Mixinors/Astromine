@@ -63,7 +63,7 @@ public class InfusingCategory implements RecipeCategory<InfusingDisplay> {
 
 		float radius = 50f;
 		float degrees = 360f / display.getInputEntries().size();
-		for (int i = 0; i < display.getInputEntries().size(); i++) {
+		for (var i = 0; i < display.getInputEntries().size(); i++) {
 			List<EntryStack> stacks = display.getInputEntries().get(i);
 			int x = (int) (radius * 1.05f * MathHelper.cos(degrees * i * 0.0174532925F));
 			int y = (int) (radius * MathHelper.sin(degrees * i * 0.0174532925F));

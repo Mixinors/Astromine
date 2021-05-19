@@ -139,7 +139,7 @@ public class AltarRecipe implements Recipe<AltarBlockEntity> {
 		public AltarRecipe read(Identifier identifier, PacketByteBuf buffer) {
 			int size = buffer.readInt();
 			List<Ingredient> inputs = new ArrayList<>(size);
-			for (int i = 0; i < size; i++) {
+			for (var i = 0; i < size; i++) {
 				inputs.add(IngredientUtils.fromIngredientPacket(buffer));
 			}
 			return new AltarRecipe(identifier, inputs, StackUtils.fromPacket(buffer));

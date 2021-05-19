@@ -60,7 +60,7 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 
 	@Override
 	public EnergyComponent createEnergyComponent() {
-		return SimpleEnergyComponent.of(getEnergySize());
+		return EnergyComponent.of(getEnergySize());
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 			if (energyVolume.hasStored(128)) {
 				BlockPos position = getPos();
 
-				Direction direction = world.getBlockState(position).get(FacingBlock.FACING);
+				var direction = world.getBlockState(position).get(FacingBlock.FACING);
 
 				BlockPos output = position.offset(direction);
 

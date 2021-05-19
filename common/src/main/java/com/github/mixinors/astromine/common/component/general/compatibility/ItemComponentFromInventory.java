@@ -71,7 +71,7 @@ public class ItemComponentFromInventory implements ItemComponent {
 	public Map<Integer, ItemStack> getContents() {
 		var contents = new Int2ObjectArrayMap<ItemStack>();
 		
-		for (int i = 0; i < this.inventory.size(); ++i) {
+		for (var i = 0; i < this.inventory.size(); ++i) {
 			contents.put(i, this.inventory.getStack(i));
 		}
 		

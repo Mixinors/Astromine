@@ -31,14 +31,14 @@ import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
  * A {@link SimpleEnergyComponent} that synchronizes itself
  * automatically.
  */
-class SimpleAutoSyncedEnergyComponent extends SimpleEnergyComponent implements AutoSyncedComponent {
+public class SimpleAutoSyncedEnergyComponent extends SimpleEnergyComponent implements AutoSyncedComponent {
     /** Instantiates a {@link SimpleAutoSyncedEnergyComponent}. */
-    protected SimpleAutoSyncedEnergyComponent(double size) {
+    SimpleAutoSyncedEnergyComponent(double size) {
         super(size);
     }
 
     /** Instantiates a {@link SimpleAutoSyncedEnergyComponent}. */
-    protected SimpleAutoSyncedEnergyComponent(EnergyVolume volume) {
+    SimpleAutoSyncedEnergyComponent(EnergyVolume volume) {
         super(volume);
     }
 }

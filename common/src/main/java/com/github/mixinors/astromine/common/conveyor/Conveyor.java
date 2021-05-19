@@ -42,7 +42,7 @@ public interface Conveyor extends ConveyableBlock {
 
 	default void updateDiagonals(World world, Block block, BlockPos pos) {
 		world.updateNeighbors(pos, block);
-		for (Direction direction : Direction.values()) {
+		for (var direction : Direction.values()) {
 			world.updateNeighbor(pos.offset(direction).down(1), block, pos);
 		}
 	}

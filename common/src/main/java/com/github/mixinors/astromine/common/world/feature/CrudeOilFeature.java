@@ -78,10 +78,10 @@ public class CrudeOilFeature extends Feature<DefaultFeatureConfig> {
 
 		var airBlocks = 0;
 
-		for (int y = spawnPos.getY() + offsetY; !world.getBlockState(spawnPos.offset(Direction.UP, y)).isAir() || (world.getBlockState(spawnPos.offset(Direction.UP, y)).isAir() && ++airBlocks < offsetY); ++y) {
+		for (var y = spawnPos.getY() + offsetY; !world.getBlockState(spawnPos.offset(Direction.UP, y)).isAir() || (world.getBlockState(spawnPos.offset(Direction.UP, y)).isAir() && ++airBlocks < offsetY); ++y) {
 			world.setBlockState(spawnPos.offset(Direction.UP, y), CRUDE_OIL_BLOCK.get().getDefaultState(), 0);
 
-			for (Direction direction : new Direction[]{ Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST }) {
+			for (var direction : new Direction[]{ Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST }) {
 				world.removeBlock(spawnPos.offset(Direction.UP, y).offset(direction), false);
 			}
 

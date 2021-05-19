@@ -25,7 +25,6 @@
 package com.github.mixinors.astromine.common.block.entity.base;
 
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.base.SimpleItemComponent;
 import com.github.mixinors.astromine.common.util.StackUtils;
 
 import net.minecraft.block.BlockState;
@@ -61,22 +60,12 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 
 	@Override
 	public ItemComponent createItemComponent() {
-		return new SimpleItemComponent(2) {
-			@Override
-			public ItemStack removeStack(int slot) {
-				leftPosition = 0;
-				rightPosition = 0;
-
-				prevLeftPosition = 0;
-				prevRightPosition = 0;
-
-				return super.removeStack(slot);
-			}
-		}.withListener((inventory) -> {
-			if (world != null && !world.isClient) {
-				sendPacket((ServerWorld) world, toTag(new CompoundTag()));
-			}
-		});
+		return ItemComponent.of(2)
+				.withListener((inventory) -> {
+					if (world != null && !world.isClient) {
+						sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+					}
+				});
 	}
 
 	@Override
@@ -84,16 +73,16 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 		if (world == null || !tickRedstone())
 			return;
 
-		Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
+		var direction = getCachedState().get(HorizontalFacingBlock.FACING);
 
-		int speed = 16;
+		var speed = 16;
 
 		if (!getItemComponent().getFirst().isEmpty()) {
 			if (left) {
-				BlockPos leftPos = getPos().offset(direction.rotateYCounterclockwise());
+				var leftPos = getPos().offset(direction.rotateYCounterclockwise());
 
 				if (getWorld().getBlockEntity(leftPos) instanceof Conveyable) {
-					Conveyable conveyable = (Conveyable) getWorld().getBlockEntity(leftPos);
+					var conveyable = (Conveyable) getWorld().getBlockEntity(leftPos);
 
 					handleLeftMovement(conveyable, speed, true);
 				}
@@ -106,10 +95,10 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 
 		if (!getItemComponent().getSecond().isEmpty()) {
 			if (right) {
-				BlockPos rightPos = getPos().offset(direction.rotateYClockwise());
+				var rightPos = getPos().offset(direction.rotateYClockwise());
 
 				if (getWorld().getBlockEntity(rightPos) instanceof Conveyable) {
-					Conveyable conveyable = (Conveyable) getWorld().getBlockEntity(rightPos);
+					var conveyable = (Conveyable) getWorld().getBlockEntity(rightPos);
 
 					handleRightMovement(conveyable, speed, true);
 				}
@@ -128,7 +117,7 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 			if (leftPosition < speed) {
 				setLeftPosition(getLeftPosition() + 1);
 			} else if (transition) {
-				ItemStack split = getItemComponent().getFirst().copy();
+				var split = getItemComponent().getFirst().copy();
 				split.setCount(Math.min(accepted, split.getCount()));
 
 				getItemComponent().getFirst().decrement(accepted);
@@ -137,7 +126,7 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 				conveyable.give(split);
 			}
 		} else if (conveyable instanceof ConveyorConveyable) {
-			ConveyorConveyable conveyor = (ConveyorConveyable) conveyable;
+			var conveyor = (ConveyorConveyable) conveyable;
 
 			if (leftPosition < speed && leftPosition + 4 < conveyor.getPosition() && conveyor.getPosition() > 4) {
 				setLeftPosition(getLeftPosition() + 1);
@@ -158,7 +147,7 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 			if (rightPosition < speed) {
 				setRightPosition(getRightPosition() + 1);
 			} else if (transition) {
-				ItemStack split = getItemComponent().getSecond().copy();
+				var split = getItemComponent().getSecond().copy();
 				split.setCount(Math.min(accepted, split.getCount()));
 
 				getItemComponent().getSecond().decrement(accepted);
@@ -167,7 +156,7 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 				conveyable.give(split);
 			}
 		} else if (conveyable instanceof ConveyorConveyable) {
-			ConveyorConveyable conveyor = (ConveyorConveyable) conveyable;
+			var conveyor = (ConveyorConveyable) conveyable;
 
 			if (rightPosition < speed && rightPosition + 4 < conveyor.getPosition() && conveyor.getPosition() > 4) {
 				setRightPosition(getRightPosition() + 1);

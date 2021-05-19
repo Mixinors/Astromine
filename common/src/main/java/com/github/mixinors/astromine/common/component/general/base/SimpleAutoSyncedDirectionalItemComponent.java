@@ -9,12 +9,12 @@ import net.minecraft.item.ItemStack;
  */
 public class SimpleAutoSyncedDirectionalItemComponent extends SimpleDirectionalItemComponent implements AutoSyncedComponent {
 	/** Instantiates a {@link SimpleDirectionalItemComponent}. */
-	public <V> SimpleAutoSyncedDirectionalItemComponent(V v, int size) {
+	<V> SimpleAutoSyncedDirectionalItemComponent(V v, int size) {
 		super(v, size);
 	}
 	
 	/** Instantiates a {@link SimpleDirectionalItemComponent}. */
-	public <V> SimpleAutoSyncedDirectionalItemComponent(V v, ItemStack... stacks) {
+	<V> SimpleAutoSyncedDirectionalItemComponent(V v, ItemStack... stacks) {
 		super(v, stacks);
 	}
 }

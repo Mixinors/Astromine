@@ -62,7 +62,7 @@ public class DownwardVerticalConveyorBlock extends VerticalConveyorBlock {
 
 	@Override
 	public BlockState getStateForNeighborUpdate(BlockState state, Direction fromDirection, BlockState fromState, WorldAccess world, BlockPos blockPos, BlockPos fromPos) {
-		Direction direction = state.get(FACING);
+		var direction = state.get(FACING);
 
 		BlockPos frontPos = blockPos.offset(direction.getOpposite());
 		BlockPos conveyorPos = blockPos.offset(direction).up();
@@ -88,7 +88,7 @@ public class DownwardVerticalConveyorBlock extends VerticalConveyorBlock {
 
 	@Override
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
-		Direction direction = state.get(FACING);
+		var direction = state.get(FACING);
 		ConveyorBlockEntity blockEntity = (ConveyorBlockEntity) world.getBlockEntity(pos);
 
 		BlockPos downPos = pos.down(1);

@@ -42,8 +42,8 @@ public class AbstractConveyableBlockEntityRenderer extends BlockEntityRenderer<A
 
 	@Override
 	public void render(AbstractConveyableBlockEntity blockEntity, float partialTicks, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int i1) {
-		int speed = 16;
-		Direction direction = blockEntity.getCachedState().get(HorizontalFacingBlock.FACING);
+		var speed = 16;
+		var direction = blockEntity.getCachedState().get(HorizontalFacingBlock.FACING);
 
 		if (!blockEntity.getWorld().getBlockState(blockEntity.getPos()).isAir()) {
 			if (!blockEntity.getItemComponent().getFirst().isEmpty()) {

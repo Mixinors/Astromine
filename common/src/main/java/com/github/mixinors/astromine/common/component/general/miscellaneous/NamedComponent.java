@@ -39,5 +39,5 @@ public interface NamedComponent extends Component {
 	Item getSymbol();
 
 	/** Returns this component's {@link Text} name. */
-	Text getName();
+	Text getText();
 }

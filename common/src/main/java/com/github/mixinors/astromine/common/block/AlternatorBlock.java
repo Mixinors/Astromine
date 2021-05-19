@@ -87,12 +87,12 @@ public class AlternatorBlock extends HorizontalFacingBlock implements BlockEntit
 
 	@Override
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
-		Direction direction = state.get(FACING);
+		var direction = state.get(FACING);
 
 		AbstractConveyableBlockEntity machineBlockEntity = (AbstractConveyableBlockEntity) world.getBlockEntity(pos);
 
-		BlockPos leftPos = pos.offset(direction.rotateYCounterclockwise());
-		BlockPos rightPos = pos.offset(direction.rotateYClockwise());
+		var leftPos = pos.offset(direction.rotateYCounterclockwise());
+		var rightPos = pos.offset(direction.rotateYClockwise());
 
 		BlockEntity leftBlockEntity = world.getBlockEntity(leftPos);
 

@@ -62,7 +62,7 @@ public class AMCallbacks {
 
 				Collections.shuffle(directions);
 
-				for (Direction direction : directions) {
+				for (var direction : directions) {
 					BlockPos sidePos = pos.offset(direction);
 					BlockState sideState = world.getBlockState(sidePos);
 
@@ -111,8 +111,8 @@ public class AMCallbacks {
 		}));
 
 		TransferEntryEvents.EVENT.register((entry) -> {
-			if (entry.getComponentKey() == AMComponents.ENERGY_INVENTORY_COMPONENT) {
-				for (Direction direction : Direction.values()) {
+			if (entry.getComponentKey() == AMComponents.ENERGY) {
+				for (var direction : Direction.values()) {
 					entry.set(direction, TransferType.INPUT_OUTPUT);
 				}
 			}

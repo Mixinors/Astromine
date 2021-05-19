@@ -188,7 +188,7 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 	 * need to set random velocities on the new slimes.
 	 */
 	public void explode() {
-		for (int i = 0; i < 50; i++) {
+		for (var i = 0; i < 50; i++) {
 			var spaceSlime = AMEntityTypes.SPACE_SLIME.get().create(this.world);
 			spaceSlime.initialize((ServerWorldAccess) this.world, this.world.getLocalDifficulty(this.getBlockPos()), SpawnReason.NATURAL, null, null);
 			this.world.spawnEntity(spaceSlime);

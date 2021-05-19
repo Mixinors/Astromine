@@ -30,10 +30,8 @@ import com.github.mixinors.astromine.common.component.general.base.ItemComponent
 import com.github.mixinors.astromine.common.component.general.provider.EnergyComponentProvider;
 import com.github.mixinors.astromine.common.component.general.provider.FluidComponentProvider;
 import com.github.mixinors.astromine.common.component.general.provider.ItemComponentProvider;
-import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.minecraft.block.entity.BlockEntityType;
 
-import com.github.mixinors.astromine.common.util.capability.energy.EnergyStorageEnergyComponentProvider;
 import com.github.mixinors.astromine.common.util.capability.inventory.InventoryItemComponentProvider;
 
 import java.util.function.Supplier;
@@ -43,7 +41,7 @@ import java.util.function.Supplier;
  * {@link EnergyComponent}, {@link FluidComponent}
  * and {@link ItemComponent}.
  */
-public abstract class ComponentEnergyFluidItemBlockEntity extends ComponentBlockEntity implements EnergyStorageEnergyComponentProvider, InventoryItemComponentProvider, EnergyComponentProvider, FluidComponentProvider, ItemComponentProvider {
+public abstract class ComponentEnergyFluidItemBlockEntity extends ComponentBlockEntity implements InventoryItemComponentProvider, EnergyComponentProvider, FluidComponentProvider, ItemComponentProvider {
 	private final EnergyComponent energyComponent = createEnergyComponent();
 
 	private final FluidComponent fluidComponent = createFluidComponent();
@@ -54,13 +52,8 @@ public abstract class ComponentEnergyFluidItemBlockEntity extends ComponentBlock
 	public ComponentEnergyFluidItemBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 
-		addComponent(AMComponents.ENERGY_INVENTORY_COMPONENT, getEnergyComponent());
 		getEnergyComponent().updateListeners();
-
-		addComponent(AMComponents.FLUID_INVENTORY_COMPONENT, getFluidComponent());
 		getFluidComponent().updateListeners();
-		
-		addComponent(AMComponents.ITEM_INVENTORY_COMPONENT, getItemComponent());
 		getItemComponent().updateListeners();
 	}
 

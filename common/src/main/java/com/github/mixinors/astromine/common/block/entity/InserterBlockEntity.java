@@ -97,7 +97,7 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityExten
 
 		boolean powered = getCachedState().get(Properties.POWERED);
 
-		int speed = ((InserterBlock) getCachedState().getBlock()).getSpeed();
+		var speed = ((InserterBlock) getCachedState().getBlock()).getSpeed();
 
 		if (!powered) {
 			if (getItemComponent().isEmpty()) {

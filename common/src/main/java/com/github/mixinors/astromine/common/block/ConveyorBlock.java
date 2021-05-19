@@ -118,7 +118,7 @@ public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityP
 			return;
 		}
 
-		Direction direction = state.get(FACING);
+		var direction = state.get(FACING);
 
 		if (entity instanceof ItemEntity && pos.equals(pos) && world.getBlockEntity(pos) instanceof ConveyorBlockEntity) {
 			ConveyorBlockEntity blockEntity = (ConveyorBlockEntity) world.getBlockEntity(pos);
@@ -160,14 +160,14 @@ public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityP
 
 	@Override
 	public BlockState getStateForNeighborUpdate(BlockState state, Direction fromDirection, BlockState fromState, WorldAccess world, BlockPos blockPos, BlockPos fromPos) {
-		Direction direction = state.get(FACING);
+		var direction = state.get(FACING);
 
 		boolean setBack = false;
 
 		boolean backExists = false;
 
-		BlockPos leftPos = blockPos.offset(direction.rotateYCounterclockwise());
-		BlockPos rightPos = blockPos.offset(direction.rotateYClockwise());
+		var leftPos = blockPos.offset(direction.rotateYCounterclockwise());
+		var rightPos = blockPos.offset(direction.rotateYClockwise());
 		BlockPos backPos = blockPos.offset(direction.getOpposite());
 		BlockPos upPos = blockPos.up();
 
@@ -244,7 +244,7 @@ public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityP
 
 	@Override
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
-		Direction direction = state.get(FACING);
+		var direction = state.get(FACING);
 
 		ConveyorBlockEntity conveyorBlockEntity = (ConveyorBlockEntity) world.getBlockEntity(pos);
 

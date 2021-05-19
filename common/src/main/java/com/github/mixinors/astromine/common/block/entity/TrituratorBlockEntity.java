@@ -37,7 +37,6 @@ import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.TrituratingRecipe;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
@@ -59,7 +58,7 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 
 	@Override
 	public ItemComponent createItemComponent() {
-		return SimpleDirectionalItemComponent.of(this, 2).withInsertPredicate((direction, stack, slot) -> {
+		return ItemComponent.of(this, 2).withInsertPredicate((direction, stack, slot) -> {
 			if (slot != 1) {
 				return false;
 			}
@@ -68,7 +67,7 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 				return false;
 			}
 
-			return TrituratingRecipe.allows(world, SimpleItemComponent.of(stack));
+			return TrituratingRecipe.allows(world, ItemComponent.of(stack));
 		}).withExtractPredicate(((direction, stack, slot) -> {
 			return slot == 0;
 		})).withListener((inventory) -> {
@@ -79,7 +78,7 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 
 	@Override
 	public EnergyComponent createEnergyComponent() {
-		return SimpleEnergyComponent.of(getEnergySize());
+		return EnergyComponent.of(getEnergySize());
 	}
 
 	@Override
@@ -99,12 +98,12 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		ItemComponent itemComponent = getItemComponent();
+		var itemComponent = getItemComponent();
 
-		EnergyComponent energyComponent = getEnergyComponent();
+		var energyComponent = getEnergyComponent();
 
 		if (itemComponent != null && energyComponent != null) {
-			EnergyVolume energyVolume = energyComponent.getVolume();
+			var energyVolume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
 				optionalRecipe = TrituratingRecipe.matching(world, itemComponent);

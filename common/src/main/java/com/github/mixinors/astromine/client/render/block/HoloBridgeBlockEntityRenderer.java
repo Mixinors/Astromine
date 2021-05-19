@@ -56,7 +56,7 @@ public class HoloBridgeBlockEntityRenderer extends BlockEntityRenderer<HoloBridg
 		if (entity.hasChild()) {
 			Vec3i pA = entity.getPos();
 
-			Direction direction = state.get(HorizontalFacingBlock.FACING);
+			var direction = state.get(HorizontalFacingBlock.FACING);
 
 			int offsetX = direction == Direction.NORTH ? 1 : 0;
 			int offsetZ = direction == Direction.WEST ? 1 : 0;

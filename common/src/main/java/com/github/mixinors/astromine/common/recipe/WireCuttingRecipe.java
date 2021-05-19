@@ -61,7 +61,7 @@ public class WireCuttingRecipe extends SpecialCraftingRecipe {
 		int inputCount = 0;
 		int shearsCount = 0;
 
-		for (int k = 0; k < inv.size(); ++k) {
+		for (var k = 0; k < inv.size(); ++k) {
 			ItemStack itemStack = inv.getStack(k);
 			if (!itemStack.isEmpty()) {
 				if (this.input.test(itemStack)) {

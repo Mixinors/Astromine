@@ -163,7 +163,7 @@ public class BaseInventory implements Inventory, RecipeInputProvider {
 	/** Clear this inventory's contents. */
 	@Override
 	public void clear() {
-		for (int slot = 0; slot < size; ++slot) {
+		for (var slot = 0; slot < size; ++slot) {
 			setStack(slot, ItemStack.EMPTY);
 		}
 

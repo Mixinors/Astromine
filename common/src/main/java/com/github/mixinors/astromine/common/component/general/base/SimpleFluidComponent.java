@@ -38,7 +38,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-class SimpleFluidComponent implements FluidComponent {
+public class SimpleFluidComponent implements FluidComponent {
 	private final Int2ObjectOpenHashMap<FluidVolume> contents = new Int2ObjectOpenHashMap<>();
 
 	private final int size;
@@ -48,13 +48,12 @@ class SimpleFluidComponent implements FluidComponent {
 	private TriPredicate<@Nullable Direction, FluidVolume, Integer> insertPredicate = (direction, volume, slot) -> true;
 
 	private TriPredicate<@Nullable Direction, FluidVolume, Integer> extractPredicate = (direction, volume, integer) -> true;
-
-
+	
 	/** Instantiates a {@link SimpleFluidComponent}. */
-	protected SimpleFluidComponent(int size) {
+	SimpleFluidComponent(int size) {
 		this.size = size;
 
-		for (int i = 0; i < size; ++i) {
+		for (var i = 0; i < size; ++i) {
 			setVolume(i, FluidVolume.ofEmpty(this::updateListeners));
 		}
 
@@ -62,10 +61,10 @@ class SimpleFluidComponent implements FluidComponent {
 	}
 
 	/** Instantiates a {@link SimpleFluidComponent}. */
-	protected SimpleFluidComponent(FluidVolume... volumes) {
+	SimpleFluidComponent(FluidVolume... volumes) {
 		this(volumes.length);
 
-		for (int i = 0; i < volumes.length; ++i) {
+		for (var i = 0; i < volumes.length; ++i) {
 			setVolume(i, volumes[i]);
 		}
 	}

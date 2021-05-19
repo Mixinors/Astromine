@@ -37,7 +37,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-class SimpleItemComponent implements ItemComponent {
+public class SimpleItemComponent implements ItemComponent {
 	private final Int2ObjectOpenHashMap<ItemStack> contents = new Int2ObjectOpenHashMap<>();
 
 	private final int size;
@@ -50,10 +50,10 @@ class SimpleItemComponent implements ItemComponent {
 
 
 	/** Instantiates a {@link SimpleItemComponent}. */
-	protected SimpleItemComponent(int size) {
+	SimpleItemComponent(int size) {
 		this.size = size;
 
-		for (int i = 0; i < size; ++i) {
+		for (var i = 0; i < size; ++i) {
 			contents.put(i, ItemStack.EMPTY);
 		}
 
@@ -61,10 +61,10 @@ class SimpleItemComponent implements ItemComponent {
 	}
 
 	/** Instantiates a {@link SimpleItemComponent}. */
-	protected SimpleItemComponent(ItemStack... stacks) {
+	SimpleItemComponent(ItemStack... stacks) {
 		this(stacks.length);
 
-		for (int i = 0; i < stacks.length; ++i) {
+		for (var i = 0; i < stacks.length; ++i) {
 			setStack(i, stacks[i]);
 		}
 	}

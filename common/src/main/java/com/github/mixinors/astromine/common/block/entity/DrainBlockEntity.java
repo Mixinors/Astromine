@@ -39,8 +39,8 @@ public class DrainBlockEntity extends ComponentFluidBlockEntity implements Ticka
 	public DrainBlockEntity() {
 		super(AMBlockEntityTypes.DRAIN);
 
-		for (Direction direction : Direction.values()) {
-			getTransferComponent().get(AMComponents.FLUID_INVENTORY_COMPONENT).set(direction, TransferType.INPUT);
+		for (var direction : Direction.values()) {
+			getTransferComponent().get(AMComponents.FLUID).set(direction, TransferType.INPUT);
 		}
 	}
 

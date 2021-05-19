@@ -1,9 +1,9 @@
 package com.github.mixinors.astromine.common.component.block.entity;
 
 public class SimpleTransferComponent implements TransferComponent {
-	private TransferEntry itemComponentTransferEntry = new TransferEntry();
-	private TransferEntry fluidComponentTransferEntry = new TransferEntry();
-	private TransferEntry energyComponentTransferEntry = new TransferEntry();
+	private TransferEntry itemComponentTransferEntry = TransferEntry.NONE;
+	private TransferEntry fluidComponentTransferEntry = TransferEntry.NONE;
+	private TransferEntry energyComponentTransferEntry = TransferEntry.NONE;
 	
 	@Override
 	public TransferEntry getItemEntry() {
@@ -37,16 +37,16 @@ public class SimpleTransferComponent implements TransferComponent {
 	
 	@Override
 	public boolean hasItem() {
-		return itemComponentTransferEntry != null;
+		return itemComponentTransferEntry != TransferEntry.NONE;
 	}
 	
 	@Override
 	public boolean hasFluid() {
-		return fluidComponentTransferEntry != null;
+		return fluidComponentTransferEntry != TransferEntry.NONE;
 	}
 	
 	@Override
 	public boolean hasEnergy() {
-		return energyComponentTransferEntry != null;
+		return energyComponentTransferEntry != TransferEntry.NONE;
 	}
 }
