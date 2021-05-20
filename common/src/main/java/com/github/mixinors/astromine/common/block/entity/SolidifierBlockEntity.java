@@ -31,7 +31,6 @@ import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyFluidItemBlockEntity;
 import com.github.mixinors.astromine.common.util.StackUtils;
-import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvider;
@@ -40,17 +39,18 @@ import com.github.mixinors.astromine.common.recipe.SolidifyingRecipe;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.world.ServerWorld;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBlockEntity implements TierProvider, EnergySizeProvider, FluidSizeProvider, SpeedProvider {
-	public double progress = 0;
-	public int limit = 100;
-	public boolean shouldTry = true;
+public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBlockEntity implements EnergySizeProvider, FluidSizeProvider, SpeedProvider {
+	private double progress = 0;
+	private int limit = 100;
+	private boolean shouldTry = true;
 
-	private Optional<SolidifyingRecipe> optionalRecipe = Optional.empty();
+	private Optional<SolidifyingRecipe> recipe = Optional.empty();
 
 	public SolidifierBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
@@ -58,21 +58,21 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 
 	@Override
 	public FluidComponent createFluidComponent() {
-		FluidComponent fluidComponent = SimpleDirectionalFluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
+		return FluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
 			if (slot != 0) {
 				return false;
 			}
-
+			
+			if (!transfer.getFluid(direction).canInsert()) {
+				return false;
+			}
+			
 			if (!volume.test(getFluidComponent().getFirst())) {
 				return false;
 			}
 
 			return SolidifyingRecipe.allows(world, FluidComponent.of(volume));
-		});
-
-		fluidComponent.getFirst().setSize(getFluidSize());
-
-		return fluidComponent;
+		}).withSizes(getFluidSize());
 	}
 
 	@Override
@@ -80,10 +80,14 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 		return ItemComponent.of(this, 1).withInsertPredicate((direction, stack, slot) -> {
 			return false;
 		}).withExtractPredicate((direction, stack, slot) -> {
+			if (!transfer.getItem(direction).canExtract()) {
+				return false;
+			}
+			
 			return slot == 0;
 		}).withListener((inventory) -> {
 			shouldTry = true;
-			optionalRecipe = Optional.empty();
+			recipe = Optional.empty();
 		});
 	}
 
@@ -105,72 +109,72 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 	@Override
 	public void tick() {
 		super.tick();
-
-		if (world == null || world.isClient || !tickRedstone())
+		
+		if (!(world instanceof ServerWorld) || !tickRedstone())
 			return;
+		
+		if (recipe.isEmpty() && shouldTry) {
+			recipe = SolidifyingRecipe.matching(world, items, fluids);
+			shouldTry = false;
 
-		var itemComponent = getItemComponent();
-
-		FluidComponent fluidComponent = getFluidComponent();
-
-		var energyComponent = getEnergyComponent();
-
-		if (fluidComponent != null) {
-			var energyVolume = energyComponent.getVolume();
-
-			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = SolidifyingRecipe.matching(world, itemComponent, fluidComponent);
-				shouldTry = false;
-
-				if (!optionalRecipe.isPresent()) {
-					progress = 0;
-					limit = 100;
-				}
+			if (recipe.isEmpty()) {
+				progress = 0;
+				limit = 100;
 			}
+		}
+		
+		if (recipe.isPresent()) {
+			var recipe = this.recipe.get();
 
-			if (optionalRecipe.isPresent()) {
-				SolidifyingRecipe recipe = optionalRecipe.get();
+			limit = recipe.getTime();
 
-				limit = recipe.getTime();
+			var speed = Math.min(getMachineSpeed(), limit - progress);
+			var consumed = recipe.getEnergyInput() * speed / limit;
 
-				double speed = Math.min(getMachineSpeed(), limit - progress);
-				double consumed = recipe.getEnergyInput() * speed / limit;
+			if (energy.hasStored(consumed)) {
+				energy.take(consumed);
 
-				if (energyVolume.hasStored(consumed)) {
-					energyVolume.take(consumed);
+				if (progress + speed >= limit) {
+					this.recipe = Optional.empty();
 
-					if (progress + speed >= limit) {
-						optionalRecipe = Optional.empty();
+					var firstFluid = fluids.getFirst();
+					var firstStack = items.getFirst();
+					
+					var firstInput = recipe.getFirstInput();
+					var firstOutput = recipe.getFirstOutput();
+					
+					firstFluid.take(firstInput.testMatching(firstFluid).getAmount());
+					items.setFirst(StackUtils.into(firstStack, firstOutput));
 
-						fluidComponent.getFirst().take(recipe.getFirstInput().testMatching(fluidComponent.getFirst()).getAmount());
-						itemComponent.setFirst(StackUtils.into(itemComponent.getFirst(), recipe.getFirstOutput()));
-
-						progress = 0;
-					} else {
-						progress += speed;
-					}
-
-					tickActive();
+					progress = 0;
 				} else {
-					tickInactive();
+					progress += speed;
 				}
+
+				tickActive();
 			} else {
 				tickInactive();
 			}
+		} else {
+			tickInactive();
 		}
 	}
 	
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.putDouble("progress", progress);
-		tag.putInt("limit", limit);
+		tag.putDouble("Progress", progress);
+		tag.putInt("Limit", limit);
+		
 		return super.toTag(tag);
 	}
 	
 	@Override
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		progress = tag.getDouble("progress");
-		limit = tag.getInt("limit");
+		progress = tag.getDouble("Progress");
+		limit = tag.getInt("Limit");
+		
+		shouldTry = true;
+		
 		super.fromTag(state, tag);
 	}
 	
@@ -193,11 +197,6 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 		public long getFluidSize() {
 			return AMConfig.get().primitiveSolidifierFluid;
 		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.PRIMITIVE;
-		}
 	}
 
 	public static class Basic extends SolidifierBlockEntity {
@@ -218,11 +217,6 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 		@Override
 		public long getFluidSize() {
 			return AMConfig.get().basicSolidifierFluid;
-		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.BASIC;
 		}
 	}
 
@@ -245,11 +239,6 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 		public long getFluidSize() {
 			return AMConfig.get().advancedSolidifierFluid;
 		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.ADVANCED;
-		}
 	}
 
 	public static class Elite extends SolidifierBlockEntity {
@@ -270,11 +259,6 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 		@Override
 		public long getFluidSize() {
 			return AMConfig.get().eliteSolidifierFluid;
-		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.ELITE;
 		}
 	}
 }

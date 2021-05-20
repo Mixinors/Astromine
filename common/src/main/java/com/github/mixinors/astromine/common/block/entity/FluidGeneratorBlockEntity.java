@@ -44,9 +44,9 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBlockEntity implements EnergySizeProvider, SpeedProvider, FluidSizeProvider {
-	public double progress = 0;
-	public int limit = 100;
-	public boolean shouldTry;
+	private double progress = 0;
+	private int limit = 100;
+	private boolean shouldTry;
 
 	private Optional<FluidGeneratingRecipe> recipe = Optional.empty();
 

@@ -31,7 +31,6 @@ import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyFluidItemBlockEntity;
 import com.github.mixinors.astromine.common.util.StackUtils;
-import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvider;
@@ -40,17 +39,18 @@ import com.github.mixinors.astromine.common.recipe.MeltingRecipe;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.world.ServerWorld;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEntity implements TierProvider, EnergySizeProvider, FluidSizeProvider, SpeedProvider {
-	public double progress = 0;
-	public int limit = 100;
-	public boolean shouldTry = true;
+public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEntity implements EnergySizeProvider, FluidSizeProvider, SpeedProvider {
+	private double progress = 0;
+	private int limit = 100;
+	private boolean shouldTry = true;
 
-	private Optional<MeltingRecipe> optionalRecipe = Optional.empty();
+	private Optional<MeltingRecipe> recipe = Optional.empty();
 
 	public MelterBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
@@ -58,20 +58,25 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 
 	@Override
 	public FluidComponent createFluidComponent() {
-		FluidComponent fluidComponent = SimpleDirectionalFluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
+		return FluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
 			return false;
 		}).withExtractPredicate((direction, volume, slot) -> {
+			if (!transfer.getFluid(direction).canExtract()) {
+				return false;
+			}
+			
 			return slot == 0;
-		});
-
-		fluidComponent.getFirst().setSize(getFluidSize());
-		return fluidComponent;
+		}).withSizes(getFluidSize());
 	}
 
 	@Override
 	public ItemComponent createItemComponent() {
 		return ItemComponent.of(this, 1).withInsertPredicate((direction, stack, slot) -> {
 			if (slot != 0) {
+				return false;
+			}
+			
+			if (!transfer.getItem(direction).canInsert()) {
 				return false;
 			}
 
@@ -81,10 +86,14 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 
 			return MeltingRecipe.allows(world, ItemComponent.of(stack));
 		}).withExtractPredicate((direction, stack, slot) -> {
+			if (!transfer.getItem(direction).canExtract()) {
+				return false;
+			}
+			
 			return false;
 		}).withListener((inventory) -> {
 			shouldTry = true;
-			optionalRecipe = Optional.empty();
+			recipe = Optional.empty();
 		});
 	}
 
@@ -106,74 +115,74 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 	@Override
 	public void tick() {
 		super.tick();
-
-		if (world == null || world.isClient || !tickRedstone())
+		
+		if (!(world instanceof ServerWorld) || !tickRedstone())
 			return;
+		
+		if (recipe.isEmpty() && shouldTry) {
+			recipe = MeltingRecipe.matching(world, items, fluids);
+			shouldTry = false;
 
-		var itemComponent = getItemComponent();
-
-		FluidComponent fluidComponent = getFluidComponent();
-
-		var energyComponent = getEnergyComponent();
-
-		if (itemComponent != null && fluidComponent != null && energyComponent != null) {
-			var energyVolume = energyComponent.getVolume();
-
-			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = MeltingRecipe.matching(world, itemComponent, fluidComponent);
-				shouldTry = false;
-
-				if (!optionalRecipe.isPresent()) {
-					progress = 0;
-					limit = 100;
-				}
+			if (recipe.isEmpty()) {
+				progress = 0;
+				limit = 100;
 			}
+		}
+		
+		if (recipe.isPresent()) {
+			var recipe = this.recipe.get();
 
-			if (optionalRecipe.isPresent()) {
-				MeltingRecipe recipe = optionalRecipe.get();
+			limit = recipe.getTime();
 
-				limit = recipe.getTime();
+			var speed = Math.min(getMachineSpeed(), limit - progress);
+			var consumed = recipe.getEnergyInput() * speed / limit;
 
-				double speed = Math.min(getMachineSpeed(), limit - progress);
-				double consumed = recipe.getEnergyInput() * speed / limit;
+			if (energy.hasStored(consumed)) {
+				energy.take(consumed);
 
-				if (energyVolume.hasStored(consumed)) {
-					energyVolume.take(consumed);
+				if (progress + speed >= limit) {
+					this.recipe = Optional.empty();
+					
+					var firstFluid = fluids.getFirst();
+					var firstStack = items.getFirst();
+					
+					var firstInput = recipe.getFirstInput();
+					var firstOutput = recipe.getFirstOutput();
 
-					if (progress + speed >= limit) {
-						optionalRecipe = Optional.empty();
+					firstFluid.take(firstOutput);
+					firstStack.decrement(firstInput.testMatching(firstStack).getCount());
+					
+					items.updateListeners();
 
-						fluidComponent.getFirst().take(recipe.getFirstOutput());
-						itemComponent.getFirst().decrement(recipe.getFirstInput().testMatching(itemComponent.getFirst()).getCount());
-						
-						itemComponent.updateListeners();
-
-						progress = 0;
-					} else {
-						progress += speed;
-					}
-
-					tickActive();
+					progress = 0;
 				} else {
-					tickInactive();
+					progress += speed;
 				}
+
+				tickActive();
 			} else {
 				tickInactive();
 			}
+		} else {
+			tickInactive();
 		}
 	}
 	
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.putDouble("progress", progress);
-		tag.putInt("limit", limit);
+		tag.putDouble("Progress", progress);
+		tag.putInt("Limit", limit);
+		
 		return super.toTag(tag);
 	}
 	
 	@Override
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		progress = tag.getDouble("progress");
-		limit = tag.getInt("limit");
+		progress = tag.getDouble("Progress");
+		limit = tag.getInt("Limit");
+		
+		shouldTry = true;
+		
 		super.fromTag(state, tag);
 	}
 
@@ -196,11 +205,6 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 		public long getFluidSize() {
 			return AMConfig.get().primitiveMelterFluid;
 		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.PRIMITIVE;
-		}
 	}
 
 	public static class Basic extends MelterBlockEntity {
@@ -221,11 +225,6 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 		@Override
 		public long getFluidSize() {
 			return AMConfig.get().basicMelterFluid;
-		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.BASIC;
 		}
 	}
 
@@ -248,11 +247,6 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 		public long getFluidSize() {
 			return AMConfig.get().advancedMelterFluid;
 		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.ADVANCED;
-		}
 	}
 
 	public static class Elite extends MelterBlockEntity {
@@ -273,11 +267,6 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 		@Override
 		public long getFluidSize() {
 			return AMConfig.get().eliteMelterFluid;
-		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.ELITE;
 		}
 	}
 }

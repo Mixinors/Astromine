@@ -173,7 +173,7 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 		return identifier;
 	}
 
-	public FluidIngredient getIngredient() {
+	public FluidIngredient getFirstInput() {
 		return input;
 	}
 

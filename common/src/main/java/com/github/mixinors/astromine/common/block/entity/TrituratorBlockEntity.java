@@ -32,24 +32,24 @@ import net.minecraft.nbt.CompoundTag;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
 import com.github.mixinors.astromine.common.util.StackUtils;
-import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.recipe.TrituratingRecipe;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
+import net.minecraft.server.world.ServerWorld;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
-	public double progress = 0;
-	public int limit = 100;
-	public boolean shouldTry = true;
-
-	Optional<TrituratingRecipe> optionalRecipe = Optional.empty();
+public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, SpeedProvider {
+	private double progress = 0;
+	private int limit = 100;
+	private boolean shouldTry = true;
+	
+	private Optional<TrituratingRecipe> recipe = Optional.empty();
 
 	public TrituratorBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
@@ -61,6 +61,10 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 			if (slot != 1) {
 				return false;
 			}
+			
+			if (!transfer.getItem(direction).canInsert()) {
+				return false;
+			}
 
 			if (!StackUtils.test(stack, getItemComponent().getSecond())) {
 				return false;
@@ -68,10 +72,14 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 
 			return TrituratingRecipe.allows(world, ItemComponent.of(stack));
 		}).withExtractPredicate(((direction, stack, slot) -> {
+			if (!transfer.getItem(direction).canExtract()) {
+				return false;
+			}
+			
 			return slot == 0;
 		})).withListener((inventory) -> {
 			shouldTry = true;
-			optionalRecipe = Optional.empty();
+			recipe = Optional.empty();
 		});
 	}
 
@@ -93,70 +101,72 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 	@Override
 	public void tick() {
 		super.tick();
-
-		if (world == null || world.isClient || !tickRedstone())
+		
+		if (!(world instanceof ServerWorld) || !tickRedstone())
 			return;
 
-		var itemComponent = getItemComponent();
+		if (recipe.isEmpty() && shouldTry) {
+			recipe = TrituratingRecipe.matching(world, items);
+			shouldTry = false;
 
-		var energyComponent = getEnergyComponent();
-
-		if (itemComponent != null && energyComponent != null) {
-			var energyVolume = energyComponent.getVolume();
-
-			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = TrituratingRecipe.matching(world, itemComponent);
-				shouldTry = false;
-
-				if (!optionalRecipe.isPresent()) {
-					progress = 0;
-					limit = 100;
-				}
+			if (recipe.isEmpty()) {
+				progress = 0;
+				limit = 100;
 			}
+		}
 
-			if (optionalRecipe.isPresent()) {
-				TrituratingRecipe recipe = optionalRecipe.get();
+		if (recipe.isPresent()) {
+			var recipe = this.recipe.get();
 
-				limit = recipe.getTime();
+			limit = recipe.getTime();
 
-				double speed = Math.min(getMachineSpeed(), limit - progress);
-				double consumed = recipe.getEnergyInput() * speed / limit;
+			var speed = Math.min(getMachineSpeed(), limit - progress);
+			var consumed = recipe.getEnergyInput() * speed / limit;
 
-				if (energyVolume.hasStored(consumed)) {
-					energyVolume.take(consumed);
+			if (energy.hasStored(consumed)) {
+				energy.take(consumed);
 
-					if (progress + speed >= limit) {
-						optionalRecipe = Optional.empty();
+				if (progress + speed >= limit) {
+					this.recipe = Optional.empty();
+					
+					var first = items.getFirst();
+					var second = items.getSecond();
 
-						itemComponent.getSecond().decrement(recipe.getFirstInput().testMatching(itemComponent.getSecond()).getCount());
-						itemComponent.setFirst(StackUtils.into(itemComponent.getFirst(), recipe.getFirstOutput()));
+					var firstInput = recipe.getFirstInput();
+					var firstOutput = recipe.getFirstOutput();
+					
+					second.decrement(firstInput.testMatching(second).getCount());
+					items.setFirst(StackUtils.into(first, firstOutput));
 
-						progress = 0;
-					} else {
-						progress += speed;
-					}
-
-					tickActive();
+					progress = 0;
 				} else {
-					tickInactive();
+					progress += speed;
 				}
+
+				tickActive();
 			} else {
 				tickInactive();
 			}
+		} else {
+			tickInactive();
 		}
 	}
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.putDouble("progress", progress);
-		tag.putInt("limit", limit);
+		tag.putDouble("Progress", progress);
+		tag.putInt("Limit", limit);
+		
 		return super.toTag(tag);
 	}
 
 	@Override
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		progress = tag.getDouble("progress");
-		limit = tag.getInt("limit");
+		progress = tag.getDouble("Progress");
+		limit = tag.getInt("Limit");
+		
+		shouldTry = true;
+		
 		super.fromTag(state, tag);
 	}
 
@@ -174,11 +184,6 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 		public double getEnergySize() {
 			return AMConfig.get().primitiveTrituratorEnergy;
 		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.PRIMITIVE;
-		}
 	}
 
 	public static class Basic extends TrituratorBlockEntity {
@@ -194,11 +199,6 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 		@Override
 		public double getEnergySize() {
 			return AMConfig.get().basicTrituratorEnergy;
-		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.BASIC;
 		}
 	}
 
@@ -216,11 +216,6 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 		public double getEnergySize() {
 			return AMConfig.get().advancedTrituratorEnergy;
 		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.ADVANCED;
-		}
 	}
 
 	public static class Elite extends TrituratorBlockEntity {
@@ -236,11 +231,6 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 		@Override
 		public double getEnergySize() {
 			return AMConfig.get().eliteTrituratorEnergy;
-		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.ELITE;
 		}
 	}
 }

@@ -67,10 +67,11 @@ public class ShredderBlockEntity extends ComponentBlockEntity implements Conveya
 
 	@Override
 	public void give(ItemStack stack) {
-		float min = 0F;
-		float max = 0.4F;
-		float random = min + ((float) Math.random()) * (max - min);
+		var min = 0F;
+		var max = 0.4F;
+		var random = min + ((float) Math.random()) * (max - min);
 		random = random - (random / 2);
+		
 		world.playSound(null, getPos().getX(), getPos().getY(), getPos().getZ(), AMSoundEvents.INCINERATE.get(), SoundCategory.BLOCKS, 0.25F, 1.0F + random);
 	}
 }

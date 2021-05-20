@@ -61,8 +61,8 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 	public ItemComponent createItemComponent() {
 		return ItemComponent.of(2)
 				.withListener((inventory) -> {
-					if (world != null && !world.isClient) {
-						sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+					if (world instanceof ServerWorld serverWorld) {
+						sendPacket(serverWorld, toTag(new CompoundTag()));
 					}
 				});
 	}

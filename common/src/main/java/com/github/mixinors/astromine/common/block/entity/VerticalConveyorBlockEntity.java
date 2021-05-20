@@ -60,34 +60,26 @@ public class VerticalConveyorBlockEntity extends ConveyorBlockEntity {
 
 	@Override
 	public ItemComponent createItemComponent() {
-		return new SimpleItemComponent(1) {
-			@Override
-			public ItemStack remove(int slot) {
-				position = 0;
-				prevPosition = 0;
-
-				horizontalPosition = 0;
-				prevHorizontalPosition = 0;
-
-				return super.remove(slot);
-			}
-		}.withListener((inventory) -> {
-			if (world != null && !world.isClient) {
-				sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+		return ItemComponent.of(1).withListener((inventory) -> {
+			if (world instanceof ServerWorld serverWorld) {
+				sendPacket(serverWorld, toTag(new CompoundTag()));
 			}
 		});
 	}
 
 	@Override
 	public void tick() {
-		var direction = getCachedState().get(HorizontalFacingBlock.FACING);
-		var speed = ((Conveyor) getCachedState().getBlock()).getSpeed();
+		var state = getCachedState();
+		var block = state.getBlock();
+		
+		var direction = state.get(HorizontalFacingBlock.FACING);
+		var speed = ((Conveyor) block).getSpeed();
 
 		if (!isEmpty()) {
-			if (getCachedState().get(ConveyorBlock.CONVEYOR)) {
-				BlockPos conveyorPos = getPos().offset(direction).up();
-				if (getWorld().getBlockEntity(conveyorPos) instanceof Conveyable) {
-					var conveyable = (Conveyable) getWorld().getBlockEntity(conveyorPos);
+			if (state.get(ConveyorBlock.CONVEYOR)) {
+				var conveyorPos = getPos().offset(direction).up();
+				
+				if (world.getBlockEntity(conveyorPos) instanceof Conveyable conveyable) {
 					if (position < speed) {
 						handleMovement(conveyable, speed, false);
 					} else {
@@ -96,9 +88,9 @@ public class VerticalConveyorBlockEntity extends ConveyorBlockEntity {
 					}
 				}
 			} else if (up) {
-				BlockPos upPos = getPos().up();
-				if (getWorld().getBlockEntity(upPos) instanceof Conveyable) {
-					var conveyable = (Conveyable) getWorld().getBlockEntity(upPos);
+				var upPos = getPos().up();
+				
+				if (world.getBlockEntity(upPos) instanceof Conveyable conveyable) {
 					handleMovement(conveyable, speed, true);
 				}
 			} else {
@@ -110,23 +102,21 @@ public class VerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	}
 
 	public void handleMovementHorizontal(Conveyable conveyable, int speed, boolean transition) {
-		int accepted = conveyable.accepts(getItemComponent().getFirst());
+		int accepted = conveyable.accepts(items.getFirst());
 
 		if (accepted > 0) {
 			if (horizontalPosition < speed) {
 				setHorizontalPosition(getHorizontalPosition() + 2);
-			} else if (transition && horizontalPosition >= speed) {
-				var split = getItemComponent().getFirst().copy();
+			} else if (transition) {
+				var split = items.getFirst().copy();
 				split.setCount(Math.min(accepted, split.getCount()));
 
-				getItemComponent().getFirst().decrement(accepted);
-				getItemComponent().updateListeners();
+				items.getFirst().decrement(accepted);
+				items.updateListeners();
 
 				conveyable.give(split);
 			}
-		} else if (conveyable instanceof ConveyorConveyable) {
-			var conveyor = (ConveyorConveyable) conveyable;
-
+		} else if (conveyable instanceof ConveyorConveyable conveyor) {
 			if (horizontalPosition < speed && horizontalPosition + 4 < conveyor.getPosition() && conveyor.getPosition() > 4) {
 				setHorizontalPosition(getHorizontalPosition() + 2);
 			} else {
@@ -153,9 +143,9 @@ public class VerticalConveyorBlockEntity extends ConveyorBlockEntity {
 		this.up = up;
 
 		markDirty();
-
-		if (!world.isClient) {
-			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+		
+		if (world instanceof ServerWorld serverWorld) {
+			sendPacket(serverWorld, toTag(new CompoundTag()));
 		}
 	}
 
@@ -180,17 +170,17 @@ public class VerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	public void fromTag(BlockState state, CompoundTag compoundTag) {
 		super.fromTag(state, compoundTag);
 
-		up = compoundTag.getBoolean("up");
+		up = compoundTag.getBoolean("Up");
 
-		horizontalPosition = compoundTag.getInt("horizontalPosition");
-		prevHorizontalPosition = horizontalPosition = compoundTag.getInt("horizontalPosition");
+		horizontalPosition = compoundTag.getInt("HorizontalPosition");
+		prevHorizontalPosition = horizontalPosition = compoundTag.getInt("HorizontalPosition");
 	}
 
 	@Override
 	public CompoundTag toTag(CompoundTag compoundTag) {
-		compoundTag.putBoolean("up", up);
+		compoundTag.putBoolean("Up", up);
 
-		compoundTag.putInt("horizontalPosition", horizontalPosition);
+		compoundTag.putInt("HorizontalPosition", horizontalPosition);
 
 		return super.toTag(compoundTag);
 	}

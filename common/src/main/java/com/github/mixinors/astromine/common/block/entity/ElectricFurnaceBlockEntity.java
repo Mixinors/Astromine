@@ -52,9 +52,9 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, SpeedProvider {
-	public double progress = 0;
-	public int limit = 100;
-	public boolean shouldTry = true;
+	private double progress = 0;
+	private int limit = 100;
+	private boolean shouldTry = true;
 
 	private Optional<SmeltingRecipe> recipe = Optional.empty();
 

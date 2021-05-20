@@ -45,26 +45,26 @@ public class SplitterBlockEntity extends AbstractConveyableBlockEntity {
 
 	@Override
 	public void give(ItemStack stack) {
-		int size = stack.getCount();
-		int smallHalf = size / 2;
-		int largeHalf = size - smallHalf;
+		var size = stack.getCount();
+		var smallHalf = size / 2;
+		var largeHalf = size - smallHalf;
 
 		if (isEmpty()) {
-			ItemStack smallStack = stack.copy();
-			ItemStack largeStack = stack.copy();
+			var smallStack = stack.copy();
+			var largeStack = stack.copy();
 
 			smallStack.setCount(smallHalf);
 			largeStack.setCount(largeHalf);
 
 			if (smallStack.getCount() > 0)
-				getItemComponent().setFirst(smallStack);
+				items.setFirst(smallStack);
 
 			if (largeStack.getCount() > 0)
-				getItemComponent().setSecond(largeStack);
-		} else if (!getItemComponent().getFirst().isEmpty() && getItemComponent().getSecond().isEmpty()) {
-			getItemComponent().setSecond(stack);
-		} else if (!getItemComponent().getSecond().isEmpty() && getItemComponent().getFirst().isEmpty()) {
-			getItemComponent().setFirst(stack);
+				items.setSecond(largeStack);
+		} else if (!items.getFirst().isEmpty() && items.getSecond().isEmpty()) {
+			items.setSecond(stack);
+		} else if (!items.getSecond().isEmpty() && items.getFirst().isEmpty()) {
+			items.setFirst(stack);
 		}
 
 		world.playSound(null, getPos().getX(), getPos().getY(), getPos().getZ(), AMSoundEvents.MACHINE_CLICK.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);

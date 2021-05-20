@@ -32,25 +32,24 @@ import net.minecraft.nbt.CompoundTag;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
 import com.github.mixinors.astromine.common.util.StackUtils;
-import com.github.mixinors.astromine.common.util.tier.MachineTier;
-import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.recipe.WireMillingRecipe;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
+import net.minecraft.server.world.ServerWorld;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
+public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, SpeedProvider {
 	public double progress = 0;
 	public int limit = 100;
 	public boolean shouldTry = true;
 
-	private Optional<WireMillingRecipe> optionalRecipe = Optional.empty();
+	private Optional<WireMillingRecipe> recipe = Optional.empty();
 
 	public WireMillBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
@@ -62,6 +61,10 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 			if (slot != 1) {
 				return false;
 			}
+			
+			if (!transfer.getItem(direction).canInsert()) {
+				return false;
+			}
 
 			if (!StackUtils.test(stack, getItemComponent().getSecond())) {
 				return false;
@@ -69,10 +72,14 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 
 			return WireMillingRecipe.allows(world, ItemComponent.of(stack));
 		}).withExtractPredicate((direction, stack, slot) -> {
+			if (!transfer.getItem(direction).canExtract()) {
+				return false;
+			}
+			
 			return slot == 0;
 		}).withListener((inventory) -> {
 			shouldTry = true;
-			optionalRecipe = Optional.empty();
+			recipe = Optional.empty();
 		});
 	}
 
@@ -94,70 +101,72 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 	@Override
 	public void tick() {
 		super.tick();
-
-		if (world == null || world.isClient || !tickRedstone())
+		
+		if (!(world instanceof ServerWorld) || !tickRedstone())
 			return;
+		
+		if (recipe.isEmpty() && shouldTry) {
+			recipe = WireMillingRecipe.matching(world, items);
+			shouldTry = false;
 
-		var itemComponent = getItemComponent();
-
-		var energyComponent = getEnergyComponent();
-
-		if (itemComponent != null) {
-			EnergyVolume volume = energyComponent.getVolume();
-
-			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = WireMillingRecipe.matching(world, itemComponent);
-				shouldTry = false;
-
-				if (!optionalRecipe.isPresent()) {
-					progress = 0;
-					limit = 100;
-				}
+			if (recipe.isEmpty()) {
+				progress = 0;
+				limit = 100;
 			}
+		}
+		
+		if (recipe.isPresent()) {
+			var recipe = this.recipe.get();
 
-			if (optionalRecipe.isPresent()) {
-				WireMillingRecipe recipe = optionalRecipe.get();
+			limit = recipe.getTime();
 
-				limit = recipe.getTime();
+			var speed = Math.min(getMachineSpeed(), limit - progress);
+			var consumed = recipe.getEnergyInput() * speed / limit;
 
-				double speed = Math.min(getMachineSpeed(), limit - progress);
-				double consumed = recipe.getEnergyInput() * speed / limit;
+			if (energy.hasStored(consumed)) {
+				energy.take(consumed);
 
-				if (volume.hasStored(consumed)) {
-					volume.take(consumed);
+				if (progress + speed >= limit) {
+					this.recipe = Optional.empty();
+					
+					var first = items.getFirst();
+					var second = items.getSecond();
+					
+					var firstInput = recipe.getFirstInput();
+					var firstOutput = recipe.getFirstOutput();
+					
+					second.decrement(firstInput.testMatching(second).getCount());
+					items.setFirst(StackUtils.into(first, firstOutput));
 
-					if (progress + speed >= limit) {
-						optionalRecipe = Optional.empty();
-
-						itemComponent.getSecond().decrement(recipe.getFirstInput().testMatching(itemComponent.getSecond()).getCount());
-						itemComponent.setFirst(StackUtils.into(itemComponent.getFirst(), recipe.getFirstOutput()));
-
-						progress = 0;
-					} else {
-						progress += speed;
-					}
-
-					tickActive();
+					progress = 0;
 				} else {
-					tickInactive();
+					progress += speed;
 				}
+
+				tickActive();
 			} else {
 				tickInactive();
 			}
+		} else {
+			tickInactive();
 		}
 	}
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.putDouble("progress", progress);
-		tag.putInt("limit", limit);
+		tag.putDouble("Progress", progress);
+		tag.putInt("Limit", limit);
+		
 		return super.toTag(tag);
 	}
 
 	@Override
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		progress = tag.getDouble("progress");
-		limit = tag.getInt("limit");
+		progress = tag.getDouble("Progress");
+		limit = tag.getInt("Limit");
+		
+		shouldTry = true;
+		
 		super.fromTag(state, tag);
 	}
 
@@ -175,11 +184,6 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 		public double getEnergySize() {
 			return AMConfig.get().primitiveWireMillEnergy;
 		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.PRIMITIVE;
-		}
 	}
 
 	public static class Basic extends WireMillBlockEntity {
@@ -195,11 +199,6 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 		@Override
 		public double getEnergySize() {
 			return AMConfig.get().basicWireMillEnergy;
-		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.BASIC;
 		}
 	}
 
@@ -217,11 +216,6 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 		public double getEnergySize() {
 			return AMConfig.get().advancedWireMillEnergy;
 		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.ADVANCED;
-		}
 	}
 
 	public static class Elite extends WireMillBlockEntity {
@@ -237,11 +231,6 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 		@Override
 		public double getEnergySize() {
 			return AMConfig.get().eliteWireMillEnergy;
-		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.ELITE;
 		}
 	}
 }

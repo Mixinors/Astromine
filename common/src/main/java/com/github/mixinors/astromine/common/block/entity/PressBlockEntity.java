@@ -33,25 +33,24 @@ import net.minecraft.nbt.CompoundTag;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
 import com.github.mixinors.astromine.common.util.StackUtils;
-import com.github.mixinors.astromine.common.util.tier.MachineTier;
-import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.recipe.PressingRecipe;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
+import net.minecraft.server.world.ServerWorld;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
-	public double progress = 0;
-	public int limit = 100;
-	public boolean shouldTry = true;
+public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, SpeedProvider {
+	private double progress = 0;
+	private int limit = 100;
+	private boolean shouldTry = true;
 
-	private Optional<PressingRecipe> optionalRecipe = Optional.empty();
+	private Optional<PressingRecipe> recipe = Optional.empty();
 
 	public PressBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
@@ -63,17 +62,25 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 			if (slot != 1) {
 				return false;
 			}
-
+			
+			if (!transfer.getItem(direction).canInsert()) {
+				return false;
+			}
+			
 			if (!StackUtils.test(stack, getItemComponent().getSecond())) {
 				return false;
 			}
 
 			return PressingRecipe.allows(world, ItemComponent.of(stack));
 		}).withExtractPredicate((direction, stack, slot) -> {
+			if (!transfer.getItem(direction).canExtract()) {
+				return false;
+			}
+			
 			return slot == 0;
 		}).withListener((inventory) -> {
 			shouldTry = true;
-			optionalRecipe = Optional.empty();
+			recipe = Optional.empty();
 		});
 	}
 
@@ -95,71 +102,73 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 	@Override
 	public void tick() {
 		super.tick();
-
-		if (world == null || world.isClient || !tickRedstone())
+		
+		if (!(world instanceof ServerWorld) || !tickRedstone())
 			return;
+		
+		if (recipe.isEmpty() && shouldTry) {
+			recipe = PressingRecipe.matching(world, items);
+			shouldTry = false;
 
-		var itemComponent = getItemComponent();
-
-		var energyComponent = getEnergyComponent();
-
-		if (itemComponent != null && energyComponent != null) {
-			EnergyVolume volume = energyComponent.getVolume();
-
-			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = PressingRecipe.matching(world, itemComponent);
-				shouldTry = false;
-
-				if (!optionalRecipe.isPresent()) {
-					progress = 0;
-					limit = 100;
-				}
+			if (recipe.isEmpty()) {
+				progress = 0;
+				limit = 100;
 			}
+		}
+		
+		if (recipe.isPresent()) {
+			var recipe = this.recipe.get();
 
-			if (optionalRecipe.isPresent()) {
-				PressingRecipe recipe = optionalRecipe.get();
+			limit = recipe.getTime();
+			
+			var speed = Math.min(getMachineSpeed(), limit - progress);
+			var consumed = recipe.getEnergyInput() * speed / limit;
 
-				limit = recipe.getTime();
+			if (energy.hasStored(consumed)) {
+				energy.take(consumed);
 
-				double speed = Math.min(getMachineSpeed(), limit - progress);
-				double consumed = recipe.getEnergyInput() * speed / limit;
+				if (progress + speed >= limit) {
+					this.recipe = Optional.empty();
+					
+					var first = items.getFirst();
+					var second = items.getSecond();
+					
+					var firstInput = recipe.getFirstInput();
+					var firstOutput = recipe.getFirstOutput();
 
-				if (volume.hasStored(consumed)) {
-					volume.take(consumed);
+					second.decrement(firstInput.testMatching(second).getCount());
 
-					if (progress + speed >= limit) {
-						optionalRecipe = Optional.empty();
+					items.setFirst(StackUtils.into(first, firstOutput));
 
-						itemComponent.getSecond().decrement(recipe.getFirstInput().testMatching(itemComponent.getSecond()).getCount());
-
-						itemComponent.setFirst(StackUtils.into(itemComponent.getFirst(), recipe.getFirstOutput()));
-
-						progress = 0;
-					} else {
-						progress += speed;
-					}
-
-					tickActive();
+					progress = 0;
 				} else {
-					tickInactive();
+					progress += speed;
 				}
+
+				tickActive();
 			} else {
 				tickInactive();
 			}
+		} else {
+			tickInactive();
 		}
 	}
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.putDouble("progress", progress);
-		tag.putInt("limit", limit);
+		tag.putDouble("Progress", progress);
+		tag.putInt("Limit", limit);
+		
 		return super.toTag(tag);
 	}
 
 	@Override
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		progress = tag.getDouble("progress");
-		limit = tag.getInt("limit");
+		progress = tag.getDouble("Progress");
+		limit = tag.getInt("Limit");
+		
+		shouldTry = true;
+		
 		super.fromTag(state, tag);
 	}
 
@@ -177,11 +186,6 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 		public double getEnergySize() {
 			return AMConfig.get().primitivePressEnergy;
 		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.PRIMITIVE;
-		}
 	}
 
 	public static class Basic extends PressBlockEntity {
@@ -197,11 +201,6 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 		@Override
 		public double getEnergySize() {
 			return AMConfig.get().basicPressEnergy;
-		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.BASIC;
 		}
 	}
 
@@ -219,11 +218,6 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 		public double getEnergySize() {
 			return AMConfig.get().advancedPressEnergy;
 		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.ADVANCED;
-		}
 	}
 
 	public static class Elite extends PressBlockEntity {
@@ -239,11 +233,6 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 		@Override
 		public double getEnergySize() {
 			return AMConfig.get().elitePressEnergy;
-		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.ELITE;
 		}
 	}
 }

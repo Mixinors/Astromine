@@ -26,19 +26,18 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.base.SimpleDirectionalFluidComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentFluidItemBlockEntity;
 import com.github.mixinors.astromine.common.util.VolumeUtils;
-import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
@@ -46,7 +45,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
-public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity implements TierProvider, FluidSizeProvider, SpeedProvider {
+public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity implements FluidSizeProvider, SpeedProvider {
 	public TankBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 	}
@@ -55,19 +54,28 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 
 	@Override
 	public FluidComponent createFluidComponent() {
-		FluidComponent fluidComponent = SimpleDirectionalFluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
+		return FluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
+			if (!transfer.getFluid(direction).canInsert()) {
+				return false;
+			}
+			
 			return slot == 0 && (filter == Fluids.EMPTY || volume.getFluid() == filter);
-		});
-
-		fluidComponent.getFirst().setSize(getFluidSize());
-		return fluidComponent;
+		}).withSizes(getFluidSize());
 	}
 
 	@Override
 	public ItemComponent createItemComponent() {
 		return ItemComponent.of(this, 2).withInsertPredicate((direction, stack, slot) -> {
+			if (!transfer.getItem(direction).canInsert()) {
+				return false;
+			}
+			
 			return slot == 0;
 		}).withExtractPredicate((direction, stack, slot) -> {
+			if (!transfer.getFluid(direction).canExtract()) {
+				return false;
+			}
+			
 			return slot == 1;
 		});
 	}
@@ -83,8 +91,8 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 	@Override
 	public void tick() {
 		super.tick();
-
-		if (world == null || world.isClient || !tickRedstone())
+		
+		if (!(world instanceof ServerWorld) || !tickRedstone())
 			return;
 
 		VolumeUtils.transferBetween(getItemComponent(), getFluidComponent(), 0, 1, 0);
@@ -92,13 +100,14 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.putString("fluid", Registry.FLUID.getId(filter).toString());
+		tag.putString("Fluid", Registry.FLUID.getId(filter).toString());
+		
 		return super.toTag(tag);
 	}
 
 	@Override
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		Registry.FLUID.getOrEmpty(new Identifier(tag.getString("fluid"))).ifPresent(filter -> this.filter = filter);
+		Registry.FLUID.getOrEmpty(new Identifier(tag.getString("Fluid"))).ifPresent(filter -> this.filter = filter);
 
 		super.fromTag(state, tag);
 	}
@@ -117,11 +126,6 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 		public long getFluidSize() {
 			return AMConfig.get().primitiveTankFluid;
 		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.PRIMITIVE;
-		}
 	}
 
 	public static class Basic extends TankBlockEntity {
@@ -137,11 +141,6 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 		@Override
 		public long getFluidSize() {
 			return AMConfig.get().basicTankFluid;
-		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.BASIC;
 		}
 	}
 
@@ -159,11 +158,6 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 		public long getFluidSize() {
 			return AMConfig.get().advancedTankFluid;
 		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.ADVANCED;
-		}
 	}
 
 	public static class Elite extends TankBlockEntity {
@@ -179,11 +173,6 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 		@Override
 		public long getFluidSize() {
 			return AMConfig.get().eliteTankFluid;
-		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.ELITE;
 		}
 	}
 
@@ -203,16 +192,13 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 		}
 
 		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.CREATIVE;
-		}
-
-		@Override
 		public void tick() {
 			super.tick();
+			
+			var first = fluids.getFirst();
 
-			getFluidComponent().getFirst().setAmount(Long.MAX_VALUE);
-			getFluidComponent().getFirst().setSize(Long.MAX_VALUE);
+			first.setAmount(Long.MAX_VALUE);
+			first.setSize(Long.MAX_VALUE);
 		}
 	}
 }

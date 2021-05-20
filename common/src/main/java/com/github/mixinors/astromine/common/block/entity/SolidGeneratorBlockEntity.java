@@ -26,31 +26,30 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
+import com.github.mixinors.astromine.common.util.FuelUtils;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import net.fabricmc.fabric.api.registry.FuelRegistry;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BucketItem;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
 import com.github.mixinors.astromine.common.util.StackUtils;
-import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
+import net.minecraft.server.world.ServerWorld;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
-public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
-	public double available = 0;
-	public double progress = 0;
-	public int limit = 100;
+public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, SpeedProvider {
+	private double available = 0;
+	private double progress = 0;
+	private int limit = 100;
 
 	public SolidGeneratorBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
@@ -62,12 +61,16 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 			if (slot != 0) {
 				return false;
 			}
+			
+			if (!transfer.getItem(direction).canInsert()) {
+				return false;
+			}
 
 			if (!StackUtils.test(stack, getItemComponent().getFirst())) {
 				return false;
 			}
 
-			return FuelRegistry.INSTANCE.get(stack.getItem()) != null;
+			return FuelUtils.getBurnTime(stack.getItem()) != null;
 		}).withExtractPredicate((direction, stack, slot) -> {
 			return false;
 		});
@@ -91,81 +94,75 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 	@Override
 	public void tick() {
 		super.tick();
-
-		if (world == null || world.isClient || !tickRedstone())
+		
+		if (!(world instanceof ServerWorld) || !tickRedstone())
 			return;
+		
+		if (available > 0) {
+			var produced = 5;
 
-		var itemComponent = getItemComponent();
+			for (var i = 0; i < 3 * getMachineSpeed(); i++) {
+				if (progress <= limit) {
+					if (energy.hasAvailable(produced)) {
+						--available;
+						++progress;
+						energy.give(produced);
 
-		var energyComponent = getEnergyComponent();
-
-		if (itemComponent != null && energyComponent != null) {
-			var energyVolume = energyComponent.getVolume();
-
-			if (available > 0) {
-				double produced = 5;
-
-				for (var i = 0; i < 3 * getMachineSpeed(); i++) {
-					if (progress <= limit) {
-						if (energyVolume.hasAvailable(produced)) {
-							--available;
-							++progress;
-							energyVolume.give(produced);
-
-							tickActive();
-						} else {
-							tickInactive();
-						}
-					}
-
-					if (progress > limit || available <= 0) {
-						progress = 0;
-						limit = 0;
-
-						tickInactive();
-					}
-				}
-			} else {
-				ItemStack burnStack = itemComponent.getFirst();
-
-				Integer value = FuelRegistry.INSTANCE.get(burnStack.getItem());
-
-				if (value != null) {
-					boolean isFuel = !(burnStack.getItem() instanceof BucketItem) && value > 0;
-
-					if (isFuel) {
-						available = value;
-						limit = value;
-						progress = 0;
-
-						burnStack.decrement(1);
-					}
-
-					if (isFuel || progress != 0) {
 						tickActive();
 					} else {
 						tickInactive();
 					}
+				}
+
+				if (progress > limit || available <= 0) {
+					progress = 0;
+					limit = 0;
+
+					tickInactive();
+				}
+			}
+		} else {
+			var burnStack = items.getFirst();
+
+			var value = FuelUtils.getBurnTime(burnStack.getItem());
+
+			if (value != null) {
+				var isFuel = !(burnStack.getItem() instanceof BucketItem) && value > 0;
+
+				if (isFuel) {
+					available = value;
+					limit = value;
+					progress = 0;
+
+					burnStack.decrement(1);
+				}
+
+				if (isFuel || progress != 0) {
+					tickActive();
 				} else {
 					tickInactive();
 				}
+			} else {
+				tickInactive();
 			}
 		}
 	}
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.putDouble("progress", progress);
-		tag.putInt("limit", limit);
-		tag.putDouble("available", available);
+		tag.putDouble("Progress", progress);
+		tag.putInt("Limit", limit);
+		tag.putDouble("Available", available);
+		
 		return super.toTag(tag);
 	}
 
 	@Override
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		progress = tag.getDouble("progress");
-		limit = tag.getInt("limit");
-		available = tag.getDouble("available");
+		progress = tag.getDouble("Progress");
+		limit = tag.getInt("Limit");
+		available = tag.getDouble("Available");
+		
 		super.fromTag(state, tag);
 	}
 
@@ -183,11 +180,6 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 		public double getEnergySize() {
 			return AMConfig.get().primitiveSolidGeneratorEnergy;
 		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.PRIMITIVE;
-		}
 	}
 
 	public static class Basic extends SolidGeneratorBlockEntity {
@@ -203,11 +195,6 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 		@Override
 		public double getEnergySize() {
 			return AMConfig.get().basicSolidGeneratorEnergy;
-		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.BASIC;
 		}
 	}
 
@@ -225,11 +212,6 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 		public double getEnergySize() {
 			return AMConfig.get().advancedSolidGeneratorEnergy;
 		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.ADVANCED;
-		}
 	}
 
 	public static class Elite extends SolidGeneratorBlockEntity {
@@ -245,11 +227,6 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 		@Override
 		public double getEnergySize() {
 			return AMConfig.get().eliteSolidGeneratorEnergy;
-		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.ELITE;
 		}
 	}
 }

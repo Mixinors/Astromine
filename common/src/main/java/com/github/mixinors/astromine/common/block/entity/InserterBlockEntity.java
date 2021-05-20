@@ -58,10 +58,10 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class InserterBlockEntity extends BlockEntity implements BlockEntityExtension, Tickable {
-	protected int position = 0;
-	protected int prevPosition = 0;
-
-	private final ItemComponent itemComponent = createItemComponent();
+	private int position = 0;
+	private int prevPosition = 0;
+	
+	private final ItemComponent items = createItemComponent();
 
 	public InserterBlockEntity() {
 		super(AMBlockEntityTypes.INSERTER.get());
@@ -72,61 +72,53 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityExten
 	}
 
 	public ItemComponent createItemComponent() {
-		return new SimpleItemComponent(1) {
-			@Override
-			public ItemStack remove(int slot) {
-				position = 15;
-				prevPosition = 15;
-
-				return super.remove(slot);
-			}
-		}.withListener((inventory) -> {
-			if (world != null && !world.isClient) {
-				sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+		return ItemComponent.of(1).withListener((inventory) -> {
+			if (world instanceof ServerWorld serverWorld) {
+				sendPacket(serverWorld, toTag(new CompoundTag()));
 			}
 		});
 	}
 
 	public ItemComponent getItemComponent() {
-		return itemComponent;
+		return items;
 	}
 
 	@Override
 	public void tick() {
-		Direction facing = getCachedState().get(HorizontalFacingBlock.FACING);
+		var facing = getCachedState().get(HorizontalFacingBlock.FACING);
 
-		boolean powered = getCachedState().get(Properties.POWERED);
+		var powered = getCachedState().get(Properties.POWERED);
 
 		var speed = ((InserterBlock) getCachedState().getBlock()).getSpeed();
 
 		if (!powered) {
-			if (getItemComponent().isEmpty()) {
-				BlockState behindState = world.getBlockState(getPos().offset(facing.getOpposite()));
+			if (items.isEmpty()) {
+				var behindState = world.getBlockState(getPos().offset(facing.getOpposite()));
 
-				ItemComponent extractableItemComponent = ItemComponent.from(world.getBlockEntity(getPos().offset(facing.getOpposite())));
+				var extractableItemComponent = ItemComponent.from(world.getBlockEntity(getPos().offset(facing.getOpposite())));
 
 				if (extractableItemComponent != null && !extractableItemComponent.isEmpty()) {
-					ItemStack stack = extractableItemComponent.getFirstExtractable(facing);
+					var stack = extractableItemComponent.getFirstExtractable(facing);
 
 					if (position == 0 && stack != null && !(behindState.getBlock() instanceof InserterBlock)) {
-						extractableItemComponent.into(getItemComponent(), AMConfig.get().inserterStackSize, facing, facing);
+						extractableItemComponent.into(items, AMConfig.get().inserterStackSize, facing, facing);
 					} else if (position > 0) {
 						setPosition(getPosition() - 1);
 					}
 				} else {
-					BlockPos offsetPos = getPos().offset(facing.getOpposite());
+					var offsetPos = getPos().offset(facing.getOpposite());
 
-					List<Inventory> entityInventories = getWorld().getEntitiesByClass(Entity.class, new Box(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1), (entity) -> !(entity instanceof PlayerEntity) && (entity instanceof Inventory)).stream().map(it -> (Inventory) it).collect(Collectors.toList());
+					var entityInventories = world.getEntitiesByClass(Entity.class, new Box(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1), (entity) -> !(entity instanceof PlayerEntity) && (entity instanceof Inventory)).stream().map(it -> (Inventory) it).collect(Collectors.toList());
 
 					if (position == 0 && entityInventories.size() >= 1) {
-						Inventory entityInventory = entityInventories.get(0);
+						var entityInventory = entityInventories.get(0);
 
 						extractableItemComponent = ItemComponent.from(entityInventory);
 
-						ItemStack stack = extractableItemComponent.getFirstExtractable(facing.getOpposite());
+						var stack = extractableItemComponent.getFirstExtractable(facing.getOpposite());
 
 						if (position == 0 && !stack.isEmpty()) {
-							extractableItemComponent.into(getItemComponent(), AMConfig.get().inserterStackSize, facing);
+							extractableItemComponent.into(items, AMConfig.get().inserterStackSize, facing);
 
 							entityInventory.markDirty();
 						}
@@ -134,50 +126,50 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityExten
 						setPosition(getPosition() - 1);
 					}
 				}
-			} else if (!getItemComponent().isEmpty()) {
-				BlockState aheadState = getWorld().getBlockState(getPos().offset(facing));
+			} else if (!items.isEmpty()) {
+				var aheadState = world.getBlockState(getPos().offset(facing));
 
-				ItemComponent insertableItemComponent = ItemComponent.from(world.getBlockEntity(getPos().offset(facing)));
+				var insertableItems = ItemComponent.from(world.getBlockEntity(getPos().offset(facing)));
 
-				Direction insertionDirection = facing.getOpposite();
+				var insertionDirection = facing.getOpposite();
 
 				if (aheadState.getBlock() instanceof ComposterBlock) {
 					insertionDirection = Direction.DOWN;
-				} else if (aheadState.getBlock() instanceof AbstractFurnaceBlock && !AbstractFurnaceBlockEntity.canUseAsFuel(getItemComponent().getFirst())) {
+				} else if (aheadState.getBlock() instanceof AbstractFurnaceBlock && !AbstractFurnaceBlockEntity.canUseAsFuel(items.getFirst())) {
 					insertionDirection = Direction.DOWN;
 				}
 
-				if (insertableItemComponent != null) {
-					var sampleStack = getItemComponent().getFirst().copy();
+				if (insertableItems != null) {
+					var sampleStack = items.getFirst().copy();
 					sampleStack.setCount(1);
 
-					ItemStack stack = insertableItemComponent.getFirstInsertable(insertionDirection, sampleStack);
+					var stack = insertableItems.getFirstInsertable(insertionDirection, sampleStack);
 
 					if (stack != null) {
 						if (position < speed) {
 							setPosition(getPosition() + 1);
 						} else if (!world.isClient) {
-							getItemComponent().into(insertableItemComponent, AMConfig.get().inserterStackSize, facing, insertionDirection);
+							items.into(insertableItems, AMConfig.get().inserterStackSize, facing, insertionDirection);
 						}
 					} else if (position > 0) {
 						setPosition(getPosition() - 1);
 					}
 				} else {
-					BlockPos offsetPos = getPos().offset(facing);
+					var offsetPos = getPos().offset(facing);
 
-					List<Inventory> entityInventories = getWorld().getEntitiesByClass(Entity.class, new Box(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1), (entity) -> !(entity instanceof PlayerEntity) && (entity instanceof Inventory)).stream().map(it -> (Inventory) it).collect(Collectors.toList());
+					var entityInventories = world.getEntitiesByClass(Entity.class, new Box(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1), (entity) -> !(entity instanceof PlayerEntity) && (entity instanceof Inventory)).stream().map(it -> (Inventory) it).collect(Collectors.toList());
 
 					if (entityInventories.size() >= 1) {
-						Inventory entityInventory = entityInventories.get(0);
+						var entityInventory = entityInventories.get(0);
 
-						insertableItemComponent = ItemComponent.from(entityInventory);
+						insertableItems = ItemComponent.from(entityInventory);
 
-						ItemStack stack = insertableItemComponent.getFirstInsertable(insertionDirection, getItemComponent().getFirst());
+						var stack = insertableItems.getFirstInsertable(insertionDirection, items.getFirst());
 
-						if (position < speed && (stack.isEmpty() || stack.getCount() != getItemComponent().getFirst().getCount())) {
+						if (position < speed && (stack.isEmpty() || stack.getCount() != items.getFirst().getCount())) {
 							setPosition(getPosition() + 1);
-						} else if (!world.isClient && (stack.isEmpty() || stack.getCount() != getItemComponent().getFirst().getCount())) {
-							getItemComponent().into(insertableItemComponent, AMConfig.get().inserterStackSize, facing, insertionDirection);
+						} else if (!world.isClient && (stack.isEmpty() || stack.getCount() != items.getFirst().getCount())) {
+							items.into(insertableItems, AMConfig.get().inserterStackSize, facing, insertionDirection);
 
 							entityInventory.markDirty();
 						}
@@ -212,13 +204,14 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityExten
 		return prevPosition;
 	}
 
-	protected void sendPacket(ServerWorld w, CompoundTag tag) {
+	protected void sendPacket(ServerWorld world, CompoundTag tag) {
 		tag.putString("id", BlockEntityType.getId(getType()).toString());
-		sendPacket(w, new BlockEntityUpdateS2CPacket(getPos(), 127, tag));
+		
+		sendPacket(world, new BlockEntityUpdateS2CPacket(getPos(), 127, tag));
 	}
 
-	protected void sendPacket(ServerWorld w, BlockEntityUpdateS2CPacket packet) {
-		w.getPlayers(player -> player.squaredDistanceTo(Vec3d.of(getPos())) < 40 * 40).forEach(player -> player.networkHandler.sendPacket(packet));
+	protected void sendPacket(ServerWorld world, BlockEntityUpdateS2CPacket packet) {
+		world.getPlayers(player -> player.squaredDistanceTo(Vec3d.of(getPos())) < 40 * 40).forEach(player -> player.networkHandler.sendPacket(packet));
 	}
 
 	@Override
@@ -230,9 +223,9 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityExten
 	public void fromTag(BlockState state, CompoundTag compoundTag) {
 		super.fromTag(state, compoundTag);
 
-		getItemComponent().setFirst(ItemStack.fromTag(compoundTag.getCompound("stack")));
+		items.setFirst(ItemStack.fromTag(compoundTag.getCompound("Stack")));
 
-		position = compoundTag.getInt("position");
+		position = compoundTag.getInt("Position");
 	}
 
 	@Override
@@ -242,9 +235,9 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityExten
 
 	@Override
 	public CompoundTag toTag(CompoundTag compoundTag) {
-		compoundTag.put("stack", getItemComponent().getFirst().toTag(new CompoundTag()));
+		compoundTag.put("Stack", items.getFirst().toTag(new CompoundTag()));
 
-		compoundTag.putInt("position", position);
+		compoundTag.putInt("Position", position);
 
 		return super.toTag(compoundTag);
 	}

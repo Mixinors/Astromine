@@ -44,9 +44,9 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockEntity implements EnergySizeProvider, SpeedProvider, FluidSizeProvider {
-	public double progress = 0;
-	public int limit = 100;
-	public boolean shouldTry = false;
+	private double progress = 0;
+	private int limit = 100;
+	private boolean shouldTry = false;
 
 	private Optional<ElectrolyzingRecipe> recipe = Optional.empty();
 

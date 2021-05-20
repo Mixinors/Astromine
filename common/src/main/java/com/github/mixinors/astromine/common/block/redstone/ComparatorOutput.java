@@ -58,7 +58,7 @@ public class ComparatorOutput {
 			return 0;
 		}
 
-		EnergyComponent component = EnergyComponent.from(entity);
+		var component = EnergyComponent.from(entity);
 
 		if (component == null) {
 			return 0;
@@ -79,20 +79,21 @@ public class ComparatorOutput {
 			return 0;
 		}
 
-		FluidComponent fluidComponent = FluidComponent.from(entity);
+		var fluidComponent = FluidComponent.from(entity);
 
 		if (fluidComponent == null) {
 			return 0;
 		}
 
-		Collection<FluidVolume> contents = fluidComponent.getContents().values();
-		long amounts = sumBy(contents, FluidVolume::getAmount);
+		var contents = fluidComponent.getContents().values();
+		var amounts = sumBy(contents, FluidVolume::getAmount);
 
 		if (amounts == 0) {
 			return 0;
 		}
 
-		long sizes = sumBy(contents, FluidVolume::getSize);
+		var sizes = sumBy(contents, FluidVolume::getSize);
+		
 		return 1 + (int) (amounts * 14.0f / sizes);
 	}
 
@@ -100,7 +101,7 @@ public class ComparatorOutput {
 	 * Sums collection of {@link T} into a {@link long} by the given {@link Function}.
 	 */
 	private static <T> long sumBy(Collection<T> ts, ToLongFunction<? super T> extractor) {
-		long result = 0;
+		var result = 0;
 
 		for (T t : ts) {
 			result += extractor.applyAsLong(t);

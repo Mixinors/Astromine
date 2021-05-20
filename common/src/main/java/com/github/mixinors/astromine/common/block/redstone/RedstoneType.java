@@ -39,40 +39,35 @@ public enum RedstoneType {
 
     /** Returns this type as a {@link Text}. */
     public Text asText() {
-        switch (this) {
-            case WORK_WHEN_OFF: {
-                return new TranslatableText("text.astromine.work_when_off").formatted(Formatting.RED);
-            }
-
-            case WORK_WHEN_ON: {
-                return new TranslatableText("text.astromine.work_when_on").formatted(Formatting.GREEN);
-            }
-
-            case WORK_ALWAYS: {
-                return new TranslatableText("text.astromine.work_always").formatted(Formatting.YELLOW);
-            }
-
-            default: {
-                return null;
-            }
-        }
+	    switch (this) {
+		    case WORK_WHEN_OFF -> {
+			    return new TranslatableText("text.astromine.work_when_off").formatted(Formatting.RED);
+		    }
+		    case WORK_WHEN_ON -> {
+			    return new TranslatableText("text.astromine.work_when_on").formatted(Formatting.GREEN);
+		    }
+		    case WORK_ALWAYS -> {
+			    return new TranslatableText("text.astromine.work_always").formatted(Formatting.YELLOW);
+		    }
+		    default -> {
+			    return null;
+		    }
+	    }
     }
 
     /** Returns the next type on this enum. */
     public RedstoneType getNext() {
-        switch (this) {
-            case WORK_ALWAYS: {
-                return WORK_WHEN_OFF;
-            }
-
-            case WORK_WHEN_OFF: {
-                return WORK_WHEN_ON;
-            }
-
-			default: {
-				return WORK_ALWAYS;
-			}
-		}
+	    switch (this) {
+		    case WORK_ALWAYS -> {
+			    return WORK_WHEN_OFF;
+		    }
+		    case WORK_WHEN_OFF -> {
+			    return WORK_WHEN_ON;
+		    }
+		    default -> {
+			    return WORK_ALWAYS;
+		    }
+	    }
 	}
 	
 	public static RedstoneType fromString(String string) {

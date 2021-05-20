@@ -49,9 +49,9 @@ import java.util.function.Supplier;
 import static java.lang.Math.min;
 
 public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, SpeedProvider {
-	public double progress = 0;
-	public int limit = 100;
-	public boolean shouldTry = false;
+	private double progress = 0;
+	private int limit = 100;
+	private boolean shouldTry = false;
 
 	private Optional<AlloySmeltingRecipe> recipe = Optional.empty();
 

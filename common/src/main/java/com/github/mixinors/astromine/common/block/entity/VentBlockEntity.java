@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.component.general.base.SimpleDirectionalFluidComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.FacingBlock;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Direction;
@@ -53,9 +54,7 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 
 	@Override
 	public FluidComponent createFluidComponent() {
-		FluidComponent fluidComponent = SimpleDirectionalFluidComponent.of(this, 1);
-		fluidComponent.getFirst().setSize(getFluidSize());
-		return fluidComponent;
+		return FluidComponent.of(this, 1).withSizes(getFluidSize());
 	}
 
 	@Override
@@ -86,65 +85,60 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 	@Override
 	public void tick() {
 		super.tick();
-
-		if (world == null || world.isClient || !tickRedstone())
+		
+		if (!(world instanceof ServerWorld) || !tickRedstone())
 			return;
+		
+		if (energy.hasStored(128)) {
+			var position = getPos();
 
-		FluidComponent fluidComponent = getFluidComponent();
+			var direction = world.getBlockState(position).get(FacingBlock.FACING);
 
-		if (fluidComponent != null) {
-			EnergyVolume energyVolume = getEnergyComponent().getVolume();
-			if (energyVolume.hasStored(128)) {
-				BlockPos position = getPos();
+			var output = position.offset(direction);
 
-				var direction = world.getBlockState(position).get(FacingBlock.FACING);
+			if (energy.hasStored(getEnergyConsumed()) && (world.getBlockState(output).isAir() || world.getBlockState(output).isSideSolidFullSquare(world, pos, direction.getOpposite()))) {
+				var atmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(getPos()));
 
-				BlockPos output = position.offset(direction);
+				var centerVolume = fluids.getFirst();
 
-				if (energyVolume.hasStored(getEnergyConsumed()) && (world.getBlockState(output).isAir() || world.getBlockState(output).isSideSolidFullSquare(world, pos, direction.getOpposite()))) {
-					ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(getPos()));
+				if (ChunkAtmosphereComponent.isInChunk(world.getChunk(output).getPos(), pos)) {
+					var sideVolume = atmosphereComponent.get(output);
 
-					FluidVolume centerVolume = fluidComponent.getFirst();
+					if ((sideVolume.test(centerVolume.getFluid())) && sideVolume.smallerThan(centerVolume.getAmount())) {
+						centerVolume.give(sideVolume, FluidVolume.BUCKET / 9L);
 
-					if (ChunkAtmosphereComponent.isInChunk(world.getChunk(output).getPos(), pos)) {
-						FluidVolume sideVolume = atmosphereComponent.get(output);
+						atmosphereComponent.add(output, sideVolume);
 
-						if ((sideVolume.test(centerVolume.getFluid())) && sideVolume.smallerThan(centerVolume.getAmount())) {
-							centerVolume.give(sideVolume, FluidVolume.BUCKET / 9L);
+						energy.take(getEnergyConsumed());
 
-							atmosphereComponent.add(output, sideVolume);
-
-							energyVolume.take(getEnergyConsumed());
-
-							tickActive();
-						} else {
-							tickInactive();
-						}
+						tickActive();
 					} else {
-						ChunkPos neighborPos = ChunkAtmosphereComponent.getNeighborFromPos(world.getChunk(output).getPos(), output);
-
-						ChunkAtmosphereComponent neighborAtmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(neighborPos.x, neighborPos.z));
-
-						FluidVolume sideVolume = neighborAtmosphereComponent.get(output);
-
-						if ((centerVolume.test(sideVolume.getFluid())) && sideVolume.smallerThan(centerVolume.getAmount())) {
-							centerVolume.give(sideVolume, FluidVolume.BUCKET / 9L);
-
-							neighborAtmosphereComponent.add(output, sideVolume);
-
-							energyVolume.take(getEnergyConsumed());
-
-							tickActive();
-						} else {
-							tickInactive();
-						}
+						tickInactive();
 					}
 				} else {
-					tickInactive();
+					var neighborPos = ChunkAtmosphereComponent.getNeighborFromPos(world.getChunk(output).getPos(), output);
+
+					var neighborAtmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(neighborPos.x, neighborPos.z));
+
+					var sideVolume = neighborAtmosphereComponent.get(output);
+
+					if ((centerVolume.test(sideVolume.getFluid())) && sideVolume.smallerThan(centerVolume.getAmount())) {
+						centerVolume.give(sideVolume, FluidVolume.BUCKET / 9L);
+
+						neighborAtmosphereComponent.add(output, sideVolume);
+
+						energy.take(getEnergyConsumed());
+
+						tickActive();
+					} else {
+						tickInactive();
+					}
 				}
 			} else {
 				tickInactive();
 			}
+		} else {
+			tickInactive();
 		}
 	}
 }
