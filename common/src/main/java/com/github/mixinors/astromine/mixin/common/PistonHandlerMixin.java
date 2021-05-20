@@ -36,23 +36,22 @@ import net.minecraft.block.piston.PistonHandler;
 
 @Mixin(PistonHandler.class)
 public abstract class PistonHandlerMixin {
-
 	@Shadow
 	private static boolean isBlockSticky(Block block) {
 		return false;
 	}
 
 	@Inject(method = "isBlockSticky(Lnet/minecraft/block/Block;)Z", at = @At("HEAD"), cancellable = true)
-	private static void isBlockStickyInject(Block block, CallbackInfoReturnable<Boolean> cir) {
-		if (block.is(AMBlocks.SPACE_SLIME_BLOCK.get()))
+	private static void astromine_isBlockSticky(Block block, CallbackInfoReturnable<Boolean> cir) {
+		if (block == AMBlocks.SPACE_SLIME_BLOCK.get())
 			cir.setReturnValue(true);
 	}
 
 	@Inject(method = "isAdjacentBlockStuck(Lnet/minecraft/block/Block;Lnet/minecraft/block/Block;)Z", at = @At("HEAD"), cancellable = true)
-	private static void isAdjacentBlockStuckInject(Block block, Block block2, CallbackInfoReturnable<Boolean> cir) {
-		if (block.is(AMBlocks.SPACE_SLIME_BLOCK.get()) && !isBlockSticky(block2))
+	private static void astromine_isAdjacentBlockStuck(Block firstBlock, Block secondBlock, CallbackInfoReturnable<Boolean> cir) {
+		if (firstBlock == AMBlocks.SPACE_SLIME_BLOCK.get() && !isBlockSticky(secondBlock))
 			cir.setReturnValue(false);
-		else if (block2.is(AMBlocks.SPACE_SLIME_BLOCK.get()) && !isBlockSticky(block))
+		else if (secondBlock == AMBlocks.SPACE_SLIME_BLOCK.get() && !isBlockSticky(firstBlock))
 			cir.setReturnValue(false);
 	}
 }

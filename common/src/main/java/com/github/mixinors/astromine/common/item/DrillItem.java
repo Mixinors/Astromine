@@ -116,7 +116,7 @@ public class DrillItem extends EnergyVolumeItem implements Vanishable, Enchantab
 		return AMConfig.get().drillConsumed * material.getMiningSpeedMultiplier();
 	}
 	
-	// TODO: Reimplement this on Fabric module!
+	// TODO: Reimplement this on Fabric & Forge modules!
 	
 //	@Override
 //	public float postProcessMiningSpeed(Tag<Item> tag, BlockState state, ItemStack stack, LivingEntity user, float currentSpeed, boolean isEffective) {

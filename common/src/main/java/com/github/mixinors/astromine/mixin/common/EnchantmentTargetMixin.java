@@ -42,7 +42,7 @@ import com.github.mixinors.astromine.common.item.EnchantableToolItem;
 @Mixin(targets = { "net/minecraft/enchantment/EnchantmentTarget$12" })
 public class EnchantmentTargetMixin {
 	@Inject(at = @At("HEAD"), method = "isAcceptableItem(Lnet/minecraft/item/Item;)Z", cancellable = true)
-	public void astromine_makeMultiToolEnchantable(Item item, CallbackInfoReturnable<Boolean> cir) {
+	public void astromine_isAcceptableItem(Item item, CallbackInfoReturnable<Boolean> cir) {
 		if (item instanceof EnchantableToolItem)
 			cir.setReturnValue(true);
 	}

@@ -47,23 +47,26 @@ public class BiomeLayerSamplerMixin {
 	private int storedLastBiomeId;
 
 	@Inject(method = "sample", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/BuiltinBiomes;fromRawId(I)Lnet/minecraft/util/registry/RegistryKey;", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
-	private void astromine_storeVariables(Registry<Biome> registry, int i, int j, CallbackInfoReturnable<Biome> cir, int k) {
+	private void astromine_sample1(Registry<Biome> registry, int i, int j, CallbackInfoReturnable<Biome> cir, int k) {
 		this.registry = registry;
 		storedLastBiomeId = k;
 	}
 
 	@ModifyVariable(method = "sample", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/BuiltinBiomes;fromRawId(I)Lnet/minecraft/util/registry/RegistryKey;", ordinal = 0, shift = At.Shift.BY, by = 2), ordinal = 0)
-	private RegistryKey<Biome> modifyBiome(RegistryKey<Biome> original) {
+	private RegistryKey<Biome> astromine_sample2(RegistryKey<Biome> original) {
 		if (original != null)
 			return original;
-		Biome biome = registry.get(storedLastBiomeId);
+		
+		var biome = registry.get(storedLastBiomeId);
+		
 		if (biome == null)
 			return original;
+		
 		return registry.getKey(biome).filter(key -> key.getValue().getNamespace().equals(AMCommon.MOD_ID)).orElse(original);
 	}
 
 	@Inject(method = "sample", at = @At("RETURN"))
-	private void astromine_removeStoredVariables(Registry<Biome> registry, int i, int j, CallbackInfoReturnable<Biome> cir) {
+	private void astromine_sample3(Registry<Biome> registry, int i, int j, CallbackInfoReturnable<Biome> cir) {
 		this.registry = null;
 	}
 }

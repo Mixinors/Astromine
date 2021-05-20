@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.mixin.common;
 
+import com.github.mixinors.astromine.common.component.base.AtmosphereComponent;
 import com.github.mixinors.astromine.registry.common.AMNetworks;
 
 import me.shedaniel.architectury.networking.NetworkManager;
@@ -56,19 +57,27 @@ import com.github.mixinors.astromine.registry.common.AMTags;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 
 import com.google.common.collect.Lists;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin implements GravityEntity, EntityAccessor {
 	@Shadow
 	public World world;
+	
 	@Shadow
 	protected boolean firstUpdate;
+	
 	@Shadow
 	protected Object2DoubleMap<Tag<Fluid>> fluidHeight;
+	
 	private int astromine_lastY = 0;
+	
 	private Entity astromine_lastVehicle = null;
+	
 	private TeleportTarget astromine_nextTeleportTarget = null;
+	
 	private World astromine_lastWorld = null;
 
 	@Shadow
@@ -86,13 +95,14 @@ public abstract class EntityMixin implements GravityEntity, EntityAccessor {
 	@Shadow public int age;
 	
 	@ModifyVariable(at = @At("HEAD"), method = "handleFallDamage(FF)Z", index = 1)
-	float getDamageMultiplier(float damageMultiplier) {
+	float astromine_handleFallDamage(float damageMultiplier) {
 		return (float) (damageMultiplier * astromine_getGravity() * astromine_getGravity());
 	}
 
 	@Override
 	public double astromine_getGravity() {
-		World world = ((Entity) (Object) this).world;
+		var world = ((Entity) (Object) this).world;
+		
 		return astromine_getGravity(world);
 	}
 
@@ -103,7 +113,7 @@ public abstract class EntityMixin implements GravityEntity, EntityAccessor {
 
 	@Inject(at = @At("HEAD"), method = "tickNetherPortal()V")
 	void astromine_tickNetherPortal(CallbackInfo callbackInformation) {
-		Entity entity = (Entity) (Object) this;
+		var entity = (Entity) (Object) this;
 
 		if ((int) entity.getPos().getY() != astromine_lastY && !entity.world.isClient && entity.getVehicle() == null) {
 			astromine_lastY = (int) entity.getPos().getY();
@@ -112,11 +122,11 @@ public abstract class EntityMixin implements GravityEntity, EntityAccessor {
 			int topPortal = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey());
 
 			if (astromine_lastY <= bottomPortal && bottomPortal != Integer.MIN_VALUE) {
-				RegistryKey<World> worldKey = RegistryKey.of(Registry.DIMENSION, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.BOTTOM, entity.world.getRegistryKey()).getValue());
+				var worldKey = RegistryKey.of(Registry.DIMENSION, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.BOTTOM, entity.world.getRegistryKey()).getValue());
 
 				astromine_teleport(entity, worldKey, DimensionLayerRegistry.Type.BOTTOM);
 			} else if (astromine_lastY >= topPortal && topPortal != Integer.MIN_VALUE) {
-				RegistryKey<World> worldKey = RegistryKey.of(Registry.DIMENSION, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey()).getValue());
+				var worldKey = RegistryKey.of(Registry.DIMENSION, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey()).getValue());
 
 				astromine_teleport(entity, worldKey, DimensionLayerRegistry.Type.TOP);
 			}
@@ -131,23 +141,24 @@ public abstract class EntityMixin implements GravityEntity, EntityAccessor {
 	}
 
 	void astromine_teleport(Entity entity, RegistryKey<World> destinationKey, DimensionLayerRegistry.Type type) {
-		ServerWorld serverWorld = entity.world.getServer().getWorld(destinationKey);
+		var serverWorld = entity.world.getServer().getWorld(destinationKey);
 
-		List<Entity> existingPassengers = Lists.newArrayList(entity.getPassengerList());
+		var existingPassengers = entity.getPassengerList();
 
-		List<DataTracker.Entry<?>> entries = Lists.newArrayList();
-		for (DataTracker.Entry<?> entry : entity.getDataTracker().getAllEntries()) {
+		var entries = new ArrayList<DataTracker.Entry>();
+		
+		for (var entry : entity.getDataTracker().getAllEntries()) {
 			entries.add(entry.copy());
 		}
 
 		astromine_nextTeleportTarget = DimensionLayerRegistry.INSTANCE.getPlacer(type, entity.world.getRegistryKey()).placeEntity(entity);
-		Entity newEntity = entity.moveToWorld(serverWorld);
+		var newEntity = entity.moveToWorld(serverWorld);
 
-		for (DataTracker.Entry entry : entries) {
+		for (var entry : entries) {
 			newEntity.getDataTracker().set(entry.getData(), entry.get());
 		}
 
-		for (Entity existingEntity : existingPassengers) {
+		for (var existingEntity : existingPassengers) {
 			((EntityMixin) (Object) existingEntity).astromine_lastVehicle = newEntity;
 		}
 	}
@@ -156,35 +167,34 @@ public abstract class EntityMixin implements GravityEntity, EntityAccessor {
 	protected void astromine_getTeleportTarget(ServerWorld destination, CallbackInfoReturnable<TeleportTarget> cir) {
 		if (astromine_nextTeleportTarget != null) {
 			cir.setReturnValue(astromine_nextTeleportTarget);
+			
 			astromine_nextTeleportTarget = null;
 		}
 	}
 
 	@Inject(at = @At("HEAD"), method = "tick()V")
-	void astromine_tick(CallbackInfo ci) {
-		// TODO Make this sync all visible chunks around the player.
-		if (((Entity) (Object) this) instanceof ServerPlayerEntity && world != astromine_lastWorld) {
+	void astromine_tick1(CallbackInfo ci) {
+		// TODO: Make this synchronize all visible chunks around the player.
+		if ((Object) this instanceof ServerPlayerEntity player && world != astromine_lastWorld) {
 			astromine_lastWorld = world;
 			
-			NetworkManager.sendToPlayer((ServerPlayerEntity) (Object) this, AMNetworks.GAS_ERASED, ClientAtmosphereManager.ofGasErased());
+			NetworkManager.sendToPlayer(player, AMNetworks.GAS_ERASED, ClientAtmosphereManager.ofGasErased());
 
-			AtmosphereComponentImpl atmosphereComponent = AtmosphereComponentImpl.from(world.getChunk(getBlockPos()));
+			var atmosphereComponent = AtmosphereComponent.from(world.getChunk(getBlockPos()));
 
 			atmosphereComponent.getVolumes().forEach(((blockPos, volume) -> {
-				NetworkManager.sendToPlayer((ServerPlayerEntity) (Object) this, AMNetworks.GAS_ADDED, ClientAtmosphereManager.ofGasAdded(blockPos, volume));
+				NetworkManager.sendToPlayer(player, AMNetworks.GAS_ADDED, ClientAtmosphereManager.ofGasAdded(blockPos, volume));
 			}));
 		}
 	}
 
 	@Inject(method = "updateWaterState", at = @At("RETURN"), cancellable = true)
-	private void astromine_updateIndustrialFluidState(CallbackInfoReturnable<Boolean> cir) {
+	private void astromine_updateWaterState(CallbackInfoReturnable<Boolean> cir) {
 		if (this.updateMovementInFluid(AMTags.INDUSTRIAL_FLUID, 0.014)) {
 			cir.setReturnValue(true);
 		}
 	}
 
 	@Inject(method = "isInLava", at = @At("RETURN"), cancellable = true)
-	protected void astromine_fakeLava(CallbackInfoReturnable<Boolean> cir) {
-		// NO-OP
-	}
+	protected void astromine_isInLava(CallbackInfoReturnable<Boolean> cir) {}
 }

@@ -35,7 +35,7 @@ import com.github.mixinors.astromine.common.entity.GravityEntity;
 @Mixin(EggEntity.class)
 public abstract class EggEntityMixin implements GravityEntity {
 	@ModifyConstant(method = "handleStatus(B)V", constant = @Constant(doubleValue = 0.08D))
-	double getGravity(double original) {
+	double astromine_handleStatus(double original) {
 		return this.astromine_getGravity();
 	}
 }

@@ -35,7 +35,7 @@ import com.github.mixinors.astromine.common.entity.GravityEntity;
 @Mixin(ItemEntity.class)
 public abstract class ItemEntityMixin implements GravityEntity {
 	@ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = -0.04D))
-	double getGravity(double original) {
+	double astromine_tick(double original) {
 		return -this.astromine_getGravity();
 	}
 

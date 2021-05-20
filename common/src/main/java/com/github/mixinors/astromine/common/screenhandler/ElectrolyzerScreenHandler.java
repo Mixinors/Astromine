@@ -60,8 +60,8 @@ public class ElectrolyzerScreenHandler extends ComponentBlockEntityEnergyFluidSc
 		var arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(fluidBar, fluidBar.getWidth() + 7, fluidBar.getHeight() / 2 - 8));
 		arrow.setSize(Size.of(22, 16));
-		arrow.setLimitSupplier(() -> electrolyzer.limit);
-		arrow.setProgressSupplier(() -> (int) electrolyzer.progress);
+		arrow.setLimitSupplier(electrolyzer::getLimit);
+		arrow.setProgressSupplier(electrolyzer::getProgress);
 
 		firstOutputFluidBar.setPosition(Position.of(arrow.getPosition(), 7 + fluidBar.getWidth(), -fluidBar.getHeight()/ 2.0F + arrow.getHeight()/ 2.0F)); // fluidBar.getX() + fluidBar.getWidth() + 4 + 18 + 18, fluidBar.getY()));
 		secondOutputFluidBar.setPosition(Position.of(arrow.getPosition(), 7 + fluidBar.getWidth() + 7 + fluidBar.getWidth(), -fluidBar.getHeight()/ 2.0F + arrow.getHeight()/ 2.0F));

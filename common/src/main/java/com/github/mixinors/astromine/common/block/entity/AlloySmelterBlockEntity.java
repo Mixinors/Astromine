@@ -49,7 +49,7 @@ import java.util.function.Supplier;
 import static java.lang.Math.min;
 
 public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, SpeedProvider {
-	private double progress = 0;
+	private int progress = 0;
 	private int limit = 100;
 	private boolean shouldTry = false;
 
@@ -162,18 +162,34 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 			tickInactive();
 		}
 	}
-
+	
+	public int getProgress() {
+		return progress;
+	}
+	
+	public void setProgress(int progress) {
+		this.progress = progress;
+	}
+	
+	public int getLimit() {
+		return limit;
+	}
+	
+	public void setLimit(int limit) {
+		this.limit = limit;
+	}
+	
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.putDouble("Progress", progress);
+		tag.putInt("Progress", progress);
 		tag.putInt("Limit", limit);
 		
 		return super.toTag(tag);
 	}
-
+	
 	@Override
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		progress = tag.getDouble("Progress");
+		progress = tag.getInt("Progress");
 		limit = tag.getInt("Limit");
 		
 		shouldTry = true;

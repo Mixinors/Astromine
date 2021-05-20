@@ -47,8 +47,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Supplier;
 
 public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, SpeedProvider {
-	private double available = 0;
-	private double progress = 0;
+	private int available = 0;
+	private int progress = 0;
 	private int limit = 100;
 
 	public SolidGeneratorBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
@@ -147,21 +147,37 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 			}
 		}
 	}
-
+	
+	public int getProgress() {
+		return progress;
+	}
+	
+	public void setProgress(int progress) {
+		this.progress = progress;
+	}
+	
+	public int getLimit() {
+		return limit;
+	}
+	
+	public void setLimit(int limit) {
+		this.limit = limit;
+	}
+	
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.putDouble("Progress", progress);
+		tag.putInt("Available", available);
+		tag.putInt("Progress", progress);
 		tag.putInt("Limit", limit);
-		tag.putDouble("Available", available);
 		
 		return super.toTag(tag);
 	}
-
+	
 	@Override
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		progress = tag.getDouble("Progress");
+		available = tag.getInt("Available");
+		progress = tag.getInt("Progress");
 		limit = tag.getInt("Limit");
-		available = tag.getDouble("Available");
 		
 		super.fromTag(state, tag);
 	}

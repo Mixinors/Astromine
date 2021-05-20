@@ -18,6 +18,7 @@
     "common.JsonDataLoaderMixin",
     "common.LivingEntityMixin",
     "common.PickaxeItemAccessor",
+    "common.PiglinBrainAccessor",
     "common.PiglinBrainMixin",
     "common.PistonHandlerMixin",
     "common.RecipeManagerAccessor",

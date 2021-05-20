@@ -57,8 +57,8 @@ public class MelterScreenHandler extends ComponentBlockEntityEnergyFluidItemScre
 		var arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(fluidBar, -31, fluidBar.getHeight() / 2 - 16 / 2));
 		arrow.setSize(Size.of(22, 16));
-		arrow.setLimitSupplier(() -> melter.limit);
-		arrow.setProgressSupplier(() -> (int) melter.progress);
+		arrow.setLimitSupplier(melter::getLimit);
+		arrow.setProgressSupplier(melter::getProgress);
 		
 		input.setPosition(Position.of(arrow, -27, 0));
 		

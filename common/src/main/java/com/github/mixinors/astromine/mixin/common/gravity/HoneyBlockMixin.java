@@ -37,7 +37,7 @@ import com.github.mixinors.astromine.common.entity.GravityEntity;
 @Mixin(HoneyBlock.class)
 public class HoneyBlockMixin {
 	@ModifyConstant(method = "isSliding(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/entity/Entity;)Z", constant = @Constant(doubleValue = -0.08D))
-	double getGravity(double original, BlockPos pos, Entity entity) {
+	double astromine_isSliding(double original, BlockPos pos, Entity entity) {
 		return -((GravityEntity) entity).astromine_getGravity();
 	}
 }

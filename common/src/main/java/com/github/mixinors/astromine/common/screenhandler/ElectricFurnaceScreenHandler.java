@@ -60,8 +60,8 @@ public class ElectricFurnaceScreenHandler extends ComponentBlockEntityEnergyItem
 		var arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(output, -31, 0));
 		arrow.setSize(Size.of(22, 16));
-		arrow.setLimitSupplier(() -> smelter.limit);
-		arrow.setProgressSupplier(() -> (int) smelter.progress);
+		arrow.setLimitSupplier(smelter::getLimit);
+		arrow.setProgressSupplier(smelter::getProgress);
 
 		input.setPosition(Position.of(arrow, -27, 0));
 

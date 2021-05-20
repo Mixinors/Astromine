@@ -46,7 +46,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBlockEntity implements EnergySizeProvider, FluidSizeProvider, SpeedProvider {
-	private double progress = 0;
+	private int progress = 0;
 	private int limit = 100;
 	private boolean shouldTry = true;
 
@@ -160,9 +160,25 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 		}
 	}
 	
+	public int getProgress() {
+		return progress;
+	}
+	
+	public void setProgress(int progress) {
+		this.progress = progress;
+	}
+	
+	public int getLimit() {
+		return limit;
+	}
+	
+	public void setLimit(int limit) {
+		this.limit = limit;
+	}
+	
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.putDouble("Progress", progress);
+		tag.putInt("Progress", progress);
 		tag.putInt("Limit", limit);
 		
 		return super.toTag(tag);
@@ -170,7 +186,7 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 	
 	@Override
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		progress = tag.getDouble("Progress");
+		progress = tag.getInt("Progress");
 		limit = tag.getInt("Limit");
 		
 		shouldTry = true;

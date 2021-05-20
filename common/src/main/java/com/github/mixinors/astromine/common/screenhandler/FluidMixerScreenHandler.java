@@ -56,8 +56,8 @@ public class FluidMixerScreenHandler extends ComponentBlockEntityEnergyFluidScre
 		var arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(secondInputFluidBar, secondInputFluidBar.getWidth() + 9, secondInputFluidBar.getHeight()/ 2.0F - 8));
 		arrow.setSize(Size.of(22, 16));
-		arrow.setLimitSupplier(() -> mixer.limit);
-		arrow.setProgressSupplier(() -> (int) mixer.progress);
+		arrow.setLimitSupplier(mixer::getLimit);
+		arrow.setProgressSupplier(mixer::getProgress);
 
 		var outputFluidBar = new VerticalFluidBarWidget();
 		outputFluidBar.setPosition(Position.of(secondInputFluidBar, secondInputFluidBar.getWidth() + 9 + arrow.getWidth() + 7, 0));

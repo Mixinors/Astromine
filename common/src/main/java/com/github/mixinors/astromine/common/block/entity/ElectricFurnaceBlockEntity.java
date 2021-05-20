@@ -52,7 +52,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, SpeedProvider {
-	private double progress = 0;
+	private int progress = 0;
 	private int limit = 100;
 	private boolean shouldTry = true;
 
@@ -202,23 +202,39 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 			tickInactive();
 		}
 	}
-
+	
+	public int getProgress() {
+		return progress;
+	}
+	
+	public void setProgress(int progress) {
+		this.progress = progress;
+	}
+	
+	public int getLimit() {
+		return limit;
+	}
+	
+	public void setLimit(int limit) {
+		this.limit = limit;
+	}
+	
+	@Override
+	public CompoundTag toTag(CompoundTag tag) {
+		tag.putInt("Progress", progress);
+		tag.putInt("Limit", limit);
+		
+		return super.toTag(tag);
+	}
+	
 	@Override
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		super.fromTag(state, tag);
-		
-		progress = tag.getDouble("Progress");
+		progress = tag.getInt("Progress");
 		limit = tag.getInt("Limit");
 		
 		shouldTry = true;
-	}
-
-	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		tag.putDouble("progress", progress);
-		tag.putInt("limit", limit);
 		
-		return super.toTag(tag);
+		super.fromTag(state, tag);
 	}
 
 	public static class Primitive extends ElectricFurnaceBlockEntity {

@@ -53,8 +53,8 @@ public class FluidGeneratorScreenHandler extends ComponentBlockEntityEnergyFluid
 		var arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(fluidBar, fluidBar.getWidth() + 7, fluidBar.getHeight()/ 2.0F - 8));
 		arrow.setSize(Size.of(22, 16));
-		arrow.setLimitSupplier(() -> generator.limit);
-		arrow.setProgressSupplier(() -> (int) generator.progress);
+		arrow.setLimitSupplier(generator::getLimit);
+		arrow.setProgressSupplier(generator::getProgress);
 
 		mainTab.addWidget(arrow);
 	}

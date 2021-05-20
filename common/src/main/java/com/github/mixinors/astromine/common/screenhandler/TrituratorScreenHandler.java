@@ -63,8 +63,8 @@ public class TrituratorScreenHandler extends ComponentBlockEntityEnergyItemScree
 		var arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(output.getX() - 31, output.getY()));
 		arrow.setSize(Size.of(22, 16));
-		arrow.setLimitSupplier(() -> triturator.limit);
-		arrow.setProgressSupplier(() -> (int) triturator.progress);
+		arrow.setLimitSupplier(triturator::getLimit);
+		arrow.setProgressSupplier(triturator::getProgress);
 
 		input.setPosition(Position.of(arrow.getX() - 27, arrow.getY()));
 

@@ -56,8 +56,8 @@ public class SolidifierScreenHandler extends ComponentBlockEntityEnergyFluidItem
 		var arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(output, -31, 0));
 		arrow.setSize(Size.of(22, 16));
-		arrow.setLimitSupplier(() -> solidifier.limit);
-		arrow.setProgressSupplier(() -> (int) solidifier.progress);
+		arrow.setLimitSupplier(solidifier::getLimit);
+		arrow.setProgressSupplier(solidifier::getProgress);
 
 		fluidBar.setPosition(Position.of(arrow, -27 - 6, -fluidBar.getHeight() / 2 + output.getHeight() / 2));
 

@@ -75,7 +75,7 @@ public class EnergyVolumeItem extends Item {
 		}
 	}
 	
-	// TODO: Reimplement this on Fabric module!
+	// TODO: Reimplement this on Fabric & Forge modules!
 	
 //	/** returns this item's size. */
 //	@Override

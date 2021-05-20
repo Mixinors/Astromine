@@ -42,7 +42,7 @@ public class StepAndDestroyBlockGoalMixin {
 	private MobEntity stepAndDestroyMob;
 
 	@ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = 0.08D))
-	double getGravity(double original) {
+	double astromine_tick(double original) {
 		return ((GravityEntity) stepAndDestroyMob).astromine_getGravity();
 	}
 }

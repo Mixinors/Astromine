@@ -49,11 +49,12 @@ public class IdentifierMixin {
 	protected String namespace;
 
 	@Inject(method = "<init>([Ljava/lang/String;)V", at = @At("RETURN"))
-	private void init(String[] strings, CallbackInfo ci) {
+	private void astromine_init(String[] strings, CallbackInfo ci) {
 		if (namespace.equals(AMCommon.MOD_ID) && AMConfig.get().compatibilityMode && IdentifierFixRegistry.INSTANCE.containsKey(path)) {
-			String oldPath = path;
+			var oldPath = path;
 			path = IdentifierFixRegistry.INSTANCE.get(path);
-			AMCommon.LOGGER.info("Fixed identifier path from " + oldPath + " to " + path);
+			
+			AMCommon.LOGGER.info(String.format("Fixed identifier path from %s to %s.", oldPath, path));
 		}
 	}
 }

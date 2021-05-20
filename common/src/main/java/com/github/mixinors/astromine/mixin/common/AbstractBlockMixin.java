@@ -56,21 +56,21 @@ public class AbstractBlockMixin {
 	@Inject(at = @At("HEAD"),
 		method = "onUse(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;Lnet/minecraft/util/hit/BlockHitResult;)Lnet/minecraft/util/ActionResult;", cancellable = true)
 	void astromine_onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
-		final ItemStack stack = player.getStackInHand(hand);
+		var stack = player.getStackInHand(hand);
 
-		final Item stackItem = stack.getItem();
+		var stackItem = stack.getItem();
 
-		final boolean isBucket = stackItem instanceof BucketItem;
+		var isBucket = stackItem instanceof BucketItem;
 
-		final boolean isFluidVolumeItem = stackItem instanceof FluidVolumeItem;
+		var isFluidVolumeItem = stackItem instanceof FluidVolumeItem;
 
-		final FluidComponent stackFluidComponent = FluidComponent.from(stack);
+		var stackFluidComponent = FluidComponent.from(stack);
 
 		if (state.getBlock().hasBlockEntity()) {
-			TransferComponent transferComponent = TransferComponent.from(world.getBlockEntity(pos));
+			var transferComponent = TransferComponent.from(world.getBlockEntity(pos));
 
 			if (transferComponent != null && transferComponent.hasFluid()) {
-				TransferType type = transferComponent.getFluid(hit.getSide());
+				var type = transferComponent.getFluid(hit.getSide());
 
 				if (!type.canInsert() && !type.canExtract()) {
 					return;
@@ -81,18 +81,18 @@ public class AbstractBlockMixin {
 		boolean shouldSkip = false;
 
 		if (stackFluidComponent != null) {
-			final Block block = state.getBlock();
+			var block = state.getBlock();
 
 			if (block.hasBlockEntity()) {
-				final BlockEntity blockEntity = world.getBlockEntity(pos);
+				var blockEntity = world.getBlockEntity(pos);
 
-				FluidComponent blockEntityFluidComponent = FluidComponent.from(blockEntity);
+				var blockEntityFluidComponent = FluidComponent.from(blockEntity);
 
 				if (blockEntityFluidComponent != null) {
-					FluidVolume stackVolume = stackFluidComponent.getFirst();
+					var stackVolume = stackFluidComponent.getFirst();
 
 					if (stackVolume.isEmpty()) {
-						FluidVolume extractable = blockEntityFluidComponent.getFirstExtractable(hit.getSide());
+						var extractable = blockEntityFluidComponent.getFirstExtractable(hit.getSide());
 
 						if (isBucket && extractable != null) {
 							if (extractable.hasStored(FluidVolume.BUCKET)) {
@@ -109,7 +109,7 @@ public class AbstractBlockMixin {
 							stackVolume.take(extractable, FluidVolume.BUCKET);
 						}
 					} else {
-						FluidVolume insertable = blockEntityFluidComponent.getFirstInsertable(hit.getSide(), stackVolume);
+						var insertable = blockEntityFluidComponent.getFirstInsertable(hit.getSide(), stackVolume);
 
 						if (isBucket && insertable != null) {
 							if (insertable.hasAvailable(FluidVolume.BUCKET)) {

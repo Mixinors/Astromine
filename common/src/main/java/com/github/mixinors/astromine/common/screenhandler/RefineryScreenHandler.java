@@ -55,8 +55,8 @@ public class RefineryScreenHandler extends ComponentBlockEntityEnergyFluidScreen
 		var arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(fluidBar, fluidBar.getWidth() + 7, fluidBar.getHeight() / 2.0F - 8));
 		arrow.setSize(Size.of(22, 16));
-		arrow.setLimitSupplier(() -> refinery.limit);
-		arrow.setProgressSupplier(() -> (int) refinery.progress);
+		arrow.setLimitSupplier(refinery::getLimit);
+		arrow.setProgressSupplier(refinery::getProgress);
 
 		outputFluidBar.setPosition(Position.of(arrow.getPosition(), 7 + fluidBar.getWidth(), -fluidBar.getHeight()/ 2.0F + arrow.getHeight()/ 2.0F));
 		mainTab.addWidget(outputFluidBar);

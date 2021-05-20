@@ -35,7 +35,7 @@ import com.github.mixinors.astromine.common.entity.GravityEntity;
 @Mixin(SquidEntity.class)
 public abstract class SquidEntityMixin implements GravityEntity {
 	@ModifyConstant(method = "tickMovement()V", constant = @Constant(doubleValue = 0.08D))
-	double getGravity(double original) {
+	double astromine_tickMovement(double original) {
 		return this.astromine_getGravity();
 	}
 }

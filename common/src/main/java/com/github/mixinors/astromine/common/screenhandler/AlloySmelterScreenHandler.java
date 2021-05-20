@@ -73,8 +73,8 @@ public class AlloySmelterScreenHandler extends ComponentBlockEntityEnergyItemScr
 		var arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(output.getX() - 31, output.getY()));
 		arrow.setSize(Size.of(22, 16));
-		arrow.setLimitSupplier(() -> smelter.limit);
-		arrow.setProgressSupplier(() -> (int) smelter.progress);
+		arrow.setLimitSupplier(smelter::getLimit);
+		arrow.setProgressSupplier(smelter::getProgress);
 
 		mainTab.addWidget(firstInput);
 		mainTab.addWidget(secondInput);

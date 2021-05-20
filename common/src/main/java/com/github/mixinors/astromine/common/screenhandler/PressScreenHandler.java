@@ -62,8 +62,8 @@ public class PressScreenHandler extends ComponentBlockEntityEnergyItemScreenHand
 		var arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(output.getX() - 31, output.getY()));
 		arrow.setSize(Size.of(22, 16));
-		arrow.setLimitSupplier(() -> press.limit);
-		arrow.setProgressSupplier(() -> (int) press.progress);
+		arrow.setLimitSupplier(press::getLimit);
+		arrow.setProgressSupplier(press::getProgress);
 		
 		input.setPosition(Position.of(arrow.getX() - 27, arrow.getY()));
 		
