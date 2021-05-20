@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.item.base;
 
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
+import com.github.mixinors.astromine.common.component.base.EnergyComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;

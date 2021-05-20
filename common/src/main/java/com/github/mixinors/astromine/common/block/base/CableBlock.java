@@ -44,18 +44,14 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.component.world.WorldNetworkComponent;
-import com.github.mixinors.astromine.common.network.NetworkMember;
+import com.github.mixinors.astromine.common.component.base.NetworkComponentImpl;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.registry.NetworkMemberRegistry;
 import com.github.mixinors.astromine.common.util.NetworkUtils;
 import com.github.mixinors.astromine.common.util.data.position.WorldPos;
 
-import com.google.common.collect.ImmutableMap;
 import javax.annotation.Nullable;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * A {@link Block} which is composed of six {@link BlockState} properties,
@@ -104,24 +100,24 @@ public abstract class CableBlock extends Block implements Waterloggable {
 	/**
 	 * Returns this {@link CableBlock}'s {@link NetworkType}.
 	 */
-	public abstract <T extends NetworkType> T getNetworkType();
+	public abstract NetworkType getNetworkType();
 
 	/**
 	 * Override behavior to update the {@link BlockState} properties
 	 * and re-trace the network.
 	 */
 	@Override
-	public void onPlaced(World world, BlockPos position, BlockState stateA, LivingEntity placer, ItemStack stack) {
-		super.onPlaced(world, position, stateA, placer, stack);
+	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		super.onPlaced(world, pos, state, placer, stack);
 
-		NetworkUtils.Tracer.trace(getNetworkType(), WorldPos.of(world, position));
+		NetworkUtils.Tracer.trace(getNetworkType(), WorldPos.of(world, pos));
 
-		var set = NetworkUtils.Modeller.of(getNetworkType(), position, world);
+		var set = NetworkUtils.Modeller.of(getNetworkType(), pos, world);
 
-		world.setBlockState(position, NetworkUtils.Modeller.toBlockState(set, stateA));
+		world.setBlockState(pos, NetworkUtils.Modeller.toBlockState(set, state));
 
 		for (var direction : Direction.values()) {
-			var offsetPos = position.offset(direction);
+			var offsetPos = pos.offset(direction);
 			var offsetBlock = WorldPos.of(world, offsetPos);
 
 			if (!(offsetBlock.getBlock() instanceof CableBlock cableBlock))
@@ -143,18 +139,18 @@ public abstract class CableBlock extends Block implements Waterloggable {
 	 * of neighbors and re-trace the network.
 	 */
 	@Override
-	public void onStateReplaced(BlockState state, World world, BlockPos position, BlockState newState, boolean moved) {
-		super.onStateReplaced(state, world, position, newState, moved);
+	public void onStateReplaced(BlockState oldState, World world, BlockPos pos, BlockState newState, boolean moved) {
+		super.onStateReplaced(oldState, world, pos, newState, moved);
 
-		if (state.getBlock() == newState.getBlock())
+		if (oldState.getBlock() == newState.getBlock())
 			return;
 
-		var networkComponent = WorldNetworkComponent.get(world);
+		var networkComponent = NetworkComponentImpl.from(world);
 
-		networkComponent.remove(networkComponent.get(getNetworkType(), position));
+		networkComponent.remove(networkComponent.get(getNetworkType(), pos));
 
 		for (var directionA : Direction.values()) {
-			var offsetPos = position.offset(directionA);
+			var offsetPos = pos.offset(directionA);
 			var offsetBlock = world.getBlockState(offsetPos).getBlock();
 
 			if (!(offsetBlock instanceof CableBlock cableBlock) || cableBlock.getNetworkType() != getNetworkType())
@@ -173,18 +169,18 @@ public abstract class CableBlock extends Block implements Waterloggable {
 	 * and re-trace the network.
 	 */
 	@Override
-	public void neighborUpdate(BlockState state, World world, BlockPos position, Block block, BlockPos neighborPosition, boolean moved) {
-		super.neighborUpdate(state, world, position, block, neighborPosition, moved);
+	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos neighborPos, boolean moved) {
+		super.neighborUpdate(state, world, pos, block, neighborPos, moved);
 
-		var networkComponent = WorldNetworkComponent.get(world);
+		var networkComponent = NetworkComponentImpl.from(world);
 
-		networkComponent.remove(networkComponent.get(getNetworkType(), position));
+		networkComponent.remove(networkComponent.get(getNetworkType(), pos));
 		
-		NetworkUtils.Tracer.trace(getNetworkType(), WorldPos.of(world, position));
+		NetworkUtils.Tracer.trace(getNetworkType(), WorldPos.of(world, pos));
 
-		var directions = NetworkUtils.Modeller.of(getNetworkType(), position, world);
+		var directions = NetworkUtils.Modeller.of(getNetworkType(), pos, world);
 		
-		world.setBlockState(position, NetworkUtils.Modeller.toBlockState(directions, world.getBlockState(position)));
+		world.setBlockState(pos, NetworkUtils.Modeller.toBlockState(directions, world.getBlockState(pos)));
 	}
 
 	/**
@@ -201,7 +197,7 @@ public abstract class CableBlock extends Block implements Waterloggable {
 	 * the {@link BlockState}'s properties.
 	 */
 	@Override
-	public VoxelShape getOutlineShape(BlockState blockState, BlockView world, BlockPos position, ShapeContext entityContext) {
+	public VoxelShape getOutlineShape(BlockState blockState, BlockView world, BlockPos pos, ShapeContext entityCtx) {
 		return NetworkUtils.Modeller.getVoxelShape(NetworkUtils.Modeller.of(blockState));
 	}
 
@@ -218,8 +214,8 @@ public abstract class CableBlock extends Block implements Waterloggable {
 	 */
 	@Nullable
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext context) {
-		return super.getPlacementState(context).with(Properties.WATERLOGGED, context.getWorld().getBlockState(context.getBlockPos()).getBlock() == Blocks.WATER);
+	public BlockState getPlacementState(ItemPlacementContext ctx) {
+		return super.getPlacementState(ctx).with(Properties.WATERLOGGED, ctx.getWorld().getBlockState(ctx.getBlockPos()).getBlock() == Blocks.WATER);
 	}
 
 }

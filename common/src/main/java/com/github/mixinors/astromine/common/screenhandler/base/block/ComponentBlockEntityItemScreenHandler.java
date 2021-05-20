@@ -41,9 +41,9 @@ public class ComponentBlockEntityItemScreenHandler extends ComponentBlockEntityS
 
 	/** Instantiates a {@link ComponentBlockEntityItemScreenHandler},
 	 * obtaining the {@link ComponentItemBlockEntity}. */
-	public ComponentBlockEntityItemScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
-		super(type, syncId, player, position);
+	public ComponentBlockEntityItemScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos pos) {
+		super(type, syncId, player, pos);
 
-		itemBlockEntity = (ComponentItemBlockEntity) player.world.getBlockEntity(position);
+		itemBlockEntity = (ComponentItemBlockEntity) player.world.getBlockEntity(pos);
 	}
 }

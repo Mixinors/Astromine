@@ -37,8 +37,8 @@ import com.github.vini2003.blade.common.miscellaneous.Size;
 public class FluidGeneratorScreenHandler extends ComponentBlockEntityEnergyFluidScreenHandler {
 	private final FluidGeneratorBlockEntity generator;
 
-	public FluidGeneratorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.LIQUID_GENERATOR, syncId, player, position);
+	public FluidGeneratorScreenHandler(int syncId, PlayerEntity player, BlockPos pos) {
+		super(AMScreenHandlers.LIQUID_GENERATOR, syncId, player, pos);
 
 		generator = (FluidGeneratorBlockEntity) energyFluidBlockEntity;
 	}

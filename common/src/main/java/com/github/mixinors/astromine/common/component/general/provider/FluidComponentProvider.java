@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.component.general.provider;
 
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
+import com.github.mixinors.astromine.common.component.base.FluidComponent;
 
 /**
  * An interface meant to be implemented

@@ -73,8 +73,8 @@ public final class NetworkInstance implements Tickable {
 	}
 
 	/** Adds the given position as a node to this instance. */
-	public void addBlockPos(BlockPos position) {
-		this.nodes.add(NetworkNode.of(position));
+	public void addBlockPos(BlockPos pos) {
+		this.nodes.add(NetworkNode.of(pos));
 	}
 
 	/** Adds the given node as a member node to this instance. */

@@ -38,8 +38,8 @@ import com.github.vini2003.blade.common.miscellaneous.Size;
 public class FluidMixerScreenHandler extends ComponentBlockEntityEnergyFluidScreenHandler {
 	private final FluidMixerBlockEntity mixer;
 
-	public FluidMixerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.FLUID_MIXER, syncId, player, position);
+	public FluidMixerScreenHandler(int syncId, PlayerEntity player, BlockPos pos) {
+		super(AMScreenHandlers.FLUID_MIXER, syncId, player, pos);
 
 		mixer = (FluidMixerBlockEntity) energyFluidBlockEntity;
 	}

@@ -28,8 +28,8 @@ import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
+import com.github.mixinors.astromine.common.component.base.FluidComponent;
+import com.github.mixinors.astromine.common.component.base.ItemComponent;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import net.minecraft.util.Pair;
 

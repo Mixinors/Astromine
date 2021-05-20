@@ -46,10 +46,10 @@ public class ComponentBlockEntityFluidScreenHandler extends ComponentBlockEntity
 
 	/** Instantiates a {@link ComponentBlockEntityItemScreenHandler},
 	 * obtaining the {@link ComponentFluidBlockEntity}. */
-	public ComponentBlockEntityFluidScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
-		super(type, syncId, player, position);
+	public ComponentBlockEntityFluidScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos pos) {
+		super(type, syncId, player, pos);
 
-		fluidBlockEntity = (ComponentFluidBlockEntity) player.world.getBlockEntity(position);
+		fluidBlockEntity = (ComponentFluidBlockEntity) player.world.getBlockEntity(pos);
 	}
 
 	/** Override behavior to add a fluid bar. */

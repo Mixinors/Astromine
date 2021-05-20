@@ -27,9 +27,9 @@ package com.github.mixinors.astromine.common.entity.base;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.compatibility.InventoryFromItemComponent;
+import com.github.mixinors.astromine.common.component.base.FluidComponent;
+import com.github.mixinors.astromine.common.component.base.ItemComponent;
+import com.github.mixinors.astromine.common.component.compat.InventoryFromItemComponent;
 
 /**
  * A {@link ComponentEntity} with an attached {@link FluidComponent}

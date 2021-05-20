@@ -39,8 +39,8 @@ import com.github.vini2003.blade.common.widget.base.SlotWidget;
 public class ElectricFurnaceScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
 	private final ElectricFurnaceBlockEntity smelter;
 
-	public ElectricFurnaceScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.ELECTRIC_FURNACE, syncId, player, position);
+	public ElectricFurnaceScreenHandler(int syncId, PlayerEntity player, BlockPos pos) {
+		super(AMScreenHandlers.ELECTRIC_FURNACE, syncId, player, pos);
 
 		smelter = (ElectricFurnaceBlockEntity) energyItemBlockEntity;
 	}

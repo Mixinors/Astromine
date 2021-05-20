@@ -39,8 +39,8 @@ public class EnergyCableBlock extends CableBlock implements EnergyNetworkType.No
 	}
 
 	@Override
-	public <T extends NetworkType> T getNetworkType() {
-		return (T) AMNetworkTypes.ENERGY;
+	public NetworkType getNetworkType() {
+		return AMNetworkTypes.ENERGY;
 	}
 
 	@Override

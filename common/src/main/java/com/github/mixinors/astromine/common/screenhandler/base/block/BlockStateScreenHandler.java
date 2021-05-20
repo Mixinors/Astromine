@@ -42,17 +42,17 @@ import java.util.function.Supplier;
  * {@link BlockPos}, {@link Block} and {@link BlockState}
  */
 public abstract class BlockStateScreenHandler extends BaseScreenHandler {
-	protected BlockPos position;
-	protected Block originalBlock;
+	protected BlockPos pos;
+	protected Block block;
 	protected BlockState state;
 
 	/** Instantiates a {@link BlockStateScreenHandler}. */
-	public BlockStateScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
+	public BlockStateScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos pos) {
 		super(type.get(), syncId, player);
 
-		this.state = player.world.getBlockState(position);
-		this.originalBlock = state.getBlock();
-		this.position = position;
+		this.state = player.world.getBlockState(pos);
+		this.block = state.getBlock();
+		this.pos = pos;
 	}
 
 	/** Override behavior to only allow the {@link ScreenHandler} to be open
@@ -60,6 +60,6 @@ public abstract class BlockStateScreenHandler extends BaseScreenHandler {
 	 * changed. */
 	@Override
 	public boolean canUse(@Nullable PlayerEntity player) {
-		return canUse(ScreenHandlerContext.create(player.world, position), player, originalBlock);
+		return canUse(ScreenHandlerContext.create(player.world, pos), player, block);
 	}
 }

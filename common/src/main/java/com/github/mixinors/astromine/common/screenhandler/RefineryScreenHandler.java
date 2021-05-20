@@ -38,8 +38,8 @@ import com.github.vini2003.blade.common.miscellaneous.Size;
 public class RefineryScreenHandler extends ComponentBlockEntityEnergyFluidScreenHandler {
 	private final RefineryBlockEntity refinery;
 
-	public RefineryScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.REFINERY, syncId, player, position);
+	public RefineryScreenHandler(int syncId, PlayerEntity player, BlockPos pos) {
+		super(AMScreenHandlers.REFINERY, syncId, player, pos);
 
 		refinery = (RefineryBlockEntity) energyFluidBlockEntity;
 	}

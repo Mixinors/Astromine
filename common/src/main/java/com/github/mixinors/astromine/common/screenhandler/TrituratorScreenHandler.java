@@ -39,8 +39,8 @@ import com.github.vini2003.blade.common.widget.base.SlotWidget;
 public class TrituratorScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
 	private final TrituratorBlockEntity triturator;
 
-	public TrituratorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.TRITURATOR, syncId, player, position);
+	public TrituratorScreenHandler(int syncId, PlayerEntity player, BlockPos pos) {
+		super(AMScreenHandlers.TRITURATOR, syncId, player, pos);
 
 		triturator = (TrituratorBlockEntity) energyItemBlockEntity;
 	}

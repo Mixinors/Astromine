@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.common.network.type;
 
-import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
+import com.github.mixinors.astromine.common.component.base.TransferComponent;
+import com.github.mixinors.astromine.common.component.base.FluidComponent;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import net.minecraft.block.entity.BlockEntity;
 
@@ -66,7 +66,7 @@ public final class FluidNetworkType implements NetworkType {
 
 				TransferType type = TransferType.NONE;
 
-				TransferComponent transferComponent = TransferComponent.get(blockEntity);
+				TransferComponent transferComponent = TransferComponent.from(blockEntity);
 
 				if (transferComponent != null) {
 					type = transferComponent.getFluid(memberNode.getDirection());

@@ -46,10 +46,10 @@ public class ComponentBlockEntityEnergyScreenHandler extends ComponentBlockEntit
 
 	/** Instantiates a {@link ComponentBlockEntityItemScreenHandler},
 	 * obtaining the {@link ComponentEnergyBlockEntity}. */
-	public ComponentBlockEntityEnergyScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
-		super(type, syncId, player, position);
+	public ComponentBlockEntityEnergyScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos pos) {
+		super(type, syncId, player, pos);
 
-		energyBlockEntity = (ComponentEnergyBlockEntity) player.world.getBlockEntity(position);
+		energyBlockEntity = (ComponentEnergyBlockEntity) player.world.getBlockEntity(pos);
 	}
 
 	/** Override behavior to add an energy bar. */

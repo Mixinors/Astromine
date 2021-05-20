@@ -31,8 +31,8 @@ import net.minecraft.util.math.BlockPos;
 import com.github.mixinors.astromine.common.screenhandler.base.block.BlockStateScreenHandler;
 
 public class NuclearWarheadScreenHandler extends BlockStateScreenHandler {
-	public NuclearWarheadScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.NUCLEAR_WARHEAD, syncId, player, position);
+	public NuclearWarheadScreenHandler(int syncId, PlayerEntity player, BlockPos pos) {
+		super(AMScreenHandlers.NUCLEAR_WARHEAD, syncId, player, pos);
 	}
 
 	@Override

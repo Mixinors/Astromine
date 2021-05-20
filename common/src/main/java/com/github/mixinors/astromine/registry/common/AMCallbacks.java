@@ -39,8 +39,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.block.transfer.TransferType;
-import com.github.mixinors.astromine.common.component.world.ChunkAtmosphereComponent;
-import com.github.mixinors.astromine.common.component.world.WorldNetworkComponent;
+import com.github.mixinors.astromine.common.component.base.AtmosphereComponentImpl;
+import com.github.mixinors.astromine.common.component.base.NetworkComponentImpl;
 import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 
@@ -51,7 +51,7 @@ import java.util.List;
 public class AMCallbacks {
 	public static void init() {
 		BlockEvent.PLACE.register((world, pos, blockState, entity) -> {
-			ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(pos));
+			AtmosphereComponentImpl atmosphereComponent = AtmosphereComponentImpl.from(world.getChunk(pos));
 
 			if (atmosphereComponent != null) {
 				BlockPos centerPos = pos;
@@ -66,10 +66,10 @@ public class AMCallbacks {
 					BlockPos sidePos = pos.offset(direction);
 					BlockState sideState = world.getBlockState(sidePos);
 
-					ChunkAtmosphereComponent sideAtmosphereComponent = atmosphereComponent;
+					AtmosphereComponentImpl sideAtmosphereComponent = atmosphereComponent;
 
 					if (!atmosphereComponent.isInChunk(sidePos)) {
-						sideAtmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(sidePos));
+						sideAtmosphereComponent = AtmosphereComponentImpl.from(world.getChunk(sidePos));
 					}
 
 					FluidVolume sideVolume = sideAtmosphereComponent.get(sidePos);
@@ -103,7 +103,7 @@ public class AMCallbacks {
 		});
 
 		TickEvent.SERVER_WORLD_PRE.register((world -> {
-			WorldNetworkComponent component = WorldNetworkComponent.get(world);
+			NetworkComponentImpl component = NetworkComponentImpl.from(world);
 
 			if (component != null) {
 				component.tick();

@@ -7,6 +7,7 @@
     "common.AbstractBlockMixin",
     "common.BiomeLayerSamplerMixin",
     "common.BucketItemAccessor",
+    "common.DyeColorAccessor",
     "common.EnchantmentTargetMixin",
     "common.EntityAccessor",
     "common.EntityMixin",

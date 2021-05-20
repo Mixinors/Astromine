@@ -44,7 +44,7 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
+import com.github.mixinors.astromine.common.component.base.FluidComponent;
 import com.github.mixinors.astromine.common.item.base.EnergyVolumeItem;
 import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
 import net.minecraft.util.Identifier;

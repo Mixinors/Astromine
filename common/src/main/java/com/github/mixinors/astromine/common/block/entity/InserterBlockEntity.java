@@ -24,8 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.base.SimpleItemComponent;
+import com.github.mixinors.astromine.common.component.base.ItemComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import me.shedaniel.architectury.extensions.BlockEntityExtension;
@@ -46,14 +45,12 @@ import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Tickable;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
 import com.github.mixinors.astromine.common.block.InserterBlock;
 
-import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -85,11 +82,14 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityExten
 
 	@Override
 	public void tick() {
-		var facing = getCachedState().get(HorizontalFacingBlock.FACING);
+		var state = getCachedState();
+		var block = state.getBlock();
+		
+		var facing = state.get(HorizontalFacingBlock.FACING);
 
-		var powered = getCachedState().get(Properties.POWERED);
+		var powered = state.get(Properties.POWERED);
 
-		var speed = ((InserterBlock) getCachedState().getBlock()).getSpeed();
+		var speed = ((InserterBlock) block).getSpeed();
 
 		if (!powered) {
 			if (items.isEmpty()) {

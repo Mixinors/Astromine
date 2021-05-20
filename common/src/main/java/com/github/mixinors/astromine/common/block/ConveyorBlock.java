@@ -118,30 +118,28 @@ public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityP
 			return;
 		}
 
-		var direction = state.get(FACING);
+		var facing = state.get(FACING);
 
-		if (entity instanceof ItemEntity && pos.equals(pos) && world.getBlockEntity(pos) instanceof ConveyorBlockEntity) {
-			ConveyorBlockEntity blockEntity = (ConveyorBlockEntity) world.getBlockEntity(pos);
-			
-			if (blockEntity.isEmpty()) {
-				blockEntity.getItemComponent().setFirst(((ItemEntity) entity).getStack());
+		if (entity instanceof ItemEntity itemEntity && pos.equals(pos) && world.getBlockEntity(pos) instanceof ConveyorBlockEntity conveyorBlockEntity) {
+			if (conveyorBlockEntity.isEmpty()) {
+				conveyorBlockEntity.getItemComponent().setFirst(itemEntity.getStack());
 
 				entity.remove();
 			}
 		} else if (!(entity instanceof ItemEntity)) {
-			MovementUtils.pushEntity(entity, pos, 2.0F / getSpeed(), direction);
+			MovementUtils.pushEntity(entity, pos, 2.0F / getSpeed(), facing);
 		}
 	}
 
 	@Override
-	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
+	public void onBlockAdded(BlockState oldState, World world, BlockPos pos, BlockState newState, boolean notify) {
 		updateDiagonals(world, this, pos);
 	}
 
 	@Override
-	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
-		if (state.getBlock() != newState.getBlock()) {
-			BlockEntity blockEntity = world.getBlockEntity(pos);
+	public void onStateReplaced(BlockState oldState, World world, BlockPos pos, BlockState newState, boolean moved) {
+		if (oldState.getBlock() != newState.getBlock()) {
+			var blockEntity = world.getBlockEntity(pos);
 
 			if (blockEntity instanceof ConveyorBlockEntity) {
 				blockEntity.markRemoved();
@@ -151,7 +149,7 @@ public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityP
 				world.updateComparators(pos, this);
 			}
 
-			super.onStateReplaced(state, world, pos, newState, moved);
+			super.onStateReplaced(oldState, world, pos, newState, moved);
 		}
 
 		updateDiagonals(world, this, pos);
@@ -159,22 +157,22 @@ public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityP
 	
 
 	@Override
-	public BlockState getStateForNeighborUpdate(BlockState state, Direction fromDirection, BlockState fromState, WorldAccess world, BlockPos blockPos, BlockPos fromPos) {
-		var direction = state.get(FACING);
+	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess access, BlockPos pos, BlockPos neighborPos) {
+		var facing = state.get(FACING);
 
 		boolean setBack = false;
 
 		boolean backExists = false;
 
-		var leftPos = blockPos.offset(direction.rotateYCounterclockwise());
-		var rightPos = blockPos.offset(direction.rotateYClockwise());
-		BlockPos backPos = blockPos.offset(direction.getOpposite());
-		BlockPos upPos = blockPos.up();
+		var leftPos = pos.offset(facing.rotateYCounterclockwise());
+		var rightPos = pos.offset(facing.rotateYClockwise());
+		var backPos = pos.offset(facing.getOpposite());
+		var upPos = pos.up();
 
-		BlockEntity leftBlockEntity = world.getBlockEntity(leftPos);
-		BlockEntity leftDownBlockEntity = world.getBlockEntity(leftPos.down());
+		var leftBlockEntity = access.getBlockEntity(leftPos);
+		var leftDownBlockEntity = access.getBlockEntity(leftPos.down());
 
-		if (leftBlockEntity instanceof Conveyable && ((Conveyable) leftBlockEntity).canExtract(direction.rotateYClockwise(), getType())) {
+		if (leftBlockEntity instanceof Conveyable conveyable && conveyable.canExtract(facing.rotateYClockwise(), getType())) {
 			state = state.with(ConveyorBlock.LEFT, true);
 
 			if (backExists) {
@@ -182,7 +180,7 @@ public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityP
 
 				setBack = true;
 			}
-		} else if (leftDownBlockEntity instanceof ConveyorConveyable && ((ConveyorConveyable) leftDownBlockEntity).getConveyorType() == ConveyorTypes.VERTICAL && ((ConveyorConveyable) leftDownBlockEntity).canExtract(direction.rotateYClockwise(), getType())) {
+		} else if (leftDownBlockEntity instanceof ConveyorConveyable conveyable && conveyable.getConveyorType() == ConveyorTypes.VERTICAL && conveyable.canExtract(facing.rotateYClockwise(), getType())) {
 			state = state.with(ConveyorBlock.LEFT, true);
 
 			if (backExists) {
@@ -195,16 +193,16 @@ public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityP
 			state = state.with(ConveyorBlock.BACK, true);
 		}
 
-		BlockEntity rightBlockEntity = world.getBlockEntity(rightPos);
-		BlockEntity rightDownBlockEntity = world.getBlockEntity(rightPos.down());
+		var rightBlockEntity = access.getBlockEntity(rightPos);
+		var rightDownBlockEntity = access.getBlockEntity(rightPos.down());
 
-		if (rightBlockEntity instanceof Conveyable && ((Conveyable) rightBlockEntity).canExtract(direction.rotateYCounterclockwise(), getType())) {
+		if (rightBlockEntity instanceof Conveyable conveyable && conveyable.canExtract(facing.rotateYCounterclockwise(), getType())) {
 			state = state.with(ConveyorBlock.RIGHT, true);
 
 			if (backExists) {
 				state = state.with(ConveyorBlock.BACK, false);
 			}
-		} else if (rightDownBlockEntity instanceof ConveyorConveyable && ((ConveyorConveyable) rightDownBlockEntity).getConveyorType() == ConveyorTypes.VERTICAL && ((ConveyorConveyable) rightDownBlockEntity).canExtract(direction.rotateYCounterclockwise(), getType())) {
+		} else if (rightDownBlockEntity instanceof ConveyorConveyable conveyable && conveyable.getConveyorType() == ConveyorTypes.VERTICAL && conveyable.canExtract(facing.rotateYCounterclockwise(), getType())) {
 			state = state.with(ConveyorBlock.RIGHT, true);
 
 			if (backExists) {
@@ -218,12 +216,12 @@ public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityP
 			}
 		}
 
-		BlockEntity backBlockEntity = world.getBlockEntity(backPos);
-		BlockEntity backDownBlockEntity = world.getBlockEntity(backPos.down());
+		var backBlockEntity = access.getBlockEntity(backPos);
+		var backDownBlockEntity = access.getBlockEntity(backPos.down());
 
-		if (backBlockEntity instanceof Conveyable && ((Conveyable) backBlockEntity).canExtract(direction, getType())) {
+		if (backBlockEntity instanceof Conveyable conveyable && conveyable.canExtract(facing, getType())) {
 			state = state.with(ConveyorBlock.BACK, false);
-		} else if (backDownBlockEntity instanceof ConveyorConveyable && !backDownBlockEntity.isRemoved() && ((ConveyorConveyable) backDownBlockEntity).getConveyorType() == ConveyorTypes.VERTICAL && ((ConveyorConveyable) backDownBlockEntity).canExtract(direction, getType())) {
+		} else if (backDownBlockEntity instanceof ConveyorConveyable conveyable && !backDownBlockEntity.isRemoved() && conveyable.getConveyorType() == ConveyorTypes.VERTICAL && conveyable.canExtract(facing, getType())) {
 			state = state.with(ConveyorBlock.BACK, false);
 		} else if (state.get(ConveyorBlock.LEFT) || state.get(ConveyorBlock.RIGHT)) {
 			state = state.with(ConveyorBlock.BACK, true);
@@ -231,9 +229,9 @@ public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityP
 			state = state.with(ConveyorBlock.BACK, false);
 		}
 
-		BlockEntity upBlockEntity = world.getBlockEntity(upPos);
+		var upBlockEntity = access.getBlockEntity(upPos);
 
-		if (upBlockEntity instanceof ConveyorConveyable && ((ConveyorConveyable) upBlockEntity).getConveyorType() == ConveyorTypes.NORMAL) {
+		if (upBlockEntity instanceof ConveyorConveyable conveyable && conveyable.getConveyorType() == ConveyorTypes.NORMAL) {
 			state = state.with(ConveyorBlock.UP, true);
 		} else {
 			state = state.with(ConveyorBlock.UP, false);
@@ -243,25 +241,25 @@ public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityP
 	}
 
 	@Override
-	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
-		var direction = state.get(FACING);
+	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos neighborPos, boolean notify) {
+		var facing = state.get(FACING);
 
-		ConveyorBlockEntity conveyorBlockEntity = (ConveyorBlockEntity) world.getBlockEntity(pos);
+		var conveyorBlockEntity = (ConveyorBlockEntity) world.getBlockEntity(pos);
 
-		BlockEntity frontBlockEntity = world.getBlockEntity(pos.offset(direction));
+		var frontBlockEntity = world.getBlockEntity(pos.offset(facing));
 
-		conveyorBlockEntity.setFront(frontBlockEntity instanceof Conveyable && ((Conveyable) frontBlockEntity).canInsert(direction.getOpposite()));
+		conveyorBlockEntity.setFront(frontBlockEntity instanceof Conveyable conveyable && conveyable.canInsert(facing.getOpposite()));
 
-		BlockEntity frontAcrossBlockEntity = world.getBlockEntity(pos.offset(direction).offset(direction));
+		var frontAcrossBlockEntity = world.getBlockEntity(pos.offset(facing).offset(facing));
 
-		conveyorBlockEntity.setAcross(frontBlockEntity instanceof ConveyorConveyable && ((ConveyorConveyable) frontBlockEntity).canInsert(direction.getOpposite()) && ((ConveyorConveyable) frontBlockEntity).canInsert(direction) && frontAcrossBlockEntity instanceof ConveyorConveyable && world.getBlockState(pos.offset(direction).offset(direction)).get(HorizontalFacingBlock.FACING) == direction.getOpposite());
+		conveyorBlockEntity.setAcross(frontBlockEntity instanceof ConveyorConveyable conveyable && conveyable.canInsert(facing.getOpposite()) && ((ConveyorConveyable) frontBlockEntity).canInsert(facing) && frontAcrossBlockEntity instanceof ConveyorConveyable && world.getBlockState(pos.offset(facing).offset(facing)).get(HorizontalFacingBlock.FACING) == facing.getOpposite());
 
-		BlockEntity downBlockEntity = world.getBlockEntity(pos.offset(direction).down());
+		var downBlockEntity = world.getBlockEntity(pos.offset(facing).down());
 
-		conveyorBlockEntity.setDown(downBlockEntity instanceof Conveyable && ((Conveyable) downBlockEntity).canInsert(Direction.UP));
+		conveyorBlockEntity.setDown(downBlockEntity instanceof Conveyable conveyable && conveyable.canInsert(Direction.UP));
 
-		if (fromPos.getY() < pos.getY()) {
-			BlockState newState = state.getStateForNeighborUpdate(direction, state, world, pos, pos);
+		if (neighborPos.getY() < pos.getY()) {
+			var newState = state.getStateForNeighborUpdate(facing, state, world, pos, pos);
 
 			world.setBlockState(pos, newState, 1 | 2);
 		}
@@ -269,7 +267,7 @@ public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityP
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		ConveyorBlockEntity blockEntity = (ConveyorBlockEntity) world.getBlockEntity(pos);
+		var blockEntity = (ConveyorBlockEntity) world.getBlockEntity(pos);
 
 		if (!player.getStackInHand(hand).isEmpty() && Block.getBlockFromItem(player.getStackInHand(hand).getItem()) instanceof Conveyor) {
 			return ActionResult.PASS;
@@ -291,8 +289,8 @@ public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityP
 	}
 
 	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> stateManagerBuilder) {
-		stateManagerBuilder.add(FACING, ConveyorBlock.LEFT, ConveyorBlock.RIGHT, ConveyorBlock.BACK, ConveyorBlock.UP, Properties.WATERLOGGED);
+	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+		builder.add(FACING, ConveyorBlock.LEFT, ConveyorBlock.RIGHT, ConveyorBlock.BACK, ConveyorBlock.UP, Properties.WATERLOGGED);
 	}
 
 	@Override
@@ -301,14 +299,14 @@ public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityP
 	}
 
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext context) {
-		World world = context.getWorld();
+	public BlockState getPlacementState(ItemPlacementContext ctx) {
+		var world = ctx.getWorld();
 
-		BlockPos blockPos = context.getBlockPos();
+		var pos = ctx.getBlockPos();
 
-		BlockState state = this.getDefaultState().with(FACING, context.getPlayer().isSneaking() ? context.getPlayerFacing().getOpposite() : context.getPlayerFacing()).with(Properties.WATERLOGGED, context.getWorld().getBlockState(context.getBlockPos()).getBlock() == Blocks.WATER);
+		var state = this.getDefaultState().with(FACING, ctx.getPlayer().isSneaking() ? ctx.getPlayerFacing().getOpposite() : ctx.getPlayerFacing()).with(Properties.WATERLOGGED, ctx.getWorld().getBlockState(ctx.getBlockPos()).getBlock() == Blocks.WATER);
 
-		return state.getStateForNeighborUpdate(null, state, world, blockPos, blockPos);
+		return state.getStateForNeighborUpdate(null, state, world, pos, pos);
 	}
 
 	@Override

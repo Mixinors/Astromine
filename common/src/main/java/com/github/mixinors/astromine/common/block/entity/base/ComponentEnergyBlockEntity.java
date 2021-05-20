@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.common.block.entity.base;
 import com.github.mixinors.astromine.common.component.general.provider.EnergyComponentProvider;
 import net.minecraft.block.entity.BlockEntityType;
 
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
+import com.github.mixinors.astromine.common.component.base.EnergyComponent;
 
 import java.util.function.Supplier;
 

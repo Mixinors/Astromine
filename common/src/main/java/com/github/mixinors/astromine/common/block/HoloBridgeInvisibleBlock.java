@@ -51,7 +51,7 @@ public class HoloBridgeInvisibleBlock extends Block {
 	}
 
 	@Override
-	public boolean isTranslucent(BlockState state, BlockView world, BlockPos pos) {
+	public boolean isTranslucent(BlockState state, BlockView view, BlockPos pos) {
 		return true;
 	}
 
@@ -62,23 +62,23 @@ public class HoloBridgeInvisibleBlock extends Block {
 
 	@Override
 	@Environment(EnvType.CLIENT)
-	public float getAmbientOcclusionLightLevel(BlockState state, BlockView world, BlockPos pos) {
+	public float getAmbientOcclusionLightLevel(BlockState state, BlockView view, BlockPos pos) {
 		return 1.0F;
 	}
 
 	@Override
-	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos position, ShapeContext context) {
-		return context.isHolding(Items.DEBUG_STICK) ? getCollisionShape(state, world, position, context) : VoxelShapes.empty();
+	public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext ctx) {
+		return ctx.isHolding(Items.DEBUG_STICK) ? getCollisionShape(state, view, pos, ctx) : VoxelShapes.empty();
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos position, ShapeContext context) {
-		if (!(world instanceof World)) {
+	public VoxelShape getCollisionShape(BlockState state, BlockView view, BlockPos pos, ShapeContext ctx) {
+		if (!(view instanceof World)) {
 			return VoxelShapes.empty();
 		} else {
-			WorldHoloBridgeComponent bridgeComponent = WorldHoloBridgeComponent.get(world);
+			var bridgeComponent = WorldHoloBridgeComponent.from(view);
 
-			return bridgeComponent.getShape(position);
+			return bridgeComponent.getShape(pos);
 		}
 	}
 }

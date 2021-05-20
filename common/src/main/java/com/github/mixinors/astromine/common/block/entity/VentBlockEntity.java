@@ -24,20 +24,14 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.common.component.general.base.SimpleDirectionalFluidComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.general.base.SimpleEnergyComponent;
-import com.github.mixinors.astromine.common.component.world.ChunkAtmosphereComponent;
-import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
+import com.github.mixinors.astromine.common.component.base.EnergyComponent;
+import com.github.mixinors.astromine.common.component.base.FluidComponent;
+import com.github.mixinors.astromine.common.component.base.AtmosphereComponentImpl;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergyConsumedProvider;
@@ -97,11 +91,11 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 			var output = position.offset(direction);
 
 			if (energy.hasStored(getEnergyConsumed()) && (world.getBlockState(output).isAir() || world.getBlockState(output).isSideSolidFullSquare(world, pos, direction.getOpposite()))) {
-				var atmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(getPos()));
+				var atmosphereComponent = AtmosphereComponentImpl.from(world.getChunk(getPos()));
 
 				var centerVolume = fluids.getFirst();
 
-				if (ChunkAtmosphereComponent.isInChunk(world.getChunk(output).getPos(), pos)) {
+				if (AtmosphereComponentImpl.isInChunk(world.getChunk(output).getPos(), pos)) {
 					var sideVolume = atmosphereComponent.get(output);
 
 					if ((sideVolume.test(centerVolume.getFluid())) && sideVolume.smallerThan(centerVolume.getAmount())) {
@@ -116,9 +110,9 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 						tickInactive();
 					}
 				} else {
-					var neighborPos = ChunkAtmosphereComponent.getNeighborFromPos(world.getChunk(output).getPos(), output);
+					var neighborPos = AtmosphereComponentImpl.getNeighborFromPos(world.getChunk(output).getPos(), output);
 
-					var neighborAtmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(neighborPos.x, neighborPos.z));
+					var neighborAtmosphereComponent = AtmosphereComponentImpl.from(world.getChunk(neighborPos.x, neighborPos.z));
 
 					var sideVolume = neighborAtmosphereComponent.get(output);
 

@@ -118,17 +118,17 @@ public class VerticalConveyorBlock extends HorizontalFacingBlock implements Bloc
 	}
 
 	@Override
-	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
-		var direction = state.get(FACING);
+	public void onBlockAdded(BlockState oldState, World world, BlockPos pos, BlockState newState, boolean notify) {
+		var direction = oldState.get(FACING);
 
 		world.updateNeighbor(pos.offset(direction).up(), this, pos);
 	}
 
 	@Override
-	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
-		var direction = state.get(FACING);
+	public void onStateReplaced(BlockState oldState, World world, BlockPos pos, BlockState newState, boolean moved) {
+		var direction = oldState.get(FACING);
 
-		if (state.getBlock() != newState.getBlock()) {
+		if (oldState.getBlock() != newState.getBlock()) {
 			BlockEntity blockEntity = world.getBlockEntity(pos);
 
 			if (blockEntity instanceof VerticalConveyorBlockEntity) {
@@ -141,19 +141,19 @@ public class VerticalConveyorBlock extends HorizontalFacingBlock implements Bloc
 
 			world.updateNeighbor(pos.offset(direction).up(), this, pos);
 
-			super.onStateReplaced(state, world, pos, newState, moved);
+			super.onStateReplaced(oldState, world, pos, newState, moved);
 		}
 	}
 
 	@Override
-	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState newState, WorldAccess world, BlockPos pos, BlockPos posFrom) {
-		Direction facing = state.get(FACING);
+	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess access, BlockPos pos, BlockPos neighborPos) {
+		var facing = state.get(FACING);
 
 		BlockPos frontPos = pos.offset(facing.getOpposite());
 		BlockPos upPos = pos.up();
 		BlockPos conveyorPos = pos.offset(facing).up();
 
-		BlockEntity frontBlockEntity = world.getBlockEntity(frontPos);
+		BlockEntity frontBlockEntity = access.getBlockEntity(frontPos);
 
 		if (frontBlockEntity instanceof Conveyable && ((Conveyable) frontBlockEntity).canExtract(facing, getType())) {
 			state = state.with(ConveyorBlock.FRONT, true);
@@ -161,9 +161,9 @@ public class VerticalConveyorBlock extends HorizontalFacingBlock implements Bloc
 			state = state.with(ConveyorBlock.FRONT, false);
 		}
 
-		BlockEntity conveyorBlockEntity = world.getBlockEntity(conveyorPos);
+		BlockEntity conveyorBlockEntity = access.getBlockEntity(conveyorPos);
 
-		if (world.isAir(upPos) && conveyorBlockEntity instanceof Conveyable && !conveyorBlockEntity.isRemoved() && ((Conveyable) conveyorBlockEntity).canInsert(facing.getOpposite())) {
+		if (access.isAir(upPos) && conveyorBlockEntity instanceof Conveyable && !conveyorBlockEntity.isRemoved() && ((Conveyable) conveyorBlockEntity).canInsert(facing.getOpposite())) {
 			state = state.with(ConveyorBlock.CONVEYOR, true);
 		} else {
 			state = state.with(ConveyorBlock.CONVEYOR, false);
@@ -174,7 +174,7 @@ public class VerticalConveyorBlock extends HorizontalFacingBlock implements Bloc
 
 	@Override
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
-		Direction facing = state.get(FACING);
+		var facing = state.get(FACING);
 
 		ConveyorBlockEntity blockEntity = (ConveyorBlockEntity) world.getBlockEntity(pos);
 
@@ -215,21 +215,21 @@ public class VerticalConveyorBlock extends HorizontalFacingBlock implements Bloc
 	}
 
 	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> stateManagerBuilder) {
-		stateManagerBuilder.add(FACING, ConveyorBlock.FRONT, ConveyorBlock.CONVEYOR, Properties.WATERLOGGED);
+	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+		builder.add(FACING, ConveyorBlock.FRONT, ConveyorBlock.CONVEYOR, Properties.WATERLOGGED);
 	}
 
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext context) {
-		World world = context.getWorld();
+	public BlockState getPlacementState(ItemPlacementContext ctx) {
+		var world = ctx.getWorld();
 
-		BlockPos blockPos = context.getBlockPos();
+		var pos = ctx.getBlockPos();
 
-		BlockState state = this.getDefaultState().with(FACING, context.getPlayerFacing());
+		var state = this.getDefaultState().with(FACING, ctx.getPlayerFacing());
 
-		state = state.getStateForNeighborUpdate(null, state, world, blockPos, blockPos);
+		state = state.getStateForNeighborUpdate(null, state, world, pos, pos);
 
-		return state.with(Properties.WATERLOGGED, context.getWorld().getBlockState(context.getBlockPos()).getBlock() == Blocks.WATER);
+		return state.with(Properties.WATERLOGGED, ctx.getWorld().getBlockState(ctx.getBlockPos()).getBlock() == Blocks.WATER);
 	}
 
 	@Override
@@ -239,13 +239,13 @@ public class VerticalConveyorBlock extends HorizontalFacingBlock implements Bloc
 
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		Direction facing = state.get(FACING);
+		var facing = state.get(FACING);
 
 		int id = facing.getId() + (state.get(ConveyorBlock.FRONT) ? 6 : 0);
 
 		if (SHAPE_CACHE[id] == null) {
-			VoxelShape firstShape = VoxelShapeUtils.rotate(facing, FIRST_SHAPE);
-			VoxelShape secondShape = VoxelShapeUtils.rotate(facing, SECOND_SHAPE);
+			var firstShape = VoxelShapeUtils.rotate(facing, FIRST_SHAPE);
+			var secondShape = VoxelShapeUtils.rotate(facing, SECOND_SHAPE);
 
 			if (state.get(ConveyorBlock.FRONT)) {
 				SHAPE_CACHE[id] = VoxelShapes.union(firstShape, secondShape);

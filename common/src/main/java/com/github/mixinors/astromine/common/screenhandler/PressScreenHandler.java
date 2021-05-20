@@ -38,8 +38,8 @@ import net.minecraft.util.math.BlockPos;
 public class PressScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
 	private final PressBlockEntity press;
 	
-	public PressScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.PRESSER, syncId, player, position);
+	public PressScreenHandler(int syncId, PlayerEntity player, BlockPos pos) {
+		super(AMScreenHandlers.PRESSER, syncId, player, pos);
 		
 		press = (PressBlockEntity) energyItemBlockEntity;
 	}

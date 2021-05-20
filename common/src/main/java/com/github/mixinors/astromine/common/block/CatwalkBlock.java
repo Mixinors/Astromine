@@ -62,8 +62,8 @@ public class CatwalkBlock extends Block implements Waterloggable {
 
 	@Nullable
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext context) {
-		return getStateForNeighborUpdate(this.getDefaultState(), null, null, context.getWorld(), context.getBlockPos(), null).with(Properties.WATERLOGGED, context.getWorld().getBlockState(context.getBlockPos()).getBlock() == Blocks.WATER);
+	public BlockState getPlacementState(ItemPlacementContext ctx) {
+		return getStateForNeighborUpdate(this.getDefaultState(), null, null, ctx.getWorld(), ctx.getBlockPos(), null).with(Properties.WATERLOGGED, ctx.getWorld().getBlockState(ctx.getBlockPos()).getBlock() == Blocks.WATER);
 	}
 
 	@Override
@@ -77,36 +77,31 @@ public class CatwalkBlock extends Block implements Waterloggable {
 	}
 
 	public BooleanProperty getPropertyFromDirection(Direction direction) {
-		switch (direction) {
-			case NORTH:
-				return Properties.NORTH;
-			case EAST:
-				return Properties.EAST;
-			case SOUTH:
-				return Properties.SOUTH;
-			case WEST:
-				return Properties.WEST;
-			default:
-				return null;
-		}
+		return switch (direction) {
+			case NORTH -> Properties.NORTH;
+			case EAST -> Properties.EAST;
+			case SOUTH -> Properties.SOUTH;
+			case WEST -> Properties.WEST;
+			default -> null;
+		};
 	}
 
 
 	@Override
-	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, @Nullable BlockState newState, WorldAccess world, BlockPos pos, BlockPos posFrom) {
-		boolean newStateSameType = newState != null && newState.getBlock() instanceof CatwalkBlock;
+	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess access, BlockPos pos, BlockPos neighborPos) {
+		var newStateSameType = neighborState != null && neighborState.getBlock() instanceof CatwalkBlock;
 
-		if ((direction == Direction.NORTH && newStateSameType) || (direction == null && world.getBlockState(pos.offset(Direction.NORTH)).getBlock() instanceof CatwalkBlock))
+		if ((direction == Direction.NORTH && newStateSameType) || (direction == null && access.getBlockState(pos.offset(Direction.NORTH)).getBlock() instanceof CatwalkBlock))
 			state = state.with(Properties.NORTH, true);
-		if ((direction == Direction.EAST && newStateSameType)|| (direction == null && world.getBlockState(pos.offset(Direction.EAST)).getBlock() instanceof CatwalkBlock))
+		if ((direction == Direction.EAST && newStateSameType)|| (direction == null && access.getBlockState(pos.offset(Direction.EAST)).getBlock() instanceof CatwalkBlock))
 			state = state.with(Properties.EAST, true);
-		if ((direction == Direction.SOUTH && newStateSameType)|| (direction == null && world.getBlockState(pos.offset(Direction.SOUTH)).getBlock() instanceof CatwalkBlock))
+		if ((direction == Direction.SOUTH && newStateSameType)|| (direction == null && access.getBlockState(pos.offset(Direction.SOUTH)).getBlock() instanceof CatwalkBlock))
 			state = state.with(Properties.SOUTH, true);
-		if ((direction == Direction.WEST && newStateSameType)|| (direction == null && world.getBlockState(pos.offset(Direction.WEST)).getBlock() instanceof CatwalkBlock))
+		if ((direction == Direction.WEST && newStateSameType)|| (direction == null && access.getBlockState(pos.offset(Direction.WEST)).getBlock() instanceof CatwalkBlock))
 			state = state.with(Properties.WEST, true);
 		if(direction == Direction.DOWN || (direction == null)) {
-			if(newState == null) newState = world.getBlockState(pos.offset(Direction.DOWN));
-			state = state.with(ConveyorBlock.NO_FLOOR, !newState.isSideSolidFullSquare(world, pos, Direction.UP));
+			if(neighborState == null) neighborState = access.getBlockState(pos.offset(Direction.DOWN));
+			state = state.with(ConveyorBlock.NO_FLOOR, !neighborState.isSideSolidFullSquare(access, pos, Direction.UP));
 		}
 
 		return state;
@@ -116,12 +111,12 @@ public class CatwalkBlock extends Block implements Waterloggable {
 	public VoxelShape getCollisionShape(BlockState state, BlockView view, BlockPos pos, ShapeContext context) {
 		int id = 0;
 
-		for (BooleanProperty property : PROPERTIES) {
+		for (var property : PROPERTIES) {
 			id = (id * 2) + (state.get(property) ? 1 : 0);
 		}
 
 		if (SHAPE_CACHE[id] == null) {
-			VoxelShape shape = VoxelShapes.empty();
+			var shape = VoxelShapes.empty();
 
 			if (state.get(ConveyorBlock.NO_FLOOR)) {
 				shape = VoxelShapes.union(shape, BOTTOM);

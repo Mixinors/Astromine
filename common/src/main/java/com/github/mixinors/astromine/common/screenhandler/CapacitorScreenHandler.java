@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
+import com.github.mixinors.astromine.common.component.base.EnergyComponent;
+import com.github.mixinors.astromine.common.component.base.ItemComponent;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
@@ -40,12 +40,12 @@ import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import java.util.function.Supplier;
 
 public class CapacitorScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
-	public CapacitorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.CAPACITOR, syncId, player, position);
+	public CapacitorScreenHandler(int syncId, PlayerEntity player, BlockPos pos) {
+		super(AMScreenHandlers.CAPACITOR, syncId, player, pos);
 	}
 
-	public CapacitorScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
-		super(type, syncId, player, position);
+	public CapacitorScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos pos) {
+		super(type, syncId, player, pos);
 	}
 
 	@Override

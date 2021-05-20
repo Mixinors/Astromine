@@ -43,7 +43,7 @@ import net.minecraft.util.registry.Registry;
 
 import com.github.mixinors.astromine.client.BaseRenderer;
 import com.github.mixinors.astromine.client.render.sprite.SpriteRenderer;
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
+import com.github.mixinors.astromine.common.component.base.FluidComponent;
 import com.github.mixinors.astromine.common.util.FluidUtils;
 import com.github.mixinors.astromine.common.util.TextUtils;
 import com.github.vini2003.blade.client.utilities.Layers;

@@ -55,13 +55,13 @@ public abstract class WireMillBlock extends HorizontalFacingTieredBlockWithEntit
 		}
 
 		@Override
-		public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-			return new WireMillScreenHandler(syncId, playerInventory.player, pos);
+		public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory inventory, PlayerEntity player) {
+			return new WireMillScreenHandler(syncId, inventory.player, pos);
 		}
 
 		@Override
-		public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
-			buffer.writeBlockPos(pos);
+		public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buf) {
+			buf.writeBlockPos(pos);
 		}
 	}
 

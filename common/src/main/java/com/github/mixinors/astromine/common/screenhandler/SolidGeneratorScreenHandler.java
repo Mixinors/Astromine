@@ -38,8 +38,8 @@ import com.github.vini2003.blade.common.widget.base.SlotWidget;
 public class SolidGeneratorScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
 	private final SolidGeneratorBlockEntity generator;
 
-	public SolidGeneratorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.SOLID_GENERATOR, syncId, player, position);
+	public SolidGeneratorScreenHandler(int syncId, PlayerEntity player, BlockPos pos) {
+		super(AMScreenHandlers.SOLID_GENERATOR, syncId, player, pos);
 
 		generator = (SolidGeneratorBlockEntity) energyItemBlockEntity;
 	}

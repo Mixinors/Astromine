@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.astromine.common.component.general;
 
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
+import com.github.mixinors.astromine.common.component.base.EnergyComponent;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.common.volume.energy.WrappedEnergyVolume;
 import team.reborn.energy.EnergyStorage;

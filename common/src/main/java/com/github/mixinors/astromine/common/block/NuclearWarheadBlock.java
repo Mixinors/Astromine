@@ -43,7 +43,7 @@ public class NuclearWarheadBlock extends Block {
 	}
 
 	@Override
-	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
+	public void onBlockAdded(BlockState oldState, World world, BlockPos pos, BlockState newState, boolean notify) {
 		this.tryDetonate(world, pos);
 	}
 

@@ -29,7 +29,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
+import com.github.mixinors.astromine.common.component.base.FluidComponent;
 import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
 import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityFluidItemScreenHandler;
 import com.github.mixinors.astromine.common.widget.blade.FluidFilterWidget;
@@ -44,13 +44,13 @@ import java.util.function.Supplier;
 public class TankScreenHandler extends ComponentBlockEntityFluidItemScreenHandler {
 	private final TankBlockEntity tank;
 
-	public TankScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.TANK, syncId, player, position);
+	public TankScreenHandler(int syncId, PlayerEntity player, BlockPos pos) {
+		super(AMScreenHandlers.TANK, syncId, player, pos);
 		tank = (TankBlockEntity) fluidItemBlockEntity;
 	}
 
-	public TankScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
-		super(type, syncId, player, position);
+	public TankScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos pos) {
+		super(type, syncId, player, pos);
 		tank = (TankBlockEntity) fluidItemBlockEntity;
 	}
 

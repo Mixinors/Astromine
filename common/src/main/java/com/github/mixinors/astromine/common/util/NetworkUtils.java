@@ -25,7 +25,6 @@
 package com.github.mixinors.astromine.common.util;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
@@ -33,21 +32,18 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.block.base.CableBlock;
-import com.github.mixinors.astromine.common.component.world.WorldNetworkComponent;
+import com.github.mixinors.astromine.common.component.base.NetworkComponentImpl;
 import com.github.mixinors.astromine.common.network.NetworkInstance;
-import com.github.mixinors.astromine.common.network.NetworkMember;
 import com.github.mixinors.astromine.common.network.NetworkMemberNode;
 import com.github.mixinors.astromine.common.network.NetworkNode;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.registry.NetworkMemberRegistry;
 import com.github.mixinors.astromine.common.util.data.position.WorldPos;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
-import it.unimi.dsi.fastutil.longs.LongSet;
 
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.EnumSet;
-import java.util.Map;
 import java.util.Set;
 
 public class NetworkUtils {
@@ -60,7 +56,7 @@ public class NetworkUtils {
 		public static void trace(NetworkType type, WorldPos initialPosition) {
 			var world = initialPosition.getWorld();
 
-			var networkComponent = WorldNetworkComponent.get(world);
+			var networkComponent = NetworkComponentImpl.from(world);
 
 			var initialMember = NetworkMemberRegistry.get(initialPosition, null);
 

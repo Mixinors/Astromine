@@ -25,8 +25,8 @@
 package com.github.mixinors.astromine.astromine.common.component.providre;
 
 import com.github.mixinors.astromine.common.block.transfer.TransferType;
-import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
+import com.github.mixinors.astromine.common.component.base.TransferComponent;
+import com.github.mixinors.astromine.common.component.base.EnergyComponent;
 import com.github.mixinors.astromine.common.util.EnergyUtils;
 import team.reborn.energy.EnergySide;
 import team.reborn.energy.EnergyStorage;
@@ -66,7 +66,7 @@ public interface EnergyStorageEnergyComponentProvider extends EnergyStorage {
 		if (side.equals(EnergySide.UNKNOWN)) {
 			allow = true;
 		} else {
-			TransferComponent transferComponent = TransferComponent.get(this);
+			TransferComponent transferComponent = TransferComponent.from(this);
 
 			if (transferComponent != null) {
 				TransferType type = transferComponent.getEnergy(EnergyUtils.toDirection(side));
@@ -91,7 +91,7 @@ public interface EnergyStorageEnergyComponentProvider extends EnergyStorage {
 		if (side.equals(EnergySide.UNKNOWN)) {
 			allow = true;
 		} else {
-			TransferComponent transferComponent = TransferComponent.get(this);
+			TransferComponent transferComponent = TransferComponent.from(this);
 
 			if (transferComponent != null) {
 				TransferType type = transferComponent.getEnergy(EnergyUtils.toDirection(side));

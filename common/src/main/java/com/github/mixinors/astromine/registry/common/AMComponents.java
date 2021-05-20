@@ -28,11 +28,11 @@ import com.github.mixinors.astromine.AMCommon;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.Fluids;
 
-import com.github.mixinors.astromine.common.component.entity.EntityOxygenComponent;
-import com.github.mixinors.astromine.common.component.general.base.SimpleFluidComponent;
-import com.github.mixinors.astromine.common.component.world.ChunkAtmosphereComponent;
+import com.github.mixinors.astromine.common.component.base.OxygenComponentImpl;
+import com.github.mixinors.astromine.common.component.base.FluidComponentImpl;
+import com.github.mixinors.astromine.common.component.base.AtmosphereComponentImpl;
 import com.github.mixinors.astromine.common.component.world.WorldHoloBridgeComponent;
-import com.github.mixinors.astromine.common.component.world.WorldNetworkComponent;
+import com.github.mixinors.astromine.common.component.base.NetworkComponentImpl;
 import com.github.mixinors.astromine.common.entity.base.ComponentEnergyEntity;
 import com.github.mixinors.astromine.common.entity.base.ComponentEnergyItemEntity;
 import com.github.mixinors.astromine.common.entity.base.ComponentFluidEntity;
@@ -72,13 +72,13 @@ public class AMComponents implements WorldComponentInitializer, ChunkComponentIn
 
 	@Override
 	public void registerWorldComponentFactories(WorldComponentFactoryRegistry registry) {
-		registry.register(NETWORK, WorldNetworkComponent::new);
+		registry.register(NETWORK, NetworkComponentImpl::new);
 		registry.register(BRIDGE, WorldHoloBridgeComponent::new);
 	}
 
 	@Override
 	public void registerChunkComponentFactories(ChunkComponentFactoryRegistry registry) {
-		registry.register(ATMOSPHERE, ChunkAtmosphereComponent::new);
+		registry.register(ATMOSPHERE, AtmosphereComponentImpl::new);
 	}
 
 	@Override
@@ -86,19 +86,19 @@ public class AMComponents implements WorldComponentInitializer, ChunkComponentIn
 		registry.registerFor(
 				item -> item instanceof FluidVolumeItem,
 				FLUID,
-				stack -> SimpleFluidComponent.of(FluidVolume.of(0L, ((FluidVolumeItem) stack.getItem()).getSize(), Fluids.EMPTY))
+				stack -> FluidComponentImpl.of(FluidVolume.of(0L, ((FluidVolumeItem) stack.getItem()).getSize(), Fluids.EMPTY))
 		);
 
 		registry.registerFor(
 			item -> item == AMItems.SPACE_SUIT_CHESTPLATE.get(),
 			AMComponents.FLUID,
-			stack -> SimpleFluidComponent.of(FluidVolume.of(AMConfig.get().spaceSuitFluid, Fluids.EMPTY))
+			stack -> FluidComponentImpl.of(FluidVolume.of(AMConfig.get().spaceSuitFluid, Fluids.EMPTY))
 		);
 	}
 
 	@Override
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
-		registry.registerFor(LivingEntity.class, OXYGEN, EntityOxygenComponent::of);
+		registry.registerFor(LivingEntity.class, OXYGEN, OxygenComponentImpl::of);
 
 		registry.registerFor(ComponentFluidItemEntity.class, FLUID, ComponentFluidItemEntity::createFluidComponent);
 		registry.registerFor(ComponentFluidItemEntity.class, ITEM, ComponentFluidItemEntity::createItemComponent);

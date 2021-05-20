@@ -102,7 +102,9 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 
 	/** Asserts whether this {@link BlockWithEntity} has
 	 * a {@link ScreenHandler} or not. */
-	public abstract boolean hasScreenHandler();
+	public boolean hasScreenHandler() {
+		return false;
+	}
 
 	/** Returns the {@link BlockEntity} this {@link Block}
 	 * will create. */
@@ -110,11 +112,15 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 
 	/** Returns the {@link ScreenHandler} this {@link Block}
 	 * will open. */
-	public abstract ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player);
+	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory inventory, PlayerEntity player) {
+		return null;
+	}
 
 	/** Populates the {@link PacketByteBuf} which will be
 	 * passed onto {@link ExtendedMenuProvider#saveExtraData(PacketByteBuf)}. */
-	public abstract void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer);
+	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buf) {
+	
+	}
 
 	/** Returns the {@link BlockEntity} this {@link Block}
 	 * will create. */
@@ -167,8 +173,8 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 
 	/** Override behavior to set {@link #ACTIVE} to false by default. */
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext context) {
-		return super.getPlacementState(context).with(ACTIVE, false);
+	public BlockState getPlacementState(ItemPlacementContext ctx) {
+		return super.getPlacementState(ctx).with(ACTIVE, false);
 	}
 
 	/** Return this {@link BlockWithEntity}'s {@link ComparatorMode}. */

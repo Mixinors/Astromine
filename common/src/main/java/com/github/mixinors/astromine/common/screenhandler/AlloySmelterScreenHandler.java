@@ -39,8 +39,8 @@ import com.github.vini2003.blade.common.widget.base.SlotWidget;
 public class AlloySmelterScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
 	private final AlloySmelterBlockEntity smelter;
 
-	public AlloySmelterScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.ALLOY_SMELTER, syncId, player, position);
+	public AlloySmelterScreenHandler(int syncId, PlayerEntity player, BlockPos pos) {
+		super(AMScreenHandlers.ALLOY_SMELTER, syncId, player, pos);
 
 		smelter = (AlloySmelterBlockEntity) energyItemBlockEntity;
 	}

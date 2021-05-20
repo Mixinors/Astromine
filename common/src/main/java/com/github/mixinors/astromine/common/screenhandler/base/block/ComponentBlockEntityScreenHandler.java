@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.screenhandler.base.block;
 
-import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
+import com.github.mixinors.astromine.common.component.base.TransferComponent;
 import com.github.mixinors.astromine.common.component.general.provider.EnergyComponentProvider;
 import com.github.mixinors.astromine.common.component.general.provider.FluidComponentProvider;
 import com.github.mixinors.astromine.common.component.general.provider.ItemComponentProvider;
@@ -40,7 +40,7 @@ import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.mixinors.astromine.common.block.entity.base.ComponentBlockEntity;
-import com.github.mixinors.astromine.common.component.general.miscellaneous.NamedComponent;
+import com.github.mixinors.astromine.common.component.general.miscellaneous.IdentifiableComponent;
 import com.github.mixinors.astromine.common.widget.blade.RedstoneWidget;
 import com.github.vini2003.blade.common.collection.TabWidgetCollection;
 import com.github.vini2003.blade.common.miscellaneous.Position;
@@ -68,10 +68,10 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 
 	/** Instantiates a {@link ComponentBlockEntityScreenHandler},
 	 * synchronizing its attached {@link ComponentBlockEntity}. */
-	public ComponentBlockEntityScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
-		super(type, syncId, player, position);
+	public ComponentBlockEntityScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos pos) {
+		super(type, syncId, player, pos);
 
-		this.blockEntity = (ComponentBlockEntity) player.world.getBlockEntity(position);
+		this.blockEntity = (ComponentBlockEntity) player.world.getBlockEntity(pos);
 
 		if (!player.world.isClient) {
 			blockEntity.doNotSkipInventory();
@@ -153,9 +153,9 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 
 		this.addWidget(redstoneWidget);
 
-		var transferComponent = TransferComponent.get(blockEntity);
+		var transferComponent = TransferComponent.from(blockEntity);
 		
-		var tabComponents = new HashMap<NamedComponent, Identifier>();
+		var tabComponents = new HashMap<IdentifiableComponent, Identifier>();
 		
 		if (blockEntity instanceof ItemComponentProvider provider) {
 			transferComponent.addItem();

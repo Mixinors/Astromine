@@ -93,13 +93,13 @@ public class AirlockBlock extends Block implements Waterloggable {
 	}
 
 	@Override
-	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		Direction facing = state.get(FACING);
+	public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext ctx) {
+		var facing = state.get(FACING);
 
 		int id = facing.getId() + (state.get(HALF) == DoubleBlockHalf.LOWER ? 1 : 2) + (!state.get(LEFT) ? 4 : 8) + (!state.get(RIGHT) ? 16: 32);
 
 		if (SHAPE_CACHE[id] == null) {
-			VoxelShape shape = VoxelShapes.union(VoxelShapes.empty(), VoxelShapeUtils.rotate(facing, DOOR_SHAPE));
+			var shape = VoxelShapes.union(VoxelShapes.empty(), VoxelShapeUtils.rotate(facing, DOOR_SHAPE));
 
 			if (state.get(HALF) == DoubleBlockHalf.LOWER) {
 				shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, BOTTOM_SHAPE));
@@ -122,9 +122,9 @@ public class AirlockBlock extends Block implements Waterloggable {
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		VoxelShape shape = VoxelShapes.empty();
-		Direction facing = state.get(FACING);
+	public VoxelShape getCollisionShape(BlockState state, BlockView view, BlockPos pos, ShapeContext ctx) {
+		var shape = VoxelShapes.empty();
+		var facing = state.get(FACING);
 
 		if (state.get(HALF) == DoubleBlockHalf.LOWER) {
 			shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, BOTTOM_SHAPE));
@@ -148,13 +148,13 @@ public class AirlockBlock extends Block implements Waterloggable {
 	}
 
 	@Override
-	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState newState, WorldAccess world, BlockPos pos, BlockPos posFrom) {
-		DoubleBlockHalf doubleBlockHalf = state.get(HALF);
-		Direction facing = state.get(FACING);
-		BlockState changedState = state;
+	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess access, BlockPos pos, BlockPos neighborPos) {
+		var doubleBlockHalf = state.get(HALF);
+		var facing = state.get(FACING);
+		var changedState = state;
 
 		if (direction == facing.rotateYClockwise() || direction == facing.rotateYCounterclockwise()) {
-			if (newState.isOf(this) && (newState.get(FACING) == facing || newState.get(FACING) == facing.getOpposite())) {
+			if (neighborState.isOf(this) && (neighborState.get(FACING) == facing || neighborState.get(FACING) == facing.getOpposite())) {
 				if (direction == facing.rotateYCounterclockwise()) {
 					changedState = changedState.with(LEFT, true);
 				} else if (direction == facing.rotateYClockwise()) {
@@ -168,9 +168,9 @@ public class AirlockBlock extends Block implements Waterloggable {
 		}
 
 		if (direction.getAxis() == Direction.Axis.Y && doubleBlockHalf == DoubleBlockHalf.LOWER == (direction == Direction.UP)) {
-			return newState.isOf(this) && newState.get(HALF) != doubleBlockHalf ? changedState.with(FACING, newState.get(FACING)).with(POWERED, newState.get(POWERED)) : Blocks.AIR.getDefaultState();
+			return neighborState.isOf(this) && neighborState.get(HALF) != doubleBlockHalf ? changedState.with(FACING, neighborState.get(FACING)).with(POWERED, neighborState.get(POWERED)) : Blocks.AIR.getDefaultState();
 		} else {
-			return doubleBlockHalf == DoubleBlockHalf.LOWER && direction == Direction.DOWN && !changedState.canPlaceAt(world, pos) ? Blocks.AIR.getDefaultState() : changedState;
+			return doubleBlockHalf == DoubleBlockHalf.LOWER && direction == Direction.DOWN && !changedState.canPlaceAt(access, pos) ? Blocks.AIR.getDefaultState() : changedState;
 		}
 	}
 
@@ -184,7 +184,7 @@ public class AirlockBlock extends Block implements Waterloggable {
 	}
 
 	@Override
-	public boolean canPathfindThrough(BlockState state, BlockView world, BlockPos pos, NavigationType type) {
+	public boolean canPathfindThrough(BlockState state, BlockView view, BlockPos pos, NavigationType type) {
 		switch (type) {
 			case LAND:
 			case AIR:
@@ -204,9 +204,9 @@ public class AirlockBlock extends Block implements Waterloggable {
 
 	@Nullable
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		BlockPos blockPos = ctx.getBlockPos();
+		var blockPos = ctx.getBlockPos();
 		if (blockPos.getY() < 255 && ctx.getWorld().getBlockState(blockPos.up()).canReplace(ctx)) {
-			World world = ctx.getWorld();
+			var world = ctx.getWorld();
 			boolean bl = world.isReceivingRedstonePower(blockPos) || world.isReceivingRedstonePower(blockPos.up());
 			return this.getDefaultState().with(FACING, ctx.getPlayerFacing()).with(POWERED, bl).with(HALF, DoubleBlockHalf.LOWER).with(Properties.WATERLOGGED, world.getBlockState(blockPos).getBlock() == Blocks.WATER);
 		} else {
@@ -223,15 +223,15 @@ public class AirlockBlock extends Block implements Waterloggable {
 		return blockState.get(POWERED);
 	}
 
-	public void setOpen(World world, BlockState blockState, BlockPos blockPos, boolean bl) {
-		if (blockState.isOf(this) && blockState.get(POWERED) != bl) {
-			world.setBlockState(blockPos, blockState.with(POWERED, bl), 10);
-			this.playOpenCloseSound(world, blockPos, bl);
+	public void setOpen(World world, BlockState state, BlockPos pos, boolean powered) {
+		if (state.isOf(this) && state.get(POWERED) != powered) {
+			world.setBlockState(pos, state.with(POWERED, powered), 10);
+			this.playOpenCloseSound(world, pos, powered);
 		}
 	}
 
 	@Override
-	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
+	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos neighborPos, boolean notify) {
 		boolean bl = world.isReceivingRedstonePower(pos) || world.isReceivingRedstonePower(pos.offset(state.get(HALF) == DoubleBlockHalf.LOWER ? Direction.UP : Direction.DOWN));
 		if (block != this && bl != state.get(POWERED)) {
 			if (bl != state.get(POWERED)) {
@@ -243,10 +243,10 @@ public class AirlockBlock extends Block implements Waterloggable {
 	}
 
 	@Override
-	public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
+	public boolean canPlaceAt(BlockState state, WorldView view, BlockPos pos) {
 		BlockPos blockPos = pos.down();
-		BlockState blockState = world.getBlockState(blockPos);
-		return state.get(HALF) == DoubleBlockHalf.LOWER ? blockState.isSideSolidFullSquare(world, blockPos, Direction.UP) : blockState.isOf(this);
+		BlockState blockState = view.getBlockState(blockPos);
+		return state.get(HALF) == DoubleBlockHalf.LOWER ? blockState.isSideSolidFullSquare(view, blockPos, Direction.UP) : blockState.isOf(this);
 	}
 
 	private void playOpenCloseSound(World world, BlockPos pos, boolean open) {

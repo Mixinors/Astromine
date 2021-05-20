@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.component.general.provider;
 
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
+import com.github.mixinors.astromine.common.component.base.ItemComponent;
 
 /**
  * An interface meant to be implemented

@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.component.general.provider;
 
-import com.github.mixinors.astromine.common.component.block.entity.RedstoneComponent;
+import com.github.mixinors.astromine.common.component.base.RedstoneComponent;
 
 /**
  * An interface meant to be implemented

@@ -28,9 +28,9 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.ComparatorBlockEntity;
 import net.minecraft.screen.ScreenHandler;
 
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
+import com.github.mixinors.astromine.common.component.base.EnergyComponent;
+import com.github.mixinors.astromine.common.component.base.FluidComponent;
+import com.github.mixinors.astromine.common.component.base.ItemComponent;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import org.jetbrains.annotations.Nullable;
 

@@ -81,13 +81,13 @@ public class InserterBlock extends HorizontalFacingBlock implements BlockEntityP
 	}
 
 	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> stateManagerBuilder) {
-		stateManagerBuilder.add(FACING, Properties.POWERED, Properties.WATERLOGGED);
+	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+		builder.add(FACING, Properties.POWERED, Properties.WATERLOGGED);
 	}
 
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext context) {
-		return this.getDefaultState().with(Properties.POWERED, false).with(FACING, context.getPlayer().isSneaking() ? context.getPlayerFacing().getOpposite() : context.getPlayerFacing()).with(Properties.WATERLOGGED, context.getWorld().getBlockState(context.getBlockPos()).getBlock() == Blocks.WATER);
+	public BlockState getPlacementState(ItemPlacementContext ctx) {
+		return this.getDefaultState().with(Properties.POWERED, false).with(FACING, ctx.getPlayer().isSneaking() ? ctx.getPlayerFacing().getOpposite() : ctx.getPlayerFacing()).with(Properties.WATERLOGGED, ctx.getWorld().getBlockState(ctx.getBlockPos()).getBlock() == Blocks.WATER);
 	}
 
 	@Override
@@ -96,9 +96,9 @@ public class InserterBlock extends HorizontalFacingBlock implements BlockEntityP
 	}
 
 	@Override
-	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
+	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos neighborPos, boolean notify) {
 		if (!world.isClient) {
-			boolean powered = state.get(Properties.POWERED);
+			var powered = state.get(Properties.POWERED);
 
 			if (powered != world.isReceivingRedstonePower(pos)) {
 				if (powered) {
@@ -119,20 +119,20 @@ public class InserterBlock extends HorizontalFacingBlock implements BlockEntityP
 
 
 	@Override
-	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
+	public void onBlockAdded(BlockState oldState, World world, BlockPos pos, BlockState newState, boolean notify) {
 		updateDiagonals(world, this, pos);
 	}
 
 	@Override
-	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
-		if (state.getBlock() != newState.getBlock()) {
-			BlockEntity blockEntity = world.getBlockEntity(pos);
+	public void onStateReplaced(BlockState oldState, World world, BlockPos pos, BlockState newState, boolean moved) {
+		if (oldState.getBlock() != newState.getBlock()) {
+			var blockEntity = world.getBlockEntity(pos);
 
-			if (blockEntity instanceof InserterBlockEntity) {
-				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), ((InserterBlockEntity) blockEntity).getItemComponent().getFirst());
+			if (blockEntity instanceof InserterBlockEntity inserterBlockEntity) {
+				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), inserterBlockEntity.getItemComponent().getFirst());
 			}
 
-			super.onStateReplaced(state, world, pos, newState, moved);
+			super.onStateReplaced(oldState, world, pos, newState, moved);
 		}
 
 		updateDiagonals(world, this, pos);

@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.widget.blade;
 
-import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
+import com.github.mixinors.astromine.common.component.base.TransferComponent;
 import com.github.mixinors.astromine.registry.common.AMNetworks;
 import me.shedaniel.architectury.networking.NetworkManager;
 import net.fabricmc.api.EnvType;

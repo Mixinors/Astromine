@@ -48,9 +48,9 @@ import net.minecraft.tag.Tag;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
-import com.github.mixinors.astromine.common.component.entity.EntityOxygenComponent;
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.world.ChunkAtmosphereComponent;
+import com.github.mixinors.astromine.common.component.base.OxygenComponentImpl;
+import com.github.mixinors.astromine.common.component.base.FluidComponent;
+import com.github.mixinors.astromine.common.component.base.AtmosphereComponentImpl;
 import com.github.mixinors.astromine.common.entity.GravityEntity;
 import com.github.mixinors.astromine.common.registry.BreathableRegistry;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
@@ -89,7 +89,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 		}
 
 		if (!entity.getType().isIn(AMTags.DOES_NOT_BREATHE)) {
-			ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(entity.world.getChunk(entity.getBlockPos()));
+			AtmosphereComponentImpl atmosphereComponent = AtmosphereComponentImpl.from(entity.world.getChunk(entity.getBlockPos()));
 
 			if (atmosphereComponent != null) {
 				FluidVolume breathingVolume;
@@ -104,7 +104,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 					breathingVolume = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));
 				}
 				
-				EntityOxygenComponent oxygenComponent = EntityOxygenComponent.get(entity);
+				OxygenComponentImpl oxygenComponent = OxygenComponentImpl.from(entity);
 				
 				if (oxygenComponent != null) {
 					ItemStack helmetStack = ItemStack.EMPTY;

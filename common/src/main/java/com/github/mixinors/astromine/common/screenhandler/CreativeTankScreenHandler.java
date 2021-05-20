@@ -34,7 +34,7 @@ import net.minecraft.util.math.BlockPos;
 // DONE? - 20/11/2020 - 05:47:47
 // DONE! - 18/05/2021 - 13:15:41
 public class CreativeTankScreenHandler extends TankScreenHandler {
-	public CreativeTankScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.CREATIVE_TANK, syncId, player, position);
+	public CreativeTankScreenHandler(int syncId, PlayerEntity player, BlockPos pos) {
+		super(AMScreenHandlers.CREATIVE_TANK, syncId, player, pos);
 	}
 }

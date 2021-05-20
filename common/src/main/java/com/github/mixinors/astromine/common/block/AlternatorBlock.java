@@ -47,58 +47,58 @@ public class AlternatorBlock extends HorizontalFacingBlock implements BlockEntit
 	}
 
 	@Override
-	public BlockEntity createBlockEntity(BlockView blockView) {
+	public BlockEntity createBlockEntity(BlockView view) {
 		return new AlternatorBlockEntity();
 	}
 
 	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> stateManagerBuilder) {
-		stateManagerBuilder.add(FACING);
+	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+		builder.add(FACING);
 	}
 
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext itemPlacementContext) {
-		return this.getDefaultState().with(FACING, itemPlacementContext.getPlayer().isSneaking() ? itemPlacementContext.getPlayerFacing().getOpposite() : itemPlacementContext.getPlayerFacing());
+	public BlockState getPlacementState(ItemPlacementContext ctx) {
+		return this.getDefaultState().with(FACING, ctx.getPlayer().isSneaking() ? ctx.getPlayerFacing().getOpposite() : ctx.getPlayerFacing());
 	}
 
 	@Override
-	public void onBlockAdded(BlockState blockState, World world, BlockPos pos, BlockState oldState, boolean notify) {
+	public void onBlockAdded(BlockState oldState, World world, BlockPos pos, BlockState newState, boolean notify) {
 		updateDiagonals(world, this, pos);
 	}
 
 	@Override
-	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
-		if (state.getBlock() != newState.getBlock()) {
-			BlockEntity blockEntity = world.getBlockEntity(pos);
+	public void onStateReplaced(BlockState oldState, World world, BlockPos pos, BlockState newState, boolean moved) {
+		if (oldState.getBlock() != newState.getBlock()) {
+			var blockEntity = world.getBlockEntity(pos);
 			
-			if (blockEntity instanceof AbstractConveyableBlockEntity) {
-				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), ((AbstractConveyableBlockEntity) blockEntity).getItemComponent().getFirst());
-				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), ((AbstractConveyableBlockEntity) blockEntity).getItemComponent().getSecond());
+			if (blockEntity instanceof AbstractConveyableBlockEntity conveyableBlockEntity) {
+				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), conveyableBlockEntity.getItemComponent().getFirst());
+				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), conveyableBlockEntity.getItemComponent().getSecond());
 
 				blockEntity.markRemoved();
 			}
 
-			super.onStateReplaced(state, world, pos, newState, moved);
+			super.onStateReplaced(oldState, world, pos, newState, moved);
 		}
 
 		updateDiagonals(world, this, pos);
 	}
 
 	@Override
-	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
-		var direction = state.get(FACING);
+	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos neighborPos, boolean notify) {
+		var facing = state.get(FACING);
 
-		AbstractConveyableBlockEntity machineBlockEntity = (AbstractConveyableBlockEntity) world.getBlockEntity(pos);
+		var machineBlockEntity = (AbstractConveyableBlockEntity) world.getBlockEntity(pos);
 
-		var leftPos = pos.offset(direction.rotateYCounterclockwise());
-		var rightPos = pos.offset(direction.rotateYClockwise());
+		var leftPos = pos.offset(facing.rotateYCounterclockwise());
+		var rightPos = pos.offset(facing.rotateYClockwise());
 
-		BlockEntity leftBlockEntity = world.getBlockEntity(leftPos);
+		var leftBlockEntity = world.getBlockEntity(leftPos);
 
-		machineBlockEntity.setLeft(leftBlockEntity instanceof Conveyable && ((Conveyable) leftBlockEntity).canInsert(direction.rotateYClockwise()));
+		machineBlockEntity.setLeft((leftBlockEntity instanceof Conveyable conveyable) && conveyable.canInsert(facing.rotateYClockwise()));
 
-		BlockEntity rightBlockEntity = world.getBlockEntity(rightPos);
+		var rightBlockEntity = world.getBlockEntity(rightPos);
 
-		machineBlockEntity.setRight(rightBlockEntity instanceof Conveyable && ((Conveyable) rightBlockEntity).canInsert(direction.rotateYCounterclockwise()));
+		machineBlockEntity.setRight((rightBlockEntity instanceof Conveyable conveyable) && conveyable.canInsert(facing.rotateYCounterclockwise()));
 	}
 }

@@ -69,28 +69,22 @@ public class CatwalkStairsBlock extends HorizontalFacingBlock implements Waterlo
 	}
 
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext context) {
-		return this.getDefaultState().with(FACING, context.getPlayer().isSneaking() ? context.getPlayerFacing().getOpposite() : context.getPlayerFacing()).with(Properties.WATERLOGGED, context.getWorld().getBlockState(context.getBlockPos()).getBlock() == Blocks.WATER);
+	public BlockState getPlacementState(ItemPlacementContext ctx) {
+		return this.getDefaultState().with(FACING, ctx.getPlayer().isSneaking() ? ctx.getPlayerFacing().getOpposite() : ctx.getPlayerFacing()).with(Properties.WATERLOGGED, ctx.getWorld().getBlockState(ctx.getBlockPos()).getBlock() == Blocks.WATER);
 	}
 
-	public boolean isAdjacentBlockOfMyType(WorldAccess world, BlockPos position, Direction direction) {
-		BlockPos newPosition = position.offset(direction);
-
-		BlockState blockState = world.getBlockState(newPosition);
-
-		Block block = (null == blockState) ? null : blockState.getBlock();
-
-		return this == block;
+	public boolean isAdjacentBlockOfMyType(WorldAccess access, BlockPos pos, Direction direction) {
+		return this == access.getBlockState(pos.offset(direction)).getBlock();
 	}
 
 	@Override
-	public BlockState getStateForNeighborUpdate(BlockState state, Direction facing, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
-		return state.with(ConveyorBlock.RIGHT, this.isAdjacentBlockOfMyType(world, pos, state.get(FACING).rotateYClockwise())).with(ConveyorBlock.LEFT, this.isAdjacentBlockOfMyType(world, pos, state.get(FACING).rotateYCounterclockwise()));
+	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess access, BlockPos pos, BlockPos neighborPos) {
+		return state.with(ConveyorBlock.RIGHT, this.isAdjacentBlockOfMyType(access, pos, state.get(FACING).rotateYClockwise())).with(ConveyorBlock.LEFT, this.isAdjacentBlockOfMyType(access, pos, state.get(FACING).rotateYCounterclockwise()));
 	}
 
 	@Override
-	public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext entityContext) {
-		Direction facing = state.get(FACING);
+	public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext ctx) {
+		var facing = state.get(FACING);
 
 		if (SHAPE_CACHE[facing.getId()] == null) {
 			SHAPE_CACHE[facing.getId()] = VoxelShapes.union(

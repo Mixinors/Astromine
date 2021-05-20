@@ -34,8 +34,8 @@ import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 
 public class BlockPlacerScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
-	public BlockPlacerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.BLOCK_PLACER, syncId, player, position);
+	public BlockPlacerScreenHandler(int syncId, PlayerEntity player, BlockPos pos) {
+		super(AMScreenHandlers.BLOCK_PLACER, syncId, player, pos);
 	}
 
 	@Override

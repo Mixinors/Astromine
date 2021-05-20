@@ -39,8 +39,8 @@ import com.github.vini2003.blade.common.widget.base.SlotWidget;
 public class WireMillScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
 	private final WireMillBlockEntity wiremill;
 
-	public WireMillScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.WIREMILL, syncId, player, position);
+	public WireMillScreenHandler(int syncId, PlayerEntity player, BlockPos pos) {
+		super(AMScreenHandlers.WIREMILL, syncId, player, pos);
 
 		wiremill = (WireMillBlockEntity) energyItemBlockEntity;
 	}

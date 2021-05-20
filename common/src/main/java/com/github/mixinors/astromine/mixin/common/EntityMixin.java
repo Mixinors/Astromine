@@ -49,7 +49,7 @@ import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.access.EntityAccessor;
 import com.github.mixinors.astromine.client.atmosphere.ClientAtmosphereManager;
-import com.github.mixinors.astromine.common.component.world.ChunkAtmosphereComponent;
+import com.github.mixinors.astromine.common.component.base.AtmosphereComponentImpl;
 import com.github.mixinors.astromine.common.entity.GravityEntity;
 import com.github.mixinors.astromine.common.registry.DimensionLayerRegistry;
 import com.github.mixinors.astromine.registry.common.AMTags;
@@ -168,7 +168,7 @@ public abstract class EntityMixin implements GravityEntity, EntityAccessor {
 			
 			NetworkManager.sendToPlayer((ServerPlayerEntity) (Object) this, AMNetworks.GAS_ERASED, ClientAtmosphereManager.ofGasErased());
 
-			ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(getBlockPos()));
+			AtmosphereComponentImpl atmosphereComponent = AtmosphereComponentImpl.from(world.getChunk(getBlockPos()));
 
 			atmosphereComponent.getVolumes().forEach(((blockPos, volume) -> {
 				NetworkManager.sendToPlayer((ServerPlayerEntity) (Object) this, AMNetworks.GAS_ADDED, ClientAtmosphereManager.ofGasAdded(blockPos, volume));

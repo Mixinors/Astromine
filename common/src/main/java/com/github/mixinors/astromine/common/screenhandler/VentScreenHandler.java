@@ -31,7 +31,7 @@ import net.minecraft.util.math.BlockPos;
 import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyFluidScreenHandler;
 
 public class VentScreenHandler extends ComponentBlockEntityEnergyFluidScreenHandler {
-	public VentScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.VENT, syncId, player, position);
+	public VentScreenHandler(int syncId, PlayerEntity player, BlockPos pos) {
+		super(AMScreenHandlers.VENT, syncId, player, pos);
 	}
 }

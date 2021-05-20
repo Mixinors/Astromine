@@ -28,15 +28,15 @@ import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.mixinors.astromine.common.component.general.compatibility.InventoryFromItemComponent;
+import com.github.mixinors.astromine.common.component.compat.InventoryFromItemComponent;
 import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityItemScreenHandler;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.widget.base.SlotListWidget;
 
 public class BufferScreenHandler extends ComponentBlockEntityItemScreenHandler {
-	public BufferScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.BUFFER, syncId, player, position);
+	public BufferScreenHandler(int syncId, PlayerEntity player, BlockPos pos) {
+		super(AMScreenHandlers.BUFFER, syncId, player, pos);
 	}
 
 	@Override

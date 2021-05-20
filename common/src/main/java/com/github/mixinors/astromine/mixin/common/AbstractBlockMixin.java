@@ -45,8 +45,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.block.transfer.TransferType;
-import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
+import com.github.mixinors.astromine.common.component.base.TransferComponent;
+import com.github.mixinors.astromine.common.component.base.FluidComponent;
 import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 
@@ -55,7 +55,7 @@ public class AbstractBlockMixin {
 	@SuppressWarnings("all")
 	@Inject(at = @At("HEAD"),
 		method = "onUse(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;Lnet/minecraft/util/hit/BlockHitResult;)Lnet/minecraft/util/ActionResult;", cancellable = true)
-	void astromine_onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult result, CallbackInfoReturnable<ActionResult> cir) {
+	void astromine_onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
 		final ItemStack stack = player.getStackInHand(hand);
 
 		final Item stackItem = stack.getItem();
@@ -67,10 +67,10 @@ public class AbstractBlockMixin {
 		final FluidComponent stackFluidComponent = FluidComponent.from(stack);
 
 		if (state.getBlock().hasBlockEntity()) {
-			TransferComponent transferComponent = TransferComponent.get(world.getBlockEntity(pos));
+			TransferComponent transferComponent = TransferComponent.from(world.getBlockEntity(pos));
 
 			if (transferComponent != null && transferComponent.hasFluid()) {
-				TransferType type = transferComponent.getFluid(result.getSide());
+				TransferType type = transferComponent.getFluid(hit.getSide());
 
 				if (!type.canInsert() && !type.canExtract()) {
 					return;
@@ -92,7 +92,7 @@ public class AbstractBlockMixin {
 					FluidVolume stackVolume = stackFluidComponent.getFirst();
 
 					if (stackVolume.isEmpty()) {
-						FluidVolume extractable = blockEntityFluidComponent.getFirstExtractable(result.getSide());
+						FluidVolume extractable = blockEntityFluidComponent.getFirstExtractable(hit.getSide());
 
 						if (isBucket && extractable != null) {
 							if (extractable.hasStored(FluidVolume.BUCKET)) {
@@ -109,7 +109,7 @@ public class AbstractBlockMixin {
 							stackVolume.take(extractable, FluidVolume.BUCKET);
 						}
 					} else {
-						FluidVolume insertable = blockEntityFluidComponent.getFirstInsertable(result.getSide(), stackVolume);
+						FluidVolume insertable = blockEntityFluidComponent.getFirstInsertable(hit.getSide(), stackVolume);
 
 						if (isBucket && insertable != null) {
 							if (insertable.hasAvailable(FluidVolume.BUCKET)) {

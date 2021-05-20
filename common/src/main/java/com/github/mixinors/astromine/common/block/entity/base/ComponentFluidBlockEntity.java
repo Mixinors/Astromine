@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.common.block.entity.base;
 import com.github.mixinors.astromine.common.component.general.provider.FluidComponentProvider;
 import net.minecraft.block.entity.BlockEntityType;
 
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
+import com.github.mixinors.astromine.common.component.base.FluidComponent;
 
 import java.util.function.Supplier;
 

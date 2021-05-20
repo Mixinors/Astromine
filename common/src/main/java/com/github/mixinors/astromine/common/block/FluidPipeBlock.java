@@ -35,7 +35,7 @@ public class FluidPipeBlock extends CableBlock implements NetworkBlock.FluidNode
 	}
 
 	@Override
-	public <T extends NetworkType> T getNetworkType() {
-		return (T) AMNetworkTypes.FLUID;
+	public NetworkType getNetworkType() {
+		return AMNetworkTypes.FLUID;
 	}
 }

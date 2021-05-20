@@ -31,7 +31,7 @@ import net.minecraft.util.math.BlockPos;
 import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyFluidScreenHandler;
 
 public class FluidCollectorScreenHandler extends ComponentBlockEntityEnergyFluidScreenHandler {
-	public FluidCollectorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.FLUID_EXTRACTOR, syncId, player, position);
+	public FluidCollectorScreenHandler(int syncId, PlayerEntity player, BlockPos pos) {
+		super(AMScreenHandlers.FLUID_EXTRACTOR, syncId, player, pos);
 	}
 }

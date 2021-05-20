@@ -38,8 +38,8 @@ import com.github.vini2003.blade.common.miscellaneous.Size;
 public class ElectrolyzerScreenHandler extends ComponentBlockEntityEnergyFluidScreenHandler {
 	private final ElectrolyzerBlockEntity electrolyzer;
 
-	public ElectrolyzerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.ELECTROLYZER, syncId, player, position);
+	public ElectrolyzerScreenHandler(int syncId, PlayerEntity player, BlockPos pos) {
+		super(AMScreenHandlers.ELECTROLYZER, syncId, player, pos);
 
 		electrolyzer = (ElectrolyzerBlockEntity) energyFluidBlockEntity;
 	}

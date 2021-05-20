@@ -24,10 +24,10 @@
 
 package com.github.mixinors.astromine.common.block.entity.base;
 
-import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
+import com.github.mixinors.astromine.common.component.base.TransferComponent;
+import com.github.mixinors.astromine.common.component.base.EnergyComponent;
+import com.github.mixinors.astromine.common.component.base.FluidComponent;
+import com.github.mixinors.astromine.common.component.base.ItemComponent;
 import com.github.mixinors.astromine.common.component.general.provider.*;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 
@@ -40,7 +40,7 @@ import net.minecraft.util.Tickable;
 import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
-import com.github.mixinors.astromine.common.component.block.entity.RedstoneComponent;
+import com.github.mixinors.astromine.common.component.base.RedstoneComponent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;

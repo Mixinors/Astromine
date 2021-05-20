@@ -49,10 +49,10 @@ public class ComponentBlockEntityEnergyFluidScreenHandler extends ComponentBlock
 
 	/** Instantiates a {@link ComponentBlockEntityItemScreenHandler},
 	 * obtaining the {@link ComponentEnergyFluidBlockEntity}. */
-	public ComponentBlockEntityEnergyFluidScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
-		super(type, syncId, player, position);
+	public ComponentBlockEntityEnergyFluidScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos pos) {
+		super(type, syncId, player, pos);
 
-		energyFluidBlockEntity = (ComponentEnergyFluidBlockEntity) player.world.getBlockEntity(position);
+		energyFluidBlockEntity = (ComponentEnergyFluidBlockEntity) player.world.getBlockEntity(pos);
 	}
 
 	/** Override behavior to add energy and fluid bars. */

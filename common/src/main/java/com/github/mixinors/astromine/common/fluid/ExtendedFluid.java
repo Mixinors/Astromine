@@ -139,9 +139,9 @@ public abstract class ExtendedFluid extends FlowableFluid {
 
 	/** Override behavior to mimic {@link WaterFluid}. */
 	@Override
-	protected void beforeBreakingBlock(WorldAccess world, BlockPos position, BlockState state) {
-		BlockEntity blockEntity = state.getBlock().hasBlockEntity() ? world.getBlockEntity(position) : null;
-		Block.dropStacks(state, world, position, blockEntity);
+	protected void beforeBreakingBlock(WorldAccess world, BlockPos pos, BlockState state) {
+		BlockEntity blockEntity = state.getBlock().hasBlockEntity() ? world.getBlockEntity(pos) : null;
+		Block.dropStacks(state, world, pos, blockEntity);
 	}
 
 	/** Asserts whether the given fluid equals

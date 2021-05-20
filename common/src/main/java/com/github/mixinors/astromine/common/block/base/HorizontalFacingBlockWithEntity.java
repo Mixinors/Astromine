@@ -59,14 +59,14 @@ public abstract class HorizontalFacingBlockWithEntity extends BlockWithEntity {
 
 	/** Override behavior to add the {@link DirectionProperty}. */
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext context) {
+	public BlockState getPlacementState(ItemPlacementContext ctx) {
 		var directionProperty = getDirectionProperty();
 
 		if (directionProperty != null) {
-			return super.getPlacementState(context).with(getDirectionProperty(), context.getPlayerFacing().getOpposite());
+			return super.getPlacementState(ctx).with(getDirectionProperty(), ctx.getPlayerFacing().getOpposite());
 		}
 
-		return super.getPlacementState(context);
+		return super.getPlacementState(ctx);
 	}
 
 	/** Override behavior to add the {@link DirectionProperty}. */

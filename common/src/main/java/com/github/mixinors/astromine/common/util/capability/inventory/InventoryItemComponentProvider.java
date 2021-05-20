@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.util.capability.inventory;
 
-import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
+import com.github.mixinors.astromine.common.component.base.TransferComponent;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.InventoryProvider;
 import net.minecraft.inventory.SidedInventory;
@@ -33,8 +33,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.WorldAccess;
 
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.compatibility.InventoryFromItemComponent;
+import com.github.mixinors.astromine.common.component.base.ItemComponent;
+import com.github.mixinors.astromine.common.component.compat.InventoryFromItemComponent;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 
@@ -61,7 +61,7 @@ public interface InventoryItemComponentProvider extends InventoryProvider, Sided
 	 * {@link TransferComponent}, if present. */
 	@Override
 	default boolean canInsert(int slot, ItemStack stack, Direction direction) {
-		var transferComponent = TransferComponent.get(this);
+		var transferComponent = TransferComponent.from(this);
 		
 		if (transferComponent != null) {
 			return transferComponent.hasItem() && transferComponent.getItem(direction).canInsert() && getItemComponent().canInsert(direction, stack, slot);
@@ -74,7 +74,7 @@ public interface InventoryItemComponentProvider extends InventoryProvider, Sided
 	 * {@link TransferComponent}, if present. */
 	@Override
 	default boolean canExtract(int slot, ItemStack stack, Direction direction) {
-		var transferComponent = TransferComponent.get(this);
+		var transferComponent = TransferComponent.from(this);
 
 		if (transferComponent != null) {
 			return transferComponent.hasItem() && transferComponent.getItem(direction).canExtract() && getItemComponent().canExtract(direction, stack, slot);
@@ -87,7 +87,7 @@ public interface InventoryItemComponentProvider extends InventoryProvider, Sided
 	 * {@link TransferComponent}, if present. */
 	@Override
 	default int[] getAvailableSlots(Direction direction) {
-		var transferComponent = TransferComponent.get(this);
+		var transferComponent = TransferComponent.from(this);
 
 		if (transferComponent != null) {
 			if (transferComponent.hasItem()) {

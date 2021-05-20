@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.component.general.provider;
 
-import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
+import com.github.mixinors.astromine.common.component.base.TransferComponent;
 
 /**
  * An interface meant to be implemented

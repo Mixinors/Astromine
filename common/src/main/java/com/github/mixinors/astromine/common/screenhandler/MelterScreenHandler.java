@@ -39,8 +39,8 @@ import com.github.vini2003.blade.common.widget.base.SlotWidget;
 public class MelterScreenHandler extends ComponentBlockEntityEnergyFluidItemScreenHandler {
 	private final MelterBlockEntity melter;
 
-	public MelterScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.MELTER, syncId, player, position);
+	public MelterScreenHandler(int syncId, PlayerEntity player, BlockPos pos) {
+		super(AMScreenHandlers.MELTER, syncId, player, pos);
 
 		melter = (MelterBlockEntity) energyFluidItemBlockEntity;
 	}

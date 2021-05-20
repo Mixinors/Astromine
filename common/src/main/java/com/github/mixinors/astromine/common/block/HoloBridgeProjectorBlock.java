@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.block;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWithEntity;
+import com.github.mixinors.astromine.mixin.common.DyeColorAccessor;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -50,19 +51,18 @@ public class HoloBridgeProjectorBlock extends HorizontalFacingBlockWithEntity {
 	}
 
 	@Override
-	public ActionResult onUse(BlockState state, World world, BlockPos position, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		ItemStack stack = player.getStackInHand(hand);
+	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+		var stack = player.getStackInHand(hand);
 
-		if (stack.getItem() instanceof DyeItem) {
-			DyeItem dye = (DyeItem) stack.getItem();
+		if (stack.getItem() instanceof DyeItem dyeItem) {
+			
+			var originalEntity = (HoloBridgeProjectorBlockEntity) world.getBlockEntity(pos);
 
-			HoloBridgeProjectorBlockEntity originalEntity = (HoloBridgeProjectorBlockEntity) world.getBlockEntity(position);
-
-			for (HoloBridgeProjectorBlockEntity entity : new HoloBridgeProjectorBlockEntity[] {originalEntity.getChild(), originalEntity, originalEntity.getParent()}) {
+			for (var entity : new HoloBridgeProjectorBlockEntity[] { originalEntity.getChild(), originalEntity, originalEntity.getParent() }) {
 				if (entity != null) {
-					int color = dye.getColor().color;
+					var color = ((DyeColorAccessor) (Object) dyeItem.getColor()).getColor();
 
-					Color colorColor = new Color((color >> 16 & 0xFF) / 255F, (color >> 8 & 0xFF) / 255F, (color & 0xFF) / 255F, 0x7E);
+					var colorColor = new Color((color >> 16 & 0xFF) / 255F, (color >> 8 & 0xFF) / 255F, (color & 0xFF) / 255F, 0x7E);
 
 					entity.color = colorColor;
 
@@ -92,22 +92,12 @@ public class HoloBridgeProjectorBlock extends HorizontalFacingBlockWithEntity {
 	}
 
 	@Override
-	public boolean hasScreenHandler() {
-		return false;
-	}
-
-	@Override
 	public BlockEntity createBlockEntity() {
 		return new HoloBridgeProjectorBlockEntity();
 	}
 
 	@Override
-	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-		return null;
-	}
-
-	@Override
-	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {}
+	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buf) {}
 
 	@Override
 	protected boolean saveTagToDroppedItem() {

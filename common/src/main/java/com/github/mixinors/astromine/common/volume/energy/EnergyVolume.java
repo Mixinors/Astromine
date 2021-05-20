@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.common.volume.energy;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
 
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
+import com.github.mixinors.astromine.common.component.base.EnergyComponent;
 import com.github.mixinors.astromine.common.volume.base.Volume;
 import io.netty.buffer.ByteBuf;
 

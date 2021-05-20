@@ -39,8 +39,8 @@ import com.github.vini2003.blade.common.widget.base.SlotWidget;
 public class SolidifierScreenHandler extends ComponentBlockEntityEnergyFluidItemScreenHandler {
 	private final SolidifierBlockEntity solidifier;
 
-	public SolidifierScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.SOLIDIFIER, syncId, player, position);
+	public SolidifierScreenHandler(int syncId, PlayerEntity player, BlockPos pos) {
+		super(AMScreenHandlers.SOLIDIFIER, syncId, player, pos);
 
 		solidifier = (SolidifierBlockEntity) energyFluidItemBlockEntity;
 	}

@@ -29,7 +29,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 public class CreativeCapacitorScreenHandler extends CapacitorScreenHandler {
-	public CreativeCapacitorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.CREATIVE_CAPACITOR, syncId, player, position);
+	public CreativeCapacitorScreenHandler(int syncId, PlayerEntity player, BlockPos pos) {
+		super(AMScreenHandlers.CREATIVE_CAPACITOR, syncId, player, pos);
 	}
 }

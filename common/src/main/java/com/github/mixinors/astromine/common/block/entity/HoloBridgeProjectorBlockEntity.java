@@ -159,7 +159,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 		}
 
 		this.segments = (ArrayList<Vector3f>) LineUtils.getBresenhamSegments(VectorUtils.toVector3f(bOP.offset(Direction.UP)), VectorUtils.toVector3f(nCP.offset(Direction.UP)), 32);
-		var bridgeComponent = WorldHoloBridgeComponent.get(world);
+		var bridgeComponent = WorldHoloBridgeComponent.from(world);
 
 		for (var v : this.segments) {
 			var nP = new BlockPos(v.getX(), v.getY(), v.getZ());
@@ -233,7 +233,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 
 	public void destroyBridge() {
 		if (this.segments != null && this.world != null) {
-			var bridgeComponent = WorldHoloBridgeComponent.get(world);
+			var bridgeComponent = WorldHoloBridgeComponent.from(world);
 
 			for (var vec : this.segments) {
 				var pos = new BlockPos(vec.getX(), vec.getY(), vec.getZ());

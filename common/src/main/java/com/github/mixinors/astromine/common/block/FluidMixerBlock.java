@@ -55,13 +55,13 @@ public abstract class FluidMixerBlock extends HorizontalFacingTieredBlockWithEnt
 		}
 
 		@Override
-		public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-			return new FluidMixerScreenHandler(syncId, playerInventory.player, pos);
+		public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory inventory, PlayerEntity player) {
+			return new FluidMixerScreenHandler(syncId, inventory.player, pos);
 		}
 
 		@Override
-		public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
-			buffer.writeBlockPos(pos);
+		public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buf) {
+			buf.writeBlockPos(pos);
 		}
 	}
 
