@@ -62,7 +62,7 @@ public final class FluidNetworkType implements NetworkType {
 			if (networkMember.acceptsType(this)) {
 				BlockEntity blockEntity = memberPos.getBlockEntity();
 
-				FluidComponent fluidComponent = FluidComponent.get(blockEntity);
+				FluidComponent fluidComponent = FluidComponent.from(blockEntity);
 
 				TransferType type = TransferType.NONE;
 

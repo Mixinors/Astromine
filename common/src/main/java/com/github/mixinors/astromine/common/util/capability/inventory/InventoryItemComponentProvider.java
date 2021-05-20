@@ -105,6 +105,6 @@ public interface InventoryItemComponentProvider extends InventoryProvider, Sided
 	/** Override behavior to return this as an {@link ItemComponent}. */
 	@Override
 	default ItemComponent getItemComponent() {
-		return ItemComponent.get(this);
+		return ItemComponent.from(this);
 	}
 }

@@ -28,20 +28,16 @@ import com.github.mixinors.astromine.common.component.general.base.EnergyCompone
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.item.ItemStack;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
-import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.common.volume.energy.InfiniteEnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
-import team.reborn.energy.Energy;
-import team.reborn.energy.EnergyHandler;
 
 import java.util.function.Supplier;
 
-public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
+public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, SpeedProvider {
 	public CapacitorBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 	}
@@ -49,8 +45,16 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 	@Override
 	public ItemComponent createItemComponent() {
 		return ItemComponent.of(this, 2).withInsertPredicate((direction, stack, slot) -> {
+			if (!transfer.getItem(direction).canInsert()) {
+				return false;
+			}
+			
 			return slot == 0;
 		}).withExtractPredicate((direction, stack, slot) -> {
+			if (!transfer.getItem(direction).canExtract()) {
+				return false;
+			}
+			
 			return slot == 1;
 		});
 	}
@@ -66,19 +70,19 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 
 		if (world == null || world.isClient || !tickRedstone())
 			return;
-
-		var itemComponent = getItemComponent();
-
-		ItemStack inputStack = itemComponent.getFirst();
-		if (Energy.valid(inputStack)) {
-			EnergyHandler energyHandler = Energy.of(inputStack);
-			energyHandler.into(Energy.of(this)).move(1024 * getMachineSpeed());
+		
+		var input = items.getFirst();
+		var output = items.getSecond();
+		
+		var inputEnergy = EnergyComponent.from(input);
+		var outputEnergy = EnergyComponent.from(output);
+		
+		if (inputEnergy != null) {
+			inputEnergy.into(energy, 1024.0D * getMachineSpeed());
 		}
-
-		ItemStack outputStack = itemComponent.getSecond();
-		if (Energy.valid(outputStack)) {
-			EnergyHandler energyHandler = Energy.of(outputStack);
-			Energy.of(this).into(energyHandler).move(1024 * getMachineSpeed());
+		
+		if (outputEnergy != null) {
+			energy.into(outputEnergy, 1024.0D * getMachineSpeed());
 		}
 	}
 
@@ -96,11 +100,6 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 		public double getMachineSpeed() {
 			return AMConfig.get().primitiveCapacitorSpeed;
 		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.PRIMITIVE;
-		}
 	}
 
 	public static class Basic extends CapacitorBlockEntity {
@@ -116,11 +115,6 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 		@Override
 		public double getMachineSpeed() {
 			return AMConfig.get().basicCapacitorSpeed;
-		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.BASIC;
 		}
 	}
 
@@ -138,11 +132,6 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 		public double getMachineSpeed() {
 			return AMConfig.get().advancedCapacitorSpeed;
 		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.ADVANCED;
-		}
 	}
 
 	public static class Elite extends CapacitorBlockEntity {
@@ -158,11 +147,6 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 		@Override
 		public double getMachineSpeed() {
 			return AMConfig.get().eliteCapacitorSpeed;
-		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.ELITE;
 		}
 	}
 
@@ -184,11 +168,6 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 		@Override
 		public double getMachineSpeed() {
 			return Double.MAX_VALUE;
-		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.CREATIVE;
 		}
 	}
 }

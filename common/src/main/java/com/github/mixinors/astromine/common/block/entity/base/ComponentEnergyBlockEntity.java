@@ -36,13 +36,13 @@ import java.util.function.Supplier;
  * {@link EnergyComponent}.
  */
 public abstract class ComponentEnergyBlockEntity extends ComponentBlockEntity implements EnergyComponentProvider {
-	private final EnergyComponent energyComponent = createEnergyComponent();
+	protected final EnergyComponent energy = createEnergyComponent();
 
 	/** Instantiates a {@link ComponentEnergyBlockEntity}. */
 	public ComponentEnergyBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 		
-		getEnergyComponent().updateListeners();
+		energy.updateListeners();
 	}
 
 	/** Returns the {@link EnergyComponent} to be attached. */
@@ -51,6 +51,6 @@ public abstract class ComponentEnergyBlockEntity extends ComponentBlockEntity im
 	/** Returns the attached {@link EnergyComponent}. */
 	@Override
 	public EnergyComponent getEnergyComponent() {
-		return energyComponent;
+		return energy;
 	}
 }

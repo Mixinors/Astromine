@@ -54,7 +54,7 @@ public class SimpleFluidComponent implements FluidComponent {
 		this.size = size;
 
 		for (var i = 0; i < size; ++i) {
-			setVolume(i, FluidVolume.ofEmpty(this::updateListeners));
+			set(i, FluidVolume.ofEmpty(this::updateListeners));
 		}
 
 		this.contents.defaultReturnValue(FluidVolume.ofEmpty(this::updateListeners));
@@ -65,7 +65,7 @@ public class SimpleFluidComponent implements FluidComponent {
 		this(volumes.length);
 
 		for (var i = 0; i < volumes.length; ++i) {
-			setVolume(i, volumes[i]);
+			set(i, volumes[i]);
 		}
 	}
 

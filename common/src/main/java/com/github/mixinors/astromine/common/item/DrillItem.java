@@ -74,7 +74,7 @@ public class DrillItem extends EnergyVolumeItem implements Vanishable, Enchantab
 	@Override
 	public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		if (!target.world.isClient) {
-			var energyComponent = EnergyComponent.get(stack);
+			var energyComponent = EnergyComponent.from(stack);
 			energyComponent.take(getEnergyConsumed() * AMConfig.get().drillEntityHitMultiplier);
 		}
 
@@ -84,7 +84,7 @@ public class DrillItem extends EnergyVolumeItem implements Vanishable, Enchantab
 	@Override
 	public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
 		if (!world.isClient && state.getHardness(world, pos) != 0.0F) {
-			var energyComponent = EnergyComponent.get(stack);
+			var energyComponent = EnergyComponent.from(stack);
 			energyComponent.take(getEnergyConsumed());
 		}
 

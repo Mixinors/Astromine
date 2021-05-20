@@ -26,32 +26,21 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.base.SimpleDirectionalItemComponent;
-import com.github.mixinors.astromine.common.component.general.base.SimpleEnergyComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ItemScatterer;
-import net.minecraft.util.Pair;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
 import com.github.mixinors.astromine.common.util.StackUtils;
-import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergyConsumedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
-import java.util.Optional;
 
 public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
 	private long cooldown = 0L;
@@ -89,66 +78,58 @@ public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity impl
 	public void tick() {
 		super.tick();
 
-		if (world == null || world.isClient || !tickRedstone())
+		if (!(world instanceof ServerWorld) || !tickRedstone())
 			return;
+		
+		if (energy.getAmount() < getEnergyConsumed()) {
+			cooldown = 0L;
 
-		var itemComponent = getItemComponent();
+			tickInactive();
+		} else {
+			tickActive();
 
-		var energyComponent = getEnergyComponent();
+			cooldown = cooldown++;
 
-		if (itemComponent != null && energyComponent != null) {
-			var energyVolume = energyComponent.getVolume();
-
-			if (energyVolume.getAmount() < getEnergyConsumed()) {
+			if (cooldown >= getMachineSpeed()) {
 				cooldown = 0L;
 
-				tickInactive();
-			} else {
-				tickActive();
+				var stored = items.getFirst();
 
-				cooldown = cooldown++;
+				var direction = getCachedState().get(HorizontalFacingBlock.FACING);
 
-				if (cooldown >= getMachineSpeed()) {
-					cooldown = 0L;
+				var targetPos = getPos().offset(direction);
 
-					var stored = itemComponent.getFirst();
+				var targetState = world.getBlockState(targetPos);
 
-					var direction = getCachedState().get(HorizontalFacingBlock.FACING);
+				if (targetState.isAir()) {
+					tickInactive();
+				} else {
+					var targetEntity = world.getBlockEntity(targetPos);
 
-					var targetPos = getPos().offset(direction);
+					var drops = Block.getDroppedStacks(targetState, (ServerWorld) world, targetPos, targetEntity);
 
-					var targetState = world.getBlockState(targetPos);
+					var storedCopy = stored.copy();
 
-					if (targetState.isAir()) {
-						tickInactive();
-					} else {
-						var targetEntity = world.getBlockEntity(targetPos);
+					var matching = drops.stream().filter(stack -> storedCopy.isEmpty() || (StackUtils.areItemsAndTagsEqual(stack, storedCopy) && storedCopy.getMaxCount() - storedCopy.getCount() > stack.getCount())).findFirst();
 
-						var drops = Block.getDroppedStacks(targetState, (ServerWorld) world, targetPos, targetEntity);
+					matching.ifPresent(match -> {
+						var pair = StackUtils.merge(match, stored);
+						
+						items.setFirst(pair.getRight());
+						
+						drops.remove(match);
+						drops.add(pair.getLeft());
+					});
 
-						var storedCopy = stored.copy();
+					drops.forEach(stack -> {
+						if (!stack.isEmpty()) {
+							ItemScatterer.spawn(world, targetPos.getX(), targetPos.getY(), targetPos.getZ(), stack);
+						}
+					});
 
-						var matching = drops.stream().filter(stack -> storedCopy.isEmpty() || (StackUtils.areItemsAndTagsEqual(stack, storedCopy) && storedCopy.getMaxCount() - storedCopy.getCount() > stack.getCount())).findFirst();
+					world.breakBlock(targetPos, false);
 
-						matching.ifPresent(match -> {
-							var pair = StackUtils.merge(match, stored);
-							
-							itemComponent.setFirst(pair.getRight());
-							
-							drops.remove(match);
-							drops.add(pair.getLeft());
-						});
-
-						drops.forEach(stack -> {
-							if (!stack.isEmpty()) {
-								ItemScatterer.spawn(world, targetPos.getX(), targetPos.getY(), targetPos.getZ(), stack);
-							}
-						});
-
-						world.breakBlock(targetPos, false);
-
-						energyVolume.take(getEnergyConsumed());
-					}
+					energy.take(getEnergyConsumed());
 				}
 			}
 		}

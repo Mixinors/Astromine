@@ -124,7 +124,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 					FluidComponent fluidComponent = null;
 					
 					if (hasSuit) {
-						fluidComponent = FluidComponent.get(chestplateStack);
+						fluidComponent = FluidComponent.from(chestplateStack);
 						
 						if (fluidComponent != null) {
 							breathingVolume = fluidComponent.getFirst();

@@ -65,8 +65,8 @@ public class GravityGauntletItem extends EnergyVolumeItem {
 		var offStack = user.getStackInHand(Hand.OFF_HAND);
 		
 		if (offStack.getItem() == AMItems.GRAVITY_GAUNTLET.get()) {
-			var ourEnergyComponent = EnergyComponent.get(stack);
-			var theirEnergyComponent = EnergyComponent.get(offStack);
+			var ourEnergyComponent = EnergyComponent.from(stack);
+			var theirEnergyComponent = EnergyComponent.from(offStack);
 			
 			if (ourEnergyComponent.getAmount() > AMConfig.get().gravityGauntletConsumed && theirEnergyComponent.getAmount() > AMConfig.get().gravityGauntletConsumed) {
 				user.setCurrentHand(hand);
@@ -84,8 +84,8 @@ public class GravityGauntletItem extends EnergyVolumeItem {
 		var offStack = user.getStackInHand(Hand.OFF_HAND);
 		
 		if (offStack.getItem() == AMItems.GRAVITY_GAUNTLET.get()) {
-			var ourEnergyComponent = EnergyComponent.get(stack);
-			var theirEnergyComponent = EnergyComponent.get(offStack);
+			var ourEnergyComponent = EnergyComponent.from(stack);
+			var theirEnergyComponent = EnergyComponent.from(offStack);
 			
 			if (ourEnergyComponent.getAmount() > AMConfig.get().gravityGauntletConsumed && theirEnergyComponent.getAmount() > AMConfig.get().gravityGauntletConsumed) {
 				ourEnergyComponent.take(AMConfig.get().gravityGauntletConsumed);

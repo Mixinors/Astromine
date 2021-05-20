@@ -32,6 +32,7 @@ import net.minecraft.block.FluidDrainable;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -58,9 +59,7 @@ public class FluidCollectorBlockEntity extends ComponentEnergyFluidBlockEntity i
 
 	@Override
 	public FluidComponent createFluidComponent() {
-		FluidComponent fluidComponent = SimpleDirectionalFluidComponent.of(this, 1);
-		fluidComponent.getFirst().setSize(FluidVolume.BUCKET * 8);
-		return fluidComponent;
+		return FluidComponent.of(this, 1).withSizes(FluidVolume.BUCKET * 8);
 	}
 
 	@Override
@@ -86,18 +85,12 @@ public class FluidCollectorBlockEntity extends ComponentEnergyFluidBlockEntity i
 	@Override
 	public void tick() {
 		super.tick();
-
-		if (world == null || world.isClient || !tickRedstone())
+		
+		if (!(world instanceof ServerWorld) || !tickRedstone())
 			return;
 
-		FluidComponent fluidComponent = getFluidComponent();
-
-		var energyComponent = getEnergyComponent();
-
-		if (fluidComponent != null) {
-			var energyVolume = energyComponent.getVolume();
-
-			if (energyVolume.getAmount() < getEnergyConsumed()) {
+		if (fluids != null) {
+			if (energy.getAmount() < getEnergyConsumed()) {
 				cooldown = 0L;
 
 				tickInactive();
@@ -109,26 +102,27 @@ public class FluidCollectorBlockEntity extends ComponentEnergyFluidBlockEntity i
 				if (cooldown >= getMachineSpeed()) {
 					cooldown = 0L;
 
-					FluidVolume fluidVolume = fluidComponent.getFirst();
+					var volume = fluids.getFirst();
 
 					var direction = getCachedState().get(HorizontalFacingBlock.FACING);
 
-					BlockPos targetPos = pos.offset(direction);
+					var targetPos = pos.offset(direction);
 
-					BlockState targetBlockState = world.getBlockState(targetPos);
-					FluidState targetFluidState = world.getFluidState(targetPos);
+					var targetBlockState = world.getBlockState(targetPos);
+					var targetFluidState = world.getFluidState(targetPos);
 
-					Block targetBlock = targetBlockState.getBlock();
+					var targetBlock = targetBlockState.getBlock();
 
-					if (targetBlock instanceof FluidDrainable && targetFluidState.isStill()) {
-						FluidVolume toInsert = FluidVolume.of(FluidVolume.BUCKET, targetFluidState.getFluid());
+					if (targetBlock instanceof FluidDrainable drainable && targetFluidState.isStill()) {
+						var volumeToInsert = FluidVolume.of(FluidVolume.BUCKET, targetFluidState.getFluid());
 
-						if (toInsert.test(fluidVolume)) {
-							fluidVolume.take(toInsert, toInsert.getAmount());
+						if (volumeToInsert.test(volume)) {
+							volume.take(volumeToInsert, volumeToInsert.getAmount());
 
-							energyVolume.take(getEnergyConsumed());
+							energy.take(getEnergyConsumed());
 
-							((FluidDrainable)targetBlock).tryDrainFluid(world, targetPos, targetBlockState);
+							drainable.tryDrainFluid(world, targetPos, targetBlockState);
+							
 							world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);
 						}
 					}
@@ -139,13 +133,15 @@ public class FluidCollectorBlockEntity extends ComponentEnergyFluidBlockEntity i
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.putLong("cooldown", cooldown);
+		tag.putLong("Cooldown", cooldown);
+		
 		return super.toTag(tag);
 	}
 
 	@Override
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		cooldown = tag.getLong("cooldown");
+		cooldown = tag.getLong("Cooldown");
+		
 		super.fromTag(state, tag);
 	}
 }

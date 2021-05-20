@@ -74,11 +74,11 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityExten
 	public ItemComponent createItemComponent() {
 		return new SimpleItemComponent(1) {
 			@Override
-			public ItemStack removeStack(int slot) {
+			public ItemStack remove(int slot) {
 				position = 15;
 				prevPosition = 15;
 
-				return super.removeStack(slot);
+				return super.remove(slot);
 			}
 		}.withListener((inventory) -> {
 			if (world != null && !world.isClient) {
@@ -103,10 +103,10 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityExten
 			if (getItemComponent().isEmpty()) {
 				BlockState behindState = world.getBlockState(getPos().offset(facing.getOpposite()));
 
-				ItemComponent extractableItemComponent = ItemComponent.get(world.getBlockEntity(getPos().offset(facing.getOpposite())));
+				ItemComponent extractableItemComponent = ItemComponent.from(world.getBlockEntity(getPos().offset(facing.getOpposite())));
 
 				if (extractableItemComponent != null && !extractableItemComponent.isEmpty()) {
-					ItemStack stack = extractableItemComponent.getFirstExtractableStack(facing);
+					ItemStack stack = extractableItemComponent.getFirstExtractable(facing);
 
 					if (position == 0 && stack != null && !(behindState.getBlock() instanceof InserterBlock)) {
 						extractableItemComponent.into(getItemComponent(), AMConfig.get().inserterStackSize, facing, facing);
@@ -121,9 +121,9 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityExten
 					if (position == 0 && entityInventories.size() >= 1) {
 						Inventory entityInventory = entityInventories.get(0);
 
-						extractableItemComponent = ItemComponent.get(entityInventory);
+						extractableItemComponent = ItemComponent.from(entityInventory);
 
-						ItemStack stack = extractableItemComponent.getFirstExtractableStack(facing.getOpposite());
+						ItemStack stack = extractableItemComponent.getFirstExtractable(facing.getOpposite());
 
 						if (position == 0 && !stack.isEmpty()) {
 							extractableItemComponent.into(getItemComponent(), AMConfig.get().inserterStackSize, facing);
@@ -137,7 +137,7 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityExten
 			} else if (!getItemComponent().isEmpty()) {
 				BlockState aheadState = getWorld().getBlockState(getPos().offset(facing));
 
-				ItemComponent insertableItemComponent = ItemComponent.get(world.getBlockEntity(getPos().offset(facing)));
+				ItemComponent insertableItemComponent = ItemComponent.from(world.getBlockEntity(getPos().offset(facing)));
 
 				Direction insertionDirection = facing.getOpposite();
 
@@ -148,10 +148,10 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityExten
 				}
 
 				if (insertableItemComponent != null) {
-					ItemStack sampleStack = getItemComponent().getFirst().copy();
+					var sampleStack = getItemComponent().getFirst().copy();
 					sampleStack.setCount(1);
 
-					ItemStack stack = insertableItemComponent.getFirstInsertableStack(insertionDirection, sampleStack);
+					ItemStack stack = insertableItemComponent.getFirstInsertable(insertionDirection, sampleStack);
 
 					if (stack != null) {
 						if (position < speed) {
@@ -170,9 +170,9 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityExten
 					if (entityInventories.size() >= 1) {
 						Inventory entityInventory = entityInventories.get(0);
 
-						insertableItemComponent = ItemComponent.get(entityInventory);
+						insertableItemComponent = ItemComponent.from(entityInventory);
 
-						ItemStack stack = insertableItemComponent.getFirstInsertableStack(insertionDirection, getItemComponent().getFirst());
+						ItemStack stack = insertableItemComponent.getFirstInsertable(insertionDirection, getItemComponent().getFirst());
 
 						if (position < speed && (stack.isEmpty() || stack.getCount() != getItemComponent().getFirst().getCount())) {
 							setPosition(getPosition() + 1);

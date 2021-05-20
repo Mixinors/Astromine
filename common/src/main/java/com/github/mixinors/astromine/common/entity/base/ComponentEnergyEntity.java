@@ -43,6 +43,6 @@ public abstract class ComponentEnergyEntity extends ComponentEntity {
 
 	/** Returns the attached {@link EnergyComponent}. */
 	public EnergyComponent getEnergyComponent() {
-		return EnergyComponent.get(this);
+		return EnergyComponent.from(this);
 	}
 }

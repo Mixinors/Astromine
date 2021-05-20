@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.Direction;
 
@@ -40,27 +41,25 @@ public class DrainBlockEntity extends ComponentFluidBlockEntity implements Ticka
 		super(AMBlockEntityTypes.DRAIN);
 
 		for (var direction : Direction.values()) {
-			getTransferComponent().get(AMComponents.FLUID).set(direction, TransferType.INPUT);
+			transfer.getFluidEntry().set(direction, TransferType.INPUT);
 		}
 	}
 
 	@Override
 	public FluidComponent createFluidComponent() {
-		FluidComponent fluidComponent = SimpleFluidComponent.of(1).withInsertPredicate((direction, volume, slot) -> {
+		return FluidComponent.of(1).withInsertPredicate((direction, volume, slot) -> {
 			return tickRedstone();
-		});
-
-		fluidComponent.getFirst().setSize(Long.MAX_VALUE);
-
-		return fluidComponent;
+		}).withSizes(Long.MAX_VALUE);
 	}
 
 	@Override
 	public void tick() {
-		if (world == null)
+		if (!(world instanceof ServerWorld))
 			return;
-
-		getFluidComponent().getFirst().setFluid(Fluids.EMPTY);
-		getFluidComponent().getFirst().setAmount(0L);
+		
+		var volume = fluids.getFirst();
+		
+		volume.setFluid(Fluids.EMPTY);
+		volume.setAmount(0L);
 	}
 }

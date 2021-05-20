@@ -66,16 +66,16 @@ public class CapacitorScreenHandler extends ComponentBlockEntityEnergyItemScreen
 		leftArrow.setPosition(Position.of(input, 28, 0));
 		leftArrow.setSize(Size.of(22, 16));
 		leftArrow.setLimitSupplier(() -> {
-			var stack = ItemComponent.get(energyItemBlockEntity).getFirst();
+			var stack = ItemComponent.from(energyItemBlockEntity).getFirst();
 			
-			var energyComponent = EnergyComponent.get(stack);
+			var energyComponent = EnergyComponent.from(stack);
 			
 			return (int) energyComponent.getSize();
 		});
 		leftArrow.setProgressSupplier(() -> {
-			var stack = ItemComponent.get(energyItemBlockEntity).getFirst();
+			var stack = ItemComponent.from(energyItemBlockEntity).getFirst();
 			
-			var energyComponent = EnergyComponent.get(stack);
+			var energyComponent = EnergyComponent.from(stack);
 			
 			return (int) energyComponent.getAmount();
 		});
@@ -84,16 +84,16 @@ public class CapacitorScreenHandler extends ComponentBlockEntityEnergyItemScreen
 		rightArrow.setPosition(Position.of(output, -34, 0));
 		rightArrow.setSize(Size.of(22, 16));
 		rightArrow.setLimitSupplier(() -> {
-			var stack = ItemComponent.get(energyItemBlockEntity).getSecond();
+			var stack = ItemComponent.from(energyItemBlockEntity).getSecond();
 			
-			var energyComponent = EnergyComponent.get(stack);
+			var energyComponent = EnergyComponent.from(stack);
 			
 			return (int) energyComponent.getSize();
 		});
 		rightArrow.setProgressSupplier(() -> {
-			var stack = ItemComponent.get(energyItemBlockEntity).getSecond();
+			var stack = ItemComponent.from(energyItemBlockEntity).getSecond();
 			
-			var energyComponent = EnergyComponent.get(stack);
+			var energyComponent = EnergyComponent.from(stack);
 			
 			return (int) energyComponent.getAmount();
 		});

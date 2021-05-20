@@ -26,14 +26,11 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.block.ConveyorBlock;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.base.SimpleItemComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.conveyor.Conveyable;
@@ -52,38 +49,28 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 
 	@Override
 	public ItemComponent createItemComponent() {
-		return new SimpleItemComponent(1) {
-			@Override
-			public ItemStack removeStack(int slot) {
-				position = 0;
-				prevPosition = 0;
-
-				horizontalPosition = 0;
-				prevHorizontalPosition = 0;
-
-				return super.removeStack(slot);
-			}
-		}.withListener((inventory) -> {
-			if (world != null && !world.isClient) {
-				sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+		return ItemComponent.of(1).withListener((inventory) -> {
+			if (world instanceof ServerWorld serverWorld) {
+				sendPacket(serverWorld, toTag(new CompoundTag()));
 			}
 		});
 	}
 
 	@Override
 	public void tick() {
-		var direction = getCachedState().get(HorizontalFacingBlock.FACING);
+		var state = getCachedState();
+		var block = (Conveyor) state.getBlock();
+		
+		var direction = state.get(HorizontalFacingBlock.FACING);
 
-		var speed = ((Conveyor) getCachedState().getBlock()).getSpeed();
+		var speed = block.getSpeed();
 
 		if (!isEmpty()) {
-			if (getCachedState().get(ConveyorBlock.FRONT)) {
-				BlockPos frontPos = getPos().offset(direction.getOpposite());
+			if (state.get(ConveyorBlock.FRONT)) {
+				var frontPos = getPos().offset(direction.getOpposite());
 
-				if (getWorld().getBlockEntity(frontPos) instanceof Conveyable) {
-					var conveyable = (Conveyable) getWorld().getBlockEntity(frontPos);
-
-					if (getCachedState().get(ConveyorBlock.CONVEYOR)) {
+				if (world.getBlockEntity(frontPos) instanceof Conveyable conveyable) {
+					if (state.get(ConveyorBlock.CONVEYOR)) {
 						if (position < speed) {
 							handleMovement(conveyable, speed, false);
 						} else {
@@ -96,12 +83,10 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 					}
 				}
 			} else if (down) {
-				BlockPos downPos = getPos().down();
+				var downPos = getPos().down();
 
-				if (getWorld().getBlockEntity(downPos) instanceof Conveyable) {
-					var conveyable = (Conveyable) getWorld().getBlockEntity(downPos);
-
-					if (getCachedState().get(ConveyorBlock.CONVEYOR)) {
+				if (world.getBlockEntity(downPos) instanceof Conveyable conveyable) {
+					if (state.get(ConveyorBlock.CONVEYOR)) {
 						handleMovement(conveyable, speed * 2, true);
 					} else {
 						handleMovement(conveyable, speed, true);
@@ -121,18 +106,16 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 		if (accepted > 0) {
 			if (horizontalPosition < speed) {
 				setHorizontalPosition(getHorizontalPosition() + 1);
-			} else if (transition && horizontalPosition >= speed) {
+			} else if (transition) {
 				var split = getItemComponent().getFirst().copy();
 				split.setCount(Math.min(accepted, split.getCount()));
 
-				getItemComponent().getFirst().decrement(accepted);
-				getItemComponent().updateListeners();
+				items.getFirst().decrement(accepted);
+				items.updateListeners();
 
 				conveyable.give(split);
 			}
-		} else if (conveyable instanceof ConveyorConveyable) {
-			var conveyor = (ConveyorConveyable) conveyable;
-
+		} else if (conveyable instanceof ConveyorConveyable conveyor) {
 			if (horizontalPosition < speed && horizontalPosition + 4 < conveyor.getPosition() && conveyor.getPosition() > 4) {
 				setHorizontalPosition(getHorizontalPosition() + 1);
 			} else {
@@ -190,17 +173,17 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	public void fromTag(BlockState state, CompoundTag compoundTag) {
 		super.fromTag(state, compoundTag);
 
-		down = compoundTag.getBoolean("down_vertical");
+		down = compoundTag.getBoolean("Down");
 
-		horizontalPosition = compoundTag.getInt("horizontalPosition");
-		prevHorizontalPosition = horizontalPosition = compoundTag.getInt("horizontalPosition");
+		horizontalPosition = compoundTag.getInt("HorizontalPosition");
+		prevHorizontalPosition = horizontalPosition = compoundTag.getInt("HorizontalPosition");
 	}
 
 	@Override
 	public CompoundTag toTag(CompoundTag compoundTag) {
-		compoundTag.putBoolean("down_vertical", down);
+		compoundTag.putBoolean("Down", down);
 
-		compoundTag.putInt("horizontalPosition", horizontalPosition);
+		compoundTag.putInt("HorizontalPosition", horizontalPosition);
 
 		return super.toTag(compoundTag);
 	}

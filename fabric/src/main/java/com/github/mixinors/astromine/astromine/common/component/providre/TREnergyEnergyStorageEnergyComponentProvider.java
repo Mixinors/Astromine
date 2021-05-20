@@ -109,6 +109,6 @@ public interface EnergyStorageEnergyComponentProvider extends EnergyStorage {
 
 	/** Override behavior to return this as an {@link EnergyComponent}. */
 	default EnergyComponent getEnergyComponent() {
-		return EnergyComponent.get(this);
+		return EnergyComponent.from(this);
 	}
 }

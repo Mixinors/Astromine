@@ -113,25 +113,25 @@ public class EnergyVolume extends Volume<Double> {
 	 * the target's available space, our amount, and the specified amount.
 	 */
 	@Override
-	public <V extends Volume<Double>> void give(V volume, Double doubleA) {
+	public <V extends Volume<Double>> void give(V volume, Double amount) {
 		if (!(volume instanceof EnergyVolume))
 			return;
 
-		var amount = Math.min(volume.getSize() - volume.getAmount(), Math.min(getAmount(), doubleA));
+		var difference = Math.min(volume.getSize() - volume.getAmount(), Math.min(getAmount(), amount));
 
-		if (amount > 0.0D) {
-			volume.setAmount(volume.getAmount() + amount);
-			setAmount(getAmount() - amount);
+		if (difference > 0.0D) {
+			volume.setAmount(volume.getAmount() + difference);
+			setAmount(getAmount() - difference);
 		}
 	}
 
 	/** Gives this volume the minimum between the available amount and the
 	 * specified amount. */
 	@Override
-	public void give(Double aDouble) {
-		var amount = Math.min(getSize() - getAmount(), aDouble);
+	public void give(Double amount) {
+		var difference = Math.min(getSize() - getAmount(), amount);
 
-		setAmount(getAmount() + amount);
+		setAmount(getAmount() + difference);
 	}
 
 	/**

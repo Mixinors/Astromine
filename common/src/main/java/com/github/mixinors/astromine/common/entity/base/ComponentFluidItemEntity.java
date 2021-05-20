@@ -49,11 +49,11 @@ public abstract class ComponentFluidItemEntity extends ComponentEntity implement
 
 	/** Returns the attached {@link FluidComponent}. */
 	public FluidComponent getFluidComponent() {
-		return FluidComponent.get(this);
+		return FluidComponent.from(this);
 	}
 
 	/** Returns the attached {@link ItemComponent}. */
 	public ItemComponent getItemComponent() {
-		return ItemComponent.get(this);
+		return ItemComponent.from(this);
 	}
 }

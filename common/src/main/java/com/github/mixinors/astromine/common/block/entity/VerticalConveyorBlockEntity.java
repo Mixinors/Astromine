@@ -62,14 +62,14 @@ public class VerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	public ItemComponent createItemComponent() {
 		return new SimpleItemComponent(1) {
 			@Override
-			public ItemStack removeStack(int slot) {
+			public ItemStack remove(int slot) {
 				position = 0;
 				prevPosition = 0;
 
 				horizontalPosition = 0;
 				prevHorizontalPosition = 0;
 
-				return super.removeStack(slot);
+				return super.remove(slot);
 			}
 		}.withListener((inventory) -> {
 			if (world != null && !world.isClient) {

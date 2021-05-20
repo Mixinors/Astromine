@@ -24,7 +24,6 @@
 
 package com.github.mixinors.astromine.common.component.general.base;
 
-import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
 import com.github.mixinors.astromine.common.component.general.miscellaneous.NamedComponent;
 import com.github.mixinors.astromine.common.component.general.provider.FluidComponentProvider;
@@ -144,47 +143,59 @@ public interface FluidComponent extends Iterable<FluidVolume>, NamedComponent {
 		addListener(() -> listener.accept(this));
 		return this;
 	}
+	
+	/** Returns this component with the given size set. */
+	default FluidComponent withSize(int slot, long size) {
+		get(slot).setSize(size);
+		return this;
+	}
+	
+	/** Returns this component with the given sizes set. */
+	default FluidComponent withSizes(long size) {
+		forEachIndexed((slot, volume) -> withSize(slot, size));
+		return this;
+	}
 
 	/** Returns this component's contents. */
 	Map<Integer, FluidVolume> getContents();
 
 	/** Returns this component's contents matching the given predicate. */
-	default List<FluidVolume> getVolumes(Predicate<FluidVolume> predicate) {
+	default List<FluidVolume> get(Predicate<FluidVolume> predicate) {
 		return getContents().values().stream().filter(predicate).collect(Collectors.toList());
 	}
 
 	/** Returns this component's contents extractable through the given direction. */
-	default List<FluidVolume> getExtractableVolumes(@Nullable Direction direction) {
+	default List<FluidVolume> getExtractable(@Nullable Direction direction) {
 		return getContents().entrySet().stream().filter((entry) -> canExtract(direction, entry.getValue(), entry.getKey())).map(Map.Entry::getValue).collect(Collectors.toList());
 	}
 
 	/** Returns this component's contents matching the given predicate
 	 * extractable through the specified direction. */
-	default List<FluidVolume> getExtractableVolumes(@Nullable Direction direction, Predicate<FluidVolume> predicate) {
-		return getExtractableVolumes(direction).stream().filter(predicate).collect(Collectors.toList());
+	default List<FluidVolume> getExtractable(@Nullable Direction direction, Predicate<FluidVolume> predicate) {
+		return getExtractable(direction).stream().filter(predicate).collect(Collectors.toList());
 	}
 
 	/** Returns this component's contents insertable through the given direction. */
-	default List<FluidVolume> getInsertableVolumes(@Nullable Direction direction) {
+	default List<FluidVolume> getInsertable(@Nullable Direction direction) {
 		return getContents().entrySet().stream().filter((entry) -> canInsert(direction, entry.getValue(), entry.getKey())).map(Map.Entry::getValue).collect(Collectors.toList());
 	}
 
 	/** Returns this component's contents insertable through the given direction
 	 * which accept the specified volume. */
-	default List<FluidVolume> getInsertableVolumes(@Nullable Direction direction, FluidVolume volume) {
+	default List<FluidVolume> getInsertable(@Nullable Direction direction, FluidVolume volume) {
 		return getContents().entrySet().stream().filter((entry) -> canInsert(direction, volume, entry.getKey())).map(Map.Entry::getValue).collect(Collectors.toList());
 	}
 
 	/** Returns this component's contents matching the given predicate
 	 * insertable through the specified direction which accept the supplied volume. */
-	default List<FluidVolume> getInsertableVolumes(@Nullable Direction direction, FluidVolume volume, Predicate<FluidVolume> predicate) {
-		return getInsertableVolumes(direction, volume).stream().filter(predicate).collect(Collectors.toList());
+	default List<FluidVolume> getInsertable(@Nullable Direction direction, FluidVolume volume, Predicate<FluidVolume> predicate) {
+		return getInsertable(direction, volume).stream().filter(predicate).collect(Collectors.toList());
 	}
 
 	/** Returns the first volume extractable through the given direction. */
 	@Nullable
-	default FluidVolume getFirstExtractableVolume(@Nullable Direction direction) {
-		var volumes = getExtractableVolumes(direction);
+	default FluidVolume getFirstExtractable(@Nullable Direction direction) {
+		var volumes = getExtractable(direction);
 		
 		volumes.removeIf(FluidVolume::isEmpty);
 		if (!volumes.isEmpty())
@@ -195,8 +206,8 @@ public interface FluidComponent extends Iterable<FluidVolume>, NamedComponent {
 	/** Returns the first volume matching the given predicate
 	 * extractable through the specified direction. */
 	@Nullable
-	default FluidVolume getFirstExtractableVolume(@Nullable Direction direction, Predicate<FluidVolume> predicate) {
-		var volumes = getExtractableVolumes(direction, predicate);
+	default FluidVolume getFirstExtractable(@Nullable Direction direction, Predicate<FluidVolume> predicate) {
+		var volumes = getExtractable(direction, predicate);
 		
 		if (!volumes.isEmpty())
 			return volumes.get(0);
@@ -206,8 +217,8 @@ public interface FluidComponent extends Iterable<FluidVolume>, NamedComponent {
 	/** Returns the first volume insertable through the given direction
 	 * which accepts the specified volume. */
 	@Nullable
-	default FluidVolume getFirstInsertableVolume(@Nullable Direction direction, FluidVolume volume) {
-		var volumes = getInsertableVolumes(direction, volume);
+	default FluidVolume getFirstInsertable(@Nullable Direction direction, FluidVolume volume) {
+		var volumes = getInsertable(direction, volume);
 		
 		if (!volumes.isEmpty())
 			return volumes.get(0);
@@ -217,8 +228,8 @@ public interface FluidComponent extends Iterable<FluidVolume>, NamedComponent {
 	/** Returns the first volume matching the given predicate
 	 * insertable through the specified direction which accepts the supplied volume. */
 	@Nullable
-	default FluidVolume getFirstInsertableVolume(Direction direction, FluidVolume volume, Predicate<FluidVolume> predicate) {
-		var volumes = getInsertableVolumes(direction, volume, predicate);
+	default FluidVolume getFirstInsertable(Direction direction, FluidVolume volume, Predicate<FluidVolume> predicate) {
+		var volumes = getInsertable(direction, volume, predicate);
 		
 		if (!volumes.isEmpty())
 			return volumes.get(0);
@@ -229,11 +240,11 @@ public interface FluidComponent extends Iterable<FluidVolume>, NamedComponent {
 	 * to the target component. */
 	default void into(FluidComponent target, long count, Direction extractionDirection, Direction insertionDirection) {
 		for (var sourceSlot = 0; sourceSlot < getSize(); ++sourceSlot) {
-			var sourceVolume = getVolume(sourceSlot);
+			var sourceVolume = get(sourceSlot);
 
 			if (canExtract(extractionDirection, sourceVolume, sourceSlot)) {
 				for (var targetSlot = 0; targetSlot < target.getSize(); ++targetSlot) {
-					var targetVolume = target.getVolume(targetSlot);
+					var targetVolume = target.get(targetSlot);
 
 					if (!sourceVolume.isEmpty() && count > 0) {
 						var insertionVolume = (FluidVolume) sourceVolume.copy();
@@ -245,8 +256,8 @@ public interface FluidComponent extends Iterable<FluidVolume>, NamedComponent {
 							var merge = VolumeUtils.merge(insertionVolume, targetVolume);
 
 							sourceVolume.take(insertionCount - merge.getLeft().getAmount());
-							setVolume(sourceSlot, sourceVolume);
-							target.setVolume(targetSlot, merge.getRight());
+							set(sourceSlot, sourceVolume);
+							target.set(targetSlot, merge.getRight());
 						}
 					} else {
 						break;
@@ -277,10 +288,10 @@ public interface FluidComponent extends Iterable<FluidVolume>, NamedComponent {
 	/** Asserts whether the given volume can be inserted through the specified
 	 * direction into the supplied slot. */
 	default boolean canInsert(@Nullable Direction direction, FluidVolume volume, int slot) {
-		if (getVolume(slot) == null) {
+		if (get(slot) == null) {
 			return false;
 		} else {
-			return volume.test(getVolume(slot));
+			return volume.test(get(slot));
 		}
 	}
 
@@ -291,24 +302,24 @@ public interface FluidComponent extends Iterable<FluidVolume>, NamedComponent {
 	}
 
 	/* Returns the volume at the given slot. */
-	default FluidVolume getVolume(int slot) {
+	default FluidVolume get(int slot) {
 		if (!getContents().containsKey(slot)) throw new ArrayIndexOutOfBoundsException("Slot " + slot + " not found in FluidComponent!");
 		return getContents().get(slot);
 	}
 
 	/** Sets the volume at the given slot to the specified value,
 	 * attaching a listener to it. */
-	default void setVolume(int slot, FluidVolume volume) {
+	default void set(int slot, FluidVolume volume) {
 		getContents().put(slot, volume.withRunnable(this::updateListeners));
 
 		updateListeners();
 	}
 
 	/** Removes the volume at the given slot, returning it. */
-	default FluidVolume removeVolume(int slot) {
-		var volume = getVolume(slot);
+	default FluidVolume remove(int slot) {
+		var volume = get(slot);
 
-		setVolume(slot, FluidVolume.ofEmpty());
+		set(slot, FluidVolume.ofEmpty());
 
 		return volume;
 	}
@@ -318,14 +329,9 @@ public interface FluidComponent extends Iterable<FluidVolume>, NamedComponent {
 		return getContents().values().stream().allMatch(FluidVolume::isEmpty);
 	}
 
-	/** Asserts whether this component's contents are not all empty or not. */
-	default boolean isNotEmpty() {
-		return !isEmpty();
-	}
-
 	 /** Clears this component's contents. */
 	default void clear() {
-		this.getContents().forEach((slot, volume) -> {
+		forEachIndexed((slot, volume) -> {
 			volume.setAmount(0L);
 			volume.setFluid(Fluids.EMPTY);
 		});
@@ -337,7 +343,7 @@ public interface FluidComponent extends Iterable<FluidVolume>, NamedComponent {
 		var listTag = new ListTag();
 
 		for (var i = 0; i < getSize(); ++i) {
-			FluidVolume volume = getVolume(i);
+			FluidVolume volume = get(i);
 
 			listTag.add(i, volume.toTag());
 		}
@@ -362,13 +368,13 @@ public interface FluidComponent extends Iterable<FluidVolume>, NamedComponent {
 		for (var i = 0; i < size; ++i) {
 			var volumeTag = volumesTag.getCompound(i);
 
-			setVolume(i, FluidVolume.fromTag(volumeTag));
+			set(i, FluidVolume.fromTag(volumeTag));
 		}
 	}
 
 	/** Returns the {@link FluidComponent} of the given {@link V}. */
 	@Nullable
-	static <V> FluidComponent get(V v) {
+	static <V> FluidComponent from(V v) {
 		if (v instanceof FluidComponentProvider) {
 			return ((FluidComponentProvider) v).getFluidComponent();
 		} else if (v instanceof ItemStack stack) {
@@ -404,92 +410,92 @@ public interface FluidComponent extends Iterable<FluidVolume>, NamedComponent {
 
 	/** Returns the first volume in this component. */
 	default FluidVolume getFirst() {
-		return getVolume(0);
+		return get(0);
 	}
 
 	/** Sets the first volume in this component to the specified value. */
 	default void setFirst(FluidVolume volume) {
-		setVolume(0, volume);
+		set(0, volume);
 	}
 
 	/** Returns the second volume in this component. */
 	default FluidVolume getSecond() {
-		return getVolume(1);
+		return get(1);
 	}
 
 	/** Sets the second volume in this component to the specified value. */
 	default void setSecond(FluidVolume volume) {
-		setVolume(1, volume);
+		set(1, volume);
 	}
 
 	/** Returns the third volume in this component. */
 	default FluidVolume getThird() {
-		return getVolume(2);
+		return get(2);
 	}
 
 	/** Sets the third volume in this component to the specified value. */
 	default void setThird(FluidVolume volume) {
-		setVolume(2, volume);
+		set(2, volume);
 	}
 
 	/** Returns the fourth volume in this component. */
 	default FluidVolume getFourth() {
-		return getVolume(3);
+		return get(3);
 	}
 
 	/** Sets the fourth volume in this component to the specified value. */
 	default void setFourth(FluidVolume volume) {
-		setVolume(3, volume);
+		set(3, volume);
 	}
 
 	/** Returns the fifth volume in this component. */
 	default FluidVolume getFifth() {
-		return getVolume(4);
+		return get(4);
 	}
 
 	/** Sets the fifth volume in this component to the specified value. */
 	default void setFifth(FluidVolume volume) {
-		setVolume(4, volume);
+		set(4, volume);
 	}
 
 	/** Returns the sixth volume in this component. */
 	default FluidVolume getSixth() {
-		return getVolume(5);
+		return get(5);
 	}
 
 	/** Sets the sixth volume in this component to the specified value. */
 	default void setSixth(FluidVolume volume) {
-		setVolume(5, volume);
+		set(5, volume);
 	}
 
 	/** Returns the seventh volume in this component. */
 	default FluidVolume getSeventh() {
-		return getVolume(6);
+		return get(6);
 	}
 
 	/** Sets the seventh volume in this component to the specified value. */
 	default void setSeventh(FluidVolume volume) {
-		setVolume(6, volume);
+		set(6, volume);
 	}
 
 	/** Returns the eighth volume in this component. */
 	default FluidVolume getEighth() {
-		return getVolume(7);
+		return get(7);
 	}
 
 	/** Sets the eighth volume in this component to the specified value. */
 	default void setEight(FluidVolume volume) {
-		setVolume(7, volume);
+		set(7, volume);
 	}
 
 	/** Returns the ninth volume in this component. */
 	default FluidVolume getNinth() {
-		return getVolume(8);
+		return get(8);
 	}
 
 	/** Sets the ninth volume in this component to the specified value. */
 	default void setNinth(FluidVolume volume) {
-		setVolume(8, volume);
+		set(8, volume);
 	}
 	
 	/** Returns this component's {@link Identifier}. */

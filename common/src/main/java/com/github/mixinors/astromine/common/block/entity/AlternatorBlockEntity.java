@@ -48,20 +48,23 @@ public class AlternatorBlockEntity extends AbstractConveyableBlockEntity {
 	@Override
 	public void give(ItemStack stack) {
 		var copyStack = stack.copy();
-
+		
+		var firstStack = items.getFirst();
+		var secondStack = items.getSecond();
+		
 		if (isEmpty()) {
 			if (right) {
-				getItemComponent().setSecond(copyStack);
+				items.setSecond(copyStack);
 			} else {
-				getItemComponent().setFirst(copyStack);
+				items.setFirst(copyStack);
 			}
 			right = !right;
-		} else if (!getItemComponent().getFirst().isEmpty() && getItemComponent().getSecond().isEmpty()) {
-			getItemComponent().setSecond(stack);
-		} else if (!getItemComponent().getSecond().isEmpty() && getItemComponent().getFirst().isEmpty()) {
-			getItemComponent().setFirst(stack);
+		} else if (!firstStack.isEmpty() && secondStack.isEmpty()) {
+			items.setSecond(stack);
+		} else if (!secondStack.isEmpty() && firstStack.isEmpty()) {
+			items.setFirst(stack);
 		}
 
-		getWorld().playSound(null, getPos().getX(), getPos().getY(), getPos().getZ(), AMSoundEvents.MACHINE_CLICK.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+		world.playSound(null, getPos().getX(), getPos().getY(), getPos().getZ(), AMSoundEvents.MACHINE_CLICK.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
 	}
 }

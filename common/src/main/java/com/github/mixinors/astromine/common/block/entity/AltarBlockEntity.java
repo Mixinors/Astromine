@@ -46,7 +46,6 @@ import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.base.SimpleItemComponent;
 import com.github.mixinors.astromine.common.component.general.compatibility.InventoryFromItemComponent;
 import com.github.mixinors.astromine.common.recipe.AltarRecipe;
 
@@ -115,7 +114,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 				syncData();
 
 				if (craftingTicks == CRAFTING_TIME + CRAFTING_TIME_SPIN / 2 && recipe != null) {
-					inventory.setStack(0, recipe.getOutput().copy());
+					inventory.set(0, recipe.getOutput().copy());
 
 					for (Supplier<AltarPedestalBlockEntity> child : children) {
 						child.get().setStack(0, ItemStack.EMPTY);
@@ -137,7 +136,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 			}
 		}
 
-		if (!world.isClient && !inventory.getStack(0).isEmpty() && craftingTicks > 0 && craftingTicks <= CRAFTING_TIME + CRAFTING_TIME_SPIN + CRAFTING_TIME_FALL) {
+		if (!world.isClient && !inventory.get(0).isEmpty() && craftingTicks > 0 && craftingTicks <= CRAFTING_TIME + CRAFTING_TIME_SPIN + CRAFTING_TIME_FALL) {
 			spawnParticles();
 		}
 	}

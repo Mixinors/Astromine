@@ -52,20 +52,20 @@ public interface InventoryFromItemComponent extends Inventory {
 	/** Returns the {@link ItemStack} at the given slot. */
 	@Override
 	default ItemStack getStack(int slot) {
-		return getItemComponent().getStack(slot);
+		return getItemComponent().get(slot);
 	}
 
 	/** Sets the {@link ItemStack} at the given slot to the specified value. */
 	@Override
 	default void setStack(int slot, ItemStack stack) {
-		getItemComponent().setStack(slot, stack);
+		getItemComponent().set(slot, stack);
 	}
 
 	/** Removes the {@link ItemStack} at the given slot,
 	 * or a part of it as per the specified count, and returns it. */
 	@Override
 	default ItemStack removeStack(int slot, int count) {
-		var removed = getItemComponent().removeStack(slot);
+		var removed = getItemComponent().remove(slot);
 
 		var returned = removed.copy();
 
@@ -73,7 +73,7 @@ public interface InventoryFromItemComponent extends Inventory {
 
 		removed.decrement(count);
 
-		getItemComponent().setStack(slot, removed);
+		getItemComponent().set(slot, removed);
 
 		return returned;
 	}
@@ -81,7 +81,7 @@ public interface InventoryFromItemComponent extends Inventory {
 	/** Removes the {@link ItemStack} at the given slot, and returns it. */
 	@Override
 	default ItemStack removeStack(int slot) {
-		return getItemComponent().removeStack(slot);
+		return getItemComponent().remove(slot);
 	}
 
 	/** Asserts whether this inventory's contents are all empty or not. */

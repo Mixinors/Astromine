@@ -24,7 +24,6 @@
 
 package com.github.mixinors.astromine.common.component.general.base;
 
-import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.component.general.miscellaneous.NamedComponent;
 import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
 import com.github.mixinors.astromine.common.component.general.compatibility.ItemComponentFromInventory;
@@ -148,42 +147,42 @@ public interface ItemComponent extends Iterable<ItemStack>, NamedComponent {
 	Map<Integer, ItemStack> getContents();
 
 	/** Returns this component's contents matching the given predicate. */
-	default List<ItemStack> getStacks(Predicate<ItemStack> predicate) {
+	default List<ItemStack> get(Predicate<ItemStack> predicate) {
 		return getContents().values().stream().filter(predicate).collect(Collectors.toList());
 	}
 
 	/** Returns this component's contents extractable through the given direction. */
-	default List<ItemStack> getExtractableStacks(@Nullable Direction direction) {
+	default List<ItemStack> getExtractable(@Nullable Direction direction) {
 		return getContents().entrySet().stream().filter((entry) -> canExtract(direction, entry.getValue(), entry.getKey())).map(Map.Entry::getValue).collect(Collectors.toList());
 	}
 
 	/** Returns this component's contents matching the given predicate
 	 * extractable through the specified direction. */
-	default List<ItemStack> getExtractableStacks(@Nullable Direction direction, Predicate<ItemStack> predicate) {
-		return getExtractableStacks(direction).stream().filter(predicate).collect(Collectors.toList());
+	default List<ItemStack> getExtractable(@Nullable Direction direction, Predicate<ItemStack> predicate) {
+		return getExtractable(direction).stream().filter(predicate).collect(Collectors.toList());
 	}
 
 	/** Returns this component's contents insertable through the given direction. */
-	default List<ItemStack> getInsertableStacks(@Nullable Direction direction) {
+	default List<ItemStack> getInsertable(@Nullable Direction direction) {
 		return getContents().entrySet().stream().filter((entry) -> canInsert(direction, entry.getValue(), entry.getKey())).map(Map.Entry::getValue).collect(Collectors.toList());
 	}
 
 	/** Returns this component's contents insertable through the given direction
 	 * which accept the specified stack. */
-	default List<ItemStack> getInsertableStacks(@Nullable Direction direction, ItemStack Stack) {
+	default List<ItemStack> getInsertable(@Nullable Direction direction, ItemStack Stack) {
 		return getContents().entrySet().stream().filter((entry) -> canInsert(direction, Stack, entry.getKey())).map(Map.Entry::getValue).collect(Collectors.toList());
 	}
 
 	/** Returns this component's contents matching the given predicate
 	 * insertable through the specified direction which accept the supplied stack. */
-	default List<ItemStack> getInsertableStacks(@Nullable Direction direction, ItemStack Stack, Predicate<ItemStack> predicate) {
-		return getInsertableStacks(direction, Stack).stream().filter(predicate).collect(Collectors.toList());
+	default List<ItemStack> getInsertable(@Nullable Direction direction, ItemStack Stack, Predicate<ItemStack> predicate) {
+		return getInsertable(direction, Stack).stream().filter(predicate).collect(Collectors.toList());
 	}
 
 	/** Returns the first stack extractable through the given direction. */
 	@Nullable
-	default ItemStack getFirstExtractableStack(@Nullable Direction direction) {
-		var stacks = getExtractableStacks(direction);
+	default ItemStack getFirstExtractable(@Nullable Direction direction) {
+		var stacks = getExtractable(direction);
 		
 		stacks.removeIf(ItemStack::isEmpty);
 		if (!stacks.isEmpty())
@@ -194,8 +193,8 @@ public interface ItemComponent extends Iterable<ItemStack>, NamedComponent {
 	/** Returns the first stack matching the given predicate
 	 * extractable through the specified direction. */
 	@Nullable
-	default ItemStack getFirstExtractableStack(@Nullable Direction direction, Predicate<ItemStack> predicate) {
-		var stacks = getExtractableStacks(direction, predicate);
+	default ItemStack getFirstExtractable(@Nullable Direction direction, Predicate<ItemStack> predicate) {
+		var stacks = getExtractable(direction, predicate);
 		
 		if (!stacks.isEmpty())
 			return stacks.get(0);
@@ -205,8 +204,8 @@ public interface ItemComponent extends Iterable<ItemStack>, NamedComponent {
 	/** Returns the first stack insertable through the given direction
 	 * which accepts the specified volume. */
 	@Nullable
-	default ItemStack getFirstInsertableStack(@Nullable Direction direction, ItemStack Stack) {
-		var stacks = getInsertableStacks(direction, Stack);
+	default ItemStack getFirstInsertable(@Nullable Direction direction, ItemStack Stack) {
+		var stacks = getInsertable(direction, Stack);
 		
 		if (!stacks.isEmpty())
 			return stacks.get(0);
@@ -216,8 +215,8 @@ public interface ItemComponent extends Iterable<ItemStack>, NamedComponent {
 	/** Returns the first volume matching the given predicate
 	 * insertable through the specified direction which accepts the supplied stack. */
 	@Nullable
-	default ItemStack getFirstInsertableStack(@Nullable Direction direction, ItemStack Stack, Predicate<ItemStack> predicate) {
-		var stacks = getInsertableStacks(direction, Stack, predicate);
+	default ItemStack getFirstInsertable(@Nullable Direction direction, ItemStack Stack, Predicate<ItemStack> predicate) {
+		var stacks = getInsertable(direction, Stack, predicate);
 		
 		if (!stacks.isEmpty())
 			return stacks.get(0);
@@ -228,11 +227,11 @@ public interface ItemComponent extends Iterable<ItemStack>, NamedComponent {
 	 * to the target component. */
 	default void into(ItemComponent target, int count, Direction extractionDirection, Direction insertionDirection) {
 		for (var sourceSlot = 0; sourceSlot < getSize(); ++sourceSlot) {
-			var sourceStack = getStack(sourceSlot);
+			var sourceStack = get(sourceSlot);
 
 			if (canExtract(extractionDirection, sourceStack, sourceSlot)) {
 				for (var targetSlot = 0; targetSlot < target.getSize(); ++targetSlot) {
-					var targetStack = target.getStack(targetSlot);
+					var targetStack = target.get(targetSlot);
 
 					if (!sourceStack.isEmpty() && count > 0) {
 						var insertionStack = sourceStack.copy();
@@ -244,8 +243,8 @@ public interface ItemComponent extends Iterable<ItemStack>, NamedComponent {
 							var merge = StackUtils.merge(insertionStack, targetStack);
 
 							sourceStack.decrement(insertionCount - merge.getLeft().getCount());
-							setStack(sourceSlot, sourceStack);
-							target.setStack(targetSlot, merge.getRight());
+							set(sourceSlot, sourceStack);
+							target.set(targetSlot, merge.getRight());
 						}
 					} else {
 						break;
@@ -276,7 +275,7 @@ public interface ItemComponent extends Iterable<ItemStack>, NamedComponent {
 	/** Asserts whether the given stack can be inserted through the specified
 	 * direction into the supplied slot. */
 	default boolean canInsert(@Nullable Direction direction, ItemStack stack, int slot) {
-		return getStack(slot).isEmpty() || (ItemStack.areItemsEqual(stack, getStack(slot)) && ItemStack.areTagsEqual(stack, getStack(slot)) && getStack(slot).getMaxCount() - getStack(slot).getCount() >= stack.getCount());
+		return get(slot).isEmpty() || (ItemStack.areItemsEqual(stack, get(slot)) && ItemStack.areTagsEqual(stack, get(slot)) && get(slot).getMaxCount() - get(slot).getCount() >= stack.getCount());
 	}
 
 	/** Asserts whether the given stack can be extracted through the specified
@@ -286,20 +285,20 @@ public interface ItemComponent extends Iterable<ItemStack>, NamedComponent {
 	}
 
 	/* Returns the {@link ItemStack} at the given slot. */
-	default ItemStack getStack(int slot) {
+	default ItemStack get(int slot) {
 		if (!getContents().containsKey(slot)) throw new ArrayIndexOutOfBoundsException("Slot " + slot + " not found in ItemComponent!");
 		return getContents().get(slot);
 	}
 
 	/** Sets the {@link ItemStack} at the given slot to the specified value. */
-	default void setStack(int slot, ItemStack stack) {
+	default void set(int slot, ItemStack stack) {
 		getContents().put(slot, stack);
 
 		updateListeners();
 	}
 
 	/** Removes the {@link ItemStack} at the given slot, returning it. */
-	default ItemStack removeStack(int slot) {
+	default ItemStack remove(int slot) {
 		var stack = getContents().remove(slot);
 
 		updateListeners();
@@ -319,7 +318,9 @@ public interface ItemComponent extends Iterable<ItemStack>, NamedComponent {
 
 	/** Clears this component's contents. */
 	default void clear() {
-		getContents().forEach((slot, stack) -> setStack(slot, ItemStack.EMPTY));
+		forEachIndexed((slot, stack) -> {
+			set(slot, ItemStack.EMPTY);
+		});
 	}
 
 	/** Returns an {@link Inventory} wrapped over this component. */
@@ -333,7 +334,7 @@ public interface ItemComponent extends Iterable<ItemStack>, NamedComponent {
 		var listTag = new ListTag();
 
 		for (var i = 0; i < getSize(); ++i) {
-			var stack = getStack(i);
+			var stack = get(i);
 
 			listTag.add(i, stack.toTag(new CompoundTag()));
 		}
@@ -358,13 +359,13 @@ public interface ItemComponent extends Iterable<ItemStack>, NamedComponent {
 		for (var i = 0; i < size; ++i) {
 			var stackTag = stacksTag.getCompound(i);
 
-			setStack(i, ItemStack.fromTag(stackTag));
+			set(i, ItemStack.fromTag(stackTag));
 		}
 	}
 
 	/** Returns the {@link ItemComponent} of the given {@link V}. */
 	@Nullable
-	static <V> ItemComponent get(V v) {
+	static <V> ItemComponent from(V v) {
 		if (v instanceof ItemComponentProvider) {
 			return ((ItemComponentProvider) v).getItemComponent();
 		} else {
@@ -399,92 +400,92 @@ public interface ItemComponent extends Iterable<ItemStack>, NamedComponent {
 
 	/** Returns the first stack in this component. */
 	default ItemStack getFirst() {
-		return getStack(0);
+		return get(0);
 	}
 
 	/** Sets the first stack in this component to the specified value. */
 	default void setFirst(ItemStack stack) {
-		setStack(0, stack);
+		set(0, stack);
 	}
 
 	/** Returns the second stack in this component. */
 	default ItemStack getSecond() {
-		return getStack(1);
+		return get(1);
 	}
 
 	/** Sets the second stack in this component to the specified value. */
 	default void setSecond(ItemStack stack) {
-		setStack(1, stack);
+		set(1, stack);
 	}
 
 	/** Returns the third stack in this component. */
 	default ItemStack getThird() {
-		return getStack(2);
+		return get(2);
 	}
 
 	/** Sets the third stack in this component to the specified value. */
 	default void setThird(ItemStack stack) {
-		setStack(2, stack);
+		set(2, stack);
 	}
 
 	/** Returns the fourth stack in this component. */
 	default ItemStack getFourth() {
-		return getStack(3);
+		return get(3);
 	}
 
 	/** Sets the fourth stack in this component to the specified value. */
 	default void setFourth(ItemStack stack) {
-		setStack(3, stack);
+		set(3, stack);
 	}
 
 	/** Returns the fifth stack in this component. */
 	default ItemStack getFifth() {
-		return getStack(4);
+		return get(4);
 	}
 
 	/** Sets the fifth stack in this component to the specified value. */
 	default void setFifth(ItemStack stack) {
-		setStack(4, stack);
+		set(4, stack);
 	}
 
 	/** Returns the sixth stack in this component. */
 	default ItemStack getSixth() {
-		return getStack(5);
+		return get(5);
 	}
 
 	/** Sets the sixth stack in this component to the specified value. */
 	default void setSixth(ItemStack stack) {
-		setStack(5, stack);
+		set(5, stack);
 	}
 
 	/** Returns the seventh stack in this component. */
 	default ItemStack getSeventh() {
-		return getStack(6);
+		return get(6);
 	}
 
 	/** Sets the seventh stack in this component to the specified value. */
 	default void setSeventh(ItemStack stack) {
-		setStack(6, stack);
+		set(6, stack);
 	}
 
 	/** Returns the eighth stack in this component. */
 	default ItemStack getEighth() {
-		return getStack(7);
+		return get(7);
 	}
 
 	/** Sets the eighth stack in this component to the specified value. */
 	default void setEight(ItemStack stack) {
-		setStack(7, stack);
+		set(7, stack);
 	}
 
 	/** Returns the ninth stack in this component. */
 	default ItemStack getNinth() {
-		return getStack(8);
+		return get(8);
 	}
 
 	/** Sets the ninth stack in this component to the specified value. */
 	default void setNinth(ItemStack stack) {
-		setStack(8, stack);
+		set(8, stack);
 	}
 	
 	/** Returns this component's {@link Identifier}. */

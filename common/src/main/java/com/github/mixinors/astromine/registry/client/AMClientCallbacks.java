@@ -59,7 +59,7 @@ public class AMClientCallbacks {
 	public static void init() {
 		TooltipEvent.ITEM.register((stack, tooltip, context) -> {
 			if (stack.getItem() instanceof FluidVolumeItem) {
-				FluidComponent fluidComponent = FluidComponent.get(stack);
+				FluidComponent fluidComponent = FluidComponent.from(stack);
 				
 				FluidVolume volume = fluidComponent.getFirst();
 				Identifier fluidId = volume.getFluidId();
@@ -100,7 +100,7 @@ public class AMClientCallbacks {
 		TooltipEvent.ITEM.register((stack, tooltip, context) -> {
 			if (stack.getItem() instanceof SpaceSuitItem) {
 				if (stack.getItem() == AMItems.SPACE_SUIT_CHESTPLATE.get()) {
-					FluidComponent fluidComponent = FluidComponent.get(stack);
+					FluidComponent fluidComponent = FluidComponent.from(stack);
 					
 					fluidComponent.forEachIndexed((slot, volume) -> {
 						tooltip.add(((MutableText) TextUtils.getFluidVolume(volume)).append(new LiteralText(" ")).append(((MutableText) TextUtils.getFluid(volume.getFluidId())).formatted(Formatting.GRAY)));

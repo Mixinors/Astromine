@@ -26,23 +26,18 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.base.SimpleDirectionalItemComponent;
-import com.github.mixinors.astromine.common.component.general.base.SimpleEnergyComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
-import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergyConsumedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
+import net.minecraft.server.world.ServerWorld;
 import org.jetbrains.annotations.NotNull;
 
 public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
@@ -81,45 +76,37 @@ public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity imple
 	public void tick() {
 		super.tick();
 
-		if (world == null || world.isClient || !tickRedstone())
+		if (!(world instanceof ServerWorld) || !tickRedstone())
 			return;
+		
+		if (energy.getAmount() < getEnergyConsumed()) {
+			cooldown = 0L;
 
-		var itemComponent = getItemComponent();
+			tickInactive();
+		} else {
+			tickActive();
 
-		var energyComponent = getEnergyComponent();
+			cooldown = cooldown++;
 
-		if (itemComponent != null && energyComponent != null) {
-			var energyVolume = energyComponent.getVolume();
-
-			if (energyVolume.getAmount() < getEnergyConsumed()) {
+			if (cooldown >= getMachineSpeed()) {
 				cooldown = 0L;
 
-				tickInactive();
-			} else {
-				tickActive();
+				var stored = items.getFirst();
 
-				cooldown = cooldown++;
+				var direction = getCachedState().get(HorizontalFacingBlock.FACING);
 
-				if (cooldown >= getMachineSpeed()) {
-					cooldown = 0L;
+				var targetPos = pos.offset(direction);
 
-					var stored = itemComponent.getFirst();
+				var targetState = world.getBlockState(targetPos);
 
-					var direction = getCachedState().get(HorizontalFacingBlock.FACING);
+				if (stored.getItem() instanceof BlockItem storedBlockItem && targetState.isAir()) {
+					var newState = storedBlockItem.getBlock().getDefaultState();
 
-					var targetPos = pos.offset(direction);
+					world.setBlockState(targetPos, newState);
 
-					var targetState = world.getBlockState(targetPos);
+					stored.decrement(1);
 
-					if (stored.getItem() instanceof BlockItem storedBlockItem && targetState.isAir()) {
-						var newState = storedBlockItem.getBlock().getDefaultState();
-
-						world.setBlockState(targetPos, newState);
-
-						stored.decrement(1);
-
-						energyVolume.take(getEnergyConsumed());
-					}
+					energy.take(getEnergyConsumed());
 				}
 			}
 		}

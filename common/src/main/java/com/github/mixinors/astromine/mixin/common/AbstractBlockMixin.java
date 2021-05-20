@@ -64,7 +64,7 @@ public class AbstractBlockMixin {
 
 		final boolean isFluidVolumeItem = stackItem instanceof FluidVolumeItem;
 
-		final FluidComponent stackFluidComponent = FluidComponent.get(stack);
+		final FluidComponent stackFluidComponent = FluidComponent.from(stack);
 
 		if (state.getBlock().hasBlockEntity()) {
 			TransferComponent transferComponent = TransferComponent.get(world.getBlockEntity(pos));
@@ -86,13 +86,13 @@ public class AbstractBlockMixin {
 			if (block.hasBlockEntity()) {
 				final BlockEntity blockEntity = world.getBlockEntity(pos);
 
-				FluidComponent blockEntityFluidComponent = FluidComponent.get(blockEntity);
+				FluidComponent blockEntityFluidComponent = FluidComponent.from(blockEntity);
 
 				if (blockEntityFluidComponent != null) {
 					FluidVolume stackVolume = stackFluidComponent.getFirst();
 
 					if (stackVolume.isEmpty()) {
-						FluidVolume extractable = blockEntityFluidComponent.getFirstExtractableVolume(result.getSide());
+						FluidVolume extractable = blockEntityFluidComponent.getFirstExtractable(result.getSide());
 
 						if (isBucket && extractable != null) {
 							if (extractable.hasStored(FluidVolume.BUCKET)) {
@@ -109,7 +109,7 @@ public class AbstractBlockMixin {
 							stackVolume.take(extractable, FluidVolume.BUCKET);
 						}
 					} else {
-						FluidVolume insertable = blockEntityFluidComponent.getFirstInsertableVolume(result.getSide(), stackVolume);
+						FluidVolume insertable = blockEntityFluidComponent.getFirstInsertable(result.getSide(), stackVolume);
 
 						if (isBucket && insertable != null) {
 							if (insertable.hasAvailable(FluidVolume.BUCKET)) {

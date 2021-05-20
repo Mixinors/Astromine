@@ -81,7 +81,7 @@ public class TankScreenHandler extends ComponentBlockEntityFluidItemScreenHandle
 			var stack = fluidItemBlockEntity.getItemComponent().getFirst();
 			var item = stack.getItem();
 			
-			return item instanceof FluidVolumeItem ? FluidComponent.get(stack).getFirst().getAmount().intValue() : 0;
+			return item instanceof FluidVolumeItem ? FluidComponent.from(stack).getFirst().getAmount().intValue() : 0;
 		});
 
 		var rightArrow = new HorizontalArrowWidget();
@@ -97,7 +97,7 @@ public class TankScreenHandler extends ComponentBlockEntityFluidItemScreenHandle
 			var stack = fluidItemBlockEntity.getItemComponent().getSecond();
 			var item = stack.getItem();
 			
-			return item instanceof FluidVolumeItem ? FluidComponent.get(stack).getFirst().getAmount().intValue() : 0;
+			return item instanceof FluidVolumeItem ? FluidComponent.from(stack).getFirst().getAmount().intValue() : 0;
 		});
 
 		var filter = new FluidFilterWidget();

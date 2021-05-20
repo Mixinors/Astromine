@@ -36,13 +36,13 @@ import java.util.function.Supplier;
  * {@link FluidComponent}.
  */
 public abstract class ComponentFluidBlockEntity extends ComponentBlockEntity implements FluidComponentProvider {
-	private final FluidComponent fluidComponent = createFluidComponent();
+	protected final FluidComponent fluids = createFluidComponent();
 
 	/** Instantiates a {@link ComponentFluidBlockEntity}. */
 	public ComponentFluidBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 		
-		getFluidComponent().updateListeners();
+		fluids.updateListeners();
 	}
 
 	/** Returns the {@link FluidComponent} to be attached. */
@@ -51,6 +51,6 @@ public abstract class ComponentFluidBlockEntity extends ComponentBlockEntity imp
 	/** Returns the attached {@link FluidComponent}. */
 	@Override
 	public FluidComponent getFluidComponent() {
-		return fluidComponent;
+		return fluids;
 	}
 }

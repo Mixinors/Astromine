@@ -24,7 +24,6 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.common.component.general.base.SimpleDirectionalFluidComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -33,24 +32,23 @@ import net.minecraft.nbt.CompoundTag;
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.common.util.tier.MachineTier;
-import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.recipe.ElectrolyzingRecipe;
+import net.minecraft.server.world.ServerWorld;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider, FluidSizeProvider {
+public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockEntity implements EnergySizeProvider, SpeedProvider, FluidSizeProvider {
 	public double progress = 0;
 	public int limit = 100;
 	public boolean shouldTry = false;
 
-	private Optional<ElectrolyzingRecipe> optionalRecipe = Optional.empty();
+	private Optional<ElectrolyzingRecipe> recipe = Optional.empty();
 
 	public ElectrolyzerBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
@@ -63,96 +61,104 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 
 	@Override
 	public FluidComponent createFluidComponent() {
-		FluidComponent fluidComponent = SimpleDirectionalFluidComponent.of(this, 3).withInsertPredicate((direction, volume, slot) -> {
+		return FluidComponent.of(this, 3).withInsertPredicate((direction, volume, slot) -> {
 			if (slot != 0) {
 				return false;
 			}
-
-			if (!volume.test(getFluidComponent().getFirst()) && !volume.test(getFluidComponent().getSecond())) {
+			
+			if (!transfer.getFluid(direction).canInsert()) {
 				return false;
 			}
 
-			return ElectrolyzingRecipe.allows(world, FluidComponent.of(volume, getFluidComponent().getSecond().copy(), getFluidComponent().getThird().copy()));
+			if (!volume.test(fluids.getFirst()) && !volume.test(fluids.getSecond())) {
+				return false;
+			}
+
+			return ElectrolyzingRecipe.allows(world, FluidComponent.of(volume, fluids.getSecond().copy(), fluids.getThird().copy()));
 		}).withExtractPredicate((direction, volume, slot) -> {
+			if (!transfer.getFluid(direction).canExtract()) {
+				return false;
+			}
+			
 			return slot == 1 || slot == 2;
 		}).withListener((inventory) -> {
 			shouldTry = true;
-			optionalRecipe = Optional.empty();
-		});
-
-		fluidComponent.forEach(it -> it.setSize(getFluidSize()));
-
-		return fluidComponent;
+			recipe = Optional.empty();
+		}).withSizes(getFluidSize());
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
-
-		if (world == null || world.isClient || !tickRedstone())
+		
+		if (!(world instanceof ServerWorld) || !tickRedstone())
 			return;
+		
+		if (recipe.isEmpty() && shouldTry) {
+			recipe = ElectrolyzingRecipe.matching(world, fluids);
+			shouldTry = false;
 
-		FluidComponent fluidComponent = getFluidComponent();
-
-		var energyComponent = getEnergyComponent();
-
-		if (fluidComponent != null && energyComponent != null) {
-			EnergyVolume volume = energyComponent.getVolume();
-
-			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = ElectrolyzingRecipe.matching(world, fluidComponent);
-				shouldTry = false;
-
-				if (!optionalRecipe.isPresent()) {
-					progress = 0;
-					limit = 100;
-				}
+			if (recipe.isEmpty()) {
+				progress = 0;
+				limit = 100;
 			}
+		}
+		
+		if (recipe.isPresent()) {
+			var recipe = this.recipe.get();
 
-			if (optionalRecipe.isPresent()) {
-				ElectrolyzingRecipe recipe = optionalRecipe.get();
+			limit = recipe.getTime();
 
-				limit = recipe.getTime();
+			var speed = Math.min(getMachineSpeed(), limit - progress);
+			var consumed = recipe.getEnergyInput() * speed / limit;
 
-				double speed = Math.min(getMachineSpeed(), limit - progress);
-				double consumed = recipe.getEnergyInput() * speed / limit;
+			if (energy.hasStored(consumed)) {
+				energy.take(consumed);
 
-				if (volume.hasStored(consumed)) {
-					volume.take(consumed);
+				if (progress + speed >= limit) {
+					this.recipe = Optional.empty();
+					
+					var first = fluids.getFirst();
+					var second = fluids.getSecond();
+					var third = fluids.getThird();
+					
+					var firstInput = recipe.getFirstInput();
+					var firstOutput = recipe.getFirstOutput();
+					var secondOutput = recipe.getSecondOutput();
 
-					if (progress + speed >= limit) {
-						optionalRecipe = Optional.empty();
+					first.take(firstInput.testMatching(first).getAmount());
+					second.take(firstOutput);
+					third.take(secondOutput);
 
-						fluidComponent.getFirst().take(recipe.getFirstInput().testMatching(fluidComponent.getFirst()).getAmount());
-						fluidComponent.getSecond().take(recipe.getFirstOutput());
-						fluidComponent.getThird().take(recipe.getSecondOutput());
-
-						progress = 0;
-					} else {
-						progress += speed;
-					}
-
-					tickActive();
+					progress = 0;
 				} else {
-					tickInactive();
+					progress += speed;
 				}
+
+				tickActive();
 			} else {
 				tickInactive();
 			}
+		} else {
+			tickInactive();
 		}
 	}
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.putDouble("progress", progress);
-		tag.putInt("limit", limit);
+		tag.putDouble("Progress", progress);
+		tag.putInt("Limit", limit);
+		
 		return super.toTag(tag);
 	}
 
 	@Override
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		progress = tag.getDouble("progress");
-		limit = tag.getInt("limit");
+		progress = tag.getDouble("Progress");
+		limit = tag.getInt("Limit");
+		
+		shouldTry = true;
+		
 		super.fromTag(state, tag);
 	}
 
@@ -175,11 +181,6 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 		public double getEnergySize() {
 			return AMConfig.get().primitiveElectrolyzerEnergy;
 		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.PRIMITIVE;
-		}
 	}
 
 	public static class Basic extends ElectrolyzerBlockEntity {
@@ -200,11 +201,6 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 		@Override
 		public double getEnergySize() {
 			return AMConfig.get().basicElectrolyzerEnergy;
-		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.BASIC;
 		}
 	}
 
@@ -227,11 +223,6 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 		public double getEnergySize() {
 			return AMConfig.get().advancedElectrolyzerEnergy;
 		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.ADVANCED;
-		}
 	}
 
 	public static class Elite extends ElectrolyzerBlockEntity {
@@ -252,11 +243,6 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 		@Override
 		public double getEnergySize() {
 			return AMConfig.get().eliteElectrolyzerEnergy;
-		}
-
-		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.ELITE;
 		}
 	}
 }

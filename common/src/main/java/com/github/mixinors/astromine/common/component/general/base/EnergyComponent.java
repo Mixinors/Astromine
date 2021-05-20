@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.component.general.base;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.component.general.miscellaneous.NamedComponent;
 import com.github.mixinors.astromine.common.component.general.provider.EnergyComponentProvider;
+import com.github.mixinors.astromine.common.volume.base.Volume;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import me.shedaniel.architectury.utils.NbtType;
 
@@ -105,7 +106,7 @@ public interface EnergyComponent extends NamedComponent {
 		addListener(() -> listener.accept(this));
 		return this;
 	}
-
+	
 	/** Returns this component's volume. */
 	EnergyVolume getVolume();
 
@@ -160,6 +161,16 @@ public interface EnergyComponent extends NamedComponent {
 		ourVolume.give(theirVolume, transferable);
 	}
 	
+	/** Asserts whether this component's volume has the specified amount of energy stored. */
+	default boolean hasStored(double amount) {
+		return getVolume().hasStored(amount);
+	}
+	
+	/** Asserts whether this component's volume has the specified amount of energy available. */
+	default boolean hasAvailable(double amount) {
+		return getVolume().hasAvailable(amount);
+	}
+	
 	/** Takes the specified amount of energy from this component's volume. */
 	default void take(double amount) {
 		getVolume().take(amount);
@@ -198,7 +209,7 @@ public interface EnergyComponent extends NamedComponent {
 
 	/** Returns the {@link EnergyComponent} of the given {@link V}. */
 	@Nullable
-	static <V> EnergyComponent get(V v) {
+	static <V> EnergyComponent from(V v) {
 		if (v instanceof EnergyComponentProvider) {
 			return ((EnergyComponentProvider) v).getEnergyComponent();
 		} else {

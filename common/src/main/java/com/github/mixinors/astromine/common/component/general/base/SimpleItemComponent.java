@@ -65,7 +65,7 @@ public class SimpleItemComponent implements ItemComponent {
 		this(stacks.length);
 
 		for (var i = 0; i < stacks.length; ++i) {
-			setStack(i, stacks[i]);
+			set(i, stacks[i]);
 		}
 	}
 

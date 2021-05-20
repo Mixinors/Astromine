@@ -69,7 +69,7 @@ public class EnergyVolumeItem extends Item {
 		if (this.isIn(group)) {
 			var stack = new ItemStack(this);
 
-			EnergyComponent.get(stack).setAmount(getSize());
+			EnergyComponent.from(stack).setAmount(getSize());
 
 			stacks.add(stack);
 		}

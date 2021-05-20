@@ -89,13 +89,13 @@ public class ItemComponentFromInventory implements ItemComponent {
 
 	/* Returns the {@link ItemStack} at the given slot. */
 	@Override
-	public ItemStack getStack(int slot) {
+	public ItemStack get(int slot) {
 		return this.inventory.getStack(slot);
 	}
 
 	/** Sets the {@link ItemStack} at the given slot to the specified value. */
 	@Override
-	public void setStack(int slot, ItemStack stack) {
+	public void set(int slot, ItemStack stack) {
 		this.inventory.setStack(slot, stack);
 	}
 }

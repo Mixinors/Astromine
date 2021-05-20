@@ -37,13 +37,13 @@ import java.util.function.Supplier;
  * {@link ItemComponent}.
  */
 public abstract class ComponentItemBlockEntity extends ComponentBlockEntity implements InventoryItemComponentProvider, ItemComponentProvider {
-	private final ItemComponent itemComponent = createItemComponent();
+	protected final ItemComponent items = createItemComponent();
 
 	/** Instantiates a {@link ComponentItemBlockEntity}. */
 	public ComponentItemBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 		
-		getItemComponent().updateListeners();
+		items.updateListeners();
 	}
 
 	/** Returns the {@link ItemComponent} to be attached. */
@@ -51,6 +51,6 @@ public abstract class ComponentItemBlockEntity extends ComponentBlockEntity impl
 
 	/** Returns the attached {@link ItemComponent}. */
 	public ItemComponent getItemComponent() {
-		return itemComponent;
+		return items;
 	}
 }

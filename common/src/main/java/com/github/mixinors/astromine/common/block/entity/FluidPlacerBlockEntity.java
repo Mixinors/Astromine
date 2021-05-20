@@ -29,6 +29,7 @@ import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -55,9 +56,7 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 
 	@Override
 	public FluidComponent createFluidComponent() {
-		FluidComponent fluidComponent = SimpleDirectionalFluidComponent.of(this, 1);
-		fluidComponent.getFirst().setSize(FluidVolume.BOTTLE * 8L);
-		return fluidComponent;
+		return FluidComponent.of(this, 1).withSizes(FluidVolume.BOTTLE * 8);
 	}
 
 	@Override
@@ -83,48 +82,41 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 	@Override
 	public void tick() {
 		super.tick();
-
-		if (world == null || world.isClient || !tickRedstone())
+		
+		if (!(world instanceof ServerWorld) || !tickRedstone())
 			return;
+		
+		if (energy.getAmount() < getEnergyConsumed()) {
+			cooldown = 0L;
 
-		FluidComponent fluidComponent = getFluidComponent();
+			tickInactive();
+		} else {
+			tickActive();
 
-		var energyComponent = getEnergyComponent();
+			cooldown++;
 
-		if (fluidComponent != null && energyComponent != null) {
-			var energyVolume = energyComponent.getVolume();
-
-			if (energyVolume.getAmount() < getEnergyConsumed()) {
+			if (cooldown >= getMachineSpeed()) {
 				cooldown = 0L;
 
-				tickInactive();
-			} else {
-				tickActive();
+				var volume = fluids.getFirst();
 
-				cooldown++;
+				var direction = getCachedState().get(HorizontalFacingBlock.FACING);
 
-				if (cooldown >= getMachineSpeed()) {
-					cooldown = 0L;
+				var targetPos = pos.offset(direction);
 
-					FluidVolume fluidVolume = fluidComponent.getFirst();
+				var targetState = world.getBlockState(targetPos);
 
-					var direction = getCachedState().get(HorizontalFacingBlock.FACING);
+				if (targetState.isAir()) {
+					if (volume.hasStored(FluidVolume.BUCKET)) {
+						var volumeToInsert = FluidVolume.of(FluidVolume.BUCKET, volume.getFluid());
 
-					BlockPos targetPos = pos.offset(direction);
+						volume.take(FluidVolume.BUCKET);
 
-					BlockState targetState = world.getBlockState(targetPos);
+						energy.take(getEnergyConsumed());
 
-					if (targetState.isAir()) {
-						if (fluidVolume.hasStored(FluidVolume.BUCKET)) {
-							FluidVolume toInsert = FluidVolume.of(FluidVolume.BUCKET, fluidVolume.getFluid());
-
-							fluidVolume.take(FluidVolume.BUCKET);
-
-							energyVolume.take(getEnergyConsumed());
-
-							world.setBlockState(targetPos, toInsert.getFluid().getDefaultState().getBlockState());
-							world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1, 1);
-						}
+						world.setBlockState(targetPos, volumeToInsert.getFluid().getDefaultState().getBlockState());
+						
+						world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1, 1);
 					}
 				}
 			}
@@ -133,13 +125,15 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.putLong("cooldown", cooldown);
+		tag.putLong("Cooldown", cooldown);
+		
 		return super.toTag(tag);
 	}
 
 	@Override
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		cooldown = tag.getLong("cooldown");
+		cooldown = tag.getLong("Cooldown");
+		
 		super.fromTag(state, tag);
 	}
 }

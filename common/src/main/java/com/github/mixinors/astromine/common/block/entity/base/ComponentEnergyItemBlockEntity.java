@@ -39,16 +39,16 @@ import java.util.function.Supplier;
  * {@link EnergyComponent} and {@link ItemComponent}.
  */
 public abstract class ComponentEnergyItemBlockEntity extends ComponentBlockEntity implements InventoryItemComponentProvider, EnergyComponentProvider, ItemComponentProvider {
-	private final EnergyComponent energyComponent = createEnergyComponent();
-
-	private final ItemComponent itemComponent = createItemComponent();
+	protected final EnergyComponent energy = createEnergyComponent();
+	
+	protected final ItemComponent items = createItemComponent();
 
 	/** Instantiates a {@link ComponentEnergyItemBlockEntity}. */
 	public ComponentEnergyItemBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 
-		getEnergyComponent().updateListeners();
-		getItemComponent().updateListeners();
+		energy.updateListeners();
+		items.updateListeners();
 	}
 
 	/** Returns the {@link EnergyComponent} to be attached. */
@@ -56,7 +56,7 @@ public abstract class ComponentEnergyItemBlockEntity extends ComponentBlockEntit
 
 	/** Returns the attached {@link EnergyComponent}. */
 	public EnergyComponent getEnergyComponent() {
-		return energyComponent;
+		return energy;
 	}
 
 	/** Returns the {@link ItemComponent} to be attached. */
@@ -65,6 +65,6 @@ public abstract class ComponentEnergyItemBlockEntity extends ComponentBlockEntit
 	/** Returns the attached {@link ItemComponent}. */
 	@Override
 	public ItemComponent getItemComponent() {
-		return itemComponent;
+		return items;
 	}
 }

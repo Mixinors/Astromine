@@ -52,9 +52,9 @@ import java.util.function.Supplier;
  * its activity, and handles redstone behavior.
  */
 public abstract class ComponentBlockEntity extends BlockEntity implements BlockEntityExtension, Tickable, TransferComponentProvider, RedstoneComponentProvider {
-	private final TransferComponent transferComponent = createTransferComponent();
+	protected final TransferComponent transfer = createTransferComponent();
 
-	private final RedstoneComponent redstoneComponent = createRedstoneComponent();
+	protected final RedstoneComponent redstone = createRedstoneComponent();
 
 	private boolean isActive = false;
 
@@ -75,7 +75,7 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 	/** Returns the attached {@link TransferComponent}. */
 	@Override
 	public TransferComponent getTransferComponent() {
-		return transferComponent;
+		return transfer;
 	}
 
 	/** Returns the {@link RedstoneComponent} to be attached. */
@@ -86,7 +86,7 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 	/** Returns the attached {@link RedstoneComponent}. */
 	@Override
 	public RedstoneComponent getRedstoneComponent() {
-		return redstoneComponent;
+		return redstone;
 	}
 
 	/** Signals that this {@link ComponentBlockEntity} should synchronize
@@ -145,10 +145,10 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 			var neighborBlockEntity = world.getBlockEntity(neighborPos);
 
 			if (getTransferComponent().hasItem()) {
-				var ourComponent = ItemComponent.get(this);
+				var ourComponent = ItemComponent.from(this);
 
 				if (ourComponent != null) {
-					var theirComponent = ItemComponent.get(neighborBlockEntity);
+					var theirComponent = ItemComponent.from(neighborBlockEntity);
 
 					if (theirComponent != null) {
 						theirComponent.into(ourComponent, 1, neighborDirection, offsetDirection);
@@ -158,10 +158,10 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 			}
 
 			if (getTransferComponent().hasFluid()) {
-				var ourComponent = FluidComponent.get(this);
+				var ourComponent = FluidComponent.from(this);
 
 				if (ourComponent != null) {
-					var theirComponent = FluidComponent.get(neighborBlockEntity);
+					var theirComponent = FluidComponent.from(neighborBlockEntity);
 
 					if (theirComponent != null) {
 						theirComponent.into(ourComponent, FluidVolume.getTransfer(), neighborDirection, offsetDirection);
@@ -171,10 +171,10 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 			}
 
 			if (getTransferComponent().hasEnergy()) {
-				var ourComponent = EnergyComponent.get(this);
+				var ourComponent = EnergyComponent.from(this);
 
 				if (ourComponent != null) {
-					var theirComponent = EnergyComponent.get(neighborBlockEntity);
+					var theirComponent = EnergyComponent.from(neighborBlockEntity);
 
 					if (theirComponent != null) {
 						theirComponent.into(ourComponent, 1024D);

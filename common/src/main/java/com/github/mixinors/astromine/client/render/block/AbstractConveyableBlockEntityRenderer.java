@@ -30,7 +30,6 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.block.entity.base.AbstractConveyableBlockEntity;
 import com.github.mixinors.astromine.common.conveyor.ConveyorTypes;

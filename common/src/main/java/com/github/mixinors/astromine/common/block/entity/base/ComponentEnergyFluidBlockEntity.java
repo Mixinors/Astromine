@@ -38,16 +38,16 @@ import java.util.function.Supplier;
  * {@link EnergyComponent} and {@link ItemComponent}.
  */
 public abstract class ComponentEnergyFluidBlockEntity extends ComponentBlockEntity implements EnergyComponentProvider, FluidComponentProvider {
-	private final EnergyComponent energyComponent = createEnergyComponent();
-
-	private final FluidComponent fluidComponent = createFluidComponent();
+	protected final EnergyComponent energy = createEnergyComponent();
+	
+	protected final FluidComponent fluids = createFluidComponent();
 
 	/** Instantiates a {@link ComponentEnergyFluidBlockEntity}. */
 	public ComponentEnergyFluidBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 		
-		getEnergyComponent().updateListeners();
-		getFluidComponent().updateListeners();
+		energy.updateListeners();
+		fluids.updateListeners();
 	}
 
 	/** Returns the {@link EnergyComponent} to be attached. */
@@ -56,7 +56,7 @@ public abstract class ComponentEnergyFluidBlockEntity extends ComponentBlockEnti
 	/** Returns the attached {@link EnergyComponent}. */
 	@Override
 	public EnergyComponent getEnergyComponent() {
-		return energyComponent;
+		return energy;
 	}
 
 	/** Returns the {@link FluidComponent} to be attached. */
@@ -65,6 +65,6 @@ public abstract class ComponentEnergyFluidBlockEntity extends ComponentBlockEnti
 	/** Returns the attached {@link FluidComponent}. */
 	@Override
 	public FluidComponent getFluidComponent() {
-		return fluidComponent;
+		return fluids;
 	}
 }

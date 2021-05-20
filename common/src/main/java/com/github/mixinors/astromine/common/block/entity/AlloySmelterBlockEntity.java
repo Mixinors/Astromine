@@ -29,12 +29,10 @@ import com.github.mixinors.astromine.common.component.general.base.ItemComponent
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
 import com.github.mixinors.astromine.common.util.StackUtils;
-import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
@@ -42,6 +40,7 @@ import com.github.mixinors.astromine.common.recipe.AlloySmeltingRecipe;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
+import net.minecraft.server.world.ServerWorld;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -54,7 +53,7 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 	public int limit = 100;
 	public boolean shouldTry = false;
 
-	private Optional<AlloySmeltingRecipe> optionalRecipe = Optional.empty();
+	private Optional<AlloySmeltingRecipe> recipe = Optional.empty();
 
 	public AlloySmelterBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
@@ -67,24 +66,24 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 				return false;
 			}
 
-			if (!getTransferComponent().getItem(direction).canInsert()) {
+			if (!transfer.getItem(direction).canInsert()) {
 				return false;
 			}
 
-			if (!StackUtils.test(stack, getItemComponent().getFirst()) && !StackUtils.test(stack, getItemComponent().getSecond())) {
+			if (!StackUtils.test(stack, items.getFirst()) && !StackUtils.test(stack, items.getSecond())) {
 				return false;
 			}
 
-			return AlloySmeltingRecipe.allows(world, ItemComponent.of(stack, getItemComponent().getSecond())) || AlloySmeltingRecipe.allows(world, ItemComponent.of(getItemComponent().getFirst(), stack));
+			return AlloySmeltingRecipe.allows(world, ItemComponent.of(stack, items.getSecond())) || AlloySmeltingRecipe.allows(world, ItemComponent.of(items.getFirst(), stack));
 		}).withExtractPredicate(((direction, stack, slot) -> {
-			if (!getTransferComponent().getItem(direction).canExtract()) {
+			if (!transfer.getItem(direction).canExtract()) {
 				return false;
 			}
 
 			return slot == 2;
 		})).withListener((inventory) -> {
 			shouldTry = true;
-			optionalRecipe = Optional.empty();
+			recipe = Optional.empty();
 		});
 	}
 
@@ -107,79 +106,78 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 	public void tick() {
 		super.tick();
 
-		if (world == null || world.isClient || !tickRedstone())
+		if (!(world instanceof ServerWorld) || !tickRedstone())
 			return;
+		
+		if (recipe.isEmpty() && shouldTry) {
+			recipe = AlloySmeltingRecipe.matching(world, items);
+			shouldTry = false;
 
-		var itemComponent = getItemComponent();
-
-		var energyComponent = getEnergyComponent();
-
-		if (itemComponent != null && energyComponent != null) {
-			var energyVolume = energyComponent.getVolume();
-
-			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = AlloySmeltingRecipe.matching(world, itemComponent);
-				shouldTry = false;
-
-				if (!optionalRecipe.isPresent()) {
-					progress = 0;
-					limit = 100;
-				}
+			if (recipe.isEmpty()) {
+				progress = 0;
+				limit = 100;
 			}
+		}
+		
+		if (recipe.isPresent()) {
+			var recipe = this.recipe.get();
 
-			if (optionalRecipe.isPresent()) {
-				var recipe = optionalRecipe.get();
+			limit = recipe.getTime();
 
-				limit = recipe.getTime();
+			var speed = min(getMachineSpeed(), limit - progress);
+			var consumed = recipe.getEnergyInput() * speed / limit;
 
-				var speed = min(getMachineSpeed(), limit - progress);
-				var consumed = recipe.getEnergyInput() * speed / limit;
+			if (energy.hasStored(consumed)) {
+				energy.take(consumed);
 
-				if (energyVolume.hasStored(consumed)) {
-					energyVolume.take(consumed);
+				if (progress + speed >= limit) {
+					this.recipe = Optional.empty();
 
-					if (progress + speed >= limit) {
-						optionalRecipe = Optional.empty();
+					var first = items.getFirst();
+					var second = items.getSecond();
+					
+					var firstInput = recipe.getFirstInput();
+					var secondInput = recipe.getSecondInput();
 
-						var first = itemComponent.getFirst();
-						var second = itemComponent.getSecond();
-
-						if (recipe.getFirstInput().test(first) && recipe.getSecondInput().test(second)) {
-							first.decrement(recipe.getFirstInput().testMatching(first).getCount());
-							second.decrement(recipe.getSecondInput().testMatching(second).getCount());
-						} else if (recipe.getFirstInput().test(second) && recipe.getSecondInput().test(first)) {
-							second.decrement(recipe.getFirstInput().testMatching(second).getCount());
-							first.decrement(recipe.getSecondInput().testMatching(first).getCount());
-						}
-
-						itemComponent.setThird(StackUtils.into(itemComponent.getThird(), recipe.getFirstOutput()));
-
-						progress = 0;
-					} else {
-						progress += speed;
+					if (firstInput.test(first) && secondInput.test(second)) {
+						first.decrement(firstInput.testMatching(first).getCount());
+						second.decrement(secondInput.testMatching(second).getCount());
+					} else if (firstInput.test(second) && secondInput.test(first)) {
+						second.decrement(firstInput.testMatching(second).getCount());
+						first.decrement(secondInput.testMatching(first).getCount());
 					}
 
-					tickActive();
+					items.setThird(StackUtils.into(items.getThird(), recipe.getFirstOutput()));
+					
+					progress = 0;
 				} else {
-					tickInactive();
+					progress += speed;
 				}
+
+				tickActive();
 			} else {
 				tickInactive();
 			}
+		} else {
+			tickInactive();
 		}
 	}
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.putDouble("progress", progress);
-		tag.putInt("limit", limit);
+		tag.putDouble("Progress", progress);
+		tag.putInt("Limit", limit);
+		
 		return super.toTag(tag);
 	}
 
 	@Override
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		progress = tag.getDouble("progress");
-		limit = tag.getInt("limit");
+		progress = tag.getDouble("Progress");
+		limit = tag.getInt("Limit");
+		
+		shouldTry = true;
+		
 		super.fromTag(state, tag);
 	}
 

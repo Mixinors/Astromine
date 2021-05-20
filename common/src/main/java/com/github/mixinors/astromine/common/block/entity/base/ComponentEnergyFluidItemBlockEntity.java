@@ -42,19 +42,19 @@ import java.util.function.Supplier;
  * and {@link ItemComponent}.
  */
 public abstract class ComponentEnergyFluidItemBlockEntity extends ComponentBlockEntity implements InventoryItemComponentProvider, EnergyComponentProvider, FluidComponentProvider, ItemComponentProvider {
-	private final EnergyComponent energyComponent = createEnergyComponent();
-
-	private final FluidComponent fluidComponent = createFluidComponent();
-
-	private final ItemComponent itemComponent = createItemComponent();
+	protected final EnergyComponent energy = createEnergyComponent();
+	
+	protected final FluidComponent fluids = createFluidComponent();
+	
+	protected final ItemComponent items = createItemComponent();
 
 	/** Instantiates a {@link ComponentEnergyFluidItemBlockEntity}. */
 	public ComponentEnergyFluidItemBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
 		super(type);
 
-		getEnergyComponent().updateListeners();
-		getFluidComponent().updateListeners();
-		getItemComponent().updateListeners();
+		energy.updateListeners();
+		fluids.updateListeners();
+		items.updateListeners();
 	}
 
 	/** Returns the {@link EnergyComponent} to be attached. */
@@ -63,7 +63,7 @@ public abstract class ComponentEnergyFluidItemBlockEntity extends ComponentBlock
 	/** Returns the attached {@link EnergyComponent}. */
 	@Override
 	public EnergyComponent getEnergyComponent() {
-		return energyComponent;
+		return energy;
 	}
 
 	/** Returns the {@link FluidComponent} to be attached. */
@@ -72,7 +72,7 @@ public abstract class ComponentEnergyFluidItemBlockEntity extends ComponentBlock
 	/** Returns the attached {@link FluidComponent}. */
 	@Override
 	public FluidComponent getFluidComponent() {
-		return fluidComponent;
+		return fluids;
 	}
 
 	/** Returns the {@link ItemComponent} to be attached. */
@@ -81,6 +81,6 @@ public abstract class ComponentEnergyFluidItemBlockEntity extends ComponentBlock
 	/** Returns the attached {@link ItemComponent}. */
 	@Override
 	public ItemComponent getItemComponent() {
-		return itemComponent;
+		return items;
 	}
 }

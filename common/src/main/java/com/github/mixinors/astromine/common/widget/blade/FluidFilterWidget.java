@@ -35,7 +35,6 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.item.ItemStack;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -51,7 +50,6 @@ import com.github.vini2003.blade.client.utilities.Layers;
 import com.github.vini2003.blade.common.widget.base.ButtonWidget;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -103,7 +101,7 @@ public class FluidFilterWidget extends ButtonWidget {
 
 		if (isWithin(x, y)) {
 			if (!stack.isEmpty()) {
-				var fluidComponent = FluidComponent.get(stack);
+				var fluidComponent = FluidComponent.from(stack);
 
 				fluidSupplier = () -> fluidComponent.getFirst().getFluid();
 				fluidConsumer.accept(fluidSupplier.get());

@@ -26,7 +26,6 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentItemBlockEntity;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.base.SimpleItemComponent;
 import com.github.mixinors.astromine.common.util.StackUtils;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMConfig;
@@ -39,9 +38,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Pair;
 import net.minecraft.util.Tickable;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
@@ -70,17 +67,9 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 
 	@Override
 	public ItemComponent createItemComponent() {
-		return new SimpleItemComponent(1) {
-			@Override
-			public ItemStack removeStack(int slot) {
-				position = 0;
-				prevPosition = 0;
-
-				return super.removeStack(slot);
-			}
-		}.withListener((inventory) -> {
-			if (world != null && !world.isClient) {
-				sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+		return ItemComponent.of(1).withListener((inventory) -> {
+			if (world instanceof ServerWorld serverWorld) {
+				sendPacket(serverWorld, toTag(new CompoundTag()));
 			}
 		});
 	}
@@ -88,33 +77,27 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 	@Override
 	public void tick() {
 		var direction = getCachedState().get(HorizontalFacingBlock.FACING);
+		
 		var speed = ((Conveyor) getCachedState().getBlock()).getSpeed();
 
 		if (!isEmpty()) {
 			if (across) {
-				BlockPos frontPos = getPos().offset(direction);
-				BlockPos frontAcrossPos = frontPos.offset(direction);
+				var frontPos = getPos().offset(direction);
+				var frontAcrossPos = frontPos.offset(direction);
 
-				if (getWorld().getBlockEntity(frontPos) instanceof ConveyorConveyable && getWorld().getBlockEntity(frontAcrossPos) instanceof ConveyorConveyable) {
-					var conveyable = (Conveyable) getWorld().getBlockEntity(frontPos);
-					Conveyable acrossConveyable = (Conveyable) getWorld().getBlockEntity(frontAcrossPos);
-
+				if (world.getBlockEntity(frontPos) instanceof ConveyorConveyable conveyable && world.getBlockEntity(frontAcrossPos) instanceof ConveyorConveyable acrossConveyable) {
 					handleMovementAcross(conveyable, acrossConveyable, speed, true);
 				}
 			} else if (front) {
-				BlockPos frontPos = getPos().offset(direction);
+				var frontPos = getPos().offset(direction);
 
-				if (getWorld().getBlockEntity(frontPos) instanceof Conveyable) {
-					var conveyable = (Conveyable) getWorld().getBlockEntity(frontPos);
-
+				if (world.getBlockEntity(frontPos) instanceof Conveyable conveyable) {
 					handleMovement(conveyable, speed, true);
 				}
 			} else if (down) {
-				BlockPos downPos = getPos().offset(direction).down();
+				var downPos = getPos().offset(direction).down();
 
-				if (getWorld().getBlockEntity(downPos) instanceof Conveyable) {
-					var conveyable = (Conveyable) getWorld().getBlockEntity(downPos);
-
+				if (world.getBlockEntity(downPos) instanceof Conveyable conveyable) {
 					handleMovement(conveyable, speed, true);
 				}
 			} else if (position != 0) {
@@ -126,23 +109,21 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 	}
 
 	public void handleMovement(Conveyable conveyable, int speed, boolean transition) {
-		int accepted = conveyable.accepts(getItemComponent().getFirst());
+		var accepted = conveyable.accepts(items.getFirst());
 
 		if (accepted > 0) {
 			if (position < speed) {
 				setPosition(getPosition() + 1);
 			} else if (transition && position == speed) {
-				var split = getItemComponent().getFirst().copy();
+				var split = items.getFirst().copy();
 				split.setCount(Math.min(accepted, split.getCount()));
-
-				getItemComponent().getFirst().decrement(accepted);
-				getItemComponent().updateListeners();
+				
+				items.getFirst().decrement(accepted);
+				items.updateListeners();
 
 				conveyable.give(split);
 			}
-		} else if (conveyable instanceof ConveyorConveyable) {
-			var conveyor = (ConveyorConveyable) conveyable;
-
+		} else if (conveyable instanceof ConveyorConveyable conveyor) {
 			if (position < speed && position + 1 < conveyor.getPosition() && conveyor.getPosition() > 1) {
 				setPosition(getPosition() + 1);
 			} else {
@@ -156,33 +137,27 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 	}
 
 	public void handleMovementAcross(Conveyable conveyable, Conveyable acrossConveyable, int speed, boolean transition) {
-		int accepted = conveyable.accepts(getItemComponent().getFirst());
+		var accepted = conveyable.accepts(items.getFirst());
 
 		if (accepted > 0) {
 			if (position < speed) {
-				if (conveyable instanceof ConveyorConveyable && acrossConveyable instanceof ConveyorConveyable) {
-					var conveyor = (ConveyorConveyable) conveyable;
-					ConveyorConveyable acrossConveyor = (ConveyorConveyable) acrossConveyable;
-
-					if (position < speed && acrossConveyor.getPosition() == 0) {
+				if (conveyable instanceof ConveyorConveyable && acrossConveyable instanceof ConveyorConveyable acrossConveyor) {
+					if (acrossConveyor.getPosition() == 0) {
 						setPosition(getPosition() + 1);
 					} else {
 						prevPosition = position;
 					}
 				}
 			} else if (transition && position == speed) {
-				var split = getItemComponent().getFirst().copy();
+				var split = items.getFirst().copy();
 				split.setCount(Math.min(accepted, split.getCount()));
 
-				getItemComponent().getFirst().decrement(accepted);
-				getItemComponent().updateListeners();
+				items.getFirst().decrement(accepted);
+				items.updateListeners();
 
 				conveyable.give(split);
 			}
-		} else if (conveyable instanceof ConveyorConveyable && acrossConveyable instanceof ConveyorConveyable) {
-			var conveyor = (ConveyorConveyable) conveyable;
-			ConveyorConveyable acrossConveyor = (ConveyorConveyable) acrossConveyable;
-
+		} else if (conveyable instanceof ConveyorConveyable conveyor && acrossConveyable instanceof ConveyorConveyable acrossConveyor) {
 			if (position < speed && acrossConveyor.getPosition() == 0 && position + 1 < conveyor.getPosition() && conveyor.getPosition() > 1) {
 				setPosition(getPosition() + 1);
 			} else {
@@ -202,8 +177,10 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 
 	@Override
 	public int accepts(ItemStack stack) {
-		if (getItemComponent().getFirst().isEmpty() || (AMConfig.get().conveyorsMergeStacks && StackUtils.areItemsAndTagsEqual(stack, getItemComponent().getFirst()))) {
-			return getItemComponent().getFirst().getMaxCount() - getItemComponent().getFirst().getCount();
+		var firstStack = items.getFirst();
+		
+		if (firstStack.isEmpty() || (AMConfig.get().conveyorsMergeStacks && StackUtils.areItemsAndTagsEqual(stack, firstStack))) {
+			return firstStack.getMaxCount() - firstStack.getCount();
 		} else {
 			return 0;
 		}
@@ -224,10 +201,11 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 		if (front || across || down) {
 			prevPosition = -1;
 		}
-
+		
 		if (!world.isClient) {
-			Pair<ItemStack, ItemStack> merge = StackUtils.merge(stack, getItemComponent().getFirst());
-			getItemComponent().setFirst(merge.getRight());
+			var merge = StackUtils.merge(stack, getItemComponent().getFirst());
+			
+			items.setFirst(merge.getRight());
 		}
 	}
 
@@ -245,8 +223,8 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 
 		markDirty();
 
-		if (!world.isClient) {
-			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+		if (world instanceof ServerWorld serverWorld) {
+			sendPacket(serverWorld, toTag(new CompoundTag()));
 		}
 	}
 
@@ -258,9 +236,9 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 		this.down = down;
 
 		markDirty();
-
-		if (!world.isClient) {
-			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+		
+		if (world instanceof ServerWorld serverWorld) {
+			sendPacket(serverWorld, toTag(new CompoundTag()));
 		}
 	}
 
@@ -272,9 +250,9 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 		this.across = across;
 
 		markDirty();
-
-		if (!world.isClient) {
-			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+		
+		if (world instanceof ServerWorld serverWorld) {
+			sendPacket(serverWorld, toTag(new CompoundTag()));
 		}
 	}
 
@@ -300,6 +278,7 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 
 	protected void sendPacket(ServerWorld w, CompoundTag tag) {
 		tag.putString("id", BlockEntityType.getId(getType()).toString());
+		
 		sendPacket(w, new BlockEntityUpdateS2CPacket(getPos(), 127, tag));
 	}
 
@@ -311,26 +290,26 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 	public void fromTag(BlockState state, CompoundTag compoundTag) {
 		super.fromTag(state, compoundTag);
 
-		front = compoundTag.getBoolean("front");
-		down = compoundTag.getBoolean("down");
-		across = compoundTag.getBoolean("across");
+		front = compoundTag.getBoolean("Front");
+		down = compoundTag.getBoolean("Down");
+		across = compoundTag.getBoolean("Across");
 
-		position = compoundTag.getInt("position");
-		prevPosition = compoundTag.getInt("prevPosition");
+		position = compoundTag.getInt("Position");
+		prevPosition = compoundTag.getInt("PreviousPosition");
 
 		getItemComponent().setFirst(ItemStack.fromTag(compoundTag.getCompound("stack")));
 	}
 
 	@Override
 	public CompoundTag toTag(CompoundTag compoundTag) {
-		compoundTag.putBoolean("front", front);
-		compoundTag.putBoolean("down", down);
-		compoundTag.putBoolean("across", across);
+		compoundTag.putBoolean("Front", front);
+		compoundTag.putBoolean("Down", down);
+		compoundTag.putBoolean("Across", across);
 
-		compoundTag.putInt("position", position);
-		compoundTag.putInt("prevPosition", prevPosition);
+		compoundTag.putInt("Position", position);
+		compoundTag.putInt("PreviousPosition", prevPosition);
 
-		compoundTag.put("stack", getItemComponent().getFirst().toTag(new CompoundTag()));
+		compoundTag.put("Stack", getItemComponent().getFirst().toTag(new CompoundTag()));
 
 		return super.toTag(compoundTag);
 	}

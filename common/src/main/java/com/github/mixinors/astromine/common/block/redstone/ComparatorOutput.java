@@ -58,7 +58,7 @@ public class ComparatorOutput {
 			return 0;
 		}
 
-		EnergyComponent component = EnergyComponent.get(entity);
+		EnergyComponent component = EnergyComponent.from(entity);
 
 		if (component == null) {
 			return 0;
@@ -79,7 +79,7 @@ public class ComparatorOutput {
 			return 0;
 		}
 
-		FluidComponent fluidComponent = FluidComponent.get(entity);
+		FluidComponent fluidComponent = FluidComponent.from(entity);
 
 		if (fluidComponent == null) {
 			return 0;

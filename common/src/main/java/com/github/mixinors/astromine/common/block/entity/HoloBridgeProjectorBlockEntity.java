@@ -73,10 +73,10 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			return;
 
 		if (!this.hasCheckedChild && this.childPosition != null) {
-			BlockEntity childEntity = this.world.getBlockEntity(this.childPosition);
+			var childEntity = this.world.getBlockEntity(this.childPosition);
 
-			if (childEntity instanceof HoloBridgeProjectorBlockEntity) {
-				this.child = (HoloBridgeProjectorBlockEntity) childEntity;
+			if (childEntity instanceof HoloBridgeProjectorBlockEntity projectorBlockEntity) {
+				this.child = projectorBlockEntity;
 				this.hasCheckedChild = true;
 
 				this.buildBridge();
@@ -86,10 +86,10 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 		}
 
 		if (!this.hasCheckedParent && this.parentPosition != null) {
-			BlockEntity parentEntity = this.world.getBlockEntity(parentPosition);
+			var parentEntity = this.world.getBlockEntity(parentPosition);
 
-			if (parentEntity instanceof HoloBridgeProjectorBlockEntity) {
-				this.parent = (HoloBridgeProjectorBlockEntity) parentEntity;
+			if (parentEntity instanceof HoloBridgeProjectorBlockEntity projectorBlockEntity) {
+				this.parent = projectorBlockEntity;
 				this.hasCheckedParent = true;
 
 				this.buildBridge();
@@ -100,12 +100,12 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	}
 
 	public boolean attemptToBuildBridge(HoloBridgeProjectorBlockEntity child) {
-		BlockPos bCP = child.getPos();
-		BlockPos bOP = this.getPos();
+		var bCP = child.getPos();
+		var bOP = this.getPos();
 
-		BlockPos nCP = bCP;
+		var nCP = bCP;
 
-		Direction cD = child.getCachedState().get(HorizontalFacingBlock.FACING);
+		var cD = child.getCachedState().get(HorizontalFacingBlock.FACING);
 
 		if (cD == Direction.EAST) {
 			nCP = nCP.add(1, 0, 0);
@@ -113,16 +113,16 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			nCP = nCP.add(0, 0, 1);
 		}
 
-		int distance = (int) Math.sqrt(this.getPos().getSquaredDistance(child.getPos()));
+		var distance = (int) Math.sqrt(this.getPos().getSquaredDistance(child.getPos()));
 
 		if (distance == 0) {
 			return false;
 		}
 
-		ArrayList<Vector3f> segments = (ArrayList<Vector3f>) LineUtils.getBresenhamSegments(VectorUtils.toVector3f(bOP.offset(Direction.UP)), VectorUtils.toVector3f(nCP.offset(Direction.UP)), 32);
+		var segments = (ArrayList<Vector3f>) LineUtils.getBresenhamSegments(VectorUtils.toVector3f(bOP.offset(Direction.UP)), VectorUtils.toVector3f(nCP.offset(Direction.UP)), 32);
 
-		for (Vector3f v : segments) {
-			BlockPos nP = new BlockPos(v.getX(), v.getY(), v.getZ());
+		for (var v : segments) {
+			var nP = new BlockPos(v.getX(), v.getY(), v.getZ());
 
 			if ((nP.getX() != bCP.getX() && nP.getX() != bOP.getX()) || (nP.getZ() != bCP.getZ() && nP.getZ() != bOP.getZ())) {
 				if (!this.world.getBlockState(nP).isAir()) {
@@ -139,12 +139,12 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			return;
 		}
 
-		BlockPos bCP = this.getChild().getPos();
-		BlockPos bOP = this.getPos();
+		var bCP = this.getChild().getPos();
+		var bOP = this.getPos();
 
-		BlockPos nCP = bCP;
+		var nCP = bCP;
 
-		Direction cD = this.getChild().getCachedState().get(HorizontalFacingBlock.FACING);
+		var cD = this.getChild().getCachedState().get(HorizontalFacingBlock.FACING);
 
 		if (cD == Direction.EAST) {
 			nCP = nCP.add(1, 0, 0);
@@ -159,10 +159,10 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 		}
 
 		this.segments = (ArrayList<Vector3f>) LineUtils.getBresenhamSegments(VectorUtils.toVector3f(bOP.offset(Direction.UP)), VectorUtils.toVector3f(nCP.offset(Direction.UP)), 32);
-		WorldHoloBridgeComponent bridgeComponent = WorldHoloBridgeComponent.get(world);
+		var bridgeComponent = WorldHoloBridgeComponent.get(world);
 
-		for (Vector3f v : this.segments) {
-			BlockPos nP = new BlockPos(v.getX(), v.getY(), v.getZ());
+		for (var v : this.segments) {
+			var nP = new BlockPos(v.getX(), v.getY(), v.getZ());
 
 			if ((nP.getX() != bCP.getX() && nP.getX() != bOP.getX()) || (nP.getZ() != bCP.getZ() && nP.getZ() != bOP.getZ())) {
 				if (this.world.getBlockState(nP).isAir()) {
@@ -233,10 +233,10 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 
 	public void destroyBridge() {
 		if (this.segments != null && this.world != null) {
-			WorldHoloBridgeComponent bridgeComponent = WorldHoloBridgeComponent.get(world);
+			var bridgeComponent = WorldHoloBridgeComponent.get(world);
 
-			for (Vector3f vec : this.segments) {
-				BlockPos pos = new BlockPos(vec.getX(), vec.getY(), vec.getZ());
+			for (var vec : this.segments) {
+				var pos = new BlockPos(vec.getX(), vec.getY(), vec.getZ());
 
 				bridgeComponent.remove(pos);
 
@@ -249,18 +249,18 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 
 	@Override
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		if (tag.contains("child_position")) {
-			this.childPosition = BlockPos.fromLong(tag.getLong("child_position"));
+		if (tag.contains("ChildPosition")) {
+			this.childPosition = BlockPos.fromLong(tag.getLong("ChildPosition"));
 		}
 
-		if (tag.contains("parent_position")) {
-			this.parentPosition = BlockPos.fromLong(tag.getLong("parent_position"));
+		if (tag.contains("ParentPosition")) {
+			this.parentPosition = BlockPos.fromLong(tag.getLong("ParentPosition"));
 		}
 
-		if (tag.contains("color")) {
-			CompoundTag colorTag = tag.getCompound("color");
+		if (tag.contains("Color")) {
+			var colorTag = tag.getCompound("Color");
 
-			color = new Color(colorTag.getFloat("r"), colorTag.getFloat("g"), colorTag.getFloat("b"), colorTag.getFloat("a"));
+			color = new Color(colorTag.getFloat("Red"), colorTag.getFloat("Green"), colorTag.getFloat("Blue"), colorTag.getFloat("Alpha"));
 		}
 
 		super.fromTag(state, tag);
@@ -269,24 +269,24 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
 		if (this.child != null) {
-			tag.putLong("child_position", this.child.getPos().asLong());
+			tag.putLong("ChildPosition", this.child.getPos().asLong());
 		} else if (this.childPosition != null) {
-			tag.putLong("child_position", this.childPosition.asLong());
+			tag.putLong("ChildPosition", this.childPosition.asLong());
 		}
 
 		if (this.parent != null) {
-			tag.putLong("parent_position", this.parent.getPos().asLong());
+			tag.putLong("ParentPosition", this.parent.getPos().asLong());
 		} else if (this.parentPosition != null) {
-			tag.putLong("parent_position", this.parentPosition.asLong());
+			tag.putLong("ParentPosition", this.parentPosition.asLong());
 		}
 
-		CompoundTag colorTag = new CompoundTag();
-		colorTag.putFloat("r", color.getR());
-		colorTag.putFloat("g", color.getG());
-		colorTag.putFloat("b", color.getB());
-		colorTag.putFloat("a", color.getA());
+		var colorTag = new CompoundTag();
+		colorTag.putFloat("Red", color.getR());
+		colorTag.putFloat("Green", color.getG());
+		colorTag.putFloat("Blue", color.getB());
+		colorTag.putFloat("Alpha", color.getA());
 
-		tag.put("color", colorTag);
+		tag.put("Color", colorTag);
 
 		return super.toTag(tag);
 	}

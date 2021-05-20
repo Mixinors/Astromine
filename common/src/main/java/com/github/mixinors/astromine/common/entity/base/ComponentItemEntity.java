@@ -43,6 +43,6 @@ public abstract class ComponentItemEntity extends ComponentEntity {
 
 	/** Returns the attached {@link ItemComponent}. */
 	public ItemComponent getItemComponent() {
-		return ItemComponent.get(this);
+		return ItemComponent.from(this);
 	}
 }

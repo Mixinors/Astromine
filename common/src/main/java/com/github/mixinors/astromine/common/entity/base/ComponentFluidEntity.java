@@ -43,6 +43,6 @@ public abstract class ComponentFluidEntity extends ComponentEntity {
 
 	/** Returns the attached {@link FluidComponent}. */
 	public FluidComponent getFluidComponent() {
-		return FluidComponent.get(this);
+		return FluidComponent.from(this);
 	}
 }
