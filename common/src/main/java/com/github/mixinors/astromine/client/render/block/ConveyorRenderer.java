@@ -61,9 +61,9 @@ import java.util.Random;
 @Environment(EnvType.CLIENT)
 public interface ConveyorRenderer<T extends BlockEntity> {
 	default void renderSupport(T blockEntity, ConveyorTypes type, float position, float speed, float horizontalPosition, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider) {
-		PositionalConveyable conveyor = (PositionalConveyable) blockEntity;
+		var conveyor = (PositionalConveyable) blockEntity;
 		var direction = blockEntity.getCachedState().get(Properties.HORIZONTAL_FACING);
-		int rotation = type == ConveyorTypes.DOWN_VERTICAL ? -90 : 90;
+		var rotation = type == ConveyorTypes.DOWN_VERTICAL ? -90 : 90;
 
 		matrixStack.push();
 
@@ -98,249 +98,274 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 
 		ClientUtils.getInstance().getTextureManager().bindTexture(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
 
-		BakedModel model = ClientUtils.getInstance().getBakedModelManager().getModel(new ModelIdentifier(new Identifier(AMCommon.MOD_ID, "conveyor_supports"), ""));
+		var model = ClientUtils.getInstance().getBakedModelManager().getModel(new ModelIdentifier(new Identifier(AMCommon.MOD_ID, "conveyor_supports"), ""));
 
 		int light = LightmapTextureManager.pack(blockEntity.getWorld().getLightLevel(LightType.BLOCK, blockEntity.getPos()), blockEntity.getWorld().getLightLevel(LightType.SKY, blockEntity.getPos()));
-		ClientUtils.getInstance().getBlockRenderManager().getModelRenderer().render(matrixStack.peek(), vertexConsumerProvider.getBuffer(RenderLayer.getCutout()), null, model, blockEntity.getPos().getX(), blockEntity.getPos().getY(), blockEntity.getPos().getZ(), light,
-			OverlayTexture.DEFAULT_UV);
+		ClientUtils.getInstance().getBlockRenderManager().getModelRenderer().render(matrixStack.peek(), vertexConsumerProvider.getBuffer(RenderLayer.getCutout()), null, model, blockEntity.getPos().getX(), blockEntity.getPos().getY(), blockEntity.getPos().getZ(), light, OverlayTexture.DEFAULT_UV);
 
 		matrixStack.pop();
 	}
 
-	default void renderItem(T blockEntity, ItemStack stack, float position, int speed, float horizontalPosition, ConveyorTypes type, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider) {
-		Random random = new Random();
+	default void renderItem(T blockEntity, ItemStack stack, float position, int speed, float horizontalPosition, ConveyorTypes type, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider) {
+		var random = new Random();
 		var direction = blockEntity.getCachedState().get(Properties.HORIZONTAL_FACING);
-		int rotation = type == ConveyorTypes.DOWN_VERTICAL ? -90 : 90;
-		int int_1 = 1;
+		var rotation = type == ConveyorTypes.DOWN_VERTICAL ? -90 : 90;
+		int amount = 1;
+		
 		if (stack.getCount() > 48) {
-			int_1 = 5;
+			amount = 5;
 		} else if (stack.getCount() > 32) {
-			int_1 = 4;
+			amount = 4;
 		} else if (stack.getCount() > 16) {
-			int_1 = 3;
+			amount = 3;
 		} else if (stack.getCount() > 1) {
-			int_1 = 2;
+			amount = 2;
 		}
 
-		int seed = stack.isEmpty() ? 187 : Item.getRawId(stack.getItem()) + stack.getDamage();
+		var seed = stack.isEmpty() ? 187 : Item.getRawId(stack.getItem()) + stack.getDamage();
 		random.setSeed(seed);
 
 		if (!stack.isEmpty() && stack.getItem() instanceof BlockItem && !ConveyorSpecialScaleRegistry.INSTANCE.containsKey(stack.getItem())) {
-			int light = LightmapTextureManager.pack(blockEntity.getWorld().getLightLevel(LightType.BLOCK, blockEntity.getPos()), blockEntity.getWorld().getLightLevel(LightType.SKY, blockEntity.getPos()));
-			Block block = ((BlockItem) stack.getItem()).getBlock();
+			var light = LightmapTextureManager.pack(blockEntity.getWorld().getLightLevel(LightType.BLOCK, blockEntity.getPos()), blockEntity.getWorld().getLightLevel(LightType.SKY, blockEntity.getPos()));
+			var block = ((BlockItem) stack.getItem()).getBlock();
 
-			for (var i = 0; i < int_1; i++) {
-				matrixStack.push();
-				matrixStack.translate(0.5F, 4F / 16F, 0.5F);
+			for (var i = 0; i < amount; i++) {
+				matrices.push();
+				matrices.translate(0.5F, 4F / 16F, 0.5F);
+				
 				if (direction == Direction.NORTH && rotation == 90) {
-					matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
+					matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
 				} else if (direction == Direction.SOUTH && rotation == -90) {
-					matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
+					matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
 				} else if (direction == Direction.EAST) {
-					matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(rotation));
+					matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(rotation));
 				} else if (direction == Direction.WEST) {
-					matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-rotation));
+					matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-rotation));
 				}
 
 				if (type == ConveyorTypes.NORMAL) {
-					matrixStack.translate(0, 0, position / speed);
+					matrices.translate(0, 0, position / speed);
 				} else if (type == ConveyorTypes.VERTICAL) {
-					matrixStack.translate(0, position / speed, horizontalPosition / speed);
+					matrices.translate(0, position / speed, horizontalPosition / speed);
 				} else if (type == ConveyorTypes.DOWN_VERTICAL) {
-					matrixStack.translate(0, (position / (speed)) + (blockEntity.getCachedState().get(ConveyorBlock.CONVEYOR) ? 1 : 0), horizontalPosition / speed);
+					matrices.translate(0, (position / (speed)) + (blockEntity.getCachedState().get(ConveyorBlock.CONVEYOR) ? 1 : 0), horizontalPosition / speed);
 				}
-				matrixStack.scale(0.5F, 0.5F, 0.5F);
-				matrixStack.translate(-0.5F, 0, -0.5F);
+				
+				matrices.scale(0.5F, 0.5F, 0.5F);
+				matrices.translate(-0.5F, 0, -0.5F);
 
 				if (i > 0) {
-					float x = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
-					float y = (random.nextFloat() * 2.0F) * 0.15F;
-					float z = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
-					matrixStack.translate(x * 2, y * 0.5F, z * 2);
+					var x = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
+					var y = (random.nextFloat() * 2.0F) * 0.15F;
+					var z = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
+					
+					matrices.translate(x * 2, y * 0.5F, z * 2);
 				}
 
-				ClientUtils.getInstance().getBlockRenderManager().renderBlockAsEntity(block.getDefaultState(), matrixStack, vertexConsumerProvider, light, OverlayTexture.DEFAULT_UV);
+				ClientUtils.getInstance().getBlockRenderManager().renderBlockAsEntity(block.getDefaultState(), matrices, vertexConsumerProvider, light, OverlayTexture.DEFAULT_UV);
+				
 				if (stack.getItem() instanceof TallBlockItem) {
-					matrixStack.translate(0, 1, 0);
-					ClientUtils.getInstance().getBlockRenderManager().renderBlockAsEntity(block.getDefaultState().with(Properties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER), matrixStack, vertexConsumerProvider, light, OverlayTexture.DEFAULT_UV);
+					matrices.translate(0, 1, 0);
+					
+					ClientUtils.getInstance().getBlockRenderManager().renderBlockAsEntity(block.getDefaultState().with(Properties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER), matrices, vertexConsumerProvider, light, OverlayTexture.DEFAULT_UV);
 				}
 
-				matrixStack.pop();
+				matrices.pop();
 			}
 		} else if (!stack.isEmpty()) {
-			int light = LightmapTextureManager.pack(blockEntity.getWorld().getLightLevel(LightType.BLOCK, blockEntity.getPos()), blockEntity.getWorld().getLightLevel(LightType.SKY, blockEntity.getPos()));
+			var light = LightmapTextureManager.pack(blockEntity.getWorld().getLightLevel(LightType.BLOCK, blockEntity.getPos()), blockEntity.getWorld().getLightLevel(LightType.SKY, blockEntity.getPos()));
 
-			matrixStack.push();
-			matrixStack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(90.0F));
-			matrixStack.translate(0.5, 0.5, -4.5F / 16F);
+			matrices.push();
+			matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(90.0F));
+			matrices.translate(0.5, 0.5, -4.5F / 16F);
 
 			if (stack.getItem() instanceof BlockItem && ConveyorSpecialScaleRegistry.INSTANCE.containsKey(stack.getItem()) && ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getRight()) {
-				matrixStack.translate(0, 0, -3.5F / 16F);
+				matrices.translate(0, 0, -3.5F / 16F);
 			}
 
 			if (direction == Direction.NORTH && rotation == 90) {
-				matrixStack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180));
+				matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180));
 			} else if (direction == Direction.SOUTH && rotation == -90) {
-				matrixStack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180));
+				matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180));
 			} else if (direction == Direction.EAST) {
-				matrixStack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(-rotation));
+				matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(-rotation));
 			} else if (direction == Direction.WEST) {
-				matrixStack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotation));
+				matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotation));
 			}
 
 			if (type == ConveyorTypes.NORMAL) {
-				matrixStack.translate(0, position / speed, 0);
+				matrices.translate(0, position / speed, 0);
 			} else if (type == ConveyorTypes.VERTICAL) {
-				matrixStack.translate(0, horizontalPosition / speed, -position / speed);
+				matrices.translate(0, horizontalPosition / speed, -position / speed);
 			} else if (type == ConveyorTypes.DOWN_VERTICAL) {
-				matrixStack.translate(0, horizontalPosition / speed, -(position / (speed)) + (blockEntity.getCachedState().get(ConveyorBlock.CONVEYOR) ? -1 : 0));
+				matrices.translate(0, horizontalPosition / speed, -(position / (speed)) + (blockEntity.getCachedState().get(ConveyorBlock.CONVEYOR) ? -1 : 0));
 			}
 
 			if (ConveyorSpecialScaleRegistry.INSTANCE.containsKey(stack.getItem())) {
-				float scale = ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getLeft();
-				matrixStack.scale(scale, scale, scale);
+				var scale = ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getLeft();
+				
+				matrices.scale(scale, scale, scale);
 
-				for (var i = 1; i < int_1; i++) {
-					matrixStack.push();
+				for (var i = 1; i < amount; i++) {
+					matrices.push();
 					if (ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getRight()) {
-						float x = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
-						float y = (random.nextFloat() * 2.0F) * 0.15F;
-						float z = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
-						matrixStack.translate(x, z, y * 0.5F);
+						var x = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
+						var y = (random.nextFloat() * 2.0F) * 0.15F;
+						var z = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
+						
+						matrices.translate(x, z, y * 0.5F);
 					}
-					ClientUtils.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
-					matrixStack.pop();
+					
+					ClientUtils.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider);
+					
+					matrices.pop();
 				}
 			} else {
-				matrixStack.scale(0.8F, 0.8F, 0.8F);
+				matrices.scale(0.8F, 0.8F, 0.8F);
 			}
 
-			ClientUtils.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
-			matrixStack.pop();
+			ClientUtils.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider);
+			
+			matrices.pop();
 		}
 	}
 
-	default void renderItem(T blockEntity, ItemStack stack, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider) {
+	default void renderItem(T blockEntity, ItemStack stack, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider) {
 		if (!stack.isEmpty()) {
 			int light = LightmapTextureManager.pack(blockEntity.getWorld().getLightLevel(LightType.BLOCK, blockEntity.getPos()), blockEntity.getWorld().getLightLevel(LightType.SKY, blockEntity.getPos()));
 
-			matrixStack.push();
+			matrices.push();
+			
 			if (!(stack.getItem() instanceof BlockItem))
-				matrixStack.scale(0.8F, 0.8F, 0.8F);
-			ClientUtils.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
-			matrixStack.pop();
+				matrices.scale(0.8F, 0.8F, 0.8F);
+			
+			ClientUtils.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider);
+			
+			matrices.pop();
 		}
 	}
 
-	default void renderItem(T blockEntity, Direction direction, ItemStack stack, float position, int speed, float horizontalPosition, ConveyorTypes type, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider) {
-		Random random = new Random();
-		int rotation = type == ConveyorTypes.DOWN_VERTICAL ? -90 : 90;
-		int int_1 = 1;
+	default void renderItem(T blockEntity, Direction direction, ItemStack stack, float position, int speed, float horizontalPosition, ConveyorTypes type, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider) {
+		var random = new Random();
+		var rotation = type == ConveyorTypes.DOWN_VERTICAL ? -90 : 90;
+		var amount = 1;
+		
 		if (stack.getCount() > 48) {
-			int_1 = 5;
+			amount = 5;
 		} else if (stack.getCount() > 32) {
-			int_1 = 4;
+			amount = 4;
 		} else if (stack.getCount() > 16) {
-			int_1 = 3;
+			amount = 3;
 		} else if (stack.getCount() > 1) {
-			int_1 = 2;
+			amount = 2;
 		}
 
 		int seed = stack.isEmpty() ? 187 : Item.getRawId(stack.getItem()) + stack.getDamage();
 		random.setSeed(seed);
 
 		if (!stack.isEmpty() && stack.getItem() instanceof BlockItem && !ConveyorSpecialScaleRegistry.INSTANCE.containsKey(stack.getItem())) {
-			int light = LightmapTextureManager.pack(blockEntity.getWorld().getLightLevel(LightType.BLOCK, blockEntity.getPos().offset(direction)), blockEntity.getWorld().getLightLevel(LightType.SKY, blockEntity.getPos().offset(direction)));
-			Block block = ((BlockItem) stack.getItem()).getBlock();
+			var light = LightmapTextureManager.pack(blockEntity.getWorld().getLightLevel(LightType.BLOCK, blockEntity.getPos().offset(direction)), blockEntity.getWorld().getLightLevel(LightType.SKY, blockEntity.getPos().offset(direction)));
+			var block = ((BlockItem) stack.getItem()).getBlock();
 
-			for (var i = 0; i < int_1; i++) {
-				matrixStack.push();
-				matrixStack.translate(0.5F, 4F / 16F, 0.5F);
+			for (var i = 0; i < amount; i++) {
+				matrices.push();
+				
+				matrices.translate(0.5F, 4F / 16F, 0.5F);
 				if (direction == Direction.NORTH && rotation == 90) {
-					matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
+					matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
 				} else if (direction == Direction.SOUTH && rotation == -90) {
-					matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
+					matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
 				} else if (direction == Direction.EAST) {
-					matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(rotation));
+					matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(rotation));
 				} else if (direction == Direction.WEST) {
-					matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-rotation));
+					matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-rotation));
 				}
 
 				if (type == ConveyorTypes.NORMAL) {
-					matrixStack.translate(0, 0, position / speed);
+					matrices.translate(0, 0, position / speed);
 				} else if (type == ConveyorTypes.VERTICAL) {
-					matrixStack.translate(0, position / speed, horizontalPosition / speed);
+					matrices.translate(0, position / speed, horizontalPosition / speed);
 				} else if (type == ConveyorTypes.DOWN_VERTICAL) {
-					matrixStack.translate(0, (position / (speed)) + (blockEntity.getCachedState().get(ConveyorBlock.CONVEYOR) ? 1 : 0), horizontalPosition / speed);
+					matrices.translate(0, (position / (speed)) + (blockEntity.getCachedState().get(ConveyorBlock.CONVEYOR) ? 1 : 0), horizontalPosition / speed);
 				}
-				matrixStack.scale(0.5F, 0.5F, 0.5F);
-				matrixStack.translate(-0.5F, 0, -0.5F);
+				
+				matrices.scale(0.5F, 0.5F, 0.5F);
+				matrices.translate(-0.5F, 0, -0.5F);
 
 				if (i > 0) {
-					float x = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
-					float y = (random.nextFloat() * 2.0F) * 0.15F;
-					float z = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
-					matrixStack.translate(x * 2, y * 0.5F, z * 2);
+					var x = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
+					var y = (random.nextFloat() * 2.0F) * 0.15F;
+					var z = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
+					
+					matrices.translate(x * 2, y * 0.5F, z * 2);
 				}
 
-				ClientUtils.getInstance().getBlockRenderManager().renderBlockAsEntity(block.getDefaultState(), matrixStack, vertexConsumerProvider, light, OverlayTexture.DEFAULT_UV);
+				ClientUtils.getInstance().getBlockRenderManager().renderBlockAsEntity(block.getDefaultState(), matrices, vertexConsumerProvider, light, OverlayTexture.DEFAULT_UV);
+				
 				if (stack.getItem() instanceof TallBlockItem) {
-					matrixStack.translate(0, 1, 0);
-					ClientUtils.getInstance().getBlockRenderManager().renderBlockAsEntity(block.getDefaultState().with(Properties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER), matrixStack, vertexConsumerProvider, light, OverlayTexture.DEFAULT_UV);
+					matrices.translate(0, 1, 0);
+					
+					ClientUtils.getInstance().getBlockRenderManager().renderBlockAsEntity(block.getDefaultState().with(Properties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER), matrices, vertexConsumerProvider, light, OverlayTexture.DEFAULT_UV);
 				}
 
-				matrixStack.pop();
+				matrices.pop();
 			}
 		} else if (!stack.isEmpty()) {
 			int light = LightmapTextureManager.pack(blockEntity.getWorld().getLightLevel(LightType.BLOCK, blockEntity.getPos()), blockEntity.getWorld().getLightLevel(LightType.SKY, blockEntity.getPos()));
 
-			matrixStack.push();
-			matrixStack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(90.0F));
-			matrixStack.translate(0.5, 0.5, -4.5F / 16F);
+			matrices.push();
+			matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(90.0F));
+			matrices.translate(0.5, 0.5, -4.5F / 16F);
 
 			if (stack.getItem() instanceof BlockItem && ConveyorSpecialScaleRegistry.INSTANCE.containsKey(stack.getItem()) && ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getRight()) {
-				matrixStack.translate(0, 0, -3.5F / 16F);
+				matrices.translate(0, 0, -3.5F / 16F);
 			}
 
 			if (direction == Direction.NORTH && rotation == 90) {
-				matrixStack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180));
+				matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180));
 			} else if (direction == Direction.SOUTH && rotation == -90) {
-				matrixStack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180));
+				matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180));
 			} else if (direction == Direction.EAST) {
-				matrixStack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(-rotation));
+				matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(-rotation));
 			} else if (direction == Direction.WEST) {
-				matrixStack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotation));
+				matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotation));
 			}
 
 			if (type == ConveyorTypes.NORMAL) {
-				matrixStack.translate(0, position / speed, 0);
+				matrices.translate(0, position / speed, 0);
 			} else if (type == ConveyorTypes.VERTICAL) {
-				matrixStack.translate(0, horizontalPosition / speed, -position / speed);
+				matrices.translate(0, horizontalPosition / speed, -position / speed);
 			} else if (type == ConveyorTypes.DOWN_VERTICAL) {
-				matrixStack.translate(0, horizontalPosition / speed, -(position / (speed)) + (blockEntity.getCachedState().get(ConveyorBlock.CONVEYOR) ? -1 : 0));
+				matrices.translate(0, horizontalPosition / speed, -(position / (speed)) + (blockEntity.getCachedState().get(ConveyorBlock.CONVEYOR) ? -1 : 0));
 			}
 
 			if (ConveyorSpecialScaleRegistry.INSTANCE.containsKey(stack.getItem())) {
-				float scale = ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getLeft();
-				matrixStack.scale(scale, scale, scale);
+				var scale = ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getLeft();
+				
+				matrices.scale(scale, scale, scale);
 
-				for (var i = 1; i < int_1; i++) {
-					matrixStack.push();
+				for (var i = 1; i < amount; i++) {
+					matrices.push();
+					
 					if (ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getRight()) {
-						float x = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
-						float y = (random.nextFloat() * 2.0F) * 0.15F;
-						float z = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
-						matrixStack.translate(x, z, y * 0.5F);
+						var x = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
+						var y = (random.nextFloat() * 2.0F) * 0.15F;
+						var z = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
+						
+						matrices.translate(x, z, y * 0.5F);
 					}
-					ClientUtils.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
-					matrixStack.pop();
+					
+					ClientUtils.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider);
+					
+					matrices.pop();
 				}
 			} else {
-				matrixStack.scale(0.8F, 0.8F, 0.8F);
+				matrices.scale(0.8F, 0.8F, 0.8F);
 			}
 
-			ClientUtils.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
-			matrixStack.pop();
+			ClientUtils.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider);
+			
+			matrices.pop();
 		}
 	}
 }

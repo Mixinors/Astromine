@@ -51,25 +51,25 @@ public class ClientAtmosphereManager {
 
 	/** Returns a {@link PacketByteBuf} for when a gas is added. */
 	public static PacketByteBuf ofGasAdded(BlockPos gasPosition, FluidVolume gasVolume) {
-		CompoundTag gasPayload = new CompoundTag();
-		gasPayload.putLong("gasPosition", gasPosition.asLong());
-		gasPayload.put("gasVolume", gasVolume.toTag());
+		var payload = new CompoundTag();
+		payload.putLong("Position", gasPosition.asLong());
+		payload.put("Volume", gasVolume.toTag());
 
-		PacketByteBuf gasBuffer = new PacketByteBuf(Unpooled.buffer());
-		gasBuffer.writeCompoundTag(gasPayload);
+		var buf = new PacketByteBuf(Unpooled.buffer());
+		buf.writeCompoundTag(payload);
 
-		return gasBuffer;
+		return buf;
 	}
 
 	/** Returns a {@link PacketByteBuf} for when a gas is removed. */
 	public static PacketByteBuf ofGasRemoved(BlockPos gasPosition) {
-		CompoundTag gasPayload = new CompoundTag();
-		gasPayload.putLong("gasPosition", gasPosition.asLong());
+		var payload = new CompoundTag();
+		payload.putLong("Position", gasPosition.asLong());
 
-		PacketByteBuf gasBuffer = new PacketByteBuf(Unpooled.buffer());
-		gasBuffer.writeCompoundTag(gasPayload);
+		var buf = new PacketByteBuf(Unpooled.buffer());
+		buf.writeCompoundTag(payload);
 
-		return gasBuffer;
+		return buf;
 	}
 
 	/** Handles gas erasure {@link PacketByteBuf}s. */
@@ -79,19 +79,19 @@ public class ClientAtmosphereManager {
 
 	/** Handles gas addition {@link PacketByteBuf}s. */
 	public static void onGasAdded(PacketByteBuf gasBuffer) {
-		CompoundTag gasPayload = gasBuffer.readCompoundTag();
-		long gasPosition = gasPayload.getLong("gasPosition");
+		var payload = gasBuffer.readCompoundTag();
+		var position = payload.getLong("Position");
 
-		FluidVolume gasVolume = FluidVolume.fromTag(gasPayload.getCompound("gasVolume"));
+		var volume = FluidVolume.fromTag(payload.getCompound("Volume"));
 
-		VOLUMES.put(gasPosition, gasVolume);
+		VOLUMES.put(position, volume);
 	}
 
 	/** Handles gas removal {@link PacketByteBuf}s. */
 	public static void onGasRemoved(PacketByteBuf gasBuffer) {
-		CompoundTag gasPayload = gasBuffer.readCompoundTag();
-		long gasPosition = gasPayload.getLong("gasPosition");
+		var payload = gasBuffer.readCompoundTag();
+		long position = payload.getLong("Position");
 
-		VOLUMES.remove(gasPosition);
+		VOLUMES.remove(position);
 	}
 }

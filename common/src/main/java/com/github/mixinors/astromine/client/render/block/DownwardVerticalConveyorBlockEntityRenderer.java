@@ -45,20 +45,23 @@ public class DownwardVerticalConveyorBlockEntityRenderer extends BlockEntityRend
 	@Override
 	public void render(DownVerticalConveyorBlockEntity blockEntity, float partialTicks, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int i1) {
 		var speed = ((Conveyor) blockEntity.getCachedState().getBlock()).getSpeed();
-		ConveyorTypes type = ((Conveyor) blockEntity.getCachedState().getBlock()).getType();
-		boolean conveyor = blockEntity.getCachedState().get(ConveyorBlock.CONVEYOR);
-		boolean front = blockEntity.getCachedState().get(ConveyorBlock.FRONT);
+		var type = ((Conveyor) blockEntity.getCachedState().getBlock()).getType();
+		var conveyor = blockEntity.getCachedState().get(ConveyorBlock.CONVEYOR);
+		var front = blockEntity.getCachedState().get(ConveyorBlock.FRONT);
 
 		var direction = blockEntity.getCachedState().get(Properties.HORIZONTAL_FACING);
 
 		if (conveyor && blockEntity.isEmpty()) {
 			matrixStack.push();
+			
 			renderSupport(blockEntity, type, -1, 16, 0, matrixStack, vertexConsumerProvider);
+			
 			matrixStack.pop();
 		} else if (conveyor && !front && !blockEntity.isEmpty() && blockEntity.getPosition() > speed) {
-			float position = (blockEntity.getRenderAttachmentData()[1] + (blockEntity.getRenderAttachmentData()[0] - blockEntity.getRenderAttachmentData()[1]) * partialTicks);
+			var position = (blockEntity.getRenderAttachmentData()[1] + (blockEntity.getRenderAttachmentData()[0] - blockEntity.getRenderAttachmentData()[1]) * partialTicks);
 
 			matrixStack.push();
+			
 			if (direction == Direction.NORTH) {
 				matrixStack.translate(0, 0, (position / speed) - 2);
 			} else if (direction == Direction.SOUTH) {
@@ -68,12 +71,15 @@ public class DownwardVerticalConveyorBlockEntityRenderer extends BlockEntityRend
 			} else if (direction == Direction.WEST) {
 				matrixStack.translate((position / speed) - 2, 0, 0);
 			}
+			
 			renderSupport(blockEntity, type, -1, 16, 0, matrixStack, vertexConsumerProvider);
+			
 			matrixStack.pop();
 		} else if (conveyor && front && !blockEntity.isEmpty() && blockEntity.getHorizontalPosition() > 0) {
-			float horizontalPosition = (blockEntity.getRenderAttachmentData()[3] + (blockEntity.getRenderAttachmentData()[2] - blockEntity.getRenderAttachmentData()[3]) * partialTicks);
+			var horizontalPosition = (blockEntity.getRenderAttachmentData()[3] + (blockEntity.getRenderAttachmentData()[2] - blockEntity.getRenderAttachmentData()[3]) * partialTicks);
 
 			matrixStack.push();
+			
 			if (direction == Direction.NORTH) {
 				matrixStack.translate(0, 0, (horizontalPosition / speed) - 1);
 			} else if (direction == Direction.SOUTH) {
@@ -83,16 +89,18 @@ public class DownwardVerticalConveyorBlockEntityRenderer extends BlockEntityRend
 			} else if (direction == Direction.WEST) {
 				matrixStack.translate((horizontalPosition / speed) - 1, 0, 0);
 			}
+			
 			renderSupport(blockEntity, type, -1, 16, 0, matrixStack, vertexConsumerProvider);
+			
 			matrixStack.pop();
 		}
 
 		if (!blockEntity.getWorld().getBlockState(blockEntity.getPos()).isAir() && !blockEntity.isEmpty()) {
-			ItemStack stack = blockEntity.getItemComponent().getFirst();
-			float position = -(blockEntity.getRenderAttachmentData()[1] + (blockEntity.getRenderAttachmentData()[0] - blockEntity.getRenderAttachmentData()[1]) * partialTicks);
-			float horizontalPosition = (blockEntity.getRenderAttachmentData()[3] + (blockEntity.getRenderAttachmentData()[2] - blockEntity.getRenderAttachmentData()[3]) * partialTicks);
+			var stack = blockEntity.getItemComponent().getFirst();
+			var position = -(blockEntity.getRenderAttachmentData()[1] + (blockEntity.getRenderAttachmentData()[0] - blockEntity.getRenderAttachmentData()[1]) * partialTicks);
+			var horizontalPosition = (blockEntity.getRenderAttachmentData()[3] + (blockEntity.getRenderAttachmentData()[2] - blockEntity.getRenderAttachmentData()[3]) * partialTicks);
 
-			if (front && horizontalPosition > 0) {} else {
+			if (front && horizontalPosition <= 0) {
 				renderSupport(blockEntity, type, position, speed, horizontalPosition, matrixStack, vertexConsumerProvider);
 			}
 

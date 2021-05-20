@@ -42,12 +42,12 @@ public class VerticalConveyorBlockEntityRenderer extends BlockEntityRenderer<Ver
 	@Override
 	public void render(VerticalConveyorBlockEntity blockEntity, float partialTicks, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int i1) {
 		var speed = ((Conveyor) blockEntity.getCachedState().getBlock()).getSpeed();
-		ConveyorTypes type = ((Conveyor) blockEntity.getCachedState().getBlock()).getType();
+		var type = ((Conveyor) blockEntity.getCachedState().getBlock()).getType();
 
 		if (!blockEntity.getWorld().getBlockState(blockEntity.getPos()).isAir() && !blockEntity.isEmpty()) {
-			ItemStack stack = blockEntity.getItemComponent().getFirst();
-			float position = blockEntity.getRenderAttachmentData()[1] + (blockEntity.getRenderAttachmentData()[0] - blockEntity.getRenderAttachmentData()[1]) * partialTicks;
-			float horizontalPosition = blockEntity.getRenderAttachmentData()[3] + (blockEntity.getRenderAttachmentData()[2] - blockEntity.getRenderAttachmentData()[3]) * partialTicks;
+			var stack = blockEntity.getItemComponent().getFirst();
+			var position = blockEntity.getRenderAttachmentData()[1] + (blockEntity.getRenderAttachmentData()[0] - blockEntity.getRenderAttachmentData()[1]) * partialTicks;
+			var horizontalPosition = blockEntity.getRenderAttachmentData()[3] + (blockEntity.getRenderAttachmentData()[2] - blockEntity.getRenderAttachmentData()[3]) * partialTicks;
 
 			renderSupport(blockEntity, type, position, speed, horizontalPosition, matrixStack, vertexConsumerProvider);
 

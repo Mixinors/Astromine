@@ -46,17 +46,17 @@ public class AbstractConveyableBlockEntityRenderer extends BlockEntityRenderer<A
 
 		if (!blockEntity.getWorld().getBlockState(blockEntity.getPos()).isAir()) {
 			if (!blockEntity.getItemComponent().getFirst().isEmpty()) {
-				ItemStack leftStack = blockEntity.getItemComponent().getFirst();
+				var leftStack = blockEntity.getItemComponent().getFirst();
 
-				float leftPosition = blockEntity.getRenderAttachmentData()[1] + (blockEntity.getRenderAttachmentData()[0] - blockEntity.getRenderAttachmentData()[1]) * partialTicks;
+				var leftPosition = blockEntity.getRenderAttachmentData()[1] + (blockEntity.getRenderAttachmentData()[0] - blockEntity.getRenderAttachmentData()[1]) * partialTicks;
 
 				renderItem(blockEntity, direction.rotateYCounterclockwise(), leftStack, leftPosition, speed, 0, ConveyorTypes.NORMAL, matrixStack, vertexConsumerProvider);
 			}
 
 			if (!blockEntity.getItemComponent().getSecond().isEmpty()) {
-				ItemStack rightStack = blockEntity.getItemComponent().getSecond();
+				var rightStack = blockEntity.getItemComponent().getSecond();
 
-				float rightPosition = blockEntity.getRenderAttachmentData()[3] + (blockEntity.getRenderAttachmentData()[2] - blockEntity.getRenderAttachmentData()[3]) * partialTicks;
+				var rightPosition = blockEntity.getRenderAttachmentData()[3] + (blockEntity.getRenderAttachmentData()[2] - blockEntity.getRenderAttachmentData()[3]) * partialTicks;
 
 				renderItem(blockEntity, direction.rotateYClockwise(), rightStack, rightPosition, speed, 0, ConveyorTypes.NORMAL, matrixStack, vertexConsumerProvider);
 			}

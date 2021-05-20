@@ -256,9 +256,11 @@ public class SpriteRenderer {
 			if (this.consumer == null) {
 				throw new RuntimeException("Invalid VertexConsumer!");
 			}
+			
 			if (this.matrices == null) {
 				throw new RuntimeException("Invalid MatrixStack!");
 			}
+			
 			if (this.sprite == null) {
 				throw new RuntimeException("Invalid Sprite!");
 			}
@@ -266,25 +268,26 @@ public class SpriteRenderer {
 			if (this.model == null) {
 				this.model = this.matrices.peek().getModel();
 			}
+			
 			if (this.normal == null) {
 				this.normal = this.matrices.peek().getNormal();
 			}
 
-			float sX = sprite.getWidth();
-			float sY = sprite.getHeight();
+			var sX = sprite.getWidth();
+			var sY = sprite.getHeight();
 
 			ClientUtils.getInstance().getTextureManager().bindTexture(texture);
 
-			for (float y = y1; y < y2; y += Math.min(y2 - y, sY)) {
-				for (float x = x1; x < x2; x += Math.min(x2 - x, sX)) {
-					float nSX = Math.min(x2 - x, sX);
-					float nSY = Math.min(y2 - y, sY);
+			for (var y = y1; y < y2; y += Math.min(y2 - y, sY)) {
+				for (var x = x1; x < x2; x += Math.min(x2 - x, sX)) {
+					var nSX = Math.min(x2 - x, sX);
+					var nSY = Math.min(y2 - y, sY);
 
-					boolean isOverX = nSX < sX;
-					boolean isOverY = nSY < sY;
+					var isOverX = nSX < sX;
+					var isOverY = nSY < sY;
 
-					float dX = 0;
-					float dY = 0;
+					var dX = 0.0F;
+					var dY = 0.0F;
 
 					if (isOverX) {
 						dX = (uEnd - uStart) * (1 - (nSX / sX));

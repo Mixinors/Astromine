@@ -69,15 +69,15 @@ public class SpaceSkybox extends Skybox {
 
 	@Override
 	public void render(MatrixStack matrices, float tickDelta) {
-		MinecraftClient client = ClientUtils.getInstance();
+		var client = ClientUtils.getInstance();
 
-		TextureManager textureManager = client.getTextureManager();
+		var textureManager = client.getTextureManager();
 
-		Tessellator tessellator = Tessellator.getInstance();
+		var tessellator = Tessellator.getInstance();
 
-		BufferBuilder buffer = tessellator.getBuffer();
+		var buffer = tessellator.getBuffer();
 
-		World world = client.world;
+		var world = client.world;
 
 		if (world == null) {
 			return;
@@ -91,62 +91,50 @@ public class SpaceSkybox extends Skybox {
 
 		for (var i = 0; i < 6; ++i) {
 			matrices.push();
-
+			
 			switch (i) {
-				case 0: {
+				case 0 -> {
 					textureManager.bindTexture(this.textures.get(DOWN));
-
+					
 					matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotation));
-
-					break;
 				}
-				case 1: {
+				case 1 -> {
 					textureManager.bindTexture(this.textures.get(WEST));
-
+					
 					matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(90.0F));
 					matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(rotation));
-
-					break;
 				}
-				case 2: {
+				case 2 -> {
 					textureManager.bindTexture(this.textures.get(EAST));
-
+					
 					matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-90.0F));
 					matrices.multiply(Vector3f.NEGATIVE_Y.getDegreesQuaternion(rotation));
-
-					break;
 				}
-				case 3: {
+				case 3 -> {
 					textureManager.bindTexture(this.textures.get(UP));
-
+					
 					matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(180.0F));
 					matrices.multiply(Vector3f.NEGATIVE_Z.getDegreesQuaternion(rotation));
-
-					break;
 				}
-				case 4: {
+				case 4 -> {
 					textureManager.bindTexture(this.textures.get(NORTH));
-
+					
 					matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(90.0F));
 					matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotation));
-
-					break;
 				}
-				case 5: {
+				case 5 -> {
 					textureManager.bindTexture(this.textures.get(SOUTH));
-
+					
 					matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(-90.0F));
 					matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotation));
-
-					break;
 				}
 			}
 
 			buffer.begin(7, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT);
 
-			GameOptions options = ClientUtils.getInstance().options;
+			var options = ClientUtils.getInstance().options;
 
-			float distance = 16F * (float) Option.RENDER_DISTANCE.get(options) - 8F;
+			var distance = 16F * (float) Option.RENDER_DISTANCE.get(options) - 8F;
 
 			buffer.vertex(matrices.peek().getModel(), -distance, -distance, -distance).color(255, 255, 255, 255).texture(0.0F, 0.0F).light(vertexLight).next();
 			buffer.vertex(matrices.peek().getModel(), -distance, -distance, distance).color(255, 255, 255, 255).texture(0.0F, 1.0F).light(vertexLight).next();

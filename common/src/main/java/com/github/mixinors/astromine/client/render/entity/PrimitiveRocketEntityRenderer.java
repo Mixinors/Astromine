@@ -60,7 +60,7 @@ public class PrimitiveRocketEntityRenderer extends EntityRenderer<PrimitiveRocke
 
 		this.model.setAngles(rocket, 0, 0.0F, -0.1F, rocket.getYaw(tickDelta), rocket.getPitch(tickDelta));
 
-		VertexConsumer vertexConsumer = provider.getBuffer(this.model.getLayer(this.getTexture(rocket)));
+		var vertexConsumer = provider.getBuffer(this.model.getLayer(this.getTexture(rocket)));
 
 		this.model.render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
 

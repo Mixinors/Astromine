@@ -73,10 +73,11 @@ public class AsteroidOreRegistry {
 	}
 
 	public int getDiameter(Random random, Block block) {
-		@Nullable
-		Pair<Range<Integer>, Range<Integer>> pair = diameters.get(block);
+		var pair = diameters.get(block);
+		
 		if (pair == null)
 			return 0;
+		
 		return (int) (((pair.getRight().getMaximum() - pair.getRight().getMinimum()) * Objects.requireNonNull(random, "random").nextFloat() + pair.getRight().getMinimum()) * 0.9);
 	}
 }

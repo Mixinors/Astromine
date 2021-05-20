@@ -37,38 +37,42 @@ import com.github.mixinors.astromine.client.model.SuperSpaceSlimeEntityModel;
 import com.github.mixinors.astromine.common.entity.SuperSpaceSlimeEntity;
 
 public class SuperSpaceSlimeEntityRenderer extends MobEntityRenderer<SuperSpaceSlimeEntity, SuperSpaceSlimeEntityModel> {
-
 	private static final Identifier TEXTURE = AMCommon.id("textures/entity/space_slime/space_slime.png");
 	private static final Identifier EXPLODING_TEXTURE = AMCommon.id("textures/entity/space_slime/space_slime_exploding.png");
 
 	public SuperSpaceSlimeEntityRenderer(EntityRenderDispatcher entityRenderDispatcher) {
 		super(entityRenderDispatcher, new SuperSpaceSlimeEntityModel(16), 0.25F);
+		
 		this.addFeature(new SlimeOverlayFeatureRenderer(this));
 	}
 
 	@Override
 	public void render(SuperSpaceSlimeEntity slimeEntity, float f, float g, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int i) {
 		this.shadowRadius = 2.5f;
+		
 		super.render(slimeEntity, f, g, matrices, vertexConsumerProvider, i);
 	}
 
 	@Override
 	public void scale(SuperSpaceSlimeEntity slimeEntity, MatrixStack matrices, float f) {
-		float scale = 0.999F;
+		var scale = 0.999F;
+		
 		matrices.scale(scale, scale, scale);
 		matrices.translate(0.0D, -0.525D, 0.0D);
 
 		// calculate stretch slime size
-		float slimeSize = 10f;
-		float i = MathHelper.lerp(f, slimeEntity.lastStretch, slimeEntity.stretch) / (slimeSize * 0.5F + 1.0F);
-		float j = 1.0F / (i + 1.0F);
+		var slimeSize = 10f;
+		
+		var i = MathHelper.lerp(f, slimeEntity.lastStretch, slimeEntity.stretch) / (slimeSize * 0.5F + 1.0F);
+		var j = 1.0F / (i + 1.0F);
 
 		// scale matrix based on slime size
 		matrices.scale(j * slimeSize, 1.0F / j * slimeSize, j * slimeSize);
 
 		// if the slime is exploding, make it quickly scale in and out
 		if (slimeEntity.isExploding()) {
-			float sin = 1 + (float) Math.sin(slimeEntity.getExplodingProgress() / 5f) / 10;
+			var sin = 1 + (float) Math.sin(slimeEntity.getExplodingProgress() / 5.0F) / 10;
+			
 			matrices.scale(sin, sin, sin);
 		}
 	}
