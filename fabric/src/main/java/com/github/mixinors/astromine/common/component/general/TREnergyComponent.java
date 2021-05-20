@@ -22,45 +22,37 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.astromine.common.volume.energy;
+package com.github.mixinors.astromine.common.component.general;
 
+import com.github.mixinors.astromine.common.volume.energy.TREnergyVolume;
+import com.github.mixinors.astromine.common.component.base.EnergyComponent;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import team.reborn.energy.EnergyStorage;
 
-public class WrappedEnergyVolume extends EnergyVolume {
-    private final EnergyStorage storage;
+import java.util.Collections;
+import java.util.List;
 
-    private WrappedEnergyVolume(EnergyStorage storage) {
-        super(storage.getStored(null), storage.getMaxStoredPower());
-        this.storage = storage;
+/**
+ * An {@link EnergyComponent} wrapped over an {@link EnergyStorage}.
+ */
+public class TREnergyComponent implements EnergyComponent {
+    private final EnergyVolume volume;
+
+    private TREnergyComponent(EnergyStorage storage) {
+        this.volume = TREnergyVolume.of(storage);
     }
 
-    private WrappedEnergyVolume(EnergyStorage storage, Runnable runnable) {
-        super(storage.getStored(null), storage.getMaxStoredPower(), runnable);
-        this.storage = storage;
-    }
-
-    public static WrappedEnergyVolume of(EnergyStorage storage) {
-        return new WrappedEnergyVolume(storage);
-    }
-
-    @Override
-    public Double getAmount() {
-        return storage.getStored(null);
+    public static TREnergyComponent of(EnergyStorage storage) {
+        return new TREnergyComponent(storage);
     }
 
     @Override
-    public void setAmount(Double amount) {
-        storage.setStored(amount);
+    public List<Runnable> getListeners() {
+        return Collections.emptyList();
     }
 
     @Override
-    public Double getSize() {
-        return storage.getMaxStoredPower();
-    }
-
-    @Override
-    public void setSize(Double size) {
-        // Unsupported, because of the fucking API.
+    public EnergyVolume getVolume() {
+        return volume;
     }
 }

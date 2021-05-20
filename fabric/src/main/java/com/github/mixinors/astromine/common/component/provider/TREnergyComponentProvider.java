@@ -22,17 +22,17 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.astromine.common.component.providre;
+package com.github.mixinors.astromine.common.component.provider;
 
+import com.github.mixinors.astromine.common.util.TREnergyUtils;
 import com.github.mixinors.astromine.common.block.transfer.TransferType;
 import com.github.mixinors.astromine.common.component.base.TransferComponent;
 import com.github.mixinors.astromine.common.component.base.EnergyComponent;
-import com.github.mixinors.astromine.common.util.EnergyUtils;
 import team.reborn.energy.EnergySide;
 import team.reborn.energy.EnergyStorage;
 import team.reborn.energy.EnergyTier;
 
-public interface EnergyStorageEnergyComponentProvider extends EnergyStorage {
+public interface TREnergyComponentProvider extends EnergyStorage {
 	/** Override behavior to redirect calls to this provider's {@link EnergyComponent}. */
 	@Override
 	default double getStored(EnergySide side) {
@@ -66,10 +66,10 @@ public interface EnergyStorageEnergyComponentProvider extends EnergyStorage {
 		if (side.equals(EnergySide.UNKNOWN)) {
 			allow = true;
 		} else {
-			TransferComponent transferComponent = TransferComponent.from(this);
+			var transferComponent = TransferComponent.from(this);
 
 			if (transferComponent != null) {
-				TransferType type = transferComponent.getEnergy(EnergyUtils.toDirection(side));
+				var type = transferComponent.getEnergy(TREnergyUtils.toDirection(side));
 
 				allow = type.canInsert();
 			}
@@ -91,10 +91,10 @@ public interface EnergyStorageEnergyComponentProvider extends EnergyStorage {
 		if (side.equals(EnergySide.UNKNOWN)) {
 			allow = true;
 		} else {
-			TransferComponent transferComponent = TransferComponent.from(this);
+			var transferComponent = TransferComponent.from(this);
 
 			if (transferComponent != null) {
-				TransferType type = transferComponent.getEnergy(EnergyUtils.toDirection(side));
+				TransferType type = transferComponent.getEnergy(TREnergyUtils.toDirection(side));
 
 				allow = type.canExtract();
 			}

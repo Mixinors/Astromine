@@ -1,0 +1,22 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.github.mixinors.astromine.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "common.AMNetworkMembersMixin",
+    "common.ComponentMixin",
+    "common.DrillItemMixin",
+    "common.DynamicToolItemItemMixin",
+    "common.EnergyComponentMixin",
+    "common.EnergyComponentProviderMixin",
+    "common.EnergyVolumeItemMixin",
+    "common.ManualItemMixin"
+  ],
+  "client": [
+
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

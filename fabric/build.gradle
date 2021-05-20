@@ -1,5 +1,5 @@
 plugins {
-    id "com.github.johnrengelman.shadow" version "5.0.0"
+    id "com.github.johnrengelman.shadow" version "7.0.0"
 }
 
 configurations {
@@ -60,52 +60,52 @@ dependencies {
     modApi "me.shedaniel:architectury-fabric:${rootProject.architectury_version}"
 
     // Cardinal-Components API
-    implementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${project.cardinal_components_version}"
-    implementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-block:${project.cardinal_components_version}"
-    implementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:${project.cardinal_components_version}"
-    implementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${project.cardinal_components_version}"
-    implementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-item:${project.cardinal_components_version}"
-    implementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-world:${project.cardinal_components_version}"
+    modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${project.cardinal_components_version}"
+    modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-block:${project.cardinal_components_version}"
+    modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:${project.cardinal_components_version}"
+    modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${project.cardinal_components_version}"
+    modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-item:${project.cardinal_components_version}"
+    modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-world:${project.cardinal_components_version}"
 
     // Shapes
-    implementation "com.terraformersmc.terraform-api:terraform-shapes-api-v1:${project.shapes_version}"
+    modImplementation "com.terraformersmc.terraform-api:terraform-shapes-api-v1:${project.shapes_version}"
 
     // Blade
-    implementation "com.github.vini2003:blade:${project.blade_version}"
-    implementation "com.github.vini2003:blade-fabric:${project.blade_version}"
+    modImplementation "com.github.vini2003:blade:${project.blade_version}"
+    modImplementation "com.github.vini2003:blade-fabric:${project.blade_version}"
 
     // Patchouli
-    implementation "vazkii.patchouli:Patchouli:${project.patchouli_version}"
+    modImplementation "vazkii.patchouli:Patchouli:${project.patchouli_version}"
 
     // ModMenu
-    implementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
+    modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
 
     // Tech Reborn Energy
-    implementation "teamreborn:energy:${project.tech_reborn_energy_version}"
+    modImplementation "teamreborn:energy:${project.tech_reborn_energy_version}"
 
     // Cloth API
-    implementation "me.shedaniel.cloth.api:cloth-durability-bar-api-v1:${project.cloth_api_version}"
+    modImplementation "me.shedaniel.cloth.api:cloth-durability-bar-api-v1:${project.cloth_api_version}"
 
     // Cloth Config
-    implementation "me.shedaniel.cloth:cloth-config:${project.cloth_config_api_version}"
-    implementation "me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_api_version}"
+    modImplementation "me.shedaniel.cloth:cloth-config:${project.cloth_config_api_version}"
+    modImplementation "me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_api_version}"
 
     // RoughlyEnoughItems
-    implementation "me.shedaniel:RoughlyEnoughItems:${project.roughly_enough_items_version}"
+    modImplementation "me.shedaniel:RoughlyEnoughItems:${project.roughly_enough_items_version}"
 
     //// Magna
     //implementation "com.github.Draylar:magna:${project.magna_version}"
 
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:${project.kotlin_version}"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${project.kotlin_version}"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${project.kotlin_version}"
+    modImplementation "org.jetbrains.kotlin:kotlin-stdlib:${project.kotlin_version}"
+    modImplementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${project.kotlin_version}"
+    modImplementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${project.kotlin_version}"
 
     // Piglib
-    implementation "com.github.Shnupbups:Piglib:${project.piglib_version}"
+    modImplementation "com.github.Shnupbups:Piglib:${project.piglib_version}"
 
     // DataBreaker
-    implementation "com.github.SuperCoder7979:databreaker:${project.databreaker_version}"
+    modImplementation "com.github.SuperCoder7979:databreaker:${project.databreaker_version}"
 
     implementation(project(path: ":common")) {
         transitive = false

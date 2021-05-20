@@ -102,7 +102,7 @@ public class DynamicToolItemItem extends Item implements Vanishable, Enchantable
 		return slot == EquipmentSlot.MAINHAND ? this.attributeModifiers : super.getAttributeModifiers(slot);
 	}
 	
-	// TODO: Reimplement this on Fabric & Forge modules!
+	// TODO: Reimplement this on Forge module!
 	
 //	@Override
 //	public float getMiningSpeedMultiplier(Tag<Item> tag, BlockState state, ItemStack stack, LivingEntity user) {

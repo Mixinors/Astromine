@@ -22,37 +22,44 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.astromine.common.component.general;
+package com.github.mixinors.astromine.common.volume.energy;
 
-import com.github.mixinors.astromine.common.component.base.EnergyComponent;
-import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
-import com.github.mixinors.astromine.common.volume.energy.WrappedEnergyVolume;
 import team.reborn.energy.EnergyStorage;
 
-import java.util.Collections;
-import java.util.List;
+public class TREnergyVolume extends EnergyVolume {
+    private final EnergyStorage storage;
 
-/**
- * An {@link EnergyComponent} wrapped over an {@link EnergyStorage}.
- */
-public class EnergyComponentFromEnergyStorage implements EnergyComponent {
-    private final EnergyVolume volume;
-
-    private EnergyComponentFromEnergyStorage(EnergyStorage storage) {
-        this.volume = WrappedEnergyVolume.of(storage);
+    private TREnergyVolume(EnergyStorage storage) {
+        super(storage.getStored(null), storage.getMaxStoredPower());
+        this.storage = storage;
     }
 
-    public static EnergyComponentFromEnergyStorage of(EnergyStorage storage) {
-        return new EnergyComponentFromEnergyStorage(storage);
+    private TREnergyVolume(EnergyStorage storage, Runnable runnable) {
+        super(storage.getStored(null), storage.getMaxStoredPower(), runnable);
+        this.storage = storage;
     }
 
-    @Override
-    public List<Runnable> getListeners() {
-        return Collections.emptyList();
+    public static TREnergyVolume of(EnergyStorage storage) {
+        return new TREnergyVolume(storage);
     }
 
     @Override
-    public EnergyVolume getVolume() {
-        return volume;
+    public Double getAmount() {
+        return storage.getStored(null);
+    }
+
+    @Override
+    public void setAmount(Double amount) {
+        storage.setStored(amount);
+    }
+
+    @Override
+    public Double getSize() {
+        return storage.getMaxStoredPower();
+    }
+
+    @Override
+    public void setSize(Double size) {
+        // Unsupported, because of the fucking API.
     }
 }

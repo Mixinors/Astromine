@@ -40,17 +40,14 @@ public class ManualItem extends Item {
 	public ManualItem(Settings settings) {
 		super(settings);
 	}
-
+	
+	// TODO: Reimplement this on Forge module!
+	
 	/** Override behavior to open our book interface. */
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		if (!world.isClient && user instanceof ServerPlayerEntity) {
-			/** Reimplementation must use platform-specific Patchouli API. */
-			throw new UnsupportedOperationException("Pending re-implementation!");
-			
-			// PatchouliAPI.get().openBookGUI((ServerPlayerEntity) user, AMCommon.id("manual"));
-
-			// return TypedActionResult.success(user.getStackInHand(hand));
+			return null;
 		} else {
 			return TypedActionResult.consume(user.getStackInHand(hand));
 		}

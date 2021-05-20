@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.astromine.common.util;
+package com.github.mixinors.astromine.common.util;
 
 import net.minecraft.util.math.Direction;
 
@@ -33,55 +33,26 @@ public class TREnergyUtils {
 	/** Returns the {@link Direction} corresponding to the specified {@link EnergySide}. */
 	@Nullable
 	public static Direction toDirection(EnergySide side) {
-		switch (side) {
-			case NORTH: {
-				return Direction.NORTH;
-			}
-			case SOUTH: {
-				return Direction.SOUTH;
-			}
-			case WEST: {
-				return Direction.WEST;
-			}
-			case EAST: {
-				return Direction.EAST;
-			}
-			case UP: {
-				return Direction.UP;
-			}
-			case DOWN: {
-				return Direction.DOWN;
-			}
-			default: {
-				return null;
-			}
-		}
+		return switch (side) {
+			case NORTH -> Direction.NORTH;
+			case SOUTH -> Direction.SOUTH;
+			case WEST -> Direction.WEST;
+			case EAST -> Direction.EAST;
+			case UP -> Direction.UP;
+			case DOWN -> Direction.DOWN;
+			case UNKNOWN -> null;
+		};
 	}
 
 	/** Returns the {@link EnergySide} corresponding to the specified {@link Direction}. */
 	public static EnergySide toSide(Direction direction) {
-		switch (direction) {
-			case NORTH: {
-				return EnergySide.NORTH;
-			}
-			case SOUTH: {
-				return EnergySide.SOUTH;
-			}
-			case WEST: {
-				return EnergySide.WEST;
-			}
-			case EAST: {
-				return EnergySide.EAST;
-			}
-			case UP: {
-				return EnergySide.UP;
-			}
-			case DOWN: {
-				return EnergySide.DOWN;
-			}
-			default: {
-				return EnergySide.UNKNOWN;
-			}
-		}
+		return switch (direction) {
+			case NORTH -> EnergySide.NORTH;
+			case SOUTH -> EnergySide.SOUTH;
+			case WEST -> EnergySide.WEST;
+			case EAST -> EnergySide.EAST;
+			case UP -> EnergySide.UP;
+			case DOWN -> EnergySide.DOWN;
+		};
 	}
 }

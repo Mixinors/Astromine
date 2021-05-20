@@ -101,7 +101,7 @@ public class AMNetworkMembers {
 		NetworkMemberRegistry.NetworkTypeProvider<NetworkType> fluid = NetworkMemberRegistry.INSTANCE.get(AMNetworkTypes.FLUID);
 
 		BLOCK_CONSUMER.put(block -> block instanceof NetworkBlock, block -> {
-			NetworkBlock networkBlock = (NetworkBlock) block;
+			var networkBlock = (NetworkBlock) block;
 			
 			if (networkBlock.isMember(AMNetworkTypes.ENERGY)) energy.register(block, networkBlock.getEnergyNetworkMemberType());
 			if (networkBlock.isMember(AMNetworkTypes.FLUID)) fluid.register(block, networkBlock.getFluidNetworkMemberType());
@@ -109,7 +109,7 @@ public class AMNetworkMembers {
 
 		Registry.BLOCK.getEntries().forEach(entry -> acceptBlock(entry.getKey(), entry.getValue()));
 		
-		// TODO: Reimplement this on Fabric & Forge modules!
+		// TODO: Reimplement this on Forge module!
 		
 		// RegistryEntryAddedCallback.event(Registry.BLOCK).register((index, identifier, block) -> acceptBlock(RegistryKey.of(Registry.BLOCK_KEY, identifier), block));
 	}
