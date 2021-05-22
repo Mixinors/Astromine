@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.client.render.sky.SpaceSkyProperties;
+import com.github.mixinors.astromine.common.component.base.EnergyComponent;
 import com.github.mixinors.astromine.common.event.SkyPropertiesEvents;
 import com.github.mixinors.astromine.common.item.HolographicConnectorItem;
 import com.github.mixinors.astromine.common.item.SpaceSuitItem;
@@ -52,17 +53,15 @@ import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
-import team.reborn.energy.Energy;
-import team.reborn.energy.EnergyHandler;
 
 public class AMClientCallbacks {
 	public static void init() {
 		TooltipEvent.ITEM.register((stack, tooltip, context) -> {
 			if (stack.getItem() instanceof FluidVolumeItem) {
-				FluidComponent fluidComponent = FluidComponent.from(stack);
+				var fluidComponent = FluidComponent.from(stack);
 				
-				FluidVolume volume = fluidComponent.getFirst();
-				Identifier fluidId = volume.getFluidId();
+				var volume = fluidComponent.getFirst();
+				var fluidId = volume.getFluidId();
 				
 				tooltip.addAll(Math.min(tooltip.size(), 1), Lists.newArrayList(
 						((MutableText) TextUtils.getFluidVolume(FluidVolume.of(volume.getAmount() / 81L, volume.getSize() / 81L, volume.getFluid()))).append(new LiteralText(" ")).append(
@@ -72,10 +71,10 @@ public class AMClientCallbacks {
 
 		TooltipEvent.ITEM.register((stack, tooltip, context) -> {
 			if (stack.getItem() instanceof EnergyVolumeItem) {
-				EnergyHandler handler = Energy.of(stack);
+				EnergyComponent handler = EnergyComponent.from(stack);
 				
 				tooltip.addAll(Math.min(tooltip.size(), 1), Lists.newArrayList(
-						TextUtils.getEnergyVolume(EnergyVolume.of(handler.getEnergy(), handler.getMaxStored()))
+						TextUtils.getEnergyVolume(EnergyVolume.of(handler.getAmount(), handler.getSize()))
 				));
 			}
 		});

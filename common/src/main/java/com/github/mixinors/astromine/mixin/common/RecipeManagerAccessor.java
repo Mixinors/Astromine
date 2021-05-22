@@ -21,5 +21,5 @@ public interface RecipeManagerAccessor {
 	void setRecipes(Map<RecipeType<?>, Map<Identifier, Recipe<?>>> recipes);
 	
 	@Invoker
-	<C extends Inventory, T extends Recipe<C>> Map<Identifier, Recipe<C>> getAllOfType(RecipeType<T> recipeType);
+	<C extends Inventory, T extends Recipe<C>> Map<Identifier, Recipe<C>> callGetAllOfType(RecipeType<T> recipeType);
 }

@@ -32,10 +32,8 @@ import com.github.mixinors.astromine.registry.common.AMKeybinds;
 import com.github.mixinors.astromine.registry.client.*;
 
 @Environment(EnvType.CLIENT)
-public class AMClient implements ClientModInitializer {
-
-	@Override
-	public void onInitializeClient() {
+public class AMClient {
+	public static void init() {
 		AMEntityRenderers.init();
 		AMBlockEntityRenderers.init();
 		AMClientModels.init();

@@ -24,13 +24,11 @@
 
 package com.github.mixinors.astromine.common.entity.base;
 
+import com.github.mixinors.astromine.common.component.Component;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.World;
-
-import dev.onyxstudios.cca.api.v3.component.Component;
-
 /**
  * An {@link Entity} which should contain {@link Component}s.
  */

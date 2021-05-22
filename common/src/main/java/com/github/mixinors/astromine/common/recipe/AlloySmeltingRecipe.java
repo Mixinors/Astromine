@@ -75,7 +75,7 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 	public static boolean allows(World world, ItemComponent itemComponent) {
 		if (RECIPE_CACHE.get(world) == null && world.getRecipeManager() instanceof RecipeManagerAccessor accessor) {
 			RECIPE_CACHE.put(world,
-					accessor.getAllOfType(Type.INSTANCE)
+					accessor.callGetAllOfType(Type.INSTANCE)
 							.values()
 							.stream()
 							.map(AlloySmeltingRecipe.class::cast)
@@ -94,7 +94,7 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 	public static Optional<AlloySmeltingRecipe> matching(World world, ItemComponent itemComponent) {
 		if (RECIPE_CACHE.get(world) == null && world.getRecipeManager() instanceof RecipeManagerAccessor accessor) {
 			RECIPE_CACHE.put(world,
-					accessor.getAllOfType(Type.INSTANCE)
+					accessor.callGetAllOfType(Type.INSTANCE)
 							.values()
 							.stream()
 							.map(AlloySmeltingRecipe.class::cast)

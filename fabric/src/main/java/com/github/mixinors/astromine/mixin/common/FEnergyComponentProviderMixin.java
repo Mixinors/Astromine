@@ -5,4 +5,4 @@ import com.github.mixinors.astromine.common.component.general.provider.EnergyCom
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(EnergyComponentProvider.class)
-public interface EnergyComponentProviderMixin extends TREnergyComponentProvider {}
+public interface FEnergyComponentProviderMixin extends TREnergyComponentProvider {}

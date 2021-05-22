@@ -27,7 +27,6 @@ package com.github.mixinors.astromine.registry.client;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.util.ClientUtils;
 import com.mojang.datafixers.util.Pair;
-import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 
 import net.minecraft.client.render.model.*;
 import net.minecraft.client.render.model.json.JsonUnbakedModel;
@@ -55,10 +54,12 @@ public class AMClientModels {
 	
 	public static final Lazy<ModelTransformation> ITEM_HANDHELD_TRANSFORMATION = new Lazy<>(() -> {
 		try {
-			Resource resource = ClientUtils.getInstance().getResourceManager().getResource(new Identifier("minecraft:models/item/handheld.json"));
-			InputStream stream = resource.getInputStream();
-			ModelTransformation model = JsonUnbakedModel.deserialize(new BufferedReader(new InputStreamReader(stream))).getTransformations();
+			var resource = ClientUtils.getInstance().getResourceManager().getResource(new Identifier("minecraft:models/item/handheld.json"));
+			var stream = resource.getInputStream();
+			var model = JsonUnbakedModel.deserialize(new BufferedReader(new InputStreamReader(stream))).getTransformations();
+			
 			stream.close();
+			
 			return model;
 		} catch (Throwable throwable) {
 			throw new RuntimeException(throwable);
@@ -66,30 +67,6 @@ public class AMClientModels {
 	});
 	
 	public static void init() {
-		ModelLoadingRegistry.INSTANCE.registerModelProvider((resourceManager, consumer) -> {
-			consumer.accept(CONVEYOR_SUPPORTS);
-		});
-		
-		ModelLoadingRegistry.INSTANCE.registerVariantProvider(resourceManager -> (modelIdentifier, modelProviderContext) -> {
-			if (modelIdentifier.equals(ROCKET_INVENTORY)) {
-				return new UnbakedModel() {
-					@Override
-					public Collection<Identifier> getModelDependencies() {
-						return Collections.emptyList();
-					}
-					
-					@Override
-					public Collection<SpriteIdentifier> getTextureDependencies(Function<Identifier, UnbakedModel> unbakedModelGetter, Set<Pair<String, String>> unresolvedTextureReferences) {
-						return Collections.emptyList();
-					}
-					
-					@Override
-					public BakedModel bake(ModelLoader loader, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings rotationContainer, Identifier modelId) {
-						return new BuiltinBakedModel(ITEM_HANDHELD_TRANSFORMATION.get(), ModelOverrideList.EMPTY, null, true);
-					}
-				};
-			}
-			return null;
-		});
+		throw new UnsupportedOperationException("Cannot call this method method; must @Overwrite!");
 	}
 }

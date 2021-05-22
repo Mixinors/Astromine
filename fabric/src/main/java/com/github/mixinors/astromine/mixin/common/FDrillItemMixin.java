@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(DrillItem.class)
-public abstract class DrillItemMixin implements DynamicAttributeTool {
+public abstract class FDrillItemMixin implements DynamicAttributeTool {
 	@Shadow protected abstract double getEnergyConsumed();
 	
 	@Shadow @Final private ToolMaterial material;

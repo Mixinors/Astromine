@@ -87,7 +87,6 @@ dependencies {
     modImplementation "me.shedaniel.cloth.api:cloth-durability-bar-api-v1:${project.cloth_api_version}"
 
     // Cloth Config
-    modImplementation "me.shedaniel.cloth:cloth-config:${project.cloth_config_api_version}"
     modImplementation "me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_api_version}"
 
     // RoughlyEnoughItems

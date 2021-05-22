@@ -73,7 +73,7 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 	public static boolean allows(World world, ItemComponent itemComponent) {
 		if (RECIPE_CACHE.get(world) == null && world.getRecipeManager() instanceof RecipeManagerAccessor accessor) {
 			RECIPE_CACHE.put(world,
-					accessor.getAllOfType(Type.INSTANCE)
+					accessor.callGetAllOfType(Type.INSTANCE)
 							.values()
 							.stream()
 							.map(PressingRecipe.class::cast)
@@ -92,7 +92,7 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 	public static Optional<PressingRecipe> matching(World world, ItemComponent itemComponent) {
 		if (RECIPE_CACHE.get(world) == null && world.getRecipeManager() instanceof RecipeManagerAccessor accessor) {
 			RECIPE_CACHE.put(world,
-					accessor.getAllOfType(Type.INSTANCE)
+					accessor.callGetAllOfType(Type.INSTANCE)
 							.values()
 							.stream()
 							.map(PressingRecipe.class::cast)

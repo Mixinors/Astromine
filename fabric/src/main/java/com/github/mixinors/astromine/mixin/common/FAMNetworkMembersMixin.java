@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AMNetworkMembers.class)
-public abstract class AMNetworkMembersMixin {
+public abstract class FAMNetworkMembersMixin {
 	@Shadow
 	public static void acceptBlock(RegistryKey<Block> id, Block block) {}
 	

@@ -4,17 +4,18 @@
   "package": "com.github.mixinors.astromine.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "common.AMNetworkMembersMixin",
-    "common.ComponentMixin",
-    "common.DrillItemMixin",
-    "common.DynamicToolItemItemMixin",
-    "common.EnergyComponentMixin",
-    "common.EnergyComponentProviderMixin",
-    "common.EnergyVolumeItemMixin",
-    "common.ManualItemMixin"
+    "client.FAMClientModelsMixin",
+    "client.FAMPatchouliPagesMixin",
+    "common.FAMNetworkMembersMixin",
+    "common.FDrillItemMixin",
+    "common.FDynamicToolItemItemMixin",
+    "common.FEnergyComponentProviderMixin",
+    "common.FEnergyVolumeItemMixin",
+    "common.FExtendedFluidMixin",
+    "common.FManualItemMixin"
   ],
   "client": [
-
+    "client.FClientUtilsMixin"
   ],
   "injectors": {
     "defaultRequire": 1

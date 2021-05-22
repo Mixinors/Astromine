@@ -74,7 +74,7 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 	public static boolean allows(World world, ItemComponent itemComponent) {
 		if (RECIPE_CACHE.get(world) == null && world.getRecipeManager() instanceof RecipeManagerAccessor accessor) {
 			RECIPE_CACHE.put(world,
-					accessor.getAllOfType(Type.INSTANCE)
+					accessor.callGetAllOfType(Type.INSTANCE)
 							.values()
 							.stream()
 							.map(MeltingRecipe.class::cast)
@@ -93,7 +93,7 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 	public static Optional<MeltingRecipe> matching(World world, ItemComponent itemComponent, FluidComponent fluidComponent) {
 		if (RECIPE_CACHE.get(world) == null && world.getRecipeManager() instanceof RecipeManagerAccessor accessor) {
 			RECIPE_CACHE.put(world,
-					accessor.getAllOfType(Type.INSTANCE)
+					accessor.callGetAllOfType(Type.INSTANCE)
 							.values()
 							.stream()
 							.map(MeltingRecipe.class::cast)

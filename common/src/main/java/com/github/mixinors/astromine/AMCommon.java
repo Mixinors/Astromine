@@ -38,7 +38,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.gson.Gson;
 
-public class AMCommon implements ModInitializer {
+public class AMCommon {
 	public static final String LOG_ID = "Astromine";
 	public static final String MOD_ID = "astromine";
 	
@@ -57,9 +57,8 @@ public class AMCommon implements ModInitializer {
 	public static <T> Registry<T> registry(RegistryKey<net.minecraft.util.registry.Registry<T>> key) {
 		return REGISTRIES.get().get(key);
 	}
-
-	@Override
-	public void onInitialize() {
+	
+	public static void init() {
 		AMIdentifierFixes.init();
 		AMDimensions.init();
 		AMFeatures.init();

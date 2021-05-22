@@ -73,7 +73,7 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 	public static boolean allows(World world, ItemComponent itemComponent) {
 		if (RECIPE_CACHE.get(world) == null && world.getRecipeManager() instanceof RecipeManagerAccessor accessor) {
 			RECIPE_CACHE.put(world,
-					accessor.getAllOfType(Type.INSTANCE)
+					accessor.callGetAllOfType(Type.INSTANCE)
 							.values()
 							.stream()
 							.map(WireMillingRecipe.class::cast)
@@ -92,7 +92,7 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 	public static Optional<WireMillingRecipe> matching(World world, ItemComponent itemComponent) {
 		if (RECIPE_CACHE.get(world) == null && world.getRecipeManager() instanceof RecipeManagerAccessor accessor) {
 			RECIPE_CACHE.put(world,
-					accessor.getAllOfType(Type.INSTANCE)
+					accessor.callGetAllOfType(Type.INSTANCE)
 							.values()
 							.stream()
 							.map(WireMillingRecipe.class::cast)

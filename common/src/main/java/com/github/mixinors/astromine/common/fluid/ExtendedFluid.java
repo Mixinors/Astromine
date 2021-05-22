@@ -24,17 +24,16 @@
 
 package com.github.mixinors.astromine.common.fluid;
 
+import com.github.mixinors.astromine.mixin.common.FluidBlockAccessor;
 import me.shedaniel.architectury.platform.Platform;
 import me.shedaniel.architectury.registry.RegistrySupplier;
 import net.fabricmc.api.EnvType;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricMaterialBuilder;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.block.Material;
-import net.minecraft.block.MaterialColor;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.fluid.FlowableFluid;
@@ -64,12 +63,9 @@ import org.jetbrains.annotations.Nullable;
  * extra properties.
  */
 public abstract class ExtendedFluid extends FlowableFluid {
-	public static final Material INDUSTRIAL_FLUID_MATERIAL = new FabricMaterialBuilder(MaterialColor.WATER).allowsMovement()
-			.lightPassesThrough()
-			.destroyedByPiston()
-			.replaceable()
-			.liquid()
-			.notSolid().build();
+	private static Material proxy_getMaterial() {
+		throw new UnsupportedOperationException("Cannot call this method method; must @Overwrite!");
+	}
 
 	private final int fogColor;
 	private final int tintColor;
@@ -283,7 +279,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 			still.still = still;
 			this.still = still;
 
-			RegistrySupplier<Block> block = AMBlocks.register(name, () -> new FluidBlock(still, AbstractBlock.Settings.of(INDUSTRIAL_FLUID_MATERIAL).noCollision().strength(100.0F).dropsNothing()));
+			RegistrySupplier<Block> block = AMBlocks.register(name, () -> FluidBlockAccessor.init(still, AbstractBlock.Settings.of(proxy_getMaterial()).noCollision().strength(100.0F).dropsNothing()));
 
 			RegistrySupplier<Item> bucket = AMItems.register(name + "_bucket", () -> new BucketItem(still, (new Item.Settings()).recipeRemainder(Items.BUCKET).maxCount(1).group(group)));
 

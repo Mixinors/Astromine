@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import team.reborn.energy.EnergyStorage;
 
 @Mixin(EnergyComponent.class)
-interface EnergyComponentMixin {
+interface FEnergyComponentMixin {
 	private static EnergyComponent of(EnergyStorage storage) {
 		return TREnergyComponent.of(storage);
 	}

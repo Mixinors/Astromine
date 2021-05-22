@@ -76,7 +76,7 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsu
 	public static boolean allows(World world, FluidComponent fluidComponent) {
 		if (RECIPE_CACHE.get(world) == null && world.getRecipeManager() instanceof RecipeManagerAccessor accessor) {
 			RECIPE_CACHE.put(world,
-					accessor.getAllOfType(Type.INSTANCE)
+					accessor.callGetAllOfType(Type.INSTANCE)
 							.values()
 							.stream()
 							.map(ElectrolyzingRecipe.class::cast)
@@ -95,7 +95,7 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsu
 	public static Optional<ElectrolyzingRecipe> matching(World world, FluidComponent fluidComponent) {
 		if (RECIPE_CACHE.get(world) == null && world.getRecipeManager() instanceof RecipeManagerAccessor accessor) {
 			RECIPE_CACHE.put(world,
-					accessor.getAllOfType(Type.INSTANCE)
+					accessor.callGetAllOfType(Type.INSTANCE)
 							.values()
 							.stream()
 							.map(ElectrolyzingRecipe.class::cast)

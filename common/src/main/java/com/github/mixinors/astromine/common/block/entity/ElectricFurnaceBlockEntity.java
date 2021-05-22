@@ -81,7 +81,7 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 				if (RECIPE_CACHE.get(world) == null) {
 					if (RECIPE_CACHE.get(world) == null && world.getRecipeManager() instanceof RecipeManagerAccessor accessor) {
 						RECIPE_CACHE.put(world,
-								accessor.getAllOfType(RecipeType.SMELTING)
+								accessor.callGetAllOfType(RecipeType.SMELTING)
 										.values()
 										.stream()
 										.map(SmeltingRecipe.class::cast)
@@ -136,7 +136,7 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 		if (recipe.isEmpty() && shouldTry) {
 			if (RECIPE_CACHE.get(world) == null && world.getRecipeManager() instanceof RecipeManagerAccessor accessor) {
 				RECIPE_CACHE.put(world,
-						accessor.getAllOfType(RecipeType.SMELTING)
+						accessor.callGetAllOfType(RecipeType.SMELTING)
 								.values()
 								.stream()
 								.map(SmeltingRecipe.class::cast)

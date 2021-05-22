@@ -11,6 +11,9 @@ dependencies {
 
     // Shapes
     modImplementation "com.terraformersmc.terraform-api:terraform-shapes-api-v1:${rootProject.shapes_version}"
+
+    // Cloth Config
+    modImplementation "me.shedaniel.cloth:cloth-config:${project.cloth_config_api_version}"
 }
 
 architectury {

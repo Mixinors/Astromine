@@ -76,7 +76,7 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 	public static boolean allows(World world, FluidComponent fluidComponent) {
 		if (RECIPE_CACHE.get(world) == null && world.getRecipeManager() instanceof RecipeManagerAccessor accessor) {
 			RECIPE_CACHE.put(world,
-					accessor.getAllOfType(Type.INSTANCE)
+					accessor.callGetAllOfType(Type.INSTANCE)
 							.values()
 							.stream()
 							.map(SolidifyingRecipe.class::cast)
@@ -95,7 +95,7 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 	public static Optional<SolidifyingRecipe> matching(World world, ItemComponent itemComponent, FluidComponent fluidComponent) {
 		if (RECIPE_CACHE.get(world) == null && world.getRecipeManager() instanceof RecipeManagerAccessor accessor) {
 			RECIPE_CACHE.put(world,
-					accessor.getAllOfType(Type.INSTANCE)
+					accessor.callGetAllOfType(Type.INSTANCE)
 							.values()
 							.stream()
 							.map(SolidifyingRecipe.class::cast)

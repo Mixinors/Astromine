@@ -55,7 +55,7 @@
       "com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin"
     ],
     "rei_containers": [
-      "com.github.mixinors.astromine.registry.common.AMContainersInfoHandlers"
+      "com.github.mixinors.astromine.common.registry.AMFContainerInfoHandlers"
     ]
   },
   "mixins": [

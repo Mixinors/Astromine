@@ -26,26 +26,12 @@ package com.github.mixinors.astromine.common.util;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
-import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
-import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.resource.ResourceType;
-import net.minecraft.screen.PlayerScreenHandler;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.BlockRenderView;
 
-import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.fluid.ExtendedFluid;
 
 import java.util.function.Function;
@@ -69,44 +55,6 @@ public class ClientUtils {
 	/** Registers the necessary data for an {@link ExtendedFluid} on the client side. */
 	@Environment(EnvType.CLIENT)
 	public static void registerExtendedFluid(String name, int tint, Fluid still, Fluid flowing) {
-		var stillSpriteIdentifier = new Identifier("block/water_still");
-		var flowingSpriteIdentifier = new Identifier("block/water_flow");
-		var listenerIdentifier = AMCommon.id(name + "_reload_listener");
-
-		var fluidSprites = new Sprite[] { null, null };
-
-		ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> {
-			registry.register(stillSpriteIdentifier);
-			registry.register(flowingSpriteIdentifier);
-		});
-
-		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
-			@Override
-			public Identifier getFabricId() {
-				return listenerIdentifier;
-			}
-
-			@Override
-			public void apply(ResourceManager resourceManager) {
-				final Function<Identifier, Sprite> atlas = ClientUtils.getInstance().getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
-				fluidSprites[0] = atlas.apply(stillSpriteIdentifier);
-				fluidSprites[1] = atlas.apply(flowingSpriteIdentifier);
-			}
-		});
-
-		final FluidRenderHandler handler = new FluidRenderHandler() {
-			@Override
-			public Sprite[] getFluidSprites(BlockRenderView view, BlockPos pos, FluidState state) {
-				return fluidSprites;
-			}
-
-			@Override
-			public int getFluidColor(BlockRenderView view, BlockPos pos, FluidState state) {
-				return tint;
-			}
-		};
-
-		FluidRenderHandlerRegistry.INSTANCE.register(still, handler);
-		FluidRenderHandlerRegistry.INSTANCE.register(flowing, handler);
+		throw new UnsupportedOperationException("Cannot call this method method; must @Overwrite!");
 	}
 }

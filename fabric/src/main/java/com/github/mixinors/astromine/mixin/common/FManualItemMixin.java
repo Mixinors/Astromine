@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import vazkii.patchouli.api.PatchouliAPI;
 
 @Mixin(ManualItem.class)
-public class ManualItemMixin {
+public class FManualItemMixin {
 	@Inject(at = @At("RETURN"), method = "use", cancellable = true)
 	void astromine_use(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
 		if (cir.getReturnValue() == null) {

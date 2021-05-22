@@ -74,7 +74,7 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 	public static boolean allows(World world, FluidComponent fluidComponent) {
 		if (RECIPE_CACHE.get(world) == null && world.getRecipeManager() instanceof RecipeManagerAccessor accessor) {
 			RECIPE_CACHE.put(world,
-					accessor.getAllOfType(Type.INSTANCE)
+					accessor.callGetAllOfType(Type.INSTANCE)
 							.values()
 							.stream()
 							.map(RefiningRecipe.class::cast)
@@ -93,7 +93,7 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 	public static Optional<RefiningRecipe> matching(World world, FluidComponent fluidComponent) {
 		if (RECIPE_CACHE.get(world) == null && world.getRecipeManager() instanceof RecipeManagerAccessor accessor) {
 			RECIPE_CACHE.put(world,
-					accessor.getAllOfType(Type.INSTANCE)
+					accessor.callGetAllOfType(Type.INSTANCE)
 							.values()
 							.stream()
 							.map(RefiningRecipe.class::cast)

@@ -25,13 +25,13 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.github.mixinors.astromine.AMCommon"
+      "com.github.mixinors.astromine.AMFCommon"
     ],
     "client": [
-      "com.github.mixinors.astromine.AMClient"
+      "com.github.mixinors.astromine.AMFClient"
     ],
     "server": [
-      "com.github.mixinors.astromine.AMDedicated"
+      "com.github.mixinors.astromine.AMFDedicated"
     ],
     "modmenu": [
       "com.github.mixinors.astromine.client.modmenu.AstromineModMenuSupport"

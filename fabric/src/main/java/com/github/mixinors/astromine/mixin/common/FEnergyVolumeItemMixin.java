@@ -10,7 +10,7 @@ import team.reborn.energy.EnergyStorage;
 import team.reborn.energy.EnergyTier;
 
 @Mixin(EnergyVolumeItem.class)
-public abstract class EnergyVolumeItemMixin implements EnergyStorage, DurabilityBarItem {
+public abstract class FEnergyVolumeItemMixin implements EnergyStorage, DurabilityBarItem {
 	@Shadow public abstract double getSize();
 	
 	/** Returns this item's size. */

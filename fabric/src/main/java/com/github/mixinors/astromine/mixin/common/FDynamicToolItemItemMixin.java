@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(DynamicToolItemItem.class)
-public class DynamicToolItemItemMixin implements DynamicAttributeTool {
+public class FDynamicToolItemItemMixin implements DynamicAttributeTool {
 	@Shadow @Final public MiningToolItem first;
 	
 	@Shadow @Final private ToolMaterial material;
