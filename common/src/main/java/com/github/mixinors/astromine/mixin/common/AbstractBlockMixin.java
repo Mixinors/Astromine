@@ -30,12 +30,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BucketItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ActionResult;
@@ -44,11 +41,10 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.block.transfer.TransferType;
-import com.github.mixinors.astromine.common.component.base.TransferComponent;
-import com.github.mixinors.astromine.common.component.base.FluidComponent;
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.TransferComponent;
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.FluidComponent;
 import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
-import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
+import com.github.mixinors.astromine.techreborn.common.volume.fluid.FluidVolume;
 
 @Mixin(AbstractBlock.class)
 public class AbstractBlockMixin {

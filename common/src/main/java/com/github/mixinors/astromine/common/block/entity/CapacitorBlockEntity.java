@@ -24,13 +24,13 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.common.component.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.base.ItemComponent;
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.EnergyComponent;
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.ItemComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
-import com.github.mixinors.astromine.common.volume.energy.InfiniteEnergyVolume;
+import com.github.mixinors.astromine.techreborn.common.volume.energy.InfiniteEnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;

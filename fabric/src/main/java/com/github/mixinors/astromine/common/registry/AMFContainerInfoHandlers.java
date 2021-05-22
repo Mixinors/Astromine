@@ -20,6 +20,10 @@ public class AMFContainerInfoHandlers implements Runnable{
 	public static final Identifier PRESSING = AMCommon.id("pressing");
 	public static final Identifier ALLOY_SMELTING = AMCommon.id("alloy_smelting");
 	
+	public static void init() {
+	
+	}
+	
 	@Override
 	public void run() {
 		ContainerInfoHandler.registerContainerInfo(TRITURATING, new SimpleContainerInfo<>(TrituratorScreenHandler.class, 1, 1, 1));

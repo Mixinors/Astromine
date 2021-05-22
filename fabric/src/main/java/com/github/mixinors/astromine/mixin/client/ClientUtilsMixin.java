@@ -1,0 +1,41 @@
+package com.github.mixinors.astromine.mixin.client;
+
+import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.client.fluid.render.ExtendedFluidRenderHandler;
+import com.github.mixinors.astromine.common.resource.ExtendedFluidResourceListener;
+import com.github.mixinors.astromine.techreborn.common.util.ClientUtils;
+import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
+import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.minecraft.client.texture.Sprite;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.resource.ResourceType;
+import net.minecraft.screen.PlayerScreenHandler;
+import net.minecraft.util.Identifier;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
+
+@Mixin(ClientUtils.class)
+public class ClientUtilsMixin {
+	@Overwrite
+	@SuppressWarnings("all")
+	public static void registerExtendedFluid(String name, int tint, Fluid still, Fluid flowing) {
+		var stillSpriteId = new Identifier("block/water_still");
+		var flowingSpriteId = new Identifier("block/water_flow");
+		var id = AMCommon.id(name + "_reload_listener");
+		
+		var sprites = new Sprite[2];
+		
+		ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register(($, registry) -> {
+			registry.register(stillSpriteId);
+			registry.register(flowingSpriteId);
+		});
+		
+		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new ExtendedFluidResourceListener(sprites, id, flowingSpriteId, stillSpriteId));
+		
+		var handler = new ExtendedFluidRenderHandler(sprites, tint);
+		
+		FluidRenderHandlerRegistry.INSTANCE.register(still, handler);
+		FluidRenderHandlerRegistry.INSTANCE.register(flowing, handler);
+	}
+}

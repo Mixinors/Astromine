@@ -1,6 +1,6 @@
 package com.github.mixinors.astromine;
 
-import com.github.mixinors.astromine.common.registry.AMFComponents;
+import com.github.mixinors.astromine.common.registry.*;
 import net.fabricmc.api.ModInitializer;
 
 public class AMFCommon implements ModInitializer {
@@ -9,5 +9,9 @@ public class AMFCommon implements ModInitializer {
 		AMCommon.init();
 		
 		AMFComponents.init();
+		AMFNetworkMembers.init();
+		AMFContainerInfoHandlers.init();
+		AMFEntityTypes.init();
+		AMFFeatures.init();
 	}
 }

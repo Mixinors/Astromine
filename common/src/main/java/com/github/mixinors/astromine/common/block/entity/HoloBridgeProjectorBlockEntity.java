@@ -24,9 +24,9 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.common.component.base.BridgeComponent;
-import com.github.mixinors.astromine.common.util.LineUtils;
-import com.github.mixinors.astromine.common.util.VectorUtils;
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.BridgeComponent;
+import com.github.mixinors.astromine.techreborn.common.util.LineUtils;
+import com.github.mixinors.astromine.techreborn.common.util.VectorUtils;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.vini2003.blade.common.miscellaneous.Color;

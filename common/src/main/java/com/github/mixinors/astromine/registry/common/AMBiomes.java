@@ -37,7 +37,7 @@ public class AMBiomes {
 	private static final Set<RegistryKey<?>> KEYS = new HashSet<>();
 	
 	public static final Identifier ASTEROID_BELT_ID = AMCommon.id("asteroid_belt");
-	public static final RegistryKey<Biome> ASTEROID_BELT = register(Registry.BIOME_KEY, ASTEROID_BELT_ID);
+	public static RegistryKey<Biome> ASTEROID_BELT = register(Registry.BIOME_KEY, ASTEROID_BELT_ID);
 	
 	
 	

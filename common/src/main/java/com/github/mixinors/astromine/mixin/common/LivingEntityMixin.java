@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.mixin.common;
 
-import com.github.mixinors.astromine.common.component.base.*;
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.*;
 import com.github.mixinors.astromine.registry.common.*;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -51,7 +51,7 @@ import net.minecraft.util.math.Vec3d;
 
 import com.github.mixinors.astromine.common.entity.GravityEntity;
 import com.github.mixinors.astromine.common.registry.BreathableRegistry;
-import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
+import com.github.mixinors.astromine.techreborn.common.volume.fluid.FluidVolume;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends EntityMixin implements GravityEntity {

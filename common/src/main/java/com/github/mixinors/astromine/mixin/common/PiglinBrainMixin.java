@@ -33,7 +33,6 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.mob.PiglinBrain;
 import net.minecraft.entity.mob.PiglinEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvents;
@@ -41,8 +40,6 @@ import net.minecraft.sound.SoundEvents;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.registry.common.AMCriteria;
 import com.github.mixinors.astromine.registry.common.AMTags;
-
-import java.util.Optional;
 
 @Mixin(PiglinBrain.class)
 public abstract class PiglinBrainMixin {
@@ -59,7 +56,7 @@ public abstract class PiglinBrainMixin {
 				if (angry) {
 					entity.playSound(SoundEvents.ENTITY_PIGLIN_ANGRY, 1.0f, 1.0f);
 					
-					PiglinBrainAccessor.becomeAngryWith(entity, optional.get());
+					PiglinBrainAccessor.callBecomeAngryWith(entity, optional.get());
 					
 					ci.cancel();
 				}

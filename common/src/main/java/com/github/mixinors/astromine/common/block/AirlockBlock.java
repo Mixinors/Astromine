@@ -33,7 +33,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.ShapeContext;
-import net.minecraft.block.TallPlantBlock;
 import net.minecraft.block.Waterloggable;
 import net.minecraft.block.enums.DoubleBlockHalf;
 import net.minecraft.block.piston.PistonBehavior;
@@ -61,7 +60,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 
-import com.github.mixinors.astromine.common.util.VoxelShapeUtils;
+import com.github.mixinors.astromine.techreborn.common.util.VoxelShapeUtils;
 
 import javax.annotation.Nullable;
 
@@ -177,7 +176,7 @@ public class AirlockBlock extends Block implements Waterloggable {
 	@Override
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		if (!world.isClient && player.isCreative()) {
-			TallPlantBlockAccessor.onBreakInCreative(world, pos, state, player);
+			TallPlantBlockAccessor.callOnBreakInCreative(world, pos, state, player);
 		}
 
 		super.onBreak(world, pos, state, player);

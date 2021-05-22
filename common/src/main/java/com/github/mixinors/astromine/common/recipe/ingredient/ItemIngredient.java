@@ -37,7 +37,7 @@ import net.minecraft.util.JsonHelper;
 import net.minecraft.util.registry.Registry;
 import com.mojang.serialization.JsonOps;
 
-import com.github.mixinors.astromine.common.util.StackUtils;
+import com.github.mixinors.astromine.techreborn.common.util.StackUtils;
 import io.netty.buffer.ByteBuf;
 
 import com.google.gson.JsonArray;

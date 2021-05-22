@@ -24,55 +24,50 @@
 
 package com.github.mixinors.astromine.registry.common;
 
-import com.github.mixinors.astromine.common.event.ServerChunkManagerEvents;
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.AtmosphereComponent;
+import com.github.mixinors.astromine.common.event.ServerChunkManagerEvent;
 
 
 import com.github.mixinors.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
+import com.github.mixinors.astromine.mixin.common.ServerChunkManagerAccessor;
 import me.shedaniel.architectury.event.events.BlockEvent;
 import me.shedaniel.architectury.event.events.TickEvent;
 
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-import com.github.mixinors.astromine.common.block.transfer.TransferType;
-import com.github.mixinors.astromine.common.component.base.AtmosphereComponentImpl;
-import com.github.mixinors.astromine.common.component.base.NetworkComponentImpl;
 import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityScreenHandler;
-import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 
 import com.google.common.collect.Lists;
 import java.util.Collections;
-import java.util.List;
 
 public class AMCallbacks {
 	public static void init() {
 		BlockEvent.PLACE.register((world, pos, blockState, entity) -> {
-			AtmosphereComponentImpl atmosphereComponent = AtmosphereComponentImpl.from(world.getChunk(pos));
+			var atmosphereComponent = AtmosphereComponent.from(world.getChunk(pos));
 
 			if (atmosphereComponent != null) {
-				BlockPos centerPos = pos;
-				BlockState centerState = world.getBlockState(centerPos);
-				FluidVolume centerVolume = atmosphereComponent.get(centerPos);
+				var centerPos = pos;
+				var centerState = world.getBlockState(centerPos);
+				var centerVolume = atmosphereComponent.get(centerPos);
 
-				List<Direction> directions = Lists.newArrayList(Direction.values());
+				var directions = Lists.newArrayList(Direction.values());
 
 				Collections.shuffle(directions);
 
 				for (var direction : directions) {
-					BlockPos sidePos = pos.offset(direction);
-					BlockState sideState = world.getBlockState(sidePos);
+					var sidePos = pos.offset(direction);
+					var sideState = world.getBlockState(sidePos);
 
-					AtmosphereComponentImpl sideAtmosphereComponent = atmosphereComponent;
+					var sideAtmosphereComponent = atmosphereComponent;
 
 					if (!atmosphereComponent.isInChunk(sidePos)) {
-						sideAtmosphereComponent = AtmosphereComponentImpl.from(world.getChunk(sidePos));
+						sideAtmosphereComponent = AtmosphereComponent.from(world.getChunk(sidePos));
 					}
 
-					FluidVolume sideVolume = sideAtmosphereComponent.get(sidePos);
+					var sideVolume = sideAtmosphereComponent.get(sidePos);
 
 					if (atmosphereComponent.isTraversableForDisplacement(centerState, centerPos, sideState, sidePos, centerVolume, sideVolume, direction)) {
 						sideVolume.take(centerVolume);
@@ -91,9 +86,7 @@ public class AMCallbacks {
 
 		TickEvent.SERVER_PRE.register((server) -> {
 			for (PlayerEntity playerEntity : server.getPlayerManager().getPlayerList()) {
-				if (playerEntity.currentScreenHandler instanceof ComponentBlockEntityScreenHandler) {
-					ComponentBlockEntityScreenHandler screenHandler = (ComponentBlockEntityScreenHandler) playerEntity.currentScreenHandler;
-
+				if (playerEntity.currentScreenHandler instanceof ComponentBlockEntityScreenHandler screenHandler) {
 					if (screenHandler.getBlockEntity() != null) {
 						screenHandler.getBlockEntity().syncData();
 						break;
@@ -101,43 +94,13 @@ public class AMCallbacks {
 				}
 			}
 		});
-
-		TickEvent.SERVER_WORLD_PRE.register((world -> {
-			NetworkComponentImpl component = NetworkComponentImpl.from(world);
-
-			if (component != null) {
-				component.tick();
-			}
-		}));
-
-		TransferEntryEvents.EVENT.register((entry) -> {
-			if (entry.getComponentKey() == AMComponents.ENERGY) {
-				for (var direction : Direction.values()) {
-					entry.set(direction, TransferType.INPUT_OUTPUT);
-				}
+		
+		ServerChunkManagerEvent.INITIALIZATION.register(manager -> {
+			var chunkGenerator = ((ServerChunkManagerAccessor) manager).getChunkGenerator();
+			
+			if (chunkGenerator instanceof EarthSpaceChunkGenerator) {
+				((ServerChunkManagerAccessor) manager).setChunkGenerator(((EarthSpaceChunkGenerator) chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed()));
 			}
 		});
-		
-		ServerChunkManagerEvents.INITIALIZATION.register(manager -> {
-			if (manager.chunkGenerator instanceof EarthSpaceChunkGenerator) {
-				manager.chunkGenerator = ((EarthSpaceChunkGenerator) manager.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
-			}
-		});
-		
-		// ServerChunkManagerCallback.EVENT.register(manager -> {
-		// 	}
-		// });
-		//
-		// ServerChunkManagerCallback.EVENT.register(manager -> {
-		// 	}
-		// });
-		//
-		// ServerChunkManagerCallback.EVENT.register(manager -> {
-		// 	}
-		// });
-		//
-		// ServerChunkManagerCallback.EVENT.register(manager -> {
-		// 	}
-		// });
 	}
 }

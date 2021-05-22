@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.mixin.common;
 
-import com.github.mixinors.astromine.common.component.base.AtmosphereComponent;
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.AtmosphereComponent;
 import com.github.mixinors.astromine.registry.common.AMNetworks;
 
 import me.shedaniel.architectury.networking.NetworkManager;
@@ -50,16 +50,12 @@ import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.access.EntityAccessor;
 import com.github.mixinors.astromine.client.atmosphere.ClientAtmosphereManager;
-import com.github.mixinors.astromine.common.component.base.AtmosphereComponentImpl;
 import com.github.mixinors.astromine.common.entity.GravityEntity;
 import com.github.mixinors.astromine.common.registry.DimensionLayerRegistry;
 import com.github.mixinors.astromine.registry.common.AMTags;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 
-import com.google.common.collect.Lists;
-
 import java.util.ArrayList;
-import java.util.List;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin implements GravityEntity, EntityAccessor {

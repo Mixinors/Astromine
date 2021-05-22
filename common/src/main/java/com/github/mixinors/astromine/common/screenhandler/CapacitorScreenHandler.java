@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
-import com.github.mixinors.astromine.common.component.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.base.ItemComponent;
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.EnergyComponent;
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.ItemComponent;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;

@@ -36,8 +36,8 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.mixinors.astromine.common.component.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.compat.InventoryFromItemComponent;
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.ItemComponent;
+import com.github.mixinors.astromine.cardinalcomponents.common.component.compat.InventoryFromItemComponent;
 
 public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFromItemComponent, Tickable, BlockEntityExtension {
 	public BlockPos parentPos;

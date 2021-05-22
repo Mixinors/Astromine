@@ -37,7 +37,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.client.render.SkyProperties;
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.common.event.SkyPropertiesEvents;
+import com.github.mixinors.astromine.common.event.SkyPropertiesEvent;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 
 @Environment(EnvType.CLIENT)
@@ -50,6 +50,6 @@ public class SkyPropertiesMixin {
 
 	@Inject(method = "<clinit>", at = @At("RETURN"))
 	private static void astromine_init(CallbackInfo info) {
-		SkyPropertiesEvents.EVENT.invoker().handle(BY_IDENTIFIER);
+		SkyPropertiesEvent.EVENT.invoker().handle(BY_IDENTIFIER);
 	}
 }

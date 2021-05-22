@@ -44,11 +44,11 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.component.base.NetworkComponentImpl;
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.NetworkComponentImpl;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.registry.NetworkMemberRegistry;
-import com.github.mixinors.astromine.common.util.NetworkUtils;
-import com.github.mixinors.astromine.common.util.data.position.WorldPos;
+import com.github.mixinors.astromine.techreborn.common.util.NetworkUtils;
+import com.github.mixinors.astromine.techreborn.common.util.data.position.WorldPos;
 
 import javax.annotation.Nullable;
 import java.util.Map;

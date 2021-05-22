@@ -28,10 +28,10 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.ComparatorBlockEntity;
 import net.minecraft.screen.ScreenHandler;
 
-import com.github.mixinors.astromine.common.component.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.base.ItemComponent;
-import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.EnergyComponent;
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.FluidComponent;
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.ItemComponent;
+import com.github.mixinors.astromine.techreborn.common.volume.fluid.FluidVolume;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;

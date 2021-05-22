@@ -34,15 +34,14 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import com.github.mixinors.astromine.client.BaseRenderer;
-import com.github.mixinors.astromine.common.util.TextUtils;
-import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
+import com.github.mixinors.astromine.techreborn.common.util.TextUtils;
+import com.github.mixinors.astromine.techreborn.common.volume.energy.EnergyVolume;
 import com.github.vini2003.blade.client.utilities.Instances;
 import com.github.vini2003.blade.client.utilities.Layers;
 import com.github.vini2003.blade.client.utilities.Scissors;
 import com.github.vini2003.blade.common.widget.base.AbstractWidget;
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.collect.Lists;
 import java.util.List;
 import java.util.function.Supplier;
 

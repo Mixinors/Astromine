@@ -27,8 +27,8 @@ package com.github.mixinors.astromine.common.entity.base;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.component.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.base.FluidComponent;
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.EnergyComponent;
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.FluidComponent;
 
 /**
  * A {@link ComponentEntity} with an attached {@link EnergyComponent}

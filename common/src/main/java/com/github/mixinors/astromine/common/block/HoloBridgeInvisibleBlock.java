@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.block;
 
-import com.github.mixinors.astromine.common.component.base.BridgeComponent;
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.BridgeComponent;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 

@@ -24,11 +24,11 @@
 
 package com.github.mixinors.astromine.common.block.entity.base;
 
-import com.github.mixinors.astromine.common.component.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.provider.EnergyComponentProvider;
-import com.github.mixinors.astromine.common.component.general.provider.FluidComponentProvider;
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.EnergyComponent;
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.FluidComponent;
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.ItemComponent;
+import com.github.mixinors.astromine.techreborn.common.component.general.provider.EnergyComponentProvider;
+import com.github.mixinors.astromine.techreborn.common.component.general.provider.FluidComponentProvider;
 import net.minecraft.block.entity.BlockEntityType;
 
 import java.util.function.Supplier;

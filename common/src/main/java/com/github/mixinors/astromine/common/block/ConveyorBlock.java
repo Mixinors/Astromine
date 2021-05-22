@@ -54,7 +54,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
-import com.github.mixinors.astromine.common.util.MovementUtils;
+import com.github.mixinors.astromine.techreborn.common.util.MovementUtils;
 import com.github.mixinors.astromine.common.block.entity.ConveyorBlockEntity;
 import com.github.mixinors.astromine.common.conveyor.Conveyable;
 import com.github.mixinors.astromine.common.conveyor.Conveyor;

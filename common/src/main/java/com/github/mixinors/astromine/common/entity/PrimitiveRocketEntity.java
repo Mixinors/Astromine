@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.common.entity;
 
-import com.github.mixinors.astromine.common.component.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.base.ItemComponent;
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.FluidComponent;
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.ItemComponent;
 import com.github.mixinors.astromine.common.entity.base.RocketEntity;
 import com.github.mixinors.astromine.registry.common.AMDimensions;
 import com.github.mixinors.astromine.registry.common.AMFluids;
@@ -51,8 +51,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
-import com.github.mixinors.astromine.common.util.VolumeUtils;
-import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
+import com.github.mixinors.astromine.techreborn.common.util.VolumeUtils;
+import com.github.mixinors.astromine.techreborn.common.volume.fluid.FluidVolume;
 import com.github.mixinors.astromine.common.screenhandler.PrimitiveRocketScreenHandler;
 import io.netty.buffer.Unpooled;
 

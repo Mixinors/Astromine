@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(PiglinBrain.class)
 public interface PiglinBrainAccessor {
 	@Invoker
-	static void becomeAngryWith(AbstractPiglinEntity abstractPiglinEntity, LivingEntity livingEntity) {
+	static void callBecomeAngryWith(AbstractPiglinEntity abstractPiglinEntity, LivingEntity livingEntity) {
 		throw new UnsupportedOperationException("Cannot invoke @Invoker method!");
 	}
 }

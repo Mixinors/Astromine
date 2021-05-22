@@ -25,8 +25,8 @@
 package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentItemBlockEntity;
-import com.github.mixinors.astromine.common.component.base.ItemComponent;
-import com.github.mixinors.astromine.common.util.StackUtils;
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.ItemComponent;
+import com.github.mixinors.astromine.techreborn.common.util.StackUtils;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import me.shedaniel.architectury.extensions.BlockEntityExtension;

@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.datagen.generator.recipe;
 
-import com.github.mixinors.astromine.common.util.GeneratorUtils;
+import com.github.mixinors.astromine.techreborn.common.util.GeneratorUtils;
 import com.github.mixinors.astromine.datagen.generator.recipe.set.base.EnergyProcessingSetRecipeGenerator;
 import com.github.mixinors.astromine.datagen.material.MaterialItemType;
 import com.github.mixinors.astromine.datagen.material.MaterialSet;

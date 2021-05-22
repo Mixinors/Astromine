@@ -43,7 +43,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.WorldAccess;
 
 
-import com.github.mixinors.astromine.common.util.VoxelShapeUtils;
+import com.github.mixinors.astromine.techreborn.common.util.VoxelShapeUtils;
 import org.jetbrains.annotations.Nullable;
 
 public class CatwalkBlock extends Block implements Waterloggable {

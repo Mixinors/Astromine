@@ -40,7 +40,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.util.ToolUtils;
+import com.github.mixinors.astromine.techreborn.common.util.ToolUtils;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;

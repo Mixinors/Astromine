@@ -25,14 +25,15 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.mixin.common.DefaultParticleTypeAccessor;
 import me.shedaniel.architectury.registry.RegistrySupplier;
 
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.util.registry.Registry;
 
 public class AMParticles {
-	public static final RegistrySupplier<DefaultParticleType> SPACE_SLIME = register("space_slime", false);
-	public static final RegistrySupplier<DefaultParticleType> ROCKET_FLAME = register("rocket_flame", true);
+	public static RegistrySupplier<DefaultParticleType> SPACE_SLIME = register("space_slime", false);
+	public static RegistrySupplier<DefaultParticleType> ROCKET_FLAME = register("rocket_flame", true);
 	
 	/**
 	 * Registers a new {@link DefaultParticleType} instance under the given name.
@@ -45,6 +46,6 @@ public class AMParticles {
 	 * @return Registered {@link DefaultParticleType}
 	 */
 	public static RegistrySupplier<DefaultParticleType> register(String name, boolean alwaysShow) {
-		return AMCommon.registry(Registry.PARTICLE_TYPE_KEY).registerSupplied(AMCommon.id(name), () -> new DefaultParticleType(alwaysShow));
+		return AMCommon.registry(Registry.PARTICLE_TYPE_KEY).registerSupplied(AMCommon.id(name), () -> DefaultParticleTypeAccessor.init(alwaysShow));
 	}
 }

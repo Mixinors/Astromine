@@ -24,18 +24,13 @@
 
 package com.github.mixinors.astromine.client.render.sky.skybox;
 
-import com.github.mixinors.astromine.common.util.ClientUtils;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.options.GameOptions;
+import com.github.mixinors.astromine.techreborn.common.util.ClientUtils;
 import net.minecraft.client.options.Option;
-import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
-import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import com.google.common.collect.ImmutableMap;

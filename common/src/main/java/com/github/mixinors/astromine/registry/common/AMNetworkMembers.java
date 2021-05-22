@@ -25,9 +25,9 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.component.general.provider.EnergyComponentProvider;
-import com.github.mixinors.astromine.common.component.general.provider.FluidComponentProvider;
-import com.github.mixinors.astromine.common.component.general.provider.ItemComponentProvider;
+import com.github.mixinors.astromine.techreborn.common.component.general.provider.EnergyComponentProvider;
+import com.github.mixinors.astromine.techreborn.common.component.general.provider.FluidComponentProvider;
+import com.github.mixinors.astromine.techreborn.common.component.general.provider.ItemComponentProvider;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.math.Direction;
@@ -39,7 +39,7 @@ import com.github.mixinors.astromine.common.network.NetworkMember;
 import com.github.mixinors.astromine.common.network.NetworkMemberType;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.registry.NetworkMemberRegistry;
-import com.github.mixinors.astromine.common.util.data.position.WorldPos;
+import com.github.mixinors.astromine.techreborn.common.util.data.position.WorldPos;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.Maps;
@@ -107,14 +107,14 @@ public class AMNetworkMembers {
 			if (networkBlock.isMember(AMNetworkTypes.FLUID)) fluid.register(block, networkBlock.getFluidNetworkMemberType());
 		});
 
-		Registry.BLOCK.getEntries().forEach(entry -> acceptBlock(entry.getKey(), entry.getValue()));
+		Registry.BLOCK.getEntries().forEach(entry -> process(entry.getKey(), entry.getValue()));
 		
 		// TODO: Reimplement this on Forge module!
 		
 		// RegistryEntryAddedCallback.event(Registry.BLOCK).register((index, identifier, block) -> acceptBlock(RegistryKey.of(Registry.BLOCK_KEY, identifier), block));
 	}
 
-	public static void acceptBlock(RegistryKey<Block> id, Block block) {
+	public static void process(RegistryKey<Block> id, Block block) {
 		if (id.getValue().getNamespace().equals(AMCommon.MOD_ID)) {
 			for (var blockConsumerEntry : BLOCK_CONSUMER.entrySet()) {
 				if (blockConsumerEntry.getKey().test(block)) {

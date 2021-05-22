@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(TallPlantBlock.class)
 public interface TallPlantBlockAccessor {
 	@Invoker
-	static void onBreakInCreative(World world, BlockPos blockPos, BlockState blockState, PlayerEntity playerEntity) {
+	static void callOnBreakInCreative(World world, BlockPos blockPos, BlockState blockState, PlayerEntity playerEntity) {
 		throw new UnsupportedOperationException("Cannot invoke @Invoker method!");
 	}
 }

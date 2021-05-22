@@ -30,7 +30,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.util.GeneratorUtils;
+import com.github.mixinors.astromine.techreborn.common.util.GeneratorUtils;
 import com.github.mixinors.astromine.datagen.generator.recipe.onetime.base.EnergyProcessingRecipeGenerator;
 import com.github.mixinors.astromine.common.recipe.TrituratingRecipe;
 import me.shedaniel.cloth.api.datagen.v1.RecipeData;

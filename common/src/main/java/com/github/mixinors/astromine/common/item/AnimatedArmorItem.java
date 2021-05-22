@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.item;
 
-import com.github.mixinors.astromine.common.util.ClientUtils;
+import com.github.mixinors.astromine.techreborn.common.util.ClientUtils;
 import com.github.mixinors.astromine.mixin.common.RenderPhaseAccessor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -33,13 +33,11 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderPhase;
 import net.minecraft.client.texture.AbstractTexture;
 import net.minecraft.client.texture.NativeImage;
-import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.texture.TextureTickListener;
 import net.minecraft.client.texture.TextureUtil;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
-import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import com.mojang.blaze3d.systems.RenderSystem;

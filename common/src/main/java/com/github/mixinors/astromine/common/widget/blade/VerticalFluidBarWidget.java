@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.widget.blade;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.util.ClientUtils;
+import com.github.mixinors.astromine.techreborn.common.util.ClientUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -40,15 +40,14 @@ import net.minecraft.util.Identifier;
 
 import com.github.mixinors.astromine.client.BaseRenderer;
 import com.github.mixinors.astromine.client.render.sprite.SpriteRenderer;
-import com.github.mixinors.astromine.common.util.FluidUtils;
-import com.github.mixinors.astromine.common.util.TextUtils;
-import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
-import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
+import com.github.mixinors.astromine.techreborn.common.util.FluidUtils;
+import com.github.mixinors.astromine.techreborn.common.util.TextUtils;
+import com.github.mixinors.astromine.techreborn.common.volume.energy.EnergyVolume;
+import com.github.mixinors.astromine.techreborn.common.volume.fluid.FluidVolume;
 import com.github.vini2003.blade.client.utilities.Layers;
 import com.github.vini2003.blade.common.utilities.Networks;
 import com.github.vini2003.blade.common.widget.base.AbstractWidget;
 
-import com.google.common.collect.Lists;
 import java.util.List;
 import java.util.function.Supplier;
 

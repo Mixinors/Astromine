@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.client;
 
-import com.github.mixinors.astromine.common.util.ClientUtils;
+import com.github.mixinors.astromine.techreborn.common.util.ClientUtils;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;

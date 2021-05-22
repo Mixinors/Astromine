@@ -32,7 +32,7 @@ import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentFluidBlockEntity;
 import com.github.mixinors.astromine.common.block.transfer.TransferType;
-import com.github.mixinors.astromine.common.component.base.FluidComponent;
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.FluidComponent;
 
 public class DrainBlockEntity extends ComponentFluidBlockEntity implements Tickable {
 	public DrainBlockEntity() {

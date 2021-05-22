@@ -37,12 +37,12 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.component.base.ItemComponent;
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.ItemComponent;
 import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.ItemIngredient;
-import com.github.mixinors.astromine.common.util.DoubleUtils;
-import com.github.mixinors.astromine.common.util.IntegerUtils;
-import com.github.mixinors.astromine.common.util.StackUtils;
+import com.github.mixinors.astromine.techreborn.common.util.DoubleUtils;
+import com.github.mixinors.astromine.techreborn.common.util.IntegerUtils;
+import com.github.mixinors.astromine.techreborn.common.util.StackUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;

@@ -51,7 +51,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 
-import com.github.mixinors.astromine.common.util.ClientUtils;
+import com.github.mixinors.astromine.techreborn.common.util.ClientUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMFluids;
 import com.github.mixinors.astromine.registry.common.AMItems;
@@ -63,6 +63,7 @@ import org.jetbrains.annotations.Nullable;
  * extra properties.
  */
 public abstract class ExtendedFluid extends FlowableFluid {
+	// TODO: Reimplement this on Forge module!
 	private static Material proxy_getMaterial() {
 		throw new UnsupportedOperationException("Cannot call this method method; must @Overwrite!");
 	}

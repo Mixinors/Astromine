@@ -26,8 +26,8 @@ package com.github.mixinors.astromine.common.recipe;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.type.HiddenRecipeType;
-import com.github.mixinors.astromine.common.util.IngredientUtils;
-import com.github.mixinors.astromine.common.util.StackUtils;
+import com.github.mixinors.astromine.techreborn.common.util.IngredientUtils;
+import com.github.mixinors.astromine.techreborn.common.util.StackUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import me.shedaniel.architectury.core.AbstractRecipeSerializer;

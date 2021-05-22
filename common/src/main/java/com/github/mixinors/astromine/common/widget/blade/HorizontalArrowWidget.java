@@ -24,12 +24,11 @@
 
 package com.github.mixinors.astromine.common.widget.blade;
 
-import com.github.mixinors.astromine.common.util.ClientUtils;
-import com.github.mixinors.astromine.common.util.TextUtils;
+import com.github.mixinors.astromine.techreborn.common.util.ClientUtils;
+import com.github.mixinors.astromine.techreborn.common.util.TextUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
@@ -42,7 +41,6 @@ import com.github.vini2003.blade.client.utilities.Scissors;
 import com.github.vini2003.blade.common.widget.base.AbstractWidget;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.IntSupplier;
 
