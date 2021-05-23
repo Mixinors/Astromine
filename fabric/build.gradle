@@ -71,7 +71,6 @@ dependencies {
     modImplementation "com.terraformersmc.terraform-api:terraform-shapes-api-v1:${project.shapes_version}"
 
     // Blade
-    modImplementation "com.github.vini2003:blade:${project.blade_version}"
     modImplementation "com.github.vini2003:blade-fabric:${project.blade_version}"
 
     // Patchouli

@@ -6,8 +6,8 @@ buildscript {
 
 plugins {
     id "maven-publish"
-    id "architectury-plugin" version "3.0-SNAPSHOT"
-    id "forgified-fabric-loom" version "0.6-SNAPSHOT" apply false
+    id "architectury-plugin" version "3.1-SNAPSHOT"
+    id "dev.architectury.loom" version "0.7.2-SNAPSHOT" apply false
 }
 
 architectury {
@@ -15,7 +15,7 @@ architectury {
 }
 
 subprojects {
-    apply plugin: "forgified-fabric-loom"
+    apply plugin: "dev.architectury.loom"
 
     loom {
         silentMojangMappingsLicense()
@@ -26,7 +26,7 @@ subprojects {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
 
         // Yarn
-        mappings "net.fabricmc:yarn:${rootProject.yarn_version}"
+        mappings "net.fabricmc:yarn:${rootProject.yarn_version}:mergedv2"
     }
 }
 
@@ -85,6 +85,7 @@ allprojects {
 
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
+        options.release = 11
     }
 
     java {
