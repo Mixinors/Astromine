@@ -26,10 +26,6 @@ architectury {
     common()
 }
 
-java {
-    withSourcesJar()
-}
-
 loom {
     mixinConfig "astromine.mixins.json"
 }
@@ -40,9 +36,6 @@ publishing {
             artifactId = rootProject.mod_name
 
             artifact remapJar
-            artifact(sourcesJar) {
-                builtBy remapSourcesJar
-            }
         }
     }
 
