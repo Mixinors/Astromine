@@ -68,15 +68,15 @@
   },
   "custom": {
     "cardinal-components": [
-      "astromine:world_network_component",
-      "astromine:chunk_atmosphere_component",
-      "astromine:world_holo_bridge_component",
-      "astromine:item_inventory_component",
-      "astromine:fluid_inventory_component",
-      "astromine:energy_inventory_component",
-      "astromine:block_entity_transfer_component",
-      "astromine:block_entity_redstone_component",
-      "astromine:entity_oxygen_component"
+      "astromine:network",
+      "astromine:atmosphere",
+      "astromine:bridge",
+      "astromine:item",
+      "astromine:fluid",
+      "astromine:energy",
+      "astromine:transfer",
+      "astromine:redstone",
+      "astromine:oxygen"
     ]
   }
 }
