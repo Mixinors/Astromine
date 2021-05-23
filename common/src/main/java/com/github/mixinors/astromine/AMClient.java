@@ -44,7 +44,6 @@ public class AMClient {
 		AMScreens.init();
 		AMClientNetworks.init();
 		AMRenderLayers.init();
-		AMPatchouliPages.init();
 		AMKeybinds.init();
 	}
 }

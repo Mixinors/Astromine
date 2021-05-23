@@ -4,23 +4,13 @@
   "package": "com.github.mixinors.astromine.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-    "com.github.mixinors.astromine.fabric.mixin.common.DrillItemMixin",
-    "com.github.mixinors.astromine.fabric.mixin.common.DynamicToolItemItemMixin",
-    "com.github.mixinors.astromine.fabric.mixin.common.EnergyComponentProviderMixin",
-    "com.github.mixinors.astromine.fabric.mixin.common.EnergyVolumeItemMixin",
-    "com.github.mixinors.astromine.fabric.mixin.common.ExtendedFluidMixin",
-    "com.github.mixinors.astromine.fabric.mixin.common.ManualItemMixin",
     "common.DrillItemMixin",
     "common.DynamicToolItemMixin",
     "common.EnergyComponentMixin",
     "common.EnergyComponentProviderMixin",
-    "common.EnergyVolumeItemMixin",
-    "common.ManualItemMixin"
+    "common.EnergyVolumeItemMixin"
   ],
   "client": [
-    "com.github.mixinors.astromine.fabric.mixin.client.ClientModelsMixin",
-    "com.github.mixinors.astromine.fabric.mixin.client.ClientUtilsMixin",
-    "com.github.mixinors.astromine.fabric.mixin.client.ParticleFactoriesMixin"
   ],
   "injectors": {
     "defaultRequire": 1

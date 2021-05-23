@@ -22,12 +22,28 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.compat.patchouli.client.page;
+package com.github.mixinors.astromine.compat.modmenu.client;
 
-import com.github.mixinors.astromine.common.recipe.PressingRecipe;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
-public class PressingPage extends BasicEnergyConsumingPage<PressingRecipe> {
-	public PressingPage() {
-		super(PressingRecipe.Type.INSTANCE);
+import com.github.mixinors.astromine.registry.common.AMConfig;
+import io.github.prospector.modmenu.api.ConfigScreenFactory;
+import io.github.prospector.modmenu.api.ModMenuApi;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.gui.ConfigScreenProvider;
+
+@Environment(EnvType.CLIENT)
+public class MMPlugin implements ModMenuApi {
+	@SuppressWarnings("deprecation")
+	@Override
+	public ConfigScreenFactory<?> getModConfigScreenFactory() {
+		return screen -> {
+			var configScreen = (ConfigScreenProvider<AMConfig>) AutoConfig.getConfigScreen(AMConfig.class, screen);
+			
+			configScreen.setOptionFunction(($, field) -> field.getName());
+			
+			return configScreen.get();
+		};
 	}
 }

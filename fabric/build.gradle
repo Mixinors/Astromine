@@ -81,7 +81,7 @@ dependencies {
     modImplementation "com.github.vini2003:blade-fabric:${project.blade_version}"
 
     // Patchouli
-    modImplementation "vazkii.patchouli:Patchouli:${project.patchouli_version}"
+    // modImplementation "vazkii.patchouli:Patchouli:${project.patchouli_version}"
 
     // ModMenu
     modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"

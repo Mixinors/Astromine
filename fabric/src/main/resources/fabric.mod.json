@@ -34,25 +34,25 @@
       "com.github.mixinors.astromine.AMFDedicated"
     ],
     "modmenu": [
-      "com.github.mixinors.astromine.fabric.compat.modmenu.MMPlugin"
+      "com.github.mixinors.astromine.compat.modmenu.client.MMPlugin"
     ],
     "cardinal-components-item": [
-      "com.github.mixinors.astromine.registry.common.AMComponents"
+      "com.github.mixinors.astromine.registry.common.fabric.AMComponentsImpl"
     ],
     "cardinal-components-entity": [
-      "com.github.mixinors.astromine.registry.common.AMComponents"
+      "com.github.mixinors.astromine.registry.common.fabric.AMComponentsImpl"
     ],
     "cardinal-components-world": [
-      "com.github.mixinors.astromine.registry.common.AMComponents"
+      "com.github.mixinors.astromine.registry.common.fabric.AMComponentsImpl"
     ],
     "cardinal-components-chunk": [
-      "com.github.mixinors.astromine.registry.common.AMComponents"
+      "com.github.mixinors.astromine.registry.common.fabric.AMComponentsImpl"
     ],
     "cardinal-components-block": [
-      "com.github.mixinors.astromine.registry.common.AMComponents"
+      "com.github.mixinors.astromine.registry.common.fabric.AMComponentsImpl"
     ],
     "rei_plugins": [
-      "com.github.mixinors.astromine.fabric.compat.roughlyenoughitems.client.REIPlugin"
+      "com.github.mixinors.astromine.compat.roughlyenoughitems.client.REIPlugin"
     ],
     "rei_containers": [
       "com.github.mixinors.astromine.registry.common.AMContainersInfoHandlers"

@@ -3,6 +3,7 @@ package com.github.mixinors.astromine.registry.common.fabric;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.component.base.*;
 import com.github.mixinors.astromine.common.entity.base.*;
+import com.github.mixinors.astromine.common.item.base.EnergyVolumeItem;
 import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import com.github.mixinors.astromine.compat.cardinalcomponents.common.component.base.CCAComponent;
@@ -70,6 +71,12 @@ public class AMComponentsImpl implements WorldComponentInitializer, ChunkCompone
 				(i) -> i instanceof FluidVolumeItem,
 				FLUID,
 				(s) -> new CCAComponent(FluidComponent.of(FluidVolume.of(((FluidVolumeItem) s.getItem()).getSize(), Fluids.EMPTY)))
+		);
+		
+		registry.registerFor(
+				(i) -> i instanceof EnergyVolumeItem,
+				ENERGY,
+				(s) -> new CCAComponent(EnergyComponent.of(((FluidVolumeItem) s.getItem()).getSize()))
 		);
 		
 		registry.registerFor(
