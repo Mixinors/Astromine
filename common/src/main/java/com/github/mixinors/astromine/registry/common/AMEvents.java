@@ -25,17 +25,13 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.common.component.base.AtmosphereComponent;
-import com.github.mixinors.astromine.common.event.ServerChunkManagerEvent;
 
 
-import com.github.mixinors.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
-import com.github.mixinors.astromine.mixin.common.common.ServerChunkManagerAccessor;
 import me.shedaniel.architectury.annotations.ExpectPlatform;
 import me.shedaniel.architectury.event.events.BlockEvent;
 import me.shedaniel.architectury.event.events.TickEvent;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.Direction;
 
@@ -93,14 +89,6 @@ public class AMEvents {
 						break;
 					}
 				}
-			}
-		});
-		
-		ServerChunkManagerEvent.INITIALIZATION.register(manager -> {
-			var chunkGenerator = ((ServerChunkManagerAccessor) manager).getChunkGenerator();
-			
-			if (chunkGenerator instanceof EarthSpaceChunkGenerator) {
-				((ServerChunkManagerAccessor) manager).setChunkGenerator(((EarthSpaceChunkGenerator) chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed()));
 			}
 		});
 		
