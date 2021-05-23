@@ -46,7 +46,11 @@ public class AMComponentsImpl implements WorldComponentInitializer, ChunkCompone
 		
 		@Override
 		public boolean equals(Object obj) {
-			return component.equals(obj);
+			if (obj instanceof CCAComponent ccaComp) {
+				return component.equals(ccaComp.peek());
+			}
+			
+			return false;
 		}
 	}
 	
@@ -57,7 +61,11 @@ public class AMComponentsImpl implements WorldComponentInitializer, ChunkCompone
 		
 		@Override
 		public boolean equals(Object obj) {
-			return component.equals(obj);
+			if (obj instanceof CCAComponent ccaComp) {
+				return component.equals(ccaComp.peek());
+			}
+			
+			return false;
 		}
 	}
 	
@@ -68,7 +76,11 @@ public class AMComponentsImpl implements WorldComponentInitializer, ChunkCompone
 		
 		@Override
 		public boolean equals(Object obj) {
-			return component.equals(obj);
+			if (obj instanceof CCAComponent ccaComp) {
+				return component.equals(ccaComp.peek());
+			}
+			
+			return false;
 		}
 	}
 	
@@ -79,7 +91,11 @@ public class AMComponentsImpl implements WorldComponentInitializer, ChunkCompone
 		
 		@Override
 		public boolean equals(Object obj) {
-			return component.equals(obj);
+			if (obj instanceof CCAComponent ccaComp) {
+				return component.equals(ccaComp.peek());
+			}
+			
+			return false;
 		}
 	}
 	
@@ -90,7 +106,11 @@ public class AMComponentsImpl implements WorldComponentInitializer, ChunkCompone
 		
 		@Override
 		public boolean equals(Object obj) {
-			return component.equals(obj);
+			if (obj instanceof CCAComponent ccaComp) {
+				return component.equals(ccaComp.peek());
+			}
+			
+			return false;
 		}
 	}
 	
@@ -101,7 +121,11 @@ public class AMComponentsImpl implements WorldComponentInitializer, ChunkCompone
 		
 		@Override
 		public boolean equals(Object obj) {
-			return component.equals(obj);
+			if (obj instanceof CCAComponent ccaComp) {
+				return component.equals(ccaComp.peek());
+			}
+			
+			return false;
 		}
 	}
 	
@@ -112,7 +136,11 @@ public class AMComponentsImpl implements WorldComponentInitializer, ChunkCompone
 		
 		@Override
 		public boolean equals(Object obj) {
-			return component.equals(obj);
+			if (obj instanceof CCAComponent ccaComp) {
+				return component.equals(ccaComp.peek());
+			}
+			
+			return false;
 		}
 	}
 	
@@ -123,7 +151,11 @@ public class AMComponentsImpl implements WorldComponentInitializer, ChunkCompone
 		
 		@Override
 		public boolean equals(Object obj) {
-			return component.equals(obj);
+			if (obj instanceof CCAComponent ccaComp) {
+				return component.equals(ccaComp.peek());
+			}
+			
+			return false;
 		}
 	}
 	
@@ -134,7 +166,11 @@ public class AMComponentsImpl implements WorldComponentInitializer, ChunkCompone
 		
 		@Override
 		public boolean equals(Object obj) {
-			return component.equals(obj);
+			if (obj instanceof CCAComponent ccaComp) {
+				return component.equals(ccaComp.peek());
+			}
+			
+			return false;
 		}
 	}
 	
