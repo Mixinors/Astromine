@@ -1,5 +1,6 @@
 package com.github.mixinors.astromine.mixin.fabric.common;
 
+import com.github.mixinors.astromine.common.component.base.EnergyComponent;
 import com.github.mixinors.astromine.common.item.base.EnergyVolumeItem;
 import me.shedaniel.cloth.api.durability.bar.DurabilityBarItem;
 import net.minecraft.item.ItemStack;
@@ -28,10 +29,10 @@ public abstract class EnergyVolumeItemMixin implements EnergyStorage, Durability
 	/** Override behavior to return our progress. */
 	@Override
 	public double getDurabilityBarProgress(ItemStack stack) {
-		if (!Energy.valid(stack) || getMaxStoredPower() == 0)
+		if (EnergyComponent.from(stack) == null || getMaxStoredPower() == 0)
 			return 0;
 		
-		return 1 - Energy.of(stack).getEnergy() / getMaxStoredPower();
+		return 1 - EnergyComponent.from(stack).getAmount() / getSize();
 	}
 
 	/** Override behavior to return true. */
