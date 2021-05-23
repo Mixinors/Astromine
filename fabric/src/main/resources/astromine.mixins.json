@@ -4,11 +4,19 @@
   "package": "com.github.mixinors.astromine.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
+    "common.AtmosphereComponentMixin",
+    "common.BridgeComponentMixin",
     "common.DrillItemMixin",
     "common.DynamicToolItemMixin",
     "common.EnergyComponentMixin",
     "common.EnergyComponentProviderMixin",
-    "common.EnergyVolumeItemMixin"
+    "common.EnergyVolumeItemMixin",
+    "common.FluidComponentMixin",
+    "common.ItemComponentMixin",
+    "common.NetworkComponentMixin",
+    "common.OxygenComponentMixin",
+    "common.RedstoneComponentMixin",
+    "common.TransferComponentMixin"
   ],
   "client": [
   ],

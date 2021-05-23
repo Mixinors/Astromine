@@ -36,19 +36,7 @@
     "modmenu": [
       "com.github.mixinors.astromine.compat.modmenu.client.MMPlugin"
     ],
-    "cardinal-components-item": [
-      "com.github.mixinors.astromine.registry.common.fabric.AMComponentsImpl"
-    ],
-    "cardinal-components-entity": [
-      "com.github.mixinors.astromine.registry.common.fabric.AMComponentsImpl"
-    ],
-    "cardinal-components-world": [
-      "com.github.mixinors.astromine.registry.common.fabric.AMComponentsImpl"
-    ],
-    "cardinal-components-chunk": [
-      "com.github.mixinors.astromine.registry.common.fabric.AMComponentsImpl"
-    ],
-    "cardinal-components-block": [
+    "cardinal-components": [
       "com.github.mixinors.astromine.registry.common.fabric.AMComponentsImpl"
     ],
     "rei_plugins": [

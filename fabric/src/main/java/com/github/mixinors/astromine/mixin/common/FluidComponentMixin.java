@@ -1,7 +1,8 @@
 package com.github.mixinors.astromine.mixin.common;
 
-import com.github.mixinors.astromine.compat.techreborn.common.component.general.TREnergyComponent;
 import com.github.mixinors.astromine.common.component.base.EnergyComponent;
+import com.github.mixinors.astromine.common.component.base.FluidComponent;
+import com.github.mixinors.astromine.compat.techreborn.common.component.general.TREnergyComponent;
 import com.github.mixinors.astromine.registry.common.fabric.AMComponentsImpl;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -10,19 +11,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import team.reborn.energy.EnergyStorage;
 
-@Mixin(EnergyComponent.class)
-class EnergyComponentMixin {
-	private static EnergyComponent of(EnergyStorage storage) {
-		return TREnergyComponent.of(storage);
-	}
-	
+@Mixin(FluidComponent.class)
+public class FluidComponentMixin {
 	@Inject(at = @At("RETURN"), method = "from", cancellable = true, remap = false)
-	private static <V> void astromine_get(V v, CallbackInfoReturnable<@Nullable EnergyComponent> cir) {
+	private static <V> void astromine_get(V v, CallbackInfoReturnable<@Nullable FluidComponent> cir) {
 		if (cir.getReturnValue() == null) {
-			if (v instanceof EnergyStorage storage) {
-				cir.setReturnValue(of(storage));
-			} else if (v != null && AMComponentsImpl.ENERGY.isProvidedBy(v)) {
-				cir.setReturnValue((EnergyComponent) AMComponentsImpl.ENERGY.get(v).peek());
+			if (v != null && AMComponentsImpl.FLUID.isProvidedBy(v)) {
+				cir.setReturnValue((FluidComponent) AMComponentsImpl.FLUID.get(v).peek());
 			}
 		}
 	}

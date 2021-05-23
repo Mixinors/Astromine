@@ -23,6 +23,10 @@ public class CCAComponent implements Component {
 		component.toTag(tag);
 	}
 	
+	public com.github.mixinors.astromine.common.component.Component peek() {
+		return component;
+	}
+	
 	public static class ServerTicking extends CCAComponent implements ServerTickingComponent {
 		public ServerTicking(com.github.mixinors.astromine.common.component.Component.ServerTicking component) {
 			super((com.github.mixinors.astromine.common.component.Component) component);
