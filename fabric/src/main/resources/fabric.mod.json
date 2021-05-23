@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "astromine",
-  "version": "${version}",
+  "version": "F${version}",
   "name": "Astromine",
   "description": "A space-themed tech mod with exploration and progression in mind.",
   "authors": [
