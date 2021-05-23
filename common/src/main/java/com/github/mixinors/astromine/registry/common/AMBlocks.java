@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.common.block.*;
-import com.github.mixinors.astromine.mixin.common.StairsBlockAccessor;
+import com.github.mixinors.astromine.mixin.common.common.StairsBlockAccessor;
 import me.shedaniel.architectury.registry.BlockProperties;
 import me.shedaniel.architectury.registry.RegistrySupplier;
 import me.shedaniel.architectury.registry.ToolType;

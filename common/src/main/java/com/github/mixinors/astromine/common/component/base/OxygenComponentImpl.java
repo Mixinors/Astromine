@@ -26,6 +26,8 @@ package com.github.mixinors.astromine.common.component.base;
 
 import net.minecraft.entity.Entity;
 
+import java.util.Objects;
+
 public class OxygenComponentImpl implements OxygenComponent {
 	private int oxygen = 0;
 
@@ -68,5 +70,18 @@ public class OxygenComponentImpl implements OxygenComponent {
 	
 	public void setEntity(Entity entity) {
 		this.entity = entity;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		OxygenComponentImpl that = (OxygenComponentImpl) o;
+		return oxygen == that.oxygen && minimumOxygen == that.minimumOxygen && maximumOxygen == that.maximumOxygen && Objects.equals(entity, that.entity);
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(oxygen, minimumOxygen, maximumOxygen, entity);
 	}
 }

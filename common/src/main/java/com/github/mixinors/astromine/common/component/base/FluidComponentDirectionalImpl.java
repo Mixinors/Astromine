@@ -28,6 +28,7 @@ import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 public class FluidComponentDirectionalImpl extends FluidComponentImpl {
@@ -71,5 +72,18 @@ public class FluidComponentDirectionalImpl extends FluidComponentImpl {
         }
 
         return direction == null ? super.canExtract(direction, volume, slot) : transferComponent.getFluid(direction).canExtract() && super.canExtract(direction, volume, slot);
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FluidComponentDirectionalImpl that = (FluidComponentDirectionalImpl) o;
+        return Objects.equals(transferComponent, that.transferComponent);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(transferComponent);
     }
 }

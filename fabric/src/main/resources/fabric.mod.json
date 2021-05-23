@@ -47,7 +47,8 @@
     ]
   },
   "mixins": [
-    "astromine.mixins.json"
+    "astromine.common.mixins.json",
+    "astromine.fabric.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.9.2",

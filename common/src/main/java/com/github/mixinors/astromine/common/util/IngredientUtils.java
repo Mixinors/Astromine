@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.util;
 
-import com.github.mixinors.astromine.mixin.common.IngredientAccessor;
+import com.github.mixinors.astromine.mixin.common.common.IngredientAccessor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;

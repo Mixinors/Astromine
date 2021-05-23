@@ -28,6 +28,7 @@ import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class EnergyComponentImpl implements EnergyComponent {
 	private final EnergyVolume content;
@@ -51,5 +52,18 @@ public class EnergyComponentImpl implements EnergyComponent {
 	@Override
 	public List<Runnable> getListeners() {
 		return listeners;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		EnergyComponentImpl that = (EnergyComponentImpl) o;
+		return Objects.equals(content, that.content);
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(content);
 	}
 }

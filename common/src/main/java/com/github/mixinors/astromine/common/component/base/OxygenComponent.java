@@ -2,6 +2,7 @@ package com.github.mixinors.astromine.common.component.base;
 
 import com.github.mixinors.astromine.common.component.Component;
 import com.github.mixinors.astromine.registry.common.AMComponents;
+import me.shedaniel.architectury.annotations.ExpectPlatform;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,7 +14,12 @@ public interface OxygenComponent extends Component {
 	/** Returns the {@link OxygenComponent} of the given {@link V}. */
 	@Nullable
 	static <V> OxygenComponent from(V v) {
-		return null;
+		return fromPost(v);
+	}
+	
+	@ExpectPlatform
+	static <V> OxygenComponent fromPost(V v) {
+		throw new AssertionError();
 	}
 	
 	/** Instantiates an {@link OxygenComponent} with automatic synchronization. */

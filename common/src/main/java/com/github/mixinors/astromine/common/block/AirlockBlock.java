@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.block;
 
-import com.github.mixinors.astromine.mixin.common.TallPlantBlockAccessor;
+import com.github.mixinors.astromine.mixin.common.common.TallPlantBlockAccessor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 

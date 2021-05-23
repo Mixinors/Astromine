@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.mixin.common.DefaultParticleTypeAccessor;
+import com.github.mixinors.astromine.mixin.common.common.DefaultParticleTypeAccessor;
 import me.shedaniel.architectury.registry.RegistrySupplier;
 
 import net.minecraft.particle.DefaultParticleType;

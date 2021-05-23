@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.access;
 
-import com.github.mixinors.astromine.mixin.common.EntityNavigationMixin;
+import com.github.mixinors.astromine.mixin.common.common.EntityNavigationMixin;
 
 /**
  * A mixin helper class, used by {@link EntityNavigationMixin}.

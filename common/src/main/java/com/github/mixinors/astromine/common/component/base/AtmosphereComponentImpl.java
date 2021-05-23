@@ -33,6 +33,7 @@ import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -87,5 +88,18 @@ public final class AtmosphereComponentImpl implements AtmosphereComponent {
 		}
 		
 		AtmosphereComponent.super.serverTick();
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		AtmosphereComponentImpl that = (AtmosphereComponentImpl) o;
+		return tickCount == that.tickCount && Objects.equals(volumes, that.volumes) && Objects.equals(world, that.world) && Objects.equals(chunk, that.chunk);
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(volumes, world, chunk, tickCount);
 	}
 }

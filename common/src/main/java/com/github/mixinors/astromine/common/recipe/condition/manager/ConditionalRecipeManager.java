@@ -2,7 +2,7 @@ package com.github.mixinors.astromine.common.recipe.condition.manager;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.condition.RecipeCondition;
-import com.github.mixinors.astromine.mixin.common.RecipeManagerAccessor;
+import com.github.mixinors.astromine.mixin.common.common.RecipeManagerAccessor;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

@@ -7,6 +7,7 @@ import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.registry.common.AMNetworks;
+import me.shedaniel.architectury.annotations.ExpectPlatform;
 import me.shedaniel.architectury.networking.NetworkManager;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundTag;
@@ -33,7 +34,12 @@ public interface AtmosphereComponent extends Component, Component.ServerTicking 
 	/** Returns the {@link AtmosphereComponent} of the given {@link V}. */
 	@Nullable
 	static <V> AtmosphereComponent from(V v) {
-		return null;
+		return fromPost(v);
+	}
+	
+	@ExpectPlatform
+	static <V> AtmosphereComponent fromPost(V v) {
+		throw new AssertionError();
 	}
 	
 	/** Instantiates an {@link AtmosphereComponent}. */

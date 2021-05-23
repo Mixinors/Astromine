@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.component.base;
 import com.github.mixinors.astromine.common.component.Component;
 import com.github.mixinors.astromine.common.component.general.provider.RedstoneComponentProvider;
 import com.github.mixinors.astromine.registry.common.AMComponents;
+import me.shedaniel.architectury.annotations.ExpectPlatform;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.block.entity.BlockEntity;
 
@@ -78,7 +79,12 @@ public interface RedstoneComponent extends Component {
 			return ((RedstoneComponentProvider) v).getRedstoneComponent();
 		}
 		
-		return null;
+		return fromPost(v);
+	}
+	
+	@ExpectPlatform
+	static <V> RedstoneComponent fromPost(V v) {
+		throw new AssertionError();
 	}
 	
 	/** Returns this component's {@link Identifier}. */

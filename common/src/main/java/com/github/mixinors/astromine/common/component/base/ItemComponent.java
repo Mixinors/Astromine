@@ -30,6 +30,7 @@ import com.github.mixinors.astromine.common.component.compat.ItemComponentFromSi
 import com.github.mixinors.astromine.common.component.general.provider.ItemComponentProvider;
 import com.github.mixinors.astromine.common.util.StackUtils;
 import com.github.mixinors.astromine.registry.common.AMComponents;
+import me.shedaniel.architectury.annotations.ExpectPlatform;
 import me.shedaniel.architectury.utils.NbtType;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
@@ -377,7 +378,12 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 			}
 		}
 		
-		return null;
+		return fromPost(v);
+	}
+	
+	@ExpectPlatform
+	static <V> ItemComponent fromPost(V v) {
+		throw new AssertionError();
 	}
 
 	/** Returns an iterator of this component's contents. */

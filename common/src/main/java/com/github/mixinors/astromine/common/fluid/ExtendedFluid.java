@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.fluid;
 
-import com.github.mixinors.astromine.mixin.common.FluidBlockAccessor;
+import com.github.mixinors.astromine.mixin.common.common.FluidBlockAccessor;
 import me.shedaniel.architectury.annotations.ExpectPlatform;
 import me.shedaniel.architectury.platform.Platform;
 import me.shedaniel.architectury.registry.RegistrySupplier;

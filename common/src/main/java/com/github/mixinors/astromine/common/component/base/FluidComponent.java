@@ -28,9 +28,10 @@ import com.github.mixinors.astromine.common.component.general.miscellaneous.Iden
 import com.github.mixinors.astromine.common.component.general.provider.FluidComponentProvider;
 import com.github.mixinors.astromine.common.util.VolumeUtils;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
-import com.github.mixinors.astromine.mixin.common.BucketItemAccessor;
+import com.github.mixinors.astromine.mixin.common.common.BucketItemAccessor;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import com.github.mixinors.astromine.registry.common.AMItems;
+import me.shedaniel.architectury.annotations.ExpectPlatform;
 import me.shedaniel.architectury.utils.NbtType;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;
@@ -387,9 +388,14 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 			}
 		}
 		
-		return null;
+		return fromPost(v);
 	}
-
+	
+	@ExpectPlatform
+	static <V> FluidComponent fromPost(V v) {
+		throw new AssertionError();
+	}
+	
 	/** Returns an iterator of this component's contents. */
 	@Override
 	default  Iterator<FluidVolume> iterator() {

@@ -3,7 +3,7 @@ package com.github.mixinors.astromine.registry.common.fabric;
 import com.github.mixinors.astromine.common.entity.PrimitiveRocketEntity;
 import com.github.mixinors.astromine.common.entity.SpaceSlimeEntity;
 import com.github.mixinors.astromine.common.entity.SuperSpaceSlimeEntity;
-import com.github.mixinors.astromine.mixin.common.SpawnRestrictionAccessor;
+import com.github.mixinors.astromine.mixin.common.common.SpawnRestrictionAccessor;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.entity.EntityDimensions;

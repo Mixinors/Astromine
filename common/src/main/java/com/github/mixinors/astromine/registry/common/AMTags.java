@@ -32,7 +32,7 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.tag.Tag;
 
-import com.github.mixinors.astromine.mixin.common.FluidTagsAccessor;
+import com.github.mixinors.astromine.mixin.common.common.FluidTagsAccessor;
 
 public class AMTags {
 	public static final Tag<Item> TRICKS_PIGLINS = TagHooks.getItemOptional(AMCommon.id("tricks_piglins"));

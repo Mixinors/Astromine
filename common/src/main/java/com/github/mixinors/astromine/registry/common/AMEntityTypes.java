@@ -28,15 +28,11 @@ import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.entity.PrimitiveRocketEntity;
 import com.github.mixinors.astromine.common.entity.SpaceSlimeEntity;
 import com.github.mixinors.astromine.common.entity.SuperSpaceSlimeEntity;
-import com.github.mixinors.astromine.mixin.common.SpawnRestrictionAccessor;
 import me.shedaniel.architectury.annotations.ExpectPlatform;
 import me.shedaniel.architectury.registry.RegistrySupplier;
-import me.shedaniel.architectury.targets.ArchitecturyTarget;
 import net.minecraft.entity.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-
-import net.minecraft.world.Heightmap;
 
 import java.util.function.Supplier;
 

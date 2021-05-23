@@ -7,6 +7,7 @@ import com.github.mixinors.astromine.common.network.NetworkNode;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.registry.NetworkTypeRegistry;
 import com.github.mixinors.astromine.registry.common.AMComponents;
+import me.shedaniel.architectury.annotations.ExpectPlatform;
 import me.shedaniel.architectury.utils.NbtType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -22,7 +23,12 @@ public interface NetworkComponent extends Component, Component.ServerTicking {
 	/** Returns the {@link NetworkComponent} of the given {@link V}. */
 	@Nullable
 	static <V> NetworkComponent from(V v) {
-		return null;
+		return fromPost(v);
+	}
+	
+	@ExpectPlatform
+	static <V> NetworkComponent fromPost(V v) {
+		throw new AssertionError();
 	}
 	
 	/** Instantiates a {@link NetworkComponent}. */

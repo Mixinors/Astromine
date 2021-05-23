@@ -24,12 +24,10 @@
 
 package com.github.mixinors.astromine.common.item;
 
-import com.github.mixinors.astromine.mixin.common.ServerPlayNetworkHandlerAccessor;
+import com.github.mixinors.astromine.mixin.common.common.ServerPlayNetworkHandlerAccessor;
 import com.github.mixinors.astromine.registry.common.AMCriteria;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CampfireBlock;
-import net.minecraft.block.FireBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;

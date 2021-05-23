@@ -1,5 +1,7 @@
 package com.github.mixinors.astromine.common.component.base;
 
+import java.util.Objects;
+
 public class TransferComponentImpl implements TransferComponent {
 	private TransferEntry itemComponentTransferEntry = TransferEntry.NONE;
 	private TransferEntry fluidComponentTransferEntry = TransferEntry.NONE;
@@ -48,5 +50,18 @@ public class TransferComponentImpl implements TransferComponent {
 	@Override
 	public boolean hasEnergy() {
 		return energyComponentTransferEntry != TransferEntry.NONE;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		TransferComponentImpl that = (TransferComponentImpl) o;
+		return Objects.equals(itemComponentTransferEntry, that.itemComponentTransferEntry) && Objects.equals(fluidComponentTransferEntry, that.fluidComponentTransferEntry) && Objects.equals(energyComponentTransferEntry, that.energyComponentTransferEntry);
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(itemComponentTransferEntry, fluidComponentTransferEntry, energyComponentTransferEntry);
 	}
 }

@@ -29,7 +29,7 @@ import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.client.render.sky.skybox.Skybox;
 import com.github.mixinors.astromine.common.registry.base.BiRegistry;
-import com.github.mixinors.astromine.mixin.client.WorldRendererMixin;
+import com.github.mixinors.astromine.mixin.common.client.WorldRendererMixin;
 
 /**
  * A {@link BiRegistry} for registration of

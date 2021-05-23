@@ -28,6 +28,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 public class ItemComponentDirectionalImpl extends ItemComponentImpl {
@@ -71,5 +72,18 @@ public class ItemComponentDirectionalImpl extends ItemComponentImpl {
         }
 
         return direction == null ? super.canExtract(direction, stack, slot) : transferComponent.getItem(direction).canExtract() && super.canExtract(direction, stack, slot);
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ItemComponentDirectionalImpl that = (ItemComponentDirectionalImpl) o;
+        return Objects.equals(transferComponent, that.transferComponent);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(transferComponent);
     }
 }

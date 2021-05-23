@@ -1,13 +1,9 @@
 package com.github.mixinors.astromine.registry.client.fabric;
 
-import com.github.mixinors.astromine.client.model.EmptyUnbakedModel;
 import com.github.mixinors.astromine.client.particle.RocketFlameParticle;
-import com.github.mixinors.astromine.mixin.common.CrackParticleAccessor;
-import com.github.mixinors.astromine.registry.client.AMClientModels;
-import com.github.mixinors.astromine.registry.client.AMParticleFactories;
+import com.github.mixinors.astromine.mixin.common.common.CrackParticleAccessor;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMParticles;
-import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.minecraft.item.ItemStack;
 

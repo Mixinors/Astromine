@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.github.mixinors.astromine.mixin.fabric",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+    "common.DrillItemMixin",
+    "common.DynamicToolItemMixin",
+    "common.EnergyComponentProviderMixin",
+    "common.EnergyVolumeItemMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

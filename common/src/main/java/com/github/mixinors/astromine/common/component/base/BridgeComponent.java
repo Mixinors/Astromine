@@ -5,6 +5,7 @@ import com.github.mixinors.astromine.common.util.VoxelShapeUtils;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import com.google.common.collect.Sets;
 import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
+import me.shedaniel.architectury.annotations.ExpectPlatform;
 import me.shedaniel.architectury.utils.NbtType;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.CompoundTag;
@@ -42,7 +43,12 @@ public interface BridgeComponent extends Component {
 	/** Returns the {@link BridgeComponent} of the given {@link V}. */
 	@Nullable
 	static <V> BridgeComponent from(V v) {
-		return null;
+		return fromPost(v);
+	}
+	
+	@ExpectPlatform
+	static <V> BridgeComponent fromPost(V v) {
+		throw new AssertionError();
 	}
 	
 	/** Instantiates an {@link BridgeComponent}. */

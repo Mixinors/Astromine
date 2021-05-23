@@ -43,11 +43,21 @@ public class AMComponentsImpl implements WorldComponentInitializer, ChunkCompone
 		public CCANetworkComponent(Component.ServerTicking component) {
 			super(component);
 		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			return component.equals(obj);
+		}
 	}
 	
 	public static class CCAAtmosphereComponent extends CCAComponent.ServerTicking {
 		public CCAAtmosphereComponent(Component.ServerTicking component) {
 			super(component);
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			return component.equals(obj);
 		}
 	}
 	
@@ -55,11 +65,21 @@ public class AMComponentsImpl implements WorldComponentInitializer, ChunkCompone
 		public CCABridgeComponent(Component component) {
 			super(component);
 		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			return component.equals(obj);
+		}
 	}
 	
 	public static class CCAItemComponent extends CCAComponent {
 		public CCAItemComponent(Component component) {
 			super(component);
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			return component.equals(obj);
 		}
 	}
 	
@@ -67,11 +87,21 @@ public class AMComponentsImpl implements WorldComponentInitializer, ChunkCompone
 		public CCAEnergyComponent(Component component) {
 			super(component);
 		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			return component.equals(obj);
+		}
 	}
 	
 	public static class CCAFluidComponent extends CCAComponent {
 		public CCAFluidComponent(Component component) {
 			super(component);
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			return component.equals(obj);
 		}
 	}
 	
@@ -79,17 +109,32 @@ public class AMComponentsImpl implements WorldComponentInitializer, ChunkCompone
 		public CCATransferComponent(Component component) {
 			super(component);
 		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			return component.equals(obj);
+		}
 	}
 	
 	public static class CCARedstoneComponent extends CCAComponent {
 		public CCARedstoneComponent(Component component) {
 			super(component);
 		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			return component.equals(obj);
+		}
 	}
 	
 	public static class CCAOxygenComponent extends CCAComponent {
 		public CCAOxygenComponent(Component component) {
 			super(component);
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			return component.equals(obj);
 		}
 	}
 	
@@ -131,7 +176,7 @@ public class AMComponentsImpl implements WorldComponentInitializer, ChunkCompone
 		registry.registerFor(
 				(i) -> i instanceof EnergyVolumeItem,
 				ENERGY,
-				(s) -> new CCAEnergyComponent(EnergyComponent.of(((FluidVolumeItem) s.getItem()).getSize()))
+				(s) -> new CCAEnergyComponent(EnergyComponent.of(((EnergyVolumeItem) s.getItem()).getSize()))
 		);
 		
 		registry.registerFor(

@@ -27,7 +27,7 @@ architectury {
 }
 
 loom {
-    mixinConfig "astromine.mixins.json"
+    mixinConfig "astromine.common.mixins.json"
 }
 
 publishing {

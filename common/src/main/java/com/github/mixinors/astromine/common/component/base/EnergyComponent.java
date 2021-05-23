@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.component.base;
 import com.github.mixinors.astromine.common.component.general.miscellaneous.IdentifiableComponent;
 import com.github.mixinors.astromine.common.component.general.provider.EnergyComponentProvider;
 import com.github.mixinors.astromine.registry.common.AMComponents;
+import me.shedaniel.architectury.annotations.ExpectPlatform;
 import me.shedaniel.architectury.utils.NbtType;
 
 import net.minecraft.item.Item;
@@ -210,9 +211,14 @@ public interface EnergyComponent extends IdentifiableComponent {
 	static <V> EnergyComponent from(V v) {
 		if (v instanceof EnergyComponentProvider) {
 			return ((EnergyComponentProvider) v).getEnergyComponent();
-		} else {
-			return null;
 		}
+		
+		return fromPost(v);
+	}
+	
+	@ExpectPlatform
+	static <V> EnergyComponent fromPost(V v) {
+		throw new AssertionError();
 	}
 	
 	/** Returns this component's {@link Identifier}. */

@@ -35,6 +35,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class FluidComponentImpl implements FluidComponent {
 	private final Int2ObjectOpenHashMap<FluidVolume> contents = new Int2ObjectOpenHashMap<>();
@@ -100,5 +101,18 @@ public class FluidComponentImpl implements FluidComponent {
 	@Override
 	public @NotNull List<Runnable> getListeners() {
 		return listeners;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		FluidComponentImpl that = (FluidComponentImpl) o;
+		return size == that.size && Objects.equals(contents, that.contents);
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(contents, size);
 	}
 }

@@ -29,6 +29,8 @@ import net.minecraft.world.World;
 import com.github.mixinors.astromine.common.network.NetworkInstance;
 
 import com.google.common.collect.Sets;
+
+import java.util.Objects;
 import java.util.Set;
 
 public final class NetworkComponentImpl implements NetworkComponent {
@@ -47,5 +49,18 @@ public final class NetworkComponentImpl implements NetworkComponent {
 	@Override
 	public Set<NetworkInstance> getInstances() {
 		return instances;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		NetworkComponentImpl that = (NetworkComponentImpl) o;
+		return Objects.equals(instances, that.instances) && Objects.equals(world, that.world);
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(instances, world);
 	}
 }

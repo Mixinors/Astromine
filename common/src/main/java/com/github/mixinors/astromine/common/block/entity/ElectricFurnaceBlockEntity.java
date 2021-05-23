@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.component.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.base.ItemComponent;
-import com.github.mixinors.astromine.mixin.common.RecipeManagerAccessor;
+import com.github.mixinors.astromine.mixin.common.common.RecipeManagerAccessor;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;

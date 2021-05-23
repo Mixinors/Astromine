@@ -29,6 +29,8 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
+
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -53,5 +55,18 @@ public class BridgeComponentImpl implements BridgeComponent {
 	
 	public Long2ObjectArrayMap<VoxelShape> getCache() {
 		return cache;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		BridgeComponentImpl that = (BridgeComponentImpl) o;
+		return Objects.equals(entries, that.entries) && Objects.equals(world, that.world);
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(entries, world);
 	}
 }

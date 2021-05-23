@@ -29,12 +29,11 @@ import com.github.mixinors.astromine.common.event.ServerChunkManagerEvent;
 
 
 import com.github.mixinors.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
-import com.github.mixinors.astromine.mixin.common.ServerChunkManagerAccessor;
+import com.github.mixinors.astromine.mixin.common.common.ServerChunkManagerAccessor;
 import me.shedaniel.architectury.annotations.ExpectPlatform;
 import me.shedaniel.architectury.event.events.BlockEvent;
 import me.shedaniel.architectury.event.events.TickEvent;
 
-import me.shedaniel.architectury.targets.ArchitecturyTarget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;

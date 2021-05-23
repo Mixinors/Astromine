@@ -34,6 +34,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class ItemComponentImpl implements ItemComponent {
 	private final Int2ObjectOpenHashMap<ItemStack> contents = new Int2ObjectOpenHashMap<>();
@@ -100,5 +101,18 @@ public class ItemComponentImpl implements ItemComponent {
 	@Override
 	public List<Runnable> getListeners() {
 		return this.listeners;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		ItemComponentImpl that = (ItemComponentImpl) o;
+		return size == that.size && Objects.equals(contents, that.contents);
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(contents, size);
 	}
 }

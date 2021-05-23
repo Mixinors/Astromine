@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.item;
 
 import com.github.mixinors.astromine.common.component.base.EnergyComponent;
-import com.github.mixinors.astromine.mixin.common.PickaxeItemAccessor;
+import com.github.mixinors.astromine.mixin.common.common.PickaxeItemAccessor;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EquipmentSlot;

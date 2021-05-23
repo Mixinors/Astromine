@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.component.base;
 import com.github.mixinors.astromine.common.component.Component;
 import com.github.mixinors.astromine.common.component.general.provider.TransferComponentProvider;
 import com.github.mixinors.astromine.registry.common.AMComponents;
+import me.shedaniel.architectury.annotations.ExpectPlatform;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
@@ -54,8 +55,13 @@ public interface TransferComponent extends Component {
 		if (v instanceof TransferComponentProvider) {
 			return ((TransferComponentProvider) v).getTransferComponent();
 		}
-
-		return null;
+		
+		return fromPost(v);
+	}
+	
+	@ExpectPlatform
+	static <V> TransferComponent fromPost(V v) {
+		throw new AssertionError();
 	}
 	
 	/** Returns this {@link TransferComponent}'s item {@link TransferEntry}. */
