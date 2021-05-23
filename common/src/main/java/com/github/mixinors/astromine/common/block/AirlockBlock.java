@@ -62,8 +62,6 @@ import net.minecraft.world.WorldView;
 
 import com.github.mixinors.astromine.techreborn.common.util.VoxelShapeUtils;
 
-import javax.annotation.Nullable;
-
 public class AirlockBlock extends Block implements Waterloggable {
 	public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
 	public static final BooleanProperty POWERED = Properties.POWERED;
@@ -200,8 +198,7 @@ public class AirlockBlock extends Block implements Waterloggable {
 	private int getCloseSoundEventId() {
 		return 1005;
 	}
-
-	@Nullable
+	
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
 		var blockPos = ctx.getBlockPos();
 		if (blockPos.getY() < 255 && ctx.getWorld().getBlockState(blockPos.up()).canReplace(ctx)) {

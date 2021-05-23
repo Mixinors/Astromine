@@ -58,7 +58,6 @@ import io.netty.buffer.Unpooled;
 
 import com.google.common.collect.Lists;
 
-import javax.annotation.Nullable;
 import java.util.Collection;
 
 public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuProvider {
@@ -151,8 +150,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 	public void saveExtraData(PacketByteBuf buf) {
 		buf.writeInt(this.getEntityId());
 	}
-
-	@Nullable
+	
 	@Override
 	public ScreenHandler createMenu(int syncId, PlayerInventory inventory, PlayerEntity player) {
 		return new PrimitiveRocketScreenHandler(syncId, player, getEntityId());

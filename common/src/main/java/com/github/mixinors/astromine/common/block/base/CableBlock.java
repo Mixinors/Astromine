@@ -51,7 +51,6 @@ import com.github.mixinors.astromine.common.registry.NetworkMemberRegistry;
 import com.github.mixinors.astromine.techreborn.common.util.NetworkUtils;
 import com.github.mixinors.astromine.techreborn.common.util.data.position.WorldPos;
 
-import javax.annotation.Nullable;
 import java.util.Map;
 
 /**
@@ -213,7 +212,6 @@ public abstract class CableBlock extends Block implements Waterloggable {
 	/**
 	 * Override behavior to implement {@link Waterloggable}.
 	 */
-	@Nullable
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
 		return super.getPlacementState(ctx).with(Properties.WATERLOGGED, ctx.getWorld().getBlockState(ctx.getBlockPos()).getBlock() == Blocks.WATER);
