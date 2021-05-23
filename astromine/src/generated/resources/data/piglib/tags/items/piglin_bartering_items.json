@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:gold_ingot",
+    "astromine:fools_gold_ingot"
+  ]
+}

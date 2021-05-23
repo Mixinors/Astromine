@@ -1,0 +1,13 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "tag": "c:red_sandstones",
+    "count": 1
+  },
+  "output": {
+    "item": "minecraft:red_sand",
+    "count": 4
+  },
+  "time": 120,
+  "energy_input": 340
+}

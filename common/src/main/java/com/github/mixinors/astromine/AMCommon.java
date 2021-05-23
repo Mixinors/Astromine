@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine;
 
+import com.github.mixinors.astromine.datagen.AMDatagen;
 import com.github.mixinors.astromine.registry.common.*;
 import me.shedaniel.architectury.registry.Registries;
 import me.shedaniel.architectury.registry.Registry;

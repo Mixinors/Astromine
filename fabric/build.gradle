@@ -112,6 +112,10 @@ dependencies {
     // DataBreaker
     modImplementation "com.github.SuperCoder7979:databreaker:${project.databreaker_version}"
 
+    // Cloth API
+    modImplementation "me.shedaniel.cloth.api:cloth-durability-bar-api-v1:${cloth_api_version}"
+    modImplementation "me.shedaniel.cloth.api:cloth-datagen-api-v1:${cloth_api_version}"
+
     implementation(project(path: ":common")) {
         transitive = false
     }

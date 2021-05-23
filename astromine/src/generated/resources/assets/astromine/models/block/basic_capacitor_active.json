@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "north": "astromine:block/capacitor/active/basic_capacitor_front",
+    "south": "astromine:block/capacitor/active/basic_capacitor_back",
+    "east": "astromine:block/capacitor/active/basic_capacitor_left",
+    "west": "astromine:block/capacitor/active/basic_capacitor_right",
+    "up": "astromine:block/capacitor/active/basic_capacitor_top",
+    "down": "astromine:block/capacitor/active/basic_capacitor_bottom",
+    "particle": "astromine:block/machine/generic_machine_top"
+  }
+}
