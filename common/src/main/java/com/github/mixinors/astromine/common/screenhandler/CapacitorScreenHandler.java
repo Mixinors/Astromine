@@ -70,14 +70,14 @@ public class CapacitorScreenHandler extends ComponentBlockEntityEnergyItemScreen
 			
 			var energyComponent = EnergyComponent.from(stack);
 			
-			return (int) energyComponent.getSize();
+			return energyComponent == null ? 1 : (int) energyComponent.getSize();
 		});
 		leftArrow.setProgressSupplier(() -> {
 			var stack = ItemComponent.from(energyItemBlockEntity).getFirst();
 			
 			var energyComponent = EnergyComponent.from(stack);
 			
-			return (int) energyComponent.getAmount();
+			return energyComponent == null ? 0 : (int) energyComponent.getAmount();
 		});
 
 		var rightArrow = new HorizontalArrowWidget();
@@ -88,14 +88,14 @@ public class CapacitorScreenHandler extends ComponentBlockEntityEnergyItemScreen
 			
 			var energyComponent = EnergyComponent.from(stack);
 			
-			return (int) energyComponent.getSize();
+			return energyComponent == null ? 1 : (int) energyComponent.getSize();
 		});
 		rightArrow.setProgressSupplier(() -> {
 			var stack = ItemComponent.from(energyItemBlockEntity).getSecond();
 			
 			var energyComponent = EnergyComponent.from(stack);
 			
-			return (int) energyComponent.getAmount();
+			return energyComponent == null ? 0 : (int) energyComponent.getAmount();
 		});
 
 		mainTab.addWidget(input);

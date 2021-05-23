@@ -71,11 +71,11 @@ public enum RedstoneType {
 	}
 	
 	public static RedstoneType fromString(String string) {
-		return string.equals("WorkAlways") ? WORK_ALWAYS : string.equals("WorkWhenOn") ? WORK_WHEN_ON : string.equals("WorkWhenOff") ? WORK_WHEN_OFF : null;
+		return string.equals("WorkAlways") ? WORK_ALWAYS : string.equals("WorkWhenOn") ? WORK_WHEN_ON : string.equals("WorkWhenOff") ? WORK_WHEN_OFF : WORK_ALWAYS;
 	}
 	
 	@Override
 	public String toString() {
-		return this == WORK_ALWAYS ? "WorkAlways" : this == WORK_WHEN_ON ? "WorkWhenOn" : this == WORK_WHEN_OFF ? "WorkWhenOff" : null;
+		return this == WORK_ALWAYS ? "WorkAlways" : this == WORK_WHEN_ON ? "WorkWhenOn" : this == WORK_WHEN_OFF ? "WorkWhenOff" : "WorkAlways";
 	}
 }

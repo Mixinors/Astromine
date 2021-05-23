@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
+import com.github.mixinors.astromine.common.component.base.ItemComponent;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
@@ -72,32 +73,36 @@ public class TankScreenHandler extends ComponentBlockEntityFluidItemScreenHandle
 		leftArrow.setPosition(Position.of(input, 28, 0));
 		leftArrow.setSize(Size.of(22, 16));
 		leftArrow.setLimitSupplier(() -> {
-			var stack = fluidItemBlockEntity.getItemComponent().getFirst();
-			var item = stack.getItem();
+			var stack = ItemComponent.from(tank).getFirst();
 			
-			return item instanceof FluidVolumeItem volumeItem ? (int) volumeItem.getSize() : 0;
+			var fluidComponent = FluidComponent.from(stack);
+			
+			return fluidComponent == null ? 1 : fluidComponent.getFirst().getSize().intValue();
  		});
 		leftArrow.setProgressSupplier(() -> {
-			var stack = fluidItemBlockEntity.getItemComponent().getFirst();
-			var item = stack.getItem();
+			var stack = ItemComponent.from(tank).getFirst();
 			
-			return item instanceof FluidVolumeItem ? FluidComponent.from(stack).getFirst().getAmount().intValue() : 0;
+			var fluidComponent = FluidComponent.from(stack);
+			
+			return fluidComponent == null ? 0 : fluidComponent.getFirst().getAmount().intValue();
 		});
 
 		var rightArrow = new HorizontalArrowWidget();
 		rightArrow.setPosition(Position.of(output, -34, 0));
 		rightArrow.setSize(Size.of(22, 16));
 		rightArrow.setLimitSupplier(() -> {
-			var stack = fluidItemBlockEntity.getItemComponent().getSecond();
-			var item = stack.getItem();
+			var stack = ItemComponent.from(tank).getSecond();
 			
-			return item instanceof FluidVolumeItem volumeItem ? (int) volumeItem.getSize() : 0;
+			var fluidComponent = FluidComponent.from(stack);
+			
+			return fluidComponent == null ? 1 : fluidComponent.getFirst().getSize().intValue();
 		});
 		rightArrow.setProgressSupplier(() -> {
-			var stack = fluidItemBlockEntity.getItemComponent().getSecond();
-			var item = stack.getItem();
+			var stack = ItemComponent.from(tank).getSecond();
 			
-			return item instanceof FluidVolumeItem ? FluidComponent.from(stack).getFirst().getAmount().intValue() : 0;
+			var fluidComponent = FluidComponent.from(stack);
+			
+			return fluidComponent == null ? 0 : fluidComponent.getFirst().getAmount().intValue();
 		});
 
 		var filter = new FluidFilterWidget();

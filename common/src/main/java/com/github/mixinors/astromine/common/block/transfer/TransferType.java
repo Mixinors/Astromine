@@ -72,11 +72,11 @@ public enum TransferType {
 	}
 	
 	public static TransferType fromString(String string) {
-		return string.equals("None") ? NONE : string.equals("Input") ? INPUT : string.equals("Output") ? OUTPUT : string.equals("InputOutput") ? INPUT_OUTPUT : null;
+		return string.equals("None") ? NONE : string.equals("Input") ? INPUT : string.equals("Output") ? OUTPUT : string.equals("InputOutput") ? INPUT_OUTPUT : NONE;
 	}
 	
 	@Override
 	public String toString() {
-		return this == NONE ? "None" : this == INPUT ? "Input" : this == OUTPUT ? "Output" : this == INPUT_OUTPUT ? "InputOutput" : null;
+		return this == NONE ? "None" : this == INPUT ? "Input" : this == OUTPUT ? "Output" : this == INPUT_OUTPUT ? "InputOutput" : "None";
 	}
 }

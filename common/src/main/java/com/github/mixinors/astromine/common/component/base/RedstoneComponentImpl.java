@@ -8,7 +8,7 @@ class RedstoneComponentImpl implements RedstoneComponent{
 	private RedstoneType type = RedstoneType.WORK_WHEN_OFF;
 	
 	public RedstoneType getType() {
-		return type;
+			return type;
 	}
 	
 	@Override
