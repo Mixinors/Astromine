@@ -141,16 +141,6 @@ jar {
     classifier "dev"
 }
 
-java {
-    withSourcesJar()
-}
-
-sourcesJar {
-    def commonSources = project(":common").remapSourcesJar
-    dependsOn commonSources
-    from zipTree(commonSources.output)
-}
-
 publishing {
     publications {
         mavenFabric(MavenPublication) {
@@ -158,9 +148,6 @@ publishing {
 
             artifact(remapJar) {
                 classifier null
-            }
-            artifact(sourcesJar) {
-                builtBy remapSourcesJar
             }
         }
     }
