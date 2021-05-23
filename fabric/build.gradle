@@ -93,7 +93,7 @@ dependencies {
     modImplementation "me.shedaniel:RoughlyEnoughItems:${project.roughly_enough_items_version}"
 
     //// Magna
-    implementation "com.github.Draylar:magna:${project.magna_version}"
+    // implementation "com.github.Draylar:magna:${project.magna_version}"
 
     // Kotlin
     modImplementation "org.jetbrains.kotlin:kotlin-stdlib:${project.kotlin_version}"

@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.mixin.client;
 
+import com.github.mixinors.astromine.mixin.common.RenderLayerAccessor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -54,25 +55,28 @@ public abstract class ArmorFeatureRendererMixin {
 
 	@Inject(method = "renderArmorParts", at = @At("HEAD"), cancellable = true)
 	private void renderArmorParts(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, ArmorItem armorItem, boolean bl, BipedEntityModel<LivingEntity> bipedEntityModel, boolean bl2, float f, float g, float h, @Nullable String string, CallbackInfo ci) {
-		if (armorItem instanceof AnimatedArmorItem) {
-			VertexConsumer vertexConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider, getArmorCutoutNoCull(this.getArmorTexture(armorItem, bl2, string), ((AnimatedArmorItem) armorItem).getFrames()), false, bl);
+		if (armorItem instanceof AnimatedArmorItem animatedArmorItem) {
+			var vertexConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider, getArmorCutoutNoCull(this.getArmorTexture(armorItem, bl2, string), animatedArmorItem.getFrames()), false, bl);
+			
 			bipedEntityModel.render(matrixStack, vertexConsumer, i, OverlayTexture.DEFAULT_UV, f, g, h, 1.0F);
+			
 			ci.cancel();
 		}
 	}
 
 	@Unique
 	private static RenderLayer getArmorCutoutNoCull(Identifier texture, int frames) {
-		RenderLayer.MultiPhaseParameters multiPhaseParameters = RenderLayer.MultiPhaseParameters.builder()
+		var multiPhaseParameters = RenderLayer.MultiPhaseParameters.builder()
 			.texture(new AnimatedArmorItem.AnimatedTexturePhase(texture, frames))
-			.transparency(RenderLayer.NO_TRANSPARENCY)
-			.diffuseLighting(RenderLayer.ENABLE_DIFFUSE_LIGHTING)
-			.alpha(RenderLayer.ONE_TENTH_ALPHA)
-			.cull(RenderLayer.DISABLE_CULLING)
-			.lightmap(RenderLayer.ENABLE_LIGHTMAP)
-			.overlay(RenderLayer.ENABLE_OVERLAY_COLOR)
-			.layering(RenderLayer.VIEW_OFFSET_Z_LAYERING)
+			.transparency(RenderLayerAccessor.getNO_TRANSPARENCY())
+			.diffuseLighting(RenderLayerAccessor.getENABLE_DIFFUSE_LIGHTING())
+			.alpha(RenderLayerAccessor.getONE_TENTH_ALPHA())
+			.cull(RenderLayerAccessor.getDISABLE_CULLING())
+			.lightmap(RenderLayerAccessor.getENABLE_LIGHTMAP())
+			.overlay(RenderLayerAccessor.getENABLE_OVERLAY_COLOR())
+			.layering(RenderLayerAccessor.getVIEW_OFFSET_Z_LAYERING())
 			.build(true);
+		
 		return RenderLayer.of("astromine:armor_cutout_no_cull", VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL, 7, 256, true, false, multiPhaseParameters);
 	}
 }

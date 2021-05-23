@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 
 @Mixin(AMClientModels.class)
 public class ClientModelsMixin {
-	@Overwrite
+	@Overwrite(remap = false)
 	@SuppressWarnings("all")
 	public static void init() {
 		ModelLoadingRegistry.INSTANCE.registerModelProvider((resourceManager, consumer) -> {

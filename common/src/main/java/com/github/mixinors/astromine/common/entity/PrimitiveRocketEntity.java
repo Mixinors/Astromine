@@ -62,9 +62,9 @@ import javax.annotation.Nullable;
 import java.util.Collection;
 
 public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuProvider {
-	private static final FluidIngredient KEROSENE_INGREDIENT = FluidIngredient.ofFluidVolumes(FluidVolume.of(FluidVolume.BUCKET / 9L, AMFluids.FUEL));
+	private static final FluidIngredient KEROSENE_INGREDIENT = FluidIngredient.ofFluidVolumes(FluidVolume.of(FluidVolume.BUCKET / 9L, AMFluids.FUEL.get()));
 
-	private static final FluidIngredient OXYGEN_INGREDIENT = FluidIngredient.ofFluidVolumes(FluidVolume.of(FluidVolume.BUCKET / 27L, AMFluids.OXYGEN));
+	private static final FluidIngredient OXYGEN_INGREDIENT = FluidIngredient.ofFluidVolumes(FluidVolume.of(FluidVolume.BUCKET / 27L, AMFluids.OXYGEN.get()));
 
 	public PrimitiveRocketEntity(EntityType<?> type, World world) {
 		super(type, world);

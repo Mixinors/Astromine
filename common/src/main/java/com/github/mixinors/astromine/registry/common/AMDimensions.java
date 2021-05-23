@@ -43,17 +43,13 @@ public class AMDimensions {
 	public static RegistryKey<DimensionType> EARTH_SPACE_TYPE_KEY = register(Registry.DIMENSION_TYPE_KEY, EARTH_SPACE_ID);
 	public static RegistryKey<World> EARTH_SPACE_WORLD = register(Registry.DIMENSION, EARTH_SPACE_ID);
 	
-	
-	
-	
-	
-	public static void init() {
-	
-	}
+	public static void init() {}
 	
 	public static <T> RegistryKey<T> register(RegistryKey<Registry<T>> registry, Identifier identifier) {
-		RegistryKey<T> key = RegistryKey.of(registry, identifier);
+		var key = RegistryKey.of(registry, identifier);
+		
 		KEYS.add(key);
+		
 		return key;
 	}
 

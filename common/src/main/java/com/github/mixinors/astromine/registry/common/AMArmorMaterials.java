@@ -53,10 +53,10 @@ public class AMArmorMaterials {
 	public static final ArmorMaterial METEORIC_STEEL = register("meteoric_steel", 20, new int[]{ 3, 5, 7, 2 }, 10, AMSoundEvents.METEORIC_STEEL_ARMOR_EQUIPPED.get(), 0.4f, 0.0f, () -> Ingredient.fromTag(TagHooks.getItemOptional(Identifier.tryParse("c:meteoric_steel_ingots"))));
 	
 	public static ArmorMaterial register(String name, int durabilityMultiplier, int[] protectionAmounts, int enchantability, SoundEvent equipSound, float toughness, float knockbackResistance, Supplier<Ingredient> supplier) {
-		return new AstromineArmorMaterial(name, durabilityMultiplier, protectionAmounts, enchantability, equipSound, toughness, knockbackResistance, supplier);
+		return new ArmorMaterialImpl(name, durabilityMultiplier, protectionAmounts, enchantability, equipSound, toughness, knockbackResistance, supplier);
 	}
 
-	public static class AstromineArmorMaterial implements ArmorMaterial {
+	public static class ArmorMaterialImpl implements ArmorMaterial {
 		private static final int[] BASE_DURABILITY = new int[]{ 13, 15, 16, 11 };
 		private final String name;
 		private final int durabilityMultiplier;
@@ -67,7 +67,7 @@ public class AMArmorMaterials {
 		private final float knockbackResistance;
 		private final Supplier<Ingredient> repairIngredientSupplier;
 
-		private AstromineArmorMaterial(String name, int durabilityMultiplier, int[] protectionAmounts, int enchantability, SoundEvent equipSound, float toughness, float knockbackResistance, Supplier<Ingredient> supplier) {
+		private ArmorMaterialImpl(String name, int durabilityMultiplier, int[] protectionAmounts, int enchantability, SoundEvent equipSound, float toughness, float knockbackResistance, Supplier<Ingredient> supplier) {
 			this.name = name;
 			this.durabilityMultiplier = durabilityMultiplier;
 			this.protectionAmounts = protectionAmounts;

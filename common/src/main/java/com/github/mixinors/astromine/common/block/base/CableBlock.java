@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.base;
 
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.NetworkComponent;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -145,7 +146,7 @@ public abstract class CableBlock extends Block implements Waterloggable {
 		if (oldState.getBlock() == newState.getBlock())
 			return;
 
-		var networkComponent = NetworkComponentImpl.from(world);
+		var networkComponent = NetworkComponent.from(world);
 
 		networkComponent.remove(networkComponent.get(getNetworkType(), pos));
 
@@ -172,7 +173,7 @@ public abstract class CableBlock extends Block implements Waterloggable {
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos neighborPos, boolean moved) {
 		super.neighborUpdate(state, world, pos, block, neighborPos, moved);
 
-		var networkComponent = NetworkComponentImpl.from(world);
+		var networkComponent = NetworkComponent.from(world);
 
 		networkComponent.remove(networkComponent.get(getNetworkType(), pos));
 		

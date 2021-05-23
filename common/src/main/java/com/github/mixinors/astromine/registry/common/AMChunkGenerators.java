@@ -25,19 +25,22 @@
 package com.github.mixinors.astromine.registry.common;
 
 
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
+import me.shedaniel.architectury.registry.RegistrySupplier;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import com.mojang.serialization.Codec;
 
-public class AMChunkGenerators {
-	public static void init() {
-		register(AMDimensions.EARTH_SPACE_ID, EarthSpaceChunkGenerator.CODEC);
-		
-	}
+import java.util.function.Supplier;
 
-	public static void register(Identifier id, Codec<? extends ChunkGenerator> codec) {
-		Registry.register(Registry.CHUNK_GENERATOR, id, codec);
+public class AMChunkGenerators {
+	public static RegistrySupplier<Codec<ChunkGenerator>> EARTH_SPACE = register(AMDimensions.EARTH_SPACE_ID, () -> (Codec) EarthSpaceChunkGenerator.CODEC);
+	
+	public static void init() {}
+
+	public static <T extends ChunkGenerator> RegistrySupplier<Codec<T>> register(Identifier id, Supplier<Codec<T>> codec) {
+		return AMCommon.registry(Registry.CHUNK_GENERATOR_KEY).registerSupplied(id, codec);
 	}
 }

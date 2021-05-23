@@ -57,9 +57,7 @@ public class AMConfig implements ConfigData {
 
 	@Comment("Gravity level in Space")
 	public double spaceGravity = 0.01D;
-
-
-
+	
 	@Comment("Energy for the Primitive Battery.")
 	public double primitiveBatteryEnergy = 8000;
 

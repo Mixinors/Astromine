@@ -58,6 +58,8 @@ import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.vini2003.blade.common.miscellaneous.Color;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.concurrent.Flow;
+
 /**
  * A class representing a {@link Fluid} with
  * extra properties.
@@ -73,12 +75,12 @@ public abstract class ExtendedFluid extends FlowableFluid {
 
 	private final boolean isInfinite;
 
-	private RegistrySupplier<Block> block;
+	private RegistrySupplier<FluidBlock> block;
 
-	private Fluid flowing;
-	private Fluid still;
+	private RegistrySupplier<Flowing> flowing;
+	private RegistrySupplier<Still> still;
 
-	private RegistrySupplier<Item> bucket;
+	private RegistrySupplier<BucketItem> bucket;
 
 	private final DamageSource source;
 
@@ -104,15 +106,19 @@ public abstract class ExtendedFluid extends FlowableFluid {
 	/** Returns this fluid's still form. */
 	@Override
 	public Fluid getStill() {
-		return still;
+		return still.get();
 	}
 
 	/** Returns this fluid's flowing form. */
 	@Override
 	public Fluid getFlowing() {
-		return flowing;
+		return flowing.get();
 	}
-
+	
+	public RegistrySupplier<BucketItem> getBucket() {
+		return bucket;
+	}
+	
 	/** Asserts whether this fluid is infinite or not. */
 	@Override
 	protected boolean isInfinite() {
@@ -189,7 +195,27 @@ public abstract class ExtendedFluid extends FlowableFluid {
 	protected BlockState toBlockState(FluidState state) {
 		return block.get().getDefaultState().with(FluidBlock.LEVEL, method_15741(state));
 	}
-
+	
+	/** Sets this fluid's flowing form. */
+	public void setFlowing(RegistrySupplier<Flowing> flowing) {
+		this.flowing = flowing;
+	}
+	
+	/** Sets this fluid's still form. */
+	public void setStill(RegistrySupplier<Still> still) {
+		this.still = still;
+	}
+	
+	/** Sets this fluid's block. */
+	public void setBlock(RegistrySupplier<FluidBlock> block) {
+		this.block = block;
+	}
+	
+	/** Sets this fluid's bucket. */
+	public void setBucket(RegistrySupplier<BucketItem> bucket) {
+		this.bucket = bucket;
+	}
+	
 	/** A builder for {@link ExtendedFluid}s. */
 	public static class Builder {
 		int fog = Color.standard().toInt();
@@ -201,12 +227,12 @@ public abstract class ExtendedFluid extends FlowableFluid {
 
 		String name = "";
 
-		RegistrySupplier<Block> block;
+		RegistrySupplier<FluidBlock> block;
 
-		Fluid flowing;
-		Fluid still;
+		RegistrySupplier<Flowing> flowing;
+		RegistrySupplier<Still> still;
 
-		RegistrySupplier<Item> bucket;
+		RegistrySupplier<BucketItem> bucket;
 
 		DamageSource source;
 
@@ -266,37 +292,37 @@ public abstract class ExtendedFluid extends FlowableFluid {
 
 		/** Builds this builder's fluid.
 		 * Part of the process is delegated to
-		 * {@link ClientUtils#registerExtendedFluid(String, int, Fluid, Fluid)},
+		 * {@link ClientUtils#registerExtendedFluid(String, int, RegistrySupplier, RegistrySupplier)},
 		 * since rendering registration cannot be done on the server side. */
-		public Fluid build() {
-			ExtendedFluid flowing = AMFluids.register(name + "_flowing", new Flowing(fog, tint, isInfinite, source));
-			ExtendedFluid still = AMFluids.register(name, new Still(fog, tint, isInfinite, source));
+		public <T extends Fluid> RegistrySupplier<T> build() {
+			var flowing = AMFluids.register(name + "_flowing", () -> new Flowing(fog, tint, isInfinite, source));
+			var still = AMFluids.register(name, () -> new Still(fog, tint, isInfinite, source));
 
-			flowing.flowing = flowing;
-			still.flowing = flowing;
+			flowing.get().setFlowing(flowing);
+			still.get().setFlowing(flowing);
 			this.flowing = flowing;
 
-			flowing.still = still;
-			still.still = still;
+			flowing.get().setStill(still);
+			still.get().setStill(still);
 			this.still = still;
 
-			RegistrySupplier<Block> block = AMBlocks.register(name, () -> FluidBlockAccessor.init(still, AbstractBlock.Settings.of(proxy_getMaterial()).noCollision().strength(100.0F).dropsNothing()));
+			var block = AMBlocks.register(name, () -> FluidBlockAccessor.init(still.get(), AbstractBlock.Settings.of(proxy_getMaterial()).noCollision().strength(100.0F).dropsNothing()));
 
-			RegistrySupplier<Item> bucket = AMItems.register(name + "_bucket", () -> new BucketItem(still, (new Item.Settings()).recipeRemainder(Items.BUCKET).maxCount(1).group(group)));
+			var bucket = AMItems.register(name + "_bucket", () -> new BucketItem(still.get(), (new Item.Settings()).recipeRemainder(Items.BUCKET).maxCount(1).group(group)));
 
-			flowing.block = block;
-			still.block = block;
+			flowing.get().setBlock(block);
+			still.get().setBlock(block);
 			this.block = block;
 
-			flowing.bucket = bucket;
-			still.bucket = bucket;
+			flowing.get().setBucket(bucket);
+			still.get().setBucket(bucket);
 			this.bucket = bucket;
 
 			if (Platform.getEnv() == EnvType.CLIENT) {
 				ClientUtils.registerExtendedFluid(name, tint, still, flowing);
 			}
 
-			return still;
+			return (RegistrySupplier<T>) still;
 		}
 	}
 

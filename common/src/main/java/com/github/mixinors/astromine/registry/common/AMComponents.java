@@ -41,7 +41,5 @@ public class AMComponents {
 
 	public static final Identifier OXYGEN = AMCommon.id("oxygen");
 
-	public static void init() {
-	
-	}
+	public static void init() {}
 }

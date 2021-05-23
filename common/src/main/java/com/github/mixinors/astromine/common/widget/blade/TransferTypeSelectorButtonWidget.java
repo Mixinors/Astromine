@@ -40,7 +40,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.client.BaseRenderer;
-import com.github.mixinors.astromine.common.block.entity.base.ComponentBlockEntity;
 import com.github.mixinors.astromine.common.block.transfer.TransferType;
 import com.github.mixinors.astromine.techreborn.common.util.MirrorUtils;
 import com.github.vini2003.blade.common.widget.base.AbstractWidget;
@@ -59,7 +58,7 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 
 	private Identifier id;
 
-	private Direction direction;
+	private Direction dir;
 
 	private Direction rotation;
 
@@ -69,12 +68,12 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 
 	/** Returns the name of this widget's side's {@link TransferType}. */
 	private String getSideName() {
-		return component.get(id).get(direction).name().toLowerCase(Locale.ROOT);
+		return component.get(id).get(dir).name().toLowerCase(Locale.ROOT);
 	}
 
 	/** Returns the {@link Identifier} of this widget's texture, based on its {@link TransferType}. */
 	private Identifier getTexture() {
-		return component.get(id).get(direction).texture();
+		return component.get(id).get(dir).texture();
 	}
 
 	/** Returns this widget's {@link TransferComponent}. */
@@ -89,12 +88,12 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 
 	/** Retrieve this widget's {@link Direction}. */
 	public Direction getDirection() {
-		return direction;
+		return dir;
 	}
 
 	/** Sets this widget's {@link Direction} to the specified one. */
-	public void setDirection(Direction direction) {
-		this.direction = direction;
+	public void setDirection(Direction dir) {
+		this.dir = dir;
 	}
 
 	/** Retrieve this widget's rotation's {@link Direction}. */
@@ -150,13 +149,11 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 				var buf = new PacketByteBuf(Unpooled.buffer());
 
 				buf.writeBlockPos(getBlockPos());
-				buf.writeIdentifier(ComponentBlockEntity.TRANSFER_UPDATE_PACKET);
-
 				buf.writeIdentifier(id);
-				buf.writeEnumConstant(direction);
-				buf.writeEnumConstant(component.get(id).get(direction).next());
+				buf.writeEnumConstant(dir);
+				buf.writeEnumConstant(component.get(id).get(dir).next());
 				
-				NetworkManager.sendToServer(AMNetworks.BLOCK_ENTITY_UPDATE_PACKET, buf);
+				NetworkManager.sendToServer(AMNetworks.TRANSFER_UPDATE, buf);
 			}
 		}
 		
@@ -170,7 +167,7 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 	@Override
 	public @NotNull List<Text> getTooltip() {
 		return List.of(
-				new TranslatableText("text.astromine.siding." + MirrorUtils.rotate(direction, rotation).getName()),
+				new TranslatableText("text.astromine.siding." + MirrorUtils.rotate(dir, rotation).getName()),
 				new TranslatableText("text.astromine.siding." + getSideName())
 		);
 	}

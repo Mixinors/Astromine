@@ -34,10 +34,7 @@ import java.util.function.Supplier;
 
 
 public class AMDecorators {
-
-	public static void init() {
-
-	}
+	public static void init() {}
 
 	private static <T extends DecoratorConfig, G extends Decorator<T>> RegistrySupplier<G> register(String name, Supplier<G> decorator) {
 		return AMCommon.registry(Registry.DECORATOR_KEY).registerSupplied(AMCommon.id(name), decorator);

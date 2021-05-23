@@ -85,7 +85,7 @@ public class CrudeOilFeature extends Feature<DefaultFeatureConfig> {
 				world.removeBlock(spawnPos.offset(Direction.UP, y).offset(direction), false);
 			}
 
-			world.getFluidTickScheduler().schedule(spawnPos.offset(Direction.UP, y), AMFluids.OIL, 0);
+			world.getFluidTickScheduler().schedule(spawnPos.offset(Direction.UP, y), AMFluids.OIL.get(), 0);
 		}
 
 		return true;

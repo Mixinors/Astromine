@@ -2,13 +2,14 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.block.entity.base.ComponentBlockEntity;
+import com.github.mixinors.astromine.common.block.transfer.TransferType;
 import me.shedaniel.architectury.networking.NetworkManager;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 
 public class AMNetworks {
-	public static final Identifier BLOCK_ENTITY_UPDATE_PACKET = AMCommon.id("block_entity_update");
+	public static final Identifier TRANSFER_UPDATE = AMCommon.id("block_entity_update");
 	
 	public static final Identifier PRIMITIVE_ROCKET_SPAWN = AMCommon.id("primitive_rocket_spawn");
 	
@@ -19,17 +20,22 @@ public class AMNetworks {
 	public static final Identifier GAS_ERASED = AMCommon.id("gas_erased");
 	
 	public static void init() {
-		NetworkManager.registerReceiver(NetworkManager.c2s(), BLOCK_ENTITY_UPDATE_PACKET, ((buf, context) -> {
+		NetworkManager.registerReceiver(NetworkManager.c2s(), TRANSFER_UPDATE, ((buf, context) -> {
 			buf.retain();
 			
-			BlockPos blockPos = buf.readBlockPos();
-			Identifier identifier = buf.readIdentifier();
-
+			var pos = buf.readBlockPos();
+			
+			var id = buf.readIdentifier();
+			var dir = buf.readEnumConstant(Direction.class);
+			var type = buf.readEnumConstant(TransferType.class);
+			
 			context.queue(() -> {
-				BlockEntity blockEntity = context.getPlayer().world.getBlockEntity(blockPos);
+				BlockEntity blockEntity = context.getPlayer().world.getBlockEntity(pos);
 				
-				if (blockEntity instanceof ComponentBlockEntity) {
-					((ComponentBlockEntity) blockEntity).consumePacket(identifier, buf);
+				if (blockEntity instanceof ComponentBlockEntity componentBlockEntity) {
+					componentBlockEntity.getTransferComponent().get(id).set(dir, type);
+					componentBlockEntity.markDirty();
+					componentBlockEntity.syncData();
 				}
 			});
 		}));

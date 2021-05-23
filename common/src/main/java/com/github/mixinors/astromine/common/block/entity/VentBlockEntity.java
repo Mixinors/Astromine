@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.AtmosphereComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.server.world.ServerWorld;
@@ -91,11 +92,11 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 			var output = position.offset(direction);
 
 			if (energy.hasStored(getEnergyConsumed()) && (world.getBlockState(output).isAir() || world.getBlockState(output).isSideSolidFullSquare(world, pos, direction.getOpposite()))) {
-				var atmosphereComponent = AtmosphereComponentImpl.from(world.getChunk(getPos()));
+				var atmosphereComponent = AtmosphereComponent.from(world.getChunk(getPos()));
 
 				var centerVolume = fluids.getFirst();
 
-				if (AtmosphereComponentImpl.isInChunk(world.getChunk(output).getPos(), pos)) {
+				if (AtmosphereComponent.isInChunk(world.getChunk(output).getPos(), pos)) {
 					var sideVolume = atmosphereComponent.get(output);
 
 					if ((sideVolume.test(centerVolume.getFluid())) && sideVolume.smallerThan(centerVolume.getAmount())) {
@@ -110,9 +111,9 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 						tickInactive();
 					}
 				} else {
-					var neighborPos = AtmosphereComponentImpl.getNeighborFromPos(world.getChunk(output).getPos(), output);
+					var neighborPos = AtmosphereComponent.getNeighborFromPos(world.getChunk(output).getPos(), output);
 
-					var neighborAtmosphereComponent = AtmosphereComponentImpl.from(world.getChunk(neighborPos.x, neighborPos.z));
+					var neighborAtmosphereComponent = AtmosphereComponent.from(world.getChunk(neighborPos.x, neighborPos.z));
 
 					var sideVolume = neighborAtmosphereComponent.get(output);
 

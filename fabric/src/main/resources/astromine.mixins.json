@@ -4,9 +4,6 @@
   "package": "com.github.mixinors.astromine.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "client.AMPatchouliPagesMixin",
-    "client.ClientModelsMixin",
-    "common.AMNetworkMembersMixin",
     "common.DrillItemMixin",
     "common.DynamicToolItemItemMixin",
     "common.EnergyComponentMixin",
@@ -16,6 +13,8 @@
     "common.ManualItemMixin"
   ],
   "client": [
+    "client.ClientModelsMixin",
+    "client.ParticleFactoriesMixin",
     "client.ClientUtilsMixin"
   ],
   "injectors": {

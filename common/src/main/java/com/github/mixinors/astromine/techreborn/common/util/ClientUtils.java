@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.techreborn.common.util;
 
+import me.shedaniel.architectury.registry.RegistrySupplier;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -52,7 +53,7 @@ public class ClientUtils {
 	
 	/** Registers the necessary data for an {@link ExtendedFluid} on the client side. */
 	@Environment(EnvType.CLIENT)
-	public static void registerExtendedFluid(String name, int tint, Fluid still, Fluid flowing) {
+	public static void registerExtendedFluid(String name, int tint, RegistrySupplier<ExtendedFluid.Still> still, RegistrySupplier<ExtendedFluid.Flowing> flowing) {
 		throw new UnsupportedOperationException("Cannot call this method method; must @Overwrite!");
 	}
 }

@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 
 @Mixin(AMParticleFactories.class)
 public class ParticleFactoriesMixin {
-	@Overwrite
+	@Overwrite(remap = false)
 	@SuppressWarnings("all")
 	public static void init() {
 		ParticleFactoryRegistry.getInstance().register(AMParticles.SPACE_SLIME.get(), (parameters, world, x, y, z, velocityX, velocityY, velocityZ) -> CrackParticleAccessor.init(world, x, y, z, new ItemStack(AMItems.SPACE_SLIME_BALL.get())));

@@ -27,6 +27,7 @@
     "common.PiglinBrainMixin",
     "common.PistonHandlerMixin",
     "common.RecipeManagerAccessor",
+    "common.RenderLayerAccessor",
     "common.RenderPhaseAccessor",
     "common.ServerChunkManagerAccessor",
     "common.ServerChunkManagerMixin",

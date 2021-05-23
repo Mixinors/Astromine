@@ -3,17 +3,10 @@ package com.github.mixinors.astromine.registry.common;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.registry.AsteroidOreRegistry;
 import com.github.mixinors.astromine.techreborn.common.util.data.Range;
-import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
-import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
-import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
-
-import java.util.function.Predicate;
 
 public class AMOres {
 	public static final Identifier ORES_ID = AMCommon.id("astromine_ores");
@@ -50,23 +43,5 @@ public class AMOres {
 		AsteroidOreRegistry.INSTANCE.register(Range.of(AMConfig.get().asteroidAsteriteOreMinimumRange, AMConfig.get().asteroidAsteriteOreMaximumRange), Range.of(AMConfig.get().asteroidAsteriteOreMinimumSize, AMConfig.get().asteroidAsteriteOreMaximumSize), AMBlocks.ASTEROID_ASTERITE_ORE.get());
 		AsteroidOreRegistry.INSTANCE.register(Range.of(AMConfig.get().asteroidStellumOreMinimumRange, AMConfig.get().asteroidStellumOreMaximumRange), Range.of(AMConfig.get().asteroidStellumOreMinimumSize, AMConfig.get().asteroidStellumOreMaximumSize), AMBlocks.ASTEROID_STELLUM_ORE.get());
 		AsteroidOreRegistry.INSTANCE.register(Range.of(AMConfig.get().asteroidGalaxiumOreMinimumRange, AMConfig.get().asteroidGalaxiumOreMaximumRange), Range.of(AMConfig.get().asteroidGalaxiumOreMinimumSize, AMConfig.get().asteroidGalaxiumOreMaximumSize), AMBlocks.ASTEROID_GALAXIUM_ORE.get());
-		
-		BiomeModifications.create(ORES_ID)
-				.add(ModificationPhase.ADDITIONS, overworldPredicate().and(context -> AMConfig.get().overworldTinOre), context -> {
-					context.getGenerationSettings().addFeature(GenerationStep.Feature.UNDERGROUND_ORES, TIN_ORE_KEY);
-				})
-				.add(ModificationPhase.ADDITIONS, overworldPredicate().and(context -> AMConfig.get().overworldCopperOre), context -> {
-					context.getGenerationSettings().addFeature(GenerationStep.Feature.UNDERGROUND_ORES, COPPER_ORE_KEY);
-				})
-				.add(ModificationPhase.ADDITIONS, overworldPredicate().and(context -> AMConfig.get().overworldSilverOre), context -> {
-					context.getGenerationSettings().addFeature(GenerationStep.Feature.UNDERGROUND_ORES, SILVER_ORE_KEY);
-				})
-				.add(ModificationPhase.ADDITIONS, overworldPredicate().and(context -> AMConfig.get().overworldLeadOre), context -> {
-					context.getGenerationSettings().addFeature(GenerationStep.Feature.UNDERGROUND_ORES, LEAD_ORE_KEY);
-				});
-	}
-	
-	private static Predicate<BiomeSelectionContext> overworldPredicate() {
-		return context -> context.getBiome().getCategory() != Biome.Category.NETHER && context.getBiome().getCategory() != Biome.Category.THEEND;
 	}
 }

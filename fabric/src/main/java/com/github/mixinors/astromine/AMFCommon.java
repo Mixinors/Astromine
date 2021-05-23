@@ -8,10 +8,13 @@ public class AMFCommon implements ModInitializer {
 	public void onInitialize() {
 		AMCommon.init();
 		
+		AMFCallbacks.init();
 		AMFComponents.init();
-		AMFNetworkMembers.init();
 		AMFContainerInfoHandlers.init();
 		AMFEntityTypes.init();
 		AMFFeatures.init();
+		AMFItems.init();
+		AMFNetworkMembers.init();
+		AMFOres.init();
 	}
 }

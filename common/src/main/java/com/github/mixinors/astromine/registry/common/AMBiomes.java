@@ -39,17 +39,13 @@ public class AMBiomes {
 	public static final Identifier ASTEROID_BELT_ID = AMCommon.id("asteroid_belt");
 	public static RegistryKey<Biome> ASTEROID_BELT = register(Registry.BIOME_KEY, ASTEROID_BELT_ID);
 	
-	
-	
-	
-	
-	public static void init() {
-	
-	}
+	public static void init() {}
 
 	public static <T> RegistryKey<T> register(RegistryKey<Registry<T>> registry, Identifier identifier) {
-		RegistryKey<T> key = RegistryKey.of(registry, identifier);
+		var key = RegistryKey.of(registry, identifier);
+		
 		KEYS.add(key);
+		
 		return key;
 	}
 

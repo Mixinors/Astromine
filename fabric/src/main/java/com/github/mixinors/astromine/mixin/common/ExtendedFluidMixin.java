@@ -17,7 +17,7 @@ public class ExtendedFluidMixin {
 			.liquid()
 			.notSolid().build();
 	
-	@Overwrite
+	@Overwrite(remap = false)
 	@SuppressWarnings("all")
 	private static Material proxy_getMaterial() {
 		return astromine_MATERIAL;

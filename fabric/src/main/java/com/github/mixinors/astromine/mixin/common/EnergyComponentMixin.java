@@ -10,12 +10,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import team.reborn.energy.EnergyStorage;
 
 @Mixin(EnergyComponent.class)
-interface EnergyComponentMixin {
+class EnergyComponentMixin {
 	private static EnergyComponent of(EnergyStorage storage) {
 		return TREnergyComponent.of(storage);
 	}
 	
-	@Inject(at = @At("RETURN"), method = "from", cancellable = true)
+	@Inject(at = @At("RETURN"), method = "from", cancellable = true, remap = false)
 	private static <V> void astromine_get(V v, CallbackInfoReturnable<@Nullable EnergyComponent> cir) {
 		if (cir.getReturnValue() == null) {
 			if (v instanceof EnergyStorage storage) {

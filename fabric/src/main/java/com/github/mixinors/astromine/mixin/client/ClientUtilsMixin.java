@@ -2,8 +2,10 @@ package com.github.mixinors.astromine.mixin.client;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.fluid.render.ExtendedFluidRenderHandler;
+import com.github.mixinors.astromine.common.fluid.ExtendedFluid;
 import com.github.mixinors.astromine.common.resource.ExtendedFluidResourceListener;
 import com.github.mixinors.astromine.techreborn.common.util.ClientUtils;
+import me.shedaniel.architectury.registry.RegistrySupplier;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -17,9 +19,9 @@ import org.spongepowered.asm.mixin.Overwrite;
 
 @Mixin(ClientUtils.class)
 public class ClientUtilsMixin {
-	@Overwrite
+	@Overwrite(remap = false)
 	@SuppressWarnings("all")
-	public static void registerExtendedFluid(String name, int tint, Fluid still, Fluid flowing) {
+	public static void registerExtendedFluid(String name, int tint, RegistrySupplier<ExtendedFluid.Still> still, RegistrySupplier<ExtendedFluid.Flowing> flowing) {
 		var stillSpriteId = new Identifier("block/water_still");
 		var flowingSpriteId = new Identifier("block/water_flow");
 		var id = AMCommon.id(name + "_reload_listener");
@@ -35,7 +37,7 @@ public class ClientUtilsMixin {
 		
 		var handler = new ExtendedFluidRenderHandler(sprites, tint);
 		
-		FluidRenderHandlerRegistry.INSTANCE.register(still, handler);
-		FluidRenderHandlerRegistry.INSTANCE.register(flowing, handler);
+		FluidRenderHandlerRegistry.INSTANCE.register(still.get(), handler);
+		FluidRenderHandlerRegistry.INSTANCE.register(flowing.get(), handler);
 	}
 }

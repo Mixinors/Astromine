@@ -24,6 +24,8 @@
 
 package com.github.mixinors.astromine.techreborn.common.util;
 
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.AtmosphereComponent;
+import com.github.mixinors.astromine.cardinalcomponents.common.component.base.NetworkComponent;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -56,7 +58,7 @@ public class NetworkUtils {
 		public static void trace(NetworkType type, WorldPos initialPosition) {
 			var world = initialPosition.getWorld();
 
-			var networkComponent = NetworkComponentImpl.from(world);
+			var networkComponent = NetworkComponent.from(world);
 
 			var initialMember = NetworkMemberRegistry.get(initialPosition, null);
 

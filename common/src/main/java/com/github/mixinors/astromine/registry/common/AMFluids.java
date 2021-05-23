@@ -25,27 +25,30 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.common.fluid.ExtendedFluid;
+import me.shedaniel.architectury.registry.RegistrySupplier;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.registry.Registry;
 
 import com.github.mixinors.astromine.AMCommon;
 
+import java.util.function.Supplier;
+
 public class AMFluids {
-	public static final Fluid OIL = ExtendedFluid.builder().fog(0x7e121212).tint(0x7e121212).damage(0).toxic(false).infinite(false).name("oil").group(AMItemGroups.ASTROMINE).build();
+	public static final RegistrySupplier<Fluid> OIL = ExtendedFluid.builder().fog(0x7e121212).tint(0x7e121212).damage(0).toxic(false).infinite(false).name("oil").group(AMItemGroups.ASTROMINE).build();
 	
-	public static final Fluid FUEL = ExtendedFluid.builder().fog(0x7e968048).tint(0x7e968048).damage(0).toxic(false).infinite(false).name("fuel").group(AMItemGroups.ASTROMINE).build();
+	public static final RegistrySupplier<Fluid> FUEL = ExtendedFluid.builder().fog(0x7e968048).tint(0x7e968048).damage(0).toxic(false).infinite(false).name("fuel").group(AMItemGroups.ASTROMINE).build();
 	
-	public static final Fluid BIOMASS = ExtendedFluid.builder().fog(0x7e6fda34).tint(0x7e6fda34).damage(0).toxic(false).infinite(false).name("biomass").group(AMItemGroups.ASTROMINE).build();
+	public static final RegistrySupplier<Fluid> BIOMASS = ExtendedFluid.builder().fog(0x7e6fda34).tint(0x7e6fda34).damage(0).toxic(false).infinite(false).name("biomass").group(AMItemGroups.ASTROMINE).build();
 	
-	public static final Fluid OXYGEN = ExtendedFluid.builder().fog(0x7e159ef9).tint(0xff159ef9).damage(0).toxic(false).infinite(false).name("oxygen").group(AMItemGroups.ASTROMINE).build();
+	public static final RegistrySupplier<Fluid> OXYGEN = ExtendedFluid.builder().fog(0x7e159ef9).tint(0xff159ef9).damage(0).toxic(false).infinite(false).name("oxygen").group(AMItemGroups.ASTROMINE).build();
 	
-	public static final Fluid HYDROGEN = ExtendedFluid.builder().fog(0x7eff0019).tint(0xffff0019).damage(0).toxic(false).infinite(false).name("hydrogen").group(AMItemGroups.ASTROMINE).build();
+	public static final RegistrySupplier<Fluid> HYDROGEN = ExtendedFluid.builder().fog(0x7eff0019).tint(0xffff0019).damage(0).toxic(false).infinite(false).name("hydrogen").group(AMItemGroups.ASTROMINE).build();
 	
 	public static void init() {
 
 	}
 
-	public static <T extends Fluid> T register(String name, T fluid) {
-		return Registry.register(Registry.FLUID, AMCommon.id(name), fluid);
+	public static <T extends Fluid> RegistrySupplier<T> register(String name, Supplier<T> fluid) {
+		return AMCommon.registry(Registry.FLUID_KEY).registerSupplied(AMCommon.id(name), fluid);
 	}
 }
