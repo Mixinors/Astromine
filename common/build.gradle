@@ -1,3 +1,9 @@
+configurations {
+    modImplementation {
+        exclude group: "com.jamieswhiteshirt"
+        exclude group: "io.github.prospector", module: "modmenu"
+    }
+}
 
 dependencies {
     // Fabric Loader

@@ -49,6 +49,13 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    modImplementation {
+        exclude group: "com.jamieswhiteshirt"
+        exclude group: "io.github.prospector", module: "modmenu"
+    }
+}
+
 dependencies {
     // Fabric Loader
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
