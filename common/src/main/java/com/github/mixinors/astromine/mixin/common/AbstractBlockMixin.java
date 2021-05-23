@@ -41,10 +41,10 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.cardinalcomponents.common.component.base.TransferComponent;
-import com.github.mixinors.astromine.cardinalcomponents.common.component.base.FluidComponent;
+import com.github.mixinors.astromine.common.component.base.TransferComponent;
+import com.github.mixinors.astromine.common.component.base.FluidComponent;
 import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
-import com.github.mixinors.astromine.techreborn.common.volume.fluid.FluidVolume;
+import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 
 @Mixin(AbstractBlock.class)
 public class AbstractBlockMixin {

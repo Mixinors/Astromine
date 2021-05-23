@@ -31,6 +31,7 @@ import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
 import com.github.mixinors.astromine.mixin.common.AxeItemAccessor;
 import com.github.mixinors.astromine.mixin.common.HoeItemAccessor;
 import com.github.mixinors.astromine.mixin.common.PickaxeItemAccessor;
+import me.shedaniel.architectury.annotations.ExpectPlatform;
 import me.shedaniel.architectury.registry.RegistrySupplier;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -49,9 +50,9 @@ public class AMItems {
 
 	public static RegistrySupplier<Item> MANUAL = register("manual", () -> new ManualItem(getBasicSettings().maxCount(1)));
 	
-	public static RegistrySupplier<Item> SPACE_SLIME_SPAWN_EGG = register("space_slime_spawn_egg", () -> new UncoloredSpawnEggItem(AMEntityTypes.SPACE_SLIME.get(), AMItems.getBasicSettings()));
+	public static RegistrySupplier<Item> SPACE_SLIME_SPAWN_EGG = null;
 	
-	public static RegistrySupplier<Item> SPACE_SLIME_BALL = register("space_slime_ball", () -> new Item(AMItems.getBasicSettings()));
+	public static RegistrySupplier<Item> SPACE_SLIME_BALL = null;
 	
 	public static RegistrySupplier<Item> ASTEROID_METITE_CLUSTER = register("asteroid_metite_cluster", () -> new Item(AMItems.getBasicSettings()));
 	public static RegistrySupplier<Item> ASTEROID_ASTERITE_CLUSTER = register("asteroid_asterite_cluster", () -> new Item(AMItems.getBasicSettings()));
@@ -81,7 +82,7 @@ public class AMItems {
 	public static RegistrySupplier<Item> SPACE_SUIT_LEGGINGS = register("space_suit_leggings", () -> new SpaceSuitItem(AMArmorMaterials.SPACE_SUIT, EquipmentSlot.LEGS, AMItems.getBasicSettings()));
 	public static RegistrySupplier<Item> SPACE_SUIT_BOOTS = register("space_suit_boots", () -> new SpaceSuitItem(AMArmorMaterials.SPACE_SUIT, EquipmentSlot.FEET, AMItems.getBasicSettings()));
 	
-	public static RegistrySupplier<Item> PRIMITIVE_ROCKET = register("rocket", () -> new UncoloredSpawnEggItem(AMEntityTypes.PRIMITIVE_ROCKET.get(), AMItems.getBasicSettings()));
+	public static RegistrySupplier<Item> PRIMITIVE_ROCKET;
 	
 	public static RegistrySupplier<Item> METITE_NUGGET = register("metite_nugget", () -> new Item(AMItems.getBasicSettings()));
 	public static RegistrySupplier<Item> STELLUM_NUGGET = register("stellum_nugget", () -> new Item(AMItems.getBasicSettings().fireproof()));
@@ -232,31 +233,31 @@ public class AMItems {
 	public static RegistrySupplier<Item> GOLD_GEAR = register("gold_gear", () -> new Item(AMItems.getBasicSettings()));
 	public static RegistrySupplier<Item> NETHERITE_GEAR = register("netherite_gear", () -> new Item(AMItems.getBasicSettings().fireproof()));
 	
-	public static RegistrySupplier<Item> WOODEN_MINING_TOOL = register("wooden_mining_tool", () -> new DynamicToolItemItem((MiningToolItem) Items.WOODEN_SHOVEL, (MiningToolItem) Items.WOODEN_PICKAXE, ToolMaterials.WOOD, AMItems.getBasicSettings()));
-	public static RegistrySupplier<Item> WOODEN_MATTOCK = register("wooden_mattock", () -> new DynamicToolItemItem((MiningToolItem) Items.WOODEN_HOE, (MiningToolItem) Items.WOODEN_AXE, ToolMaterials.WOOD, AMItems.getBasicSettings()));
+	public static RegistrySupplier<Item> WOODEN_MINING_TOOL = register("wooden_mining_tool", () -> new DynamicToolItem((MiningToolItem) Items.WOODEN_SHOVEL, (MiningToolItem) Items.WOODEN_PICKAXE, ToolMaterials.WOOD, AMItems.getBasicSettings()));
+	public static RegistrySupplier<Item> WOODEN_MATTOCK = register("wooden_mattock", () -> new DynamicToolItem((MiningToolItem) Items.WOODEN_HOE, (MiningToolItem) Items.WOODEN_AXE, ToolMaterials.WOOD, AMItems.getBasicSettings()));
 	
-	public static RegistrySupplier<Item> STONE_MINING_TOOL = register("stone_mining_tool", () -> new DynamicToolItemItem((MiningToolItem) Items.STONE_SHOVEL, (MiningToolItem) Items.STONE_PICKAXE, ToolMaterials.STONE, AMItems.getBasicSettings()));
-	public static RegistrySupplier<Item> STONE_MATTOCK = register("stone_mattock", () -> new DynamicToolItemItem((MiningToolItem) Items.STONE_HOE, (MiningToolItem) Items.STONE_AXE, ToolMaterials.STONE, AMItems.getBasicSettings()));
+	public static RegistrySupplier<Item> STONE_MINING_TOOL = register("stone_mining_tool", () -> new DynamicToolItem((MiningToolItem) Items.STONE_SHOVEL, (MiningToolItem) Items.STONE_PICKAXE, ToolMaterials.STONE, AMItems.getBasicSettings()));
+	public static RegistrySupplier<Item> STONE_MATTOCK = register("stone_mattock", () -> new DynamicToolItem((MiningToolItem) Items.STONE_HOE, (MiningToolItem) Items.STONE_AXE, ToolMaterials.STONE, AMItems.getBasicSettings()));
 	
-	public static RegistrySupplier<Item> IRON_MINING_TOOL = register("iron_mining_tool", () -> new DynamicToolItemItem((MiningToolItem) Items.IRON_SHOVEL, (MiningToolItem) Items.IRON_PICKAXE, ToolMaterials.IRON, AMItems.getBasicSettings()));
-	public static RegistrySupplier<Item> IRON_MATTOCK = register("iron_mattock", () -> new DynamicToolItemItem((MiningToolItem) Items.IRON_HOE, (MiningToolItem) Items.IRON_AXE, ToolMaterials.IRON, AMItems.getBasicSettings()));
+	public static RegistrySupplier<Item> IRON_MINING_TOOL = register("iron_mining_tool", () -> new DynamicToolItem((MiningToolItem) Items.IRON_SHOVEL, (MiningToolItem) Items.IRON_PICKAXE, ToolMaterials.IRON, AMItems.getBasicSettings()));
+	public static RegistrySupplier<Item> IRON_MATTOCK = register("iron_mattock", () -> new DynamicToolItem((MiningToolItem) Items.IRON_HOE, (MiningToolItem) Items.IRON_AXE, ToolMaterials.IRON, AMItems.getBasicSettings()));
 	
-	public static RegistrySupplier<Item> GOLDEN_MINING_TOOL = register("golden_mining_tool", () -> new DynamicToolItemItem((MiningToolItem) Items.GOLDEN_SHOVEL, (MiningToolItem) Items.GOLDEN_PICKAXE, ToolMaterials.GOLD, AMItems.getBasicSettings()));
-	public static RegistrySupplier<Item> GOLDEN_MATTOCK = register("golden_mattock", () -> new DynamicToolItemItem((MiningToolItem) Items.GOLDEN_HOE, (MiningToolItem) Items.GOLDEN_AXE, ToolMaterials.GOLD, AMItems.getBasicSettings()));
+	public static RegistrySupplier<Item> GOLDEN_MINING_TOOL = register("golden_mining_tool", () -> new DynamicToolItem((MiningToolItem) Items.GOLDEN_SHOVEL, (MiningToolItem) Items.GOLDEN_PICKAXE, ToolMaterials.GOLD, AMItems.getBasicSettings()));
+	public static RegistrySupplier<Item> GOLDEN_MATTOCK = register("golden_mattock", () -> new DynamicToolItem((MiningToolItem) Items.GOLDEN_HOE, (MiningToolItem) Items.GOLDEN_AXE, ToolMaterials.GOLD, AMItems.getBasicSettings()));
 	
-	public static RegistrySupplier<Item> DIAMOND_MINING_TOOL = register("diamond_mining_tool", () -> new DynamicToolItemItem((MiningToolItem) Items.DIAMOND_SHOVEL, (MiningToolItem) Items.DIAMOND_PICKAXE, ToolMaterials.DIAMOND, AMItems.getBasicSettings()));
-	public static RegistrySupplier<Item> DIAMOND_MATTOCK = register("diamond_mattock", () -> new DynamicToolItemItem((MiningToolItem) Items.DIAMOND_HOE, (MiningToolItem) Items.DIAMOND_AXE, ToolMaterials.DIAMOND, AMItems.getBasicSettings()));
+	public static RegistrySupplier<Item> DIAMOND_MINING_TOOL = register("diamond_mining_tool", () -> new DynamicToolItem((MiningToolItem) Items.DIAMOND_SHOVEL, (MiningToolItem) Items.DIAMOND_PICKAXE, ToolMaterials.DIAMOND, AMItems.getBasicSettings()));
+	public static RegistrySupplier<Item> DIAMOND_MATTOCK = register("diamond_mattock", () -> new DynamicToolItem((MiningToolItem) Items.DIAMOND_HOE, (MiningToolItem) Items.DIAMOND_AXE, ToolMaterials.DIAMOND, AMItems.getBasicSettings()));
 	
-	public static RegistrySupplier<Item> NETHERITE_MINING_TOOL = register("netherite_mining_tool", () -> new DynamicToolItemItem((MiningToolItem) Items.NETHERITE_SHOVEL, (MiningToolItem) Items.NETHERITE_PICKAXE, ToolMaterials.NETHERITE, AMItems.getBasicSettings().fireproof()));
-	public static RegistrySupplier<Item> NETHERITE_MATTOCK = register("netherite_mattock", () -> new DynamicToolItemItem((MiningToolItem) Items.NETHERITE_HOE, (MiningToolItem) Items.NETHERITE_AXE, ToolMaterials.NETHERITE, AMItems.getBasicSettings().fireproof()));
+	public static RegistrySupplier<Item> NETHERITE_MINING_TOOL = register("netherite_mining_tool", () -> new DynamicToolItem((MiningToolItem) Items.NETHERITE_SHOVEL, (MiningToolItem) Items.NETHERITE_PICKAXE, ToolMaterials.NETHERITE, AMItems.getBasicSettings().fireproof()));
+	public static RegistrySupplier<Item> NETHERITE_MATTOCK = register("netherite_mattock", () -> new DynamicToolItem((MiningToolItem) Items.NETHERITE_HOE, (MiningToolItem) Items.NETHERITE_AXE, ToolMaterials.NETHERITE, AMItems.getBasicSettings().fireproof()));
 	
 	public static RegistrySupplier<PickaxeItem> BRONZE_PICKAXE = register("bronze_pickaxe", () -> PickaxeItemAccessor.init(AMToolMaterials.BRONZE, 1, -2.8f, AMItems.getBasicSettings()));
 	public static RegistrySupplier<AxeItem> BRONZE_AXE = register("bronze_axe", () -> AxeItemAccessor.init(AMToolMaterials.BRONZE, 5f, -3.0f, AMItems.getBasicSettings()));
 	public static RegistrySupplier<ShovelItem> BRONZE_SHOVEL = register("bronze_shovel", () -> new ShovelItem(AMToolMaterials.BRONZE, 1.5f, -3.0f, AMItems.getBasicSettings()));
 	public static RegistrySupplier<HoeItem> BRONZE_HOE = register("bronze_hoe", () -> HoeItemAccessor.init(AMToolMaterials.BRONZE, -2, 0f, AMItems.getBasicSettings()));
 	public static RegistrySupplier<Item> BRONZE_SWORD = register("bronze_sword", () -> new SwordItem(AMToolMaterials.BRONZE, 3, -2.4f, AMItems.getBasicSettings()));
-	public static RegistrySupplier<Item> BRONZE_MINING_TOOL = register("bronze_mining_tool", () -> new DynamicToolItemItem(BRONZE_SHOVEL.get(), BRONZE_PICKAXE.get(), AMToolMaterials.BRONZE, AMItems.getBasicSettings()));
-	public static RegistrySupplier<Item> BRONZE_MATTOCK = register("bronze_mattock", () -> new DynamicToolItemItem(BRONZE_HOE.get(), BRONZE_AXE.get(), AMToolMaterials.BRONZE, AMItems.getBasicSettings()));
+	public static RegistrySupplier<Item> BRONZE_MINING_TOOL = register("bronze_mining_tool", () -> new DynamicToolItem(BRONZE_SHOVEL.get(), BRONZE_PICKAXE.get(), AMToolMaterials.BRONZE, AMItems.getBasicSettings()));
+	public static RegistrySupplier<Item> BRONZE_MATTOCK = register("bronze_mattock", () -> new DynamicToolItem(BRONZE_HOE.get(), BRONZE_AXE.get(), AMToolMaterials.BRONZE, AMItems.getBasicSettings()));
 	// TODO: Reimplement this on Forge & Fabric modules!
 	public static RegistrySupplier<Item> BRONZE_HAMMER = null;
 	// TODO: Reimplement this on Forge & Fabric modules!
@@ -267,8 +268,8 @@ public class AMItems {
 	public static RegistrySupplier<ShovelItem> STEEL_SHOVEL = register("steel_shovel", () -> new ShovelItem(AMToolMaterials.STEEL, 1.5f, -3.0f, AMItems.getBasicSettings()));
 	public static RegistrySupplier<HoeItem> STEEL_HOE = register("steel_hoe", () -> HoeItemAccessor.init(AMToolMaterials.STEEL, -3, 0f, AMItems.getBasicSettings()));
 	public static RegistrySupplier<Item> STEEL_SWORD = register("steel_sword", () -> new SwordItem(AMToolMaterials.STEEL, 3, -2.4f, AMItems.getBasicSettings()));
-	public static RegistrySupplier<Item> STEEL_MINING_TOOL = register("steel_mining_tool", () -> new DynamicToolItemItem(STEEL_SHOVEL.get(), STEEL_PICKAXE.get(), AMToolMaterials.STEEL, AMItems.getBasicSettings()));
-	public static RegistrySupplier<Item> STEEL_MATTOCK = register("steel_mattock", () -> new DynamicToolItemItem(STEEL_HOE.get(), STEEL_AXE.get(), AMToolMaterials.STEEL, AMItems.getBasicSettings()));
+	public static RegistrySupplier<Item> STEEL_MINING_TOOL = register("steel_mining_tool", () -> new DynamicToolItem(STEEL_SHOVEL.get(), STEEL_PICKAXE.get(), AMToolMaterials.STEEL, AMItems.getBasicSettings()));
+	public static RegistrySupplier<Item> STEEL_MATTOCK = register("steel_mattock", () -> new DynamicToolItem(STEEL_HOE.get(), STEEL_AXE.get(), AMToolMaterials.STEEL, AMItems.getBasicSettings()));
 	// TODO: Reimplement this on Forge & Fabric modules!
 	public static RegistrySupplier<Item> STEEL_HAMMER = null;
 	// TODO: Reimplement this on Forge & Fabric modules!
@@ -279,8 +280,8 @@ public class AMItems {
 	public static RegistrySupplier<ShovelItem> METITE_SHOVEL = register("metite_shovel", () -> new ShovelItem(AMToolMaterials.METITE, 1.5f, -3.0f, AMItems.getBasicSettings()));
 	public static RegistrySupplier<HoeItem> METITE_HOE = register("metite_hoe", () -> HoeItemAccessor.init(AMToolMaterials.METITE, -4, 0f, AMItems.getBasicSettings()));
 	public static RegistrySupplier<Item> METITE_SWORD = register("metite_sword", () -> new SwordItem(AMToolMaterials.METITE, 3, -2.4f, AMItems.getBasicSettings()));
-	public static RegistrySupplier<Item> METITE_MINING_TOOL = register("metite_mining_tool", () -> new DynamicToolItemItem(METITE_SHOVEL.get(), METITE_PICKAXE.get(), AMToolMaterials.METITE, AMItems.getBasicSettings()));
-	public static RegistrySupplier<Item> METITE_MATTOCK = register("metite_mattock", () -> new DynamicToolItemItem(METITE_HOE.get(), METITE_AXE.get(), AMToolMaterials.METITE, AMItems.getBasicSettings()));
+	public static RegistrySupplier<Item> METITE_MINING_TOOL = register("metite_mining_tool", () -> new DynamicToolItem(METITE_SHOVEL.get(), METITE_PICKAXE.get(), AMToolMaterials.METITE, AMItems.getBasicSettings()));
+	public static RegistrySupplier<Item> METITE_MATTOCK = register("metite_mattock", () -> new DynamicToolItem(METITE_HOE.get(), METITE_AXE.get(), AMToolMaterials.METITE, AMItems.getBasicSettings()));
 	// TODO: Reimplement this on Forge & Fabric modules!
 	public static RegistrySupplier<Item> METITE_HAMMER = null;
 	// TODO: Reimplement this on Forge & Fabric modules!
@@ -291,8 +292,8 @@ public class AMItems {
 	public static RegistrySupplier<ShovelItem> ASTERITE_SHOVEL = register("asterite_shovel", () -> new ShovelItem(AMToolMaterials.ASTERITE, 1.5f, -3.0f, AMItems.getBasicSettings()));
 	public static RegistrySupplier<HoeItem> ASTERITE_HOE = register("asterite_hoe", () -> HoeItemAccessor.init(AMToolMaterials.ASTERITE, -5, 0f, AMItems.getBasicSettings()));
 	public static RegistrySupplier<Item> ASTERITE_SWORD = register("asterite_sword", () -> new SwordItem(AMToolMaterials.ASTERITE, 3, -2.4f, AMItems.getBasicSettings()));
-	public static RegistrySupplier<Item> ASTERITE_MINING_TOOL = register("asterite_mining_tool", () -> new DynamicToolItemItem(ASTERITE_SHOVEL.get(), ASTERITE_PICKAXE.get(), AMToolMaterials.ASTERITE, AMItems.getBasicSettings()));
-	public static RegistrySupplier<Item> ASTERITE_MATTOCK = register("asterite_mattock", () -> new DynamicToolItemItem(ASTERITE_HOE.get(), ASTERITE_AXE.get(), AMToolMaterials.ASTERITE, AMItems.getBasicSettings()));
+	public static RegistrySupplier<Item> ASTERITE_MINING_TOOL = register("asterite_mining_tool", () -> new DynamicToolItem(ASTERITE_SHOVEL.get(), ASTERITE_PICKAXE.get(), AMToolMaterials.ASTERITE, AMItems.getBasicSettings()));
+	public static RegistrySupplier<Item> ASTERITE_MATTOCK = register("asterite_mattock", () -> new DynamicToolItem(ASTERITE_HOE.get(), ASTERITE_AXE.get(), AMToolMaterials.ASTERITE, AMItems.getBasicSettings()));
 	// TODO: Reimplement this on Forge & Fabric modules!
 	public static RegistrySupplier<Item> ASTERITE_HAMMER = null;
 	// TODO: Reimplement this on Forge & Fabric modules!
@@ -303,8 +304,8 @@ public class AMItems {
 	public static RegistrySupplier<ShovelItem> STELLUM_SHOVEL = register("stellum_shovel", () -> new ShovelItem(AMToolMaterials.STELLUM, 1.5f, -3.0f, AMItems.getBasicSettings().fireproof()));
 	public static RegistrySupplier<HoeItem> STELLUM_HOE = register("stellum_hoe", () -> HoeItemAccessor.init(AMToolMaterials.STELLUM, -6, 0f, AMItems.getBasicSettings().fireproof()));
 	public static RegistrySupplier<Item> STELLUM_SWORD = register("stellum_sword", () -> new SwordItem(AMToolMaterials.STELLUM, 3, -2.4f, AMItems.getBasicSettings().fireproof()));
-	public static RegistrySupplier<Item> STELLUM_MINING_TOOL = register("stellum_mining_tool", () -> new DynamicToolItemItem(STELLUM_SHOVEL.get(), STELLUM_PICKAXE.get(), AMToolMaterials.STELLUM, AMItems.getBasicSettings().fireproof()));
-	public static RegistrySupplier<Item> STELLUM_MATTOCK = register("stellum_mattock", () -> new DynamicToolItemItem(STELLUM_HOE.get(), STELLUM_AXE.get(), AMToolMaterials.STELLUM, AMItems.getBasicSettings().fireproof()));
+	public static RegistrySupplier<Item> STELLUM_MINING_TOOL = register("stellum_mining_tool", () -> new DynamicToolItem(STELLUM_SHOVEL.get(), STELLUM_PICKAXE.get(), AMToolMaterials.STELLUM, AMItems.getBasicSettings().fireproof()));
+	public static RegistrySupplier<Item> STELLUM_MATTOCK = register("stellum_mattock", () -> new DynamicToolItem(STELLUM_HOE.get(), STELLUM_AXE.get(), AMToolMaterials.STELLUM, AMItems.getBasicSettings().fireproof()));
 	// TODO: Reimplement this on Forge & Fabric modules!
 	public static RegistrySupplier<Item> STELLUM_HAMMER = null;
 	// TODO: Reimplement this on Forge & Fabric modules!
@@ -315,8 +316,8 @@ public class AMItems {
 	public static RegistrySupplier<ShovelItem> GALAXIUM_SHOVEL = register("galaxium_shovel", () -> new ShovelItem(AMToolMaterials.GALAXIUM, 1.5f, -3.0f, AMItems.getBasicSettings()));
 	public static RegistrySupplier<HoeItem> GALAXIUM_HOE = register("galaxium_hoe", () -> HoeItemAccessor.init(AMToolMaterials.GALAXIUM, -5, 0f, AMItems.getBasicSettings()));
 	public static RegistrySupplier<Item> GALAXIUM_SWORD = register("galaxium_sword", () -> new SwordItem(AMToolMaterials.GALAXIUM, 3, -2.4f, AMItems.getBasicSettings()));
-	public static RegistrySupplier<Item> GALAXIUM_MINING_TOOL = register("galaxium_mining_tool", () -> new DynamicToolItemItem(GALAXIUM_SHOVEL.get(), GALAXIUM_PICKAXE.get(), AMToolMaterials.GALAXIUM, AMItems.getBasicSettings()));
-	public static RegistrySupplier<Item> GALAXIUM_MATTOCK = register("galaxium_mattock", () -> new DynamicToolItemItem(GALAXIUM_HOE.get(), GALAXIUM_AXE.get(), AMToolMaterials.GALAXIUM, AMItems.getBasicSettings()));
+	public static RegistrySupplier<Item> GALAXIUM_MINING_TOOL = register("galaxium_mining_tool", () -> new DynamicToolItem(GALAXIUM_SHOVEL.get(), GALAXIUM_PICKAXE.get(), AMToolMaterials.GALAXIUM, AMItems.getBasicSettings()));
+	public static RegistrySupplier<Item> GALAXIUM_MATTOCK = register("galaxium_mattock", () -> new DynamicToolItem(GALAXIUM_HOE.get(), GALAXIUM_AXE.get(), AMToolMaterials.GALAXIUM, AMItems.getBasicSettings()));
 	// TODO: Reimplement this on Forge & Fabric modules!
 	public static RegistrySupplier<Item> GALAXIUM_HAMMER = null;
 	// TODO: Reimplement this on Forge & Fabric modules!
@@ -327,8 +328,8 @@ public class AMItems {
 	public static RegistrySupplier<ShovelItem> UNIVITE_SHOVEL = register("univite_shovel", () -> new ShovelItem(AMToolMaterials.UNIVITE, 1.5f, -3.0f, AMItems.getBasicSettings().fireproof()));
 	public static RegistrySupplier<HoeItem> UNIVITE_HOE = register("univite_hoe", () -> HoeItemAccessor.init(AMToolMaterials.UNIVITE, -6, 0f, AMItems.getBasicSettings().fireproof()));
 	public static RegistrySupplier<Item> UNIVITE_SWORD = register("univite_sword", () -> new SwordItem(AMToolMaterials.UNIVITE, 3, -2.4f, AMItems.getBasicSettings().fireproof()));
-	public static RegistrySupplier<Item> UNIVITE_MINING_TOOL = register("univite_mining_tool", () -> new DynamicToolItemItem(UNIVITE_SHOVEL.get(), UNIVITE_PICKAXE.get(), AMToolMaterials.UNIVITE, AMItems.getBasicSettings().fireproof()));
-	public static RegistrySupplier<Item> UNIVITE_MATTOCK = register("univite_mattock", () -> new DynamicToolItemItem(UNIVITE_HOE.get(), UNIVITE_AXE.get(), AMToolMaterials.UNIVITE, AMItems.getBasicSettings().fireproof()));
+	public static RegistrySupplier<Item> UNIVITE_MINING_TOOL = register("univite_mining_tool", () -> new DynamicToolItem(UNIVITE_SHOVEL.get(), UNIVITE_PICKAXE.get(), AMToolMaterials.UNIVITE, AMItems.getBasicSettings().fireproof()));
+	public static RegistrySupplier<Item> UNIVITE_MATTOCK = register("univite_mattock", () -> new DynamicToolItem(UNIVITE_HOE.get(), UNIVITE_AXE.get(), AMToolMaterials.UNIVITE, AMItems.getBasicSettings().fireproof()));
 	// TODO: Reimplement this on Forge & Fabric modules!
 	public static RegistrySupplier<Item> UNIVITE_HAMMER = null;
 	// TODO: Reimplement this on Forge & Fabric modules!
@@ -339,8 +340,8 @@ public class AMItems {
 	public static RegistrySupplier<ShovelItem> METEORIC_STEEL_SHOVEL = register("meteoric_steel_shovel", () -> new ShovelItem(AMToolMaterials.METEORIC_STEEL, 1.5f, -3.0f, AMItems.getBasicSettings()));
 	public static RegistrySupplier<HoeItem> METEORIC_STEEL_HOE = register("meteoric_steel_hoe", () -> HoeItemAccessor.init(AMToolMaterials.METEORIC_STEEL, -3, 0f, AMItems.getBasicSettings()));
 	public static RegistrySupplier<Item> METEORIC_STEEL_SWORD = register("meteoric_steel_sword", () -> new SwordItem(AMToolMaterials.METEORIC_STEEL, 3, -2.4f, AMItems.getBasicSettings()));
-	public static RegistrySupplier<Item> METEORIC_STEEL_MINING_TOOL = register("meteoric_steel_mining_tool", () -> new DynamicToolItemItem(METEORIC_STEEL_SHOVEL.get(), METEORIC_STEEL_PICKAXE.get(), AMToolMaterials.METEORIC_STEEL, AMItems.getBasicSettings()));
-	public static RegistrySupplier<Item> METEORIC_STEEL_MATTOCK = register("meteoric_steel_mattock", () -> new DynamicToolItemItem(METEORIC_STEEL_HOE.get(), METEORIC_STEEL_AXE.get(), AMToolMaterials.METEORIC_STEEL, AMItems.getBasicSettings()));
+	public static RegistrySupplier<Item> METEORIC_STEEL_MINING_TOOL = register("meteoric_steel_mining_tool", () -> new DynamicToolItem(METEORIC_STEEL_SHOVEL.get(), METEORIC_STEEL_PICKAXE.get(), AMToolMaterials.METEORIC_STEEL, AMItems.getBasicSettings()));
+	public static RegistrySupplier<Item> METEORIC_STEEL_MATTOCK = register("meteoric_steel_mattock", () -> new DynamicToolItem(METEORIC_STEEL_HOE.get(), METEORIC_STEEL_AXE.get(), AMToolMaterials.METEORIC_STEEL, AMItems.getBasicSettings()));
 	// TODO: Reimplement this on Forge & Fabric modules!
 	public static RegistrySupplier<Item> METEORIC_STEEL_HAMMER = null;
 	// TODO: Reimplement this on Forge & Fabric modules!
@@ -453,7 +454,12 @@ public class AMItems {
 	public static RegistrySupplier<Item> GRAVITY_GAUNTLET = register("gravity_gauntlet", () -> new GravityGauntletItem(getBasicSettings().maxCount(1), AMConfig.get().gravityGauntletEnergy));
 	
 	public static void init() {
+		postInit();
+	}
 	
+	@ExpectPlatform
+	public static void postInit() {
+		throw new AssertionError();
 	}
 
 	/**

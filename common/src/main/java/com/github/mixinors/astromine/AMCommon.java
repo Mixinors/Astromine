@@ -27,7 +27,6 @@ package com.github.mixinors.astromine;
 import com.github.mixinors.astromine.registry.common.*;
 import me.shedaniel.architectury.registry.Registries;
 import me.shedaniel.architectury.registry.Registry;
-import net.fabricmc.api.ModInitializer;
 
 import net.minecraft.util.Identifier;
 
@@ -62,10 +61,10 @@ public class AMCommon {
 		AMIdentifierFixes.init();
 		AMDimensions.init();
 		AMFeatures.init();
-		AMItems.init();
 		AMBlocks.init();
 		AMScreenHandlers.init();
 		AMEntityTypes.init();
+		AMItems.init();
 		AMNetworkTypes.init();
 		AMPotions.init();
 		AMBiomeSources.init();
@@ -75,7 +74,7 @@ public class AMCommon {
 		AMChunkGenerators.init();
 		AMGravities.init();
 		AMDimensionLayers.init();
-		AMCallbacks.init();
+		AMEvents.init();
 		AMRecipeSerializers.init();
 		AMCommands.init();
 		AMAtmospheres.init();

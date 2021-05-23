@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.widget.blade;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.techreborn.common.util.ClientUtils;
+import com.github.mixinors.astromine.common.util.ClientUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -43,9 +43,9 @@ import net.minecraft.util.registry.Registry;
 
 import com.github.mixinors.astromine.client.BaseRenderer;
 import com.github.mixinors.astromine.client.render.sprite.SpriteRenderer;
-import com.github.mixinors.astromine.cardinalcomponents.common.component.base.FluidComponent;
-import com.github.mixinors.astromine.techreborn.common.util.FluidUtils;
-import com.github.mixinors.astromine.techreborn.common.util.TextUtils;
+import com.github.mixinors.astromine.common.component.base.FluidComponent;
+import com.github.mixinors.astromine.common.util.FluidUtils;
+import com.github.mixinors.astromine.common.util.TextUtils;
 import com.github.vini2003.blade.client.utilities.Layers;
 import com.github.vini2003.blade.common.widget.base.ButtonWidget;
 import org.jetbrains.annotations.NotNull;

@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.mixin.common;
 
-import com.github.mixinors.astromine.cardinalcomponents.common.component.base.AtmosphereComponent;
+import com.github.mixinors.astromine.common.component.base.AtmosphereComponent;
 import com.github.mixinors.astromine.registry.common.AMNetworks;
 
 import me.shedaniel.architectury.networking.NetworkManager;

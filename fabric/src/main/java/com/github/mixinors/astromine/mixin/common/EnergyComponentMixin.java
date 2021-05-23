@@ -1,7 +1,7 @@
 package com.github.mixinors.astromine.mixin.common;
 
-import com.github.mixinors.astromine.techreborn.common.component.general.TREnergyComponent;
-import com.github.mixinors.astromine.cardinalcomponents.common.component.base.EnergyComponent;
+import com.github.mixinors.astromine.compat.techreborn.common.component.general.TREnergyComponent;
+import com.github.mixinors.astromine.common.component.base.EnergyComponent;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

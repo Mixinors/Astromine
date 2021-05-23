@@ -2,7 +2,8 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.registry.AsteroidOreRegistry;
-import com.github.mixinors.astromine.techreborn.common.util.data.Range;
+import com.github.mixinors.astromine.common.util.data.Range;
+import me.shedaniel.architectury.annotations.ExpectPlatform;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
@@ -43,5 +44,12 @@ public class AMOres {
 		AsteroidOreRegistry.INSTANCE.register(Range.of(AMConfig.get().asteroidAsteriteOreMinimumRange, AMConfig.get().asteroidAsteriteOreMaximumRange), Range.of(AMConfig.get().asteroidAsteriteOreMinimumSize, AMConfig.get().asteroidAsteriteOreMaximumSize), AMBlocks.ASTEROID_ASTERITE_ORE.get());
 		AsteroidOreRegistry.INSTANCE.register(Range.of(AMConfig.get().asteroidStellumOreMinimumRange, AMConfig.get().asteroidStellumOreMaximumRange), Range.of(AMConfig.get().asteroidStellumOreMinimumSize, AMConfig.get().asteroidStellumOreMaximumSize), AMBlocks.ASTEROID_STELLUM_ORE.get());
 		AsteroidOreRegistry.INSTANCE.register(Range.of(AMConfig.get().asteroidGalaxiumOreMinimumRange, AMConfig.get().asteroidGalaxiumOreMaximumRange), Range.of(AMConfig.get().asteroidGalaxiumOreMinimumSize, AMConfig.get().asteroidGalaxiumOreMaximumSize), AMBlocks.ASTEROID_GALAXIUM_ORE.get());
+		
+		postInit();
+	}
+	
+	@ExpectPlatform
+	public static void postInit() {
+		throw new AssertionError();
 	}
 }

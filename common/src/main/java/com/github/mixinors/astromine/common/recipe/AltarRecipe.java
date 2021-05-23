@@ -38,8 +38,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.techreborn.common.util.IngredientUtils;
-import com.github.mixinors.astromine.techreborn.common.util.StackUtils;
+import com.github.mixinors.astromine.common.util.IngredientUtils;
+import com.github.mixinors.astromine.common.util.StackUtils;
 import com.github.mixinors.astromine.common.block.entity.AltarBlockEntity;
 
 import com.google.common.collect.Lists;

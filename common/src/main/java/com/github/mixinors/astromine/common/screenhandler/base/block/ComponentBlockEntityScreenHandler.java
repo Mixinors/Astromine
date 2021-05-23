@@ -24,11 +24,11 @@
 
 package com.github.mixinors.astromine.common.screenhandler.base.block;
 
-import com.github.mixinors.astromine.cardinalcomponents.common.component.base.TransferComponent;
-import com.github.mixinors.astromine.techreborn.common.component.general.provider.EnergyComponentProvider;
-import com.github.mixinors.astromine.techreborn.common.component.general.provider.FluidComponentProvider;
-import com.github.mixinors.astromine.techreborn.common.component.general.provider.ItemComponentProvider;
-import com.github.mixinors.astromine.techreborn.common.util.MirrorUtils;
+import com.github.mixinors.astromine.common.component.base.TransferComponent;
+import com.github.mixinors.astromine.common.component.general.provider.EnergyComponentProvider;
+import com.github.mixinors.astromine.common.component.general.provider.FluidComponentProvider;
+import com.github.mixinors.astromine.common.component.general.provider.ItemComponentProvider;
+import com.github.mixinors.astromine.common.util.MirrorUtils;
 import com.github.mixinors.astromine.common.widget.blade.TransferTypeSelectorButtonWidget;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.minecraft.entity.player.PlayerEntity;
@@ -40,7 +40,7 @@ import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.mixinors.astromine.common.block.entity.base.ComponentBlockEntity;
-import com.github.mixinors.astromine.techreborn.common.component.general.miscellaneous.IdentifiableComponent;
+import com.github.mixinors.astromine.common.component.general.miscellaneous.IdentifiableComponent;
 import com.github.mixinors.astromine.common.widget.blade.RedstoneWidget;
 import com.github.vini2003.blade.common.collection.TabWidgetCollection;
 import com.github.vini2003.blade.common.miscellaneous.Position;

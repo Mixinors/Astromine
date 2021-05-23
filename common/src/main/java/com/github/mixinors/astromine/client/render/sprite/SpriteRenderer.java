@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.client.render.sprite;
 
-import com.github.mixinors.astromine.techreborn.common.util.ClientUtils;
+import com.github.mixinors.astromine.common.util.ClientUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 

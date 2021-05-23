@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.item;
 
-import com.github.mixinors.astromine.techreborn.common.util.ClientUtils;
+import com.github.mixinors.astromine.common.util.ClientUtils;
 import com.github.mixinors.astromine.mixin.common.RenderPhaseAccessor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

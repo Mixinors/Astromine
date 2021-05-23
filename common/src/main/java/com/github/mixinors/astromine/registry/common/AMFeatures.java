@@ -26,7 +26,9 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.world.feature.*;
+import me.shedaniel.architectury.annotations.ExpectPlatform;
 import me.shedaniel.architectury.registry.RegistrySupplier;
+import me.shedaniel.architectury.targets.ArchitecturyTarget;
 import net.minecraft.structure.StructurePieceType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -51,7 +53,12 @@ public class AMFeatures {
 	public static final Identifier ASTROMINE_BIOME_MODIFICATIONS = AMCommon.id("biome_modifications");
 	
 	public static void init() {
-
+		postInit();
+	}
+	
+	@ExpectPlatform
+	public static void postInit() {
+		throw new AssertionError();
 	}
 	
 	public static <T extends FeatureConfig> RegistrySupplier<Feature<T>> registerFeature(Identifier id, Supplier<Feature<T>> feature) {

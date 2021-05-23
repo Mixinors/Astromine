@@ -32,8 +32,8 @@ import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-import com.github.mixinors.astromine.techreborn.common.util.StringUtils;
-import com.github.mixinors.astromine.techreborn.common.volume.fluid.FluidVolume;
+import com.github.mixinors.astromine.common.util.StringUtils;
+import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import io.netty.buffer.ByteBuf;
 
 import java.util.Arrays;

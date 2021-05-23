@@ -24,16 +24,15 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.cardinalcomponents.common.component.base.AtmosphereComponent;
+import com.github.mixinors.astromine.common.component.base.AtmosphereComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.server.world.ServerWorld;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
-import com.github.mixinors.astromine.cardinalcomponents.common.component.base.EnergyComponent;
-import com.github.mixinors.astromine.cardinalcomponents.common.component.base.FluidComponent;
-import com.github.mixinors.astromine.cardinalcomponents.common.component.base.AtmosphereComponentImpl;
-import com.github.mixinors.astromine.techreborn.common.volume.fluid.FluidVolume;
+import com.github.mixinors.astromine.common.component.base.EnergyComponent;
+import com.github.mixinors.astromine.common.component.base.FluidComponent;
+import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergyConsumedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;

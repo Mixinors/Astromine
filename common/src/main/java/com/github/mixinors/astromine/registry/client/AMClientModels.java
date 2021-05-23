@@ -25,8 +25,9 @@
 package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.techreborn.common.util.ClientUtils;
+import com.github.mixinors.astromine.common.util.ClientUtils;
 
+import me.shedaniel.architectury.annotations.ExpectPlatform;
 import net.minecraft.client.render.model.json.JsonUnbakedModel;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.ModelIdentifier;
@@ -56,6 +57,11 @@ public class AMClientModels {
 	});
 	
 	public static void init() {
-		throw new UnsupportedOperationException("Cannot call this method method; must @Overwrite!");
+		postInit();
+	}
+	
+	@ExpectPlatform
+	public static void postInit() {
+		throw new AssertionError();
 	}
 }

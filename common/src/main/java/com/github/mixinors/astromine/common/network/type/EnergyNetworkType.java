@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.network.type;
 
-import com.github.mixinors.astromine.cardinalcomponents.common.component.base.EnergyComponent;
+import com.github.mixinors.astromine.common.component.base.EnergyComponent;
 
 import com.github.mixinors.astromine.common.network.NetworkInstance;
 import com.github.mixinors.astromine.common.network.NetworkNode;

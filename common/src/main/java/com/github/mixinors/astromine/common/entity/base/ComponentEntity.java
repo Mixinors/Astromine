@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.entity.base;
 
-import com.github.mixinors.astromine.cardinalcomponents.common.component.Component;
+import com.github.mixinors.astromine.common.component.Component;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundTag;

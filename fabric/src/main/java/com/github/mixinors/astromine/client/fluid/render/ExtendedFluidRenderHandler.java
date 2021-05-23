@@ -5,7 +5,6 @@ import net.minecraft.client.texture.Sprite;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockRenderView;
-import org.jetbrains.annotations.Nullable;
 
 public class ExtendedFluidRenderHandler implements FluidRenderHandler {
 	private final Sprite[] sprites;

@@ -26,9 +26,6 @@ package com.github.mixinors.astromine;
 
 import net.fabricmc.api.DedicatedServerModInitializer;
 
-public class AMDedicated implements DedicatedServerModInitializer {
-	@Override
-	public void onInitializeServer() {
-
-	}
+public class AMDedicated {
+	public static void init() {}
 }

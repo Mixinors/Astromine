@@ -25,14 +25,14 @@
 package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.client.render.sky.SpaceSkyProperties;
-import com.github.mixinors.astromine.cardinalcomponents.common.component.base.EnergyComponent;
+import com.github.mixinors.astromine.common.component.base.EnergyComponent;
 import com.github.mixinors.astromine.common.event.SkyPropertiesEvent;
 import com.github.mixinors.astromine.common.item.HolographicConnectorItem;
 import com.github.mixinors.astromine.common.item.SpaceSuitItem;
 import com.github.mixinors.astromine.common.network.type.EnergyNetworkType;
-import com.github.mixinors.astromine.techreborn.common.util.TextUtils;
-import com.github.mixinors.astromine.techreborn.common.volume.energy.EnergyVolume;
-import com.github.mixinors.astromine.techreborn.common.volume.fluid.FluidVolume;
+import com.github.mixinors.astromine.common.util.TextUtils;
+import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
+import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import com.github.mixinors.astromine.registry.common.AMDimensions;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.google.common.collect.Lists;
@@ -45,7 +45,7 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
-import com.github.mixinors.astromine.cardinalcomponents.common.component.base.FluidComponent;
+import com.github.mixinors.astromine.common.component.base.FluidComponent;
 import com.github.mixinors.astromine.common.item.base.EnergyVolumeItem;
 import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
 import net.minecraft.util.Pair;

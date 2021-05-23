@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.common.widget.blade;
 
-import com.github.mixinors.astromine.techreborn.common.util.ClientUtils;
-import com.github.mixinors.astromine.techreborn.common.util.TextUtils;
+import com.github.mixinors.astromine.common.util.ClientUtils;
+import com.github.mixinors.astromine.common.util.TextUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 

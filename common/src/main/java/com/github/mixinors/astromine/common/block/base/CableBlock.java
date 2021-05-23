@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.base;
 
-import com.github.mixinors.astromine.cardinalcomponents.common.component.base.NetworkComponent;
+import com.github.mixinors.astromine.common.component.base.NetworkComponent;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -45,11 +45,10 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.cardinalcomponents.common.component.base.NetworkComponentImpl;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.registry.NetworkMemberRegistry;
-import com.github.mixinors.astromine.techreborn.common.util.NetworkUtils;
-import com.github.mixinors.astromine.techreborn.common.util.data.position.WorldPos;
+import com.github.mixinors.astromine.common.util.NetworkUtils;
+import com.github.mixinors.astromine.common.util.data.position.WorldPos;
 
 import java.util.Map;
 

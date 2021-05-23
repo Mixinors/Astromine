@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.client.model;
 
-import com.github.mixinors.astromine.techreborn.common.util.ClientUtils;
+import com.github.mixinors.astromine.common.util.ClientUtils;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.SlimeEntityModel;
 import net.minecraft.client.render.model.json.ModelTransformation;

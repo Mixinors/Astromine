@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.fluid;
 
 import com.github.mixinors.astromine.mixin.common.FluidBlockAccessor;
+import me.shedaniel.architectury.annotations.ExpectPlatform;
 import me.shedaniel.architectury.platform.Platform;
 import me.shedaniel.architectury.registry.RegistrySupplier;
 import net.fabricmc.api.EnvType;
@@ -51,14 +52,12 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 
-import com.github.mixinors.astromine.techreborn.common.util.ClientUtils;
+import com.github.mixinors.astromine.common.util.ClientUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMFluids;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.vini2003.blade.common.miscellaneous.Color;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.concurrent.Flow;
 
 /**
  * A class representing a {@link Fluid} with
@@ -66,8 +65,9 @@ import java.util.concurrent.Flow;
  */
 public abstract class ExtendedFluid extends FlowableFluid {
 	// TODO: Reimplement this on Forge module!
-	private static Material proxy_getMaterial() {
-		throw new UnsupportedOperationException("Cannot call this method method; must @Overwrite!");
+	@ExpectPlatform
+	private static Material getMaterial() {
+		throw new AssertionError();
 	}
 
 	private final int fogColor;
@@ -306,7 +306,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 			still.get().setStill(still);
 			this.still = still;
 
-			var block = AMBlocks.register(name, () -> FluidBlockAccessor.init(still.get(), AbstractBlock.Settings.of(proxy_getMaterial()).noCollision().strength(100.0F).dropsNothing()));
+			var block = AMBlocks.register(name, () -> FluidBlockAccessor.init(still.get(), AbstractBlock.Settings.of(getMaterial()).noCollision().strength(100.0F).dropsNothing()));
 
 			var bucket = AMItems.register(name + "_bucket", () -> new BucketItem(still.get(), (new Item.Settings()).recipeRemainder(Items.BUCKET).maxCount(1).group(group)));
 

@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.mixin.client;
 
-import com.github.mixinors.astromine.techreborn.common.util.ClientUtils;
+import com.github.mixinors.astromine.common.util.ClientUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -55,7 +55,7 @@ import com.github.mixinors.astromine.client.registry.SkyboxRegistry;
 import com.github.mixinors.astromine.client.render.layer.Layer;
 import com.github.mixinors.astromine.client.render.sky.skybox.Skybox;
 import com.github.mixinors.astromine.common.fluid.ExtendedFluid;
-import com.github.mixinors.astromine.techreborn.common.volume.fluid.FluidVolume;
+import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 
 @Mixin(WorldRenderer.class)

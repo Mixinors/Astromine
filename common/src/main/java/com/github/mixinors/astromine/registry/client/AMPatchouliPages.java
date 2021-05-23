@@ -24,13 +24,18 @@
 
 package com.github.mixinors.astromine.registry.client;
 
+import me.shedaniel.architectury.annotations.ExpectPlatform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
 public class AMPatchouliPages {
-	@Environment(EnvType.CLIENT)
 	public static void init() {
-		throw new UnsupportedOperationException("Cannot call this method method; must @Overwrite!");
+		postInit();
+	}
+	
+	@ExpectPlatform
+	public static void postInit() {
+		throw new AssertionError();
 	}
 }

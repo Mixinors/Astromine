@@ -24,6 +24,12 @@
 
 package com.github.mixinors.astromine.registry.common;
 
-public class AMContainersInfoHandlers {
+import me.shedaniel.architectury.annotations.ExpectPlatform;
+
+public class AMContainersInfoHandlers implements Runnable {
 	public static void init() {}
+	
+	@ExpectPlatform
+	@Override
+	public void run() {}
 }

@@ -29,7 +29,9 @@ import com.github.mixinors.astromine.common.entity.PrimitiveRocketEntity;
 import com.github.mixinors.astromine.common.entity.SpaceSlimeEntity;
 import com.github.mixinors.astromine.common.entity.SuperSpaceSlimeEntity;
 import com.github.mixinors.astromine.mixin.common.SpawnRestrictionAccessor;
+import me.shedaniel.architectury.annotations.ExpectPlatform;
 import me.shedaniel.architectury.registry.RegistrySupplier;
+import me.shedaniel.architectury.targets.ArchitecturyTarget;
 import net.minecraft.entity.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -49,7 +51,12 @@ public class AMEntityTypes {
 	public static RegistrySupplier<EntityType<SuperSpaceSlimeEntity>> SUPER_SPACE_SLIME = null;
 	
 	public static void init() {
-		SpawnRestrictionAccessor.callRegister(AMEntityTypes.SPACE_SLIME.get(), SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, SpaceSlimeEntity::canSpawnInDark);
+		postInit();
+	}
+	
+	@ExpectPlatform
+	public static void postInit() {
+		throw new AssertionError();
 	}
 
 	public static <T extends Entity> RegistrySupplier<EntityType<T>> registerBuilder(String id, Supplier<EntityType.Builder<T>> builder) {

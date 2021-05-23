@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.widget.blade;
 
-import com.github.mixinors.astromine.cardinalcomponents.common.component.base.TransferComponent;
+import com.github.mixinors.astromine.common.component.base.TransferComponent;
 import com.github.mixinors.astromine.registry.common.AMNetworks;
 import me.shedaniel.architectury.networking.NetworkManager;
 import net.fabricmc.api.EnvType;
@@ -41,7 +41,7 @@ import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.client.BaseRenderer;
 import com.github.mixinors.astromine.common.block.transfer.TransferType;
-import com.github.mixinors.astromine.techreborn.common.util.MirrorUtils;
+import com.github.mixinors.astromine.common.util.MirrorUtils;
 import com.github.vini2003.blade.common.widget.base.AbstractWidget;
 import io.netty.buffer.Unpooled;
 import org.jetbrains.annotations.NotNull;

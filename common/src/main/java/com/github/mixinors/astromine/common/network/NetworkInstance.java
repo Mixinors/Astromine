@@ -32,7 +32,7 @@ import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.registry.NetworkMemberRegistry;
 import com.github.mixinors.astromine.common.registry.NetworkTypeRegistry;
-import com.github.mixinors.astromine.techreborn.common.util.data.position.WorldPos;
+import com.github.mixinors.astromine.common.util.data.position.WorldPos;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.Sets;

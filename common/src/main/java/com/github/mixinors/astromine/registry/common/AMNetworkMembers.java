@@ -25,10 +25,12 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.techreborn.common.component.general.provider.EnergyComponentProvider;
-import com.github.mixinors.astromine.techreborn.common.component.general.provider.FluidComponentProvider;
-import com.github.mixinors.astromine.techreborn.common.component.general.provider.ItemComponentProvider;
+import com.github.mixinors.astromine.common.component.general.provider.EnergyComponentProvider;
+import com.github.mixinors.astromine.common.component.general.provider.FluidComponentProvider;
+import com.github.mixinors.astromine.common.component.general.provider.ItemComponentProvider;
 
+import me.shedaniel.architectury.annotations.ExpectPlatform;
+import me.shedaniel.architectury.targets.ArchitecturyTarget;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
@@ -39,7 +41,7 @@ import com.github.mixinors.astromine.common.network.NetworkMember;
 import com.github.mixinors.astromine.common.network.NetworkMemberType;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.registry.NetworkMemberRegistry;
-import com.github.mixinors.astromine.techreborn.common.util.data.position.WorldPos;
+import com.github.mixinors.astromine.common.util.data.position.WorldPos;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.Maps;
@@ -112,6 +114,13 @@ public class AMNetworkMembers {
 		// TODO: Reimplement this on Forge module!
 		
 		// RegistryEntryAddedCallback.event(Registry.BLOCK).register((index, identifier, block) -> acceptBlock(RegistryKey.of(Registry.BLOCK_KEY, identifier), block));
+		
+		postInit();
+	}
+	
+	@ExpectPlatform
+	public static void postInit() {
+		throw new AssertionError();
 	}
 
 	public static void process(RegistryKey<Block> id, Block block) {

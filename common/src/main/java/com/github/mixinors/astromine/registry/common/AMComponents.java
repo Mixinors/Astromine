@@ -25,6 +25,8 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
+import me.shedaniel.architectury.annotations.ExpectPlatform;
+import me.shedaniel.architectury.targets.ArchitecturyTarget;
 import net.minecraft.util.Identifier;
 
 public class AMComponents {
@@ -41,5 +43,12 @@ public class AMComponents {
 
 	public static final Identifier OXYGEN = AMCommon.id("oxygen");
 
-	public static void init() {}
+	public static void init() {
+		postInit();
+	}
+	
+	@ExpectPlatform
+	public static void postInit() {
+		throw new AssertionError();
+	}
 }

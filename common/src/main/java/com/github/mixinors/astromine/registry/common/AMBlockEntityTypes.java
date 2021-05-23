@@ -139,9 +139,7 @@ public class AMBlockEntityTypes {
 	
 	public static RegistrySupplier<BlockEntityType<DrainBlockEntity>> DRAIN = register("drain", DrainBlockEntity::new, AMBlocks.DRAIN);
 	
-	public static void init() {
-
-	}
+	public static void init() {}
 
 	/**
 	 * @param name

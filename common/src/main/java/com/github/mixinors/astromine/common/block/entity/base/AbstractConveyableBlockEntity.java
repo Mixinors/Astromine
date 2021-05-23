@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.common.block.entity.base;
 
-import com.github.mixinors.astromine.cardinalcomponents.common.component.base.ItemComponent;
-import com.github.mixinors.astromine.techreborn.common.util.StackUtils;
+import com.github.mixinors.astromine.common.component.base.ItemComponent;
+import com.github.mixinors.astromine.common.util.StackUtils;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;

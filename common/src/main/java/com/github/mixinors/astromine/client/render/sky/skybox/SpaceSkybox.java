@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.client.render.sky.skybox;
 
-import com.github.mixinors.astromine.techreborn.common.util.ClientUtils;
+import com.github.mixinors.astromine.common.util.ClientUtils;
 import net.minecraft.client.options.Option;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;

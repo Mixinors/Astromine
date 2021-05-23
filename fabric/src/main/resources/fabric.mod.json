@@ -34,7 +34,7 @@
       "com.github.mixinors.astromine.AMFDedicated"
     ],
     "modmenu": [
-      "com.github.mixinors.astromine.modmenu.MMPlugin"
+      "com.github.mixinors.astromine.fabric.compat.modmenu.MMPlugin"
     ],
     "cardinal-components-item": [
       "com.github.mixinors.astromine.registry.common.AMComponents"
@@ -52,7 +52,7 @@
       "com.github.mixinors.astromine.registry.common.AMComponents"
     ],
     "rei_plugins": [
-      "com.github.mixinors.astromine.roughlyenoughitems.client.REIPlugin"
+      "com.github.mixinors.astromine.fabric.compat.roughlyenoughitems.client.REIPlugin"
     ],
     "rei_containers": [
       "com.github.mixinors.astromine.registry.common.AMContainersInfoHandlers"

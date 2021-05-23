@@ -24,9 +24,9 @@
 
 package com.github.mixinors.astromine.common.network.type;
 
-import com.github.mixinors.astromine.cardinalcomponents.common.component.base.TransferComponent;
-import com.github.mixinors.astromine.cardinalcomponents.common.component.base.FluidComponent;
-import com.github.mixinors.astromine.techreborn.common.volume.fluid.FluidVolume;
+import com.github.mixinors.astromine.common.component.base.TransferComponent;
+import com.github.mixinors.astromine.common.component.base.FluidComponent;
+import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import net.minecraft.block.entity.BlockEntity;
 
 import com.github.mixinors.astromine.common.block.transfer.TransferType;
@@ -35,7 +35,7 @@ import com.github.mixinors.astromine.common.network.NetworkMember;
 import com.github.mixinors.astromine.common.network.NetworkMemberNode;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.registry.NetworkMemberRegistry;
-import com.github.mixinors.astromine.techreborn.common.util.data.position.WorldPos;
+import com.github.mixinors.astromine.common.util.data.position.WorldPos;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.Direction;
 

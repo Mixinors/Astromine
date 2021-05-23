@@ -36,8 +36,7 @@ import java.util.function.Supplier;
 public class AMAttributes {
 	public static RegistrySupplier<EntityAttribute> GRAVITY_MULTIPLIER = register(AMCommon.id("gravity_multiplier"), () -> new ClampedEntityAttribute("attribute.name.generic.astromine.gravity_multiplier", 1d, -100d, 100d));
 
-	public static void init() {
-	}
+	public static void init() {}
 
 	public static RegistrySupplier<EntityAttribute> register(Identifier id, Supplier<EntityAttribute> supplier) {
 		return AMCommon.registry(Registry.ATTRIBUTE_KEY).registerSupplied(id, supplier);

@@ -49,8 +49,9 @@ public class AMArmorMaterials {
 	public static final ArmorMaterial GALAXIUM = register("galaxium", 44, new int[]{ 4, 8, 9, 4 }, 18, AMSoundEvents.GALAXIUM_ARMOR_EQUIPPED.get(), 4.5f, 0.1f, () -> Ingredient.fromTag(TagHooks.getItemOptional(Identifier.tryParse("c:galaxiums"))));
 	public static final ArmorMaterial UNIVITE = register("univite", 47, new int[]{ 5, 8, 9, 5 }, 22, AMSoundEvents.UNIVITE_ARMOR_EQUIPPED.get(), 5.0f, 0.1f, () -> Ingredient.fromTag(TagHooks.getItemOptional(Identifier.tryParse("c:univite_ingots"))));
 	
-	
 	public static final ArmorMaterial METEORIC_STEEL = register("meteoric_steel", 20, new int[]{ 3, 5, 7, 2 }, 10, AMSoundEvents.METEORIC_STEEL_ARMOR_EQUIPPED.get(), 0.4f, 0.0f, () -> Ingredient.fromTag(TagHooks.getItemOptional(Identifier.tryParse("c:meteoric_steel_ingots"))));
+	
+	public static void init() {}
 	
 	public static ArmorMaterial register(String name, int durabilityMultiplier, int[] protectionAmounts, int enchantability, SoundEvent equipSound, float toughness, float knockbackResistance, Supplier<Ingredient> supplier) {
 		return new ArmorMaterialImpl(name, durabilityMultiplier, protectionAmounts, enchantability, equipSound, toughness, knockbackResistance, supplier);

@@ -60,7 +60,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 
-import com.github.mixinors.astromine.techreborn.common.util.VoxelShapeUtils;
+import com.github.mixinors.astromine.common.util.VoxelShapeUtils;
 
 public class AirlockBlock extends Block implements Waterloggable {
 	public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
