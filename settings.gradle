@@ -14,6 +14,5 @@ if (JavaVersion.current().ordinal() + 1 < 16) {
 include("common")
 include("fabric")
 include("forge")
-include("astromine-datagen-initializer")
 
 rootProject.name = "astromine"

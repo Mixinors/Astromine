@@ -1,0 +1,35 @@
+modLoader = "javafml"
+loaderVersion = "[35,)"
+#issueTrackerURL = ""
+license = "MIT"
+
+[[mods]]
+modId = "astromine"
+version = "${version}"
+displayName = "Astromine"
+authors = "vini2003, shedaniel, Shnupbups"
+description = '''
+A space-themed tech mod with exploration and progression in mind.
+'''
+#logoFile = ""
+
+[[dependencies.astromine]]
+modId = "forge"
+mandatory = true
+versionRange = "[36,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.astromine]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.16.5,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.astromine]]
+modId = "architectury"
+mandatory = true
+versionRange = "[1.8.131,)"
+ordering = "AFTER"
+side = "BOTH"
