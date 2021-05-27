@@ -21,6 +21,9 @@ dependencies {
 
     // Architectury
     modApi "me.shedaniel:architectury-forge:${rootProject.architectury_version}"
+    
+    // Cloth Config
+    modImplementation "me.shedaniel.cloth:cloth-config-forge:${project.cloth_config_version}"
 
     implementation(project(path: ":common")) {
         transitive = false
@@ -67,9 +70,6 @@ publishing {
 
             artifact(remapJar) {
                 classifier null
-            }
-            artifact(sourcesJar) {
-                builtBy remapSourcesJar
             }
         }
     }

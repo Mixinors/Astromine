@@ -36,7 +36,7 @@ import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 public class AMConfig implements ConfigData {
 	@ConfigEntry.Gui.Excluded
 	public static AMConfig INSTANCE;
-
+	
 	@Comment("Whether Nuclear Warheads are enabled.")
 	public boolean nuclearWarheadEnabled = true;
 

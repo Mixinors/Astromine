@@ -24,6 +24,8 @@
 
 package com.github.mixinors.astromine.common.block.base;
 
+import com.github.mixinors.astromine.common.item.base.EnergyItem;
+import com.github.mixinors.astromine.common.item.base.FluidItem;
 import me.shedaniel.architectury.registry.MenuRegistry;
 import me.shedaniel.architectury.registry.menu.ExtendedMenuProvider;
 
@@ -57,8 +59,6 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.block.redstone.ComparatorMode;
-import com.github.mixinors.astromine.common.item.base.EnergyVolumeItem;
-import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
 
 import java.util.List;
 
@@ -89,7 +89,7 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if (!world.isClient && (!(player.getStackInHand(hand).getItem() instanceof BucketItem) && !(player.getStackInHand(hand).getItem() instanceof EnergyVolumeItem) && !(player.getStackInHand(hand).getItem() instanceof FluidVolumeItem)) && hasScreenHandler()) {
+		if (!world.isClient && (!(player.getStackInHand(hand).getItem() instanceof BucketItem) && !(player.getStackInHand(hand).getItem() instanceof EnergyItem) && !(player.getStackInHand(hand).getItem() instanceof FluidItem)) && hasScreenHandler()) {
 			MenuRegistry.openExtendedMenu((ServerPlayerEntity) player, createScreenHandlerFactory((ServerPlayerEntity) player, state, world, pos));
 
 			return ActionResult.CONSUME;

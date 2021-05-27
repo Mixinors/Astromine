@@ -37,13 +37,13 @@ import net.minecraft.item.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.item.base.EnergyVolumeItem;
+import com.github.mixinors.astromine.common.item.base.EnergyItem;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
-public class DrillItem extends EnergyVolumeItem implements Vanishable, EnchantableToolItem {
+public class DrillItem extends EnergyItem implements Vanishable, EnchantableToolItem {
 	private final ToolMaterial material;
 	private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
 	

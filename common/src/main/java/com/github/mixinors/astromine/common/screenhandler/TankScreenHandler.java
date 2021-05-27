@@ -31,7 +31,6 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.component.base.FluidComponent;
-import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
 import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityFluidItemScreenHandler;
 import com.github.mixinors.astromine.common.widget.blade.FluidFilterWidget;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;

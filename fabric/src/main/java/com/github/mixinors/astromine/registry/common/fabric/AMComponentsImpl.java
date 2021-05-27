@@ -4,8 +4,8 @@ import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.component.Component;
 import com.github.mixinors.astromine.common.component.base.*;
 import com.github.mixinors.astromine.common.entity.base.*;
-import com.github.mixinors.astromine.common.item.base.EnergyVolumeItem;
-import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
+import com.github.mixinors.astromine.common.item.base.EnergyItem;
+import com.github.mixinors.astromine.common.item.base.FluidItem;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import com.github.mixinors.astromine.compat.cardinalcomponents.common.component.base.CCAComponent;
 import com.github.mixinors.astromine.registry.common.AMConfig;
@@ -204,21 +204,21 @@ public class AMComponentsImpl implements WorldComponentInitializer, ChunkCompone
 	@Override
 	public void registerItemComponentFactories(ItemComponentFactoryRegistry registry) {
 		registry.registerFor(
-				(i) -> i instanceof FluidVolumeItem,
+				(i) -> i instanceof FluidItem,
 				FLUID,
-				(s) -> new CCAFluidComponent(FluidComponent.of(FluidVolume.of(((FluidVolumeItem) s.getItem()).getSize(), Fluids.EMPTY)))
+				(s) -> new CCAFluidComponent(FluidComponent.of(((FluidItem) s.getItem()).getSize()))
 		);
 		
 		registry.registerFor(
-				(i) -> i instanceof EnergyVolumeItem,
+				(i) -> i instanceof EnergyItem,
 				ENERGY,
-				(s) -> new CCAEnergyComponent(EnergyComponent.of(((EnergyVolumeItem) s.getItem()).getSize()))
+				(s) -> new CCAEnergyComponent(EnergyComponent.of(((EnergyItem) s.getItem()).getSize()))
 		);
 		
 		registry.registerFor(
 				(i) -> i == AMItems.SPACE_SUIT_CHESTPLATE.get(),
 				FLUID,
-				(s) -> new CCAFluidComponent(FluidComponent.of(FluidVolume.of(AMConfig.get().spaceSuitFluid, Fluids.EMPTY)))
+				(s) -> new CCAFluidComponent(FluidComponent.of(AMConfig.get().spaceSuitFluid))
 		);
 	}
 	

@@ -1,16 +1,15 @@
 package com.github.mixinors.astromine.mixin.fabric.common;
 
 import com.github.mixinors.astromine.common.component.base.EnergyComponent;
-import com.github.mixinors.astromine.common.item.base.EnergyVolumeItem;
+import com.github.mixinors.astromine.common.item.base.EnergyItem;
 import me.shedaniel.cloth.api.durability.bar.DurabilityBarItem;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyStorage;
 import team.reborn.energy.EnergyTier;
 
-@Mixin(EnergyVolumeItem.class)
+@Mixin(EnergyItem.class)
 public abstract class EnergyVolumeItemMixin implements EnergyStorage, DurabilityBarItem {
 	@Shadow public abstract double getSize();
 	

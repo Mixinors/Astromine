@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.mixin.common.common;
 
+import com.github.mixinors.astromine.common.item.base.FluidItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -43,7 +44,6 @@ import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.component.base.TransferComponent;
 import com.github.mixinors.astromine.common.component.base.FluidComponent;
-import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 
 @Mixin(AbstractBlock.class)
@@ -58,7 +58,7 @@ public class AbstractBlockMixin {
 
 		var isBucket = stackItem instanceof BucketItem;
 
-		var isFluidVolumeItem = stackItem instanceof FluidVolumeItem;
+		var isFluidVolumeItem = stackItem instanceof FluidItem;
 
 		var stackFluidComponent = FluidComponent.from(stack);
 

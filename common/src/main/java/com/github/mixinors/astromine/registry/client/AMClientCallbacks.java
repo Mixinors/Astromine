@@ -29,6 +29,7 @@ import com.github.mixinors.astromine.common.component.base.EnergyComponent;
 import com.github.mixinors.astromine.common.event.SkyPropertiesEvent;
 import com.github.mixinors.astromine.common.item.HolographicConnectorItem;
 import com.github.mixinors.astromine.common.item.SpaceSuitItem;
+import com.github.mixinors.astromine.common.item.base.FluidItem;
 import com.github.mixinors.astromine.common.network.type.EnergyNetworkType;
 import com.github.mixinors.astromine.common.util.TextUtils;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
@@ -46,8 +47,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
 import com.github.mixinors.astromine.common.component.base.FluidComponent;
-import com.github.mixinors.astromine.common.item.base.EnergyVolumeItem;
-import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
+import com.github.mixinors.astromine.common.item.base.EnergyItem;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.RegistryKey;
@@ -56,7 +56,7 @@ import net.minecraft.world.World;
 public class AMClientCallbacks {
 	public static void init() {
 		TooltipEvent.ITEM.register((stack, tooltip, context) -> {
-			if (stack.getItem() instanceof FluidVolumeItem) {
+			if (stack.getItem() instanceof FluidItem) {
 				var fluidComponent = FluidComponent.from(stack);
 				
 				var volume = fluidComponent.getFirst();
@@ -69,7 +69,7 @@ public class AMClientCallbacks {
 		});
 
 		TooltipEvent.ITEM.register((stack, tooltip, context) -> {
-			if (stack.getItem() instanceof EnergyVolumeItem) {
+			if (stack.getItem() instanceof EnergyItem) {
 				EnergyComponent handler = EnergyComponent.from(stack);
 				
 				tooltip.addAll(Math.min(tooltip.size(), 1), Lists.newArrayList(

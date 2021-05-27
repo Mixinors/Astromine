@@ -35,24 +35,24 @@ import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 /**
  * An {@link Item} with an attached {@link EnergyVolume}.
  */
-public class EnergyVolumeItem extends Item {
+public class EnergyItem extends Item {
 	private final double size;
 
-	/** Instantiates an {@link EnergyVolumeItem}s. */
-	protected EnergyVolumeItem(Item.Settings settings, double size) {
+	/** Instantiates an {@link EnergyItem}s. */
+	protected EnergyItem(Item.Settings settings, double size) {
 		super(settings);
 
 		this.size = size;
 	}
 
-	/** Instantiates an {@link EnergyVolumeItem}. */
-	public static EnergyVolumeItem ofCreative(Item.Settings settings) {
-		return new EnergyVolumeItem(settings, Double.MAX_VALUE);
+	/** Instantiates an {@link EnergyItem}. */
+	public static EnergyItem ofCreative(Item.Settings settings) {
+		return new EnergyItem(settings, Double.MAX_VALUE);
 	}
 
-	/** Instantiates an {@link EnergyVolumeItem}s. */
-	public static EnergyVolumeItem of(Settings settings, double size) {
-		return new EnergyVolumeItem(settings, size);
+	/** Instantiates an {@link EnergyItem}s. */
+	public static EnergyItem of(Settings settings, double size) {
+		return new EnergyItem(settings, size);
 	}
 
 	/** Returns this item's size. */
@@ -60,7 +60,7 @@ public class EnergyVolumeItem extends Item {
 		return size;
 	}
 
-	/** Override behavior to add instances of {@link EnergyVolumeItem}
+	/** Override behavior to add instances of {@link EnergyItem}
 	 * as {@link ItemStack}s to {@link ItemGroup}s with full energy. */
 	@Override
 	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
