@@ -216,18 +216,18 @@ public class AMComponentsImpl {
 		}
 	}
 	
-	private static final Capability.IStorage<FComponent> DEFAULT_STORAGE = new Capability.IStorage<>() {
+	private record FCapabilityStorage<T extends FComponent>() implements Capability.IStorage<T> {
 		@Nullable
 		@Override
-		public Tag writeNBT(Capability<FComponent> capability, FComponent instance, Direction dir) {
+		public Tag writeNBT(Capability<T> capability, T instance, Direction arg) {
 			return instance.serializeNBT();
 		}
 		
 		@Override
-		public void readNBT(Capability<FComponent> capability, FComponent instance, Direction dir, Tag tag) {
+		public void readNBT(Capability<T> capability, T instance, Direction dir, Tag tag) {
 			instance.deserializeNBT((CompoundTag) tag);
 		}
-	};
+	}
 	
 	private record FCapabilityProvider(Object instance) implements ICapabilityProvider {
 		@NotNull
@@ -240,15 +240,15 @@ public class AMComponentsImpl {
 	;
 	
 	public static void postInit() {
-		CapabilityManager.INSTANCE.register(FComponent.class, DEFAULT_STORAGE, () -> new FNetworkComponentImpl(null));
-		CapabilityManager.INSTANCE.register(FComponent.class, DEFAULT_STORAGE, () -> new FAtmosphereComponentImpl(null));
-		CapabilityManager.INSTANCE.register(FComponent.class, DEFAULT_STORAGE, () -> new FBridgeComponentImpl(null));
-		CapabilityManager.INSTANCE.register(FComponent.class, DEFAULT_STORAGE, () -> new FItemComponentImpl(null));
-		CapabilityManager.INSTANCE.register(FComponent.class, DEFAULT_STORAGE, () -> new FEnergyComponentImpl(null));
-		CapabilityManager.INSTANCE.register(FComponent.class, DEFAULT_STORAGE, () -> new FFluidComponentImpl(null));
-		CapabilityManager.INSTANCE.register(FComponent.class, DEFAULT_STORAGE, () -> new FTransferComponentImpl(null));
-		CapabilityManager.INSTANCE.register(FComponent.class, DEFAULT_STORAGE, () -> new FRedstoneComponentImpl(null));
-		CapabilityManager.INSTANCE.register(FComponent.class, DEFAULT_STORAGE, () -> new FOxygenComponentImpl(null));
+		CapabilityManager.INSTANCE.register(FNetworkComponent.class, new FCapabilityStorage<>(), () -> new FNetworkComponentImpl(null));
+		CapabilityManager.INSTANCE.register(FAtmosphereComponent.class, new FCapabilityStorage<>(), () -> new FAtmosphereComponentImpl(null));
+		CapabilityManager.INSTANCE.register(FBridgeComponent.class, new FCapabilityStorage<>(), () -> new FBridgeComponentImpl(null));
+		CapabilityManager.INSTANCE.register(FItemComponent.class, new FCapabilityStorage<>(), () -> new FItemComponentImpl(null));
+		CapabilityManager.INSTANCE.register(FEnergyComponent.class, new FCapabilityStorage<>(), () -> new FEnergyComponentImpl(null));
+		CapabilityManager.INSTANCE.register(FFluidComponent.class, new FCapabilityStorage<>(), () -> new FFluidComponentImpl(null));
+		CapabilityManager.INSTANCE.register(FTransferComponent.class, new FCapabilityStorage<>(), () -> new FTransferComponentImpl(null));
+		CapabilityManager.INSTANCE.register(FRedstoneComponent.class, new FCapabilityStorage<>(), () -> new FRedstoneComponentImpl(null));
+		CapabilityManager.INSTANCE.register(FOxygenComponent.class, new FCapabilityStorage<>(), () -> new FOxygenComponentImpl(null));
 		
 	}
 	
