@@ -24,9 +24,6 @@ project.ext.setDefaultApis = {
     // Tech Reborn Energy
     useAsApi("teamreborn:energy:${tech_reborn_energy_version}")
 
-    // Cloth API
-    useAsApiOptionally("me.shedaniel.cloth.api:cloth-datagen-api-v1:${cloth_api_version}")
-
     // Cloth Config
     useAsCompileOnly("me.shedaniel.cloth:cloth-config:${cloth_config_api_version}")
     useAsRuntime("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_api_version}")
