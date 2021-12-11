@@ -112,7 +112,7 @@ public abstract class HorizontalFacingTieredBlockWithEntity extends HorizontalFa
 						NbtCompound beTag = null;
 
 						if (blockEntity != null) {
-							beTag = blockEntity.writeNbt(new NbtCompound());
+							beTag = blockEntity.createNbtWithId();
 							beTag.putInt("x", pos.getX());
 							beTag.putInt("y", pos.getY());
 							beTag.putInt("z", pos.getZ());
@@ -133,7 +133,7 @@ public abstract class HorizontalFacingTieredBlockWithEntity extends HorizontalFa
 						BlockEntity newBlockEntity = world.getBlockEntity(pos);
 
 						if (newBlockEntity != null && beTag != null) {
-							newBlockEntity.readNbt(newState, beTag);
+							newBlockEntity.readNbt(beTag);
 						}
 
 						return ActionResult.SUCCESS;

@@ -38,10 +38,10 @@ import com.mojang.serialization.Codec;
 public class MeteorFeature extends StructureFeature<DefaultFeatureConfig> {
 
 	public MeteorFeature(Codec<DefaultFeatureConfig> codec) {
-		super(codec, );
+		super(codec, getStructureStartFactory());
 	}
 
-	public StructureGeneratorFactory<DefaultFeatureConfig> getStructureStartFactory() {
+	public static StructureGeneratorFactory<DefaultFeatureConfig> getStructureStartFactory() {
 		return context -> {
 			// TODO
 		};

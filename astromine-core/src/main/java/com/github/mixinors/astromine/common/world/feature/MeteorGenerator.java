@@ -60,10 +60,10 @@ public class MeteorGenerator extends ShiftableStructurePiece {
 	private static OpenSimplexNoise noise;
 
 	public MeteorGenerator(Random random, int x, int z) {
-		super(AMFeatures.METEOR_STRUCTURE.get(), random, x, 64, z, 16, 16, 16);
+		super(AMFeatures.METEOR_STRUCTURE.get(), x, 64, z, 16, 16, 16, getRandomHorizontalDirection(random));
 	}
 
-	public MeteorGenerator(StructureManager manager, NbtCompound tag) {
+	public MeteorGenerator(NbtCompound tag) {
 		super(AMFeatures.METEOR_STRUCTURE.get(), tag);
 	}
 
@@ -83,8 +83,8 @@ public class MeteorGenerator extends ShiftableStructurePiece {
 	}
 
 	@Override
-	public boolean generate(StructureWorldAccess world, StructureAccessor structureAccessor, ChunkGenerator chunkGenerator, Random random, BlockBox boundingBox, ChunkPos chunkPos, BlockPos blockPos) {
-		return generate(world, chunkPos, random, blockPos);
+	public void generate(StructureWorldAccess world, StructureAccessor structureAccessor, ChunkGenerator chunkGenerator, Random random, BlockBox boundingBox, ChunkPos chunkPos, BlockPos blockPos) {
+		generate(world, chunkPos, random, blockPos);
 	}
 
 	public boolean generate(StructureWorldAccess world, ChunkPos chunkPos, Random random, BlockPos blockPos) {

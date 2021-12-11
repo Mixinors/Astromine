@@ -43,6 +43,7 @@ import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -56,14 +57,18 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 	}
 
 	@Override
-	public boolean generate(StructureWorldAccess world, ChunkGenerator generator, Random random, BlockPos featurePosition, DefaultFeatureConfig config) {
+	public boolean generate(FeatureContext<DefaultFeatureConfig> context) {
+		StructureWorldAccess world = context.getWorld();
+		Random random = context.getRandom();
+		BlockPos featurePosition = context.getOrigin();
+		DefaultFeatureConfig config = context.getConfig();
 		featurePosition = new BlockPos(featurePosition.getX(), random.nextInt(256), featurePosition.getZ());
 
 		WeightedList<Block> ores = new WeightedList<>();
 
 		chances(random, ores);
 
-		if (ores.isEmpty()) {
+		if (ores.stream().findAny().isEmpty()) {
 			return true;
 		}
 

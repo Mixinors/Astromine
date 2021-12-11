@@ -30,13 +30,12 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.dynamic.RegistryLookupCodec;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.ChunkRegion;
-import net.minecraft.world.Heightmap;
-import net.minecraft.world.WorldAccess;
+import net.minecraft.world.*;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.StructureAccessor;
+import net.minecraft.world.gen.chunk.Blender;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
@@ -50,6 +49,8 @@ import com.github.mixinors.astromine.registry.common.AMConfig;
 
 import java.util.Arrays;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 public class EarthSpaceChunkGenerator extends ChunkGenerator {
 	public static Codec<EarthSpaceChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed), RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry)).apply(instance,
@@ -82,7 +83,7 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 	}
 
 	@Override
-	public void buildSurface(ChunkRegion region, Chunk chunk) {
+	public void buildSurface(ChunkRegion region, StructureAccessor structures, Chunk chunk) {
 
 	}
 
@@ -123,14 +124,14 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 	}
 
 	@Override
-	public int getHeight(int x, int z, Heightmap.Type heightmapType) {
+	public int getHeight(int x, int z, Heightmap.Type heightmap, HeightLimitView world) {
 		return 0;
 	}
 
 	@Override
-	public BlockView getColumnSample(int x, int z) {
+	public VerticalBlockSample getColumnSample(int x, int z, HeightLimitView world) {
 		BlockState[] states = new BlockState[256];
 		Arrays.fill(states, Blocks.AIR.getDefaultState());
-		return new VerticalBlockSample(states);
+		return new VerticalBlockSample(world.getBottomY(), states);
 	}
 }

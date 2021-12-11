@@ -143,7 +143,7 @@ public class SpaceSkybox extends Skybox {
 				}
 			}
 
-			buffer.begin(7, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT);
+			buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT);
 
 			GameOptions options = ClientUtils.getInstance().options;
 
@@ -178,7 +178,7 @@ public class SpaceSkybox extends Skybox {
 
 		matrices.push();
 
-		buffer.begin(7, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT);
+		buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT);
 
 		RenderSystem.enableBlend();
 		RenderSystem.enableDepthTest();
