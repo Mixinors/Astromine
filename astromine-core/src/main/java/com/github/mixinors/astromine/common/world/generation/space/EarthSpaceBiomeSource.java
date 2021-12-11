@@ -33,6 +33,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import com.google.common.collect.ImmutableList;
+import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 
 public class EarthSpaceBiomeSource extends BiomeSource {
 	public static final Codec<EarthSpaceBiomeSource> CODEC = RecordCodecBuilder.create((instance) -> instance.group(RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter((biomeSource) -> biomeSource.registry), Codec.LONG.fieldOf("seed").stable().forGetter((
@@ -57,7 +58,7 @@ public class EarthSpaceBiomeSource extends BiomeSource {
 	}
 
 	@Override
-	public Biome getBiomeForNoiseGen(int biomeX, int biomeY, int biomeZ) {
+	public Biome getBiome(int x, int y, int z, MultiNoiseUtil.MultiNoiseSampler noise) {
 		return registry.get(AMBiomes.ASTEROID_BELT);
 	}
 }

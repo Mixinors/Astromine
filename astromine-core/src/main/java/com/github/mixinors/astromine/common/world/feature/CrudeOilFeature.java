@@ -43,6 +43,8 @@ import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.util.FeatureContext;
+import net.minecraft.world.tick.OrderedTick;
 
 import java.util.Random;
 
@@ -54,7 +56,10 @@ public class CrudeOilFeature extends Feature<DefaultFeatureConfig> {
 	}
 
 	@Override
-	public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random random, BlockPos pos, DefaultFeatureConfig config) {
+	public boolean generate(FeatureContext<DefaultFeatureConfig> context) {
+		Random random = context.getRandom();
+		StructureWorldAccess world = context.getWorld();
+		BlockPos pos = context.getOrigin();
 		if (random.nextInt(AMConfig.get().crudeOilThreshold) > 1)
 			return false;
 
@@ -79,7 +84,7 @@ public class CrudeOilFeature extends Feature<DefaultFeatureConfig> {
 				world.removeBlock(pos.offset(Direction.UP, y).offset(direction), false);
 			}
 
-			world.getFluidTickScheduler().schedule(pos.offset(Direction.UP, y), AMFluids.OIL, 0);
+			world.getFluidTickScheduler().scheduleTick(OrderedTick.create(AMFluids.OIL, pos.offset(Direction.UP, y)));
 		}
 
 		return true;

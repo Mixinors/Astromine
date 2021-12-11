@@ -65,9 +65,10 @@ public class AbstractBlockMixin {
 		final boolean isFluidVolumeItem = stackItem instanceof FluidVolumeItem;
 
 		final FluidComponent stackFluidComponent = FluidComponent.get(stack);
+		BlockEntity blockEntity = world.getBlockEntity(pos);
 
-		if (state.getBlock().hasBlockEntity()) {
-			TransferComponent transferComponent = TransferComponent.get(world.getBlockEntity(pos));
+		if (blockEntity != null) {
+			TransferComponent transferComponent = TransferComponent.get(blockEntity);
 
 			if (transferComponent != null && transferComponent.hasFluid()) {
 				TransferType type = transferComponent.getFluid(result.getSide());
@@ -83,9 +84,7 @@ public class AbstractBlockMixin {
 		if (stackFluidComponent != null) {
 			final Block block = state.getBlock();
 
-			if (block.hasBlockEntity()) {
-				final BlockEntity blockEntity = world.getBlockEntity(pos);
-
+			if (blockEntity != null) {
 				FluidComponent blockEntityFluidComponent = FluidComponent.get(blockEntity);
 
 				if (blockEntityFluidComponent != null) {

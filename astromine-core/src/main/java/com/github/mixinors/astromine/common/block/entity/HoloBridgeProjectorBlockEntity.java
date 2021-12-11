@@ -298,6 +298,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	@Override
 	public NbtCompound toInitialChunkDataNbt() {
 		NbtCompound compound = new NbtCompound();
+		writeNbt(compound);
 		return compound;
 	}
 }

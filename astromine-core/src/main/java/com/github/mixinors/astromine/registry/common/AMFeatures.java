@@ -51,12 +51,12 @@ public class AMFeatures {
 	//
 	
 	public static final Identifier METEOR_ID = AMCommon.id("meteor");
-	public static final RegistrySupplier<StructurePieceType> METEOR_STRUCTURE = registerStructurePiece(METEOR_ID, () -> MeteorGenerator::new);
+	public static final RegistrySupplier<StructurePieceType> METEOR_STRUCTURE = registerStructurePiece(METEOR_ID, () -> (StructurePieceType.Simple) MeteorGenerator::new);
 	public static final RegistryKey<ConfiguredStructureFeature<?, ?>> METEOR_KEY = RegistryKey.of(Registry.CONFIGURED_STRUCTURE_FEATURE_KEY, METEOR_ID);
 	
 	public static final Identifier CRUDE_OIL_ID = AMCommon.id("crude_oil");
 	public static final RegistrySupplier<Feature<DefaultFeatureConfig>> CRUDE_OIL = registerFeature(CRUDE_OIL_ID, () -> new CrudeOilFeature(DefaultFeatureConfig.CODEC));
-	public static final RegistryKey<ConfiguredFeature<?, ?>> CRUDE_OIL_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, CRUDE_OIL_ID);
+	public static final RegistryKey<PlacedFeature> CRUDE_OIL_KEY = RegistryKey.of(Registry.PLACED_FEATURE_KEY, CRUDE_OIL_ID);
 	
 	public static final Identifier ASTROMINE_BIOME_MODIFICATIONS = AMCommon.id("biome_modifications");
 	
@@ -66,7 +66,7 @@ public class AMFeatures {
 		FabricStructureBuilder.create(METEOR_ID, meteor)
 				.step(GenerationStep.Feature.SURFACE_STRUCTURES)
 				.defaultConfig(32, 8, 12345)
-				.superflatFeature(meteorStructure)
+				// .superflatFeature(meteorStructure)
 				.register();
 		
 		BiomeModifications.create(ASTROMINE_BIOME_MODIFICATIONS)
