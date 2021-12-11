@@ -87,7 +87,7 @@ public class AMComponents implements WorldComponentInitializer, ChunkComponentIn
 
 	@Override
 	public void registerItemComponentFactories(ItemComponentFactoryRegistry registry) {
-		registry.registerFor(
+		registry.register(
 				item -> item instanceof FluidVolumeItem,
 				FLUID_INVENTORY_COMPONENT,
 				stack -> SimpleFluidComponent.of(FluidVolume.of(0L, ((FluidVolumeItem) stack.getItem()).getSize(), Fluids.EMPTY))
