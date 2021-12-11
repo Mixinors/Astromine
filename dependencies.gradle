@@ -7,6 +7,8 @@ project.ext.setDefaultApis = {
     useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-item:${cardinal_components_version}")
     useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-world:${cardinal_components_version}")
 
+    modImplementation("net.fabricmc:fabric-language-kotlin:${fabric_language_kotlin_version}")
+
     // Shapes
     useAsApi("com.terraformersmc.terraform-api:terraform-shapes-api-v1:${shapes_version}")
 
@@ -35,6 +37,8 @@ project.ext.setDefaultApis = {
 
     // RoughlyEnoughItems
     useAsApiOptionally("me.shedaniel:RoughlyEnoughItems-fabric:${roughly_enough_items_version}")
+	
+	modImplementation("com.github.Draylar.omega-config:omega-config:${omega_config_version}")
 
     // Magna
     useAsApi("com.github.Draylar:magna:${magna_version}")

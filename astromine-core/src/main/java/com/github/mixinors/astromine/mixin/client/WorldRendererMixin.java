@@ -73,13 +73,13 @@ public abstract class WorldRendererMixin {
 	private BufferBuilderStorage bufferBuilders;
 
 	@Shadow
-	protected abstract void renderLayer(RenderLayer renderLayer, MatrixStack matrixStack, double d, double e, double f);
+	protected abstract void renderLayer(RenderLayer renderLayer, MatrixStack matrixStack, double d, double e, double f, Matrix4f positionMatrix);
 
 	@Shadow
 	public abstract void render(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f);
 
-	@Inject(at = @At("HEAD"), method = "renderSky(Lnet/minecraft/client/util/math/Matrix" + "Stack;F)V", cancellable = true)
-	void astromine_renderSky(MatrixStack matrices, float tickDelta, CallbackInfo callbackInformation) {
+	@Inject(at = @At("HEAD"), method = "renderSky(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/util/math/Matrix4f;FLjava/lang/Runnable;)V", cancellable = true)
+	void astromine_renderSky(MatrixStack matrices, Matrix4f projectionMatrix, float tickDelta, Runnable runnable, CallbackInfo callbackInformation) {
 		Skybox skybox = SkyboxRegistry.INSTANCE.get(this.client.world.getRegistryKey());
 
 		if (skybox != null) {

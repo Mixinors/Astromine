@@ -62,6 +62,7 @@ public class AMCommon implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		AMAttributes.init();
 		AMIdentifierFixes.init();
 		AMDimensions.init();
 		AMFeatures.init();
@@ -86,7 +87,6 @@ public class AMCommon implements ModInitializer {
 		AMSoundEvents.init();
 		AMNetworkMembers.init();
 		AMCriteria.init();
-		AMAttributes.init();
 		AMToolMaterials.init();
 		AMOres.init();
 		AMItemGroups.init();

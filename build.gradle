@@ -60,9 +60,6 @@ allprojects {
         maven {
             name = "JitPack"
             url = "https://jitpack.io"
-            content {
-                includeGroupByRegex "com.github(\\.\\w+)+"
-            }
         }
 
         maven {

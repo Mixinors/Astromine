@@ -29,6 +29,7 @@ import com.github.mixinors.astromine.registry.common.AMComponents;
 import com.github.mixinors.astromine.registry.common.AMNetworks;
 
 import me.shedaniel.architectury.networking.NetworkManager;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -88,7 +89,7 @@ public abstract class EntityMixin implements GravityEntity, EntityAccessor {
 	
 	@Shadow public int age;
 	
-	@ModifyVariable(at = @At("HEAD"), method = "handleFallDamage(FF)Z", index = 1)
+	@ModifyVariable(at = @At("HEAD"), method = "handleFallDamage(FFLnet/minecraft/entity/damage/DamageSource;)Z", index = 1)
 	float getDamageMultiplier(float damageMultiplier) {
 		return (float) (damageMultiplier * astromine_getGravity() * astromine_getGravity());
 	}

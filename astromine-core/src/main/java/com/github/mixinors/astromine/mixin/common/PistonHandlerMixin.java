@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.mixin.common;
 
 import com.github.mixinors.astromine.registry.common.AMBlocks;
+import net.minecraft.block.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -38,21 +39,21 @@ import net.minecraft.block.piston.PistonHandler;
 public abstract class PistonHandlerMixin {
 
 	@Shadow
-	private static boolean isBlockSticky(Block block) {
+	private static boolean isBlockSticky( BlockState state ) {
 		return false;
 	}
 
-	@Inject(method = "isBlockSticky(Lnet/minecraft/block/Block;)Z", at = @At("HEAD"), cancellable = true)
-	private static void isBlockStickyInject(Block block, CallbackInfoReturnable<Boolean> cir) {
-		if (block == AMBlocks.SPACE_SLIME_BLOCK.get())
+	@Inject(method = "isBlockSticky(Lnet/minecraft/block/BlockState;)Z", at = @At("HEAD"), cancellable = true)
+	private static void isBlockStickyInject(BlockState state, CallbackInfoReturnable<Boolean> cir) {
+		if (state.getBlock() == AMBlocks.SPACE_SLIME_BLOCK.get())
 			cir.setReturnValue(true);
 	}
 
-	@Inject(method = "isAdjacentBlockStuck(Lnet/minecraft/block/Block;Lnet/minecraft/block/Block;)Z", at = @At("HEAD"), cancellable = true)
-	private static void isAdjacentBlockStuckInject(Block block, Block block2, CallbackInfoReturnable<Boolean> cir) {
-		if (block == AMBlocks.SPACE_SLIME_BLOCK.get() && !isBlockSticky(block2))
+	@Inject(method = "isAdjacentBlockStuck(Lnet/minecraft/block/BlockState;Lnet/minecraft/block/BlockState;)Z", at = @At("HEAD"), cancellable = true)
+	private static void isAdjacentBlockStuckInject(BlockState state, BlockState adjacentState, CallbackInfoReturnable<Boolean> cir) {
+		if (state.getBlock() == AMBlocks.SPACE_SLIME_BLOCK.get() && !isBlockSticky(adjacentState))
 			cir.setReturnValue(false);
-		else if (block2 == AMBlocks.SPACE_SLIME_BLOCK.get() && !isBlockSticky(block))
+		else if (adjacentState.getBlock() == AMBlocks.SPACE_SLIME_BLOCK.get() && !isBlockSticky(state))
 			cir.setReturnValue(false);
 	}
 }
