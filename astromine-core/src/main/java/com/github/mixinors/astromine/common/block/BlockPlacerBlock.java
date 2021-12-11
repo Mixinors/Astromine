@@ -45,8 +45,8 @@ public class BlockPlacerBlock extends HorizontalFacingBlockWithEntity implements
 	}
 
 	@Override
-	public BlockEntity createBlockEntity() {
-		return new BlockPlacerBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new BlockPlacerBlockEntity(pos, state);
 	}
 
 	@Override

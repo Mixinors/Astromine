@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.block;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWithEntity;
+import dev.architectury.hooks.block.BlockEntityHooks;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -62,16 +63,16 @@ public class HoloBridgeProjectorBlock extends HorizontalFacingBlockWithEntity {
 
 			for (HoloBridgeProjectorBlockEntity entity : new HoloBridgeProjectorBlockEntity[] {originalEntity.getChild(), originalEntity, originalEntity.getParent()}) {
 				if (entity != null) {
-					int color = dye.getColor().color;
+					float[] color = dye.getColor().getColorComponents();
 
-					Color colorColor = new Color((color >> 16 & 0xFF) / 255F, (color >> 8 & 0xFF) / 255F, (color & 0xFF) / 255F, 0x7E);
+					Color colorColor = new Color(color[0], color[1], color[2], 0x7E);
 
 					entity.color = colorColor;
 
 					entity.markDirty();
 
 					if (!world.isClient)
-						entity.syncData();
+						BlockEntityHooks.syncData(entity);
 
 					if (entity.hasChild()) {
 						entity.getChild().color = colorColor;
@@ -79,7 +80,7 @@ public class HoloBridgeProjectorBlock extends HorizontalFacingBlockWithEntity {
 						entity.getChild().markDirty();
 
 						if (!world.isClient) {
-							entity.getChild().syncData();
+							BlockEntityHooks.syncData(entity.getChild());
 						}
 					}
 

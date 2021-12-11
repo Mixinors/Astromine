@@ -54,7 +54,7 @@ public class SuperSpaceSlimeFaceTowardTargetGoal extends Goal {
 		} else if (!livingEntity.isAlive()) {
 			return false;
 		} else {
-			return (!(livingEntity instanceof PlayerEntity) || !((PlayerEntity) livingEntity).abilities.invulnerable) && this.slime.getMoveControl() instanceof SuperSpaceSlimeMoveControl;
+			return (!(livingEntity instanceof PlayerEntity) || !((PlayerEntity) livingEntity).getAbilities().invulnerable) && this.slime.getMoveControl() instanceof SuperSpaceSlimeMoveControl;
 		}
 	}
 
@@ -66,7 +66,7 @@ public class SuperSpaceSlimeFaceTowardTargetGoal extends Goal {
 			return false;
 		} else if (!livingEntity.isAlive()) {
 			return false;
-		} else if (livingEntity instanceof PlayerEntity && ((PlayerEntity) livingEntity).abilities.invulnerable) {
+		} else if (livingEntity instanceof PlayerEntity && ((PlayerEntity) livingEntity).getAbilities().invulnerable) {
 			return false;
 		} else {
 			return --this.ticksLeft > 0;
@@ -82,6 +82,6 @@ public class SuperSpaceSlimeFaceTowardTargetGoal extends Goal {
 	@Override
 	public void tick() {
 		this.slime.lookAtEntity(this.slime.getTarget(), 10.0F, 10.0F);
-		((SuperSpaceSlimeMoveControl) this.slime.getMoveControl()).look(this.slime.yaw, true);
+		((SuperSpaceSlimeMoveControl) this.slime.getMoveControl()).look(this.slime.getYaw(), true);
 	}
 }

@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.item;
 
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.SpawnEggItem;
 
@@ -33,7 +34,7 @@ import net.minecraft.item.SpawnEggItem;
  */
 public class UncoloredSpawnEggItem extends SpawnEggItem {
 	/** Instantiates an {@link UncoloredSpawnEggItem}s. */
-	public UncoloredSpawnEggItem(EntityType<?> type, Item.Settings settings) {
+	public UncoloredSpawnEggItem(EntityType<? extends MobEntity> type, Item.Settings settings) {
 		super(type, 0xFFFFFFFF, 0xFFFFFFFF, settings);
 	}
 }
