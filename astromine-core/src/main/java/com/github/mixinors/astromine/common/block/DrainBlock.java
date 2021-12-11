@@ -49,8 +49,8 @@ public class DrainBlock extends BlockWithEntity implements NetworkBlock.FluidReq
 	}
 
 	@Override
-	public BlockEntity createBlockEntity() {
-		return new DrainBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new DrainBlockEntity(pos, state);
 	}
 
 	@Override

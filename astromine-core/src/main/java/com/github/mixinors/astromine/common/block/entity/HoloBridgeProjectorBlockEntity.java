@@ -207,7 +207,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			this.setChild(null);
 
 			if (!world.isClient) {
-				//TODO: this.syncData();
+				BlockEntityHooks.syncData(this);
 			}
 		}
 

@@ -25,6 +25,8 @@
 package com.github.mixinors.astromine.common.block;
 
 import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
+import com.github.mixinors.astromine.common.block.entity.AltarPedestalBlockEntity;
+import dev.architectury.hooks.block.BlockEntityHooks;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -47,8 +49,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-
-import com.github.mixinors.astromine.common.block.entity.AltarPedestalBlockEntity;
 
 public class AltarPedestalBlock extends BlockWithEntity {
 	protected static final VoxelShape SHAPE = Block.createCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 16.0D, 14.0D);
@@ -75,8 +75,8 @@ public class AltarPedestalBlock extends BlockWithEntity {
 	}
 
 	@Override
-	public BlockEntity createBlockEntity() {
-		return new AltarPedestalBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new AltarPedestalBlockEntity(pos, state);
 	}
 
 	@Override
@@ -107,7 +107,7 @@ public class AltarPedestalBlock extends BlockWithEntity {
 				} else if (pedestalBlockEntity.getStack(0).isEmpty()) {
 					if (!stackInHand.isEmpty()) {
 						pedestalBlockEntity.setStack(0, stackInHand.split(1));
-						pedestalBlockEntity.syncData();
+						BlockEntityHooks.syncData(pedestalBlockEntity);
 						return ActionResult.SUCCESS;
 					}
 					return ActionResult.CONSUME;
@@ -117,12 +117,12 @@ public class AltarPedestalBlock extends BlockWithEntity {
 					player.setStackInHand(hand, copy);
 					pedestalBlockEntity.setStack(0, ItemStack.EMPTY);
 					player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, .6F, 1);
-					pedestalBlockEntity.syncData();
+					BlockEntityHooks.syncData(pedestalBlockEntity);
 				} else if (stackInHand.isEmpty()) {
 					player.setStackInHand(hand, pedestalBlockEntity.getStack(0).copy());
 					pedestalBlockEntity.setStack(0, ItemStack.EMPTY);
 					player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, .6F, 1);
-					pedestalBlockEntity.syncData();
+					BlockEntityHooks.syncData(pedestalBlockEntity);
 				} else {
 					return ActionResult.CONSUME;
 				}

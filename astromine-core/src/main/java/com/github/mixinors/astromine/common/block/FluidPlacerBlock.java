@@ -46,8 +46,8 @@ public class FluidPlacerBlock extends HorizontalFacingBlockWithEntity implements
 	}
 
 	@Override
-	public BlockEntity createBlockEntity() {
-		return new FluidPlacerBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new FluidPlacerBlockEntity(pos, state);
 	}
 
 	@Override

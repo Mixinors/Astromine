@@ -11,7 +11,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.PlacedFeature;
 
 import java.util.function.Predicate;
 
@@ -19,16 +19,16 @@ public class AMOres {
 	public static final Identifier ORES_ID = AMCommon.id("astromine_ores");
 
 	public static final Identifier TIN_ORE_ID = AMCommon.id("tin_ore");
-	public static final RegistryKey<ConfiguredFeature<?, ?>> TIN_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, TIN_ORE_ID);
+	public static final RegistryKey<PlacedFeature> TIN_ORE_KEY = RegistryKey.of(Registry.PLACED_FEATURE_KEY, TIN_ORE_ID);
 	
 	public static final Identifier COPPER_ORE_ID = AMCommon.id("copper_ore");
-	public static final RegistryKey<ConfiguredFeature<?, ?>> COPPER_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, COPPER_ORE_ID);
+	public static final RegistryKey<PlacedFeature> COPPER_ORE_KEY = RegistryKey.of(Registry.PLACED_FEATURE_KEY, COPPER_ORE_ID);
 	
 	public static final Identifier SILVER_ORE_ID = AMCommon.id("silver_ore");
-	public static final RegistryKey<ConfiguredFeature<?, ?>> SILVER_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, SILVER_ORE_ID);
+	public static final RegistryKey<PlacedFeature> SILVER_ORE_KEY = RegistryKey.of(Registry.PLACED_FEATURE_KEY, SILVER_ORE_ID);
 	
 	public static final Identifier LEAD_ORE_ID = AMCommon.id("lead_ore");
-	public static final RegistryKey<ConfiguredFeature<?, ?>> LEAD_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, LEAD_ORE_ID);
+	public static final RegistryKey<PlacedFeature> LEAD_ORE_KEY = RegistryKey.of(Registry.PLACED_FEATURE_KEY, LEAD_ORE_ID);
 	
 	
 	public static void init() {

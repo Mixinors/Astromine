@@ -96,10 +96,10 @@ public class AbstractBlockMixin {
 
 						if (isBucket && extractable != null) {
 							if (extractable.hasStored(FluidVolume.BUCKET)) {
-								if (stack.getCount() == 1 || (player.inventory.getEmptySlot() == -1 && stack.getCount() == 1)) {
+								if (stack.getCount() == 1 || (player.getInventory().getEmptySlot() == -1 && stack.getCount() == 1)) {
 									stackVolume.take(extractable, FluidVolume.BUCKET);
 									player.setStackInHand(hand, new ItemStack(stackVolume.getFluid().getBucketItem()));
-								} else if (player.inventory.getEmptySlot() != -1 && stack.getCount() > 1) {
+								} else if (player.getInventory().getEmptySlot() != -1 && stack.getCount() > 1) {
 									stackVolume.take(extractable, FluidVolume.BUCKET);
 									stack.decrement(1);
 									player.giveItemStack(new ItemStack(stackVolume.getFluid().getBucketItem()));
@@ -113,12 +113,12 @@ public class AbstractBlockMixin {
 
 						if (isBucket && insertable != null) {
 							if (insertable.hasAvailable(FluidVolume.BUCKET)) {
-								if (stack.getCount() == 1 || (player.inventory.getEmptySlot() == -1 && stack.getCount() == 1)) {
+								if (stack.getCount() == 1 || (player.getInventory().getEmptySlot() == -1 && stack.getCount() == 1)) {
 									insertable.take(stackVolume, FluidVolume.BUCKET);
 									if (!player.isCreative()) {
 										player.setStackInHand(hand, new ItemStack(Items.BUCKET));
 									}
-								} else if (player.inventory.getEmptySlot() != -1 && stack.getCount() > 1) {
+								} else if (player.getInventory().getEmptySlot() != -1 && stack.getCount() > 1) {
 									insertable.take(stackVolume, FluidVolume.BUCKET);
 									if (!player.isCreative()) {
 										stack.decrement(1);

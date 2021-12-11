@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMSoundEvents;
+import dev.architectury.hooks.block.BlockEntityHooks;
 import me.shedaniel.architectury.extensions.BlockEntityExtension;
 import me.shedaniel.architectury.utils.NbtType;
 
@@ -50,6 +51,8 @@ import com.github.mixinors.astromine.common.component.general.compatibility.Inve
 import com.github.mixinors.astromine.common.recipe.AltarRecipe;
 
 import com.google.common.collect.Lists;
+import net.minecraft.util.math.Vec3f;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -119,7 +122,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 					for (Supplier<AltarPedestalBlockEntity> child : children) {
 						child.get().setStack(0, ItemStack.EMPTY);
 						child.get().parentPos = null;
-						child.get().syncData();
+						BlockEntityHooks.syncData(child.get());
 						spinAge = child.get().getSpinAge();
 					}
 
@@ -144,7 +147,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 	public void spawnParticles() {
 		double yProgress = getYProgress(craftingTicks);
 		float l = AltarBlockEntity.HOVER_HEIGHT + 0.1F;
-		DustParticleEffect effect = new DustParticleEffect(1, 1, 1, 1);
+		DustParticleEffect effect = new DustParticleEffect(new Vec3f(1, 1, 1), 1);
 		((ServerWorld) world).spawnParticles(effect, getPos().getX() + 0.5D, getPos().getY() + l + 1.0D - 0.1D + AltarBlockEntity.HEIGHT_OFFSET * yProgress, getPos().getZ() + 0.5D, 2, 0.1D, 0D, 0.1D, 0);
 	}
 
@@ -191,7 +194,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 			craftingTicks = 1;
 			craftingTicksDelta = 1;
 			for (Supplier<AltarPedestalBlockEntity> child : children) {
-				child.get().syncData();
+				BlockEntityHooks.syncData(child.get());
 			}
 
 			world.playSound(null, getPos(), AMSoundEvents.ALTAR_START.get(), SoundCategory.BLOCKS, 1, 1);
@@ -255,7 +258,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 		for (Supplier<AltarPedestalBlockEntity> child : children) {
 			child.get().parentPos = null;
 			if (!world.isClient)
-				child.get().syncData();
+				BlockEntityHooks.syncData(child.get());
 		}
 
 		children.clear();

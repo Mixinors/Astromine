@@ -39,14 +39,14 @@ public class SuperSpaceSlimeMoveControl extends MoveControl {
 	public SuperSpaceSlimeMoveControl(SuperSpaceSlimeEntity slime) {
 		super(slime);
 		this.slime = slime;
-		this.targetYaw = 180.0F * slime.yaw / 3.1415927F;
+		this.targetYaw = 180.0F * slime.getYaw() / 3.1415927F;
 	}
 
 	@Override
 	public void tick() {
-		this.entity.yaw = this.wrapDegrees(this.entity.yaw, this.targetYaw, 90.0F);
-		this.entity.headYaw = this.entity.yaw;
-		this.entity.bodyYaw = this.entity.yaw;
+		this.entity.setYaw(this.wrapDegrees(this.entity.getYaw(), this.targetYaw, 90.0F));
+		this.entity.headYaw = this.entity.getYaw();
+		this.entity.bodyYaw = this.entity.getYaw();
 
 		if (this.state != MoveControl.State.MOVE_TO) {
 			this.entity.setForwardSpeed(0.0F);

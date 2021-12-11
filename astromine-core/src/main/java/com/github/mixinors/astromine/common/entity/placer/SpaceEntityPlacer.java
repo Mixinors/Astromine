@@ -42,6 +42,6 @@ public class SpaceEntityPlacer implements EntityPlacer {
 
 	@Override
 	public TeleportTarget placeEntity(Entity entity) {
-		return new TeleportTarget(new Vec3d(entity.getX(), y, entity.getZ()), entity.getVelocity(), entity.getHeadYaw(), entity.pitch);
+		return new TeleportTarget(new Vec3d(entity.getX(), y, entity.getZ()), entity.getVelocity(), entity.getHeadYaw(), entity.getPitch());
 	}
 }

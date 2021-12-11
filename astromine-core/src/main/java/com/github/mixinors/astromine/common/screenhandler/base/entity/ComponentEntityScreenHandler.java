@@ -108,9 +108,9 @@ public abstract class ComponentEntityScreenHandler extends BaseScreenHandler {
 		Position invPos = Position.of(tabs, 7F, 25F + 7F + (184 - 18 - 18 - (18 * 4) - 3 + getTabWidgetExtendedHeight()));
 		TextWidget invTitle = new TextWidget();
 		invTitle.setPosition(Position.of(invPos, 0, -10));
-		invTitle.setText(getPlayer().inventory.getName());
+		invTitle.setText(getPlayer().getInventory().getName());
 		invTitle.setColor(4210752);
 		mainTab.addWidget(invTitle);
-		playerSlots = Slots.addPlayerInventory(invPos, Size.of(18F, 18F), mainTab, getPlayer().inventory);
+		playerSlots = Slots.addPlayerInventory(invPos, Size.of(18F, 18F), mainTab, getPlayer().getInventory());
 	}
 }

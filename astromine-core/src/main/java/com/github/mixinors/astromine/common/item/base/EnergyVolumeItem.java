@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.item.base;
 
+import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -79,7 +80,7 @@ public class EnergyVolumeItem extends Item implements EnergyHolder {
 	public int getItemBarStep(ItemStack stack) {
 		if (!Energy.valid(stack) || getMaxStoredPower() == 0)
 			return 0;
-		return (int) (1 - Energy.of(stack).getEnergy() / getMaxStoredPower());
+		return (int) Math.round(13 * (1 - Energy.of(stack).getEnergy() / getMaxStoredPower()));
 	}
 
 	/** Override behavior to return true. */

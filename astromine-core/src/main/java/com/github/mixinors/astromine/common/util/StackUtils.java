@@ -111,7 +111,7 @@ public class StackUtils {
 				return ItemStack.EMPTY;
 			}
 		} else {
-			return ShapedRecipe.getItem(jsonElement.getAsJsonObject());
+			return ShapedRecipe.outputFromJson(jsonElement.getAsJsonObject());
 		}
 	}
 

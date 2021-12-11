@@ -24,6 +24,14 @@
 
 package com.github.mixinors.astromine.common.component.world;
 
+import com.github.mixinors.astromine.common.network.NetworkInstance;
+import com.github.mixinors.astromine.common.network.NetworkMemberNode;
+import com.github.mixinors.astromine.common.network.NetworkNode;
+import com.github.mixinors.astromine.common.network.type.base.NetworkType;
+import com.github.mixinors.astromine.common.registry.NetworkTypeRegistry;
+import com.github.mixinors.astromine.registry.common.AMComponents;
+import com.google.common.collect.Sets;
+import dev.onyxstudios.cca.api.v3.component.Component;
 import me.shedaniel.architectury.utils.NbtType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -32,17 +40,8 @@ import net.minecraft.nbt.NbtLong;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import com.github.mixinors.astromine.common.network.NetworkInstance;
-import com.github.mixinors.astromine.common.network.NetworkMemberNode;
-import com.github.mixinors.astromine.common.network.NetworkNode;
-import com.github.mixinors.astromine.common.network.type.base.NetworkType;
-import com.github.mixinors.astromine.common.registry.NetworkTypeRegistry;
-import com.github.mixinors.astromine.registry.common.AMComponents;
-import dev.onyxstudios.cca.api.v3.component.Component;
 import org.jetbrains.annotations.Nullable;
 
-import com.google.common.collect.Sets;
 import java.util.Set;
 
 /**

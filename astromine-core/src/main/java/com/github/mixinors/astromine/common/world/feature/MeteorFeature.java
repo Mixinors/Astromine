@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.world.feature;
 
+import net.minecraft.structure.StructureGeneratorFactory;
 import net.minecraft.structure.StructureManager;
 import net.minecraft.structure.StructureStart;
 import net.minecraft.util.math.BlockBox;
@@ -37,16 +38,17 @@ import com.mojang.serialization.Codec;
 public class MeteorFeature extends StructureFeature<DefaultFeatureConfig> {
 
 	public MeteorFeature(Codec<DefaultFeatureConfig> codec) {
-		super(codec);
+		super(codec, );
 	}
 
-	public StructureFeature.StructureStartFactory<DefaultFeatureConfig> getStructureStartFactory() {
-		return MeteorFeature.Start::new;
+	public StructureGeneratorFactory<DefaultFeatureConfig> getStructureStartFactory() {
+		return context -> {
+			// TODO
+		};
 	}
 
 	public static class Start extends StructureStart<DefaultFeatureConfig> {
-
-		public Start(StructureFeature<DefaultFeatureConfig> structureFeature, int i, int j, BlockBox blockBox, int k, long l) {
+		public Start(StructureGeneratorFactory.Context<DefaultFeatureConfig> context) {
 			super(structureFeature, i, j, blockBox, k, l);
 		}
 
