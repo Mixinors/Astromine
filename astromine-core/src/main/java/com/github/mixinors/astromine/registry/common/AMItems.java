@@ -81,7 +81,7 @@ public class AMItems {
 	public static final RegistrySupplier<Item> SPACE_SUIT_LEGGINGS = register("space_suit_leggings", () -> new SpaceSuitItem(AMArmorMaterials.SPACE_SUIT, EquipmentSlot.LEGS, AMItems.getBasicSettings()));
 	public static final RegistrySupplier<Item> SPACE_SUIT_BOOTS = register("space_suit_boots", () -> new SpaceSuitItem(AMArmorMaterials.SPACE_SUIT, EquipmentSlot.FEET, AMItems.getBasicSettings()));
 	
-	public static final RegistrySupplier<Item> PRIMITIVE_ROCKET = register("rocket", () -> new UncoloredSpawnEggItem(AMEntityTypes.PRIMITIVE_ROCKET.get(), AMItems.getBasicSettings()));
+	public static final RegistrySupplier<Item> PRIMITIVE_ROCKET = register("rocket", () -> new RocketItem(AMEntityTypes.PRIMITIVE_ROCKET.get(), AMItems.getBasicSettings()));
 	
 	public static final RegistrySupplier<Item> METITE_NUGGET = register("metite_nugget", () -> new Item(AMItems.getBasicSettings()));
 	public static final RegistrySupplier<Item> STELLUM_NUGGET = register("stellum_nugget", () -> new Item(AMItems.getBasicSettings().fireproof()));
