@@ -114,7 +114,7 @@ public final class ItemIngredient implements Predicate<ItemStack> {
 		if (entries.length == 1 && entries[0] instanceof TagEntry) {
 			JsonObject jsonObject = new JsonObject();
 
-			jsonObject.addProperty("tag", ServerTagManagerHolder.getTagManager().getItems().getTagId(((TagEntry) entries[0]).tag).toString());
+			jsonObject.addProperty("tag", ServerTagManagerHolder.getTagManager().getOrCreateTagGroup(Registry.ITEM_KEY).getUncheckedTagId(((TagEntry) entries[0]).tag).toString());
 			jsonObject.addProperty("amount", ((TagEntry) entries[0]).count);
 
 			return jsonObject;
@@ -248,7 +248,7 @@ public final class ItemIngredient implements Predicate<ItemStack> {
 				} else if (jsonObject.has("tag")) {
 					Identifier tagId = new Identifier(JsonHelper.getString(jsonObject, "tag"));
 
-					Tag<Item> tag = ServerTagManagerHolder.getTagManager().getItems().getTag(tagId);
+					Tag<Item> tag = ServerTagManagerHolder.getTagManager().getOrCreateTagGroup(Registry.ITEM_KEY).getTag(tagId);
 
 					if (tag == null) {
 						throw new JsonSyntaxException("Unknown item tag '" + tagId + "'");

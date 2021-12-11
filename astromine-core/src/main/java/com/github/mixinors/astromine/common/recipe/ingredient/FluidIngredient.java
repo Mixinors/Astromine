@@ -31,6 +31,7 @@ import net.minecraft.tag.ServerTagManagerHolder;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 
 import com.github.mixinors.astromine.common.util.StringUtils;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
@@ -104,7 +105,7 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 		if (entries.length == 1 && entries[0] instanceof TagEntry) {
 			JsonObject jsonObject = new JsonObject();
 
-			jsonObject.addProperty("tag", ServerTagManagerHolder.getTagManager().getFluids().getTagId(((TagEntry) entries[0]).tag).toString());
+			jsonObject.addProperty("tag", ServerTagManagerHolder.getTagManager().getOrCreateTagGroup(Registry.FLUID_KEY).getUncheckedTagId(((TagEntry) entries[0]).tag).toString());
 			jsonObject.addProperty("amount", ((TagEntry) entries[0]).amount);
 
 			return jsonObject;
@@ -222,7 +223,7 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 				} else if (jsonObject.has("tag")) {
 					Identifier tagId = new Identifier(StringUtils.fromJson(jsonObject.get("tag")));
 
-					Tag<Fluid> tag = ServerTagManagerHolder.getTagManager().getFluids().getTag(tagId);
+					Tag<Fluid> tag = ServerTagManagerHolder.getTagManager().getOrCreateTagGroup(Registry.FLUID_KEY).getTag(tagId);
 
 					if (tag == null) {
 						throw new JsonSyntaxException("Unknown fluid tag '" + tagId + "'!");
