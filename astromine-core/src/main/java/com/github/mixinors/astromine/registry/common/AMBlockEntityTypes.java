@@ -130,15 +130,6 @@ public class AMBlockEntityTypes {
 	public static final RegistrySupplier<BlockEntityType<BlockBreakerBlockEntity>> BLOCK_BREAKER = register("block_breaker", BlockBreakerBlockEntity::new, AMBlocks.BLOCK_BREAKER);
 	public static final RegistrySupplier<BlockEntityType<BlockPlacerBlockEntity>> BLOCK_PLACER = register("block_placer", BlockPlacerBlockEntity::new, AMBlocks.BLOCK_PLACER);
 	
-	public static final RegistrySupplier<BlockEntityType<AbstractConveyableBlockEntity>> ALTERNATOR = register("alternator", AlternatorBlockEntity::new, AMBlocks.ALTERNATOR);
-	public static final RegistrySupplier<BlockEntityType<AbstractConveyableBlockEntity>> SPLITTER = register("splitter", SplitterBlockEntity::new, AMBlocks.SPLITTER);
-	public static final RegistrySupplier<BlockEntityType<ShredderBlockEntity>> INCINERATOR = register("shredder", ShredderBlockEntity::new, AMBlocks.SHREDDER);
-	public static final RegistrySupplier<BlockEntityType<InserterBlockEntity>> INSERTER = register("inserter", InserterBlockEntity::new, AMBlocks.INSERTER, AMBlocks.FAST_INSERTER);
-	
-	public static final RegistrySupplier<BlockEntityType<ConveyorBlockEntity>> CONVEYOR = register("conveyor", ConveyorBlockEntity::new, AMBlocks.BASIC_CONVEYOR, AMBlocks.ADVANCED_CONVEYOR, AMBlocks.ELITE_CONVEYOR);
-	public static final RegistrySupplier<BlockEntityType<VerticalConveyorBlockEntity>> VERTICAL_CONVEYOR = register("vertical_conveyor", VerticalConveyorBlockEntity::new, AMBlocks.BASIC_VERTICAL_CONVEYOR, AMBlocks.ADVANCED_VERTICAL_CONVEYOR, AMBlocks.ELITE_VERTICAL_CONVEYOR);
-	public static final RegistrySupplier<BlockEntityType<DownVerticalConveyorBlockEntity>> DOWNWARD_VERTICAL_CONVEYOR = register("downward_vertical_conveyor", DownVerticalConveyorBlockEntity::new, AMBlocks.BASIC_DOWNWARD_VERTICAL_CONVEYOR, AMBlocks.ADVANCED_DOWNWARD_VERTICAL_CONVEYOR, AMBlocks.ELITE_DOWNWARD_VERTICAL_CONVEYOR);
-	
 	public static final RegistrySupplier<BlockEntityType<DrainBlockEntity>> DRAIN = register("drain", DrainBlockEntity::new, AMBlocks.DRAIN);
 	
 	public static void init() {

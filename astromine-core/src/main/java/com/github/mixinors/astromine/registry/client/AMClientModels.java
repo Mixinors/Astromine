@@ -49,8 +49,6 @@ import java.util.Set;
 import java.util.function.Function;
 
 public class AMClientModels {
-	public static final ModelIdentifier CONVEYOR_SUPPORTS = new ModelIdentifier(AMCommon.id("conveyor_supports"), "");
-	
 	public static final ModelIdentifier ROCKET_INVENTORY = new ModelIdentifier(AMCommon.id("rocket"), "inventory");
 	
 	public static final Lazy<ModelTransformation> ITEM_HANDHELD_TRANSFORMATION = new Lazy<>(() -> {
@@ -66,10 +64,6 @@ public class AMClientModels {
 	});
 	
 	public static void init() {
-		ModelLoadingRegistry.INSTANCE.registerModelProvider((resourceManager, consumer) -> {
-			consumer.accept(CONVEYOR_SUPPORTS);
-		});
-		
 		ModelLoadingRegistry.INSTANCE.registerVariantProvider(resourceManager -> (modelIdentifier, modelProviderContext) -> {
 			if (modelIdentifier.equals(ROCKET_INVENTORY)) {
 				return new UnbakedModel() {

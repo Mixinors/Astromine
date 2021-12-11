@@ -41,14 +41,6 @@ public class AMBlockEntityRenderers {
 	public static void init() {
 		register(AMBlockEntityTypes.HOLOGRAPHIC_BRIDGE, HoloBridgeBlockEntityRenderer::new);
 		
-		register(AMBlockEntityTypes.ALTERNATOR, AbstractConveyableBlockEntityRenderer::new);
-		register(AMBlockEntityTypes.SPLITTER, AbstractConveyableBlockEntityRenderer::new);
-		register(AMBlockEntityTypes.INSERTER, InserterBlockEntityRenderer::new);
-		
-		register(AMBlockEntityTypes.CONVEYOR, ConveyorBlockEntityRenderer::new);
-		register(AMBlockEntityTypes.VERTICAL_CONVEYOR, VerticalConveyorBlockEntityRenderer::new);
-		register(AMBlockEntityTypes.DOWNWARD_VERTICAL_CONVEYOR, DownwardVerticalConveyorBlockEntityRenderer::new);
-		
 		register(AMBlockEntityTypes.ALTAR_PEDESTAL, AltarPedestalBlockEntityRenderer::new);
 		register(AMBlockEntityTypes.ALTAR, AltarBlockEntityRenderer::new);
 	}

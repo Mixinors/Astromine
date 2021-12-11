@@ -235,24 +235,7 @@ public class AMBlocks {
 	
 	public static final Block AIRLOCK = new AirlockBlock(getBasicSettings());
 	
-	public static final RegistrySupplier<Block> ALTERNATOR = register("alternator", () -> new AlternatorBlock(getBasicSettings()), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> SPLITTER = register("splitter", () -> new SplitterBlock(getBasicSettings()), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> SHREDDER = register("shredder", () -> new ShredderBlock(getBasicSettings().ticksRandomly()), AMItems.getBasicSettings());
-	
 	public static final RegistrySupplier<Block> DRAIN = register("drain", () -> new DrainBlock(getBasicSettings()), AMItems.getBasicSettings());
-	
-	public static final RegistrySupplier<Block> INSERTER = register("inserter", () -> new InserterBlock("normal", AMConfig.get().inserterSpeed, getBasicSettings().nonOpaque()), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> FAST_INSERTER = register("fast_inserter", () -> new InserterBlock("fast", AMConfig.get().fastInserterSpeed, getBasicSettings().nonOpaque()), AMItems.getBasicSettings());
-	
-	public static final RegistrySupplier<Block> BASIC_CONVEYOR = register("basic_conveyor", () -> new ConveyorBlock(getBasicSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), AMConfig.get().basicConveyorSpeed), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> BASIC_VERTICAL_CONVEYOR = register("basic_vertical_conveyor", () -> new VerticalConveyorBlock(getBasicSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), AMConfig.get().basicConveyorSpeed), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> BASIC_DOWNWARD_VERTICAL_CONVEYOR = register("basic_downward_vertical_conveyor", () -> new DownwardVerticalConveyorBlock(getBasicSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), AMConfig.get().basicConveyorSpeed), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> ADVANCED_CONVEYOR = register("advanced_conveyor", () -> new ConveyorBlock(getAdvancedSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), AMConfig.get().advancedConveyorSpeed), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> ADVANCED_VERTICAL_CONVEYOR = register("advanced_vertical_conveyor", () -> new VerticalConveyorBlock(getAdvancedSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), AMConfig.get().advancedConveyorSpeed), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> ADVANCED_DOWNWARD_VERTICAL_CONVEYOR = register("advanced_downward_vertical_conveyor", () -> new DownwardVerticalConveyorBlock(getAdvancedSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), AMConfig.get().advancedConveyorSpeed), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> ELITE_CONVEYOR = register("elite_conveyor", () -> new ConveyorBlock(getEliteSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), AMConfig.get().eliteConveyorSpeed), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> ELITE_VERTICAL_CONVEYOR = register("elite_vertical_conveyor", () -> new VerticalConveyorBlock(getEliteSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), AMConfig.get().eliteConveyorSpeed), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> ELITE_DOWNWARD_VERTICAL_CONVEYOR = register("elite_downward_vertical_conveyor", () -> new DownwardVerticalConveyorBlock(getEliteSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), AMConfig.get().eliteConveyorSpeed), AMItems.getBasicSettings());
 	
 	public static final RegistrySupplier<Block> CATWALK = register("catwalk", () -> new CatwalkBlock(BlockProperties.copy(Blocks.STONE).sounds(BlockSoundGroup.METAL).nonOpaque()), AMItems.getBasicSettings());
 	public static final RegistrySupplier<Block> CATWALK_STAIRS = register("catwalk_stairs", () -> new CatwalkStairsBlock(BlockProperties.copy(Blocks.STONE).sounds(BlockSoundGroup.METAL).nonOpaque()), AMItems.getBasicSettings());
