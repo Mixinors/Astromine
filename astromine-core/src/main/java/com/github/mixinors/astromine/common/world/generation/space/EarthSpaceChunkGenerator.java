@@ -95,7 +95,7 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 		return CompletableFuture.supplyAsync(() -> {
 			populateNoise(structureAccessor, chunk);
 			return Unit.INSTANCE;
-		}).thenApply(unit -> chunk);
+		}, executor).thenApply(unit -> chunk);
 	}
 
 	public void populateNoise(StructureAccessor accessor, Chunk chunk) {
