@@ -47,6 +47,10 @@ project.ext.setDefaultApis = {
 
     // Architectury API
     useAsApi("me.shedaniel:architectury-fabric:${architectury_api_version}")
+
+    // RoughlyEnoughItems
+    useAsApi "me.shedaniel:RoughlyEnoughItems-api-fabric:${roughly_enough_items_version}"
+    useAsApi "me.shedaniel:RoughlyEnoughItems-fabric:${roughly_enough_items_version}"
 }
 
 project.ext.setRuntimeTestMods = {

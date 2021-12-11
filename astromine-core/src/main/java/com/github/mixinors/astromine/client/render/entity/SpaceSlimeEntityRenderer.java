@@ -25,9 +25,9 @@
 package com.github.mixinors.astromine.client.render.entity;
 
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.MobEntityRenderer;
 import net.minecraft.client.render.entity.feature.SlimeOverlayFeatureRenderer;
+import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
@@ -35,14 +35,15 @@ import net.minecraft.util.math.Vec3f;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.model.SpaceSlimeEntityModel;
 import com.github.mixinors.astromine.common.entity.SpaceSlimeEntity;
-import net.minecraft.client.render.entity.EntityRendererFactory.Context;
+import net.minecraft.client.render.entity.EntityRendererFactory;
 
 public class SpaceSlimeEntityRenderer extends MobEntityRenderer<SpaceSlimeEntity, SpaceSlimeEntityModel> {
 	private static final Identifier TEXTURE = AMCommon.id("textures/entity/space_slime/space_slime.png");
 
-	public SpaceSlimeEntityRenderer(Context context) {
-		super(context, new SpaceSlimeEntityModel(16), 0.25F);
-		this.addFeature(new SlimeOverlayFeatureRenderer(context));
+	public SpaceSlimeEntityRenderer(EntityRendererFactory.Context context) {
+		super(context, new SpaceSlimeEntityModel(context.getPart(EntityModelLayers.SLIME)), 0.25F);
+		this.addFeature(new SlimeOverlayFeatureRenderer(this, context.getModelLoader()));
+		// I don't get why it's complaining, MobEntityRenderer implements FeatureRendererContext through LivingEntityRenderer
 	}
 
 	@Override

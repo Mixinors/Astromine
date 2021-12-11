@@ -41,12 +41,6 @@ allprojects {
         version = project.mod_version + "+" + project.minecraft_version
     }
 
-    ext {
-        shouldGenerateData = false
-        // A special flag to disable this module to go into production jar and mark this moudle to be running the datagen task.
-        isRunningGenerateDataTask = path == ":astromine-datagen-initializer"
-    }
-
     java {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -167,7 +161,7 @@ allprojects {
     
     afterEvaluate {
         remapJar {
-            addNestedDependencies = project.rootProject != project && !isRunningGenerateDataTask
+            addNestedDependencies = project.rootProject != project
         }
     }
 }
@@ -199,47 +193,6 @@ subprojects {
     }
 
     afterEvaluate {
-        if (shouldGenerateData) {
-            sourceSets {
-                main {
-                    resources {
-                        srcDir 'src/generated/resources'
-                    }
-                }
-                datagen {
-                    compileClasspath += main.compileClasspath
-                    runtimeClasspath += main.runtimeClasspath
-                }
-            }
-
-            task datagenJar(type: Jar) {
-                classifier("datagen")
-                from sourceSets.datagen.output
-            }
-
-            configurations {
-                datagenDev
-                datagenCompile.extendsFrom(compileClasspath)
-            }
-
-            dependencies {
-                datagenCompile sourceSets.main.output
-            }
-
-            artifacts {
-                datagenDev file: file("${project.buildDir}/libs/$archivesBaseName-${version}-datagen.jar"), type: 'jar', builtBy: datagenJar
-            }
-
-            if (isRunningGenerateDataTask) {
-                task generateData(type: RunClientTask, dependsOn: downloadAssets) {
-                    classpath = configurations.runtimeClasspath
-                    classpath sourceSets.datagen.runtimeClasspath
-                    classpath sourceSets.main.output
-                    classpath sourceSets.datagen.output
-                }
-            }
-        }
-
         curseforge {
             if ((project.hasProperty('curse_api_key') || System.getenv('curse_api_key') != null) && cfProjectId >= 0) {
                 project {
@@ -301,13 +254,6 @@ allprojects {
     }
 }
 
-task generateDataAll
-subprojects.forEach {
-    if (it.isRunningGenerateDataTask) {
-        generateDataAll.dependsOn("${it.path}:generateData")
-    }
-}
-
 task deleteBuildFolderAll {
     doLast {
         allprojects {
@@ -322,10 +268,6 @@ task releaseOnCf
 releaseOnCf.dependsOn(":curseforge")
 subprojects { releaseOnCf.dependsOn("${it.path}:curseforge") }
 subprojects { rootProject.remapJar.dependsOn("${it.path}:remapJar") }
-
-sourceSets {
-    datagen
-}
 
 dependencies {
     subprojects.each {
@@ -343,13 +285,11 @@ publishing {
             pom.withXml {
                 def depsNode = asNode().appendNode("dependencies")
                 subprojects.each {
-                    if (!it.isRunningGenerateDataTask) {
-                        def depNode = depsNode.appendNode("dependency")
-                        depNode.appendNode("groupId", it.group)
-                        depNode.appendNode("artifactId", it.name)
-                        depNode.appendNode("version", it.version)
-                        depNode.appendNode("scope", "compile")
-                    }
+                    def depNode = depsNode.appendNode("dependency")
+                    depNode.appendNode("groupId", it.group)
+                    depNode.appendNode("artifactId", it.name)
+                    depNode.appendNode("version", it.version)
+                    depNode.appendNode("scope", "compile")
                 }
             }
         }

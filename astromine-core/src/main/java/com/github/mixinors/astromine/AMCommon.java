@@ -24,6 +24,8 @@
 
 package com.github.mixinors.astromine;
 
+import java.util.function.Supplier;
+
 import com.github.mixinors.astromine.registry.common.*;
 import me.shedaniel.architectury.registry.Registries;
 import me.shedaniel.architectury.registry.Registry;
@@ -31,14 +33,12 @@ import net.fabricmc.api.ModInitializer;
 
 import net.minecraft.util.Identifier;
 
-import net.minecraft.util.Lazy;
 import net.minecraft.util.registry.RegistryKey;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.gson.Gson;
-
-import java.util.function.Consumer;
+import com.google.common.base.Suppliers;
 
 public class AMCommon implements ModInitializer {
 	public static final String LOG_ID = "Astromine";
@@ -48,7 +48,7 @@ public class AMCommon implements ModInitializer {
 
 	public static final Logger LOGGER = LogManager.getLogger(LOG_ID);
 	
-	public static final Lazy<Registries> REGISTRIES = new Lazy<>(() -> Registries.get(MOD_ID));
+	public static final Supplier<Registries> REGISTRIES = Suppliers.memoize(() -> Registries.get(MOD_ID));
 
 	public static Identifier id(String name) {
 		if (name.indexOf(':') >= 0)

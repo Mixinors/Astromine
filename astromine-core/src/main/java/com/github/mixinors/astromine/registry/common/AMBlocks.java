@@ -97,7 +97,7 @@ public class AMBlocks {
 	public static final RegistrySupplier<Block> ALTAR_PEDESTAL = register("altar_pedestal", () -> new AltarPedestalBlock(BlockProperties.of(Material.METAL, MapColor.GOLD).tool(ToolType.PICKAXE, 2).requiresTool().strength(5, 6).sounds(BlockSoundGroup.METAL).nonOpaque()), AMItems.getBasicSettings());
 	public static final RegistrySupplier<Block> ALTAR = register("altar", () -> new AltarBlock(BlockProperties.of(Material.METAL, MapColor.GOLD).tool(ToolType.PICKAXE, 2).requiresTool().strength(5, 6).sounds(BlockSoundGroup.METAL).nonOpaque()), AMItems.getBasicSettings());
 	
-	public static final RegistrySupplier<Block> SPACE_SLIME_BLOCK = register("space_slime_block", () -> new SlimeBlock(FabricBlockSettings.copyOf(Blocks.SLIME_BLOCK).materialColor(MapColor.PURPLE)), AMItems.getBasicSettings());
+	public static final RegistrySupplier<Block> SPACE_SLIME_BLOCK = register("space_slime_block", () -> new SlimeBlock(BlockProperties.copy(Blocks.SLIME_BLOCK).mapColor(MapColor.PURPLE)), AMItems.getBasicSettings());
 	
 	public static final RegistrySupplier<Block> COPPER_ORE = register("copper_ore", () -> new AstromineOreBlock(BlockProperties.of(Material.STONE).tool(ToolType.PICKAXE, 1).requiresTool().strength(3, 3).sounds(BlockSoundGroup.STONE)), AMItems.getBasicSettings());
 	public static final RegistrySupplier<Block> TIN_ORE = register("tin_ore", () -> new AstromineOreBlock(BlockProperties.of(Material.STONE).tool(ToolType.PICKAXE, 1).requiresTool().strength(3, 3).sounds(BlockSoundGroup.STONE)), AMItems.getBasicSettings());
