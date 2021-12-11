@@ -24,8 +24,9 @@
 
 package com.github.mixinors.astromine.common.world.feature;
 
-import com.github.mixinors.astromine.common.util.data.Range;
 import com.github.mixinors.astromine.client.registry.AsteroidOreRegistry;
+import com.github.mixinors.astromine.common.util.WeightedList;
+import com.github.mixinors.astromine.common.util.data.Range;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.mojang.serialization.Codec;
@@ -37,10 +38,8 @@ import com.terraformersmc.terraform.shapes.impl.layer.transform.RotateLayer;
 import com.terraformersmc.terraform.shapes.impl.layer.transform.TranslateLayer;
 import net.minecraft.block.Block;
 import net.minecraft.util.Pair;
-import net.minecraft.util.collection.WeightedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.util.FeatureContext;
@@ -68,11 +67,12 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 
 		chances(random, ores);
 
-		if (ores.stream().findAny().isEmpty()) {
+		if (ores.isEmpty()) {
 			return true;
 		}
 
-		Block ore = ores.pickRandom(random);
+		ores.shuffle(random);
+		Block ore = ores.stream().findFirst().get();
 
 		double xSize = AsteroidOreRegistry.INSTANCE.getDiameter(random, ore);
 		double ySize = AsteroidOreRegistry.INSTANCE.getDiameter(random, ore);

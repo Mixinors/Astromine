@@ -15,7 +15,7 @@ accessible field net/minecraft/client/render/RenderPhase endAction Ljava/lang/Ru
 accessible field net/minecraft/item/BucketItem fluid Lnet/minecraft/fluid/Fluid;
 accessible field net/minecraft/recipe/Ingredient matchingStacks [Lnet/minecraft/item/ItemStack;
 accessible field net/minecraft/server/network/ServerPlayNetworkHandler floatingTicks I
-accessible field net/minecraft/server/world/ServerChunkManager chunkGenerator Lnet/minecraft/world/gen/chunk/ChunkGenerator;
+accessible field net/minecraft/server/world/ThreadedAnvilChunkStorage chunkGenerator Lnet/minecraft/world/gen/chunk/ChunkGenerator;
 accessible field net/minecraft/util/DyeColor color I
 accessible method net/minecraft/client/render/RenderLayer of (Ljava/lang/String;Lnet/minecraft/client/render/VertexFormat;Lnet/minecraft/client/render/VertexFormat$DrawMode;IZZLnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;)Lnet/minecraft/client/render/RenderLayer$MultiPhase;
 accessible method net/minecraft/advancement/criterion/Criteria register (Lnet/minecraft/advancement/criterion/Criterion;)Lnet/minecraft/advancement/criterion/Criterion;
@@ -35,4 +35,4 @@ accessible method net/minecraft/recipe/RecipeManager getAllOfType (Lnet/minecraf
 mutable field net/minecraft/client/render/RenderPhase beginAction Ljava/lang/Runnable;
 mutable field net/minecraft/client/render/RenderPhase endAction Ljava/lang/Runnable;
 mutable field net/minecraft/server/network/ServerPlayNetworkHandler floatingTicks I
-mutable field net/minecraft/server/world/ServerChunkManager chunkGenerator Lnet/minecraft/world/gen/chunk/ChunkGenerator;
+mutable field net/minecraft/server/world/ThreadedAnvilChunkStorage chunkGenerator Lnet/minecraft/world/gen/chunk/ChunkGenerator;

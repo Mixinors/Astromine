@@ -120,8 +120,8 @@ public class AMCallbacks {
 		});
 		
 		ServerChunkManagerCallback.EVENT.register(manager -> {
-			if (manager.chunkGenerator instanceof EarthSpaceChunkGenerator) {
-				manager.chunkGenerator = ((EarthSpaceChunkGenerator) manager.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
+			if (manager.threadedAnvilChunkStorage.chunkGenerator instanceof EarthSpaceChunkGenerator) {
+				manager.threadedAnvilChunkStorage.chunkGenerator = ((EarthSpaceChunkGenerator) manager.threadedAnvilChunkStorage.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
 			}
 		});
 		
