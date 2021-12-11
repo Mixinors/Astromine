@@ -10,7 +10,7 @@ plugins {
     id 'maven-publish'
     id 'dev.architectury.loom' version '0.10.0-SNAPSHOT'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
-    id "org.cadixdev.licenser" version "0.5.0"
+    id "org.cadixdev.licenser" version "0.6.1"
 }
 
 apply from: 'dependencies.gradle'
@@ -67,7 +67,7 @@ allprojects {
             name = "JitPack"
             url = "https://jitpack.io"
             content {
-                includeGroupByRegex "com.github.\\w+"
+                includeGroupByRegex "com.github(\\.\\w+)+"
             }
         }
 
@@ -113,6 +113,8 @@ allprojects {
                 if (!dep.contains("me.shedaniel")) {
                     exclude group: "me.shedaniel"
                 }
+                // tmp
+                exclude group: "com.github.Draylar.omega-config", module: "omega-config-base"
                 exclude group: "me.shedaniel.cloth", module: "cloth-config"
                 exclude group: "io.github.prospector", module: "modmenu"
             }
@@ -327,7 +329,7 @@ sourceSets {
 
 dependencies {
     subprojects.each {
-        compile project(path: ":${it.path}", configuration: "dev")
+        implementation project(path: ":${it.path}", configuration: "namedElements")
     }
 
     modRuntime "net.fabricmc:dev-launch-injector:+"

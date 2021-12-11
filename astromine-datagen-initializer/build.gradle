@@ -3,7 +3,7 @@ shouldGenerateData = true
 dependencies {
     rootProject.subprojects.forEach {
         if (it.path != path) {
-            compile project(path: ":${it.path}", configuration: 'dev')
+            implementation project(path: ":${it.path}", configuration: 'namedElements')
         }
     }
 }
