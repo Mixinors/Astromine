@@ -36,6 +36,7 @@ public class AMClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
+		AMEntityModelLayers.init();
 		AMEntityRenderers.init();
 		AMBlockEntityRenderers.init();
 		AMClientModels.init();

@@ -200,11 +200,6 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	}
 
 	@Override
-	public double getSquaredRenderDistance() {
-		return Math.pow(2, 15);
-	}
-
-	@Override
 	public void markRemoved() {
 		if (this.child != null) {
 			this.destroyBridge();
@@ -212,7 +207,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			this.setChild(null);
 
 			if (!world.isClient) {
-				this.syncData();
+				//TODO: this.syncData();
 			}
 		}
 
@@ -303,5 +298,6 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	@Override
 	public NbtCompound toInitialChunkDataNbt() {
 		NbtCompound compound = new NbtCompound();
+		return compound;
 	}
 }
