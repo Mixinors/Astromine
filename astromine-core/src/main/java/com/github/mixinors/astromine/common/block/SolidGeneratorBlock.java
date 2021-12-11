@@ -77,8 +77,8 @@ public abstract class SolidGeneratorBlock extends HorizontalFacingTieredBlockWit
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new SolidGeneratorBlockEntity.Primitive();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new SolidGeneratorBlockEntity.Primitive(pos, state);
 		}
 	}
 
@@ -88,8 +88,8 @@ public abstract class SolidGeneratorBlock extends HorizontalFacingTieredBlockWit
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new SolidGeneratorBlockEntity.Basic();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new SolidGeneratorBlockEntity.Basic(pos, state);
 		}
 	}
 
@@ -99,8 +99,8 @@ public abstract class SolidGeneratorBlock extends HorizontalFacingTieredBlockWit
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new SolidGeneratorBlockEntity.Advanced();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new SolidGeneratorBlockEntity.Advanced(pos, state);
 		}
 	}
 
@@ -110,8 +110,8 @@ public abstract class SolidGeneratorBlock extends HorizontalFacingTieredBlockWit
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new SolidGeneratorBlockEntity.Elite();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new SolidGeneratorBlockEntity.Elite(pos, state);
 		}
 	}
 }

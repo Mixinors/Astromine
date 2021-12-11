@@ -71,8 +71,8 @@ public abstract class TrituratorBlock extends HorizontalFacingTieredBlockWithEnt
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new TrituratorBlockEntity.Primitive();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new TrituratorBlockEntity.Primitive(pos, state);
 		}
 	}
 
@@ -82,8 +82,8 @@ public abstract class TrituratorBlock extends HorizontalFacingTieredBlockWithEnt
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new TrituratorBlockEntity.Basic();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new TrituratorBlockEntity.Basic(pos, state);
 		}
 	}
 
@@ -93,8 +93,8 @@ public abstract class TrituratorBlock extends HorizontalFacingTieredBlockWithEnt
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new TrituratorBlockEntity.Advanced();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new TrituratorBlockEntity.Advanced(pos, state);
 		}
 	}
 
@@ -104,8 +104,8 @@ public abstract class TrituratorBlock extends HorizontalFacingTieredBlockWithEnt
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new TrituratorBlockEntity.Elite();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new TrituratorBlockEntity.Elite(pos, state);
 		}
 	}
 }

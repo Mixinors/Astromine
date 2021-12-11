@@ -70,8 +70,8 @@ public abstract class BufferBlock extends HorizontalFacingTieredBlockWithEntity 
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new BufferBlockEntity.Primitive();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new BufferBlockEntity.Primitive(pos, state);
 		}
 	}
 
@@ -81,8 +81,8 @@ public abstract class BufferBlock extends HorizontalFacingTieredBlockWithEntity 
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new BufferBlockEntity.Basic();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new BufferBlockEntity.Basic(pos, state);
 		}
 	}
 
@@ -92,8 +92,8 @@ public abstract class BufferBlock extends HorizontalFacingTieredBlockWithEntity 
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new BufferBlockEntity.Advanced();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new BufferBlockEntity.Advanced(pos, state);
 		}
 	}
 
@@ -103,8 +103,8 @@ public abstract class BufferBlock extends HorizontalFacingTieredBlockWithEntity 
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new BufferBlockEntity.Elite();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new BufferBlockEntity.Elite(pos, state);
 		}
 	}
 
@@ -114,8 +114,8 @@ public abstract class BufferBlock extends HorizontalFacingTieredBlockWithEntity 
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new BufferBlockEntity.Creative();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new BufferBlockEntity.Creative(pos, state);
 		}
 	}
 }

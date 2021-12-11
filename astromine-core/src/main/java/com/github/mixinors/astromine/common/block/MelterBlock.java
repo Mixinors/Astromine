@@ -77,8 +77,8 @@ public abstract class MelterBlock extends HorizontalFacingTieredBlockWithEntity 
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new MelterBlockEntity.Primitive();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new MelterBlockEntity.Primitive(pos, state);
 		}
 	}
 
@@ -88,8 +88,8 @@ public abstract class MelterBlock extends HorizontalFacingTieredBlockWithEntity 
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new MelterBlockEntity.Basic();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new MelterBlockEntity.Basic(pos, state);
 		}
 	}
 
@@ -99,8 +99,8 @@ public abstract class MelterBlock extends HorizontalFacingTieredBlockWithEntity 
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new MelterBlockEntity.Advanced();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new MelterBlockEntity.Advanced(pos, state);
 		}
 	}
 
@@ -110,8 +110,8 @@ public abstract class MelterBlock extends HorizontalFacingTieredBlockWithEntity 
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new MelterBlockEntity.Elite();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new MelterBlockEntity.Elite(pos, state);
 		}
 	}
 }

@@ -108,10 +108,6 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 	 * a {@link ScreenHandler} or not. */
 	public abstract boolean hasScreenHandler();
 
-	/** Returns the {@link BlockEntity} this {@link Block}
-	 * will create. */
-	public abstract BlockEntity createBlockEntity();
-
 	/** Returns the {@link ScreenHandler} this {@link Block}
 	 * will open. */
 	public abstract ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player);

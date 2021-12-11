@@ -71,8 +71,8 @@ public abstract class ElectrolyzerBlock extends HorizontalFacingTieredBlockWithE
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new ElectrolyzerBlockEntity.Primitive();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new ElectrolyzerBlockEntity.Primitive(pos, state);
 		}
 	}
 
@@ -82,8 +82,8 @@ public abstract class ElectrolyzerBlock extends HorizontalFacingTieredBlockWithE
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new ElectrolyzerBlockEntity.Basic();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new ElectrolyzerBlockEntity.Basic(pos, state);
 		}
 	}
 
@@ -93,8 +93,8 @@ public abstract class ElectrolyzerBlock extends HorizontalFacingTieredBlockWithE
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new ElectrolyzerBlockEntity.Advanced();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new ElectrolyzerBlockEntity.Advanced(pos, state);
 		}
 	}
 
@@ -104,8 +104,8 @@ public abstract class ElectrolyzerBlock extends HorizontalFacingTieredBlockWithE
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new ElectrolyzerBlockEntity.Elite();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new ElectrolyzerBlockEntity.Elite(pos, state);
 		}
 	}
 }
