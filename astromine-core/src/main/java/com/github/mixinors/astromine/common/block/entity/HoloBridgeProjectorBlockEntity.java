@@ -45,7 +45,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public class HoloBridgeProjectorBlockEntity extends BlockEntity {
+public class HoloBridgeProjectorBlockEntity extends BlockEntity implements TickableBlockEntity {
 	public ArrayList<Vec3f> segments = null;
 
 	public Color color = Color.of("0x7e80cad4");
@@ -302,14 +302,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public void loadClientData(BlockState state, NbtCompound tag) {
-		this.readNbt(state, tag);
-
-		
-	}
-
-	@Override
-	public NbtCompound saveClientData(NbtCompound compoundTag) {
-		return this.writeNbt(compoundTag);
+	public NbtCompound toInitialChunkDataNbt() {
+		NbtCompound compound = new NbtCompound();
 	}
 }

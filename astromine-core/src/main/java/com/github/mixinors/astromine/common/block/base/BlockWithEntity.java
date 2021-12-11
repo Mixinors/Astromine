@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.base;
 
+import com.github.mixinors.astromine.common.block.entity.TickableBlockEntity;
 import me.shedaniel.architectury.registry.MenuRegistry;
 import me.shedaniel.architectury.registry.menu.ExtendedMenuProvider;
 
@@ -32,6 +33,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -59,6 +62,7 @@ import net.minecraft.world.World;
 import com.github.mixinors.astromine.common.block.redstone.ComparatorMode;
 import com.github.mixinors.astromine.common.item.base.EnergyVolumeItem;
 import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -116,13 +120,6 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 	 * passed onto {@link ExtendedMenuProvider#saveExtraData(PacketByteBuf)}. */
 	public abstract void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer);
 
-	/** Returns the {@link BlockEntity} this {@link Block}
-	 * will create. */
-	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
-		return createBlockEntity();
-	}
-
 	/** Returns the {@link ScreenHandlerFactory} this {@link Block}
 	 * will use. */
 	public ExtendedMenuProvider createScreenHandlerFactory(ServerPlayerEntity player, BlockState state, World world, BlockPos pos) {
@@ -150,6 +147,7 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 
 	/** Repasses the synced block event to the {@link BlockEntity} in the
 	 * given {@link World} at the given {@link BlockPos}. */
+	@Override
 	public boolean onSyncedBlockEvent(BlockState state, World world, BlockPos pos, int type, int data) {
 		super.onSyncedBlockEvent(state, world, pos, type, data);
 
@@ -196,9 +194,19 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 
 		if (blockEntity != null) {
-			blockEntity.readNbt(state, stack.getOrCreateNbt());
-			blockEntity.setPos(pos);
+			blockEntity.readNbt(stack.getOrCreateNbt());
 		}
+	}
+
+	@Nullable
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+		// We might not need this, but whatever, we are astromine
+		return (world1, blockPos, blockState, blockEntity) -> {
+			if (blockEntity instanceof TickableBlockEntity tickableBlockEntity) {
+				tickableBlockEntity.tick();
+			}
+		};
 	}
 
 	/** Override behavior to write {@link BlockEntity} contents to {@link ItemStack} {@link NbtCompound}. */

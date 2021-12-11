@@ -39,10 +39,12 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.block.entity.HoloBridgeProjectorBlockEntity;
 import com.github.vini2003.blade.common.miscellaneous.Color;
+import org.jetbrains.annotations.Nullable;
 
 public class HoloBridgeProjectorBlock extends HorizontalFacingBlockWithEntity {
 	public HoloBridgeProjectorBlock(AbstractBlock.Settings settings) {
@@ -96,10 +98,10 @@ public class HoloBridgeProjectorBlock extends HorizontalFacingBlockWithEntity {
 		return false;
 	}
 
+	@Nullable
 	@Override
-	public BlockEntity createBlockEntity() {
-		return new HoloBridgeProjectorBlockEntity();
-	}
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new HoloBridgeProjectorBlockEntity(pos, state);
 
 	@Override
 	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
