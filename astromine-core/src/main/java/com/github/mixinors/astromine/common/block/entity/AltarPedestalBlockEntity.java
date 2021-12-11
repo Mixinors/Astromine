@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 
-import me.shedaniel.architectury.hooks.BlockEntityHooks;
+import dev.architectury.hooks.block.BlockEntityHooks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -40,14 +40,14 @@ import com.github.mixinors.astromine.common.component.general.SimpleItemComponen
 import com.github.mixinors.astromine.common.component.general.compatibility.InventoryFromItemComponent;
 import org.jetbrains.annotations.ApiStatus;
 
-public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFromItemComponent {
+public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFromItemComponent, TickableBlockEntity {
 	public BlockPos parentPos;
 	private int spinAge;
 	private int lastSpinAddition;
 	private int yAge;
 	private ItemComponent inventory = SimpleItemComponent.of(1).withListener(inventory -> {
 		if (hasWorld() && !world.isClient) {
-			syncData();
+			BlockEntityHooks.syncData(this);
 			world.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1, 1);
 		}
 	});
@@ -69,7 +69,7 @@ public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFr
 	@Override
 	public void markDirty() {
 		super.markDirty();
-		syncData();
+		BlockEntityHooks.syncData(this);
 	}
 
 	@Override

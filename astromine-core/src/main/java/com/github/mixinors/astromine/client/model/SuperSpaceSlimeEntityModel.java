@@ -46,7 +46,7 @@ public class SuperSpaceSlimeEntityModel extends SlimeEntityModel<SuperSpaceSlime
 
 	@Override
 	public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha) {
-		this.getPart().render(matrices, vertices, light, overlay, red, green, blue, alpha));
+		this.getPart().render(matrices, vertices, light, overlay, red, green, blue, alpha);
 
 		// translate & scale for glass outline
 		matrices.translate(0, 1.25, 0);
