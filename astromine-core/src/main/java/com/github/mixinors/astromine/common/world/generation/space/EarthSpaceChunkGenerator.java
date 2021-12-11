@@ -32,13 +32,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.*;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.Blender;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
+import net.minecraft.world.gen.random.AtomicSimpleRandom;
 import net.minecraft.world.gen.random.ChunkRandom;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -78,6 +81,16 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 		return withSeedCommon(seed);
 	}
 
+	@Override
+	public MultiNoiseUtil.MultiNoiseSampler getMultiNoiseSampler() {
+		return (i, j, k) -> MultiNoiseUtil.createNoiseValuePoint(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+	}
+
+	@Override
+	public void carve(ChunkRegion chunkRegion, long seed, BiomeAccess biomeAccess, StructureAccessor structureAccessor, Chunk chunk, GenerationStep.Carver generationStep) {
+
+	}
+
 	public ChunkGenerator withSeedCommon(long seed) {
 		return new EarthSpaceChunkGenerator(seed, biomeRegistry);
 	}
@@ -88,7 +101,17 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 	}
 
 	@Override
-	public void populateNoise(WorldAccess world, StructureAccessor accessor, Chunk chunk) {
+	public void populateEntities(ChunkRegion region) {
+
+	}
+
+	@Override
+	public int getWorldHeight() {
+		return 512;
+	}
+
+	@Override
+	public CompletableFuture<Chunk> populateNoise(Executor executor, Blender blender, StructureAccessor structureAccessor, Chunk chunk) {
 		BlockPos.Mutable mutable = new BlockPos.Mutable();
 		int x1 = chunk.getPos().getStartX();
 		int z1 = chunk.getPos().getStartZ();
@@ -98,7 +121,7 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 		int z2 = chunk.getPos().getEndZ();
 		int y2 = 256;
 
-		ChunkRandom random = new ChunkRandom();
+		ChunkRandom random = new ChunkRandom(new AtomicSimpleRandom(0L));
 		random.setPopulationSeed(this.seed, x1, z1);
 
 		for (int x = x1; x <= x2; ++x) {
@@ -115,6 +138,17 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 				}
 			}
 		}
+		return CompletableFuture.completedFuture(chunk);
+	}
+
+	@Override
+	public int getSeaLevel() {
+		return 0;
+	}
+
+	@Override
+	public int getMinimumY() {
+		return 512;
 	}
 
 	// Desmos: \frac{10}{x+1}-\frac{10}{x-257}-0.155

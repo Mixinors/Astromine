@@ -32,23 +32,24 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkSection;
+import net.minecraft.world.chunk.UpgradeData;
 import net.minecraft.world.chunk.WorldChunk;
+import net.minecraft.world.gen.chunk.BlendingData;
 
 import com.github.mixinors.astromine.common.access.WorldChunkAccessor;
+import org.jetbrains.annotations.Nullable;
 
 @Mixin(WorldChunk.class)
-public class WorldChunkMixin implements WorldChunkAccessor {
+public abstract class WorldChunkMixin extends Chunk implements WorldChunkAccessor {
 	@Shadow
 	@Final
 	private World world;
-	@Shadow
-	@Final
-	private ChunkPos pos;
-	@Shadow
-	@Final
-	private ChunkSection[] sections;
 
 	private WorldChunk astromine_east;
 	private WorldChunk astromine_west;
@@ -56,6 +57,10 @@ public class WorldChunkMixin implements WorldChunkAccessor {
 	private WorldChunk astromine_south;
 
 	private Runnable astromine_unload;
+
+	private WorldChunkMixin(ChunkPos pos, UpgradeData upgradeData, HeightLimitView heightLimitView, Registry<Biome> biome, long inhabitedTime, @Nullable ChunkSection[] sectionArrayInitializer, @Nullable BlendingData blendingData) {
+		super(pos, upgradeData, heightLimitView, biome, inhabitedTime, sectionArrayInitializer, blendingData);
+	}
 
 	@Override
 	public void astromine_addUnloadListener(Runnable runnable) {
@@ -103,8 +108,8 @@ public class WorldChunkMixin implements WorldChunkAccessor {
 
 	@Override
 	public void astromine_removeSubchunk(int subchunk) {
-		this.sections[subchunk] = WorldChunk.EMPTY_SECTION;
-
+		//TODO: Fix
+		//this.sectionArray[subchunk] = WorldChunk.EMPTY_SECTION;
 	}
 
 	@Override

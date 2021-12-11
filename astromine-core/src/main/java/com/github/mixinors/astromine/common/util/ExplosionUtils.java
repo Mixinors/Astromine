@@ -66,7 +66,7 @@ public class ExplosionUtils {
 					blocks += forSubchunks(chunk, box, boz, x, y, z, radius);
 					chunk.setShouldSave(true);
 					ServerChunkManager manager = (ServerChunkManager) access.getChunkManager();
-					manager.threadedAnvilChunkStorage.getPlayersWatchingChunk(new ChunkPos(cx, cz), false).forEach(s -> s.networkHandler.sendPacket(new ChunkDataS2CPacket(chunk, 65535)));
+					manager.threadedAnvilChunkStorage.getPlayersWatchingChunk(new ChunkPos(cx, cz), false)/*TODO:.forEach(s -> s.networkHandler.sendPacket(new ChunkDataS2CPacket(chunk, 65535)))*/;
 				}
 			}
 		}
