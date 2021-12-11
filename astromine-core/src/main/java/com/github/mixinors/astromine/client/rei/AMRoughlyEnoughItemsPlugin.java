@@ -64,6 +64,7 @@ import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import me.shedaniel.rei.api.fractions.Fraction;
+import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCustomDisplay;
 import me.shedaniel.rei.plugin.crafting.DefaultCustomDisplay;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

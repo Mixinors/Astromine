@@ -102,6 +102,7 @@ public class HoloBridgeProjectorBlock extends HorizontalFacingBlockWithEntity {
 	@Override
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 		return new HoloBridgeProjectorBlockEntity(pos, state);
+	}
 
 	@Override
 	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
