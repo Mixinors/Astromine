@@ -133,7 +133,7 @@ public abstract class RocketEntity extends ComponentFluidItemEntity {
 
 		this.getDroppedStacks().forEach(stack -> ItemScatterer.spawn(world, getX(), getY(), getZ(), stack.copy()));
 
-		Collection<Entity> passengers = this.getPassengersDeep();
+		Iterable<Entity> passengers = this.getPassengersDeep();
 
 		for (Entity passenger : passengers) {
 			if (passenger instanceof ServerPlayerEntity) {
@@ -143,7 +143,7 @@ public abstract class RocketEntity extends ComponentFluidItemEntity {
 			passenger.stopRiding();
 		}
 
-		this.remove();
+		this.remove(RemovalReason.KILLED);
 	}
 
 	private void tryExplode() {
@@ -155,7 +155,7 @@ public abstract class RocketEntity extends ComponentFluidItemEntity {
 	}
 
 	public Vec3d updatePassengerForDismount(LivingEntity passenger) {
-		Vec3d vec3d = getPassengerDismountOffset(this.getWidth(), passenger.getWidth(), this.yaw + (passenger.getMainArm() == Arm.RIGHT ? 90.0F : -90.0F));
+		Vec3d vec3d = getPassengerDismountOffset(this.getWidth(), passenger.getWidth(), this.getYaw() + (passenger.getMainArm() == Arm.RIGHT ? 90.0F : -90.0F));
 		return new Vec3d(vec3d.getX() + this.getX(), vec3d.getY() + this.getY(), vec3d.getZ() + this.getZ());
 	}
 
