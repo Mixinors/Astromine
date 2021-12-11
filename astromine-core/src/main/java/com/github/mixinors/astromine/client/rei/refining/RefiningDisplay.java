@@ -24,17 +24,16 @@
 
 package com.github.mixinors.astromine.client.rei.refining;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
-import net.minecraft.util.Identifier;
-
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
+import com.github.mixinors.astromine.common.recipe.RefiningRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
-import com.github.mixinors.astromine.common.recipe.RefiningRecipe;
-import me.shedaniel.rei.api.EntryStack;
-import me.shedaniel.rei.api.RecipeDisplay;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.display.Display;
+import me.shedaniel.rei.api.common.entry.EntryIngredient;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.util.Identifier;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -43,7 +42,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Environment(EnvType.CLIENT)
-public class RefiningDisplay implements RecipeDisplay {
+public class RefiningDisplay implements Display {
 	private final double energy;
 	private final FluidIngredient input;
 	private final FluidVolume output;
@@ -61,28 +60,23 @@ public class RefiningDisplay implements RecipeDisplay {
 	}
 
 	@Override
-	public Optional<Identifier> getRecipeLocation() {
+	public Optional<Identifier> getDisplayLocation() {
 		return Optional.ofNullable(id);
 	}
 
 	@Override
-	public List<List<EntryStack>> getInputEntries() {
-		return Collections.singletonList(Arrays.stream(input.getMatchingVolumes()).map(AMRoughlyEnoughItemsPlugin::convertToEntryStack).collect(Collectors.toList()));
+	public List<EntryIngredient> getInputEntries() {
+		return Collections.singletonList(EntryIngredient.of(Arrays.stream(input.getMatchingVolumes()).map(AMRoughlyEnoughItemsPlugin::convertToEntryStack).collect(Collectors.toList())));
 	}
 
 	@Override
-	public List<List<EntryStack>> getRequiredEntries() {
-		return getInputEntries();
+	public List<EntryIngredient> getOutputEntries() {
+		return Collections.singletonList(EntryIngredient.of(AMRoughlyEnoughItemsPlugin.convertToEntryStack(output)));
 	}
 
 	@Override
-	public Identifier getRecipeCategory() {
+	public CategoryIdentifier<?> getCategoryIdentifier() {
 		return AMRoughlyEnoughItemsPlugin.REFINING;
-	}
-
-	@Override
-	public List<List<EntryStack>> getResultingEntries() {
-		return Arrays.asList(Collections.singletonList(AMRoughlyEnoughItemsPlugin.convertToEntryStack(output)));
 	}
 
 	public double getEnergy() {

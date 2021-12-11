@@ -24,17 +24,16 @@
 
 package com.github.mixinors.astromine.client.rei.generating;
 
+import me.shedaniel.rei.api.common.display.Display;
+import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import me.shedaniel.rei.api.EntryStack;
-import me.shedaniel.rei.api.RecipeDisplay;
 
 import java.util.Collections;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public abstract class AbstractEnergyGeneratingDisplay implements RecipeDisplay {
+public abstract class AbstractEnergyGeneratingDisplay implements Display {
 	private final double energyGenerated;
 
 	public AbstractEnergyGeneratingDisplay(double energyGenerated) {
@@ -42,7 +41,7 @@ public abstract class AbstractEnergyGeneratingDisplay implements RecipeDisplay {
 	}
 
 	@Override
-	public List<EntryStack> getOutputEntries() {
+	public List<EntryIngredient> getOutputEntries() {
 		return Collections.emptyList();
 	}
 

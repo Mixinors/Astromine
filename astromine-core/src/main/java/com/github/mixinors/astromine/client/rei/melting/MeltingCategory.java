@@ -29,34 +29,35 @@ import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.google.common.collect.Lists;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
-import me.shedaniel.rei.api.EntryStack;
-import me.shedaniel.rei.api.RecipeCategory;
-import me.shedaniel.rei.api.widgets.Widgets;
-import me.shedaniel.rei.gui.widget.Widget;
+import me.shedaniel.rei.api.client.gui.Renderer;
+import me.shedaniel.rei.api.client.gui.widgets.Widget;
+import me.shedaniel.rei.api.client.gui.widgets.Widgets;
+import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.resource.language.I18n;
+import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
 
 import java.text.DecimalFormat;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class MeltingCategory implements RecipeCategory<MeltingDisplay> {
+public class MeltingCategory implements DisplayCategory<MeltingDisplay> {
 	@Override
-	public Identifier getIdentifier() {
+	public CategoryIdentifier<? extends MeltingDisplay> getCategoryIdentifier() {
 		return AMRoughlyEnoughItemsPlugin.MELTING;
 	}
 
 	@Override
-	public String getCategoryName() {
-		return I18n.translate("category.astromine.melting");
+	public Text getTitle() {
+		return new TranslatableText("category.astromine.melting");
 	}
 
 	@Override
-	public EntryStack getLogo() {
-		return EntryStack.create(AMBlocks.ADVANCED_MELTER.get());
+	public Renderer getIcon() {
+		return EntryStacks.of(AMBlocks.ADVANCED_MELTER.get());
 	}
 
 	@Override
@@ -70,7 +71,7 @@ public class MeltingCategory implements RecipeCategory<MeltingDisplay> {
 		widgets.add(Widgets.createLabel(new Point(bounds.x + bounds.width - 5, bounds.y + 5), new TranslatableText("category.astromine.cooking.time", df.format(display.getTimeRequired() / 20d))).noShadow().rightAligned().color(0xFF404040, 0xFFBBBBBB));
 		widgets.add(Widgets.createArrow(new Point(startPoint.x + 27, startPoint.y + 18)).animationDurationTicks(display.getTimeRequired()));
 		widgets.add(Widgets.createSlot(new Point(startPoint.x + 4, startPoint.y + 19)).entries(display.getInputEntries().get(0)).markInput());
-		widgets.addAll(AMRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 70 - 32, bounds.getCenterY() - 23, 12, 48), display.getResultingEntries().get(0), true, 5000));
+		widgets.addAll(AMRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 70 - 32, bounds.getCenterY() - 23, 12, 48), display.getOutputEntries().get(0), true, 5000));
 		return widgets;
 	}
 }

@@ -24,47 +24,46 @@
 
 package com.github.mixinors.astromine.client.rei.refining;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
-import net.minecraft.client.resource.language.I18n;
-import net.minecraft.util.Identifier;
-
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
+import com.google.common.collect.Lists;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
-import me.shedaniel.rei.api.EntryStack;
-import me.shedaniel.rei.api.RecipeCategory;
-import me.shedaniel.rei.api.widgets.Widgets;
-import me.shedaniel.rei.gui.widget.Widget;
+import me.shedaniel.rei.api.client.gui.Renderer;
+import me.shedaniel.rei.api.client.gui.widgets.Widget;
+import me.shedaniel.rei.api.client.gui.widgets.Widgets;
+import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 
-import com.google.common.collect.Lists;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class RefiningCategory implements RecipeCategory<RefiningDisplay> {
-	private final Identifier id;
+public class RefiningCategory implements DisplayCategory<RefiningDisplay> {
+	private final CategoryIdentifier<? extends RefiningDisplay> id;
 	private final String translationKey;
-	private final EntryStack logo;
+	private final Renderer logo;
 
-	public RefiningCategory(Identifier id, String translationKey, EntryStack logo) {
+	public RefiningCategory(CategoryIdentifier<? extends RefiningDisplay> id, String translationKey, Renderer logo) {
 		this.id = id;
 		this.translationKey = translationKey;
 		this.logo = logo;
 	}
 
 	@Override
-	public Identifier getIdentifier() {
+	public CategoryIdentifier<? extends RefiningDisplay> getCategoryIdentifier() {
 		return id;
 	}
 
 	@Override
-	public String getCategoryName() {
-		return I18n.translate(translationKey);
+	public Text getTitle() {
+		return new TranslatableText(translationKey);
 	}
 
 	@Override
-	public EntryStack getLogo() {
+	public Renderer getIcon() {
 		return logo;
 	}
 
@@ -76,7 +75,7 @@ public class RefiningCategory implements RecipeCategory<RefiningDisplay> {
 		widgets.addAll(AMRoughlyEnoughItemsPlugin.createEnergyDisplay(new Rectangle(innerBounds.x + 10, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getEnergy(), false, 12500));
 		widgets.addAll(AMRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.x + 24, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getInputEntries().get(0), false, 5000));
 		widgets.add(Widgets.createArrow(new Point(innerBounds.getX() + 45, innerBounds.getY() + 26)));
-		widgets.addAll(AMRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 70 - 32, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getResultingEntries().get(0), true, 5000));
+		widgets.addAll(AMRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 70 - 32, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getOutputEntries().get(0), true, 5000));
 		return widgets;
 	}
 }

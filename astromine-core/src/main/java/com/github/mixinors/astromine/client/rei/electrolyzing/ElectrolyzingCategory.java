@@ -24,47 +24,46 @@
 
 package com.github.mixinors.astromine.client.rei.electrolyzing;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
-import net.minecraft.client.resource.language.I18n;
-import net.minecraft.util.Identifier;
-
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
+import com.google.common.collect.Lists;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
-import me.shedaniel.rei.api.EntryStack;
-import me.shedaniel.rei.api.RecipeCategory;
-import me.shedaniel.rei.api.widgets.Widgets;
-import me.shedaniel.rei.gui.widget.Widget;
+import me.shedaniel.rei.api.client.gui.Renderer;
+import me.shedaniel.rei.api.client.gui.widgets.Widget;
+import me.shedaniel.rei.api.client.gui.widgets.Widgets;
+import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 
-import com.google.common.collect.Lists;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class ElectrolyzingCategory implements RecipeCategory<ElectrolyzingDisplay> {
-	private final Identifier id;
+public class ElectrolyzingCategory implements DisplayCategory<ElectrolyzingDisplay> {
+	private final CategoryIdentifier<? extends ElectrolyzingDisplay> id;
 	private final String translationKey;
-	private final EntryStack logo;
+	private final Renderer logo;
 
-	public ElectrolyzingCategory(Identifier id, String translationKey, EntryStack logo) {
+	public ElectrolyzingCategory(CategoryIdentifier<? extends ElectrolyzingDisplay> id, String translationKey, Renderer logo) {
 		this.id = id;
 		this.translationKey = translationKey;
 		this.logo = logo;
 	}
 
 	@Override
-	public Identifier getIdentifier() {
+	public CategoryIdentifier<? extends ElectrolyzingDisplay> getCategoryIdentifier() {
 		return id;
 	}
 
 	@Override
-	public String getCategoryName() {
-		return I18n.translate(translationKey);
+	public Text getTitle() {
+		return new TranslatableText(translationKey);
 	}
 
 	@Override
-	public EntryStack getLogo() {
+	public Renderer getIcon() {
 		return logo;
 	}
 

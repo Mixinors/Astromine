@@ -24,50 +24,50 @@
 
 package com.github.mixinors.astromine.client.rei.solidifying;
 
-import com.github.mixinors.astromine.registry.common.AMBlocks;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
-import net.minecraft.client.resource.language.I18n;
-import net.minecraft.util.Identifier;
-
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
+import com.github.mixinors.astromine.registry.common.AMBlocks;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
-import me.shedaniel.rei.api.EntryStack;
-import me.shedaniel.rei.api.RecipeCategory;
-import me.shedaniel.rei.api.widgets.Widgets;
-import me.shedaniel.rei.gui.widget.Widget;
+import me.shedaniel.rei.api.client.gui.Renderer;
+import me.shedaniel.rei.api.client.gui.widgets.Widget;
+import me.shedaniel.rei.api.client.gui.widgets.Widgets;
+import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.util.EntryStacks;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class SolidifyingCategory implements RecipeCategory<SolidifyingDisplay> {
+public class SolidifyingCategory implements DisplayCategory<SolidifyingDisplay> {
 	@Override
-	public Identifier getIdentifier() {
+	public CategoryIdentifier<? extends SolidifyingDisplay> getCategoryIdentifier() {
 		return AMRoughlyEnoughItemsPlugin.SOLIDIFYING;
 	}
 
 	@Override
-	public String getCategoryName() {
-		return I18n.translate("category.astromine.fluid_generating");
+	public Text getTitle() {
+		return new TranslatableText("category.astromine.fluid_generating");
 	}
 
 	@Override
-	public EntryStack getLogo() {
-		return EntryStack.create(AMBlocks.ADVANCED_SOLIDIFIER.get());
+	public Renderer getIcon() {
+		return EntryStacks.of(AMBlocks.ADVANCED_SOLIDIFIER.get());
 	}
 
 	@Override
 	public List<Widget> setupDisplay(SolidifyingDisplay display, Rectangle bounds) {
 		List<Widget> widgets = new ArrayList<>();
 		Rectangle innerBounds = new Rectangle(bounds.getCenterX() - 55, bounds.y, 110, bounds.height);
-		widgets.addAll(AMRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getX() + 24, innerBounds.getCenterY() - 23, 12, 48), Collections.singletonList(EntryStack.create(display.getFluid(), AMRoughlyEnoughItemsPlugin.convertToFraction(
-			display.getAmount()))), false, 5000));
+		widgets.addAll(AMRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getX() + 24, innerBounds.getCenterY() - 23, 12, 48),
+			Collections.singletonList(EntryStacks.of(display.getFluid(), display.getAmount())), false, 5000));
 		widgets.add(Widgets.createArrow(new Point(innerBounds.getX() + 45, innerBounds.getY() + 26)));
-		widgets.add(Widgets.createSlot(new Point(innerBounds.getX() + 61, innerBounds.getY() + 19)).entries(display.getResultingEntries().get(0)).disableBackground().markOutput());
+		widgets.add(Widgets.createSlot(new Point(innerBounds.getX() + 61, innerBounds.getY() + 19)).entries(display.getOutputEntries().get(0)).disableBackground().markOutput());
 		return widgets;
 	}
 }

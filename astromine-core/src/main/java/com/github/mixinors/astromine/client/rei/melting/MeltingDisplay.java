@@ -26,12 +26,12 @@ package com.github.mixinors.astromine.client.rei.melting;
 
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.common.recipe.MeltingRecipe;
-import com.github.mixinors.astromine.common.recipe.PressingRecipe;
-import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.recipe.ingredient.ItemIngredient;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
-import me.shedaniel.rei.api.EntryStack;
-import me.shedaniel.rei.api.RecipeDisplay;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.display.Display;
+import me.shedaniel.rei.api.common.entry.EntryIngredient;
+import me.shedaniel.rei.api.common.util.EntryIngredients;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;
@@ -40,10 +40,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Environment(EnvType.CLIENT)
-public class MeltingDisplay implements RecipeDisplay {
+public class MeltingDisplay implements Display {
 	private final ItemIngredient input;
 	private final FluidVolume output;
 	private final int timeRequired;
@@ -53,7 +52,7 @@ public class MeltingDisplay implements RecipeDisplay {
 	public MeltingDisplay(MeltingRecipe recipe) {
 		this(recipe.getFirstInput(), recipe.getFirstOutput(), recipe.getTime(), recipe.getEnergyInput(), recipe.getId());
 	}
-	
+
 	public MeltingDisplay(ItemIngredient input, FluidVolume output, int timeRequired, double energyRequired, Identifier recipeId) {
 		this.input = input;
 		this.output = output;
@@ -61,20 +60,15 @@ public class MeltingDisplay implements RecipeDisplay {
 		this.energyRequired = energyRequired;
 		this.recipeId = recipeId;
 	}
-	
+
 	@Override
-	public List<List<EntryStack>> getInputEntries() {
-		return Collections.singletonList(Arrays.stream(input.getMatchingStacks()).map(EntryStack::create).collect(Collectors.toList()));
+	public List<EntryIngredient> getInputEntries() {
+		return Collections.singletonList(EntryIngredients.ofItemStacks(Arrays.asList(input.getMatchingStacks())));
 	}
 
 	@Override
-	public List<List<EntryStack>> getRequiredEntries() {
-		return getInputEntries();
-	}
-
-	@Override
-	public List<EntryStack> getOutputEntries() {
-		return Collections.singletonList(AMRoughlyEnoughItemsPlugin.convertToEntryStack(output));
+	public List<EntryIngredient> getOutputEntries() {
+		return Collections.singletonList(EntryIngredient.of(AMRoughlyEnoughItemsPlugin.convertToEntryStack(output)));
 	}
 
 	public int getTimeRequired() {
@@ -86,12 +80,12 @@ public class MeltingDisplay implements RecipeDisplay {
 	}
 
 	@Override
-	public Identifier getRecipeCategory() {
+	public CategoryIdentifier<?> getCategoryIdentifier() {
 		return AMRoughlyEnoughItemsPlugin.PRESSING;
 	}
 
 	@Override
-	public Optional<Identifier> getRecipeLocation() {
+	public Optional<Identifier> getDisplayLocation() {
 		return Optional.ofNullable(this.recipeId);
 	}
 }
