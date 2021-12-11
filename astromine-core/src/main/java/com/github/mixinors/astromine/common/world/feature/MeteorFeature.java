@@ -26,36 +26,31 @@ package com.github.mixinors.astromine.common.world.feature;
 
 import net.minecraft.structure.StructureGeneratorFactory;
 import net.minecraft.structure.StructureManager;
+import net.minecraft.structure.StructurePiecesCollector;
+import net.minecraft.structure.StructurePiecesGenerator;
 import net.minecraft.structure.StructureStart;
+import net.minecraft.structure.SwampHutGenerator;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.source.BiomeCoords;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
+import net.minecraft.world.gen.feature.MineshaftFeature;
+import net.minecraft.world.gen.feature.MineshaftFeatureConfig;
 import net.minecraft.world.gen.feature.StructureFeature;
+import net.minecraft.world.gen.random.AtomicSimpleRandom;
+import net.minecraft.world.gen.random.ChunkRandom;
+
 import com.mojang.serialization.Codec;
 
 public class MeteorFeature extends StructureFeature<DefaultFeatureConfig> {
 
 	public MeteorFeature(Codec<DefaultFeatureConfig> codec) {
-		super(codec, );
+		super(codec, StructureGeneratorFactory.simple((context) -> true, MeteorFeature::addPieces));
 	}
 
-	public StructureGeneratorFactory<DefaultFeatureConfig> getStructureStartFactory() {
-		return context -> {
-			// TODO
-		};
-	}
-
-	public static class Start extends StructureStart<DefaultFeatureConfig> {
-		public Start(StructureGeneratorFactory.Context<DefaultFeatureConfig> context) {
-			super(structureFeature, i, j, blockBox, k, l);
-		}
-
-		public void init(DynamicRegistryManager drm, ChunkGenerator chunkGenerator, StructureManager structureManager, int i, int j, Biome biome, DefaultFeatureConfig defaultFeatureConfig) {
-			MeteorGenerator meteorGenerator = new MeteorGenerator(this.random, i * 16, j * 16);
-			this.children.add(meteorGenerator);
-			this.getBoundingBox();
-		}
+	private static void addPieces(StructurePiecesCollector collector, StructurePiecesGenerator.Context<DefaultFeatureConfig> context) {
+		collector.addPiece(new MeteorGenerator(context.random(), context.chunkPos().getStartX(), context.chunkPos().getStartZ()));
 	}
 }
