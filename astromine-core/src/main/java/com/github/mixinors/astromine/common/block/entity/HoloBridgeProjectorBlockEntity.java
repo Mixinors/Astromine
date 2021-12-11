@@ -35,18 +35,18 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.util.math.Vector3f;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.math.Vec3i;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
 public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Tickable, BlockEntityExtension {
-	public ArrayList<Vector3f> segments = null;
+	public ArrayList<Vec3f> segments = null;
 
 	public Color color = Color.of("0x7e80cad4");
 
@@ -119,9 +119,9 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			return false;
 		}
 
-		ArrayList<Vector3f> segments = (ArrayList<Vector3f>) LineUtils.getBresenhamSegments(VectorUtils.toVector3f(bOP.offset(Direction.UP)), VectorUtils.toVector3f(nCP.offset(Direction.UP)), 32);
+		ArrayList<Vec3f> segments = (ArrayList<Vec3f>) LineUtils.getBresenhamSegments(VectorUtils.toVector3f(bOP.offset(Direction.UP)), VectorUtils.toVector3f(nCP.offset(Direction.UP)), 32);
 
-		for (Vector3f v : segments) {
+		for (Vec3f v : segments) {
 			BlockPos nP = new BlockPos(v.getX(), v.getY(), v.getZ());
 
 			if ((nP.getX() != bCP.getX() && nP.getX() != bOP.getX()) || (nP.getZ() != bCP.getZ() && nP.getZ() != bOP.getZ())) {
@@ -158,10 +158,10 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			return;
 		}
 
-		this.segments = (ArrayList<Vector3f>) LineUtils.getBresenhamSegments(VectorUtils.toVector3f(bOP.offset(Direction.UP)), VectorUtils.toVector3f(nCP.offset(Direction.UP)), 32);
+		this.segments = (ArrayList<Vec3f>) LineUtils.getBresenhamSegments(VectorUtils.toVector3f(bOP.offset(Direction.UP)), VectorUtils.toVector3f(nCP.offset(Direction.UP)), 32);
 		WorldHoloBridgeComponent bridgeComponent = WorldHoloBridgeComponent.get(world);
 
-		for (Vector3f v : this.segments) {
+		for (Vec3f v : this.segments) {
 			BlockPos nP = new BlockPos(v.getX(), v.getY(), v.getZ());
 
 			if ((nP.getX() != bCP.getX() && nP.getX() != bOP.getX()) || (nP.getZ() != bCP.getZ() && nP.getZ() != bOP.getZ())) {
@@ -235,7 +235,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 		if (this.segments != null && this.world != null) {
 			WorldHoloBridgeComponent bridgeComponent = WorldHoloBridgeComponent.get(world);
 
-			for (Vector3f vec : this.segments) {
+			for (Vec3f vec : this.segments) {
 				BlockPos pos = new BlockPos(vec.getX(), vec.getY(), vec.getZ());
 
 				bridgeComponent.remove(pos);
@@ -248,7 +248,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	}
 
 	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+	public void readNbt(BlockState state, @NotNull NbtCompound tag) {
 		if (tag.contains("child_position")) {
 			this.childPosition = BlockPos.fromLong(tag.getLong("child_position"));
 		}
@@ -258,16 +258,16 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 		}
 
 		if (tag.contains("color")) {
-			CompoundTag colorTag = tag.getCompound("color");
+			NbtCompound colorTag = tag.getCompound("color");
 
 			color = new Color(colorTag.getFloat("r"), colorTag.getFloat("g"), colorTag.getFloat("b"), colorTag.getFloat("a"));
 		}
 
-		super.fromTag(state, tag);
+		super.readNbt(state, tag);
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public NbtCompound writeNbt(NbtCompound tag) {
 		if (this.child != null) {
 			tag.putLong("child_position", this.child.getPos().asLong());
 		} else if (this.childPosition != null) {
@@ -280,7 +280,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			tag.putLong("parent_position", this.parentPosition.asLong());
 		}
 
-		CompoundTag colorTag = new CompoundTag();
+		NbtCompound colorTag = new NbtCompound();
 		colorTag.putFloat("r", color.getR());
 		colorTag.putFloat("g", color.getG());
 		colorTag.putFloat("b", color.getB());
@@ -288,12 +288,12 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 
 		tag.put("color", colorTag);
 
-		return super.toTag(tag);
+		return super.writeNbt(tag);
 	}
 
 	@Override
-	public void loadClientData(BlockState state, CompoundTag tag) {
-		this.fromTag(state, tag);
+	public void loadClientData(BlockState state, NbtCompound tag) {
+		this.readNbt(state, tag);
 
 		this.destroyBridge();
 
@@ -305,7 +305,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	}
 
 	@Override
-	public CompoundTag saveClientData(CompoundTag compoundTag) {
-		return this.toTag(compoundTag);
+	public NbtCompound saveClientData(NbtCompound compoundTag) {
+		return this.writeNbt(compoundTag);
 	}
 }

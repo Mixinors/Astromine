@@ -86,8 +86,8 @@ public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttr
 			if (selfHandler.getEnergy() > AMConfig.get().gravityGauntletConsumed && otherHandler.getEnergy() > AMConfig.get().gravityGauntletConsumed) {
 				selfHandler.extract(AMConfig.get().gravityGauntletConsumed);
 				otherHandler.extract(AMConfig.get().gravityGauntletConsumed);
-				stack.getOrCreateTag().putBoolean("Charged", true);
-				offStack.getOrCreateTag().putBoolean("Charged", true);
+				stack.getOrCreateNbt().putBoolean("Charged", true);
+				offStack.getOrCreateNbt().putBoolean("Charged", true);
 				return stack;
 			}
 		}
@@ -110,11 +110,11 @@ public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttr
 			return super.postHit(stack, target, attacker);
 		ItemStack offStack = attacker.getStackInHand(Hand.OFF_HAND);
 		if (offStack.getItem() == AMItems.GRAVITY_GAUNTLET.get()) {
-			if (stack.getOrCreateTag().getBoolean("Charged") && offStack.getOrCreateTag().getBoolean("Charged")) {
+			if (stack.getOrCreateNbt().getBoolean("Charged") && offStack.getOrCreateNbt().getBoolean("Charged")) {
 				target.takeKnockback(1, attacker.getX() - target.getX(), attacker.getZ() - target.getZ());
 				target.addVelocity(0f, 0.5f, 0f);
-				stack.getOrCreateTag().putBoolean("Charged", false);
-				offStack.getOrCreateTag().putBoolean("Charged", false);
+				stack.getOrCreateNbt().putBoolean("Charged", false);
+				offStack.getOrCreateNbt().putBoolean("Charged", false);
 				return true;
 			}
 		}
@@ -123,7 +123,7 @@ public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttr
 
 	@Override
 	public boolean hasGlint(ItemStack stack) {
-		return stack.getOrCreateTag().getBoolean("Charged");
+		return stack.getOrCreateNbt().getBoolean("Charged");
 	}
 
 	// TODO: dynamic once not broken so only provide when charged

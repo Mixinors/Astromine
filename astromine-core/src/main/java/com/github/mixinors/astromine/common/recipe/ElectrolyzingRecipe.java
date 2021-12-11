@@ -161,7 +161,7 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsu
 	}
 
 	@Override
-	public ItemStack getRecipeKindIcon() {
+	public ItemStack createIcon() {
 		return new ItemStack(AMBlocks.ADVANCED_ELECTROLYZER.get());
 	}
 

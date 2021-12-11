@@ -32,7 +32,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -92,16 +92,16 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public NbtCompound writeNbt(NbtCompound tag) {
 		tag.putString("fluid", Registry.FLUID.getId(filter).toString());
-		return super.toTag(tag);
+		return super.writeNbt(tag);
 	}
 
 	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+	public void readNbt(BlockState state, @NotNull NbtCompound tag) {
 		Registry.FLUID.getOrEmpty(new Identifier(tag.getString("fluid"))).ifPresent(filter -> this.filter = filter);
 
-		super.fromTag(state, tag);
+		super.readNbt(state, tag);
 	}
 
 	public static class Primitive extends TankBlockEntity {

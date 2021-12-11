@@ -27,7 +27,6 @@ package com.github.mixinors.astromine.common.entity.base;
 import com.github.mixinors.astromine.registry.common.AMCriteria;
 import com.github.mixinors.astromine.registry.common.AMParticles;
 import net.minecraft.client.util.math.Vector3d;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -44,6 +43,7 @@ import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
@@ -66,7 +66,7 @@ public abstract class RocketEntity extends ComponentFluidItemEntity {
 
 	protected abstract Vector3d getAcceleration();
 
-	protected abstract Vector3f getPassengerPosition();
+	protected abstract Vec3f getPassengerPosition();
 
 	protected abstract Collection<ItemStack> getDroppedStacks();
 
@@ -78,8 +78,8 @@ public abstract class RocketEntity extends ComponentFluidItemEntity {
 	@Override
 	public void updatePassengerPosition(Entity passenger) {
 		if (this.hasPassenger(passenger)) {
-			Vector3f position = getPassengerPosition();
-			passenger.updatePosition(getX() + position.getX(), getY() + position.getY(), getZ() + position.getZ());
+			Vec3f position = getPassengerPosition();
+			passenger.setPosition(getX() + position.getX(), getY() + position.getY(), getZ() + position.getZ());
 		}
 	}
 

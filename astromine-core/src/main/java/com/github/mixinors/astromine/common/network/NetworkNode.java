@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.network;
 
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 
 import com.google.common.base.Objects;
@@ -34,7 +34,7 @@ import com.google.common.base.Objects;
  * a network, with no attached {@link NetworkMember}.
  *
  * Serialization and deserialization methods are provided for:
- * - {@link CompoundTag} - through {@link #toTag()} and {@link #fromTag(CompoundTag)}.
+ * - {@link NbtCompound} - through {@link #toTag()} and {@link #fromTag(NbtCompound)}.
  */
 public final class NetworkNode {
 	private long pos;
@@ -104,14 +104,14 @@ public final class NetworkNode {
 		return String.format("[%s, %s, %s]", getBlockPosition().getX(), getBlockPosition().getY(), getBlockPosition().getY());
 	}
 
-	/** Deserializes a {@link NetworkNode} from a {@link CompoundTag}. */
-	public static NetworkNode fromTag(CompoundTag tag) {
+	/** Deserializes a {@link NetworkNode} from a {@link NbtCompound}. */
+	public static NetworkNode fromTag(NbtCompound tag) {
 		return of(tag.getLong("pos"));
 	}
 
-	/** Serializes a {@link NetworkNode} to a {@link CompoundTag}. */
-	public CompoundTag toTag() {
-		CompoundTag tag = new CompoundTag();
+	/** Serializes a {@link NetworkNode} to a {@link NbtCompound}. */
+	public NbtCompound toTag() {
+		NbtCompound tag = new NbtCompound();
 
 		tag.putLong("pos", pos);
 

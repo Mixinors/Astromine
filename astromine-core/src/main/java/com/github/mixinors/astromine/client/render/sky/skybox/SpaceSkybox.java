@@ -26,15 +26,15 @@ package com.github.mixinors.astromine.client.render.sky.skybox;
 
 import com.github.mixinors.astromine.common.util.ClientUtils;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.options.GameOptions;
-import net.minecraft.client.options.Option;
+import net.minecraft.client.option.GameOptions;
+import net.minecraft.client.option.Option;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 import com.mojang.blaze3d.systems.RenderSystem;
 
@@ -96,47 +96,47 @@ public class SpaceSkybox extends Skybox {
 				case 0: {
 					textureManager.bindTexture(this.textures.get(DOWN));
 
-					matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotation));
+					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(rotation));
 
 					break;
 				}
 				case 1: {
 					textureManager.bindTexture(this.textures.get(WEST));
 
-					matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(90.0F));
-					matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(rotation));
+					matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90.0F));
+					matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(rotation));
 
 					break;
 				}
 				case 2: {
 					textureManager.bindTexture(this.textures.get(EAST));
 
-					matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-90.0F));
-					matrices.multiply(Vector3f.NEGATIVE_Y.getDegreesQuaternion(rotation));
+					matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90.0F));
+					matrices.multiply(Vec3f.NEGATIVE_Y.getDegreesQuaternion(rotation));
 
 					break;
 				}
 				case 3: {
 					textureManager.bindTexture(this.textures.get(UP));
 
-					matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(180.0F));
-					matrices.multiply(Vector3f.NEGATIVE_Z.getDegreesQuaternion(rotation));
+					matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(180.0F));
+					matrices.multiply(Vec3f.NEGATIVE_Z.getDegreesQuaternion(rotation));
 
 					break;
 				}
 				case 4: {
 					textureManager.bindTexture(this.textures.get(NORTH));
 
-					matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(90.0F));
-					matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotation));
+					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(90.0F));
+					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(rotation));
 
 					break;
 				}
 				case 5: {
 					textureManager.bindTexture(this.textures.get(SOUTH));
 
-					matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(-90.0F));
-					matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotation));
+					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(-90.0F));
+					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(rotation));
 
 					break;
 				}
@@ -148,10 +148,10 @@ public class SpaceSkybox extends Skybox {
 
 			float distance = 16F * (float) Option.RENDER_DISTANCE.get(options) - 8F;
 
-			buffer.vertex(matrices.peek().getModel(), -distance, -distance, -distance).color(255, 255, 255, 255).texture(0.0F, 0.0F).light(vertexLight).next();
-			buffer.vertex(matrices.peek().getModel(), -distance, -distance, distance).color(255, 255, 255, 255).texture(0.0F, 1.0F).light(vertexLight).next();
-			buffer.vertex(matrices.peek().getModel(), distance, -distance, distance).color(255, 255, 255, 255).texture(1.0F, 1.0F).light(vertexLight).next();
-			buffer.vertex(matrices.peek().getModel(), distance, -distance, -distance).color(255, 255, 255, 255).texture(1.0F, 0.0F).light(vertexLight).next();
+			buffer.vertex(matrices.peek().getPositionMatrix(), -distance, -distance, -distance).color(255, 255, 255, 255).texture(0.0F, 0.0F).light(vertexLight).next();
+			buffer.vertex(matrices.peek().getPositionMatrix(), -distance, -distance, distance).color(255, 255, 255, 255).texture(0.0F, 1.0F).light(vertexLight).next();
+			buffer.vertex(matrices.peek().getPositionMatrix(), distance, -distance, distance).color(255, 255, 255, 255).texture(1.0F, 1.0F).light(vertexLight).next();
+			buffer.vertex(matrices.peek().getPositionMatrix(), distance, -distance, -distance).color(255, 255, 255, 255).texture(1.0F, 0.0F).light(vertexLight).next();
 
 			tessellator.draw();
 
@@ -164,10 +164,10 @@ public class SpaceSkybox extends Skybox {
 
 		buffer.begin(7, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT);
 
-		buffer.vertex(matrices.peek().getModel(), -100.0F, (float) (-64.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), -100.0F).color(255, 255, 255, 255).texture(u0P, 0.0F).light(vertexLight).next();
-		buffer.vertex(matrices.peek().getModel(), -100.0F, (float) (-64.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), 100.0F).color(255, 255, 255, 255).texture(u0P, 1.0F).light(vertexLight).next();
-		buffer.vertex(matrices.peek().getModel(), 100.0F, (float) (-64.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), 100.0F).color(255, 255, 255, 255).texture(u1P, 1.0F).light(vertexLight).next();
-		buffer.vertex(matrices.peek().getModel(), 100.0F, (float) (-64.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), -100.0F).color(255, 255, 255, 255).texture(u1P, 0.0F).light(vertexLight).next();
+		buffer.vertex(matrices.peek().getPositionMatrix(), -100.0F, (float) (-64.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), -100.0F).color(255, 255, 255, 255).texture(u0P, 0.0F).light(vertexLight).next();
+		buffer.vertex(matrices.peek().getPositionMatrix(), -100.0F, (float) (-64.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), 100.0F).color(255, 255, 255, 255).texture(u0P, 1.0F).light(vertexLight).next();
+		buffer.vertex(matrices.peek().getPositionMatrix(), 100.0F, (float) (-64.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), 100.0F).color(255, 255, 255, 255).texture(u1P, 1.0F).light(vertexLight).next();
+		buffer.vertex(matrices.peek().getPositionMatrix(), 100.0F, (float) (-64.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), -100.0F).color(255, 255, 255, 255).texture(u1P, 0.0F).light(vertexLight).next();
 
 		tessellator.draw();
 
@@ -182,10 +182,10 @@ public class SpaceSkybox extends Skybox {
 		RenderSystem.enableBlend();
 		RenderSystem.enableDepthTest();
 
-		buffer.vertex(matrices.peek().getModel(), -100.0F, (float) (-60.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), -100.0F).color(255, 255, 255, 255).texture(u0C, 0).light(vertexLight).next();
-		buffer.vertex(matrices.peek().getModel(), -100.0F, (float) (-60.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), 100.0F).color(255, 255, 255, 255).texture(u0C, 1).light(vertexLight).next();
-		buffer.vertex(matrices.peek().getModel(), 100.0F, (float) (-60.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), 100.0F).color(255, 255, 255, 255).texture(u1C, 1).light(vertexLight).next();
-		buffer.vertex(matrices.peek().getModel(), 100.0F, (float) (-60.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), -100.0F).color(255, 255, 255, 255).texture(u1C, 0).light(vertexLight).next();
+		buffer.vertex(matrices.peek().getPositionMatrix(), -100.0F, (float) (-60.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), -100.0F).color(255, 255, 255, 255).texture(u0C, 0).light(vertexLight).next();
+		buffer.vertex(matrices.peek().getPositionMatrix(), -100.0F, (float) (-60.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), 100.0F).color(255, 255, 255, 255).texture(u0C, 1).light(vertexLight).next();
+		buffer.vertex(matrices.peek().getPositionMatrix(), 100.0F, (float) (-60.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), 100.0F).color(255, 255, 255, 255).texture(u1C, 1).light(vertexLight).next();
+		buffer.vertex(matrices.peek().getPositionMatrix(), 100.0F, (float) (-60.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), -100.0F).color(255, 255, 255, 255).texture(u1C, 0).light(vertexLight).next();
 
 		tessellator.draw();
 

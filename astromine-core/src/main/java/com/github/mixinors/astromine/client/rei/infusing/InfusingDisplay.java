@@ -41,7 +41,7 @@ public class InfusingDisplay implements RecipeDisplay {
 	private Identifier recipeId;
 
 	public InfusingDisplay(AltarRecipe recipe) {
-		this(EntryStack.ofIngredients(recipe.getPreviewInputs()), Collections.singletonList(Collections.singletonList(EntryStack.create(recipe.getOutput().copy()))), recipe.getId());
+		this(EntryStack.ofIngredients(recipe.getIngredients()), Collections.singletonList(Collections.singletonList(EntryStack.create(recipe.getOutput().copy()))), recipe.getId());
 	}
 
 	public InfusingDisplay(List<List<EntryStack>> inputs, List<List<EntryStack>> outputs, Identifier recipeId) {

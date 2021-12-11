@@ -153,7 +153,7 @@ public final class TrituratingRecipe implements EnergyConsumingRecipe<Inventory>
 	}
 
 	@Override
-	public ItemStack getRecipeKindIcon() {
+	public ItemStack createIcon() {
 		return new ItemStack(AMBlocks.ADVANCED_TRITURATOR.get());
 	}
 

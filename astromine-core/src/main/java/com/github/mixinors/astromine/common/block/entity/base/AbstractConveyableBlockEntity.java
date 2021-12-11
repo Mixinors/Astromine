@@ -32,7 +32,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -74,7 +74,7 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 			}
 		}.withListener((inventory) -> {
 			if (world != null && !world.isClient) {
-				sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+				sendPacket((ServerWorld) world, writeNbt(new NbtCompound()));
 			}
 		});
 	}
@@ -224,7 +224,7 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 		markDirty();
 
 		if (!world.isClient) {
-			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+			sendPacket((ServerWorld) world, writeNbt(new NbtCompound()));
 		}
 	}
 
@@ -234,7 +234,7 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 		markDirty();
 
 		if (!world.isClient) {
-			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+			sendPacket((ServerWorld) world, writeNbt(new NbtCompound()));
 		}
 	}
 
@@ -263,7 +263,7 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 		return new int[] { leftPosition, prevLeftPosition, rightPosition, prevRightPosition };
 	}
 
-	protected void sendPacket(ServerWorld world, CompoundTag tag) {
+	protected void sendPacket(ServerWorld world, NbtCompound tag) {
 		tag.putString("id", BlockEntityType.getId(getType()).toString());
 
 		sendPacket(world, new BlockEntityUpdateS2CPacket(getPos(), 127, tag));
@@ -274,11 +274,11 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 	}
 
 	@Override
-	public void fromTag(BlockState state, CompoundTag compoundTag) {
-		super.fromTag(state, compoundTag);
+	public void readNbt(BlockState state, NbtCompound compoundTag) {
+		super.readNbt(state, compoundTag);
 
-		getItemComponent().setFirst(ItemStack.fromTag(compoundTag.getCompound("leftStack")));
-		getItemComponent().setSecond(ItemStack.fromTag(compoundTag.getCompound("rightStack")));
+		getItemComponent().setFirst(ItemStack.fromNbt(compoundTag.getCompound("leftStack")));
+		getItemComponent().setSecond(ItemStack.fromNbt(compoundTag.getCompound("rightStack")));
 
 		leftPosition = compoundTag.getInt("leftPosition");
 		prevLeftPosition = compoundTag.getInt("prevLeftPosition");
@@ -291,9 +291,9 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag compoundTag) {
-		compoundTag.put("leftStack", getItemComponent().getFirst().toTag(new CompoundTag()));
-		compoundTag.put("rightStack", getItemComponent().getSecond().toTag(new CompoundTag()));
+	public NbtCompound writeNbt(NbtCompound compoundTag) {
+		compoundTag.put("leftStack", getItemComponent().getFirst().writeNbt(new NbtCompound()));
+		compoundTag.put("rightStack", getItemComponent().getSecond().writeNbt(new NbtCompound()));
 
 
 		compoundTag.putInt("leftPosition", leftPosition);
@@ -305,21 +305,21 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 		compoundTag.putBoolean("left", left);
 		compoundTag.putBoolean("right", right);
 
-		return super.toTag(compoundTag);
+		return super.writeNbt(compoundTag);
 	}
 
 	@Override
-	public void loadClientData(BlockState state, CompoundTag compoundTag) {
-		fromTag(state, compoundTag);
+	public void loadClientData(BlockState state, NbtCompound compoundTag) {
+		readNbt(state, compoundTag);
 	}
 
 	@Override
-	public CompoundTag saveClientData(CompoundTag compoundTag) {
-		return toTag(compoundTag);
+	public NbtCompound saveClientData(NbtCompound compoundTag) {
+		return writeNbt(compoundTag);
 	}
 
 	@Override
-	public CompoundTag toInitialChunkDataTag() {
-		return toTag(new CompoundTag());
+	public NbtCompound toInitialChunkDataNbt() {
+		return writeNbt(new NbtCompound());
 	}
 }

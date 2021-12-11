@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.volume.base;
 
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 
 import io.netty.buffer.ByteBuf;
@@ -215,8 +215,8 @@ public abstract class Volume<N extends Number> {
 	/** Returns a copy of this volume. */
 	public abstract <V extends Volume<N>> V copy();
 
-	/** Serializes this volume to a {@link CompoundTag}. */
-	public abstract CompoundTag toTag();
+	/** Serializes this volume to a {@link NbtCompound}. */
+	public abstract NbtCompound toTag();
 
 	/** Deserializes a volume from a {@link JsonElement}. */
 	public abstract JsonElement toJson();

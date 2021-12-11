@@ -38,8 +38,8 @@ import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.PotionItem;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.potion.Potions;
 import net.minecraft.text.Text;
@@ -62,7 +62,7 @@ import static java.lang.Math.min;
  * A {@link IdentifiableComponent} representing a fluid reserve.
  *
  * Serialization and deserialization methods are provided for:
- * - {@link CompoundTag} - through {@link #toTag(CompoundTag)} and {@link #fromTag(CompoundTag)}.
+ * - {@link NbtCompound} - through {@link #toTag(NbtCompound)} and {@link #fromTag(NbtCompound)}.
  */
 public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableComponent {
 	/** Instantiates a {@link FluidComponent}. */
@@ -314,10 +314,10 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 		});
 	}
 
-	/** Serializes this {@link FluidComponent} to a {@link CompoundTag}. */
+	/** Serializes this {@link FluidComponent} to a {@link NbtCompound}. */
 	@Override
-	default void writeToNbt(CompoundTag tag) {
-		ListTag listTag = new ListTag();
+	default void writeToNbt(NbtCompound tag) {
+		NbtList listTag = new NbtList();
 
 		for (int i = 0; i < getSize(); ++i) {
 			FluidVolume volume = getVolume(i);
@@ -325,7 +325,7 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 			listTag.add(i, volume.toTag());
 		}
 
-		CompoundTag dataTag = new CompoundTag();
+		NbtCompound dataTag = new NbtCompound();
 
 		dataTag.putInt("size", getSize());
 		dataTag.put("volumes", listTag);
@@ -333,17 +333,17 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 		tag.put(AMComponents.FLUID_INVENTORY_COMPONENT.getId().toString(), dataTag);
 	}
 
-	/** Deserializes this {@link FluidComponent} from a {@link CompoundTag}. */
+	/** Deserializes this {@link FluidComponent} from a {@link NbtCompound}. */
 	@Override
-	default void readFromNbt(CompoundTag tag) {
-		CompoundTag dataTag = tag.getCompound(AMComponents.FLUID_INVENTORY_COMPONENT.getId().toString());
+	default void readFromNbt(NbtCompound tag) {
+		NbtCompound dataTag = tag.getCompound(AMComponents.FLUID_INVENTORY_COMPONENT.getId().toString());
 
 		int size = dataTag.getInt("size");
 
-		ListTag volumesTag = dataTag.getList("volumes", 10);
+		NbtList volumesTag = dataTag.getList("volumes", 10);
 
 		for (int i = 0; i < size; ++i) {
-			CompoundTag volumeTag = volumesTag.getCompound(i);
+			NbtCompound volumeTag = volumesTag.getCompound(i);
 
 			setVolume(i, FluidVolume.fromTag(volumeTag));
 		}

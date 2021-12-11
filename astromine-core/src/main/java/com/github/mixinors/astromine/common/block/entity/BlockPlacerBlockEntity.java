@@ -32,7 +32,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
@@ -125,14 +125,14 @@ public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity imple
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public NbtCompound writeNbt(NbtCompound tag) {
 		tag.putLong("cooldown", cooldown);
-		return super.toTag(tag);
+		return super.writeNbt(tag);
 	}
 
 	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+	public void readNbt(BlockState state, @NotNull NbtCompound tag) {
 		cooldown = tag.getLong("cooldown");
-		super.fromTag(state, tag);
+		super.readNbt(state, tag);
 	}
 }

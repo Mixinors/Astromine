@@ -31,8 +31,7 @@ import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-
+import net.minecraft.nbt.NbtCompound;
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
 import com.github.mixinors.astromine.common.util.StackUtils;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
@@ -173,17 +172,17 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public NbtCompound writeNbt(NbtCompound tag) {
 		tag.putDouble("progress", progress);
 		tag.putInt("limit", limit);
-		return super.toTag(tag);
+		return super.writeNbt(tag);
 	}
 
 	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+	public void readNbt(BlockState state, @NotNull NbtCompound tag) {
 		progress = tag.getDouble("progress");
 		limit = tag.getInt("limit");
-		super.fromTag(state, tag);
+		super.readNbt(state, tag);
 	}
 
 	public static class Primitive extends AlloySmelterBlockEntity {

@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.volume.energy;
 
 import com.github.mixinors.astromine.AMCommon;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 
@@ -64,7 +64,7 @@ import com.google.gson.JsonObject;
  * {@link EnergyComponent#updateListeners()}, if using one.
  *
  * Serialization and deserialization methods are provided for:
- * - {@link CompoundTag} - through {@link #toTag()} and {@link #fromTag(CompoundTag)}.
+ * - {@link NbtCompound} - through {@link #toTag()} and {@link #fromTag(NbtCompound)}.
  * - {@link JsonElement} - through {@link #toJson()} and {@link #fromJson(JsonElement)}.
  * - {@link ByteBuf} - through {@link #toPacket(PacketByteBuf)} and {@link #fromPacket(PacketByteBuf)}.
  */
@@ -177,15 +177,15 @@ public class EnergyVolume extends Volume<Double> {
 		return String.format("%s E", super.toString());
 	}
 
-	/** Deserializes a volume from a {@link CompoundTag}. */
-	public static EnergyVolume fromTag(CompoundTag tag) {
+	/** Deserializes a volume from a {@link NbtCompound}. */
+	public static EnergyVolume fromTag(NbtCompound tag) {
 		return of(tag.getDouble("amount"), tag.getDouble("size"));
 	}
 
-	/** Serializes this volume to a {@link CompoundTag}. */
+	/** Serializes this volume to a {@link NbtCompound}. */
 	@Override
-	public CompoundTag toTag() {
-		CompoundTag tag = new CompoundTag();
+	public NbtCompound toTag() {
+		NbtCompound tag = new NbtCompound();
 		tag.putDouble("amount", getAmount());
 		tag.putDouble("size", getSize());
 		return tag;

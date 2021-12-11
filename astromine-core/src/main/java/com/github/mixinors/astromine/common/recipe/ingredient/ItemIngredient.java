@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.common.recipe.ingredient;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
@@ -183,7 +183,7 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 		if (this.matchingStacks.length == 0)
 			return false;
 		for (ItemStack matchingStack : matchingStacks) {
-			if (ItemStack.areItemsEqual(stack, matchingStack) && (!matchingStack.hasTag() || ItemStack.areTagsEqual(stack, matchingStack))) return true;
+			if (ItemStack.areItemsEqual(stack, matchingStack) && (!matchingStack.hasNbt() || ItemStack.areNbtEqual(stack, matchingStack))) return true;
 		}
 		return false;
 	}
@@ -198,7 +198,7 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 		if (this.matchingStacks.length == 0)
 			return ItemStack.EMPTY;
 		for (ItemStack matchingStack : matchingStacks) {
-			if (ItemStack.areItemsEqual(matchingStack, stack) && (!matchingStack.hasTag() || ItemStack.areTagsEqual(matchingStack, stack)) && stack.getCount() >= matchingStack.getCount())
+			if (ItemStack.areItemsEqual(matchingStack, stack) && (!matchingStack.hasNbt() || ItemStack.areNbtEqual(matchingStack, stack)) && stack.getCount() >= matchingStack.getCount())
 				return matchingStack.copy();
 		}
 		return ItemStack.EMPTY;
@@ -223,7 +223,7 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 			} else {
 				int count = 1;
 
-				CompoundTag stackTag = null;
+				NbtCompound stackTag = null;
 
 				if (jsonObject.has("count")) {
 					count = JsonHelper.getInt(jsonObject, "count");
@@ -231,7 +231,7 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 
 				if (jsonObject.has("item")) {
 					if (jsonObject.has("nbt")) {
-						stackTag = (CompoundTag) JsonOps.INSTANCE.convertTo(NbtOps.INSTANCE, jsonObject.get("nbt"));
+						stackTag = (NbtCompound) JsonOps.INSTANCE.convertTo(NbtOps.INSTANCE, jsonObject.get("nbt"));
 					}
 
 					Identifier itemId = new Identifier(JsonHelper.getString(jsonObject, "item"));
@@ -241,7 +241,7 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 					ItemStack stack = new ItemStack(item, count);
 
 					if (stackTag != null) {
-						stack.setTag(stackTag);
+						stack.setNbt(stackTag);
 					}
 
 					return new SimpleEntry(stack);

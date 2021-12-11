@@ -29,8 +29,8 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.InventoryChangedListener;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.RecipeFinder;
 import net.minecraft.recipe.RecipeInputProvider;
+import net.minecraft.recipe.RecipeMatcher;
 import net.minecraft.util.collection.DefaultedList;
 
 import java.util.ArrayList;
@@ -172,7 +172,7 @@ public class BaseInventory implements Inventory, RecipeInputProvider {
 
 	/** Override behavior to do nothing. */
 	@Override
-	public void provideRecipeInputs(RecipeFinder recipeFinder) {}
+	public void provideRecipeInputs(RecipeMatcher recipeFinder) {}
 
 	/** Returns this inventory's string representation. */
 	public String toString() {

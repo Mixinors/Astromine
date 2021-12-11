@@ -41,7 +41,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
@@ -82,7 +82,7 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityExten
 			}
 		}.withListener((inventory) -> {
 			if (world != null && !world.isClient) {
-				sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+				sendPacket((ServerWorld) world, writeNbt(new NbtCompound()));
 			}
 		});
 	}
@@ -212,7 +212,7 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityExten
 		return prevPosition;
 	}
 
-	protected void sendPacket(ServerWorld w, CompoundTag tag) {
+	protected void sendPacket(ServerWorld w, NbtCompound tag) {
 		tag.putString("id", BlockEntityType.getId(getType()).toString());
 		sendPacket(w, new BlockEntityUpdateS2CPacket(getPos(), 127, tag));
 	}
@@ -227,35 +227,35 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityExten
 	}
 
 	@Override
-	public void fromTag(BlockState state, CompoundTag compoundTag) {
-		super.fromTag(state, compoundTag);
+	public void readNbt(BlockState state, NbtCompound compoundTag) {
+		super.readNbt(state, compoundTag);
 
-		getItemComponent().setFirst(ItemStack.fromTag(compoundTag.getCompound("stack")));
+		getItemComponent().setFirst(ItemStack.fromNbt(compoundTag.getCompound("stack")));
 
 		position = compoundTag.getInt("position");
 	}
 
 	@Override
-	public void loadClientData(BlockState state, CompoundTag compoundTag) {
-		fromTag(state, compoundTag);
+	public void loadClientData(BlockState state, NbtCompound compoundTag) {
+		readNbt(state, compoundTag);
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag compoundTag) {
-		compoundTag.put("stack", getItemComponent().getFirst().toTag(new CompoundTag()));
+	public NbtCompound writeNbt(NbtCompound compoundTag) {
+		compoundTag.put("stack", getItemComponent().getFirst().writeNbt(new NbtCompound()));
 
 		compoundTag.putInt("position", position);
 
-		return super.toTag(compoundTag);
+		return super.writeNbt(compoundTag);
 	}
 
 	@Override
-	public CompoundTag toInitialChunkDataTag() {
-		return toTag(new CompoundTag());
+	public NbtCompound toInitialChunkDataNbt() {
+		return writeNbt(new NbtCompound());
 	}
 
 	@Override
-	public CompoundTag saveClientData(CompoundTag compoundTag) {
-		return toTag(compoundTag);
+	public NbtCompound saveClientData(NbtCompound compoundTag) {
+		return writeNbt(compoundTag);
 	}
 }

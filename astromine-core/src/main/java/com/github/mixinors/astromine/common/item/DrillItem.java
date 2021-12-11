@@ -111,7 +111,7 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 	}
 	
 	@Override
-	public boolean isEffectiveOn(BlockState state) {
+	public boolean isSuitableFor(BlockState state) {
 		float pickaxeSpeed = pickaxe.getMiningSpeedMultiplier(ItemStack.EMPTY, state);
 		float shovelSpeed = shovel.getMiningSpeedMultiplier(ItemStack.EMPTY, state);
 		

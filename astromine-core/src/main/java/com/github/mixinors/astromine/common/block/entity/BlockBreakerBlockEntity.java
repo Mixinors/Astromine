@@ -33,7 +33,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.Pair;
@@ -152,14 +152,14 @@ public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity impl
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public NbtCompound writeNbt(NbtCompound tag) {
 		tag.putLong("cooldown", cooldown);
-		return super.toTag(tag);
+		return super.writeNbt(tag);
 	}
 
 	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+	public void readNbt(BlockState state, @NotNull NbtCompound tag) {
 		cooldown = tag.getLong("cooldown");
-		super.fromTag(state, tag);
+		super.readNbt(state, tag);
 	}
 }

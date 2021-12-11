@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.common.component.block.entity;
 import com.github.mixinors.astromine.common.component.general.provider.TransferComponentProvider;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
@@ -50,7 +50,7 @@ import java.util.Map;
  * siding information.
  *
  * Serialization and deserialization methods are provided for:
- * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
+ * - {@link NbtCompound} - through {@link #writeToNbt(NbtCompound)} and {@link #readFromNbt(NbtCompound)}.
  */
 public class TransferComponent implements Component {
 	private final Reference2ReferenceMap<ComponentKey<?>, TransferEntry> components = new Reference2ReferenceOpenHashMap<>();
@@ -119,10 +119,10 @@ public class TransferComponent implements Component {
 		return components.get(AMComponents.ENERGY_INVENTORY_COMPONENT).get(direction);
 	}
 
-	/** Serializes this {@link TransferComponent} to a {@link CompoundTag}. */
+	/** Serializes this {@link TransferComponent} to a {@link NbtCompound}. */
 	@Override
-	public void writeToNbt(CompoundTag tag) {
-		CompoundTag dataTag = new CompoundTag();
+	public void writeToNbt(NbtCompound tag) {
+		NbtCompound dataTag = new NbtCompound();
 
 		for (Map.Entry<ComponentKey<?>, TransferEntry> entry : components.entrySet()) {
 			dataTag.put(entry.getKey().getId().toString(), entry.getValue().toTag());
@@ -131,10 +131,10 @@ public class TransferComponent implements Component {
 		tag.put("data", dataTag);
 	}
 
-	/** Deserializes this {@link TransferComponent} from a {@link CompoundTag}. */
+	/** Deserializes this {@link TransferComponent} from a {@link NbtCompound}. */
 	@Override
-	public void readFromNbt(CompoundTag tag) {
-		CompoundTag dataTag = tag.getCompound("data");
+	public void readFromNbt(NbtCompound tag) {
+		NbtCompound dataTag = tag.getCompound("data");
 
 		for (String key : dataTag.getKeys()) {
 			Identifier keyId = new Identifier(key);
@@ -151,7 +151,7 @@ public class TransferComponent implements Component {
 	 * A representation of a side's transfer information.
 	 *
 	 * Serialization and deserialization methods are provided for:
-	 * - {@link CompoundTag} - through {@link #toTag()} and {@link #fromTag(CompoundTag)}.
+	 * - {@link NbtCompound} - through {@link #toTag()} and {@link #fromTag(NbtCompound)}.
 	 */
 	public static class TransferEntry {
 		private final Reference2ReferenceMap<Direction, TransferType> types = new Reference2ReferenceOpenHashMap<>(6, 1);
@@ -182,8 +182,8 @@ public class TransferComponent implements Component {
 			return types.get(origin);
 		}
 
-		/** Deserializes this {@link TransferEntry} from a {@link CompoundTag}. */
-		public void fromTag(CompoundTag tag) {
+		/** Deserializes this {@link TransferEntry} from a {@link NbtCompound}. */
+		public void fromTag(NbtCompound tag) {
 			for (String directionKey : tag.getKeys()) {
 				if (tag.contains(directionKey)) {
 					types.put(DirectionUtils.byNameOrId(directionKey), TransferType.valueOf(tag.getString(directionKey)));
@@ -191,9 +191,9 @@ public class TransferComponent implements Component {
 			}
 		}
 
-		/** Serializes this {@link TransferEntry} to a {@link CompoundTag}. */
-		public CompoundTag toTag() {
-			CompoundTag tag = new CompoundTag();
+		/** Serializes this {@link TransferEntry} to a {@link NbtCompound}. */
+		public NbtCompound toTag() {
+			NbtCompound tag = new NbtCompound();
 
 			for (Map.Entry<Direction, TransferType> entry : types.entrySet()) {
 				if (entry.getValue() != TransferType.NONE)

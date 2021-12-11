@@ -40,7 +40,7 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerFactory;
@@ -188,7 +188,7 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 		return getComparatorMode().getOutput(world.getBlockEntity(pos));
 	}
 
-	/** Override behavior to read {@link BlockEntity} contents from {@link ItemStack} {@link CompoundTag}. */
+	/** Override behavior to read {@link BlockEntity} contents from {@link ItemStack} {@link NbtCompound}. */
 	@Override
 	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		super.onPlaced(world, pos, state, placer, stack);
@@ -196,12 +196,12 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 
 		if (blockEntity != null) {
-			blockEntity.fromTag(state, stack.getOrCreateTag());
+			blockEntity.readNbt(state, stack.getOrCreateNbt());
 			blockEntity.setPos(pos);
 		}
 	}
 
-	/** Override behavior to write {@link BlockEntity} contents to {@link ItemStack} {@link CompoundTag}. */
+	/** Override behavior to write {@link BlockEntity} contents to {@link ItemStack} {@link NbtCompound}. */
 	@Override
 	public List<ItemStack> getDroppedStacks(BlockState state, LootContext.Builder builder) {
 		List<ItemStack> stacks = super.getDroppedStacks(state, builder);
@@ -209,11 +209,11 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 		if (blockEntity != null && saveTagToDroppedItem()) {
 			for (ItemStack drop : stacks) {
 				if (drop.getItem() == asItem()) {
-					CompoundTag tag = blockEntity.toTag(drop.getOrCreateTag());
+					NbtCompound tag = blockEntity.writeNbt(drop.getOrCreateNbt());
 					tag.remove("x");
 					tag.remove("y");
 					tag.remove("z");
-					drop.setTag(tag);
+					drop.setNbt(tag);
 					break;
 				}
 			}

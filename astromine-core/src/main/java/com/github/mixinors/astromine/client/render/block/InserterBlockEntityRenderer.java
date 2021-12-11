@@ -30,10 +30,9 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
-
+import net.minecraft.util.math.Vec3f;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.model.InserterArmModel;
 import com.github.mixinors.astromine.common.block.InserterBlock;
@@ -55,13 +54,13 @@ public class InserterBlockEntityRenderer extends BlockEntityRenderer<InserterBlo
 
 		matrices.push();
 		matrices.translate(0.5, 1.5, 0.5);
-		matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(180.0F));
+		matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(180.0F));
 		if (direction == Direction.SOUTH) {
-			matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
+			matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
 		} else if (direction == Direction.EAST) {
-			matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(90));
+			matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(90));
 		} else if (direction == Direction.WEST) {
-			matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-90));
+			matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-90));
 		}
 
 		modelInserterArm.getLowerArm().yaw = (float) Math.toRadians((position / speed) * 180F);
@@ -85,11 +84,11 @@ public class InserterBlockEntityRenderer extends BlockEntityRenderer<InserterBlo
 			matrices.push();
 			matrices.translate(0.5, 0, 0.5);
 			if (direction == Direction.NORTH) {
-				matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
+				matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
 			} else if (direction == Direction.EAST) {
-				matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(90));
+				matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(90));
 			} else if (direction == Direction.WEST) {
-				matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-90));
+				matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-90));
 			}
 
 			float lowArmSize = 8 / 16F;
@@ -99,8 +98,8 @@ public class InserterBlockEntityRenderer extends BlockEntityRenderer<InserterBlo
 			float distance = (float) Math.sqrt(Math.pow(lowArmSize, 2) + Math.pow(midArmSize, 2) - 2 * lowArmSize * midArmSize * Math.cos(connectingAngle));
 			float angle = (float) (180 - Math.toDegrees(modelInserterArm.getLowerArm().pitch + modelInserterArm.getMiddleArm().pitch));
 
-			matrices.multiply(Vector3f.NEGATIVE_Y.getDegreesQuaternion((float) Math.toDegrees(modelInserterArm.getLowerArm().yaw)));
-			matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(180 + angle));
+			matrices.multiply(Vec3f.NEGATIVE_Y.getDegreesQuaternion((float) Math.toDegrees(modelInserterArm.getLowerArm().yaw)));
+			matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(180 + angle));
 			matrices.translate(0, (1 + 5 / 16F) - distance, distance - (1F / 16F));
 			matrices.scale(0.3F, 0.3F, 0.3F);
 

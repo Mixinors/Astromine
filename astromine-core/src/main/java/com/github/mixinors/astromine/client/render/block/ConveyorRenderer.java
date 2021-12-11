@@ -41,7 +41,6 @@ import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -50,6 +49,7 @@ import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.LightType;
 
 import com.github.mixinors.astromine.common.registry.ConveyorSpecialScaleRegistry;
@@ -70,17 +70,17 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 		matrixStack.translate(0.5, 4F / 16F, 0.5);
 
 		if (type == ConveyorTypes.DOWN_VERTICAL) {
-			matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
+			matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
 		}
 
 		if (direction == Direction.NORTH && rotation == 90) {
-			matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
+			matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
 		} else if (direction == Direction.SOUTH && rotation == -90) {
-			matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
+			matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
 		} else if (direction == Direction.EAST) {
-			matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(rotation));
+			matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(rotation));
 		} else if (direction == Direction.WEST) {
-			matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-rotation));
+			matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-rotation));
 		}
 
 		matrixStack.translate(-0.5F, -1.001F, -0.5F);
@@ -133,13 +133,13 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 				matrixStack.push();
 				matrixStack.translate(0.5F, 4F / 16F, 0.5F);
 				if (direction == Direction.NORTH && rotation == 90) {
-					matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
+					matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
 				} else if (direction == Direction.SOUTH && rotation == -90) {
-					matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
+					matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
 				} else if (direction == Direction.EAST) {
-					matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(rotation));
+					matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(rotation));
 				} else if (direction == Direction.WEST) {
-					matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-rotation));
+					matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-rotation));
 				}
 
 				if (type == ConveyorTypes.NORMAL) {
@@ -171,7 +171,7 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 			int light = LightmapTextureManager.pack(blockEntity.getWorld().getLightLevel(LightType.BLOCK, blockEntity.getPos()), blockEntity.getWorld().getLightLevel(LightType.SKY, blockEntity.getPos()));
 
 			matrixStack.push();
-			matrixStack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(90.0F));
+			matrixStack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90.0F));
 			matrixStack.translate(0.5, 0.5, -4.5F / 16F);
 
 			if (stack.getItem() instanceof BlockItem && ConveyorSpecialScaleRegistry.INSTANCE.containsKey(stack.getItem()) && ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getRight()) {
@@ -179,13 +179,13 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 			}
 
 			if (direction == Direction.NORTH && rotation == 90) {
-				matrixStack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180));
+				matrixStack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180));
 			} else if (direction == Direction.SOUTH && rotation == -90) {
-				matrixStack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180));
+				matrixStack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180));
 			} else if (direction == Direction.EAST) {
-				matrixStack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(-rotation));
+				matrixStack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(-rotation));
 			} else if (direction == Direction.WEST) {
-				matrixStack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotation));
+				matrixStack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(rotation));
 			}
 
 			if (type == ConveyorTypes.NORMAL) {
@@ -257,13 +257,13 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 				matrixStack.push();
 				matrixStack.translate(0.5F, 4F / 16F, 0.5F);
 				if (direction == Direction.NORTH && rotation == 90) {
-					matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
+					matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
 				} else if (direction == Direction.SOUTH && rotation == -90) {
-					matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
+					matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
 				} else if (direction == Direction.EAST) {
-					matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(rotation));
+					matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(rotation));
 				} else if (direction == Direction.WEST) {
-					matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-rotation));
+					matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-rotation));
 				}
 
 				if (type == ConveyorTypes.NORMAL) {
@@ -295,7 +295,7 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 			int light = LightmapTextureManager.pack(blockEntity.getWorld().getLightLevel(LightType.BLOCK, blockEntity.getPos()), blockEntity.getWorld().getLightLevel(LightType.SKY, blockEntity.getPos()));
 
 			matrixStack.push();
-			matrixStack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(90.0F));
+			matrixStack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90.0F));
 			matrixStack.translate(0.5, 0.5, -4.5F / 16F);
 
 			if (stack.getItem() instanceof BlockItem && ConveyorSpecialScaleRegistry.INSTANCE.containsKey(stack.getItem()) && ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getRight()) {
@@ -303,13 +303,13 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 			}
 
 			if (direction == Direction.NORTH && rotation == 90) {
-				matrixStack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180));
+				matrixStack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180));
 			} else if (direction == Direction.SOUTH && rotation == -90) {
-				matrixStack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180));
+				matrixStack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180));
 			} else if (direction == Direction.EAST) {
-				matrixStack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(-rotation));
+				matrixStack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(-rotation));
 			} else if (direction == Direction.WEST) {
-				matrixStack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotation));
+				matrixStack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(rotation));
 			}
 
 			if (type == ConveyorTypes.NORMAL) {

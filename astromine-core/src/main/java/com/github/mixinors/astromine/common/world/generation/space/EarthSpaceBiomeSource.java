@@ -25,8 +25,8 @@
 package com.github.mixinors.astromine.common.world.generation.space;
 
 import com.github.mixinors.astromine.registry.common.AMBiomes;
+import net.minecraft.util.dynamic.RegistryLookupCodec;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryLookupCodec;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
 import com.mojang.serialization.Codec;

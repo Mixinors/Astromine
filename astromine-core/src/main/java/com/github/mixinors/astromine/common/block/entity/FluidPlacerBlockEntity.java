@@ -28,7 +28,7 @@ import com.github.mixinors.astromine.common.component.general.SimpleDirectionalF
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -133,14 +133,14 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public NbtCompound writeNbt(NbtCompound tag) {
 		tag.putLong("cooldown", cooldown);
-		return super.toTag(tag);
+		return super.writeNbt(tag);
 	}
 
 	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+	public void readNbt(BlockState state, @NotNull NbtCompound tag) {
 		cooldown = tag.getLong("cooldown");
-		super.fromTag(state, tag);
+		super.readNbt(state, tag);
 	}
 }

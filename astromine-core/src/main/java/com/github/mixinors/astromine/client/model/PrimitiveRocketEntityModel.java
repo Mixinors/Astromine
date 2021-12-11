@@ -34,8 +34,8 @@ import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
 
 import com.github.mixinors.astromine.common.entity.PrimitiveRocketEntity;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.Vec3f;
 
 public class PrimitiveRocketEntityModel extends EntityModel<PrimitiveRocketEntity> {
 	private final ModelPart model;
@@ -96,8 +96,8 @@ public class PrimitiveRocketEntityModel extends EntityModel<PrimitiveRocketEntit
 			matrices.scale(0.3F, 0.3F, 0.3F);
 		}
 		
-		matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(45));
-		matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(45));
+		matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(45));
+		matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(45));
 		
 		VertexConsumer glintConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, primitiveRocketEntityModel.getLayer(PrimitiveRocketEntityRenderer.ID), false, stack.hasGlint());
 		primitiveRocketEntityModel.render(matrices, glintConsumer, i, j, 1.0F, 1.0F, 1.0F, 1.0F);

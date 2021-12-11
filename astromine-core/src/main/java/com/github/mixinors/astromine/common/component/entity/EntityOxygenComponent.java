@@ -28,8 +28,7 @@ import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundTag;
-
+import net.minecraft.nbt.NbtCompound;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import com.github.mixinors.astromine.registry.common.AMConfig;
@@ -40,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
  * A {@link Component} containing oxygen levels for an entity.
  *
  * Serialization and deserialization methods are provided for:
- * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
+ * - {@link NbtCompound} - through {@link #writeToNbt(NbtCompound)} and {@link #readFromNbt(NbtCompound)}.
  */
 public final class EntityOxygenComponent implements AutoSyncedComponent {
 	int oxygen = 0;
@@ -142,15 +141,15 @@ public final class EntityOxygenComponent implements AutoSyncedComponent {
 		this.entity = entity;
 	}
 
-	/** Serializes this {@link FluidComponent} to a {@link CompoundTag}. */
+	/** Serializes this {@link FluidComponent} to a {@link NbtCompound}. */
 	@Override
-	public void writeToNbt(CompoundTag tag) {
+	public void writeToNbt(NbtCompound tag) {
 		tag.putInt("oxygen", oxygen);
 	}
 
-	/** Deserializes this {@link FluidComponent} from a {@link CompoundTag}. */
+	/** Deserializes this {@link FluidComponent} from a {@link NbtCompound}. */
 	@Override
-	public void readFromNbt(CompoundTag tag) {
+	public void readFromNbt(NbtCompound tag) {
 		this.oxygen = tag.getInt("oxygen");
 	}
 }

@@ -36,7 +36,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Pair;
@@ -80,7 +80,7 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 			}
 		}.withListener((inventory) -> {
 			if (world != null && !world.isClient) {
-				sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+				sendPacket((ServerWorld) world, writeNbt(new NbtCompound()));
 			}
 		});
 	}
@@ -246,7 +246,7 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 		markDirty();
 
 		if (!world.isClient) {
-			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+			sendPacket((ServerWorld) world, writeNbt(new NbtCompound()));
 		}
 	}
 
@@ -260,7 +260,7 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 		markDirty();
 
 		if (!world.isClient) {
-			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+			sendPacket((ServerWorld) world, writeNbt(new NbtCompound()));
 		}
 	}
 
@@ -274,7 +274,7 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 		markDirty();
 
 		if (!world.isClient) {
-			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+			sendPacket((ServerWorld) world, writeNbt(new NbtCompound()));
 		}
 	}
 
@@ -298,7 +298,7 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 		return prevPosition;
 	}
 
-	protected void sendPacket(ServerWorld w, CompoundTag tag) {
+	protected void sendPacket(ServerWorld w, NbtCompound tag) {
 		tag.putString("id", BlockEntityType.getId(getType()).toString());
 		sendPacket(w, new BlockEntityUpdateS2CPacket(getPos(), 127, tag));
 	}
@@ -308,8 +308,8 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 	}
 
 	@Override
-	public void fromTag(BlockState state, CompoundTag compoundTag) {
-		super.fromTag(state, compoundTag);
+	public void readNbt(BlockState state, NbtCompound compoundTag) {
+		super.readNbt(state, compoundTag);
 
 		front = compoundTag.getBoolean("front");
 		down = compoundTag.getBoolean("down");
@@ -318,11 +318,11 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 		position = compoundTag.getInt("position");
 		prevPosition = compoundTag.getInt("prevPosition");
 
-		getItemComponent().setFirst(ItemStack.fromTag(compoundTag.getCompound("stack")));
+		getItemComponent().setFirst(ItemStack.fromNbt(compoundTag.getCompound("stack")));
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag compoundTag) {
+	public NbtCompound writeNbt(NbtCompound compoundTag) {
 		compoundTag.putBoolean("front", front);
 		compoundTag.putBoolean("down", down);
 		compoundTag.putBoolean("across", across);
@@ -330,23 +330,23 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 		compoundTag.putInt("position", position);
 		compoundTag.putInt("prevPosition", prevPosition);
 
-		compoundTag.put("stack", getItemComponent().getFirst().toTag(new CompoundTag()));
+		compoundTag.put("stack", getItemComponent().getFirst().writeNbt(new NbtCompound()));
 
-		return super.toTag(compoundTag);
+		return super.writeNbt(compoundTag);
 	}
 
 	@Override
-	public CompoundTag toInitialChunkDataTag() {
-		return toTag(new CompoundTag());
+	public NbtCompound toInitialChunkDataNbt() {
+		return writeNbt(new NbtCompound());
 	}
 
 	@Override
-	public void loadClientData(BlockState state, CompoundTag compoundTag) {
-		fromTag(state, compoundTag);
+	public void loadClientData(BlockState state, NbtCompound compoundTag) {
+		readNbt(state, compoundTag);
 	}
 
 	@Override
-	public CompoundTag saveClientData(CompoundTag compoundTag) {
-		return toTag(compoundTag);
+	public NbtCompound saveClientData(NbtCompound compoundTag) {
+		return writeNbt(compoundTag);
 	}
 }

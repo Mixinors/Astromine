@@ -32,7 +32,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -73,7 +73,7 @@ public class VerticalConveyorBlockEntity extends ConveyorBlockEntity {
 			}
 		}.withListener((inventory) -> {
 			if (world != null && !world.isClient) {
-				sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+				sendPacket((ServerWorld) world, writeNbt(new NbtCompound()));
 			}
 		});
 	}
@@ -155,7 +155,7 @@ public class VerticalConveyorBlockEntity extends ConveyorBlockEntity {
 		markDirty();
 
 		if (!world.isClient) {
-			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+			sendPacket((ServerWorld) world, writeNbt(new NbtCompound()));
 		}
 	}
 
@@ -177,8 +177,8 @@ public class VerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	}
 
 	@Override
-	public void fromTag(BlockState state, CompoundTag compoundTag) {
-		super.fromTag(state, compoundTag);
+	public void readNbt(BlockState state, NbtCompound compoundTag) {
+		super.readNbt(state, compoundTag);
 
 		up = compoundTag.getBoolean("up");
 
@@ -187,11 +187,11 @@ public class VerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag compoundTag) {
+	public NbtCompound writeNbt(NbtCompound compoundTag) {
 		compoundTag.putBoolean("up", up);
 
 		compoundTag.putInt("horizontalPosition", horizontalPosition);
 
-		return super.toTag(compoundTag);
+		return super.writeNbt(compoundTag);
 	}
 }

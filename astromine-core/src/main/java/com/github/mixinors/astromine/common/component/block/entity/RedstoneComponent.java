@@ -26,10 +26,9 @@ package com.github.mixinors.astromine.common.component.block.entity;
 
 import com.github.mixinors.astromine.common.component.general.provider.RedstoneComponentProvider;
 import com.github.mixinors.astromine.registry.common.AMComponents;
-import net.minecraft.nbt.CompoundTag;
-
 import com.github.mixinors.astromine.common.block.redstone.RedstoneType;
 import dev.onyxstudios.cca.api.v3.component.Component;
+import net.minecraft.nbt.NbtCompound;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -37,7 +36,7 @@ import org.jetbrains.annotations.Nullable;
  * redstone information.
  *
  * Serialization and deserialization methods are provided for:
- * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
+ * - {@link NbtCompound} - through {@link #writeToNbt(NbtCompound)} and {@link #readFromNbt(NbtCompound)}.
  */
 public class RedstoneComponent implements Component {
 	private RedstoneType type = RedstoneType.WORK_WHEN_OFF;
@@ -52,20 +51,20 @@ public class RedstoneComponent implements Component {
 		this.type = type;
 	}
 
-	/** Serializes this {@link RedstoneComponent} to a {@link CompoundTag}. */
+	/** Serializes this {@link RedstoneComponent} to a {@link NbtCompound}. */
 	@Override
-	public void writeToNbt(CompoundTag tag) {
-		CompoundTag dataTag = new CompoundTag();
+	public void writeToNbt(NbtCompound tag) {
+		NbtCompound dataTag = new NbtCompound();
 
 		dataTag.putInt("number", type.asNumber());
 
 		tag.put("data", dataTag);
 	}
 
-	/** Deserializes this {@link RedstoneComponent} from a {@link CompoundTag}. */
+	/** Deserializes this {@link RedstoneComponent} from a {@link NbtCompound}. */
 	@Override
-	public void readFromNbt(CompoundTag tag) {
-		CompoundTag dataTag = tag.getCompound("data");
+	public void readFromNbt(NbtCompound tag) {
+		NbtCompound dataTag = tag.getCompound("data");
 
 		type = RedstoneType.byNumber(dataTag.getInt("number"));
 	}

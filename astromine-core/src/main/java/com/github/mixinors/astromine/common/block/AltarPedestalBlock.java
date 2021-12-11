@@ -65,7 +65,7 @@ public class AltarPedestalBlock extends BlockWithEntity {
 		} else if (first.getCount() >= first.getMaxCount()) {
 			return false;
 		} else {
-			return ItemStack.areTagsEqual(first, second);
+			return ItemStack.areNbtEqual(first, second);
 		}
 	}
 

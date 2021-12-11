@@ -31,9 +31,8 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.util.Identifier;
-
+import net.minecraft.util.math.Vec3f;
 import com.github.mixinors.astromine.client.model.PrimitiveRocketEntityModel;
 import com.github.mixinors.astromine.common.entity.PrimitiveRocketEntity;
 
@@ -56,7 +55,7 @@ public class PrimitiveRocketEntityRenderer extends EntityRenderer<PrimitiveRocke
 
 		matrices.scale(2, 2, 2);
 
-		matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(90.0F));
+		matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(90.0F));
 
 		this.model.setAngles(rocket, 0, 0.0F, -0.1F, rocket.getYaw(tickDelta), rocket.getPitch(tickDelta));
 

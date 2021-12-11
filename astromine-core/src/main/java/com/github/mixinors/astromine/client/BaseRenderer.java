@@ -62,10 +62,10 @@ public class BaseRenderer {
 		matrices.push();
 		VertexConsumer consumer = provider.getBuffer(layer);
 
-		consumer.vertex(matrices.peek().getModel(), x, y, 0).color(color.getR(), color.getG(), color.getB(), color.getA()).light(light).next();
-		consumer.vertex(matrices.peek().getModel(), x, y + sY, 0).color(color.getR(), color.getG(), color.getB(), color.getA()).light(light).next();
-		consumer.vertex(matrices.peek().getModel(), x + sX, y + sY, 0).color(color.getR(), color.getG(), color.getB(), color.getA()).light(light).next();
-		consumer.vertex(matrices.peek().getModel(), x + sX, y, 0).color(color.getR(), color.getG(), color.getB(), color.getA()).light(light).next();
+		consumer.vertex(matrices.peek().getPositionMatrix(), x, y, 0).color(color.getR(), color.getG(), color.getB(), color.getA()).light(light).next();
+		consumer.vertex(matrices.peek().getPositionMatrix(), x, y + sY, 0).color(color.getR(), color.getG(), color.getB(), color.getA()).light(light).next();
+		consumer.vertex(matrices.peek().getPositionMatrix(), x + sX, y + sY, 0).color(color.getR(), color.getG(), color.getB(), color.getA()).light(light).next();
+		consumer.vertex(matrices.peek().getPositionMatrix(), x + sX, y, 0).color(color.getR(), color.getG(), color.getB(), color.getA()).light(light).next();
 
 		if (provider instanceof VertexConsumerProvider.Immediate) {
 			((VertexConsumerProvider.Immediate) provider).draw();
@@ -105,10 +105,10 @@ public class BaseRenderer {
 		matrices.push();
 		VertexConsumer consumer = provider.getBuffer(layer);
 
-		consumer.vertex(matrices.peek().getModel(), endX, startY, 0).color(colorStart.getR(), colorStart.getG(), colorStart.getB(), colorStart.getA()).texture(uS, vS).light(light).normal(matrices.peek().getNormal(), 0, 1, 0).next();
-		consumer.vertex(matrices.peek().getModel(), startX, startY, 0).color(colorStart.getR(), colorStart.getG(), colorStart.getB(), colorStart.getA()).texture(uS, vE).light(light).normal(matrices.peek().getNormal(), 0, 1, 0).next();
-		consumer.vertex(matrices.peek().getModel(), startX, endY, 0).color(colorEnd.getR(), colorEnd.getG(), colorEnd.getB(), colorEnd.getA()).texture(uE, vS).light(light).normal(matrices.peek().getNormal(), 0, 1, 0).next();
-		consumer.vertex(matrices.peek().getModel(), endX, endY, 0).color(colorEnd.getR(), colorEnd.getG(), colorEnd.getB(), colorEnd.getA()).texture(uE, vE).light(light).normal(matrices.peek().getNormal(), 0, 1, 0).next();
+		consumer.vertex(matrices.peek().getPositionMatrix(), endX, startY, 0).color(colorStart.getR(), colorStart.getG(), colorStart.getB(), colorStart.getA()).texture(uS, vS).light(light).normal(matrices.peek().getNormalMatrix(), 0, 1, 0).next();
+		consumer.vertex(matrices.peek().getPositionMatrix(), startX, startY, 0).color(colorStart.getR(), colorStart.getG(), colorStart.getB(), colorStart.getA()).texture(uS, vE).light(light).normal(matrices.peek().getNormalMatrix(), 0, 1, 0).next();
+		consumer.vertex(matrices.peek().getPositionMatrix(), startX, endY, 0).color(colorEnd.getR(), colorEnd.getG(), colorEnd.getB(), colorEnd.getA()).texture(uE, vS).light(light).normal(matrices.peek().getNormalMatrix(), 0, 1, 0).next();
+		consumer.vertex(matrices.peek().getPositionMatrix(), endX, endY, 0).color(colorEnd.getR(), colorEnd.getG(), colorEnd.getB(), colorEnd.getA()).texture(uE, vE).light(light).normal(matrices.peek().getNormalMatrix(), 0, 1, 0).next();
 
 		if (provider instanceof VertexConsumerProvider.Immediate) {
 			((VertexConsumerProvider.Immediate) provider).draw();
@@ -174,10 +174,10 @@ public class BaseRenderer {
 
 		VertexConsumer consumer = provider.getBuffer(layer);
 
-		consumer.vertex(matrices.peek().getModel(), x, y + sY, 0).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(u0, v1).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrices.peek().getNormal(), 0, 0, 0).next();
-		consumer.vertex(matrices.peek().getModel(), x + sX, y + sY, 0).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(u1, v1).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrices.peek().getNormal(), 0, 0, 0).next();
-		consumer.vertex(matrices.peek().getModel(), x + sX, y, 0).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(u1, v0).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrices.peek().getNormal(), 0, 0, 0).next();
-		consumer.vertex(matrices.peek().getModel(), x, y, 0).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(u0, v0).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrices.peek().getNormal(), 0, 0, 0).next();
+		consumer.vertex(matrices.peek().getPositionMatrix(), x, y + sY, 0).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(u0, v1).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrices.peek().getNormalMatrix(), 0, 0, 0).next();
+		consumer.vertex(matrices.peek().getPositionMatrix(), x + sX, y + sY, 0).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(u1, v1).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrices.peek().getNormalMatrix(), 0, 0, 0).next();
+		consumer.vertex(matrices.peek().getPositionMatrix(), x + sX, y, 0).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(u1, v0).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrices.peek().getNormalMatrix(), 0, 0, 0).next();
+		consumer.vertex(matrices.peek().getPositionMatrix(), x, y, 0).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(u0, v0).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrices.peek().getNormalMatrix(), 0, 0, 0).next();
 
 		matrices.pop();
 	}

@@ -38,7 +38,6 @@ import me.shedaniel.architectury.registry.menu.ExtendedMenuProvider;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 
 import net.minecraft.client.util.math.Vector3d;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -51,6 +50,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
@@ -103,8 +103,8 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 	}
 
 	@Override
-	protected Vector3f getPassengerPosition() {
-		return new Vector3f(0.0F, 7.75F, 0.0F);
+	protected Vec3f getPassengerPosition() {
+		return new Vec3f(0.0F, 7.75F, 0.0F);
 	}
 
 	@Override
@@ -145,20 +145,20 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 		packet.writeDouble(this.getY());
 		packet.writeDouble(this.getZ());
 		packet.writeUuid(this.getUuid());
-		packet.writeInt(this.getEntityId());
+		packet.writeInt(this.getId());
 
 		return NetworkManager.toPacket(NetworkManager.s2c(), AMNetworks.PRIMITIVE_ROCKET_SPAWN, packet);
 	}
 	
 	@Override
 	public void saveExtraData(PacketByteBuf buf) {
-		buf.writeInt(this.getEntityId());
+		buf.writeInt(this.getId());
 	}
 
 	@Nullable
 	@Override
 	public ScreenHandler createMenu(int syncId, PlayerInventory inventory, PlayerEntity player) {
-		return new PrimitiveRocketScreenHandler(syncId, player, getEntityId());
+		return new PrimitiveRocketScreenHandler(syncId, player, getId());
 	}
 
 	@Override

@@ -34,12 +34,11 @@ import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-
+import net.minecraft.util.math.Vec3f;
 import com.github.mixinors.astromine.common.block.entity.AltarBlockEntity;
 import com.github.mixinors.astromine.common.block.entity.AltarPedestalBlockEntity;
 
@@ -60,7 +59,7 @@ public class AltarPedestalBlockEntityRenderer extends BlockEntityRenderer<AltarP
 		ItemStack stack = entity.getItemComponent().getFirst();
 		int j = stack.isEmpty() ? 187 : Item.getRawId(stack.getItem()) + stack.getDamage();
 		this.random.setSeed(j);
-		BakedModel bakedModel = this.itemRenderer.getHeldItemModel(stack, entity.getWorld(), null);
+		BakedModel bakedModel = this.itemRenderer.getModel(stack, entity.getWorld(), null);
 		boolean bl = bakedModel.hasDepth();
 		int k = 1;
 		float h = 0.25F;
@@ -79,7 +78,7 @@ public class AltarPedestalBlockEntityRenderer extends BlockEntityRenderer<AltarP
 			matrices.translate(multiply.x, multiply.y, multiply.z);
 		}
 		float n = getHeight(entity, tickDelta);
-		matrices.multiply(Vector3f.POSITIVE_Y.getRadialQuaternion(n));
+		matrices.multiply(Vec3f.POSITIVE_Y.getRadialQuaternion(n));
 		float o = bakedModel.getTransformation().ground.scale.getX();
 		float p = bakedModel.getTransformation().ground.scale.getY();
 		float q = bakedModel.getTransformation().ground.scale.getZ();

@@ -38,7 +38,7 @@ import me.shedaniel.architectury.extensions.BlockEntityExtension;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
@@ -254,31 +254,31 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 		}
 	}
 
-	/** Serializes this {@link ComponentBlockEntity} to a {@link CompoundTag}. */
+	/** Serializes this {@link ComponentBlockEntity} to a {@link NbtCompound}. */
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		CompoundTag transferTag = new CompoundTag();
+	public NbtCompound writeNbt(NbtCompound tag) {
+		NbtCompound transferTag = new NbtCompound();
 		getTransferComponent().writeToNbt(transferTag);
 
-		CompoundTag redstoneTag = new CompoundTag();
+		NbtCompound redstoneTag = new NbtCompound();
 		getRedstoneComponent().writeToNbt(redstoneTag);
 
 		tag.put("transfer", transferTag);
 		tag.put("redstone", redstoneTag);
 
 		allComponents.forEach((type, component) -> {
-			CompoundTag componentTag = new CompoundTag();
+			NbtCompound componentTag = new NbtCompound();
 			component.writeToNbt(componentTag);
 
 			tag.put(type.getId().toString(), componentTag);
 		});
 
-		return super.toTag(tag);
+		return super.writeNbt(tag);
 	}
 
-	/** Deserializes this {@link ComponentBlockEntity} from a {@link CompoundTag}. */
+	/** Deserializes this {@link ComponentBlockEntity} from a {@link NbtCompound}. */
 	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+	public void readNbt(BlockState state, @NotNull NbtCompound tag) {
 		getTransferComponent().readFromNbt(tag.getCompound("transfer"));
 		getRedstoneComponent().readFromNbt(tag.getCompound("redstone"));
 
@@ -291,11 +291,11 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 		this.pos = new BlockPos(tag.getInt("x"), tag.getInt("y"), tag.getInt("z"));
 	}
 
-	/** Serializes this {@link ComponentBlockEntity} to a {@link CompoundTag},
+	/** Serializes this {@link ComponentBlockEntity} to a {@link NbtCompound},
 	 * for synchronization usage. */
 	@Override
-	public CompoundTag saveClientData(CompoundTag compoundTag) {
-		compoundTag = toTag(compoundTag);
+	public NbtCompound saveClientData(NbtCompound compoundTag) {
+		compoundTag = writeNbt(compoundTag);
 		if (skipInventory) {
 			compoundTag.remove(AMComponents.ITEM_INVENTORY_COMPONENT.getId().toString());
 		} else {
@@ -304,10 +304,10 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 		return compoundTag;
 	}
 
-	/** Deserializes this {@link ComponentBlockEntity} from a {@link CompoundTag},
+	/** Deserializes this {@link ComponentBlockEntity} from a {@link NbtCompound},
 	 * for synchronization usage. */
 	@Override
-	public void loadClientData(BlockState state, CompoundTag compoundTag) {
-		fromTag(state, compoundTag);
+	public void loadClientData(BlockState state, NbtCompound compoundTag) {
+		readNbt(state, compoundTag);
 	}
 }

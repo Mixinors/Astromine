@@ -147,7 +147,7 @@ public class FluidFilterWidget extends ButtonWidget {
 					.setup(provider, RenderLayer.getSolid())
 					.sprite(FluidUtils.getSprite(fluidSupplier.get()))
 					.color(FluidUtils.getColor(ClientUtils.getPlayer(), fluidSupplier.get())).light(0x00f000f0).overlay(OverlayTexture.DEFAULT_UV).alpha(
-				0xff).normal(matrices.peek().getNormal(), 0, 0, 0).position(matrices.peek().getModel(), x + 1, y + 1, x + sX - 1, y + sY - 1, 0F).next(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
+				0xff).normal(matrices.peek().getNormalMatrix(), 0, 0, 0).position(matrices.peek().getPositionMatrix(), x + 1, y + 1, x + sX - 1, y + sY - 1, 0F).next(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
 		}
 	}
 }

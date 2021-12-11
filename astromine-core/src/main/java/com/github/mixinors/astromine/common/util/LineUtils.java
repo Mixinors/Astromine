@@ -24,17 +24,16 @@
 
 package com.github.mixinors.astromine.common.util;
 
-import net.minecraft.client.util.math.Vector3f;
-
 import com.google.common.collect.Lists;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import net.minecraft.util.math.Vec3f;
 
 public class LineUtils {
 	/** Returns points of a Bezier curve between the three given points with the specified amount of segments. */
-	public static Collection<Vector3f> getBezierSegments(Vector3f posA, Vector3f posB, Vector3f posC, float segments) {
-		ArrayList<Vector3f> positions = new ArrayList<>();
+	public static Collection<Vec3f> getBezierSegments(Vec3f posA, Vec3f posB, Vec3f posC, float segments) {
+		ArrayList<Vec3f> positions = new ArrayList<>();
 
 		double x1 = posA.getX();
 		double y1 = posA.getY();
@@ -67,11 +66,11 @@ public class LineUtils {
 			double pY = p0Y + p1Y + p2Y;
 
 			if (t == 0) {
-				positions.add(new Vector3f((float) x1, (float) y1, (float) z1));
+				positions.add(new Vec3f((float) x1, (float) y1, (float) z1));
 			} else if (t + (1f / segments) >= 1) {
-				positions.add(new Vector3f((float) x3, (float) y3, (float) z3));
+				positions.add(new Vec3f((float) x3, (float) y3, (float) z3));
 			} else {
-				positions.add(new Vector3f((float) pX, (float) pY, (float) ((float) z1 + cZ)));
+				positions.add(new Vec3f((float) pX, (float) pY, (float) ((float) z1 + cZ)));
 			}
 
 			cZ += dZ;
@@ -81,7 +80,7 @@ public class LineUtils {
 	}
 
 	/** Returns points of a Bresenham line between the two given points with the specified amount of segments. */
-	public static Collection<Vector3f> getBresenhamSegments(Vector3f posA, Vector3f posB, float segments) {
+	public static Collection<Vec3f> getBresenhamSegments(Vec3f posA, Vec3f posB, float segments) {
 		float x1 = posA.getX();
 		float y1 = posA.getY();
 		float z1 = posA.getZ();
@@ -90,7 +89,7 @@ public class LineUtils {
 		float y2 = posB.getY();
 		float z2 = posB.getZ();
 
-		List<Vector3f> points = Lists.newArrayList();
+		List<Vec3f> points = Lists.newArrayList();
 
 		points.add(posA);
 
@@ -140,7 +139,7 @@ public class LineUtils {
 				p1 += 2 * dy;
 				p2 += 2 * dz;
 
-				points.add(new Vector3f(x1, y1, z1));
+				points.add(new Vec3f(x1, y1, z1));
 			}
 		} else if (dy >= dx && dy >= dz) {
 			float p1 = 2 * dx - dy;
@@ -162,7 +161,7 @@ public class LineUtils {
 				p1 += 2 * dx;
 				p2 += 2 * dz;
 
-				points.add(new Vector3f(x1, y1, z1));
+				points.add(new Vec3f(x1, y1, z1));
 			}
 		} else {
 			float p1 = 2 * dy - dz;
@@ -184,7 +183,7 @@ public class LineUtils {
 				p1 += 2 * dy;
 				p2 += 2 * dx;
 
-				points.add(new Vector3f(x1, y1, z1));
+				points.add(new Vec3f(x1, y1, z1));
 			}
 		}
 

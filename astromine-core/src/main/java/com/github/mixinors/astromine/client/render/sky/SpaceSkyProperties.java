@@ -26,12 +26,11 @@ package com.github.mixinors.astromine.client.render.sky;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import net.minecraft.client.render.SkyProperties;
+import net.minecraft.client.render.DimensionEffects;
 import net.minecraft.util.math.Vec3d;
 
 @Environment(EnvType.CLIENT)
-public class SpaceSkyProperties extends SkyProperties {
+public class SpaceSkyProperties extends DimensionEffects {
 	public SpaceSkyProperties() {
 		super(Float.NaN, false, SkyType.NONE, true, true);
 	}

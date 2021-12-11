@@ -31,8 +31,8 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
-import net.minecraft.block.MaterialColor;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPos;
@@ -44,7 +44,7 @@ import net.minecraft.world.World;
 import com.github.mixinors.astromine.common.component.world.WorldHoloBridgeComponent;
 
 public class HoloBridgeInvisibleBlock extends Block {
-	public static final Material MATERIAL = new Material.Builder(MaterialColor.CLEAR).build();
+	public static final Material MATERIAL = new Material.Builder(MapColor.CLEAR).build();
 
 	public HoloBridgeInvisibleBlock(AbstractBlock.Settings settings) {
 		super(settings);

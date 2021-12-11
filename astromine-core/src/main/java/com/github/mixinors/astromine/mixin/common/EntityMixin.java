@@ -115,11 +115,11 @@ public abstract class EntityMixin implements GravityEntity, EntityAccessor {
 			int topPortal = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey());
 
 			if (astromine_lastY <= bottomPortal && bottomPortal != Integer.MIN_VALUE) {
-				RegistryKey<World> worldKey = RegistryKey.of(Registry.DIMENSION, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.BOTTOM, entity.world.getRegistryKey()).getValue());
+				RegistryKey<World> worldKey = RegistryKey.of(Registry.WORLD_KEY, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.BOTTOM, entity.world.getRegistryKey()).getValue());
 
 				astromine_teleport(entity, worldKey, DimensionLayerRegistry.Type.BOTTOM);
 			} else if (astromine_lastY >= topPortal && topPortal != Integer.MIN_VALUE) {
-				RegistryKey<World> worldKey = RegistryKey.of(Registry.DIMENSION, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey()).getValue());
+				RegistryKey<World> worldKey = RegistryKey.of(Registry.WORLD_KEY, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey()).getValue());
 
 				astromine_teleport(entity, worldKey, DimensionLayerRegistry.Type.TOP);
 			}

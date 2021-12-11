@@ -29,7 +29,7 @@ import me.shedaniel.architectury.extensions.BlockEntityExtension;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -107,18 +107,18 @@ public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFr
 	}
 
 	@Override
-	public void loadClientData(BlockState blockState, CompoundTag compoundTag) {
-		fromTag(null, compoundTag);
+	public void loadClientData(BlockState blockState, NbtCompound compoundTag) {
+		readNbt(null, compoundTag);
 	}
 
 	@Override
-	public CompoundTag saveClientData(CompoundTag compoundTag) {
-		return toTag(compoundTag);
+	public NbtCompound saveClientData(NbtCompound compoundTag) {
+		return writeNbt(compoundTag);
 	}
 
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
-		super.fromTag(state, tag);
+	public void readNbt(BlockState state, NbtCompound tag) {
+		super.readNbt(state, tag);
 		inventory.readFromNbt(tag);
 		if (tag.contains("parent"))
 			parentPos = BlockPos.fromLong(tag.getLong("parent"));
@@ -126,11 +126,11 @@ public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFr
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public NbtCompound writeNbt(NbtCompound tag) {
 		inventory.writeToNbt(tag);
 		if (parentPos != null)
 			tag.putLong("parent", parentPos.asLong());
-		return super.toTag(tag);
+		return super.writeNbt(tag);
 	}
 
 	public void onRemove() {

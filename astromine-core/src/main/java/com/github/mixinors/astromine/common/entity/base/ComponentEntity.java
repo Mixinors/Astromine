@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.common.entity.base;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
 
 import dev.onyxstudios.cca.api.v3.component.Component;
@@ -42,11 +42,11 @@ public abstract class ComponentEntity extends Entity {
 
 	/** Override behavior to do nothing, as synchronize themselves. */
 	@Override
-	protected void writeCustomDataToTag(CompoundTag tag) {
+	protected void writeCustomDataToNbt(NbtCompound tag) {
 
 	}
 
 	/** Override behavior to do nothing, as synchronize themselves. */
 	@Override
-	protected void readCustomDataFromTag(CompoundTag tag) {}
+	protected void readCustomDataFromNbt(NbtCompound tag) {}
 }

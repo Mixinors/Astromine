@@ -31,7 +31,7 @@ import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.SmeltingRecipe;
 
@@ -157,7 +157,7 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 					ItemStack output = recipe.getOutput().copy();
 
 					boolean isEmpty = itemComponent.getFirst().isEmpty();
-					boolean isEqual = ItemStack.areItemsEqual(itemComponent.getFirst(), output) && ItemStack.areTagsEqual(itemComponent.getFirst(), output);
+					boolean isEqual = ItemStack.areItemsEqual(itemComponent.getFirst(), output) && ItemStack.areNbtEqual(itemComponent.getFirst(), output);
 
 					if ((isEmpty || isEqual) && itemComponent.getFirst().getCount() + output.getCount() <= itemComponent.getFirst().getMaxCount() && energyVolume.hasStored(500.0D / limit * speed)) {
 						energyVolume.take(500.0D / limit * speed);
@@ -194,18 +194,18 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 	}
 
 	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		super.fromTag(state, tag);
+	public void readNbt(BlockState state, @NotNull NbtCompound tag) {
+		super.readNbt(state, tag);
 		progress = tag.getDouble("progress");
 		limit = tag.getInt("limit");
 		shouldTry = true;
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public NbtCompound writeNbt(NbtCompound tag) {
 		tag.putDouble("progress", progress);
 		tag.putInt("limit", limit);
-		return super.toTag(tag);
+		return super.writeNbt(tag);
 	}
 
 	public static class Primitive extends ElectricFurnaceBlockEntity {
