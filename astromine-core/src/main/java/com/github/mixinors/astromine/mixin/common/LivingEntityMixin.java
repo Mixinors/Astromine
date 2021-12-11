@@ -84,7 +84,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 	}
 
 	@Override
-	@ModifyVariable(at = @At("HEAD"), method = "handleFallDamage(FF)Z", index = 1)
+	@ModifyVariable(at = @At("HEAD"), method = "handleFallDamage(FFLnet/minecraft/entity/damage/DamageSource;)Z", index = 1)
 	float getDamageMultiplier(float damageMultiplier) {
 		return (float) (damageMultiplier * astromine_getGravity() * astromine_getGravity());
 	}
@@ -143,13 +143,13 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 					
 					EntityAccessor entityAccessor = (EntityAccessor) this;
 					
-					if (entityAccessor.getField_25599() != null && breathingVolume.isEmpty()) {
-						breathingVolume = FluidVolume.of(FluidVolume.BUCKET, entityAccessor.getField_25599().values().get(0));
+					if (entityAccessor.getSubmergedFluidTag() != null && breathingVolume.isEmpty()) {
+						breathingVolume = FluidVolume.of(FluidVolume.BUCKET, entityAccessor.getSubmergedFluidTag().values().get(0));
 					}
 					
 					boolean isBreathing = BreathableRegistry.INSTANCE.canBreathe(entity.getType(), breathingVolume.getFluid());
 					
-					if ((!(entity instanceof PlayerEntity) || (entity instanceof PlayerEntity && !entity.isSpectator() &&!((PlayerEntity) entity).isCreative())) && isBreathing && fluidComponent != null && age % 5 == 0) {
+					if ((!(entity instanceof PlayerEntity) || !entity.isSpectator() && !((PlayerEntity) entity).isCreative()) && isBreathing && fluidComponent != null && age % 5 == 0) {
 						fluidComponent.getFirst().take(81L);
 					}
 					
@@ -168,11 +168,11 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 		return tag;
 	}
 
-	@ModifyVariable(method = "tickMovement", slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;method_29920()Z")), at = @At(value = "STORE", ordinal = 0) // result from "isTouchingWater && l > 0.0"
-	)
+	/*TODO: Fixin
+	@ModifyVariable(method = "tickMovement", slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;shouldSwimInFluids()Z")), at = @At(value = "STORE", ordinal = 0)) // result from "isTouchingWater && l > 0.0"
 	private boolean astromine_allowIndustrialFluidSwimming(boolean touchingWater) {
 		return touchingWater || this.getFluidHeight(AMTags.INDUSTRIAL_FLUID) > 0;
-	}
+	}*/
 
 	@Inject(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isInLava()Z"))
 	private void astromine_travelInIndustrialFluids(Vec3d movementInput, CallbackInfo ci) {

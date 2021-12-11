@@ -36,10 +36,10 @@ import java.util.Map;
 public class Layer extends RenderLayer {
 	private static final Map<Identifier, RenderLayer> CACHE = new HashMap<>();
 
-	private static final RenderLayer HOLOGRAPHIC_BRIDGE = of("holographic_bridge", VertexFormats.POSITION_COLOR_LIGHT, VertexFormat.DrawMode.QUADS, 256, false, true, RenderLayer.MultiPhaseParameters.builder().cull(DISABLE_CULLING).lightmap(ENABLE_LIGHTMAP)/*.shadeModel(SMOOTH_SHADE_MODEL)*/.transparency(
-		TRANSLUCENT_TRANSPARENCY)/*.alpha(ONE_TENTH_ALPHA)*/.layering(VIEW_OFFSET_Z_LAYERING).build(false));
+	private static final RenderLayer HOLOGRAPHIC_BRIDGE = of("holographic_bridge", VertexFormats.POSITION_COLOR_LIGHT, VertexFormat.DrawMode.QUADS, 256, false, true, RenderLayer.MultiPhaseParameters.builder().cull(DISABLE_CULLING).lightmap(ENABLE_LIGHTMAP)/*TODO:.shadeModel(SMOOTH_SHADE_MODEL)*/.transparency(
+		TRANSLUCENT_TRANSPARENCY)/*TODO:.alpha(ONE_TENTH_ALPHA)*/.layering(VIEW_OFFSET_Z_LAYERING).build(false));
 
-	private static final RenderLayer GAS = of("gas", VertexFormats.POSITION_COLOR_LIGHT, VertexFormat.DrawMode.QUADS, 2097152, true, true, RenderLayer.MultiPhaseParameters.builder().cull(DISABLE_CULLING).layering(VIEW_OFFSET_Z_LAYERING)/*.shadeModel(SMOOTH_SHADE_MODEL)*/.transparency(TRANSLUCENT_TRANSPARENCY)
+	private static final RenderLayer GAS = of("gas", VertexFormats.POSITION_COLOR_LIGHT, VertexFormat.DrawMode.QUADS, 2097152, true, true, RenderLayer.MultiPhaseParameters.builder().cull(DISABLE_CULLING).layering(VIEW_OFFSET_Z_LAYERING)/*TODO:.shadeModel(SMOOTH_SHADE_MODEL)*/.transparency(TRANSLUCENT_TRANSPARENCY)
 		.build(true));
 
 	/** Instantiates a {@link Layer}. */
@@ -50,7 +50,7 @@ public class Layer extends RenderLayer {
 	/** Returns the {@link RenderLayer} for the given texture. */
 	public static RenderLayer get(Identifier texture) {
 		CACHE.computeIfAbsent(texture, (key) -> of("entity_cutout", VertexFormats.POSITION_COLOR_TEXTURE_LIGHT, VertexFormat.DrawMode.QUADS, 256, true, true, RenderLayer.MultiPhaseParameters.builder().texture(new RenderPhase.Texture(texture, false, false)).transparency(TRANSLUCENT_TRANSPARENCY)
-			/*.diffuseLighting(DISABLE_DIFFUSE_LIGHTING).alpha(ONE_TENTH_ALPHA)*/.lightmap(DISABLE_LIGHTMAP).overlay(DISABLE_OVERLAY_COLOR).build(true)));
+			/*TODO:.diffuseLighting(DISABLE_DIFFUSE_LIGHTING).alpha(ONE_TENTH_ALPHA)*/.lightmap(DISABLE_LIGHTMAP).overlay(DISABLE_OVERLAY_COLOR).build(true)));
 		return CACHE.get(texture);
 	}
 
