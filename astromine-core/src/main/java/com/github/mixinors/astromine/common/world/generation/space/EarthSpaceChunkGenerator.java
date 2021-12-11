@@ -40,7 +40,10 @@ import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.source.BiomeAccess;
+import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.Blender;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
@@ -81,13 +84,46 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 		return withSeedCommon(seed);
 	}
 
+	private static final MultiNoiseUtil.NoiseValuePoint POINT = new MultiNoiseUtil.NoiseValuePoint(
+			0, // space is cold
+			0, // there is no humidity in space
+			0, // nor are there continents
+			0, // or erosion for that matter
+			0, // and there's certainly no depth
+			0 // or weirdness, well, maybe a little
+	);
+	@Override
+	public MultiNoiseUtil.MultiNoiseSampler getMultiNoiseSampler() {
+		return (i, j, k) -> POINT;
+	}
+
+	@Override
+	public void carve(ChunkRegion chunkRegion,
+			long seed,
+			BiomeAccess biomeAccess,
+			StructureAccessor structureAccessor,
+			Chunk chunk,
+			GenerationStep.Carver generationStep) {
+		// hm yes today I will carve space
+		// yes yes hyperspace lanes in astromine when
+	}
+
 	public ChunkGenerator withSeedCommon(long seed) {
 		return new EarthSpaceChunkGenerator(seed, biomeRegistry);
 	}
 
 	@Override
 	public void buildSurface(ChunkRegion region, StructureAccessor structures, Chunk chunk) {
+	}
 
+	@Override
+	public void populateEntities(ChunkRegion region) {
+
+	}
+
+	@Override
+	public int getWorldHeight() {
+		return 512;
 	}
 
 	@Override
@@ -96,6 +132,16 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 			populateNoise(structureAccessor, chunk);
 			return Unit.INSTANCE;
 		}, executor).thenApply(unit -> chunk);
+	}
+
+	@Override
+	public int getSeaLevel() {
+		return 0; // there is no ocean in space, or maybe all of space is an ocean, after all we travel in space with space SHIPs :tiny_potato:
+	}
+
+	@Override
+	public int getMinimumY() {
+		return 0;
 	}
 
 	public void populateNoise(StructureAccessor accessor, Chunk chunk) {
