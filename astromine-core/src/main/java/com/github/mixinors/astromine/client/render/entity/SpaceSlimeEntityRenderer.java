@@ -35,13 +35,14 @@ import net.minecraft.util.math.Vec3f;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.model.SpaceSlimeEntityModel;
 import com.github.mixinors.astromine.common.entity.SpaceSlimeEntity;
+import net.minecraft.client.render.entity.EntityRendererFactory.Context;
 
 public class SpaceSlimeEntityRenderer extends MobEntityRenderer<SpaceSlimeEntity, SpaceSlimeEntityModel> {
 	private static final Identifier TEXTURE = AMCommon.id("textures/entity/space_slime/space_slime.png");
 
-	public SpaceSlimeEntityRenderer(EntityRenderDispatcher entityRenderDispatcher) {
-		super(entityRenderDispatcher, new SpaceSlimeEntityModel(16), 0.25F);
-		this.addFeature(new SlimeOverlayFeatureRenderer(this));
+	public SpaceSlimeEntityRenderer(Context context) {
+		super(context, new SpaceSlimeEntityModel(16), 0.25F);
+		this.addFeature(new SlimeOverlayFeatureRenderer(context));
 	}
 
 	@Override

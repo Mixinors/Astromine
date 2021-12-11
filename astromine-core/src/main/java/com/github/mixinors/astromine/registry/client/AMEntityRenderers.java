@@ -24,6 +24,8 @@
 
 package com.github.mixinors.astromine.registry.client;
 
+import net.minecraft.client.render.entity.EntityRendererFactory.Context;
+
 import com.github.mixinors.astromine.client.render.entity.PrimitiveRocketEntityRenderer;
 import com.github.mixinors.astromine.client.render.entity.SpaceSlimeEntityRenderer;
 import com.github.mixinors.astromine.client.render.entity.SuperSpaceSlimeEntityRenderer;
@@ -32,7 +34,7 @@ import me.shedaniel.architectury.registry.entity.EntityRenderers;
 
 public class AMEntityRenderers {
 	public static void init() {
-		EntityRenderers.register(AMEntityTypes.PRIMITIVE_ROCKET.get(), PrimitiveRocketEntityRenderer::new);
+		EntityRenderers.register(AMEntityTypes.PRIMITIVE_ROCKET.get(), context -> new PrimitiveRocketEntityRenderer(context));
 		EntityRenderers.register(AMEntityTypes.SPACE_SLIME.get(), SpaceSlimeEntityRenderer::new);
 		EntityRenderers.register(AMEntityTypes.SUPER_SPACE_SLIME.get(), SuperSpaceSlimeEntityRenderer::new);
 	}
