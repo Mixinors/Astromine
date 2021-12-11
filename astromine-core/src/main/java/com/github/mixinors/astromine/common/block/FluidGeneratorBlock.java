@@ -77,8 +77,8 @@ public abstract class FluidGeneratorBlock extends HorizontalFacingTieredBlockWit
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new FluidGeneratorBlockEntity.Primitive();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new FluidGeneratorBlockEntity.Primitive(pos, state);
 		}
 	}
 
@@ -88,8 +88,8 @@ public abstract class FluidGeneratorBlock extends HorizontalFacingTieredBlockWit
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new FluidGeneratorBlockEntity.Basic();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new FluidGeneratorBlockEntity.Basic(pos, state);
 		}
 	}
 
@@ -99,8 +99,8 @@ public abstract class FluidGeneratorBlock extends HorizontalFacingTieredBlockWit
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new FluidGeneratorBlockEntity.Advanced();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new FluidGeneratorBlockEntity.Advanced(pos, state);
 		}
 	}
 
@@ -110,8 +110,8 @@ public abstract class FluidGeneratorBlock extends HorizontalFacingTieredBlockWit
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new FluidGeneratorBlockEntity.Elite();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new FluidGeneratorBlockEntity.Elite(pos, state);
 		}
 	}
 }

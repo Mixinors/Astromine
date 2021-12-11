@@ -71,8 +71,8 @@ public abstract class WireMillBlock extends HorizontalFacingTieredBlockWithEntit
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new WireMillBlockEntity.Primitive();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new WireMillBlockEntity.Primitive(pos, state);
 		}
 	}
 
@@ -82,8 +82,8 @@ public abstract class WireMillBlock extends HorizontalFacingTieredBlockWithEntit
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new WireMillBlockEntity.Basic();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new WireMillBlockEntity.Basic(pos, state);
 		}
 	}
 
@@ -93,8 +93,8 @@ public abstract class WireMillBlock extends HorizontalFacingTieredBlockWithEntit
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new WireMillBlockEntity.Advanced();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new WireMillBlockEntity.Advanced(pos, state);
 		}
 	}
 
@@ -104,8 +104,8 @@ public abstract class WireMillBlock extends HorizontalFacingTieredBlockWithEntit
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new WireMillBlockEntity.Elite();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new WireMillBlockEntity.Elite(pos, state);
 		}
 	}
 }

@@ -78,8 +78,8 @@ public abstract class CapacitorBlock extends HorizontalFacingTieredBlockWithEnti
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new CapacitorBlockEntity.Primitive();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new CapacitorBlockEntity.Primitive(pos, state);
 		}
 	}
 
@@ -89,8 +89,8 @@ public abstract class CapacitorBlock extends HorizontalFacingTieredBlockWithEnti
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new CapacitorBlockEntity.Basic();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new CapacitorBlockEntity.Basic(pos, state);
 		}
 	}
 
@@ -100,8 +100,8 @@ public abstract class CapacitorBlock extends HorizontalFacingTieredBlockWithEnti
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new CapacitorBlockEntity.Advanced();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new CapacitorBlockEntity.Advanced(pos, state);
 		}
 	}
 
@@ -111,8 +111,8 @@ public abstract class CapacitorBlock extends HorizontalFacingTieredBlockWithEnti
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new CapacitorBlockEntity.Elite();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new CapacitorBlockEntity.Elite(pos, state);
 		}
 	}
 
@@ -127,8 +127,8 @@ public abstract class CapacitorBlock extends HorizontalFacingTieredBlockWithEnti
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new CapacitorBlockEntity.Creative();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new CapacitorBlockEntity.Creative(pos, state);
 		}
 
 		@Override

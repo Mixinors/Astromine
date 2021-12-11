@@ -71,8 +71,8 @@ public abstract class RefineryBlock extends HorizontalFacingTieredBlockWithEntit
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new RefineryBlockEntity.Primitive();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new RefineryBlockEntity.Primitive(pos, state);
 		}
 	}
 
@@ -82,8 +82,8 @@ public abstract class RefineryBlock extends HorizontalFacingTieredBlockWithEntit
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new RefineryBlockEntity.Basic();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new RefineryBlockEntity.Basic(pos, state);
 		}
 	}
 
@@ -93,8 +93,8 @@ public abstract class RefineryBlock extends HorizontalFacingTieredBlockWithEntit
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new RefineryBlockEntity.Advanced();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new RefineryBlockEntity.Advanced(pos, state);
 		}
 	}
 
@@ -104,8 +104,8 @@ public abstract class RefineryBlock extends HorizontalFacingTieredBlockWithEntit
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new RefineryBlockEntity.Elite();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new RefineryBlockEntity.Elite(pos, state);
 		}
 	}
 }
