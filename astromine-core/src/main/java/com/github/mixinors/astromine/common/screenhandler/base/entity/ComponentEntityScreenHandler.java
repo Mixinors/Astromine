@@ -24,6 +24,13 @@
 
 package com.github.mixinors.astromine.common.screenhandler.base.entity;
 
+import dev.vini2003.hammer.common.geometry.position.Position;
+import dev.vini2003.hammer.common.geometry.size.Size;
+import dev.vini2003.hammer.common.screen.handler.BaseScreenHandler;
+import dev.vini2003.hammer.common.util.Slots;
+import dev.vini2003.hammer.common.widget.slot.SlotWidget;
+import dev.vini2003.hammer.common.widget.tab.TabWidget;
+import dev.vini2003.hammer.common.widget.text.TextWidget;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -33,14 +40,6 @@ import net.minecraft.screen.ScreenHandlerType;
 import com.github.mixinors.astromine.common.block.entity.base.ComponentBlockEntity;
 import com.github.mixinors.astromine.common.entity.base.ComponentEntity;
 import com.github.mixinors.astromine.common.screenhandler.base.block.BlockStateScreenHandler;
-import com.github.vini2003.blade.common.collection.TabWidgetCollection;
-import com.github.vini2003.blade.common.handler.BaseScreenHandler;
-import com.github.vini2003.blade.common.miscellaneous.Position;
-import com.github.vini2003.blade.common.miscellaneous.Size;
-import com.github.vini2003.blade.common.utilities.Slots;
-import com.github.vini2003.blade.common.widget.base.SlotWidget;
-import com.github.vini2003.blade.common.widget.base.TabWidget;
-import com.github.vini2003.blade.common.widget.base.TextWidget;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -50,14 +49,15 @@ import java.util.function.Supplier;
  * A {@link BlockStateScreenHandler} with an attached
  * {@link ComponentBlockEntity}.
  */
-public abstract class ComponentEntityScreenHandler extends BaseScreenHandler {
+public abstract class ComponentEntityScreenHandler extends BaseScreenHandler
+{
 	protected ComponentEntity entity;
 
 	protected Collection<SlotWidget> playerSlots = new HashSet<>();
 
 	protected TabWidget tabs;
 
-	protected TabWidgetCollection mainTab;
+	protected TabWidget.TabWidgetCollection mainTab;
 
 	/** Instantiates a {@link ComponentEntityScreenHandler},
 	 * synchronizing its attached {@link ComponentEntity}. */
@@ -90,12 +90,12 @@ public abstract class ComponentEntityScreenHandler extends BaseScreenHandler {
 	@Override
 	public void initialize(int width, int height) {
 		tabs = new TabWidget();
-		tabs.setSize(Size.of(176F, 188F + getTabWidgetExtendedHeight()));
-		tabs.setPosition(Position.of(width / 2 - tabs.getWidth() / 2, height / 2 - tabs.getHeight() / 2));
+		tabs.setSize( Size.of(176F, 188F + getTabWidgetExtendedHeight()));
+		tabs.setPosition( Position.of(width / 2 - tabs.getWidth() / 2, height / 2 - tabs.getHeight() / 2));
 
-		addWidget(tabs);
+		add(tabs);
 
-		mainTab = (TabWidgetCollection) tabs.addTab(getSymbol());
+		mainTab = (TabWidget.TabWidgetCollection) tabs.addTab(getSymbol());
 		mainTab.setPosition(Position.of(tabs, 0, 25F + 7F));
 		mainTab.setSize(Size.of(176F, 184F));
 
@@ -103,14 +103,14 @@ public abstract class ComponentEntityScreenHandler extends BaseScreenHandler {
 		title.setPosition(Position.of(mainTab, 8, 0));
 		title.setText(entity.getDisplayName());
 		title.setColor(4210752);
-		mainTab.addWidget(title);
+		mainTab.add(title);
 
 		Position invPos = Position.of(tabs, 7F, 25F + 7F + (184 - 18 - 18 - (18 * 4) - 3 + getTabWidgetExtendedHeight()));
 		TextWidget invTitle = new TextWidget();
 		invTitle.setPosition(Position.of(invPos, 0, -10));
 		invTitle.setText(getPlayer().getInventory().getName());
 		invTitle.setColor(4210752);
-		mainTab.addWidget(invTitle);
+		mainTab.add(invTitle);
 		playerSlots = Slots.addPlayerInventory(invPos, Size.of(18F, 18F), mainTab, getPlayer().getInventory());
 	}
 }

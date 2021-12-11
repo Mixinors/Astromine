@@ -25,6 +25,8 @@
 package com.github.mixinors.astromine.common.screenhandler;
 
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
+import dev.vini2003.hammer.common.geometry.position.Position;
+import dev.vini2003.hammer.common.geometry.size.Size;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
@@ -32,8 +34,6 @@ import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBl
 import com.github.mixinors.astromine.common.widget.blade.VerticalFluidBarWidget;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.block.entity.FluidMixerBlockEntity;
-import com.github.vini2003.blade.common.miscellaneous.Position;
-import com.github.vini2003.blade.common.miscellaneous.Size;
 
 public class FluidMixerScreenHandler extends ComponentBlockEntityEnergyFluidScreenHandler {
 	private FluidMixerBlockEntity mixer;
@@ -49,8 +49,8 @@ public class FluidMixerScreenHandler extends ComponentBlockEntityEnergyFluidScre
 		super.initialize(width, height);
 
 		VerticalFluidBarWidget secondInputFluidBar = new VerticalFluidBarWidget();
-		secondInputFluidBar.setPosition(Position.of(fluidBar, fluidBar.getWidth() + 7, 0));
-		secondInputFluidBar.setSize(Size.absolute(fluidBar));
+		secondInputFluidBar.setPosition( Position.of(fluidBar, fluidBar.getWidth() + 7, 0));
+		secondInputFluidBar.setSize( Size.of(fluidBar));
 		secondInputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getSecond());
 
 		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
@@ -61,11 +61,11 @@ public class FluidMixerScreenHandler extends ComponentBlockEntityEnergyFluidScre
 
 		VerticalFluidBarWidget outputFluidBar = new VerticalFluidBarWidget();
 		outputFluidBar.setPosition(Position.of(secondInputFluidBar, secondInputFluidBar.getWidth() + 9 + arrow.getWidth() + 7, 0));
-		outputFluidBar.setSize(Size.absolute(fluidBar));
+		outputFluidBar.setSize(Size.of(fluidBar));
 		outputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getThird());
 
-		mainTab.addWidget(secondInputFluidBar);
-		mainTab.addWidget(arrow);
-		mainTab.addWidget(outputFluidBar);
+		mainTab.add(secondInputFluidBar);
+		mainTab.add(arrow);
+		mainTab.add(outputFluidBar);
 	}
 }

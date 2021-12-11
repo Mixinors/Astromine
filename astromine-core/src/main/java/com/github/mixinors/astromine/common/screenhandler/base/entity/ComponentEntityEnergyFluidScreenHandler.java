@@ -24,14 +24,14 @@
 
 package com.github.mixinors.astromine.common.screenhandler.base.entity;
 
+import dev.vini2003.hammer.common.geometry.position.Position;
+import dev.vini2003.hammer.common.geometry.size.Size;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 
 import com.github.mixinors.astromine.common.entity.base.ComponentEnergyFluidEntity;
 import com.github.mixinors.astromine.common.widget.blade.VerticalEnergyBarWidget;
 import com.github.mixinors.astromine.common.widget.blade.VerticalFluidBarWidget;
-import com.github.vini2003.blade.common.miscellaneous.Position;
-import com.github.vini2003.blade.common.miscellaneous.Size;
 
 import java.util.function.Supplier;
 
@@ -59,8 +59,8 @@ public abstract class ComponentEntityEnergyFluidScreenHandler extends ComponentE
 		super.initialize(width, height);
 
 		energyBar = new VerticalEnergyBarWidget();
-		energyBar.setPosition(Position.of(mainTab, 7, 11));
-		energyBar.setSize(Size.of(24, 48));
+		energyBar.setPosition( Position.of(mainTab, 7, 11));
+		energyBar.setSize( Size.of(24, 48));
 		energyBar.setVolumeSupplier(() -> entity.getEnergyComponent().getVolume());
 
 		fluidBar = new VerticalFluidBarWidget();
@@ -68,7 +68,7 @@ public abstract class ComponentEntityEnergyFluidScreenHandler extends ComponentE
 		fluidBar.setSize(Size.of(energyBar.getWidth(), energyBar.getHeight()));
 		fluidBar.setVolumeSupplier(() -> entity.getFluidComponent().getFirst());
 
-		mainTab.addWidget(energyBar);
-		mainTab.addWidget(fluidBar);
+		mainTab.add(energyBar);
+		mainTab.add(fluidBar);
 	}
 }

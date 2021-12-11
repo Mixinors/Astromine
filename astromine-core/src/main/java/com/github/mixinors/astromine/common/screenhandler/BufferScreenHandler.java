@@ -25,14 +25,14 @@
 package com.github.mixinors.astromine.common.screenhandler;
 
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
+import dev.vini2003.hammer.common.geometry.position.Position;
+import dev.vini2003.hammer.common.geometry.size.Size;
+import dev.vini2003.hammer.common.widget.list.slot.SlotListWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.component.general.compatibility.InventoryFromItemComponent;
 import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityItemScreenHandler;
-import com.github.vini2003.blade.common.miscellaneous.Position;
-import com.github.vini2003.blade.common.miscellaneous.Size;
-import com.github.vini2003.blade.common.widget.base.SlotListWidget;
 
 public class BufferScreenHandler extends ComponentBlockEntityItemScreenHandler {
 	public BufferScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
@@ -50,10 +50,10 @@ public class BufferScreenHandler extends ComponentBlockEntityItemScreenHandler {
 		int topPadding = 10;
 
 		SlotListWidget slotList = new SlotListWidget(InventoryFromItemComponent.of(blockEntity.getItemComponent()), slotWidth, slotHeight, 0);
-		slotList.setPosition(Position.of(mainTab.getX() + leftPadding, mainTab.getY() + topPadding));
-		slotList.setSize(Size.of(slotWidth, slotHeight));
+		slotList.setPosition( Position.of(mainTab.getX() + leftPadding, mainTab.getY() + topPadding));
+		slotList.setSize( Size.of(slotWidth, slotHeight));
 
-		mainTab.addWidget(slotList);
+		mainTab.add(slotList);
 	}
 
 	@Override

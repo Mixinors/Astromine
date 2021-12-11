@@ -26,6 +26,9 @@ package com.github.mixinors.astromine.common.widget.blade;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.util.ClientUtils;
+import dev.vini2003.hammer.client.util.Layers;
+import dev.vini2003.hammer.common.util.Networks;
+import dev.vini2003.hammer.common.widget.Widget;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -44,9 +47,6 @@ import com.github.mixinors.astromine.common.util.FluidUtils;
 import com.github.mixinors.astromine.common.util.TextUtils;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
-import com.github.vini2003.blade.client.utilities.Layers;
-import com.github.vini2003.blade.common.utilities.Networks;
-import com.github.vini2003.blade.common.widget.base.AbstractWidget;
 
 import com.google.common.collect.Lists;
 import java.util.List;
@@ -60,7 +60,8 @@ import java.util.function.Supplier;
  * {@link EnergyVolume#getAmount()} and {@link EnergyVolume#getSize()}
  * are queried from.
  */
-public class VerticalFluidBarWidget extends AbstractWidget {
+public class VerticalFluidBarWidget extends Widget
+{
 	private final Identifier FLUID_BACKGROUND = AMCommon.id("textures/widget/fluid_volume_fractional_vertical_bar_background.png");
 
 	private Supplier<FluidVolume> volumeSupplier;
@@ -68,7 +69,7 @@ public class VerticalFluidBarWidget extends AbstractWidget {
 	/** Instantiates a {@link VerticalFluidBarWidget}, adding the
 	 * mouse click event to the synchronization list. */
 	public VerticalFluidBarWidget() {
-		getSynchronize().add(Networks.getMOUSE_CLICK());
+		getSynchronize().add( Networks.getMouseClicked());
 	}
 
 	/** Returns this widget's {@link #volumeSupplier}. */
@@ -111,7 +112,7 @@ public class VerticalFluidBarWidget extends AbstractWidget {
 	/** Renders this widget. */
 	@Environment(EnvType.CLIENT)
 	@Override
-	public void drawWidget(MatrixStack matrices, VertexConsumerProvider provider) {
+	public void drawWidget(MatrixStack matrices, VertexConsumerProvider provider, float delta) {
 		if (getHidden()) {
 			return;
 		}

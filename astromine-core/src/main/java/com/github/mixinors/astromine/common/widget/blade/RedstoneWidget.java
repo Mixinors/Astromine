@@ -24,6 +24,9 @@
 
 package com.github.mixinors.astromine.common.widget.blade;
 
+import dev.vini2003.hammer.client.texture.PartitionedTexture;
+import dev.vini2003.hammer.common.widget.Widget;
+import dev.vini2003.hammer.common.widget.button.ButtonWidget;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
@@ -34,20 +37,18 @@ import net.minecraft.util.Formatting;
 
 import com.github.mixinors.astromine.client.BaseRenderer;
 import com.github.mixinors.astromine.common.block.entity.base.ComponentBlockEntity;
-import com.github.vini2003.blade.Blade;
-import com.github.vini2003.blade.client.data.PartitionedTexture;
-import com.github.vini2003.blade.common.widget.base.AbstractWidget;
-import com.github.vini2003.blade.common.widget.base.ButtonWidget;
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
 
 /**
- * An {@link AbstractWidget} which represents
+ * An {@link Widget} which represents
  * a redstone mode toggle for a {@link ComponentBlockEntity}.
  */
-public class RedstoneWidget extends ButtonWidget {
+public class RedstoneWidget extends ButtonWidget
+{
     private ComponentBlockEntity blockEntity;
 
     private final ItemStack GLOWSTONE = new ItemStack(Items.GLOWSTONE_DUST);
@@ -56,7 +57,7 @@ public class RedstoneWidget extends ButtonWidget {
 
     private final ItemStack GUNPOWDER = new ItemStack(Items.GUNPOWDER);
 
-    public static final PartitionedTexture TEXTURE = new PartitionedTexture(Blade.identifier("textures/widget/panel.png"), 18F, 18F, 0.25F, 0.25F, 0.25F, 0.25F);
+    public static final PartitionedTexture TEXTURE = new PartitionedTexture(new Identifier("hammer", "textures/widget/panel.png"), 18F, 18F, 0.25F, 0.25F, 0.25F, 0.25F);
 
     public RedstoneWidget() {
         setClickAction(() -> {
@@ -100,7 +101,7 @@ public class RedstoneWidget extends ButtonWidget {
 
     /** Renders this widget. */
     @Override
-    public void drawWidget(@NotNull MatrixStack matrices, @NotNull VertexConsumerProvider provider) {
+    public void drawWidget(@NotNull MatrixStack matrices, @NotNull VertexConsumerProvider provider, float delta) {
         if (getHidden()) {
             return;
         }

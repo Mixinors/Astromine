@@ -25,6 +25,9 @@
 package com.github.mixinors.astromine.common.screenhandler;
 
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
+import dev.vini2003.hammer.common.geometry.position.Position;
+import dev.vini2003.hammer.common.geometry.size.Size;
+import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
@@ -32,9 +35,6 @@ import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBl
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
 import com.github.mixinors.astromine.common.block.entity.TrituratorBlockEntity;
-import com.github.vini2003.blade.common.miscellaneous.Position;
-import com.github.vini2003.blade.common.miscellaneous.Size;
-import com.github.vini2003.blade.common.widget.base.SlotWidget;
 
 public class TrituratorScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
 	private TrituratorBlockEntity triturator;
@@ -50,8 +50,8 @@ public class TrituratorScreenHandler extends ComponentBlockEntityEnergyItemScree
 		super.initialize(width, height);
 
 		SlotWidget output = new SlotWidget(0, blockEntity, ExtractionSlot::new);
-		output.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
-		output.setSize(Size.of(18, 18));
+		output.setPosition( Position.of(energyBar.getX(), energyBar.getY()));
+		output.setSize( Size.of(18, 18));
 
 		SlotWidget input = new SlotWidget(1, blockEntity);
 		input.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
@@ -68,8 +68,8 @@ public class TrituratorScreenHandler extends ComponentBlockEntityEnergyItemScree
 
 		input.setPosition(Position.of(arrow.getX() - 27, arrow.getY()));
 
-		mainTab.addWidget(input);
-		mainTab.addWidget(output);
-		mainTab.addWidget(arrow);
+		mainTab.add(input);
+		mainTab.add(output);
+		mainTab.add(arrow);
 	}
 }

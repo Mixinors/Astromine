@@ -29,9 +29,9 @@ import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBl
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import com.github.vini2003.blade.common.miscellaneous.Position;
-import com.github.vini2003.blade.common.miscellaneous.Size;
-import com.github.vini2003.blade.common.widget.base.SlotWidget;
+import dev.vini2003.hammer.common.geometry.position.Position;
+import dev.vini2003.hammer.common.geometry.size.Size;
+import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
@@ -50,10 +50,10 @@ public class PressScreenHandler extends ComponentBlockEntityEnergyItemScreenHand
 		
 		SlotWidget output = new SlotWidget(0, blockEntity, ExtractionSlot::new);
 		output.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
-		output.setSize(Size.of(18, 18));
+		output.setSize( Size.of(18, 18));
 		
 		SlotWidget input = new SlotWidget(1, blockEntity);
-		input.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
+		input.setPosition( Position.of(energyBar.getX(), energyBar.getY()));
 		input.setSize(Size.of(18, 18));
 		
 		output.setPosition(Position.of(width / 2F - output.getWidth() / 2F, output.getY()));
@@ -67,8 +67,8 @@ public class PressScreenHandler extends ComponentBlockEntityEnergyItemScreenHand
 		
 		input.setPosition(Position.of(arrow.getX() - 27, arrow.getY()));
 		
-		mainTab.addWidget(input);
-		mainTab.addWidget(output);
-		mainTab.addWidget(arrow);
+		mainTab.add(input);
+		mainTab.add(output);
+		mainTab.add(arrow);
 	}
 }

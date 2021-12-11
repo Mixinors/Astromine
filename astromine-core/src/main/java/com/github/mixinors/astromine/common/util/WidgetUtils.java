@@ -25,22 +25,22 @@
 package com.github.mixinors.astromine.common.util;
 
 import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
+import dev.vini2003.hammer.common.geometry.position.Position;
+import dev.vini2003.hammer.common.geometry.size.Size;
+import dev.vini2003.hammer.common.widget.tab.TabWidget;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.widget.blade.TransferTypeSelectorButtonWidget;
-import com.github.vini2003.blade.common.collection.TabWidgetCollection;
-import com.github.vini2003.blade.common.miscellaneous.Position;
-import com.github.vini2003.blade.common.miscellaneous.Size;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 
 import com.google.common.collect.ImmutableMap;
 
 public class WidgetUtils {
-	/** Populates a {@link TabWidgetCollection} widgets corresponding to
+	/** Populates a {@link TabWidget.TabWidgetCollection} widgets corresponding to
 	 * the specified {@link TransferComponent} and {@link ComponentKey}.
 	 */
-	public static void createTransferTab(TabWidgetCollection tab, Position anchor, Direction rotation, TransferComponent component, BlockPos blockPos, ComponentKey<?> type) {
+	public static void createTransferTab( TabWidget.TabWidgetCollection tab, Position anchor, Direction rotation, TransferComponent component, BlockPos blockPos, ComponentKey<?> type) {
 		final Position finalNorth = Position.of(anchor, 7 + 22, 31 + 22);
 		final Position finalSouth = Position.of(anchor, 7 + 0, 31 + 44);
 		final Position finalUp = Position.of(anchor, 7 + 22, 31 + 0);
@@ -54,14 +54,14 @@ public class WidgetUtils {
 		for (Direction direction : Direction.values()) {
 			TransferTypeSelectorButtonWidget button = new TransferTypeSelectorButtonWidget();
 			button.setPosition(positions.get(MirrorUtils.rotate(direction, rotation)));
-			button.setSize(Size.of(18, 18));
+			button.setSize( Size.of(18, 18));
 			button.setComponent(component);
 			button.setType(type);
 			button.setRotation(rotation);
 			button.setDirection(direction);
 			button.setBlockPos(blockPos);
 
-			tab.addWidget(button);
+			tab.add(button);
 		}
 	}
 }

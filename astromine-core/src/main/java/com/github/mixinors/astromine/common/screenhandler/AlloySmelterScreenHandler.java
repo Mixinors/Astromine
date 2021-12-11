@@ -25,6 +25,9 @@
 package com.github.mixinors.astromine.common.screenhandler;
 
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
+import dev.vini2003.hammer.common.geometry.position.Position;
+import dev.vini2003.hammer.common.geometry.size.Size;
+import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
@@ -32,9 +35,6 @@ import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBl
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
 import com.github.mixinors.astromine.common.block.entity.AlloySmelterBlockEntity;
-import com.github.vini2003.blade.common.miscellaneous.Position;
-import com.github.vini2003.blade.common.miscellaneous.Size;
-import com.github.vini2003.blade.common.widget.base.SlotWidget;
 
 public class AlloySmelterScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
 	private AlloySmelterBlockEntity smelter;
@@ -50,8 +50,8 @@ public class AlloySmelterScreenHandler extends ComponentBlockEntityEnergyItemScr
 		super.initialize(width, height);
 
 		SlotWidget firstInput = new SlotWidget(0, smelter);
-		firstInput.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
-		firstInput.setSize(Size.of(18, 18));
+		firstInput.setPosition( Position.of(energyBar.getX(), energyBar.getY()));
+		firstInput.setSize( Size.of(18, 18));
 
 		SlotWidget secondInput = new SlotWidget(1, smelter);
 		secondInput.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
@@ -76,9 +76,9 @@ public class AlloySmelterScreenHandler extends ComponentBlockEntityEnergyItemScr
 		arrow.setLimitSupplier(() -> smelter.limit);
 		arrow.setProgressSupplier(() -> (int) smelter.progress);
 
-		mainTab.addWidget(firstInput);
-		mainTab.addWidget(secondInput);
-		mainTab.addWidget(output);
-		mainTab.addWidget(arrow);
+		mainTab.add(firstInput);
+		mainTab.add(secondInput);
+		mainTab.add(output);
+		mainTab.add(arrow);
 	}
 }

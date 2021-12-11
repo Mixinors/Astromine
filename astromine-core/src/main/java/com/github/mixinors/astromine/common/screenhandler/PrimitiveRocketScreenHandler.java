@@ -26,6 +26,10 @@ package com.github.mixinors.astromine.common.screenhandler;
 
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
+import dev.vini2003.hammer.common.geometry.position.Position;
+import dev.vini2003.hammer.common.geometry.size.Size;
+import dev.vini2003.hammer.common.widget.button.ButtonWidget;
+import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.TranslatableText;
@@ -34,10 +38,6 @@ import net.minecraft.util.Formatting;
 import com.github.mixinors.astromine.common.screenhandler.base.entity.ComponentEntityFluidItemScreenHandler;
 import com.github.mixinors.astromine.common.widget.blade.VerticalFluidBarWidget;
 import com.github.mixinors.astromine.common.entity.base.RocketEntity;
-import com.github.vini2003.blade.common.miscellaneous.Position;
-import com.github.vini2003.blade.common.miscellaneous.Size;
-import com.github.vini2003.blade.common.widget.base.ButtonWidget;
-import com.github.vini2003.blade.common.widget.base.SlotWidget;
 
 public class PrimitiveRocketScreenHandler extends ComponentEntityFluidItemScreenHandler {
 	public PrimitiveRocketScreenHandler(int syncId, PlayerEntity player, int entityId) {
@@ -60,7 +60,7 @@ public class PrimitiveRocketScreenHandler extends ComponentEntityFluidItemScreen
 		});
 
 		launchButtonWidget.setPosition(Position.of(mainTab, 3 + 4, 11));
-		launchButtonWidget.setSize(Size.of(48, 18));
+		launchButtonWidget.setSize( Size.of(48, 18));
 		launchButtonWidget.setLabel(new TranslatableText("text.astromine.rocket.launch"));
 		launchButtonWidget.setDisabled(() -> entity.getDataTracker().get(RocketEntity.IS_RUNNING) || (entity.getFluidComponent().getFirst().smallerOrEqualThan(0L) && entity.getFluidComponent().getSecond().smallerOrEqualThan(0L)));
 
@@ -74,7 +74,7 @@ public class PrimitiveRocketScreenHandler extends ComponentEntityFluidItemScreen
 		abortButtonWidget.setSize(Size.of(48, 18));
 		abortButtonWidget.setLabel(new TranslatableText("text.astromine.rocket.destroy").formatted(Formatting.RED));
 
-		fluidBar.setPosition(Position.of(width / 2F - fluidBar.getWidth() / 2F + 2, fluidBar.getY()));
+		fluidBar.setPosition( Position.of(width / 2F - fluidBar.getWidth() / 2F + 2, fluidBar.getY()));
 
 		SlotWidget firstInput = new SlotWidget(0, entity);
 		firstInput.setPosition(Position.of(fluidBar, -18 - 3, 0));
@@ -97,15 +97,15 @@ public class PrimitiveRocketScreenHandler extends ComponentEntityFluidItemScreen
 		secondOutput.setPosition(Position.of(secondFluidBar, -18 - 3, secondFluidBar.getHeight() - 18));
 		secondOutput.setSize(Size.of(18, 18));
 
-		mainTab.addWidget(launchButtonWidget);
-		mainTab.addWidget(abortButtonWidget);
+		mainTab.add(launchButtonWidget);
+		mainTab.add(abortButtonWidget);
 
-		mainTab.addWidget(secondFluidBar);
+		mainTab.add(secondFluidBar);
 
-		mainTab.addWidget(firstInput);
-		mainTab.addWidget(firstOutput);
+		mainTab.add(firstInput);
+		mainTab.add(firstOutput);
 
-		mainTab.addWidget(secondInput);
-		mainTab.addWidget(secondOutput);
+		mainTab.add(secondInput);
+		mainTab.add(secondOutput);
 	}
 }

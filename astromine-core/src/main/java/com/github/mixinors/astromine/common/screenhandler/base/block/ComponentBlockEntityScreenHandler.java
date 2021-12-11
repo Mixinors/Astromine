@@ -31,6 +31,12 @@ import com.github.mixinors.astromine.common.component.general.provider.ItemCompo
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import dev.architectury.hooks.block.BlockEntityHooks;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
+import dev.vini2003.hammer.common.geometry.position.Position;
+import dev.vini2003.hammer.common.geometry.size.Size;
+import dev.vini2003.hammer.common.util.Slots;
+import dev.vini2003.hammer.common.widget.slot.SlotWidget;
+import dev.vini2003.hammer.common.widget.tab.TabWidget;
+import dev.vini2003.hammer.common.widget.text.TextWidget;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
@@ -44,13 +50,6 @@ import com.github.mixinors.astromine.common.block.entity.base.ComponentBlockEnti
 import com.github.mixinors.astromine.common.component.general.miscellaneous.IdentifiableComponent;
 import com.github.mixinors.astromine.common.util.WidgetUtils;
 import com.github.mixinors.astromine.common.widget.blade.RedstoneWidget;
-import com.github.vini2003.blade.common.collection.TabWidgetCollection;
-import com.github.vini2003.blade.common.miscellaneous.Position;
-import com.github.vini2003.blade.common.miscellaneous.Size;
-import com.github.vini2003.blade.common.utilities.Slots;
-import com.github.vini2003.blade.common.widget.base.SlotWidget;
-import com.github.vini2003.blade.common.widget.base.TabWidget;
-import com.github.vini2003.blade.common.widget.base.TextWidget;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -69,7 +68,7 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 
 	protected TabWidget tabs;
 
-	protected TabWidgetCollection mainTab;
+	protected TabWidget.TabWidgetCollection mainTab;
 
 	/** Instantiates a {@link ComponentBlockEntityScreenHandler},
 	 * synchronizing its attached {@link ComponentBlockEntity}. */
@@ -92,13 +91,13 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 
 	/** Returns the {@link Position} at which the {@link TabWidget}
 	 * should be located. */
-	public Position getTabsPosition(int width, int height) {
+	public Position getTabsPosition( int width, int height) {
 		return Position.of(width / 2 - tabs.getWidth() / 2, height / 2 - tabs.getHeight() / 2);
 	}
 
 	/** Returns the {@link Size} which the {@link TabWidget}
 	 * should use. */
-	public Size getTabsSize(int width, int height) {
+	public Size getTabsSize( int width, int height) {
 		return Size.of(176F, 188F + getTabWidgetExtendedHeight());
 	}
 
@@ -117,9 +116,9 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 		tabs.setSize(getTabsSize(width, height));
 		tabs.setPosition(getTabsPosition(width, height));
 
-		addWidget(tabs);
+		add(tabs);
 
-		mainTab = (TabWidgetCollection) tabs.addTab(blockEntity.getCachedState().getBlock().asItem(), () -> Collections.singletonList(new TranslatableText(blockEntity.getCachedState().getBlock().getTranslationKey())));
+		mainTab = (TabWidget.TabWidgetCollection) tabs.addTab(blockEntity.getCachedState().getBlock().asItem(), () -> Collections.singletonList(new TranslatableText(blockEntity.getCachedState().getBlock().getTranslationKey())));
 		mainTab.setPosition(Position.of(tabs, 0, 25F + 7F));
 		mainTab.setSize(Size.of(176F, 184F));
 
@@ -127,14 +126,14 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 		title.setPosition(Position.of(mainTab, 8, 0));
 		title.setText(new TranslatableText(blockEntity.getCachedState().getBlock().asItem().getTranslationKey()));
 		title.setColor(4210752);
-		mainTab.addWidget(title);
+		mainTab.add(title);
 
 		Position invPos = Position.of(tabs, 7F + (tabs.getWidth() / 2 - ((9 * 18F) / 2) - 7F), 25F + 7F + (184 - 18 - 18 - (18 * 4) - 3 + getTabWidgetExtendedHeight()));
 		TextWidget invTitle = new TextWidget();
 		invTitle.setPosition(Position.of(invPos, 0, -10));
 		invTitle.setText(getPlayer().getInventory().getName());
 		invTitle.setColor(4210752);
-		mainTab.addWidget(invTitle);
+		mainTab.add(invTitle);
 		playerSlots = Slots.addPlayerInventory(invPos, Size.of(18F, 18F), mainTab, getPlayer().getInventory());
 
 		Direction rotation = Direction.NORTH;
@@ -153,25 +152,25 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 		redstoneWidget.setSize(Size.of(20, 19));
 		redstoneWidget.setBlockEntity(blockEntity);
 
-		addWidget(redstoneWidget);
+		add(redstoneWidget);
 
 		TransferComponent transferComponent = TransferComponent.get(blockEntity);
 
 		BiConsumer<IdentifiableComponent, ComponentKey<? extends IdentifiableComponent>> tabAdder = (identifiableComponent, key) -> {
-			TabWidgetCollection current = (TabWidgetCollection) tabs.addTab(identifiableComponent.getSymbol(), () -> Collections.singletonList(identifiableComponent.getName()));
+			TabWidget.TabWidgetCollection current = (TabWidget.TabWidgetCollection) tabs.addTab(identifiableComponent.getSymbol(), () -> Collections.singletonList(identifiableComponent.getName()));
 			WidgetUtils.createTransferTab(current, Position.of(tabs, tabs.getWidth() / 2 - 38, getTabWidgetExtendedHeight() / 2), finalRotation, transferComponent, blockEntity.getPos(), key);
 			TextWidget invTabTitle = new TextWidget();
 			invTabTitle.setPosition(Position.of(invPos, 0, -10));
 			invTabTitle.setText(getPlayer().getInventory().getName());
 			invTabTitle.setColor(4210752);
-			current.addWidget(invTabTitle);
+			current.add(invTabTitle);
 			playerSlots.addAll(Slots.addPlayerInventory(invPos, Size.of(18F, 18F), current, getPlayer().getInventory()));
 
 			TextWidget tabTitle = new TextWidget();
 			tabTitle.setPosition(Position.of(mainTab, 8, 0));
 			tabTitle.setText(identifiableComponent.getName());
 			tabTitle.setColor(4210752);
-			current.addWidget(tabTitle);
+			current.add(tabTitle);
 		};
 
 		if (blockEntity instanceof ItemComponentProvider) {

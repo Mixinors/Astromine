@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.fluid;
 
+import dev.vini2003.hammer.common.color.Color;
 import me.shedaniel.architectury.platform.Platform;
 import me.shedaniel.architectury.registry.RegistrySupplier;
 import net.fabricmc.api.EnvType;
@@ -56,7 +57,6 @@ import com.github.mixinors.astromine.common.util.ClientUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMFluids;
 import com.github.mixinors.astromine.registry.common.AMItems;
-import com.github.vini2003.blade.common.miscellaneous.Color;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -195,8 +195,8 @@ public abstract class ExtendedFluid extends FlowableFluid {
 
 	/** A builder for {@link ExtendedFluid}s. */
 	public static class Builder {
-		int fog = Color.standard().toInt();
-		int tint = Color.standard().toInt();
+		int fog = Color.getStandard().toInt();
+		int tint = Color.getStandard().toInt();
 		int damage = 0;
 
 		boolean isInfinite = false;

@@ -25,6 +25,9 @@
 package com.github.mixinors.astromine.common.screenhandler;
 
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
+import dev.vini2003.hammer.common.geometry.position.Position;
+import dev.vini2003.hammer.common.geometry.size.Size;
+import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
@@ -36,9 +39,6 @@ import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBl
 import com.github.mixinors.astromine.common.widget.blade.FluidFilterWidget;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.block.entity.TankBlockEntity;
-import com.github.vini2003.blade.common.miscellaneous.Position;
-import com.github.vini2003.blade.common.miscellaneous.Size;
-import com.github.vini2003.blade.common.widget.base.SlotWidget;
 
 import java.util.function.Supplier;
 
@@ -59,11 +59,11 @@ public class TankScreenHandler extends ComponentBlockEntityFluidItemScreenHandle
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		fluidBar.setPosition(Position.of(width / 2F - fluidBar.getWidth() / 2F, fluidBar.getY()));
+		fluidBar.setPosition( Position.of(width / 2F - fluidBar.getWidth() / 2F, fluidBar.getY()));
 
 		SlotWidget input = new SlotWidget(0, blockEntity);
 		input.setPosition(Position.of(fluidBar, -18 - 3, 0));
-		input.setSize(Size.of(18, 18));
+		input.setSize( Size.of(18, 18));
 
 		SlotWidget output = new SlotWidget(1, blockEntity);
 		output.setPosition(Position.of(fluidBar, -18 - 3, fluidBar.getHeight() - 18));
@@ -121,9 +121,9 @@ public class TankScreenHandler extends ComponentBlockEntityFluidItemScreenHandle
 		});
 		filter.setFluidSupplier(() -> tank.getFilter());
 
-		mainTab.addWidget(input);
-		mainTab.addWidget(output);
+		mainTab.add(input);
+		mainTab.add(output);
 
-		mainTab.addWidget(filter);
+		mainTab.add(filter);
 	}
 }

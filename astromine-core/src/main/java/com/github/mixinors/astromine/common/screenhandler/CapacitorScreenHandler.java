@@ -25,6 +25,9 @@
 package com.github.mixinors.astromine.common.screenhandler;
 
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
+import dev.vini2003.hammer.common.geometry.position.Position;
+import dev.vini2003.hammer.common.geometry.size.Size;
+import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
@@ -32,9 +35,6 @@ import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyItemScreenHandler;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
-import com.github.vini2003.blade.common.miscellaneous.Position;
-import com.github.vini2003.blade.common.miscellaneous.Size;
-import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
@@ -53,11 +53,11 @@ public class CapacitorScreenHandler extends ComponentBlockEntityEnergyItemScreen
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		energyBar.setPosition(Position.of(width / 2F - energyBar.getWidth() / 2F, energyBar.getY()));
+		energyBar.setPosition( Position.of(width / 2F - energyBar.getWidth() / 2F, energyBar.getY()));
 
 		SlotWidget input = new SlotWidget(0, blockEntity);
 		input.setPosition(Position.of(mainTab, 12, 26));
-		input.setSize(Size.of(18, 18));
+		input.setSize( Size.of(18, 18));
 
 		SlotWidget output = new SlotWidget(1, blockEntity);
 		output.setPosition(Position.of(mainTab, 146, 26));
@@ -87,9 +87,9 @@ public class CapacitorScreenHandler extends ComponentBlockEntityEnergyItemScreen
 			return handler.getEnergy() < handler.getMaxStored() && blockEntity.getEnergyComponent().getAmount() > 0 && handler.getMaxInput() > 0 ? 1 : 0;
 		});
 
-		mainTab.addWidget(input);
-		mainTab.addWidget(output);
-		mainTab.addWidget(leftArrow);
-		mainTab.addWidget(rightArrow);
+		mainTab.add(input);
+		mainTab.add(output);
+		mainTab.add(leftArrow);
+		mainTab.add(rightArrow);
 	}
 }

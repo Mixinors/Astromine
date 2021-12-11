@@ -24,12 +24,12 @@
 
 package com.github.mixinors.astromine.client.screen.base.entity;
 
+import dev.vini2003.hammer.common.screen.handler.BaseScreenHandler;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
 import com.github.mixinors.astromine.client.screen.base.CustomForegroundBaseHandledScreen;
 import com.github.mixinors.astromine.common.screenhandler.base.entity.ComponentEntityScreenHandler;
-import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 
 /**
  * A {@link CustomForegroundBaseHandledScreen} used by
@@ -37,7 +37,7 @@ import com.github.vini2003.blade.common.handler.BaseScreenHandler;
  */
 public class ComponentEntityHandledScreen<T extends ComponentEntityScreenHandler> extends CustomForegroundBaseHandledScreen<T> {
 	/** Instantiates a {@link ComponentEntityHandledScreen}. */
-	public ComponentEntityHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
+	public ComponentEntityHandledScreen( BaseScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 	}
 }

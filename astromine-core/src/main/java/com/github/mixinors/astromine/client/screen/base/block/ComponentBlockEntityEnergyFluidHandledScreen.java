@@ -24,11 +24,11 @@
 
 package com.github.mixinors.astromine.client.screen.base.block;
 
+import dev.vini2003.hammer.common.screen.handler.BaseScreenHandler;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
 import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityScreenHandler;
-import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 
 /**
  * A {@link ComponentBlockEntityHandledScreen} used by
@@ -36,7 +36,7 @@ import com.github.vini2003.blade.common.handler.BaseScreenHandler;
  */
 public class ComponentBlockEntityEnergyFluidHandledScreen<T extends ComponentBlockEntityScreenHandler> extends ComponentBlockEntityHandledScreen<T> {
 	/** Instantiates a {@link ComponentBlockEntityEnergyFluidHandledScreen}. */
-	public ComponentBlockEntityEnergyFluidHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
+	public ComponentBlockEntityEnergyFluidHandledScreen( BaseScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 	}
 }

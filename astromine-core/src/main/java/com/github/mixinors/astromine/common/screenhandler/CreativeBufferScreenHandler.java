@@ -25,14 +25,14 @@
 package com.github.mixinors.astromine.common.screenhandler;
 
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
+import dev.vini2003.hammer.common.geometry.position.Position;
+import dev.vini2003.hammer.common.geometry.size.Size;
+import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.component.general.compatibility.InventoryFromItemComponent;
 import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityItemScreenHandler;
-import com.github.vini2003.blade.common.miscellaneous.Position;
-import com.github.vini2003.blade.common.miscellaneous.Size;
-import com.github.vini2003.blade.common.widget.base.SlotWidget;
 
 public class CreativeBufferScreenHandler extends ComponentBlockEntityItemScreenHandler {
 	public CreativeBufferScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
@@ -44,9 +44,9 @@ public class CreativeBufferScreenHandler extends ComponentBlockEntityItemScreenH
 		super.initialize(width, height);
 
 		SlotWidget slot = new SlotWidget(0, InventoryFromItemComponent.of(blockEntity.getItemComponent()));
-		slot.setPosition(Position.of(mainTab, 70, 20));
-		slot.setSize(Size.of(36, 36));
+		slot.setPosition( Position.of(mainTab, 70, 20));
+		slot.setSize( Size.of(36, 36));
 
-		mainTab.addWidget(slot);
+		mainTab.add(slot);
 	}
 }

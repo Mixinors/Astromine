@@ -11,9 +11,9 @@ project.ext.setDefaultApis = {
     useAsApi("com.terraformersmc.terraform-api:terraform-shapes-api-v1:${shapes_version}")
 
     // Blade
-    useAsCompileOnly("com.github.vini2003:blade:${blade_version}")
-    useAsRuntime("com.github.vini2003:blade-fabric:${blade_version}")
-    include("com.github.vini2003:blade-fabric:${blade_version}")
+    useAsCompileOnly("dev.vini2003:hammer:${hammer_version}")
+    useAsRuntime("dev.vini2003:hammer:${hammer_version}")
+    include("dev.vini2003:hammer:${hammer_version}")
 
     // Patchouli
     useAsApi("vazkii.patchouli:Patchouli:${patchouli_version}")

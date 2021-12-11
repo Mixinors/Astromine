@@ -24,6 +24,14 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
+import dev.vini2003.hammer.common.geometry.position.Position;
+import dev.vini2003.hammer.common.geometry.size.Size;
+import dev.vini2003.hammer.common.screen.handler.BaseScreenHandler;
+import dev.vini2003.hammer.common.util.Slots;
+import dev.vini2003.hammer.common.widget.WidgetCollection;
+import dev.vini2003.hammer.common.widget.button.ButtonWidget;
+import dev.vini2003.hammer.common.widget.panel.PanelWidget;
+import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -34,13 +42,6 @@ import net.minecraft.util.registry.Registry;
 
 import com.github.mixinors.astromine.common.inventory.BaseInventory;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import com.github.vini2003.blade.common.handler.BaseScreenHandler;
-import com.github.vini2003.blade.common.miscellaneous.Position;
-import com.github.vini2003.blade.common.miscellaneous.Size;
-import com.github.vini2003.blade.common.utilities.Slots;
-import com.github.vini2003.blade.common.widget.base.ButtonWidget;
-import com.github.vini2003.blade.common.widget.base.PanelWidget;
-import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
@@ -61,7 +62,8 @@ import java.util.Map;
  * configured as an interface for {@link CraftingRecipe}
  * creation as {@link JsonElement}.
  */
-public class RecipeCreatorScreenHandler extends BaseScreenHandler {
+public class RecipeCreatorScreenHandler extends BaseScreenHandler
+{
 	public static final Inventory[] craftingInventories = new Inventory[] { BaseInventory.of(10), BaseInventory.of(10) };
 
 	public Inventory getInventory() {
@@ -100,12 +102,12 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
             }
         };
         PanelWidget panel = new PanelWidget();
-		panel.setPosition(Position.of(width / 2 - 88.5, height / 2 - 92));
-		panel.setSize(Size.of(93 + 84, 100 + 84));
+		panel.setPosition( Position.of(width / 2 - 88.5, height / 2 - 92));
+		panel.setSize( Size.of(93 + 84, 100 + 84));
 
-		addWidget(panel);
+		add(panel);
 
-		Slots.addPlayerInventory(Position.of(panel.getX() + 7, panel.getY() + 7 + 9 + 18 + 18 + 18 + 7 + 18 + 7), Size.of(18, 18), this, getPlayer().getInventory());
+		Slots.addPlayerInventory(Position.of(panel.getX() + 7, panel.getY() + 7 + 9 + 18 + 18 + 18 + 7 + 18 + 7), Size.of(18, 18), (WidgetCollection) this, getPlayer().getInventory());
 
 		List<SlotWidget> inputSlots = Lists.newArrayList(Slots.addArray(Position.of(panel.getX() + 7, panel.getY() + 7 + 9), Size.of(18, 18), panel, 0, 3, 3, getInventory()));
 
@@ -113,7 +115,7 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 		outputSlot.setPosition(Position.of(panel.getX() + 7 + 18 * 3 + 7, panel.getY() + 7 + 18 + 9));
 		outputSlot.setSize(Size.of(18, 18));
 
-		panel.addWidget(outputSlot);
+		panel.add(outputSlot);
 
 		ButtonWidget saveButton = new ButtonWidget();
 		saveButton.setPosition(Position.of(panel.getX() + 7, panel.getY() + 7 + 14 + 18 * 3));
@@ -200,7 +202,7 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 			return null;
 		});
 
-		panel.addWidget(saveButton);
+		panel.add(saveButton);
 	}
 
 	@Override

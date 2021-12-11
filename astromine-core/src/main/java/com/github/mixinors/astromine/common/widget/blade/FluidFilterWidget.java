@@ -26,6 +26,8 @@ package com.github.mixinors.astromine.common.widget.blade;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.util.ClientUtils;
+import dev.vini2003.hammer.client.util.Layers;
+import dev.vini2003.hammer.common.widget.button.ButtonWidget;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -47,8 +49,6 @@ import com.github.mixinors.astromine.client.render.sprite.SpriteRenderer;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.util.FluidUtils;
 import com.github.mixinors.astromine.common.util.TextUtils;
-import com.github.vini2003.blade.client.utilities.Layers;
-import com.github.vini2003.blade.common.widget.base.ButtonWidget;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -66,7 +66,8 @@ import java.util.function.Supplier;
  * When clicked, the fluid is changed, triggering the
  * {@link #fluidConsumer} to update the related object.
  */
-public class FluidFilterWidget extends ButtonWidget {
+public class FluidFilterWidget extends ButtonWidget
+{
 	private static final Identifier FLUID_BACKGROUND = AMCommon.id("textures/widget/fluid_filter_background.png");
 
 	private Supplier<Fluid> fluidSupplier = () -> Fluids.EMPTY;
@@ -99,7 +100,7 @@ public class FluidFilterWidget extends ButtonWidget {
 	public void onMouseClicked(float x, float y, int button) {
 		super.onMouseClicked(x, y, button);
 
-		ItemStack stack = getHandler().getCursorStack();
+		ItemStack stack = getHandled().getHandler().getCursorStack();
 
 		if (isWithin(x, y)) {
 			if (!stack.isEmpty()) {
@@ -126,7 +127,7 @@ public class FluidFilterWidget extends ButtonWidget {
 	/** Renders this widget. */
 	@Environment(EnvType.CLIENT)
 	@Override
-	public void drawWidget(@NotNull MatrixStack matrices, @NotNull VertexConsumerProvider provider) {
+	public void drawWidget(@NotNull MatrixStack matrices, @NotNull VertexConsumerProvider provider, float delta) {
 		if (getHidden()) {
 			return;
 		}

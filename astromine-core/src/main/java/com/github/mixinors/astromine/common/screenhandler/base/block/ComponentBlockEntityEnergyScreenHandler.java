@@ -24,14 +24,14 @@
 
 package com.github.mixinors.astromine.common.screenhandler.base.block;
 
+import dev.vini2003.hammer.common.geometry.position.Position;
+import dev.vini2003.hammer.common.geometry.size.Size;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyBlockEntity;
 import com.github.mixinors.astromine.common.widget.blade.VerticalEnergyBarWidget;
-import com.github.vini2003.blade.common.miscellaneous.Position;
-import com.github.vini2003.blade.common.miscellaneous.Size;
 
 import java.util.function.Supplier;
 
@@ -58,10 +58,10 @@ public class ComponentBlockEntityEnergyScreenHandler extends ComponentBlockEntit
 		super.initialize(width, height);
 
 		energyBar = new VerticalEnergyBarWidget();
-		energyBar.setPosition(Position.of(mainTab, 7F, 11));
-		energyBar.setSize(Size.of(24F, 48F));
+		energyBar.setPosition( Position.of(mainTab, 7F, 11));
+		energyBar.setSize( Size.of(24F, 48F));
 		energyBar.setVolumeSupplier(() -> blockEntity.getEnergyComponent().getVolume());
 
-		mainTab.addWidget(energyBar);
+		mainTab.add(energyBar);
 	}
 }

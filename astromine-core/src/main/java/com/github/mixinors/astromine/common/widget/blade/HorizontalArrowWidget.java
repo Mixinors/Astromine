@@ -26,6 +26,9 @@ package com.github.mixinors.astromine.common.widget.blade;
 
 import com.github.mixinors.astromine.common.util.ClientUtils;
 import com.github.mixinors.astromine.common.util.TextUtils;
+import dev.vini2003.hammer.client.scissor.Scissors;
+import dev.vini2003.hammer.client.util.Layers;
+import dev.vini2003.hammer.common.widget.Widget;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -37,9 +40,6 @@ import net.minecraft.util.Identifier;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.BaseRenderer;
-import com.github.vini2003.blade.client.utilities.Layers;
-import com.github.vini2003.blade.client.utilities.Scissors;
-import com.github.vini2003.blade.common.widget.base.AbstractWidget;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -51,7 +51,8 @@ import java.util.function.IntSupplier;
  * the progress level of the {@link #progressSupplier} relative
  * to the {@link #limitSupplier}.
  */
-public class HorizontalArrowWidget extends AbstractWidget {
+public class HorizontalArrowWidget extends Widget
+{
 	private static final Identifier BACKGROUND = AMCommon.id("textures/widget/horizontal_arrow_background.png");
 	private static final Identifier FOREGROUND = AMCommon.id("textures/widget/horizontal_arrow_foreground.png");
 
@@ -88,7 +89,7 @@ public class HorizontalArrowWidget extends AbstractWidget {
 	/** Renders this widget. */
 	@Environment(EnvType.CLIENT)
 	@Override
-	public void drawWidget(MatrixStack matrices, VertexConsumerProvider provider) {
+	public void drawWidget(MatrixStack matrices, VertexConsumerProvider provider, float delta) {
 		if (getHidden()) {
 			return;
 		}

@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.widget.blade;
 
 import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
 import com.github.mixinors.astromine.registry.common.AMNetworks;
+import dev.vini2003.hammer.common.widget.Widget;
 import me.shedaniel.architectury.networking.NetworkManager;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -43,7 +44,6 @@ import com.github.mixinors.astromine.client.BaseRenderer;
 import com.github.mixinors.astromine.common.block.entity.base.ComponentBlockEntity;
 import com.github.mixinors.astromine.common.block.transfer.TransferType;
 import com.github.mixinors.astromine.common.util.MirrorUtils;
-import com.github.vini2003.blade.common.widget.base.AbstractWidget;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import io.netty.buffer.Unpooled;
 import org.jetbrains.annotations.NotNull;
@@ -56,7 +56,8 @@ import java.util.Locale;
  * A button for the selection of
  * {@link TransferType}s connected to a machine.
  */
-public class TransferTypeSelectorButtonWidget extends AbstractWidget {
+public class TransferTypeSelectorButtonWidget extends Widget
+{
 	private TransferComponent component;
 
 	private ComponentKey<?> type;
@@ -136,7 +137,7 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 	@Override
 	public void onMouseClicked(float mouseX, float mouseY, int mouseButton) {
 		super.onMouseClicked(mouseX, mouseY, mouseButton);
-		if (getFocused() && getHandler().getClient()) {
+		if (getFocused() && getHandled().getClient()) {
 			wasClicked = true;
 		}
 	}
@@ -147,7 +148,7 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 	@Override
 	public void onMouseReleased(float mouseX, float mouseY, int mouseButton) {
 		if (getFocused() && !getHidden() && wasClicked) {
-			if (getHandler().getClient()) {
+			if (getHandled().getClient()) {
 				PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
 
 				buf.writeBlockPos(getBlockPos());
@@ -177,7 +178,7 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 	/** Renders this widget. */
 	@Environment(EnvType.CLIENT)
 	@Override
-	public void drawWidget(@NotNull MatrixStack matrices, @NotNull VertexConsumerProvider provider) {
+	public void drawWidget(@NotNull MatrixStack matrices, @NotNull VertexConsumerProvider provider, float delta) {
 		if (getHidden())
 			return;
 

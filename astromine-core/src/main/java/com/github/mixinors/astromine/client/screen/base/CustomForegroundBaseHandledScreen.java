@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.client.screen.base;
 
-import com.github.vini2003.blade.client.handler.BaseHandledScreen;
-import com.github.vini2003.blade.common.handler.BaseScreenHandler;
+import dev.vini2003.hammer.client.screen.BaseHandledScreen;
+import dev.vini2003.hammer.common.screen.handler.BaseScreenHandler;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
@@ -36,7 +36,8 @@ import org.jetbrains.annotations.Nullable;
  * A {@link BaseHandledScreen} whose {@link #drawForeground(MatrixStack, int, int)}
  * method does nothing.
  */
-public class CustomForegroundBaseHandledScreen<T extends BaseScreenHandler> extends BaseHandledScreen<T> {
+public class CustomForegroundBaseHandledScreen<T extends BaseScreenHandler> extends BaseHandledScreen<T>
+{
 	/**
 	 * Instantiates a {@link CustomForegroundBaseHandledScreen}.
 	 */

@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.screenhandler.base.block;
 
+import dev.vini2003.hammer.common.screen.handler.BaseScreenHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,7 +33,6 @@ import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
@@ -41,7 +41,8 @@ import java.util.function.Supplier;
  * This class represents a {@link ScreenHandler} with an associated
  * {@link BlockPos}, {@link Block} and {@link BlockState}
  */
-public abstract class BlockStateScreenHandler extends BaseScreenHandler {
+public abstract class BlockStateScreenHandler extends BaseScreenHandler
+{
 	protected BlockPos position;
 	protected Block originalBlock;
 	protected BlockState state;

@@ -80,6 +80,15 @@ allprojects {
                 includeGroup "vazkii.patchouli"
             }
         }
+
+        maven {
+            name = "vini"
+            url = "https://maven.pkg.github.com/vini2003/Maven/"
+            credentials {
+                username = "vini2003"
+                password = "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"
+            }
+        }
     }
 
     dependencies {

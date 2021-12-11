@@ -25,6 +25,10 @@
 package com.github.mixinors.astromine.common.widget.blade;
 
 import com.github.mixinors.astromine.AMCommon;
+import dev.vini2003.hammer.client.scissor.Scissors;
+import dev.vini2003.hammer.client.util.Instances;
+import dev.vini2003.hammer.client.util.Layers;
+import dev.vini2003.hammer.common.widget.Widget;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -36,10 +40,6 @@ import net.minecraft.util.Identifier;
 import com.github.mixinors.astromine.client.BaseRenderer;
 import com.github.mixinors.astromine.common.util.TextUtils;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
-import com.github.vini2003.blade.client.utilities.Instances;
-import com.github.vini2003.blade.client.utilities.Layers;
-import com.github.vini2003.blade.client.utilities.Scissors;
-import com.github.vini2003.blade.common.widget.base.AbstractWidget;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.Lists;
@@ -54,7 +54,8 @@ import java.util.function.Supplier;
  * {@link EnergyVolume#getAmount()} and {@link EnergyVolume#getSize()}
  * are queried from.
  */
-public class VerticalEnergyBarWidget extends AbstractWidget {
+public class VerticalEnergyBarWidget extends Widget
+{
 	private static final Identifier ENERGY_BACKGROUND = AMCommon.id("textures/widget/energy_volume_fractional_vertical_bar_background.png");
 	private static final Identifier ENERGY_FOREGROUND = AMCommon.id("textures/widget/energy_volume_fractional_vertical_bar_foreground.png");
 
@@ -84,7 +85,7 @@ public class VerticalEnergyBarWidget extends AbstractWidget {
 	/** Renders this widget. */
 	@Environment(EnvType.CLIENT)
 	@Override
-	public void drawWidget(@NotNull MatrixStack matrices, @NotNull VertexConsumerProvider provider) {
+	public void drawWidget(@NotNull MatrixStack matrices, @NotNull VertexConsumerProvider provider, float delta) {
 		if (getHidden())
 			return;
 
@@ -94,8 +95,8 @@ public class VerticalEnergyBarWidget extends AbstractWidget {
 		float sX = getSize().getWidth();
 		float sY = getSize().getHeight();
 
-		float rawHeight = Instances.client().getWindow().getHeight();
-		float scale = (float) Instances.client().getWindow().getScaleFactor();
+		float rawHeight = Instances.INSTANCE.getClient().getWindow().getHeight();
+		float scale = (float) Instances.INSTANCE.getClient().getWindow().getScaleFactor();
 
 		EnergyVolume volume = volumeSupplier.get();
 

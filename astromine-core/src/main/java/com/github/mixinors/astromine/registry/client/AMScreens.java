@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.registry.client;
 import com.github.mixinors.astromine.client.screen.RecipeCreatorHandledScreen;
 import com.github.mixinors.astromine.client.screen.base.CustomForegroundBaseHandledScreen;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import com.github.vini2003.blade.common.handler.BaseScreenHandler;
+import dev.vini2003.hammer.common.screen.handler.BaseScreenHandler;
 import me.shedaniel.architectury.event.events.client.ClientLifecycleEvent;
 import me.shedaniel.architectury.registry.MenuRegistry;
 import me.shedaniel.architectury.registry.RegistrySupplier;
@@ -71,7 +71,7 @@ public class AMScreens {
 		});
 	}
 
-	public static <H extends BaseScreenHandler> void registerSimple(RegistrySupplier<? extends ScreenHandlerType<? extends H>> type) {
+	public static <H extends BaseScreenHandler> void registerSimple( RegistrySupplier<? extends ScreenHandlerType<? extends H>> type) {
 		AMScreens.<H, CustomForegroundBaseHandledScreen<H>>register(type, CustomForegroundBaseHandledScreen::new);
 	}
 

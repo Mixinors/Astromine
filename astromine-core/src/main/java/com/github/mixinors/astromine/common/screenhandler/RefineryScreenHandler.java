@@ -25,6 +25,8 @@
 package com.github.mixinors.astromine.common.screenhandler;
 
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
+import dev.vini2003.hammer.common.geometry.position.Position;
+import dev.vini2003.hammer.common.geometry.size.Size;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
@@ -32,8 +34,6 @@ import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBl
 import com.github.mixinors.astromine.common.widget.blade.VerticalFluidBarWidget;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.block.entity.RefineryBlockEntity;
-import com.github.vini2003.blade.common.miscellaneous.Position;
-import com.github.vini2003.blade.common.miscellaneous.Size;
 
 public class RefineryScreenHandler extends ComponentBlockEntityEnergyFluidScreenHandler {
 	private RefineryBlockEntity refinery;
@@ -49,17 +49,17 @@ public class RefineryScreenHandler extends ComponentBlockEntityEnergyFluidScreen
 		super.initialize(width, height);
 
 		VerticalFluidBarWidget outputFluidBar = new VerticalFluidBarWidget();
-		outputFluidBar.setSize(Size.absolute(fluidBar));
+		outputFluidBar.setSize( Size.of(fluidBar));
 		outputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getSecond());
 
 		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
-		arrow.setPosition(Position.of(fluidBar, fluidBar.getWidth() + 7, fluidBar.getHeight() / 2 - 8));
+		arrow.setPosition( Position.of(fluidBar, fluidBar.getWidth() + 7, fluidBar.getHeight() / 2 - 8));
 		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> refinery.limit);
 		arrow.setProgressSupplier(() -> (int) refinery.progress);
 
 		outputFluidBar.setPosition(Position.of(arrow.getPosition(), 7 + fluidBar.getWidth(), -fluidBar.getHeight() / 2F + arrow.getHeight() / 2F));
-		mainTab.addWidget(outputFluidBar);
-		mainTab.addWidget(arrow);
+		mainTab.add(outputFluidBar);
+		mainTab.add(arrow);
 	}
 }

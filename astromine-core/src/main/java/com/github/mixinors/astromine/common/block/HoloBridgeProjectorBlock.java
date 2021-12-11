@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.block;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import dev.architectury.hooks.block.BlockEntityHooks;
+import dev.vini2003.hammer.common.color.Color;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -44,7 +45,6 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.block.entity.HoloBridgeProjectorBlockEntity;
-import com.github.vini2003.blade.common.miscellaneous.Color;
 import org.jetbrains.annotations.Nullable;
 
 public class HoloBridgeProjectorBlock extends HorizontalFacingBlockWithEntity {
