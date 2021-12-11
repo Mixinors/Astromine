@@ -99,7 +99,7 @@ public class FluidFilterWidget extends ButtonWidget {
 	public void onMouseClicked(float x, float y, int button) {
 		super.onMouseClicked(x, y, button);
 
-		ItemStack stack = getHandler().getPlayer().inventory.getCursorStack();
+		ItemStack stack = getHandler().getCursorStack();
 
 		if (isWithin(x, y)) {
 			if (!stack.isEmpty()) {

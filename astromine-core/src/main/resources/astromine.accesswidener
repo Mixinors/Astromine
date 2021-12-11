@@ -1,5 +1,7 @@
 accessWidener v1 named
 
+accessible class net/minecraft/client/render/RenderLayer$MultiPhaseParameters
+accessible class net/minecraft/client/render/RenderPhase$Texture
 accessible field net/minecraft/block/EntityShapeContext heldItem Lnet/minecraft/item/Item;
 accessible field net/minecraft/client/render/RenderPhase DISABLE_CULLING Lnet/minecraft/client/render/RenderPhase$Cull;
 accessible field net/minecraft/client/render/RenderPhase ENABLE_DIFFUSE_LIGHTING Lnet/minecraft/client/render/RenderPhase$DiffuseLighting;
@@ -15,6 +17,7 @@ accessible field net/minecraft/recipe/Ingredient matchingStacks [Lnet/minecraft/
 accessible field net/minecraft/server/network/ServerPlayNetworkHandler floatingTicks I
 accessible field net/minecraft/server/world/ServerChunkManager chunkGenerator Lnet/minecraft/world/gen/chunk/ChunkGenerator;
 accessible field net/minecraft/util/DyeColor color I
+accessible method net/minecraft/client/render/RenderLayer of (Ljava/lang/String;Lnet/minecraft/client/render/VertexFormat;Lnet/minecraft/client/render/VertexFormat$DrawMode;IZZLnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;)Lnet/minecraft/client/render/RenderLayer$MultiPhase;
 accessible method net/minecraft/advancement/criterion/Criteria register (Lnet/minecraft/advancement/criterion/Criterion;)Lnet/minecraft/advancement/criterion/Criterion;
 accessible method net/minecraft/block/FluidBlock <init> (Lnet/minecraft/fluid/FlowableFluid;Lnet/minecraft/block/AbstractBlock$Settings;)V
 accessible method net/minecraft/block/StairsBlock <init> (Lnet/minecraft/block/BlockState;Lnet/minecraft/block/AbstractBlock$Settings;)V

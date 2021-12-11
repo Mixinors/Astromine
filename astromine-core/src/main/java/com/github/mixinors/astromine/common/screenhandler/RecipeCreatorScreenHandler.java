@@ -105,7 +105,7 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 
 		addWidget(panel);
 
-		Slots.addPlayerInventory(Position.of(panel.getX() + 7, panel.getY() + 7 + 9 + 18 + 18 + 18 + 7 + 18 + 7), Size.of(18, 18), this, getPlayer().inventory);
+		Slots.addPlayerInventory(Position.of(panel.getX() + 7, panel.getY() + 7 + 9 + 18 + 18 + 18 + 7 + 18 + 7), Size.of(18, 18), this, getPlayer().getInventory());
 
 		List<SlotWidget> inputSlots = Lists.newArrayList(Slots.addArray(Position.of(panel.getX() + 7, panel.getY() + 7 + 9), Size.of(18, 18), panel, 0, 3, 3, getInventory()));
 

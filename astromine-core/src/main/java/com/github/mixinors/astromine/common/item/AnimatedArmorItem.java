@@ -25,25 +25,22 @@
 package com.github.mixinors.astromine.common.item;
 
 import com.github.mixinors.astromine.common.util.ClientUtils;
+import com.mojang.blaze3d.platform.TextureUtil;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderPhase;
 import net.minecraft.client.texture.AbstractTexture;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.texture.TextureTickListener;
-import net.minecraft.client.texture.TextureUtil;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
-import com.mojang.blaze3d.systems.RenderSystem;
-
 import org.apache.logging.log4j.LogManager;
 
 import java.io.IOException;
@@ -81,6 +78,7 @@ public class AnimatedArmorItem extends ArmorItem {
 
 		/** Instantiates a {@link Texture}. */
 		public AnimatedTexturePhase(Identifier id, int frames) {
+			super(id, false, false);
 			beginAction = () -> {
 				RenderSystem.enableTexture();
 
@@ -184,7 +182,7 @@ public class AnimatedArmorItem extends ArmorItem {
 
 				this.placeholderTexture = new NativeImage(this.image.getFormat(), image.getWidth(), image.getHeight() / frames, false);
 
-				TextureUtil.allocate(this.getGlId(), placeholderTexture.getWidth(), placeholderTexture.getHeight());
+				TextureUtil.prepareImage(this.getGlId(), placeholderTexture.getWidth(), placeholderTexture.getHeight());
 			}
 
 			/** Closes this texture. */
