@@ -64,9 +64,11 @@ public class ExplosionUtils {
 					int cx = (x >> 4) + cox, cz = (z >> 4) + coz;
 					WorldChunk chunk = access.getChunk(cx, cz);
 					blocks += forSubchunks(chunk, box, boz, x, y, z, radius);
-					chunk.markDirty();
+					chunk.setShouldSave(true);
 					ServerChunkManager manager = (ServerChunkManager) access.getChunkManager();
-					manager.threadedAnvilChunkStorage.getPlayersWatchingChunk(new ChunkPos(cx, cz), false).forEach(s -> s.networkHandler.sendPacket(new ChunkDataS2CPacket(chunk, 65535)));
+					manager.threadedAnvilChunkStorage.getPlayersWatchingChunk(new ChunkPos(cx, cz), false).forEach(s -> s.networkHandler.sendPacket(
+							new ChunkDataS2CPacket(chunk, manager.getLightingProvider(), null, null, true)
+					));
 				}
 			}
 		}
@@ -122,7 +124,7 @@ public class ExplosionUtils {
 							}
 						}
 					}
-					chunk.getLightingProvider().setSectionStatus(ChunkSectionPos.from(bx >> 4, i, bz >> 4), false);
+					chunk.getWorld().getLightingProvider().setSectionStatus(ChunkSectionPos.from(bx >> 4, i, bz >> 4), false);
 				}
 			}
 		}

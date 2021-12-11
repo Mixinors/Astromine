@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.component.general;
 
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
+import dev.onyxstudios.cca.api.v3.item.ItemComponent;
 import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.util.data.predicate.TriPredicate;

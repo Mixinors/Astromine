@@ -24,7 +24,10 @@
 
 package com.github.mixinors.astromine.mixin.client;
 
+import com.github.mixinors.astromine.registry.client.AMEntityModelLayers;
 import com.github.mixinors.astromine.registry.common.AMItems;
+import com.google.common.base.Suppliers;
+import net.minecraft.client.MinecraftClient;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -39,16 +42,18 @@ import net.minecraft.item.ItemStack;
 
 import com.github.mixinors.astromine.client.model.PrimitiveRocketEntityModel;
 
+import java.util.function.Supplier;
+
 @Mixin(BuiltinModelItemRenderer.class)
 public class BuiltinModelItemRendererMixin {
 	@Unique
-	private final PrimitiveRocketEntityModel primitiveRocketEntityModel = new PrimitiveRocketEntityModel();
+	private final Supplier<PrimitiveRocketEntityModel> primitiveRocketEntityModel = Suppliers.memoize(() ->  new PrimitiveRocketEntityModel(MinecraftClient.getInstance().getEntityModelLoader().getModelPart(AMEntityModelLayers.ROCKET)));
 
 	@Inject(method = "render", at = @At("HEAD"), cancellable = true)
 	private void render(ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, CallbackInfo ci) {
 		if (stack.getItem() == AMItems.PRIMITIVE_ROCKET.get()) {
 			ci.cancel();
-			PrimitiveRocketEntityModel.renderItem(primitiveRocketEntityModel, stack, mode, matrices, vertexConsumers, light, overlay);
+			PrimitiveRocketEntityModel.renderItem(primitiveRocketEntityModel.get(), stack, mode, matrices, vertexConsumers, light, overlay);
 		}
 	}
 }

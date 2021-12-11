@@ -29,6 +29,7 @@ import com.github.mixinors.astromine.common.component.general.provider.EnergyCom
 import com.github.mixinors.astromine.common.component.general.provider.FluidComponentProvider;
 import com.github.mixinors.astromine.common.component.general.provider.ItemComponentProvider;
 import com.github.mixinors.astromine.registry.common.AMComponents;
+import dev.architectury.hooks.block.BlockEntityHooks;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
