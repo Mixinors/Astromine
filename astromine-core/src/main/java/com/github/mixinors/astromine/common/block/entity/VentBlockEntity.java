@@ -48,9 +48,9 @@ import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 
 public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements FluidSizeProvider, EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
 	public VentBlockEntity(BlockPos blockPos, BlockState blockState) {
-		super(AMBlockEntityTypes.VENT);
+		super(AMBlockEntityTypes.VENT, blockPos, blockState);
 
-		getFluidComponent().getFirst().setSize(AMConfig.get().ventFluid, blockPos, blockState);
+		getFluidComponent().getFirst().setSize(AMConfig.get().ventFluid);
 	}
 
 	@Override

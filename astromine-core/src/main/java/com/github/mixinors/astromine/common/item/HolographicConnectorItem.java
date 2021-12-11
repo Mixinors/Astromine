@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.item;
 
 import com.github.mixinors.astromine.registry.common.AMSoundEvents;
+import dev.architectury.hooks.block.BlockEntityHooks;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.Item;
@@ -132,7 +133,7 @@ public class HolographicConnectorItem extends Item {
 					}
 
 					parent.buildBridge();
-					parent.syncData();
+					BlockEntityHooks.syncData(parent);
 					context.getPlayer().setStackInHand(context.getHand(), unselect(context.getStack()));
 				}
 			}

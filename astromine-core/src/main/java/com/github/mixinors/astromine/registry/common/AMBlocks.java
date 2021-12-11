@@ -237,9 +237,6 @@ public class AMBlocks {
 	
 	public static final RegistrySupplier<Block> DRAIN = register("drain", () -> new DrainBlock(getBasicSettings()), AMItems.getBasicSettings());
 	
-	public static final RegistrySupplier<Block> CATWALK = register("catwalk", () -> new CatwalkBlock(BlockProperties.copy(Blocks.STONE).sounds(BlockSoundGroup.METAL).nonOpaque()), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> CATWALK_STAIRS = register("catwalk_stairs", () -> new CatwalkStairsBlock(BlockProperties.copy(Blocks.STONE).sounds(BlockSoundGroup.METAL).nonOpaque()), AMItems.getBasicSettings());
-	
 	public static final RegistrySupplier<Block> FLUID_CABLE = register("fluid_pipe", () -> new FluidPipeBlock(BlockProperties.of(Material.METAL).tool(ToolType.PICKAXE, 1).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
 	
 	public static final RegistrySupplier<Block> PRIMITIVE_ENERGY_CABLE = register("primitive_energy_cable", () -> new EnergyCableBlock(AMConfig.get().primitiveEnergyCableEnergy, BlockProperties.of(Material.METAL).tool(ToolType.PICKAXE, 1).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());

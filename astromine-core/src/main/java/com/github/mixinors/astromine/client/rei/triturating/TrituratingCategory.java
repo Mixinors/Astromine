@@ -24,41 +24,40 @@
 
 package com.github.mixinors.astromine.client.rei.triturating;
 
-import com.github.mixinors.astromine.registry.common.AMBlocks;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
-import net.minecraft.client.resource.language.I18n;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
-
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
+import com.github.mixinors.astromine.registry.common.AMBlocks;
+import com.google.common.collect.Lists;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
-import me.shedaniel.rei.api.EntryStack;
-import me.shedaniel.rei.api.RecipeCategory;
-import me.shedaniel.rei.api.widgets.Widgets;
-import me.shedaniel.rei.gui.widget.Widget;
+import me.shedaniel.rei.api.client.gui.Renderer;
+import me.shedaniel.rei.api.client.gui.widgets.Widget;
+import me.shedaniel.rei.api.client.gui.widgets.Widgets;
+import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.util.EntryStacks;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 
-import com.google.common.collect.Lists;
 import java.text.DecimalFormat;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class TrituratingCategory implements RecipeCategory<TrituratingDisplay> {
+public class TrituratingCategory implements DisplayCategory<TrituratingDisplay> {
 	@Override
-	public Identifier getIdentifier() {
+	public CategoryIdentifier<? extends TrituratingDisplay> getCategoryIdentifier() {
 		return AMRoughlyEnoughItemsPlugin.TRITURATING;
 	}
 
 	@Override
-	public String getCategoryName() {
-		return I18n.translate("category.astromine.triturating");
+	public Text getTitle() {
+		return new TranslatableText("category.astromine.triturating");
 	}
 
 	@Override
-	public EntryStack getLogo() {
-		return EntryStack.create(AMBlocks.ADVANCED_TRITURATOR.get());
+	public Renderer getIcon() {
+		return EntryStacks.of(AMBlocks.ADVANCED_TRITURATOR.get());
 	}
 
 	@Override
@@ -72,7 +71,7 @@ public class TrituratingCategory implements RecipeCategory<TrituratingDisplay> {
 		widgets.add(Widgets.createArrow(new Point(startPoint.x + 27, startPoint.y + 18)).animationDurationTicks(display.getTimeRequired()));
 		widgets.add(Widgets.createResultSlotBackground(new Point(startPoint.x + 61, startPoint.y + 19)));
 		widgets.add(Widgets.createSlot(new Point(startPoint.x + 4, startPoint.y + 19)).entries(display.getInputEntries().get(0)).markInput());
-		widgets.add(Widgets.createSlot(new Point(startPoint.x + 61, startPoint.y + 19)).entries(display.getResultingEntries().get(0)).disableBackground().markOutput());
+		widgets.add(Widgets.createSlot(new Point(startPoint.x + 61, startPoint.y + 19)).entries(display.getOutputEntries().get(0)).disableBackground().markOutput());
 		return widgets;
 	}
 }

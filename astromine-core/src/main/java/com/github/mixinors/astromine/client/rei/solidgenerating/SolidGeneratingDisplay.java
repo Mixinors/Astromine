@@ -24,26 +24,24 @@
 
 package com.github.mixinors.astromine.client.rei.solidgenerating;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
-import net.minecraft.util.Identifier;
-
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.client.rei.generating.AbstractEnergyGeneratingDisplay;
-import me.shedaniel.rei.api.EntryStack;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.entry.EntryIngredient;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.util.Identifier;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
 public class SolidGeneratingDisplay extends AbstractEnergyGeneratingDisplay {
-	private final List<EntryStack> stacks;
+	private final List<EntryIngredient> stacks;
 	private final Identifier id;
 	private final Double time;
 
-	public SolidGeneratingDisplay(double energyGenerated, List<EntryStack> stacks, Identifier id, Double time) {
+	public SolidGeneratingDisplay(double energyGenerated, List<EntryIngredient> stacks, Identifier id, Double time) {
 		super(energyGenerated);
 		this.stacks = stacks;
 		this.id = id;
@@ -51,22 +49,17 @@ public class SolidGeneratingDisplay extends AbstractEnergyGeneratingDisplay {
 	}
 
 	@Override
-	public List<List<EntryStack>> getInputEntries() {
-		return Collections.singletonList(stacks);
+	public List<EntryIngredient> getInputEntries() {
+		return stacks;
 	}
 
 	@Override
-	public List<List<EntryStack>> getRequiredEntries() {
-		return getInputEntries();
-	}
-
-	@Override
-	public Identifier getRecipeCategory() {
+	public CategoryIdentifier<?> getCategoryIdentifier() {
 		return AMRoughlyEnoughItemsPlugin.SOLID_GENERATING;
 	}
 
 	@Override
-	public Optional<Identifier> getRecipeLocation() {
+	public Optional<Identifier> getDisplayLocation() {
 		return Optional.ofNullable(this.id);
 	}
 

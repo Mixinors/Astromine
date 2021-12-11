@@ -56,7 +56,7 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 	private Optional<FluidGeneratingRecipe> optionalRecipe = Optional.empty();
 
 	public FluidGeneratorBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
-		super(type);
+		super(type, blockPos, blockState);
 	}
 
 	@Override

@@ -71,8 +71,8 @@ public abstract class PressBlock extends HorizontalFacingTieredBlockWithEntity i
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new PressBlockEntity.Primitive();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new PressBlockEntity.Primitive(pos, state);
 		}
 	}
 
@@ -82,8 +82,8 @@ public abstract class PressBlock extends HorizontalFacingTieredBlockWithEntity i
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new PressBlockEntity.Basic();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new PressBlockEntity.Basic(pos, state);
 		}
 	}
 
@@ -93,8 +93,8 @@ public abstract class PressBlock extends HorizontalFacingTieredBlockWithEntity i
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new PressBlockEntity.Advanced();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new PressBlockEntity.Advanced(pos, state);
 		}
 	}
 
@@ -104,8 +104,8 @@ public abstract class PressBlock extends HorizontalFacingTieredBlockWithEntity i
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new PressBlockEntity.Elite();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new PressBlockEntity.Elite(pos, state);
 		}
 	}
 }

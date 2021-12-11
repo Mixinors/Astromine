@@ -24,18 +24,18 @@
 
 package com.github.mixinors.astromine.client.rei.solidifying;
 
+import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
+import com.github.mixinors.astromine.client.rei.generating.AbstractEnergyGeneratingDisplay;
+import com.github.mixinors.astromine.common.recipe.SolidifyingRecipe;
+import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.entry.EntryIngredient;
+import me.shedaniel.rei.api.common.util.EntryIngredients;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
-
-import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
-import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
-import com.github.mixinors.astromine.client.rei.generating.AbstractEnergyGeneratingDisplay;
-import com.github.mixinors.astromine.common.recipe.SolidifyingRecipe;
-import me.shedaniel.rei.api.EntryStack;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -57,22 +57,17 @@ public class SolidifyingDisplay extends AbstractEnergyGeneratingDisplay {
 	}
 
 	@Override
-	public List<List<EntryStack>> getInputEntries() {
-		return Collections.singletonList(Arrays.stream(input.getMatchingVolumes()).map(AMRoughlyEnoughItemsPlugin::convertToEntryStack).collect(Collectors.toList()));
+	public List<EntryIngredient> getInputEntries() {
+		return Collections.singletonList(EntryIngredient.of(Arrays.stream(input.getMatchingVolumes()).map(AMRoughlyEnoughItemsPlugin::convertToEntryStack).collect(Collectors.toList())));
 	}
 
 	@Override
-	public List<EntryStack> getOutputEntries() {
-		return Collections.singletonList(EntryStack.create(output));
+	public List<EntryIngredient> getOutputEntries() {
+		return Collections.singletonList(EntryIngredients.of(output));
 	}
 
 	@Override
-	public List<List<EntryStack>> getRequiredEntries() {
-		return getInputEntries();
-	}
-
-	@Override
-	public Identifier getRecipeCategory() {
+	public CategoryIdentifier<?> getCategoryIdentifier() {
 		return AMRoughlyEnoughItemsPlugin.SOLID_GENERATING;
 	}
 
@@ -85,7 +80,7 @@ public class SolidifyingDisplay extends AbstractEnergyGeneratingDisplay {
 	}
 
 	@Override
-	public Optional<Identifier> getRecipeLocation() {
+	public Optional<Identifier> getDisplayLocation() {
 		return Optional.ofNullable(this.id);
 	}
 }

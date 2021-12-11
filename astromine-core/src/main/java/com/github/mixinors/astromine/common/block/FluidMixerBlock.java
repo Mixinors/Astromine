@@ -71,8 +71,8 @@ public abstract class FluidMixerBlock extends HorizontalFacingTieredBlockWithEnt
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new FluidMixerBlockEntity.Primitive();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new FluidMixerBlockEntity.Primitive(pos, state);
 		}
 	}
 
@@ -82,8 +82,8 @@ public abstract class FluidMixerBlock extends HorizontalFacingTieredBlockWithEnt
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new FluidMixerBlockEntity.Basic();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new FluidMixerBlockEntity.Basic(pos, state);
 		}
 	}
 
@@ -93,8 +93,8 @@ public abstract class FluidMixerBlock extends HorizontalFacingTieredBlockWithEnt
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new FluidMixerBlockEntity.Advanced();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new FluidMixerBlockEntity.Advanced(pos, state);
 		}
 	}
 
@@ -104,8 +104,8 @@ public abstract class FluidMixerBlock extends HorizontalFacingTieredBlockWithEnt
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new FluidMixerBlockEntity.Elite();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new FluidMixerBlockEntity.Elite(pos, state);
 		}
 	}
 }

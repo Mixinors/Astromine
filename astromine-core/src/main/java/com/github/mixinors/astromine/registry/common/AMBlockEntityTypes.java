@@ -25,7 +25,6 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.common.block.entity.*;
-import com.github.mixinors.astromine.common.block.entity.base.AbstractConveyableBlockEntity;
 import me.shedaniel.architectury.registry.RegistrySupplier;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;

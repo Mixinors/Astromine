@@ -78,8 +78,8 @@ public abstract class TankBlock extends HorizontalFacingTieredBlockWithEntity im
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new TankBlockEntity.Primitive();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new TankBlockEntity.Primitive(pos, state);
 		}
 	}
 
@@ -89,8 +89,8 @@ public abstract class TankBlock extends HorizontalFacingTieredBlockWithEntity im
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new TankBlockEntity.Basic();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new TankBlockEntity.Basic(pos, state);
 		}
 	}
 
@@ -100,8 +100,8 @@ public abstract class TankBlock extends HorizontalFacingTieredBlockWithEntity im
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new TankBlockEntity.Advanced();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new TankBlockEntity.Advanced(pos, state);
 		}
 	}
 
@@ -111,8 +111,8 @@ public abstract class TankBlock extends HorizontalFacingTieredBlockWithEntity im
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new TankBlockEntity.Elite();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new TankBlockEntity.Elite(pos, state);
 		}
 	}
 
@@ -122,8 +122,8 @@ public abstract class TankBlock extends HorizontalFacingTieredBlockWithEntity im
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new TankBlockEntity.Creative();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new TankBlockEntity.Creative(pos, state);
 		}
 
 		@Override

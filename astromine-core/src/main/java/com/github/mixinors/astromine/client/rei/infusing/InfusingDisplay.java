@@ -24,49 +24,50 @@
 
 package com.github.mixinors.astromine.client.rei.infusing;
 
-import net.minecraft.util.Identifier;
-
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.common.recipe.AltarRecipe;
-import me.shedaniel.rei.api.EntryStack;
-import me.shedaniel.rei.api.RecipeDisplay;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.display.Display;
+import me.shedaniel.rei.api.common.entry.EntryIngredient;
+import me.shedaniel.rei.api.common.util.EntryIngredients;
+import net.minecraft.util.Identifier;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class InfusingDisplay implements RecipeDisplay {
-	private List<List<EntryStack>> inputs;
-	private List<List<EntryStack>> outputs;
+public class InfusingDisplay implements Display {
+	private List<EntryIngredient> inputs;
+	private List<EntryIngredient> outputs;
 	private Identifier recipeId;
 
 	public InfusingDisplay(AltarRecipe recipe) {
-		this(EntryStack.ofIngredients(recipe.getIngredients()), Collections.singletonList(Collections.singletonList(EntryStack.create(recipe.getOutput().copy()))), recipe.getId());
+		this(EntryIngredients.ofIngredients(recipe.getIngredients()), Collections.singletonList(EntryIngredients.of(recipe.getOutput().copy())), recipe.getId());
 	}
 
-	public InfusingDisplay(List<List<EntryStack>> inputs, List<List<EntryStack>> outputs, Identifier recipeId) {
+	public InfusingDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, Identifier recipeId) {
 		this.inputs = inputs;
 		this.outputs = outputs;
 		this.recipeId = recipeId;
 	}
 
 	@Override
-	public List<List<EntryStack>> getInputEntries() {
+	public List<EntryIngredient> getInputEntries() {
 		return inputs;
 	}
 
 	@Override
-	public List<List<EntryStack>> getResultingEntries() {
+	public List<EntryIngredient> getOutputEntries() {
 		return outputs;
 	}
 
 	@Override
-	public Optional<Identifier> getRecipeLocation() {
+	public Optional<Identifier> getDisplayLocation() {
 		return Optional.ofNullable(recipeId);
 	}
 
 	@Override
-	public Identifier getRecipeCategory() {
+	public CategoryIdentifier<?> getCategoryIdentifier() {
 		return AMRoughlyEnoughItemsPlugin.INFUSING;
 	}
 }

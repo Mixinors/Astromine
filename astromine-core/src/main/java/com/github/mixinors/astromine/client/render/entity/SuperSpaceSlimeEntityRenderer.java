@@ -29,6 +29,7 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.MobEntityRenderer;
 import net.minecraft.client.render.entity.feature.SlimeOverlayFeatureRenderer;
+import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
@@ -42,7 +43,7 @@ public class SuperSpaceSlimeEntityRenderer extends MobEntityRenderer<SuperSpaceS
 	private static final Identifier EXPLODING_TEXTURE = AMCommon.id("textures/entity/space_slime/space_slime_exploding.png");
 
 	public SuperSpaceSlimeEntityRenderer(EntityRendererFactory.Context context) {
-		super(context, new SuperSpaceSlimeEntityModel(16), 0.25F);
+		super(context, new SuperSpaceSlimeEntityModel(context.getPart(EntityModelLayers.SLIME)), 0.25F);
 		this.addFeature(new SlimeOverlayFeatureRenderer(this, context.getModelLoader()));
 	}
 

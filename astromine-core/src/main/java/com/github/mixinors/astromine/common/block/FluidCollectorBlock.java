@@ -46,8 +46,8 @@ public class FluidCollectorBlock extends HorizontalFacingBlockWithEntity impleme
 	}
 
 	@Override
-	public BlockEntity createBlockEntity() {
-		return new FluidCollectorBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new FluidCollectorBlockEntity(pos, state);
 	}
 
 	@Override

@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.block;
 
 import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
+import dev.architectury.hooks.block.BlockEntityHooks;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -67,8 +68,8 @@ public class AltarBlock extends BlockWithEntity {
 	}
 
 	@Override
-	public BlockEntity createBlockEntity() {
-		return new AltarBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new AltarBlockEntity(pos, state);
 	}
 
 	@Override
@@ -111,7 +112,7 @@ public class AltarBlock extends BlockWithEntity {
 
 				player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, .6F, 1);
 
-				blockEntity.syncData();
+				BlockEntityHooks.syncData(blockEntity);
 
 				return ActionResult.SUCCESS;
 			} else if (stackInHand.isEmpty()) {
@@ -121,7 +122,7 @@ public class AltarBlock extends BlockWithEntity {
 
 				player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, .6F, 1);
 
-				blockEntity.syncData();
+				BlockEntityHooks.syncData(blockEntity);
 
 				return ActionResult.SUCCESS;
 			} else {

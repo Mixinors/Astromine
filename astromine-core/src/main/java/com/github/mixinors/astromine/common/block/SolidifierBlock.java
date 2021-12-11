@@ -77,8 +77,8 @@ public abstract class SolidifierBlock extends HorizontalFacingTieredBlockWithEnt
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new SolidifierBlockEntity.Primitive();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new SolidifierBlockEntity.Primitive(pos, state);
 		}
 	}
 
@@ -88,8 +88,8 @@ public abstract class SolidifierBlock extends HorizontalFacingTieredBlockWithEnt
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new SolidifierBlockEntity.Basic();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new SolidifierBlockEntity.Basic(pos, state);
 		}
 	}
 
@@ -99,8 +99,8 @@ public abstract class SolidifierBlock extends HorizontalFacingTieredBlockWithEnt
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new SolidifierBlockEntity.Advanced();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new SolidifierBlockEntity.Advanced(pos, state);
 		}
 	}
 
@@ -110,8 +110,8 @@ public abstract class SolidifierBlock extends HorizontalFacingTieredBlockWithEnt
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new SolidifierBlockEntity.Elite();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new SolidifierBlockEntity.Elite(pos, state);
 		}
 	}
 }

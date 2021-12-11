@@ -79,7 +79,7 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 
 		if (!player.world.isClient) {
 			blockEntity.doNotSkipInventory();
-			blockEntity.syncData();
+			BlockEntityHooks.syncData(blockEntity);
 		}
 	}
 
@@ -131,10 +131,10 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 		Position invPos = Position.of(tabs, 7F + (tabs.getWidth() / 2 - ((9 * 18F) / 2) - 7F), 25F + 7F + (184 - 18 - 18 - (18 * 4) - 3 + getTabWidgetExtendedHeight()));
 		TextWidget invTitle = new TextWidget();
 		invTitle.setPosition(Position.of(invPos, 0, -10));
-		invTitle.setText(getPlayer().inventory.getName());
+		invTitle.setText(getPlayer().getInventory().getName());
 		invTitle.setColor(4210752);
 		mainTab.addWidget(invTitle);
-		playerSlots = Slots.addPlayerInventory(invPos, Size.of(18F, 18F), mainTab, getPlayer().inventory);
+		playerSlots = Slots.addPlayerInventory(invPos, Size.of(18F, 18F), mainTab, getPlayer().getInventory());
 
 		Direction rotation = Direction.NORTH;
 		Block block = blockEntity.getCachedState().getBlock();
@@ -161,10 +161,10 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 			WidgetUtils.createTransferTab(current, Position.of(tabs, tabs.getWidth() / 2 - 38, getTabWidgetExtendedHeight() / 2), finalRotation, transferComponent, blockEntity.getPos(), key);
 			TextWidget invTabTitle = new TextWidget();
 			invTabTitle.setPosition(Position.of(invPos, 0, -10));
-			invTabTitle.setText(getPlayer().inventory.getName());
+			invTabTitle.setText(getPlayer().getInventory().getName());
 			invTabTitle.setColor(4210752);
 			current.addWidget(invTabTitle);
-			playerSlots.addAll(Slots.addPlayerInventory(invPos, Size.of(18F, 18F), current, getPlayer().inventory));
+			playerSlots.addAll(Slots.addPlayerInventory(invPos, Size.of(18F, 18F), current, getPlayer().getInventory()));
 
 			TextWidget tabTitle = new TextWidget();
 			tabTitle.setPosition(Position.of(mainTab, 8, 0));

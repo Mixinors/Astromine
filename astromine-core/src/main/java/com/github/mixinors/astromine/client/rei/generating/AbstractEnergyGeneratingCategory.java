@@ -24,20 +24,19 @@
 
 package com.github.mixinors.astromine.client.rei.generating;
 
+import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
+import com.google.common.collect.Lists;
+import me.shedaniel.math.Rectangle;
+import me.shedaniel.rei.api.client.gui.widgets.Widget;
+import me.shedaniel.rei.api.client.gui.widgets.Widgets;
+import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
-import me.shedaniel.math.Rectangle;
-import me.shedaniel.rei.api.RecipeCategory;
-import me.shedaniel.rei.api.widgets.Widgets;
-import me.shedaniel.rei.gui.widget.Widget;
-
-import com.google.common.collect.Lists;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public abstract class AbstractEnergyGeneratingCategory<T extends AbstractEnergyGeneratingDisplay> implements RecipeCategory<T> {
+public abstract class AbstractEnergyGeneratingCategory<T extends AbstractEnergyGeneratingDisplay> implements DisplayCategory<T> {
 	@Override
 	public List<Widget> setupDisplay(T recipeDisplay, Rectangle bounds) {
 		List<Widget> widgets = Lists.newArrayList();

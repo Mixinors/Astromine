@@ -71,8 +71,8 @@ public abstract class AlloySmelterBlock extends HorizontalFacingTieredBlockWithE
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new AlloySmelterBlockEntity.Primitive();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new AlloySmelterBlockEntity.Primitive(pos, state);
 		}
 	}
 
@@ -82,8 +82,8 @@ public abstract class AlloySmelterBlock extends HorizontalFacingTieredBlockWithE
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new AlloySmelterBlockEntity.Basic();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new AlloySmelterBlockEntity.Basic(pos, state);
 		}
 	}
 
@@ -93,8 +93,8 @@ public abstract class AlloySmelterBlock extends HorizontalFacingTieredBlockWithE
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new AlloySmelterBlockEntity.Advanced();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new AlloySmelterBlockEntity.Advanced(pos, state);
 		}
 	}
 
@@ -104,8 +104,8 @@ public abstract class AlloySmelterBlock extends HorizontalFacingTieredBlockWithE
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new AlloySmelterBlockEntity.Elite();
+		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+			return new AlloySmelterBlockEntity.Elite(pos, state);
 		}
 	}
 }

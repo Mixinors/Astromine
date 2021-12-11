@@ -107,14 +107,14 @@ public class DynamicToolItemItem extends Item implements DynamicAttributeTool, V
 
 	@Override
 	public float getMiningSpeedMultiplier(Tag<Item> tag, BlockState state, ItemStack stack, LivingEntity user) {
-		if (first.isIn(tag) || second.isIn(tag))
+		if (tag.contains(first) || tag.contains(second))
 			return material.getMiningSpeedMultiplier();
 		return 1;
 	}
 
 	@Override
 	public int getMiningLevel(Tag<Item> tag, BlockState state, ItemStack stack, LivingEntity user) {
-		if (first.isIn(tag) || second.isIn(tag))
+		if (tag.contains(first) || tag.contains(second))
 			return material.getMiningLevel();
 		return 0;
 	}

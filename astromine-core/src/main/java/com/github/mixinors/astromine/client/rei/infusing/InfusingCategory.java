@@ -24,36 +24,38 @@
 
 package com.github.mixinors.astromine.client.rei.infusing;
 
-import com.github.mixinors.astromine.registry.common.AMBlocks;
-import net.minecraft.client.resource.language.I18n;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
-
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
+import com.github.mixinors.astromine.registry.common.AMBlocks;
+import com.google.common.collect.Lists;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
-import me.shedaniel.rei.api.EntryStack;
-import me.shedaniel.rei.api.RecipeCategory;
-import me.shedaniel.rei.api.widgets.Widgets;
-import me.shedaniel.rei.gui.widget.Widget;
+import me.shedaniel.rei.api.client.gui.Renderer;
+import me.shedaniel.rei.api.client.gui.widgets.Widget;
+import me.shedaniel.rei.api.client.gui.widgets.Widgets;
+import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.entry.EntryStack;
+import me.shedaniel.rei.api.common.util.EntryStacks;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.math.MathHelper;
 
-import com.google.common.collect.Lists;
 import java.util.List;
 
-public class InfusingCategory implements RecipeCategory<InfusingDisplay> {
+public class InfusingCategory implements DisplayCategory<InfusingDisplay> {
 	@Override
-	public Identifier getIdentifier() {
+	public CategoryIdentifier<? extends InfusingDisplay> getCategoryIdentifier() {
 		return AMRoughlyEnoughItemsPlugin.INFUSING;
 	}
 
 	@Override
-	public String getCategoryName() {
-		return I18n.translate("category.astromine.infusing");
+	public Text getTitle() {
+		return new TranslatableText("category.astromine.infusing");
 	}
 
 	@Override
-	public EntryStack getLogo() {
-		return EntryStack.create(AMBlocks.ALTAR.get());
+	public Renderer getIcon() {
+		return EntryStacks.of(AMBlocks.ALTAR.get());
 	}
 
 	@Override
@@ -64,15 +66,15 @@ public class InfusingCategory implements RecipeCategory<InfusingDisplay> {
 		float radius = 50f;
 		float degrees = 360f / display.getInputEntries().size();
 		for (int i = 0; i < display.getInputEntries().size(); i++) {
-			List<EntryStack> stacks = display.getInputEntries().get(i);
+			List<EntryStack<?>> stacks = display.getInputEntries().get(i);
 			int x = (int) (radius * 1.05f * MathHelper.cos(degrees * i * 0.0174532925F));
 			int y = (int) (radius * MathHelper.sin(degrees * i * 0.0174532925F));
-			widgets.add(Widgets.createSlot(new Point(bounds.x + 65 + x, bounds.y + 54 + y + 15)).entry(EntryStack.create(AMBlocks.ALTAR_PEDESTAL.get())).noFavoritesInteractable().noInteractable().disableHighlight().disableTooltips().disableBackground());
+			widgets.add(Widgets.createSlot(new Point(bounds.x + 65 + x, bounds.y + 54 + y + 15)).entry(EntryStacks.of(AMBlocks.ALTAR_PEDESTAL.get())).noFavoritesInteractable().noInteractable().disableHighlight().disableTooltips().disableBackground());
 			widgets.add(Widgets.createSlot(new Point(bounds.x + 65 + x, bounds.y + 54 + y)).entries(stacks).disableBackground().markInput());
 		}
 
-		widgets.add(Widgets.createSlot(new Point(bounds.x + 65, bounds.y + 54 + 15)).entry(EntryStack.create(AMBlocks.ALTAR.get())).noFavoritesInteractable().noInteractable().disableHighlight().disableTooltips().disableBackground());
-		widgets.add(Widgets.createSlot(new Point(bounds.x + 65, bounds.y + 54)).entries(display.getResultingEntries().get(0)).disableBackground().markOutput());
+		widgets.add(Widgets.createSlot(new Point(bounds.x + 65, bounds.y + 54 + 15)).entry(EntryStacks.of(AMBlocks.ALTAR.get())).noFavoritesInteractable().noInteractable().disableHighlight().disableTooltips().disableBackground());
+		widgets.add(Widgets.createSlot(new Point(bounds.x + 65, bounds.y + 54)).entries(display.getOutputEntries().get(0)).disableBackground().markOutput());
 		return widgets;
 	}
 

@@ -45,8 +45,8 @@ public class BlockBreakerBlock extends HorizontalFacingBlockWithEntity implement
 	}
 
 	@Override
-	public BlockEntity createBlockEntity() {
-		return new BlockBreakerBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new BlockBreakerBlockEntity(pos, state);
 	}
 
 	@Override

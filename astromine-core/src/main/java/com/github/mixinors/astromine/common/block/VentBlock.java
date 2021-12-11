@@ -50,8 +50,8 @@ public class VentBlock extends HorizontalFacingBlockWithEntity implements Networ
 	}
 
 	@Override
-	public BlockEntity createBlockEntity() {
-		return new VentBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new VentBlockEntity(pos, state);
 	}
 
 	@Override

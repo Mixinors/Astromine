@@ -24,21 +24,20 @@
 
 package com.github.mixinors.astromine.client.rei.solidgenerating;
 
-import com.github.mixinors.astromine.registry.common.AMBlocks;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
-import net.minecraft.client.resource.language.I18n;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
-
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.client.rei.generating.AbstractEnergyGeneratingCategory;
+import com.github.mixinors.astromine.registry.common.AMBlocks;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
-import me.shedaniel.rei.api.EntryStack;
-import me.shedaniel.rei.api.widgets.Widgets;
-import me.shedaniel.rei.gui.widget.Widget;
+import me.shedaniel.rei.api.client.gui.Renderer;
+import me.shedaniel.rei.api.client.gui.widgets.Widget;
+import me.shedaniel.rei.api.client.gui.widgets.Widgets;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.util.EntryStacks;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -46,18 +45,18 @@ import java.util.List;
 @Environment(EnvType.CLIENT)
 public class SolidGeneratingCategory extends AbstractEnergyGeneratingCategory<SolidGeneratingDisplay> {
 	@Override
-	public Identifier getIdentifier() {
+	public CategoryIdentifier<? extends SolidGeneratingDisplay> getCategoryIdentifier() {
 		return AMRoughlyEnoughItemsPlugin.SOLID_GENERATING;
 	}
 
 	@Override
-	public String getCategoryName() {
-		return I18n.translate("category.astromine.solid_generating");
+	public Text getTitle() {
+		return new TranslatableText("category.astromine.solid_generating");
 	}
 
 	@Override
-	public EntryStack getLogo() {
-		return EntryStack.create(AMBlocks.ADVANCED_SOLID_GENERATOR.get());
+	public Renderer getIcon() {
+		return EntryStacks.of(AMBlocks.ADVANCED_SOLID_GENERATOR.get());
 	}
 
 	@Override
