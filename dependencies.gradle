@@ -10,10 +10,15 @@ project.ext.setDefaultApis = {
     // Shapes
     useAsApi("com.terraformersmc.terraform-api:terraform-shapes-api-v1:${shapes_version}")
 
-    // Blade
+    // Hammer
     useAsCompileOnly("com.github.vini2003:hammer:${hammer_version}")
     useAsRuntimeOnly("com.github.vini2003:hammer:${hammer_version}")
     include("com.github.vini2003:hammer:${hammer_version}")
+
+    // Fabric Language Kotlin
+    useAsCompileOnly("net.fabricmc:fabric-language-kotlin:${fabric_language_kotlin_version}")
+    useAsRuntimeOnly("net.fabricmc:fabric-language-kotlin:${fabric_language_kotlin_version}")
+    include("net.fabricmc:fabric-language-kotlin:${fabric_language_kotlin_version}")
 
     // Patchouli
     useAsApi("vazkii.patchouli:Patchouli:${patchouli_version}")

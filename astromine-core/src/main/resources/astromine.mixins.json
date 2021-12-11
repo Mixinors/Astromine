@@ -5,7 +5,6 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "common.AbstractBlockMixin",
-    "common.BiomeLayerSamplerMixin",
     "common.EnchantmentTargetMixin",
     "common.EntityAccessor",
     "common.EntityMixin",
