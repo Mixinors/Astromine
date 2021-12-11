@@ -80,15 +80,6 @@ allprojects {
                 includeGroup "vazkii.patchouli"
             }
         }
-
-        maven {
-            name = "vini"
-            url = "https://maven.pkg.github.com/vini2003/Maven/"
-            credentials {
-                username = "vini2003"
-                password = "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"
-            }
-        }
     }
 
     dependencies {
@@ -126,7 +117,7 @@ allprojects {
             useAsApiOptionally(dep)
             include(dep)
         }
-        dependencies.ext.useAsRuntime = { dep ->
+        dependencies.ext.useAsRuntimeOnly = { dep ->
             modRuntimeOnly(dep) {
                 if (!dep.contains("net.fabricmc.fabric-api")) {
                     exclude group: "net.fabricmc.fabric-api"

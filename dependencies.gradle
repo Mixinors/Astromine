@@ -11,9 +11,9 @@ project.ext.setDefaultApis = {
     useAsApi("com.terraformersmc.terraform-api:terraform-shapes-api-v1:${shapes_version}")
 
     // Blade
-    useAsCompileOnly("dev.vini2003:hammer:${hammer_version}")
-    useAsRuntime("dev.vini2003:hammer:${hammer_version}")
-    include("dev.vini2003:hammer:${hammer_version}")
+    useAsCompileOnly("com.github.vini2003:hammer:${hammer_version}")
+    useAsRuntimeOnly("com.github.vini2003:hammer:${hammer_version}")
+    include("com.github.vini2003:hammer:${hammer_version}")
 
     // Patchouli
     useAsApi("vazkii.patchouli:Patchouli:${patchouli_version}")
@@ -26,7 +26,7 @@ project.ext.setDefaultApis = {
 
     // Cloth Config
     useAsCompileOnly("me.shedaniel.cloth:cloth-config:${cloth_config_api_version}")
-    useAsRuntime("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_api_version}")
+    useAsRuntimeOnly("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_api_version}")
 
     // RoughlyEnoughItems
     useAsApiOptionally("me.shedaniel:RoughlyEnoughItems-fabric:${roughly_enough_items_version}")
@@ -52,5 +52,5 @@ project.ext.setDefaultApis = {
 
 project.ext.setRuntimeTestMods = {
     // DataBreaker
-    // useAsRuntime("com.github.SuperCoder7979:databreaker:${databreaker_version}")
+    // useAsRuntimeOnly("com.github.SuperCoder7979:databreaker:${databreaker_version}")
 }
