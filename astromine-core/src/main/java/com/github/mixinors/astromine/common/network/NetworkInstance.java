@@ -24,7 +24,6 @@
 
 package com.github.mixinors.astromine.common.network;
 
-import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -44,7 +43,7 @@ import java.util.stream.Collectors;
  * and {@link NetworkMemberNode}s, representing a simple
  * network structure.
  */
-public final class NetworkInstance implements Tickable {
+public final class NetworkInstance {
 	public static final NetworkInstance EMPTY = new NetworkInstance();
 
 	public final Set<NetworkMemberNode> members = Sets.newConcurrentHashSet();
@@ -127,7 +126,7 @@ public final class NetworkInstance implements Tickable {
 	}
 
 	/** Override behavior to tick network via our {@link NetworkType}. */
-	@Override
+	// TODO: Ticking stuff
 	public void tick() {
 		this.type.tick(this);
 	}

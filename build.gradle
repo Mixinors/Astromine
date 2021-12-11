@@ -118,7 +118,7 @@ allprojects {
             include(dep)
         }
         dependencies.ext.useAsRuntime = { dep ->
-            modRuntime(dep) {
+            modRuntimeOnly(dep) {
                 if (!dep.contains("net.fabricmc.fabric-api")) {
                     exclude group: "net.fabricmc.fabric-api"
                 }
