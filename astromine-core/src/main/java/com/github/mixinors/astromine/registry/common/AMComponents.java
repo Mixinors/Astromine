@@ -87,19 +87,17 @@ public class AMComponents implements WorldComponentInitializer, ChunkComponentIn
 
 	@Override
 	public void registerItemComponentFactories(ItemComponentFactoryRegistry registry) {
-		/*TODO: Yeet components
 		registry.register(
 				item -> item instanceof FluidVolumeItem,
 				FLUID_INVENTORY_COMPONENT,
 				stack -> SimpleFluidComponent.of(FluidVolume.of(0L, ((FluidVolumeItem) stack.getItem()).getSize(), Fluids.EMPTY))
 		);
 
-		registry.register(
+		registry.registerFor(
 			item -> item == AMItems.SPACE_SUIT_CHESTPLATE.get(),
 			AMComponents.FLUID_INVENTORY_COMPONENT,
 			stack -> SimpleFluidComponent.of(FluidVolume.of(AMConfig.get().spaceSuitFluid, Fluids.EMPTY))
 		);
-		 */
 	}
 
 	@Override

@@ -24,13 +24,21 @@
 
 package com.github.mixinors.astromine.common.world.generation.space;
 
+import com.github.mixinors.astromine.common.noise.OctaveNoiseSampler;
+import com.github.mixinors.astromine.common.noise.OpenSimplexNoise;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
+import com.github.mixinors.astromine.registry.common.AMConfig;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.util.Unit;
 import net.minecraft.util.dynamic.RegistryLookupCodec;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.*;
+import net.minecraft.world.ChunkRegion;
+import net.minecraft.world.HeightLimitView;
+import net.minecraft.world.Heightmap;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil;
@@ -43,12 +51,7 @@ import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
 import net.minecraft.world.gen.random.AtomicSimpleRandom;
 import net.minecraft.world.gen.random.ChunkRandom;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-
-import com.github.mixinors.astromine.common.noise.OctaveNoiseSampler;
-import com.github.mixinors.astromine.common.noise.OpenSimplexNoise;
-import com.github.mixinors.astromine.registry.common.AMConfig;
+import net.minecraft.world.gen.random.RandomSeed;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -81,14 +84,28 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 		return withSeedCommon(seed);
 	}
 
+	private static final MultiNoiseUtil.NoiseValuePoint POINT = new MultiNoiseUtil.NoiseValuePoint(
+			0, // space is cold
+			0, // there is no humidity in space
+			0, // nor are there continents
+			0, // or erosion for that matter
+			0, // and there's certainly no depth
+			0 // or weirdness, well, maybe a little
+	);
 	@Override
 	public MultiNoiseUtil.MultiNoiseSampler getMultiNoiseSampler() {
-		return (i, j, k) -> MultiNoiseUtil.createNoiseValuePoint(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+		return (i, j, k) -> POINT;
 	}
 
 	@Override
-	public void carve(ChunkRegion chunkRegion, long seed, BiomeAccess biomeAccess, StructureAccessor structureAccessor, Chunk chunk, GenerationStep.Carver generationStep) {
-
+	public void carve(ChunkRegion chunkRegion,
+			long seed,
+			BiomeAccess biomeAccess,
+			StructureAccessor structureAccessor,
+			Chunk chunk,
+			GenerationStep.Carver generationStep) {
+		// hm yes today I will carve space
+		// yes yes hyperspace lanes in astromine when
 	}
 
 	public ChunkGenerator withSeedCommon(long seed) {
@@ -97,7 +114,6 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 
 	@Override
 	public void buildSurface(ChunkRegion region, StructureAccessor structures, Chunk chunk) {
-
 	}
 
 	@Override
@@ -112,6 +128,23 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 
 	@Override
 	public CompletableFuture<Chunk> populateNoise(Executor executor, Blender blender, StructureAccessor structureAccessor, Chunk chunk) {
+		return CompletableFuture.supplyAsync(() -> {
+			populateNoise(structureAccessor, chunk);
+			return Unit.INSTANCE;
+		}, executor).thenApply(unit -> chunk);
+	}
+
+	@Override
+	public int getSeaLevel() {
+		return 0; // there is no ocean in space, or maybe all of space is an ocean, after all we travel in space with space SHIPs :tiny_potato:
+	}
+
+	@Override
+	public int getMinimumY() {
+		return 0;
+	}
+
+	public void populateNoise(StructureAccessor accessor, Chunk chunk) {
 		BlockPos.Mutable mutable = new BlockPos.Mutable();
 		int x1 = chunk.getPos().getStartX();
 		int z1 = chunk.getPos().getStartZ();
@@ -121,7 +154,7 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 		int z2 = chunk.getPos().getEndZ();
 		int y2 = 256;
 
-		ChunkRandom random = new ChunkRandom(new AtomicSimpleRandom(0L));
+		ChunkRandom random = new ChunkRandom(new AtomicSimpleRandom(RandomSeed.getSeed()));
 		random.setPopulationSeed(this.seed, x1, z1);
 
 		for (int x = x1; x <= x2; ++x) {
@@ -138,17 +171,6 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 				}
 			}
 		}
-		return CompletableFuture.completedFuture(chunk);
-	}
-
-	@Override
-	public int getSeaLevel() {
-		return 0;
-	}
-
-	@Override
-	public int getMinimumY() {
-		return 512;
 	}
 
 	// Desmos: \frac{10}{x+1}-\frac{10}{x-257}-0.155
