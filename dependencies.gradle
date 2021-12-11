@@ -7,8 +7,6 @@ project.ext.setDefaultApis = {
     useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-item:${cardinal_components_version}")
     useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-world:${cardinal_components_version}")
 
-    modImplementation("net.fabricmc:fabric-language-kotlin:${fabric_language_kotlin_version}")
-
     // Shapes
     useAsApi("com.terraformersmc.terraform-api:terraform-shapes-api-v1:${shapes_version}")
 

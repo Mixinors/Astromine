@@ -89,11 +89,10 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 		return (float) (damageMultiplier * astromine_getGravity() * astromine_getGravity());
 	}
 
-
 	@Inject(at = @At("HEAD"), method = "tick()V")
 	void onTick(CallbackInfo callbackInformation) {
 		Entity entity = (Entity) (Object) this;
-		
+
 		if (entity.world.isClient) {
 			return;
 		}
