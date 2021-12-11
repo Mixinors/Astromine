@@ -35,11 +35,7 @@ import net.minecraft.world.gen.feature.StructureFeature;
 public class MeteorFeature extends StructureFeature<DefaultFeatureConfig> {
 
 	public MeteorFeature(Codec<DefaultFeatureConfig> codec) {
-		super(codec, getStructureStartFactory());
-	}
-
-	public static StructureGeneratorFactory<DefaultFeatureConfig> getStructureStartFactory() {
-		return StructureGeneratorFactory.simple(StructureGeneratorFactory.checkForBiomeOnTop(Heightmap.Type.WORLD_SURFACE_WG), MeteorFeature::addPieces);
+		super(codec, StructureGeneratorFactory.simple(StructureGeneratorFactory.checkForBiomeOnTop(Heightmap.Type.WORLD_SURFACE_WG), MeteorFeature::addPieces));
 	}
 
 	private static void addPieces(StructurePiecesCollector collector, StructurePiecesGenerator.Context<DefaultFeatureConfig> context) {
