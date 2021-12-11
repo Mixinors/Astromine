@@ -28,6 +28,7 @@ import com.github.mixinors.astromine.common.block.ConveyorBlock;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
+import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.property.Properties;
@@ -37,9 +38,8 @@ import com.github.mixinors.astromine.common.block.entity.DownVerticalConveyorBlo
 import com.github.mixinors.astromine.common.conveyor.Conveyor;
 import com.github.mixinors.astromine.common.conveyor.ConveyorTypes;
 
-public class DownwardVerticalConveyorBlockEntityRenderer extends BlockEntityRenderer<DownVerticalConveyorBlockEntity> implements ConveyorRenderer<DownVerticalConveyorBlockEntity> {
-	public DownwardVerticalConveyorBlockEntityRenderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher) {
-		super(blockEntityRenderDispatcher);
+public class DownwardVerticalConveyorBlockEntityRenderer implements BlockEntityRenderer<DownVerticalConveyorBlockEntity>, ConveyorRenderer<DownVerticalConveyorBlockEntity> {
+	public DownwardVerticalConveyorBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
 	}
 
 	@Override

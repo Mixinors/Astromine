@@ -30,7 +30,7 @@ import com.github.mixinors.astromine.common.util.VectorUtils;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.vini2003.blade.common.miscellaneous.Color;
-import me.shedaniel.architectury.extensions.BlockEntityExtension;
+import dev.architectury.hooks.block.BlockEntityHooks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -45,7 +45,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Tickable, BlockEntityExtension {
+public class HoloBridgeProjectorBlockEntity extends BlockEntity {
 	public ArrayList<Vec3f> segments = null;
 
 	public Color color = Color.of("0x7e80cad4");
@@ -59,8 +59,8 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	private boolean hasCheckedChild = false;
 	private boolean hasCheckedParent = false;
 
-	public HoloBridgeProjectorBlockEntity() {
-		super(AMBlockEntityTypes.HOLOGRAPHIC_BRIDGE.get());
+	public HoloBridgeProjectorBlockEntity(BlockPos blockPos, BlockState blockState) {
+		super(AMBlockEntityTypes.HOLOGRAPHIC_BRIDGE.get(), blockPos, blockState);
 	}
 
 	public boolean hasChild() {
@@ -223,7 +223,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			this.parent.setChild(null);
 
 			if (!world.isClient) {
-				this.parent.syncData();
+				BlockEntityHooks.syncData(this.parent);
 			}
 		}
 
@@ -248,7 +248,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	}
 
 	@Override
-	public void readNbt(BlockState state, @NotNull NbtCompound tag) {
+	public void readNbt(@NotNull NbtCompound tag) {
 		if (tag.contains("child_position")) {
 			this.childPosition = BlockPos.fromLong(tag.getLong("child_position"));
 		}
@@ -262,12 +262,22 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 
 			color = new Color(colorTag.getFloat("r"), colorTag.getFloat("g"), colorTag.getFloat("b"), colorTag.getFloat("a"));
 		}
+		
+		if (world.isClient) {
+			this.destroyBridge();
 
-		super.readNbt(state, tag);
+			if (this.childPosition != null) {
+				this.child = (HoloBridgeProjectorBlockEntity) this.world.getBlockEntity(this.childPosition);
+			}
+
+			this.buildBridge();
+		}
+
+		super.readNbt(tag);
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
+	public void writeNbt(NbtCompound tag) {
 		if (this.child != null) {
 			tag.putLong("child_position", this.child.getPos().asLong());
 		} else if (this.childPosition != null) {
@@ -288,20 +298,14 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 
 		tag.put("color", colorTag);
 
-		return super.writeNbt(tag);
+		super.writeNbt(tag);
 	}
 
 	@Override
 	public void loadClientData(BlockState state, NbtCompound tag) {
 		this.readNbt(state, tag);
 
-		this.destroyBridge();
-
-		if (this.childPosition != null) {
-			this.child = (HoloBridgeProjectorBlockEntity) this.world.getBlockEntity(this.childPosition);
-		}
-
-		this.buildBridge();
+		
 	}
 
 	@Override

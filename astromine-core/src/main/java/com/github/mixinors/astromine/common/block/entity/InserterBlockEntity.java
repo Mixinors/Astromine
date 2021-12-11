@@ -28,7 +28,6 @@ import com.github.mixinors.astromine.common.component.general.base.ItemComponent
 import com.github.mixinors.astromine.common.component.general.SimpleItemComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMConfig;
-import me.shedaniel.architectury.extensions.BlockEntityExtension;
 
 import net.minecraft.block.AbstractFurnaceBlock;
 import net.minecraft.block.BlockState;
@@ -45,7 +44,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
@@ -57,18 +55,18 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class InserterBlockEntity extends BlockEntity implements BlockEntityExtension, Tickable {
+public class InserterBlockEntity extends BlockEntity {
 	protected int position = 0;
 	protected int prevPosition = 0;
 
 	private final ItemComponent itemComponent = createItemComponent();
 
-	public InserterBlockEntity() {
-		super(AMBlockEntityTypes.INSERTER.get());
+	public InserterBlockEntity(BlockPos blockPos, BlockState blockState) {
+		super(AMBlockEntityTypes.INSERTER.get(), blockPos, blockState);
 	}
 
-	public InserterBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
-		super(type.get());
+	public InserterBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
+		super(type.get(), blockPos, blockState);
 	}
 
 	public ItemComponent createItemComponent() {
@@ -82,7 +80,7 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityExten
 			}
 		}.withListener((inventory) -> {
 			if (world != null && !world.isClient) {
-				sendPacket((ServerWorld) world, writeNbt(new NbtCompound()));
+				sendPacket((ServerWorld) world);
 			}
 		});
 	}
@@ -212,9 +210,8 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityExten
 		return prevPosition;
 	}
 
-	protected void sendPacket(ServerWorld w, NbtCompound tag) {
-		tag.putString("id", BlockEntityType.getId(getType()).toString());
-		sendPacket(w, new BlockEntityUpdateS2CPacket(getPos(), 127, tag));
+	protected void sendPacket(ServerWorld w) {
+		sendPacket(w, BlockEntityUpdateS2CPacket.create(this));
 	}
 
 	protected void sendPacket(ServerWorld w, BlockEntityUpdateS2CPacket packet) {
@@ -227,8 +224,8 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityExten
 	}
 
 	@Override
-	public void readNbt(BlockState state, NbtCompound compoundTag) {
-		super.readNbt(state, compoundTag);
+	public void readNbt(NbtCompound compoundTag) {
+		super.readNbt(compoundTag);
 
 		getItemComponent().setFirst(ItemStack.fromNbt(compoundTag.getCompound("stack")));
 
@@ -236,26 +233,11 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityExten
 	}
 
 	@Override
-	public void loadClientData(BlockState state, NbtCompound compoundTag) {
-		readNbt(state, compoundTag);
-	}
-
-	@Override
-	public NbtCompound writeNbt(NbtCompound compoundTag) {
+	public void writeNbt(NbtCompound compoundTag) {
 		compoundTag.put("stack", getItemComponent().getFirst().writeNbt(new NbtCompound()));
 
 		compoundTag.putInt("position", position);
 
-		return super.writeNbt(compoundTag);
-	}
-
-	@Override
-	public NbtCompound toInitialChunkDataNbt() {
-		return writeNbt(new NbtCompound());
-	}
-
-	@Override
-	public NbtCompound saveClientData(NbtCompound compoundTag) {
-		return writeNbt(compoundTag);
+		super.writeNbt(compoundTag);
 	}
 }

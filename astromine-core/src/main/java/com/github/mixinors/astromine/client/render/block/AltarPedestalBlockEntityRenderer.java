@@ -30,6 +30,7 @@ import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
+import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.json.ModelTransformation;
@@ -44,13 +45,12 @@ import com.github.mixinors.astromine.common.block.entity.AltarPedestalBlockEntit
 
 import java.util.Random;
 
-public class AltarPedestalBlockEntityRenderer extends BlockEntityRenderer<AltarPedestalBlockEntity> {
+public class AltarPedestalBlockEntityRenderer implements BlockEntityRenderer<AltarPedestalBlockEntity> {
 	public static final float HOVER_HEIGHT = 0f;
 	private final ItemRenderer itemRenderer = ClientUtils.getInstance().getItemRenderer();
 	private final Random random = new Random();
 
-	public AltarPedestalBlockEntityRenderer(BlockEntityRenderDispatcher dispatcher) {
-		super(dispatcher);
+	public AltarPedestalBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class AltarPedestalBlockEntityRenderer extends BlockEntityRenderer<AltarP
 		ItemStack stack = entity.getItemComponent().getFirst();
 		int j = stack.isEmpty() ? 187 : Item.getRawId(stack.getItem()) + stack.getDamage();
 		this.random.setSeed(j);
-		BakedModel bakedModel = this.itemRenderer.getModel(stack, entity.getWorld(), null);
+		BakedModel bakedModel = this.itemRenderer.getModel(stack, entity.getWorld(), null, 0);
 		boolean bl = bakedModel.hasDepth();
 		int k = 1;
 		float h = 0.25F;

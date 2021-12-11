@@ -26,21 +26,23 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMSoundEvents;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 
 import com.github.mixinors.astromine.common.block.entity.base.AbstractConveyableBlockEntity;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.function.Supplier;
 
 public class SplitterBlockEntity extends AbstractConveyableBlockEntity {
-	public SplitterBlockEntity() {
-		super(AMBlockEntityTypes.SPLITTER);
+	public SplitterBlockEntity(BlockPos blockPos, BlockState blockState) {
+		super(AMBlockEntityTypes.SPLITTER, blockPos, blockState);
 	}
 
-	public SplitterBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
-		super(type);
+	public SplitterBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
+		super(type, blockPos, blockState);
 	}
 
 	@Override

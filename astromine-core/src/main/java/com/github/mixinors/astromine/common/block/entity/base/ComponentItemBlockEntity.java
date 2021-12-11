@@ -26,10 +26,12 @@ package com.github.mixinors.astromine.common.block.entity.base;
 
 import com.github.mixinors.astromine.common.component.general.provider.ItemComponentProvider;
 import com.github.mixinors.astromine.registry.common.AMComponents;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.util.capability.inventory.ComponentInventoryProvider;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.function.Supplier;
 
@@ -41,8 +43,8 @@ public abstract class ComponentItemBlockEntity extends ComponentBlockEntity impl
 	private final ItemComponent itemComponent = createItemComponent();
 
 	/** Instantiates a {@link ComponentItemBlockEntity}. */
-	public ComponentItemBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
-		super(type);
+	public ComponentItemBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
+		super(type, blockPos, blockState);
 
 		addComponent(AMComponents.ITEM_INVENTORY_COMPONENT, getItemComponent());
 		getItemComponent().updateListeners();

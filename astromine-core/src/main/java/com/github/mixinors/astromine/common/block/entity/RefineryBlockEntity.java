@@ -41,6 +41,7 @@ import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvid
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.RefiningRecipe;
+import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -53,8 +54,8 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 
 	private Optional<RefiningRecipe> optionalRecipe = Optional.empty();
 
-	public RefineryBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
-		super(type);
+	public RefineryBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
+		super(type, blockPos, blockState);
 	}
 
 	@Override
@@ -143,22 +144,22 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
+	public void writeNbt(NbtCompound tag) {
 		tag.putDouble("progress", progress);
 		tag.putInt("limit", limit);
-		return super.writeNbt(tag);
+		super.writeNbt(tag);
 	}
 
 	@Override
-	public void readNbt(BlockState state, @NotNull NbtCompound tag) {
+	public void readNbt(@NotNull NbtCompound tag) {
 		progress = tag.getDouble("progress");
 		limit = tag.getInt("limit");
-		super.readNbt(state, tag);
+		super.readNbt(tag);
 	}
 
 	public static class Primitive extends RefineryBlockEntity {
-		public Primitive() {
-			super(AMBlockEntityTypes.PRIMITIVE_REFINERY);
+		public Primitive(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.PRIMITIVE_REFINERY, blockPos, blockState);
 		}
 
 		@Override
@@ -183,8 +184,8 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 	}
 
 	public static class Basic extends RefineryBlockEntity {
-		public Basic() {
-			super(AMBlockEntityTypes.BASIC_REFINERY);
+		public Basic(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.BASIC_REFINERY, blockPos, blockState);
 		}
 
 		@Override
@@ -209,8 +210,8 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 	}
 
 	public static class Advanced extends RefineryBlockEntity {
-		public Advanced() {
-			super(AMBlockEntityTypes.ADVANCED_REFINERY);
+		public Advanced(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.ADVANCED_REFINERY, blockPos, blockState);
 		}
 
 		@Override
@@ -235,8 +236,8 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 	}
 
 	public static class Elite extends RefineryBlockEntity {
-		public Elite() {
-			super(AMBlockEntityTypes.ELITE_REFINERY);
+		public Elite(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.ELITE_REFINERY, blockPos, blockState);
 		}
 
 		@Override

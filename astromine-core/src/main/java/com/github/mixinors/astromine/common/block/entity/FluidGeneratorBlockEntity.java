@@ -42,6 +42,7 @@ import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvid
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.FluidGeneratingRecipe;
+import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -54,7 +55,7 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 
 	private Optional<FluidGeneratingRecipe> optionalRecipe = Optional.empty();
 
-	public FluidGeneratorBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
+	public FluidGeneratorBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type);
 	}
 
@@ -139,22 +140,22 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
+	public void writeNbt(NbtCompound tag) {
 		tag.putDouble("progress", progress);
 		tag.putInt("limit", limit);
-		return super.writeNbt(tag);
+		super.writeNbt(tag);
 	}
 
 	@Override
-	public void readNbt(BlockState state, @NotNull NbtCompound tag) {
+	public void readNbt(@NotNull NbtCompound tag) {
 		progress = tag.getDouble("progress");
 		limit = tag.getInt("limit");
-		super.readNbt(state, tag);
+		super.readNbt(tag);
 	}
 
 	public static class Primitive extends FluidGeneratorBlockEntity {
-		public Primitive() {
-			super(AMBlockEntityTypes.PRIMITIVE_LIQUID_GENERATOR);
+		public Primitive(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.PRIMITIVE_LIQUID_GENERATOR, blockPos, blockState);
 		}
 
 		@Override
@@ -179,8 +180,8 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 	}
 
 	public static class Basic extends FluidGeneratorBlockEntity {
-		public Basic() {
-			super(AMBlockEntityTypes.BASIC_LIQUID_GENERATOR);
+		public Basic(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.BASIC_LIQUID_GENERATOR, blockPos, blockState);
 		}
 
 		@Override
@@ -205,8 +206,8 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 	}
 
 	public static class Advanced extends FluidGeneratorBlockEntity {
-		public Advanced() {
-			super(AMBlockEntityTypes.ADVANCED_LIQUID_GENERATOR);
+		public Advanced(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.ADVANCED_LIQUID_GENERATOR, blockPos, blockState);
 		}
 
 		@Override
@@ -231,8 +232,8 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 	}
 
 	public static class Elite extends FluidGeneratorBlockEntity {
-		public Elite() {
-			super(AMBlockEntityTypes.ELITE_LIQUID_GENERATOR);
+		public Elite(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.ELITE_LIQUID_GENERATOR, blockPos, blockState);
 		}
 
 		@Override

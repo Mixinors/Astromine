@@ -46,8 +46,8 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	protected int horizontalPosition;
 	protected int prevHorizontalPosition;
 
-	public DownVerticalConveyorBlockEntity() {
-		super(AMBlockEntityTypes.DOWNWARD_VERTICAL_CONVEYOR);
+	public DownVerticalConveyorBlockEntity(BlockPos blockPos, BlockState blockState) {
+		super(AMBlockEntityTypes.DOWNWARD_VERTICAL_CONVEYOR, blockPos, blockState);
 	}
 
 	@Override
@@ -197,7 +197,7 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound compoundTag) {
+	public void writeNbt(NbtCompound compoundTag) {
 		compoundTag.putBoolean("down_vertical", down);
 
 		compoundTag.putInt("horizontalPosition", horizontalPosition);

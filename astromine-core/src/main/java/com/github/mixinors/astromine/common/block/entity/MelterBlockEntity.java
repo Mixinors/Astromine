@@ -44,6 +44,7 @@ import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.MeltingRecipe;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
+import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -56,8 +57,8 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 
 	private Optional<MeltingRecipe> optionalRecipe = Optional.empty();
 
-	public MelterBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
-		super(type);
+	public MelterBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
+		super(type, blockPos, blockState);
 	}
 
 	@Override
@@ -168,22 +169,22 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 	}
 	
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
+	public void writeNbt(NbtCompound tag) {
 		tag.putDouble("progress", progress);
 		tag.putInt("limit", limit);
-		return super.writeNbt(tag);
+		super.writeNbt(tag);
 	}
 	
 	@Override
-	public void readNbt(BlockState state, @NotNull NbtCompound tag) {
+	public void readNbt(@NotNull NbtCompound tag) {
 		progress = tag.getDouble("progress");
 		limit = tag.getInt("limit");
-		super.readNbt(state, tag);
+		super.readNbt(tag);
 	}
 
 	public static class Primitive extends MelterBlockEntity {
-		public Primitive() {
-			super(AMBlockEntityTypes.PRIMITIVE_MELTER);
+		public Primitive(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.PRIMITIVE_MELTER, blockPos, blockState);
 		}
 
 		@Override
@@ -208,8 +209,8 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 	}
 
 	public static class Basic extends MelterBlockEntity {
-		public Basic() {
-			super(AMBlockEntityTypes.BASIC_MELTER);
+		public Basic(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.BASIC_MELTER, blockPos, blockState);
 		}
 
 		@Override
@@ -234,8 +235,8 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 	}
 
 	public static class Advanced extends MelterBlockEntity {
-		public Advanced() {
-			super(AMBlockEntityTypes.ADVANCED_MELTER);
+		public Advanced(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.ADVANCED_MELTER, blockPos, blockState);
 		}
 
 		@Override
@@ -260,8 +261,8 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 	}
 
 	public static class Elite extends MelterBlockEntity {
-		public Elite() {
-			super(AMBlockEntityTypes.ELITE_MELTER);
+		public Elite(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.ELITE_MELTER, blockPos, blockState);
 		}
 
 		@Override

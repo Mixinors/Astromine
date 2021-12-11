@@ -28,6 +28,7 @@ import com.github.mixinors.astromine.common.component.general.*;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 
@@ -38,14 +39,15 @@ import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
+import net.minecraft.util.math.BlockPos;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
 import java.util.function.Supplier;
 
 public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
-	public CapacitorBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
-		super(type);
+	public CapacitorBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
+		super(type, blockPos, blockState);
 	}
 
 	@Override
@@ -85,8 +87,8 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 	}
 
 	public static class Primitive extends CapacitorBlockEntity {
-		public Primitive() {
-			super(AMBlockEntityTypes.PRIMITIVE_CAPACITOR);
+		public Primitive(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.PRIMITIVE_CAPACITOR, blockPos, blockState);
 		}
 
 		@Override
@@ -106,8 +108,8 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 	}
 
 	public static class Basic extends CapacitorBlockEntity {
-		public Basic() {
-			super(AMBlockEntityTypes.BASIC_CAPACITOR);
+		public Basic(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.BASIC_CAPACITOR, blockPos, blockState);
 		}
 
 		@Override
@@ -127,8 +129,8 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 	}
 
 	public static class Advanced extends CapacitorBlockEntity {
-		public Advanced() {
-			super(AMBlockEntityTypes.ADVANCED_CAPACITOR);
+		public Advanced(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.ADVANCED_CAPACITOR, blockPos, blockState);
 		}
 
 		@Override
@@ -148,8 +150,8 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 	}
 
 	public static class Elite extends CapacitorBlockEntity {
-		public Elite() {
-			super(AMBlockEntityTypes.ELITE_CAPACITOR);
+		public Elite(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.ELITE_CAPACITOR, blockPos, blockState);
 		}
 
 		@Override
@@ -169,8 +171,8 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 	}
 
 	public static class Creative extends CapacitorBlockEntity {
-		public Creative() {
-			super(AMBlockEntityTypes.CREATIVE_CAPACITOR);
+		public Creative(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.CREATIVE_CAPACITOR, blockPos, blockState);
 		}
 
 		@Override

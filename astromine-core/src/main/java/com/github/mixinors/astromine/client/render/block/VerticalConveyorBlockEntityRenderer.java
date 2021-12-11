@@ -24,19 +24,17 @@
 
 package com.github.mixinors.astromine.client.render.block;
 
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
-import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.ItemStack;
-
 import com.github.mixinors.astromine.common.block.entity.VerticalConveyorBlockEntity;
 import com.github.mixinors.astromine.common.conveyor.Conveyor;
 import com.github.mixinors.astromine.common.conveyor.ConveyorTypes;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.block.entity.BlockEntityRenderer;
+import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.ItemStack;
 
-public class VerticalConveyorBlockEntityRenderer extends BlockEntityRenderer<VerticalConveyorBlockEntity> implements ConveyorRenderer<VerticalConveyorBlockEntity> {
-	public VerticalConveyorBlockEntityRenderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher) {
-		super(blockEntityRenderDispatcher);
+public class VerticalConveyorBlockEntityRenderer implements BlockEntityRenderer<VerticalConveyorBlockEntity>, ConveyorRenderer<VerticalConveyorBlockEntity> {
+	public VerticalConveyorBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
 	}
 
 	@Override

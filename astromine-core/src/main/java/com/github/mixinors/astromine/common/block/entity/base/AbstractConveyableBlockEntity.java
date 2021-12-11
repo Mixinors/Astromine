@@ -55,8 +55,8 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 	boolean left = false;
 	boolean right = false;
 	
-	public AbstractConveyableBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
-		super(type);
+	public AbstractConveyableBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
+		super(type, blockPos, blockState);
 	}
 
 	@Override
@@ -266,7 +266,7 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 	protected void sendPacket(ServerWorld world, NbtCompound tag) {
 		tag.putString("id", BlockEntityType.getId(getType()).toString());
 
-		sendPacket(world, new BlockEntityUpdateS2CPacket(getPos(), 127, tag));
+		sendPacket(world, BlockEntityUpdateS2CPacket.create(this));
 	}
 
 	protected void sendPacket(ServerWorld world, BlockEntityUpdateS2CPacket packet) {
@@ -291,7 +291,7 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound compoundTag) {
+	public void writeNbt(NbtCompound compoundTag) {
 		compoundTag.put("leftStack", getItemComponent().getFirst().writeNbt(new NbtCompound()));
 		compoundTag.put("rightStack", getItemComponent().getSecond().writeNbt(new NbtCompound()));
 

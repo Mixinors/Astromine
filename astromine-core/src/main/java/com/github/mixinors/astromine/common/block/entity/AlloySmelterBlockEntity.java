@@ -44,6 +44,7 @@ import com.github.mixinors.astromine.common.recipe.AlloySmeltingRecipe;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
+import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -58,8 +59,8 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 
 	private Optional<AlloySmeltingRecipe> optionalRecipe = Optional.empty();
 
-	public AlloySmelterBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
-		super(type);
+	public AlloySmelterBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
+		super(type, blockPos, blockState);
 	}
 
 	@Override
@@ -172,22 +173,22 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
+	public void writeNbt(NbtCompound tag) {
 		tag.putDouble("progress", progress);
 		tag.putInt("limit", limit);
-		return super.writeNbt(tag);
+		super.writeNbt(tag);
 	}
 
 	@Override
-	public void readNbt(BlockState state, @NotNull NbtCompound tag) {
+	public void readNbt(@NotNull NbtCompound tag) {
 		progress = tag.getDouble("progress");
 		limit = tag.getInt("limit");
-		super.readNbt(state, tag);
+		super.readNbt(tag);
 	}
 
 	public static class Primitive extends AlloySmelterBlockEntity {
-		public Primitive() {
-			super(AMBlockEntityTypes.PRIMITIVE_ALLOY_SMELTER);
+		public Primitive(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.PRIMITIVE_ALLOY_SMELTER, blockPos, blockState);
 		}
 
 		@Override
@@ -207,8 +208,8 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 	}
 
 	public static class Basic extends AlloySmelterBlockEntity {
-		public Basic() {
-			super(AMBlockEntityTypes.BASIC_ALLOY_SMELTER);
+		public Basic(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.BASIC_ALLOY_SMELTER, blockPos, blockState);
 		}
 
 		@Override
@@ -228,8 +229,8 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 	}
 
 	public static class Advanced extends AlloySmelterBlockEntity {
-		public Advanced() {
-			super(AMBlockEntityTypes.ADVANCED_ALLOY_SMELTER);
+		public Advanced(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.ADVANCED_ALLOY_SMELTER, blockPos, blockState);
 		}
 
 		@Override
@@ -249,8 +250,8 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 	}
 
 	public static class Elite extends AlloySmelterBlockEntity {
-		public Elite() {
-			super(AMBlockEntityTypes.ELITE_ALLOY_SMELTER);
+		public Elite(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.ELITE_ALLOY_SMELTER, blockPos, blockState);
 		}
 
 		@Override

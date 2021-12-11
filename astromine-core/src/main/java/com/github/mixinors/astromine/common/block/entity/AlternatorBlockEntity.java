@@ -26,23 +26,25 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMSoundEvents;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 
 import com.github.mixinors.astromine.common.block.entity.base.AbstractConveyableBlockEntity;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.function.Supplier;
 
 public class AlternatorBlockEntity extends AbstractConveyableBlockEntity {
 	public boolean right = false;
 
-	public AlternatorBlockEntity() {
-		super(AMBlockEntityTypes.ALTERNATOR);
+	public AlternatorBlockEntity(BlockPos blockPos, BlockState blockState) {
+		super(AMBlockEntityTypes.ALTERNATOR, blockPos, blockState);
 	}
 
-	public AlternatorBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
-		super(type);
+	public AlternatorBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
+		super(type, blockPos, blockState);
 	}
 
 	@Override

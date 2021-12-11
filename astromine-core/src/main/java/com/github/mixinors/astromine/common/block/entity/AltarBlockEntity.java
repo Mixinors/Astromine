@@ -42,7 +42,6 @@ import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Lazy;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
@@ -58,7 +57,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class AltarBlockEntity extends BlockEntity implements InventoryFromItemComponent, Tickable, BlockEntityExtension {
+public class AltarBlockEntity extends BlockEntity implements InventoryFromItemComponent, BlockEntityExtension {
 	public static final int CRAFTING_TIME = 100;
 	public static final int CRAFTING_TIME_SPIN = 80;
 	public static final int CRAFTING_TIME_FALL = 60;
@@ -76,8 +75,8 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 			syncData();
 	});
 
-	public AltarBlockEntity() {
-		super(AMBlockEntityTypes.ALTAR.get());
+	public AltarBlockEntity(BlockPos pos, BlockState state) {
+		super(AMBlockEntityTypes.ALTAR.get(), pos, state);
 	}
 
 	@Override
@@ -98,7 +97,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 		return InventoryFromItemComponent.super.getStack(slot);
 	}
 
-	@Override
+	// TODO tick from block class
 	public void tick() {
 		yAge++;
 		lastAgeAddition = spinAge;
@@ -211,17 +210,18 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 
 	@Override
 	public void loadClientData(BlockState state, NbtCompound compoundTag) {
-		readNbt(state, compoundTag);
+		readNbt(compoundTag);
 	}
 
 	@Override
 	public NbtCompound saveClientData(NbtCompound compoundTag) {
-		return writeNbt(compoundTag);
+		writeNbt(compoundTag);
+		return compoundTag;
 	}
 
 	@Override
-	public void readNbt(BlockState state, NbtCompound tag) {
-		super.readNbt(state, tag);
+	public void readNbt(NbtCompound tag) {
+		super.readNbt(tag);
 		inventory.readFromNbt(tag);
 		craftingTicks = tag.getInt("craftingTicks");
 		if (craftingTicksDelta == 0 || craftingTicks == 0 || craftingTicks == 1)
@@ -236,7 +236,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
+	protected void writeNbt(NbtCompound tag) {
 		inventory.writeToNbt(tag);
 		tag.putInt("craftingTicks", craftingTicks);
 		NbtList childrenTag = new NbtList();
@@ -244,7 +244,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 			childrenTag.add(NbtLong.of(child.get().getPos().asLong()));
 		}
 		tag.put("children", childrenTag);
-		return super.writeNbt(tag);
+		super.writeNbt(tag);
 	}
 
 	public void onRemove() {

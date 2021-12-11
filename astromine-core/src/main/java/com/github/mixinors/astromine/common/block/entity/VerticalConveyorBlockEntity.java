@@ -50,12 +50,12 @@ public class VerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	protected int horizontalPosition;
 	protected int prevHorizontalPosition;
 
-	public VerticalConveyorBlockEntity() {
-		super(AMBlockEntityTypes.VERTICAL_CONVEYOR);
+	public VerticalConveyorBlockEntity(BlockPos blockPos, BlockState blockState) {
+		super(AMBlockEntityTypes.VERTICAL_CONVEYOR, blockPos, blockState);
 	}
 
-	public VerticalConveyorBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
-		super(type);
+	public VerticalConveyorBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
+		super(type, blockPos, blockState);
 	}
 
 	@Override
@@ -187,7 +187,7 @@ public class VerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound compoundTag) {
+	public void writeNbt(NbtCompound compoundTag) {
 		compoundTag.putBoolean("up", up);
 
 		compoundTag.putInt("horizontalPosition", horizontalPosition);

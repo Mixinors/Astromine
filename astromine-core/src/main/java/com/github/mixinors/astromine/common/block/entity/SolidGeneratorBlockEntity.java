@@ -45,6 +45,7 @@ import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
+import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
@@ -54,8 +55,8 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 	public double progress = 0;
 	public int limit = 100;
 
-	public SolidGeneratorBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
-		super(type);
+	public SolidGeneratorBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
+		super(type, blockPos, blockState);
 	}
 
 	@Override
@@ -156,24 +157,24 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
+	public void writeNbt(NbtCompound tag) {
 		tag.putDouble("progress", progress);
 		tag.putInt("limit", limit);
 		tag.putDouble("available", available);
-		return super.writeNbt(tag);
+		super.writeNbt(tag);
 	}
 
 	@Override
-	public void readNbt(BlockState state, @NotNull NbtCompound tag) {
+	public void readNbt(@NotNull NbtCompound tag) {
 		progress = tag.getDouble("progress");
 		limit = tag.getInt("limit");
 		available = tag.getDouble("available");
-		super.readNbt(state, tag);
+		super.readNbt(tag);
 	}
 
 	public static class Primitive extends SolidGeneratorBlockEntity {
-		public Primitive() {
-			super(AMBlockEntityTypes.PRIMITIVE_SOLID_GENERATOR);
+		public Primitive(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.PRIMITIVE_SOLID_GENERATOR, blockPos, blockState);
 		}
 
 		@Override
@@ -193,8 +194,8 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 	}
 
 	public static class Basic extends SolidGeneratorBlockEntity {
-		public Basic() {
-			super(AMBlockEntityTypes.BASIC_SOLID_GENERATOR);
+		public Basic(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.BASIC_SOLID_GENERATOR, blockPos, blockState);
 		}
 
 		@Override
@@ -214,8 +215,8 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 	}
 
 	public static class Advanced extends SolidGeneratorBlockEntity {
-		public Advanced() {
-			super(AMBlockEntityTypes.ADVANCED_SOLID_GENERATOR);
+		public Advanced(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.ADVANCED_SOLID_GENERATOR, blockPos, blockState);
 		}
 
 		@Override
@@ -235,8 +236,8 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 	}
 
 	public static class Elite extends SolidGeneratorBlockEntity {
-		public Elite() {
-			super(AMBlockEntityTypes.ELITE_SOLID_GENERATOR);
+		public Elite(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.ELITE_SOLID_GENERATOR, blockPos, blockState);
 		}
 
 		@Override

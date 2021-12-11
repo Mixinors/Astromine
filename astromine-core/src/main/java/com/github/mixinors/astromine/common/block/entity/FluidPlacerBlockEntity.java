@@ -50,8 +50,8 @@ import org.jetbrains.annotations.NotNull;
 public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
 	private long cooldown = 0L;
 
-	public FluidPlacerBlockEntity() {
-		super(AMBlockEntityTypes.FLUID_INSERTER);
+	public FluidPlacerBlockEntity(BlockPos blockPos, BlockState blockState) {
+		super(AMBlockEntityTypes.FLUID_INSERTER, blockPos, blockState);
 	}
 
 	@Override
@@ -133,14 +133,14 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
+	public void writeNbt(NbtCompound tag) {
 		tag.putLong("cooldown", cooldown);
-		return super.writeNbt(tag);
+		super.writeNbt(tag);
 	}
 
 	@Override
-	public void readNbt(BlockState state, @NotNull NbtCompound tag) {
+	public void readNbt(@NotNull NbtCompound tag) {
 		cooldown = tag.getLong("cooldown");
-		super.readNbt(state, tag);
+		super.readNbt(tag);
 	}
 }

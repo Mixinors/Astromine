@@ -25,11 +25,10 @@
 package com.github.mixinors.astromine.client.render.block;
 
 import com.github.mixinors.astromine.common.util.ClientUtils;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
+import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.json.ModelTransformation;
@@ -42,12 +41,12 @@ import com.github.mixinors.astromine.common.block.entity.AltarBlockEntity;
 
 import java.util.Random;
 
-public class AltarBlockEntityRenderer extends BlockEntityRenderer<AltarBlockEntity> {
+// AK9 WAS HERE
+public class AltarBlockEntityRenderer implements BlockEntityRenderer<AltarBlockEntity> {
 	private final ItemRenderer itemRenderer = ClientUtils.getInstance().getItemRenderer();
 	private final Random random = new Random();
 
-	public AltarBlockEntityRenderer(BlockEntityRenderDispatcher dispatcher) {
-		super(dispatcher);
+	public AltarBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
 	}
 
 	@Override
@@ -58,7 +57,7 @@ public class AltarBlockEntityRenderer extends BlockEntityRenderer<AltarBlockEnti
 		ItemStack stack = entity.getItemComponent().getFirst();
 		int j = stack.isEmpty() ? 187 : Item.getRawId(stack.getItem()) + stack.getDamage();
 		this.random.setSeed(j);
-		BakedModel bakedModel = this.itemRenderer.getModel(stack, entity.getWorld(), null);
+		BakedModel bakedModel = this.itemRenderer.getModel(stack, entity.getWorld(), null, 0);
 		boolean bl = bakedModel.hasDepth();
 		int k = 1;
 		float h = 0.25F;

@@ -26,10 +26,12 @@ package com.github.mixinors.astromine.common.block.entity.base;
 
 import com.github.mixinors.astromine.common.component.general.provider.EnergyComponentProvider;
 import com.github.mixinors.astromine.registry.common.AMComponents;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.util.capability.energy.ComponentEnergyProvider;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.function.Supplier;
 
@@ -41,8 +43,8 @@ public abstract class ComponentEnergyBlockEntity extends ComponentBlockEntity im
 	private final EnergyComponent energyComponent = createEnergyComponent();
 
 	/** Instantiates a {@link ComponentEnergyBlockEntity}. */
-	public ComponentEnergyBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
-		super(type);
+	public ComponentEnergyBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
+		super(type, blockPos, blockState);
 
 		addComponent(AMComponents.ENERGY_INVENTORY_COMPONENT, getEnergyComponent());
 		getEnergyComponent().updateListeners();

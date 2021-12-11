@@ -30,7 +30,6 @@ import com.github.mixinors.astromine.common.component.general.SimpleItemComponen
 import com.github.mixinors.astromine.common.util.StackUtils;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMConfig;
-import me.shedaniel.architectury.extensions.BlockEntityExtension;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -40,7 +39,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Pair;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
@@ -52,7 +50,7 @@ import com.github.mixinors.astromine.common.conveyor.ConveyorTypes;
 
 import java.util.function.Supplier;
 
-public class ConveyorBlockEntity extends ComponentItemBlockEntity implements ConveyorConveyable, BlockEntityExtension, Tickable {
+public class ConveyorBlockEntity extends ComponentItemBlockEntity implements ConveyorConveyable {
 	protected boolean front = false;
 	protected boolean down = false;
 	protected boolean across = false;
@@ -60,12 +58,12 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 	protected int position = 0;
 	protected int prevPosition = 0;
 
-	public ConveyorBlockEntity() {
-		super(AMBlockEntityTypes.CONVEYOR);
+	public ConveyorBlockEntity(BlockPos blockPos, BlockState blockState) {
+		super(AMBlockEntityTypes.CONVEYOR, blockPos, blockState);
 	}
 
-	public ConveyorBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
-		super(type);
+	public ConveyorBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
+		super(type, blockPos, blockState);
 	}
 
 	@Override
@@ -246,7 +244,7 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 		markDirty();
 
 		if (!world.isClient) {
-			sendPacket((ServerWorld) world, writeNbt(new NbtCompound()));
+			sendPacket((ServerWorld) world);
 		}
 	}
 
@@ -260,7 +258,7 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 		markDirty();
 
 		if (!world.isClient) {
-			sendPacket((ServerWorld) world, writeNbt(new NbtCompound()));
+			sendPacket((ServerWorld) world);
 		}
 	}
 
@@ -274,7 +272,7 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 		markDirty();
 
 		if (!world.isClient) {
-			sendPacket((ServerWorld) world, writeNbt(new NbtCompound()));
+			sendPacket((ServerWorld) world);
 		}
 	}
 
@@ -298,9 +296,8 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 		return prevPosition;
 	}
 
-	protected void sendPacket(ServerWorld w, NbtCompound tag) {
-		tag.putString("id", BlockEntityType.getId(getType()).toString());
-		sendPacket(w, new BlockEntityUpdateS2CPacket(getPos(), 127, tag));
+	protected void sendPacket(ServerWorld w) {
+		sendPacket(w, BlockEntityUpdateS2CPacket.create(this));
 	}
 
 	protected void sendPacket(ServerWorld world, BlockEntityUpdateS2CPacket packet) {
@@ -308,8 +305,8 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 	}
 
 	@Override
-	public void readNbt(BlockState state, NbtCompound compoundTag) {
-		super.readNbt(state, compoundTag);
+	public void readNbt(NbtCompound compoundTag) {
+		super.readNbt(compoundTag);
 
 		front = compoundTag.getBoolean("front");
 		down = compoundTag.getBoolean("down");
@@ -322,7 +319,7 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound compoundTag) {
+	public void writeNbt(NbtCompound compoundTag) {
 		compoundTag.putBoolean("front", front);
 		compoundTag.putBoolean("down", down);
 		compoundTag.putBoolean("across", across);
@@ -332,21 +329,6 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 
 		compoundTag.put("stack", getItemComponent().getFirst().writeNbt(new NbtCompound()));
 
-		return super.writeNbt(compoundTag);
-	}
-
-	@Override
-	public NbtCompound toInitialChunkDataNbt() {
-		return writeNbt(new NbtCompound());
-	}
-
-	@Override
-	public void loadClientData(BlockState state, NbtCompound compoundTag) {
-		readNbt(state, compoundTag);
-	}
-
-	@Override
-	public NbtCompound saveClientData(NbtCompound compoundTag) {
-		return writeNbt(compoundTag);
+		super.writeNbt(compoundTag);
 	}
 }

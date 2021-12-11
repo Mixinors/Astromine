@@ -26,9 +26,11 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMSoundEvents;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentBlockEntity;
@@ -38,12 +40,12 @@ import com.github.mixinors.astromine.common.conveyor.ConveyorTypes;
 import java.util.function.Supplier;
 
 public class ShredderBlockEntity extends ComponentBlockEntity implements Conveyable {
-	public ShredderBlockEntity() {
-		super(AMBlockEntityTypes.INCINERATOR);
+	public ShredderBlockEntity(BlockPos blockPos, BlockState blockState) {
+		super(AMBlockEntityTypes.INCINERATOR, blockPos, blockState);
 	}
 
-	public ShredderBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
-		super(type);
+	public ShredderBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
+		super(type, blockPos, blockState);
 	}
 
 	@Override

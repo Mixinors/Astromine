@@ -25,22 +25,22 @@
 package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import me.shedaniel.architectury.extensions.BlockEntityExtension;
 
+import me.shedaniel.architectury.hooks.BlockEntityHooks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.component.general.SimpleItemComponent;
 import com.github.mixinors.astromine.common.component.general.compatibility.InventoryFromItemComponent;
+import org.jetbrains.annotations.ApiStatus;
 
-public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFromItemComponent, Tickable, BlockEntityExtension {
+public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFromItemComponent {
 	public BlockPos parentPos;
 	private int spinAge;
 	private int lastSpinAddition;
@@ -52,8 +52,8 @@ public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFr
 		}
 	});
 
-	public AltarPedestalBlockEntity() {
-		super(AMBlockEntityTypes.ALTAR_PEDESTAL.get());
+	public AltarPedestalBlockEntity(BlockPos blockPos, BlockState blockState) {
+		super(AMBlockEntityTypes.ALTAR_PEDESTAL.get(), blockPos, blockState);
 	}
 
 	@Override
@@ -107,18 +107,8 @@ public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFr
 	}
 
 	@Override
-	public void loadClientData(BlockState blockState, NbtCompound compoundTag) {
-		readNbt(null, compoundTag);
-	}
-
-	@Override
-	public NbtCompound saveClientData(NbtCompound compoundTag) {
-		return writeNbt(compoundTag);
-	}
-
-	@Override
-	public void readNbt(BlockState state, NbtCompound tag) {
-		super.readNbt(state, tag);
+	public void readNbt(NbtCompound tag) {
+		super.readNbt(tag);
 		inventory.readFromNbt(tag);
 		if (tag.contains("parent"))
 			parentPos = BlockPos.fromLong(tag.getLong("parent"));
@@ -126,11 +116,11 @@ public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFr
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
+	public void writeNbt(NbtCompound tag) {
 		inventory.writeToNbt(tag);
 		if (parentPos != null)
 			tag.putLong("parent", parentPos.asLong());
-		return super.writeNbt(tag);
+		super.writeNbt(tag);
 	}
 
 	public void onRemove() {

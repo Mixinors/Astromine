@@ -27,6 +27,8 @@ package com.github.mixinors.astromine.registry.common;
 import com.github.mixinors.astromine.common.block.entity.*;
 import com.github.mixinors.astromine.common.block.entity.base.AbstractConveyableBlockEntity;
 import me.shedaniel.architectury.registry.RegistrySupplier;
+import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -154,8 +156,8 @@ public class AMBlockEntityTypes {
 	 * @return Registered BlockEntityType
 	 */
 	@SafeVarargs
-	public static <B extends BlockEntity> RegistrySupplier<BlockEntityType<B>> register(String name, Supplier<B> supplier, Supplier<Block>... supportedBlocks) {
-		return AMCommon.registry(Registry.BLOCK_ENTITY_TYPE_KEY).registerSupplied(AMCommon.id(name), () -> BlockEntityType.Builder.create(supplier, resolveBlocks(supportedBlocks)).build(null));
+	public static <B extends BlockEntity> RegistrySupplier<BlockEntityType<B>> register(String name, FabricBlockEntityTypeBuilder.Factory<B> supplier, Supplier<Block>... supportedBlocks) {
+		return AMCommon.registry(Registry.BLOCK_ENTITY_TYPE_KEY).registerSupplied(AMCommon.id(name), () -> FabricBlockEntityTypeBuilder.create(supplier, resolveBlocks(supportedBlocks)).build(null));
 	}
 
 	private static Block[] resolveBlocks(Supplier<Block>[] supportedBlocks) {

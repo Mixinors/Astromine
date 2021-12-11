@@ -47,8 +47,8 @@ import org.jetbrains.annotations.NotNull;
 public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
 	private long cooldown = 0L;
 
-	public BlockPlacerBlockEntity() {
-		super(AMBlockEntityTypes.BLOCK_PLACER);
+	public BlockPlacerBlockEntity(BlockPos blockPos, BlockState blockState) {
+		super(AMBlockEntityTypes.BLOCK_PLACER, blockPos, blockState);
 	}
 
 	@Override
@@ -125,14 +125,14 @@ public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity imple
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
+	public void writeNbt(NbtCompound tag) {
 		tag.putLong("cooldown", cooldown);
-		return super.writeNbt(tag);
+		super.writeNbt(tag);
 	}
 
 	@Override
-	public void readNbt(BlockState state, @NotNull NbtCompound tag) {
+	public void readNbt(@NotNull NbtCompound tag) {
 		cooldown = tag.getLong("cooldown");
-		super.readNbt(state, tag);
+		super.readNbt(tag);
 	}
 }

@@ -26,21 +26,23 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.component.general.SimpleDirectionalItemComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentItemBlockEntity;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.function.Supplier;
 
 public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
-	public BufferBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
-		super(type);
+	public BufferBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
+		super(type, blockPos, blockState);
 	}
 
 	public static class Primitive extends BufferBlockEntity {
-		public Primitive() {
-			super(AMBlockEntityTypes.PRIMITIVE_BUFFER);
+		public Primitive(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.PRIMITIVE_BUFFER, blockPos, blockState);
 		}
 
 		@Override
@@ -50,8 +52,8 @@ public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 	}
 
 	public static class Basic extends BufferBlockEntity {
-		public Basic() {
-			super(AMBlockEntityTypes.BASIC_BUFFER);
+		public Basic(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.BASIC_BUFFER, blockPos, blockState);
 		}
 
 		@Override
@@ -61,8 +63,8 @@ public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 	}
 
 	public static class Advanced extends BufferBlockEntity {
-		public Advanced() {
-			super(AMBlockEntityTypes.ADVANCED_BUFFER);
+		public Advanced(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.ADVANCED_BUFFER, blockPos, blockState);
 		}
 
 		@Override
@@ -72,8 +74,8 @@ public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 	}
 
 	public static class Elite extends BufferBlockEntity {
-		public Elite() {
-			super(AMBlockEntityTypes.ELITE_BUFFER);
+		public Elite(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.ELITE_BUFFER, blockPos, blockState);
 		}
 
 		@Override
@@ -83,8 +85,8 @@ public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 	}
 
 	public static class Creative extends BufferBlockEntity {
-		public Creative() {
-			super(AMBlockEntityTypes.CREATIVE_BUFFER);
+		public Creative(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.CREATIVE_BUFFER, blockPos, blockState);
 		}
 
 		@Override

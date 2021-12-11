@@ -42,6 +42,7 @@ import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvid
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.ElectrolyzingRecipe;
+import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -54,8 +55,8 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 
 	private Optional<ElectrolyzingRecipe> optionalRecipe = Optional.empty();
 
-	public ElectrolyzerBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
-		super(type);
+	public ElectrolyzerBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
+		super(type, blockPos, blockState);
 	}
 
 	@Override
@@ -145,22 +146,22 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
+	public void writeNbt(NbtCompound tag) {
 		tag.putDouble("progress", progress);
 		tag.putInt("limit", limit);
-		return super.writeNbt(tag);
+		super.writeNbt(tag);
 	}
 
 	@Override
-	public void readNbt(BlockState state, @NotNull NbtCompound tag) {
+	public void readNbt(@NotNull NbtCompound tag) {
 		progress = tag.getDouble("progress");
 		limit = tag.getInt("limit");
-		super.readNbt(state, tag);
+		super.readNbt(tag);
 	}
 
 	public static class Primitive extends ElectrolyzerBlockEntity {
-		public Primitive() {
-			super(AMBlockEntityTypes.PRIMITIVE_ELECTROLYZER);
+		public Primitive(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.PRIMITIVE_ELECTROLYZER, blockPos, blockState);
 		}
 
 		@Override
@@ -185,8 +186,8 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 	}
 
 	public static class Basic extends ElectrolyzerBlockEntity {
-		public Basic() {
-			super(AMBlockEntityTypes.BASIC_ELECTROLYZER);
+		public Basic(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.BASIC_ELECTROLYZER, blockPos, blockState);
 		}
 
 		@Override
@@ -211,8 +212,8 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 	}
 
 	public static class Advanced extends ElectrolyzerBlockEntity {
-		public Advanced() {
-			super(AMBlockEntityTypes.ADVANCED_ELECTROLYZER);
+		public Advanced(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.ADVANCED_ELECTROLYZER, blockPos, blockState);
 		}
 
 		@Override
@@ -237,8 +238,8 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 	}
 
 	public static class Elite extends ElectrolyzerBlockEntity {
-		public Elite() {
-			super(AMBlockEntityTypes.ELITE_ELECTROLYZER);
+		public Elite(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.ELITE_ELECTROLYZER, blockPos, blockState);
 		}
 
 		@Override

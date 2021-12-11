@@ -29,6 +29,7 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
+import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
@@ -38,9 +39,8 @@ import com.github.mixinors.astromine.client.model.InserterArmModel;
 import com.github.mixinors.astromine.common.block.InserterBlock;
 import com.github.mixinors.astromine.common.block.entity.InserterBlockEntity;
 
-public class InserterBlockEntityRenderer extends BlockEntityRenderer<InserterBlockEntity> implements ConveyorRenderer<InserterBlockEntity> {
-	public InserterBlockEntityRenderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher) {
-		super(blockEntityRenderDispatcher);
+public class InserterBlockEntityRenderer implements BlockEntityRenderer<InserterBlockEntity>, ConveyorRenderer<InserterBlockEntity> {
+	public InserterBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
 	}
 
 	@Override

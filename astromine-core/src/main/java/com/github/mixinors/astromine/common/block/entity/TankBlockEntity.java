@@ -34,6 +34,7 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentFluidItemBlockEntity;
@@ -48,8 +49,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Supplier;
 
 public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity implements TierProvider, FluidSizeProvider, SpeedProvider {
-	public TankBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
-		super(type);
+	public TankBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
+		super(type, blockPos, blockState);
 	}
 
 	private Fluid filter = Fluids.EMPTY;
@@ -92,21 +93,21 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
+	public void writeNbt(NbtCompound tag) {
 		tag.putString("fluid", Registry.FLUID.getId(filter).toString());
-		return super.writeNbt(tag);
+		super.writeNbt(tag);
 	}
 
 	@Override
-	public void readNbt(BlockState state, @NotNull NbtCompound tag) {
+	public void readNbt(@NotNull NbtCompound tag) {
 		Registry.FLUID.getOrEmpty(new Identifier(tag.getString("fluid"))).ifPresent(filter -> this.filter = filter);
 
-		super.readNbt(state, tag);
+		super.readNbt(tag);
 	}
 
 	public static class Primitive extends TankBlockEntity {
-		public Primitive() {
-			super(AMBlockEntityTypes.PRIMITIVE_TANK);
+		public Primitive(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.PRIMITIVE_TANK, blockPos, blockState);
 		}
 
 		@Override
@@ -126,8 +127,8 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 	}
 
 	public static class Basic extends TankBlockEntity {
-		public Basic() {
-			super(AMBlockEntityTypes.BASIC_TANK);
+		public Basic(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.BASIC_TANK, blockPos, blockState);
 		}
 
 		@Override
@@ -147,8 +148,8 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 	}
 
 	public static class Advanced extends TankBlockEntity {
-		public Advanced() {
-			super(AMBlockEntityTypes.ADVANCED_TANK);
+		public Advanced(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.ADVANCED_TANK, blockPos, blockState);
 		}
 
 		@Override
@@ -168,8 +169,8 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 	}
 
 	public static class Elite extends TankBlockEntity {
-		public Elite() {
-			super(AMBlockEntityTypes.ELITE_TANK);
+		public Elite(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.ELITE_TANK, blockPos, blockState);
 		}
 
 		@Override
@@ -189,8 +190,8 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 	}
 
 	public static class Creative extends TankBlockEntity {
-		public Creative() {
-			super(AMBlockEntityTypes.CREATIVE_TANK);
+		public Creative(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.CREATIVE_TANK, blockPos, blockState);
 		}
 
 		@Override
