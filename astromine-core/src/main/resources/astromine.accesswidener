@@ -35,4 +35,5 @@ accessible method net/minecraft/recipe/RecipeManager getAllOfType (Lnet/minecraf
 mutable field net/minecraft/client/render/RenderPhase beginAction Ljava/lang/Runnable;
 mutable field net/minecraft/client/render/RenderPhase endAction Ljava/lang/Runnable;
 mutable field net/minecraft/server/network/ServerPlayNetworkHandler floatingTicks I
+accessible field net/minecraft/server/world/ThreadedAnvilChunkStorage chunkGenerator Lnet/minecraft/world/gen/chunk/ChunkGenerator;
 mutable field net/minecraft/server/world/ThreadedAnvilChunkStorage chunkGenerator Lnet/minecraft/world/gen/chunk/ChunkGenerator;
