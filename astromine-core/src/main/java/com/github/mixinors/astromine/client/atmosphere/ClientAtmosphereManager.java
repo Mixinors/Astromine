@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.client.atmosphere;
 
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 
@@ -51,23 +51,23 @@ public class ClientAtmosphereManager {
 
 	/** Returns a {@link PacketByteBuf} for when a gas is added. */
 	public static PacketByteBuf ofGasAdded(BlockPos gasPosition, FluidVolume gasVolume) {
-		CompoundTag gasPayload = new CompoundTag();
+		NbtCompound gasPayload = new NbtCompound();
 		gasPayload.putLong("gasPosition", gasPosition.asLong());
 		gasPayload.put("gasVolume", gasVolume.toTag());
 
 		PacketByteBuf gasBuffer = new PacketByteBuf(Unpooled.buffer());
-		gasBuffer.writeCompoundTag(gasPayload);
+		gasBuffer.writeNbt(gasPayload);
 
 		return gasBuffer;
 	}
 
 	/** Returns a {@link PacketByteBuf} for when a gas is removed. */
 	public static PacketByteBuf ofGasRemoved(BlockPos gasPosition) {
-		CompoundTag gasPayload = new CompoundTag();
+		NbtCompound gasPayload = new NbtCompound();
 		gasPayload.putLong("gasPosition", gasPosition.asLong());
 
 		PacketByteBuf gasBuffer = new PacketByteBuf(Unpooled.buffer());
-		gasBuffer.writeCompoundTag(gasPayload);
+		gasBuffer.writeNbt(gasPayload);
 
 		return gasBuffer;
 	}
@@ -79,7 +79,7 @@ public class ClientAtmosphereManager {
 
 	/** Handles gas addition {@link PacketByteBuf}s. */
 	public static void onGasAdded(PacketByteBuf gasBuffer) {
-		CompoundTag gasPayload = gasBuffer.readCompoundTag();
+		NbtCompound gasPayload = gasBuffer.readNbt();
 		long gasPosition = gasPayload.getLong("gasPosition");
 
 		FluidVolume gasVolume = FluidVolume.fromTag(gasPayload.getCompound("gasVolume"));
@@ -89,7 +89,7 @@ public class ClientAtmosphereManager {
 
 	/** Handles gas removal {@link PacketByteBuf}s. */
 	public static void onGasRemoved(PacketByteBuf gasBuffer) {
-		CompoundTag gasPayload = gasBuffer.readCompoundTag();
+		NbtCompound gasPayload = gasBuffer.readNbt();
 		long gasPosition = gasPayload.getLong("gasPosition");
 
 		VOLUMES.remove(gasPosition);

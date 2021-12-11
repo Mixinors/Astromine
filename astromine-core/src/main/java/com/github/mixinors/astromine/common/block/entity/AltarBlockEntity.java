@@ -34,15 +34,14 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.LongTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtLong;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Lazy;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
@@ -58,7 +57,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class AltarBlockEntity extends BlockEntity implements InventoryFromItemComponent, Tickable, BlockEntityExtension {
+public class AltarBlockEntity extends BlockEntity implements InventoryFromItemComponent, BlockEntityExtension {
 	public static final int CRAFTING_TIME = 100;
 	public static final int CRAFTING_TIME_SPIN = 80;
 	public static final int CRAFTING_TIME_FALL = 60;
@@ -76,8 +75,8 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 			syncData();
 	});
 
-	public AltarBlockEntity() {
-		super(AMBlockEntityTypes.ALTAR.get());
+	public AltarBlockEntity(BlockPos pos, BlockState state) {
+		super(AMBlockEntityTypes.ALTAR.get(), pos, state);
 	}
 
 	@Override
@@ -98,7 +97,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 		return InventoryFromItemComponent.super.getStack(slot);
 	}
 
-	@Override
+	// TODO tick from block class
 	public void tick() {
 		yAge++;
 		lastAgeAddition = spinAge;
@@ -210,41 +209,42 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 	}
 
 	@Override
-	public void loadClientData(BlockState state, CompoundTag compoundTag) {
-		fromTag(state, compoundTag);
+	public void loadClientData(BlockState state, NbtCompound compoundTag) {
+		readNbt(compoundTag);
 	}
 
 	@Override
-	public CompoundTag saveClientData(CompoundTag compoundTag) {
-		return toTag(compoundTag);
+	public NbtCompound saveClientData(NbtCompound compoundTag) {
+		writeNbt(compoundTag);
+		return compoundTag;
 	}
 
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
-		super.fromTag(state, tag);
+	public void readNbt(NbtCompound tag) {
+		super.readNbt(tag);
 		inventory.readFromNbt(tag);
 		craftingTicks = tag.getInt("craftingTicks");
 		if (craftingTicksDelta == 0 || craftingTicks == 0 || craftingTicks == 1)
 			craftingTicksDelta = craftingTicks;
 		children.clear();
-		ListTag children = tag.getList("children", NbtType.LONG);
-		for (Tag child : children) {
-			long pos = ((LongTag) child).getLong();
+		NbtList children = tag.getList("children", NbtType.LONG);
+		for (NbtElement child : children) {
+			long pos = ((NbtLong) child).longValue();
 			Lazy<AltarPedestalBlockEntity> lazy = new Lazy<>(() -> (AltarPedestalBlockEntity) world.getBlockEntity(BlockPos.fromLong(pos)));
 			this.children.add(lazy::get);
 		}
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	protected void writeNbt(NbtCompound tag) {
 		inventory.writeToNbt(tag);
 		tag.putInt("craftingTicks", craftingTicks);
-		ListTag childrenTag = new ListTag();
+		NbtList childrenTag = new NbtList();
 		for (Supplier<AltarPedestalBlockEntity> child : children) {
-			childrenTag.add(LongTag.of(child.get().getPos().asLong()));
+			childrenTag.add(NbtLong.of(child.get().getPos().asLong()));
 		}
 		tag.put("children", childrenTag);
-		return super.toTag(tag);
+		super.writeNbt(tag);
 	}
 
 	public void onRemove() {

@@ -33,20 +33,19 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import net.minecraft.client.render.SkyProperties;
+import net.minecraft.client.render.DimensionEffects;
 import net.minecraft.util.Identifier;
 
 import com.github.mixinors.astromine.common.callback.SkyPropertiesCallback;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 
 @Environment(EnvType.CLIENT)
-@Mixin(SkyProperties.class)
+@Mixin(DimensionEffects.class)
 public class SkyPropertiesMixin {
 
 	@Shadow
 	@Final
-	private static Object2ObjectMap<Identifier, SkyProperties> BY_IDENTIFIER;
+	private static Object2ObjectMap<Identifier, DimensionEffects> BY_IDENTIFIER;
 
 	@Inject(method = "<clinit>", at = @At("RETURN"))
 	private static void astromine_init(CallbackInfo info) {

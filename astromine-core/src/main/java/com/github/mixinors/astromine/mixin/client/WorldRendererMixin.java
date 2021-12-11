@@ -136,40 +136,40 @@ public abstract class WorldRendererMixin {
 				float z = bZ - cZ;
 
 				// Bottom
-				consumer.vertex(matrices.peek().getModel(), x, y, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY, bZ))))).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x, y, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY, bZ + 1))))).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY, bZ + 1))))).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY, bZ))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getPositionMatrix(), x, y, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY, bZ))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getPositionMatrix(), x, y, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY, bZ + 1))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getPositionMatrix(), x + 1, y, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY, bZ + 1))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getPositionMatrix(), x + 1, y, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY, bZ))))).light(15728880).next();
 
 				// Top
-				consumer.vertex(matrices.peek().getModel(), x, y + 1, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY + 1, bZ))))).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x, y + 1, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY + 1, bZ + 1))))).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY + 1, bZ + 1))))).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY + 1, bZ))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getPositionMatrix(), x, y + 1, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY + 1, bZ))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getPositionMatrix(), x, y + 1, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY + 1, bZ + 1))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getPositionMatrix(), x + 1, y + 1, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY + 1, bZ + 1))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getPositionMatrix(), x + 1, y + 1, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY + 1, bZ))))).light(15728880).next();
 
 				// Front
-				consumer.vertex(matrices.peek().getModel(), x, y, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY, bZ))))).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x, y + 1, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY + 1, bZ))))).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY + 1, bZ))))).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY, bZ))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getPositionMatrix(), x, y, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY, bZ))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getPositionMatrix(), x, y + 1, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY + 1, bZ))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getPositionMatrix(), x + 1, y + 1, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY + 1, bZ))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getPositionMatrix(), x + 1, y, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY, bZ))))).light(15728880).next();
 
 				// Back
-				consumer.vertex(matrices.peek().getModel(), x, y, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY, bZ + 1))))).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x, y + 1, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY + 1, bZ + 1))))).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY + 1, bZ + 1))))).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY, bZ + 1))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getPositionMatrix(), x, y, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY, bZ + 1))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getPositionMatrix(), x, y + 1, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY + 1, bZ + 1))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getPositionMatrix(), x + 1, y + 1, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY + 1, bZ + 1))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getPositionMatrix(), x + 1, y, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY, bZ + 1))))).light(15728880).next();
 
 				// Left
-				consumer.vertex(matrices.peek().getModel(), x, y, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY, bZ))))).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x, y + 1, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY + 1, bZ))))).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x, y + 1, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY + 1, bZ + 1))))).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x, y, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY, bZ + 1))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getPositionMatrix(), x, y, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY, bZ))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getPositionMatrix(), x, y + 1, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY + 1, bZ))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getPositionMatrix(), x, y + 1, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY + 1, bZ + 1))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getPositionMatrix(), x, y, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY, bZ + 1))))).light(15728880).next();
 
 				// Right
-				consumer.vertex(matrices.peek().getModel(), x + 1, y, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY, bZ))))).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY + 1, bZ))))).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY + 1, bZ + 1))))).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY, bZ + 1))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getPositionMatrix(), x + 1, y, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY, bZ))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getPositionMatrix(), x + 1, y + 1, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY + 1, bZ))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getPositionMatrix(), x + 1, y + 1, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY + 1, bZ + 1))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getPositionMatrix(), x + 1, y, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY, bZ + 1))))).light(15728880).next();
 			}
 		}
 

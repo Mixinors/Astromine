@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.network;
 
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
@@ -34,7 +34,7 @@ import com.google.common.base.Objects;
  * A node for a {@link NetworkMember} of a network.
  *
  * Serialization and deserialization methods are provided for:
- * - {@link CompoundTag} - through {@link #toTag()} and {@link #fromTag(CompoundTag)}.
+ * - {@link NbtCompound} - through {@link #toTag()} and {@link #fromTag(NbtCompound)}.
  */
 public final class NetworkMemberNode {
 	private long pos;
@@ -155,14 +155,14 @@ public final class NetworkMemberNode {
 		return String.format("[%s, %s, %s], %s", getBlockPosition().getX(), getBlockPosition().getY(), getBlockPosition().getY(), getDirection().asString().toUpperCase());
 	}
 
-	/** Deserializes a {@link NetworkMemberNode} from a {@link CompoundTag}. */
-	public static NetworkMemberNode fromTag(CompoundTag tag) {
+	/** Deserializes a {@link NetworkMemberNode} from a {@link NbtCompound}. */
+	public static NetworkMemberNode fromTag(NbtCompound tag) {
 		return of(tag.getLong("pos"), tag.getInt("dir"));
 	}
 
-	/** Serializes a {@link NetworkMemberNode} to a {@link CompoundTag}. */
-	public CompoundTag toTag() {
-		CompoundTag tag = new CompoundTag();
+	/** Serializes a {@link NetworkMemberNode} to a {@link NbtCompound}. */
+	public NbtCompound toTag() {
+		NbtCompound tag = new NbtCompound();
 
 		tag.putLong("pos", pos);
 		tag.putInt("dir", directionId);

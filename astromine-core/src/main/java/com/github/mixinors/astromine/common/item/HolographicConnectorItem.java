@@ -30,7 +30,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
@@ -149,21 +149,21 @@ public class HolographicConnectorItem extends Item {
 
 	private ItemStack unselect(ItemStack stack) {
 		stack = stack.copy();
-		CompoundTag tag = stack.getOrCreateTag();
+		NbtCompound tag = stack.getOrCreateNbt();
 		tag.remove("SelectedConnectorBlock");
 		return stack;
 	}
 
 	private ItemStack selectBlock(ItemStack stack, RegistryKey<World> registryKey, BlockPos pos) {
 		stack = stack.copy();
-		CompoundTag tag = stack.getOrCreateTag();
+		NbtCompound tag = stack.getOrCreateNbt();
 		tag.remove("SelectedConnectorBlock");
 		tag.put("SelectedConnectorBlock", writePos(registryKey, pos));
 		return stack;
 	}
 
 	public Pair<RegistryKey<World>, BlockPos> readBlock(ItemStack stack) {
-		CompoundTag tag = stack.getTag();
+		NbtCompound tag = stack.getNbt();
 		if (tag == null)
 			return null;
 		if (!tag.contains("SelectedConnectorBlock"))
@@ -171,8 +171,8 @@ public class HolographicConnectorItem extends Item {
 		return readPos(tag.getCompound("SelectedConnectorBlock"));
 	}
 
-	private CompoundTag writePos(RegistryKey<World> registryKey, BlockPos pos) {
-		CompoundTag tag = new CompoundTag();
+	private NbtCompound writePos(RegistryKey<World> registryKey, BlockPos pos) {
+		NbtCompound tag = new NbtCompound();
 		tag.putString("World", registryKey.getValue().toString());
 		tag.putInt("X", pos.getX());
 		tag.putInt("Y", pos.getY());
@@ -180,8 +180,8 @@ public class HolographicConnectorItem extends Item {
 		return tag;
 	}
 
-	private Pair<RegistryKey<World>, BlockPos> readPos(CompoundTag tag) {
-		RegistryKey<World> registryKey = RegistryKey.of(Registry.DIMENSION, Identifier.tryParse(tag.getString("World")));
+	private Pair<RegistryKey<World>, BlockPos> readPos(NbtCompound tag) {
+		RegistryKey<World> registryKey = RegistryKey.of(Registry.WORLD_KEY, Identifier.tryParse(tag.getString("World")));
 		int x = tag.getInt("X");
 		int y = tag.getInt("Y");
 		int z = tag.getInt("Z");

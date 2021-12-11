@@ -33,8 +33,8 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidBlock;
+import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
-import net.minecraft.block.MaterialColor;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.fluid.FlowableFluid;
@@ -64,7 +64,7 @@ import org.jetbrains.annotations.Nullable;
  * extra properties.
  */
 public abstract class ExtendedFluid extends FlowableFluid {
-	public static final Material INDUSTRIAL_FLUID_MATERIAL = new FabricMaterialBuilder(MaterialColor.WATER).allowsMovement()
+	public static final Material INDUSTRIAL_FLUID_MATERIAL = new FabricMaterialBuilder(MapColor.WATER_BLUE).allowsMovement()
 			.lightPassesThrough()
 			.destroyedByPiston()
 			.replaceable()
@@ -190,7 +190,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 	/** Returns this fluid's {@link BlockState} representation. */
 	@Override
 	protected BlockState toBlockState(FluidState state) {
-		return block.get().getDefaultState().with(FluidBlock.LEVEL, method_15741(state));
+		return block.get().getDefaultState().with(FluidBlock.LEVEL, getBlockStateLevel(state));
 	}
 
 	/** A builder for {@link ExtendedFluid}s. */

@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.component.general.SimpleDirectionalFluidComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -46,10 +47,10 @@ import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvid
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 
 public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements FluidSizeProvider, EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
-	public VentBlockEntity() {
+	public VentBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.VENT);
 
-		getFluidComponent().getFirst().setSize(AMConfig.get().ventFluid);
+		getFluidComponent().getFirst().setSize(AMConfig.get().ventFluid, blockPos, blockState);
 	}
 
 	@Override

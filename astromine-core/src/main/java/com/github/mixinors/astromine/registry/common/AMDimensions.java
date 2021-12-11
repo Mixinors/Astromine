@@ -39,9 +39,9 @@ public class AMDimensions {
 	private static final Set<RegistryKey<?>> KEYS = new HashSet<>();
 	
 	public static final Identifier EARTH_SPACE_ID = AMCommon.id("earth_space");
-	public static final RegistryKey<DimensionOptions> EARTH_SPACE_OPTIONS = register(Registry.DIMENSION_OPTIONS, EARTH_SPACE_ID);
+	public static final RegistryKey<DimensionOptions> EARTH_SPACE_OPTIONS = register(Registry.DIMENSION_KEY, EARTH_SPACE_ID);
 	public static final RegistryKey<DimensionType> EARTH_SPACE_TYPE_KEY = register(Registry.DIMENSION_TYPE_KEY, EARTH_SPACE_ID);
-	public static final RegistryKey<World> EARTH_SPACE_WORLD = register(Registry.DIMENSION, EARTH_SPACE_ID);
+	public static final RegistryKey<World> EARTH_SPACE_WORLD = register(Registry.WORLD_KEY, EARTH_SPACE_ID);
 	
 	
 	

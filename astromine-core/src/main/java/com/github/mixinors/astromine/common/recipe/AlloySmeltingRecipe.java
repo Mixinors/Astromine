@@ -165,7 +165,7 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 	}
 
 	@Override
-	public ItemStack getRecipeKindIcon() {
+	public ItemStack createIcon() {
 		return new ItemStack(AMBlocks.ADVANCED_ALLOY_SMELTER.get());
 	}
 

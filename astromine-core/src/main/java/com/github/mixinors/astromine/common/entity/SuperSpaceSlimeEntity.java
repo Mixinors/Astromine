@@ -32,7 +32,7 @@ import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.goal.FollowTargetGoal;
+import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.BossBar;
@@ -45,7 +45,7 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvent;
@@ -99,7 +99,7 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 		this.goalSelector.add(3, new SuperSpaceSlimeRandomLookGoal(this));
 		this.goalSelector.add(5, new SuperSpaceSlimeMoveGoal(this));
 
-		this.targetSelector.add(1, new FollowTargetGoal<>(this, PlayerEntity.class, 10, true, false, (livingEntity) -> true));
+		this.targetSelector.add(1, new ActiveTargetGoal<>(this, PlayerEntity.class, 10, true, false, (livingEntity) -> true));
 	}
 
 	@Override
@@ -142,15 +142,15 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 	}
 
 	@Override
-	public void writeCustomDataToTag(CompoundTag tag) {
-		super.writeCustomDataToTag(tag);
+	public void writeCustomDataToNbt(NbtCompound tag) {
+		super.writeCustomDataToNbt(tag);
 		tag.putBoolean("hasExploded", this.hasExploded());
 		tag.putBoolean("wasOnGround", this.onGroundLastTick);
 	}
 
 	@Override
-	public void readCustomDataFromTag(CompoundTag tag) {
-		super.readCustomDataFromTag(tag);
+	public void readCustomDataFromNbt(NbtCompound tag) {
+		super.readCustomDataFromNbt(tag);
 		this.setHasExploded(tag.getBoolean("hasExploded"));
 		this.onGroundLastTick = tag.getBoolean("wasOnGround");
 	}
@@ -243,7 +243,7 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 
 			if (this.squaredDistanceTo(target) < 0.6D * (double) size * 0.6D * (double) size && this.canSee(target) && target.damage(DamageSource.mob(this), this.getDamageAmount())) {
 				this.playSound(SoundEvents.ENTITY_SLIME_ATTACK, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
-				this.dealDamage(this, target);
+				this.applyDamageEffects(this, target);
 			}
 		}
 	}

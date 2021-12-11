@@ -30,8 +30,7 @@ import com.github.mixinors.astromine.common.component.general.base.ItemComponent
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.nbt.CompoundTag;
-
+import net.minecraft.nbt.NbtCompound;
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
 import com.github.mixinors.astromine.common.util.StackUtils;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
@@ -43,6 +42,7 @@ import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.TrituratingRecipe;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
+import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -55,8 +55,8 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 
 	Optional<TrituratingRecipe> optionalRecipe = Optional.empty();
 
-	public TrituratorBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
-		super(type);
+	public TrituratorBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
+		super(type, blockPos, blockState);
 	}
 
 	@Override
@@ -151,22 +151,22 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public void writeNbt(NbtCompound tag) {
 		tag.putDouble("progress", progress);
 		tag.putInt("limit", limit);
-		return super.toTag(tag);
+		super.writeNbt(tag);
 	}
 
 	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+	public void readNbt(@NotNull NbtCompound tag) {
 		progress = tag.getDouble("progress");
 		limit = tag.getInt("limit");
-		super.fromTag(state, tag);
+		super.readNbt(tag);
 	}
 
 	public static class Primitive extends TrituratorBlockEntity {
-		public Primitive() {
-			super(AMBlockEntityTypes.PRIMITIVE_TRITURATOR);
+		public Primitive(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.PRIMITIVE_TRITURATOR, blockPos, blockState);
 		}
 
 		@Override
@@ -186,8 +186,8 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 	}
 
 	public static class Basic extends TrituratorBlockEntity {
-		public Basic() {
-			super(AMBlockEntityTypes.BASIC_TRITURATOR);
+		public Basic(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.BASIC_TRITURATOR, blockPos, blockState);
 		}
 
 		@Override
@@ -207,8 +207,8 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 	}
 
 	public static class Advanced extends TrituratorBlockEntity {
-		public Advanced() {
-			super(AMBlockEntityTypes.ADVANCED_TRITURATOR);
+		public Advanced(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.ADVANCED_TRITURATOR, blockPos, blockState);
 		}
 
 		@Override
@@ -228,8 +228,8 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 	}
 
 	public static class Elite extends TrituratorBlockEntity {
-		public Elite() {
-			super(AMBlockEntityTypes.ELITE_TRITURATOR);
+		public Elite(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.ELITE_TRITURATOR, blockPos, blockState);
 		}
 
 		@Override

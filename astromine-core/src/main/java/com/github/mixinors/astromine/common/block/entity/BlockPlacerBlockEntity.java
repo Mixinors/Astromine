@@ -32,7 +32,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
@@ -47,8 +47,8 @@ import org.jetbrains.annotations.NotNull;
 public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
 	private long cooldown = 0L;
 
-	public BlockPlacerBlockEntity() {
-		super(AMBlockEntityTypes.BLOCK_PLACER);
+	public BlockPlacerBlockEntity(BlockPos blockPos, BlockState blockState) {
+		super(AMBlockEntityTypes.BLOCK_PLACER, blockPos, blockState);
 	}
 
 	@Override
@@ -125,14 +125,14 @@ public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity imple
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public void writeNbt(NbtCompound tag) {
 		tag.putLong("cooldown", cooldown);
-		return super.toTag(tag);
+		super.writeNbt(tag);
 	}
 
 	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+	public void readNbt(@NotNull NbtCompound tag) {
 		cooldown = tag.getLong("cooldown");
-		super.fromTag(state, tag);
+		super.readNbt(tag);
 	}
 }

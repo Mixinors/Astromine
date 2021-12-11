@@ -59,7 +59,7 @@ import java.util.Set;
  * which will be used to build the block's {@link VoxelShape}.
  *
  * Serialization and deserialization methods are provided for:
- * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
+ * - {@link NbtCompound} - through {@link #writeToNbt(NbtCompound)} and {@link #readFromNbt(NbtCompound)}.
  */
 public final class WorldHoloBridgeComponent implements Component {
 	private final Long2ObjectArrayMap<Set<Vec3i>> entries = new Long2ObjectArrayMap<>();
@@ -160,13 +160,13 @@ public final class WorldHoloBridgeComponent implements Component {
 		return shape;
 	}
 
-	/** Serializes this {@link WorldHoloBridgeComponent} to a {@link CompoundTag}. */
+	/** Serializes this {@link WorldHoloBridgeComponent} to a {@link NbtCompound}. */
 	@Override
-	public void writeToNbt(CompoundTag tag) {
-		ListTag dataTag = new ListTag();
+	public void writeToNbt(NbtCompound tag) {
+		NbtList dataTag = new NbtList();
 
 		for (Long2ObjectMap.Entry<Set<Vec3i>> entry : entries.long2ObjectEntrySet()) {
-			CompoundTag pointTag = new CompoundTag();
+			NbtCompound pointTag = new NbtCompound();
 			long[] vecs = new long[entry.getValue().size()];
 			
 			int i = 0;
@@ -175,7 +175,7 @@ public final class WorldHoloBridgeComponent implements Component {
 			}
 
 			pointTag.putLong("Positions", entry.getLongKey());
-			pointTag.put("Vectors", new LongArrayTag(vecs));
+			pointTag.put("Vectors", new NbtLongArray(vecs));
 
 			dataTag.add(pointTag);
 		}
@@ -183,15 +183,15 @@ public final class WorldHoloBridgeComponent implements Component {
 		tag.put("Data", dataTag);
 	}
 
-	/** Deserializes this {@link WorldHoloBridgeComponent} from a {@link CompoundTag}. */
+	/** Deserializes this {@link WorldHoloBridgeComponent} from a {@link NbtCompound}. */
 	@Override
-	public void readFromNbt(CompoundTag tag) {
-		ListTag dataTag = tag.getList("Data", NbtType.COMPOUND);
+	public void readFromNbt(NbtCompound tag) {
+		NbtList dataTag = tag.getList("Data", NbtType.COMPOUND);
 
-		for (Tag pointTag : dataTag) {
-			long[] vecs = ((CompoundTag) pointTag).getLongArray("Vectors");
+		for (NbtElement pointTag : dataTag) {
+			long[] vecs = ((NbtCompound) pointTag).getLongArray("Vectors");
 
-			long pos = ((CompoundTag) pointTag).getLong("Position");
+			long pos = ((NbtCompound) pointTag).getLong("Position");
 
 			for (long vec : vecs) {
 				add(pos, BlockPos.fromLong(vec));

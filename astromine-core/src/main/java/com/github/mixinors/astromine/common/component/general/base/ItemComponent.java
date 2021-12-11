@@ -36,8 +36,8 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Pair;
@@ -62,7 +62,7 @@ import static java.lang.Integer.min;
  * A {@link IdentifiableComponent} representing an item reserve.
  *
  * Serialization and deserialization methods are provided for:
- * - {@link CompoundTag} - through {@link #toTag(CompoundTag)} and {@link #fromTag(CompoundTag)}.
+ * - {@link NbtCompound} - through {@link #toTag(NbtCompound)} and {@link #fromTag(NbtCompound)}.
  */
 public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponent {
 	/** Instantiates an {@link ItemComponent}. */
@@ -260,7 +260,7 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 	/** Asserts whether the given stack can be inserted through the specified
 	 * direction into the supplied slot. */
 	default boolean canInsert(@Nullable Direction direction, ItemStack stack, int slot) {
-		return getStack(slot).isEmpty() || (ItemStack.areItemsEqual(stack, getStack(slot)) && ItemStack.areTagsEqual(stack, getStack(slot)) && getStack(slot).getMaxCount() - getStack(slot).getCount() >= stack.getCount());
+		return getStack(slot).isEmpty() || (ItemStack.areItemsEqual(stack, getStack(slot)) && ItemStack.areNbtEqual(stack, getStack(slot)) && getStack(slot).getMaxCount() - getStack(slot).getCount() >= stack.getCount());
 	}
 
 	/** Asserts whether the given stack can be extracted through the specified
@@ -311,18 +311,18 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 		return InventoryFromItemComponent.of(this);
 	}
 
-	/** Serializes this {@link ItemComponent} to a {@link CompoundTag}. */
+	/** Serializes this {@link ItemComponent} to a {@link NbtCompound}. */
 	@Override
-	default void writeToNbt(CompoundTag tag) {
-		ListTag listTag = new ListTag();
+	default void writeToNbt(NbtCompound tag) {
+		NbtList listTag = new NbtList();
 
 		for (int i = 0; i < getSize(); ++i) {
 			ItemStack stack = getStack(i);
 
-			listTag.add(i, stack.toTag(new CompoundTag()));
+			listTag.add(i, stack.writeNbt(new NbtCompound()));
 		}
 
-		CompoundTag dataTag = new CompoundTag();
+		NbtCompound dataTag = new NbtCompound();
 
 		dataTag.putInt("size", getSize());
 		dataTag.put("stacks", listTag);
@@ -330,19 +330,19 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 		tag.put(AMComponents.ITEM_INVENTORY_COMPONENT.getId().toString(), dataTag);
 	}
 
-	/** Deserializes this {@link ItemComponent} from  a {@link CompoundTag}. */
+	/** Deserializes this {@link ItemComponent} from  a {@link NbtCompound}. */
 	@Override
-	default void readFromNbt(CompoundTag tag) {
-		CompoundTag dataTag = tag.getCompound(AMComponents.ITEM_INVENTORY_COMPONENT.getId().toString());
+	default void readFromNbt(NbtCompound tag) {
+		NbtCompound dataTag = tag.getCompound(AMComponents.ITEM_INVENTORY_COMPONENT.getId().toString());
 
 		int size = dataTag.getInt("size");
 
-		ListTag stacksTag = dataTag.getList("stacks", 10);
+		NbtList stacksTag = dataTag.getList("stacks", 10);
 
 		for (int i = 0; i < size; ++i) {
-			CompoundTag stackTag = stacksTag.getCompound(i);
+			NbtCompound stackTag = stacksTag.getCompound(i);
 
-			setStack(i, ItemStack.fromTag(stackTag));
+			setStack(i, ItemStack.fromNbt(stackTag));
 		}
 	}
 

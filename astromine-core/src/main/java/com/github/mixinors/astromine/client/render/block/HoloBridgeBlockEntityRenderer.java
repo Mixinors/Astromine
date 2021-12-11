@@ -31,18 +31,18 @@ import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
+import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.math.Vec3i;
 
 import com.github.mixinors.astromine.client.render.layer.Layer;
 import com.github.mixinors.astromine.common.block.HoloBridgeProjectorBlock;
 import com.github.mixinors.astromine.common.block.entity.HoloBridgeProjectorBlockEntity;
 
-public class HoloBridgeBlockEntityRenderer extends BlockEntityRenderer<HoloBridgeProjectorBlockEntity> {
-	public HoloBridgeBlockEntityRenderer(BlockEntityRenderDispatcher dispatcher) {
-		super(dispatcher);
+public class HoloBridgeBlockEntityRenderer implements BlockEntityRenderer<HoloBridgeProjectorBlockEntity> {
+	public HoloBridgeBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
 	}
 
 	@Override
@@ -65,8 +65,8 @@ public class HoloBridgeBlockEntityRenderer extends BlockEntityRenderer<HoloBridg
 				return;
 			}
 
-			Vector3f start = entity.segments.get(0);
-			Vector3f end = entity.segments.get(entity.segments.size() - 1);
+			Vec3f start = entity.segments.get(0);
+			Vec3f end = entity.segments.get(entity.segments.size() - 1);
 
 			matrices.push();
 
@@ -81,11 +81,11 @@ public class HoloBridgeBlockEntityRenderer extends BlockEntityRenderer<HoloBridg
 			float zA = end.getZ() - pA.getZ();
 			float zB = start.getZ() - pA.getZ();
 
-			consumer.vertex(matrices.peek().getModel(), xA, yA, zA).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).texture(0, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
-			consumer.vertex(matrices.peek().getModel(), xB, yB, zB).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).texture(0, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
-			consumer.vertex(matrices.peek().getModel(), xB + offsetX, yB, zB + offsetZ).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).texture(1, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(),
+			consumer.vertex(matrices.peek().getPositionMatrix(), xA, yA, zA).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).texture(0, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormalMatrix(), 0, 1, 0).next();
+			consumer.vertex(matrices.peek().getPositionMatrix(), xB, yB, zB).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).texture(0, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormalMatrix(), 0, 1, 0).next();
+			consumer.vertex(matrices.peek().getPositionMatrix(), xB + offsetX, yB, zB + offsetZ).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).texture(1, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormalMatrix(),
 				0, 1, 0).next();
-			consumer.vertex(matrices.peek().getModel(), xA + offsetX, yA, zA + offsetZ).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).texture(1, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(),
+			consumer.vertex(matrices.peek().getPositionMatrix(), xA + offsetX, yA, zA + offsetZ).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).texture(1, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormalMatrix(),
 				0, 1, 0).next();
 
 			matrices.pop();

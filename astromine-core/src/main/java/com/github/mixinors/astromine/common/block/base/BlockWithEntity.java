@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.base;
 
+import com.github.mixinors.astromine.common.block.entity.TickableBlockEntity;
 import me.shedaniel.architectury.registry.MenuRegistry;
 import me.shedaniel.architectury.registry.menu.ExtendedMenuProvider;
 
@@ -32,6 +33,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -40,7 +43,7 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerFactory;
@@ -59,6 +62,7 @@ import net.minecraft.world.World;
 import com.github.mixinors.astromine.common.block.redstone.ComparatorMode;
 import com.github.mixinors.astromine.common.item.base.EnergyVolumeItem;
 import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -116,13 +120,6 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 	 * passed onto {@link ExtendedMenuProvider#saveExtraData(PacketByteBuf)}. */
 	public abstract void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer);
 
-	/** Returns the {@link BlockEntity} this {@link Block}
-	 * will create. */
-	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
-		return createBlockEntity();
-	}
-
 	/** Returns the {@link ScreenHandlerFactory} this {@link Block}
 	 * will use. */
 	public ExtendedMenuProvider createScreenHandlerFactory(ServerPlayerEntity player, BlockState state, World world, BlockPos pos) {
@@ -150,6 +147,7 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 
 	/** Repasses the synced block event to the {@link BlockEntity} in the
 	 * given {@link World} at the given {@link BlockPos}. */
+	@Override
 	public boolean onSyncedBlockEvent(BlockState state, World world, BlockPos pos, int type, int data) {
 		super.onSyncedBlockEvent(state, world, pos, type, data);
 
@@ -188,7 +186,7 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 		return getComparatorMode().getOutput(world.getBlockEntity(pos));
 	}
 
-	/** Override behavior to read {@link BlockEntity} contents from {@link ItemStack} {@link CompoundTag}. */
+	/** Override behavior to read {@link BlockEntity} contents from {@link ItemStack} {@link NbtCompound}. */
 	@Override
 	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		super.onPlaced(world, pos, state, placer, stack);
@@ -196,12 +194,22 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 
 		if (blockEntity != null) {
-			blockEntity.fromTag(state, stack.getOrCreateTag());
-			blockEntity.setPos(pos);
+			blockEntity.readNbt(stack.getOrCreateNbt());
 		}
 	}
 
-	/** Override behavior to write {@link BlockEntity} contents to {@link ItemStack} {@link CompoundTag}. */
+	@Nullable
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+		// We might not need this, but whatever, we are astromine
+		return (world1, blockPos, blockState, blockEntity) -> {
+			if (blockEntity instanceof TickableBlockEntity tickableBlockEntity) {
+				tickableBlockEntity.tick();
+			}
+		};
+	}
+
+	/** Override behavior to write {@link BlockEntity} contents to {@link ItemStack} {@link NbtCompound}. */
 	@Override
 	public List<ItemStack> getDroppedStacks(BlockState state, LootContext.Builder builder) {
 		List<ItemStack> stacks = super.getDroppedStacks(state, builder);
@@ -209,11 +217,11 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 		if (blockEntity != null && saveTagToDroppedItem()) {
 			for (ItemStack drop : stacks) {
 				if (drop.getItem() == asItem()) {
-					CompoundTag tag = blockEntity.toTag(drop.getOrCreateTag());
+					NbtCompound tag = blockEntity.createNbt();
 					tag.remove("x");
 					tag.remove("y");
 					tag.remove("z");
-					drop.setTag(tag);
+					drop.setNbt(tag);
 					break;
 				}
 			}

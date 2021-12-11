@@ -23,8 +23,8 @@ public class AMClientNetworks {
 				PrimitiveRocketEntity rocketEntity = AMEntityTypes.PRIMITIVE_ROCKET.get().create(ClientUtils.getWorld());
 				
 				rocketEntity.setUuid(uuid);
-				rocketEntity.setEntityId(id);
-				rocketEntity.updatePosition(x, y, z);
+				rocketEntity.setId(id);
+				rocketEntity.setPosition(x, y, z);
 				rocketEntity.updateTrackedPosition(x, y, z);
 				
 				ClientUtils.getWorld().addEntity(id, rocketEntity);

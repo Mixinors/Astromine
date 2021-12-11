@@ -26,9 +26,11 @@ package com.github.mixinors.astromine.common.block.entity.base;
 
 import com.github.mixinors.astromine.common.component.general.provider.FluidComponentProvider;
 import com.github.mixinors.astromine.registry.common.AMComponents;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.function.Supplier;
 
@@ -40,8 +42,8 @@ public abstract class ComponentFluidBlockEntity extends ComponentBlockEntity imp
 	private final FluidComponent fluidComponent = createFluidComponent();
 
 	/** Instantiates a {@link ComponentFluidBlockEntity}. */
-	public ComponentFluidBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
-		super(type);
+	public ComponentFluidBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
+		super(type, blockPos, blockState);
 
 		addComponent(AMComponents.FLUID_INVENTORY_COMPONENT, getFluidComponent());
 		getFluidComponent().updateListeners();

@@ -40,8 +40,6 @@ public class AMRenderLayers {
 			register(AMBlocks.ALTAR_PEDESTAL.get(), RenderLayer.getCutout());
 			register(AMBlocks.SPACE_SLIME_BLOCK.get(), RenderLayer.getTranslucent());
 
-			register(AMBlocks.ALTERNATOR.get(), RenderLayer.getCutout());
-			register(AMBlocks.SPLITTER.get(), RenderLayer.getCutout());
 			register(AMBlocks.SHREDDER.get(), RenderLayer.getCutout());
 		});
 	}

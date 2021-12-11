@@ -38,9 +38,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.structure.ShiftableStructurePiece;
 import net.minecraft.structure.StructureManager;
-import net.minecraft.structure.StructurePieceWithDimensions;
 import net.minecraft.util.math.*;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.Heightmap;
@@ -55,7 +55,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-public class MeteorGenerator extends StructurePieceWithDimensions {
+public class MeteorGenerator extends ShiftableStructurePiece {
 
 	private static OpenSimplexNoise noise;
 
@@ -63,7 +63,7 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 		super(AMFeatures.METEOR_STRUCTURE.get(), random, x, 64, z, 16, 16, 16);
 	}
 
-	public MeteorGenerator(StructureManager manager, CompoundTag tag) {
+	public MeteorGenerator(StructureManager manager, NbtCompound tag) {
 		super(AMFeatures.METEOR_STRUCTURE.get(), tag);
 	}
 

@@ -25,7 +25,6 @@ project.ext.setDefaultApis = {
     useAsApi("teamreborn:energy:${tech_reborn_energy_version}")
 
     // Cloth API
-    useAsApi("me.shedaniel.cloth.api:cloth-durability-bar-api-v1:${cloth_api_version}")
     useAsApiOptionally("me.shedaniel.cloth.api:cloth-datagen-api-v1:${cloth_api_version}")
 
     // Cloth Config
@@ -33,7 +32,7 @@ project.ext.setDefaultApis = {
     useAsRuntime("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_api_version}")
 
     // RoughlyEnoughItems
-    useAsApiOptionally("me.shedaniel:RoughlyEnoughItems:${roughly_enough_items_version}")
+    useAsApiOptionally("me.shedaniel:RoughlyEnoughItems-fabric:${roughly_enough_items_version}")
 
     // Magna
     useAsApi("com.github.Draylar:magna:${magna_version}")
@@ -48,9 +47,13 @@ project.ext.setDefaultApis = {
 
     // Architectury API
     useAsApi("me.shedaniel:architectury-fabric:${architectury_api_version}")
+
+    // RoughlyEnoughItems
+    useAsApi "me.shedaniel:RoughlyEnoughItems-api-fabric:${roughly_enough_items_version}"
+    useAsApi "me.shedaniel:RoughlyEnoughItems-fabric:${roughly_enough_items_version}"
 }
 
 project.ext.setRuntimeTestMods = {
     // DataBreaker
-    useAsRuntime("com.github.SuperCoder7979:databreaker:${databreaker_version}")
+    // useAsRuntime("com.github.SuperCoder7979:databreaker:${databreaker_version}")
 }

@@ -32,6 +32,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
+import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -40,19 +41,11 @@ public class AMBlockEntityRenderers {
 	public static void init() {
 		register(AMBlockEntityTypes.HOLOGRAPHIC_BRIDGE, HoloBridgeBlockEntityRenderer::new);
 		
-		register(AMBlockEntityTypes.ALTERNATOR, AbstractConveyableBlockEntityRenderer::new);
-		register(AMBlockEntityTypes.SPLITTER, AbstractConveyableBlockEntityRenderer::new);
-		register(AMBlockEntityTypes.INSERTER, InserterBlockEntityRenderer::new);
-		
-		register(AMBlockEntityTypes.CONVEYOR, ConveyorBlockEntityRenderer::new);
-		register(AMBlockEntityTypes.VERTICAL_CONVEYOR, VerticalConveyorBlockEntityRenderer::new);
-		register(AMBlockEntityTypes.DOWNWARD_VERTICAL_CONVEYOR, DownwardVerticalConveyorBlockEntityRenderer::new);
-		
 		register(AMBlockEntityTypes.ALTAR_PEDESTAL, AltarPedestalBlockEntityRenderer::new);
 		register(AMBlockEntityTypes.ALTAR, AltarBlockEntityRenderer::new);
 	}
 
-	public static <B extends BlockEntity, C extends BlockEntityType<B>> void register(Supplier<C> c, Function<BlockEntityRenderDispatcher, BlockEntityRenderer<? super B>> b) {
+	public static <B extends BlockEntity, C extends BlockEntityType<B>> void register(Supplier<C> c, BlockEntityRendererFactory<? super B> b) {
 		BlockEntityRenderers.registerRenderer(c.get(), b);
 	}
 }

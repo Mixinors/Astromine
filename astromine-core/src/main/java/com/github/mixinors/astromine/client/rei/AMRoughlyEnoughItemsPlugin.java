@@ -57,7 +57,14 @@ import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.google.common.collect.ImmutableList;
 import me.shedaniel.rei.api.BuiltinPlugin;
 import me.shedaniel.rei.api.RecipeHelper;
+import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
+import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
+import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.util.EntryIngredients;
+import me.shedaniel.rei.api.common.util.EntryStacks;
 import me.shedaniel.rei.api.fractions.Fraction;
+import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCustomDisplay;
 import me.shedaniel.rei.plugin.crafting.DefaultCustomDisplay;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -98,83 +105,85 @@ import java.util.List;
 import java.util.Map;
 
 @Environment(EnvType.CLIENT)
-public class AMRoughlyEnoughItemsPlugin implements REIPluginV0 {
+public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 	private static final Identifier ENERGY_BACKGROUND = AMCommon.id("textures/widget/energy_volume_fractional_vertical_bar_background_thin.png");
 	private static final Identifier ENERGY_FOREGROUND = AMCommon.id("textures/widget/energy_volume_fractional_vertical_bar_foreground_thin.png");
 	
-	public static final Identifier INFUSING = AMCommon.id("infusing");
-	public static final Identifier TRITURATING = AMCommon.id("triturating");
-	public static final Identifier ELECTRIC_SMELTING = AMCommon.id("electric_smelting");
-	public static final Identifier LIQUID_GENERATING = AMCommon.id("fluid_generating");
-	public static final Identifier SOLID_GENERATING = AMCommon.id("solid_generating");
-	public static final Identifier FLUID_MIXING = AMCommon.id("fluid_mixing");
-	public static final Identifier ELECTROLYZING = AMCommon.id("electrolyzing");
-	public static final Identifier REFINING = AMCommon.id("refining");
-	public static final Identifier PRESSING = AMCommon.id("pressing");
-	public static final Identifier MELTING = AMCommon.id("melting");
-	public static final Identifier WIREMILLING = AMCommon.id("wire_milling");
-	public static final Identifier ALLOY_SMELTING = AMCommon.id("alloy_smelting");
-	public static final Identifier SOLIDIFYING = AMCommon.id("solidifying");
-	
+	public static final CategoryIdentifier<InfusingCategory> INFUSING = CategoryIdentifier.of(AMCommon.id("infusing"));
+	public static final CategoryIdentifier TRITURATING = CategoryIdentifier.of(AMCommon.id("triturating"));
+	public static final CategoryIdentifier ELECTRIC_SMELTING = CategoryIdentifier.of(AMCommon.id("electric_smelting"));
+	public static final CategoryIdentifier LIQUID_GENERATING = CategoryIdentifier.of(AMCommon.id("fluid_generating"));
+	public static final CategoryIdentifier SOLID_GENERATING = CategoryIdentifier.of(AMCommon.id("solid_generating"));
+	public static final CategoryIdentifier FLUID_MIXING = CategoryIdentifier.of(AMCommon.id("fluid_mixing"));
+	public static final CategoryIdentifier ELECTROLYZING = CategoryIdentifier.of(AMCommon.id("electrolyzing"));
+	public static final CategoryIdentifier REFINING = CategoryIdentifier.of(AMCommon.id("refining"));
+	public static final CategoryIdentifier PRESSING = CategoryIdentifier.of(AMCommon.id("pressing"));
+	public static final CategoryIdentifier MELTING = CategoryIdentifier.of(AMCommon.id("melting"));
+	public static final CategoryIdentifier WIREMILLING = CategoryIdentifier.of(AMCommon.id("wire_milling"));
+	public static final CategoryIdentifier ALLOY_SMELTING = CategoryIdentifier.of(AMCommon.id("alloy_smelting"));
+	public static final CategoryIdentifier SOLIDIFYING = CategoryIdentifier.of(AMCommon.id("solidifying"));
 	
 	@Override
-	public Identifier getPluginIdentifier() {
-		return AMCommon.id(AMCommon.MOD_ID);
+	public void registerCategories(CategoryRegistry registry) {
+		registry.add(new InfusingCategory());
+		registry.add(new SolidifyingCategory(),
+			new TrituratingCategory(),
+			new ElectricSmeltingCategory(),
+			new FluidGeneratingCategory(),
+			new SolidGeneratingCategory(),
+			new PressingCategory(),
+			new MeltingCategory(),
+			new WireMillingCategory(),
+			new AlloySmeltingCategory(),
+			new FluidMixingCategory(FLUID_MIXING, "category.astromine.fluid_mixing", EntryStacks.of(AMBlocks.ADVANCED_FLUID_MIXER.get())),
+			new ElectrolyzingCategory(ELECTROLYZING, "category.astromine.electrolyzing", EntryStacks.of(AMBlocks.ADVANCED_ELECTROLYZER.get())),
+			new RefiningCategory(REFINING, "category.astromine.refining", EntryStacks.of(AMBlocks.ADVANCED_REFINERY.get())));
+
+		registry.addWorkstations(INFUSING, EntryStacks.of(AMBlocks.ALTAR.get()));
+		registry.addWorkstations(TRITURATING, EntryStacks.of(AMBlocks.PRIMITIVE_TRITURATOR.get()), EntryStacks.of(AMBlocks.BASIC_TRITURATOR.get()), EntryStacks.of(AMBlocks.ADVANCED_TRITURATOR.get()), EntryStacks.of(AMBlocks.ELITE_TRITURATOR.get()));
+		registry.addWorkstations(ELECTRIC_SMELTING, EntryStacks.of(AMBlocks.PRIMITIVE_ELECTRIC_FURNACE.get()), EntryStacks.of(AMBlocks.BASIC_ELECTRIC_FURNACE.get()), EntryStacks.of(AMBlocks.ADVANCED_ELECTRIC_FURNACE.get()), EntryStacks.of(AMBlocks.ELITE_ELECTRIC_FURNACE.get()));
+		registry.addWorkstations(LIQUID_GENERATING, EntryStacks.of(AMBlocks.PRIMITIVE_LIQUID_GENERATOR.get()), EntryStacks.of(AMBlocks.BASIC_LIQUID_GENERATOR.get()), EntryStacks.of(AMBlocks.ADVANCED_LIQUID_GENERATOR.get()), EntryStacks.of(AMBlocks.ELITE_LIQUID_GENERATOR.get()));
+		registry.addWorkstations(SOLID_GENERATING, EntryStacks.of(AMBlocks.PRIMITIVE_SOLID_GENERATOR.get()), EntryStacks.of(AMBlocks.BASIC_SOLID_GENERATOR.get()), EntryStacks.of(AMBlocks.ADVANCED_SOLID_GENERATOR.get()), EntryStacks.of(AMBlocks.ELITE_SOLID_GENERATOR.get()));
+		registry.addWorkstations(FLUID_MIXING, EntryStacks.of(AMBlocks.PRIMITIVE_FLUID_MIXER.get()), EntryStacks.of(AMBlocks.BASIC_FLUID_MIXER.get()), EntryStacks.of(AMBlocks.ADVANCED_FLUID_MIXER.get()), EntryStacks.of(AMBlocks.ELITE_FLUID_MIXER.get()));
+		registry.addWorkstations(ELECTROLYZING, EntryStacks.of(AMBlocks.PRIMITIVE_ELECTROLYZER.get()), EntryStacks.of(AMBlocks.BASIC_ELECTROLYZER.get()), EntryStacks.of(AMBlocks.ADVANCED_ELECTROLYZER.get()), EntryStacks.of(AMBlocks.ELITE_ELECTROLYZER.get()));
+		registry.addWorkstations(REFINING, EntryStacks.of(AMBlocks.PRIMITIVE_REFINERY.get()), EntryStacks.of(AMBlocks.BASIC_REFINERY.get()), EntryStacks.of(AMBlocks.ADVANCED_REFINERY.get()), EntryStacks.of(AMBlocks.ELITE_REFINERY.get()));
+		registry.addWorkstations(PRESSING, EntryStacks.of(AMBlocks.PRIMITIVE_PRESSER.get()), EntryStacks.of(AMBlocks.BASIC_PRESSER.get()), EntryStacks.of(AMBlocks.ADVANCED_PRESSER.get()), EntryStacks.of(AMBlocks.ELITE_PRESSER.get()));
+		registry.addWorkstations(MELTING, EntryStacks.of(AMBlocks.PRIMITIVE_MELTER.get()), EntryStacks.of(AMBlocks.BASIC_MELTER.get()), EntryStacks.of(AMBlocks.ADVANCED_MELTER.get()), EntryStacks.of(AMBlocks.ELITE_MELTER.get()));
+		registry.addWorkstations(WIREMILLING, EntryStacks.of(AMBlocks.PRIMITIVE_WIREMILL.get()), EntryStacks.of(AMBlocks.BASIC_WIREMILL.get()), EntryStacks.of(AMBlocks.ADVANCED_WIREMILL.get()), EntryStacks.of(AMBlocks.ELITE_WIREMILL.get()));
+		registry.addWorkstations(ALLOY_SMELTING, EntryStacks.of(AMBlocks.PRIMITIVE_ALLOY_SMELTER.get()), EntryStacks.of(AMBlocks.BASIC_ALLOY_SMELTER.get()), EntryStacks.of(AMBlocks.ADVANCED_ALLOY_SMELTER.get()), EntryStacks.of(AMBlocks.ELITE_ALLOY_SMELTER.get()));
+		registry.addWorkstations(SOLIDIFYING, EntryStacks.of(AMBlocks.PRIMITIVE_SOLIDIFIER.get()), EntryStacks.of(AMBlocks.BASIC_SOLIDIFIER.get()), EntryStacks.of(AMBlocks.ADVANCED_SOLIDIFIER.get()), EntryStacks.of(AMBlocks.ELITE_SOLIDIFIER.get())
+
+			registry.removePlusButton(LIQUID_GENERATING);
+		registry.setPlusButtonArea(SOLID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
+		registry.removePlusButton(FLUID_MIXING);
+		registry.removePlusButton(ELECTROLYZING);
+		registry.removePlusButton(REFINING);
 	}
-	
+
 	@Override
-	public void registerPluginCategories(RecipeHelper recipeHelper) {
-		recipeHelper.registerCategories(new InfusingCategory());
-		recipeHelper.registerCategories(new SolidifyingCategory(), new TrituratingCategory(), new ElectricSmeltingCategory(), new FluidGeneratingCategory(), new SolidGeneratingCategory(), new PressingCategory(), new MeltingCategory(), new WireMillingCategory(), new AlloySmeltingCategory(), new FluidMixingCategory(FLUID_MIXING, "category.astromine.fluid_mixing", EntryStack.create(AMBlocks.ADVANCED_FLUID_MIXER.get())), new ElectrolyzingCategory(ELECTROLYZING, "category.astromine.electrolyzing", EntryStack.create(AMBlocks.ADVANCED_ELECTROLYZER.get())), new RefiningCategory(REFINING, "category.astromine.refining", EntryStack.create(AMBlocks.ADVANCED_REFINERY.get())));
-	}
-	
-	@Override
-	public void registerRecipeDisplays(RecipeHelper recipeHelper) {
-		recipeHelper.registerRecipes(INFUSING, AltarRecipe.class, InfusingDisplay::new);
-		recipeHelper.registerRecipes(TRITURATING, TrituratingRecipe.class, TrituratingDisplay::new);
-		recipeHelper.registerRecipes(ELECTRIC_SMELTING, SmeltingRecipe.class, ElectricSmeltingDisplay::new);
-		recipeHelper.registerRecipes(LIQUID_GENERATING, FluidGeneratingRecipe.class, FluidGeneratingDisplay::new);
-		recipeHelper.registerRecipes(FLUID_MIXING, FluidMixingRecipe.class, FluidMixingDisplay::new);
-		recipeHelper.registerRecipes(ELECTROLYZING, ElectrolyzingRecipe.class, ElectrolyzingDisplay::new);
-		recipeHelper.registerRecipes(REFINING, RefiningRecipe.class, RefiningDisplay::new);
-		recipeHelper.registerRecipes(PRESSING, PressingRecipe.class, PressingDisplay::new);
-		recipeHelper.registerRecipes(MELTING, MeltingRecipe.class, MeltingDisplay::new);
-		recipeHelper.registerRecipes(WIREMILLING, WireMillingRecipe.class, WireMillingDisplay::new);
-		recipeHelper.registerRecipes(ALLOY_SMELTING, AlloySmeltingRecipe.class, AlloySmeltingDisplay::new);
-		recipeHelper.registerRecipes(SOLIDIFYING, SolidifyingRecipe.class, SolidifyingDisplay::new);
+	public void registerDisplays(DisplayRegistry registry) {
+		registry.registerFiller(AltarRecipe.class, InfusingDisplay::new);
+		registry.registerFiller(TrituratingRecipe.class, TrituratingDisplay::new);
+		registry.registerFiller(SmeltingRecipe.class, ElectricSmeltingDisplay::new);
+		registry.registerFiller(FluidGeneratingRecipe.class, FluidGeneratingDisplay::new);
+		registry.registerFiller(FluidMixingRecipe.class, FluidMixingDisplay::new);
+		registry.registerFiller(ElectrolyzingRecipe.class, ElectrolyzingDisplay::new);
+		registry.registerFiller(RefiningRecipe.class, RefiningDisplay::new);
+		registry.registerFiller(PressingRecipe.class, PressingDisplay::new);
+		registry.registerFiller(MeltingRecipe.class, MeltingDisplay::new);
+		registry.registerFiller(WireMillingRecipe.class, WireMillingDisplay::new);
+		registry.registerFiller(AlloySmeltingRecipe.class, AlloySmeltingDisplay::new);
+		registry.registerFiller(SolidifyingRecipe.class, SolidifyingDisplay::new);
 		
-		recipeHelper.registerRecipes(BuiltinPlugin.CRAFTING, WireCuttingRecipe.class, recipe -> {
-			return new DefaultCustomDisplay(recipe, EntryStack.ofIngredients(ImmutableList.of(recipe.getInput(), recipe.getTool())), Collections.singletonList(EntryStack.create(recipe.getOutput())));
+		registry.registerFiller(WireCuttingRecipe.class, recipe -> {
+			return new DefaultCustomDisplay(recipe, EntryIngredients.ofIngredients(ImmutableList.of(recipe.getInput(), recipe.getTool())), Collections.singletonList(EntryStacks.of(recipe.getOutput())));
 		});
 		
 		for (Map.Entry<Item, Integer> entry : AbstractFurnaceBlockEntity.createFuelTimeMap().entrySet()) {
 			if (!(entry.getKey() instanceof BucketItem) && entry != null && entry.getValue() > 0) {
-				recipeHelper.registerDisplay(new SolidGeneratingDisplay((entry.getValue() / 2F * 5) / (entry.getValue() / 2F) * 6, Collections.singletonList(EntryStack.create(entry.getKey())), null, (entry.getValue() / 2) / 6.0));
+				registry.add(new SolidGeneratingDisplay((entry.getValue() / 2F * 5) / (entry.getValue() / 2F) * 6, Collections.singletonList(EntryStacks.of(entry.getKey())), null, (entry.getValue() / 2) / 6.0));
 			}
 		}
-	}
-	
-	@Override
-	public void registerOthers(RecipeHelper recipeHelper) {
-		recipeHelper.registerWorkingStations(INFUSING, EntryStack.create(AMBlocks.ALTAR.get()));
-		recipeHelper.registerWorkingStations(TRITURATING, EntryStack.create(AMBlocks.PRIMITIVE_TRITURATOR.get()), EntryStack.create(AMBlocks.BASIC_TRITURATOR.get()), EntryStack.create(AMBlocks.ADVANCED_TRITURATOR.get()), EntryStack.create(AMBlocks.ELITE_TRITURATOR.get()));
-		recipeHelper.registerWorkingStations(ELECTRIC_SMELTING, EntryStack.create(AMBlocks.PRIMITIVE_ELECTRIC_FURNACE.get()), EntryStack.create(AMBlocks.BASIC_ELECTRIC_FURNACE.get()), EntryStack.create(AMBlocks.ADVANCED_ELECTRIC_FURNACE.get()), EntryStack.create(AMBlocks.ELITE_ELECTRIC_FURNACE.get()));
-		recipeHelper.registerWorkingStations(LIQUID_GENERATING, EntryStack.create(AMBlocks.PRIMITIVE_LIQUID_GENERATOR.get()), EntryStack.create(AMBlocks.BASIC_LIQUID_GENERATOR.get()), EntryStack.create(AMBlocks.ADVANCED_LIQUID_GENERATOR.get()), EntryStack.create(AMBlocks.ELITE_LIQUID_GENERATOR.get()));
-		recipeHelper.registerWorkingStations(SOLID_GENERATING, EntryStack.create(AMBlocks.PRIMITIVE_SOLID_GENERATOR.get()), EntryStack.create(AMBlocks.BASIC_SOLID_GENERATOR.get()), EntryStack.create(AMBlocks.ADVANCED_SOLID_GENERATOR.get()), EntryStack.create(AMBlocks.ELITE_SOLID_GENERATOR.get()));
-		recipeHelper.registerWorkingStations(FLUID_MIXING, EntryStack.create(AMBlocks.PRIMITIVE_FLUID_MIXER.get()), EntryStack.create(AMBlocks.BASIC_FLUID_MIXER.get()), EntryStack.create(AMBlocks.ADVANCED_FLUID_MIXER.get()), EntryStack.create(AMBlocks.ELITE_FLUID_MIXER.get()));
-		recipeHelper.registerWorkingStations(ELECTROLYZING, EntryStack.create(AMBlocks.PRIMITIVE_ELECTROLYZER.get()), EntryStack.create(AMBlocks.BASIC_ELECTROLYZER.get()), EntryStack.create(AMBlocks.ADVANCED_ELECTROLYZER.get()), EntryStack.create(AMBlocks.ELITE_ELECTROLYZER.get()));
-		recipeHelper.registerWorkingStations(REFINING, EntryStack.create(AMBlocks.PRIMITIVE_REFINERY.get()), EntryStack.create(AMBlocks.BASIC_REFINERY.get()), EntryStack.create(AMBlocks.ADVANCED_REFINERY.get()), EntryStack.create(AMBlocks.ELITE_REFINERY.get()));
-		recipeHelper.registerWorkingStations(PRESSING, EntryStack.create(AMBlocks.PRIMITIVE_PRESSER.get()), EntryStack.create(AMBlocks.BASIC_PRESSER.get()), EntryStack.create(AMBlocks.ADVANCED_PRESSER.get()), EntryStack.create(AMBlocks.ELITE_PRESSER.get()));
-		recipeHelper.registerWorkingStations(MELTING, EntryStack.create(AMBlocks.PRIMITIVE_MELTER.get()), EntryStack.create(AMBlocks.BASIC_MELTER.get()), EntryStack.create(AMBlocks.ADVANCED_MELTER.get()), EntryStack.create(AMBlocks.ELITE_MELTER.get()));
-		recipeHelper.registerWorkingStations(WIREMILLING, EntryStack.create(AMBlocks.PRIMITIVE_WIREMILL.get()), EntryStack.create(AMBlocks.BASIC_WIREMILL.get()), EntryStack.create(AMBlocks.ADVANCED_WIREMILL.get()), EntryStack.create(AMBlocks.ELITE_WIREMILL.get()));
-		recipeHelper.registerWorkingStations(ALLOY_SMELTING, EntryStack.create(AMBlocks.PRIMITIVE_ALLOY_SMELTER.get()), EntryStack.create(AMBlocks.BASIC_ALLOY_SMELTER.get()), EntryStack.create(AMBlocks.ADVANCED_ALLOY_SMELTER.get()), EntryStack.create(AMBlocks.ELITE_ALLOY_SMELTER.get()));
-		recipeHelper.registerWorkingStations(SOLIDIFYING, EntryStack.create(AMBlocks.PRIMITIVE_SOLIDIFIER.get()), EntryStack.create(AMBlocks.BASIC_SOLIDIFIER.get()), EntryStack.create(AMBlocks.ADVANCED_SOLIDIFIER.get()), EntryStack.create(AMBlocks.ELITE_SOLIDIFIER.get()));
-		
-		recipeHelper.registerAutoCraftButtonArea(LIQUID_GENERATING, bounds -> new Rectangle(0, 0, 0, 0));
-		recipeHelper.registerAutoCraftButtonArea(SOLID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
-		recipeHelper.registerAutoCraftButtonArea(FLUID_MIXING, bounds -> new Rectangle(0, 0, 0, 0));
-		recipeHelper.registerAutoCraftButtonArea(ELECTROLYZING, bounds -> new Rectangle(0, 0, 0, 0));
-		recipeHelper.registerAutoCraftButtonArea(REFINING, bounds -> new Rectangle(0, 0, 0, 0));
 	}
 	
 	public static Fraction convertToFraction(long fraction) {
@@ -266,7 +275,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIPluginV0 {
 				else height = MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
 				VertexConsumerProvider.Immediate consumers = ClientUtils.getInstance().getBufferBuilders().getEntityVertexConsumers();
 				SpriteRenderer.beginPass().setup(consumers, RenderLayer.getSolid()).sprite(FluidUtils.getSprite(entry.getFluid())).color(FluidUtils.getColor(ClientUtils.getPlayer(), entry.getFluid())).light(0x00f000f0).overlay(OverlayTexture.DEFAULT_UV).alpha(
-					0xff).normal(matrices.peek().getNormal(), 0, 0, 0).position(matrices.peek().getModel(), bounds.x + 1, bounds.y + bounds.height - height + 1, bounds.x + bounds.width - 1, bounds.y + bounds.height - 1, getZOffset() + 1).next(
+					0xff).normal(matrices.peek().getNormalMatrix(), 0, 0, 0).position(matrices.peek().getPositionMatrix(), bounds.x + 1, bounds.y + bounds.height - height + 1, bounds.x + bounds.width - 1, bounds.y + bounds.height - 1, getZOffset() + 1).next(
 					PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
 				consumers.draw();
 			}

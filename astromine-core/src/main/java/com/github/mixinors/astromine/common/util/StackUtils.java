@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.common.util;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.util.Identifier;
@@ -49,7 +49,7 @@ public class StackUtils {
 	public static Pair<ItemStack, ItemStack> merge(ItemStack source, ItemStack target) {
 		int targetMax = target.getMaxCount();
 
-		if (ItemStack.areItemsEqual(source, target) && ItemStack.areTagsEqual(source, target)) {
+		if (ItemStack.areItemsEqual(source, target) && ItemStack.areNbtEqual(source, target)) {
 			int sourceCount = source.getCount();
 			int targetCount = target.getCount();
 
@@ -77,7 +77,7 @@ public class StackUtils {
 	 * and whether the target can fit the source, or not.
 	 */
 	public static boolean test(ItemStack source, ItemStack target) {
-		return target.isEmpty() || ItemStack.areItemsEqual(source, target) && ItemStack.areTagsEqual(source, target) && target.getMaxCount() - target.getCount() >= source.getCount();
+		return target.isEmpty() || ItemStack.areItemsEqual(source, target) && ItemStack.areNbtEqual(source, target) && target.getMaxCount() - target.getCount() >= source.getCount();
 	}
 
 	/** Weakly merges an {@link ItemStack} into another, returning the resulting target. */
@@ -91,9 +91,9 @@ public class StackUtils {
 		}
 	}
 
-	/** Asserts equality of {@link ItemStack} {@link CompoundTag} and {@link Item}. */
+	/** Asserts equality of {@link ItemStack} {@link NbtCompound} and {@link Item}. */
 	public static boolean areItemsAndTagsEqual(ItemStack left, ItemStack right) {
-		return ItemStack.areItemsEqual(left, right) && ItemStack.areTagsEqual(left, right);
+		return ItemStack.areItemsEqual(left, right) && ItemStack.areNbtEqual(left, right);
 	}
 
 	/** Deserializes an {@link ItemStack} from a {@link JsonElement}. */
@@ -111,7 +111,7 @@ public class StackUtils {
 				return ItemStack.EMPTY;
 			}
 		} else {
-			return ShapedRecipe.getItemStack(jsonElement.getAsJsonObject());
+			return ShapedRecipe.getItem(jsonElement.getAsJsonObject());
 		}
 	}
 

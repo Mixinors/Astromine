@@ -35,14 +35,14 @@ import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 
 import me.shedaniel.architectury.extensions.BlockEntityExtension;
+import me.shedaniel.architectury.hooks.BlockEntityHooks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
@@ -67,10 +67,10 @@ import java.util.function.Supplier;
 /**
  * A {@link BlockEntity} which is synchronized to the client
  * through {@link BlockEntityExtension}, which is
- * {@link Tickable}, updates its {@link BlockState} based on
+ * tickable, updates its {@link BlockState} based on
  * its activity, and handles redstone behavior.
  */
-public abstract class ComponentBlockEntity extends BlockEntity implements BlockEntityExtension, Tickable, TransferComponentProvider, RedstoneComponentProvider {
+public abstract class ComponentBlockEntity extends BlockEntity implements TransferComponentProvider, RedstoneComponentProvider {
 	public static final Identifier TRANSFER_UPDATE_PACKET = AMCommon.id("transfer_update_packet");
 
 	private final TransferComponent transferComponent = createTransferComponent();
@@ -88,8 +88,8 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 	protected boolean skipInventory = true;
 
 	/** Instantiates a {@link ComponentBlockEntity}. */
-	public ComponentBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
-		super(type.get());
+	public ComponentBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
+		super(type.get(), blockPos, blockState);
 
 		addPacketConsumer(TRANSFER_UPDATE_PACKET, ((buf) -> {
 			Identifier packetIdentifier = buf.readIdentifier();
@@ -182,11 +182,15 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 		}
 	}
 
+	public void syncData() {
+		BlockEntityHooks.syncData(this);
+	}
+
 	/** Ticks this {@link ComponentBlockEntity},
 	 * handling transfer between adjacent {@link BlockEntity}-ies
 	 * and updating the machine's {@link BlockState}
 	 * based on its activity, or lack thereof. */
-	@Override
+	// TODO: Fix ticking
 	public void tick() {
 		if (!hasWorld() || world.isClient)
 			return;
@@ -254,31 +258,31 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 		}
 	}
 
-	/** Serializes this {@link ComponentBlockEntity} to a {@link CompoundTag}. */
+	/** Serializes this {@link ComponentBlockEntity} to a {@link NbtCompound}. */
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		CompoundTag transferTag = new CompoundTag();
+	public void writeNbt(NbtCompound tag) {
+		NbtCompound transferTag = new NbtCompound();
 		getTransferComponent().writeToNbt(transferTag);
 
-		CompoundTag redstoneTag = new CompoundTag();
+		NbtCompound redstoneTag = new NbtCompound();
 		getRedstoneComponent().writeToNbt(redstoneTag);
 
 		tag.put("transfer", transferTag);
 		tag.put("redstone", redstoneTag);
 
 		allComponents.forEach((type, component) -> {
-			CompoundTag componentTag = new CompoundTag();
+			NbtCompound componentTag = new NbtCompound();
 			component.writeToNbt(componentTag);
 
 			tag.put(type.getId().toString(), componentTag);
 		});
 
-		return super.toTag(tag);
+		super.writeNbt(tag);
 	}
 
-	/** Deserializes this {@link ComponentBlockEntity} from a {@link CompoundTag}. */
+	/** Deserializes this {@link ComponentBlockEntity} from a {@link NbtCompound}. */
 	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+	public void readNbt(@NotNull NbtCompound tag) {
 		getTransferComponent().readFromNbt(tag.getCompound("transfer"));
 		getRedstoneComponent().readFromNbt(tag.getCompound("redstone"));
 
@@ -288,26 +292,20 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 			}
 		});
 
-		this.pos = new BlockPos(tag.getInt("x"), tag.getInt("y"), tag.getInt("z"));
+		super.readNbt(tag);
 	}
 
-	/** Serializes this {@link ComponentBlockEntity} to a {@link CompoundTag},
+	/** Serializes this {@link ComponentBlockEntity} to a {@link NbtCompound},
 	 * for synchronization usage. */
 	@Override
-	public CompoundTag saveClientData(CompoundTag compoundTag) {
-		compoundTag = toTag(compoundTag);
+	public NbtCompound toInitialChunkDataNbt() {
+		NbtCompound compound = new NbtCompound();
+		writeNbt(compound);
 		if (skipInventory) {
-			compoundTag.remove(AMComponents.ITEM_INVENTORY_COMPONENT.getId().toString());
+			compound.remove(AMComponents.ITEM_INVENTORY_COMPONENT.getId().toString());
 		} else {
 			skipInventory = true;
 		}
-		return compoundTag;
-	}
-
-	/** Deserializes this {@link ComponentBlockEntity} from a {@link CompoundTag},
-	 * for synchronization usage. */
-	@Override
-	public void loadClientData(BlockState state, CompoundTag compoundTag) {
-		fromTag(state, compoundTag);
+		return compound;
 	}
 }

@@ -87,7 +87,7 @@ public class ClientUtils {
 			}
 
 			@Override
-			public void apply(ResourceManager resourceManager) {
+			public void reload(ResourceManager resourceManager) {
 				final Function<Identifier, Sprite> atlas = ClientUtils.getInstance().getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
 				fluidSprites[0] = atlas.apply(stillSpriteIdentifier);
 				fluidSprites[1] = atlas.apply(flowingSpriteIdentifier);

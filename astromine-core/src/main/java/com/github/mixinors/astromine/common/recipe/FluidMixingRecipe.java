@@ -164,7 +164,7 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 	}
 
 	@Override
-	public ItemStack getRecipeKindIcon() {
+	public ItemStack createIcon() {
 		return new ItemStack(AMBlocks.ADVANCED_FLUID_MIXER.get());
 	}
 

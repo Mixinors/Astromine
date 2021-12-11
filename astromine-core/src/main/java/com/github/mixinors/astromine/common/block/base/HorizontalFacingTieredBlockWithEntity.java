@@ -30,7 +30,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -109,10 +109,10 @@ public abstract class HorizontalFacingTieredBlockWithEntity extends HorizontalFa
 
 						BlockEntity blockEntity = world.getBlockEntity(pos);
 
-						CompoundTag beTag = null;
+						NbtCompound beTag = null;
 
 						if (blockEntity != null) {
-							beTag = blockEntity.toTag(new CompoundTag());
+							beTag = blockEntity.writeNbt(new NbtCompound());
 							beTag.putInt("x", pos.getX());
 							beTag.putInt("y", pos.getY());
 							beTag.putInt("z", pos.getZ());
@@ -133,7 +133,7 @@ public abstract class HorizontalFacingTieredBlockWithEntity extends HorizontalFa
 						BlockEntity newBlockEntity = world.getBlockEntity(pos);
 
 						if (newBlockEntity != null && beTag != null) {
-							newBlockEntity.fromTag(newState, beTag);
+							newBlockEntity.readNbt(newState, beTag);
 						}
 
 						return ActionResult.SUCCESS;

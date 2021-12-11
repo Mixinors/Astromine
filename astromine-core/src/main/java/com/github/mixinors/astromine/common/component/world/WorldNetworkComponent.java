@@ -25,11 +25,10 @@
 package com.github.mixinors.astromine.common.component.world;
 
 import me.shedaniel.architectury.utils.NbtType;
-
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.LongTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtLong;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
@@ -52,9 +51,9 @@ import java.util.Set;
  * a {@link World}'s networks.
  *
  * Serialization and deserialization methods are provided for:
- * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
+ * - {@link NbtCompound} - through {@link #writeToNbt(NbtCompound)} and {@link #readFromNbt(NbtCompound)}.
  */
-public final class WorldNetworkComponent implements Component, Tickable {
+public final class WorldNetworkComponent implements Component {
 	private final Set<NetworkInstance> instances = Sets.newConcurrentHashSet();
 
 	private final World world;
@@ -93,29 +92,29 @@ public final class WorldNetworkComponent implements Component, Tickable {
 	}
 
 	/** Override behavior to implement network ticking logic. */
-	@Override
+	// TODO: Ticking stuff
 	public void tick() {
 		this.instances.removeIf(NetworkInstance::isEmpty);
 		this.instances.forEach(NetworkInstance::tick);
 	}
 
-	/** Serializes this {@link WorldNetworkComponent} to a {@link CompoundTag}. */
+	/** Serializes this {@link WorldNetworkComponent} to a {@link NbtCompound}. */
 	@Override
-	public void writeToNbt(CompoundTag tag) {
-		ListTag instanceTags = new ListTag();
+	public void writeToNbt(NbtCompound tag) {
+		NbtList instanceTags = new NbtList();
 
 		for (NetworkInstance instance : instances) {
-			ListTag nodeList = new ListTag();
+			NbtList nodeList = new NbtList();
 			for (NetworkNode node : instance.nodes) {
-				nodeList.add(LongTag.of(node.getLongPosition()));
+				nodeList.add(NbtLong.of(node.getLongPosition()));
 			}
 
-			ListTag memberList = new ListTag();
+			NbtList memberList = new NbtList();
 			for (NetworkMemberNode member : instance.members) {
 				memberList.add(member.toTag());
 			}
 
-			CompoundTag data = new CompoundTag();
+			NbtCompound data = new NbtCompound();
 
 			data.putString("type", NetworkTypeRegistry.INSTANCE.getKey(instance.getType()).toString());
 			data.put("nodes", nodeList);
@@ -127,24 +126,24 @@ public final class WorldNetworkComponent implements Component, Tickable {
 		tag.put("instanceTags", instanceTags);
 	}
 
-	/** Deserializes this {@link WorldNetworkComponent} from a {@link CompoundTag}. */
+	/** Deserializes this {@link WorldNetworkComponent} from a {@link NbtCompound}. */
 	@Override
-	public void readFromNbt(CompoundTag tag) {
-		ListTag instanceTags = tag.getList("instanceTags", NbtType.COMPOUND);
-		for (Tag instanceTag : instanceTags) {
-			CompoundTag dataTag = (CompoundTag) instanceTag;
-			ListTag nodeList = dataTag.getList("nodes", NbtType.LONG);
-			ListTag memberList = dataTag.getList("members", NbtType.COMPOUND);
+	public void readFromNbt(NbtCompound tag) {
+		NbtList instanceTags = tag.getList("instanceTags", NbtType.COMPOUND);
+		for (NbtElement instanceTag : instanceTags) {
+			NbtCompound dataTag = (NbtCompound) instanceTag;
+			NbtList nodeList = dataTag.getList("nodes", NbtType.LONG);
+			NbtList memberList = dataTag.getList("members", NbtType.COMPOUND);
 
 			NetworkType type = NetworkTypeRegistry.INSTANCE.get(new Identifier(dataTag.getString("type")));
 			NetworkInstance instance = new NetworkInstance(world, type);
 
-			for (Tag nodeKey : nodeList) {
-				instance.addNode(NetworkNode.of(((LongTag) nodeKey).getLong()));
+			for (NbtElement nodeKey : nodeList) {
+				instance.addNode(NetworkNode.of(((NbtLong) nodeKey).longValue()));
 			}
 
-			for (Tag memberTag : memberList) {
-				instance.addMember(NetworkMemberNode.fromTag((CompoundTag) memberTag));
+			for (NbtElement memberTag : memberList) {
+				instance.addMember(NetworkMemberNode.fromTag((NbtCompound) memberTag));
 			}
 
 			add(instance);

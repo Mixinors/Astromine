@@ -97,7 +97,7 @@ public class AltarRecipe implements Recipe<AltarBlockEntity> {
 	}
 
 	@Override
-	public ItemStack getRecipeKindIcon() {
+	public ItemStack createIcon() {
 		return new ItemStack(AMBlocks.ALTAR.get());
 	}
 
@@ -117,7 +117,7 @@ public class AltarRecipe implements Recipe<AltarBlockEntity> {
 	}
 
 	@Override
-	public DefaultedList<Ingredient> getPreviewInputs() {
+	public DefaultedList<Ingredient> getIngredients() {
 		return DefaultedList.copyOf(Ingredient.EMPTY, ingredients.toArray(new Ingredient[0]));
 	}
 

@@ -33,7 +33,7 @@ import com.github.mixinors.astromine.registry.common.AMComponents;
 import me.shedaniel.architectury.utils.NbtType;
 
 import net.minecraft.item.Item;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 
@@ -51,7 +51,7 @@ import static java.lang.Math.min;
  * A {@link IdentifiableComponent} representing an energy reserve.
  *
  * Serialization and deserialization methods are provided for:
- * - {@link CompoundTag} - through {@link #toTag(CompoundTag)} and {@link #fromTag(CompoundTag)}.
+ * - {@link NbtCompound} - through {@link #toTag(NbtCompound)} and {@link #fromTag(NbtCompound)}.
  */
 public interface EnergyComponent extends IdentifiableComponent {
 	/** Instantiates an {@link EnergyComponent}. */
@@ -166,20 +166,20 @@ public interface EnergyComponent extends IdentifiableComponent {
 		ourVolume.give(theirVolume, transferable);
 	}
 
-	/** Serializes this {@link EnergyComponent} to a {@link CompoundTag}. */
+	/** Serializes this {@link EnergyComponent} to a {@link NbtCompound}. */
 	@Override
-	default void writeToNbt(CompoundTag tag) {
-		CompoundTag dataTag = new CompoundTag();
+	default void writeToNbt(NbtCompound tag) {
+		NbtCompound dataTag = new NbtCompound();
 
 		dataTag.putDouble("energy", getVolume().getAmount());
 
 		tag.put(AMComponents.ENERGY_INVENTORY_COMPONENT.getId().toString(), dataTag);
 	}
 
-	/** Deserializes this {@link EnergyComponent} from a {@link CompoundTag}. */
+	/** Deserializes this {@link EnergyComponent} from a {@link NbtCompound}. */
 	@Override
-	default void readFromNbt(CompoundTag tag) {
-		CompoundTag dataTag = tag.getCompound(AMComponents.ENERGY_INVENTORY_COMPONENT.getId().toString());
+	default void readFromNbt(NbtCompound tag) {
+		NbtCompound dataTag = tag.getCompound(AMComponents.ENERGY_INVENTORY_COMPONENT.getId().toString());
 
 		EnergyVolume volume = getVolume();
 

@@ -31,7 +31,7 @@ import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.SmeltingRecipe;
 
@@ -45,6 +45,7 @@ import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
@@ -62,8 +63,8 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 
 	private static final Map<World, SmeltingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public ElectricFurnaceBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
-		super(type);
+	public ElectricFurnaceBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
+		super(type, blockPos, blockState);
 	}
 
 	@Override
@@ -157,7 +158,7 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 					ItemStack output = recipe.getOutput().copy();
 
 					boolean isEmpty = itemComponent.getFirst().isEmpty();
-					boolean isEqual = ItemStack.areItemsEqual(itemComponent.getFirst(), output) && ItemStack.areTagsEqual(itemComponent.getFirst(), output);
+					boolean isEqual = ItemStack.areItemsEqual(itemComponent.getFirst(), output) && ItemStack.areNbtEqual(itemComponent.getFirst(), output);
 
 					if ((isEmpty || isEqual) && itemComponent.getFirst().getCount() + output.getCount() <= itemComponent.getFirst().getMaxCount() && energyVolume.hasStored(500.0D / limit * speed)) {
 						energyVolume.take(500.0D / limit * speed);
@@ -194,23 +195,23 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 	}
 
 	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		super.fromTag(state, tag);
+	public void readNbt(@NotNull NbtCompound tag) {
+		super.readNbt(tag);
 		progress = tag.getDouble("progress");
 		limit = tag.getInt("limit");
 		shouldTry = true;
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public void writeNbt(NbtCompound tag) {
 		tag.putDouble("progress", progress);
 		tag.putInt("limit", limit);
-		return super.toTag(tag);
+		super.writeNbt(tag);
 	}
 
 	public static class Primitive extends ElectricFurnaceBlockEntity {
-		public Primitive() {
-			super(AMBlockEntityTypes.PRIMITIVE_ELECTRIC_FURNACE);
+		public Primitive(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.PRIMITIVE_ELECTRIC_FURNACE, blockPos, blockState);
 		}
 
 		@Override
@@ -230,8 +231,8 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 	}
 
 	public static class Basic extends ElectricFurnaceBlockEntity {
-		public Basic() {
-			super(AMBlockEntityTypes.BASIC_ELECTRIC_FURNACE);
+		public Basic(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.BASIC_ELECTRIC_FURNACE, blockPos, blockState);
 		}
 
 		@Override
@@ -251,8 +252,8 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 	}
 
 	public static class Advanced extends ElectricFurnaceBlockEntity {
-		public Advanced() {
-			super(AMBlockEntityTypes.ADVANCED_ELECTRIC_FURNACE);
+		public Advanced(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.ADVANCED_ELECTRIC_FURNACE, blockPos, blockState);
 		}
 
 		@Override
@@ -272,8 +273,8 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 	}
 
 	public static class Elite extends ElectricFurnaceBlockEntity {
-		public Elite() {
-			super(AMBlockEntityTypes.ELITE_ELECTRIC_FURNACE);
+		public Elite(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.ELITE_ELECTRIC_FURNACE, blockPos, blockState);
 		}
 
 		@Override

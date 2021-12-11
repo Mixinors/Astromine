@@ -31,7 +31,7 @@ import com.github.mixinors.astromine.common.component.general.base.ItemComponent
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
-
+import net.minecraft.nbt.NbtCompound;
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyFluidItemBlockEntity;
 import com.github.mixinors.astromine.common.util.StackUtils;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
@@ -44,7 +44,7 @@ import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.SolidifyingRecipe;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -57,8 +57,8 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 
 	private Optional<SolidifyingRecipe> optionalRecipe = Optional.empty();
 
-	public SolidifierBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
-		super(type);
+	public SolidifierBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
+		super(type, blockPos, blockState);
 	}
 
 	@Override
@@ -166,22 +166,22 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 	}
 	
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public void writeNbt(NbtCompound tag) {
 		tag.putDouble("progress", progress);
 		tag.putInt("limit", limit);
-		return super.toTag(tag);
+		super.writeNbt(tag);
 	}
 	
 	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+	public void readNbt(@NotNull NbtCompound tag) {
 		progress = tag.getDouble("progress");
 		limit = tag.getInt("limit");
-		super.fromTag(state, tag);
+		super.readNbt(tag);
 	}
 	
 	public static class Primitive extends SolidifierBlockEntity {
-		public Primitive() {
-			super(AMBlockEntityTypes.PRIMITIVE_SOLIDIFIER);
+		public Primitive(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.PRIMITIVE_SOLIDIFIER, blockPos, blockState);
 		}
 
 		@Override
@@ -206,8 +206,8 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 	}
 
 	public static class Basic extends SolidifierBlockEntity {
-		public Basic() {
-			super(AMBlockEntityTypes.BASIC_SOLIDIFIER);
+		public Basic(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.BASIC_SOLIDIFIER, blockPos, blockState);
 		}
 
 		@Override
@@ -232,8 +232,8 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 	}
 
 	public static class Advanced extends SolidifierBlockEntity {
-		public Advanced() {
-			super(AMBlockEntityTypes.ADVANCED_SOLIDIFIER);
+		public Advanced(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.ADVANCED_SOLIDIFIER, blockPos, blockState);
 		}
 
 		@Override
@@ -258,8 +258,8 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 	}
 
 	public static class Elite extends SolidifierBlockEntity {
-		public Elite() {
-			super(AMBlockEntityTypes.ELITE_SOLIDIFIER);
+		public Elite(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.ELITE_SOLIDIFIER, blockPos, blockState);
 		}
 
 		@Override

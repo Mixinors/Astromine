@@ -27,6 +27,8 @@ package com.github.mixinors.astromine.registry.common;
 import com.github.mixinors.astromine.common.block.entity.*;
 import com.github.mixinors.astromine.common.block.entity.base.AbstractConveyableBlockEntity;
 import me.shedaniel.architectury.registry.RegistrySupplier;
+import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -128,15 +130,6 @@ public class AMBlockEntityTypes {
 	public static final RegistrySupplier<BlockEntityType<BlockBreakerBlockEntity>> BLOCK_BREAKER = register("block_breaker", BlockBreakerBlockEntity::new, AMBlocks.BLOCK_BREAKER);
 	public static final RegistrySupplier<BlockEntityType<BlockPlacerBlockEntity>> BLOCK_PLACER = register("block_placer", BlockPlacerBlockEntity::new, AMBlocks.BLOCK_PLACER);
 	
-	public static final RegistrySupplier<BlockEntityType<AbstractConveyableBlockEntity>> ALTERNATOR = register("alternator", AlternatorBlockEntity::new, AMBlocks.ALTERNATOR);
-	public static final RegistrySupplier<BlockEntityType<AbstractConveyableBlockEntity>> SPLITTER = register("splitter", SplitterBlockEntity::new, AMBlocks.SPLITTER);
-	public static final RegistrySupplier<BlockEntityType<ShredderBlockEntity>> INCINERATOR = register("shredder", ShredderBlockEntity::new, AMBlocks.SHREDDER);
-	public static final RegistrySupplier<BlockEntityType<InserterBlockEntity>> INSERTER = register("inserter", InserterBlockEntity::new, AMBlocks.INSERTER, AMBlocks.FAST_INSERTER);
-	
-	public static final RegistrySupplier<BlockEntityType<ConveyorBlockEntity>> CONVEYOR = register("conveyor", ConveyorBlockEntity::new, AMBlocks.BASIC_CONVEYOR, AMBlocks.ADVANCED_CONVEYOR, AMBlocks.ELITE_CONVEYOR);
-	public static final RegistrySupplier<BlockEntityType<VerticalConveyorBlockEntity>> VERTICAL_CONVEYOR = register("vertical_conveyor", VerticalConveyorBlockEntity::new, AMBlocks.BASIC_VERTICAL_CONVEYOR, AMBlocks.ADVANCED_VERTICAL_CONVEYOR, AMBlocks.ELITE_VERTICAL_CONVEYOR);
-	public static final RegistrySupplier<BlockEntityType<DownVerticalConveyorBlockEntity>> DOWNWARD_VERTICAL_CONVEYOR = register("downward_vertical_conveyor", DownVerticalConveyorBlockEntity::new, AMBlocks.BASIC_DOWNWARD_VERTICAL_CONVEYOR, AMBlocks.ADVANCED_DOWNWARD_VERTICAL_CONVEYOR, AMBlocks.ELITE_DOWNWARD_VERTICAL_CONVEYOR);
-	
 	public static final RegistrySupplier<BlockEntityType<DrainBlockEntity>> DRAIN = register("drain", DrainBlockEntity::new, AMBlocks.DRAIN);
 	
 	public static void init() {
@@ -154,8 +147,8 @@ public class AMBlockEntityTypes {
 	 * @return Registered BlockEntityType
 	 */
 	@SafeVarargs
-	public static <B extends BlockEntity> RegistrySupplier<BlockEntityType<B>> register(String name, Supplier<B> supplier, Supplier<Block>... supportedBlocks) {
-		return AMCommon.registry(Registry.BLOCK_ENTITY_TYPE_KEY).registerSupplied(AMCommon.id(name), () -> BlockEntityType.Builder.create(supplier, resolveBlocks(supportedBlocks)).build(null));
+	public static <B extends BlockEntity> RegistrySupplier<BlockEntityType<B>> register(String name, FabricBlockEntityTypeBuilder.Factory<B> supplier, Supplier<Block>... supportedBlocks) {
+		return AMCommon.registry(Registry.BLOCK_ENTITY_TYPE_KEY).registerSupplied(AMCommon.id(name), () -> FabricBlockEntityTypeBuilder.create(supplier, resolveBlocks(supportedBlocks)).build(null));
 	}
 
 	private static Block[] resolveBlocks(Supplier<Block>[] supportedBlocks) {

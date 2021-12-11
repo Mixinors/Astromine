@@ -65,7 +65,7 @@ public class TrickedPiglinCriterion extends AbstractCriterion<TrickedPiglinCrite
 
 	/** Triggers this {@link Criterion} for the given player with the given parameter. */
 	public void trigger(ServerPlayerEntity player, boolean successful) {
-		this.test(player, conditions -> conditions.matches(successful));
+		this.trigger(player, conditions -> conditions.matches(successful));
 	}
 
 	/**

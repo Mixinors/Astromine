@@ -265,10 +265,10 @@ public class SpriteRenderer {
 			}
 
 			if (this.model == null) {
-				this.model = this.matrices.peek().getModel();
+				this.model = this.matrices.peek().getPositionMatrix();
 			}
 			if (this.normal == null) {
-				this.normal = this.matrices.peek().getNormal();
+				this.normal = this.matrices.peek().getNormalMatrix();
 			}
 
 			float sX = sprite.getWidth();

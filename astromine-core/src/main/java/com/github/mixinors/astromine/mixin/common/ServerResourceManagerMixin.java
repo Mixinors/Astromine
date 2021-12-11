@@ -18,6 +18,6 @@ public class ServerResourceManagerMixin {
 	
 	@Inject(at = @At("RETURN"), method = "<init>")
 	void astromine_init(CommandManager.RegistrationEnvironment registrationEnvironment, int i, CallbackInfo ci) {
-		resourceManager.registerListener(new ConditionalRecipeManager((ServerResourceManager) (Object) this));
+		resourceManager.registerReloader(new ConditionalRecipeManager((ServerResourceManager) (Object) this));
 	}
 }

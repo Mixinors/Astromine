@@ -29,7 +29,7 @@ import com.github.mixinors.astromine.registry.common.AMNetworks;
 
 import me.shedaniel.architectury.networking.NetworkManager;
 import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
@@ -58,7 +58,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * a {@link Chunk}'s atmosphere.
  * <p>
  * Serialization and deserialization methods are provided for:
- * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
+ * - {@link NbtCompound} - through {@link #writeToNbt(NbtCompound)} and {@link #readFromNbt(NbtCompound)}.
  */
 public final class ChunkAtmosphereComponent implements Component, ServerTickingComponent {
 	private final List<Direction> directions = Lists.newArrayList(Direction.values());
@@ -306,19 +306,19 @@ public final class ChunkAtmosphereComponent implements Component, ServerTickingC
 	}
 
 	/**
-	 * Serializes this {@link ChunkAtmosphereComponent} to a {@link CompoundTag}.
+	 * Serializes this {@link ChunkAtmosphereComponent} to a {@link NbtCompound}.
 	 */
 	@Override
-	public void writeToNbt(CompoundTag tag) {
+	public void writeToNbt(NbtCompound tag) {
 		if (world == null)
 			return;
 
-		CompoundTag dataTag = new CompoundTag();
+		NbtCompound dataTag = new NbtCompound();
 
 		int i = 0;
 
 		for (Map.Entry<BlockPos, FluidVolume> entry : volumes.entrySet()) {
-			CompoundTag pointTag = new CompoundTag();
+			NbtCompound pointTag = new NbtCompound();
 			pointTag.putLong("pos", entry.getKey().asLong());
 			pointTag.put("volume", entry.getValue().toTag());
 
@@ -330,17 +330,17 @@ public final class ChunkAtmosphereComponent implements Component, ServerTickingC
 	}
 
 	/**
-	 * Deserializes this {@link ChunkAtmosphereComponent} from a {@link CompoundTag}.
+	 * Deserializes this {@link ChunkAtmosphereComponent} from a {@link NbtCompound}.
 	 */
 	@Override
-	public void readFromNbt(CompoundTag tag) {
+	public void readFromNbt(NbtCompound tag) {
 		if (world == null)
 			return;
 
-		CompoundTag dataTag = tag.getCompound("data");
+		NbtCompound dataTag = tag.getCompound("data");
 
 		for (String key : dataTag.getKeys()) {
-			CompoundTag pointTag = dataTag.getCompound(key);
+			NbtCompound pointTag = dataTag.getCompound(key);
 
 			volumes.put(BlockPos.fromLong(pointTag.getLong("pos")), FluidVolume.fromTag(pointTag.getCompound("volume")));
 		}

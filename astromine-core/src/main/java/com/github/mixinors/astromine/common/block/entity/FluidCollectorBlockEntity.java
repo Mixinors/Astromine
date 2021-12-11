@@ -31,7 +31,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidDrainable;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -53,8 +53,8 @@ import org.jetbrains.annotations.NotNull;
 public class FluidCollectorBlockEntity extends ComponentEnergyFluidBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
 	private long cooldown = 0L;
 
-	public FluidCollectorBlockEntity() {
-		super(AMBlockEntityTypes.FLUID_EXTRACTOR);
+	public FluidCollectorBlockEntity(BlockPos blockPos, BlockState blockState) {
+		super(AMBlockEntityTypes.FLUID_EXTRACTOR, blockPos, blockState);
 	}
 
 	@Override
@@ -139,14 +139,14 @@ public class FluidCollectorBlockEntity extends ComponentEnergyFluidBlockEntity i
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public void writeNbt(NbtCompound tag) {
 		tag.putLong("cooldown", cooldown);
-		return super.toTag(tag);
+		super.writeNbt(tag);
 	}
 
 	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+	public void readNbt(@NotNull NbtCompound tag) {
 		cooldown = tag.getLong("cooldown");
-		super.fromTag(state, tag);
+		super.readNbt(tag);
 	}
 }

@@ -19,9 +19,9 @@ accessible method net/minecraft/advancement/criterion/Criteria register (Lnet/mi
 accessible method net/minecraft/block/FluidBlock <init> (Lnet/minecraft/fluid/FlowableFluid;Lnet/minecraft/block/AbstractBlock$Settings;)V
 accessible method net/minecraft/block/StairsBlock <init> (Lnet/minecraft/block/BlockState;Lnet/minecraft/block/AbstractBlock$Settings;)V
 accessible method net/minecraft/block/TallPlantBlock onBreakInCreative (Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/entity/player/PlayerEntity;)V
-accessible method net/minecraft/client/com.github.mixinors.astromine.client.particle/CrackParticle <init> (Lnet/minecraft/client/world/ClientWorld;DDDLnet/minecraft/item/ItemStack;)V
+accessible method net/minecraft/client/CrackParticle <init> (Lnet/minecraft/client/world/ClientWorld;DDDLnet/minecraft/item/ItemStack;)V
 accessible method net/minecraft/client/particle/CrackParticle <init> (Lnet/minecraft/client/world/ClientWorld;DDDLnet/minecraft/item/ItemStack;)V
-accessible method net/minecraft/com.github.mixinors.astromine.client.particle/DefaultParticleType <init> (Z)V
+accessible method net/minecraft/particle/DefaultParticleType <init> (Z)V
 accessible method net/minecraft/entity/SpawnRestriction register (Lnet/minecraft/entity/EntityType;Lnet/minecraft/entity/SpawnRestriction$Location;Lnet/minecraft/world/Heightmap$Type;Lnet/minecraft/entity/SpawnRestriction$SpawnPredicate;)V
 accessible method net/minecraft/entity/mob/PiglinBrain becomeAngryWith (Lnet/minecraft/entity/mob/AbstractPiglinEntity;Lnet/minecraft/entity/LivingEntity;)V
 accessible method net/minecraft/item/AxeItem <init> (Lnet/minecraft/item/ToolMaterial;FFLnet/minecraft/item/Item$Settings;)V
@@ -29,7 +29,6 @@ accessible method net/minecraft/item/HoeItem <init> (Lnet/minecraft/item/ToolMat
 accessible method net/minecraft/item/Item rayTrace (Lnet/minecraft/world/World;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/world/RayTraceContext$FluidHandling;)Lnet/minecraft/util/hit/BlockHitResult
 accessible method net/minecraft/item/PickaxeItem <init> (Lnet/minecraft/item/ToolMaterial;IFLnet/minecraft/item/Item$Settings;)V
 accessible method net/minecraft/recipe/RecipeManager getAllOfType (Lnet/minecraft/recipe/RecipeType;)Ljava/util/Map;
-accessible method net/minecraft/particle/DefaultParticleType <init> (Z)V
 mutable field net/minecraft/client/render/RenderPhase beginAction Ljava/lang/Runnable;
 mutable field net/minecraft/client/render/RenderPhase endAction Ljava/lang/Runnable;
 mutable field net/minecraft/server/network/ServerPlayNetworkHandler floatingTicks I

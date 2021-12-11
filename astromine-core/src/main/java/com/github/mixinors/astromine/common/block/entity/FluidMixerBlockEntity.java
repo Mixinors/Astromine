@@ -28,8 +28,7 @@ import com.github.mixinors.astromine.common.component.general.SimpleDirectionalF
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.nbt.CompoundTag;
-
+import net.minecraft.nbt.NbtCompound;
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
@@ -43,6 +42,7 @@ import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvid
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.FluidMixingRecipe;
+import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -55,8 +55,8 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 
 	private Optional<FluidMixingRecipe> optionalRecipe = Optional.empty();
 
-	public FluidMixerBlockEntity(Supplier<? extends BlockEntityType<?>> type) {
-		super(type);
+	public FluidMixerBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
+		super(type, blockPos, blockState);
 	}
 
 	@Override
@@ -146,22 +146,22 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public void writeNbt(NbtCompound tag) {
 		tag.putDouble("progress", progress);
 		tag.putInt("limit", limit);
-		return super.toTag(tag);
+		super.writeNbt(tag);
 	}
 
 	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+	public void readNbt(@NotNull NbtCompound tag) {
 		progress = tag.getDouble("progress");
 		limit = tag.getInt("limit");
-		super.fromTag(state, tag);
+		super.readNbt(tag);
 	}
 
 	public static class Primitive extends FluidMixerBlockEntity {
-		public Primitive() {
-			super(AMBlockEntityTypes.PRIMITIVE_FLUID_MIXER);
+		public Primitive(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.PRIMITIVE_FLUID_MIXER, blockPos, blockState);
 		}
 
 		@Override
@@ -186,8 +186,8 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 	}
 
 	public static class Basic extends FluidMixerBlockEntity {
-		public Basic() {
-			super(AMBlockEntityTypes.BASIC_FLUID_MIXER);
+		public Basic(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.BASIC_FLUID_MIXER, blockPos, blockState);
 		}
 
 		@Override
@@ -212,8 +212,8 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 	}
 
 	public static class Advanced extends FluidMixerBlockEntity {
-		public Advanced() {
-			super(AMBlockEntityTypes.ADVANCED_FLUID_MIXER);
+		public Advanced(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.ADVANCED_FLUID_MIXER, blockPos, blockState);
 		}
 
 		@Override
@@ -238,8 +238,8 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 	}
 
 	public static class Elite extends FluidMixerBlockEntity {
-		public Elite() {
-			super(AMBlockEntityTypes.ELITE_FLUID_MIXER);
+		public Elite(BlockPos blockPos, BlockState blockState) {
+			super(AMBlockEntityTypes.ELITE_FLUID_MIXER, blockPos, blockState);
 		}
 
 		@Override

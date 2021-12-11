@@ -44,7 +44,7 @@ public class SuperSpaceSlimeMoveControl extends MoveControl {
 
 	@Override
 	public void tick() {
-		this.entity.yaw = this.changeAngle(this.entity.yaw, this.targetYaw, 90.0F);
+		this.entity.yaw = this.wrapDegrees(this.entity.yaw, this.targetYaw, 90.0F);
 		this.entity.headYaw = this.entity.yaw;
 		this.entity.bodyYaw = this.entity.yaw;
 

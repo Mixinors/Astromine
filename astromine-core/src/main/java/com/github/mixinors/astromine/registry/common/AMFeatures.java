@@ -45,18 +45,18 @@ import java.util.function.Supplier;
 public class AMFeatures {
 	public static final Identifier ASTEROID_ORES_ID = AMCommon.id("asteroid_ores");
 	public static final RegistrySupplier<Feature<DefaultFeatureConfig>> ASTEROID_ORES = registerFeature(ASTEROID_ORES_ID, () -> new AsteroidOreFeature(DefaultFeatureConfig.CODEC));
-	public static final RegistryKey<ConfiguredFeature<?, ?>> ASTEROID_ORES_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, ASTEROID_ORES_ID);
+	public static final RegistryKey<ConfiguredFeature<?, ?>> ASTEROID_ORES_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, ASTEROID_ORES_ID);
 	
 	//
 	//
 	
 	public static final Identifier METEOR_ID = AMCommon.id("meteor");
 	public static final RegistrySupplier<StructurePieceType> METEOR_STRUCTURE = registerStructurePiece(METEOR_ID, () -> MeteorGenerator::new);
-	public static final RegistryKey<ConfiguredStructureFeature<?, ?>> METEOR_KEY = RegistryKey.of(Registry.CONFIGURED_STRUCTURE_FEATURE_WORLDGEN, METEOR_ID);
+	public static final RegistryKey<ConfiguredStructureFeature<?, ?>> METEOR_KEY = RegistryKey.of(Registry.CONFIGURED_STRUCTURE_FEATURE_KEY, METEOR_ID);
 	
 	public static final Identifier CRUDE_OIL_ID = AMCommon.id("crude_oil");
 	public static final RegistrySupplier<Feature<DefaultFeatureConfig>> CRUDE_OIL = registerFeature(CRUDE_OIL_ID, () -> new CrudeOilFeature(DefaultFeatureConfig.CODEC));
-	public static final RegistryKey<ConfiguredFeature<?, ?>> CRUDE_OIL_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, CRUDE_OIL_ID);
+	public static final RegistryKey<ConfiguredFeature<?, ?>> CRUDE_OIL_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, CRUDE_OIL_ID);
 	
 	public static final Identifier ASTROMINE_BIOME_MODIFICATIONS = AMCommon.id("biome_modifications");
 	

@@ -24,29 +24,29 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.common.component.general.*;
+import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.EnergyConsumedProvider;
+import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
+import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
+import com.github.mixinors.astromine.common.component.general.SimpleDirectionalItemComponent;
+import com.github.mixinors.astromine.common.component.general.SimpleEnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
+import com.github.mixinors.astromine.common.util.StackUtils;
+import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+import com.github.mixinors.astromine.registry.common.AMConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-
-import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
-import com.github.mixinors.astromine.common.util.StackUtils;
-import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
-import com.github.mixinors.astromine.registry.common.AMConfig;
-import com.github.mixinors.astromine.common.block.entity.machine.EnergyConsumedProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -55,8 +55,8 @@ import java.util.Optional;
 public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
 	private long cooldown = 0L;
 
-	public BlockBreakerBlockEntity() {
-		super(AMBlockEntityTypes.BLOCK_BREAKER);
+	public BlockBreakerBlockEntity(BlockPos blockPos, BlockState blockState) {
+		super(AMBlockEntityTypes.BLOCK_BREAKER, blockPos, blockState);
 	}
 
 	@Override
@@ -152,14 +152,14 @@ public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity impl
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public void writeNbt(NbtCompound tag) {
 		tag.putLong("cooldown", cooldown);
-		return super.toTag(tag);
+		super.writeNbt(tag);
 	}
 
 	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+	public void readNbt(@NotNull NbtCompound tag) {
 		cooldown = tag.getLong("cooldown");
-		super.fromTag(state, tag);
+		super.readNbt(tag);
 	}
 }

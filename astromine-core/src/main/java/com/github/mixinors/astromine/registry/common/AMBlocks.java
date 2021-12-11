@@ -44,8 +44,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class AMBlocks {
-	public static final RegistrySupplier<Block> ASTEROID_STONE = register("asteroid_stone", () -> new Block(BlockProperties.of(Material.STONE, MaterialColor.GRAY).tool(ToolType.PICKAXE, 3).requiresTool().strength(1.5F, 3F)), AMItems.getBasicSettings().fireproof());
-	public static final RegistrySupplier<Block> BLAZING_ASTEROID_STONE = register("blazing_asteroid_stone", () -> new MagmaBlock(BlockProperties.of(Material.STONE, MaterialColor.GRAY).tool(ToolType.PICKAXE, 3).requiresTool().strength(50, 1500).luminance((state) -> 3).ticksRandomly().allowsSpawning((state, world, pos, entityType) -> entityType.isFireImmune()).postProcess((state, world, pos) -> true).emissiveLighting((state, world, pos) -> true)), AMItems.getBasicSettings().fireproof());
+	public static final RegistrySupplier<Block> ASTEROID_STONE = register("asteroid_stone", () -> new Block(BlockProperties.of(Material.STONE, MapColor.GRAY).tool(ToolType.PICKAXE, 3).requiresTool().strength(1.5F, 3F)), AMItems.getBasicSettings().fireproof());
+	public static final RegistrySupplier<Block> BLAZING_ASTEROID_STONE = register("blazing_asteroid_stone", () -> new MagmaBlock(BlockProperties.of(Material.STONE, MapColor.GRAY).tool(ToolType.PICKAXE, 3).requiresTool().strength(50, 1500).luminance((state) -> 3).ticksRandomly().allowsSpawning((state, world, pos, entityType) -> entityType.isFireImmune()).postProcess((state, world, pos) -> true).emissiveLighting((state, world, pos) -> true)), AMItems.getBasicSettings().fireproof());
 	
 	public static final RegistrySupplier<Block> SMOOTH_ASTEROID_STONE = register("smooth_asteroid_stone", () -> new Block(BlockProperties.copy(ASTEROID_STONE.get())), AMItems.getBasicSettings().fireproof());
 	
@@ -94,10 +94,10 @@ public class AMBlocks {
 	public static final RegistrySupplier<Block> ASTEROID_EMERALD_ORE = register("asteroid_emerald_ore", () -> new AstromineOreBlock(BlockProperties.of(Material.STONE).tool(ToolType.PICKAXE, 4).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getBasicSettings().fireproof());
 	
 	
-	public static final RegistrySupplier<Block> ALTAR_PEDESTAL = register("altar_pedestal", () -> new AltarPedestalBlock(BlockProperties.of(Material.METAL, MaterialColor.GOLD).tool(ToolType.PICKAXE, 2).requiresTool().strength(5, 6).sounds(BlockSoundGroup.METAL).nonOpaque()), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> ALTAR = register("altar", () -> new AltarBlock(BlockProperties.of(Material.METAL, MaterialColor.GOLD).tool(ToolType.PICKAXE, 2).requiresTool().strength(5, 6).sounds(BlockSoundGroup.METAL).nonOpaque()), AMItems.getBasicSettings());
+	public static final RegistrySupplier<Block> ALTAR_PEDESTAL = register("altar_pedestal", () -> new AltarPedestalBlock(BlockProperties.of(Material.METAL, MapColor.GOLD).tool(ToolType.PICKAXE, 2).requiresTool().strength(5, 6).sounds(BlockSoundGroup.METAL).nonOpaque()), AMItems.getBasicSettings());
+	public static final RegistrySupplier<Block> ALTAR = register("altar", () -> new AltarBlock(BlockProperties.of(Material.METAL, MapColor.GOLD).tool(ToolType.PICKAXE, 2).requiresTool().strength(5, 6).sounds(BlockSoundGroup.METAL).nonOpaque()), AMItems.getBasicSettings());
 	
-	public static final RegistrySupplier<Block> SPACE_SLIME_BLOCK = register("space_slime_block", () -> new SlimeBlock(FabricBlockSettings.copyOf(Blocks.SLIME_BLOCK).materialColor(MaterialColor.PURPLE)), AMItems.getBasicSettings());
+	public static final RegistrySupplier<Block> SPACE_SLIME_BLOCK = register("space_slime_block", () -> new SlimeBlock(BlockProperties.copy(Blocks.SLIME_BLOCK).mapColor(MapColor.PURPLE)), AMItems.getBasicSettings());
 	
 	public static final RegistrySupplier<Block> COPPER_ORE = register("copper_ore", () -> new AstromineOreBlock(BlockProperties.of(Material.STONE).tool(ToolType.PICKAXE, 1).requiresTool().strength(3, 3).sounds(BlockSoundGroup.STONE)), AMItems.getBasicSettings());
 	public static final RegistrySupplier<Block> TIN_ORE = register("tin_ore", () -> new AstromineOreBlock(BlockProperties.of(Material.STONE).tool(ToolType.PICKAXE, 1).requiresTool().strength(3, 3).sounds(BlockSoundGroup.STONE)), AMItems.getBasicSettings());
@@ -106,25 +106,25 @@ public class AMBlocks {
 	
 	public static final RegistrySupplier<Block> METEOR_METITE_ORE = register("meteor_metite_ore", () -> new AstromineOreBlock(BlockProperties.of(Material.STONE).tool(ToolType.PICKAXE, 4).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getBasicSettings().fireproof());
 	
-	public static final RegistrySupplier<Block> METITE_BLOCK = register("metite_block", () -> new Block(BlockProperties.of(Material.METAL, MaterialColor.PINK).tool(ToolType.PICKAXE, 4).requiresTool().strength(8, 100).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> ASTERITE_BLOCK = register("asterite_block", () -> new Block(BlockProperties.of(Material.METAL, MaterialColor.RED).tool(ToolType.PICKAXE, 4).requiresTool().strength(25, 1000).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> STELLUM_BLOCK = register("stellum_block", () -> new Block(BlockProperties.of(Material.METAL, MaterialColor.ORANGE).tool(ToolType.PICKAXE, 4).requiresTool().strength(10, 80).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings().fireproof());
-	public static final RegistrySupplier<Block> GALAXIUM_BLOCK = register("galaxium_block", () -> new Block(BlockProperties.of(Material.METAL, MaterialColor.PURPLE).tool(ToolType.PICKAXE, 5).requiresTool().strength(50, 1300).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> UNIVITE_BLOCK = register("univite_block", () -> new Block(BlockProperties.of(Material.METAL, MaterialColor.WHITE).tool(ToolType.PICKAXE, 6).requiresTool().strength(80, 2000).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings().fireproof());
+	public static final RegistrySupplier<Block> METITE_BLOCK = register("metite_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.PINK).tool(ToolType.PICKAXE, 4).requiresTool().strength(8, 100).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
+	public static final RegistrySupplier<Block> ASTERITE_BLOCK = register("asterite_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.RED).tool(ToolType.PICKAXE, 4).requiresTool().strength(25, 1000).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
+	public static final RegistrySupplier<Block> STELLUM_BLOCK = register("stellum_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.ORANGE).tool(ToolType.PICKAXE, 4).requiresTool().strength(10, 80).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings().fireproof());
+	public static final RegistrySupplier<Block> GALAXIUM_BLOCK = register("galaxium_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.PURPLE).tool(ToolType.PICKAXE, 5).requiresTool().strength(50, 1300).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
+	public static final RegistrySupplier<Block> UNIVITE_BLOCK = register("univite_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.WHITE).tool(ToolType.PICKAXE, 6).requiresTool().strength(80, 2000).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings().fireproof());
 	
 	
-	public static final RegistrySupplier<Block> COPPER_BLOCK = register("copper_block", () -> new Block(BlockProperties.of(Material.METAL, MaterialColor.ORANGE).tool(ToolType.PICKAXE, 1).requiresTool().strength(4, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> TIN_BLOCK = register("tin_block", () -> new Block(BlockProperties.of(Material.METAL, MaterialColor.LIGHT_GRAY).tool(ToolType.PICKAXE, 1).requiresTool().strength(4, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> SILVER_BLOCK = register("silver_block", () -> new Block(BlockProperties.of(Material.METAL, MaterialColor.LIGHT_GRAY).tool(ToolType.PICKAXE, 2).requiresTool().strength(5, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> LEAD_BLOCK = register("lead_block", () -> new Block(BlockProperties.of(Material.METAL, MaterialColor.BLUE_TERRACOTTA).tool(ToolType.PICKAXE, 2).requiresTool().strength(6, 8).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
+	public static final RegistrySupplier<Block> COPPER_BLOCK = register("copper_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.ORANGE).tool(ToolType.PICKAXE, 1).requiresTool().strength(4, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
+	public static final RegistrySupplier<Block> TIN_BLOCK = register("tin_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.LIGHT_GRAY).tool(ToolType.PICKAXE, 1).requiresTool().strength(4, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
+	public static final RegistrySupplier<Block> SILVER_BLOCK = register("silver_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.LIGHT_GRAY).tool(ToolType.PICKAXE, 2).requiresTool().strength(5, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
+	public static final RegistrySupplier<Block> LEAD_BLOCK = register("lead_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.TERRACOTTA_BLUE).tool(ToolType.PICKAXE, 2).requiresTool().strength(6, 8).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
 	
-	public static final RegistrySupplier<Block> BRONZE_BLOCK = register("bronze_block", () -> new Block(BlockProperties.of(Material.METAL, MaterialColor.ORANGE_TERRACOTTA).tool(ToolType.PICKAXE, 2).requiresTool().strength(6, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> STEEL_BLOCK = register("steel_block", () -> new Block(BlockProperties.of(Material.METAL, MaterialColor.GRAY).tool(ToolType.PICKAXE, 2).requiresTool().strength(8, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> ELECTRUM_BLOCK = register("electrum_block", () -> new Block(BlockProperties.of(Material.METAL, MaterialColor.YELLOW).tool(ToolType.PICKAXE, 2).requiresTool().strength(6, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> FOOLS_GOLD_BLOCK = register("fools_gold_block", () -> new Block(BlockProperties.of(Material.METAL, MaterialColor.GOLD).tool(ToolType.PICKAXE, 2).requiresTool().strength(5, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> METEORIC_STEEL_BLOCK = register("meteoric_steel_block", () -> new Block(BlockProperties.of(Material.METAL, MaterialColor.GOLD).tool(ToolType.PICKAXE, 2).requiresTool().strength(5, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
+	public static final RegistrySupplier<Block> BRONZE_BLOCK = register("bronze_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.TERRACOTTA_ORANGE).tool(ToolType.PICKAXE, 2).requiresTool().strength(6, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
+	public static final RegistrySupplier<Block> STEEL_BLOCK = register("steel_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.GRAY).tool(ToolType.PICKAXE, 2).requiresTool().strength(8, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
+	public static final RegistrySupplier<Block> ELECTRUM_BLOCK = register("electrum_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.YELLOW).tool(ToolType.PICKAXE, 2).requiresTool().strength(6, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
+	public static final RegistrySupplier<Block> FOOLS_GOLD_BLOCK = register("fools_gold_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.GOLD).tool(ToolType.PICKAXE, 2).requiresTool().strength(5, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
+	public static final RegistrySupplier<Block> METEORIC_STEEL_BLOCK = register("meteoric_steel_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.GOLD).tool(ToolType.PICKAXE, 2).requiresTool().strength(5, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
 	
-	public static final RegistrySupplier<Block> METEOR_STONE = register("meteor_stone", () -> new Block(BlockProperties.of(Material.STONE, MaterialColor.BLACK).tool(ToolType.PICKAXE, 3).requiresTool().strength(30, 1500)), AMItems.getBasicSettings().fireproof());
+	public static final RegistrySupplier<Block> METEOR_STONE = register("meteor_stone", () -> new Block(BlockProperties.of(Material.STONE, MapColor.BLACK).tool(ToolType.PICKAXE, 3).requiresTool().strength(30, 1500)), AMItems.getBasicSettings().fireproof());
 	public static final RegistrySupplier<Block> METEOR_STONE_SLAB = register("meteor_stone_slab", () -> new SlabBlock(BlockProperties.copy(METEOR_STONE.get())), AMItems.getBasicSettings().fireproof());
 	public static final RegistrySupplier<Block> METEOR_STONE_STAIRS = register("meteor_stone_stairs", () -> new StairsBlock(METEOR_STONE.get().getDefaultState(), BlockProperties.copy(METEOR_STONE.get())), AMItems.getBasicSettings().fireproof());
 	public static final RegistrySupplier<Block> METEOR_STONE_WALL = register("meteor_stone_wall", () -> new WallBlock(BlockProperties.copy(METEOR_STONE.get())), AMItems.getBasicSettings().fireproof());
@@ -235,24 +235,7 @@ public class AMBlocks {
 	
 	public static final Block AIRLOCK = new AirlockBlock(getBasicSettings());
 	
-	public static final RegistrySupplier<Block> ALTERNATOR = register("alternator", () -> new AlternatorBlock(getBasicSettings()), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> SPLITTER = register("splitter", () -> new SplitterBlock(getBasicSettings()), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> SHREDDER = register("shredder", () -> new ShredderBlock(getBasicSettings().ticksRandomly()), AMItems.getBasicSettings());
-	
 	public static final RegistrySupplier<Block> DRAIN = register("drain", () -> new DrainBlock(getBasicSettings()), AMItems.getBasicSettings());
-	
-	public static final RegistrySupplier<Block> INSERTER = register("inserter", () -> new InserterBlock("normal", AMConfig.get().inserterSpeed, getBasicSettings().nonOpaque()), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> FAST_INSERTER = register("fast_inserter", () -> new InserterBlock("fast", AMConfig.get().fastInserterSpeed, getBasicSettings().nonOpaque()), AMItems.getBasicSettings());
-	
-	public static final RegistrySupplier<Block> BASIC_CONVEYOR = register("basic_conveyor", () -> new ConveyorBlock(getBasicSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), AMConfig.get().basicConveyorSpeed), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> BASIC_VERTICAL_CONVEYOR = register("basic_vertical_conveyor", () -> new VerticalConveyorBlock(getBasicSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), AMConfig.get().basicConveyorSpeed), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> BASIC_DOWNWARD_VERTICAL_CONVEYOR = register("basic_downward_vertical_conveyor", () -> new DownwardVerticalConveyorBlock(getBasicSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), AMConfig.get().basicConveyorSpeed), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> ADVANCED_CONVEYOR = register("advanced_conveyor", () -> new ConveyorBlock(getAdvancedSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), AMConfig.get().advancedConveyorSpeed), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> ADVANCED_VERTICAL_CONVEYOR = register("advanced_vertical_conveyor", () -> new VerticalConveyorBlock(getAdvancedSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), AMConfig.get().advancedConveyorSpeed), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> ADVANCED_DOWNWARD_VERTICAL_CONVEYOR = register("advanced_downward_vertical_conveyor", () -> new DownwardVerticalConveyorBlock(getAdvancedSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), AMConfig.get().advancedConveyorSpeed), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> ELITE_CONVEYOR = register("elite_conveyor", () -> new ConveyorBlock(getEliteSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), AMConfig.get().eliteConveyorSpeed), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> ELITE_VERTICAL_CONVEYOR = register("elite_vertical_conveyor", () -> new VerticalConveyorBlock(getEliteSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), AMConfig.get().eliteConveyorSpeed), AMItems.getBasicSettings());
-	public static final RegistrySupplier<Block> ELITE_DOWNWARD_VERTICAL_CONVEYOR = register("elite_downward_vertical_conveyor", () -> new DownwardVerticalConveyorBlock(getEliteSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), AMConfig.get().eliteConveyorSpeed), AMItems.getBasicSettings());
 	
 	public static final RegistrySupplier<Block> CATWALK = register("catwalk", () -> new CatwalkBlock(BlockProperties.copy(Blocks.STONE).sounds(BlockSoundGroup.METAL).nonOpaque()), AMItems.getBasicSettings());
 	public static final RegistrySupplier<Block> CATWALK_STAIRS = register("catwalk_stairs", () -> new CatwalkStairsBlock(BlockProperties.copy(Blocks.STONE).sounds(BlockSoundGroup.METAL).nonOpaque()), AMItems.getBasicSettings());
@@ -330,22 +313,22 @@ public class AMBlocks {
 	}
 
 	public static AbstractBlock.Settings getPrimitiveSettings() {
-		return BlockProperties.of(Material.METAL, MaterialColor.ORANGE).tool(ToolType.PICKAXE, 1).requiresTool().strength(4, 6).sounds(BlockSoundGroup.METAL);
+		return BlockProperties.of(Material.METAL, MapColor.ORANGE).tool(ToolType.PICKAXE, 1).requiresTool().strength(4, 6).sounds(BlockSoundGroup.METAL);
 	}
 
 	public static AbstractBlock.Settings getBasicSettings() {
-		return BlockProperties.of(Material.METAL, MaterialColor.ORANGE_TERRACOTTA).tool(ToolType.PICKAXE, 2).requiresTool().strength(6, 6).sounds(BlockSoundGroup.METAL);
+		return BlockProperties.of(Material.METAL, MapColor.TERRACOTTA_ORANGE).tool(ToolType.PICKAXE, 2).requiresTool().strength(6, 6).sounds(BlockSoundGroup.METAL);
 	}
 
 	public static AbstractBlock.Settings getAdvancedSettings() {
-		return BlockProperties.of(Material.METAL, MaterialColor.GRAY).tool(ToolType.PICKAXE, 2).requiresTool().strength(8, 6).sounds(BlockSoundGroup.METAL);
+		return BlockProperties.of(Material.METAL, MapColor.GRAY).tool(ToolType.PICKAXE, 2).requiresTool().strength(8, 6).sounds(BlockSoundGroup.METAL);
 	}
 
 	public static AbstractBlock.Settings getEliteSettings() {
-		return BlockProperties.of(Material.METAL, MaterialColor.PINK).tool(ToolType.PICKAXE, 4).requiresTool().strength(8, 100).sounds(BlockSoundGroup.METAL);
+		return BlockProperties.of(Material.METAL, MapColor.PINK).tool(ToolType.PICKAXE, 4).requiresTool().strength(8, 100).sounds(BlockSoundGroup.METAL);
 	}
 
 	public static AbstractBlock.Settings getCreativeSettings() {
-		return BlockProperties.of(Material.METAL, MaterialColor.LIME).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.METAL);
+		return BlockProperties.of(Material.METAL, MapColor.LIME).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.METAL);
 	}
 }

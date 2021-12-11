@@ -52,7 +52,7 @@ public class UseFireExtinguisherCriterion extends AbstractCriterion<UseFireExtin
 	}
 
 	public void trigger(ServerPlayerEntity player) {
-		this.test(player, conditions -> true);
+		this.trigger(player, conditions -> true);
 	}
 
 	public static class Conditions extends AbstractCriterionConditions {

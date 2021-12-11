@@ -28,7 +28,7 @@ import com.github.mixinors.astromine.common.util.NumberUtils;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -76,7 +76,7 @@ import java.text.DecimalFormat;
  * {@link FluidComponent#updateListeners()}, if using one.
  *
  * Serialization and deserialization methods are provided for:
- * - {@link CompoundTag} - through {@link #toTag()} and {@link #fromTag(CompoundTag)}.
+ * - {@link NbtCompound} - through {@link #toTag()} and {@link #fromTag(NbtCompound)}.
  * - {@link JsonElement} - through {@link #toJson()} and {@link #fromJson(JsonElement)}.
  * - {@link ByteBuf} - through {@link #toPacket(PacketByteBuf)} and {@link #fromPacket(PacketByteBuf)}.
  */
@@ -298,15 +298,15 @@ public class FluidVolume extends Volume<Long> {
 		return getFluidId().toString() + ", " + NumberUtils.shorten(getAmount().doubleValue(), "U") + " / " + NumberUtils.shorten(getSize().doubleValue(), "U");
 	}
 
-	/** Deserializes a volume from a {@link CompoundTag}. */
-	public static FluidVolume fromTag(CompoundTag tag) {
+	/** Deserializes a volume from a {@link NbtCompound}. */
+	public static FluidVolume fromTag(NbtCompound tag) {
 		return of(tag.getLong("amount"), tag.getLong("size"), Registry.FLUID.get(new Identifier(tag.getString("fluid"))));
 	}
 
-	/** Serializes this volume to a {@link CompoundTag}. */
+	/** Serializes this volume to a {@link NbtCompound}. */
 	@Override
-	public CompoundTag toTag() {
-		CompoundTag tag = new CompoundTag();
+	public NbtCompound toTag() {
+		NbtCompound tag = new NbtCompound();
 		tag.putLong("amount", getAmount());
 		tag.putLong("size", getSize());
 		tag.putString("fluid", Registry.FLUID.getId(getFluid()).toString());

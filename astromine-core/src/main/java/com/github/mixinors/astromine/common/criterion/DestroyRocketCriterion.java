@@ -54,7 +54,7 @@ public class DestroyRocketCriterion extends AbstractCriterion<DestroyRocketCrite
 	}
 
 	public void trigger(ServerPlayerEntity player, boolean intentional) {
-		this.test(player, conditions -> conditions.matches(intentional));
+		this.trigger(player, conditions -> conditions.matches(intentional));
 	}
 
 	public static class Conditions extends AbstractCriterionConditions {

@@ -160,12 +160,12 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 	}
 
 	@Override
-	public DefaultedList<Ingredient> getPreviewInputs() {
+	public DefaultedList<Ingredient> getIngredients() {
 		return DefaultedList.of();
 	}
 
 	@Override
-	public ItemStack getRecipeKindIcon() {
+	public ItemStack createIcon() {
 		return new ItemStack(AMBlocks.ADVANCED_LIQUID_GENERATOR.get());
 	}
 
