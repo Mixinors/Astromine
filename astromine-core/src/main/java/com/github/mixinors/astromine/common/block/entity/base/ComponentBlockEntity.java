@@ -67,7 +67,7 @@ import java.util.function.Supplier;
 /**
  * A {@link BlockEntity} which is synchronized to the client
  * through {@link BlockEntityExtension}, which is
- * {@link Tickable}, updates its {@link BlockState} based on
+ * tickable, updates its {@link BlockState} based on
  * its activity, and handles redstone behavior.
  */
 public abstract class ComponentBlockEntity extends BlockEntity implements TransferComponentProvider, RedstoneComponentProvider {
@@ -190,7 +190,7 @@ public abstract class ComponentBlockEntity extends BlockEntity implements Transf
 	 * handling transfer between adjacent {@link BlockEntity}-ies
 	 * and updating the machine's {@link BlockState}
 	 * based on its activity, or lack thereof. */
-	@Override
+	// TODO: Fix ticking
 	public void tick() {
 		if (!hasWorld() || world.isClient)
 			return;
@@ -291,6 +291,8 @@ public abstract class ComponentBlockEntity extends BlockEntity implements Transf
 				component.readFromNbt(tag.getCompound(type.getId().toString()));
 			}
 		});
+
+		super.readNbt(tag);
 	}
 
 	/** Serializes this {@link ComponentBlockEntity} to a {@link NbtCompound},

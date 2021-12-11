@@ -217,7 +217,7 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 		if (blockEntity != null && saveTagToDroppedItem()) {
 			for (ItemStack drop : stacks) {
 				if (drop.getItem() == asItem()) {
-					NbtCompound tag = blockEntity.writeNbt(drop.getOrCreateNbt());
+					NbtCompound tag = blockEntity.createNbt();
 					tag.remove("x");
 					tag.remove("y");
 					tag.remove("z");

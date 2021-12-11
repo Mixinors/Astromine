@@ -28,7 +28,6 @@ import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
@@ -37,7 +36,7 @@ import com.github.mixinors.astromine.common.block.transfer.TransferType;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.SimpleFluidComponent;
 
-public class DrainBlockEntity extends ComponentFluidBlockEntity implements Tickable {
+public class DrainBlockEntity extends ComponentFluidBlockEntity {
 	public DrainBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.DRAIN, blockPos, blockState);
 
@@ -57,7 +56,7 @@ public class DrainBlockEntity extends ComponentFluidBlockEntity implements Ticka
 		return fluidComponent;
 	}
 
-	@Override
+	// TODO: Ticking stuff
 	public void tick() {
 		if (world == null)
 			return;

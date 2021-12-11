@@ -53,7 +53,7 @@ import java.util.Set;
  * Serialization and deserialization methods are provided for:
  * - {@link NbtCompound} - through {@link #writeToNbt(NbtCompound)} and {@link #readFromNbt(NbtCompound)}.
  */
-public final class WorldNetworkComponent implements Component, Tickable {
+public final class WorldNetworkComponent implements Component {
 	private final Set<NetworkInstance> instances = Sets.newConcurrentHashSet();
 
 	private final World world;
@@ -92,7 +92,7 @@ public final class WorldNetworkComponent implements Component, Tickable {
 	}
 
 	/** Override behavior to implement network ticking logic. */
-	@Override
+	// TODO: Ticking stuff
 	public void tick() {
 		this.instances.removeIf(NetworkInstance::isEmpty);
 		this.instances.forEach(NetworkInstance::tick);

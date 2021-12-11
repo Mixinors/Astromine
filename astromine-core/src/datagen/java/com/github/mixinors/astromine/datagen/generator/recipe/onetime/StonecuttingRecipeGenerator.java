@@ -71,8 +71,8 @@ public class StonecuttingRecipeGenerator extends OneTimeRecipeGenerator {
 	@Override
 	public void generate(RecipeData data) {
 		SingleItemRecipeJsonFactory
-				.create(input, output, outputCount)
-				.create("impossible", new ImpossibleCriterion.Conditions())
+				.createStonecutting(input, output, outputCount)
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
 				.offerTo(data, getRecipeId());
 	}
 }
