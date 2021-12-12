@@ -90,7 +90,6 @@ public final class WorldNetworkComponent implements Component {
 	}
 
 	/** Override behavior to implement network ticking logic. */
-	// TODO: Ticking stuff
 	public void tick() {
 		this.instances.removeIf(NetworkInstance::isEmpty);
 		this.instances.forEach(NetworkInstance::tick);

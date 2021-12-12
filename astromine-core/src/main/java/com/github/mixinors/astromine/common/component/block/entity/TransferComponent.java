@@ -43,6 +43,7 @@ import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 
+import java.util.EnumMap;
 import java.util.Map;
 
 /**
@@ -154,7 +155,7 @@ public class TransferComponent implements Component {
 	 * - {@link NbtCompound} - through {@link #toTag()} and {@link #fromTag(NbtCompound)}.
 	 */
 	public static class TransferEntry {
-		private final Reference2ReferenceMap<Direction, TransferType> types = new Reference2ReferenceOpenHashMap<>(6, 1);
+		private final EnumMap<Direction, TransferType> types = new EnumMap<>(Direction.class);
 
 		private final ComponentKey<?> componentKey;
 

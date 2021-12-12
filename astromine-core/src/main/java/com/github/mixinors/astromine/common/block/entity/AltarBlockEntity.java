@@ -24,12 +24,15 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import com.github.mixinors.astromine.common.component.general.SimpleItemComponent;
+import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
+import com.github.mixinors.astromine.common.component.general.compatibility.InventoryFromItemComponent;
+import com.github.mixinors.astromine.common.recipe.AltarRecipe;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMSoundEvents;
+import com.google.common.collect.Lists;
 import dev.architectury.hooks.block.BlockEntityHooks;
-import dev.architectury.hooks.block.fabric.BlockEntityHooksImpl;
 import dev.architectury.utils.NbtType;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.EntityType;
@@ -39,19 +42,16 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtLong;
+import net.minecraft.network.Packet;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Lazy;
 import net.minecraft.util.math.BlockPos;
-
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleItemComponent;
-import com.github.mixinors.astromine.common.component.general.compatibility.InventoryFromItemComponent;
-import com.github.mixinors.astromine.common.recipe.AltarRecipe;
-
-import com.google.common.collect.Lists;
 import net.minecraft.util.math.Vec3f;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
 import java.util.List;
@@ -60,7 +60,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class AltarBlockEntity extends BlockEntity implements InventoryFromItemComponent {
+public class AltarBlockEntity extends BlockEntity implements InventoryFromItemComponent, TickableBlockEntity {
 	public static final int CRAFTING_TIME = 100;
 	public static final int CRAFTING_TIME_SPIN = 80;
 	public static final int CRAFTING_TIME_FALL = 60;
@@ -75,7 +75,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 	public List<Supplier<AltarPedestalBlockEntity>> children = Lists.newArrayList();
 	private ItemComponent inventory = SimpleItemComponent.of(1).withListener(inventory -> {
 		if (hasWorld() && !world.isClient)
-			BlockEntityHooksImpl.syncData(this);
+			BlockEntityHooks.syncData(this);
 	});
 
 	public AltarBlockEntity(BlockPos pos, BlockState state) {
@@ -100,7 +100,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 		return InventoryFromItemComponent.super.getStack(slot);
 	}
 
-	// TODO tick from block class
+	@Override
 	public void tick() {
 		yAge++;
 		lastAgeAddition = spinAge;
@@ -114,7 +114,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 		if (craftingTicks > 0) {
 			craftingTicks++;
 			if (!world.isClient) {
-				BlockEntityHooksImpl.syncData(this);
+				BlockEntityHooks.syncData(this);
 
 				if (craftingTicks == CRAFTING_TIME + CRAFTING_TIME_SPIN / 2 && recipe != null) {
 					inventory.setStack(0, recipe.getOutput().copy());
@@ -211,16 +211,16 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 			blockEntity -> (AltarPedestalBlockEntity) blockEntity).filter(blockEntity -> blockEntity.parentPos == null || pos.equals(blockEntity.parentPos)).map(blockEntity -> (Supplier<AltarPedestalBlockEntity>) () -> blockEntity).collect(Collectors.toList());
 	}
 
-//	@Override
-//	public void loadClientData(BlockState state, NbtCompound compoundTag) {
-//		readNbt(compoundTag);
-//	}
-//
-//	@Override
-//	public NbtCompound saveClientData(NbtCompound compoundTag) {
-//		writeNbt(compoundTag);
-//		return compoundTag;
-//	}
+	@Override
+	public NbtCompound toInitialChunkDataNbt() {
+		return createNbt();
+	}
+
+	@Nullable
+	@Override
+	public Packet<ClientPlayPacketListener> toUpdatePacket() {
+		return BlockEntityUpdateS2CPacket.create(this);
+	}
 
 	@Override
 	public void readNbt(NbtCompound tag) {

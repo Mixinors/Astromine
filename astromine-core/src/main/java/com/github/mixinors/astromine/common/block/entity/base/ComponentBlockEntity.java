@@ -25,6 +25,10 @@
 package com.github.mixinors.astromine.common.block.entity.base;
 
 import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
+import com.github.mixinors.astromine.common.block.entity.TickableBlockEntity;
+import com.github.mixinors.astromine.common.block.transfer.TransferType;
+import com.github.mixinors.astromine.common.component.block.entity.RedstoneComponent;
 import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
@@ -33,30 +37,27 @@ import com.github.mixinors.astromine.common.component.general.provider.RedstoneC
 import com.github.mixinors.astromine.common.component.general.provider.TransferComponentProvider;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import com.github.mixinors.astromine.registry.common.AMComponents;
-
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import dev.architectury.hooks.block.BlockEntityHooks;
-import dev.architectury.hooks.block.fabric.BlockEntityHooksImpl;
+import dev.onyxstudios.cca.api.v3.component.Component;
+import dev.onyxstudios.cca.api.v3.component.ComponentKey;
+import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.Packet;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-
-import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
-import com.github.mixinors.astromine.common.block.transfer.TransferType;
-import com.github.mixinors.astromine.common.component.block.entity.RedstoneComponent;
-import dev.onyxstudios.cca.api.v3.component.Component;
-import dev.onyxstudios.cca.api.v3.component.ComponentKey;
-import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.EnergyHandler;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 import java.util.List;
 import java.util.Map;
@@ -69,7 +70,7 @@ import java.util.function.Supplier;
  * tickable, updates its {@link BlockState} based on
  * its activity, and handles redstone behavior.
  */
-public abstract class ComponentBlockEntity extends BlockEntity implements TransferComponentProvider, RedstoneComponentProvider {
+public abstract class ComponentBlockEntity extends BlockEntity implements TransferComponentProvider, RedstoneComponentProvider, TickableBlockEntity {
 	public static final Identifier TRANSFER_UPDATE_PACKET = AMCommon.id("transfer_update_packet");
 
 	private final TransferComponent transferComponent = createTransferComponent();
@@ -97,7 +98,7 @@ public abstract class ComponentBlockEntity extends BlockEntity implements Transf
 
 			getTransferComponent().get(ComponentRegistry.get(packetIdentifier)).set(packetDirection, packetTransferType);
 			markDirty();
-			BlockEntityHooksImpl.syncData(this);
+			BlockEntityHooks.syncData(this);
 		}));
 	}
 
@@ -189,7 +190,7 @@ public abstract class ComponentBlockEntity extends BlockEntity implements Transf
 	 * handling transfer between adjacent {@link BlockEntity}-ies
 	 * and updating the machine's {@link BlockState}
 	 * based on its activity, or lack thereof. */
-	// TODO: Fix ticking
+	@Override
 	public void tick() {
 		if (!hasWorld() || world.isClient)
 			return;
@@ -298,13 +299,18 @@ public abstract class ComponentBlockEntity extends BlockEntity implements Transf
 	 * for synchronization usage. */
 	@Override
 	public NbtCompound toInitialChunkDataNbt() {
-		NbtCompound compound = new NbtCompound();
-		writeNbt(compound);
+		NbtCompound compound = createNbt();
 		if (skipInventory) {
 			compound.remove(AMComponents.ITEM_INVENTORY_COMPONENT.getId().toString());
 		} else {
 			skipInventory = true;
 		}
 		return compound;
+	}
+
+	@Nullable
+	@Override
+	public Packet<ClientPlayPacketListener> toUpdatePacket() {
+		return BlockEntityUpdateS2CPacket.create(this);
 	}
 }
