@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "astromine:copper_block"
+          "name": "astromine:raw_tin_block"
         }
       ],
       "conditions": [

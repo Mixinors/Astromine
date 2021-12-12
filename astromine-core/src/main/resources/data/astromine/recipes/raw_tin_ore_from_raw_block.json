@@ -2,11 +2,11 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "tag": "c:copper_blocks"
+      "tag": "c:raw_tin_blocks"
     }
   ],
   "result": {
-    "item": "astromine:copper_ingot",
+    "item": "astromine:raw_tin",
     "count": 9
   }
 }

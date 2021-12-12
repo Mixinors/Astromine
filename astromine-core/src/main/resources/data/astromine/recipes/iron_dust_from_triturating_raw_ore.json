@@ -1,0 +1,13 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "item": "minecraft:raw_iron",
+    "count": 1
+  },
+  "output": {
+    "item": "astromine:iron_dust",
+    "count": 2
+  },
+  "time": 180,
+  "energy_input": 340
+}

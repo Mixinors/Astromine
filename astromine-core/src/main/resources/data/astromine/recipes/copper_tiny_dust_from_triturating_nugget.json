@@ -1,7 +1,7 @@
 {
   "type": "astromine:triturating",
   "input": {
-    "tag": "c:copper_nuggets",
+    "item": "astromine:copper_nugget",
     "count": 1
   },
   "output": {

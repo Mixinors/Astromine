@@ -99,11 +99,14 @@ public class AMBlocks {
 	
 	public static final RegistrySupplier<Block> SPACE_SLIME_BLOCK = register("space_slime_block", () -> new SlimeBlock(BlockProperties.copy(Blocks.SLIME_BLOCK).mapColor(MapColor.PURPLE)), AMItems.getBasicSettings());
 	
-	public static final RegistrySupplier<Block> COPPER_ORE = register("copper_ore", () -> new AstromineOreBlock(BlockProperties.of(Material.STONE)/*TODO replace with tag tool(ToolType.PICKAXE, 1)*/.requiresTool().strength(3, 3).sounds(BlockSoundGroup.STONE)), AMItems.getBasicSettings());
 	public static final RegistrySupplier<Block> TIN_ORE = register("tin_ore", () -> new AstromineOreBlock(BlockProperties.of(Material.STONE)/*TODO replace with tag tool(ToolType.PICKAXE, 1)*/.requiresTool().strength(3, 3).sounds(BlockSoundGroup.STONE)), AMItems.getBasicSettings());
 	public static final RegistrySupplier<Block> SILVER_ORE = register("silver_ore", () -> new AstromineOreBlock(BlockProperties.of(Material.STONE)/*TODO replace with tag tool(ToolType.PICKAXE, 2)*/.requiresTool().strength(3, 3).sounds(BlockSoundGroup.STONE)), AMItems.getBasicSettings());
 	public static final RegistrySupplier<Block> LEAD_ORE = register("lead_ore", () -> new AstromineOreBlock(BlockProperties.of(Material.STONE)/*TODO replace with tag tool(ToolType.PICKAXE, 2)*/.requiresTool().strength(3, 3).sounds(BlockSoundGroup.STONE)), AMItems.getBasicSettings());
-	
+
+	public static final RegistrySupplier<Block> RAW_TIN_BLOCK = register("raw_tin_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.LIGHT_GRAY)/*TODO replace with tag tool(ToolType.PICKAXE, 1)*/.requiresTool().strength(4, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
+	public static final RegistrySupplier<Block> RAW_SILVER_BLOCK = register("raw_silver_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.LIGHT_GRAY)/*TODO replace with tag tool(ToolType.PICKAXE, 2)*/.requiresTool().strength(5, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
+	public static final RegistrySupplier<Block> RAW_LEAD_BLOCK = register("raw_lead_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.TERRACOTTA_BLUE)/*TODO replace with tag tool(ToolType.PICKAXE, 2)*/.requiresTool().strength(6, 8).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
+
 	public static final RegistrySupplier<Block> METEOR_METITE_ORE = register("meteor_metite_ore", () -> new AstromineOreBlock(BlockProperties.of(Material.STONE)/*TODO replace with tag tool(ToolType.PICKAXE, 4)*/.requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getBasicSettings().fireproof());
 	
 	public static final RegistrySupplier<Block> METITE_BLOCK = register("metite_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.PINK)/*TODO replace with tag tool(ToolType.PICKAXE, 4)*/.requiresTool().strength(8, 100).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
@@ -111,9 +114,7 @@ public class AMBlocks {
 	public static final RegistrySupplier<Block> STELLUM_BLOCK = register("stellum_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.ORANGE)/*TODO replace with tag tool(ToolType.PICKAXE, 4)*/.requiresTool().strength(10, 80).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings().fireproof());
 	public static final RegistrySupplier<Block> GALAXIUM_BLOCK = register("galaxium_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.PURPLE)/*TODO replace with tag .tool(ToolType.PICKAXE, 5)*/.requiresTool().strength(50, 1300).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
 	public static final RegistrySupplier<Block> UNIVITE_BLOCK = register("univite_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.WHITE)/*TODO replace with tag .tool(ToolType.PICKAXE, 6)*/.requiresTool().strength(80, 2000).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings().fireproof());
-	
-	
-	public static final RegistrySupplier<Block> COPPER_BLOCK = register("copper_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.ORANGE)/*TODO replace with tag tool(ToolType.PICKAXE, 1)*/.requiresTool().strength(4, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
+
 	public static final RegistrySupplier<Block> TIN_BLOCK = register("tin_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.LIGHT_GRAY)/*TODO replace with tag tool(ToolType.PICKAXE, 1)*/.requiresTool().strength(4, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
 	public static final RegistrySupplier<Block> SILVER_BLOCK = register("silver_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.LIGHT_GRAY)/*TODO replace with tag tool(ToolType.PICKAXE, 2)*/.requiresTool().strength(5, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
 	public static final RegistrySupplier<Block> LEAD_BLOCK = register("lead_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.TERRACOTTA_BLUE)/*TODO replace with tag tool(ToolType.PICKAXE, 2)*/.requiresTool().strength(6, 8).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
@@ -123,7 +124,7 @@ public class AMBlocks {
 	public static final RegistrySupplier<Block> ELECTRUM_BLOCK = register("electrum_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.YELLOW)/*TODO replace with tag tool(ToolType.PICKAXE, 2)*/.requiresTool().strength(6, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
 	public static final RegistrySupplier<Block> FOOLS_GOLD_BLOCK = register("fools_gold_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.GOLD)/*TODO replace with tag tool(ToolType.PICKAXE, 2)*/.requiresTool().strength(5, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
 	public static final RegistrySupplier<Block> METEORIC_STEEL_BLOCK = register("meteoric_steel_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.GOLD)/*TODO replace with tag tool(ToolType.PICKAXE, 2)*/.requiresTool().strength(5, 6).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
-	
+
 	public static final RegistrySupplier<Block> METEOR_STONE = register("meteor_stone", () -> new Block(BlockProperties.of(Material.STONE, MapColor.BLACK)/*TODO replace with tag tool(ToolType.PICKAXE, 3)*/.requiresTool().strength(30, 1500)), AMItems.getBasicSettings().fireproof());
 	public static final RegistrySupplier<Block> METEOR_STONE_SLAB = register("meteor_stone_slab", () -> new SlabBlock(BlockProperties.copy(METEOR_STONE.get())), AMItems.getBasicSettings().fireproof());
 	public static final RegistrySupplier<Block> METEOR_STONE_STAIRS = register("meteor_stone_stairs", () -> new StairsBlock(METEOR_STONE.get().getDefaultState(), BlockProperties.copy(METEOR_STONE.get())), AMItems.getBasicSettings().fireproof());

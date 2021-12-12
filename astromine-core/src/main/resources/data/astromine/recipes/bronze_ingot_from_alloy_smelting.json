@@ -1,7 +1,7 @@
 {
   "type": "astromine:alloy_smelting",
   "first_input": {
-    "tag": "c:copper_ingots",
+    "item": "minecraft:copper_ingot",
     "count": 3
   },
   "second_input": {

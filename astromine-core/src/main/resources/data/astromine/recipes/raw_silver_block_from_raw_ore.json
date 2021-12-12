@@ -7,13 +7,13 @@
   ],
   "key": {
     "#": {
-      "tag": "c:copper_ingots"
+      "tag": "c:raw_silver_ores"
     },
     "I": {
-      "item": "astromine:copper_ingot"
+      "item": "astromine:raw_silver"
     }
   },
   "result": {
-    "item": "astromine:copper_block"
+    "item": "astromine:raw_silver_block"
   }
 }

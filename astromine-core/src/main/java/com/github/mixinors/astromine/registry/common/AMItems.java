@@ -80,12 +80,11 @@ public class AMItems {
 	public static final RegistrySupplier<Item> SPACE_SUIT_BOOTS = register("space_suit_boots", () -> new SpaceSuitItem(AMArmorMaterials.SPACE_SUIT, EquipmentSlot.FEET, AMItems.getBasicSettings()));
 	
 	public static final RegistrySupplier<Item> PRIMITIVE_ROCKET = register("rocket", () -> new RocketItem(AMEntityTypes.PRIMITIVE_ROCKET.get(), AMItems.getBasicSettings()));
-	
+
 	public static final RegistrySupplier<Item> METITE_NUGGET = register("metite_nugget", () -> new Item(AMItems.getBasicSettings()));
 	public static final RegistrySupplier<Item> STELLUM_NUGGET = register("stellum_nugget", () -> new Item(AMItems.getBasicSettings().fireproof()));
 	public static final RegistrySupplier<Item> UNIVITE_NUGGET = register("univite_nugget", () -> new Item(AMItems.getBasicSettings().fireproof()));
-	
-	
+
 	public static final RegistrySupplier<Item> COPPER_NUGGET = register("copper_nugget", () -> new Item(AMItems.getBasicSettings()));
 	public static final RegistrySupplier<Item> TIN_NUGGET = register("tin_nugget", () -> new Item(AMItems.getBasicSettings()));
 	public static final RegistrySupplier<Item> SILVER_NUGGET = register("silver_nugget", () -> new Item(AMItems.getBasicSettings()));
@@ -117,9 +116,7 @@ public class AMItems {
 	public static final RegistrySupplier<Item> METITE_INGOT = register("metite_ingot", () -> new Item(AMItems.getBasicSettings()));
 	public static final RegistrySupplier<Item> STELLUM_INGOT = register("stellum_ingot", () -> new Item(AMItems.getBasicSettings().fireproof()));
 	public static final RegistrySupplier<Item> UNIVITE_INGOT = register("univite_ingot", () -> new Item(AMItems.getBasicSettings().fireproof()));
-	
-	
-	public static final RegistrySupplier<Item> COPPER_INGOT = register("copper_ingot", () -> new Item(AMItems.getBasicSettings()));
+
 	public static final RegistrySupplier<Item> TIN_INGOT = register("tin_ingot", () -> new Item(AMItems.getBasicSettings()));
 	public static final RegistrySupplier<Item> SILVER_INGOT = register("silver_ingot", () -> new Item(AMItems.getBasicSettings()));
 	public static final RegistrySupplier<Item> LEAD_INGOT = register("lead_ingot", () -> new Item(AMItems.getBasicSettings()));
@@ -129,6 +126,10 @@ public class AMItems {
 	public static final RegistrySupplier<Item> ELECTRUM_INGOT = register("electrum_ingot", () -> new Item(AMItems.getBasicSettings()));
 	public static final RegistrySupplier<Item> FOOLS_GOLD_INGOT = register("fools_gold_ingot", () -> new Item(AMItems.getBasicSettings()));
 	public static final RegistrySupplier<Item> METEORIC_STEEL_INGOT = register("meteoric_steel_ingot", () -> new Item(AMItems.getBasicSettings()));
+
+	public static final RegistrySupplier<Item> RAW_TIN = register("raw_tin", () -> new Item(AMItems.getBasicSettings()));
+	public static final RegistrySupplier<Item> RAW_SILVER = register("raw_silver", () -> new Item(AMItems.getBasicSettings()));
+	public static final RegistrySupplier<Item> RAW_LEAD = register("raw_lead", () -> new Item(AMItems.getBasicSettings()));
 	
 	public static final RegistrySupplier<Item> METITE_DUST = register("metite_dust", () -> new Item(AMItems.getBasicSettings()));
 	public static final RegistrySupplier<Item> ASTERITE_DUST = register("asterite_dust", () -> new Item(AMItems.getBasicSettings()));
@@ -213,8 +214,7 @@ public class AMItems {
 	public static final RegistrySupplier<Item> METITE_GEAR = register("metite_gear", () -> new Item(AMItems.getBasicSettings()));
 	public static final RegistrySupplier<Item> STELLUM_GEAR = register("stellum_gear", () -> new Item(AMItems.getBasicSettings().fireproof()));
 	public static final RegistrySupplier<Item> UNIVITE_GEAR = register("univite_gear", () -> new Item(AMItems.getBasicSettings().fireproof()));
-	
-	
+
 	public static final RegistrySupplier<Item> COPPER_GEAR = register("copper_gear", () -> new Item(AMItems.getBasicSettings()));
 	public static final RegistrySupplier<Item> TIN_GEAR = register("tin_gear", () -> new Item(AMItems.getBasicSettings()));
 	public static final RegistrySupplier<Item> SILVER_GEAR = register("silver_gear", () -> new Item(AMItems.getBasicSettings()));

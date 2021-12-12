@@ -1,7 +1,7 @@
 {
   "type": "astromine:wire_milling",
   "input": {
-    "tag": "c:copper_ingots",
+    "item": "minecraft:copper_ingot",
     "count": 1
   },
   "output": {

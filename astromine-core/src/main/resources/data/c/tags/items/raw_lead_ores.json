@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "astromine:raw_lead",
+      "required": false
+    }
+  ]
+}
