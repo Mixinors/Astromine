@@ -1,6 +1,20 @@
 {
   "replace": false,
   "values": [
-    "#astromine:drills"
+    "minecraft:wooden_shovel",
+    "minecraft:stone_shovel",
+    "minecraft:golden_shovel",
+    "minecraft:iron_shovel",
+    "minecraft:diamond_shovel",
+    "minecraft:netherite_shovel",
+    "astromine:bronze_shovel",
+    "astromine:steel_shovel",
+    "astromine:metite_shovel",
+    "astromine:asterite_shovel",
+    "astromine:stellum_shovel",
+    "astromine:galaxium_shovel",
+    "astromine:univite_shovel",
+    "astromine:meteoric_steel_shovel",
+    "#astromine:mining_tools"
   ]
 }

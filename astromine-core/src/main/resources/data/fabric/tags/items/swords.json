@@ -1,6 +1,19 @@
 {
   "replace": false,
   "values": [
-    "#astromine:drills"
+    "minecraft:wooden_sword",
+    "minecraft:stone_sword",
+    "minecraft:golden_sword",
+    "minecraft:iron_sword",
+    "minecraft:diamond_sword",
+    "minecraft:netherite_sword",
+    "astromine:bronze_sword",
+    "astromine:steel_sword",
+    "astromine:metite_sword",
+    "astromine:asterite_sword",
+    "astromine:stellum_sword",
+    "astromine:galaxium_sword",
+    "astromine:univite_sword",
+    "astromine:meteoric_steel_sword"
   ]
 }

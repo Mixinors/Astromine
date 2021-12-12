@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "north": "astromine:block/fluid_mixer/inactive/advanced_fluid_mixer_front",
+    "south": "astromine:block/fluid_mixer/inactive/advanced_fluid_mixer_back",
+    "east": "astromine:block/fluid_mixer/inactive/advanced_fluid_mixer_left",
+    "west": "astromine:block/fluid_mixer/inactive/advanced_fluid_mixer_right",
+    "up": "astromine:block/fluid_mixer/inactive/advanced_fluid_mixer_top",
+    "down": "astromine:block/fluid_mixer/inactive/advanced_fluid_mixer_bottom",
+    "particle": "astromine:block/machine/generic_machine_top"
+  }
+}

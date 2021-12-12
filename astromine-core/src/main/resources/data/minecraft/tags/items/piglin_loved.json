@@ -1,0 +1,42 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:gold_ore",
+    "minecraft:gold_block",
+    "minecraft:gold_ingot",
+    "minecraft:golden_sword",
+    "minecraft:golden_shovel",
+    "minecraft:golden_pickaxe",
+    "minecraft:golden_axe",
+    "minecraft:golden_hoe",
+    "minecraft:golden_helmet",
+    "minecraft:golden_chestplate",
+    "minecraft:golden_leggings",
+    "minecraft:golden_boots",
+    "minecraft:golden_apple",
+    {
+      "id": "astromine:asteroid_gold_cluster",
+      "required": false
+    },
+    "astromine:gold_wire",
+    "astromine:fools_gold_ingot",
+    "astromine:fools_gold_dust",
+    "astromine:gold_dust",
+    "astromine:fools_gold_plate",
+    "astromine:gold_plate",
+    "astromine:fools_gold_gear",
+    "astromine:gold_gear",
+    "astromine:golden_mining_tool",
+    "astromine:golden_mattock",
+    "astromine:fools_gold_helmet",
+    "astromine:fools_gold_chestplate",
+    "astromine:fools_gold_leggings",
+    "astromine:fools_gold_boots",
+    "astromine:fools_gold_apple",
+    {
+      "id": "astromine:asteroid_gold_ore",
+      "required": false
+    },
+    "astromine:fools_gold_block"
+  ]
+}

@@ -163,6 +163,14 @@ allprojects {
     }
 }
 
+sourceSets {
+    main {
+        resources {
+            srcDir "src/generated/resources"
+        }
+    }
+}
+
 subprojects {
     archivesBaseName = project.name
 

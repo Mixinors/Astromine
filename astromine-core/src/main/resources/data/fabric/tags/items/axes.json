@@ -1,6 +1,20 @@
 {
   "replace": false,
   "values": [
-    "#astromine:drills"
+    "minecraft:wooden_axe",
+    "minecraft:stone_axe",
+    "minecraft:golden_axe",
+    "minecraft:iron_axe",
+    "minecraft:diamond_axe",
+    "minecraft:netherite_axe",
+    "astromine:bronze_axe",
+    "astromine:steel_axe",
+    "astromine:metite_axe",
+    "astromine:asterite_axe",
+    "astromine:stellum_axe",
+    "astromine:galaxium_axe",
+    "astromine:univite_axe",
+    "astromine:meteoric_steel_axe",
+    "#astromine:mattocks"
   ]
 }

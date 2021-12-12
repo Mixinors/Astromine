@@ -1,0 +1,13 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "item": "minecraft:magma_block",
+    "count": 1
+  },
+  "output": {
+    "item": "minecraft:magma_cream",
+    "count": 4
+  },
+  "time": 120,
+  "energy_input": 340
+}

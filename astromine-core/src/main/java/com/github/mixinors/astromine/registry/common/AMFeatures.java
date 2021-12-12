@@ -68,7 +68,8 @@ public class AMFeatures {
 				.defaultConfig(32, 8, 12345)
 				// .superflatFeature(meteorStructure)
 				.register();
-		
+
+		/* TODO: Fix stuff
 		BiomeModifications.create(ASTROMINE_BIOME_MODIFICATIONS)
 				.add(ModificationPhase.ADDITIONS, overworldPredicate(), context -> {
 					if (AMConfig.get().meteorGeneration) {
@@ -80,6 +81,7 @@ public class AMFeatures {
 						context.getGenerationSettings().addFeature(GenerationStep.Feature.LAKES, CRUDE_OIL_KEY);
 					}
 				});
+		 */
 	}
 	
 	public static <T extends FeatureConfig> RegistrySupplier<Feature<T>> registerFeature(Identifier id, Supplier<Feature<T>> feature) {

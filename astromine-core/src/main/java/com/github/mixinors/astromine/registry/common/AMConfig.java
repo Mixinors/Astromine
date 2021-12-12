@@ -653,9 +653,6 @@ public class AMConfig implements ConfigData {
 
 	@Comment("Stack size transferred by Inserters.")
 	public int inserterStackSize = 8;
-
-	@Comment("Whether Conveyors should merge their contents with others or not.")
-	public boolean conveyorsMergeStacks = false;
 	
 	@Comment("Whether generation of Copper Ore in the Overworld is enabled.")
 	public boolean overworldCopperOre = true;

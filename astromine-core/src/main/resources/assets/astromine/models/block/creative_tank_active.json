@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "north": "astromine:block/tank/active/creative_tank_front",
+    "south": "astromine:block/tank/active/creative_tank_back",
+    "east": "astromine:block/tank/active/creative_tank_left",
+    "west": "astromine:block/tank/active/creative_tank_right",
+    "up": "astromine:block/tank/active/creative_tank_top",
+    "down": "astromine:block/tank/active/creative_tank_bottom",
+    "particle": "astromine:block/machine/generic_machine_top"
+  }
+}

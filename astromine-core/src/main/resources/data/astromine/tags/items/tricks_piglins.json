@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    "astromine:fools_gold_nugget",
+    "astromine:fools_gold_ingot",
+    "astromine:fools_gold_dust",
+    "astromine:fools_gold_tiny_dust",
+    "astromine:fools_gold_plate",
+    "astromine:fools_gold_gear",
+    "astromine:fools_gold_helmet",
+    "astromine:fools_gold_chestplate",
+    "astromine:fools_gold_leggings",
+    "astromine:fools_gold_boots",
+    "astromine:fools_gold_apple",
+    "astromine:fools_gold_block"
+  ]
+}

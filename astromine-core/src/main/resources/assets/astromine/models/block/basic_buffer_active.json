@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "north": "astromine:block/buffer/active/basic_buffer_front",
+    "south": "astromine:block/buffer/active/basic_buffer_back",
+    "east": "astromine:block/buffer/active/basic_buffer_left",
+    "west": "astromine:block/buffer/active/basic_buffer_right",
+    "up": "astromine:block/buffer/active/basic_buffer_top",
+    "down": "astromine:block/buffer/active/basic_buffer_bottom",
+    "particle": "astromine:block/machine/generic_machine_top"
+  }
+}

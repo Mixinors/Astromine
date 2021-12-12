@@ -7,6 +7,8 @@
   "has_ceiling": false,
   "infiniburn": "astromine:infiniburn_space",
   "logical_height": 256,
+  "min_y": 512,
+  "height": 512,
   "has_raids": false,
   "respawn_anchor_works": false,
   "bed_works": false,
