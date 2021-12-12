@@ -60,13 +60,15 @@ public class AMClientCallbacks {
 		ItemTooltipCallback.EVENT.register( ( stack, context, tooltip ) -> {
 			if (stack.getItem() instanceof FluidVolumeItem) {
 				FluidComponent fluidComponent = FluidComponent.get(stack);
-				
-				FluidVolume volume = fluidComponent.getFirst();
-				Identifier fluidId = volume.getFluidId();
-				
-				tooltip.addAll(Math.min(tooltip.size(), 1), Lists.newArrayList(
-						((MutableText) TextUtils.getFluidVolume(FluidVolume.of(volume.getAmount() / 81L, volume.getSize() / 81L, volume.getFluid()))).append(new LiteralText(" ")).append(
-								((MutableText) TextUtils.getFluid(fluidId)).formatted(Formatting.GRAY))));
+
+				if(fluidComponent != null) {
+					FluidVolume volume = fluidComponent.getFirst();
+					Identifier fluidId = volume.getFluidId();
+
+					tooltip.addAll(Math.min(tooltip.size(), 1), Lists.newArrayList(
+							((MutableText) TextUtils.getFluidVolume(FluidVolume.of(volume.getAmount() / 81L, volume.getSize() / 81L, volume.getFluid()))).append(new LiteralText(" ")).append(
+									((MutableText) TextUtils.getFluid(fluidId)).formatted(Formatting.GRAY))));
+				}
 			}
 		});
 
@@ -101,10 +103,11 @@ public class AMClientCallbacks {
 			if (stack.getItem() instanceof SpaceSuitItem) {
 				if (stack.getItem() == AMItems.SPACE_SUIT_CHESTPLATE.get()) {
 					FluidComponent fluidComponent = FluidComponent.get(stack);
-					
-					fluidComponent.forEachIndexed((slot, volume) -> {
-						tooltip.add(((MutableText) TextUtils.getFluidVolume(volume)).append(new LiteralText(" ")).append(((MutableText) TextUtils.getFluid(volume.getFluidId())).formatted(Formatting.GRAY)));
-					});
+					if(fluidComponent != null) {
+						fluidComponent.forEachIndexed((slot, volume) -> {
+							tooltip.add(((MutableText) TextUtils.getFluidVolume(volume)).append(new LiteralText(" ")).append(((MutableText) TextUtils.getFluid(volume.getFluidId())).formatted(Formatting.GRAY)));
+						});
+					}
 				}
 			}
 		});

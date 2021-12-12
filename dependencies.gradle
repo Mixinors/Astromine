@@ -36,10 +36,10 @@ project.ext.setDefaultApis = {
     // RoughlyEnoughItems
     useAsApiOptionally("me.shedaniel:RoughlyEnoughItems-fabric:${roughly_enough_items_version}")
 	
-	modImplementation("com.github.Draylar.omega-config:omega-config:${omega_config_version}")
+	//modImplementation("com.github.Draylar.omega-config:omega-config:${omega_config_version}")
 
     // Magna
-    useAsApi("com.github.Draylar:magna:${magna_version}")
+    //useAsApi("com.github.Draylar:magna:${magna_version}")
 
     // Kotlin
     useAsApi("org.jetbrains.kotlin:kotlin-stdlib:${project.kotlin_version}")

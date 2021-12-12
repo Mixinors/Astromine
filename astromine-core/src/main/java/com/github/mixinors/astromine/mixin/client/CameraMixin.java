@@ -39,7 +39,7 @@ import com.github.mixinors.astromine.registry.common.AMTags;
 @Mixin(Camera.class)
 public abstract class CameraMixin {
 	@Redirect(method = "getSubmersionType", at = @At(value = "INVOKE", target = "Lnet/minecraft/fluid/FluidState;isIn(Lnet/minecraft/tag/Tag;)Z", ordinal = 0))
-	private static boolean astromine_getSubmersionTypeForIndustrialFluid(FluidState fluidState, Tag<Fluid> tag) {
+	private boolean astromine_getSubmersionTypeForIndustrialFluid(FluidState fluidState, Tag<Fluid> tag) {
 		return fluidState.isIn(tag) || fluidState.isIn(AMTags.INDUSTRIAL_FLUID); // steal the water background rendering
 	}
 }
