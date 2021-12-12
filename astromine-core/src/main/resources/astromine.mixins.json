@@ -35,7 +35,7 @@
   ],
   "client": [
     "client.ArmorFeatureRendererMixin",
-    "client.BackgroundRendererMixin",
+    "client.CameraMixin",
     "client.BossBarHudMixin",
     "client.BuiltinModelItemRendererMixin",
     "client.ClientPlayerInteractionManagerMixin",

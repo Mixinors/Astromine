@@ -26,22 +26,20 @@ package com.github.mixinors.astromine.mixin.client;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
-import net.minecraft.client.render.BackgroundRenderer;
+import net.minecraft.client.render.Camera;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.tag.Tag;
 
 import com.github.mixinors.astromine.registry.common.AMTags;
 
-@Mixin(BackgroundRenderer.class)
-public abstract class BackgroundRendererMixin {
-	@ModifyVariable(method = "render", at = @At(value = "STORE", ordinal = 0))
-	private static FluidState astromine_renderIndustrialFluidBackground(FluidState submergedFluidState) {
-		if (AMTags.INDUSTRIAL_FLUID.contains(submergedFluidState.getFluid())) {
-			// steal the water background rendering
-			return Fluids.WATER.getDefaultState();
-		}
-		return submergedFluidState;
+@Mixin(Camera.class)
+public abstract class CameraMixin {
+	@Redirect(method = "getSubmersionType", at = @At(value = "INVOKE", target = "Lnet/minecraft/fluid/FluidState;isIn(Lnet/minecraft/tag/Tag;)Z", ordinal = 0))
+	private static boolean astromine_getSubmersionTypeForIndustrialFluid(FluidState fluidState, Tag<Fluid> tag) {
+		return fluidState.isIn(tag) || fluidState.isIn(AMTags.INDUSTRIAL_FLUID); // steal the water background rendering
 	}
 }

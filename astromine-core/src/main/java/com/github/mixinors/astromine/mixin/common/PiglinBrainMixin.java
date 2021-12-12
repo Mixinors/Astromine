@@ -46,16 +46,16 @@ import java.util.Optional;
 
 @Mixin(PiglinBrain.class)
 public abstract class PiglinBrainMixin {
-	@Inject(method = "consumeOffHandItem(Lnet/minecraft/entity/mob/PiglinEntity;Z)V", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/mob/PiglinBrain;acceptsForBarter(Lnet/minecraft/item/Item;)Z"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
-	private static void astromine_consumeOffHandItem(PiglinEntity entity, boolean bl, CallbackInfo ci, ItemStack stack, boolean bl2) {
-		if (bl && bl2 && stack.isIn(AMTags.TRICKS_PIGLINS)) {
-			Optional<PlayerEntity> optional = entity.getBrain().getOptionalMemory(MemoryModuleType.NEAREST_VISIBLE_PLAYER);
-			if (optional.isPresent() && optional.get() instanceof ServerPlayerEntity) {
-				boolean noticed = entity.getRandom().nextInt(AMConfig.get().piglinAngerChance) == 0;
-				AMCriteria.TRICKED_PIGLIN.trigger((ServerPlayerEntity) optional.get(), !noticed);
+	@Inject(method = "consumeOffHandItem(Lnet/minecraft/entity/mob/PiglinEntity;Z)V", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/mob/PiglinBrain;acceptsForBarter(Lnet/minecraft/item/ItemStack;)Z"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
+	private static void astromine_consumeOffHandItem(PiglinEntity piglin, boolean barter, CallbackInfo ci, ItemStack stack) {
+		if (stack.isIn(AMTags.TRICKS_PIGLINS)) { //TODO: make sure this works correctly
+			Optional<PlayerEntity> optional = piglin.getBrain().getOptionalMemory(MemoryModuleType.NEAREST_VISIBLE_PLAYER);
+			if (optional.isPresent() && optional.get() instanceof ServerPlayerEntity player) {
+				boolean noticed = piglin.getRandom().nextInt(AMConfig.get().piglinAngerChance) == 0;
+				AMCriteria.TRICKED_PIGLIN.trigger(player, !noticed);
 				if (noticed) {
-					entity.playSound(SoundEvents.ENTITY_PIGLIN_ANGRY, 1.0f, 1.0f);
-					PiglinBrain.becomeAngryWith(entity, optional.get());
+					piglin.playSound(SoundEvents.ENTITY_PIGLIN_ANGRY, 1.0f, 1.0f);
+					PiglinBrain.becomeAngryWith(piglin, player);
 					ci.cancel();
 				}
 			}
