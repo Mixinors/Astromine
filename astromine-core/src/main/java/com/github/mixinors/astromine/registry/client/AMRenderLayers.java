@@ -25,15 +25,15 @@
 package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-import me.shedaniel.architectury.event.events.client.ClientLifecycleEvent;
-import me.shedaniel.architectury.registry.RenderTypes;
 
+import dev.architectury.event.events.client.ClientLifecycleEvent;
+import dev.architectury.registry.client.rendering.fabric.RenderTypeRegistryImpl;
 import net.minecraft.block.Block;
 import net.minecraft.client.render.RenderLayer;
 
 public class AMRenderLayers {
 	public static void init() {
-		ClientLifecycleEvent.CLIENT_SETUP.register(client -> {
+		ClientLifecycleEvent.CLIENT_SETUP.register( client -> {
 			register(AMBlocks.AIRLOCK, RenderLayer.getTranslucent());
 
 			register(AMBlocks.ALTAR.get(), RenderLayer.getCutout());
@@ -51,7 +51,7 @@ public class AMRenderLayers {
 	 * @return Block instance registered
 	 */
 	public static <T extends Block> T register(T block, RenderLayer renderLayer) {
-		RenderTypes.register(renderLayer, block);
+		RenderTypeRegistryImpl.register(renderLayer, block);
 		return block;
 	}
 }

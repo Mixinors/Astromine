@@ -27,10 +27,10 @@ package com.github.mixinors.astromine.registry.client;
 import com.github.mixinors.astromine.client.screen.RecipeCreatorHandledScreen;
 import com.github.mixinors.astromine.client.screen.base.CustomForegroundBaseHandledScreen;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
+import dev.architectury.event.events.client.ClientLifecycleEvent;
+import dev.architectury.registry.menu.MenuRegistry;
+import dev.architectury.registry.registries.RegistrySupplier;
 import dev.vini2003.hammer.common.screen.handler.BaseScreenHandler;
-import me.shedaniel.architectury.event.events.client.ClientLifecycleEvent;
-import me.shedaniel.architectury.registry.MenuRegistry;
-import me.shedaniel.architectury.registry.RegistrySupplier;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screen.Screen;
@@ -41,7 +41,7 @@ import net.minecraft.screen.ScreenHandlerType;
 @Environment(EnvType.CLIENT)
 public class AMScreens {
 	public static void init() {
-		ClientLifecycleEvent.CLIENT_SETUP.register(client -> {
+		ClientLifecycleEvent.CLIENT_SETUP.register( client -> {
 			register(AMScreenHandlers.RECIPE_CREATOR, RecipeCreatorHandledScreen::new);
 			registerSimple(AMScreenHandlers.ROCKET);
 			registerSimple(AMScreenHandlers.FLUID_EXTRACTOR);

@@ -26,16 +26,16 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.screenhandler.*;
-import me.shedaniel.architectury.registry.MenuRegistry;
-import me.shedaniel.architectury.registry.RegistrySupplier;
 
+import dev.architectury.registry.menu.MenuRegistry;
+import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class AMScreenHandlers {
-	public static final RegistrySupplier<ScreenHandlerType<RecipeCreatorScreenHandler>> RECIPE_CREATOR = registerExtended(AMCommon.id("recipe_creator"), ((syncId, inventory, buffer) -> {
+	public static final RegistrySupplier<ScreenHandlerType<RecipeCreatorScreenHandler>> RECIPE_CREATOR = registerExtended(AMCommon.id("recipe_creator"), (( syncId, inventory, buffer) -> {
 		return new RecipeCreatorScreenHandler(syncId, inventory.player);
 	}));
 
@@ -144,6 +144,6 @@ public class AMScreenHandlers {
 	}
 
 	public static <T extends ScreenHandler> RegistrySupplier<ScreenHandlerType<T>> registerExtended(Identifier id, MenuRegistry.ExtendedMenuTypeFactory<T> factory) {
-		return AMCommon.registry(Registry.MENU_KEY).registerSupplied(id, () -> MenuRegistry.ofExtended(factory));
+		return AMCommon.registry(Registry.MENU_KEY).register(id, () -> MenuRegistry.ofExtended(factory));
 	}
 }

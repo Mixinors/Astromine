@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.world.feature.*;
-import me.shedaniel.architectury.registry.RegistrySupplier;
+import dev.architectury.registry.registries.RegistrySupplier;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
@@ -83,11 +83,11 @@ public class AMFeatures {
 	}
 	
 	public static <T extends FeatureConfig> RegistrySupplier<Feature<T>> registerFeature(Identifier id, Supplier<Feature<T>> feature) {
-		return AMCommon.registry(Registry.FEATURE_KEY).registerSupplied(id, feature);
+		return AMCommon.registry(Registry.FEATURE_KEY).register(id, feature);
 	}
 
 	public static <T extends StructurePieceType> RegistrySupplier<T> registerStructurePiece( Identifier id, Supplier<T> pieceType) {
-		return AMCommon.registry(Registry.STRUCTURE_PIECE_KEY).registerSupplied(id, pieceType);
+		return AMCommon.registry(Registry.STRUCTURE_PIECE_KEY).register(id, pieceType);
 	}
 	
 	private static Predicate<BiomeSelectionContext> overworldPredicate() {

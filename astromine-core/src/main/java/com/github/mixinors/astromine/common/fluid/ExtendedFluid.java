@@ -24,9 +24,9 @@
 
 package com.github.mixinors.astromine.common.fluid;
 
+import dev.architectury.platform.Platform;
+import dev.architectury.registry.registries.RegistrySupplier;
 import dev.vini2003.hammer.common.color.Color;
-import me.shedaniel.architectury.platform.Platform;
-import me.shedaniel.architectury.registry.RegistrySupplier;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricMaterialBuilder;
 
@@ -295,7 +295,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 			still.bucket = bucket;
 			this.bucket = bucket;
 
-			if (Platform.getEnv() == EnvType.CLIENT) {
+			if ( Platform.getEnv() == EnvType.CLIENT) {
 				ClientUtils.registerExtendedFluid(name, tint, still, flowing);
 			}
 

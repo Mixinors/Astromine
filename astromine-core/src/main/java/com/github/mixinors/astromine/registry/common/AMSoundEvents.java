@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.registry.common;
 
-import me.shedaniel.architectury.registry.RegistrySupplier;
+import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.registry.Registry;
 
@@ -61,6 +61,6 @@ public class AMSoundEvents {
 	}
 	
 	public static RegistrySupplier<SoundEvent> register(String id) {
-		return AMCommon.registry(Registry.SOUND_EVENT_KEY).registerSupplied(AMCommon.id(id), () -> new SoundEvent(AMCommon.id(id)));
+		return AMCommon.registry(Registry.SOUND_EVENT_KEY).register(AMCommon.id(id), () -> new SoundEvent(AMCommon.id(id)));
 	}
 }

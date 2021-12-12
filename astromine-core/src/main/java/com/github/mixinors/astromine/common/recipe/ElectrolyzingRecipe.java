@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.common.recipe;
 
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-import me.shedaniel.architectury.core.AbstractRecipeSerializer;
+import dev.architectury.core.AbstractRecipeSerializer;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -190,7 +190,8 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsu
 		return energyInput;
 	}
 
-	public static final class Serializer extends AbstractRecipeSerializer<ElectrolyzingRecipe> {
+	public static final class Serializer extends AbstractRecipeSerializer<ElectrolyzingRecipe>
+	{
 		public static final Identifier ID = AMCommon.id("electrolyzing");
 
 		public static final Serializer INSTANCE = new Serializer();

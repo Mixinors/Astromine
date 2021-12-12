@@ -35,8 +35,8 @@ import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import com.github.mixinors.astromine.registry.common.AMDimensions;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.google.common.collect.Lists;
-import me.shedaniel.architectury.event.events.TooltipEvent;
 
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.item.BlockItem;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
@@ -57,7 +57,7 @@ import team.reborn.energy.EnergyHandler;
 
 public class AMClientCallbacks {
 	public static void init() {
-		TooltipEvent.ITEM.register((stack, tooltip, context) -> {
+		ItemTooltipCallback.EVENT.register( ( stack, context, tooltip ) -> {
 			if (stack.getItem() instanceof FluidVolumeItem) {
 				FluidComponent fluidComponent = FluidComponent.get(stack);
 				
@@ -70,7 +70,7 @@ public class AMClientCallbacks {
 			}
 		});
 
-		TooltipEvent.ITEM.register((stack, tooltip, context) -> {
+		ItemTooltipCallback.EVENT.register( ( stack, context, tooltip ) -> {
 			if (stack.getItem() instanceof EnergyVolumeItem) {
 				EnergyHandler handler = Energy.of(stack);
 				
@@ -80,7 +80,7 @@ public class AMClientCallbacks {
 			}
 		});
 
-		TooltipEvent.ITEM.register((stack, tooltip, context) -> {
+		ItemTooltipCallback.EVENT.register( ( stack, context, tooltip ) -> {
 			if (stack.getItem() instanceof HolographicConnectorItem) {
 				Pair<RegistryKey<World>, BlockPos> pair = ((HolographicConnectorItem) stack.getItem()).readBlock(stack);
 				
@@ -91,13 +91,13 @@ public class AMClientCallbacks {
 			}
 		});
 
-		TooltipEvent.ITEM.register((stack, tooltip, context) -> {
+		ItemTooltipCallback.EVENT.register( ( stack, context, tooltip ) -> {
 			if (stack.getItem() instanceof BlockItem && ((BlockItem) stack.getItem()).getBlock() instanceof EnergyNetworkType.NodeSpeedProvider) {
 				tooltip.add(new TranslatableText("text.astromine.tooltip.cable.speed", ((EnergyNetworkType.NodeSpeedProvider) ((BlockItem) stack.getItem()).getBlock()).getNodeSpeed()).formatted(Formatting.GRAY));
 			}
 		});
 
-		TooltipEvent.ITEM.register((stack, tooltip, context) -> {
+		ItemTooltipCallback.EVENT.register( ( stack, context, tooltip ) -> {
 			if (stack.getItem() instanceof SpaceSuitItem) {
 				if (stack.getItem() == AMItems.SPACE_SUIT_CHESTPLATE.get()) {
 					FluidComponent fluidComponent = FluidComponent.get(stack);

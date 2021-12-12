@@ -25,7 +25,6 @@
 package com.github.mixinors.astromine.common.component.world;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
-import me.shedaniel.architectury.utils.NbtType;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.*;
 import net.minecraft.util.math.BlockPos;
@@ -34,6 +33,7 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
+import dev.architectury.utils.NbtType;
 
 import com.github.mixinors.astromine.common.util.VoxelShapeUtils;
 import com.github.mixinors.astromine.registry.common.AMComponents;

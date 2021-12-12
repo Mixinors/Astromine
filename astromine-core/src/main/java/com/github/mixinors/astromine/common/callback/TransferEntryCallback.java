@@ -25,8 +25,8 @@
 package com.github.mixinors.astromine.common.callback;
 
 import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
-import me.shedaniel.architectury.event.Event;
-import me.shedaniel.architectury.event.EventFactory;
+import dev.architectury.event.Event;
+import dev.architectury.event.EventFactory;
 
 public interface TransferEntryCallback {
 	Event<TransferEntryCallback> EVENT = EventFactory.createLoop();

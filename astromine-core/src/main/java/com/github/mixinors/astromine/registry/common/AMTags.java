@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
 
-import me.shedaniel.architectury.hooks.TagHooks;
+import dev.architectury.hooks.tags.TagHooks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
@@ -35,17 +35,17 @@ import net.minecraft.tag.Tag;
 import com.github.mixinors.astromine.mixin.common.FluidTagsAccessor;
 
 public class AMTags {
-	public static final Tag<Item> TRICKS_PIGLINS = TagHooks.getItemOptional(AMCommon.id("tricks_piglins"));
+	public static final Tag<Item> TRICKS_PIGLINS = TagHooks.optionalItem(AMCommon.id("tricks_piglins"));
 	
 	public static final Tag<Fluid> INDUSTRIAL_FLUID = registerRequired("industrial_fluid");
 
-	public static final Tag<Fluid> NORMAL_BREATHABLE = TagHooks.getFluidOptional(AMCommon.id("normal_breathable"));
-	public static final Tag<Fluid> WATER_BREATHABLE = TagHooks.getFluidOptional(AMCommon.id("water_breathable"));
-	public static final Tag<Fluid> LAVA_BREATHABLE = TagHooks.getFluidOptional(AMCommon.id("lava_breathable"));
+	public static final Tag<Fluid> NORMAL_BREATHABLE = TagHooks.optionalFluid(AMCommon.id("normal_breathable"));
+	public static final Tag<Fluid> WATER_BREATHABLE = TagHooks.optionalFluid(AMCommon.id("water_breathable"));
+	public static final Tag<Fluid> LAVA_BREATHABLE = TagHooks.optionalFluid(AMCommon.id("lava_breathable"));
 	
-	public static final Tag<Fluid> ROCKET_FUELS = TagHooks.getFluidOptional(AMCommon.id("rocket_fuels"));
+	public static final Tag<Fluid> ROCKET_FUELS = TagHooks.optionalFluid(AMCommon.id("rocket_fuels"));
 	
-	public static final Tag<EntityType<?>> DOES_NOT_BREATHE = TagHooks.getEntityTypeOptional(AMCommon.id("does_not_breathe"));
+	public static final Tag<EntityType<?>> DOES_NOT_BREATHE = TagHooks.optionalEntityType(AMCommon.id("does_not_breathe"));
 	
 	private static Tag.Identified<Fluid> registerRequired(String path) {
 		return FluidTagsAccessor.invokeRegister(AMCommon.MOD_ID + ":" + path);

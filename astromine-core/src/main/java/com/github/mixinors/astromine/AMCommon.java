@@ -27,12 +27,13 @@ package com.github.mixinors.astromine;
 import java.util.function.Supplier;
 
 import com.github.mixinors.astromine.registry.common.*;
-import me.shedaniel.architectury.registry.Registries;
-import me.shedaniel.architectury.registry.Registry;
+import dev.architectury.registry.registries.Registrar;
+import dev.architectury.registry.registries.Registries;
 import net.fabricmc.api.ModInitializer;
 
 import net.minecraft.util.Identifier;
 
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -56,7 +57,7 @@ public class AMCommon implements ModInitializer {
 		return new Identifier(MOD_ID, name);
 	}
 	
-	public static <T> Registry<T> registry(RegistryKey<net.minecraft.util.registry.Registry<T>> key) {
+	public static <T> Registrar<T> registry( RegistryKey<Registry<T>> key) {
 		return REGISTRIES.get().get(key);
 	}
 

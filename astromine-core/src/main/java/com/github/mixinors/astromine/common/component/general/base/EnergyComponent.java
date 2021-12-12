@@ -30,8 +30,8 @@ import com.github.mixinors.astromine.common.component.general.SimpleEnergyCompon
 import com.github.mixinors.astromine.common.component.general.compatibility.EnergyComponentFromEnergyStorage;
 import com.github.mixinors.astromine.common.component.general.provider.EnergyComponentProvider;
 import com.github.mixinors.astromine.registry.common.AMComponents;
-import me.shedaniel.architectury.utils.NbtType;
 
+import dev.architectury.utils.NbtType;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;

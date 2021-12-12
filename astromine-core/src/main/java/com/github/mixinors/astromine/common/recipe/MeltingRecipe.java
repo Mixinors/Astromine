@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.common.recipe;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-import me.shedaniel.architectury.core.AbstractRecipeSerializer;
+import dev.architectury.core.AbstractRecipeSerializer;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -183,7 +183,8 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 		return energyInput;
 	}
 
-	public static final class Serializer extends AbstractRecipeSerializer<MeltingRecipe> {
+	public static final class Serializer extends AbstractRecipeSerializer<MeltingRecipe>
+	{
 		public static final Identifier ID = AMCommon.id("melting");
 
 		public static final Serializer INSTANCE = new Serializer();

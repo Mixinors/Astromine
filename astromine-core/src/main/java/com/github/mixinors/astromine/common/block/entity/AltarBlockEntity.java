@@ -27,8 +27,8 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMSoundEvents;
 import dev.architectury.hooks.block.BlockEntityHooks;
-import me.shedaniel.architectury.extensions.BlockEntityExtension;
-import me.shedaniel.architectury.utils.NbtType;
+import dev.architectury.hooks.block.fabric.BlockEntityHooksImpl;
+import dev.architectury.utils.NbtType;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -60,7 +60,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class AltarBlockEntity extends BlockEntity implements InventoryFromItemComponent, BlockEntityExtension {
+public class AltarBlockEntity extends BlockEntity implements InventoryFromItemComponent {
 	public static final int CRAFTING_TIME = 100;
 	public static final int CRAFTING_TIME_SPIN = 80;
 	public static final int CRAFTING_TIME_FALL = 60;
@@ -75,7 +75,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 	public List<Supplier<AltarPedestalBlockEntity>> children = Lists.newArrayList();
 	private ItemComponent inventory = SimpleItemComponent.of(1).withListener(inventory -> {
 		if (hasWorld() && !world.isClient)
-			syncData();
+			BlockEntityHooksImpl.syncData(this);
 	});
 
 	public AltarBlockEntity(BlockPos pos, BlockState state) {
@@ -114,7 +114,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 		if (craftingTicks > 0) {
 			craftingTicks++;
 			if (!world.isClient) {
-				syncData();
+				BlockEntityHooksImpl.syncData(this);
 
 				if (craftingTicks == CRAFTING_TIME + CRAFTING_TIME_SPIN / 2 && recipe != null) {
 					inventory.setStack(0, recipe.getOutput().copy());
@@ -211,16 +211,16 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 			blockEntity -> (AltarPedestalBlockEntity) blockEntity).filter(blockEntity -> blockEntity.parentPos == null || pos.equals(blockEntity.parentPos)).map(blockEntity -> (Supplier<AltarPedestalBlockEntity>) () -> blockEntity).collect(Collectors.toList());
 	}
 
-	@Override
-	public void loadClientData(BlockState state, NbtCompound compoundTag) {
-		readNbt(compoundTag);
-	}
-
-	@Override
-	public NbtCompound saveClientData(NbtCompound compoundTag) {
-		writeNbt(compoundTag);
-		return compoundTag;
-	}
+//	@Override
+//	public void loadClientData(BlockState state, NbtCompound compoundTag) {
+//		readNbt(compoundTag);
+//	}
+//
+//	@Override
+//	public NbtCompound saveClientData(NbtCompound compoundTag) {
+//		writeNbt(compoundTag);
+//		return compoundTag;
+//	}
 
 	@Override
 	public void readNbt(NbtCompound tag) {

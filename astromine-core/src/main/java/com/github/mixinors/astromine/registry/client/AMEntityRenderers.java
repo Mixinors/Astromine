@@ -24,18 +24,19 @@
 
 package com.github.mixinors.astromine.registry.client;
 
-import net.minecraft.client.render.entity.EntityRendererFactory.Context;
+import dev.architectury.registry.level.entity.fabric.EntityRendererRegistryImpl;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 
 import com.github.mixinors.astromine.client.render.entity.PrimitiveRocketEntityRenderer;
 import com.github.mixinors.astromine.client.render.entity.SpaceSlimeEntityRenderer;
 import com.github.mixinors.astromine.client.render.entity.SuperSpaceSlimeEntityRenderer;
 import com.github.mixinors.astromine.registry.common.AMEntityTypes;
-import me.shedaniel.architectury.registry.entity.EntityRenderers;
+import net.minecraft.client.render.entity.EntityRenderers;
 
 public class AMEntityRenderers {
 	public static void init() {
-		EntityRenderers.register(AMEntityTypes.PRIMITIVE_ROCKET.get(), context -> new PrimitiveRocketEntityRenderer(context));
-		EntityRenderers.register(AMEntityTypes.SPACE_SLIME.get(), SpaceSlimeEntityRenderer::new);
-		EntityRenderers.register(AMEntityTypes.SUPER_SPACE_SLIME.get(), SuperSpaceSlimeEntityRenderer::new);
+		EntityRendererRegistry.register(AMEntityTypes.PRIMITIVE_ROCKET.get(), PrimitiveRocketEntityRenderer::new );
+		EntityRendererRegistry.register(AMEntityTypes.SPACE_SLIME.get(), SpaceSlimeEntityRenderer::new);
+		EntityRendererRegistry.register(AMEntityTypes.SUPER_SPACE_SLIME.get(), SuperSpaceSlimeEntityRenderer::new);
 	}
 }

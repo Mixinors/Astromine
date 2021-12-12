@@ -30,7 +30,7 @@ import com.github.mixinors.astromine.common.util.IngredientUtils;
 import com.github.mixinors.astromine.common.util.StackUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import me.shedaniel.architectury.core.AbstractRecipeSerializer;
+import dev.architectury.core.AbstractRecipeSerializer;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -132,7 +132,8 @@ public class WireCuttingRecipe extends SpecialCraftingRecipe {
 		return remainingStacks;
 	}
 
-	public static final class Serializer extends AbstractRecipeSerializer<WireCuttingRecipe> {
+	public static final class Serializer extends AbstractRecipeSerializer<WireCuttingRecipe>
+	{
 		public static final Identifier ID = AMCommon.id("wire_cutting");
 
 		public static final Serializer INSTANCE = new Serializer();

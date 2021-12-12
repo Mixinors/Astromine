@@ -2,7 +2,7 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.block.entity.base.ComponentBlockEntity;
-import me.shedaniel.architectury.networking.NetworkManager;
+import dev.architectury.networking.NetworkManager;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -19,7 +19,7 @@ public class AMNetworks {
 	public static final Identifier GAS_ERASED = AMCommon.id("gas_erased");
 	
 	public static void init() {
-		NetworkManager.registerReceiver(NetworkManager.c2s(), BLOCK_ENTITY_UPDATE_PACKET, ((buf, context) -> {
+		NetworkManager.registerReceiver(NetworkManager.c2s(), BLOCK_ENTITY_UPDATE_PACKET, (( buf, context) -> {
 			buf.retain();
 			
 			BlockPos blockPos = buf.readBlockPos();

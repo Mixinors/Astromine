@@ -34,8 +34,8 @@ import com.github.mixinors.astromine.common.component.general.provider.TransferC
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 
-import me.shedaniel.architectury.extensions.BlockEntityExtension;
-import me.shedaniel.architectury.hooks.BlockEntityHooks;
+import dev.architectury.hooks.block.BlockEntityHooks;
+import dev.architectury.hooks.block.fabric.BlockEntityHooksImpl;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -65,8 +65,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * A {@link BlockEntity} which is synchronized to the client
- * through {@link BlockEntityExtension}, which is
+ * A {@link BlockEntity} which is synchronized to the client which is
  * tickable, updates its {@link BlockState} based on
  * its activity, and handles redstone behavior.
  */
@@ -98,7 +97,7 @@ public abstract class ComponentBlockEntity extends BlockEntity implements Transf
 
 			getTransferComponent().get(ComponentRegistry.get(packetIdentifier)).set(packetDirection, packetTransferType);
 			markDirty();
-			syncData();
+			BlockEntityHooksImpl.syncData(this);
 		}));
 	}
 

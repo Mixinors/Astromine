@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.registry.common;
 
-import me.shedaniel.architectury.registry.CreativeTabs;
+import dev.architectury.registry.fabric.CreativeTabRegistryImpl;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -41,6 +41,6 @@ public class AMItemGroups {
 	}
 
 	public static ItemGroup register(String id, Supplier<? extends ItemConvertible> icon) {
-		return CreativeTabs.create(AMCommon.id(id), () -> new ItemStack(icon.get()));
+		return CreativeTabRegistryImpl.create(AMCommon.id(id), () -> new ItemStack(icon.get()));
 	}
 }

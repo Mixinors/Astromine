@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
-import me.shedaniel.architectury.registry.RegistrySupplier;
+import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.entity.attribute.ClampedEntityAttribute;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.util.Identifier;
@@ -40,6 +40,6 @@ public class AMAttributes {
 	}
 
 	public static RegistrySupplier<EntityAttribute> register(Identifier id, Supplier<EntityAttribute> supplier) {
-		return AMCommon.registry(Registry.ATTRIBUTE_KEY).registerSupplied(id, supplier);
+		return AMCommon.registry(Registry.ATTRIBUTE_KEY).register(id, supplier);
 	}
 }

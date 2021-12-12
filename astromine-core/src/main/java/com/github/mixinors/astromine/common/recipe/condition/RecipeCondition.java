@@ -1,6 +1,6 @@
 package com.github.mixinors.astromine.common.recipe.condition;
 
-import me.shedaniel.architectury.platform.Platform;
+import dev.architectury.platform.Platform;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 

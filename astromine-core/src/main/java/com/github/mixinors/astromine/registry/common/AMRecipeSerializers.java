@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.*;
-import me.shedaniel.architectury.registry.RegistrySupplier;
+import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
@@ -63,6 +63,6 @@ public class AMRecipeSerializers {
 	}
 
 	private static <T extends Recipe<?>> RegistrySupplier<RecipeSerializer<T>> register(Identifier id, RecipeSerializer<T> serializer) {
-		return AMCommon.registry(Registry.RECIPE_SERIALIZER_KEY).registerSupplied(id, () -> serializer);
+		return AMCommon.registry(Registry.RECIPE_SERIALIZER_KEY).register(id, () -> serializer);
 	}
 }

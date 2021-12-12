@@ -24,10 +24,9 @@
 
 package com.github.mixinors.astromine.registry.common;
 
-import me.shedaniel.architectury.event.events.CommandRegistrationEvent;
-import me.shedaniel.architectury.registry.MenuRegistry;
-import me.shedaniel.architectury.registry.menu.ExtendedMenuProvider;
-
+import dev.architectury.event.events.common.CommandRegistrationEvent;
+import dev.architectury.registry.menu.ExtendedMenuProvider;
+import dev.architectury.registry.menu.MenuRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketByteBuf;
@@ -42,7 +41,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class AMCommands {
 	public static void init() {
-		CommandRegistrationEvent.EVENT.register((dispatcher, environment) -> {
+		CommandRegistrationEvent.EVENT.register(( dispatcher, environment) -> {
 			dispatcher.register(LiteralArgumentBuilder.<ServerCommandSource> literal("recipe").then(LiteralArgumentBuilder.<ServerCommandSource> literal("creator").executes((context) -> {
 				MenuRegistry.openExtendedMenu(context.getSource().getPlayer(), new ExtendedMenuProvider() {
 					@Override

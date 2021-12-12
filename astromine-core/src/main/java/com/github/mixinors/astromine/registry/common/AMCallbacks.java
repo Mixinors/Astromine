@@ -28,9 +28,10 @@ import com.github.mixinors.astromine.common.callback.ServerChunkManagerCallback;
 
 
 import com.github.mixinors.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
-import me.shedaniel.architectury.event.events.BlockEvent;
-import me.shedaniel.architectury.event.events.TickEvent;
 
+import dev.architectury.event.EventResult;
+import dev.architectury.event.events.common.BlockEvent;
+import dev.architectury.event.events.common.TickEvent;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -51,7 +52,7 @@ import java.util.List;
 
 public class AMCallbacks {
 	public static void init() {
-		BlockEvent.PLACE.register((world, pos, blockState, entity) -> {
+		BlockEvent.PLACE.register(( world, pos, blockState, entity) -> {
 			ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(pos));
 
 			if (atmosphereComponent != null) {
@@ -87,10 +88,10 @@ public class AMCallbacks {
 				atmosphereComponent.remove(centerPos);
 			}
 
-			return ActionResult.PASS;
+			return EventResult.pass();
 		});
 
-		TickEvent.SERVER_PRE.register((server) -> {
+		TickEvent.SERVER_PRE.register(( server) -> {
 			for (PlayerEntity playerEntity : server.getPlayerManager().getPlayerList()) {
 				if (playerEntity.currentScreenHandler instanceof ComponentBlockEntityScreenHandler) {
 					ComponentBlockEntityScreenHandler screenHandler = (ComponentBlockEntityScreenHandler) playerEntity.currentScreenHandler;
@@ -103,7 +104,7 @@ public class AMCallbacks {
 			}
 		});
 
-		TickEvent.SERVER_WORLD_PRE.register((world -> {
+		TickEvent.SERVER_LEVEL_PRE.register((world -> {
 			WorldNetworkComponent component = WorldNetworkComponent.get(world);
 
 			if (component != null) {

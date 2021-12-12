@@ -4,7 +4,7 @@ import com.github.mixinors.astromine.client.atmosphere.ClientAtmosphereManager;
 import com.github.mixinors.astromine.common.entity.PrimitiveRocketEntity;
 import com.github.mixinors.astromine.common.util.ClientUtils;
 import com.github.mixinors.astromine.registry.common.AMEntityTypes;
-import me.shedaniel.architectury.networking.NetworkManager;
+import dev.architectury.networking.NetworkManager;
 
 import java.util.UUID;
 
@@ -12,7 +12,7 @@ import static com.github.mixinors.astromine.registry.common.AMNetworks.*;
 
 public class AMClientNetworks {
 	public static void init() {
-		NetworkManager.registerReceiver(NetworkManager.s2c(), PRIMITIVE_ROCKET_SPAWN, ((buf, context) -> {
+		NetworkManager.registerReceiver(NetworkManager.s2c(), PRIMITIVE_ROCKET_SPAWN, (( buf, context) -> {
 			double x = buf.readDouble();
 			double y = buf.readDouble();
 			double z = buf.readDouble();

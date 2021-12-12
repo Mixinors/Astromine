@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.common.recipe;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-import me.shedaniel.architectury.core.AbstractRecipeSerializer;
+import dev.architectury.core.AbstractRecipeSerializer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
@@ -121,7 +121,8 @@ public class AltarRecipe implements Recipe<AltarBlockEntity> {
 		return DefaultedList.copyOf(Ingredient.EMPTY, ingredients.toArray(new Ingredient[0]));
 	}
 
-	public static final class Serializer extends AbstractRecipeSerializer<AltarRecipe> {
+	public static final class Serializer extends AbstractRecipeSerializer<AltarRecipe>
+	{
 		public static final Identifier ID = AMCommon.id("altar");
 
 		public static final Serializer INSTANCE = new Serializer();

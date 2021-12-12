@@ -25,9 +25,9 @@
 package com.github.mixinors.astromine.common.block.base;
 
 import com.github.mixinors.astromine.common.block.entity.TickableBlockEntity;
-import me.shedaniel.architectury.registry.MenuRegistry;
-import me.shedaniel.architectury.registry.menu.ExtendedMenuProvider;
 
+import dev.architectury.registry.menu.ExtendedMenuProvider;
+import dev.architectury.registry.menu.MenuRegistry;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
@@ -118,7 +118,7 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 
 	/** Returns the {@link ScreenHandlerFactory} this {@link Block}
 	 * will use. */
-	public ExtendedMenuProvider createScreenHandlerFactory(ServerPlayerEntity player, BlockState state, World world, BlockPos pos) {
+	public ExtendedMenuProvider createScreenHandlerFactory( ServerPlayerEntity player, BlockState state, World world, BlockPos pos) {
 		return new ExtendedMenuProvider() {
 			/** Writes data from {@link BlockWithEntity#populateScreenHandlerBuffer(BlockState, World, BlockPos, ServerPlayerEntity, PacketByteBuf)}
 			 * to the given {@link PacketByteBuf}. */

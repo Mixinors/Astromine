@@ -24,9 +24,9 @@
 
 package com.github.mixinors.astromine.common.callback;
 
+import dev.architectury.event.Event;
+import dev.architectury.event.EventFactory;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
-import me.shedaniel.architectury.event.Event;
-import me.shedaniel.architectury.event.EventFactory;
 import net.minecraft.client.render.DimensionEffects;
 import net.minecraft.util.Identifier;
 

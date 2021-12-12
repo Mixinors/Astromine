@@ -30,8 +30,8 @@ import com.github.mixinors.astromine.common.criterion.LaunchRocketCriterion;
 import com.github.mixinors.astromine.common.criterion.MetiteOreUnderestimationCriterion;
 import com.github.mixinors.astromine.common.criterion.ProperlyUseFireExtinguisherCriterion;
 import com.github.mixinors.astromine.common.criterion.UseFireExtinguisherCriterion;
-import me.shedaniel.architectury.registry.CriteriaTriggersRegistry;
 
+import dev.architectury.registry.level.advancement.CriteriaTriggersRegistry;
 import net.minecraft.advancement.criterion.Criterion;
 
 import com.github.mixinors.astromine.common.criterion.TrickedPiglinCriterion;

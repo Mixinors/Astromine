@@ -28,9 +28,9 @@ import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.item.*;
 import com.github.mixinors.astromine.common.item.base.EnergyVolumeItem;
 import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
+import dev.architectury.registry.registries.RegistrySupplier;
 import draylar.magna.item.ExcavatorItem;
 import draylar.magna.item.HammerItem;
-import me.shedaniel.architectury.registry.RegistrySupplier;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -463,7 +463,7 @@ public class AMItems {
 	 * @return Item instance registered
 	 */
 	public static <T extends Item> RegistrySupplier<T> register(Identifier name, Supplier<T> item) {
-		return AMCommon.registry(Registry.ITEM_KEY).registerSupplied(name, item);
+		return AMCommon.registry(Registry.ITEM_KEY).register(name, item);
 	}
 
 	public static Item.Settings getBasicSettings() {

@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.client.render.block.*;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import me.shedaniel.architectury.registry.BlockEntityRenderers;
+import dev.architectury.registry.client.rendering.fabric.BlockEntityRendererRegistryImpl;
 
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -46,6 +46,6 @@ public class AMBlockEntityRenderers {
 	}
 
 	public static <B extends BlockEntity, C extends BlockEntityType<B>> void register(Supplier<C> c, BlockEntityRendererFactory<? super B> b) {
-		BlockEntityRenderers.registerRenderer(c.get(), b);
+		BlockEntityRendererRegistryImpl.register(c.get(), b);
 	}
 }

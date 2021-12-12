@@ -26,8 +26,8 @@ package com.github.mixinors.astromine.common.util;
 
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
-import me.shedaniel.architectury.platform.Platform;
 
+import dev.architectury.platform.Platform;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
@@ -82,7 +82,7 @@ public class TextUtils {
 
     /** Returns the "Astromine" / "TechReborn" / "Minecraft" ... text. */
     public static Text getMod(Identifier identifier) {
-        return new LiteralText(Platform.getMod(identifier.getNamespace()).getName()).formatted(Formatting.BLUE, Formatting.ITALIC);
+        return new LiteralText( Platform.getMod(identifier.getNamespace()).getName()).formatted(Formatting.BLUE, Formatting.ITALIC);
     }
 
     /** Returns the "75%" text. */
