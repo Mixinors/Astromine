@@ -1,7 +1,7 @@
 {
   "name": "Electrolyzer",
   "icon": "astromine:primitive_electrolyzer",
-  "category": "machines",
+  "category": "astromine:machines",
   "sortnum": 1,
   "pages": [
     {

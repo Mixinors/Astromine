@@ -1,7 +1,7 @@
 {
   "name": "Metite",
   "icon": "astromine:electrum_ingot",
-  "category": "resources",
+  "category": "astromine:resources",
   "sortnum": 9,
   "pages": []
 }

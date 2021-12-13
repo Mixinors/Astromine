@@ -1,7 +1,7 @@
 {
   "name": "Wire Mill",
   "icon": "astromine:primitive_wire_mill",
-  "category": "machines",
+  "category": "astromine:machines",
   "sortnum": 1,
   "pages": [
     {

@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:metite_nugget_from_smelting_metite_shovel"
+    ]
+  },
+  "criteria": {
+    "has_metite_shovel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:metite_shovel"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:metite_nugget_from_smelting_metite_shovel"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_metite_shovel",
+      "has_the_recipe"
+    ]
+  ]
+}

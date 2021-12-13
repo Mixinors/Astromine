@@ -1,7 +1,7 @@
 {
   "name": "Battery",
   "icon": "astromine:primitive_battery",
-  "category": "gadgets",
+  "category": "astromine:gadgets",
   "sortnum": 1,
   "pages": [
     {

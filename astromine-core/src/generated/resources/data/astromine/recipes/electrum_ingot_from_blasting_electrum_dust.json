@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "group": "electrum_ingot",
+  "ingredient": {
+    "item": "astromine:electrum_dust"
+  },
+  "result": "astromine:electrum_ingot",
+  "experience": 0.0,
+  "cookingtime": 100
+}

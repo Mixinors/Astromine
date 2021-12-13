@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:stellum_nugget_from_blasting_stellum_shovel"
+    ]
+  },
+  "criteria": {
+    "has_stellum_shovel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:stellum_shovel"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:stellum_nugget_from_blasting_stellum_shovel"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_stellum_shovel",
+      "has_the_recipe"
+    ]
+  ]
+}

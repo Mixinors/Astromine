@@ -1,7 +1,7 @@
 {
   "name": "Fool's Gold",
   "icon": "astromine:fools_gold_ingot",
-  "category": "resources",
+  "category": "astromine:resources",
   "sortnum": 5,
   "pages": []
 }

@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:tin_ingot_from_blasting_asteroid_tin_cluster"
+    ]
+  },
+  "criteria": {
+    "has_asteroid_tin_cluster": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:asteroid_tin_cluster"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:tin_ingot_from_blasting_asteroid_tin_cluster"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_asteroid_tin_cluster",
+      "has_the_recipe"
+    ]
+  ]
+}

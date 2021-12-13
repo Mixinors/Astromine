@@ -1,7 +1,7 @@
 {
   "name": "Fluid Placer",
   "icon": "astromine:fluid_placer",
-  "category": "machines",
+  "category": "astromine:machines",
   "sortnum": 4,
   "pages": [
     {

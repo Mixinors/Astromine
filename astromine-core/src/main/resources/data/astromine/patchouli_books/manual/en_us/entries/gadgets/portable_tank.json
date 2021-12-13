@@ -1,7 +1,7 @@
 {
   "name": "Portable Tank",
   "icon": "astromine:portable_tank",
-  "category": "gadgets",
+  "category": "astromine:gadgets",
   "sortnum": 2,
   "pages": [
     {

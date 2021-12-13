@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:stellum_nugget_from_blasting_stellum_leggings"
+    ]
+  },
+  "criteria": {
+    "has_stellum_leggings": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:stellum_leggings"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:stellum_nugget_from_blasting_stellum_leggings"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_stellum_leggings",
+      "has_the_recipe"
+    ]
+  ]
+}

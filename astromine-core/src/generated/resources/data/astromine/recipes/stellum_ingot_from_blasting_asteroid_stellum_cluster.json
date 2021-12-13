@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "group": "stellum_ingot",
+  "ingredient": {
+    "item": "astromine:asteroid_stellum_cluster"
+  },
+  "result": "astromine:stellum_ingot",
+  "experience": 0.7,
+  "cookingtime": 100
+}

@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "astromine:netherite_gear"
+    ]
+  },
+  "criteria": {
+    "has_netherite_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:netherite_ingot"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "astromine:netherite_gear"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_netherite_ingot",
+      "has_the_recipe"
+    ]
+  ]
+}

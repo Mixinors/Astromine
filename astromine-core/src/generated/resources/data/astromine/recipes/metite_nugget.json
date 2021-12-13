@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "astromine:metite_ingot"
+    }
+  ],
+  "result": {
+    "item": "astromine:metite_nugget",
+    "count": 9
+  }
+}

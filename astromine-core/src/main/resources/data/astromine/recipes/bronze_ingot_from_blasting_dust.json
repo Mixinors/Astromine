@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "tag": "c:bronze_dusts"
-  },
-  "result": "astromine:bronze_ingot",
-  "experience": 0.1,
-  "cookingtime": 100
-}

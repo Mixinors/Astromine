@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:diamond_fragment_from_blasting_diamond_pickaxe"
+    ]
+  },
+  "criteria": {
+    "has_diamond_pickaxe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:diamond_pickaxe"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:diamond_fragment_from_blasting_diamond_pickaxe"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_diamond_pickaxe",
+      "has_the_recipe"
+    ]
+  ]
+}

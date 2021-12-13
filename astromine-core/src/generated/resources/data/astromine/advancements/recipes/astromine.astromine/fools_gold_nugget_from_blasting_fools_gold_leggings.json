@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:fools_gold_nugget_from_blasting_fools_gold_leggings"
+    ]
+  },
+  "criteria": {
+    "has_fools_gold_leggings": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:fools_gold_leggings"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:fools_gold_nugget_from_blasting_fools_gold_leggings"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_fools_gold_leggings",
+      "has_the_recipe"
+    ]
+  ]
+}

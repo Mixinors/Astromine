@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:stellum_nugget_from_blasting_stellum_pickaxe"
+    ]
+  },
+  "criteria": {
+    "has_stellum_pickaxe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:stellum_pickaxe"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:stellum_nugget_from_blasting_stellum_pickaxe"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_stellum_pickaxe",
+      "has_the_recipe"
+    ]
+  ]
+}

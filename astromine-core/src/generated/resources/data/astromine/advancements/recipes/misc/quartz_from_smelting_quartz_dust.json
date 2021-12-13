@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:quartz_from_smelting_quartz_dust"
+    ]
+  },
+  "criteria": {
+    "has_quartz_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:quartz_dust"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:quartz_from_smelting_quartz_dust"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_quartz_dust",
+      "has_the_recipe"
+    ]
+  ]
+}

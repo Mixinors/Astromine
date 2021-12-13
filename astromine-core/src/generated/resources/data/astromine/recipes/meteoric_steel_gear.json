@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " X ",
+    "X X",
+    " X "
+  ],
+  "key": {
+    "X": {
+      "item": "astromine:meteoric_steel_ingot"
+    }
+  },
+  "result": {
+    "item": "astromine:meteoric_steel_gear",
+    "count": 2
+  }
+}

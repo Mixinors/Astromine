@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "group": "galaxium_fragment",
+  "ingredient": {
+    "item": "astromine:galaxium_tiny_dust"
+  },
+  "result": "astromine:galaxium_fragment",
+  "experience": 0.0,
+  "cookingtime": 100
+}

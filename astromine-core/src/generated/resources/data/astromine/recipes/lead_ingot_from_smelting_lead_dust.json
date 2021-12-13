@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "group": "lead_ingot",
+  "ingredient": {
+    "item": "astromine:lead_dust"
+  },
+  "result": "astromine:lead_ingot",
+  "experience": 0.0,
+  "cookingtime": 200
+}

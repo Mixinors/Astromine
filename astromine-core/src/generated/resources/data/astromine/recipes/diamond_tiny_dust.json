@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "astromine:diamond_dust"
+    }
+  ],
+  "result": {
+    "item": "astromine:diamond_tiny_dust",
+    "count": 9
+  }
+}

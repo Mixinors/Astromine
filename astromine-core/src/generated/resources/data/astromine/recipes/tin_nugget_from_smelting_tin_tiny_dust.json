@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "group": "tin_nugget",
+  "ingredient": {
+    "item": "astromine:tin_tiny_dust"
+  },
+  "result": "astromine:tin_nugget",
+  "experience": 0.0,
+  "cookingtime": 200
+}

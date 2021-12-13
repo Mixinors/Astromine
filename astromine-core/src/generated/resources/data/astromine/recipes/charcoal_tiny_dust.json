@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "astromine:charcoal_dust"
+    }
+  ],
+  "result": {
+    "item": "astromine:charcoal_tiny_dust",
+    "count": 9
+  }
+}

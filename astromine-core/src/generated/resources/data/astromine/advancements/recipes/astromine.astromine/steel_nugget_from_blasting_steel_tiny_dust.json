@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:steel_nugget_from_blasting_steel_tiny_dust"
+    ]
+  },
+  "criteria": {
+    "has_steel_tiny_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:steel_tiny_dust"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:steel_nugget_from_blasting_steel_tiny_dust"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_steel_tiny_dust",
+      "has_the_recipe"
+    ]
+  ]
+}

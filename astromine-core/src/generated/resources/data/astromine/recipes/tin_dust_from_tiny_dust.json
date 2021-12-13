@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "tin_dust",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "astromine:tin_tiny_dust"
+    }
+  },
+  "result": {
+    "item": "astromine:tin_dust"
+  }
+}

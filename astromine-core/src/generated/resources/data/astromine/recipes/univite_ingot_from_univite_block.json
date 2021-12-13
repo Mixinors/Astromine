@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "univite_ingot",
+  "ingredients": [
+    {
+      "item": "astromine:univite_block"
+    }
+  ],
+  "result": {
+    "item": "astromine:univite_ingot",
+    "count": 9
+  }
+}

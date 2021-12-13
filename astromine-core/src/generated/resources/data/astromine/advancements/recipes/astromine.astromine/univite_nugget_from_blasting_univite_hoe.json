@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:univite_nugget_from_blasting_univite_hoe"
+    ]
+  },
+  "criteria": {
+    "has_univite_hoe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:univite_hoe"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:univite_nugget_from_blasting_univite_hoe"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_univite_hoe",
+      "has_the_recipe"
+    ]
+  ]
+}

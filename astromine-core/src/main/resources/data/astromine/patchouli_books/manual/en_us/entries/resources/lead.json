@@ -1,7 +1,7 @@
 {
   "name": "Lead",
   "icon": "astromine:lead_ingot",
-  "category": "resources",
+  "category": "astromine:resources",
   "sortnum": 8,
   "pages": []
 }

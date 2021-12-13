@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:asterite_fragment"
+    ]
+  },
+  "criteria": {
+    "has_asterite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:asterite"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:asterite_fragment"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_asterite",
+      "has_the_recipe"
+    ]
+  ]
+}

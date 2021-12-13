@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "copper_dust",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "astromine:copper_tiny_dust"
+    }
+  },
+  "result": {
+    "item": "astromine:copper_dust"
+  }
+}

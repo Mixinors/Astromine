@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:steel_nugget_from_blasting_steel_pickaxe"
+    ]
+  },
+  "criteria": {
+    "has_steel_pickaxe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:steel_pickaxe"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:steel_nugget_from_blasting_steel_pickaxe"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_steel_pickaxe",
+      "has_the_recipe"
+    ]
+  ]
+}

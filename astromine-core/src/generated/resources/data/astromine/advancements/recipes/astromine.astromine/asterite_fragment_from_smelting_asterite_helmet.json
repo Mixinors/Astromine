@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:asterite_fragment_from_smelting_asterite_helmet"
+    ]
+  },
+  "criteria": {
+    "has_asterite_helmet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:asterite_helmet"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:asterite_fragment_from_smelting_asterite_helmet"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_asterite_helmet",
+      "has_the_recipe"
+    ]
+  ]
+}

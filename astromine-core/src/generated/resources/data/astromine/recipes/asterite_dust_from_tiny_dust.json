@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "asterite_dust",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "astromine:asterite_tiny_dust"
+    }
+  },
+  "result": {
+    "item": "astromine:asterite_dust"
+  }
+}

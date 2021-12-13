@@ -1,7 +1,7 @@
 {
   "name": "Electrum",
   "icon": "astromine:electrum_ingot",
-  "category": "resources",
+  "category": "astromine:resources",
   "sortnum": 7,
   "pages": []
 }

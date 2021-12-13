@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "group": "netherite_nugget",
+  "ingredient": {
+    "item": "minecraft:netherite_axe"
+  },
+  "result": "astromine:netherite_nugget",
+  "experience": 0.1,
+  "cookingtime": 100
+}

@@ -1,7 +1,7 @@
 {
   "name": "Solidifier",
   "icon": "astromine:primitive_solidifier",
-  "category": "machines",
+  "category": "astromine:machines",
   "sortnum": 1,
   "pages": [
     {

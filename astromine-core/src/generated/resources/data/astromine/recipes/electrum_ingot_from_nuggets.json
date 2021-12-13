@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "electrum_ingot",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "astromine:electrum_nugget"
+    }
+  },
+  "result": {
+    "item": "astromine:electrum_ingot"
+  }
+}

@@ -1,7 +1,7 @@
 {
   "name": "Platings",
   "icon": "astromine:primitive_plating",
-  "category": "components",
+  "category": "astromine:components",
   "sortnum": 4,
   "pages": [
     {

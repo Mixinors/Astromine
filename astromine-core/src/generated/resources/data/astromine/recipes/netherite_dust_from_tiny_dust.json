@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "netherite_dust",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "astromine:netherite_tiny_dust"
+    }
+  },
+  "result": {
+    "item": "astromine:netherite_dust"
+  }
+}

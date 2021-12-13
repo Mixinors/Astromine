@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:metite_nugget_from_blasting_metite_axe"
+    ]
+  },
+  "criteria": {
+    "has_metite_axe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:metite_axe"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:metite_nugget_from_blasting_metite_axe"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_metite_axe",
+      "has_the_recipe"
+    ]
+  ]
+}

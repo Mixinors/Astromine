@@ -1,5 +1,6 @@
 package com.github.mixinors.astromine.datagen.family;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -8,6 +9,7 @@ import java.util.function.BiConsumer;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.datagen.provider.AMModelProvider;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
@@ -20,13 +22,13 @@ import net.minecraft.item.Item;
 import net.minecraft.util.registry.Registry;
 
 public class MaterialFamily {
-	private final Item baseItem;
-	private final MaterialType type;
 	final Map<ItemVariant, Item> itemVariants = Maps.newHashMap();
 	final Map<BlockVariant, Block> blockVariants = Maps.newHashMap();
+	final Set<AlloyIngredients> alloyIngredients = Sets.newHashSet();
+	private final Item baseItem;
+	private final MaterialType type;
 	@Nullable
 	MaterialFamily smithingBase;
-	final Set<AlloyIngredients> alloyIngredients = Sets.newHashSet();
 	boolean piglinLoved = false;
 	boolean generateModels = true;
 	boolean generateRecipes = true;
@@ -34,6 +36,7 @@ public class MaterialFamily {
 	String group;
 	@Nullable
 	String unlockCriterionName;
+	float oreSmeltingExperience = 0.7f;
 
 	MaterialFamily(Item baseItem, MaterialType type) {
 		this.baseItem = baseItem;
@@ -48,6 +51,10 @@ public class MaterialFamily {
 		return type;
 	}
 
+	public ItemVariant getBaseVariant() {
+		return getType().asVariant();
+	}
+
 	public Map<ItemVariant, Item> getItemVariants() {
 		return this.itemVariants;
 	}
@@ -56,16 +63,58 @@ public class MaterialFamily {
 		return this.blockVariants;
 	}
 
-	public boolean isBaseVanilla() {
-		return Registry.ITEM.getId(getBaseItem()).getNamespace().equals("minecraft");
+	public boolean isBaseAstromine() {
+		return Registry.ITEM.getId(getBaseItem()).getNamespace().equals(AMCommon.MOD_ID);
 	}
 
-	public boolean isVariantVanilla(ItemVariant variant) {
-		return Registry.ITEM.getId(getVariant(variant)).getNamespace().equals("minecraft");
+	public boolean isVariantAstromine(ItemVariant variant) {
+		return hasVariant(variant) && Registry.ITEM.getId(getVariant(variant)).getNamespace().equals(AMCommon.MOD_ID);
 	}
 
-	public boolean isVariantVanilla(BlockVariant variant) {
-		return Registry.BLOCK.getId(getVariant(variant)).getNamespace().equals("minecraft");
+	public boolean isVariantAstromine(BlockVariant variant) {
+		return hasVariant(variant) && Registry.BLOCK.getId(getVariant(variant)).getNamespace().equals(AMCommon.MOD_ID);
+	}
+
+	public boolean areVariantsAstromine(ItemVariant... variants) {
+		return Arrays.stream(variants).allMatch(this::isVariantAstromine);
+	}
+
+	public boolean areVariantsAstromine(BlockVariant... variants) {
+		return Arrays.stream(variants).allMatch(this::isVariantAstromine);
+	}
+
+	public boolean areAnyVariantsAstromine(ItemVariant... variants) {
+		return Arrays.stream(variants).anyMatch(this::isVariantAstromine);
+	}
+
+	public boolean areAnyVariantsAstromine(BlockVariant... variants) {
+		return Arrays.stream(variants).anyMatch(this::isVariantAstromine);
+	}
+
+	public boolean shouldGenerateRecipe(ItemVariant output) {
+		return shouldGenerateRecipe(getBaseVariant(), output);
+	}
+
+	public boolean shouldGenerateRecipe(BlockVariant output) {
+		return shouldGenerateRecipe(getBaseVariant(), output);
+	}
+
+	public boolean shouldGenerateRecipe(ItemVariant input, ItemVariant output) {
+		if (input.equals(output)) return false;
+		return shouldGenerateRecipes() && hasVariants(input, output) && areAnyVariantsAstromine(input, output);
+	}
+
+	public boolean shouldGenerateRecipe(BlockVariant input, BlockVariant output) {
+		if (input.equals(output)) return false;
+		return shouldGenerateRecipes() && hasVariants(input, output) && areAnyVariantsAstromine(input, output);
+	}
+
+	public boolean shouldGenerateRecipe(ItemVariant input, BlockVariant output) {
+		return shouldGenerateRecipes() && hasVariant(input) && hasVariant(output) && (isVariantAstromine(input) || isVariantAstromine(output));
+	}
+
+	public boolean shouldGenerateRecipe(BlockVariant input, ItemVariant output) {
+		return shouldGenerateRecipes() && hasVariant(input) && hasVariant(output) && (isVariantAstromine(input) || isVariantAstromine(output));
 	}
 
 	public Item getVariant(ItemVariant variant) {
@@ -84,12 +133,20 @@ public class MaterialFamily {
 		return this.blockVariants.containsKey(variant);
 	}
 
+	public boolean hasVariants(ItemVariant... variants) {
+		return Arrays.stream(variants).allMatch(this::hasVariant);
+	}
+
+	public boolean hasVariants(BlockVariant... variants) {
+		return Arrays.stream(variants).allMatch(this::hasVariant);
+	}
+
 	public boolean shouldGenerateModel(ItemVariant variant) {
-		return shouldGenerateModels() && hasVariant(variant) && !isVariantVanilla(variant);
+		return shouldGenerateModels() && hasVariant(variant) && isVariantAstromine(variant);
 	}
 
 	public boolean shouldGenerateModel(BlockVariant variant) {
-		return shouldGenerateModels() && hasVariant(variant) && !isVariantVanilla(variant);
+		return shouldGenerateModels() && hasVariant(variant) && isVariantAstromine(variant);
 	}
 
 	public boolean shouldGenerateModels() {
@@ -132,6 +189,99 @@ public class MaterialFamily {
 
 	public Set<AlloyIngredients> getAlloyIngredients() {
 		return alloyIngredients;
+	}
+
+	public float getOreSmeltingExperience() {
+		return oreSmeltingExperience;
+	}
+
+	public enum ItemVariant {
+		INGOT("ingot"),
+		GEM("gem"),
+		MISC("misc"),
+		NUGGET("nugget"),
+		RAW_ORE("raw_ore"),
+		METEOR_CLUSTER("meteor_cluster"),
+		ASTEROID_CLUSTER("asteroid_cluster"),
+		DUST("dust"),
+		TINY_DUST("tiny_dust"),
+		GEAR("gear"),
+		PLATE("plate"),
+		WIRE("wire"),
+		PICKAXE("pickaxe"),
+		AXE("axe"),
+		SHOVEL("shovel"),
+		SWORD("sword"),
+		HOE("hoe"),
+		HELMET("helmet"),
+		CHESTPLATE("chestplate"),
+		LEGGINGS("leggings"),
+		BOOTS("boots"),
+		APPLE("apple"),
+		HORSE_ARMOR("horse_armor");
+
+		private final String name;
+
+		ItemVariant(String name) {
+			this.name = name;
+		}
+
+		public String getName() {
+			return this.name;
+		}
+
+		public BiConsumer<ItemModelGenerator, Item> getModelRegistrar() {
+			return switch (this) {
+				case PICKAXE, AXE, SHOVEL, SWORD, HOE -> (itemModelGenerator, item) -> itemModelGenerator.register(item, Models.HANDHELD);
+				default -> (itemModelGenerator, item) -> itemModelGenerator.register(item, Models.GENERATED);
+			};
+		}
+	}
+
+	public enum BlockVariant {
+		BLOCK("block"),
+		BLOCK_2x2("block_2x2"),
+		ORE("ore"),
+		DEEPSLATE_ORE("deepslate_ore"),
+		NETHER_ORE("nether_ore"),
+		METEOR_ORE("meteor_ore"),
+		ASTEROID_ORE("asteroid_ore"),
+		RAW_ORE_BLOCK("raw_ore_block");
+
+		private final String name;
+
+		BlockVariant(String name) {
+			this.name = name;
+		}
+
+		public String getName() {
+			return this.name;
+		}
+
+		public BiConsumer<BlockStateModelGenerator, Block> getModelRegistrar() {
+			return switch (this) {
+				case METEOR_ORE -> AMModelProvider::registerMeteorOre;
+				case ASTEROID_ORE -> AMModelProvider::registerAsteroidOre;
+				default -> BlockStateModelGenerator::registerSimpleCubeAll;
+			};
+		}
+	}
+
+	public enum MaterialType {
+		INGOT(ItemVariant.INGOT),
+		GEM(ItemVariant.GEM),
+		MISC(ItemVariant.MISC),
+		DUST(ItemVariant.DUST);
+
+		private final ItemVariant variant;
+
+		MaterialType(ItemVariant variant) {
+			this.variant = variant;
+		}
+
+		public ItemVariant asVariant() {
+			return this.variant;
+		}
 	}
 
 	public static class Builder {
@@ -232,6 +382,16 @@ public class MaterialFamily {
 			return this;
 		}
 
+		public MaterialFamily.Builder apple(Item apple) {
+			this.family.itemVariants.put(ItemVariant.APPLE, apple);
+			return this;
+		}
+
+		public MaterialFamily.Builder horseArmor(Item horseArmor) {
+			this.family.itemVariants.put(ItemVariant.HORSE_ARMOR, horseArmor);
+			return this;
+		}
+
 		public MaterialFamily.Builder noGenerateModels() {
 			this.family.generateModels = false;
 			return this;
@@ -278,94 +438,14 @@ public class MaterialFamily {
 			this.family.alloyIngredients.add(new AlloyIngredients(first, firstCount, second, secondCount, outputCount));
 			return this;
 		}
-	}
 
-	public enum ItemVariant {
-		INGOT("ingot"),
-		GEM("gem"),
-		MISC("misc"),
-		NUGGET("nugget"),
-		RAW_ORE("raw_ore"),
-		METEOR_CLUSTER("meteor_cluster"),
-		ASTEROID_CLUSTER("asteroid_cluster"),
-		DUST("dust"),
-		TINY_DUST("tiny_dust"),
-		GEAR("gear"),
-		PLATE("plate"),
-		WIRE("wire"),
-		PICKAXE("pickaxe"),
-		AXE("axe"),
-		SHOVEL("shovel"),
-		SWORD("sword"),
-		HOE("hoe"),
-		HELMET("helmet"),
-		CHESTPLATE("chestplate"),
-		LEGGINGS("leggings"),
-		BOOTS("boots");
-
-		private final String name;
-
-		ItemVariant(String name) {
-			this.name = name;
-		}
-
-		public String getName() {
-			return this.name;
-		}
-
-		public BiConsumer<ItemModelGenerator, Item> getModelRegistrar() {
-			return switch(this) {
-				case PICKAXE, AXE, SHOVEL, SWORD, HOE -> (itemModelGenerator, item) -> itemModelGenerator.register(item, Models.HANDHELD);
-				default -> (itemModelGenerator, item) -> itemModelGenerator.register(item, Models.GENERATED);
-			};
+		public MaterialFamily.Builder oreSmeltingExperience(float oreSmeltingExperience) {
+			this.family.oreSmeltingExperience = oreSmeltingExperience;
+			return this;
 		}
 	}
 
-	public enum BlockVariant {
-		BLOCK("block"),
-		BLOCK_2x2("block_2x2"),
-		ORE("ore"),
-		DEEPSLATE_ORE("deepslate_ore"),
-		NETHER_ORE("nether_ore"),
-		METEOR_ORE("meteor_ore"),
-		ASTEROID_ORE("asteroid_ore"),
-		RAW_ORE_BLOCK("raw_ore_block");
-
-		private final String name;
-
-		BlockVariant(String name) {
-			this.name = name;
-		}
-
-		public String getName() {
-			return this.name;
-		}
-
-		public BiConsumer<BlockStateModelGenerator, Block> getModelRegistrar() {
-			return switch(this) {
-				case METEOR_ORE -> AMModelProvider::registerMeteorOre;
-				case ASTEROID_ORE -> AMModelProvider::registerAsteroidOre;
-				default -> BlockStateModelGenerator::registerSimpleCubeAll;
-			};
-		}
+	public record AlloyIngredients(MaterialFamily first, int firstCount, MaterialFamily second, int secondCount,
+								   int outputCount) {
 	}
-
-	public enum MaterialType {
-		INGOT(ItemVariant.INGOT),
-		GEM(ItemVariant.GEM),
-		MISC(ItemVariant.MISC),
-		DUST(ItemVariant.DUST);
-
-		private final ItemVariant variant;
-
-		MaterialType(ItemVariant variant) {
-			this.variant = variant;
-		}
-
-		public ItemVariant asVariant() {
-			return this.variant;
-		}
-	}
-
-	public record AlloyIngredients(MaterialFamily first, int firstCount, MaterialFamily second, int secondCount, int outputCount){}
 }

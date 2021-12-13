@@ -1,7 +1,7 @@
 {
   "name": "Rocket",
   "icon": "astromine:rocket",
-  "category": "astronautics",
+  "category": "astromine:astronautics",
   "sortnum": 2,
   "pages": [
     {

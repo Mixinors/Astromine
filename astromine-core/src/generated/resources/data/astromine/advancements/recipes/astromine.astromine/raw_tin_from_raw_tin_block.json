@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:raw_tin_from_raw_tin_block"
+    ]
+  },
+  "criteria": {
+    "has_raw_tin_block": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:raw_tin_block"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:raw_tin_from_raw_tin_block"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_raw_tin_block",
+      "has_the_recipe"
+    ]
+  ]
+}

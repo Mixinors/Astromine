@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:meteoric_steel_ingot_from_blasting_meteoric_steel_dust"
+    ]
+  },
+  "criteria": {
+    "has_meteoric_steel_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:meteoric_steel_dust"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:meteoric_steel_ingot_from_blasting_meteoric_steel_dust"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_meteoric_steel_dust",
+      "has_the_recipe"
+    ]
+  ]
+}

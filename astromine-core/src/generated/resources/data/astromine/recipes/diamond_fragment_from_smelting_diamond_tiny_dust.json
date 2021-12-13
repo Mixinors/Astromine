@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "group": "diamond_fragment",
+  "ingredient": {
+    "item": "astromine:diamond_tiny_dust"
+  },
+  "result": "astromine:diamond_fragment",
+  "experience": 0.0,
+  "cookingtime": 200
+}

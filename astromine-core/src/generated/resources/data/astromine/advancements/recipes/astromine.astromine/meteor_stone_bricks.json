@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "astromine:meteor_stone_bricks"
+    ]
+  },
+  "criteria": {
+    "has_smooth_meteor_stone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:smooth_meteor_stone"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "astromine:meteor_stone_bricks"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_smooth_meteor_stone",
+      "has_the_recipe"
+    ]
+  ]
+}

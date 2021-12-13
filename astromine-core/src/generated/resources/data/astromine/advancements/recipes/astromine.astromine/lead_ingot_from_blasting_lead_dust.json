@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:lead_ingot_from_blasting_lead_dust"
+    ]
+  },
+  "criteria": {
+    "has_lead_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:lead_dust"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:lead_ingot_from_blasting_lead_dust"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_lead_dust",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "group": "stellum_ingot",
+  "ingredient": {
+    "item": "astromine:asteroid_stellum_ore"
+  },
+  "result": "astromine:stellum_ingot",
+  "experience": 0.7,
+  "cookingtime": 200
+}

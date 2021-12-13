@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:stellum_nugget_from_smelting_stellum_chestplate"
+    ]
+  },
+  "criteria": {
+    "has_stellum_chestplate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:stellum_chestplate"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:stellum_nugget_from_smelting_stellum_chestplate"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_stellum_chestplate",
+      "has_the_recipe"
+    ]
+  ]
+}

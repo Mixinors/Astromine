@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "meteoric_steel_ingot",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "astromine:meteoric_steel_nugget"
+    }
+  },
+  "result": {
+    "item": "astromine:meteoric_steel_ingot"
+  }
+}

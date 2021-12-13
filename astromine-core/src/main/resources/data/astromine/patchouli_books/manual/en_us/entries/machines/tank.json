@@ -1,7 +1,7 @@
 {
   "name": "Tank",
   "icon": "astromine:primitive_tank",
-  "category": "machines",
+  "category": "astromine:machines",
   "sortnum": 7,
   "pages": [
     {

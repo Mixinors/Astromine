@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X",
+    "S",
+    "S"
+  ],
+  "key": {
+    "X": {
+      "item": "astromine:meteoric_steel_ingot"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "astromine:meteoric_steel_shovel"
+  }
+}

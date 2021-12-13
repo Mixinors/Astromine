@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:netherite_nugget_from_smelting_netherite_hoe"
+    ]
+  },
+  "criteria": {
+    "has_netherite_hoe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:netherite_hoe"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:netherite_nugget_from_smelting_netherite_hoe"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_netherite_hoe",
+      "has_the_recipe"
+    ]
+  ]
+}

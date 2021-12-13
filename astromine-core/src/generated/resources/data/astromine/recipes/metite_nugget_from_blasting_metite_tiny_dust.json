@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "group": "metite_nugget",
+  "ingredient": {
+    "item": "astromine:metite_tiny_dust"
+  },
+  "result": "astromine:metite_nugget",
+  "experience": 0.0,
+  "cookingtime": 100
+}

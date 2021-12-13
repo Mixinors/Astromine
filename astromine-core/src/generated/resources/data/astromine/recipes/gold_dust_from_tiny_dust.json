@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "gold_dust",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "astromine:gold_tiny_dust"
+    }
+  },
+  "result": {
+    "item": "astromine:gold_dust"
+  }
+}

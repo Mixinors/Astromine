@@ -1,7 +1,7 @@
 {
   "name": "Bronze",
   "icon": "astromine:bronze_ingot",
-  "category": "resources",
+  "category": "astromine:resources",
   "sortnum": 5,
   "pages": []
 }

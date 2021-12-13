@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XAX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "astromine:lead_ingot"
+    },
+    "A": {
+      "item": "minecraft:apple"
+    }
+  },
+  "result": {
+    "item": "astromine:lead_apple"
+  }
+}

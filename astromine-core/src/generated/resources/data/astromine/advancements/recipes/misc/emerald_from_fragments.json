@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:emerald_from_fragments"
+    ]
+  },
+  "criteria": {
+    "has_emerald_fragment": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:emerald_fragment"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:emerald_from_fragments"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_emerald_fragment",
+      "has_the_recipe"
+    ]
+  ]
+}

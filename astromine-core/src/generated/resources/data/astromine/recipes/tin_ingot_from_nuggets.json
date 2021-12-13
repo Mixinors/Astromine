@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "tin_ingot",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "astromine:tin_nugget"
+    }
+  },
+  "result": {
+    "item": "astromine:tin_ingot"
+  }
+}

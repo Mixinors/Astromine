@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "fools_gold_ingot",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "astromine:fools_gold_nugget"
+    }
+  },
+  "result": {
+    "item": "astromine:fools_gold_ingot"
+  }
+}

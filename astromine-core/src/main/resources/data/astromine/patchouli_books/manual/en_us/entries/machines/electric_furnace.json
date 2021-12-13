@@ -1,7 +1,7 @@
 {
   "name": "Electric Furnace",
   "icon": "astromine:primitive_electric_furnace",
-  "category": "machines",
+  "category": "astromine:machines",
   "sortnum": 1,
   "pages": [
     {

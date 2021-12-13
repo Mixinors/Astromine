@@ -1,7 +1,7 @@
 {
   "name": "Fluid Collector",
   "icon": "astromine:fluid_collector",
-  "category": "machines",
+  "category": "astromine:machines",
   "sortnum": 3,
   "pages": [
     {

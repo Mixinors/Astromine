@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:diamond_dust_from_tiny_dust"
+    ]
+  },
+  "criteria": {
+    "has_diamond_tiny_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:diamond_tiny_dust"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:diamond_dust_from_tiny_dust"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_diamond_tiny_dust",
+      "has_the_recipe"
+    ]
+  ]
+}

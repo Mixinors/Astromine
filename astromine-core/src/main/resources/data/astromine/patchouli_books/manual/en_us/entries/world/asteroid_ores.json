@@ -1,7 +1,7 @@
 {
   "name": "Asteroid Ores",
   "icon": "astromine:asteroid_diamond_ore",
-  "category": "world",
+  "category": "astromine:world",
   "sortnum": 0,
   "pages": [
     {

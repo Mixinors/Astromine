@@ -1,7 +1,7 @@
 {
   "name": "Circuits",
   "icon": "astromine:primitive_circuit",
-  "category": "components",
+  "category": "astromine:components",
   "sortnum": 3,
   "pages": [
     {

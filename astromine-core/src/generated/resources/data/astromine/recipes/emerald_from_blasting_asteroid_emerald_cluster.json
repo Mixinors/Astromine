@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "group": "emerald",
+  "ingredient": {
+    "item": "astromine:asteroid_emerald_cluster"
+  },
+  "result": "minecraft:emerald",
+  "experience": 0.7,
+  "cookingtime": 100
+}

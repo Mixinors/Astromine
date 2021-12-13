@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:raw_lead_block"
+    ]
+  },
+  "criteria": {
+    "has_raw_lead": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:raw_lead"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:raw_lead_block"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_raw_lead",
+      "has_the_recipe"
+    ]
+  ]
+}

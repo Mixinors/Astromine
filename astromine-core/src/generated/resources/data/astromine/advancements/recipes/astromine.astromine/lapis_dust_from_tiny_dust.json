@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:lapis_dust_from_tiny_dust"
+    ]
+  },
+  "criteria": {
+    "has_lapis_tiny_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:lapis_tiny_dust"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:lapis_dust_from_tiny_dust"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_lapis_tiny_dust",
+      "has_the_recipe"
+    ]
+  ]
+}

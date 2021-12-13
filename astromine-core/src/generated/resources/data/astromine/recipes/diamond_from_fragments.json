@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "diamond",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "astromine:diamond_fragment"
+    }
+  },
+  "result": {
+    "item": "minecraft:diamond"
+  }
+}

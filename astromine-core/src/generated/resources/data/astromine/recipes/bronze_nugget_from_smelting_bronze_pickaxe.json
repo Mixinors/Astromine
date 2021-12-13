@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "group": "bronze_nugget",
+  "ingredient": {
+    "item": "astromine:bronze_pickaxe"
+  },
+  "result": "astromine:bronze_nugget",
+  "experience": 0.1,
+  "cookingtime": 200
+}

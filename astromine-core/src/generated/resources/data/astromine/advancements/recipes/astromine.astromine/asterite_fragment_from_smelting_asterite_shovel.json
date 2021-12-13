@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:asterite_fragment_from_smelting_asterite_shovel"
+    ]
+  },
+  "criteria": {
+    "has_asterite_shovel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:asterite_shovel"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:asterite_fragment_from_smelting_asterite_shovel"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_asterite_shovel",
+      "has_the_recipe"
+    ]
+  ]
+}

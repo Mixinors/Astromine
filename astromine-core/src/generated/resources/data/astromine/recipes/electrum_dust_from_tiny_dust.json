@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "electrum_dust",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "astromine:electrum_tiny_dust"
+    }
+  },
+  "result": {
+    "item": "astromine:electrum_dust"
+  }
+}

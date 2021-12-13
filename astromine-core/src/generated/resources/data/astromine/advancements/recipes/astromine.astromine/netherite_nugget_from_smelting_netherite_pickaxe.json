@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:netherite_nugget_from_smelting_netherite_pickaxe"
+    ]
+  },
+  "criteria": {
+    "has_netherite_pickaxe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:netherite_pickaxe"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:netherite_nugget_from_smelting_netherite_pickaxe"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_netherite_pickaxe",
+      "has_the_recipe"
+    ]
+  ]
+}

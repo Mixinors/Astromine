@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "electrum_ingot",
+  "ingredients": [
+    {
+      "item": "astromine:electrum_block"
+    }
+  ],
+  "result": {
+    "item": "astromine:electrum_ingot",
+    "count": 9
+  }
+}

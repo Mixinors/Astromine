@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "univite_dust",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "astromine:univite_tiny_dust"
+    }
+  },
+  "result": {
+    "item": "astromine:univite_dust"
+  }
+}

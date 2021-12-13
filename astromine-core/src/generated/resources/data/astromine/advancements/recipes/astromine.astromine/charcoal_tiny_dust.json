@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:charcoal_tiny_dust"
+    ]
+  },
+  "criteria": {
+    "has_charcoal_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:charcoal_dust"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:charcoal_tiny_dust"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_charcoal_dust",
+      "has_the_recipe"
+    ]
+  ]
+}

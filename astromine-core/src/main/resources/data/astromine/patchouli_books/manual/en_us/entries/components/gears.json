@@ -1,7 +1,7 @@
 {
   "name": "Gears",
   "icon": "astromine:iron_gear",
-  "category": "components",
+  "category": "astromine:components",
   "sortnum": 2,
   "pages": [
     {

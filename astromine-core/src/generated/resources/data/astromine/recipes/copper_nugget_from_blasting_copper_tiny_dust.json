@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "group": "copper_nugget",
+  "ingredient": {
+    "item": "astromine:copper_tiny_dust"
+  },
+  "result": "astromine:copper_nugget",
+  "experience": 0.0,
+  "cookingtime": 100
+}

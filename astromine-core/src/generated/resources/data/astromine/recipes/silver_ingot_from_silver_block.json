@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "silver_ingot",
+  "ingredients": [
+    {
+      "item": "astromine:silver_block"
+    }
+  ],
+  "result": {
+    "item": "astromine:silver_ingot",
+    "count": 9
+  }
+}

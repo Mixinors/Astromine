@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "lapis_dust",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "astromine:lapis_tiny_dust"
+    }
+  },
+  "result": {
+    "item": "astromine:lapis_dust"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "group": "silver_ingot",
+  "ingredient": {
+    "item": "astromine:silver_dust"
+  },
+  "result": "astromine:silver_ingot",
+  "experience": 0.0,
+  "cookingtime": 200
+}

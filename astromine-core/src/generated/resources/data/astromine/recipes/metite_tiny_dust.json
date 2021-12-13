@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "astromine:metite_dust"
+    }
+  ],
+  "result": {
+    "item": "astromine:metite_tiny_dust",
+    "count": 9
+  }
+}

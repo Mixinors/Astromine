@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "group": "lead_ingot",
+  "ingredient": {
+    "item": "astromine:raw_lead"
+  },
+  "result": "astromine:lead_ingot",
+  "experience": 0.7,
+  "cookingtime": 100
+}

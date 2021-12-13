@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "bronze_ingot",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "astromine:bronze_nugget"
+    }
+  },
+  "result": {
+    "item": "astromine:bronze_ingot"
+  }
+}

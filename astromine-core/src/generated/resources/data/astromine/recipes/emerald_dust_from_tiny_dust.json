@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "emerald_dust",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "astromine:emerald_tiny_dust"
+    }
+  },
+  "result": {
+    "item": "astromine:emerald_dust"
+  }
+}

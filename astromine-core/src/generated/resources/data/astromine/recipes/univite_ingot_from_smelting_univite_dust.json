@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "group": "univite_ingot",
+  "ingredient": {
+    "item": "astromine:univite_dust"
+  },
+  "result": "astromine:univite_ingot",
+  "experience": 0.0,
+  "cookingtime": 200
+}

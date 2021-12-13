@@ -25,7 +25,7 @@ public class MaterialFamilies {
 			.asteroidOre(AMBlocks.ASTEROID_DIAMOND_ORE.get(), AMItems.ASTEROID_DIAMOND_CLUSTER.get())
 			.dust(AMItems.DIAMOND_DUST.get(), AMItems.DIAMOND_TINY_DUST.get())
 			.tools(Items.DIAMOND_PICKAXE, Items.DIAMOND_AXE, Items.DIAMOND_SHOVEL, Items.DIAMOND_SWORD, Items.DIAMOND_HOE)
-			.armor(Items.DIAMOND_HELMET, Items.DIAMOND_CHESTPLATE, Items.DIAMOND_LEGGINGS, Items.DIAMOND_BOOTS)
+			.armor(Items.DIAMOND_HELMET, Items.DIAMOND_CHESTPLATE, Items.DIAMOND_LEGGINGS, Items.DIAMOND_BOOTS).horseArmor(Items.DIAMOND_HORSE_ARMOR)
 			.build();
 
 	public static final MaterialFamily EMERALD = register(Items.EMERALD, MaterialType.GEM)
@@ -38,16 +38,16 @@ public class MaterialFamilies {
 			.block2x2(Blocks.QUARTZ_BLOCK).nugget(AMItems.QUARTZ_FRAGMENT.get())
 			.netherOre(Blocks.NETHER_QUARTZ_ORE)
 			.dust(AMItems.QUARTZ_DUST.get(), AMItems.QUARTZ_TINY_DUST.get()).build();
-	
+
 	// Vanilla Ingots
-	
+
 	public static final MaterialFamily IRON = register(Items.IRON_INGOT, MaterialType.INGOT)
 			.block(Blocks.IRON_BLOCK).nugget(Items.IRON_NUGGET)
 			.ore(Blocks.IRON_ORE, Blocks.DEEPSLATE_IRON_ORE).rawOre(Items.RAW_IRON, Blocks.RAW_IRON_BLOCK)
 			.asteroidOre(AMBlocks.ASTEROID_IRON_ORE.get(), AMItems.ASTEROID_IRON_CLUSTER.get())
 			.dust(AMItems.IRON_DUST.get(), AMItems.IRON_TINY_DUST.get())
 			.tools(Items.IRON_PICKAXE, Items.IRON_AXE, Items.IRON_SHOVEL, Items.IRON_SWORD, Items.IRON_HOE)
-			.armor(Items.IRON_HELMET, Items.IRON_CHESTPLATE, Items.IRON_LEGGINGS, Items.IRON_BOOTS)
+			.armor(Items.IRON_HELMET, Items.IRON_CHESTPLATE, Items.IRON_LEGGINGS, Items.IRON_BOOTS).horseArmor(Items.IRON_HORSE_ARMOR)
 			.gear(AMItems.IRON_GEAR.get()).plate(AMItems.IRON_PLATE.get()).build();
 
 	public static final MaterialFamily GOLD = register(Items.GOLD_INGOT, MaterialType.INGOT)
@@ -56,9 +56,11 @@ public class MaterialFamilies {
 			.asteroidOre(AMBlocks.ASTEROID_GOLD_ORE.get(), AMItems.ASTEROID_GOLD_CLUSTER.get())
 			.dust(AMItems.GOLD_DUST.get(), AMItems.GOLD_TINY_DUST.get())
 			.tools(Items.GOLDEN_PICKAXE, Items.GOLDEN_AXE, Items.GOLDEN_SHOVEL, Items.GOLDEN_SWORD, Items.GOLDEN_HOE)
-			.armor(Items.GOLDEN_HELMET, Items.GOLDEN_CHESTPLATE, Items.GOLDEN_LEGGINGS, Items.GOLDEN_BOOTS)
+			.armor(Items.GOLDEN_HELMET, Items.GOLDEN_CHESTPLATE, Items.GOLDEN_LEGGINGS, Items.GOLDEN_BOOTS).horseArmor(Items.GOLDEN_HORSE_ARMOR)
 			.gear(AMItems.GOLD_GEAR.get()).plate(AMItems.GOLD_PLATE.get())
-			.wire(AMItems.GOLD_WIRE.get()).piglinLoved().build();
+			.wire(AMItems.GOLD_WIRE.get())
+			.apple(Items.GOLDEN_APPLE)
+			.piglinLoved().build();
 
 	public static final MaterialFamily COPPER = register(Items.COPPER_INGOT, MaterialType.INGOT)
 			.block(Blocks.COPPER_BLOCK).nugget(AMItems.COPPER_NUGGET.get())
@@ -75,7 +77,7 @@ public class MaterialFamilies {
 			.armor(Items.NETHERITE_HELMET, Items.NETHERITE_CHESTPLATE, Items.NETHERITE_LEGGINGS, Items.NETHERITE_BOOTS)
 			.gear(AMItems.NETHERITE_GEAR.get()).plate(AMItems.NETHERITE_PLATE.get())
 			.smithingBase(DIAMOND).build();
-	
+
 	// Vanilla Misc
 
 	public static final MaterialFamily COAL = register(Items.COAL, MaterialType.MISC)
@@ -124,7 +126,7 @@ public class MaterialFamilies {
 			.dust(AMItems.GALAXIUM_DUST.get(), AMItems.GALAXIUM_TINY_DUST.get())
 			.tools(AMItems.GALAXIUM_PICKAXE.get(), AMItems.GALAXIUM_AXE.get(), AMItems.GALAXIUM_SHOVEL.get(), AMItems.GALAXIUM_SWORD.get(), AMItems.GALAXIUM_HOE.get())
 			.armor(AMItems.GALAXIUM_HELMET.get(), AMItems.GALAXIUM_CHESTPLATE.get(), AMItems.GALAXIUM_LEGGINGS.get(), AMItems.GALAXIUM_BOOTS.get()).build();
-	
+
 	// Astromine Ingots
 
 	public static final MaterialFamily TIN = register(AMItems.TIN_INGOT.get(), MaterialType.INGOT)
@@ -148,7 +150,8 @@ public class MaterialFamilies {
 			.ore(AMBlocks.LEAD_ORE.get(), AMBlocks.DEEPSLATE_LEAD_ORE.get()).rawOre(AMItems.RAW_LEAD.get(), AMBlocks.RAW_LEAD_BLOCK.get())
 			.asteroidOre(AMBlocks.ASTEROID_LEAD_ORE.get(), AMItems.ASTEROID_LEAD_CLUSTER.get())
 			.dust(AMItems.LEAD_DUST.get(), AMItems.LEAD_TINY_DUST.get())
-			.gear(AMItems.LEAD_GEAR.get()).plate(AMItems.LEAD_PLATE.get()).build();
+			.gear(AMItems.LEAD_GEAR.get()).plate(AMItems.LEAD_PLATE.get())
+			.apple(AMItems.LEAD_APPLE.get()).build();
 
 	public static final MaterialFamily STEEL = register(AMItems.STEEL_INGOT.get(), MaterialType.INGOT)
 			.block(AMBlocks.STEEL_BLOCK.get()).nugget(AMItems.STEEL_NUGGET.get())
@@ -157,7 +160,7 @@ public class MaterialFamilies {
 			.armor(AMItems.STEEL_HELMET.get(), AMItems.STEEL_CHESTPLATE.get(), AMItems.STEEL_LEGGINGS.get(), AMItems.STEEL_BOOTS.get())
 			.gear(AMItems.STEEL_GEAR.get()).plate(AMItems.STEEL_PLATE.get())
 			.alloyIngredients(IRON, COAL, 1).alloyIngredients(IRON, CHARCOAL, 1).build();
-	
+
 	public static final MaterialFamily BRONZE = register(AMItems.BRONZE_INGOT.get(), MaterialType.INGOT)
 			.block(AMBlocks.BRONZE_BLOCK.get()).nugget(AMItems.BRONZE_NUGGET.get())
 			.dust(AMItems.BRONZE_DUST.get(), AMItems.BRONZE_TINY_DUST.get())
@@ -170,6 +173,7 @@ public class MaterialFamilies {
 			.block(AMBlocks.ELECTRUM_BLOCK.get()).nugget(AMItems.ELECTRUM_NUGGET.get())
 			.dust(AMItems.ELECTRUM_DUST.get(), AMItems.ELECTRUM_TINY_DUST.get())
 			.gear(AMItems.ELECTRUM_GEAR.get()).plate(AMItems.ELECTRUM_PLATE.get())
+			.wire(AMItems.ELECTRUM_WIRE.get())
 			.alloyIngredients(GOLD, SILVER).build();
 
 	public static final MaterialFamily FOOLS_GOLD = register(AMItems.FOOLS_GOLD_INGOT.get(), MaterialType.INGOT)
@@ -177,6 +181,7 @@ public class MaterialFamilies {
 			.dust(AMItems.FOOLS_GOLD_DUST.get(), AMItems.FOOLS_GOLD_TINY_DUST.get())
 			.armor(AMItems.FOOLS_GOLD_HELMET.get(), AMItems.FOOLS_GOLD_CHESTPLATE.get(), AMItems.FOOLS_GOLD_LEGGINGS.get(), AMItems.FOOLS_GOLD_BOOTS.get())
 			.gear(AMItems.FOOLS_GOLD_GEAR.get()).plate(AMItems.FOOLS_GOLD_PLATE.get())
+			.apple(AMItems.FOOLS_GOLD_APPLE.get())
 			.alloyIngredients(IRON, GUNPOWDER, 1).build();
 
 	public static final MaterialFamily METITE = register(AMItems.METITE_INGOT.get(), MaterialType.INGOT)

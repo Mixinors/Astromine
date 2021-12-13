@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "group": "metite_ingot",
+  "ingredient": {
+    "item": "astromine:asteroid_metite_cluster"
+  },
+  "result": "astromine:metite_ingot",
+  "experience": 0.7,
+  "cookingtime": 100
+}

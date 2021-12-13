@@ -1,7 +1,7 @@
 {
   "name": "Solid Generator",
   "icon": "astromine:primitive_solid_generator",
-  "category": "machines",
+  "category": "astromine:machines",
   "sortnum": 1,
   "pages": [
     {

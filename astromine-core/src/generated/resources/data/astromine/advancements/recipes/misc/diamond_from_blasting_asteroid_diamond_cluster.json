@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:diamond_from_blasting_asteroid_diamond_cluster"
+    ]
+  },
+  "criteria": {
+    "has_asteroid_diamond_cluster": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:asteroid_diamond_cluster"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:diamond_from_blasting_asteroid_diamond_cluster"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_asteroid_diamond_cluster",
+      "has_the_recipe"
+    ]
+  ]
+}

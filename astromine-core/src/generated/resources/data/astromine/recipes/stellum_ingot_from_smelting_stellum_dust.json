@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "group": "stellum_ingot",
+  "ingredient": {
+    "item": "astromine:stellum_dust"
+  },
+  "result": "astromine:stellum_ingot",
+  "experience": 0.0,
+  "cookingtime": 200
+}

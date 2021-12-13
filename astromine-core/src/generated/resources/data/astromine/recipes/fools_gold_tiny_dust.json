@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "astromine:fools_gold_dust"
+    }
+  ],
+  "result": {
+    "item": "astromine:fools_gold_tiny_dust",
+    "count": 9
+  }
+}

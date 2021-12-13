@@ -1,7 +1,7 @@
 {
   "name": "Plates",
   "icon": "astromine:iron_plate",
-  "category": "components",
+  "category": "astromine:components",
   "sortnum": 1,
   "pages": [
     {

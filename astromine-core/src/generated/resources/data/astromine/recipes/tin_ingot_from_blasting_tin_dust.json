@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "group": "tin_ingot",
+  "ingredient": {
+    "item": "astromine:tin_dust"
+  },
+  "result": "astromine:tin_ingot",
+  "experience": 0.0,
+  "cookingtime": 100
+}

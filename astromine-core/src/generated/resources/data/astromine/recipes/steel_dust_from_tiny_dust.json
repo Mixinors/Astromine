@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "steel_dust",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "astromine:steel_tiny_dust"
+    }
+  },
+  "result": {
+    "item": "astromine:steel_dust"
+  }
+}

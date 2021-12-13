@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X X",
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "astromine:univite_ingot"
+    }
+  },
+  "result": {
+    "item": "astromine:univite_chestplate"
+  }
+}

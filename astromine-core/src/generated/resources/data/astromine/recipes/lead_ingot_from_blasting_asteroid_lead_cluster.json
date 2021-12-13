@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "group": "lead_ingot",
+  "ingredient": {
+    "item": "astromine:asteroid_lead_cluster"
+  },
+  "result": "astromine:lead_ingot",
+  "experience": 0.7,
+  "cookingtime": 100
+}

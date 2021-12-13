@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:galaxium_fragment_from_smelting_galaxium_sword"
+    ]
+  },
+  "criteria": {
+    "has_galaxium_sword": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:galaxium_sword"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:galaxium_fragment_from_smelting_galaxium_sword"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_galaxium_sword",
+      "has_the_recipe"
+    ]
+  ]
+}

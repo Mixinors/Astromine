@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "quartz_dust",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "astromine:quartz_tiny_dust"
+    }
+  },
+  "result": {
+    "item": "astromine:quartz_dust"
+  }
+}

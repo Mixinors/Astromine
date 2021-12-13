@@ -1,7 +1,7 @@
 {
   "name": "Drill",
   "icon": "astromine:primitive_drill",
-  "category": "gadgets",
+  "category": "astromine:gadgets",
   "sortnum": 3,
   "pages": [
     {

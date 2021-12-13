@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "astromine:netherite_dust"
+    }
+  ],
+  "result": {
+    "item": "astromine:netherite_tiny_dust",
+    "count": 9
+  }
+}

@@ -1,7 +1,7 @@
 {
   "name": "Buffer",
   "icon": "astromine:primitive_buffer",
-  "category": "machines",
+  "category": "astromine:machines",
   "sortnum": 5,
   "pages": [
     {

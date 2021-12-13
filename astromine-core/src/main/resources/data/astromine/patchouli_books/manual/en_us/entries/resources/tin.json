@@ -1,7 +1,7 @@
 {
   "name": "Tin",
   "icon": "astromine:tin_ingot",
-  "category": "resources",
+  "category": "astromine:resources",
   "sortnum": 4,
   "pages": []
 }

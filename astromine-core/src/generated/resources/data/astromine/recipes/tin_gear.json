@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " X ",
+    "X X",
+    " X "
+  ],
+  "key": {
+    "X": {
+      "item": "astromine:tin_ingot"
+    }
+  },
+  "result": {
+    "item": "astromine:tin_gear",
+    "count": 2
+  }
+}

@@ -6,7 +6,6 @@ import java.util.Set;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
 import com.github.mixinors.astromine.common.fluid.ExtendedFluid;
-import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.datagen.family.AMBlockFamilies;
 import com.github.mixinors.astromine.datagen.family.MaterialFamilies;
 import com.github.mixinors.astromine.datagen.family.MaterialFamily;
@@ -19,11 +18,8 @@ import net.minecraft.data.client.ItemModelGenerator;
 import net.minecraft.data.client.model.*;
 import net.minecraft.data.family.BlockFamilies;
 import net.minecraft.data.family.BlockFamily;
-import net.minecraft.item.Item;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.registry.Registry;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockStateDefinitionProvider;
@@ -42,7 +38,13 @@ public class AMModelProvider extends FabricBlockStateDefinitionProvider {
 	public static final Set<Block> SIMPLE_STATE = Set.of(
 			AMBlocks.SPACE_SLIME_BLOCK.get(),
 			AMBlocks.ALTAR.get(),
-			AMBlocks.ALTAR_PEDESTAL.get(),
+			AMBlocks.ALTAR_PEDESTAL.get()
+	);
+
+	/**
+	 * Blocks with a single model, where neither the block model nor the item model are data generated
+	 */
+	public static final Set<Block> JUST_STATE = Set.of(
 			AMBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.get()
 	);
 
@@ -156,61 +158,6 @@ public class AMModelProvider extends FabricBlockStateDefinitionProvider {
 		super(dataGenerator);
 	}
 
-	@Override
-	public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
-		BlockFamilies.getFamilies().filter(AMBlockFamilies::isAstromineFamily).filter(BlockFamily::shouldGenerateModels).forEach(family -> {
-			blockStateModelGenerator.registerCubeAllModelTexturePool(family.getBaseBlock()).family(family);
-			blockStateModelGenerator.registerParentedItemModel(family.getBaseBlock(), ModelIds.getBlockModelId(family.getBaseBlock()));
-		});
-		
-		SIMPLE_CUBE_ALL.forEach((block) -> {
-			blockStateModelGenerator.registerSimpleCubeAll(block);
-			blockStateModelGenerator.registerParentedItemModel(block, ModelIds.getBlockModelId(block));
-		});
-
-		SIMPLE_STATE.forEach((block) -> {
-			blockStateModelGenerator.registerSimpleState(block);
-			blockStateModelGenerator.registerParentedItemModel(block, ModelIds.getBlockModelId(block));
-		});
-
-		CUBE_BOTTOM_TOP.forEach((block) -> {
-			blockStateModelGenerator.registerSingleton(block, TexturedModel.CUBE_BOTTOM_TOP);
-			blockStateModelGenerator.registerParentedItemModel(block, ModelIds.getBlockModelId(block));
-		});
-
-		FLUIDS.forEach((fluid) -> {
-			blockStateModelGenerator.registerStateWithModelReference(fluid.getBlock(), Blocks.WATER);
-			registerCauldron(blockStateModelGenerator, fluid.getCauldron());
-		});
-
-		MACHINES.forEach((block) -> {
-			registerMachine(blockStateModelGenerator, block);
-			blockStateModelGenerator.registerParentedItemModel(block, ModelIds.getBlockModelId(block));
-		});
-
-		MaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateModels).forEach((family) -> {
-			family.getBlockVariants().forEach(((variant, block) -> {
-				if(family.shouldGenerateModel(variant)) {
-					variant.getModelRegistrar().accept(blockStateModelGenerator, block);
-					blockStateModelGenerator.registerParentedItemModel(block, ModelIds.getBlockModelId(block));
-				}
-			}));
-		});
-	}
-
-	@Override
-	public void generateItemModels(ItemModelGenerator itemModelGenerator) {
-		MaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateModels).forEach((family) -> {
-			family.getItemVariants().forEach(((variant, item) -> {
-				if(family.shouldGenerateModel(variant)) variant.getModelRegistrar().accept(itemModelGenerator, item);
-			}));
-		});
-
-		FLUIDS.forEach((fluid) -> {
-			itemModelGenerator.register(fluid.getBucketItem(), Models.GENERATED);
-		});
-	}
-
 	public static void registerCubeColumn(BlockStateModelGenerator blockStateModelGenerator, Block cubeColumn, Block endTexture) {
 		Texture texture = Texture.sideEnd(Texture.getId(cubeColumn), Texture.getId(endTexture));
 		Identifier identifier = Models.CUBE_COLUMN.upload(cubeColumn, texture, blockStateModelGenerator.modelCollector);
@@ -229,6 +176,91 @@ public class AMModelProvider extends FabricBlockStateDefinitionProvider {
 		blockStateModelGenerator.blockStateCollector.accept(BlockStateModelGenerator.createSingletonBlockState(cauldron, Models.TEMPLATE_CAULDRON_FULL.upload(cauldron, Texture.cauldron(Texture.getSubId(Blocks.WATER, "_still")), blockStateModelGenerator.modelCollector)));
 	}
 
+	public static Model model(Identifier parent, String variant, TextureKey... requiredTextures) {
+		return new Model(Optional.of(parent), Optional.of(variant), requiredTextures);
+	}
+
+	public static Model model(Identifier parent, TextureKey... requiredTextures) {
+		return new Model(Optional.of(parent), Optional.empty(), requiredTextures);
+	}
+
+	private static Model blockModel(Identifier parent, TextureKey... requiredTextures) {
+		return model(getBlockFolderId(parent), requiredTextures);
+	}
+
+	private static Model blockModel(Identifier parent, String variant, TextureKey... requiredTextures) {
+		return model(getBlockFolderId(parent), variant, requiredTextures);
+	}
+
+	private static Model itemModel(Identifier parent, TextureKey... requiredTextures) {
+		return model(getItemFolderId(parent), requiredTextures);
+	}
+
+	public static Identifier getBlockFolderId(Identifier id) {
+		return new Identifier(id.getNamespace(), "block/" + id.getPath());
+	}
+
+	public static Identifier getItemFolderId(Identifier id) {
+		return new Identifier(id.getNamespace(), "item/" + id.getPath());
+	}
+
+	@Override
+	public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
+		BlockFamilies.getFamilies().filter(AMBlockFamilies::isAstromineFamily).filter(BlockFamily::shouldGenerateModels).forEach(family -> {
+			blockStateModelGenerator.registerCubeAllModelTexturePool(family.getBaseBlock()).family(family);
+			blockStateModelGenerator.registerParentedItemModel(family.getBaseBlock(), ModelIds.getBlockModelId(family.getBaseBlock()));
+		});
+
+		SIMPLE_CUBE_ALL.forEach((block) -> {
+			blockStateModelGenerator.registerSimpleCubeAll(block);
+			blockStateModelGenerator.registerParentedItemModel(block, ModelIds.getBlockModelId(block));
+		});
+
+		SIMPLE_STATE.forEach((block) -> {
+			blockStateModelGenerator.registerSimpleState(block);
+			blockStateModelGenerator.registerParentedItemModel(block, ModelIds.getBlockModelId(block));
+		});
+
+		JUST_STATE.forEach(blockStateModelGenerator::registerSimpleState);
+
+		CUBE_BOTTOM_TOP.forEach((block) -> {
+			blockStateModelGenerator.registerSingleton(block, TexturedModel.CUBE_BOTTOM_TOP);
+			blockStateModelGenerator.registerParentedItemModel(block, ModelIds.getBlockModelId(block));
+		});
+
+		FLUIDS.forEach((fluid) -> {
+			blockStateModelGenerator.registerStateWithModelReference(fluid.getBlock(), Blocks.WATER);
+			registerCauldron(blockStateModelGenerator, fluid.getCauldron());
+		});
+
+		MACHINES.forEach((block) -> {
+			registerMachine(blockStateModelGenerator, block);
+			blockStateModelGenerator.registerParentedItemModel(block, ModelIds.getBlockModelId(block));
+		});
+
+		MaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateModels).forEach((family) -> {
+			family.getBlockVariants().forEach(((variant, block) -> {
+				if (family.shouldGenerateModel(variant)) {
+					variant.getModelRegistrar().accept(blockStateModelGenerator, block);
+					blockStateModelGenerator.registerParentedItemModel(block, ModelIds.getBlockModelId(block));
+				}
+			}));
+		});
+	}
+
+	@Override
+	public void generateItemModels(ItemModelGenerator itemModelGenerator) {
+		MaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateModels).forEach((family) -> {
+			family.getItemVariants().forEach(((variant, item) -> {
+				if (family.shouldGenerateModel(variant)) variant.getModelRegistrar().accept(itemModelGenerator, item);
+			}));
+		});
+
+		FLUIDS.forEach((fluid) -> {
+			itemModelGenerator.register(fluid.getBucketItem(), Models.GENERATED);
+		});
+	}
+
 	public final void registerMachine(BlockStateModelGenerator blockStateModelGenerator, Block machine) {
 		Texture inactiveTexture = new Texture().put(TextureKey.TOP, Texture.getSubId(machine, "_top")).put(TextureKey.BOTTOM, Texture.getSubId(machine, "_bottom")).put(LEFT, Texture.getSubId(machine, "_left")).put(RIGHT, Texture.getSubId(machine, "_right")).put(TextureKey.FRONT, Texture.getSubId(machine, "_front")).put(TextureKey.BACK, Texture.getSubId(machine, "_back"));
 		Texture activeTexture = new Texture().put(TextureKey.TOP, Texture.getSubId(machine, "_top_active")).put(TextureKey.BOTTOM, Texture.getSubId(machine, "_bottom_active")).put(LEFT, Texture.getSubId(machine, "_left_active")).put(RIGHT, Texture.getSubId(machine, "_right_active")).put(TextureKey.FRONT, Texture.getSubId(machine, "_front_active")).put(TextureKey.BACK, Texture.getSubId(machine, "_back_active"));
@@ -244,41 +276,13 @@ public class AMModelProvider extends FabricBlockStateDefinitionProvider {
 
 		blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(machine).coordinate(BlockStateVariantMap.create(Properties.HORIZONTAL_FACING, BlockWithEntity.ACTIVE)
 				.register((facing, active) -> {
-					BlockStateVariant facingVariant = switch(facing) {
+					BlockStateVariant facingVariant = switch (facing) {
 						case EAST -> eastVariant;
 						case SOUTH -> southVariant;
 						case WEST -> westVariant;
 						default -> northVariant;
 					};
-					return BlockStateVariant.union(facingVariant, active ? activeVariant:inactiveVariant);
+					return BlockStateVariant.union(facingVariant, active ? activeVariant : inactiveVariant);
 				})));
-	}
-
-	public static Model model(Identifier parent, String variant, TextureKey... requiredTextures) {
-		return new Model(Optional.of(parent), Optional.of(variant), requiredTextures);
-	}
-
-	public static Model model(Identifier parent, TextureKey... requiredTextures) {
-		return new Model(Optional.of(parent), Optional.empty(), requiredTextures);
-	}
-
-	private static Model blockModel(Identifier parent, TextureKey ... requiredTextures) {
-		return model(getBlockFolderId(parent), requiredTextures);
-	}
-
-	private static Model blockModel(Identifier parent, String variant, TextureKey ... requiredTextures) {
-		return model(getBlockFolderId(parent), variant, requiredTextures);
-	}
-
-	private static Model itemModel(Identifier parent, TextureKey ... requiredTextures) {
-		return model(getItemFolderId(parent), requiredTextures);
-	}
-
-	public static Identifier getBlockFolderId(Identifier id) {
-		return new Identifier(id.getNamespace(), "block/" + id.getPath());
-	}
-
-	public static Identifier getItemFolderId(Identifier id) {
-		return new Identifier(id.getNamespace(), "item/" + id.getPath());
 	}
 }

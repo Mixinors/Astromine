@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:asterite_from_smelting_asteroid_asterite_ore"
+    ]
+  },
+  "criteria": {
+    "has_asteroid_asterite_ore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:asteroid_asterite_ore"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:asterite_from_smelting_asteroid_asterite_ore"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_asteroid_asterite_ore",
+      "has_the_recipe"
+    ]
+  ]
+}

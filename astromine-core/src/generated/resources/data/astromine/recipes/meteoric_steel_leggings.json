@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "X X",
+    "X X"
+  ],
+  "key": {
+    "X": {
+      "item": "astromine:meteoric_steel_ingot"
+    }
+  },
+  "result": {
+    "item": "astromine:meteoric_steel_leggings"
+  }
+}

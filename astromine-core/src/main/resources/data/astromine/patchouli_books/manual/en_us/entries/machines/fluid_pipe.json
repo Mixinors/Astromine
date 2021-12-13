@@ -1,7 +1,7 @@
 {
   "name": "Fluid Pipe",
   "icon": "astromine:fluid_pipe",
-  "category": "machines",
+  "category": "astromine:machines",
   "sortnum": 14,
   "pages": [
     {

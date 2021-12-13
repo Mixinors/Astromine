@@ -1,7 +1,7 @@
 {
   "name": "Asterite",
   "icon": "astromine:asterite",
-  "category": "resources",
+  "category": "astromine:resources",
   "sortnum": 1,
   "pages": []
 }

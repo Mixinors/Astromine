@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:galaxium_fragment_from_smelting_galaxium_helmet"
+    ]
+  },
+  "criteria": {
+    "has_galaxium_helmet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:galaxium_helmet"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:galaxium_fragment_from_smelting_galaxium_helmet"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_galaxium_helmet",
+      "has_the_recipe"
+    ]
+  ]
+}

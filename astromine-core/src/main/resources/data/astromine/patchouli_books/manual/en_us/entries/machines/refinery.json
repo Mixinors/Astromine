@@ -1,7 +1,7 @@
 {
   "name": "Refinery",
   "icon": "astromine:primitive_refinery",
-  "category": "machines",
+  "category": "astromine:machines",
   "sortnum": 1,
   "pages": [
     {

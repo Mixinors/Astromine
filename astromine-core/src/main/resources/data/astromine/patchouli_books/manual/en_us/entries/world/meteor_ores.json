@@ -1,7 +1,7 @@
 {
   "name": "Meteor Ores",
   "icon": "astromine:meteor_metite_ore",
-  "category": "world",
+  "category": "astromine:world",
   "sortnum": 0,
   "pages": [
     {

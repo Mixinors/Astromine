@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:bronze_nugget_from_smelting_bronze_sword"
+    ]
+  },
+  "criteria": {
+    "has_bronze_sword": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:bronze_sword"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:bronze_nugget_from_smelting_bronze_sword"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_bronze_sword",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " X ",
+    "X X",
+    " X "
+  ],
+  "key": {
+    "X": {
+      "item": "astromine:fools_gold_ingot"
+    }
+  },
+  "result": {
+    "item": "astromine:fools_gold_gear",
+    "count": 2
+  }
+}

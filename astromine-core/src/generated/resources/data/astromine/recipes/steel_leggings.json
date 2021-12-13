@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "X X",
+    "X X"
+  ],
+  "key": {
+    "X": {
+      "item": "astromine:steel_ingot"
+    }
+  },
+  "result": {
+    "item": "astromine:steel_leggings"
+  }
+}

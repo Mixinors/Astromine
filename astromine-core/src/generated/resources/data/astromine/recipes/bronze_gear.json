@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " X ",
+    "X X",
+    " X "
+  ],
+  "key": {
+    "X": {
+      "item": "astromine:bronze_ingot"
+    }
+  },
+  "result": {
+    "item": "astromine:bronze_gear",
+    "count": 2
+  }
+}

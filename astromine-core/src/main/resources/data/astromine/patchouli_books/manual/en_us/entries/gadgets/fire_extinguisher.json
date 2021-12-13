@@ -1,7 +1,7 @@
 {
   "name": "Fire Extinguisher",
   "icon": "astromine:fire_extinguisher",
-  "category": "gadgets",
+  "category": "astromine:gadgets",
   "sortnum": 4,
   "pages": [
     {

@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:stellum_tiny_dust"
+    ]
+  },
+  "criteria": {
+    "has_stellum_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:stellum_dust"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:stellum_tiny_dust"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_stellum_dust",
+      "has_the_recipe"
+    ]
+  ]
+}

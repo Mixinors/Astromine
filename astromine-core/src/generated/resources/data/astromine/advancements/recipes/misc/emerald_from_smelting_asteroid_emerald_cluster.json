@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:emerald_from_smelting_asteroid_emerald_cluster"
+    ]
+  },
+  "criteria": {
+    "has_asteroid_emerald_cluster": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:asteroid_emerald_cluster"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:emerald_from_smelting_asteroid_emerald_cluster"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_asteroid_emerald_cluster",
+      "has_the_recipe"
+    ]
+  ]
+}

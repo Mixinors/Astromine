@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "metite_ingot",
+  "ingredients": [
+    {
+      "item": "astromine:metite_block"
+    }
+  ],
+  "result": {
+    "item": "astromine:metite_ingot",
+    "count": 9
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:galaxium_fragment_from_blasting_galaxium_shovel"
+    ]
+  },
+  "criteria": {
+    "has_galaxium_shovel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:galaxium_shovel"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:galaxium_fragment_from_blasting_galaxium_shovel"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_galaxium_shovel",
+      "has_the_recipe"
+    ]
+  ]
+}

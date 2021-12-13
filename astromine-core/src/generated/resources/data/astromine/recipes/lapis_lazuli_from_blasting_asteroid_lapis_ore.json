@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "group": "lapis_lazuli",
+  "ingredient": {
+    "item": "astromine:asteroid_lapis_ore"
+  },
+  "result": "minecraft:lapis_lazuli",
+  "experience": 0.7,
+  "cookingtime": 100
+}

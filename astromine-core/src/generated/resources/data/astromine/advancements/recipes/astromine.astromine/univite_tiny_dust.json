@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:univite_tiny_dust"
+    ]
+  },
+  "criteria": {
+    "has_univite_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:univite_dust"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:univite_tiny_dust"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_univite_dust",
+      "has_the_recipe"
+    ]
+  ]
+}

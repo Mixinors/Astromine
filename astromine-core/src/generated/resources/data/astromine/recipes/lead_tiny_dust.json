@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "astromine:lead_dust"
+    }
+  ],
+  "result": {
+    "item": "astromine:lead_tiny_dust",
+    "count": 9
+  }
+}

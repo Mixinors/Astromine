@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:metite_ingot_from_smelting_metite_dust"
+    ]
+  },
+  "criteria": {
+    "has_metite_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:metite_dust"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:metite_ingot_from_smelting_metite_dust"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_metite_dust",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "name": "Fluid Mixer",
   "icon": "astromine:primitive_fluid_mixer",
-  "category": "machines",
+  "category": "astromine:machines",
   "sortnum": 1,
   "pages": [
     {

@@ -1,7 +1,7 @@
 {
   "name": "Capacitor",
   "icon": "astromine:primitive_capacitor",
-  "category": "machines",
+  "category": "astromine:machines",
   "sortnum": 6,
   "pages": [
     {

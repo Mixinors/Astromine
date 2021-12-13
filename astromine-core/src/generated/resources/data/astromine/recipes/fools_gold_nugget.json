@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "astromine:fools_gold_ingot"
+    }
+  ],
+  "result": {
+    "item": "astromine:fools_gold_nugget",
+    "count": 9
+  }
+}

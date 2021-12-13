@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    " S",
+    " S"
+  ],
+  "key": {
+    "X": {
+      "item": "astromine:stellum_ingot"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "astromine:stellum_hoe"
+  }
+}

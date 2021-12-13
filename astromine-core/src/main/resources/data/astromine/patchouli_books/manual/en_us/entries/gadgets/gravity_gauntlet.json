@@ -1,7 +1,7 @@
 {
   "name": "Gravity Gauntlet",
   "icon": "astromine:gravity_gauntlet",
-  "category": "gadgets",
+  "category": "astromine:gadgets",
   "sortnum": 5,
   "pages": [
     {

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "group": "galaxium",
+  "ingredient": {
+    "item": "astromine:asteroid_galaxium_cluster"
+  },
+  "result": "astromine:galaxium",
+  "experience": 0.7,
+  "cookingtime": 100
+}

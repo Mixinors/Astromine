@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "group": "gold_ingot",
+  "ingredient": {
+    "item": "astromine:asteroid_gold_ore"
+  },
+  "result": "minecraft:gold_ingot",
+  "experience": 0.7,
+  "cookingtime": 100
+}

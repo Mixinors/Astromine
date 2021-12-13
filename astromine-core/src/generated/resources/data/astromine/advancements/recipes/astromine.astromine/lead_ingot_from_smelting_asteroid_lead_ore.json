@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:lead_ingot_from_smelting_asteroid_lead_ore"
+    ]
+  },
+  "criteria": {
+    "has_asteroid_lead_ore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:asteroid_lead_ore"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:lead_ingot_from_smelting_asteroid_lead_ore"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_asteroid_lead_ore",
+      "has_the_recipe"
+    ]
+  ]
+}

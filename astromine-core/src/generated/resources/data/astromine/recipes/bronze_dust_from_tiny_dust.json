@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "bronze_dust",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "astromine:bronze_tiny_dust"
+    }
+  },
+  "result": {
+    "item": "astromine:bronze_dust"
+  }
+}

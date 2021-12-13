@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:electrum_ingot_from_electrum_block"
+    ]
+  },
+  "criteria": {
+    "has_electrum_block": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:electrum_block"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:electrum_ingot_from_electrum_block"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_electrum_block",
+      "has_the_recipe"
+    ]
+  ]
+}

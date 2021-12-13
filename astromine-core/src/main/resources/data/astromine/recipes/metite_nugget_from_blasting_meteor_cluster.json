@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "tag": "c:meteor_metite_clusters"
-  },
-  "result": "astromine:metite_nugget",
-  "experience": 0.1,
-  "cookingtime": 100
-}

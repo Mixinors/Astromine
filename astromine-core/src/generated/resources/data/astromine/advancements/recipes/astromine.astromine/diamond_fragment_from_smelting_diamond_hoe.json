@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:diamond_fragment_from_smelting_diamond_hoe"
+    ]
+  },
+  "criteria": {
+    "has_diamond_hoe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:diamond_hoe"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:diamond_fragment_from_smelting_diamond_hoe"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_diamond_hoe",
+      "has_the_recipe"
+    ]
+  ]
+}
