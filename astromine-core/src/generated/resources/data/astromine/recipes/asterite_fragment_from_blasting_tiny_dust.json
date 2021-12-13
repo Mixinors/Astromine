@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "tag": "c:asterite_tiny_dusts"
-  },
-  "result": "astromine:asterite_fragment",
-  "experience": 0.1,
-  "cookingtime": 100
-}

@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    {
-      "id": "astromine:asteroid_emerald_ore",
-      "required": false
-    }
-  ]
-}

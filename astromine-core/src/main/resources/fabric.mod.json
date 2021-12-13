@@ -56,6 +56,9 @@
     ],
     "rei_containers": [
       "com.github.mixinors.astromine.registry.common.AMContainersInfoHandlers"
+    ],
+    "fabric-datagen": [
+      "com.github.mixinors.astromine.datagen.AMDatagen"
     ]
   },
   "mixins": [

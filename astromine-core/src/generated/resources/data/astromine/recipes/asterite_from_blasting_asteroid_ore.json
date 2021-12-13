@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "tag": "c:asteroid_asterite_ores"
-  },
-  "result": "astromine:asterite",
-  "experience": 0.1,
-  "cookingtime": 100
-}

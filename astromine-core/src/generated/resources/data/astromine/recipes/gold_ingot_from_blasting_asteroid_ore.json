@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "tag": "c:asteroid_gold_ores"
-  },
-  "result": "minecraft:gold_ingot",
-  "experience": 0.1,
-  "cookingtime": 100
-}

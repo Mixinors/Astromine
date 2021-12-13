@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "tag": "c:quartz_tiny_dusts"
-  },
-  "result": "astromine:quartz_fragment",
-  "experience": 0.1,
-  "cookingtime": 100
-}

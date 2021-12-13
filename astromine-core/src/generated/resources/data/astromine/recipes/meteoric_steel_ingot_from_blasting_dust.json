@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "tag": "c:meteoric_steel_dusts"
-  },
-  "result": "astromine:meteoric_steel_ingot",
-  "experience": 0.1,
-  "cookingtime": 100
-}

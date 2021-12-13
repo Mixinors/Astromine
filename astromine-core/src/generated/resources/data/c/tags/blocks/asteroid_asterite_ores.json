@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    {
-      "id": "astromine:asteroid_asterite_ore",
-      "required": false
-    }
-  ]
-}

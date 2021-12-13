@@ -145,6 +145,10 @@ allprojects {
             }
             inputs.property "version", project.version
         }
+
+        remapJar {
+            addNestedDependencies = project.rootProject != project
+        }
     }
 
     tasks.withType(JavaCompile) {
@@ -155,19 +159,13 @@ allprojects {
         classifier("sources")
         from sourceSets.main.allSource
     }
-    
-    afterEvaluate {
-        remapJar {
-            addNestedDependencies = project.rootProject != project
-        }
-    }
-}
 
-sourceSets {
-    main {
-        resources {
-            srcDir "src/generated/resources"
-        }
+    apply plugin: 'org.cadixdev.licenser'
+
+    license {
+        header = rootProject.file("LICENSE")
+
+        ignoreFailures = true
     }
 }
 
@@ -241,22 +239,35 @@ subprojects {
         }
     }
 
+    loom {
+        runs {
+            datagenClient {
+                client()
+                name "Data Generation"
+                vmArg "-Dfabric-api.datagen"
+                vmArg "-Dfabric-api.datagen.output-dir=${file("src/generated/resources")}"
+
+                ideConfigGenerated = true
+                runDir "build/datagen"
+                source sourceSets.main
+            }
+        }
+    }
+
+    sourceSets {
+        main {
+            resources {
+                srcDir "src/generated/resources"
+            }
+        }
+    }
+
     task copyBuiltToMain(type: Copy) {
         from "${project.buildDir}/libs/"
         into "${rootProject.buildDir}/libs/"
         include "*.jar"
     }
     build.finalizedBy(copyBuiltToMain)
-}
-
-allprojects {
-    apply plugin: 'org.cadixdev.licenser'
-
-    license {
-        header = rootProject.file("LICENSE")
-
-        ignoreFailures = true
-    }
 }
 
 task deleteBuildFolderAll {
