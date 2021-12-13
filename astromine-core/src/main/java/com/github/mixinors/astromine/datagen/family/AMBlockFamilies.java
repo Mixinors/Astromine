@@ -1,9 +1,11 @@
 package com.github.mixinors.astromine.datagen.family;
 
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 
 import net.minecraft.data.family.BlockFamilies;
 import net.minecraft.data.family.BlockFamily;
+import net.minecraft.util.registry.Registry;
 
 public class AMBlockFamilies {
 	public static final BlockFamily ASTEROID_STONE = BlockFamilies.register(AMBlocks.ASTEROID_STONE.get()).slab(AMBlocks.ASTEROID_STONE_SLAB.get()).stairs(AMBlocks.ASTEROID_STONE_STAIRS.get()).wall(AMBlocks.ASTEROID_STONE_WALL.get()).polished(AMBlocks.POLISHED_ASTEROID_STONE.get()).build();
@@ -17,5 +19,9 @@ public class AMBlockFamilies {
 
 	public static void init() {
 
+	}
+
+	public static boolean isAstromineFamily(BlockFamily family) {
+		return Registry.BLOCK.getId(family.getBaseBlock()).getNamespace().equals(AMCommon.MOD_ID);
 	}
 }

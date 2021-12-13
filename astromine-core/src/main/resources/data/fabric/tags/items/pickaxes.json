@@ -14,7 +14,6 @@
     "astromine:stellum_pickaxe",
     "astromine:galaxium_pickaxe",
     "astromine:univite_pickaxe",
-    "astromine:meteoric_steel_pickaxe",
-    "#astromine:mining_tools"
+    "astromine:meteoric_steel_pickaxe"
   ]
 }

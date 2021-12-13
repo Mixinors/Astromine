@@ -14,7 +14,6 @@
     "astromine:stellum_shovel",
     "astromine:galaxium_shovel",
     "astromine:univite_shovel",
-    "astromine:meteoric_steel_shovel",
-    "#astromine:mining_tools"
+    "astromine:meteoric_steel_shovel"
   ]
 }

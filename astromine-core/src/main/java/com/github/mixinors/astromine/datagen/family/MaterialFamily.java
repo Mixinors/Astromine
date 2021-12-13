@@ -8,7 +8,7 @@ import java.util.function.BiConsumer;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-import com.github.mixinors.astromine.datagen.model.AMModelProvider;
+import com.github.mixinors.astromine.datagen.provider.AMModelProvider;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 

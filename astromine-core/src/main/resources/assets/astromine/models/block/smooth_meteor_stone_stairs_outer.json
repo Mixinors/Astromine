@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/outer_stairs",
-  "textures": {
-    "bottom": "astromine:block/smooth_meteor_stone",
-    "top": "astromine:block/smooth_meteor_stone",
-    "side": "astromine:block/smooth_meteor_stone"
-  }
-}

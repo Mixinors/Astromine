@@ -1,0 +1,11 @@
+{
+  "parent": "astromine:block/machine",
+  "textures": {
+    "top": "astromine:block/elite_press_top",
+    "bottom": "astromine:block/elite_press_bottom",
+    "left": "astromine:block/elite_press_left",
+    "right": "astromine:block/elite_press_right",
+    "front": "astromine:block/elite_press_front",
+    "back": "astromine:block/elite_press_back"
+  }
+}

@@ -21,7 +21,9 @@
       "conditions": {
         "items": [
           {
-            "item": "astromine:univite_ingot"
+            "items": [
+              "astromine:univite_ingot"
+            ]
           }
         ]
       }

@@ -21,7 +21,9 @@
       "conditions": {
         "items": [
           {
-            "item": "astromine:galaxium"
+            "items": [
+              "astromine:galaxium"
+            ]
           }
         ]
       }

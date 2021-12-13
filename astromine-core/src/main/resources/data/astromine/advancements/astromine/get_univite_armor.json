@@ -24,16 +24,24 @@
       "conditions": {
         "items": [
           {
-            "item": "astromine:univite_helmet"
+            "items": [
+              "astromine:univite_helmet"
+            ]
           },
           {
-            "item": "astromine:univite_chestplate"
+            "items": [
+              "astromine:univite_chestplate"
+            ]
           },
           {
-            "item": "astromine:univite_leggings"
+            "items": [
+              "astromine:univite_leggings"
+            ]
           },
           {
-            "item": "astromine:univite_boots"
+            "items": [
+              "astromine:univite_boots"
+            ]
           }
         ]
       }

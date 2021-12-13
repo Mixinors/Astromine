@@ -237,7 +237,7 @@ public class AMBlocks {
 	public static final RegistrySupplier<Block> ELITE_CAPACITOR = register("elite_capacitor", () -> new CapacitorBlock.Elite(getEliteSettings()), AMItems.getBasicSettings());
 	public static final RegistrySupplier<Block> CREATIVE_CAPACITOR = register("creative_capacitor", () -> new CapacitorBlock.Creative(getCreativeSettings()), AMItems.getBasicSettings());
 	
-	public static final Block AIRLOCK = new AirlockBlock(getBasicSettings());
+	public static final RegistrySupplier<Block> AIRLOCK = register("airlock", () -> new AirlockBlock(getBasicSettings()), block -> new TallBlockItem(block, AMItems.getBasicSettings()));
 	
 	public static final RegistrySupplier<Block> DRAIN = register("drain", () -> new DrainBlock(getBasicSettings()), AMItems.getBasicSettings());
 	
@@ -249,7 +249,6 @@ public class AMBlocks {
 	public static final RegistrySupplier<Block> ELITE_ENERGY_CABLE = register("elite_energy_cable", () -> new EnergyCableBlock(AMConfig.get().eliteEnergyCableEnergy, BlockProperties.of(Material.METAL)/*TODO replace with tag tool(ToolType.PICKAXE, 1)*/.requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
 	
 	public static void init() {
-		register("airlock", () -> AIRLOCK, block -> new TallBlockItem(block, AMItems.getBasicSettings()));
 	}
 
 	/**

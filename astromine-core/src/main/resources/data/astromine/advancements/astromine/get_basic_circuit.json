@@ -21,7 +21,9 @@
       "conditions": {
         "items": [
           {
-            "item": "astromine:basic_circuit"
+            "items": [
+              "astromine:basic_circuit"
+            ]
           }
         ]
       }

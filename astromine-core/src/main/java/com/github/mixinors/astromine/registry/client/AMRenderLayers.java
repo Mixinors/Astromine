@@ -34,7 +34,7 @@ import net.minecraft.client.render.RenderLayer;
 public class AMRenderLayers {
 	public static void init() {
 		ClientLifecycleEvent.CLIENT_SETUP.register( client -> {
-			register(AMBlocks.AIRLOCK, RenderLayer.getTranslucent());
+			register(AMBlocks.AIRLOCK.get(), RenderLayer.getTranslucent());
 
 			register(AMBlocks.ALTAR.get(), RenderLayer.getCutout());
 			register(AMBlocks.ALTAR_PEDESTAL.get(), RenderLayer.getCutout());

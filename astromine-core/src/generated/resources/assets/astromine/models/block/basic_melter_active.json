@@ -1,0 +1,11 @@
+{
+  "parent": "astromine:block/machine_active",
+  "textures": {
+    "top": "astromine:block/basic_melter_top_active",
+    "bottom": "astromine:block/basic_melter_bottom_active",
+    "left": "astromine:block/basic_melter_left_active",
+    "right": "astromine:block/basic_melter_right_active",
+    "front": "astromine:block/basic_melter_front_active",
+    "back": "astromine:block/basic_melter_back_active"
+  }
+}

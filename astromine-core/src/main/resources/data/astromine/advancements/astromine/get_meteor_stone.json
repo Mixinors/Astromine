@@ -21,7 +21,9 @@
       "conditions": {
         "items": [
           {
-            "item": "astromine:meteor_stone"
+            "items": [
+              "astromine:meteor_stone"
+            ]
           }
         ]
       }

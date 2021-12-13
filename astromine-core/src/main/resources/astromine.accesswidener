@@ -34,3 +34,6 @@ accessible field net/minecraft/server/world/ThreadedAnvilChunkStorage chunkGener
 mutable field net/minecraft/server/world/ThreadedAnvilChunkStorage chunkGenerator Lnet/minecraft/world/gen/chunk/ChunkGenerator;
 accessible   field   net/minecraft/data/client/model/BlockStateModelGenerator    blockStateCollector Ljava/util/function/Consumer;
 accessible   field   net/minecraft/data/client/model/BlockStateModelGenerator    modelCollector  Ljava/util/function/BiConsumer;
+accessible class net/minecraft/data/client/model/BlockStateModelGenerator$BlockTexturePool
+accessible method net/minecraft/data/client/model/TextureKey of (Ljava/lang/String;)Lnet/minecraft/data/client/model/TextureKey;
+accessible method net/minecraft/data/client/model/TextureKey of (Ljava/lang/String;Lnet/minecraft/data/client/model/TextureKey;)Lnet/minecraft/data/client/model/TextureKey;

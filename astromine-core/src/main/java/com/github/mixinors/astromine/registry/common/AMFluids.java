@@ -34,15 +34,15 @@ import com.github.mixinors.astromine.AMCommon;
 import java.util.List;
 
 public class AMFluids {
-	public static final Fluid OIL = ExtendedFluid.builder().fog(0x7e121212).tint(0x7e121212).damage(0).toxic(false).infinite(false).name("oil").group(AMItemGroups.ASTROMINE).build();
+	public static final ExtendedFluid OIL = ExtendedFluid.builder().fog(0x7e121212).tint(0x7e121212).damage(0).toxic(false).infinite(false).name("oil").group(AMItemGroups.ASTROMINE).build();
 	
-	public static final Fluid FUEL = ExtendedFluid.builder().fog(0x7e968048).tint(0x7e968048).damage(0).toxic(false).infinite(false).name("fuel").group(AMItemGroups.ASTROMINE).build();
+	public static final ExtendedFluid FUEL = ExtendedFluid.builder().fog(0x7e968048).tint(0x7e968048).damage(0).toxic(false).infinite(false).name("fuel").group(AMItemGroups.ASTROMINE).build();
 	
-	public static final Fluid BIOMASS = ExtendedFluid.builder().fog(0x7e6fda34).tint(0x7e6fda34).damage(0).toxic(false).infinite(false).name("biomass").group(AMItemGroups.ASTROMINE).build();
+	public static final ExtendedFluid BIOMASS = ExtendedFluid.builder().fog(0x7e6fda34).tint(0x7e6fda34).damage(0).toxic(false).infinite(false).name("biomass").group(AMItemGroups.ASTROMINE).build();
 	
-	public static final Fluid OXYGEN = ExtendedFluid.builder().fog(0x7e159ef9).tint(0xff159ef9).damage(0).toxic(false).infinite(false).name("oxygen").group(AMItemGroups.ASTROMINE).build();
+	public static final ExtendedFluid OXYGEN = ExtendedFluid.builder().fog(0x7e159ef9).tint(0xff159ef9).damage(0).toxic(false).infinite(false).name("oxygen").group(AMItemGroups.ASTROMINE).build();
 	
-	public static final Fluid HYDROGEN = ExtendedFluid.builder().fog(0x7eff0019).tint(0xffff0019).damage(0).toxic(false).infinite(false).name("hydrogen").group(AMItemGroups.ASTROMINE).build();
+	public static final ExtendedFluid HYDROGEN = ExtendedFluid.builder().fog(0x7eff0019).tint(0xffff0019).damage(0).toxic(false).infinite(false).name("hydrogen").group(AMItemGroups.ASTROMINE).build();
 	
 	public static void init() {
 

@@ -1,0 +1,11 @@
+{
+  "parent": "astromine:block/machine",
+  "textures": {
+    "top": "astromine:block/vent_top",
+    "bottom": "astromine:block/vent_bottom",
+    "left": "astromine:block/vent_left",
+    "right": "astromine:block/vent_right",
+    "front": "astromine:block/vent_front",
+    "back": "astromine:block/vent_back"
+  }
+}

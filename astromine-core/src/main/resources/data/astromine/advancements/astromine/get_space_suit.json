@@ -24,16 +24,24 @@
       "conditions": {
         "items": [
           {
-            "item": "astromine:space_suit_helmet"
+            "items": [
+              "astromine:space_suit_helmet"
+            ]
           },
           {
-            "item": "astromine:space_suit_chestplate"
+            "items": [
+              "astromine:space_suit_chestplate"
+            ]
           },
           {
-            "item": "astromine:space_suit_leggings"
+            "items": [
+              "astromine:space_suit_leggings"
+            ]
           },
           {
-            "item": "astromine:space_suit_boots"
+            "items": [
+              "astromine:space_suit_boots"
+            ]
           }
         ]
       }

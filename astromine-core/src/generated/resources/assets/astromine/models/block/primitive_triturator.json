@@ -1,0 +1,11 @@
+{
+  "parent": "astromine:block/machine",
+  "textures": {
+    "top": "astromine:block/primitive_triturator_top",
+    "bottom": "astromine:block/primitive_triturator_bottom",
+    "left": "astromine:block/primitive_triturator_left",
+    "right": "astromine:block/primitive_triturator_right",
+    "front": "astromine:block/primitive_triturator_front",
+    "back": "astromine:block/primitive_triturator_back"
+  }
+}

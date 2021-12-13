@@ -21,7 +21,9 @@
       "conditions": {
         "items": [
           {
-            "item": "astromine:advanced_circuit"
+            "items": [
+              "astromine:advanced_circuit"
+            ]
           }
         ]
       }

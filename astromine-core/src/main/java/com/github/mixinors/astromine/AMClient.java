@@ -49,5 +49,6 @@ public class AMClient implements ClientModInitializer {
 		AMRenderLayers.init();
 		AMPatchouliPages.init();
 		AMKeybinds.init();
+		AMColorProviders.init();
 	}
 }
