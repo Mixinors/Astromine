@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    {
-      "id": "astromine:asteroid_iron_cluster",
-      "required": false
-    }
-  ]
-}

@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "#c:nether_quartz_ores",
+    "#c:nether_raw_netherite_ores",
+    "#c:nether_gold_ores"
+  ]
+}

@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:metite_tiny_dust"
+      "astromine:metite_tiny_dust"
     ]
   },
   "criteria": {
-    "has_metite_dust": {
+    "has_metite_dusts": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:metite_dust"
-            ]
+            "tag": "c:metite_dusts"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:metite_tiny_dust"
+        "recipe": "astromine:metite_tiny_dust"
       }
     }
   },
   "requirements": [
     [
-      "has_metite_dust",
+      "has_metite_dusts",
       "has_the_recipe"
     ]
   ]

@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "astromine:raw_netherite_dust"
+      "tag": "c:raw_netherite_dusts"
     }
   ],
   "result": {

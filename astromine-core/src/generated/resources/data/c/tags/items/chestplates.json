@@ -1,0 +1,18 @@
+{
+  "replace": false,
+  "values": [
+    "#c:fools_gold_chestplates",
+    "#c:asterite_chestplates",
+    "#c:steel_chestplates",
+    "#c:stellum_chestplates",
+    "#c:univite_chestplates",
+    "#c:diamond_chestplates",
+    "#c:netherite_chestplates",
+    "#c:metite_chestplates",
+    "#c:galaxium_chestplates",
+    "#c:gold_chestplates",
+    "#c:iron_chestplates",
+    "#c:meteoric_steel_chestplates",
+    "#c:bronze_chestplates"
+  ]
+}

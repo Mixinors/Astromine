@@ -6,14 +6,12 @@
     ]
   },
   "criteria": {
-    "has_silver_ingot": {
+    "has_silver_ingots": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:silver_ingot"
-            ]
+            "tag": "c:silver_ingots"
           }
         ]
       }
@@ -27,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_silver_ingot",
+      "has_silver_ingots",
       "has_the_recipe"
     ]
   ]

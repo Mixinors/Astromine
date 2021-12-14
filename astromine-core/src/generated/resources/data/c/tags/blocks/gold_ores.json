@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "#c:asteroid_gold_ores",
+    "#c:nether_gold_ores",
+    "#c:stone_gold_ores",
+    "#c:deepslate_gold_ores"
+  ]
+}

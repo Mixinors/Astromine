@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:electrum_tiny_dust"
+      "astromine:electrum_tiny_dust"
     ]
   },
   "criteria": {
-    "has_electrum_dust": {
+    "has_electrum_dusts": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:electrum_dust"
-            ]
+            "tag": "c:electrum_dusts"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:electrum_tiny_dust"
+        "recipe": "astromine:electrum_tiny_dust"
       }
     }
   },
   "requirements": [
     [
-      "has_electrum_dust",
+      "has_electrum_dusts",
       "has_the_recipe"
     ]
   ]

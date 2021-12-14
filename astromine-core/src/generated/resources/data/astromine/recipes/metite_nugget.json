@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "astromine:metite_ingot"
+      "tag": "c:metite_ingots"
     }
   ],
   "result": {

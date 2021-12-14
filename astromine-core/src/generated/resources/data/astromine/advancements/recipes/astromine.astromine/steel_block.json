@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:steel_block"
+      "astromine:steel_block"
     ]
   },
   "criteria": {
-    "has_steel_ingot": {
+    "has_steel_ingots": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:steel_ingot"
-            ]
+            "tag": "c:steel_ingots"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:steel_block"
+        "recipe": "astromine:steel_block"
       }
     }
   },
   "requirements": [
     [
-      "has_steel_ingot",
+      "has_steel_ingots",
       "has_the_recipe"
     ]
   ]

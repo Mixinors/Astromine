@@ -1,0 +1,20 @@
+{
+  "replace": false,
+  "values": [
+    "#c:fools_gold_ingots",
+    "#c:silver_ingots",
+    "#c:steel_ingots",
+    "#c:stellum_ingots",
+    "#c:univite_ingots",
+    "#c:netherite_ingots",
+    "#c:metite_ingots",
+    "#c:electrum_ingots",
+    "#c:copper_ingots",
+    "#c:tin_ingots",
+    "#c:gold_ingots",
+    "#c:iron_ingots",
+    "#c:meteoric_steel_ingots",
+    "#c:lead_ingots",
+    "#c:bronze_ingots"
+  ]
+}

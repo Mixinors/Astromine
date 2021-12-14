@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "astromine:bronze_dust"
+      "tag": "c:bronze_dusts"
     }
   ],
   "result": {

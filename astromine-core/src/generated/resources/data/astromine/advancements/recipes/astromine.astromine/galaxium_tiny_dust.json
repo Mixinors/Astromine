@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:galaxium_tiny_dust"
+      "astromine:galaxium_tiny_dust"
     ]
   },
   "criteria": {
-    "has_galaxium_dust": {
+    "has_galaxium_dusts": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:galaxium_dust"
-            ]
+            "tag": "c:galaxium_dusts"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:galaxium_tiny_dust"
+        "recipe": "astromine:galaxium_tiny_dust"
       }
     }
   },
   "requirements": [
     [
-      "has_galaxium_dust",
+      "has_galaxium_dusts",
       "has_the_recipe"
     ]
   ]

@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:diamond_fragment"
+      "astromine:diamond_fragment"
     ]
   },
   "criteria": {
-    "has_diamond": {
+    "has_diamonds": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:diamond"
-            ]
+            "tag": "c:diamonds"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:diamond_fragment"
+        "recipe": "astromine:diamond_fragment"
       }
     }
   },
   "requirements": [
     [
-      "has_diamond",
+      "has_diamonds",
       "has_the_recipe"
     ]
   ]

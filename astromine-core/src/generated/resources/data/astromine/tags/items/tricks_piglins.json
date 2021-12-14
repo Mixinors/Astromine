@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    "#c:fools_gold_gears",
+    "#c:fools_gold_blocks",
+    "#c:fools_gold_apples",
+    "#c:fools_gold_ingots",
+    "#c:fools_gold_nuggets",
+    "#c:fools_gold_tiny_dusts",
+    "#c:fools_gold_helmets",
+    "#c:fools_gold_leggings",
+    "#c:fools_gold_dusts",
+    "#c:fools_gold_boots",
+    "#c:fools_gold_chestplates",
+    "#c:fools_gold_plates"
+  ]
+}

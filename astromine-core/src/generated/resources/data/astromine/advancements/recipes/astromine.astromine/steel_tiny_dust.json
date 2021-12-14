@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:steel_tiny_dust"
+      "astromine:steel_tiny_dust"
     ]
   },
   "criteria": {
-    "has_steel_dust": {
+    "has_steel_dusts": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:steel_dust"
-            ]
+            "tag": "c:steel_dusts"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:steel_tiny_dust"
+        "recipe": "astromine:steel_tiny_dust"
       }
     }
   },
   "requirements": [
     [
-      "has_steel_dust",
+      "has_steel_dusts",
       "has_the_recipe"
     ]
   ]

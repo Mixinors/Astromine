@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "astromine:charcoal_dust"
+      "tag": "c:charcoal_dusts"
     }
   ],
   "result": {

@@ -6,14 +6,12 @@
     ]
   },
   "criteria": {
-    "has_netherite_ingot": {
+    "has_netherite_ingots": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:netherite_ingot"
-            ]
+            "tag": "c:netherite_ingots"
           }
         ]
       }
@@ -27,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_netherite_ingot",
+      "has_netherite_ingots",
       "has_the_recipe"
     ]
   ]

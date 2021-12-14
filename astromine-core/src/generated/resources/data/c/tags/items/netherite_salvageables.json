@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "#c:netherite_leggings",
+    "#c:netherite_chestplates",
+    "#c:netherite_pickaxes",
+    "#c:netherite_boots",
+    "#c:netherite_axes",
+    "#c:netherite_helmets",
+    "#c:netherite_shovels",
+    "#c:netherite_swords",
+    "#c:netherite_hoes"
+  ]
+}

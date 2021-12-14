@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:raw_netherite_tiny_dust"
+      "astromine:raw_netherite_tiny_dust"
     ]
   },
   "criteria": {
-    "has_raw_netherite_dust": {
+    "has_raw_netherite_dusts": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:raw_netherite_dust"
-            ]
+            "tag": "c:raw_netherite_dusts"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:raw_netherite_tiny_dust"
+        "recipe": "astromine:raw_netherite_tiny_dust"
       }
     }
   },
   "requirements": [
     [
-      "has_raw_netherite_dust",
+      "has_raw_netherite_dusts",
       "has_the_recipe"
     ]
   ]

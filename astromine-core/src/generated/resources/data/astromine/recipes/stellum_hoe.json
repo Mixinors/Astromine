@@ -7,7 +7,7 @@
   ],
   "key": {
     "X": {
-      "item": "astromine:stellum_ingot"
+      "tag": "c:stellum_ingots"
     },
     "S": {
       "item": "minecraft:stick"

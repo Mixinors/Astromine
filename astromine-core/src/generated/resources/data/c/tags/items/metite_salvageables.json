@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "#c:metite_leggings",
+    "#c:metite_chestplates",
+    "#c:metite_pickaxes",
+    "#c:metite_boots",
+    "#c:metite_axes",
+    "#c:metite_helmets",
+    "#c:metite_shovels",
+    "#c:metite_swords",
+    "#c:metite_hoes"
+  ]
+}

@@ -6,14 +6,12 @@
     ]
   },
   "criteria": {
-    "has_meteoric_steel_ingot": {
+    "has_meteoric_steel_ingots": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:meteoric_steel_ingot"
-            ]
+            "tag": "c:meteoric_steel_ingots"
           }
         ]
       }
@@ -27,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_meteoric_steel_ingot",
+      "has_meteoric_steel_ingots",
       "has_the_recipe"
     ]
   ]

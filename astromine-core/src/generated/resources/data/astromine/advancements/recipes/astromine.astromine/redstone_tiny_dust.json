@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:redstone_tiny_dust"
+      "astromine:redstone_tiny_dust"
     ]
   },
   "criteria": {
-    "has_redstone": {
+    "has_redstone_dusts": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:redstone"
-            ]
+            "tag": "c:redstone_dusts"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:redstone_tiny_dust"
+        "recipe": "astromine:redstone_tiny_dust"
       }
     }
   },
   "requirements": [
     [
-      "has_redstone",
+      "has_redstone_dusts",
       "has_the_recipe"
     ]
   ]

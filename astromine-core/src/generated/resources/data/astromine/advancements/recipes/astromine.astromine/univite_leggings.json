@@ -6,14 +6,12 @@
     ]
   },
   "criteria": {
-    "has_univite_ingot": {
+    "has_univite_ingots": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:univite_ingot"
-            ]
+            "tag": "c:univite_ingots"
           }
         ]
       }
@@ -27,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_univite_ingot",
+      "has_univite_ingots",
       "has_the_recipe"
     ]
   ]

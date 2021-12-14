@@ -1,15 +1,18 @@
 package com.github.mixinors.astromine.datagen.family;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.common.util.WordUtils;
 import com.github.mixinors.astromine.datagen.provider.AMModelProvider;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
@@ -19,7 +22,12 @@ import net.minecraft.data.client.ItemModelGenerator;
 import net.minecraft.data.client.model.BlockStateModelGenerator;
 import net.minecraft.data.client.model.Models;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemConvertible;
+import net.minecraft.tag.Tag;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+
+import net.fabricmc.fabric.api.tag.TagFactory;
 
 public class MaterialFamily {
 	final Map<ItemVariant, Item> itemVariants = Maps.newHashMap();
@@ -27,20 +35,32 @@ public class MaterialFamily {
 	final Set<AlloyIngredients> alloyIngredients = Sets.newHashSet();
 	private final Item baseItem;
 	private final MaterialType type;
+	private final String name;
 	@Nullable
 	MaterialFamily smithingBase;
 	boolean piglinLoved = false;
 	boolean generateModels = true;
 	boolean generateRecipes = true;
+	boolean generateTags = true;
 	@Nullable
 	String group;
 	@Nullable
 	String unlockCriterionName;
 	float oreSmeltingExperience = 0.7f;
+	@Nullable
+	String baseTagPathOverride;
+	boolean validForBeacon = false;
+	@Nullable
+	String alias;
 
-	MaterialFamily(Item baseItem, MaterialType type) {
+	MaterialFamily(String name, Item baseItem, MaterialType type) {
 		this.baseItem = baseItem;
 		this.type = type;
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public Item getBaseItem() {
@@ -61,6 +81,23 @@ public class MaterialFamily {
 
 	public Map<BlockVariant, Block> getBlockVariants() {
 		return this.blockVariants;
+	}
+
+	public Map<ItemVariant, Tag.Identified<Item>> getItemTags() {
+		return Maps.toMap(this.itemVariants.keySet(), this::getTag);
+	}
+
+	public Map<BlockVariant, Tag.Identified<Block>> getBlockTags() {
+		return Maps.toMap(this.blockVariants.keySet(), this::getTag);
+	}
+
+	public Map<BlockVariant, Tag.Identified<Item>> getBlockItemTags() {
+		return Maps.toMap(this.blockVariants.keySet(), this::getItemTag);
+	}
+
+	public Map<Variant<?>, Tag.Identified<Item>> getAllItemTags() {
+		return new ImmutableMap.Builder<Variant<?>, Tag.Identified<Item>>()
+				.putAll(getItemTags()).putAll(getBlockItemTags()).build();
 	}
 
 	public boolean isBaseAstromine() {
@@ -157,6 +194,10 @@ public class MaterialFamily {
 		return this.generateRecipes;
 	}
 
+	public boolean shouldGenerateTags() {
+		return this.generateTags;
+	}
+
 	public boolean isPiglinLoved() {
 		return this.piglinLoved;
 	}
@@ -195,7 +236,75 @@ public class MaterialFamily {
 		return oreSmeltingExperience;
 	}
 
-	public enum ItemVariant {
+	public Identifier getTagId(Variant<?> variant) {
+		if(getBaseVariant().equals(variant) && baseTagPathOverride != null) return new Identifier("c", baseTagPathOverride);
+		else return variant.getTagId(name);
+	}
+
+	public Identifier getTagId(String variant) {
+		return new Identifier("c", name+"_"+variant);
+	}
+
+	public Identifier getAliasTagId(Variant<?> variant) {
+		return variant.getTagId(alias);
+	}
+
+	public Identifier getAliasTagId(String variant) {
+		return new Identifier("c", alias+"_"+variant);
+	}
+
+	public <T extends ItemConvertible> Tag.Identified<T> getTag(Variant<T> variant) {
+		return variant.getTagFactory().create(getTagId(variant));
+	}
+
+	public <T extends ItemConvertible> Tag.Identified<T> getAliasTag(Variant<T> variant) {
+		return variant.getTagFactory().create(getAliasTagId(variant));
+	}
+
+	public Tag.Identified<Item> getItemTag(BlockVariant variant) {
+		return TagFactory.ITEM.create(getTagId(variant));
+	}
+
+	public Tag.Identified<Item> getItemTag(String variant) {
+		return TagFactory.ITEM.create(getTagId(variant));
+	}
+
+	public Tag.Identified<Block> getBlockTag(String variant) {
+		return TagFactory.BLOCK.create(getTagId(variant));
+	}
+
+	public Tag.Identified<Item> getAliasItemTag(BlockVariant variant) {
+		return TagFactory.ITEM.create(getAliasTagId(variant));
+	}
+
+	public Tag.Identified<Item> getAliasItemTag(String variant) {
+		return TagFactory.ITEM.create(getAliasTagId(variant));
+	}
+
+	public Tag.Identified<Block> getAliasBlockTag(String variant) {
+		return TagFactory.BLOCK.create(getAliasTagId(variant));
+	}
+
+	public Tag.Identified<Item> getBaseTag() {
+		return getTag(getBaseVariant());
+	}
+
+	public boolean isValidForBeacon() {
+		return validForBeacon;
+	}
+
+	public boolean hasAlias() {
+		return alias != null;
+	}
+
+	public Optional<String> getAlias() {
+		if (StringUtils.isBlank(this.alias)) {
+			return Optional.empty();
+		}
+		return Optional.of(this.alias);
+	}
+
+	public enum ItemVariant implements Variant<Item> {
 		INGOT("ingot"),
 		GEM("gem"),
 		MISC("misc"),
@@ -226,19 +335,71 @@ public class MaterialFamily {
 			this.name = name;
 		}
 
+		@Override
 		public String getName() {
 			return this.name;
 		}
 
+		@Override
 		public BiConsumer<ItemModelGenerator, Item> getModelRegistrar() {
 			return switch (this) {
 				case PICKAXE, AXE, SHOVEL, SWORD, HOE -> (itemModelGenerator, item) -> itemModelGenerator.register(item, Models.HANDHELD);
 				default -> (itemModelGenerator, item) -> itemModelGenerator.register(item, Models.GENERATED);
 			};
 		}
+
+		@Override
+		public String getTagPath() {
+			return switch (this) {
+				case LEGGINGS, BOOTS -> getName();
+				case APPLE -> "metal_apples";
+				default -> Variant.super.getTagPath();
+			};
+		}
+
+		@Override
+		public String getTagPrefix() {
+			return switch (this) {
+				case RAW_ORE -> "raw_";
+				case METEOR_CLUSTER -> "meteor_";
+				case ASTEROID_CLUSTER -> "asteroid_";
+				default -> Variant.super.getTagPrefix();
+			};
+		}
+
+		@Override
+		public String getTagSuffix() {
+			return switch (this) {
+				case GEM, MISC, RAW_ORE -> "";
+				case METEOR_CLUSTER, ASTEROID_CLUSTER -> "_clusters";
+				case APPLE -> "_apples";
+				default -> Variant.super.getTagSuffix();
+			};
+		}
+
+		@Override
+		public String getTagCentre(String material) {
+			return switch(this) {
+				case GEM, MISC, RAW_ORE -> WordUtils.pluralize(material);
+				default -> Variant.super.getTagCentre(material);
+			};
+		}
+
+		@Override
+		public boolean hasVariantTag() {
+			return switch(this) {
+				case MISC -> false;
+				default -> Variant.super.hasVariantTag();
+			};
+		}
+
+		@Override
+		public TagFactory<Item> getTagFactory() {
+			return TagFactory.ITEM;
+		}
 	}
 
-	public enum BlockVariant {
+	public enum BlockVariant implements Variant<Block> {
 		BLOCK("block"),
 		BLOCK_2x2("block_2x2"),
 		ORE("ore"),
@@ -254,16 +415,57 @@ public class MaterialFamily {
 			this.name = name;
 		}
 
+		@Override
 		public String getName() {
 			return this.name;
 		}
 
+		@Override
 		public BiConsumer<BlockStateModelGenerator, Block> getModelRegistrar() {
 			return switch (this) {
 				case METEOR_ORE -> AMModelProvider::registerMeteorOre;
 				case ASTEROID_ORE -> AMModelProvider::registerAsteroidOre;
 				default -> BlockStateModelGenerator::registerSimpleCubeAll;
 			};
+		}
+
+		@Override
+		public String getTagPath() {
+			return switch (this) {
+				case BLOCK_2x2 -> "blocks";
+				default -> Variant.super.getTagPath();
+			};
+		}
+
+		@Override
+		public String getTagPrefix() {
+			return switch (this) {
+				case NETHER_ORE -> "nether_";
+				case METEOR_ORE -> "meteor_";
+				case ASTEROID_ORE -> "asteroid_";
+				case DEEPSLATE_ORE -> "deepslate_";
+				case ORE -> "stone_";
+				case RAW_ORE_BLOCK -> "raw_";
+				default -> Variant.super.getTagPrefix();
+			};
+		}
+
+		@Override
+		public String getTagSuffix() {
+			return switch (this) {
+				case RAW_ORE_BLOCK -> "_blocks";
+				case NETHER_ORE, METEOR_ORE, ASTEROID_ORE, DEEPSLATE_ORE -> "_ores";
+				default -> Variant.super.getTagSuffix();
+			};
+		}
+
+		@Override
+		public TagFactory<Block> getTagFactory() {
+			return TagFactory.BLOCK;
+		}
+
+		public Tag.Identified<Item> getItemTag() {
+			return TagFactory.ITEM.create(new Identifier("c", getTagPath()));
 		}
 	}
 
@@ -284,11 +486,59 @@ public class MaterialFamily {
 		}
 	}
 
+	public interface Variant<T extends ItemConvertible> {
+		String getName();
+
+		BiConsumer<?, T> getModelRegistrar();
+
+		default String getTagPath() {
+			return WordUtils.pluralize(getName());
+		}
+
+		default String getTagPrefix() {
+			return "";
+		}
+
+		default String getTagSuffix() {
+			return "_" + getTagPath();
+		}
+
+		default String getTagCentre(String material) {
+			return material;
+		}
+
+		default String getTagPath(String material) {
+			return getTagPrefix() + getTagCentre(material) + getTagSuffix();
+		}
+
+		default Identifier getTagId() {
+			return new Identifier("c", getTagPath());
+		}
+
+		default Identifier getTagId(String material) {
+			return new Identifier("c", getTagPath(material));
+		}
+
+		default Tag.Identified<T> getTag() {
+			return getTagFactory().create(getTagId());
+		}
+
+		default Tag.Identified<T> getTag(String material) {
+			return getTagFactory().create(getTagId(material));
+		}
+
+		default boolean hasVariantTag() {
+			return true;
+		}
+
+		TagFactory<T> getTagFactory();
+	}
+
 	public static class Builder {
 		private final MaterialFamily family;
 
-		public Builder(Item baseItem, MaterialType type) {
-			this.family = new MaterialFamily(baseItem, type);
+		public Builder(String name, Item baseItem, MaterialType type) {
+			this.family = new MaterialFamily(name, baseItem, type);
 			this.family.itemVariants.put(type.asVariant(), baseItem);
 		}
 
@@ -402,6 +652,11 @@ public class MaterialFamily {
 			return this;
 		}
 
+		public MaterialFamily.Builder noGenerateTags() {
+			this.family.generateTags = false;
+			return this;
+		}
+
 		public MaterialFamily.Builder group(String group) {
 			this.family.group = group;
 			return this;
@@ -441,6 +696,21 @@ public class MaterialFamily {
 
 		public MaterialFamily.Builder oreSmeltingExperience(float oreSmeltingExperience) {
 			this.family.oreSmeltingExperience = oreSmeltingExperience;
+			return this;
+		}
+
+		public MaterialFamily.Builder baseTagPathOverride(String baseTagPathOverride) {
+			this.family.baseTagPathOverride = baseTagPathOverride;
+			return this;
+		}
+
+		public MaterialFamily.Builder validForBeacon() {
+			this.family.validForBeacon = true;
+			return this;
+		}
+
+		public MaterialFamily.Builder alias(String alias) {
+			this.family.alias = alias;
 			return this;
 		}
 	}

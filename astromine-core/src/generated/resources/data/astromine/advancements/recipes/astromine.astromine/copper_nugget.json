@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:copper_nugget"
+      "astromine:copper_nugget"
     ]
   },
   "criteria": {
-    "has_copper_ingot": {
+    "has_copper_ingots": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:copper_ingot"
-            ]
+            "tag": "c:copper_ingots"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:copper_nugget"
+        "recipe": "astromine:copper_nugget"
       }
     }
   },
   "requirements": [
     [
-      "has_copper_ingot",
+      "has_copper_ingots",
       "has_the_recipe"
     ]
   ]

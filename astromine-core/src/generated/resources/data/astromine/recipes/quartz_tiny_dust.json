@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "astromine:quartz_dust"
+      "tag": "c:quartz_dusts"
     }
   ],
   "result": {

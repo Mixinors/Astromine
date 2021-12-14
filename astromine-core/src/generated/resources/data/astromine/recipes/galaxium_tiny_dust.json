@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "astromine:galaxium_dust"
+      "tag": "c:galaxium_dusts"
     }
   ],
   "result": {

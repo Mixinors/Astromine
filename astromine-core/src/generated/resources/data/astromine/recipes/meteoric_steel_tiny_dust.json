@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "astromine:meteoric_steel_dust"
+      "tag": "c:meteoric_steel_dusts"
     }
   ],
   "result": {

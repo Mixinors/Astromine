@@ -6,14 +6,12 @@
     ]
   },
   "criteria": {
-    "has_steel_ingot": {
+    "has_steel_ingots": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:steel_ingot"
-            ]
+            "tag": "c:steel_ingots"
           }
         ]
       }
@@ -27,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_steel_ingot",
+      "has_steel_ingots",
       "has_the_recipe"
     ]
   ]

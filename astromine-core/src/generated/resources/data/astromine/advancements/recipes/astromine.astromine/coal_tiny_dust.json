@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:coal_tiny_dust"
+      "astromine:coal_tiny_dust"
     ]
   },
   "criteria": {
-    "has_coal_dust": {
+    "has_coal_dusts": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:coal_dust"
-            ]
+            "tag": "c:coal_dusts"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:coal_tiny_dust"
+        "recipe": "astromine:coal_tiny_dust"
       }
     }
   },
   "requirements": [
     [
-      "has_coal_dust",
+      "has_coal_dusts",
       "has_the_recipe"
     ]
   ]

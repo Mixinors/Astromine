@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:asterite_tiny_dust"
+      "astromine:asterite_tiny_dust"
     ]
   },
   "criteria": {
-    "has_asterite_dust": {
+    "has_asterite_dusts": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:asterite_dust"
-            ]
+            "tag": "c:asterite_dusts"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:asterite_tiny_dust"
+        "recipe": "astromine:asterite_tiny_dust"
       }
     }
   },
   "requirements": [
     [
-      "has_asterite_dust",
+      "has_asterite_dusts",
       "has_the_recipe"
     ]
   ]

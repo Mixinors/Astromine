@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "c:raw_tin_blocks"
+    }
+  ],
+  "result": {
+    "item": "astromine:raw_tin",
+    "count": 9
+  }
+}

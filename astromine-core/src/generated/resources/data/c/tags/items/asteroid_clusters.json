@@ -1,0 +1,20 @@
+{
+  "replace": false,
+  "values": [
+    "#c:asteroid_silver_clusters",
+    "#c:asteroid_asterite_clusters",
+    "#c:asteroid_stellum_clusters",
+    "#c:asteroid_diamond_clusters",
+    "#c:asteroid_metite_clusters",
+    "#c:asteroid_emerald_clusters",
+    "#c:asteroid_coal_clusters",
+    "#c:asteroid_copper_clusters",
+    "#c:asteroid_galaxium_clusters",
+    "#c:asteroid_tin_clusters",
+    "#c:asteroid_gold_clusters",
+    "#c:asteroid_redstone_clusters",
+    "#c:asteroid_iron_clusters",
+    "#c:asteroid_lapis_clusters",
+    "#c:asteroid_lead_clusters"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "#c:asteroid_redstone_ores",
+    "#c:stone_redstone_ores",
+    "#c:deepslate_redstone_ores"
+  ]
+}

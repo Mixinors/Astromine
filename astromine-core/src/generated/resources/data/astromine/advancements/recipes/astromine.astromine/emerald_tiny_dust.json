@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:emerald_tiny_dust"
+      "astromine:emerald_tiny_dust"
     ]
   },
   "criteria": {
-    "has_emerald_dust": {
+    "has_emerald_dusts": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:emerald_dust"
-            ]
+            "tag": "c:emerald_dusts"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:emerald_tiny_dust"
+        "recipe": "astromine:emerald_tiny_dust"
       }
     }
   },
   "requirements": [
     [
-      "has_emerald_dust",
+      "has_emerald_dusts",
       "has_the_recipe"
     ]
   ]

@@ -7,7 +7,7 @@
   ],
   "key": {
     "X": {
-      "item": "minecraft:gold_ingot"
+      "tag": "c:gold_ingots"
     }
   },
   "result": {

@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:bronze_block"
+      "astromine:bronze_block"
     ]
   },
   "criteria": {
-    "has_bronze_ingot": {
+    "has_bronze_ingots": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:bronze_ingot"
-            ]
+            "tag": "c:bronze_ingots"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:bronze_block"
+        "recipe": "astromine:bronze_block"
       }
     }
   },
   "requirements": [
     [
-      "has_bronze_ingot",
+      "has_bronze_ingots",
       "has_the_recipe"
     ]
   ]

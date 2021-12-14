@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "#c:asteroid_coal_ores",
+    "#c:stone_coal_ores",
+    "#c:deepslate_coal_ores"
+  ]
+}

@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:meteoric_steel_tiny_dust"
+      "astromine:meteoric_steel_tiny_dust"
     ]
   },
   "criteria": {
-    "has_meteoric_steel_dust": {
+    "has_meteoric_steel_dusts": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:meteoric_steel_dust"
-            ]
+            "tag": "c:meteoric_steel_dusts"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:meteoric_steel_tiny_dust"
+        "recipe": "astromine:meteoric_steel_tiny_dust"
       }
     }
   },
   "requirements": [
     [
-      "has_meteoric_steel_dust",
+      "has_meteoric_steel_dusts",
       "has_the_recipe"
     ]
   ]

@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "astromine:lapis_dust"
+      "tag": "c:lapis_dusts"
     }
   ],
   "result": {

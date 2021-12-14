@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "#c:galaxium_leggings",
+    "#c:galaxium_chestplates",
+    "#c:galaxium_pickaxes",
+    "#c:galaxium_boots",
+    "#c:galaxium_axes",
+    "#c:galaxium_helmets",
+    "#c:galaxium_shovels",
+    "#c:galaxium_swords",
+    "#c:galaxium_hoes"
+  ]
+}

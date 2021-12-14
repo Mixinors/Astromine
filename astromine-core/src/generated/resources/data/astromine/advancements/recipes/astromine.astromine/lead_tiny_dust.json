@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:lead_tiny_dust"
+      "astromine:lead_tiny_dust"
     ]
   },
   "criteria": {
-    "has_lead_dust": {
+    "has_lead_dusts": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:lead_dust"
-            ]
+            "tag": "c:lead_dusts"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:lead_tiny_dust"
+        "recipe": "astromine:lead_tiny_dust"
       }
     }
   },
   "requirements": [
     [
-      "has_lead_dust",
+      "has_lead_dusts",
       "has_the_recipe"
     ]
   ]

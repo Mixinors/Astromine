@@ -6,14 +6,12 @@
     ]
   },
   "criteria": {
-    "has_tin_ingot": {
+    "has_tin_ingots": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:tin_ingot"
-            ]
+            "tag": "c:tin_ingots"
           }
         ]
       }
@@ -27,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_tin_ingot",
+      "has_tin_ingots",
       "has_the_recipe"
     ]
   ]

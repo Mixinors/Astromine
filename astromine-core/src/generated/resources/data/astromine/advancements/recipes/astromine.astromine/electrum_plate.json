@@ -6,14 +6,12 @@
     ]
   },
   "criteria": {
-    "has_electrum_ingot": {
+    "has_electrum_ingots": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:electrum_ingot"
-            ]
+            "tag": "c:electrum_ingots"
           }
         ]
       }
@@ -27,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_electrum_ingot",
+      "has_electrum_ingots",
       "has_the_recipe"
     ]
   ]

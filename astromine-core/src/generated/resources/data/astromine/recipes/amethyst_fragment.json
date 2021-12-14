@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "c:amethysts"
+    }
+  ],
+  "result": {
+    "item": "astromine:amethyst_fragment",
+    "count": 9
+  }
+}

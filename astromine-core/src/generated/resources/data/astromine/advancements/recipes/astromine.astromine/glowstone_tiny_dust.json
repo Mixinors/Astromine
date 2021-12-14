@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:glowstone_tiny_dust"
+      "astromine:glowstone_tiny_dust"
     ]
   },
   "criteria": {
-    "has_glowstone_dust": {
+    "has_glowstone_dusts": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:glowstone_dust"
-            ]
+            "tag": "c:glowstone_dusts"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:glowstone_tiny_dust"
+        "recipe": "astromine:glowstone_tiny_dust"
       }
     }
   },
   "requirements": [
     [
-      "has_glowstone_dust",
+      "has_glowstone_dusts",
       "has_the_recipe"
     ]
   ]

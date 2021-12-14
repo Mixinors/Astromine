@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:quartz_tiny_dust"
+      "astromine:quartz_tiny_dust"
     ]
   },
   "criteria": {
-    "has_quartz_dust": {
+    "has_quartz_dusts": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:quartz_dust"
-            ]
+            "tag": "c:quartz_dusts"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:quartz_tiny_dust"
+        "recipe": "astromine:quartz_tiny_dust"
       }
     }
   },
   "requirements": [
     [
-      "has_quartz_dust",
+      "has_quartz_dusts",
       "has_the_recipe"
     ]
   ]

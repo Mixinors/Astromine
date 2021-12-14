@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:gold_tiny_dust"
+      "astromine:gold_tiny_dust"
     ]
   },
   "criteria": {
-    "has_gold_dust": {
+    "has_gold_dusts": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:gold_dust"
-            ]
+            "tag": "c:gold_dusts"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:gold_tiny_dust"
+        "recipe": "astromine:gold_tiny_dust"
       }
     }
   },
   "requirements": [
     [
-      "has_gold_dust",
+      "has_gold_dusts",
       "has_the_recipe"
     ]
   ]

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "tag": "c:amethyst_tiny_dusts"
+    }
+  },
+  "result": {
+    "item": "astromine:amethyst_dust"
+  }
+}

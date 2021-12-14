@@ -1,11 +1,13 @@
 package com.github.mixinors.astromine.datagen.provider;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.datagen.family.AMBlockFamilies;
 import com.github.mixinors.astromine.datagen.family.MaterialFamilies;
 import com.github.mixinors.astromine.datagen.family.MaterialFamily;
@@ -14,17 +16,23 @@ import com.github.mixinors.astromine.datagen.family.MaterialFamily.ItemVariant;
 import com.github.mixinors.astromine.datagen.family.MaterialFamily.MaterialType;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import org.apache.logging.log4j.util.TriConsumer;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.data.family.BlockFamilies;
 import net.minecraft.data.family.BlockFamily;
 import net.minecraft.data.server.RecipesProvider;
 import net.minecraft.data.server.recipe.CookingRecipeJsonFactory;
+import net.minecraft.data.server.recipe.CraftingRecipeJsonFactory;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonFactory;
+import net.minecraft.data.server.recipe.ShapelessRecipeJsonFactory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.tag.Tag;
+import net.minecraft.util.Identifier;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipesProvider;
@@ -44,19 +52,7 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 			ItemVariant.ASTEROID_CLUSTER
 	);
 
-	public static Set<ItemVariant> EQUIPMENT = Set.of(
-			ItemVariant.HELMET,
-			ItemVariant.CHESTPLATE,
-			ItemVariant.LEGGINGS,
-			ItemVariant.BOOTS,
-			ItemVariant.PICKAXE,
-			ItemVariant.AXE,
-			ItemVariant.SHOVEL,
-			ItemVariant.SWORD,
-			ItemVariant.HOE
-	);
-
-	public static Map<ItemVariant, BasicOfferer> EQUIPMENT_OFFERERS = Map.of(
+	public static Map<ItemVariant, TagOfferer> EQUIPMENT_OFFERERS = Map.of(
 			ItemVariant.HELMET, AMRecipeProvider::offerHelmetRecipe,
 			ItemVariant.CHESTPLATE, AMRecipeProvider::offerChestplateRecipe,
 			ItemVariant.LEGGINGS, AMRecipeProvider::offerLeggingsRecipe,
@@ -68,7 +64,7 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 			ItemVariant.HOE, AMRecipeProvider::offerHoeRecipe
 	);
 
-	public static Map<ItemVariant, BasicOfferer> MISC_OFFERERS = Map.of(
+	public static Map<ItemVariant, TagOfferer> MISC_OFFERERS = Map.of(
 			ItemVariant.GEAR, AMRecipeProvider::offerGearRecipe,
 			ItemVariant.PLATE, AMRecipeProvider::offerPlateRecipe,
 			ItemVariant.APPLE, AMRecipeProvider::offerMaterialAppleRecipe
@@ -106,6 +102,14 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 		return RecipesProvider.getRecipeName(to) + "_from_" + from;
 	}
 
+	public static String convertBetween(ItemConvertible to, Tag.Identified<Item> from) {
+		return getRecipeName(to) + "_from_" + getRecipeName(from);
+	}
+
+	public static String getRecipeName(Tag.Identified<Item> tag) {
+		return tag.getId().getPath();
+	}
+
 	public static void offerReversibleCompactingRecipesWithInputItemGroup(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, ItemConvertible compacted) {
 		offerReversibleCompactingRecipesWithInputItemGroup(exporter, input, compacted, getRecipeName(compacted));
 	}
@@ -131,60 +135,113 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 		offerBlasting(exporter, inputs, output, experience, 100, getRecipeName(output));
 	}
 
-	public static void offerHelmetRecipe(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, ItemConvertible output) {
-		ShapedRecipeJsonFactory.create(output).input('X', input).pattern("XXX").pattern("X X").criterion("has_" + getRecipeName(input), RecipesProvider.conditionsFromItem(input)).offerTo(exporter);
+	public static void offerSmeltingAndBlasting(Consumer<RecipeJsonProvider> exporter, Tag<Item> inputs, ItemConvertible output, float experience) {
+		offerSmelting(exporter, new ArrayList<>(inputs.values()), output, experience, 200, getRecipeName(output));
+		offerBlasting(exporter, new ArrayList<>(inputs.values()), output, experience, 100, getRecipeName(output));
 	}
 
-	public static void offerChestplateRecipe(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, ItemConvertible output) {
-		ShapedRecipeJsonFactory.create(output).input('X', input).pattern("X X").pattern("XXX").pattern("XXX").criterion("has_" + getRecipeName(input), RecipesProvider.conditionsFromItem(input)).offerTo(exporter);
+	public static void offerHelmetRecipe(Consumer<RecipeJsonProvider> exporter, Tag.Identified<Item> input, ItemConvertible output) {
+		withCriterion(ShapedRecipeJsonFactory.create(output).input('X', input).pattern("XXX").pattern("X X"), input).offerTo(exporter);
 	}
 
-	public static void offerLeggingsRecipe(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, ItemConvertible output) {
-		ShapedRecipeJsonFactory.create(output).input('X', input).pattern("XXX").pattern("X X").pattern("X X").criterion("has_" + getRecipeName(input), RecipesProvider.conditionsFromItem(input)).offerTo(exporter);
+	public static void offerChestplateRecipe(Consumer<RecipeJsonProvider> exporter, Tag.Identified<Item> input, ItemConvertible output) {
+		withCriterion(ShapedRecipeJsonFactory.create(output).input('X', input).pattern("X X").pattern("XXX").pattern("XXX"), input).offerTo(exporter);
 	}
 
-	public static void offerBootsRecipe(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, ItemConvertible output) {
-		ShapedRecipeJsonFactory.create(output).input('X', input).pattern("X X").pattern("X X").criterion("has_" + getRecipeName(input), RecipesProvider.conditionsFromItem(input)).offerTo(exporter);
+	public static void offerLeggingsRecipe(Consumer<RecipeJsonProvider> exporter, Tag.Identified<Item> input, ItemConvertible output) {
+		withCriterion(ShapedRecipeJsonFactory.create(output).input('X', input).pattern("XXX").pattern("X X").pattern("X X"), input).offerTo(exporter);
 	}
 
-	public static void offerPickaxeRecipe(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, ItemConvertible output) {
-		ShapedRecipeJsonFactory.create(output).input('X', input).input('S', Items.STICK).pattern("XXX").pattern(" S ").pattern(" S ").criterion("has_" + getRecipeName(input), RecipesProvider.conditionsFromItem(input)).offerTo(exporter);
+	public static void offerBootsRecipe(Consumer<RecipeJsonProvider> exporter, Tag.Identified<Item> input, ItemConvertible output) {
+		withCriterion(ShapedRecipeJsonFactory.create(output).input('X', input).pattern("X X").pattern("X X"), input).offerTo(exporter);
 	}
 
-	public static void offerAxeRecipe(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, ItemConvertible output) {
-		ShapedRecipeJsonFactory.create(output).input('X', input).input('S', Items.STICK).pattern("XX").pattern("XS").pattern(" S").criterion("has_" + getRecipeName(input), RecipesProvider.conditionsFromItem(input)).offerTo(exporter);
+	public static void offerPickaxeRecipe(Consumer<RecipeJsonProvider> exporter, Tag.Identified<Item> input, ItemConvertible output) {
+		withCriterion(ShapedRecipeJsonFactory.create(output).input('X', input).input('S', Items.STICK).pattern("XXX").pattern(" S ").pattern(" S "), input).offerTo(exporter);
 	}
 
-	public static void offerShovelRecipe(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, ItemConvertible output) {
-		ShapedRecipeJsonFactory.create(output).input('X', input).input('S', Items.STICK).pattern("X").pattern("S").pattern("S").criterion("has_" + getRecipeName(input), RecipesProvider.conditionsFromItem(input)).offerTo(exporter);
+	public static void offerAxeRecipe(Consumer<RecipeJsonProvider> exporter, Tag.Identified<Item> input, ItemConvertible output) {
+		withCriterion(ShapedRecipeJsonFactory.create(output).input('X', input).input('S', Items.STICK).pattern("XX").pattern("XS").pattern(" S"), input).offerTo(exporter);
 	}
 
-	public static void offerSwordRecipe(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, ItemConvertible output) {
-		ShapedRecipeJsonFactory.create(output).input('X', input).input('S', Items.STICK).pattern("X").pattern("X").pattern("S").criterion("has_" + getRecipeName(input), RecipesProvider.conditionsFromItem(input)).offerTo(exporter);
+	public static void offerShovelRecipe(Consumer<RecipeJsonProvider> exporter, Tag.Identified<Item> input, ItemConvertible output) {
+		withCriterion(ShapedRecipeJsonFactory.create(output).input('X', input).input('S', Items.STICK).pattern("X").pattern("S").pattern("S"), input).offerTo(exporter);
 	}
 
-	public static void offerHoeRecipe(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, ItemConvertible output) {
-		ShapedRecipeJsonFactory.create(output).input('X', input).input('S', Items.STICK).pattern("XX").pattern(" S").pattern(" S").criterion("has_" + getRecipeName(input), RecipesProvider.conditionsFromItem(input)).offerTo(exporter);
+	public static void offerSwordRecipe(Consumer<RecipeJsonProvider> exporter, Tag.Identified<Item> input, ItemConvertible output) {
+		withCriterion(ShapedRecipeJsonFactory.create(output).input('X', input).input('S', Items.STICK).pattern("X").pattern("X").pattern("S"), input).offerTo(exporter);
 	}
 
-	public static void offerGearRecipe(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, ItemConvertible output) {
-		ShapedRecipeJsonFactory.create(output, 2).input('X', input).pattern(" X ").pattern("X X").pattern(" X ").criterion("has_" + getRecipeName(input), RecipesProvider.conditionsFromItem(input)).offerTo(exporter);
+	public static void offerHoeRecipe(Consumer<RecipeJsonProvider> exporter, Tag.Identified<Item> input, ItemConvertible output) {
+		withCriterion(ShapedRecipeJsonFactory.create(output).input('X', input).input('S', Items.STICK).pattern("XX").pattern(" S").pattern(" S"), input).offerTo(exporter);
 	}
 
-	public static void offerPlateRecipe(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, ItemConvertible output) {
-		ShapedRecipeJsonFactory.create(output).input('X', input).pattern("X").pattern("X").criterion("has_" + getRecipeName(input), RecipesProvider.conditionsFromItem(input)).offerTo(exporter);
+	public static void offerGearRecipe(Consumer<RecipeJsonProvider> exporter, Tag.Identified<Item> input, ItemConvertible output) {
+		withCriterion(ShapedRecipeJsonFactory.create(output, 2).input('X', input).pattern(" X ").pattern("X X").pattern(" X "), input).offerTo(exporter);
+	}
+
+	public static void offerPlateRecipe(Consumer<RecipeJsonProvider> exporter, Tag.Identified<Item> input, ItemConvertible output) {
+		withCriterion(ShapedRecipeJsonFactory.create(output).input('X', input).pattern("X").pattern("X"), input).offerTo(exporter);
+	}
+
+	public static void offerMaterialAppleRecipe(Consumer<RecipeJsonProvider> exporter, Tag.Identified<Item> input, ItemConvertible output) {
+		withCriterion(ShapedRecipeJsonFactory.create(output).input('X', input).input('A', Items.APPLE).pattern("XXX").pattern("XAX").pattern("XXX"), input).offerTo(exporter);
 	}
 
 	public static void offer2x2CompactingRecipe(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, ItemConvertible output) {
-		ShapedRecipeJsonFactory.create(output).input('#', input).pattern("##").pattern("##").criterion("has_" + getRecipeName(input), RecipesProvider.conditionsFromItem(input)).offerTo(exporter);
+		withCriterion(create2x2CompactingRecipe(input, output), input).offerTo(exporter);
+	}
+
+	public static void offer2x2CompactingRecipe(Consumer<RecipeJsonProvider> exporter, Tag.Identified<Item> input, ItemConvertible output) {
+		withCriterion(create2x2CompactingRecipe(input, output), input).offerTo(exporter);
+	}
+	
+	public static ShapedRecipeJsonFactory create2x2CompactingRecipe(ItemConvertible input, ItemConvertible output) {
+		return ShapedRecipeJsonFactory.create(output).input('#', input).pattern("##").pattern("##");
+	}
+
+	public static ShapedRecipeJsonFactory create2x2CompactingRecipe(Tag.Identified<Item> input, ItemConvertible output) {
+		return ShapedRecipeJsonFactory.create(output).input('#', input).pattern("##").pattern("##");
+	}
+
+	public static void offerCompactingRecipe(Consumer<RecipeJsonProvider> exporter, Tag.Identified<Item> input, ItemConvertible output) {
+		withCriterion(createCompactingRecipe(input, output), input).offerTo(exporter);
+	}
+
+	public static ShapedRecipeJsonFactory createCompactingRecipe(ItemConvertible input, ItemConvertible output) {
+		return ShapedRecipeJsonFactory.create(output).input('#', input).pattern("###").pattern("###").pattern("###");
+	}
+
+	public static ShapedRecipeJsonFactory createCompactingRecipe(Tag.Identified<Item> input, ItemConvertible output) {
+		return ShapedRecipeJsonFactory.create(output).input('#', input).pattern("###").pattern("###").pattern("###");
+	}
+	
+	public static void offerReverseCompactingRecipe(Consumer<RecipeJsonProvider> exporter, Tag.Identified<Item> input, ItemConvertible output) {
+		withCriterion(ShapelessRecipeJsonFactory.create(output, 9).input(input), input).offerTo(exporter);
+	}
+
+	public static void offerCompactingRecipeWithFullName(Consumer<RecipeJsonProvider> exporter, Tag.Identified<Item> input, ItemConvertible output) {
+		offerWithName(exporter, withCriterion(ShapedRecipeJsonFactory.create(output).input('#', input).pattern("###").pattern("###").pattern("###"), input), convertBetween(output, input));
+	}
+
+	public static void offerReverseCompactingRecipeWithFullName(Consumer<RecipeJsonProvider> exporter, Tag.Identified<Item> input, ItemConvertible output) {
+		offerWithName(exporter, withCriterion(ShapelessRecipeJsonFactory.create(output, 9).input(input), input), convertBetween(output, input));
 	}
 
 	public static void offerSmoothingRecipe(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, ItemConvertible output) {
-		CookingRecipeJsonFactory.createSmelting(Ingredient.ofItems(input), output, 0.1f, 200).criterion("has_" + getRecipeName(input), RecipesProvider.conditionsFromItem(input)).offerTo(exporter);
+		withCriterion(CookingRecipeJsonFactory.createSmelting(Ingredient.ofItems(input), output, 0.1f, 200), input).offerTo(exporter);
+	}
+	
+	public static CraftingRecipeJsonFactory withCriterion(CraftingRecipeJsonFactory factory, ItemConvertible input) {
+		return factory.criterion("has_" + getRecipeName(input), RecipesProvider.conditionsFromItem(input));
 	}
 
-	public static void offerMaterialAppleRecipe(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, ItemConvertible output) {
-		ShapedRecipeJsonFactory.create(output).input('X', input).input('A', Items.APPLE).pattern("XXX").pattern("XAX").pattern("XXX").criterion("has_" + getRecipeName(input), RecipesProvider.conditionsFromItem(input)).offerTo(exporter);
+	public static CraftingRecipeJsonFactory withCriterion(CraftingRecipeJsonFactory factory, Tag.Identified<Item> input) {
+		return factory.criterion("has_" + getRecipeName(input), RecipesProvider.conditionsFromTag(input));
+	}
+
+	public static void offerWithName(Consumer<RecipeJsonProvider> exporter, CraftingRecipeJsonFactory factory, String name) {
+		factory.offerTo(exporter, AMCommon.id(name));
 	}
 
 	public static void generateFamily(Consumer<RecipeJsonProvider> exporter, BlockFamily family) {
@@ -221,56 +278,63 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 
 		MaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateRecipes).forEach((family) -> {
 			if (family.shouldGenerateRecipe(BlockVariant.BLOCK)) {
-				offerReversibleCompactingRecipesWithInputItemGroup(exporter, family.getBaseItem(), family.getVariant(BlockVariant.BLOCK));
+				offerCompactingRecipe(exporter, family.getBaseTag(), family.getVariant(BlockVariant.BLOCK));
+				offerReverseCompactingRecipeWithFullName(exporter, family.getItemTag(BlockVariant.BLOCK), family.getBaseItem());
 			}
 			if (family.shouldGenerateRecipe(ItemVariant.NUGGET, family.getBaseVariant())) {
-				offerReversibleCompactingRecipesWithCompactedItemGroup(exporter, family.getVariant(ItemVariant.NUGGET), family.getBaseItem(), family.getType() == MaterialType.GEM ? "fragments" : "nuggets");
+				offerCompactingRecipeWithFullName(exporter, family.getTag(ItemVariant.NUGGET), family.getBaseItem());
+				offerReverseCompactingRecipe(exporter, family.getBaseTag(), family.getVariant(ItemVariant.NUGGET));
 			}
 			if (family.shouldGenerateRecipe(ItemVariant.TINY_DUST, ItemVariant.DUST)) {
-				offerReversibleCompactingRecipesWithCompactedItemGroup(exporter, family.getVariant(ItemVariant.TINY_DUST), family.getVariant(ItemVariant.DUST), "tiny_dust");
+				offerCompactingRecipeWithFullName(exporter, family.getTag(ItemVariant.TINY_DUST), family.getVariant(ItemVariant.DUST));
+				offerReverseCompactingRecipe(exporter, family.getTag(ItemVariant.DUST), family.getVariant(ItemVariant.TINY_DUST));
 			}
 			if (family.shouldGenerateRecipe(ItemVariant.RAW_ORE, BlockVariant.RAW_ORE_BLOCK)) {
-				offerReversibleCompactingRecipesWithInputItemGroup(exporter, family.getVariant(ItemVariant.RAW_ORE), family.getVariant(BlockVariant.RAW_ORE_BLOCK));
+				offerCompactingRecipe(exporter, family.getTag(ItemVariant.RAW_ORE), family.getVariant(BlockVariant.RAW_ORE_BLOCK));
+				offerReverseCompactingRecipeWithFullName(exporter, family.getItemTag(BlockVariant.RAW_ORE_BLOCK), family.getVariant(ItemVariant.RAW_ORE));
 			}
 			ORE_VARIANTS.forEach((variant -> {
 				if (family.shouldGenerateRecipe(variant, family.getBaseVariant())) {
-					offerSmeltingAndBlasting(exporter, family.getVariant(variant), family.getBaseItem(), family.getOreSmeltingExperience());
+					offerSmeltingAndBlasting(exporter, family.getItemTag(variant), family.getBaseItem(), family.getOreSmeltingExperience());
 				}
 			}));
 			ORE_ITEM_VARIANTS.forEach((variant -> {
 				if (family.shouldGenerateRecipe(variant, family.getBaseVariant())) {
-					offerSmeltingAndBlasting(exporter, family.getVariant(variant), family.getBaseItem(), family.getOreSmeltingExperience());
+					offerSmeltingAndBlasting(exporter, family.getTag(variant), family.getBaseItem(), family.getOreSmeltingExperience());
 				}
 			}));
 			if (!family.getType().equals(MaterialType.MISC) && !family.getType().equals(MaterialType.DUST)) {
 				if (family.shouldGenerateRecipe(ItemVariant.DUST, family.getBaseVariant())) {
-					offerSmeltingAndBlasting(exporter, family.getVariant(ItemVariant.DUST), family.getBaseItem(), 0.0f);
+					offerSmeltingAndBlasting(exporter, family.getTag(ItemVariant.DUST), family.getBaseItem(), 0.0f);
 				}
 				if (family.shouldGenerateRecipe(ItemVariant.TINY_DUST, ItemVariant.NUGGET)) {
-					offerSmeltingAndBlasting(exporter, family.getVariant(ItemVariant.TINY_DUST), family.getVariant(ItemVariant.NUGGET), 0.0f);
+					offerSmeltingAndBlasting(exporter, family.getTag(ItemVariant.TINY_DUST), family.getVariant(ItemVariant.NUGGET), 0.0f);
 				}
 			}
-			EQUIPMENT.forEach((variant) -> {
-				if (family.shouldGenerateRecipe(variant, ItemVariant.NUGGET)) {
-					offerSmeltingAndBlasting(exporter, family.getVariant(variant), family.getVariant(ItemVariant.NUGGET), 0.1f);
-				}
-			});
+			if (family.hasVariant(ItemVariant.NUGGET)) {
+				offerSmeltingAndBlasting(exporter, family.getItemTag("salvageables"), family.getVariant(ItemVariant.NUGGET), 0.1f);
+			}
 			EQUIPMENT_OFFERERS.forEach((variant, offerer) -> {
 				if (family.shouldGenerateRecipe(variant)) {
-					offerer.accept(exporter, family.getBaseItem(), family.getVariant(variant));
+					offerer.accept(exporter, family.getBaseTag(), family.getVariant(variant));
 				}
 			});
 			MISC_OFFERERS.forEach((variant, offerer) -> {
 				if (family.shouldGenerateRecipe(variant)) {
-					offerer.accept(exporter, family.getBaseItem(), family.getVariant(variant));
+					offerer.accept(exporter, family.getBaseTag(), family.getVariant(variant));
 				}
 			});
 			if (family.shouldGenerateRecipe(BlockVariant.BLOCK_2x2)) {
-				offer2x2CompactingRecipe(exporter, family.getBaseItem(), family.getVariant(BlockVariant.BLOCK_2x2));
+				offer2x2CompactingRecipe(exporter, family.getBaseTag(), family.getVariant(BlockVariant.BLOCK_2x2));
 			}
 		});
 	}
 
 	@FunctionalInterface
-	public interface BasicOfferer extends TriConsumer<Consumer<RecipeJsonProvider>, ItemConvertible, ItemConvertible> {}
+	public interface BasicOfferer extends TriConsumer<Consumer<RecipeJsonProvider>, ItemConvertible, ItemConvertible> {
+	}
+
+	@FunctionalInterface
+	public interface TagOfferer extends TriConsumer<Consumer<RecipeJsonProvider>, Tag.Identified<Item>, ItemConvertible> {
+	}
 }

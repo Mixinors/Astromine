@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "#c:diamond_leggings",
+    "#c:diamond_horse_armors",
+    "#c:diamond_chestplates",
+    "#c:diamond_pickaxes",
+    "#c:diamond_boots",
+    "#c:diamond_axes",
+    "#c:diamond_helmets",
+    "#c:diamond_shovels",
+    "#c:diamond_swords",
+    "#c:diamond_hoes"
+  ]
+}

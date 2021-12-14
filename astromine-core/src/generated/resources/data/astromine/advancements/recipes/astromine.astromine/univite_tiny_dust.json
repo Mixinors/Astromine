@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:univite_tiny_dust"
+      "astromine:univite_tiny_dust"
     ]
   },
   "criteria": {
-    "has_univite_dust": {
+    "has_univite_dusts": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:univite_dust"
-            ]
+            "tag": "c:univite_dusts"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:univite_tiny_dust"
+        "recipe": "astromine:univite_tiny_dust"
       }
     }
   },
   "requirements": [
     [
-      "has_univite_dust",
+      "has_univite_dusts",
       "has_the_recipe"
     ]
   ]

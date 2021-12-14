@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "astromine:meteoric_steel_ingot"
+      "tag": "c:meteoric_steel_ingots"
     }
   ],
   "result": {

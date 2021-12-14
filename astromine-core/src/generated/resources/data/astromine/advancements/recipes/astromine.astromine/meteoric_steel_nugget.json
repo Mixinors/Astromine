@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:meteoric_steel_nugget"
+      "astromine:meteoric_steel_nugget"
     ]
   },
   "criteria": {
-    "has_meteoric_steel_ingot": {
+    "has_meteoric_steel_ingots": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:meteoric_steel_ingot"
-            ]
+            "tag": "c:meteoric_steel_ingots"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:meteoric_steel_nugget"
+        "recipe": "astromine:meteoric_steel_nugget"
       }
     }
   },
   "requirements": [
     [
-      "has_meteoric_steel_ingot",
+      "has_meteoric_steel_ingots",
       "has_the_recipe"
     ]
   ]

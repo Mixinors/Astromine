@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "astromine:fools_gold_dust"
+      "tag": "c:fools_gold_dusts"
     }
   ],
   "result": {

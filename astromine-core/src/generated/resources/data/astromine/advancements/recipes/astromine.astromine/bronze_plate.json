@@ -6,14 +6,12 @@
     ]
   },
   "criteria": {
-    "has_bronze_ingot": {
+    "has_bronze_ingots": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:bronze_ingot"
-            ]
+            "tag": "c:bronze_ingots"
           }
         ]
       }
@@ -27,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_bronze_ingot",
+      "has_bronze_ingots",
       "has_the_recipe"
     ]
   ]

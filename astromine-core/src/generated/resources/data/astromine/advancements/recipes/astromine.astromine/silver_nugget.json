@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:silver_nugget"
+      "astromine:silver_nugget"
     ]
   },
   "criteria": {
-    "has_silver_ingot": {
+    "has_silver_ingots": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:silver_ingot"
-            ]
+            "tag": "c:silver_ingots"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:silver_nugget"
+        "recipe": "astromine:silver_nugget"
       }
     }
   },
   "requirements": [
     [
-      "has_silver_ingot",
+      "has_silver_ingots",
       "has_the_recipe"
     ]
   ]

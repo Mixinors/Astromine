@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "astromine:emerald_dust"
+      "tag": "c:emerald_dusts"
     }
   ],
   "result": {

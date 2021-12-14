@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:galaxium_block"
+      "astromine:galaxium_block"
     ]
   },
   "criteria": {
-    "has_galaxium": {
+    "has_galaxiums": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:galaxium"
-            ]
+            "tag": "c:galaxiums"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:galaxium_block"
+        "recipe": "astromine:galaxium_block"
       }
     }
   },
   "requirements": [
     [
-      "has_galaxium",
+      "has_galaxiums",
       "has_the_recipe"
     ]
   ]

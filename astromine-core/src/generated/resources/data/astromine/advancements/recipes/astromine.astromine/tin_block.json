@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:tin_block"
+      "astromine:tin_block"
     ]
   },
   "criteria": {
-    "has_tin_ingot": {
+    "has_tin_ingots": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:tin_ingot"
-            ]
+            "tag": "c:tin_ingots"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:tin_block"
+        "recipe": "astromine:tin_block"
       }
     }
   },
   "requirements": [
     [
-      "has_tin_ingot",
+      "has_tin_ingots",
       "has_the_recipe"
     ]
   ]

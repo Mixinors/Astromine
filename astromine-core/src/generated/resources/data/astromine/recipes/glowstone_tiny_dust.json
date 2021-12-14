@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "minecraft:glowstone_dust"
+      "tag": "c:glowstone_dusts"
     }
   ],
   "result": {

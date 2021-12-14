@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "#c:deepslate_silver_ores",
+    "#c:deepslate_diamond_ores",
+    "#c:deepslate_emerald_ores",
+    "#c:deepslate_coal_ores",
+    "#c:deepslate_copper_ores",
+    "#c:deepslate_tin_ores",
+    "#c:deepslate_gold_ores",
+    "#c:deepslate_redstone_ores",
+    "#c:deepslate_iron_ores",
+    "#c:deepslate_lapis_ores",
+    "#c:deepslate_lead_ores"
+  ]
+}

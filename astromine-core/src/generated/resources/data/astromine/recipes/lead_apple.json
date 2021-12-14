@@ -7,7 +7,7 @@
   ],
   "key": {
     "X": {
-      "item": "astromine:lead_ingot"
+      "tag": "c:lead_ingots"
     },
     "A": {
       "item": "minecraft:apple"

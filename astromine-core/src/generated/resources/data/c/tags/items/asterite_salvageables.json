@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "#c:asterite_leggings",
+    "#c:asterite_chestplates",
+    "#c:asterite_pickaxes",
+    "#c:asterite_boots",
+    "#c:asterite_axes",
+    "#c:asterite_helmets",
+    "#c:asterite_shovels",
+    "#c:asterite_swords",
+    "#c:asterite_hoes"
+  ]
+}

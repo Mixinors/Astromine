@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "astromine:silver_dust"
+      "tag": "c:silver_dusts"
     }
   ],
   "result": {

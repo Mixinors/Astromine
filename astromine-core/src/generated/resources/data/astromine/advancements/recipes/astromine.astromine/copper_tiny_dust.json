@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:copper_tiny_dust"
+      "astromine:copper_tiny_dust"
     ]
   },
   "criteria": {
-    "has_copper_dust": {
+    "has_copper_dusts": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:copper_dust"
-            ]
+            "tag": "c:copper_dusts"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:copper_tiny_dust"
+        "recipe": "astromine:copper_tiny_dust"
       }
     }
   },
   "requirements": [
     [
-      "has_copper_dust",
+      "has_copper_dusts",
       "has_the_recipe"
     ]
   ]

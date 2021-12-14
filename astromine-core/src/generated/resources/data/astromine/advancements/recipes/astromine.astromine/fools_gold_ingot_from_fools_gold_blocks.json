@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "astromine:fools_gold_ingot_from_fools_gold_blocks"
+    ]
+  },
+  "criteria": {
+    "has_fools_gold_blocks": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:fools_gold_blocks"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "astromine:fools_gold_ingot_from_fools_gold_blocks"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_fools_gold_blocks",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "#c:steel_leggings",
+    "#c:steel_chestplates",
+    "#c:steel_pickaxes",
+    "#c:steel_boots",
+    "#c:steel_axes",
+    "#c:steel_helmets",
+    "#c:steel_shovels",
+    "#c:steel_swords",
+    "#c:steel_hoes"
+  ]
+}

@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:metite_block"
+      "astromine:metite_block"
     ]
   },
   "criteria": {
-    "has_metite_ingot": {
+    "has_metite_ingots": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:metite_ingot"
-            ]
+            "tag": "c:metite_ingots"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:metite_block"
+        "recipe": "astromine:metite_block"
       }
     }
   },
   "requirements": [
     [
-      "has_metite_ingot",
+      "has_metite_ingots",
       "has_the_recipe"
     ]
   ]

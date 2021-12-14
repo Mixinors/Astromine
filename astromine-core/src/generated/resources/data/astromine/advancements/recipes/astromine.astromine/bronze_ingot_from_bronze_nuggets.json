@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "astromine:bronze_ingot_from_bronze_nuggets"
+    ]
+  },
+  "criteria": {
+    "has_bronze_nuggets": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:bronze_nuggets"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "astromine:bronze_ingot_from_bronze_nuggets"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_bronze_nuggets",
+      "has_the_recipe"
+    ]
+  ]
+}

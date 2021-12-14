@@ -106,6 +106,7 @@ public class AMItems {
 	public static final RegistrySupplier<Item> DIAMOND_FRAGMENT = register("diamond_fragment", () -> new Item(AMItems.getBasicSettings()));
 	public static final RegistrySupplier<Item> EMERALD_FRAGMENT = register("emerald_fragment", () -> new Item(AMItems.getBasicSettings()));
 	public static final RegistrySupplier<Item> QUARTZ_FRAGMENT = register("quartz_fragment", () -> new Item(AMItems.getBasicSettings()));
+	public static final RegistrySupplier<Item> AMETHYST_FRAGMENT = register("amethyst_fragment", () -> new Item(AMItems.getBasicSettings()));
 	
 	public static final RegistrySupplier<Item> COPPER_WIRE = register("copper_wire", () -> new Item(AMItems.getBasicSettings()));
 	public static final RegistrySupplier<Item> TIN_WIRE = register("tin_wire", () -> new Item(AMItems.getBasicSettings()));
@@ -158,6 +159,7 @@ public class AMItems {
 	public static final RegistrySupplier<Item> DIAMOND_DUST = register("diamond_dust", () -> new Item(AMItems.getBasicSettings()));
 	public static final RegistrySupplier<Item> EMERALD_DUST = register("emerald_dust", () -> new Item(AMItems.getBasicSettings()));
 	public static final RegistrySupplier<Item> QUARTZ_DUST = register("quartz_dust", () -> new Item(AMItems.getBasicSettings()));
+	public static final RegistrySupplier<Item> AMETHYST_DUST = register("amethyst_dust", () -> new Item(AMItems.getBasicSettings()));
 
 	public static final RegistrySupplier<Item> COAL_DUST = register("coal_dust", () -> new Item(AMItems.getBasicSettings()));
 	public static final RegistrySupplier<Item> LAPIS_DUST = register("lapis_dust", () -> new Item(AMItems.getBasicSettings()));
@@ -189,6 +191,7 @@ public class AMItems {
 	public static final RegistrySupplier<Item> DIAMOND_TINY_DUST = register("diamond_tiny_dust", () -> new Item(AMItems.getBasicSettings()));
 	public static final RegistrySupplier<Item> EMERALD_TINY_DUST = register("emerald_tiny_dust", () -> new Item(AMItems.getBasicSettings()));
 	public static final RegistrySupplier<Item> QUARTZ_TINY_DUST = register("quartz_tiny_dust", () -> new Item(AMItems.getBasicSettings()));
+	public static final RegistrySupplier<Item> AMETHYST_TINY_DUST = register("amethyst_tiny_dust", () -> new Item(AMItems.getBasicSettings()));
 
 	public static final RegistrySupplier<Item> COAL_TINY_DUST = register("coal_tiny_dust", () -> new Item(AMItems.getBasicSettings()));
 	public static final RegistrySupplier<Item> LAPIS_TINY_DUST = register("lapis_tiny_dust", () -> new Item(AMItems.getBasicSettings()));

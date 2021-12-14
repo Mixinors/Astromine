@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:asterite_fragment"
+      "astromine:asterite_fragment"
     ]
   },
   "criteria": {
-    "has_asterite": {
+    "has_asterites": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:asterite"
-            ]
+            "tag": "c:asterites"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:asterite_fragment"
+        "recipe": "astromine:asterite_fragment"
       }
     }
   },
   "requirements": [
     [
-      "has_asterite",
+      "has_asterites",
       "has_the_recipe"
     ]
   ]

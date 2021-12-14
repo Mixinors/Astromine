@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "astromine:univite_dust"
+      "tag": "c:univite_dusts"
     }
   ],
   "result": {

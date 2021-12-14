@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:raw_silver_block"
+      "astromine:raw_silver_block"
     ]
   },
   "criteria": {
-    "has_raw_silver": {
+    "has_raw_silvers": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:raw_silver"
-            ]
+            "tag": "c:raw_silvers"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:raw_silver_block"
+        "recipe": "astromine:raw_silver_block"
       }
     }
   },
   "requirements": [
     [
-      "has_raw_silver",
+      "has_raw_silvers",
       "has_the_recipe"
     ]
   ]

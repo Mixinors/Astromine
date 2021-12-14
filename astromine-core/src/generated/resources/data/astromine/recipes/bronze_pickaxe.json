@@ -7,7 +7,7 @@
   ],
   "key": {
     "X": {
-      "item": "astromine:bronze_ingot"
+      "tag": "c:bronze_ingots"
     },
     "S": {
       "item": "minecraft:stick"

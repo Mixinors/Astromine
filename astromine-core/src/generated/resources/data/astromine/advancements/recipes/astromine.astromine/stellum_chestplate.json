@@ -6,14 +6,12 @@
     ]
   },
   "criteria": {
-    "has_stellum_ingot": {
+    "has_stellum_ingots": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "astromine:stellum_ingot"
-            ]
+            "tag": "c:stellum_ingots"
           }
         ]
       }
@@ -27,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_stellum_ingot",
+      "has_stellum_ingots",
       "has_the_recipe"
     ]
   ]

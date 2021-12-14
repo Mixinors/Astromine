@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "#c:asteroid_emerald_ores",
+    "#c:stone_emerald_ores",
+    "#c:deepslate_emerald_ores"
+  ]
+}

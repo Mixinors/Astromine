@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
+import com.github.mixinors.astromine.common.util.WordUtils;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
 import dev.vini2003.hammer.common.screen.handler.BaseScreenHandler;
@@ -95,7 +96,7 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler
 
                     TYPES.forEach((type) -> {
                         if (id.getPath().contains(type)) {
-                            put(id.toString(), "c:" + id.getPath() + "s");
+                            put(id.toString(), "c:" + WordUtils.pluralize(id.getPath()));
                         }
                     });
                 });

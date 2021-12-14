@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:netherite_nugget"
+      "astromine:netherite_nugget"
     ]
   },
   "criteria": {
-    "has_netherite_ingot": {
+    "has_netherite_ingots": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:netherite_ingot"
-            ]
+            "tag": "c:netherite_ingots"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:netherite_nugget"
+        "recipe": "astromine:netherite_nugget"
       }
     }
   },
   "requirements": [
     [
-      "has_netherite_ingot",
+      "has_netherite_ingots",
       "has_the_recipe"
     ]
   ]

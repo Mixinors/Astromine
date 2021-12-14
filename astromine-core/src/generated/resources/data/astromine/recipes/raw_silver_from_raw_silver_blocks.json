@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "c:raw_silver_blocks"
+    }
+  ],
+  "result": {
+    "item": "astromine:raw_silver",
+    "count": 9
+  }
+}
