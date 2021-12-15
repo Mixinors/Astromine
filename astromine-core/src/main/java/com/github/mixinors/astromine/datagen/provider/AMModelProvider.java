@@ -12,6 +12,7 @@ import com.github.mixinors.astromine.datagen.family.material.MaterialFamilies;
 import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMFluids;
+import com.github.mixinors.astromine.registry.common.AMItems;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -19,6 +20,7 @@ import net.minecraft.data.client.ItemModelGenerator;
 import net.minecraft.data.client.model.*;
 import net.minecraft.data.family.BlockFamilies;
 import net.minecraft.data.family.BlockFamily;
+import net.minecraft.item.Item;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 
@@ -141,6 +143,85 @@ public class AMModelProvider extends FabricBlockStateDefinitionProvider {
 			AMBlocks.BLOCK_PLACER.get()
 	);
 
+	/**
+	 * Items with the GENERATED model
+	 */
+	public static final Set<Item> GENERATED = Set.of(
+			AMItems.ENERGY.get(),
+			AMItems.FLUID.get(),
+			AMItems.ITEM.get(),
+			
+			AMItems.MANUAL.get(),
+			
+			AMItems.SPACE_SLIME_SPAWN_EGG.get(),
+			
+			AMItems.SPACE_SLIME_BALL.get(),
+			
+			AMItems.BIOFUEL.get(),
+			
+			AMItems.MACHINE_CHASSIS.get(),
+			
+			AMItems.BASIC_MACHINE_UPGRADE_KIT.get(),
+			AMItems.ADVANCED_MACHINE_UPGRADE_KIT.get(),
+			AMItems.ELITE_MACHINE_UPGRADE_KIT.get(),
+			
+			AMItems.PRIMITIVE_PLATING.get(),
+			AMItems.BASIC_PLATING.get(),
+			AMItems.ADVANCED_PLATING.get(),
+			AMItems.ELITE_PLATING.get(),
+			
+			AMItems.PORTABLE_TANK.get(),
+			AMItems.LARGE_PORTABLE_TANK.get(),
+			
+			AMItems.PRIMITIVE_CIRCUIT.get(),
+			AMItems.BASIC_CIRCUIT.get(),
+			AMItems.ADVANCED_CIRCUIT.get(),
+			AMItems.ELITE_CIRCUIT.get(),
+
+			AMItems.PRIMITIVE_BATTERY.get(),
+			AMItems.BASIC_BATTERY.get(),
+			AMItems.ADVANCED_BATTERY.get(),
+			AMItems.ELITE_BATTERY.get(),
+			AMItems.CREATIVE_BATTERY.get(),
+
+			AMItems.PRIMITIVE_BATTERY_PACK.get(),
+			AMItems.BASIC_BATTERY_PACK.get(),
+			AMItems.ADVANCED_BATTERY_PACK.get(),
+			AMItems.ELITE_BATTERY_PACK.get(),
+			AMItems.CREATIVE_BATTERY_PACK.get(),
+
+			AMItems.PRIMITIVE_ROCKET_FUEL_TANK.get(),
+			AMItems.PRIMITIVE_ROCKET_PLATING.get(),
+			AMItems.PRIMITIVE_ROCKET_HULL.get(),
+			AMItems.PRIMITIVE_ROCKET_BOOSTER.get(),
+
+			AMItems.SPACE_SUIT_HELMET.get(),
+			AMItems.SPACE_SUIT_CHESTPLATE.get(),
+			AMItems.SPACE_SUIT_LEGGINGS.get(),
+			AMItems.SPACE_SUIT_BOOTS.get()
+	);
+
+	/**
+	 * Items with the HANDHELD model
+	 */
+	public static final Set<Item> HANDHELD = Set.of(
+			AMItems.BLADES.get(),
+
+			AMItems.PRIMITIVE_DRILL.get(),
+			AMItems.BASIC_DRILL.get(),
+			AMItems.ADVANCED_DRILL.get(),
+			AMItems.ELITE_DRILL.get(),
+			
+			AMItems.DRILL_HEAD.get(),
+			
+			AMItems.PRIMITIVE_DRILL_BASE.get(),
+			AMItems.BASIC_DRILL_BASE.get(),
+			AMItems.ADVANCED_DRILL_BASE.get(),
+			AMItems.ELITE_DRILL_BASE.get(),
+
+			AMItems.HOLOGRAPHIC_CONNECTOR.get()
+	);
+
 	public static final TextureKey LEFT = TextureKey.of("left", TextureKey.EAST);
 	public static final TextureKey RIGHT = TextureKey.of("right", TextureKey.WEST);
 
@@ -249,9 +330,11 @@ public class AMModelProvider extends FabricBlockStateDefinitionProvider {
 			}));
 		});
 
-		AMDatagen.FLUIDS.forEach((fluid) -> {
-			itemModelGenerator.register(fluid.getBucketItem(), Models.GENERATED);
-		});
+		AMDatagen.FLUIDS.forEach((fluid) -> itemModelGenerator.register(fluid.getBucketItem(), Models.GENERATED));
+
+		GENERATED.forEach((item) -> itemModelGenerator.register(item, Models.GENERATED));
+
+		HANDHELD.forEach((item) -> itemModelGenerator.register(item, Models.HANDHELD));
 	}
 
 	public final void registerMachine(BlockStateModelGenerator blockStateModelGenerator, Block machine) {

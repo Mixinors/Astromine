@@ -1,20 +1,20 @@
 {
   "replace": false,
   "values": [
-    "#c:bronze_blocks",
-    "#c:emerald_blocks",
-    "#c:diamond_blocks",
-    "#c:galaxium_blocks",
-    "#c:steel_blocks",
-    "#c:gold_blocks",
-    "#c:iron_blocks",
-    "#c:univite_blocks",
-    "#c:meteoric_steel_blocks",
     "#c:metite_blocks",
-    "#c:netherite_blocks",
-    "#c:silver_blocks",
+    "#c:univite_blocks",
+    "#c:bronze_blocks",
     "#c:stellum_blocks",
+    "#c:netherite_blocks",
+    "#c:asterite_blocks",
+    "#c:emerald_blocks",
+    "#c:steel_blocks",
+    "#c:galaxium_blocks",
+    "#c:diamond_blocks",
+    "#c:silver_blocks",
     "#c:electrum_blocks",
-    "#c:asterite_blocks"
+    "#c:iron_blocks",
+    "#c:gold_blocks",
+    "#c:meteoric_steel_blocks"
   ]
 }

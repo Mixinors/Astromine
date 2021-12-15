@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    {
-      "id": "astromine:raw_silver",
-      "required": false
-    }
-  ]
-}

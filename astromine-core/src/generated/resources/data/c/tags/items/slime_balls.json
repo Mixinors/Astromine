@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:slime_ball",
+    "#c:space_slime_balls"
+  ]
+}

@@ -1,10 +1,10 @@
 {
   "replace": false,
   "values": [
-    "#c:asteroid_ores",
     "#c:meteor_ores",
-    "#c:nether_ores",
     "#c:deepslate_ores",
-    "#c:stone_ores"
+    "#c:stone_ores",
+    "#c:asteroid_ores",
+    "#c:nether_ores"
   ]
 }

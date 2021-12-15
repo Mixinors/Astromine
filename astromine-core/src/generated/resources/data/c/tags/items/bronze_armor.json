@@ -1,9 +1,9 @@
 {
   "replace": false,
   "values": [
-    "#c:bronze_boots",
-    "#c:bronze_helmets",
+    "#c:bronze_leggings",
     "#c:bronze_chestplates",
-    "#c:bronze_leggings"
+    "#c:bronze_boots",
+    "#c:bronze_helmets"
   ]
 }

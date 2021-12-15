@@ -1,17 +1,17 @@
 {
   "replace": false,
   "values": [
-    "#c:bronze_shovels",
-    "#c:diamond_shovels",
-    "#c:galaxium_shovels",
-    "#c:steel_shovels",
-    "#c:gold_shovels",
-    "#c:iron_shovels",
-    "#c:univite_shovels",
-    "#c:meteoric_steel_shovels",
     "#c:metite_shovels",
-    "#c:netherite_shovels",
+    "#c:univite_shovels",
+    "#c:bronze_shovels",
     "#c:stellum_shovels",
-    "#c:asterite_shovels"
+    "#c:netherite_shovels",
+    "#c:asterite_shovels",
+    "#c:steel_shovels",
+    "#c:galaxium_shovels",
+    "#c:diamond_shovels",
+    "#c:iron_shovels",
+    "#c:gold_shovels",
+    "#c:meteoric_steel_shovels"
   ]
 }

@@ -1,9 +1,9 @@
 {
   "replace": false,
   "values": [
-    "#c:univite_boots",
-    "#c:univite_helmets",
+    "#c:univite_leggings",
     "#c:univite_chestplates",
-    "#c:univite_leggings"
+    "#c:univite_boots",
+    "#c:univite_helmets"
   ]
 }

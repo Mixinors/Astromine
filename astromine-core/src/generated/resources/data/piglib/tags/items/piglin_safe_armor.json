@@ -1,7 +1,8 @@
 {
   "replace": false,
   "values": [
-    "#c:gold_armor",
-    "#c:fools_gold_armor"
+    "#c:fools_gold_armor",
+    "#c:pyrite_armor",
+    "#c:gold_armor"
   ]
 }

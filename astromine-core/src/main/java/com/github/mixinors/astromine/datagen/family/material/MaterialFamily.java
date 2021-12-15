@@ -304,6 +304,10 @@ public class MaterialFamily {
 		return getTag(getBaseVariant());
 	}
 
+	public Tag.Identified<Item> getAliasBaseTag() {
+		return getAliasTag(getBaseVariant());
+	}
+
 	public boolean isValidForBeacon() {
 		return validForBeacon;
 	}
@@ -331,7 +335,8 @@ public class MaterialFamily {
 		INGOT(ItemVariant.INGOT),
 		GEM(ItemVariant.GEM),
 		MISC(ItemVariant.MISC),
-		DUST(ItemVariant.DUST);
+		DUST(ItemVariant.DUST),
+		BALL(ItemVariant.BALL);
 
 		private final ItemVariant variant;
 

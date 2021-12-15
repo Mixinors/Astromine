@@ -93,26 +93,46 @@ public class AMTagProviders {
 				family.getBlockTags().forEach((variant, tag) -> {
 					getOrCreateTagBuilder(tag).add(family.getVariant(variant));
 
+					if(family.hasAlias()) {
+						getOrCreateTagBuilder(family.getAliasTag(variant)).addTag(tag);
+					}
+
 					if(family.isPiglinLoved()) {
 						guardedByPiglinsTagBuilder.addTag(tag);
+
+						if(family.hasAlias()) {
+							guardedByPiglinsTagBuilder.addTag(family.getAliasTag(variant));
+						}
 					}
 
 					if(variant.hasTag()) {
 						getOrCreateTagBuilder(variant.getTag()).addTag(tag);
+
+						if(family.hasAlias()) {
+							getOrCreateTagBuilder(variant.getTag()).addTag(family.getAliasTag(variant));
+						}
 					}
 				});
 
 				if(family.hasAnyBlockVariants(AMDatagen.ORE_VARIANTS)) {
-					FabricTagBuilder<Block> oresTagBuilder = getOrCreateTagBuilder(family.getBlockTag("ores"));
+					Tag.Identified<Block> oresTag = family.getBlockTag("ores");
+					FabricTagBuilder<Block> oresTagBuilder = getOrCreateTagBuilder(oresTag);
 					AMDatagen.ORE_VARIANTS.forEach((variant) -> {
 						if(family.hasVariant(variant)) {
 							oresTagBuilder.addTag(family.getTag(variant));
 						}
 					});
+					if(family.hasAlias()) {
+						getOrCreateTagBuilder(family.getAliasBlockTag("ores")).addTag(oresTag);
+					}
 				}
 
 				if(family.isValidForBeacon() && family.hasVariant(BlockVariant.BLOCK)) {
 					beaconBaseTagBuilder.addTag(family.getTag(BlockVariant.BLOCK));
+
+					if(family.hasAlias()) {
+						beaconBaseTagBuilder.addTag(family.getAliasTag(BlockVariant.BLOCK));
+					}
 				}
 			});
 
@@ -132,7 +152,9 @@ public class AMTagProviders {
 
 			FabricTagBuilder<Block> oresTagBuilder = getOrCreateTagBuilder(createCommonBlockTag("ores"));
 			AMDatagen.ORE_VARIANTS.forEach((variant) -> {
-				if(variant.hasTag()) oresTagBuilder.addTag(variant.getTag());
+				if(variant.hasTag()) {
+					oresTagBuilder.addTag(variant.getTag());
+				}
 			});
 		}
 	}
@@ -160,13 +182,33 @@ public class AMTagProviders {
 				family.getItemTags().forEach((variant, tag) -> {
 					getOrCreateTagBuilder(tag).add(family.getVariant(variant));
 
+					if(family.hasAlias()) {
+						getOrCreateTagBuilder(family.getAliasTag(variant)).addTag(tag);
+					}
+
 					if(family.isPiglinLoved()) {
-						if(variant.equals(ItemVariant.NUGGET)) piglinLovedNuggetsTagBuilder.addTag(tag);
-						else piglinLovedTagBuilder.addTag(tag);
+						if(variant.equals(ItemVariant.NUGGET)) {
+							piglinLovedNuggetsTagBuilder.addTag(tag);
+
+							if(family.hasAlias()) {
+								piglinLovedNuggetsTagBuilder.addTag(family.getAliasTag(variant));
+							}
+						}
+						else {
+							piglinLovedTagBuilder.addTag(tag);
+
+							if(family.hasAlias()) {
+								piglinLovedTagBuilder.addTag(family.getAliasTag(variant));
+							}
+						}
 					}
 
 					if(variant.hasTag()) {
 						getOrCreateTagBuilder(variant.getTag()).addTag(tag);
+
+						if(family.hasAlias()) {
+							getOrCreateTagBuilder(variant.getTag()).addTag(family.getAliasTag(variant));
+						}
 					}
 				});
 				family.getBlockItemTags().forEach((variant, tag) -> {
@@ -174,12 +216,20 @@ public class AMTagProviders {
 
 					copy(blockTag, tag);
 
+					if(family.hasAlias()) {
+						copy(family.getAliasTag(variant), family.getAliasItemTag(variant));
+					}
+
 					if(family.isPiglinLoved()) {
 						piglinLovedTagBuilder.addTag(tag);
 					}
 
 					if(variant.hasTag()) {
 						getOrCreateTagBuilder(variant.getItemTag()).addTag(tag);
+
+						if(family.hasAlias()) {
+							getOrCreateTagBuilder(variant.getItemTag()).addTag(family.getAliasItemTag(variant));
+						}
 					}
 				});
 
@@ -187,22 +237,31 @@ public class AMTagProviders {
 					Tag.Identified<Block> oresBlockTag = family.getBlockTag("ores");
 					Tag.Identified<Item> oresItemTag = family.getItemTag("ores");
 					copy(oresBlockTag, oresItemTag);
+
+					if(family.hasAlias()) {
+						copy(family.getAliasBlockTag("ores"), family.getAliasItemTag("ores"));
+					}
 				}
 
 				if(family.hasAnyItemVariants(AMDatagen.CLUSTER_VARIANTS)) {
-					FabricTagBuilder<Item> clustersTagBuilder = getOrCreateTagBuilder(family.getItemTag("clusters"));
+					Tag.Identified<Item> clustersTag = family.getItemTag("clusters");
+					FabricTagBuilder<Item> clustersTagBuilder = getOrCreateTagBuilder(clustersTag);
 					AMDatagen.CLUSTER_VARIANTS.forEach((variant) -> {
 						if(family.hasVariant(variant)) {
 							clustersTagBuilder.addTag(family.getTag(variant));
 						}
 					});
+					if(family.hasAlias()) {
+						getOrCreateTagBuilder(family.getAliasItemTag("clusters")).addTag(clustersTag);
+					}
 				}
 
 				if(family.hasAnyItemVariants(AMDatagen.EQUIPMENT_VARIANTS)) {
 					Tag.Identified<Item> armorTag = family.getItemTag("armor");
 					Tag.Identified<Item> toolsTag = family.getItemTag("tools");
 
-					FabricTagBuilder<Item> salvageablesTagBuilder = getOrCreateTagBuilder(family.getItemTag("salvageables"));
+					Tag.Identified<Item> salvageablesTag = family.getItemTag("salvageables");
+					FabricTagBuilder<Item> salvageablesTagBuilder = getOrCreateTagBuilder(salvageablesTag);
 
 					if(family.hasAnyItemVariants(AMDatagen.ARMOR_VARIANTS)) {
 						FabricTagBuilder<Item> armorTagBuilder = getOrCreateTagBuilder(armorTag);
@@ -214,9 +273,17 @@ public class AMTagProviders {
 
 						if(family.isPiglinLoved()) {
 							piglinSafeArmorTagBuilder.addTag(armorTag);
+
+							if(family.hasAlias()) {
+								piglinSafeArmorTagBuilder.addTag(family.getAliasItemTag("armor"));
+							}
 						}
 
 						salvageablesTagBuilder.addTag(armorTag);
+
+						if(family.hasAlias()) {
+							getOrCreateTagBuilder(family.getAliasItemTag("armor")).addTag(armorTag);
+						}
 					}
 
 					if(family.hasAnyItemVariants(AMDatagen.TOOL_VARIANTS)) {
@@ -228,19 +295,35 @@ public class AMTagProviders {
 						});
 
 						salvageablesTagBuilder.addTag(toolsTag);
+
+						if(family.hasAlias()) {
+							getOrCreateTagBuilder(family.getAliasItemTag("tools")).addTag(toolsTag);
+						}
 					}
 
 					if(family.hasVariant(ItemVariant.HORSE_ARMOR)) {
 						salvageablesTagBuilder.add(family.getVariant(ItemVariant.HORSE_ARMOR));
 					}
+
+					if(family.hasAlias()) {
+						getOrCreateTagBuilder(family.getAliasItemTag("salvageables")).addTag(salvageablesTag);
+					}
 				}
 
 				if(family.isValidForBeacon()) {
 					beaconPaymentTagBuilder.addTag(family.getBaseTag());
+
+					if(family.hasAlias()) {
+						beaconPaymentTagBuilder.addTag(family.getAliasBaseTag());
+					}
 				}
 
 				if(family.isPiglinLoved()) {
 					piglinBarteringItemsTagBuilder.addTag(family.getBaseTag());
+
+					if(family.hasAlias()) {
+						piglinBarteringItemsTagBuilder.addTag(family.getAliasBaseTag());
+					}
 				}
 			});
 

@@ -1,11 +1,11 @@
 {
   "replace": false,
   "values": [
-    "#c:raw_golds",
-    "#c:raw_irons",
     "#c:raw_coppers",
+    "#c:raw_silvers",
     "#c:raw_leads",
-    "#c:raw_tins",
-    "#c:raw_silvers"
+    "#c:raw_irons",
+    "#c:raw_golds",
+    "#c:raw_tins"
   ]
 }

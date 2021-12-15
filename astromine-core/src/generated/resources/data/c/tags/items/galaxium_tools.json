@@ -2,9 +2,9 @@
   "replace": false,
   "values": [
     "#c:galaxium_hoes",
-    "#c:galaxium_shovels",
     "#c:galaxium_pickaxes",
+    "#c:galaxium_axes",
     "#c:galaxium_swords",
-    "#c:galaxium_axes"
+    "#c:galaxium_shovels"
   ]
 }

@@ -108,16 +108,21 @@ public class MaterialFamilies {
 
 	public static final MaterialFamily RAW_NETHERITE = register("raw_netherite", Items.NETHERITE_SCRAP, MaterialType.MISC)
 			.netherOre(Blocks.ANCIENT_DEBRIS)
-			.dust(AMItems.RAW_NETHERITE_DUST.get(), AMItems.RAW_NETHERITE_TINY_DUST.get()).build();
+			.dust(AMItems.RAW_NETHERITE_DUST.get(), AMItems.RAW_NETHERITE_TINY_DUST.get())
+			.alias("netherite_scrap").build();
 
 	public static final MaterialFamily CHARCOAL = register("charcoal", Items.CHARCOAL, MaterialType.MISC)
-			.dust(AMItems.CHARCOAL_DUST.get(), AMItems.CHARCOAL_TINY_DUST.get()).build();
+			.dust(AMItems.CHARCOAL_DUST.get(), AMItems.CHARCOAL_TINY_DUST.get())
+			.alias("coal").build();
 
 	public static final MaterialFamily GLOWSTONE = register("glowstone", Items.GLOWSTONE_DUST, MaterialType.DUST)
 			.block2x2(Blocks.GLOWSTONE)
 			.tinyDust(AMItems.GLOWSTONE_TINY_DUST.get()).build();
 
 	public static final MaterialFamily GUNPOWDER = register("gunpowder", Items.GUNPOWDER, MaterialType.DUST).build();
+
+	public static final MaterialFamily SLIME = register("slime", Items.SLIME_BALL, MaterialType.BALL)
+			.block(Blocks.SLIME_BLOCK).build();
 
 	// Astromine Gems
 
@@ -197,7 +202,8 @@ public class MaterialFamilies {
 			.gear(AMItems.FOOLS_GOLD_GEAR.get()).plate(AMItems.FOOLS_GOLD_PLATE.get())
 			.apple(AMItems.FOOLS_GOLD_APPLE.get())
 			.alloyIngredients(IRON, GUNPOWDER, 1)
-			.piglinLoved().build();
+			.piglinLoved()
+			.alias("pyrite").build();
 
 	public static final MaterialFamily METITE = register("metite", AMItems.METITE_INGOT.get(), MaterialType.INGOT)
 			.block(AMBlocks.METITE_BLOCK.get()).nugget(AMItems.METITE_NUGGET.get())
@@ -235,6 +241,14 @@ public class MaterialFamilies {
 			.gear(AMItems.METEORIC_STEEL_GEAR.get()).plate(AMItems.METEORIC_STEEL_PLATE.get())
 			.alloyIngredients(METITE, STEEL)
 			.validForBeacon().build();
+
+	// Astromine misc
+
+	public static final MaterialFamily SPACE_SLIME = register("space_slime", AMItems.SPACE_SLIME_BALL.get(), MaterialType.BALL)
+			.block(AMBlocks.SPACE_SLIME_BLOCK.get())
+			.noGenerateModels()
+			.alias("slime").build();
+
 
 	public static MaterialFamily.Builder register(String name, Item baseItem, MaterialType materialType) {
 		MaterialFamily.Builder builder = new MaterialFamily.Builder(name, baseItem, materialType);

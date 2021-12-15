@@ -1,6 +1,6 @@
 {
   "replace": false,
   "values": [
-    "minecraft:slime_block"
+    "#c:raw_netherite_dusts"
   ]
 }

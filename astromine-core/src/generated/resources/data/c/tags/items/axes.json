@@ -1,17 +1,17 @@
 {
   "replace": false,
   "values": [
-    "#c:bronze_axes",
-    "#c:diamond_axes",
-    "#c:galaxium_axes",
-    "#c:steel_axes",
-    "#c:gold_axes",
-    "#c:iron_axes",
-    "#c:univite_axes",
-    "#c:meteoric_steel_axes",
     "#c:metite_axes",
-    "#c:netherite_axes",
+    "#c:univite_axes",
+    "#c:bronze_axes",
     "#c:stellum_axes",
-    "#c:asterite_axes"
+    "#c:netherite_axes",
+    "#c:asterite_axes",
+    "#c:steel_axes",
+    "#c:galaxium_axes",
+    "#c:diamond_axes",
+    "#c:iron_axes",
+    "#c:gold_axes",
+    "#c:meteoric_steel_axes"
   ]
 }

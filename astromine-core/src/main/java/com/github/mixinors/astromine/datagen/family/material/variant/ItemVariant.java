@@ -34,7 +34,8 @@ public enum ItemVariant implements Variant<Item> {
 	LEGGINGS("leggings", false),
 	BOOTS("boots", false),
 	APPLE("apple", "metal_apples", "", "apples"),
-	HORSE_ARMOR("horse_armor", "horse_armor");
+	HORSE_ARMOR("horse_armor", "horse_armor"),
+	BALL("ball");
 
 	private final String name;
 	private final String path;
@@ -98,7 +99,10 @@ public enum ItemVariant implements Variant<Item> {
 
 	@Override
 	public boolean hasTag() {
-		return !this.equals(MISC);
+		return switch(this) {
+			case MISC, BALL -> false;
+			default -> true;
+		};
 	}
 
 	@Override
