@@ -2,9 +2,9 @@
   "replace": false,
   "values": [
     "#c:pickaxes",
-    "#c:swords",
+    "#c:axes",
     "#c:shovels",
-    "#c:hoes",
-    "#c:axes"
+    "#c:swords",
+    "#c:hoes"
   ]
 }

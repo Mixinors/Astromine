@@ -2,9 +2,9 @@
   "replace": false,
   "values": [
     "#c:netherite_pickaxes",
-    "#c:netherite_swords",
+    "#c:netherite_axes",
     "#c:netherite_shovels",
-    "#c:netherite_hoes",
-    "#c:netherite_axes"
+    "#c:netherite_swords",
+    "#c:netherite_hoes"
   ]
 }

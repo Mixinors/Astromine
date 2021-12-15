@@ -1,9 +1,9 @@
 {
   "replace": false,
   "values": [
-    "#c:diamond_boots",
     "#c:diamond_helmets",
+    "#c:diamond_chestplates",
     "#c:diamond_leggings",
-    "#c:diamond_chestplates"
+    "#c:diamond_boots"
   ]
 }

@@ -1,20 +1,20 @@
 {
   "replace": false,
   "values": [
-    "#c:metite_asteroid_clusters",
+    "#c:asterite_asteroid_clusters",
+    "#c:coal_asteroid_clusters",
     "#c:copper_asteroid_clusters",
-    "#c:redstone_asteroid_clusters",
+    "#c:diamond_asteroid_clusters",
     "#c:emerald_asteroid_clusters",
     "#c:galaxium_asteroid_clusters",
-    "#c:iron_asteroid_clusters",
-    "#c:silver_asteroid_clusters",
-    "#c:lead_asteroid_clusters",
-    "#c:coal_asteroid_clusters",
-    "#c:tin_asteroid_clusters",
-    "#c:stellum_asteroid_clusters",
     "#c:gold_asteroid_clusters",
-    "#c:asterite_asteroid_clusters",
-    "#c:diamond_asteroid_clusters",
-    "#c:lapis_asteroid_clusters"
+    "#c:iron_asteroid_clusters",
+    "#c:lapis_asteroid_clusters",
+    "#c:lead_asteroid_clusters",
+    "#c:metite_asteroid_clusters",
+    "#c:redstone_asteroid_clusters",
+    "#c:silver_asteroid_clusters",
+    "#c:stellum_asteroid_clusters",
+    "#c:tin_asteroid_clusters"
   ]
 }

@@ -1,9 +1,9 @@
 {
   "replace": false,
   "values": [
-    "#c:gold_boots",
     "#c:gold_helmets",
+    "#c:gold_chestplates",
     "#c:gold_leggings",
-    "#c:gold_chestplates"
+    "#c:gold_boots"
   ]
 }

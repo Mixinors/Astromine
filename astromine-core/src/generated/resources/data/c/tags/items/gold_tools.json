@@ -2,9 +2,9 @@
   "replace": false,
   "values": [
     "#c:gold_pickaxes",
-    "#c:gold_swords",
+    "#c:gold_axes",
     "#c:gold_shovels",
-    "#c:gold_hoes",
-    "#c:gold_axes"
+    "#c:gold_swords",
+    "#c:gold_hoes"
   ]
 }

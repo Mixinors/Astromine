@@ -2,9 +2,9 @@
   "replace": false,
   "values": [
     "#c:asterite_pickaxes",
-    "#c:asterite_swords",
+    "#c:asterite_axes",
     "#c:asterite_shovels",
-    "#c:asterite_hoes",
-    "#c:asterite_axes"
+    "#c:asterite_swords",
+    "#c:asterite_hoes"
   ]
 }

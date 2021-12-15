@@ -3,8 +3,8 @@
   "values": [
     "#c:copper_wires",
     "#c:electrum_wires",
+    "#c:gold_wires",
     "#c:silver_wires",
-    "#c:tin_wires",
-    "#c:gold_wires"
+    "#c:tin_wires"
   ]
 }

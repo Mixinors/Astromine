@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "#c:asteroid_clusters",
-    "#c:meteor_clusters"
+    "#c:meteor_clusters",
+    "#c:asteroid_clusters"
   ]
 }

@@ -1,9 +1,9 @@
 {
   "replace": false,
   "values": [
-    "#c:meteoric_steel_boots",
     "#c:meteoric_steel_helmets",
+    "#c:meteoric_steel_chestplates",
     "#c:meteoric_steel_leggings",
-    "#c:meteoric_steel_chestplates"
+    "#c:meteoric_steel_boots"
   ]
 }

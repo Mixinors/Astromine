@@ -260,7 +260,7 @@ public class MaterialFamilies {
 	}
 
 	public static Stream<MaterialFamily> getFamilies() {
-		return BASE_ITEMS_TO_FAMILIES.values().stream();
+		return BASE_ITEMS_TO_FAMILIES.values().stream().sorted();
 	}
 
 	public static void init() {

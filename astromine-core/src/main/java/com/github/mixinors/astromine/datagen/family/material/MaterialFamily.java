@@ -15,6 +15,7 @@ import com.github.mixinors.astromine.datagen.family.material.variant.BlockVarian
 import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant;
 import com.github.mixinors.astromine.datagen.family.material.variant.Variant;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
@@ -26,7 +27,7 @@ import net.minecraft.util.registry.Registry;
 
 import net.fabricmc.fabric.api.tag.TagFactory;
 
-public class MaterialFamily {
+public class MaterialFamily implements Comparable<MaterialFamily> {
 	final Map<ItemVariant, Item> itemVariants = Maps.newHashMap();
 	final Map<BlockVariant, Block> blockVariants = Maps.newHashMap();
 	final Set<AlloyIngredients> alloyIngredients = Sets.newHashSet();
@@ -329,6 +330,11 @@ public class MaterialFamily {
 
 	public boolean isBlock2x2() {
 		return block2x2;
+	}
+
+	@Override
+	public int compareTo(@NotNull MaterialFamily o) {
+		return getName().compareTo(o.getName());
 	}
 
 	public enum MaterialType {

@@ -1,17 +1,17 @@
 {
   "replace": false,
   "values": [
-    "#c:metite_pickaxes",
+    "#c:asterite_pickaxes",
+    "#c:bronze_pickaxes",
+    "#c:diamond_pickaxes",
     "#c:galaxium_pickaxes",
-    "#c:meteoric_steel_pickaxes",
+    "#c:gold_pickaxes",
     "#c:iron_pickaxes",
-    "#c:univite_pickaxes",
+    "#c:meteoric_steel_pickaxes",
+    "#c:metite_pickaxes",
+    "#c:netherite_pickaxes",
     "#c:steel_pickaxes",
     "#c:stellum_pickaxes",
-    "#c:gold_pickaxes",
-    "#c:bronze_pickaxes",
-    "#c:asterite_pickaxes",
-    "#c:diamond_pickaxes",
-    "#c:netherite_pickaxes"
+    "#c:univite_pickaxes"
   ]
 }

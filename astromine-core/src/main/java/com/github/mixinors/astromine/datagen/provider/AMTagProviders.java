@@ -1,5 +1,6 @@
 package com.github.mixinors.astromine.datagen.provider;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -89,7 +90,7 @@ public class AMTagProviders {
 			FabricTagBuilder<Block> beaconBaseTagBuilder = getOrCreateTagBuilder(BlockTags.BEACON_BASE_BLOCKS);
 			FabricTagBuilder<Block> guardedByPiglinsTagBuilder = getOrCreateTagBuilder(BlockTags.GUARDED_BY_PIGLINS);
 
-			MaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateTags).forEach(family -> {
+			MaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateTags).forEachOrdered(family -> {
 				family.getBlockTags().forEach((variant, tag) -> {
 					getOrCreateTagBuilder(tag).add(family.getVariant(variant));
 
@@ -136,7 +137,7 @@ public class AMTagProviders {
 				}
 			});
 
-			BlockFamilies.getFamilies().filter(AMBlockFamilies::isAstromineFamily).forEach(family -> family.getVariants().forEach((variant, block) -> {
+			AMBlockFamilies.getFamilies().forEachOrdered(family -> family.getVariants().forEach((variant, block) -> {
 				if(VANILLA_BLOCK_TAG_VARIANTS.containsKey(variant)) {
 					getOrCreateTagBuilder(createBlockTag(VANILLA_BLOCK_TAG_VARIANTS.get(variant))).add(block);
 				}
@@ -163,7 +164,7 @@ public class AMTagProviders {
 	}
 
 	public static class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
-		public static final Map<Set<ItemVariant>, Identifier> GENERIC_TAGS = Map.of(
+		public static final Map<List<ItemVariant>, Identifier> GENERIC_TAGS = Map.of(
 				AMDatagen.CLUSTER_VARIANTS, createCommonTagId("clusters"),
 				AMDatagen.ARMOR_VARIANTS, createCommonTagId("armor"),
 				AMDatagen.TOOL_VARIANTS, createCommonTagId("tools")
@@ -181,7 +182,7 @@ public class AMTagProviders {
 			FabricTagBuilder<Item> piglinBarteringItemsTagBuilder = getOrCreateTagBuilder(Piglib.PIGLIN_BARTERING_ITEMS);
 			FabricTagBuilder<Item> piglinSafeArmorTagBuilder = getOrCreateTagBuilder(Piglib.PIGLIN_SAFE_ARMOR);
 
-			MaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateTags).forEach(family -> {
+			MaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateTags).forEachOrdered(family -> {
 				family.getItemTags().forEach((variant, tag) -> {
 					getOrCreateTagBuilder(tag).add(family.getVariant(variant));
 
@@ -330,7 +331,7 @@ public class AMTagProviders {
 				}
 			});
 
-			BlockFamilies.getFamilies().filter(AMBlockFamilies::isAstromineFamily).forEach(family -> family.getVariants().forEach((variant, block) -> {
+			AMBlockFamilies.getFamilies().forEachOrdered(family -> family.getVariants().forEach((variant, block) -> {
 				if(VANILLA_ITEM_TAG_VARIANTS.containsKey(variant)) {
 					getOrCreateTagBuilder(createItemTag(VANILLA_ITEM_TAG_VARIANTS.get(variant))).add(block.asItem());
 				}

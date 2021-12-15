@@ -2,9 +2,9 @@
   "replace": false,
   "values": [
     "#c:iron_pickaxes",
-    "#c:iron_swords",
+    "#c:iron_axes",
     "#c:iron_shovels",
-    "#c:iron_hoes",
-    "#c:iron_axes"
+    "#c:iron_swords",
+    "#c:iron_hoes"
   ]
 }
