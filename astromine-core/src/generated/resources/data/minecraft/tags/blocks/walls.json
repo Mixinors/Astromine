@@ -4,8 +4,8 @@
     "astromine:meteor_stone_brick_wall",
     "astromine:asteroid_stone_wall",
     "astromine:meteor_stone_wall",
-    "astromine:smooth_asteroid_stone_wall",
     "astromine:smooth_meteor_stone_wall",
-    "astromine:asteroid_stone_brick_wall"
+    "astromine:asteroid_stone_brick_wall",
+    "astromine:smooth_asteroid_stone_wall"
   ]
 }

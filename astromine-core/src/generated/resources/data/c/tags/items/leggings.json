@@ -1,18 +1,18 @@
 {
   "replace": false,
   "values": [
-    "#c:fools_gold_leggings",
-    "#c:asterite_leggings",
-    "#c:steel_leggings",
-    "#c:stellum_leggings",
-    "#c:univite_leggings",
+    "#c:bronze_leggings",
     "#c:diamond_leggings",
-    "#c:netherite_leggings",
-    "#c:metite_leggings",
     "#c:galaxium_leggings",
+    "#c:steel_leggings",
     "#c:gold_leggings",
     "#c:iron_leggings",
+    "#c:univite_leggings",
     "#c:meteoric_steel_leggings",
-    "#c:bronze_leggings"
+    "#c:metite_leggings",
+    "#c:netherite_leggings",
+    "#c:stellum_leggings",
+    "#c:fools_gold_leggings",
+    "#c:asterite_leggings"
   ]
 }

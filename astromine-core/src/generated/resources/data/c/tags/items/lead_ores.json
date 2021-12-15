@@ -1,8 +1,8 @@
 {
   "replace": false,
   "values": [
-    "#c:asteroid_lead_ores",
-    "#c:stone_lead_ores",
-    "#c:deepslate_lead_ores"
+    "#c:lead_asteroid_ores",
+    "#c:lead_deepslate_ores",
+    "#c:lead_stone_ores"
   ]
 }

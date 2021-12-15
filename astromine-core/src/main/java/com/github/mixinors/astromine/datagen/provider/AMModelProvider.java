@@ -6,9 +6,10 @@ import java.util.Set;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
 import com.github.mixinors.astromine.common.fluid.ExtendedFluid;
-import com.github.mixinors.astromine.datagen.family.AMBlockFamilies;
-import com.github.mixinors.astromine.datagen.family.MaterialFamilies;
-import com.github.mixinors.astromine.datagen.family.MaterialFamily;
+import com.github.mixinors.astromine.datagen.AMDatagen;
+import com.github.mixinors.astromine.datagen.family.block.AMBlockFamilies;
+import com.github.mixinors.astromine.datagen.family.material.MaterialFamilies;
+import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMFluids;
 
@@ -50,14 +51,6 @@ public class AMModelProvider extends FabricBlockStateDefinitionProvider {
 
 	public static final Set<Block> CUBE_BOTTOM_TOP = Set.of(
 			AMBlocks.NUCLEAR_WARHEAD.get()
-	);
-
-	public static final Set<ExtendedFluid> FLUIDS = Set.of(
-			AMFluids.OIL,
-			AMFluids.FUEL,
-			AMFluids.BIOMASS,
-			AMFluids.OXYGEN,
-			AMFluids.HYDROGEN
 	);
 
 	public static final Set<Block> MACHINES = Set.of(
@@ -228,7 +221,7 @@ public class AMModelProvider extends FabricBlockStateDefinitionProvider {
 			blockStateModelGenerator.registerParentedItemModel(block, ModelIds.getBlockModelId(block));
 		});
 
-		FLUIDS.forEach((fluid) -> {
+		AMDatagen.FLUIDS.forEach((fluid) -> {
 			blockStateModelGenerator.registerStateWithModelReference(fluid.getBlock(), Blocks.WATER);
 			registerCauldron(blockStateModelGenerator, fluid.getCauldron());
 		});
@@ -256,7 +249,7 @@ public class AMModelProvider extends FabricBlockStateDefinitionProvider {
 			}));
 		});
 
-		FLUIDS.forEach((fluid) -> {
+		AMDatagen.FLUIDS.forEach((fluid) -> {
 			itemModelGenerator.register(fluid.getBucketItem(), Models.GENERATED);
 		});
 	}

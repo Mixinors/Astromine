@@ -1,14 +1,7 @@
 {
   "replace": false,
   "values": [
-    "#c:bronze_leggings",
-    "#c:bronze_chestplates",
-    "#c:bronze_pickaxes",
-    "#c:bronze_boots",
-    "#c:bronze_axes",
-    "#c:bronze_helmets",
-    "#c:bronze_shovels",
-    "#c:bronze_swords",
-    "#c:bronze_hoes"
+    "#c:bronze_armor",
+    "#c:bronze_tools"
   ]
 }

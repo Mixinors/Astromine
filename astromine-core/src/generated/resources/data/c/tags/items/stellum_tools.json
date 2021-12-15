@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#c:stellum_hoes",
+    "#c:stellum_shovels",
+    "#c:stellum_pickaxes",
+    "#c:stellum_swords",
+    "#c:stellum_axes"
+  ]
+}

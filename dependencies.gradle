@@ -47,7 +47,7 @@ project.ext.setDefaultApis = {
     useAsApi("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${project.kotlin_version}")
 
     // Piglib
-    useAsApi("com.github.Shnupbups:Piglib:${piglib_version}")
+    useAsApi("com.shnupbups:Piglib:${piglib_version}")
 
     // Architectury API
     useAsApi("dev.architectury:architectury-fabric:${architectury_api_version}")

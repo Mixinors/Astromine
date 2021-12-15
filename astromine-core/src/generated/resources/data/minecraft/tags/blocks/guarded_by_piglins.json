@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "#c:gold_stone_ores",
+    "#c:gold_asteroid_ores",
+    "#c:gold_blocks",
+    "#c:gold_nether_ores",
+    "#c:raw_gold_blocks",
+    "#c:gold_deepslate_ores",
+    "#c:fools_gold_blocks"
+  ]
+}

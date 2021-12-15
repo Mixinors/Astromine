@@ -1,9 +1,9 @@
 {
   "replace": false,
   "values": [
-    "#c:asteroid_gold_ores",
-    "#c:nether_gold_ores",
-    "#c:stone_gold_ores",
-    "#c:deepslate_gold_ores"
+    "#c:gold_asteroid_ores",
+    "#c:gold_nether_ores",
+    "#c:gold_deepslate_ores",
+    "#c:gold_stone_ores"
   ]
 }

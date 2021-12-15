@@ -1,20 +1,20 @@
 {
   "replace": false,
   "values": [
-    "#c:fools_gold_gears",
-    "#c:silver_gears",
+    "#c:bronze_gears",
     "#c:steel_gears",
-    "#c:stellum_gears",
-    "#c:univite_gears",
-    "#c:netherite_gears",
-    "#c:metite_gears",
-    "#c:electrum_gears",
-    "#c:copper_gears",
-    "#c:tin_gears",
     "#c:gold_gears",
     "#c:iron_gears",
-    "#c:meteoric_steel_gears",
+    "#c:copper_gears",
     "#c:lead_gears",
-    "#c:bronze_gears"
+    "#c:univite_gears",
+    "#c:meteoric_steel_gears",
+    "#c:tin_gears",
+    "#c:metite_gears",
+    "#c:netherite_gears",
+    "#c:silver_gears",
+    "#c:stellum_gears",
+    "#c:electrum_gears",
+    "#c:fools_gold_gears"
   ]
 }

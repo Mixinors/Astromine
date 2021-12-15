@@ -1,18 +1,18 @@
 {
   "replace": false,
   "values": [
-    "#c:fools_gold_boots",
-    "#c:asterite_boots",
-    "#c:steel_boots",
-    "#c:stellum_boots",
-    "#c:univite_boots",
+    "#c:bronze_boots",
     "#c:diamond_boots",
-    "#c:netherite_boots",
-    "#c:metite_boots",
     "#c:galaxium_boots",
+    "#c:steel_boots",
     "#c:gold_boots",
     "#c:iron_boots",
+    "#c:univite_boots",
     "#c:meteoric_steel_boots",
-    "#c:bronze_boots"
+    "#c:metite_boots",
+    "#c:netherite_boots",
+    "#c:stellum_boots",
+    "#c:fools_gold_boots",
+    "#c:asterite_boots"
   ]
 }

@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "#c:galaxium_boots",
+    "#c:galaxium_helmets",
+    "#c:galaxium_chestplates",
+    "#c:galaxium_leggings"
+  ]
+}

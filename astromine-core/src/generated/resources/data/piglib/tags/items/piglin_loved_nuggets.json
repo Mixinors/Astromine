@@ -1,4 +1,7 @@
 {
   "replace": false,
-  "values": []
+  "values": [
+    "#c:gold_nuggets",
+    "#c:fools_gold_nuggets"
+  ]
 }

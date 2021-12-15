@@ -1,20 +1,20 @@
 {
   "replace": false,
   "values": [
-    "#c:asteroid_silver_ores",
-    "#c:asteroid_asterite_ores",
-    "#c:asteroid_stellum_ores",
-    "#c:asteroid_diamond_ores",
-    "#c:asteroid_metite_ores",
-    "#c:asteroid_emerald_ores",
-    "#c:asteroid_coal_ores",
-    "#c:asteroid_copper_ores",
-    "#c:asteroid_galaxium_ores",
-    "#c:asteroid_tin_ores",
-    "#c:asteroid_gold_ores",
-    "#c:asteroid_redstone_ores",
-    "#c:asteroid_iron_ores",
-    "#c:asteroid_lapis_ores",
-    "#c:asteroid_lead_ores"
+    "#c:emerald_asteroid_ores",
+    "#c:redstone_asteroid_ores",
+    "#c:diamond_asteroid_ores",
+    "#c:galaxium_asteroid_ores",
+    "#c:lapis_asteroid_ores",
+    "#c:coal_asteroid_ores",
+    "#c:gold_asteroid_ores",
+    "#c:iron_asteroid_ores",
+    "#c:copper_asteroid_ores",
+    "#c:lead_asteroid_ores",
+    "#c:tin_asteroid_ores",
+    "#c:metite_asteroid_ores",
+    "#c:silver_asteroid_ores",
+    "#c:stellum_asteroid_ores",
+    "#c:asterite_asteroid_ores"
   ]
 }

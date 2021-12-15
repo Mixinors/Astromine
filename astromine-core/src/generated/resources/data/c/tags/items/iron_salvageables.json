@@ -1,15 +1,8 @@
 {
   "replace": false,
   "values": [
-    "#c:iron_leggings",
-    "#c:iron_horse_armors",
-    "#c:iron_chestplates",
-    "#c:iron_pickaxes",
-    "#c:iron_boots",
-    "#c:iron_axes",
-    "#c:iron_helmets",
-    "#c:iron_shovels",
-    "#c:iron_swords",
-    "#c:iron_hoes"
+    "#c:iron_armor",
+    "#c:iron_tools",
+    "minecraft:iron_horse_armor"
   ]
 }

@@ -1,17 +1,17 @@
 {
   "replace": false,
   "values": [
-    "#c:asterite_hoes",
-    "#c:steel_hoes",
-    "#c:stellum_hoes",
-    "#c:univite_hoes",
+    "#c:bronze_hoes",
     "#c:diamond_hoes",
-    "#c:netherite_hoes",
-    "#c:metite_hoes",
     "#c:galaxium_hoes",
+    "#c:steel_hoes",
     "#c:gold_hoes",
     "#c:iron_hoes",
+    "#c:univite_hoes",
     "#c:meteoric_steel_hoes",
-    "#c:bronze_hoes"
+    "#c:metite_hoes",
+    "#c:netherite_hoes",
+    "#c:stellum_hoes",
+    "#c:asterite_hoes"
   ]
 }

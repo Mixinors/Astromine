@@ -1,14 +1,7 @@
 {
   "replace": false,
   "values": [
-    "#c:meteoric_steel_leggings",
-    "#c:meteoric_steel_chestplates",
-    "#c:meteoric_steel_pickaxes",
-    "#c:meteoric_steel_boots",
-    "#c:meteoric_steel_axes",
-    "#c:meteoric_steel_helmets",
-    "#c:meteoric_steel_shovels",
-    "#c:meteoric_steel_swords",
-    "#c:meteoric_steel_hoes"
+    "#c:meteoric_steel_armor",
+    "#c:meteoric_steel_tools"
   ]
 }

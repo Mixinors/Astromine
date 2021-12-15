@@ -1,8 +1,8 @@
 {
   "replace": false,
   "values": [
-    "#c:asteroid_iron_ores",
-    "#c:stone_iron_ores",
-    "#c:deepslate_iron_ores"
+    "#c:iron_asteroid_ores",
+    "#c:iron_deepslate_ores",
+    "#c:iron_stone_ores"
   ]
 }

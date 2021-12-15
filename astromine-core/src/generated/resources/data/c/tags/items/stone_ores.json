@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "#c:emerald_stone_ores",
+    "#c:redstone_stone_ores",
+    "#c:diamond_stone_ores",
+    "#c:lapis_stone_ores",
+    "#c:coal_stone_ores",
+    "#c:gold_stone_ores",
+    "#c:iron_stone_ores",
+    "#c:copper_stone_ores",
+    "#c:lead_stone_ores",
+    "#c:tin_stone_ores",
+    "#c:silver_stone_ores"
+  ]
+}

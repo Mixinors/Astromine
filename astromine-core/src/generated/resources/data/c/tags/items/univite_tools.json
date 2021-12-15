@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#c:univite_hoes",
+    "#c:univite_shovels",
+    "#c:univite_pickaxes",
+    "#c:univite_swords",
+    "#c:univite_axes"
+  ]
+}

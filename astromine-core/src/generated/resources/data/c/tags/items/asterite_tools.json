@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#c:asterite_hoes",
+    "#c:asterite_shovels",
+    "#c:asterite_pickaxes",
+    "#c:asterite_swords",
+    "#c:asterite_axes"
+  ]
+}

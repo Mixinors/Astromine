@@ -1,14 +1,7 @@
 {
   "replace": false,
   "values": [
-    "#c:univite_leggings",
-    "#c:univite_chestplates",
-    "#c:univite_pickaxes",
-    "#c:univite_boots",
-    "#c:univite_axes",
-    "#c:univite_helmets",
-    "#c:univite_shovels",
-    "#c:univite_swords",
-    "#c:univite_hoes"
+    "#c:univite_armor",
+    "#c:univite_tools"
   ]
 }

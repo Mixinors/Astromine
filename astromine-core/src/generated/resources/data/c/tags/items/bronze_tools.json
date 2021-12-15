@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#c:bronze_hoes",
+    "#c:bronze_shovels",
+    "#c:bronze_pickaxes",
+    "#c:bronze_swords",
+    "#c:bronze_axes"
+  ]
+}
