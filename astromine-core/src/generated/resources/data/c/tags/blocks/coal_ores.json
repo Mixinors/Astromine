@@ -2,7 +2,7 @@
   "replace": false,
   "values": [
     "#c:coal_deepslate_ores",
-    "#c:coal_stone_ores",
-    "#c:coal_asteroid_ores"
+    "#c:coal_asteroid_ores",
+    "#c:coal_stone_ores"
   ]
 }

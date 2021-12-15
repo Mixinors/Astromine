@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "minecraft:coal",
-    "#c:charcoals"
+    "#c:charcoals",
+    "minecraft:coal"
   ]
 }

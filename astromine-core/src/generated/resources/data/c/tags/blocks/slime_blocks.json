@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "minecraft:slime_block",
-    "#c:space_slime_blocks"
+    "#c:space_slime_blocks",
+    "minecraft:slime_block"
   ]
 }

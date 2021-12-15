@@ -2,19 +2,19 @@
   "replace": false,
   "values": [
     "#c:metite_ingots",
-    "#c:univite_ingots",
-    "#c:bronze_ingots",
-    "#c:stellum_ingots",
-    "#c:netherite_ingots",
-    "#c:asterites",
     "#c:emeralds",
-    "#c:steel_ingots",
     "#c:galaxiums",
-    "#c:diamonds",
-    "#c:silver_ingots",
-    "#c:electrum_ingots",
+    "#c:meteoric_steel_ingots",
     "#c:iron_ingots",
+    "#c:univite_ingots",
+    "#c:electrum_ingots",
+    "#c:silver_ingots",
+    "#c:steel_ingots",
+    "#c:stellum_ingots",
     "#c:gold_ingots",
-    "#c:meteoric_steel_ingots"
+    "#c:bronze_ingots",
+    "#c:asterites",
+    "#c:diamonds",
+    "#c:netherite_ingots"
   ]
 }

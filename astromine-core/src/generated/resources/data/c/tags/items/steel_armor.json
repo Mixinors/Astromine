@@ -1,9 +1,9 @@
 {
   "replace": false,
   "values": [
-    "#c:steel_leggings",
-    "#c:steel_chestplates",
     "#c:steel_boots",
-    "#c:steel_helmets"
+    "#c:steel_helmets",
+    "#c:steel_leggings",
+    "#c:steel_chestplates"
   ]
 }

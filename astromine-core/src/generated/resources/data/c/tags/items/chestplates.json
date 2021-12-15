@@ -2,18 +2,18 @@
   "replace": false,
   "values": [
     "#c:metite_chestplates",
-    "#c:univite_chestplates",
-    "#c:bronze_chestplates",
-    "#c:stellum_chestplates",
-    "#c:netherite_chestplates",
-    "#c:asterite_chestplates",
-    "#c:steel_chestplates",
-    "#c:galaxium_chestplates",
     "#c:fools_gold_chestplates",
     "#c:pyrite_chestplates",
-    "#c:diamond_chestplates",
+    "#c:galaxium_chestplates",
+    "#c:meteoric_steel_chestplates",
     "#c:iron_chestplates",
+    "#c:univite_chestplates",
+    "#c:steel_chestplates",
+    "#c:stellum_chestplates",
     "#c:gold_chestplates",
-    "#c:meteoric_steel_chestplates"
+    "#c:bronze_chestplates",
+    "#c:asterite_chestplates",
+    "#c:diamond_chestplates",
+    "#c:netherite_chestplates"
   ]
 }

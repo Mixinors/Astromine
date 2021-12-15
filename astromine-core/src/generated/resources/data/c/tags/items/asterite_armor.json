@@ -1,9 +1,9 @@
 {
   "replace": false,
   "values": [
-    "#c:asterite_leggings",
-    "#c:asterite_chestplates",
     "#c:asterite_boots",
-    "#c:asterite_helmets"
+    "#c:asterite_helmets",
+    "#c:asterite_leggings",
+    "#c:asterite_chestplates"
   ]
 }

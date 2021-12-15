@@ -2,7 +2,7 @@
   "replace": false,
   "values": [
     "#c:silver_deepslate_ores",
-    "#c:silver_stone_ores",
-    "#c:silver_asteroid_ores"
+    "#c:silver_asteroid_ores",
+    "#c:silver_stone_ores"
   ]
 }

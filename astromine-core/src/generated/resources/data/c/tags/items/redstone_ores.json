@@ -2,7 +2,7 @@
   "replace": false,
   "values": [
     "#c:redstone_deepslate_ores",
-    "#c:redstone_stone_ores",
-    "#c:redstone_asteroid_ores"
+    "#c:redstone_asteroid_ores",
+    "#c:redstone_stone_ores"
   ]
 }

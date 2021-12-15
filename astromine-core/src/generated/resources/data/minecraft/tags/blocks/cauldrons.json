@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#c:oxygen_cauldrons",
+    "#c:fuel_cauldrons",
+    "#c:biomass_cauldrons",
+    "#c:oil_cauldrons",
+    "#c:hydrogen_cauldrons"
+  ]
+}

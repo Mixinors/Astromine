@@ -1,9 +1,9 @@
 {
   "replace": false,
   "values": [
-    "#c:stellum_leggings",
-    "#c:stellum_chestplates",
     "#c:stellum_boots",
-    "#c:stellum_helmets"
+    "#c:stellum_helmets",
+    "#c:stellum_leggings",
+    "#c:stellum_chestplates"
   ]
 }

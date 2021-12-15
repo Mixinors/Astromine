@@ -1,10 +1,10 @@
 {
   "replace": false,
   "values": [
-    "#c:metite_hoes",
     "#c:metite_pickaxes",
-    "#c:metite_axes",
     "#c:metite_swords",
-    "#c:metite_shovels"
+    "#c:metite_shovels",
+    "#c:metite_hoes",
+    "#c:metite_axes"
   ]
 }

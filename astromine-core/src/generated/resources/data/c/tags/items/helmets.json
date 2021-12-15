@@ -2,18 +2,18 @@
   "replace": false,
   "values": [
     "#c:metite_helmets",
-    "#c:univite_helmets",
-    "#c:bronze_helmets",
-    "#c:stellum_helmets",
-    "#c:netherite_helmets",
-    "#c:asterite_helmets",
-    "#c:steel_helmets",
-    "#c:galaxium_helmets",
     "#c:fools_gold_helmets",
     "#c:pyrite_helmets",
-    "#c:diamond_helmets",
+    "#c:galaxium_helmets",
+    "#c:meteoric_steel_helmets",
     "#c:iron_helmets",
+    "#c:univite_helmets",
+    "#c:steel_helmets",
+    "#c:stellum_helmets",
     "#c:gold_helmets",
-    "#c:meteoric_steel_helmets"
+    "#c:bronze_helmets",
+    "#c:asterite_helmets",
+    "#c:diamond_helmets",
+    "#c:netherite_helmets"
   ]
 }

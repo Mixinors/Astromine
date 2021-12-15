@@ -142,12 +142,15 @@ public class AMTagProviders {
 				}
 			}));
 
+			FabricTagBuilder<Block> cauldronsTagBuilder = getOrCreateTagBuilder(BlockTags.CAULDRONS);
 			AMDatagen.FLUIDS.forEach((fluid) -> {
 				String fluidName = Registry.FLUID.getId(fluid.getStill()).getPath();
-				FabricTagBuilder<Block> tag = getOrCreateTagBuilder(createCommonBlockTag(fluidName));
-				FabricTagBuilder<Block> cauldronTag = getOrCreateTagBuilder(createCommonBlockTag(fluidName+"_cauldrons"));
-				tag.add(fluid.getBlock());
-				cauldronTag.add(fluid.getCauldron());
+				FabricTagBuilder<Block> tagBuilder = getOrCreateTagBuilder(createCommonBlockTag(fluidName));
+				Tag.Identified<Block> cauldronTag = createCommonBlockTag(fluidName+"_cauldrons");
+				FabricTagBuilder<Block> cauldronTagBuilder = getOrCreateTagBuilder(cauldronTag);
+				tagBuilder.add(fluid.getBlock());
+				cauldronTagBuilder.add(fluid.getCauldron());
+				cauldronsTagBuilder.addTag(cauldronTag);
 			});
 
 			FabricTagBuilder<Block> oresTagBuilder = getOrCreateTagBuilder(createCommonBlockTag("ores"));
@@ -334,8 +337,8 @@ public class AMTagProviders {
 			}));
 
 			AMDatagen.FLUIDS.forEach((fluid) -> {
-				FabricTagBuilder<Item> bucketTag = getOrCreateTagBuilder(createCommonItemTag(Registry.FLUID.getId(fluid.getStill()).getPath()+"_buckets"));
-				bucketTag.add(fluid.getBucketItem());
+				FabricTagBuilder<Item> bucketTagBuilder = getOrCreateTagBuilder(createCommonItemTag(Registry.FLUID.getId(fluid.getStill()).getPath()+"_buckets"));
+				bucketTagBuilder.add(fluid.getBucketItem());
 			});
 
 			copy(createCommonBlockTag("ores"), createCommonItemTag("ores"));
@@ -362,8 +365,8 @@ public class AMTagProviders {
 		@Override
 		protected void generateTags() {
 			AMDatagen.FLUIDS.forEach((fluid) -> {
-				FabricTagBuilder<Fluid> tag = getOrCreateTagBuilder(createCommonFluidTag(Registry.FLUID.getId(fluid.getStill()).getPath()));
-				tag.add(fluid.getStill(), fluid.getFlowing());
+				FabricTagBuilder<Fluid> tagBuilder = getOrCreateTagBuilder(createCommonFluidTag(Registry.FLUID.getId(fluid.getStill()).getPath()));
+				tagBuilder.add(fluid.getStill(), fluid.getFlowing());
 			});
 		}
 	}

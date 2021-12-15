@@ -1,10 +1,10 @@
 {
   "replace": false,
   "values": [
-    "#c:bronze_hoes",
     "#c:bronze_pickaxes",
-    "#c:bronze_axes",
     "#c:bronze_swords",
-    "#c:bronze_shovels"
+    "#c:bronze_shovels",
+    "#c:bronze_hoes",
+    "#c:bronze_axes"
   ]
 }

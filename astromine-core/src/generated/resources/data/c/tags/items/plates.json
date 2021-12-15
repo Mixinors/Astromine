@@ -2,20 +2,20 @@
   "replace": false,
   "values": [
     "#c:metite_plates",
-    "#c:univite_plates",
-    "#c:bronze_plates",
-    "#c:stellum_plates",
-    "#c:netherite_plates",
-    "#c:copper_plates",
-    "#c:steel_plates",
     "#c:fools_gold_plates",
     "#c:pyrite_plates",
-    "#c:silver_plates",
-    "#c:electrum_plates",
-    "#c:lead_plates",
-    "#c:iron_plates",
-    "#c:gold_plates",
+    "#c:copper_plates",
     "#c:meteoric_steel_plates",
-    "#c:tin_plates"
+    "#c:iron_plates",
+    "#c:univite_plates",
+    "#c:electrum_plates",
+    "#c:silver_plates",
+    "#c:lead_plates",
+    "#c:steel_plates",
+    "#c:tin_plates",
+    "#c:stellum_plates",
+    "#c:gold_plates",
+    "#c:bronze_plates",
+    "#c:netherite_plates"
   ]
 }

@@ -2,16 +2,16 @@
   "replace": false,
   "values": [
     "#c:metite_swords",
-    "#c:univite_swords",
-    "#c:bronze_swords",
-    "#c:stellum_swords",
-    "#c:netherite_swords",
-    "#c:asterite_swords",
-    "#c:steel_swords",
     "#c:galaxium_swords",
-    "#c:diamond_swords",
+    "#c:meteoric_steel_swords",
     "#c:iron_swords",
+    "#c:univite_swords",
+    "#c:steel_swords",
+    "#c:stellum_swords",
     "#c:gold_swords",
-    "#c:meteoric_steel_swords"
+    "#c:bronze_swords",
+    "#c:asterite_swords",
+    "#c:diamond_swords",
+    "#c:netherite_swords"
   ]
 }

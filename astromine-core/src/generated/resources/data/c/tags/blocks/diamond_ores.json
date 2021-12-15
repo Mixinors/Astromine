@@ -2,7 +2,7 @@
   "replace": false,
   "values": [
     "#c:diamond_deepslate_ores",
-    "#c:diamond_stone_ores",
-    "#c:diamond_asteroid_ores"
+    "#c:diamond_asteroid_ores",
+    "#c:diamond_stone_ores"
   ]
 }

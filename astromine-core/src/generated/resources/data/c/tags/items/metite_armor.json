@@ -1,9 +1,9 @@
 {
   "replace": false,
   "values": [
-    "#c:metite_leggings",
-    "#c:metite_chestplates",
     "#c:metite_boots",
-    "#c:metite_helmets"
+    "#c:metite_helmets",
+    "#c:metite_leggings",
+    "#c:metite_chestplates"
   ]
 }

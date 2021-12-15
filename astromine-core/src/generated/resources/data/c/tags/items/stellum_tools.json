@@ -1,10 +1,10 @@
 {
   "replace": false,
   "values": [
-    "#c:stellum_hoes",
     "#c:stellum_pickaxes",
-    "#c:stellum_axes",
     "#c:stellum_swords",
-    "#c:stellum_shovels"
+    "#c:stellum_shovels",
+    "#c:stellum_hoes",
+    "#c:stellum_axes"
   ]
 }

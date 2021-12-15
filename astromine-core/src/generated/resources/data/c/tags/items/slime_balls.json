@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "minecraft:slime_ball",
-    "#c:space_slime_balls"
+    "#c:space_slime_balls",
+    "minecraft:slime_ball"
   ]
 }

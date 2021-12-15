@@ -1,10 +1,10 @@
 {
   "replace": false,
   "values": [
-    "#c:asterites",
-    "#c:amethysts",
     "#c:emeralds",
     "#c:galaxiums",
+    "#c:amethysts",
+    "#c:asterites",
     "#c:diamonds",
     "#c:quartzes"
   ]

@@ -2,7 +2,7 @@
   "replace": false,
   "values": [
     "#c:lead_deepslate_ores",
-    "#c:lead_stone_ores",
-    "#c:lead_asteroid_ores"
+    "#c:lead_asteroid_ores",
+    "#c:lead_stone_ores"
   ]
 }

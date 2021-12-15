@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "astromine:coal_tiny_dust",
-    "#c:charcoal_tiny_dusts"
+    "#c:charcoal_tiny_dusts",
+    "astromine:coal_tiny_dust"
   ]
 }

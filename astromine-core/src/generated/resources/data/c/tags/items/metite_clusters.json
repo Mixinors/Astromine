@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "#c:metite_meteor_clusters",
-    "#c:metite_asteroid_clusters"
+    "#c:metite_asteroid_clusters",
+    "#c:metite_meteor_clusters"
   ]
 }

@@ -2,10 +2,10 @@
   "replace": false,
   "values": [
     "#c:raw_copper_blocks",
+    "#c:raw_iron_blocks",
     "#c:raw_silver_blocks",
     "#c:raw_lead_blocks",
-    "#c:raw_iron_blocks",
-    "#c:raw_gold_blocks",
-    "#c:raw_tin_blocks"
+    "#c:raw_tin_blocks",
+    "#c:raw_gold_blocks"
   ]
 }
