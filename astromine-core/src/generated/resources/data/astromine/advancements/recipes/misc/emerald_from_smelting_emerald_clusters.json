@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:emerald_from_smelting_emerald_clusters"
+    ]
+  },
+  "criteria": {
+    "has_emerald_clusters": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:emerald_clusters"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:emerald_from_smelting_emerald_clusters"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_emerald_clusters",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:metite_nugget_from_smelting_metite_salvageables"
+    ]
+  },
+  "criteria": {
+    "has_metite_salvageables": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:metite_salvageables"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:metite_nugget_from_smelting_metite_salvageables"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_metite_salvageables",
+      "has_the_recipe"
+    ]
+  ]
+}

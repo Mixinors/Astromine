@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "tag": "c:lead_tiny_dusts"
+  },
+  "result": "astromine:lead_nugget",
+  "experience": 0.0,
+  "cookingtime": 200
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:galaxium_from_smelting_galaxium_clusters"
+    ]
+  },
+  "criteria": {
+    "has_galaxium_clusters": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:galaxium_clusters"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:galaxium_from_smelting_galaxium_clusters"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_galaxium_clusters",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -179,6 +179,18 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 		return getRecipeName(to) + "_from_" + getRecipeName(from);
 	}
 
+	public static String convertBetween(ItemConvertible to, String process, ItemConvertible from) {
+		return RecipesProvider.getRecipeName(to) + "_from_" + process + "_" + RecipesProvider.getRecipeName(from);
+	}
+
+	public static String convertBetween(ItemConvertible to, String process, String from) {
+		return RecipesProvider.getRecipeName(to) + "_from_" + process + "_" + from;
+	}
+
+	public static String convertBetween(ItemConvertible to, String process, Tag.Identified<Item> from) {
+		return getRecipeName(to) + "_from_" + process + "_"  + getRecipeName(from);
+	}
+
 	public static String getRecipeName(Tag.Identified<Item> tag) {
 		return tag.getId().getPath();
 	}
@@ -203,14 +215,14 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 		offerSmeltingAndBlasting(exporter, List.of(input), output, experience);
 	}
 
-	public static void offerSmeltingAndBlasting(Consumer<RecipeJsonProvider> exporter, List<ItemConvertible> inputs, ItemConvertible output, float experience) {
-		offerSmelting(exporter, inputs, output, experience, 200, getRecipeName(output));
-		offerBlasting(exporter, inputs, output, experience, 100, getRecipeName(output));
+	public static void offerSmeltingAndBlasting(Consumer<RecipeJsonProvider> exporter, List<ItemConvertible> input, ItemConvertible output, float experience) {
+		offerSmelting(exporter, input, output, experience, 200, getRecipeName(output));
+		offerBlasting(exporter, input, output, experience, 100, getRecipeName(output));
 	}
 
-	public static void offerSmeltingAndBlasting(Consumer<RecipeJsonProvider> exporter, Tag<Item> inputs, ItemConvertible output, float experience) {
-		offerSmelting(exporter, new ArrayList<>(inputs.values()), output, experience, 200, getRecipeName(output));
-		offerBlasting(exporter, new ArrayList<>(inputs.values()), output, experience, 100, getRecipeName(output));
+	public static void offerSmeltingAndBlasting(Consumer<RecipeJsonProvider> exporter, Tag.Identified<Item> input, ItemConvertible output, float experience) {
+		CookingRecipeJsonFactory.createSmelting(Ingredient.fromTag(input), output, experience, 200).criterion("has_" + getRecipeName(input), RecipesProvider.conditionsFromTag(input)).offerTo(exporter, convertBetween(output, "smelting", input));
+		CookingRecipeJsonFactory.createBlasting(Ingredient.fromTag(input), output, experience, 100).criterion("has_" + getRecipeName(input), RecipesProvider.conditionsFromTag(input)).offerTo(exporter, convertBetween(output, "blasting", input));
 	}
 
 	public static void offerHelmetRecipe(Consumer<RecipeJsonProvider> exporter, Tag.Identified<Item> input, ItemConvertible output) {
@@ -306,7 +318,7 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 	}
 
 	public static void offerSmithingRecipe(Consumer<RecipeJsonProvider> exporter, Item input, Item addition, Item output) {
-		SmithingRecipeJsonFactory.create(Ingredient.ofItems(input), Ingredient.ofItems(addition), output).criterion("has_" + getRecipeName(addition), RecipesProvider.conditionsFromItem(addition)).offerTo(exporter, RecipesProvider.getItemPath(output) + "_smithing");
+		SmithingRecipeJsonFactory.create(Ingredient.ofItems(input), Ingredient.ofItems(addition), output).criterion("has_" + getRecipeName(addition), RecipesProvider.conditionsFromItem(addition)).offerTo(exporter, convertBetween(output, "smithing", input));
 	}
 
 	public static TrituratingRecipeJsonFactory createTrituratingRecipe(Tag.Identified<Item> input, ItemConvertible output, int outputCount, int processingTime, int energy) {
@@ -318,11 +330,11 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 	}
 
 	public static void offerTrituratingRecipe(Consumer<RecipeJsonProvider> exporter, Tag.Identified<Item> input, ItemConvertible output, int outputCount, int processingTime, int energy) {
-		createTrituratingRecipe(input, output, outputCount, processingTime, energy).offerTo(exporter, getRecipeName(output) + "_from_triturating_" + getRecipeName(input));
+		createTrituratingRecipe(input, output, outputCount, processingTime, energy).offerTo(exporter, convertBetween(output, "triturating", input));
 	}
 
 	public static void offerTrituratingRecipe(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, ItemConvertible output, int outputCount, int processingTime, int energy) {
-		createTrituratingRecipe(input, output, outputCount, processingTime, energy).offerTo(exporter, getRecipeName(output) + "_from_triturating_" + getRecipeName(input));
+		createTrituratingRecipe(input, output, outputCount, processingTime, energy).offerTo(exporter, convertBetween(output, "triturating", input));
 	}
 
 	public static PressingRecipeJsonFactory createPressingRecipe(Tag.Identified<Item> input, ItemConvertible output, int outputCount, int processingTime, int energy) {
@@ -334,11 +346,11 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 	}
 
 	public static void offerPressingRecipe(Consumer<RecipeJsonProvider> exporter, Tag.Identified<Item> input, ItemConvertible output, int outputCount, int processingTime, int energy) {
-		createPressingRecipe(input, output, outputCount, processingTime, energy).offerTo(exporter, getRecipeName(output) + "_from_pressing_" + getRecipeName(input));
+		createPressingRecipe(input, output, outputCount, processingTime, energy).offerTo(exporter, convertBetween(output, "pressing", input));
 	}
 
 	public static void offerPressingRecipe(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, ItemConvertible output, int outputCount, int processingTime, int energy) {
-		createPressingRecipe(input, output, outputCount, processingTime, energy).offerTo(exporter, getRecipeName(output) + "_from_pressing_" + getRecipeName(input));
+		createPressingRecipe(input, output, outputCount, processingTime, energy).offerTo(exporter, convertBetween(output, "pressing", input));
 	}
 
 	public static WireMillingRecipeJsonFactory createWireMillingRecipe(Tag.Identified<Item> input, ItemConvertible output, int outputCount, int processingTime, int energy) {
@@ -350,11 +362,11 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 	}
 
 	public static void offerWireMillingRecipe(Consumer<RecipeJsonProvider> exporter, Tag.Identified<Item> input, ItemConvertible output, int outputCount, int processingTime, int energy) {
-		createWireMillingRecipe(input, output, outputCount, processingTime, energy).offerTo(exporter, getRecipeName(output) + "_from_wire_milling_" + getRecipeName(input));
+		createWireMillingRecipe(input, output, outputCount, processingTime, energy).offerTo(exporter, convertBetween(output, "wire_milling", input));
 	}
 
 	public static void offerWireMillingRecipe(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, ItemConvertible output, int outputCount, int processingTime, int energy) {
-		createWireMillingRecipe(input, output, outputCount, processingTime, energy).offerTo(exporter, getRecipeName(output) + "_from_wire_milling_" + getRecipeName(input));
+		createWireMillingRecipe(input, output, outputCount, processingTime, energy).offerTo(exporter, convertBetween(output, "wire_milling", input));
 	}
 
 	public static CraftingRecipeJsonFactory withCriterion(CraftingRecipeJsonFactory factory, ItemConvertible input) {
@@ -402,50 +414,64 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 		});
 
 		MaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateRecipes).forEach((family) -> {
+			AMCommon.LOGGER.info("Offering recipes for "+family.getName());
 			if (family.shouldGenerateRecipe(BlockVariant.BLOCK)) {
 				if (family.isBlock2x2()) {
+					AMCommon.LOGGER.info("Offering 2x2 compacting recipe for base -> block");
 					offer2x2CompactingRecipe(exporter, family.getBaseTag(), family.getVariant(BlockVariant.BLOCK));
 				} else {
+					AMCommon.LOGGER.info("Offering compacting and reverse compacting recipe for base <-> block");
 					offerCompactingRecipe(exporter, family.getBaseTag(), family.getVariant(BlockVariant.BLOCK));
 					offerReverseCompactingRecipeWithFullName(exporter, family.getItemTag(BlockVariant.BLOCK), family.getBaseItem());
 				}
 			}
 			if (family.shouldGenerateRecipe(ItemVariant.NUGGET, family.getBaseVariant())) {
+				AMCommon.LOGGER.info("Offering compacting and reverse compacting recipe for base <-> nugget");
 				offerCompactingRecipeWithFullName(exporter, family.getTag(ItemVariant.NUGGET), family.getBaseItem());
 				offerReverseCompactingRecipe(exporter, family.getBaseTag(), family.getVariant(ItemVariant.NUGGET));
 			}
 			if (family.shouldGenerateRecipe(ItemVariant.TINY_DUST, ItemVariant.DUST)) {
+				AMCommon.LOGGER.info("Offering compacting and reverse compacting recipe for dust <-> tiny dust");
 				offerCompactingRecipeWithFullName(exporter, family.getTag(ItemVariant.TINY_DUST), family.getVariant(ItemVariant.DUST));
 				offerReverseCompactingRecipe(exporter, family.getTag(ItemVariant.DUST), family.getVariant(ItemVariant.TINY_DUST));
 			}
 			if (family.shouldGenerateRecipe(ItemVariant.RAW_ORE, BlockVariant.RAW_ORE_BLOCK)) {
+				AMCommon.LOGGER.info("Offering compacting and reverse compacting recipe for raw ore <-> raw ore block");
 				offerCompactingRecipe(exporter, family.getTag(ItemVariant.RAW_ORE), family.getVariant(BlockVariant.RAW_ORE_BLOCK));
 				offerReverseCompactingRecipeWithFullName(exporter, family.getItemTag(BlockVariant.RAW_ORE_BLOCK), family.getVariant(ItemVariant.RAW_ORE));
 			}
 			if (family.hasAnyBlockVariants(AMDatagen.ORE_VARIANTS)) {
+				AMCommon.LOGGER.info("Offering smelting and blasting for ores -> base");
 				offerSmeltingAndBlasting(exporter, family.getItemTag("ores"), family.getBaseItem(), family.getOreSmeltingExperience());
 			}
 			if (family.hasAnyItemVariants(AMDatagen.CLUSTER_VARIANTS)) {
+				AMCommon.LOGGER.info("Offering smelting and blasting for clusters -> base");
 				offerSmeltingAndBlasting(exporter, family.getItemTag("clusters"), family.getBaseItem(), family.getOreSmeltingExperience());
 			}
 			if (family.shouldGenerateRecipe(ItemVariant.RAW_ORE, family.getBaseVariant())) {
+				AMCommon.LOGGER.info("Offering smelting and blasting for raw ores -> base");
 				offerSmeltingAndBlasting(exporter, family.getTag(ItemVariant.RAW_ORE), family.getBaseItem(), family.getOreSmeltingExperience());
 			}
 			if (!family.getType().equals(MaterialType.MISC) && !family.getType().equals(MaterialType.DUST)) {
 				if (family.shouldGenerateRecipe(ItemVariant.DUST, family.getBaseVariant())) {
+					AMCommon.LOGGER.info("Offering smelting and blasting for dust -> base");
 					offerSmeltingAndBlasting(exporter, family.getTag(ItemVariant.DUST), family.getBaseItem(), 0.0f);
 				}
 				if (family.shouldGenerateRecipe(ItemVariant.TINY_DUST, ItemVariant.NUGGET)) {
+					AMCommon.LOGGER.info("Offering smelting and blasting for tiny dust -> nugget");
 					offerSmeltingAndBlasting(exporter, family.getTag(ItemVariant.TINY_DUST), family.getVariant(ItemVariant.NUGGET), 0.0f);
 				}
 			}
 			if (family.hasAnyItemVariants(AMDatagen.EQUIPMENT_VARIANTS)) {
 				if (family.hasVariant(ItemVariant.NUGGET))
+					AMCommon.LOGGER.info("Offering smelting and blasting for salvagables -> nugget");
 					offerSmeltingAndBlasting(exporter, family.getItemTag("salvageables"), family.getVariant(ItemVariant.NUGGET), 0.1f);
 				if (family.hasVariant(ItemVariant.TINY_DUST))
+					AMCommon.LOGGER.info("Offering triturating for salvagables -> tiny dusts");
 					offerTrituratingRecipe(exporter, family.getItemTag("salvageables"), family.getVariant(ItemVariant.TINY_DUST), 2, 30, 200);
 			}
 			if (family.usesSmithing()) {
+				AMCommon.LOGGER.info("Offering smithing recipes for equipment");
 				MaterialFamily smithingBase = family.getSmithingBase().orElse(MaterialFamilies.DIAMOND);
 				AMDatagen.EQUIPMENT_VARIANTS.forEach((variant) -> {
 					if (family.shouldGenerateRecipe(variant)) {
@@ -453,6 +479,7 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 					}
 				});
 			} else {
+				AMCommon.LOGGER.info("Offering crafting recipes for equipment");
 				EQUIPMENT_OFFERERS.forEach((variant, offerer) -> {
 					if (family.shouldGenerateRecipe(variant)) {
 						offerer.accept(exporter, family.getBaseTag(), family.getVariant(variant));
@@ -461,28 +488,34 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 			}
 			MISC_OFFERERS.forEach((variant, offerer) -> {
 				if (family.shouldGenerateRecipe(variant)) {
+					AMCommon.LOGGER.info("Offering recipe for base -> "+variant.getName());
 					offerer.accept(exporter, family.getBaseTag(), family.getVariant(variant));
 				}
 			});
 
 			if (family.hasVariant(ItemVariant.DUST)) {
 				if (!family.getType().equals(MaterialType.DUST)) {
+					AMCommon.LOGGER.info("Offering triturating for base -> dust");
 					offerTrituratingRecipe(exporter, family.getBaseTag(), family.getVariant(ItemVariant.DUST), 1, 60, 270);
 				}
 				if (family.hasVariant(BlockVariant.BLOCK)) {
+					AMCommon.LOGGER.info("Offering triturating for block -> dusts");
 					if (family.shouldGenerateTags())
 						offerTrituratingRecipe(exporter, family.getItemTag(BlockVariant.BLOCK), family.getVariant(ItemVariant.DUST), family.isBlock2x2() ? 4 : 9, 240, 540);
 					else
 						offerTrituratingRecipe(exporter, family.getVariant(BlockVariant.BLOCK), family.getVariant(ItemVariant.DUST), family.isBlock2x2() ? 4 : 9, 240, 540);
 				}
 				if (family.hasVariant(ItemVariant.RAW_ORE)) {
+					AMCommon.LOGGER.info("Offering triturating for raw ore -> dusts");
 					offerTrituratingRecipe(exporter, family.getTag(ItemVariant.RAW_ORE), family.getVariant(ItemVariant.DUST), 2, 90, 300);
 					offerTrituratingRecipe(exporter, family.getItemTag(BlockVariant.RAW_ORE_BLOCK), family.getVariant(ItemVariant.DUST), 18, 760, 2550);
 				} else {
 					if (family.hasAnyBlockVariants(AMDatagen.ORE_VARIANTS)) {
+						AMCommon.LOGGER.info("Offering triturating for ores -> dusts");
 						offerTrituratingRecipe(exporter, family.getItemTag("ores"), family.getVariant(ItemVariant.DUST), 2, 180, 340);
 					}
 					if (family.hasAnyItemVariants(AMDatagen.CLUSTER_VARIANTS)) {
+						AMCommon.LOGGER.info("Offering triturating for clusters -> dusts");
 						offerTrituratingRecipe(exporter, family.getItemTag("clusters"), family.getVariant(ItemVariant.DUST), 2, 90, 300);
 					}
 				}
@@ -490,27 +523,35 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 
 			if (family.hasVariant(ItemVariant.RAW_ORE)) {
 				if (family.hasAnyBlockVariants(AMDatagen.ORE_VARIANTS)) {
+					AMCommon.LOGGER.info("Offering triturating for ores -> raw ores");
 					offerTrituratingRecipe(exporter, family.getItemTag("ores"), family.getVariant(ItemVariant.RAW_ORE), 2, 180, 340);
 				}
 				if (family.hasAnyItemVariants(AMDatagen.CLUSTER_VARIANTS)) {
+					AMCommon.LOGGER.info("Offering triturating for clusters -> raw ores");
 					offerTrituratingRecipe(exporter, family.getItemTag("clusters"), family.getVariant(ItemVariant.RAW_ORE), 2, 90, 300);
 				}
 			}
 
 			if (family.shouldGenerateRecipe(ItemVariant.NUGGET, ItemVariant.TINY_DUST)) {
+				AMCommon.LOGGER.info("Offering triturating for nugget -> tiny dust");
 				offerTrituratingRecipe(exporter, family.getTag(ItemVariant.NUGGET), family.getVariant(ItemVariant.TINY_DUST), 1, 30, 200);
 			}
 
 			if (family.shouldGenerateRecipe(ItemVariant.PLATE)) {
+				AMCommon.LOGGER.info("Offering pressing for base -> plate");
 				offerPressingRecipe(exporter, family.getBaseTag(), family.getVariant(ItemVariant.PLATE), 1, 80, 340);
 				if (family.hasVariant(BlockVariant.BLOCK)) {
+					AMCommon.LOGGER.info("Offering pressing for block -> plates");
 					offerPressingRecipe(exporter, family.getItemTag(BlockVariant.BLOCK), family.getVariant(ItemVariant.PLATE), family.isBlock2x2() ? 4 : 9, family.isBlock2x2() ? 280 : 680, family.isBlock2x2() ? 1200 : 2900);
 				}
 			}
 
 			if (family.shouldGenerateRecipe(ItemVariant.WIRE)) {
+				AMCommon.LOGGER.info("Offering wire milling for base -> wires");
 				offerWireMillingRecipe(exporter, family.getBaseTag(), family.getVariant(ItemVariant.WIRE), 3, 80, 340);
 			}
+
+			AMCommon.LOGGER.info("Finished offering recipes for "+family.getName());
 		});
 
 		offerSmelting(exporter, List.of(AMBlocks.METEOR_STONE.get()), AMBlocks.SMOOTH_METEOR_STONE.get(), 0.1f, 200, getRecipeName(AMBlocks.SMOOTH_METEOR_STONE.get()));

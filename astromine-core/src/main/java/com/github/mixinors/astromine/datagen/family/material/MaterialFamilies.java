@@ -82,16 +82,6 @@ public class MaterialFamilies {
 			.wire(AMItems.COPPER_WIRE.get())
 			.miningLevel(1).build();
 
-	public static final MaterialFamily NETHERITE = register("netherite", Items.NETHERITE_INGOT, MaterialType.INGOT)
-			.block(Blocks.NETHERITE_BLOCK).nugget(AMItems.NETHERITE_NUGGET.get())
-			.dust(AMItems.NETHERITE_DUST.get(), AMItems.NETHERITE_TINY_DUST.get())
-			.tools(Items.NETHERITE_PICKAXE, Items.NETHERITE_AXE, Items.NETHERITE_SHOVEL, Items.NETHERITE_SWORD, Items.NETHERITE_HOE)
-			.armor(Items.NETHERITE_HELMET, Items.NETHERITE_CHESTPLATE, Items.NETHERITE_LEGGINGS, Items.NETHERITE_BOOTS)
-			.gear(AMItems.NETHERITE_GEAR.get()).plate(AMItems.NETHERITE_PLATE.get())
-			.smithingBase(DIAMOND)
-			.validForBeacon()
-			.miningLevel(3).build();
-
 	// Vanilla Misc
 
 	public static final MaterialFamily COAL = register("coal", Items.COAL, MaterialType.MISC)
@@ -132,6 +122,19 @@ public class MaterialFamilies {
 
 	public static final MaterialFamily SLIME = register("slime", Items.SLIME_BALL, MaterialType.BALL)
 			.block(Blocks.SLIME_BLOCK).build();
+
+	// Vanilla Alloys
+
+	public static final MaterialFamily NETHERITE = register("netherite", Items.NETHERITE_INGOT, MaterialType.INGOT)
+			.block(Blocks.NETHERITE_BLOCK).nugget(AMItems.NETHERITE_NUGGET.get())
+			.dust(AMItems.NETHERITE_DUST.get(), AMItems.NETHERITE_TINY_DUST.get())
+			.tools(Items.NETHERITE_PICKAXE, Items.NETHERITE_AXE, Items.NETHERITE_SHOVEL, Items.NETHERITE_SWORD, Items.NETHERITE_HOE)
+			.armor(Items.NETHERITE_HELMET, Items.NETHERITE_CHESTPLATE, Items.NETHERITE_LEGGINGS, Items.NETHERITE_BOOTS)
+			.gear(AMItems.NETHERITE_GEAR.get()).plate(AMItems.NETHERITE_PLATE.get())
+			.smithingBase(DIAMOND)
+			.alloyIngredients(GOLD, 4, RAW_NETHERITE, 4, 1)
+			.validForBeacon()
+			.miningLevel(3).build();
 
 	// Astromine Gems
 
@@ -191,7 +194,7 @@ public class MaterialFamilies {
 			.tools(AMItems.STEEL_PICKAXE.get(), AMItems.STEEL_AXE.get(), AMItems.STEEL_SHOVEL.get(), AMItems.STEEL_SWORD.get(), AMItems.STEEL_HOE.get())
 			.armor(AMItems.STEEL_HELMET.get(), AMItems.STEEL_CHESTPLATE.get(), AMItems.STEEL_LEGGINGS.get(), AMItems.STEEL_BOOTS.get())
 			.gear(AMItems.STEEL_GEAR.get()).plate(AMItems.STEEL_PLATE.get())
-			.alloyIngredients(IRON, COAL, 1).alloyIngredients(IRON, CHARCOAL, 1)
+			.alloyIngredients(IRON, 1, COAL, 2, 1).alloyIngredients(IRON, CHARCOAL, 1)
 			.validForBeacon()
 			.miningLevel(2).build();
 
@@ -266,7 +269,7 @@ public class MaterialFamilies {
 			.tools(AMItems.METEORIC_STEEL_PICKAXE.get(), AMItems.METEORIC_STEEL_AXE.get(), AMItems.METEORIC_STEEL_SHOVEL.get(), AMItems.METEORIC_STEEL_SWORD.get(), AMItems.METEORIC_STEEL_HOE.get())
 			.armor(AMItems.METEORIC_STEEL_HELMET.get(), AMItems.METEORIC_STEEL_CHESTPLATE.get(), AMItems.METEORIC_STEEL_LEGGINGS.get(), AMItems.METEORIC_STEEL_BOOTS.get())
 			.gear(AMItems.METEORIC_STEEL_GEAR.get()).plate(AMItems.METEORIC_STEEL_PLATE.get())
-			.alloyIngredients(METITE, STEEL)
+			.alloyIngredients(METITE, 2, STEEL, 1)
 			.validForBeacon()
 			.miningLevel(4).build();
 

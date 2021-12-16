@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "tag": "c:univite_tiny_dusts"
+  },
+  "result": "astromine:univite_nugget",
+  "experience": 0.0,
+  "cookingtime": 200
+}

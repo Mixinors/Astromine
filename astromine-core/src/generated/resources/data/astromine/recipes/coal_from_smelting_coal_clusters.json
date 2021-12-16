@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "tag": "c:coal_clusters"
+  },
+  "result": "minecraft:coal",
+  "experience": 0.7,
+  "cookingtime": 200
+}

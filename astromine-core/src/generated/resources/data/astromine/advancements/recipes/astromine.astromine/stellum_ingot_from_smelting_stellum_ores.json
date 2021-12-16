@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:stellum_ingot_from_smelting_stellum_ores"
+    ]
+  },
+  "criteria": {
+    "has_stellum_ores": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:stellum_ores"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:stellum_ingot_from_smelting_stellum_ores"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_stellum_ores",
+      "has_the_recipe"
+    ]
+  ]
+}
