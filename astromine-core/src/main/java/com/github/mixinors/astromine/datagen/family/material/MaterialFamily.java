@@ -108,11 +108,27 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 	}
 
 	public boolean isVariantAstromine(ItemVariant variant) {
-		return hasVariant(variant) && Registry.ITEM.getId(getVariant(variant)).getNamespace().equals(AMCommon.MOD_ID);
+		return isVariantOfNamespace(variant, AMCommon.MOD_ID);
 	}
 
 	public boolean isVariantAstromine(BlockVariant variant) {
-		return hasVariant(variant) && Registry.BLOCK.getId(getVariant(variant)).getNamespace().equals(AMCommon.MOD_ID);
+		return isVariantOfNamespace(variant, AMCommon.MOD_ID);
+	}
+
+	public boolean isVariantVanilla(ItemVariant variant) {
+		return isVariantOfNamespace(variant, "minecraft");
+	}
+
+	public boolean isVariantVanilla(BlockVariant variant) {
+		return isVariantOfNamespace(variant, "minecraft");
+	}
+
+	public boolean isVariantOfNamespace(ItemVariant variant, String namespace) {
+		return hasVariant(variant) && Registry.ITEM.getId(getVariant(variant)).getNamespace().equals(namespace);
+	}
+
+	public boolean isVariantOfNamespace(BlockVariant variant, String namespace) {
+		return hasVariant(variant) && Registry.BLOCK.getId(getVariant(variant)).getNamespace().equals(namespace);
 	}
 
 	public boolean areVariantsAstromine(ItemVariant... variants) {
@@ -195,6 +211,14 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 
 	public boolean hasAnyBlockVariants(Collection<BlockVariant> variants) {
 		return variants.stream().anyMatch(this::hasVariant);
+	}
+
+	public boolean areAnyItemVariantsVanilla(Collection<ItemVariant> variants) {
+		return variants.stream().anyMatch(this::isVariantVanilla);
+	}
+
+	public boolean areAnyBlockVariantsVanilla(Collection<BlockVariant> variants) {
+		return variants.stream().anyMatch(this::isVariantVanilla);
 	}
 
 	public boolean shouldGenerateModel(ItemVariant variant) {

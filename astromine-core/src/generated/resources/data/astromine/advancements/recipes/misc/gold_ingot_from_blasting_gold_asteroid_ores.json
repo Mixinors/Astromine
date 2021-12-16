@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:gold_ingot_from_blasting_gold_asteroid_ores"
+    ]
+  },
+  "criteria": {
+    "has_gold_asteroid_ores": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:gold_asteroid_ores"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:gold_ingot_from_blasting_gold_asteroid_ores"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_gold_asteroid_ores",
+      "has_the_recipe"
+    ]
+  ]
+}

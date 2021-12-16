@@ -442,7 +442,13 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 			}
 			if (family.hasAnyBlockVariants(AMDatagen.ORE_VARIANTS)) {
 				AMCommon.LOGGER.info("Offering smelting and blasting for ores -> base");
-				offerSmeltingAndBlasting(exporter, family.getItemTag("ores"), family.getBaseItem(), family.getOreSmeltingExperience());
+				if(family.areAnyBlockVariantsVanilla(AMDatagen.ORE_VARIANTS)) {
+					AMDatagen.ORE_VARIANTS.stream().filter(family::isVariantAstromine).forEach((variant) -> {
+						offerSmeltingAndBlasting(exporter, family.getItemTag(variant), family.getBaseItem(), family.getOreSmeltingExperience());
+					});
+				} else {
+					offerSmeltingAndBlasting(exporter, family.getItemTag("ores"), family.getBaseItem(), family.getOreSmeltingExperience());
+				}
 			}
 			if (family.hasAnyItemVariants(AMDatagen.CLUSTER_VARIANTS)) {
 				AMCommon.LOGGER.info("Offering smelting and blasting for clusters -> base");
