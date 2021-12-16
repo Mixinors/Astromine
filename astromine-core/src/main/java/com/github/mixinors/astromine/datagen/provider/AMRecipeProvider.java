@@ -104,22 +104,18 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 			BlockFamilies.DEEPSLATE, BlockFamilies.COBBLED_DEEPSLATE
 	)).putAll(VARIANT_FAMILIES).build();
 
-	public static final Map<Block, ItemConvertible> TRITURATED_BLOCKS_1_TO_1_CHEAP = new ImmutableMap.Builder<Block, ItemConvertible>().putAll(Map.of(
-			Blocks.END_STONE_BRICKS, Blocks.END_STONE,
-			Blocks.CHISELED_DEEPSLATE, Blocks.COBBLED_DEEPSLATE,
-			Blocks.SMOOTH_STONE, Blocks.STONE,
-			Blocks.SMOOTH_STONE_SLAB, Blocks.STONE_SLAB,
+	public static final Map<Block, ItemConvertible> CONCRETE_TO_CONCRETE_POWDER = new ImmutableMap.Builder<Block, ItemConvertible>().putAll(Map.of(
 			Blocks.WHITE_CONCRETE, Blocks.WHITE_CONCRETE_POWDER,
 			Blocks.ORANGE_CONCRETE, Blocks.ORANGE_CONCRETE_POWDER,
 			Blocks.MAGENTA_CONCRETE, Blocks.MAGENTA_CONCRETE_POWDER,
 			Blocks.LIGHT_BLUE_CONCRETE, Blocks.LIGHT_BLUE_CONCRETE_POWDER,
 			Blocks.YELLOW_CONCRETE, Blocks.YELLOW_CONCRETE_POWDER,
-			Blocks.LIME_CONCRETE, Blocks.LIME_CONCRETE_POWDER
-	)).putAll(Map.of(
+			Blocks.LIME_CONCRETE, Blocks.LIME_CONCRETE_POWDER,
 			Blocks.PINK_CONCRETE, Blocks.PINK_CONCRETE_POWDER,
 			Blocks.GRAY_CONCRETE, Blocks.GRAY_CONCRETE_POWDER,
 			Blocks.LIGHT_GRAY_CONCRETE, Blocks.LIGHT_GRAY_CONCRETE_POWDER,
-			Blocks.CYAN_CONCRETE, Blocks.CYAN_CONCRETE_POWDER,
+			Blocks.CYAN_CONCRETE, Blocks.CYAN_CONCRETE_POWDER
+	)).putAll(Map.of(
 			Blocks.PURPLE_CONCRETE, Blocks.PURPLE_CONCRETE_POWDER,
 			Blocks.BLUE_CONCRETE, Blocks.BLUE_CONCRETE_POWDER,
 			Blocks.BROWN_CONCRETE, Blocks.BROWN_CONCRETE_POWDER,
@@ -127,6 +123,14 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 			Blocks.RED_CONCRETE, Blocks.RED_CONCRETE_POWDER,
 			Blocks.BLACK_CONCRETE, Blocks.BLACK_CONCRETE_POWDER
 	)).build();
+
+	public static final Map<Block, ItemConvertible> TRITURATED_BLOCKS_1_TO_1_CHEAP = new ImmutableMap.Builder<Block, ItemConvertible>().putAll(Map.of(
+			Blocks.END_STONE_BRICKS, Blocks.END_STONE,
+			Blocks.CHISELED_DEEPSLATE, Blocks.COBBLED_DEEPSLATE,
+			Blocks.SMOOTH_STONE, Blocks.STONE,
+			Blocks.SMOOTH_STONE_SLAB, Blocks.STONE_SLAB,
+			Blocks.SOUL_SOIL, Blocks.SOUL_SAND
+	)).putAll(CONCRETE_TO_CONCRETE_POWDER).build();
 
 	public static final Map<Block, ItemConvertible> TRITURATED_BLOCKS_1_TO_4 = Map.of(
 			Blocks.MAGMA_BLOCK, Items.MAGMA_CREAM,
@@ -154,6 +158,13 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 	public static final Map<Block, ItemConvertible> TRITURATED_BLOCKS_1_TO_1_EXPENSIVE = Map.of(
 			Blocks.COBBLESTONE, Blocks.GRAVEL,
 			Blocks.GRAVEL, Blocks.SAND
+	);
+
+	public static final Map<Tag.Identified<Item>, Integer> BIOFUEL_TAGS = Map.of(
+			AMDatagen.createCommonItemTag("one_biofuel"), 1,
+			AMDatagen.createCommonItemTag("two_biofuel"), 2,
+			AMDatagen.createCommonItemTag("four_biofuel"), 4,
+			AMDatagen.createCommonItemTag("nine_biofuel"), 9
 	);
 
 	public AMRecipeProvider(FabricDataGenerator dataGenerator) {
@@ -508,10 +519,10 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 		offerTrituratingRecipe(exporter, Items.BLAZE_ROD, Items.BLAZE_POWDER, 4, 60, 270);
 		offerTrituratingRecipe(exporter, Items.BONE, Items.BONE_MEAL, 4, 60, 270);
 		offerTrituratingRecipe(exporter, Items.SUGAR_CANE, Items.SUGAR, 2, 60, 270);
-		offerTrituratingRecipe(exporter, AMTagProviders.createCommonItemTag("yellow_sandstones"), Blocks.SAND, 4, 240, 440);
-		offerTrituratingRecipe(exporter, AMTagProviders.createCommonItemTag("red_sandstones"), Blocks.RED_SAND, 4, 240, 440);
-		offerTrituratingRecipe(exporter, AMTagProviders.createCommonItemTag("cut_copper"), AMItems.COPPER_DUST.get(), 1, 240, 440);
-		offerTrituratingRecipe(exporter, AMTagProviders.createCommonItemTag("purpur_blocks"), Items.POPPED_CHORUS_FRUIT, 4, 80, 300);
+		offerTrituratingRecipe(exporter, AMDatagen.createCommonItemTag("yellow_sandstones"), Blocks.SAND, 4, 240, 440);
+		offerTrituratingRecipe(exporter, AMDatagen.createCommonItemTag("red_sandstones"), Blocks.RED_SAND, 4, 240, 440);
+		offerTrituratingRecipe(exporter, AMDatagen.createCommonItemTag("cut_copper"), AMItems.COPPER_DUST.get(), 1, 240, 440);
+		offerTrituratingRecipe(exporter, AMDatagen.createCommonItemTag("purpur_blocks"), Items.POPPED_CHORUS_FRUIT, 4, 80, 300);
 		offerTrituratingRecipe(exporter, ItemTags.WOOL, Items.STRING, 4, 80, 300);
 
 		TRITURATED_BLOCK_FAMILIES.forEach((inputFamily, outputFamily) -> {
@@ -540,6 +551,10 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 
 		TRITURATED_BLOCKS_1_TO_1_EXPENSIVE.forEach((input, output) -> {
 			offerTrituratingRecipe(exporter, input, output, 1, 240, 440);
+		});
+
+		BIOFUEL_TAGS.forEach((tag, count) -> {
+			offerTrituratingRecipe(exporter, tag, AMItems.BIOFUEL.get(), count, 100+(40*count), 100*count);
 		});
 	}
 

@@ -69,8 +69,8 @@ public class AMBlockLootTableProvider extends FabricBlockLootTablesProvider {
 							}
 							addDrop(block, (b) -> oreDrops(block, drop));
 						}
-						case METEOR_ORE -> this.addDrop(block, oreDrops(block, family.getVariant(ItemVariant.METEOR_CLUSTER)));
-						case ASTEROID_ORE -> this.addDrop(block, oreDrops(block, family.getVariant(ItemVariant.ASTEROID_CLUSTER)));
+						case METEOR_ORE -> this.addDrop(block, oreDrops(block, family.getVariant(ItemVariant.METEOR_ORE_CLUSTER)));
+						case ASTEROID_ORE -> this.addDrop(block, oreDrops(block, family.getVariant(ItemVariant.ASTEROID_ORE_CLUSTER)));
 					}
 				}
 			});

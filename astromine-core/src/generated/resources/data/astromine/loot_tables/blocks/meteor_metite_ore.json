@@ -39,7 +39,7 @@
                   "function": "minecraft:explosion_decay"
                 }
               ],
-              "name": "astromine:meteor_metite_cluster"
+              "name": "astromine:meteor_metite_ore_cluster"
             }
           ]
         }

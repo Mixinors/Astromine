@@ -81,7 +81,7 @@ public class MeltingDisplay implements Display {
 
 	@Override
 	public CategoryIdentifier<?> getCategoryIdentifier() {
-		return AMRoughlyEnoughItemsPlugin.PRESSING;
+		return AMRoughlyEnoughItemsPlugin.MELTING;
 	}
 
 	@Override

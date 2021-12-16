@@ -1,7 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "astromine:biofuel",
-    {"id":"techreborn:biofuel","required":false}
-  ]
-}

@@ -3,11 +3,14 @@ package com.github.mixinors.astromine.datagen.family.material.variant;
 import java.util.function.BiConsumer;
 
 import com.github.mixinors.astromine.common.util.WordUtils;
+import com.github.mixinors.astromine.datagen.AMDatagen;
+import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
 import com.github.mixinors.astromine.datagen.provider.AMModelProvider;
 
 import net.minecraft.block.Block;
 import net.minecraft.data.client.model.BlockStateModelGenerator;
 import net.minecraft.item.Item;
+import net.minecraft.tag.BlockTags;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 
@@ -82,5 +85,28 @@ public enum BlockVariant implements Variant<Block> {
 
 	public Tag.Identified<Item> getItemTag() {
 		return TagFactory.ITEM.create(new Identifier("c", getTagPath()));
+	}
+
+	public int getMiningLevel() {
+		return switch(this) {
+			case ASTEROID_ORE, METEOR_ORE -> 4;
+			default -> 0;
+		};
+	}
+
+	public int getMiningLevel(MaterialFamily family) {
+		return Math.max(family.getMiningLevel(), getMiningLevel());
+	}
+
+	public Tag.Identified<Block> getMineableTag() {
+		return BlockTags.PICKAXE_MINEABLE;
+	}
+
+	public AMDatagen.HarvestData getHarvestData() {
+		return new AMDatagen.HarvestData(getMineableTag(), getMiningLevel());
+	}
+
+	public AMDatagen.HarvestData getHarvestData(MaterialFamily family) {
+		return new AMDatagen.HarvestData(getMineableTag(), getMiningLevel(family));
 	}
 }

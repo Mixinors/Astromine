@@ -11,6 +11,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.datagen.AMDatagen;
 import com.github.mixinors.astromine.datagen.family.material.variant.BlockVariant;
 import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant;
 import com.github.mixinors.astromine.datagen.family.material.variant.Variant;
@@ -53,6 +54,7 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 	String alias;
 	private boolean hasEquipment = false;
 	private boolean block2x2;
+	private int miningLevel = 0;
 
 	MaterialFamily(String name, Item baseItem, MaterialType type) {
 		this.baseItem = baseItem;
@@ -347,6 +349,14 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 		return getName().compareTo(o.getName());
 	}
 
+	public int getMiningLevel() {
+		return miningLevel;
+	}
+
+	public AMDatagen.HarvestData getHarvestData(BlockVariant variant) {
+		return variant.getHarvestData(this);
+	}
+
 	public enum MaterialType {
 		INGOT(ItemVariant.INGOT),
 		GEM(ItemVariant.GEM),
@@ -432,15 +442,15 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 			return this;
 		}
 
-		public MaterialFamily.Builder meteorOre(Block meteorOre, Item meteorCluster) {
+		public MaterialFamily.Builder meteorOre(Block meteorOre, Item meteorOreCluster) {
 			this.family.blockVariants.put(BlockVariant.METEOR_ORE, meteorOre);
-			this.family.itemVariants.put(ItemVariant.METEOR_CLUSTER, meteorCluster);
+			this.family.itemVariants.put(ItemVariant.METEOR_ORE_CLUSTER, meteorOreCluster);
 			return this;
 		}
 
-		public MaterialFamily.Builder asteroidOre(Block asteroidOre, Item asteroidCluster) {
+		public MaterialFamily.Builder asteroidOre(Block asteroidOre, Item asteroidOreCluster) {
 			this.family.blockVariants.put(BlockVariant.ASTEROID_ORE, asteroidOre);
-			this.family.itemVariants.put(ItemVariant.ASTEROID_CLUSTER, asteroidCluster);
+			this.family.itemVariants.put(ItemVariant.ASTEROID_ORE_CLUSTER, asteroidOreCluster);
 			return this;
 		}
 
@@ -557,6 +567,11 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 
 		public MaterialFamily.Builder alias(String alias) {
 			this.family.alias = alias;
+			return this;
+		}
+
+		public MaterialFamily.Builder miningLevel(int miningLevel) {
+			this.family.miningLevel = miningLevel;
 			return this;
 		}
 	}

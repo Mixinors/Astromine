@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "#c:bronze_blocks",
+    "#c:electrum_blocks",
+    "#c:lead_blocks",
+    "#c:raw_lead_blocks",
+    "#c:lead_deepslate_ores",
+    "#c:lead_stone_ores",
+    "#c:silver_blocks",
+    "#c:raw_silver_blocks",
+    "#c:silver_deepslate_ores",
+    "#c:silver_stone_ores",
+    "#c:steel_blocks"
+  ]
+}

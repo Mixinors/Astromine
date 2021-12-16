@@ -1,0 +1,24 @@
+{
+  "replace": false,
+  "values": [
+    "astromine:asteroid_stone",
+    "astromine:blazing_asteroid_stone",
+    "astromine:asteroid_stone_bricks",
+    "astromine:polished_asteroid_stone",
+    "astromine:smooth_asteroid_stone",
+    "astromine:asteroid_stone_slab",
+    "astromine:asteroid_stone_brick_slab",
+    "astromine:polished_asteroid_stone_slab",
+    "astromine:smooth_asteroid_stone_slab",
+    "astromine:meteor_stone",
+    "astromine:meteor_stone_bricks",
+    "astromine:polished_meteor_stone",
+    "astromine:smooth_meteor_stone",
+    "astromine:meteor_stone_slab",
+    "astromine:meteor_stone_brick_slab",
+    "astromine:polished_meteor_stone_slab",
+    "astromine:smooth_meteor_stone_slab",
+    "#c:meteor_ores",
+    "#c:asteroid_ores"
+  ]
+}

@@ -59,6 +59,8 @@ import com.github.mixinors.astromine.common.util.NumberUtils;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.google.common.collect.ImmutableList;
+
+import com.mojang.blaze3d.systems.RenderSystem;
 import dev.architectury.fluid.FluidStack;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
@@ -221,14 +223,14 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 		protected void drawBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 			if (background) {
 				Rectangle bounds = getBounds();
-				ClientUtils.getInstance().getTextureManager().bindTexture(ENERGY_BACKGROUND);
-				DrawableHelper.drawTexture(matrices, bounds.x, bounds.y, 0, 0, bounds.width, bounds.height, bounds.width, bounds.height);
-				ClientUtils.getInstance().getTextureManager().bindTexture(ENERGY_FOREGROUND);
+				RenderSystem.setShaderTexture(0, ENERGY_BACKGROUND);
+				drawTexture(matrices, bounds.x, bounds.y, 0, 0, bounds.width, bounds.height, bounds.width, bounds.height);
+				RenderSystem.setShaderTexture(0, ENERGY_FOREGROUND);
 				int height;
 				if (generating)
 					height = bounds.height - MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
 				else height = MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
-				DrawableHelper.drawTexture(matrices, bounds.x, bounds.y + height, 0, height, bounds.width - 1, bounds.height - height - 1, bounds.width, bounds.height);
+				drawTexture(matrices, bounds.x, bounds.y + height, 0, height, bounds.width - 1, bounds.height - height - 1, bounds.width, bounds.height);
 			}
 		}
 
@@ -251,8 +253,8 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 		protected void drawBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 			if (background) {
 				Rectangle bounds = getBounds();
-				ClientUtils.getInstance().getTextureManager().bindTexture(ENERGY_BACKGROUND);
-				DrawableHelper.drawTexture(matrices, bounds.x, bounds.y, 0, 0, bounds.width, bounds.height, bounds.width, bounds.height);
+				RenderSystem.setShaderTexture(0, ENERGY_BACKGROUND);
+				drawTexture(matrices, bounds.x, bounds.y, 0, 0, bounds.width, bounds.height, bounds.width, bounds.height);
 			}
 		}
 

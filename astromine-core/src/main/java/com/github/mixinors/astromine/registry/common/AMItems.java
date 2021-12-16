@@ -51,25 +51,25 @@ public class AMItems {
 	
 	public static final RegistrySupplier<Item> SPACE_SLIME_BALL = register("space_slime_ball", () -> new Item(AMItems.getBasicSettings()));
 	
-	public static final RegistrySupplier<Item> ASTEROID_METITE_CLUSTER = register("asteroid_metite_cluster", () -> new Item(AMItems.getBasicSettings()));
-	public static final RegistrySupplier<Item> ASTEROID_ASTERITE_CLUSTER = register("asteroid_asterite_cluster", () -> new Item(AMItems.getBasicSettings()));
-	public static final RegistrySupplier<Item> ASTEROID_STELLUM_CLUSTER = register("asteroid_stellum_cluster", () -> new Item(AMItems.getBasicSettings().fireproof()));
-	public static final RegistrySupplier<Item> ASTEROID_GALAXIUM_CLUSTER = register("asteroid_galaxium_cluster", () -> new Item(AMItems.getBasicSettings()));
+	public static final RegistrySupplier<Item> ASTEROID_METITE_ORE_CLUSTER = register("asteroid_metite_ore_cluster", () -> new Item(AMItems.getBasicSettings()));
+	public static final RegistrySupplier<Item> ASTEROID_ASTERITE_ORE_CLUSTER = register("asteroid_asterite_ore_cluster", () -> new Item(AMItems.getBasicSettings()));
+	public static final RegistrySupplier<Item> ASTEROID_STELLUM_ORE_CLUSTER = register("asteroid_stellum_ore_cluster", () -> new Item(AMItems.getBasicSettings().fireproof()));
+	public static final RegistrySupplier<Item> ASTEROID_GALAXIUM_ORE_CLUSTER = register("asteroid_galaxium_ore_cluster", () -> new Item(AMItems.getBasicSettings()));
 
-	public static final RegistrySupplier<Item> ASTEROID_TIN_CLUSTER = register("asteroid_tin_cluster", () -> new Item(AMItems.getBasicSettings()));
-	public static final RegistrySupplier<Item> ASTEROID_SILVER_CLUSTER = register("asteroid_silver_cluster", () -> new Item(AMItems.getBasicSettings()));
-	public static final RegistrySupplier<Item> ASTEROID_LEAD_CLUSTER = register("asteroid_lead_cluster", () -> new Item(AMItems.getBasicSettings()));
+	public static final RegistrySupplier<Item> ASTEROID_TIN_ORE_CLUSTER = register("asteroid_tin_ore_cluster", () -> new Item(AMItems.getBasicSettings()));
+	public static final RegistrySupplier<Item> ASTEROID_SILVER_ORE_CLUSTER = register("asteroid_silver_ore_cluster", () -> new Item(AMItems.getBasicSettings()));
+	public static final RegistrySupplier<Item> ASTEROID_LEAD_ORE_CLUSTER = register("asteroid_lead_ore_cluster", () -> new Item(AMItems.getBasicSettings()));
 
-	public static final RegistrySupplier<Item> ASTEROID_IRON_CLUSTER = register("asteroid_iron_cluster", () -> new Item(AMItems.getBasicSettings()));
-	public static final RegistrySupplier<Item> ASTEROID_GOLD_CLUSTER = register("asteroid_gold_cluster", () -> new Item(AMItems.getBasicSettings()));
-	public static final RegistrySupplier<Item> ASTEROID_COPPER_CLUSTER = register("asteroid_copper_cluster", () -> new Item(AMItems.getBasicSettings()));
+	public static final RegistrySupplier<Item> ASTEROID_IRON_ORE_CLUSTER = register("asteroid_iron_ore_cluster", () -> new Item(AMItems.getBasicSettings()));
+	public static final RegistrySupplier<Item> ASTEROID_GOLD_ORE_CLUSTER = register("asteroid_gold_ore_cluster", () -> new Item(AMItems.getBasicSettings()));
+	public static final RegistrySupplier<Item> ASTEROID_COPPER_ORE_CLUSTER = register("asteroid_copper_ore_cluster", () -> new Item(AMItems.getBasicSettings()));
 
-	public static final RegistrySupplier<Item> ASTEROID_DIAMOND_CLUSTER = register("asteroid_diamond_cluster", () -> new Item(AMItems.getBasicSettings()));
-	public static final RegistrySupplier<Item> ASTEROID_EMERALD_CLUSTER = register("asteroid_emerald_cluster", () -> new Item(AMItems.getBasicSettings()));
+	public static final RegistrySupplier<Item> ASTEROID_DIAMOND_ORE_CLUSTER = register("asteroid_diamond_ore_cluster", () -> new Item(AMItems.getBasicSettings()));
+	public static final RegistrySupplier<Item> ASTEROID_EMERALD_ORE_CLUSTER = register("asteroid_emerald_ore_cluster", () -> new Item(AMItems.getBasicSettings()));
 
-	public static final RegistrySupplier<Item> ASTEROID_COAL_CLUSTER = register("asteroid_coal_cluster", () -> new Item(AMItems.getBasicSettings()));
-	public static final RegistrySupplier<Item> ASTEROID_LAPIS_CLUSTER = register("asteroid_lapis_cluster", () -> new Item(AMItems.getBasicSettings()));
-	public static final RegistrySupplier<Item> ASTEROID_REDSTONE_CLUSTER = register("asteroid_redstone_cluster", () -> new Item(AMItems.getBasicSettings()));
+	public static final RegistrySupplier<Item> ASTEROID_COAL_ORE_CLUSTER = register("asteroid_coal_ore_cluster", () -> new Item(AMItems.getBasicSettings()));
+	public static final RegistrySupplier<Item> ASTEROID_LAPIS_ORE_CLUSTER = register("asteroid_lapis_ore_cluster", () -> new Item(AMItems.getBasicSettings()));
+	public static final RegistrySupplier<Item> ASTEROID_REDSTONE_ORE_CLUSTER = register("asteroid_redstone_ore_cluster", () -> new Item(AMItems.getBasicSettings()));
 
 	public static final RegistrySupplier<Item> PRIMITIVE_ROCKET_FUEL_TANK = register("primitive_rocket_fuel_tank", () -> new Item(AMItems.getBasicSettings().maxCount(1)));
 	public static final RegistrySupplier<Item> PRIMITIVE_ROCKET_PLATING = register("primitive_rocket_plating", () -> new Item(AMItems.getBasicSettings().maxCount(1)));
@@ -332,7 +332,7 @@ public class AMItems {
 	public static final RegistrySupplier<Item> METEORIC_STEEL_LEGGINGS = register("meteoric_steel_leggings", () -> new ArmorItem(AMArmorMaterials.METEORIC_STEEL, EquipmentSlot.LEGS, AMItems.getBasicSettings()));
 	public static final RegistrySupplier<Item> METEORIC_STEEL_BOOTS = register("meteoric_steel_boots", () -> new ArmorItem(AMArmorMaterials.METEORIC_STEEL, EquipmentSlot.FEET, AMItems.getBasicSettings()));
 	
-	public static final RegistrySupplier<Item> METEOR_METITE_CLUSTER = register("meteor_metite_cluster", () -> new Item(AMItems.getBasicSettings()));
+	public static final RegistrySupplier<Item> METEOR_METITE_ORE_CLUSTER = register("meteor_metite_ore_cluster", () -> new Item(AMItems.getBasicSettings()));
 	
 	public static final RegistrySupplier<Item> FIRE_EXTINGUISHER = register("fire_extinguisher", () -> new FireExtinguisherItem(AMItems.getBasicSettings().maxCount(1)));
 	

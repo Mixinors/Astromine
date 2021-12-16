@@ -39,7 +39,7 @@
                   "function": "minecraft:explosion_decay"
                 }
               ],
-              "name": "astromine:asteroid_galaxium_cluster"
+              "name": "astromine:asteroid_galaxium_ore_cluster"
             }
           ]
         }
