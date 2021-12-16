@@ -55,94 +55,6 @@ public class AMModelProvider extends FabricBlockStateDefinitionProvider {
 			AMBlocks.NUCLEAR_WARHEAD.get()
 	);
 
-	public static final Set<Block> MACHINES = Set.of(
-			AMBlocks.PRIMITIVE_TANK.get(),
-			AMBlocks.BASIC_TANK.get(),
-			AMBlocks.ADVANCED_TANK.get(),
-			AMBlocks.ELITE_TANK.get(),
-			AMBlocks.CREATIVE_TANK.get(),
-
-			AMBlocks.PRIMITIVE_SOLID_GENERATOR.get(),
-			AMBlocks.BASIC_SOLID_GENERATOR.get(),
-			AMBlocks.ADVANCED_SOLID_GENERATOR.get(),
-			AMBlocks.ELITE_SOLID_GENERATOR.get(),
-
-			AMBlocks.PRIMITIVE_LIQUID_GENERATOR.get(),
-			AMBlocks.BASIC_LIQUID_GENERATOR.get(),
-			AMBlocks.ADVANCED_LIQUID_GENERATOR.get(),
-			AMBlocks.ELITE_LIQUID_GENERATOR.get(),
-
-			AMBlocks.PRIMITIVE_ELECTRIC_FURNACE.get(),
-			AMBlocks.BASIC_ELECTRIC_FURNACE.get(),
-			AMBlocks.ADVANCED_ELECTRIC_FURNACE.get(),
-			AMBlocks.ELITE_ELECTRIC_FURNACE.get(),
-
-			AMBlocks.PRIMITIVE_ALLOY_SMELTER.get(),
-			AMBlocks.BASIC_ALLOY_SMELTER.get(),
-			AMBlocks.ADVANCED_ALLOY_SMELTER.get(),
-			AMBlocks.ELITE_ALLOY_SMELTER.get(),
-
-			AMBlocks.PRIMITIVE_TRITURATOR.get(),
-			AMBlocks.BASIC_TRITURATOR.get(),
-			AMBlocks.ADVANCED_TRITURATOR.get(),
-			AMBlocks.ELITE_TRITURATOR.get(),
-
-			AMBlocks.PRIMITIVE_PRESSER.get(),
-			AMBlocks.BASIC_PRESSER.get(),
-			AMBlocks.ADVANCED_PRESSER.get(),
-			AMBlocks.ELITE_PRESSER.get(),
-
-			AMBlocks.PRIMITIVE_WIREMILL.get(),
-			AMBlocks.BASIC_WIREMILL.get(),
-			AMBlocks.ADVANCED_WIREMILL.get(),
-			AMBlocks.ELITE_WIREMILL.get(),
-
-			AMBlocks.PRIMITIVE_ELECTROLYZER.get(),
-			AMBlocks.BASIC_ELECTROLYZER.get(),
-			AMBlocks.ADVANCED_ELECTROLYZER.get(),
-			AMBlocks.ELITE_ELECTROLYZER.get(),
-
-			AMBlocks.PRIMITIVE_REFINERY.get(),
-			AMBlocks.BASIC_REFINERY.get(),
-			AMBlocks.ADVANCED_REFINERY.get(),
-			AMBlocks.ELITE_REFINERY.get(),
-
-			AMBlocks.PRIMITIVE_FLUID_MIXER.get(),
-			AMBlocks.BASIC_FLUID_MIXER.get(),
-			AMBlocks.ADVANCED_FLUID_MIXER.get(),
-			AMBlocks.ELITE_FLUID_MIXER.get(),
-
-			AMBlocks.PRIMITIVE_SOLIDIFIER.get(),
-			AMBlocks.BASIC_SOLIDIFIER.get(),
-			AMBlocks.ADVANCED_SOLIDIFIER.get(),
-			AMBlocks.ELITE_SOLIDIFIER.get(),
-
-			AMBlocks.PRIMITIVE_MELTER.get(),
-			AMBlocks.BASIC_MELTER.get(),
-			AMBlocks.ADVANCED_MELTER.get(),
-			AMBlocks.ELITE_MELTER.get(),
-
-			AMBlocks.PRIMITIVE_BUFFER.get(),
-			AMBlocks.BASIC_BUFFER.get(),
-			AMBlocks.ADVANCED_BUFFER.get(),
-			AMBlocks.ELITE_BUFFER.get(),
-			AMBlocks.CREATIVE_BUFFER.get(),
-
-			AMBlocks.PRIMITIVE_CAPACITOR.get(),
-			AMBlocks.BASIC_CAPACITOR.get(),
-			AMBlocks.ADVANCED_CAPACITOR.get(),
-			AMBlocks.ELITE_CAPACITOR.get(),
-			AMBlocks.CREATIVE_CAPACITOR.get(),
-
-			AMBlocks.VENT.get(),
-
-			AMBlocks.FLUID_EXTRACTOR.get(),
-			AMBlocks.FLUID_INSERTER.get(),
-
-			AMBlocks.BLOCK_BREAKER.get(),
-			AMBlocks.BLOCK_PLACER.get()
-	);
-
 	/**
 	 * Items with the GENERATED model
 	 */
@@ -307,7 +219,7 @@ public class AMModelProvider extends FabricBlockStateDefinitionProvider {
 			registerCauldron(blockStateModelGenerator, fluid.getCauldron());
 		});
 
-		MACHINES.forEach((block) -> {
+		AMDatagen.MACHINES.forEach((block) -> {
 			registerMachine(blockStateModelGenerator, block);
 			blockStateModelGenerator.registerParentedItemModel(block, ModelIds.getBlockModelId(block));
 		});

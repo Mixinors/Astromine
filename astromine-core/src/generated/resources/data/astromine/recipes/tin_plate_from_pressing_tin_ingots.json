@@ -1,0 +1,12 @@
+{
+  "type": "astromine:pressing",
+  "input": {
+    "tag": "c:tin_ingots"
+  },
+  "output": {
+    "item": "astromine:tin_plate",
+    "count": 1
+  },
+  "time": 80,
+  "energy_input": 340
+}

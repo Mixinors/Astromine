@@ -1,0 +1,12 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "tag": "c:metite_clusters"
+  },
+  "output": {
+    "item": "astromine:metite_dust",
+    "count": 2
+  },
+  "time": 90,
+  "energy_input": 300
+}

@@ -1,0 +1,12 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "item": "minecraft:honeycomb_block"
+  },
+  "output": {
+    "item": "minecraft:honeycomb",
+    "count": 4
+  },
+  "time": 80,
+  "energy_input": 300
+}

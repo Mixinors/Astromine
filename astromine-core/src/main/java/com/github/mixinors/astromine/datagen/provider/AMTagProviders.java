@@ -6,15 +6,18 @@ import java.util.Set;
 
 import com.google.common.collect.ImmutableMap;
 
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.datagen.AMDatagen;
 import com.github.mixinors.astromine.datagen.family.block.AMBlockFamilies;
 import com.github.mixinors.astromine.datagen.family.material.MaterialFamilies;
 import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
 import com.github.mixinors.astromine.datagen.family.material.variant.BlockVariant;
 import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant;
+import com.github.mixinors.astromine.registry.common.AMItems;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.data.family.BlockFamilies;
 import net.minecraft.data.family.BlockFamily;
 import net.minecraft.fluid.Fluid;
@@ -160,6 +163,70 @@ public class AMTagProviders {
 					oresTagBuilder.addTag(variant.getTag());
 				}
 			});
+
+			Tag.Identified<Block> yellowSandstonesTag = createCommonBlockTag("yellow_sandstones");
+			getOrCreateTagBuilder(yellowSandstonesTag)
+					.add(Blocks.SANDSTONE)
+					.add(Blocks.CHISELED_SANDSTONE)
+					.add(Blocks.CUT_SANDSTONE)
+					.add(Blocks.SMOOTH_SANDSTONE);
+
+			Tag.Identified<Block> redSandstonesTag = createCommonBlockTag("red_sandstones");
+			getOrCreateTagBuilder(redSandstonesTag)
+					.add(Blocks.RED_SANDSTONE)
+					.add(Blocks.CHISELED_RED_SANDSTONE)
+					.add(Blocks.CUT_RED_SANDSTONE)
+					.add(Blocks.SMOOTH_RED_SANDSTONE);
+
+			getOrCreateTagBuilder(createCommonBlockTag("sandstones"))
+					.addTag(yellowSandstonesTag)
+					.addTag(redSandstonesTag);
+
+			getOrCreateTagBuilder(createCommonBlockTag("quartz_blocks"))
+					.add(Blocks.QUARTZ_BLOCK)
+					.add(Blocks.QUARTZ_BRICKS)
+					.add(Blocks.QUARTZ_PILLAR)
+					.add(Blocks.CHISELED_QUARTZ_BLOCK);
+
+			Tag.Identified<Block> unwaxedCopperBlocksTag = createCommonBlockTag("unwaxed_copper_blocks");
+			getOrCreateTagBuilder(unwaxedCopperBlocksTag)
+					.add(Blocks.COPPER_BLOCK)
+					.add(Blocks.EXPOSED_COPPER)
+					.add(Blocks.WEATHERED_COPPER)
+					.add(Blocks.OXIDIZED_COPPER);
+
+			Tag.Identified<Block> waxedCopperBlocksTag = createCommonBlockTag("waxed_copper_blocks");
+			getOrCreateTagBuilder(waxedCopperBlocksTag)
+					.add(Blocks.WAXED_COPPER_BLOCK)
+					.add(Blocks.WAXED_EXPOSED_COPPER)
+					.add(Blocks.WAXED_WEATHERED_COPPER)
+					.add(Blocks.WAXED_OXIDIZED_COPPER);
+
+			getOrCreateTagBuilder(createCommonBlockTag("copper_blocks"))
+					.addTag(unwaxedCopperBlocksTag)
+					.addTag(waxedCopperBlocksTag);
+
+			Tag.Identified<Block> unwaxedCutCopperTag = createCommonBlockTag("unwaxed_cut_copper");
+			getOrCreateTagBuilder(unwaxedCutCopperTag)
+					.add(Blocks.CUT_COPPER)
+					.add(Blocks.EXPOSED_CUT_COPPER)
+					.add(Blocks.WEATHERED_CUT_COPPER)
+					.add(Blocks.OXIDIZED_CUT_COPPER);
+
+			Tag.Identified<Block> waxedCutCopperTag = createCommonBlockTag("waxed_cut_copper");
+			getOrCreateTagBuilder(waxedCutCopperTag)
+					.add(Blocks.WAXED_CUT_COPPER)
+					.add(Blocks.WAXED_EXPOSED_CUT_COPPER)
+					.add(Blocks.WAXED_WEATHERED_CUT_COPPER)
+					.add(Blocks.WAXED_OXIDIZED_CUT_COPPER);
+
+			getOrCreateTagBuilder(createCommonBlockTag("cut_copper"))
+					.addTag(unwaxedCutCopperTag)
+					.addTag(waxedCutCopperTag);
+
+			getOrCreateTagBuilder(createCommonBlockTag("purpur_blocks"))
+					.add(Blocks.PURPUR_BLOCK)
+					.add(Blocks.PURPUR_PILLAR);
 		}
 	}
 
@@ -168,6 +235,27 @@ public class AMTagProviders {
 				AMDatagen.CLUSTER_VARIANTS, createCommonTagId("clusters"),
 				AMDatagen.ARMOR_VARIANTS, createCommonTagId("armor"),
 				AMDatagen.TOOL_VARIANTS, createCommonTagId("tools")
+		);
+
+		public static final List<Identifier> COPY = List.of(
+				createCommonTagId("yellow_sandstones"),
+				createCommonTagId("red_sandstones"),
+				createCommonTagId("sandstones"),
+				createCommonTagId("quartz_blocks"),
+				createCommonTagId("unwaxed_copper_blocks"),
+				createCommonTagId("waxed_copper_blocks"),
+				createCommonTagId("copper_blocks"),
+				createCommonTagId("unwaxed_cut_copper"),
+				createCommonTagId("waxed_cut_copper"),
+				createCommonTagId("cut_copper"),
+				createCommonTagId("purpur_blocks")
+		);
+
+		public static final List<Item> DRILLS = List.of(
+				AMItems.PRIMITIVE_DRILL.get(),
+				AMItems.BASIC_DRILL.get(),
+				AMItems.ADVANCED_DRILL.get(),
+				AMItems.ELITE_DRILL.get()
 		);
 
 		public AMItemTagProvider(FabricDataGenerator dataGenerator, @Nullable BlockTagProvider blockTagProvider) {
@@ -351,9 +439,12 @@ public class AMTagProviders {
 				});
 			});
 
-			AMDatagen.TOOL_VARIANTS.forEach((variant) -> {
-				getOrCreateTagBuilder(createItemTag(new Identifier("fabric", variant.getTagPath()))).addTag(variant.getTag());
-			});
+			AMDatagen.TOOL_VARIANTS.forEach((variant) -> getOrCreateTagBuilder(createItemTag(new Identifier("fabric", variant.getTagPath()))).addTag(variant.getTag()));
+
+			FabricTagBuilder<Item> drillsTagBuilder = getOrCreateTagBuilder(createItemTag(AMCommon.id("drills")));
+			DRILLS.forEach(drillsTagBuilder::add);
+
+			COPY.forEach((id -> copy(createBlockTag(id), createItemTag(id))));
 		}
 	}
 

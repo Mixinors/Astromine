@@ -1,0 +1,12 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "tag": "c:galaxium_salvageables"
+  },
+  "output": {
+    "item": "astromine:galaxium_tiny_dust",
+    "count": 2
+  },
+  "time": 30,
+  "energy_input": 200
+}

@@ -1,0 +1,12 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "tag": "c:stellum_nuggets"
+  },
+  "output": {
+    "item": "astromine:stellum_tiny_dust",
+    "count": 1
+  },
+  "time": 30,
+  "energy_input": 200
+}

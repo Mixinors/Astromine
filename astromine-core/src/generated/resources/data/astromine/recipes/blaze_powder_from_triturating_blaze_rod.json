@@ -1,0 +1,12 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "item": "minecraft:blaze_rod"
+  },
+  "output": {
+    "item": "minecraft:blaze_powder",
+    "count": 4
+  },
+  "time": 60,
+  "energy_input": 270
+}

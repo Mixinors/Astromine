@@ -40,6 +40,7 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 	boolean generateModels = true;
 	boolean generateRecipes = true;
 	boolean generateTags = true;
+	boolean generateLootTables = true;
 	@Nullable
 	String group;
 	@Nullable
@@ -202,6 +203,10 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 		return shouldGenerateModels() && hasVariant(variant) && isVariantAstromine(variant);
 	}
 
+	public boolean shouldGenerateLootTable(BlockVariant variant) {
+		return shouldGenerateLootTables() && hasVariant(variant) && isVariantAstromine(variant);
+	}
+
 	public boolean shouldGenerateModels() {
 		return this.generateModels;
 	}
@@ -212,6 +217,10 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 
 	public boolean shouldGenerateTags() {
 		return this.generateTags;
+	}
+
+	public boolean shouldGenerateLootTables() {
+		return this.generateLootTables;
 	}
 
 	public boolean isPiglinLoved() {
@@ -434,9 +443,12 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 			return this;
 		}
 
-		public MaterialFamily.Builder dust(Item dust, Item tinyDust) {
+		public MaterialFamily.Builder dust(Item dust) {
 			this.family.itemVariants.put(ItemVariant.DUST, dust);
-			return this.tinyDust(tinyDust);
+			return this;
+		}
+		public MaterialFamily.Builder dust(Item dust, Item tinyDust) {
+			return this.dust(dust).tinyDust(tinyDust);
 		}
 
 		public MaterialFamily.Builder tinyDust(Item tinyDust) {
@@ -481,6 +493,11 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 
 		public MaterialFamily.Builder noGenerateTags() {
 			this.family.generateTags = false;
+			return this;
+		}
+
+		public MaterialFamily.Builder noGenerateLootTables() {
+			this.family.generateLootTables = false;
 			return this;
 		}
 

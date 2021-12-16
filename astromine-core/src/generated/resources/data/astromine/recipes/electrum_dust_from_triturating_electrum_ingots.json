@@ -1,0 +1,12 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "tag": "c:electrum_ingots"
+  },
+  "output": {
+    "item": "astromine:electrum_dust",
+    "count": 1
+  },
+  "time": 60,
+  "energy_input": 270
+}

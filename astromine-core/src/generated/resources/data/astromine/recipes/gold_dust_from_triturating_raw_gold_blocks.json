@@ -1,0 +1,12 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "tag": "c:raw_gold_blocks"
+  },
+  "output": {
+    "item": "astromine:gold_dust",
+    "count": 18
+  },
+  "time": 760,
+  "energy_input": 2550
+}

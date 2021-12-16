@@ -1,0 +1,12 @@
+{
+  "type": "astromine:pressing",
+  "input": {
+    "tag": "c:meteoric_steel_ingots"
+  },
+  "output": {
+    "item": "astromine:meteoric_steel_plate",
+    "count": 1
+  },
+  "time": 80,
+  "energy_input": 340
+}

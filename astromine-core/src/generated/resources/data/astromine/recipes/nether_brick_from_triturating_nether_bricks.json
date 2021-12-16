@@ -1,0 +1,12 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "item": "minecraft:nether_bricks"
+  },
+  "output": {
+    "item": "minecraft:nether_brick",
+    "count": 4
+  },
+  "time": 80,
+  "energy_input": 300
+}

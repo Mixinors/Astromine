@@ -1,0 +1,12 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "item": "minecraft:polished_blackstone_stairs"
+  },
+  "output": {
+    "item": "minecraft:blackstone_stairs",
+    "count": 1
+  },
+  "time": 80,
+  "energy_input": 300
+}

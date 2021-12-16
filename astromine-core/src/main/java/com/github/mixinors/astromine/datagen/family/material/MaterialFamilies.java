@@ -11,6 +11,7 @@ import com.github.mixinors.astromine.registry.common.AMItems;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.Items;
 import net.minecraft.util.registry.Registry;
 
@@ -250,11 +251,11 @@ public class MaterialFamilies {
 			.alias("slime").build();
 
 
-	public static MaterialFamily.Builder register(String name, Item baseItem, MaterialType materialType) {
-		MaterialFamily.Builder builder = new MaterialFamily.Builder(name, baseItem, materialType);
-		MaterialFamily materialFamily = BASE_ITEMS_TO_FAMILIES.put(baseItem, builder.build());
+	public static MaterialFamily.Builder register(String name, ItemConvertible baseItem, MaterialType materialType) {
+		MaterialFamily.Builder builder = new MaterialFamily.Builder(name, baseItem.asItem(), materialType);
+		MaterialFamily materialFamily = BASE_ITEMS_TO_FAMILIES.put(baseItem.asItem(), builder.build());
 		if (materialFamily != null) {
-			throw new IllegalStateException("Duplicate family definition for " + Registry.ITEM.getId(baseItem));
+			throw new IllegalStateException("Duplicate family definition for " + Registry.ITEM.getId(baseItem.asItem()));
 		}
 		return builder;
 	}

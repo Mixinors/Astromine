@@ -21,7 +21,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "astromine:gears"
+            "tag": "c:gears"
           }
         ]
       }
