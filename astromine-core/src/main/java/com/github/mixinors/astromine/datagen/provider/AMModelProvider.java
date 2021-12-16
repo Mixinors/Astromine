@@ -5,13 +5,11 @@ import java.util.Set;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
-import com.github.mixinors.astromine.common.fluid.ExtendedFluid;
 import com.github.mixinors.astromine.datagen.AMDatagen;
 import com.github.mixinors.astromine.datagen.family.block.AMBlockFamilies;
 import com.github.mixinors.astromine.datagen.family.material.MaterialFamilies;
 import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-import com.github.mixinors.astromine.registry.common.AMFluids;
 import com.github.mixinors.astromine.registry.common.AMItems;
 
 import net.minecraft.block.Block;
@@ -62,29 +60,29 @@ public class AMModelProvider extends FabricBlockStateDefinitionProvider {
 			AMItems.ENERGY.get(),
 			AMItems.FLUID.get(),
 			AMItems.ITEM.get(),
-			
+
 			AMItems.MANUAL.get(),
-			
+
 			AMItems.SPACE_SLIME_SPAWN_EGG.get(),
-			
+
 			AMItems.SPACE_SLIME_BALL.get(),
-			
+
 			AMItems.BIOFUEL.get(),
-			
+
 			AMItems.MACHINE_CHASSIS.get(),
-			
+
 			AMItems.BASIC_MACHINE_UPGRADE_KIT.get(),
 			AMItems.ADVANCED_MACHINE_UPGRADE_KIT.get(),
 			AMItems.ELITE_MACHINE_UPGRADE_KIT.get(),
-			
+
 			AMItems.PRIMITIVE_PLATING.get(),
 			AMItems.BASIC_PLATING.get(),
 			AMItems.ADVANCED_PLATING.get(),
 			AMItems.ELITE_PLATING.get(),
-			
+
 			AMItems.PORTABLE_TANK.get(),
 			AMItems.LARGE_PORTABLE_TANK.get(),
-			
+
 			AMItems.PRIMITIVE_CIRCUIT.get(),
 			AMItems.BASIC_CIRCUIT.get(),
 			AMItems.ADVANCED_CIRCUIT.get(),
@@ -123,9 +121,9 @@ public class AMModelProvider extends FabricBlockStateDefinitionProvider {
 			AMItems.BASIC_DRILL.get(),
 			AMItems.ADVANCED_DRILL.get(),
 			AMItems.ELITE_DRILL.get(),
-			
+
 			AMItems.DRILL_HEAD.get(),
-			
+
 			AMItems.PRIMITIVE_DRILL_BASE.get(),
 			AMItems.BASIC_DRILL_BASE.get(),
 			AMItems.ADVANCED_DRILL_BASE.get(),

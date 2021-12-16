@@ -3,7 +3,6 @@ package com.github.mixinors.astromine.datagen.family.material.variant;
 import java.util.function.BiConsumer;
 
 import com.github.mixinors.astromine.common.util.WordUtils;
-import org.lwjgl.system.CallbackI;
 
 import net.minecraft.data.client.ItemModelGenerator;
 import net.minecraft.data.client.model.Models;
@@ -99,7 +98,7 @@ public enum ItemVariant implements Variant<Item> {
 
 	@Override
 	public boolean hasTag() {
-		return switch(this) {
+		return switch (this) {
 			case MISC, BALL -> false;
 			default -> true;
 		};

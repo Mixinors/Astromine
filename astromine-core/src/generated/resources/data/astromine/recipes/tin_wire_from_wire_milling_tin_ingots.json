@@ -1,11 +1,10 @@
 {
   "type": "astromine:wire_milling",
   "input": {
-    "item": "minecraft:copper_ingot",
-    "count": 1
+    "tag": "c:tin_ingots"
   },
   "output": {
-    "item": "astromine:copper_wire",
+    "item": "astromine:tin_wire",
     "count": 3
   },
   "time": 80,

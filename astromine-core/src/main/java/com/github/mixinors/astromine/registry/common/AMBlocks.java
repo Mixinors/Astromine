@@ -26,9 +26,7 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.common.block.*;
 import dev.architectury.registry.block.BlockProperties;
-import dev.architectury.registry.block.ToolType;
 import dev.architectury.registry.registries.RegistrySupplier;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 
 import net.minecraft.block.*;
 import net.minecraft.item.BlockItem;
@@ -241,7 +239,7 @@ public class AMBlocks {
 	
 	public static final RegistrySupplier<Block> DRAIN = register("drain", () -> new DrainBlock(getBasicSettings()), AMItems.getBasicSettings());
 	
-	public static final RegistrySupplier<Block> FLUID_CABLE = register("fluid_pipe", () -> new FluidPipeBlock(BlockProperties.of(Material.METAL)/*TODO replace with tag tool(ToolType.PICKAXE, 1)*/.requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
+	public static final RegistrySupplier<Block> FLUID_PIPE = register("fluid_pipe", () -> new FluidPipeBlock(BlockProperties.of(Material.METAL)/*TODO replace with tag tool(ToolType.PICKAXE, 1)*/.requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
 	
 	public static final RegistrySupplier<Block> PRIMITIVE_ENERGY_CABLE = register("primitive_energy_cable", () -> new EnergyCableBlock(AMConfig.get().primitiveEnergyCableEnergy, BlockProperties.of(Material.METAL)/*TODO replace with tag tool(ToolType.PICKAXE, 1)*/.requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());
 	public static final RegistrySupplier<Block> BASIC_ENERGY_CABLE = register("basic_energy_cable", () -> new EnergyCableBlock(AMConfig.get().basicEnergyCableEnergy, BlockProperties.of(Material.METAL)/*TODO replace with tag tool(ToolType.PICKAXE, 1)*/.requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getBasicSettings());

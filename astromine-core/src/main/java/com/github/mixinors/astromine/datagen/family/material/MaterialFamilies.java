@@ -94,7 +94,7 @@ public class MaterialFamilies {
 			.asteroidOre(AMBlocks.ASTEROID_COAL_ORE.get(), AMItems.ASTEROID_COAL_CLUSTER.get())
 			.dust(AMItems.COAL_DUST.get(), AMItems.COAL_TINY_DUST.get()).build();
 
-	public static final MaterialFamily REDSTONE = register("redstone",Items.REDSTONE, MaterialType.DUST)
+	public static final MaterialFamily REDSTONE = register("redstone", Items.REDSTONE, MaterialType.DUST)
 			.block(Blocks.REDSTONE_BLOCK)
 			.overworldOre(Blocks.REDSTONE_ORE, Blocks.DEEPSLATE_REDSTONE_ORE)
 			.asteroidOre(AMBlocks.ASTEROID_REDSTONE_ORE.get(), AMItems.ASTEROID_REDSTONE_CLUSTER.get())

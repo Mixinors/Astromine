@@ -2,11 +2,12 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1,
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "astromine:asteroid_stone_bricks"
+          "name": "astromine:asteroid_stone"
         }
       ],
       "conditions": [

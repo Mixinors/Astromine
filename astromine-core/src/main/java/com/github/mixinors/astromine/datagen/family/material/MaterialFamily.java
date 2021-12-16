@@ -262,12 +262,13 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 	}
 
 	public Identifier getTagId(Variant<?> variant) {
-		if(getBaseVariant().equals(variant) && baseTagPathOverride != null) return new Identifier("c", baseTagPathOverride);
+		if (getBaseVariant().equals(variant) && baseTagPathOverride != null)
+			return new Identifier("c", baseTagPathOverride);
 		else return variant.getTagId(this);
 	}
 
 	public Identifier getTagId(String variant) {
-		return new Identifier("c", name+"_"+variant);
+		return new Identifier("c", name + "_" + variant);
 	}
 
 	public Identifier getAliasTagId(Variant<?> variant) {
@@ -275,7 +276,7 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 	}
 
 	public Identifier getAliasTagId(String variant) {
-		return new Identifier("c", alias+"_"+variant);
+		return new Identifier("c", alias + "_" + variant);
 	}
 
 	public <T extends ItemConvertible> Tag.Identified<T> getTag(Variant<T> variant) {
@@ -447,6 +448,7 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 			this.family.itemVariants.put(ItemVariant.DUST, dust);
 			return this;
 		}
+
 		public MaterialFamily.Builder dust(Item dust, Item tinyDust) {
 			return this.dust(dust).tinyDust(tinyDust);
 		}

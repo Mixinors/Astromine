@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 
 import com.github.mixinors.astromine.common.fluid.ExtendedFluid;
 import com.github.mixinors.astromine.datagen.family.block.AMBlockFamilies;

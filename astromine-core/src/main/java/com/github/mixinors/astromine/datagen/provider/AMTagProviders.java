@@ -2,7 +2,6 @@ package com.github.mixinors.astromine.datagen.provider;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -18,7 +17,6 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.data.family.BlockFamilies;
 import net.minecraft.data.family.BlockFamily;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
@@ -97,51 +95,51 @@ public class AMTagProviders {
 				family.getBlockTags().forEach((variant, tag) -> {
 					getOrCreateTagBuilder(tag).add(family.getVariant(variant));
 
-					if(family.hasAlias()) {
+					if (family.hasAlias()) {
 						getOrCreateTagBuilder(family.getAliasTag(variant)).addTag(tag);
 					}
 
-					if(family.isPiglinLoved()) {
+					if (family.isPiglinLoved()) {
 						guardedByPiglinsTagBuilder.addTag(tag);
 
-						if(family.hasAlias()) {
+						if (family.hasAlias()) {
 							guardedByPiglinsTagBuilder.addTag(family.getAliasTag(variant));
 						}
 					}
 
-					if(variant.hasTag()) {
+					if (variant.hasTag()) {
 						getOrCreateTagBuilder(variant.getTag()).addTag(tag);
 
-						if(family.hasAlias()) {
+						if (family.hasAlias()) {
 							getOrCreateTagBuilder(variant.getTag()).addTag(family.getAliasTag(variant));
 						}
 					}
 				});
 
-				if(family.hasAnyBlockVariants(AMDatagen.ORE_VARIANTS)) {
+				if (family.hasAnyBlockVariants(AMDatagen.ORE_VARIANTS)) {
 					Tag.Identified<Block> oresTag = family.getBlockTag("ores");
 					FabricTagBuilder<Block> oresTagBuilder = getOrCreateTagBuilder(oresTag);
 					AMDatagen.ORE_VARIANTS.forEach((variant) -> {
-						if(family.hasVariant(variant)) {
+						if (family.hasVariant(variant)) {
 							oresTagBuilder.addTag(family.getTag(variant));
 						}
 					});
-					if(family.hasAlias()) {
+					if (family.hasAlias()) {
 						getOrCreateTagBuilder(family.getAliasBlockTag("ores")).addTag(oresTag);
 					}
 				}
 
-				if(family.isValidForBeacon() && family.hasVariant(BlockVariant.BLOCK)) {
+				if (family.isValidForBeacon() && family.hasVariant(BlockVariant.BLOCK)) {
 					beaconBaseTagBuilder.addTag(family.getTag(BlockVariant.BLOCK));
 
-					if(family.hasAlias()) {
+					if (family.hasAlias()) {
 						beaconBaseTagBuilder.addTag(family.getAliasTag(BlockVariant.BLOCK));
 					}
 				}
 			});
 
 			AMBlockFamilies.getFamilies().forEachOrdered(family -> family.getVariants().forEach((variant, block) -> {
-				if(VANILLA_BLOCK_TAG_VARIANTS.containsKey(variant)) {
+				if (VANILLA_BLOCK_TAG_VARIANTS.containsKey(variant)) {
 					getOrCreateTagBuilder(createBlockTag(VANILLA_BLOCK_TAG_VARIANTS.get(variant))).add(block);
 				}
 			}));
@@ -150,7 +148,7 @@ public class AMTagProviders {
 			AMDatagen.FLUIDS.forEach((fluid) -> {
 				String fluidName = Registry.FLUID.getId(fluid.getStill()).getPath();
 				FabricTagBuilder<Block> tagBuilder = getOrCreateTagBuilder(createCommonBlockTag(fluidName));
-				Tag.Identified<Block> cauldronTag = createCommonBlockTag(fluidName+"_cauldrons");
+				Tag.Identified<Block> cauldronTag = createCommonBlockTag(fluidName + "_cauldrons");
 				FabricTagBuilder<Block> cauldronTagBuilder = getOrCreateTagBuilder(cauldronTag);
 				tagBuilder.add(fluid.getBlock());
 				cauldronTagBuilder.add(fluid.getCauldron());
@@ -159,7 +157,7 @@ public class AMTagProviders {
 
 			FabricTagBuilder<Block> oresTagBuilder = getOrCreateTagBuilder(createCommonBlockTag("ores"));
 			AMDatagen.ORE_VARIANTS.forEach((variant) -> {
-				if(variant.hasTag()) {
+				if (variant.hasTag()) {
 					oresTagBuilder.addTag(variant.getTag());
 				}
 			});
@@ -274,31 +272,30 @@ public class AMTagProviders {
 				family.getItemTags().forEach((variant, tag) -> {
 					getOrCreateTagBuilder(tag).add(family.getVariant(variant));
 
-					if(family.hasAlias()) {
+					if (family.hasAlias()) {
 						getOrCreateTagBuilder(family.getAliasTag(variant)).addTag(tag);
 					}
 
-					if(family.isPiglinLoved()) {
-						if(variant.equals(ItemVariant.NUGGET)) {
+					if (family.isPiglinLoved()) {
+						if (variant.equals(ItemVariant.NUGGET)) {
 							piglinLovedNuggetsTagBuilder.addTag(tag);
 
-							if(family.hasAlias()) {
+							if (family.hasAlias()) {
 								piglinLovedNuggetsTagBuilder.addTag(family.getAliasTag(variant));
 							}
-						}
-						else {
+						} else {
 							piglinLovedTagBuilder.addTag(tag);
 
-							if(family.hasAlias()) {
+							if (family.hasAlias()) {
 								piglinLovedTagBuilder.addTag(family.getAliasTag(variant));
 							}
 						}
 					}
 
-					if(variant.hasTag()) {
+					if (variant.hasTag()) {
 						getOrCreateTagBuilder(variant.getTag()).addTag(tag);
 
-						if(family.hasAlias()) {
+						if (family.hasAlias()) {
 							getOrCreateTagBuilder(variant.getTag()).addTag(family.getAliasTag(variant));
 						}
 					}
@@ -308,125 +305,125 @@ public class AMTagProviders {
 
 					copy(blockTag, tag);
 
-					if(family.hasAlias()) {
+					if (family.hasAlias()) {
 						copy(family.getAliasTag(variant), family.getAliasItemTag(variant));
 					}
 
-					if(family.isPiglinLoved()) {
+					if (family.isPiglinLoved()) {
 						piglinLovedTagBuilder.addTag(tag);
 					}
 
-					if(variant.hasTag()) {
+					if (variant.hasTag()) {
 						getOrCreateTagBuilder(variant.getItemTag()).addTag(tag);
 
-						if(family.hasAlias()) {
+						if (family.hasAlias()) {
 							getOrCreateTagBuilder(variant.getItemTag()).addTag(family.getAliasItemTag(variant));
 						}
 					}
 				});
 
-				if(family.hasAnyBlockVariants(AMDatagen.ORE_VARIANTS)) {
+				if (family.hasAnyBlockVariants(AMDatagen.ORE_VARIANTS)) {
 					Tag.Identified<Block> oresBlockTag = family.getBlockTag("ores");
 					Tag.Identified<Item> oresItemTag = family.getItemTag("ores");
 					copy(oresBlockTag, oresItemTag);
 
-					if(family.hasAlias()) {
+					if (family.hasAlias()) {
 						copy(family.getAliasBlockTag("ores"), family.getAliasItemTag("ores"));
 					}
 				}
 
-				if(family.hasAnyItemVariants(AMDatagen.CLUSTER_VARIANTS)) {
+				if (family.hasAnyItemVariants(AMDatagen.CLUSTER_VARIANTS)) {
 					Tag.Identified<Item> clustersTag = family.getItemTag("clusters");
 					FabricTagBuilder<Item> clustersTagBuilder = getOrCreateTagBuilder(clustersTag);
 					AMDatagen.CLUSTER_VARIANTS.forEach((variant) -> {
-						if(family.hasVariant(variant)) {
+						if (family.hasVariant(variant)) {
 							clustersTagBuilder.addTag(family.getTag(variant));
 						}
 					});
-					if(family.hasAlias()) {
+					if (family.hasAlias()) {
 						getOrCreateTagBuilder(family.getAliasItemTag("clusters")).addTag(clustersTag);
 					}
 				}
 
-				if(family.hasAnyItemVariants(AMDatagen.EQUIPMENT_VARIANTS)) {
+				if (family.hasAnyItemVariants(AMDatagen.EQUIPMENT_VARIANTS)) {
 					Tag.Identified<Item> armorTag = family.getItemTag("armor");
 					Tag.Identified<Item> toolsTag = family.getItemTag("tools");
 
 					Tag.Identified<Item> salvageablesTag = family.getItemTag("salvageables");
 					FabricTagBuilder<Item> salvageablesTagBuilder = getOrCreateTagBuilder(salvageablesTag);
 
-					if(family.hasAnyItemVariants(AMDatagen.ARMOR_VARIANTS)) {
+					if (family.hasAnyItemVariants(AMDatagen.ARMOR_VARIANTS)) {
 						FabricTagBuilder<Item> armorTagBuilder = getOrCreateTagBuilder(armorTag);
 						AMDatagen.ARMOR_VARIANTS.forEach((variant) -> {
-							if(family.hasVariant(variant)) {
+							if (family.hasVariant(variant)) {
 								armorTagBuilder.addTag(family.getTag(variant));
 							}
 						});
 
-						if(family.isPiglinLoved()) {
+						if (family.isPiglinLoved()) {
 							piglinSafeArmorTagBuilder.addTag(armorTag);
 
-							if(family.hasAlias()) {
+							if (family.hasAlias()) {
 								piglinSafeArmorTagBuilder.addTag(family.getAliasItemTag("armor"));
 							}
 						}
 
 						salvageablesTagBuilder.addTag(armorTag);
 
-						if(family.hasAlias()) {
+						if (family.hasAlias()) {
 							getOrCreateTagBuilder(family.getAliasItemTag("armor")).addTag(armorTag);
 						}
 					}
 
-					if(family.hasAnyItemVariants(AMDatagen.TOOL_VARIANTS)) {
+					if (family.hasAnyItemVariants(AMDatagen.TOOL_VARIANTS)) {
 						FabricTagBuilder<Item> toolsTagBuilder = getOrCreateTagBuilder(toolsTag);
 						AMDatagen.TOOL_VARIANTS.forEach((variant) -> {
-							if(family.hasVariant(variant)) {
+							if (family.hasVariant(variant)) {
 								toolsTagBuilder.addTag(family.getTag(variant));
 							}
 						});
 
 						salvageablesTagBuilder.addTag(toolsTag);
 
-						if(family.hasAlias()) {
+						if (family.hasAlias()) {
 							getOrCreateTagBuilder(family.getAliasItemTag("tools")).addTag(toolsTag);
 						}
 					}
 
-					if(family.hasVariant(ItemVariant.HORSE_ARMOR)) {
+					if (family.hasVariant(ItemVariant.HORSE_ARMOR)) {
 						salvageablesTagBuilder.add(family.getVariant(ItemVariant.HORSE_ARMOR));
 					}
 
-					if(family.hasAlias()) {
+					if (family.hasAlias()) {
 						getOrCreateTagBuilder(family.getAliasItemTag("salvageables")).addTag(salvageablesTag);
 					}
 				}
 
-				if(family.isValidForBeacon()) {
+				if (family.isValidForBeacon()) {
 					beaconPaymentTagBuilder.addTag(family.getBaseTag());
 
-					if(family.hasAlias()) {
+					if (family.hasAlias()) {
 						beaconPaymentTagBuilder.addTag(family.getAliasBaseTag());
 					}
 				}
 
-				if(family.isPiglinLoved()) {
+				if (family.isPiglinLoved()) {
 					piglinBarteringItemsTagBuilder.addTag(family.getBaseTag());
 
-					if(family.hasAlias()) {
+					if (family.hasAlias()) {
 						piglinBarteringItemsTagBuilder.addTag(family.getAliasBaseTag());
 					}
 				}
 			});
 
 			AMBlockFamilies.getFamilies().forEachOrdered(family -> family.getVariants().forEach((variant, block) -> {
-				if(VANILLA_ITEM_TAG_VARIANTS.containsKey(variant)) {
+				if (VANILLA_ITEM_TAG_VARIANTS.containsKey(variant)) {
 					getOrCreateTagBuilder(createItemTag(VANILLA_ITEM_TAG_VARIANTS.get(variant))).add(block.asItem());
 				}
 			}));
 
 			AMDatagen.FLUIDS.forEach((fluid) -> {
-				FabricTagBuilder<Item> bucketTagBuilder = getOrCreateTagBuilder(createCommonItemTag(Registry.FLUID.getId(fluid.getStill()).getPath()+"_buckets"));
+				FabricTagBuilder<Item> bucketTagBuilder = getOrCreateTagBuilder(createCommonItemTag(Registry.FLUID.getId(fluid.getStill()).getPath() + "_buckets"));
 				bucketTagBuilder.add(fluid.getBucketItem());
 			});
 
@@ -435,7 +432,7 @@ public class AMTagProviders {
 			GENERIC_TAGS.forEach((variantSet, id) -> {
 				FabricTagBuilder<Item> tag = getOrCreateTagBuilder(createItemTag(id));
 				variantSet.forEach((variant) -> {
-					if(variant.hasTag()) tag.addTag(variant.getTag());
+					if (variant.hasTag()) tag.addTag(variant.getTag());
 				});
 			});
 

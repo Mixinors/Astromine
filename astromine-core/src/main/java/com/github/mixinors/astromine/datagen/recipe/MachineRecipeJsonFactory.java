@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 
 import com.github.mixinors.astromine.common.recipe.PressingRecipe;
 import com.github.mixinors.astromine.common.recipe.TrituratingRecipe;
+import com.github.mixinors.astromine.common.recipe.WireMillingRecipe;
 import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
 import dev.architectury.core.AbstractRecipeSerializer;
 import org.jetbrains.annotations.Nullable;
@@ -48,9 +49,13 @@ public abstract class MachineRecipeJsonFactory<T extends EnergyConsumingRecipe<I
 		return new TrituratingRecipeJsonFactory(input, output, outputCount, processingTime, energy, TrituratingRecipe.Serializer.INSTANCE);
 	}
 
+	public static WireMillingRecipeJsonFactory createWireMilling(Ingredient input, ItemConvertible output, int outputCount, int processingTime, int energy) {
+		return new WireMillingRecipeJsonFactory(input, output, outputCount, processingTime, energy, WireMillingRecipe.Serializer.INSTANCE);
+	}
+
 	@Override
 	public void offerTo(Consumer<RecipeJsonProvider> exporter) {
-		this.offerTo(exporter, CraftingRecipeJsonFactory.getItemId(this.getOutputItem())+"_from_"+getName());
+		this.offerTo(exporter, CraftingRecipeJsonFactory.getItemId(this.getOutputItem()) + "_from_" + getName());
 	}
 
 	public abstract String getName();
@@ -81,9 +86,11 @@ public abstract class MachineRecipeJsonFactory<T extends EnergyConsumingRecipe<I
 		exporter.accept(new MachineRecipeJsonProvider<T>(recipeId, this.group == null ? "" : this.group, this.input, this.output, this.outputCount, this.processingTime, this.energy, this.serializer));
 	}
 
-	public record MachineRecipeJsonProvider<T extends EnergyConsumingRecipe<Inventory>>(Identifier recipeId, String group,
+	public record MachineRecipeJsonProvider<T extends EnergyConsumingRecipe<Inventory>>(Identifier recipeId,
+																						String group,
 																						Ingredient input, Item output,
-																						int outputCount, int processingTime, int energy,
+																						int outputCount,
+																						int processingTime, int energy,
 																						RecipeSerializer<T> serializer)
 			implements RecipeJsonProvider {
 

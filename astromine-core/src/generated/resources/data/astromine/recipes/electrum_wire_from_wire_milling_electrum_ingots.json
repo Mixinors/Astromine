@@ -1,8 +1,7 @@
 {
   "type": "astromine:wire_milling",
   "input": {
-    "tag": "c:electrum_ingots",
-    "count": 1
+    "tag": "c:electrum_ingots"
   },
   "output": {
     "item": "astromine:electrum_wire",

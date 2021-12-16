@@ -1,11 +1,10 @@
 {
   "type": "astromine:wire_milling",
   "input": {
-    "tag": "c:gold_ingots",
-    "count": 1
+    "tag": "c:copper_ingots"
   },
   "output": {
-    "item": "astromine:gold_wire",
+    "item": "astromine:copper_wire",
     "count": 3
   },
   "time": 80,

@@ -34,21 +34,21 @@ public class AMBlockFamilies {
 	}
 
 	public static boolean hasItemTag(BlockFamily.Variant variant) {
-		return switch(variant) {
+		return switch (variant) {
 			case BUTTON, DOOR, FENCE, SIGN, SLAB, STAIRS, TRAPDOOR, WALL -> true;
 			default -> false;
 		};
 	}
 
 	public static boolean hasBlockTag(BlockFamily.Variant variant) {
-		return switch(variant) {
+		return switch (variant) {
 			case BUTTON, DOOR, FENCE, FENCE_GATE, PRESSURE_PLATE, SIGN, SLAB, STAIRS, TRAPDOOR, WALL, WALL_SIGN -> true;
 			default -> false;
 		};
 	}
 
 	public static String getTagPath(BlockFamily.Variant variant) {
-		return switch(variant) {
+		return switch (variant) {
 			case STAIRS -> variant.getName();
 			default -> WordUtils.pluralize(variant.getName());
 		};

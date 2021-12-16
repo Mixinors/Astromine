@@ -38,6 +38,7 @@ public interface Variant<T extends ItemConvertible> {
 
 	/**
 	 * The centre of a family-dependent tag, e.g. {@code iron}, {@code diamonds}
+	 *
 	 * @param material the family's name, e.g. {@code iron}, {@code diamond}
 	 */
 	default String getTagCentre(String material) {
@@ -53,6 +54,7 @@ public interface Variant<T extends ItemConvertible> {
 
 	/**
 	 * The path of a family-dependent tag, e.g. {@code raw_iron_blocks}, {@code diamonds}
+	 *
 	 * @param material the family's name
 	 */
 	default String getTagPath(String material) {
@@ -77,6 +79,7 @@ public interface Variant<T extends ItemConvertible> {
 
 	/**
 	 * The {@link Identifier} of a family-dependent tag for the given family name, e.g. {@code c:raw_iron_blocks}, {@code c:diamonds}
+	 *
 	 * @param family the family's name
 	 */
 	default Identifier getTagId(String family) {
@@ -113,6 +116,7 @@ public interface Variant<T extends ItemConvertible> {
 
 	/**
 	 * Whether this variant's family-dependent tags have a prefix
+	 *
 	 * @see #getTagPrefix()
 	 */
 	default boolean hasTagPrefix() {
@@ -121,6 +125,7 @@ public interface Variant<T extends ItemConvertible> {
 
 	/**
 	 * Whether this variant's family-dependent tags have a suffix
+	 *
 	 * @see #getTagSuffix()
 	 */
 	default boolean hasTagSuffix() {
@@ -129,6 +134,7 @@ public interface Variant<T extends ItemConvertible> {
 
 	/**
 	 * Whether this variant's family-dependent tags should have their centre pluralized
+	 *
 	 * @see #getTagCentre(String)
 	 */
 	default boolean shouldPluralizeTagCentre() {
