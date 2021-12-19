@@ -67,15 +67,15 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		ItemStore itemComponent = getItemComponent();
+		ItemStore itemStorage = getItemComponent();
 
-		ItemStack inputStack = itemComponent.getFirst();
+		ItemStack inputStack = itemStorage.getStack(0);
 		if (Energy.valid(inputStack)) {
 			EnergyHandler energyHandler = Energy.of(inputStack);
 			energyHandler.into(Energy.of(this)).move(1024 * getMachineSpeed());
 		}
 
-		ItemStack outputStack = itemComponent.getSecond();
+		ItemStack outputStack = itemStorage.getStack(1);
 		if (Energy.valid(outputStack)) {
 			EnergyHandler energyHandler = Energy.of(outputStack);
 			Energy.of(this).into(energyHandler).move(1024 * getMachineSpeed());
@@ -88,7 +88,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().primitiveCapacitorEnergy;
 		}
 
@@ -109,7 +109,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().basicCapacitorEnergy;
 		}
 
@@ -130,7 +130,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().advancedCapacitorEnergy;
 		}
 
@@ -151,7 +151,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().eliteCapacitorEnergy;
 		}
 
@@ -177,7 +177,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return Double.MAX_VALUE;
 		}
 

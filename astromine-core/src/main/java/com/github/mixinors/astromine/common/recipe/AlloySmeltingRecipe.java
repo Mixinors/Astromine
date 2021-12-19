@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.recipe;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.architectury.core.AbstractRecipeSerializer;
 import net.minecraft.inventory.Inventory;
@@ -71,13 +72,13 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 	}
 
 
-	public static boolean allows(World world, ItemStore itemComponent) {
+	public static boolean allows(World world, SimpleItemStorage itemStorage) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (AlloySmeltingRecipe) it).toArray(AlloySmeltingRecipe[]::new));
 		}
 
 		for (AlloySmeltingRecipe recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.allows(itemComponent)) {
+			if (recipe.allows(itemStorage)) {
 				return true;
 			}
 		}
@@ -85,13 +86,13 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 		return false;
 	}
 
-	public static Optional<AlloySmeltingRecipe> matching(World world, ItemStore itemComponent) {
+	public static Optional<AlloySmeltingRecipe> matching(World world, SimpleItemStorage itemStorage) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (AlloySmeltingRecipe) it).toArray(AlloySmeltingRecipe[]::new));
 		}
 
 		for (AlloySmeltingRecipe recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.matches(itemComponent)) {
+			if (recipe.matches(itemStorage)) {
 				return Optional.of(recipe);
 			}
 		}
@@ -99,32 +100,32 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 		return Optional.empty();
 	}
 
-	public boolean matches(ItemStore itemComponent) {
-		if (itemComponent.getSize() < 3) {
+	public boolean matches(SimpleItemStorage itemStorage) {
+		if (itemStorage.getSize() < 3) {
 			return false;
 		}
 
-		if (!firstInput.test(itemComponent.getFirst()) && !secondInput.test(itemComponent.getFirst())) {
+		if (!firstInput.test(itemStorage.getStack(0)) && !secondInput.test(itemStorage.getStack(0))) {
 			return false;
 		}
 
-		if (!firstInput.test(itemComponent.getSecond()) && !secondInput.test(itemComponent.getSecond())) {
+		if (!firstInput.test(itemStorage.getStack(1)) && !secondInput.test(itemStorage.getStack(1))) {
 			return false;
 		}
 
-		return StackUtils.test(firstOutput, itemComponent.getThird());
+		return StackUtils.test(firstOutput, itemStorage.getStack(2));
 	}
 
-	public boolean allows(ItemStore itemComponent) {
-		if (itemComponent.getSize() < 2) {
+	public boolean allows(ItemStore itemStorage) {
+		if (itemStorage.getSize() < 2) {
 			return false;
 		}
 
-		if (!firstInput.testWeak(itemComponent.getFirst()) && !secondInput.testWeak(itemComponent.getFirst())) {
+		if (!firstInput.testWeak(itemStorage.getStack(0)) && !secondInput.testWeak(itemStorage.getStack(0))) {
 			return false;
 		}
 
-		return firstInput.testWeak(itemComponent.getSecond()) || secondInput.testWeak(itemComponent.getSecond());
+		return firstInput.testWeak(itemStorage.getStack(1)) || secondInput.testWeak(itemStorage.getStack(1));
 	}
 
 

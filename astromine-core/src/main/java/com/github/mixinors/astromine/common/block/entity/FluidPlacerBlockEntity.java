@@ -56,9 +56,9 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 
 	@Override
 	public FluidStore createFluidComponent() {
-		FluidStore fluidComponent = SimpleDirectionalFluidComponent.of(this, 1);
-		fluidComponent.getFirst().setSize(FluidVolume.BOTTLE * 8L);
-		return fluidComponent;
+		FluidStore fluidStorage = SimpleDirectionalFluidComponent.of(this, 1);
+		fluidStorage.getFirst().setSize(FluidVolume.BOTTLE * 8L);
+		return fluidStorage;
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 	}
 
 	@Override
-	public double getEnergySize() {
+	public long getEnergySize() {
 		return AMConfig.get().fluidPlacerEnergy;
 	}
 
@@ -88,11 +88,11 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		FluidStore fluidComponent = getFluidComponent();
+		FluidStore fluidStorage = getFluidComponent();
 
 		EnergyStore energyComponent = getEnergyComponent();
 
-		if (fluidComponent != null && energyComponent != null) {
+		if (fluidStorage != null && energyComponent != null) {
 			EnergyVolume energyVolume = energyComponent.getVolume();
 
 			if (energyVolume.getAmount() < getEnergyConsumed()) {
@@ -107,7 +107,7 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 				if (cooldown >= getMachineSpeed()) {
 					cooldown = 0L;
 
-					FluidVolume fluidVolume = fluidComponent.getFirst();
+					FluidVolume fluidVolume = fluidStorage.getFirst();
 
 					Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
 

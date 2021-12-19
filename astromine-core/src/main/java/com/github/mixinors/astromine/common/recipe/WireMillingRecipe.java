@@ -68,13 +68,13 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 		this.time = time;
 	}
 
-	public static boolean allows(World world, ItemStore itemComponent) {
+	public static boolean allows(World world, ItemStore itemStorage) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (WireMillingRecipe) it).toArray(WireMillingRecipe[]::new));
 		}
 
 		for (WireMillingRecipe recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.allows(itemComponent)) {
+			if (recipe.allows(itemStorage)) {
 				return true;
 			}
 		}
@@ -82,13 +82,13 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 		return false;
 	}
 
-	public static Optional<WireMillingRecipe> matching(World world, ItemStore itemComponent) {
+	public static Optional<WireMillingRecipe> matching(World world, ItemStore itemStorage) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (WireMillingRecipe) it).toArray(WireMillingRecipe[]::new));
 		}
 
 		for (WireMillingRecipe recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.matches(itemComponent)) {
+			if (recipe.matches(itemStorage)) {
 				return Optional.of(recipe);
 			}
 		}
@@ -96,24 +96,24 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 		return Optional.empty();
 	}
 
-	public boolean matches(ItemStore itemComponent) {
-		if (itemComponent.getSize() < 2) {
+	public boolean matches(ItemStore itemStorage) {
+		if (itemStorage.getSize() < 2) {
 			return false;
 		}
 
-		if (!firstInput.test(itemComponent.getSecond())) {
+		if (!firstInput.test(itemStorage.getStack(1))) {
 			return false;
 		}
 
-		return StackUtils.test(firstOutput, itemComponent.getFirst());
+		return StackUtils.test(firstOutput, itemStorage.getStack(0));
 	}
 
-	public boolean allows(ItemStore itemComponent) {
-		if (itemComponent.getSize() < 1) {
+	public boolean allows(ItemStore itemStorage) {
+		if (itemStorage.getSize() < 1) {
 			return false;
 		}
 
-		return firstInput.testWeak(itemComponent.getSecond());
+		return firstInput.testWeak(itemStorage.getStack(1));
 	}
 
 	@Override

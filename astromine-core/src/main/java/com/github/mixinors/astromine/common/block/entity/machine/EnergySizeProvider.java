@@ -25,5 +25,5 @@
 package com.github.mixinors.astromine.common.block.entity.machine;
 
 public interface EnergySizeProvider {
-	double getEnergySize();
+	long getEnergySize();
 }

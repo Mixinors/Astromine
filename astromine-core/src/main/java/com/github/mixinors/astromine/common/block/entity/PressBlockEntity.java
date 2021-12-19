@@ -97,15 +97,15 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		ItemStore itemComponent = getItemComponent();
+		ItemStore itemStorage = getItemComponent();
 
 		EnergyStore energyComponent = getEnergyComponent();
 
-		if (itemComponent != null && energyComponent != null) {
+		if (itemStorage != null && energyComponent != null) {
 			EnergyVolume volume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = PressingRecipe.matching(world, itemComponent);
+				optionalRecipe = PressingRecipe.matching(world, itemStorage);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -128,9 +128,9 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 					if (progress + speed >= limit) {
 						optionalRecipe = Optional.empty();
 
-						itemComponent.getSecond().decrement(recipe.getFirstInput().testMatching(itemComponent.getSecond()).getCount());
+						itemStorage.getStack(1).decrement(recipe.getFirstInput().testMatching(itemStorage.getStack(1)).getCount());
 
-						itemComponent.setFirst(StackUtils.into(itemComponent.getFirst(), recipe.getFirstOutput()));
+						itemStorage.setStack(0, StackUtils.into(itemStorage.getStack(0), recipe.getFirstOutput()));
 
 						progress = 0;
 					} else {
@@ -172,7 +172,7 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().primitivePressEnergy;
 		}
 
@@ -193,7 +193,7 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().basicPressEnergy;
 		}
 
@@ -214,7 +214,7 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().advancedPressEnergy;
 		}
 
@@ -235,7 +235,7 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().elitePressEnergy;
 		}
 

@@ -44,13 +44,13 @@ public class DrainBlockEntity extends ComponentFluidBlockEntity {
 
 	@Override
 	public FluidStore createFluidComponent() {
-		FluidStore fluidComponent = SimpleFluidComponent.of(1).withInsertPredicate((direction, volume, slot) -> {
+		FluidStore fluidStorage = SimpleFluidComponent.of(1).withInsertPredicate((direction, volume, slot) -> {
 			return shouldRun();
 		});
 
-		fluidComponent.getFirst().setSize(Long.MAX_VALUE);
+		fluidStorage.getFirst().setSize(Long.MAX_VALUE);
 
-		return fluidComponent;
+		return fluidStorage;
 	}
 
 	// TODO: Ticking stuff

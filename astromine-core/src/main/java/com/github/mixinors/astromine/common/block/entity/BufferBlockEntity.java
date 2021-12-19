@@ -93,10 +93,10 @@ public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 
 		@Override
 		public void tick() {
-			ItemStore itemComponent = getItemComponent();
+			ItemStore itemStorage = getItemComponent();
 
-			if (itemComponent != null) {
-				itemComponent.forEach(stack -> {
+			if (itemStorage != null) {
+				itemStorage.forEach(stack -> {
 					stack.setCount(stack.getMaxCount());
 				});
 			}

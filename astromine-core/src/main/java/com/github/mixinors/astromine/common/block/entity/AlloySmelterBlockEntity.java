@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
@@ -44,6 +45,7 @@ import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -60,50 +62,26 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 	public AlloySmelterBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
-		itemStorage = new SimpleItemStorage(3).withDirInsertPredicate((direction, stack, slot) -> {
+		energyStorage = new SimpleEnergyStorage(getEnergySize(), Long.MAX_VALUE, Long.MAX_VALUE);
+		
+		itemStorage = new SimpleItemStorage(3).insertPredicate((variant, slot) -> {
 			if (slot != 0 && slot != 1) {
 				return false;
 			}
 			
-			if (!getTransferComponent().getItem(direction).canInsert()) {
+			if (!StackUtils.test(variant.toStack(), itemStorage.getStack(0)) &&
+				!StackUtils.test(variant.toStack(), itemStorage.getStack(1))) {
 				return false;
 			}
 			
-			if (!StackUtils.test(stack, getItemComponent().getFirst()) && !StackUtils.test(stack, getItemComponent().getSecond())) {
-				return false;
-			}
+			var a =  AlloySmeltingRecipe.allows(world, new SimpleItemStorage(variant.toStack(), itemStorage.getStack(0)));
+			var b =  AlloySmeltingRecipe.allows(world, new SimpleItemStorage(itemStorage.getStack(0), variant.toStack()));
 			
-			return AlloySmeltingRecipe.allows(world, ItemStore.of(stack, getItemComponent().getSecond())) || AlloySmeltingRecipe.allows(world, ItemStore.of(getItemComponent().getFirst(), stack));
-		}).withDirExtractPredicate(((direction, stack, slot) -> {
-			if (!getTransferComponent().getItem(direction).canExtract()) {
-				return false;
-			}
-			
-			return slot == 2;
-		})).withListener((inventory) -> {
+			return a || b;
+		}).listener(() -> {
 			shouldTry = true;
 			optionalRecipe = Optional.empty();
-		});
-	}
-
-	@Override
-	public ItemStore createItemComponent() {
-	
-	}
-
-	@Override
-	public EnergyStore createEnergyComponent() {
-		return SimpleEnergyComponent.of(getEnergySize());
-	}
-
-	@Override
-	public IntSet getItemInputSlots() {
-		return new IntArraySet(new int[] { 0, 1 });
-	}
-
-	@Override
-	public IntSet getItemOutputSlots() {
-		return IntSets.singleton(2);
+		}).insertSlots(new int[] { 0, 1}).extractSlots(new int[] { 2 });
 	}
 
 	@Override
@@ -113,15 +91,9 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		ItemStore itemComponent = getItemComponent();
-
-		EnergyStore energyComponent = getEnergyComponent();
-
-		if (itemComponent != null && energyComponent != null) {
-			EnergyVolume energyVolume = energyComponent.getVolume();
-
+		if (itemStorage != null && energyStorage != null) {
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = AlloySmeltingRecipe.matching(world, itemComponent);
+				optionalRecipe = AlloySmeltingRecipe.matching(world, itemStorage);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -131,40 +103,41 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 			}
 
 			if (optionalRecipe.isPresent()) {
-				AlloySmeltingRecipe recipe = optionalRecipe.get();
+				var recipe = optionalRecipe.get();
 
 				limit = recipe.getTime();
 
-				double speed = min(getMachineSpeed(), limit - progress);
-				double consumed = recipe.getEnergyInput() * speed / limit;
+				var speed = min(getMachineSpeed(), limit - progress);
+				var consumed = (long) (recipe.getEnergyInput() * speed / limit);
 
-				if (energyVolume.hasStored(consumed)) {
-					energyVolume.take(consumed);
-
-					if (progress + speed >= limit) {
-						optionalRecipe = Optional.empty();
-
-						ItemStack first = itemComponent.getFirst();
-						ItemStack second = itemComponent.getSecond();
-
-						if (recipe.getFirstInput().test(first) && recipe.getSecondInput().test(second)) {
-							first.decrement(recipe.getFirstInput().testMatching(first).getCount());
-							second.decrement(recipe.getSecondInput().testMatching(second).getCount());
-						} else if (recipe.getFirstInput().test(second) && recipe.getSecondInput().test(first)) {
-							second.decrement(recipe.getFirstInput().testMatching(second).getCount());
-							first.decrement(recipe.getSecondInput().testMatching(first).getCount());
+				try (var transaction = Transaction.openOuter()) {
+					if (energyStorage.extract(consumed, transaction) == consumed) {
+						transaction.commit();
+						
+						if (progress + speed >= limit) {
+							optionalRecipe = Optional.empty();
+							
+							var first = itemStorage.getStack(0);
+							var second = itemStorage.getStack(1);
+							
+							if (recipe.getFirstInput().test(first) && recipe.getSecondInput().test(second)) {
+								first.decrement(recipe.getFirstInput().testMatching(first).getCount());
+								second.decrement(recipe.getSecondInput().testMatching(second).getCount());
+							} else if (recipe.getFirstInput().test(second) && recipe.getSecondInput().test(first)) {
+								second.decrement(recipe.getFirstInput().testMatching(second).getCount());
+								first.decrement(recipe.getSecondInput().testMatching(first).getCount());
+							}
+							
+							itemStorage.setStack(2, StackUtils.into(itemStorage.getStack(2), recipe.getFirstOutput()));
+							
+							progress = 0;
+						} else {
+							progress += speed;
 						}
-
-						itemComponent.setThird(StackUtils.into(itemComponent.getThird(), recipe.getFirstOutput()));
-
-						progress = 0;
+						isActive = true;
 					} else {
-						progress += speed;
+						isActive = false;
 					}
-
-					isActive = true;
-				} else {
-					isActive = false;
 				}
 			} else {
 				isActive = false;
@@ -197,7 +170,7 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().primitiveAlloySmelterEnergy;
 		}
 
@@ -218,7 +191,7 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().basicAlloySmelterEnergy;
 		}
 
@@ -239,7 +212,7 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().advancedAlloySmelterEnergy;
 		}
 
@@ -260,7 +233,7 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().eliteAlloySmelterEnergy;
 		}
 

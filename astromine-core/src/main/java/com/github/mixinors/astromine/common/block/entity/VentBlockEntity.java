@@ -49,9 +49,9 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 
 	@Override
 	public FluidStore createFluidComponent() {
-		FluidStore fluidComponent = SimpleDirectionalFluidComponent.of(this, 1);
-		fluidComponent.getFirst().setSize(getFluidSize());
-		return fluidComponent;
+		FluidStore fluidStorage = SimpleDirectionalFluidComponent.of(this, 1);
+		fluidStorage.getFirst().setSize(getFluidSize());
+		return fluidStorage;
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 	}
 
 	@Override
-	public double getEnergySize() {
+	public long getEnergySize() {
 		return AMConfig.get().ventEnergy;
 	}
 
@@ -86,9 +86,9 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		FluidStore fluidComponent = getFluidComponent();
+		FluidStore fluidStorage = getFluidComponent();
 
-		if (fluidComponent != null) {
+		if (fluidStorage != null) {
 			EnergyVolume energyVolume = getEnergyComponent().getVolume();
 			if (energyVolume.hasStored(128)) {
 				BlockPos position = getPos();
@@ -100,7 +100,7 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 				if (energyVolume.hasStored(getEnergyConsumed()) && (world.getBlockState(output).isAir() || world.getBlockState(output).isSideSolidFullSquare(world, pos, direction.getOpposite()))) {
 					ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(getPos()));
 
-					FluidVolume centerVolume = fluidComponent.getFirst();
+					FluidVolume centerVolume = fluidStorage.getFirst();
 
 					if (ChunkAtmosphereComponent.isInChunk(world.getChunk(output).getPos(), pos)) {
 						FluidVolume sideVolume = atmosphereComponent.get(output);

@@ -98,15 +98,15 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		SimpleItemStorage itemComponent = getItemComponent();
+		SimpleItemStorage itemStorage = getItemComponent();
 
 		EnergyStore energyComponent = getEnergyComponent();
 
-		if (itemComponent != null) {
+		if (itemStorage != null) {
 			EnergyVolume volume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = WireMillingRecipe.matching(world, itemComponent);
+				optionalRecipe = WireMillingRecipe.matching(world, itemStorage);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -129,8 +129,8 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 					if (progress + speed >= limit) {
 						optionalRecipe = Optional.empty();
 
-						itemComponent.getSecond().decrement(recipe.getFirstInput().testMatching(itemComponent.getSecond()).getCount());
-						itemComponent.setFirst(StackUtils.into(itemComponent.getFirst(), recipe.getFirstOutput()));
+						itemStorage.getStack(1).decrement(recipe.getFirstInput().testMatching(itemStorage.getStack(1)).getCount());
+						itemStorage.setStack(0, StackUtils.into(itemStorage.getStack(0), recipe.getFirstOutput()));
 
 						progress = 0;
 					} else {
@@ -172,7 +172,7 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().primitiveWireMillEnergy;
 		}
 
@@ -193,7 +193,7 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().basicWireMillEnergy;
 		}
 
@@ -214,7 +214,7 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().advancedWireMillEnergy;
 		}
 
@@ -235,7 +235,7 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().eliteWireMillEnergy;
 		}
 

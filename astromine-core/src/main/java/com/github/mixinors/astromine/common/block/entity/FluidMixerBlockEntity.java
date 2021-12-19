@@ -60,7 +60,7 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 
 	@Override
 	public FluidStore createFluidComponent() {
-		FluidStore fluidComponent = SimpleDirectionalFluidComponent.of(this, 3).withInsertPredicate((direction, volume, slot) -> {
+		FluidStore fluidStorage = SimpleDirectionalFluidComponent.of(this, 3).withInsertPredicate((direction, volume, slot) -> {
 			if (slot != 0 && slot != 1) {
 				return false;
 			}
@@ -77,9 +77,9 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 			optionalRecipe = Optional.empty();
 		});
 
-		fluidComponent.forEach(it -> it.setSize(getFluidSize()));
+		fluidStorage.forEach(it -> it.setSize(getFluidSize()));
 
-		return fluidComponent;
+		return fluidStorage;
 	}
 
 	@Override
@@ -89,15 +89,15 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		FluidStore fluidComponent = getFluidComponent();
+		FluidStore fluidStorage = getFluidComponent();
 
 		EnergyStore energyComponent = getEnergyComponent();
 
-		if (fluidComponent != null && energyComponent != null) {
+		if (fluidStorage != null && energyComponent != null) {
 			EnergyVolume energyVolume = getEnergyComponent().getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = FluidMixingRecipe.matching(world, fluidComponent);
+				optionalRecipe = FluidMixingRecipe.matching(world, fluidStorage);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -120,9 +120,9 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 					if (progress + speed >= limit) {
 						optionalRecipe = Optional.empty();
 
-						fluidComponent.getFirst().take(recipe.getFirstInput().testMatching(fluidComponent.getFirst()).getAmount());
-						fluidComponent.getSecond().take(recipe.getSecondInput().testMatching(fluidComponent.getSecond()).getAmount());
-						fluidComponent.getThird().take(recipe.getFirstOutput());
+						fluidStorage.getFirst().take(recipe.getFirstInput().testMatching(fluidStorage.getFirst()).getAmount());
+						fluidStorage.getSecond().take(recipe.getSecondInput().testMatching(fluidStorage.getSecond()).getAmount());
+						fluidStorage.getThird().take(recipe.getFirstOutput());
 
 						progress = 0;
 					} else {
@@ -169,7 +169,7 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().primitiveFluidMixerEnergy;
 		}
 
@@ -195,7 +195,7 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().basicFluidMixerEnergy;
 		}
 
@@ -221,7 +221,7 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().advancedFluidMixerEnergy;
 		}
 
@@ -247,7 +247,7 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().eliteFluidMixerEnergy;
 		}
 

@@ -58,14 +58,14 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 
 	@Override
 	public FluidStore createFluidComponent() {
-		FluidStore fluidComponent = SimpleDirectionalFluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
+		FluidStore fluidStorage = SimpleDirectionalFluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
 			return false;
 		}).withExtractPredicate((direction, volume, slot) -> {
 			return slot == 0;
 		});
 
-		fluidComponent.getFirst().setSize(getFluidSize());
-		return fluidComponent;
+		fluidStorage.getFirst().setSize(getFluidSize());
+		return fluidStorage;
 	}
 
 	@Override
@@ -110,17 +110,17 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		ItemStore itemComponent = getItemComponent();
+		ItemStore itemStorage = getItemComponent();
 
-		FluidStore fluidComponent = getFluidComponent();
+		FluidStore fluidStorage = getFluidComponent();
 
 		EnergyStore energyComponent = getEnergyComponent();
 
-		if (itemComponent != null && fluidComponent != null && energyComponent != null) {
+		if (itemStorage != null && fluidStorage != null && energyComponent != null) {
 			EnergyVolume energyVolume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = MeltingRecipe.matching(world, itemComponent, fluidComponent);
+				optionalRecipe = MeltingRecipe.matching(world, itemStorage, fluidStorage);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -143,10 +143,10 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 					if (progress + speed >= limit) {
 						optionalRecipe = Optional.empty();
 
-						fluidComponent.getFirst().take(recipe.getFirstOutput());
-						itemComponent.getFirst().decrement(recipe.getFirstInput().testMatching(itemComponent.getFirst()).getCount());
+						fluidStorage.getFirst().take(recipe.getFirstOutput());
+						itemStorage.getStack(0).decrement(recipe.getFirstInput().testMatching(itemStorage.getStack(0)).getCount());
 						
-						itemComponent.triggerListeners();
+						itemStorage.triggerListeners();
 
 						progress = 0;
 					} else {
@@ -188,7 +188,7 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().primitiveMelterEnergy;
 		}
 
@@ -214,7 +214,7 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().basicMelterEnergy;
 		}
 
@@ -240,7 +240,7 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().advancedMelterEnergy;
 		}
 
@@ -266,7 +266,7 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().eliteMelterEnergy;
 		}
 

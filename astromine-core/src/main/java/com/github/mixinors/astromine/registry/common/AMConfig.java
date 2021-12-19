@@ -61,16 +61,16 @@ public class AMConfig implements ConfigData {
 
 
 	@Comment("Energy for the Primitive Battery.")
-	public double primitiveBatteryEnergy = 8000;
+	public long primitiveBatteryEnergy = 8000;
 
 	@Comment("Energy for the Basic Battery.")
-	public double basicBatteryEnergy = 16000;
+	public long basicBatteryEnergy = 16000;
 
 	@Comment("Energy for the Advanced Battery.")
-	public double advancedBatteryEnergy = 32000;
+	public long advancedBatteryEnergy = 32000;
 
 	@Comment("Energy for the Elite Battery.")
-	public double eliteBatteryEnergy = 64000;
+	public long eliteBatteryEnergy = 64000;
 
 	@Comment("Fluid for the Large Portable Tank.")
 	public long largePortableTankFluid = FluidVolume.BUCKET * 16L;
@@ -103,16 +103,16 @@ public class AMConfig implements ConfigData {
 	public double eliteTankSpeed = 16.0D;
 
 	@Comment("Energy for the Primitive Battery Pack.")
-	public double primitiveBatteryPackEnergy = primitiveBatteryEnergy * 6.0D;
+	public long primitiveBatteryPackEnergy = primitiveBatteryEnergy * 6;
 
 	@Comment("Energy for the Basic Battery Pack.")
-	public double basicBatteryPackEnergy = basicBatteryEnergy * 6.0D;
+	public long basicBatteryPackEnergy = basicBatteryEnergy * 6;
 
 	@Comment("Energy for the Advanced Battery Pack.")
-	public double advancedBatteryPackEnergy = advancedBatteryEnergy * 6.0D;
+	public long advancedBatteryPackEnergy = advancedBatteryEnergy * 6;
 
 	@Comment("Energy for the Elite Battery Pack.")
-	public double eliteBatteryPackEnergy = eliteBatteryEnergy * 6.0D;
+	public long eliteBatteryPackEnergy = eliteBatteryEnergy * 6;
 
 	@Comment("Speed for the Primitive Triturator.")
 	public double primitiveTrituratorSpeed = 0.5D;
@@ -127,16 +127,16 @@ public class AMConfig implements ConfigData {
 	public double eliteTrituratorSpeed = 4.0D;
 
 	@Comment("Energy for the Primitive Triturator.")
-	public double primitiveTrituratorEnergy = primitiveBatteryPackEnergy;
+	public long primitiveTrituratorEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Basic Triturator.")
-	public double basicTrituratorEnergy = basicBatteryPackEnergy;
+	public long basicTrituratorEnergy = basicBatteryPackEnergy;
 
 	@Comment("Energy for the Advanced Triturator.")
-	public double advancedTrituratorEnergy = advancedBatteryPackEnergy;
+	public long advancedTrituratorEnergy = advancedBatteryPackEnergy;
 
 	@Comment("Energy for the Elite Triturator.")
-	public double eliteTrituratorEnergy = eliteBatteryPackEnergy;
+	public long eliteTrituratorEnergy = eliteBatteryPackEnergy;
 
 	@Comment("Speed for the Primitive Solid Generator.")
 	public double primitiveSolidGeneratorSpeed = 0.5D;
@@ -151,16 +151,16 @@ public class AMConfig implements ConfigData {
 	public double eliteSolidGeneratorSpeed = 4.0D;
 
 	@Comment("Energy for the Primitive Solid Generator.")
-	public double primitiveSolidGeneratorEnergy = primitiveBatteryPackEnergy;
+	public long primitiveSolidGeneratorEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Basic Solid Generator.")
-	public double basicSolidGeneratorEnergy = basicBatteryPackEnergy;
+	public long basicSolidGeneratorEnergy = basicBatteryPackEnergy;
 
 	@Comment("Energy for the Advanced Solid Generator.")
-	public double advancedSolidGeneratorEnergy = advancedBatteryPackEnergy;
+	public long advancedSolidGeneratorEnergy = advancedBatteryPackEnergy;
 
 	@Comment("Energy for the Elite Solid Generator.")
-	public double eliteSolidGeneratorEnergy = eliteBatteryPackEnergy;
+	public long eliteSolidGeneratorEnergy = eliteBatteryPackEnergy;
 
 	@Comment("Speed for the Primitive Press.")
 	public double primitivePressSpeed = 0.5D;
@@ -175,16 +175,16 @@ public class AMConfig implements ConfigData {
 	public double elitePressSpeed = 4.0D;
 
 	@Comment("Energy for the Primitive Press.")
-	public double primitivePressEnergy = primitiveBatteryPackEnergy;
+	public long primitivePressEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Basic Press.")
-	public double basicPressEnergy = basicBatteryPackEnergy;
+	public long basicPressEnergy = basicBatteryPackEnergy;
 
 	@Comment("Energy for the Advanced Press.")
-	public double advancedPressEnergy = advancedBatteryPackEnergy;
+	public long advancedPressEnergy = advancedBatteryPackEnergy;
 
 	@Comment("Energy for the Elite Press.")
-	public double elitePressEnergy = eliteBatteryPackEnergy;
+	public long elitePressEnergy = eliteBatteryPackEnergy;
 	
 	@Comment("Speed for the Primitive Wire Mill.")
 	public double primitiveWireMillSpeed = 0.5D;
@@ -199,16 +199,16 @@ public class AMConfig implements ConfigData {
 	public double eliteWireMillSpeed = 4.0D;
 
 	@Comment("Energy for the Primitive Wire Mill.")
-	public double primitiveWireMillEnergy = primitiveBatteryPackEnergy;
+	public long primitiveWireMillEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Basic Wire Mill.")
-	public double basicWireMillEnergy = basicBatteryPackEnergy;
+	public long basicWireMillEnergy = basicBatteryPackEnergy;
 
 	@Comment("Energy for the Advanced Wire Mill.")
-	public double advancedWireMillEnergy = advancedBatteryPackEnergy;
+	public long advancedWireMillEnergy = advancedBatteryPackEnergy;
 
 	@Comment("Energy for the Elite Wire Mill.")
-	public double eliteWireMillEnergy = eliteBatteryPackEnergy;
+	public long eliteWireMillEnergy = eliteBatteryPackEnergy;
 
 	@Comment("Speed for the Primitive Fluid Generator.")
 	public double primitiveFluidGeneratorSpeed = 0.5D;
@@ -223,16 +223,16 @@ public class AMConfig implements ConfigData {
 	public double eliteFluidGeneratorSpeed = 4.0D;
 
 	@Comment("Energy for the Primitive Fluid Generator.")
-	public double primitiveFluidGeneratorEnergy = primitiveBatteryPackEnergy;
+	public long primitiveFluidGeneratorEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Basic Fluid Generator.")
-	public double basicFluidGeneratorEnergy = basicBatteryPackEnergy;
+	public long basicFluidGeneratorEnergy = basicBatteryPackEnergy;
 
 	@Comment("Energy for the Advanced Fluid Generator.")
-	public double advancedFluidGeneratorEnergy = advancedBatteryPackEnergy;
+	public long advancedFluidGeneratorEnergy = advancedBatteryPackEnergy;
 
 	@Comment("Energy for the Elite Fluid Generator.")
-	public double eliteFluidGeneratorEnergy = eliteBatteryPackEnergy;
+	public long eliteFluidGeneratorEnergy = eliteBatteryPackEnergy;
 
 	@Comment("Fluid for the Primitive Fluid Generator.")
 	public long primitiveFluidGeneratorFluid = largePortableTankFluid * 2L;
@@ -259,16 +259,16 @@ public class AMConfig implements ConfigData {
 	public double eliteFluidMixerSpeed = 4.0D;
 
 	@Comment("Energy for the Primitive Fluid Mixer.")
-	public double primitiveFluidMixerEnergy = primitiveBatteryPackEnergy;
+	public long primitiveFluidMixerEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Basic Fluid Mixer.")
-	public double basicFluidMixerEnergy = basicBatteryPackEnergy;
+	public long basicFluidMixerEnergy = basicBatteryPackEnergy;
 
 	@Comment("Energy for the Advanced Fluid Mixer.")
-	public double advancedFluidMixerEnergy = advancedBatteryPackEnergy;
+	public long advancedFluidMixerEnergy = advancedBatteryPackEnergy;
 
 	@Comment("Energy for the Elite Fluid Mixer.")
-	public double eliteFluidMixerEnergy = eliteBatteryPackEnergy;
+	public long eliteFluidMixerEnergy = eliteBatteryPackEnergy;
 
 	@Comment("Fluid for the Primitive Fluid Mixer.")
 	public long primitiveFluidMixerFluid = largePortableTankFluid * 2L;
@@ -295,16 +295,16 @@ public class AMConfig implements ConfigData {
 	public double eliteElectrolyzerSpeed = 4.0D;
 
 	@Comment("Energy for the Primitive Electrolyzer.")
-	public double primitiveElectrolyzerEnergy = primitiveBatteryPackEnergy;
+	public long primitiveElectrolyzerEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Basic Electrolyzer.")
-	public double basicElectrolyzerEnergy = basicBatteryPackEnergy;
+	public long basicElectrolyzerEnergy = basicBatteryPackEnergy;
 
 	@Comment("Energy for the Advanced Electrolyzer.")
-	public double advancedElectrolyzerEnergy = advancedBatteryPackEnergy;
+	public long advancedElectrolyzerEnergy = advancedBatteryPackEnergy;
 
 	@Comment("Energy for the Elite Electrolyzer.")
-	public double eliteElectrolyzerEnergy = eliteBatteryPackEnergy;
+	public long eliteElectrolyzerEnergy = eliteBatteryPackEnergy;
 
 	@Comment("Fluid for the Primitive Electrolyzer.")
 	public long primitiveElectrolyzerFluid = largePortableTankFluid * 2L;
@@ -331,16 +331,16 @@ public class AMConfig implements ConfigData {
 	public double eliteRefinerySpeed = 4.0D;
 
 	@Comment("Energy for the Primitive Refinery.")
-	public double primitiveRefineryEnergy = primitiveBatteryPackEnergy;
+	public long primitiveRefineryEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Basic Refinery.")
-	public double basicRefineryEnergy = basicBatteryPackEnergy;
+	public long basicRefineryEnergy = basicBatteryPackEnergy;
 
 	@Comment("Energy for the Advanced Refinery.")
-	public double advancedRefineryEnergy = advancedBatteryPackEnergy;
+	public long advancedRefineryEnergy = advancedBatteryPackEnergy;
 
 	@Comment("Energy for the Elite Refinery.")
-	public double eliteRefineryEnergy = eliteBatteryPackEnergy;
+	public long eliteRefineryEnergy = eliteBatteryPackEnergy;
 
 	@Comment("Fluid for the Primitive Refinery.")
 	public long primitiveRefineryFluid = primitiveTankFluid * 2L;
@@ -367,16 +367,16 @@ public class AMConfig implements ConfigData {
 	public double eliteElectricFurnaceSpeed = 4.0D;
 
 	@Comment("Energy for the Primitive Electric Furnace.")
-	public double primitiveElectricFurnaceEnergy = primitiveBatteryPackEnergy;
+	public long primitiveElectricFurnaceEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Basic Electric Furnace.")
-	public double basicElectricFurnaceEnergy = basicBatteryPackEnergy;
+	public long basicElectricFurnaceEnergy = basicBatteryPackEnergy;
 
 	@Comment("Energy for the Advanced Electric Furnace.")
-	public double advancedElectricFurnaceEnergy = advancedBatteryPackEnergy;
+	public long advancedElectricFurnaceEnergy = advancedBatteryPackEnergy;
 
 	@Comment("Energy for the Elite Electric Furnace.")
-	public double eliteElectricFurnaceEnergy = eliteBatteryPackEnergy;
+	public long eliteElectricFurnaceEnergy = eliteBatteryPackEnergy;
 
 	@Comment("Speed for the Primitive Alloy Smelter.")
 	public double primitiveAlloySmelterSpeed = 0.5D;
@@ -391,34 +391,34 @@ public class AMConfig implements ConfigData {
 	public double eliteAlloySmelterSpeed = 4.0D;
 
 	@Comment("Energy for the Primitive Alloy Smelter.")
-	public double primitiveAlloySmelterEnergy = primitiveElectricFurnaceEnergy* 2.0D + primitiveBatteryPackEnergy;
+	public long primitiveAlloySmelterEnergy = primitiveElectricFurnaceEnergy* 2 + primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Basic Alloy Smelter.")
-	public double basicAlloySmelterEnergy = basicElectricFurnaceEnergy* 2.0D + basicBatteryPackEnergy;
+	public long basicAlloySmelterEnergy = basicElectricFurnaceEnergy* 2 + basicBatteryPackEnergy;
 
 	@Comment("Energy for the Advanced Alloy Smelter.")
-	public double advancedAlloySmelterEnergy = advancedElectricFurnaceEnergy* 2.0D + advancedBatteryPackEnergy;
+	public long advancedAlloySmelterEnergy = advancedElectricFurnaceEnergy* 2 + advancedBatteryPackEnergy;
 
 	@Comment("Energy for the Elite Alloy Smelter.")
-	public double eliteAlloySmelterEnergy = eliteElectricFurnaceEnergy* 2.0D + eliteBatteryPackEnergy;
+	public long eliteAlloySmelterEnergy = eliteElectricFurnaceEnergy* 2 + eliteBatteryPackEnergy;
 
 	@Comment("Energy for the Block Placer.")
-	public double blockPlacerEnergy = primitiveBatteryPackEnergy;
+	public long blockPlacerEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Block Breaker.")
-	public double blockBreakerEnergy = primitiveBatteryPackEnergy;
+	public long blockBreakerEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Fluid Placer.")
-	public double fluidPlacerEnergy = primitiveBatteryPackEnergy;
+	public long fluidPlacerEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Fluid Collector.")
-	public double fluidCollectorEnergy = primitiveBatteryPackEnergy;
+	public long fluidCollectorEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Speed for the Vent.")
 	public double ventSpeed = 1.0D;
 
 	@Comment("Energy for the Vent.")
-	public double ventEnergy = primitiveBatteryPackEnergy;
+	public long ventEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Fluid for the Vent.")
 	public long ventFluid = FluidVolume.BUCKET * 16L;
@@ -436,16 +436,16 @@ public class AMConfig implements ConfigData {
 	public double eliteCapacitorSpeed = 4.0D;
 
 	@Comment("Energy for the Primitive Capacitor.")
-	public double primitiveCapacitorEnergy = primitiveBatteryPackEnergy * 4.0D;
+	public long primitiveCapacitorEnergy = primitiveBatteryPackEnergy * 4;
 
 	@Comment("Energy for the Basic Capacitor.")
-	public double basicCapacitorEnergy = basicBatteryPackEnergy * 4.0D;
+	public long basicCapacitorEnergy = basicBatteryPackEnergy * 4;
 
 	@Comment("Energy for the Advanced Capacitor.")
-	public double advancedCapacitorEnergy = advancedBatteryPackEnergy * 4.0D;
+	public long advancedCapacitorEnergy = advancedBatteryPackEnergy * 4;
 
 	@Comment("Energy for the Elite Capacitor.")
-	public double eliteCapacitorEnergy = eliteBatteryPackEnergy * 4.0D;
+	public long eliteCapacitorEnergy = eliteBatteryPackEnergy * 4;
 
 	@Comment("Energy for the Block Placer actions.")
 	public double blockPlacerEnergyConsumed = 1024.0D;
@@ -475,7 +475,7 @@ public class AMConfig implements ConfigData {
 	public long fluidCollectorSpeed = 40L;
 
 	@Comment("Energy for the Gravity Gauntlet.")
-	public double gravityGauntletEnergy = advancedBatteryEnergy;
+	public long gravityGauntletEnergy = advancedBatteryEnergy;
 
 	@Comment("Energy for the Gravity Gauntlet actions.")
 	public double gravityGauntletConsumed = 512.0D;
@@ -523,28 +523,28 @@ public class AMConfig implements ConfigData {
 	public boolean endMeteorGeneration = true;
 
 	@Comment("Energy for the Primitive Drill.")
-	public double primitiveDrillEnergy = primitiveBatteryPackEnergy * 2;
+	public long primitiveDrillEnergy = primitiveBatteryPackEnergy * 2;
 
 	@Comment("Energy for the Basic Drill.")
-	public double basicDrillEnergy = basicBatteryPackEnergy * 2;
+	public long basicDrillEnergy = basicBatteryPackEnergy * 2;
 
 	@Comment("Energy for the Advanced Drill.")
-	public double advancedDrillEnergy = advancedBatteryPackEnergy * 2;
+	public long advancedDrillEnergy = advancedBatteryPackEnergy * 2;
 
 	@Comment("Energy for the Elite Drill.")
-	public double eliteDrillEnergy = eliteBatteryPackEnergy * 2;
+	public long eliteDrillEnergy = eliteBatteryPackEnergy * 2;
 
 	@Comment("Energy rate for the Primitive Energy Cable.")
-	public double primitiveEnergyCableEnergy = 256.0D;
+	public long primitiveEnergyCableEnergy = 256;
 
 	@Comment("Energy for the Basic Energy Cable.")
-	public double basicEnergyCableEnergy = 512.0D;
+	public long basicEnergyCableEnergy = 512;
 
 	@Comment("Energy for the Advanced Energy Cable.")
-	public double advancedEnergyCableEnergy = 1024.0D;
+	public long advancedEnergyCableEnergy = 1024;
 
 	@Comment("Energy for the Elite Energy Cable.")
-	public double eliteEnergyCableEnergy = 4096.0D;
+	public long eliteEnergyCableEnergy = 4096;
 
 	@Comment("Delay for the Inserter actions (smaller is faster).")
 	public int inserterSpeed = 16;
@@ -598,16 +598,16 @@ public class AMConfig implements ConfigData {
 	public double eliteMelterSpeed = 4.0D;
 
 	@Comment("Energy for the Primitive Melter.")
-	public double primitiveMelterEnergy = primitiveBatteryPackEnergy;
+	public long primitiveMelterEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Basic Melter.")
-	public double basicMelterEnergy = basicBatteryPackEnergy;
+	public long basicMelterEnergy = basicBatteryPackEnergy;
 
 	@Comment("Energy for the Advanced Melter.")
-	public double advancedMelterEnergy = advancedBatteryPackEnergy;
+	public long advancedMelterEnergy = advancedBatteryPackEnergy;
 
 	@Comment("Energy for the Elite Melter.")
-	public double eliteMelterEnergy = eliteBatteryPackEnergy;
+	public long eliteMelterEnergy = eliteBatteryPackEnergy;
 
 	@Comment("Fluid for the Primitive Solidifier.")
 	public long primitiveSolidifierFluid = largePortableTankFluid;
@@ -634,16 +634,16 @@ public class AMConfig implements ConfigData {
 	public double eliteSolidifierSpeed = 4.0D;
 
 	@Comment("Energy for the Primitive Solidifier.")
-	public double primitiveSolidifierEnergy = primitiveBatteryPackEnergy;
+	public long primitiveSolidifierEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Basic Solidifier.")
-	public double basicSolidifierEnergy = basicBatteryPackEnergy;
+	public long basicSolidifierEnergy = basicBatteryPackEnergy;
 
 	@Comment("Energy for the Advanced Solidifier.")
-	public double advancedSolidifierEnergy = advancedBatteryPackEnergy;
+	public long advancedSolidifierEnergy = advancedBatteryPackEnergy;
 
 	@Comment("Energy for the Elite Solidifier.")
-	public double eliteSolidifierEnergy = eliteBatteryPackEnergy;
+	public long eliteSolidifierEnergy = eliteBatteryPackEnergy;
 
 	@Comment("Default gravity for non-Astromine dimensions.")
 	public double defaultGravity = 0.08D;

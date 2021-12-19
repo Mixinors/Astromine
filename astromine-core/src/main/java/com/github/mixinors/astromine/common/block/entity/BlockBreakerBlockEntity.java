@@ -65,7 +65,7 @@ public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity impl
 	}
 
 	@Override
-	public double getEnergySize() {
+	public long getEnergySize() {
 		return AMConfig.get().blockBreakerEnergy;
 	}
 
@@ -86,11 +86,11 @@ public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity impl
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		ItemStore itemComponent = getItemComponent();
+		ItemStore itemStorage = getItemComponent();
 
 		EnergyStore energyComponent = getEnergyComponent();
 
-		if (itemComponent != null && energyComponent != null) {
+		if (itemStorage != null && energyComponent != null) {
 			EnergyVolume energyVolume = energyComponent.getVolume();
 
 			if (energyVolume.getAmount() < getEnergyConsumed()) {
@@ -105,7 +105,7 @@ public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity impl
 				if (cooldown >= getMachineSpeed()) {
 					cooldown = 0L;
 
-					ItemStack stored = itemComponent.getFirst();
+					ItemStack stored = itemStorage.getStack(0);
 
 					Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
 
@@ -126,7 +126,7 @@ public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity impl
 
 						matching.ifPresent(match -> {
 							Pair<ItemStack, ItemStack> pair = StackUtils.merge(match, stored);
-							itemComponent.setFirst(pair.getRight());
+							itemStorage.setStack(0, pair.getRight());
 							drops.remove(match);
 							drops.add(pair.getLeft());
 						});

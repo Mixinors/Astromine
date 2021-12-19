@@ -98,15 +98,15 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		SimpleItemStorage itemComponent = getItemComponent();
+		SimpleItemStorage itemStorage = getItemComponent();
 
 		EnergyStore energyComponent = getEnergyComponent();
 
-		if (itemComponent != null && energyComponent != null) {
+		if (itemStorage != null && energyComponent != null) {
 			EnergyVolume energyVolume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = TrituratingRecipe.matching(world, itemComponent);
+				optionalRecipe = TrituratingRecipe.matching(world, itemStorage);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -129,8 +129,8 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 					if (progress + speed >= limit) {
 						optionalRecipe = Optional.empty();
 
-						itemComponent.getSecond().decrement(recipe.getFirstInput().testMatching(itemComponent.getSecond()).getCount());
-						itemComponent.setFirst(StackUtils.into(itemComponent.getFirst(), recipe.getFirstOutput()));
+						itemStorage.getStack(1).decrement(recipe.getFirstInput().testMatching(itemStorage.getStack(1)).getCount());
+						itemStorage.setStack(0, StackUtils.into(itemStorage.getStack(0), recipe.getFirstOutput()));
 
 						progress = 0;
 					} else {
@@ -172,7 +172,7 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().primitiveTrituratorEnergy;
 		}
 
@@ -193,7 +193,7 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().basicTrituratorEnergy;
 		}
 
@@ -214,7 +214,7 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().advancedTrituratorEnergy;
 		}
 
@@ -235,7 +235,7 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().eliteTrituratorEnergy;
 		}
 

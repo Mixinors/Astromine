@@ -66,13 +66,13 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 		this.time = time;
 	}
 
-	public static boolean allows(World world, FluidStore fluidComponent) {
+	public static boolean allows(World world, FluidStore fluidStorage) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidGeneratingRecipe) it).toArray(FluidGeneratingRecipe[]::new));
 		}
 
 		for (FluidGeneratingRecipe recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.allows(fluidComponent)) {
+			if (recipe.allows(fluidStorage)) {
 				return true;
 			}
 		}
@@ -80,13 +80,13 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 		return false;
 	}
 
-	public static Optional<FluidGeneratingRecipe> matching(World world, FluidStore fluidComponent) {
+	public static Optional<FluidGeneratingRecipe> matching(World world, FluidStore fluidStorage) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidGeneratingRecipe) it).toArray(FluidGeneratingRecipe[]::new));
 		}
 
 		for (FluidGeneratingRecipe recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.allows(fluidComponent)) {
+			if (recipe.allows(fluidStorage)) {
 				return Optional.of(recipe);
 			}
 		}
@@ -94,20 +94,20 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 		return Optional.empty();
 	}
 
-	public boolean matches(FluidStore fluidComponent) {
-		if (fluidComponent.getSize() < 1) {
+	public boolean matches(FluidStore fluidStorage) {
+		if (fluidStorage.getSize() < 1) {
 			return false;
 		}
 
-		return firstInput.test(fluidComponent.getFirst());
+		return firstInput.test(fluidStorage.getFirst());
 	}
 
-	public boolean allows(FluidStore fluidComponent) {
-		if (fluidComponent.getSize() < 1) {
+	public boolean allows(FluidStore fluidStorage) {
+		if (fluidStorage.getSize() < 1) {
 			return false;
 		}
 
-		return firstInput.testWeak(fluidComponent.getFirst());
+		return firstInput.testWeak(fluidStorage.getFirst());
 	}
 
 	@Override

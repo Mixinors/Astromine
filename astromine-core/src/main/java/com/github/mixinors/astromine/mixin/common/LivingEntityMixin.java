@@ -118,13 +118,13 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 
 					boolean hasSuit = !helmetStack.isEmpty() && !chestplateStack.isEmpty() && !leggingsStack.isEmpty() && !bootsStack.isEmpty();
 					
-					FluidStore fluidComponent = null;
+					FluidStore fluidStorage = null;
 					
 					if (hasSuit) {
-						fluidComponent = FluidStore.get(chestplateStack);
+						fluidStorage = FluidStore.get(chestplateStack);
 						
-						if (fluidComponent != null) {
-							breathingVolume = fluidComponent.getFirst();
+						if (fluidStorage != null) {
+							breathingVolume = fluidStorage.getFirst();
 						}
 					}
 					
@@ -136,8 +136,8 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 					
 					boolean isBreathing = BreathableRegistry.INSTANCE.canBreathe(entity.getType(), breathingVolume.getFluid());
 					
-					if ((!(entity instanceof PlayerEntity) || !entity.isSpectator() && !((PlayerEntity) entity).isCreative()) && isBreathing && fluidComponent != null && age % 5 == 0) {
-						fluidComponent.getFirst().take(81L);
+					if ((!(entity instanceof PlayerEntity) || !entity.isSpectator() && !((PlayerEntity) entity).isCreative()) && isBreathing && fluidStorage != null && age % 5 == 0) {
+						fluidStorage.getFirst().take(81L);
 					}
 					
 					oxygenComponent.simulate(isBreathing);

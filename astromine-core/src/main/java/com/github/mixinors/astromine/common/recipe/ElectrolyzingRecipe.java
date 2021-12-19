@@ -71,13 +71,13 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsu
 		this.time = time;
 	}
 
-	public static boolean allows(World world, FluidStore fluidComponent) {
+	public static boolean allows(World world, FluidStore fluidStorage) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (ElectrolyzingRecipe) it).toArray(ElectrolyzingRecipe[]::new));
 		}
 
 		for (ElectrolyzingRecipe recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.allows(fluidComponent)) {
+			if (recipe.allows(fluidStorage)) {
 				return true;
 			}
 		}
@@ -85,13 +85,13 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsu
 		return false;
 	}
 
-	public static Optional<ElectrolyzingRecipe> matching(World world, FluidStore fluidComponent) {
+	public static Optional<ElectrolyzingRecipe> matching(World world, FluidStore fluidStorage) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (ElectrolyzingRecipe) it).toArray(ElectrolyzingRecipe[]::new));
 		}
 
 		for (ElectrolyzingRecipe recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.allows(fluidComponent)) {
+			if (recipe.allows(fluidStorage)) {
 				return Optional.of(recipe);
 			}
 		}
@@ -99,28 +99,28 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsu
 		return Optional.empty();
 	}
 
-	public boolean matches(FluidStore fluidComponent) {
-		if (fluidComponent.getSize() < 3) {
+	public boolean matches(FluidStore fluidStorage) {
+		if (fluidStorage.getSize() < 3) {
 			return false;
 		}
 
-		if (!firstInput.test(fluidComponent.getFirst())) {
+		if (!firstInput.test(fluidStorage.getFirst())) {
 			return false;
 		}
 
-		if (!firstOutput.test(fluidComponent.getSecond())) {
+		if (!firstOutput.test(fluidStorage.getSecond())) {
 			return false;
 		}
 
-		return secondOutput.test(fluidComponent.getThird());
+		return secondOutput.test(fluidStorage.getThird());
 	}
 
-	public boolean allows(FluidStore fluidComponent) {
-		if (fluidComponent.getSize() < 1) {
+	public boolean allows(FluidStore fluidStorage) {
+		if (fluidStorage.getSize() < 1) {
 			return false;
 		}
 
-		return firstInput.testWeak(fluidComponent.getFirst());
+		return firstInput.testWeak(fluidStorage.getFirst());
 	}
 
 

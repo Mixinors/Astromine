@@ -76,13 +76,13 @@ public class ComparatorOutput {
 			return 0;
 		}
 
-		FluidStore fluidComponent = FluidStore.get(entity);
+		FluidStore fluidStorage = FluidStore.get(entity);
 
-		if (fluidComponent == null) {
+		if (fluidStorage == null) {
 			return 0;
 		}
 
-		Collection<FluidVolume> contents = fluidComponent.getContents().values();
+		Collection<FluidVolume> contents = fluidStorage.getContents().values();
 		long amounts = sumBy(contents, FluidVolume::getAmount);
 
 		if (amounts == 0) {

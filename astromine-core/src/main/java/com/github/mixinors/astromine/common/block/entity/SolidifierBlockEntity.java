@@ -58,7 +58,7 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 
 	@Override
 	public FluidStore createFluidComponent() {
-		FluidStore fluidComponent = SimpleDirectionalFluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
+		FluidStore fluidStorage = SimpleDirectionalFluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
 			if (slot != 0) {
 				return false;
 			}
@@ -70,9 +70,9 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 			return SolidifyingRecipe.allows(world, FluidStore.of(volume));
 		});
 
-		fluidComponent.getFirst().setSize(getFluidSize());
+		fluidStorage.getFirst().setSize(getFluidSize());
 
-		return fluidComponent;
+		return fluidStorage;
 	}
 
 	@Override
@@ -109,17 +109,17 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		ItemStore itemComponent = getItemComponent();
+		ItemStore itemStorage = getItemComponent();
 
-		FluidStore fluidComponent = getFluidComponent();
+		FluidStore fluidStorage = getFluidComponent();
 
 		EnergyStore energyComponent = getEnergyComponent();
 
-		if (fluidComponent != null) {
+		if (fluidStorage != null) {
 			EnergyVolume energyVolume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = SolidifyingRecipe.matching(world, itemComponent, fluidComponent);
+				optionalRecipe = SolidifyingRecipe.matching(world, itemStorage, fluidStorage);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -142,8 +142,8 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 					if (progress + speed >= limit) {
 						optionalRecipe = Optional.empty();
 
-						fluidComponent.getFirst().take(recipe.getFirstInput().testMatching(fluidComponent.getFirst()).getAmount());
-						itemComponent.setFirst(StackUtils.into(itemComponent.getFirst(), recipe.getFirstOutput()));
+						fluidStorage.getFirst().take(recipe.getFirstInput().testMatching(fluidStorage.getFirst()).getAmount());
+						itemStorage.setStack(0, StackUtils.into(itemStorage.getStack(0), recipe.getFirstOutput()));
 
 						progress = 0;
 					} else {
@@ -185,7 +185,7 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().primitiveSolidifierEnergy;
 		}
 
@@ -211,7 +211,7 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().basicSolidifierEnergy;
 		}
 
@@ -237,7 +237,7 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().advancedSolidifierEnergy;
 		}
 
@@ -263,7 +263,7 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().eliteSolidifierEnergy;
 		}
 

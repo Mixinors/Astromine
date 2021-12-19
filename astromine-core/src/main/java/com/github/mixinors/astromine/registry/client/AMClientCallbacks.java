@@ -58,10 +58,10 @@ public class AMClientCallbacks {
 	public static void init() {
 		ItemTooltipCallback.EVENT.register( ( stack, context, tooltip ) -> {
 			if (stack.getItem() instanceof FluidVolumeItem) {
-				FluidStore fluidComponent = FluidStore.get(stack);
+				FluidStore fluidStorage = FluidStore.get(stack);
 
-				if(fluidComponent != null) {
-					FluidVolume volume = fluidComponent.getFirst();
+				if(fluidStorage != null) {
+					FluidVolume volume = fluidStorage.getFirst();
 					Identifier fluidId = volume.getFluidId();
 
 					tooltip.addAll(Math.min(tooltip.size(), 1), Lists.newArrayList(
@@ -101,9 +101,9 @@ public class AMClientCallbacks {
 		ItemTooltipCallback.EVENT.register( ( stack, context, tooltip ) -> {
 			if (stack.getItem() instanceof SpaceSuitItem) {
 				if (stack.getItem() == AMItems.SPACE_SUIT_CHESTPLATE.get()) {
-					FluidStore fluidComponent = FluidStore.get(stack);
-					if(fluidComponent != null) {
-						fluidComponent.forEachIndexed((slot, volume) -> {
+					FluidStore fluidStorage = FluidStore.get(stack);
+					if(fluidStorage != null) {
+						fluidStorage.forEachIndexed((slot, volume) -> {
 							tooltip.add(((MutableText) TextUtils.getFluidVolume(volume)).append(new LiteralText(" ")).append(((MutableText) TextUtils.getFluid(volume.getFluidId())).formatted(Formatting.GRAY)));
 						});
 					}

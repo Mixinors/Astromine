@@ -60,7 +60,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 
 	@Override
 	public FluidStore createFluidComponent() {
-		FluidStore fluidComponent = SimpleDirectionalFluidComponent.of(this, 3).withInsertPredicate((direction, volume, slot) -> {
+		FluidStore fluidStorage = SimpleDirectionalFluidComponent.of(this, 3).withInsertPredicate((direction, volume, slot) -> {
 			if (slot != 0) {
 				return false;
 			}
@@ -77,9 +77,9 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 			optionalRecipe = Optional.empty();
 		});
 
-		fluidComponent.forEach(it -> it.setSize(getFluidSize()));
+		fluidStorage.forEach(it -> it.setSize(getFluidSize()));
 
-		return fluidComponent;
+		return fluidStorage;
 	}
 
 	@Override
@@ -89,15 +89,15 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		FluidStore fluidComponent = getFluidComponent();
+		FluidStore fluidStorage = getFluidComponent();
 
 		EnergyStore energyComponent = getEnergyComponent();
 
-		if (fluidComponent != null && energyComponent != null) {
+		if (fluidStorage != null && energyComponent != null) {
 			EnergyVolume volume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = ElectrolyzingRecipe.matching(world, fluidComponent);
+				optionalRecipe = ElectrolyzingRecipe.matching(world, fluidStorage);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -120,9 +120,9 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 					if (progress + speed >= limit) {
 						optionalRecipe = Optional.empty();
 
-						fluidComponent.getFirst().take(recipe.getFirstInput().testMatching(fluidComponent.getFirst()).getAmount());
-						fluidComponent.getSecond().take(recipe.getFirstOutput());
-						fluidComponent.getThird().take(recipe.getSecondOutput());
+						fluidStorage.getFirst().take(recipe.getFirstInput().testMatching(fluidStorage.getFirst()).getAmount());
+						fluidStorage.getSecond().take(recipe.getFirstOutput());
+						fluidStorage.getThird().take(recipe.getSecondOutput());
 
 						progress = 0;
 					} else {
@@ -169,7 +169,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().primitiveElectrolyzerEnergy;
 		}
 
@@ -195,7 +195,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().basicElectrolyzerEnergy;
 		}
 
@@ -221,7 +221,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().advancedElectrolyzerEnergy;
 		}
 
@@ -247,7 +247,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().eliteElectrolyzerEnergy;
 		}
 

@@ -58,7 +58,7 @@ public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity imple
 	}
 
 	@Override
-	public double getEnergySize() {
+	public long getEnergySize() {
 		return AMConfig.get().blockPlacerEnergy;
 	}
 
@@ -79,11 +79,11 @@ public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity imple
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		ItemStore itemComponent = getItemComponent();
+		ItemStore itemStorage = getItemComponent();
 
 		EnergyStore energyComponent = getEnergyComponent();
 
-		if (itemComponent != null && energyComponent != null) {
+		if (itemStorage != null && energyComponent != null) {
 			EnergyVolume energyVolume = energyComponent.getVolume();
 
 			if (energyVolume.getAmount() < getEnergyConsumed()) {
@@ -98,7 +98,7 @@ public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity imple
 				if (cooldown >= getMachineSpeed()) {
 					cooldown = 0L;
 
-					ItemStack stored = itemComponent.getFirst();
+					ItemStack stored = itemStorage.getStack(0);
 
 					Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
 

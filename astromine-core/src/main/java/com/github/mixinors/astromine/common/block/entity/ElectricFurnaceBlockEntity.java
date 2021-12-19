@@ -115,14 +115,14 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		ItemStore itemComponent = getItemComponent();
+		ItemStore itemStorage = getItemComponent();
 
 		EnergyStore energyComponent = getEnergyComponent();
 
-		if (itemComponent != null && energyComponent != null) {
+		if (itemStorage != null && energyComponent != null) {
 			EnergyVolume energyVolume = energyComponent.getVolume();
 
-			BaseInventory inputInventory = BaseInventory.of(itemComponent.getSecond());
+			BaseInventory inputInventory = BaseInventory.of(itemStorage.getStack(1));
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
 				if (RECIPE_CACHE.get(world) == null) {
@@ -153,21 +153,21 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 
 					ItemStack output = recipe.getOutput().copy();
 
-					boolean isEmpty = itemComponent.getFirst().isEmpty();
-					boolean isEqual = ItemStack.areItemsEqual(itemComponent.getFirst(), output) && ItemStack.areNbtEqual(itemComponent.getFirst(), output);
+					boolean isEmpty = itemStorage.getStack(0).isEmpty();
+					boolean isEqual = ItemStack.areItemsEqual(itemStorage.getStack(0), output) && ItemStack.areNbtEqual(itemStorage.getStack(0), output);
 
-					if ((isEmpty || isEqual) && itemComponent.getFirst().getCount() + output.getCount() <= itemComponent.getFirst().getMaxCount() && energyVolume.hasStored(500.0D / limit * speed)) {
+					if ((isEmpty || isEqual) && itemStorage.getStack(0).getCount() + output.getCount() <= itemStorage.getStack(0).getMaxCount() && energyVolume.hasStored(500.0D / limit * speed)) {
 						energyVolume.take(500.0D / limit * speed);
 
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
 
-							itemComponent.getSecond().decrement(1);
+							itemStorage.getStack(1).decrement(1);
 
 							if (isEmpty) {
-								itemComponent.setFirst(output);
+								itemStorage.setStack(0, output);
 							} else {
-								itemComponent.getFirst().increment(output.getCount());
+								itemStorage.getStack(0).increment(output.getCount());
 
 								shouldTry = true; // Vanilla is garbage; if we don't do it here, it only triggers the listener on #setStack.
 							}
@@ -216,7 +216,7 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().primitiveElectricFurnaceEnergy;
 		}
 
@@ -237,7 +237,7 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().basicElectricFurnaceEnergy;
 		}
 
@@ -258,7 +258,7 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().advancedElectricFurnaceEnergy;
 		}
 
@@ -279,7 +279,7 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().eliteElectricFurnaceEnergy;
 		}
 

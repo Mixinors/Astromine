@@ -103,9 +103,9 @@ public class FluidFilterWidget extends ButtonWidget
 
 		if (isWithin(x, y)) {
 			if (!stack.isEmpty()) {
-				FluidStore fluidComponent = FluidStore.get(stack);
+				FluidStore fluidStorage = FluidStore.get(stack);
 
-				fluidSupplier = () -> fluidComponent.getFirst().getFluid();
+				fluidSupplier = () -> fluidStorage.getFirst().getFluid();
 				fluidConsumer.accept(fluidSupplier.get());
 			} else if (button == 2) {
 				fluidSupplier = () -> Fluids.EMPTY;

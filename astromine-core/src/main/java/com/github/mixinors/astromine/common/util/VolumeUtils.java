@@ -55,21 +55,21 @@ public class VolumeUtils {
 
 	/** Inserts fluids from the first stack into the first fluid volume.
 		* Inserts fluids from the first fluid volume into the first stack. */
-	public static void transferBetween(ItemStore itemComponent, FluidStore fluidComponent, int firstStackSlot, int secondStackSlot, int volumeSlot) {
-		if (fluidComponent != null) {
-			if (itemComponent != null) {
-				FluidStore firstStackFluidComponent = FluidStore.get(itemComponent.getStack(firstStackSlot));
+	public static void transferBetween(ItemStore itemStorage, FluidStore fluidStorage, int firstStackSlot, int secondStackSlot, int volumeSlot) {
+		if (fluidStorage != null) {
+			if (itemStorage != null) {
+				FluidStore firstStackFluidComponent = FluidStore.get(itemStorage.getStack(firstStackSlot));
 
 				if (firstStackFluidComponent != null) {
-					FluidVolume ourVolume = fluidComponent.getVolume(volumeSlot);
+					FluidVolume ourVolume = fluidStorage.getVolume(volumeSlot);
 
 					firstStackFluidComponent.forEach(stackVolume -> {if (ourVolume.test(stackVolume.getFluid())) {
-						if (itemComponent.getStack(firstStackSlot).getItem() instanceof BucketItem) {
-							if (itemComponent.getStack(firstStackSlot).getItem() != Items.BUCKET && itemComponent.getStack(firstStackSlot).getCount() == 1) {
+						if (itemStorage.getStack(firstStackSlot).getItem() instanceof BucketItem) {
+							if (itemStorage.getStack(firstStackSlot).getItem() != Items.BUCKET && itemStorage.getStack(firstStackSlot).getCount() == 1) {
 								if (ourVolume.hasAvailable(FluidVolume.BUCKET) || ourVolume.isEmpty()) {
 									ourVolume.take(stackVolume, FluidVolume.BUCKET);
 
-                                        itemComponent.setStack(firstStackSlot, new ItemStack(Items.BUCKET));
+                                        itemStorage.setStack(firstStackSlot, new ItemStack(Items.BUCKET));
                                     }
                                 }
                             } else {
@@ -79,18 +79,18 @@ public class VolumeUtils {
                     });
                 }
 
-				FluidStore secondStackFluidComponent = FluidStore.get(itemComponent.getStack(secondStackSlot));
+				FluidStore secondStackFluidComponent = FluidStore.get(itemStorage.getStack(secondStackSlot));
 
 				if (secondStackFluidComponent != null) {
-					FluidVolume ourVolume = fluidComponent.getVolume(volumeSlot);
+					FluidVolume ourVolume = fluidStorage.getVolume(volumeSlot);
 
 					secondStackFluidComponent.forEach(stackVolume -> {if (stackVolume.test(ourVolume.getFluid())) {
-						if (itemComponent.getStack(secondStackSlot).getItem() instanceof BucketItem) {
-							if (itemComponent.getStack(secondStackSlot).getItem() == Items.BUCKET && itemComponent.getStack(secondStackSlot).getCount() == 1) {
+						if (itemStorage.getStack(secondStackSlot).getItem() instanceof BucketItem) {
+							if (itemStorage.getStack(secondStackSlot).getItem() == Items.BUCKET && itemStorage.getStack(secondStackSlot).getCount() == 1) {
 								if (ourVolume.hasStored(FluidVolume.BUCKET)) {
 									ourVolume.give(stackVolume, FluidVolume.BUCKET);
 
-                                        itemComponent.setStack(secondStackSlot, new ItemStack(stackVolume.getFluid().getBucketItem()));
+                                        itemStorage.setStack(secondStackSlot, new ItemStack(stackVolume.getFluid().getBucketItem()));
                                     }
                                 }
                             } else {

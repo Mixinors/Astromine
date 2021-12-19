@@ -26,32 +26,26 @@ package com.github.mixinors.astromine.common.transfer.storage;
 
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.math.Direction;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.BiPredicate;
-import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
 public class SimpleFluidStorage implements Storage<FluidVariant> {
 	private final int size;
 	
+	private final List<Runnable> listeners;
+	
 	private final List<Storage<FluidVariant>> storages;
 	
-	private Predicate<@Nullable Direction> dirInsertPredicate;
+	private BiPredicate<FluidVariant, Integer> insertPredicate = null;
 	
-	private Predicate<@Nullable Direction> dirExtractPredicate;
-	
-	private BiPredicate<FluidVariant, Integer> slotInsertPredicate = null;
-	
-	private BiPredicate<FluidVariant, Integer> slotExtractPredicate = null;
+	private BiPredicate<FluidVariant, Integer> extractPredicate = null;
 	
 	private StorageSiding[] sidings;
 	
@@ -62,14 +56,12 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	public SimpleFluidStorage(int size) {
 		this.size = size;
 		
+		this.listeners = new ArrayList<>();
 		this.storages = new ArrayList<>(size);
 
 		for (int i = 0; i < size; ++i) {
 			this.storages.set(i, new SimpleFluidVariantStorage());
 		}
-		
-		this.dirInsertPredicate = ($) -> true;
-		this.dirExtractPredicate = ($) -> true;
 		
 		this.sidings = new StorageSiding[6];
 		
@@ -79,38 +71,33 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		this.extractSlots = IntStream.range(0, size).toArray();
 	}
 	
-	public SimpleFluidStorage withInsertPredicate(Predicate<@Nullable Direction> dirInsertPredicate) {
-		this.dirInsertPredicate = dirInsertPredicate;
+	public SimpleFluidStorage insertPredicate(BiPredicate<FluidVariant, Integer> slotInsertPredicate) {
+		this.insertPredicate = slotInsertPredicate;
 		return this;
 	}
 	
-	public SimpleFluidStorage withExtractPredicate(Predicate<@Nullable Direction> dirExtractPredicate) {
-		this.dirExtractPredicate = dirExtractPredicate;
+	public SimpleFluidStorage extractPredicate(BiPredicate<FluidVariant, Integer> slotExtractPredicate) {
+		this.extractPredicate = slotExtractPredicate;
 		return this;
 	}
 	
-	public SimpleFluidStorage withSlotInsertPredicate(BiPredicate<FluidVariant, Integer> slotInsertPredicate) {
-		this.slotInsertPredicate = slotInsertPredicate;
-		return this;
-	}
-	
-	public SimpleFluidStorage withSlotExtractPredicate(BiPredicate<FluidVariant, Integer> slotExtractPredicate) {
-		this.slotExtractPredicate = slotExtractPredicate;
-		return this;
-	}
-	
-	public SimpleFluidStorage withSidings(StorageSiding[] sidings) {
+	public SimpleFluidStorage sidings(StorageSiding[] sidings) {
 		this.sidings = sidings;
 		return this;
 	}
 	
-	public SimpleFluidStorage withInsertSlots(int[] insertSlots) {
+	public SimpleFluidStorage insertSlots(int[] insertSlots) {
 		this.insertSlots = insertSlots;
 		return this;
 	}
 	
-	public SimpleFluidStorage withExtractSlots(int[] extractSlots) {
+	public SimpleFluidStorage extractSlots(int[] extractSlots) {
 		this.extractSlots = extractSlots;
+		return this;
+	}
+	
+	public SimpleFluidStorage listener(Runnable listener) {
+		this.listeners.add(listener);
 		return this;
 	}
 	
@@ -119,10 +106,16 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		StoragePreconditions.notBlank(resource);
 		StoragePreconditions.notNegative(maxAmount);
 		
+		transaction.addCloseCallback((($, result) -> {
+			if (result.wasCommitted()) {
+				listeners.forEach(Runnable::run);
+			}
+		}));
+		
 		var amount = 0;
 		
 		for (var slot : insertSlots) {
-			if (!slotInsertPredicate.test(resource, slot)) continue;
+			if (!insertPredicate.test(resource, slot)) continue;
 			
 			var storage = storages.get(slot);
 			
@@ -138,11 +131,17 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	public long extract(FluidVariant resource, long maxAmount, TransactionContext transaction) {
 		StoragePreconditions.notBlank(resource);
 		StoragePreconditions.notNegative(maxAmount);
+		
+		transaction.addCloseCallback((($, result) -> {
+			if (result.wasCommitted()) {
+				listeners.forEach(Runnable::run);
+			}
+		}));
 
 		var amount = 0;
 		
 		for (var slot : extractSlots) {
-			if (!slotExtractPredicate.test(resource, slot)) continue;
+			if (!extractPredicate.test(resource, slot)) continue;
 			
 			var storage = storages.get(slot);
 			
@@ -169,12 +168,20 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		return extractSlots.length > 0;
 	}
 	
-	public boolean canInsertFrom(@Nullable Direction direction) {
-		return dirInsertPredicate == null || dirInsertPredicate.test(direction);
+	public StorageView<FluidVariant> getStorage(int index) {
+		return (StorageView<FluidVariant>) storages.get(index);
 	}
 	
-	public boolean canExtractFrom(@Nullable Direction direction) {
-		return dirExtractPredicate == null || dirExtractPredicate.test(direction);
+	public FluidVariant getVariant(int index) {
+		return getStorage(index).getResource();
+	}
+	
+	public int getSize() {
+		return size;
+	}
+	
+	public List<Runnable> getListeners() {
+		return listeners;
 	}
 	
 	public void writeToNbt(NbtCompound nbt) {

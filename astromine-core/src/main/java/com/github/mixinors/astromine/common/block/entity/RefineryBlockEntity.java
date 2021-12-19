@@ -60,7 +60,7 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 
 	@Override
 	public FluidStore createFluidComponent() {
-		FluidStore fluidComponent = SimpleDirectionalFluidComponent.of(this, 2).withInsertPredicate((direction, volume, slot) -> {
+		FluidStore fluidStorage = SimpleDirectionalFluidComponent.of(this, 2).withInsertPredicate((direction, volume, slot) -> {
 			if (slot != 0) {
 				return false;
 			}
@@ -77,9 +77,9 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 			optionalRecipe = Optional.empty();
 		});
 
-		fluidComponent.forEach(it -> it.setSize(getFluidSize()));
+		fluidStorage.forEach(it -> it.setSize(getFluidSize()));
 
-		return fluidComponent;
+		return fluidStorage;
 	}
 
 	@Override
@@ -89,15 +89,15 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		FluidStore fluidComponent = getFluidComponent();
+		FluidStore fluidStorage = getFluidComponent();
 
 		EnergyStore energyComponent = getEnergyComponent();
 
-		if (fluidComponent != null && energyComponent != null) {
+		if (fluidStorage != null && energyComponent != null) {
 			EnergyVolume volume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = RefiningRecipe.matching(world, fluidComponent);
+				optionalRecipe = RefiningRecipe.matching(world, fluidStorage);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -114,14 +114,14 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 				double speed = Math.min(getMachineSpeed(), limit - progress);
 				double consumed = recipe.getEnergyInput() * speed / limit;
 
-				if (volume.hasStored(consumed) && recipe.matches(fluidComponent)) {
+				if (volume.hasStored(consumed) && recipe.matches(fluidStorage)) {
 					volume.take(consumed);
 
 					if (progress + speed >= limit) {
 						optionalRecipe = Optional.empty();
 
-						fluidComponent.getFirst().take(recipe.getIngredient().testMatching(fluidComponent.getFirst()).getAmount());
-						fluidComponent.getSecond().take(recipe.getFirstOutput());
+						fluidStorage.getFirst().take(recipe.getIngredient().testMatching(fluidStorage.getFirst()).getAmount());
+						fluidStorage.getSecond().take(recipe.getFirstOutput());
 
 						progress = 0;
 					} else {
@@ -168,7 +168,7 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().primitiveRefineryEnergy;
 		}
 
@@ -194,7 +194,7 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().basicRefineryEnergy;
 		}
 
@@ -220,7 +220,7 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().advancedRefineryEnergy;
 		}
 
@@ -246,7 +246,7 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().eliteRefineryEnergy;
 		}
 

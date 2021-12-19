@@ -68,13 +68,13 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 		this.time = time;
 	}
 
-	public static boolean allows(World world, ItemStore itemComponent) {
+	public static boolean allows(World world, ItemStore itemStorage) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (MeltingRecipe) it).toArray(MeltingRecipe[]::new));
 		}
 
 		for (MeltingRecipe recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.allows(itemComponent)) {
+			if (recipe.allows(itemStorage)) {
 				return true;
 			}
 		}
@@ -82,13 +82,13 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 		return false;
 	}
 
-	public static Optional<MeltingRecipe> matching(World world, ItemStore itemComponent, FluidStore fluidComponent) {
+	public static Optional<MeltingRecipe> matching(World world, ItemStore itemStorage, FluidStore fluidStorage) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (MeltingRecipe) it).toArray(MeltingRecipe[]::new));
 		}
 
 		for (MeltingRecipe recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.matches(itemComponent, fluidComponent)) {
+			if (recipe.matches(itemStorage, fluidStorage)) {
 				return Optional.of(recipe);
 			}
 		}
@@ -96,28 +96,28 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 		return Optional.empty();
 	}
 
-	public boolean matches(ItemStore itemComponent, FluidStore fluidComponent) {
-		if (fluidComponent.getSize() < 1) {
+	public boolean matches(ItemStore itemStorage, FluidStore fluidStorage) {
+		if (fluidStorage.getSize() < 1) {
 			return false;
 		}
 
-		if (itemComponent.getSize() < 1) {
+		if (itemStorage.getSize() < 1) {
 			return false;
 		}
 
-		if (!firstInput.test(itemComponent.getFirst())) {
+		if (!firstInput.test(itemStorage.getStack(0))) {
 			return false;
 		}
 
-		return firstOutput.test(fluidComponent.getFirst());
+		return firstOutput.test(fluidStorage.getFirst());
 	}
 
-	public boolean allows(ItemStore itemComponent) {
-		if (itemComponent.getSize() < 1) {
+	public boolean allows(ItemStore itemStorage) {
+		if (itemStorage.getSize() < 1) {
 			return false;
 		}
 
-		return firstInput.testWeak(itemComponent.getFirst());
+		return firstInput.testWeak(itemStorage.getStack(0));
 	}
 
 	@Override

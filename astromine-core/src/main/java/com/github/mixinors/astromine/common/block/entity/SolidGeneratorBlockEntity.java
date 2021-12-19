@@ -94,11 +94,11 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		ItemStore itemComponent = getItemComponent();
+		ItemStore itemStorage = getItemComponent();
 
 		EnergyStore energyComponent = getEnergyComponent();
 
-		if (itemComponent != null && energyComponent != null) {
+		if (itemStorage != null && energyComponent != null) {
 			EnergyVolume energyVolume = energyComponent.getVolume();
 
 			if (available > 0) {
@@ -125,7 +125,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 					}
 				}
 			} else {
-				ItemStack burnStack = itemComponent.getFirst();
+				ItemStack burnStack = itemStorage.getStack(0);
 
 				Integer value = FuelRegistry.INSTANCE.get(burnStack.getItem());
 
@@ -179,7 +179,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().primitiveSolidGeneratorEnergy;
 		}
 
@@ -200,7 +200,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().basicSolidGeneratorEnergy;
 		}
 
@@ -221,7 +221,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().advancedSolidGeneratorEnergy;
 		}
 
@@ -242,7 +242,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().eliteSolidGeneratorEnergy;
 		}
 

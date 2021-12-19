@@ -69,13 +69,13 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 		this.time = time;
 	}
 
-	public static boolean allows(World world, FluidStore fluidComponent) {
+	public static boolean allows(World world, FluidStore fluidStorage) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (RefiningRecipe) it).toArray(RefiningRecipe[]::new));
 		}
 
 		for (RefiningRecipe recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.allows(fluidComponent)) {
+			if (recipe.allows(fluidStorage)) {
 				return true;
 			}
 		}
@@ -83,13 +83,13 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 		return false;
 	}
 	
-	public static Optional<RefiningRecipe> matching(World world, FluidStore fluidComponent) {
+	public static Optional<RefiningRecipe> matching(World world, FluidStore fluidStorage) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (RefiningRecipe) it).toArray(RefiningRecipe[]::new));
 		}
 
 		for (RefiningRecipe recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.allows(fluidComponent)) {
+			if (recipe.allows(fluidStorage)) {
 				return Optional.of(recipe);
 			}
 		}
@@ -97,24 +97,24 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 		return Optional.empty();
 	}
 
-	public boolean matches(FluidStore fluidComponent) {
-		if (fluidComponent.getSize() < 2) {
+	public boolean matches(FluidStore fluidStorage) {
+		if (fluidStorage.getSize() < 2) {
 			return false;
 		}
 
-		if (!input.test(fluidComponent.getFirst())) {
+		if (!input.test(fluidStorage.getFirst())) {
 			return false;
 		}
 		
-		return output.test(fluidComponent.getSecond());
+		return output.test(fluidStorage.getSecond());
 	}
 
-	public boolean allows(FluidStore fluidComponent) {
-		if (fluidComponent.getSize() < 1) {
+	public boolean allows(FluidStore fluidStorage) {
+		if (fluidStorage.getSize() < 1) {
 			return false;
 		}
 
-		return input.testWeak(fluidComponent.getFirst());
+		return input.testWeak(fluidStorage.getFirst());
 	}
 
 	@Override

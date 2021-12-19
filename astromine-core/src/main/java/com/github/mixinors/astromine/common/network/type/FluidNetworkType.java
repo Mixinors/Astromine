@@ -61,7 +61,7 @@ public final class FluidNetworkType implements NetworkType {
 			if (networkMember.acceptsType(this)) {
 				BlockEntity blockEntity = memberPos.getBlockEntity();
 
-				FluidStore fluidComponent = FluidStore.get(blockEntity);
+				FluidStore fluidStorage = FluidStore.get(blockEntity);
 
 				TransferType type = TransferType.NONE;
 
@@ -73,11 +73,11 @@ public final class FluidNetworkType implements NetworkType {
 
 				if (!type.isNone()) {
 					if (type.canExtract() && (networkMember.isProvider(this) || networkMember.isBuffer(this))) {
-						providers.add(new Pair<>(fluidComponent, memberNode.getDirection()));
+						providers.add(new Pair<>(fluidStorage, memberNode.getDirection()));
 					}
 
 					if (type.canInsert() && (networkMember.isRequester(this) || networkMember.isBuffer(this))) {
-						requesters.add(new Pair<>(fluidComponent, memberNode.getDirection()));
+						requesters.add(new Pair<>(fluidStorage, memberNode.getDirection()));
 					}
 				}
 			}

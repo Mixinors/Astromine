@@ -60,7 +60,7 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 
 	@Override
 	public FluidStore createFluidComponent() {
-		FluidStore fluidComponent = SimpleDirectionalFluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
+		FluidStore fluidStorage = SimpleDirectionalFluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
 			if (slot != 0) {
 				return false;
 			}
@@ -75,9 +75,9 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 			optionalRecipe = Optional.empty();
 		});
 
-		fluidComponent.getFirst().setSize(getFluidSize());
+		fluidStorage.getFirst().setSize(getFluidSize());
 
-		return fluidComponent;
+		return fluidStorage;
 	}
 
 	@Override
@@ -87,15 +87,15 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		FluidStore fluidComponent = getFluidComponent();
+		FluidStore fluidStorage = getFluidComponent();
 
 		EnergyStore energyComponent = getEnergyComponent();
 
-		if (fluidComponent != null) {
+		if (fluidStorage != null) {
 			EnergyVolume energyVolume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = FluidGeneratingRecipe.matching(world, fluidComponent);
+				optionalRecipe = FluidGeneratingRecipe.matching(world, fluidStorage);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -112,11 +112,11 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 				double speed = Math.min(getMachineSpeed(), limit - progress);
 				double generated = recipe.getEnergyOutput() * speed / limit;
 
-				if (energyVolume.hasAvailable(generated) && optionalRecipe.get().matches(fluidComponent)) {
+				if (energyVolume.hasAvailable(generated) && optionalRecipe.get().matches(fluidStorage)) {
 					if (progress + speed >= limit) {
 						optionalRecipe = Optional.empty();
 
-						fluidComponent.getFirst().take(recipe.getFirstInput().testMatching(fluidComponent.getFirst()).getAmount());
+						fluidStorage.getFirst().take(recipe.getFirstInput().testMatching(fluidStorage.getFirst()).getAmount());
 
 						energyVolume.give(generated);
 					} else {
@@ -163,7 +163,7 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().primitiveFluidGeneratorEnergy;
 		}
 
@@ -189,7 +189,7 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().basicFluidGeneratorEnergy;
 		}
 
@@ -215,7 +215,7 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().advancedFluidGeneratorEnergy;
 		}
 
@@ -241,7 +241,7 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 		}
 
 		@Override
-		public double getEnergySize() {
+		public long getEnergySize() {
 			return AMConfig.get().eliteFluidGeneratorEnergy;
 		}
 
