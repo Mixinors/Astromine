@@ -186,8 +186,8 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		return extractSlots.length > 0;
 	}
 	
-	public StorageView<ItemVariant> getStorage(int index) {
-		return (StorageView<ItemVariant>) storages.get(index);
+	public SimpleItemVariantStorage getStorage(int index) {
+		return (SimpleItemVariantStorage) storages.get(index);
 	}
 	
 	public ItemVariant getVariant(int index) {
@@ -200,6 +200,14 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	
 	public List<Runnable> getListeners() {
 		return listeners;
+	}
+	
+	public StorageSiding[] getSidings() {
+		return sidings;
+	}
+	
+	public void setSidings(StorageSiding[] sidings) {
+		this.sidings = sidings;
 	}
 	
 	/**

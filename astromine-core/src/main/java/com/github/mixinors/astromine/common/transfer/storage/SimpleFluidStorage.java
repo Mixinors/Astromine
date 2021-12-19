@@ -168,8 +168,8 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		return extractSlots.length > 0;
 	}
 	
-	public StorageView<FluidVariant> getStorage(int index) {
-		return (StorageView<FluidVariant>) storages.get(index);
+	public SimpleFluidVariantStorage getStorage(int index) {
+		return (SimpleFluidVariantStorage) storages.get(index);
 	}
 	
 	public FluidVariant getVariant(int index) {
@@ -182,6 +182,14 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	
 	public List<Runnable> getListeners() {
 		return listeners;
+	}
+	
+	public StorageSiding[] getSidings() {
+		return sidings;
+	}
+	
+	public void setSidings(StorageSiding[] sidings) {
+		this.sidings = sidings;
 	}
 	
 	public void writeToNbt(NbtCompound nbt) {
