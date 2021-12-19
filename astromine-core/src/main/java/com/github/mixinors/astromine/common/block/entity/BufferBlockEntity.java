@@ -24,6 +24,8 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -32,7 +34,7 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.function.Supplier;
 
-public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
+public abstract class BufferBlockEntity extends ExtendedBlockEntity {
 	public BufferBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 	}
@@ -40,65 +42,50 @@ public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 	public static class Primitive extends BufferBlockEntity {
 		public Primitive(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.PRIMITIVE_BUFFER, blockPos, blockState);
-		}
-
-		@Override
-		public SimpleItemStorage createItemComponent() {
-			return SimpleDirectionalItemComponent.of(this, 6 * 9);
+			
+			itemStorage = new SimpleItemStorage(6 * 9);
 		}
 	}
 
 	public static class Basic extends BufferBlockEntity {
 		public Basic(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.BASIC_BUFFER, blockPos, blockState);
-		}
-
-		@Override
-		public SimpleItemStorage createItemComponent() {
-			return SimpleDirectionalItemComponent.of(this, 12 * 9);
+			
+			itemStorage = new SimpleItemStorage(12 * 9);
 		}
 	}
 
 	public static class Advanced extends BufferBlockEntity {
 		public Advanced(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ADVANCED_BUFFER, blockPos, blockState);
-		}
-
-		@Override
-		public SimpleItemStorage createItemComponent() {
-			return SimpleDirectionalItemComponent.of(this, 18 * 9);
+			
+			itemStorage = new SimpleItemStorage(18 * 9);
 		}
 	}
 
 	public static class Elite extends BufferBlockEntity {
 		public Elite(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ELITE_BUFFER, blockPos, blockState);
-		}
-
-		@Override
-		public SimpleItemStorage createItemComponent() {
-			return SimpleDirectionalItemComponent.of(this, 24 * 9);
+			
+			itemStorage = new SimpleItemStorage(24 * 9);
 		}
 	}
 
 	public static class Creative extends BufferBlockEntity {
 		public Creative(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.CREATIVE_BUFFER, blockPos, blockState);
-		}
-
-		@Override
-		public SimpleItemStorage createItemComponent() {
-			return SimpleDirectionalItemComponent.of(this, 6 * 9);
+			
+			itemStorage = new SimpleItemStorage(6 * 9);
 		}
 
 		@Override
 		public void tick() {
-			SimpleItemStorage itemStorage = getItemComponent();
-
 			if (itemStorage != null) {
-				itemStorage.forEach(stack -> {
+				for (int i = 0; i < itemStorage.getSize(); ++i) {
+					var stack = itemStorage.getStack(i);
+					
 					stack.setCount(stack.getMaxCount());
-				});
+				}
 			}
 		}
 	}
