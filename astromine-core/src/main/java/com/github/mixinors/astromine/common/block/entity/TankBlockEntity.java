@@ -52,8 +52,8 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 	private Fluid filter = Fluids.EMPTY;
 
 	@Override
-	public FluidStore createFluidComponent() {
-		FluidStore fluidStorage = SimpleDirectionalFluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
+	public SimpleFluidStorage createFluidComponent() {
+		SimpleFluidStorage fluidStorage = SimpleDirectionalFluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
 			return slot == 0 && (filter == Fluids.EMPTY || volume.getFluid() == filter);
 		});
 

@@ -28,7 +28,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.world.World;
 
 /**
- * A {@link ComponentEntity} with an attached {@link FluidStore}
+ * A {@link ComponentEntity} with an attached {@link SimpleFluidStorage}
  * and {@link SimpleItemStorage}.
  */
 public abstract class ComponentFluidItemEntity extends ComponentEntity implements InventoryFromItemComponent {
@@ -37,15 +37,15 @@ public abstract class ComponentFluidItemEntity extends ComponentEntity implement
 		super(type, world);
 	}
 
-	/** Returns the {@link FluidStore} to be attached. */
-	public abstract FluidStore createFluidComponent();
+	/** Returns the {@link SimpleFluidStorage} to be attached. */
+	public abstract SimpleFluidStorage createFluidComponent();
 
 	/** Returns the {@link SimpleItemStorage} to be attached. */
 	public abstract SimpleItemStorage createItemComponent();
 
-	/** Returns the attached {@link FluidStore}. */
-	public FluidStore getFluidComponent() {
-		return FluidStore.get(this);
+	/** Returns the attached {@link SimpleFluidStorage}. */
+	public SimpleFluidStorage getFluidComponent() {
+		return SimpleFluidStorage.get(this);
 	}
 
 	/** Returns the attached {@link SimpleItemStorage}. */

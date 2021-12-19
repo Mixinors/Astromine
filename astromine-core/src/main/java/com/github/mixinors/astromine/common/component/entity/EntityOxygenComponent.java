@@ -140,13 +140,13 @@ public final class EntityOxygenComponent implements AutoSyncedComponent {
 		this.entity = entity;
 	}
 
-	/** Serializes this {@link FluidStore} to a {@link NbtCompound}. */
+	/** Serializes this {@link SimpleFluidStorage} to a {@link NbtCompound}. */
 	@Override
 	public void writeToNbt(NbtCompound tag) {
 		tag.putInt("oxygen", oxygen);
 	}
 
-	/** Deserializes this {@link FluidStore} from a {@link NbtCompound}. */
+	/** Deserializes this {@link SimpleFluidStorage} from a {@link NbtCompound}. */
 	@Override
 	public void readFromNbt(NbtCompound tag) {
 		this.oxygen = tag.getInt("oxygen");

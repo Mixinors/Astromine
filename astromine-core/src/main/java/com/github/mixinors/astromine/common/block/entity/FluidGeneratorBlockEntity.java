@@ -59,8 +59,8 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 	}
 
 	@Override
-	public FluidStore createFluidComponent() {
-		FluidStore fluidStorage = SimpleDirectionalFluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
+	public SimpleFluidStorage createFluidComponent() {
+		SimpleFluidStorage fluidStorage = SimpleDirectionalFluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
 			if (slot != 0) {
 				return false;
 			}
@@ -69,7 +69,7 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 				return false;
 			}
 
-			return FluidGeneratingRecipe.allows(world, FluidStore.of(volume, getFluidComponent().getFirst().copy()));
+			return FluidGeneratingRecipe.allows(world, SimpleFluidStorage.of(volume, getFluidComponent().getFirst().copy()));
 		}).withExtractPredicate((direction, volume, slot) -> false).withListener((inventory) -> {
 			shouldTry = true;
 			optionalRecipe = Optional.empty();
@@ -87,7 +87,7 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		FluidStore fluidStorage = getFluidComponent();
+		SimpleFluidStorage fluidStorage = getFluidComponent();
 
 		EnergyStore energyComponent = getEnergyComponent();
 

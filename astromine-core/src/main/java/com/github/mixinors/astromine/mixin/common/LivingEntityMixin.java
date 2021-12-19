@@ -118,10 +118,10 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 
 					boolean hasSuit = !helmetStack.isEmpty() && !chestplateStack.isEmpty() && !leggingsStack.isEmpty() && !bootsStack.isEmpty();
 					
-					FluidStore fluidStorage = null;
+					SimpleFluidStorage fluidStorage = null;
 					
 					if (hasSuit) {
-						fluidStorage = FluidStore.get(chestplateStack);
+						fluidStorage = SimpleFluidStorage.get(chestplateStack);
 						
 						if (fluidStorage != null) {
 							breathingVolume = fluidStorage.getFirst();

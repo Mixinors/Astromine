@@ -59,8 +59,8 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 	}
 
 	@Override
-	public FluidStore createFluidComponent() {
-		FluidStore fluidStorage = SimpleDirectionalFluidComponent.of(this, 2).withInsertPredicate((direction, volume, slot) -> {
+	public SimpleFluidStorage createFluidComponent() {
+		SimpleFluidStorage fluidStorage = SimpleDirectionalFluidComponent.of(this, 2).withInsertPredicate((direction, volume, slot) -> {
 			if (slot != 0) {
 				return false;
 			}
@@ -69,7 +69,7 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 				return false;
 			}
 
-			return RefiningRecipe.allows(world, FluidStore.of(volume));
+			return RefiningRecipe.allows(world, SimpleFluidStorage.of(volume));
 		}).withExtractPredicate((direction, volume, slot) -> {
 			return slot == 1;
 		}).withListener((inventory) -> {
@@ -89,7 +89,7 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		FluidStore fluidStorage = getFluidComponent();
+		SimpleFluidStorage fluidStorage = getFluidComponent();
 
 		EnergyStore energyComponent = getEnergyComponent();
 

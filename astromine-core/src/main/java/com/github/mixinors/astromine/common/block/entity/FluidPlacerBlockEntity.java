@@ -55,8 +55,8 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 	}
 
 	@Override
-	public FluidStore createFluidComponent() {
-		FluidStore fluidStorage = SimpleDirectionalFluidComponent.of(this, 1);
+	public SimpleFluidStorage createFluidComponent() {
+		SimpleFluidStorage fluidStorage = SimpleDirectionalFluidComponent.of(this, 1);
 		fluidStorage.getFirst().setSize(FluidVolume.BOTTLE * 8L);
 		return fluidStorage;
 	}
@@ -88,7 +88,7 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		FluidStore fluidStorage = getFluidComponent();
+		SimpleFluidStorage fluidStorage = getFluidComponent();
 
 		EnergyStore energyComponent = getEnergyComponent();
 

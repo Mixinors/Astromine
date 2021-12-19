@@ -70,7 +70,7 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 		this.time = time;
 	}
 
-	public static boolean allows(World world, FluidStore fluidStorage) {
+	public static boolean allows(World world, SimpleFluidStorage fluidStorage) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (SolidifyingRecipe) it).toArray(SolidifyingRecipe[]::new));
 		}
@@ -84,7 +84,7 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 		return false;
 	}
 
-	public static Optional<SolidifyingRecipe> matching(World world, SimpleItemStorage itemStorage, FluidStore fluidStorage) {
+	public static Optional<SolidifyingRecipe> matching(World world, SimpleItemStorage itemStorage, SimpleFluidStorage fluidStorage) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (SolidifyingRecipe) it).toArray(SolidifyingRecipe[]::new));
 		}
@@ -98,7 +98,7 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 		return Optional.empty();
 	}
 
-	public boolean matches(SimpleItemStorage itemStorage, FluidStore fluidStorage) {
+	public boolean matches(SimpleItemStorage itemStorage, SimpleFluidStorage fluidStorage) {
 		if (fluidStorage.getSize() < 1) {
 			return false;
 		}
@@ -114,7 +114,7 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 		return StackUtils.test(firstOutput, itemStorage.getStack(0)) ;
 	}
 
-	public boolean allows(FluidStore fluidStorage) {
+	public boolean allows(SimpleFluidStorage fluidStorage) {
 		if (fluidStorage.getSize() < 1) {
 			return false;
 		}

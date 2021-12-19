@@ -48,8 +48,8 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 	}
 
 	@Override
-	public FluidStore createFluidComponent() {
-		FluidStore fluidStorage = SimpleDirectionalFluidComponent.of(this, 1);
+	public SimpleFluidStorage createFluidComponent() {
+		SimpleFluidStorage fluidStorage = SimpleDirectionalFluidComponent.of(this, 1);
 		fluidStorage.getFirst().setSize(getFluidSize());
 		return fluidStorage;
 	}
@@ -86,7 +86,7 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		FluidStore fluidStorage = getFluidComponent();
+		SimpleFluidStorage fluidStorage = getFluidComponent();
 
 		if (fluidStorage != null) {
 			EnergyVolume energyVolume = getEnergyComponent().getVolume();

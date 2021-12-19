@@ -82,7 +82,7 @@ public class AMNetworkMembers {
 			@Override
 			public Collection<NetworkMemberType> get(WorldPos pos, @Nullable Direction direction) {
 				if (!this.types.containsKey(pos.getBlock())) {
-					if (FluidStore.get(pos.getBlockEntity()) != null) {
+					if (SimpleFluidStorage.get(pos.getBlockEntity()) != null) {
 						return NetworkMember.REQUESTER_PROVIDER;
 					}
 				}

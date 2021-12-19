@@ -59,8 +59,8 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 	}
 
 	@Override
-	public FluidStore createFluidComponent() {
-		FluidStore fluidStorage = SimpleDirectionalFluidComponent.of(this, 3).withInsertPredicate((direction, volume, slot) -> {
+	public SimpleFluidStorage createFluidComponent() {
+		SimpleFluidStorage fluidStorage = SimpleDirectionalFluidComponent.of(this, 3).withInsertPredicate((direction, volume, slot) -> {
 			if (slot != 0 && slot != 1) {
 				return false;
 			}
@@ -69,7 +69,7 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 				return false;
 			}
 
-			return FluidMixingRecipe.allows(world, FluidStore.of(volume, getFluidComponent().getSecond().copy(), getFluidComponent().getThird().copy())) || FluidMixingRecipe.allows(world, FluidStore.of(getFluidComponent().getFirst().copy(), volume, getFluidComponent().getThird().copy()));
+			return FluidMixingRecipe.allows(world, SimpleFluidStorage.of(volume, getFluidComponent().getSecond().copy(), getFluidComponent().getThird().copy())) || FluidMixingRecipe.allows(world, SimpleFluidStorage.of(getFluidComponent().getFirst().copy(), volume, getFluidComponent().getThird().copy()));
 		}).withExtractPredicate((direction, volume, slot) -> {
 			return slot == 2;
 		}).withListener((inventory) -> {
@@ -89,7 +89,7 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		FluidStore fluidStorage = getFluidComponent();
+		SimpleFluidStorage fluidStorage = getFluidComponent();
 
 		EnergyStore energyComponent = getEnergyComponent();
 

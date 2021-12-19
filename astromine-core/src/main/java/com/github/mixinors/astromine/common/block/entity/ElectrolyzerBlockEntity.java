@@ -24,6 +24,8 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -38,11 +40,12 @@ import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.ElectrolyzingRecipe;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider, FluidSizeProvider {
+public abstract class ElectrolyzerBlockEntity extends ExtendedBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider, FluidSizeProvider {
 	public double progress = 0;
 	public int limit = 100;
 	public boolean shouldTry = false;
@@ -51,6 +54,16 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 
 	public ElectrolyzerBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
+		
+		energyStorage = new SimpleEnergyStorage(getEnergySize(), Long.MAX_VALUE, Long.MAX_VALUE);
+		
+		fluidStorage = new SimpleFluidStorage(3).insertPredicate((variant, slot) -> {
+			if (slot != 0) {
+				return false;
+			}
+			
+			return ElectrolyzingRecipe.allows(world, new SimpleFluidStorage(fluidStorage.getStorage(1)))
+		})
 	}
 
 	@Override
@@ -59,8 +72,8 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 	}
 
 	@Override
-	public FluidStore createFluidComponent() {
-		FluidStore fluidStorage = SimpleDirectionalFluidComponent.of(this, 3).withInsertPredicate((direction, volume, slot) -> {
+	public SimpleFluidStorage createFluidComponent() {
+		SimpleFluidStorage fluidStorage = SimpleDirectionalFluidComponent.of(this, 3).withInsertPredicate((direction, volume, slot) -> {
 			if (slot != 0) {
 				return false;
 			}
@@ -69,7 +82,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 				return false;
 			}
 
-			return ElectrolyzingRecipe.allows(world, FluidStore.of(volume, getFluidComponent().getSecond().copy(), getFluidComponent().getThird().copy()));
+			return ElectrolyzingRecipe.allows(world, SimpleFluidStorage.of(volume, getFluidComponent().getSecond().copy(), getFluidComponent().getThird().copy()));
 		}).withExtractPredicate((direction, volume, slot) -> {
 			return slot == 1 || slot == 2;
 		}).withListener((inventory) -> {
@@ -89,7 +102,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		FluidStore fluidStorage = getFluidComponent();
+		SimpleFluidStorage fluidStorage = getFluidComponent();
 
 		EnergyStore energyComponent = getEnergyComponent();
 

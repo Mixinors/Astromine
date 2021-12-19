@@ -82,7 +82,7 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 		return false;
 	}
 
-	public static Optional<MeltingRecipe> matching(World world, SimpleItemStorage itemStorage, FluidStore fluidStorage) {
+	public static Optional<MeltingRecipe> matching(World world, SimpleItemStorage itemStorage, SimpleFluidStorage fluidStorage) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (MeltingRecipe) it).toArray(MeltingRecipe[]::new));
 		}
@@ -96,7 +96,7 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 		return Optional.empty();
 	}
 
-	public boolean matches(SimpleItemStorage itemStorage, FluidStore fluidStorage) {
+	public boolean matches(SimpleItemStorage itemStorage, SimpleFluidStorage fluidStorage) {
 		if (fluidStorage.getSize() < 1) {
 			return false;
 		}

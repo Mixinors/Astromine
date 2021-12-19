@@ -50,8 +50,8 @@ public final class FluidNetworkType implements NetworkType {
 	 * transferring energy between them. */
 	@Override
 	public void tick(NetworkInstance instance) {
-		List<Pair<FluidStore, Direction>> providers = Lists.newArrayList();
-		List<Pair<FluidStore, Direction>> requesters = Lists.newArrayList();
+		List<Pair<SimpleFluidStorage, Direction>> providers = Lists.newArrayList();
+		List<Pair<SimpleFluidStorage, Direction>> requesters = Lists.newArrayList();
 
 		for (NetworkMemberNode memberNode : instance.members) {
 			WorldPos memberPos = WorldPos.of(instance.getWorld(), memberNode.getBlockPosition());
@@ -61,7 +61,7 @@ public final class FluidNetworkType implements NetworkType {
 			if (networkMember.acceptsType(this)) {
 				BlockEntity blockEntity = memberPos.getBlockEntity();
 
-				FluidStore fluidStorage = FluidStore.get(blockEntity);
+				SimpleFluidStorage fluidStorage = SimpleFluidStorage.get(blockEntity);
 
 				TransferType type = TransferType.NONE;
 
@@ -83,8 +83,8 @@ public final class FluidNetworkType implements NetworkType {
 			}
 		}
 
-		for (Pair<FluidStore, Direction> provider : providers) {
-			for (Pair<FluidStore, Direction> requester : requesters) {
+		for (Pair<SimpleFluidStorage, Direction> provider : providers) {
+			for (Pair<SimpleFluidStorage, Direction> requester : requesters) {
 				provider.getLeft().into(requester.getLeft(), FluidVolume.getTransfer(), requester.getRight().getOpposite());
 			}
 		}

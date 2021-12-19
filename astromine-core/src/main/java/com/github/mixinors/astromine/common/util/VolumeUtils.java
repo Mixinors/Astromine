@@ -55,10 +55,10 @@ public class VolumeUtils {
 
 	/** Inserts fluids from the first stack into the first fluid volume.
 		* Inserts fluids from the first fluid volume into the first stack. */
-	public static void transferBetween(SimpleItemStorage itemStorage, FluidStore fluidStorage, int firstStackSlot, int secondStackSlot, int volumeSlot) {
+	public static void transferBetween(SimpleItemStorage itemStorage, SimpleFluidStorage fluidStorage, int firstStackSlot, int secondStackSlot, int volumeSlot) {
 		if (fluidStorage != null) {
 			if (itemStorage != null) {
-				FluidStore firstStackFluidComponent = FluidStore.get(itemStorage.getStack(firstStackSlot));
+				SimpleFluidStorage firstStackFluidComponent = SimpleFluidStorage.get(itemStorage.getStack(firstStackSlot));
 
 				if (firstStackFluidComponent != null) {
 					FluidVolume ourVolume = fluidStorage.getVolume(volumeSlot);
@@ -79,7 +79,7 @@ public class VolumeUtils {
                     });
                 }
 
-				FluidStore secondStackFluidComponent = FluidStore.get(itemStorage.getStack(secondStackSlot));
+				SimpleFluidStorage secondStackFluidComponent = SimpleFluidStorage.get(itemStorage.getStack(secondStackSlot));
 
 				if (secondStackFluidComponent != null) {
 					FluidVolume ourVolume = fluidStorage.getVolume(volumeSlot);

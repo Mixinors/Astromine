@@ -57,8 +57,8 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 	}
 
 	@Override
-	public FluidStore createFluidComponent() {
-		FluidStore fluidStorage = SimpleDirectionalFluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
+	public SimpleFluidStorage createFluidComponent() {
+		SimpleFluidStorage fluidStorage = SimpleDirectionalFluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
 			if (slot != 0) {
 				return false;
 			}
@@ -67,7 +67,7 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 				return false;
 			}
 
-			return SolidifyingRecipe.allows(world, FluidStore.of(volume));
+			return SolidifyingRecipe.allows(world, SimpleFluidStorage.of(volume));
 		});
 
 		fluidStorage.getFirst().setSize(getFluidSize());
@@ -111,7 +111,7 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 
 		SimpleItemStorage itemStorage = getItemComponent();
 
-		FluidStore fluidStorage = getFluidComponent();
+		SimpleFluidStorage fluidStorage = getFluidComponent();
 
 		EnergyStore energyComponent = getEnergyComponent();
 

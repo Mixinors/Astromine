@@ -71,7 +71,7 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 		this.time = time;
 	}
 
-	public static boolean allows(World world, FluidStore fluidStorage) {
+	public static boolean allows(World world, SimpleFluidStorage fluidStorage) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidMixingRecipe) it).toArray(FluidMixingRecipe[]::new));
 		}
@@ -85,7 +85,7 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 		return false;
 	}
 
-	public static Optional<FluidMixingRecipe> matching(World world, FluidStore fluidStorage) {
+	public static Optional<FluidMixingRecipe> matching(World world, SimpleFluidStorage fluidStorage) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidMixingRecipe) it).toArray(FluidMixingRecipe[]::new));
 		}
@@ -99,7 +99,7 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 		return Optional.empty();
 	}
 
-	public boolean matches(FluidStore fluidStorage) {
+	public boolean matches(SimpleFluidStorage fluidStorage) {
 		if (fluidStorage.getSize() < 3) {
 			return false;
 		}
@@ -115,7 +115,7 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 		return firstOutput.test(fluidStorage.getThird());
 	}
 
-	public boolean allows(FluidStore fluidStorage) {
+	public boolean allows(SimpleFluidStorage fluidStorage) {
 		if (fluidStorage.getSize() < 2) {
 			return false;
 		}

@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.recipe;
 
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.architectury.core.AbstractRecipeSerializer;
 import net.minecraft.inventory.Inventory;
@@ -71,7 +72,7 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsu
 		this.time = time;
 	}
 
-	public static boolean allows(World world, FluidStore fluidStorage) {
+	public static boolean allows(World world, SimpleFluidStorage fluidStorage) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (ElectrolyzingRecipe) it).toArray(ElectrolyzingRecipe[]::new));
 		}
@@ -85,7 +86,7 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsu
 		return false;
 	}
 
-	public static Optional<ElectrolyzingRecipe> matching(World world, FluidStore fluidStorage) {
+	public static Optional<ElectrolyzingRecipe> matching(World world, SimpleFluidStorage fluidStorage) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (ElectrolyzingRecipe) it).toArray(ElectrolyzingRecipe[]::new));
 		}
@@ -99,7 +100,7 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsu
 		return Optional.empty();
 	}
 
-	public boolean matches(FluidStore fluidStorage) {
+	public boolean matches(SimpleFluidStorage fluidStorage) {
 		if (fluidStorage.getSize() < 3) {
 			return false;
 		}
@@ -115,7 +116,7 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsu
 		return secondOutput.test(fluidStorage.getThird());
 	}
 
-	public boolean allows(FluidStore fluidStorage) {
+	public boolean allows(SimpleFluidStorage fluidStorage) {
 		if (fluidStorage.getSize() < 1) {
 			return false;
 		}

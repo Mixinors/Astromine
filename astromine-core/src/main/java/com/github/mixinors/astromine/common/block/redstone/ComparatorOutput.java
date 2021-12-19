@@ -69,14 +69,14 @@ public class ComparatorOutput {
 	}
 
 	/**
-	 * Returns the output level for a {@link BlockEntity} with a {@link FluidStore}.
+	 * Returns the output level for a {@link BlockEntity} with a {@link SimpleFluidStorage}.
 	 */
 	public static int forFluids(@Nullable BlockEntity entity) {
 		if (entity == null) {
 			return 0;
 		}
 
-		FluidStore fluidStorage = FluidStore.get(entity);
+		SimpleFluidStorage fluidStorage = SimpleFluidStorage.get(entity);
 
 		if (fluidStorage == null) {
 			return 0;

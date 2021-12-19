@@ -70,8 +70,8 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 	}
 
 	@Override
-	public FluidStore createFluidComponent() {
-		FluidStore fluidStorage = SimpleAutoSyncedFluidComponent.of(2);
+	public SimpleFluidStorage createFluidComponent() {
+		SimpleFluidStorage fluidStorage = SimpleAutoSyncedFluidComponent.of(2);
 		fluidStorage.getFirst().setSize(FluidVolume.BUCKET * 16L);
 		fluidStorage.getSecond().setSize(FluidVolume.BUCKET * 16L);
 		return fluidStorage;

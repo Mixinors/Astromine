@@ -63,7 +63,7 @@ public class AbstractBlockMixin {
 
 		final boolean isFluidVolumeItem = stackItem instanceof FluidVolumeItem;
 
-		final FluidStore stackFluidComponent = FluidStore.get(stack);
+		final SimpleFluidStorage stackFluidComponent = SimpleFluidStorage.get(stack);
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 
 		if (blockEntity != null) {
@@ -84,7 +84,7 @@ public class AbstractBlockMixin {
 			final Block block = state.getBlock();
 
 			if (blockEntity != null) {
-				FluidStore blockEntityFluidComponent = FluidStore.get(blockEntity);
+				SimpleFluidStorage blockEntityFluidComponent = SimpleFluidStorage.get(blockEntity);
 
 				if (blockEntityFluidComponent != null) {
 					FluidVolume stackVolume = stackFluidComponent.getFirst();
