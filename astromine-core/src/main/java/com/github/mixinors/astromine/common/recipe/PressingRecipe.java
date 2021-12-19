@@ -68,7 +68,7 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 		this.time = time;
 	}
 
-	public static boolean allows(World world, ItemStore itemStorage) {
+	public static boolean allows(World world, SimpleItemStorage itemStorage) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (PressingRecipe) it).toArray(PressingRecipe[]::new));
 		}
@@ -82,7 +82,7 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 		return false;
 	}
 
-	public static Optional<PressingRecipe> matching(World world, ItemStore itemStorage) {
+	public static Optional<PressingRecipe> matching(World world, SimpleItemStorage itemStorage) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (PressingRecipe) it).toArray(PressingRecipe[]::new));
 		}
@@ -96,7 +96,7 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 		return Optional.empty();
 	}
 
-	public boolean matches(ItemStore itemStorage) {
+	public boolean matches(SimpleItemStorage itemStorage) {
 		if (itemStorage.getSize() < 2) {
 			return false;
 		}
@@ -108,7 +108,7 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 		return StackUtils.test(firstOutput, itemStorage.getStack(0));
 	}
 
-	public boolean allows(ItemStore itemStorage) {
+	public boolean allows(SimpleItemStorage itemStorage) {
 		if (itemStorage.getSize() < 1) {
 			return false;
 		}

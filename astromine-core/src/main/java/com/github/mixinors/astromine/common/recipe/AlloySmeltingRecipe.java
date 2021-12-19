@@ -116,7 +116,7 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 		return StackUtils.test(firstOutput, itemStorage.getStack(2));
 	}
 
-	public boolean allows(ItemStore itemStorage) {
+	public boolean allows(SimpleItemStorage itemStorage) {
 		if (itemStorage.getSize() < 2) {
 			return false;
 		}

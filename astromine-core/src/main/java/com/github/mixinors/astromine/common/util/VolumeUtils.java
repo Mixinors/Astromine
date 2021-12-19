@@ -55,7 +55,7 @@ public class VolumeUtils {
 
 	/** Inserts fluids from the first stack into the first fluid volume.
 		* Inserts fluids from the first fluid volume into the first stack. */
-	public static void transferBetween(ItemStore itemStorage, FluidStore fluidStorage, int firstStackSlot, int secondStackSlot, int volumeSlot) {
+	public static void transferBetween(SimpleItemStorage itemStorage, FluidStore fluidStorage, int firstStackSlot, int secondStackSlot, int volumeSlot) {
 		if (fluidStorage != null) {
 			if (itemStorage != null) {
 				FluidStore firstStackFluidComponent = FluidStore.get(itemStorage.getStack(firstStackSlot));

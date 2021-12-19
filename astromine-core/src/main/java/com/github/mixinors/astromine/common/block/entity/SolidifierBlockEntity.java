@@ -76,7 +76,7 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 	}
 
 	@Override
-	public ItemStore createItemComponent() {
+	public SimpleItemStorage createItemComponent() {
 		return SimpleDirectionalItemComponent.of(this, 1).withInsertPredicate((direction, stack, slot) -> {
 			return false;
 		}).withExtractPredicate((direction, stack, slot) -> {
@@ -109,7 +109,7 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		ItemStore itemStorage = getItemComponent();
+		SimpleItemStorage itemStorage = getItemComponent();
 
 		FluidStore fluidStorage = getFluidComponent();
 

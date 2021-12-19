@@ -48,7 +48,7 @@ public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity imple
 	}
 
 	@Override
-	public ItemStore createItemComponent() {
+	public SimpleItemStorage createItemComponent() {
 		return SimpleDirectionalItemComponent.of(this, 1);
 	}
 
@@ -63,7 +63,7 @@ public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity imple
 	}
 
 	@Override
-	public double getEnergyConsumed() {
+	public long getEnergyConsumed() {
 		return AMConfig.get().blockPlacerEnergyConsumed;
 	}
 
@@ -79,7 +79,7 @@ public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity imple
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		ItemStore itemStorage = getItemComponent();
+		SimpleItemStorage itemStorage = getItemComponent();
 
 		EnergyStore energyComponent = getEnergyComponent();
 

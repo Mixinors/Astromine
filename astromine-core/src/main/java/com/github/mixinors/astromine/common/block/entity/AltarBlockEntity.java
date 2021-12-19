@@ -35,6 +35,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LightningEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -58,7 +59,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class AltarBlockEntity extends BlockEntity implements InventoryFromItemComponent, TickableBlockEntity {
+public class AltarBlockEntity extends BlockEntity implements Inventory, TickableBlockEntity {
 	public static final int CRAFTING_TIME = 100;
 	public static final int CRAFTING_TIME_SPIN = 80;
 	public static final int CRAFTING_TIME_FALL = 60;

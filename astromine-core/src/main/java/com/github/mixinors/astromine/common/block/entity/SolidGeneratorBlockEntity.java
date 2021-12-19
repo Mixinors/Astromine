@@ -56,7 +56,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 	}
 
 	@Override
-	public ItemStore createItemComponent() {
+	public SimpleItemStorage createItemComponent() {
 		return SimpleDirectionalItemComponent.of(this, 1).withInsertPredicate((direction, stack, slot) -> {
 			if (slot != 0) {
 				return false;
@@ -94,7 +94,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		ItemStore itemStorage = getItemComponent();
+		SimpleItemStorage itemStorage = getItemComponent();
 
 		EnergyStore energyComponent = getEnergyComponent();
 

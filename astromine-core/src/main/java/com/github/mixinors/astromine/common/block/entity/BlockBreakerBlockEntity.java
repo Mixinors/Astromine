@@ -24,13 +24,16 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergyConsumedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.common.util.StackUtils;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMConfig;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -43,25 +46,20 @@ import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.NotNull;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 import java.util.List;
 import java.util.Optional;
 
-public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
+public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
 	private long cooldown = 0L;
 
 	public BlockBreakerBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.BLOCK_BREAKER, blockPos, blockState);
-	}
-
-	@Override
-	public ItemStore createItemComponent() {
-		return SimpleDirectionalItemComponent.of(this, 1);
-	}
-
-	@Override
-	public EnergyStore createEnergyComponent() {
-		return SimpleEnergyComponent.of(getEnergySize());
+		
+		energyStorage = new SimpleEnergyStorage(getEnergySize(), Long.MAX_VALUE, Long.MAX_VALUE);
+		
+		itemStorage = new SimpleItemStorage(1);
 	}
 
 	@Override
@@ -70,7 +68,7 @@ public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity impl
 	}
 
 	@Override
-	public double getEnergyConsumed() {
+	public long getEnergyConsumed() {
 		return AMConfig.get().blockBreakerEnergyConsumed;
 	}
 
@@ -86,23 +84,26 @@ public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity impl
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		ItemStore itemStorage = getItemComponent();
-
-		EnergyStore energyComponent = getEnergyComponent();
-
-		if (itemStorage != null && energyComponent != null) {
-			EnergyVolume energyVolume = energyComponent.getVolume();
-
-			if (energyVolume.getAmount() < getEnergyConsumed()) {
+		if (itemStorage != null && energyStorage != null) {
+			if (energyStorage.getAmount() < getEnergyConsumed()) {
 				cooldown = 0L;
 
 				isActive = false;
 			} else {
-				isActive = true;
-
-				cooldown = cooldown++;
-
+				var consumed = getEnergyConsumed();
+				
 				if (cooldown >= getMachineSpeed()) {
+					try (var transaction = Transaction.openOuter()) {
+					if (energyStorage.extract(consumed, transaction) == consumed) {
+						transaction.commit();
+						
+						
+					}
+				}
+					isActive = true;
+
+					cooldown = cooldown++;
+
 					cooldown = 0L;
 
 					ItemStack stored = itemStorage.getStack(0);
@@ -138,8 +139,6 @@ public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity impl
 						});
 
 						world.breakBlock(targetPos, false);
-
-						energyVolume.take(getEnergyConsumed());
 					}
 				}
 			}

@@ -47,7 +47,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 	}
 
 	@Override
-	public ItemStore createItemComponent() {
+	public SimpleItemStorage createItemComponent() {
 		return SimpleDirectionalItemComponent.of(this, 2).withInsertPredicate((direction, stack, slot) -> {
 			return slot == 0;
 		}).withExtractPredicate((direction, stack, slot) -> {
@@ -67,7 +67,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		ItemStore itemStorage = getItemComponent();
+		SimpleItemStorage itemStorage = getItemComponent();
 
 		ItemStack inputStack = itemStorage.getStack(0);
 		if (Energy.valid(inputStack)) {

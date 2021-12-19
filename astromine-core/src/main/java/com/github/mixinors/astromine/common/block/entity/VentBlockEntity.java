@@ -75,7 +75,7 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 	}
 
 	@Override
-	public double getEnergyConsumed() {
+	public long getEnergyConsumed() {
 		return AMConfig.get().ventEnergyConsumed;
 	}
 

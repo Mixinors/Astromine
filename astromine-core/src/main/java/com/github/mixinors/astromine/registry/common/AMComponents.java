@@ -56,7 +56,7 @@ public class AMComponents implements WorldComponentInitializer, ChunkComponentIn
 	public static final ComponentKey<ChunkAtmosphereComponent> CHUNK_ATMOSPHERE_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("chunk_atmosphere_component"), ChunkAtmosphereComponent.class);
 	public static final ComponentKey<WorldHoloBridgeComponent> WORLD_BRIDGE_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("world_holo_bridge_component"), WorldHoloBridgeComponent.class);
 
-	public static final ComponentKey<ItemStore> ITEM_INVENTORY_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("item_inventory_component"), ItemStore.class);
+	public static final ComponentKey<SimpleItemStorage> ITEM_INVENTORY_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("item_inventory_component"), SimpleItemStorage.class);
 	public static final ComponentKey<FluidStore> FLUID_INVENTORY_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("fluid_inventory_component"), FluidStore.class);
 	public static final ComponentKey<EnergyStore> ENERGY_INVENTORY_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("energy_inventory_component"), EnergyStore.class);
 

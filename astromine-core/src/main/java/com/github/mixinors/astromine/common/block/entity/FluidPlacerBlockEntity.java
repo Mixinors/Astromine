@@ -67,7 +67,7 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 	}
 
 	@Override
-	public double getEnergyConsumed() {
+	public long getEnergyConsumed() {
 		return AMConfig.get().fluidPlacerEnergyConsumed;
 	}
 

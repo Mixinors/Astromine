@@ -69,7 +69,7 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 	}
 
 	@Override
-	public ItemStore createItemComponent() {
+	public SimpleItemStorage createItemComponent() {
 		return SimpleDirectionalItemComponent.of(this, 1).withInsertPredicate((direction, stack, slot) -> {
 			if (slot != 0) {
 				return false;
@@ -79,7 +79,7 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 				return false;
 			}
 
-			return MeltingRecipe.allows(world, ItemStore.of(stack));
+			return MeltingRecipe.allows(world, SimpleItemStorage.of(stack));
 		}).withExtractPredicate((direction, stack, slot) -> {
 			return false;
 		}).withListener((inventory) -> {
@@ -110,7 +110,7 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		ItemStore itemStorage = getItemComponent();
+		SimpleItemStorage itemStorage = getItemComponent();
 
 		FluidStore fluidStorage = getFluidComponent();
 

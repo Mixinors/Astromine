@@ -68,7 +68,7 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 		this.time = time;
 	}
 
-	public static boolean allows(World world, ItemStore itemStorage) {
+	public static boolean allows(World world, SimpleItemStorage itemStorage) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (MeltingRecipe) it).toArray(MeltingRecipe[]::new));
 		}
@@ -82,7 +82,7 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 		return false;
 	}
 
-	public static Optional<MeltingRecipe> matching(World world, ItemStore itemStorage, FluidStore fluidStorage) {
+	public static Optional<MeltingRecipe> matching(World world, SimpleItemStorage itemStorage, FluidStore fluidStorage) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (MeltingRecipe) it).toArray(MeltingRecipe[]::new));
 		}
@@ -96,7 +96,7 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 		return Optional.empty();
 	}
 
-	public boolean matches(ItemStore itemStorage, FluidStore fluidStorage) {
+	public boolean matches(SimpleItemStorage itemStorage, FluidStore fluidStorage) {
 		if (fluidStorage.getSize() < 1) {
 			return false;
 		}
@@ -112,7 +112,7 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 		return firstOutput.test(fluidStorage.getFirst());
 	}
 
-	public boolean allows(ItemStore itemStorage) {
+	public boolean allows(SimpleItemStorage itemStorage) {
 		if (itemStorage.getSize() < 1) {
 			return false;
 		}

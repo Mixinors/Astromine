@@ -56,7 +56,7 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 	}
 
 	@Override
-	public ItemStore createItemComponent() {
+	public SimpleItemStorage createItemComponent() {
 		return SimpleDirectionalItemComponent.of(this, 2).withInsertPredicate((direction, stack, slot) -> {
 			if (slot != 1) {
 				return false;
@@ -66,7 +66,7 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 				return false;
 			}
 
-			return PressingRecipe.allows(world, ItemStore.of(stack));
+			return PressingRecipe.allows(world, SimpleItemStorage.of(stack));
 		}).withExtractPredicate((direction, stack, slot) -> {
 			return slot == 0;
 		}).withListener((inventory) -> {
@@ -97,7 +97,7 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		ItemStore itemStorage = getItemComponent();
+		SimpleItemStorage itemStorage = getItemComponent();
 
 		EnergyStore energyComponent = getEnergyComponent();
 

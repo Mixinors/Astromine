@@ -78,7 +78,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 	}
 
 	@Override
-	public ItemStore createItemComponent() {
+	public SimpleItemStorage createItemComponent() {
 		return SimpleAutoSyncedItemComponent.of(4);
 	}
 

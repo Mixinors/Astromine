@@ -448,19 +448,19 @@ public class AMConfig implements ConfigData {
 	public long eliteCapacitorEnergy = eliteBatteryPackEnergy * 4;
 
 	@Comment("Energy for the Block Placer actions.")
-	public double blockPlacerEnergyConsumed = 1024.0D;
+	public long blockPlacerEnergyConsumed = 1024;
 
 	@Comment("Energy for the Block Breaker actions.")
-	public double blockBreakerEnergyConsumed = 1024.0D;
+	public long blockBreakerEnergyConsumed = 1024;
 
 	@Comment("Energy for the Fluid Placer actions.")
-	public double fluidPlacerEnergyConsumed = 1024.0D;
+	public long fluidPlacerEnergyConsumed = 1024;
 
 	@Comment("Energy for the Fluid Collector actions.")
-	public double fluidCollectorEnergyConsumed = 1024.0D;
+	public long fluidCollectorEnergyConsumed = 1024;
 
 	@Comment("Energy for the Vent actions.")
-	public double ventEnergyConsumed = 1024.0D;
+	public long ventEnergyConsumed = 1024;
 
 	@Comment("Delay for the Block Placer actions (smaller is faster).")
 	public long blockPlacerSpeed = 40L;

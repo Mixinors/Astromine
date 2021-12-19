@@ -41,7 +41,7 @@ import java.util.function.ToLongFunction;
  */
 public class ComparatorOutput {
 	/**
-	 * Returns the output level for a {@link BlockEntity} with an {@link ItemStore}.
+	 * Returns the output level for a {@link BlockEntity} with an {@link SimpleItemStorage}.
 	 */
 	public static int forItems(@Nullable BlockEntity entity) {
 		return ScreenHandler.calculateComparatorOutput(entity);

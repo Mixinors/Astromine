@@ -62,7 +62,7 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 	}
 
 	@Override
-	public ItemStore createItemComponent() {
+	public SimpleItemStorage createItemComponent() {
 		return SimpleDirectionalItemComponent.of(this, 2).withInsertPredicate((direction, stack, slot) -> {
 			return slot == 0;
 		}).withExtractPredicate((direction, stack, slot) -> {

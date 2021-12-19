@@ -29,7 +29,7 @@ import net.minecraft.world.World;
 
 /**
  * A {@link ComponentEntity} with an attached {@link EnergyStore},
- * {@link FluidStore} and {@link ItemStore}.
+ * {@link FluidStore} and {@link SimpleItemStorage}.
  */
 public abstract class ComponentEnergyFluidItemEntity extends ComponentEntity implements InventoryFromItemComponent {
 	/** Instantiates a {@link ComponentEnergyFluidItemEntity}. */
@@ -44,7 +44,7 @@ public abstract class ComponentEnergyFluidItemEntity extends ComponentEntity imp
 	public abstract FluidStore createFluidComponent();
 
 	/** Returns the {@link EnergyStore} to be attached. */
-	public abstract ItemStore createItemComponent();
+	public abstract SimpleItemStorage createItemComponent();
 
 	/** Returns the attached {@link EnergyStore}. */
 	public EnergyStore getEnergyComponent() {
@@ -56,8 +56,8 @@ public abstract class ComponentEnergyFluidItemEntity extends ComponentEntity imp
 		return FluidStore.get(this);
 	}
 
-	/** Returns the attached {@link ItemStore}. */
-	public ItemStore getItemComponent() {
-		return ItemStore.get(this);
+	/** Returns the attached {@link SimpleItemStorage}. */
+	public SimpleItemStorage getItemComponent() {
+		return SimpleItemStorage.get(this);
 	}
 }

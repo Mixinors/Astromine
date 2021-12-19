@@ -64,7 +64,7 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 	}
 
 	@Override
-	public ItemStore createItemComponent() {
+	public SimpleItemStorage createItemComponent() {
 		return SimpleDirectionalItemComponent.of(this, 2).withInsertPredicate((direction, stack, slot) -> {
 			if (slot != 1) {
 				return false;
@@ -115,7 +115,7 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		ItemStore itemStorage = getItemComponent();
+		SimpleItemStorage itemStorage = getItemComponent();
 
 		EnergyStore energyComponent = getEnergyComponent();
 

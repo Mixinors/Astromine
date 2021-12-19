@@ -100,9 +100,9 @@ public interface ComponentInventoryProvider extends InventoryProvider, SidedInve
 		return new int[] { 0 };
 	}
 
-	/** Override behavior to return this as an {@link ItemStore}. */
+	/** Override behavior to return this as an {@link SimpleItemStorage}. */
 	@Override
-	default ItemStore getItemComponent() {
-		return ItemStore.get(this);
+	default SimpleItemStorage getItemComponent() {
+		return SimpleItemStorage.get(this);
 	}
 }
