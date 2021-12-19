@@ -56,20 +56,20 @@ public class PrimitiveRocketEntityModel extends SinglePartEntityModel<PrimitiveR
 		ModelPartData modelPartData = modelData.getRoot();
 
 		modelPartData.addChild("rocket", ModelPartBuilder.create().uv(48, 0).cuboid(-6.0F, -11.0F, -6.0F, 12, 11, 12), ModelTransform.NONE);
-		modelPartData.addChild("rocket", ModelPartBuilder.create().uv(78, 84).cuboid(-5.0F, -18.0F, -5.0F, 10, 7, 10), ModelTransform.NONE);
-		modelPartData.addChild("rocket", ModelPartBuilder.create().uv(84, 0).cuboid(-4.0F, -21.0F, -4.0F, 8, 3, 8), ModelTransform.NONE);
-		modelPartData.addChild("rocket", ModelPartBuilder.create().uv(0, 0).cuboid(-6.0F, -106.0F, -6.0F, 12, 86, 12), ModelTransform.NONE);
-		modelPartData.addChild("rocket", ModelPartBuilder.create().uv(48, 48).cuboid(-5.0F, -142.0F, -5.0F, 10, 36, 10), ModelTransform.NONE);
-		modelPartData.addChild("rocket", ModelPartBuilder.create().uv(78, 23).cuboid(-4.0F, -161.0F, -4.0F, 8, 19, 8), ModelTransform.NONE);
-		modelPartData.addChild("rocket", ModelPartBuilder.create().uv(0, 98).cuboid(-2.0F, -180.0F, -2.0F, 4, 19, 4), ModelTransform.NONE);
-		modelPartData.addChild("rocket", ModelPartBuilder.create().uv(88, 50).cuboid(-1.0F, -33.0F, 6.0F, 2, 15, 9), ModelTransform.NONE);
-		modelPartData.addChild("rocket", ModelPartBuilder.create().uv(48, 23).cuboid(-1.0F, -33.0F, -15.0F, 2, 15, 9), ModelTransform.NONE);
-		modelPartData.addChild("rocket", ModelPartBuilder.create().uv(70, 101).cuboid(-1.0F, -48.0F, 6.0F, 2, 15, 5), ModelTransform.NONE);
-		modelPartData.addChild("rocket", ModelPartBuilder.create().uv(84, 101).cuboid(-1.0F, -48.0F, -11.0F, 2, 15, 5), ModelTransform.NONE);
-		modelPartData.addChild("rocket", ModelPartBuilder.create().uv(16, 98).cuboid(-15.0F, -33.0F, -1.0F, 9, 15, 2), ModelTransform.NONE);
-		modelPartData.addChild("rocket", ModelPartBuilder.create().uv(48, 94).cuboid(6.0F, -33.0F, -1.0F, 9, 15, 2), ModelTransform.NONE);
-		modelPartData.addChild("rocket", ModelPartBuilder.create().uv(98, 101).cuboid(-11.0F, -48.0F, -1.0F, 5, 15, 2), ModelTransform.NONE);
-		modelPartData.addChild("rocket", ModelPartBuilder.create().uv(101, 11).cuboid(6.0F, -48.0F, -1.0F, 5, 15, 2), ModelTransform.NONE);
+		modelPartData.addChild("rocket1", ModelPartBuilder.create().uv(78, 84).cuboid(-5.0F, -18.0F, -5.0F, 10, 7, 10), ModelTransform.NONE);
+		modelPartData.addChild("rocket2", ModelPartBuilder.create().uv(84, 0).cuboid(-4.0F, -21.0F, -4.0F, 8, 3, 8), ModelTransform.NONE);
+		modelPartData.addChild("rocket3", ModelPartBuilder.create().uv(0, 0).cuboid(-6.0F, -106.0F, -6.0F, 12, 86, 12), ModelTransform.NONE);
+		modelPartData.addChild("rocket4", ModelPartBuilder.create().uv(48, 48).cuboid(-5.0F, -142.0F, -5.0F, 10, 36, 10), ModelTransform.NONE);
+		modelPartData.addChild("rocket5", ModelPartBuilder.create().uv(78, 23).cuboid(-4.0F, -161.0F, -4.0F, 8, 19, 8), ModelTransform.NONE);
+		modelPartData.addChild("rocket6", ModelPartBuilder.create().uv(0, 98).cuboid(-2.0F, -180.0F, -2.0F, 4, 19, 4), ModelTransform.NONE);
+		modelPartData.addChild("rocket7", ModelPartBuilder.create().uv(88, 50).cuboid(-1.0F, -33.0F, 6.0F, 2, 15, 9), ModelTransform.NONE);
+		modelPartData.addChild("rocket8", ModelPartBuilder.create().uv(48, 23).cuboid(-1.0F, -33.0F, -15.0F, 2, 15, 9), ModelTransform.NONE);
+		modelPartData.addChild("rocket9", ModelPartBuilder.create().uv(70, 101).cuboid(-1.0F, -48.0F, 6.0F, 2, 15, 5), ModelTransform.NONE);
+		modelPartData.addChild("rocket10", ModelPartBuilder.create().uv(84, 101).cuboid(-1.0F, -48.0F, -11.0F, 2, 15, 5), ModelTransform.NONE);
+		modelPartData.addChild("rocket11", ModelPartBuilder.create().uv(16, 98).cuboid(-15.0F, -33.0F, -1.0F, 9, 15, 2), ModelTransform.NONE);
+		modelPartData.addChild("rocket12", ModelPartBuilder.create().uv(48, 94).cuboid(6.0F, -33.0F, -1.0F, 9, 15, 2), ModelTransform.NONE);
+		modelPartData.addChild("rocket13", ModelPartBuilder.create().uv(98, 101).cuboid(-11.0F, -48.0F, -1.0F, 5, 15, 2), ModelTransform.NONE);
+		modelPartData.addChild("rocket14", ModelPartBuilder.create().uv(101, 11).cuboid(6.0F, -48.0F, -1.0F, 5, 15, 2), ModelTransform.NONE);
 
 		return TexturedModelData.of(modelData, 128, 128);
 	}
