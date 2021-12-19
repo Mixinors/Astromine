@@ -59,6 +59,6 @@ public class EarthSpaceBiomeSource extends BiomeSource {
 
 	@Override
 	public Biome getBiome(int x, int y, int z, MultiNoiseUtil.MultiNoiseSampler noise) {
-		return registry.get(AMBiomes.ASTEROID_BELT);
+		return registry.get(AMBiomes.ASTEROID_BELT_KEY );
 	}
 }

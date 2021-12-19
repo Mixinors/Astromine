@@ -24,14 +24,13 @@
 
 package com.github.mixinors.astromine.client.render.sky.skybox;
 
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.util.ClientUtils;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.option.Option;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.*;
 import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
@@ -78,6 +77,13 @@ public class SpaceSkybox extends Skybox {
 
 		BufferBuilder buffer = tessellator.getBuffer();
 
+		RenderSystem.depthMask(false);
+		RenderSystem.enableBlend();
+
+		RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE, GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ZERO);
+
+		RenderSystem.setShader(GameRenderer::getPositionColorTexLightmapShader);
+
 		World world = client.world;
 
 		if (world == null) {
@@ -92,17 +98,16 @@ public class SpaceSkybox extends Skybox {
 
 		for (int i = 0; i < 6; ++i) {
 			matrices.push();
-
 			switch (i) {
 				case 0: {
-					textureManager.bindTexture(this.textures.get(DOWN));
+					RenderSystem.setShaderTexture(0, this.textures.get(DOWN));
 
 					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(rotation));
 
 					break;
 				}
 				case 1: {
-					textureManager.bindTexture(this.textures.get(WEST));
+					RenderSystem.setShaderTexture(0, this.textures.get(WEST));
 
 					matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90.0F));
 					matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(rotation));
@@ -110,7 +115,7 @@ public class SpaceSkybox extends Skybox {
 					break;
 				}
 				case 2: {
-					textureManager.bindTexture(this.textures.get(EAST));
+					RenderSystem.setShaderTexture(0, this.textures.get(EAST));
 
 					matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90.0F));
 					matrices.multiply(Vec3f.NEGATIVE_Y.getDegreesQuaternion(rotation));
@@ -118,7 +123,7 @@ public class SpaceSkybox extends Skybox {
 					break;
 				}
 				case 3: {
-					textureManager.bindTexture(this.textures.get(UP));
+					RenderSystem.setShaderTexture(0, this.textures.get(UP));
 
 					matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(180.0F));
 					matrices.multiply(Vec3f.NEGATIVE_Z.getDegreesQuaternion(rotation));
@@ -126,7 +131,7 @@ public class SpaceSkybox extends Skybox {
 					break;
 				}
 				case 4: {
-					textureManager.bindTexture(this.textures.get(NORTH));
+					RenderSystem.setShaderTexture(0, this.textures.get(NORTH));
 
 					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(90.0F));
 					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(rotation));
@@ -134,7 +139,7 @@ public class SpaceSkybox extends Skybox {
 					break;
 				}
 				case 5: {
-					textureManager.bindTexture(this.textures.get(SOUTH));
+					RenderSystem.setShaderTexture(0, this.textures.get(SOUTH));
 
 					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(-90.0F));
 					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(rotation));
@@ -147,19 +152,19 @@ public class SpaceSkybox extends Skybox {
 
 			GameOptions options = ClientUtils.getInstance().options;
 
-			float distance = 16F * (float) Option.RENDER_DISTANCE.get(options) - 8F;
+			float distance = 16F * (float) Option.RENDER_DISTANCE.get( options ) - 8F;
 
-			buffer.vertex(matrices.peek().getPositionMatrix(), -distance, -distance, -distance).color(255, 255, 255, 255).texture(0.0F, 0.0F).light(vertexLight).next();
-			buffer.vertex(matrices.peek().getPositionMatrix(), -distance, -distance, distance).color(255, 255, 255, 255).texture(0.0F, 1.0F).light(vertexLight).next();
-			buffer.vertex(matrices.peek().getPositionMatrix(), distance, -distance, distance).color(255, 255, 255, 255).texture(1.0F, 1.0F).light(vertexLight).next();
-			buffer.vertex(matrices.peek().getPositionMatrix(), distance, -distance, -distance).color(255, 255, 255, 255).texture(1.0F, 0.0F).light(vertexLight).next();
+			buffer.vertex( matrices.peek().getPositionMatrix(), -distance, -distance, -distance ).color( 1F, 1F, 1F, 1F ).texture( 0.0F, 0.0F ).light(vertexLight).next();
+			buffer.vertex( matrices.peek().getPositionMatrix(), -distance, -distance, distance ).color( 1F, 1F, 1F, 1F ).texture( 0.0F, 1.0F ).light(vertexLight).next();
+			buffer.vertex( matrices.peek().getPositionMatrix(), distance, -distance, distance ).color( 1F, 1F, 1F, 1F ).texture( 1.0F, 1.0F ).light(vertexLight).next();
+			buffer.vertex( matrices.peek().getPositionMatrix(), distance, -distance, -distance ).color( 1F, 1F, 1F, 1F ).texture( 1.0F, 0.0F ).light(vertexLight).next();
 
 			tessellator.draw();
 
 			matrices.pop();
 		}
 
-		textureManager.bindTexture(this.textures.get(PLANET));
+		RenderSystem.setShaderTexture(0, this.textures.get(PLANET));
 
 		matrices.push();
 
@@ -174,7 +179,7 @@ public class SpaceSkybox extends Skybox {
 
 		matrices.pop();
 
-		textureManager.bindTexture(this.textures.get(CLOUD));
+		RenderSystem.setShaderTexture(0, this.textures.get(CLOUD));
 
 		matrices.push();
 
@@ -200,6 +205,10 @@ public class SpaceSkybox extends Skybox {
 
 		u0P -= 0.0000066f;
 		u1P -= 0.0000066f;
+
+		RenderSystem.depthMask(true);
+		RenderSystem.enableTexture();
+		RenderSystem.disableBlend();
 	}
 
 	public static class Builder {
