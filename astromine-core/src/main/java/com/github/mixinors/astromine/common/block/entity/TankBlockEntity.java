@@ -34,7 +34,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 
-import com.github.mixinors.astromine.common.block.entity.base.ComponentFluidItemBlockEntity;
 import com.github.mixinors.astromine.common.util.VolumeUtils;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMConfig;

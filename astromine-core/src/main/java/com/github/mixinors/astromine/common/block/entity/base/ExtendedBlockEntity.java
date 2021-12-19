@@ -74,14 +74,12 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 		
 		switch (redstoneControl) {
 			case WORK_WHEN_ON -> {
-				if (powered) isActive = true;
-				else isActive = false;
+				isActive = powered;
 				return powered;
 			}
 			
 			case WORK_WHEN_OFF -> {
-				if (!powered) isActive = true;
-				else isActive = false;
+				isActive = !powered;
 				return !powered;
 			}
 			

@@ -31,7 +31,6 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-import com.github.mixinors.astromine.common.block.entity.base.ComponentFluidBlockEntity;
 import com.github.mixinors.astromine.common.block.transfer.TransferType;
 
 public class DrainBlockEntity extends ComponentFluidBlockEntity {

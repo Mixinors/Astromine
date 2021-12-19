@@ -39,6 +39,7 @@ import net.minecraft.inventory.Inventory;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
@@ -49,9 +50,13 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	
 	private final List<Storage<ItemVariant>> storages;
 	
-	private Predicate<@Nullable Direction> insertPredicate = null;
+	private Predicate<@Nullable Direction> dirInsertPredicate = null;
 	
-	private Predicate<@Nullable Direction> extractPredicate = null;
+	private Predicate<@Nullable Direction> dirExtractPredicate = null;
+	
+	private BiPredicate<ItemVariant, Integer> slotInsertPredicate = null;
+	
+	private BiPredicate<ItemVariant, Integer> slotExtractPredicate = null;
 	
 	private StorageSiding[] sidings;
 	
@@ -86,13 +91,23 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		}
 	}
 	
-	public SimpleItemStorage withInsertPredicate(Predicate<@Nullable Direction> insertPredicate) {
-		this.insertPredicate = insertPredicate;
+	public SimpleItemStorage withDirInsertPredicate(Predicate<@Nullable Direction> dirInsertPredicate) {
+		this.dirInsertPredicate = dirInsertPredicate;
 		return this;
 	}
 	
-	public SimpleItemStorage withExtractPredicate(Predicate<@Nullable Direction> extractPredicate) {
-		this.extractPredicate = extractPredicate;
+	public SimpleItemStorage withDirExtractPredicate(Predicate<@Nullable Direction> dirExtractPredicate) {
+		this.dirExtractPredicate = dirExtractPredicate;
+		return this;
+	}
+	
+	public SimpleItemStorage withSlotInsertPredicate(BiPredicate<ItemVariant, Integer> slotInsertPredicate) {
+		this.slotInsertPredicate = slotInsertPredicate;
+		return this;
+	}
+	
+	public SimpleItemStorage withSlotExtractPredicate(BiPredicate<ItemVariant, Integer> slotExtractPredicate) {
+		this.slotExtractPredicate = slotExtractPredicate;
 		return this;
 	}
 	
@@ -119,6 +134,8 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		var amount = 0;
 		
 		for (var slot : insertSlots) {
+			if (!slotInsertPredicate.test(resource, slot)) continue;
+			
 			var storage = storages.get(slot);
 			
 			amount += storage.insert(resource, maxAmount - amount, transaction);
@@ -137,6 +154,8 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		var amount = 0;
 		
 		for (var slot : extractSlots) {
+			if (!slotExtractPredicate.test(resource, slot)) continue;
+			
 			var storage = storages.get(slot);
 			
 			amount += storage.extract(resource, maxAmount - amount, transaction);
@@ -162,12 +181,12 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		return extractSlots.length > 0;
 	}
 	
-	public boolean canInsert(@Nullable Direction direction) {
-		return insertPredicate == null || insertPredicate.test(direction);
+	public boolean canInsertFrom(@Nullable Direction direction) {
+		return dirInsertPredicate == null || dirInsertPredicate.test(direction);
 	}
 	
-	public boolean canExtract(@Nullable Direction direction) {
-		return extractPredicate == null || extractPredicate.test(direction);
+	public boolean canExtractFrom(@Nullable Direction direction) {
+		return dirExtractPredicate == null || dirExtractPredicate.test(direction);
 	}
 	
 	/**

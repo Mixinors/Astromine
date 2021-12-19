@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.transfer.storage;
 
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
@@ -35,6 +36,7 @@ import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
@@ -43,9 +45,13 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	
 	private final List<Storage<FluidVariant>> storages;
 	
-	private Predicate<@Nullable Direction> insertPredicate;
+	private Predicate<@Nullable Direction> dirInsertPredicate;
 	
-	private Predicate<@Nullable Direction> extractPredicate;
+	private Predicate<@Nullable Direction> dirExtractPredicate;
+	
+	private BiPredicate<FluidVariant, Integer> slotInsertPredicate = null;
+	
+	private BiPredicate<FluidVariant, Integer> slotExtractPredicate = null;
 	
 	private StorageSiding[] sidings;
 	
@@ -62,8 +68,8 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 			this.storages.set(i, new SimpleFluidVariantStorage());
 		}
 		
-		this.insertPredicate = ($) -> true;
-		this.extractPredicate = ($) -> true;
+		this.dirInsertPredicate = ($) -> true;
+		this.dirExtractPredicate = ($) -> true;
 		
 		this.sidings = new StorageSiding[6];
 		
@@ -73,13 +79,23 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		this.extractSlots = IntStream.range(0, size).toArray();
 	}
 	
-	public SimpleFluidStorage withInsertPredicate(Predicate<@Nullable Direction> insertPredicate) {
-		this.insertPredicate = insertPredicate;
+	public SimpleFluidStorage withInsertPredicate(Predicate<@Nullable Direction> dirInsertPredicate) {
+		this.dirInsertPredicate = dirInsertPredicate;
 		return this;
 	}
 	
-	public SimpleFluidStorage withExtractPredicate(Predicate<@Nullable Direction> extractPredicate) {
-		this.extractPredicate = extractPredicate;
+	public SimpleFluidStorage withExtractPredicate(Predicate<@Nullable Direction> dirExtractPredicate) {
+		this.dirExtractPredicate = dirExtractPredicate;
+		return this;
+	}
+	
+	public SimpleFluidStorage withSlotInsertPredicate(BiPredicate<FluidVariant, Integer> slotInsertPredicate) {
+		this.slotInsertPredicate = slotInsertPredicate;
+		return this;
+	}
+	
+	public SimpleFluidStorage withSlotExtractPredicate(BiPredicate<FluidVariant, Integer> slotExtractPredicate) {
+		this.slotExtractPredicate = slotExtractPredicate;
 		return this;
 	}
 	
@@ -106,6 +122,8 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		var amount = 0;
 		
 		for (var slot : insertSlots) {
+			if (!slotInsertPredicate.test(resource, slot)) continue;
+			
 			var storage = storages.get(slot);
 			
 			amount += storage.insert(resource, maxAmount - amount, transaction);
@@ -124,6 +142,8 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		var amount = 0;
 		
 		for (var slot : extractSlots) {
+			if (!slotExtractPredicate.test(resource, slot)) continue;
+			
 			var storage = storages.get(slot);
 			
 			amount += storage.extract(resource, maxAmount - amount, transaction);
@@ -149,12 +169,12 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		return extractSlots.length > 0;
 	}
 	
-	public boolean canInsert(@Nullable Direction direction) {
-		return insertPredicate == null || insertPredicate.test(direction);
+	public boolean canInsertFrom(@Nullable Direction direction) {
+		return dirInsertPredicate == null || dirInsertPredicate.test(direction);
 	}
 	
-	public boolean canExtract(@Nullable Direction direction) {
-		return extractPredicate == null || extractPredicate.test(direction);
+	public boolean canExtractFrom(@Nullable Direction direction) {
+		return dirExtractPredicate == null || dirExtractPredicate.test(direction);
 	}
 	
 	public void writeToNbt(NbtCompound nbt) {

@@ -28,7 +28,6 @@ import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 
-import com.github.mixinors.astromine.common.block.entity.base.ComponentItemBlockEntity;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.function.Supplier;

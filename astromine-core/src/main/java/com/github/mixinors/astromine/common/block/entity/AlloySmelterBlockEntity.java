@@ -24,12 +24,13 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
 import com.github.mixinors.astromine.common.util.StackUtils;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
@@ -49,7 +50,7 @@ import java.util.function.Supplier;
 
 import static java.lang.Math.min;
 
-public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
+public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
 	public double progress = 0;
 	public int limit = 100;
 	public boolean shouldTry = false;
@@ -58,34 +59,36 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 
 	public AlloySmelterBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
-	}
-
-	@Override
-	public ItemStore createItemComponent() {
-		return SimpleDirectionalItemComponent.of(this, 3).withInsertPredicate((direction, stack, slot) -> {
+		
+		itemStorage = new SimpleItemStorage(3).withDirInsertPredicate((direction, stack, slot) -> {
 			if (slot != 0 && slot != 1) {
 				return false;
 			}
-
+			
 			if (!getTransferComponent().getItem(direction).canInsert()) {
 				return false;
 			}
-
+			
 			if (!StackUtils.test(stack, getItemComponent().getFirst()) && !StackUtils.test(stack, getItemComponent().getSecond())) {
 				return false;
 			}
-
+			
 			return AlloySmeltingRecipe.allows(world, ItemStore.of(stack, getItemComponent().getSecond())) || AlloySmeltingRecipe.allows(world, ItemStore.of(getItemComponent().getFirst(), stack));
-		}).withExtractPredicate(((direction, stack, slot) -> {
+		}).withDirExtractPredicate(((direction, stack, slot) -> {
 			if (!getTransferComponent().getItem(direction).canExtract()) {
 				return false;
 			}
-
+			
 			return slot == 2;
 		})).withListener((inventory) -> {
 			shouldTry = true;
 			optionalRecipe = Optional.empty();
 		});
+	}
+
+	@Override
+	public ItemStore createItemComponent() {
+	
 	}
 
 	@Override
