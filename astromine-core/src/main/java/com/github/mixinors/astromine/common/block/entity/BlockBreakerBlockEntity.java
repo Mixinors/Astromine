@@ -30,26 +30,18 @@ import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvi
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.common.util.StackUtils;
-import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ItemScatterer;
-import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.NotNull;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
-
-import java.util.List;
-import java.util.Optional;
 
 public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
 	private long cooldown = 0L;
@@ -85,61 +77,66 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Ener
 			return;
 
 		if (itemStorage != null && energyStorage != null) {
-			if (energyStorage.getAmount() < getEnergyConsumed()) {
+			var consumed = getEnergyConsumed();
+			
+			if (energyStorage.getAmount() < consumed) {
 				cooldown = 0L;
 
 				isActive = false;
 			} else {
-				var consumed = getEnergyConsumed();
-				
 				if (cooldown >= getMachineSpeed()) {
 					try (var transaction = Transaction.openOuter()) {
-					if (energyStorage.extract(consumed, transaction) == consumed) {
-						transaction.commit();
-						
-						
-					}
-				}
-					isActive = true;
+						if (energyStorage.extract(consumed, transaction) == consumed) {
+							var stored = itemStorage.getStack(0);
+							
+							var direction = getCachedState().get(HorizontalFacingBlock.FACING);
+							
+							var targetPos = getPos().offset(direction);
+							
+							var targetState = world.getBlockState(targetPos);
 
-					cooldown = cooldown++;
-
-					cooldown = 0L;
-
-					ItemStack stored = itemStorage.getStack(0);
-
-					Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
-
-					BlockPos targetPos = getPos().offset(direction);
-
-					BlockState targetState = world.getBlockState(targetPos);
-
-					if (targetState.isAir()) {
-						isActive = false;
-					} else {
-						BlockEntity targetEntity = world.getBlockEntity(targetPos);
-
-						List<ItemStack> drops = Block.getDroppedStacks(targetState, (ServerWorld) world, targetPos, targetEntity);
-
-						ItemStack storedCopy = stored.copy();
-
-						Optional<ItemStack> matching = drops.stream().filter(stack -> storedCopy.isEmpty() || (StackUtils.areItemsAndTagsEqual(stack, storedCopy) && storedCopy.getMaxCount() - storedCopy.getCount() > stack.getCount())).findFirst();
-
-						matching.ifPresent(match -> {
-							Pair<ItemStack, ItemStack> pair = StackUtils.merge(match, stored);
-							itemStorage.setStack(0, pair.getRight());
-							drops.remove(match);
-							drops.add(pair.getLeft());
-						});
-
-						drops.forEach(stack -> {
-							if (!stack.isEmpty()) {
-								ItemScatterer.spawn(world, targetPos.getX(), targetPos.getY(), targetPos.getZ(), stack);
+							if (!targetState.isAir()) {
+								cooldown = 0;
+								
+								isActive = true;
+								
+								var targetEntity = world.getBlockEntity(targetPos);
+								
+								var drops = Block.getDroppedStacks(targetState, (ServerWorld) world, targetPos, targetEntity);
+								
+								var storedCopy = stored.copy();
+								
+								var matching = drops.stream().filter(stack -> storedCopy.isEmpty() || (StackUtils.areItemsAndTagsEqual(stack, storedCopy) && storedCopy.getMaxCount() - storedCopy.getCount() > stack.getCount())).findFirst();
+								
+								matching.ifPresent(match -> {
+									var pair = StackUtils.merge(match, stored);
+									
+									itemStorage.setStack(0, pair.getRight());
+									
+									drops.remove(match);
+									drops.add(pair.getLeft());
+								});
+								
+								drops.forEach(stack -> {
+									if (!stack.isEmpty()) {
+										ItemScatterer.spawn(world, targetPos.getX(), targetPos.getY(), targetPos.getZ(), stack);
+									}
+								});
+								
+								world.breakBlock(targetPos, false);
+								
+								transaction.commit();
+							} else {
+								isActive = false;
+								
+								transaction.abort();
 							}
-						});
-
-						world.breakBlock(targetPos, false);
+						}
 					}
+				} else {
+					cooldown++;
+					
+					isActive = true;
 				}
 			}
 		}
@@ -147,13 +144,15 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Ener
 
 	@Override
 	public void writeNbt(NbtCompound nbt) {
-		nbt.putLong("cooldown", cooldown);
+		nbt.putLong("Cooldown", cooldown);
+		
 		super.writeNbt(nbt);
 	}
 
 	@Override
 	public void readNbt(@NotNull NbtCompound nbt) {
-		cooldown = nbt.getLong("cooldown");
+		cooldown = nbt.getLong("Cooldown");
+		
 		super.readNbt(nbt);
 	}
 }

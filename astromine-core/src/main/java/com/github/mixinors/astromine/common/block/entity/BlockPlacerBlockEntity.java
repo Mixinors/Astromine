@@ -24,37 +24,31 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-
-import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergyConsumedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import org.jetbrains.annotations.NotNull;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
+public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
 	private long cooldown = 0L;
 
 	public BlockPlacerBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.BLOCK_PLACER, blockPos, blockState);
-	}
-
-	@Override
-	public SimpleItemStorage createItemComponent() {
-		return SimpleDirectionalItemComponent.of(this, 1);
-	}
-
-	@Override
-	public EnergyStore createEnergyComponent() {
-		return SimpleEnergyComponent.of(getEnergySize());
+		
+		energyStorage = new SimpleEnergyStorage(getEnergySize(), Long.MAX_VALUE, Long.MAX_VALUE);
+		
+		itemStorage = new SimpleItemStorage(1);
 	}
 
 	@Override
@@ -79,42 +73,46 @@ public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity imple
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		SimpleItemStorage itemStorage = getItemComponent();
-
-		EnergyStore energyComponent = getEnergyComponent();
-
-		if (itemStorage != null && energyComponent != null) {
-			EnergyVolume energyVolume = energyComponent.getVolume();
-
-			if (energyVolume.getAmount() < getEnergyConsumed()) {
+		if (itemStorage != null && itemStorage != null) {
+			var consumed = getEnergyConsumed();
+			
+			if (energyStorage.getAmount() < consumed) {
 				cooldown = 0L;
-
+				
 				isActive = false;
 			} else {
-				isActive = true;
-
-				cooldown = cooldown++;
-
 				if (cooldown >= getMachineSpeed()) {
-					cooldown = 0L;
-
-					ItemStack stored = itemStorage.getStack(0);
-
-					Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
-
-					BlockPos targetPos = pos.offset(direction);
-
-					BlockState targetState = world.getBlockState(targetPos);
-
-					if (stored.getItem() instanceof BlockItem && targetState.isAir()) {
-						BlockState newState = ((BlockItem) stored.getItem()).getBlock().getDefaultState();
-
-						world.setBlockState(targetPos, newState);
-
-						stored.decrement(1);
-
-						energyVolume.take(getEnergyConsumed());
+					try (var transaction = Transaction.openOuter()) {
+						if (energyStorage.extract(consumed, transaction) == consumed) {
+							var stored = itemStorage.getStack(0);
+							
+							var direction = getCachedState().get(HorizontalFacingBlock.FACING);
+							
+							var targetPos = pos.offset(direction);
+							
+							var targetState = world.getBlockState(targetPos);
+							
+							if (stored.getItem() instanceof BlockItem blockItem && targetState.isAir()) {
+								cooldown = 0;
+								
+								var newState = blockItem.getBlock().getDefaultState();
+								
+								world.setBlockState(targetPos, newState);
+								
+								stored.decrement(1);
+								
+								transaction.commit();
+							} else {
+								isActive = false;
+								
+								transaction.abort();
+							}
+						}
 					}
+				} else {
+					cooldown++;
+					
+					isActive = true;
 				}
 			}
 		}
@@ -122,13 +120,15 @@ public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity imple
 
 	@Override
 	public void writeNbt(NbtCompound nbt) {
-		nbt.putLong("cooldown", cooldown);
+		nbt.putLong("Cooldown", cooldown);
+		
 		super.writeNbt(nbt);
 	}
 
 	@Override
 	public void readNbt(@NotNull NbtCompound nbt) {
-		cooldown = nbt.getLong("cooldown");
+		cooldown = nbt.getLong("Cooldown");
+		
 		super.readNbt(nbt);
 	}
 }
