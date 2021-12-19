@@ -24,42 +24,40 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.item.ItemStack;
 
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
-import com.github.mixinors.astromine.common.volume.energy.InfiniteEnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import net.minecraft.util.math.BlockPos;
-import team.reborn.energy.Energy;
-import team.reborn.energy.EnergyHandler;
+import team.reborn.energy.api.EnergyStorage;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 import java.util.function.Supplier;
 
-public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
+public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
 	public CapacitorBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
-	}
-
-	@Override
-	public SimpleItemStorage createItemComponent() {
-		return SimpleDirectionalItemComponent.of(this, 2).withInsertPredicate((direction, stack, slot) -> {
+		
+		energyStorage = new SimpleEnergyStorage(getEnergySize(), Long.MAX_VALUE, Long.MAX_VALUE);
+		
+		itemStorage = new SimpleItemStorage(2).insertPredicate((stack, slot) -> {
 			return slot == 0;
-		}).withExtractPredicate((direction, stack, slot) -> {
+		}).extractPredicate((stack, slot) -> {
 			return slot == 1;
 		});
 	}
-
-	@Override
-	public EnergyStore createEnergyComponent() {
-		return SimpleEnergyComponent.of(getEnergySize());
-	}
-
+	
 	@Override
 	public void tick() {
 		super.tick();
@@ -67,18 +65,22 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		SimpleItemStorage itemStorage = getItemComponent();
-
-		ItemStack inputStack = itemStorage.getStack(0);
-		if (Energy.valid(inputStack)) {
-			EnergyHandler energyHandler = Energy.of(inputStack);
-			energyHandler.into(Energy.of(this)).move(1024 * getMachineSpeed());
-		}
-
-		ItemStack outputStack = itemStorage.getStack(1);
-		if (Energy.valid(outputStack)) {
-			EnergyHandler energyHandler = Energy.of(outputStack);
-			Energy.of(this).into(energyHandler).move(1024 * getMachineSpeed());
+		var extractStack = itemStorage.getStack(0);
+		var extractEnergyStorage = EnergyStorage.ITEM.find(extractStack, ContainerItemContext.ofSingleSlot((SingleSlotStorage<ItemVariant>) itemStorage.getStorage(0)));
+		
+		try (var extractTransaction = Transaction.openOuter()) {
+			extractEnergyStorage.extract((long) Math.min(1024 * getMachineSpeed(), energyStorage.getCapacity() - energyStorage.getAmount()), extractTransaction);
+			
+			try (var insertTranscation = extractTransaction.openNested()) {
+				var insertStack = itemStorage.getStack(1);
+				var insertEnergyStorage = EnergyStorage.ITEM.find(insertStack, ContainerItemContext.ofSingleSlot((SingleSlotStorage<ItemVariant>) itemStorage.getStorage(1)));
+				
+				insertEnergyStorage.insert((long) (1024 * getMachineSpeed()), insertTranscation);
+				
+				insertTranscation.commit();
+				extractTransaction.commit();
+			}
+			
 		}
 	}
 
@@ -169,21 +171,19 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 	public static class Creative extends CapacitorBlockEntity {
 		public Creative(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.CREATIVE_CAPACITOR, blockPos, blockState);
+			
+			energyStorage = new SimpleEnergyStorage(Long.MAX_VALUE, Long.MAX_VALUE, Long.MAX_VALUE);
 		}
-
-		@Override
-		public EnergyStore createEnergyComponent() {
-			return SimpleEnergyComponent.of(InfiniteEnergyVolume.of());
-		}
+		
 
 		@Override
 		public long getEnergySize() {
-			return Double.MAX_VALUE;
+			return Long.MAX_VALUE;
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return Double.MAX_VALUE;
+			return Long.MAX_VALUE;
 		}
 
 		@Override
