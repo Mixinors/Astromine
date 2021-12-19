@@ -24,16 +24,11 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.common.component.general.SimpleDirectionalFluidComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleEnergyComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleFluidComponent;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
@@ -60,13 +55,13 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 	}
 
 	@Override
-	public EnergyComponent createEnergyComponent() {
+	public EnergyStore createEnergyComponent() {
 		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
 	@Override
-	public FluidComponent createFluidComponent() {
-		FluidComponent fluidComponent = SimpleDirectionalFluidComponent.of(this, 3).withInsertPredicate((direction, volume, slot) -> {
+	public FluidStore createFluidComponent() {
+		FluidStore fluidComponent = SimpleDirectionalFluidComponent.of(this, 3).withInsertPredicate((direction, volume, slot) -> {
 			if (slot != 0 && slot != 1) {
 				return false;
 			}
@@ -75,7 +70,7 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 				return false;
 			}
 
-			return FluidMixingRecipe.allows(world, FluidComponent.of(volume, getFluidComponent().getSecond().copy(), getFluidComponent().getThird().copy())) || FluidMixingRecipe.allows(world, FluidComponent.of(getFluidComponent().getFirst().copy(), volume, getFluidComponent().getThird().copy()));
+			return FluidMixingRecipe.allows(world, FluidStore.of(volume, getFluidComponent().getSecond().copy(), getFluidComponent().getThird().copy())) || FluidMixingRecipe.allows(world, FluidStore.of(getFluidComponent().getFirst().copy(), volume, getFluidComponent().getThird().copy()));
 		}).withExtractPredicate((direction, volume, slot) -> {
 			return slot == 2;
 		}).withListener((inventory) -> {
@@ -95,9 +90,9 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		FluidComponent fluidComponent = getFluidComponent();
+		FluidStore fluidComponent = getFluidComponent();
 
-		EnergyComponent energyComponent = getEnergyComponent();
+		EnergyStore energyComponent = getEnergyComponent();
 
 		if (fluidComponent != null && energyComponent != null) {
 			EnergyVolume energyVolume = getEnergyComponent().getVolume();

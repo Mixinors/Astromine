@@ -27,13 +27,9 @@ package com.github.mixinors.astromine.common.entity.base;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.compatibility.InventoryFromItemComponent;
-
 /**
- * A {@link ComponentEntity} with an attached {@link FluidComponent}
- * and {@link ItemComponent}.
+ * A {@link ComponentEntity} with an attached {@link FluidStore}
+ * and {@link ItemStore}.
  */
 public abstract class ComponentFluidItemEntity extends ComponentEntity implements InventoryFromItemComponent {
 	/** Instantiates a {@link ComponentFluidItemEntity}. */
@@ -41,19 +37,19 @@ public abstract class ComponentFluidItemEntity extends ComponentEntity implement
 		super(type, world);
 	}
 
-	/** Returns the {@link FluidComponent} to be attached. */
-	public abstract FluidComponent createFluidComponent();
+	/** Returns the {@link FluidStore} to be attached. */
+	public abstract FluidStore createFluidComponent();
 
-	/** Returns the {@link ItemComponent} to be attached. */
-	public abstract ItemComponent createItemComponent();
+	/** Returns the {@link ItemStore} to be attached. */
+	public abstract ItemStore createItemComponent();
 
-	/** Returns the attached {@link FluidComponent}. */
-	public FluidComponent getFluidComponent() {
-		return FluidComponent.get(this);
+	/** Returns the attached {@link FluidStore}. */
+	public FluidStore getFluidComponent() {
+		return FluidStore.get(this);
 	}
 
-	/** Returns the attached {@link ItemComponent}. */
-	public ItemComponent getItemComponent() {
-		return ItemComponent.get(this);
+	/** Returns the attached {@link ItemStore}. */
+	public ItemStore getItemComponent() {
+		return ItemStore.get(this);
 	}
 }

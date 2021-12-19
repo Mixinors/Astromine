@@ -31,7 +31,6 @@ import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.mixinors.astromine.common.component.general.compatibility.InventoryFromItemComponent;
 import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityItemScreenHandler;
 
 public class CreativeBufferScreenHandler extends ComponentBlockEntityItemScreenHandler {

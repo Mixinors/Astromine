@@ -25,7 +25,6 @@
 package com.github.mixinors.astromine.common.network.type;
 
 import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import net.minecraft.block.entity.BlockEntity;
 
@@ -51,8 +50,8 @@ public final class FluidNetworkType implements NetworkType {
 	 * transferring energy between them. */
 	@Override
 	public void tick(NetworkInstance instance) {
-		List<Pair<FluidComponent, Direction>> providers = Lists.newArrayList();
-		List<Pair<FluidComponent, Direction>> requesters = Lists.newArrayList();
+		List<Pair<FluidStore, Direction>> providers = Lists.newArrayList();
+		List<Pair<FluidStore, Direction>> requesters = Lists.newArrayList();
 
 		for (NetworkMemberNode memberNode : instance.members) {
 			WorldPos memberPos = WorldPos.of(instance.getWorld(), memberNode.getBlockPosition());
@@ -62,7 +61,7 @@ public final class FluidNetworkType implements NetworkType {
 			if (networkMember.acceptsType(this)) {
 				BlockEntity blockEntity = memberPos.getBlockEntity();
 
-				FluidComponent fluidComponent = FluidComponent.get(blockEntity);
+				FluidStore fluidComponent = FluidStore.get(blockEntity);
 
 				TransferType type = TransferType.NONE;
 
@@ -84,8 +83,8 @@ public final class FluidNetworkType implements NetworkType {
 			}
 		}
 
-		for (Pair<FluidComponent, Direction> provider : providers) {
-			for (Pair<FluidComponent, Direction> requester : requesters) {
+		for (Pair<FluidStore, Direction> provider : providers) {
+			for (Pair<FluidStore, Direction> requester : requesters) {
 				provider.getLeft().into(requester.getLeft(), FluidVolume.getTransfer(), requester.getRight().getOpposite());
 			}
 		}

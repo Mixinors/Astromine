@@ -24,14 +24,10 @@
 
 package com.github.mixinors.astromine.common.block.entity.base;
 
-import com.github.mixinors.astromine.common.component.general.provider.EnergyComponentProvider;
-import com.github.mixinors.astromine.common.component.general.provider.ItemComponentProvider;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.util.capability.energy.ComponentEnergyProvider;
 import com.github.mixinors.astromine.common.util.capability.inventory.ComponentInventoryProvider;
 import net.minecraft.util.math.BlockPos;
@@ -40,12 +36,12 @@ import java.util.function.Supplier;
 
 /**
  * A {@link ComponentBlockEntity} with an attached
- * {@link EnergyComponent} and {@link ItemComponent}.
+ * {@link EnergyStore} and {@link ItemStore}.
  */
 public abstract class ComponentEnergyItemBlockEntity extends ComponentBlockEntity implements ComponentEnergyProvider, ComponentInventoryProvider, EnergyComponentProvider, ItemComponentProvider {
-	private final EnergyComponent energyComponent = createEnergyComponent();
+	private final EnergyStore energyComponent = createEnergyComponent();
 
-	private final ItemComponent itemComponent = createItemComponent();
+	private final ItemStore itemComponent = createItemComponent();
 
 	/** Instantiates a {@link ComponentEnergyItemBlockEntity}. */
 	public ComponentEnergyItemBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
@@ -55,23 +51,23 @@ public abstract class ComponentEnergyItemBlockEntity extends ComponentBlockEntit
 		getEnergyComponent().updateListeners();
 
 		addComponent(AMComponents.ITEM_INVENTORY_COMPONENT, getItemComponent());
-		getItemComponent().updateListeners();
+		getItemComponent().triggerListeners();
 	}
 
-	/** Returns the {@link EnergyComponent} to be attached. */
-	public abstract EnergyComponent createEnergyComponent();
+	/** Returns the {@link EnergyStore} to be attached. */
+	public abstract EnergyStore createEnergyComponent();
 
-	/** Returns the attached {@link EnergyComponent}. */
-	public EnergyComponent getEnergyComponent() {
+	/** Returns the attached {@link EnergyStore}. */
+	public EnergyStore getEnergyComponent() {
 		return energyComponent;
 	}
 
-	/** Returns the {@link ItemComponent} to be attached. */
-	public abstract ItemComponent createItemComponent();
+	/** Returns the {@link ItemStore} to be attached. */
+	public abstract ItemStore createItemComponent();
 
-	/** Returns the attached {@link ItemComponent}. */
+	/** Returns the attached {@link ItemStore}. */
 	@Override
-	public ItemComponent getItemComponent() {
+	public ItemStore getItemComponent() {
 		return itemComponent;
 	}
 }

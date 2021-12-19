@@ -25,7 +25,6 @@
 package com.github.mixinors.astromine.mixin.common;
 
 import com.github.mixinors.astromine.registry.common.*;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -36,34 +35,23 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FluidBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tag.Tag;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.registry.Registry;
 
-import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.component.entity.EntityOxygenComponent;
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.mixinors.astromine.common.entity.GravityEntity;
 import com.github.mixinors.astromine.common.registry.BreathableRegistry;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
-
-import java.util.Optional;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends EntityMixin implements GravityEntity {
@@ -130,10 +118,10 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 
 					boolean hasSuit = !helmetStack.isEmpty() && !chestplateStack.isEmpty() && !leggingsStack.isEmpty() && !bootsStack.isEmpty();
 					
-					FluidComponent fluidComponent = null;
+					FluidStore fluidComponent = null;
 					
 					if (hasSuit) {
-						fluidComponent = FluidComponent.get(chestplateStack);
+						fluidComponent = FluidStore.get(chestplateStack);
 						
 						if (fluidComponent != null) {
 							breathingVolume = fluidComponent.getFirst();

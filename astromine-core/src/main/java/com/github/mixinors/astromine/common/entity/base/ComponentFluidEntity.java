@@ -27,10 +27,8 @@ package com.github.mixinors.astromine.common.entity.base;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-
 /**
- * A {@link ComponentEntity} with an attached {@link FluidComponent}.
+ * A {@link ComponentEntity} with an attached {@link FluidStore}.
  */
 public abstract class ComponentFluidEntity extends ComponentEntity {
 	/** Instantiates a {@link ComponentFluidEntity}. */
@@ -38,11 +36,11 @@ public abstract class ComponentFluidEntity extends ComponentEntity {
 		super(type, world);
 	}
 
-	/** Returns the {@link FluidComponent} to be attached. */
-	public abstract FluidComponent createFluidComponent();
+	/** Returns the {@link FluidStore} to be attached. */
+	public abstract FluidStore createFluidComponent();
 
-	/** Returns the attached {@link FluidComponent}. */
-	public FluidComponent getFluidComponent() {
-		return FluidComponent.get(this);
+	/** Returns the attached {@link FluidStore}. */
+	public FluidStore getFluidComponent() {
+		return FluidStore.get(this);
 	}
 }

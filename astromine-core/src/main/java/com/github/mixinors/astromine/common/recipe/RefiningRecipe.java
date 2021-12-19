@@ -37,7 +37,6 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.util.DoubleUtils;
@@ -70,7 +69,7 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 		this.time = time;
 	}
 
-	public static boolean allows(World world, FluidComponent fluidComponent) {
+	public static boolean allows(World world, FluidStore fluidComponent) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (RefiningRecipe) it).toArray(RefiningRecipe[]::new));
 		}
@@ -84,7 +83,7 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 		return false;
 	}
 	
-	public static Optional<RefiningRecipe> matching(World world, FluidComponent fluidComponent) {
+	public static Optional<RefiningRecipe> matching(World world, FluidStore fluidComponent) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (RefiningRecipe) it).toArray(RefiningRecipe[]::new));
 		}
@@ -98,7 +97,7 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 		return Optional.empty();
 	}
 
-	public boolean matches(FluidComponent fluidComponent) {
+	public boolean matches(FluidStore fluidComponent) {
 		if (fluidComponent.getSize() < 2) {
 			return false;
 		}
@@ -110,7 +109,7 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 		return output.test(fluidComponent.getSecond());
 	}
 
-	public boolean allows(FluidComponent fluidComponent) {
+	public boolean allows(FluidStore fluidComponent) {
 		if (fluidComponent.getSize() < 1) {
 			return false;
 		}

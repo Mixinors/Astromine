@@ -24,16 +24,11 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.common.component.general.SimpleDirectionalFluidComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleEnergyComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleFluidComponent;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
@@ -60,13 +55,13 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 	}
 
 	@Override
-	public EnergyComponent createEnergyComponent() {
+	public EnergyStore createEnergyComponent() {
 		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
 	@Override
-	public FluidComponent createFluidComponent() {
-		FluidComponent fluidComponent = SimpleDirectionalFluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
+	public FluidStore createFluidComponent() {
+		FluidStore fluidComponent = SimpleDirectionalFluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
 			if (slot != 0) {
 				return false;
 			}
@@ -75,7 +70,7 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 				return false;
 			}
 
-			return FluidGeneratingRecipe.allows(world, FluidComponent.of(volume, getFluidComponent().getFirst().copy()));
+			return FluidGeneratingRecipe.allows(world, FluidStore.of(volume, getFluidComponent().getFirst().copy()));
 		}).withExtractPredicate((direction, volume, slot) -> false).withListener((inventory) -> {
 			shouldTry = true;
 			optionalRecipe = Optional.empty();
@@ -93,9 +88,9 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		FluidComponent fluidComponent = getFluidComponent();
+		FluidStore fluidComponent = getFluidComponent();
 
-		EnergyComponent energyComponent = getEnergyComponent();
+		EnergyStore energyComponent = getEnergyComponent();
 
 		if (fluidComponent != null) {
 			EnergyVolume energyVolume = energyComponent.getVolume();

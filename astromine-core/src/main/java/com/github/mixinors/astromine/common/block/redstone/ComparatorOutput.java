@@ -28,9 +28,6 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.ComparatorBlockEntity;
 import net.minecraft.screen.ScreenHandler;
 
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,21 +41,21 @@ import java.util.function.ToLongFunction;
  */
 public class ComparatorOutput {
 	/**
-	 * Returns the output level for a {@link BlockEntity} with an {@link ItemComponent}.
+	 * Returns the output level for a {@link BlockEntity} with an {@link ItemStore}.
 	 */
 	public static int forItems(@Nullable BlockEntity entity) {
 		return ScreenHandler.calculateComparatorOutput(entity);
 	}
 
 	/**
-	 * Returns the output level for a {@link BlockEntity} with an {@link EnergyComponent}.
+	 * Returns the output level for a {@link BlockEntity} with an {@link EnergyStore}.
 	 */
 	public static int forEnergy(@Nullable BlockEntity entity) {
 		if (entity == null) {
 			return 0;
 		}
 
-		EnergyComponent component = EnergyComponent.get(entity);
+		EnergyStore component = EnergyStore.get(entity);
 
 		if (component == null) {
 			return 0;
@@ -72,14 +69,14 @@ public class ComparatorOutput {
 	}
 
 	/**
-	 * Returns the output level for a {@link BlockEntity} with a {@link FluidComponent}.
+	 * Returns the output level for a {@link BlockEntity} with a {@link FluidStore}.
 	 */
 	public static int forFluids(@Nullable BlockEntity entity) {
 		if (entity == null) {
 			return 0;
 		}
 
-		FluidComponent fluidComponent = FluidComponent.get(entity);
+		FluidStore fluidComponent = FluidStore.get(entity);
 
 		if (fluidComponent == null) {
 			return 0;

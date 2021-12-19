@@ -36,7 +36,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.ItemIngredient;
 import com.github.mixinors.astromine.common.util.DoubleUtils;
@@ -69,7 +68,7 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 		this.time = time;
 	}
 
-	public static boolean allows(World world, ItemComponent itemComponent) {
+	public static boolean allows(World world, ItemStore itemComponent) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (PressingRecipe) it).toArray(PressingRecipe[]::new));
 		}
@@ -83,7 +82,7 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 		return false;
 	}
 
-	public static Optional<PressingRecipe> matching(World world, ItemComponent itemComponent) {
+	public static Optional<PressingRecipe> matching(World world, ItemStore itemComponent) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (PressingRecipe) it).toArray(PressingRecipe[]::new));
 		}
@@ -97,7 +96,7 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 		return Optional.empty();
 	}
 
-	public boolean matches(ItemComponent itemComponent) {
+	public boolean matches(ItemStore itemComponent) {
 		if (itemComponent.getSize() < 2) {
 			return false;
 		}
@@ -109,7 +108,7 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 		return StackUtils.test(firstOutput, itemComponent.getFirst());
 	}
 
-	public boolean allows(ItemComponent itemComponent) {
+	public boolean allows(ItemStore itemComponent) {
 		if (itemComponent.getSize() < 1) {
 			return false;
 		}

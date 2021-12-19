@@ -28,10 +28,6 @@ import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyIte
 import com.github.mixinors.astromine.common.block.entity.machine.EnergyConsumedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
-import com.github.mixinors.astromine.common.component.general.SimpleDirectionalItemComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleEnergyComponent;
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.util.StackUtils;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
@@ -60,12 +56,12 @@ public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity impl
 	}
 
 	@Override
-	public ItemComponent createItemComponent() {
+	public ItemStore createItemComponent() {
 		return SimpleDirectionalItemComponent.of(this, 1);
 	}
 
 	@Override
-	public EnergyComponent createEnergyComponent() {
+	public EnergyStore createEnergyComponent() {
 		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
@@ -91,9 +87,9 @@ public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity impl
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		ItemComponent itemComponent = getItemComponent();
+		ItemStore itemComponent = getItemComponent();
 
-		EnergyComponent energyComponent = getEnergyComponent();
+		EnergyStore energyComponent = getEnergyComponent();
 
 		if (itemComponent != null && energyComponent != null) {
 			EnergyVolume energyVolume = energyComponent.getVolume();

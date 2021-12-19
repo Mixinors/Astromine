@@ -27,10 +27,8 @@ package com.github.mixinors.astromine.common.entity.base;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
-
 /**
- * A{@link ComponentEntity} with an attached {@link EnergyComponent}.
+ * A{@link ComponentEntity} with an attached {@link EnergyStore}.
  */
 public abstract class ComponentEnergyEntity extends ComponentEntity {
 	/** Instantiates a {@link ComponentEnergyEntity} */
@@ -38,11 +36,11 @@ public abstract class ComponentEnergyEntity extends ComponentEntity {
 		super(type, world);
 	}
 
-	/** Returns the {@link EnergyComponent} to be attached. */
-	public abstract EnergyComponent createEnergyComponent();
+	/** Returns the {@link EnergyStore} to be attached. */
+	public abstract EnergyStore createEnergyComponent();
 
-	/** Returns the attached {@link EnergyComponent}. */
-	public EnergyComponent getEnergyComponent() {
-		return EnergyComponent.get(this);
+	/** Returns the attached {@link EnergyStore}. */
+	public EnergyStore getEnergyComponent() {
+		return EnergyStore.get(this);
 	}
 }

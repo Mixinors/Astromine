@@ -33,8 +33,6 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleFluidComponent;
 import com.github.mixinors.astromine.common.volume.base.Volume;
 import io.netty.buffer.ByteBuf;
 
@@ -48,7 +46,7 @@ import java.text.DecimalFormat;
  * A {@link Volume} of {@link Fluid}s, whose amount
  * and size are represented by a {@link Long}
  *
- * It is not an inventory, thus it is recommended to use a {@link FluidComponent},
+ * It is not an inventory, thus it is recommended to use a {@link FluidStore},
  * most commonly via its implementation, {@link SimpleFluidComponent}.
  *
  * A few utility methods for instantiation are provided, that being:
@@ -73,7 +71,7 @@ import java.text.DecimalFormat;
  * the given {@link Fluid}, and a listener as a {@link Runnable}.
  *
  * It is recommended that you always set the volume's listener to
- * {@link FluidComponent#updateListeners()}, if using one.
+ * {@link FluidStore#updateListeners()}, if using one.
  *
  * Serialization and deserialization methods are provided for:
  * - {@link NbtCompound} - through {@link #toTag()} and {@link #fromTag(NbtCompound)}.

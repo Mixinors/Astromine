@@ -36,8 +36,6 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.ItemIngredient;
 import com.github.mixinors.astromine.common.util.DoubleUtils;
@@ -70,7 +68,7 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 		this.time = time;
 	}
 
-	public static boolean allows(World world, ItemComponent itemComponent) {
+	public static boolean allows(World world, ItemStore itemComponent) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (MeltingRecipe) it).toArray(MeltingRecipe[]::new));
 		}
@@ -84,7 +82,7 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 		return false;
 	}
 
-	public static Optional<MeltingRecipe> matching(World world, ItemComponent itemComponent, FluidComponent fluidComponent) {
+	public static Optional<MeltingRecipe> matching(World world, ItemStore itemComponent, FluidStore fluidComponent) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (MeltingRecipe) it).toArray(MeltingRecipe[]::new));
 		}
@@ -98,7 +96,7 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 		return Optional.empty();
 	}
 
-	public boolean matches(ItemComponent itemComponent, FluidComponent fluidComponent) {
+	public boolean matches(ItemStore itemComponent, FluidStore fluidComponent) {
 		if (fluidComponent.getSize() < 1) {
 			return false;
 		}
@@ -114,7 +112,7 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 		return firstOutput.test(fluidComponent.getFirst());
 	}
 
-	public boolean allows(ItemComponent itemComponent) {
+	public boolean allows(ItemStore itemComponent) {
 		if (itemComponent.getSize() < 1) {
 			return false;
 		}

@@ -24,7 +24,6 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.common.component.general.SimpleDirectionalFluidComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -38,10 +37,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleEnergyComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleFluidComponent;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
@@ -58,14 +53,14 @@ public class FluidCollectorBlockEntity extends ComponentEnergyFluidBlockEntity i
 	}
 
 	@Override
-	public FluidComponent createFluidComponent() {
-		FluidComponent fluidComponent = SimpleDirectionalFluidComponent.of(this, 1);
+	public FluidStore createFluidComponent() {
+		FluidStore fluidComponent = SimpleDirectionalFluidComponent.of(this, 1);
 		fluidComponent.getFirst().setSize(FluidVolume.BUCKET * 8);
 		return fluidComponent;
 	}
 
 	@Override
-	public EnergyComponent createEnergyComponent() {
+	public EnergyStore createEnergyComponent() {
 		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
@@ -91,9 +86,9 @@ public class FluidCollectorBlockEntity extends ComponentEnergyFluidBlockEntity i
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		FluidComponent fluidComponent = getFluidComponent();
+		FluidStore fluidComponent = getFluidComponent();
 
-		EnergyComponent energyComponent = getEnergyComponent();
+		EnergyStore energyComponent = getEnergyComponent();
 
 		if (fluidComponent != null) {
 			EnergyVolume energyVolume = energyComponent.getVolume();

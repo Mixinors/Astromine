@@ -24,12 +24,6 @@
 
 package com.github.mixinors.astromine.common.block.entity.base;
 
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.provider.EnergyComponentProvider;
-import com.github.mixinors.astromine.common.component.general.provider.FluidComponentProvider;
-import com.github.mixinors.astromine.common.component.general.provider.ItemComponentProvider;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -42,15 +36,15 @@ import java.util.function.Supplier;
 
 /**
  * A {@link ComponentBlockEntity} with an attached
- * {@link EnergyComponent}, {@link FluidComponent}
- * and {@link ItemComponent}.
+ * {@link EnergyStore}, {@link FluidStore}
+ * and {@link ItemStore}.
  */
 public abstract class ComponentEnergyFluidItemBlockEntity extends ComponentBlockEntity implements ComponentEnergyProvider, ComponentInventoryProvider, EnergyComponentProvider, FluidComponentProvider, ItemComponentProvider {
-	private final EnergyComponent energyComponent = createEnergyComponent();
+	private final EnergyStore energyComponent = createEnergyComponent();
 
-	private final FluidComponent fluidComponent = createFluidComponent();
+	private final FluidStore fluidComponent = createFluidComponent();
 
-	private final ItemComponent itemComponent = createItemComponent();
+	private final ItemStore itemComponent = createItemComponent();
 
 	/** Instantiates a {@link ComponentEnergyFluidItemBlockEntity}. */
 	public ComponentEnergyFluidItemBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
@@ -63,33 +57,33 @@ public abstract class ComponentEnergyFluidItemBlockEntity extends ComponentBlock
 		getFluidComponent().updateListeners();
 		
 		addComponent(AMComponents.ITEM_INVENTORY_COMPONENT, getItemComponent());
-		getItemComponent().updateListeners();
+		getItemComponent().triggerListeners();
 	}
 
-	/** Returns the {@link EnergyComponent} to be attached. */
-	public abstract EnergyComponent createEnergyComponent();
+	/** Returns the {@link EnergyStore} to be attached. */
+	public abstract EnergyStore createEnergyComponent();
 
-	/** Returns the attached {@link EnergyComponent}. */
+	/** Returns the attached {@link EnergyStore}. */
 	@Override
-	public EnergyComponent getEnergyComponent() {
+	public EnergyStore getEnergyComponent() {
 		return energyComponent;
 	}
 
-	/** Returns the {@link FluidComponent} to be attached. */
-	public abstract FluidComponent createFluidComponent();
+	/** Returns the {@link FluidStore} to be attached. */
+	public abstract FluidStore createFluidComponent();
 
-	/** Returns the attached {@link FluidComponent}. */
+	/** Returns the attached {@link FluidStore}. */
 	@Override
-	public FluidComponent getFluidComponent() {
+	public FluidStore getFluidComponent() {
 		return fluidComponent;
 	}
 
-	/** Returns the {@link ItemComponent} to be attached. */
-	public abstract ItemComponent createItemComponent();
+	/** Returns the {@link ItemStore} to be attached. */
+	public abstract ItemStore createItemComponent();
 
-	/** Returns the attached {@link ItemComponent}. */
+	/** Returns the attached {@link ItemStore}. */
 	@Override
-	public ItemComponent getItemComponent() {
+	public ItemStore getItemComponent() {
 		return itemComponent;
 	}
 }

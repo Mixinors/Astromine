@@ -38,8 +38,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.util.DoubleUtils;
@@ -72,7 +70,7 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 		this.time = time;
 	}
 
-	public static boolean allows(World world, FluidComponent fluidComponent) {
+	public static boolean allows(World world, FluidStore fluidComponent) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (SolidifyingRecipe) it).toArray(SolidifyingRecipe[]::new));
 		}
@@ -86,7 +84,7 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 		return false;
 	}
 
-	public static Optional<SolidifyingRecipe> matching(World world, ItemComponent itemComponent, FluidComponent fluidComponent) {
+	public static Optional<SolidifyingRecipe> matching(World world, ItemStore itemComponent, FluidStore fluidComponent) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (SolidifyingRecipe) it).toArray(SolidifyingRecipe[]::new));
 		}
@@ -100,7 +98,7 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 		return Optional.empty();
 	}
 
-	public boolean matches(ItemComponent itemComponent, FluidComponent fluidComponent) {
+	public boolean matches(ItemStore itemComponent, FluidStore fluidComponent) {
 		if (fluidComponent.getSize() < 1) {
 			return false;
 		}
@@ -116,7 +114,7 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 		return StackUtils.test(firstOutput, itemComponent.getFirst()) ;
 	}
 
-	public boolean allows(FluidComponent fluidComponent) {
+	public boolean allows(FluidStore fluidComponent) {
 		if (fluidComponent.getSize() < 1) {
 			return false;
 		}

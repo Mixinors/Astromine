@@ -27,12 +27,9 @@ package com.github.mixinors.astromine.common.entity.base;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-
 /**
- * A {@link ComponentEntity} with an attached {@link EnergyComponent}
- * and {@link ItemComponent}.
+ * A {@link ComponentEntity} with an attached {@link EnergyStore}
+ * and {@link ItemStore}.
  */
 public abstract class ComponentEnergyItemEntity extends ComponentEntity {
 	/** Instantiates a {@link ComponentEnergyItemEntity}. */
@@ -40,19 +37,19 @@ public abstract class ComponentEnergyItemEntity extends ComponentEntity {
 		super(type, world);
 	}
 
-	/** Returns the {@link EnergyComponent} to be attached. */
-	public abstract EnergyComponent createEnergyComponent();
+	/** Returns the {@link EnergyStore} to be attached. */
+	public abstract EnergyStore createEnergyComponent();
 
-	/** Returns the {@link ItemComponent} to be attached. */
-	public abstract ItemComponent createItemComponent();
+	/** Returns the {@link ItemStore} to be attached. */
+	public abstract ItemStore createItemComponent();
 
-	/** Returns the attached {@link EnergyComponent}. */
-	public EnergyComponent getEnergyComponent() {
-		return EnergyComponent.get(this);
+	/** Returns the attached {@link EnergyStore}. */
+	public EnergyStore getEnergyComponent() {
+		return EnergyStore.get(this);
 	}
 
-	/** Returns the attached {@link ItemComponent}. */
-	public ItemComponent getItemComponent() {
-		return ItemComponent.get(this);
+	/** Returns the attached {@link ItemStore}. */
+	public ItemStore getItemComponent() {
+		return ItemStore.get(this);
 	}
 }

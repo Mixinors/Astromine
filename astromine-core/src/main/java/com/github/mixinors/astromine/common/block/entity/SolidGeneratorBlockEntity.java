@@ -24,9 +24,6 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.common.component.general.*;
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 
@@ -60,7 +57,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 	}
 
 	@Override
-	public ItemComponent createItemComponent() {
+	public ItemStore createItemComponent() {
 		return SimpleDirectionalItemComponent.of(this, 1).withInsertPredicate((direction, stack, slot) -> {
 			if (slot != 0) {
 				return false;
@@ -77,7 +74,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 	}
 
 	@Override
-	public EnergyComponent createEnergyComponent() {
+	public EnergyStore createEnergyComponent() {
 		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
@@ -98,9 +95,9 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		ItemComponent itemComponent = getItemComponent();
+		ItemStore itemComponent = getItemComponent();
 
-		EnergyComponent energyComponent = getEnergyComponent();
+		EnergyStore energyComponent = getEnergyComponent();
 
 		if (itemComponent != null && energyComponent != null) {
 			EnergyVolume energyVolume = energyComponent.getVolume();

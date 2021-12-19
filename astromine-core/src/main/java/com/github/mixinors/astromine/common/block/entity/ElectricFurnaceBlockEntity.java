@@ -24,9 +24,6 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.common.component.general.*;
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -68,7 +65,7 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 	}
 
 	@Override
-	public ItemComponent createItemComponent() {
+	public ItemStore createItemComponent() {
 		return SimpleDirectionalItemComponent.of(this, 2).withInsertPredicate((direction, stack, slot) -> {
 			if (slot != 1) {
 				return false;
@@ -98,7 +95,7 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 	}
 
 	@Override
-	public EnergyComponent createEnergyComponent() {
+	public EnergyStore createEnergyComponent() {
 		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
@@ -119,9 +116,9 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		ItemComponent itemComponent = getItemComponent();
+		ItemStore itemComponent = getItemComponent();
 
-		EnergyComponent energyComponent = getEnergyComponent();
+		EnergyStore energyComponent = getEnergyComponent();
 
 		if (itemComponent != null && energyComponent != null) {
 			EnergyVolume energyVolume = energyComponent.getVolume();

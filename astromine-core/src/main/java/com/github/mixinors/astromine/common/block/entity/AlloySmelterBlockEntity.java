@@ -24,9 +24,6 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.common.component.general.*;
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -64,7 +61,7 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 	}
 
 	@Override
-	public ItemComponent createItemComponent() {
+	public ItemStore createItemComponent() {
 		return SimpleDirectionalItemComponent.of(this, 3).withInsertPredicate((direction, stack, slot) -> {
 			if (slot != 0 && slot != 1) {
 				return false;
@@ -78,7 +75,7 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 				return false;
 			}
 
-			return AlloySmeltingRecipe.allows(world, ItemComponent.of(stack, getItemComponent().getSecond())) || AlloySmeltingRecipe.allows(world, ItemComponent.of(getItemComponent().getFirst(), stack));
+			return AlloySmeltingRecipe.allows(world, ItemStore.of(stack, getItemComponent().getSecond())) || AlloySmeltingRecipe.allows(world, ItemStore.of(getItemComponent().getFirst(), stack));
 		}).withExtractPredicate(((direction, stack, slot) -> {
 			if (!getTransferComponent().getItem(direction).canExtract()) {
 				return false;
@@ -92,7 +89,7 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 	}
 
 	@Override
-	public EnergyComponent createEnergyComponent() {
+	public EnergyStore createEnergyComponent() {
 		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
@@ -113,9 +110,9 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		ItemComponent itemComponent = getItemComponent();
+		ItemStore itemComponent = getItemComponent();
 
-		EnergyComponent energyComponent = getEnergyComponent();
+		EnergyStore energyComponent = getEnergyComponent();
 
 		if (itemComponent != null && energyComponent != null) {
 			EnergyVolume energyVolume = energyComponent.getVolume();

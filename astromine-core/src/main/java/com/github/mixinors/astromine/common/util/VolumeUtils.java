@@ -28,8 +28,6 @@ import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import net.minecraft.util.Pair;
 
@@ -57,10 +55,10 @@ public class VolumeUtils {
 
 	/** Inserts fluids from the first stack into the first fluid volume.
 		* Inserts fluids from the first fluid volume into the first stack. */
-	public static void transferBetween(ItemComponent itemComponent, FluidComponent fluidComponent, int firstStackSlot, int secondStackSlot, int volumeSlot) {
+	public static void transferBetween(ItemStore itemComponent, FluidStore fluidComponent, int firstStackSlot, int secondStackSlot, int volumeSlot) {
 		if (fluidComponent != null) {
 			if (itemComponent != null) {
-				FluidComponent firstStackFluidComponent = FluidComponent.get(itemComponent.getStack(firstStackSlot));
+				FluidStore firstStackFluidComponent = FluidStore.get(itemComponent.getStack(firstStackSlot));
 
 				if (firstStackFluidComponent != null) {
 					FluidVolume ourVolume = fluidComponent.getVolume(volumeSlot);
@@ -81,7 +79,7 @@ public class VolumeUtils {
                     });
                 }
 
-				FluidComponent secondStackFluidComponent = FluidComponent.get(itemComponent.getStack(secondStackSlot));
+				FluidStore secondStackFluidComponent = FluidStore.get(itemComponent.getStack(secondStackSlot));
 
 				if (secondStackFluidComponent != null) {
 					FluidVolume ourVolume = fluidComponent.getVolume(volumeSlot);

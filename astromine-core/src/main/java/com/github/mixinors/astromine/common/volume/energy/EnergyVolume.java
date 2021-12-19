@@ -29,8 +29,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleEnergyComponent;
 import com.github.mixinors.astromine.common.volume.base.Volume;
 import io.netty.buffer.ByteBuf;
 
@@ -41,7 +39,7 @@ import com.google.gson.JsonObject;
  * A {@link Volume} of energy, whose amount and size
  * are represented by {@link Double}.
  *
- * It is not an inventory, thus it is recommended to use a {@link EnergyComponent},
+ * It is not an inventory, thus it is recommended to use a {@link EnergyStore},
  * most commonly via its implementation, {@link SimpleEnergyComponent}.
  *
  * A few utility methods for instantiation are provided, that being:
@@ -61,7 +59,7 @@ import com.google.gson.JsonObject;
  * as a {@link Double)}, size as a {@link Double}, and a listener as a {@link Runnable}.
  *
  * It is recommended that you always set the volume's listener to
- * {@link EnergyComponent#updateListeners()}, if using one.
+ * {@link EnergyStore#updateListeners()}, if using one.
  *
  * Serialization and deserialization methods are provided for:
  * - {@link NbtCompound} - through {@link #toTag()} and {@link #fromTag(NbtCompound)}.

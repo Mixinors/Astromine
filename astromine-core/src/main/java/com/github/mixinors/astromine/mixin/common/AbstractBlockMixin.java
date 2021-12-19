@@ -46,7 +46,6 @@ import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.block.transfer.TransferType;
 import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 
@@ -64,7 +63,7 @@ public class AbstractBlockMixin {
 
 		final boolean isFluidVolumeItem = stackItem instanceof FluidVolumeItem;
 
-		final FluidComponent stackFluidComponent = FluidComponent.get(stack);
+		final FluidStore stackFluidComponent = FluidStore.get(stack);
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 
 		if (blockEntity != null) {
@@ -85,7 +84,7 @@ public class AbstractBlockMixin {
 			final Block block = state.getBlock();
 
 			if (blockEntity != null) {
-				FluidComponent blockEntityFluidComponent = FluidComponent.get(blockEntity);
+				FluidStore blockEntityFluidComponent = FluidStore.get(blockEntity);
 
 				if (blockEntityFluidComponent != null) {
 					FluidVolume stackVolume = stackFluidComponent.getFirst();

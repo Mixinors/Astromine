@@ -24,12 +24,10 @@
 
 package com.github.mixinors.astromine.common.block.entity.base;
 
-import com.github.mixinors.astromine.common.component.general.provider.ItemComponentProvider;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.util.capability.inventory.ComponentInventoryProvider;
 import net.minecraft.util.math.BlockPos;
 
@@ -37,24 +35,24 @@ import java.util.function.Supplier;
 
 /**
  * A {@link ComponentBlockEntity} with an attached
- * {@link ItemComponent}.
+ * {@link ItemStore}.
  */
 public abstract class ComponentItemBlockEntity extends ComponentBlockEntity implements ComponentInventoryProvider, ItemComponentProvider {
-	private final ItemComponent itemComponent = createItemComponent();
+	private final ItemStore itemComponent = createItemComponent();
 
 	/** Instantiates a {@link ComponentItemBlockEntity}. */
 	public ComponentItemBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 
 		addComponent(AMComponents.ITEM_INVENTORY_COMPONENT, getItemComponent());
-		getItemComponent().updateListeners();
+		getItemComponent().triggerListeners();
 	}
 
-	/** Returns the {@link ItemComponent} to be attached. */
-	public abstract ItemComponent createItemComponent();
+	/** Returns the {@link ItemStore} to be attached. */
+	public abstract ItemStore createItemComponent();
 
-	/** Returns the attached {@link ItemComponent}. */
-	public ItemComponent getItemComponent() {
+	/** Returns the attached {@link ItemStore}. */
+	public ItemStore getItemComponent() {
 		return itemComponent;
 	}
 }

@@ -33,8 +33,6 @@ import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentFluidBlockEntity;
 import com.github.mixinors.astromine.common.block.transfer.TransferType;
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleFluidComponent;
 
 public class DrainBlockEntity extends ComponentFluidBlockEntity {
 	public DrainBlockEntity(BlockPos blockPos, BlockState blockState) {
@@ -46,8 +44,8 @@ public class DrainBlockEntity extends ComponentFluidBlockEntity {
 	}
 
 	@Override
-	public FluidComponent createFluidComponent() {
-		FluidComponent fluidComponent = SimpleFluidComponent.of(1).withInsertPredicate((direction, volume, slot) -> {
+	public FluidStore createFluidComponent() {
+		FluidStore fluidComponent = SimpleFluidComponent.of(1).withInsertPredicate((direction, volume, slot) -> {
 			return tickRedstone();
 		});
 

@@ -46,7 +46,6 @@ import net.minecraft.util.registry.Registry;
 
 import com.github.mixinors.astromine.client.BaseRenderer;
 import com.github.mixinors.astromine.client.render.sprite.SpriteRenderer;
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.util.FluidUtils;
 import com.github.mixinors.astromine.common.util.TextUtils;
 import org.jetbrains.annotations.NotNull;
@@ -104,7 +103,7 @@ public class FluidFilterWidget extends ButtonWidget
 
 		if (isWithin(x, y)) {
 			if (!stack.isEmpty()) {
-				FluidComponent fluidComponent = FluidComponent.get(stack);
+				FluidStore fluidComponent = FluidStore.get(stack);
 
 				fluidSupplier = () -> fluidComponent.getFirst().getFluid();
 				fluidConsumer.accept(fluidSupplier.get());

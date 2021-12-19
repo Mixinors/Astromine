@@ -27,14 +27,9 @@ package com.github.mixinors.astromine.registry.common;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.fluid.Fluids;
 
 import com.github.mixinors.astromine.common.component.block.entity.RedstoneComponent;
 import com.github.mixinors.astromine.common.component.entity.EntityOxygenComponent;
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleFluidComponent;
 import com.github.mixinors.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.mixinors.astromine.common.component.world.WorldHoloBridgeComponent;
 import com.github.mixinors.astromine.common.component.world.WorldNetworkComponent;
@@ -43,8 +38,6 @@ import com.github.mixinors.astromine.common.entity.base.ComponentEnergyItemEntit
 import com.github.mixinors.astromine.common.entity.base.ComponentFluidEntity;
 import com.github.mixinors.astromine.common.entity.base.ComponentFluidItemEntity;
 import com.github.mixinors.astromine.common.entity.base.ComponentItemEntity;
-import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
-import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import dev.onyxstudios.cca.api.v3.block.BlockComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.block.BlockComponentInitializer;
 import dev.onyxstudios.cca.api.v3.chunk.ChunkComponentFactoryRegistry;
@@ -63,9 +56,9 @@ public class AMComponents implements WorldComponentInitializer, ChunkComponentIn
 	public static final ComponentKey<ChunkAtmosphereComponent> CHUNK_ATMOSPHERE_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("chunk_atmosphere_component"), ChunkAtmosphereComponent.class);
 	public static final ComponentKey<WorldHoloBridgeComponent> WORLD_BRIDGE_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("world_holo_bridge_component"), WorldHoloBridgeComponent.class);
 
-	public static final ComponentKey<ItemComponent> ITEM_INVENTORY_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("item_inventory_component"), ItemComponent.class);
-	public static final ComponentKey<FluidComponent> FLUID_INVENTORY_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("fluid_inventory_component"), FluidComponent.class);
-	public static final ComponentKey<EnergyComponent> ENERGY_INVENTORY_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("energy_inventory_component"), EnergyComponent.class);
+	public static final ComponentKey<ItemStore> ITEM_INVENTORY_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("item_inventory_component"), ItemStore.class);
+	public static final ComponentKey<FluidStore> FLUID_INVENTORY_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("fluid_inventory_component"), FluidStore.class);
+	public static final ComponentKey<EnergyStore> ENERGY_INVENTORY_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("energy_inventory_component"), EnergyStore.class);
 
 	public static final ComponentKey<TransferComponent> BLOCK_ENTITY_TRANSFER_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("block_entity_transfer_component"), TransferComponent.class);
 	public static final ComponentKey<RedstoneComponent> BLOCK_ENTITY_REDSTONE_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("block_entity_redstone_component"), RedstoneComponent.class);

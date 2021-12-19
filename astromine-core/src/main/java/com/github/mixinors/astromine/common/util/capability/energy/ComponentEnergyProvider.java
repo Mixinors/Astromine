@@ -26,7 +26,6 @@ package com.github.mixinors.astromine.common.util.capability.energy;
 
 import com.github.mixinors.astromine.common.block.transfer.TransferType;
 import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.util.EnergyUtils;
 import team.reborn.energy.EnergySide;
 import team.reborn.energy.EnergyStorage;
@@ -34,19 +33,19 @@ import team.reborn.energy.EnergyTier;
 
 public interface
 ComponentEnergyProvider extends EnergyStorage {
-	/** Override behavior to redirect calls to this provider's {@link EnergyComponent}. */
+	/** Override behavior to redirect calls to this provider's {@link EnergyStore}. */
 	@Override
 	default double getStored(EnergySide side) {
 		return getEnergyComponent().getAmount();
 	}
 
-	/** Override behavior to redirect calls to this provider's {@link EnergyComponent}. */
+	/** Override behavior to redirect calls to this provider's {@link EnergyStore}. */
 	@Override
 	default void setStored(double amount) {
 		getEnergyComponent().setAmount(amount);
 	}
 
-	/** Override behavior to redirect calls to this provider's {@link EnergyComponent}. */
+	/** Override behavior to redirect calls to this provider's {@link EnergyStore}. */
 	@Override
 	default double getMaxStoredPower() {
 		return getEnergyComponent().getSize();
@@ -58,7 +57,7 @@ ComponentEnergyProvider extends EnergyStorage {
 		return EnergyTier.INSANE;
 	}
 
-	/** Override behavior to redirect calls to this provider's {@link EnergyComponent}
+	/** Override behavior to redirect calls to this provider's {@link EnergyStore}
 	 * and {@link TransferComponent}, if present. */
 	@Override
 	default double getMaxInput(EnergySide side) {
@@ -83,7 +82,7 @@ ComponentEnergyProvider extends EnergyStorage {
 		}
 	}
 
-	/** Override behavior to redirect calls to this provider's {@link EnergyComponent}
+	/** Override behavior to redirect calls to this provider's {@link EnergyStore}
 	 * and {@link TransferComponent}, if present. */
 	@Override
 	default double getMaxOutput(EnergySide side) {
@@ -108,8 +107,8 @@ ComponentEnergyProvider extends EnergyStorage {
 		}
 	}
 
-	/** Override behavior to return this as an {@link EnergyComponent}. */
-	default EnergyComponent getEnergyComponent() {
-		return EnergyComponent.get(this);
+	/** Override behavior to return this as an {@link EnergyStore}. */
+	default EnergyStore getEnergyComponent() {
+		return EnergyStore.get(this);
 	}
 }

@@ -44,7 +44,6 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.item.base.EnergyVolumeItem;
 import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
 import net.minecraft.util.Identifier;
@@ -59,7 +58,7 @@ public class AMClientCallbacks {
 	public static void init() {
 		ItemTooltipCallback.EVENT.register( ( stack, context, tooltip ) -> {
 			if (stack.getItem() instanceof FluidVolumeItem) {
-				FluidComponent fluidComponent = FluidComponent.get(stack);
+				FluidStore fluidComponent = FluidStore.get(stack);
 
 				if(fluidComponent != null) {
 					FluidVolume volume = fluidComponent.getFirst();
@@ -102,7 +101,7 @@ public class AMClientCallbacks {
 		ItemTooltipCallback.EVENT.register( ( stack, context, tooltip ) -> {
 			if (stack.getItem() instanceof SpaceSuitItem) {
 				if (stack.getItem() == AMItems.SPACE_SUIT_CHESTPLATE.get()) {
-					FluidComponent fluidComponent = FluidComponent.get(stack);
+					FluidStore fluidComponent = FluidStore.get(stack);
 					if(fluidComponent != null) {
 						fluidComponent.forEachIndexed((slot, volume) -> {
 							tooltip.add(((MutableText) TextUtils.getFluidVolume(volume)).append(new LiteralText(" ")).append(((MutableText) TextUtils.getFluid(volume.getFluidId())).formatted(Formatting.GRAY)));

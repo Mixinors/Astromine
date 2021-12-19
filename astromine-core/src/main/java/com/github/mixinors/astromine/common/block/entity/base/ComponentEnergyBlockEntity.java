@@ -24,12 +24,10 @@
 
 package com.github.mixinors.astromine.common.block.entity.base;
 
-import com.github.mixinors.astromine.common.component.general.provider.EnergyComponentProvider;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.util.capability.energy.ComponentEnergyProvider;
 import net.minecraft.util.math.BlockPos;
 
@@ -37,10 +35,10 @@ import java.util.function.Supplier;
 
 /**
  * A {@link ComponentBlockEntity} with an attached
- * {@link EnergyComponent}.
+ * {@link EnergyStore}.
  */
 public abstract class ComponentEnergyBlockEntity extends ComponentBlockEntity implements ComponentEnergyProvider, EnergyComponentProvider {
-	private final EnergyComponent energyComponent = createEnergyComponent();
+	private final EnergyStore energyComponent = createEnergyComponent();
 
 	/** Instantiates a {@link ComponentEnergyBlockEntity}. */
 	public ComponentEnergyBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
@@ -50,12 +48,12 @@ public abstract class ComponentEnergyBlockEntity extends ComponentBlockEntity im
 		getEnergyComponent().updateListeners();
 	}
 
-	/** Returns the {@link EnergyComponent} to be attached. */
-	public abstract EnergyComponent createEnergyComponent();
+	/** Returns the {@link EnergyStore} to be attached. */
+	public abstract EnergyStore createEnergyComponent();
 
-	/** Returns the attached {@link EnergyComponent}. */
+	/** Returns the attached {@link EnergyStore}. */
 	@Override
-	public EnergyComponent getEnergyComponent() {
+	public EnergyStore getEnergyComponent() {
 		return energyComponent;
 	}
 }

@@ -30,11 +30,7 @@ import com.github.mixinors.astromine.common.block.entity.TickableBlockEntity;
 import com.github.mixinors.astromine.common.block.transfer.TransferType;
 import com.github.mixinors.astromine.common.component.block.entity.RedstoneComponent;
 import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.component.general.provider.RedstoneComponentProvider;
-import com.github.mixinors.astromine.common.component.general.provider.TransferComponentProvider;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import com.google.common.collect.Lists;
@@ -205,10 +201,10 @@ public abstract class ComponentBlockEntity extends BlockEntity implements Transf
 			BlockEntity neighborBlockEntity = world.getBlockEntity(neighborPos);
 
 			if (getTransferComponent().hasItem()) {
-				ItemComponent ourComponent = ItemComponent.get(this);
+				ItemStore ourComponent = ItemStore.get(this);
 
 				if (ourComponent != null) {
-					ItemComponent theirComponent = ItemComponent.get(neighborBlockEntity);
+					ItemStore theirComponent = ItemStore.get(neighborBlockEntity);
 
 					if (theirComponent != null) {
 						theirComponent.into(ourComponent, 1, neighborDirection, offsetDirection);
@@ -218,10 +214,10 @@ public abstract class ComponentBlockEntity extends BlockEntity implements Transf
 			}
 
 			if (getTransferComponent().hasFluid()) {
-				FluidComponent ourComponent = FluidComponent.get(this);
+				FluidStore ourComponent = FluidStore.get(this);
 
 				if (ourComponent != null) {
-					FluidComponent theirComponent = FluidComponent.get(neighborBlockEntity);
+					FluidStore theirComponent = FluidStore.get(neighborBlockEntity);
 
 					if (theirComponent != null) {
 						theirComponent.into(ourComponent, FluidVolume.getTransfer(), neighborDirection, offsetDirection);
@@ -231,10 +227,10 @@ public abstract class ComponentBlockEntity extends BlockEntity implements Transf
 			}
 
 			if (getTransferComponent().hasEnergy()) {
-				EnergyComponent ourComponent = EnergyComponent.get(this);
+				EnergyStore ourComponent = EnergyStore.get(this);
 
 				if (ourComponent != null) {
-					EnergyComponent theirComponent = EnergyComponent.get(neighborBlockEntity);
+					EnergyStore theirComponent = EnergyStore.get(neighborBlockEntity);
 
 					if (theirComponent != null) {
 						theirComponent.into(ourComponent, 1024D);

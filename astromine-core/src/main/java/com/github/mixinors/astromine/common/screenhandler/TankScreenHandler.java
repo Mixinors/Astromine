@@ -33,7 +33,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
 import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityFluidItemScreenHandler;
 import com.github.mixinors.astromine.common.widget.blade.FluidFilterWidget;
@@ -85,7 +84,7 @@ public class TankScreenHandler extends ComponentBlockEntityFluidItemScreenHandle
 			ItemStack stack = blockEntity.getItemComponent().getFirst();
 
 			if (stack.getItem() instanceof FluidVolumeItem) {
-				return FluidComponent.get(stack.getItem()).getFirst().getAmount().intValue();
+				return FluidStore.get(stack.getItem()).getFirst().getAmount().intValue();
 			} else {
 				return 0;
 			}
@@ -107,7 +106,7 @@ public class TankScreenHandler extends ComponentBlockEntityFluidItemScreenHandle
 			ItemStack stack = blockEntity.getItemComponent().getSecond();
 
 			if (stack.getItem() instanceof FluidVolumeItem) {
-				return FluidComponent.get(stack.getItem()).getFirst().getAmount().intValue();
+				return FluidStore.get(stack.getItem()).getFirst().getAmount().intValue();
 			} else {
 				return 0;
 			}

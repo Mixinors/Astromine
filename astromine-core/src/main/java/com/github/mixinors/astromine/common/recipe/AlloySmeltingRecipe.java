@@ -36,7 +36,6 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.ItemIngredient;
 import com.github.mixinors.astromine.common.util.DoubleUtils;
@@ -72,7 +71,7 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 	}
 
 
-	public static boolean allows(World world, ItemComponent itemComponent) {
+	public static boolean allows(World world, ItemStore itemComponent) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (AlloySmeltingRecipe) it).toArray(AlloySmeltingRecipe[]::new));
 		}
@@ -86,7 +85,7 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 		return false;
 	}
 
-	public static Optional<AlloySmeltingRecipe> matching(World world, ItemComponent itemComponent) {
+	public static Optional<AlloySmeltingRecipe> matching(World world, ItemStore itemComponent) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (AlloySmeltingRecipe) it).toArray(AlloySmeltingRecipe[]::new));
 		}
@@ -100,7 +99,7 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 		return Optional.empty();
 	}
 
-	public boolean matches(ItemComponent itemComponent) {
+	public boolean matches(ItemStore itemComponent) {
 		if (itemComponent.getSize() < 3) {
 			return false;
 		}
@@ -116,7 +115,7 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 		return StackUtils.test(firstOutput, itemComponent.getThird());
 	}
 
-	public boolean allows(ItemComponent itemComponent) {
+	public boolean allows(ItemStore itemComponent) {
 		if (itemComponent.getSize() < 2) {
 			return false;
 		}

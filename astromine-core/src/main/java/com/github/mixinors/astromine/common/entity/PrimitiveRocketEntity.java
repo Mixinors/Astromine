@@ -24,9 +24,6 @@
 
 package com.github.mixinors.astromine.common.entity;
 
-import com.github.mixinors.astromine.common.component.general.*;
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.entity.base.RocketEntity;
 import com.github.mixinors.astromine.registry.common.AMDimensions;
 import com.github.mixinors.astromine.registry.common.AMFluids;
@@ -35,7 +32,6 @@ import com.github.mixinors.astromine.registry.common.AMNetworks;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.registry.menu.ExtendedMenuProvider;
 import dev.architectury.registry.menu.MenuRegistry;
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 
 import net.minecraft.client.util.math.Vector3d;
 import net.minecraft.entity.EntityType;
@@ -44,7 +40,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
@@ -75,15 +70,15 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 	}
 
 	@Override
-	public FluidComponent createFluidComponent() {
-		FluidComponent fluidComponent = SimpleAutoSyncedFluidComponent.of(2);
+	public FluidStore createFluidComponent() {
+		FluidStore fluidComponent = SimpleAutoSyncedFluidComponent.of(2);
 		fluidComponent.getFirst().setSize(FluidVolume.BUCKET * 16L);
 		fluidComponent.getSecond().setSize(FluidVolume.BUCKET * 16L);
 		return fluidComponent;
 	}
 
 	@Override
-	public ItemComponent createItemComponent() {
+	public ItemStore createItemComponent() {
 		return SimpleAutoSyncedItemComponent.of(4);
 	}
 

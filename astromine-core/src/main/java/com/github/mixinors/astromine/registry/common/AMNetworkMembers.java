@@ -24,7 +24,6 @@
 
 package com.github.mixinors.astromine.registry.common;
 
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 
 import net.minecraft.block.Block;
@@ -83,7 +82,7 @@ public class AMNetworkMembers {
 			@Override
 			public Collection<NetworkMemberType> get(WorldPos pos, @Nullable Direction direction) {
 				if (!this.types.containsKey(pos.getBlock())) {
-					if (FluidComponent.get(pos.getBlockEntity()) != null) {
+					if (FluidStore.get(pos.getBlockEntity()) != null) {
 						return NetworkMember.REQUESTER_PROVIDER;
 					}
 				}

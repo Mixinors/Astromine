@@ -24,9 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.common.component.general.SimpleItemComponent;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.compatibility.InventoryFromItemComponent;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.common.recipe.AltarRecipe;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMSoundEvents;
@@ -73,7 +71,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 	public float craftingTicksDelta = 0;
 	public AltarRecipe recipe;
 	public List<Supplier<AltarPedestalBlockEntity>> children = Lists.newArrayList();
-	private ItemComponent inventory = SimpleItemComponent.of(1).withListener(inventory -> {
+	private SimpleItemStorage inventory = SimpleItemStorage.of(1).withListener(inventory -> {
 		if (hasWorld() && !world.isClient)
 			BlockEntityHooks.syncData(this);
 	});
@@ -83,7 +81,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 	}
 
 	@Override
-	public ItemComponent getItemComponent() {
+	public SimpleItemStorage getItemComponent() {
 		return inventory;
 	}
 

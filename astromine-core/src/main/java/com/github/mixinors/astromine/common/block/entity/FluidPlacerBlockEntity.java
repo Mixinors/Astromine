@@ -24,8 +24,11 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.common.component.general.SimpleDirectionalFluidComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
+import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.nbt.NbtCompound;
@@ -35,10 +38,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleEnergyComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleFluidComponent;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
@@ -47,7 +46,9 @@ import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvi
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import org.jetbrains.annotations.NotNull;
 
-public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
+import java.util.Iterator;
+
+public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider, Storage<FluidVariant> {
 	private long cooldown = 0L;
 
 	public FluidPlacerBlockEntity(BlockPos blockPos, BlockState blockState) {
@@ -55,14 +56,14 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 	}
 
 	@Override
-	public FluidComponent createFluidComponent() {
-		FluidComponent fluidComponent = SimpleDirectionalFluidComponent.of(this, 1);
+	public FluidStore createFluidComponent() {
+		FluidStore fluidComponent = SimpleDirectionalFluidComponent.of(this, 1);
 		fluidComponent.getFirst().setSize(FluidVolume.BOTTLE * 8L);
 		return fluidComponent;
 	}
 
 	@Override
-	public EnergyComponent createEnergyComponent() {
+	public EnergyStore createEnergyComponent() {
 		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
@@ -88,9 +89,9 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		FluidComponent fluidComponent = getFluidComponent();
+		FluidStore fluidComponent = getFluidComponent();
 
-		EnergyComponent energyComponent = getEnergyComponent();
+		EnergyStore energyComponent = getEnergyComponent();
 
 		if (fluidComponent != null && energyComponent != null) {
 			EnergyVolume energyVolume = energyComponent.getVolume();
@@ -142,5 +143,20 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 	public void readNbt(@NotNull NbtCompound tag) {
 		cooldown = tag.getLong("cooldown");
 		super.readNbt(tag);
+	}
+	
+	@Override
+	public long insert(FluidVariant resource, long maxAmount, TransactionContext transaction) {
+		transaction
+	}
+	
+	@Override
+	public long extract(FluidVariant resource, long maxAmount, TransactionContext transaction) {
+		return 0;
+	}
+	
+	@Override
+	public Iterator<StorageView<FluidVariant>> iterator(TransactionContext transaction) {
+		return null;
 	}
 }

@@ -24,22 +24,20 @@
 
 package com.github.mixinors.astromine.common.block.entity.base;
 
-import com.github.mixinors.astromine.common.component.general.provider.FluidComponentProvider;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.function.Supplier;
 
 /**
  * A {@link ComponentBlockEntity} with an attached
- * {@link FluidComponent}.
+ * {@link FluidStore}.
  */
 public abstract class ComponentFluidBlockEntity extends ComponentBlockEntity implements FluidComponentProvider {
-	private final FluidComponent fluidComponent = createFluidComponent();
+	private final FluidStore fluidComponent = createFluidComponent();
 
 	/** Instantiates a {@link ComponentFluidBlockEntity}. */
 	public ComponentFluidBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
@@ -49,12 +47,12 @@ public abstract class ComponentFluidBlockEntity extends ComponentBlockEntity imp
 		getFluidComponent().updateListeners();
 	}
 
-	/** Returns the {@link FluidComponent} to be attached. */
-	public abstract FluidComponent createFluidComponent();
+	/** Returns the {@link FluidStore} to be attached. */
+	public abstract FluidStore createFluidComponent();
 
-	/** Returns the attached {@link FluidComponent}. */
+	/** Returns the attached {@link FluidStore}. */
 	@Override
-	public FluidComponent getFluidComponent() {
+	public FluidStore getFluidComponent() {
 		return fluidComponent;
 	}
 }

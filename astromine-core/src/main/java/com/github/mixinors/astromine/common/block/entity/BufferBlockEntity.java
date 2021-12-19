@@ -24,13 +24,11 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.common.component.general.SimpleDirectionalItemComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.mixinors.astromine.common.block.entity.base.ComponentItemBlockEntity;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.function.Supplier;
@@ -46,7 +44,7 @@ public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 		}
 
 		@Override
-		public ItemComponent createItemComponent() {
+		public ItemStore createItemComponent() {
 			return SimpleDirectionalItemComponent.of(this, 6 * 9);
 		}
 	}
@@ -57,7 +55,7 @@ public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 		}
 
 		@Override
-		public ItemComponent createItemComponent() {
+		public ItemStore createItemComponent() {
 			return SimpleDirectionalItemComponent.of(this, 12 * 9);
 		}
 	}
@@ -68,7 +66,7 @@ public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 		}
 
 		@Override
-		public ItemComponent createItemComponent() {
+		public ItemStore createItemComponent() {
 			return SimpleDirectionalItemComponent.of(this, 18 * 9);
 		}
 	}
@@ -79,7 +77,7 @@ public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 		}
 
 		@Override
-		public ItemComponent createItemComponent() {
+		public ItemStore createItemComponent() {
 			return SimpleDirectionalItemComponent.of(this, 24 * 9);
 		}
 	}
@@ -90,13 +88,13 @@ public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 		}
 
 		@Override
-		public ItemComponent createItemComponent() {
+		public ItemStore createItemComponent() {
 			return SimpleDirectionalItemComponent.of(this, 6 * 9);
 		}
 
 		@Override
 		public void tick() {
-			ItemComponent itemComponent = getItemComponent();
+			ItemStore itemComponent = getItemComponent();
 
 			if (itemComponent != null) {
 				itemComponent.forEach(stack -> {

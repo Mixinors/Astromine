@@ -37,7 +37,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.util.DoubleUtils;
@@ -72,7 +71,7 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 		this.time = time;
 	}
 
-	public static boolean allows(World world, FluidComponent fluidComponent) {
+	public static boolean allows(World world, FluidStore fluidComponent) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidMixingRecipe) it).toArray(FluidMixingRecipe[]::new));
 		}
@@ -86,7 +85,7 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 		return false;
 	}
 
-	public static Optional<FluidMixingRecipe> matching(World world, FluidComponent fluidComponent) {
+	public static Optional<FluidMixingRecipe> matching(World world, FluidStore fluidComponent) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidMixingRecipe) it).toArray(FluidMixingRecipe[]::new));
 		}
@@ -100,7 +99,7 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 		return Optional.empty();
 	}
 
-	public boolean matches(FluidComponent fluidComponent) {
+	public boolean matches(FluidStore fluidComponent) {
 		if (fluidComponent.getSize() < 3) {
 			return false;
 		}
@@ -116,7 +115,7 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 		return firstOutput.test(fluidComponent.getThird());
 	}
 
-	public boolean allows(FluidComponent fluidComponent) {
+	public boolean allows(FluidStore fluidComponent) {
 		if (fluidComponent.getSize() < 2) {
 			return false;
 		}

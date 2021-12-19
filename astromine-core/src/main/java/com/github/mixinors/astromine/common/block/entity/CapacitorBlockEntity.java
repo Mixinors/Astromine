@@ -24,9 +24,6 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.common.component.general.*;
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -51,7 +48,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 	}
 
 	@Override
-	public ItemComponent createItemComponent() {
+	public ItemStore createItemComponent() {
 		return SimpleDirectionalItemComponent.of(this, 2).withInsertPredicate((direction, stack, slot) -> {
 			return slot == 0;
 		}).withExtractPredicate((direction, stack, slot) -> {
@@ -60,7 +57,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 	}
 
 	@Override
-	public EnergyComponent createEnergyComponent() {
+	public EnergyStore createEnergyComponent() {
 		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
@@ -71,7 +68,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		ItemComponent itemComponent = getItemComponent();
+		ItemStore itemComponent = getItemComponent();
 
 		ItemStack inputStack = itemComponent.getFirst();
 		if (Energy.valid(inputStack)) {
@@ -176,7 +173,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 		}
 
 		@Override
-		public EnergyComponent createEnergyComponent() {
+		public EnergyStore createEnergyComponent() {
 			return SimpleEnergyComponent.of(InfiniteEnergyVolume.of());
 		}
 

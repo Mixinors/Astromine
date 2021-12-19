@@ -27,14 +27,9 @@ package com.github.mixinors.astromine.common.entity.base;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.compatibility.InventoryFromItemComponent;
-
 /**
- * A {@link ComponentEntity} with an attached {@link EnergyComponent},
- * {@link FluidComponent} and {@link ItemComponent}.
+ * A {@link ComponentEntity} with an attached {@link EnergyStore},
+ * {@link FluidStore} and {@link ItemStore}.
  */
 public abstract class ComponentEnergyFluidItemEntity extends ComponentEntity implements InventoryFromItemComponent {
 	/** Instantiates a {@link ComponentEnergyFluidItemEntity}. */
@@ -42,27 +37,27 @@ public abstract class ComponentEnergyFluidItemEntity extends ComponentEntity imp
 		super(type, world);
 	}
 
-	/** Returns the {@link EnergyComponent} to be attached. */
-	public abstract EnergyComponent createEnergyComponent();
+	/** Returns the {@link EnergyStore} to be attached. */
+	public abstract EnergyStore createEnergyComponent();
 
-	/** Returns the {@link EnergyComponent} to be attached. */
-	public abstract FluidComponent createFluidComponent();
+	/** Returns the {@link EnergyStore} to be attached. */
+	public abstract FluidStore createFluidComponent();
 
-	/** Returns the {@link EnergyComponent} to be attached. */
-	public abstract ItemComponent createItemComponent();
+	/** Returns the {@link EnergyStore} to be attached. */
+	public abstract ItemStore createItemComponent();
 
-	/** Returns the attached {@link EnergyComponent}. */
-	public EnergyComponent getEnergyComponent() {
-		return EnergyComponent.get(this);
+	/** Returns the attached {@link EnergyStore}. */
+	public EnergyStore getEnergyComponent() {
+		return EnergyStore.get(this);
 	}
 
-	/** Returns the attached {@link FluidComponent}. */
-	public FluidComponent getFluidComponent() {
-		return FluidComponent.get(this);
+	/** Returns the attached {@link FluidStore}. */
+	public FluidStore getFluidComponent() {
+		return FluidStore.get(this);
 	}
 
-	/** Returns the attached {@link ItemComponent}. */
-	public ItemComponent getItemComponent() {
-		return ItemComponent.get(this);
+	/** Returns the attached {@link ItemStore}. */
+	public ItemStore getItemComponent() {
+		return ItemStore.get(this);
 	}
 }

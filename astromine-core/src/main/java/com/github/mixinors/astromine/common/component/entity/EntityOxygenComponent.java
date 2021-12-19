@@ -29,7 +29,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import dev.onyxstudios.cca.api.v3.component.Component;
@@ -141,13 +140,13 @@ public final class EntityOxygenComponent implements AutoSyncedComponent {
 		this.entity = entity;
 	}
 
-	/** Serializes this {@link FluidComponent} to a {@link NbtCompound}. */
+	/** Serializes this {@link FluidStore} to a {@link NbtCompound}. */
 	@Override
 	public void writeToNbt(NbtCompound tag) {
 		tag.putInt("oxygen", oxygen);
 	}
 
-	/** Deserializes this {@link FluidComponent} from a {@link NbtCompound}. */
+	/** Deserializes this {@link FluidStore} from a {@link NbtCompound}. */
 	@Override
 	public void readFromNbt(NbtCompound tag) {
 		this.oxygen = tag.getInt("oxygen");

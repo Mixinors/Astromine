@@ -24,10 +24,6 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.common.component.general.*;
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -62,8 +58,8 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 	}
 
 	@Override
-	public FluidComponent createFluidComponent() {
-		FluidComponent fluidComponent = SimpleDirectionalFluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
+	public FluidStore createFluidComponent() {
+		FluidStore fluidComponent = SimpleDirectionalFluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
 			return false;
 		}).withExtractPredicate((direction, volume, slot) -> {
 			return slot == 0;
@@ -74,7 +70,7 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 	}
 
 	@Override
-	public ItemComponent createItemComponent() {
+	public ItemStore createItemComponent() {
 		return SimpleDirectionalItemComponent.of(this, 1).withInsertPredicate((direction, stack, slot) -> {
 			if (slot != 0) {
 				return false;
@@ -84,7 +80,7 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 				return false;
 			}
 
-			return MeltingRecipe.allows(world, ItemComponent.of(stack));
+			return MeltingRecipe.allows(world, ItemStore.of(stack));
 		}).withExtractPredicate((direction, stack, slot) -> {
 			return false;
 		}).withListener((inventory) -> {
@@ -94,7 +90,7 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 	}
 
 	@Override
-	public EnergyComponent createEnergyComponent() {
+	public EnergyStore createEnergyComponent() {
 		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
@@ -115,11 +111,11 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		ItemComponent itemComponent = getItemComponent();
+		ItemStore itemComponent = getItemComponent();
 
-		FluidComponent fluidComponent = getFluidComponent();
+		FluidStore fluidComponent = getFluidComponent();
 
-		EnergyComponent energyComponent = getEnergyComponent();
+		EnergyStore energyComponent = getEnergyComponent();
 
 		if (itemComponent != null && fluidComponent != null && energyComponent != null) {
 			EnergyVolume energyVolume = energyComponent.getVolume();
@@ -151,7 +147,7 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 						fluidComponent.getFirst().take(recipe.getFirstOutput());
 						itemComponent.getFirst().decrement(recipe.getFirstInput().testMatching(itemComponent.getFirst()).getCount());
 						
-						itemComponent.updateListeners();
+						itemComponent.triggerListeners();
 
 						progress = 0;
 					} else {

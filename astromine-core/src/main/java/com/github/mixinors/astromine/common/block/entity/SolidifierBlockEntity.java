@@ -24,10 +24,6 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.common.component.general.*;
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -62,8 +58,8 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 	}
 
 	@Override
-	public FluidComponent createFluidComponent() {
-		FluidComponent fluidComponent = SimpleDirectionalFluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
+	public FluidStore createFluidComponent() {
+		FluidStore fluidComponent = SimpleDirectionalFluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
 			if (slot != 0) {
 				return false;
 			}
@@ -72,7 +68,7 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 				return false;
 			}
 
-			return SolidifyingRecipe.allows(world, FluidComponent.of(volume));
+			return SolidifyingRecipe.allows(world, FluidStore.of(volume));
 		});
 
 		fluidComponent.getFirst().setSize(getFluidSize());
@@ -81,7 +77,7 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 	}
 
 	@Override
-	public ItemComponent createItemComponent() {
+	public ItemStore createItemComponent() {
 		return SimpleDirectionalItemComponent.of(this, 1).withInsertPredicate((direction, stack, slot) -> {
 			return false;
 		}).withExtractPredicate((direction, stack, slot) -> {
@@ -93,7 +89,7 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 	}
 
 	@Override
-	public EnergyComponent createEnergyComponent() {
+	public EnergyStore createEnergyComponent() {
 		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
@@ -114,11 +110,11 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		ItemComponent itemComponent = getItemComponent();
+		ItemStore itemComponent = getItemComponent();
 
-		FluidComponent fluidComponent = getFluidComponent();
+		FluidStore fluidComponent = getFluidComponent();
 
-		EnergyComponent energyComponent = getEnergyComponent();
+		EnergyStore energyComponent = getEnergyComponent();
 
 		if (fluidComponent != null) {
 			EnergyVolume energyVolume = energyComponent.getVolume();

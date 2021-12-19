@@ -27,10 +27,8 @@ package com.github.mixinors.astromine.common.entity.base;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-
 /**
- * A {@link ComponentEntity} with an attached {@link ItemComponent}.
+ * A {@link ComponentEntity} with an attached {@link ItemStore}.
  */
 public abstract class ComponentItemEntity extends ComponentEntity {
 	/** Instantiates a {@link ComponentItemEntity}. */
@@ -38,11 +36,11 @@ public abstract class ComponentItemEntity extends ComponentEntity {
 		super(type, world);
 	}
 
-	/** Returns the {@link ItemComponent} to be attached. */
-	public abstract ItemComponent createItemComponent();
+	/** Returns the {@link ItemStore} to be attached. */
+	public abstract ItemStore createItemComponent();
 
-	/** Returns the attached {@link ItemComponent}. */
-	public ItemComponent getItemComponent() {
-		return ItemComponent.get(this);
+	/** Returns the attached {@link ItemStore}. */
+	public ItemStore getItemComponent() {
+		return ItemStore.get(this);
 	}
 }

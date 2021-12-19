@@ -24,9 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.common.component.general.*;
-import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -60,7 +58,7 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 	}
 
 	@Override
-	public ItemComponent createItemComponent() {
+	public SimpleItemStorage createItemComponent() {
 		return SimpleDirectionalItemComponent.of(this, 2).withInsertPredicate((direction, stack, slot) -> {
 			if (slot != 1) {
 				return false;
@@ -70,7 +68,7 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 				return false;
 			}
 
-			return TrituratingRecipe.allows(world, SimpleItemComponent.of(stack));
+			return TrituratingRecipe.allows(world, SimpleItemStorage.of(stack));
 		}).withExtractPredicate(((direction, stack, slot) -> {
 			return slot == 0;
 		})).withListener((inventory) -> {
@@ -80,7 +78,7 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 	}
 
 	@Override
-	public EnergyComponent createEnergyComponent() {
+	public EnergyStore createEnergyComponent() {
 		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
@@ -101,9 +99,9 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		ItemComponent itemComponent = getItemComponent();
+		SimpleItemStorage itemComponent = getItemComponent();
 
-		EnergyComponent energyComponent = getEnergyComponent();
+		EnergyStore energyComponent = getEnergyComponent();
 
 		if (itemComponent != null && energyComponent != null) {
 			EnergyVolume energyVolume = energyComponent.getVolume();

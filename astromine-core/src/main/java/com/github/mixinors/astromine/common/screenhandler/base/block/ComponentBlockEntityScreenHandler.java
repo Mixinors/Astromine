@@ -25,9 +25,6 @@
 package com.github.mixinors.astromine.common.screenhandler.base.block;
 
 import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
-import com.github.mixinors.astromine.common.component.general.provider.EnergyComponentProvider;
-import com.github.mixinors.astromine.common.component.general.provider.FluidComponentProvider;
-import com.github.mixinors.astromine.common.component.general.provider.ItemComponentProvider;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import dev.architectury.hooks.block.BlockEntityHooks;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
@@ -47,7 +44,6 @@ import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.mixinors.astromine.common.block.entity.base.ComponentBlockEntity;
-import com.github.mixinors.astromine.common.component.general.miscellaneous.IdentifiableComponent;
 import com.github.mixinors.astromine.common.util.WidgetUtils;
 import com.github.mixinors.astromine.common.widget.blade.RedstoneWidget;
 

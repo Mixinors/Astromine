@@ -33,8 +33,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.WorldAccess;
 
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.compatibility.InventoryFromItemComponent;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 
@@ -102,9 +100,9 @@ public interface ComponentInventoryProvider extends InventoryProvider, SidedInve
 		return new int[] { 0 };
 	}
 
-	/** Override behavior to return this as an {@link ItemComponent}. */
+	/** Override behavior to return this as an {@link ItemStore}. */
 	@Override
-	default ItemComponent getItemComponent() {
-		return ItemComponent.get(this);
+	default ItemStore getItemComponent() {
+		return ItemStore.get(this);
 	}
 }

@@ -38,10 +38,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleItemComponent;
-import com.github.mixinors.astromine.common.component.general.compatibility.InventoryFromItemComponent;
-import org.jetbrains.annotations.ApiStatus;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import org.jetbrains.annotations.Nullable;
 
 public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFromItemComponent, TickableBlockEntity {
@@ -49,7 +46,7 @@ public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFr
 	private int spinAge;
 	private int lastSpinAddition;
 	private int yAge;
-	private ItemComponent inventory = SimpleItemComponent.of(1).withListener(inventory -> {
+	private SimpleItemStorage inventory = SimpleItemStorage.of(1).withListener(inventory -> {
 		if (hasWorld() && !world.isClient) {
 			BlockEntityHooks.syncData(this);
 			world.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1, 1);
@@ -61,7 +58,7 @@ public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFr
 	}
 
 	@Override
-	public ItemComponent getItemComponent() {
+	public SimpleItemStorage getItemComponent() {
 		return inventory;
 	}
 
