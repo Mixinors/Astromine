@@ -24,7 +24,10 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
@@ -34,23 +37,21 @@ import net.minecraft.recipe.SmeltingRecipe;
 
 import com.github.mixinors.astromine.common.inventory.BaseInventory;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
-import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
-import it.unimi.dsi.fastutil.ints.IntSet;
-import it.unimi.dsi.fastutil.ints.IntSets;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
+public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
 	public double progress = 0;
 	public int limit = 100;
 	public boolean shouldTry = true;
@@ -61,51 +62,35 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 
 	public ElectricFurnaceBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
-	}
-
-	@Override
-	public SimpleItemStorage createItemComponent() {
-		return SimpleDirectionalItemComponent.of(this, 2).withInsertPredicate((direction, stack, slot) -> {
+		
+		energyStorage = new SimpleEnergyStorage(getEnergySize(), Long.MAX_VALUE, Long.MAX_VALUE);
+		
+		itemStorage = new SimpleItemStorage(2).insertPredicate((variant, slot) -> {
 			if (slot != 1) {
 				return false;
 			}
-
-			BaseInventory inputInventory = BaseInventory.of(stack);
-
+			
+			var inputInventory = BaseInventory.of(variant.toStack());
+			
 			if (world != null) {
 				if (RECIPE_CACHE.get(world) == null) {
 					RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(RecipeType.SMELTING).values().stream().map(it -> (SmeltingRecipe) it).toArray(SmeltingRecipe[]::new));
 				}
-
-				for (SmeltingRecipe recipe : RECIPE_CACHE.get(world)) {
+				
+				for (var recipe : RECIPE_CACHE.get(world)) {
 					if (recipe.matches(inputInventory, world)) {
 						return true;
 					}
 				}
 			}
-
+			
 			return false;
-		}).withExtractPredicate(((direction, stack, slot) -> {
+		}).extractPredicate((variant, slot) -> {
 			return slot == 0;
-		})).withListener((inventory) -> {
+		}).listener(() -> {
 			shouldTry = true;
 			optionalRecipe = Optional.empty();
-		});
-	}
-
-	@Override
-	public EnergyStore createEnergyComponent() {
-		return SimpleEnergyComponent.of(getEnergySize());
-	}
-
-	@Override
-	public IntSet getItemInputSlots() {
-		return IntSets.singleton(1);
-	}
-
-	@Override
-	public IntSet getItemOutputSlots() {
-		return IntSets.singleton(0);
+		}).insertSlots(new int[] { 1 }).extractSlots(new int[] { 0 });
 	}
 
 	@Override
@@ -115,21 +100,15 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		SimpleItemStorage itemStorage = getItemComponent();
-
-		EnergyStore energyComponent = getEnergyComponent();
-
-		if (itemStorage != null && energyComponent != null) {
-			EnergyVolume energyVolume = energyComponent.getVolume();
-
-			BaseInventory inputInventory = BaseInventory.of(itemStorage.getStack(1));
+		if (itemStorage != null && energyStorage != null) {
+			var inputInventory = BaseInventory.of(itemStorage.getStack(1));
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
 				if (RECIPE_CACHE.get(world) == null) {
 					RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(RecipeType.SMELTING).values().stream().map(it -> (SmeltingRecipe) it).toArray(SmeltingRecipe[]::new));
 				}
 
-				for (SmeltingRecipe recipe : RECIPE_CACHE.get(world)) {
+				for (var recipe : RECIPE_CACHE.get(world)) {
 					if (recipe.matches(inputInventory, world)) {
 						optionalRecipe = Optional.of(recipe);
 					}
@@ -144,40 +123,46 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 			}
 
 			if (optionalRecipe.isPresent()) {
-				SmeltingRecipe recipe = optionalRecipe.get();
+				var recipe = optionalRecipe.get();
 
 				if (recipe.matches(inputInventory, world)) {
 					limit = recipe.getCookTime();
 
-					double speed = Math.min(getMachineSpeed() * 2, limit - progress);
+					var speed = Math.min(getMachineSpeed() * 2, limit - progress);
 
-					ItemStack output = recipe.getOutput().copy();
+					var output = recipe.getOutput().copy();
 
-					boolean isEmpty = itemStorage.getStack(0).isEmpty();
-					boolean isEqual = ItemStack.areItemsEqual(itemStorage.getStack(0), output) && ItemStack.areNbtEqual(itemStorage.getStack(0), output);
+					var isEmpty = itemStorage.getStack(0).isEmpty();
+					var isEqual = ItemStack.areItemsEqual(itemStorage.getStack(0), output) && ItemStack.areNbtEqual(itemStorage.getStack(0), output);
 
-					if ((isEmpty || isEqual) && itemStorage.getStack(0).getCount() + output.getCount() <= itemStorage.getStack(0).getMaxCount() && energyVolume.hasStored(500.0D / limit * speed)) {
-						energyVolume.take(500.0D / limit * speed);
-
-						if (progress + speed >= limit) {
-							optionalRecipe = Optional.empty();
-
-							itemStorage.getStack(1).decrement(1);
-
-							if (isEmpty) {
-								itemStorage.setStack(0, output);
+					if (energyStorage.getAmount() > 500.0D / limit * speed) {
+						try (var transaction = Transaction.openOuter()) {
+							energyStorage.extract((long) (500.0D / limit * speed), transaction);
+							
+							if ((isEmpty || isEqual) && itemStorage.getStack(0).getCount() + output.getCount() <= itemStorage.getStack(0).getMaxCount()) {
+								if (progress + speed >= limit) {
+									optionalRecipe = Optional.empty();
+									
+									itemStorage.getStack(1).decrement(1);
+									
+									if (isEmpty) {
+										itemStorage.setStack(0, output);
+									} else {
+										itemStorage.getStack(0).increment(output.getCount());
+										
+										shouldTry = true; // Vanilla is garbage; if we don't do it here, it only triggers the listener on #setStack.
+									}
+									
+									progress = 0;
+								} else {
+									progress += speed;
+								}
+								
+								isActive = true;
 							} else {
-								itemStorage.getStack(0).increment(output.getCount());
-
-								shouldTry = true; // Vanilla is garbage; if we don't do it here, it only triggers the listener on #setStack.
+								isActive = false;
 							}
-
-							progress = 0;
-						} else {
-							progress += speed;
 						}
-
-						isActive = true;
 					} else {
 						isActive = false;
 					}
