@@ -83,23 +83,23 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 	public void tick() {
 		super.tick();
 
-		if (world == null || world.isClient || !tickRedstone())
+		if (world == null || world.isClient || !shouldRun())
 			return;
 
 		VolumeUtils.transferBetween(getItemComponent(), getFluidComponent(), 0, 1, 0);
 	}
 
 	@Override
-	public void writeNbt(NbtCompound tag) {
-		tag.putString("fluid", Registry.FLUID.getId(filter).toString());
-		super.writeNbt(tag);
+	public void writeNbt(NbtCompound nbt) {
+		nbt.putString("fluid", Registry.FLUID.getId(filter).toString());
+		super.writeNbt(nbt);
 	}
 
 	@Override
-	public void readNbt(@NotNull NbtCompound tag) {
-		Registry.FLUID.getOrEmpty(new Identifier(tag.getString("fluid"))).ifPresent(filter -> this.filter = filter);
+	public void readNbt(@NotNull NbtCompound nbt) {
+		Registry.FLUID.getOrEmpty(new Identifier(nbt.getString("fluid"))).ifPresent(filter -> this.filter = filter);
 
-		super.readNbt(tag);
+		super.readNbt(nbt);
 	}
 
 	public static class Primitive extends TankBlockEntity {

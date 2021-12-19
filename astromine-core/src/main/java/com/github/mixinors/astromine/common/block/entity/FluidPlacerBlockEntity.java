@@ -86,7 +86,7 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 	public void tick() {
 		super.tick();
 
-		if (world == null || world.isClient || !tickRedstone())
+		if (world == null || world.isClient || !shouldRun())
 			return;
 
 		FluidStore fluidComponent = getFluidComponent();
@@ -99,9 +99,9 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 			if (energyVolume.getAmount() < getEnergyConsumed()) {
 				cooldown = 0L;
 
-				tickInactive();
+				isActive = false;
 			} else {
-				tickActive();
+				isActive = true;
 
 				cooldown++;
 
@@ -134,15 +134,15 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 	}
 
 	@Override
-	public void writeNbt(NbtCompound tag) {
-		tag.putLong("cooldown", cooldown);
-		super.writeNbt(tag);
+	public void writeNbt(NbtCompound nbt) {
+		nbt.putLong("cooldown", cooldown);
+		super.writeNbt(nbt);
 	}
 
 	@Override
-	public void readNbt(@NotNull NbtCompound tag) {
-		cooldown = tag.getLong("cooldown");
-		super.readNbt(tag);
+	public void readNbt(@NotNull NbtCompound nbt) {
+		cooldown = nbt.getLong("cooldown");
+		super.readNbt(nbt);
 	}
 	
 	@Override

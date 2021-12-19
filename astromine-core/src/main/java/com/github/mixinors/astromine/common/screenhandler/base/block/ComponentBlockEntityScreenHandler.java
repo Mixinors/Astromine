@@ -43,7 +43,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWithEntity;
-import com.github.mixinors.astromine.common.block.entity.base.ComponentBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.util.WidgetUtils;
 import com.github.mixinors.astromine.common.widget.blade.RedstoneWidget;
 
@@ -55,10 +55,10 @@ import java.util.function.Supplier;
 
 /**
  * A {@link BlockStateScreenHandler}with an attached
- * {@link ComponentBlockEntity}.
+ * {@link ExtendedBlockEntity}.
  */
 public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreenHandler {
-	protected ComponentBlockEntity blockEntity;
+	protected ExtendedBlockEntity blockEntity;
 
 	protected Collection<SlotWidget> playerSlots = new HashSet<>();
 
@@ -67,11 +67,11 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 	protected TabWidget.TabWidgetCollection mainTab;
 
 	/** Instantiates a {@link ComponentBlockEntityScreenHandler},
-	 * synchronizing its attached {@link ComponentBlockEntity}. */
+	 * synchronizing its attached {@link ExtendedBlockEntity}. */
 	public ComponentBlockEntityScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
 
-		this.blockEntity = (ComponentBlockEntity) player.world.getBlockEntity(position);
+		this.blockEntity = (ExtendedBlockEntity) player.world.getBlockEntity(position);
 
 		if (!player.world.isClient) {
 			blockEntity.doNotSkipInventory();
@@ -80,8 +80,8 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 	}
 
 	/** Returns this {@link ComponentBlockEntityScreenHandler}'s
-	 * {@link ComponentBlockEntity}. */
-	public ComponentBlockEntity getBlockEntity() {
+	 * {@link ExtendedBlockEntity}. */
+	public ExtendedBlockEntity getBlockEntity() {
 		return blockEntity;
 	}
 

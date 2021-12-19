@@ -65,7 +65,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 	public void tick() {
 		super.tick();
 
-		if (world == null || world.isClient || !tickRedstone())
+		if (world == null || world.isClient || !shouldRun())
 			return;
 
 		ItemStore itemComponent = getItemComponent();

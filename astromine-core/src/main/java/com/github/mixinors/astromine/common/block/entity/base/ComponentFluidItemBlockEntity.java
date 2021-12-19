@@ -34,10 +34,10 @@ import net.minecraft.util.math.BlockPos;
 import java.util.function.Supplier;
 
 /**
- * A {@link ComponentBlockEntity} with an attached
+ * A {@link ExtendedBlockEntity} with an attached
  * {@link FluidStore} and {@link ItemStore}.
  */
-public abstract class ComponentFluidItemBlockEntity extends ComponentBlockEntity implements ComponentInventoryProvider, FluidComponentProvider, ItemComponentProvider {
+public abstract class ComponentFluidItemBlockEntity extends ExtendedBlockEntity implements ComponentInventoryProvider, FluidComponentProvider, ItemComponentProvider {
 	private final FluidStore fluidComponent = createFluidComponent();
 
 	private final ItemStore itemComponent = createItemComponent();

@@ -41,7 +41,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.client.BaseRenderer;
-import com.github.mixinors.astromine.common.block.entity.base.ComponentBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.block.transfer.TransferType;
 import com.github.mixinors.astromine.common.util.MirrorUtils;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
@@ -152,7 +152,7 @@ public class TransferTypeSelectorButtonWidget extends Widget
 				PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
 
 				buf.writeBlockPos(getBlockPos());
-				buf.writeIdentifier(ComponentBlockEntity.TRANSFER_UPDATE_PACKET);
+				buf.writeIdentifier(ExtendedBlockEntity.TRANSFER_UPDATE_PACKET);
 
 				buf.writeIdentifier(type.getId());
 				buf.writeEnumConstant(direction);

@@ -36,7 +36,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
 import com.github.mixinors.astromine.client.BaseRenderer;
-import com.github.mixinors.astromine.common.block.entity.base.ComponentBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
@@ -45,11 +45,11 @@ import java.util.List;
 
 /**
  * An {@link Widget} which represents
- * a redstone mode toggle for a {@link ComponentBlockEntity}.
+ * a redstone mode toggle for a {@link ExtendedBlockEntity}.
  */
 public class RedstoneWidget extends ButtonWidget
 {
-    private ComponentBlockEntity blockEntity;
+    private ExtendedBlockEntity blockEntity;
 
     private final ItemStack GLOWSTONE = new ItemStack(Items.GLOWSTONE_DUST);
 
@@ -69,13 +69,13 @@ public class RedstoneWidget extends ButtonWidget
         });
     }
 
-    /** Returns this widget's {@link ComponentBlockEntity}. */
-    public ComponentBlockEntity getBlockEntity() {
+    /** Returns this widget's {@link ExtendedBlockEntity}. */
+    public ExtendedBlockEntity getBlockEntity() {
         return blockEntity;
     }
 
-    /** Sets this widget's {@link ComponentBlockEntity} to the specified value. */
-    public void setBlockEntity(ComponentBlockEntity blockEntity) {
+    /** Sets this widget's {@link ExtendedBlockEntity} to the specified value. */
+    public void setBlockEntity(ExtendedBlockEntity blockEntity) {
         this.blockEntity = blockEntity;
     }
 

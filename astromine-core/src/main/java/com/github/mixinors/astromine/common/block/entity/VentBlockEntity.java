@@ -84,7 +84,7 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 	public void tick() {
 		super.tick();
 
-		if (world == null || world.isClient || !tickRedstone())
+		if (world == null || world.isClient || !shouldRun())
 			return;
 
 		FluidStore fluidComponent = getFluidComponent();
@@ -113,9 +113,9 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 
 							energyVolume.take(getEnergyConsumed());
 
-							tickActive();
+							isActive = true;
 						} else {
-							tickInactive();
+							isActive = false;
 						}
 					} else {
 						ChunkPos neighborPos = ChunkAtmosphereComponent.getNeighborFromPos(world.getChunk(output).getPos(), output);
@@ -131,16 +131,16 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 
 							energyVolume.take(getEnergyConsumed());
 
-							tickActive();
+							isActive = true;
 						} else {
-							tickInactive();
+							isActive = false;
 						}
 					}
 				} else {
-					tickInactive();
+					isActive = false;
 				}
 			} else {
-				tickInactive();
+				isActive = false;
 			}
 		}
 	}

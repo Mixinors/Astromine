@@ -84,7 +84,7 @@ public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity impl
 	public void tick() {
 		super.tick();
 
-		if (world == null || world.isClient || !tickRedstone())
+		if (world == null || world.isClient || !shouldRun())
 			return;
 
 		ItemStore itemComponent = getItemComponent();
@@ -97,9 +97,9 @@ public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity impl
 			if (energyVolume.getAmount() < getEnergyConsumed()) {
 				cooldown = 0L;
 
-				tickInactive();
+				isActive = false;
 			} else {
-				tickActive();
+				isActive = true;
 
 				cooldown = cooldown++;
 
@@ -115,7 +115,7 @@ public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity impl
 					BlockState targetState = world.getBlockState(targetPos);
 
 					if (targetState.isAir()) {
-						tickInactive();
+						isActive = false;
 					} else {
 						BlockEntity targetEntity = world.getBlockEntity(targetPos);
 
@@ -148,14 +148,14 @@ public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity impl
 	}
 
 	@Override
-	public void writeNbt(NbtCompound tag) {
-		tag.putLong("cooldown", cooldown);
-		super.writeNbt(tag);
+	public void writeNbt(NbtCompound nbt) {
+		nbt.putLong("cooldown", cooldown);
+		super.writeNbt(nbt);
 	}
 
 	@Override
-	public void readNbt(@NotNull NbtCompound tag) {
-		cooldown = tag.getLong("cooldown");
-		super.readNbt(tag);
+	public void readNbt(@NotNull NbtCompound nbt) {
+		cooldown = nbt.getLong("cooldown");
+		super.readNbt(nbt);
 	}
 }

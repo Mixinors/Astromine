@@ -24,12 +24,13 @@
 
 package com.github.mixinors.astromine.common.transfer.storage;
 
-import com.github.mixinors.astromine.common.transfer.Siding;
+import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,13 +47,13 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	
 	private Predicate<@Nullable Direction> extractPredicate;
 	
-	private Siding[] sidings;
+	private StorageSiding[] sidings;
 	
 	private int[] insertSlots;
 	
 	private int[] extractSlots;
 	
-	protected SimpleFluidStorage(int size) {
+	public SimpleFluidStorage(int size) {
 		this.size = size;
 		
 		this.storages = new ArrayList<>(size);
@@ -64,16 +65,12 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		this.insertPredicate = ($) -> true;
 		this.extractPredicate = ($) -> true;
 		
-		this.sidings = new Siding[6];
+		this.sidings = new StorageSiding[6];
 		
-		Arrays.fill(sidings, Siding.NONE);
+		Arrays.fill(sidings, StorageSiding.NONE);
 		
 		this.insertSlots = IntStream.range(0, size).toArray();
 		this.extractSlots = IntStream.range(0, size).toArray();
-	}
-	
-	public static SimpleFluidStorage of(int size) {
-		return new SimpleFluidStorage(size);
 	}
 	
 	public SimpleFluidStorage withInsertPredicate(Predicate<@Nullable Direction> insertPredicate) {
@@ -86,7 +83,7 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		return this;
 	}
 	
-	public SimpleFluidStorage withSidings(Siding[] sidings) {
+	public SimpleFluidStorage withSidings(StorageSiding[] sidings) {
 		this.sidings = sidings;
 		return this;
 	}
@@ -158,6 +155,14 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	
 	public boolean canExtract(@Nullable Direction direction) {
 		return extractPredicate == null || extractPredicate.test(direction);
+	}
+	
+	public void writeToNbt(NbtCompound nbt) {
+		// TODO
+	}
+	
+	public void readFromNbt(NbtCompound nbt) {
+		// TODO
 	}
 	
 	/**

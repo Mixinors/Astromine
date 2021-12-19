@@ -85,7 +85,7 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 	public void tick() {
 		super.tick();
 
-		if (world == null || world.isClient || !tickRedstone())
+		if (world == null || world.isClient || !shouldRun())
 			return;
 
 		FluidStore fluidComponent = getFluidComponent();
@@ -124,28 +124,28 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 						progress += speed;
 					}
 
-					tickActive();
+					isActive = true;
 				} else {
-					tickInactive();
+					isActive = false;
 				}
 			} else {
-				tickInactive();
+				isActive = false;
 			}
 		}
 	}
 
 	@Override
-	public void writeNbt(NbtCompound tag) {
-		tag.putDouble("progress", progress);
-		tag.putInt("limit", limit);
-		super.writeNbt(tag);
+	public void writeNbt(NbtCompound nbt) {
+		nbt.putDouble("progress", progress);
+		nbt.putInt("limit", limit);
+		super.writeNbt(nbt);
 	}
 
 	@Override
-	public void readNbt(@NotNull NbtCompound tag) {
-		progress = tag.getDouble("progress");
-		limit = tag.getInt("limit");
-		super.readNbt(tag);
+	public void readNbt(@NotNull NbtCompound nbt) {
+		progress = nbt.getDouble("progress");
+		limit = nbt.getInt("limit");
+		super.readNbt(nbt);
 	}
 
 	public static class Primitive extends FluidGeneratorBlockEntity {

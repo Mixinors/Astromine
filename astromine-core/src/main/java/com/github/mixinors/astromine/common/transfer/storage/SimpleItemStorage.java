@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.transfer.storage;
 
-import com.github.mixinors.astromine.common.transfer.Siding;
+import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
@@ -32,6 +32,7 @@ import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.Direction;
 import net.minecraft.inventory.Inventory;
 
@@ -52,13 +53,13 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	
 	private Predicate<@Nullable Direction> extractPredicate = null;
 	
-	private Siding[] sidings;
+	private StorageSiding[] sidings;
 	
 	private int[] insertSlots;
 	
 	private int[] extractSlots;
 	
-	protected SimpleItemStorage(int size) {
+	public SimpleItemStorage(int size) {
 		this.size = size;
 		
 		this.stacks = new ArrayList<>(size);
@@ -69,28 +70,20 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 			this.storages.set(i, new SimpleItemVariantStorage(this, i));
 		}
 		
-		this.sidings = new Siding[6];
+		this.sidings = new StorageSiding[6];
 		
-		Arrays.fill(sidings, Siding.NONE);
+		Arrays.fill(sidings, StorageSiding.NONE);
 		
 		this.insertSlots = IntStream.range(0, size).toArray();
 		this.extractSlots = IntStream.range(0, size).toArray();
 	}
 	
-	protected SimpleItemStorage(ItemStack... stacks) {
+	public SimpleItemStorage(ItemStack... stacks) {
 		this(stacks.length);
 
 		for (int i = 0; i < stacks.length; ++i) {
 			this.stacks.set(i, stacks[i]);
 		}
-	}
-	
-	public static SimpleItemStorage of(int size) {
-		return new SimpleItemStorage(size);
-	}
-	
-	public static SimpleItemStorage of(ItemStack... stacks) {
-		return new SimpleItemStorage(stacks);
 	}
 	
 	public SimpleItemStorage withInsertPredicate(Predicate<@Nullable Direction> insertPredicate) {
@@ -103,7 +96,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		return this;
 	}
 	
-	public SimpleItemStorage withSidings(Siding[] sidings) {
+	public SimpleItemStorage withSidings(StorageSiding[] sidings) {
 		this.sidings = sidings;
 		return this;
 	}
@@ -242,6 +235,14 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		for (int i = 0; i < size; ++i) {
 			stacks.set(i, ItemStack.EMPTY);
 		}
+	}
+	
+	public void writeToNbt(NbtCompound nbt) {
+		// TODO
+	}
+	
+	public void readFromNbt(NbtCompound nbt) {
+		// TODO
 	}
 	
 	/**

@@ -37,7 +37,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 
-import com.github.mixinors.astromine.common.block.entity.base.ComponentBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.entity.base.ComponentEntity;
 import com.github.mixinors.astromine.common.screenhandler.base.block.BlockStateScreenHandler;
 
@@ -47,7 +47,7 @@ import java.util.function.Supplier;
 
 /**
  * A {@link BlockStateScreenHandler} with an attached
- * {@link ComponentBlockEntity}.
+ * {@link ExtendedBlockEntity}.
  */
 public abstract class ComponentEntityScreenHandler extends BaseScreenHandler
 {

@@ -1,7 +1,7 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.block.entity.base.ComponentBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.Identifier;
@@ -28,8 +28,8 @@ public class AMNetworks {
 			context.queue(() -> {
 				BlockEntity blockEntity = context.getPlayer().world.getBlockEntity(blockPos);
 				
-				if (blockEntity instanceof ComponentBlockEntity) {
-					((ComponentBlockEntity) blockEntity).consumePacket(identifier, buf);
+				if (blockEntity instanceof ExtendedBlockEntity) {
+					((ExtendedBlockEntity) blockEntity).consumePacket(identifier, buf);
 				}
 			});
 		}));

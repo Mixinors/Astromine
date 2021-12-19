@@ -46,7 +46,7 @@ public class DrainBlockEntity extends ComponentFluidBlockEntity {
 	@Override
 	public FluidStore createFluidComponent() {
 		FluidStore fluidComponent = SimpleFluidComponent.of(1).withInsertPredicate((direction, volume, slot) -> {
-			return tickRedstone();
+			return shouldRun();
 		});
 
 		fluidComponent.getFirst().setSize(Long.MAX_VALUE);

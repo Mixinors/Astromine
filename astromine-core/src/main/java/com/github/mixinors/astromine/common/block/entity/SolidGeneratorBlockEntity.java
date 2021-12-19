@@ -92,7 +92,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 	public void tick() {
 		super.tick();
 
-		if (world == null || world.isClient || !tickRedstone())
+		if (world == null || world.isClient || !shouldRun())
 			return;
 
 		ItemStore itemComponent = getItemComponent();
@@ -112,9 +112,9 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 							++progress;
 							energyVolume.give(produced);
 
-							tickActive();
+							isActive = true;
 						} else {
-							tickInactive();
+							isActive = false;
 						}
 					}
 
@@ -122,7 +122,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 						progress = 0;
 						limit = 0;
 
-						tickInactive();
+						isActive = false;
 					}
 				}
 			} else {
@@ -142,31 +142,31 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 					}
 
 					if (isFuel || progress != 0) {
-						tickActive();
+						isActive = true;
 					} else {
-						tickInactive();
+						isActive = false;
 					}
 				} else {
-					tickInactive();
+					isActive = false;
 				}
 			}
 		}
 	}
 
 	@Override
-	public void writeNbt(NbtCompound tag) {
-		tag.putDouble("progress", progress);
-		tag.putInt("limit", limit);
-		tag.putDouble("available", available);
-		super.writeNbt(tag);
+	public void writeNbt(NbtCompound nbt) {
+		nbt.putDouble("progress", progress);
+		nbt.putInt("limit", limit);
+		nbt.putDouble("available", available);
+		super.writeNbt(nbt);
 	}
 
 	@Override
-	public void readNbt(@NotNull NbtCompound tag) {
-		progress = tag.getDouble("progress");
-		limit = tag.getInt("limit");
-		available = tag.getDouble("available");
-		super.readNbt(tag);
+	public void readNbt(@NotNull NbtCompound nbt) {
+		progress = nbt.getDouble("progress");
+		limit = nbt.getInt("limit");
+		available = nbt.getDouble("available");
+		super.readNbt(nbt);
 	}
 
 	public static class Primitive extends SolidGeneratorBlockEntity {
