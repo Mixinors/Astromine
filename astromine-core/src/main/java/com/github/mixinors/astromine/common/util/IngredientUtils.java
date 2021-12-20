@@ -28,7 +28,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 
-import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.recipe.ingredient.ItemIngredient;
 import io.netty.buffer.ByteBuf;
 

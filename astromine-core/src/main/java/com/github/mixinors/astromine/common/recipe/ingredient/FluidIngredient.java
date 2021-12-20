@@ -24,260 +24,203 @@
 
 package com.github.mixinors.astromine.common.recipe.ingredient;
 
-import com.google.gson.*;
+import com.google.gson.JsonObject;
+import dev.architectury.hooks.tags.TagHooks;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.tag.ServerTagManagerHolder;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 
-import com.github.mixinors.astromine.common.util.StringUtils;
-import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
-import io.netty.buffer.ByteBuf;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiPredicate;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
-
-/**
- * A recipe ingredient consisting of (a) {@link Fluid}(s) and its
- * {@link long}(s) fractional amount(s).
- *
- * Serialization and deserialization methods are provided for:
- * - {@link JsonElement} - through {@link #toJson()} and {@link #fromJson(JsonElement)}.
- * - {@link ByteBuf} - through {@link #toPacket(PacketByteBuf)} and {@link #fromPacket(PacketByteBuf)}.
- */
-public final class FluidIngredient implements Predicate<FluidVolume> {
-	private final Entry[] entries;
-
-	private FluidVolume[] matchingVolumes;
-
-	/** Instantiates a {@link FluidIngredient}. */
-	private FluidIngredient(Entry... entries) {
-		this.entries = entries;
+public final class FluidIngredient implements BiPredicate<FluidVariant, Long> {
+	private final Entry entry;
+	
+	public FluidIngredient(Entry entry) {
+		this.entry = entry;
 	}
-
-	/** Instantiates a {@link FluidIngredient}. */
-	public static FluidIngredient ofFluidVolumes(FluidVolume... volumes) {
-		return ofFluidVolumes(Arrays.asList(volumes));
-	}
-
-	/** Instantiates a {@link FluidIngredient}. */
-	public static FluidIngredient ofFluidVolumes(Collection<FluidVolume> volumes) {
-		return new FluidIngredient(new SimpleEntry(volumes));
-	}
-
-	/** Instantiates a {@link FluidIngredient}. */
-	public static FluidIngredient ofEntries(Stream<? extends Entry> volumes) {
-		return new FluidIngredient(volumes.toArray(Entry[]::new));
-	}
-
-	/** Deserializes a {@link FluidIngredient} from a {@link JsonElement}. */
-	public static FluidIngredient fromJson(JsonElement json) {
-		if (json != null && !json.isJsonNull()) {
-			if (json.isJsonObject()) {
-				return ofEntries(Stream.of(Entry.fromJson(json)));
-			} else if (json.isJsonArray()) {
-				JsonArray jsonArray = json.getAsJsonArray();
-
-				if (jsonArray.size() == 0) {
-					throw new JsonSyntaxException("Fluid array cannot be empty, at least one fluid must be defined");
-				} else {
-					return ofEntries(StreamSupport.stream(jsonArray.spliterator(), false).map((jsonElement) -> Entry.fromJson(jsonElement.getAsJsonObject().get("fluid"))));
-				}
-			} else if (json.isJsonPrimitive() && json.getAsJsonPrimitive().isString()) {
-				return ofEntries(Stream.generate(() -> new SimpleEntry(FluidVolume.of(FluidVolume.BUCKET, Registry.FLUID.get(new Identifier(json.getAsString()))))).limit(1));
-			} else {
-				throw new JsonSyntaxException("Expected fluid to be object or array of objects");
-			}
-		} else {
-			throw new JsonSyntaxException("Fluid cannot be null");
-		}
-	}
-
-	/** Serializes this {@link FluidIngredient} to a {@link JsonElement}. */
-	public JsonElement toJson() {
-		if (entries.length == 1 && entries[0] instanceof TagEntry) {
-			JsonObject jsonObject = new JsonObject();
-
-			jsonObject.addProperty("tag", ServerTagManagerHolder.getTagManager().getOrCreateTagGroup(Registry.FLUID_KEY).getUncheckedTagId(((TagEntry) entries[0]).tag).toString());
-			jsonObject.addProperty("amount", ((TagEntry) entries[0]).amount);
-
-			return jsonObject;
-		} else if (entries.length >= 1) {
-			JsonArray jsonArray = new JsonArray();
-
-			for (Entry entry : entries) {
-				jsonArray.add(((SimpleEntry) entry).volumes.iterator().next().toJson());
-			}
-
-			return jsonArray;
-		} else {
-			throw new UnsupportedOperationException("Cannot serialize a FluidIngredient with no entries");
-		}
-	}
-
-	/** Deserializes a {@link FluidIngredient} from a {@link ByteBuf}. */
-	public static FluidIngredient fromPacket(PacketByteBuf buffer) {
-		int size = buffer.readVarInt();
-		return ofEntries(Stream.generate(() -> new SimpleEntry(FluidVolume.fromPacket(buffer))).limit(size));
-	}
-
-	/** Serializes a {@link ItemIngredient} to a {@link ByteBuf}. */
-	public PacketByteBuf toPacket(PacketByteBuf buffer) {
-		this.cacheMatchingVolumes();
-
-		buffer.writeVarInt(this.matchingVolumes.length);
-
-		for (FluidVolume matchingVolume : this.matchingVolumes) {
-			matchingVolume.toPacket(buffer);
-		}
-
-		return buffer;
-	}
-
-	/** Returns the matching volumes of this ingredient. */
-	public FluidVolume[] getMatchingVolumes() {
-		this.cacheMatchingVolumes();
-		return this.matchingVolumes;
-	}
-
-	/** Caches the matching volumes of this ingredient. */
-	private void cacheMatchingVolumes() {
-		if (this.matchingVolumes == null) {
-			this.matchingVolumes = Arrays.stream(this.entries).flatMap(Entry::getVolumes).distinct().toArray(FluidVolume[]::new);
-		}
-	}
-
-	/** Asserts whether the given {@link FluidVolume} has the
-	 * same fluid and equal or bigger amount than any of the
-	 * volumes of this ingredient or not. */
+	
 	@Override
-	public boolean test(FluidVolume volume) {
-		return testMatching(volume) != null;
+	public boolean test(FluidVariant testVariant, Long testAmount) {
+		return entry.test(testVariant, testAmount);
 	}
-
-	/** Asserts whether the given {@link Fluid} has the same fluid
-	 * as any of the volumes of this ingredient or not. */
-	public boolean testWeak(FluidVolume volume) {
-		FluidVolume[] matchingVolumes = getMatchingVolumes();
-		if (this.matchingVolumes.length == 0)
-			return false;
-		for (FluidVolume matchingVolume : matchingVolumes) {
-			if (matchingVolume.getFluid().equals(volume.getFluid()))
-				return true;
+	
+	public static FluidIngredient fromJson(JsonObject json) {
+		if (json.isJsonPrimitive()) {
+			var entryAsId = new Identifier(json.getAsString());
+			var entryAsFluid = Registry.FLUID.get(entryAsId);
+			var entryAsFluidVariant = FluidVariant.of(entryAsFluid);
+			
+			return new FluidIngredient(new VariantEntry(entryAsFluidVariant));
 		}
-		return false;
-	}
-
-	/** Returns the first volume to have the same
-	 * fluid and equal or bigger amount than the
-	 * given {@link FluidVolume}. */
-	public FluidVolume testMatching(FluidVolume volume) {
-		if (volume == null)
-			return null;
-		FluidVolume[] matchingVolumes = getMatchingVolumes();
-		if (this.matchingVolumes.length == 0)
-			return null;
-		for (FluidVolume matchingVolume : matchingVolumes) {
-			if (FluidVolume.fluidsEqual(matchingVolume, volume) && volume.getAmount() >= matchingVolume.getAmount())
-				return matchingVolume.copy();
+		
+		if (json.isJsonObject()) {
+			var jsonObject = json.getAsJsonObject();
+			
+			if (jsonObject.has("item")) {
+				if (jsonObject.has("amount")) {
+					var entryAsId = new Identifier(jsonObject.get("item").getAsString());
+					var entryAsFluid = Registry.FLUID.get(entryAsId);
+					var entryAsFluidVariant = FluidVariant.of(entryAsFluid);
+					
+					var entryAmount = jsonObject.get("amount").getAsLong();
+					
+					return new FluidIngredient(new VariantEntry(entryAsFluidVariant, entryAmount));
+				} else {
+					var entryAsId = new Identifier(jsonObject.get("item").getAsString());
+					var entryAsFluid = Registry.FLUID.get(entryAsId);
+					var entryAsFluidVariant = FluidVariant.of(entryAsFluid);
+					
+					return new FluidIngredient(new VariantEntry(entryAsFluidVariant));
+				}
+			}
+			
+			if (jsonObject.has("tag")) {
+				if (jsonObject.has("amount")) {
+					var entryAsId = new Identifier(jsonObject.get("tag").getAsString());
+					var entryAsTag = TagHooks.optionalFluid(entryAsId);
+					
+					var entryAmount = jsonObject.get("amount").getAsLong();
+					
+					return new FluidIngredient(new TagEntry(entryAsTag, entryAmount));
+				} else {
+					var entryAsId = new Identifier(jsonObject.get("tag").getAsString());
+					var entryAsTag = TagHooks.optionalFluid(entryAsId);
+					
+					return new FluidIngredient(new TagEntry(entryAsTag));
+				}
+			}
 		}
+		
 		return null;
 	}
-
-	/**
-	 * A supplier of {@link FluidVolume}s as a {@link Stream}.
-	 */
-	interface Entry {
-		/** Returns the volumes of this entry. */
-		Stream<FluidVolume> getVolumes();
-
-		/** Deserializes a {@link SimpleEntry} or {@link TagEntry}
-		 * from a {@link JsonElement}. */
-		static Entry fromJson(JsonElement jsonElement) {
-			if (!jsonElement.isJsonObject()) throw new JsonParseException("A fluid ingredient entry must be an object");
-
-			JsonObject jsonObject = jsonElement.getAsJsonObject();
-
-			if (jsonObject.has("fluid") && jsonObject.has("tag")) {
-				throw new JsonParseException("A fluid ingredient entry is either a tag or a fluid, not both!");
-			} else {
-				long amount = FluidVolume.BUCKET;
-
-				if (jsonObject.has("amount")) {
-					amount = jsonObject.get("amount").getAsLong();
-				}
-
-				if (jsonObject.has("fluid")) {
-					Identifier fluidId = new Identifier(StringUtils.fromJson(jsonObject.get("fluid")));
-
-					Fluid fluid = Registry.FLUID.getOrEmpty(fluidId).orElseThrow(() -> new JsonSyntaxException("Unknown fluid '" + fluidId + "'!"));
-
-					return new SimpleEntry(FluidVolume.of(amount, fluid));
-				} else if (jsonObject.has("tag")) {
-					Identifier tagId = new Identifier(StringUtils.fromJson(jsonObject.get("tag")));
-
-					Tag<Fluid> tag = ServerTagManagerHolder.getTagManager().getOrCreateTagGroup(Registry.FLUID_KEY).getTag(tagId);
-
-					if (tag == null) {
-						throw new JsonSyntaxException("Unknown fluid tag '" + tagId + "'!");
-					} else {
-						return new TagEntry(tag, amount);
-					}
-				} else {
-					throw new JsonParseException("A fluid ingredient entry needs either a tag or a fluid!");
+	
+	public static JsonObject toJson(FluidIngredient ingredient) {
+		var jsonObject = new JsonObject();
+		
+		if (ingredient.entry instanceof VariantEntry variantEntry) {
+			var entryJsonObject = new JsonObject();
+			
+			entryJsonObject.addProperty("item", Registry.FLUID.getId(variantEntry.requiredVariant.getFluid()).toString());
+			entryJsonObject.addProperty("amount", variantEntry.requiredAmount);
+		}
+		
+		if (ingredient.entry instanceof TagEntry tagEntry) {
+			var entryJsonObject = new JsonObject();
+			
+			entryJsonObject.addProperty("tag", ServerTagManagerHolder.getTagManager().getOrCreateTagGroup(Registry.FLUID_KEY).getUncheckedTagId(tagEntry.requiredTag).toString());
+			entryJsonObject.addProperty("amount", tagEntry.requiredAmount);
+		}
+		
+		return jsonObject;
+	}
+	
+	public static FluidIngredient fromPacket(PacketByteBuf buf) {
+		var entryType = buf.readString();
+		var entryTypeId = new Identifier(buf.readString());
+		
+		var entryAmount = buf.readLong();
+		
+		if (entryType.equals("fluid")) {
+			var entryFluid = Registry.FLUID.get(entryTypeId);
+			var entryVariant = FluidVariant.of(entryFluid);
+			
+			return new FluidIngredient(new VariantEntry(entryVariant, entryAmount));
+		}
+		
+		if (entryType.equals("tag")) {
+			var entryTag = TagHooks.optionalFluid(entryTypeId);
+			
+			return new FluidIngredient(new TagEntry(entryTag, entryAmount));
+		}
+		
+		return null;
+	}
+	
+	public static PacketByteBuf toPacket(FluidIngredient ingredient) {
+		if (ingredient.entry instanceof VariantEntry variantEntry) {
+			var buf = PacketByteBufs.create();
+			
+			buf.writeString("fluid");
+			buf.writeString(Registry.FLUID.getId(variantEntry.requiredVariant.getFluid()).toString());
+			buf.writeLong(variantEntry.requiredAmount);
+			
+			return buf;
+		}
+		
+		if (ingredient.entry instanceof TagEntry tagEntry) {
+			var buf = PacketByteBufs.create();
+			
+			buf.writeString("tag");
+			buf.writeString(ServerTagManagerHolder.getTagManager().getOrCreateTagGroup(Registry.FLUID_KEY).getUncheckedTagId(tagEntry.requiredTag).toString());
+			buf.writeLong(tagEntry.requiredAmount);
+			
+			return buf;
+		}
+		
+		return null;
+	}
+	
+	public static abstract class Entry implements BiPredicate<FluidVariant, Long> {}
+	
+	public static class VariantEntry extends Entry {
+		private final FluidVariant requiredVariant;
+		private final long requiredAmount;
+		
+		public VariantEntry(FluidVariant variant) {
+			this.requiredVariant = variant;
+			this.requiredAmount = 1;
+		}
+		
+		public VariantEntry(FluidVariant variant, long amount) {
+			this.requiredVariant = variant;
+			this.requiredAmount = amount;
+		}
+		
+		@Override
+		public boolean test(FluidVariant testVariant, Long testAmount) {
+			return testVariant.equals(requiredVariant) && testAmount > requiredAmount;
+		}
+	}
+	
+	public static class TagEntry extends Entry {
+		private final Tag<Fluid> requiredTag;
+		private List<FluidVariant> requiredVariants;
+		private final long requiredAmount;
+		
+		public TagEntry(Tag<Fluid> tag) {
+			this.requiredTag = tag;
+			this.requiredAmount = 1;
+		}
+		
+		public TagEntry(Tag<Fluid> tag, long amount) {
+			this.requiredTag = tag;
+			this.requiredAmount = amount;
+		}
+		
+		@Override
+		public boolean test(FluidVariant testVariant, Long testAmount) {
+			if (requiredVariants == null) {
+				requiredVariants = new ArrayList<>();
+				
+				for (var fluid : requiredTag.values()) {
+					requiredVariants.add(FluidVariant.of(fluid));
 				}
 			}
-		}
-	}
-
-	/**
-	 * An {@link Entry} of a fixed collection of {@link FluidVolume}s.
-	 */
-	private static class SimpleEntry implements Entry {
-		private final Collection<FluidVolume> volumes;
-
-		/** Instantiates a {@link SimpleEntry}. */
-		public SimpleEntry(Collection<FluidVolume> volumes) {
-			this.volumes = volumes;
-		}
-
-		/** Instantiates a {@link SimpleEntry}. */
-		public SimpleEntry(FluidVolume volume) {
-			this(Collections.singleton(volume));
-		}
-
-		/** Returns the volumes of this entry. */
-		@Override
-		public Stream<FluidVolume> getVolumes() {
-			return volumes.stream();
-		}
-	}
-
-	/**
-	 * An {@link Entry} of a dynamic collection of {@link FluidVolume}s,
-	 * gathered from a {@link Tag<Fluid>}.
-	 */
-	private static class TagEntry implements Entry {
-		private final Tag<Fluid> tag;
-		private final long amount;
-
-		/** Instantiates a {@link TagEntry}. */
-		private TagEntry(Tag<Fluid> tag, long amount) {
-			this.tag = tag;
-			this.amount = amount;
-		}
-
-		/** Returns the volumes of this entry. */
-		@Override
-		public Stream<FluidVolume> getVolumes() {
-			return this.tag.values().stream().map(fluid -> FluidVolume.of(amount, fluid));
+			
+			for (var requiredVariant : requiredVariants) {
+				if (requiredVariant.equals(testVariant) && testAmount > requiredAmount) {
+					return true;
+				}
+			}
+			
+			return false;
 		}
 	}
 }

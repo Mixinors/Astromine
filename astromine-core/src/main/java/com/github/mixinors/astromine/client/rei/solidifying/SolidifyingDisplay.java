@@ -27,7 +27,6 @@ package com.github.mixinors.astromine.client.rei.solidifying;
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.client.rei.generating.AbstractEnergyGeneratingDisplay;
 import com.github.mixinors.astromine.common.recipe.SolidifyingRecipe;
-import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.util.EntryIngredients;

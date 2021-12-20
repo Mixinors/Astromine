@@ -39,7 +39,6 @@ import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
-import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.util.DoubleUtils;
 import com.github.mixinors.astromine.common.util.IntegerUtils;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;

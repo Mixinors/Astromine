@@ -48,7 +48,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.util.VolumeUtils;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import com.github.mixinors.astromine.common.screenhandler.PrimitiveRocketScreenHandler;

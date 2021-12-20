@@ -26,7 +26,6 @@ package com.github.mixinors.astromine.client.rei.fluidmixing;
 
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.common.recipe.FluidMixingRecipe;
-import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.Display;
