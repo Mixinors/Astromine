@@ -48,7 +48,7 @@ public class WireMillingDisplay implements Display {
 	private final Identifier recipeId;
 
 	public WireMillingDisplay(WireMillingRecipe recipe) {
-		this(Collections.singletonList(EntryIngredients.ofItemStacks(Arrays.asList(recipe.getFirstInput().getMatchingStacks()))), Collections.singletonList(EntryIngredients.of(recipe.getOutput())), recipe.getTime(), recipe.getEnergyInput(), recipe.getId());
+		this(Collections.singletonList(EntryIngredients.ofItemStacks(Arrays.asList(recipe.getInput().getMatchingStacks()))), Collections.singletonList(EntryIngredients.of(recipe.getOutput())), recipe.getTime(), recipe.getEnergyInput(), recipe.getId());
 	}
 
 	public WireMillingDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, int timeRequired, double energyRequired, Identifier recipeId) {

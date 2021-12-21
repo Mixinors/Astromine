@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -48,9 +49,18 @@ import java.util.function.Supplier;
 import static java.lang.Math.min;
 
 public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
-	public double progress = 0;
-	public int limit = 100;
-	public boolean shouldTry = false;
+	private double progress = 0;
+	private int limit = 100;
+	private boolean shouldTry = false;
+	
+	private static final int INPUT_SLOT_1 = 0;
+	private static final int INPUT_SLOT_2 = 1;
+	
+	private static final int OUTPUT_SLOT = 2;
+	
+	private static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT_1, INPUT_SLOT_2 };
+	
+	private static final int[] EXTRACT_SLOTS = new int[] { OUTPUT_SLOT };
 
 	private Optional<AlloySmeltingRecipe> optionalRecipe = Optional.empty();
 
@@ -60,23 +70,23 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 		energyStorage = new SimpleEnergyStorage(getEnergySize(), Long.MAX_VALUE, Long.MAX_VALUE);
 		
 		itemStorage = new SimpleItemStorage(3).insertPredicate((variant, slot) -> {
-			if (slot != 0 && slot != 1) {
+			if (slot != INPUT_SLOT_1 && slot != INPUT_SLOT_2) {
 				return false;
 			}
 			
-			if (!StackUtils.test(variant.toStack(), itemStorage.getStack(0)) &&
-				!StackUtils.test(variant.toStack(), itemStorage.getStack(1))) {
+			if (!itemStorage.getVariant(INPUT_SLOT_1).equals(variant) &&
+				!itemStorage.getVariant(INPUT_SLOT_2).equals(variant)) {
 				return false;
 			}
 			
-			var a =  AlloySmeltingRecipe.allows(world, new SimpleItemStorage(variant.toStack(), itemStorage.getStack(0)));
-			var b =  AlloySmeltingRecipe.allows(world, new SimpleItemStorage(itemStorage.getStack(0), variant.toStack()));
-			
-			return a || b;
+			return AlloySmeltingRecipe.allows(world, variant, itemStorage.getVariant(INPUT_SLOT_2)) ||
+				   AlloySmeltingRecipe.allows(world, itemStorage.getVariant(INPUT_SLOT_1), variant);
+		}).extractPredicate((variant, slot) -> {
+			return slot == OUTPUT_SLOT;
 		}).listener(() -> {
 			shouldTry = true;
 			optionalRecipe = Optional.empty();
-		}).insertSlots(new int[] { 0, 1}).extractSlots(new int[] { 2 });
+		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 
 	@Override
@@ -88,7 +98,7 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 
 		if (itemStorage != null && energyStorage != null) {
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = AlloySmeltingRecipe.matching(world, itemStorage);
+				optionalRecipe = AlloySmeltingRecipe.matching(world, itemStorage.slice(INPUT_SLOT_1, INPUT_SLOT_2, OUTPUT_SLOT));
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -100,35 +110,40 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 			if (optionalRecipe.isPresent()) {
 				var recipe = optionalRecipe.get();
 
-				limit = recipe.getTime();
+				limit = recipe.time;
 
 				var speed = min(getMachineSpeed(), limit - progress);
-				var consumed = (long) (recipe.getEnergyInput() * speed / limit);
+				var consumed = (long) (recipe.energyInput * speed / limit);
 
 				try (var transaction = Transaction.openOuter()) {
 					if (energyStorage.extract(consumed, transaction) == consumed) {
-						transaction.commit();
-						
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
 							
-							var first = itemStorage.getStack(0);
-							var second = itemStorage.getStack(1);
+							var firstInputStorage = itemStorage.getStorage(INPUT_SLOT_1);
+							var secondInputStorage = itemStorage.getStorage(INPUT_SLOT_2);
 							
-							if (recipe.getFirstInput().test(first) && recipe.getSecondInput().test(second)) {
-								first.decrement(recipe.getFirstInput().testMatching(first).getCount());
-								second.decrement(recipe.getSecondInput().testMatching(second).getCount());
-							} else if (recipe.getFirstInput().test(second) && recipe.getSecondInput().test(first)) {
-								second.decrement(recipe.getFirstInput().testMatching(second).getCount());
-								first.decrement(recipe.getSecondInput().testMatching(first).getCount());
+							if (recipe.firstInput.test(firstInputStorage) && recipe.secondInput.test(secondInputStorage)) {
+								firstInputStorage.extract(firstInputStorage.getResource(), recipe.firstInput.getAmount(), transaction);
+								secondInputStorage.extract(secondInputStorage.getResource(), recipe.secondInput.getAmount(), transaction);
+							} else if (recipe.firstInput.test(secondInputStorage.getResource(), secondInputStorage.getAmount()) &&
+									   recipe.secondInput.test(firstInputStorage.getResource(), firstInputStorage.getAmount())) {
+								
+								firstInputStorage.extract(secondInputStorage.getResource(), recipe.secondInput.getAmount(), transaction);
+								secondInputStorage.extract(firstInputStorage.getResource(), recipe.firstInput.getAmount(), transaction);
 							}
 							
-							itemStorage.setStack(2, StackUtils.into(itemStorage.getStack(2), recipe.getFirstOutput()));
+							var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
+							
+							outputStorage.insert(ItemVariant.of(recipe.output.copy()), recipe.output.getCount(), transaction);
+
+							transaction.commit();
 							
 							progress = 0;
 						} else {
 							progress += speed;
 						}
+						
 						isActive = true;
 					} else {
 						isActive = false;
@@ -142,15 +157,17 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 
 	@Override
 	public void writeNbt(NbtCompound nbt) {
-		nbt.putDouble("progress", progress);
-		nbt.putInt("limit", limit);
+		nbt.putDouble("Progress", progress);
+		nbt.putInt("Limit", limit);
+		
 		super.writeNbt(nbt);
 	}
 
 	@Override
 	public void readNbt(@NotNull NbtCompound nbt) {
-		progress = nbt.getDouble("progress");
-		limit = nbt.getInt("limit");
+		progress = nbt.getDouble("Progress");
+		limit = nbt.getInt("Limit");
+		
 		super.readNbt(nbt);
 	}
 

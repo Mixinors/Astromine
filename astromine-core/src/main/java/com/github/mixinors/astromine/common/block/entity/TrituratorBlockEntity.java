@@ -24,89 +24,71 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
-import com.github.mixinors.astromine.common.util.StackUtils;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
-import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.TrituratingRecipe;
-import it.unimi.dsi.fastutil.ints.IntSet;
-import it.unimi.dsi.fastutil.ints.IntSets;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
+public abstract class TrituratorBlockEntity extends ExtendedBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
 	public double progress = 0;
 	public int limit = 100;
 	public boolean shouldTry = true;
 
-	Optional<TrituratingRecipe> optionalRecipe = Optional.empty();
+	private static final int INPUT_SLOT = 0;
+	
+	private static final int OUTPUT_SLOT = 1;
+	
+	private static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
+	
+	private static final int[] EXTRACT_SLOTS = new int[] { OUTPUT_SLOT };
+	
+	private Optional<TrituratingRecipe> optionalRecipe = Optional.empty();
 
 	public TrituratorBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
-	}
-
-	@Override
-	public SimpleItemStorage createItemComponent() {
-		return SimpleDirectionalItemComponent.of(this, 2).withInsertPredicate((direction, stack, slot) -> {
-			if (slot != 1) {
+		
+		energyStorage = new SimpleEnergyStorage(getEnergySize(), Long.MAX_VALUE, Long.MAX_VALUE);
+		
+		itemStorage = new SimpleItemStorage(2).insertPredicate((variant, slot) -> {
+			if (slot != INPUT_SLOT) {
 				return false;
 			}
-
-			if (!StackUtils.test(stack, getItemComponent().getSecond())) {
-				return false;
-			}
-
-			return TrituratingRecipe.allows(world, SimpleItemStorage.of(stack));
-		}).withExtractPredicate(((direction, stack, slot) -> {
-			return slot == 0;
-		})).withListener((inventory) -> {
+			
+			return TrituratingRecipe.allows(world, variant);
+		}).extractPredicate((variant, slot) -> {
+			return slot == OUTPUT_SLOT;
+		}).listener(() -> {
 			shouldTry = true;
 			optionalRecipe = Optional.empty();
-		});
+		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
-
-	@Override
-	public EnergyStore createEnergyComponent() {
-		return SimpleEnergyComponent.of(getEnergySize());
-	}
-
-	@Override
-	public IntSet getItemInputSlots() {
-		return IntSets.singleton(1);
-	}
-
-	@Override
-	public IntSet getItemOutputSlots() {
-		return IntSets.singleton(0);
-	}
-
+	
 	@Override
 	public void tick() {
 		super.tick();
 
 		if (world == null || world.isClient || !shouldRun())
 			return;
-
-		SimpleItemStorage itemStorage = getItemComponent();
-
-		EnergyStore energyComponent = getEnergyComponent();
-
-		if (itemStorage != null && energyComponent != null) {
-			EnergyVolume energyVolume = energyComponent.getVolume();
-
+		
+		if (itemStorage != null && itemStorage != null) {
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = TrituratingRecipe.matching(world, itemStorage);
+				optionalRecipe = TrituratingRecipe.matching(world, itemStorage.slice(INPUT_SLOT, OUTPUT_SLOT));
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -116,30 +98,37 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 			}
 
 			if (optionalRecipe.isPresent()) {
-				TrituratingRecipe recipe = optionalRecipe.get();
+				var recipe = optionalRecipe.get();
 
-				limit = recipe.getTime();
+				limit = recipe.time;
 
-				double speed = Math.min(getMachineSpeed(), limit - progress);
-				double consumed = recipe.getEnergyInput() * speed / limit;
-
-				if (energyVolume.hasStored(consumed)) {
-					energyVolume.take(consumed);
-
-					if (progress + speed >= limit) {
-						optionalRecipe = Optional.empty();
-
-						itemStorage.getStack(1).decrement(recipe.getFirstInput().testMatching(itemStorage.getStack(1)).getCount());
-						itemStorage.setStack(0, StackUtils.into(itemStorage.getStack(0), recipe.getFirstOutput()));
-
-						progress = 0;
+				var speed = Math.min(getMachineSpeed(), limit - progress);
+				var consumed = (long) (recipe.energyInput * speed / limit);
+				
+				try (var transaction = Transaction.openOuter()) {
+					if (energyStorage.extract(consumed, transaction) == consumed) {
+						if (progress + speed >= limit) {
+							optionalRecipe = Optional.empty();
+							
+							var inputStorage = itemStorage.getStorage(INPUT_SLOT);
+							
+							inputStorage.extract(inputStorage.getResource(), recipe.input.getAmount(), transaction);
+							
+							var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
+							
+							outputStorage.insert(ItemVariant.of(recipe.output.copy()), recipe.output.getCount(), transaction);
+							
+							transaction.commit();
+							
+							progress = 0;
+						} else {
+							progress += speed;
+						}
+						
+						isActive = true;
 					} else {
-						progress += speed;
+						isActive = false;
 					}
-
-					isActive = true;
-				} else {
-					isActive = false;
 				}
 			} else {
 				isActive = false;
@@ -149,15 +138,17 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 
 	@Override
 	public void writeNbt(NbtCompound nbt) {
-		nbt.putDouble("progress", progress);
-		nbt.putInt("limit", limit);
+		nbt.putDouble("Progress", progress);
+		nbt.putInt("Limit", limit);
+		
 		super.writeNbt(nbt);
 	}
 
 	@Override
 	public void readNbt(@NotNull NbtCompound nbt) {
-		progress = nbt.getDouble("progress");
-		limit = nbt.getInt("limit");
+		progress = nbt.getDouble("Progress");
+		limit = nbt.getInt("Limit");
+		
 		super.readNbt(nbt);
 	}
 

@@ -48,7 +48,7 @@ public class TrituratingDisplay implements Display {
 	private final Identifier recipeId;
 
 	public TrituratingDisplay(TrituratingRecipe recipe) {
-		this(Collections.singletonList(EntryIngredients.ofItemStacks(Arrays.asList(recipe.getFirstInput().getMatchingStacks()))), Collections.singletonList(EntryIngredients.of(recipe.getFirstOutput())), recipe.getTime(), recipe.getEnergyInput(), recipe.getId());
+		this(Collections.singletonList(EntryIngredients.ofItemStacks(Arrays.asList(recipe.getInput().getMatchingStacks()))), Collections.singletonList(EntryIngredients.of(recipe.getOutput())), recipe.getTime(), recipe.getEnergyInput(), recipe.getId());
 	}
 
 	public TrituratingDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, int timeRequired, double energyRequired, Identifier recipeId) {

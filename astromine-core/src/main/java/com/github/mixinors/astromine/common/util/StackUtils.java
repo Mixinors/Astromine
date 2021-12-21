@@ -40,6 +40,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 public class StackUtils {
+	public static boolean fits(ItemStack source, ItemStack target) {
+		return target.getMaxCount() - target.getCount() >= source.getCount();
+	}
+	
 	/** Attempts to merge two {@link ItemStack}s, returning a {@link Pair}
 	 * with the results.
 	 *
@@ -76,7 +80,7 @@ public class StackUtils {
 	/** Asserts whether the source {@link ItemStack} matches the second,
 	 * and whether the target can fit the source, or not.
 	 */
-	public static boolean test(ItemStack source, ItemStack target) {
+	public static boolean equalsAndFits(ItemStack source, ItemStack target) {
 		return target.isEmpty() || ItemStack.areItemsEqual(source, target) && ItemStack.areNbtEqual(source, target) && target.getMaxCount() - target.getCount() >= source.getCount();
 	}
 

@@ -110,7 +110,7 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 			return false;
 		}
 
-		return StackUtils.test(firstOutput, itemStorage.getStack(0)) ;
+		return StackUtils.equalsAndFits(firstOutput, itemStorage.getStack(0)) ;
 	}
 
 	public boolean allows(SimpleFluidStorage fluidStorage) {

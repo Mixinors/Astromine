@@ -27,6 +27,8 @@ package com.github.mixinors.astromine.common.recipe;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.architectury.core.AbstractRecipeSerializer;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -52,29 +54,29 @@ import java.util.Map;
 import java.util.Optional;
 
 public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory> {
-	private final Identifier identifier;
-	private final ItemIngredient firstInput;
-	private final ItemStack firstOutput;
-	private final double energyInput;
-	private final int time;
+	public final Identifier id;
+	public final ItemIngredient input;
+	public final ItemStack output;
+	public final double energyInput;
+	public final int time;
 
 	private static final Map<World, WireMillingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public WireMillingRecipe(Identifier identifier, ItemIngredient firstInput, ItemStack firstOutput, double energyInput, int time) {
-		this.identifier = identifier;
-		this.firstInput = firstInput;
-		this.firstOutput = firstOutput;
+	public WireMillingRecipe(Identifier id, ItemIngredient input, ItemStack output, double energyInput, int time) {
+		this.id = id;
+		this.input = input;
+		this.output = output;
 		this.energyInput = energyInput;
 		this.time = time;
 	}
 
-	public static boolean allows(World world, SimpleItemStorage itemStorage) {
+	public static boolean allows(World world, ItemVariant... variants) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (WireMillingRecipe) it).toArray(WireMillingRecipe[]::new));
 		}
 
 		for (WireMillingRecipe recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.allows(itemStorage)) {
+			if (recipe.allows(variants)) {
 				return true;
 			}
 		}
@@ -82,39 +84,38 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 		return false;
 	}
 
-	public static Optional<WireMillingRecipe> matching(World world, SimpleItemStorage itemStorage) {
+	public static Optional<WireMillingRecipe> matching(World world, SingleSlotStorage<ItemVariant>... storages) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (WireMillingRecipe) it).toArray(WireMillingRecipe[]::new));
 		}
 
 		for (WireMillingRecipe recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.matches(itemStorage)) {
+			if (recipe.matches(storages)) {
 				return Optional.of(recipe);
 			}
 		}
 
 		return Optional.empty();
 	}
-
-	public boolean matches(SimpleItemStorage itemStorage) {
-		if (itemStorage.getSize() < 2) {
+	
+	public boolean matches(SingleSlotStorage<ItemVariant>... storages) {
+		var inputStorage = storages[0];
+		
+		var outputStorage = storages[1];
+		
+		if (!input.test(inputStorage)) {
 			return false;
 		}
-
-		if (!firstInput.test(itemStorage.getStack(1))) {
-			return false;
-		}
-
-		return StackUtils.test(firstOutput, itemStorage.getStack(0));
+		
+		return StackUtils.equalsAndFits(output, outputStorage.getResource().toStack((int) outputStorage.getAmount()));
+	}
+	
+	public boolean allows(ItemVariant... variants) {
+		var inputVariant = variants[0];
+		
+		return input.test(inputVariant, Long.MAX_VALUE);
 	}
 
-	public boolean allows(SimpleItemStorage itemStorage) {
-		if (itemStorage.getSize() < 1) {
-			return false;
-		}
-
-		return firstInput.testWeak(itemStorage.getStack(1));
-	}
 
 	@Override
 	public boolean matches(Inventory inv, World world) {
@@ -123,7 +124,7 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 
 	@Override
 	public ItemStack craft(Inventory inventory) {
-		return firstOutput.copy();
+		return output.copy();
 	}
 
 	@Override
@@ -133,12 +134,12 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 
 	@Override
 	public ItemStack getOutput() {
-		return firstOutput.copy();
+		return output.copy();
 	}
 
 	@Override
 	public Identifier getId() {
-		return identifier;
+		return id;
 	}
 
 	@Override
@@ -155,23 +156,7 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 	public ItemStack createIcon() {
 		return new ItemStack(AMBlocks.ADVANCED_WIREMILL.get());
 	}
-
-	public Identifier getIdentifier() {
-		return identifier;
-	}
-
-	public ItemIngredient getFirstInput() {
-		return firstInput;
-	}
-
-	public ItemStack getFirstOutput() {
-		return firstOutput;
-	}
-
-	public int getTime() {
-		return time;
-	}
-
+	
 	@Override
 	public double getEnergyInput() {
 		return energyInput;
@@ -190,8 +175,8 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 			WireMillingRecipe.Format format = new Gson().fromJson(object, WireMillingRecipe.Format.class);
 
 			return new WireMillingRecipe(identifier,
-					ItemIngredient.fromJson(format.firstInput),
-					StackUtils.fromJson(format.firstOutput),
+					ItemIngredient.fromJson(format.input),
+					StackUtils.fromJson(format.output),
 					DoubleUtils.fromJson(format.energyInput),
 					IntegerUtils.fromJson(format.time)
 			);
@@ -210,8 +195,8 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 
 		@Override
 		public void write(PacketByteBuf buffer, WireMillingRecipe recipe) {
-			recipe.firstInput.toPacket(buffer);
-			StackUtils.toPacket(buffer, recipe.firstOutput);
+			ItemIngredient.toPacket(buffer, recipe.input);
+			StackUtils.toPacket(buffer, recipe.output);
 			DoubleUtils.toPacket(buffer, recipe.energyInput);
 			IntegerUtils.toPacket(buffer, recipe.time);
 		}
@@ -225,24 +210,14 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 
 	public static final class Format {
 		@SerializedName("input")
-		JsonElement firstInput;
+		JsonElement input;
 
 		@SerializedName("output")
-		JsonElement firstOutput;
+		JsonElement output;
 
 		@SerializedName("energy_input")
 		JsonElement energyInput;
 
 		JsonElement time;
-
-		@Override
-		public String toString() {
-			return "Format{" +
-					"firstInput=" + firstInput +
-					", firstOutput=" + firstOutput +
-					", energyInput=" + energyInput +
-					", time=" + time +
-					'}';
-		}
 	}
 }

@@ -26,12 +26,14 @@ package com.github.mixinors.astromine.common.recipe;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
-import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.architectury.core.AbstractRecipeSerializer;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
@@ -52,33 +54,32 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventory> {
-	private final Identifier identifier;
-	private final ItemIngredient firstInput;
-	private final ItemIngredient secondInput;
-	private final ItemStack firstOutput;
-	private final double energyInput;
-	private final int time;
+public final class AlloySmeltingRecipe implements Recipe<Inventory> {
+	public final Identifier id;
+	public final ItemIngredient firstInput;
+	public final ItemIngredient secondInput;
+	public final ItemStack output;
+	public final double energyInput;
+	public final int time;
 
 	private static final Map<World, AlloySmeltingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public AlloySmeltingRecipe(Identifier identifier, ItemIngredient firstInput, ItemIngredient secondInput, ItemStack firstOutput, double energyInput, int time) {
-		this.identifier = identifier;
+	public AlloySmeltingRecipe(Identifier id, ItemIngredient firstInput, ItemIngredient secondInput, ItemStack output, double energyInput, int time) {
+		this.id = id;
 		this.firstInput = firstInput;
 		this.secondInput = secondInput;
-		this.firstOutput = firstOutput;
+		this.output = output;
 		this.energyInput = energyInput;
 		this.time = time;
 	}
-
-
-	public static boolean allows(World world, SimpleItemStorage itemStorage) {
+	
+	public static boolean allows(World world, ItemVariant... variants) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (AlloySmeltingRecipe) it).toArray(AlloySmeltingRecipe[]::new));
 		}
 
 		for (AlloySmeltingRecipe recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.allows(itemStorage)) {
+			if (recipe.allows(variants)) {
 				return true;
 			}
 		}
@@ -86,13 +87,13 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 		return false;
 	}
 
-	public static Optional<AlloySmeltingRecipe> matching(World world, SimpleItemStorage itemStorage) {
+	public static Optional<AlloySmeltingRecipe> matching(World world, SingleSlotStorage<ItemVariant>... storages) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (AlloySmeltingRecipe) it).toArray(AlloySmeltingRecipe[]::new));
 		}
 
 		for (AlloySmeltingRecipe recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.matches(itemStorage)) {
+			if (recipe.matches(storages)) {
 				return Optional.of(recipe);
 			}
 		}
@@ -100,32 +101,32 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 		return Optional.empty();
 	}
 
-	public boolean matches(SimpleItemStorage itemStorage) {
-		if (itemStorage.getSize() < 3) {
+	public boolean matches(SingleSlotStorage<ItemVariant>... storages) {
+		var firstInputStorage = storages[0];
+		var secondInputStorage = storages[1];
+		
+		var outputStorage = storages[2];
+		
+		if (!firstInput.test(firstInputStorage) && !secondInput.test(firstInputStorage)) {
 			return false;
 		}
 
-		if (!firstInput.test(itemStorage.getStack(0)) && !secondInput.test(itemStorage.getStack(0))) {
+		if (!firstInput.test(secondInputStorage) && !secondInput.test(secondInputStorage)) {
 			return false;
 		}
 
-		if (!firstInput.test(itemStorage.getStack(1)) && !secondInput.test(itemStorage.getStack(1))) {
-			return false;
-		}
-
-		return StackUtils.test(firstOutput, itemStorage.getStack(2));
+		return StackUtils.equalsAndFits(output, outputStorage.getResource().toStack((int) outputStorage.getAmount()));
 	}
 
-	public boolean allows(SimpleItemStorage itemStorage) {
-		if (itemStorage.getSize() < 2) {
+	public boolean allows(ItemVariant... variants) {
+		var firstInputVariant = variants[0];
+		var secondInputVariant = variants[1];
+		
+		if (!firstInput.test(firstInputVariant, Long.MAX_VALUE) && !secondInput.test(firstInputVariant, Long.MAX_VALUE)) {
 			return false;
 		}
 
-		if (!firstInput.testWeak(itemStorage.getStack(0)) && !secondInput.testWeak(itemStorage.getStack(0))) {
-			return false;
-		}
-
-		return firstInput.testWeak(itemStorage.getStack(1)) || secondInput.testWeak(itemStorage.getStack(1));
+		return firstInput.test(secondInputVariant, Long.MAX_VALUE) || secondInput.test(secondInputVariant, Long.MAX_VALUE);
 	}
 
 
@@ -151,7 +152,7 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 
 	@Override
 	public Identifier getId() {
-		return identifier;
+		return id;
 	}
 
 	@Override
@@ -169,32 +170,7 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 		return new ItemStack(AMBlocks.ADVANCED_ALLOY_SMELTER.get());
 	}
 
-	public Identifier getIdentifier() {
-		return identifier;
-	}
-
-	public ItemIngredient getFirstInput() {
-		return firstInput;
-	}
-
-	public ItemIngredient getSecondInput() {
-		return secondInput;
-	}
-
-	public ItemStack getFirstOutput() {
-		return firstOutput.copy();
-	}
-	
-	public int getTime() {
-		return time;
-	}
-
-	public double getEnergyInput() {
-		return energyInput;
-	}
-
-	public static final class Serializer extends AbstractRecipeSerializer<AlloySmeltingRecipe>
-	{
+	public static final class Serializer extends AbstractRecipeSerializer<AlloySmeltingRecipe> {
 		public static final Identifier ID = AMCommon.id("alloy_smelting");
 
 		public static final Serializer INSTANCE = new Serializer();
@@ -229,9 +205,9 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 
 		@Override
 		public void write(PacketByteBuf buffer, AlloySmeltingRecipe recipe) {
-			recipe.firstInput.toPacket(buffer);
-			recipe.secondInput.toPacket(buffer);
-			StackUtils.toPacket(buffer, recipe.firstOutput);
+			ItemIngredient.toPacket(buffer, recipe.firstInput);
+			ItemIngredient.toPacket(buffer, recipe.secondInput);
+			StackUtils.toPacket(buffer, recipe.output);
 			DoubleUtils.toPacket(buffer, recipe.energyInput);
 			IntegerUtils.toPacket(buffer, recipe.time);
 		}
@@ -256,16 +232,5 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 		JsonElement energyInput;
 
 		JsonElement time;
-
-		@Override
-		public String toString() {
-			return "Format{" +
-					"firstInput=" + firstInput +
-					", secondInput=" + secondInput +
-					", output=" + output +
-					", energyInput=" + energyInput +
-					", time=" + time +
-					'}';
-		}
 	}
 }

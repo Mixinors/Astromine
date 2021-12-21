@@ -29,6 +29,7 @@ import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -117,6 +118,17 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	public SimpleItemStorage listener(Runnable listener) {
 		this.listeners.add(listener);
 		return this;
+	}
+	
+	public SingleSlotStorage<ItemVariant>[] slice(int... slots) {
+		var storages = new SingleSlotStorage[slots.length];
+		
+		for (var i = 0; i < slots.length; ++i) {
+			var slot = getStorage(slots[i]);
+			storages[i] = slot;
+		}
+		
+		return storages;
 	}
 	
 	@Override

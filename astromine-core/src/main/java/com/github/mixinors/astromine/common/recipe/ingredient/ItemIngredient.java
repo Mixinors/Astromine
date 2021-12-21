@@ -24,10 +24,11 @@
 
 package com.github.mixinors.astromine.common.recipe.ingredient;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import dev.architectury.hooks.tags.TagHooks;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.minecraft.item.Item;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.tag.ServerTagManagerHolder;
@@ -39,19 +40,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiPredicate;
 
-public final class ItemIngredient implements BiPredicate<ItemVariant, Long> {
+public final class ItemIngredient {
 	private final Entry entry;
 	
 	public ItemIngredient(Entry entry) {
 		this.entry = entry;
 	}
 	
-	@Override
+	public boolean test(SingleSlotStorage<ItemVariant> testStorage) {
+		return test(testStorage.getResource(), testStorage.getAmount());
+	}
+	
 	public boolean test(ItemVariant testVariant, Long testAmount) {
 		return entry.test(testVariant, testAmount);
 	}
 	
-	public static ItemIngredient fromJson(JsonObject json) {
+	public Entry getEntry() {
+		return entry;
+	}
+	
+	public long getAmount() {
+		return entry.getAmount();
+	}
+	
+	public static ItemIngredient fromJson(JsonElement json) {
 		if (json.isJsonPrimitive()) {
 			var entryAsId = new Identifier(json.getAsString());
 			var entryAsItem = Registry.ITEM.get(entryAsId);
@@ -143,31 +155,23 @@ public final class ItemIngredient implements BiPredicate<ItemVariant, Long> {
 		return null;
 	}
 	
-	public static PacketByteBuf toPacket(ItemIngredient ingredient) {
+	public static void toPacket(PacketByteBuf buf, ItemIngredient ingredient) {
 		if (ingredient.entry instanceof VariantEntry variantEntry) {
-			var buf = PacketByteBufs.create();
-			
 			buf.writeString("item");
 			buf.writeString(Registry.ITEM.getId(variantEntry.requiredVariant.getItem()).toString());
 			buf.writeLong(variantEntry.requiredAmount);
-			
-			return buf;
 		}
 		
 		if (ingredient.entry instanceof TagEntry tagEntry) {
-			var buf = PacketByteBufs.create();
-			
 			buf.writeString("tag");
 			buf.writeString(ServerTagManagerHolder.getTagManager().getOrCreateTagGroup(Registry.ITEM_KEY).getUncheckedTagId(tagEntry.requiredTag).toString());
 			buf.writeLong(tagEntry.requiredAmount);
-			
-			return buf;
 		}
-		
-		return null;
 	}
 	
-	public static abstract class Entry implements BiPredicate<ItemVariant, Long> {}
+	public static abstract class Entry implements BiPredicate<ItemVariant, Long> {
+		public abstract long getAmount();
+	}
 	
 	public static class VariantEntry extends Entry {
 		private final ItemVariant requiredVariant;
@@ -185,7 +189,12 @@ public final class ItemIngredient implements BiPredicate<ItemVariant, Long> {
 		
 		@Override
 		public boolean test(ItemVariant testVariant, Long testAmount) {
-			return testVariant.equals(requiredVariant) && testAmount > requiredAmount;
+			return testVariant.equals(requiredVariant) && testAmount >= requiredAmount;
+		}
+		
+		@Override
+		public long getAmount() {
+			return requiredAmount;
 		}
 	}
 	
@@ -215,12 +224,17 @@ public final class ItemIngredient implements BiPredicate<ItemVariant, Long> {
 			}
 			
 			for (var requiredVariant : requiredVariants) {
-				if (requiredVariant.equals(testVariant) && testAmount > requiredAmount) {
+				if (requiredVariant.equals(testVariant) && testAmount >= requiredAmount) {
 					return true;
 				}
 			}
 			
 			return false;
+		}
+		
+		@Override
+		public long getAmount() {
+			return requiredAmount;
 		}
 	}
 }

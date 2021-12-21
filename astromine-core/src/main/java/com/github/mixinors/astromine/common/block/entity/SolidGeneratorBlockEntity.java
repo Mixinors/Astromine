@@ -24,67 +24,56 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BucketItem;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import com.github.mixinors.astromine.common.util.StackUtils;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
-import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
-import it.unimi.dsi.fastutil.ints.IntSet;
-import it.unimi.dsi.fastutil.ints.IntSets;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 import java.util.function.Supplier;
 
-public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
-	public double available = 0;
-	public double progress = 0;
-	public int limit = 100;
+public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
+	private double available = 0;
+	private double progress = 0;
+	private int limit = 100;
+	
+	private static final int INPUT_SLOT = 0;
+	
+	private static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
+	
+	private static final int[] EXTRACT_SLOTS = new int[] { };
 
 	public SolidGeneratorBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
-	}
-
-	@Override
-	public SimpleItemStorage createItemComponent() {
-		return SimpleDirectionalItemComponent.of(this, 1).withInsertPredicate((direction, stack, slot) -> {
-			if (slot != 0) {
+		
+		energyStorage = new SimpleEnergyStorage(getEnergySize(), Long.MAX_VALUE, Long.MAX_VALUE);
+		
+		itemStorage = new SimpleItemStorage(1).insertPredicate((variant, slot) -> {
+			if (slot != INPUT_SLOT) {
 				return false;
 			}
-
-			if (!StackUtils.test(stack, getItemComponent().getFirst())) {
+			
+			if (!itemStorage.getVariant(INPUT_SLOT).equals(variant)) {
 				return false;
 			}
-
-			return FuelRegistry.INSTANCE.get(stack.getItem()) != null;
-		}).withExtractPredicate((direction, stack, slot) -> {
+			
+			return FuelRegistry.INSTANCE.get(variant.getItem()) != null;
+		}).extractPredicate((variant, slot) -> {
 			return false;
-		});
-	}
-
-	@Override
-	public EnergyStore createEnergyComponent() {
-		return SimpleEnergyComponent.of(getEnergySize());
-	}
-
-	@Override
-	public IntSet getItemInputSlots() {
-		return IntSets.singleton(0);
-	}
-
-	@Override
-	public IntSet getItemOutputSlots() {
-		return IntSets.EMPTY_SET;
+		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 
 	@Override
@@ -94,59 +83,57 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		SimpleItemStorage itemStorage = getItemComponent();
-
-		EnergyStore energyComponent = getEnergyComponent();
-
-		if (itemStorage != null && energyComponent != null) {
-			EnergyVolume energyVolume = energyComponent.getVolume();
-
-			if (available > 0) {
-				double produced = 5;
-
-				for (int i = 0; i < 3 * getMachineSpeed(); i++) {
-					if (progress <= limit) {
-						if (energyVolume.hasAvailable(produced)) {
-							--available;
-							++progress;
-							energyVolume.give(produced);
-
+		if (itemStorage != null && energyStorage != null) {
+			try (var transaction = Transaction.openOuter()) {
+				if (available > 0) {
+					var produced = 5;
+					
+					for (int i = 0; i < 3 * getMachineSpeed(); ++i) {
+						if (progress < limit) {
+							// TODO: Make it work without waiting for a whole step.
+							if (energyStorage.insert(produced, transaction) == produced) {
+								--available;
+								
+								++produced;
+								
+								isActive = true;
+							} else {
+								isActive = false;
+							}
+							
+							if (progress >= limit || available <= 0) {
+								progress = 0;
+								limit = 0;
+								
+								isActive = false;
+							}
+						}
+					}
+				} else {
+					var inputStack = itemStorage.getStack(INPUT_SLOT);
+					
+					var inputBurnTime = FuelRegistry.INSTANCE.get(inputStack.getItem());
+					
+					if (inputBurnTime != null) {
+						var isFuel = !(inputStack.getItem() instanceof BucketItem) && inputBurnTime > 0;
+						
+						if (isFuel) {
+							available = inputBurnTime;
+							limit = inputBurnTime;
+							
+							progress = 0;
+							
+							itemStorage.extract(itemStorage.getVariant(INPUT_SLOT), 1, transaction);
+						}
+						
+						if (isFuel || progress != 0) {
 							isActive = true;
 						} else {
 							isActive = false;
 						}
-					}
-
-					if (progress > limit || available <= 0) {
-						progress = 0;
-						limit = 0;
-
-						isActive = false;
-					}
-				}
-			} else {
-				ItemStack burnStack = itemStorage.getStack(0);
-
-				Integer value = FuelRegistry.INSTANCE.get(burnStack.getItem());
-
-				if (value != null) {
-					boolean isFuel = !(burnStack.getItem() instanceof BucketItem) && value > 0;
-
-					if (isFuel) {
-						available = value;
-						limit = value;
-						progress = 0;
-
-						burnStack.decrement(1);
-					}
-
-					if (isFuel || progress != 0) {
-						isActive = true;
 					} else {
 						isActive = false;
 					}
-				} else {
-					isActive = false;
 				}
 			}
 		}
@@ -154,17 +141,19 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 
 	@Override
 	public void writeNbt(NbtCompound nbt) {
-		nbt.putDouble("progress", progress);
-		nbt.putInt("limit", limit);
-		nbt.putDouble("available", available);
+		nbt.putDouble("Progress", progress);
+		nbt.putInt("Limit", limit);
+		nbt.putDouble("Available", available);
+		
 		super.writeNbt(nbt);
 	}
 
 	@Override
 	public void readNbt(@NotNull NbtCompound nbt) {
-		progress = nbt.getDouble("progress");
-		limit = nbt.getInt("limit");
-		available = nbt.getDouble("available");
+		progress = nbt.getDouble("Progress");
+		limit = nbt.getInt("Limit");
+		available = nbt.getDouble("Available");
+		
 		super.readNbt(nbt);
 	}
 

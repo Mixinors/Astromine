@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.recipe.ingredient;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import dev.architectury.hooks.tags.TagHooks;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -51,7 +52,7 @@ public final class FluidIngredient implements BiPredicate<FluidVariant, Long> {
 		return entry.test(testVariant, testAmount);
 	}
 	
-	public static FluidIngredient fromJson(JsonObject json) {
+	public static FluidIngredient fromJson(JsonElement json) {
 		if (json.isJsonPrimitive()) {
 			var entryAsId = new Identifier(json.getAsString());
 			var entryAsFluid = Registry.FLUID.get(entryAsId);
@@ -143,28 +144,18 @@ public final class FluidIngredient implements BiPredicate<FluidVariant, Long> {
 		return null;
 	}
 	
-	public static PacketByteBuf toPacket(FluidIngredient ingredient) {
+	public static void toPacket(PacketByteBuf buf, FluidIngredient ingredient) {
 		if (ingredient.entry instanceof VariantEntry variantEntry) {
-			var buf = PacketByteBufs.create();
-			
 			buf.writeString("fluid");
 			buf.writeString(Registry.FLUID.getId(variantEntry.requiredVariant.getFluid()).toString());
 			buf.writeLong(variantEntry.requiredAmount);
-			
-			return buf;
 		}
 		
 		if (ingredient.entry instanceof TagEntry tagEntry) {
-			var buf = PacketByteBufs.create();
-			
 			buf.writeString("tag");
 			buf.writeString(ServerTagManagerHolder.getTagManager().getOrCreateTagGroup(Registry.FLUID_KEY).getUncheckedTagId(tagEntry.requiredTag).toString());
 			buf.writeLong(tagEntry.requiredAmount);
-			
-			return buf;
 		}
-		
-		return null;
 	}
 	
 	public static abstract class Entry implements BiPredicate<FluidVariant, Long> {}
