@@ -115,7 +115,7 @@ public final class ItemIngredient implements Predicate<ItemStack> {
 			JsonObject jsonObject = new JsonObject();
 
 			jsonObject.addProperty("tag", ServerTagManagerHolder.getTagManager().getOrCreateTagGroup(Registry.ITEM_KEY).getUncheckedTagId(((TagEntry) entries[0]).tag).toString());
-			jsonObject.addProperty("amount", ((TagEntry) entries[0]).count);
+			jsonObject.addProperty("count", ((TagEntry) entries[0]).count);
 
 			return jsonObject;
 		} else if (entries.length >= 1) {

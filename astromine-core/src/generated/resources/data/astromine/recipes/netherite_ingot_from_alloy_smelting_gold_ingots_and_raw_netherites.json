@@ -5,13 +5,13 @@
     "count": 4
   },
   "second_input": {
-    "item": "minecraft:netherite_scrap",
+    "tag": "c:raw_netherites",
     "count": 4
   },
   "output": {
     "item": "minecraft:netherite_ingot",
     "count": 1
   },
-  "time": 200,
-  "energy_input": 800
+  "time": 100,
+  "energy_input": 100
 }

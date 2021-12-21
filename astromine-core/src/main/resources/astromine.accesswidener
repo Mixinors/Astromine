@@ -37,3 +37,5 @@ accessible   field   net/minecraft/data/client/model/BlockStateModelGenerator   
 accessible class net/minecraft/data/client/model/BlockStateModelGenerator$BlockTexturePool
 accessible method net/minecraft/data/client/model/TextureKey of (Ljava/lang/String;)Lnet/minecraft/data/client/model/TextureKey;
 accessible method net/minecraft/data/client/model/TextureKey of (Ljava/lang/String;Lnet/minecraft/data/client/model/TextureKey;)Lnet/minecraft/data/client/model/TextureKey;
+accessible class net/minecraft/recipe/Ingredient$Entry
+accessible field net/minecraft/recipe/Ingredient entries [Lnet/minecraft/recipe/Ingredient$Entry;

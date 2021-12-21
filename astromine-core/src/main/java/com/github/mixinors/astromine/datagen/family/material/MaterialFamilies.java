@@ -134,7 +134,7 @@ public class MaterialFamilies {
 			.armor(Items.NETHERITE_HELMET, Items.NETHERITE_CHESTPLATE, Items.NETHERITE_LEGGINGS, Items.NETHERITE_BOOTS)
 			.gear(AMItems.NETHERITE_GEAR.get()).plate(AMItems.NETHERITE_PLATE.get())
 			.smithingBase(DIAMOND)
-			.alloyIngredients(GOLD, 4, RAW_NETHERITE, 4, 1)
+			.alloyIngredients(GOLD, 4, RAW_NETHERITE, 4, 1, 100, 100)
 			.validForBeacon()
 			.miningLevel(3).build();
 
@@ -196,7 +196,7 @@ public class MaterialFamilies {
 			.tools(AMItems.STEEL_PICKAXE.get(), AMItems.STEEL_AXE.get(), AMItems.STEEL_SHOVEL.get(), AMItems.STEEL_SWORD.get(), AMItems.STEEL_HOE.get())
 			.armor(AMItems.STEEL_HELMET.get(), AMItems.STEEL_CHESTPLATE.get(), AMItems.STEEL_LEGGINGS.get(), AMItems.STEEL_BOOTS.get())
 			.gear(AMItems.STEEL_GEAR.get()).plate(AMItems.STEEL_PLATE.get())
-			.alloyIngredients(IRON, 1, COAL, 2, 1).alloyIngredients(IRON, CHARCOAL, 1)
+			.alloyIngredients(IRON, 1, COAL, 2, 1, 250, 900).alloyIngredients(IRON, 1, CHARCOAL, 2, 1, 250, 900)
 			.validForBeacon()
 			.miningLevel(2).build();
 
@@ -206,7 +206,7 @@ public class MaterialFamilies {
 			.tools(AMItems.BRONZE_PICKAXE.get(), AMItems.BRONZE_AXE.get(), AMItems.BRONZE_SHOVEL.get(), AMItems.BRONZE_SWORD.get(), AMItems.BRONZE_HOE.get())
 			.armor(AMItems.BRONZE_HELMET.get(), AMItems.BRONZE_CHESTPLATE.get(), AMItems.BRONZE_LEGGINGS.get(), AMItems.BRONZE_BOOTS.get())
 			.gear(AMItems.BRONZE_GEAR.get()).plate(AMItems.BRONZE_PLATE.get())
-			.alloyIngredients(COPPER, 3, TIN, 1)
+			.alloyIngredients(COPPER, 3, TIN, 1, 200, 800)
 			.validForBeacon()
 			.miningLevel(2).build();
 
@@ -215,7 +215,7 @@ public class MaterialFamilies {
 			.dust(AMItems.ELECTRUM_DUST.get(), AMItems.ELECTRUM_TINY_DUST.get())
 			.gear(AMItems.ELECTRUM_GEAR.get()).plate(AMItems.ELECTRUM_PLATE.get())
 			.wire(AMItems.ELECTRUM_WIRE.get())
-			.alloyIngredients(GOLD, SILVER)
+			.alloyIngredients(GOLD, SILVER, 180, 750)
 			.validForBeacon()
 			.miningLevel(2).build();
 
@@ -225,7 +225,7 @@ public class MaterialFamilies {
 			.armor(AMItems.FOOLS_GOLD_HELMET.get(), AMItems.FOOLS_GOLD_CHESTPLATE.get(), AMItems.FOOLS_GOLD_LEGGINGS.get(), AMItems.FOOLS_GOLD_BOOTS.get())
 			.gear(AMItems.FOOLS_GOLD_GEAR.get()).plate(AMItems.FOOLS_GOLD_PLATE.get())
 			.apple(AMItems.FOOLS_GOLD_APPLE.get())
-			.alloyIngredients(IRON, GUNPOWDER, 1)
+			.alloyIngredients(IRON, GUNPOWDER, 150, 600)
 			.piglinLoved()
 			.alias("pyrite")
 			.miningLevel(1).build();
@@ -271,7 +271,7 @@ public class MaterialFamilies {
 			.tools(AMItems.METEORIC_STEEL_PICKAXE.get(), AMItems.METEORIC_STEEL_AXE.get(), AMItems.METEORIC_STEEL_SHOVEL.get(), AMItems.METEORIC_STEEL_SWORD.get(), AMItems.METEORIC_STEEL_HOE.get())
 			.armor(AMItems.METEORIC_STEEL_HELMET.get(), AMItems.METEORIC_STEEL_CHESTPLATE.get(), AMItems.METEORIC_STEEL_LEGGINGS.get(), AMItems.METEORIC_STEEL_BOOTS.get())
 			.gear(AMItems.METEORIC_STEEL_GEAR.get()).plate(AMItems.METEORIC_STEEL_PLATE.get())
-			.alloyIngredients(METITE, 2, STEEL, 1)
+			.alloyIngredients(METITE, 2, STEEL, 1, 300, 1000)
 			.validForBeacon()
 			.miningLevel(4).build();
 

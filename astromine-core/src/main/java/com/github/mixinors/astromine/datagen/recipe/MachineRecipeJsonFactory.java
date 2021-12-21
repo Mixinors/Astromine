@@ -23,34 +23,18 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public abstract class MachineRecipeJsonFactory<T extends EnergyConsumingRecipe<Inventory>> implements CraftingRecipeJsonFactory {
-	private final Item output;
-	private final int outputCount;
-	private final Ingredient input;
-	private final int processingTime;
-	private final int energy;
-	@Nullable
-	private String group;
-	private final AbstractRecipeSerializer<T> serializer;
+	protected final int processingTime;
+	protected final int energy;
+	protected final AbstractRecipeSerializer<T> serializer;
 
-	protected MachineRecipeJsonFactory(Ingredient input, ItemConvertible output, int outputCount, int processingTime, int energy, AbstractRecipeSerializer<T> serializer) {
-		this.output = output.asItem();
-		this.outputCount = outputCount;
-		this.input = input;
+	protected MachineRecipeJsonFactory(int processingTime, int energy, AbstractRecipeSerializer<T> serializer) {
 		this.processingTime = processingTime;
 		this.energy = energy;
 		this.serializer = serializer;
 	}
 
-	public static PressingRecipeJsonFactory createPressing(Ingredient input, ItemConvertible output, int outputCount, int processingTime, int energy) {
-		return new PressingRecipeJsonFactory(input, output, outputCount, processingTime, energy, PressingRecipe.Serializer.INSTANCE);
-	}
-
-	public static TrituratingRecipeJsonFactory createTriturating(Ingredient input, ItemConvertible output, int outputCount, int processingTime, int energy) {
-		return new TrituratingRecipeJsonFactory(input, output, outputCount, processingTime, energy, TrituratingRecipe.Serializer.INSTANCE);
-	}
-
-	public static WireMillingRecipeJsonFactory createWireMilling(Ingredient input, ItemConvertible output, int outputCount, int processingTime, int energy) {
-		return new WireMillingRecipeJsonFactory(input, output, outputCount, processingTime, energy, WireMillingRecipe.Serializer.INSTANCE);
+	public int getEnergy() {
+		return energy;
 	}
 
 	@Override
@@ -68,42 +52,41 @@ public abstract class MachineRecipeJsonFactory<T extends EnergyConsumingRecipe<I
 
 	@Override
 	public CraftingRecipeJsonFactory group(@Nullable String group) {
-		this.group = group;
+		// we don't use groups here!
 		return this;
 	}
 
-	@Override
-	public Item getOutputItem() {
-		return output;
+	public static PressingRecipeJsonFactory createPressing(Ingredient input, ItemConvertible output, int outputCount, int processingTime, int energy) {
+		return new PressingRecipeJsonFactory(input, output, outputCount, processingTime, energy);
 	}
 
-	public int getEnergy() {
-		return energy;
+	public static TrituratingRecipeJsonFactory createTriturating(Ingredient input, ItemConvertible output, int outputCount, int processingTime, int energy) {
+		return new TrituratingRecipeJsonFactory(input, output, outputCount, processingTime, energy);
 	}
 
-	@Override
-	public void offerTo(Consumer<RecipeJsonProvider> exporter, Identifier recipeId) {
-		exporter.accept(new MachineRecipeJsonProvider<T>(recipeId, this.group == null ? "" : this.group, this.input, this.output, this.outputCount, this.processingTime, this.energy, this.serializer));
+	public static WireMillingRecipeJsonFactory createWireMilling(Ingredient input, ItemConvertible output, int outputCount, int processingTime, int energy) {
+		return new WireMillingRecipeJsonFactory(input, output, outputCount, processingTime, energy);
 	}
 
-	public record MachineRecipeJsonProvider<T extends EnergyConsumingRecipe<Inventory>>(Identifier recipeId,
-																						String group,
-																						Ingredient input, Item output,
-																						int outputCount,
-																						int processingTime, int energy,
-																						RecipeSerializer<T> serializer)
-			implements RecipeJsonProvider {
+	public static AlloySmeltingRecipeJsonFactory createAlloySmelting(Ingredient firstInput, int firstCount, Ingredient secondInput, int secondCount, ItemConvertible output, int outputCount, int processingTime, int energy) {
+		return new AlloySmeltingRecipeJsonFactory(firstInput, firstCount, secondInput,secondCount, output, outputCount, processingTime, energy);
+	}
+
+	public abstract static class MachineRecipeJsonProvider<T extends EnergyConsumingRecipe<Inventory>> implements RecipeJsonProvider {
+		protected final Identifier recipeId;
+		protected final int processingTime;
+		protected final int energy;
+		protected final RecipeSerializer<T> serializer;
+
+		public MachineRecipeJsonProvider(Identifier recipeId, int processingTime, int energy, RecipeSerializer<T> serializer) {
+			this.recipeId = recipeId;
+			this.processingTime = processingTime;
+			this.energy = energy;
+			this.serializer = serializer;
+		}
 
 		@Override
 		public void serialize(JsonObject json) {
-			if (!this.group.isEmpty()) {
-				json.addProperty("group", this.group);
-			}
-			json.add("input", this.input.toJson());
-			JsonObject outputJson = new JsonObject();
-			outputJson.addProperty("item", Registry.ITEM.getId(this.output).toString());
-			outputJson.addProperty("count", outputCount);
-			json.add("output", outputJson);
 			json.addProperty("time", this.processingTime);
 			json.addProperty("energy_input", this.energy);
 		}
@@ -116,12 +99,14 @@ public abstract class MachineRecipeJsonFactory<T extends EnergyConsumingRecipe<I
 		@Nullable
 		@Override
 		public JsonObject toAdvancementJson() {
+			// we don't use recipe advancements here!
 			return null;
 		}
 
 		@Nullable
 		@Override
 		public Identifier getAdvancementId() {
+			// we don't use recipe advancements here!
 			return null;
 		}
 

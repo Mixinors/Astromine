@@ -31,7 +31,7 @@ import net.fabricmc.fabric.api.tag.TagFactory;
 public class MaterialFamily implements Comparable<MaterialFamily> {
 	final Map<ItemVariant, Item> itemVariants = Maps.newHashMap();
 	final Map<BlockVariant, Block> blockVariants = Maps.newHashMap();
-	final Set<AlloyIngredients> alloyIngredients = Sets.newHashSet();
+	final Set<AlloyInfo> alloyInfos = Sets.newHashSet();
 	private final Item baseItem;
 	private final MaterialType type;
 	private final String name;
@@ -272,15 +272,15 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 	}
 
 	public boolean isAlloy() {
-		return !alloyIngredients.isEmpty();
+		return !alloyInfos.isEmpty();
 	}
 
 	public Optional<MaterialFamily> getSmithingBase() {
 		return Optional.ofNullable(smithingBase);
 	}
 
-	public Set<AlloyIngredients> getAlloyIngredients() {
-		return alloyIngredients;
+	public Set<AlloyInfo> getAlloyInfos() {
+		return alloyInfos;
 	}
 
 	public float getOreSmeltingExperience() {
@@ -557,20 +557,20 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 			return this;
 		}
 
-		public MaterialFamily.Builder alloyIngredients(MaterialFamily first, MaterialFamily second) {
-			return alloyIngredients(first, 1, second, 1);
+		public MaterialFamily.Builder alloyIngredients(MaterialFamily first, MaterialFamily second, int time, int energy) {
+			return alloyIngredients(first, 1, second, 1, time, energy);
 		}
 
-		public MaterialFamily.Builder alloyIngredients(MaterialFamily first, int firstCount, MaterialFamily second, int secondCount) {
-			return alloyIngredients(first, firstCount, second, secondCount, firstCount + secondCount);
+		public MaterialFamily.Builder alloyIngredients(MaterialFamily first, int firstCount, MaterialFamily second, int secondCount, int time, int energy) {
+			return alloyIngredients(first, firstCount, second, secondCount, firstCount + secondCount, time, energy);
 		}
 
-		public MaterialFamily.Builder alloyIngredients(MaterialFamily first, MaterialFamily second, int outputCount) {
-			return alloyIngredients(first, 1, second, 1, outputCount);
+		public MaterialFamily.Builder alloyIngredients(MaterialFamily first, MaterialFamily second, int outputCount, int time, int energy) {
+			return alloyIngredients(first, 1, second, 1, outputCount, time, energy);
 		}
 
-		public MaterialFamily.Builder alloyIngredients(MaterialFamily first, int firstCount, MaterialFamily second, int secondCount, int outputCount) {
-			this.family.alloyIngredients.add(new AlloyIngredients(first, firstCount, second, secondCount, outputCount));
+		public MaterialFamily.Builder alloyIngredients(MaterialFamily first, int firstCount, MaterialFamily second, int secondCount, int outputCount, int time, int energy) {
+			this.family.alloyInfos.add(new AlloyInfo(first, firstCount, second, secondCount, outputCount, time, energy));
 			return this;
 		}
 
@@ -600,7 +600,7 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 		}
 	}
 
-	public record AlloyIngredients(MaterialFamily first, int firstCount, MaterialFamily second, int secondCount,
-								   int outputCount) {
+	public record AlloyInfo(MaterialFamily firstIngredient, int firstCount, MaterialFamily secondIngredient, int secondCount,
+							int outputCount, int time, int energy) {
 	}
 }

@@ -5,9 +5,9 @@ import com.github.mixinors.astromine.common.recipe.PressingRecipe;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.recipe.Ingredient;
 
-public class PressingRecipeJsonFactory extends MachineRecipeJsonFactory<PressingRecipe> {
-	protected PressingRecipeJsonFactory(Ingredient input, ItemConvertible output, int outputCount, int processingTime, int energy, PressingRecipe.Serializer serializer) {
-		super(input, output, outputCount, processingTime, energy, serializer);
+public class PressingRecipeJsonFactory extends SimpleMachineRecipeJsonFactory<PressingRecipe> {
+	protected PressingRecipeJsonFactory(Ingredient input, ItemConvertible output, int outputCount, int processingTime, int energy) {
+		super(input, output, outputCount, processingTime, energy, PressingRecipe.Serializer.INSTANCE);
 	}
 
 	@Override

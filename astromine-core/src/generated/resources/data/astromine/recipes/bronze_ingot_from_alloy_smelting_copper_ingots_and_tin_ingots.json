@@ -1,15 +1,16 @@
 {
   "type": "astromine:alloy_smelting",
   "first_input": {
-    "tag": "c:metite_ingots",
-    "count": 2
+    "tag": "c:copper_ingots",
+    "count": 3
   },
   "second_input": {
-    "tag": "c:steel_ingots"
+    "tag": "c:tin_ingots",
+    "count": 1
   },
   "output": {
-    "item": "astromine:meteoric_steel_ingot",
-    "count": 3
+    "item": "astromine:bronze_ingot",
+    "count": 4
   },
   "time": 200,
   "energy_input": 800

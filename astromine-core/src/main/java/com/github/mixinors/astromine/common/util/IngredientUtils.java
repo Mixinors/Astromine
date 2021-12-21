@@ -32,7 +32,9 @@ import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.recipe.ingredient.ItemIngredient;
 import io.netty.buffer.ByteBuf;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 public class IngredientUtils {
 	/** Deserializes an {@link Ingredient} from a {@link JsonElement}. */
@@ -68,5 +70,20 @@ public class IngredientUtils {
 		}
 
 		return ItemStack.EMPTY;
+	}
+
+	public static JsonElement toJsonWithCount(Ingredient ingredient, int count) {
+		if (ingredient.entries.length == 1) {
+			JsonObject entryObject = ingredient.entries[0].toJson();
+			entryObject.addProperty("count", count);
+			return entryObject;
+		}
+		JsonArray jsonArray = new JsonArray();
+		for (Ingredient.Entry entry : ingredient.entries) {
+			JsonObject entryObject = entry.toJson();
+			entryObject.addProperty("count", count);
+			jsonArray.add(entryObject);
+		}
+		return jsonArray;
 	}
 }
