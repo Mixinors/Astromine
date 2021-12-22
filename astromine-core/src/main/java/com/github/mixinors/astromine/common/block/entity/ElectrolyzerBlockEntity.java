@@ -133,7 +133,7 @@ public abstract class ElectrolyzerBlockEntity extends ExtendedBlockEntity implem
 					if (progress + speed >= limit) {
 						optionalRecipe = Optional.empty();
 
-						fluidStorage.getFirst().take(recipe.getFirstInput().testMatching(fluidStorage.getFirst()).getAmount());
+						fluidStorage.getFirst().take(recipe.getInput().testMatching(fluidStorage.getFirst()).getAmount());
 						fluidStorage.getSecond().take(recipe.getFirstOutput());
 						fluidStorage.getThird().take(recipe.getSecondOutput());
 

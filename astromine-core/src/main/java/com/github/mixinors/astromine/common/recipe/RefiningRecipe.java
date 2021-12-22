@@ -26,8 +26,12 @@ package com.github.mixinors.astromine.common.recipe;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
+import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
+import com.github.mixinors.astromine.common.recipe.result.FluidResult;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.architectury.core.AbstractRecipeSerializer;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -37,10 +41,8 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.mixinors.astromine.common.util.DoubleUtils;
 import com.github.mixinors.astromine.common.util.IntegerUtils;
-import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -51,30 +53,30 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<Inventory> {
-	private final Identifier identifier;
-	private final FluidIngredient input;
-	private final FluidVolume output;
-	private final double energyInput;
-	private final int time;
+public final class RefiningRecipe implements Recipe<Inventory> {
+	public final Identifier id;
+	public final FluidIngredient input;
+	public final FluidResult output;
+	public final double energyInput;
+	public final int time;
 
 	private static final Map<World, RefiningRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public RefiningRecipe(Identifier identifier, FluidIngredient input, FluidVolume output, double energyInput, int time) {
-		this.identifier = identifier;
+	public RefiningRecipe(Identifier id, FluidIngredient input, FluidResult output, double energyInput, int time) {
+		this.id = id;
 		this.input = input;
 		this.output = output;
 		this.energyInput = energyInput;
 		this.time = time;
 	}
 
-	public static boolean allows(World world, SimpleFluidStorage fluidStorage) {
+	public static boolean allows(World world, FluidVariant... variants) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (RefiningRecipe) it).toArray(RefiningRecipe[]::new));
 		}
 
 		for (RefiningRecipe recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.allows(fluidStorage)) {
+			if (recipe.allows(variants)) {
 				return true;
 			}
 		}
@@ -82,13 +84,13 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 		return false;
 	}
 	
-	public static Optional<RefiningRecipe> matching(World world, SimpleFluidStorage fluidStorage) {
+	public static Optional<RefiningRecipe> matching(World world, SingleSlotStorage<FluidVariant>... storages) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (RefiningRecipe) it).toArray(RefiningRecipe[]::new));
 		}
 
 		for (RefiningRecipe recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.allows(fluidStorage)) {
+			if (recipe.matches(storages)) {
 				return Optional.of(recipe);
 			}
 		}
@@ -96,29 +98,27 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 		return Optional.empty();
 	}
 
-	public boolean matches(SimpleFluidStorage fluidStorage) {
-		if (fluidStorage.getSize() < 2) {
-			return false;
-		}
-
-		if (!input.test(fluidStorage.getFirst())) {
+	public boolean matches(SingleSlotStorage<FluidVariant>... storages) {
+		var inputStorage = storages[0];
+		
+		var outputStorage = storages[1];
+		
+		if (!input.test(inputStorage)) {
 			return false;
 		}
 		
-		return output.test(fluidStorage.getSecond());
+		return output.equalsAndFitsIn(outputStorage);
 	}
 
-	public boolean allows(SimpleFluidStorage fluidStorage) {
-		if (fluidStorage.getSize() < 1) {
-			return false;
-		}
-
-		return input.testWeak(fluidStorage.getFirst());
+	public boolean allows(FluidVariant... variants) {
+		var inputVariant = variants[0];
+		
+		return input.test(inputVariant, Long.MAX_VALUE);
 	}
 
 	@Override
 	public Identifier getId() {
-		return identifier;
+		return id;
 	}
 
 	@Override
@@ -156,29 +156,7 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 		return new ItemStack(AMBlocks.ADVANCED_ELECTROLYZER.get());
 	}
 
-	public Identifier getIdentifier() {
-		return identifier;
-	}
-
-	public FluidIngredient getIngredient() {
-		return input;
-	}
-
-	public FluidVolume getFirstOutput() {
-		return output.copy();
-	}
-
-	public int getTime() {
-		return time;
-	}
-
-	@Override
-	public double getEnergyInput() {
-		return energyInput;
-	}
-
-	public static final class Serializer extends AbstractRecipeSerializer<RefiningRecipe>
-	{
+	public static final class Serializer extends AbstractRecipeSerializer<RefiningRecipe> {
 		public static final Identifier ID = AMCommon.id("refining");
 
 		public static final Serializer INSTANCE = new Serializer();
@@ -191,8 +169,8 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 
 			return new RefiningRecipe(
 					identifier,
-					FluidIngredient.fromJson(format.firstInput),
-					FluidVolume.fromJson(format.output),
+					FluidIngredient.fromJson(format.input),
+					FluidResult.fromJson(format.output),
 					DoubleUtils.fromJson(format.energyInput),
 					IntegerUtils.fromJson(format.time)
 			);
@@ -203,7 +181,7 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 			return new RefiningRecipe(
 					identifier,
 					FluidIngredient.fromPacket(buffer),
-					FluidVolume.fromPacket(buffer),
+					FluidResult.fromPacket(buffer),
 					DoubleUtils.fromPacket(buffer),
 					IntegerUtils.fromPacket(buffer)
 			);
@@ -211,8 +189,8 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 
 		@Override
 		public void write(PacketByteBuf buffer, RefiningRecipe recipe) {
-			recipe.input.toPacket(buffer);
-			recipe.output.toPacket(buffer);
+			FluidIngredient.toPacket(buffer, recipe.input);
+			FluidResult.toPacket(buffer, recipe.output);
 			DoubleUtils.toPacket(buffer, recipe.energyInput);
 			IntegerUtils.toPacket(buffer, recipe.time);
 		}
@@ -226,7 +204,7 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 
 	public static final class Format {
 		@SerializedName("input")
-		JsonElement firstInput;
+		JsonElement input;
 
 		@SerializedName("output")
 		JsonElement output;
@@ -235,15 +213,5 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 		JsonElement energyInput;
 
 		JsonElement time;
-		
-		@Override
-		public String toString() {
-			return "Format{" +
-					"firstInput=" + firstInput +
-					", output=" + output +
-					", energyInput=" + energyInput +
-					", time=" + time +
-					'}';
-		}
 	}
 }

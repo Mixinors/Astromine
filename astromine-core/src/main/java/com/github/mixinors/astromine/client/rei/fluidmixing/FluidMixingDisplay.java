@@ -52,7 +52,7 @@ public class FluidMixingDisplay implements Display {
 		this.energy = recipe.getEnergyInput();
 		this.firstIngredient = recipe.getFirstInput();
 		this.secondIngredient = recipe.getSecondInput();
-		this.output = recipe.getFirstOutput();
+		this.output = recipe.getOutput();
 		this.id = recipe.getId();
 	}
 

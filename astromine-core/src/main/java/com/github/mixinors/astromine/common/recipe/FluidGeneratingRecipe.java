@@ -26,8 +26,11 @@ package com.github.mixinors.astromine.common.recipe;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
+import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.architectury.core.AbstractRecipeSerializer;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -50,28 +53,28 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGeneratingRecipe<Inventory> {
-	private final Identifier identifier;
-	private final FluidIngredient firstInput;
-	private final double energyOutput;
-	private final int time;
+public final class FluidGeneratingRecipe implements Recipe<Inventory> {
+	public final Identifier id;
+	public final FluidIngredient input;
+	public final double energyOutput;
+	public final int time;
 
 	private static final Map<World, FluidGeneratingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public FluidGeneratingRecipe(Identifier identifier, FluidIngredient firstInput, double energyOutput, int time) {
-		this.identifier = identifier;
-		this.firstInput = firstInput;
+	public FluidGeneratingRecipe(Identifier id, FluidIngredient input, double energyOutput, int time) {
+		this.id = id;
+		this.input = input;
 		this.energyOutput = energyOutput;
 		this.time = time;
 	}
 
-	public static boolean allows(World world, SimpleFluidStorage fluidStorage) {
+	public static boolean allows(World world, FluidVariant... variants) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidGeneratingRecipe) it).toArray(FluidGeneratingRecipe[]::new));
 		}
 
 		for (FluidGeneratingRecipe recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.allows(fluidStorage)) {
+			if (recipe.allows(variants)) {
 				return true;
 			}
 		}
@@ -79,13 +82,13 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 		return false;
 	}
 
-	public static Optional<FluidGeneratingRecipe> matching(World world, SimpleFluidStorage fluidStorage) {
+	public static Optional<FluidGeneratingRecipe> matching(World world, SingleSlotStorage<FluidVariant>... storages) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidGeneratingRecipe) it).toArray(FluidGeneratingRecipe[]::new));
 		}
 
 		for (FluidGeneratingRecipe recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.allows(fluidStorage)) {
+			if (recipe.matches(storages)) {
 				return Optional.of(recipe);
 			}
 		}
@@ -93,20 +96,16 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 		return Optional.empty();
 	}
 
-	public boolean matches(SimpleFluidStorage fluidStorage) {
-		if (fluidStorage.getSize() < 1) {
-			return false;
-		}
-
-		return firstInput.test(fluidStorage.getFirst());
+	public boolean matches(SingleSlotStorage<FluidVariant>... storages) {
+		var inputStorage = storages[0];
+		
+		return input.test(inputStorage);
 	}
 
-	public boolean allows(SimpleFluidStorage fluidStorage) {
-		if (fluidStorage.getSize() < 1) {
-			return false;
-		}
-
-		return firstInput.testWeak(fluidStorage.getFirst());
+	public boolean allows(FluidVariant... variants) {
+		var inputVariant = variants[0];
+		
+		return input.test(inputVariant, Long.MAX_VALUE);
 	}
 
 	@Override
@@ -131,7 +130,7 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 
 	@Override
 	public Identifier getId() {
-		return identifier;
+		return id;
 	}
 
 	@Override
@@ -149,19 +148,6 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 		return new ItemStack(AMBlocks.ADVANCED_LIQUID_GENERATOR.get());
 	}
 
-	public FluidIngredient getFirstInput() {
-		return firstInput;
-	}
-
-	public int getTime() {
-		return time;
-	}
-
-	@Override
-	public double getEnergyOutput() {
-		return energyOutput;
-	}
-
 	public static final class Serializer extends AbstractRecipeSerializer<FluidGeneratingRecipe>
 	{
 		public static final Identifier ID = AMCommon.id("fluid_generating");
@@ -174,7 +160,7 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 		public FluidGeneratingRecipe read(Identifier identifier, JsonObject object) {
 			FluidGeneratingRecipe.Format format = new Gson().fromJson(object, FluidGeneratingRecipe.Format.class);
 
-			return new FluidGeneratingRecipe(identifier, FluidIngredient.fromJson(format.firstInput), DoubleUtils.fromJson(format.energyOutput), IntegerUtils.fromJson(format.time)
+			return new FluidGeneratingRecipe(identifier, FluidIngredient.fromJson(format.input), DoubleUtils.fromJson(format.energyOutput), IntegerUtils.fromJson(format.time)
 			);
 		}
 
@@ -190,7 +176,7 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 
 		@Override
 		public void write(PacketByteBuf buffer, FluidGeneratingRecipe recipe) {
-			recipe.firstInput.toPacket(buffer);
+			FluidIngredient.toPacket(buffer, recipe.input);
 			DoubleUtils.toPacket(buffer, recipe.energyOutput);
 			IntegerUtils.toPacket(buffer, recipe.time);
 		}
@@ -204,16 +190,11 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 
 	public static final class Format {
 		@SerializedName("input")
-		JsonElement firstInput;
+		JsonElement input;
 
 		@SerializedName("energy_output")
 		JsonElement energyOutput;
 
 		JsonElement time;
-
-		@Override
-		public String toString() {
-			return "Format{" + "firstInput=" + firstInput + ", energyOutput=" + energyOutput + ", time=" + time + '}';
-		}
 	}
 }

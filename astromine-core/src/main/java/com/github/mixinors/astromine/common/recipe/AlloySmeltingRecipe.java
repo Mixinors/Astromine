@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.recipe;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
+import com.github.mixinors.astromine.common.recipe.result.ItemResult;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.architectury.core.AbstractRecipeSerializer;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
@@ -58,13 +59,13 @@ public final class AlloySmeltingRecipe implements Recipe<Inventory> {
 	public final Identifier id;
 	public final ItemIngredient firstInput;
 	public final ItemIngredient secondInput;
-	public final ItemStack output;
+	public final ItemResult output;
 	public final double energyInput;
 	public final int time;
 
 	private static final Map<World, AlloySmeltingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public AlloySmeltingRecipe(Identifier id, ItemIngredient firstInput, ItemIngredient secondInput, ItemStack output, double energyInput, int time) {
+	public AlloySmeltingRecipe(Identifier id, ItemIngredient firstInput, ItemIngredient secondInput, ItemResult output, double energyInput, int time) {
 		this.id = id;
 		this.firstInput = firstInput;
 		this.secondInput = secondInput;
@@ -114,8 +115,8 @@ public final class AlloySmeltingRecipe implements Recipe<Inventory> {
 		if (!firstInput.test(secondInputStorage) && !secondInput.test(secondInputStorage)) {
 			return false;
 		}
-
-		return StackUtils.equalsAndFits(output, outputStorage.getResource().toStack((int) outputStorage.getAmount()));
+		
+		return output.equalsAndFitsIn(outputStorage);
 	}
 
 	public boolean allows(ItemVariant... variants) {
@@ -185,7 +186,7 @@ public final class AlloySmeltingRecipe implements Recipe<Inventory> {
 					identifier,
 					ItemIngredient.fromJson(format.firstInput),
 					ItemIngredient.fromJson(format.secondInput),
-					StackUtils.fromJson(format.output.getAsJsonObject()),
+					ItemResult.fromJson(format.output),
 					DoubleUtils.fromJson(format.energyInput),
 					IntegerUtils.fromJson(format.time)
 			);
@@ -197,7 +198,7 @@ public final class AlloySmeltingRecipe implements Recipe<Inventory> {
 					identifier,
 					ItemIngredient.fromPacket(buffer),
 					ItemIngredient.fromPacket(buffer),
-					StackUtils.fromPacket(buffer),
+					ItemResult.fromPacket(buffer),
 					DoubleUtils.fromPacket(buffer),
 					IntegerUtils.fromPacket(buffer)
 			);
@@ -207,7 +208,7 @@ public final class AlloySmeltingRecipe implements Recipe<Inventory> {
 		public void write(PacketByteBuf buffer, AlloySmeltingRecipe recipe) {
 			ItemIngredient.toPacket(buffer, recipe.firstInput);
 			ItemIngredient.toPacket(buffer, recipe.secondInput);
-			StackUtils.toPacket(buffer, recipe.output);
+			ItemResult.toPacket(buffer, recipe.output);
 			DoubleUtils.toPacket(buffer, recipe.energyInput);
 			IntegerUtils.toPacket(buffer, recipe.time);
 		}

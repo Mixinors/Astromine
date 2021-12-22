@@ -26,12 +26,18 @@ package com.github.mixinors.astromine.common.recipe;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
+import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
+import com.github.mixinors.astromine.common.recipe.result.ItemResult;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.architectury.core.AbstractRecipeSerializer;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
@@ -52,30 +58,30 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory> {
-	private final Identifier identifier;
-	private final FluidIngredient firstInput;
-	private final ItemStack firstOutput;
-	private final double energyInput;
-	private final int time;
+public final class SolidifyingRecipe implements Recipe<Inventory> {
+	public final Identifier id;
+	public final FluidIngredient input;
+	public final ItemResult output;
+	public final double energyInput;
+	public final int time;
 
 	private static final Map<World, SolidifyingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public SolidifyingRecipe(Identifier identifier, FluidIngredient firstInput, ItemStack firstOutput, double energyInput, int time) {
-		this.identifier = identifier;
-		this.firstInput = firstInput;
-		this.firstOutput = firstOutput;
+	public SolidifyingRecipe(Identifier id, FluidIngredient input, ItemResult output, double energyInput, int time) {
+		this.id = id;
+		this.input = input;
+		this.output = output;
 		this.energyInput = energyInput;
 		this.time = time;
 	}
 
-	public static boolean allows(World world, SimpleFluidStorage fluidStorage) {
+	public static boolean allows(World world, FluidVariant... variants) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (SolidifyingRecipe) it).toArray(SolidifyingRecipe[]::new));
 		}
 
 		for (SolidifyingRecipe recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.allows(fluidStorage)) {
+			if (recipe.allows(variants)) {
 				return true;
 			}
 		}
@@ -83,13 +89,13 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 		return false;
 	}
 
-	public static Optional<SolidifyingRecipe> matching(World world, SimpleItemStorage itemStorage, SimpleFluidStorage fluidStorage) {
+	public static Optional<SolidifyingRecipe> matching(World world, SingleSlotStorage<ItemVariant>[] itemStorages, SingleSlotStorage<FluidVariant>[] fluidStorages) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (SolidifyingRecipe) it).toArray(SolidifyingRecipe[]::new));
 		}
 
 		for (SolidifyingRecipe recipe : RECIPE_CACHE.get(world)) {
-			if (recipe.matches(itemStorage, fluidStorage)) {
+			if (recipe.matches(itemStorages, fluidStorages)) {
 				return Optional.of(recipe);
 			}
 		}
@@ -97,28 +103,22 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 		return Optional.empty();
 	}
 
-	public boolean matches(SimpleItemStorage itemStorage, SimpleFluidStorage fluidStorage) {
-		if (fluidStorage.getSize() < 1) {
+	public boolean matches(SingleSlotStorage<ItemVariant>[] itemStorages, SingleSlotStorage<FluidVariant>[] fluidStorages) {
+		var fluidInputStorage = fluidStorages[0];
+		
+		var itemOutputStorage = itemStorages[0];
+		
+		if (!input.test(fluidInputStorage)) {
 			return false;
 		}
-
-		if (itemStorage.getSize() < 1) {
-			return false;
-		}
-
-		if (!firstInput.test(fluidStorage.getFirst())) {
-			return false;
-		}
-
-		return StackUtils.equalsAndFits(firstOutput, itemStorage.getStack(0)) ;
+		
+		return output.equalsAndFitsIn(itemOutputStorage);
 	}
 
-	public boolean allows(SimpleFluidStorage fluidStorage) {
-		if (fluidStorage.getSize() < 1) {
-			return false;
-		}
+	public boolean allows(FluidVariant... variants) {
+		var inputVariant = variants[0];
 
-		return firstInput.testWeak(fluidStorage.getFirst());
+		return input.test(inputVariant, Long.MAX_VALUE);
 	}
 
 	@Override
@@ -143,7 +143,7 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 
 	@Override
 	public Identifier getId() {
-		return identifier;
+		return id;
 	}
 
 	@Override
@@ -165,30 +165,8 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 	public ItemStack createIcon() {
 		return new ItemStack(AMBlocks.ADVANCED_LIQUID_GENERATOR.get());
 	}
-
-	public Identifier getIdentifier() {
-		return identifier;
-	}
-
-	public FluidIngredient getFirstInput() {
-		return firstInput;
-	}
-
-	public ItemStack getFirstOutput() {
-		return firstOutput;
-	}
-
-	@Override
-	public double getEnergyInput() {
-		return energyInput;
-	}
-
-	public int getTime() {
-		return time;
-	}
-
-	public static final class Serializer extends AbstractRecipeSerializer<SolidifyingRecipe>
-	{
+	
+	public static final class Serializer extends AbstractRecipeSerializer<SolidifyingRecipe> {
 		public static final Identifier ID = AMCommon.id("solidifying");
 
 		public static final Serializer INSTANCE = new Serializer();
@@ -201,8 +179,8 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 
 			return new SolidifyingRecipe(
 					identifier,
-					FluidIngredient.fromJson(format.firstInput),
-					StackUtils.fromJson(format.firstOutput),
+					FluidIngredient.fromJson(format.input),
+					ItemResult.fromJson(format.output),
 					DoubleUtils.fromJson(format.energyInput),
 					IntegerUtils.fromJson(format.time)
 			);
@@ -213,7 +191,7 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 			return new SolidifyingRecipe(
 					identifier,
 					FluidIngredient.fromPacket(buffer),
-					StackUtils.fromPacket(buffer),
+					ItemResult.fromPacket(buffer),
 					DoubleUtils.fromPacket(buffer),
 					IntegerUtils.fromPacket(buffer)
 			);
@@ -221,8 +199,8 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 
 		@Override
 		public void write(PacketByteBuf buffer, SolidifyingRecipe recipe) {
-			recipe.firstInput.toPacket(buffer);
-			StackUtils.toPacket(buffer, recipe.getFirstOutput());
+			FluidIngredient.toPacket(buffer, recipe.input);
+			ItemResult.toPacket(buffer, recipe.output);
 			DoubleUtils.toPacket(buffer, recipe.energyInput);
 			IntegerUtils.toPacket(buffer, recipe.time);
 		}
@@ -236,24 +214,14 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 
 	public static final class Format {
 		@SerializedName("input")
-		JsonElement firstInput;
+		JsonElement input;
 
 		@SerializedName("output")
-		JsonElement firstOutput;
+		JsonElement output;
 
 		@SerializedName("energy_input")
 		JsonElement energyInput;
 
 		JsonElement time;
-
-		@Override
-		public String toString() {
-			return "Format{" +
-					"firstInput=" + firstInput +
-					", firstOutput=" + firstOutput +
-					", energyInput=" + energyInput +
-					", time=" + time +
-					'}';
-		}
 	}
 }

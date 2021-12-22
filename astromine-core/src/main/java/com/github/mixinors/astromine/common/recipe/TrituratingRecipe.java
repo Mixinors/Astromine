@@ -156,8 +156,7 @@ public final class TrituratingRecipe implements Recipe<Inventory> {
 		return new ItemStack(AMBlocks.ADVANCED_TRITURATOR.get());
 	}
 	
-	public static final class Serializer extends AbstractRecipeSerializer<TrituratingRecipe>
-	{
+	public static final class Serializer extends AbstractRecipeSerializer<TrituratingRecipe> {
 		public static final Identifier ID = AMCommon.id("triturating");
 
 		public static final Serializer INSTANCE = new Serializer();

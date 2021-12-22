@@ -122,7 +122,7 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 
 						fluidStorage.getFirst().take(recipe.getFirstInput().testMatching(fluidStorage.getFirst()).getAmount());
 						fluidStorage.getSecond().take(recipe.getSecondInput().testMatching(fluidStorage.getSecond()).getAmount());
-						fluidStorage.getThird().take(recipe.getFirstOutput());
+						fluidStorage.getThird().take(recipe.getOutput());
 
 						progress = 0;
 					} else {

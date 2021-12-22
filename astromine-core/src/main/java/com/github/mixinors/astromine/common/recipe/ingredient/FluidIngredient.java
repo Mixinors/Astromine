@@ -27,8 +27,8 @@ package com.github.mixinors.astromine.common.recipe.ingredient;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import dev.architectury.hooks.tags.TagHooks;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.tag.ServerTagManagerHolder;
@@ -40,16 +40,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiPredicate;
 
-public final class FluidIngredient implements BiPredicate<FluidVariant, Long> {
+public final class FluidIngredient {
 	private final Entry entry;
 	
 	public FluidIngredient(Entry entry) {
 		this.entry = entry;
 	}
 	
-	@Override
+	public boolean test(SingleSlotStorage<FluidVariant> testStorage) {
+		return test(testStorage.getResource(), testStorage.getAmount());
+	}
+	
 	public boolean test(FluidVariant testVariant, Long testAmount) {
 		return entry.test(testVariant, testAmount);
+	}
+	
+	public Entry getEntry() {
+		return entry;
+	}
+	
+	public long getAmount() {
+		return entry.getAmount();
 	}
 	
 	public static FluidIngredient fromJson(JsonElement json) {
@@ -64,9 +75,9 @@ public final class FluidIngredient implements BiPredicate<FluidVariant, Long> {
 		if (json.isJsonObject()) {
 			var jsonObject = json.getAsJsonObject();
 			
-			if (jsonObject.has("item")) {
+			if (jsonObject.has("fluid")) {
 				if (jsonObject.has("amount")) {
-					var entryAsId = new Identifier(jsonObject.get("item").getAsString());
+					var entryAsId = new Identifier(jsonObject.get("fluid").getAsString());
 					var entryAsFluid = Registry.FLUID.get(entryAsId);
 					var entryAsFluidVariant = FluidVariant.of(entryAsFluid);
 					
@@ -74,7 +85,7 @@ public final class FluidIngredient implements BiPredicate<FluidVariant, Long> {
 					
 					return new FluidIngredient(new VariantEntry(entryAsFluidVariant, entryAmount));
 				} else {
-					var entryAsId = new Identifier(jsonObject.get("item").getAsString());
+					var entryAsId = new Identifier(jsonObject.get("fluid").getAsString());
 					var entryAsFluid = Registry.FLUID.get(entryAsId);
 					var entryAsFluidVariant = FluidVariant.of(entryAsFluid);
 					
@@ -108,7 +119,7 @@ public final class FluidIngredient implements BiPredicate<FluidVariant, Long> {
 		if (ingredient.entry instanceof VariantEntry variantEntry) {
 			var entryJsonObject = new JsonObject();
 			
-			entryJsonObject.addProperty("item", Registry.FLUID.getId(variantEntry.requiredVariant.getFluid()).toString());
+			entryJsonObject.addProperty("fluid", Registry.FLUID.getId(variantEntry.requiredVariant.getFluid()).toString());
 			entryJsonObject.addProperty("amount", variantEntry.requiredAmount);
 		}
 		
@@ -158,7 +169,9 @@ public final class FluidIngredient implements BiPredicate<FluidVariant, Long> {
 		}
 	}
 	
-	public static abstract class Entry implements BiPredicate<FluidVariant, Long> {}
+	public static abstract class Entry implements BiPredicate<FluidVariant, Long> {
+		public abstract long getAmount();
+	}
 	
 	public static class VariantEntry extends Entry {
 		private final FluidVariant requiredVariant;
@@ -176,7 +189,12 @@ public final class FluidIngredient implements BiPredicate<FluidVariant, Long> {
 		
 		@Override
 		public boolean test(FluidVariant testVariant, Long testAmount) {
-			return testVariant.equals(requiredVariant) && testAmount > requiredAmount;
+			return testVariant.equals(requiredVariant) && testAmount >= requiredAmount;
+		}
+		
+		@Override
+		public long getAmount() {
+			return requiredAmount;
 		}
 	}
 	
@@ -206,12 +224,17 @@ public final class FluidIngredient implements BiPredicate<FluidVariant, Long> {
 			}
 			
 			for (var requiredVariant : requiredVariants) {
-				if (requiredVariant.equals(testVariant) && testAmount > requiredAmount) {
+				if (requiredVariant.equals(testVariant) && testAmount >= requiredAmount) {
 					return true;
 				}
 			}
 			
 			return false;
+		}
+		
+		@Override
+		public long getAmount() {
+			return requiredAmount;
 		}
 	}
 }

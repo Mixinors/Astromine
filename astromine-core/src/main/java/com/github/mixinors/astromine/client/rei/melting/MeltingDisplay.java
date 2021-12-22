@@ -50,7 +50,7 @@ public class MeltingDisplay implements Display {
 	private final Identifier recipeId;
 
 	public MeltingDisplay(MeltingRecipe recipe) {
-		this(recipe.getFirstInput(), recipe.getFirstOutput(), recipe.getTime(), recipe.getEnergyInput(), recipe.getId());
+		this(recipe.getInput(), recipe.getOutput(), recipe.getTime(), recipe.getEnergyInput(), recipe.getId());
 	}
 
 	public MeltingDisplay(ItemIngredient input, FluidVolume output, int timeRequired, double energyRequired, Identifier recipeId) {
