@@ -1,17 +1,18 @@
 package com.github.mixinors.astromine.common.util;
 
-import com.google.common.collect.Lists;
-import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.Dynamic;
-import com.mojang.serialization.DynamicOps;
-
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Stream;
+
+import com.google.common.collect.Lists;
+
+import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.Dynamic;
+import com.mojang.serialization.DynamicOps;
 
 public class WeightedList<U> {
 	protected final List<WeightedList.Entry<U>> entries;
@@ -25,9 +26,7 @@ public class WeightedList<U> {
 	}
 
 	public static <U> Codec<WeightedList<U>> createCodec(Codec<U> codec) {
-		return WeightedList.Entry.createCodec(codec).listOf().xmap(WeightedList::new, (weightedList) -> {
-			return weightedList.entries;
-		});
+		return WeightedList.Entry.createCodec(codec).listOf().xmap(WeightedList::new, (weightedList) -> weightedList.entries);
 	}
 
 	public WeightedList<U> add(U data, int weight) {
@@ -36,9 +35,7 @@ public class WeightedList<U> {
 	}
 
 	public WeightedList<U> shuffle(Random random) {
-		this.entries.forEach((entry) -> {
-			entry.setShuffledOrder(random.nextFloat());
-		});
+		this.entries.forEach((entry) -> entry.setShuffledOrder(random.nextFloat()));
 		this.entries.sort(Comparator.comparingDouble(WeightedList.Entry::getShuffledOrder));
 		return this;
 	}
@@ -48,7 +45,7 @@ public class WeightedList<U> {
 	}
 
 	public String toString() {
-		return "ShufflingList[" + this.entries + "]";
+		return "WeightedList[" + this.entries + "]";
 	}
 
 	public boolean isEmpty() {
@@ -93,9 +90,7 @@ public class WeightedList<U> {
 					Dynamic<T> dynamic = new Dynamic<>(dynamicOps, object);
 					return dynamic.get("data").flatMap(codec::parse).map((data) -> {
 						return new WeightedList.Entry<>(data, dynamic.get("weight").asInt(1));
-					}).map((entry) -> {
-						return Pair.of(entry, dynamicOps.empty());
-					});
+					}).map((entry) -> Pair.of(entry, dynamicOps.empty()));
 				}
 
 				@Override

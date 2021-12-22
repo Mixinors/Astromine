@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.util;
 
 
 import dev.architectury.hooks.fluid.FluidStackHooks;
+
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;

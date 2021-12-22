@@ -34,32 +34,42 @@ import team.reborn.energy.EnergyTier;
 
 public interface
 ComponentEnergyProvider extends EnergyStorage {
-	/** Override behavior to redirect calls to this provider's {@link EnergyComponent}. */
+	/**
+	 * Override behavior to redirect calls to this provider's {@link EnergyComponent}.
+	 */
 	@Override
 	default double getStored(EnergySide side) {
 		return getEnergyComponent().getAmount();
 	}
 
-	/** Override behavior to redirect calls to this provider's {@link EnergyComponent}. */
+	/**
+	 * Override behavior to redirect calls to this provider's {@link EnergyComponent}.
+	 */
 	@Override
 	default void setStored(double amount) {
 		getEnergyComponent().setAmount(amount);
 	}
 
-	/** Override behavior to redirect calls to this provider's {@link EnergyComponent}. */
+	/**
+	 * Override behavior to redirect calls to this provider's {@link EnergyComponent}.
+	 */
 	@Override
 	default double getMaxStoredPower() {
 		return getEnergyComponent().getSize();
 	}
 
-	/** Override behavior to ignore TechReborn's energy tiers. */
+	/**
+	 * Override behavior to ignore TechReborn's energy tiers.
+	 */
 	@Override
 	default EnergyTier getTier() {
 		return EnergyTier.INSANE;
 	}
 
-	/** Override behavior to redirect calls to this provider's {@link EnergyComponent}
-	 * and {@link TransferComponent}, if present. */
+	/**
+	 * Override behavior to redirect calls to this provider's {@link EnergyComponent}
+	 * and {@link TransferComponent}, if present.
+	 */
 	@Override
 	default double getMaxInput(EnergySide side) {
 		boolean allow = false;
@@ -83,8 +93,10 @@ ComponentEnergyProvider extends EnergyStorage {
 		}
 	}
 
-	/** Override behavior to redirect calls to this provider's {@link EnergyComponent}
-	 * and {@link TransferComponent}, if present. */
+	/**
+	 * Override behavior to redirect calls to this provider's {@link EnergyComponent}
+	 * and {@link TransferComponent}, if present.
+	 */
 	@Override
 	default double getMaxOutput(EnergySide side) {
 		boolean allow = false;
@@ -108,7 +120,9 @@ ComponentEnergyProvider extends EnergyStorage {
 		}
 	}
 
-	/** Override behavior to return this as an {@link EnergyComponent}. */
+	/**
+	 * Override behavior to return this as an {@link EnergyComponent}.
+	 */
 	default EnergyComponent getEnergyComponent() {
 		return EnergyComponent.get(this);
 	}

@@ -24,32 +24,40 @@
 
 package com.github.mixinors.astromine.common.util;
 
-import com.github.mixinors.astromine.AMCommon;
-import net.minecraft.network.PacketByteBuf;
-
-import io.netty.buffer.ByteBuf;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 
+import com.github.mixinors.astromine.AMCommon;
+import io.netty.buffer.ByteBuf;
+
+import net.minecraft.network.PacketByteBuf;
+
 public class IntegerUtils {
-    /** Serializes the given integer to a {@link ByteBuf}. */
-    public static void toPacket(PacketByteBuf buffer, int number) {
-        buffer.writeInt(number);
-    }
+	/**
+	 * Serializes the given integer to a {@link ByteBuf}.
+	 */
+	public static void toPacket(PacketByteBuf buffer, int number) {
+		buffer.writeInt(number);
+	}
 
-    /** Deserializes an integer from a {@link ByteBuf}. */
-    public static int fromPacket(PacketByteBuf buffer) {
-        return buffer.readInt();
-    }
+	/**
+	 * Deserializes an integer from a {@link ByteBuf}.
+	 */
+	public static int fromPacket(PacketByteBuf buffer) {
+		return buffer.readInt();
+	}
 
-    /** Serializes the given integer to a {@link JsonElement}. */
-    public static JsonElement toJson(int number) {
-        return new JsonPrimitive(number);
-    }
+	/**
+	 * Serializes the given integer to a {@link JsonElement}.
+	 */
+	public static JsonElement toJson(int number) {
+		return new JsonPrimitive(number);
+	}
 
-    /** Deserializes an integer from a {@link JsonElement}. */
-    public static int fromJson(JsonElement json) {
-        return AMCommon.GSON.fromJson(json, Integer.class);
-    }
+	/**
+	 * Deserializes an integer from a {@link JsonElement}.
+	 */
+	public static int fromJson(JsonElement json) {
+		return AMCommon.GSON.fromJson(json, Integer.class);
+	}
 }

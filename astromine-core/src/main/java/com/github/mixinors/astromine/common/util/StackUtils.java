@@ -24,6 +24,12 @@
 
 package com.github.mixinors.astromine.common.util;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+
+import io.netty.buffer.ByteBuf;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -33,19 +39,14 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.registry.Registry;
 
-import io.netty.buffer.ByteBuf;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-
 public class StackUtils {
-	/** Attempts to merge two {@link ItemStack}s, returning a {@link Pair}
+	/**
+	 * Attempts to merge two {@link ItemStack}s, returning a {@link Pair}
 	 * with the results.
-	 *
+	 * <p>
 	 * The amount transferred is the {@link Math#min(int, int)} between
 	 * their available space, our amount, and the specified amount.
-	 * */
+	 */
 	public static Pair<ItemStack, ItemStack> merge(ItemStack source, ItemStack target) {
 		int targetMax = target.getMaxCount();
 
@@ -73,14 +74,17 @@ public class StackUtils {
 		return new Pair<>(source, target);
 	}
 
-	/** Asserts whether the source {@link ItemStack} matches the second,
+	/**
+	 * Asserts whether the source {@link ItemStack} matches the second,
 	 * and whether the target can fit the source, or not.
 	 */
 	public static boolean test(ItemStack source, ItemStack target) {
 		return target.isEmpty() || ItemStack.areItemsEqual(source, target) && ItemStack.areNbtEqual(source, target) && target.getMaxCount() - target.getCount() >= source.getCount();
 	}
 
-	/** Weakly merges an {@link ItemStack} into another, returning the resulting target. */
+	/**
+	 * Weakly merges an {@link ItemStack} into another, returning the resulting target.
+	 */
 	public static ItemStack into(ItemStack source, ItemStack target) {
 		if (target.isEmpty()) {
 			return source.copy();
@@ -91,12 +95,16 @@ public class StackUtils {
 		}
 	}
 
-	/** Asserts equality of {@link ItemStack} {@link NbtCompound} and {@link Item}. */
+	/**
+	 * Asserts equality of {@link ItemStack} {@link NbtCompound} and {@link Item}.
+	 */
 	public static boolean areItemsAndTagsEqual(ItemStack left, ItemStack right) {
 		return ItemStack.areItemsEqual(left, right) && ItemStack.areNbtEqual(left, right);
 	}
 
-	/** Deserializes an {@link ItemStack} from a {@link JsonElement}. */
+	/**
+	 * Deserializes an {@link ItemStack} from a {@link JsonElement}.
+	 */
 	public static ItemStack fromJson(JsonElement jsonElement) {
 		if (!jsonElement.isJsonObject()) {
 			if (jsonElement.isJsonPrimitive()) {
@@ -115,7 +123,9 @@ public class StackUtils {
 		}
 	}
 
-	/** Serializes the given {@link ItemStack} to a {@link JsonElement}. */
+	/**
+	 * Serializes the given {@link ItemStack} to a {@link JsonElement}.
+	 */
 	public static JsonElement toJson(ItemStack stack) {
 		JsonObject object = new JsonObject();
 		object.addProperty("item", Registry.ITEM.getId(stack.getItem()).toString());
@@ -123,12 +133,16 @@ public class StackUtils {
 		return object;
 	}
 
-	/** Deserializes an {@link ItemStack} from a {@link ByteBuf}. */
+	/**
+	 * Deserializes an {@link ItemStack} from a {@link ByteBuf}.
+	 */
 	public static ItemStack fromPacket(PacketByteBuf buffer) {
 		return buffer.readItemStack();
 	}
 
-	/** Serializes the given {@link ItemStack} to a {@link ByteBuf}. */
+	/**
+	 * Serializes the given {@link ItemStack} to a {@link ByteBuf}.
+	 */
 	public static void toPacket(PacketByteBuf buffer, ItemStack stack) {
 		buffer.writeItemStack(stack);
 	}

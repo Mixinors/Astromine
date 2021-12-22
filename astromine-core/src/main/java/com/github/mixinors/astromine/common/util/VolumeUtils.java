@@ -24,22 +24,23 @@
 
 package com.github.mixinors.astromine.common.util;
 
-import net.minecraft.item.BucketItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
+
+import net.minecraft.item.BucketItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.Pair;
 
 public class VolumeUtils {
-	/** Attempts to merge two {@link FluidVolume}s, returning a {@link Pair}
+	/**
+	 * Attempts to merge two {@link FluidVolume}s, returning a {@link Pair}
 	 * with the results.
-	 *
+	 * <p>
 	 * The amount transferred is the {@link Math#min(long, long)}  between
 	 * their available space, our amount, and the specified amount.
-	 * */
+	 */
 	public static Pair<FluidVolume, FluidVolume> merge(FluidVolume source, FluidVolume target) {
 		long targetMax = target.getSize();
 
@@ -55,8 +56,10 @@ public class VolumeUtils {
 		return new Pair<>(source, target);
 	}
 
-	/** Inserts fluids from the first stack into the first fluid volume.
-		* Inserts fluids from the first fluid volume into the first stack. */
+	/**
+	 * Inserts fluids from the first stack into the first fluid volume.
+	 * Inserts fluids from the first fluid volume into the first stack.
+	 */
 	public static void transferBetween(ItemComponent itemComponent, FluidComponent fluidComponent, int firstStackSlot, int secondStackSlot, int volumeSlot) {
 		if (fluidComponent != null) {
 			if (itemComponent != null) {
@@ -65,43 +68,45 @@ public class VolumeUtils {
 				if (firstStackFluidComponent != null) {
 					FluidVolume ourVolume = fluidComponent.getVolume(volumeSlot);
 
-					firstStackFluidComponent.forEach(stackVolume -> {if (ourVolume.test(stackVolume.getFluid())) {
-						if (itemComponent.getStack(firstStackSlot).getItem() instanceof BucketItem) {
-							if (itemComponent.getStack(firstStackSlot).getItem() != Items.BUCKET && itemComponent.getStack(firstStackSlot).getCount() == 1) {
-								if (ourVolume.hasAvailable(FluidVolume.BUCKET) || ourVolume.isEmpty()) {
-									ourVolume.take(stackVolume, FluidVolume.BUCKET);
+					firstStackFluidComponent.forEach(stackVolume -> {
+						if (ourVolume.test(stackVolume.getFluid())) {
+							if (itemComponent.getStack(firstStackSlot).getItem() instanceof BucketItem) {
+								if (itemComponent.getStack(firstStackSlot).getItem() != Items.BUCKET && itemComponent.getStack(firstStackSlot).getCount() == 1) {
+									if (ourVolume.hasAvailable(FluidVolume.BUCKET) || ourVolume.isEmpty()) {
+										ourVolume.take(stackVolume, FluidVolume.BUCKET);
 
-                                        itemComponent.setStack(firstStackSlot, new ItemStack(Items.BUCKET));
-                                    }
-                                }
-                            } else {
-                                ourVolume.take(stackVolume, FluidVolume.BUCKET);
-                            }
-                        }
-                    });
-                }
+										itemComponent.setStack(firstStackSlot, new ItemStack(Items.BUCKET));
+									}
+								}
+							} else {
+								ourVolume.take(stackVolume, FluidVolume.BUCKET);
+							}
+						}
+					});
+				}
 
 				FluidComponent secondStackFluidComponent = FluidComponent.get(itemComponent.getStack(secondStackSlot));
 
 				if (secondStackFluidComponent != null) {
 					FluidVolume ourVolume = fluidComponent.getVolume(volumeSlot);
 
-					secondStackFluidComponent.forEach(stackVolume -> {if (stackVolume.test(ourVolume.getFluid())) {
-						if (itemComponent.getStack(secondStackSlot).getItem() instanceof BucketItem) {
-							if (itemComponent.getStack(secondStackSlot).getItem() == Items.BUCKET && itemComponent.getStack(secondStackSlot).getCount() == 1) {
-								if (ourVolume.hasStored(FluidVolume.BUCKET)) {
-									ourVolume.give(stackVolume, FluidVolume.BUCKET);
+					secondStackFluidComponent.forEach(stackVolume -> {
+						if (stackVolume.test(ourVolume.getFluid())) {
+							if (itemComponent.getStack(secondStackSlot).getItem() instanceof BucketItem) {
+								if (itemComponent.getStack(secondStackSlot).getItem() == Items.BUCKET && itemComponent.getStack(secondStackSlot).getCount() == 1) {
+									if (ourVolume.hasStored(FluidVolume.BUCKET)) {
+										ourVolume.give(stackVolume, FluidVolume.BUCKET);
 
-                                        itemComponent.setStack(secondStackSlot, new ItemStack(stackVolume.getFluid().getBucketItem()));
-                                    }
-                                }
-                            } else {
-                                ourVolume.give(stackVolume, FluidVolume.BUCKET);
-                            }
-                        }
-                    });
-                }
-            }
-        }
-    }
+										itemComponent.setStack(secondStackSlot, new ItemStack(stackVolume.getFluid().getBucketItem()));
+									}
+								}
+							} else {
+								ourVolume.give(stackVolume, FluidVolume.BUCKET);
+							}
+						}
+					});
+				}
+			}
+		}
+	}
 }

@@ -31,7 +31,7 @@ public class WordUtils {
 			}
 		}
 		String plural = base + suffix;
-		AMCommon.LOGGER.debug("Pluralizing "+singular+" produced "+plural);
+		AMCommon.LOGGER.debug("Pluralizing " + singular + " produced " + plural);
 		return plural;
 	}
 

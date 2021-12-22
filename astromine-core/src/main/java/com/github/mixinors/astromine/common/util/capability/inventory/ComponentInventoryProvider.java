@@ -24,7 +24,14 @@
 
 package com.github.mixinors.astromine.common.util.capability.inventory;
 
+import java.util.stream.IntStream;
+
 import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
+import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
+import com.github.mixinors.astromine.common.component.general.compatibility.InventoryFromItemComponent;
+import it.unimi.dsi.fastutil.ints.IntArraySet;
+import it.unimi.dsi.fastutil.ints.IntSet;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.InventoryProvider;
 import net.minecraft.inventory.SidedInventory;
@@ -33,36 +40,37 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.WorldAccess;
 
-import com.github.mixinors.astromine.common.component.general.base.ItemComponent;
-import com.github.mixinors.astromine.common.component.general.compatibility.InventoryFromItemComponent;
-import it.unimi.dsi.fastutil.ints.IntArraySet;
-import it.unimi.dsi.fastutil.ints.IntSet;
-
-import java.util.stream.IntStream;
-
 public interface ComponentInventoryProvider extends InventoryProvider, SidedInventory, InventoryFromItemComponent {
-	/** Returns this inventory. */
+	/**
+	 * Returns this inventory.
+	 */
 	@Override
 	default SidedInventory getInventory(BlockState state, WorldAccess world, BlockPos pos) {
 		return this;
 	}
 
-	/** Returns this inventory's input slots, defaulting to all slots. */
+	/**
+	 * Returns this inventory's input slots, defaulting to all slots.
+	 */
 	default IntSet getItemInputSlots() {
 		return new IntArraySet(IntStream.range(0, size()).toArray());
 	}
 
-	/** Returns this inventory's output slots, defaulting to all slots. */
+	/**
+	 * Returns this inventory's output slots, defaulting to all slots.
+	 */
 	default IntSet getItemOutputSlots() {
 		return new IntArraySet(IntStream.range(0, size()).toArray());
 	}
 
-	/** Override behavior to redirect calls to this inventory's
-	 * {@link TransferComponent}, if present. */
+	/**
+	 * Override behavior to redirect calls to this inventory's
+	 * {@link TransferComponent}, if present.
+	 */
 	@Override
 	default boolean canInsert(int slot, ItemStack stack, Direction direction) {
 		TransferComponent transferComponent = TransferComponent.get(this);
-		
+
 		if (transferComponent != null) {
 			return transferComponent.hasItem() && transferComponent.getItem(direction).canInsert() && getItemComponent().canInsert(direction, stack, slot);
 		} else {
@@ -70,8 +78,10 @@ public interface ComponentInventoryProvider extends InventoryProvider, SidedInve
 		}
 	}
 
-	/** Override behavior to redirect calls to this inventory's
-	 * {@link TransferComponent}, if present. */
+	/**
+	 * Override behavior to redirect calls to this inventory's
+	 * {@link TransferComponent}, if present.
+	 */
 	@Override
 	default boolean canExtract(int slot, ItemStack stack, Direction direction) {
 		TransferComponent transferComponent = TransferComponent.get(this);
@@ -83,8 +93,10 @@ public interface ComponentInventoryProvider extends InventoryProvider, SidedInve
 		}
 	}
 
-	/** Override behavior to redirect calls to this inventory's
-	 * {@link TransferComponent}, if present. */
+	/**
+	 * Override behavior to redirect calls to this inventory's
+	 * {@link TransferComponent}, if present.
+	 */
 	@Override
 	default int[] getAvailableSlots(Direction direction) {
 		TransferComponent transferComponent = TransferComponent.get(this);
@@ -99,10 +111,12 @@ public interface ComponentInventoryProvider extends InventoryProvider, SidedInve
 			}
 		}
 
-		return new int[] { 0 };
+		return new int[]{0};
 	}
 
-	/** Override behavior to return this as an {@link ItemComponent}. */
+	/**
+	 * Override behavior to return this as an {@link ItemComponent}.
+	 */
 	@Override
 	default ItemComponent getItemComponent() {
 		return ItemComponent.get(this);

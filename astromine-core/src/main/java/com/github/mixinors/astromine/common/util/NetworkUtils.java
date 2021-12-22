@@ -24,13 +24,11 @@
 
 package com.github.mixinors.astromine.common.util;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.World;
+import java.util.ArrayDeque;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Map;
+import java.util.Set;
 
 import com.github.mixinors.astromine.common.block.base.CableBlock;
 import com.github.mixinors.astromine.common.component.world.WorldNetworkComponent;
@@ -44,17 +42,20 @@ import com.github.mixinors.astromine.common.util.data.position.WorldPos;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;
 
-import java.util.ArrayDeque;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.Map;
-import java.util.Set;
+import net.minecraft.block.BlockState;
+import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.World;
 
 public class NetworkUtils {
 	public static class Tracer {
-		/** Traces a network of the given {@link NetworkType}
+		/**
+		 * Traces a network of the given {@link NetworkType}
 		 * from the specified initial {@link WorldPos}.
-		 *
+		 * <p>
 		 * Interconnected networks will be merged if necessary.
 		 */
 		public static void trace(NetworkType type, WorldPos initialPosition) {
@@ -137,7 +138,7 @@ public class NetworkUtils {
 	 */
 	public static class Modeller {
 		protected static final VoxelShape[] SHAPE_CACHE = new VoxelShape[64];
-		
+
 		public static int of(BlockState blockState) {
 			int i = 0;
 
@@ -168,8 +169,10 @@ public class NetworkUtils {
 			return directions;
 		}
 
-		/** Returns a {@link BlockState} with {@code directions}
-		 * as {@link CableBlock} properties. */
+		/**
+		 * Returns a {@link BlockState} with {@code directions}
+		 * as {@link CableBlock} properties.
+		 */
 		public static BlockState toBlockState(Set<Direction> directions, BlockState state) {
 			if (!(state.getBlock() instanceof CableBlock))
 				return state;
@@ -179,8 +182,10 @@ public class NetworkUtils {
 			return state;
 		}
 
-		/** Returns a {@link VoxelShape} with {@code directions}
-		 * as {@link CableBlock} shapes. */
+		/**
+		 * Returns a {@link VoxelShape} with {@code directions}
+		 * as {@link CableBlock} shapes.
+		 */
 		private static VoxelShape toVoxelShape(int directions, VoxelShape shape) {
 			for (Direction direction : Direction.values()) {
 				if ((directions & (0x1 << direction.getId())) != 0) {
@@ -190,20 +195,24 @@ public class NetworkUtils {
 			return shape;
 		}
 
-		/** Returns a {@link VoxelShape} with {@code directions}
-		 * as {@link CableBlock} shapes, also caches the shapes. */
+		/**
+		 * Returns a {@link VoxelShape} with {@code directions}
+		 * as {@link CableBlock} shapes, also caches the shapes.
+		 */
 		public static VoxelShape getVoxelShape(Set<Direction> directions) {
 			int i = 0;
 
 			for (Direction direction : directions) {
 				i |= 1 << direction.getId();
 			}
-			
+
 			return getVoxelShape(i);
 		}
 
-		/** Returns a {@link VoxelShape} with {@code directions}
-		 * as {@link CableBlock} shapes, also caches the shapes. */
+		/**
+		 * Returns a {@link VoxelShape} with {@code directions}
+		 * as {@link CableBlock} shapes, also caches the shapes.
+		 */
 		public static VoxelShape getVoxelShape(int directions) {
 			VoxelShape shape = SHAPE_CACHE[directions];
 			if (shape != null) {
