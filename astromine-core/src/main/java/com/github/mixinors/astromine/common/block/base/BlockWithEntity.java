@@ -59,7 +59,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.block.redstone.ComparatorMode;
 import com.github.mixinors.astromine.common.item.base.EnergyVolumeItem;
 import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
 import org.jetbrains.annotations.Nullable;

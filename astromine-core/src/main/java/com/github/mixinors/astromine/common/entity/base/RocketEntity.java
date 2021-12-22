@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.entity.base;
 
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.registry.common.AMCriteria;
 import com.github.mixinors.astromine.registry.common.AMParticles;
 import net.minecraft.client.util.math.Vector3d;
@@ -53,11 +54,24 @@ import java.util.Collection;
 
 import static java.lang.Math.min;
 
-public abstract class RocketEntity extends ComponentFluidItemEntity {
+public abstract class RocketEntity extends ExtendedEntity {
+	protected static final int FLUID_INPUT_SLOT_1 = 0;
+	protected static final int FLUID_INPUT_SLOT_2 = 1;
+	
+	protected static final int[] FLUID_INSERT_SLOTS = new int[] {FLUID_INPUT_SLOT_1, FLUID_INPUT_SLOT_2};
+	
+	protected static final int[] FLUID_EXTRACT_SLOTS = new int[] { };
+	
 	public static final TrackedData<Boolean> IS_RUNNING = DataTracker.registerData(RocketEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 
 	public RocketEntity(EntityType<?> type, World world) {
 		super(type, world);
+		
+		fluidStorage = new SimpleFluidStorage(1).extractPredicate((variant, slot) -> {
+			return false;
+		}).insertPredicate((variant, slot) -> {
+			return slot == FLUID_INPUT_SLOT_1 || slot == FLUID_INPUT_SLOT_2;
+		}).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
 	}
 
 	protected abstract boolean isFuelMatching();
@@ -147,11 +161,9 @@ public abstract class RocketEntity extends ComponentFluidItemEntity {
 	}
 
 	private void tryExplode() {
-		float[] strength = { 0 };
+		var strength = fluidStorage.getStorage(FLUID_INPUT_SLOT_1).getAmount() * 0.25F + fluidStorage.getStorage(FLUID_INPUT_SLOT_2).getAmount() * 0.25F;
 
-		getFluidComponent().forEach(volume -> strength[0] += volume.getAmount().floatValue());
-
-		world.createExplosion(this, getX(), getY(), getZ(), min(strength[0], 32F) + 3F, Explosion.DestructionType.BREAK);
+		world.createExplosion(this, getX(), getY(), getZ(), min(strength, 32.0F) + 3.0F, Explosion.DestructionType.BREAK);
 	}
 
 	public Vec3d updatePassengerForDismount(LivingEntity passenger) {
@@ -162,10 +174,11 @@ public abstract class RocketEntity extends ComponentFluidItemEntity {
 	public abstract void openInventory(PlayerEntity player);
 
 	public void tryLaunch(PlayerEntity launcher) {
-		if (this.getFluidComponent().getFirst().biggerThan(0L)) {
+		if (fluidStorage.getStorage(FLUID_INPUT_SLOT_1).getAmount() > 0 && fluidStorage.getStorage(FLUID_INPUT_SLOT_2).getAmount() > 0) {
 			this.getDataTracker().set(RocketEntity.IS_RUNNING, true);
-			if (launcher instanceof ServerPlayerEntity) {
-				AMCriteria.LAUNCH_ROCKET.trigger((ServerPlayerEntity) launcher);
+			
+			if (launcher instanceof ServerPlayerEntity serverLauncher) {
+				AMCriteria.LAUNCH_ROCKET.trigger(serverLauncher);
 			}
 		}
 	}

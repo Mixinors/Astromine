@@ -54,13 +54,18 @@ public abstract class SolidifierBlockEntity extends ExtendedBlockEntity implemen
 	public int limit = 100;
 	public boolean shouldTry = true;
 	
-	private static final int INPUT_SLOT = 0;
+	private static final int FLUID_INPUT_SLOT = 0;
 	
-	private static final int OUTPUT_SLOT = 0;
+	private static final int[] FLUID_INSERT_SLOTS = new int[] { FLUID_INPUT_SLOT };
 	
-	private static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
+	private static final int[] FLUID_EXTRACT_SLOTS = new int[] { };
 	
-	private static final int[] EXTRACT_SLOTS = new int[] { OUTPUT_SLOT };
+	private static final int ITEM_OUTPUT_SLOT = 0;
+	
+	private static final int[] ITEM_INSERT_SLOTS = new int[] { };
+	
+	private static final int[] ITEM_EXTRACT_SLOTS = new int[] { ITEM_OUTPUT_SLOT };
+	
 
 	private Optional<SolidifyingRecipe> optionalRecipe = Optional.empty();
 
@@ -72,7 +77,7 @@ public abstract class SolidifierBlockEntity extends ExtendedBlockEntity implemen
 		fluidStorage = new SimpleFluidStorage(1).extractPredicate((variant, slot) -> {
 			return false;
 		}).insertPredicate((variant, slot) -> {
-			if (slot != INPUT_SLOT) {
+			if (slot != FLUID_INPUT_SLOT) {
 				return false;
 			}
 			
@@ -80,16 +85,16 @@ public abstract class SolidifierBlockEntity extends ExtendedBlockEntity implemen
 		}).listener(() -> {
 			shouldTry = true;
 			optionalRecipe = Optional.empty();
-		}).insertSlots(INSERT_SLOTS).extractSlots(new int[] {});
+		}).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
 		
 		itemStorage = new SimpleItemStorage(1).extractPredicate((variant, slot) -> {
-			return slot == OUTPUT_SLOT;
+			return slot == ITEM_OUTPUT_SLOT;
 		}).insertPredicate((variant, slot) -> {
 			return false;
 		}).listener(() -> {
 			shouldTry = true;
 			optionalRecipe = Optional.empty();
-		}).insertSlots(new int[] { }).extractSlots(EXTRACT_SLOTS);
+		}).insertSlots(ITEM_INSERT_SLOTS).extractSlots(ITEM_EXTRACT_SLOTS);
 	}
 	
 	@Override
@@ -101,7 +106,7 @@ public abstract class SolidifierBlockEntity extends ExtendedBlockEntity implemen
 
 		if (fluidStorage != null && itemStorage != null && energyStorage != null) {
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = SolidifyingRecipe.matching(world, itemStorage.slice(OUTPUT_SLOT), fluidStorage.slice(INPUT_SLOT));
+				optionalRecipe = SolidifyingRecipe.matching(world, itemStorage.slice(ITEM_OUTPUT_SLOT), fluidStorage.slice(FLUID_INPUT_SLOT));
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -123,11 +128,11 @@ public abstract class SolidifierBlockEntity extends ExtendedBlockEntity implemen
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
 							
-							var inputStorage = fluidStorage.getStorage(INPUT_SLOT);
+							var inputStorage = fluidStorage.getStorage(FLUID_INPUT_SLOT);
 							
 							inputStorage.extract(inputStorage.getResource(), recipe.input.getAmount(), transaction);
 							
-							var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
+							var outputStorage = itemStorage.getStorage(ITEM_OUTPUT_SLOT);
 							
 							outputStorage.insert(recipe.output.variant, recipe.output.amount, transaction);
 							

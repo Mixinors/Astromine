@@ -38,7 +38,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
-import com.github.mixinors.astromine.common.entity.base.ComponentEntity;
+import com.github.mixinors.astromine.common.entity.base.ExtendedEntity;
 import com.github.mixinors.astromine.common.screenhandler.base.block.BlockStateScreenHandler;
 
 import java.util.Collection;
@@ -51,7 +51,7 @@ import java.util.function.Supplier;
  */
 public abstract class ComponentEntityScreenHandler extends BaseScreenHandler
 {
-	protected ComponentEntity entity;
+	protected ExtendedEntity entity;
 
 	protected Collection<SlotWidget> playerSlots = new HashSet<>();
 
@@ -60,11 +60,11 @@ public abstract class ComponentEntityScreenHandler extends BaseScreenHandler
 	protected TabWidget.TabWidgetCollection mainTab;
 
 	/** Instantiates a {@link ComponentEntityScreenHandler},
-	 * synchronizing its attached {@link ComponentEntity}. */
+	 * synchronizing its attached {@link ExtendedEntity}. */
 	public ComponentEntityScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, int entityId) {
 		super(type.get(), syncId, player);
 
-		entity = (ComponentEntity) player.world.getEntityById(entityId);
+		entity = (ExtendedEntity) player.world.getEntityById(entityId);
 	}
 
 	/** Returns an {@link ItemStack} representing this entity in the {@link TabWidget}. */

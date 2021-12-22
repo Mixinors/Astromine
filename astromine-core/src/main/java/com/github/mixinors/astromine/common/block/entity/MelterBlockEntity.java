@@ -32,7 +32,6 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
-import com.github.mixinors.astromine.common.util.StackUtils;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
@@ -40,8 +39,6 @@ import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvid
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.MeltingRecipe;
-import it.unimi.dsi.fastutil.ints.IntSet;
-import it.unimi.dsi.fastutil.ints.IntSets;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
@@ -54,13 +51,17 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements T
 	public int limit = 100;
 	public boolean shouldTry = true;
 	
-	private static final int INPUT_SLOT = 0;
+	private static final int FLUID_OUTPUT_SLOT = 0;
 	
-	private static final int OUTPUT_SLOT = 1;
+	private static final int[] FLUID_INSERT_SLOTS = new int[] { };
 	
-	private static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
+	private static final int[] FLUID_EXTRACT_SLOTS = new int[] { FLUID_OUTPUT_SLOT };
 	
-	private static final int[] EXTRACT_SLOTS = new int[] { OUTPUT_SLOT };
+	private static final int ITEM_INPUT_SLOT = 0;
+	
+	private static final int[] ITEM_INSERT_SLOTS = new int[] { ITEM_INPUT_SLOT };
+	
+	private static final int[] ITEM_EXTRACT_SLOTS = new int[] { };
 
 	private Optional<MeltingRecipe> optionalRecipe = Optional.empty();
 
@@ -70,20 +71,20 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements T
 		energyStorage = new SimpleEnergyStorage(getEnergySize(), Long.MAX_VALUE, Long.MAX_VALUE);
 		
 		fluidStorage = new SimpleFluidStorage(1).extractPredicate((variant, slot) -> {
-			return slot == OUTPUT_SLOT;
+			return slot == FLUID_OUTPUT_SLOT;
 		}).insertPredicate((variant, slot) -> {
 			return false;
 		}).listener(() -> {
 			shouldTry = true;
 			optionalRecipe = Optional.empty();
-		}).insertSlots(new int[] {}).extractSlots(EXTRACT_SLOTS);
+		}).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
 		
-		fluidStorage.getStorage(OUTPUT_SLOT).setCapacity(getFluidSize());
+		fluidStorage.getStorage(FLUID_OUTPUT_SLOT).setCapacity(getFluidSize());
 		
 		itemStorage = new SimpleItemStorage(1).extractPredicate((variant, slot) -> {
 			return false;
 		}).insertPredicate((variant, slot) -> {
-			if (slot != INPUT_SLOT) {
+			if (slot != ITEM_INPUT_SLOT) {
 				return false;
 			}
 			
@@ -91,7 +92,7 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements T
 		}).listener(() -> {
 			shouldTry = true;
 			optionalRecipe = Optional.empty();
-		}).insertSlots(INSERT_SLOTS).extractSlots(new int[] {});
+		}).insertSlots(FLUID_INSERT_SLOTS).extractSlots(ITEM_EXTRACT_SLOTS);
 	}
 	
 	@Override
@@ -103,7 +104,7 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements T
 
 		if (itemStorage != null && fluidStorage != null && energyStorage != null) {
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = MeltingRecipe.matching(world, itemStorage.slice(INPUT_SLOT), fluidStorage.slice(OUTPUT_SLOT));
+				optionalRecipe = MeltingRecipe.matching(world, itemStorage.slice(ITEM_INPUT_SLOT), fluidStorage.slice(FLUID_OUTPUT_SLOT));
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -125,11 +126,11 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements T
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
 							
-							var inputStorage = itemStorage.getStorage(INPUT_SLOT);
+							var inputStorage = itemStorage.getStorage(ITEM_INPUT_SLOT);
 							
 							inputStorage.extract(inputStorage.getResource(), recipe.input.getAmount(), transaction);
 							
-							var outputStorage = fluidStorage.getStorage(OUTPUT_SLOT);
+							var outputStorage = fluidStorage.getStorage(FLUID_OUTPUT_SLOT);
 							
 							outputStorage.insert(recipe.output.variant, recipe.output.amount, transaction);
 							

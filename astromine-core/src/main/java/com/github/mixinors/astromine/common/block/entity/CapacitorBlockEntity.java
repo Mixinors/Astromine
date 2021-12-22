@@ -27,8 +27,10 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+import com.google.common.base.Predicates;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
@@ -41,21 +43,30 @@ import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import net.minecraft.util.math.BlockPos;
 import team.reborn.energy.api.EnergyStorage;
+import team.reborn.energy.api.EnergyStorageUtil;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 import java.util.function.Supplier;
 
 public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
+	private static final int INPUT_SLOT = 0;
+	
+	private static final int OUTPUT_SLOT = 1;
+	
+	private static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
+	
+	private static final int[] EXTRACT_SLOTS = new int[] { OUTPUT_SLOT };
+	
 	public CapacitorBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
 		energyStorage = new SimpleEnergyStorage(getEnergySize(), Long.MAX_VALUE, Long.MAX_VALUE);
 		
 		itemStorage = new SimpleItemStorage(2).insertPredicate((variant, slot) -> {
-			return slot == 0;
+			return slot == INPUT_SLOT;
 		}).extractPredicate((stack, slot) -> {
-			return slot == 1;
-		});
+			return slot == OUTPUT_SLOT;
+		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 	
 	@Override
@@ -65,22 +76,17 @@ public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implement
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		var extractStack = itemStorage.getStack(0);
-		var extractEnergyStorage = EnergyStorage.ITEM.find(extractStack, ContainerItemContext.ofSingleSlot((SingleSlotStorage<ItemVariant>) itemStorage.getStorage(0)));
+		var inputStack = itemStorage.getStack(INPUT_SLOT);
+		var inputEnergyStorage = EnergyStorage.ITEM.find(inputStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(INPUT_SLOT)));
 		
-		try (var extractTransaction = Transaction.openOuter()) {
-			extractEnergyStorage.extract((long) Math.min(1024 * getMachineSpeed(), energyStorage.getCapacity() - energyStorage.getAmount()), extractTransaction);
+		var outputStack = itemStorage.getStack(OUTPUT_SLOT);
+		var outputEnergyStorage = EnergyStorage.ITEM.find(outputStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(OUTPUT_SLOT)));
+		
+		try (var transaction = Transaction.openOuter()) {
+			EnergyStorageUtil.move(inputEnergyStorage, energyStorage, (long) (1024 * getMachineSpeed()), transaction);
+			EnergyStorageUtil.move(energyStorage, outputEnergyStorage, (long) (1024 * getMachineSpeed()), transaction);
 			
-			try (var insertTranscation = extractTransaction.openNested()) {
-				var insertStack = itemStorage.getStack(1);
-				var insertEnergyStorage = EnergyStorage.ITEM.find(insertStack, ContainerItemContext.ofSingleSlot((SingleSlotStorage<ItemVariant>) itemStorage.getStorage(1)));
-				
-				insertEnergyStorage.insert((long) (1024 * getMachineSpeed()), insertTranscation);
-				
-				insertTranscation.commit();
-				extractTransaction.commit();
-			}
-			
+			transaction.commit();
 		}
 	}
 

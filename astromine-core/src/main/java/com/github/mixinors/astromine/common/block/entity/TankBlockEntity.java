@@ -24,7 +24,17 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+import com.google.common.base.Predicates;
+import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.fluid.Fluid;
@@ -34,41 +44,55 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 
-import com.github.mixinors.astromine.common.util.VolumeUtils;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import org.jetbrains.annotations.NotNull;
+import team.reborn.energy.api.EnergyStorage;
+import team.reborn.energy.api.EnergyStorageUtil;
 
 import java.util.function.Supplier;
 
-public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity implements TierProvider, FluidSizeProvider, SpeedProvider {
+public abstract class TankBlockEntity extends ExtendedBlockEntity implements TierProvider, FluidSizeProvider, SpeedProvider {
+	private static final int FLUID_INPUT_SLOT = 0;
+	
+	private static final int FLUID_OUTPUT_SLOT = 0;
+	
+	private static final int[] FLUID_INSERT_SLOTS = new int[] { FLUID_INPUT_SLOT };
+	
+	private static final int[] FLUID_EXTRACT_SLOTS = new int[] { FLUID_OUTPUT_SLOT };
+	
+	private static final int ITEM_INPUT_SLOT = 0;
+	
+	private static final int ITEM_OUTPUT_SLOT = 1;
+	
+	private static final int[] ITEM_INSERT_SLOTS = new int[] { ITEM_INPUT_SLOT };
+	
+	private static final int[] ITEM_EXTRACT_SLOTS = new int[] { ITEM_OUTPUT_SLOT };
+	
 	public TankBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
+		
+		fluidStorage = new SimpleFluidStorage(1).extractPredicate((variant, slot) -> {
+			return slot == FLUID_INPUT_SLOT;
+		}).extractPredicate((variant, slot) -> {
+			return slot == FLUID_OUTPUT_SLOT;
+		}).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
+		
+		itemStorage = new SimpleItemStorage(2).extractPredicate((variant, slot) -> {
+			return slot == ITEM_INPUT_SLOT;
+		}).insertPredicate((variant, slot) -> {
+			if (slot != ITEM_OUTPUT_SLOT) {
+				return false;
+			}
+			
+			return FluidStorage.ITEM.getProvider(variant.getItem()) != null;
+		}).insertSlots(ITEM_INSERT_SLOTS).extractSlots(ITEM_EXTRACT_SLOTS);
 	}
 
 	private Fluid filter = Fluids.EMPTY;
-
-	@Override
-	public SimpleFluidStorage createFluidComponent() {
-		SimpleFluidStorage fluidStorage = SimpleDirectionalFluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
-			return slot == 0 && (filter == Fluids.EMPTY || volume.getFluid() == filter);
-		});
-
-		fluidStorage.getFirst().setSize(getFluidSize());
-		return fluidStorage;
-	}
-
-	@Override
-	public SimpleItemStorage createItemComponent() {
-		return SimpleDirectionalItemComponent.of(this, 2).withInsertPredicate((direction, stack, slot) -> {
-			return slot == 0;
-		}).withExtractPredicate((direction, stack, slot) -> {
-			return slot == 1;
-		});
-	}
 
 	public Fluid getFilter() {
 		return filter;
@@ -84,19 +108,31 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 
 		if (world == null || world.isClient || !shouldRun())
 			return;
-
-		VolumeUtils.transferBetween(getItemComponent(), getFluidComponent(), 0, 1, 0);
+		
+		var inputStack = itemStorage.getStack(ITEM_INPUT_SLOT);
+		var inputFluidStorage = FluidStorage.ITEM.find(inputStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(ITEM_INPUT_SLOT)));
+		
+		var outputStack = itemStorage.getStack(ITEM_OUTPUT_SLOT);
+		var outputFluidStorage = FluidStorage.ITEM.find(outputStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(ITEM_OUTPUT_SLOT)));
+		
+		try (var transaction = Transaction.openOuter()) {
+			StorageUtil.move(inputFluidStorage, fluidStorage.getStorage(FLUID_INPUT_SLOT), Predicates.alwaysTrue(), (long) (1024 * getMachineSpeed()), transaction);
+			StorageUtil.move(fluidStorage.getStorage(FLUID_OUTPUT_SLOT), outputFluidStorage, Predicates.alwaysTrue(), (long) (1024 * getMachineSpeed()), transaction);
+			
+			transaction.commit();
+		}
 	}
 
 	@Override
 	public void writeNbt(NbtCompound nbt) {
-		nbt.putString("fluid", Registry.FLUID.getId(filter).toString());
+		nbt.putString("Fluid", Registry.FLUID.getId(filter).toString());
+		
 		super.writeNbt(nbt);
 	}
 
 	@Override
 	public void readNbt(@NotNull NbtCompound nbt) {
-		Registry.FLUID.getOrEmpty(new Identifier(nbt.getString("fluid"))).ifPresent(filter -> this.filter = filter);
+		Registry.FLUID.getOrEmpty(new Identifier(nbt.getString("Fluid"))).ifPresent(filter -> this.filter = filter);
 
 		super.readNbt(nbt);
 	}
@@ -208,9 +244,12 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 		@Override
 		public void tick() {
 			super.tick();
-
-			getFluidComponent().getFirst().setAmount(Long.MAX_VALUE);
-			getFluidComponent().getFirst().setSize(Long.MAX_VALUE);
+			
+			try (var transaction = Transaction.openOuter()) {
+				fluidStorage.getStorage(FLUID_OUTPUT_SLOT).insert(fluidStorage.getStorage(FLUID_OUTPUT_SLOT).getResource(), Long.MAX_VALUE, transaction);
+				
+				transaction.commit();
+			}
 		}
 	}
 }

@@ -47,6 +47,10 @@ public final class FluidIngredient {
 		this.entry = entry;
 	}
 	
+	public FluidIngredient(FluidVariant variant, long amount) {
+		this.entry = new VariantEntry(variant, amount);
+	}
+	
 	public boolean test(SingleSlotStorage<FluidVariant> testStorage) {
 		return test(testStorage.getResource(), testStorage.getAmount());
 	}

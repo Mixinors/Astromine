@@ -35,7 +35,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
-import com.github.mixinors.astromine.common.block.redstone.ComparatorMode;
 import com.github.mixinors.astromine.common.network.NetworkBlock;
 import com.github.mixinors.astromine.common.block.entity.SolidifierBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.SolidifierScreenHandler;
@@ -63,11 +62,6 @@ public abstract class SolidifierBlock extends HorizontalFacingTieredBlockWithEnt
 		@Override
 		public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
 			buffer.writeBlockPos(pos);
-		}
-
-		@Override
-		protected ComparatorMode getComparatorMode() {
-			return ComparatorMode.FLUIDS;
 		}
 	}
 

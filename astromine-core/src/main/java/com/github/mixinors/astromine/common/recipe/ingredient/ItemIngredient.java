@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.recipe.ingredient;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import dev.architectury.hooks.tags.TagHooks;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.minecraft.item.Item;
@@ -45,6 +46,10 @@ public final class ItemIngredient {
 	
 	public ItemIngredient(Entry entry) {
 		this.entry = entry;
+	}
+	
+	public ItemIngredient(ItemVariant variant, long amount) {
+		this.entry = new VariantEntry(variant, amount);
 	}
 	
 	public boolean test(SingleSlotStorage<ItemVariant> testStorage) {

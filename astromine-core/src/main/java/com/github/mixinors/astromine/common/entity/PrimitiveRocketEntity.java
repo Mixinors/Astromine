@@ -25,14 +25,22 @@
 package com.github.mixinors.astromine.common.entity;
 
 import com.github.mixinors.astromine.common.entity.base.RocketEntity;
+import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMDimensions;
 import com.github.mixinors.astromine.registry.common.AMFluids;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMNetworks;
+import com.google.common.base.Predicates;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.registry.menu.ExtendedMenuProvider;
 import dev.architectury.registry.menu.MenuRegistry;
 
+import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.client.util.math.Vector3d;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -48,8 +56,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.util.VolumeUtils;
-import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import com.github.mixinors.astromine.common.screenhandler.PrimitiveRocketScreenHandler;
 import io.netty.buffer.Unpooled;
 
@@ -58,38 +64,47 @@ import com.google.common.collect.Lists;
 import javax.annotation.Nullable;
 import java.util.Collection;
 
-public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuProvider
-{
-	private static final FluidIngredient KEROSENE_INGREDIENT = FluidIngredient.ofFluidVolumes(FluidVolume.of(FluidVolume.BUCKET / 9L, AMFluids.FUEL));
+public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuProvider {
+	private static final int ITEM_INPUT_SLOT_1 = 0;
+	private static final int ITEM_INPUT_SLOT_2 = 2;
+	
+	private static final int ITEM_OUTPUT_SLOT_1 = 1;
+	private static final int ITEM_OUTPUT_SLOT_2 = 2;
+	
+	private static final int[] ITEM_INSERT_SLOTS = new int[] { ITEM_INPUT_SLOT_1, ITEM_INPUT_SLOT_2 };
+	
+	private static final int[] ITEM_EXTRACT_SLOTS = new int[] { ITEM_OUTPUT_SLOT_1, ITEM_OUTPUT_SLOT_2 };
+	
+	private static final FluidIngredient FUEL_INGREDIENT = new FluidIngredient(FluidVariant.of(AMFluids.FUEL), 81000 / 9);
 
-	private static final FluidIngredient OXYGEN_INGREDIENT = FluidIngredient.ofFluidVolumes(FluidVolume.of(FluidVolume.BUCKET / 27L, AMFluids.OXYGEN));
+	private static final FluidIngredient OXYGEN_INGREDIENT = new FluidIngredient(FluidVariant.of(AMFluids.OXYGEN), 81000 / 27);
 
 	public PrimitiveRocketEntity(EntityType<?> type, World world) {
 		super(type, world);
-	}
-
-	@Override
-	public SimpleFluidStorage createFluidComponent() {
-		SimpleFluidStorage fluidStorage = SimpleAutoSyncedFluidComponent.of(2);
-		fluidStorage.getFirst().setSize(FluidVolume.BUCKET * 16L);
-		fluidStorage.getSecond().setSize(FluidVolume.BUCKET * 16L);
-		return fluidStorage;
-	}
-
-	@Override
-	public SimpleItemStorage createItemComponent() {
-		return SimpleAutoSyncedItemComponent.of(4);
+		
+		fluidStorage.getStorage(FLUID_INPUT_SLOT_1).setCapacity(81000 * 16);
+		fluidStorage.getStorage(FLUID_INPUT_SLOT_2).setCapacity(81000 * 16);
+		
+		itemStorage = new SimpleItemStorage(4).extractPredicate((variant, slot) -> {
+			return slot == ITEM_OUTPUT_SLOT_1 || slot == ITEM_OUTPUT_SLOT_2;
+		}).insertPredicate((variant, slot) -> {
+			return FluidStorage.ITEM.getProvider(variant.getItem()) != null && (slot == ITEM_INPUT_SLOT_1 || slot == ITEM_INPUT_SLOT_2);
+		}).insertSlots(ITEM_INSERT_SLOTS).extractSlots(ITEM_EXTRACT_SLOTS);
 	}
 
 	@Override
 	protected boolean isFuelMatching() {
-		return KEROSENE_INGREDIENT.test(getFluidComponent().getFirst()) && OXYGEN_INGREDIENT.test(getFluidComponent().getSecond());
+		return FUEL_INGREDIENT.test(fluidStorage.getStorage(FLUID_INPUT_SLOT_1)) && OXYGEN_INGREDIENT.test(fluidStorage.getStorage(FLUID_INPUT_SLOT_2));
 	}
 
 	@Override
 	protected void consumeFuel() {
-		getFluidComponent().getFirst().take(KEROSENE_INGREDIENT.testMatching(getFluidComponent().getFirst()).getAmount());
-		getFluidComponent().getSecond().take(OXYGEN_INGREDIENT.testMatching(getFluidComponent().getSecond()).getAmount());
+		try (var transaction = Transaction.openOuter()) {
+			fluidStorage.getStorage(FLUID_INPUT_SLOT_1).extract(FluidVariant.of(AMFluids.FUEL), FUEL_INGREDIENT.getAmount(), transaction);
+			fluidStorage.getStorage(FLUID_INPUT_SLOT_2).extract(FluidVariant.of(AMFluids.OXYGEN), OXYGEN_INGREDIENT.getAmount(), transaction);
+			
+			transaction.commit();
+		}
 	}
 
 	@Override
@@ -163,10 +178,45 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 
 			getDataTracker().set(IS_RUNNING, false);
 		}
-
-		VolumeUtils.transferBetween(getItemComponent(), getFluidComponent(), 0, 1, 0);
-		VolumeUtils.transferBetween(getItemComponent(), getFluidComponent(), 2, 3, 1);
-
+		
+		try (var transaction = Transaction.openOuter()) {
+			var firstItemInputStack = itemStorage.getStack(ITEM_INPUT_SLOT_1);
+			var secondItemInputStack = itemStorage.getStack(ITEM_INPUT_SLOT_2);
+			
+			var firstItemInputStorage = itemStorage.getStorage(ITEM_INPUT_SLOT_1);
+			var secondItemInputStorage = itemStorage.getStorage(ITEM_INPUT_SLOT_2);
+			
+			var firstItemOutputStorage = itemStorage.getStorage(ITEM_OUTPUT_SLOT_1);
+			var secondItemOutputStorage = itemStorage.getStorage(ITEM_OUTPUT_SLOT_2);
+			
+			var firstFluidInputStorage = fluidStorage.getStorage(FLUID_INPUT_SLOT_1);
+			var secondFluidInputStorage = fluidStorage.getStorage(FLUID_INPUT_SLOT_2);
+			
+			var firstFluidOutputStorage = FluidStorage.ITEM.find(firstItemInputStack, ContainerItemContext.ofSingleSlot(firstItemInputStorage));
+			var secondFluidOutputStorage = FluidStorage.ITEM.find(secondItemInputStack, ContainerItemContext.ofSingleSlot(secondItemInputStorage));
+			
+			StorageUtil.move(firstFluidOutputStorage, firstFluidInputStorage, Predicates.alwaysTrue(), 81000, transaction);
+			StorageUtil.move(secondFluidOutputStorage, secondFluidInputStorage, Predicates.alwaysTrue(), 81000, transaction);
+			
+			if (firstItemOutputStorage.getResource().isBlank()) {
+				StorageUtil.move(firstItemInputStorage, firstItemOutputStorage, (variant) -> {
+					var storage = FluidStorage.ITEM.find(variant.toStack(), ContainerItemContext.ofSingleSlot(firstItemOutputStorage));
+					
+					return storage == null || storage.iterator(transaction).next().isResourceBlank();
+				}, 1, transaction);
+			}
+			
+			if (secondItemOutputStorage.getResource().isBlank()) {
+				StorageUtil.move(secondItemInputStorage, secondItemOutputStorage, (variant) -> {
+					var storage = FluidStorage.ITEM.find(variant.toStack(), ContainerItemContext.ofSingleSlot(firstItemOutputStorage));
+					
+					return storage == null || storage.iterator(transaction).next().isResourceBlank();
+				}, 1, transaction);
+			}
+			
+			transaction.commit();
+		}
+		
 		super.tick();
 	}
 }
