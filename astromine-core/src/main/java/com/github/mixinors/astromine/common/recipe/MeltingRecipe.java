@@ -55,17 +55,17 @@ import java.util.Optional;
 
 public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 	private final Identifier identifier;
-	private final ItemIngredient firstInput;
-	private final FluidVolume firstOutput;
+	private final ItemIngredient input;
+	private final FluidVolume output;
 	private final double energyInput;
 	private final int time;
 
 	private static final Map<World, MeltingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public MeltingRecipe(Identifier identifier, ItemIngredient firstInput, FluidVolume firstOutput, double energyInput, int time) {
+	public MeltingRecipe(Identifier identifier, ItemIngredient input, FluidVolume output, double energyInput, int time) {
 		this.identifier = identifier;
-		this.firstInput = firstInput;
-		this.firstOutput = firstOutput;
+		this.input = input;
+		this.output = output;
 		this.energyInput = energyInput;
 		this.time = time;
 	}
@@ -107,11 +107,11 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 			return false;
 		}
 
-		if (!firstInput.test(itemComponent.getFirst())) {
+		if (!input.test(itemComponent.getFirst())) {
 			return false;
 		}
 
-		return firstOutput.test(fluidComponent.getFirst());
+		return output.test(fluidComponent.getFirst());
 	}
 
 	public boolean allows(ItemComponent itemComponent) {
@@ -119,7 +119,7 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 			return false;
 		}
 
-		return firstInput.testWeak(itemComponent.getFirst());
+		return input.testWeak(itemComponent.getFirst());
 	}
 
 	@Override
@@ -166,12 +166,12 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 		return identifier;
 	}
 
-	public ItemIngredient getFirstInput() {
-		return firstInput;
+	public ItemIngredient getInput() {
+		return input;
 	}
 
-	public FluidVolume getFirstOutput() {
-		return firstOutput.copy();
+	public FluidVolume getFluidOutput() {
+		return output.copy();
 	}
 
 	public int getTime() {
@@ -197,8 +197,8 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 
 			return new MeltingRecipe(
 					identifier,
-					ItemIngredient.fromJson(format.firstInput),
-					FluidVolume.fromJson(format.firstOutput),
+					ItemIngredient.fromJson(format.input),
+					FluidVolume.fromJson(format.output),
 					DoubleUtils.fromJson(format.energyInput),
 					IntegerUtils.fromJson(format.time)
 			);
@@ -217,8 +217,8 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 
 		@Override
 		public void write(PacketByteBuf buffer, MeltingRecipe recipe) {
-			recipe.firstInput.toPacket(buffer);
-			recipe.firstOutput.toPacket(buffer);
+			recipe.input.toPacket(buffer);
+			recipe.output.toPacket(buffer);
 			DoubleUtils.toPacket(buffer, recipe.energyInput);
 			IntegerUtils.toPacket(buffer, recipe.time);
 		}
@@ -231,13 +231,11 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 	}
 
 	public static final class Format {
-		@SerializedName("input")
-		JsonElement firstInput;
+		JsonElement input;
 
-		@SerializedName("output")
-		JsonElement firstOutput;
+		JsonElement output;
 
-		@SerializedName("energy")
+		@SerializedName("energy_input")
 		JsonElement energyInput;
 
 		JsonElement time;
@@ -245,8 +243,8 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 		@Override
 		public String toString() {
 			return "Format{" +
-					"firstInput=" + firstInput +
-					", firstOutput=" + firstOutput +
+					"input=" + input +
+					", output=" + output +
 					", energyInput=" + energyInput +
 					", time=" + time +
 					'}';

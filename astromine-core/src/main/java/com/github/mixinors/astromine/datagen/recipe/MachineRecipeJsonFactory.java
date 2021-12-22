@@ -4,9 +4,7 @@ import java.util.function.Consumer;
 
 import com.google.gson.JsonObject;
 
-import com.github.mixinors.astromine.common.recipe.PressingRecipe;
-import com.github.mixinors.astromine.common.recipe.TrituratingRecipe;
-import com.github.mixinors.astromine.common.recipe.WireMillingRecipe;
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
 import dev.architectury.core.AbstractRecipeSerializer;
 import org.jetbrains.annotations.Nullable;
@@ -14,9 +12,12 @@ import org.jetbrains.annotations.Nullable;
 import net.minecraft.advancement.criterion.CriterionConditions;
 import net.minecraft.data.server.recipe.CraftingRecipeJsonFactory;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
+import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
@@ -24,25 +25,51 @@ import net.minecraft.util.registry.Registry;
 
 public abstract class MachineRecipeJsonFactory<T extends EnergyConsumingRecipe<Inventory>> implements CraftingRecipeJsonFactory {
 	protected final int processingTime;
-	protected final int energy;
 	protected final AbstractRecipeSerializer<T> serializer;
 
-	protected MachineRecipeJsonFactory(int processingTime, int energy, AbstractRecipeSerializer<T> serializer) {
+	protected MachineRecipeJsonFactory(int processingTime, AbstractRecipeSerializer<T> serializer) {
 		this.processingTime = processingTime;
-		this.energy = energy;
 		this.serializer = serializer;
-	}
-
-	public int getEnergy() {
-		return energy;
 	}
 
 	@Override
 	public void offerTo(Consumer<RecipeJsonProvider> exporter) {
-		this.offerTo(exporter, CraftingRecipeJsonFactory.getItemId(this.getOutputItem()) + "_from_" + getName());
+		this.offerTo(exporter, getRecipeId());
+	}
+
+	@Override
+	public void offerTo(Consumer<RecipeJsonProvider> exporter, String recipePath) {
+		Identifier defaultId = getRecipeId();
+		Identifier givenId = new Identifier(recipePath);
+		if (givenId.equals(defaultId)) {
+			throw new IllegalStateException("Recipe " + recipePath + " should remove its 'recipePath' argument as it is equal to default one");
+		} else {
+			this.offerTo(exporter, givenId);
+		}
 	}
 
 	public abstract String getName();
+
+	@Override
+	public Item getOutputItem() {
+		return Items.AIR;
+	}
+
+	public Fluid getOutputFluid() {
+		return Fluids.EMPTY;
+	}
+
+	public Identifier getOutputId() {
+		return switch(getOutputType()) {
+			case ITEM -> CraftingRecipeJsonFactory.getItemId(getOutputItem());
+			case FLUID -> getFluidId(getOutputFluid());
+			case ENERGY -> AMCommon.id("energy");
+		};
+	}
+
+	public Identifier getRecipeId() {
+		return new Identifier(getOutputId() + "_from_" + getName());
+	}
 
 	@Override
 	public CraftingRecipeJsonFactory criterion(String name, CriterionConditions conditions) {
@@ -55,6 +82,12 @@ public abstract class MachineRecipeJsonFactory<T extends EnergyConsumingRecipe<I
 		// we don't use groups here!
 		return this;
 	}
+
+	static Identifier getFluidId(Fluid fluid) {
+		return Registry.FLUID.getId(fluid);
+	}
+
+	public abstract OutputType getOutputType();
 
 	public static PressingRecipeJsonFactory createPressing(Ingredient input, ItemConvertible output, int outputCount, int processingTime, int energy) {
 		return new PressingRecipeJsonFactory(input, output, outputCount, processingTime, energy);
@@ -72,23 +105,24 @@ public abstract class MachineRecipeJsonFactory<T extends EnergyConsumingRecipe<I
 		return new AlloySmeltingRecipeJsonFactory(firstInput, firstCount, secondInput,secondCount, output, outputCount, processingTime, energy);
 	}
 
+	public static MeltingRecipeJsonFactory createMelting(Ingredient input, Fluid output, int outputAmount, int processingTime, int energy) {
+		return new MeltingRecipeJsonFactory(input, output, outputAmount, processingTime, energy);
+	}
+
 	public abstract static class MachineRecipeJsonProvider<T extends EnergyConsumingRecipe<Inventory>> implements RecipeJsonProvider {
 		protected final Identifier recipeId;
 		protected final int processingTime;
-		protected final int energy;
 		protected final RecipeSerializer<T> serializer;
 
-		public MachineRecipeJsonProvider(Identifier recipeId, int processingTime, int energy, RecipeSerializer<T> serializer) {
+		public MachineRecipeJsonProvider(Identifier recipeId, int processingTime, RecipeSerializer<T> serializer) {
 			this.recipeId = recipeId;
 			this.processingTime = processingTime;
-			this.energy = energy;
 			this.serializer = serializer;
 		}
 
 		@Override
 		public void serialize(JsonObject json) {
 			json.addProperty("time", this.processingTime);
-			json.addProperty("energy_input", this.energy);
 		}
 
 		@Override
@@ -114,5 +148,11 @@ public abstract class MachineRecipeJsonFactory<T extends EnergyConsumingRecipe<I
 		public Identifier getRecipeId() {
 			return this.recipeId;
 		}
+	}
+
+	public enum OutputType {
+		ITEM,
+		FLUID,
+		ENERGY
 	}
 }

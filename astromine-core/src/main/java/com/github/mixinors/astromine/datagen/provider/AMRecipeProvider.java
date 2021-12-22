@@ -17,10 +17,12 @@ import com.github.mixinors.astromine.datagen.family.material.variant.BlockVarian
 import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant;
 import com.github.mixinors.astromine.datagen.recipe.AlloySmeltingRecipeJsonFactory;
 import com.github.mixinors.astromine.datagen.recipe.MachineRecipeJsonFactory;
+import com.github.mixinors.astromine.datagen.recipe.MeltingRecipeJsonFactory;
 import com.github.mixinors.astromine.datagen.recipe.PressingRecipeJsonFactory;
 import com.github.mixinors.astromine.datagen.recipe.TrituratingRecipeJsonFactory;
 import com.github.mixinors.astromine.datagen.recipe.WireMillingRecipeJsonFactory;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
+import com.github.mixinors.astromine.registry.common.AMFluids;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import org.apache.logging.log4j.util.TriConsumer;
 
@@ -35,6 +37,7 @@ import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonFactory;
 import net.minecraft.data.server.recipe.ShapelessRecipeJsonFactory;
 import net.minecraft.data.server.recipe.SmithingRecipeJsonFactory;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.Items;
@@ -385,6 +388,22 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 		createAlloySmeltingRecipe(firstInput, firstCount, secondInput, secondCount, output, outputCount, processingTime, energy).offerTo(exporter, convertBetween(output, "alloy_smelting", getRecipeName(firstInput)+"_and_"+getRecipeName(secondInput)));
 	}
 
+	public static MeltingRecipeJsonFactory createMeltingRecipe(Tag.Identified<Item> input, Fluid output, int outputAmount, int processingTime, int energy) {
+		return MachineRecipeJsonFactory.createMelting(Ingredient.fromTag(input), output, outputAmount, processingTime, energy);
+	}
+
+	public static MeltingRecipeJsonFactory createMeltingRecipe(ItemConvertible input, Fluid output, int outputAmount, int processingTime, int energy) {
+		return MachineRecipeJsonFactory.createMelting(Ingredient.ofItems(input), output, outputAmount, processingTime, energy);
+	}
+
+	public static void offerMeltingRecipe(Consumer<RecipeJsonProvider> exporter, Tag.Identified<Item> input, Fluid output, int outputAmount, int processingTime, int energy) {
+		createMeltingRecipe(input, output, outputAmount, processingTime, energy).offerTo(exporter);
+	}
+
+	public static void offerMeltingRecipe(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, Fluid output, int outputAmount, int processingTime, int energy) {
+		createMeltingRecipe(input, output, outputAmount, processingTime, energy).offerTo(exporter);
+	}
+
 	public static CraftingRecipeJsonFactory withCriterion(CraftingRecipeJsonFactory factory, ItemConvertible input) {
 		return factory.criterion("has_" + getRecipeName(input), RecipesProvider.conditionsFromItem(input));
 	}
@@ -640,6 +659,8 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 		BIOFUEL_TAGS.forEach((tag, count) -> {
 			offerTrituratingRecipe(exporter, tag, AMItems.BIOFUEL.get(), count, 100+(40*count), 100*count);
 		});
+		
+		offerMeltingRecipe(exporter, AMDatagen.createCommonItemTag("biofuel"), AMFluids.BIOMASS.getStill(), 810, 100, 8000);
 	}
 
 	@FunctionalInterface

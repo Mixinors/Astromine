@@ -132,9 +132,9 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 					if (progress + speed >= limit) {
 						optionalRecipe = Optional.empty();
 
-						itemComponent.getSecond().decrement(recipe.getFirstInput().testMatching(itemComponent.getSecond()).getCount());
+						itemComponent.getSecond().decrement(recipe.getInput().testMatching(itemComponent.getSecond()).getCount());
 
-						itemComponent.setFirst(StackUtils.into(itemComponent.getFirst(), recipe.getFirstOutput()));
+						itemComponent.setFirst(StackUtils.into(itemComponent.getFirst(), recipe.getItemOutput()));
 
 						progress = 0;
 					} else {

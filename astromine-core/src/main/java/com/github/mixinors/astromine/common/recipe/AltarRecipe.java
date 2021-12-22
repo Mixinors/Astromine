@@ -168,7 +168,10 @@ public class AltarRecipe implements Recipe<AltarBlockEntity> {
 
 		@Override
 		public String toString() {
-			return "Format{" + "inputs=" + inputs + ", output=" + output + '}';
+			return "Format{" +
+					"inputs=" + inputs +
+					", output=" + output +
+					'}';
 		}
 	}
 }

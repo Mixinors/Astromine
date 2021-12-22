@@ -54,17 +54,17 @@ import java.util.Optional;
 
 public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 	private final Identifier identifier;
-	private final ItemIngredient firstInput;
-	private final ItemStack firstOutput;
+	private final ItemIngredient input;
+	private final ItemStack output;
 	private final double energyInput;
 	private final int time;
 
 	private static final Map<World, PressingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public PressingRecipe(Identifier identifier, ItemIngredient firstInput, ItemStack output, double energy, int time) {
+	public PressingRecipe(Identifier identifier, ItemIngredient input, ItemStack output, double energy, int time) {
 		this.identifier = identifier;
-		this.firstInput = firstInput;
-		this.firstOutput = output;
+		this.input = input;
+		this.output = output;
 		this.energyInput = energy;
 		this.time = time;
 	}
@@ -102,11 +102,11 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 			return false;
 		}
 
-		if (!firstInput.test(itemComponent.getSecond())) {
+		if (!input.test(itemComponent.getSecond())) {
 			return false;
 		}
 
-		return StackUtils.test(firstOutput, itemComponent.getFirst());
+		return StackUtils.test(output, itemComponent.getFirst());
 	}
 
 	public boolean allows(ItemComponent itemComponent) {
@@ -114,7 +114,7 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 			return false;
 		}
 
-		return firstInput.testWeak(itemComponent.getSecond());
+		return input.testWeak(itemComponent.getSecond());
 	}
 
 	@Override
@@ -134,7 +134,7 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 
 	@Override
 	public ItemStack getOutput() {
-		return ItemStack.EMPTY;
+		return output.copy();
 	}
 
 	@Override
@@ -161,12 +161,12 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 		return identifier;
 	}
 
-	public ItemIngredient getFirstInput() {
-		return firstInput;
+	public ItemIngredient getInput() {
+		return input;
 	}
 
-	public ItemStack getFirstOutput() {
-		return firstOutput;
+	public ItemStack getItemOutput() {
+		return output;
 	}
 
 	public int getTime() {
@@ -192,8 +192,8 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 
 			return new PressingRecipe(
 					identifier,
-					ItemIngredient.fromJson(format.firstInput),
-					StackUtils.fromJson(format.firstOutput),
+					ItemIngredient.fromJson(format.input),
+					StackUtils.fromJson(format.output),
 					DoubleUtils.fromJson(format.energyInput),
 					IntegerUtils.fromJson(format.time)
 			);
@@ -212,8 +212,8 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 
 		@Override
 		public void write(PacketByteBuf buffer, PressingRecipe recipe) {
-			recipe.firstInput.toPacket(buffer);
-			StackUtils.toPacket(buffer, recipe.firstOutput);
+			recipe.input.toPacket(buffer);
+			StackUtils.toPacket(buffer, recipe.output);
 			DoubleUtils.toPacket(buffer, recipe.energyInput);
 			IntegerUtils.toPacket(buffer, recipe.time);
 		}
@@ -227,10 +227,10 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 
 	public static final class Format {
 		@SerializedName("input")
-		JsonElement firstInput;
+		JsonElement input;
 
 		@SerializedName("output")
-		JsonElement firstOutput;
+		JsonElement output;
 
 		@SerializedName("energy_input")
 		JsonElement energyInput;
@@ -240,8 +240,8 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 		@Override
 		public String toString() {
 			return "Format{" +
-					"firstInput=" + firstInput +
-					", firstOutput=" + firstOutput +
+					"input=" + input +
+					", output=" + output +
 					", energyInput=" + energyInput +
 					", time=" + time +
 					'}';

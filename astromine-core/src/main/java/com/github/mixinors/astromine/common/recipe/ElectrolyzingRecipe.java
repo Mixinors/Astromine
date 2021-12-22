@@ -55,7 +55,7 @@ import java.util.Optional;
 
 public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<Inventory> {
 	private final Identifier identifier;
-	private final FluidIngredient firstInput;
+	private final FluidIngredient input;
 	private final FluidVolume firstOutput;
 	private final FluidVolume secondOutput;
 	private final double energyInput;
@@ -63,9 +63,9 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsu
 
 	private static final Map<World, ElectrolyzingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public ElectrolyzingRecipe(Identifier identifier, FluidIngredient firstInput, FluidVolume firstOutput, FluidVolume secondOutput, double energyInput, int time) {
+	public ElectrolyzingRecipe(Identifier identifier, FluidIngredient input, FluidVolume firstOutput, FluidVolume secondOutput, double energyInput, int time) {
 		this.identifier = identifier;
-		this.firstInput = firstInput;
+		this.input = input;
 		this.firstOutput = firstOutput;
 		this.secondOutput = secondOutput;
 		this.energyInput = energyInput;
@@ -105,7 +105,7 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsu
 			return false;
 		}
 
-		if (!firstInput.test(fluidComponent.getFirst())) {
+		if (!input.test(fluidComponent.getFirst())) {
 			return false;
 		}
 
@@ -121,7 +121,7 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsu
 			return false;
 		}
 
-		return firstInput.testWeak(fluidComponent.getFirst());
+		return input.testWeak(fluidComponent.getFirst());
 	}
 
 
@@ -169,8 +169,8 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsu
 		return identifier;
 	}
 
-	public FluidIngredient getFirstInput() {
-		return firstInput;
+	public FluidIngredient getInput() {
+		return input;
 	}
 
 	public FluidVolume getFirstOutput() {
@@ -204,7 +204,7 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsu
 
 			return new ElectrolyzingRecipe(
 					identifier,
-					FluidIngredient.fromJson(format.firstInput),
+					FluidIngredient.fromJson(format.input),
 					FluidVolume.fromJson(format.firstOutput),
 					FluidVolume.fromJson(format.secondOutput),
 					DoubleUtils.fromJson(format.energyInput),
@@ -226,7 +226,7 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsu
 
 		@Override
 		public void write(PacketByteBuf buffer, ElectrolyzingRecipe recipe) {
-			recipe.firstInput.toPacket(buffer);
+			recipe.input.toPacket(buffer);
 			recipe.firstOutput.toPacket(buffer);
 			recipe.secondOutput.toPacket(buffer);
 			DoubleUtils.toPacket(buffer, recipe.energyInput);
@@ -241,8 +241,7 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsu
 	}
 
 	public static final class Format {
-		@SerializedName("input")
-		JsonElement firstInput;
+		JsonElement input;
 
 		@SerializedName("first_output")
 		JsonElement firstOutput;
@@ -257,7 +256,13 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsu
 
 		@Override
 		public String toString() {
-			return "Format{" + "input=" + firstInput + ", firstOutput=" + firstOutput + ", secondOutput=" + secondOutput + ", energy=" + energyInput + ", time=" + time + '}';
+			return "Format{" +
+					"input=" + input +
+					", firstOutput=" + firstOutput +
+					", secondOutput=" + secondOutput +
+					", energy=" + energyInput +
+					", time=" + time +
+					'}';
 		}
 	}
 }

@@ -33,7 +33,6 @@ import com.github.mixinors.astromine.common.block.entity.base.ComponentEnergyFlu
 import com.github.mixinors.astromine.common.component.general.base.EnergyComponent;
 import com.github.mixinors.astromine.common.component.general.base.FluidComponent;
 import com.github.mixinors.astromine.common.component.general.SimpleEnergyComponent;
-import com.github.mixinors.astromine.common.component.general.SimpleFluidComponent;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
@@ -126,7 +125,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 					if (progress + speed >= limit) {
 						optionalRecipe = Optional.empty();
 
-						fluidComponent.getFirst().take(recipe.getFirstInput().testMatching(fluidComponent.getFirst()).getAmount());
+						fluidComponent.getFirst().take(recipe.getInput().testMatching(fluidComponent.getFirst()).getAmount());
 						fluidComponent.getSecond().take(recipe.getFirstOutput());
 						fluidComponent.getThird().take(recipe.getSecondOutput());
 

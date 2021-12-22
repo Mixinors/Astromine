@@ -166,7 +166,7 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 		return input;
 	}
 
-	public FluidVolume getFirstOutput() {
+	public FluidVolume getFluidOutput() {
 		return output.copy();
 	}
 
@@ -193,7 +193,7 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 
 			return new RefiningRecipe(
 					identifier,
-					FluidIngredient.fromJson(format.firstInput),
+					FluidIngredient.fromJson(format.input),
 					FluidVolume.fromJson(format.output),
 					DoubleUtils.fromJson(format.energyInput),
 					IntegerUtils.fromJson(format.time)
@@ -227,10 +227,8 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 	}
 
 	public static final class Format {
-		@SerializedName("input")
-		JsonElement firstInput;
+		JsonElement input;
 
-		@SerializedName("output")
 		JsonElement output;
 
 		@SerializedName("energy_input")
@@ -241,7 +239,7 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 		@Override
 		public String toString() {
 			return "Format{" +
-					"firstInput=" + firstInput +
+					"input=" + input +
 					", output=" + output +
 					", energyInput=" + energyInput +
 					", time=" + time +

@@ -48,7 +48,7 @@ public class FluidGeneratingDisplay extends AbstractEnergyGeneratingDisplay {
 
 	public FluidGeneratingDisplay(FluidGeneratingRecipe recipe) {
 		super(recipe.getEnergyOutput());
-		this.input = recipe.getFirstInput();
+		this.input = recipe.getInput();
 		this.id = recipe.getId();
 	}
 

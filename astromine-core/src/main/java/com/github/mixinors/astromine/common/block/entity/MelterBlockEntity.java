@@ -148,8 +148,8 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 					if (progress + speed >= limit) {
 						optionalRecipe = Optional.empty();
 
-						fluidComponent.getFirst().take(recipe.getFirstOutput());
-						itemComponent.getFirst().decrement(recipe.getFirstInput().testMatching(itemComponent.getFirst()).getCount());
+						fluidComponent.getFirst().take(recipe.getFluidOutput());
+						itemComponent.getFirst().decrement(recipe.getInput().testMatching(itemComponent.getFirst()).getCount());
 						
 						itemComponent.updateListeners();
 

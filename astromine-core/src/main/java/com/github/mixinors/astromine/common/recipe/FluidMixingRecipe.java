@@ -57,17 +57,17 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 	private final Identifier identifier;
 	private final FluidIngredient firstInput;
 	private final FluidIngredient secondInput;
-	private final FluidVolume firstOutput;
+	private final FluidVolume output;
 	private final double energyInput;
 	private final int time;
 
 	private static final Map<World, FluidMixingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public FluidMixingRecipe(Identifier identifier, FluidIngredient firstInput, FluidIngredient secondIngredient, FluidVolume firstOutput, double energyInput, int time) {
+	public FluidMixingRecipe(Identifier identifier, FluidIngredient firstInput, FluidIngredient secondIngredient, FluidVolume output, double energyInput, int time) {
 		this.identifier = identifier;
 		this.firstInput = firstInput;
 		this.secondInput = secondIngredient;
-		this.firstOutput = firstOutput;
+		this.output = output;
 		this.energyInput = energyInput;
 		this.time = time;
 	}
@@ -113,7 +113,7 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 			return false;
 		}
 
-		return firstOutput.test(fluidComponent.getThird());
+		return output.test(fluidComponent.getThird());
 	}
 
 	public boolean allows(FluidComponent fluidComponent) {
@@ -180,8 +180,8 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 		return secondInput;
 	}
 
-	public FluidVolume getFirstOutput() {
-		return firstOutput.copy();
+	public FluidVolume getFluidOutput() {
+		return output.copy();
 	}
 
 	public int getTime() {
@@ -205,7 +205,7 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 		public FluidMixingRecipe read(Identifier identifier, JsonObject object) {
 			FluidMixingRecipe.Format format = new Gson().fromJson(object, FluidMixingRecipe.Format.class);
 
-			return new FluidMixingRecipe(identifier, FluidIngredient.fromJson(format.firstInput), FluidIngredient.fromJson(format.secondInput), FluidVolume.fromJson(format.firstOutput), DoubleUtils.fromJson(
+			return new FluidMixingRecipe(identifier, FluidIngredient.fromJson(format.firstInput), FluidIngredient.fromJson(format.secondInput), FluidVolume.fromJson(format.output), DoubleUtils.fromJson(
 				format.energyInput), IntegerUtils.fromJson(format.time)
 			);
 		}
@@ -226,7 +226,7 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 		public void write(PacketByteBuf buffer, FluidMixingRecipe recipe) {
 			recipe.firstInput.toPacket(buffer);
 			recipe.secondInput.toPacket(buffer);
-			recipe.firstOutput.toPacket(buffer);
+			recipe.output.toPacket(buffer);
 			DoubleUtils.toPacket(buffer, recipe.energyInput);
 			IntegerUtils.toPacket(buffer, recipe.time);
 		}
@@ -245,8 +245,7 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 		@SerializedName("second_input")
 		JsonElement secondInput;
 
-		@SerializedName("output")
-		JsonElement firstOutput;
+		JsonElement output;
 
 		@SerializedName("energy_input")
 		JsonElement energyInput;
@@ -255,7 +254,13 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 
 		@Override
 		public String toString() {
-			return "Format{" + "firstInput=" + firstInput + ", secondInput=" + secondInput + ", firstOutput=" + firstOutput + ", energyInput=" + energyInput + ", time=" + time + '}';
+			return "Format{" +
+					"firstInput=" + firstInput +
+					", secondInput=" + secondInput +
+					", output=" + output +
+					", energyInput=" + energyInput +
+					", time=" + time +
+					'}';
 		}
 	}
 }

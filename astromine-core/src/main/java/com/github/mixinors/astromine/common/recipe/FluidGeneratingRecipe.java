@@ -54,15 +54,15 @@ import java.util.Optional;
 
 public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGeneratingRecipe<Inventory> {
 	private final Identifier identifier;
-	private final FluidIngredient firstInput;
+	private final FluidIngredient input;
 	private final double energyOutput;
 	private final int time;
 
 	private static final Map<World, FluidGeneratingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public FluidGeneratingRecipe(Identifier identifier, FluidIngredient firstInput, double energyOutput, int time) {
+	public FluidGeneratingRecipe(Identifier identifier, FluidIngredient input, double energyOutput, int time) {
 		this.identifier = identifier;
-		this.firstInput = firstInput;
+		this.input = input;
 		this.energyOutput = energyOutput;
 		this.time = time;
 	}
@@ -100,7 +100,7 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 			return false;
 		}
 
-		return firstInput.test(fluidComponent.getFirst());
+		return input.test(fluidComponent.getFirst());
 	}
 
 	public boolean allows(FluidComponent fluidComponent) {
@@ -108,7 +108,7 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 			return false;
 		}
 
-		return firstInput.testWeak(fluidComponent.getFirst());
+		return input.testWeak(fluidComponent.getFirst());
 	}
 
 	@Override
@@ -151,8 +151,8 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 		return new ItemStack(AMBlocks.ADVANCED_LIQUID_GENERATOR.get());
 	}
 
-	public FluidIngredient getFirstInput() {
-		return firstInput;
+	public FluidIngredient getInput() {
+		return input;
 	}
 
 	public int getTime() {
@@ -176,7 +176,7 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 		public FluidGeneratingRecipe read(Identifier identifier, JsonObject object) {
 			FluidGeneratingRecipe.Format format = new Gson().fromJson(object, FluidGeneratingRecipe.Format.class);
 
-			return new FluidGeneratingRecipe(identifier, FluidIngredient.fromJson(format.firstInput), DoubleUtils.fromJson(format.energyOutput), IntegerUtils.fromJson(format.time)
+			return new FluidGeneratingRecipe(identifier, FluidIngredient.fromJson(format.input), DoubleUtils.fromJson(format.energyOutput), IntegerUtils.fromJson(format.time)
 			);
 		}
 
@@ -192,7 +192,7 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 
 		@Override
 		public void write(PacketByteBuf buffer, FluidGeneratingRecipe recipe) {
-			recipe.firstInput.toPacket(buffer);
+			recipe.input.toPacket(buffer);
 			DoubleUtils.toPacket(buffer, recipe.energyOutput);
 			IntegerUtils.toPacket(buffer, recipe.time);
 		}
@@ -205,8 +205,7 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 	}
 
 	public static final class Format {
-		@SerializedName("input")
-		JsonElement firstInput;
+		JsonElement input;
 
 		@SerializedName("energy_output")
 		JsonElement energyOutput;
@@ -215,7 +214,11 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 
 		@Override
 		public String toString() {
-			return "Format{" + "firstInput=" + firstInput + ", energyOutput=" + energyOutput + ", time=" + time + '}';
+			return "Format{" +
+					"input=" + input +
+					", energyOutput=" + energyOutput +
+					", time=" + time +
+					'}';
 		}
 	}
 }

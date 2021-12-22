@@ -1,7 +1,6 @@
 package com.github.mixinors.astromine.datagen.provider.tag;
 
 import java.util.List;
-import java.util.Map;
 
 import com.github.mixinors.astromine.datagen.AMDatagen;
 import com.github.mixinors.astromine.datagen.AMDatagen.HarvestData;
@@ -16,7 +15,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.data.family.BlockFamily;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.tag.Tag;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
@@ -24,23 +22,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 
 public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 	public static final List<Block> INFINIBURN_BLOCKS = List.of(
-			AMBlocks.ASTEROID_STONE.get(),
-			AMBlocks.BLAZING_ASTEROID_STONE.get(),
-			AMBlocks.ASTEROID_STONE_BRICKS.get(),
-			AMBlocks.POLISHED_ASTEROID_STONE.get(),
-			AMBlocks.SMOOTH_ASTEROID_STONE.get(),
-			AMBlocks.ASTEROID_STONE_SLAB.get(),
-			AMBlocks.ASTEROID_STONE_BRICK_SLAB.get(),
-			AMBlocks.POLISHED_ASTEROID_STONE_SLAB.get(),
-			AMBlocks.SMOOTH_ASTEROID_STONE_SLAB.get(),
-			AMBlocks.METEOR_STONE.get(),
-			AMBlocks.METEOR_STONE_BRICKS.get(),
-			AMBlocks.POLISHED_METEOR_STONE.get(),
-			AMBlocks.SMOOTH_METEOR_STONE.get(),
-			AMBlocks.METEOR_STONE_SLAB.get(),
-			AMBlocks.METEOR_STONE_BRICK_SLAB.get(),
-			AMBlocks.POLISHED_METEOR_STONE_SLAB.get(),
-			AMBlocks.SMOOTH_METEOR_STONE_SLAB.get()
+			AMBlocks.BLAZING_ASTEROID_STONE.get()
 	);
 
 	public static final List<Tag.Identified<Block>> INFINIBURN_TAGS = List.of(
@@ -50,19 +32,15 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 
 	public static final HarvestData SPACE_STONE_HARVEST_DATA = new HarvestData(BlockTags.PICKAXE_MINEABLE, 3);
 
-	public static final Map<BlockFamily, HarvestData> FAMILY_HARVEST_DATA = Map.of(
-			AMBlockFamilies.METEOR_STONE, SPACE_STONE_HARVEST_DATA,
-			AMBlockFamilies.SMOOTH_METEOR_STONE, SPACE_STONE_HARVEST_DATA,
-			AMBlockFamilies.POLISHED_METEOR_STONE, SPACE_STONE_HARVEST_DATA,
-			AMBlockFamilies.METEOR_STONE_BRICK, SPACE_STONE_HARVEST_DATA,
-			AMBlockFamilies.ASTEROID_STONE, SPACE_STONE_HARVEST_DATA,
-			AMBlockFamilies.SMOOTH_ASTEROID_STONE, SPACE_STONE_HARVEST_DATA,
-			AMBlockFamilies.POLISHED_ASTEROID_STONE, SPACE_STONE_HARVEST_DATA,
-			AMBlockFamilies.ASTEROID_STONE_BRICK, SPACE_STONE_HARVEST_DATA
-	);
-
-	public static final Map<Block, HarvestData> BLOCK_HARVEST_DATA = Map.of(
-
+	public static final List<BlockFamily> SPACE_STONE_FAMILIES = List.of(
+			AMBlockFamilies.METEOR_STONE,
+			AMBlockFamilies.SMOOTH_METEOR_STONE,
+			AMBlockFamilies.POLISHED_METEOR_STONE,
+			AMBlockFamilies.METEOR_STONE_BRICK,
+			AMBlockFamilies.ASTEROID_STONE,
+			AMBlockFamilies.SMOOTH_ASTEROID_STONE,
+			AMBlockFamilies.POLISHED_ASTEROID_STONE,
+			AMBlockFamilies.ASTEROID_STONE_BRICK
 	);
 
 	public AMBlockTagProvider(FabricDataGenerator dataGenerator) {
@@ -266,8 +244,10 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 		INFINIBURN_BLOCKS.forEach(infiniburnTagBuilder::add);
 		INFINIBURN_TAGS.forEach(infiniburnTagBuilder::addTag);
 
-		FAMILY_HARVEST_DATA.forEach((family, harvestData) -> family.getVariants().forEach((variant, block) -> addHarvestData(block, harvestData)));
-		BLOCK_HARVEST_DATA.forEach(this::addHarvestData);
+		SPACE_STONE_FAMILIES.forEach((family) -> family.getVariants().forEach((variant, block) -> {
+			infiniburnTagBuilder.add(block);
+			addHarvestData(block, SPACE_STONE_HARVEST_DATA);
+		}));
 	}
 
 	public void addHarvestData(Block block, HarvestData harvestData) {

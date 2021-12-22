@@ -57,17 +57,17 @@ import java.util.Optional;
 
 public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory> {
 	private final Identifier identifier;
-	private final FluidIngredient firstInput;
-	private final ItemStack firstOutput;
+	private final FluidIngredient input;
+	private final ItemStack output;
 	private final double energyInput;
 	private final int time;
 
 	private static final Map<World, SolidifyingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public SolidifyingRecipe(Identifier identifier, FluidIngredient firstInput, ItemStack firstOutput, double energyInput, int time) {
+	public SolidifyingRecipe(Identifier identifier, FluidIngredient input, ItemStack output, double energyInput, int time) {
 		this.identifier = identifier;
-		this.firstInput = firstInput;
-		this.firstOutput = firstOutput;
+		this.input = input;
+		this.output = output;
 		this.energyInput = energyInput;
 		this.time = time;
 	}
@@ -109,11 +109,11 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 			return false;
 		}
 
-		if (!firstInput.test(fluidComponent.getFirst())) {
+		if (!input.test(fluidComponent.getFirst())) {
 			return false;
 		}
 
-		return StackUtils.test(firstOutput, itemComponent.getFirst()) ;
+		return StackUtils.test(output, itemComponent.getFirst()) ;
 	}
 
 	public boolean allows(FluidComponent fluidComponent) {
@@ -121,7 +121,7 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 			return false;
 		}
 
-		return firstInput.testWeak(fluidComponent.getFirst());
+		return input.testWeak(fluidComponent.getFirst());
 	}
 
 	@Override
@@ -141,7 +141,7 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 
 	@Override
 	public ItemStack getOutput() {
-		return ItemStack.EMPTY;
+		return output.copy();
 	}
 
 	@Override
@@ -173,12 +173,12 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 		return identifier;
 	}
 
-	public FluidIngredient getFirstInput() {
-		return firstInput;
+	public FluidIngredient getInput() {
+		return input;
 	}
 
-	public ItemStack getFirstOutput() {
-		return firstOutput;
+	public ItemStack getItemOutput() {
+		return output;
 	}
 
 	@Override
@@ -204,8 +204,8 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 
 			return new SolidifyingRecipe(
 					identifier,
-					FluidIngredient.fromJson(format.firstInput),
-					StackUtils.fromJson(format.firstOutput),
+					FluidIngredient.fromJson(format.input),
+					StackUtils.fromJson(format.output),
 					DoubleUtils.fromJson(format.energyInput),
 					IntegerUtils.fromJson(format.time)
 			);
@@ -224,8 +224,8 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 
 		@Override
 		public void write(PacketByteBuf buffer, SolidifyingRecipe recipe) {
-			recipe.firstInput.toPacket(buffer);
-			StackUtils.toPacket(buffer, recipe.getFirstOutput());
+			recipe.input.toPacket(buffer);
+			StackUtils.toPacket(buffer, recipe.getItemOutput());
 			DoubleUtils.toPacket(buffer, recipe.energyInput);
 			IntegerUtils.toPacket(buffer, recipe.time);
 		}
@@ -238,11 +238,9 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 	}
 
 	public static final class Format {
-		@SerializedName("input")
-		JsonElement firstInput;
+		JsonElement input;
 
-		@SerializedName("output")
-		JsonElement firstOutput;
+		JsonElement output;
 
 		@SerializedName("energy_input")
 		JsonElement energyInput;
@@ -252,8 +250,8 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 		@Override
 		public String toString() {
 			return "Format{" +
-					"firstInput=" + firstInput +
-					", firstOutput=" + firstOutput +
+					"input=" + input +
+					", output=" + output +
 					", energyInput=" + energyInput +
 					", time=" + time +
 					'}';

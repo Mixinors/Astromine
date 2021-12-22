@@ -147,8 +147,8 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 					if (progress + speed >= limit) {
 						optionalRecipe = Optional.empty();
 
-						fluidComponent.getFirst().take(recipe.getFirstInput().testMatching(fluidComponent.getFirst()).getAmount());
-						itemComponent.setFirst(StackUtils.into(itemComponent.getFirst(), recipe.getFirstOutput()));
+						fluidComponent.getFirst().take(recipe.getInput().testMatching(fluidComponent.getFirst()).getAmount());
+						itemComponent.setFirst(StackUtils.into(itemComponent.getFirst(), recipe.getItemOutput()));
 
 						progress = 0;
 					} else {

@@ -155,7 +155,7 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 							first.decrement(recipe.getSecondInput().testMatching(first).getCount());
 						}
 
-						itemComponent.setThird(StackUtils.into(itemComponent.getThird(), recipe.getFirstOutput()));
+						itemComponent.setThird(StackUtils.into(itemComponent.getThird(), recipe.getItemOutput()));
 
 						progress = 0;
 					} else {

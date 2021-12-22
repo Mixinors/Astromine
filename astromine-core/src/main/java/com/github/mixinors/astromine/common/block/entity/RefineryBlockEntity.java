@@ -126,7 +126,7 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 						optionalRecipe = Optional.empty();
 
 						fluidComponent.getFirst().take(recipe.getIngredient().testMatching(fluidComponent.getFirst()).getAmount());
-						fluidComponent.getSecond().take(recipe.getFirstOutput());
+						fluidComponent.getSecond().take(recipe.getFluidOutput());
 
 						progress = 0;
 					} else {

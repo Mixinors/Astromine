@@ -51,8 +51,8 @@ public class SolidifyingDisplay extends AbstractEnergyGeneratingDisplay {
 
 	public SolidifyingDisplay(SolidifyingRecipe recipe) {
 		super(recipe.getEnergyInput());
-		this.input = recipe.getFirstInput();
-		this.output = recipe.getFirstOutput();
+		this.input = recipe.getInput();
+		this.output = recipe.getItemOutput();
 		this.id = recipe.getId();
 	}
 

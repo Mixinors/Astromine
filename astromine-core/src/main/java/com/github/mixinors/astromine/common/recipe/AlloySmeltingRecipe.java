@@ -56,17 +56,17 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 	private final Identifier identifier;
 	private final ItemIngredient firstInput;
 	private final ItemIngredient secondInput;
-	private final ItemStack firstOutput;
+	private final ItemStack output;
 	private final double energyInput;
 	private final int time;
 
 	private static final Map<World, AlloySmeltingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public AlloySmeltingRecipe(Identifier identifier, ItemIngredient firstInput, ItemIngredient secondInput, ItemStack firstOutput, double energyInput, int time) {
+	public AlloySmeltingRecipe(Identifier identifier, ItemIngredient firstInput, ItemIngredient secondInput, ItemStack output, double energyInput, int time) {
 		this.identifier = identifier;
 		this.firstInput = firstInput;
 		this.secondInput = secondInput;
-		this.firstOutput = firstOutput;
+		this.output = output;
 		this.energyInput = energyInput;
 		this.time = time;
 	}
@@ -113,7 +113,7 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 			return false;
 		}
 
-		return StackUtils.test(firstOutput, itemComponent.getThird());
+		return StackUtils.test(output, itemComponent.getThird());
 	}
 
 	public boolean allows(ItemComponent itemComponent) {
@@ -141,7 +141,7 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 
 	@Override
 	public ItemStack getOutput() {
-		return ItemStack.EMPTY;
+		return output.copy();
 	}
 
 	@Override
@@ -181,8 +181,8 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 		return secondInput;
 	}
 
-	public ItemStack getFirstOutput() {
-		return firstOutput.copy();
+	public ItemStack getItemOutput() {
+		return output.copy();
 	}
 	
 	public int getTime() {
@@ -231,7 +231,7 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 		public void write(PacketByteBuf buffer, AlloySmeltingRecipe recipe) {
 			recipe.firstInput.toPacket(buffer);
 			recipe.secondInput.toPacket(buffer);
-			StackUtils.toPacket(buffer, recipe.firstOutput);
+			StackUtils.toPacket(buffer, recipe.output);
 			DoubleUtils.toPacket(buffer, recipe.energyInput);
 			IntegerUtils.toPacket(buffer, recipe.time);
 		}
