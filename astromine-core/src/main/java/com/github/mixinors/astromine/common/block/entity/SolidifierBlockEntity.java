@@ -24,13 +24,16 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import com.github.mixinors.astromine.common.util.StackUtils;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
-import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvider;
@@ -41,67 +44,54 @@ import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBlockEntity implements TierProvider, EnergySizeProvider, FluidSizeProvider, SpeedProvider {
+public abstract class SolidifierBlockEntity extends ExtendedBlockEntity implements TierProvider, EnergySizeProvider, FluidSizeProvider, SpeedProvider {
 	public double progress = 0;
 	public int limit = 100;
 	public boolean shouldTry = true;
+	
+	private static final int INPUT_SLOT = 0;
+	
+	private static final int OUTPUT_SLOT = 0;
+	
+	private static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
+	
+	private static final int[] EXTRACT_SLOTS = new int[] { OUTPUT_SLOT };
 
 	private Optional<SolidifyingRecipe> optionalRecipe = Optional.empty();
 
 	public SolidifierBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
-	}
-
-	@Override
-	public SimpleFluidStorage createFluidComponent() {
-		SimpleFluidStorage fluidStorage = SimpleDirectionalFluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
-			if (slot != 0) {
-				return false;
-			}
-
-			if (!volume.test(getFluidComponent().getFirst())) {
-				return false;
-			}
-
-			return SolidifyingRecipe.allows(world, SimpleFluidStorage.of(volume));
-		});
-
-		fluidStorage.getFirst().setSize(getFluidSize());
-
-		return fluidStorage;
-	}
-
-	@Override
-	public SimpleItemStorage createItemComponent() {
-		return SimpleDirectionalItemComponent.of(this, 1).withInsertPredicate((direction, stack, slot) -> {
+		
+		energyStorage = new SimpleEnergyStorage(getEnergySize(), Long.MAX_VALUE, Long.MAX_VALUE);
+		
+		fluidStorage = new SimpleFluidStorage(1).extractPredicate((variant, slot) -> {
 			return false;
-		}).withExtractPredicate((direction, stack, slot) -> {
-			return slot == 0;
-		}).withListener((inventory) -> {
+		}).insertPredicate((variant, slot) -> {
+			if (slot != INPUT_SLOT) {
+				return false;
+			}
+			
+			return SolidifyingRecipe.allows(world, variant);
+		}).listener(() -> {
 			shouldTry = true;
 			optionalRecipe = Optional.empty();
-		});
+		}).insertSlots(INSERT_SLOTS).extractSlots(new int[] {});
+		
+		itemStorage = new SimpleItemStorage(1).extractPredicate((variant, slot) -> {
+			return slot == OUTPUT_SLOT;
+		}).insertPredicate((variant, slot) -> {
+			return false;
+		}).listener(() -> {
+			shouldTry = true;
+			optionalRecipe = Optional.empty();
+		}).insertSlots(new int[] { }).extractSlots(EXTRACT_SLOTS);
 	}
-
-	@Override
-	public EnergyStore createEnergyComponent() {
-		return SimpleEnergyComponent.of(getEnergySize());
-	}
-
-	@Override
-	public IntSet getItemInputSlots() {
-		return IntSets.EMPTY_SET;
-	}
-
-	@Override
-	public IntSet getItemOutputSlots() {
-		return IntSets.singleton(0);
-	}
-
+	
 	@Override
 	public void tick() {
 		super.tick();
@@ -109,17 +99,9 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		SimpleItemStorage itemStorage = getItemComponent();
-
-		SimpleFluidStorage fluidStorage = getFluidComponent();
-
-		EnergyStore energyComponent = getEnergyComponent();
-
-		if (fluidStorage != null) {
-			EnergyVolume energyVolume = energyComponent.getVolume();
-
+		if (fluidStorage != null && itemStorage != null && energyStorage != null) {
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = SolidifyingRecipe.matching(world, itemStorage, fluidStorage);
+				optionalRecipe = SolidifyingRecipe.matching(world, itemStorage.slice(OUTPUT_SLOT), fluidStorage.slice(INPUT_SLOT));
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -129,30 +111,37 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 			}
 
 			if (optionalRecipe.isPresent()) {
-				SolidifyingRecipe recipe = optionalRecipe.get();
+				var recipe = optionalRecipe.get();
 
-				limit = recipe.getTime();
+				limit = recipe.time;
 
-				double speed = Math.min(getMachineSpeed(), limit - progress);
-				double consumed = recipe.getEnergyInput() * speed / limit;
-
-				if (energyVolume.hasStored(consumed)) {
-					energyVolume.take(consumed);
-
-					if (progress + speed >= limit) {
-						optionalRecipe = Optional.empty();
-
-						fluidStorage.getFirst().take(recipe.getInput().testMatching(fluidStorage.getFirst()).getAmount());
-						itemStorage.setStack(0, StackUtils.into(itemStorage.getStack(0), recipe.getOutput()));
-
-						progress = 0;
+				var speed = Math.min(getMachineSpeed(), limit - progress);
+				var consumed = (long) (recipe.energyInput * speed / limit);
+				
+				try (var transaction = Transaction.openOuter()) {
+					if (energyStorage.extract(consumed, transaction) == consumed) {
+						if (progress + speed >= limit) {
+							optionalRecipe = Optional.empty();
+							
+							var inputStorage = fluidStorage.getStorage(INPUT_SLOT);
+							
+							inputStorage.extract(inputStorage.getResource(), recipe.input.getAmount(), transaction);
+							
+							var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
+							
+							outputStorage.insert(recipe.output.variant, recipe.output.amount, transaction);
+							
+							transaction.commit();
+							
+							progress = 0;
+						} else {
+							progress += speed;
+						}
+						
+						isActive = true;
 					} else {
-						progress += speed;
+						isActive = false;
 					}
-
-					isActive = true;
-				} else {
-					isActive = false;
 				}
 			} else {
 				isActive = false;
@@ -162,15 +151,17 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 	
 	@Override
 	public void writeNbt(NbtCompound nbt) {
-		nbt.putDouble("progress", progress);
-		nbt.putInt("limit", limit);
+		nbt.putDouble("Progress", progress);
+		nbt.putInt("Limit", limit);
+		
 		super.writeNbt(nbt);
 	}
 	
 	@Override
 	public void readNbt(@NotNull NbtCompound nbt) {
-		progress = nbt.getDouble("progress");
-		limit = nbt.getInt("limit");
+		progress = nbt.getDouble("Progress");
+		limit = nbt.getInt("Limit");
+		
 		super.readNbt(nbt);
 	}
 	

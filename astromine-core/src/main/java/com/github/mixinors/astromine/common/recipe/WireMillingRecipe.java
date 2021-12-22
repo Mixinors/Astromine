@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.recipe;
 
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
+import com.github.mixinors.astromine.common.util.LongUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.architectury.core.AbstractRecipeSerializer;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
@@ -57,12 +58,12 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 	public final Identifier id;
 	public final ItemIngredient input;
 	public final ItemStack output;
-	public final double energyInput;
+	public final long energyInput;
 	public final int time;
 
 	private static final Map<World, WireMillingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public WireMillingRecipe(Identifier id, ItemIngredient input, ItemStack output, double energyInput, int time) {
+	public WireMillingRecipe(Identifier id, ItemIngredient input, ItemStack output, long energyInput, int time) {
 		this.id = id;
 		this.input = input;
 		this.output = output;
@@ -177,7 +178,7 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 			return new WireMillingRecipe(identifier,
 					ItemIngredient.fromJson(format.input),
 					StackUtils.fromJson(format.output),
-					DoubleUtils.fromJson(format.energyInput),
+					LongUtils.fromJson(format.energyInput),
 					IntegerUtils.fromJson(format.time)
 			);
 		}
@@ -188,7 +189,7 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 					identifier,
 					ItemIngredient.fromPacket(buffer),
 					StackUtils.fromPacket(buffer),
-					DoubleUtils.fromPacket(buffer),
+					LongUtils.fromPacket(buffer),
 					IntegerUtils.fromPacket(buffer)
 			);
 		}
@@ -197,7 +198,7 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 		public void write(PacketByteBuf buffer, WireMillingRecipe recipe) {
 			ItemIngredient.toPacket(buffer, recipe.input);
 			StackUtils.toPacket(buffer, recipe.output);
-			DoubleUtils.toPacket(buffer, recipe.energyInput);
+			LongUtils.toPacket(buffer, recipe.energyInput);
 			IntegerUtils.toPacket(buffer, recipe.time);
 		}
 	}

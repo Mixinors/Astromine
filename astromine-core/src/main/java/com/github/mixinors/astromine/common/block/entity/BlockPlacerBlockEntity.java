@@ -42,13 +42,27 @@ import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
 	private long cooldown = 0L;
+	
+	public static final int INPUT_SLOT = 0;
+	
+	public static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
+	
+	public static final int[] EXTRACT_SLOTS = new int[] { };
 
 	public BlockPlacerBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.BLOCK_PLACER, blockPos, blockState);
 		
 		energyStorage = new SimpleEnergyStorage(getEnergySize(), Long.MAX_VALUE, Long.MAX_VALUE);
 		
-		itemStorage = new SimpleItemStorage(1);
+		itemStorage = new SimpleItemStorage(1).extractPredicate((variant, slot) -> {
+			return false;
+		}).insertPredicate((variant, slot) -> {
+			if (slot != INPUT_SLOT) {
+				return false;
+			}
+			
+			return variant.getItem() instanceof BlockItem;
+		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 
 	@Override
@@ -99,7 +113,9 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Energ
 								
 								world.setBlockState(targetPos, newState);
 								
-								stored.decrement(1);
+								var inputStorage = itemStorage.getStorage(INPUT_SLOT);
+								
+								itemStorage.extract(inputStorage.getResource(), 1, transaction);
 								
 								transaction.commit();
 							} else {
@@ -107,6 +123,8 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Energ
 								
 								transaction.abort();
 							}
+						} else {
+							isActive = false;
 						}
 					}
 				} else {

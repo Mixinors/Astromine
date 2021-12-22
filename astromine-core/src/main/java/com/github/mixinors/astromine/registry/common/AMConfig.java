@@ -413,6 +413,9 @@ public class AMConfig implements ConfigData {
 
 	@Comment("Energy for the Fluid Collector.")
 	public long fluidCollectorEnergy = primitiveBatteryPackEnergy;
+	
+	@Comment("Fluid for the Fluid Collector.")
+	public long fluidCollectorFluid = 81000 * 8;
 
 	@Comment("Speed for the Vent.")
 	public double ventSpeed = 1.0D;

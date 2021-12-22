@@ -24,12 +24,14 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
-import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvider;
@@ -38,48 +40,49 @@ import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.FluidMixingRecipe;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider, FluidSizeProvider {
+public abstract class FluidMixerBlockEntity extends ExtendedBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider, FluidSizeProvider {
 	public double progress = 0;
 	public int limit = 100;
 	public boolean shouldTry = false;
+	
+	private static final int INPUT_SLOT_1 = 0;
+	private static final int INPUT_SLOT_2 = 1;
+	
+	private static final int OUTPUT_SLOT = 2;
+	
+	private static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT_1, INPUT_SLOT_2 };
+	
+	private static final int[] EXTRACT_SLOTS = new int[] { OUTPUT_SLOT };
 
 	private Optional<FluidMixingRecipe> optionalRecipe = Optional.empty();
 
 	public FluidMixerBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
-	}
-
-	@Override
-	public EnergyStore createEnergyComponent() {
-		return SimpleEnergyComponent.of(getEnergySize());
-	}
-
-	@Override
-	public SimpleFluidStorage createFluidComponent() {
-		SimpleFluidStorage fluidStorage = SimpleDirectionalFluidComponent.of(this, 3).withInsertPredicate((direction, volume, slot) -> {
-			if (slot != 0 && slot != 1) {
+		
+		energyStorage = new SimpleEnergyStorage(getEnergySize(), Long.MAX_VALUE, Long.MAX_VALUE);
+		
+		fluidStorage = new SimpleFluidStorage(3).extractPredicate((variant, slot) -> {
+			return slot == OUTPUT_SLOT;
+		}).insertPredicate((variant, slot) -> {
+			if (slot != INPUT_SLOT_1 && slot != INPUT_SLOT_2) {
 				return false;
 			}
-
-			if (!volume.test(getFluidComponent().getFirst()) && !volume.test(getFluidComponent().getSecond())) {
-				return false;
-			}
-
-			return FluidMixingRecipe.allows(world, SimpleFluidStorage.of(volume, getFluidComponent().getSecond().copy(), getFluidComponent().getThird().copy())) || FluidMixingRecipe.allows(world, SimpleFluidStorage.of(getFluidComponent().getFirst().copy(), volume, getFluidComponent().getThird().copy()));
-		}).withExtractPredicate((direction, volume, slot) -> {
-			return slot == 2;
-		}).withListener((inventory) -> {
+			
+			return FluidMixingRecipe.allows(world, variant, fluidStorage.getVariant(1)) ||
+				   FluidMixingRecipe.allows(world, fluidStorage.getVariant(0), variant);
+		}).listener(() -> {
 			shouldTry = true;
 			optionalRecipe = Optional.empty();
-		});
-
-		fluidStorage.forEach(it -> it.setSize(getFluidSize()));
-
-		return fluidStorage;
+		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
+		
+		fluidStorage.getStorage(INPUT_SLOT_1).setCapacity(getFluidSize());
+		fluidStorage.getStorage(INPUT_SLOT_2).setCapacity(getFluidSize());
+		fluidStorage.getStorage(OUTPUT_SLOT).setCapacity(getFluidSize());
 	}
 
 	@Override
@@ -88,16 +91,10 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 
 		if (world == null || world.isClient || !shouldRun())
 			return;
-
-		SimpleFluidStorage fluidStorage = getFluidComponent();
-
-		EnergyStore energyComponent = getEnergyComponent();
-
-		if (fluidStorage != null && energyComponent != null) {
-			EnergyVolume energyVolume = getEnergyComponent().getVolume();
-
+		
+		if (fluidStorage != null && energyStorage != null) {
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = FluidMixingRecipe.matching(world, fluidStorage);
+				optionalRecipe = FluidMixingRecipe.matching(world, fluidStorage.slice(INPUT_SLOT_1, INPUT_SLOT_2));
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -107,49 +104,64 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 			}
 
 			if (optionalRecipe.isPresent()) {
-				FluidMixingRecipe recipe = optionalRecipe.get();
+				var recipe = optionalRecipe.get();
 
-				limit = recipe.getTime();
+				limit = recipe.time;
 
-				double speed = Math.min(getMachineSpeed(), limit - progress);
-				double consumed = recipe.getEnergyInput() * speed / limit;
-
-				if (energyVolume.hasStored(consumed)) {
-					energyVolume.take(consumed);
-
-					if (progress + speed >= limit) {
-						optionalRecipe = Optional.empty();
-
-						fluidStorage.getFirst().take(recipe.getFirstInput().testMatching(fluidStorage.getFirst()).getAmount());
-						fluidStorage.getSecond().take(recipe.getSecondInput().testMatching(fluidStorage.getSecond()).getAmount());
-						fluidStorage.getThird().take(recipe.getOutput());
-
-						progress = 0;
+				var speed = Math.min(getMachineSpeed(), limit - progress);
+				var consumed = (long) (recipe.energyInput * speed / limit);
+				
+				try (var transaction = Transaction.openOuter()) {
+					if (energyStorage.extract(consumed, transaction) == consumed) {
+						if (progress + speed >= limit) {
+							optionalRecipe = Optional.empty();
+							
+							var firstInputStorage = fluidStorage.getStorage(INPUT_SLOT_1);
+							var secondInputStorage = fluidStorage.getStorage(INPUT_SLOT_2);
+							
+							if (recipe.firstInput.test(firstInputStorage) && recipe.secondInput.test(secondInputStorage)) {
+								firstInputStorage.extract(firstInputStorage.getResource(), recipe.firstInput.getAmount(), transaction);
+								secondInputStorage.extract(secondInputStorage.getResource(), recipe.secondInput.getAmount(), transaction);
+							} else if (recipe.firstInput.test(secondInputStorage) && recipe.secondInput.test(firstInputStorage)) {
+								firstInputStorage.extract(firstInputStorage.getResource(), recipe.secondInput.getAmount(), transaction);
+								secondInputStorage.extract(secondInputStorage.getResource(), recipe.firstInput.getAmount(), transaction);
+							}
+							
+							var outputStorage = fluidStorage.getStorage(OUTPUT_SLOT);
+							
+							outputStorage.insert(recipe.output.variant, recipe.output.amount, transaction);
+							
+							transaction.commit();
+							
+							progress = 0;
+						} else {
+							progress += speed;
+						}
+						
+						isActive = true;
 					} else {
-						progress += speed;
+						isActive = false;
 					}
-
-					isActive = true;
-				} else {
-					isActive = false;
 				}
 			} else {
 				isActive = false;
 			}
 		}
 	}
-
+	
 	@Override
 	public void writeNbt(NbtCompound nbt) {
-		nbt.putDouble("progress", progress);
-		nbt.putInt("limit", limit);
+		nbt.putDouble("Progress", progress);
+		nbt.putInt("Limit", limit);
+		
 		super.writeNbt(nbt);
 	}
-
+	
 	@Override
 	public void readNbt(@NotNull NbtCompound nbt) {
-		progress = nbt.getDouble("progress");
-		limit = nbt.getInt("limit");
+		progress = nbt.getDouble("Progress");
+		limit = nbt.getInt("Limit");
+		
 		super.readNbt(nbt);
 	}
 

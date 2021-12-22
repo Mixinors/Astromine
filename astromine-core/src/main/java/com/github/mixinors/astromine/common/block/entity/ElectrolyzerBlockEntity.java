@@ -27,11 +27,11 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
-import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvider;
@@ -50,6 +50,15 @@ public abstract class ElectrolyzerBlockEntity extends ExtendedBlockEntity implem
 	public int limit = 100;
 	public boolean shouldTry = false;
 
+	private static final int INPUT_SLOT = 0;
+	
+	private static final int OUTPUT_SLOT_1 = 1;
+	private static final int OUTPUT_SLOT_2 = 2;
+	
+	private static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
+	
+	private static final int[] EXTRACT_SLOTS = new int[] { OUTPUT_SLOT_1, OUTPUT_SLOT_2 };
+	
 	private Optional<ElectrolyzingRecipe> optionalRecipe = Optional.empty();
 
 	public ElectrolyzerBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
@@ -62,37 +71,13 @@ public abstract class ElectrolyzerBlockEntity extends ExtendedBlockEntity implem
 				return false;
 			}
 			
-			return ElectrolyzingRecipe.allows(world, new SimpleFluidStorage(fluidStorage.getStorage(1)))
-		})
-	}
-
-	@Override
-	public EnergyStore createEnergyComponent() {
-		return SimpleEnergyComponent.of(getEnergySize());
-	}
-
-	@Override
-	public SimpleFluidStorage createFluidComponent() {
-		SimpleFluidStorage fluidStorage = SimpleDirectionalFluidComponent.of(this, 3).withInsertPredicate((direction, volume, slot) -> {
-			if (slot != 0) {
-				return false;
-			}
-
-			if (!volume.test(getFluidComponent().getFirst()) && !volume.test(getFluidComponent().getSecond())) {
-				return false;
-			}
-
-			return ElectrolyzingRecipe.allows(world, SimpleFluidStorage.of(volume, getFluidComponent().getSecond().copy(), getFluidComponent().getThird().copy()));
-		}).withExtractPredicate((direction, volume, slot) -> {
-			return slot == 1 || slot == 2;
-		}).withListener((inventory) -> {
+			return ElectrolyzingRecipe.allows(world, variant);
+		}).extractPredicate((variant, slot) -> {
+			return slot == OUTPUT_SLOT_1 || slot == OUTPUT_SLOT_2;
+		}).listener(() -> {
 			shouldTry = true;
 			optionalRecipe = Optional.empty();
-		});
-
-		fluidStorage.forEach(it -> it.setSize(getFluidSize()));
-
-		return fluidStorage;
+		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 
 	@Override
@@ -102,15 +87,9 @@ public abstract class ElectrolyzerBlockEntity extends ExtendedBlockEntity implem
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		SimpleFluidStorage fluidStorage = getFluidComponent();
-
-		EnergyStore energyComponent = getEnergyComponent();
-
-		if (fluidStorage != null && energyComponent != null) {
-			EnergyVolume volume = energyComponent.getVolume();
-
+		if (fluidStorage != null && energyStorage != null) {
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = ElectrolyzingRecipe.matching(world, fluidStorage);
+				optionalRecipe = ElectrolyzingRecipe.matching(world, fluidStorage.slice(INPUT_SLOT, OUTPUT_SLOT_1, OUTPUT_SLOT_2));
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -120,49 +99,66 @@ public abstract class ElectrolyzerBlockEntity extends ExtendedBlockEntity implem
 			}
 
 			if (optionalRecipe.isPresent()) {
-				ElectrolyzingRecipe recipe = optionalRecipe.get();
+				var recipe = optionalRecipe.get();
 
-				limit = recipe.getTime();
+				limit = recipe.time;
 
-				double speed = Math.min(getMachineSpeed(), limit - progress);
-				double consumed = recipe.getEnergyInput() * speed / limit;
-
-				if (volume.hasStored(consumed)) {
-					volume.take(consumed);
-
-					if (progress + speed >= limit) {
-						optionalRecipe = Optional.empty();
-
-						fluidStorage.getFirst().take(recipe.getInput().testMatching(fluidStorage.getFirst()).getAmount());
-						fluidStorage.getSecond().take(recipe.getFirstOutput());
-						fluidStorage.getThird().take(recipe.getSecondOutput());
-
-						progress = 0;
+				var speed = Math.min(getMachineSpeed(), limit - progress);
+				var consumed = (long) (recipe.energyInput * speed / limit);
+				
+				try (var transaction = Transaction.openOuter()) {
+					if (energyStorage.extract(consumed, transaction) == consumed) {
+						if (progress + speed >= limit) {
+							optionalRecipe = Optional.empty();
+							
+							var inputStorage = fluidStorage.getStorage(INPUT_SLOT);
+							
+							inputStorage.extract(inputStorage.getResource(), recipe.input.getAmount(), transaction);
+							
+							var firstOutputStorage = fluidStorage.getStorage(OUTPUT_SLOT_1);
+							var secondOutputStorage = fluidStorage.getStorage(OUTPUT_SLOT_2);
+							
+							if (recipe.firstOutput.equalsAndFitsIn(firstOutputStorage) &&
+								recipe.secondOutput.equalsAndFitsIn(secondOutputStorage)) {
+								
+								firstOutputStorage.insert(recipe.firstOutput.variant, recipe.firstOutput.amount, transaction);
+								secondOutputStorage.insert(recipe.secondOutput.variant, recipe.secondOutput.amount, transaction);
+							} else if (recipe.firstOutput.equalsAndFitsIn(secondOutputStorage) &&
+									   recipe.secondOutput.equalsAndFitsIn(firstOutputStorage)) {
+								
+								firstOutputStorage.insert(recipe.secondOutput.variant, recipe.secondOutput.amount, transaction);
+								secondOutputStorage.insert(recipe.firstOutput.variant, recipe.firstOutput.amount, transaction);
+							}
+							
+							transaction.commit();
+							
+							progress = 0;
+						} else {
+							progress += speed;
+						}
+						
+						isActive = true;
 					} else {
-						progress += speed;
+						isActive = false;
 					}
-
-					isActive = true;
-				} else {
-					isActive = false;
 				}
-			} else {
-				isActive = false;
 			}
 		}
 	}
-
+	
 	@Override
 	public void writeNbt(NbtCompound nbt) {
-		nbt.putDouble("progress", progress);
-		nbt.putInt("limit", limit);
+		nbt.putDouble("Progress", progress);
+		nbt.putInt("Limit", limit);
+		
 		super.writeNbt(nbt);
 	}
-
+	
 	@Override
 	public void readNbt(@NotNull NbtCompound nbt) {
-		progress = nbt.getDouble("progress");
-		limit = nbt.getInt("limit");
+		progress = nbt.getDouble("Progress");
+		limit = nbt.getInt("Limit");
+		
 		super.readNbt(nbt);
 	}
 

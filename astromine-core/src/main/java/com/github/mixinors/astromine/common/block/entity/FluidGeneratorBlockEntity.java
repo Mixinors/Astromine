@@ -24,12 +24,14 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
-import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvider;
@@ -38,46 +40,43 @@ import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.FluidGeneratingRecipe;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider, FluidSizeProvider {
+public abstract class FluidGeneratorBlockEntity extends ExtendedBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider, FluidSizeProvider {
 	public double progress = 0;
 	public int limit = 100;
 	public boolean shouldTry;
+	
+	private static final int INPUT_SLOT = 0;
+	
+	private static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
+	
+	private static final int[] EXTRACT_SLOTS = new int[] { };
 
 	private Optional<FluidGeneratingRecipe> optionalRecipe = Optional.empty();
 
 	public FluidGeneratorBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
-	}
-
-	@Override
-	public EnergyStore createEnergyComponent() {
-		return SimpleEnergyComponent.of(getEnergySize());
-	}
-
-	@Override
-	public SimpleFluidStorage createFluidComponent() {
-		SimpleFluidStorage fluidStorage = SimpleDirectionalFluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
-			if (slot != 0) {
+		
+		energyStorage = new SimpleEnergyStorage(getEnergySize(), Long.MAX_VALUE, Long.MAX_VALUE);
+		
+		fluidStorage = new SimpleFluidStorage(1).extractPredicate((variant, slot) -> {
+			return false;
+		}).insertPredicate((variant, slot) -> {
+			if (slot != INPUT_SLOT) {
 				return false;
 			}
-
-			if (!volume.test(getFluidComponent().getFirst())) {
-				return false;
-			}
-
-			return FluidGeneratingRecipe.allows(world, SimpleFluidStorage.of(volume, getFluidComponent().getFirst().copy()));
-		}).withExtractPredicate((direction, volume, slot) -> false).withListener((inventory) -> {
+			
+			return FluidGeneratingRecipe.allows(world, variant);
+		}).listener(() -> {
 			shouldTry = true;
 			optionalRecipe = Optional.empty();
-		});
-
-		fluidStorage.getFirst().setSize(getFluidSize());
-
-		return fluidStorage;
+		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
+		
+		fluidStorage.getStorage(INPUT_SLOT).setCapacity(getFluidSize());
 	}
 
 	@Override
@@ -86,16 +85,10 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 
 		if (world == null || world.isClient || !shouldRun())
 			return;
-
-		SimpleFluidStorage fluidStorage = getFluidComponent();
-
-		EnergyStore energyComponent = getEnergyComponent();
-
-		if (fluidStorage != null) {
-			EnergyVolume energyVolume = energyComponent.getVolume();
-
+		
+		if (fluidStorage != null && energyStorage != null) {
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = FluidGeneratingRecipe.matching(world, fluidStorage);
+				optionalRecipe = FluidGeneratingRecipe.matching(world, fluidStorage.slice(INPUT_SLOT));
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -105,45 +98,53 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 			}
 
 			if (optionalRecipe.isPresent()) {
-				FluidGeneratingRecipe recipe = optionalRecipe.get();
+				var recipe = optionalRecipe.get();
 
-				limit = recipe.getTime();
+				limit = recipe.time;
 
-				double speed = Math.min(getMachineSpeed(), limit - progress);
-				double generated = recipe.getEnergyOutput() * speed / limit;
-
-				if (energyVolume.hasAvailable(generated) && optionalRecipe.get().matches(fluidStorage)) {
-					if (progress + speed >= limit) {
-						optionalRecipe = Optional.empty();
-
-						fluidStorage.getFirst().take(recipe.getInput().testMatching(fluidStorage.getFirst()).getAmount());
-
-						energyVolume.give(generated);
+				var speed = Math.min(getMachineSpeed(), limit - progress);
+				var generated = (long) (recipe.energyOutput * speed / limit);
+				
+				try (var transaction = Transaction.openOuter()) {
+					if (energyStorage.insert(generated, transaction) == generated) {
+						if (progress + speed >= limit) {
+							optionalRecipe = Optional.empty();
+							
+							var inputStorage = fluidStorage.getStorage(INPUT_SLOT);
+							
+							fluidStorage.extract(inputStorage.getResource(), recipe.input.getAmount(), transaction);
+							
+							transaction.commit();
+							
+							progress = 0;
+						} else {
+							progress += speed;
+						}
+						
+						isActive = true;
 					} else {
-						progress += speed;
+						isActive = false;
 					}
-
-					isActive = true;
-				} else {
-					isActive = false;
 				}
 			} else {
 				isActive = false;
 			}
 		}
 	}
-
+	
 	@Override
 	public void writeNbt(NbtCompound nbt) {
-		nbt.putDouble("progress", progress);
-		nbt.putInt("limit", limit);
+		nbt.putDouble("Progress", progress);
+		nbt.putInt("Limit", limit);
+		
 		super.writeNbt(nbt);
 	}
-
+	
 	@Override
 	public void readNbt(@NotNull NbtCompound nbt) {
-		progress = nbt.getDouble("progress");
-		limit = nbt.getInt("limit");
+		progress = nbt.getDouble("Progress");
+		limit = nbt.getInt("Limit");
+		
 		super.readNbt(nbt);
 	}
 

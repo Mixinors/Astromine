@@ -28,6 +28,7 @@ import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.recipe.result.FluidResult;
+import com.github.mixinors.astromine.common.util.LongUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.architectury.core.AbstractRecipeSerializer;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
@@ -57,12 +58,12 @@ public final class RefiningRecipe implements Recipe<Inventory> {
 	public final Identifier id;
 	public final FluidIngredient input;
 	public final FluidResult output;
-	public final double energyInput;
+	public final long energyInput;
 	public final int time;
 
 	private static final Map<World, RefiningRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public RefiningRecipe(Identifier id, FluidIngredient input, FluidResult output, double energyInput, int time) {
+	public RefiningRecipe(Identifier id, FluidIngredient input, FluidResult output, long energyInput, int time) {
 		this.id = id;
 		this.input = input;
 		this.output = output;
@@ -171,7 +172,7 @@ public final class RefiningRecipe implements Recipe<Inventory> {
 					identifier,
 					FluidIngredient.fromJson(format.input),
 					FluidResult.fromJson(format.output),
-					DoubleUtils.fromJson(format.energyInput),
+					LongUtils.fromJson(format.energyInput),
 					IntegerUtils.fromJson(format.time)
 			);
 		}
@@ -182,7 +183,7 @@ public final class RefiningRecipe implements Recipe<Inventory> {
 					identifier,
 					FluidIngredient.fromPacket(buffer),
 					FluidResult.fromPacket(buffer),
-					DoubleUtils.fromPacket(buffer),
+					LongUtils.fromPacket(buffer),
 					IntegerUtils.fromPacket(buffer)
 			);
 		}
@@ -191,7 +192,7 @@ public final class RefiningRecipe implements Recipe<Inventory> {
 		public void write(PacketByteBuf buffer, RefiningRecipe recipe) {
 			FluidIngredient.toPacket(buffer, recipe.input);
 			FluidResult.toPacket(buffer, recipe.output);
-			DoubleUtils.toPacket(buffer, recipe.energyInput);
+			LongUtils.toPacket(buffer, recipe.energyInput);
 			IntegerUtils.toPacket(buffer, recipe.time);
 		}
 	}

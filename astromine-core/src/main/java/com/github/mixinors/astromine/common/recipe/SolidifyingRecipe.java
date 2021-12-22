@@ -28,6 +28,7 @@ import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.recipe.result.ItemResult;
+import com.github.mixinors.astromine.common.util.LongUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.architectury.core.AbstractRecipeSerializer;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
@@ -62,12 +63,12 @@ public final class SolidifyingRecipe implements Recipe<Inventory> {
 	public final Identifier id;
 	public final FluidIngredient input;
 	public final ItemResult output;
-	public final double energyInput;
+	public final long energyInput;
 	public final int time;
 
 	private static final Map<World, SolidifyingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public SolidifyingRecipe(Identifier id, FluidIngredient input, ItemResult output, double energyInput, int time) {
+	public SolidifyingRecipe(Identifier id, FluidIngredient input, ItemResult output, long energyInput, int time) {
 		this.id = id;
 		this.input = input;
 		this.output = output;
@@ -181,7 +182,7 @@ public final class SolidifyingRecipe implements Recipe<Inventory> {
 					identifier,
 					FluidIngredient.fromJson(format.input),
 					ItemResult.fromJson(format.output),
-					DoubleUtils.fromJson(format.energyInput),
+					LongUtils.fromJson(format.energyInput),
 					IntegerUtils.fromJson(format.time)
 			);
 		}
@@ -192,7 +193,7 @@ public final class SolidifyingRecipe implements Recipe<Inventory> {
 					identifier,
 					FluidIngredient.fromPacket(buffer),
 					ItemResult.fromPacket(buffer),
-					DoubleUtils.fromPacket(buffer),
+					LongUtils.fromPacket(buffer),
 					IntegerUtils.fromPacket(buffer)
 			);
 		}
@@ -201,7 +202,7 @@ public final class SolidifyingRecipe implements Recipe<Inventory> {
 		public void write(PacketByteBuf buffer, SolidifyingRecipe recipe) {
 			FluidIngredient.toPacket(buffer, recipe.input);
 			ItemResult.toPacket(buffer, recipe.output);
-			DoubleUtils.toPacket(buffer, recipe.energyInput);
+			LongUtils.toPacket(buffer, recipe.energyInput);
 			IntegerUtils.toPacket(buffer, recipe.time);
 		}
 	}

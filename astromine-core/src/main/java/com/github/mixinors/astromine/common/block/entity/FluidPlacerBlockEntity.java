@@ -24,46 +24,43 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
-import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
-import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 
-import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
-import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergyConsumedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import org.jetbrains.annotations.NotNull;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-import java.util.Iterator;
-
-public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider, Storage<FluidVariant> {
+public class FluidPlacerBlockEntity extends ExtendedBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
 	private long cooldown = 0L;
-
+	
+	private static final int INPUT_SLOT = 0;
+	
+	private static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
+	
+	private static final int[] EXTRACT_SLOTS = new int[] { };
+	
 	public FluidPlacerBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.FLUID_INSERTER, blockPos, blockState);
-	}
-
-	@Override
-	public SimpleFluidStorage createFluidComponent() {
-		SimpleFluidStorage fluidStorage = SimpleDirectionalFluidComponent.of(this, 1);
-		fluidStorage.getFirst().setSize(FluidVolume.BOTTLE * 8L);
-		return fluidStorage;
-	}
-
-	@Override
-	public EnergyStore createEnergyComponent() {
-		return SimpleEnergyComponent.of(getEnergySize());
+		
+		energyStorage = new SimpleEnergyStorage(getEnergySize(), Long.MAX_VALUE, Long.MAX_VALUE);
+		
+		fluidStorage = new SimpleFluidStorage(1).extractPredicate((variant, slot) -> {
+			return false;
+		}).insertPredicate((variant, slot) -> {
+			return slot == INPUT_SLOT;
+		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 
 	@Override
@@ -88,74 +85,62 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		SimpleFluidStorage fluidStorage = getFluidComponent();
-
-		EnergyStore energyComponent = getEnergyComponent();
-
-		if (fluidStorage != null && energyComponent != null) {
-			EnergyVolume energyVolume = energyComponent.getVolume();
-
-			if (energyVolume.getAmount() < getEnergyConsumed()) {
+		if (fluidStorage != null && energyStorage != null) {			var consumed = getEnergyConsumed();
+			
+			if (energyStorage.getAmount() < consumed) {
 				cooldown = 0L;
-
+				
 				isActive = false;
 			} else {
-				isActive = true;
-
-				cooldown++;
-
 				if (cooldown >= getMachineSpeed()) {
-					cooldown = 0L;
-
-					FluidVolume fluidVolume = fluidStorage.getFirst();
-
-					Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
-
-					BlockPos targetPos = pos.offset(direction);
-
-					BlockState targetState = world.getBlockState(targetPos);
-
-					if (targetState.isAir()) {
-						if (fluidVolume.hasStored(FluidVolume.BUCKET)) {
-							FluidVolume toInsert = FluidVolume.of(FluidVolume.BUCKET, fluidVolume.getFluid());
-
-							fluidVolume.take(FluidVolume.BUCKET);
-
-							energyVolume.take(getEnergyConsumed());
-
-							world.setBlockState(targetPos, toInsert.getFluid().getDefaultState().getBlockState());
-							world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1, 1);
+					try (var transaction = Transaction.openOuter()) {
+						if (energyStorage.extract(consumed, transaction) == consumed) {
+							var direction = getCachedState().get(HorizontalFacingBlock.FACING);
+							
+							var targetPos = pos.offset(direction);
+							
+							var targetState = world.getBlockState(targetPos);
+							
+							var inputStorage = fluidStorage.getStorage(INPUT_SLOT);
+							
+							if (inputStorage.getAmount() >= 81000 && targetState.isAir()) {
+								if (fluidStorage.extract(inputStorage.getResource(), 81000, transaction) == 81000) {
+									world.setBlockState(targetPos, inputStorage.getResource().getFluid().getDefaultState().getBlockState());
+									world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1, 1);
+									
+									transaction.commit();
+								} else {
+									isActive = false;
+									
+									transaction.abort();
+								}
+							} else {
+								isActive = false;
+							}
+						} else {
+							isActive = false;
 						}
 					}
+				} else {
+					cooldown++;
+					
+					isActive = true;
 				}
 			}
 		}
 	}
-
+	
 	@Override
 	public void writeNbt(NbtCompound nbt) {
-		nbt.putLong("cooldown", cooldown);
+		nbt.putLong("Cooldown", cooldown);
+		
 		super.writeNbt(nbt);
 	}
-
+	
 	@Override
 	public void readNbt(@NotNull NbtCompound nbt) {
-		cooldown = nbt.getLong("cooldown");
+		cooldown = nbt.getLong("Cooldown");
+		
 		super.readNbt(nbt);
-	}
-	
-	@Override
-	public long insert(FluidVariant resource, long maxAmount, TransactionContext transaction) {
-		transaction
-	}
-	
-	@Override
-	public long extract(FluidVariant resource, long maxAmount, TransactionContext transaction) {
-		return 0;
-	}
-	
-	@Override
-	public Iterator<StorageView<FluidVariant>> iterator(TransactionContext transaction) {
-		return null;
 	}
 }

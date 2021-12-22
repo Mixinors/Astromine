@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.recipe;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
+import com.github.mixinors.astromine.common.util.LongUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.architectury.core.AbstractRecipeSerializer;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
@@ -56,12 +57,12 @@ import java.util.Optional;
 public final class FluidGeneratingRecipe implements Recipe<Inventory> {
 	public final Identifier id;
 	public final FluidIngredient input;
-	public final double energyOutput;
+	public final long energyOutput;
 	public final int time;
 
 	private static final Map<World, FluidGeneratingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public FluidGeneratingRecipe(Identifier id, FluidIngredient input, double energyOutput, int time) {
+	public FluidGeneratingRecipe(Identifier id, FluidIngredient input, long energyOutput, int time) {
 		this.id = id;
 		this.input = input;
 		this.energyOutput = energyOutput;
@@ -160,7 +161,11 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory> {
 		public FluidGeneratingRecipe read(Identifier identifier, JsonObject object) {
 			FluidGeneratingRecipe.Format format = new Gson().fromJson(object, FluidGeneratingRecipe.Format.class);
 
-			return new FluidGeneratingRecipe(identifier, FluidIngredient.fromJson(format.input), DoubleUtils.fromJson(format.energyOutput), IntegerUtils.fromJson(format.time)
+			return new FluidGeneratingRecipe(
+					identifier,
+					FluidIngredient.fromJson(format.input),
+					LongUtils.fromJson(format.energyOutput),
+					IntegerUtils.fromJson(format.time)
 			);
 		}
 
@@ -169,7 +174,7 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory> {
 			return new FluidGeneratingRecipe(
 					identifier,
 					FluidIngredient.fromPacket(buffer),
-					DoubleUtils.fromPacket(buffer),
+					LongUtils.fromPacket(buffer),
 					IntegerUtils.fromPacket(buffer)
 			);
 		}
@@ -177,7 +182,7 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory> {
 		@Override
 		public void write(PacketByteBuf buffer, FluidGeneratingRecipe recipe) {
 			FluidIngredient.toPacket(buffer, recipe.input);
-			DoubleUtils.toPacket(buffer, recipe.energyOutput);
+			LongUtils.toPacket(buffer, recipe.energyOutput);
 			IntegerUtils.toPacket(buffer, recipe.time);
 		}
 	}

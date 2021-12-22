@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.recipe;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.recipe.result.FluidResult;
+import com.github.mixinors.astromine.common.util.LongUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.architectury.core.AbstractRecipeSerializer;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
@@ -59,12 +60,12 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory> {
 	public final FluidIngredient input;
 	public final FluidResult firstOutput;
 	public final FluidResult secondOutput;
-	public final double energyInput;
+	public final long energyInput;
 	public final int time;
 
 	private static final Map<World, ElectrolyzingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public ElectrolyzingRecipe(Identifier id, FluidIngredient input, FluidResult firstOutput, FluidResult secondOutput, double energyInput, int time) {
+	public ElectrolyzingRecipe(Identifier id, FluidIngredient input, FluidResult firstOutput, FluidResult secondOutput, long energyInput, int time) {
 		this.id = id;
 		this.input = input;
 		this.firstOutput = firstOutput;
@@ -179,7 +180,7 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory> {
 					FluidIngredient.fromJson(format.input),
 					FluidResult.fromJson(format.firstOutput),
 					FluidResult.fromJson(format.secondOutput),
-					DoubleUtils.fromJson(format.energyInput),
+					LongUtils.fromJson(format.energyInput),
 					IntegerUtils.fromJson(format.time)
 			);
 		}
@@ -191,7 +192,7 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory> {
 					FluidIngredient.fromPacket(buffer),
 					FluidResult.fromPacket(buffer),
 					FluidResult.fromPacket(buffer),
-					DoubleUtils.fromPacket(buffer),
+					LongUtils.fromPacket(buffer),
 					IntegerUtils.fromPacket(buffer)
 			);
 		}
@@ -201,7 +202,7 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory> {
 			FluidIngredient.toPacket(buffer, recipe.input);
 			FluidResult.toPacket(buffer, recipe.firstOutput);
 			FluidResult.toPacket(buffer, recipe.secondOutput);
-			DoubleUtils.toPacket(buffer, recipe.energyInput);
+			LongUtils.toPacket(buffer, recipe.energyInput);
 			IntegerUtils.toPacket(buffer, recipe.time);
 		}
 	}

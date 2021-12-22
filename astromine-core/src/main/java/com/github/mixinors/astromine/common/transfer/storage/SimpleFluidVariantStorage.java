@@ -10,6 +10,7 @@ public class SimpleFluidVariantStorage extends SingleVariantStorage<FluidVariant
 	private long capacity = 81000L;
 	
 	public SimpleFluidVariantStorage() {
+	
 	}
 	
 	@Override

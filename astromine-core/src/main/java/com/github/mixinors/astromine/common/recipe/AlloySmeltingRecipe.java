@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.recipe;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
 import com.github.mixinors.astromine.common.recipe.result.ItemResult;
+import com.github.mixinors.astromine.common.util.LongUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.architectury.core.AbstractRecipeSerializer;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
@@ -60,12 +61,12 @@ public final class AlloySmeltingRecipe implements Recipe<Inventory> {
 	public final ItemIngredient firstInput;
 	public final ItemIngredient secondInput;
 	public final ItemResult output;
-	public final double energyInput;
+	public final long energyInput;
 	public final int time;
 
 	private static final Map<World, AlloySmeltingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public AlloySmeltingRecipe(Identifier id, ItemIngredient firstInput, ItemIngredient secondInput, ItemResult output, double energyInput, int time) {
+	public AlloySmeltingRecipe(Identifier id, ItemIngredient firstInput, ItemIngredient secondInput, ItemResult output, long energyInput, int time) {
 		this.id = id;
 		this.firstInput = firstInput;
 		this.secondInput = secondInput;
@@ -187,7 +188,7 @@ public final class AlloySmeltingRecipe implements Recipe<Inventory> {
 					ItemIngredient.fromJson(format.firstInput),
 					ItemIngredient.fromJson(format.secondInput),
 					ItemResult.fromJson(format.output),
-					DoubleUtils.fromJson(format.energyInput),
+					LongUtils.fromJson(format.energyInput),
 					IntegerUtils.fromJson(format.time)
 			);
 		}
@@ -199,7 +200,7 @@ public final class AlloySmeltingRecipe implements Recipe<Inventory> {
 					ItemIngredient.fromPacket(buffer),
 					ItemIngredient.fromPacket(buffer),
 					ItemResult.fromPacket(buffer),
-					DoubleUtils.fromPacket(buffer),
+					LongUtils.fromPacket(buffer),
 					IntegerUtils.fromPacket(buffer)
 			);
 		}
@@ -209,7 +210,7 @@ public final class AlloySmeltingRecipe implements Recipe<Inventory> {
 			ItemIngredient.toPacket(buffer, recipe.firstInput);
 			ItemIngredient.toPacket(buffer, recipe.secondInput);
 			ItemResult.toPacket(buffer, recipe.output);
-			DoubleUtils.toPacket(buffer, recipe.energyInput);
+			LongUtils.toPacket(buffer, recipe.energyInput);
 			IntegerUtils.toPacket(buffer, recipe.time);
 		}
 	}

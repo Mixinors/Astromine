@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvider;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
@@ -39,19 +40,28 @@ import com.github.mixinors.astromine.common.block.transfer.TransferType;
 
 import java.util.Arrays;
 
-public class DrainBlockEntity extends ExtendedBlockEntity {
+public class DrainBlockEntity extends ExtendedBlockEntity implements FluidSizeProvider {
+	private static final int INPUT_SLOT = 0;
+	
+	private static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
+	
+	private static final int[] EXTRACT_SLOTS = new int[] { };
+	
 	public DrainBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.DRAIN, blockPos, blockState);
 		
 		fluidStorage = new SimpleFluidStorage(1).insertPredicate((variant, slot) -> {
 			return shouldRun();
-		});
+		}).extractPredicate((variant, slot) -> {
+			return false;
+		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 		
-		fluidStorage.getStorage(0).setCapacity(Long.MAX_VALUE);
+		fluidStorage.getStorage(INPUT_SLOT).setCapacity(getFluidSize());
 		
 		Arrays.fill(fluidStorage.getSidings(), StorageSiding.INSERT);
 	}
 	
+	@Override
 	public void tick() {
 		if (world == null)
 			return;
@@ -61,5 +71,10 @@ public class DrainBlockEntity extends ExtendedBlockEntity {
 			
 			transaction.commit();
 		}
+	}
+	
+	@Override
+	public long getFluidSize() {
+		return Long.MAX_VALUE;
 	}
 }

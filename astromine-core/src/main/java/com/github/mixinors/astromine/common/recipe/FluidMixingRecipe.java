@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.recipe;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.recipe.result.FluidResult;
+import com.github.mixinors.astromine.common.util.LongUtils;
 import dev.architectury.core.AbstractRecipeSerializer;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
@@ -58,12 +59,12 @@ public final class FluidMixingRecipe implements Recipe<Inventory> {
 	public final FluidIngredient firstInput;
 	public final FluidIngredient secondInput;
 	public final FluidResult output;
-	public final double energyInput;
+	public final long energyInput;
 	public final int time;
 
 	private static final Map<World, FluidMixingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public FluidMixingRecipe(Identifier id, FluidIngredient firstInput, FluidIngredient secondIngredient, FluidResult output, double energyInput, int time) {
+	public FluidMixingRecipe(Identifier id, FluidIngredient firstInput, FluidIngredient secondIngredient, FluidResult output, long energyInput, int time) {
 		this.id = id;
 		this.firstInput = firstInput;
 		this.secondInput = secondIngredient;
@@ -179,7 +180,7 @@ public final class FluidMixingRecipe implements Recipe<Inventory> {
 					FluidIngredient.fromJson(format.firstInput),
 					FluidIngredient.fromJson(format.secondInput),
 					FluidResult.fromJson(format.output),
-					DoubleUtils.fromJson(format.energyInput),
+					LongUtils.fromJson(format.energyInput),
 					IntegerUtils.fromJson(format.time)
 			);
 		}
@@ -191,7 +192,7 @@ public final class FluidMixingRecipe implements Recipe<Inventory> {
 					FluidIngredient.fromPacket(buffer),
 					FluidIngredient.fromPacket(buffer),
 					FluidResult.fromPacket(buffer),
-					DoubleUtils.fromPacket(buffer),
+					LongUtils.fromPacket(buffer),
 					IntegerUtils.fromPacket(buffer)
 			);
 		}
@@ -201,7 +202,7 @@ public final class FluidMixingRecipe implements Recipe<Inventory> {
 			FluidIngredient.toPacket(buffer, recipe.firstInput);
 			FluidIngredient.toPacket(buffer, recipe.secondInput);
 			FluidResult.toPacket(buffer, recipe.output);
-			DoubleUtils.toPacket(buffer, recipe.energyInput);
+			LongUtils.toPacket(buffer, recipe.energyInput);
 			IntegerUtils.toPacket(buffer, recipe.time);
 		}
 	}

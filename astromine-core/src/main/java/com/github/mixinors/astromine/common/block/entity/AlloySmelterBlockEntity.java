@@ -74,11 +74,6 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 				return false;
 			}
 			
-			if (!itemStorage.getVariant(INPUT_SLOT_1).equals(variant) &&
-				!itemStorage.getVariant(INPUT_SLOT_2).equals(variant)) {
-				return false;
-			}
-			
 			return AlloySmeltingRecipe.allows(world, variant, itemStorage.getVariant(INPUT_SLOT_2)) ||
 				   AlloySmeltingRecipe.allows(world, itemStorage.getVariant(INPUT_SLOT_1), variant);
 		}).extractPredicate((variant, slot) -> {
@@ -129,13 +124,13 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 							} else if (recipe.firstInput.test(secondInputStorage.getResource(), secondInputStorage.getAmount()) &&
 									   recipe.secondInput.test(firstInputStorage.getResource(), firstInputStorage.getAmount())) {
 								
-								firstInputStorage.extract(secondInputStorage.getResource(), recipe.secondInput.getAmount(), transaction);
-								secondInputStorage.extract(firstInputStorage.getResource(), recipe.firstInput.getAmount(), transaction);
+								firstInputStorage.extract(firstInputStorage.getResource(), recipe.secondInput.getAmount(), transaction);
+								secondInputStorage.extract(secondInputStorage.getResource(), recipe.firstInput.getAmount(), transaction);
 							}
 							
 							var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
 							
-							outputStorage.insert(ItemVariant.of(recipe.output.copy()), recipe.output.getCount(), transaction);
+							outputStorage.insert(recipe.output.variant, recipe.output.amount, transaction);
 
 							transaction.commit();
 							
