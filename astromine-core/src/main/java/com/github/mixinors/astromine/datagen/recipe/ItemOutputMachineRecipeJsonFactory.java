@@ -1,17 +1,13 @@
 package com.github.mixinors.astromine.datagen.recipe;
 
-import java.util.function.Consumer;
-
 import com.google.gson.JsonObject;
 
 import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
 import dev.architectury.core.AbstractRecipeSerializer;
 
-import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
-import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;

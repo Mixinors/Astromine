@@ -76,7 +76,7 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 					}
 				}
 
-				if(family.isVariantAstromine(variant)) addHarvestData(tag, family.getHarvestData(variant));
+				if (family.isVariantAstromine(variant)) addHarvestData(tag, family.getHarvestData(variant));
 			});
 
 			if (family.hasAnyBlockVariants(AMDatagen.ORE_VARIANTS)) {
@@ -252,11 +252,11 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 
 	public void addHarvestData(Block block, HarvestData harvestData) {
 		getOrCreateTagBuilder(harvestData.mineableTag()).add(block);
-		if(harvestData.miningLevel() > 0) getOrCreateTagBuilder(harvestData.miningLevelTag()).add(block);
+		if (harvestData.miningLevel() > 0) getOrCreateTagBuilder(harvestData.miningLevelTag()).add(block);
 	}
 
 	public void addHarvestData(Tag.Identified<Block> tag, HarvestData harvestData) {
 		getOrCreateTagBuilder(harvestData.mineableTag()).addTag(tag);
-		if(harvestData.miningLevel() > 0) getOrCreateTagBuilder(harvestData.miningLevelTag()).addTag(tag);
+		if (harvestData.miningLevel() > 0) getOrCreateTagBuilder(harvestData.miningLevelTag()).addTag(tag);
 	}
 }

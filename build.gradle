@@ -201,7 +201,7 @@ subprojects {
                 project {
                     id = cfProjectId.toString()
                     releaseType = rootProject.release_cycle
-                    changelog = "View the changelog at https://github.com/Chainmail-Studios/Astromine"
+                    changelog = "View the changelog at https://github.com/Mixinors/Astromine"
                     ((String) rootProject.tagged_versions).split(",").each {
                         addGameVersion it
                     }
@@ -213,6 +213,8 @@ subprojects {
                         embeddedLibrary "cardinal-components"
                         embeddedLibrary "libblockattributes"
                         embeddedLibrary "patchouli-fabric"
+						embeddedLibrary "piglib"
+						embeddedLibrary "cauldronlib"
                     }
                     mainArtifact(file("${project.buildDir}/libs/${project.archivesBaseName}-${project.version}.jar"))
                 }
@@ -341,6 +343,8 @@ curseforge {
                 embeddedLibrary "cardinal-components"
                 embeddedLibrary "libblockattributes"
                 embeddedLibrary "patchouli-fabric"
+                embeddedLibrary "piglib"
+                embeddedLibrary "cauldronlib"
             }
             mainArtifact(file("${project.buildDir}/libs/${project.archivesBaseName}-${project.version}.jar"))
         }

@@ -60,7 +60,7 @@ public abstract class MachineRecipeJsonFactory<T extends EnergyConsumingRecipe<I
 	}
 
 	public Identifier getOutputId() {
-		return switch(getOutputType()) {
+		return switch (getOutputType()) {
 			case ITEM -> CraftingRecipeJsonFactory.getItemId(getOutputItem());
 			case FLUID -> getFluidId(getOutputFluid());
 			case ENERGY -> AMCommon.id("energy");
@@ -102,7 +102,7 @@ public abstract class MachineRecipeJsonFactory<T extends EnergyConsumingRecipe<I
 	}
 
 	public static AlloySmeltingRecipeJsonFactory createAlloySmelting(Ingredient firstInput, int firstCount, Ingredient secondInput, int secondCount, ItemConvertible output, int outputCount, int processingTime, int energy) {
-		return new AlloySmeltingRecipeJsonFactory(firstInput, firstCount, secondInput,secondCount, output, outputCount, processingTime, energy);
+		return new AlloySmeltingRecipeJsonFactory(firstInput, firstCount, secondInput, secondCount, output, outputCount, processingTime, energy);
 	}
 
 	public static MeltingRecipeJsonFactory createMelting(Ingredient input, Fluid output, int outputAmount, int processingTime, int energy) {

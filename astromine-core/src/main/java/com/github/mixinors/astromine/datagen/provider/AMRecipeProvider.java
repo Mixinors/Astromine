@@ -191,7 +191,7 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 	}
 
 	public static String convertBetween(ItemConvertible to, String process, Tag.Identified<Item> from) {
-		return getRecipeName(to) + "_from_" + process + "_"  + getRecipeName(from);
+		return getRecipeName(to) + "_from_" + process + "_" + getRecipeName(from);
 	}
 
 	public static String getRecipeName(Tag.Identified<Item> tag) {
@@ -381,11 +381,11 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 	}
 
 	public static void offerAlloySmeltingRecipe(Consumer<RecipeJsonProvider> exporter, Tag.Identified<Item> firstInput, int firstCount, Tag.Identified<Item> secondInput, int secondCount, ItemConvertible output, int outputCount, int processingTime, int energy) {
-		createAlloySmeltingRecipe(firstInput, firstCount, secondInput, secondCount, output, outputCount, processingTime, energy).offerTo(exporter, convertBetween(output, "alloy_smelting", getRecipeName(firstInput)+"_and_"+getRecipeName(secondInput)));
+		createAlloySmeltingRecipe(firstInput, firstCount, secondInput, secondCount, output, outputCount, processingTime, energy).offerTo(exporter, convertBetween(output, "alloy_smelting", getRecipeName(firstInput) + "_and_" + getRecipeName(secondInput)));
 	}
 
 	public static void offerAlloySmeltingRecipe(Consumer<RecipeJsonProvider> exporter, ItemConvertible firstInput, int firstCount, ItemConvertible secondInput, int secondCount, ItemConvertible output, int outputCount, int processingTime, int energy) {
-		createAlloySmeltingRecipe(firstInput, firstCount, secondInput, secondCount, output, outputCount, processingTime, energy).offerTo(exporter, convertBetween(output, "alloy_smelting", getRecipeName(firstInput)+"_and_"+getRecipeName(secondInput)));
+		createAlloySmeltingRecipe(firstInput, firstCount, secondInput, secondCount, output, outputCount, processingTime, energy).offerTo(exporter, convertBetween(output, "alloy_smelting", getRecipeName(firstInput) + "_and_" + getRecipeName(secondInput)));
 	}
 
 	public static MeltingRecipeJsonFactory createMeltingRecipe(Tag.Identified<Item> input, Fluid output, int outputAmount, int processingTime, int energy) {
@@ -449,7 +449,7 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 		});
 
 		MaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateRecipes).forEach((family) -> {
-			AMCommon.LOGGER.info("Offering recipes for "+family.getName());
+			AMCommon.LOGGER.info("Offering recipes for " + family.getName());
 			if (family.shouldGenerateRecipe(BlockVariant.BLOCK)) {
 				if (family.isBlock2x2()) {
 					AMCommon.LOGGER.info("Offering 2x2 compacting recipe for base -> block");
@@ -477,7 +477,7 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 			}
 			if (family.hasAnyBlockVariants(AMDatagen.ORE_VARIANTS)) {
 				AMCommon.LOGGER.info("Offering smelting and blasting for ores -> base");
-				if(family.areAnyBlockVariantsVanilla(AMDatagen.ORE_VARIANTS)) {
+				if (family.areAnyBlockVariantsVanilla(AMDatagen.ORE_VARIANTS)) {
 					AMDatagen.ORE_VARIANTS.stream().filter(family::isVariantAstromine).forEach((variant) -> {
 						offerSmeltingAndBlasting(exporter, family.getItemTag(variant), family.getBaseItem(), family.getOreSmeltingExperience());
 					});
@@ -506,10 +506,10 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 			if (family.hasAnyItemVariants(AMDatagen.EQUIPMENT_VARIANTS)) {
 				if (family.hasVariant(ItemVariant.NUGGET))
 					AMCommon.LOGGER.info("Offering smelting and blasting for salvagables -> nugget");
-					offerSmeltingAndBlasting(exporter, family.getItemTag("salvageables"), family.getVariant(ItemVariant.NUGGET), 0.1f);
+				offerSmeltingAndBlasting(exporter, family.getItemTag("salvageables"), family.getVariant(ItemVariant.NUGGET), 0.1f);
 				if (family.hasVariant(ItemVariant.TINY_DUST))
 					AMCommon.LOGGER.info("Offering triturating for salvagables -> tiny dusts");
-					offerTrituratingRecipe(exporter, family.getItemTag("salvageables"), family.getVariant(ItemVariant.TINY_DUST), 2, 30, 200);
+				offerTrituratingRecipe(exporter, family.getItemTag("salvageables"), family.getVariant(ItemVariant.TINY_DUST), 2, 30, 200);
 			}
 			if (family.usesSmithing()) {
 				AMCommon.LOGGER.info("Offering smithing recipes for equipment");
@@ -529,7 +529,7 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 			}
 			MISC_OFFERERS.forEach((variant, offerer) -> {
 				if (family.shouldGenerateRecipe(variant)) {
-					AMCommon.LOGGER.info("Offering recipe for base -> "+variant.getName());
+					AMCommon.LOGGER.info("Offering recipe for base -> " + variant.getName());
 					offerer.accept(exporter, family.getBaseTag(), family.getVariant(variant));
 				}
 			});
@@ -598,22 +598,22 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 					MaterialFamily second = alloyInfo.secondIngredient();
 					AMCommon.LOGGER.info("Offering alloy smelting for base + base -> base");
 					offerAlloySmeltingRecipe(exporter, first.getBaseTag(), alloyInfo.firstCount(), second.getBaseTag(), alloyInfo.secondCount(), family.getBaseItem(), alloyInfo.outputCount(), alloyInfo.time(), alloyInfo.energy());
-					if(family.hasVariant(ItemVariant.NUGGET) && first.hasVariant(ItemVariant.NUGGET) && second.hasVariant(ItemVariant.NUGGET)) {
+					if (family.hasVariant(ItemVariant.NUGGET) && first.hasVariant(ItemVariant.NUGGET) && second.hasVariant(ItemVariant.NUGGET)) {
 						AMCommon.LOGGER.info("Offering alloy smelting for nugget + nugget -> nugget");
 						offerAlloySmeltingRecipe(exporter, alloyInfo.firstIngredient().getTag(ItemVariant.NUGGET), alloyInfo.firstCount(), alloyInfo.secondIngredient().getTag(ItemVariant.NUGGET), alloyInfo.secondCount(), family.getVariant(ItemVariant.NUGGET), alloyInfo.outputCount(), alloyInfo.time() / 8, alloyInfo.energy() / 8);
 					}
-					if(family.hasVariant(ItemVariant.DUST) && first.hasVariant(ItemVariant.DUST) && second.hasVariant(ItemVariant.DUST)) {
+					if (family.hasVariant(ItemVariant.DUST) && first.hasVariant(ItemVariant.DUST) && second.hasVariant(ItemVariant.DUST)) {
 						AMCommon.LOGGER.info("Offering alloy smelting for dust + dust -> dust");
 						offerAlloySmeltingRecipe(exporter, alloyInfo.firstIngredient().getTag(ItemVariant.DUST), alloyInfo.firstCount(), alloyInfo.secondIngredient().getTag(ItemVariant.DUST), alloyInfo.secondCount(), family.getVariant(ItemVariant.DUST), alloyInfo.outputCount(), alloyInfo.time(), alloyInfo.energy());
 					}
-					if(family.hasVariant(ItemVariant.TINY_DUST) && first.hasVariant(ItemVariant.TINY_DUST) && second.hasVariant(ItemVariant.TINY_DUST)) {
+					if (family.hasVariant(ItemVariant.TINY_DUST) && first.hasVariant(ItemVariant.TINY_DUST) && second.hasVariant(ItemVariant.TINY_DUST)) {
 						AMCommon.LOGGER.info("Offering alloy smelting for tiny dust + tiny dust -> tiny dust");
 						offerAlloySmeltingRecipe(exporter, alloyInfo.firstIngredient().getTag(ItemVariant.TINY_DUST), alloyInfo.firstCount(), alloyInfo.secondIngredient().getTag(ItemVariant.TINY_DUST), alloyInfo.secondCount(), family.getVariant(ItemVariant.TINY_DUST), alloyInfo.outputCount(), alloyInfo.time() / 8, alloyInfo.energy() / 8);
 					}
 				}));
 			}
 
-			AMCommon.LOGGER.info("Finished offering recipes for "+family.getName());
+			AMCommon.LOGGER.info("Finished offering recipes for " + family.getName());
 		});
 
 		offerSmelting(exporter, List.of(AMBlocks.METEOR_STONE.get()), AMBlocks.SMOOTH_METEOR_STONE.get(), 0.1f, 200, getRecipeName(AMBlocks.SMOOTH_METEOR_STONE.get()));
@@ -657,9 +657,9 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 		});
 
 		BIOFUEL_TAGS.forEach((tag, count) -> {
-			offerTrituratingRecipe(exporter, tag, AMItems.BIOFUEL.get(), count, 100+(40*count), 100*count);
+			offerTrituratingRecipe(exporter, tag, AMItems.BIOFUEL.get(), count, 100 + (40 * count), 100 * count);
 		});
-		
+
 		offerMeltingRecipe(exporter, AMDatagen.createCommonItemTag("biofuel"), AMFluids.BIOMASS.getStill(), 810, 100, 8000);
 	}
 

@@ -247,7 +247,7 @@ public class AMModelProvider extends FabricBlockStateDefinitionProvider {
 		HANDHELD.forEach((item) -> itemModelGenerator.register(item, Models.HANDHELD));
 	}
 
-	public final void registerMachine(BlockStateModelGenerator blockStateModelGenerator, Block machine) {
+	public static void registerMachine(BlockStateModelGenerator blockStateModelGenerator, Block machine) {
 		Texture inactiveTexture = new Texture().put(TextureKey.TOP, Texture.getSubId(machine, "_top")).put(TextureKey.BOTTOM, Texture.getSubId(machine, "_bottom")).put(LEFT, Texture.getSubId(machine, "_left")).put(RIGHT, Texture.getSubId(machine, "_right")).put(TextureKey.FRONT, Texture.getSubId(machine, "_front")).put(TextureKey.BACK, Texture.getSubId(machine, "_back"));
 		Texture activeTexture = new Texture().put(TextureKey.TOP, Texture.getSubId(machine, "_top_active")).put(TextureKey.BOTTOM, Texture.getSubId(machine, "_bottom_active")).put(LEFT, Texture.getSubId(machine, "_left_active")).put(RIGHT, Texture.getSubId(machine, "_right_active")).put(TextureKey.FRONT, Texture.getSubId(machine, "_front_active")).put(TextureKey.BACK, Texture.getSubId(machine, "_back_active"));
 		Identifier inactiveId = MACHINE.upload(machine, inactiveTexture, blockStateModelGenerator.modelCollector);

@@ -88,7 +88,7 @@ public enum BlockVariant implements Variant<Block> {
 	}
 
 	public int getMiningLevel() {
-		return switch(this) {
+		return switch (this) {
 			case ASTEROID_ORE, METEOR_ORE -> 4;
 			default -> 0;
 		};

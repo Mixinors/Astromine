@@ -20,6 +20,7 @@ import com.github.mixinors.astromine.datagen.provider.tag.AMFluidTagProvider;
 import com.github.mixinors.astromine.datagen.provider.tag.AMItemTagProvider;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMFluids;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.data.family.BlockFamily;
@@ -228,6 +229,7 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 		}
 	}
 
+	@Nullable
 	public static Tag.Identified<Block> getMiningLevelTag(int miningLevel) {
 		if (miningLevel <= 0) return null;
 		return switch (miningLevel) {
