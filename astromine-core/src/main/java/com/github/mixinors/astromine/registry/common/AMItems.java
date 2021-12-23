@@ -324,7 +324,7 @@ public class AMItems {
 	
 	public static final RegistrySupplier<Item> UNIVITE_HELMET = register("univite_helmet", () -> new AnimatedArmorItem(AMArmorMaterials.UNIVITE, EquipmentSlot.HEAD, AMItems.getSettings().fireproof(), 18));
 	public static final RegistrySupplier<Item> UNIVITE_CHESTPLATE = register("univite_chestplate", () -> new AnimatedArmorItem(AMArmorMaterials.UNIVITE, EquipmentSlot.CHEST, AMItems.getSettings().fireproof(), 18));
-	public static final RegistrySupplier<Item> UNIVITE_LEGGINGS = register("univite_leggings", () -> new ArmorItem(AMArmorMaterials.UNIVITE, EquipmentSlot.LEGS, AMItems.getSettings().fireproof()));
+	public static final RegistrySupplier<Item> UNIVITE_LEGGINGS = register("univite_leggings", () -> new AnimatedArmorItem(AMArmorMaterials.UNIVITE, EquipmentSlot.LEGS, AMItems.getSettings().fireproof(), 18));
 	public static final RegistrySupplier<Item> UNIVITE_BOOTS = register("univite_boots", () -> new AnimatedArmorItem(AMArmorMaterials.UNIVITE, EquipmentSlot.FEET, AMItems.getSettings().fireproof(), 18));
 	
 	public static final RegistrySupplier<Item> METEORIC_STEEL_HELMET = register("meteoric_steel_helmet", () -> new ArmorItem(AMArmorMaterials.METEORIC_STEEL, EquipmentSlot.HEAD, AMItems.getSettings()));

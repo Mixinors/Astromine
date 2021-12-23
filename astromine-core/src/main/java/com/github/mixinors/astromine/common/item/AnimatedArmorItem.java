@@ -29,6 +29,8 @@ import com.mojang.blaze3d.platform.TextureUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderPhase;
 import net.minecraft.client.texture.AbstractTexture;
@@ -102,7 +104,7 @@ public class AnimatedArmorItem extends ArmorItem {
 					textureManager.registerTexture(id, texture);
 				}
 
-				texture.bindTexture();
+				RenderSystem.setShaderTexture(0, texture.getGlId());
 			};
 
 			endAction = () -> {};
@@ -171,7 +173,7 @@ public class AnimatedArmorItem extends ArmorItem {
 				this.frames = frames;
 			}
 
-			/** Loads this this texture from a {@link ResourceManager}. */
+			/** Loads this texture from a {@link ResourceManager}. */
 			@Override
 			public void load(ResourceManager manager) throws IOException {
 				close();

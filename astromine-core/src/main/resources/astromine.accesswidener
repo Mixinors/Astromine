@@ -35,3 +35,4 @@ mutable field net/minecraft/server/world/ThreadedAnvilChunkStorage chunkGenerato
 accessible class net/minecraft/data/client/model/BlockStateModelGenerator$BlockTexturePool
 accessible class net/minecraft/recipe/Ingredient$Entry
 accessible field net/minecraft/recipe/Ingredient entries [Lnet/minecraft/recipe/Ingredient$Entry;
+accessible field net/minecraft/client/render/RenderPhase ARMOR_CUTOUT_NO_CULL_SHADER Lnet/minecraft/client/render/RenderPhase$Shader;
