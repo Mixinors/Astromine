@@ -154,7 +154,7 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 
 	@Override
 	public ItemStack createIcon() {
-		return new ItemStack(AMBlocks.ADVANCED_WIREMILL.get());
+		return new ItemStack(AMBlocks.ADVANCED_WIRE_MILL.get());
 	}
 
 	public Identifier getIdentifier() {

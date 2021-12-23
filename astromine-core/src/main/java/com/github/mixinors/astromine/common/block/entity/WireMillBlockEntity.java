@@ -166,7 +166,7 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 
 	public static class Primitive extends WireMillBlockEntity {
 		public Primitive(BlockPos blockPos, BlockState blockState) {
-			super(AMBlockEntityTypes.PRIMITIVE_WIREMILL, blockPos, blockState);
+			super(AMBlockEntityTypes.PRIMITIVE_WIRE_MILL, blockPos, blockState);
 		}
 
 		@Override
@@ -187,7 +187,7 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 
 	public static class Basic extends WireMillBlockEntity {
 		public Basic(BlockPos blockPos, BlockState blockState) {
-			super(AMBlockEntityTypes.BASIC_WIREMILL, blockPos, blockState);
+			super(AMBlockEntityTypes.BASIC_WIRE_MILL, blockPos, blockState);
 		}
 
 		@Override
@@ -208,7 +208,7 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 
 	public static class Advanced extends WireMillBlockEntity {
 		public Advanced(BlockPos blockPos, BlockState blockState) {
-			super(AMBlockEntityTypes.ADVANCED_WIREMILL, blockPos, blockState);
+			super(AMBlockEntityTypes.ADVANCED_WIRE_MILL, blockPos, blockState);
 		}
 
 		@Override
@@ -229,7 +229,7 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 
 	public static class Elite extends WireMillBlockEntity {
 		public Elite(BlockPos blockPos, BlockState blockState) {
-			super(AMBlockEntityTypes.ELITE_WIREMILL, blockPos, blockState);
+			super(AMBlockEntityTypes.ELITE_WIRE_MILL, blockPos, blockState);
 		}
 
 		@Override

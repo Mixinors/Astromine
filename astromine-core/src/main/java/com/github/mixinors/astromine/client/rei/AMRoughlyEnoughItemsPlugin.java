@@ -146,7 +146,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 		registry.addWorkstations(REFINING, EntryStacks.of(AMBlocks.PRIMITIVE_REFINERY.get()), EntryStacks.of(AMBlocks.BASIC_REFINERY.get()), EntryStacks.of(AMBlocks.ADVANCED_REFINERY.get()), EntryStacks.of(AMBlocks.ELITE_REFINERY.get()));
 		registry.addWorkstations(PRESSING, EntryStacks.of(AMBlocks.PRIMITIVE_PRESSER.get()), EntryStacks.of(AMBlocks.BASIC_PRESSER.get()), EntryStacks.of(AMBlocks.ADVANCED_PRESSER.get()), EntryStacks.of(AMBlocks.ELITE_PRESSER.get()));
 		registry.addWorkstations(MELTING, EntryStacks.of(AMBlocks.PRIMITIVE_MELTER.get()), EntryStacks.of(AMBlocks.BASIC_MELTER.get()), EntryStacks.of(AMBlocks.ADVANCED_MELTER.get()), EntryStacks.of(AMBlocks.ELITE_MELTER.get()));
-		registry.addWorkstations(WIRE_MILLING, EntryStacks.of(AMBlocks.PRIMITIVE_WIREMILL.get()), EntryStacks.of(AMBlocks.BASIC_WIREMILL.get()), EntryStacks.of(AMBlocks.ADVANCED_WIREMILL.get()), EntryStacks.of(AMBlocks.ELITE_WIREMILL.get()));
+		registry.addWorkstations(WIRE_MILLING, EntryStacks.of(AMBlocks.PRIMITIVE_WIRE_MILL.get()), EntryStacks.of(AMBlocks.BASIC_WIRE_MILL.get()), EntryStacks.of(AMBlocks.ADVANCED_WIRE_MILL.get()), EntryStacks.of(AMBlocks.ELITE_WIRE_MILL.get()));
 		registry.addWorkstations(ALLOY_SMELTING, EntryStacks.of(AMBlocks.PRIMITIVE_ALLOY_SMELTER.get()), EntryStacks.of(AMBlocks.BASIC_ALLOY_SMELTER.get()), EntryStacks.of(AMBlocks.ADVANCED_ALLOY_SMELTER.get()), EntryStacks.of(AMBlocks.ELITE_ALLOY_SMELTER.get()));
 		registry.addWorkstations(SOLIDIFYING, EntryStacks.of(AMBlocks.PRIMITIVE_SOLIDIFIER.get()), EntryStacks.of(AMBlocks.BASIC_SOLIDIFIER.get()), EntryStacks.of(AMBlocks.ADVANCED_SOLIDIFIER.get()), EntryStacks.of(AMBlocks.ELITE_SOLIDIFIER.get()));
 			

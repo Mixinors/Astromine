@@ -176,10 +176,10 @@ public class AMBlocks {
 	public static final RegistrySupplier<Block> ADVANCED_PRESSER = register("advanced_press", () -> new PressBlock.Advanced(getAdvancedSettings()), AMItems.getSettings());
 	public static final RegistrySupplier<Block> ELITE_PRESSER = register("elite_press", () -> new PressBlock.Elite(getEliteSettings()), AMItems.getSettings());
 	
-	public static final RegistrySupplier<Block> PRIMITIVE_WIREMILL = register("primitive_wire_mill", () -> new WireMillBlock.Primitive(getPrimitiveSettings()), AMItems.getSettings());
-	public static final RegistrySupplier<Block> BASIC_WIREMILL = register("basic_wire_mill", () -> new WireMillBlock.Basic(getBasicSettings()), AMItems.getSettings());
-	public static final RegistrySupplier<Block> ADVANCED_WIREMILL = register("advanced_wire_mill", () -> new WireMillBlock.Advanced(getAdvancedSettings()), AMItems.getSettings());
-	public static final RegistrySupplier<Block> ELITE_WIREMILL = register("elite_wire_mill", () -> new WireMillBlock.Elite(getEliteSettings()), AMItems.getSettings());
+	public static final RegistrySupplier<Block> PRIMITIVE_WIRE_MILL = register("primitive_wire_mill", () -> new WireMillBlock.Primitive(getPrimitiveSettings()), AMItems.getSettings());
+	public static final RegistrySupplier<Block> BASIC_WIRE_MILL = register("basic_wire_mill", () -> new WireMillBlock.Basic(getBasicSettings()), AMItems.getSettings());
+	public static final RegistrySupplier<Block> ADVANCED_WIRE_MILL = register("advanced_wire_mill", () -> new WireMillBlock.Advanced(getAdvancedSettings()), AMItems.getSettings());
+	public static final RegistrySupplier<Block> ELITE_WIRE_MILL = register("elite_wire_mill", () -> new WireMillBlock.Elite(getEliteSettings()), AMItems.getSettings());
 	
 	public static final RegistrySupplier<Block> PRIMITIVE_ELECTROLYZER = register("primitive_electrolyzer", () -> new ElectrolyzerBlock.Primitive(getPrimitiveSettings()), AMItems.getSettings());
 	public static final RegistrySupplier<Block> BASIC_ELECTROLYZER = register("basic_electrolyzer", () -> new ElectrolyzerBlock.Basic(getBasicSettings()), AMItems.getSettings());
