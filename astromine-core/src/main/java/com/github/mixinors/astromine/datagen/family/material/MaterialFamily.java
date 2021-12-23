@@ -39,6 +39,7 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 	boolean generateModels = true;
 	boolean generateRecipes = true;
 	boolean generateTags = true;
+	boolean generateHarvestTags = true;
 	boolean generateLootTables = true;
 	float oreSmeltingExperience = 0.7f;
 	@Nullable
@@ -221,6 +222,10 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 		return shouldGenerateLootTables() && hasVariant(variant) && isVariantAstromine(variant);
 	}
 
+	public boolean shouldGenerateHarvestTags(BlockVariant variant) {
+		return shouldGenerateHarvestTags() && hasVariant(variant) && isVariantAstromine(variant);
+	}
+
 	public boolean shouldGenerateModels() {
 		return this.generateModels;
 	}
@@ -231,6 +236,10 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 
 	public boolean shouldGenerateTags() {
 		return this.generateTags;
+	}
+
+	public boolean shouldGenerateHarvestTags() {
+		return this.generateHarvestTags;
 	}
 
 	public boolean shouldGenerateLootTables() {
@@ -490,6 +499,11 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 
 		public MaterialFamily.Builder noGenerateTags() {
 			this.family.generateTags = false;
+			return this;
+		}
+
+		public MaterialFamily.Builder noGenerateHarvestTags() {
+			this.family.generateHarvestTags = false;
 			return this;
 		}
 

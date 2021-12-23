@@ -148,7 +148,7 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 
 	@Override
 	public ItemStack createIcon() {
-		return new ItemStack(AMBlocks.ADVANCED_LIQUID_GENERATOR.get());
+		return new ItemStack(AMBlocks.ADVANCED_FLUID_GENERATOR.get());
 	}
 
 	public FluidIngredient getInput() {

@@ -61,10 +61,10 @@ public class AMBlockEntityTypes {
 	public static final RegistrySupplier<BlockEntityType<SolidGeneratorBlockEntity.Advanced>> ADVANCED_SOLID_GENERATOR = register("advanced_solid_generator", SolidGeneratorBlockEntity.Advanced::new, AMBlocks.ADVANCED_SOLID_GENERATOR);
 	public static final RegistrySupplier<BlockEntityType<SolidGeneratorBlockEntity.Elite>> ELITE_SOLID_GENERATOR = register("elite_solid_generator", SolidGeneratorBlockEntity.Elite::new, AMBlocks.ELITE_SOLID_GENERATOR);
 	
-	public static final RegistrySupplier<BlockEntityType<FluidGeneratorBlockEntity.Primitive>> PRIMITIVE_LIQUID_GENERATOR = register("primitive_fluid_generator", FluidGeneratorBlockEntity.Primitive::new, AMBlocks.PRIMITIVE_LIQUID_GENERATOR);
-	public static final RegistrySupplier<BlockEntityType<FluidGeneratorBlockEntity.Basic>> BASIC_LIQUID_GENERATOR = register("basic_fluid_generator", FluidGeneratorBlockEntity.Basic::new, AMBlocks.BASIC_LIQUID_GENERATOR);
-	public static final RegistrySupplier<BlockEntityType<FluidGeneratorBlockEntity.Advanced>> ADVANCED_LIQUID_GENERATOR = register("advanced_fluid_generator", FluidGeneratorBlockEntity.Advanced::new, AMBlocks.ADVANCED_LIQUID_GENERATOR);
-	public static final RegistrySupplier<BlockEntityType<FluidGeneratorBlockEntity.Elite>> ELITE_LIQUID_GENERATOR = register("elite_fluid_generator", FluidGeneratorBlockEntity.Elite::new, AMBlocks.ELITE_LIQUID_GENERATOR);
+	public static final RegistrySupplier<BlockEntityType<FluidGeneratorBlockEntity.Primitive>> PRIMITIVE_LIQUID_GENERATOR = register("primitive_fluid_generator", FluidGeneratorBlockEntity.Primitive::new, AMBlocks.PRIMITIVE_FLUID_GENERATOR);
+	public static final RegistrySupplier<BlockEntityType<FluidGeneratorBlockEntity.Basic>> BASIC_LIQUID_GENERATOR = register("basic_fluid_generator", FluidGeneratorBlockEntity.Basic::new, AMBlocks.BASIC_FLUID_GENERATOR);
+	public static final RegistrySupplier<BlockEntityType<FluidGeneratorBlockEntity.Advanced>> ADVANCED_LIQUID_GENERATOR = register("advanced_fluid_generator", FluidGeneratorBlockEntity.Advanced::new, AMBlocks.ADVANCED_FLUID_GENERATOR);
+	public static final RegistrySupplier<BlockEntityType<FluidGeneratorBlockEntity.Elite>> ELITE_LIQUID_GENERATOR = register("elite_fluid_generator", FluidGeneratorBlockEntity.Elite::new, AMBlocks.ELITE_FLUID_GENERATOR);
 	
 	public static final RegistrySupplier<BlockEntityType<ElectricFurnaceBlockEntity.Primitive>> PRIMITIVE_ELECTRIC_FURNACE = register("primitive_electric_furnace", ElectricFurnaceBlockEntity.Primitive::new, AMBlocks.PRIMITIVE_ELECTRIC_FURNACE);
 	public static final RegistrySupplier<BlockEntityType<ElectricFurnaceBlockEntity.Basic>> BASIC_ELECTRIC_FURNACE = register("basic_electric_furnace", ElectricFurnaceBlockEntity.Basic::new, AMBlocks.BASIC_ELECTRIC_FURNACE);

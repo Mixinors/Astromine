@@ -81,7 +81,6 @@ import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCustomDisplay;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -110,14 +109,14 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 	public static final CategoryIdentifier<InfusingDisplay> INFUSING = CategoryIdentifier.of(AMCommon.id("infusing"));
 	public static final CategoryIdentifier<TrituratingDisplay> TRITURATING = CategoryIdentifier.of(AMCommon.id("triturating"));
 	public static final CategoryIdentifier<ElectricSmeltingDisplay> ELECTRIC_SMELTING = CategoryIdentifier.of(AMCommon.id("electric_smelting"));
-	public static final CategoryIdentifier<FluidGeneratingDisplay> LIQUID_GENERATING = CategoryIdentifier.of(AMCommon.id("fluid_generating"));
+	public static final CategoryIdentifier<FluidGeneratingDisplay> FLUID_GENERATING = CategoryIdentifier.of(AMCommon.id("fluid_generating"));
 	public static final CategoryIdentifier<SolidGeneratingDisplay> SOLID_GENERATING = CategoryIdentifier.of(AMCommon.id("solid_generating"));
 	public static final CategoryIdentifier<FluidMixingDisplay> FLUID_MIXING = CategoryIdentifier.of(AMCommon.id("fluid_mixing"));
 	public static final CategoryIdentifier<ElectrolyzingDisplay> ELECTROLYZING = CategoryIdentifier.of(AMCommon.id("electrolyzing"));
 	public static final CategoryIdentifier<RefiningDisplay> REFINING = CategoryIdentifier.of(AMCommon.id("refining"));
 	public static final CategoryIdentifier<PressingDisplay> PRESSING = CategoryIdentifier.of(AMCommon.id("pressing"));
 	public static final CategoryIdentifier<MeltingDisplay> MELTING = CategoryIdentifier.of(AMCommon.id("melting"));
-	public static final CategoryIdentifier<WireMillingDisplay> WIREMILLING = CategoryIdentifier.of(AMCommon.id("wire_milling"));
+	public static final CategoryIdentifier<WireMillingDisplay> WIRE_MILLING = CategoryIdentifier.of(AMCommon.id("wire_milling"));
 	public static final CategoryIdentifier<AlloySmeltingDisplay> ALLOY_SMELTING = CategoryIdentifier.of(AMCommon.id("alloy_smelting"));
 	public static final CategoryIdentifier<SolidifyingDisplay> SOLIDIFYING = CategoryIdentifier.of(AMCommon.id("solidifying"));
 
@@ -140,18 +139,18 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 		registry.addWorkstations(INFUSING, EntryStacks.of(AMBlocks.ALTAR.get()));
 		registry.addWorkstations(TRITURATING, EntryStacks.of(AMBlocks.PRIMITIVE_TRITURATOR.get()), EntryStacks.of(AMBlocks.BASIC_TRITURATOR.get()), EntryStacks.of(AMBlocks.ADVANCED_TRITURATOR.get()), EntryStacks.of(AMBlocks.ELITE_TRITURATOR.get()));
 		registry.addWorkstations(ELECTRIC_SMELTING, EntryStacks.of(AMBlocks.PRIMITIVE_ELECTRIC_FURNACE.get()), EntryStacks.of(AMBlocks.BASIC_ELECTRIC_FURNACE.get()), EntryStacks.of(AMBlocks.ADVANCED_ELECTRIC_FURNACE.get()), EntryStacks.of(AMBlocks.ELITE_ELECTRIC_FURNACE.get()));
-		registry.addWorkstations(LIQUID_GENERATING, EntryStacks.of(AMBlocks.PRIMITIVE_LIQUID_GENERATOR.get()), EntryStacks.of(AMBlocks.BASIC_LIQUID_GENERATOR.get()), EntryStacks.of(AMBlocks.ADVANCED_LIQUID_GENERATOR.get()), EntryStacks.of(AMBlocks.ELITE_LIQUID_GENERATOR.get()));
+		registry.addWorkstations(FLUID_GENERATING, EntryStacks.of(AMBlocks.PRIMITIVE_FLUID_GENERATOR.get()), EntryStacks.of(AMBlocks.BASIC_FLUID_GENERATOR.get()), EntryStacks.of(AMBlocks.ADVANCED_FLUID_GENERATOR.get()), EntryStacks.of(AMBlocks.ELITE_FLUID_GENERATOR.get()));
 		registry.addWorkstations(SOLID_GENERATING, EntryStacks.of(AMBlocks.PRIMITIVE_SOLID_GENERATOR.get()), EntryStacks.of(AMBlocks.BASIC_SOLID_GENERATOR.get()), EntryStacks.of(AMBlocks.ADVANCED_SOLID_GENERATOR.get()), EntryStacks.of(AMBlocks.ELITE_SOLID_GENERATOR.get()));
 		registry.addWorkstations(FLUID_MIXING, EntryStacks.of(AMBlocks.PRIMITIVE_FLUID_MIXER.get()), EntryStacks.of(AMBlocks.BASIC_FLUID_MIXER.get()), EntryStacks.of(AMBlocks.ADVANCED_FLUID_MIXER.get()), EntryStacks.of(AMBlocks.ELITE_FLUID_MIXER.get()));
 		registry.addWorkstations(ELECTROLYZING, EntryStacks.of(AMBlocks.PRIMITIVE_ELECTROLYZER.get()), EntryStacks.of(AMBlocks.BASIC_ELECTROLYZER.get()), EntryStacks.of(AMBlocks.ADVANCED_ELECTROLYZER.get()), EntryStacks.of(AMBlocks.ELITE_ELECTROLYZER.get()));
 		registry.addWorkstations(REFINING, EntryStacks.of(AMBlocks.PRIMITIVE_REFINERY.get()), EntryStacks.of(AMBlocks.BASIC_REFINERY.get()), EntryStacks.of(AMBlocks.ADVANCED_REFINERY.get()), EntryStacks.of(AMBlocks.ELITE_REFINERY.get()));
 		registry.addWorkstations(PRESSING, EntryStacks.of(AMBlocks.PRIMITIVE_PRESSER.get()), EntryStacks.of(AMBlocks.BASIC_PRESSER.get()), EntryStacks.of(AMBlocks.ADVANCED_PRESSER.get()), EntryStacks.of(AMBlocks.ELITE_PRESSER.get()));
 		registry.addWorkstations(MELTING, EntryStacks.of(AMBlocks.PRIMITIVE_MELTER.get()), EntryStacks.of(AMBlocks.BASIC_MELTER.get()), EntryStacks.of(AMBlocks.ADVANCED_MELTER.get()), EntryStacks.of(AMBlocks.ELITE_MELTER.get()));
-		registry.addWorkstations(WIREMILLING, EntryStacks.of(AMBlocks.PRIMITIVE_WIREMILL.get()), EntryStacks.of(AMBlocks.BASIC_WIREMILL.get()), EntryStacks.of(AMBlocks.ADVANCED_WIREMILL.get()), EntryStacks.of(AMBlocks.ELITE_WIREMILL.get()));
+		registry.addWorkstations(WIRE_MILLING, EntryStacks.of(AMBlocks.PRIMITIVE_WIREMILL.get()), EntryStacks.of(AMBlocks.BASIC_WIREMILL.get()), EntryStacks.of(AMBlocks.ADVANCED_WIREMILL.get()), EntryStacks.of(AMBlocks.ELITE_WIREMILL.get()));
 		registry.addWorkstations(ALLOY_SMELTING, EntryStacks.of(AMBlocks.PRIMITIVE_ALLOY_SMELTER.get()), EntryStacks.of(AMBlocks.BASIC_ALLOY_SMELTER.get()), EntryStacks.of(AMBlocks.ADVANCED_ALLOY_SMELTER.get()), EntryStacks.of(AMBlocks.ELITE_ALLOY_SMELTER.get()));
 		registry.addWorkstations(SOLIDIFYING, EntryStacks.of(AMBlocks.PRIMITIVE_SOLIDIFIER.get()), EntryStacks.of(AMBlocks.BASIC_SOLIDIFIER.get()), EntryStacks.of(AMBlocks.ADVANCED_SOLIDIFIER.get()), EntryStacks.of(AMBlocks.ELITE_SOLIDIFIER.get()));
 			
-		registry.removePlusButton(LIQUID_GENERATING);
+		registry.removePlusButton(FLUID_GENERATING);
 		registry.setPlusButtonArea(SOLID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
 		registry.removePlusButton(FLUID_MIXING);
 		registry.removePlusButton(ELECTROLYZING);

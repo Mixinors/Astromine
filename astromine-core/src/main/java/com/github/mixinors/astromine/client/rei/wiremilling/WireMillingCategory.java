@@ -47,7 +47,7 @@ import java.util.List;
 public class WireMillingCategory implements DisplayCategory<WireMillingDisplay> {
 	@Override
 	public CategoryIdentifier<? extends WireMillingDisplay> getCategoryIdentifier() {
-		return AMRoughlyEnoughItemsPlugin.WIREMILLING;
+		return AMRoughlyEnoughItemsPlugin.WIRE_MILLING;
 	}
 
 	@Override

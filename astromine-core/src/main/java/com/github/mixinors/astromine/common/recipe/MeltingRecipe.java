@@ -159,7 +159,7 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 
 	@Override
 	public ItemStack createIcon() {
-		return new ItemStack(AMBlocks.ADVANCED_LIQUID_GENERATOR.get());
+		return new ItemStack(AMBlocks.ADVANCED_MELTER.get());
 	}
 
 	public Identifier getIdentifier() {

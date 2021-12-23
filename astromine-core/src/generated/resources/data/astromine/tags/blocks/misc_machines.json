@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "astromine:vent",
+    "astromine:fluid_collector",
+    "astromine:fluid_placer",
+    "astromine:block_breaker",
+    "astromine:block_placer"
+  ]
+}

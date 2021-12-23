@@ -46,7 +46,7 @@ import java.util.List;
 public class FluidGeneratingCategory extends AbstractEnergyGeneratingCategory<FluidGeneratingDisplay> {
 	@Override
 	public CategoryIdentifier<? extends FluidGeneratingDisplay> getCategoryIdentifier() {
-		return AMRoughlyEnoughItemsPlugin.LIQUID_GENERATING;
+		return AMRoughlyEnoughItemsPlugin.FLUID_GENERATING;
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class FluidGeneratingCategory extends AbstractEnergyGeneratingCategory<Fl
 
 	@Override
 	public Renderer getIcon() {
-		return EntryStacks.of(AMBlocks.ADVANCED_LIQUID_GENERATOR.get());
+		return EntryStacks.of(AMBlocks.ADVANCED_FLUID_GENERATOR.get());
 	}
 
 	@Override

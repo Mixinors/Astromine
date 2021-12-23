@@ -79,7 +79,7 @@ public class WireMillingDisplay implements Display {
 
 	@Override
 	public CategoryIdentifier<?> getCategoryIdentifier() {
-		return AMRoughlyEnoughItemsPlugin.WIREMILLING;
+		return AMRoughlyEnoughItemsPlugin.WIRE_MILLING;
 	}
 
 	@Override

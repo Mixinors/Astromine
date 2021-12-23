@@ -166,7 +166,7 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 
 	@Override
 	public ItemStack createIcon() {
-		return new ItemStack(AMBlocks.ADVANCED_LIQUID_GENERATOR.get());
+		return new ItemStack(AMBlocks.ADVANCED_SOLIDIFIER.get());
 	}
 
 	public Identifier getIdentifier() {
