@@ -24,8 +24,6 @@
 
 package com.github.mixinors.astromine.registry.common;
 
-import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
-
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 
 import me.shedaniel.autoconfig.AutoConfig;
