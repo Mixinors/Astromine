@@ -50,7 +50,9 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 			AMDatagen.createCommonTagId("nether_roots"),
 			AMDatagen.createCommonTagId("nether_vines"),
 			AMDatagen.createCommonTagId("pumpkins"),
-			AMDatagen.createCommonTagId("gourds")
+			AMDatagen.createCommonTagId("gourds"),
+			AMDatagen.createCommonTagId("weeping_vines"),
+			AMDatagen.createCommonTagId("twisting_vines")
 	);
 
 	public static final List<Item> DRILLS = List.of(
@@ -147,16 +149,6 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 			Items.HONEYCOMB_BLOCK,
 			Items.PUMPKIN_PIE,
 			Items.MOSS_BLOCK
-	);
-
-	// vanilla tags haven't been populated, so in order to nest them inside a custom tag without
-	// crashing, we need to actually add something to them ourselves... :irritatered:
-	public static final Map<Tag.Identified<Item>, Item> IRRITATERED = Map.of(
-			ItemTags.SMALL_FLOWERS, Items.POPPY,
-			ItemTags.LEAVES, Items.OAK_LEAVES,
-			ItemTags.TALL_FLOWERS, Items.SUNFLOWER,
-			ItemTags.SAPLINGS, Items.OAK_SAPLING,
-			ItemTags.FISHES, Items.COD
 	);
 
 	public AMItemTagProvider(FabricDataGenerator dataGenerator, @Nullable BlockTagProvider blockTagProvider) {
@@ -359,12 +351,6 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 				.add(Items.SWEET_BERRIES)
 				.add(Items.GLOW_BERRIES);
 
-		getOrCreateTagBuilder(AMDatagen.createCommonItemTag("weeping_vines"))
-				.add(Items.WEEPING_VINES);
-
-		getOrCreateTagBuilder(AMDatagen.createCommonItemTag("twisting_vines"))
-				.add(Items.TWISTING_VINES);
-
 		getOrCreateTagBuilder(AMDatagen.createCommonItemTag("vines"))
 				.addTag(AMDatagen.createCommonItemTag("nether_vines"))
 				.add(Items.VINE);
@@ -391,9 +377,5 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 		FabricTagBuilder<Item> nineBiofuelTagBuilder = getOrCreateTagBuilder(AMDatagen.createCommonItemTag("nine_biofuel"));
 		NINE_BIOFUEL_ITEMS.forEach(nineBiofuelTagBuilder::add);
 		NINE_BIOFUEL_TAGS.forEach(nineBiofuelTagBuilder::addTag);
-
-		IRRITATERED.forEach((tag, item) -> {
-			getOrCreateTagBuilder(tag).add(item);
-		});
 	}
 }
