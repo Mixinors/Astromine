@@ -3,9 +3,11 @@ package com.github.mixinors.astromine.datagen.provider;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.datagen.AMDatagen;
@@ -24,6 +26,7 @@ import com.github.mixinors.astromine.datagen.recipe.WireMillingRecipeJsonFactory
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMFluids;
 import com.github.mixinors.astromine.registry.common.AMItems;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import org.apache.logging.log4j.util.TriConsumer;
 
 import net.minecraft.block.Block;
@@ -74,38 +77,56 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 			BlockFamily.Variant.POLISHED, RecipesProvider::offerStonecuttingRecipe
 	);
 
-	public static final Map<BlockFamily, BlockFamily> VARIANT_FAMILIES = Map.of(
-			AMBlockFamilies.POLISHED_ASTEROID_STONE, AMBlockFamilies.ASTEROID_STONE,
-			AMBlockFamilies.ASTEROID_STONE_BRICK, AMBlockFamilies.SMOOTH_ASTEROID_STONE,
-			AMBlockFamilies.POLISHED_METEOR_STONE, AMBlockFamilies.METEOR_STONE,
-			AMBlockFamilies.METEOR_STONE_BRICK, AMBlockFamilies.SMOOTH_METEOR_STONE
-	);
-
-	public static final Map<Block, Block> SMOOTH_FROM_REGULAR = Map.of(
+	public static final Map<Block, Block> REGULAR_TO_SMOOTH = Map.of(
 			AMBlocks.METEOR_STONE.get(), AMBlocks.SMOOTH_METEOR_STONE.get(),
 			AMBlocks.ASTEROID_STONE.get(), AMBlocks.SMOOTH_ASTEROID_STONE.get()
 	);
 
-	public static final Map<Block, Block> BRICKS_FROM_SMOOTH = Map.of(
-			AMBlocks.SMOOTH_METEOR_STONE.get(), AMBlocks.METEOR_STONE_BRICKS.get(),
-			AMBlocks.SMOOTH_ASTEROID_STONE.get(), AMBlocks.ASTEROID_STONE_BRICKS.get()
+	public static final Map<BlockFamily, BlockFamily> REGULAR_TO_POLISHED = Map.of(
+			AMBlockFamilies.METEOR_STONE, AMBlockFamilies.POLISHED_METEOR_STONE,
+			AMBlockFamilies.ASTEROID_STONE, AMBlockFamilies.POLISHED_ASTEROID_STONE
 	);
+
+	public static final Map<BlockFamily, BlockFamily> POLISHED_TO_BRICK = Map.of(
+			AMBlockFamilies.POLISHED_METEOR_STONE, AMBlockFamilies.METEOR_STONE_BRICK,
+			AMBlockFamilies.POLISHED_ASTEROID_STONE, AMBlockFamilies.ASTEROID_STONE_BRICK
+	);
+
+	public static final Map<BlockFamily, BlockFamily> REGULAR_TO_BRICK = Map.of(
+			AMBlockFamilies.METEOR_STONE, AMBlockFamilies.METEOR_STONE_BRICK,
+			AMBlockFamilies.ASTEROID_STONE, AMBlockFamilies.ASTEROID_STONE_BRICK
+	);
+
+	public static final Set<Map<BlockFamily, BlockFamily>> VARIANT_FAMILIES = Set.of(
+			REGULAR_TO_POLISHED,
+			POLISHED_TO_BRICK
+	);
+
+	public static final Set<Map<BlockFamily, BlockFamily>> STONECUT_FAMILIES = new ImmutableSet.Builder<Map<BlockFamily, BlockFamily>>().addAll(Set.of(
+			REGULAR_TO_BRICK
+	)).addAll(VARIANT_FAMILIES).build();
 
 	public static final Map<BlockFamily, BlockFamily> TRITURATED_BLOCK_FAMILIES = new ImmutableMap.Builder<BlockFamily, BlockFamily>().putAll(Map.of(
 			BlockFamilies.STONE_BRICK, BlockFamilies.STONE,
-			BlockFamilies.DEEPSLATE_BRICK, BlockFamilies.DEEPSLATE,
-			BlockFamilies.MOSSY_STONE_BRICK, BlockFamilies.STONE
-	)).putAll(Map.of(
+			BlockFamilies.DEEPSLATE_BRICK, BlockFamilies.POLISHED_DEEPSLATE,
 			BlockFamilies.POLISHED_BLACKSTONE_BRICK, BlockFamilies.POLISHED_BLACKSTONE,
+			AMBlockFamilies.ASTEROID_STONE_BRICK, AMBlockFamilies.POLISHED_ASTEROID_STONE,
+			AMBlockFamilies.METEOR_STONE_BRICK, AMBlockFamilies.POLISHED_METEOR_STONE
+	)).putAll(Map.of(
 			BlockFamilies.POLISHED_BLACKSTONE, BlockFamilies.BLACKSTONE,
 			BlockFamilies.POLISHED_ANDESITE, BlockFamilies.ANDESITE,
 			BlockFamilies.POLISHED_DIORITE, BlockFamilies.DIORITE,
 			BlockFamilies.POLISHED_GRANITE, BlockFamilies.GRANITE,
-			BlockFamilies.POLISHED_DEEPSLATE, BlockFamilies.COBBLED_DEEPSLATE
+			BlockFamilies.POLISHED_DEEPSLATE, BlockFamilies.COBBLED_DEEPSLATE,
+			AMBlockFamilies.POLISHED_ASTEROID_STONE, AMBlockFamilies.ASTEROID_STONE,
+			AMBlockFamilies.POLISHED_METEOR_STONE, AMBlockFamilies.METEOR_STONE
 	)).putAll(Map.of(
 			BlockFamilies.STONE, BlockFamilies.COBBLESTONE,
 			BlockFamilies.DEEPSLATE, BlockFamilies.COBBLED_DEEPSLATE
-	)).putAll(VARIANT_FAMILIES).build();
+	)).putAll(Map.of(
+			AMBlockFamilies.SMOOTH_ASTEROID_STONE, AMBlockFamilies.ASTEROID_STONE,
+			AMBlockFamilies.SMOOTH_METEOR_STONE, AMBlockFamilies.METEOR_STONE
+	)).build();
 
 	public static final Map<Block, ItemConvertible> CONCRETE_TO_CONCRETE_POWDER = new ImmutableMap.Builder<Block, ItemConvertible>().putAll(Map.of(
 			Blocks.WHITE_CONCRETE, Blocks.WHITE_CONCRETE_POWDER,
@@ -161,6 +182,13 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 	public static final Map<Block, ItemConvertible> TRITURATED_BLOCKS_1_TO_1_EXPENSIVE = Map.of(
 			Blocks.COBBLESTONE, Blocks.GRAVEL,
 			Blocks.GRAVEL, Blocks.SAND
+	);
+
+	public static final Map<Map<Block, ItemConvertible>, Integer> TRITURATED_BLOCKS_CHEAP = Map.of(
+			TRITURATED_BLOCKS_1_TO_1_CHEAP, 1,
+			TRITURATED_BLOCKS_1_TO_2, 2,
+			TRITURATED_BLOCKS_1_TO_4, 4,
+			TRITURATED_BLOCKS_1_TO_9, 9
 	);
 
 	public static final Map<Tag.Identified<Item>, Integer> BIOFUEL_TAGS = Map.of(
@@ -290,6 +318,22 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 
 	public static ShapedRecipeJsonFactory create2x2CompactingRecipe(Tag.Identified<Item> input, ItemConvertible output) {
 		return ShapedRecipeJsonFactory.create(output).input('#', input).pattern("##").pattern("##");
+	}
+
+	public static void offerBricksRecipe(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, ItemConvertible output) {
+		withCriterion(createBricksRecipe(input, output), input).offerTo(exporter);
+	}
+
+	public static void offerBricksRecipe(Consumer<RecipeJsonProvider> exporter, Tag.Identified<Item> input, ItemConvertible output) {
+		withCriterion(createBricksRecipe(input, output), input).offerTo(exporter);
+	}
+
+	public static ShapedRecipeJsonFactory createBricksRecipe(ItemConvertible input, ItemConvertible output) {
+		return ShapedRecipeJsonFactory.create(output, 4).input('#', input).pattern("##").pattern("##");
+	}
+
+	public static ShapedRecipeJsonFactory createBricksRecipe(Tag.Identified<Item> input, ItemConvertible output) {
+		return ShapedRecipeJsonFactory.create(output, 4).input('#', input).pattern("##").pattern("##");
 	}
 
 	public static void offerCompactingRecipe(Consumer<RecipeJsonProvider> exporter, Tag.Identified<Item> input, ItemConvertible output) {
@@ -428,24 +472,23 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 	protected void generateRecipes(Consumer<RecipeJsonProvider> exporter) {
 		BlockFamilies.getFamilies().filter(AMBlockFamilies::isAstromineFamily).filter(BlockFamily::shouldGenerateRecipes).forEach(family -> generateFamily(exporter, family));
 
-		VARIANT_FAMILIES.forEach((variantFamily, baseFamily) -> {
+		STONECUT_FAMILIES.forEach(map -> map.forEach((originalFamily, cutFamily) -> {
 			STONECUTTING_OFFERERS.forEach((variant, offerer) -> {
-				if (variantFamily.getVariants().containsKey(variant))
-					offerer.accept(exporter, variantFamily.getVariant(variant), baseFamily.getBaseBlock());
+				if (cutFamily.getVariants().containsKey(variant))
+					offerer.accept(exporter, cutFamily.getVariant(variant), originalFamily.getBaseBlock());
 			});
-			Arrays.stream(BlockFamily.Variant.values()).forEach((variant) -> {
-				if (variantFamily.getVariants().containsKey(variant) && baseFamily.getVariants().containsKey(variant)) {
-					offerStonecuttingRecipe(exporter, variantFamily.getVariant(variant), baseFamily.getVariant(variant));
+			originalFamily.getVariants().forEach((variant, block) -> {
+				if (cutFamily.getVariants().containsKey(variant)) {
+					offerStonecuttingRecipe(exporter, cutFamily.getVariant(variant), block);
 				}
 			});
-		});
+		}));
 
-		SMOOTH_FROM_REGULAR.forEach((regular, smooth) -> {
+		POLISHED_TO_BRICK.forEach((polishedFamily, brickFamily) -> offerBricksRecipe(exporter, polishedFamily.getBaseBlock(), brickFamily.getBaseBlock()));
+
+		REGULAR_TO_SMOOTH.forEach((regular, smooth) -> {
 			offerSmoothingRecipe(exporter, regular, smooth);
-		});
-
-		BRICKS_FROM_SMOOTH.forEach((smooth, bricks) -> {
-			offer2x2CompactingRecipe(exporter, smooth, bricks);
+			offerSmelting(exporter, List.of(regular), smooth, 0.1f, 200, getRecipeName(smooth));
 		});
 
 		MaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateRecipes).forEach((family) -> {
@@ -616,9 +659,6 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 			AMCommon.LOGGER.info("Finished offering recipes for " + family.getName());
 		});
 
-		offerSmelting(exporter, List.of(AMBlocks.METEOR_STONE.get()), AMBlocks.SMOOTH_METEOR_STONE.get(), 0.1f, 200, getRecipeName(AMBlocks.SMOOTH_METEOR_STONE.get()));
-		offerSmelting(exporter, List.of(AMBlocks.ASTEROID_STONE.get()), AMBlocks.SMOOTH_ASTEROID_STONE.get(), 0.1f, 200, getRecipeName(AMBlocks.SMOOTH_ASTEROID_STONE.get()));
-
 		offerTrituratingRecipe(exporter, Items.BLAZE_ROD, Items.BLAZE_POWDER, 4, 60, 270);
 		offerTrituratingRecipe(exporter, Items.BONE, Items.BONE_MEAL, 4, 60, 270);
 		offerTrituratingRecipe(exporter, Items.SUGAR_CANE, Items.SUGAR, 2, 60, 270);
@@ -636,20 +676,10 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 			});
 		});
 
-		TRITURATED_BLOCKS_1_TO_4.forEach((input, output) -> {
-			offerTrituratingRecipe(exporter, input, output, 4, 80, 300);
-		});
-
-		TRITURATED_BLOCKS_1_TO_2.forEach((input, output) -> {
-			offerTrituratingRecipe(exporter, input, output, 2, 80, 300);
-		});
-
-		TRITURATED_BLOCKS_1_TO_9.forEach((input, output) -> {
-			offerTrituratingRecipe(exporter, input, output, 9, 80, 300);
-		});
-
-		TRITURATED_BLOCKS_1_TO_1_CHEAP.forEach((input, output) -> {
-			offerTrituratingRecipe(exporter, input, output, 1, 80, 300);
+		TRITURATED_BLOCKS_CHEAP.forEach((map, count) -> {
+			map.forEach((input, output) -> {
+				offerTrituratingRecipe(exporter, input, output, count, 80, 300);
+			});
 		});
 
 		TRITURATED_BLOCKS_1_TO_1_EXPENSIVE.forEach((input, output) -> {

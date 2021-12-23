@@ -1,10 +1,10 @@
 {
   "replace": false,
   "values": [
+    "astromine:polished_meteor_stone",
     "astromine:meteor_stone_stairs",
     "astromine:meteor_stone_wall",
     "astromine:meteor_stone_slab",
-    "astromine:polished_meteor_stone",
     "astromine:smooth_meteor_stone_stairs",
     "astromine:smooth_meteor_stone_wall",
     "astromine:smooth_meteor_stone_slab",
@@ -13,10 +13,10 @@
     "astromine:meteor_stone_brick_stairs",
     "astromine:meteor_stone_brick_wall",
     "astromine:meteor_stone_brick_slab",
+    "astromine:polished_asteroid_stone",
     "astromine:asteroid_stone_stairs",
     "astromine:asteroid_stone_wall",
     "astromine:asteroid_stone_slab",
-    "astromine:polished_asteroid_stone",
     "astromine:smooth_asteroid_stone_stairs",
     "astromine:smooth_asteroid_stone_wall",
     "astromine:smooth_asteroid_stone_slab",
