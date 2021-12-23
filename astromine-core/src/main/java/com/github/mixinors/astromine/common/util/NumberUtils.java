@@ -24,29 +24,37 @@
 
 package com.github.mixinors.astromine.common.util;
 
-import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
+import java.text.DecimalFormat;
 
 public class NumberUtils {
+	public static final DecimalFormat FORMAT = new DecimalFormat("#0.00");
+
 	private static final String[] units = new String[]{"k", "M", "G", "T", "P", "E", "Z", "Y"};
 
 	/**
 	 * Shortens the given {@link long}, appending the specified
 	 * unit if necessary.
 	 * <p>
-	 * < 1,000 has no suffix.
-	 * > 1,000 has the "k" suffix.
-	 * > 1,000,000 has the "M" suffix.
-	 * > 1,000,000,000 has the "G" suffix.
-	 * > 1,000,000,000,000 has the "T" suffix.
-	 * > 1,000,000,000,000,000 has the "P" suffix.
-	 * > 1,000,000,000,000,000,000 has the "E" suffix.
-	 * > 1,000,000,000,000,000,000,000 has the "Z" suffix.
-	 * > 1,000,000,000,000,000,000,000,000 has the "Y" suffix.
-	 * > 1,000,000,000,000,000,000,000,000,000 has the "∞" suffix.
+	 * <= 999 has no suffix.
+	 * >= 1,000 has the "k" suffix.
+	 * >= 1,000,000 has the "M" suffix.
+	 * >= 1,000,000,000 has the "G" suffix.
+	 * >= 1,000,000,000,000 has the "T" suffix.
+	 * >= 1,000,000,000,000,000 has the "P" suffix.
+	 * >= 1,000,000,000,000,000,000 has the "E" suffix.
+	 * >= 1,000,000,000,000,000,000,000 has the "Z" suffix.
+	 * >= 1,000,000,000,000,000,000,000,000 has the "Y" suffix.
+	 * >= 1,000,000,000,000,000,000,000,000,000 has the "∞" suffix.
 	 */
 	public static String shorten(long value, String unit) {
+		boolean negative = false;
+		if (value < 0) {
+			negative = true;
+			value = Math.abs(value);
+		}
+
 		if (value < 1000) {
-			return value + unit;
+			return (negative ? "-" : "") + value + unit;
 		}
 
 		int exponent = 0;
@@ -55,28 +63,35 @@ public class NumberUtils {
 			++exponent;
 		}
 
-		return String.format("%d%s", value, exponent - 1 > units.length - 1 ? "∞" : units[exponent - 1] + unit);
+		return (negative ? "-" : "") + String.format("%d%s", value, exponent - 1 > units.length - 1 ? "∞" : units[exponent - 1] + unit);
 	}
 
 	/**
 	 * Shortens the given {@link double}, appending the specified
 	 * unit if necessary.
 	 * <p>
-	 * < 1,000 has no suffix.
-	 * > 1,000 has the "k" suffix.
-	 * > 1,000,000 has the "M" suffix.
-	 * > 1,000,000,000 has the "G" suffix.
-	 * > 1,000,000,000,000 has the "T" suffix.
-	 * > 1,000,000,000,000,000 has the "P" suffix.
-	 * > 1,000,000,000,000,000,000 has the "E" suffix.
-	 * > 1,000,000,000,000,000,000,000 has the "Z" suffix.
-	 * > 1,000,000,000,000,000,000,000,000 has the "Y" suffix.
-	 * > 1,000,000,000,000,000,000,000,000,000 has the "∞" suffix.
+	 * <= 999 has no suffix.
+	 * >= 1,000 has the "k" suffix.
+	 * >= 1,000,000 has the "M" suffix.
+	 * >= 1,000,000,000 has the "G" suffix.
+	 * >= 1,000,000,000,000 has the "T" suffix.
+	 * >= 1,000,000,000,000,000 has the "P" suffix.
+	 * >= 1,000,000,000,000,000,000 has the "E" suffix.
+	 * >= 1,000,000,000,000,000,000,000 has the "Z" suffix.
+	 * >= 1,000,000,000,000,000,000,000,000 has the "Y" suffix.
+	 * >= 1,000,000,000,000,000,000,000,000,000 has the "∞" suffix.
 	 */
 	public static String shorten(double value, String unit) {
 		if (value == Math.round(value)) return shorten((long) value, unit);
+
+		boolean negative = false;
+		if (value < 0) {
+			negative = true;
+			value = Math.abs(value);
+		}
+
 		if (value < 1000) {
-			return FluidVolume.FORMAT.format(value) + unit;
+			return (negative ? "-" : "") + FORMAT.format(value) + unit;
 		}
 
 		int exponent = 0;
@@ -85,6 +100,6 @@ public class NumberUtils {
 			++exponent;
 		}
 
-		return String.format("%.1f%s", value, exponent - 1 > units.length - 1 ? "∞" : units[exponent - 1] + unit);
+		return (negative ? "-" : "") + String.format("%.1f%s", value, exponent - 1 > units.length - 1 ? "∞" : units[exponent - 1] + unit);
 	}
 }
