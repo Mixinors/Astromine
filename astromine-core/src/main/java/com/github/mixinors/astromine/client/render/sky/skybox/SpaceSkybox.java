@@ -25,230 +25,232 @@
 package com.github.mixinors.astromine.client.render.sky.skybox;
 
 import com.github.mixinors.astromine.common.util.ClientUtils;
+import com.google.common.collect.ImmutableMap;
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.option.Option;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.*;
 import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
-import com.mojang.blaze3d.systems.RenderSystem;
-
-import com.google.common.collect.ImmutableMap;
 
 public class SpaceSkybox extends Skybox {
-	public static final Identifier UP = new Identifier("skybox", "up");
-	public static final Identifier DOWN = new Identifier("skybox", "down");
-	public static final Identifier WEST = new Identifier("skybox", "west");
-	public static final Identifier EAST = new Identifier("skybox", "east");
-	public static final Identifier NORTH = new Identifier("skybox", "north");
-	public static final Identifier SOUTH = new Identifier("skybox", "south");
+    public static final Identifier UP = new Identifier("skybox", "up");
+    public static final Identifier DOWN = new Identifier("skybox", "down");
+    public static final Identifier WEST = new Identifier("skybox", "west");
+    public static final Identifier EAST = new Identifier("skybox", "east");
+    public static final Identifier NORTH = new Identifier("skybox", "north");
+    public static final Identifier SOUTH = new Identifier("skybox", "south");
 
-	public static final Identifier PLANET = new Identifier("skybox", "planet");
-	public static final Identifier CLOUD = new Identifier("skybox", "cloud");
+    public static final Identifier PLANET = new Identifier("skybox", "planet");
+    public static final Identifier CLOUD = new Identifier("skybox", "cloud");
 
-	public static float u0C = 0.0f;
-	public static float u1C = 1.0f;
+    public static float u0C = 0.0f;
+    public static float u1C = 1.0f;
 
-	public static float u0P = 0.0f;
-	public static float u1P = 1.0f;
+    public static float u0P = 0.0f;
+    public static float u1P = 1.0f;
 
-	public ImmutableMap<Identifier, Identifier> textures;
+    public ImmutableMap<Identifier, Identifier> textures;
 
-	private SpaceSkybox(Builder builder) {
-		this.textures = builder.textures.build();
+    private SpaceSkybox(Builder builder) {
+		textures = builder.textures.build();
 
-		if (this.textures.size() != 8) {
-			throw new UnsupportedOperationException("Skybox constructed without necessary information!");
-		}
-	}
+        if (textures.size() != 8) {
+            throw new UnsupportedOperationException("Skybox constructed without necessary information!");
+        }
+    }
 
-	@Override
-	public void render(MatrixStack matrices, float tickDelta) {
-		MinecraftClient client = ClientUtils.getInstance();
+    @Override
+    public void render(MatrixStack matrices, float tickDelta) {
+        MinecraftClient client = ClientUtils.getInstance();
 
-		TextureManager textureManager = client.getTextureManager();
+        TextureManager textureManager = client.getTextureManager();
 
-		Tessellator tessellator = Tessellator.getInstance();
+        Tessellator tessellator = Tessellator.getInstance();
 
-		BufferBuilder buffer = tessellator.getBuffer();
+        BufferBuilder buffer = tessellator.getBuffer();
 
-		World world = client.world;
+        RenderSystem.depthMask(false);
+        RenderSystem.enableBlend();
 
-		if (world == null) {
-			return;
-		}
+        RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE, GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ZERO);
 
-		float rotation = (world.getTimeOfDay() / 12000f) * 360;
+        RenderSystem.setShader(GameRenderer::getPositionColorTexLightmapShader);
 
-		int rawLight = (int) ((world.getTimeOfDay() / 12000) % 15);
+        World world = client.world;
 
-		int vertexLight = 0x00f000f0 >> 2 | rawLight >> 3 | rawLight;
+        if (world == null) {
+            return;
+        }
 
-		for (int i = 0; i < 6; ++i) {
-			matrices.push();
+        float rotation = (world.getTimeOfDay() / 12000f) * 360;
 
-			switch (i) {
-				case 0: {
-					textureManager.bindTexture(this.textures.get(DOWN));
+        int rawLight = (int) ((world.getTimeOfDay() / 12000) % 15);
+
+        int vertexLight = 0x00f000f0 >> 2 | rawLight >> 3 | rawLight;
+
+        for (int i = 0; i < 6; ++i) {
+            matrices.push();
+            switch (i) {
+                case 0:
+					RenderSystem.setShaderTexture(0, textures.get(DOWN));
 
 					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(rotation));
 
 					break;
-				}
-				case 1: {
-					textureManager.bindTexture(this.textures.get(WEST));
+				case 1:
+					RenderSystem.setShaderTexture(0, textures.get(WEST));
 
 					matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90.0F));
 					matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(rotation));
 
 					break;
-				}
-				case 2: {
-					textureManager.bindTexture(this.textures.get(EAST));
+				case 2:
+					RenderSystem.setShaderTexture(0, textures.get(EAST));
 
 					matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90.0F));
 					matrices.multiply(Vec3f.NEGATIVE_Y.getDegreesQuaternion(rotation));
 
 					break;
-				}
-				case 3: {
-					textureManager.bindTexture(this.textures.get(UP));
+				case 3:
+					RenderSystem.setShaderTexture(0, textures.get(UP));
 
 					matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(180.0F));
 					matrices.multiply(Vec3f.NEGATIVE_Z.getDegreesQuaternion(rotation));
 
 					break;
-				}
-				case 4: {
-					textureManager.bindTexture(this.textures.get(NORTH));
+				case 4:
+					RenderSystem.setShaderTexture(0, textures.get(NORTH));
 
 					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(90.0F));
 					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(rotation));
 
 					break;
-				}
-				case 5: {
-					textureManager.bindTexture(this.textures.get(SOUTH));
+				case 5:
+					RenderSystem.setShaderTexture(0, textures.get(SOUTH));
 
 					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(-90.0F));
 					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(rotation));
 
 					break;
-				}
 			}
 
-			buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT);
+            buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT);
 
-			GameOptions options = ClientUtils.getInstance().options;
+            GameOptions options = ClientUtils.getInstance().options;
 
-			float distance = 16F * (float) Option.RENDER_DISTANCE.get(options) - 8F;
+            float distance = 16F * (float) Option.RENDER_DISTANCE.get(options) - 8F;
 
-			buffer.vertex(matrices.peek().getPositionMatrix(), -distance, -distance, -distance).color(255, 255, 255, 255).texture(0.0F, 0.0F).light(vertexLight).next();
-			buffer.vertex(matrices.peek().getPositionMatrix(), -distance, -distance, distance).color(255, 255, 255, 255).texture(0.0F, 1.0F).light(vertexLight).next();
-			buffer.vertex(matrices.peek().getPositionMatrix(), distance, -distance, distance).color(255, 255, 255, 255).texture(1.0F, 1.0F).light(vertexLight).next();
-			buffer.vertex(matrices.peek().getPositionMatrix(), distance, -distance, -distance).color(255, 255, 255, 255).texture(1.0F, 0.0F).light(vertexLight).next();
+            buffer.vertex(matrices.peek().getPositionMatrix(), -distance, -distance, -distance).color(1F, 1F, 1F, 1F).texture(0.0F, 0.0F).light(vertexLight).next();
+            buffer.vertex(matrices.peek().getPositionMatrix(), -distance, -distance, distance).color(1F, 1F, 1F, 1F).texture(0.0F, 1.0F).light(vertexLight).next();
+            buffer.vertex(matrices.peek().getPositionMatrix(), distance, -distance, distance).color(1F, 1F, 1F, 1F).texture(1.0F, 1.0F).light(vertexLight).next();
+            buffer.vertex(matrices.peek().getPositionMatrix(), distance, -distance, -distance).color(1F, 1F, 1F, 1F).texture(1.0F, 0.0F).light(vertexLight).next();
 
-			tessellator.draw();
+            tessellator.draw();
 
-			matrices.pop();
-		}
+            matrices.pop();
+        }
 
-		textureManager.bindTexture(this.textures.get(PLANET));
+        RenderSystem.setShaderTexture(0, textures.get(PLANET));
 
-		matrices.push();
+        matrices.push();
 
-		buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT);
+        buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT);
 
-		buffer.vertex(matrices.peek().getPositionMatrix(), -100.0F, (float) (-64.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), -100.0F).color(255, 255, 255, 255).texture(u0P, 0.0F).light(vertexLight).next();
-		buffer.vertex(matrices.peek().getPositionMatrix(), -100.0F, (float) (-64.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), 100.0F).color(255, 255, 255, 255).texture(u0P, 1.0F).light(vertexLight).next();
-		buffer.vertex(matrices.peek().getPositionMatrix(), 100.0F, (float) (-64.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), 100.0F).color(255, 255, 255, 255).texture(u1P, 1.0F).light(vertexLight).next();
-		buffer.vertex(matrices.peek().getPositionMatrix(), 100.0F, (float) (-64.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), -100.0F).color(255, 255, 255, 255).texture(u1P, 0.0F).light(vertexLight).next();
+        buffer.vertex(matrices.peek().getPositionMatrix(), -100.0F, (float) (-64.0F - (client.player.getY())), -100.0F).color(255, 255, 255, 255).texture(u0P, 0.0F).light(vertexLight).next();
+        buffer.vertex(matrices.peek().getPositionMatrix(), -100.0F, (float) (-64.0F - (client.player.getY())), 100.0F).color(255, 255, 255, 255).texture(u0P, 1.0F).light(vertexLight).next();
+        buffer.vertex(matrices.peek().getPositionMatrix(), 100.0F, (float) (-64.0F - (client.player.getY())), 100.0F).color(255, 255, 255, 255).texture(u1P, 1.0F).light(vertexLight).next();
+        buffer.vertex(matrices.peek().getPositionMatrix(), 100.0F, (float) (-64.0F - (client.player.getY())), -100.0F).color(255, 255, 255, 255).texture(u1P, 0.0F).light(vertexLight).next();
 
-		tessellator.draw();
+        tessellator.draw();
 
-		matrices.pop();
+        matrices.pop();
 
-		textureManager.bindTexture(this.textures.get(CLOUD));
+        RenderSystem.setShaderTexture(0, textures.get(CLOUD));
 
-		matrices.push();
+        matrices.push();
 
-		buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT);
+        buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT);
 
-		RenderSystem.enableBlend();
-		RenderSystem.enableDepthTest();
+        RenderSystem.enableBlend();
+        RenderSystem.enableDepthTest();
 
-		buffer.vertex(matrices.peek().getPositionMatrix(), -100.0F, (float) (-60.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), -100.0F).color(255, 255, 255, 255).texture(u0C, 0).light(vertexLight).next();
-		buffer.vertex(matrices.peek().getPositionMatrix(), -100.0F, (float) (-60.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), 100.0F).color(255, 255, 255, 255).texture(u0C, 1).light(vertexLight).next();
-		buffer.vertex(matrices.peek().getPositionMatrix(), 100.0F, (float) (-60.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), 100.0F).color(255, 255, 255, 255).texture(u1C, 1).light(vertexLight).next();
-		buffer.vertex(matrices.peek().getPositionMatrix(), 100.0F, (float) (-60.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), -100.0F).color(255, 255, 255, 255).texture(u1C, 0).light(vertexLight).next();
+        buffer.vertex(matrices.peek().getPositionMatrix(), -100.0F, (float) (-60.0F - (client.player.getY())), -100.0F).color(255, 255, 255, 255).texture(u0C, 0).light(vertexLight).next();
+        buffer.vertex(matrices.peek().getPositionMatrix(), -100.0F, (float) (-60.0F - (client.player.getY())), 100.0F).color(255, 255, 255, 255).texture(u0C, 1).light(vertexLight).next();
+        buffer.vertex(matrices.peek().getPositionMatrix(), 100.0F, (float) (-60.0F - (client.player.getY())), 100.0F).color(255, 255, 255, 255).texture(u1C, 1).light(vertexLight).next();
+        buffer.vertex(matrices.peek().getPositionMatrix(), 100.0F, (float) (-60.0F - (client.player.getY())), -100.0F).color(255, 255, 255, 255).texture(u1C, 0).light(vertexLight).next();
 
-		tessellator.draw();
+        tessellator.draw();
 
-		RenderSystem.disableBlend();
-		RenderSystem.disableDepthTest();
+        RenderSystem.disableBlend();
+        RenderSystem.disableDepthTest();
 
-		matrices.pop();
+        matrices.pop();
 
-		u0C -= 0.00001f;
-		u1C -= 0.00001f;
+        u0C -= 0.00001f;
+        u1C -= 0.00001f;
 
-		u0P -= 0.0000066f;
-		u1P -= 0.0000066f;
-	}
+        u0P -= 0.0000066f;
+        u1P -= 0.0000066f;
 
-	public static class Builder {
-		ImmutableMap.Builder<Identifier, Identifier> textures = ImmutableMap.builder();
+        RenderSystem.depthMask(true);
+        RenderSystem.enableTexture();
+        RenderSystem.disableBlend();
+    }
 
-		public Builder() {}
+    public static class Builder {
+        ImmutableMap.Builder<Identifier, Identifier> textures = ImmutableMap.builder();
 
-		public Builder up(Identifier up) {
-			this.textures.put(UP, up);
-			return this;
-		}
+        public Builder() {
+        }
 
-		public Builder down(Identifier down) {
-			this.textures.put(DOWN, down);
-			return this;
-		}
+        public Builder up(Identifier up) {
+			textures.put(UP, up);
+            return this;
+        }
 
-		public Builder east(Identifier east) {
-			this.textures.put(EAST, east);
-			return this;
-		}
+        public Builder down(Identifier down) {
+			textures.put(DOWN, down);
+            return this;
+        }
 
-		public Builder west(Identifier west) {
-			this.textures.put(WEST, west);
-			return this;
-		}
+        public Builder east(Identifier east) {
+			textures.put(EAST, east);
+            return this;
+        }
 
-		public Builder north(Identifier north) {
-			this.textures.put(NORTH, north);
-			return this;
-		}
+        public Builder west(Identifier west) {
+			textures.put(WEST, west);
+            return this;
+        }
 
-		public Builder south(Identifier south) {
-			this.textures.put(SOUTH, south);
-			return this;
-		}
+        public Builder north(Identifier north) {
+			textures.put(NORTH, north);
+            return this;
+        }
 
-		public Builder planet(Identifier planet) {
-			this.textures.put(PLANET, planet);
-			return this;
-		}
+        public Builder south(Identifier south) {
+			textures.put(SOUTH, south);
+            return this;
+        }
 
-		public Builder cloud(Identifier cloud) {
-			this.textures.put(CLOUD, cloud);
-			return this;
-		}
+        public Builder planet(Identifier planet) {
+			textures.put(PLANET, planet);
+            return this;
+        }
 
-		public SpaceSkybox build() {
-			return new SpaceSkybox(this);
-		}
-	}
+        public Builder cloud(Identifier cloud) {
+			textures.put(CLOUD, cloud);
+            return this;
+        }
+
+        public SpaceSkybox build() {
+            return new SpaceSkybox(this);
+        }
+    }
 }

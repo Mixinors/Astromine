@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "astromine:asteroid_stone_slab"
+  },
+  "result": "astromine:asteroid_stone_brick_slab",
+  "count": 1
+}

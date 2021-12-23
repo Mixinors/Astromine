@@ -179,7 +179,11 @@ public class WireCuttingRecipe extends SpecialCraftingRecipe {
 
 		@Override
 		public String toString() {
-			return "Format{" + "inputs=" + input + ", tool=" + tool + ", output=" + output + '}';
+			return "Format{" +
+					"inputs=" + input +
+					", tool=" + tool +
+					", output=" + output +
+					'}';
 		}
 	}
 }

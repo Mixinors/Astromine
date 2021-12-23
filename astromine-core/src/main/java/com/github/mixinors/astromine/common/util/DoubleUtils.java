@@ -24,32 +24,40 @@
 
 package com.github.mixinors.astromine.common.util;
 
-import net.minecraft.network.PacketByteBuf;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
 
 import com.github.mixinors.astromine.AMCommon;
 import io.netty.buffer.ByteBuf;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
+import net.minecraft.network.PacketByteBuf;
 
 public class DoubleUtils {
-    /** Serializes the given double to a {@link ByteBuf}. */
-    public static void toPacket(PacketByteBuf buffer, double number) {
-        buffer.writeDouble(number);
-    }
+	/**
+	 * Serializes the given double to a {@link ByteBuf}.
+	 */
+	public static void toPacket(PacketByteBuf buffer, double number) {
+		buffer.writeDouble(number);
+	}
 
-    /** Deserializes a double from a {@link ByteBuf}. */
-    public static double fromPacket(PacketByteBuf buffer) {
-        return buffer.readDouble();
-    }
+	/**
+	 * Deserializes a double from a {@link ByteBuf}.
+	 */
+	public static double fromPacket(PacketByteBuf buffer) {
+		return buffer.readDouble();
+	}
 
-    /** Serializes the given double to a {@link JsonElement}. */
-    public static JsonElement toJson(double number) {
-        return new JsonPrimitive(number);
-    }
+	/**
+	 * Serializes the given double to a {@link JsonElement}.
+	 */
+	public static JsonElement toJson(double number) {
+		return new JsonPrimitive(number);
+	}
 
-    /** Deserializes a double from a {@link JsonElement}. */
-    public static double fromJson(JsonElement json) {
-        return AMCommon.GSON.fromJson(json, Double.class);
-    }
+	/**
+	 * Deserializes a double from a {@link JsonElement}.
+	 */
+	public static double fromJson(JsonElement json) {
+		return AMCommon.GSON.fromJson(json, Double.class);
+	}
 }

@@ -27,12 +27,12 @@ package com.github.mixinors.astromine.common.util;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 
 public class NumberUtils {
-	private static final String[] units = new String[]{ "k", "M", "G", "T", "P", "E", "Z", "Y" };
+	private static final String[] units = new String[]{"k", "M", "G", "T", "P", "E", "Z", "Y"};
 
 	/**
 	 * Shortens the given {@link long}, appending the specified
 	 * unit if necessary.
-	 *
+	 * <p>
 	 * < 1,000 has no suffix.
 	 * > 1,000 has the "k" suffix.
 	 * > 1,000,000 has the "M" suffix.
@@ -61,7 +61,7 @@ public class NumberUtils {
 	/**
 	 * Shortens the given {@link double}, appending the specified
 	 * unit if necessary.
-	 *
+	 * <p>
 	 * < 1,000 has no suffix.
 	 * > 1,000 has the "k" suffix.
 	 * > 1,000,000 has the "M" suffix.

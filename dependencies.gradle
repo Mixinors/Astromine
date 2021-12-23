@@ -49,6 +49,9 @@ project.ext.setDefaultApis = {
     // Piglib
     useAsApi("com.shnupbups:Piglib:${piglib_version}")
 
+    // CauldronLib
+    useAsApi("com.shnupbups:CauldronLib:${cauldronlib_version}")
+
     // Architectury API
     useAsApi("dev.architectury:architectury-fabric:${architectury_api_version}")
 

@@ -24,34 +24,35 @@
 
 package com.github.mixinors.astromine.common.util;
 
+import java.util.UUID;
+
+import com.github.mixinors.astromine.registry.common.AMItems;
+
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.MiningToolItem;
 
-import com.github.mixinors.astromine.registry.common.AMItems;
-
-import java.util.UUID;
-
 public class ToolUtils {
-	/** Returns half of the sum of the attack damage of two {@link MiningToolItem}s. */
+	/**
+	 * Returns half of the sum of the attack damage of two {@link MiningToolItem}s.
+	 */
 	public static float getAttackDamage(MiningToolItem first, MiningToolItem second) {
 		return (first.getAttackDamage() + second.getAttackDamage()) / 2F;
 	}
 
-	/** Returns a third of the sum of the attack speed of two {@link MiningToolItem}s. */
+	/**
+	 * Returns a third of the sum of the attack speed of two {@link MiningToolItem}s.
+	 */
 	public static float getAttackSpeed(MiningToolItem first, MiningToolItem second) {
 		return (getAttackSpeed(first) + getAttackSpeed(second)) / 3F;
 	}
 
-	/** Returns the attack speed of a {@link MiningToolItem}. */
+	/**
+	 * Returns the attack speed of a {@link MiningToolItem}.
+	 */
 	private static float getAttackSpeed(MiningToolItem item) {
 		return item.getAttributeModifiers(EquipmentSlot.MAINHAND).get(EntityAttributes.GENERIC_ATTACK_SPEED).stream().filter((EntityAttributeModifier modifier) -> modifier.getId().equals(UUID.fromString("FA233E1C-4180-4865-B01B-BCCE9785ACA3"))).map(EntityAttributeModifier::getValue).findFirst().orElse(0d).floatValue();
-	}
-
-	/** Returns an {@link ItemStack} of our manual. */
-	public static ItemStack getAstromineBook() {
-		return new ItemStack(AMItems.MANUAL.get());
 	}
 }

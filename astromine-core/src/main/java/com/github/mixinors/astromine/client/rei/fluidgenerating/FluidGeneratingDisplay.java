@@ -58,7 +58,7 @@ public class FluidGeneratingDisplay extends AbstractEnergyGeneratingDisplay {
 
 	@Override
 	public CategoryIdentifier<?> getCategoryIdentifier() {
-		return AMRoughlyEnoughItemsPlugin.LIQUID_GENERATING;
+		return AMRoughlyEnoughItemsPlugin.FLUID_GENERATING;
 	}
 
 	public Fluid getFluid() {

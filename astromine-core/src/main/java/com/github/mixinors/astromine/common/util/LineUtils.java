@@ -24,14 +24,18 @@
 
 package com.github.mixinors.astromine.common.util;
 
-import com.google.common.collect.Lists;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import com.google.common.collect.Lists;
+
 import net.minecraft.util.math.Vec3f;
 
 public class LineUtils {
-	/** Returns points of a Bezier curve between the three given points with the specified amount of segments. */
+	/**
+	 * Returns points of a Bezier curve between the three given points with the specified amount of segments.
+	 */
 	public static Collection<Vec3f> getBezierSegments(Vec3f posA, Vec3f posB, Vec3f posC, float segments) {
 		ArrayList<Vec3f> positions = new ArrayList<>();
 
@@ -79,7 +83,9 @@ public class LineUtils {
 		return positions;
 	}
 
-	/** Returns points of a Bresenham line between the two given points with the specified amount of segments. */
+	/**
+	 * Returns points of a Bresenham line between the two given points with the specified amount of segments.
+	 */
 	public static Collection<Vec3f> getBresenhamSegments(Vec3f posA, Vec3f posB, float segments) {
 		float x1 = posA.getX();
 		float y1 = posA.getY();
@@ -97,9 +103,9 @@ public class LineUtils {
 		float dy = Math.abs(y2 - y1);
 		float dz = Math.abs(z2 - z1);
 
-		float xs = 0;
-		float ys = 0;
-		float zs = 0;
+		float xs;
+		float ys;
+		float zs;
 
 		if (x2 > x1) {
 			xs = 1 / segments;

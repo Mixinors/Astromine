@@ -6,10 +6,11 @@
   ],
   "key": {
     "#": {
-      "item": "astromine:smooth_meteor_stone"
+      "item": "astromine:polished_meteor_stone"
     }
   },
   "result": {
-    "item": "astromine:meteor_stone_bricks"
+    "item": "astromine:meteor_stone_bricks",
+    "count": 4
   }
 }

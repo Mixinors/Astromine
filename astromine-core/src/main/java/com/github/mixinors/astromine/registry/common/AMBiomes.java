@@ -26,9 +26,14 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeEffects;
+import net.minecraft.world.biome.GenerationSettings;
+import net.minecraft.world.biome.SpawnSettings;
+import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -37,14 +42,36 @@ public class AMBiomes {
 	private static final Set<RegistryKey<?>> KEYS = new HashSet<>();
 	
 	public static final Identifier ASTEROID_BELT_ID = AMCommon.id("asteroid_belt");
-	public static final RegistryKey<Biome> ASTEROID_BELT = register(Registry.BIOME_KEY, ASTEROID_BELT_ID);
-	
-	
-	
-	
-	
+	public static final RegistryKey<Biome> ASTEROID_BELT_KEY = register(Registry.BIOME_KEY, ASTEROID_BELT_ID);
+
+	private static Biome createAsteroidBelt() {
+		// We specify what entities spawn and what features generate in the biome.
+		// Aside from some structures, trees, rocks, plants and
+		//   custom entities, these are mostly the same for each biome.
+		// Vanilla configured features for biomes are defined in DefaultBiomeFeatures.
+
+		SpawnSettings.Builder spawnSettings = new SpawnSettings.Builder();
+
+		GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
+
+		return (new Biome.Builder())
+			.precipitation(Biome.Precipitation.RAIN)
+			.category(Biome.Category.NONE)
+			.temperature(0F)
+			.downfall(0F)
+			.effects((new BiomeEffects.Builder())
+				.waterColor(0x3f76e4)
+				.waterFogColor(0x050533)
+				.fogColor(0xc0d8ff)
+				.skyColor(0x77adff)
+				.build())
+			.spawnSettings(spawnSettings.build())
+			.generationSettings(generationSettings.build())
+			.build();
+	}
+
 	public static void init() {
-	
+		Registry.register( BuiltinRegistries.BIOME, ASTEROID_BELT_KEY.getValue(), createAsteroidBelt());
 	}
 
 	public static <T> RegistryKey<T> register(RegistryKey<Registry<T>> registry, Identifier identifier) {

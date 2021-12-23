@@ -2,7 +2,6 @@ package com.github.mixinors.astromine.datagen;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -20,6 +19,7 @@ import com.github.mixinors.astromine.datagen.provider.tag.AMFluidTagProvider;
 import com.github.mixinors.astromine.datagen.provider.tag.AMItemTagProvider;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMFluids;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.data.family.BlockFamily;
@@ -32,6 +32,7 @@ import net.minecraft.util.Identifier;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.tag.TagFactory;
+import net.fabricmc.yarn.constants.MiningLevels;
 
 public class AMDatagen implements DataGeneratorEntrypoint {
 	public static final List<ExtendedFluid> FLUIDS = List.of(
@@ -74,85 +75,85 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 			ItemVariant.ASTEROID_ORE_CLUSTER
 	);
 
-	public static final Set<Block> MACHINES = Set.of(
+	public static final List<Block> PRIMITIVE_MACHINES = List.of(
 			AMBlocks.PRIMITIVE_TANK.get(),
-			AMBlocks.BASIC_TANK.get(),
-			AMBlocks.ADVANCED_TANK.get(),
-			AMBlocks.ELITE_TANK.get(),
-			AMBlocks.CREATIVE_TANK.get(),
-
 			AMBlocks.PRIMITIVE_SOLID_GENERATOR.get(),
-			AMBlocks.BASIC_SOLID_GENERATOR.get(),
-			AMBlocks.ADVANCED_SOLID_GENERATOR.get(),
-			AMBlocks.ELITE_SOLID_GENERATOR.get(),
-
-			AMBlocks.PRIMITIVE_LIQUID_GENERATOR.get(),
-			AMBlocks.BASIC_LIQUID_GENERATOR.get(),
-			AMBlocks.ADVANCED_LIQUID_GENERATOR.get(),
-			AMBlocks.ELITE_LIQUID_GENERATOR.get(),
-
+			AMBlocks.PRIMITIVE_FLUID_GENERATOR.get(),
 			AMBlocks.PRIMITIVE_ELECTRIC_FURNACE.get(),
-			AMBlocks.BASIC_ELECTRIC_FURNACE.get(),
-			AMBlocks.ADVANCED_ELECTRIC_FURNACE.get(),
-			AMBlocks.ELITE_ELECTRIC_FURNACE.get(),
-
 			AMBlocks.PRIMITIVE_ALLOY_SMELTER.get(),
-			AMBlocks.BASIC_ALLOY_SMELTER.get(),
-			AMBlocks.ADVANCED_ALLOY_SMELTER.get(),
-			AMBlocks.ELITE_ALLOY_SMELTER.get(),
-
 			AMBlocks.PRIMITIVE_TRITURATOR.get(),
-			AMBlocks.BASIC_TRITURATOR.get(),
-			AMBlocks.ADVANCED_TRITURATOR.get(),
-			AMBlocks.ELITE_TRITURATOR.get(),
-
 			AMBlocks.PRIMITIVE_PRESSER.get(),
-			AMBlocks.BASIC_PRESSER.get(),
-			AMBlocks.ADVANCED_PRESSER.get(),
-			AMBlocks.ELITE_PRESSER.get(),
-
-			AMBlocks.PRIMITIVE_WIREMILL.get(),
-			AMBlocks.BASIC_WIREMILL.get(),
-			AMBlocks.ADVANCED_WIREMILL.get(),
-			AMBlocks.ELITE_WIREMILL.get(),
-
+			AMBlocks.PRIMITIVE_WIRE_MILL.get(),
 			AMBlocks.PRIMITIVE_ELECTROLYZER.get(),
-			AMBlocks.BASIC_ELECTROLYZER.get(),
-			AMBlocks.ADVANCED_ELECTROLYZER.get(),
-			AMBlocks.ELITE_ELECTROLYZER.get(),
-
 			AMBlocks.PRIMITIVE_REFINERY.get(),
-			AMBlocks.BASIC_REFINERY.get(),
-			AMBlocks.ADVANCED_REFINERY.get(),
-			AMBlocks.ELITE_REFINERY.get(),
-
 			AMBlocks.PRIMITIVE_FLUID_MIXER.get(),
-			AMBlocks.BASIC_FLUID_MIXER.get(),
-			AMBlocks.ADVANCED_FLUID_MIXER.get(),
-			AMBlocks.ELITE_FLUID_MIXER.get(),
-
 			AMBlocks.PRIMITIVE_SOLIDIFIER.get(),
-			AMBlocks.BASIC_SOLIDIFIER.get(),
-			AMBlocks.ADVANCED_SOLIDIFIER.get(),
-			AMBlocks.ELITE_SOLIDIFIER.get(),
-
 			AMBlocks.PRIMITIVE_MELTER.get(),
-			AMBlocks.BASIC_MELTER.get(),
-			AMBlocks.ADVANCED_MELTER.get(),
-			AMBlocks.ELITE_MELTER.get(),
-
 			AMBlocks.PRIMITIVE_BUFFER.get(),
+			AMBlocks.PRIMITIVE_CAPACITOR.get()
+	);
+
+	public static final List<Block> BASIC_MACHINES = List.of(
+			AMBlocks.BASIC_TANK.get(),
+			AMBlocks.BASIC_SOLID_GENERATOR.get(),
+			AMBlocks.BASIC_FLUID_GENERATOR.get(),
+			AMBlocks.BASIC_ELECTRIC_FURNACE.get(),
+			AMBlocks.BASIC_ALLOY_SMELTER.get(),
+			AMBlocks.BASIC_TRITURATOR.get(),
+			AMBlocks.BASIC_PRESSER.get(),
+			AMBlocks.BASIC_WIRE_MILL.get(),
+			AMBlocks.BASIC_ELECTROLYZER.get(),
+			AMBlocks.BASIC_REFINERY.get(),
+			AMBlocks.BASIC_FLUID_MIXER.get(),
+			AMBlocks.BASIC_SOLIDIFIER.get(),
+			AMBlocks.BASIC_MELTER.get(),
 			AMBlocks.BASIC_BUFFER.get(),
+			AMBlocks.BASIC_CAPACITOR.get()
+	);
+
+	public static final List<Block> ADVANCED_MACHINES = List.of(
+			AMBlocks.ADVANCED_TANK.get(),
+			AMBlocks.ADVANCED_SOLID_GENERATOR.get(),
+			AMBlocks.ADVANCED_FLUID_GENERATOR.get(),
+			AMBlocks.ADVANCED_ELECTRIC_FURNACE.get(),
+			AMBlocks.ADVANCED_ALLOY_SMELTER.get(),
+			AMBlocks.ADVANCED_TRITURATOR.get(),
+			AMBlocks.ADVANCED_PRESSER.get(),
+			AMBlocks.ADVANCED_WIRE_MILL.get(),
+			AMBlocks.ADVANCED_ELECTROLYZER.get(),
+			AMBlocks.ADVANCED_REFINERY.get(),
+			AMBlocks.ADVANCED_FLUID_MIXER.get(),
+			AMBlocks.ADVANCED_SOLIDIFIER.get(),
+			AMBlocks.ADVANCED_MELTER.get(),
 			AMBlocks.ADVANCED_BUFFER.get(),
+			AMBlocks.ADVANCED_CAPACITOR.get()
+	);
+
+	public static final List<Block> ELITE_MACHINES = List.of(
+			AMBlocks.ELITE_TANK.get(),
+			AMBlocks.ELITE_SOLID_GENERATOR.get(),
+			AMBlocks.ELITE_FLUID_GENERATOR.get(),
+			AMBlocks.ELITE_ELECTRIC_FURNACE.get(),
+			AMBlocks.ELITE_ALLOY_SMELTER.get(),
+			AMBlocks.ELITE_TRITURATOR.get(),
+			AMBlocks.ELITE_PRESSER.get(),
+			AMBlocks.ELITE_WIRE_MILL.get(),
+			AMBlocks.ELITE_ELECTROLYZER.get(),
+			AMBlocks.ELITE_REFINERY.get(),
+			AMBlocks.ELITE_FLUID_MIXER.get(),
+			AMBlocks.ELITE_SOLIDIFIER.get(),
+			AMBlocks.ELITE_MELTER.get(),
 			AMBlocks.ELITE_BUFFER.get(),
+			AMBlocks.ELITE_CAPACITOR.get()
+	);
+
+	public static final List<Block> CREATIVE_MACHINES = List.of(
+			AMBlocks.CREATIVE_TANK.get(),
 			AMBlocks.CREATIVE_BUFFER.get(),
+			AMBlocks.CREATIVE_CAPACITOR.get()
+	);
 
-			AMBlocks.PRIMITIVE_CAPACITOR.get(),
-			AMBlocks.BASIC_CAPACITOR.get(),
-			AMBlocks.ADVANCED_CAPACITOR.get(),
-			AMBlocks.ELITE_CAPACITOR.get(),
-			AMBlocks.CREATIVE_CAPACITOR.get(),
-
+	public static final List<Block> MISC_MACHINES = List.of(
 			AMBlocks.VENT.get(),
 
 			AMBlocks.FLUID_EXTRACTOR.get(),
@@ -160,6 +161,21 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 
 			AMBlocks.BLOCK_BREAKER.get(),
 			AMBlocks.BLOCK_PLACER.get()
+	);
+	
+	public static final List<Block> MACHINES = new ImmutableList.Builder<Block>()
+			.addAll(PRIMITIVE_MACHINES)
+			.addAll(BASIC_MACHINES)
+			.addAll(ADVANCED_MACHINES)
+			.addAll(ELITE_MACHINES)
+			.addAll(CREATIVE_MACHINES)
+			.addAll(MISC_MACHINES).build();
+
+	public static final List<Block> ENERGY_CABLES = List.of(
+			AMBlocks.PRIMITIVE_ENERGY_CABLE.get(),
+			AMBlocks.BASIC_ENERGY_CABLE.get(),
+			AMBlocks.ADVANCED_ENERGY_CABLE.get(),
+			AMBlocks.ELITE_ENERGY_CABLE.get()
 	);
 
 	public static final Map<BlockFamily.Variant, Identifier> VANILLA_ITEM_TAG_VARIANTS = Map.of(
@@ -223,11 +239,24 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 	}
 
 	public record HarvestData(Tag.Identified<Block> mineableTag, int miningLevel) {
+		public static final HarvestData PICKAXE = new HarvestData(MiningLevels.WOOD);
+		public static final HarvestData STONE_PICKAXE = new HarvestData(MiningLevels.STONE);
+		public static final HarvestData IRON_PICKAXE = new HarvestData(MiningLevels.IRON);
+		public static final HarvestData DIAMOND_PICKAXE = new HarvestData(MiningLevels.DIAMOND);
+		public static final HarvestData NETHERITE_PICKAXE = new HarvestData(MiningLevels.NETHERITE);
+		public static final HarvestData LEVEL_5_PICKAXE = new HarvestData(5);
+		public static final HarvestData LEVEL_6_PICKAXE = new HarvestData(6);
+
+		public HarvestData(int miningLevel) {
+			this(BlockTags.PICKAXE_MINEABLE, miningLevel);
+		}
+
 		public Tag.Identified<Block> miningLevelTag() {
 			return getMiningLevelTag(miningLevel());
 		}
 	}
 
+	@Nullable
 	public static Tag.Identified<Block> getMiningLevelTag(int miningLevel) {
 		if (miningLevel <= 0) return null;
 		return switch (miningLevel) {

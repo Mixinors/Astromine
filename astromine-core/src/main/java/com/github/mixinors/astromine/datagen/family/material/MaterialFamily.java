@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
@@ -15,7 +14,6 @@ import com.github.mixinors.astromine.datagen.AMDatagen;
 import com.github.mixinors.astromine.datagen.family.material.variant.BlockVariant;
 import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant;
 import com.github.mixinors.astromine.datagen.family.material.variant.Variant;
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,7 +29,7 @@ import net.fabricmc.fabric.api.tag.TagFactory;
 public class MaterialFamily implements Comparable<MaterialFamily> {
 	final Map<ItemVariant, Item> itemVariants = Maps.newHashMap();
 	final Map<BlockVariant, Block> blockVariants = Maps.newHashMap();
-	final Set<AlloyIngredients> alloyIngredients = Sets.newHashSet();
+	final Set<AlloyInfo> alloyInfos = Sets.newHashSet();
 	private final Item baseItem;
 	private final MaterialType type;
 	private final String name;
@@ -41,18 +39,14 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 	boolean generateModels = true;
 	boolean generateRecipes = true;
 	boolean generateTags = true;
+	boolean generateHarvestTags = true;
 	boolean generateLootTables = true;
-	@Nullable
-	String group;
-	@Nullable
-	String unlockCriterionName;
 	float oreSmeltingExperience = 0.7f;
 	@Nullable
 	String baseTagPathOverride;
 	boolean validForBeacon = false;
 	@Nullable
 	String alias;
-	private boolean hasEquipment = false;
 	private boolean block2x2;
 	private int miningLevel = 0;
 
@@ -98,13 +92,8 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 		return Maps.toMap(this.blockVariants.keySet(), this::getItemTag);
 	}
 
-	public Map<Variant<?>, Tag.Identified<Item>> getAllItemTags() {
-		return new ImmutableMap.Builder<Variant<?>, Tag.Identified<Item>>()
-				.putAll(getItemTags()).putAll(getBlockItemTags()).build();
-	}
-
 	public boolean isBaseAstromine() {
-		return Registry.ITEM.getId(getBaseItem()).getNamespace().equals(AMCommon.MOD_ID);
+		return isVariantAstromine(getBaseVariant());
 	}
 
 	public boolean isVariantAstromine(ItemVariant variant) {
@@ -233,6 +222,10 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 		return shouldGenerateLootTables() && hasVariant(variant) && isVariantAstromine(variant);
 	}
 
+	public boolean shouldGenerateHarvestTags(BlockVariant variant) {
+		return shouldGenerateHarvestTags() && hasVariant(variant) && isVariantAstromine(variant);
+	}
+
 	public boolean shouldGenerateModels() {
 		return this.generateModels;
 	}
@@ -245,6 +238,10 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 		return this.generateTags;
 	}
 
+	public boolean shouldGenerateHarvestTags() {
+		return this.generateHarvestTags;
+	}
+
 	public boolean shouldGenerateLootTables() {
 		return this.generateLootTables;
 	}
@@ -253,34 +250,20 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 		return this.piglinLoved;
 	}
 
-	public Optional<String> getGroup() {
-		if (StringUtils.isBlank(this.group)) {
-			return Optional.empty();
-		}
-		return Optional.of(this.group);
-	}
-
-	public Optional<String> getUnlockCriterionName() {
-		if (StringUtils.isBlank(this.unlockCriterionName)) {
-			return Optional.empty();
-		}
-		return Optional.of(this.unlockCriterionName);
-	}
-
 	public boolean usesSmithing() {
 		return smithingBase != null;
 	}
 
 	public boolean isAlloy() {
-		return !alloyIngredients.isEmpty();
+		return !alloyInfos.isEmpty();
 	}
 
 	public Optional<MaterialFamily> getSmithingBase() {
 		return Optional.ofNullable(smithingBase);
 	}
 
-	public Set<AlloyIngredients> getAlloyIngredients() {
-		return alloyIngredients;
+	public Set<AlloyInfo> getAlloyInfos() {
+		return alloyInfos;
 	}
 
 	public float getOreSmeltingExperience() {
@@ -353,17 +336,6 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 		return alias != null;
 	}
 
-	public Optional<String> getAlias() {
-		if (StringUtils.isBlank(this.alias)) {
-			return Optional.empty();
-		}
-		return Optional.of(this.alias);
-	}
-
-	public boolean hasEquipment() {
-		return hasEquipment;
-	}
-
 	public boolean isBlock2x2() {
 		return block2x2;
 	}
@@ -417,7 +389,6 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 			this.family.itemVariants.put(ItemVariant.SHOVEL, shovel);
 			this.family.itemVariants.put(ItemVariant.SWORD, sword);
 			this.family.itemVariants.put(ItemVariant.HOE, hoe);
-			this.family.hasEquipment = true;
 			return this;
 		}
 
@@ -426,7 +397,6 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 			this.family.itemVariants.put(ItemVariant.CHESTPLATE, chestplate);
 			this.family.itemVariants.put(ItemVariant.LEGGINGS, leggings);
 			this.family.itemVariants.put(ItemVariant.BOOTS, boots);
-			this.family.hasEquipment = true;
 			return this;
 		}
 
@@ -532,18 +502,13 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 			return this;
 		}
 
+		public MaterialFamily.Builder noGenerateHarvestTags() {
+			this.family.generateHarvestTags = false;
+			return this;
+		}
+
 		public MaterialFamily.Builder noGenerateLootTables() {
 			this.family.generateLootTables = false;
-			return this;
-		}
-
-		public MaterialFamily.Builder group(String group) {
-			this.family.group = group;
-			return this;
-		}
-
-		public MaterialFamily.Builder unlockCriterionName(String unlockCriterionName) {
-			this.family.unlockCriterionName = unlockCriterionName;
 			return this;
 		}
 
@@ -557,20 +522,20 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 			return this;
 		}
 
-		public MaterialFamily.Builder alloyIngredients(MaterialFamily first, MaterialFamily second) {
-			return alloyIngredients(first, 1, second, 1);
+		public MaterialFamily.Builder alloyIngredients(MaterialFamily first, MaterialFamily second, int time, int energy) {
+			return alloyIngredients(first, 1, second, 1, time, energy);
 		}
 
-		public MaterialFamily.Builder alloyIngredients(MaterialFamily first, int firstCount, MaterialFamily second, int secondCount) {
-			return alloyIngredients(first, firstCount, second, secondCount, firstCount + secondCount);
+		public MaterialFamily.Builder alloyIngredients(MaterialFamily first, int firstCount, MaterialFamily second, int secondCount, int time, int energy) {
+			return alloyIngredients(first, firstCount, second, secondCount, firstCount + secondCount, time, energy);
 		}
 
-		public MaterialFamily.Builder alloyIngredients(MaterialFamily first, MaterialFamily second, int outputCount) {
-			return alloyIngredients(first, 1, second, 1, outputCount);
+		public MaterialFamily.Builder alloyIngredients(MaterialFamily first, MaterialFamily second, int outputCount, int time, int energy) {
+			return alloyIngredients(first, 1, second, 1, outputCount, time, energy);
 		}
 
-		public MaterialFamily.Builder alloyIngredients(MaterialFamily first, int firstCount, MaterialFamily second, int secondCount, int outputCount) {
-			this.family.alloyIngredients.add(new AlloyIngredients(first, firstCount, second, secondCount, outputCount));
+		public MaterialFamily.Builder alloyIngredients(MaterialFamily first, int firstCount, MaterialFamily second, int secondCount, int outputCount, int time, int energy) {
+			this.family.alloyInfos.add(new AlloyInfo(first, firstCount, second, secondCount, outputCount, time, energy));
 			return this;
 		}
 
@@ -600,7 +565,7 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 		}
 	}
 
-	public record AlloyIngredients(MaterialFamily first, int firstCount, MaterialFamily second, int secondCount,
-								   int outputCount) {
+	public record AlloyInfo(MaterialFamily firstIngredient, int firstCount, MaterialFamily secondIngredient,
+							int secondCount, int outputCount, int time, int energy) {
 	}
 }

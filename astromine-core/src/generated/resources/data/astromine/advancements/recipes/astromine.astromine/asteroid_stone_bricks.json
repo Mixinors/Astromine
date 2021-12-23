@@ -6,13 +6,13 @@
     ]
   },
   "criteria": {
-    "has_smooth_asteroid_stone": {
+    "has_polished_asteroid_stone": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "astromine:smooth_asteroid_stone"
+              "astromine:polished_asteroid_stone"
             ]
           }
         ]
@@ -27,7 +27,7 @@
   },
   "requirements": [
     [
-      "has_smooth_asteroid_stone",
+      "has_polished_asteroid_stone",
       "has_the_recipe"
     ]
   ]

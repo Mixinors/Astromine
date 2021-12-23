@@ -28,7 +28,9 @@ import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.math.Vec3i;
 
 public class VectorUtils {
-	/** Returns a {@link Vec3i} converted to a {@link Vec3f}. */
+	/**
+	 * Returns a {@link Vec3i} converted to a {@link Vec3f}.
+	 */
 	public static Vec3f toVector3f(Vec3i vec3i) {
 		return new Vec3f(vec3i.getX(), vec3i.getY(), vec3i.getZ());
 	}

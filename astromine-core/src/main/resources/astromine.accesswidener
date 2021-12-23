@@ -32,8 +32,7 @@ mutable field net/minecraft/client/render/RenderPhase endAction Ljava/lang/Runna
 mutable field net/minecraft/server/network/ServerPlayNetworkHandler floatingTicks I
 accessible field net/minecraft/server/world/ThreadedAnvilChunkStorage chunkGenerator Lnet/minecraft/world/gen/chunk/ChunkGenerator;
 mutable field net/minecraft/server/world/ThreadedAnvilChunkStorage chunkGenerator Lnet/minecraft/world/gen/chunk/ChunkGenerator;
-accessible   field   net/minecraft/data/client/model/BlockStateModelGenerator    blockStateCollector Ljava/util/function/Consumer;
-accessible   field   net/minecraft/data/client/model/BlockStateModelGenerator    modelCollector  Ljava/util/function/BiConsumer;
 accessible class net/minecraft/data/client/model/BlockStateModelGenerator$BlockTexturePool
-accessible method net/minecraft/data/client/model/TextureKey of (Ljava/lang/String;)Lnet/minecraft/data/client/model/TextureKey;
-accessible method net/minecraft/data/client/model/TextureKey of (Ljava/lang/String;Lnet/minecraft/data/client/model/TextureKey;)Lnet/minecraft/data/client/model/TextureKey;
+accessible class net/minecraft/recipe/Ingredient$Entry
+accessible field net/minecraft/recipe/Ingredient entries [Lnet/minecraft/recipe/Ingredient$Entry;
+accessible field net/minecraft/client/render/RenderPhase ARMOR_CUTOUT_NO_CULL_SHADER Lnet/minecraft/client/render/RenderPhase$Shader;

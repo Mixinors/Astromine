@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:biofuel"
+  },
+  "output": {
+    "fluid": "astromine:biomass",
+    "amount": 810
+  },
+  "energy_input": 8000,
+  "time": 100
+}

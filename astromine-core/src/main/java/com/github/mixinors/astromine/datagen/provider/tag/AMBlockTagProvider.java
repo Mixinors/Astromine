@@ -1,8 +1,9 @@
 package com.github.mixinors.astromine.datagen.provider.tag;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.datagen.AMDatagen;
 import com.github.mixinors.astromine.datagen.AMDatagen.HarvestData;
 import com.github.mixinors.astromine.datagen.family.block.AMBlockFamilies;
@@ -16,7 +17,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.data.family.BlockFamily;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.tag.Tag;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
@@ -24,23 +24,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 
 public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 	public static final List<Block> INFINIBURN_BLOCKS = List.of(
-			AMBlocks.ASTEROID_STONE.get(),
-			AMBlocks.BLAZING_ASTEROID_STONE.get(),
-			AMBlocks.ASTEROID_STONE_BRICKS.get(),
-			AMBlocks.POLISHED_ASTEROID_STONE.get(),
-			AMBlocks.SMOOTH_ASTEROID_STONE.get(),
-			AMBlocks.ASTEROID_STONE_SLAB.get(),
-			AMBlocks.ASTEROID_STONE_BRICK_SLAB.get(),
-			AMBlocks.POLISHED_ASTEROID_STONE_SLAB.get(),
-			AMBlocks.SMOOTH_ASTEROID_STONE_SLAB.get(),
-			AMBlocks.METEOR_STONE.get(),
-			AMBlocks.METEOR_STONE_BRICKS.get(),
-			AMBlocks.POLISHED_METEOR_STONE.get(),
-			AMBlocks.SMOOTH_METEOR_STONE.get(),
-			AMBlocks.METEOR_STONE_SLAB.get(),
-			AMBlocks.METEOR_STONE_BRICK_SLAB.get(),
-			AMBlocks.POLISHED_METEOR_STONE_SLAB.get(),
-			AMBlocks.SMOOTH_METEOR_STONE_SLAB.get()
+			AMBlocks.BLAZING_ASTEROID_STONE.get()
 	);
 
 	public static final List<Tag.Identified<Block>> INFINIBURN_TAGS = List.of(
@@ -48,21 +32,26 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 			AMDatagen.createCommonBlockTag("asteroid_ores")
 	);
 
-	public static final HarvestData SPACE_STONE_HARVEST_DATA = new HarvestData(BlockTags.PICKAXE_MINEABLE, 3);
+	public static final HarvestData SPACE_STONE_HARVEST_DATA = HarvestData.DIAMOND_PICKAXE;
 
-	public static final Map<BlockFamily, HarvestData> FAMILY_HARVEST_DATA = Map.of(
-			AMBlockFamilies.METEOR_STONE, SPACE_STONE_HARVEST_DATA,
-			AMBlockFamilies.SMOOTH_METEOR_STONE, SPACE_STONE_HARVEST_DATA,
-			AMBlockFamilies.POLISHED_METEOR_STONE, SPACE_STONE_HARVEST_DATA,
-			AMBlockFamilies.METEOR_STONE_BRICK, SPACE_STONE_HARVEST_DATA,
-			AMBlockFamilies.ASTEROID_STONE, SPACE_STONE_HARVEST_DATA,
-			AMBlockFamilies.SMOOTH_ASTEROID_STONE, SPACE_STONE_HARVEST_DATA,
-			AMBlockFamilies.POLISHED_ASTEROID_STONE, SPACE_STONE_HARVEST_DATA,
-			AMBlockFamilies.ASTEROID_STONE_BRICK, SPACE_STONE_HARVEST_DATA
-	);
+	public static final HarvestData PRIMITIVE_MACHINE_HARVEST_DATA = HarvestData.STONE_PICKAXE;
+	public static final HarvestData BASIC_MACHINE_HARVEST_DATA = HarvestData.IRON_PICKAXE;
+	public static final HarvestData ADVANCED_MACHINE_HARVEST_DATA = HarvestData.IRON_PICKAXE;
+	public static final HarvestData ELITE_MACHINE_HARVEST_DATA = HarvestData.NETHERITE_PICKAXE;
 
-	public static final Map<Block, HarvestData> BLOCK_HARVEST_DATA = Map.of(
+	public static final HarvestData MISC_MACHINE_HARVEST_DATA = HarvestData.IRON_PICKAXE;
 
+	public static final HarvestData PIPE_AND_CABLE_HARVEST_DATA = HarvestData.STONE_PICKAXE;
+
+	public static final List<BlockFamily> SPACE_STONE_FAMILIES = List.of(
+			AMBlockFamilies.METEOR_STONE,
+			AMBlockFamilies.SMOOTH_METEOR_STONE,
+			AMBlockFamilies.POLISHED_METEOR_STONE,
+			AMBlockFamilies.METEOR_STONE_BRICK,
+			AMBlockFamilies.ASTEROID_STONE,
+			AMBlockFamilies.SMOOTH_ASTEROID_STONE,
+			AMBlockFamilies.POLISHED_ASTEROID_STONE,
+			AMBlockFamilies.ASTEROID_STONE_BRICK
 	);
 
 	public AMBlockTagProvider(FabricDataGenerator dataGenerator) {
@@ -98,7 +87,7 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 					}
 				}
 
-				if(family.isVariantAstromine(variant)) addHarvestData(tag, family.getHarvestData(variant));
+				if (family.shouldGenerateHarvestTags(variant)) addHarvestData(family.getHarvestData(variant), tag);
 			});
 
 			if (family.hasAnyBlockVariants(AMDatagen.ORE_VARIANTS)) {
@@ -266,17 +255,72 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 		INFINIBURN_BLOCKS.forEach(infiniburnTagBuilder::add);
 		INFINIBURN_TAGS.forEach(infiniburnTagBuilder::addTag);
 
-		FAMILY_HARVEST_DATA.forEach((family, harvestData) -> family.getVariants().forEach((variant, block) -> addHarvestData(block, harvestData)));
-		BLOCK_HARVEST_DATA.forEach(this::addHarvestData);
+		SPACE_STONE_FAMILIES.forEach((family) -> family.getVariants().forEach((variant, block) -> {
+			infiniburnTagBuilder.add(block);
+			addHarvestData(SPACE_STONE_HARVEST_DATA, block);
+		}));
+		
+		Tag.Identified<Block> primitiveMachinesTag = AMDatagen.createBlockTag(AMCommon.id("primitive_machines"));
+		FabricTagBuilder<Block> primitiveMachinesTagBuilder = getOrCreateTagBuilder(primitiveMachinesTag);
+		AMDatagen.PRIMITIVE_MACHINES.forEach(primitiveMachinesTagBuilder::add);
+		addHarvestData(PRIMITIVE_MACHINE_HARVEST_DATA, primitiveMachinesTag);
+
+		Tag.Identified<Block> basicMachinesTag = AMDatagen.createBlockTag(AMCommon.id("basic_machines"));
+		FabricTagBuilder<Block> basicMachinesTagBuilder = getOrCreateTagBuilder(basicMachinesTag);
+		AMDatagen.BASIC_MACHINES.forEach(basicMachinesTagBuilder::add);
+		addHarvestData(BASIC_MACHINE_HARVEST_DATA, basicMachinesTag);
+
+		Tag.Identified<Block> advancedMachinesTag = AMDatagen.createBlockTag(AMCommon.id("advanced_machines"));
+		FabricTagBuilder<Block> advancedMachinesTagBuilder = getOrCreateTagBuilder(advancedMachinesTag);
+		AMDatagen.ADVANCED_MACHINES.forEach(advancedMachinesTagBuilder::add);
+		addHarvestData(ADVANCED_MACHINE_HARVEST_DATA, advancedMachinesTag);
+
+		Tag.Identified<Block> eliteMachinesTag = AMDatagen.createBlockTag(AMCommon.id("elite_machines"));
+		FabricTagBuilder<Block> eliteMachinesTagBuilder = getOrCreateTagBuilder(eliteMachinesTag);
+		AMDatagen.ELITE_MACHINES.forEach(eliteMachinesTagBuilder::add);
+		addHarvestData(ELITE_MACHINE_HARVEST_DATA, eliteMachinesTag);
+
+		Tag.Identified<Block> creativeMachinesTag = AMDatagen.createBlockTag(AMCommon.id("creative_machines"));
+		FabricTagBuilder<Block> creativeMachinesTagBuilder = getOrCreateTagBuilder(creativeMachinesTag);
+		AMDatagen.CREATIVE_MACHINES.forEach(creativeMachinesTagBuilder::add);
+
+		Tag.Identified<Block> miscMachinesTag = AMDatagen.createBlockTag(AMCommon.id("misc_machines"));
+		FabricTagBuilder<Block> miscMachinesTagBuilder = getOrCreateTagBuilder(miscMachinesTag);
+		AMDatagen.MISC_MACHINES.forEach(miscMachinesTagBuilder::add);
+		addHarvestData(MISC_MACHINE_HARVEST_DATA, miscMachinesTag);
+		
+		getOrCreateTagBuilder(AMDatagen.createBlockTag(AMCommon.id("machines")))
+				.addTag(primitiveMachinesTag)
+				.addTag(basicMachinesTag)
+				.addTag(advancedMachinesTag)
+				.addTag(eliteMachinesTag)
+				.addTag(creativeMachinesTag)
+				.addTag(miscMachinesTag);
+
+		Tag.Identified<Block> energyCablesTag = AMDatagen.createBlockTag(AMCommon.id("energy_cables"));
+		FabricTagBuilder<Block> energyCablesTagBuilder = getOrCreateTagBuilder(energyCablesTag);
+		AMDatagen.ENERGY_CABLES.forEach(energyCablesTagBuilder::add);
+		addHarvestData(PIPE_AND_CABLE_HARVEST_DATA, energyCablesTag);
+		addHarvestData(PIPE_AND_CABLE_HARVEST_DATA, AMBlocks.FLUID_PIPE.get());
+
+		addHarvestData(HarvestData.IRON_PICKAXE, AMBlocks.HOLOGRAPHIC_BRIDGE_PROJECTOR.get());
+
+		addHarvestData(HarvestData.STONE_PICKAXE, AMBlocks.AIRLOCK.get(), AMBlocks.DRAIN.get());
+
+		addHarvestData(HarvestData.LEVEL_5_PICKAXE, AMBlocks.NUCLEAR_WARHEAD.get());
 	}
 
-	public void addHarvestData(Block block, HarvestData harvestData) {
+	public void addHarvestData(HarvestData harvestData, Block block) {
 		getOrCreateTagBuilder(harvestData.mineableTag()).add(block);
-		if(harvestData.miningLevel() > 0) getOrCreateTagBuilder(harvestData.miningLevelTag()).add(block);
+		if (harvestData.miningLevel() > 0) getOrCreateTagBuilder(harvestData.miningLevelTag()).add(block);
 	}
 
-	public void addHarvestData(Tag.Identified<Block> tag, HarvestData harvestData) {
+	public void addHarvestData(HarvestData harvestData, Block... blocks) {
+		Arrays.stream(blocks).forEach((block) -> addHarvestData(harvestData, block));
+	}
+
+	public void addHarvestData(HarvestData harvestData, Tag.Identified<Block> tag) {
 		getOrCreateTagBuilder(harvestData.mineableTag()).addTag(tag);
-		if(harvestData.miningLevel() > 0) getOrCreateTagBuilder(harvestData.miningLevelTag()).addTag(tag);
+		if (harvestData.miningLevel() > 0) getOrCreateTagBuilder(harvestData.miningLevelTag()).addTag(tag);
 	}
 }

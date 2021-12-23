@@ -1,0 +1,20 @@
+{
+  "replace": false,
+  "values": [
+    "astromine:primitive_tank",
+    "astromine:primitive_solid_generator",
+    "astromine:primitive_fluid_generator",
+    "astromine:primitive_electric_furnace",
+    "astromine:primitive_alloy_smelter",
+    "astromine:primitive_triturator",
+    "astromine:primitive_press",
+    "astromine:primitive_wire_mill",
+    "astromine:primitive_electrolyzer",
+    "astromine:primitive_refinery",
+    "astromine:primitive_fluid_mixer",
+    "astromine:primitive_solidifier",
+    "astromine:primitive_melter",
+    "astromine:primitive_buffer",
+    "astromine:primitive_capacitor"
+  ]
+}

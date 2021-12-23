@@ -24,13 +24,10 @@
 
 package com.github.mixinors.astromine.common.util;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
-import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
-import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
+import java.util.function.Function;
+
+import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.common.fluid.ExtendedFluid;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -45,35 +42,46 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockRenderView;
 
-import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.fluid.ExtendedFluid;
-
-import java.util.function.Function;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
+import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
+import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 
 public class ClientUtils {
-	/** Returns Minecraft's client's instance. */
+	/**
+	 * Returns Minecraft's client's instance.
+	 */
 	public static MinecraftClient getInstance() {
 		return MinecraftClient.getInstance();
 	}
-	
-	/** Returns Minecraft's client's player. */
+
+	/**
+	 * Returns Minecraft's client's player.
+	 */
 	public static ClientPlayerEntity getPlayer() {
 		return getInstance().player;
 	}
-	
-	/** Returns Minecraft's client's world. **/
+
+	/**
+	 * Returns Minecraft's client's world.
+	 **/
 	public static ClientWorld getWorld() {
 		return getInstance().world;
 	}
-	
-	/** Registers the necessary data for an {@link ExtendedFluid} on the client side. */
+
+	/**
+	 * Registers the necessary data for an {@link ExtendedFluid} on the client side.
+	 */
 	@Environment(EnvType.CLIENT)
 	public static void registerExtendedFluid(String name, int tint, Fluid still, Fluid flowing) {
 		Identifier stillSpriteIdentifier = new Identifier("block/water_still");
 		Identifier flowingSpriteIdentifier = new Identifier("block/water_flow");
 		Identifier listenerIdentifier = AMCommon.id(name + "_reload_listener");
 
-		Sprite[] fluidSprites = { null, null };
+		Sprite[] fluidSprites = {null, null};
 
 		ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> {
 			registry.register(stillSpriteIdentifier);

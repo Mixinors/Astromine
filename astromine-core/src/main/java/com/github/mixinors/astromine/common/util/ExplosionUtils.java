@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.util;
 
 import com.github.mixinors.astromine.AMCommon;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.network.packet.s2c.play.ChunkDataS2CPacket;
@@ -38,12 +39,15 @@ import net.minecraft.world.chunk.WorldChunk;
 
 /**
  * This is a concerning utility class - vini2003.
+ *
  * @author HalfOf2
  */
 public class ExplosionUtils {
 	private static final BlockState AIR = Blocks.AIR.getDefaultState();
 
-	/** Attempts to explode at specified position with the given power. */
+	/**
+	 * Attempts to explode at specified position with the given power.
+	 */
 	public static void attemptExplosion(World world, int x, int y, int z, int power) {
 		if (!world.isClient) {
 			long start = System.currentTimeMillis();
@@ -53,7 +57,9 @@ public class ExplosionUtils {
 		}
 	}
 
-	/** Explodes at specified position with the given power. */
+	/**
+	 * Explodes at specified position with the given power.
+	 */
 	private static long explode(World access, int x, int y, int z, int radius) {
 		int cr = radius >> 4;
 		long blocks = 0;
@@ -77,7 +83,8 @@ public class ExplosionUtils {
 
 	/**
 	 * Asserts whether a certain point is inside a given sphere or not.
-	 * Originally from {@see https://stackoverflow.com/a/4579069/9773993}, adapted to Java. */
+	 * Originally from {@see https://stackoverflow.com/a/4579069/9773993}, adapted to Java.
+	 */
 	private static boolean touchesOrIsIn(int x1, int y1, int z1, int x2, int y2, int z2, int radius) {
 		int squared = radius * radius;
 
@@ -100,7 +107,9 @@ public class ExplosionUtils {
 		return squared > 0;
 	}
 
-	/** Explodes all subchunks in the given sphere. */
+	/**
+	 * Explodes all subchunks in the given sphere.
+	 */
 	private static long forSubchunks(WorldChunk chunk, int bx, int bz, int x, int y, int z, int radius) {
 		int scr = radius >> 4;
 		int sc = y >> 4;
@@ -131,7 +140,9 @@ public class ExplosionUtils {
 		return destroyed;
 	}
 
-	/** Asserts... something?! */
+	/**
+	 * Asserts... something?!
+	 */
 	private static boolean in(int ox, int oy, int oz, int radius) {
 		return ox * ox + oy * oy + oz * oz <= radius * radius;
 	}

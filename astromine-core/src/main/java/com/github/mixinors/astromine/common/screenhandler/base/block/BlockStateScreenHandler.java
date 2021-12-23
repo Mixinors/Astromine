@@ -51,7 +51,7 @@ public abstract class BlockStateScreenHandler extends BaseScreenHandler
 	public BlockStateScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type.get(), syncId, player);
 
-		this.state = player.world.getBlockState(position);
+		this.state = player.getWorld().getBlockState(position);
 		this.originalBlock = state.getBlock();
 		this.position = position;
 	}
@@ -61,6 +61,7 @@ public abstract class BlockStateScreenHandler extends BaseScreenHandler
 	 * changed. */
 	@Override
 	public boolean canUse(@Nullable PlayerEntity player) {
-		return canUse(ScreenHandlerContext.create(player.world, position), player, originalBlock);
+		if(player == null) return false;
+		return canUse(ScreenHandlerContext.create(player.getWorld(), position), player, originalBlock);
 	}
 }

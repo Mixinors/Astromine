@@ -50,7 +50,7 @@ public class AlloySmeltingDisplay extends SimpleTransferRecipeDisplay {
 
 	public AlloySmeltingDisplay(AlloySmeltingRecipe recipe) {
 		this(Lists.newArrayList(EntryIngredients.ofItemStacks(Arrays.asList(recipe.getFirstInput().getMatchingStacks())), EntryIngredients.ofItemStacks(Arrays.asList(recipe.getSecondInput().getMatchingStacks()))),
-			Collections.singletonList(EntryIngredients.of(recipe.getFirstOutput())), recipe
+			Collections.singletonList(EntryIngredients.of(recipe.getItemOutput())), recipe
 				.getTime(), recipe.getEnergyInput(), recipe.getId());
 	}
 

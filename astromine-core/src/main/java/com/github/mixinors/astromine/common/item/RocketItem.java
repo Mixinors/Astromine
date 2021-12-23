@@ -1,5 +1,6 @@
 package com.github.mixinors.astromine.common.item;
 
+import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.FluidBlock;
@@ -45,14 +46,14 @@ public class RocketItem extends Item {
 		}
 		BlockHitResult blockHitResult = hitResult;
 		BlockPos blockPos = blockHitResult.getBlockPos();
-		if (!(world.getBlockState(blockPos).getBlock() instanceof FluidBlock)) {
+		if ( world.getBlockState(blockPos).getBlock() instanceof FluidBlock ) {
 			return TypedActionResult.pass(itemStack);
 		}
 		if (!world.canPlayerModifyAt(user, blockPos) || !user.canPlaceOn(blockPos, blockHitResult.getSide(), itemStack)) {
 			return TypedActionResult.fail(itemStack);
 		}
 		EntityType<?> entityType = this.getEntityType(itemStack.getNbt());
-		if (entityType.spawnFromItemStack((ServerWorld)world, itemStack, user, blockPos, SpawnReason.SPAWN_EGG, false, false) == null) {
+		if (entityType.spawnFromItemStack((ServerWorld)world, itemStack, user, blockPos.offset(Direction.UP), SpawnReason.SPAWN_EGG, false, false) == null) {
 			return TypedActionResult.pass(itemStack);
 		}
 		if (!user.getAbilities().creativeMode) {

@@ -24,32 +24,40 @@
 
 package com.github.mixinors.astromine.common.util;
 
-import com.github.mixinors.astromine.AMCommon;
-import net.minecraft.network.PacketByteBuf;
-
-import io.netty.buffer.ByteBuf;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 
+import com.github.mixinors.astromine.AMCommon;
+import io.netty.buffer.ByteBuf;
+
+import net.minecraft.network.PacketByteBuf;
+
 public class StringUtils {
-    /** Serializes the given {@link String} to a {@link ByteBuf}. */
-    public static void toPacket(PacketByteBuf buffer, String string) {
-        buffer.writeString(string);
-    }
+	/**
+	 * Serializes the given {@link String} to a {@link ByteBuf}.
+	 */
+	public static void toPacket(PacketByteBuf buffer, String string) {
+		buffer.writeString(string);
+	}
 
-    /** Deserializes a {@link String} from a {@link ByteBuf}. */
-    public static String fromPacket(PacketByteBuf buffer) {
-        return buffer.readString();
-    }
+	/**
+	 * Deserializes a {@link String} from a {@link ByteBuf}.
+	 */
+	public static String fromPacket(PacketByteBuf buffer) {
+		return buffer.readString();
+	}
 
-    /** Serializes the given {@link String} to a {@link JsonElement}. */
-    public static JsonElement toJson(String string) {
-        return new JsonPrimitive(string);
-    }
+	/**
+	 * Serializes the given {@link String} to a {@link JsonElement}.
+	 */
+	public static JsonElement toJson(String string) {
+		return new JsonPrimitive(string);
+	}
 
-    /** Deserializes a {@link String} from a {@link JsonElement}. */
-    public static String fromJson(JsonElement json) {
-        return AMCommon.GSON.fromJson(json, String.class);
-    }
+	/**
+	 * Deserializes a {@link String} from a {@link JsonElement}.
+	 */
+	public static String fromJson(JsonElement json) {
+		return AMCommon.GSON.fromJson(json, String.class);
+	}
 }

@@ -27,23 +27,18 @@ package com.github.mixinors.astromine.common.util;
 import net.minecraft.util.math.Direction;
 
 public class DirectionUtils {
-	/** Returns the {@link Direction} corresponding to the given name or ordinal. */
+	/**
+	 * Returns the {@link Direction} corresponding to the given name or ordinal.
+	 */
 	public static Direction byNameOrId(String nameOrOrdinal) {
-		switch (nameOrOrdinal) {
-			case "down":
-				return Direction.DOWN;
-			case "up":
-				return Direction.UP;
-			case "north":
-				return Direction.NORTH;
-			case "south":
-				return Direction.SOUTH;
-			case "west":
-				return Direction.WEST;
-			case "east":
-				return Direction.EAST;
-			default:
-				return Direction.byId(Integer.parseInt(nameOrOrdinal));
-		}
+		return switch (nameOrOrdinal) {
+			case "down" -> Direction.DOWN;
+			case "up" -> Direction.UP;
+			case "north" -> Direction.NORTH;
+			case "south" -> Direction.SOUTH;
+			case "west" -> Direction.WEST;
+			case "east" -> Direction.EAST;
+			default -> Direction.byId(Integer.parseInt(nameOrOrdinal));
+		};
 	}
 }

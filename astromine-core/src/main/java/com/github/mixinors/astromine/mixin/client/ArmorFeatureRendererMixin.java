@@ -50,8 +50,8 @@ public abstract class ArmorFeatureRendererMixin {
 
 	@Inject(method = "renderArmorParts", at = @At("HEAD"), cancellable = true)
 	private void renderArmorParts(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, ArmorItem armorItem, boolean bl, BipedEntityModel<LivingEntity> bipedEntityModel, boolean bl2, float f, float g, float h, @Nullable String string, CallbackInfo ci) {
-		if (armorItem instanceof AnimatedArmorItem) {
-			VertexConsumer vertexConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider, getArmorCutoutNoCull(this.getArmorTexture(armorItem, bl2, string), ((AnimatedArmorItem) armorItem).getFrames()), false, bl);
+		if (armorItem instanceof AnimatedArmorItem animatedArmorItem) {
+			VertexConsumer vertexConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider, getArmorCutoutNoCull(this.getArmorTexture(armorItem, bl2, string), animatedArmorItem.getFrames()), false, bl);
 			bipedEntityModel.render(matrixStack, vertexConsumer, i, OverlayTexture.DEFAULT_UV, f, g, h, 1.0F);
 			ci.cancel();
 		}
@@ -61,9 +61,8 @@ public abstract class ArmorFeatureRendererMixin {
 	private static RenderLayer getArmorCutoutNoCull(Identifier texture, int frames) {
 		RenderLayer.MultiPhaseParameters multiPhaseParameters = RenderLayer.MultiPhaseParameters.builder()
 			.texture(new AnimatedArmorItem.AnimatedTexturePhase(texture, frames))
+			.shader(RenderPhase.ARMOR_CUTOUT_NO_CULL_SHADER)
 			.transparency(RenderLayer.NO_TRANSPARENCY)
-			// .diffuseLighting(RenderLayer.ENABLE_DIFFUSE_LIGHTING)
-			// .alpha(RenderLayer.ONE_TENTH_ALPHA)
 			.cull(RenderLayer.DISABLE_CULLING)
 			.lightmap(RenderLayer.ENABLE_LIGHTMAP)
 			.overlay(RenderLayer.ENABLE_OVERLAY_COLOR)

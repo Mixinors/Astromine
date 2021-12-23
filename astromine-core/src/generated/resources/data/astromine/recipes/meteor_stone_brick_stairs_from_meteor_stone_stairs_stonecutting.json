@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "astromine:meteor_stone_stairs"
+  },
+  "result": "astromine:meteor_stone_brick_stairs",
+  "count": 1
+}

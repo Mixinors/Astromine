@@ -57,19 +57,17 @@ public class PrimitiveRocketEntityRenderer extends EntityRenderer<PrimitiveRocke
 	public void render(PrimitiveRocketEntity rocket, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider provider, int light) {
 		matrices.push();
 
-		matrices.translate(0.0D, 3.0D, 0.0D);
-
 		matrices.scale(-1.0F, -1.0F, 1.0F);
 
 		matrices.scale(2, 2, 2);
 
 		matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(90.0F));
 
-		this.model.setAngles(rocket, 0, 0.0F, -0.1F, rocket.getYaw(tickDelta), rocket.getPitch(tickDelta));
+		model.setAngles(rocket, 0, 0.0F, -0.1F, rocket.getYaw(tickDelta), rocket.getPitch(tickDelta));
 
-		VertexConsumer vertexConsumer = provider.getBuffer(this.model.getLayer(this.getTexture(rocket)));
+		VertexConsumer vertexConsumer = provider.getBuffer(model.getLayer( getTexture(rocket)));
 
-		this.model.render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
+		model.render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
 
 		matrices.pop();
 
