@@ -25,6 +25,8 @@
 package com.github.mixinors.astromine.common.recipe;
 
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
+import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
+import com.github.mixinors.astromine.common.recipe.result.ItemResult;
 import com.github.mixinors.astromine.common.util.LongUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.architectury.core.AbstractRecipeSerializer;
@@ -39,9 +41,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.ItemIngredient;
-import com.github.mixinors.astromine.common.util.DoubleUtils;
 import com.github.mixinors.astromine.common.util.IntegerUtils;
 import com.github.mixinors.astromine.common.util.StackUtils;
 
@@ -54,16 +54,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory> {
+public final class WireMillingRecipe implements EnergyConsumingRecipe {
 	public final Identifier id;
 	public final ItemIngredient input;
-	public final ItemStack output;
+	public final ItemResult output;
 	public final long energyInput;
 	public final int time;
 
 	private static final Map<World, WireMillingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public WireMillingRecipe(Identifier id, ItemIngredient input, ItemStack output, long energyInput, int time) {
+	public WireMillingRecipe(Identifier id, ItemIngredient input, ItemResult output, long energyInput, int time) {
 		this.id = id;
 		this.input = input;
 		this.output = output;
@@ -108,7 +108,7 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 			return false;
 		}
 		
-		return StackUtils.equalsAndFits(output, outputStorage.getResource().toStack((int) outputStorage.getAmount()));
+		return output.equalsAndFitsIn(outputStorage);
 	}
 	
 	public boolean allows(ItemVariant... variants) {
@@ -125,7 +125,7 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 
 	@Override
 	public ItemStack craft(Inventory inventory) {
-		return output.copy();
+		return getOutput().copy();
 	}
 
 	@Override
@@ -135,7 +135,7 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 
 	@Override
 	public ItemStack getOutput() {
-		return output.copy();
+		return output.toStack();
 	}
 
 	@Override
@@ -155,12 +155,25 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 
 	@Override
 	public ItemStack createIcon() {
-		return new ItemStack(AMBlocks.ADVANCED_WIREMILL.get());
+		return new ItemStack(AMBlocks.ADVANCED_WIRE_MILL.get());
 	}
-	
+
 	@Override
-	public double getEnergyInput() {
+	public long getEnergyInput() {
 		return energyInput;
+	}
+
+	@Override
+	public int getTime() {
+		return time;
+	}
+
+	public ItemIngredient getInput() {
+		return input;
+	}
+
+	public ItemResult getItemOutput() {
+		return output;
 	}
 
 	public static final class Serializer extends AbstractRecipeSerializer<WireMillingRecipe>
@@ -177,7 +190,7 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 
 			return new WireMillingRecipe(identifier,
 					ItemIngredient.fromJson(format.input),
-					StackUtils.fromJson(format.output),
+					ItemResult.fromJson(format.output),
 					LongUtils.fromJson(format.energyInput),
 					IntegerUtils.fromJson(format.time)
 			);
@@ -188,7 +201,7 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 			return new WireMillingRecipe(
 					identifier,
 					ItemIngredient.fromPacket(buffer),
-					StackUtils.fromPacket(buffer),
+					ItemResult.fromPacket(buffer),
 					LongUtils.fromPacket(buffer),
 					IntegerUtils.fromPacket(buffer)
 			);
@@ -197,7 +210,7 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 		@Override
 		public void write(PacketByteBuf buffer, WireMillingRecipe recipe) {
 			ItemIngredient.toPacket(buffer, recipe.input);
-			StackUtils.toPacket(buffer, recipe.output);
+			ItemResult.toPacket(buffer, recipe.output);
 			LongUtils.toPacket(buffer, recipe.energyInput);
 			IntegerUtils.toPacket(buffer, recipe.time);
 		}

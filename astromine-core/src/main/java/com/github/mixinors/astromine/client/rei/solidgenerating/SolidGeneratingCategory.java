@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.client.rei.solidgenerating;
 
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
-import com.github.mixinors.astromine.client.rei.generating.AbstractEnergyGeneratingCategory;
+import com.github.mixinors.astromine.client.rei.generating.EnergyGeneratingCategory;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
@@ -43,7 +43,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class SolidGeneratingCategory extends AbstractEnergyGeneratingCategory<SolidGeneratingDisplay> {
+public class SolidGeneratingCategory extends EnergyGeneratingCategory<SolidGeneratingDisplay> {
 	@Override
 	public CategoryIdentifier<? extends SolidGeneratingDisplay> getCategoryIdentifier() {
 		return AMRoughlyEnoughItemsPlugin.SOLID_GENERATING;

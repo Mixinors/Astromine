@@ -25,6 +25,8 @@
 package com.github.mixinors.astromine.common.recipe;
 
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
+import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
+import com.github.mixinors.astromine.common.recipe.result.ItemResult;
 import com.github.mixinors.astromine.common.util.LongUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.architectury.core.AbstractRecipeSerializer;
@@ -33,7 +35,6 @@ import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
@@ -41,7 +42,6 @@ import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.ingredient.ItemIngredient;
-import com.github.mixinors.astromine.common.util.DoubleUtils;
 import com.github.mixinors.astromine.common.util.IntegerUtils;
 import com.github.mixinors.astromine.common.util.StackUtils;
 
@@ -54,16 +54,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public final class TrituratingRecipe implements Recipe<Inventory> {
+public final class TrituratingRecipe implements EnergyConsumingRecipe {
 	public final Identifier id;
 	public final ItemIngredient input;
-	public final ItemStack output;
+	public final ItemResult output;
 	public final long energyInput;
 	public final int time;
 
 	private static final Map<World, TrituratingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public TrituratingRecipe(Identifier id, ItemIngredient input, ItemStack output, long energyInput, int time) {
+	public TrituratingRecipe(Identifier id, ItemIngredient input, ItemResult output, long energyInput, int time) {
 		this.id = id;
 		this.input = input;
 		this.output = output;
@@ -108,7 +108,7 @@ public final class TrituratingRecipe implements Recipe<Inventory> {
 			return false;
 		}
 		
-		return StackUtils.equalsAndFits(output, outputStorage.getResource().toStack((int) outputStorage.getAmount()));
+		return output.equalsAndFitsIn(outputStorage);
 	}
 
 	public boolean allows(ItemVariant... variants) {
@@ -124,7 +124,7 @@ public final class TrituratingRecipe implements Recipe<Inventory> {
 
 	@Override
 	public ItemStack craft(Inventory inventory) {
-		return ItemStack.EMPTY;
+		return getOutput().copy();
 	}
 
 	@Override
@@ -134,7 +134,7 @@ public final class TrituratingRecipe implements Recipe<Inventory> {
 
 	@Override
 	public ItemStack getOutput() {
-		return ItemStack.EMPTY;
+		return output.toStack();
 	}
 
 	@Override
@@ -156,6 +156,24 @@ public final class TrituratingRecipe implements Recipe<Inventory> {
 	public ItemStack createIcon() {
 		return new ItemStack(AMBlocks.ADVANCED_TRITURATOR.get());
 	}
+
+	@Override
+	public long getEnergyInput() {
+		return energyInput;
+	}
+
+	@Override
+	public int getTime() {
+		return time;
+	}
+
+	public ItemIngredient getInput() {
+		return input;
+	}
+
+	public ItemResult getItemOutput() {
+		return output;
+	}
 	
 	public static final class Serializer extends AbstractRecipeSerializer<TrituratingRecipe> {
 		public static final Identifier ID = AMCommon.id("triturating");
@@ -171,7 +189,7 @@ public final class TrituratingRecipe implements Recipe<Inventory> {
 			return new TrituratingRecipe(
 					identifier,
 					ItemIngredient.fromJson(format.input),
-					StackUtils.fromJson(format.output),
+					ItemResult.fromJson(format.output),
 					LongUtils.fromJson(format.energyInput),
 					IntegerUtils.fromJson(format.time)
 			);
@@ -182,7 +200,7 @@ public final class TrituratingRecipe implements Recipe<Inventory> {
 			return new TrituratingRecipe(
 					identifier,
 					ItemIngredient.fromPacket(buffer),
-					StackUtils.fromPacket(buffer),
+					ItemResult.fromPacket(buffer),
 					LongUtils.fromPacket(buffer),
 					IntegerUtils.fromPacket(buffer)
 			);
@@ -191,7 +209,7 @@ public final class TrituratingRecipe implements Recipe<Inventory> {
 		@Override
 		public void write(PacketByteBuf buffer, TrituratingRecipe recipe) {
 			ItemIngredient.toPacket(buffer, recipe.input);
-			StackUtils.toPacket(buffer, recipe.output);
+			ItemResult.toPacket(buffer, recipe.output);
 			LongUtils.toPacket(buffer, recipe.energyInput);
 			IntegerUtils.toPacket(buffer, recipe.time);
 		}
@@ -204,10 +222,8 @@ public final class TrituratingRecipe implements Recipe<Inventory> {
 	}
 
 	public static final class Format {
-		@SerializedName("input")
 		JsonElement input;
 
-		@SerializedName("output")
 		JsonElement output;
 
 		@SerializedName("energy_input")

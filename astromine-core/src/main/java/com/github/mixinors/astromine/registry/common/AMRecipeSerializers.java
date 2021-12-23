@@ -33,8 +33,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class AMRecipeSerializers {
-	public static final RegistrySupplier<RecipeSerializer<AltarRecipe>> INFUSING = register(AltarRecipe.Serializer.ID, AltarRecipe.Serializer.INSTANCE);
-
 	public static final RegistrySupplier<RecipeSerializer<WireCuttingRecipe>> WIRE_CUTTING = register(WireCuttingRecipe.Serializer.ID, WireCuttingRecipe.Serializer.INSTANCE);
 
 	public static final RegistrySupplier<RecipeSerializer<TrituratingRecipe>> TRITURATING = register(TrituratingRecipe.Serializer.ID, TrituratingRecipe.Serializer.INSTANCE);

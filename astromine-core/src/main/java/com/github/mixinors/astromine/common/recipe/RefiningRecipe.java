@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.recipe;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
+import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.recipe.result.FluidResult;
 import com.github.mixinors.astromine.common.util.LongUtils;
@@ -36,13 +37,11 @@ import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.util.DoubleUtils;
 import com.github.mixinors.astromine.common.util.IntegerUtils;
 
 import com.google.gson.Gson;
@@ -54,7 +53,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public final class RefiningRecipe implements Recipe<Inventory> {
+public final class RefiningRecipe implements EnergyConsumingRecipe {
 	public final Identifier id;
 	public final FluidIngredient input;
 	public final FluidResult output;
@@ -154,7 +153,25 @@ public final class RefiningRecipe implements Recipe<Inventory> {
 
 	@Override
 	public ItemStack createIcon() {
-		return new ItemStack(AMBlocks.ADVANCED_ELECTROLYZER.get());
+		return new ItemStack(AMBlocks.ADVANCED_REFINERY.get());
+	}
+
+	@Override
+	public long getEnergyInput() {
+		return energyInput;
+	}
+
+	@Override
+	public int getTime() {
+		return time;
+	}
+
+	public FluidIngredient getInput() {
+		return input;
+	}
+
+	public FluidResult getFluidOutput() {
+		return output;
 	}
 
 	public static final class Serializer extends AbstractRecipeSerializer<RefiningRecipe> {
@@ -204,10 +221,8 @@ public final class RefiningRecipe implements Recipe<Inventory> {
 	}
 
 	public static final class Format {
-		@SerializedName("input")
 		JsonElement input;
 
-		@SerializedName("output")
 		JsonElement output;
 
 		@SerializedName("energy_input")

@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.recipe;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
+import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.mixinors.astromine.common.recipe.result.ItemResult;
 import com.github.mixinors.astromine.common.util.LongUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
@@ -35,17 +36,13 @@ import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.ItemIngredient;
-import com.github.mixinors.astromine.common.util.DoubleUtils;
 import com.github.mixinors.astromine.common.util.IntegerUtils;
-import com.github.mixinors.astromine.common.util.StackUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -56,7 +53,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public final class AlloySmeltingRecipe implements Recipe<Inventory> {
+public final class AlloySmeltingRecipe implements EnergyConsumingRecipe {
 	public final Identifier id;
 	public final ItemIngredient firstInput;
 	public final ItemIngredient secondInput;
@@ -170,6 +167,28 @@ public final class AlloySmeltingRecipe implements Recipe<Inventory> {
 	@Override
 	public ItemStack createIcon() {
 		return new ItemStack(AMBlocks.ADVANCED_ALLOY_SMELTER.get());
+	}
+
+	@Override
+	public long getEnergyInput() {
+		return energyInput;
+	}
+
+	@Override
+	public int getTime() {
+		return time;
+	}
+
+	public ItemIngredient getFirstInput() {
+		return firstInput;
+	}
+
+	public ItemIngredient getSecondInput() {
+		return secondInput;
+	}
+
+	public ItemResult getItemOutput() {
+		return output;
 	}
 
 	public static final class Serializer extends AbstractRecipeSerializer<AlloySmeltingRecipe> {

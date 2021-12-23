@@ -24,9 +24,6 @@
 
 package com.github.mixinors.astromine.common.recipe.base;
 
-import net.minecraft.inventory.Inventory;
-import net.minecraft.recipe.Recipe;
-
-public interface EnergyConsumingRecipe<C extends Inventory> extends Recipe<C> {
-	double getEnergyInput();
+public interface EnergyConsumingRecipe extends TimeBasedRecipe {
+	long getEnergyInput();
 }

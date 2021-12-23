@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.recipe;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
+import com.github.mixinors.astromine.common.recipe.ingredient.ItemIngredient;
 import com.github.mixinors.astromine.common.util.LongUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.architectury.core.AbstractRecipeSerializer;
@@ -54,7 +55,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public final class FluidGeneratingRecipe implements Recipe<Inventory> {
+public final class FluidGeneratingRecipe implements EnergyGeneratingRecipe {
 	public final Identifier id;
 	public final FluidIngredient input;
 	public final long energyOutput;
@@ -146,7 +147,21 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory> {
 
 	@Override
 	public ItemStack createIcon() {
-		return new ItemStack(AMBlocks.ADVANCED_LIQUID_GENERATOR.get());
+		return new ItemStack(AMBlocks.ADVANCED_FLUID_GENERATOR.get());
+	}
+
+	@Override
+	public long getEnergyOutput() {
+		return energyOutput;
+	}
+
+	@Override
+	public int getTime() {
+		return time;
+	}
+
+	public FluidIngredient getInput() {
+		return input;
 	}
 
 	public static final class Serializer extends AbstractRecipeSerializer<FluidGeneratingRecipe>

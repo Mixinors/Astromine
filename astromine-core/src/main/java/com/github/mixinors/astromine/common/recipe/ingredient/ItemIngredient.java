@@ -24,31 +24,41 @@
 
 package com.github.mixinors.astromine.common.recipe.ingredient;
 
+import com.google.common.collect.Lists;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import dev.architectury.hooks.tags.TagHooks;
+import org.jetbrains.annotations.Nullable;
+
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.tag.ServerTagManagerHolder;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.BiPredicate;
 
 public final class ItemIngredient {
 	private final Entry entry;
+	@Nullable
+	private ItemVariant[] matchingVariants;
 	
 	public ItemIngredient(Entry entry) {
 		this.entry = entry;
 	}
 	
-	public ItemIngredient(ItemVariant variant, long amount) {
+	public ItemIngredient(ItemVariant variant, int amount) {
 		this.entry = new VariantEntry(variant, amount);
 	}
 	
@@ -64,8 +74,23 @@ public final class ItemIngredient {
 		return entry;
 	}
 	
-	public long getAmount() {
+	public int getAmount() {
 		return entry.getAmount();
+	}
+
+	public Ingredient asIngredient() {
+		return Ingredient.ofStacks(entry.getVariants().stream().map(variant -> variant.toStack(entry.getAmount())));
+	}
+
+	public ItemVariant[] getMatchingVariants() {
+		this.cacheMatchingVariants();
+		return this.matchingVariants;
+	}
+
+	private void cacheMatchingVariants() {
+		if (this.matchingVariants == null) {
+			this.matchingVariants = entry.getVariants().stream().distinct().toArray(ItemVariant[]::new);
+		}
 	}
 	
 	public static ItemIngredient fromJson(JsonElement json) {
@@ -86,7 +111,7 @@ public final class ItemIngredient {
 					var entryAsItem = Registry.ITEM.get(entryAsId);
 					var entryAsItemVariant = ItemVariant.of(entryAsItem);
 					
-					var entryAmount = jsonObject.get("amount").getAsLong();
+					var entryAmount = jsonObject.get("amount").getAsInt();
 					
 					return new ItemIngredient(new VariantEntry(entryAsItemVariant, entryAmount));
 				} else {
@@ -103,7 +128,7 @@ public final class ItemIngredient {
 					var entryAsId = new Identifier(jsonObject.get("tag").getAsString());
 					var entryAsTag = TagHooks.optionalItem(entryAsId);
 					
-					var entryAmount = jsonObject.get("amount").getAsLong();
+					var entryAmount = jsonObject.get("amount").getAsInt();
 					
 					return new ItemIngredient(new TagEntry(entryAsTag, entryAmount));
 				} else {
@@ -142,7 +167,7 @@ public final class ItemIngredient {
 		var entryType = buf.readString();
 		var entryTypeId = new Identifier(buf.readString());
 		
-		var entryAmount = buf.readLong();
+		var entryAmount = buf.readInt();
 		
 		if (entryType.equals("item")) {
 			var entryItem = Registry.ITEM.get(entryTypeId);
@@ -175,19 +200,21 @@ public final class ItemIngredient {
 	}
 	
 	public static abstract class Entry implements BiPredicate<ItemVariant, Long> {
-		public abstract long getAmount();
+		public abstract int getAmount();
+
+		public abstract Collection<ItemVariant> getVariants();
 	}
 	
 	public static class VariantEntry extends Entry {
 		private final ItemVariant requiredVariant;
-		private final long requiredAmount;
+		private final int requiredAmount;
 		
 		public VariantEntry(ItemVariant variant) {
 			this.requiredVariant = variant;
 			this.requiredAmount = 1;
 		}
 		
-		public VariantEntry(ItemVariant variant, long amount) {
+		public VariantEntry(ItemVariant variant, int amount) {
 			this.requiredVariant = variant;
 			this.requiredAmount = amount;
 		}
@@ -198,22 +225,27 @@ public final class ItemIngredient {
 		}
 		
 		@Override
-		public long getAmount() {
+		public int getAmount() {
 			return requiredAmount;
+		}
+
+		@Override
+		public Collection<ItemVariant> getVariants() {
+			return Collections.singleton(requiredVariant);
 		}
 	}
 	
 	public static class TagEntry extends Entry {
 		private final Tag<Item> requiredTag;
 		private List<ItemVariant> requiredVariants;
-		private final long requiredAmount;
+		private final int requiredAmount;
 		
 		public TagEntry(Tag<Item> tag) {
 			this.requiredTag = tag;
 			this.requiredAmount = 1;
 		}
 		
-		public TagEntry(Tag<Item> tag, long amount) {
+		public TagEntry(Tag<Item> tag, int amount) {
 			this.requiredTag = tag;
 			this.requiredAmount = amount;
 		}
@@ -238,8 +270,17 @@ public final class ItemIngredient {
 		}
 		
 		@Override
-		public long getAmount() {
+		public int getAmount() {
 			return requiredAmount;
+		}
+
+		@Override
+		public Collection<ItemVariant> getVariants() {
+			ArrayList<ItemVariant> list = Lists.newArrayList();
+			for (Item item : this.requiredTag.values()) {
+				list.add(ItemVariant.of(item));
+			}
+			return list;
 		}
 	}
 }

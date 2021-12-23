@@ -25,10 +25,16 @@
 package com.github.mixinors.astromine.client.rei.fluidgenerating;
 
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
-import com.github.mixinors.astromine.client.rei.generating.AbstractEnergyGeneratingDisplay;
+import com.github.mixinors.astromine.client.rei.generating.EnergyGeneratingDisplay;
 import com.github.mixinors.astromine.common.recipe.FluidGeneratingRecipe;
+import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
+import dev.architectury.fluid.FluidStack;
+
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
+import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
+import me.shedaniel.rei.api.common.util.EntryIngredients;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.fluid.Fluid;
@@ -41,36 +47,16 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Environment(EnvType.CLIENT)
-public class FluidGeneratingDisplay extends AbstractEnergyGeneratingDisplay {
-	private final FluidIngredient input;
-	private final Identifier id;
-
+public class FluidGeneratingDisplay extends EnergyGeneratingDisplay {
 	public FluidGeneratingDisplay(FluidGeneratingRecipe recipe) {
-		super(recipe.getEnergyOutput());
-		this.input = recipe.getInput();
-		this.id = recipe.getId();
-	}
-
-	@Override
-	public List<EntryIngredient> getInputEntries() {
-		return Collections.singletonList(EntryIngredient.of(Arrays.stream(input.getMatchingVolumes()).map(AMRoughlyEnoughItemsPlugin::convertToEntryStack).collect(Collectors.toList())));
+		super(
+				Collections.singletonList(EntryIngredients.of(VanillaEntryTypes.FLUID, Arrays.stream(recipe.getInput().getMatchingVariants()).map(variant -> FluidStack.create(variant.getFluid(), recipe.getInput().getAmount())).toList())),
+				recipe.getTime(), recipe.getEnergyOutput(), recipe.getId()
+		);
 	}
 
 	@Override
 	public CategoryIdentifier<?> getCategoryIdentifier() {
 		return AMRoughlyEnoughItemsPlugin.FLUID_GENERATING;
-	}
-
-	public Fluid getFluid() {
-		return input.getMatchingVolumes()[0].getFluid();
-	}
-
-	public long getAmount() {
-		return input.getMatchingVolumes()[0].getAmount();
-	}
-
-	@Override
-	public Optional<Identifier> getDisplayLocation() {
-		return Optional.ofNullable(this.id);
 	}
 }

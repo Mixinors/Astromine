@@ -65,7 +65,7 @@ public class SolidifyingCategory implements DisplayCategory<SolidifyingDisplay> 
 		List<Widget> widgets = new ArrayList<>();
 		Rectangle innerBounds = new Rectangle(bounds.getCenterX() - 55, bounds.y, 110, bounds.height);
 		widgets.addAll(AMRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getX() + 24, innerBounds.getCenterY() - 23, 12, 48),
-			Collections.singletonList(EntryStacks.of(display.getFluid(), display.getAmount())), false, 5000));
+			display.getInputEntries().get(0), false, 5000));
 		widgets.add(Widgets.createArrow(new Point(innerBounds.getX() + 45, innerBounds.getY() + 26)));
 		widgets.add(Widgets.createSlot(new Point(innerBounds.getX() + 61, innerBounds.getY() + 19)).entries(display.getOutputEntries().get(0)).disableBackground().markOutput());
 		return widgets;

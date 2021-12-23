@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.client.rei.fluidgenerating;
 
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
-import com.github.mixinors.astromine.client.rei.generating.AbstractEnergyGeneratingCategory;
+import com.github.mixinors.astromine.client.rei.generating.EnergyGeneratingCategory;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
@@ -43,7 +43,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class FluidGeneratingCategory extends AbstractEnergyGeneratingCategory<FluidGeneratingDisplay> {
+public class FluidGeneratingCategory extends EnergyGeneratingCategory<FluidGeneratingDisplay> {
 	@Override
 	public CategoryIdentifier<? extends FluidGeneratingDisplay> getCategoryIdentifier() {
 		return AMRoughlyEnoughItemsPlugin.FLUID_GENERATING;
@@ -63,7 +63,7 @@ public class FluidGeneratingCategory extends AbstractEnergyGeneratingCategory<Fl
 	public List<Widget> setupDisplay(FluidGeneratingDisplay recipeDisplay, Rectangle bounds) {
 		List<Widget> widgets = super.setupDisplay(recipeDisplay, bounds);
 		Rectangle innerBounds = new Rectangle(bounds.getCenterX() - 55, bounds.y, 110, bounds.height);
-		widgets.addAll(AMRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getX() + 24, innerBounds.getCenterY() - 23, 12, 48), Collections.singletonList(EntryStacks.of(recipeDisplay.getFluid(), recipeDisplay.getAmount())), false, 5000));
+		widgets.addAll(AMRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getX() + 24, innerBounds.getCenterY() - 23, 12, 48), recipeDisplay.getInputEntries().get(0), false, 5000));
 		widgets.add(Widgets.createArrow(new Point(innerBounds.getX() + 45, innerBounds.getY() + 26)));
 		return widgets;
 	}

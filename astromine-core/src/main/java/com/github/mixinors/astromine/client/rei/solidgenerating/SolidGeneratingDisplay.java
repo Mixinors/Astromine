@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.client.rei.solidgenerating;
 
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
-import com.github.mixinors.astromine.client.rei.generating.AbstractEnergyGeneratingDisplay;
+import com.github.mixinors.astromine.client.rei.generating.EnergyGeneratingDisplay;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import net.fabricmc.api.EnvType;
@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
-public class SolidGeneratingDisplay extends AbstractEnergyGeneratingDisplay {
+public class SolidGeneratingDisplay extends EnergyGeneratingDisplay {
 	private final List<EntryIngredient> stacks;
 	private final Identifier id;
 	private final Double time;

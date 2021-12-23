@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.recipe;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
+import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.recipe.result.ItemResult;
 import com.github.mixinors.astromine.common.util.LongUtils;
@@ -38,17 +39,13 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
-import com.github.mixinors.astromine.common.util.DoubleUtils;
 import com.github.mixinors.astromine.common.util.IntegerUtils;
-import com.github.mixinors.astromine.common.util.StackUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -59,7 +56,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public final class SolidifyingRecipe implements Recipe<Inventory> {
+public final class SolidifyingRecipe implements EnergyConsumingRecipe {
 	public final Identifier id;
 	public final FluidIngredient input;
 	public final ItemResult output;
@@ -129,7 +126,7 @@ public final class SolidifyingRecipe implements Recipe<Inventory> {
 
 	@Override
 	public ItemStack craft(Inventory inventory) {
-		return ItemStack.EMPTY;
+		return getOutput().copy();
 	}
 
 	@Override
@@ -139,7 +136,7 @@ public final class SolidifyingRecipe implements Recipe<Inventory> {
 
 	@Override
 	public ItemStack getOutput() {
-		return ItemStack.EMPTY;
+		return output.toStack();
 	}
 
 	@Override
@@ -164,7 +161,25 @@ public final class SolidifyingRecipe implements Recipe<Inventory> {
 
 	@Override
 	public ItemStack createIcon() {
-		return new ItemStack(AMBlocks.ADVANCED_LIQUID_GENERATOR.get());
+		return new ItemStack(AMBlocks.ADVANCED_SOLIDIFIER.get());
+	}
+
+	@Override
+	public long getEnergyInput() {
+		return energyInput;
+	}
+
+	@Override
+	public int getTime() {
+		return time;
+	}
+
+	public FluidIngredient getInput() {
+		return input;
+	}
+
+	public ItemResult getItemOutput() {
+		return output;
 	}
 	
 	public static final class Serializer extends AbstractRecipeSerializer<SolidifyingRecipe> {
@@ -214,10 +229,8 @@ public final class SolidifyingRecipe implements Recipe<Inventory> {
 	}
 
 	public static final class Format {
-		@SerializedName("input")
 		JsonElement input;
 
-		@SerializedName("output")
 		JsonElement output;
 
 		@SerializedName("energy_input")

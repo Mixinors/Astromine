@@ -36,7 +36,7 @@ import net.fabricmc.api.Environment;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public abstract class AbstractEnergyGeneratingCategory<T extends AbstractEnergyGeneratingDisplay> implements DisplayCategory<T> {
+public abstract class EnergyGeneratingCategory<T extends EnergyGeneratingDisplay> implements DisplayCategory<T> {
 	@Override
 	public List<Widget> setupDisplay(T recipeDisplay, Rectangle bounds) {
 		List<Widget> widgets = Lists.newArrayList();

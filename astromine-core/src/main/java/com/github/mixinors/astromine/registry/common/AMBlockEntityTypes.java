@@ -37,12 +37,7 @@ import com.github.mixinors.astromine.AMCommon;
 import java.util.function.Supplier;
 
 public class AMBlockEntityTypes {
-	public static final RegistrySupplier<BlockEntityType<AltarPedestalBlockEntity>> ALTAR_PEDESTAL = register("altar_pedestal", AltarPedestalBlockEntity::new, AMBlocks.ALTAR_PEDESTAL);
-	public static final RegistrySupplier<BlockEntityType<AltarBlockEntity>> ALTAR = register("altar", AltarBlockEntity::new, AMBlocks.ALTAR);
-	
 	public static final RegistrySupplier<BlockEntityType<HoloBridgeProjectorBlockEntity>> HOLOGRAPHIC_BRIDGE = register("holographic_bridge", HoloBridgeProjectorBlockEntity::new, AMBlocks.HOLOGRAPHIC_BRIDGE_PROJECTOR);
-	
-	public static final RegistrySupplier<BlockEntityType<VentBlockEntity>> VENT = register("vent", VentBlockEntity::new, AMBlocks.VENT);
 	
 	public static final RegistrySupplier<BlockEntityType<TankBlockEntity.Primitive>> PRIMITIVE_TANK = register("primitive_tank", TankBlockEntity.Primitive::new, AMBlocks.PRIMITIVE_TANK);
 	public static final RegistrySupplier<BlockEntityType<TankBlockEntity.Basic>> BASIC_TANK = register("basic_tank", TankBlockEntity.Basic::new, AMBlocks.BASIC_TANK);

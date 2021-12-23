@@ -15,7 +15,7 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
 
-public abstract class SimpleMachineRecipeJsonFactory<T extends EnergyConsumingRecipe<Inventory>> extends ItemOutputMachineRecipeJsonFactory<T> {
+public abstract class SimpleMachineRecipeJsonFactory<T extends EnergyConsumingRecipe> extends ItemOutputMachineRecipeJsonFactory<T> {
 	private final Ingredient input;
 
 	protected SimpleMachineRecipeJsonFactory(Ingredient input, ItemConvertible output, int outputCount, int processingTime, int energy, AbstractRecipeSerializer<T> serializer) {
@@ -28,7 +28,7 @@ public abstract class SimpleMachineRecipeJsonFactory<T extends EnergyConsumingRe
 		exporter.accept(new SimpleMachineRecipeJsonProvider<>(recipeId, this.input, this.output, this.outputCount, this.processingTime, this.energy, this.serializer));
 	}
 
-	public static class SimpleMachineRecipeJsonProvider<T extends EnergyConsumingRecipe<Inventory>> extends ItemOutputMachineRecipeJsonProvider<T> {
+	public static class SimpleMachineRecipeJsonProvider<T extends EnergyConsumingRecipe> extends ItemOutputMachineRecipeJsonProvider<T> {
 		private final Ingredient input;
 
 		public SimpleMachineRecipeJsonProvider(Identifier recipeId, Ingredient input, Item output, int outputCount, int processingTime, int energy, RecipeSerializer<T> serializer) {

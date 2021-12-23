@@ -25,11 +25,18 @@
 package com.github.mixinors.astromine.client.rei.fluidmixing;
 
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
+import com.github.mixinors.astromine.client.rei.EnergyConsumingDisplay;
 import com.github.mixinors.astromine.common.recipe.FluidMixingRecipe;
-import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
+import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
+import com.github.mixinors.astromine.common.recipe.result.FluidResult;
+import dev.architectury.fluid.FluidStack;
+
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.Display;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
+import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
+import me.shedaniel.rei.api.common.util.EntryIngredients;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;
@@ -40,44 +47,23 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Environment(EnvType.CLIENT)
-public class FluidMixingDisplay implements Display {
-	private final double energy;
-	private final FluidIngredient firstIngredient;
-	private final FluidIngredient secondIngredient;
-	private final FluidVolume output;
-	private final Identifier id;
+import com.google.common.collect.Lists;
 
+@Environment(EnvType.CLIENT)
+public class FluidMixingDisplay extends EnergyConsumingDisplay {
 	public FluidMixingDisplay(FluidMixingRecipe recipe) {
-		this.energy = recipe.getEnergyInput();
-		this.firstIngredient = recipe.getFirstInput();
-		this.secondIngredient = recipe.getSecondInput();
-		this.output = recipe.getOutput();
-		this.id = recipe.getId();
+		super(
+				Lists.newArrayList(
+						EntryIngredients.of(VanillaEntryTypes.FLUID, Arrays.stream(recipe.getFirstInput().getMatchingVariants()).map(variant -> FluidStack.create(variant.getFluid(), recipe.getFirstInput().getAmount())).toList()),
+						EntryIngredients.of(VanillaEntryTypes.FLUID, Arrays.stream(recipe.getSecondInput().getMatchingVariants()).map(variant -> FluidStack.create(variant.getFluid(), recipe.getSecondInput().getAmount())).toList())
+				),
+				Collections.singletonList(EntryIngredients.of(recipe.getFluidOutput().toStack())),
+				recipe.getTime(), recipe.getEnergyInput(), recipe.getId()
+		);
 	}
 
 	@Override
 	public CategoryIdentifier<?> getCategoryIdentifier() {
 		return AMRoughlyEnoughItemsPlugin.FLUID_MIXING;
-	}
-
-	@Override
-	public Optional<Identifier> getDisplayLocation() {
-		return Optional.ofNullable(id);
-	}
-
-	@Override
-	public List<EntryIngredient> getInputEntries() {
-		return Arrays.asList(EntryIngredient.of(Arrays.stream(firstIngredient.getMatchingVolumes()).map(AMRoughlyEnoughItemsPlugin::convertToEntryStack).collect(Collectors.toList())),
-			EntryIngredient.of(Arrays.stream(secondIngredient.getMatchingVolumes()).map(AMRoughlyEnoughItemsPlugin::convertToEntryStack).collect(Collectors.toList())));
-	}
-
-	@Override
-	public List<EntryIngredient> getOutputEntries() {
-		return Collections.singletonList(EntryIngredient.of(AMRoughlyEnoughItemsPlugin.convertToEntryStack(output)));
-	}
-
-	public double getEnergy() {
-		return energy;
 	}
 }

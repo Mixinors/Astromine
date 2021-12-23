@@ -22,32 +22,30 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.client.rei.infusing;
+package com.github.mixinors.astromine.client.rei.generating;
 
-import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
-import com.github.mixinors.astromine.common.recipe.AltarRecipe;
-import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.Display;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
-import me.shedaniel.rei.api.common.util.EntryIngredients;
-import net.minecraft.util.Identifier;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class InfusingDisplay implements Display {
-	private List<EntryIngredient> inputs;
-	private List<EntryIngredient> outputs;
-	private Identifier recipeId;
+import net.minecraft.util.Identifier;
 
-	public InfusingDisplay(AltarRecipe recipe) {
-		this(EntryIngredients.ofIngredients(recipe.getIngredients()), Collections.singletonList(EntryIngredients.of(recipe.getOutput().copy())), recipe.getId());
-	}
+@Environment(EnvType.CLIENT)
+public abstract class EnergyGeneratingDisplay implements Display {
+	private final List<EntryIngredient> inputs;
+	private final int timeRequired;
+	private final double energyGeneratedPerTick;
+	private final Identifier recipeId;
 
-	public InfusingDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, Identifier recipeId) {
+	public EnergyGeneratingDisplay(List<EntryIngredient> inputs, int timeRequired, double energyGeneratedPerTick, Identifier recipeId) {
 		this.inputs = inputs;
-		this.outputs = outputs;
+		this.timeRequired = timeRequired;
+		this.energyGeneratedPerTick = energyGeneratedPerTick;
 		this.recipeId = recipeId;
 	}
 
@@ -58,16 +56,19 @@ public class InfusingDisplay implements Display {
 
 	@Override
 	public List<EntryIngredient> getOutputEntries() {
-		return outputs;
+		return Collections.emptyList();
+	}
+
+	public int getTimeRequired() {
+		return timeRequired;
+	}
+
+	public double getEnergyGeneratedPerTick() {
+		return energyGeneratedPerTick;
 	}
 
 	@Override
 	public Optional<Identifier> getDisplayLocation() {
-		return Optional.ofNullable(recipeId);
-	}
-
-	@Override
-	public CategoryIdentifier<?> getCategoryIdentifier() {
-		return AMRoughlyEnoughItemsPlugin.INFUSING;
+		return Optional.ofNullable(this.recipeId);
 	}
 }

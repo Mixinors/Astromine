@@ -32,7 +32,7 @@ public class MeltingRecipeJsonFactory extends FluidOutputMachineRecipeJsonFactor
 		return "melting";
 	}
 
-	public static class MeltingRecipeJsonProvider<T extends EnergyConsumingRecipe<Inventory>> extends FluidOutputMachineRecipeJsonProvider<T> {
+	public static class MeltingRecipeJsonProvider<T extends EnergyConsumingRecipe> extends FluidOutputMachineRecipeJsonProvider<T> {
 		private final Ingredient input;
 
 		public MeltingRecipeJsonProvider(Identifier recipeId, Ingredient input, Fluid output, int outputAmount, int processingTime, int energy, RecipeSerializer<T> serializer) {

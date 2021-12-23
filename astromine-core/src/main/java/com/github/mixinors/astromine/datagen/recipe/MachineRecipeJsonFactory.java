@@ -23,7 +23,7 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-public abstract class MachineRecipeJsonFactory<T extends EnergyConsumingRecipe<Inventory>> implements CraftingRecipeJsonFactory {
+public abstract class MachineRecipeJsonFactory<T extends EnergyConsumingRecipe> implements CraftingRecipeJsonFactory {
 	protected final int processingTime;
 	protected final AbstractRecipeSerializer<T> serializer;
 
@@ -109,7 +109,7 @@ public abstract class MachineRecipeJsonFactory<T extends EnergyConsumingRecipe<I
 		return new MeltingRecipeJsonFactory(input, output, outputAmount, processingTime, energy);
 	}
 
-	public abstract static class MachineRecipeJsonProvider<T extends EnergyConsumingRecipe<Inventory>> implements RecipeJsonProvider {
+	public abstract static class MachineRecipeJsonProvider<T extends EnergyConsumingRecipe> implements RecipeJsonProvider {
 		protected final Identifier recipeId;
 		protected final int processingTime;
 		protected final RecipeSerializer<T> serializer;

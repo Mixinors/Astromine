@@ -24,12 +24,17 @@
 
 package com.github.mixinors.astromine.common.recipe.ingredient;
 
+import com.google.common.collect.Lists;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import dev.architectury.hooks.tags.TagHooks;
+import org.jetbrains.annotations.Nullable;
+
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.item.Item;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.tag.ServerTagManagerHolder;
 import net.minecraft.tag.Tag;
@@ -37,11 +42,15 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.BiPredicate;
 
 public final class FluidIngredient {
 	private final Entry entry;
+	@Nullable
+	private FluidVariant[] matchingVariants;
 	
 	public FluidIngredient(Entry entry) {
 		this.entry = entry;
@@ -65,6 +74,17 @@ public final class FluidIngredient {
 	
 	public long getAmount() {
 		return entry.getAmount();
+	}
+
+	public FluidVariant[] getMatchingVariants() {
+		this.cacheMatchingVariants();
+		return this.matchingVariants;
+	}
+
+	private void cacheMatchingVariants() {
+		if (this.matchingVariants == null) {
+			this.matchingVariants = entry.getVariants().stream().distinct().toArray(FluidVariant[]::new);
+		}
 	}
 	
 	public static FluidIngredient fromJson(JsonElement json) {
@@ -175,6 +195,8 @@ public final class FluidIngredient {
 	
 	public static abstract class Entry implements BiPredicate<FluidVariant, Long> {
 		public abstract long getAmount();
+
+		public abstract Collection<FluidVariant> getVariants();
 	}
 	
 	public static class VariantEntry extends Entry {
@@ -199,6 +221,11 @@ public final class FluidIngredient {
 		@Override
 		public long getAmount() {
 			return requiredAmount;
+		}
+
+		@Override
+		public Collection<FluidVariant> getVariants() {
+			return Collections.singleton(requiredVariant);
 		}
 	}
 	
@@ -239,6 +266,15 @@ public final class FluidIngredient {
 		@Override
 		public long getAmount() {
 			return requiredAmount;
+		}
+
+		@Override
+		public Collection<FluidVariant> getVariants() {
+			ArrayList<FluidVariant> list = Lists.newArrayList();
+			for (Fluid fluid : this.requiredTag.values()) {
+				list.add(FluidVariant.of(fluid));
+			}
+			return list;
 		}
 	}
 }

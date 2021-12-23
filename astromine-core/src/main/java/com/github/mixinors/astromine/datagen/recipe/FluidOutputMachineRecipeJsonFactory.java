@@ -11,7 +11,7 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-public abstract class FluidOutputMachineRecipeJsonFactory<T extends EnergyConsumingRecipe<Inventory>> extends EnergyInputMachineRecipeJsonFactory<T> {
+public abstract class FluidOutputMachineRecipeJsonFactory<T extends EnergyConsumingRecipe> extends EnergyInputMachineRecipeJsonFactory<T> {
 	protected final Fluid output;
 	protected final int outputAmount;
 
@@ -36,7 +36,7 @@ public abstract class FluidOutputMachineRecipeJsonFactory<T extends EnergyConsum
 		return getFluidId(getOutputFluid());
 	}
 
-	public abstract static class FluidOutputMachineRecipeJsonProvider<T extends EnergyConsumingRecipe<Inventory>> extends EnergyInputMachineRecipeJsonProvider<T> {
+	public abstract static class FluidOutputMachineRecipeJsonProvider<T extends EnergyConsumingRecipe> extends EnergyInputMachineRecipeJsonProvider<T> {
 		private final Fluid output;
 		private final int outputAmount;
 

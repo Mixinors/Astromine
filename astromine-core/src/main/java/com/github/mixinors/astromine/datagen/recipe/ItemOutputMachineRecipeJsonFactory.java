@@ -12,7 +12,7 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-public abstract class ItemOutputMachineRecipeJsonFactory<T extends EnergyConsumingRecipe<Inventory>> extends EnergyInputMachineRecipeJsonFactory<T> {
+public abstract class ItemOutputMachineRecipeJsonFactory<T extends EnergyConsumingRecipe> extends EnergyInputMachineRecipeJsonFactory<T> {
 	protected final Item output;
 	protected final int outputCount;
 
@@ -32,7 +32,7 @@ public abstract class ItemOutputMachineRecipeJsonFactory<T extends EnergyConsumi
 		return OutputType.ITEM;
 	}
 
-	public abstract static class ItemOutputMachineRecipeJsonProvider<T extends EnergyConsumingRecipe<Inventory>> extends EnergyInputMachineRecipeJsonProvider<T> {
+	public abstract static class ItemOutputMachineRecipeJsonProvider<T extends EnergyConsumingRecipe> extends EnergyInputMachineRecipeJsonProvider<T> {
 		private final Item output;
 		private final int outputCount;
 

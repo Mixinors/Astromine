@@ -35,8 +35,6 @@ import com.github.mixinors.astromine.client.rei.fluidgenerating.FluidGeneratingC
 import com.github.mixinors.astromine.client.rei.fluidgenerating.FluidGeneratingDisplay;
 import com.github.mixinors.astromine.client.rei.fluidmixing.FluidMixingCategory;
 import com.github.mixinors.astromine.client.rei.fluidmixing.FluidMixingDisplay;
-import com.github.mixinors.astromine.client.rei.infusing.InfusingCategory;
-import com.github.mixinors.astromine.client.rei.infusing.InfusingDisplay;
 import com.github.mixinors.astromine.client.rei.melting.MeltingCategory;
 import com.github.mixinors.astromine.client.rei.melting.MeltingDisplay;
 import com.github.mixinors.astromine.client.rei.pressing.PressingCategory;
@@ -53,10 +51,10 @@ import com.github.mixinors.astromine.client.rei.wiremilling.WireMillingCategory;
 import com.github.mixinors.astromine.client.rei.wiremilling.WireMillingDisplay;
 import com.github.mixinors.astromine.client.render.sprite.SpriteRenderer;
 import com.github.mixinors.astromine.common.recipe.*;
+import com.github.mixinors.astromine.common.recipe.result.FluidResult;
 import com.github.mixinors.astromine.common.util.ClientUtils;
 import com.github.mixinors.astromine.common.util.FluidUtils;
 import com.github.mixinors.astromine.common.util.NumberUtils;
-import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.google.common.collect.ImmutableList;
 
@@ -80,6 +78,8 @@ import me.shedaniel.rei.impl.client.gui.widget.EntryWidget;
 import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCustomDisplay;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
@@ -106,7 +106,6 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 	private static final Identifier ENERGY_BACKGROUND = AMCommon.id("textures/widget/energy_volume_fractional_vertical_bar_background_thin.png");
 	private static final Identifier ENERGY_FOREGROUND = AMCommon.id("textures/widget/energy_volume_fractional_vertical_bar_foreground_thin.png");
 
-	public static final CategoryIdentifier<InfusingDisplay> INFUSING = CategoryIdentifier.of(AMCommon.id("infusing"));
 	public static final CategoryIdentifier<TrituratingDisplay> TRITURATING = CategoryIdentifier.of(AMCommon.id("triturating"));
 	public static final CategoryIdentifier<ElectricSmeltingDisplay> ELECTRIC_SMELTING = CategoryIdentifier.of(AMCommon.id("electric_smelting"));
 	public static final CategoryIdentifier<FluidGeneratingDisplay> FLUID_GENERATING = CategoryIdentifier.of(AMCommon.id("fluid_generating"));
@@ -122,7 +121,6 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 
 	@Override
 	public void registerCategories(CategoryRegistry registry) {
-		registry.add(new InfusingCategory());
 		registry.add(new SolidifyingCategory(),
 			new TrituratingCategory(),
 			new ElectricSmeltingCategory(),
@@ -136,7 +134,6 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 			new ElectrolyzingCategory(ELECTROLYZING, "category.astromine.electrolyzing", EntryStacks.of(AMBlocks.ADVANCED_ELECTROLYZER.get())),
 			new RefiningCategory(REFINING, "category.astromine.refining", EntryStacks.of(AMBlocks.ADVANCED_REFINERY.get())));
 
-		registry.addWorkstations(INFUSING, EntryStacks.of(AMBlocks.ALTAR.get()));
 		registry.addWorkstations(TRITURATING, EntryStacks.of(AMBlocks.PRIMITIVE_TRITURATOR.get()), EntryStacks.of(AMBlocks.BASIC_TRITURATOR.get()), EntryStacks.of(AMBlocks.ADVANCED_TRITURATOR.get()), EntryStacks.of(AMBlocks.ELITE_TRITURATOR.get()));
 		registry.addWorkstations(ELECTRIC_SMELTING, EntryStacks.of(AMBlocks.PRIMITIVE_ELECTRIC_FURNACE.get()), EntryStacks.of(AMBlocks.BASIC_ELECTRIC_FURNACE.get()), EntryStacks.of(AMBlocks.ADVANCED_ELECTRIC_FURNACE.get()), EntryStacks.of(AMBlocks.ELITE_ELECTRIC_FURNACE.get()));
 		registry.addWorkstations(FLUID_GENERATING, EntryStacks.of(AMBlocks.PRIMITIVE_FLUID_GENERATOR.get()), EntryStacks.of(AMBlocks.BASIC_FLUID_GENERATOR.get()), EntryStacks.of(AMBlocks.ADVANCED_FLUID_GENERATOR.get()), EntryStacks.of(AMBlocks.ELITE_FLUID_GENERATOR.get()));
@@ -159,7 +156,6 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 
 	@Override
 	public void registerDisplays(DisplayRegistry registry) {
-		registry.registerFiller(AltarRecipe.class, InfusingDisplay::new);
 		registry.registerFiller(TrituratingRecipe.class, TrituratingDisplay::new);
 		registry.registerFiller(SmeltingRecipe.class, ElectricSmeltingDisplay::new);
 		registry.registerFiller(FluidGeneratingRecipe.class, FluidGeneratingDisplay::new);
@@ -183,8 +179,8 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 		}
 	}
 
-	public static EntryStack<FluidStack> convertToEntryStack(FluidVolume volume) {
-		return EntryStacks.of(volume.getFluid(), volume.getAmount());
+	public static EntryStack<FluidStack> convertToEntryStack(FluidVariant variant, long amount) {
+		return EntryStacks.of(variant.getFluid(), amount);
 	}
 
 	public static List<Widget> createEnergyDisplay(Rectangle bounds, double energy, boolean generating, long speed) {

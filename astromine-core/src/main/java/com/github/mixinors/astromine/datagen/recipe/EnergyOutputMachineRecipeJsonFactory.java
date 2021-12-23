@@ -9,7 +9,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
 
-public abstract class EnergyOutputMachineRecipeJsonFactory<T extends EnergyConsumingRecipe<Inventory>> extends MachineRecipeJsonFactory<T> {
+public abstract class EnergyOutputMachineRecipeJsonFactory<T extends EnergyConsumingRecipe> extends MachineRecipeJsonFactory<T> {
 	protected final int energy;
 
 	protected EnergyOutputMachineRecipeJsonFactory(int processingTime, int energy, AbstractRecipeSerializer<T> serializer) {
@@ -21,7 +21,7 @@ public abstract class EnergyOutputMachineRecipeJsonFactory<T extends EnergyConsu
 		return energy;
 	}
 
-	public abstract static class EnergyOutputMachineRecipeJsonProvider<T extends EnergyConsumingRecipe<Inventory>> extends MachineRecipeJsonProvider<T> {
+	public abstract static class EnergyOutputMachineRecipeJsonProvider<T extends EnergyConsumingRecipe> extends MachineRecipeJsonProvider<T> {
 		protected final int energy;
 
 		public EnergyOutputMachineRecipeJsonProvider(Identifier recipeId, int processingTime, int energy, RecipeSerializer<T> serializer) {

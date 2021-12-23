@@ -72,7 +72,7 @@ public class FluidMixingCategory implements DisplayCategory<FluidMixingDisplay> 
 		List<Widget> widgets = Lists.newArrayList();
 		Rectangle innerBounds = new Rectangle(bounds.getCenterX() - 65, bounds.y, 130, bounds.height);
 		widgets.add(Widgets.createRecipeBase(innerBounds));
-		widgets.addAll(AMRoughlyEnoughItemsPlugin.createEnergyDisplay(new Rectangle(innerBounds.x + 10, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getEnergy(), false, 12500));
+		widgets.addAll(AMRoughlyEnoughItemsPlugin.createEnergyDisplay(new Rectangle(innerBounds.x + 10, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getEnergyRequired(), false, 12500));
 		widgets.addAll(AMRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.x + 24, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getInputEntries().get(0), false, 5000));
 		widgets.addAll(AMRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.x + 38, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getInputEntries().get(1), false, 5000));
 		widgets.add(Widgets.createArrow(new Point(innerBounds.getX() + 61, innerBounds.getY() + 26)));

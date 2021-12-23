@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.client.rei.alloysmelting;
 
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
-import com.github.mixinors.astromine.client.rei.SimpleTransferRecipeDisplay;
+import com.github.mixinors.astromine.client.rei.EnergyConsumingDisplay;
 import com.github.mixinors.astromine.common.recipe.AlloySmeltingRecipe;
 import com.google.common.collect.Lists;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
@@ -41,58 +41,20 @@ import java.util.List;
 import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
-public class AlloySmeltingDisplay extends SimpleTransferRecipeDisplay {
-	private final List<EntryIngredient> inputs;
-	private final List<EntryIngredient> outputs;
-	private final int timeRequired;
-	private final double energyRequired;
-	private final Identifier recipeId;
-
+public class AlloySmeltingDisplay extends EnergyConsumingDisplay {
 	public AlloySmeltingDisplay(AlloySmeltingRecipe recipe) {
-		this(Lists.newArrayList(EntryIngredients.ofItemStacks(Arrays.asList(recipe.getFirstInput().getMatchingStacks())), EntryIngredients.ofItemStacks(Arrays.asList(recipe.getSecondInput().getMatchingStacks()))),
-			Collections.singletonList(EntryIngredients.of(recipe.getItemOutput())), recipe
-				.getTime(), recipe.getEnergyInput(), recipe.getId());
-	}
-
-	public AlloySmeltingDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, int timeRequired, double energyRequired, Identifier recipeId) {
-		super(1, 2);
-		this.inputs = inputs;
-		this.outputs = outputs;
-		this.timeRequired = timeRequired;
-		this.energyRequired = energyRequired;
-		this.recipeId = recipeId;
-	}
-
-	@Override
-	public List<EntryIngredient> getInputEntries() {
-		return inputs;
-	}
-
-	@Override
-	public List<EntryIngredient> getRequiredEntries() {
-		return getInputEntries();
-	}
-
-	@Override
-	public List<EntryIngredient> getOutputEntries() {
-		return outputs;
-	}
-
-	public int getTimeRequired() {
-		return timeRequired;
-	}
-
-	public double getEnergyRequired() {
-		return energyRequired;
+		super(
+				Lists.newArrayList(
+						EntryIngredients.ofItemStacks(Arrays.stream(recipe.getFirstInput().getMatchingVariants()).map(variant -> variant.toStack(recipe.getFirstInput().getAmount())).toList()),
+						EntryIngredients.ofItemStacks(Arrays.stream(recipe.getSecondInput().getMatchingVariants()).map(variant -> variant.toStack(recipe.getSecondInput().getAmount())).toList())
+				),
+				Collections.singletonList(EntryIngredients.of(recipe.getItemOutput().toStack())),
+				recipe.getTime(), recipe.getEnergyInput(), recipe.getId()
+		);
 	}
 
 	@Override
 	public CategoryIdentifier<?> getCategoryIdentifier() {
 		return AMRoughlyEnoughItemsPlugin.ALLOY_SMELTING;
-	}
-
-	@Override
-	public Optional<Identifier> getDisplayLocation() {
-		return Optional.ofNullable(this.recipeId);
 	}
 }

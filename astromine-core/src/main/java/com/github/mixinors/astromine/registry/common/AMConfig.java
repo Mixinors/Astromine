@@ -25,6 +25,9 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
+
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
+
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
@@ -73,10 +76,10 @@ public class AMConfig implements ConfigData {
 	public long eliteBatteryEnergy = 64000;
 
 	@Comment("Fluid for the Large Portable Tank.")
-	public long largePortableTankFluid = FluidVolume.BUCKET * 16L;
+	public long largePortableTankFluid = FluidConstants.BUCKET * 16L;
 
 	@Comment("Fluid for the Portable Tank.")
-	public long portableTankFluid = FluidVolume.BUCKET * 8L;
+	public long portableTankFluid = FluidConstants.BUCKET * 8L;
 
 	@Comment("Fluid for the Primitive Tank.")
 	public long primitiveTankFluid = largePortableTankFluid * 4L;
@@ -424,7 +427,7 @@ public class AMConfig implements ConfigData {
 	public long ventEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Fluid for the Vent.")
-	public long ventFluid = FluidVolume.BUCKET * 16L;
+	public long ventFluid = FluidConstants.BUCKET * 16L;
 
 	@Comment("Speed for the Primitive Capacitor.")
 	public double primitiveCapacitorSpeed = 0.5D;
@@ -574,7 +577,7 @@ public class AMConfig implements ConfigData {
 	public boolean asphyxiateAK9 = true;
 
 	@Comment("Fluid amount for the Fluid Pipe and inter-machine transfer.")
-	public long fluidTransfer = FluidVolume.BUCKET * 4;
+	public long fluidTransfer = FluidConstants.BUCKET * 4;
 
 	@Comment("Fluid for the Primitive Melter.")
 	public long primitiveMelterFluid = largePortableTankFluid;

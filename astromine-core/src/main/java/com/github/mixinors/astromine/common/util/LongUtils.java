@@ -22,16 +22,42 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.client.rei;
+package com.github.mixinors.astromine.common.util;
 
-import me.shedaniel.rei.api.common.display.Display;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
 
-public abstract class SimpleTransferRecipeDisplay implements Display {
-	private final int width;
-	private final int height;
+import com.github.mixinors.astromine.AMCommon;
+import io.netty.buffer.ByteBuf;
 
-	public SimpleTransferRecipeDisplay(int width, int height) {
-		this.width = width;
-		this.height = height;
+import net.minecraft.network.PacketByteBuf;
+
+public class LongUtils {
+	/**
+	 * Serializes the given integer to a {@link ByteBuf}.
+	 */
+	public static void toPacket(PacketByteBuf buffer, long number) {
+		buffer.writeLong(number);
+	}
+
+	/**
+	 * Deserializes an integer from a {@link ByteBuf}.
+	 */
+	public static long fromPacket(PacketByteBuf buffer) {
+		return buffer.readLong();
+	}
+
+	/**
+	 * Serializes the given integer to a {@link JsonElement}.
+	 */
+	public static JsonElement toJson(long number) {
+		return new JsonPrimitive(number);
+	}
+
+	/**
+	 * Deserializes an integer from a {@link JsonElement}.
+	 */
+	public static long fromJson(JsonElement json) {
+		return AMCommon.GSON.fromJson(json, Long.class);
 	}
 }
