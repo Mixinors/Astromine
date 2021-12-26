@@ -25,9 +25,11 @@
 package com.github.mixinors.astromine.common.transfer.storage;
 
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
@@ -290,11 +292,45 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	}
 	
 	public void writeToNbt(NbtCompound nbt) {
-		// TODO
+		var sidingsNbt = new NbtCompound();
+		
+		for (var i = 0; i < sidings.length; ++i) {
+			sidingsNbt.putInt(""+ i, sidings[i].ordinal());
+		}
+		
+		nbt.put("Sidings", sidingsNbt);
+		
+		var storagesNbt = new NbtCompound();
+		
+		for (var i = 0; i < size; ++i) {
+			var storageNbt = new NbtCompound();
+			
+			storageNbt.putLong("Amount", getStorage(i).getAmount());
+			storageNbt.put("Variant", getStorage(i).getResource().toNbt());
+			
+			storagesNbt.put("" + i, storageNbt);
+		}
+		
+		nbt.put("Storages", storagesNbt);
 	}
 	
 	public void readFromNbt(NbtCompound nbt) {
-		// TODO
+		var sidingsNbt = nbt.getCompound("Sidings");
+		
+		for (var i = 0; i < sidings.length; ++i) {
+			sidings[i] = StorageSiding.values()[sidingsNbt.getInt("" + i)];
+		}
+		
+		var storagesNbt = nbt.getCompound("Storages");
+		
+		for (var i = 0; i < sidings.length; ++i) {
+			var storageNbt = storagesNbt.getCompound("" + i);
+			
+			var amount = storageNbt.getLong("Amount");
+			var variant = ItemVariant.fromNbt(storageNbt.getCompound("Variant"));
+			
+			setStack(i, variant.toStack((int) amount));
+		}
 	}
 	
 	/**

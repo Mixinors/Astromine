@@ -31,6 +31,8 @@ import dev.vini2003.hammer.common.widget.button.ButtonWidget;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
+import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -103,9 +105,10 @@ public class FluidFilterWidget extends ButtonWidget
 
 		if (isWithin(x, y)) {
 			if (!stack.isEmpty()) {
-				SimpleFluidStorage fluidStorage = SimpleFluidStorage.get(stack);
+				// TODO: Iterate, find first, maybe?
+				var fluidStorage = FluidStorage.ITEM.find(stack, ContainerItemContext.ofPlayerCursor(getHandled().getHandler().getPlayer(), getHandled().getHandler()));
 
-				fluidSupplier = () -> fluidStorage.getFirst().getFluid();
+				fluidSupplier = () -> fluidStorage.exZ().getFluid();
 				fluidConsumer.accept(fluidSupplier.get());
 			} else if (button == 2) {
 				fluidSupplier = () -> Fluids.EMPTY;

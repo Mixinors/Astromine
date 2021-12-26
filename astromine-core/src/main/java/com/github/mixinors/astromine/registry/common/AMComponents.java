@@ -47,16 +47,8 @@ import dev.onyxstudios.cca.api.v3.world.WorldComponentInitializer;
 
 public class AMComponents implements WorldComponentInitializer, ChunkComponentInitializer, ItemComponentInitializer, EntityComponentInitializer, BlockComponentInitializer {
 	public static final ComponentKey<WorldNetworkComponent> WORLD_NETWORK_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("world_network_component"), WorldNetworkComponent.class);
-	public static final ComponentKey<ChunkAtmosphereComponent> CHUNK_ATMOSPHERE_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("chunk_atmosphere_component"), ChunkAtmosphereComponent.class);
 	public static final ComponentKey<WorldHoloBridgeComponent> WORLD_BRIDGE_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("world_holo_bridge_component"), WorldHoloBridgeComponent.class);
-
-	public static final ComponentKey<SimpleItemStorage> ITEM_INVENTORY_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("item_inventory_component"), SimpleItemStorage.class);
-	public static final ComponentKey<SimpleFluidStorage> FLUID_INVENTORY_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("fluid_inventory_component"), SimpleFluidStorage.class);
-	public static final ComponentKey<EnergyStore> ENERGY_INVENTORY_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("energy_inventory_component"), EnergyStore.class);
-
-	public static final ComponentKey<TransferComponent> BLOCK_ENTITY_TRANSFER_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("block_entity_transfer_component"), TransferComponent.class);
-	public static final ComponentKey<RedstoneComponent> BLOCK_ENTITY_REDSTONE_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("block_entity_redstone_component"), RedstoneComponent.class);
-
+	
 	public static final ComponentKey<EntityOxygenComponent> ENTITY_OXYGEN_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("entity_oxygen_component"), EntityOxygenComponent.class);
 
 	public static void initialize() {}
@@ -69,43 +61,18 @@ public class AMComponents implements WorldComponentInitializer, ChunkComponentIn
 
 	@Override
 	public void registerChunkComponentFactories(ChunkComponentFactoryRegistry registry) {
-		registry.register(CHUNK_ATMOSPHERE_COMPONENT, ChunkAtmosphereComponent::new);
 	}
 
 	@Override
 	public void registerItemComponentFactories(ItemComponentFactoryRegistry registry) {
-		/* TODO: yeet components
-		registry.register(
-				item -> item instanceof FluidVolumeItem,
-				FLUID_INVENTORY_COMPONENT,
-				stack -> SimpleFluidComponent.of(FluidVolume.of(0L, ((FluidVolumeItem) stack.getItem()).getSize(), Fluids.EMPTY))
-		);
-
-		registry.register(
-			item -> item == AMItems.SPACE_SUIT_CHESTPLATE.get(),
-			AMComponents.FLUID_INVENTORY_COMPONENT,
-			stack -> SimpleFluidComponent.of(FluidVolume.of(AMConfig.get().spaceSuitFluid, Fluids.EMPTY))
-		);
-		 */
 	}
 
 	@Override
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
 		registry.registerFor(LivingEntity.class, ENTITY_OXYGEN_COMPONENT, EntityOxygenComponent::of);
-
-		registry.registerFor(ComponentFluidItemEntity.class, FLUID_INVENTORY_COMPONENT, ComponentFluidItemEntity::createFluidComponent);
-		registry.registerFor(ComponentFluidItemEntity.class, ITEM_INVENTORY_COMPONENT, ComponentFluidItemEntity::createItemComponent);
-
-		registry.registerFor(ComponentEnergyItemEntity.class, ITEM_INVENTORY_COMPONENT, ComponentEnergyItemEntity::createItemComponent);
-		registry.registerFor(ComponentEnergyItemEntity.class, ENERGY_INVENTORY_COMPONENT, ComponentEnergyItemEntity::createEnergyComponent);
-
-		registry.registerFor(ComponentItemEntity.class, ITEM_INVENTORY_COMPONENT, ComponentItemEntity::createItemComponent);
-
-		registry.registerFor(ComponentFluidEntity.class, FLUID_INVENTORY_COMPONENT, ComponentFluidEntity::createFluidComponent);
-
-		registry.registerFor(ComponentEnergyEntity.class, ENERGY_INVENTORY_COMPONENT, ComponentEnergyEntity::createEnergyComponent);
 	}
 
 	@Override
-	public void registerBlockComponentFactories(BlockComponentFactoryRegistry registry) {}
+	public void registerBlockComponentFactories(BlockComponentFactoryRegistry registry) {
+	}
 }
