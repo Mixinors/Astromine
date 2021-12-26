@@ -32,9 +32,9 @@ import net.minecraft.util.Identifier;
  */
 public enum TransferType {
 	NONE(AMCommon.id("textures/widget/none.png")),
-	INPUT(AMCommon.id("textures/widget/input.png")),
-	OUTPUT(AMCommon.id("textures/widget/output.png")),
-	INPUT_OUTPUT(AMCommon.id("textures/widget/input_output.png"));
+	INPUT(AMCommon.id("textures/widget/insert.png")),
+	OUTPUT(AMCommon.id("textures/widget/extract.png")),
+	INPUT_OUTPUT(AMCommon.id("textures/widget/insert_extract.png"));
 
 	private final Identifier texture;
 

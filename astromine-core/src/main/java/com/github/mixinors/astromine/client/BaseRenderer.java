@@ -25,13 +25,12 @@
 package com.github.mixinors.astromine.client;
 
 import com.github.mixinors.astromine.common.util.ClientUtils;
+import com.mojang.blaze3d.systems.RenderSystem;
+import dev.vini2003.hammer.client.texture.SpriteTexture;
 import dev.vini2003.hammer.client.util.Layers;
 import dev.vini2003.hammer.common.color.Color;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.*;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.util.math.MatrixStack;
@@ -101,6 +100,7 @@ public class BaseRenderer {
 	/** Draws a gradient quads. */
 	public static void drawGradientQuad(MatrixStack matrices, VertexConsumerProvider provider, RenderLayer layer, float startX, float startY, float endX, float endY, float uS, float vS, float uE, float vE, int light, Color colorStart, Color colorEnd, boolean textured) {
 		matrices.push();
+		
 		VertexConsumer consumer = provider.getBuffer(layer);
 
 		consumer.vertex(matrices.peek().getPositionMatrix(), endX, startY, 0).color(colorStart.getR(), colorStart.getG(), colorStart.getB(), colorStart.getA()).texture(uS, vS).light(light).normal(matrices.peek().getNormalMatrix(), 0, 1, 0).next();
@@ -118,14 +118,14 @@ public class BaseRenderer {
 	/** Draws a textured quads. */
 	public static void drawTexturedQuad(MatrixStack matrices, VertexConsumerProvider provider, RenderLayer layer, float x, float y, float sX, float sY, Identifier texture) {
 		matrices.push();
-		drawTexturedQuad(matrices, provider, layer, x, y, sX, sY, 0, 0, 1, 1, 0x00f000f0, Color.Companion.of(0xFFFFFFFF), texture);
+		drawTexturedQuad(matrices, provider, layer, x, y, sX, sY, 0, 0, 1, 1, 0x00f000f0, Color.of(0xFFFFFFFF), texture);
 		matrices.pop();
 	}
 
 	/** Draws a textured quads. */
 	public static void drawTexturedQuad(MatrixStack matrices, VertexConsumerProvider provider, float x, float y, float sX, float sY, Identifier texture) {
 		matrices.push();
-		drawTexturedQuad(matrices, provider, Layers.INTERFACE, x, y, sX, sY, 0, 0, 1, 1, 0x00f000f0, Color.Companion.of(0xFFFFFFFF), texture);
+		drawTexturedQuad(matrices, provider, Layers.get(texture), x, y, sX, sY, 0, 0, 1, 1, 0x00f000f0, Color.of(0xFFFFFFFF), texture);
 		matrices.pop();
 	}
 
@@ -139,7 +139,7 @@ public class BaseRenderer {
 	/** Draws a textured quads. */
 	public static void drawTexturedQuad(MatrixStack matrices, VertexConsumerProvider provider, float x, float y, float sX, float sY, Color color, Identifier texture) {
 		matrices.push();
-		drawTexturedQuad(matrices, provider, Layers.INTERFACE, x, y, sX, sY, 0, 0, 1, 1, 0x00f000f0, color, texture);
+		drawTexturedQuad(matrices, provider, Layers.get(texture), x, y, sX, sY, 0, 0, 1, 1, 0x00f000f0, color, texture);
 		matrices.pop();
 	}
 
@@ -153,7 +153,7 @@ public class BaseRenderer {
 	/** Draws a textured quads. */
 	public static void drawTexturedQuad(MatrixStack matrices, VertexConsumerProvider provider, float x, float y, float sX, float sY, int light, Color color, Identifier texture) {
 		matrices.push();
-		drawTexturedQuad(matrices, provider, Layers.INTERFACE, x, y, sX, sY, 0, 0, 1, 1, light, color, texture);
+		drawTexturedQuad(matrices, provider, Layers.get(texture), x, y, sX, sY, 0, 0, 1, 1, light, color, texture);
 		matrices.pop();
 	}
 
@@ -168,10 +168,11 @@ public class BaseRenderer {
 	public static void drawTexturedQuad(MatrixStack matrices, VertexConsumerProvider provider, RenderLayer layer, float x, float y, float sX, float sY, float u0, float v0, float u1, float v1, int light, Color color, Identifier texture) {
 		matrices.push();
 
-		getTextureManager().bindTexture(texture);
+		RenderSystem.setShader(GameRenderer::getPositionColorTexLightmapShader);
+		RenderSystem.setShaderTexture(0, texture);
 
 		VertexConsumer consumer = provider.getBuffer(layer);
-
+		
 		consumer.vertex(matrices.peek().getPositionMatrix(), x, y + sY, 0).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(u0, v1).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrices.peek().getNormalMatrix(), 0, 0, 0).next();
 		consumer.vertex(matrices.peek().getPositionMatrix(), x + sX, y + sY, 0).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(u1, v1).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrices.peek().getNormalMatrix(), 0, 0, 0).next();
 		consumer.vertex(matrices.peek().getPositionMatrix(), x + sX, y, 0).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(u1, v0).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrices.peek().getNormalMatrix(), 0, 0, 0).next();
