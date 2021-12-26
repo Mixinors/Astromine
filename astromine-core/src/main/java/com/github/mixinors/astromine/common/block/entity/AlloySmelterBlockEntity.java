@@ -27,12 +27,12 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
-import com.github.mixinors.astromine.common.util.StackUtils;
+
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
@@ -130,7 +130,7 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 							
 							var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
 							
-							outputStorage.insert(recipe.output().variant(), recipe.output().amount(), transaction);
+							outputStorage.insert(recipe.output().variant(), recipe.output().count(), transaction);
 
 							transaction.commit();
 							

@@ -32,7 +32,7 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
-import com.github.mixinors.astromine.common.util.StackUtils;
+
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
@@ -40,8 +40,7 @@ import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvid
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
 import com.github.mixinors.astromine.common.recipe.SolidifyingRecipe;
-import it.unimi.dsi.fastutil.ints.IntSet;
-import it.unimi.dsi.fastutil.ints.IntSets;
+
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
@@ -134,7 +133,7 @@ public abstract class SolidifierBlockEntity extends ExtendedBlockEntity implemen
 							
 							var outputStorage = itemStorage.getStorage(ITEM_OUTPUT_SLOT);
 							
-							outputStorage.insert(recipe.output().variant(), recipe.output().amount(), transaction);
+							outputStorage.insert(recipe.output().variant(), recipe.output().count(), transaction);
 							
 							transaction.commit();
 							

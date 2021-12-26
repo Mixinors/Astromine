@@ -106,12 +106,12 @@ public final class ItemIngredient {
 			var jsonObject = json.getAsJsonObject();
 			
 			if (jsonObject.has("item")) {
-				if (jsonObject.has("amount")) {
+				if (jsonObject.has("count")) {
 					var entryAsId = new Identifier(jsonObject.get("item").getAsString());
 					var entryAsItem = Registry.ITEM.get(entryAsId);
 					var entryAsItemVariant = ItemVariant.of(entryAsItem);
 					
-					var entryAmount = jsonObject.get("amount").getAsInt();
+					var entryAmount = jsonObject.get("count").getAsInt();
 					
 					return new ItemIngredient(new VariantEntry(entryAsItemVariant, entryAmount));
 				} else {
@@ -124,11 +124,11 @@ public final class ItemIngredient {
 			}
 			
 			if (jsonObject.has("tag")) {
-				if (jsonObject.has("amount")) {
+				if (jsonObject.has("count")) {
 					var entryAsId = new Identifier(jsonObject.get("tag").getAsString());
 					var entryAsTag = TagHooks.optionalItem(entryAsId);
 					
-					var entryAmount = jsonObject.get("amount").getAsInt();
+					var entryAmount = jsonObject.get("count").getAsInt();
 					
 					return new ItemIngredient(new TagEntry(entryAsTag, entryAmount));
 				} else {
@@ -150,14 +150,14 @@ public final class ItemIngredient {
 			var entryJsonObject = new JsonObject();
 			
 			entryJsonObject.addProperty("item", Registry.ITEM.getId(variantEntry.requiredVariant.getItem()).toString());
-			entryJsonObject.addProperty("amount", variantEntry.requiredAmount);
+			entryJsonObject.addProperty("count", variantEntry.requiredAmount);
 		}
 		
 		if (ingredient.entry instanceof TagEntry tagEntry) {
 			var entryJsonObject = new JsonObject();
 			
 			entryJsonObject.addProperty("tag", ServerTagManagerHolder.getTagManager().getOrCreateTagGroup(Registry.ITEM_KEY).getUncheckedTagId(tagEntry.requiredTag).toString());
-			entryJsonObject.addProperty("amount", tagEntry.requiredAmount);
+			entryJsonObject.addProperty("count", tagEntry.requiredAmount);
 		}
 		
 		return jsonObject;
