@@ -28,9 +28,11 @@ import com.github.mixinors.astromine.common.volume.base.Volume;
 import com.github.mixinors.astromine.common.volume.energy.EnergyVolume;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import dev.architectury.platform.Platform;
+import team.reborn.energy.api.EnergyStorage;
 
 import net.minecraft.fluid.Fluid;
 import net.minecraft.text.LiteralText;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
@@ -39,7 +41,14 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
+
+@SuppressWarnings("unstable")
 public class TextUtils {
+	public static final char ENERGY_UNIT = 'E';
+	public static final char FLUID_UNIT = 'D';
+
 	/**
 	 * Returns the "Astromine" text, formatted with {@link Formatting#BLUE}
 	 * and {@link Formatting#ITALIC}.
@@ -56,26 +65,18 @@ public class TextUtils {
 	}
 
 	/**
-	 * Returns the "16k / 32k" text.
-	 */
-	public static Text getVolume(Volume<?> volume) {
-		String unit = volume instanceof EnergyVolume ? "E" : volume instanceof FluidVolume ? "U" : "";
-		return new LiteralText(NumberUtils.shorten(volume.getAmount().doubleValue(), unit) + " / " + NumberUtils.shorten(volume.getSize().doubleValue(), unit)).formatted(Formatting.GRAY);
-	}
-
-	/**
 	 * Returns the "16kE / 32kE" text.
 	 */
-	public static Text getEnergyVolume(EnergyVolume volume) {
-		return new LiteralText(NumberUtils.shorten(volume.getAmount(), "E")).formatted(Formatting.GREEN).append(new LiteralText(" / ").formatted(Formatting.GRAY)).append(new LiteralText(NumberUtils.shorten(volume.getSize(), "E")).formatted(Formatting.GREEN));
+	public static Text getEnergyStorage(EnergyStorage storage) {
+		return getEnergyAmount(storage.getAmount()).append(new LiteralText(" / ").formatted(Formatting.GRAY)).append(getEnergyAmount(storage.getCapacity()));
 	}
 
 	/**
-	 * Returns the "16kU / 32kU" text.
+	 * Returns the "16kD / 32kD" text.
 	 */
-	public static Text getFluidVolume(FluidVolume volume) {
-		Style style = Style.EMPTY.withColor(TextColor.fromRgb(FluidUtils.getColor(ClientUtils.getPlayer(), volume.getFluid())));
-		return new LiteralText(NumberUtils.shorten(volume.getAmount(), "U")).fillStyle(style).append(new LiteralText(" / ").formatted(Formatting.GRAY)).append(new LiteralText(NumberUtils.shorten(volume.getSize(), "U")).fillStyle(style));
+	public static Text getFluidStorage(StorageView<FluidVariant> storage) {
+		Fluid fluid = storage.getResource().getFluid();
+		return getFluidAmount(fluid, storage.getAmount()).append(new LiteralText(" / ").formatted(Formatting.GRAY)).append(getFluidAmount(fluid, storage.getCapacity()));
 	}
 
 	/**
@@ -86,21 +87,29 @@ public class TextUtils {
 	}
 
 	/**
-	 * Returns the "Water" / "Lava" / "Hydrogen" / "... text.
+	 * Returns the "Water" / "Lava" / "Hydrogen" / ... text.
 	 */
 	public static Text getFluid(Fluid fluid) {
 		return getFluid(Registry.FLUID.getId(fluid));
 	}
 
 	/**
-	 * Returns the "astromine:oxygen" / "minecraft:stone" ... text.
+	 * Returns the "Water" / "Lava" / "Hydrogen" / ... text.
+	 */
+	public static Text getFluidVariant(FluidVariant variant) {
+		return getFluid(variant.getFluid());
+	}
+
+	/**
+	 * Returns the "astromine:oxygen" / "minecraft:stone" ... text, formatted with {@link Formatting#DARK_GRAY}.
 	 */
 	public static Text getIdentifier(Identifier identifier) {
 		return new LiteralText(identifier.toString()).formatted(Formatting.DARK_GRAY);
 	}
 
 	/**
-	 * Returns the "Astromine" / "TechReborn" / "Minecraft" ... text.
+	 * Returns the "Astromine" / "TechReborn" / "Minecraft" ... text, formatted with {@link Formatting#BLUE}
+	 * and {@link Formatting#ITALIC}.
 	 */
 	public static Text getMod(Identifier identifier) {
 		return new LiteralText(Platform.getMod(identifier.getNamespace()).getName()).formatted(Formatting.BLUE, Formatting.ITALIC);
@@ -110,6 +119,35 @@ public class TextUtils {
 	 * Returns the "75%" text.
 	 */
 	public static Text getRatio(int progress, int limit) {
-		return new LiteralText("" + (int) ((float) progress / (float) limit * 100) + "%");
+		return new LiteralText((int) ((float) progress / (float) limit * 100) + "%");
+	}
+
+	/**
+	 * Returns the 16kD text.
+	 */
+	public static LiteralText getAmount(long amount, char unit) {
+		return new LiteralText(NumberUtils.shorten(amount, unit));
+	}
+
+	/**
+	 * Returns the 16kD text, formatted with the color of the fluid.
+	 */
+	public static MutableText getFluidAmount(Fluid fluid, long amount) {
+		Style style = Style.EMPTY.withColor(TextColor.fromRgb(FluidUtils.getColor(ClientUtils.getPlayer(), fluid)));
+		return getFluidAmount(amount).fillStyle(style);
+	}
+
+	/**
+	 * Returns the 16kD text.
+	 */
+	public static LiteralText getFluidAmount(long amount) {
+		return getAmount(amount, FLUID_UNIT);
+	}
+
+	/**
+	 * Returns the 16kE text, formatted with {@link Formatting#GREEN}.
+	 */
+	public static MutableText getEnergyAmount(long amount) {
+		return getAmount(amount, ENERGY_UNIT).formatted(Formatting.GREEN);
 	}
 }

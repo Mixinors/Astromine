@@ -24,35 +24,35 @@
 
 package com.github.mixinors.astromine.common.recipe;
 
-import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
-import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
-import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
-import com.github.mixinors.astromine.common.recipe.result.FluidResult;
-import com.github.mixinors.astromine.common.util.LongUtils;
-import dev.architectury.core.AbstractRecipeSerializer;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
-
-import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.util.IntegerUtils;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
+import com.github.mixinors.astromine.common.recipe.base.input.DoubleFluidInputRecipe;
+import com.github.mixinors.astromine.common.recipe.base.output.FluidOutputRecipe;
+import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
+import com.github.mixinors.astromine.common.recipe.result.FluidResult;
+import com.github.mixinors.astromine.common.util.IntegerUtils;
+import com.github.mixinors.astromine.common.util.LongUtils;
+import dev.architectury.core.AbstractRecipeSerializer;
 
-public final class FluidMixingRecipe implements EnergyConsumingRecipe {
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.util.Identifier;
+import net.minecraft.world.World;
+
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
+
+public final class FluidMixingRecipe implements DoubleFluidInputRecipe,FluidOutputRecipe {
 	public final Identifier id;
 	public final FluidIngredient firstInput;
 	public final FluidIngredient secondInput;
@@ -116,17 +116,6 @@ public final class FluidMixingRecipe implements EnergyConsumingRecipe {
 		return output.equalsAndFitsIn(outputStorage);
 	}
 
-	public boolean allows(FluidVariant... variants) {
-		var firstInputVariant = variants[0];
-		var secondInputVariant = variants[1];
-		
-		if (!firstInput.test(firstInputVariant, Long.MAX_VALUE) && !secondInput.test(firstInputVariant, Long.MAX_VALUE)) {
-			return false;
-		}
-		
-		return secondInput.test(secondInputVariant, Long.MAX_VALUE) || firstInput.test(secondInputVariant, Long.MAX_VALUE);
-	}
-
 	@Override
 	public Identifier getId() {
 		return id;
@@ -140,26 +129,6 @@ public final class FluidMixingRecipe implements EnergyConsumingRecipe {
 	@Override
 	public RecipeType<?> getType() {
 		return Type.INSTANCE;
-	}
-
-	@Override
-	public boolean matches(Inventory inventory, World world) {
-		return false;
-	}
-
-	@Override
-	public ItemStack craft(Inventory inventory) {
-		return ItemStack.EMPTY;
-	}
-
-	@Override
-	public boolean fits(int width, int height) {
-		return false;
-	}
-	
-	@Override
-	public ItemStack getOutput() {
-		return ItemStack.EMPTY;
 	}
 
 	@Override

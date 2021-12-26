@@ -24,6 +24,6 @@
 
 package com.github.mixinors.astromine.common.recipe.base;
 
-public interface EnergyConsumingRecipe extends TimeBasedRecipe {
+public interface EnergyConsumingRecipe extends AMRecipe {
 	long getEnergyInput();
 }

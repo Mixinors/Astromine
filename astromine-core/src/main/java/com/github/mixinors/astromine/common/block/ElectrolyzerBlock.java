@@ -35,6 +35,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
+import com.github.mixinors.astromine.common.block.redstone.ComparatorMode;
 import com.github.mixinors.astromine.common.network.NetworkBlock;
 import com.github.mixinors.astromine.common.block.entity.ElectrolyzerBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.ElectrolyzerScreenHandler;
@@ -42,6 +43,11 @@ import com.github.mixinors.astromine.common.screenhandler.ElectrolyzerScreenHand
 public abstract class ElectrolyzerBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.FluidBuffer {
 	public ElectrolyzerBlock(Settings settings) {
 		super(settings);
+	}
+
+	@Override
+	protected ComparatorMode getComparatorMode() {
+		return ComparatorMode.FLUIDS;
 	}
 
 	public abstract static class Base extends ElectrolyzerBlock {

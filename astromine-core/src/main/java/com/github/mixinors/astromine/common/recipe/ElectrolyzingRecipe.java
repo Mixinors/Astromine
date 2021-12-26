@@ -24,16 +24,26 @@
 
 package com.github.mixinors.astromine.common.recipe;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.annotations.SerializedName;
+
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
-import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
+import com.github.mixinors.astromine.common.recipe.base.input.FluidInputRecipe;
+import com.github.mixinors.astromine.common.recipe.base.output.DoubleFluidOutputRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.recipe.result.FluidResult;
+import com.github.mixinors.astromine.common.util.IntegerUtils;
 import com.github.mixinors.astromine.common.util.LongUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.architectury.core.AbstractRecipeSerializer;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
-import net.minecraft.inventory.Inventory;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.RecipeSerializer;
@@ -41,19 +51,10 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.util.IntegerUtils;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.annotations.SerializedName;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
-public final class ElectrolyzingRecipe implements EnergyConsumingRecipe {
+public final class ElectrolyzingRecipe implements FluidInputRecipe,DoubleFluidOutputRecipe {
 	public final Identifier id;
 	public final FluidIngredient input;
 	public final FluidResult firstOutput;
@@ -114,13 +115,6 @@ public final class ElectrolyzingRecipe implements EnergyConsumingRecipe {
 			|| secondOutput.equalsAndFitsIn(firstOutputStorage) && firstOutput.equalsAndFitsIn(secondOutputStorage);
 	}
 
-	public boolean allows(FluidVariant... variants) {
-		var inputVariant = variants[0];
-		
-		return input.test(inputVariant, Long.MAX_VALUE);
-	}
-
-
 	@Override
 	public Identifier getId() {
 		return id;
@@ -134,26 +128,6 @@ public final class ElectrolyzingRecipe implements EnergyConsumingRecipe {
 	@Override
 	public RecipeType<?> getType() {
 		return Type.INSTANCE;
-	}
-
-	@Override
-	public boolean matches(Inventory inventory, World world) {
-		return false;
-	}
-
-	@Override
-	public ItemStack craft(Inventory inventory) {
-		return ItemStack.EMPTY;
-	}
-
-	@Override
-	public boolean fits(int width, int height) {
-		return false;
-	}
-
-	@Override
-	public ItemStack getOutput() {
-		return ItemStack.EMPTY;
 	}
 
 	@Override

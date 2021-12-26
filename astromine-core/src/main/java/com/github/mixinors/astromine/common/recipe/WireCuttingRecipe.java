@@ -24,13 +24,17 @@
 
 package com.github.mixinors.astromine.common.recipe;
 
+import java.util.Random;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
 import com.github.mixinors.astromine.common.util.IngredientUtils;
 import com.github.mixinors.astromine.common.util.StackUtils;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import dev.architectury.core.AbstractRecipeSerializer;
+
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -40,8 +44,6 @@ import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
-
-import java.util.Random;
 
 public class WireCuttingRecipe extends SpecialCraftingRecipe {
 	private static final Random RANDOM = new Random();

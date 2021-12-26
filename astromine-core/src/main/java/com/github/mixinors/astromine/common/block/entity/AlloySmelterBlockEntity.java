@@ -130,7 +130,7 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 							
 							var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
 							
-							outputStorage.insert(recipe.output.variant, recipe.output.amount, transaction);
+							outputStorage.insert(recipe.output.variant(), recipe.output.amount(), transaction);
 
 							transaction.commit();
 							
