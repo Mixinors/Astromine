@@ -1,1 +1,23 @@
-{"type":"minecraft:crafting_shaped","pattern":["616","555","616"],"key":{"1":{"item":"minecraft:diamond"},"5":{"tag":"c:copper_wires"},"6":{"tag":"c:gold_ingots"}},"result":{"item":"astromine:elite_energy_cable","count":8}}
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "616",
+    "555",
+    "616"
+  ],
+  "key": {
+    "1": {
+      "item": "minecraft:diamond"
+    },
+    "5": {
+      "tag": "c:copper_wires"
+    },
+    "6": {
+      "tag": "c:gold_ingots"
+    }
+  },
+  "result": {
+    "item": "astromine:elite_energy_cable",
+    "count": 8
+  }
+}

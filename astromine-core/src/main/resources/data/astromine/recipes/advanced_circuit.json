@@ -1,1 +1,23 @@
-{"type":"minecraft:crafting_shaped","pattern":["878","555","878"],"key":{"5":{"tag":"c:tin_wires"},"7":{"tag":"c:gold_ingots"},"8":{"tag":"c:iron_ingots"}},"result":{"item":"astromine:advanced_circuit","count":2}}
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "878",
+    "555",
+    "878"
+  ],
+  "key": {
+    "5": {
+      "tag": "c:tin_wires"
+    },
+    "7": {
+      "tag": "c:gold_ingots"
+    },
+    "8": {
+      "tag": "c:iron_ingots"
+    }
+  },
+  "result": {
+    "item": "astromine:advanced_circuit",
+    "count": 2
+  }
+}

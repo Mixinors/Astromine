@@ -72,10 +72,14 @@ public record FluidResult(FluidVariant variant, long amount) {
 			var variantFluid = Registry.FLUID.get(variantId);
 
 			var variant = FluidVariant.of(variantFluid);
-
-			var variantAmount = jsonObject.get("amount").getAsLong();
-
-			return new FluidResult(variant, variantAmount);
+			
+			if (jsonObject.has("amount")) {
+				var variantAmount = jsonObject.get("amount").getAsInt();
+				
+				return new FluidResult(variant, variantAmount);
+			} else {
+				return new FluidResult(variant, 81000L);
+			}
 		}
 	}
 

@@ -1,1 +1,26 @@
-{"type":"minecraft:crafting_shaped","pattern":["262","545","6 6"],"key":{"2":{"tag":"c:steel_plates"},"4":{"item":"minecraft:flint_and_steel"},"5":{"tag":"c:steel_gears"},"6":{"tag":"c:steel_ingots"}},"result":{"item":"astromine:primitive_rocket_booster","count":1}}
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "262",
+    "545",
+    "6 6"
+  ],
+  "key": {
+    "2": {
+      "tag": "c:steel_plates"
+    },
+    "4": {
+      "item": "minecraft:flint_and_steel"
+    },
+    "5": {
+      "tag": "c:steel_gears"
+    },
+    "6": {
+      "tag": "c:steel_ingots"
+    }
+  },
+  "result": {
+    "item": "astromine:primitive_rocket_booster",
+    "count": 1
+  }
+}

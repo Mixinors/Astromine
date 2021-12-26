@@ -1,1 +1,20 @@
-{"type":"minecraft:crafting_shaped","pattern":["222","444","222"],"key":{"2":{"tag":"c:iron_ingots"},"4":{"tag":"c:tin_wires"}},"result":{"item":"astromine:primitive_energy_cable","count":8}}
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "222",
+    "444",
+    "222"
+  ],
+  "key": {
+    "2": {
+      "tag": "c:iron_ingots"
+    },
+    "4": {
+      "tag": "c:tin_wires"
+    }
+  },
+  "result": {
+    "item": "astromine:primitive_energy_cable",
+    "count": 8
+  }
+}

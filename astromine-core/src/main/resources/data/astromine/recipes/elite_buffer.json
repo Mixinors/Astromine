@@ -1,1 +1,26 @@
-{"type":"minecraft:crafting_shaped","pattern":["010","545","010"],"key":{"0":{"item":"astromine:elite_plating"},"1":{"item":"minecraft:diamond"},"4":{"item":"astromine:advanced_buffer"},"5":{"item":"minecraft:chest"}},"result":{"item":"astromine:elite_buffer","count":1}}
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "010",
+    "545",
+    "010"
+  ],
+  "key": {
+    "0": {
+      "item": "astromine:elite_plating"
+    },
+    "1": {
+      "item": "minecraft:diamond"
+    },
+    "4": {
+      "item": "astromine:advanced_buffer"
+    },
+    "5": {
+      "item": "minecraft:chest"
+    }
+  },
+  "result": {
+    "item": "astromine:elite_buffer",
+    "count": 1
+  }
+}

@@ -1,1 +1,26 @@
-{"type":"minecraft:crafting_shaped","pattern":["616","343","616"],"key":{"1":{"item":"minecraft:diamond"},"3":{"item":"astromine:elite_circuit"},"4":{"item":"astromine:advanced_fluid_mixer"},"6":{"item":"astromine:elite_plating"}},"result":{"item":"astromine:elite_fluid_mixer","count":1}}
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "616",
+    "343",
+    "616"
+  ],
+  "key": {
+    "1": {
+      "item": "minecraft:diamond"
+    },
+    "3": {
+      "item": "astromine:elite_circuit"
+    },
+    "4": {
+      "item": "astromine:advanced_fluid_mixer"
+    },
+    "6": {
+      "item": "astromine:elite_plating"
+    }
+  },
+  "result": {
+    "item": "astromine:elite_fluid_mixer",
+    "count": 1
+  }
+}

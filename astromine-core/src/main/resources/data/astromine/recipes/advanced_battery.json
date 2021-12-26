@@ -1,5 +1,23 @@
 {
-  "type": "minecraft:crafting_shaped", "pattern": [" 1 ", "848", "848"],
-  "key": {"1": {"tag": "c:gold_dusts"}, "4": {"tag": "c:lead_dusts"}, "8": {"tag": "c:tin_plates"}},
-  "result": {"item": "astromine:advanced_battery", "count": 4}
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " 1 ",
+    "848",
+    "848"
+  ],
+  "key": {
+    "1": {
+      "tag": "c:gold_dusts"
+    },
+    "4": {
+      "tag": "c:lead_dusts"
+    },
+    "8": {
+      "tag": "c:tin_plates"
+    }
+  },
+  "result": {
+    "item": "astromine:advanced_battery",
+    "count": 4
+  }
 }

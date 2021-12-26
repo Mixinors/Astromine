@@ -1,1 +1,26 @@
-{"type":"minecraft:crafting_shaped","pattern":["676","343","676"],"key":{"3":{"item":"astromine:elite_circuit"},"4":{"item":"astromine:elite_battery_pack"},"6":{"item":"astromine:elite_plating"},"7":{"item":"minecraft:diamond"}},"result":{"item":"astromine:elite_machine_upgrade_kit","count":1}}
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "676",
+    "343",
+    "676"
+  ],
+  "key": {
+    "3": {
+      "item": "astromine:elite_circuit"
+    },
+    "4": {
+      "item": "astromine:elite_battery_pack"
+    },
+    "6": {
+      "item": "astromine:elite_plating"
+    },
+    "7": {
+      "item": "minecraft:diamond"
+    }
+  },
+  "result": {
+    "item": "astromine:elite_machine_upgrade_kit",
+    "count": 1
+  }
+}

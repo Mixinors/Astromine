@@ -63,7 +63,7 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		this.storages = new ArrayList<>(size);
 
 		for (int i = 0; i < size; ++i) {
-			this.storages.set(i, new SimpleFluidVariantStorage());
+			this.storages.add(i, new SimpleFluidVariantStorage());
 		}
 		
 		this.sidings = new StorageSiding[6];
@@ -238,7 +238,7 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		
 		var storagesNbt = nbt.getCompound("Storages");
 		
-		for (var i = 0; i < sidings.length; ++i) {
+		for (var i = 0; i < size; ++i) {
 			var storageNbt = storagesNbt.getCompound("" + i);
 			
 			var amount = storageNbt.getLong("Amount");

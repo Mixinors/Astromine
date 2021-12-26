@@ -1,1 +1,9 @@
-{"replace":false,"values":[{"id":"techreborn:compressed_air","required":false}]}
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "techreborn:compressed_air",
+      "required": false
+    }
+  ]
+}

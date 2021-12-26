@@ -2,10 +2,10 @@
   "replace": false,
   "values": [
     "#c:fools_gold_blocks",
+    "#c:tin_deepslate_ores",
     "#c:tin_stone_ores",
     "#c:tin_blocks",
     "#c:raw_tin_blocks",
-    "#c:tin_deepslate_ores",
     "#astromine:primitive_machines",
     "#astromine:energy_cables",
     "astromine:fluid_pipe",

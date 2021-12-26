@@ -1,1 +1,9 @@
-{"replace":false,"values":[{"id":"techreborn:hydrogen","required":false}]}
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "techreborn:hydrogen",
+      "required": false
+    }
+  ]
+}

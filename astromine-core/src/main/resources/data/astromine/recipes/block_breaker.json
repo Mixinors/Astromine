@@ -1,1 +1,26 @@
-{"type":"minecraft:crafting_shaped","pattern":["666","345","666"],"key":{"3":{"item":"astromine:primitive_circuit"},"4":{"item":"astromine:machine_chassis"},"5":{"item":"minecraft:iron_pickaxe"},"6":{"tag":"c:iron_ingots"}},"result":{"item":"astromine:block_breaker","count":1}}
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "666",
+    "345",
+    "666"
+  ],
+  "key": {
+    "3": {
+      "item": "astromine:primitive_circuit"
+    },
+    "4": {
+      "item": "astromine:machine_chassis"
+    },
+    "5": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "6": {
+      "tag": "c:iron_ingots"
+    }
+  },
+  "result": {
+    "item": "astromine:block_breaker",
+    "count": 1
+  }
+}

@@ -1,1 +1,20 @@
-{"type":"minecraft:crafting_shaped","pattern":["222","5 5","   "],"key":{"2":{"item":"minecraft:white_wool"},"5":{"tag":"c:steel_plates"}},"result":{"item":"astromine:space_suit_boots","count":1}}
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "222",
+    "5 5",
+    "   "
+  ],
+  "key": {
+    "2": {
+      "item": "minecraft:white_wool"
+    },
+    "5": {
+      "tag": "c:steel_plates"
+    }
+  },
+  "result": {
+    "item": "astromine:space_suit_boots",
+    "count": 1
+  }
+}

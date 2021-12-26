@@ -158,31 +158,17 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 		if (nbt.contains("EnergyStorage")) {
 			var energyStorageNbt = nbt.getCompound("EnergyStorage");
 			
-			energyStorage = new SimpleEnergyStorage(
-					energyStorageNbt.getInt("Capacity"),
-					energyStorageNbt.getInt("MaxInsert"),
-					energyStorageNbt.getInt("MaxExtract")
-			);
-			
-			energyStorage.amount = energyStorageNbt.getInt("Amount");
+			energyStorage.amount = energyStorageNbt.getLong("Amount");
 		}
 		
 		if (nbt.contains("ItemStorage")) {
 			var itemStorageNbt = nbt.getCompound("ItemStorage");
-			
-			itemStorage = new SimpleItemStorage(
-					itemStorageNbt.getInt("Size")
-			);
 			
 			itemStorage.readFromNbt(itemStorageNbt);
 		}
 		
 		if (nbt.contains("FluidStorage")) {
 			var fluidStorageNbt = nbt.getCompound("FluidStorage");
-			
-			fluidStorage = new SimpleFluidStorage(
-					fluidStorageNbt.getInt("Size")
-			);
 			
 			fluidStorage.readFromNbt(fluidStorageNbt);
 		}

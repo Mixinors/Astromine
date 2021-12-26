@@ -1,1 +1,9 @@
-{"replace":false,"values":[{"id":"techreborn:beryllium","required":false}]}
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "techreborn:beryllium",
+      "required": false
+    }
+  ]
+}

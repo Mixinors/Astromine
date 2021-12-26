@@ -72,8 +72,8 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		this.storages = new ArrayList<>(size);
 
 		for (int i = 0; i < size; ++i) {
-			this.stacks.set(i, ItemStack.EMPTY);
-			this.storages.set(i, new SimpleItemVariantStorage(this, i));
+			this.stacks.add(i, ItemStack.EMPTY);
+			this.storages.add(i, new SimpleItemVariantStorage(this, i));
 		}
 		
 		this.sidings = new StorageSiding[6];
@@ -323,7 +323,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		
 		var storagesNbt = nbt.getCompound("Storages");
 		
-		for (var i = 0; i < sidings.length; ++i) {
+		for (var i = 0; i < size; ++i) {
 			var storageNbt = storagesNbt.getCompound("" + i);
 			
 			var amount = storageNbt.getLong("Amount");

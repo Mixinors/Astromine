@@ -1,1 +1,9 @@
-{"replace":false,"values":[{"id":"techreborn:nitro_carbon","required":false}]}
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "techreborn:nitro_carbon",
+      "required": false
+    }
+  ]
+}

@@ -1,5 +1,20 @@
 {
-  "type": "minecraft:crafting_shaped", "pattern": ["   ", " 4 ", "6  "],
-  "key": {"4": {"item": "astromine:drill_head"}, "6": {"item": "astromine:primitive_drill_base"}},
-  "result": {"item": "astromine:primitive_drill", "count": 1}
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    " 4 ",
+    "6  "
+  ],
+  "key": {
+    "4": {
+      "item": "astromine:drill_head"
+    },
+    "6": {
+      "item": "astromine:primitive_drill_base"
+    }
+  },
+  "result": {
+    "item": "astromine:primitive_drill",
+    "count": 1
+  }
 }
