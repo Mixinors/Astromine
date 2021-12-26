@@ -26,8 +26,8 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.item.*;
-import com.github.mixinors.astromine.common.item.base.EnergyItem;
-import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
+import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
+import com.github.mixinors.astromine.common.item.base.FluidStorageItem;
 import dev.architectury.registry.registries.RegistrySupplier;
 
 import net.minecraft.entity.EquipmentSlot;
@@ -356,25 +356,25 @@ public class AMItems {
 	public static final RegistrySupplier<Item> ADVANCED_PLATING = register("advanced_plating", () -> new Item(getSettings()));
 	public static final RegistrySupplier<Item> ELITE_PLATING = register("elite_plating", () -> new Item(getSettings()));
 	
-	public static final RegistrySupplier<Item> PORTABLE_TANK = register("portable_tank", () -> FluidVolumeItem.of(getSettings().maxCount(1), AMConfig.get().portableTankFluid));
-	public static final RegistrySupplier<Item> LARGE_PORTABLE_TANK = register("large_portable_tank", () -> FluidVolumeItem.of(getSettings().maxCount(1), AMConfig.get().largePortableTankFluid));
+	public static final RegistrySupplier<Item> PORTABLE_TANK = register("portable_tank", () -> FluidStorageItem.of(getSettings().maxCount(1), AMConfig.get().portableTankFluid));
+	public static final RegistrySupplier<Item> LARGE_PORTABLE_TANK = register("large_portable_tank", () -> FluidStorageItem.of(getSettings().maxCount(1), AMConfig.get().largePortableTankFluid));
 	
 	public static final RegistrySupplier<Item> PRIMITIVE_CIRCUIT = register("primitive_circuit", () -> new Item(getSettings()));
 	public static final RegistrySupplier<Item> BASIC_CIRCUIT = register("basic_circuit", () -> new Item(getSettings()));
 	public static final RegistrySupplier<Item> ADVANCED_CIRCUIT = register("advanced_circuit", () -> new Item(getSettings()));
 	public static final RegistrySupplier<Item> ELITE_CIRCUIT = register("elite_circuit", () -> new Item(getSettings()));
 	
-	public static final RegistrySupplier<Item> PRIMITIVE_BATTERY = register("primitive_battery", () -> EnergyItem.of(getSettings().maxCount(1), AMConfig.get().primitiveBatteryEnergy));
-	public static final RegistrySupplier<Item> BASIC_BATTERY = register("basic_battery", () -> EnergyItem.of(getSettings().maxCount(1), AMConfig.get().basicBatteryEnergy));
-	public static final RegistrySupplier<Item> ADVANCED_BATTERY = register("advanced_battery", () -> EnergyItem.of(getSettings().maxCount(1), AMConfig.get().advancedBatteryEnergy));
-	public static final RegistrySupplier<Item> ELITE_BATTERY = register("elite_battery", () -> EnergyItem.of(getSettings().maxCount(1), AMConfig.get().eliteBatteryEnergy));
-	public static final RegistrySupplier<Item> CREATIVE_BATTERY = register("creative_battery", () -> EnergyItem.ofCreative(getSettings().maxCount(1)));
+	public static final RegistrySupplier<Item> PRIMITIVE_BATTERY = register("primitive_battery", () -> EnergyStorageItem.of(getSettings().maxCount(1), AMConfig.get().primitiveBatteryEnergy));
+	public static final RegistrySupplier<Item> BASIC_BATTERY = register("basic_battery", () -> EnergyStorageItem.of(getSettings().maxCount(1), AMConfig.get().basicBatteryEnergy));
+	public static final RegistrySupplier<Item> ADVANCED_BATTERY = register("advanced_battery", () -> EnergyStorageItem.of(getSettings().maxCount(1), AMConfig.get().advancedBatteryEnergy));
+	public static final RegistrySupplier<Item> ELITE_BATTERY = register("elite_battery", () -> EnergyStorageItem.of(getSettings().maxCount(1), AMConfig.get().eliteBatteryEnergy));
+	public static final RegistrySupplier<Item> CREATIVE_BATTERY = register("creative_battery", () -> EnergyStorageItem.ofCreative(getSettings().maxCount(1)));
 	
-	public static final RegistrySupplier<Item> PRIMITIVE_BATTERY_PACK = register("primitive_battery_pack", () -> EnergyItem.of(getSettings().maxCount(1), AMConfig.get().primitiveBatteryPackEnergy));
-	public static final RegistrySupplier<Item> BASIC_BATTERY_PACK = register("basic_battery_pack", () -> EnergyItem.of(getSettings().maxCount(1), AMConfig.get().basicBatteryPackEnergy));
-	public static final RegistrySupplier<Item> ADVANCED_BATTERY_PACK = register("advanced_battery_pack", () -> EnergyItem.of(getSettings().maxCount(1), AMConfig.get().advancedBatteryPackEnergy));
-	public static final RegistrySupplier<Item> ELITE_BATTERY_PACK = register("elite_battery_pack", () -> EnergyItem.of(getSettings().maxCount(1), AMConfig.get().eliteBatteryPackEnergy));
-	public static final RegistrySupplier<Item> CREATIVE_BATTERY_PACK = register("creative_battery_pack", () -> EnergyItem.ofCreative(getSettings().maxCount(1)));
+	public static final RegistrySupplier<Item> PRIMITIVE_BATTERY_PACK = register("primitive_battery_pack", () -> EnergyStorageItem.of(getSettings().maxCount(1), AMConfig.get().primitiveBatteryPackEnergy));
+	public static final RegistrySupplier<Item> BASIC_BATTERY_PACK = register("basic_battery_pack", () -> EnergyStorageItem.of(getSettings().maxCount(1), AMConfig.get().basicBatteryPackEnergy));
+	public static final RegistrySupplier<Item> ADVANCED_BATTERY_PACK = register("advanced_battery_pack", () -> EnergyStorageItem.of(getSettings().maxCount(1), AMConfig.get().advancedBatteryPackEnergy));
+	public static final RegistrySupplier<Item> ELITE_BATTERY_PACK = register("elite_battery_pack", () -> EnergyStorageItem.of(getSettings().maxCount(1), AMConfig.get().eliteBatteryPackEnergy));
+	public static final RegistrySupplier<Item> CREATIVE_BATTERY_PACK = register("creative_battery_pack", () -> EnergyStorageItem.ofCreative(getSettings().maxCount(1)));
 	
 	public static final RegistrySupplier<Item> PRIMITIVE_DRILL = register("primitive_drill", () -> new DrillItem(AMToolMaterials.PRIMITIVE_DRILL, 1, -2.8F, 1, AMConfig.get().primitiveDrillEnergy, getSettings().maxCount(1)));
 	public static final RegistrySupplier<Item> BASIC_DRILL = register("basic_drill", () -> new DrillItem(AMToolMaterials.BASIC_DRILL, 1, -2.8F, 1, AMConfig.get().basicDrillEnergy, getSettings().maxCount(1)));

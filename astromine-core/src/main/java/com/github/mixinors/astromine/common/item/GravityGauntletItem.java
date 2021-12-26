@@ -39,13 +39,13 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.item.base.EnergyItem;
+import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
-public class GravityGauntletItem extends EnergyItem implements DynamicAttributeTool {
+public class GravityGauntletItem extends EnergyStorageItem implements DynamicAttributeTool {
 	private static final Multimap<EntityAttribute, EntityAttributeModifier> EAMS = HashMultimap.create();
 
 	static {
