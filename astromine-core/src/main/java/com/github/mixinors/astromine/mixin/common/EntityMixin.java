@@ -164,18 +164,20 @@ public abstract class EntityMixin implements GravityEntity, EntityAccessor {
 
 	@Inject(at = @At("HEAD"), method = "tick()V")
 	void astromine_tick(CallbackInfo ci) {
+		// TODO: Rewrite Atmosphere stuff, incl. this.
+		
 		// TODO Make this sync all visible chunks around the player.
-		if (((Entity) (Object) this) instanceof ServerPlayerEntity && world != astromine_lastWorld) {
-			astromine_lastWorld = world;
-			
-			NetworkManager.sendToPlayer((ServerPlayerEntity) (Object) this, AMNetworks.GAS_ERASED, ClientAtmosphereManager.ofGasErased());
-
-			ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(getBlockPos()));
-
-			atmosphereComponent.getVolumes().forEach(((blockPos, volume) -> {
-				NetworkManager.sendToPlayer((ServerPlayerEntity) (Object) this, AMNetworks.GAS_ADDED, ClientAtmosphereManager.ofGasAdded(blockPos, volume));
-			}));
-		}
+		// if (((Entity) (Object) this) instanceof ServerPlayerEntity && world != astromine_lastWorld) {
+		// 	astromine_lastWorld = world;
+		//
+		// 	NetworkManager.sendToPlayer((ServerPlayerEntity) (Object) this, AMNetworks.GAS_ERASED, ClientAtmosphereManager.ofGasErased());
+//
+		// 	ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(getBlockPos()));
+//
+		// 	atmosphereComponent.getVolumes().forEach(((blockPos, volume) -> {
+		// 		NetworkManager.sendToPlayer((ServerPlayerEntity) (Object) this, AMNetworks.GAS_ADDED, ClientAtmosphereManager.ofGasAdded(blockPos, volume));
+		// 	}));
+		// }
 	}
 
 	@Inject(method = "updateWaterState", at = @At("RETURN"), cancellable = true)

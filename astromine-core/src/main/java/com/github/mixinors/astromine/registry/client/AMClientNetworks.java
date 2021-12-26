@@ -53,30 +53,6 @@ public class AMClientNetworks {
 				ClientUtils.getWorld().addEntity(id, rocketEntity);
 			});
 		}));
-
-		NetworkManager.registerReceiver(NetworkManager.s2c(), GAS_ERASED, ((buf, context) -> {
-			buf.retain();
-			
-			context.queue(() -> {
-				ClientAtmosphereManager.onGasErased(buf);
-			});
-		}));
-
-		NetworkManager.registerReceiver(NetworkManager.s2c(), GAS_ADDED, ((buf, context) -> {
-			buf.retain();
-
-			context.queue(() -> {
-				ClientAtmosphereManager.onGasAdded(buf);
-			});
-		}));
-
-		NetworkManager.registerReceiver(NetworkManager.s2c(), GAS_REMOVED, ((buf, context) -> {
-			buf.retain();
-
-			context.queue(() -> {
-				ClientAtmosphereManager.onGasRemoved(buf);
-			});
-		}));
 		
 		// TODO: 08/08/2020 - 11:00:51
 		// TODO: 27/08/2020 - 21:15:05

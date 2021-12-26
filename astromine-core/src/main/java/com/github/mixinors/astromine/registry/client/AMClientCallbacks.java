@@ -50,34 +50,32 @@ import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
-import team.reborn.energy.Energy;
-import team.reborn.energy.EnergyHandler;
 
 public class AMClientCallbacks {
 	public static void init() {
 		ItemTooltipCallback.EVENT.register( ( stack, context, tooltip ) -> {
-			if (stack.getItem() instanceof FluidVolumeItem) {
-				SimpleFluidStorage fluidStorage = SimpleFluidStorage.get(stack);
-
-				if(fluidStorage != null) {
-					FluidVolume volume = fluidStorage.getFirst();
-					Identifier fluidId = volume.getFluidId();
-
-					tooltip.addAll(Math.min(tooltip.size(), 1), Lists.newArrayList(
-							((MutableText) TextUtils.getFluidVolume(FluidVolume.of(volume.getAmount() / 81L, volume.getSize() / 81L, volume.getFluid()))).append(new LiteralText(" ")).append(
-									((MutableText) TextUtils.getFluid(fluidId)).formatted(Formatting.GRAY))));
-				}
-			}
+			// if (stack.getItem() instanceof FluidVolumeItem) {
+			// 	SimpleFluidStorage fluidStorage = SimpleFluidStorage.get(stack);
+//
+			// 	if(fluidStorage != null) {
+			// 		FluidVolume volume = fluidStorage.getFirst();
+			// 		Identifier fluidId = volume.getFluidId();
+//
+			// 		tooltip.addAll(Math.min(tooltip.size(), 1), Lists.newArrayList(
+			// 				((MutableText) TextUtils.getFluidVolume(FluidVolume.of(volume.getAmount() / 81L, volume.getSize() / 81L, volume.getFluid()))).append(new LiteralText(" ")).append(
+			// 						((MutableText) TextUtils.getFluid(fluidId)).formatted(Formatting.GRAY))));
+			// 	}
+			// }
 		});
 
 		ItemTooltipCallback.EVENT.register( ( stack, context, tooltip ) -> {
-			if (stack.getItem() instanceof EnergyVolumeItem) {
-				EnergyHandler handler = Energy.of(stack);
-				
-				tooltip.addAll(Math.min(tooltip.size(), 1), Lists.newArrayList(
-						TextUtils.getEnergyVolume(EnergyVolume.of(handler.getEnergy(), handler.getMaxStored()))
-				));
-			}
+			// if (stack.getItem() instanceof EnergyVolumeItem) {
+			// 	EnergyHandler handler = Energy.of(stack);
+			//
+			// 	tooltip.addAll(Math.min(tooltip.size(), 1), Lists.newArrayList(
+			// 			TextUtils.getEnergyVolume(EnergyVolume.of(handler.getEnergy(), handler.getMaxStored()))
+			// 	));
+			// }
 		});
 
 		ItemTooltipCallback.EVENT.register( ( stack, context, tooltip ) -> {
@@ -98,16 +96,16 @@ public class AMClientCallbacks {
 		});
 
 		ItemTooltipCallback.EVENT.register( ( stack, context, tooltip ) -> {
-			if (stack.getItem() instanceof SpaceSuitItem) {
-				if (stack.getItem() == AMItems.SPACE_SUIT_CHESTPLATE.get()) {
-					SimpleFluidStorage fluidStorage = SimpleFluidStorage.get(stack);
-					if(fluidStorage != null) {
-						fluidStorage.forEachIndexed((slot, volume) -> {
-							tooltip.add(((MutableText) TextUtils.getFluidVolume(volume)).append(new LiteralText(" ")).append(((MutableText) TextUtils.getFluid(volume.getFluidId())).formatted(Formatting.GRAY)));
-						});
-					}
-				}
-			}
+			// if (stack.getItem() instanceof SpaceSuitItem) {
+			// 	if (stack.getItem() == AMItems.SPACE_SUIT_CHESTPLATE.get()) {
+			// 		SimpleFluidStorage fluidStorage = SimpleFluidStorage.get(stack);
+			// 		if(fluidStorage != null) {
+			// 			fluidStorage.forEachIndexed((slot, volume) -> {
+			// 				tooltip.add(((MutableText) TextUtils.getFluidVolume(volume)).append(new LiteralText(" ")).append(((MutableText) TextUtils.getFluid(volume.getFluidId())).formatted(Formatting.GRAY)));
+			// 			});
+			// 		}
+			// 	}
+			// }
 		});
 		
 		SkyPropertiesCallback.EVENT.register((properties) -> properties.put(AMDimensions.EARTH_SPACE_ID, new SpaceSkyProperties()));

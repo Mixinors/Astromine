@@ -41,7 +41,7 @@ public class SolidGeneratingDisplay extends EnergyGeneratingDisplay {
 	private final Identifier id;
 	private final Double time;
 
-	public SolidGeneratingDisplay(double energyGenerated, List<EntryIngredient> stacks, Identifier id, Double time) {
+	public SolidGeneratingDisplay(zz energyGenerated, List<EntryIngredient> stacks, Identifier id, Double time) {
 		super(energyGenerated);
 		this.stacks = stacks;
 		this.id = id;
