@@ -186,7 +186,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 			fluidBar = new FluidBarWidget();
 			
 			if (energyBar == null) {
-				fluidBar.setPosition(Position.of(mainTab, 7.0F, 0.0F, 0.0F));
+				fluidBar.setPosition(Position.of(mainTab, 7.0F, 11.0F, 0.0F));
 			} else {
 				fluidBar.setPosition(Position.of(energyBar, 7.0F, 0.0F, 0.0F));
 			}

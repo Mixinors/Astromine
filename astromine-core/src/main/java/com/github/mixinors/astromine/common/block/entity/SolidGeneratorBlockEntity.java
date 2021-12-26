@@ -86,18 +86,25 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 		if (itemStorage != null && energyStorage != null) {
 			try (var transaction = Transaction.openOuter()) {
 				if (available > 0) {
+					progress = limit - available;
+					
 					var produced = 5;
 					
 					for (int i = 0; i < 3 * getMachineSpeed(); ++i) {
 						if (progress < limit) {
-							// TODO: Make it work without waiting for a whole step.
-							if (energyStorage.insert(produced, transaction) == produced) {
+							var nestedTransacation = transaction.openNested();
+							
+							if (energyStorage.insert(produced, nestedTransacation) == produced) {
 								--available;
 								
 								++produced;
 								
 								isActive = true;
+								
+								nestedTransacation.commit();
 							} else {
+								nestedTransacation.abort();
+								
 								isActive = false;
 							}
 							
@@ -110,6 +117,8 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 						}
 					}
 				} else {
+					progress = 0;
+					
 					var inputStack = itemStorage.getStack(INPUT_SLOT);
 					
 					var inputBurnTime = FuelRegistry.INSTANCE.get(inputStack.getItem());
@@ -123,7 +132,11 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 							
 							progress = 0;
 							
-							itemStorage.extract(itemStorage.getVariant(INPUT_SLOT), 1, transaction);
+							var nestedTransacation = transaction.openNested();
+							
+							itemStorage.removeStack(INPUT_SLOT, 1);
+							
+							nestedTransacation.commit();
 						}
 						
 						if (isFuel || progress != 0) {
@@ -135,6 +148,8 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 						isActive = false;
 					}
 				}
+				
+				transaction.commit();
 			}
 		}
 	}

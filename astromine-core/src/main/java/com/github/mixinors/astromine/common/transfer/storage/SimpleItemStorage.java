@@ -64,6 +64,8 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	
 	private int[] extractSlots;
 	
+	private long version = 0L;
+	
 	public SimpleItemStorage(int size) {
 		this.size = size;
 		
@@ -141,6 +143,8 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		transaction.addCloseCallback((($, result) -> {
 			if (result.wasCommitted()) {
 				listeners.forEach(Runnable::run);
+				
+				++version;
 			}
 		}));
 		
@@ -167,6 +171,8 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		transaction.addCloseCallback((($, result) -> {
 			if (result.wasCommitted()) {
 				listeners.forEach(Runnable::run);
+				
+				++version;
 			}
 		}));
 		
@@ -331,6 +337,11 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 			
 			setStack(i, variant.toStack((int) amount));
 		}
+	}
+	
+	@Override
+	public long getVersion() {
+		return version;
 	}
 	
 	/**

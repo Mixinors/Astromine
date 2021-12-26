@@ -56,6 +56,8 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	
 	private int[] extractSlots;
 	
+	private long version = 0L;
+	
 	public SimpleFluidStorage(int size) {
 		this.size = size;
 		
@@ -123,6 +125,8 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		transaction.addCloseCallback((($, result) -> {
 			if (result.wasCommitted()) {
 				listeners.forEach(Runnable::run);
+				
+				++version;
 			}
 		}));
 		
@@ -149,6 +153,8 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		transaction.addCloseCallback((($, result) -> {
 			if (result.wasCommitted()) {
 				listeners.forEach(Runnable::run);
+				
+				++version;
 			}
 		}));
 
@@ -247,6 +253,11 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 			getStorage(i).amount = amount;
 			getStorage(i).variant = variant;
 		}
+	}
+	
+	@Override
+	public long getVersion() {
+		return version;
 	}
 	
 	/**

@@ -116,8 +116,8 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tie
 		var outputFluidStorage = FluidStorage.ITEM.find(outputStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(ITEM_OUTPUT_SLOT)));
 		
 		try (var transaction = Transaction.openOuter()) {
-			StorageUtil.move(inputFluidStorage, fluidStorage.getStorage(FLUID_INPUT_SLOT), Predicates.alwaysTrue(), (long) (1024 * getMachineSpeed()), transaction);
-			StorageUtil.move(fluidStorage.getStorage(FLUID_OUTPUT_SLOT), outputFluidStorage, Predicates.alwaysTrue(), (long) (1024 * getMachineSpeed()), transaction);
+			StorageUtil.move(inputFluidStorage, fluidStorage.getStorage(FLUID_INPUT_SLOT), Predicates.alwaysTrue(), 81000, transaction);
+			StorageUtil.move(fluidStorage.getStorage(FLUID_OUTPUT_SLOT), outputFluidStorage, Predicates.alwaysTrue(), 81000, transaction);
 			
 			transaction.commit();
 		}

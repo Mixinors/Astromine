@@ -41,34 +41,32 @@ import net.minecraft.screen.ScreenHandlerType;
 @Environment(EnvType.CLIENT)
 public class AMScreens {
 	public static void init() {
-		ClientLifecycleEvent.CLIENT_SETUP.register( client -> {
-			register(AMScreenHandlers.RECIPE_CREATOR, RecipeCreatorHandledScreen::new);
-			registerSimple(AMScreenHandlers.ROCKET);
-			registerSimple(AMScreenHandlers.FLUID_EXTRACTOR);
-			registerSimple(AMScreenHandlers.FLUID_INSERTER);
-			registerSimple(AMScreenHandlers.BLOCK_BREAKER);
-			registerSimple(AMScreenHandlers.BLOCK_PLACER);
-			registerSimple(AMScreenHandlers.LIQUID_GENERATOR);
-			registerSimple(AMScreenHandlers.SOLID_GENERATOR);
-			registerSimple(AMScreenHandlers.VENT);
-			registerSimple(AMScreenHandlers.TANK);
-			registerSimple(AMScreenHandlers.NUCLEAR_WARHEAD);
-			registerSimple(AMScreenHandlers.CAPACITOR);
-			registerSimple(AMScreenHandlers.CREATIVE_CAPACITOR);
-			registerSimple(AMScreenHandlers.CREATIVE_TANK);
-			registerSimple(AMScreenHandlers.CREATIVE_BUFFER);
-			registerSimple(AMScreenHandlers.BUFFER);
-			registerSimple(AMScreenHandlers.TRITURATOR);
-			registerSimple(AMScreenHandlers.PRESSER);
-			registerSimple(AMScreenHandlers.WIREMILL);
-			registerSimple(AMScreenHandlers.ELECTRIC_FURNACE);
-			registerSimple(AMScreenHandlers.ELECTROLYZER);
-			registerSimple(AMScreenHandlers.REFINERY);
-			registerSimple(AMScreenHandlers.FLUID_MIXER);
-			registerSimple(AMScreenHandlers.ALLOY_SMELTER);
-			registerSimple(AMScreenHandlers.SOLIDIFIER);
-			registerSimple(AMScreenHandlers.MELTER);
-		});
+		register(AMScreenHandlers.RECIPE_CREATOR, RecipeCreatorHandledScreen::new);
+		registerSimple(AMScreenHandlers.ROCKET);
+		registerSimple(AMScreenHandlers.FLUID_EXTRACTOR);
+		registerSimple(AMScreenHandlers.FLUID_INSERTER);
+		registerSimple(AMScreenHandlers.BLOCK_BREAKER);
+		registerSimple(AMScreenHandlers.BLOCK_PLACER);
+		registerSimple(AMScreenHandlers.LIQUID_GENERATOR);
+		registerSimple(AMScreenHandlers.SOLID_GENERATOR);
+		registerSimple(AMScreenHandlers.VENT);
+		registerSimple(AMScreenHandlers.TANK);
+		registerSimple(AMScreenHandlers.NUCLEAR_WARHEAD);
+		registerSimple(AMScreenHandlers.CAPACITOR);
+		registerSimple(AMScreenHandlers.CREATIVE_CAPACITOR);
+		registerSimple(AMScreenHandlers.CREATIVE_TANK);
+		registerSimple(AMScreenHandlers.CREATIVE_BUFFER);
+		registerSimple(AMScreenHandlers.BUFFER);
+		registerSimple(AMScreenHandlers.TRITURATOR);
+		registerSimple(AMScreenHandlers.PRESSER);
+		registerSimple(AMScreenHandlers.WIREMILL);
+		registerSimple(AMScreenHandlers.ELECTRIC_FURNACE);
+		registerSimple(AMScreenHandlers.ELECTROLYZER);
+		registerSimple(AMScreenHandlers.REFINERY);
+		registerSimple(AMScreenHandlers.FLUID_MIXER);
+		registerSimple(AMScreenHandlers.ALLOY_SMELTER);
+		registerSimple(AMScreenHandlers.SOLIDIFIER);
+		registerSimple(AMScreenHandlers.MELTER);
 	}
 
 	public static <H extends BaseScreenHandler> void registerSimple( RegistrySupplier<? extends ScreenHandlerType<? extends H>> type) {

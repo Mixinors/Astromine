@@ -27,9 +27,15 @@ package com.github.mixinors.astromine.common.block.entity.base;
 import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
 import com.github.mixinors.astromine.common.block.entity.TickableBlockEntity;
 import com.github.mixinors.astromine.common.transfer.RedstoneControl;
+import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
+import com.google.common.base.Predicates;
 import dev.architectury.hooks.block.BlockEntityHooks;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -38,8 +44,11 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import team.reborn.energy.api.EnergyStorage;
+import team.reborn.energy.api.EnergyStorageUtil;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 import java.util.function.Supplier;
@@ -56,6 +65,10 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	protected SimpleEnergyStorage energyStorage = null;
 	protected SimpleItemStorage itemStorage = null;
 	protected SimpleFluidStorage fluidStorage = null;
+	
+	protected long lastEnergyStorageVersion = 0;
+	protected long lastItemStorageVersion = 0;
+	protected long lastFluidStorageVersion = 0;
 	
 	public ExtendedBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type.get(), blockPos, blockState);
@@ -99,7 +112,40 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 		if (!hasWorld() || world.isClient) {
 			return;
 		}
-
+		
+		try (var transaction = Transaction.openOuter()) {
+			for (var direction : Direction.values()) {
+				var theirPos = getPos().offset(direction);
+				
+				var theirItemStorage = ItemStorage.SIDED.find(world, theirPos, direction.getOpposite());
+				var ourItemStorage = ItemStorage.SIDED.find(world, pos, direction);
+				
+				if (ourItemStorage != null && theirItemStorage != null) {
+					StorageUtil.move(ourItemStorage, theirItemStorage, (variant) -> {
+						return ourItemStorage.exactView(transaction, variant).getAmount() > theirItemStorage.exactView(transaction, variant).getAmount();
+					}, 1, transaction);
+				}
+				
+				var theirFluidStorage = FluidStorage.SIDED.find(world, theirPos, direction.getOpposite());
+				var ourFluidStorage = FluidStorage.SIDED.find(world, pos, direction);
+				
+				if (ourFluidStorage != null && theirFluidStorage != null) {
+					StorageUtil.move(ourFluidStorage, theirFluidStorage, (variant) -> {
+						return ourFluidStorage.exactView(transaction, variant).getAmount() > theirFluidStorage.exactView(transaction, variant).getAmount();
+					}, 81000L, transaction);
+				}
+				
+				var theirEnergyStorage = EnergyStorage.SIDED.find(world, theirPos, direction.getOpposite());
+				var ourEnergyStorage = EnergyStorage.SIDED.find(world, pos, direction);
+				
+				if (ourEnergyStorage != null && theirEnergyStorage != null && ourEnergyStorage.getAmount() > theirEnergyStorage.getAmount()) {
+					EnergyStorageUtil.move(ourEnergyStorage, theirEnergyStorage, 1024, transaction);
+				}
+			}
+			
+			transaction.commit();
+		}
+		
 		// TODO: Share items, fluids and energy with neighbors.
 
 		if (world.getBlockState(getPos()).contains(BlockWithEntity.ACTIVE)) {
@@ -119,7 +165,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	
 	@Override
 	public void writeNbt(NbtCompound nbt) {
-		nbt.putInt("RedstoneControl", redstoneControl.ordinal());
+		nbt.putString("RedstoneControl", redstoneControl.name());
 		
 		if (energyStorage != null) {
 			var energyStorageNbt = new NbtCompound();
@@ -153,7 +199,9 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	
 	@Override
 	public void readNbt(@NotNull NbtCompound nbt) {
-		redstoneControl = RedstoneControl.values()[nbt.getInt("RedstoneControl")];
+		if (nbt.contains("RedstoneControl")) {
+			redstoneControl = RedstoneControl.valueOf(nbt.getString("RedstoneControl"));
+		}
 		
 		if (nbt.contains("EnergyStorage")) {
 			var energyStorageNbt = nbt.getCompound("EnergyStorage");
@@ -165,12 +213,28 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 			var itemStorageNbt = nbt.getCompound("ItemStorage");
 			
 			itemStorage.readFromNbt(itemStorageNbt);
+		} else if (nbt.contains("ItemStorageSidings")) {
+			var sidings = getItemStorage().getSidings();
+			
+			var sidingsNbt = nbt.getCompound("ItemStorageSidings");
+			
+			for (var i = 0; i < sidings.length; ++i) {
+				sidings[i] = StorageSiding.values()[sidingsNbt.getInt("" + i)];
+			}
 		}
 		
 		if (nbt.contains("FluidStorage")) {
 			var fluidStorageNbt = nbt.getCompound("FluidStorage");
 			
 			fluidStorage.readFromNbt(fluidStorageNbt);
+		} else if (nbt.contains("FluidStorageSidings")) {
+			var sidings = getFluidStorage().getSidings();
+			
+			var sidingsNbt = nbt.getCompound("FluidStorageSidings");
+			
+			for (var i = 0; i < sidings.length; ++i) {
+				sidings[i] = StorageSiding.values()[sidingsNbt.getInt("" + i)];
+			}
 		}
 
 		super.readNbt(nbt);
@@ -178,7 +242,55 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	
 	@Override
 	public NbtCompound toInitialChunkDataNbt() {
-		return createNbt();
+		var nbt = new NbtCompound();
+		
+		writeNbt(nbt);
+		
+		if (hasItemStorage() && getItemStorage().getVersion() != lastItemStorageVersion) {
+			lastItemStorageVersion = getItemStorage().getVersion();
+			
+			var itemStorageNbt = new NbtCompound();
+			
+			itemStorage.writeToNbt(itemStorageNbt);
+			
+			nbt.put("ItemStorage", itemStorageNbt);
+		} else if (hasItemStorage()) {
+			nbt.remove("ItemStorage");
+			
+			var sidings = getItemStorage().getSidings();
+			
+			var sidingsNbt = new NbtCompound();
+			
+			for (var i = 0; i < sidings.length; ++i) {
+				sidingsNbt.putInt(""+ i, sidings[i].ordinal());
+			}
+			
+			nbt.put("ItemStorageSidings", sidingsNbt);
+		}
+		
+		if (hasFluidStorage() && getFluidStorage().getVersion() != lastFluidStorageVersion) {
+			lastFluidStorageVersion = getFluidStorage().getVersion();
+			
+			var fluidStorageNbt = new NbtCompound();
+			
+			fluidStorage.writeToNbt(fluidStorageNbt);
+			
+			nbt.put("FluidStorage", fluidStorageNbt);
+		} else if (hasFluidStorage()) {
+			nbt.remove("FluidStorage");
+			
+			var sidings = getFluidStorage().getSidings();
+			
+			var sidingsNbt = new NbtCompound();
+			
+			for (var i = 0; i < sidings.length; ++i) {
+				sidingsNbt.putInt(""+ i, sidings[i].ordinal());
+			}
+			
+			nbt.put("FluidStorageSidings", sidingsNbt);
+		}
+		
+		return nbt;
 	}
 
 	@Nullable
