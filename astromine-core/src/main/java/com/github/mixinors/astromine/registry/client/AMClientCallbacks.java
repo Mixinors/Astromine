@@ -66,7 +66,7 @@ public class AMClientCallbacks {
 		ItemTooltipCallback.EVENT.register( ( stack, context, tooltip ) -> {
 			if (stack.getItem() instanceof EnergyStorageItem item) {
 				tooltip.addAll(Math.min(tooltip.size(), 1), Lists.newArrayList(
-						TextUtils.getEnergyStorage(item.getStoredEnergy(stack), item.getEnergyCapacity())
+						TextUtils.getEnergy(item.getStoredEnergy(stack), item.getEnergyCapacity())
 				));
 			}
 		});
