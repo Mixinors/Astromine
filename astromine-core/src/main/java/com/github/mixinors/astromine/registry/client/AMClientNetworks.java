@@ -24,7 +24,6 @@
 
 package com.github.mixinors.astromine.registry.client;
 
-import com.github.mixinors.astromine.client.atmosphere.ClientAtmosphereManager;
 import com.github.mixinors.astromine.common.entity.PrimitiveRocketEntity;
 import com.github.mixinors.astromine.common.util.ClientUtils;
 import com.github.mixinors.astromine.registry.common.AMEntityTypes;

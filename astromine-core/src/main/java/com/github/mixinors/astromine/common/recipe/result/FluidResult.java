@@ -38,11 +38,8 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 
 public record FluidResult(FluidVariant variant, long amount) {
-<<<<<<< HEAD
-=======
 	public static final FluidResult EMPTY = new FluidResult(FluidVariant.blank(), 0);
 
->>>>>>> 91440ca20391b3f06c086a702b9f6e539ec75131
 	public FluidStack toStack() {
 		return FluidStack.create(variant.getFluid(), amount, variant.copyNbt());
 	}

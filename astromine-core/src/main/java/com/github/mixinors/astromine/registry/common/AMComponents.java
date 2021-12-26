@@ -25,19 +25,13 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
 import net.minecraft.entity.LivingEntity;
 
-import com.github.mixinors.astromine.common.component.block.entity.RedstoneComponent;
 import com.github.mixinors.astromine.common.component.entity.EntityOxygenComponent;
-import com.github.mixinors.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.mixinors.astromine.common.component.world.WorldHoloBridgeComponent;
 import com.github.mixinors.astromine.common.component.world.WorldNetworkComponent;
-import com.github.mixinors.astromine.common.entity.base.ComponentEnergyEntity;
-import com.github.mixinors.astromine.common.entity.base.ComponentEnergyItemEntity;
-import com.github.mixinors.astromine.common.entity.base.ComponentFluidEntity;
-import com.github.mixinors.astromine.common.entity.base.ComponentFluidItemEntity;
-import com.github.mixinors.astromine.common.entity.base.ComponentItemEntity;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import dev.onyxstudios.cca.api.v3.block.BlockComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.block.BlockComponentInitializer;
 import dev.onyxstudios.cca.api.v3.chunk.ChunkComponentFactoryRegistry;

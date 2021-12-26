@@ -52,8 +52,6 @@ import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.access.EntityAccessor;
-import com.github.mixinors.astromine.client.atmosphere.ClientAtmosphereManager;
-import com.github.mixinors.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.mixinors.astromine.common.entity.GravityEntity;
 import com.github.mixinors.astromine.common.registry.DimensionLayerRegistry;
 import com.github.mixinors.astromine.registry.common.AMTags;
