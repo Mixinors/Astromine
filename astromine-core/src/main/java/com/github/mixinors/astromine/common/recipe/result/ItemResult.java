@@ -35,22 +35,22 @@ import net.minecraft.util.registry.Registry;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 
-public record ItemResult(ItemVariant variant, int amount) {
+public record ItemResult(ItemVariant variant, int count) {
 	public static final ItemResult EMPTY = new ItemResult(ItemVariant.blank(), 0);
 
 	public ItemStack toStack() {
-		return variant.toStack(amount);
+		return variant.toStack(count);
 	}
 
 	public boolean equalsAndFitsIn(SingleSlotStorage<ItemVariant> storage) {
-		return storage.getCapacity() - storage.getAmount() >= amount && storage.getResource().equals(variant);
+		return storage.getCapacity() - storage.getAmount() >= count && storage.getResource().equals(variant);
 	}
 
 	public static JsonObject toJson(ItemResult result) {
 		var jsonObject = new JsonObject();
 
 		jsonObject.addProperty("item", Registry.ITEM.getId(result.variant.getItem()).toString());
-		jsonObject.addProperty("amount", result.amount);
+		jsonObject.addProperty("count", result.count);
 
 		return jsonObject;
 	}
@@ -71,17 +71,17 @@ public record ItemResult(ItemVariant variant, int amount) {
 
 			var variant = ItemVariant.of(variantItem);
 
-			int variantAmount;
-			if(jsonObject.has("amount")) variantAmount = jsonObject.get("amount").getAsInt();
-			else variantAmount = 1;
+			int variantCount;
+			if(jsonObject.has("count")) variantCount = jsonObject.get("count").getAsInt();
+			else variantCount = 1;
 
-			return new ItemResult(variant, variantAmount);
+			return new ItemResult(variant, variantCount);
 		}
 	}
 
 	public static void toPacket(PacketByteBuf buf, ItemResult result) {
 		buf.writeString(Registry.ITEM.getId(result.variant.getItem()).toString());
-		buf.writeLong(result.amount);
+		buf.writeLong(result.count);
 	}
 
 	public static ItemResult fromPacket(PacketByteBuf buf) {
