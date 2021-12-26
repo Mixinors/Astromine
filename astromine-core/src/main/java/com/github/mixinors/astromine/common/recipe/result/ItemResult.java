@@ -70,14 +70,12 @@ public record ItemResult(ItemVariant variant, int amount) {
 			var variantItem = Registry.ITEM.get(variantId);
 
 			var variant = ItemVariant.of(variantItem);
-			
-			if (jsonObject.has("amount")) {
-				var variantAmount = jsonObject.get("amount").getAsInt();
-				
-				return new ItemResult(variant, variantAmount);
-			} else {
-				return new ItemResult(variant, 1);
-			}
+
+			int variantAmount;
+			if(jsonObject.has("amount")) variantAmount = jsonObject.get("amount").getAsInt();
+			else variantAmount = 1;
+
+			return new ItemResult(variant, variantAmount);
 		}
 	}
 
