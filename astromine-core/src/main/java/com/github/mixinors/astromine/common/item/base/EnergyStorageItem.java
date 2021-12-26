@@ -75,7 +75,7 @@ public class EnergyStorageItem extends Item implements SimpleBatteryItem {
 	public int getItemBarStep(ItemStack stack) {
 		if (getEnergyCapacity() == 0)
 			return 0;
-		return Math.round(13 * (1 - SimpleBatteryItem.getStoredEnergyUnchecked(stack) / getEnergyCapacity()));
+		return Math.round(13 * (SimpleBatteryItem.getStoredEnergyUnchecked(stack) / getEnergyCapacity()));
 	}
 
 	/** Override behavior to return true. */
