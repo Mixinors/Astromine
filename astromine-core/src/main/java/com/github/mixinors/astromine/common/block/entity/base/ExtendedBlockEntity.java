@@ -178,15 +178,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	
 	@Override
 	public NbtCompound toInitialChunkDataNbt() {
-		var nbt = createNbt();
-		
-		if (skipInventory) {
-			nbt.remove("ItemStorage");
-		} else {
-			skipInventory = true;
-		}
-		
-		return nbt;
+		return createNbt();
 	}
 
 	@Nullable
