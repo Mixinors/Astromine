@@ -273,7 +273,8 @@ public final class FluidIngredient {
 		public Collection<FluidVariant> getVariants() {
 			ArrayList<FluidVariant> list = Lists.newArrayList();
 			for (Fluid fluid : this.requiredTag.values()) {
-				list.add(FluidVariant.of(fluid));
+				if(fluid.isStill(fluid.getDefaultState()))
+					list.add(FluidVariant.of(fluid));
 			}
 			return list;
 		}
