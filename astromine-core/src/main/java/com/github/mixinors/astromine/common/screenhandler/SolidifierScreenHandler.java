@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
+import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
@@ -31,12 +32,11 @@ import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyFluidItemScreenHandler;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
 import com.github.mixinors.astromine.common.block.entity.SolidifierBlockEntity;
 
-public class SolidifierScreenHandler extends ComponentBlockEntityEnergyFluidItemScreenHandler {
+public class SolidifierScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private SolidifierBlockEntity solidifier;
 
 	public SolidifierScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
@@ -49,7 +49,7 @@ public class SolidifierScreenHandler extends ComponentBlockEntityEnergyFluidItem
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		SlotWidget output = new SlotWidget(0, solidifier, ExtractionSlot::new);
+		SlotWidget output = new SlotWidget(0, solidifier.getItemStorage(), ExtractionSlot::new);
 		output.setSize( Size.of(18, 18));
 		output.setPosition(Position.of(fluidBar, 102, 15));
 

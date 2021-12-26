@@ -24,18 +24,18 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
+import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
+import dev.vini2003.hammer.common.widget.bar.FluidBarWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyFluidScreenHandler;
-import com.github.mixinors.astromine.common.widget.blade.VerticalFluidBarWidget;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.block.entity.FluidMixerBlockEntity;
 
-public class FluidMixerScreenHandler extends ComponentBlockEntityEnergyFluidScreenHandler {
+public class FluidMixerScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private FluidMixerBlockEntity mixer;
 
 	public FluidMixerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
@@ -48,10 +48,10 @@ public class FluidMixerScreenHandler extends ComponentBlockEntityEnergyFluidScre
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		VerticalFluidBarWidget secondInputFluidBar = new VerticalFluidBarWidget();
+		var secondInputFluidBar = new FluidBarWidget();
 		secondInputFluidBar.setPosition( Position.of(fluidBar, fluidBar.getWidth() + 7, 0));
 		secondInputFluidBar.setSize( Size.of(fluidBar));
-		secondInputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getSecond());
+		secondInputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(1));
 
 		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(secondInputFluidBar, secondInputFluidBar.getWidth() + 9, secondInputFluidBar.getHeight() / 2F - 8));
@@ -59,10 +59,10 @@ public class FluidMixerScreenHandler extends ComponentBlockEntityEnergyFluidScre
 		arrow.setLimitSupplier(() -> mixer.limit);
 		arrow.setProgressSupplier(() -> (int) mixer.progress);
 
-		VerticalFluidBarWidget outputFluidBar = new VerticalFluidBarWidget();
+		var outputFluidBar = new FluidBarWidget();
 		outputFluidBar.setPosition(Position.of(secondInputFluidBar, secondInputFluidBar.getWidth() + 9 + arrow.getWidth() + 7, 0));
 		outputFluidBar.setSize(Size.of(fluidBar));
-		outputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getThird());
+		outputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(2));
 
 		mainTab.add(secondInputFluidBar);
 		mainTab.add(arrow);

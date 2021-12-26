@@ -51,7 +51,7 @@ public class BaseRenderer {
 	/** Draws a quads. */
 	public static void drawQuad(MatrixStack matrices, VertexConsumerProvider provider, float x, float y, float sX, float sY, Color color) {
 		matrices.push();
-		drawQuad(matrices, provider, Layers.INSTANCE.getInterface(), x, y, sX, sY, 0x00f000f0, color);
+		drawQuad(matrices, provider, Layers.INTERFACE, x, y, sX, sY, 0x00f000f0, color);
 		matrices.pop();
 	}
 
@@ -80,7 +80,7 @@ public class BaseRenderer {
 	/** Draws a gradient quads. */
 	public static void drawGradientQuad(MatrixStack matrices, VertexConsumerProvider provider, float startX, float startY, float endX, float endY, Color colorStart, Color colorEnd) {
 		matrices.push();
-		drawGradientQuad(matrices, provider, Layers.INSTANCE.getInterface(), startX, startY, endX, endY, 0, 0, 1, 1, 0x00f000f0, colorStart, colorEnd, false);
+		drawGradientQuad(matrices, provider, Layers.INTERFACE, startX, startY, endX, endY, 0, 0, 1, 1, 0x00f000f0, colorStart, colorEnd, false);
 		matrices.pop();
 	}
 
@@ -94,7 +94,7 @@ public class BaseRenderer {
 	/** Draws a gradient quads. */
 	public static void drawGradientQuad(MatrixStack matrices, VertexConsumerProvider provider, float startX, float startY, float endX, float endY, int light, Color colorStart, Color colorEnd) {
 		matrices.push();
-		drawGradientQuad(matrices, provider, Layers.INSTANCE.getInterface(), startX, startY, endX, endY, 0, 0, 1, 1, light, colorStart, colorEnd, false);
+		drawGradientQuad(matrices, provider, Layers.INTERFACE, startX, startY, endX, endY, 0, 0, 1, 1, light, colorStart, colorEnd, false);
 		matrices.pop();
 	}
 
@@ -125,7 +125,7 @@ public class BaseRenderer {
 	/** Draws a textured quads. */
 	public static void drawTexturedQuad(MatrixStack matrices, VertexConsumerProvider provider, float x, float y, float sX, float sY, Identifier texture) {
 		matrices.push();
-		drawTexturedQuad(matrices, provider, Layers.INSTANCE.getInterface(), x, y, sX, sY, 0, 0, 1, 1, 0x00f000f0, Color.Companion.of(0xFFFFFFFF), texture);
+		drawTexturedQuad(matrices, provider, Layers.INTERFACE, x, y, sX, sY, 0, 0, 1, 1, 0x00f000f0, Color.Companion.of(0xFFFFFFFF), texture);
 		matrices.pop();
 	}
 
@@ -139,7 +139,7 @@ public class BaseRenderer {
 	/** Draws a textured quads. */
 	public static void drawTexturedQuad(MatrixStack matrices, VertexConsumerProvider provider, float x, float y, float sX, float sY, Color color, Identifier texture) {
 		matrices.push();
-		drawTexturedQuad(matrices, provider, Layers.INSTANCE.getInterface(), x, y, sX, sY, 0, 0, 1, 1, 0x00f000f0, color, texture);
+		drawTexturedQuad(matrices, provider, Layers.INTERFACE, x, y, sX, sY, 0, 0, 1, 1, 0x00f000f0, color, texture);
 		matrices.pop();
 	}
 
@@ -153,7 +153,7 @@ public class BaseRenderer {
 	/** Draws a textured quads. */
 	public static void drawTexturedQuad(MatrixStack matrices, VertexConsumerProvider provider, float x, float y, float sX, float sY, int light, Color color, Identifier texture) {
 		matrices.push();
-		drawTexturedQuad(matrices, provider, Layers.INSTANCE.getInterface(), x, y, sX, sY, 0, 0, 1, 1, light, color, texture);
+		drawTexturedQuad(matrices, provider, Layers.INTERFACE, x, y, sX, sY, 0, 0, 1, 1, light, color, texture);
 		matrices.pop();
 	}
 

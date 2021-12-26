@@ -47,8 +47,8 @@ import java.util.function.Supplier;
 
 public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
 	private double available = 0;
-	private double progress = 0;
-	private int limit = 100;
+	public double progress = 0;
+	public int limit = 100;
 	
 	private static final int INPUT_SLOT = 0;
 	

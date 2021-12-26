@@ -62,7 +62,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 
 		this.skipInventory = true;
 		
-		this.redstoneControl = RedstoneControl.NONE;
+		this.redstoneControl = RedstoneControl.WORK_ALWAYS;
 	}
 	
 	public void doNotSkipInventory() {
@@ -192,20 +192,40 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	
 	@Override
 	public NbtCompound toInitialChunkDataNbt() {
-		NbtCompound compound = createNbt();
+		var nbt = createNbt();
 		
 		if (skipInventory) {
-			compound.remove("ItemStorage");
+			nbt.remove("ItemStorage");
 		} else {
 			skipInventory = true;
 		}
 		
-		return compound;
+		return nbt;
 	}
 
 	@Nullable
 	@Override
 	public Packet<ClientPlayPacketListener> toUpdatePacket() {
 		return BlockEntityUpdateS2CPacket.create(this);
+	}
+	
+	public RedstoneControl getRedstoneControl() {
+		return redstoneControl;
+	}
+	
+	public void setRedstoneControl(RedstoneControl redstoneControl) {
+		this.redstoneControl = redstoneControl;
+	}
+	
+	public SimpleEnergyStorage getEnergyStorage() {
+		return energyStorage;
+	}
+
+	public SimpleItemStorage getItemStorage() {
+		return itemStorage;
+	}
+	
+	public SimpleFluidStorage getFluidStorage() {
+		return fluidStorage;
 	}
 }

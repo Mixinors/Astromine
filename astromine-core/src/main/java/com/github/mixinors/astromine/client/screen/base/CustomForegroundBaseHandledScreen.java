@@ -32,22 +32,11 @@ import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * A {@link BaseHandledScreen} whose {@link #drawForeground(MatrixStack, int, int)}
- * method does nothing.
- */
-public class CustomForegroundBaseHandledScreen<T extends BaseScreenHandler> extends BaseHandledScreen<T>
-{
-	/**
-	 * Instantiates a {@link CustomForegroundBaseHandledScreen}.
-	 */
+public class CustomForegroundBaseHandledScreen<T extends BaseScreenHandler> extends BaseHandledScreen<T> {
 	public CustomForegroundBaseHandledScreen(@NotNull BaseScreenHandler handler, @NotNull PlayerInventory inventory, @NotNull Text title) {
 		super(handler, inventory, title);
 	}
-
-	/**
-	 * Override behavior to do nothing.
-	 */
+	
 	@Override
 	protected void drawForeground(@Nullable MatrixStack matrices, int mouseX, int mouseY) {}
 }

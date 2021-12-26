@@ -24,13 +24,12 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
+import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyFluidScreenHandler;
-
-public class VentScreenHandler extends ComponentBlockEntityEnergyFluidScreenHandler {
+public class VentScreenHandler extends ExtendedBlockEntityScreenHandler {
 	public VentScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.VENT, syncId, player, position);
 	}

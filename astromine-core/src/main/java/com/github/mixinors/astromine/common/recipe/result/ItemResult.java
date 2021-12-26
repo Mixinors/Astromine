@@ -11,7 +11,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public record ItemResult(ItemVariant variant, int amount) {
-
 	public ItemStack toStack() {
 		return variant.toStack(amount);
 	}

@@ -28,15 +28,11 @@ import dev.vini2003.hammer.common.screen.handler.BaseScreenHandler;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
-import com.github.mixinors.astromine.common.screenhandler.base.entity.ComponentEntityEnergyScreenHandler;
+import com.github.mixinors.astromine.client.screen.base.CustomForegroundBaseHandledScreen;
+import com.github.mixinors.astromine.common.screenhandler.base.entity.ExtendedEntityScreenHandler;
 
-/**
- * A {@link ComponentEntityHandledScreen} used by
- * {@link ComponentEntityEnergyScreenHandler}.
- */
-public class ComponentEntityEnergyHandledScreen<T extends ComponentEntityEnergyScreenHandler> extends ComponentEntityHandledScreen<T> {
-	/** Instantiates a {@link ComponentEntityEnergyHandledScreen}. */
-	public ComponentEntityEnergyHandledScreen( BaseScreenHandler handler, PlayerInventory inventory, Text title) {
+public class ExtendedEntityHandledScreen<T extends ExtendedEntityScreenHandler> extends CustomForegroundBaseHandledScreen<T> {
+	public ExtendedEntityHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 	}
 }

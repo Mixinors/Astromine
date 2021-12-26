@@ -49,6 +49,7 @@ import java.util.function.BiPredicate;
 
 public final class FluidIngredient {
 	private final Entry entry;
+	
 	@Nullable
 	private FluidVariant[] matchingVariants;
 	

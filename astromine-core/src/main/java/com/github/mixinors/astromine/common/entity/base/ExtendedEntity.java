@@ -108,4 +108,16 @@ public abstract class ExtendedEntity extends Entity {
 			fluidStorage.readFromNbt(fluidStorageNbt);
 		}
 	}
+	
+	public SimpleEnergyStorage getEnergyStorage() {
+		return energyStorage;
+	}
+	
+	public SimpleItemStorage getItemStorage() {
+		return itemStorage;
+	}
+	
+	public SimpleFluidStorage getFluidStorage() {
+		return fluidStorage;
+	}
 }

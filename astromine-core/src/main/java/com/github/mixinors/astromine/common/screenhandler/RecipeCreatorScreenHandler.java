@@ -58,13 +58,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * A {@link BaseScreenHandler}
- * configured as an interface for {@link CraftingRecipe}
- * creation as {@link JsonElement}.
- */
-public class RecipeCreatorScreenHandler extends BaseScreenHandler
-{
+public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 	public static final Inventory[] craftingInventories = new Inventory[] { BaseInventory.of(10), BaseInventory.of(10) };
 
 	public Inventory getInventory() {
@@ -89,19 +83,19 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler
             }
         };
 
-        final Map<String, String> TAGS = new HashMap<String, String>() {
-            {
-                Registry.ITEM.forEach((item) -> {
-                    Identifier id = Registry.ITEM.getId(item);
-
-                    TYPES.forEach((type) -> {
-                        if (id.getPath().contains(type)) {
-                            put(id.toString(), "c:" + WordUtils.pluralize(id.getPath()));
-                        }
-                    });
-                });
-            }
-        };
+        final Map<String, String> TAGS = new HashMap<>() {
+			{
+				Registry.ITEM.forEach((item) -> {
+					Identifier id = Registry.ITEM.getId(item);
+			
+					TYPES.forEach((type) -> {
+						if (id.getPath().contains(type)) {
+							put(id.toString(), "c:" + WordUtils.pluralize(id.getPath()));
+						}
+					});
+				});
+			}
+		};
         PanelWidget panel = new PanelWidget();
 		panel.setPosition( Position.of(width / 2 - 88.5, height / 2 - 92));
 		panel.setSize( Size.of(93 + 84, 100 + 84));

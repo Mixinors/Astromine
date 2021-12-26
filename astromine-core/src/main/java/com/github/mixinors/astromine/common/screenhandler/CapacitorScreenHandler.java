@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
+import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
@@ -33,14 +34,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyItemScreenHandler;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
 import java.util.function.Supplier;
 
-public class CapacitorScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
+public class CapacitorScreenHandler extends ExtendedBlockEntityScreenHandler {
 	public CapacitorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.CAPACITOR, syncId, player, position);
 	}
@@ -55,11 +55,11 @@ public class CapacitorScreenHandler extends ComponentBlockEntityEnergyItemScreen
 
 		energyBar.setPosition( Position.of(width / 2F - energyBar.getWidth() / 2F, energyBar.getY()));
 
-		SlotWidget input = new SlotWidget(0, blockEntity);
+		SlotWidget input = new SlotWidget(0, blockEntity.getItemStorage());
 		input.setPosition(Position.of(mainTab, 12, 26));
 		input.setSize( Size.of(18, 18));
 
-		SlotWidget output = new SlotWidget(1, blockEntity);
+		SlotWidget output = new SlotWidget(1, blockEntity.getItemStorage());
 		output.setPosition(Position.of(mainTab, 146, 26));
 		output.setSize(Size.of(18, 18));
 
@@ -68,7 +68,7 @@ public class CapacitorScreenHandler extends ComponentBlockEntityEnergyItemScreen
 		leftArrow.setSize(Size.of(22, 16));
 		leftArrow.setLimitSupplier(() -> 1);
 		leftArrow.setProgressSupplier(() -> {
-			ItemStack stack = blockEntity.getItemComponent().getFirst();
+			ItemStack stack = blockEntity.getItemStorage().getStack(0);
 			if (!Energy.valid(stack))
 				return 0;
 			EnergyHandler handler = Energy.of(stack);
@@ -80,7 +80,7 @@ public class CapacitorScreenHandler extends ComponentBlockEntityEnergyItemScreen
 		rightArrow.setSize(Size.of(22, 16));
 		rightArrow.setLimitSupplier(() -> 1);
 		rightArrow.setProgressSupplier(() -> {
-			ItemStack stack = blockEntity.getItemComponent().getSecond();
+			ItemStack stack = blockEntity.getItemStorage().getStack(1);
 			if (!Energy.valid(stack))
 				return 0;
 			EnergyHandler handler = Energy.of(stack);

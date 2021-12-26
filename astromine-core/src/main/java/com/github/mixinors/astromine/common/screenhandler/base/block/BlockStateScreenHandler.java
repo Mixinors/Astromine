@@ -37,17 +37,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
-/**
- * This class represents a {@link ScreenHandler} with an associated
- * {@link BlockPos}, {@link Block} and {@link BlockState}
- */
-public abstract class BlockStateScreenHandler extends BaseScreenHandler
-{
+public abstract class BlockStateScreenHandler extends BaseScreenHandler {
 	protected BlockPos position;
 	protected Block originalBlock;
 	protected BlockState state;
-
-	/** Instantiates a {@link BlockStateScreenHandler}. */
+	
 	public BlockStateScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type.get(), syncId, player);
 
@@ -55,13 +49,13 @@ public abstract class BlockStateScreenHandler extends BaseScreenHandler
 		this.originalBlock = state.getBlock();
 		this.position = position;
 	}
-
-	/** Override behavior to only allow the {@link ScreenHandler} to be open
-	 * when possible, and while the associated {@link BlockState} has not
-	 * changed. */
+	
 	@Override
 	public boolean canUse(@Nullable PlayerEntity player) {
-		if(player == null) return false;
+		if (player == null) {
+			return false;
+		}
+		
 		return canUse(ScreenHandlerContext.create(player.getWorld(), position), player, originalBlock);
 	}
 }

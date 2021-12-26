@@ -35,7 +35,6 @@ import dev.architectury.event.events.common.TickEvent;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
@@ -43,7 +42,7 @@ import com.github.mixinors.astromine.common.block.transfer.TransferType;
 import com.github.mixinors.astromine.common.callback.TransferEntryCallback;
 import com.github.mixinors.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.mixinors.astromine.common.component.world.WorldNetworkComponent;
-import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityScreenHandler;
+import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 
 import com.google.common.collect.Lists;
@@ -93,8 +92,8 @@ public class AMCallbacks {
 
 		TickEvent.SERVER_PRE.register(( server) -> {
 			for (PlayerEntity playerEntity : server.getPlayerManager().getPlayerList()) {
-				if (playerEntity.currentScreenHandler instanceof ComponentBlockEntityScreenHandler) {
-					ComponentBlockEntityScreenHandler screenHandler = (ComponentBlockEntityScreenHandler) playerEntity.currentScreenHandler;
+				if (playerEntity.currentScreenHandler instanceof ExtendedBlockEntityScreenHandler) {
+					ExtendedBlockEntityScreenHandler screenHandler = (ExtendedBlockEntityScreenHandler) playerEntity.currentScreenHandler;
 
 					if (screenHandler.getBlockEntity() != null) {
 						screenHandler.getBlockEntity().syncData();

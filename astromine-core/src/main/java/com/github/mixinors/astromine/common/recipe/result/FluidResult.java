@@ -13,7 +13,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public record FluidResult(FluidVariant variant, long amount) {
-
 	public FluidStack toStack() {
 		return FluidStack.create(variant.getFluid(), amount, variant.copyNbt());
 	}

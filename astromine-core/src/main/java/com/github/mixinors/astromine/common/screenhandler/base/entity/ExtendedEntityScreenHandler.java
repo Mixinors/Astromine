@@ -28,6 +28,8 @@ import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
 import dev.vini2003.hammer.common.screen.handler.BaseScreenHandler;
 import dev.vini2003.hammer.common.util.Slots;
+import dev.vini2003.hammer.common.widget.bar.EnergyBarWidget;
+import dev.vini2003.hammer.common.widget.bar.FluidBarWidget;
 import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 import dev.vini2003.hammer.common.widget.tab.TabWidget;
 import dev.vini2003.hammer.common.widget.text.TextWidget;
@@ -45,72 +47,86 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.function.Supplier;
 
-/**
- * A {@link BlockStateScreenHandler} with an attached
- * {@link ExtendedBlockEntity}.
- */
-public abstract class ComponentEntityScreenHandler extends BaseScreenHandler
-{
+public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 	protected ExtendedEntity entity;
 
+	protected EnergyBarWidget energyBar = null;
+	protected FluidBarWidget fluidBar = null;
+	
 	protected Collection<SlotWidget> playerSlots = new HashSet<>();
 
 	protected TabWidget tabs;
 
 	protected TabWidget.TabWidgetCollection mainTab;
-
-	/** Instantiates a {@link ComponentEntityScreenHandler},
-	 * synchronizing its attached {@link ExtendedEntity}. */
-	public ComponentEntityScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, int entityId) {
+	
+	public ExtendedEntityScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, int entityId) {
 		super(type.get(), syncId, player);
 
 		entity = (ExtendedEntity) player.world.getEntityById(entityId);
 	}
-
-	/** Returns an {@link ItemStack} representing this entity in the {@link TabWidget}. */
+	
 	public abstract ItemStack getSymbol();
-
-	/** Returns the additional height that the {@link TabWidget} should have.
-	 * At that, I don't know why this method is a thing. */
+	
 	public int getTabWidgetExtendedHeight() {
 		return 0;
 	}
-
-	/** Override behavior to only allow the {@link ScreenHandler} to be open
-	 * when possible, and while the associated {@link Entity} has not died
-	 * or moved too far away. */
+	
 	@Override
 	public boolean canUse(PlayerEntity player) {
 		return this.entity.isAlive() && this.entity.distanceTo(player) < 8.0F;
 	}
-
-	/** Override behavior to build the entity interface,
-	 * instantiating and configuring the {@link TabWidget},
-	 * its tabs, the inventory, and other miscellaneous things. */
+	
 	@Override
 	public void initialize(int width, int height) {
 		tabs = new TabWidget();
-		tabs.setSize( Size.of(176F, 188F + getTabWidgetExtendedHeight()));
-		tabs.setPosition( Position.of(width / 2 - tabs.getWidth() / 2, height / 2 - tabs.getHeight() / 2));
+		tabs.setSize( Size.of(176.0F, 188F + getTabWidgetExtendedHeight(), 0.0F));
+		tabs.setPosition( Position.of(width / 2.0F - tabs.getWidth() / 2.0F, height / 2.0F - tabs.getHeight() / 2.0F, 0.0F));
 
 		add(tabs);
 
 		mainTab = (TabWidget.TabWidgetCollection) tabs.addTab(getSymbol());
-		mainTab.setPosition(Position.of(tabs, 0, 25F + 7F));
-		mainTab.setSize(Size.of(176F, 184F));
+		mainTab.setPosition(Position.of(tabs, 0.0F, 25.0F + 7.0F, 0.0F));
+		mainTab.setSize(Size.of(176.0F, 184.0F, 0.0F));
 
-		TextWidget title = new TextWidget();
-		title.setPosition(Position.of(mainTab, 8, 0));
+		var title = new TextWidget();
+		title.setPosition(Position.of(mainTab, 8.0F, 0.0F, 0.0F));
 		title.setText(entity.getDisplayName());
 		title.setColor(4210752);
+		
 		mainTab.add(title);
 
-		Position invPos = Position.of(tabs, 7F, 25F + 7F + (184 - 18 - 18 - (18 * 4) - 3 + getTabWidgetExtendedHeight()));
-		TextWidget invTitle = new TextWidget();
-		invTitle.setPosition(Position.of(invPos, 0, -10));
+		var invPos = Position.of(tabs, 7.0F, 25.0F + 7.0F + (184.0F - 18.0F - 18.0F - (18.0F * 4.0F) - 3.0F + getTabWidgetExtendedHeight()), 0.0F);
+		
+		var invTitle = new TextWidget();
+		invTitle.setPosition(Position.of(invPos, 0.0F, -10.0F, 0.0F));
 		invTitle.setText(getPlayer().getInventory().getName());
 		invTitle.setColor(4210752);
+		
 		mainTab.add(invTitle);
-		playerSlots = Slots.addPlayerInventory(invPos, Size.of(18F, 18F), mainTab, getPlayer().getInventory());
+		
+		playerSlots = Slots.addPlayerInventory(invPos, Size.of(18.0F, 18.0F, 0.0F), mainTab, getPlayer().getInventory());
+		
+		if (entity.getEnergyStorage() != null) {
+			energyBar = new EnergyBarWidget();
+			energyBar.setPosition( Position.of(mainTab, 7.0F, 11.0F, 0.0F));
+			energyBar.setSize( Size.of(24.0F, 48.0F, 0.0F));
+			energyBar.setCurrent(() -> (float) entity.getEnergyStorage().getAmount());
+			energyBar.setMaximum(() -> (float) entity.getEnergyStorage().getCapacity());
+			
+			mainTab.add(energyBar);
+		}
+		
+		if (entity.getFluidStorage() != null) {
+			fluidBar = new FluidBarWidget();
+			
+			if (energyBar == null) {
+				fluidBar.setPosition(Position.of(mainTab, 7.0F, 0.0F, 0.0F));
+			} else {
+				fluidBar.setPosition(Position.of(energyBar, 7.0F, 0.0F, 0.0F));
+			}
+			
+			fluidBar.setSize(Size.of(24.0F, 48.0F, 0.0F));
+			fluidBar.setStorage(entity.getFluidStorage().getStorage(0));
+		}
 	}
 }

@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
+import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
@@ -31,12 +32,11 @@ import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyItemScreenHandler;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
 import com.github.mixinors.astromine.common.block.entity.AlloySmelterBlockEntity;
 
-public class AlloySmelterScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
+public class AlloySmelterScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private AlloySmelterBlockEntity smelter;
 
 	public AlloySmelterScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
@@ -49,15 +49,15 @@ public class AlloySmelterScreenHandler extends ComponentBlockEntityEnergyItemScr
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		SlotWidget firstInput = new SlotWidget(0, smelter);
-		firstInput.setPosition( Position.of(energyBar.getX(), energyBar.getY()));
+		SlotWidget firstInput = new SlotWidget(0, smelter.getItemStorage());
+		firstInput.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
 		firstInput.setSize( Size.of(18, 18));
 
-		SlotWidget secondInput = new SlotWidget(1, smelter);
+		SlotWidget secondInput = new SlotWidget(1, smelter.getItemStorage());
 		secondInput.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
 		secondInput.setSize(Size.of(18, 18));
 
-		SlotWidget output = new SlotWidget(2, smelter, ExtractionSlot::new);
+		SlotWidget output = new SlotWidget(2, smelter.getItemStorage(), ExtractionSlot::new);
 		output.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
 		output.setSize(Size.of(18, 18));
 

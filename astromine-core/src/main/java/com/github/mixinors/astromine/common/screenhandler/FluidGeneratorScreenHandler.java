@@ -24,17 +24,17 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
+import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyFluidScreenHandler;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.block.entity.FluidGeneratorBlockEntity;
 
-public class FluidGeneratorScreenHandler extends ComponentBlockEntityEnergyFluidScreenHandler {
+public class FluidGeneratorScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private FluidGeneratorBlockEntity generator;
 
 	public FluidGeneratorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {

@@ -24,10 +24,12 @@
 
 package com.github.mixinors.astromine.common.util;
 
+import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.transfer.StorageSiding;
+import com.github.mixinors.astromine.common.transfer.StorageType;
 import com.google.common.collect.ImmutableMap;
 
-import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
-import com.github.mixinors.astromine.common.widget.blade.TransferTypeSelectorButtonWidget;
+import com.github.mixinors.astromine.common.widget.blade.StorageSidingWidget;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
@@ -36,33 +38,42 @@ import dev.vini2003.hammer.common.widget.tab.TabWidget;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class WidgetUtils {
-	/**
-	 * Populates a {@link TabWidget.TabWidgetCollection} widgets corresponding to
-	 * the specified {@link TransferComponent} and {@link ComponentKey}.
-	 */
-	public static void createTransferTab(TabWidget.TabWidgetCollection tab, Position anchor, Direction rotation, TransferComponent component, BlockPos blockPos, ComponentKey<?> type) {
-		final Position finalNorth = Position.of(anchor, 7 + 22, 31 + 22);
-		final Position finalSouth = Position.of(anchor, 7, 31 + 44);
-		final Position finalUp = Position.of(anchor, 7 + 22, 31);
-		final Position finalDown = Position.of(anchor, 7 + 22, 31 + 44);
-		final Position finalWest = Position.of(anchor, 7 + 44, 31 + 22);
-		final Position finalEast = Position.of(anchor, 7, 31 + 22);
+	public static List<StorageSidingWidget> createStorageSiding(Position anchor, ExtendedBlockEntity blockEntity, StorageSiding[] sidings, StorageType type, Direction rotation) {
+		var north = Position.of(anchor, 7.0F + 22.0F, 31.0F + 22.0F, 0.0F);
+		var south = Position.of(anchor, 7.0F, 31.0F + 44, 0.0F);
+		var up = Position.of(anchor, 7.0F + 22.0F, 31.0F, 0.0F);
+		var down = Position.of(anchor, 7.0F + 22.0F, 31.0F + 44.0F, 0.0F);
+		var west = Position.of(anchor, 7.0F + 44.0F, 31.0F + 22.0F, 0.0F);
+		var east = Position.of(anchor, 7.0F, 31.0F + 22.0F, 0.0F);
 
-		final ImmutableMap<Direction, Position> positions = ImmutableMap.<Direction, Position>builder().put(Direction.NORTH, finalNorth).put(Direction.SOUTH, finalSouth).put(Direction.WEST, finalWest).put(Direction.EAST, finalEast).put(Direction.UP, finalUp).put(Direction.DOWN,
-				finalDown).build();
+		var positions = ImmutableMap.<Direction, Position>builder()
+				.put(Direction.NORTH, north)
+				.put(Direction.SOUTH, south)
+				.put(Direction.WEST, west)
+				.put(Direction.EAST, east)
+				.put(Direction.UP, up)
+				.put(Direction.DOWN, down)
+				.build();
 
-		for (Direction direction : Direction.values()) {
-			TransferTypeSelectorButtonWidget button = new TransferTypeSelectorButtonWidget();
+		var list = new ArrayList<StorageSidingWidget>();
+		
+		for (var direction : Direction.values()) {
+			var button = new StorageSidingWidget();
 			button.setPosition(positions.get(MirrorUtils.rotate(direction, rotation)));
-			button.setSize(Size.of(18, 18));
-			button.setComponent(component);
+			button.setSize(Size.of(18.0F, 18.0F, 0.0F));
+			button.setBlockEntity(blockEntity);
+			button.setSiding(sidings[direction.ordinal()]);
 			button.setType(type);
 			button.setRotation(rotation);
 			button.setDirection(direction);
-			button.setBlockPos(blockPos);
 
-			tab.add(button);
+			list.add(button);
 		}
+		
+		return list;
 	}
 }

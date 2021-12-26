@@ -47,8 +47,8 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
-	private double progress = 0;
-	private int limit = 100;
+	public double progress = 0;
+	public int limit = 100;
 	private boolean shouldTry = true;
 	
 	private static final int INPUT_SLOT = 0;

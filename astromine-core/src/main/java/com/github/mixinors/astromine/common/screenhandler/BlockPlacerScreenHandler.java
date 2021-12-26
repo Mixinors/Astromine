@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
+import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
@@ -31,9 +32,7 @@ import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyItemScreenHandler;
-
-public class BlockPlacerScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
+public class BlockPlacerScreenHandler extends ExtendedBlockEntityScreenHandler {
 	public BlockPlacerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.BLOCK_PLACER, syncId, player, position);
 	}
@@ -42,7 +41,7 @@ public class BlockPlacerScreenHandler extends ComponentBlockEntityEnergyItemScre
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		SlotWidget slot = new SlotWidget(0, blockEntity);
+		SlotWidget slot = new SlotWidget(0, blockEntity.getItemStorage());
 		slot.setPosition( Position.of(mainTab, mainTab.getWidth() / 2F - 9F, 26));
 		slot.setSize( Size.of(18, 18));
 

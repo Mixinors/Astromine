@@ -51,6 +51,7 @@ import java.util.function.BiPredicate;
 
 public final class ItemIngredient {
 	private final Entry entry;
+	
 	@Nullable
 	private ItemVariant[] matchingVariants;
 	

@@ -24,18 +24,18 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
+import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
+import dev.vini2003.hammer.common.widget.bar.FluidBarWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyFluidScreenHandler;
-import com.github.mixinors.astromine.common.widget.blade.VerticalFluidBarWidget;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.block.entity.RefineryBlockEntity;
 
-public class RefineryScreenHandler extends ComponentBlockEntityEnergyFluidScreenHandler {
+public class RefineryScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private RefineryBlockEntity refinery;
 
 	public RefineryScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
@@ -48,9 +48,9 @@ public class RefineryScreenHandler extends ComponentBlockEntityEnergyFluidScreen
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		VerticalFluidBarWidget outputFluidBar = new VerticalFluidBarWidget();
+		var outputFluidBar = new FluidBarWidget();
 		outputFluidBar.setSize( Size.of(fluidBar));
-		outputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getSecond());
+		outputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(1));
 
 		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
 		arrow.setPosition( Position.of(fluidBar, fluidBar.getWidth() + 7, fluidBar.getHeight() / 2 - 8));

@@ -24,18 +24,18 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
+import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
+import dev.vini2003.hammer.common.widget.bar.FluidBarWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyFluidScreenHandler;
-import com.github.mixinors.astromine.common.widget.blade.VerticalFluidBarWidget;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.block.entity.ElectrolyzerBlockEntity;
 
-public class ElectrolyzerScreenHandler extends ComponentBlockEntityEnergyFluidScreenHandler {
+public class ElectrolyzerScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private ElectrolyzerBlockEntity electrolyzer;
 
 	public ElectrolyzerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
@@ -48,14 +48,14 @@ public class ElectrolyzerScreenHandler extends ComponentBlockEntityEnergyFluidSc
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		VerticalFluidBarWidget firstOutputFluidBar = new VerticalFluidBarWidget();
+		var firstOutputFluidBar = new FluidBarWidget();
 		firstOutputFluidBar.setSize( Size.of(fluidBar));
-		firstOutputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getSecond());
+		firstOutputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(1));
 
-		VerticalFluidBarWidget secondOutputFluidBar = new VerticalFluidBarWidget();
+		var secondOutputFluidBar = new FluidBarWidget();
 		secondOutputFluidBar.setSize(Size.of(fluidBar));
 
-		secondOutputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getThird());
+		secondOutputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(2));
 
 		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(fluidBar, fluidBar.getWidth() + 7, fluidBar.getHeight() / 2 - 8));

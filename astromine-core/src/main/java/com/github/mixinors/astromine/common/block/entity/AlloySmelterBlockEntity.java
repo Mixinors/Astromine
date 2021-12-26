@@ -49,8 +49,8 @@ import java.util.function.Supplier;
 import static java.lang.Math.min;
 
 public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
-	private double progress = 0;
-	private int limit = 100;
+	public double progress = 0;
+	public int limit = 100;
 	private boolean shouldTry = false;
 	
 	private static final int INPUT_SLOT_1 = 0;
@@ -130,7 +130,7 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 							
 							var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
 							
-							outputStorage.insert(recipe.output.variant, recipe.output.amount, transaction);
+							outputStorage.insert(recipe.output.variant(), recipe.output.amount(), transaction);
 
 							transaction.commit();
 							

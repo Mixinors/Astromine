@@ -31,7 +31,7 @@ import com.github.mixinors.astromine.client.rei.pressing.PressingDisplay;
 import com.github.mixinors.astromine.client.rei.solidgenerating.SolidGeneratingDisplay;
 import com.github.mixinors.astromine.client.rei.triturating.TrituratingDisplay;
 import com.github.mixinors.astromine.common.screenhandler.*;
-import com.github.mixinors.astromine.common.screenhandler.base.block.ComponentBlockEntityScreenHandler;
+import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
@@ -66,7 +66,7 @@ public class AMContainersInfoHandlers implements REIServerPlugin {
 			SimpleMenuInfoProvider.of(display -> new SimpleContainerInfo<>(display, 0, 1)));
 	}
 
-	private static class SimpleContainerInfo<T extends ComponentBlockEntityScreenHandler, D extends Display> implements SimplePlayerInventoryMenuInfo<T, D> {
+	private static class SimpleContainerInfo<T extends ExtendedBlockEntityScreenHandler, D extends Display> implements SimplePlayerInventoryMenuInfo<T, D> {
 		private final D display;
 		private final IntList gridStacks;
 
