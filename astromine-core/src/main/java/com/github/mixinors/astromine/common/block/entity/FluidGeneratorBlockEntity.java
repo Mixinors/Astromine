@@ -100,10 +100,10 @@ public abstract class FluidGeneratorBlockEntity extends ExtendedBlockEntity impl
 			if (optionalRecipe.isPresent()) {
 				var recipe = optionalRecipe.get();
 
-				limit = recipe.time;
+				limit = recipe.time();
 
 				var speed = Math.min(getMachineSpeed(), limit - progress);
-				var generated = (long) (recipe.energyOutput * speed / limit);
+				var generated = (long) (recipe.energyOutput() * speed / limit);
 				
 				try (var transaction = Transaction.openOuter()) {
 					if (energyStorage.insert(generated, transaction) == generated) {
@@ -112,7 +112,7 @@ public abstract class FluidGeneratorBlockEntity extends ExtendedBlockEntity impl
 							
 							var inputStorage = fluidStorage.getStorage(INPUT_SLOT);
 							
-							fluidStorage.extract(inputStorage.getResource(), recipe.input.getAmount(), transaction);
+							fluidStorage.extract(inputStorage.getResource(), recipe.input().getAmount(), transaction);
 							
 							transaction.commit();
 							

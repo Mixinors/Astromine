@@ -106,10 +106,10 @@ public abstract class FluidMixerBlockEntity extends ExtendedBlockEntity implemen
 			if (optionalRecipe.isPresent()) {
 				var recipe = optionalRecipe.get();
 
-				limit = recipe.time;
+				limit = recipe.time();
 
 				var speed = Math.min(getMachineSpeed(), limit - progress);
-				var consumed = (long) (recipe.energyInput * speed / limit);
+				var consumed = (long) (recipe.energyInput() * speed / limit);
 				
 				try (var transaction = Transaction.openOuter()) {
 					if (energyStorage.extract(consumed, transaction) == consumed) {
@@ -119,17 +119,17 @@ public abstract class FluidMixerBlockEntity extends ExtendedBlockEntity implemen
 							var firstInputStorage = fluidStorage.getStorage(INPUT_SLOT_1);
 							var secondInputStorage = fluidStorage.getStorage(INPUT_SLOT_2);
 							
-							if (recipe.firstInput.test(firstInputStorage) && recipe.secondInput.test(secondInputStorage)) {
-								firstInputStorage.extract(firstInputStorage.getResource(), recipe.firstInput.getAmount(), transaction);
-								secondInputStorage.extract(secondInputStorage.getResource(), recipe.secondInput.getAmount(), transaction);
-							} else if (recipe.firstInput.test(secondInputStorage) && recipe.secondInput.test(firstInputStorage)) {
-								firstInputStorage.extract(firstInputStorage.getResource(), recipe.secondInput.getAmount(), transaction);
-								secondInputStorage.extract(secondInputStorage.getResource(), recipe.firstInput.getAmount(), transaction);
+							if (recipe.firstInput().test(firstInputStorage) && recipe.secondInput().test(secondInputStorage)) {
+								firstInputStorage.extract(firstInputStorage.getResource(), recipe.firstInput().getAmount(), transaction);
+								secondInputStorage.extract(secondInputStorage.getResource(), recipe.secondInput().getAmount(), transaction);
+							} else if (recipe.firstInput().test(secondInputStorage) && recipe.secondInput().test(firstInputStorage)) {
+								firstInputStorage.extract(firstInputStorage.getResource(), recipe.secondInput().getAmount(), transaction);
+								secondInputStorage.extract(secondInputStorage.getResource(), recipe.firstInput().getAmount(), transaction);
 							}
 							
 							var outputStorage = fluidStorage.getStorage(OUTPUT_SLOT);
 							
-							outputStorage.insert(recipe.output.variant, recipe.output.amount, transaction);
+							outputStorage.insert(recipe.output().variant(), recipe.output().amount(), transaction);
 							
 							transaction.commit();
 							

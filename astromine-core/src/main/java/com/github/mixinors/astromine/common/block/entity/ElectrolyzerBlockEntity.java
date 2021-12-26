@@ -101,10 +101,10 @@ public abstract class ElectrolyzerBlockEntity extends ExtendedBlockEntity implem
 			if (optionalRecipe.isPresent()) {
 				var recipe = optionalRecipe.get();
 
-				limit = recipe.time;
+				limit = recipe.time();
 
 				var speed = Math.min(getMachineSpeed(), limit - progress);
-				var consumed = (long) (recipe.energyInput * speed / limit);
+				var consumed = (long) (recipe.energyInput() * speed / limit);
 				
 				try (var transaction = Transaction.openOuter()) {
 					if (energyStorage.extract(consumed, transaction) == consumed) {
@@ -113,21 +113,21 @@ public abstract class ElectrolyzerBlockEntity extends ExtendedBlockEntity implem
 							
 							var inputStorage = fluidStorage.getStorage(INPUT_SLOT);
 							
-							inputStorage.extract(inputStorage.getResource(), recipe.input.getAmount(), transaction);
+							inputStorage.extract(inputStorage.getResource(), recipe.input().getAmount(), transaction);
 							
 							var firstOutputStorage = fluidStorage.getStorage(OUTPUT_SLOT_1);
 							var secondOutputStorage = fluidStorage.getStorage(OUTPUT_SLOT_2);
 							
-							if (recipe.firstOutput.equalsAndFitsIn(firstOutputStorage) &&
-								recipe.secondOutput.equalsAndFitsIn(secondOutputStorage)) {
+							if (recipe.firstOutput().equalsAndFitsIn(firstOutputStorage) &&
+								recipe.secondOutput().equalsAndFitsIn(secondOutputStorage)) {
 								
-								firstOutputStorage.insert(recipe.firstOutput.variant, recipe.firstOutput.amount, transaction);
-								secondOutputStorage.insert(recipe.secondOutput.variant, recipe.secondOutput.amount, transaction);
-							} else if (recipe.firstOutput.equalsAndFitsIn(secondOutputStorage) &&
-									   recipe.secondOutput.equalsAndFitsIn(firstOutputStorage)) {
+								firstOutputStorage.insert(recipe.firstOutput().variant(), recipe.firstOutput().amount(), transaction);
+								secondOutputStorage.insert(recipe.secondOutput().variant(), recipe.secondOutput().amount(), transaction);
+							} else if (recipe.firstOutput().equalsAndFitsIn(secondOutputStorage) &&
+									   recipe.secondOutput().equalsAndFitsIn(firstOutputStorage)) {
 								
-								firstOutputStorage.insert(recipe.secondOutput.variant, recipe.secondOutput.amount, transaction);
-								secondOutputStorage.insert(recipe.firstOutput.variant, recipe.firstOutput.amount, transaction);
+								firstOutputStorage.insert(recipe.secondOutput().variant(), recipe.secondOutput().amount(), transaction);
+								secondOutputStorage.insert(recipe.firstOutput().variant(), recipe.firstOutput().amount(), transaction);
 							}
 							
 							transaction.commit();

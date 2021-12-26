@@ -54,24 +54,12 @@ import net.minecraft.world.World;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 
-public final class ElectrolyzingRecipe implements FluidInputRecipe,DoubleFluidOutputRecipe {
-	public final Identifier id;
-	public final FluidIngredient input;
-	public final FluidResult firstOutput;
-	public final FluidResult secondOutput;
-	public final long energyInput;
-	public final int time;
-
+public record ElectrolyzingRecipe(Identifier id,
+								  FluidIngredient input,
+								  FluidResult firstOutput,
+								  FluidResult secondOutput,
+								  long energyInput, int time) implements FluidInputRecipe, DoubleFluidOutputRecipe {
 	private static final Map<World, ElectrolyzingRecipe[]> RECIPE_CACHE = new HashMap<>();
-
-	public ElectrolyzingRecipe(Identifier id, FluidIngredient input, FluidResult firstOutput, FluidResult secondOutput, long energyInput, int time) {
-		this.id = id;
-		this.input = input;
-		this.firstOutput = firstOutput;
-		this.secondOutput = secondOutput;
-		this.energyInput = energyInput;
-		this.time = time;
-	}
 
 	public static boolean allows(World world, FluidVariant... variants) {
 		if (RECIPE_CACHE.get(world) == null) {
@@ -103,16 +91,16 @@ public final class ElectrolyzingRecipe implements FluidInputRecipe,DoubleFluidOu
 
 	public boolean matches(SingleSlotStorage<FluidVariant>... variants) {
 		var inputStorage = variants[0];
-		
+
 		var firstOutputStorage = variants[1];
 		var secondOutputStorage = variants[2];
 
 		if (!input.test(inputStorage)) {
 			return false;
 		}
-		
+
 		return firstOutput.equalsAndFitsIn(firstOutputStorage) && secondOutput.equalsAndFitsIn(secondOutputStorage)
-			|| secondOutput.equalsAndFitsIn(firstOutputStorage) && firstOutput.equalsAndFitsIn(secondOutputStorage);
+				|| secondOutput.equalsAndFitsIn(firstOutputStorage) && firstOutput.equalsAndFitsIn(secondOutputStorage);
 	}
 
 	@Override
@@ -157,13 +145,13 @@ public final class ElectrolyzingRecipe implements FluidInputRecipe,DoubleFluidOu
 		return secondOutput;
 	}
 
-	public static final class Serializer extends AbstractRecipeSerializer<ElectrolyzingRecipe>
-	{
+	public static final class Serializer extends AbstractRecipeSerializer<ElectrolyzingRecipe> {
 		public static final Identifier ID = AMCommon.id("electrolyzing");
 
 		public static final Serializer INSTANCE = new Serializer();
 
-		private Serializer() {}
+		private Serializer() {
+		}
 
 		@Override
 		public ElectrolyzingRecipe read(Identifier identifier, JsonObject object) {
@@ -204,11 +192,11 @@ public final class ElectrolyzingRecipe implements FluidInputRecipe,DoubleFluidOu
 	public static final class Type implements AMRecipeType<ElectrolyzingRecipe> {
 		public static final Type INSTANCE = new Type();
 
-		private Type() {}
+		private Type() {
+		}
 	}
 
 	public static final class Format {
-		@SerializedName("input")
 		JsonElement input;
 
 		@SerializedName("first_output")

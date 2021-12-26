@@ -176,16 +176,9 @@ public class WireCuttingRecipe extends SpecialCraftingRecipe {
 
 	public static final class Format {
 		JsonObject input;
-		JsonObject tool;
-		JsonObject output;
 
-		@Override
-		public String toString() {
-			return "Format{" +
-					"inputs=" + input +
-					", tool=" + tool +
-					", output=" + output +
-					'}';
-		}
+		JsonObject tool;
+
+		JsonObject output;
 	}
 }

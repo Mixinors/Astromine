@@ -101,10 +101,10 @@ public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements
 			if (optionalRecipe.isPresent()) {
 				var recipe = optionalRecipe.get();
 				
-				limit = recipe.time;
+				limit = recipe.time();
 				
 				var speed = Math.min(getMachineSpeed(), limit - progress);
-				var consumed = (long) (recipe.energyInput * speed / limit);
+				var consumed = (long) (recipe.energyInput() * speed / limit);
 				
 				try (var transaction = Transaction.openOuter()) {
 					if (energyStorage.extract(consumed, transaction) == consumed) {
@@ -113,11 +113,11 @@ public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements
 							
 							var inputStorage = itemStorage.getStorage(INPUT_SLOT);
 							
-							inputStorage.extract(inputStorage.getResource(), recipe.input.getAmount(), transaction);
+							inputStorage.extract(inputStorage.getResource(), recipe.input().getAmount(), transaction);
 							
 							var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
 							
-							outputStorage.insert(ItemVariant.of(recipe.output.copy()), recipe.output.getCount(), transaction);
+							outputStorage.insert(recipe.output().variant(), recipe.output().amount(), transaction);
 							
 							transaction.commit();
 							
@@ -156,7 +156,7 @@ public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements
 
 	public static class Primitive extends WireMillBlockEntity {
 		public Primitive(BlockPos blockPos, BlockState blockState) {
-			super(AMBlockEntityTypes.PRIMITIVE_WIREMILL, blockPos, blockState);
+			super(AMBlockEntityTypes.PRIMITIVE_WIRE_MILL, blockPos, blockState);
 		}
 
 		@Override
@@ -177,7 +177,7 @@ public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements
 
 	public static class Basic extends WireMillBlockEntity {
 		public Basic(BlockPos blockPos, BlockState blockState) {
-			super(AMBlockEntityTypes.BASIC_WIREMILL, blockPos, blockState);
+			super(AMBlockEntityTypes.BASIC_WIRE_MILL, blockPos, blockState);
 		}
 
 		@Override
@@ -198,7 +198,7 @@ public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements
 
 	public static class Advanced extends WireMillBlockEntity {
 		public Advanced(BlockPos blockPos, BlockState blockState) {
-			super(AMBlockEntityTypes.ADVANCED_WIREMILL, blockPos, blockState);
+			super(AMBlockEntityTypes.ADVANCED_WIRE_MILL, blockPos, blockState);
 		}
 
 		@Override
@@ -219,7 +219,7 @@ public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements
 
 	public static class Elite extends WireMillBlockEntity {
 		public Elite(BlockPos blockPos, BlockState blockState) {
-			super(AMBlockEntityTypes.ELITE_WIREMILL, blockPos, blockState);
+			super(AMBlockEntityTypes.ELITE_WIRE_MILL, blockPos, blockState);
 		}
 
 		@Override

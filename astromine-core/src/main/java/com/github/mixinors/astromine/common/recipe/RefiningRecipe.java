@@ -54,22 +54,11 @@ import net.minecraft.world.World;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 
-public final class RefiningRecipe implements FluidInputRecipe,FluidOutputRecipe {
-	public final Identifier id;
-	public final FluidIngredient input;
-	public final FluidResult output;
-	public final long energyInput;
-	public final int time;
-
+public record RefiningRecipe(Identifier id,
+							 FluidIngredient input,
+							 FluidResult output, long energyInput,
+							 int time) implements FluidInputRecipe, FluidOutputRecipe {
 	private static final Map<World, RefiningRecipe[]> RECIPE_CACHE = new HashMap<>();
-
-	public RefiningRecipe(Identifier id, FluidIngredient input, FluidResult output, long energyInput, int time) {
-		this.id = id;
-		this.input = input;
-		this.output = output;
-		this.energyInput = energyInput;
-		this.time = time;
-	}
 
 	public static boolean allows(World world, FluidVariant... variants) {
 		if (RECIPE_CACHE.get(world) == null) {
@@ -84,7 +73,7 @@ public final class RefiningRecipe implements FluidInputRecipe,FluidOutputRecipe 
 
 		return false;
 	}
-	
+
 	public static Optional<RefiningRecipe> matching(World world, SingleSlotStorage<FluidVariant>... storages) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (RefiningRecipe) it).toArray(RefiningRecipe[]::new));
@@ -101,13 +90,13 @@ public final class RefiningRecipe implements FluidInputRecipe,FluidOutputRecipe 
 
 	public boolean matches(SingleSlotStorage<FluidVariant>... storages) {
 		var inputStorage = storages[0];
-		
+
 		var outputStorage = storages[1];
-		
+
 		if (!input.test(inputStorage)) {
 			return false;
 		}
-		
+
 		return output.equalsAndFitsIn(outputStorage);
 	}
 
@@ -154,7 +143,8 @@ public final class RefiningRecipe implements FluidInputRecipe,FluidOutputRecipe 
 
 		public static final Serializer INSTANCE = new Serializer();
 
-		private Serializer() {}
+		private Serializer() {
+		}
 
 		@Override
 		public RefiningRecipe read(Identifier identifier, JsonObject object) {
@@ -192,7 +182,8 @@ public final class RefiningRecipe implements FluidInputRecipe,FluidOutputRecipe 
 	public static final class Type implements AMRecipeType<RefiningRecipe> {
 		public static final Type INSTANCE = new Type();
 
-		private Type() {}
+		private Type() {
+		}
 	}
 
 	public static final class Format {

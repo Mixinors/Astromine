@@ -52,24 +52,13 @@ import net.minecraft.world.World;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 
-public final class FluidMixingRecipe implements DoubleFluidInputRecipe,FluidOutputRecipe {
-	public final Identifier id;
-	public final FluidIngredient firstInput;
-	public final FluidIngredient secondInput;
-	public final FluidResult output;
-	public final long energyInput;
-	public final int time;
+public record FluidMixingRecipe(Identifier id,
+								FluidIngredient firstInput,
+								FluidIngredient secondInput,
+								FluidResult output,
+								long energyInput, int time) implements DoubleFluidInputRecipe,FluidOutputRecipe {
 
 	private static final Map<World, FluidMixingRecipe[]> RECIPE_CACHE = new HashMap<>();
-
-	public FluidMixingRecipe(Identifier id, FluidIngredient firstInput, FluidIngredient secondIngredient, FluidResult output, long energyInput, int time) {
-		this.id = id;
-		this.firstInput = firstInput;
-		this.secondInput = secondIngredient;
-		this.output = output;
-		this.energyInput = energyInput;
-		this.time = time;
-	}
 
 	public static boolean allows(World world, FluidVariant... variants) {
 		if (RECIPE_CACHE.get(world) == null) {
@@ -209,7 +198,6 @@ public final class FluidMixingRecipe implements DoubleFluidInputRecipe,FluidOutp
 		@SerializedName("second_input")
 		JsonElement secondInput;
 
-		@SerializedName("output")
 		JsonElement output;
 
 		@SerializedName("energy_input")

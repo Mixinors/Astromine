@@ -55,22 +55,11 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 
-public final class MeltingRecipe implements ItemInputRecipe,FluidOutputRecipe {
-	public final Identifier id;
-	public final ItemIngredient input;
-	public final FluidResult output;
-	public final long energyInput;
-	public final int time;
-
+public record MeltingRecipe(Identifier id,
+							ItemIngredient input,
+							FluidResult output, long energyInput,
+							int time) implements ItemInputRecipe, FluidOutputRecipe {
 	private static final Map<World, MeltingRecipe[]> RECIPE_CACHE = new HashMap<>();
-
-	public MeltingRecipe(Identifier id, ItemIngredient input, FluidResult output, long energyInput, int time) {
-		this.id = id;
-		this.input = input;
-		this.output = output;
-		this.energyInput = energyInput;
-		this.time = time;
-	}
 
 	public static boolean allows(World world, ItemVariant... variants) {
 		if (RECIPE_CACHE.get(world) == null) {
@@ -102,9 +91,9 @@ public final class MeltingRecipe implements ItemInputRecipe,FluidOutputRecipe {
 
 	public boolean matches(SingleSlotStorage<ItemVariant>[] itemStorages, SingleSlotStorage<FluidVariant>[] fluidStorages) {
 		var itemInputStorage = itemStorages[0];
-		
+
 		var fluidOutputStorage = fluidStorages[0];
-		
+
 		if (!input.test(itemInputStorage)) {
 			return false;
 		}
@@ -149,13 +138,14 @@ public final class MeltingRecipe implements ItemInputRecipe,FluidOutputRecipe {
 	public FluidResult getFluidOutput() {
 		return output;
 	}
-	
+
 	public static final class Serializer extends AbstractRecipeSerializer<MeltingRecipe> {
 		public static final Identifier ID = AMCommon.id("melting");
 
 		public static final Serializer INSTANCE = new Serializer();
 
-		private Serializer() {}
+		private Serializer() {
+		}
 
 		@Override
 		public MeltingRecipe read(Identifier identifier, JsonObject object) {
@@ -193,17 +183,16 @@ public final class MeltingRecipe implements ItemInputRecipe,FluidOutputRecipe {
 	public static final class Type implements AMRecipeType<MeltingRecipe> {
 		public static final Type INSTANCE = new Type();
 
-		private Type() {}
+		private Type() {
+		}
 	}
 
 	public static final class Format {
-		@SerializedName("input")
 		JsonElement input;
 
-		@SerializedName("output")
 		JsonElement output;
 
-		@SerializedName("energy")
+		@SerializedName("energy_input")
 		JsonElement energyInput;
 
 		JsonElement time;

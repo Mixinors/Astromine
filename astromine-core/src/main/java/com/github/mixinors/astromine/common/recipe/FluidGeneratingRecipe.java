@@ -53,20 +53,10 @@ import net.minecraft.world.World;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 
-public final class FluidGeneratingRecipe implements FluidInputRecipe, EnergyOutputRecipe {
-	public final Identifier id;
-	public final FluidIngredient input;
-	public final long energyOutput;
-	public final int time;
-
+public record FluidGeneratingRecipe(Identifier id,
+									FluidIngredient input,
+									long energyOutput, int time) implements FluidInputRecipe, EnergyOutputRecipe {
 	private static final Map<World, FluidGeneratingRecipe[]> RECIPE_CACHE = new HashMap<>();
-
-	public FluidGeneratingRecipe(Identifier id, FluidIngredient input, long energyOutput, int time) {
-		this.id = id;
-		this.input = input;
-		this.energyOutput = energyOutput;
-		this.time = time;
-	}
 
 	public static boolean allows(World world, FluidVariant... variants) {
 		if (RECIPE_CACHE.get(world) == null) {
@@ -98,7 +88,7 @@ public final class FluidGeneratingRecipe implements FluidInputRecipe, EnergyOutp
 
 	public boolean matches(SingleSlotStorage<FluidVariant>... storages) {
 		var inputStorage = storages[0];
-		
+
 		return input.test(inputStorage);
 	}
 
@@ -136,13 +126,13 @@ public final class FluidGeneratingRecipe implements FluidInputRecipe, EnergyOutp
 		return input;
 	}
 
-	public static final class Serializer extends AbstractRecipeSerializer<FluidGeneratingRecipe>
-	{
+	public static final class Serializer extends AbstractRecipeSerializer<FluidGeneratingRecipe> {
 		public static final Identifier ID = AMCommon.id("fluid_generating");
 
 		public static final Serializer INSTANCE = new Serializer();
 
-		private Serializer() {}
+		private Serializer() {
+		}
 
 		@Override
 		public FluidGeneratingRecipe read(Identifier identifier, JsonObject object) {
@@ -177,11 +167,11 @@ public final class FluidGeneratingRecipe implements FluidInputRecipe, EnergyOutp
 	public static final class Type implements AMRecipeType<FluidGeneratingRecipe> {
 		public static final Type INSTANCE = new Type();
 
-		private Type() {}
+		private Type() {
+		}
 	}
 
 	public static final class Format {
-		@SerializedName("input")
 		JsonElement input;
 
 		@SerializedName("energy_output")

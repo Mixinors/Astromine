@@ -54,25 +54,13 @@ import net.minecraft.world.World;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 
-public final class AlloySmeltingRecipe implements DoubleItemInputRecipe,ItemOutputRecipe {
-	public final Identifier id;
-	public final ItemIngredient firstInput;
-	public final ItemIngredient secondInput;
-	public final ItemResult output;
-	public final long energyInput;
-	public final int time;
-
+public record AlloySmeltingRecipe(Identifier id,
+								  ItemIngredient firstInput,
+								  ItemIngredient secondInput,
+								  ItemResult output,
+								  long energyInput, int time) implements DoubleItemInputRecipe, ItemOutputRecipe {
 	private static final Map<World, AlloySmeltingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public AlloySmeltingRecipe(Identifier id, ItemIngredient firstInput, ItemIngredient secondInput, ItemResult output, long energyInput, int time) {
-		this.id = id;
-		this.firstInput = firstInput;
-		this.secondInput = secondInput;
-		this.output = output;
-		this.energyInput = energyInput;
-		this.time = time;
-	}
-	
 	public static boolean allows(World world, ItemVariant... variants) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (AlloySmeltingRecipe) it).toArray(AlloySmeltingRecipe[]::new));
@@ -104,9 +92,9 @@ public final class AlloySmeltingRecipe implements DoubleItemInputRecipe,ItemOutp
 	public boolean matches(SingleSlotStorage<ItemVariant>... storages) {
 		var firstInputStorage = storages[0];
 		var secondInputStorage = storages[1];
-		
+
 		var outputStorage = storages[2];
-		
+
 		if (!firstInput.test(firstInputStorage) && !secondInput.test(firstInputStorage)) {
 			return false;
 		}
@@ -114,7 +102,7 @@ public final class AlloySmeltingRecipe implements DoubleItemInputRecipe,ItemOutp
 		if (!firstInput.test(secondInputStorage) && !secondInput.test(secondInputStorage)) {
 			return false;
 		}
-		
+
 		return output.equalsAndFitsIn(outputStorage);
 	}
 
@@ -165,7 +153,8 @@ public final class AlloySmeltingRecipe implements DoubleItemInputRecipe,ItemOutp
 
 		public static final Serializer INSTANCE = new Serializer();
 
-		private Serializer() {}
+		private Serializer() {
+		}
 
 		@Override
 		public AlloySmeltingRecipe read(Identifier identifier, JsonObject object) {
@@ -206,7 +195,8 @@ public final class AlloySmeltingRecipe implements DoubleItemInputRecipe,ItemOutp
 	public static final class Type implements AMRecipeType<AlloySmeltingRecipe> {
 		public static final Type INSTANCE = new Type();
 
-		private Type() {}
+		private Type() {
+		}
 	}
 
 	public static final class Format {

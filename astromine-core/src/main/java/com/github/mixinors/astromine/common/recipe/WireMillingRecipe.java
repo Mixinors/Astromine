@@ -54,22 +54,11 @@ import net.minecraft.world.World;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 
-public final class WireMillingRecipe implements ItemInputRecipe,ItemOutputRecipe {
-	public final Identifier id;
-	public final ItemIngredient input;
-	public final ItemResult output;
-	public final long energyInput;
-	public final int time;
-
+public record WireMillingRecipe(Identifier id,
+								ItemIngredient input,
+								ItemResult output, long energyInput,
+								int time) implements ItemInputRecipe, ItemOutputRecipe {
 	private static final Map<World, WireMillingRecipe[]> RECIPE_CACHE = new HashMap<>();
-
-	public WireMillingRecipe(Identifier id, ItemIngredient input, ItemResult output, long energyInput, int time) {
-		this.id = id;
-		this.input = input;
-		this.output = output;
-		this.energyInput = energyInput;
-		this.time = time;
-	}
 
 	public static boolean allows(World world, ItemVariant... variants) {
 		if (RECIPE_CACHE.get(world) == null) {
@@ -98,16 +87,16 @@ public final class WireMillingRecipe implements ItemInputRecipe,ItemOutputRecipe
 
 		return Optional.empty();
 	}
-	
+
 	public boolean matches(SingleSlotStorage<ItemVariant>... storages) {
 		var inputStorage = storages[0];
-		
+
 		var outputStorage = storages[1];
-		
+
 		if (!input.test(inputStorage)) {
 			return false;
 		}
-		
+
 		return output.equalsAndFitsIn(outputStorage);
 	}
 
@@ -149,13 +138,13 @@ public final class WireMillingRecipe implements ItemInputRecipe,ItemOutputRecipe
 		return output;
 	}
 
-	public static final class Serializer extends AbstractRecipeSerializer<WireMillingRecipe>
-	{
+	public static final class Serializer extends AbstractRecipeSerializer<WireMillingRecipe> {
 		public static final Identifier ID = AMCommon.id("wire_milling");
 
 		public static final Serializer INSTANCE = new Serializer();
 
-		private Serializer() {}
+		private Serializer() {
+		}
 
 		@Override
 		public WireMillingRecipe read(Identifier identifier, JsonObject object) {
@@ -192,14 +181,13 @@ public final class WireMillingRecipe implements ItemInputRecipe,ItemOutputRecipe
 	public static final class Type implements AMRecipeType<WireMillingRecipe> {
 		public static final Type INSTANCE = new Type();
 
-		private Type() {}
+		private Type() {
+		}
 	}
 
 	public static final class Format {
-		@SerializedName("input")
 		JsonElement input;
 
-		@SerializedName("output")
 		JsonElement output;
 
 		@SerializedName("energy_input")
