@@ -46,96 +46,82 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * A {@link NetworkType} for energy.
- */
 public final class EnergyNetworkType implements NetworkType {
-	/** Override behavior to handle attached {@link EnergyHandler}s,
-	 * transferring energy between them.
-	 *
-	 * Performance is dubious at best.
-	 *
-	 * Transfer is done through {@link Energy}. */
 	@Override
 	public void tick(NetworkInstance instance) {
-		Reference2DoubleMap<EnergyHandler> providers = new Reference2DoubleOpenHashMap<>();
-		Reference2DoubleMap<EnergyHandler> requesters = new Reference2DoubleOpenHashMap<>();
-
-		for (NetworkMemberNode memberNode : instance.members) {
-			WorldPos memberPos = WorldPos.of(instance.getWorld(), memberNode.getBlockPosition());
-			NetworkMember networkMember = NetworkMemberRegistry.get(memberPos, memberNode.getDirection());
-			BlockEntity blockEntity = memberPos.getBlockEntity();
-
-			WorldPos nodePosition = memberPos.offset(memberNode.getDirection());
-
-			double speed = nodePosition.getBlock() instanceof NodeSpeedProvider ? ((NodeSpeedProvider) nodePosition.getBlock()).getNodeSpeed() : 0.0D;
-
-			if (speed <= 0)
-				continue;
-
-			if (networkMember.acceptsType(this)) {
-				TransferType type = TransferType.NONE;
-
-				TransferComponent transferComponent = TransferComponent.get(blockEntity);
-
-				if (transferComponent != null && transferComponent.get(AMComponents.ENERGY_INVENTORY_COMPONENT) != null) {
-					type = transferComponent.getEnergy(memberNode.getDirection());
-				}
-
-				EnergyHandler volume = Energy.of(blockEntity).side(memberNode.getDirection());
-
-				if (!type.isNone()) {
-					if (type.canExtract() && (networkMember.isProvider(this) || networkMember.isBuffer(this))) {
-						providers.put(volume, speed);
-					}
-
-					if (type.canInsert() && (networkMember.isRequester(this) || networkMember.isBuffer(this))) {
-						requesters.put(volume, speed);
-					}
-				}
-			}
-		}
-
-		List<EnergyHandler> requesterKeys = Lists.newArrayList(requesters.keySet());
-		requesterKeys.sort(Comparator.comparingDouble(EnergyHandler::getEnergy));
-
-		for (Reference2DoubleMap.Entry<EnergyHandler> inputEntry : providers.reference2DoubleEntrySet()) {
-			EnergyHandler input = inputEntry.getKey();
-
-			double inputSpeed = inputEntry.getDoubleValue();
-
-			for (int i = requesterKeys.size() - 1; i >= 0; i--) {
-				EnergyHandler output = requesterKeys.get(i);
-
-				double outputSpeed = requesters.getOrDefault(output, 0.0D);
-
-				double a = inputSpeed / requesters.size();
-				double b = outputSpeed / requesters.size();
-				double c = input.getEnergy() / (i + 1);
-				double d = output.getMaxStored() - output.getEnergy();
-				double e = input.getMaxOutput();
-				double f = output.getMaxInput();
-
-				double speed = Collections.min(Arrays.asList(a, b, c, d, e, f));
-
-				input.into(output).move(speed);
-			}
-		}
+		// TODO: Rewrite this.
+		
+//		Reference2DoubleMap<EnergyHandler> providers = new Reference2DoubleOpenHashMap<>();
+//		Reference2DoubleMap<EnergyHandler> requesters = new Reference2DoubleOpenHashMap<>();
+//
+//		for (NetworkMemberNode memberNode : instance.members) {
+//			WorldPos memberPos = WorldPos.of(instance.getWorld(), memberNode.getBlockPosition());
+//			NetworkMember networkMember = NetworkMemberRegistry.get(memberPos, memberNode.getDirection());
+//			BlockEntity blockEntity = memberPos.getBlockEntity();
+//
+//			WorldPos nodePosition = memberPos.offset(memberNode.getDirection());
+//
+//			double speed = nodePosition.getBlock() instanceof NodeSpeedProvider ? ((NodeSpeedProvider) nodePosition.getBlock()).getNodeSpeed() : 0.0D;
+//
+//			if (speed <= 0)
+//				continue;
+//
+//			if (networkMember.acceptsType(this)) {
+//				TransferType type = TransferType.NONE;
+//
+//				TransferComponent transferComponent = TransferComponent.get(blockEntity);
+//
+//				if (transferComponent != null && transferComponent.get(AMComponents.ENERGY_INVENTORY_COMPONENT) != null) {
+//					type = transferComponent.getEnergy(memberNode.getDirection());
+//				}
+//
+//				EnergyHandler volume = Energy.of(blockEntity).side(memberNode.getDirection());
+//
+//				if (!type.isNone()) {
+//					if (type.canExtract() && (networkMember.isProvider(this) || networkMember.isBuffer(this))) {
+//						providers.put(volume, speed);
+//					}
+//
+//					if (type.canInsert() && (networkMember.isRequester(this) || networkMember.isBuffer(this))) {
+//						requesters.put(volume, speed);
+//					}
+//				}
+//			}
+//		}
+//
+//		List<EnergyHandler> requesterKeys = Lists.newArrayList(requesters.keySet());
+//		requesterKeys.sort(Comparator.comparingDouble(EnergyHandler::getEnergy));
+//
+//		for (Reference2DoubleMap.Entry<EnergyHandler> inputEntry : providers.reference2DoubleEntrySet()) {
+//			EnergyHandler input = inputEntry.getKey();
+//
+//			double inputSpeed = inputEntry.getDoubleValue();
+//
+//			for (int i = requesterKeys.size() - 1; i >= 0; i--) {
+//				EnergyHandler output = requesterKeys.get(i);
+//
+//				double outputSpeed = requesters.getOrDefault(output, 0.0D);
+//
+//				double a = inputSpeed / requesters.size();
+//				double b = outputSpeed / requesters.size();
+//				double c = input.getEnergy() / (i + 1);
+//				double d = output.getMaxStored() - output.getEnergy();
+//				double e = input.getMaxOutput();
+//				double f = output.getMaxInput();
+//
+//				double speed = Collections.min(Arrays.asList(a, b, c, d, e, f));
+//
+//				input.into(output).move(speed);
+//			}
+//		}
 	}
-
-	/** Returns this type's string representation.
-	 * It will be "Energy". */
+	
 	@Override
 	public String toString() {
 		return "Energy";
 	}
-
-	/**
-	 * A speed provider for
-	 * attached {@link NetworkNode}s.
-	 */
+	
 	public interface NodeSpeedProvider {
-		/** Returns this node's transfer speed. */
 		double getNodeSpeed();
 	}
 }

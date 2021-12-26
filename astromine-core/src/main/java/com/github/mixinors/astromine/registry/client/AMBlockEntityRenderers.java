@@ -40,9 +40,6 @@ import java.util.function.Supplier;
 public class AMBlockEntityRenderers {
 	public static void init() {
 		register(AMBlockEntityTypes.HOLOGRAPHIC_BRIDGE, HoloBridgeBlockEntityRenderer::new);
-		
-		register(AMBlockEntityTypes.ALTAR_PEDESTAL, AltarPedestalBlockEntityRenderer::new);
-		register(AMBlockEntityTypes.ALTAR, AltarBlockEntityRenderer::new);
 	}
 
 	public static <B extends BlockEntity, C extends BlockEntityType<B>> void register(Supplier<C> c, BlockEntityRendererFactory<? super B> b) {

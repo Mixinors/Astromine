@@ -78,71 +78,73 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 
 	@Inject(at = @At("HEAD"), method = "tick()V")
 	void onTick(CallbackInfo callbackInformation) {
-		Entity entity = (Entity) (Object) this;
-
-		if (entity.world.isClient) {
-			return;
-		}
-
-		if (!entity.getType().isIn(AMTags.DOES_NOT_BREATHE)) {
-			ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(entity.world.getChunk(entity.getBlockPos()));
-
-			if (atmosphereComponent != null) {
-				FluidVolume breathingVolume;
-
-				if (!AMDimensions.isAstromine(entity.world.getRegistryKey())) {
-					breathingVolume = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));
-
-					if (breathingVolume.isEmpty()) {
-						breathingVolume = FluidVolume.of(FluidVolume.BUCKET, AMFluids.OXYGEN);
-					}
-				} else {
-					breathingVolume = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));
-				}
-				
-				EntityOxygenComponent oxygenComponent = EntityOxygenComponent.get(entity);
-				
-				if (oxygenComponent != null) {
-					ItemStack helmetStack = ItemStack.EMPTY;
-					ItemStack chestplateStack = ItemStack.EMPTY;
-					ItemStack leggingsStack = ItemStack.EMPTY;
-					ItemStack bootsStack = ItemStack.EMPTY;
-
-					for (ItemStack stack : getArmorItems()) {
-						if (stack.getItem() == AMItems.SPACE_SUIT_HELMET.get()) helmetStack = stack;
-						if (stack.getItem() == AMItems.SPACE_SUIT_CHESTPLATE.get()) chestplateStack = stack;
-						if (stack.getItem() == AMItems.SPACE_SUIT_LEGGINGS.get()) leggingsStack = stack;
-						if (stack.getItem() == AMItems.SPACE_SUIT_BOOTS.get()) bootsStack = stack;
-					}
-
-					boolean hasSuit = !helmetStack.isEmpty() && !chestplateStack.isEmpty() && !leggingsStack.isEmpty() && !bootsStack.isEmpty();
-					
-					SimpleFluidStorage fluidStorage = null;
-					
-					if (hasSuit) {
-						fluidStorage = SimpleFluidStorage.get(chestplateStack);
-						
-						if (fluidStorage != null) {
-							breathingVolume = fluidStorage.getFirst();
-						}
-					}
-					
-					EntityAccessor entityAccessor = (EntityAccessor) this;
-					
-					if (entityAccessor.getSubmergedFluidTag() != null && breathingVolume.isEmpty()) {
-						breathingVolume = FluidVolume.of(FluidVolume.BUCKET, entityAccessor.getSubmergedFluidTag().values().get(0));
-					}
-					
-					boolean isBreathing = BreathableRegistry.INSTANCE.canBreathe(entity.getType(), breathingVolume.getFluid());
-					
-					if ((!(entity instanceof PlayerEntity) || !entity.isSpectator() && !((PlayerEntity) entity).isCreative()) && isBreathing && fluidStorage != null && age % 5 == 0) {
-						fluidStorage.getFirst().take(81L);
-					}
-					
-					oxygenComponent.simulate(isBreathing);
-				}
-			}
-		}
+		// TODO: Rewrite Atmosphere stuff, incl. this.
+		
+		// Entity entity = (Entity) (Object) this;
+//
+		// if (entity.world.isClient) {
+		// 	return;
+		// }
+//
+		// if (!entity.getType().isIn(AMTags.DOES_NOT_BREATHE)) {
+		// 	ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(entity.world.getChunk(entity.getBlockPos()));
+//
+		// 	if (atmosphereComponent != null) {
+		// 		FluidVolume breathingVolume;
+//
+		// 		if (!AMDimensions.isAstromine(entity.world.getRegistryKey())) {
+		// 			breathingVolume = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));
+//
+		// 			if (breathingVolume.isEmpty()) {
+		// 				breathingVolume = FluidVolume.of(FluidVolume.BUCKET, AMFluids.OXYGEN);
+		// 			}
+		// 		} else {
+		// 			breathingVolume = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));
+		// 		}
+		//
+		// 		EntityOxygenComponent oxygenComponent = EntityOxygenComponent.get(entity);
+		//
+		// 		if (oxygenComponent != null) {
+		// 			ItemStack helmetStack = ItemStack.EMPTY;
+		// 			ItemStack chestplateStack = ItemStack.EMPTY;
+		// 			ItemStack leggingsStack = ItemStack.EMPTY;
+		// 			ItemStack bootsStack = ItemStack.EMPTY;
+//
+		// 			for (ItemStack stack : getArmorItems()) {
+		// 				if (stack.getItem() == AMItems.SPACE_SUIT_HELMET.get()) helmetStack = stack;
+		// 				if (stack.getItem() == AMItems.SPACE_SUIT_CHESTPLATE.get()) chestplateStack = stack;
+		// 				if (stack.getItem() == AMItems.SPACE_SUIT_LEGGINGS.get()) leggingsStack = stack;
+		// 				if (stack.getItem() == AMItems.SPACE_SUIT_BOOTS.get()) bootsStack = stack;
+		// 			}
+//
+		// 			boolean hasSuit = !helmetStack.isEmpty() && !chestplateStack.isEmpty() && !leggingsStack.isEmpty() && !bootsStack.isEmpty();
+		//
+		// 			SimpleFluidStorage fluidStorage = null;
+		//
+		// 			if (hasSuit) {
+		// 				fluidStorage = SimpleFluidStorage.get(chestplateStack);
+		//
+		// 				if (fluidStorage != null) {
+		// 					breathingVolume = fluidStorage.getFirst();
+		// 				}
+		// 			}
+		//
+		// 			EntityAccessor entityAccessor = (EntityAccessor) this;
+		//
+		// 			if (entityAccessor.getSubmergedFluidTag() != null && breathingVolume.isEmpty()) {
+		// 				breathingVolume = FluidVolume.of(FluidVolume.BUCKET, entityAccessor.getSubmergedFluidTag().values().get(0));
+		// 			}
+		//
+		// 			boolean isBreathing = BreathableRegistry.INSTANCE.canBreathe(entity.getType(), breathingVolume.getFluid());
+		//
+		// 			if ((!(entity instanceof PlayerEntity) || !entity.isSpectator() && !((PlayerEntity) entity).isCreative()) && isBreathing && fluidStorage != null && age % 5 == 0) {
+		// 				fluidStorage.getFirst().take(81L);
+		// 			}
+		//
+		// 			oxygenComponent.simulate(isBreathing);
+		// 		}
+		// 	}
+		// }
 	}
 
 	// A redirect would be the most efficient, but ModifyArg is the only compatible option

@@ -41,56 +41,50 @@ import net.minecraft.util.math.Direction;
 
 import com.google.common.collect.Lists;
 
-/**
- * A {@link NetworkType} for fluids.
- */
 public final class FluidNetworkType implements NetworkType {
-	/** Override behavior to handle attached fluid inventories,
-	 * transferring energy between them. */
 	@Override
 	public void tick(NetworkInstance instance) {
-		List<Pair<SimpleFluidStorage, Direction>> providers = Lists.newArrayList();
-		List<Pair<SimpleFluidStorage, Direction>> requesters = Lists.newArrayList();
-
-		for (NetworkMemberNode memberNode : instance.members) {
-			WorldPos memberPos = WorldPos.of(instance.getWorld(), memberNode.getBlockPosition());
-
-			NetworkMember networkMember = NetworkMemberRegistry.get(memberPos, memberNode.getDirection());
-
-			if (networkMember.acceptsType(this)) {
-				BlockEntity blockEntity = memberPos.getBlockEntity();
-
-				SimpleFluidStorage fluidStorage = SimpleFluidStorage.get(blockEntity);
-
-				TransferType type = TransferType.NONE;
-
-				TransferComponent transferComponent = TransferComponent.get(blockEntity);
-
-				if (transferComponent != null) {
-					type = transferComponent.getFluid(memberNode.getDirection());
-				}
-
-				if (!type.isNone()) {
-					if (type.canExtract() && (networkMember.isProvider(this) || networkMember.isBuffer(this))) {
-						providers.add(new Pair<>(fluidStorage, memberNode.getDirection()));
-					}
-
-					if (type.canInsert() && (networkMember.isRequester(this) || networkMember.isBuffer(this))) {
-						requesters.add(new Pair<>(fluidStorage, memberNode.getDirection()));
-					}
-				}
-			}
-		}
-
-		for (Pair<SimpleFluidStorage, Direction> provider : providers) {
-			for (Pair<SimpleFluidStorage, Direction> requester : requesters) {
-				provider.getLeft().into(requester.getLeft(), FluidVolume.getTransfer(), requester.getRight().getOpposite());
-			}
-		}
+		// TODO: Rewrite this.
+//		List<Pair<SimpleFluidStorage, Direction>> providers = Lists.newArrayList();
+//		List<Pair<SimpleFluidStorage, Direction>> requesters = Lists.newArrayList();
+//
+//		for (NetworkMemberNode memberNode : instance.members) {
+//			WorldPos memberPos = WorldPos.of(instance.getWorld(), memberNode.getBlockPosition());
+//
+//			NetworkMember networkMember = NetworkMemberRegistry.get(memberPos, memberNode.getDirection());
+//
+//			if (networkMember.acceptsType(this)) {
+//				BlockEntity blockEntity = memberPos.getBlockEntity();
+//
+//				SimpleFluidStorage fluidStorage = SimpleFluidStorage.get(blockEntity);
+//
+//				TransferType type = TransferType.NONE;
+//
+//				TransferComponent transferComponent = TransferComponent.get(blockEntity);
+//
+//				if (transferComponent != null) {
+//					type = transferComponent.getFluid(memberNode.getDirection());
+//				}
+//
+//				if (!type.isNone()) {
+//					if (type.canExtract() && (networkMember.isProvider(this) || networkMember.isBuffer(this))) {
+//						providers.add(new Pair<>(fluidStorage, memberNode.getDirection()));
+//					}
+//
+//					if (type.canInsert() && (networkMember.isRequester(this) || networkMember.isBuffer(this))) {
+//						requesters.add(new Pair<>(fluidStorage, memberNode.getDirection()));
+//					}
+//				}
+//			}
+//		}
+//
+//		for (Pair<SimpleFluidStorage, Direction> provider : providers) {
+//			for (Pair<SimpleFluidStorage, Direction> requester : requesters) {
+//				provider.getLeft().into(requester.getLeft(), FluidVolume.getTransfer(), requester.getRight().getOpposite());
+//			}
+//		}
 	}
-
-	/** Returns this type's string representation.
-	 * It will be "Fluid". */
+	
 	@Override
 	public String toString() {
 		return "Fluid";

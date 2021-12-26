@@ -27,55 +27,46 @@ package com.github.mixinors.astromine.registry.client;
 import com.github.mixinors.astromine.client.render.sky.SpaceSkyProperties;
 import com.github.mixinors.astromine.common.callback.SkyPropertiesCallback;
 import com.github.mixinors.astromine.common.item.HolographicConnectorItem;
-import com.github.mixinors.astromine.common.item.SpaceSuitItem;
 import com.github.mixinors.astromine.common.network.type.EnergyNetworkType;
-import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.util.TextUtils;
 import com.github.mixinors.astromine.registry.common.AMDimensions;
-import com.github.mixinors.astromine.registry.common.AMItems;
+
 import com.google.common.collect.Lists;
 
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.item.BlockItem;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
-import com.github.mixinors.astromine.common.item.base.EnergyItem;
-import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
-import net.minecraft.util.Identifier;
+import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
+
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
-import team.reborn.energy.Energy;
-import team.reborn.energy.EnergyHandler;
 
 public class AMClientCallbacks {
 	public static void init() {
 		ItemTooltipCallback.EVENT.register( ( stack, context, tooltip ) -> {
-			if (stack.getItem() instanceof FluidVolumeItem) {
-				SimpleFluidStorage fluidStorage = SimpleFluidStorage.get(stack);
-
-				if(fluidStorage != null) {
-					FluidVolume volume = fluidStorage.getFirst();
-					Identifier fluidId = volume.getFluidId();
-
-					tooltip.addAll(Math.min(tooltip.size(), 1), Lists.newArrayList(
-							((MutableText) TextUtils.getFluidVolume(FluidVolume.of(volume.getAmount() / 81L, volume.getSize() / 81L, volume.getFluid()))).append(new LiteralText(" ")).append(
-									((MutableText) TextUtils.getFluid(fluidId)).formatted(Formatting.GRAY))));
-				}
-			}
+			// if (stack.getItem() instanceof FluidVolumeItem) {
+			// 	SimpleFluidStorage fluidStorage = SimpleFluidStorage.get(stack);
+//
+			// 	if(fluidStorage != null) {
+			// 		FluidVolume volume = fluidStorage.getFirst();
+			// 		Identifier fluidId = volume.getFluidId();
+//
+			// 		tooltip.addAll(Math.min(tooltip.size(), 1), Lists.newArrayList(
+			// 				((MutableText) TextUtils.getFluidVolume(FluidVolume.of(volume.getAmount() / 81L, volume.getSize() / 81L, volume.getFluid()))).append(new LiteralText(" ")).append(
+			// 						((MutableText) TextUtils.getFluid(fluidId)).formatted(Formatting.GRAY))));
+			// 	}
+			// }
 		});
 
 		ItemTooltipCallback.EVENT.register( ( stack, context, tooltip ) -> {
-			if (stack.getItem() instanceof EnergyItem) {
-				EnergyHandler handler = Energy.of(stack);
-				
+			if (stack.getItem() instanceof EnergyStorageItem item) {
 				tooltip.addAll(Math.min(tooltip.size(), 1), Lists.newArrayList(
-						TextUtils.getEnergyVolume(EnergyVolume.of(handler.getEnergy(), handler.getMaxStored()))
+						TextUtils.getEnergyStorage(item.getStoredEnergy(stack), item.getEnergyCapacity())
 				));
 			}
 		});
@@ -98,16 +89,16 @@ public class AMClientCallbacks {
 		});
 
 		ItemTooltipCallback.EVENT.register( ( stack, context, tooltip ) -> {
-			if (stack.getItem() instanceof SpaceSuitItem) {
-				if (stack.getItem() == AMItems.SPACE_SUIT_CHESTPLATE.get()) {
-					SimpleFluidStorage fluidStorage = SimpleFluidStorage.get(stack);
-					if(fluidStorage != null) {
-						fluidStorage.forEachIndexed((slot, volume) -> {
-							tooltip.add(((MutableText) TextUtils.getFluidVolume(volume)).append(new LiteralText(" ")).append(((MutableText) TextUtils.getFluid(volume.getFluidId())).formatted(Formatting.GRAY)));
-						});
-					}
-				}
-			}
+			// if (stack.getItem() instanceof SpaceSuitItem) {
+			// 	if (stack.getItem() == AMItems.SPACE_SUIT_CHESTPLATE.get()) {
+			// 		SimpleFluidStorage fluidStorage = SimpleFluidStorage.get(stack);
+			// 		if(fluidStorage != null) {
+			// 			fluidStorage.forEachIndexed((slot, volume) -> {
+			// 				tooltip.add(((MutableText) TextUtils.getFluidVolume(volume)).append(new LiteralText(" ")).append(((MutableText) TextUtils.getFluid(volume.getFluidId())).formatted(Formatting.GRAY)));
+			// 			});
+			// 		}
+			// 	}
+			// }
 		});
 		
 		SkyPropertiesCallback.EVENT.register((properties) -> properties.put(AMDimensions.EARTH_SPACE_ID, new SpaceSkyProperties()));

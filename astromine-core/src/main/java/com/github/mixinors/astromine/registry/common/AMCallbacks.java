@@ -48,44 +48,46 @@ import java.util.List;
 
 public class AMCallbacks {
 	public static void init() {
-		BlockEvent.PLACE.register(( world, pos, blockState, entity) -> {
-			ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(pos));
+		// TODO: Rewrite Atmosphere stuff, incl. this.
+		
+		// BlockEvent.PLACE.register(( world, pos, blockState, entity) -> {
+			// ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(pos));
+//
+			// if (atmosphereComponent != null) {
+			// 	BlockPos centerPos = pos;
+			// 	BlockState centerState = world.getBlockState(centerPos);
+			// 	FluidVolume centerVolume = atmosphereComponent.get(centerPos);
+//
+			// 	List<Direction> directions = Lists.newArrayList(Direction.values());
+//
+			// 	Collections.shuffle(directions);
+//
+			// 	for (Direction direction : directions) {
+			// 		BlockPos sidePos = pos.offset(direction);
+			// 		BlockState sideState = world.getBlockState(sidePos);
+//
+			// 		ChunkAtmosphereComponent sideAtmosphereComponent = atmosphereComponent;
+//
+			// 		if (!atmosphereComponent.isInChunk(sidePos)) {
+			// 			sideAtmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(sidePos));
+			// 		}
+//
+			// 		FluidVolume sideVolume = sideAtmosphereComponent.get(sidePos);
+//
+			// 		if (atmosphereComponent.isTraversableForDisplacement(centerState, centerPos, sideState, sidePos, centerVolume, sideVolume, direction)) {
+			// 			sideVolume.take(centerVolume);
+			// 			sideAtmosphereComponent.add(sidePos, sideVolume);
+//
+			// 			break;
+//
+			// 		}
+			// 	}
+//
+			// 	atmosphereComponent.remove(centerPos);
+			// }
 
-			if (atmosphereComponent != null) {
-				BlockPos centerPos = pos;
-				BlockState centerState = world.getBlockState(centerPos);
-				FluidVolume centerVolume = atmosphereComponent.get(centerPos);
-
-				List<Direction> directions = Lists.newArrayList(Direction.values());
-
-				Collections.shuffle(directions);
-
-				for (Direction direction : directions) {
-					BlockPos sidePos = pos.offset(direction);
-					BlockState sideState = world.getBlockState(sidePos);
-
-					ChunkAtmosphereComponent sideAtmosphereComponent = atmosphereComponent;
-
-					if (!atmosphereComponent.isInChunk(sidePos)) {
-						sideAtmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(sidePos));
-					}
-
-					FluidVolume sideVolume = sideAtmosphereComponent.get(sidePos);
-
-					if (atmosphereComponent.isTraversableForDisplacement(centerState, centerPos, sideState, sidePos, centerVolume, sideVolume, direction)) {
-						sideVolume.take(centerVolume);
-						sideAtmosphereComponent.add(sidePos, sideVolume);
-
-						break;
-
-					}
-				}
-
-				atmosphereComponent.remove(centerPos);
-			}
-
-			return EventResult.pass();
-		});
+			// return EventResult.pass();
+		// });
 
 		TickEvent.SERVER_PRE.register(( server) -> {
 			for (PlayerEntity playerEntity : server.getPlayerManager().getPlayerList()) {
@@ -107,35 +109,11 @@ public class AMCallbacks {
 				component.tick();
 			}
 		}));
-
-		TransferEntryCallback.EVENT.register((entry) -> {
-			if (entry.getComponentKey() == AMComponents.ENERGY_INVENTORY_COMPONENT) {
-				for (Direction direction : Direction.values()) {
-					entry.set(direction, TransferType.INPUT_OUTPUT);
-				}
-			}
-		});
 		
 		ServerChunkManagerCallback.EVENT.register(manager -> {
 			if (manager.threadedAnvilChunkStorage.chunkGenerator instanceof EarthSpaceChunkGenerator) {
 				manager.threadedAnvilChunkStorage.chunkGenerator = ((EarthSpaceChunkGenerator) manager.threadedAnvilChunkStorage.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
 			}
 		});
-		
-		// ServerChunkManagerCallback.EVENT.register(manager -> {
-		// 	}
-		// });
-		//
-		// ServerChunkManagerCallback.EVENT.register(manager -> {
-		// 	}
-		// });
-		//
-		// ServerChunkManagerCallback.EVENT.register(manager -> {
-		// 	}
-		// });
-		//
-		// ServerChunkManagerCallback.EVENT.register(manager -> {
-		// 	}
-		// });
 	}
 }
