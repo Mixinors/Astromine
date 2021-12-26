@@ -24,16 +24,26 @@
 
 package com.github.mixinors.astromine.common.recipe;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.annotations.SerializedName;
+
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
-import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
+import com.github.mixinors.astromine.common.recipe.base.input.FluidInputRecipe;
+import com.github.mixinors.astromine.common.recipe.base.output.DoubleFluidOutputRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.recipe.result.FluidResult;
+import com.github.mixinors.astromine.common.util.IntegerUtils;
 import com.github.mixinors.astromine.common.util.LongUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.architectury.core.AbstractRecipeSerializer;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
-import net.minecraft.inventory.Inventory;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.RecipeSerializer;
@@ -41,36 +51,15 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.util.IntegerUtils;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.annotations.SerializedName;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
-public final class ElectrolyzingRecipe implements EnergyConsumingRecipe {
-	public final Identifier id;
-	public final FluidIngredient input;
-	public final FluidResult firstOutput;
-	public final FluidResult secondOutput;
-	public final long energyInput;
-	public final int time;
-
+public record ElectrolyzingRecipe(Identifier id,
+								  FluidIngredient input,
+								  FluidResult firstOutput,
+								  FluidResult secondOutput,
+								  long energyInput, int time) implements FluidInputRecipe, DoubleFluidOutputRecipe {
 	private static final Map<World, ElectrolyzingRecipe[]> RECIPE_CACHE = new HashMap<>();
-
-	public ElectrolyzingRecipe(Identifier id, FluidIngredient input, FluidResult firstOutput, FluidResult secondOutput, long energyInput, int time) {
-		this.id = id;
-		this.input = input;
-		this.firstOutput = firstOutput;
-		this.secondOutput = secondOutput;
-		this.energyInput = energyInput;
-		this.time = time;
-	}
 
 	public static boolean allows(World world, FluidVariant... variants) {
 		if (RECIPE_CACHE.get(world) == null) {
@@ -102,24 +91,17 @@ public final class ElectrolyzingRecipe implements EnergyConsumingRecipe {
 
 	public boolean matches(SingleSlotStorage<FluidVariant>... variants) {
 		var inputStorage = variants[0];
-		
+
 		var firstOutputStorage = variants[1];
 		var secondOutputStorage = variants[2];
 
 		if (!input.test(inputStorage)) {
 			return false;
 		}
-		
+
 		return firstOutput.equalsAndFitsIn(firstOutputStorage) && secondOutput.equalsAndFitsIn(secondOutputStorage)
-			|| secondOutput.equalsAndFitsIn(firstOutputStorage) && firstOutput.equalsAndFitsIn(secondOutputStorage);
+				|| secondOutput.equalsAndFitsIn(firstOutputStorage) && firstOutput.equalsAndFitsIn(secondOutputStorage);
 	}
-
-	public boolean allows(FluidVariant... variants) {
-		var inputVariant = variants[0];
-		
-		return input.test(inputVariant, Long.MAX_VALUE);
-	}
-
 
 	@Override
 	public Identifier getId() {
@@ -134,26 +116,6 @@ public final class ElectrolyzingRecipe implements EnergyConsumingRecipe {
 	@Override
 	public RecipeType<?> getType() {
 		return Type.INSTANCE;
-	}
-
-	@Override
-	public boolean matches(Inventory inventory, World world) {
-		return false;
-	}
-
-	@Override
-	public ItemStack craft(Inventory inventory) {
-		return ItemStack.EMPTY;
-	}
-
-	@Override
-	public boolean fits(int width, int height) {
-		return false;
-	}
-
-	@Override
-	public ItemStack getOutput() {
-		return ItemStack.EMPTY;
 	}
 
 	@Override
@@ -183,13 +145,13 @@ public final class ElectrolyzingRecipe implements EnergyConsumingRecipe {
 		return secondOutput;
 	}
 
-	public static final class Serializer extends AbstractRecipeSerializer<ElectrolyzingRecipe>
-	{
+	public static final class Serializer extends AbstractRecipeSerializer<ElectrolyzingRecipe> {
 		public static final Identifier ID = AMCommon.id("electrolyzing");
 
 		public static final Serializer INSTANCE = new Serializer();
 
-		private Serializer() {}
+		private Serializer() {
+		}
 
 		@Override
 		public ElectrolyzingRecipe read(Identifier identifier, JsonObject object) {
@@ -230,11 +192,11 @@ public final class ElectrolyzingRecipe implements EnergyConsumingRecipe {
 	public static final class Type implements AMRecipeType<ElectrolyzingRecipe> {
 		public static final Type INSTANCE = new Type();
 
-		private Type() {}
+		private Type() {
+		}
 	}
 
 	public static final class Format {
-		@SerializedName("input")
 		JsonElement input;
 
 		@SerializedName("first_output")

@@ -24,51 +24,39 @@
 
 package com.github.mixinors.astromine.common.recipe;
 
-import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
-import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
-import com.github.mixinors.astromine.common.recipe.ingredient.ItemIngredient;
-import com.github.mixinors.astromine.common.util.LongUtils;
-import com.github.mixinors.astromine.registry.common.AMBlocks;
-import dev.architectury.core.AbstractRecipeSerializer;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
-
-import com.github.mixinors.astromine.common.recipe.base.EnergyGeneratingRecipe;
-import com.github.mixinors.astromine.common.util.DoubleUtils;
-import com.github.mixinors.astromine.common.util.IntegerUtils;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
+import com.github.mixinors.astromine.common.recipe.base.input.FluidInputRecipe;
+import com.github.mixinors.astromine.common.recipe.base.output.EnergyOutputRecipe;
+import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
+import com.github.mixinors.astromine.common.util.IntegerUtils;
+import com.github.mixinors.astromine.common.util.LongUtils;
+import com.github.mixinors.astromine.registry.common.AMBlocks;
+import dev.architectury.core.AbstractRecipeSerializer;
 
-public final class FluidGeneratingRecipe implements EnergyGeneratingRecipe {
-	public final Identifier id;
-	public final FluidIngredient input;
-	public final long energyOutput;
-	public final int time;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.util.Identifier;
+import net.minecraft.world.World;
 
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
+
+public record FluidGeneratingRecipe(Identifier id,
+									FluidIngredient input,
+									long energyOutput, int time) implements FluidInputRecipe, EnergyOutputRecipe {
 	private static final Map<World, FluidGeneratingRecipe[]> RECIPE_CACHE = new HashMap<>();
-
-	public FluidGeneratingRecipe(Identifier id, FluidIngredient input, long energyOutput, int time) {
-		this.id = id;
-		this.input = input;
-		this.energyOutput = energyOutput;
-		this.time = time;
-	}
 
 	public static boolean allows(World world, FluidVariant... variants) {
 		if (RECIPE_CACHE.get(world) == null) {
@@ -100,34 +88,8 @@ public final class FluidGeneratingRecipe implements EnergyGeneratingRecipe {
 
 	public boolean matches(SingleSlotStorage<FluidVariant>... storages) {
 		var inputStorage = storages[0];
-		
+
 		return input.test(inputStorage);
-	}
-
-	public boolean allows(FluidVariant... variants) {
-		var inputVariant = variants[0];
-		
-		return input.test(inputVariant, Long.MAX_VALUE);
-	}
-
-	@Override
-	public boolean matches(Inventory inventory, World world) {
-		return false;
-	}
-
-	@Override
-	public ItemStack craft(Inventory inventory) {
-		return ItemStack.EMPTY;
-	}
-
-	@Override
-	public boolean fits(int width, int height) {
-		return false;
-	}
-
-	@Override
-	public ItemStack getOutput() {
-		return ItemStack.EMPTY;
 	}
 
 	@Override
@@ -164,13 +126,13 @@ public final class FluidGeneratingRecipe implements EnergyGeneratingRecipe {
 		return input;
 	}
 
-	public static final class Serializer extends AbstractRecipeSerializer<FluidGeneratingRecipe>
-	{
+	public static final class Serializer extends AbstractRecipeSerializer<FluidGeneratingRecipe> {
 		public static final Identifier ID = AMCommon.id("fluid_generating");
 
 		public static final Serializer INSTANCE = new Serializer();
 
-		private Serializer() {}
+		private Serializer() {
+		}
 
 		@Override
 		public FluidGeneratingRecipe read(Identifier identifier, JsonObject object) {
@@ -205,11 +167,11 @@ public final class FluidGeneratingRecipe implements EnergyGeneratingRecipe {
 	public static final class Type implements AMRecipeType<FluidGeneratingRecipe> {
 		public static final Type INSTANCE = new Type();
 
-		private Type() {}
+		private Type() {
+		}
 	}
 
 	public static final class Format {
-		@SerializedName("input")
 		JsonElement input;
 
 		@SerializedName("energy_output")

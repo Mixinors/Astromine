@@ -34,6 +34,8 @@ import net.minecraft.world.World;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
+import javax.annotation.Nullable;
+
 public abstract class ExtendedEntity extends Entity {
 	protected SimpleEnergyStorage energyStorage = null;
 	protected SimpleItemStorage itemStorage = null;
@@ -109,14 +111,29 @@ public abstract class ExtendedEntity extends Entity {
 		}
 	}
 	
+	public boolean hasEnergyStorage() {
+		return getEnergyStorage() != null;
+	}
+	
+	public boolean hasFluidStorage() {
+		return getFluidStorage() != null;
+	}
+	
+	public boolean hasItemStorage() {
+		return getItemStorage() != null;
+	}
+	
+	@Nullable
 	public SimpleEnergyStorage getEnergyStorage() {
 		return energyStorage;
 	}
 	
+	@Nullable
 	public SimpleItemStorage getItemStorage() {
 		return itemStorage;
 	}
 	
+	@Nullable
 	public SimpleFluidStorage getFluidStorage() {
 		return fluidStorage;
 	}

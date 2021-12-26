@@ -24,18 +24,26 @@
 
 package com.github.mixinors.astromine.common.recipe;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.annotations.SerializedName;
+
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
-import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
+import com.github.mixinors.astromine.common.recipe.base.input.FluidInputRecipe;
+import com.github.mixinors.astromine.common.recipe.base.output.ItemOutputRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.recipe.result.ItemResult;
+import com.github.mixinors.astromine.common.util.IntegerUtils;
 import com.github.mixinors.astromine.common.util.LongUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.architectury.core.AbstractRecipeSerializer;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
-import net.minecraft.inventory.Inventory;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
@@ -45,33 +53,15 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.util.IntegerUtils;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.annotations.SerializedName;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
-public final class SolidifyingRecipe implements EnergyConsumingRecipe {
-	public final Identifier id;
-	public final FluidIngredient input;
-	public final ItemResult output;
-	public final long energyInput;
-	public final int time;
-
+public record SolidifyingRecipe(Identifier id,
+								FluidIngredient input,
+								ItemResult output, long energyInput,
+								int time) implements FluidInputRecipe, ItemOutputRecipe {
 	private static final Map<World, SolidifyingRecipe[]> RECIPE_CACHE = new HashMap<>();
-
-	public SolidifyingRecipe(Identifier id, FluidIngredient input, ItemResult output, long energyInput, int time) {
-		this.id = id;
-		this.input = input;
-		this.output = output;
-		this.energyInput = energyInput;
-		this.time = time;
-	}
 
 	public static boolean allows(World world, FluidVariant... variants) {
 		if (RECIPE_CACHE.get(world) == null) {
@@ -103,40 +93,14 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe {
 
 	public boolean matches(SingleSlotStorage<ItemVariant>[] itemStorages, SingleSlotStorage<FluidVariant>[] fluidStorages) {
 		var fluidInputStorage = fluidStorages[0];
-		
+
 		var itemOutputStorage = itemStorages[0];
-		
+
 		if (!input.test(fluidInputStorage)) {
 			return false;
 		}
-		
+
 		return output.equalsAndFitsIn(itemOutputStorage);
-	}
-
-	public boolean allows(FluidVariant... variants) {
-		var inputVariant = variants[0];
-
-		return input.test(inputVariant, Long.MAX_VALUE);
-	}
-
-	@Override
-	public boolean matches(Inventory inventory, World world) {
-		return false;
-	}
-
-	@Override
-	public ItemStack craft(Inventory inventory) {
-		return getOutput().copy();
-	}
-
-	@Override
-	public boolean fits(int width, int height) {
-		return false;
-	}
-
-	@Override
-	public ItemStack getOutput() {
-		return output.toStack();
 	}
 
 	@Override
@@ -181,13 +145,14 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe {
 	public ItemResult getItemOutput() {
 		return output;
 	}
-	
+
 	public static final class Serializer extends AbstractRecipeSerializer<SolidifyingRecipe> {
 		public static final Identifier ID = AMCommon.id("solidifying");
 
 		public static final Serializer INSTANCE = new Serializer();
 
-		private Serializer() {}
+		private Serializer() {
+		}
 
 		@Override
 		public SolidifyingRecipe read(Identifier identifier, JsonObject object) {
@@ -225,7 +190,8 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe {
 	public static final class Type implements AMRecipeType<SolidifyingRecipe> {
 		public static final Type INSTANCE = new Type();
 
-		private Type() {}
+		private Type() {
+		}
 	}
 
 	public static final class Format {

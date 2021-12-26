@@ -35,6 +35,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
+import com.github.mixinors.astromine.common.block.redstone.ComparatorMode;
 import com.github.mixinors.astromine.common.network.NetworkBlock;
 import com.github.mixinors.astromine.common.block.entity.SolidGeneratorBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.SolidGeneratorScreenHandler;
@@ -42,6 +43,11 @@ import com.github.mixinors.astromine.common.screenhandler.SolidGeneratorScreenHa
 public abstract class SolidGeneratorBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyProvider {
 	public SolidGeneratorBlock(Settings settings) {
 		super(settings);
+	}
+
+	@Override
+	protected ComparatorMode getComparatorMode() {
+		return ComparatorMode.ENERGY;
 	}
 
 	public abstract static class Base extends SolidGeneratorBlock {

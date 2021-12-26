@@ -208,7 +208,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	public Packet<ClientPlayPacketListener> toUpdatePacket() {
 		return BlockEntityUpdateS2CPacket.create(this);
 	}
-	
+
 	public RedstoneControl getRedstoneControl() {
 		return redstoneControl;
 	}
@@ -216,16 +216,31 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	public void setRedstoneControl(RedstoneControl redstoneControl) {
 		this.redstoneControl = redstoneControl;
 	}
-	
+
+	public boolean hasEnergyStorage() {
+		return getEnergyStorage() != null;
+	}
+
+	public boolean hasFluidStorage() {
+		return getFluidStorage() != null;
+	}
+
+	public boolean hasItemStorage() {
+		return getItemStorage() != null;
+	}
+
+	@Nullable
 	public SimpleEnergyStorage getEnergyStorage() {
 		return energyStorage;
 	}
-
-	public SimpleItemStorage getItemStorage() {
-		return itemStorage;
-	}
 	
+	@Nullable
 	public SimpleFluidStorage getFluidStorage() {
 		return fluidStorage;
+	}
+
+	@Nullable
+	public SimpleItemStorage getItemStorage() {
+		return itemStorage;
 	}
 }

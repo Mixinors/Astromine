@@ -106,7 +106,7 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 		
 		playerSlots = Slots.addPlayerInventory(invPos, Size.of(18.0F, 18.0F, 0.0F), mainTab, getPlayer().getInventory());
 		
-		if (entity.getEnergyStorage() != null) {
+		if (entity.hasEnergyStorage()) {
 			energyBar = new EnergyBarWidget();
 			energyBar.setPosition( Position.of(mainTab, 7.0F, 11.0F, 0.0F));
 			energyBar.setSize( Size.of(24.0F, 48.0F, 0.0F));
@@ -116,7 +116,7 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 			mainTab.add(energyBar);
 		}
 		
-		if (entity.getFluidStorage() != null) {
+		if (entity.hasFluidStorage()) {
 			fluidBar = new FluidBarWidget();
 			
 			if (energyBar == null) {

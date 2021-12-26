@@ -55,6 +55,7 @@ import com.github.mixinors.astromine.common.recipe.result.FluidResult;
 import com.github.mixinors.astromine.common.util.ClientUtils;
 import com.github.mixinors.astromine.common.util.FluidUtils;
 import com.github.mixinors.astromine.common.util.NumberUtils;
+import com.github.mixinors.astromine.common.util.TextUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.google.common.collect.ImmutableList;
 
@@ -183,14 +184,14 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 		return EntryStacks.of(variant.getFluid(), amount);
 	}
 
-	public static List<Widget> createEnergyDisplay(Rectangle bounds, double energy, boolean generating, long speed) {
+	public static List<Widget> createEnergyDisplay(Rectangle bounds, long energy, boolean generating, long speed) {
 		return Collections.singletonList(new EnergyEntryWidget(bounds, speed, generating).entry(ClientEntryStacks.of(new AbstractRenderer() {
 			@Override
 			public void render(MatrixStack matrices, Rectangle bounds, int mouseX, int mouseY, float delta) {}
 
 			@Override
 			public @Nullable Tooltip getTooltip(Point mouse) {
-				return Tooltip.create(mouse, new TranslatableText("text.astromine.energy"), new LiteralText(NumberUtils.shorten(energy, "") + "E").formatted(Formatting.GRAY), new LiteralText("Astromine").formatted(Formatting.BLUE, Formatting.ITALIC));
+				return Tooltip.create(mouse, new TranslatableText("text.astromine.energy"), TextUtils.getEnergyAmount(energy), TextUtils.getAstromine());
 			}
 		})).notFavoritesInteractable());
 	}

@@ -35,6 +35,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
+import com.github.mixinors.astromine.common.block.redstone.ComparatorMode;
 import com.github.mixinors.astromine.common.network.NetworkBlock;
 import com.github.mixinors.astromine.common.network.NetworkMemberType;
 import com.github.mixinors.astromine.common.block.entity.CapacitorBlockEntity;
@@ -43,6 +44,11 @@ import com.github.mixinors.astromine.common.screenhandler.CapacitorScreenHandler
 public abstract class CapacitorBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyBuffer {
 	public CapacitorBlock(Settings settings) {
 		super(settings);
+	}
+
+	@Override
+	protected ComparatorMode getComparatorMode() {
+		return ComparatorMode.ENERGY;
 	}
 
 	public abstract static class Base extends CapacitorBlock {

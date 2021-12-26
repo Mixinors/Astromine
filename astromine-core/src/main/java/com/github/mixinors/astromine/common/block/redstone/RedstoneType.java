@@ -38,93 +38,45 @@ public enum RedstoneType {
 
     /** Returns this type as a {@link Text}. */
     public Text asText() {
-        switch (this) {
-            case WORK_WHEN_OFF: {
-                return new TranslatableText("text.astromine.work_when_off").formatted(Formatting.RED);
-            }
-
-            case WORK_WHEN_ON: {
-                return new TranslatableText("text.astromine.work_when_on").formatted(Formatting.GREEN);
-            }
-
-            case WORK_ALWAYS: {
-                return new TranslatableText("text.astromine.work_always").formatted(Formatting.YELLOW);
-            }
-
-            default: {
-                return null;
-            }
-        }
+		return switch (this) {
+			case WORK_WHEN_OFF -> new TranslatableText("text.astromine.work_when_off").formatted(Formatting.RED);
+			case WORK_WHEN_ON -> new TranslatableText("text.astromine.work_when_on").formatted(Formatting.GREEN);
+			case WORK_ALWAYS -> new TranslatableText("text.astromine.work_always").formatted(Formatting.YELLOW);
+		};
     }
 
     /** Returns this type as a number. */
     public int asNumber() {
-        switch (this) {
-			case WORK_WHEN_ON: {
-				return 1;
-			}
-
-			case WORK_ALWAYS: {
-				return 2;
-			}
-
-			default: {
-				return 0;
-			}
-		}
+		return switch (this) {
+			case WORK_WHEN_ON -> 1;
+			case WORK_ALWAYS -> 2;
+			default -> 0;
+		};
 	}
 
     /** Returns the type corresponding to the given number. */
     public static RedstoneType byNumber(int number) {
-        switch (number) {
-            case 1: {
-                return WORK_WHEN_ON;
-            }
-
-            case 2: {
-                return WORK_ALWAYS;
-            }
-
-            default: {
-                return WORK_WHEN_OFF;
-            }
-        }
+		return switch (number) {
+			case 1 -> WORK_WHEN_ON;
+			case 2 -> WORK_ALWAYS;
+			default -> WORK_WHEN_OFF;
+		};
     }
 
     /** Returns the next type on this enum. */
     public RedstoneType next() {
-        switch (this) {
-            case WORK_ALWAYS: {
-                return WORK_WHEN_OFF;
-            }
-
-            case WORK_WHEN_OFF: {
-                return WORK_WHEN_ON;
-            }
-
-			default: {
-				return WORK_ALWAYS;
-			}
-		}
+		return switch (this) {
+			case WORK_ALWAYS -> WORK_WHEN_OFF;
+			case WORK_WHEN_OFF -> WORK_WHEN_ON;
+			default -> WORK_ALWAYS;
+		};
 	}
 
 	public boolean shouldWork(boolean powered) {
-		switch(this) {
-			case WORK_WHEN_OFF: {
-				return !powered;
-			}
-
-			case WORK_WHEN_ON: {
-				return powered;
-			}
-
-			case WORK_ALWAYS: {
-				return true;
-			}
-
-			default: {
-				return false;
-			}
-		}
+		return switch(this) {
+			case WORK_WHEN_OFF -> !powered;
+			case WORK_WHEN_ON -> powered;
+			case WORK_ALWAYS -> true;
+		};
 	}
 }

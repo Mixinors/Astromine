@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.block.base;
 
 import com.github.mixinors.astromine.common.block.entity.TickableBlockEntity;
 
+import com.github.mixinors.astromine.common.block.redstone.ComparatorMode;
 import dev.architectury.registry.menu.ExtendedMenuProvider;
 import dev.architectury.registry.menu.MenuRegistry;
 import net.minecraft.block.AbstractBlock;

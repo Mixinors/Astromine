@@ -22,8 +22,17 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.common.recipe.base;
+package com.github.mixinors.astromine.common.recipe.base.output;
 
-public interface EnergyGeneratingRecipe extends TimeBasedRecipe {
-	long getEnergyOutput();
+import com.github.mixinors.astromine.common.recipe.result.ItemResult;
+
+public interface DoubleItemOutputRecipe extends ItemOutputRecipe {
+	@Override
+	default ItemResult getItemOutput() {
+		return getFirstOutput();
+	}
+
+	ItemResult getFirstOutput();
+
+	ItemResult getSecondOutput();
 }

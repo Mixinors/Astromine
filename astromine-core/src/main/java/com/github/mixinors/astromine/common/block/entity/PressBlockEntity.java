@@ -103,10 +103,10 @@ public abstract class PressBlockEntity extends ExtendedBlockEntity implements En
 			if (optionalRecipe.isPresent()) {
 				var recipe = optionalRecipe.get();
 
-				limit = recipe.time;
+				limit = recipe.time();
 
 				var speed = Math.min(getMachineSpeed(), limit - progress);
-				var consumed = (long) (recipe.energyInput * speed / limit);
+				var consumed = (long) (recipe.energyInput() * speed / limit);
 
 				try (var transaction = Transaction.openOuter()) {
 					if (energyStorage.extract(consumed, transaction) == consumed) {
@@ -115,11 +115,11 @@ public abstract class PressBlockEntity extends ExtendedBlockEntity implements En
 							
 							var inputStorage = itemStorage.getStorage(INPUT_SLOT);
 							
-							inputStorage.extract(inputStorage.getResource(), recipe.input.getAmount(), transaction);
+							inputStorage.extract(inputStorage.getResource(), recipe.input().getAmount(), transaction);
 							
 							var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
 							
-							outputStorage.insert(ItemVariant.of(recipe.output.copy()), recipe.output.getCount(), transaction);
+							outputStorage.insert(recipe.output().variant(), recipe.output().amount(), transaction);
 							
 							transaction.commit();
 							

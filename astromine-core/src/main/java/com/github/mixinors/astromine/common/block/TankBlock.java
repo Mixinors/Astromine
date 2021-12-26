@@ -35,6 +35,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
+import com.github.mixinors.astromine.common.block.redstone.ComparatorMode;
 import com.github.mixinors.astromine.common.network.NetworkBlock;
 import com.github.mixinors.astromine.common.network.NetworkMemberType;
 import com.github.mixinors.astromine.common.block.entity.TankBlockEntity;
@@ -43,6 +44,11 @@ import com.github.mixinors.astromine.common.screenhandler.TankScreenHandler;
 public abstract class TankBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.FluidBuffer {
 	public TankBlock(Settings settings) {
 		super(settings);
+	}
+
+	@Override
+	protected ComparatorMode getComparatorMode() {
+		return ComparatorMode.FLUIDS;
 	}
 
 	public abstract static class Base extends TankBlock {

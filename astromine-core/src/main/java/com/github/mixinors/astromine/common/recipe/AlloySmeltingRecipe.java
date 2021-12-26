@@ -24,16 +24,26 @@
 
 package com.github.mixinors.astromine.common.recipe;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.annotations.SerializedName;
+
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
-import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
+import com.github.mixinors.astromine.common.recipe.base.input.DoubleItemInputRecipe;
+import com.github.mixinors.astromine.common.recipe.base.output.ItemOutputRecipe;
+import com.github.mixinors.astromine.common.recipe.ingredient.ItemIngredient;
 import com.github.mixinors.astromine.common.recipe.result.ItemResult;
+import com.github.mixinors.astromine.common.util.IntegerUtils;
 import com.github.mixinors.astromine.common.util.LongUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.architectury.core.AbstractRecipeSerializer;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
-import net.minecraft.inventory.Inventory;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.RecipeSerializer;
@@ -41,37 +51,16 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.recipe.ingredient.ItemIngredient;
-import com.github.mixinors.astromine.common.util.IntegerUtils;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.annotations.SerializedName;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
-public final class AlloySmeltingRecipe implements EnergyConsumingRecipe {
-	public final Identifier id;
-	public final ItemIngredient firstInput;
-	public final ItemIngredient secondInput;
-	public final ItemResult output;
-	public final long energyInput;
-	public final int time;
-
+public record AlloySmeltingRecipe(Identifier id,
+								  ItemIngredient firstInput,
+								  ItemIngredient secondInput,
+								  ItemResult output,
+								  long energyInput, int time) implements DoubleItemInputRecipe, ItemOutputRecipe {
 	private static final Map<World, AlloySmeltingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public AlloySmeltingRecipe(Identifier id, ItemIngredient firstInput, ItemIngredient secondInput, ItemResult output, long energyInput, int time) {
-		this.id = id;
-		this.firstInput = firstInput;
-		this.secondInput = secondInput;
-		this.output = output;
-		this.energyInput = energyInput;
-		this.time = time;
-	}
-	
 	public static boolean allows(World world, ItemVariant... variants) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (AlloySmeltingRecipe) it).toArray(AlloySmeltingRecipe[]::new));
@@ -103,9 +92,9 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe {
 	public boolean matches(SingleSlotStorage<ItemVariant>... storages) {
 		var firstInputStorage = storages[0];
 		var secondInputStorage = storages[1];
-		
+
 		var outputStorage = storages[2];
-		
+
 		if (!firstInput.test(firstInputStorage) && !secondInput.test(firstInputStorage)) {
 			return false;
 		}
@@ -113,40 +102,8 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe {
 		if (!firstInput.test(secondInputStorage) && !secondInput.test(secondInputStorage)) {
 			return false;
 		}
-		
+
 		return output.equalsAndFitsIn(outputStorage);
-	}
-
-	public boolean allows(ItemVariant... variants) {
-		var firstInputVariant = variants[0];
-		var secondInputVariant = variants[1];
-		
-		if (!firstInput.test(firstInputVariant, Long.MAX_VALUE) && !secondInput.test(firstInputVariant, Long.MAX_VALUE)) {
-			return false;
-		}
-
-		return firstInput.test(secondInputVariant, Long.MAX_VALUE) || secondInput.test(secondInputVariant, Long.MAX_VALUE);
-	}
-
-
-	@Override
-	public boolean matches(Inventory inventory, World world) {
-		return false;
-	}
-
-	@Override
-	public ItemStack craft(Inventory inventory) {
-		return ItemStack.EMPTY;
-	}
-
-	@Override
-	public ItemStack getOutput() {
-		return ItemStack.EMPTY;
-	}
-
-	@Override
-	public boolean fits(int width, int height) {
-		return false;
 	}
 
 	@Override
@@ -196,7 +153,8 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe {
 
 		public static final Serializer INSTANCE = new Serializer();
 
-		private Serializer() {}
+		private Serializer() {
+		}
 
 		@Override
 		public AlloySmeltingRecipe read(Identifier identifier, JsonObject object) {
@@ -237,7 +195,8 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe {
 	public static final class Type implements AMRecipeType<AlloySmeltingRecipe> {
 		public static final Type INSTANCE = new Type();
 
-		private Type() {}
+		private Type() {
+		}
 	}
 
 	public static final class Format {

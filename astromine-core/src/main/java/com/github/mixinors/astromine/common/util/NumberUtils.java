@@ -29,24 +29,24 @@ import java.text.DecimalFormat;
 public class NumberUtils {
 	public static final DecimalFormat FORMAT = new DecimalFormat("#0.00");
 
-	private static final String[] units = new String[]{"k", "M", "G", "T", "P", "E", "Z", "Y"};
+	private static final char[] SI_PREFIXES = new char[]{'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'};
 
 	/**
-	 * Shortens the given {@link long}, appending the specified
-	 * unit if necessary.
+	 * Shortens the given long, appending an SI prefix
+	 * if necessary.
 	 * <p>
-	 * <= 999 has no suffix.
-	 * >= 1,000 has the "k" suffix.
-	 * >= 1,000,000 has the "M" suffix.
-	 * >= 1,000,000,000 has the "G" suffix.
-	 * >= 1,000,000,000,000 has the "T" suffix.
-	 * >= 1,000,000,000,000,000 has the "P" suffix.
-	 * >= 1,000,000,000,000,000,000 has the "E" suffix.
-	 * >= 1,000,000,000,000,000,000,000 has the "Z" suffix.
-	 * >= 1,000,000,000,000,000,000,000,000 has the "Y" suffix.
-	 * >= 1,000,000,000,000,000,000,000,000,000 has the "∞" suffix.
+	 * <= 999 has no SI prefix.
+	 * >= 1,000 has the "k" prefix.
+	 * >= 1,000,000 has the "M" prefix.
+	 * >= 1,000,000,000 has the "G" prefix.
+	 * >= 1,000,000,000,000 has the "T" prefix.
+	 * >= 1,000,000,000,000,000 has the "P" prefix.
+	 * >= 1,000,000,000,000,000,000 has the "E" prefix.
+	 * >= 1,000,000,000,000,000,000,000 has the "Z" prefix.
+	 * >= 1,000,000,000,000,000,000,000,000 has the "Y" prefix.
+	 * >= 1,000,000,000,000,000,000,000,000,000 has the "∞" prefix.
 	 */
-	public static String shorten(long value, String unit) {
+	public static String shorten(long value) {
 		boolean negative = false;
 		if (value < 0) {
 			negative = true;
@@ -54,7 +54,7 @@ public class NumberUtils {
 		}
 
 		if (value < 1000) {
-			return (negative ? "-" : "") + value + unit;
+			return (negative ? "-" : "") + value;
 		}
 
 		int exponent = 0;
@@ -63,26 +63,26 @@ public class NumberUtils {
 			++exponent;
 		}
 
-		return (negative ? "-" : "") + String.format("%d%s", value, exponent - 1 > units.length - 1 ? "∞" : units[exponent - 1] + unit);
+		return (negative ? "-" : "") + String.format("%d%s", value, exponent - 1 > SI_PREFIXES.length - 1 ? "∞" : SI_PREFIXES[exponent - 1]);
 	}
 
 	/**
-	 * Shortens the given {@link double}, appending the specified
-	 * unit if necessary.
+	 * Shortens the given {@link double}, appending an SI prefix
+	 * if necessary.
 	 * <p>
-	 * <= 999 has no suffix.
-	 * >= 1,000 has the "k" suffix.
-	 * >= 1,000,000 has the "M" suffix.
-	 * >= 1,000,000,000 has the "G" suffix.
-	 * >= 1,000,000,000,000 has the "T" suffix.
-	 * >= 1,000,000,000,000,000 has the "P" suffix.
-	 * >= 1,000,000,000,000,000,000 has the "E" suffix.
-	 * >= 1,000,000,000,000,000,000,000 has the "Z" suffix.
-	 * >= 1,000,000,000,000,000,000,000,000 has the "Y" suffix.
-	 * >= 1,000,000,000,000,000,000,000,000,000 has the "∞" suffix.
+	 * <= 999 has no SI prefix.
+	 * >= 1,000 has the "k" prefix.
+	 * >= 1,000,000 has the "M" prefix.
+	 * >= 1,000,000,000 has the "G" prefix.
+	 * >= 1,000,000,000,000 has the "T" prefix.
+	 * >= 1,000,000,000,000,000 has the "P" prefix.
+	 * >= 1,000,000,000,000,000,000 has the "E" prefix.
+	 * >= 1,000,000,000,000,000,000,000 has the "Z" prefix.
+	 * >= 1,000,000,000,000,000,000,000,000 has the "Y" prefix.
+	 * >= 1,000,000,000,000,000,000,000,000,000 has the "∞" prefix.
 	 */
-	public static String shorten(double value, String unit) {
-		if (value == Math.round(value)) return shorten((long) value, unit);
+	public static String shorten(double value) {
+		if (value == Math.round(value)) return shorten((long) value);
 
 		boolean negative = false;
 		if (value < 0) {
@@ -91,7 +91,7 @@ public class NumberUtils {
 		}
 
 		if (value < 1000) {
-			return (negative ? "-" : "") + FORMAT.format(value) + unit;
+			return (negative ? "-" : "") + FORMAT.format(value);
 		}
 
 		int exponent = 0;
@@ -100,6 +100,44 @@ public class NumberUtils {
 			++exponent;
 		}
 
-		return (negative ? "-" : "") + String.format("%.1f%s", value, exponent - 1 > units.length - 1 ? "∞" : units[exponent - 1] + unit);
+		return (negative ? "-" : "") + String.format("%.1f%s", value, exponent - 1 > SI_PREFIXES.length - 1 ? "∞" : SI_PREFIXES[exponent - 1]);
+	}
+
+	/**
+	 * Shortens the given long, appending an SI prefix
+	 * if necessary, and a given unit.
+	 * <p>
+	 * <= 999 has no SI prefix.
+	 * >= 1,000 has the "k" prefix.
+	 * >= 1,000,000 has the "M" prefix.
+	 * >= 1,000,000,000 has the "G" prefix.
+	 * >= 1,000,000,000,000 has the "T" prefix.
+	 * >= 1,000,000,000,000,000 has the "P" prefix.
+	 * >= 1,000,000,000,000,000,000 has the "E" prefix.
+	 * >= 1,000,000,000,000,000,000,000 has the "Z" prefix.
+	 * >= 1,000,000,000,000,000,000,000,000 has the "Y" prefix.
+	 * >= 1,000,000,000,000,000,000,000,000,000 has the "∞" prefix.
+	 */
+	public static String shorten(long value, char unit) {
+		return shorten(value) + unit;
+	}
+
+	/**
+	 * Shortens the given double, appending an SI prefix
+	 * if necessary, and a given unit.
+	 * <p>
+	 * <= 999 has no SI prefix.
+	 * >= 1,000 has the "k" prefix.
+	 * >= 1,000,000 has the "M" prefix.
+	 * >= 1,000,000,000 has the "G" prefix.
+	 * >= 1,000,000,000,000 has the "T" prefix.
+	 * >= 1,000,000,000,000,000 has the "P" prefix.
+	 * >= 1,000,000,000,000,000,000 has the "E" prefix.
+	 * >= 1,000,000,000,000,000,000,000 has the "Z" prefix.
+	 * >= 1,000,000,000,000,000,000,000,000 has the "Y" prefix.
+	 * >= 1,000,000,000,000,000,000,000,000,000 has the "∞" prefix.
+	 */
+	public static String shorten(double value, char unit) {
+		return shorten(value) + unit;
 	}
 }
