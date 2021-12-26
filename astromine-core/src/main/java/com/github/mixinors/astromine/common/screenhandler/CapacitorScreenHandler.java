@@ -29,14 +29,14 @@ import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
 import dev.vini2003.hammer.common.widget.slot.SlotWidget;
+import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
-import team.reborn.energy.Energy;
-import team.reborn.energy.EnergyHandler;
+import team.reborn.energy.api.EnergyStorage;
 
 import java.util.function.Supplier;
 
@@ -66,26 +66,10 @@ public class CapacitorScreenHandler extends ExtendedBlockEntityScreenHandler {
 		HorizontalArrowWidget leftArrow = new HorizontalArrowWidget();
 		leftArrow.setPosition(Position.of(input, 28, 0));
 		leftArrow.setSize(Size.of(22, 16));
-		leftArrow.setLimitSupplier(() -> 1);
-		leftArrow.setProgressSupplier(() -> {
-			ItemStack stack = blockEntity.getItemStorage().getStack(0);
-			if (!Energy.valid(stack))
-				return 0;
-			EnergyHandler handler = Energy.of(stack);
-			return handler.getEnergy() > 0 && handler.getMaxOutput() > 0 ? 1 : 0;
-		});
 
 		HorizontalArrowWidget rightArrow = new HorizontalArrowWidget();
 		rightArrow.setPosition(Position.of(output, -34, 0));
 		rightArrow.setSize(Size.of(22, 16));
-		rightArrow.setLimitSupplier(() -> 1);
-		rightArrow.setProgressSupplier(() -> {
-			ItemStack stack = blockEntity.getItemStorage().getStack(1);
-			if (!Energy.valid(stack))
-				return 0;
-			EnergyHandler handler = Energy.of(stack);
-			return handler.getEnergy() < handler.getMaxStored() && blockEntity.getEnergyComponent().getAmount() > 0 && handler.getMaxInput() > 0 ? 1 : 0;
-		});
 
 		mainTab.add(input);
 		mainTab.add(output);

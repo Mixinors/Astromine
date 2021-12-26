@@ -254,8 +254,8 @@ public abstract class ExtendedFluid extends FlowableFluid {
 	 * A builder for {@link ExtendedFluid}s.
 	 */
 	public static class Builder {
-		int fog = Color.getStandard().toInt();
-		int tint = Color.getStandard().toInt();
+		int fog = Color.Standard.toInt();
+		int tint = Color.Standard.toInt();
 		int damage = 0;
 
 		boolean isInfinite = false;

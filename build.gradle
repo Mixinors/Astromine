@@ -31,14 +31,14 @@ allprojects {
     }
 
     def runNumber = System.getenv("GITHUB_RUN_NUMBER") ?: "9999"
-    archivesBaseName = project.mod_name
+    archivesBaseName = project.modName
 
     if (isSnapshot) {
-        group = rootProject.mod_group + "-snapshot"
-        version = rootProject.mod_version + '-alpha.' + runNumber + "+" + project.minecraft_version
+        group = rootProject.modGroup + "-snapshot"
+        version = rootProject.modVersion + '-alpha.' + runNumber + "+" + project.minecraftVersion
     } else {
-        group = project.mod_group
-        version = project.mod_version + "+" + project.minecraft_version
+        group = project.modGroup
+        version = project.modVersion + "+" + project.minecraftVersion
     }
 
     java {
@@ -129,10 +129,10 @@ allprojects {
             }
         }
 
-        minecraft group: 'com.mojang', name: 'minecraft', version: minecraft_version
-        mappings group: 'net.fabricmc', name: 'yarn', version: yarn_version, classifier: 'v2'
-        modImplementation "net.fabricmc:fabric-loader:$fabric_loader_version"
-        useAsApiOptionally "net.fabricmc.fabric-api:fabric-api:$fabric_api_version"
+        minecraft group: 'com.mojang', name: 'minecraft', version: minecraftVersion
+        mappings group: 'net.fabricmc', name: 'yarn', version: yarnVersion, classifier: 'v2'
+        modImplementation "net.fabricmc:fabric-loader:$fabricLoaderVersion"
+        useAsApiOptionally "net.fabricmc.fabric-api:fabric-api:$fabricApiVersion"
         modImplementation "com.google.code.findbugs:jsr305:3.0.2"
 
         tap(rootProject.ext.setDefaultApis)
@@ -200,9 +200,9 @@ subprojects {
             if ((project.hasProperty('curse_api_key') || System.getenv('curse_api_key') != null) && cfProjectId >= 0) {
                 project {
                     id = cfProjectId.toString()
-                    releaseType = rootProject.release_cycle
+                    releaseType = rootProject.releaseCycle
                     changelog = "View the changelog at https://github.com/Mixinors/Astromine"
-                    ((String) rootProject.tagged_versions).split(",").each {
+                    ((String) rootProject.taggedVersions).split(",").each {
                         addGameVersion it
                     }
                     relations {
@@ -330,9 +330,9 @@ curseforge {
         apiKey = project.hasProperty('curse_api_key') ? project.property('curse_api_key') : System.getenv('curse_api_key')
         project {
             id = "391739"
-            releaseType = rootProject.release_cycle
+            releaseType = rootProject.releaseCycle
             changelog = "View the changelog at https://github.com/Mixinors/Astromine"
-            ((String) rootProject.tagged_versions).split(",").each {
+            ((String) rootProject.taggedVersions).split(",").each {
                 addGameVersion it
             }
             relations {

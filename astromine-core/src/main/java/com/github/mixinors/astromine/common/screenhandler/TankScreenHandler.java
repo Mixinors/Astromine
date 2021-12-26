@@ -29,6 +29,8 @@ import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
 import dev.vini2003.hammer.common.widget.slot.SlotWidget;
+import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
@@ -37,6 +39,7 @@ import net.minecraft.util.math.BlockPos;
 import com.github.mixinors.astromine.common.widget.blade.FluidFilterWidget;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.block.entity.TankBlockEntity;
+import team.reborn.energy.api.EnergyStorage;
 
 import java.util.function.Supplier;
 
@@ -70,46 +73,10 @@ public class TankScreenHandler extends ExtendedBlockEntityScreenHandler {
 		HorizontalArrowWidget leftArrow = new HorizontalArrowWidget();
 		leftArrow.setPosition(Position.of(input, 28, 0));
 		leftArrow.setSize(Size.of(22, 16));
-		// leftArrow.setLimitSupplier(() -> {
-		// 	ItemStack stack = blockEntity.getItemStorage().getFirst();
-//
-		// 	if (stack.getItem() instanceof FluidVolumeItem) {
-		// 		return (int) ((FluidVolumeItem) stack.getItem()).getSize();
-		// 	} else {
-		// 		return 0;
-		// 	}
- 		// });
-		// leftArrow.setProgressSupplier(() -> {
-		// 	ItemStack stack = blockEntity.getItemStorage().getFirst();
-//
-		// 	if (stack.getItem() instanceof FluidVolumeItem) {
-		// 		return SimpleFluidStorage.get(stack.getItem()).getFirst().getAmount().intValue();
-		// 	} else {
-		// 		return 0;
-		// 	}
-		// });
-
+		
 		HorizontalArrowWidget rightArrow = new HorizontalArrowWidget();
 		rightArrow.setPosition(Position.of(output, -34, 0));
 		rightArrow.setSize(Size.of(22, 16));
-		// rightArrow.setLimitSupplier(() -> {
-		// 	ItemStack stack = blockEntity.getItemComponent().getSecond();
-//
-		// 	if (stack.getItem() instanceof FluidVolumeItem) {
-		// 		return (int) ((FluidVolumeItem) stack.getItem()).getSize();
-		// 	} else {
-		// 		return 0;
-		// 	}
-		// });
-		// rightArrow.setProgressSupplier(() -> {
-		// 	ItemStack stack = blockEntity.getItemComponent().getSecond();
-//
-		// 	if (stack.getItem() instanceof FluidVolumeItem) {
-		// 		return SimpleFluidStorage.get(stack.getItem()).getFirst().getAmount().intValue();
-		// 	} else {
-		// 		return 0;
-		// 	}
-		// });
 
 		FluidFilterWidget filter = new FluidFilterWidget();
 		filter.setPosition(Position.of(input, 5F, 18F + 2F));
