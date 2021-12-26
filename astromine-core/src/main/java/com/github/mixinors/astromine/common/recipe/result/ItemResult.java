@@ -71,7 +71,9 @@ public record ItemResult(ItemVariant variant, int amount) {
 
 			var variant = ItemVariant.of(variantItem);
 
-			var variantAmount = jsonObject.get("amount").getAsInt();
+			int variantAmount;
+			if(jsonObject.has("amount")) variantAmount = jsonObject.get("amount").getAsInt();
+			else variantAmount = 1;
 
 			return new ItemResult(variant, variantAmount);
 		}

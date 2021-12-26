@@ -40,6 +40,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
 import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
+import team.reborn.energy.api.base.SimpleBatteryItem;
 
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
@@ -66,7 +67,7 @@ public class AMClientCallbacks {
 		ItemTooltipCallback.EVENT.register( ( stack, context, tooltip ) -> {
 			if (stack.getItem() instanceof EnergyStorageItem item) {
 				tooltip.addAll(Math.min(tooltip.size(), 1), Lists.newArrayList(
-						TextUtils.getEnergy(item.getStoredEnergy(stack), item.getEnergyCapacity())
+						TextUtils.getEnergy(SimpleBatteryItem.getStoredEnergyUnchecked(stack), item.getEnergyCapacity())
 				));
 			}
 		});
