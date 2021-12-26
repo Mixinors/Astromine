@@ -39,11 +39,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.common.block.transfer.TransferType;
-import com.github.mixinors.astromine.common.callback.TransferEntryCallback;
-import com.github.mixinors.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.mixinors.astromine.common.component.world.WorldNetworkComponent;
 import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
-import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 
 import com.google.common.collect.Lists;
 import java.util.Collections;

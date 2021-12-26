@@ -24,12 +24,12 @@
 
 package com.github.mixinors.astromine.common.recipe.base.input;
 
-import com.github.mixinors.astromine.common.recipe.base.TimeBasedRecipe;
+import com.github.mixinors.astromine.common.recipe.base.AMRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 
-public interface FluidInputRecipe extends TimeBasedRecipe {
+public interface FluidInputRecipe extends AMRecipe {
 	FluidIngredient getInput();
 
 	default boolean allows(FluidVariant... variants) {

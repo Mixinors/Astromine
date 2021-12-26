@@ -45,9 +45,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.block.transfer.TransferType;
-import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
 import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
-import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 
 @Mixin(AbstractBlock.class)
 public class AbstractBlockMixin {

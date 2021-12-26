@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.common.network.type;
 
-import com.github.mixinors.astromine.common.component.block.entity.TransferComponent;
-import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
+import java.util.List;
+
 import net.minecraft.block.entity.BlockEntity;
 
 import com.github.mixinors.astromine.common.block.transfer.TransferType;
@@ -34,13 +34,12 @@ import com.github.mixinors.astromine.common.network.NetworkMember;
 import com.github.mixinors.astromine.common.network.NetworkMemberNode;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.registry.NetworkMemberRegistry;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.util.data.position.WorldPos;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.Direction;
 
 import com.google.common.collect.Lists;
-
-import java.util.List;
 
 /**
  * A {@link NetworkType} for fluids.

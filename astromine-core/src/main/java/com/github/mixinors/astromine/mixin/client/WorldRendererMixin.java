@@ -50,12 +50,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
 
-import com.github.mixinors.astromine.client.atmosphere.ClientAtmosphereManager;
 import com.github.mixinors.astromine.client.registry.SkyboxRegistry;
 import com.github.mixinors.astromine.client.render.layer.Layer;
 import com.github.mixinors.astromine.client.render.sky.skybox.Skybox;
 import com.github.mixinors.astromine.common.fluid.ExtendedFluid;
-import com.github.mixinors.astromine.common.volume.fluid.FluidVolume;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 
 @Mixin(WorldRenderer.class)
