@@ -39,10 +39,10 @@ import net.minecraft.util.Identifier;
 public abstract class EnergyGeneratingDisplay implements Display {
 	private final List<EntryIngredient> inputs;
 	private final int timeRequired;
-	private final double energyGeneratedPerTick;
+	private final long energyGeneratedPerTick;
 	private final Identifier recipeId;
 
-	public EnergyGeneratingDisplay(List<EntryIngredient> inputs, int timeRequired, double energyGeneratedPerTick, Identifier recipeId) {
+	public EnergyGeneratingDisplay(List<EntryIngredient> inputs, int timeRequired, long energyGeneratedPerTick, Identifier recipeId) {
 		this.inputs = inputs;
 		this.timeRequired = timeRequired;
 		this.energyGeneratedPerTick = energyGeneratedPerTick;
@@ -63,7 +63,7 @@ public abstract class EnergyGeneratingDisplay implements Display {
 		return timeRequired;
 	}
 
-	public double getEnergyGeneratedPerTick() {
+	public long getEnergyGeneratedPerTick() {
 		return energyGeneratedPerTick;
 	}
 

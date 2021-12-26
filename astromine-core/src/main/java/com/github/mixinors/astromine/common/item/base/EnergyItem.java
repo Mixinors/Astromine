@@ -29,56 +29,53 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
 
-import team.reborn.energy.Energy;
-import team.reborn.energy.EnergyHolder;
-import team.reborn.energy.EnergyTier;
+import team.reborn.energy.api.EnergyStorage;
+import team.reborn.energy.api.base.SimpleBatteryItem;
 
 /**
- * An {@link Item} with an attached {@link EnergyVolume}.
+ * An {@link Item} with an attached {@link EnergyStorage}.
  */
-public class EnergyVolumeItem extends Item implements EnergyHolder {
-	private final double size;
+public class EnergyItem extends Item implements SimpleBatteryItem {
+	private final long capacity;
 
-	/** Instantiates an {@link EnergyVolumeItem}s. */
-	protected EnergyVolumeItem(Item.Settings settings, double size) {
+	/** Instantiates an {@link EnergyItem}s. */
+	protected EnergyItem(Item.Settings settings, long capacity) {
 		super(settings);
 
-		this.size = size;
+		this.capacity = capacity;
 	}
 
-	/** Instantiates an {@link EnergyVolumeItem}. */
-	public static EnergyVolumeItem ofCreative(Item.Settings settings) {
-		return new EnergyVolumeItem(settings, Double.MAX_VALUE);
+	/** Instantiates an {@link EnergyItem}. */
+	public static EnergyItem ofCreative(Item.Settings settings) {
+		return new EnergyItem(settings, Long.MAX_VALUE);
 	}
 
-	/** Instantiates an {@link EnergyVolumeItem}s. */
-	public static EnergyVolumeItem of(Settings settings, double size) {
-		return new EnergyVolumeItem(settings, size);
+	/** Instantiates an {@link EnergyItem}s. */
+	public static EnergyItem of(Settings settings, long size) {
+		return new EnergyItem(settings, size);
 	}
 
-	/** Returns this item's size. */
-	public double getSize() {
-		return size;
-	}
-
-	/** returns this item's size. */
 	@Override
-	public double getMaxStoredPower() {
-		return getSize();
+	public long getEnergyCapacity() {
+		return capacity;
 	}
 
-	/** Override behavior to ignore TechReborn's energy tiers. */
 	@Override
-	public EnergyTier getTier() {
-		return EnergyTier.INSANE;
+	public long getEnergyMaxInput() {
+		return capacity;
+	}
+
+	@Override
+	public long getEnergyMaxOutput() {
+		return capacity;
 	}
 
 	/** Override behavior to return our progress. */
 	@Override
 	public int getItemBarStep(ItemStack stack) {
-		if (!Energy.valid(stack) || getMaxStoredPower() == 0)
+		if (getEnergyCapacity() == 0)
 			return 0;
-		return (int) Math.round(13 * (1 - Energy.of(stack).getEnergy() / getMaxStoredPower()));
+		return Math.round(13 * (1 - getStoredEnergy(stack) / getEnergyCapacity()));
 	}
 
 	/** Override behavior to return true. */
@@ -93,7 +90,7 @@ public class EnergyVolumeItem extends Item implements EnergyHolder {
 		return 0x91261f;
 	}
 
-	/** Override behavior to add instances of {@link EnergyVolumeItem}
+	/** Override behavior to add instances of {@link EnergyItem}
 	 * as {@link ItemStack}s to {@link ItemGroup}s with full energy. */
 	@Override
 	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
@@ -102,7 +99,7 @@ public class EnergyVolumeItem extends Item implements EnergyHolder {
 		if (this.isIn(group)) {
 			ItemStack stack = new ItemStack(this);
 
-			Energy.of(stack).set(getMaxStoredPower());
+			setStoredEnergy(stack, getEnergyCapacity());
 
 			stacks.add(stack);
 		}

@@ -37,33 +37,12 @@ import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
 public class SolidGeneratingDisplay extends EnergyGeneratingDisplay {
-	private final List<EntryIngredient> stacks;
-	private final Identifier id;
-	private final Double time;
-
-	public SolidGeneratingDisplay(double energyGenerated, List<EntryIngredient> stacks, Identifier id, Double time) {
-		super(energyGenerated);
-		this.stacks = stacks;
-		this.id = id;
-		this.time = time;
-	}
-
-	@Override
-	public List<EntryIngredient> getInputEntries() {
-		return stacks;
+	public SolidGeneratingDisplay(List<EntryIngredient> inputs, int timeRequired, long energyGeneratedPerTick, Identifier recipeId) {
+		super(inputs, timeRequired, energyGeneratedPerTick, recipeId);
 	}
 
 	@Override
 	public CategoryIdentifier<?> getCategoryIdentifier() {
 		return AMRoughlyEnoughItemsPlugin.SOLID_GENERATING;
-	}
-
-	@Override
-	public Optional<Identifier> getDisplayLocation() {
-		return Optional.ofNullable(this.id);
-	}
-
-	public Double getTime() {
-		return time;
 	}
 }

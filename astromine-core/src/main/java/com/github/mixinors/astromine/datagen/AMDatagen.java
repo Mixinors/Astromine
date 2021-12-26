@@ -178,8 +178,6 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 	);
 
 	public static final List<Block> MISC_MACHINES = List.of(
-			AMBlocks.VENT.get(),
-
 			AMBlocks.FLUID_EXTRACTOR.get(),
 			AMBlocks.FLUID_INSERTER.get(),
 

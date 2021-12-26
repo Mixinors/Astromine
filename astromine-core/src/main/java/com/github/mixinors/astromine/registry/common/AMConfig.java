@@ -482,10 +482,10 @@ public class AMConfig implements ConfigData {
 	public long gravityGauntletEnergy = advancedBatteryEnergy;
 
 	@Comment("Energy for the Gravity Gauntlet actions.")
-	public double gravityGauntletConsumed = 512.0D;
+	public long gravityGauntletConsumed = 512L;
 
 	@Comment("Energy for the Drill actions.")
-	public double drillConsumed = 6.0D;
+	public long drillConsumed = 6L;
 
 	@Comment("Multiplier for the Drill entity hit actions.")
 	public double drillEntityHitMultiplier = 2.0D;

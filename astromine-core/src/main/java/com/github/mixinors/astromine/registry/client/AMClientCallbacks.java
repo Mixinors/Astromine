@@ -43,7 +43,7 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
-import com.github.mixinors.astromine.common.item.base.EnergyVolumeItem;
+import com.github.mixinors.astromine.common.item.base.EnergyItem;
 import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
@@ -71,7 +71,7 @@ public class AMClientCallbacks {
 		});
 
 		ItemTooltipCallback.EVENT.register( ( stack, context, tooltip ) -> {
-			if (stack.getItem() instanceof EnergyVolumeItem) {
+			if (stack.getItem() instanceof EnergyItem) {
 				EnergyHandler handler = Energy.of(stack);
 				
 				tooltip.addAll(Math.min(tooltip.size(), 1), Lists.newArrayList(

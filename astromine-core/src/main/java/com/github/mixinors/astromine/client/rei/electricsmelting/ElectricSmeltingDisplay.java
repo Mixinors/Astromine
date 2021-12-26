@@ -33,7 +33,7 @@ import net.minecraft.recipe.AbstractCookingRecipe;
 
 @Environment(EnvType.CLIENT)
 public class ElectricSmeltingDisplay extends DefaultCookingDisplay {
-	private final double energyRequired;
+	private final long energyRequired;
 
 	public ElectricSmeltingDisplay(AbstractCookingRecipe recipe) {
 		super(recipe);
@@ -45,7 +45,7 @@ public class ElectricSmeltingDisplay extends DefaultCookingDisplay {
 		return AMRoughlyEnoughItemsPlugin.ELECTRIC_SMELTING;
 	}
 
-	public double getEnergyRequired() {
+	public long getEnergyRequired() {
 		return energyRequired;
 	}
 }

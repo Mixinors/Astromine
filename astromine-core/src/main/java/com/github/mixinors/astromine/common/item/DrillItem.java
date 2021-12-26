@@ -37,15 +37,13 @@ import net.minecraft.tag.Tag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.item.base.EnergyVolumeItem;
+import com.github.mixinors.astromine.common.item.base.EnergyItem;
 import com.github.mixinors.astromine.registry.common.AMConfig;
-import team.reborn.energy.Energy;
-import team.reborn.energy.EnergyHandler;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
-public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool, Vanishable, EnchantableToolItem {
+public class DrillItem extends EnergyItem implements DynamicAttributeTool, Vanishable, EnchantableToolItem {
 	private final int radius;
 	private final ToolMaterial material;
 	private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
@@ -53,8 +51,8 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 	private final PickaxeItem pickaxe;
 	private final ShovelItem shovel;
 
-	public DrillItem(ToolMaterial material, float attackDamage, float attackSpeed, int radius, double size, Settings settings) {
-		super(settings, size);
+	public DrillItem(ToolMaterial material, float attackDamage, float attackSpeed, int radius, long capacity, Settings settings) {
+		super(settings, capacity);
 		
 		this.pickaxe = new PickaxeItem(material, (int) attackDamage, attackSpeed, settings);
 		this.shovel = new ShovelItem(material, attackDamage, attackSpeed, settings);
@@ -78,8 +76,7 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 	@Override
 	public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		if (!target.world.isClient) {
-			EnergyHandler energy = Energy.of(stack);
-			energy.use(getEnergy() * AMConfig.get().drillEntityHitMultiplier);
+			return tryUseEnergy(stack, (long) (getEnergyConsumed() * AMConfig.get().drillEntityHitMultiplier));
 		}
 
 		return true;
@@ -88,8 +85,7 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 	@Override
 	public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
 		if (!world.isClient && state.getHardness(world, pos) != 0.0F) {
-			EnergyHandler energy = Energy.of(stack);
-			energy.use(getEnergy());
+			return tryUseEnergy(stack, getEnergyConsumed());
 		}
 
 		return true;
@@ -120,7 +116,7 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 	
 	@Override
 	public float postProcessMiningSpeed(Tag<Item> tag, BlockState state, ItemStack stack, LivingEntity user, float currentSpeed, boolean isEffective) {
-		return Energy.of(stack).getEnergy() <= getEnergy() ? 0F : currentSpeed;
+		return getStoredEnergy(stack) <= getEnergyConsumed() ? 0F : currentSpeed;
 	}
 
 	@Override
@@ -131,7 +127,7 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 		return Math.max(pickaxeSpeed, shovelSpeed);
 	}
 
-	public double getEnergy() {
-		return AMConfig.get().drillConsumed * material.getMiningSpeedMultiplier();
+	public long getEnergyConsumed() {
+		return (long) (AMConfig.get().drillConsumed * material.getMiningSpeedMultiplier());
 	}
 }

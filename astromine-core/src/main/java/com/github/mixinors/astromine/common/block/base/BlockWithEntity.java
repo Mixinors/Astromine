@@ -57,10 +57,9 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.item.base.EnergyVolumeItem;
+import com.github.mixinors.astromine.common.item.base.EnergyItem;
 import com.github.mixinors.astromine.common.item.base.FluidVolumeItem;
 import org.jetbrains.annotations.Nullable;
 
@@ -93,7 +92,7 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if (!world.isClient && (!(player.getStackInHand(hand).getItem() instanceof BucketItem) && !(player.getStackInHand(hand).getItem() instanceof EnergyVolumeItem) && !(player.getStackInHand(hand).getItem() instanceof FluidVolumeItem)) && hasScreenHandler()) {
+		if (!world.isClient && (!(player.getStackInHand(hand).getItem() instanceof BucketItem) && !(player.getStackInHand(hand).getItem() instanceof EnergyItem) && !(player.getStackInHand(hand).getItem() instanceof FluidVolumeItem)) && hasScreenHandler()) {
 			MenuRegistry.openExtendedMenu((ServerPlayerEntity) player, createScreenHandlerFactory((ServerPlayerEntity) player, state, world, pos));
 
 			return ActionResult.CONSUME;

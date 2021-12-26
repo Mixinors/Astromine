@@ -36,10 +36,10 @@ public abstract class EnergyConsumingDisplay implements Display {
 	private final List<EntryIngredient> inputs;
 	private final List<EntryIngredient> outputs;
 	private final int timeRequired;
-	private final double energyRequired;
+	private final long energyRequired;
 	private final Identifier recipeId;
 
-	public EnergyConsumingDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, int timeRequired, double energyRequired, Identifier recipeId) {
+	public EnergyConsumingDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, int timeRequired, long energyRequired, Identifier recipeId) {
 		this.inputs = inputs;
 		this.outputs = outputs;
 		this.timeRequired = timeRequired;
@@ -61,7 +61,7 @@ public abstract class EnergyConsumingDisplay implements Display {
 		return timeRequired;
 	}
 
-	public double getEnergyRequired() {
+	public long getEnergyRequired() {
 		return energyRequired;
 	}
 

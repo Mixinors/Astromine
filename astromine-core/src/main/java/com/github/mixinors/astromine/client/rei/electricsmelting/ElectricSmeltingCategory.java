@@ -55,8 +55,8 @@ public class ElectricSmeltingCategory extends DefaultCookingCategory {
 		List<Widget> widgets = Lists.newArrayList();
 		widgets.add(Widgets.createRecipeBase(bounds));
 		widgets.add(Widgets.createResultSlotBackground(new Point(startPoint.x + 61, startPoint.y + 19)));
-		if (display instanceof ElectricSmeltingDisplay)
-			widgets.addAll(AMRoughlyEnoughItemsPlugin.createEnergyDisplay(new Rectangle(bounds.getX() + 10, bounds.getCenterY() - 23, 12, 48), ((ElectricSmeltingDisplay) display).getEnergyRequired(), false, (long) (cookingTime / 10 * 500)));
+		if (display instanceof ElectricSmeltingDisplay electricSmeltingDisplay)
+			widgets.addAll(AMRoughlyEnoughItemsPlugin.createEnergyDisplay(new Rectangle(bounds.getX() + 10, bounds.getCenterY() - 23, 12, 48), electricSmeltingDisplay.getEnergyRequired(), false, (long) (cookingTime / 10 * 500)));
 		widgets.add(Widgets.createLabel(new Point(bounds.x + bounds.width - 5, bounds.y + 5), new TranslatableText("category.astromine.cooking.time", df.format(cookingTime / 40.0F))).noShadow().rightAligned().color(0xFF404040, 0xFFBBBBBB));
 		widgets.add(Widgets.createArrow(new Point(startPoint.x + 27, startPoint.y + 18)).animationDurationTicks(cookingTime / 3));
 		widgets.add(Widgets.createSlot(new Point(startPoint.x + 4, startPoint.y + 19)).entries(display.getInputEntries().get(0)).markInput());

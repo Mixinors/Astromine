@@ -174,8 +174,8 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 		});
 
 		for (Map.Entry<Item, Integer> entry : AbstractFurnaceBlockEntity.createFuelTimeMap().entrySet()) {
-			if (!(entry.getKey() instanceof BucketItem) && entry != null && entry.getValue() > 0) {
-				registry.add(new SolidGeneratingDisplay((entry.getValue() / 2F * 5) / (entry.getValue() / 2F) * 6, Collections.singletonList(EntryIngredients.of(entry.getKey())), null, (entry.getValue() / 2) / 6.0));
+			if (!(entry.getKey() instanceof BucketItem) && entry.getValue() > 0) {
+				registry.add(new SolidGeneratingDisplay(Collections.singletonList(EntryIngredients.of(entry.getKey())), (entry.getValue() / 2) / 6, (long) ((entry.getValue() / 2F * 5) / (entry.getValue() / 2F) * 6), null));
 			}
 		}
 	}

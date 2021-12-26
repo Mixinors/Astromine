@@ -61,9 +61,7 @@ public class AMModelProvider extends FabricBlockStateDefinitionProvider {
 	 * Blocks with a single model, where the block model itself isn't data generated
 	 */
 	public static final Set<Block> SIMPLE_STATE = Set.of(
-			AMBlocks.SPACE_SLIME_BLOCK.get(),
-			AMBlocks.ALTAR.get(),
-			AMBlocks.ALTAR_PEDESTAL.get()
+			AMBlocks.SPACE_SLIME_BLOCK.get()
 	);
 
 	/**

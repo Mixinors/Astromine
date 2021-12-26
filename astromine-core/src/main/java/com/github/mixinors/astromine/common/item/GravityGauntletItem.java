@@ -39,23 +39,21 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.item.base.EnergyVolumeItem;
+import com.github.mixinors.astromine.common.item.base.EnergyItem;
 import com.github.mixinors.astromine.registry.common.AMConfig;
-import team.reborn.energy.Energy;
-import team.reborn.energy.EnergyHandler;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
-public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttributeTool {
+public class GravityGauntletItem extends EnergyItem implements DynamicAttributeTool {
 	private static final Multimap<EntityAttribute, EntityAttributeModifier> EAMS = HashMultimap.create();
 
 	static {
 		EAMS.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "attack", 4f, EntityAttributeModifier.Operation.ADDITION));
 	}
 
-	public GravityGauntletItem(Settings settings, double size) {
-		super(settings, size);
+	public GravityGauntletItem(Settings settings, long capacity) {
+		super(settings, capacity);
 	}
 
 	@Override
@@ -64,10 +62,8 @@ public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttr
 		if (hand == Hand.OFF_HAND)
 			return TypedActionResult.pass(stack);
 		ItemStack offStack = user.getStackInHand(Hand.OFF_HAND);
-		if (offStack.getItem() == AMItems.GRAVITY_GAUNTLET.get()) {
-			EnergyHandler selfHandler = Energy.of(stack);
-			EnergyHandler otherHandler = Energy.of(offStack);
-			if (selfHandler.getEnergy() > AMConfig.get().gravityGauntletConsumed && otherHandler.getEnergy() > AMConfig.get().gravityGauntletConsumed) {
+		if (offStack.isOf(AMItems.GRAVITY_GAUNTLET.get())) {
+			if (getStoredEnergy(stack) >= AMConfig.get().gravityGauntletConsumed && getStoredEnergy(offStack) >= AMConfig.get().gravityGauntletConsumed) {
 				user.setCurrentHand(hand);
 				return TypedActionResult.success(stack);
 			}
@@ -80,12 +76,10 @@ public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttr
 		if (world.isClient)
 			return stack;
 		ItemStack offStack = user.getStackInHand(Hand.OFF_HAND);
-		if (offStack.getItem() == AMItems.GRAVITY_GAUNTLET.get()) {
-			EnergyHandler selfHandler = Energy.of(stack);
-			EnergyHandler otherHandler = Energy.of(offStack);
-			if (selfHandler.getEnergy() > AMConfig.get().gravityGauntletConsumed && otherHandler.getEnergy() > AMConfig.get().gravityGauntletConsumed) {
-				selfHandler.extract(AMConfig.get().gravityGauntletConsumed);
-				otherHandler.extract(AMConfig.get().gravityGauntletConsumed);
+		if (offStack.isOf(AMItems.GRAVITY_GAUNTLET.get())) {
+			if (getStoredEnergy(stack) >= AMConfig.get().gravityGauntletConsumed && getStoredEnergy(offStack) >= AMConfig.get().gravityGauntletConsumed) {
+				tryUseEnergy(stack, AMConfig.get().gravityGauntletConsumed);
+				tryUseEnergy(offStack, AMConfig.get().gravityGauntletConsumed);
 				stack.getOrCreateNbt().putBoolean("Charged", true);
 				offStack.getOrCreateNbt().putBoolean("Charged", true);
 				return stack;

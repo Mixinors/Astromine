@@ -50,9 +50,6 @@ public class AMBlockLootTableProvider extends FabricBlockLootTablesProvider {
 	public static final List<Block> DROPS_SELF = List.of(
 			AMBlocks.BLAZING_ASTEROID_STONE.get(),
 
-			AMBlocks.ALTAR.get(),
-			AMBlocks.ALTAR_PEDESTAL.get(),
-
 			AMBlocks.FLUID_PIPE.get(),
 
 			AMBlocks.PRIMITIVE_ENERGY_CABLE.get(),

@@ -65,7 +65,7 @@ public class SolidGeneratingCategory extends EnergyGeneratingCategory<SolidGener
 		List<Widget> widgets = super.setupDisplay(recipeDisplay, bounds);
 		Rectangle innerBounds = new Rectangle(bounds.getCenterX() - 55, bounds.y, 110, bounds.height);
 		widgets.add(Widgets.createSlot(new Point(innerBounds.getX() + 20, innerBounds.getY() + 26)).entries(recipeDisplay.getInputEntries().get(0)).markInput());
-		widgets.add(Widgets.createLabel(new Point(innerBounds.x + 5, innerBounds.y + 5), new TranslatableText("category.astromine.cooking.time", df.format(recipeDisplay.getTime()))).noShadow().leftAligned().color(0xFF404040, 0xFFBBBBBB));
+		widgets.add(Widgets.createLabel(new Point(innerBounds.x + 5, innerBounds.y + 5), new TranslatableText("category.astromine.cooking.time", df.format(recipeDisplay.getTimeRequired()))).noShadow().leftAligned().color(0xFF404040, 0xFFBBBBBB));
 		widgets.add(Widgets.createArrow(new Point(innerBounds.getX() + 45, innerBounds.getY() + 26)));
 		return widgets;
 	}
