@@ -67,7 +67,14 @@ public class TextUtils {
 	public static Text getEnergyStorage(EnergyStorage storage) {
 		return getEnergyAmount(storage.getAmount()).append(new LiteralText(" / ").formatted(Formatting.GRAY)).append(getEnergyAmount(storage.getCapacity()));
 	}
-
+	
+	/**
+	 * Returns the "16kE / 32kE" text.
+	 */
+	public static Text getEnergy(long amount, long capacity) {
+		return getEnergyAmount(amount).append(new LiteralText(" / ").formatted(Formatting.GRAY)).append(getEnergyAmount(capacity));
+	}
+	
 	/**
 	 * Returns the "16kD / 32kD" text.
 	 */

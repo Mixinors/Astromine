@@ -40,7 +40,6 @@ import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.registry.NetworkMemberRegistry;
 import com.github.mixinors.astromine.common.util.data.position.WorldPos;
 import org.jetbrains.annotations.Nullable;
-import team.reborn.energy.EnergyStorage;
 
 import com.google.common.collect.Maps;
 import java.util.Collection;
@@ -55,12 +54,12 @@ public class AMNetworkMembers {
 		NetworkMemberRegistry.INSTANCE.register(AMNetworkTypes.ENERGY, new NetworkMemberRegistry.NetworkTypeProviderImpl<NetworkType>() {
 			@Override
 			public Collection<NetworkMemberType> get(WorldPos pos, @Nullable Direction direction) {
-				if (!this.types.containsKey(pos.getBlock())) {
-					BlockEntity blockEntity = pos.getBlockEntity();
-					if (blockEntity instanceof EnergyStorage) {
-						return NetworkMember.REQUESTER_PROVIDER;
-					}
-				}
+				// if (!this.types.containsKey(pos.getBlock())) {
+				// 	BlockEntity blockEntity = pos.getBlockEntity();
+				// 	if (blockEntity instanceof EnergyStorage) {
+				// 		return NetworkMember.REQUESTER_PROVIDER;
+				// 	}
+				// }
 				return super.get(pos, direction);
 			}
 		});
@@ -68,12 +67,12 @@ public class AMNetworkMembers {
 		NetworkMemberRegistry.INSTANCE.register(AMNetworkTypes.ITEM, new NetworkMemberRegistry.NetworkTypeProviderImpl<NetworkType>() {
 			@Override
 			public Collection<NetworkMemberType> get(WorldPos pos, @Nullable Direction direction) {
-				if (!this.types.containsKey(pos.getBlock())) {
-					BlockEntity blockEntity = pos.getBlockEntity();
-					if (blockEntity instanceof InventoryProvider) {
-						return NetworkMember.REQUESTER_PROVIDER;
-					}
-				}
+				// if (!this.types.containsKey(pos.getBlock())) {
+				// 	BlockEntity blockEntity = pos.getBlockEntity();
+				// 	if (blockEntity instanceof InventoryProvider) {
+				// 		return NetworkMember.REQUESTER_PROVIDER;
+				// 	}
+				// }
 				return super.get(pos, direction);
 			}
 		});
@@ -81,11 +80,11 @@ public class AMNetworkMembers {
 		NetworkMemberRegistry.INSTANCE.register(AMNetworkTypes.FLUID, new NetworkMemberRegistry.NetworkTypeProviderImpl<NetworkType>() {
 			@Override
 			public Collection<NetworkMemberType> get(WorldPos pos, @Nullable Direction direction) {
-				if (!this.types.containsKey(pos.getBlock())) {
-					if (SimpleFluidStorage.get(pos.getBlockEntity()) != null) {
-						return NetworkMember.REQUESTER_PROVIDER;
-					}
-				}
+				// if (!this.types.containsKey(pos.getBlock())) {
+				// 	if (SimpleFluidStorage.get(pos.getBlockEntity()) != null) {
+				// 		return NetworkMember.REQUESTER_PROVIDER;
+				// 	}
+				// }
 				return super.get(pos, direction);
 			}
 		});

@@ -26,17 +26,17 @@ package com.github.mixinors.astromine.common.item.base;
 
 import net.minecraft.item.Item;
 
-public class FluidVolumeItem extends Item {
+public class FluidStorageItem extends Item {
 	private final long size;
 
-	private FluidVolumeItem(Item.Settings settings, long size) {
+	private FluidStorageItem(Item.Settings settings, long size) {
 		super(settings);
 
 		this.size = size;
 	}
 
-	public static FluidVolumeItem of(Item.Settings settings, long size) {
-		return new FluidVolumeItem(settings, size);
+	public static FluidStorageItem of(Item.Settings settings, long size) {
+		return new FluidStorageItem(settings, size);
 	}
 
 	public long getSize() {

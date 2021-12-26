@@ -37,13 +37,13 @@ import net.minecraft.tag.Tag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.item.base.EnergyItem;
+import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
 import com.github.mixinors.astromine.registry.common.AMConfig;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
-public class DrillItem extends EnergyItem implements DynamicAttributeTool, Vanishable, EnchantableToolItem {
+public class DrillItem extends EnergyStorageItem implements DynamicAttributeTool, Vanishable, EnchantableToolItem {
 	private final int radius;
 	private final ToolMaterial material;
 	private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;

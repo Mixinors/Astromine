@@ -35,24 +35,24 @@ import team.reborn.energy.api.base.SimpleBatteryItem;
 /**
  * An {@link Item} with an attached {@link EnergyStorage}.
  */
-public class EnergyItem extends Item implements SimpleBatteryItem {
+public class EnergyStorageItem extends Item implements SimpleBatteryItem {
 	private final long capacity;
 
-	/** Instantiates an {@link EnergyItem}s. */
-	protected EnergyItem(Item.Settings settings, long capacity) {
+	/** Instantiates an {@link EnergyStorageItem}s. */
+	protected EnergyStorageItem(Item.Settings settings, long capacity) {
 		super(settings);
 
 		this.capacity = capacity;
 	}
 
-	/** Instantiates an {@link EnergyItem}. */
-	public static EnergyItem ofCreative(Item.Settings settings) {
-		return new EnergyItem(settings, Long.MAX_VALUE);
+	/** Instantiates an {@link EnergyStorageItem}. */
+	public static EnergyStorageItem ofCreative(Item.Settings settings) {
+		return new EnergyStorageItem(settings, Long.MAX_VALUE);
 	}
 
-	/** Instantiates an {@link EnergyItem}s. */
-	public static EnergyItem of(Settings settings, long size) {
-		return new EnergyItem(settings, size);
+	/** Instantiates an {@link EnergyStorageItem}s. */
+	public static EnergyStorageItem of(Settings settings, long size) {
+		return new EnergyStorageItem(settings, size);
 	}
 
 	@Override
@@ -90,7 +90,7 @@ public class EnergyItem extends Item implements SimpleBatteryItem {
 		return 0x91261f;
 	}
 
-	/** Override behavior to add instances of {@link EnergyItem}
+	/** Override behavior to add instances of {@link EnergyStorageItem}
 	 * as {@link ItemStack}s to {@link ItemGroup}s with full energy. */
 	@Override
 	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
