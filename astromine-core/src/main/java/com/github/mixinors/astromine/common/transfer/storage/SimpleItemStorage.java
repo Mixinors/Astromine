@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.transfer.storage;
 
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 
+import com.github.mixinors.astromine.registry.common.AMItems;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
@@ -256,6 +257,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		var existingStack = stacks.get(slot);
 
 		var removedStack = new ItemStack(existingStack.getItem(), Math.min(existingStack.getCount(), amount));
+		removedStack.setNbt(existingStack.getNbt().copy());
 		
 		existingStack.setCount(Math.max(0, existingStack.getCount() - amount));
 		
@@ -309,6 +311,10 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 			
 			storageNbt.putLong("Amount", getStorage(i).getAmount());
 			storageNbt.put("Variant", getStorage(i).getResource().toNbt());
+			
+			if (getStorage(i).getStack().getItem() == AMItems.ADVANCED_DRILL.get()) {
+				int f = 0;
+			}
 			
 			storagesNbt.put(String.valueOf(i), storageNbt);
 		}
