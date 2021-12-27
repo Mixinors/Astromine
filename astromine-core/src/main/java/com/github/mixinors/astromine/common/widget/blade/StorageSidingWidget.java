@@ -123,7 +123,7 @@ public class StorageSidingWidget extends Widget {
 	public void onMouseClicked(float mouseX, float mouseY, int button) {
 		super.onMouseClicked(mouseX, mouseY, button);
 		
-		if (getFocused() && getHandled().getClient()) {
+		if (!getHidden() && getFocused() && getHandled().getClient()) {
 			var sidings = (StorageSiding[]) null;
 			
 			if (type == StorageType.ITEM) {
