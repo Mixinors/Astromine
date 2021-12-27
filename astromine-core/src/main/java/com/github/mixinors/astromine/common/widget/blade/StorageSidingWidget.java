@@ -161,7 +161,7 @@ public class StorageSidingWidget extends Widget {
 		
 		var name = switch (sidings[direction.ordinal()]) {
 			case INSERT -> new TranslatableText("text.astromine.siding.insert").styled(style -> style.withColor(0x0078FF));
-			case EXTRACT -> new TranslatableText("text.astromine.siding.insert").styled(style -> style.withColor(0xFF6100));
+			case EXTRACT -> new TranslatableText("text.astromine.siding.extract").styled(style -> style.withColor(0xFF6100));
 			case INSERT_EXTRACT ->
 				new TranslatableText("text.astromine.siding.insert").styled(style -> style.withColor(0x9800FF)).append(
 						new LiteralText(" / ").styled(style -> style.withColor(0x9800FF))
