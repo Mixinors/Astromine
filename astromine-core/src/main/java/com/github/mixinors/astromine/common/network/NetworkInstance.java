@@ -118,7 +118,7 @@ public final class NetworkInstance {
 	public boolean isEmpty() {
 		this.nodes.removeIf(node -> !NetworkMemberRegistry.get(WorldPos.of(world, node.getBlockPosition()), null).isNode(getType()));
 		if (this.nodes.isEmpty()) {
-			AMCommon.LOGGER.error("Network is empty! " + toString());
+			AMCommon.LOGGER.error("Network is empty! " + this);
 			return true;
 		}
 		return false;

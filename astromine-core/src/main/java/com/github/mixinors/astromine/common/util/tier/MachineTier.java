@@ -29,5 +29,5 @@ public enum MachineTier {
 	BASIC,
 	ADVANCED,
 	ELITE,
-	CREATIVE;
+	CREATIVE
 }
