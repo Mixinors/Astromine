@@ -256,9 +256,9 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	public ItemStack removeStack(int slot, int amount) {
 		var existingStack = stacks.get(slot);
 
-		var removedStack = new ItemStack(existingStack.getItem(), Math.min(existingStack.getCount(), amount));
-		removedStack.setNbt(existingStack.getNbt().copy());
-		
+		var removedStack = existingStack.copy();
+		removedStack.setCount(Math.min(existingStack.getCount(), amount));
+
 		existingStack.setCount(Math.max(0, existingStack.getCount() - amount));
 		
 		return removedStack;
