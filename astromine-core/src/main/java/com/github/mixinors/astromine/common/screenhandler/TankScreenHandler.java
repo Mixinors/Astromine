@@ -59,32 +59,37 @@ public class TankScreenHandler extends ExtendedBlockEntityScreenHandler {
 
 		fluidBar.setPosition( Position.of(width / 2F - fluidBar.getWidth() / 2F, fluidBar.getY()));
 
-		var input = new SlotWidget(0, blockEntity.getItemStorage());
-		input.setPosition(Position.of(fluidBar, -18 - 3, 0));
-		input.setSize( Size.of(18, 18));
+		var unload = new SlotWidget(0, blockEntity.getItemStorage());
+		unload.setPosition(Position.of(fluidBar, -18 - 3, 0));
+		unload.setSize( Size.of(18, 18));
 
-		var output = new SlotWidget(1, blockEntity.getItemStorage());
-		output.setPosition(Position.of(fluidBar, -18 - 3, fluidBar.getHeight() - 18));
-		output.setSize(Size.of(18, 18));
+		var buffer = new SlotWidget(1, blockEntity.getItemStorage());
+		buffer.setPosition(Position.of(unload, -18 - 3, 18 - 3.5F));
+		buffer.setSize(Size.of(18, 18));
+		
+		var load = new SlotWidget(2, blockEntity.getItemStorage());
+		load.setPosition(Position.of(fluidBar, -18 - 3, fluidBar.getHeight() - 18));
+		load.setSize(Size.of(18, 18));
 
 		var leftArrow = new HorizontalArrowWidget();
-		leftArrow.setPosition(Position.of(input, 28, 0));
+		leftArrow.setPosition(Position.of(unload, 28, 0));
 		leftArrow.setSize(Size.of(22, 16));
 		
 		var rightArrow = new HorizontalArrowWidget();
-		rightArrow.setPosition(Position.of(output, -34, 0));
+		rightArrow.setPosition(Position.of(load, -34, 0));
 		rightArrow.setSize(Size.of(22, 16));
 
 		var filter = new FluidFilterWidget();
-		filter.setPosition(Position.of(input, 5F, 18F + 2F));
+		filter.setPosition(Position.of(unload, 5F, 18F + 2F));
 		filter.setSize(Size.of(8, 8));
 		filter.setFluidConsumer(fluid -> {
 			tank.setFilter(fluid);
 		});
 		filter.setFluidSupplier(() -> tank.getFilter());
-
-		mainTab.add(input);
-		mainTab.add(output);
+		
+		mainTab.add(unload);
+		mainTab.add(buffer);
+		mainTab.add(load);
 
 		mainTab.add(filter);
 	}

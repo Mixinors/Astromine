@@ -49,7 +49,7 @@ public class SolidifierScreenHandler extends ExtendedBlockEntityScreenHandler {
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		var output try (var get(0, solidifier.getItemStorage(), ExtractionSlot::new);
+		var output = new SlotWidget(0, solidifier.getItemStorage(), ExtractionSlot::new);
 		output.setSize( Size.of(18, 18));
 		output.setPosition(Position.of(fluidBar, 102, 15));
 

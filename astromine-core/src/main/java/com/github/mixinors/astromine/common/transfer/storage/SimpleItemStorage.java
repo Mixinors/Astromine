@@ -72,7 +72,11 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 
 		for (var i = 0; i < size; ++i) {
 			this.stacks.add(i, ItemStack.EMPTY);
-			this.storages.add(i, new SimpleItemVariantStorage(this, i));
+			
+			var storage = new SimpleItemVariantStorage(this, i);
+			storage.setOuterStorage(this);
+			
+			this.storages.add(i, storage);
 		}
 		
 		this.sidings = new StorageSiding[6];
@@ -141,7 +145,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 			if (result.wasCommitted()) {
 				listeners.forEach(Runnable::run);
 				
-				++version;
+				incrementVersion();
 			}
 		}));
 
@@ -169,7 +173,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 			if (result.wasCommitted()) {
 				listeners.forEach(Runnable::run);
 				
-				++version;
+				incrementVersion();
 			}
 		}));
 
@@ -261,6 +265,8 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 
 		existingStack.setCount(Math.max(0, existingStack.getCount() - amount));
 		
+		incrementVersion();
+		
 		return removedStack;
 	}
 	
@@ -270,12 +276,16 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		
 		stacks.set(slot, ItemStack.EMPTY);
 		
+		incrementVersion();
+		
 		return stack;
 	}
 	
 	@Override
 	public void setStack(int slot, ItemStack stack) {
 		stacks.set(slot, stack);
+		
+		incrementVersion();
 	}
 	
 	@Override
@@ -293,6 +303,8 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		for (var i = 0; i < size; ++i) {
 			stacks.set(i, ItemStack.EMPTY);
 		}
+		
+		incrementVersion();
 	}
 	
 	public void writeToNbt(NbtCompound nbt) {
@@ -344,6 +356,10 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	@Override
 	public long getVersion() {
 		return version;
+	}
+	
+	public void incrementVersion() {
+		version += 1;
 	}
 	
 	/**

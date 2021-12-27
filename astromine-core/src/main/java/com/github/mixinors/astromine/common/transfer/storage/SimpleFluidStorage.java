@@ -63,7 +63,10 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		this.storages = new ArrayList<>(size);
 
 		for (var i = 0; i < size; ++i) {
-			this.storages.add(i, new SimpleFluidVariantStorage());
+			var storage = new SimpleFluidVariantStorage();
+			storage.setOuterStorage(this);
+			
+			this.storages.add(i, storage);
 		}
 		
 		this.sidings = new StorageSiding[6];
@@ -124,7 +127,7 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 			if (result.wasCommitted()) {
 				listeners.forEach(Runnable::run);
 				
-				++version;
+				incrementVersion();
 			}
 		}));
 
@@ -152,7 +155,7 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 			if (result.wasCommitted()) {
 				listeners.forEach(Runnable::run);
 				
-				++version;
+				incrementVersion();
 			}
 		}));
 
@@ -256,6 +259,10 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	@Override
 	public long getVersion() {
 		return version;
+	}
+	
+	public void incrementVersion() {
+		version += 1;
 	}
 	
 	/**

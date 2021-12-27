@@ -32,6 +32,8 @@ public class SimpleItemVariantStorage extends SingleStackStorage {
 	private final Inventory inventory;
 	private final int slot;
 	
+	private SimpleItemStorage outerStorage = null;
+	
 	public SimpleItemVariantStorage(Inventory inventory, int slot) {
 		this.inventory = inventory;
 		this.slot = slot;
@@ -45,5 +47,13 @@ public class SimpleItemVariantStorage extends SingleStackStorage {
 	@Override
 	protected void setStack(ItemStack stack) {
 		inventory.setStack(slot, stack);
+	}
+	
+	public SimpleItemStorage getOuterStorage() {
+		return outerStorage;
+	}
+	
+	public void setOuterStorage(SimpleItemStorage outerStorage) {
+		this.outerStorage = outerStorage;
 	}
 }

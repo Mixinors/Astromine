@@ -27,16 +27,41 @@ package com.github.mixinors.astromine.common.transfer.storage;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
+import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 
 public class SimpleFluidVariantStorage extends SingleVariantStorage<FluidVariant> {
 	private long capacity;
+	
+	private SimpleFluidStorage outerStorage = null;
 
 	public SimpleFluidVariantStorage() {
 		this(FluidConstants.BUCKET);
 	}
-
+	
 	public SimpleFluidVariantStorage(long capacity) {
 		this.capacity = capacity;
+	}
+	
+	@Override
+	public long insert(FluidVariant insertedVariant, long maxAmount, TransactionContext transaction) {
+		transaction.addCloseCallback(($, result) -> {
+			if (outerStorage != null && result.wasCommitted()) {
+				outerStorage.incrementVersion();
+			}
+		});
+		
+		return super.insert(insertedVariant, maxAmount, transaction);
+	}
+	
+	@Override
+	public long extract(FluidVariant extractedVariant, long maxAmount, TransactionContext transaction) {
+		transaction.addCloseCallback(($, result) -> {
+			if (outerStorage != null && result.wasCommitted()) {
+				outerStorage.incrementVersion();
+			}
+		});
+		
+		return super.extract(extractedVariant, maxAmount, transaction);
 	}
 	
 	@Override
@@ -56,5 +81,13 @@ public class SimpleFluidVariantStorage extends SingleVariantStorage<FluidVariant
 	@Override
 	protected long getCapacity(FluidVariant variant) {
 		return capacity;
+	}
+	
+	public SimpleFluidStorage getOuterStorage() {
+		return outerStorage;
+	}
+	
+	public void setOuterStorage(SimpleFluidStorage outerStorage) {
+		this.outerStorage = outerStorage;
 	}
 }

@@ -32,15 +32,12 @@ import com.google.common.base.Predicates;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -66,11 +63,13 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tie
 	
 	private static final int ITEM_INPUT_SLOT = 0;
 	
-	private static final int ITEM_OUTPUT_SLOT = 1;
+	private static final int ITEM_OUTPUT_SLOT_1 = 1;
+	
+	private static final int ITEM_OUTPUT_SLOT_2 = 2;
 	
 	private static final int[] ITEM_INSERT_SLOTS = new int[] { ITEM_INPUT_SLOT };
 	
-	private static final int[] ITEM_EXTRACT_SLOTS = new int[] { ITEM_OUTPUT_SLOT };
+	private static final int[] ITEM_EXTRACT_SLOTS = new int[] {ITEM_OUTPUT_SLOT_1, ITEM_OUTPUT_SLOT_2 };
 	
 	public TankBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
@@ -81,10 +80,10 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tie
 			return slot == FLUID_OUTPUT_SLOT;
 		}).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
 		
-		itemStorage = new SimpleItemStorage(2).extractPredicate((variant, slot) -> {
+		itemStorage = new SimpleItemStorage(3).extractPredicate((variant, slot) -> {
 			return slot == ITEM_INPUT_SLOT;
 		}).insertPredicate((variant, slot) -> {
-			if (slot != ITEM_OUTPUT_SLOT) {
+			if (slot != ITEM_OUTPUT_SLOT_1 || slot != ITEM_OUTPUT_SLOT_2) {
 				return false;
 			}
 			
@@ -109,15 +108,23 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tie
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		var inputStack = itemStorage.getStack(ITEM_INPUT_SLOT);
-		var inputFluidStorage = FluidStorage.ITEM.find(inputStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(ITEM_INPUT_SLOT)));
+		var unloadStack = itemStorage.getStack(ITEM_INPUT_SLOT);
+		var unloadItemStorage = itemStorage.getStorage(ITEM_INPUT_SLOT);
+		var unloadFluidStorage = FluidStorage.ITEM.find(unloadStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(ITEM_INPUT_SLOT)));
 
-		var outputStack = itemStorage.getStack(ITEM_OUTPUT_SLOT);
-		var outputFluidStorage = FluidStorage.ITEM.find(outputStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(ITEM_OUTPUT_SLOT)));
+		var middleItemStorage = itemStorage.getStorage(ITEM_OUTPUT_SLOT_1);
+		
+		var loadStack = itemStorage.getStack(ITEM_OUTPUT_SLOT_2);
+		var loadFluidStorage = FluidStorage.ITEM.find(loadStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(ITEM_OUTPUT_SLOT_2)));
 		
 		try (var transaction = Transaction.openOuter()) {
-			StorageUtil.move(inputFluidStorage, fluidStorage.getStorage(FLUID_INPUT_SLOT), Predicates.alwaysTrue(), FluidConstants.BUCKET, transaction);
-			StorageUtil.move(fluidStorage.getStorage(FLUID_OUTPUT_SLOT), outputFluidStorage, Predicates.alwaysTrue(), FluidConstants.BUCKET, transaction);
+			StorageUtil.move(unloadFluidStorage, fluidStorage.getStorage(FLUID_INPUT_SLOT), Predicates.alwaysTrue(), FluidConstants.BUCKET, transaction);
+			StorageUtil.move(fluidStorage.getStorage(FLUID_OUTPUT_SLOT), loadFluidStorage, Predicates.alwaysTrue(), FluidConstants.BUCKET, transaction);
+			
+			StorageUtil.move(unloadItemStorage, middleItemStorage, (variant) -> {
+				var stored = StorageUtil.findStoredResource(unloadFluidStorage, transaction);
+				return stored == null || stored.isBlank();
+			}, 1, transaction);
 			
 			transaction.commit();
 		}
