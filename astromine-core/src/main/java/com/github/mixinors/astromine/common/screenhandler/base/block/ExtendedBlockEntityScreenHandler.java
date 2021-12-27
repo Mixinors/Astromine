@@ -35,8 +35,11 @@ import dev.vini2003.hammer.common.widget.bar.FluidBarWidget;
 import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 import dev.vini2003.hammer.common.widget.tab.TabWidget;
 import dev.vini2003.hammer.common.widget.text.TextWidget;
+
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -103,37 +106,37 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 		mainTab.setPosition(Position.of(tabs, 0, 25.0F + 7.0F, 0.0F));
 		mainTab.setSize(Size.of(176.0F, 184.0F, 0.0F));
 
-		var title = new TextWidget();
+		TextWidget title = new TextWidget();
 		title.setPosition(Position.of(mainTab, 8, 0, 0.0F));
 		title.setText(new TranslatableText(blockEntity.getCachedState().getBlock().asItem().getTranslationKey()));
 		title.setColor(4210752);
 		mainTab.add(title);
 
-		var invPos = Position.of(tabs,
+		Position invPos = Position.of(tabs,
 				7.0F + (tabs.getWidth() / 2.0F - ((9.0F * 18.0F) / 2.0F) - 7.0F),
 				25.0F + 7.0F + (184.0F - 18.0F - 18.0F - (18.0F * 4.0F) - 3.0F + getTabWidgetExtendedHeight()),
 				0.0F
 		);
-		
-		var invTitle = new TextWidget();
+
+		TextWidget invTitle = new TextWidget();
 		invTitle.setPosition(Position.of(invPos, 0.0F, -10.0F, 0.0F));
 		invTitle.setText(getPlayer().getInventory().getName());
 		invTitle.setColor(4210752);
 		mainTab.add(invTitle);
 		playerSlots = Slots.addPlayerInventory(invPos, Size.of(18.0F, 18.0F, 0.0F), mainTab, getPlayer().getInventory());
 
-		var rotation = new Direction[] { Direction.NORTH };
-		var block = blockEntity.getCachedState().getBlock();
+		Direction[] rotation = new Direction[] { Direction.NORTH };
+		Block block = blockEntity.getCachedState().getBlock();
 
 		if (block instanceof HorizontalFacingBlockWithEntity) {
-			var property = ((HorizontalFacingBlockWithEntity) block).getDirectionProperty();
+			DirectionProperty property = ((HorizontalFacingBlockWithEntity) block).getDirectionProperty();
 			
 			if (property != null) {
 				rotation[0] = blockEntity.getCachedState().get(property);
 			}
 		}
-		
-		var redstoneWidget = new RedstoneControlWidget();
+
+		RedstoneControlWidget redstoneWidget = new RedstoneControlWidget();
 		redstoneWidget.setPosition(Position.of(tabs, tabs.getWidth() - 20.0F, 0.0F, 0.0F));
 		redstoneWidget.setSize(Size.of(20.0F, 19.0F, 0.0F));
 		redstoneWidget.setBlockEntity(blockEntity);
@@ -141,13 +144,13 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 		add(redstoneWidget);
 		
 		BiConsumer<StorageSiding[], StorageType> tabAdder = (sidings, type) -> {
-			var tabCollection = (TabWidget.TabWidgetCollection) tabs.addTab(type.getItem(), () -> Collections.singletonList(type.getName()));
+			TabWidget.TabWidgetCollection tabCollection = (TabWidget.TabWidgetCollection) tabs.addTab(type.getItem(), () -> Collections.singletonList(type.getName()));
 			
 			WidgetUtils.createStorageSiding(
 					Position.of(tabs, tabs.getWidth() / 2.0F - 38.0F, getTabWidgetExtendedHeight() / 2.0F, 0.0F), blockEntity, sidings, type, rotation[0]
 			).forEach(tabCollection::add);
-			
-			var invTabTitle = new TextWidget();
+
+			TextWidget invTabTitle = new TextWidget();
 			invTabTitle.setPosition(Position.of(invPos, 0.0F, -10.0F, 0.0F));
 			invTabTitle.setText(getPlayer().getInventory().getName());
 			invTabTitle.setColor(4210752);
@@ -156,7 +159,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 			
 			playerSlots.addAll(Slots.addPlayerInventory(invPos, Size.of(18.0F, 18.0F, 0.0F), tabCollection, getPlayer().getInventory()));
 
-			var tabTitle = new TextWidget();
+			TextWidget tabTitle = new TextWidget();
 			tabTitle.setPosition(Position.of(mainTab, 8.0F, 0.0F, 0.0F));
 			tabTitle.setText(type.getName());
 			tabTitle.setColor(4210752);

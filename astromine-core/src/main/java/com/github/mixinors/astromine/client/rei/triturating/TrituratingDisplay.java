@@ -24,24 +24,21 @@
 
 package com.github.mixinors.astromine.client.rei.triturating;
 
-import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
-import com.github.mixinors.astromine.client.rei.EnergyConsumingDisplay;
-import com.github.mixinors.astromine.common.recipe.TrituratingRecipe;
-import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import me.shedaniel.rei.api.common.display.Display;
-import me.shedaniel.rei.api.common.entry.EntryIngredient;
-import me.shedaniel.rei.api.common.util.EntryIngredients;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.util.Identifier;
-
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+
+import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
+import com.github.mixinors.astromine.client.rei.base.input.EnergyInputDisplay;
+import com.github.mixinors.astromine.common.recipe.TrituratingRecipe;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.util.EntryIngredients;
 
 @Environment(EnvType.CLIENT)
-public class TrituratingDisplay extends EnergyConsumingDisplay {
+public class TrituratingDisplay extends EnergyInputDisplay {
 	public TrituratingDisplay(TrituratingRecipe recipe) {
 		super(
 				Collections.singletonList(EntryIngredients.ofItemStacks(Arrays.stream(recipe.getInput().getMatchingVariants()).map(variant -> variant.toStack(recipe.getInput().getAmount())).toList())),

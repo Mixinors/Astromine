@@ -32,8 +32,13 @@ import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.google.common.base.Predicates;
 import dev.architectury.hooks.block.BlockEntityHooks;
+
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
@@ -113,30 +118,30 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 			return;
 		}
 		
-		try (var transaction = Transaction.openOuter()) {
-			for (var direction : Direction.values()) {
-				var theirPos = getPos().offset(direction);
-				
-				var theirItemStorage = ItemStorage.SIDED.find(world, theirPos, direction.getOpposite());
-				var ourItemStorage = ItemStorage.SIDED.find(world, pos, direction);
+		try (Transaction transaction = Transaction.openOuter()) {
+			for (Direction direction : Direction.values()) {
+				BlockPos theirPos = getPos().offset(direction);
+
+				Storage<ItemVariant> theirItemStorage = ItemStorage.SIDED.find(world, theirPos, direction.getOpposite());
+				Storage<ItemVariant> ourItemStorage = ItemStorage.SIDED.find(world, pos, direction);
 				
 				if (ourItemStorage != null && theirItemStorage != null) {
 					StorageUtil.move(ourItemStorage, theirItemStorage, (variant) -> {
 						return ourItemStorage.exactView(transaction, variant).getAmount() > theirItemStorage.exactView(transaction, variant).getAmount();
 					}, 1, transaction);
 				}
-				
-				var theirFluidStorage = FluidStorage.SIDED.find(world, theirPos, direction.getOpposite());
-				var ourFluidStorage = FluidStorage.SIDED.find(world, pos, direction);
+
+				Storage<FluidVariant> theirFluidStorage = FluidStorage.SIDED.find(world, theirPos, direction.getOpposite());
+				Storage<FluidVariant> ourFluidStorage = FluidStorage.SIDED.find(world, pos, direction);
 				
 				if (ourFluidStorage != null && theirFluidStorage != null) {
 					StorageUtil.move(ourFluidStorage, theirFluidStorage, (variant) -> {
 						return ourFluidStorage.exactView(transaction, variant).getAmount() > theirFluidStorage.exactView(transaction, variant).getAmount();
-					}, 81000L, transaction);
+					}, FluidConstants.BUCKET, transaction);
 				}
-				
-				var theirEnergyStorage = EnergyStorage.SIDED.find(world, theirPos, direction.getOpposite());
-				var ourEnergyStorage = EnergyStorage.SIDED.find(world, pos, direction);
+
+				EnergyStorage theirEnergyStorage = EnergyStorage.SIDED.find(world, theirPos, direction.getOpposite());
+				EnergyStorage ourEnergyStorage = EnergyStorage.SIDED.find(world, pos, direction);
 				
 				if (ourEnergyStorage != null && theirEnergyStorage != null && ourEnergyStorage.getAmount() > theirEnergyStorage.getAmount()) {
 					EnergyStorageUtil.move(ourEnergyStorage, theirEnergyStorage, 1024, transaction);
@@ -168,7 +173,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 		nbt.putString("RedstoneControl", redstoneControl.name());
 		
 		if (energyStorage != null) {
-			var energyStorageNbt = new NbtCompound();
+			NbtCompound energyStorageNbt = new NbtCompound();
 			
 			energyStorageNbt.putLong("Amount", energyStorage.amount);
 			energyStorageNbt.putLong("Capacity", energyStorage.capacity);
@@ -179,7 +184,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 		}
 		
 		if (itemStorage != null) {
-			var itemStorageNbt = new NbtCompound();
+			NbtCompound itemStorageNbt = new NbtCompound();
 			
 			itemStorage.writeToNbt(itemStorageNbt);
 			
@@ -187,7 +192,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 		}
 		
 		if (fluidStorage != null) {
-			var fluidStorageNbt = new NbtCompound();
+			NbtCompound fluidStorageNbt = new NbtCompound();
 			
 			fluidStorage.writeToNbt(fluidStorageNbt);
 			
@@ -204,36 +209,36 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 		}
 		
 		if (nbt.contains("EnergyStorage")) {
-			var energyStorageNbt = nbt.getCompound("EnergyStorage");
+			NbtCompound energyStorageNbt = nbt.getCompound("EnergyStorage");
 			
 			energyStorage.amount = energyStorageNbt.getLong("Amount");
 		}
 		
 		if (nbt.contains("ItemStorage")) {
-			var itemStorageNbt = nbt.getCompound("ItemStorage");
+			NbtCompound itemStorageNbt = nbt.getCompound("ItemStorage");
 			
 			itemStorage.readFromNbt(itemStorageNbt);
 		} else if (nbt.contains("ItemStorageSidings")) {
-			var sidings = getItemStorage().getSidings();
+			StorageSiding[] sidings = getItemStorage().getSidings();
+
+			NbtCompound sidingsNbt = nbt.getCompound("ItemStorageSidings");
 			
-			var sidingsNbt = nbt.getCompound("ItemStorageSidings");
-			
-			for (var i = 0; i < sidings.length; ++i) {
-				sidings[i] = StorageSiding.values()[sidingsNbt.getInt("" + i)];
+			for (int i = 0; i < sidings.length; ++i) {
+				sidings[i] = StorageSiding.values()[sidingsNbt.getInt(String.valueOf(i))];
 			}
 		}
 		
 		if (nbt.contains("FluidStorage")) {
-			var fluidStorageNbt = nbt.getCompound("FluidStorage");
+			NbtCompound fluidStorageNbt = nbt.getCompound("FluidStorage");
 			
 			fluidStorage.readFromNbt(fluidStorageNbt);
 		} else if (nbt.contains("FluidStorageSidings")) {
-			var sidings = getFluidStorage().getSidings();
+			StorageSiding[] sidings = getFluidStorage().getSidings();
+
+			NbtCompound sidingsNbt = nbt.getCompound("FluidStorageSidings");
 			
-			var sidingsNbt = nbt.getCompound("FluidStorageSidings");
-			
-			for (var i = 0; i < sidings.length; ++i) {
-				sidings[i] = StorageSiding.values()[sidingsNbt.getInt("" + i)];
+			for (int i = 0; i < sidings.length; ++i) {
+				sidings[i] = StorageSiding.values()[sidingsNbt.getInt(String.valueOf(i))];
 			}
 		}
 
@@ -242,27 +247,27 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	
 	@Override
 	public NbtCompound toInitialChunkDataNbt() {
-		var nbt = new NbtCompound();
+		NbtCompound nbt = new NbtCompound();
 		
 		writeNbt(nbt);
 		
 		if (hasItemStorage() && getItemStorage().getVersion() != lastItemStorageVersion) {
 			lastItemStorageVersion = getItemStorage().getVersion();
-			
-			var itemStorageNbt = new NbtCompound();
+
+			NbtCompound itemStorageNbt = new NbtCompound();
 			
 			itemStorage.writeToNbt(itemStorageNbt);
 			
 			nbt.put("ItemStorage", itemStorageNbt);
 		} else if (hasItemStorage()) {
 			nbt.remove("ItemStorage");
+
+			StorageSiding[] sidings = getItemStorage().getSidings();
+
+			NbtCompound sidingsNbt = new NbtCompound();
 			
-			var sidings = getItemStorage().getSidings();
-			
-			var sidingsNbt = new NbtCompound();
-			
-			for (var i = 0; i < sidings.length; ++i) {
-				sidingsNbt.putInt(""+ i, sidings[i].ordinal());
+			for (int i = 0; i < sidings.length; ++i) {
+				sidingsNbt.putInt(String.valueOf(i), sidings[i].ordinal());
 			}
 			
 			nbt.put("ItemStorageSidings", sidingsNbt);
@@ -270,21 +275,21 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 		
 		if (hasFluidStorage() && getFluidStorage().getVersion() != lastFluidStorageVersion) {
 			lastFluidStorageVersion = getFluidStorage().getVersion();
-			
-			var fluidStorageNbt = new NbtCompound();
+
+			NbtCompound fluidStorageNbt = new NbtCompound();
 			
 			fluidStorage.writeToNbt(fluidStorageNbt);
 			
 			nbt.put("FluidStorage", fluidStorageNbt);
 		} else if (hasFluidStorage()) {
 			nbt.remove("FluidStorage");
+
+			StorageSiding[] sidings = getFluidStorage().getSidings();
+
+			NbtCompound sidingsNbt = new NbtCompound();
 			
-			var sidings = getFluidStorage().getSidings();
-			
-			var sidingsNbt = new NbtCompound();
-			
-			for (var i = 0; i < sidings.length; ++i) {
-				sidingsNbt.putInt(""+ i, sidings[i].ordinal());
+			for (int i = 0; i < sidings.length; ++i) {
+				sidingsNbt.putInt(String.valueOf(i), sidings[i].ordinal());
 			}
 			
 			nbt.put("FluidStorageSidings", sidingsNbt);

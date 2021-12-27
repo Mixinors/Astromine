@@ -22,27 +22,55 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.client.rei.generating;
+package com.github.mixinors.astromine.client.rei.base.output;
 
-import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
-import com.google.common.collect.Lists;
-import me.shedaniel.math.Rectangle;
-import me.shedaniel.rei.api.client.gui.widgets.Widget;
-import me.shedaniel.rei.api.client.gui.widgets.Widgets;
-import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+import com.github.mixinors.astromine.client.rei.base.AMDisplay;
+
+import net.minecraft.util.Identifier;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import java.util.List;
+import me.shedaniel.rei.api.common.entry.EntryIngredient;
 
 @Environment(EnvType.CLIENT)
-public abstract class EnergyGeneratingCategory<T extends EnergyGeneratingDisplay> implements DisplayCategory<T> {
+public abstract class EnergyOutputDisplay implements AMDisplay {
+	private final List<EntryIngredient> inputs;
+	private final int timeRequired;
+	private final long energyGeneratedPerTick;
+	private final Identifier recipeId;
+
+	public EnergyOutputDisplay(List<EntryIngredient> inputs, int timeRequired, long energyGeneratedPerTick, Identifier recipeId) {
+		this.inputs = inputs;
+		this.timeRequired = timeRequired;
+		this.energyGeneratedPerTick = energyGeneratedPerTick;
+		this.recipeId = recipeId;
+	}
+
 	@Override
-	public List<Widget> setupDisplay(T recipeDisplay, Rectangle bounds) {
-		List<Widget> widgets = Lists.newArrayList();
-		Rectangle innerBounds = new Rectangle(bounds.getCenterX() - 55, bounds.y, 110, bounds.height);
-		widgets.add(Widgets.createRecipeBase(innerBounds));
-		widgets.addAll(AMRoughlyEnoughItemsPlugin.createEnergyDisplay(new Rectangle(innerBounds.getMaxX() - 32, innerBounds.getCenterY() - 23, 12, 48), recipeDisplay.getEnergyGeneratedPerTick(), true, 5000));
-		return widgets;
+	public List<EntryIngredient> getInputEntries() {
+		return inputs;
+	}
+
+	@Override
+	public List<EntryIngredient> getOutputEntries() {
+		return Collections.emptyList();
+	}
+
+	public int getTimeRequired() {
+		return timeRequired;
+	}
+
+	public long getEnergyGeneratedPerTick() {
+		return energyGeneratedPerTick;
+	}
+
+	@Override
+	public Optional<Identifier> getDisplayLocation() {
+		return Optional.ofNullable(this.recipeId);
 	}
 }

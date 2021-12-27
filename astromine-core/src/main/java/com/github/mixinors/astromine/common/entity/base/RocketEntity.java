@@ -161,7 +161,7 @@ public abstract class RocketEntity extends ExtendedEntity {
 	}
 
 	private void tryExplode() {
-		var strength = fluidStorage.getStorage(FLUID_INPUT_SLOT_1).getAmount() * 0.25F + fluidStorage.getStorage(FLUID_INPUT_SLOT_2).getAmount() * 0.25F;
+		float strength = fluidStorage.getStorage(FLUID_INPUT_SLOT_1).getAmount() * 0.25F + fluidStorage.getStorage(FLUID_INPUT_SLOT_2).getAmount() * 0.25F;
 
 		world.createExplosion(this, getX(), getY(), getZ(), min(strength, 32.0F) + 3.0F, Explosion.DestructionType.BREAK);
 	}

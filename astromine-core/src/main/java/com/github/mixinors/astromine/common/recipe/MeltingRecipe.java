@@ -90,9 +90,9 @@ public record MeltingRecipe(Identifier id,
 	}
 
 	public boolean matches(SingleSlotStorage<ItemVariant>[] itemStorages, SingleSlotStorage<FluidVariant>[] fluidStorages) {
-		var itemInputStorage = itemStorages[0];
+		SingleSlotStorage<ItemVariant> itemInputStorage = itemStorages[0];
 
-		var fluidOutputStorage = fluidStorages[0];
+		SingleSlotStorage<FluidVariant> fluidOutputStorage = fluidStorages[0];
 
 		if (!input.test(itemInputStorage)) {
 			return false;

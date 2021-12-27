@@ -138,8 +138,10 @@ public class AnimatedArmorItem extends ArmorItem {
 			return this.id.hashCode();
 		}
 
-		/** Returns this texture's string representation.
-		* For example, it may be "texture [minecraft:textures/models/armor/asterite_layer_1.png". */
+		/**
+		 * Returns this texture's string representation.
+		 * For example, it may be "texture [minecraft:textures/models/armor/asterite_layer_1.png]".
+		 */
 		@Override
 		public String toString() {
 			return this.name + '[' + this.id + "]";

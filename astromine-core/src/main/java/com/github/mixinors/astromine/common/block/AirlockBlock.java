@@ -184,13 +184,10 @@ public class AirlockBlock extends Block implements Waterloggable {
 
 	@Override
 	public boolean canPathfindThrough(BlockState state, BlockView world, BlockPos pos, NavigationType type) {
-		switch (type) {
-			case LAND:
-			case AIR:
-				return state.get(POWERED);
-			default:
-				return false;
-		}
+		return switch (type) {
+			case LAND, AIR -> state.get(POWERED);
+			default -> false;
+		};
 	}
 
 	private int getOpenSoundEventId() {

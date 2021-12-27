@@ -90,10 +90,10 @@ public record AlloySmeltingRecipe(Identifier id,
 	}
 
 	public boolean matches(SingleSlotStorage<ItemVariant>... storages) {
-		var firstInputStorage = storages[0];
-		var secondInputStorage = storages[1];
+		SingleSlotStorage<ItemVariant> firstInputStorage = storages[0];
+		SingleSlotStorage<ItemVariant> secondInputStorage = storages[1];
 
-		var outputStorage = storages[2];
+		SingleSlotStorage<ItemVariant> outputStorage = storages[2];
 
 		if (!firstInput.test(firstInputStorage) && !secondInput.test(firstInputStorage)) {
 			return false;

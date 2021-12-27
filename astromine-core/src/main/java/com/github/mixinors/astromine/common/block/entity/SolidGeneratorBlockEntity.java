@@ -33,6 +33,7 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BucketItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMConfig;
@@ -84,15 +85,15 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 			return;
 
 		if (itemStorage != null && energyStorage != null) {
-			try (var transaction = Transaction.openOuter()) {
+			try (Transaction transaction = Transaction.openOuter()) {
 				if (available > 0) {
 					progress = limit - available;
-					
-					var produced = 5;
+
+					int produced = 5;
 					
 					for (int i = 0; i < 3 * getMachineSpeed(); ++i) {
 						if (progress < limit) {
-							var nestedTransacation = transaction.openNested();
+							Transaction nestedTransacation = transaction.openNested();
 							
 							if (energyStorage.insert(produced, nestedTransacation) == produced) {
 								--available;
@@ -118,21 +119,21 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 					}
 				} else {
 					progress = 0;
-					
-					var inputStack = itemStorage.getStack(INPUT_SLOT);
-					
-					var inputBurnTime = FuelRegistry.INSTANCE.get(inputStack.getItem());
+
+					ItemStack inputStack = itemStorage.getStack(INPUT_SLOT);
+
+					Integer inputBurnTime = FuelRegistry.INSTANCE.get(inputStack.getItem());
 					
 					if (inputBurnTime != null) {
-						var isFuel = !(inputStack.getItem() instanceof BucketItem) && inputBurnTime > 0;
+						boolean isFuel = !(inputStack.getItem() instanceof BucketItem) && inputBurnTime > 0;
 						
 						if (isFuel) {
 							available = inputBurnTime;
 							limit = inputBurnTime;
 							
 							progress = 0;
-							
-							var nestedTransacation = transaction.openNested();
+
+							Transaction nestedTransacation = transaction.openNested();
 							
 							itemStorage.removeStack(INPUT_SLOT, 1);
 							

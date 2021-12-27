@@ -87,7 +87,7 @@ public record FluidGeneratingRecipe(Identifier id,
 	}
 
 	public boolean matches(SingleSlotStorage<FluidVariant>... storages) {
-		var inputStorage = storages[0];
+		SingleSlotStorage<FluidVariant> inputStorage = storages[0];
 
 		return input.test(inputStorage);
 	}

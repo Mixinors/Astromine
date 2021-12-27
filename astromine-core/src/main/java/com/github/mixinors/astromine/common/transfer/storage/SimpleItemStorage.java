@@ -125,10 +125,10 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	}
 	
 	public SingleSlotStorage<ItemVariant>[] slice(int... slots) {
-		var storages = new SingleSlotStorage[slots.length];
+		SingleSlotStorage[] storages = new SingleSlotStorage[slots.length];
 		
-		for (var i = 0; i < slots.length; ++i) {
-			var slot = getStorage(slots[i]);
+		for (int i = 0; i < slots.length; ++i) {
+			SimpleItemVariantStorage slot = getStorage(slots[i]);
 			storages[i] = slot;
 		}
 		
@@ -147,13 +147,13 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 				++version;
 			}
 		}));
+
+		int amount = 0;
 		
-		var amount = 0;
-		
-		for (var slot : insertSlots) {
+		for (int slot : insertSlots) {
 			if (!insertPredicate.test(resource, slot)) continue;
-			
-			var storage = storages.get(slot);
+
+			Storage<ItemVariant> storage = storages.get(slot);
 			
 			amount += storage.insert(resource, maxAmount - amount, transaction);
 			
@@ -175,13 +175,13 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 				++version;
 			}
 		}));
+
+		int amount = 0;
 		
-		var amount = 0;
-		
-		for (var slot : extractSlots) {
+		for (int slot : extractSlots) {
 			if (!extractPredicate.test(resource, slot)) continue;
-			
-			var storage = storages.get(slot);
+
+			Storage<ItemVariant> storage = storages.get(slot);
 			
 			amount += storage.extract(resource, maxAmount - amount, transaction);
 			
@@ -241,7 +241,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	
 	@Override
 	public boolean isEmpty() {
-		for (var stack : stacks) {
+		for (ItemStack stack : stacks) {
 			if (!stack.isEmpty()) {
 				return false;
 			}
@@ -257,9 +257,9 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	
 	@Override
 	public ItemStack removeStack(int slot, int amount) {
-		var existingStack = stacks.get(slot);
-		
-		var removedStack = new ItemStack(existingStack.getItem(), Math.min(existingStack.getCount(), amount));
+		ItemStack existingStack = stacks.get(slot);
+
+		ItemStack removedStack = new ItemStack(existingStack.getItem(), Math.min(existingStack.getCount(), amount));
 		
 		existingStack.setCount(Math.max(0, existingStack.getCount() - amount));
 		
@@ -268,7 +268,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	
 	@Override
 	public ItemStack removeStack(int slot) {
-		var stack = stacks.get(slot);
+		ItemStack stack = stacks.get(slot);
 		
 		stacks.set(slot, ItemStack.EMPTY);
 		
@@ -298,42 +298,42 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	}
 	
 	public void writeToNbt(NbtCompound nbt) {
-		var sidingsNbt = new NbtCompound();
+		NbtCompound sidingsNbt = new NbtCompound();
 		
-		for (var i = 0; i < sidings.length; ++i) {
-			sidingsNbt.putInt(""+ i, sidings[i].ordinal());
+		for (int i = 0; i < sidings.length; ++i) {
+			sidingsNbt.putInt(String.valueOf(i), sidings[i].ordinal());
 		}
 		
 		nbt.put("Sidings", sidingsNbt);
+
+		NbtCompound storagesNbt = new NbtCompound();
 		
-		var storagesNbt = new NbtCompound();
-		
-		for (var i = 0; i < size; ++i) {
-			var storageNbt = new NbtCompound();
+		for (int i = 0; i < size; ++i) {
+			NbtCompound storageNbt = new NbtCompound();
 			
 			storageNbt.putLong("Amount", getStorage(i).getAmount());
 			storageNbt.put("Variant", getStorage(i).getResource().toNbt());
 			
-			storagesNbt.put("" + i, storageNbt);
+			storagesNbt.put(String.valueOf(i), storageNbt);
 		}
 		
 		nbt.put("Storages", storagesNbt);
 	}
 	
 	public void readFromNbt(NbtCompound nbt) {
-		var sidingsNbt = nbt.getCompound("Sidings");
+		NbtCompound sidingsNbt = nbt.getCompound("Sidings");
 		
-		for (var i = 0; i < sidings.length; ++i) {
-			sidings[i] = StorageSiding.values()[sidingsNbt.getInt("" + i)];
+		for (int i = 0; i < sidings.length; ++i) {
+			sidings[i] = StorageSiding.values()[sidingsNbt.getInt(String.valueOf(i))];
 		}
+
+		NbtCompound storagesNbt = nbt.getCompound("Storages");
 		
-		var storagesNbt = nbt.getCompound("Storages");
-		
-		for (var i = 0; i < size; ++i) {
-			var storageNbt = storagesNbt.getCompound("" + i);
-			
-			var amount = storageNbt.getLong("Amount");
-			var variant = ItemVariant.fromNbt(storageNbt.getCompound("Variant"));
+		for (int i = 0; i < size; ++i) {
+			NbtCompound storageNbt = storagesNbt.getCompound(String.valueOf(i));
+
+			long amount = storageNbt.getLong("Amount");
+			ItemVariant variant = ItemVariant.fromNbt(storageNbt.getCompound("Variant"));
 			
 			setStack(i, variant.toStack((int) amount));
 		}

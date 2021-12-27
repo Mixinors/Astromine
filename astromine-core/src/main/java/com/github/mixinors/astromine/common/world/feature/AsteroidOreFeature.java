@@ -89,7 +89,7 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 		for (Map.Entry<Block, @Nullable Pair<Range<Integer>, Range<Integer>>> entry : AsteroidOreRegistry.INSTANCE.diameters.reference2ReferenceEntrySet()) {
 			Pair<Range<Integer>, Range<Integer>> pair = entry.getValue();
 			if (pair != null) {
-				ores.add(entry.getKey(), (int) ((pair.getLeft().getMaximum() - pair.getLeft().getMinimum()) * Objects.requireNonNull(random, "random").nextFloat() + pair.getLeft().getMinimum()));
+				ores.add(entry.getKey(), (int) ((pair.getLeft().maximum() - pair.getLeft().minimum()) * Objects.requireNonNull(random, "random").nextFloat() + pair.getLeft().minimum()));
 			}
 		}
 	}

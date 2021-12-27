@@ -97,7 +97,7 @@ public class SpriteRenderer {
 		RenderLayer layer;
 
 		/** We only want {@link #beginPass()} to
-		 * able able to instantiate a {@link RenderPass}. */
+		 * be able to instantiate a {@link RenderPass}. */
 		private RenderPass() {}
 
 		/** Sets the {@link VertexConsumer} of this pass,

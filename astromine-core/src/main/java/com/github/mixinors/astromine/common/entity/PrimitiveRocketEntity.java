@@ -26,7 +26,9 @@ package com.github.mixinors.astromine.common.entity;
 
 import com.github.mixinors.astromine.common.entity.base.RocketEntity;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidVariantStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemVariantStorage;
 import com.github.mixinors.astromine.registry.common.AMDimensions;
 import com.github.mixinors.astromine.registry.common.AMFluids;
 import com.github.mixinors.astromine.registry.common.AMItems;
@@ -40,6 +42,7 @@ import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.client.util.math.Vector3d;
@@ -83,8 +86,8 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 	public PrimitiveRocketEntity(EntityType<?> type, World world) {
 		super(type, world);
 		
-		fluidStorage.getStorage(FLUID_INPUT_SLOT_1).setCapacity(81000 * 16);
-		fluidStorage.getStorage(FLUID_INPUT_SLOT_2).setCapacity(81000 * 16);
+		fluidStorage.getStorage(FLUID_INPUT_SLOT_1).setCapacity(FluidConstants.BUCKET * 16);
+		fluidStorage.getStorage(FLUID_INPUT_SLOT_2).setCapacity(FluidConstants.BUCKET * 16);
 		
 		itemStorage = new SimpleItemStorage(4).extractPredicate((variant, slot) -> {
 			return slot == ITEM_OUTPUT_SLOT_1 || slot == ITEM_OUTPUT_SLOT_2;
@@ -100,7 +103,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 
 	@Override
 	protected void consumeFuel() {
-		try (var transaction = Transaction.openOuter()) {
+		try (Transaction transaction = Transaction.openOuter()) {
 			fluidStorage.getStorage(FLUID_INPUT_SLOT_1).extract(FluidVariant.of(AMFluids.FUEL), FUEL_INGREDIENT.getAmount(), transaction);
 			fluidStorage.getStorage(FLUID_INPUT_SLOT_2).extract(FluidVariant.of(AMFluids.OXYGEN), OXYGEN_INGREDIENT.getAmount(), transaction);
 			
@@ -180,28 +183,28 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 			getDataTracker().set(IS_RUNNING, false);
 		}
 		
-		try (var transaction = Transaction.openOuter()) {
-			var firstItemInputStack = itemStorage.getStack(ITEM_INPUT_SLOT_1);
-			var secondItemInputStack = itemStorage.getStack(ITEM_INPUT_SLOT_2);
+		try (Transaction transaction = Transaction.openOuter()) {
+			ItemStack firstItemInputStack = itemStorage.getStack(ITEM_INPUT_SLOT_1);
+			ItemStack secondItemInputStack = itemStorage.getStack(ITEM_INPUT_SLOT_2);
+
+			SimpleItemVariantStorage firstItemInputStorage = itemStorage.getStorage(ITEM_INPUT_SLOT_1);
+			SimpleItemVariantStorage secondItemInputStorage = itemStorage.getStorage(ITEM_INPUT_SLOT_2);
+
+			SimpleItemVariantStorage firstItemOutputStorage = itemStorage.getStorage(ITEM_OUTPUT_SLOT_1);
+			SimpleItemVariantStorage secondItemOutputStorage = itemStorage.getStorage(ITEM_OUTPUT_SLOT_2);
+
+			SimpleFluidVariantStorage firstFluidInputStorage = fluidStorage.getStorage(FLUID_INPUT_SLOT_1);
+			SimpleFluidVariantStorage secondFluidInputStorage = fluidStorage.getStorage(FLUID_INPUT_SLOT_2);
+
+			Storage<FluidVariant> firstFluidOutputStorage = FluidStorage.ITEM.find(firstItemInputStack, ContainerItemContext.ofSingleSlot(firstItemInputStorage));
+			Storage<FluidVariant> secondFluidOutputStorage = FluidStorage.ITEM.find(secondItemInputStack, ContainerItemContext.ofSingleSlot(secondItemInputStorage));
 			
-			var firstItemInputStorage = itemStorage.getStorage(ITEM_INPUT_SLOT_1);
-			var secondItemInputStorage = itemStorage.getStorage(ITEM_INPUT_SLOT_2);
-			
-			var firstItemOutputStorage = itemStorage.getStorage(ITEM_OUTPUT_SLOT_1);
-			var secondItemOutputStorage = itemStorage.getStorage(ITEM_OUTPUT_SLOT_2);
-			
-			var firstFluidInputStorage = fluidStorage.getStorage(FLUID_INPUT_SLOT_1);
-			var secondFluidInputStorage = fluidStorage.getStorage(FLUID_INPUT_SLOT_2);
-			
-			var firstFluidOutputStorage = FluidStorage.ITEM.find(firstItemInputStack, ContainerItemContext.ofSingleSlot(firstItemInputStorage));
-			var secondFluidOutputStorage = FluidStorage.ITEM.find(secondItemInputStack, ContainerItemContext.ofSingleSlot(secondItemInputStorage));
-			
-			StorageUtil.move(firstFluidOutputStorage, firstFluidInputStorage, Predicates.alwaysTrue(), 81000, transaction);
-			StorageUtil.move(secondFluidOutputStorage, secondFluidInputStorage, Predicates.alwaysTrue(), 81000, transaction);
+			StorageUtil.move(firstFluidOutputStorage, firstFluidInputStorage, Predicates.alwaysTrue(), FluidConstants.BUCKET, transaction);
+			StorageUtil.move(secondFluidOutputStorage, secondFluidInputStorage, Predicates.alwaysTrue(), FluidConstants.BUCKET, transaction);
 			
 			if (firstItemOutputStorage.getResource().isBlank()) {
 				StorageUtil.move(firstItemInputStorage, firstItemOutputStorage, (variant) -> {
-					var storage = FluidStorage.ITEM.find(variant.toStack(), ContainerItemContext.ofSingleSlot(firstItemOutputStorage));
+					Storage<FluidVariant> storage = FluidStorage.ITEM.find(variant.toStack(), ContainerItemContext.ofSingleSlot(firstItemOutputStorage));
 					
 					return storage == null || storage.iterator(transaction).next().isResourceBlank();
 				}, 1, transaction);
@@ -209,7 +212,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 			
 			if (secondItemOutputStorage.getResource().isBlank()) {
 				StorageUtil.move(secondItemInputStorage, secondItemOutputStorage, (variant) -> {
-					var storage = FluidStorage.ITEM.find(variant.toStack(), ContainerItemContext.ofSingleSlot(firstItemOutputStorage));
+					Storage<FluidVariant> storage = FluidStorage.ITEM.find(variant.toStack(), ContainerItemContext.ofSingleSlot(firstItemOutputStorage));
 					
 					return storage == null || storage.iterator(transaction).next().isResourceBlank();
 				}, 1, transaction);

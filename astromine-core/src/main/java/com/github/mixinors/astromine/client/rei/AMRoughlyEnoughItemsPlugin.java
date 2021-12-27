@@ -24,6 +24,12 @@
 
 package com.github.mixinors.astromine.client.rei;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import com.google.common.collect.ImmutableList;
+
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.rei.alloysmelting.AlloySmeltingCategory;
 import com.github.mixinors.astromine.client.rei.alloysmelting.AlloySmeltingDisplay;
@@ -51,16 +57,32 @@ import com.github.mixinors.astromine.client.rei.wiremilling.WireMillingCategory;
 import com.github.mixinors.astromine.client.rei.wiremilling.WireMillingDisplay;
 import com.github.mixinors.astromine.client.render.sprite.SpriteRenderer;
 import com.github.mixinors.astromine.common.recipe.*;
-import com.github.mixinors.astromine.common.recipe.result.FluidResult;
 import com.github.mixinors.astromine.common.util.ClientUtils;
 import com.github.mixinors.astromine.common.util.FluidUtils;
-import com.github.mixinors.astromine.common.util.NumberUtils;
 import com.github.mixinors.astromine.common.util.TextUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-import com.google.common.collect.ImmutableList;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.architectury.fluid.FluidStack;
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.client.render.OverlayTexture;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.item.BucketItem;
+import net.minecraft.item.Item;
+import net.minecraft.recipe.SmeltingRecipe;
+import net.minecraft.screen.PlayerScreenHandler;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.AbstractRenderer;
@@ -77,30 +99,6 @@ import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import me.shedaniel.rei.impl.client.gui.widget.EntryWidget;
 import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCustomDisplay;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-
-import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.BucketItem;
-import net.minecraft.item.Item;
-import net.minecraft.recipe.SmeltingRecipe;
-import net.minecraft.screen.PlayerScreenHandler;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 @Environment(EnvType.CLIENT)
 public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
@@ -131,9 +129,10 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 			new MeltingCategory(),
 			new WireMillingCategory(),
 			new AlloySmeltingCategory(),
-			new FluidMixingCategory(FLUID_MIXING, "category.astromine.fluid_mixing", EntryStacks.of(AMBlocks.ADVANCED_FLUID_MIXER.get())),
-			new ElectrolyzingCategory(ELECTROLYZING, "category.astromine.electrolyzing", EntryStacks.of(AMBlocks.ADVANCED_ELECTROLYZER.get())),
-			new RefiningCategory(REFINING, "category.astromine.refining", EntryStacks.of(AMBlocks.ADVANCED_REFINERY.get())));
+			new FluidMixingCategory(),
+			new ElectrolyzingCategory(),
+			new RefiningCategory()
+		);
 
 		registry.addWorkstations(TRITURATING, EntryStacks.of(AMBlocks.PRIMITIVE_TRITURATOR.get()), EntryStacks.of(AMBlocks.BASIC_TRITURATOR.get()), EntryStacks.of(AMBlocks.ADVANCED_TRITURATOR.get()), EntryStacks.of(AMBlocks.ELITE_TRITURATOR.get()));
 		registry.addWorkstations(ELECTRIC_SMELTING, EntryStacks.of(AMBlocks.PRIMITIVE_ELECTRIC_FURNACE.get()), EntryStacks.of(AMBlocks.BASIC_ELECTRIC_FURNACE.get()), EntryStacks.of(AMBlocks.ADVANCED_ELECTRIC_FURNACE.get()), EntryStacks.of(AMBlocks.ELITE_ELECTRIC_FURNACE.get()));
@@ -184,7 +183,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 		return EntryStacks.of(variant.getFluid(), amount);
 	}
 
-	public static List<Widget> createEnergyDisplay(Rectangle bounds, long energy, boolean generating, long speed) {
+	public static List<Widget> createEnergyDisplay(Rectangle bounds, long energy, boolean generating, int speed) {
 		return Collections.singletonList(new EnergyEntryWidget(bounds, speed, generating).entry(ClientEntryStacks.of(new AbstractRenderer() {
 			@Override
 			public void render(MatrixStack matrices, Rectangle bounds, int mouseX, int mouseY, float delta) {}

@@ -3,6 +3,9 @@ package com.github.mixinors.astromine.registry.common;
 import com.github.mixinors.astromine.common.block.entity.*;
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
+import com.github.mixinors.astromine.common.transfer.StorageSiding;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
@@ -13,11 +16,11 @@ public class AMLookups {
 	public static void init() {
 		ItemStorage.SIDED.registerForBlockEntities((blockEntity, direction) -> {
 			if (blockEntity instanceof ExtendedBlockEntity extendedBlockEntity) {
-				var itemStorage = extendedBlockEntity.getItemStorage();
-				
-				var sidings = itemStorage.getSidings();
-				
-				var siding = sidings[direction.ordinal()];
+				SimpleItemStorage itemStorage = extendedBlockEntity.getItemStorage();
+
+				StorageSiding[] sidings = itemStorage.getSidings();
+
+				StorageSiding siding = sidings[direction.ordinal()];
 				
 				return switch (siding) {
 					case INSERT, EXTRACT, INSERT_EXTRACT -> itemStorage;
@@ -85,11 +88,11 @@ public class AMLookups {
 		
 		FluidStorage.SIDED.registerForBlockEntities((blockEntity, direction) -> {
 			if (blockEntity instanceof ExtendedBlockEntity extendedBlockEntity) {
-				var fluidStorage = extendedBlockEntity.getFluidStorage();
-				
-				var sidings = fluidStorage.getSidings();
-				
-				var siding = sidings[direction.ordinal()];
+				SimpleFluidStorage fluidStorage = extendedBlockEntity.getFluidStorage();
+
+				StorageSiding[] sidings = fluidStorage.getSidings();
+
+				StorageSiding siding = sidings[direction.ordinal()];
 				
 				return switch (siding) {
 					case INSERT, EXTRACT, INSERT_EXTRACT -> fluidStorage;

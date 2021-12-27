@@ -190,6 +190,6 @@ public class HolographicConnectorItem extends Item {
 	}
 
 	public String toShortString(BlockPos pos) {
-		return "" + pos.getX() + ", " + pos.getY() + ", " + pos.getZ();
+		return pos.getX() + ", " + pos.getY() + ", " + pos.getZ();
 	}
 }

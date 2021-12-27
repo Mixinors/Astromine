@@ -79,13 +79,13 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 	}
 
 	/** Sets the {@link BlockState} at the {@link BlockPos} in
-	 * in the given {@link World} to have {@link #ACTIVE} as true. */
+	 * the given {@link World} to have {@link #ACTIVE} as true. */
 	public static void markActive(World world, BlockPos pos) {
 		world.setBlockState(pos, world.getBlockState(pos).with(ACTIVE, true));
 	}
 
 	/** Sets the {@link BlockState} at the {@link BlockPos} in
-	 * in the given {@link World} to have {@link #ACTIVE} as false. */
+	 * the given {@link World} to have {@link #ACTIVE} as false. */
 	public static void markInactive(World world, BlockPos pos) {
 		world.setBlockState(pos, world.getBlockState(pos).with(ACTIVE, false));
 	}

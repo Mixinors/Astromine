@@ -34,6 +34,7 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
@@ -63,9 +64,9 @@ public class RedstoneControlWidget extends ButtonWidget {
         super.onMouseClicked(x, y, button);
     
         if (getFocused() && getHandled().getClient()) {
-            var control = blockEntity.getRedstoneControl();
-            
-            var next = (RedstoneControl) null;
+            RedstoneControl control = blockEntity.getRedstoneControl();
+
+            RedstoneControl next = (RedstoneControl) null;
     
             if (button == GLFW.GLFW_MOUSE_BUTTON_1) {
                 next = control.next();
@@ -74,8 +75,8 @@ public class RedstoneControlWidget extends ButtonWidget {
             } else {
                 return;
             }
-    
-            var buf = NetworkingUtils.ofRedstoneControl(next, blockEntity.getPos());
+
+            PacketByteBuf buf = NetworkingUtils.ofRedstoneControl(next, blockEntity.getPos());
     
             NetworkManager.sendToServer(AMNetworks.REDSTONE_CONTROL_UPDATE, buf);
         }

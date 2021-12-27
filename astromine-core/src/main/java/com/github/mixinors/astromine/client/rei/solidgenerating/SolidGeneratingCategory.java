@@ -25,25 +25,22 @@
 package com.github.mixinors.astromine.client.rei.solidgenerating;
 
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
-import com.github.mixinors.astromine.client.rei.generating.EnergyGeneratingCategory;
+import com.github.mixinors.astromine.client.rei.base.input.SingleItemInputCategory;
+import com.github.mixinors.astromine.client.rei.base.output.EnergyOutputCategory;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-import me.shedaniel.math.Point;
-import me.shedaniel.math.Rectangle;
-import me.shedaniel.rei.api.client.gui.Renderer;
-import me.shedaniel.rei.api.client.gui.widgets.Widget;
-import me.shedaniel.rei.api.client.gui.widgets.Widgets;
-import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import me.shedaniel.rei.api.common.util.EntryStacks;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 
-import java.text.DecimalFormat;
-import java.util.List;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import me.shedaniel.rei.api.client.gui.Renderer;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.util.EntryStacks;
 
 @Environment(EnvType.CLIENT)
-public class SolidGeneratingCategory extends EnergyGeneratingCategory<SolidGeneratingDisplay> {
+public class SolidGeneratingCategory implements SingleItemInputCategory<SolidGeneratingDisplay>, EnergyOutputCategory<SolidGeneratingDisplay> {
 	@Override
 	public CategoryIdentifier<? extends SolidGeneratingDisplay> getCategoryIdentifier() {
 		return AMRoughlyEnoughItemsPlugin.SOLID_GENERATING;
@@ -57,16 +54,5 @@ public class SolidGeneratingCategory extends EnergyGeneratingCategory<SolidGener
 	@Override
 	public Renderer getIcon() {
 		return EntryStacks.of(AMBlocks.ADVANCED_SOLID_GENERATOR.get());
-	}
-
-	@Override
-	public List<Widget> setupDisplay(SolidGeneratingDisplay recipeDisplay, Rectangle bounds) {
-		DecimalFormat df = new DecimalFormat("###.##");
-		List<Widget> widgets = super.setupDisplay(recipeDisplay, bounds);
-		Rectangle innerBounds = new Rectangle(bounds.getCenterX() - 55, bounds.y, 110, bounds.height);
-		widgets.add(Widgets.createSlot(new Point(innerBounds.getX() + 20, innerBounds.getY() + 26)).entries(recipeDisplay.getInputEntries().get(0)).markInput());
-		widgets.add(Widgets.createLabel(new Point(innerBounds.x + 5, innerBounds.y + 5), new TranslatableText("category.astromine.cooking.time", df.format(recipeDisplay.getTimeRequired()))).noShadow().leftAligned().color(0xFF404040, 0xFFBBBBBB));
-		widgets.add(Widgets.createArrow(new Point(innerBounds.getX() + 45, innerBounds.getY() + 26)));
-		return widgets;
 	}
 }

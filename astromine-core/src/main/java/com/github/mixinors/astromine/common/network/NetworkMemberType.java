@@ -47,13 +47,12 @@ public enum NetworkMemberType {
 	 * For example, it may be "Requester". */
 	@Override
 	public String toString() {
-		switch (this) {
-			case REQUESTER: return "Requester";
-			case PROVIDER: return "Provider";
-			case BUFFER: return "Buffer";
-			case NODE: return "Node";
-
-			default: return "None";
-		}
+		return switch (this) {
+			case REQUESTER -> "Requester";
+			case PROVIDER -> "Provider";
+			case BUFFER -> "Buffer";
+			case NODE -> "Node";
+			default -> "None";
+		};
 	}
 }

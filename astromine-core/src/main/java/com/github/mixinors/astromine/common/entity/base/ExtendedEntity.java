@@ -48,7 +48,7 @@ public abstract class ExtendedEntity extends Entity {
 	@Override
 	protected void writeCustomDataToNbt(NbtCompound nbt) {
 		if (energyStorage != null) {
-			var energyStorageNbt = new NbtCompound();
+			NbtCompound energyStorageNbt = new NbtCompound();
 			
 			energyStorageNbt.putLong("Amount", energyStorage.amount);
 			energyStorageNbt.putLong("Capacity", energyStorage.capacity);
@@ -59,7 +59,7 @@ public abstract class ExtendedEntity extends Entity {
 		}
 		
 		if (itemStorage != null) {
-			var itemStorageNbt = new NbtCompound();
+			NbtCompound itemStorageNbt = new NbtCompound();
 			
 			itemStorage.writeToNbt(itemStorageNbt);
 			
@@ -67,7 +67,7 @@ public abstract class ExtendedEntity extends Entity {
 		}
 		
 		if (fluidStorage != null) {
-			var fluidStorageNbt = new NbtCompound();
+			NbtCompound fluidStorageNbt = new NbtCompound();
 			
 			fluidStorage.writeToNbt(fluidStorageNbt);
 			
@@ -79,7 +79,7 @@ public abstract class ExtendedEntity extends Entity {
 	@Override
 	protected void readCustomDataFromNbt(NbtCompound nbt) {
 		if (nbt.contains("EnergyStorage")) {
-			var energyStorageNbt = nbt.getCompound("EnergyStorage");
+			NbtCompound energyStorageNbt = nbt.getCompound("EnergyStorage");
 			
 			energyStorage = new SimpleEnergyStorage(
 					energyStorageNbt.getInt("Capacity"),
@@ -91,7 +91,7 @@ public abstract class ExtendedEntity extends Entity {
 		}
 		
 		if (nbt.contains("ItemStorage")) {
-			var itemStorageNbt = nbt.getCompound("ItemStorage");
+			NbtCompound itemStorageNbt = nbt.getCompound("ItemStorage");
 			
 			itemStorage = new SimpleItemStorage(
 					itemStorageNbt.getInt("Size")
@@ -101,7 +101,7 @@ public abstract class ExtendedEntity extends Entity {
 		}
 		
 		if (nbt.contains("FluidStorage")) {
-			var fluidStorageNbt = nbt.getCompound("FluidStorage");
+			NbtCompound fluidStorageNbt = nbt.getCompound("FluidStorage");
 			
 			fluidStorage = new SimpleFluidStorage(
 					fluidStorageNbt.getInt("Size")

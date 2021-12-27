@@ -24,22 +24,23 @@
 
 package com.github.mixinors.astromine.client.rei.solidifying;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
-import com.github.mixinors.astromine.client.rei.EnergyConsumingDisplay;
+import com.github.mixinors.astromine.client.rei.base.input.EnergyInputDisplay;
 import com.github.mixinors.astromine.common.recipe.SolidifyingRecipe;
 import dev.architectury.fluid.FluidStack;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
-import java.util.Arrays;
-import java.util.Collections;
 
 @Environment(EnvType.CLIENT)
-public class SolidifyingDisplay extends EnergyConsumingDisplay {
+public class SolidifyingDisplay extends EnergyInputDisplay {
 	public SolidifyingDisplay(SolidifyingRecipe recipe) {
 		super(
 				Collections.singletonList(EntryIngredients.of(VanillaEntryTypes.FLUID, Arrays.stream(recipe.getInput().getMatchingVariants()).map(variant -> FluidStack.create(variant.getFluid(), recipe.getInput().getAmount())).toList())),

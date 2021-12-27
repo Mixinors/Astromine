@@ -22,30 +22,29 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.client.rei.generating;
+package com.github.mixinors.astromine.client.rei.base.input;
 
-import me.shedaniel.rei.api.common.display.Display;
-import me.shedaniel.rei.api.common.entry.EntryIngredient;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import com.github.mixinors.astromine.client.rei.base.AMDisplay;
+
 import net.minecraft.util.Identifier;
 
-@Environment(EnvType.CLIENT)
-public abstract class EnergyGeneratingDisplay implements Display {
+import me.shedaniel.rei.api.common.entry.EntryIngredient;
+
+public abstract class EnergyInputDisplay implements AMDisplay {
 	private final List<EntryIngredient> inputs;
+	private final List<EntryIngredient> outputs;
 	private final int timeRequired;
-	private final long energyGeneratedPerTick;
+	private final long energyRequired;
 	private final Identifier recipeId;
 
-	public EnergyGeneratingDisplay(List<EntryIngredient> inputs, int timeRequired, long energyGeneratedPerTick, Identifier recipeId) {
+	public EnergyInputDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, int timeRequired, long energyRequired, Identifier recipeId) {
 		this.inputs = inputs;
+		this.outputs = outputs;
 		this.timeRequired = timeRequired;
-		this.energyGeneratedPerTick = energyGeneratedPerTick;
+		this.energyRequired = energyRequired;
 		this.recipeId = recipeId;
 	}
 
@@ -56,15 +55,15 @@ public abstract class EnergyGeneratingDisplay implements Display {
 
 	@Override
 	public List<EntryIngredient> getOutputEntries() {
-		return Collections.emptyList();
+		return outputs;
 	}
 
 	public int getTimeRequired() {
 		return timeRequired;
 	}
 
-	public long getEnergyGeneratedPerTick() {
-		return energyGeneratedPerTick;
+	public long getEnergyRequired() {
+		return energyRequired;
 	}
 
 	@Override

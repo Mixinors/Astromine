@@ -46,14 +46,14 @@ public class VoxelShapeUtils {
 	private static final double TWO_HUNDRED_SEVENTY_DEGREES = Math.toRadians(270);
 
 	/**
-	 * Returns an union of all the given {@link VoxelShape}s.
+	 * Returns a union of all the given {@link VoxelShape}s.
 	 */
 	public static VoxelShape union(VoxelShape... shapes) {
 		return union(Lists.newArrayList(shapes));
 	}
 
 	/**
-	 * Returns an union of all the given {@link VoxelShape}s.
+	 * Returns a union of all the given {@link VoxelShape}s.
 	 */
 	public static VoxelShape union(Collection<VoxelShape> shapes) {
 		VoxelShape collision = VoxelShapes.empty();

@@ -28,15 +28,22 @@ import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntit
 import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvider;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidDrainable;
 import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergyConsumedProvider;
@@ -96,7 +103,7 @@ public class FluidCollectorBlockEntity extends ExtendedBlockEntity implements En
 			return;
 
 		if (fluidStorage != null && energyStorage != null) {
-			var consumed = getEnergyConsumed();
+			long consumed = getEnergyConsumed();
 			
 			if (energyStorage.getAmount() < consumed) {
 				cooldown = 0L;
@@ -104,21 +111,21 @@ public class FluidCollectorBlockEntity extends ExtendedBlockEntity implements En
 				isActive = false;
 			} else {
 				if (cooldown >= getMachineSpeed()) {
-					try (var transaction = Transaction.openOuter()) {
+					try (Transaction transaction = Transaction.openOuter()) {
 						if (energyStorage.extract(consumed, transaction) == consumed) {
-							var direction = getCachedState().get(HorizontalFacingBlock.FACING);
-							
-							var targetPos = pos.offset(direction);
-							
-							var targetBlockState = world.getBlockState(targetPos);
-							var targetFluidState = world.getFluidState(targetPos);
-							
-							var targetBlock = targetBlockState.getBlock();
+							Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
+
+							BlockPos targetPos = pos.offset(direction);
+
+							BlockState targetBlockState = world.getBlockState(targetPos);
+							FluidState targetFluidState = world.getFluidState(targetPos);
+
+							Block targetBlock = targetBlockState.getBlock();
 							
 							if (targetBlock instanceof FluidDrainable && targetFluidState.isStill()) {
-								var targetFluid = targetFluidState.getFluid();
+								Fluid targetFluid = targetFluidState.getFluid();
 								
-								if (fluidStorage.insert(FluidVariant.of(targetFluid), 81000, transaction) == 81000) {
+								if (fluidStorage.insert(FluidVariant.of(targetFluid), FluidConstants.BUCKET, transaction) == FluidConstants.BUCKET) {
 									((FluidDrainable)targetBlock).tryDrainFluid(world, targetPos, targetBlockState);
 									
 									world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);

@@ -30,8 +30,11 @@ import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.google.common.base.Predicates;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
@@ -39,6 +42,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -108,16 +112,16 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tie
 
 		if (world == null || world.isClient || !shouldRun())
 			return;
+
+		ItemStack inputStack = itemStorage.getStack(ITEM_INPUT_SLOT);
+		Storage<FluidVariant> inputFluidStorage = FluidStorage.ITEM.find(inputStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(ITEM_INPUT_SLOT)));
+
+		ItemStack outputStack = itemStorage.getStack(ITEM_OUTPUT_SLOT);
+		Storage<FluidVariant> outputFluidStorage = FluidStorage.ITEM.find(outputStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(ITEM_OUTPUT_SLOT)));
 		
-		var inputStack = itemStorage.getStack(ITEM_INPUT_SLOT);
-		var inputFluidStorage = FluidStorage.ITEM.find(inputStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(ITEM_INPUT_SLOT)));
-		
-		var outputStack = itemStorage.getStack(ITEM_OUTPUT_SLOT);
-		var outputFluidStorage = FluidStorage.ITEM.find(outputStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(ITEM_OUTPUT_SLOT)));
-		
-		try (var transaction = Transaction.openOuter()) {
-			StorageUtil.move(inputFluidStorage, fluidStorage.getStorage(FLUID_INPUT_SLOT), Predicates.alwaysTrue(), 81000, transaction);
-			StorageUtil.move(fluidStorage.getStorage(FLUID_OUTPUT_SLOT), outputFluidStorage, Predicates.alwaysTrue(), 81000, transaction);
+		try (Transaction transaction = Transaction.openOuter()) {
+			StorageUtil.move(inputFluidStorage, fluidStorage.getStorage(FLUID_INPUT_SLOT), Predicates.alwaysTrue(), FluidConstants.BUCKET, transaction);
+			StorageUtil.move(fluidStorage.getStorage(FLUID_OUTPUT_SLOT), outputFluidStorage, Predicates.alwaysTrue(), FluidConstants.BUCKET, transaction);
 			
 			transaction.commit();
 		}
@@ -245,7 +249,7 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tie
 		public void tick() {
 			super.tick();
 			
-			try (var transaction = Transaction.openOuter()) {
+			try (Transaction transaction = Transaction.openOuter()) {
 				fluidStorage.getStorage(FLUID_OUTPUT_SLOT).insert(fluidStorage.getStorage(FLUID_OUTPUT_SLOT).getResource(), Long.MAX_VALUE, transaction);
 				
 				transaction.commit();

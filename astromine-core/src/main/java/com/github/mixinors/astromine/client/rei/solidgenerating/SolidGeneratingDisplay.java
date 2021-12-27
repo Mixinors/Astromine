@@ -24,19 +24,21 @@
 
 package com.github.mixinors.astromine.client.rei.solidgenerating;
 
+import java.util.List;
+
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
-import com.github.mixinors.astromine.client.rei.generating.EnergyGeneratingDisplay;
-import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import me.shedaniel.rei.api.common.entry.EntryIngredient;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import com.github.mixinors.astromine.client.rei.base.output.EnergyOutputDisplay;
+
 import net.minecraft.util.Identifier;
 
-import java.util.List;
-import java.util.Optional;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.entry.EntryIngredient;
 
 @Environment(EnvType.CLIENT)
-public class SolidGeneratingDisplay extends EnergyGeneratingDisplay {
+public class SolidGeneratingDisplay extends EnergyOutputDisplay {
 	public SolidGeneratingDisplay(List<EntryIngredient> inputs, int timeRequired, long energyGeneratedPerTick, Identifier recipeId) {
 		super(inputs, timeRequired, energyGeneratedPerTick, recipeId);
 	}

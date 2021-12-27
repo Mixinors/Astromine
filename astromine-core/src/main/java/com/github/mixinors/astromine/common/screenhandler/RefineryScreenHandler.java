@@ -48,7 +48,7 @@ public class RefineryScreenHandler extends ExtendedBlockEntityScreenHandler {
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		var outputFluidBar = new FluidBarWidget();
+		FluidBarWidget outputFluidBar = new FluidBarWidget();
 		outputFluidBar.setSize( Size.of(fluidBar));
 		outputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(1));
 

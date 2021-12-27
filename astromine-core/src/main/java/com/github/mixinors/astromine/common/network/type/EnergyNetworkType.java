@@ -37,8 +37,6 @@ import com.github.mixinors.astromine.common.registry.NetworkMemberRegistry;
 import com.github.mixinors.astromine.common.util.data.position.WorldPos;
 import it.unimi.dsi.fastutil.objects.Reference2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Reference2DoubleOpenHashMap;
-import team.reborn.energy.Energy;
-import team.reborn.energy.EnergyHandler;
 
 import com.google.common.collect.Lists;
 import java.util.Arrays;

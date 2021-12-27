@@ -30,6 +30,7 @@ import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.function.Supplier;
@@ -82,7 +83,7 @@ public abstract class BufferBlockEntity extends ExtendedBlockEntity {
 		public void tick() {
 			if (itemStorage != null) {
 				for (int i = 0; i < itemStorage.getSize(); ++i) {
-					var stack = itemStorage.getStack(i);
+					ItemStack stack = itemStorage.getStack(i);
 					
 					stack.setCount(stack.getMaxCount());
 				}

@@ -33,6 +33,8 @@ import net.fabricmc.api.Environment;
 
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
@@ -106,7 +108,7 @@ public class FluidFilterWidget extends ButtonWidget
 
 		if (isWithin(x, y)) {
 			if (!stack.isEmpty()) {
-				var fluidStorage = FluidStorage.ITEM.find(stack, ContainerItemContext.ofPlayerCursor(getHandled().getHandler().getPlayer(), getHandled().getHandler()));
+				Storage<FluidVariant> fluidStorage = FluidStorage.ITEM.find(stack, ContainerItemContext.ofPlayerCursor(getHandled().getHandler().getPlayer(), getHandled().getHandler()));
 				
 				fluidSupplier = () -> StorageUtil.findStoredResource(fluidStorage, null).getFluid();
 				fluidConsumer.accept(fluidSupplier.get());

@@ -26,7 +26,9 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidVariantStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemVariantStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
@@ -114,23 +116,23 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements T
 			}
 
 			if (optionalRecipe.isPresent()) {
-				var recipe = optionalRecipe.get();
+				MeltingRecipe recipe = optionalRecipe.get();
 
 				limit = recipe.time();
 
-				var speed = Math.min(getMachineSpeed(), limit - progress);
-				var consumed = (long) (recipe.energyInput() * speed / limit);
+				double speed = Math.min(getMachineSpeed(), limit - progress);
+				long consumed = (long) (recipe.energyInput() * speed / limit);
 
-				try (var transaction = Transaction.openOuter()) {
+				try (Transaction transaction = Transaction.openOuter()) {
 					if (energyStorage.extract(consumed, transaction) == consumed) {
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
-							
-							var inputStorage = itemStorage.getStorage(ITEM_INPUT_SLOT);
+
+							SimpleItemVariantStorage inputStorage = itemStorage.getStorage(ITEM_INPUT_SLOT);
 							
 							inputStorage.extract(inputStorage.getResource(), recipe.input().getAmount(), transaction);
-							
-							var outputStorage = fluidStorage.getStorage(FLUID_OUTPUT_SLOT);
+
+							SimpleFluidVariantStorage outputStorage = fluidStorage.getStorage(FLUID_OUTPUT_SLOT);
 							
 							outputStorage.insert(recipe.output().variant(), recipe.output().amount(), transaction);
 							

@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.recipe.result;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
@@ -47,7 +48,7 @@ public record ItemResult(ItemVariant variant, int count) {
 	}
 
 	public static JsonObject toJson(ItemResult result) {
-		var jsonObject = new JsonObject();
+		JsonObject jsonObject = new JsonObject();
 
 		jsonObject.addProperty("item", Registry.ITEM.getId(result.variant.getItem()).toString());
 		jsonObject.addProperty("count", result.count);
@@ -57,19 +58,19 @@ public record ItemResult(ItemVariant variant, int count) {
 
 	public static ItemResult fromJson(JsonElement jsonElement) {
 		if (!jsonElement.isJsonObject()) {
-			var variantId = new Identifier(jsonElement.getAsString());
-			var variantItem = Registry.ITEM.get(variantId);
+			Identifier variantId = new Identifier(jsonElement.getAsString());
+			Item variantItem = Registry.ITEM.get(variantId);
 
-			var variant = ItemVariant.of(variantItem);
+			ItemVariant variant = ItemVariant.of(variantItem);
 
 			return new ItemResult(variant, 1);
 		} else {
-			var jsonObject = jsonElement.getAsJsonObject();
+			JsonObject jsonObject = jsonElement.getAsJsonObject();
 
-			var variantId = new Identifier(jsonObject.get("item").getAsString());
-			var variantItem = Registry.ITEM.get(variantId);
+			Identifier variantId = new Identifier(jsonObject.get("item").getAsString());
+			Item variantItem = Registry.ITEM.get(variantId);
 
-			var variant = ItemVariant.of(variantItem);
+			ItemVariant variant = ItemVariant.of(variantItem);
 
 			int variantCount;
 			if(jsonObject.has("count")) variantCount = jsonObject.get("count").getAsInt();
@@ -85,12 +86,12 @@ public record ItemResult(ItemVariant variant, int count) {
 	}
 
 	public static ItemResult fromPacket(PacketByteBuf buf) {
-		var variantId = new Identifier(buf.readString());
-		var variantItem = Registry.ITEM.get(variantId);
+		Identifier variantId = new Identifier(buf.readString());
+		Item variantItem = Registry.ITEM.get(variantId);
 
-		var variant = ItemVariant.of(variantItem);
+		ItemVariant variant = ItemVariant.of(variantItem);
 
-		var variantAmount = buf.readInt();
+		int variantAmount = buf.readInt();
 
 		return new ItemResult(variant, variantAmount);
 	}

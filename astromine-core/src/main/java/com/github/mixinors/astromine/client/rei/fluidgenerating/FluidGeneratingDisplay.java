@@ -24,30 +24,23 @@
 
 package com.github.mixinors.astromine.client.rei.fluidgenerating;
 
-import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
-import com.github.mixinors.astromine.client.rei.generating.EnergyGeneratingDisplay;
-import com.github.mixinors.astromine.common.recipe.FluidGeneratingRecipe;
-import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
-import dev.architectury.fluid.FluidStack;
+import java.util.Arrays;
+import java.util.Collections;
 
-import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import me.shedaniel.rei.api.common.entry.EntryIngredient;
-import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
-import me.shedaniel.rei.api.common.util.EntryIngredients;
+import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
+import com.github.mixinors.astromine.client.rei.base.output.EnergyOutputDisplay;
+import com.github.mixinors.astromine.common.recipe.FluidGeneratingRecipe;
+import dev.architectury.fluid.FluidStack;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.util.Identifier;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
+import me.shedaniel.rei.api.common.util.EntryIngredients;
 
 @Environment(EnvType.CLIENT)
-public class FluidGeneratingDisplay extends EnergyGeneratingDisplay {
+public class FluidGeneratingDisplay extends EnergyOutputDisplay {
 	public FluidGeneratingDisplay(FluidGeneratingRecipe recipe) {
 		super(
 				Collections.singletonList(EntryIngredients.of(VanillaEntryTypes.FLUID, Arrays.stream(recipe.getInput().getMatchingVariants()).map(variant -> FluidStack.create(variant.getFluid(), recipe.getInput().getAmount())).toList())),
