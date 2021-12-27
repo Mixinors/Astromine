@@ -111,7 +111,11 @@ public class FluidFilterWidget extends ButtonWidget
 				var fluidStorage = FluidStorage.ITEM.find(stack, ContainerItemContext.ofPlayerCursor(getHandled().getHandler().getPlayer(), getHandled().getHandler()));
 				
 				if (fluidStorage != null) {
-					var fluid = StorageUtil.findStoredResource(fluidStorage, null).getFluid();
+					var fluidVariant = StorageUtil.findStoredResource(fluidStorage, null);
+
+					Fluid fluid;
+					if(fluidVariant == null) fluid = Fluids.EMPTY;
+					else fluid = fluidVariant.getFluid();
 					
 					fluidSupplier = () -> fluid;
 					fluidConsumer.accept(fluidSupplier.get());
