@@ -111,7 +111,7 @@ public class FluidCollectorBlockEntity extends ExtendedBlockEntity implements En
 				isActive = false;
 			} else {
 				if (cooldown >= getMachineSpeed()) {
-					try (Transaction transaction = Transaction.openOuter()) {
+					try (var transaction = Transaction.openOuter()) {
 						if (energyStorage.extract(consumed, transaction) == consumed) {
 							var direction = getCachedState().get(HorizontalFacingBlock.FACING);
 

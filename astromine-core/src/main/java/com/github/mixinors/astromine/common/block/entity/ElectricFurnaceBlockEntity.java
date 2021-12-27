@@ -136,7 +136,7 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 					var isEqual = ItemStack.areItemsEqual(itemStorage.getStack(0), output) && ItemStack.areNbtEqual(itemStorage.getStack(0), output);
 
 					if (energyStorage.getAmount() > 500.0D / limit * speed) {
-						try (Transaction transaction = Transaction.openOuter()) {
+						try (var transaction = Transaction.openOuter()) {
 							energyStorage.extract((long) (500.0D / limit * speed), transaction);
 							
 							if ((isEmpty || isEqual) && itemStorage.getStack(0).getCount() + output.getCount() <= itemStorage.getStack(0).getMaxCount()) {

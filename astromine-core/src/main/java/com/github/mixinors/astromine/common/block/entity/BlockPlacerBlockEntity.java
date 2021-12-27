@@ -100,7 +100,7 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Energ
 				isActive = false;
 			} else {
 				if (cooldown >= getMachineSpeed()) {
-					try (Transaction transaction = Transaction.openOuter()) {
+					try (var transaction = Transaction.openOuter()) {
 						if (energyStorage.extract(consumed, transaction) == consumed) {
 							var stored = itemStorage.getStack(0);
 

@@ -115,7 +115,7 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tie
 		var outputStack = itemStorage.getStack(ITEM_OUTPUT_SLOT);
 		var outputFluidStorage = FluidStorage.ITEM.find(outputStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(ITEM_OUTPUT_SLOT)));
 		
-		try (Transaction transaction = Transaction.openOuter()) {
+		try (var transaction = Transaction.openOuter()) {
 			StorageUtil.move(inputFluidStorage, fluidStorage.getStorage(FLUID_INPUT_SLOT), Predicates.alwaysTrue(), FluidConstants.BUCKET, transaction);
 			StorageUtil.move(fluidStorage.getStorage(FLUID_OUTPUT_SLOT), outputFluidStorage, Predicates.alwaysTrue(), FluidConstants.BUCKET, transaction);
 			
@@ -245,7 +245,7 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tie
 		public void tick() {
 			super.tick();
 			
-			try (Transaction transaction = Transaction.openOuter()) {
+			try (var transaction = Transaction.openOuter()) {
 				fluidStorage.getStorage(FLUID_OUTPUT_SLOT).insert(fluidStorage.getStorage(FLUID_OUTPUT_SLOT).getResource(), Long.MAX_VALUE, transaction);
 				
 				transaction.commit();

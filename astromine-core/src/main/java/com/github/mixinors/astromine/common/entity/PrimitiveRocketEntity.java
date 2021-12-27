@@ -103,7 +103,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 
 	@Override
 	protected void consumeFuel() {
-		try (Transaction transaction = Transaction.openOuter()) {
+		try (var transaction = Transaction.openOuter()) {
 			fluidStorage.getStorage(FLUID_INPUT_SLOT_1).extract(FluidVariant.of(AMFluids.FUEL), FUEL_INGREDIENT.getAmount(), transaction);
 			fluidStorage.getStorage(FLUID_INPUT_SLOT_2).extract(FluidVariant.of(AMFluids.OXYGEN), OXYGEN_INGREDIENT.getAmount(), transaction);
 			
@@ -183,7 +183,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 			getDataTracker().set(IS_RUNNING, false);
 		}
 		
-		try (Transaction transaction = Transaction.openOuter()) {
+		try (var transaction = Transaction.openOuter()) {
 			var firstItemInputStack = itemStorage.getStack(ITEM_INPUT_SLOT_1);
 			var secondItemInputStack = itemStorage.getStack(ITEM_INPUT_SLOT_2);
 

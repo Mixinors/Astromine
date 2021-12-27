@@ -106,7 +106,7 @@ public abstract class TrituratorBlockEntity extends ExtendedBlockEntity implemen
 				var speed = Math.min(getMachineSpeed(), limit - progress);
 				var consumed = (long) (recipe.energyInput() * speed / limit);
 				
-				try (Transaction transaction = Transaction.openOuter()) {
+				try (var transaction = Transaction.openOuter()) {
 					if (energyStorage.extract(consumed, transaction) == consumed) {
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();

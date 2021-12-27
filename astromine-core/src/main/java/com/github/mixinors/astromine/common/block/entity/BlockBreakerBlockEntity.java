@@ -93,7 +93,7 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Ener
 				isActive = false;
 			} else {
 				if (cooldown >= getMachineSpeed()) {
-					try (Transaction transaction = Transaction.openOuter()) {
+					try (var transaction = Transaction.openOuter()) {
 						if (energyStorage.extract(consumed, transaction) == consumed) {
 							var stored = itemStorage.getStack(0);
 

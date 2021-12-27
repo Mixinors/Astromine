@@ -81,7 +81,7 @@ public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implement
 		var outputStack = itemStorage.getStack(OUTPUT_SLOT);
 		var outputEnergyStorage = EnergyStorage.ITEM.find(outputStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(OUTPUT_SLOT)));
 		
-		try (Transaction transaction = Transaction.openOuter()) {
+		try (var transaction = Transaction.openOuter()) {
 			EnergyStorageUtil.move(inputEnergyStorage, energyStorage, (long) (1024 * getMachineSpeed()), transaction);
 			EnergyStorageUtil.move(energyStorage, outputEnergyStorage, (long) (1024 * getMachineSpeed()), transaction);
 			

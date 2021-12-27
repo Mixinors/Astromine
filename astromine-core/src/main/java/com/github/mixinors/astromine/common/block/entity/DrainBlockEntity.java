@@ -62,7 +62,7 @@ public class DrainBlockEntity extends ExtendedBlockEntity implements FluidSizePr
 		if (world == null)
 			return;
 
-		try (Transaction transaction = Transaction.openOuter()) {
+		try (var transaction = Transaction.openOuter()) {
 			fluidStorage.extract(fluidStorage.getStorage(0).getResource(), Long.MAX_VALUE, transaction);
 			
 			transaction.commit();

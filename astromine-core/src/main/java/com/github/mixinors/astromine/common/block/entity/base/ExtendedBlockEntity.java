@@ -117,7 +117,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 			return;
 		}
 		
-		try (Transaction transaction = Transaction.openOuter()) {
+		try (var transaction = Transaction.openOuter()) {
 			for (var direction : Direction.values()) {
 				var theirPos = getPos().offset(direction);
 

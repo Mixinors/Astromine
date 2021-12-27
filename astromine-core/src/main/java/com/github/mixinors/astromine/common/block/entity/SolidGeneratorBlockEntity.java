@@ -85,7 +85,7 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 			return;
 
 		if (itemStorage != null && energyStorage != null) {
-			try (Transaction transaction = Transaction.openOuter()) {
+			try (var transaction = Transaction.openOuter()) {
 				if (available > 0) {
 					progress = limit - available;
 

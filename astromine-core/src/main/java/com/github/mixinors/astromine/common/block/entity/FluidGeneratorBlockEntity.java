@@ -106,7 +106,7 @@ public abstract class FluidGeneratorBlockEntity extends ExtendedBlockEntity impl
 				var speed = Math.min(getMachineSpeed(), limit - progress);
 				var generated = (long) (recipe.energyOutput() * speed / limit);
 				
-				try (Transaction transaction = Transaction.openOuter()) {
+				try (var transaction = Transaction.openOuter()) {
 					if (energyStorage.insert(generated, transaction) == generated) {
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
