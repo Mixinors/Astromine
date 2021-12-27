@@ -176,7 +176,7 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	
 	@Override
 	public Iterator<StorageView<FluidVariant>> iterator(TransactionContext transaction) {
-		return (Iterator) storages;
+		return (Iterator) storages.iterator();
 	}
 	
 	@Override
