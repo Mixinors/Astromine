@@ -93,6 +93,8 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tie
 			
 			return FluidStorage.ITEM.getProvider(variant.getItem()) != null;
 		}).insertSlots(ITEM_INSERT_SLOTS).extractSlots(ITEM_EXTRACT_SLOTS);
+		
+		fluidStorage.getStorage(FLUID_INPUT_SLOT).setCapacity(getFluidSize());
 	}
 
 	private Fluid filter = Fluids.EMPTY;

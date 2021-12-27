@@ -143,7 +143,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 				EnergyStorage ourEnergyStorage = EnergyStorage.SIDED.find(world, pos, direction);
 				
 				if (ourEnergyStorage != null && theirEnergyStorage != null && ourEnergyStorage.getAmount() > theirEnergyStorage.getAmount()) {
-					EnergyStorageUtil.move(ourEnergyStorage, theirEnergyStorage, 1024, transaction);
+					EnergyStorageUtil.move(ourEnergyStorage, theirEnergyStorage, ourEnergyStorage.getAmount() - theirEnergyStorage.getAmount(), transaction);
 				}
 			}
 			
