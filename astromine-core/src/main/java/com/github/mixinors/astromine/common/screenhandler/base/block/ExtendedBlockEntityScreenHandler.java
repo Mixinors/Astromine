@@ -196,6 +196,8 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 			
 			fluidBar.setSize(Size.of(24.0F, 48.0F, 0.0F));
 			fluidBar.setStorage(blockEntity.getFluidStorage().getStorage(0));
+			
+			mainTab.add(fluidBar);
 		}
 	}
 }

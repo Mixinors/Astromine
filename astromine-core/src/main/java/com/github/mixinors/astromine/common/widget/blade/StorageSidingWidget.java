@@ -134,7 +134,7 @@ public class StorageSidingWidget extends Widget {
 				sidings = blockEntity.getFluidStorage().getSidings();
 			}
 
-			StorageSiding next;
+			var next = (StorageSiding) null;
 			
 			if (button == GLFW.GLFW_MOUSE_BUTTON_1) {
 				next = sidings[direction.ordinal()].next();
