@@ -38,6 +38,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
@@ -155,7 +156,20 @@ public class StorageSidingWidget extends Widget {
 	public @NotNull List<Text> getTooltip() {
 		var offset = MirrorUtils.rotate(direction, rotation);
 		
-		return Arrays.asList(new TranslatableText("text.astromine.siding." + offset.getName()), new TranslatableText("text.astromine.siding." + getSideName()));
+		var name = switch (siding) {
+			case INSERT -> new TranslatableText("text.astromine.siding.insert").styled(style -> style.withColor(0x0078FF));
+			case EXTRACT -> new TranslatableText("text.astromine.siding.insert").styled(style -> style.withColor(0xFF6100));
+			case INSERT_EXTRACT ->
+				new TranslatableText("text.astromine.siding.insert").styled(style -> style.withColor(0x0078FF)).append(
+						new LiteralText(" & ").styled(style -> style.withColor(0x9800FF))
+				).append(
+						new TranslatableText("text.astromine.siding").styled(style -> style.withColor(0xFF6100))
+				);
+			
+			case NONE -> new TranslatableText("text.astromine.siding.none").styled(style -> style.withColor(0x909090));
+		};
+		
+		return Arrays.asList(new TranslatableText("text.astromine.siding." + offset.getName()), name);
 	}
 
 	@Environment(EnvType.CLIENT)
