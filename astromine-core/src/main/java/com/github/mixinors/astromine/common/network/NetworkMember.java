@@ -29,22 +29,23 @@ import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.google.common.collect.Sets;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Set;
 
 /**
  * A member of a network.
  */
 public interface NetworkMember {
-	Collection<NetworkMemberType> REQUESTER_PROVIDER = Sets.newHashSet(NetworkMemberType.REQUESTER, NetworkMemberType.PROVIDER);
-
-	Collection<NetworkMemberType> REQUESTER = Collections.singleton(NetworkMemberType.REQUESTER);
-
-	Collection<NetworkMemberType> PROVIDER = Collections.singleton(NetworkMemberType.PROVIDER);
-
-	Collection<NetworkMemberType> BUFFER = Collections.singleton(NetworkMemberType.BUFFER);
-
-	Collection<NetworkMemberType> NODE = Collections.singleton(NetworkMemberType.NODE);
-
-	Collection<NetworkMemberType> NONE = Collections.emptySet();
+	Set<NetworkMemberType> REQUESTER_PROVIDER = Sets.newHashSet(NetworkMemberType.REQUESTER, NetworkMemberType.PROVIDER);
+	
+	Set<NetworkMemberType> REQUESTER = Collections.singleton(NetworkMemberType.REQUESTER);
+	
+	Set<NetworkMemberType> PROVIDER = Collections.singleton(NetworkMemberType.PROVIDER);
+	
+	Set<NetworkMemberType> BUFFER = Collections.singleton(NetworkMemberType.BUFFER);
+	
+	Set<NetworkMemberType> NODE = Collections.singleton(NetworkMemberType.NODE);
+	
+	Set<NetworkMemberType> NONE = Collections.emptySet();
 
 	/** Returns the {@link NetworkMemberType}s of this member
 	 * for the given {@link NetworkType}. */

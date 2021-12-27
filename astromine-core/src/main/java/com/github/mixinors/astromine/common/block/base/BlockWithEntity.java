@@ -207,10 +207,10 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 	/** Override behavior to write {@link BlockEntity} contents to {@link ItemStack} {@link NbtCompound}. */
 	@Override
 	public List<ItemStack> getDroppedStacks(BlockState state, LootContext.Builder builder) {
-		List<ItemStack> stacks = super.getDroppedStacks(state, builder);
+		var stacks = super.getDroppedStacks(state, builder);
 		var blockEntity = builder.getNullable(LootContextParameters.BLOCK_ENTITY);
 		if (blockEntity != null && saveTagToDroppedItem()) {
-			for (ItemStack drop : stacks) {
+			for (var drop : stacks) {
 				if (drop.getItem() == asItem()) {
 					var tag = blockEntity.createNbt();
 					tag.remove("x");

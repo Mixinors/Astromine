@@ -145,7 +145,7 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 	}
 
 	public void populateNoise(StructureAccessor accessor, Chunk chunk) {
-		BlockPos.Mutable mutable = new BlockPos.Mutable();
+		var mutable = new BlockPos.Mutable();
 		var x1 = chunk.getPos().getStartX();
 		var z1 = chunk.getPos().getStartZ();
 		var y1 = 0;
@@ -186,7 +186,7 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 
 	@Override
 	public VerticalBlockSample getColumnSample(int x, int z, HeightLimitView world) {
-		BlockState[] states = new BlockState[256];
+		var states = new BlockState[256];
 		Arrays.fill(states, Blocks.AIR.getDefaultState());
 		return new VerticalBlockSample(world.getBottomY(), states);
 	}

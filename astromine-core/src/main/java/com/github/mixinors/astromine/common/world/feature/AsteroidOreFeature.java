@@ -63,7 +63,7 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 		var config = context.getConfig();
 		featurePosition = new BlockPos(featurePosition.getX(), random.nextInt(256), featurePosition.getZ());
 
-		WeightedList<Block> ores = new WeightedList<>();
+		var ores = new WeightedList<Block>();
 
 		chances(random, ores);
 
@@ -99,7 +99,7 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 		var vein = Shapes.ellipsoid(xSize, ySize, zSize).applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true))).applyLayer(TranslateLayer.of(Position.of(
 				featurePosition)));
 
-		for (Position streamPosition : vein.stream().collect(Collectors.toSet())) {
+		for (var streamPosition : vein.stream().collect(Collectors.toSet())) {
 			var orePosition = streamPosition.toBlockPos();
 
 			if (world.getBlockState(orePosition).getBlock() == AMBlocks.ASTEROID_STONE.get()) {

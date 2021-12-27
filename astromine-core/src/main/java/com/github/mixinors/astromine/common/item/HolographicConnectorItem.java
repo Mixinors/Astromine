@@ -182,7 +182,7 @@ public class HolographicConnectorItem extends Item {
 	}
 
 	private Pair<RegistryKey<World>, BlockPos> readPos(NbtCompound tag) {
-		RegistryKey<World> registryKey = RegistryKey.of(Registry.WORLD_KEY, Identifier.tryParse(tag.getString("World")));
+		var registryKey = RegistryKey.of(Registry.WORLD_KEY, Identifier.tryParse(tag.getString("World")));
 		var x = tag.getInt("X");
 		var y = tag.getInt("Y");
 		var z = tag.getInt("Z");

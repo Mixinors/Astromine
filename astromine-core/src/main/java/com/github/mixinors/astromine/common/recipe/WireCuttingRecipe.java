@@ -115,7 +115,7 @@ public class WireCuttingRecipe extends SpecialCraftingRecipe {
 
 	@Override
 	public DefaultedList<ItemStack> getRemainder(CraftingInventory inv) {
-		DefaultedList<ItemStack> remainingStacks = DefaultedList.ofSize(inv.size(), ItemStack.EMPTY);
+		var remainingStacks = DefaultedList.ofSize(inv.size(), ItemStack.EMPTY);
 
 		for (var i = 0; i < remainingStacks.size(); ++i) {
 			var itemStack = inv.getStack(i);
@@ -144,7 +144,7 @@ public class WireCuttingRecipe extends SpecialCraftingRecipe {
 
 		@Override
 		public WireCuttingRecipe read(Identifier identifier, JsonObject object) {
-			WireCuttingRecipe.Format format = new Gson().fromJson(object, WireCuttingRecipe.Format.class);
+			var format = new Gson().fromJson(object, WireCuttingRecipe.Format.class);
 
 			return new WireCuttingRecipe(identifier,
 				IngredientUtils.fromIngredientJson(format.input),

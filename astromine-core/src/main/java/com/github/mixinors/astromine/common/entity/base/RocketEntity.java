@@ -147,9 +147,9 @@ public abstract class RocketEntity extends ExtendedEntity {
 
 		this.getDroppedStacks().forEach(stack -> ItemScatterer.spawn(world, getX(), getY(), getZ(), stack.copy()));
 
-		Iterable<Entity> passengers = this.getPassengersDeep();
+		var passengers = this.getPassengersDeep();
 
-		for (Entity passenger : passengers) {
+		for (var passenger : passengers) {
 			if (passenger instanceof ServerPlayerEntity) {
 				AMCriteria.DESTROY_ROCKET.trigger((ServerPlayerEntity) passenger, intentional);
 			}
@@ -161,7 +161,7 @@ public abstract class RocketEntity extends ExtendedEntity {
 	}
 
 	private void tryExplode() {
-		float strength = fluidStorage.getStorage(FLUID_INPUT_SLOT_1).getAmount() * 0.25F + fluidStorage.getStorage(FLUID_INPUT_SLOT_2).getAmount() * 0.25F;
+		var strength = fluidStorage.getStorage(FLUID_INPUT_SLOT_1).getAmount() * 0.25F + fluidStorage.getStorage(FLUID_INPUT_SLOT_2).getAmount() * 0.25F;
 
 		world.createExplosion(this, getX(), getY(), getZ(), min(strength, 32.0F) + 3.0F, Explosion.DestructionType.BREAK);
 	}

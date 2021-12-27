@@ -268,9 +268,9 @@ public abstract class ExtendedFluid extends FlowableFluid {
 			still.still = still;
 			this.still = still;
 
-			RegistrySupplier<Block> block = AMBlocks.register(name, () -> new FluidBlock(still, AbstractBlock.Settings.of(INDUSTRIAL_FLUID_MATERIAL).noCollision().strength(100.0F).dropsNothing()));
+			var block = (RegistrySupplier) AMBlocks.register(name, () -> new FluidBlock(still, AbstractBlock.Settings.of(INDUSTRIAL_FLUID_MATERIAL).noCollision().strength(100.0F).dropsNothing()));
 
-			RegistrySupplier<Item> bucket = AMItems.register(name + "_bucket", () -> new BucketItem(still, (new Item.Settings()).recipeRemainder(Items.BUCKET).maxCount(1).group(group)));
+			var bucket = (RegistrySupplier) AMItems.register(name + "_bucket", () -> new BucketItem(still, (new Item.Settings()).recipeRemainder(Items.BUCKET).maxCount(1).group(group)));
 
 			flowing.block = block;
 			still.block = block;
@@ -280,8 +280,8 @@ public abstract class ExtendedFluid extends FlowableFluid {
 			still.bucket = bucket;
 			this.bucket = bucket;
 
-			Map<Item, CauldronBehavior> cauldronBehaviorMap = CauldronBehavior.createMap();
-			RegistrySupplier<Block> cauldron = AMBlocks.register(name + "_cauldron", () -> new FullCauldronBlock(BlockProperties.copy(Blocks.CAULDRON), cauldronBehaviorMap));
+			var cauldronBehaviorMap = CauldronBehavior.createMap();
+			var cauldron = (RegistrySupplier) AMBlocks.register(name + "_cauldron", () -> new FullCauldronBlock(BlockProperties.copy(Blocks.CAULDRON), cauldronBehaviorMap));
 
 			flowing.cauldronBehaviorMap = cauldronBehaviorMap;
 			still.cauldronBehaviorMap = cauldronBehaviorMap;

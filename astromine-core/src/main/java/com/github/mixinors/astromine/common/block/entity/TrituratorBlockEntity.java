@@ -99,23 +99,23 @@ public abstract class TrituratorBlockEntity extends ExtendedBlockEntity implemen
 			}
 
 			if (optionalRecipe.isPresent()) {
-				TrituratingRecipe recipe = optionalRecipe.get();
+				var recipe = optionalRecipe.get();
 
 				limit = recipe.time();
 
-				double speed = Math.min(getMachineSpeed(), limit - progress);
-				long consumed = (long) (recipe.energyInput() * speed / limit);
+				var speed = Math.min(getMachineSpeed(), limit - progress);
+				var consumed = (long) (recipe.energyInput() * speed / limit);
 				
 				try (Transaction transaction = Transaction.openOuter()) {
 					if (energyStorage.extract(consumed, transaction) == consumed) {
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
 
-							SimpleItemVariantStorage inputStorage = itemStorage.getStorage(INPUT_SLOT);
+							var inputStorage = itemStorage.getStorage(INPUT_SLOT);
 							
 							inputStorage.extract(inputStorage.getResource(), recipe.input().getAmount(), transaction);
 
-							SimpleItemVariantStorage outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
+							var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
 							
 							outputStorage.insert(recipe.output().variant(), recipe.output().count(), transaction);
 							

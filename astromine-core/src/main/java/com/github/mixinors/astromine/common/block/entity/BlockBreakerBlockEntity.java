@@ -85,7 +85,7 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Ener
 			return;
 
 		if (itemStorage != null && energyStorage != null) {
-			long consumed = getEnergyConsumed();
+			var consumed = getEnergyConsumed();
 			
 			if (energyStorage.getAmount() < consumed) {
 				cooldown = 0L;
@@ -95,26 +95,26 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Ener
 				if (cooldown >= getMachineSpeed()) {
 					try (Transaction transaction = Transaction.openOuter()) {
 						if (energyStorage.extract(consumed, transaction) == consumed) {
-							ItemStack stored = itemStorage.getStack(0);
+							var stored = itemStorage.getStack(0);
 
-							Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
+							var direction = getCachedState().get(HorizontalFacingBlock.FACING);
 
-							BlockPos targetPos = getPos().offset(direction);
+							var targetPos = getPos().offset(direction);
 
-							BlockState targetState = world.getBlockState(targetPos);
+							var targetState = world.getBlockState(targetPos);
 
 							if (!targetState.isAir()) {
 								cooldown = 0;
 								
 								isActive = true;
 
-								BlockEntity targetEntity = world.getBlockEntity(targetPos);
+								var targetEntity = world.getBlockEntity(targetPos);
 
-								List<ItemStack> drops = Block.getDroppedStacks(targetState, (ServerWorld) world, targetPos, targetEntity);
+								var drops = Block.getDroppedStacks(targetState, (ServerWorld) world, targetPos, targetEntity);
 
-								ItemStack storedCopy = stored.copy();
+								var storedCopy = stored.copy();
 
-								Optional<ItemStack> matching = drops.stream().filter(stack -> storedCopy.isEmpty() || (StackUtils.areItemsAndTagsEqual(stack, storedCopy) && storedCopy.getMaxCount() - storedCopy.getCount() > stack.getCount())).findFirst();
+								var matching = drops.stream().filter(stack -> storedCopy.isEmpty() || (StackUtils.areItemsAndTagsEqual(stack, storedCopy) && storedCopy.getMaxCount() - storedCopy.getCount() > stack.getCount())).findFirst();
 								
 								matching.ifPresent(match -> {
 									Pair<ItemStack, ItemStack> pair = StackUtils.merge(match, stored);

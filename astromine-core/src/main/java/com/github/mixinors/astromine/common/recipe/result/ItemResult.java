@@ -48,7 +48,7 @@ public record ItemResult(ItemVariant variant, int count) {
 	}
 
 	public static JsonObject toJson(ItemResult result) {
-		JsonObject jsonObject = new JsonObject();
+		var jsonObject = new JsonObject();
 
 		jsonObject.addProperty("item", Registry.ITEM.getId(result.variant.getItem()).toString());
 		jsonObject.addProperty("count", result.count);
@@ -58,19 +58,19 @@ public record ItemResult(ItemVariant variant, int count) {
 
 	public static ItemResult fromJson(JsonElement jsonElement) {
 		if (!jsonElement.isJsonObject()) {
-			Identifier variantId = new Identifier(jsonElement.getAsString());
-			Item variantItem = Registry.ITEM.get(variantId);
+			var variantId = new Identifier(jsonElement.getAsString());
+			var variantItem = Registry.ITEM.get(variantId);
 
-			ItemVariant variant = ItemVariant.of(variantItem);
+			var variant = ItemVariant.of(variantItem);
 
 			return new ItemResult(variant, 1);
 		} else {
-			JsonObject jsonObject = jsonElement.getAsJsonObject();
+			var jsonObject = jsonElement.getAsJsonObject();
 
-			Identifier variantId = new Identifier(jsonObject.get("item").getAsString());
-			Item variantItem = Registry.ITEM.get(variantId);
+			var variantId = new Identifier(jsonObject.get("item").getAsString());
+			var variantItem = Registry.ITEM.get(variantId);
 
-			ItemVariant variant = ItemVariant.of(variantItem);
+			var variant = ItemVariant.of(variantItem);
 
 			var variantCount = 1;
 			
@@ -88,12 +88,12 @@ public record ItemResult(ItemVariant variant, int count) {
 	}
 
 	public static ItemResult fromPacket(PacketByteBuf buf) {
-		Identifier variantId = new Identifier(buf.readString());
-		Item variantItem = Registry.ITEM.get(variantId);
+		var variantId = new Identifier(buf.readString());
+		var variantItem = Registry.ITEM.get(variantId);
 
-		ItemVariant variant = ItemVariant.of(variantItem);
+		var variant = ItemVariant.of(variantItem);
 
-		int variantAmount = buf.readInt();
+		var variantAmount = buf.readInt();
 
 		return new ItemResult(variant, variantAmount);
 	}

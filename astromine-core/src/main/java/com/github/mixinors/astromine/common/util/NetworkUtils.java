@@ -73,7 +73,7 @@ public class NetworkUtils {
 
 			tracedPositions.add(initialPosition.getBlockPos().asLong());
 
-			ArrayDeque<BlockPos> positionsToTrace = new ArrayDeque<>(Collections.singleton(initialPosition.getBlockPos()));
+			var positionsToTrace = new ArrayDeque<>(Collections.singleton(initialPosition.getBlockPos()));
 
 			var instance = new NetworkInstance(world, type);
 
@@ -86,7 +86,7 @@ public class NetworkUtils {
 
 				var initialObject = WorldPos.of(world, position);
 
-				for (Direction direction : Direction.values()) {
+				for (var direction : Direction.values()) {
 					var offsetPosition = position.offset(direction);
 					var offsetPositionLong = offsetPosition.asLong();
 
@@ -152,11 +152,11 @@ public class NetworkUtils {
 		}
 
 		public static Set<Direction> of(NetworkType type, BlockPos initialPosition, World world) {
-			Set<Direction> directions = EnumSet.noneOf(Direction.class);
+			var directions = EnumSet.noneOf(Direction.class);
 
 			var initialObject = WorldPos.of(world, initialPosition);
 
-			for (Direction direction : Direction.values()) {
+			for (var direction : Direction.values()) {
 				var pos = WorldPos.of(world, initialPosition.offset(direction));
 
 				var offsetMember = NetworkMemberRegistry.get(pos, direction.getOpposite());
@@ -176,7 +176,7 @@ public class NetworkUtils {
 		public static BlockState toBlockState(Set<Direction> directions, BlockState state) {
 			if (!(state.getBlock() instanceof CableBlock))
 				return state;
-			for (Direction direction : Direction.values()) {
+			for (var direction : Direction.values()) {
 				state = state.with(CableBlock.PROPERTIES.get(direction), directions.contains(direction));
 			}
 			return state;
@@ -187,7 +187,7 @@ public class NetworkUtils {
 		 * as {@link CableBlock} shapes.
 		 */
 		private static VoxelShape toVoxelShape(int directions, VoxelShape shape) {
-			for (Direction direction : Direction.values()) {
+			for (var direction : Direction.values()) {
 				if ((directions & (0x1 << direction.getId())) != 0) {
 					shape = VoxelShapes.union(shape, CableBlock.SHAPE_MAP.get(CableBlock.PROPERTIES.get(direction)));
 				}
@@ -202,7 +202,7 @@ public class NetworkUtils {
 		public static VoxelShape getVoxelShape(Set<Direction> directions) {
 			var i = 0;
 
-			for (Direction direction : directions) {
+			for (var direction : directions) {
 				i |= 1 << direction.getId();
 			}
 

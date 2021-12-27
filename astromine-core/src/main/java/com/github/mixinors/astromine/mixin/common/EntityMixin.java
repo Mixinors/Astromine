@@ -50,6 +50,8 @@ import com.github.mixinors.astromine.registry.common.AMTags;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 
 import com.google.common.collect.Lists;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Mixin(Entity.class)
@@ -106,11 +108,11 @@ public abstract class EntityMixin implements GravityEntity, EntityAccessor {
 			var topPortal = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey());
 
 			if (astromine_lastY <= bottomPortal && bottomPortal != Integer.MIN_VALUE) {
-				RegistryKey<World> worldKey = RegistryKey.of(Registry.WORLD_KEY, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.BOTTOM, entity.world.getRegistryKey()).getValue());
+				var worldKey = RegistryKey.of(Registry.WORLD_KEY, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.BOTTOM, entity.world.getRegistryKey()).getValue());
 
 				astromine_teleport(entity, worldKey, DimensionLayerRegistry.Type.BOTTOM);
 			} else if (astromine_lastY >= topPortal && topPortal != Integer.MIN_VALUE) {
-				RegistryKey<World> worldKey = RegistryKey.of(Registry.WORLD_KEY, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey()).getValue());
+				var worldKey = RegistryKey.of(Registry.WORLD_KEY, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey()).getValue());
 
 				astromine_teleport(entity, worldKey, DimensionLayerRegistry.Type.TOP);
 			}
@@ -127,21 +129,21 @@ public abstract class EntityMixin implements GravityEntity, EntityAccessor {
 	void astromine_teleport(Entity entity, RegistryKey<World> destinationKey, DimensionLayerRegistry.Type type) {
 		var serverWorld = entity.world.getServer().getWorld(destinationKey);
 
-		List<Entity> existingPassengers = Lists.newArrayList(entity.getPassengerList());
+		var existingPassengers = new ArrayList<>(entity.getPassengerList());
 
-		List<DataTracker.Entry<?>> entries = Lists.newArrayList();
-		for (DataTracker.Entry<?> entry : entity.getDataTracker().getAllEntries()) {
+		var entries = new ArrayList<DataTracker.Entry>();
+		for (var entry : entity.getDataTracker().getAllEntries()) {
 			entries.add(entry.copy());
 		}
 
 		astromine_nextTeleportTarget = DimensionLayerRegistry.INSTANCE.getPlacer(type, entity.world.getRegistryKey()).placeEntity(entity);
 		var newEntity = entity.moveToWorld(serverWorld);
 
-		for (DataTracker.Entry entry : entries) {
+		for (var entry : entries) {
 			newEntity.getDataTracker().set(entry.getData(), entry.get());
 		}
 
-		for (Entity existingEntity : existingPassengers) {
+		for (var existingEntity : existingPassengers) {
 			((EntityMixin) (Object) existingEntity).astromine_lastVehicle = newEntity;
 		}
 	}

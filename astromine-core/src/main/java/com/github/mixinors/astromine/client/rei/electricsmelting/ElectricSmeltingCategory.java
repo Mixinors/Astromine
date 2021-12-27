@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.client.rei.electricsmelting;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -56,7 +57,7 @@ public class ElectricSmeltingCategory extends DefaultCookingCategory {
 		var startPoint = new Point(bounds.getCenterX() - 41, bounds.getCenterY() - 27);
 		var cookingTime = display.getCookingTime();
 		var df = new DecimalFormat("###.##");
-		List<Widget> widgets = Lists.newArrayList();
+		var widgets = new ArrayList<Widget>();
 		widgets.add(Widgets.createRecipeBase(bounds));
 		widgets.add(Widgets.createResultSlotBackground(new Point(startPoint.x + 61, startPoint.y + 19)));
 		if (display instanceof ElectricSmeltingDisplay electricSmeltingDisplay)

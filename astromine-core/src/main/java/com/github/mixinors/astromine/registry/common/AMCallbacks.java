@@ -49,11 +49,11 @@ public class AMCallbacks {
 			// 	var centerState = world.getBlockState(centerPos);
 			// 	var centerVolume = atmosphereComponent.get(centerPos);
 //
-			// 	List<Direction> directions = Lists.newArrayList(Direction.values());
+			// 	var directions = Lists.newArrayList(Direction.values());
 //
 			// 	Collections.shuffle(directions);
 //
-			// 	for (Direction direction : directions) {
+			// 	for (var direction : directions) {
 			// 		var sidePos = pos.offset(direction);
 			// 		var sideState = world.getBlockState(sidePos);
 //
@@ -81,7 +81,7 @@ public class AMCallbacks {
 		// });
 
 		TickEvent.SERVER_PRE.register(( server) -> {
-			for (PlayerEntity playerEntity : server.getPlayerManager().getPlayerList()) {
+			for (var playerEntity : server.getPlayerManager().getPlayerList()) {
 				if (playerEntity.currentScreenHandler instanceof ExtendedBlockEntityScreenHandler screenHandler) {
 
 					if (screenHandler.getBlockEntity() != null) {

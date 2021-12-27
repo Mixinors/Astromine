@@ -259,7 +259,7 @@ public class AMBlocks {
 	 * @return Block instance registered
 	 */
 	public static <T extends Block> RegistrySupplier<T> register(String name, Supplier<T> block, Function<T, BlockItem> item) {
-		RegistrySupplier<T> b = register(AMCommon.id(name), block);
+		var b = register(AMCommon.id(name), block);
 		if (item != null) {
 			AMCommon.registry(Registry.ITEM_KEY).register(b.getId(), () -> {
 				var t = b.get();

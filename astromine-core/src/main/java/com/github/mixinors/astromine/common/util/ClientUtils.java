@@ -81,7 +81,7 @@ public class ClientUtils {
 		var flowingSpriteIdentifier = new Identifier("block/water_flow");
 		var listenerIdentifier = AMCommon.id(name + "_reload_listener");
 
-		Sprite[] fluidSprites = {null, null};
+		var fluidSprites = new Sprite[] { null, null };
 
 		ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> {
 			registry.register(stillSpriteIdentifier);

@@ -104,7 +104,7 @@ public class MeteorGenerator extends ShiftableStructurePiece {
 
 		var metiteOre = Registry.BLOCK.getOrEmpty(AMCommon.id("meteor_metite_ore")).orElse(null);
 		if (metiteOre != null) {
-			for (Position streamPosition : vein.stream().collect(Collectors.toSet())) {
+			for (var streamPosition : vein.stream().collect(Collectors.toSet())) {
 				var orePosition = streamPosition.toBlockPos();
 
 				if (world.getBlockState(orePosition).getBlock() == AMBlocks.METEOR_STONE.get()) {
@@ -118,7 +118,7 @@ public class MeteorGenerator extends ShiftableStructurePiece {
 
 	private BlockPos emptySphere(StructureWorldAccess world, BlockPos originPos, int radius, GroundManipulator bottom, GroundManipulator underneath) {
 		var hasWater = false;
-		List<BlockPos> placedPositions = new ArrayList<>();
+		var placedPositions = new ArrayList<BlockPos>();
 
 		for (var x = -radius; x <= radius; x++) {
 			for (var z = -radius; z <= radius; z++) {
@@ -140,14 +140,14 @@ public class MeteorGenerator extends ShiftableStructurePiece {
 			}
 		}
 
-		for (BlockPos placedPosition : placedPositions) {
+		for (var placedPosition : placedPositions) {
 			world.setBlockState(placedPosition, hasWater && placedPosition.getY() < world.getSeaLevel() ? Fluids.WATER.getStill().getDefaultState().getBlockState() : Blocks.AIR.getDefaultState(), 3);
 		}
 
-		List<BlockPos> bottomPositions = new ArrayList<>();
-		List<BlockPos> underneathPositions = new ArrayList<>();
+		var bottomPositions = new ArrayList<BlockPos>();
+		var underneathPositions = new ArrayList<BlockPos>();
 
-		for (BlockPos pos : placedPositions) {
+		for (var pos : placedPositions) {
 			// store bottom block
 			if (world.getBlockState(pos).isAir() && world.getBlockState(pos.down()).isSolidBlock(world, pos)) {
 				bottomPositions.add(pos);
@@ -155,11 +155,11 @@ public class MeteorGenerator extends ShiftableStructurePiece {
 			}
 		}
 
-		for (BlockPos pos : bottomPositions) {
+		for (var pos : bottomPositions) {
 			world.setBlockState(pos, hasWater && pos.getY() < world.getSeaLevel() ? Fluids.WATER.getStill().getDefaultState().getBlockState() : world.getRandom().nextInt(10) == 0 ? Blocks.FIRE.getDefaultState() : Blocks.AIR.getDefaultState(), 3);
 		}
 
-		for (BlockPos pos : underneathPositions) {
+		for (var pos : underneathPositions) {
 			world.setBlockState(pos, underneath.manipulate(world.getBlockState(pos)), 3);
 		}
 

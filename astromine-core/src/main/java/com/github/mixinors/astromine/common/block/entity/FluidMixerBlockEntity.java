@@ -105,20 +105,20 @@ public abstract class FluidMixerBlockEntity extends ExtendedBlockEntity implemen
 			}
 
 			if (optionalRecipe.isPresent()) {
-				FluidMixingRecipe recipe = optionalRecipe.get();
+				var recipe = optionalRecipe.get();
 
 				limit = recipe.time();
 
-				double speed = Math.min(getMachineSpeed(), limit - progress);
-				long consumed = (long) (recipe.energyInput() * speed / limit);
+				var speed = Math.min(getMachineSpeed(), limit - progress);
+				var consumed = (long) (recipe.energyInput() * speed / limit);
 				
 				try (Transaction transaction = Transaction.openOuter()) {
 					if (energyStorage.extract(consumed, transaction) == consumed) {
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
 
-							SimpleFluidVariantStorage firstInputStorage = fluidStorage.getStorage(INPUT_SLOT_1);
-							SimpleFluidVariantStorage secondInputStorage = fluidStorage.getStorage(INPUT_SLOT_2);
+							var firstInputStorage = fluidStorage.getStorage(INPUT_SLOT_1);
+							var secondInputStorage = fluidStorage.getStorage(INPUT_SLOT_2);
 							
 							if (recipe.firstInput().test(firstInputStorage) && recipe.secondInput().test(secondInputStorage)) {
 								firstInputStorage.extract(firstInputStorage.getResource(), recipe.firstInput().getAmount(), transaction);
@@ -128,7 +128,7 @@ public abstract class FluidMixerBlockEntity extends ExtendedBlockEntity implemen
 								secondInputStorage.extract(secondInputStorage.getResource(), recipe.firstInput().getAmount(), transaction);
 							}
 
-							SimpleFluidVariantStorage outputStorage = fluidStorage.getStorage(OUTPUT_SLOT);
+							var outputStorage = fluidStorage.getStorage(OUTPUT_SLOT);
 							
 							outputStorage.insert(recipe.output().variant(), recipe.output().amount(), transaction);
 							

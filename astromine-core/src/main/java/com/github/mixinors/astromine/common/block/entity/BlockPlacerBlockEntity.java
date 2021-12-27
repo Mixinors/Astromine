@@ -92,7 +92,7 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Energ
 			return;
 
 		if (itemStorage != null && itemStorage != null) {
-			long consumed = getEnergyConsumed();
+			var consumed = getEnergyConsumed();
 			
 			if (energyStorage.getAmount() < consumed) {
 				cooldown = 0L;
@@ -102,22 +102,22 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Energ
 				if (cooldown >= getMachineSpeed()) {
 					try (Transaction transaction = Transaction.openOuter()) {
 						if (energyStorage.extract(consumed, transaction) == consumed) {
-							ItemStack stored = itemStorage.getStack(0);
+							var stored = itemStorage.getStack(0);
 
-							Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
+							var direction = getCachedState().get(HorizontalFacingBlock.FACING);
 
-							BlockPos targetPos = pos.offset(direction);
+							var targetPos = pos.offset(direction);
 
-							BlockState targetState = world.getBlockState(targetPos);
+							var targetState = world.getBlockState(targetPos);
 							
 							if (stored.getItem() instanceof BlockItem blockItem && targetState.isAir()) {
 								cooldown = 0;
 
-								BlockState newState = blockItem.getBlock().getDefaultState();
+								var newState = blockItem.getBlock().getDefaultState();
 								
 								world.setBlockState(targetPos, newState);
 
-								SimpleItemVariantStorage inputStorage = itemStorage.getStorage(INPUT_SLOT);
+								var inputStorage = itemStorage.getStorage(INPUT_SLOT);
 								
 								itemStorage.extract(inputStorage.getResource(), 1, transaction);
 								

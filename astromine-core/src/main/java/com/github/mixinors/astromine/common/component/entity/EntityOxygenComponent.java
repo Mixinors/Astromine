@@ -42,12 +42,12 @@ import org.jetbrains.annotations.Nullable;
  * - {@link NbtCompound} - through {@link #writeToNbt(NbtCompound)} and {@link #readFromNbt(NbtCompound)}.
  */
 public final class EntityOxygenComponent implements AutoSyncedComponent {
-	int oxygen = 0;
+	private int oxygen = 0;
+	
+	private int minimumOxygen = -20;
+	private int maximumOxygen = 180;
 
-	int minimumOxygen = -20;
-	int maximumOxygen = 180;
-
-	Entity entity;
+	private Entity entity;
 
 	/** Instantiates an {@link EntityOxygenComponent}. */
 	private EntityOxygenComponent(Entity entity) {
@@ -81,7 +81,7 @@ public final class EntityOxygenComponent implements AutoSyncedComponent {
 		oxygen = nextOxygen(isBreathing, oxygen);
 
 		if (oxygen == getMinimumOxygen()) {
-			boolean isAK9 = false;
+			var isAK9 = false;
 
 			if (entity instanceof PlayerEntity) {
 				isAK9 = ((PlayerEntity) entity).getGameProfile().getId().toString().equals("38113444-0bc0-4502-9a4c-17903067907c");

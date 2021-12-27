@@ -108,7 +108,7 @@ public class FluidFilterWidget extends ButtonWidget
 
 		if (isWithin(x, y)) {
 			if (!stack.isEmpty()) {
-				Storage<FluidVariant> fluidStorage = FluidStorage.ITEM.find(stack, ContainerItemContext.ofPlayerCursor(getHandled().getHandler().getPlayer(), getHandled().getHandler()));
+				var fluidStorage = FluidStorage.ITEM.find(stack, ContainerItemContext.ofPlayerCursor(getHandled().getHandler().getPlayer(), getHandled().getHandler()));
 				
 				fluidSupplier = () -> StorageUtil.findStoredResource(fluidStorage, null).getFluid();
 				fluidConsumer.accept(fluidSupplier.get());

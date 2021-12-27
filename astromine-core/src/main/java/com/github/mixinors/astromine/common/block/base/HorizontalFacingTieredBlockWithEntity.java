@@ -80,7 +80,7 @@ public abstract class HorizontalFacingTieredBlockWithEntity extends HorizontalFa
 				if (itemTier != null && itemTier.ordinal() != 0 && Tier.values()[itemTier.ordinal() - 1] == blockTier) {
 					var newBlockId = new Identifier(blockId.toString().replace(blockTier.name().toLowerCase(Locale.ROOT) + "_", itemTier.name().toLowerCase(Locale.ROOT) + "_"));
 
-					Optional<Block> newBlock = Registry.BLOCK.getOrEmpty(newBlockId);
+					var newBlock = Registry.BLOCK.getOrEmpty(newBlockId);
 
 					if (newBlock.isPresent()) {
 						if (world.isClient) {
@@ -122,9 +122,9 @@ public abstract class HorizontalFacingTieredBlockWithEntity extends HorizontalFa
 
 						var newState = newBlock.get().getDefaultState();
 
-						for (Property property : state.getProperties()) {
+						for (var property : state.getProperties()) {
 							if (newState.contains(property)) {
-								newState = newState.with(property, state.get(property));
+								newState = newState.with((Property) property, state.get(property));
 							}
 						}
 
@@ -157,7 +157,7 @@ public abstract class HorizontalFacingTieredBlockWithEntity extends HorizontalFa
 		/** Returns the {@link Tier} of the given {@link Identifier}'s path. */
 		static Tier fromId(Identifier identifier) {
 			var path = identifier.getPath();
-			for (Tier tier : values()) {
+			for (var tier : values()) {
 				if (path.startsWith(tier.name().toLowerCase(Locale.ROOT) + "_")) {
 					return tier;
 				}

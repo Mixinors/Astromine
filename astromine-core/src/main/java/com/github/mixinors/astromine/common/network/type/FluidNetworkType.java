@@ -34,7 +34,7 @@ public final class FluidNetworkType implements NetworkType {
 //		List<Pair<SimpleFluidStorage, Direction>> providers = Lists.newArrayList();
 //		List<Pair<SimpleFluidStorage, Direction>> requesters = Lists.newArrayList();
 //
-//		for (NetworkMemberNode memberNode : instance.members) {
+//		for (var memberNode : instance.members) {
 //			var memberPos = WorldPos.of(instance.getWorld(), memberNode.getBlockPosition());
 //
 //			var networkMember = NetworkMemberRegistry.get(memberPos, memberNode.getDirection());

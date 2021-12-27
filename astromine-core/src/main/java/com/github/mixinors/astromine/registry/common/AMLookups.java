@@ -38,11 +38,11 @@ public class AMLookups {
 	public static void init() {
 		ItemStorage.SIDED.registerForBlockEntities((blockEntity, direction) -> {
 			if (blockEntity instanceof ExtendedBlockEntity extendedBlockEntity) {
-				SimpleItemStorage itemStorage = extendedBlockEntity.getItemStorage();
+				var itemStorage = extendedBlockEntity.getItemStorage();
 
-				StorageSiding[] sidings = itemStorage.getSidings();
+				var sidings = itemStorage.getSidings();
 
-				StorageSiding siding = sidings[direction.ordinal()];
+				var siding = sidings[direction.ordinal()];
 				
 				return switch (siding) {
 					case INSERT, EXTRACT, INSERT_EXTRACT -> itemStorage;
@@ -110,11 +110,11 @@ public class AMLookups {
 		
 		FluidStorage.SIDED.registerForBlockEntities((blockEntity, direction) -> {
 			if (blockEntity instanceof ExtendedBlockEntity extendedBlockEntity) {
-				SimpleFluidStorage fluidStorage = extendedBlockEntity.getFluidStorage();
+				var fluidStorage = extendedBlockEntity.getFluidStorage();
 
-				StorageSiding[] sidings = fluidStorage.getSidings();
+				var sidings = fluidStorage.getSidings();
 
-				StorageSiding siding = sidings[direction.ordinal()];
+				var siding = sidings[direction.ordinal()];
 				
 				return switch (siding) {
 					case INSERT, EXTRACT, INSERT_EXTRACT -> fluidStorage;

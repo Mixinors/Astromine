@@ -69,7 +69,7 @@ public class StorageSidingWidget extends Widget {
 	
 	private String getSideName() {
 		if (type == StorageType.ITEM) {
-			StorageSiding[] sidings = blockEntity.getItemStorage().getSidings();
+			var sidings = blockEntity.getItemStorage().getSidings();
 			
 			return switch (sidings[direction.ordinal()]) {
 				case INSERT -> "insert";
@@ -80,7 +80,7 @@ public class StorageSidingWidget extends Widget {
 		}
 		
 		if (type == StorageType.FLUID) {
-			StorageSiding[] sidings = blockEntity.getFluidStorage().getSidings();
+			var sidings = blockEntity.getFluidStorage().getSidings();
 			
 			return switch (sidings[direction.ordinal()]) {
 				case INSERT -> "insert";
@@ -95,7 +95,7 @@ public class StorageSidingWidget extends Widget {
 
 	private Identifier getTexture() {
 		if (type == StorageType.ITEM) {
-			StorageSiding[] sidings = blockEntity.getItemStorage().getSidings();
+			var sidings = blockEntity.getItemStorage().getSidings();
 			
 			return switch (sidings[direction.ordinal()]) {
 				case INSERT -> TEXTURE_INSERT;
@@ -106,7 +106,7 @@ public class StorageSidingWidget extends Widget {
 		}
 		
 		if (type == StorageType.FLUID) {
-			StorageSiding[] sidings = blockEntity.getFluidStorage().getSidings();
+			var sidings = blockEntity.getFluidStorage().getSidings();
 			
 			return switch (sidings[direction.ordinal()]) {
 				case INSERT -> TEXTURE_INSERT;
@@ -124,7 +124,7 @@ public class StorageSidingWidget extends Widget {
 		super.onMouseClicked(mouseX, mouseY, button);
 		
 		if (getFocused() && getHandled().getClient()) {
-			StorageSiding[] sidings = null;
+			var sidings = (StorageSiding[]) null;
 			
 			if (type == StorageType.ITEM) {
 				sidings = blockEntity.getItemStorage().getSidings();
@@ -144,7 +144,7 @@ public class StorageSidingWidget extends Widget {
 				return;
 			}
 
-			PacketByteBuf buf = NetworkingUtils.ofStorageSiding(next, type, direction, blockEntity.getPos());
+			var buf = NetworkingUtils.ofStorageSiding(next, type, direction, blockEntity.getPos());
 			
 			NetworkManager.sendToServer(AMNetworks.STORAGE_SIDING_UPDATE, buf);
 		}
@@ -153,7 +153,7 @@ public class StorageSidingWidget extends Widget {
 	@Environment(EnvType.CLIENT)
 	@Override
 	public @NotNull List<Text> getTooltip() {
-		Direction offset = MirrorUtils.rotate(direction, rotation);
+		var offset = MirrorUtils.rotate(direction, rotation);
 		
 		return Arrays.asList(new TranslatableText("text.astromine.siding." + offset.getName()), new TranslatableText("text.astromine.siding." + getSideName()));
 	}

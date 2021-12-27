@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.client.rei.base;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -40,9 +41,9 @@ import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 public interface AMCategory<T extends AMDisplay> extends DisplayCategory<T> {
 	@Override
 	default List<Widget> setupDisplay(T display, Rectangle bounds) {
-		Point startPoint = new Point(bounds.getCenterX() - 41, bounds.getCenterY() - 27);
-		DecimalFormat df = new DecimalFormat("###.##");
-		List<Widget> widgets = Lists.newArrayList();
+		var startPoint = new Point(bounds.getCenterX() - 41, bounds.getCenterY() - 27);
+		var df = new DecimalFormat("###.##");
+		var widgets = new ArrayList<Widget>();
 		widgets.add(Widgets.createRecipeBase(bounds));
 		addEnergyInputWidgets(widgets, display, startPoint, bounds);
 		widgets.add(Widgets.createLabel(new Point(bounds.x + bounds.width - 5, bounds.y + 5), new TranslatableText("category.astromine.cooking.time", df.format(display.getTimeRequired() / 20d))).noShadow().rightAligned().color(0xFF404040, 0xFFBBBBBB));

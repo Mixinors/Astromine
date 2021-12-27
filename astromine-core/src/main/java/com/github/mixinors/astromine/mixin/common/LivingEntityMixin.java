@@ -105,7 +105,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 		// 			var leggingsStack = ItemStack.EMPTY;
 		// 			var bootsStack = ItemStack.EMPTY;
 //
-		// 			for (ItemStack stack : getArmorItems()) {
+		// 			for (var stack : getArmorItems()) {
 		// 				if (stack.getItem() == AMItems.SPACE_SUIT_HELMET.get()) helmetStack = stack;
 		// 				if (stack.getItem() == AMItems.SPACE_SUIT_CHESTPLATE.get()) chestplateStack = stack;
 		// 				if (stack.getItem() == AMItems.SPACE_SUIT_LEGGINGS.get()) leggingsStack = stack;

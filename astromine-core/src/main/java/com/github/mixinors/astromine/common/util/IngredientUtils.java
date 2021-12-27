@@ -68,7 +68,7 @@ public class IngredientUtils {
 	public static ItemStack testMatching(Ingredient input, ItemStack stack) {
 		if (stack != null) {
 			if (input.matchingStacks.length != 0) {
-				for (ItemStack matching : input.matchingStacks) {
+				for (var matching : input.matchingStacks) {
 					if (matching.getItem() == stack.getItem()) {
 						return matching;
 					}
@@ -86,7 +86,7 @@ public class IngredientUtils {
 			return entryObject;
 		}
 		var jsonArray = new JsonArray();
-		for (Ingredient.Entry entry : ingredient.entries) {
+		for (var entry : ingredient.entries) {
 			var entryObject = entry.toJson();
 			entryObject.addProperty("count", count);
 			jsonArray.add(entryObject);

@@ -149,7 +149,7 @@ public class BaseInventory implements Inventory, RecipeInputProvider {
 	/** Triggers this inventory's {@link InventoryChangedListener}s. */
 	@Override
 	public void markDirty() {
-		for (InventoryChangedListener listener : listeners) {
+		for (var listener : listeners) {
 			listener.onInventoryChanged(this);
 		}
 	}

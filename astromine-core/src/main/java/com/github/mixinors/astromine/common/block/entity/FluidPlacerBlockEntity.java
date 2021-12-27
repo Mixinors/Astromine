@@ -90,7 +90,7 @@ public class FluidPlacerBlockEntity extends ExtendedBlockEntity implements Energ
 			return;
 
 		if (fluidStorage != null && energyStorage != null) {
-			long consumed = getEnergyConsumed();
+			var consumed = getEnergyConsumed();
 			
 			if (energyStorage.getAmount() < consumed) {
 				cooldown = 0L;
@@ -100,13 +100,13 @@ public class FluidPlacerBlockEntity extends ExtendedBlockEntity implements Energ
 				if (cooldown >= getMachineSpeed()) {
 					try (Transaction transaction = Transaction.openOuter()) {
 						if (energyStorage.extract(consumed, transaction) == consumed) {
-							Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
+							var direction = getCachedState().get(HorizontalFacingBlock.FACING);
 
-							BlockPos targetPos = pos.offset(direction);
+							var targetPos = pos.offset(direction);
 
-							BlockState targetState = world.getBlockState(targetPos);
+							var targetState = world.getBlockState(targetPos);
 
-							SimpleFluidVariantStorage inputStorage = fluidStorage.getStorage(INPUT_SLOT);
+							var inputStorage = fluidStorage.getStorage(INPUT_SLOT);
 							
 							if (inputStorage.getAmount() >= FluidConstants.BUCKET && targetState.isAir()) {
 								if (fluidStorage.extract(inputStorage.getResource(), FluidConstants.BUCKET, transaction) == FluidConstants.BUCKET) {

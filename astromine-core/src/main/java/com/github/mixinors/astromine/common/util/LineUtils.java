@@ -37,7 +37,7 @@ public class LineUtils {
 	 * Returns points of a Bézier curve between the three given points with the specified amount of segments.
 	 */
 	public static Collection<Vec3f> getBezierSegments(Vec3f posA, Vec3f posB, Vec3f posC, float segments) {
-		ArrayList<Vec3f> positions = new ArrayList<>();
+		var positions = new ArrayList<Vec3f>();
 
 		var x1 = posA.getX();
 		var y1 = posA.getY();
@@ -70,11 +70,11 @@ public class LineUtils {
 			var pY = p0Y + p1Y + p2Y;
 
 			if (t == 0) {
-				positions.add(new Vec3f((float) x1, (float) y1, (float) z1));
+				positions.add(new Vec3f(x1, y1, z1));
 			} else if (t + (1f / segments) >= 1) {
-				positions.add(new Vec3f((float) x3, (float) y3, (float) z3));
+				positions.add(new Vec3f(x3, y3, z3));
 			} else {
-				positions.add(new Vec3f((float) pX, (float) pY, (float) ((float) z1 + cZ)));
+				positions.add(new Vec3f((float) pX, (float) pY, z1 + cZ));
 			}
 
 			cZ += dZ;
@@ -95,7 +95,7 @@ public class LineUtils {
 		var y2 = posB.getY();
 		var z2 = posB.getZ();
 
-		List<Vec3f> points = Lists.newArrayList();
+		var points = new ArrayList<Vec3f>();
 
 		points.add(posA);
 

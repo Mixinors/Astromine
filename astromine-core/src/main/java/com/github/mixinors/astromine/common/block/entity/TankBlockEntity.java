@@ -109,11 +109,11 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tie
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		ItemStack inputStack = itemStorage.getStack(ITEM_INPUT_SLOT);
-		Storage<FluidVariant> inputFluidStorage = FluidStorage.ITEM.find(inputStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(ITEM_INPUT_SLOT)));
+		var inputStack = itemStorage.getStack(ITEM_INPUT_SLOT);
+		var inputFluidStorage = FluidStorage.ITEM.find(inputStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(ITEM_INPUT_SLOT)));
 
-		ItemStack outputStack = itemStorage.getStack(ITEM_OUTPUT_SLOT);
-		Storage<FluidVariant> outputFluidStorage = FluidStorage.ITEM.find(outputStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(ITEM_OUTPUT_SLOT)));
+		var outputStack = itemStorage.getStack(ITEM_OUTPUT_SLOT);
+		var outputFluidStorage = FluidStorage.ITEM.find(outputStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(ITEM_OUTPUT_SLOT)));
 		
 		try (Transaction transaction = Transaction.openOuter()) {
 			StorageUtil.move(inputFluidStorage, fluidStorage.getStorage(FLUID_INPUT_SLOT), Predicates.alwaysTrue(), FluidConstants.BUCKET, transaction);

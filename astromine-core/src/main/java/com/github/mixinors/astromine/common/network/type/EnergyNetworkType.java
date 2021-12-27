@@ -32,10 +32,10 @@ public final class EnergyNetworkType implements NetworkType {
 	public void tick(NetworkInstance instance) {
 		// TODO: Rewrite this.
 		
-//		Reference2DoubleMap<EnergyHandler> providers = new Reference2DoubleOpenHashMap<>();
-//		Reference2DoubleMap<EnergyHandler> requesters = new Reference2DoubleOpenHashMap<>();
+//		var providers = new Reference2DoubleOpenHashMap<>();
+//		var requesters = new Reference2DoubleOpenHashMap<>();
 //
-//		for (NetworkMemberNode memberNode : instance.members) {
+//		for (var memberNode : instance.members) {
 //			var memberPos = WorldPos.of(instance.getWorld(), memberNode.getBlockPosition());
 //			var networkMember = NetworkMemberRegistry.get(memberPos, memberNode.getDirection());
 //			var blockEntity = memberPos.getBlockEntity();
@@ -70,10 +70,10 @@ public final class EnergyNetworkType implements NetworkType {
 //			}
 //		}
 //
-//		List<EnergyHandler> requesterKeys = Lists.newArrayList(requesters.keySet());
+//		var requesterKeys = Lists.newArrayList(requesters.keySet());
 //		requesterKeys.sort(Comparator.comparingDouble(EnergyHandler::getEnergy));
 //
-//		for (Reference2DoubleMap.Entry<EnergyHandler> inputEntry : providers.reference2DoubleEntrySet()) {
+//		for (var inputEntry : providers.reference2DoubleEntrySet()) {
 //			var input = inputEntry.getKey();
 //
 //			var inputSpeed = inputEntry.getDoubleValue();

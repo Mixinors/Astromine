@@ -49,7 +49,7 @@ public class OctaveNoiseSampler<T extends Noise> extends Noise {
 		samplers = new Noise[octaves];
 		clamp = 1D / (1D - (1D / Math.pow(2, octaves)));
 
-		Constructor<T> constructor = this.getNoiseConstructor(classT);
+		var constructor = this.getNoiseConstructor(classT);
 
 		for (var i = 0; i < octaves; ++i) {
 			samplers[i] = create(constructor, rand.nextLong());
@@ -88,7 +88,7 @@ public class OctaveNoiseSampler<T extends Noise> extends Noise {
 	public double sample(double x, double y) {
 		var amplFreq = 0.5D;
 		var result = 0.0D;
-		for (Noise sampler : samplers) {
+		for (var sampler : samplers) {
 			result += (amplFreq * sampler.sample(x / (amplFreq * frequency), y / (amplFreq * frequency)));
 
 			amplFreq *= 0.5D;
@@ -101,7 +101,7 @@ public class OctaveNoiseSampler<T extends Noise> extends Noise {
 	public double sample(double x, double y, double z) {
 		var amplFreq = 0.5D;
 		var result = 0.0D;
-		for (Noise sampler : samplers) {
+		for (var sampler : samplers) {
 			var freq = amplFreq * frequency;
 			result += (amplFreq * sampler.sample(x / freq, y / freq, z / freq));
 

@@ -75,7 +75,7 @@ public class RocketItem extends Item {
 		if (!world.canPlayerModifyAt(user, blockPos) || !user.canPlaceOn(blockPos, blockHitResult.getSide(), itemStack)) {
 			return TypedActionResult.fail(itemStack);
 		}
-		EntityType<?> entityType = this.getEntityType(itemStack.getNbt());
+		var entityType = this.getEntityType(itemStack.getNbt());
 		if (entityType.spawnFromItemStack((ServerWorld)world, itemStack, user, blockPos.offset(Direction.UP), SpawnReason.SPAWN_EGG, false, false) == null) {
 			return TypedActionResult.pass(itemStack);
 		}

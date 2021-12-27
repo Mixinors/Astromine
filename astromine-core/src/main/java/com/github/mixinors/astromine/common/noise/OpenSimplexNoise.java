@@ -80,16 +80,16 @@ public class OpenSimplexNoise extends Noise {
 		super(seed);
 		perm = new short[256];
 		permGradIndex3D = new short[256];
-		short[] source = new short[256];
+		var source = new short[256];
 
 		for (var i = 0; i < 256; i++)
 			source[i] = (short) i;
 		seed = seed * 6364136223846793005L + 1442695040888963407L;
 		seed = seed * 6364136223846793005L + 1442695040888963407L;
 		seed = seed * 6364136223846793005L + 1442695040888963407L;
-		for (int i = 255; i >= 0; i--) {
+		for (var i = 255; i >= 0; i--) {
 			seed = seed * 6364136223846793005L + 1442695040888963407L;
-			int r = (int) ((seed + 31) % (i + 1));
+			var r = (int) ((seed + 31) % (i + 1));
 
 			if (r < 0)
 				r += (i + 1);

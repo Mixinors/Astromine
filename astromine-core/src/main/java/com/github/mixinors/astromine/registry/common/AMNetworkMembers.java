@@ -86,8 +86,8 @@ public class AMNetworkMembers {
 			}
 		});
 
-		NetworkMemberRegistry.NetworkTypeProvider<NetworkType> energy = NetworkMemberRegistry.INSTANCE.get(AMNetworkTypes.ENERGY);
-		NetworkMemberRegistry.NetworkTypeProvider<NetworkType> fluid = NetworkMemberRegistry.INSTANCE.get(AMNetworkTypes.FLUID);
+		var energy = NetworkMemberRegistry.INSTANCE.get(AMNetworkTypes.ENERGY);
+		var fluid = NetworkMemberRegistry.INSTANCE.get(AMNetworkTypes.FLUID);
 
 		BLOCK_CONSUMER.put(block -> block instanceof NetworkBlock, block -> {
 			var networkBlock = (NetworkBlock)block;

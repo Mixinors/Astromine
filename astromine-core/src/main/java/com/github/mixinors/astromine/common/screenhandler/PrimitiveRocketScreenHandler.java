@@ -53,7 +53,7 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		ButtonWidget launchButtonWidget = new ButtonWidget(() -> {
+		var launchButtonWidget = new ButtonWidget(() -> {
 			((RocketEntity) entity).tryLaunch(this.getPlayer());
 
 			return null;
@@ -64,7 +64,7 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 		launchButtonWidget.setLabel(new TranslatableText("text.astromine.rocket.launch"));
 		launchButtonWidget.setDisabled(() -> entity.getDataTracker().get(RocketEntity.IS_RUNNING) || (entity.getFluidStorage().getStorage(0).isResourceBlank() && entity.getFluidStorage().getStorage(1).isResourceBlank()));
 
-		ButtonWidget abortButtonWidget = new ButtonWidget(() -> {
+		var abortButtonWidget = new ButtonWidget(() -> {
 			((RocketEntity) entity).tryDisassemble(true);
 
 			return null;
@@ -76,24 +76,24 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 
 		fluidBar.setPosition( Position.of(width / 2.0F - fluidBar.getWidth() / 2.0F + 2.0F, fluidBar.getY(), 0.0F));
 
-		SlotWidget firstInput = new SlotWidget(0, entity.getItemStorage());
+		var firstInput = new SlotWidget(0, entity.getItemStorage());
 		firstInput.setPosition(Position.of(fluidBar, -18.0F - 3.0F, 0.0F, 0.0F));
 		firstInput.setSize(Size.of(18.0F, 18.0F, 0.0F));
 
-		SlotWidget firstOutput = new SlotWidget(1, entity.getItemStorage());
+		var firstOutput = new SlotWidget(1, entity.getItemStorage());
 		firstOutput.setPosition(Position.of(fluidBar, -18.0F - 3.0F, fluidBar.getHeight() - 18.0F, 0.0F));
 		firstOutput.setSize(Size.of(18.0F, 18.0F, 0.0F));
 
-		FluidBarWidget secondFluidBar = new FluidBarWidget();
+		var secondFluidBar = new FluidBarWidget();
 		secondFluidBar.setPosition(Position.of(fluidBar, 24.0F + 18.0F + 3.0F + 3.0F, 0.0F, 0.0F));
 		secondFluidBar.setSize(Size.of(24.0F, 48.0F, 0.0F));
 		secondFluidBar.setStorage(entity.getFluidStorage().getStorage(1));
 
-		SlotWidget secondInput = new SlotWidget(2, entity.getItemStorage());
+		var secondInput = new SlotWidget(2, entity.getItemStorage());
 		secondInput.setPosition(Position.of(secondFluidBar, -18.0F - .0F, 0.0F, 0.0F));
 		secondInput.setSize(Size.of(18.0F, 18.0F, 0.0F));
 
-		SlotWidget secondOutput = new SlotWidget(3, entity.getItemStorage());
+		var secondOutput = new SlotWidget(3, entity.getItemStorage());
 		secondOutput.setPosition(Position.of(secondFluidBar, -18.0F - 3.0F, secondFluidBar.getHeight() - 18.0F, 0.0F));
 		secondOutput.setSize(Size.of(18.0F, 18.0F, 0.0F));
 

@@ -122,7 +122,7 @@ public final class WorldHoloBridgeComponent implements Component {
 	public VoxelShape getShape(long pos) {
 		if (cache.containsKey(pos)) return cache.get(pos);
 
-		Set<Vec3i> vectors = get(pos);
+		var vectors = get(pos);
 
 		if (vectors == null)
 			return VoxelShapes.fullCube();
@@ -144,7 +144,7 @@ public final class WorldHoloBridgeComponent implements Component {
 		var c = false;
 		var d = false;
 
-		for (Vec3i vec : vecs) {
+		for (var vec : vecs) {
 			if (!c && vec.getX() < 0)
 				c = true;
 			if (!d && vec.getZ() < 0)
@@ -165,12 +165,12 @@ public final class WorldHoloBridgeComponent implements Component {
 	public void writeToNbt(NbtCompound tag) {
 		var dataTag = new NbtList();
 
-		for (Long2ObjectMap.Entry<Set<Vec3i>> entry : entries.long2ObjectEntrySet()) {
+		for (var entry : entries.long2ObjectEntrySet()) {
 			var pointTag = new NbtCompound();
-			long[] vecs = new long[entry.getValue().size()];
+			var vecs = new long[entry.getValue().size()];
 			
 			var i = 0;
-			for (Vec3i vec : entry.getValue()) {
+			for (var vec : entry.getValue()) {
 				vecs[i++] = BlockPos.asLong(vec.getX(), vec.getY(), vec.getZ());
 			}
 
@@ -188,12 +188,12 @@ public final class WorldHoloBridgeComponent implements Component {
 	public void readFromNbt(NbtCompound tag) {
 		var dataTag = tag.getList("Data", NbtType.COMPOUND);
 
-		for (NbtElement pointTag : dataTag) {
-			long[] vecs = ((NbtCompound) pointTag).getLongArray("Vectors");
+		for (var pointTag : dataTag) {
+			var vecs = ((NbtCompound) pointTag).getLongArray("Vectors");
 
 			var pos = ((NbtCompound) pointTag).getLong("Position");
 
-			for (long vec : vecs) {
+			for (var vec : vecs) {
 				add(pos, BlockPos.fromLong(vec));
 			}
 		}

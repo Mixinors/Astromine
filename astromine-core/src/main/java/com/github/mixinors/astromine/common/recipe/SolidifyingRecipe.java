@@ -68,7 +68,7 @@ public record SolidifyingRecipe(Identifier id,
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (SolidifyingRecipe) it).toArray(SolidifyingRecipe[]::new));
 		}
 
-		for (SolidifyingRecipe recipe : RECIPE_CACHE.get(world)) {
+		for (var recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.allows(variants)) {
 				return true;
 			}
@@ -82,7 +82,7 @@ public record SolidifyingRecipe(Identifier id,
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (SolidifyingRecipe) it).toArray(SolidifyingRecipe[]::new));
 		}
 
-		for (SolidifyingRecipe recipe : RECIPE_CACHE.get(world)) {
+		for (var recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.matches(itemStorages, fluidStorages)) {
 				return Optional.of(recipe);
 			}
@@ -92,9 +92,9 @@ public record SolidifyingRecipe(Identifier id,
 	}
 
 	public boolean matches(SingleSlotStorage<ItemVariant>[] itemStorages, SingleSlotStorage<FluidVariant>[] fluidStorages) {
-		SingleSlotStorage<FluidVariant> fluidInputStorage = fluidStorages[0];
+		var fluidInputStorage = fluidStorages[0];
 
-		SingleSlotStorage<ItemVariant> itemOutputStorage = itemStorages[0];
+		var itemOutputStorage = itemStorages[0];
 
 		if (!input.test(fluidInputStorage)) {
 			return false;
@@ -156,7 +156,7 @@ public record SolidifyingRecipe(Identifier id,
 
 		@Override
 		public SolidifyingRecipe read(Identifier identifier, JsonObject object) {
-			SolidifyingRecipe.Format format = new Gson().fromJson(object, SolidifyingRecipe.Format.class);
+			var format = new Gson().fromJson(object, SolidifyingRecipe.Format.class);
 
 			return new SolidifyingRecipe(
 					identifier,
