@@ -48,7 +48,7 @@ public class BreathableRegistry extends MultiRegistry<EntityType<?>, Tag<Fluid>>
 	/** Registers a variable amount of {@link Tag<Fluid>}. */
 	@SafeVarargs
 	public final void register(EntityType<?> type, Tag<Fluid>... tags) {
-		for (var tag : tags) {
+		for (Tag<Fluid> tag : tags) {
 			register(type, tag);
 		}
 	}

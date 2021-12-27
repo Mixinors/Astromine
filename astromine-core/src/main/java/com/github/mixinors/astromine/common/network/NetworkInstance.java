@@ -136,7 +136,7 @@ public final class NetworkInstance {
 
 		if (object == null || getClass() != object.getClass()) return false;
 
-		var that = (NetworkInstance) object;
+		NetworkInstance that = (NetworkInstance) object;
 
 		return Objects.equal(members, that.members) &&
 				Objects.equal(nodes, that.nodes) &&

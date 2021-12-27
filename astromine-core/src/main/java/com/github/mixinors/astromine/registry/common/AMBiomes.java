@@ -49,9 +49,9 @@ public class AMBiomes {
 		//   custom entities, these are mostly the same for each biome.
 		// Vanilla configured features for biomes are defined in DefaultBiomeFeatures.
 
-		var spawnSettings = new SpawnSettings.Builder();
+		SpawnSettings.Builder spawnSettings = new SpawnSettings.Builder();
 
-		var generationSettings = new GenerationSettings.Builder();
+		GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
 
 		return (new Biome.Builder())
 			.precipitation(Biome.Precipitation.RAIN)
@@ -74,7 +74,7 @@ public class AMBiomes {
 	}
 
 	public static <T> RegistryKey<T> register(RegistryKey<Registry<T>> registry, Identifier identifier) {
-		var key = RegistryKey.of(registry, identifier);
+		RegistryKey<T> key = RegistryKey.of(registry, identifier);
 		KEYS.add(key);
 		return key;
 	}

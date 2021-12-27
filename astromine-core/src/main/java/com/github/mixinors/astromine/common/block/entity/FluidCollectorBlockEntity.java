@@ -103,7 +103,7 @@ public class FluidCollectorBlockEntity extends ExtendedBlockEntity implements En
 			return;
 
 		if (fluidStorage != null && energyStorage != null) {
-			var consumed = getEnergyConsumed();
+			long consumed = getEnergyConsumed();
 			
 			if (energyStorage.getAmount() < consumed) {
 				cooldown = 0L;
@@ -111,19 +111,19 @@ public class FluidCollectorBlockEntity extends ExtendedBlockEntity implements En
 				isActive = false;
 			} else {
 				if (cooldown >= getMachineSpeed()) {
-					try (var transaction = Transaction.openOuter()) {
+					try (Transaction transaction = Transaction.openOuter()) {
 						if (energyStorage.extract(consumed, transaction) == consumed) {
-							var direction = getCachedState().get(HorizontalFacingBlock.FACING);
+							Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
 
-							var targetPos = pos.offset(direction);
+							BlockPos targetPos = pos.offset(direction);
 
-							var targetBlockState = world.getBlockState(targetPos);
-							var targetFluidState = world.getFluidState(targetPos);
+							BlockState targetBlockState = world.getBlockState(targetPos);
+							FluidState targetFluidState = world.getFluidState(targetPos);
 
-							var targetBlock = targetBlockState.getBlock();
+							Block targetBlock = targetBlockState.getBlock();
 							
 							if (targetBlock instanceof FluidDrainable && targetFluidState.isStill()) {
-								var targetFluid = targetFluidState.getFluid();
+								Fluid targetFluid = targetFluidState.getFluid();
 								
 								if (fluidStorage.insert(FluidVariant.of(targetFluid), FluidConstants.BUCKET, transaction) == FluidConstants.BUCKET) {
 									((FluidDrainable)targetBlock).tryDrainFluid(world, targetPos, targetBlockState);

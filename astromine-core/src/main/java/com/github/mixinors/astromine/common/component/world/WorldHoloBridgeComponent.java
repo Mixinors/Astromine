@@ -122,12 +122,12 @@ public final class WorldHoloBridgeComponent implements Component {
 	public VoxelShape getShape(long pos) {
 		if (cache.containsKey(pos)) return cache.get(pos);
 
-		var vectors = get(pos);
+		Set<Vec3i> vectors = get(pos);
 
 		if (vectors == null)
 			return VoxelShapes.fullCube();
 
-		var shape = getShape(vectors);
+		VoxelShape shape = getShape(vectors);
 
 		cache.put(pos, shape);
 
@@ -137,14 +137,14 @@ public final class WorldHoloBridgeComponent implements Component {
 	/** Returns the {@link VoxelShape} formed by the given {@link Set} of steps.
 	 * I made this work months ago; and I don't know how. Accept it, or suffer. */
 	private VoxelShape getShape(Set<Vec3i> vecs) {
-		var shape = VoxelShapes.empty();
+		VoxelShape shape = VoxelShapes.empty();
 
-		var a = vecs.stream().allMatch(vec -> vec.getZ() == 0);
-		var b = vecs.stream().allMatch(vec -> vec.getX() == 0);
-		var c = false;
-		var d = false;
+		boolean a = vecs.stream().allMatch(vec -> vec.getZ() == 0);
+		boolean b = vecs.stream().allMatch(vec -> vec.getX() == 0);
+		boolean c = false;
+		boolean d = false;
 
-		for (var vec : vecs) {
+		for (Vec3i vec : vecs) {
 			if (!c && vec.getX() < 0)
 				c = true;
 			if (!d && vec.getZ() < 0)
@@ -163,14 +163,14 @@ public final class WorldHoloBridgeComponent implements Component {
 	/** Serializes this {@link WorldHoloBridgeComponent} to a {@link NbtCompound}. */
 	@Override
 	public void writeToNbt(NbtCompound tag) {
-		var dataTag = new NbtList();
+		NbtList dataTag = new NbtList();
 
-		for (var entry : entries.long2ObjectEntrySet()) {
-			var pointTag = new NbtCompound();
-			var vecs = new long[entry.getValue().size()];
-			
-			var i = 0;
-			for (var vec : entry.getValue()) {
+		for (Long2ObjectMap.Entry<Set<Vec3i>> entry : entries.long2ObjectEntrySet()) {
+			NbtCompound pointTag = new NbtCompound();
+			long[] vecs = new long[entry.getValue().size()];
+
+			int i = 0;
+			for (Vec3i vec : entry.getValue()) {
 				vecs[i++] = BlockPos.asLong(vec.getX(), vec.getY(), vec.getZ());
 			}
 
@@ -186,14 +186,14 @@ public final class WorldHoloBridgeComponent implements Component {
 	/** Deserializes this {@link WorldHoloBridgeComponent} from a {@link NbtCompound}. */
 	@Override
 	public void readFromNbt(NbtCompound tag) {
-		var dataTag = tag.getList("Data", NbtType.COMPOUND);
+		NbtList dataTag = tag.getList("Data", NbtType.COMPOUND);
 
-		for (var pointTag : dataTag) {
-			var vecs = ((NbtCompound) pointTag).getLongArray("Vectors");
+		for (NbtElement pointTag : dataTag) {
+			long[] vecs = ((NbtCompound) pointTag).getLongArray("Vectors");
 
-			var pos = ((NbtCompound) pointTag).getLong("Position");
+			long pos = ((NbtCompound) pointTag).getLong("Position");
 
-			for (var vec : vecs) {
+			for (long vec : vecs) {
 				add(pos, BlockPos.fromLong(vec));
 			}
 		}

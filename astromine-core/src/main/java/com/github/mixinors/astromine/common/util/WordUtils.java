@@ -38,14 +38,14 @@ public class WordUtils {
 
 	// tons of edge cases not covered but eh
 	private static String findPlural(String singular) {
-		var base = singular;
-		var suffix = "s";
-		var lastChar = singular.charAt(singular.length() - 1);
-		var secondLastChar = singular.charAt(singular.length() - 2);
+		String base = singular;
+		String suffix = "s";
+		char lastChar = singular.charAt(singular.length() - 1);
+		char secondLastChar = singular.charAt(singular.length() - 2);
 		if (lastChar == 's' || lastChar == 'z' || lastChar == 'x' || (lastChar == 'h' && (secondLastChar == 'c' || secondLastChar == 's'))) {
 			suffix = "e" + suffix;
 		} else {
-			var substring = singular.substring(0, singular.length() - 2);
+			String substring = singular.substring(0, singular.length() - 2);
 			if (lastChar == 'f' && secondLastChar != 'f') {
 				base = substring;
 				suffix = "ves";
@@ -54,13 +54,13 @@ public class WordUtils {
 				suffix = "ies";
 			}
 		}
-		var plural = base + suffix;
+		String plural = base + suffix;
 		AMCommon.LOGGER.debug("Pluralizing " + singular + " produced " + plural);
 		return plural;
 	}
 
 	public static boolean isVowel(char c) {
-		var lc = Character.toLowerCase(c);
+		char lc = Character.toLowerCase(c);
 		return lc == 'a' || lc == 'e' || lc == 'i' || lc == 'o' || lc == 'u';
 	}
 }

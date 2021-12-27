@@ -41,7 +41,7 @@ public class BlockBreakerScreenHandler extends ExtendedBlockEntityScreenHandler 
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		var slot = new SlotWidget(0, blockEntity.getItemStorage());
+		SlotWidget slot = new SlotWidget(0, blockEntity.getItemStorage());
 		slot.setPosition( Position.of(mainTab, mainTab.getWidth() / 2F - 9F, 26));
 		slot.setSize( Size.of(18, 18));
 

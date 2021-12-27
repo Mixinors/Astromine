@@ -94,12 +94,12 @@ public class AirlockBlock extends Block implements Waterloggable {
 
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		var facing = state.get(FACING);
+		Direction facing = state.get(FACING);
 
-		var id = facing.getId() + (state.get(HALF) == DoubleBlockHalf.LOWER ? 1 : 2) + (!state.get(LEFT) ? 4 : 8) + (!state.get(RIGHT) ? 16: 32);
+		int id = facing.getId() + (state.get(HALF) == DoubleBlockHalf.LOWER ? 1 : 2) + (!state.get(LEFT) ? 4 : 8) + (!state.get(RIGHT) ? 16: 32);
 
 		if (SHAPE_CACHE[id] == null) {
-			var shape = VoxelShapes.union(VoxelShapes.empty(), VoxelShapeUtils.rotate(facing, DOOR_SHAPE));
+			VoxelShape shape = VoxelShapes.union(VoxelShapes.empty(), VoxelShapeUtils.rotate(facing, DOOR_SHAPE));
 
 			if (state.get(HALF) == DoubleBlockHalf.LOWER) {
 				shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, BOTTOM_SHAPE));
@@ -123,8 +123,8 @@ public class AirlockBlock extends Block implements Waterloggable {
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		var shape = VoxelShapes.empty();
-		var facing = state.get(FACING);
+		VoxelShape shape = VoxelShapes.empty();
+		Direction facing = state.get(FACING);
 
 		if (state.get(HALF) == DoubleBlockHalf.LOWER) {
 			shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, BOTTOM_SHAPE));
@@ -149,9 +149,9 @@ public class AirlockBlock extends Block implements Waterloggable {
 
 	@Override
 	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState newState, WorldAccess world, BlockPos pos, BlockPos posFrom) {
-		var doubleBlockHalf = state.get(HALF);
-		var facing = state.get(FACING);
-		var changedState = state;
+		DoubleBlockHalf doubleBlockHalf = state.get(HALF);
+		Direction facing = state.get(FACING);
+		BlockState changedState = state;
 
 		if (direction == facing.rotateYClockwise() || direction == facing.rotateYCounterclockwise()) {
 			if (newState.isOf(this) && (newState.get(FACING) == facing || newState.get(FACING) == facing.getOpposite())) {
@@ -201,10 +201,10 @@ public class AirlockBlock extends Block implements Waterloggable {
 
 	@Nullable
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		var blockPos = ctx.getBlockPos();
+		BlockPos blockPos = ctx.getBlockPos();
 		if (blockPos.getY() < 255 && ctx.getWorld().getBlockState(blockPos.up()).canReplace(ctx)) {
-			var world = ctx.getWorld();
-			var bl = world.isReceivingRedstonePower(blockPos) || world.isReceivingRedstonePower(blockPos.up());
+			World world = ctx.getWorld();
+			boolean bl = world.isReceivingRedstonePower(blockPos) || world.isReceivingRedstonePower(blockPos.up());
 			return this.getDefaultState().with(FACING, ctx.getPlayerFacing()).with(POWERED, bl).with(HALF, DoubleBlockHalf.LOWER).with(Properties.WATERLOGGED, world.getBlockState(blockPos).getBlock() == Blocks.WATER);
 		} else {
 			return null;
@@ -229,7 +229,7 @@ public class AirlockBlock extends Block implements Waterloggable {
 
 	@Override
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
-		var bl = world.isReceivingRedstonePower(pos) || world.isReceivingRedstonePower(pos.offset(state.get(HALF) == DoubleBlockHalf.LOWER ? Direction.UP : Direction.DOWN));
+		boolean bl = world.isReceivingRedstonePower(pos) || world.isReceivingRedstonePower(pos.offset(state.get(HALF) == DoubleBlockHalf.LOWER ? Direction.UP : Direction.DOWN));
 		if (block != this && bl != state.get(POWERED)) {
 			if (bl != state.get(POWERED)) {
 				this.playOpenCloseSound(world, pos, bl);
@@ -241,8 +241,8 @@ public class AirlockBlock extends Block implements Waterloggable {
 
 	@Override
 	public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
-		var blockPos = pos.down();
-		var blockState = world.getBlockState(blockPos);
+		BlockPos blockPos = pos.down();
+		BlockState blockState = world.getBlockState(blockPos);
 		return state.get(HALF) == DoubleBlockHalf.LOWER ? blockState.isSideSolidFullSquare(world, blockPos, Direction.UP) : blockState.isOf(this);
 	}
 

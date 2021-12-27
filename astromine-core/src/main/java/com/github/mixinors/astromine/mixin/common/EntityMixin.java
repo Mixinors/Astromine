@@ -88,7 +88,7 @@ public abstract class EntityMixin implements GravityEntity, EntityAccessor {
 
 	@Override
 	public double astromine_getGravity() {
-		var world = ((Entity) (Object) this).world;
+		World world = ((Entity) (Object) this).world;
 		return astromine_getGravity(world);
 	}
 
@@ -99,20 +99,20 @@ public abstract class EntityMixin implements GravityEntity, EntityAccessor {
 
 	@Inject(at = @At("HEAD"), method = "tickNetherPortal()V")
 	void astromine_tickNetherPortal(CallbackInfo callbackInformation) {
-		var entity = (Entity) (Object) this;
+		Entity entity = (Entity) (Object) this;
 
 		if ((int) entity.getPos().getY() != astromine_lastY && !entity.world.isClient && entity.getVehicle() == null) {
 			astromine_lastY = (int) entity.getPos().getY();
 
-			var bottomPortal = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.BOTTOM, entity.world.getRegistryKey());
-			var topPortal = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey());
+			int bottomPortal = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.BOTTOM, entity.world.getRegistryKey());
+			int topPortal = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey());
 
 			if (astromine_lastY <= bottomPortal && bottomPortal != Integer.MIN_VALUE) {
-				var worldKey = RegistryKey.of(Registry.WORLD_KEY, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.BOTTOM, entity.world.getRegistryKey()).getValue());
+				RegistryKey<World> worldKey = RegistryKey.of(Registry.WORLD_KEY, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.BOTTOM, entity.world.getRegistryKey()).getValue());
 
 				astromine_teleport(entity, worldKey, DimensionLayerRegistry.Type.BOTTOM);
 			} else if (astromine_lastY >= topPortal && topPortal != Integer.MIN_VALUE) {
-				var worldKey = RegistryKey.of(Registry.WORLD_KEY, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey()).getValue());
+				RegistryKey<World> worldKey = RegistryKey.of(Registry.WORLD_KEY, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey()).getValue());
 
 				astromine_teleport(entity, worldKey, DimensionLayerRegistry.Type.TOP);
 			}
@@ -127,23 +127,23 @@ public abstract class EntityMixin implements GravityEntity, EntityAccessor {
 	}
 
 	void astromine_teleport(Entity entity, RegistryKey<World> destinationKey, DimensionLayerRegistry.Type type) {
-		var serverWorld = entity.world.getServer().getWorld(destinationKey);
+		ServerWorld serverWorld = entity.world.getServer().getWorld(destinationKey);
 
-		var existingPassengers = new ArrayList<>(entity.getPassengerList());
+		ArrayList<Entity> existingPassengers = new ArrayList<>(entity.getPassengerList());
 
-		var entries = new ArrayList<DataTracker.Entry>();
-		for (var entry : entity.getDataTracker().getAllEntries()) {
+		ArrayList<DataTracker.Entry> entries = new ArrayList<DataTracker.Entry>();
+		for (DataTracker.Entry<?> entry : entity.getDataTracker().getAllEntries()) {
 			entries.add(entry.copy());
 		}
 
 		astromine_nextTeleportTarget = DimensionLayerRegistry.INSTANCE.getPlacer(type, entity.world.getRegistryKey()).placeEntity(entity);
-		var newEntity = entity.moveToWorld(serverWorld);
+		Entity newEntity = entity.moveToWorld(serverWorld);
 
-		for (var entry : entries) {
+		for (DataTracker.Entry entry : entries) {
 			newEntity.getDataTracker().set(entry.getData(), entry.get());
 		}
 
-		for (var existingEntity : existingPassengers) {
+		for (Entity existingEntity : existingPassengers) {
 			((EntityMixin) (Object) existingEntity).astromine_lastVehicle = newEntity;
 		}
 	}

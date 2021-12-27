@@ -53,15 +53,15 @@ public class HolographicConnectorItem extends Item {
 
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
-		var world = context.getWorld();
+		World world = context.getWorld();
 
-		var position = context.getBlockPos();
+		BlockPos position = context.getBlockPos();
 
 		if (context.shouldCancelInteraction())
 			return super.useOnBlock(context);
 
 		if (world.getBlockState(position).getBlock() instanceof HoloBridgeProjectorBlock) {
-			var entity = (HoloBridgeProjectorBlockEntity) world.getBlockEntity(position);
+			HoloBridgeProjectorBlockEntity entity = (HoloBridgeProjectorBlockEntity) world.getBlockEntity(position);
 
 			Pair<RegistryKey<World>, BlockPos> pair = readBlock(context.getStack());
 			if (pair == null || !pair.getLeft().getValue().equals(world.getRegistryKey().getValue())) {
@@ -73,7 +73,7 @@ public class HolographicConnectorItem extends Item {
 				}
 			} else {
 
-				var blockEntity = world.getBlockEntity(pair.getRight());
+				BlockEntity blockEntity = world.getBlockEntity(pair.getRight());
 				if (!(blockEntity instanceof HoloBridgeProjectorBlockEntity parent)) {
 					if (!world.isClient) {
 						context.getPlayer().setStackInHand(context.getHand(), selectBlock(context.getStack(), entity.getWorld().getRegistryKey(), entity.getPos()));
@@ -84,11 +84,11 @@ public class HolographicConnectorItem extends Item {
 					return ActionResult.SUCCESS;
 				}
 
-				var nP = entity.getPos();
-				var oP = parent.getPos();
+				BlockPos nP = entity.getPos();
+				BlockPos oP = parent.getPos();
 
 				if (parent.getPos().getZ() < entity.getPos().getZ() || parent.getPos().getX() < entity.getPos().getX()) {
-					var temporary = parent;
+					HoloBridgeProjectorBlockEntity temporary = parent;
 					parent = entity;
 					entity = temporary;
 				}
@@ -150,21 +150,21 @@ public class HolographicConnectorItem extends Item {
 
 	private ItemStack unselect(ItemStack stack) {
 		stack = stack.copy();
-		var tag = stack.getOrCreateNbt();
+		NbtCompound tag = stack.getOrCreateNbt();
 		tag.remove("SelectedConnectorBlock");
 		return stack;
 	}
 
 	private ItemStack selectBlock(ItemStack stack, RegistryKey<World> registryKey, BlockPos pos) {
 		stack = stack.copy();
-		var tag = stack.getOrCreateNbt();
+		NbtCompound tag = stack.getOrCreateNbt();
 		tag.remove("SelectedConnectorBlock");
 		tag.put("SelectedConnectorBlock", writePos(registryKey, pos));
 		return stack;
 	}
 
 	public Pair<RegistryKey<World>, BlockPos> readBlock(ItemStack stack) {
-		var tag = stack.getNbt();
+		NbtCompound tag = stack.getNbt();
 		if (tag == null)
 			return null;
 		if (!tag.contains("SelectedConnectorBlock"))
@@ -173,7 +173,7 @@ public class HolographicConnectorItem extends Item {
 	}
 
 	private NbtCompound writePos(RegistryKey<World> registryKey, BlockPos pos) {
-		var tag = new NbtCompound();
+		NbtCompound tag = new NbtCompound();
 		tag.putString("World", registryKey.getValue().toString());
 		tag.putInt("X", pos.getX());
 		tag.putInt("Y", pos.getY());
@@ -182,10 +182,10 @@ public class HolographicConnectorItem extends Item {
 	}
 
 	private Pair<RegistryKey<World>, BlockPos> readPos(NbtCompound tag) {
-		var registryKey = RegistryKey.of(Registry.WORLD_KEY, Identifier.tryParse(tag.getString("World")));
-		var x = tag.getInt("X");
-		var y = tag.getInt("Y");
-		var z = tag.getInt("Z");
+		RegistryKey<World> registryKey = RegistryKey.of(Registry.WORLD_KEY, Identifier.tryParse(tag.getString("World")));
+		int x = tag.getInt("X");
+		int y = tag.getInt("Y");
+		int z = tag.getInt("Z");
 		return new Pair<>(registryKey, new BlockPos(x, y, z));
 	}
 

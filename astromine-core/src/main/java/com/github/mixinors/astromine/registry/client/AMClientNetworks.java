@@ -36,14 +36,14 @@ import static com.github.mixinors.astromine.registry.common.AMNetworks.*;
 public class AMClientNetworks {
 	public static void init() {
 		NetworkManager.registerReceiver(NetworkManager.s2c(), PRIMITIVE_ROCKET_SPAWN, (( buf, context) -> {
-			var x = buf.readDouble();
-			var y = buf.readDouble();
-			var z = buf.readDouble();
-			var uuid = buf.readUuid();
-			var id = buf.readInt();
+			double x = buf.readDouble();
+			double y = buf.readDouble();
+			double z = buf.readDouble();
+			UUID uuid = buf.readUuid();
+			int id = buf.readInt();
 
 			context.queue(() -> {
-				var rocketEntity = AMEntityTypes.PRIMITIVE_ROCKET.get().create(ClientUtils.getWorld());
+				PrimitiveRocketEntity rocketEntity = AMEntityTypes.PRIMITIVE_ROCKET.get().create(ClientUtils.getWorld());
 				
 				rocketEntity.setUuid(uuid);
 				rocketEntity.setId(id);

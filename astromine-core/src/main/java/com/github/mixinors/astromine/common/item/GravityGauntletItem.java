@@ -58,10 +58,10 @@ public class GravityGauntletItem extends EnergyStorageItem implements DynamicAtt
 
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-		var stack = user.getStackInHand(hand);
+		ItemStack stack = user.getStackInHand(hand);
 		if (hand == Hand.OFF_HAND)
 			return TypedActionResult.pass(stack);
-		var offStack = user.getStackInHand(Hand.OFF_HAND);
+		ItemStack offStack = user.getStackInHand(Hand.OFF_HAND);
 		if (offStack.isOf(AMItems.GRAVITY_GAUNTLET.get())) {
 			if (getStoredEnergy(stack) >= AMConfig.get().gravityGauntletConsumed && getStoredEnergy(offStack) >= AMConfig.get().gravityGauntletConsumed) {
 				user.setCurrentHand(hand);
@@ -75,7 +75,7 @@ public class GravityGauntletItem extends EnergyStorageItem implements DynamicAtt
 	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
 		if (world.isClient)
 			return stack;
-		var offStack = user.getStackInHand(Hand.OFF_HAND);
+		ItemStack offStack = user.getStackInHand(Hand.OFF_HAND);
 		if (offStack.isOf(AMItems.GRAVITY_GAUNTLET.get())) {
 			if (getStoredEnergy(stack) >= AMConfig.get().gravityGauntletConsumed && getStoredEnergy(offStack) >= AMConfig.get().gravityGauntletConsumed) {
 				tryUseEnergy(stack, AMConfig.get().gravityGauntletConsumed);
@@ -102,7 +102,7 @@ public class GravityGauntletItem extends EnergyStorageItem implements DynamicAtt
 	public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		if (attacker.world.isClient)
 			return super.postHit(stack, target, attacker);
-		var offStack = attacker.getStackInHand(Hand.OFF_HAND);
+		ItemStack offStack = attacker.getStackInHand(Hand.OFF_HAND);
 		if (offStack.getItem() == AMItems.GRAVITY_GAUNTLET.get()) {
 			if (stack.getOrCreateNbt().getBoolean("Charged") && offStack.getOrCreateNbt().getBoolean("Charged")) {
 				target.takeKnockback(1, attacker.getX() - target.getX(), attacker.getZ() - target.getZ());

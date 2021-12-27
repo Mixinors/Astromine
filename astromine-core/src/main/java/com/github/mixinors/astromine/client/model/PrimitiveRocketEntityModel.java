@@ -51,8 +51,8 @@ public class PrimitiveRocketEntityModel extends SinglePartEntityModel<PrimitiveR
 	}
 	
 	public static TexturedModelData getTexturedModelData() {
-		var modelData = new ModelData();
-		var modelPartData = modelData.getRoot();
+		ModelData modelData = new ModelData();
+		ModelPartData modelPartData = modelData.getRoot();
 
 		modelPartData.addChild("rocket", ModelPartBuilder.create().uv(48, 0).cuboid(-6.0F, -11.0F, -6.0F, 12, 11, 12), ModelTransform.NONE);
 		modelPartData.addChild("rocket1", ModelPartBuilder.create().uv(78, 84).cuboid(-5.0F, -18.0F, -5.0F, 10, 7, 10), ModelTransform.NONE);
@@ -106,8 +106,8 @@ public class PrimitiveRocketEntityModel extends SinglePartEntityModel<PrimitiveR
 		
 		matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(45));
 		matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(45));
-		
-		var glintConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, primitiveRocketEntityModel.getLayer(PrimitiveRocketEntityRenderer.ID), false, stack.hasGlint());
+
+		VertexConsumer glintConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, primitiveRocketEntityModel.getLayer(PrimitiveRocketEntityRenderer.ID), false, stack.hasGlint());
 		primitiveRocketEntityModel.render(matrices, glintConsumer, i, j, 1.0F, 1.0F, 1.0F, 1.0F);
 		matrices.pop();
 	}

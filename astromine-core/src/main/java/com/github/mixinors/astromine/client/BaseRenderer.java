@@ -56,7 +56,7 @@ public class BaseRenderer {
 	/** Draws a quads. */
 	public static void drawQuad(MatrixStack matrices, VertexConsumerProvider provider, RenderLayer layer, float x, float y, float sX, float sY, int light, Color color) {
 		matrices.push();
-		var consumer = provider.getBuffer(layer);
+		VertexConsumer consumer = provider.getBuffer(layer);
 
 		consumer.vertex(matrices.peek().getPositionMatrix(), x, y, 0).color(color.getR(), color.getG(), color.getB(), color.getA()).light(light).next();
 		consumer.vertex(matrices.peek().getPositionMatrix(), x, y + sY, 0).color(color.getR(), color.getG(), color.getB(), color.getA()).light(light).next();
@@ -99,8 +99,8 @@ public class BaseRenderer {
 	/** Draws a gradient quads. */
 	public static void drawGradientQuad(MatrixStack matrices, VertexConsumerProvider provider, RenderLayer layer, float startX, float startY, float endX, float endY, float uS, float vS, float uE, float vE, int light, Color colorStart, Color colorEnd, boolean textured) {
 		matrices.push();
-		
-		var consumer = provider.getBuffer(layer);
+
+		VertexConsumer consumer = provider.getBuffer(layer);
 
 		consumer.vertex(matrices.peek().getPositionMatrix(), endX, startY, 0).color(colorStart.getR(), colorStart.getG(), colorStart.getB(), colorStart.getA()).texture(uS, vS).light(light).normal(matrices.peek().getNormalMatrix(), 0, 1, 0).next();
 		consumer.vertex(matrices.peek().getPositionMatrix(), startX, startY, 0).color(colorStart.getR(), colorStart.getG(), colorStart.getB(), colorStart.getA()).texture(uS, vE).light(light).normal(matrices.peek().getNormalMatrix(), 0, 1, 0).next();
@@ -170,7 +170,7 @@ public class BaseRenderer {
 		RenderSystem.setShader(GameRenderer::getPositionColorTexLightmapShader);
 		RenderSystem.setShaderTexture(0, texture);
 
-		var consumer = provider.getBuffer(layer);
+		VertexConsumer consumer = provider.getBuffer(layer);
 		
 		consumer.vertex(matrices.peek().getPositionMatrix(), x, y + sY, 0).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(u0, v1).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrices.peek().getNormalMatrix(), 0, 0, 0).next();
 		consumer.vertex(matrices.peek().getPositionMatrix(), x + sX, y + sY, 0).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(u1, v1).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrices.peek().getNormalMatrix(), 0, 0, 0).next();

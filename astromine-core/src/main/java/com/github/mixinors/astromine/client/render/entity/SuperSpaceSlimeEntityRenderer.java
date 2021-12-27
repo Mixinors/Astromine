@@ -55,21 +55,21 @@ public class SuperSpaceSlimeEntityRenderer extends MobEntityRenderer<SuperSpaceS
 
 	@Override
 	public void scale(SuperSpaceSlimeEntity slimeEntity, MatrixStack matrices, float f) {
-		var scale = 0.999F;
+		float scale = 0.999F;
 		matrices.scale(scale, scale, scale);
 		matrices.translate(0.0D, -0.525D, 0.0D);
 
 		// calculate stretch slime size
-		var slimeSize = 10f;
-		var i = MathHelper.lerp(f, slimeEntity.lastStretch, slimeEntity.stretch) / (slimeSize * 0.5F + 1.0F);
-		var j = 1.0F / (i + 1.0F);
+		float slimeSize = 10f;
+		float i = MathHelper.lerp(f, slimeEntity.lastStretch, slimeEntity.stretch) / (slimeSize * 0.5F + 1.0F);
+		float j = 1.0F / (i + 1.0F);
 
 		// scale matrix based on slime size
 		matrices.scale(j * slimeSize, 1.0F / j * slimeSize, j * slimeSize);
 
 		// if the slime is exploding, make it quickly scale in and out
 		if (slimeEntity.isExploding()) {
-			var sin = 1 + (float) Math.sin(slimeEntity.getExplodingProgress() / 5f) / 10;
+			float sin = 1 + (float) Math.sin(slimeEntity.getExplodingProgress() / 5f) / 10;
 			matrices.scale(sin, sin, sin);
 		}
 	}

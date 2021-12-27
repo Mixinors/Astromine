@@ -42,8 +42,8 @@ public class SuperSpaceSlimeSwimmingGoal extends Goal {
 
 	@Override
 	public boolean canStart() {
-		var validState = this.slime.isTouchingWater() || this.slime.isInLava();
-		var hasSlimeMoveControls = this.slime.getMoveControl() instanceof SuperSpaceSlimeMoveControl;
+		boolean validState = this.slime.isTouchingWater() || this.slime.isInLava();
+		boolean hasSlimeMoveControls = this.slime.getMoveControl() instanceof SuperSpaceSlimeMoveControl;
 
 		return validState && hasSlimeMoveControls;
 	}

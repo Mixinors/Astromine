@@ -223,7 +223,7 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 		MaterialFamilies.init();
 		dataGenerator.addProvider(AMModelProvider::new);
 		dataGenerator.addProvider(AMRecipeProvider::new);
-		var blockTagProvider = new AMBlockTagProvider(dataGenerator);
+		AMBlockTagProvider blockTagProvider = new AMBlockTagProvider(dataGenerator);
 		dataGenerator.addProvider(blockTagProvider);
 		dataGenerator.addProvider(new AMItemTagProvider(dataGenerator, blockTagProvider));
 		dataGenerator.addProvider(AMFluidTagProvider::new);

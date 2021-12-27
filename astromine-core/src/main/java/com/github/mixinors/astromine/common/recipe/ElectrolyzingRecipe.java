@@ -66,7 +66,7 @@ public record ElectrolyzingRecipe(Identifier id,
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (ElectrolyzingRecipe) it).toArray(ElectrolyzingRecipe[]::new));
 		}
 
-		for (var recipe : RECIPE_CACHE.get(world)) {
+		for (ElectrolyzingRecipe recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.allows(variants)) {
 				return true;
 			}
@@ -80,7 +80,7 @@ public record ElectrolyzingRecipe(Identifier id,
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (ElectrolyzingRecipe) it).toArray(ElectrolyzingRecipe[]::new));
 		}
 
-		for (var recipe : RECIPE_CACHE.get(world)) {
+		for (ElectrolyzingRecipe recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.matches(storages)) {
 				return Optional.of(recipe);
 			}
@@ -90,10 +90,10 @@ public record ElectrolyzingRecipe(Identifier id,
 	}
 
 	public boolean matches(SingleSlotStorage<FluidVariant>... variants) {
-		var inputStorage = variants[0];
+		SingleSlotStorage<FluidVariant> inputStorage = variants[0];
 
-		var firstOutputStorage = variants[1];
-		var secondOutputStorage = variants[2];
+		SingleSlotStorage<FluidVariant> firstOutputStorage = variants[1];
+		SingleSlotStorage<FluidVariant> secondOutputStorage = variants[2];
 
 		if (!input.test(inputStorage)) {
 			return false;
@@ -155,7 +155,7 @@ public record ElectrolyzingRecipe(Identifier id,
 
 		@Override
 		public ElectrolyzingRecipe read(Identifier identifier, JsonObject object) {
-			var format = new Gson().fromJson(object, ElectrolyzingRecipe.Format.class);
+			Format format = new Gson().fromJson(object, ElectrolyzingRecipe.Format.class);
 
 			return new ElectrolyzingRecipe(
 					identifier,

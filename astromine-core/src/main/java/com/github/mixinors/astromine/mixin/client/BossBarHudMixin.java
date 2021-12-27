@@ -66,7 +66,7 @@ public abstract class BossBarHudMixin extends DrawableHelper {
 			this.drawTexture(matrices, i, j, 0, 0, 185, 12);
 
 			// percentage -> texture width
-			var overlayBarWidth = (int) (bossBar.getPercent() * 185.0F);
+			int overlayBarWidth = (int) (bossBar.getPercent() * 185.0F);
 
 			// draw overlay
 			this.drawTexture(matrices, i, j, 0, 12, overlayBarWidth, 12);

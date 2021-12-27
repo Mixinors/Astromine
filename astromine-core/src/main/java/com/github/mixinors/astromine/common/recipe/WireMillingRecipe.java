@@ -65,7 +65,7 @@ public record WireMillingRecipe(Identifier id,
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (WireMillingRecipe) it).toArray(WireMillingRecipe[]::new));
 		}
 
-		for (var recipe : RECIPE_CACHE.get(world)) {
+		for (WireMillingRecipe recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.allows(variants)) {
 				return true;
 			}
@@ -79,7 +79,7 @@ public record WireMillingRecipe(Identifier id,
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (WireMillingRecipe) it).toArray(WireMillingRecipe[]::new));
 		}
 
-		for (var recipe : RECIPE_CACHE.get(world)) {
+		for (WireMillingRecipe recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.matches(storages)) {
 				return Optional.of(recipe);
 			}
@@ -89,9 +89,9 @@ public record WireMillingRecipe(Identifier id,
 	}
 
 	public boolean matches(SingleSlotStorage<ItemVariant>... storages) {
-		var inputStorage = storages[0];
+		SingleSlotStorage<ItemVariant> inputStorage = storages[0];
 
-		var outputStorage = storages[1];
+		SingleSlotStorage<ItemVariant> outputStorage = storages[1];
 
 		if (!input.test(inputStorage)) {
 			return false;
@@ -148,7 +148,7 @@ public record WireMillingRecipe(Identifier id,
 
 		@Override
 		public WireMillingRecipe read(Identifier identifier, JsonObject object) {
-			var format = new Gson().fromJson(object, WireMillingRecipe.Format.class);
+			Format format = new Gson().fromJson(object, WireMillingRecipe.Format.class);
 
 			return new WireMillingRecipe(identifier,
 					ItemIngredient.fromJson(format.input),

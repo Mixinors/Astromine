@@ -81,7 +81,7 @@ public final class EntityOxygenComponent implements AutoSyncedComponent {
 		oxygen = nextOxygen(isBreathing, oxygen);
 
 		if (oxygen == getMinimumOxygen()) {
-			var isAK9 = false;
+			boolean isAK9 = false;
 
 			if (entity instanceof PlayerEntity) {
 				isAK9 = ((PlayerEntity) entity).getGameProfile().getId().toString().equals("38113444-0bc0-4502-9a4c-17903067907c");

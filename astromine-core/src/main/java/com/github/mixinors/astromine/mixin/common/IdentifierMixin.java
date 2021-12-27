@@ -51,7 +51,7 @@ public class IdentifierMixin {
 	@Inject(method = "<init>([Ljava/lang/String;)V", at = @At("RETURN"))
 	private void init(String[] strings, CallbackInfo ci) {
 		if (namespace.equals(AMCommon.MOD_ID) && AMConfig.get().compatibilityMode && IdentifierFixRegistry.INSTANCE.containsKey(path)) {
-			var oldPath = path;
+			String oldPath = path;
 			path = IdentifierFixRegistry.INSTANCE.get(path);
 			AMCommon.LOGGER.info("Fixed identifier path from " + oldPath + " to " + path);
 		}

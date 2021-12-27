@@ -76,7 +76,7 @@ public class HoloBridgeInvisibleBlock extends Block {
 		if (!(world instanceof World)) {
 			return VoxelShapes.empty();
 		} else {
-			var bridgeComponent = WorldHoloBridgeComponent.get(world);
+			WorldHoloBridgeComponent bridgeComponent = WorldHoloBridgeComponent.get(world);
 
 			return bridgeComponent.getShape(position);
 		}

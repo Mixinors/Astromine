@@ -94,21 +94,21 @@ public class HorizontalArrowWidget extends Widget
 			return;
 		}
 
-		var x = getPosition().getX();
-		var y = getPosition().getY();
+		float x = getPosition().getX();
+		float y = getPosition().getY();
 
-		var sX = getSize().getWidth();
-		var sY = getSize().getHeight();
+		float sX = getSize().getWidth();
+		float sY = getSize().getHeight();
 
-		var rawHeight = ClientUtils.getInstance().getWindow().getHeight();
-		var scale = (float) ClientUtils.getInstance().getWindow().getScaleFactor();
+		int rawHeight = ClientUtils.getInstance().getWindow().getHeight();
+		float scale = (float) ClientUtils.getInstance().getWindow().getScaleFactor();
 
-		var sBGX = (int) (((sX / limitSupplier.getAsInt()) * progressSupplier.getAsInt()));
+		int sBGX = (int) (((sX / limitSupplier.getAsInt()) * progressSupplier.getAsInt()));
 
-		var backgroundLayer = Layers.get(BACKGROUND);
-		var foregroundLayer = Layers.get(FOREGROUND);
+		RenderLayer backgroundLayer = Layers.get(BACKGROUND);
+		RenderLayer foregroundLayer = Layers.get(FOREGROUND);
 
-		var area = new Scissors(provider, (int) (x * scale), (int) (rawHeight - ((y + sY) * scale)), (int) (sX * scale), (int) (sY * scale));
+		Scissors area = new Scissors(provider, (int) (x * scale), (int) (rawHeight - ((y + sY) * scale)), (int) (sX * scale), (int) (sY * scale));
 
 		BaseRenderer.drawTexturedQuad(matrices, provider, backgroundLayer, getPosition().getX(), getPosition().getY(), getSize().getWidth(), getSize().getHeight(), BACKGROUND);
 

@@ -49,9 +49,9 @@ public class OctaveNoiseSampler<T extends Noise> extends Noise {
 		samplers = new Noise[octaves];
 		clamp = 1D / (1D - (1D / Math.pow(2, octaves)));
 
-		var constructor = this.getNoiseConstructor(classT);
+		Constructor<T> constructor = this.getNoiseConstructor(classT);
 
-		for (var i = 0; i < octaves; ++i) {
+		for (int i = 0; i < octaves; ++i) {
 			samplers[i] = create(constructor, rand.nextLong());
 		}
 
@@ -86,9 +86,9 @@ public class OctaveNoiseSampler<T extends Noise> extends Noise {
 	}
 
 	public double sample(double x, double y) {
-		var amplFreq = 0.5D;
-		var result = 0.0D;
-		for (var sampler : samplers) {
+		double amplFreq = 0.5D;
+		double result = 0.0D;
+		for (Noise sampler : samplers) {
 			result += (amplFreq * sampler.sample(x / (amplFreq * frequency), y / (amplFreq * frequency)));
 
 			amplFreq *= 0.5D;
@@ -99,10 +99,10 @@ public class OctaveNoiseSampler<T extends Noise> extends Noise {
 	}
 
 	public double sample(double x, double y, double z) {
-		var amplFreq = 0.5D;
-		var result = 0.0D;
-		for (var sampler : samplers) {
-			var freq = amplFreq * frequency;
+		double amplFreq = 0.5D;
+		double result = 0.0D;
+		for (Noise sampler : samplers) {
+			double freq = amplFreq * frequency;
 			result += (amplFreq * sampler.sample(x / freq, y / freq, z / freq));
 
 			amplFreq *= 0.5D;
@@ -113,41 +113,41 @@ public class OctaveNoiseSampler<T extends Noise> extends Noise {
 	}
 
 	public double sampleCustom(double x, double y, double freqModifier, double amplitudeHMod, double amplitudeLMod, int octaves) {
-		var amplFreq = 0.5D;
-		var result = 0;
+		double amplFreq = 0.5D;
+		int result = 0;
 
-		var sampleFreq = frequency * freqModifier;
+		double sampleFreq = frequency * freqModifier;
 
-		for (var i = 0; i < octaves; ++i) {
-			var sampler = samplers[i];
+		for (int i = 0; i < octaves; ++i) {
+			Noise sampler = samplers[i];
 
-			var freq = amplFreq * sampleFreq;
+			double freq = amplFreq * sampleFreq;
 			result += (amplFreq * sampler.sample(x / freq, y / freq));
 
 			amplFreq *= 0.5D;
 		}
 
-		var sampleClamp = 1D / (1D - (1D / Math.pow(2, octaves)));
+		double sampleClamp = 1D / (1D - (1D / Math.pow(2, octaves)));
 		result *= sampleClamp;
 		return result > 0 ? result * amplitudeHigh * amplitudeHMod : result * amplitudeLow * amplitudeLMod;
 	}
 
 	public double sampleCustom(double x, double y, double z, double freqModifier, double amplitudeHMod, double amplitudeLMod, int octaves) {
-		var amplFreq = 0.5D;
-		var result = 0.0D;
+		double amplFreq = 0.5D;
+		double result = 0.0D;
 
-		var sampleFreq = frequency * freqModifier;
+		double sampleFreq = frequency * freqModifier;
 
-		for (var i = 0; i < octaves; ++i) {
-			var sampler = samplers[i];
+		for (int i = 0; i < octaves; ++i) {
+			Noise sampler = samplers[i];
 
-			var freq = amplFreq * sampleFreq;
+			double freq = amplFreq * sampleFreq;
 			result += (amplFreq * sampler.sample(x / freq, y / freq, z / freq));
 
 			amplFreq *= 0.5D;
 		}
 
-		var sampleClamp = 1D / (1D - (1D / Math.pow(2, octaves)));
+		double sampleClamp = 1D / (1D - (1D / Math.pow(2, octaves)));
 		result = result * sampleClamp;
 		return result > 0 ? result * amplitudeHigh * amplitudeHMod : result * amplitudeLow * amplitudeLMod;
 	}

@@ -34,6 +34,7 @@ import dev.architectury.platform.Platform;
 import dev.architectury.registry.block.BlockProperties;
 import dev.architectury.registry.registries.RegistrySupplier;
 import dev.vini2003.hammer.common.color.Color;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.AbstractBlock;
@@ -137,7 +138,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 	
 	@Override
 	protected void beforeBreakingBlock(WorldAccess world, BlockPos position, BlockState state) {
-		var blockEntity = world.getBlockEntity(position);
+		BlockEntity blockEntity = world.getBlockEntity(position);
 		Block.dropStacks(state, world, position, blockEntity);
 	}
 	
@@ -257,8 +258,8 @@ public abstract class ExtendedFluid extends FlowableFluid {
 		}
 		
 		public ExtendedFluid build() {
-			var flowing = AMFluids.register(name + "_flowing", new Flowing(fog, tint, isInfinite, source));
-			var still = AMFluids.register(name, new Still(fog, tint, isInfinite, source));
+			Flowing flowing = AMFluids.register(name + "_flowing", new Flowing(fog, tint, isInfinite, source));
+			Still still = AMFluids.register(name, new Still(fog, tint, isInfinite, source));
 
 			flowing.flowing = flowing;
 			still.flowing = flowing;
@@ -268,9 +269,9 @@ public abstract class ExtendedFluid extends FlowableFluid {
 			still.still = still;
 			this.still = still;
 
-			var block = (RegistrySupplier) AMBlocks.register(name, () -> new FluidBlock(still, AbstractBlock.Settings.of(INDUSTRIAL_FLUID_MATERIAL).noCollision().strength(100.0F).dropsNothing()));
+			RegistrySupplier block = (RegistrySupplier) AMBlocks.register(name, () -> new FluidBlock(still, AbstractBlock.Settings.of(INDUSTRIAL_FLUID_MATERIAL).noCollision().strength(100.0F).dropsNothing()));
 
-			var bucket = (RegistrySupplier) AMItems.register(name + "_bucket", () -> new BucketItem(still, (new Item.Settings()).recipeRemainder(Items.BUCKET).maxCount(1).group(group)));
+			RegistrySupplier bucket = (RegistrySupplier) AMItems.register(name + "_bucket", () -> new BucketItem(still, (new Item.Settings()).recipeRemainder(Items.BUCKET).maxCount(1).group(group)));
 
 			flowing.block = block;
 			still.block = block;
@@ -280,8 +281,8 @@ public abstract class ExtendedFluid extends FlowableFluid {
 			still.bucket = bucket;
 			this.bucket = bucket;
 
-			var cauldronBehaviorMap = CauldronBehavior.createMap();
-			var cauldron = (RegistrySupplier) AMBlocks.register(name + "_cauldron", () -> new FullCauldronBlock(BlockProperties.copy(Blocks.CAULDRON), cauldronBehaviorMap));
+			Object2ObjectOpenHashMap<Item, CauldronBehavior> cauldronBehaviorMap = CauldronBehavior.createMap();
+			RegistrySupplier cauldron = (RegistrySupplier) AMBlocks.register(name + "_cauldron", () -> new FullCauldronBlock(BlockProperties.copy(Blocks.CAULDRON), cauldronBehaviorMap));
 
 			flowing.cauldronBehaviorMap = cauldronBehaviorMap;
 			still.cauldronBehaviorMap = cauldronBehaviorMap;

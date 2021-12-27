@@ -60,7 +60,7 @@ public class DrillItem extends EnergyStorageItem implements DynamicAttributeTool
 		this.radius = radius;
 		this.material = material;
 
-		var builder = ImmutableMultimap.<EntityAttribute, EntityAttributeModifier>builder();
+		ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.<EntityAttribute, EntityAttributeModifier>builder();
 
 		builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Tool modifier", attackDamage, EntityAttributeModifier.Operation.ADDITION));
 		builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Tool modifier", attackSpeed, EntityAttributeModifier.Operation.ADDITION));
@@ -108,8 +108,8 @@ public class DrillItem extends EnergyStorageItem implements DynamicAttributeTool
 	
 	@Override
 	public boolean isSuitableFor(BlockState state) {
-		var pickaxeSpeed = pickaxe.getMiningSpeedMultiplier(ItemStack.EMPTY, state);
-		var shovelSpeed = shovel.getMiningSpeedMultiplier(ItemStack.EMPTY, state);
+		float pickaxeSpeed = pickaxe.getMiningSpeedMultiplier(ItemStack.EMPTY, state);
+		float shovelSpeed = shovel.getMiningSpeedMultiplier(ItemStack.EMPTY, state);
 		
 		return pickaxeSpeed > 1.0F || shovelSpeed > 1.0F;
 	}
@@ -121,8 +121,8 @@ public class DrillItem extends EnergyStorageItem implements DynamicAttributeTool
 
 	@Override
 	public float getMiningSpeedMultiplier(ItemStack stack, BlockState state) {
-		var pickaxeSpeed = pickaxe.getMiningSpeedMultiplier(ItemStack.EMPTY, state);
-		var shovelSpeed = shovel.getMiningSpeedMultiplier(ItemStack.EMPTY, state);
+		float pickaxeSpeed = pickaxe.getMiningSpeedMultiplier(ItemStack.EMPTY, state);
+		float shovelSpeed = shovel.getMiningSpeedMultiplier(ItemStack.EMPTY, state);
 		
 		return Math.max(pickaxeSpeed, shovelSpeed);
 	}

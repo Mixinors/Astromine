@@ -85,7 +85,7 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Ener
 			return;
 
 		if (itemStorage != null && energyStorage != null) {
-			var consumed = getEnergyConsumed();
+			long consumed = getEnergyConsumed();
 			
 			if (energyStorage.getAmount() < consumed) {
 				cooldown = 0L;
@@ -93,28 +93,28 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Ener
 				isActive = false;
 			} else {
 				if (cooldown >= getMachineSpeed()) {
-					try (var transaction = Transaction.openOuter()) {
+					try (Transaction transaction = Transaction.openOuter()) {
 						if (energyStorage.extract(consumed, transaction) == consumed) {
-							var stored = itemStorage.getStack(0);
+							ItemStack stored = itemStorage.getStack(0);
 
-							var direction = getCachedState().get(HorizontalFacingBlock.FACING);
+							Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
 
-							var targetPos = getPos().offset(direction);
+							BlockPos targetPos = getPos().offset(direction);
 
-							var targetState = world.getBlockState(targetPos);
+							BlockState targetState = world.getBlockState(targetPos);
 
 							if (!targetState.isAir()) {
 								cooldown = 0;
 								
 								isActive = true;
 
-								var targetEntity = world.getBlockEntity(targetPos);
+								BlockEntity targetEntity = world.getBlockEntity(targetPos);
 
-								var drops = Block.getDroppedStacks(targetState, (ServerWorld) world, targetPos, targetEntity);
+								List<ItemStack> drops = Block.getDroppedStacks(targetState, (ServerWorld) world, targetPos, targetEntity);
 
-								var storedCopy = stored.copy();
+								ItemStack storedCopy = stored.copy();
 
-								var matching = drops.stream().filter(stack -> storedCopy.isEmpty() || (StackUtils.areItemsAndTagsEqual(stack, storedCopy) && storedCopy.getMaxCount() - storedCopy.getCount() > stack.getCount())).findFirst();
+								Optional<ItemStack> matching = drops.stream().filter(stack -> storedCopy.isEmpty() || (StackUtils.areItemsAndTagsEqual(stack, storedCopy) && storedCopy.getMaxCount() - storedCopy.getCount() > stack.getCount())).findFirst();
 								
 								matching.ifPresent(match -> {
 									Pair<ItemStack, ItemStack> pair = StackUtils.merge(match, stored);

@@ -98,20 +98,20 @@ public final class WorldNetworkComponent implements Component {
 	/** Serializes this {@link WorldNetworkComponent} to a {@link NbtCompound}. */
 	@Override
 	public void writeToNbt(NbtCompound tag) {
-		var instanceTags = new NbtList();
+		NbtList instanceTags = new NbtList();
 
-		for (var instance : instances) {
-			var nodeList = new NbtList();
-			for (var node : instance.nodes) {
+		for (NetworkInstance instance : instances) {
+			NbtList nodeList = new NbtList();
+			for (NetworkNode node : instance.nodes) {
 				nodeList.add(NbtLong.of(node.getLongPosition()));
 			}
 
-			var memberList = new NbtList();
-			for (var member : instance.members) {
+			NbtList memberList = new NbtList();
+			for (NetworkMemberNode member : instance.members) {
 				memberList.add(member.toTag());
 			}
 
-			var data = new NbtCompound();
+			NbtCompound data = new NbtCompound();
 
 			data.putString("type", NetworkTypeRegistry.INSTANCE.getKey(instance.getType()).toString());
 			data.put("nodes", nodeList);
@@ -126,20 +126,20 @@ public final class WorldNetworkComponent implements Component {
 	/** Deserializes this {@link WorldNetworkComponent} from a {@link NbtCompound}. */
 	@Override
 	public void readFromNbt(NbtCompound tag) {
-		var instanceTags = tag.getList("instanceTags", NbtType.COMPOUND);
-		for (var instanceTag : instanceTags) {
-			var dataTag = (NbtCompound) instanceTag;
-			var nodeList = dataTag.getList("nodes", NbtType.LONG);
-			var memberList = dataTag.getList("members", NbtType.COMPOUND);
+		NbtList instanceTags = tag.getList("instanceTags", NbtType.COMPOUND);
+		for (NbtElement instanceTag : instanceTags) {
+			NbtCompound dataTag = (NbtCompound) instanceTag;
+			NbtList nodeList = dataTag.getList("nodes", NbtType.LONG);
+			NbtList memberList = dataTag.getList("members", NbtType.COMPOUND);
 
-			var type = NetworkTypeRegistry.INSTANCE.get(new Identifier(dataTag.getString("type")));
-			var instance = new NetworkInstance(world, type);
+			NetworkType type = NetworkTypeRegistry.INSTANCE.get(new Identifier(dataTag.getString("type")));
+			NetworkInstance instance = new NetworkInstance(world, type);
 
-			for (var nodeKey : nodeList) {
+			for (NbtElement nodeKey : nodeList) {
 				instance.addNode(NetworkNode.of(((NbtLong) nodeKey).longValue()));
 			}
 
-			for (var memberTag : memberList) {
+			for (NbtElement memberTag : memberList) {
 				instance.addMember(NetworkMemberNode.fromTag((NbtCompound) memberTag));
 			}
 

@@ -48,7 +48,7 @@ public class IdentifierFixRegistry extends UniRegistry<String, String> {
 	 * or the value passed if no fixes are registered. */
 	@Override
 	public String get(String oldPath) {
-		var newPath = Optional.ofNullable(super.get(oldPath)).orElse(oldPath);
+		String newPath = Optional.ofNullable(super.get(oldPath)).orElse(oldPath);
 
 		return containsKey(newPath) ? get(newPath) : newPath;
 	}

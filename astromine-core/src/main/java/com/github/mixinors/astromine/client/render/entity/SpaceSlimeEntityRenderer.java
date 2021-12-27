@@ -53,7 +53,7 @@ public class SpaceSlimeEntityRenderer extends MobEntityRenderer<SpaceSlimeEntity
 		// if the slime is floating, we rotate it around the x axis for 1 full rotation
 		// todo: random axis rotation
 		if (slimeEntity.isFloating()) {
-			var progress = slimeEntity.getFloatingProgress() / 200f;
+			float progress = slimeEntity.getFloatingProgress() / 200f;
 			matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(progress * 360));
 		}
 
@@ -62,14 +62,14 @@ public class SpaceSlimeEntityRenderer extends MobEntityRenderer<SpaceSlimeEntity
 
 	@Override
 	public void scale(SpaceSlimeEntity slimeEntity, MatrixStack matrices, float f) {
-		var scale = 0.999F;
+		float scale = 0.999F;
 		matrices.scale(scale, scale, scale);
 		matrices.translate(0.0D, -0.125D, 0.0D);
 
 		// calculate stretch slime size
-		var slimeSize = (float) slimeEntity.getSize();
-		var i = MathHelper.lerp(f, slimeEntity.lastStretch, slimeEntity.stretch) / (slimeSize * 0.5F + 1.0F);
-		var j = 1.0F / (i + 1.0F);
+		float slimeSize = (float) slimeEntity.getSize();
+		float i = MathHelper.lerp(f, slimeEntity.lastStretch, slimeEntity.stretch) / (slimeSize * 0.5F + 1.0F);
+		float j = 1.0F / (i + 1.0F);
 
 		// scale matrix based on slime size
 		matrices.scale(j * slimeSize, 1.0F / j * slimeSize, j * slimeSize);

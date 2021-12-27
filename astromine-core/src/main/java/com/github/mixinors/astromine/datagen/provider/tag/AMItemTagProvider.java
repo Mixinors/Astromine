@@ -181,11 +181,11 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 
 	@Override
 	protected void generateTags() {
-		var beaconPaymentTagBuilder = getOrCreateTagBuilder(ItemTags.BEACON_PAYMENT_ITEMS);
-		var piglinLovedTagBuilder = getOrCreateTagBuilder(ItemTags.PIGLIN_LOVED);
-		var piglinLovedNuggetsTagBuilder = getOrCreateTagBuilder(Piglib.PIGLIN_LOVED_NUGGETS);
-		var piglinBarteringItemsTagBuilder = getOrCreateTagBuilder(Piglib.PIGLIN_BARTERING_ITEMS);
-		var piglinSafeArmorTagBuilder = getOrCreateTagBuilder(Piglib.PIGLIN_SAFE_ARMOR);
+		FabricTagProvider<Item>.FabricTagBuilder<Item> beaconPaymentTagBuilder = getOrCreateTagBuilder(ItemTags.BEACON_PAYMENT_ITEMS);
+		FabricTagProvider<Item>.FabricTagBuilder<Item> piglinLovedTagBuilder = getOrCreateTagBuilder(ItemTags.PIGLIN_LOVED);
+		FabricTagProvider<Item>.FabricTagBuilder<Item> piglinLovedNuggetsTagBuilder = getOrCreateTagBuilder(Piglib.PIGLIN_LOVED_NUGGETS);
+		FabricTagProvider<Item>.FabricTagBuilder<Item> piglinBarteringItemsTagBuilder = getOrCreateTagBuilder(Piglib.PIGLIN_BARTERING_ITEMS);
+		FabricTagProvider<Item>.FabricTagBuilder<Item> piglinSafeArmorTagBuilder = getOrCreateTagBuilder(Piglib.PIGLIN_SAFE_ARMOR);
 
 		MaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateTags).forEachOrdered(family -> {
 			family.getItemTags().forEach((variant, tag) -> {
@@ -220,7 +220,7 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 				}
 			});
 			family.getBlockItemTags().forEach((variant, tag) -> {
-				var blockTag = family.getTag(variant);
+				Tag.Identified<Block> blockTag = family.getTag(variant);
 
 				copy(blockTag, tag);
 
@@ -242,8 +242,8 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 			});
 
 			if (family.hasAnyBlockVariants(AMDatagen.ORE_VARIANTS)) {
-				var oresBlockTag = family.getBlockTag("ores");
-				var oresItemTag = family.getItemTag("ores");
+				Tag.Identified<Block> oresBlockTag = family.getBlockTag("ores");
+				Tag.Identified<Item> oresItemTag = family.getItemTag("ores");
 				copy(oresBlockTag, oresItemTag);
 
 				if (family.hasAlias()) {
@@ -252,8 +252,8 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 			}
 
 			if (family.hasAnyItemVariants(AMDatagen.CLUSTER_VARIANTS)) {
-				var clustersTag = family.getItemTag("clusters");
-				var clustersTagBuilder = getOrCreateTagBuilder(clustersTag);
+				Tag.Identified<Item> clustersTag = family.getItemTag("clusters");
+				FabricTagProvider<Item>.FabricTagBuilder<Item> clustersTagBuilder = getOrCreateTagBuilder(clustersTag);
 				AMDatagen.CLUSTER_VARIANTS.forEach((variant) -> {
 					if (family.hasVariant(variant)) {
 						clustersTagBuilder.addTag(family.getTag(variant));
@@ -265,14 +265,14 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 			}
 
 			if (family.hasAnyItemVariants(AMDatagen.EQUIPMENT_VARIANTS)) {
-				var armorTag = family.getItemTag("armor");
-				var toolsTag = family.getItemTag("tools");
+				Tag.Identified<Item> armorTag = family.getItemTag("armor");
+				Tag.Identified<Item> toolsTag = family.getItemTag("tools");
 
-				var salvageablesTag = family.getItemTag("salvageables");
-				var salvageablesTagBuilder = getOrCreateTagBuilder(salvageablesTag);
+				Tag.Identified<Item> salvageablesTag = family.getItemTag("salvageables");
+				FabricTagProvider<Item>.FabricTagBuilder<Item> salvageablesTagBuilder = getOrCreateTagBuilder(salvageablesTag);
 
 				if (family.hasAnyItemVariants(AMDatagen.ARMOR_VARIANTS)) {
-					var armorTagBuilder = getOrCreateTagBuilder(armorTag);
+					FabricTagProvider<Item>.FabricTagBuilder<Item> armorTagBuilder = getOrCreateTagBuilder(armorTag);
 					AMDatagen.ARMOR_VARIANTS.forEach((variant) -> {
 						if (family.hasVariant(variant)) {
 							armorTagBuilder.addTag(family.getTag(variant));
@@ -295,7 +295,7 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 				}
 
 				if (family.hasAnyItemVariants(AMDatagen.TOOL_VARIANTS)) {
-					var toolsTagBuilder = getOrCreateTagBuilder(toolsTag);
+					FabricTagProvider<Item>.FabricTagBuilder<Item> toolsTagBuilder = getOrCreateTagBuilder(toolsTag);
 					AMDatagen.TOOL_VARIANTS.forEach((variant) -> {
 						if (family.hasVariant(variant)) {
 							toolsTagBuilder.addTag(family.getTag(variant));
@@ -342,14 +342,14 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 		}));
 
 		AMDatagen.FLUIDS.forEach((fluid) -> {
-			var bucketTagBuilder = getOrCreateTagBuilder(AMDatagen.createCommonItemTag(Registry.FLUID.getId(fluid.getStill()).getPath() + "_buckets"));
+			FabricTagProvider<Item>.FabricTagBuilder<Item> bucketTagBuilder = getOrCreateTagBuilder(AMDatagen.createCommonItemTag(Registry.FLUID.getId(fluid.getStill()).getPath() + "_buckets"));
 			bucketTagBuilder.add(fluid.getBucketItem());
 		});
 
 		copy(AMDatagen.createCommonBlockTag("ores"), AMDatagen.createCommonItemTag("ores"));
 
 		GENERIC_TAGS.forEach((variantSet, id) -> {
-			var tag = getOrCreateTagBuilder(AMDatagen.createItemTag(id));
+			FabricTagProvider<Item>.FabricTagBuilder<Item> tag = getOrCreateTagBuilder(AMDatagen.createItemTag(id));
 			variantSet.forEach((variant) -> {
 				if (variant.hasTag()) tag.addTag(variant.getTag());
 			});
@@ -357,7 +357,7 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 
 		AMDatagen.TOOL_VARIANTS.forEach((variant) -> getOrCreateTagBuilder(AMDatagen.createItemTag(new Identifier("fabric", variant.getTagPath()))).addTag(variant.getTag()));
 
-		var drillsTagBuilder = getOrCreateTagBuilder(AMDatagen.createItemTag(AMCommon.id("drills")));
+		FabricTagProvider<Item>.FabricTagBuilder<Item> drillsTagBuilder = getOrCreateTagBuilder(AMDatagen.createItemTag(AMCommon.id("drills")));
 		DRILLS.forEach(drillsTagBuilder::add);
 
 		COPY.forEach((id -> copy(AMDatagen.createBlockTag(id), AMDatagen.createItemTag(id))));
@@ -386,19 +386,19 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 				.addTag(AMDatagen.createCommonItemTag("coal_dusts"))
 				.addTag(AMDatagen.createCommonItemTag("charcoal_dusts"));
 
-		var oneBiofuelTagBuilder = getOrCreateTagBuilder(AMDatagen.createCommonItemTag("one_biofuel"));
+		FabricTagProvider<Item>.FabricTagBuilder<Item> oneBiofuelTagBuilder = getOrCreateTagBuilder(AMDatagen.createCommonItemTag("one_biofuel"));
 		ONE_BIOFUEL_ITEMS.forEach(oneBiofuelTagBuilder::add);
 		ONE_BIOFUEL_TAGS.forEach(oneBiofuelTagBuilder::addTag);
 
-		var twoBiofuelTagBuilder = getOrCreateTagBuilder(AMDatagen.createCommonItemTag("two_biofuel"));
+		FabricTagProvider<Item>.FabricTagBuilder<Item> twoBiofuelTagBuilder = getOrCreateTagBuilder(AMDatagen.createCommonItemTag("two_biofuel"));
 		TWO_BIOFUEL_ITEMS.forEach(twoBiofuelTagBuilder::add);
 		TWO_BIOFUEL_TAGS.forEach(twoBiofuelTagBuilder::addTag);
 
-		var fourBiofuelTagBuilder = getOrCreateTagBuilder(AMDatagen.createCommonItemTag("four_biofuel"));
+		FabricTagProvider<Item>.FabricTagBuilder<Item> fourBiofuelTagBuilder = getOrCreateTagBuilder(AMDatagen.createCommonItemTag("four_biofuel"));
 		FOUR_BIOFUEL_ITEMS.forEach(fourBiofuelTagBuilder::add);
 		FOUR_BIOFUEL_TAGS.forEach(fourBiofuelTagBuilder::addTag);
 
-		var nineBiofuelTagBuilder = getOrCreateTagBuilder(AMDatagen.createCommonItemTag("nine_biofuel"));
+		FabricTagProvider<Item>.FabricTagBuilder<Item> nineBiofuelTagBuilder = getOrCreateTagBuilder(AMDatagen.createCommonItemTag("nine_biofuel"));
 		NINE_BIOFUEL_ITEMS.forEach(nineBiofuelTagBuilder::add);
 		NINE_BIOFUEL_TAGS.forEach(nineBiofuelTagBuilder::addTag);
 	}

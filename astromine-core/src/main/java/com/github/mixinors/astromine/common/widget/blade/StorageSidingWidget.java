@@ -39,6 +39,7 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.LiteralText;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
@@ -70,7 +71,7 @@ public class StorageSidingWidget extends Widget {
 	
 	private String getSideName() {
 		if (type == StorageType.ITEM) {
-			var sidings = blockEntity.getItemStorage().getSidings();
+			StorageSiding[] sidings = blockEntity.getItemStorage().getSidings();
 			
 			return switch (sidings[direction.ordinal()]) {
 				case INSERT -> "insert";
@@ -81,7 +82,7 @@ public class StorageSidingWidget extends Widget {
 		}
 		
 		if (type == StorageType.FLUID) {
-			var sidings = blockEntity.getFluidStorage().getSidings();
+			StorageSiding[] sidings = blockEntity.getFluidStorage().getSidings();
 			
 			return switch (sidings[direction.ordinal()]) {
 				case INSERT -> "insert";
@@ -96,7 +97,7 @@ public class StorageSidingWidget extends Widget {
 
 	private Identifier getTexture() {
 		if (type == StorageType.ITEM) {
-			var sidings = blockEntity.getItemStorage().getSidings();
+			StorageSiding[] sidings = blockEntity.getItemStorage().getSidings();
 			
 			return switch (sidings[direction.ordinal()]) {
 				case INSERT -> TEXTURE_INSERT;
@@ -107,7 +108,7 @@ public class StorageSidingWidget extends Widget {
 		}
 		
 		if (type == StorageType.FLUID) {
-			var sidings = blockEntity.getFluidStorage().getSidings();
+			StorageSiding[] sidings = blockEntity.getFluidStorage().getSidings();
 			
 			return switch (sidings[direction.ordinal()]) {
 				case INSERT -> TEXTURE_INSERT;
@@ -125,7 +126,7 @@ public class StorageSidingWidget extends Widget {
 		super.onMouseClicked(mouseX, mouseY, button);
 		
 		if (!getHidden() && getFocused() && getHandled().getClient()) {
-			var sidings = (StorageSiding[]) null;
+			StorageSiding[] sidings = (StorageSiding[]) null;
 			
 			if (type == StorageType.ITEM) {
 				sidings = blockEntity.getItemStorage().getSidings();
@@ -135,7 +136,7 @@ public class StorageSidingWidget extends Widget {
 				sidings = blockEntity.getFluidStorage().getSidings();
 			}
 
-			var next = (StorageSiding) null;
+			StorageSiding next = (StorageSiding) null;
 			
 			if (button == GLFW.GLFW_MOUSE_BUTTON_1) {
 				next = sidings[direction.ordinal()].next();
@@ -145,7 +146,7 @@ public class StorageSidingWidget extends Widget {
 				return;
 			}
 
-			var buf = NetworkingUtils.ofStorageSiding(next, type, direction, blockEntity.getPos());
+			PacketByteBuf buf = NetworkingUtils.ofStorageSiding(next, type, direction, blockEntity.getPos());
 			
 			NetworkManager.sendToServer(AMNetworks.STORAGE_SIDING_UPDATE, buf);
 		}
@@ -154,9 +155,9 @@ public class StorageSidingWidget extends Widget {
 	@Environment(EnvType.CLIENT)
 	@Override
 	public @NotNull List<Text> getTooltip() {
-		var offset = MirrorUtils.rotate(direction, rotation);
-		
-		var name = switch (siding) {
+		Direction offset = MirrorUtils.rotate(direction, rotation);
+
+		MutableText name = switch (siding) {
 			case INSERT -> new TranslatableText("text.astromine.siding.insert").styled(style -> style.withColor(0x0078FF));
 			case EXTRACT -> new TranslatableText("text.astromine.siding.insert").styled(style -> style.withColor(0xFF6100));
 			case INSERT_EXTRACT ->

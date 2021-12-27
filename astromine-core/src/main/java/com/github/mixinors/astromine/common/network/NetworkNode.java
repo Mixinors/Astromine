@@ -110,7 +110,7 @@ public final class NetworkNode {
 
 	/** Serializes a {@link NetworkNode} to a {@link NbtCompound}. */
 	public NbtCompound toTag() {
-		var tag = new NbtCompound();
+		NbtCompound tag = new NbtCompound();
 
 		tag.putLong("pos", pos);
 

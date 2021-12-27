@@ -51,22 +51,22 @@ public class StackUtils {
 	 * their available space, our amount, and the specified amount.
 	 * */
 	public static Pair<ItemStack, ItemStack> merge(ItemStack source, ItemStack target) {
-		var targetMax = target.getMaxCount();
+		int targetMax = target.getMaxCount();
 
 		if (ItemStack.areItemsEqual(source, target) && ItemStack.areNbtEqual(source, target)) {
-			var sourceCount = source.getCount();
-			var targetCount = target.getCount();
+			int sourceCount = source.getCount();
+			int targetCount = target.getCount();
 
-			var targetAvailable = Math.max(0, targetMax - targetCount);
+			int targetAvailable = Math.max(0, targetMax - targetCount);
 
 			target.increment(Math.min(sourceCount, targetAvailable));
 			source.setCount(Math.max(sourceCount - targetAvailable, 0));
 		} else {
 			if (target.isEmpty() && !source.isEmpty()) {
-				var targetCount = target.getCount();
-				var targetAvailable = targetMax - targetCount;
+				int targetCount = target.getCount();
+				int targetAvailable = targetMax - targetCount;
 
-				var sourceCount = source.getCount();
+				int sourceCount = source.getCount();
 
 				target = source.copy();
 				target.setCount(Math.min(sourceCount, targetAvailable));
@@ -104,7 +104,7 @@ public class StackUtils {
 	public static ItemStack fromJson(JsonElement jsonElement) {
 		if (!jsonElement.isJsonObject()) {
 			if (jsonElement.isJsonPrimitive()) {
-				var primitive = jsonElement.getAsJsonPrimitive();
+				JsonPrimitive primitive = jsonElement.getAsJsonPrimitive();
 
 				if (primitive.isString()) {
 					return new ItemStack(Registry.ITEM.get(new Identifier(primitive.getAsString())));
@@ -121,7 +121,7 @@ public class StackUtils {
 
 	/** Serializes the given {@link ItemStack} to a {@link JsonElement}. */
 	public static JsonElement toJson(ItemStack stack) {
-		var object = new JsonObject();
+		JsonObject object = new JsonObject();
 		object.addProperty("item", Registry.ITEM.getId(stack.getItem()).toString());
 		object.addProperty("count", stack.getCount());
 		return object;

@@ -86,11 +86,11 @@ public class AMNetworkMembers {
 			}
 		});
 
-		var energy = NetworkMemberRegistry.INSTANCE.get(AMNetworkTypes.ENERGY);
-		var fluid = NetworkMemberRegistry.INSTANCE.get(AMNetworkTypes.FLUID);
+		NetworkMemberRegistry.NetworkTypeProvider<NetworkType> energy = NetworkMemberRegistry.INSTANCE.get(AMNetworkTypes.ENERGY);
+		NetworkMemberRegistry.NetworkTypeProvider<NetworkType> fluid = NetworkMemberRegistry.INSTANCE.get(AMNetworkTypes.FLUID);
 
 		BLOCK_CONSUMER.put(block -> block instanceof NetworkBlock, block -> {
-			var networkBlock = (NetworkBlock)block;
+			NetworkBlock networkBlock = (NetworkBlock)block;
 			if (networkBlock.isMember(AMNetworkTypes.ENERGY)) energy.register(block, networkBlock.getEnergyNetworkMemberType());
 			if (networkBlock.isMember(AMNetworkTypes.FLUID)) fluid.register(block, networkBlock.getFluidNetworkMemberType());
 		});

@@ -70,14 +70,14 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 				return false;
 			}
 
-			var inputInventory = BaseInventory.of(variant.toStack());
+			BaseInventory inputInventory = BaseInventory.of(variant.toStack());
 			
 			if (world != null) {
 				if (RECIPE_CACHE.get(world) == null) {
 					RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(RecipeType.SMELTING).values().stream().map(it -> (SmeltingRecipe) it).toArray(SmeltingRecipe[]::new));
 				}
 				
-				for (var recipe : RECIPE_CACHE.get(world)) {
+				for (SmeltingRecipe recipe : RECIPE_CACHE.get(world)) {
 					if (recipe.matches(inputInventory, world)) {
 						return true;
 					}
@@ -101,14 +101,14 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 			return;
 
 		if (itemStorage != null && energyStorage != null) {
-			var inputInventory = BaseInventory.of(itemStorage.getStack(1));
+			BaseInventory inputInventory = BaseInventory.of(itemStorage.getStack(1));
 
 			if (optionalRecipe.isEmpty() && shouldTry) {
 				if (RECIPE_CACHE.get(world) == null) {
 					RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(RecipeType.SMELTING).values().stream().map(it -> (SmeltingRecipe) it).toArray(SmeltingRecipe[]::new));
 				}
 
-				for (var recipe : RECIPE_CACHE.get(world)) {
+				for (SmeltingRecipe recipe : RECIPE_CACHE.get(world)) {
 					if (recipe.matches(inputInventory, world)) {
 						optionalRecipe = Optional.of(recipe);
 					}
@@ -123,20 +123,20 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 			}
 
 			if (optionalRecipe.isPresent()) {
-				var recipe = optionalRecipe.get();
+				SmeltingRecipe recipe = optionalRecipe.get();
 
 				if (recipe.matches(inputInventory, world)) {
 					limit = recipe.getCookTime();
 
-					var speed = Math.min(getMachineSpeed() * 2, limit - progress);
+					double speed = Math.min(getMachineSpeed() * 2, limit - progress);
 
-					var output = recipe.getOutput().copy();
+					ItemStack output = recipe.getOutput().copy();
 
-					var isEmpty = itemStorage.getStack(0).isEmpty();
-					var isEqual = ItemStack.areItemsEqual(itemStorage.getStack(0), output) && ItemStack.areNbtEqual(itemStorage.getStack(0), output);
+					boolean isEmpty = itemStorage.getStack(0).isEmpty();
+					boolean isEqual = ItemStack.areItemsEqual(itemStorage.getStack(0), output) && ItemStack.areNbtEqual(itemStorage.getStack(0), output);
 
 					if (energyStorage.getAmount() > 500.0D / limit * speed) {
-						try (var transaction = Transaction.openOuter()) {
+						try (Transaction transaction = Transaction.openOuter()) {
 							energyStorage.extract((long) (500.0D / limit * speed), transaction);
 							
 							if ((isEmpty || isEqual) && itemStorage.getStack(0).getCount() + output.getCount() <= itemStorage.getStack(0).getMaxCount()) {

@@ -111,7 +111,7 @@ public class WeightedList<U> {
 				@Override
 				public <T> DataResult<Pair<WeightedList.Entry<E>, T>> decode(DynamicOps<T> dynamicOps, T object) {
 					Objects.requireNonNull(codec);
-					var dynamic = new Dynamic<>(dynamicOps, object);
+					Dynamic<T> dynamic = new Dynamic<>(dynamicOps, object);
 					return dynamic.get("data").flatMap(codec::parse).map((data) -> {
 						return new WeightedList.Entry<>(data, dynamic.get("weight").asInt(1));
 					}).map((entry) -> Pair.of(entry, dynamicOps.empty()));

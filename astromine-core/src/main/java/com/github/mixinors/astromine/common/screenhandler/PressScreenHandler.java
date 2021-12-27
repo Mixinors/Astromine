@@ -47,19 +47,19 @@ public class PressScreenHandler extends ExtendedBlockEntityScreenHandler {
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
-		
-		var output = new SlotWidget(0, blockEntity.getItemStorage(), ExtractionSlot::new);
+
+		SlotWidget output = new SlotWidget(0, blockEntity.getItemStorage(), ExtractionSlot::new);
 		output.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
 		output.setSize( Size.of(18, 18));
-		
-		var input = new SlotWidget(1, blockEntity.getItemStorage());
+
+		SlotWidget input = new SlotWidget(1, blockEntity.getItemStorage());
 		input.setPosition( Position.of(energyBar.getX(), energyBar.getY()));
 		input.setSize(Size.of(18, 18));
 		
 		output.setPosition(Position.of(width / 2F - output.getWidth() / 2F, output.getY()));
 		output.setPosition(Position.of(output.getX() + 27, output.getY() + 15));
-		
-		var arrow = new HorizontalArrowWidget();
+
+		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(output.getX() - 31, output.getY()));
 		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> press.limit);

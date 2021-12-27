@@ -63,7 +63,7 @@ public record FluidGeneratingRecipe(Identifier id,
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidGeneratingRecipe) it).toArray(FluidGeneratingRecipe[]::new));
 		}
 
-		for (var recipe : RECIPE_CACHE.get(world)) {
+		for (FluidGeneratingRecipe recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.allows(variants)) {
 				return true;
 			}
@@ -77,7 +77,7 @@ public record FluidGeneratingRecipe(Identifier id,
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidGeneratingRecipe) it).toArray(FluidGeneratingRecipe[]::new));
 		}
 
-		for (var recipe : RECIPE_CACHE.get(world)) {
+		for (FluidGeneratingRecipe recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.matches(storages)) {
 				return Optional.of(recipe);
 			}
@@ -87,7 +87,7 @@ public record FluidGeneratingRecipe(Identifier id,
 	}
 
 	public boolean matches(SingleSlotStorage<FluidVariant>... storages) {
-		var inputStorage = storages[0];
+		SingleSlotStorage<FluidVariant> inputStorage = storages[0];
 
 		return input.test(inputStorage);
 	}
@@ -136,7 +136,7 @@ public record FluidGeneratingRecipe(Identifier id,
 
 		@Override
 		public FluidGeneratingRecipe read(Identifier identifier, JsonObject object) {
-			var format = new Gson().fromJson(object, FluidGeneratingRecipe.Format.class);
+			Format format = new Gson().fromJson(object, FluidGeneratingRecipe.Format.class);
 
 			return new FluidGeneratingRecipe(
 					identifier,

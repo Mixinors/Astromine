@@ -63,7 +63,7 @@ public abstract class WorldChunkMixin extends Chunk implements WorldChunkAccesso
 		if (this.astromine_unload == null) {
 			this.astromine_unload = runnable;
 		} else {
-			var run = this.astromine_unload;
+			Runnable run = this.astromine_unload;
 			this.astromine_unload = () -> {
 				run.run();
 				runnable.run();
@@ -110,9 +110,9 @@ public abstract class WorldChunkMixin extends Chunk implements WorldChunkAccesso
 
 	@Override
 	public WorldChunk astromine_east() {
-		var chunk = this.astromine_east;
+		WorldChunk chunk = this.astromine_east;
 		if (chunk == null) {
-			var pos = this.pos;
+			ChunkPos pos = this.pos;
 			chunk = this.astromine_east = this.world.getChunk(pos.x + 1, pos.z);
 			((WorldChunkAccessor) chunk).astromine_addUnloadListener(() -> this.astromine_east = null);
 			((WorldChunkAccessor) chunk).astromine_attachWest((WorldChunk) (Object) this);
@@ -123,9 +123,9 @@ public abstract class WorldChunkMixin extends Chunk implements WorldChunkAccesso
 
 	@Override
 	public WorldChunk astromine_west() {
-		var chunk = this.astromine_west;
+		WorldChunk chunk = this.astromine_west;
 		if (chunk == null) {
-			var pos = this.pos;
+			ChunkPos pos = this.pos;
 			chunk = this.astromine_west = this.world.getChunk(pos.x - 1, pos.z);
 			((WorldChunkAccessor) chunk).astromine_addUnloadListener(() -> this.astromine_west = null);
 			((WorldChunkAccessor) chunk).astromine_attachEast((WorldChunk) (Object) this);
@@ -136,9 +136,9 @@ public abstract class WorldChunkMixin extends Chunk implements WorldChunkAccesso
 
 	@Override
 	public WorldChunk astromine_north() {
-		var chunk = this.astromine_north;
+		WorldChunk chunk = this.astromine_north;
 		if (chunk == null) {
-			var pos = this.pos;
+			ChunkPos pos = this.pos;
 			chunk = this.astromine_north = this.world.getChunk(pos.x, pos.z - 1);
 			((WorldChunkAccessor) chunk).astromine_addUnloadListener(() -> this.astromine_north = null);
 			((WorldChunkAccessor) chunk).astromine_attachSouth((WorldChunk) (Object) this);
@@ -149,9 +149,9 @@ public abstract class WorldChunkMixin extends Chunk implements WorldChunkAccesso
 
 	@Override
 	public WorldChunk astromine_south() {
-		var chunk = this.astromine_south;
+		WorldChunk chunk = this.astromine_south;
 		if (chunk == null) {
-			var pos = this.pos;
+			ChunkPos pos = this.pos;
 			chunk = this.astromine_south = this.world.getChunk(pos.x, pos.z + 1);
 			((WorldChunkAccessor) chunk).astromine_addUnloadListener(() -> this.astromine_south = null);
 			((WorldChunkAccessor) chunk).astromine_attachNorth((WorldChunk) (Object) this);

@@ -57,13 +57,13 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 
 	@Override
 	public boolean generate(FeatureContext<DefaultFeatureConfig> context) {
-		var world = context.getWorld();
-		var random = context.getRandom();
-		var featurePosition = context.getOrigin();
-		var config = context.getConfig();
+		StructureWorldAccess world = context.getWorld();
+		Random random = context.getRandom();
+		BlockPos featurePosition = context.getOrigin();
+		DefaultFeatureConfig config = context.getConfig();
 		featurePosition = new BlockPos(featurePosition.getX(), random.nextInt(256), featurePosition.getZ());
 
-		var ores = new WeightedList<Block>();
+		WeightedList<Block> ores = new WeightedList<Block>();
 
 		chances(random, ores);
 
@@ -73,11 +73,11 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 
 		ores.shuffle(random);
 
-		var ore = ores.stream().findFirst().orElse(AMBlocks.ASTEROID_STONE.get());
+		Block ore = ores.stream().findFirst().orElse(AMBlocks.ASTEROID_STONE.get());
 
-		var xSize = AsteroidOreRegistry.INSTANCE.getDiameter(random, ore);
-		var ySize = AsteroidOreRegistry.INSTANCE.getDiameter(random, ore);
-		var zSize = AsteroidOreRegistry.INSTANCE.getDiameter(random, ore);
+		int xSize = AsteroidOreRegistry.INSTANCE.getDiameter(random, ore);
+		int ySize = AsteroidOreRegistry.INSTANCE.getDiameter(random, ore);
+		int zSize = AsteroidOreRegistry.INSTANCE.getDiameter(random, ore);
 
 		if (xSize > 0 && ySize > 0 && zSize > 0) {
 			this.place(world, random, featurePosition, ore, (float) xSize, (float) ySize, (float) zSize);
@@ -96,11 +96,11 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 	}
 
 	private void place(StructureWorldAccess world, Random random, BlockPos featurePosition, Block ore, float xSize, float ySize, float zSize) {
-		var vein = Shapes.ellipsoid(xSize, ySize, zSize).applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true))).applyLayer(TranslateLayer.of(Position.of(
+		Shape vein = Shapes.ellipsoid(xSize, ySize, zSize).applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true))).applyLayer(TranslateLayer.of(Position.of(
 				featurePosition)));
 
-		for (var streamPosition : vein.stream().collect(Collectors.toSet())) {
-			var orePosition = streamPosition.toBlockPos();
+		for (Position streamPosition : vein.stream().collect(Collectors.toSet())) {
+			BlockPos orePosition = streamPosition.toBlockPos();
 
 			if (world.getBlockState(orePosition).getBlock() == AMBlocks.ASTEROID_STONE.get()) {
 				if (random.nextInt(AMConfig.get().asteroidOreThreshold) == 0) {

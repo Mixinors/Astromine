@@ -49,15 +49,15 @@ public class AlloySmelterScreenHandler extends ExtendedBlockEntityScreenHandler 
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		var firstInput = new SlotWidget(0, smelter.getItemStorage());
+		SlotWidget firstInput = new SlotWidget(0, smelter.getItemStorage());
 		firstInput.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
 		firstInput.setSize( Size.of(18, 18));
 
-		var secondInput = new SlotWidget(1, smelter.getItemStorage());
+		SlotWidget secondInput = new SlotWidget(1, smelter.getItemStorage());
 		secondInput.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
 		secondInput.setSize(Size.of(18, 18));
 
-		var output = new SlotWidget(2, smelter.getItemStorage(), ExtractionSlot::new);
+		SlotWidget output = new SlotWidget(2, smelter.getItemStorage(), ExtractionSlot::new);
 		output.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
 		output.setSize(Size.of(18, 18));
 
@@ -70,7 +70,7 @@ public class AlloySmelterScreenHandler extends ExtendedBlockEntityScreenHandler 
 		output.setPosition(Position.of(width / 2F - output.getWidth() / 2, output.getY()));
 		output.setPosition(Position.of(secondInput.getX() + 57, secondInput.getY() - 9));
 
-		var arrow = new HorizontalArrowWidget();
+		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(output.getX() - 31, output.getY()));
 		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> smelter.limit);

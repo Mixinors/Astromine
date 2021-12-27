@@ -52,7 +52,7 @@ public class AMDimensions {
 	}
 	
 	public static <T> RegistryKey<T> register(RegistryKey<Registry<T>> registry, Identifier identifier) {
-		var key = RegistryKey.of(registry, identifier);
+		RegistryKey<T> key = RegistryKey.of(registry, identifier);
 		KEYS.add(key);
 		return key;
 	}

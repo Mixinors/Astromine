@@ -33,7 +33,7 @@ public interface ItemInputRecipe extends AMRecipe {
 	ItemIngredient getInput();
 
 	default boolean allows(ItemVariant... variants) {
-		var inputVariant = variants[0];
+		ItemVariant inputVariant = variants[0];
 
 		return getInput().test(inputVariant, Long.MAX_VALUE);
 	}

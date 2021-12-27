@@ -92,7 +92,7 @@ public abstract class RocketEntity extends ExtendedEntity {
 	@Override
 	public void updatePassengerPosition(Entity passenger) {
 		if (this.hasPassenger(passenger)) {
-			var position = getPassengerPosition();
+			Vec3f position = getPassengerPosition();
 			passenger.setPosition(getX() + position.getX(), getY() + position.getY(), getZ() + position.getZ());
 		}
 	}
@@ -105,18 +105,18 @@ public abstract class RocketEntity extends ExtendedEntity {
 			if (isFuelMatching()) {
 				consumeFuel();
 
-				var acceleration = getAcceleration();
+				Vector3d acceleration = getAcceleration();
 
 				this.addVelocity(0, acceleration.y, 0);
 				this.move(MovementType.SELF, this.getVelocity());
 
 				if (!this.world.isClient) {
-					var box = getBoundingBox();
+					Box box = getBoundingBox();
 
-					var y = getY();
+					double y = getY();
 
-					for (var x = box.minX; x < box.maxX; x += 0.0625) {
-						for (var z = box.minZ; z < box.maxZ; z += 0.0625) {
+					for (double x = box.minX; x < box.maxX; x += 0.0625) {
+						for (double z = box.minZ; z < box.maxZ; z += 0.0625) {
 							((ServerWorld) world).spawnParticles(AMParticles.ROCKET_FLAME.get(), x, y, z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
 						}
 					}
@@ -147,9 +147,9 @@ public abstract class RocketEntity extends ExtendedEntity {
 
 		this.getDroppedStacks().forEach(stack -> ItemScatterer.spawn(world, getX(), getY(), getZ(), stack.copy()));
 
-		var passengers = this.getPassengersDeep();
+		Iterable<Entity> passengers = this.getPassengersDeep();
 
-		for (var passenger : passengers) {
+		for (Entity passenger : passengers) {
 			if (passenger instanceof ServerPlayerEntity) {
 				AMCriteria.DESTROY_ROCKET.trigger((ServerPlayerEntity) passenger, intentional);
 			}
@@ -161,13 +161,13 @@ public abstract class RocketEntity extends ExtendedEntity {
 	}
 
 	private void tryExplode() {
-		var strength = fluidStorage.getStorage(FLUID_INPUT_SLOT_1).getAmount() * 0.25F + fluidStorage.getStorage(FLUID_INPUT_SLOT_2).getAmount() * 0.25F;
+		float strength = fluidStorage.getStorage(FLUID_INPUT_SLOT_1).getAmount() * 0.25F + fluidStorage.getStorage(FLUID_INPUT_SLOT_2).getAmount() * 0.25F;
 
 		world.createExplosion(this, getX(), getY(), getZ(), min(strength, 32.0F) + 3.0F, Explosion.DestructionType.BREAK);
 	}
 
 	public Vec3d updatePassengerForDismount(LivingEntity passenger) {
-		var vec3d = getPassengerDismountOffset(this.getWidth(), passenger.getWidth(), this.getYaw() + (passenger.getMainArm() == Arm.RIGHT ? 90.0F : -90.0F));
+		Vec3d vec3d = getPassengerDismountOffset(this.getWidth(), passenger.getWidth(), this.getYaw() + (passenger.getMainArm() == Arm.RIGHT ? 90.0F : -90.0F));
 		return new Vec3d(vec3d.getX() + this.getX(), vec3d.getY() + this.getY(), vec3d.getZ() + this.getZ());
 	}
 

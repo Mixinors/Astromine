@@ -87,7 +87,7 @@ public interface SingularStackInventory extends Inventory {
 			throw new ArrayIndexOutOfBoundsException("Cannot access slot bigger than inventory size");
 		}
 
-		var stack = getStack();
+		ItemStack stack = getStack();
 
 		if (count > stack.getCount()) {
 			setStack(ItemStack.EMPTY);
@@ -95,7 +95,7 @@ public interface SingularStackInventory extends Inventory {
 		} else {
 			stack.decrement(count);
 
-			var copy = stack.copy();
+			ItemStack copy = stack.copy();
 
 			copy.setCount(count);
 
@@ -111,7 +111,7 @@ public interface SingularStackInventory extends Inventory {
 			throw new ArrayIndexOutOfBoundsException("Cannot access slot bigger than inventory size");
 		}
 
-		var stack = getStack();
+		ItemStack stack = getStack();
 
 		markDirty();
 
@@ -173,7 +173,7 @@ public interface SingularStackInventory extends Inventory {
 		 */
 		@Override
 		public String toString() {
-			var slot = new AtomicInteger(0);
+			AtomicInteger slot = new AtomicInteger(0);
 
 			return getItems().stream().map(stack -> String.format("%s - [%s]", slot.getAndIncrement(), stack.toString())).collect(Collectors.joining(", "));
 		}

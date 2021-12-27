@@ -50,7 +50,7 @@ public class FluidGeneratorScreenHandler extends ExtendedBlockEntityScreenHandle
 		energyBar.setPosition( Position.of(mainTab, 68, 11));
 		fluidBar.setPosition(Position.of(mainTab, 7, 11));
 
-		var arrow = new HorizontalArrowWidget();
+		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(fluidBar, fluidBar.getWidth() + 7, fluidBar.getHeight() / 2F - 8));
 		arrow.setSize( Size.of(22, 16));
 		arrow.setLimitSupplier(() -> generator.limit);

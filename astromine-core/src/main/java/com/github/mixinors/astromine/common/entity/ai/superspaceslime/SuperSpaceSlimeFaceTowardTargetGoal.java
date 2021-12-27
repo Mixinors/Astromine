@@ -47,7 +47,7 @@ public class SuperSpaceSlimeFaceTowardTargetGoal extends Goal {
 
 	@Override
 	public boolean canStart() {
-		var livingEntity = this.slime.getTarget();
+		LivingEntity livingEntity = this.slime.getTarget();
 
 		if (livingEntity == null) {
 			return false;
@@ -60,7 +60,7 @@ public class SuperSpaceSlimeFaceTowardTargetGoal extends Goal {
 
 	@Override
 	public boolean shouldContinue() {
-		var livingEntity = this.slime.getTarget();
+		LivingEntity livingEntity = this.slime.getTarget();
 
 		if (livingEntity == null) {
 			return false;

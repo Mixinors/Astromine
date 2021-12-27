@@ -104,14 +104,14 @@ public class FluidFilterWidget extends ButtonWidget
 	public void onMouseClicked(float x, float y, int button) {
 		super.onMouseClicked(x, y, button);
 
-		var stack = getHandled().getHandler().getCursorStack();
+		ItemStack stack = getHandled().getHandler().getCursorStack();
 
 		if (isWithin(x, y)) {
 			if (!stack.isEmpty()) {
-				var fluidStorage = FluidStorage.ITEM.find(stack, ContainerItemContext.ofPlayerCursor(getHandled().getHandler().getPlayer(), getHandled().getHandler()));
+				Storage<FluidVariant> fluidStorage = FluidStorage.ITEM.find(stack, ContainerItemContext.ofPlayerCursor(getHandled().getHandler().getPlayer(), getHandled().getHandler()));
 				
 				if (fluidStorage != null) {
-					var fluid = StorageUtil.findStoredResource(fluidStorage, null).getFluid();
+					Fluid fluid = StorageUtil.findStoredResource(fluidStorage, null).getFluid();
 					
 					fluidSupplier = () -> fluid;
 					fluidConsumer.accept(fluidSupplier.get());
@@ -127,7 +127,7 @@ public class FluidFilterWidget extends ButtonWidget
 	@NotNull
 	@Override
 	public List<Text> getTooltip() {
-		var fluidId = Registry.FLUID.getId(fluidSupplier.get());
+		Identifier fluidId = Registry.FLUID.getId(fluidSupplier.get());
 
 		return Collections.singletonList(new TranslatableText("text.astromine.filter", TextUtils.getFluid(fluidId)));
 	}
@@ -140,13 +140,13 @@ public class FluidFilterWidget extends ButtonWidget
 			return;
 		}
 
-		var x = getPosition().getX();
-		var y = getPosition().getY();
+		float x = getPosition().getX();
+		float y = getPosition().getY();
 
-		var sX = getSize().getWidth();
-		var sY = getSize().getHeight();
+		float sX = getSize().getWidth();
+		float sY = getSize().getHeight();
 
-		var layer = Layers.get(FLUID_BACKGROUND);
+		RenderLayer layer = Layers.get(FLUID_BACKGROUND);
 
 		BaseRenderer.drawTexturedQuad(matrices, provider, layer, x, y, getSize().getWidth(), getSize().getHeight(), FLUID_BACKGROUND);
 

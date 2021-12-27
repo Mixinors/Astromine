@@ -41,7 +41,7 @@ public class Vec3f {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-		var vec2f = (Vec3f) o;
+		Vec3f vec2f = (Vec3f) o;
 		return Float.compare(vec2f.x, x) == 0 && Float.compare(vec2f.y, y) == 0 && Float.compare(vec2f.z, z) == 0;
 	}
 

@@ -27,17 +27,21 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemVariantStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.google.common.base.Predicates;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -108,21 +112,21 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tie
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		var unloadStack = itemStorage.getStack(ITEM_INPUT_SLOT);
-		var unloadItemStorage = itemStorage.getStorage(ITEM_INPUT_SLOT);
-		var unloadFluidStorage = FluidStorage.ITEM.find(unloadStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(ITEM_INPUT_SLOT)));
+		ItemStack unloadStack = itemStorage.getStack(ITEM_INPUT_SLOT);
+		SimpleItemVariantStorage unloadItemStorage = itemStorage.getStorage(ITEM_INPUT_SLOT);
+		Storage<FluidVariant> unloadFluidStorage = FluidStorage.ITEM.find(unloadStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(ITEM_INPUT_SLOT)));
 
-		var middleItemStorage = itemStorage.getStorage(ITEM_OUTPUT_SLOT_1);
+		SimpleItemVariantStorage middleItemStorage = itemStorage.getStorage(ITEM_OUTPUT_SLOT_1);
+
+		ItemStack loadStack = itemStorage.getStack(ITEM_OUTPUT_SLOT_2);
+		Storage<FluidVariant> loadFluidStorage = FluidStorage.ITEM.find(loadStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(ITEM_OUTPUT_SLOT_2)));
 		
-		var loadStack = itemStorage.getStack(ITEM_OUTPUT_SLOT_2);
-		var loadFluidStorage = FluidStorage.ITEM.find(loadStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(ITEM_OUTPUT_SLOT_2)));
-		
-		try (var transaction = Transaction.openOuter()) {
+		try (Transaction transaction = Transaction.openOuter()) {
 			StorageUtil.move(unloadFluidStorage, fluidStorage.getStorage(FLUID_INPUT_SLOT), Predicates.alwaysTrue(), FluidConstants.BUCKET, transaction);
 			StorageUtil.move(fluidStorage.getStorage(FLUID_OUTPUT_SLOT), loadFluidStorage, Predicates.alwaysTrue(), FluidConstants.BUCKET, transaction);
 			
 			StorageUtil.move(unloadItemStorage, middleItemStorage, (variant) -> {
-				var stored = StorageUtil.findStoredResource(unloadFluidStorage, transaction);
+				FluidVariant stored = StorageUtil.findStoredResource(unloadFluidStorage, transaction);
 				return stored == null || stored.isBlank();
 			}, 1, transaction);
 			
@@ -252,7 +256,7 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tie
 		public void tick() {
 			super.tick();
 			
-			try (var transaction = Transaction.openOuter()) {
+			try (Transaction transaction = Transaction.openOuter()) {
 				fluidStorage.getStorage(FLUID_OUTPUT_SLOT).insert(fluidStorage.getStorage(FLUID_OUTPUT_SLOT).getResource(), Long.MAX_VALUE, transaction);
 				
 				transaction.commit();

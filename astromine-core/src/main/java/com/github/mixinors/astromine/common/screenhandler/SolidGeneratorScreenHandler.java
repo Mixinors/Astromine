@@ -48,13 +48,13 @@ public class SolidGeneratorScreenHandler extends ExtendedBlockEntityScreenHandle
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		var arrow = new HorizontalArrowWidget();
+		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of( energyBar, energyBar.getWidth() + 3, energyBar.getHeight() / 2F - 8));
 		arrow.setSize( Size.of(22, 16));
 		arrow.setLimitSupplier(() -> generator.limit);
 		arrow.setProgressSupplier(() -> (int) generator.progress);
 
-		var input = new SlotWidget(0, blockEntity.getItemStorage());
+		SlotWidget input = new SlotWidget(0, blockEntity.getItemStorage());
 		input.setPosition(Position.of(arrow, -26, 0));
 		input.setSize(Size.of(18, 18));
 

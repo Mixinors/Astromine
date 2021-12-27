@@ -48,18 +48,18 @@ public class FluidMixerScreenHandler extends ExtendedBlockEntityScreenHandler {
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		var secondInputFluidBar = new FluidBarWidget();
+		FluidBarWidget secondInputFluidBar = new FluidBarWidget();
 		secondInputFluidBar.setPosition( Position.of(fluidBar, fluidBar.getWidth() + 7, 0));
 		secondInputFluidBar.setSize( Size.of(fluidBar));
 		secondInputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(1));
 
-		var arrow = new HorizontalArrowWidget();
+		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(secondInputFluidBar, secondInputFluidBar.getWidth() + 9, secondInputFluidBar.getHeight() / 2F - 8));
 		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> mixer.limit);
 		arrow.setProgressSupplier(() -> (int) mixer.progress);
 
-		var outputFluidBar = new FluidBarWidget();
+		FluidBarWidget outputFluidBar = new FluidBarWidget();
 		outputFluidBar.setPosition(Position.of(secondInputFluidBar, secondInputFluidBar.getWidth() + 9 + arrow.getWidth() + 7, 0));
 		outputFluidBar.setSize(Size.of(fluidBar));
 		outputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(2));

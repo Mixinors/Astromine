@@ -145,8 +145,8 @@ public class AMBlockEntityTypes {
 	}
 
 	private static Block[] resolveBlocks(Supplier<Block>[] supportedBlocks) {
-		var blocks = new Block[supportedBlocks.length];
-		for (var i = 0; i < supportedBlocks.length; i++) {
+		Block[] blocks = new Block[supportedBlocks.length];
+		for (int i = 0; i < supportedBlocks.length; i++) {
 			blocks[i] = supportedBlocks[i].get();
 		}
 		return blocks;

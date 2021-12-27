@@ -67,7 +67,7 @@ public abstract class ItemOutputMachineRecipeJsonFactory<T extends EnergyConsumi
 
 		@Override
 		public void serialize(JsonObject json) {
-			var outputJson = new JsonObject();
+			JsonObject outputJson = new JsonObject();
 			outputJson.addProperty("item", Registry.ITEM.getId(this.output).toString());
 			outputJson.addProperty("count", outputCount);
 			json.add("output", outputJson);

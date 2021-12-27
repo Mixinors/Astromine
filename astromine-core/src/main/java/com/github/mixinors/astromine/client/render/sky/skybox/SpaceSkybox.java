@@ -94,7 +94,7 @@ public class SpaceSkybox extends Skybox {
 
         int vertexLight = 0x00f000f0 >> 2 | rawLight >> 3 | rawLight;
 
-        for (var i = 0; i < 6; ++i) {
+        for (int i = 0; i < 6; ++i) {
             matrices.push();
 			switch (i) {
 				case 0 -> {

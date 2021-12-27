@@ -48,7 +48,7 @@ public abstract class HorizontalFacingBlockWithEntity extends BlockWithEntity {
 	/** Override behavior to add the {@link DirectionProperty}. */
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		var directionProperty = getDirectionProperty();
+		DirectionProperty directionProperty = getDirectionProperty();
 
 		if (directionProperty != null) {
 			builder.add(directionProperty);
@@ -60,7 +60,7 @@ public abstract class HorizontalFacingBlockWithEntity extends BlockWithEntity {
 	/** Override behavior to add the {@link DirectionProperty}. */
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
-		var directionProperty = getDirectionProperty();
+		DirectionProperty directionProperty = getDirectionProperty();
 
 		if (directionProperty != null) {
 			return super.getPlacementState(context).with(getDirectionProperty(), context.getPlayerFacing().getOpposite());
@@ -72,7 +72,7 @@ public abstract class HorizontalFacingBlockWithEntity extends BlockWithEntity {
 	/** Override behavior to add the {@link DirectionProperty}. */
 	@Override
 	public BlockState rotate(BlockState state, BlockRotation rotation) {
-		var directionProperty = getDirectionProperty();
+		DirectionProperty directionProperty = getDirectionProperty();
 
 		if (directionProperty != null) {
 			return state.with(getDirectionProperty(), rotation.rotate(state.get(getDirectionProperty())));
@@ -84,7 +84,7 @@ public abstract class HorizontalFacingBlockWithEntity extends BlockWithEntity {
 	/** Override behavior to add the {@link DirectionProperty}. */
 	@Override
 	public BlockState mirror(BlockState state, BlockMirror mirror) {
-		var directionProperty = getDirectionProperty();
+		DirectionProperty directionProperty = getDirectionProperty();
 
 		if (directionProperty != null) {
 			return state.rotate(mirror.getRotation(state.get(getDirectionProperty())));

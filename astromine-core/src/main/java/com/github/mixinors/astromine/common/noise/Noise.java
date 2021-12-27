@@ -60,12 +60,12 @@ public abstract class Noise {
 	 * @return the absolute value
 	 */
 	public static int fastAbs(int n) {
-		var mask = n >> (SIZE_INT * CHAR_BIT - 1);
+		int mask = n >> (SIZE_INT * CHAR_BIT - 1);
 		return ((n + mask) ^ mask);
 	}
 
 	public static long fastAbs(long n) {
-		var mask = n >> (SIZE_INT * CHAR_BIT - 1);
+		long mask = n >> (SIZE_INT * CHAR_BIT - 1);
 		return ((n + mask) ^ mask);
 	}
 

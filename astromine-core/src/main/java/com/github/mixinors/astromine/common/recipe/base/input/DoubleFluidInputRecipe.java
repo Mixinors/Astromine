@@ -40,8 +40,8 @@ public interface DoubleFluidInputRecipe extends FluidInputRecipe {
 
 	@Override
 	default boolean allows(FluidVariant... variants) {
-		var firstInputVariant = variants[0];
-		var secondInputVariant = variants[1];
+		FluidVariant firstInputVariant = variants[0];
+		FluidVariant secondInputVariant = variants[1];
 
 		if (!getFirstInput().test(firstInputVariant, Long.MAX_VALUE) && !getSecondInput().test(firstInputVariant, Long.MAX_VALUE)) {
 			return false;

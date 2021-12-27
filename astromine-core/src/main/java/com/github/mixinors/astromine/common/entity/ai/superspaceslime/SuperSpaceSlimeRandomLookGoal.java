@@ -44,9 +44,9 @@ public class SuperSpaceSlimeRandomLookGoal extends Goal {
 
 	@Override
 	public boolean canStart() {
-	var validTarget = this.slime.getTarget() == null;
-		var validState = this.slime.isOnGround() || this.slime.isTouchingWater() || this.slime.isInLava() || this.slime.hasStatusEffect(StatusEffects.LEVITATION);
-		var hasSlimeMoveControls = this.slime.getMoveControl() instanceof SuperSpaceSlimeMoveControl;
+		boolean validTarget = this.slime.getTarget() == null;
+		boolean validState = this.slime.isOnGround() || this.slime.isTouchingWater() || this.slime.isInLava() || this.slime.hasStatusEffect(StatusEffects.LEVITATION);
+		boolean hasSlimeMoveControls = this.slime.getMoveControl() instanceof SuperSpaceSlimeMoveControl;
 
 		return validTarget && validState && hasSlimeMoveControls;
 	}

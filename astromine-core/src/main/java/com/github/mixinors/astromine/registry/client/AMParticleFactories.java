@@ -39,7 +39,7 @@ public class AMParticleFactories {
 		ParticleFactoryRegistry.getInstance().register(AMParticles.SPACE_SLIME.get(), (parameters, world, x, y, z, velocityX, velocityY, velocityZ) -> new CrackParticle(world, x, y, z, new ItemStack(AMItems.SPACE_SLIME_BALL.get())));
 		
 		ParticleFactoryRegistry.getInstance().register(AMParticles.ROCKET_FLAME.get(), provider -> (parameters, world, x, y, z, velocityX, velocityY, velocityZ) -> {
-			var particle = new RocketFlameParticle(world, x, y, z, velocityX, velocityY, velocityZ);
+			RocketFlameParticle particle = new RocketFlameParticle(world, x, y, z, velocityX, velocityY, velocityZ);
 			particle.setSprite(provider);
 			return particle;
 		});

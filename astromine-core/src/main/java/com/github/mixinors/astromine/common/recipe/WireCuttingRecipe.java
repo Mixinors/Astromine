@@ -60,11 +60,11 @@ public class WireCuttingRecipe extends SpecialCraftingRecipe {
 
 	@Override
 	public boolean matches(CraftingInventory inv, World world) {
-		var inputCount = 0;
-		var shearsCount = 0;
+		int inputCount = 0;
+		int shearsCount = 0;
 
-		for (var k = 0; k < inv.size(); ++k) {
-			var itemStack = inv.getStack(k);
+		for (int k = 0; k < inv.size(); ++k) {
+			ItemStack itemStack = inv.getStack(k);
 			if (!itemStack.isEmpty()) {
 				if (this.input.test(itemStack)) {
 					++inputCount;
@@ -115,14 +115,14 @@ public class WireCuttingRecipe extends SpecialCraftingRecipe {
 
 	@Override
 	public DefaultedList<ItemStack> getRemainder(CraftingInventory inv) {
-		var remainingStacks = DefaultedList.ofSize(inv.size(), ItemStack.EMPTY);
+		DefaultedList<ItemStack> remainingStacks = DefaultedList.ofSize(inv.size(), ItemStack.EMPTY);
 
-		for (var i = 0; i < remainingStacks.size(); ++i) {
-			var itemStack = inv.getStack(i);
+		for (int i = 0; i < remainingStacks.size(); ++i) {
+			ItemStack itemStack = inv.getStack(i);
 			if (itemStack.getItem().hasRecipeRemainder()) {
 				remainingStacks.set(i, new ItemStack(itemStack.getItem().getRecipeRemainder()));
 			} else if (tool.test(itemStack)) {
-				var remainingTool = itemStack.copy();
+				ItemStack remainingTool = itemStack.copy();
 				remainingTool.setCount(1);
 				if (!remainingTool.damage(1, RANDOM, null)) {
 					remainingStacks.set(i, remainingTool);
@@ -144,7 +144,7 @@ public class WireCuttingRecipe extends SpecialCraftingRecipe {
 
 		@Override
 		public WireCuttingRecipe read(Identifier identifier, JsonObject object) {
-			var format = new Gson().fromJson(object, WireCuttingRecipe.Format.class);
+			Format format = new Gson().fromJson(object, WireCuttingRecipe.Format.class);
 
 			return new WireCuttingRecipe(identifier,
 				IngredientUtils.fromIngredientJson(format.input),

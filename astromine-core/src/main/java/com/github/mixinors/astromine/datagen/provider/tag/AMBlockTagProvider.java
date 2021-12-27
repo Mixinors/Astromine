@@ -84,8 +84,8 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 
 	@Override
 	protected void generateTags() {
-		var beaconBaseTagBuilder = getOrCreateTagBuilder(BlockTags.BEACON_BASE_BLOCKS);
-		var guardedByPiglinsTagBuilder = getOrCreateTagBuilder(BlockTags.GUARDED_BY_PIGLINS);
+		FabricTagProvider<Block>.FabricTagBuilder<Block> beaconBaseTagBuilder = getOrCreateTagBuilder(BlockTags.BEACON_BASE_BLOCKS);
+		FabricTagProvider<Block>.FabricTagBuilder<Block> guardedByPiglinsTagBuilder = getOrCreateTagBuilder(BlockTags.GUARDED_BY_PIGLINS);
 
 		MaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateTags).forEachOrdered(family -> {
 			family.getBlockTags().forEach((variant, tag) -> {
@@ -115,8 +115,8 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 			});
 
 			if (family.hasAnyBlockVariants(AMDatagen.ORE_VARIANTS)) {
-				var oresTag = family.getBlockTag("ores");
-				var oresTagBuilder = getOrCreateTagBuilder(oresTag);
+				Tag.Identified<Block> oresTag = family.getBlockTag("ores");
+				FabricTagProvider<Block>.FabricTagBuilder<Block> oresTagBuilder = getOrCreateTagBuilder(oresTag);
 				AMDatagen.ORE_VARIANTS.forEach((variant) -> {
 					if (family.hasVariant(variant)) {
 						oresTagBuilder.addTag(family.getTag(variant));
@@ -142,32 +142,32 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 			}
 		}));
 
-		var cauldronsTagBuilder = getOrCreateTagBuilder(BlockTags.CAULDRONS);
+		FabricTagProvider<Block>.FabricTagBuilder<Block> cauldronsTagBuilder = getOrCreateTagBuilder(BlockTags.CAULDRONS);
 		AMDatagen.FLUIDS.forEach((fluid) -> {
-			var fluidName = Registry.FLUID.getId(fluid.getStill()).getPath();
-			var tagBuilder = getOrCreateTagBuilder(AMDatagen.createCommonBlockTag(fluidName));
-			var cauldronTag = AMDatagen.createCommonBlockTag(fluidName + "_cauldrons");
-			var cauldronTagBuilder = getOrCreateTagBuilder(cauldronTag);
+			String fluidName = Registry.FLUID.getId(fluid.getStill()).getPath();
+			FabricTagProvider<Block>.FabricTagBuilder<Block> tagBuilder = getOrCreateTagBuilder(AMDatagen.createCommonBlockTag(fluidName));
+			Tag.Identified<Block> cauldronTag = AMDatagen.createCommonBlockTag(fluidName + "_cauldrons");
+			FabricTagProvider<Block>.FabricTagBuilder<Block> cauldronTagBuilder = getOrCreateTagBuilder(cauldronTag);
 			tagBuilder.add(fluid.getBlock());
 			cauldronTagBuilder.add(fluid.getCauldron());
 			cauldronsTagBuilder.addTag(cauldronTag);
 		});
 
-		var oresTagBuilder = getOrCreateTagBuilder(AMDatagen.createCommonBlockTag("ores"));
+		FabricTagProvider<Block>.FabricTagBuilder<Block> oresTagBuilder = getOrCreateTagBuilder(AMDatagen.createCommonBlockTag("ores"));
 		AMDatagen.ORE_VARIANTS.forEach((variant) -> {
 			if (variant.hasTag()) {
 				oresTagBuilder.addTag(variant.getTag());
 			}
 		});
 
-		var yellowSandstonesTag = AMDatagen.createCommonBlockTag("yellow_sandstones");
+		Tag.Identified<Block> yellowSandstonesTag = AMDatagen.createCommonBlockTag("yellow_sandstones");
 		getOrCreateTagBuilder(yellowSandstonesTag)
 				.add(Blocks.SANDSTONE)
 				.add(Blocks.CHISELED_SANDSTONE)
 				.add(Blocks.CUT_SANDSTONE)
 				.add(Blocks.SMOOTH_SANDSTONE);
 
-		var redSandstonesTag = AMDatagen.createCommonBlockTag("red_sandstones");
+		Tag.Identified<Block> redSandstonesTag = AMDatagen.createCommonBlockTag("red_sandstones");
 		getOrCreateTagBuilder(redSandstonesTag)
 				.add(Blocks.RED_SANDSTONE)
 				.add(Blocks.CHISELED_RED_SANDSTONE)
@@ -184,14 +184,14 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 				.add(Blocks.QUARTZ_PILLAR)
 				.add(Blocks.CHISELED_QUARTZ_BLOCK);
 
-		var unwaxedCopperBlocksTag = AMDatagen.createCommonBlockTag("unwaxed_copper_blocks");
+		Tag.Identified<Block> unwaxedCopperBlocksTag = AMDatagen.createCommonBlockTag("unwaxed_copper_blocks");
 		getOrCreateTagBuilder(unwaxedCopperBlocksTag)
 				.add(Blocks.COPPER_BLOCK)
 				.add(Blocks.EXPOSED_COPPER)
 				.add(Blocks.WEATHERED_COPPER)
 				.add(Blocks.OXIDIZED_COPPER);
 
-		var waxedCopperBlocksTag = AMDatagen.createCommonBlockTag("waxed_copper_blocks");
+		Tag.Identified<Block> waxedCopperBlocksTag = AMDatagen.createCommonBlockTag("waxed_copper_blocks");
 		getOrCreateTagBuilder(waxedCopperBlocksTag)
 				.add(Blocks.WAXED_COPPER_BLOCK)
 				.add(Blocks.WAXED_EXPOSED_COPPER)
@@ -202,14 +202,14 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 				.addTag(unwaxedCopperBlocksTag)
 				.addTag(waxedCopperBlocksTag);
 
-		var unwaxedCutCopperTag = AMDatagen.createCommonBlockTag("unwaxed_cut_copper");
+		Tag.Identified<Block> unwaxedCutCopperTag = AMDatagen.createCommonBlockTag("unwaxed_cut_copper");
 		getOrCreateTagBuilder(unwaxedCutCopperTag)
 				.add(Blocks.CUT_COPPER)
 				.add(Blocks.EXPOSED_CUT_COPPER)
 				.add(Blocks.WEATHERED_CUT_COPPER)
 				.add(Blocks.OXIDIZED_CUT_COPPER);
 
-		var waxedCutCopperTag = AMDatagen.createCommonBlockTag("waxed_cut_copper");
+		Tag.Identified<Block> waxedCutCopperTag = AMDatagen.createCommonBlockTag("waxed_cut_copper");
 		getOrCreateTagBuilder(waxedCutCopperTag)
 				.add(Blocks.WAXED_CUT_COPPER)
 				.add(Blocks.WAXED_EXPOSED_CUT_COPPER)
@@ -240,22 +240,22 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 				.add(Blocks.WARPED_ROOTS)
 				.add(Blocks.CRIMSON_ROOTS);
 
-		var weepingVinesTag = AMDatagen.createCommonBlockTag("weeping_vines");
+		Tag.Identified<Block> weepingVinesTag = AMDatagen.createCommonBlockTag("weeping_vines");
 		getOrCreateTagBuilder(weepingVinesTag)
 				.add(Blocks.WEEPING_VINES)
 				.add(Blocks.WEEPING_VINES_PLANT);
 
-		var twistingVinesTag = AMDatagen.createCommonBlockTag("twisting_vines");
+		Tag.Identified<Block> twistingVinesTag = AMDatagen.createCommonBlockTag("twisting_vines");
 		getOrCreateTagBuilder(twistingVinesTag)
 				.add(Blocks.TWISTING_VINES)
 				.add(Blocks.TWISTING_VINES_PLANT);
 
-		var netherVinesTag = AMDatagen.createCommonBlockTag("nether_vines");
+		Tag.Identified<Block> netherVinesTag = AMDatagen.createCommonBlockTag("nether_vines");
 		getOrCreateTagBuilder(netherVinesTag)
 				.addTag(weepingVinesTag)
 				.addTag(twistingVinesTag);
 
-		var caveVinesTag = AMDatagen.createCommonBlockTag("cave_vines");
+		Tag.Identified<Block> caveVinesTag = AMDatagen.createCommonBlockTag("cave_vines");
 		getOrCreateTagBuilder(caveVinesTag)
 				.add(Blocks.CAVE_VINES)
 				.add(Blocks.CAVE_VINES_PLANT);
@@ -265,7 +265,7 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 				.addTag(caveVinesTag)
 				.add(Blocks.VINE);
 
-		var pumpkinsTag = AMDatagen.createCommonBlockTag("pumpkins");
+		Tag.Identified<Block> pumpkinsTag = AMDatagen.createCommonBlockTag("pumpkins");
 		getOrCreateTagBuilder(pumpkinsTag)
 				.add(Blocks.PUMPKIN)
 				.add(Blocks.CARVED_PUMPKIN)
@@ -275,7 +275,7 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 				.addTag(pumpkinsTag)
 				.add(Blocks.MELON);
 
-		var infiniburnTagBuilder = getOrCreateTagBuilder(BlockTags.INFINIBURN_OVERWORLD);
+		FabricTagProvider<Block>.FabricTagBuilder<Block> infiniburnTagBuilder = getOrCreateTagBuilder(BlockTags.INFINIBURN_OVERWORLD);
 		INFINIBURN_BLOCKS.forEach(infiniburnTagBuilder::add);
 		INFINIBURN_TAGS.forEach(infiniburnTagBuilder::addTag);
 
@@ -283,33 +283,33 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 			infiniburnTagBuilder.add(block);
 			addHarvestData(SPACE_STONE_HARVEST_DATA, block);
 		}));
-		
-		var primitiveMachinesTag = AMDatagen.createBlockTag(AMCommon.id("primitive_machines"));
-		var primitiveMachinesTagBuilder = getOrCreateTagBuilder(primitiveMachinesTag);
+
+		Tag.Identified<Block> primitiveMachinesTag = AMDatagen.createBlockTag(AMCommon.id("primitive_machines"));
+		FabricTagProvider<Block>.FabricTagBuilder<Block> primitiveMachinesTagBuilder = getOrCreateTagBuilder(primitiveMachinesTag);
 		AMDatagen.PRIMITIVE_MACHINES.forEach(primitiveMachinesTagBuilder::add);
 		addHarvestData(PRIMITIVE_MACHINE_HARVEST_DATA, primitiveMachinesTag);
 
-		var basicMachinesTag = AMDatagen.createBlockTag(AMCommon.id("basic_machines"));
-		var basicMachinesTagBuilder = getOrCreateTagBuilder(basicMachinesTag);
+		Tag.Identified<Block> basicMachinesTag = AMDatagen.createBlockTag(AMCommon.id("basic_machines"));
+		FabricTagProvider<Block>.FabricTagBuilder<Block> basicMachinesTagBuilder = getOrCreateTagBuilder(basicMachinesTag);
 		AMDatagen.BASIC_MACHINES.forEach(basicMachinesTagBuilder::add);
 		addHarvestData(BASIC_MACHINE_HARVEST_DATA, basicMachinesTag);
 
-		var advancedMachinesTag = AMDatagen.createBlockTag(AMCommon.id("advanced_machines"));
-		var advancedMachinesTagBuilder = getOrCreateTagBuilder(advancedMachinesTag);
+		Tag.Identified<Block> advancedMachinesTag = AMDatagen.createBlockTag(AMCommon.id("advanced_machines"));
+		FabricTagProvider<Block>.FabricTagBuilder<Block> advancedMachinesTagBuilder = getOrCreateTagBuilder(advancedMachinesTag);
 		AMDatagen.ADVANCED_MACHINES.forEach(advancedMachinesTagBuilder::add);
 		addHarvestData(ADVANCED_MACHINE_HARVEST_DATA, advancedMachinesTag);
 
-		var eliteMachinesTag = AMDatagen.createBlockTag(AMCommon.id("elite_machines"));
-		var eliteMachinesTagBuilder = getOrCreateTagBuilder(eliteMachinesTag);
+		Tag.Identified<Block> eliteMachinesTag = AMDatagen.createBlockTag(AMCommon.id("elite_machines"));
+		FabricTagProvider<Block>.FabricTagBuilder<Block> eliteMachinesTagBuilder = getOrCreateTagBuilder(eliteMachinesTag);
 		AMDatagen.ELITE_MACHINES.forEach(eliteMachinesTagBuilder::add);
 		addHarvestData(ELITE_MACHINE_HARVEST_DATA, eliteMachinesTag);
 
-		var creativeMachinesTag = AMDatagen.createBlockTag(AMCommon.id("creative_machines"));
-		var creativeMachinesTagBuilder = getOrCreateTagBuilder(creativeMachinesTag);
+		Tag.Identified<Block> creativeMachinesTag = AMDatagen.createBlockTag(AMCommon.id("creative_machines"));
+		FabricTagProvider<Block>.FabricTagBuilder<Block> creativeMachinesTagBuilder = getOrCreateTagBuilder(creativeMachinesTag);
 		AMDatagen.CREATIVE_MACHINES.forEach(creativeMachinesTagBuilder::add);
 
-		var miscMachinesTag = AMDatagen.createBlockTag(AMCommon.id("misc_machines"));
-		var miscMachinesTagBuilder = getOrCreateTagBuilder(miscMachinesTag);
+		Tag.Identified<Block> miscMachinesTag = AMDatagen.createBlockTag(AMCommon.id("misc_machines"));
+		FabricTagProvider<Block>.FabricTagBuilder<Block> miscMachinesTagBuilder = getOrCreateTagBuilder(miscMachinesTag);
 		AMDatagen.MISC_MACHINES.forEach(miscMachinesTagBuilder::add);
 		addHarvestData(MISC_MACHINE_HARVEST_DATA, miscMachinesTag);
 		
@@ -321,8 +321,8 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 				.addTag(creativeMachinesTag)
 				.addTag(miscMachinesTag);
 
-		var energyCablesTag = AMDatagen.createBlockTag(AMCommon.id("energy_cables"));
-		var energyCablesTagBuilder = getOrCreateTagBuilder(energyCablesTag);
+		Tag.Identified<Block> energyCablesTag = AMDatagen.createBlockTag(AMCommon.id("energy_cables"));
+		FabricTagProvider<Block>.FabricTagBuilder<Block> energyCablesTagBuilder = getOrCreateTagBuilder(energyCablesTag);
 		AMDatagen.ENERGY_CABLES.forEach(energyCablesTagBuilder::add);
 		addHarvestData(PIPE_AND_CABLE_HARVEST_DATA, energyCablesTag);
 		addHarvestData(PIPE_AND_CABLE_HARVEST_DATA, AMBlocks.FLUID_PIPE.get());

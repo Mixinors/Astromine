@@ -99,7 +99,7 @@ public class EnergyStorageItem extends Item implements SimpleBatteryItem {
 		super.appendStacks(group, stacks);
 
 		if (this.isIn(group)) {
-			var stack = new ItemStack(this);
+			ItemStack stack = new ItemStack(this);
 
 			setStoredEnergy(stack, getEnergyCapacity());
 

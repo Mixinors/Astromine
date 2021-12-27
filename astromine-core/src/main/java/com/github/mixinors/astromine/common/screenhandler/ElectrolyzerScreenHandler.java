@@ -48,16 +48,16 @@ public class ElectrolyzerScreenHandler extends ExtendedBlockEntityScreenHandler 
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		var firstOutputFluidBar = new FluidBarWidget();
+		FluidBarWidget firstOutputFluidBar = new FluidBarWidget();
 		firstOutputFluidBar.setSize( Size.of(fluidBar));
 		firstOutputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(1));
 
-		var secondOutputFluidBar = new FluidBarWidget();
+		FluidBarWidget secondOutputFluidBar = new FluidBarWidget();
 		secondOutputFluidBar.setSize(Size.of(fluidBar));
 
 		secondOutputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(2));
 
-		var arrow = new HorizontalArrowWidget();
+		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(fluidBar, fluidBar.getWidth() + 7, fluidBar.getHeight() / 2 - 8));
 		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> electrolyzer.limit);
