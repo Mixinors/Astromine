@@ -47,12 +47,12 @@ public class RefineryScreenHandler extends ExtendedBlockEntityScreenHandler {
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
-
-		FluidBarWidget outputFluidBar = new FluidBarWidget();
+		
+		var outputFluidBar = new FluidBarWidget();
 		outputFluidBar.setSize( Size.of(fluidBar));
 		outputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(1));
-
-		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
+		
+		var arrow = new HorizontalArrowWidget();
 		arrow.setPosition( Position.of(fluidBar, fluidBar.getWidth() + 7, fluidBar.getHeight() / 2 - 8));
 		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> refinery.limit);

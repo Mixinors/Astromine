@@ -68,7 +68,7 @@ public class IngredientUtils {
 	public static ItemStack testMatching(Ingredient input, ItemStack stack) {
 		if (stack != null) {
 			if (input.matchingStacks.length != 0) {
-				for (ItemStack matching : input.matchingStacks) {
+				for (var matching : input.matchingStacks) {
 					if (matching.getItem() == stack.getItem()) {
 						return matching;
 					}
@@ -81,13 +81,13 @@ public class IngredientUtils {
 
 	public static JsonElement toJsonWithCount(Ingredient ingredient, int count) {
 		if (ingredient.entries.length == 1) {
-			JsonObject entryObject = ingredient.entries[0].toJson();
+			var entryObject = ingredient.entries[0].toJson();
 			entryObject.addProperty("count", count);
 			return entryObject;
 		}
-		JsonArray jsonArray = new JsonArray();
-		for (Ingredient.Entry entry : ingredient.entries) {
-			JsonObject entryObject = entry.toJson();
+		var jsonArray = new JsonArray();
+		for (var entry : ingredient.entries) {
+			var entryObject = entry.toJson();
 			entryObject.addProperty("count", count);
 			jsonArray.add(entryObject);
 		}

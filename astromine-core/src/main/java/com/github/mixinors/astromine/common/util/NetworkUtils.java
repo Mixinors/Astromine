@@ -40,7 +40,6 @@ import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.registry.NetworkMemberRegistry;
 import com.github.mixinors.astromine.common.util.data.position.WorldPos;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
-import it.unimi.dsi.fastutil.longs.LongSet;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.state.property.BooleanProperty;
@@ -59,46 +58,46 @@ public class NetworkUtils {
 		 * Interconnected networks will be merged if necessary.
 		 */
 		public static void trace(NetworkType type, WorldPos initialPosition) {
-			World world = initialPosition.getWorld();
-
-			WorldNetworkComponent networkComponent = WorldNetworkComponent.get(world);
-
-			NetworkMember initialMember = NetworkMemberRegistry.get(initialPosition, null);
+			var world = initialPosition.getWorld();
+			
+			var networkComponent = WorldNetworkComponent.get(world);
+			
+			var initialMember = NetworkMemberRegistry.get(initialPosition, null);
 
 			if (!initialMember.acceptsType(type) || !initialMember.isNode(type) || networkComponent.contains(type, initialPosition.getBlockPos())) {
 				return;
 			}
-
-			LongOpenHashSet tracedPositions = new LongOpenHashSet();
+			
+			var tracedPositions = new LongOpenHashSet();
 
 			tracedPositions.add(initialPosition.getBlockPos().asLong());
-
-			ArrayDeque<BlockPos> positionsToTrace = new ArrayDeque<>(Collections.singleton(initialPosition.getBlockPos()));
-
-			NetworkInstance instance = new NetworkInstance(world, type);
+			
+			var positionsToTrace = new ArrayDeque<BlockPos>(Collections.singleton(initialPosition.getBlockPos()));
+			
+			var instance = new NetworkInstance(world, type);
 
 			instance.addNode(NetworkNode.of(initialPosition.getBlockPos()));
 
 			while (!positionsToTrace.isEmpty()) {
-				BlockPos position = positionsToTrace.pop();
+				var position = positionsToTrace.pop();
+				
+				var joined = false;
+				
+				var initialObject = WorldPos.of(world, position);
 
-				boolean joined = false;
-
-				WorldPos initialObject = WorldPos.of(world, position);
-
-				for (Direction direction : Direction.values()) {
-					BlockPos offsetPosition = position.offset(direction);
-					long offsetPositionLong = offsetPosition.asLong();
+				for (var direction : Direction.values()) {
+					var offsetPosition = position.offset(direction);
+					var offsetPositionLong = offsetPosition.asLong();
 
 					if (tracedPositions.contains(offsetPositionLong)) {
 						continue;
 					}
-
-					WorldPos offsetObject = WorldPos.of(world, offsetPosition);
-
-					NetworkMember offsetMember = NetworkMemberRegistry.get(offsetObject, direction.getOpposite());
-
-					NetworkInstance existingInstance = networkComponent.get(type, offsetPosition);
+					
+					var offsetObject = WorldPos.of(world, offsetPosition);
+					
+					var offsetMember = NetworkMemberRegistry.get(offsetObject, direction.getOpposite());
+					
+					var existingInstance = networkComponent.get(type, offsetPosition);
 
 					if (existingInstance != NetworkInstance.EMPTY) {
 						existingInstance.join(instance);
@@ -140,9 +139,9 @@ public class NetworkUtils {
 		protected static final VoxelShape[] SHAPE_CACHE = new VoxelShape[64];
 
 		public static int of(BlockState blockState) {
-			int i = 0;
+			var i = 0;
 
-			for (Map.Entry<Direction, BooleanProperty> property : CableBlock.PROPERTIES.entrySet()) {
+			for (var property : CableBlock.PROPERTIES.entrySet()) {
 				if (blockState.get(property.getValue())) {
 					i |= 1 << property.getKey().getId();
 				}
@@ -152,14 +151,14 @@ public class NetworkUtils {
 		}
 
 		public static Set<Direction> of(NetworkType type, BlockPos initialPosition, World world) {
-			EnumSet<Direction> directions = EnumSet.noneOf(Direction.class);
+			var directions = EnumSet.noneOf(Direction.class);
+			
+			var initialObject = WorldPos.of(world, initialPosition);
 
-			WorldPos initialObject = WorldPos.of(world, initialPosition);
-
-			for (Direction direction : Direction.values()) {
-				WorldPos pos = WorldPos.of(world, initialPosition.offset(direction));
-
-				NetworkMember offsetMember = NetworkMemberRegistry.get(pos, direction.getOpposite());
+			for (var direction : Direction.values()) {
+				var pos = WorldPos.of(world, initialPosition.offset(direction));
+				
+				var offsetMember = NetworkMemberRegistry.get(pos, direction.getOpposite());
 
 				if (offsetMember.acceptsType(type) && (!offsetMember.isNode(type) || pos.getBlock() == initialObject.getBlock())) {
 					directions.add(direction);
@@ -176,7 +175,7 @@ public class NetworkUtils {
 		public static BlockState toBlockState(Set<Direction> directions, BlockState state) {
 			if (!(state.getBlock() instanceof CableBlock))
 				return state;
-			for (Direction direction : Direction.values()) {
+			for (var direction : Direction.values()) {
 				state = state.with(CableBlock.PROPERTIES.get(direction), directions.contains(direction));
 			}
 			return state;
@@ -187,7 +186,7 @@ public class NetworkUtils {
 		 * as {@link CableBlock} shapes.
 		 */
 		private static VoxelShape toVoxelShape(int directions, VoxelShape shape) {
-			for (Direction direction : Direction.values()) {
+			for (var direction : Direction.values()) {
 				if ((directions & (0x1 << direction.getId())) != 0) {
 					shape = VoxelShapes.union(shape, CableBlock.SHAPE_MAP.get(CableBlock.PROPERTIES.get(direction)));
 				}
@@ -200,9 +199,9 @@ public class NetworkUtils {
 		 * as {@link CableBlock} shapes, also caches the shapes.
 		 */
 		public static VoxelShape getVoxelShape(Set<Direction> directions) {
-			int i = 0;
+			var i = 0;
 
-			for (Direction direction : directions) {
+			for (var direction : directions) {
 				i |= 1 << direction.getId();
 			}
 
@@ -214,7 +213,7 @@ public class NetworkUtils {
 		 * as {@link CableBlock} shapes, also caches the shapes.
 		 */
 		public static VoxelShape getVoxelShape(int directions) {
-			VoxelShape shape = SHAPE_CACHE[directions];
+			var shape = SHAPE_CACHE[directions];
 			if (shape != null) {
 				return shape;
 			}

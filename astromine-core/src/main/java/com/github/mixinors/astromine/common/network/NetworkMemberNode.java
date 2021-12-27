@@ -160,7 +160,7 @@ public final class NetworkMemberNode {
 
 	/** Serializes a {@link NetworkMemberNode} to a {@link NbtCompound}. */
 	public NbtCompound toTag() {
-		NbtCompound tag = new NbtCompound();
+		var tag = new NbtCompound();
 
 		tag.putLong("pos", pos);
 		tag.putInt("dir", directionId);

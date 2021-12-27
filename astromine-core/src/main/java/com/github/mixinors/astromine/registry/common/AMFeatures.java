@@ -60,8 +60,8 @@ public class AMFeatures {
 	public static final Identifier ASTROMINE_BIOME_MODIFICATIONS = AMCommon.id("biome_modifications");
 	
 	public static void init() {
-		MeteorFeature meteor = new MeteorFeature(DefaultFeatureConfig.CODEC);
-		ConfiguredStructureFeature<DefaultFeatureConfig, ? extends StructureFeature<DefaultFeatureConfig>> meteorStructure = meteor.configure(new DefaultFeatureConfig());
+		var meteor = new MeteorFeature(DefaultFeatureConfig.CODEC);
+		var meteorStructure = meteor.configure(new DefaultFeatureConfig());
 		FabricStructureBuilder.create(METEOR_ID, meteor)
 				.step(GenerationStep.Feature.SURFACE_STRUCTURES)
 				.defaultConfig(32, 8, 12345)

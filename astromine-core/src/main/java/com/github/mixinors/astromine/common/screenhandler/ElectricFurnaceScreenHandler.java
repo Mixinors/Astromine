@@ -48,16 +48,16 @@ public class ElectricFurnaceScreenHandler extends ExtendedBlockEntityScreenHandl
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
-
-		SlotWidget output = new SlotWidget(0, smelter.getItemStorage(), ExtractionSlot::new);
+		
+		var output = new SlotWidget(0, smelter.getItemStorage(), ExtractionSlot::new);
 		output.setSize( Size.of(18, 18));
-
-		SlotWidget input = new SlotWidget(1, smelter.getItemStorage());
+		
+		var input = new SlotWidget(1, smelter.getItemStorage());
 		input.setSize(Size.of(18, 18));
 
 		output.setPosition( Position.of(energyBar, 102, 15));
-
-		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
+		
+		var arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(output, -31, 0));
 		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> smelter.limit);

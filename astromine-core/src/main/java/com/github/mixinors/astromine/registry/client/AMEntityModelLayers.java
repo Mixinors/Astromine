@@ -39,7 +39,7 @@ public class AMEntityModelLayers {
 	}
 
 	public static EntityModelLayer register(String id, EntityModelLayerRegistry.TexturedModelDataProvider texturedModelDataProvider) {
-		EntityModelLayer entityModelLayer = new EntityModelLayer(AMCommon.id(id), "main");
+		var entityModelLayer = new EntityModelLayer(AMCommon.id(id), "main");
 		EntityModelLayerRegistry.registerModelLayer(entityModelLayer, texturedModelDataProvider);
 		return entityModelLayer;
 	}

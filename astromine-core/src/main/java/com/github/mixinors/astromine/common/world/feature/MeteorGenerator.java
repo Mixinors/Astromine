@@ -50,7 +50,6 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -67,10 +66,10 @@ public class MeteorGenerator extends ShiftableStructurePiece {
 	}
 
 	public static void buildSphere(StructureWorldAccess world, BlockPos originPos, int radius, BlockState state) {
-		for (int x = -radius; x <= radius; x++) {
-			for (int z = -radius; z <= radius; z++) {
-				for (int y = -radius; y <= radius; y++) {
-					double distance = Math.sqrt(Math.pow(x, 2) + Math.pow(z, 2) + Math.pow(y, 2));
+		for (var x = -radius; x <= radius; x++) {
+			for (var z = -radius; z <= radius; z++) {
+				for (var y = -radius; y <= radius; y++) {
+					var distance = Math.sqrt(Math.pow(x, 2) + Math.pow(z, 2) + Math.pow(y, 2));
 
 					// place blocks within spherical radius
 					if (distance <= radius - ((radius * 1f / 3f) * noise.sample((originPos.getX() + x) / 10f, (originPos.getY() + y) / 10f, (originPos.getZ() + z) / 10f))) {
@@ -90,7 +89,7 @@ public class MeteorGenerator extends ShiftableStructurePiece {
 		if (!world.toServerWorld().getRegistryKey().equals(World.OVERWORLD))
 			return false;
 		noise = new OpenSimplexNoise(world.getSeed());
-		BlockPos originPos = world.getTopPosition(Heightmap.Type.OCEAN_FLOOR_WG, new BlockPos(chunkPos.getStartX() + 8, 0, chunkPos.getStartZ() + 8));
+		var originPos = world.getTopPosition(Heightmap.Type.OCEAN_FLOOR_WG, new BlockPos(chunkPos.getStartX() + 8, 0, chunkPos.getStartZ() + 8));
 		originPos = emptySphere(world, originPos, 16, state -> {
 			if (world.getRandom().nextInt(10) == 0) {
 				return Blocks.FIRE.getDefaultState();
@@ -99,13 +98,13 @@ public class MeteorGenerator extends ShiftableStructurePiece {
 			}
 		}, state -> Blocks.COBBLESTONE.getDefaultState());
 		buildSphere(world, originPos, 8, AMBlocks.METEOR_STONE.get().getDefaultState());
-
-		Shape vein = Shapes.ellipsoid((float) 4, (float) 4, (float) 4).applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true))).applyLayer(TranslateLayer.of(Position.of(originPos)));
-
-		Block metiteOre = Registry.BLOCK.getOrEmpty(AMCommon.id("meteor_metite_ore")).orElse(null);
+		
+		var vein = Shapes.ellipsoid((float) 4, (float) 4, (float) 4).applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true))).applyLayer(TranslateLayer.of(Position.of(originPos)));
+		
+		var metiteOre = Registry.BLOCK.getOrEmpty(AMCommon.id("meteor_metite_ore")).orElse(null);
 		if (metiteOre != null) {
-			for (Position streamPosition : vein.stream().collect(Collectors.toSet())) {
-				BlockPos orePosition = streamPosition.toBlockPos();
+			for (var streamPosition : vein.stream().collect(Collectors.toSet())) {
+				var orePosition = streamPosition.toBlockPos();
 
 				if (world.getBlockState(orePosition).getBlock() == AMBlocks.METEOR_STONE.get()) {
 					world.setBlockState(orePosition, metiteOre.getDefaultState(), 0b0110100);
@@ -117,17 +116,17 @@ public class MeteorGenerator extends ShiftableStructurePiece {
 	}
 
 	private BlockPos emptySphere(StructureWorldAccess world, BlockPos originPos, int radius, GroundManipulator bottom, GroundManipulator underneath) {
-		boolean hasWater = false;
-		ArrayList<BlockPos> placedPositions = new ArrayList<BlockPos>();
+		var hasWater = false;
+		var placedPositions = new ArrayList<BlockPos>();
 
-		for (int x = -radius; x <= radius; x++) {
-			for (int z = -radius; z <= radius; z++) {
-				for (int y = -radius; y <= radius; y++) {
-					double distance = Math.sqrt(Math.pow(x, 2) + Math.pow(z, 2) + Math.pow(y * 1.3, 2));
+		for (var x = -radius; x <= radius; x++) {
+			for (var z = -radius; z <= radius; z++) {
+				for (var y = -radius; y <= radius; y++) {
+					var distance = Math.sqrt(Math.pow(x, 2) + Math.pow(z, 2) + Math.pow(y * 1.3, 2));
 
 					// place blocks within spherical radius
 					if (distance <= radius + (5 * noise.sample((originPos.getX() + x) / 10f, (originPos.getZ() + z) / 10f))) {
-						BlockPos offsetPos = originPos.add(x, y, z);
+						var offsetPos = originPos.add(x, y, z);
 						if (!hasWater && world.getFluidState(offsetPos).getFluid().matchesType(Fluids.WATER)) {
 							hasWater = true;
 						}
@@ -140,14 +139,14 @@ public class MeteorGenerator extends ShiftableStructurePiece {
 			}
 		}
 
-		for (BlockPos placedPosition : placedPositions) {
+		for (var placedPosition : placedPositions) {
 			world.setBlockState(placedPosition, hasWater && placedPosition.getY() < world.getSeaLevel() ? Fluids.WATER.getStill().getDefaultState().getBlockState() : Blocks.AIR.getDefaultState(), 3);
 		}
+		
+		var bottomPositions = new ArrayList<BlockPos>();
+		var underneathPositions = new ArrayList<BlockPos>();
 
-		ArrayList<BlockPos> bottomPositions = new ArrayList<BlockPos>();
-		ArrayList<BlockPos> underneathPositions = new ArrayList<BlockPos>();
-
-		for (BlockPos pos : placedPositions) {
+		for (var pos : placedPositions) {
 			// store bottom block
 			if (world.getBlockState(pos).isAir() && world.getBlockState(pos.down()).isSolidBlock(world, pos)) {
 				bottomPositions.add(pos);
@@ -155,11 +154,11 @@ public class MeteorGenerator extends ShiftableStructurePiece {
 			}
 		}
 
-		for (BlockPos pos : bottomPositions) {
+		for (var pos : bottomPositions) {
 			world.setBlockState(pos, hasWater && pos.getY() < world.getSeaLevel() ? Fluids.WATER.getStill().getDefaultState().getBlockState() : world.getRandom().nextInt(10) == 0 ? Blocks.FIRE.getDefaultState() : Blocks.AIR.getDefaultState(), 3);
 		}
 
-		for (BlockPos pos : underneathPositions) {
+		for (var pos : underneathPositions) {
 			world.setBlockState(pos, underneath.manipulate(world.getBlockState(pos)), 3);
 		}
 

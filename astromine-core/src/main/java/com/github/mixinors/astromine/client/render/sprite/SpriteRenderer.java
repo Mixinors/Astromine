@@ -269,22 +269,22 @@ public class SpriteRenderer {
 			if (this.normal == null) {
 				this.normal = this.matrices.peek().getNormalMatrix();
 			}
-
-			int sX = sprite.getWidth();
-			int sY = sprite.getHeight();
+			
+			var sX = sprite.getWidth();
+			var sY = sprite.getHeight();
 
 			ClientUtils.getInstance().getTextureManager().bindTexture(texture);
 
-			for (float y = y1; y < y2; y += Math.min(y2 - y, sY)) {
-				for (float x = x1; x < x2; x += Math.min(x2 - x, sX)) {
-					float nSX = Math.min(x2 - x, sX);
-					float nSY = Math.min(y2 - y, sY);
-
-					boolean isOverX = nSX < sX;
-					boolean isOverY = nSY < sY;
-
-					float dX = 0.0F;
-					float dY = 0.0F;
+			for (var y = y1; y < y2; y += Math.min(y2 - y, sY)) {
+				for (var x = x1; x < x2; x += Math.min(x2 - x, sX)) {
+					var nSX = Math.min(x2 - x, sX);
+					var nSY = Math.min(y2 - y, sY);
+					
+					var isOverX = nSX < sX;
+					var isOverY = nSY < sY;
+					
+					var dX = 0.0F;
+					var dY = 0.0F;
 
 					if (isOverX) {
 						dX = (uEnd - uStart) * (1 - (nSX / sX));

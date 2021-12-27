@@ -50,7 +50,7 @@ public record FluidResult(FluidVariant variant, long amount) {
 	}
 
 	public static JsonObject toJson(FluidResult result) {
-		JsonObject jsonObject = new JsonObject();
+		var jsonObject = new JsonObject();
 
 		jsonObject.addProperty("fluid", Registry.FLUID.getId(result.variant.getFluid()).toString());
 		jsonObject.addProperty("amount", result.amount);
@@ -60,22 +60,22 @@ public record FluidResult(FluidVariant variant, long amount) {
 
 	public static FluidResult fromJson(JsonElement jsonElement) {
 		if (!jsonElement.isJsonObject()) {
-			Identifier variantId = new Identifier(jsonElement.getAsString());
-			Fluid variantFluid = Registry.FLUID.get(variantId);
-
-			FluidVariant variant = FluidVariant.of(variantFluid);
+			var variantId = new Identifier(jsonElement.getAsString());
+			var variantFluid = Registry.FLUID.get(variantId);
+			
+			var variant = FluidVariant.of(variantFluid);
 
 			return new FluidResult(variant, FluidConstants.BUCKET);
 		} else {
-			JsonObject jsonObject = jsonElement.getAsJsonObject();
-
-			Identifier variantId = new Identifier(jsonObject.get("fluid").getAsString());
-			Fluid variantFluid = Registry.FLUID.get(variantId);
-
-			FluidVariant variant = FluidVariant.of(variantFluid);
+			var jsonObject = jsonElement.getAsJsonObject();
+			
+			var variantId = new Identifier(jsonObject.get("fluid").getAsString());
+			var variantFluid = Registry.FLUID.get(variantId);
+			
+			var variant = FluidVariant.of(variantFluid);
 			
 			if (jsonObject.has("amount")) {
-				int variantAmount = jsonObject.get("amount").getAsInt();
+				var variantAmount = jsonObject.get("amount").getAsInt();
 				
 				return new FluidResult(variant, variantAmount);
 			} else {
@@ -90,12 +90,12 @@ public record FluidResult(FluidVariant variant, long amount) {
 	}
 
 	public static FluidResult fromPacket(PacketByteBuf buf) {
-		Identifier variantId = new Identifier(buf.readString());
-		Fluid variantFluid = Registry.FLUID.get(variantId);
-
-		FluidVariant variant = FluidVariant.of(variantFluid);
-
-		long variantAmount = buf.readLong();
+		var variantId = new Identifier(buf.readString());
+		var variantFluid = Registry.FLUID.get(variantId);
+		
+		var variant = FluidVariant.of(variantFluid);
+		
+		var variantAmount = buf.readLong();
 
 		return new FluidResult(variant, variantAmount);
 	}

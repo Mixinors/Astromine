@@ -116,23 +116,23 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements T
 			}
 
 			if (optionalRecipe.isPresent()) {
-				MeltingRecipe recipe = optionalRecipe.get();
+				var recipe = optionalRecipe.get();
 
 				limit = recipe.time();
+				
+				var speed = Math.min(getMachineSpeed(), limit - progress);
+				var consumed = (long) (recipe.energyInput() * speed / limit);
 
-				double speed = Math.min(getMachineSpeed(), limit - progress);
-				long consumed = (long) (recipe.energyInput() * speed / limit);
-
-				try (Transaction transaction = Transaction.openOuter()) {
+				try (var transaction = Transaction.openOuter()) {
 					if (energyStorage.extract(consumed, transaction) == consumed) {
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
-
-							SimpleItemVariantStorage inputStorage = itemStorage.getStorage(ITEM_INPUT_SLOT);
+							
+							var inputStorage = itemStorage.getStorage(ITEM_INPUT_SLOT);
 							
 							inputStorage.extract(inputStorage.getResource(), recipe.input().getAmount(), transaction);
-
-							SimpleFluidVariantStorage outputStorage = fluidStorage.getStorage(FLUID_OUTPUT_SLOT);
+							
+							var outputStorage = fluidStorage.getStorage(FLUID_OUTPUT_SLOT);
 							
 							outputStorage.insert(recipe.output().variant(), recipe.output().amount(), transaction);
 							

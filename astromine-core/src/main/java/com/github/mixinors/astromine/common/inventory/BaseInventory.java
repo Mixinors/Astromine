@@ -120,7 +120,7 @@ public class BaseInventory implements Inventory, RecipeInputProvider {
 	 * or a part of it as per the specified count, and returns it. */
 	@Override
 	public ItemStack removeStack(int slot, int amount) {
-		ItemStack stack = Inventories.splitStack(this.stacks, slot, amount);
+		var stack = Inventories.splitStack(this.stacks, slot, amount);
 
 		if (!stack.isEmpty()) {
 			this.markDirty();
@@ -133,7 +133,7 @@ public class BaseInventory implements Inventory, RecipeInputProvider {
 	 * and returns it. */
 	@Override
 	public ItemStack removeStack(int slot) {
-		ItemStack stack = stacks.get(slot);
+		var stack = stacks.get(slot);
 
 		if (stack.isEmpty()) {
 			return ItemStack.EMPTY;
@@ -149,7 +149,7 @@ public class BaseInventory implements Inventory, RecipeInputProvider {
 	/** Triggers this inventory's {@link InventoryChangedListener}s. */
 	@Override
 	public void markDirty() {
-		for (InventoryChangedListener listener : listeners) {
+		for (var listener : listeners) {
 			listener.onInventoryChanged(this);
 		}
 	}
@@ -163,7 +163,7 @@ public class BaseInventory implements Inventory, RecipeInputProvider {
 	/** Clear this inventory's contents. */
 	@Override
 	public void clear() {
-		for (int slot = 0; slot < size; ++slot) {
+		for (var slot = 0; slot < size; ++slot) {
 			setStack(slot, ItemStack.EMPTY);
 		}
 
@@ -176,7 +176,7 @@ public class BaseInventory implements Inventory, RecipeInputProvider {
 
 	/** Returns this inventory's string representation. */
 	public String toString() {
-		AtomicInteger slot = new AtomicInteger(0);
+		var slot = new AtomicInteger(0);
 
 		return stacks.stream().map(stack -> String.format("%s - [%s]", slot.getAndIncrement(), stack.toString())).collect(Collectors.joining(", "));
 	}

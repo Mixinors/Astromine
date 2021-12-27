@@ -310,8 +310,8 @@ public class MaterialFamilies {
 
 
 	public static MaterialFamily.Builder register(String name, ItemConvertible baseItem, MaterialType materialType) {
-		MaterialFamily.Builder builder = new MaterialFamily.Builder(name, baseItem.asItem(), materialType);
-		MaterialFamily materialFamily = BASE_ITEMS_TO_FAMILIES.put(baseItem.asItem(), builder.build());
+		var builder = new MaterialFamily.Builder(name, baseItem.asItem(), materialType);
+		var materialFamily = BASE_ITEMS_TO_FAMILIES.put(baseItem.asItem(), builder.build());
 		if (materialFamily != null) {
 			throw new IllegalStateException("Duplicate family definition for " + Registry.ITEM.getId(baseItem.asItem()));
 		}

@@ -33,7 +33,7 @@ public interface FluidInputRecipe extends AMRecipe {
 	FluidIngredient getInput();
 
 	default boolean allows(FluidVariant... variants) {
-		FluidVariant inputVariant = variants[0];
+		var inputVariant = variants[0];
 
 		return getInput().test(inputVariant, Long.MAX_VALUE);
 	}

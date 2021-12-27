@@ -58,7 +58,7 @@ public class DimensionLayerRegistry {
 	 * transition level {@link Integer}, target dimension {@link RegistryKey<World>},
 	 * and entity placing logic {@link EntityPlacer}. */
 	public void register(Type type, RegistryKey<World> dimension, int levelY, RegistryKey<World> newDimension, EntityPlacer placer) {
-		Map<RegistryKey<World>, Pair<Integer, RegistryKey<World>>> ENTRIES = type == Type.TOP ? this.TOP_ENTRIES : this.BOTTOM_ENTRIES;
+		var ENTRIES = type == Type.TOP ? this.TOP_ENTRIES : this.BOTTOM_ENTRIES;
 
 		ENTRIES.put(dimension, new Pair<>(levelY, newDimension));
 
@@ -72,9 +72,9 @@ public class DimensionLayerRegistry {
 	/** Retrieves the transition level {@link Integer}
 	 * for the given {@link Type} at the specified {@link RegistryKey<World>}. */
 	public int getLevel(Type type, RegistryKey<World> dimension) {
-		Map<RegistryKey<World>, Pair<Integer, RegistryKey<World>>> ENTRIES = type == Type.TOP ? this.TOP_ENTRIES : this.BOTTOM_ENTRIES;
-
-		Pair<Integer, RegistryKey<World>> pair = ENTRIES.get(dimension);
+		var ENTRIES = type == Type.TOP ? this.TOP_ENTRIES : this.BOTTOM_ENTRIES;
+		
+		var pair = ENTRIES.get(dimension);
 
 		return pair == null ? Integer.MIN_VALUE : pair.getLeft();
 	}
@@ -82,9 +82,9 @@ public class DimensionLayerRegistry {
 	/** Retrieves the upper or low dimension {@link RegistryKey<World>} for the given
 	 * {@link Type} at the specified {@link RegistryKey<World>}. */
 	public RegistryKey<World> getDimension(Type type, RegistryKey<World> dimension) {
-		Map<RegistryKey<World>, Pair<Integer, RegistryKey<World>>> ENTRIES = type == Type.TOP ? this.TOP_ENTRIES : this.BOTTOM_ENTRIES;
-
-		Pair<Integer, RegistryKey<World>> pair = ENTRIES.get(dimension);
+		var ENTRIES = type == Type.TOP ? this.TOP_ENTRIES : this.BOTTOM_ENTRIES;
+		
+		var pair = ENTRIES.get(dimension);
 
 		return pair == null ? null : pair.getRight();
 	}

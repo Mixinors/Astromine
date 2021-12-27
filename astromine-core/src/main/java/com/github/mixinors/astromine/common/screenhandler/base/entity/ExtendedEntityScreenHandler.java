@@ -45,7 +45,7 @@ import java.util.HashSet;
 import java.util.function.Supplier;
 
 public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
-	protected ExtendedEntity entity;
+	protected final ExtendedEntity entity;
 
 	protected EnergyBarWidget energyBar = null;
 	protected FluidBarWidget fluidBar = null;
@@ -84,17 +84,17 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 		mainTab = (TabWidget.TabWidgetCollection) tabs.addTab(getSymbol());
 		mainTab.setPosition(Position.of(tabs, 0.0F, 25.0F + 7.0F, 0.0F));
 		mainTab.setSize(Size.of(176.0F, 184.0F, 0.0F));
-
-		TextWidget title = new TextWidget();
+		
+		var title = new TextWidget();
 		title.setPosition(Position.of(mainTab, 8.0F, 0.0F, 0.0F));
 		title.setText(entity.getDisplayName());
 		title.setColor(4210752);
 		
 		mainTab.add(title);
-
-		Position invPos = Position.of(tabs, 7.0F, 25.0F + 7.0F + (184.0F - 18.0F - 18.0F - (18.0F * 4.0F) - 3.0F + getTabWidgetExtendedHeight()), 0.0F);
-
-		TextWidget invTitle = new TextWidget();
+		
+		var invPos = Position.of(tabs, 7.0F, 25.0F + 7.0F + (184.0F - 18.0F - 18.0F - (18.0F * 4.0F) - 3.0F + getTabWidgetExtendedHeight()), 0.0F);
+		
+		var invTitle = new TextWidget();
 		invTitle.setPosition(Position.of(invPos, 0.0F, -10.0F, 0.0F));
 		invTitle.setText(getPlayer().getInventory().getName());
 		invTitle.setColor(4210752);

@@ -56,7 +56,7 @@ public class AMEntityTypes {
 		AttackEntityCallback.EVENT.register((playerEntity, world, hand, entity, entityHitResult) -> {
 			if (entity instanceof SuperSpaceSlimeEntity) {
 				if (world.random.nextInt(10) == 0) {
-					SpaceSlimeEntity spaceSlimeEntity = AMEntityTypes.SPACE_SLIME.get().create(world);
+					var spaceSlimeEntity = AMEntityTypes.SPACE_SLIME.get().create(world);
 					spaceSlimeEntity.setPos(entity.getX(), entity.getY(), entity.getZ());
 					world.spawnEntity(spaceSlimeEntity);
 				}

@@ -65,32 +65,32 @@ public abstract class HorizontalFacingTieredBlockWithEntity extends HorizontalFa
 	 * Is there a point anymore? */
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		Identifier blockId = Registry.BLOCK.getId(this);
-
-		Tier blockTier = Tier.fromId(blockId);
+		var blockId = Registry.BLOCK.getId(this);
+		
+		var blockTier = Tier.fromId(blockId);
 
 		if (blockTier != null) {
-			ItemStack stack = player.getStackInHand(hand);
-
-			Identifier itemId = Registry.ITEM.getId(stack.getItem());
+			var stack = player.getStackInHand(hand);
+			
+			var itemId = Registry.ITEM.getId(stack.getItem());
 
 			if (itemId.getNamespace().equals(AMCommon.MOD_ID) && itemId.getPath().endsWith("_machine_upgrade_kit")) {
-				Tier itemTier = Tier.fromId(itemId);
+				var itemTier = Tier.fromId(itemId);
 
 				if (itemTier != null && itemTier.ordinal() != 0 && Tier.values()[itemTier.ordinal() - 1] == blockTier) {
-					Identifier newBlockId = new Identifier(blockId.toString().replace(blockTier.name().toLowerCase(Locale.ROOT) + "_", itemTier.name().toLowerCase(Locale.ROOT) + "_"));
-
-					Optional<Block> newBlock = Registry.BLOCK.getOrEmpty(newBlockId);
+					var newBlockId = new Identifier(blockId.toString().replace(blockTier.name().toLowerCase(Locale.ROOT) + "_", itemTier.name().toLowerCase(Locale.ROOT) + "_"));
+					
+					var newBlock = Registry.BLOCK.getOrEmpty(newBlockId);
 
 					if (newBlock.isPresent()) {
 						if (world.isClient) {
-							Random random = world.random;
+							var random = world.random;
+							
+							var x = pos.getX() - 0.3;
+							var y = pos.getY() - 0.3;
+							var z = pos.getZ() - 0.3;
 
-							double x = pos.getX() - 0.3;
-							double y = pos.getY() - 0.3;
-							double z = pos.getZ() - 0.3;
-
-							for (int i = 0; i < 20; i++) {
+							for (var i = 0; i < 20; i++) {
 								world.addParticle(ParticleTypes.COMPOSTER, x + random.nextDouble() * 1.6, y + random.nextDouble() * 1.6, z + random.nextDouble() * 1.6, -0.2 + random.nextDouble() * 0.4, -0.2 + random.nextDouble() * 0.4, -0.2 + random.nextDouble() * 0.4);
 							}
 
@@ -100,16 +100,16 @@ public abstract class HorizontalFacingTieredBlockWithEntity extends HorizontalFa
 						}
 
 						if (!player.isCreative()) {
-							ItemStack copy = stack.copy();
+							var copy = stack.copy();
 
 							copy.decrement(1);
 
 							player.setStackInHand(hand, copy);
 						}
-
-						BlockEntity blockEntity = world.getBlockEntity(pos);
-
-						NbtCompound beTag = (NbtCompound) null;
+						
+						var blockEntity = world.getBlockEntity(pos);
+						
+						var beTag = (NbtCompound) null;
 
 						if (blockEntity != null) {
 							beTag = blockEntity.createNbtWithId();
@@ -119,18 +119,18 @@ public abstract class HorizontalFacingTieredBlockWithEntity extends HorizontalFa
 						}
 
 						world.removeBlockEntity(pos);
+						
+						var newState = newBlock.get().getDefaultState();
 
-						BlockState newState = newBlock.get().getDefaultState();
-
-						for (Property<?> property : state.getProperties()) {
+						for (var property : state.getProperties()) {
 							if (newState.contains(property)) {
 								newState = newState.with((Property) property, state.get(property));
 							}
 						}
 
 						world.setBlockState(pos, newState, 3, 512);
-
-						BlockEntity newBlockEntity = world.getBlockEntity(pos);
+						
+						var newBlockEntity = world.getBlockEntity(pos);
 
 						if (newBlockEntity != null && beTag != null) {
 							newBlockEntity.readNbt(beTag);
@@ -156,8 +156,8 @@ public abstract class HorizontalFacingTieredBlockWithEntity extends HorizontalFa
 
 		/** Returns the {@link Tier} of the given {@link Identifier}'s path. */
 		static Tier fromId(Identifier identifier) {
-			String path = identifier.getPath();
-			for (Tier tier : values()) {
+			var path = identifier.getPath();
+			for (var tier : values()) {
 				if (path.startsWith(tier.name().toLowerCase(Locale.ROOT) + "_")) {
 					return tier;
 				}

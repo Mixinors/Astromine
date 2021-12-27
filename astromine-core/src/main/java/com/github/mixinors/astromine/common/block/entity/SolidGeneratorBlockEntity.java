@@ -85,15 +85,15 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 			return;
 
 		if (itemStorage != null && energyStorage != null) {
-			try (Transaction transaction = Transaction.openOuter()) {
+			try (var transaction = Transaction.openOuter()) {
 				if (available > 0) {
 					progress = limit - available;
-
-					int produced = 5;
 					
-					for (int i = 0; i < 3 * getMachineSpeed(); ++i) {
+					var produced = 5;
+					
+					for (var i = 0; i < 3 * getMachineSpeed(); ++i) {
 						if (progress < limit) {
-							Transaction nestedTransaction = transaction.openNested();
+							var nestedTransaction = transaction.openNested();
 							
 							if (energyStorage.insert(produced, nestedTransaction) == produced) {
 								--available;
@@ -119,21 +119,21 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 					}
 				} else {
 					progress = 0;
-
-					ItemStack inputStack = itemStorage.getStack(INPUT_SLOT);
-
-					Integer inputBurnTime = FuelRegistry.INSTANCE.get(inputStack.getItem());
+					
+					var inputStack = itemStorage.getStack(INPUT_SLOT);
+					
+					var inputBurnTime = FuelRegistry.INSTANCE.get(inputStack.getItem());
 					
 					if (inputBurnTime != null) {
-						boolean isFuel = !(inputStack.getItem() instanceof BucketItem) && inputBurnTime > 0;
+						var isFuel = !(inputStack.getItem() instanceof BucketItem) && inputBurnTime > 0;
 						
 						if (isFuel) {
 							available = inputBurnTime;
 							limit = inputBurnTime;
 							
 							progress = 0;
-
-							Transaction nestedTransaction = transaction.openNested();
+							
+							var nestedTransaction = transaction.openNested();
 							
 							itemStorage.removeStack(INPUT_SLOT, 1);
 							

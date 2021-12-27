@@ -148,7 +148,7 @@ public record OreDistribution(
 	}
 
 	private ConfiguredFeature<?, ?> registerConfiguredFeature(Identifier id, Block stoneOre, Block deepslateOre) {
-		List<OreFeatureConfig.Target> targets = List.of(
+		var targets = List.of(
 				OreFeatureConfig.createTarget(OreConfiguredFeatures.STONE_ORE_REPLACEABLES, stoneOre.getDefaultState()),
 				OreFeatureConfig.createTarget(OreConfiguredFeatures.DEEPSLATE_ORE_REPLACEABLES, deepslateOre.getDefaultState())
 		);

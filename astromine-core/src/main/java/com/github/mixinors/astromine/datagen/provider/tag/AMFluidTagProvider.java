@@ -41,7 +41,7 @@ public class AMFluidTagProvider extends FabricTagProvider.FluidTagProvider {
 	@Override
 	protected void generateTags() {
 		AMDatagen.FLUIDS.forEach((fluid) -> {
-			FabricTagProvider<Fluid>.FabricTagBuilder<Fluid> tagBuilder = getOrCreateTagBuilder(AMDatagen.createCommonFluidTag(Registry.FLUID.getId(fluid.getStill()).getPath()));
+			var tagBuilder = getOrCreateTagBuilder(AMDatagen.createCommonFluidTag(Registry.FLUID.getId(fluid.getStill()).getPath()));
 			tagBuilder.add(fluid.getStill(), fluid.getFlowing());
 		});
 	}

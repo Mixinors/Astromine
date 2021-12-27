@@ -104,20 +104,20 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 			}
 
 			if (optionalRecipe.isPresent()) {
-				AlloySmeltingRecipe recipe = optionalRecipe.get();
+				var recipe = optionalRecipe.get();
 
 				limit = recipe.time();
+				
+				var speed = min(getMachineSpeed(), limit - progress);
+				var consumed = (long) (recipe.energyInput() * speed / limit);
 
-				double speed = min(getMachineSpeed(), limit - progress);
-				long consumed = (long) (recipe.energyInput() * speed / limit);
-
-				try (Transaction transaction = Transaction.openOuter()) {
+				try (var transaction = Transaction.openOuter()) {
 					if (energyStorage.extract(consumed, transaction) == consumed) {
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
-
-							SimpleItemVariantStorage firstInputStorage = itemStorage.getStorage(INPUT_SLOT_1);
-							SimpleItemVariantStorage secondInputStorage = itemStorage.getStorage(INPUT_SLOT_2);
+							
+							var firstInputStorage = itemStorage.getStorage(INPUT_SLOT_1);
+							var secondInputStorage = itemStorage.getStorage(INPUT_SLOT_2);
 							
 							if (recipe.firstInput().test(firstInputStorage) && recipe.secondInput().test(secondInputStorage)) {
 								firstInputStorage.extract(firstInputStorage.getResource(), recipe.firstInput().getAmount(), transaction);
@@ -128,8 +128,8 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 								firstInputStorage.extract(firstInputStorage.getResource(), recipe.secondInput().getAmount(), transaction);
 								secondInputStorage.extract(secondInputStorage.getResource(), recipe.firstInput().getAmount(), transaction);
 							}
-
-							SimpleItemVariantStorage outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
+							
+							var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
 							
 							outputStorage.insert(recipe.output().variant(), recipe.output().count(), transaction);
 

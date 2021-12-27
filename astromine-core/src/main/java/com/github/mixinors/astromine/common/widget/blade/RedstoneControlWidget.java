@@ -64,7 +64,7 @@ public class RedstoneControlWidget extends ButtonWidget {
         super.onMouseClicked(x, y, button);
     
         if (getFocused() && getHandled().getClient()) {
-            RedstoneControl control = blockEntity.getRedstoneControl();
+            var control = blockEntity.getRedstoneControl();
 
             RedstoneControl next;
     
@@ -75,8 +75,8 @@ public class RedstoneControlWidget extends ButtonWidget {
             } else {
                 return;
             }
-
-            PacketByteBuf buf = NetworkingUtils.ofRedstoneControl(next, blockEntity.getPos());
+    
+            var buf = NetworkingUtils.ofRedstoneControl(next, blockEntity.getPos());
     
             NetworkManager.sendToServer(AMNetworks.REDSTONE_CONTROL_UPDATE, buf);
         }
@@ -97,12 +97,12 @@ public class RedstoneControlWidget extends ButtonWidget {
         if (getHidden()) {
             return;
         }
-
-        float x = getPosition().getX();
-        float y = getPosition().getY();
-
-        float sX = getSize().getWidth();
-        float sY = getSize().getHeight();
+    
+        var x = getPosition().getX();
+        var y = getPosition().getY();
+    
+        var sX = getSize().getWidth();
+        var sY = getSize().getHeight();
 
         TEXTURE.draw(matrices, provider, x, y, sX, sY);
     

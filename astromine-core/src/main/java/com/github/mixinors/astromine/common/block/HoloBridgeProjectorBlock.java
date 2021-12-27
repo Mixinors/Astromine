@@ -53,16 +53,16 @@ public class HoloBridgeProjectorBlock extends HorizontalFacingBlockWithEntity {
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos position, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		ItemStack stack = player.getStackInHand(hand);
+		var stack = player.getStackInHand(hand);
 		
 		if (stack.getItem() instanceof DyeItem dye) {
-			HoloBridgeProjectorBlockEntity originalEntity = (HoloBridgeProjectorBlockEntity) world.getBlockEntity(position);
+			var originalEntity = (HoloBridgeProjectorBlockEntity) world.getBlockEntity(position);
 
-			for (HoloBridgeProjectorBlockEntity entity : new HoloBridgeProjectorBlockEntity[] {originalEntity.getChild(), originalEntity, originalEntity.getParent()}) {
+			for (var entity : new HoloBridgeProjectorBlockEntity[] {originalEntity.getChild(), originalEntity, originalEntity.getParent()}) {
 				if (entity != null) {
-					float[] color = dye.getColor().getColorComponents();
-
-					Color colorColor = new Color(color[0], color[1], color[2], 0x7E);
+					var color = dye.getColor().getColorComponents();
+					
+					var colorColor = new Color(color[0], color[1], color[2], 0x7E);
 
 					entity.color = colorColor;
 

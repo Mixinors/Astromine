@@ -117,23 +117,23 @@ public abstract class SolidifierBlockEntity extends ExtendedBlockEntity implemen
 			}
 
 			if (optionalRecipe.isPresent()) {
-				SolidifyingRecipe recipe = optionalRecipe.get();
+				var recipe = optionalRecipe.get();
 
 				limit = recipe.time();
-
-				double speed = Math.min(getMachineSpeed(), limit - progress);
-				long consumed = (long) (recipe.energyInput() * speed / limit);
 				
-				try (Transaction transaction = Transaction.openOuter()) {
+				var speed = Math.min(getMachineSpeed(), limit - progress);
+				var consumed = (long) (recipe.energyInput() * speed / limit);
+				
+				try (var transaction = Transaction.openOuter()) {
 					if (energyStorage.extract(consumed, transaction) == consumed) {
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
-
-							SimpleFluidVariantStorage inputStorage = fluidStorage.getStorage(FLUID_INPUT_SLOT);
+							
+							var inputStorage = fluidStorage.getStorage(FLUID_INPUT_SLOT);
 							
 							inputStorage.extract(inputStorage.getResource(), recipe.input().getAmount(), transaction);
-
-							SimpleItemVariantStorage outputStorage = itemStorage.getStorage(ITEM_OUTPUT_SLOT);
+							
+							var outputStorage = itemStorage.getStorage(ITEM_OUTPUT_SLOT);
 							
 							outputStorage.insert(recipe.output().variant(), recipe.output().count(), transaction);
 							

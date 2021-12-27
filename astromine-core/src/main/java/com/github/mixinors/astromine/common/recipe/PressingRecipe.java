@@ -65,7 +65,7 @@ public record PressingRecipe(Identifier id,
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (PressingRecipe) it).toArray(PressingRecipe[]::new));
 		}
 
-		for (PressingRecipe recipe : RECIPE_CACHE.get(world)) {
+		for (var recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.allows(variants)) {
 				return true;
 			}
@@ -79,7 +79,7 @@ public record PressingRecipe(Identifier id,
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (PressingRecipe) it).toArray(PressingRecipe[]::new));
 		}
 
-		for (PressingRecipe recipe : RECIPE_CACHE.get(world)) {
+		for (var recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.matches(storages)) {
 				return Optional.of(recipe);
 			}
@@ -89,9 +89,9 @@ public record PressingRecipe(Identifier id,
 	}
 
 	public boolean matches(SingleSlotStorage<ItemVariant>... storages) {
-		SingleSlotStorage<ItemVariant> inputStorage = storages[0];
-
-		SingleSlotStorage<ItemVariant> outputStorage = storages[1];
+		var inputStorage = storages[0];
+		
+		var outputStorage = storages[1];
 
 		if (!input.test(inputStorage)) {
 			return false;
@@ -148,7 +148,7 @@ public record PressingRecipe(Identifier id,
 
 		@Override
 		public PressingRecipe read(Identifier identifier, JsonObject object) {
-			Format format = new Gson().fromJson(object, PressingRecipe.Format.class);
+			var format = new Gson().fromJson(object, PressingRecipe.Format.class);
 
 			return new PressingRecipe(
 					identifier,

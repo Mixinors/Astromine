@@ -28,8 +28,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.Lists;
-
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 
@@ -54,10 +52,10 @@ public class ElectricSmeltingCategory extends DefaultCookingCategory {
 
 	@Override
 	public List<Widget> setupDisplay(DefaultCookingDisplay display, Rectangle bounds) {
-		Point startPoint = new Point(bounds.getCenterX() - 41, bounds.getCenterY() - 27);
-		double cookingTime = display.getCookingTime();
-		DecimalFormat df = new DecimalFormat("###.##");
-		ArrayList<Widget> widgets = new ArrayList<Widget>();
+		var startPoint = new Point(bounds.getCenterX() - 41, bounds.getCenterY() - 27);
+		var cookingTime = display.getCookingTime();
+		var df = new DecimalFormat("###.##");
+		var widgets = new ArrayList<Widget>();
 		widgets.add(Widgets.createRecipeBase(bounds));
 		widgets.add(Widgets.createResultSlotBackground(new Point(startPoint.x + 61, startPoint.y + 19)));
 		if (display instanceof ElectricSmeltingDisplay electricSmeltingDisplay)

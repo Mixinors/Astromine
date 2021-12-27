@@ -30,7 +30,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.BiPredicate;
 
-import com.google.common.collect.Lists;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -90,29 +89,29 @@ public final class FluidIngredient {
 	
 	public static FluidIngredient fromJson(JsonElement json) {
 		if (json.isJsonPrimitive()) {
-			Identifier entryAsId = new Identifier(json.getAsString());
-			Fluid entryAsFluid = Registry.FLUID.get(entryAsId);
-			FluidVariant entryAsFluidVariant = FluidVariant.of(entryAsFluid);
+			var entryAsId = new Identifier(json.getAsString());
+			var entryAsFluid = Registry.FLUID.get(entryAsId);
+			var entryAsFluidVariant = FluidVariant.of(entryAsFluid);
 			
 			return new FluidIngredient(new VariantEntry(entryAsFluidVariant));
 		}
 		
 		if (json.isJsonObject()) {
-			JsonObject jsonObject = json.getAsJsonObject();
+			var jsonObject = json.getAsJsonObject();
 			
 			if (jsonObject.has("fluid")) {
 				if (jsonObject.has("amount")) {
-					Identifier entryAsId = new Identifier(jsonObject.get("fluid").getAsString());
-					Fluid entryAsFluid = Registry.FLUID.get(entryAsId);
-					FluidVariant entryAsFluidVariant = FluidVariant.of(entryAsFluid);
-
-					long entryAmount = jsonObject.get("amount").getAsLong();
+					var entryAsId = new Identifier(jsonObject.get("fluid").getAsString());
+					var entryAsFluid = Registry.FLUID.get(entryAsId);
+					var entryAsFluidVariant = FluidVariant.of(entryAsFluid);
+					
+					var entryAmount = jsonObject.get("amount").getAsLong();
 					
 					return new FluidIngredient(new VariantEntry(entryAsFluidVariant, entryAmount));
 				} else {
-					Identifier entryAsId = new Identifier(jsonObject.get("fluid").getAsString());
-					Fluid entryAsFluid = Registry.FLUID.get(entryAsId);
-					FluidVariant entryAsFluidVariant = FluidVariant.of(entryAsFluid);
+					var entryAsId = new Identifier(jsonObject.get("fluid").getAsString());
+					var entryAsFluid = Registry.FLUID.get(entryAsId);
+					var entryAsFluidVariant = FluidVariant.of(entryAsFluid);
 					
 					return new FluidIngredient(new VariantEntry(entryAsFluidVariant));
 				}
@@ -120,15 +119,15 @@ public final class FluidIngredient {
 			
 			if (jsonObject.has("tag")) {
 				if (jsonObject.has("amount")) {
-					Identifier entryAsId = new Identifier(jsonObject.get("tag").getAsString());
-					Tag.Identified<Fluid> entryAsTag = TagHooks.optionalFluid(entryAsId);
-
-					long entryAmount = jsonObject.get("amount").getAsLong();
+					var entryAsId = new Identifier(jsonObject.get("tag").getAsString());
+					var entryAsTag = TagHooks.optionalFluid(entryAsId);
+					
+					var entryAmount = jsonObject.get("amount").getAsLong();
 					
 					return new FluidIngredient(new TagEntry(entryAsTag, entryAmount));
 				} else {
-					Identifier entryAsId = new Identifier(jsonObject.get("tag").getAsString());
-					Tag.Identified<Fluid> entryAsTag = TagHooks.optionalFluid(entryAsId);
+					var entryAsId = new Identifier(jsonObject.get("tag").getAsString());
+					var entryAsTag = TagHooks.optionalFluid(entryAsId);
 					
 					return new FluidIngredient(new TagEntry(entryAsTag));
 				}
@@ -139,17 +138,17 @@ public final class FluidIngredient {
 	}
 	
 	public static JsonObject toJson(FluidIngredient ingredient) {
-		JsonObject jsonObject = new JsonObject();
+		var jsonObject = new JsonObject();
 		
 		if (ingredient.entry instanceof VariantEntry variantEntry) {
-			JsonObject entryJsonObject = new JsonObject();
+			var entryJsonObject = new JsonObject();
 			
 			entryJsonObject.addProperty("fluid", Registry.FLUID.getId(variantEntry.requiredVariant.getFluid()).toString());
 			entryJsonObject.addProperty("amount", variantEntry.requiredAmount);
 		}
 		
 		if (ingredient.entry instanceof TagEntry tagEntry) {
-			JsonObject entryJsonObject = new JsonObject();
+			var entryJsonObject = new JsonObject();
 			
 			entryJsonObject.addProperty("tag", ServerTagManagerHolder.getTagManager().getOrCreateTagGroup(Registry.FLUID_KEY).getUncheckedTagId(tagEntry.requiredTag).toString());
 			entryJsonObject.addProperty("amount", tagEntry.requiredAmount);
@@ -159,20 +158,20 @@ public final class FluidIngredient {
 	}
 	
 	public static FluidIngredient fromPacket(PacketByteBuf buf) {
-		String entryType = buf.readString();
-		Identifier entryTypeId = new Identifier(buf.readString());
-
-		long entryAmount = buf.readLong();
+		var entryType = buf.readString();
+		var entryTypeId = new Identifier(buf.readString());
+		
+		var entryAmount = buf.readLong();
 		
 		if (entryType.equals("fluid")) {
-			Fluid entryFluid = Registry.FLUID.get(entryTypeId);
-			FluidVariant entryVariant = FluidVariant.of(entryFluid);
+			var entryFluid = Registry.FLUID.get(entryTypeId);
+			var entryVariant = FluidVariant.of(entryFluid);
 			
 			return new FluidIngredient(new VariantEntry(entryVariant, entryAmount));
 		}
 		
 		if (entryType.equals("tag")) {
-			Tag.Identified<Fluid> entryTag = TagHooks.optionalFluid(entryTypeId);
+			var entryTag = TagHooks.optionalFluid(entryTypeId);
 			
 			return new FluidIngredient(new TagEntry(entryTag, entryAmount));
 		}
@@ -250,12 +249,12 @@ public final class FluidIngredient {
 			if (requiredVariants == null) {
 				requiredVariants = new ArrayList<>();
 				
-				for (Fluid fluid : requiredTag.values()) {
+				for (var fluid : requiredTag.values()) {
 					requiredVariants.add(FluidVariant.of(fluid));
 				}
 			}
 			
-			for (FluidVariant requiredVariant : requiredVariants) {
+			for (var requiredVariant : requiredVariants) {
 				if (requiredVariant.equals(testVariant) && testAmount >= requiredAmount) {
 					return true;
 				}
@@ -271,9 +270,9 @@ public final class FluidIngredient {
 
 		@Override
 		public Collection<FluidVariant> getVariants() {
-			ArrayList<FluidVariant> list = new ArrayList<FluidVariant>();
+			var list = new ArrayList<FluidVariant>();
 			
-			for (Fluid fluid : this.requiredTag.values()) {
+			for (var fluid : this.requiredTag.values()) {
 				if (fluid.isStill(fluid.getDefaultState())) {
 					list.add(FluidVariant.of(fluid));
 				}

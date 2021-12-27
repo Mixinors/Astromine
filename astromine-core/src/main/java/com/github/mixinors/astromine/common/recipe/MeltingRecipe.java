@@ -66,7 +66,7 @@ public record MeltingRecipe(Identifier id,
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (MeltingRecipe) it).toArray(MeltingRecipe[]::new));
 		}
 
-		for (MeltingRecipe recipe : RECIPE_CACHE.get(world)) {
+		for (var recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.allows(variants)) {
 				return true;
 			}
@@ -80,7 +80,7 @@ public record MeltingRecipe(Identifier id,
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (MeltingRecipe) it).toArray(MeltingRecipe[]::new));
 		}
 
-		for (MeltingRecipe recipe : RECIPE_CACHE.get(world)) {
+		for (var recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.matches(itemStorages, fluidStorages)) {
 				return Optional.of(recipe);
 			}
@@ -90,9 +90,9 @@ public record MeltingRecipe(Identifier id,
 	}
 
 	public boolean matches(SingleSlotStorage<ItemVariant>[] itemStorages, SingleSlotStorage<FluidVariant>[] fluidStorages) {
-		SingleSlotStorage<ItemVariant> itemInputStorage = itemStorages[0];
-
-		SingleSlotStorage<FluidVariant> fluidOutputStorage = fluidStorages[0];
+		var itemInputStorage = itemStorages[0];
+		
+		var fluidOutputStorage = fluidStorages[0];
 
 		if (!input.test(itemInputStorage)) {
 			return false;
@@ -149,7 +149,7 @@ public record MeltingRecipe(Identifier id,
 
 		@Override
 		public MeltingRecipe read(Identifier identifier, JsonObject object) {
-			Format format = new Gson().fromJson(object, MeltingRecipe.Format.class);
+			var format = new Gson().fromJson(object, MeltingRecipe.Format.class);
 
 			return new MeltingRecipe(
 					identifier,

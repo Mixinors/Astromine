@@ -172,7 +172,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 			return new DefaultCustomDisplay(recipe, EntryIngredients.ofIngredients(ImmutableList.of(recipe.getInput(), recipe.getTool())), Collections.singletonList(EntryIngredients.of(recipe.getOutput())));
 		});
 
-		for (Map.Entry<Item, Integer> entry : AbstractFurnaceBlockEntity.createFuelTimeMap().entrySet()) {
+		for (var entry : AbstractFurnaceBlockEntity.createFuelTimeMap().entrySet()) {
 			if (!(entry.getKey() instanceof BucketItem) && entry.getValue() > 0) {
 				registry.add(new SolidGeneratingDisplay(Collections.singletonList(EntryIngredients.of(entry.getKey())), (entry.getValue() / 2) / 6, (long) ((entry.getValue() / 2F * 5) / (entry.getValue() / 2F) * 6), null));
 			}
@@ -196,7 +196,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 	}
 
 	public static List<Widget> createFluidDisplay(Rectangle bounds, List<EntryStack<?>> fluidStacks, boolean generating, long speed) {
-		EntryWidget entry = new FluidEntryWidget(bounds, speed, generating).entries(fluidStacks);
+		var entry = new FluidEntryWidget(bounds, speed, generating).entries(fluidStacks);
 		if (generating)
 			entry.markOutput();
 		else entry.markInput();
@@ -217,11 +217,11 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 		@Override
 		protected void drawBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 			if (background) {
-				Rectangle bounds = getBounds();
+				var bounds = getBounds();
 				RenderSystem.setShaderTexture(0, ENERGY_BACKGROUND);
 				drawTexture(matrices, bounds.x, bounds.y, 0, 0, bounds.width, bounds.height, bounds.width, bounds.height);
 				RenderSystem.setShaderTexture(0, ENERGY_FOREGROUND);
-				int height = MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
+				var height = MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
 				if (generating) {
 					height = bounds.height - MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
 				}
@@ -248,7 +248,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 		@Override
 		protected void drawBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 			if (background) {
-				Rectangle bounds = getBounds();
+				var bounds = getBounds();
 				RenderSystem.setShaderTexture(0, ENERGY_BACKGROUND);
 				drawTexture(matrices, bounds.x, bounds.y, 0, 0, bounds.width, bounds.height, bounds.width, bounds.height);
 			}
@@ -256,14 +256,14 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 
 		@Override
 		protected void drawCurrentEntry(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-			EntryStack<?> entry = getCurrentEntry();
+			var entry = getCurrentEntry();
 			if (entry.getType() == VanillaEntryTypes.FLUID && !entry.isEmpty()) {
-				Rectangle bounds = getBounds();
-				int height = MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
+				var bounds = getBounds();
+				var height = MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
 				if (!generating)
 					height = bounds.height - MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
-				VertexConsumerProvider.Immediate consumers = ClientUtils.getInstance().getBufferBuilders().getEntityVertexConsumers();
-				Fluid fluid = entry.<FluidStack>castValue().getFluid();
+				var consumers = ClientUtils.getInstance().getBufferBuilders().getEntityVertexConsumers();
+				var fluid = entry.<FluidStack>castValue().getFluid();
 				SpriteRenderer.beginPass().setup(consumers, RenderLayer.getSolid()).sprite(FluidUtils.getSprite(fluid)).color(FluidUtils.getColor(ClientUtils.getPlayer(), fluid)).light(0x00f000f0).overlay(OverlayTexture.DEFAULT_UV).alpha(
 					0xff).normal(matrices.peek().getNormalMatrix(), 0, 0, 0).position(matrices.peek().getPositionMatrix(), bounds.x + 1, bounds.y + bounds.height - height + 1, bounds.x + bounds.width - 1, bounds.y + bounds.height - 1, getZOffset() + 1).next(
 					PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);

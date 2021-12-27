@@ -76,7 +76,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			return;
 
 		if (!this.hasCheckedChild && this.childPosition != null) {
-			BlockEntity childEntity = this.world.getBlockEntity(this.childPosition);
+			var childEntity = this.world.getBlockEntity(this.childPosition);
 
 			if (childEntity instanceof HoloBridgeProjectorBlockEntity) {
 				this.child = (HoloBridgeProjectorBlockEntity) childEntity;
@@ -89,7 +89,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 		}
 
 		if (!this.hasCheckedParent && this.parentPosition != null) {
-			BlockEntity parentEntity = this.world.getBlockEntity(parentPosition);
+			var parentEntity = this.world.getBlockEntity(parentPosition);
 
 			if (parentEntity instanceof HoloBridgeProjectorBlockEntity) {
 				this.parent = (HoloBridgeProjectorBlockEntity) parentEntity;
@@ -103,29 +103,29 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	}
 
 	public boolean attemptToBuildBridge(HoloBridgeProjectorBlockEntity child) {
-		BlockPos bCP = child.getPos();
-		BlockPos bOP = this.getPos();
-
-		BlockPos nCP = bCP;
-
-		Direction cD = child.getCachedState().get(HorizontalFacingBlock.FACING);
+		var bCP = child.getPos();
+		var bOP = this.getPos();
+		
+		var nCP = bCP;
+		
+		var cD = child.getCachedState().get(HorizontalFacingBlock.FACING);
 
 		if (cD == Direction.EAST) {
 			nCP = nCP.add(1, 0, 0);
 		} else if (cD == Direction.SOUTH) {
 			nCP = nCP.add(0, 0, 1);
 		}
-
-		int distance = (int) Math.sqrt(this.getPos().getSquaredDistance(child.getPos()));
+		
+		var distance = (int) Math.sqrt(this.getPos().getSquaredDistance(child.getPos()));
 
 		if (distance == 0) {
 			return false;
 		}
+		
+		var segments = (ArrayList<Vec3f>) LineUtils.getBresenhamSegments(VectorUtils.toVector3f(bOP.offset(Direction.UP)), VectorUtils.toVector3f(nCP.offset(Direction.UP)), 32);
 
-		ArrayList<Vec3f> segments = (ArrayList<Vec3f>) LineUtils.getBresenhamSegments(VectorUtils.toVector3f(bOP.offset(Direction.UP)), VectorUtils.toVector3f(nCP.offset(Direction.UP)), 32);
-
-		for (Vec3f v : segments) {
-			BlockPos nP = new BlockPos(v.getX(), v.getY(), v.getZ());
+		for (var v : segments) {
+			var nP = new BlockPos(v.getX(), v.getY(), v.getZ());
 
 			if ((nP.getX() != bCP.getX() && nP.getX() != bOP.getX()) || (nP.getZ() != bCP.getZ() && nP.getZ() != bOP.getZ())) {
 				if (!this.world.getBlockState(nP).isAir()) {
@@ -141,31 +141,31 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 		if (this.child == null || this.world == null) {
 			return;
 		}
-
-		BlockPos bCP = this.getChild().getPos();
-		BlockPos bOP = this.getPos();
-
-		BlockPos nCP = bCP;
-
-		Direction cD = this.getChild().getCachedState().get(HorizontalFacingBlock.FACING);
+		
+		var bCP = this.getChild().getPos();
+		var bOP = this.getPos();
+		
+		var nCP = bCP;
+		
+		var cD = this.getChild().getCachedState().get(HorizontalFacingBlock.FACING);
 
 		if (cD == Direction.EAST) {
 			nCP = nCP.add(1, 0, 0);
 		} else if (cD == Direction.SOUTH) {
 			nCP = nCP.add(0, 0, 1);
 		}
-
-		int distance = (int) Math.sqrt(this.getPos().getSquaredDistance(this.getChild().getPos()));
+		
+		var distance = (int) Math.sqrt(this.getPos().getSquaredDistance(this.getChild().getPos()));
 
 		if (distance == 0) {
 			return;
 		}
 
 		this.segments = (ArrayList<Vec3f>) LineUtils.getBresenhamSegments(VectorUtils.toVector3f(bOP.offset(Direction.UP)), VectorUtils.toVector3f(nCP.offset(Direction.UP)), 32);
-		WorldHoloBridgeComponent bridgeComponent = WorldHoloBridgeComponent.get(world);
+		var bridgeComponent = WorldHoloBridgeComponent.get(world);
 
-		for (Vec3f v : this.segments) {
-			BlockPos nP = new BlockPos(v.getX(), v.getY(), v.getZ());
+		for (var v : this.segments) {
+			var nP = new BlockPos(v.getX(), v.getY(), v.getZ());
 
 			if ((nP.getX() != bCP.getX() && nP.getX() != bOP.getX()) || (nP.getZ() != bCP.getZ() && nP.getZ() != bOP.getZ())) {
 				if (this.world.getBlockState(nP).isAir()) {
@@ -231,10 +231,10 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 
 	public void destroyBridge() {
 		if (this.segments != null && this.world != null) {
-			WorldHoloBridgeComponent bridgeComponent = WorldHoloBridgeComponent.get(world);
+			var bridgeComponent = WorldHoloBridgeComponent.get(world);
 
-			for (Vec3f vec : this.segments) {
-				BlockPos pos = new BlockPos(vec.getX(), vec.getY(), vec.getZ());
+			for (var vec : this.segments) {
+				var pos = new BlockPos(vec.getX(), vec.getY(), vec.getZ());
 
 				bridgeComponent.remove(pos);
 
@@ -256,7 +256,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 		}
 
 		if (tag.contains("color")) {
-			NbtCompound colorTag = tag.getCompound("color");
+			var colorTag = tag.getCompound("color");
 
 			color = new Color(colorTag.getFloat("r"), colorTag.getFloat("g"), colorTag.getFloat("b"), colorTag.getFloat("a"));
 		}
@@ -287,8 +287,8 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 		} else if (this.parentPosition != null) {
 			tag.putLong("parent_position", this.parentPosition.asLong());
 		}
-
-		NbtCompound colorTag = new NbtCompound();
+		
+		var colorTag = new NbtCompound();
 		colorTag.putFloat("r", color.getR());
 		colorTag.putFloat("g", color.getG());
 		colorTag.putFloat("b", color.getB());

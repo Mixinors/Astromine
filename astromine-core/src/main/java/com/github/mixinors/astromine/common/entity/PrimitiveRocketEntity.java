@@ -26,23 +26,21 @@ package com.github.mixinors.astromine.common.entity;
 
 import com.github.mixinors.astromine.common.entity.base.RocketEntity;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
-import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidVariantStorage;
+import com.github.mixinors.astromine.common.screenhandler.PrimitiveRocketScreenHandler;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
-import com.github.mixinors.astromine.common.transfer.storage.SimpleItemVariantStorage;
 import com.github.mixinors.astromine.registry.common.AMDimensions;
 import com.github.mixinors.astromine.registry.common.AMFluids;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMNetworks;
-import com.google.common.base.Predicates;
+import com.google.common.collect.Lists;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.registry.menu.ExtendedMenuProvider;
 import dev.architectury.registry.menu.MenuRegistry;
-
+import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.client.util.math.Vector3d;
@@ -59,11 +57,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
-
-import com.github.mixinors.astromine.common.screenhandler.PrimitiveRocketScreenHandler;
-import io.netty.buffer.Unpooled;
-
-import com.google.common.collect.Lists;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
@@ -103,7 +96,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 
 	@Override
 	protected void consumeFuel() {
-		try (Transaction transaction = Transaction.openOuter()) {
+		try (var transaction = Transaction.openOuter()) {
 			fluidStorage.getStorage(FLUID_INPUT_SLOT_1).extract(FluidVariant.of(AMFluids.FUEL), FUEL_INGREDIENT.getAmount(), transaction);
 			fluidStorage.getStorage(FLUID_INPUT_SLOT_2).extract(FluidVariant.of(AMFluids.OXYGEN), OXYGEN_INGREDIENT.getAmount(), transaction);
 			
@@ -153,7 +146,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 
 	@Override
 	public Packet<?> createSpawnPacket() {
-		PacketByteBuf packet = new PacketByteBuf(Unpooled.buffer());
+		var packet = new PacketByteBuf(Unpooled.buffer());
 
 		packet.writeDouble(this.getX());
 		packet.writeDouble(this.getY());
@@ -183,28 +176,28 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 			getDataTracker().set(IS_RUNNING, false);
 		}
 		
-		try (Transaction transaction = Transaction.openOuter()) {
-			ItemStack firstItemInputStack = itemStorage.getStack(ITEM_INPUT_SLOT_1);
-			ItemStack secondItemInputStack = itemStorage.getStack(ITEM_INPUT_SLOT_2);
-
-			SimpleItemVariantStorage firstItemInputStorage = itemStorage.getStorage(ITEM_INPUT_SLOT_1);
-			SimpleItemVariantStorage secondItemInputStorage = itemStorage.getStorage(ITEM_INPUT_SLOT_2);
-
-			SimpleItemVariantStorage firstItemOutputStorage = itemStorage.getStorage(ITEM_OUTPUT_SLOT_1);
-			SimpleItemVariantStorage secondItemOutputStorage = itemStorage.getStorage(ITEM_OUTPUT_SLOT_2);
-
-			SimpleFluidVariantStorage firstFluidInputStorage = fluidStorage.getStorage(FLUID_INPUT_SLOT_1);
-			SimpleFluidVariantStorage secondFluidInputStorage = fluidStorage.getStorage(FLUID_INPUT_SLOT_2);
-
-			Storage<FluidVariant> firstFluidOutputStorage = FluidStorage.ITEM.find(firstItemInputStack, ContainerItemContext.ofSingleSlot(firstItemInputStorage));
-			Storage<FluidVariant> secondFluidOutputStorage = FluidStorage.ITEM.find(secondItemInputStack, ContainerItemContext.ofSingleSlot(secondItemInputStorage));
+		try (var transaction = Transaction.openOuter()) {
+			var firstItemInputStack = itemStorage.getStack(ITEM_INPUT_SLOT_1);
+			var secondItemInputStack = itemStorage.getStack(ITEM_INPUT_SLOT_2);
 			
-			StorageUtil.move(firstFluidOutputStorage, firstFluidInputStorage, Predicates.alwaysTrue(), FluidConstants.BUCKET, transaction);
-			StorageUtil.move(secondFluidOutputStorage, secondFluidInputStorage, Predicates.alwaysTrue(), FluidConstants.BUCKET, transaction);
+			var firstItemInputStorage = itemStorage.getStorage(ITEM_INPUT_SLOT_1);
+			var secondItemInputStorage = itemStorage.getStorage(ITEM_INPUT_SLOT_2);
+			
+			var firstItemOutputStorage = itemStorage.getStorage(ITEM_OUTPUT_SLOT_1);
+			var secondItemOutputStorage = itemStorage.getStorage(ITEM_OUTPUT_SLOT_2);
+			
+			var firstFluidInputStorage = fluidStorage.getStorage(FLUID_INPUT_SLOT_1);
+			var secondFluidInputStorage = fluidStorage.getStorage(FLUID_INPUT_SLOT_2);
+			
+			var firstFluidOutputStorage = FluidStorage.ITEM.find(firstItemInputStack, ContainerItemContext.ofSingleSlot(firstItemInputStorage));
+			var secondFluidOutputStorage = FluidStorage.ITEM.find(secondItemInputStack, ContainerItemContext.ofSingleSlot(secondItemInputStorage));
+			
+			StorageUtil.move(firstFluidOutputStorage, firstFluidInputStorage, fluidVariant -> true, FluidConstants.BUCKET, transaction);
+			StorageUtil.move(secondFluidOutputStorage, secondFluidInputStorage, fluidVariant -> true, FluidConstants.BUCKET, transaction);
 			
 			if (firstItemOutputStorage.getResource().isBlank()) {
 				StorageUtil.move(firstItemInputStorage, firstItemOutputStorage, (variant) -> {
-					Storage<FluidVariant> storage = FluidStorage.ITEM.find(variant.toStack(), ContainerItemContext.ofSingleSlot(firstItemOutputStorage));
+					var storage = FluidStorage.ITEM.find(variant.toStack(), ContainerItemContext.ofSingleSlot(firstItemOutputStorage));
 					
 					return storage == null || storage.iterator(transaction).next().isResourceBlank();
 				}, 1, transaction);
@@ -212,7 +205,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 			
 			if (secondItemOutputStorage.getResource().isBlank()) {
 				StorageUtil.move(secondItemInputStorage, secondItemOutputStorage, (variant) -> {
-					Storage<FluidVariant> storage = FluidStorage.ITEM.find(variant.toStack(), ContainerItemContext.ofSingleSlot(firstItemOutputStorage));
+					var storage = FluidStorage.ITEM.find(variant.toStack(), ContainerItemContext.ofSingleSlot(firstItemOutputStorage));
 					
 					return storage == null || storage.iterator(transaction).next().isResourceBlank();
 				}, 1, transaction);

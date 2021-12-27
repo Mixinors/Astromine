@@ -30,7 +30,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.BiPredicate;
 
-import com.google.common.collect.Lists;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -95,29 +94,29 @@ public final class ItemIngredient {
 	
 	public static ItemIngredient fromJson(JsonElement json) {
 		if (json.isJsonPrimitive()) {
-			Identifier entryAsId = new Identifier(json.getAsString());
-			Item entryAsItem = Registry.ITEM.get(entryAsId);
-			ItemVariant entryAsItemVariant = ItemVariant.of(entryAsItem);
+			var entryAsId = new Identifier(json.getAsString());
+			var entryAsItem = Registry.ITEM.get(entryAsId);
+			var entryAsItemVariant = ItemVariant.of(entryAsItem);
 			
 			return new ItemIngredient(new VariantEntry(entryAsItemVariant));
 		}
 		
 		if (json.isJsonObject()) {
-			JsonObject jsonObject = json.getAsJsonObject();
+			var jsonObject = json.getAsJsonObject();
 			
 			if (jsonObject.has("item")) {
 				if (jsonObject.has("count")) {
-					Identifier entryAsId = new Identifier(jsonObject.get("item").getAsString());
-					Item entryAsItem = Registry.ITEM.get(entryAsId);
-					ItemVariant entryAsItemVariant = ItemVariant.of(entryAsItem);
-
-					int entryAmount = jsonObject.get("count").getAsInt();
+					var entryAsId = new Identifier(jsonObject.get("item").getAsString());
+					var entryAsItem = Registry.ITEM.get(entryAsId);
+					var entryAsItemVariant = ItemVariant.of(entryAsItem);
+					
+					var entryAmount = jsonObject.get("count").getAsInt();
 					
 					return new ItemIngredient(new VariantEntry(entryAsItemVariant, entryAmount));
 				} else {
-					Identifier entryAsId = new Identifier(jsonObject.get("item").getAsString());
-					Item entryAsItem = Registry.ITEM.get(entryAsId);
-					ItemVariant entryAsItemVariant = ItemVariant.of(entryAsItem);
+					var entryAsId = new Identifier(jsonObject.get("item").getAsString());
+					var entryAsItem = Registry.ITEM.get(entryAsId);
+					var entryAsItemVariant = ItemVariant.of(entryAsItem);
 					
 					return new ItemIngredient(new VariantEntry(entryAsItemVariant));
 				}
@@ -125,15 +124,15 @@ public final class ItemIngredient {
 			
 			if (jsonObject.has("tag")) {
 				if (jsonObject.has("count")) {
-					Identifier entryAsId = new Identifier(jsonObject.get("tag").getAsString());
-					Tag.Identified<Item> entryAsTag = TagHooks.optionalItem(entryAsId);
-
-					int entryAmount = jsonObject.get("count").getAsInt();
+					var entryAsId = new Identifier(jsonObject.get("tag").getAsString());
+					var entryAsTag = TagHooks.optionalItem(entryAsId);
+					
+					var entryAmount = jsonObject.get("count").getAsInt();
 					
 					return new ItemIngredient(new TagEntry(entryAsTag, entryAmount));
 				} else {
-					Identifier entryAsId = new Identifier(jsonObject.get("tag").getAsString());
-					Tag.Identified<Item> entryAsTag = TagHooks.optionalItem(entryAsId);
+					var entryAsId = new Identifier(jsonObject.get("tag").getAsString());
+					var entryAsTag = TagHooks.optionalItem(entryAsId);
 					
 					return new ItemIngredient(new TagEntry(entryAsTag));
 				}
@@ -144,17 +143,17 @@ public final class ItemIngredient {
 	}
 	
 	public static JsonObject toJson(ItemIngredient ingredient) {
-		JsonObject jsonObject = new JsonObject();
+		var jsonObject = new JsonObject();
 		
 		if (ingredient.entry instanceof VariantEntry variantEntry) {
-			JsonObject entryJsonObject = new JsonObject();
+			var entryJsonObject = new JsonObject();
 			
 			entryJsonObject.addProperty("item", Registry.ITEM.getId(variantEntry.requiredVariant.getItem()).toString());
 			entryJsonObject.addProperty("count", variantEntry.requiredAmount);
 		}
 		
 		if (ingredient.entry instanceof TagEntry tagEntry) {
-			JsonObject entryJsonObject = new JsonObject();
+			var entryJsonObject = new JsonObject();
 			
 			entryJsonObject.addProperty("tag", ServerTagManagerHolder.getTagManager().getOrCreateTagGroup(Registry.ITEM_KEY).getUncheckedTagId(tagEntry.requiredTag).toString());
 			entryJsonObject.addProperty("count", tagEntry.requiredAmount);
@@ -164,20 +163,20 @@ public final class ItemIngredient {
 	}
 	
 	public static ItemIngredient fromPacket(PacketByteBuf buf) {
-		String entryType = buf.readString();
-		Identifier entryTypeId = new Identifier(buf.readString());
-
-		int entryAmount = buf.readInt();
+		var entryType = buf.readString();
+		var entryTypeId = new Identifier(buf.readString());
+		
+		var entryAmount = buf.readInt();
 		
 		if (entryType.equals("item")) {
-			Item entryItem = Registry.ITEM.get(entryTypeId);
-			ItemVariant entryVariant = ItemVariant.of(entryItem);
+			var entryItem = Registry.ITEM.get(entryTypeId);
+			var entryVariant = ItemVariant.of(entryItem);
 			
 			return new ItemIngredient(new VariantEntry(entryVariant, entryAmount));
 		}
 		
 		if (entryType.equals("tag")) {
-			Tag.Identified<Item> entryTag = TagHooks.optionalItem(entryTypeId);
+			var entryTag = TagHooks.optionalItem(entryTypeId);
 			
 			return new ItemIngredient(new TagEntry(entryTag, entryAmount));
 		}
@@ -255,12 +254,12 @@ public final class ItemIngredient {
 			if (requiredVariants == null) {
 				requiredVariants = new ArrayList<>();
 				
-				for (Item item : requiredTag.values()) {
+				for (var item : requiredTag.values()) {
 					requiredVariants.add(ItemVariant.of(item));
 				}
 			}
 			
-			for (ItemVariant requiredVariant : requiredVariants) {
+			for (var requiredVariant : requiredVariants) {
 				if (requiredVariant.equals(testVariant) && testAmount >= requiredAmount) {
 					return true;
 				}
@@ -276,9 +275,9 @@ public final class ItemIngredient {
 
 		@Override
 		public Collection<ItemVariant> getVariants() {
-			ArrayList<ItemVariant> list = new ArrayList<ItemVariant>();
+			var list = new ArrayList<ItemVariant>();
 			
-			for (Item item : this.requiredTag.values()) {
+			for (var item : this.requiredTag.values()) {
 				list.add(ItemVariant.of(item));
 			}
 			

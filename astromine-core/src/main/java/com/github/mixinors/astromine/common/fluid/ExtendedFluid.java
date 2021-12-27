@@ -138,7 +138,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 	
 	@Override
 	protected void beforeBreakingBlock(WorldAccess world, BlockPos position, BlockState state) {
-		BlockEntity blockEntity = world.getBlockEntity(position);
+		var blockEntity = world.getBlockEntity(position);
 		Block.dropStacks(state, world, position, blockEntity);
 	}
 	
@@ -258,8 +258,8 @@ public abstract class ExtendedFluid extends FlowableFluid {
 		}
 		
 		public ExtendedFluid build() {
-			Flowing flowing = AMFluids.register(name + "_flowing", new Flowing(fog, tint, isInfinite, source));
-			Still still = AMFluids.register(name, new Still(fog, tint, isInfinite, source));
+			var flowing = AMFluids.register(name + "_flowing", new Flowing(fog, tint, isInfinite, source));
+			var still = AMFluids.register(name, new Still(fog, tint, isInfinite, source));
 
 			flowing.flowing = flowing;
 			still.flowing = flowing;
@@ -268,28 +268,29 @@ public abstract class ExtendedFluid extends FlowableFluid {
 			flowing.still = still;
 			still.still = still;
 			this.still = still;
+			
+			var block = AMBlocks.register(name, () -> new FluidBlock(still, AbstractBlock.Settings.of(INDUSTRIAL_FLUID_MATERIAL).noCollision().strength(100.0F).dropsNothing()));
+			
+			var bucket = AMItems.register(name + "_bucket", () -> new BucketItem(still, (new Item.Settings()).recipeRemainder(Items.BUCKET).maxCount(1).group(group)));
 
-			RegistrySupplier block = (RegistrySupplier) AMBlocks.register(name, () -> new FluidBlock(still, AbstractBlock.Settings.of(INDUSTRIAL_FLUID_MATERIAL).noCollision().strength(100.0F).dropsNothing()));
+			flowing.block = (RegistrySupplier) block;
+			still.block = (RegistrySupplier) block;
+			this.block = (RegistrySupplier) block;
 
-			RegistrySupplier bucket = (RegistrySupplier) AMItems.register(name + "_bucket", () -> new BucketItem(still, (new Item.Settings()).recipeRemainder(Items.BUCKET).maxCount(1).group(group)));
-
-			flowing.block = block;
-			still.block = block;
-			this.block = block;
-
-			flowing.bucket = bucket;
-			still.bucket = bucket;
-			this.bucket = bucket;
-
-			Object2ObjectOpenHashMap<Item, CauldronBehavior> cauldronBehaviorMap = CauldronBehavior.createMap();
-			RegistrySupplier cauldron = (RegistrySupplier) AMBlocks.register(name + "_cauldron", () -> new FullCauldronBlock(BlockProperties.copy(Blocks.CAULDRON), cauldronBehaviorMap));
+			flowing.bucket = (RegistrySupplier) bucket;
+			still.bucket = (RegistrySupplier) bucket;
+			this.bucket = (RegistrySupplier) bucket;
+			
+			var cauldronBehaviorMap = CauldronBehavior.createMap();
+			var cauldron = AMBlocks.register(name + "_cauldron", () -> new FullCauldronBlock(BlockProperties.copy(Blocks.CAULDRON), cauldronBehaviorMap));
 
 			flowing.cauldronBehaviorMap = cauldronBehaviorMap;
 			still.cauldronBehaviorMap = cauldronBehaviorMap;
 			this.cauldronBehaviorMap = cauldronBehaviorMap;
-			flowing.cauldron = cauldron;
-			still.cauldron = cauldron;
-			this.cauldron = cauldron;
+			
+			flowing.cauldron = (RegistrySupplier) cauldron;
+			still.cauldron = (RegistrySupplier) cauldron;
+			this.cauldron = (RegistrySupplier) cauldron;
 
 			CauldronLib.registerBehaviorMap(cauldronBehaviorMap);
 			CauldronLib.registerFillFromBucketBehavior(this.bucket.get(), this.cauldron.get());

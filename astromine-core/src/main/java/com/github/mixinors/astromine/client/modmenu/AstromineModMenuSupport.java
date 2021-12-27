@@ -38,7 +38,7 @@ public class AstromineModMenuSupport implements ModMenuApi {
 	@Override
 	public ConfigScreenFactory<?> getModConfigScreenFactory() {
 		return screen -> {
-			ConfigScreenProvider<AMConfig> configScreen = (ConfigScreenProvider<AMConfig>) AutoConfig.getConfigScreen(AMConfig.class, screen);
+			var configScreen = (ConfigScreenProvider<AMConfig>) AutoConfig.getConfigScreen(AMConfig.class, screen);
 			configScreen.setOptionFunction((s, field) -> field.getName());
 			return configScreen.get();
 		};

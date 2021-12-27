@@ -63,14 +63,14 @@ public class FireExtinguisherItem extends Item {
 
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-		Vec3d placeVec = user.getCameraPosVec(0);
-
-		Vec3d thrustVec = new Vec3d(0.8, 0.8, 0.8);
+		var placeVec = user.getCameraPosVec(0);
+		
+		var thrustVec = new Vec3d(0.8, 0.8, 0.8);
 
 		thrustVec = thrustVec.multiply(user.getRotationVector());
 
-		for (int i = 0; i < world.random.nextInt(64); ++i) {
-			float r = world.random.nextFloat();
+		for (var i = 0; i < world.random.nextInt(64); ++i) {
+			var r = world.random.nextFloat();
 			world.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, placeVec.x + thrustVec.x, placeVec.y + thrustVec.y, placeVec.z + thrustVec.z, thrustVec.x * r, thrustVec.y * r, thrustVec.z * r);
 		}
 
@@ -86,11 +86,11 @@ public class FireExtinguisherItem extends Item {
 		} else {
 			user.getItemCooldownManager().set(this, AMConfig.get().fireExtinguisherSneakingDelay);
 		}
-
-		BlockHitResult result = (BlockHitResult) user.raycast(6, 0, false);
+		
+		var result = (BlockHitResult) user.raycast(6, 0, false);
 
 		BlockPos.Mutable.stream(new Box(result.getBlockPos()).expand(2)).forEach(position -> {
-			BlockState state = world.getBlockState(position);
+			var state = world.getBlockState(position);
 
 			if (state.getBlock() instanceof FireBlock) {
 				world.setBlockState(position, Blocks.AIR.getDefaultState());

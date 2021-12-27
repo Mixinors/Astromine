@@ -40,8 +40,8 @@ public interface DoubleItemInputRecipe extends ItemInputRecipe {
 
 	@Override
 	default boolean allows(ItemVariant... variants) {
-		ItemVariant firstInputVariant = variants[0];
-		ItemVariant secondInputVariant = variants[1];
+		var firstInputVariant = variants[0];
+		var secondInputVariant = variants[1];
 
 		if (!getFirstInput().test(firstInputVariant, Long.MAX_VALUE) && !getSecondInput().test(firstInputVariant, Long.MAX_VALUE)) {
 			return false;

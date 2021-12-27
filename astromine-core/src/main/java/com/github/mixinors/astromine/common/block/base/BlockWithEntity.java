@@ -145,8 +145,8 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 	@Override
 	public boolean onSyncedBlockEvent(BlockState state, World world, BlockPos pos, int type, int data) {
 		super.onSyncedBlockEvent(state, world, pos, type, data);
-
-		BlockEntity blockEntity = world.getBlockEntity(pos);
+		
+		var blockEntity = world.getBlockEntity(pos);
 
 		return blockEntity != null && blockEntity.onSyncedBlockEvent(type, data);
 	}
@@ -185,8 +185,8 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 	@Override
 	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		super.onPlaced(world, pos, state, placer, stack);
-
-		BlockEntity blockEntity = world.getBlockEntity(pos);
+		
+		var blockEntity = world.getBlockEntity(pos);
 
 		if (blockEntity != null) {
 			blockEntity.readNbt(stack.getOrCreateNbt());
@@ -207,12 +207,12 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 	/** Override behavior to write {@link BlockEntity} contents to {@link ItemStack} {@link NbtCompound}. */
 	@Override
 	public List<ItemStack> getDroppedStacks(BlockState state, LootContext.Builder builder) {
-		List<ItemStack> stacks = super.getDroppedStacks(state, builder);
-		BlockEntity blockEntity = builder.getNullable(LootContextParameters.BLOCK_ENTITY);
+		var stacks = super.getDroppedStacks(state, builder);
+		var blockEntity = builder.getNullable(LootContextParameters.BLOCK_ENTITY);
 		if (blockEntity != null && saveTagToDroppedItem()) {
-			for (ItemStack drop : stacks) {
+			for (var drop : stacks) {
 				if (drop.getItem() == asItem()) {
-					NbtCompound tag = blockEntity.createNbt();
+					var tag = blockEntity.createNbt();
 					tag.remove("x");
 					tag.remove("y");
 					tag.remove("z");

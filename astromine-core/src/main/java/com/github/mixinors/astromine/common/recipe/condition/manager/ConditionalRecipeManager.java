@@ -54,23 +54,23 @@ public class ConditionalRecipeManager extends RecipeManager {
 	
 	@Override
 	protected void apply(Map<Identifier, JsonElement> map, ResourceManager resourceManager, Profiler profiler) {
-		HashMap<Identifier, JsonElement> allowed = new HashMap<Identifier, JsonElement>();
+		var allowed = new HashMap<Identifier, JsonElement>();
 		
-		for (Map.Entry<Identifier, JsonElement> entry : map.entrySet()) {
+		for (var entry : map.entrySet()) {
 			if (entry.getValue() instanceof JsonObject jsonObject) {
-				RecipeCondition condition = AMCommon.GSON.fromJson(jsonObject.get("condition"), RecipeCondition.class);
+				var condition = AMCommon.GSON.fromJson(jsonObject.get("condition"), RecipeCondition.class);
 				
 				if (condition.isAllowed()) {
 					allowed.put(new Identifier(entry.getKey().getNamespace(), "conditional_" + entry.getKey().getPath()), jsonObject.get("recipe"));
 				}
 			}
 		}
-
-		Map<RecipeType<?>, Map<Identifier, Recipe<?>>> existing = ((RecipeManagerAccessor) this.resourceManager.getRecipeManager()).getRecipes();
-		ImmutableMap<? extends RecipeType<?>, ImmutableMap<Identifier, Recipe<?>>> parsed = parse(allowed);
-		HashMap<RecipeType<?>, Map<Identifier, Recipe<?>>> combined = new HashMap<RecipeType<?>, Map<Identifier, Recipe<?>>>();
 		
-		for (Map.Entry<RecipeType<?>, Map<Identifier, Recipe<?>>> entry : existing.entrySet()) {
+		var existing = ((RecipeManagerAccessor) this.resourceManager.getRecipeManager()).getRecipes();
+		var parsed = parse(allowed);
+		var combined = new HashMap<RecipeType<?>, Map<Identifier, Recipe<?>>>();
+		
+		for (var entry : existing.entrySet()) {
 			if (!combined.containsKey(entry.getKey())) {
 				combined.put(entry.getKey(), new HashMap<>());
 			}
@@ -90,13 +90,13 @@ public class ConditionalRecipeManager extends RecipeManager {
 	}
 	
 	public ImmutableMap<? extends RecipeType<?>, ImmutableMap<Identifier, Recipe<?>>> parse(Map<Identifier, JsonElement> map) {
-		HashMap<RecipeType<?>, ImmutableMap.Builder<Identifier, Recipe<?>>> recipeMap = new HashMap<RecipeType<?>, ImmutableMap.Builder<Identifier, Recipe<?>>>();
+		var recipeMap = new HashMap<RecipeType<?>, ImmutableMap.Builder<Identifier, Recipe<?>>>();
 		
-		for (Map.Entry<Identifier, JsonElement> identifierJsonElementEntry : map.entrySet()) {
-			Identifier identifier = identifierJsonElementEntry.getKey();
+		for (var identifierJsonElementEntry : map.entrySet()) {
+			var identifier = identifierJsonElementEntry.getKey();
 			
 			try {
-				Recipe<?> recipe = deserialize(identifier, JsonHelper.asObject(identifierJsonElementEntry.getValue(), "top element"));
+				var recipe = deserialize(identifier, JsonHelper.asObject(identifierJsonElementEntry.getValue(), "top element"));
 				recipeMap.computeIfAbsent(recipe.getType(), (recipeType) -> ImmutableMap.builder()).put(identifier, recipe);
 			} catch (IllegalArgumentException | JsonParseException var9) {
 				AMCommon.LOGGER.error("Parsing error loading conditional recipe {}", identifier, var9);

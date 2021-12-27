@@ -67,13 +67,13 @@ public class SpaceSkybox extends Skybox {
 
     @Override
     public void render(MatrixStack matrices, float tickDelta) {
-        MinecraftClient client = ClientUtils.getInstance();
-
-        TextureManager textureManager = client.getTextureManager();
-
-        Tessellator tessellator = Tessellator.getInstance();
-
-        BufferBuilder buffer = tessellator.getBuffer();
+		var client = ClientUtils.getInstance();
+	
+		var textureManager = client.getTextureManager();
+	
+		var tessellator = Tessellator.getInstance();
+	
+		var buffer = tessellator.getBuffer();
 
         RenderSystem.depthMask(false);
         RenderSystem.enableBlend();
@@ -87,14 +87,14 @@ public class SpaceSkybox extends Skybox {
         if (world == null) {
             return;
         }
+	
+		var rotation = (world.getTimeOfDay() / 12000f) * 360;
+	
+		var rawLight = (int) ((world.getTimeOfDay() / 12000) % 15);
+	
+		var vertexLight = 0x00f000f0 >> 2 | rawLight >> 3 | rawLight;
 
-        float rotation = (world.getTimeOfDay() / 12000f) * 360;
-
-        int rawLight = (int) ((world.getTimeOfDay() / 12000) % 15);
-
-        int vertexLight = 0x00f000f0 >> 2 | rawLight >> 3 | rawLight;
-
-        for (int i = 0; i < 6; ++i) {
+        for (var i = 0; i < 6; ++i) {
             matrices.push();
 			switch (i) {
 				case 0 -> {
@@ -129,10 +129,10 @@ public class SpaceSkybox extends Skybox {
 			}
 
             buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT);
-
-            GameOptions options = ClientUtils.getInstance().options;
-
-            float distance = 16F * (float) Option.RENDER_DISTANCE.get(options) - 8F;
+	
+			var options = ClientUtils.getInstance().options;
+	
+			var distance = 16F * (float) Option.RENDER_DISTANCE.get(options) - 8F;
 
             buffer.vertex(matrices.peek().getPositionMatrix(), -distance, -distance, -distance).color(1F, 1F, 1F, 1F).texture(0.0F, 0.0F).light(vertexLight).next();
             buffer.vertex(matrices.peek().getPositionMatrix(), -distance, -distance, distance).color(1F, 1F, 1F, 1F).texture(0.0F, 1.0F).light(vertexLight).next();

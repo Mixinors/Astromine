@@ -74,7 +74,7 @@ public class AMClientCallbacks {
 
 		ItemTooltipCallback.EVENT.register( ( stack, context, tooltip ) -> {
 			if (stack.getItem() instanceof HolographicConnectorItem) {
-				Pair<RegistryKey<World>, BlockPos> pair = ((HolographicConnectorItem) stack.getItem()).readBlock(stack);
+				var pair = ((HolographicConnectorItem) stack.getItem()).readBlock(stack);
 				
 				if (pair != null) {
 					tooltip.add(Text.of(null));

@@ -40,8 +40,8 @@ public class CreativeBufferScreenHandler extends ExtendedBlockEntityScreenHandle
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
-
-		SlotWidget slot = new SlotWidget(0, blockEntity.getItemStorage());
+		
+		var slot = new SlotWidget(0, blockEntity.getItemStorage());
 		slot.setPosition( Position.of(mainTab, 70, 20));
 		slot.setSize( Size.of(36, 36));
 

@@ -57,13 +57,13 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 
 	@Override
 	public boolean generate(FeatureContext<DefaultFeatureConfig> context) {
-		StructureWorldAccess world = context.getWorld();
-		Random random = context.getRandom();
-		BlockPos featurePosition = context.getOrigin();
-		DefaultFeatureConfig config = context.getConfig();
+		var world = context.getWorld();
+		var random = context.getRandom();
+		var featurePosition = context.getOrigin();
+		var config = context.getConfig();
 		featurePosition = new BlockPos(featurePosition.getX(), random.nextInt(256), featurePosition.getZ());
-
-		WeightedList<Block> ores = new WeightedList<Block>();
+		
+		var ores = new WeightedList<Block>();
 
 		chances(random, ores);
 
@@ -72,12 +72,12 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 		}
 
 		ores.shuffle(random);
-
-		Block ore = ores.stream().findFirst().orElse(AMBlocks.ASTEROID_STONE.get());
-
-		int xSize = AsteroidOreRegistry.INSTANCE.getDiameter(random, ore);
-		int ySize = AsteroidOreRegistry.INSTANCE.getDiameter(random, ore);
-		int zSize = AsteroidOreRegistry.INSTANCE.getDiameter(random, ore);
+		
+		var ore = ores.stream().findFirst().orElse(AMBlocks.ASTEROID_STONE.get());
+		
+		var xSize = AsteroidOreRegistry.INSTANCE.getDiameter(random, ore);
+		var ySize = AsteroidOreRegistry.INSTANCE.getDiameter(random, ore);
+		var zSize = AsteroidOreRegistry.INSTANCE.getDiameter(random, ore);
 
 		if (xSize > 0 && ySize > 0 && zSize > 0) {
 			this.place(world, random, featurePosition, ore, (float) xSize, (float) ySize, (float) zSize);
@@ -87,8 +87,8 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 	}
 
 	private void chances(Random random, WeightedList<Block> ores) {
-		for (Map.Entry<Block, @Nullable Pair<Range<Integer>, Range<Integer>>> entry : AsteroidOreRegistry.INSTANCE.diameters.reference2ReferenceEntrySet()) {
-			Pair<Range<Integer>, Range<Integer>> pair = entry.getValue();
+		for (var entry : AsteroidOreRegistry.INSTANCE.diameters.reference2ReferenceEntrySet()) {
+			var pair = entry.getValue();
 			if (pair != null) {
 				ores.add(entry.getKey(), (int) ((pair.getLeft().maximum() - pair.getLeft().minimum()) * Objects.requireNonNull(random, "random").nextFloat() + pair.getLeft().minimum()));
 			}
@@ -96,11 +96,11 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 	}
 
 	private void place(StructureWorldAccess world, Random random, BlockPos featurePosition, Block ore, float xSize, float ySize, float zSize) {
-		Shape vein = Shapes.ellipsoid(xSize, ySize, zSize).applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true))).applyLayer(TranslateLayer.of(Position.of(
+		var vein = Shapes.ellipsoid(xSize, ySize, zSize).applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true))).applyLayer(TranslateLayer.of(Position.of(
 				featurePosition)));
 
-		for (Position streamPosition : vein.stream().collect(Collectors.toSet())) {
-			BlockPos orePosition = streamPosition.toBlockPos();
+		for (var streamPosition : vein.stream().collect(Collectors.toSet())) {
+			var orePosition = streamPosition.toBlockPos();
 
 			if (world.getBlockState(orePosition).getBlock() == AMBlocks.ASTEROID_STONE.get()) {
 				if (random.nextInt(AMConfig.get().asteroidOreThreshold) == 0) {

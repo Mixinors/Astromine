@@ -82,8 +82,8 @@ public interface Variant<T extends ItemConvertible> {
 	 * @param material the family's name
 	 */
 	default String getTagPath(String material) {
-		String prefix = hasTagPrefix() ? getTagPrefix() + "_" : "";
-		String suffix = hasTagSuffix() ? "_" + getTagSuffix() : "";
+		var prefix = hasTagPrefix() ? getTagPrefix() + "_" : "";
+		var suffix = hasTagSuffix() ? "_" + getTagSuffix() : "";
 		return prefix + getTagCentre(material) + suffix;
 	}
 

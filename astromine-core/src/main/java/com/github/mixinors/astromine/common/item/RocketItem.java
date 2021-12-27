@@ -59,23 +59,22 @@ public class RocketItem extends Item {
 
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-		ItemStack itemStack = user.getStackInHand(hand);
-		BlockHitResult hitResult = SpawnEggItem.raycast(world, user, RaycastContext.FluidHandling.SOURCE_ONLY);
+		var itemStack = user.getStackInHand(hand);
+		var hitResult = SpawnEggItem.raycast(world, user, RaycastContext.FluidHandling.SOURCE_ONLY);
 		if (((HitResult)hitResult).getType() != HitResult.Type.BLOCK) {
 			return TypedActionResult.pass(itemStack);
 		}
 		if (!(world instanceof ServerWorld)) {
 			return TypedActionResult.success(itemStack);
 		}
-		BlockHitResult blockHitResult = hitResult;
-		BlockPos blockPos = blockHitResult.getBlockPos();
+		var blockPos = hitResult.getBlockPos();
 		if ( world.getBlockState(blockPos).getBlock() instanceof FluidBlock ) {
 			return TypedActionResult.pass(itemStack);
 		}
-		if (!world.canPlayerModifyAt(user, blockPos) || !user.canPlaceOn(blockPos, blockHitResult.getSide(), itemStack)) {
+		if (!world.canPlayerModifyAt(user, blockPos) || !user.canPlaceOn(blockPos, hitResult.getSide(), itemStack)) {
 			return TypedActionResult.fail(itemStack);
 		}
-		EntityType<?> entityType = this.getEntityType(itemStack.getNbt());
+		var entityType = this.getEntityType(itemStack.getNbt());
 		if (entityType.spawnFromItemStack((ServerWorld)world, itemStack, user, blockPos.offset(Direction.UP), SpawnReason.SPAWN_EGG, false, false) == null) {
 			return TypedActionResult.pass(itemStack);
 		}

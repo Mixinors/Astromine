@@ -56,7 +56,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenHandler {
-	protected ExtendedBlockEntity blockEntity;
+	protected final ExtendedBlockEntity blockEntity;
 	
 	protected EnergyBarWidget energyBar = null;
 	protected FluidBarWidget fluidBar = null;
@@ -105,52 +105,52 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 		mainTab = (TabWidget.TabWidgetCollection) tabs.addTab(blockEntity.getCachedState().getBlock().asItem(), () -> Collections.singletonList(new TranslatableText(blockEntity.getCachedState().getBlock().getTranslationKey())));
 		mainTab.setPosition(Position.of(tabs, 0, 25.0F + 7.0F, 0.0F));
 		mainTab.setSize(Size.of(176.0F, 184.0F, 0.0F));
-
-		TextWidget title = new TextWidget();
+		
+		var title = new TextWidget();
 		title.setPosition(Position.of(mainTab, 8, 0, 0.0F));
 		title.setText(new TranslatableText(blockEntity.getCachedState().getBlock().asItem().getTranslationKey()));
 		title.setColor(4210752);
 		mainTab.add(title);
-
-		Position invPos = Position.of(tabs,
+		
+		var invPos = Position.of(tabs,
 				7.0F + (tabs.getWidth() / 2.0F - ((9.0F * 18.0F) / 2.0F) - 7.0F),
 				25.0F + 7.0F + (184.0F - 18.0F - 18.0F - (18.0F * 4.0F) - 3.0F + getTabWidgetExtendedHeight()),
 				0.0F
 		);
-
-		TextWidget invTitle = new TextWidget();
+		
+		var invTitle = new TextWidget();
 		invTitle.setPosition(Position.of(invPos, 0.0F, -10.0F, 0.0F));
 		invTitle.setText(getPlayer().getInventory().getName());
 		invTitle.setColor(4210752);
 		mainTab.add(invTitle);
 		playerSlots = Slots.addPlayerInventory(invPos, Size.of(18.0F, 18.0F, 0.0F), mainTab, getPlayer().getInventory());
-
-		Direction[] rotation = new Direction[] { Direction.NORTH };
-		Block block = blockEntity.getCachedState().getBlock();
+		
+		var rotation = new Direction[] { Direction.NORTH };
+		var block = blockEntity.getCachedState().getBlock();
 
 		if (block instanceof HorizontalFacingBlockWithEntity) {
-			DirectionProperty property = ((HorizontalFacingBlockWithEntity) block).getDirectionProperty();
+			var property = ((HorizontalFacingBlockWithEntity) block).getDirectionProperty();
 			
 			if (property != null) {
 				rotation[0] = blockEntity.getCachedState().get(property);
 			}
 		}
-
-		RedstoneControlWidget redstoneWidget = new RedstoneControlWidget();
+		
+		var redstoneWidget = new RedstoneControlWidget();
 		redstoneWidget.setPosition(Position.of(tabs, tabs.getWidth() - 20.0F, 0.0F, 0.0F));
 		redstoneWidget.setSize(Size.of(20.0F, 19.0F, 0.0F));
 		redstoneWidget.setBlockEntity(blockEntity);
 
 		add(redstoneWidget);
 		
-		BiConsumer<StorageSiding[], StorageType> tabAdder = (sidings, type) -> {
-			TabWidget.TabWidgetCollection tabCollection = (TabWidget.TabWidgetCollection) tabs.addTab(type.getItem(), () -> Collections.singletonList(type.getName()));
+		var tabAdder = (BiConsumer<StorageSiding[], StorageType>) (sidings, type) -> {
+			var tabCollection = (TabWidget.TabWidgetCollection) tabs.addTab(type.getItem(), () -> Collections.singletonList(type.getName()));
 			
 			WidgetUtils.createStorageSiding(
 					Position.of(tabs, tabs.getWidth() / 2.0F - 38.0F, getTabWidgetExtendedHeight() / 2.0F, 0.0F), blockEntity, sidings, type, rotation[0]
 			).forEach(tabCollection::add);
-
-			TextWidget invTabTitle = new TextWidget();
+			
+			var invTabTitle = new TextWidget();
 			invTabTitle.setPosition(Position.of(invPos, 0.0F, -10.0F, 0.0F));
 			invTabTitle.setText(getPlayer().getInventory().getName());
 			invTabTitle.setColor(4210752);
@@ -158,8 +158,8 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 			tabCollection.add(invTabTitle);
 			
 			playerSlots.addAll(Slots.addPlayerInventory(invPos, Size.of(18.0F, 18.0F, 0.0F), tabCollection, getPlayer().getInventory()));
-
-			TextWidget tabTitle = new TextWidget();
+			
+			var tabTitle = new TextWidget();
 			tabTitle.setPosition(Position.of(mainTab, 8.0F, 0.0F, 0.0F));
 			tabTitle.setText(type.getName());
 			tabTitle.setColor(4210752);

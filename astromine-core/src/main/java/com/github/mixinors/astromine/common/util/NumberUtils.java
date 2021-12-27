@@ -47,7 +47,7 @@ public class NumberUtils {
 	 * >= 1,000,000,000,000,000,000,000,000,000 has the "∞" prefix.
 	 */
 	public static String shorten(long value) {
-		boolean negative = false;
+		var negative = false;
 		if (value < 0) {
 			negative = true;
 			value = Math.abs(value);
@@ -56,8 +56,8 @@ public class NumberUtils {
 		if (value < 1000) {
 			return (negative ? "-" : "") + value;
 		}
-
-		int exponent = 0;
+		
+		var exponent = 0;
 		while (value >= 1000) {
 			value /= 1000;
 			++exponent;
@@ -83,8 +83,8 @@ public class NumberUtils {
 	 */
 	public static String shorten(double value) {
 		if (value == Math.round(value)) return shorten((long) value);
-
-		boolean negative = false;
+		
+		var negative = false;
 		if (value < 0) {
 			negative = true;
 			value = Math.abs(value);
@@ -93,8 +93,8 @@ public class NumberUtils {
 		if (value < 1000) {
 			return (negative ? "-" : "") + FORMAT.format(value);
 		}
-
-		int exponent = 0;
+		
+		var exponent = 0;
 		while (value >= 1000) {
 			value /= 1000;
 			++exponent;

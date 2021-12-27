@@ -85,12 +85,12 @@ public class AMNetworkMembers {
 				return super.get(pos, direction);
 			}
 		});
-
-		NetworkMemberRegistry.NetworkTypeProvider<NetworkType> energy = NetworkMemberRegistry.INSTANCE.get(AMNetworkTypes.ENERGY);
-		NetworkMemberRegistry.NetworkTypeProvider<NetworkType> fluid = NetworkMemberRegistry.INSTANCE.get(AMNetworkTypes.FLUID);
+		
+		var energy = NetworkMemberRegistry.INSTANCE.get(AMNetworkTypes.ENERGY);
+		var fluid = NetworkMemberRegistry.INSTANCE.get(AMNetworkTypes.FLUID);
 
 		BLOCK_CONSUMER.put(block -> block instanceof NetworkBlock, block -> {
-			NetworkBlock networkBlock = (NetworkBlock)block;
+			var networkBlock = (NetworkBlock)block;
 			if (networkBlock.isMember(AMNetworkTypes.ENERGY)) energy.register(block, networkBlock.getEnergyNetworkMemberType());
 			if (networkBlock.isMember(AMNetworkTypes.FLUID)) fluid.register(block, networkBlock.getFluidNetworkMemberType());
 		});
@@ -102,7 +102,7 @@ public class AMNetworkMembers {
 
 	public static void acceptBlock(RegistryKey<Block> id, Block block) {
 		if (id.getValue().getNamespace().equals("astromine")) {
-			for (Map.Entry<Predicate<Block>, Consumer<Block>> blockConsumerEntry : BLOCK_CONSUMER.entrySet()) {
+			for (var blockConsumerEntry : BLOCK_CONSUMER.entrySet()) {
 				if (blockConsumerEntry.getKey().test(block)) {
 					blockConsumerEntry.getValue().accept(block);
 					break;

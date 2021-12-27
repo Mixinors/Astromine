@@ -45,16 +45,16 @@ public class AMNetworks {
 	public static void init() {
 		NetworkManager.registerReceiver(NetworkManager.c2s(), STORAGE_SIDING_UPDATE, ((buf, context) -> {
 			buf.retain();
-
-			StorageSiding siding = buf.readEnumConstant(StorageSiding.class);
-			StorageType type = buf.readEnumConstant(StorageType.class);
-			Direction direction = buf.readEnumConstant(Direction.class);
-			BlockPos pos = buf.readBlockPos();
+			
+			var siding = buf.readEnumConstant(StorageSiding.class);
+			var type = buf.readEnumConstant(StorageType.class);
+			var direction = buf.readEnumConstant(Direction.class);
+			var pos = buf.readBlockPos();
 
 			context.queue(() -> {
-				ExtendedBlockEntity blockEntity = (ExtendedBlockEntity) context.getPlayer().world.getBlockEntity(pos);
-
-				StorageSiding[] sidings = (StorageSiding[]) null;
+				var blockEntity = (ExtendedBlockEntity) context.getPlayer().world.getBlockEntity(pos);
+				
+				var sidings = (StorageSiding[]) null;
 				
 				if (type == StorageType.ITEM) {
 					sidings = blockEntity.getItemStorage().getSidings();
@@ -72,12 +72,12 @@ public class AMNetworks {
 		
 		NetworkManager.registerReceiver(NetworkManager.c2s(), REDSTONE_CONTROL_UPDATE, ((buf, context) -> {
 			buf.retain();
-
-			RedstoneControl control = buf.readEnumConstant(RedstoneControl.class);
-			BlockPos pos = buf.readBlockPos();
+			
+			var control = buf.readEnumConstant(RedstoneControl.class);
+			var pos = buf.readBlockPos();
 			
 			context.queue(() -> {
-				ExtendedBlockEntity blockEntity = (ExtendedBlockEntity) context.getPlayer().world.getBlockEntity(pos);
+				var blockEntity = (ExtendedBlockEntity) context.getPlayer().world.getBlockEntity(pos);
 				
 				blockEntity.setRedstoneControl(control);
 				

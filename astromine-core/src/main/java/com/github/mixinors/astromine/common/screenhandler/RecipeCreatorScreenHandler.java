@@ -84,7 +84,7 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
         final Map<String, String> TAGS = new HashMap<>() {
 			{
 				Registry.ITEM.forEach((item) -> {
-					Identifier id = Registry.ITEM.getId(item);
+					var id = Registry.ITEM.getId(item);
 			
 					TYPES.forEach((type) -> {
 						if (id.getPath().contains(type)) {
@@ -94,23 +94,23 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 				});
 			}
 		};
-        PanelWidget panel = new PanelWidget();
+		var panel = new PanelWidget();
 		panel.setPosition( Position.of(width / 2 - 88.5, height / 2 - 92));
 		panel.setSize( Size.of(93 + 84, 100 + 84));
 
 		add(panel);
 
 		Slots.addPlayerInventory(Position.of(panel.getX() + 7, panel.getY() + 7 + 9 + 18 + 18 + 18 + 7 + 18 + 7), Size.of(18, 18), (WidgetCollection) this, getPlayer().getInventory());
-
-		ArrayList<SlotWidget> inputSlots = Lists.newArrayList(Slots.addArray(Position.of(panel.getX() + 7, panel.getY() + 7 + 9), Size.of(18, 18), panel, 0, 3, 3, getInventory()));
-
-		SlotWidget outputSlot = new SlotWidget(9, getInventory());
+		
+		var inputSlots = Lists.newArrayList(Slots.addArray(Position.of(panel.getX() + 7, panel.getY() + 7 + 9), Size.of(18, 18), panel, 0, 3, 3, getInventory()));
+		
+		var outputSlot = new SlotWidget(9, getInventory());
 		outputSlot.setPosition(Position.of(panel.getX() + 7 + 18 * 3 + 7, panel.getY() + 7 + 18 + 9));
 		outputSlot.setSize(Size.of(18, 18));
 
 		panel.add(outputSlot);
-
-		ButtonWidget saveButton = new ButtonWidget();
+		
+		var saveButton = new ButtonWidget();
 		saveButton.setPosition(Position.of(panel.getX() + 7, panel.getY() + 7 + 14 + 18 * 3));
 		saveButton.setSize(Size.of(18 * 3, 18));
 		saveButton.setLabel(new LiteralText("Save"));
@@ -120,12 +120,12 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 			Map<Integer, String> grid = new HashMap<>();
 
 			inputSlots.forEach((it) -> {
-				int slot = it.getSlot();
-
-				ItemStack stack = it.getBackendSlot().getStack();
+				var slot = it.getSlot();
+				
+				var stack = it.getBackendSlot().getStack();
 
 				if (!stack.isEmpty()) {
-					String name = Registry.ITEM.getId(stack.getItem()).toString();
+					var name = Registry.ITEM.getId(stack.getItem()).toString();
 
 					if (inverseTable.containsKey(name)) {
 						grid.put(slot, Integer.toString(inverseTable.get(name)));
@@ -138,27 +138,27 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 					grid.put(slot, " ");
 				}
 			});
-
-			ItemStack outputStack = outputSlot.getBackendSlot().getStack();
-
-			String outputName = Registry.ITEM.getId(outputStack.getItem()).toString();
-
-			JsonObject recipeJson = new JsonObject();
+			
+			var outputStack = outputSlot.getBackendSlot().getStack();
+			
+			var outputName = Registry.ITEM.getId(outputStack.getItem()).toString();
+			
+			var recipeJson = new JsonObject();
 
 			recipeJson.addProperty("type", "minecraft:crafting_shaped");
-
-			JsonArray patternJson = new JsonArray();
+			
+			var patternJson = new JsonArray();
 
 			patternJson.add(grid.get(0) + grid.get(1) + grid.get(2));
 			patternJson.add(grid.get(3) + grid.get(4) + grid.get(5));
 			patternJson.add(grid.get(6) + grid.get(7) + grid.get(8));
 
 			recipeJson.add("pattern", patternJson);
-
-			JsonObject keyJson = new JsonObject();
+			
+			var keyJson = new JsonObject();
 
 			table.forEach((slot, name) -> {
-				JsonObject entry = new JsonObject();
+				var entry = new JsonObject();
 
 				if (TAGS.containsKey(name)) {
 					entry.addProperty("tag", TAGS.get(name));
@@ -170,19 +170,19 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 			});
 
 			recipeJson.add("key", keyJson);
-
-			JsonObject resultJson = new JsonObject();
+			
+			var resultJson = new JsonObject();
 
 			resultJson.addProperty("item", outputName);
             resultJson.addProperty("count", outputStack.getCount());
 
 			recipeJson.add("result", resultJson);
-
-			File generatedFile = new File("generated");
+			
+			var generatedFile = new File("generated");
 
 			generatedFile.mkdir();
-
-			File outputFile = new File("generated/" + outputName.replace(":", "_").replace("/", "_").replace("astromine_", "") + ".json");
+			
+			var outputFile = new File("generated/" + outputName.replace(":", "_").replace("/", "_").replace("astromine_", "") + ".json");
 
 			try {
 				outputFile.createNewFile();

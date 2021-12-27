@@ -31,7 +31,6 @@ import com.github.mixinors.astromine.common.world.generation.space.EarthSpaceChu
 
 import dev.architectury.event.events.common.TickEvent;
 
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 
@@ -82,7 +81,7 @@ public class AMCallbacks {
 		// });
 
 		TickEvent.SERVER_PRE.register(( server) -> {
-			for (ServerPlayerEntity playerEntity : server.getPlayerManager().getPlayerList()) {
+			for (var playerEntity : server.getPlayerManager().getPlayerList()) {
 				if (playerEntity.currentScreenHandler instanceof ExtendedBlockEntityScreenHandler screenHandler) {
 
 					if (screenHandler.getBlockEntity() != null) {
@@ -94,7 +93,7 @@ public class AMCallbacks {
 		});
 
 		TickEvent.SERVER_LEVEL_PRE.register((world -> {
-			WorldNetworkComponent component = WorldNetworkComponent.get(world);
+			var component = WorldNetworkComponent.get(world);
 
 			if (component != null) {
 				component.tick();

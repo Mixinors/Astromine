@@ -37,9 +37,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Supplier;
 
 public abstract class BlockStateScreenHandler extends BaseScreenHandler {
-	protected BlockPos position;
-	protected Block originalBlock;
-	protected BlockState state;
+	protected final BlockPos position;
+	protected final Block originalBlock;
+	protected final BlockState state;
 	
 	public BlockStateScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type.get(), syncId, player);

@@ -77,11 +77,11 @@ public class ClientUtils {
 	 */
 	@Environment(EnvType.CLIENT)
 	public static void registerExtendedFluid(String name, int tint, Fluid still, Fluid flowing) {
-		Identifier stillSpriteIdentifier = new Identifier("block/water_still");
-		Identifier flowingSpriteIdentifier = new Identifier("block/water_flow");
-		Identifier listenerIdentifier = AMCommon.id(name + "_reload_listener");
-
-		Sprite[] fluidSprites = new Sprite[] { null, null };
+		var stillSpriteIdentifier = new Identifier("block/water_still");
+		var flowingSpriteIdentifier = new Identifier("block/water_flow");
+		var listenerIdentifier = AMCommon.id(name + "_reload_listener");
+		
+		var fluidSprites = new Sprite[] { null, null };
 
 		ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> {
 			registry.register(stillSpriteIdentifier);
@@ -96,13 +96,13 @@ public class ClientUtils {
 
 			@Override
 			public void reload(ResourceManager resourceManager) {
-				final Function<Identifier, Sprite> atlas = ClientUtils.getInstance().getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
+				final var atlas = ClientUtils.getInstance().getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
 				fluidSprites[0] = atlas.apply(stillSpriteIdentifier);
 				fluidSprites[1] = atlas.apply(flowingSpriteIdentifier);
 			}
 		});
 
-		final FluidRenderHandler handler = new FluidRenderHandler() {
+		final var handler = new FluidRenderHandler() {
 			@Override
 			public Sprite[] getFluidSprites(BlockRenderView view, BlockPos pos, FluidState state) {
 				return fluidSprites;

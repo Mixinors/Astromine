@@ -56,8 +56,8 @@ public class VoxelShapeUtils {
 	 * Returns a union of all the given {@link VoxelShape}s.
 	 */
 	public static VoxelShape union(Collection<VoxelShape> shapes) {
-		VoxelShape collision = VoxelShapes.empty();
-		for (VoxelShape shape : shapes) {
+		var collision = VoxelShapes.empty();
+		for (var shape : shapes) {
 			collision = VoxelShapes.union(shape, collision);
 		}
 		return collision;
@@ -67,11 +67,11 @@ public class VoxelShapeUtils {
 	 * Returns the given {@link VoxelShape} rotated the supplied radians in the specified {@link Direction.Axis}.
 	 */
 	public static VoxelShape rotate(Direction.Axis axis, double radians, VoxelShape shape) {
-		VoxelShape collision = VoxelShapes.empty();
+		var collision = VoxelShapes.empty();
 
-		for (Box box : shape.getBoundingBoxes()) {
-			Pair<Double, Double> min = axis == Direction.Axis.X ? rotatePoint(box.minY, box.minZ, radians) : (axis == Direction.Axis.Z ? rotatePoint(box.minX, box.minY, radians) : rotatePoint(box.minX, box.minZ, radians));
-			Pair<Double, Double> max = axis == Direction.Axis.X ? rotatePoint(box.maxY, box.maxZ, radians) : (axis == Direction.Axis.Z ? rotatePoint(box.maxX, box.maxY, radians) : rotatePoint(box.maxX, box.maxZ, radians));
+		for (var box : shape.getBoundingBoxes()) {
+			var min = axis == Direction.Axis.X ? rotatePoint(box.minY, box.minZ, radians) : (axis == Direction.Axis.Z ? rotatePoint(box.minX, box.minY, radians) : rotatePoint(box.minX, box.minZ, radians));
+			var max = axis == Direction.Axis.X ? rotatePoint(box.maxY, box.maxZ, radians) : (axis == Direction.Axis.Z ? rotatePoint(box.maxX, box.maxY, radians) : rotatePoint(box.maxX, box.maxZ, radians));
 			collision = VoxelShapes.union(collision, axis == Direction.Axis.X ? VoxelShapes.cuboid(box.minX, min.getFirst(), min.getSecond(), box.maxX, max.getFirst(), max.getSecond()) : (axis == Direction.Axis.Z ? VoxelShapes.cuboid(min.getFirst(), min.getSecond(), box.minZ, max
 					.getFirst(), max.getSecond(), box.maxZ) : VoxelShapes.cuboid(Math.min(min.getFirst(), max.getFirst()), Math.min(box.minY, box.maxY), Math.min(min.getSecond(), max.getSecond()), Math.max(min.getFirst(), max.getFirst()), Math.max(box.minY, box.maxY), Math.max(min.getSecond(), max.getSecond()))));
 		}
@@ -82,8 +82,8 @@ public class VoxelShapeUtils {
 	 * Returns the given {@link VoxelShape}s rotated the supplied radians in the specified {@link Direction.Axis}.
 	 */
 	public static VoxelShape rotate(Direction.Axis axis, double radians, Collection<VoxelShape> shapes) {
-		VoxelShape collision = VoxelShapes.empty();
-		for (VoxelShape shape : shapes) {
+		var collision = VoxelShapes.empty();
+		for (var shape : shapes) {
 			collision = VoxelShapes.union(collision, rotate(axis, radians, shape));
 		}
 		return collision;

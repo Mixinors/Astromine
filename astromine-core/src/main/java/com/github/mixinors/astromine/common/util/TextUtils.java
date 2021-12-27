@@ -86,7 +86,7 @@ public class TextUtils {
 	 * Returns the "16kD / 32kD" text.
 	 */
 	public static Text getFluidStorage(StorageView<FluidVariant> storage) {
-		Fluid fluid = storage.getResource().getFluid();
+		var fluid = storage.getResource().getFluid();
 		return getFluidAmount(fluid, storage.getAmount()).append(new LiteralText(" / ").formatted(Formatting.GRAY)).append(getFluidAmount(fluid, storage.getCapacity()));
 	}
 
@@ -144,7 +144,7 @@ public class TextUtils {
 	 * Returns the 16kD text, formatted with the color of the fluid.
 	 */
 	public static MutableText getFluidAmount(Fluid fluid, long amount) {
-		Style style = Style.EMPTY.withColor(TextColor.fromRgb(FluidUtils.getColor(ClientUtils.getPlayer(), fluid)));
+		var style = Style.EMPTY.withColor(TextColor.fromRgb(FluidUtils.getColor(ClientUtils.getPlayer(), fluid)));
 		return getFluidAmount(amount).fillStyle(style);
 	}
 

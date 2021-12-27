@@ -67,7 +67,7 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 			AMFluids.HYDROGEN
 	);
 
-	public static List<BlockVariant> ORE_VARIANTS = List.of(
+	public static final List<BlockVariant> ORE_VARIANTS = List.of(
 			BlockVariant.STONE_ORE,
 			BlockVariant.DEEPSLATE_ORE,
 			BlockVariant.NETHER_ORE,
@@ -223,7 +223,7 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 		MaterialFamilies.init();
 		dataGenerator.addProvider(AMModelProvider::new);
 		dataGenerator.addProvider(AMRecipeProvider::new);
-		AMBlockTagProvider blockTagProvider = new AMBlockTagProvider(dataGenerator);
+		var blockTagProvider = new AMBlockTagProvider(dataGenerator);
 		dataGenerator.addProvider(blockTagProvider);
 		dataGenerator.addProvider(new AMItemTagProvider(dataGenerator, blockTagProvider));
 		dataGenerator.addProvider(AMFluidTagProvider::new);

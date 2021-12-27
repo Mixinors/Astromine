@@ -74,7 +74,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipesProvider;
 
 public class AMRecipeProvider extends FabricRecipesProvider {
-	public static Map<ItemVariant, TagOfferer> EQUIPMENT_OFFERERS = Map.of(
+	public static final Map<ItemVariant, TagOfferer> EQUIPMENT_OFFERERS = Map.of(
 			ItemVariant.HELMET, AMRecipeProvider::offerHelmetRecipe,
 			ItemVariant.CHESTPLATE, AMRecipeProvider::offerChestplateRecipe,
 			ItemVariant.LEGGINGS, AMRecipeProvider::offerLeggingsRecipe,
@@ -86,7 +86,7 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 			ItemVariant.HOE, AMRecipeProvider::offerHoeRecipe
 	);
 
-	public static Map<ItemVariant, TagOfferer> MISC_OFFERERS = Map.of(
+	public static final Map<ItemVariant, TagOfferer> MISC_OFFERERS = Map.of(
 			ItemVariant.GEAR, AMRecipeProvider::offerGearRecipe,
 			ItemVariant.PLATE, AMRecipeProvider::offerPlateRecipe,
 			ItemVariant.APPLE, AMRecipeProvider::offerMaterialAppleRecipe
@@ -578,7 +578,7 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 			}
 			if (family.usesSmithing()) {
 				AMCommon.LOGGER.info("Offering smithing recipes for equipment");
-				MaterialFamily smithingBase = family.getSmithingBase().orElse(MaterialFamilies.DIAMOND);
+				var smithingBase = family.getSmithingBase().orElse(MaterialFamilies.DIAMOND);
 				AMDatagen.EQUIPMENT_VARIANTS.forEach((variant) -> {
 					if (family.shouldGenerateRecipe(variant)) {
 						offerSmithingRecipe(exporter, smithingBase.getVariant(variant), family.getBaseItem(), family.getVariant(variant));
@@ -659,8 +659,8 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 
 			if (family.isAlloy()) {
 				family.getAlloyInfos().forEach((alloyInfo -> {
-					MaterialFamily first = alloyInfo.firstIngredient();
-					MaterialFamily second = alloyInfo.secondIngredient();
+					var first = alloyInfo.firstIngredient();
+					var second = alloyInfo.secondIngredient();
 					AMCommon.LOGGER.info("Offering alloy smelting for base + base -> base");
 					offerAlloySmeltingRecipe(exporter, first.getBaseTag(), alloyInfo.firstCount(), second.getBaseTag(), alloyInfo.secondCount(), family.getBaseItem(), alloyInfo.outputCount(), alloyInfo.time(), alloyInfo.energy());
 					if (family.hasVariant(ItemVariant.NUGGET) && first.hasVariant(ItemVariant.NUGGET) && second.hasVariant(ItemVariant.NUGGET)) {

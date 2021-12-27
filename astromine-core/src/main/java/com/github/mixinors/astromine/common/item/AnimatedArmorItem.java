@@ -82,10 +82,10 @@ public class AnimatedArmorItem extends ArmorItem {
 			super(id, false, false);
 			beginAction = () -> {
 				RenderSystem.enableTexture();
-
-				TextureManager textureManager = ClientUtils.getInstance().getTextureManager();
-
-				AbstractTexture texture = textureManager.getTexture(id);
+				
+				var textureManager = ClientUtils.getInstance().getTextureManager();
+				
+				var texture = textureManager.getTexture(id);
 
 				if (!(texture instanceof AnimatedTexture)) {
 					if (texture != null) {
@@ -123,7 +123,7 @@ public class AnimatedArmorItem extends ArmorItem {
 			if (this == object) {
 				return true;
 			} else if (object != null && this.getClass() == object.getClass()) {
-				AnimatedTexturePhase animatedTexturePhase = (AnimatedTexturePhase) object;
+				var animatedTexturePhase = (AnimatedTexturePhase) object;
 
 				return this.id.equals(animatedTexturePhase.id);
 			} else {
@@ -179,7 +179,7 @@ public class AnimatedArmorItem extends ArmorItem {
 			public void load(ResourceManager manager) throws IOException {
 				close();
 
-				try (Resource resource = manager.getResource(id)) {
+				try (var resource = manager.getResource(id)) {
 					image = NativeImage.read(resource.getInputStream());
 				}
 
@@ -223,11 +223,11 @@ public class AnimatedArmorItem extends ArmorItem {
 				++tick;
 
 				bindTexture();
+				
+				var yOffset = (tick % frames) * placeholderTexture.getHeight();
 
-				int yOffset = (tick % frames) * placeholderTexture.getHeight();
-
-				for (int x = 0; x < placeholderTexture.getWidth(); x++) {
-					for (int y = 0; y < placeholderTexture.getHeight(); y++) {
+				for (var x = 0; x < placeholderTexture.getWidth(); x++) {
+					for (var y = 0; y < placeholderTexture.getHeight(); y++) {
 						placeholderTexture.setColor(x, y, image.getColor(x, y + yOffset));
 					}
 				}

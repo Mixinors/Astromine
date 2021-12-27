@@ -66,7 +66,7 @@ public record AlloySmeltingRecipe(Identifier id,
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (AlloySmeltingRecipe) it).toArray(AlloySmeltingRecipe[]::new));
 		}
 
-		for (AlloySmeltingRecipe recipe : RECIPE_CACHE.get(world)) {
+		for (var recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.allows(variants)) {
 				return true;
 			}
@@ -80,7 +80,7 @@ public record AlloySmeltingRecipe(Identifier id,
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (AlloySmeltingRecipe) it).toArray(AlloySmeltingRecipe[]::new));
 		}
 
-		for (AlloySmeltingRecipe recipe : RECIPE_CACHE.get(world)) {
+		for (var recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.matches(storages)) {
 				return Optional.of(recipe);
 			}
@@ -90,10 +90,10 @@ public record AlloySmeltingRecipe(Identifier id,
 	}
 
 	public boolean matches(SingleSlotStorage<ItemVariant>... storages) {
-		SingleSlotStorage<ItemVariant> firstInputStorage = storages[0];
-		SingleSlotStorage<ItemVariant> secondInputStorage = storages[1];
-
-		SingleSlotStorage<ItemVariant> outputStorage = storages[2];
+		var firstInputStorage = storages[0];
+		var secondInputStorage = storages[1];
+		
+		var outputStorage = storages[2];
 
 		if (!firstInput.test(firstInputStorage) && !secondInput.test(firstInputStorage)) {
 			return false;
@@ -158,7 +158,7 @@ public record AlloySmeltingRecipe(Identifier id,
 
 		@Override
 		public AlloySmeltingRecipe read(Identifier identifier, JsonObject object) {
-			Format format = new Gson().fromJson(object, AlloySmeltingRecipe.Format.class);
+			var format = new Gson().fromJson(object, AlloySmeltingRecipe.Format.class);
 
 			return new AlloySmeltingRecipe(
 					identifier,

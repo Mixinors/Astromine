@@ -100,24 +100,24 @@ public abstract class ElectrolyzerBlockEntity extends ExtendedBlockEntity implem
 			}
 
 			if (optionalRecipe.isPresent()) {
-				ElectrolyzingRecipe recipe = optionalRecipe.get();
+				var recipe = optionalRecipe.get();
 
 				limit = recipe.time();
-
-				double speed = Math.min(getMachineSpeed(), limit - progress);
-				long consumed = (long) (recipe.energyInput() * speed / limit);
 				
-				try (Transaction transaction = Transaction.openOuter()) {
+				var speed = Math.min(getMachineSpeed(), limit - progress);
+				var consumed = (long) (recipe.energyInput() * speed / limit);
+				
+				try (var transaction = Transaction.openOuter()) {
 					if (energyStorage.extract(consumed, transaction) == consumed) {
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
-
-							SimpleFluidVariantStorage inputStorage = fluidStorage.getStorage(INPUT_SLOT);
+							
+							var inputStorage = fluidStorage.getStorage(INPUT_SLOT);
 							
 							inputStorage.extract(inputStorage.getResource(), recipe.input().getAmount(), transaction);
-
-							SimpleFluidVariantStorage firstOutputStorage = fluidStorage.getStorage(OUTPUT_SLOT_1);
-							SimpleFluidVariantStorage secondOutputStorage = fluidStorage.getStorage(OUTPUT_SLOT_2);
+							
+							var firstOutputStorage = fluidStorage.getStorage(OUTPUT_SLOT_1);
+							var secondOutputStorage = fluidStorage.getStorage(OUTPUT_SLOT_2);
 							
 							if (recipe.firstOutput().equalsAndFitsIn(firstOutputStorage) &&
 								recipe.secondOutput().equalsAndFitsIn(secondOutputStorage)) {

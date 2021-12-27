@@ -65,7 +65,7 @@ public record FluidMixingRecipe(Identifier id,
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidMixingRecipe) it).toArray(FluidMixingRecipe[]::new));
 		}
 
-		for (FluidMixingRecipe recipe : RECIPE_CACHE.get(world)) {
+		for (var recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.allows(variants)) {
 				return true;
 			}
@@ -79,7 +79,7 @@ public record FluidMixingRecipe(Identifier id,
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidMixingRecipe) it).toArray(FluidMixingRecipe[]::new));
 		}
 
-		for (FluidMixingRecipe recipe : RECIPE_CACHE.get(world)) {
+		for (var recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.matches(storages)) {
 				return Optional.of(recipe);
 			}
@@ -89,10 +89,10 @@ public record FluidMixingRecipe(Identifier id,
 	}
 
 	public boolean matches(SingleSlotStorage<FluidVariant>... storages) {
-		SingleSlotStorage<FluidVariant> firstInputStorage = storages[0];
-		SingleSlotStorage<FluidVariant> secondInputStorage = storages[1];
-
-		SingleSlotStorage<FluidVariant> outputStorage = storages[2];
+		var firstInputStorage = storages[0];
+		var secondInputStorage = storages[1];
+		
+		var outputStorage = storages[2];
 		
 		if (!firstInput.test(firstInputStorage)) {
 			return false;
@@ -151,7 +151,7 @@ public record FluidMixingRecipe(Identifier id,
 
 		@Override
 		public FluidMixingRecipe read(Identifier identifier, JsonObject object) {
-			Format format = new Gson().fromJson(object, FluidMixingRecipe.Format.class);
+			var format = new Gson().fromJson(object, FluidMixingRecipe.Format.class);
 
 			return new FluidMixingRecipe(
 					identifier,
