@@ -105,11 +105,11 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements T
 			return;
 
 		if (itemStorage != null && fluidStorage != null && energyStorage != null) {
-			if (!optionalRecipe.isPresent() && shouldTry) {
+			if (optionalRecipe.isEmpty() && shouldTry) {
 				optionalRecipe = MeltingRecipe.matching(world, itemStorage.slice(ITEM_INPUT_SLOT), fluidStorage.slice(FLUID_OUTPUT_SLOT));
 				shouldTry = false;
 
-				if (!optionalRecipe.isPresent()) {
+				if (optionalRecipe.isEmpty()) {
 					progress = 0;
 					limit = 100;
 				}

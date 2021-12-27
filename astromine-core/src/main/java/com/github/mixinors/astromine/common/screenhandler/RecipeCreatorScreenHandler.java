@@ -36,7 +36,6 @@ import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -49,7 +48,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.io.File;
 import java.io.IOException;
@@ -71,17 +69,17 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 
 	@Override
 	public void initialize(int width, int height) {
-		final List<String> TYPES = new ArrayList<String>() {
-            {
-                add("nugget");
-                add("wire");
-                add("ingot");
-                add("dust");
-                add("tiny_dust");
-                add("plate");
-                add("gear");
-            }
-        };
+		final List<String> TYPES = new ArrayList<>() {
+			{
+				add("nugget");
+				add("wire");
+				add("ingot");
+				add("dust");
+				add("tiny_dust");
+				add("plate");
+				add("gear");
+			}
+		};
 
         final Map<String, String> TAGS = new HashMap<>() {
 			{

@@ -26,10 +26,7 @@ package com.github.mixinors.astromine.common.transfer.storage;
 
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.item.base.SingleStackStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
 
 public class SimpleFluidVariantStorage extends SingleVariantStorage<FluidVariant> {
 	private long capacity;

@@ -41,7 +41,6 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.client.BaseRenderer;
@@ -125,7 +124,7 @@ public class StorageSidingWidget extends Widget {
 		super.onMouseClicked(mouseX, mouseY, button);
 		
 		if (getFocused() && getHandled().getClient()) {
-			StorageSiding[] sidings = (StorageSiding[]) null;
+			StorageSiding[] sidings = null;
 			
 			if (type == StorageType.ITEM) {
 				sidings = blockEntity.getItemStorage().getSidings();
@@ -135,7 +134,7 @@ public class StorageSidingWidget extends Widget {
 				sidings = blockEntity.getFluidStorage().getSidings();
 			}
 
-			StorageSiding next = (StorageSiding) null;
+			StorageSiding next;
 			
 			if (button == GLFW.GLFW_MOUSE_BUTTON_1) {
 				next = sidings[direction.ordinal()].next();

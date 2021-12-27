@@ -30,7 +30,6 @@ import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
 import dev.architectury.core.AbstractRecipeSerializer;
 
 import net.minecraft.fluid.Fluid;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;

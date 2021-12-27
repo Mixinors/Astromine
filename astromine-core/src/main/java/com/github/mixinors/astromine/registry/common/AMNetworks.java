@@ -30,7 +30,7 @@ import com.github.mixinors.astromine.common.transfer.RedstoneControl;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.StorageType;
 import dev.architectury.networking.NetworkManager;
-import net.minecraft.block.entity.BlockEntity;
+
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -54,7 +54,7 @@ public class AMNetworks {
 			context.queue(() -> {
 				ExtendedBlockEntity blockEntity = (ExtendedBlockEntity) context.getPlayer().world.getBlockEntity(pos);
 
-				StorageSiding[] sidings = (StorageSiding[]) null;
+				StorageSiding[] sidings = null;
 				
 				if (type == StorageType.ITEM) {
 					sidings = blockEntity.getItemStorage().getSidings();

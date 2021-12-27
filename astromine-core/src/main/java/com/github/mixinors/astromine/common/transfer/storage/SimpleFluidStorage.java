@@ -26,14 +26,12 @@ package com.github.mixinors.astromine.common.transfer.storage;
 
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.registry.Registry;
 
 import java.util.*;
 import java.util.function.BiPredicate;

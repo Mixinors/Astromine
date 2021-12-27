@@ -27,14 +27,11 @@ package com.github.mixinors.astromine.registry.common;
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.InventoryProvider;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 
 import com.github.mixinors.astromine.common.network.NetworkBlock;
-import com.github.mixinors.astromine.common.network.NetworkMember;
 import com.github.mixinors.astromine.common.network.NetworkMemberType;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.registry.NetworkMemberRegistry;

@@ -37,7 +37,7 @@ import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
 import com.github.mixinors.astromine.common.block.entity.ElectricFurnaceBlockEntity;
 
 public class ElectricFurnaceScreenHandler extends ExtendedBlockEntityScreenHandler {
-	private ElectricFurnaceBlockEntity smelter;
+	private final ElectricFurnaceBlockEntity smelter;
 
 	public ElectricFurnaceScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.ELECTRIC_FURNACE, syncId, player, position);

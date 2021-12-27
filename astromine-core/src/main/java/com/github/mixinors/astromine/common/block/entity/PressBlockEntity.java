@@ -91,11 +91,11 @@ public abstract class PressBlockEntity extends ExtendedBlockEntity implements En
 			return;
 		
 		if (itemStorage != null && energyStorage != null) {
-			if (!optionalRecipe.isPresent() && shouldTry) {
+			if (optionalRecipe.isEmpty() && shouldTry) {
 				optionalRecipe = PressingRecipe.matching(world, itemStorage.slice(INPUT_SLOT, OUTPUT_SLOT));
 				shouldTry = false;
 
-				if (!optionalRecipe.isPresent()) {
+				if (optionalRecipe.isEmpty()) {
 					progress = 0;
 					limit = 100;
 				}

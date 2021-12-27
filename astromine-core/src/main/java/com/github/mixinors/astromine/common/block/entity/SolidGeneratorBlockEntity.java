@@ -93,18 +93,18 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 					
 					for (int i = 0; i < 3 * getMachineSpeed(); ++i) {
 						if (progress < limit) {
-							Transaction nestedTransacation = transaction.openNested();
+							Transaction nestedTransaction = transaction.openNested();
 							
-							if (energyStorage.insert(produced, nestedTransacation) == produced) {
+							if (energyStorage.insert(produced, nestedTransaction) == produced) {
 								--available;
 								
 								++produced;
 								
 								isActive = true;
 								
-								nestedTransacation.commit();
+								nestedTransaction.commit();
 							} else {
-								nestedTransacation.abort();
+								nestedTransaction.abort();
 								
 								isActive = false;
 							}
@@ -133,18 +133,14 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 							
 							progress = 0;
 
-							Transaction nestedTransacation = transaction.openNested();
+							Transaction nestedTransaction = transaction.openNested();
 							
 							itemStorage.removeStack(INPUT_SLOT, 1);
 							
-							nestedTransacation.commit();
+							nestedTransaction.commit();
 						}
-						
-						if (isFuel || progress != 0) {
-							isActive = true;
-						} else {
-							isActive = false;
-						}
+
+						isActive = isFuel || progress != 0;
 					} else {
 						isActive = false;
 					}

@@ -25,7 +25,6 @@
 package com.github.mixinors.astromine.common.screenhandler;
 
 import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
-import com.github.mixinors.astromine.common.widget.vanilla.InsertionSlot;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
@@ -35,11 +34,10 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
-import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
 import com.github.mixinors.astromine.common.block.entity.MelterBlockEntity;
 
 public class MelterScreenHandler extends ExtendedBlockEntityScreenHandler {
-	private MelterBlockEntity melter;
+	private final MelterBlockEntity melter;
 
 	public MelterScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.MELTER, syncId, player, position);

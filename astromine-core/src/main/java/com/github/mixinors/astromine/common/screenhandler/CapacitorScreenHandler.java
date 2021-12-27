@@ -29,14 +29,12 @@ import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
 import dev.vini2003.hammer.common.widget.slot.SlotWidget;
-import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
+
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
-import team.reborn.energy.api.EnergyStorage;
 
 import java.util.function.Supplier;
 

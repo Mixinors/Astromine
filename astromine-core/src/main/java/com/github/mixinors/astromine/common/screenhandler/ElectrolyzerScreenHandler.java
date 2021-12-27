@@ -36,7 +36,7 @@ import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.block.entity.ElectrolyzerBlockEntity;
 
 public class ElectrolyzerScreenHandler extends ExtendedBlockEntityScreenHandler {
-	private ElectrolyzerBlockEntity electrolyzer;
+	private final ElectrolyzerBlockEntity electrolyzer;
 
 	public ElectrolyzerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.ELECTROLYZER, syncId, player, position);

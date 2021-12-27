@@ -88,11 +88,11 @@ public abstract class TrituratorBlockEntity extends ExtendedBlockEntity implemen
 			return;
 		
 		if (itemStorage != null && itemStorage != null) {
-			if (!optionalRecipe.isPresent() && shouldTry) {
+			if (optionalRecipe.isEmpty() && shouldTry) {
 				optionalRecipe = TrituratingRecipe.matching(world, itemStorage.slice(INPUT_SLOT, OUTPUT_SLOT));
 				shouldTry = false;
 
-				if (!optionalRecipe.isPresent()) {
+				if (optionalRecipe.isEmpty()) {
 					progress = 0;
 					limit = 100;
 				}

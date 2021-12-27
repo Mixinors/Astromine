@@ -36,7 +36,7 @@ import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.block.entity.RefineryBlockEntity;
 
 public class RefineryScreenHandler extends ExtendedBlockEntityScreenHandler {
-	private RefineryBlockEntity refinery;
+	private final RefineryBlockEntity refinery;
 
 	public RefineryScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.REFINERY, syncId, player, position);

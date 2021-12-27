@@ -27,19 +27,6 @@ package com.github.mixinors.astromine.registry.common;
 import net.minecraft.entity.*;
 
 import com.github.mixinors.astromine.common.registry.BreathableRegistry;
-import net.minecraft.entity.boss.WitherEntity;
-import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-import net.minecraft.entity.decoration.ArmorStandEntity;
-import net.minecraft.entity.decoration.EndCrystalEntity;
-import net.minecraft.entity.decoration.ItemFrameEntity;
-import net.minecraft.entity.decoration.LeashKnotEntity;
-import net.minecraft.entity.decoration.painting.PaintingEntity;
-import net.minecraft.entity.mob.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.entity.projectile.thrown.*;
-import net.minecraft.entity.vehicle.*;
 
 public class AMBreathables {
 	public static void init() {

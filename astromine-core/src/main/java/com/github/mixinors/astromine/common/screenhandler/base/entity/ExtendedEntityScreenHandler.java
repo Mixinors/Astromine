@@ -33,15 +33,12 @@ import dev.vini2003.hammer.common.widget.bar.FluidBarWidget;
 import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 import dev.vini2003.hammer.common.widget.tab.TabWidget;
 import dev.vini2003.hammer.common.widget.text.TextWidget;
-import net.minecraft.entity.Entity;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 
-import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.entity.base.ExtendedEntity;
-import com.github.mixinors.astromine.common.screenhandler.base.block.BlockStateScreenHandler;
 
 import java.util.Collection;
 import java.util.HashSet;

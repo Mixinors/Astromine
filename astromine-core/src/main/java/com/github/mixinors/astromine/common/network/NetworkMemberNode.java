@@ -130,10 +130,8 @@ public final class NetworkMemberNode {
 	public boolean equals(Object object) {
 		if (this == object)
 			return true;
-		if (!(object instanceof NetworkMemberNode))
+		if (!(object instanceof NetworkMemberNode that))
 			return false;
-
-		NetworkMemberNode that = (NetworkMemberNode) object;
 
 		if (directionId == -1) {
 			return this.pos == that.pos;

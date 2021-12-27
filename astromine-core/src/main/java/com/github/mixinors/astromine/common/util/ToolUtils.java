@@ -26,12 +26,9 @@ package com.github.mixinors.astromine.common.util;
 
 import java.util.UUID;
 
-import com.github.mixinors.astromine.registry.common.AMItems;
-
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.MiningToolItem;
 
 public class ToolUtils {

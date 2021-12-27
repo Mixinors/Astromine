@@ -72,7 +72,7 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 		}
 
 		ores.shuffle(random);
-		Block ore = ores.stream().findFirst().get();
+		Block ore = ores.stream().findFirst().orElse(AMBlocks.ASTEROID_STONE.get());
 
 		double xSize = AsteroidOreRegistry.INSTANCE.getDiameter(random, ore);
 		double ySize = AsteroidOreRegistry.INSTANCE.getDiameter(random, ore);

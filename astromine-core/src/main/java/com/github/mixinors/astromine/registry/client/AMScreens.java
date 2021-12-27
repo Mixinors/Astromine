@@ -27,7 +27,6 @@ package com.github.mixinors.astromine.registry.client;
 import com.github.mixinors.astromine.client.screen.RecipeCreatorHandledScreen;
 import com.github.mixinors.astromine.client.screen.base.CustomForegroundBaseHandledScreen;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import dev.architectury.event.events.client.ClientLifecycleEvent;
 import dev.architectury.registry.menu.MenuRegistry;
 import dev.architectury.registry.registries.RegistrySupplier;
 import dev.vini2003.hammer.common.screen.handler.BaseScreenHandler;
@@ -59,7 +58,7 @@ public class AMScreens {
 		registerSimple(AMScreenHandlers.BUFFER);
 		registerSimple(AMScreenHandlers.TRITURATOR);
 		registerSimple(AMScreenHandlers.PRESSER);
-		registerSimple(AMScreenHandlers.WIREMILL);
+		registerSimple(AMScreenHandlers.WIRE_MILL);
 		registerSimple(AMScreenHandlers.ELECTRIC_FURNACE);
 		registerSimple(AMScreenHandlers.ELECTROLYZER);
 		registerSimple(AMScreenHandlers.REFINERY);
@@ -70,7 +69,7 @@ public class AMScreens {
 	}
 
 	public static <H extends BaseScreenHandler> void registerSimple( RegistrySupplier<? extends ScreenHandlerType<? extends H>> type) {
-		AMScreens.<H, CustomForegroundBaseHandledScreen<H>>register(type, CustomForegroundBaseHandledScreen::new);
+		AMScreens.register(type, CustomForegroundBaseHandledScreen::new);
 	}
 
 	public static <H extends ScreenHandler, S extends Screen & ScreenHandlerProvider<H>> void register(RegistrySupplier<? extends ScreenHandlerType<? extends H>> type, MenuRegistry.ScreenFactory<H, S> screenFactory) {

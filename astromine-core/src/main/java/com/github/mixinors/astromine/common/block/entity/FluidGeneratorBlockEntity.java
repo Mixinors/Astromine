@@ -88,11 +88,11 @@ public abstract class FluidGeneratorBlockEntity extends ExtendedBlockEntity impl
 			return;
 		
 		if (fluidStorage != null && energyStorage != null) {
-			if (!optionalRecipe.isPresent() && shouldTry) {
+			if (optionalRecipe.isEmpty() && shouldTry) {
 				optionalRecipe = FluidGeneratingRecipe.matching(world, fluidStorage.slice(INPUT_SLOT));
 				shouldTry = false;
 
-				if (!optionalRecipe.isPresent()) {
+				if (optionalRecipe.isEmpty()) {
 					progress = 0;
 					limit = 100;
 				}

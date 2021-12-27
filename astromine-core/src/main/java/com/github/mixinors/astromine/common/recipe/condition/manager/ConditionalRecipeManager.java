@@ -106,6 +106,6 @@ public class ConditionalRecipeManager extends RecipeManager {
 		}
 		
 		AMCommon.LOGGER.info("Loaded {} conditional recipes", recipeMap.size());
-		return recipeMap.entrySet().stream().collect(ImmutableMap.toImmutableMap(Map.Entry::getKey, (entryx) -> (entryx.getValue()).build()));
+		return recipeMap.entrySet().stream().collect(ImmutableMap.toImmutableMap(Map.Entry::getKey, (entry) -> (entry.getValue()).build()));
 	}
 }

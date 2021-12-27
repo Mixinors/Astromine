@@ -28,7 +28,6 @@ import java.util.Comparator;
 import java.util.stream.Stream;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.util.WordUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 
 import net.minecraft.data.family.BlockFamilies;

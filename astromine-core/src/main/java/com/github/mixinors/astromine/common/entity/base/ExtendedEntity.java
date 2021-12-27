@@ -31,7 +31,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
 
-import dev.onyxstudios.cca.api.v3.component.Component;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 import javax.annotation.Nullable;

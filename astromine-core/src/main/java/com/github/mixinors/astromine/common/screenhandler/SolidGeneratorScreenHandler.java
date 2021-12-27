@@ -36,7 +36,7 @@ import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.block.entity.SolidGeneratorBlockEntity;
 
 public class SolidGeneratorScreenHandler extends ExtendedBlockEntityScreenHandler {
-	private SolidGeneratorBlockEntity generator;
+	private final SolidGeneratorBlockEntity generator;
 
 	public SolidGeneratorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.SOLID_GENERATOR, syncId, player, position);

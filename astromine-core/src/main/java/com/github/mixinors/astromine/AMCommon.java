@@ -31,7 +31,6 @@ import dev.architectury.registry.registries.Registrar;
 import dev.architectury.registry.registries.Registries;
 import net.fabricmc.api.ModInitializer;
 
-import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.minecraft.util.Identifier;
 
 import net.minecraft.util.registry.Registry;

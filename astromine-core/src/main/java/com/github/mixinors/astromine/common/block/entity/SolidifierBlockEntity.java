@@ -106,11 +106,11 @@ public abstract class SolidifierBlockEntity extends ExtendedBlockEntity implemen
 			return;
 
 		if (fluidStorage != null && itemStorage != null && energyStorage != null) {
-			if (!optionalRecipe.isPresent() && shouldTry) {
+			if (optionalRecipe.isEmpty() && shouldTry) {
 				optionalRecipe = SolidifyingRecipe.matching(world, itemStorage.slice(ITEM_OUTPUT_SLOT), fluidStorage.slice(FLUID_INPUT_SLOT));
 				shouldTry = false;
 
-				if (!optionalRecipe.isPresent()) {
+				if (optionalRecipe.isEmpty()) {
 					progress = 0;
 					limit = 100;
 				}

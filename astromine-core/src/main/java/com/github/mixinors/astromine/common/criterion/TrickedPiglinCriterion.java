@@ -49,7 +49,7 @@ public class TrickedPiglinCriterion extends AbstractCriterion<TrickedPiglinCrite
 		this.id = id;
 	}
 
-	/** Reads {@link Conditions} from a {@link JsonObject}. */;
+	/** Reads {@link Conditions} from a {@link JsonObject}. */
 	@Override
 	protected TrickedPiglinCriterion.Conditions conditionsFromJson(JsonObject obj, EntityPredicate.Extended playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
 		if (obj.has("successful"))

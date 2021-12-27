@@ -89,11 +89,11 @@ public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements
 			return;
 		
 		if (itemStorage != null && energyStorage != null) {
-			if (!optionalRecipe.isPresent() && shouldTry) {
+			if (optionalRecipe.isEmpty() && shouldTry) {
 				optionalRecipe = WireMillingRecipe.matching(world, itemStorage.slice(INPUT_SLOT, OUTPUT_SLOT));
 				shouldTry = false;
 				
-				if (!optionalRecipe.isPresent()) {
+				if (optionalRecipe.isEmpty()) {
 					progress = 0;
 					limit = 100;
 				}

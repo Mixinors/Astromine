@@ -29,14 +29,10 @@ import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvid
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import com.github.mixinors.astromine.registry.common.AMComponents;
+
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-
-import com.github.mixinors.astromine.common.block.transfer.TransferType;
 
 import java.util.Arrays;
 

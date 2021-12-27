@@ -94,11 +94,11 @@ public abstract class FluidMixerBlockEntity extends ExtendedBlockEntity implemen
 			return;
 		
 		if (fluidStorage != null && energyStorage != null) {
-			if (!optionalRecipe.isPresent() && shouldTry) {
+			if (optionalRecipe.isEmpty() && shouldTry) {
 				optionalRecipe = FluidMixingRecipe.matching(world, fluidStorage.slice(INPUT_SLOT_1, INPUT_SLOT_2));
 				shouldTry = false;
 
-				if (!optionalRecipe.isPresent()) {
+				if (optionalRecipe.isEmpty()) {
 					progress = 0;
 					limit = 100;
 				}

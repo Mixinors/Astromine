@@ -26,7 +26,6 @@ package com.github.mixinors.astromine.client;
 
 import com.github.mixinors.astromine.common.util.ClientUtils;
 import com.mojang.blaze3d.systems.RenderSystem;
-import dev.vini2003.hammer.client.texture.SpriteTexture;
 import dev.vini2003.hammer.client.util.Layers;
 import dev.vini2003.hammer.common.color.Color;
 import net.minecraft.client.font.TextRenderer;

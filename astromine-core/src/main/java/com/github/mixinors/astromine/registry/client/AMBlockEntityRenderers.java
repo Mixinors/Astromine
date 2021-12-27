@@ -30,11 +30,8 @@ import dev.architectury.registry.client.rendering.fabric.BlockEntityRendererRegi
 
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
-import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class AMBlockEntityRenderers {

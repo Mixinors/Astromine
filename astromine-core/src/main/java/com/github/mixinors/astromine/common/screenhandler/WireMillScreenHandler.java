@@ -37,12 +37,12 @@ import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
 import com.github.mixinors.astromine.common.block.entity.WireMillBlockEntity;
 
 public class WireMillScreenHandler extends ExtendedBlockEntityScreenHandler {
-	private WireMillBlockEntity wiremill;
+	private final WireMillBlockEntity wire_mill;
 
 	public WireMillScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.WIREMILL, syncId, player, position);
+		super(AMScreenHandlers.WIRE_MILL, syncId, player, position);
 
-		wiremill = (WireMillBlockEntity) blockEntity;
+		wire_mill = (WireMillBlockEntity) blockEntity;
 	}
 
 	@Override
@@ -63,8 +63,8 @@ public class WireMillScreenHandler extends ExtendedBlockEntityScreenHandler {
 		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(output.getX() - 31, output.getY()));
 		arrow.setSize(Size.of(22, 16));
-		arrow.setLimitSupplier(() -> wiremill.limit);
-		arrow.setProgressSupplier(() -> (int) wiremill.progress);
+		arrow.setLimitSupplier(() -> wire_mill.limit);
+		arrow.setProgressSupplier(() -> (int) wire_mill.progress);
 
 		input.setPosition(Position.of(arrow.getX() - 27, arrow.getY()));
 

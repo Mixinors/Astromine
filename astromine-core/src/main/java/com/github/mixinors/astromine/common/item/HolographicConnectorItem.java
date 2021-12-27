@@ -73,7 +73,7 @@ public class HolographicConnectorItem extends Item {
 				}
 			} else {
 				BlockEntity blockEntity = world.getBlockEntity(pair.getRight());
-				if (!(blockEntity instanceof HoloBridgeProjectorBlockEntity)) {
+				if (!(blockEntity instanceof HoloBridgeProjectorBlockEntity parent)) {
 					if (!world.isClient) {
 						context.getPlayer().setStackInHand(context.getHand(), selectBlock(context.getStack(), entity.getWorld().getRegistryKey(), entity.getPos()));
 					} else {
@@ -82,7 +82,6 @@ public class HolographicConnectorItem extends Item {
 					}
 					return ActionResult.SUCCESS;
 				}
-				HoloBridgeProjectorBlockEntity parent = (HoloBridgeProjectorBlockEntity) blockEntity;
 
 				BlockPos nP = entity.getPos();
 				BlockPos oP = parent.getPos();

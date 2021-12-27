@@ -54,8 +54,8 @@ public class AMToolMaterials {
 	
 	}
 	
-	public static ToolMaterial register(int miningLevel, int itemDurability, float miningSpeed, float attackDamage, int enchantibility, Supplier<Ingredient> repairIngredient) {
-		return new AstromineToolMaterial(miningLevel, itemDurability, miningSpeed, attackDamage, enchantibility, repairIngredient);
+	public static ToolMaterial register(int miningLevel, int itemDurability, float miningSpeed, float attackDamage, int enchantability, Supplier<Ingredient> repairIngredient) {
+		return new AstromineToolMaterial(miningLevel, itemDurability, miningSpeed, attackDamage, enchantability, repairIngredient);
 	}
 
 	public static class AstromineToolMaterial implements ToolMaterial {
@@ -66,12 +66,12 @@ public class AMToolMaterials {
 		private final int enchantability;
 		private final Lazy<Ingredient> repairIngredient;
 
-		AstromineToolMaterial(int miningLevel, int itemDurability, float miningSpeed, float attackDamage, int enchantibility, Supplier<Ingredient> repairIngredient) {
+		AstromineToolMaterial(int miningLevel, int itemDurability, float miningSpeed, float attackDamage, int enchantability, Supplier<Ingredient> repairIngredient) {
 			this.miningLevel = miningLevel;
 			this.itemDurability = itemDurability;
 			this.miningSpeed = miningSpeed;
 			this.attackDamage = attackDamage;
-			this.enchantability = enchantibility;
+			this.enchantability = enchantability;
 			this.repairIngredient = new Lazy(repairIngredient);
 		}
 

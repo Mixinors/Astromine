@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.component.entity;
 
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
@@ -70,8 +71,7 @@ public final class EntityOxygenComponent implements AutoSyncedComponent {
 
 	/** Simulate behavior, damaging the entity if out of oxygen. */
 	public void simulate(boolean isBreathing) {
-		if (entity instanceof PlayerEntity) {
-			PlayerEntity player = (PlayerEntity) entity;
+		if (entity instanceof PlayerEntity player) {
 
 			if (player.isCreative() || player.isSpectator()) {
 				return;
@@ -130,7 +130,7 @@ public final class EntityOxygenComponent implements AutoSyncedComponent {
 		this.maximumOxygen = maximumOxygen;
 	}
 
-	/** Returns this componetn's entity. */
+	/** Returns this component's entity. */
 	public Entity getEntity() {
 		return entity;
 	}

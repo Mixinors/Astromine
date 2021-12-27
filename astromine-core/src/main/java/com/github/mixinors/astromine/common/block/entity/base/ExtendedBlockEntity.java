@@ -30,7 +30,6 @@ import com.github.mixinors.astromine.common.transfer.RedstoneControl;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
-import com.google.common.base.Predicates;
 import dev.architectury.hooks.block.BlockEntityHooks;
 
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;

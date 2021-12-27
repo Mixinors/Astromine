@@ -89,11 +89,11 @@ public abstract class ElectrolyzerBlockEntity extends ExtendedBlockEntity implem
 			return;
 
 		if (fluidStorage != null && energyStorage != null) {
-			if (!optionalRecipe.isPresent() && shouldTry) {
+			if (optionalRecipe.isEmpty() && shouldTry) {
 				optionalRecipe = ElectrolyzingRecipe.matching(world, fluidStorage.slice(INPUT_SLOT, OUTPUT_SLOT_1, OUTPUT_SLOT_2));
 				shouldTry = false;
 
-				if (!optionalRecipe.isPresent()) {
+				if (optionalRecipe.isEmpty()) {
 					progress = 0;
 					limit = 100;
 				}

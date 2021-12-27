@@ -66,7 +66,7 @@ public class RedstoneControlWidget extends ButtonWidget {
         if (getFocused() && getHandled().getClient()) {
             RedstoneControl control = blockEntity.getRedstoneControl();
 
-            RedstoneControl next = (RedstoneControl) null;
+            RedstoneControl next;
     
             if (button == GLFW.GLFW_MOUSE_BUTTON_1) {
                 next = control.next();

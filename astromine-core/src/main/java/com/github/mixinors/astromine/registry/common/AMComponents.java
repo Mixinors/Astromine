@@ -30,8 +30,6 @@ import net.minecraft.entity.LivingEntity;
 import com.github.mixinors.astromine.common.component.entity.EntityOxygenComponent;
 import com.github.mixinors.astromine.common.component.world.WorldHoloBridgeComponent;
 import com.github.mixinors.astromine.common.component.world.WorldNetworkComponent;
-import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
-import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import dev.onyxstudios.cca.api.v3.block.BlockComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.block.BlockComponentInitializer;
 import dev.onyxstudios.cca.api.v3.chunk.ChunkComponentFactoryRegistry;

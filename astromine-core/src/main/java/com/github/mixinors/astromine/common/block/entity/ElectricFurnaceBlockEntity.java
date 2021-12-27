@@ -103,7 +103,7 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 		if (itemStorage != null && energyStorage != null) {
 			BaseInventory inputInventory = BaseInventory.of(itemStorage.getStack(1));
 
-			if (!optionalRecipe.isPresent() && shouldTry) {
+			if (optionalRecipe.isEmpty() && shouldTry) {
 				if (RECIPE_CACHE.get(world) == null) {
 					RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(RecipeType.SMELTING).values().stream().map(it -> (SmeltingRecipe) it).toArray(SmeltingRecipe[]::new));
 				}
@@ -116,7 +116,7 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 
 				shouldTry = false;
 
-				if (!optionalRecipe.isPresent()) {
+				if (optionalRecipe.isEmpty()) {
 					progress = 0;
 					limit = 100;
 				}

@@ -33,7 +33,6 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.GenerationSettings;
 import net.minecraft.world.biome.SpawnSettings;
-import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
 
 import java.util.HashSet;
 import java.util.Set;

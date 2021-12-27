@@ -36,7 +36,7 @@ import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.block.entity.FluidMixerBlockEntity;
 
 public class FluidMixerScreenHandler extends ExtendedBlockEntityScreenHandler {
-	private FluidMixerBlockEntity mixer;
+	private final FluidMixerBlockEntity mixer;
 
 	public FluidMixerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.FLUID_MIXER, syncId, player, position);
