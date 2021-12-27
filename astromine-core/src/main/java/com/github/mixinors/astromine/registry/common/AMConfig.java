@@ -658,9 +658,6 @@ public class AMConfig implements ConfigData {
 	@Comment("Stack size transferred by Inserters.")
 	public int inserterStackSize = 8;
 	
-	@Comment("Whether generation of Copper Ore in the Overworld is enabled.")
-	public boolean overworldCopperOre = true;
-	
 	@Comment("Whether generation of Tin Ore in the Overworld is enabled.")
 	public boolean overworldTinOre = true;
 	
