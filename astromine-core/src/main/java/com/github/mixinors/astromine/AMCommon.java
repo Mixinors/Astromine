@@ -57,7 +57,7 @@ public class AMCommon implements ModInitializer {
 		return new Identifier(MOD_ID, name);
 	}
 	
-	public static <T> Registrar<T> registry( RegistryKey<Registry<T>> key) {
+	public static <T> Registrar<T> registry(RegistryKey<Registry<T>> key) {
 		return REGISTRIES.get().get(key);
 	}
 

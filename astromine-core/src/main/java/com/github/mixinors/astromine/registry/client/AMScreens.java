@@ -69,7 +69,7 @@ public class AMScreens {
 	}
 
 	public static <H extends BaseScreenHandler> void registerSimple( RegistrySupplier<? extends ScreenHandlerType<? extends H>> type) {
-		AMScreens.register(type, CustomForegroundBaseHandledScreen::new);
+		AMScreens.<H, CustomForegroundBaseHandledScreen<H>>register(type, CustomForegroundBaseHandledScreen::new);
 	}
 
 	public static <H extends ScreenHandler, S extends Screen & ScreenHandlerProvider<H>> void register(RegistrySupplier<? extends ScreenHandlerType<? extends H>> type, MenuRegistry.ScreenFactory<H, S> screenFactory) {
