@@ -251,11 +251,13 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tie
 		@Override
 		public void tick() {
 			super.tick();
-			
-			try (var transaction = Transaction.openOuter()) {
-				fluidStorage.getStorage(FLUID_OUTPUT_SLOT).insert(fluidStorage.getStorage(FLUID_OUTPUT_SLOT).getResource(), Long.MAX_VALUE, transaction);
-				
-				transaction.commit();
+
+			if(fluidStorage.getStorage(FLUID_OUTPUT_SLOT).getResource().getFluid() != Fluids.EMPTY) {
+				try (var transaction = Transaction.openOuter()) {
+					fluidStorage.getStorage(FLUID_OUTPUT_SLOT).insert(fluidStorage.getStorage(FLUID_OUTPUT_SLOT).getResource(), Long.MAX_VALUE, transaction);
+
+					transaction.commit();
+				}
 			}
 		}
 	}
