@@ -30,6 +30,8 @@ import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 
@@ -59,7 +61,7 @@ public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implement
 	public CapacitorBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergySize(), Long.MAX_VALUE, Long.MAX_VALUE);
+		energyStorage = new SimpleEnergyStorage(getEnergySize(), getMaxTransferRate(), getMaxTransferRate());
 		
 		itemStorage = new SimpleItemStorage(2).insertPredicate((variant, slot) -> {
 			return slot == INPUT_SLOT;
@@ -87,6 +89,10 @@ public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implement
 			
 			transaction.commit();
 		}
+	}
+
+	public long getMaxTransferRate() {
+		return (long) (AMConfig.get().capcitorTransferRate * getMachineSpeed());
 	}
 
 	public static class Primitive extends CapacitorBlockEntity {
@@ -176,10 +182,7 @@ public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implement
 	public static class Creative extends CapacitorBlockEntity {
 		public Creative(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.CREATIVE_CAPACITOR, blockPos, blockState);
-			
-			energyStorage = new SimpleEnergyStorage(Long.MAX_VALUE, Long.MAX_VALUE, Long.MAX_VALUE);
 		}
-		
 
 		@Override
 		public long getEnergySize() {
@@ -194,6 +197,17 @@ public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implement
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.CREATIVE;
+		}
+
+		@Override
+		public void tick() {
+			super.tick();
+			if(energyStorage.getAmount() < Long.MAX_VALUE) {
+				try (Transaction transaction = Transaction.openOuter()) {
+					energyStorage.insert(Long.MAX_VALUE, transaction);
+					transaction.commit();
+				}
+			}
 		}
 	}
 }

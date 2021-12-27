@@ -59,8 +59,6 @@ public class AMConfig implements ConfigData {
 	@Comment("Gravity level in Space")
 	public double spaceGravity = 0.01D;
 
-
-
 	@Comment("Energy for the Primitive Battery.")
 	public long primitiveBatteryEnergy = 8000;
 
@@ -418,14 +416,8 @@ public class AMConfig implements ConfigData {
 	@Comment("Fluid for the Fluid Collector.")
 	public long fluidCollectorFluid = FluidConstants.BUCKET * 8;
 
-	@Comment("Speed for the Vent.")
-	public double ventSpeed = 1.0D;
-
-	@Comment("Energy for the Vent.")
-	public long ventEnergy = primitiveBatteryPackEnergy;
-
-	@Comment("Fluid for the Vent.")
-	public long ventFluid = FluidConstants.BUCKET * 16L;
+	@Comment("Base Capacitor energy transfer rate")
+	public long capcitorTransferRate = 10L;
 
 	@Comment("Speed for the Primitive Capacitor.")
 	public double primitiveCapacitorSpeed = 0.5D;
@@ -550,21 +542,6 @@ public class AMConfig implements ConfigData {
 	@Comment("Energy for the Elite Energy Cable.")
 	public long eliteEnergyCableEnergy = 4096;
 
-	@Comment("Delay for the Inserter actions (smaller is faster).")
-	public int inserterSpeed = 16;
-
-	@Comment("Delay for the Fast Inserter actions (smaller is faster).")
-	public int fastInserterSpeed = 8;
-
-	@Comment("Delay for the Basic Conveyor actions (smaller is faster).")
-	public int basicConveyorSpeed = 16;
-
-	@Comment("Delay for the Advanced Conveyor actions (smaller is faster).")
-	public int advancedConveyorSpeed = 8;
-
-	@Comment("Delay for the Elite Conveyor actions (smaller is faster).")
-	public int eliteConveyorSpeed = 8;
-
 	@Comment("Fluid for the Space Suit.")
 	public long spaceSuitFluid = portableTankFluid;
 
@@ -654,9 +631,6 @@ public class AMConfig implements ConfigData {
 
 	@Comment("Chance for Piglins to realize if you try to trick them. (1 in x)")
 	public int piglinAngerChance = 5;
-
-	@Comment("Stack size transferred by Inserters.")
-	public int inserterStackSize = 8;
 	
 	@Comment("Whether generation of Tin Ore in the Overworld is enabled.")
 	public boolean overworldTinOre = true;
