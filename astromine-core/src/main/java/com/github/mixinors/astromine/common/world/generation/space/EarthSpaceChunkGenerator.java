@@ -146,21 +146,21 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 
 	public void populateNoise(StructureAccessor accessor, Chunk chunk) {
 		BlockPos.Mutable mutable = new BlockPos.Mutable();
-		int x1 = chunk.getPos().getStartX();
-		int z1 = chunk.getPos().getStartZ();
-		int y1 = 0;
+		var x1 = chunk.getPos().getStartX();
+		var z1 = chunk.getPos().getStartZ();
+		var y1 = 0;
 
-		int x2 = chunk.getPos().getEndX();
-		int z2 = chunk.getPos().getEndZ();
-		int y2 = 256;
+		var x2 = chunk.getPos().getEndX();
+		var z2 = chunk.getPos().getEndZ();
+		var y2 = 256;
 
-		ChunkRandom random = new ChunkRandom(new AtomicSimpleRandom(RandomSeed.getSeed()));
+		var random = new ChunkRandom(new AtomicSimpleRandom(RandomSeed.getSeed()));
 		random.setPopulationSeed(this.seed, x1, z1);
 
-		for (int x = x1; x <= x2; ++x) {
-			for (int z = z1; z <= z2; ++z) {
-				for (int y = y1; y <= y2; ++y) {
-					double noise = this.noise.sample(x, y, z);
+		for (var x = x1; x <= x2; ++x) {
+			for (var z = z1; z <= z2; ++z) {
+				for (var y = y1; y <= y2; ++y) {
+					var noise = this.noise.sample(x, y, z);
 					noise -= computeNoiseFalloff(y);
 
 					if (noise > AMConfig.get().asteroidNoiseThreshold) {

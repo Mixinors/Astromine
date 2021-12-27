@@ -77,22 +77,22 @@ public abstract class ExtendedFluid extends FlowableFluid {
 			.liquid()
 			.notSolid().build();
 
-	private final int fogColor;
-	private final int tintColor;
+	final int fogColor;
+	final int tintColor;
 
-	private final boolean isInfinite;
+	final boolean isInfinite;
 
-	private RegistrySupplier<Block> block;
+	RegistrySupplier<Block> block;
 
-	private Fluid flowing;
-	private Fluid still;
+	Fluid flowing;
+	Fluid still;
 
-	private RegistrySupplier<Item> bucket;
+	RegistrySupplier<Item> bucket;
 
-	private Map<Item, CauldronBehavior> cauldronBehaviorMap;
-	private RegistrySupplier<Block> cauldron;
+	Map<Item, CauldronBehavior> cauldronBehaviorMap;
+	RegistrySupplier<Block> cauldron;
 
-	private final DamageSource source;
+	final DamageSource source;
 
 	public ExtendedFluid(int fogColor, int tintColor, boolean isInfinite, @Nullable DamageSource source) {
 		this.fogColor = fogColor;
@@ -138,7 +138,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 	
 	@Override
 	protected void beforeBreakingBlock(WorldAccess world, BlockPos position, BlockState state) {
-		BlockEntity blockEntity = world.getBlockEntity(position);
+		var blockEntity = world.getBlockEntity(position);
 		Block.dropStacks(state, world, position, blockEntity);
 	}
 	
@@ -191,28 +191,28 @@ public abstract class ExtendedFluid extends FlowableFluid {
 	}
 	
 	public static class Builder {
-		int fog = Color.STANDARD.toInt();
-		int tint = Color.STANDARD.toInt();
-		int damage = 0;
+		private int fog = Color.STANDARD.toInt();
+		private int  tint = Color.STANDARD.toInt();
+		private int  damage = 0;
 
-		boolean isInfinite = false;
-		boolean isToxic = false;
+		private boolean isInfinite = false;
+		private boolean isToxic = false;
 
-		String name = "";
+		private String name = "";
+		
+		private RegistrySupplier<Block> block;
 
-		RegistrySupplier<Block> block;
+		private Fluid flowing;
+		private Fluid still;
+		
+		private RegistrySupplier<Item> bucket;
 
-		Fluid flowing;
-		Fluid still;
-
-		RegistrySupplier<Item> bucket;
-
-		Map<Item, CauldronBehavior> cauldronBehaviorMap;
-		RegistrySupplier<Block> cauldron;
-
-		DamageSource source;
-
-		ItemGroup group;
+		private Map<Item, CauldronBehavior> cauldronBehaviorMap;
+		private RegistrySupplier<Block> cauldron;
+		
+		private DamageSource source;
+		
+		private ItemGroup group;
 		
 		private Builder() {
 		}
@@ -258,8 +258,8 @@ public abstract class ExtendedFluid extends FlowableFluid {
 		}
 		
 		public ExtendedFluid build() {
-			ExtendedFluid flowing = AMFluids.register(name + "_flowing", new Flowing(fog, tint, isInfinite, source));
-			ExtendedFluid still = AMFluids.register(name, new Still(fog, tint, isInfinite, source));
+			var flowing = AMFluids.register(name + "_flowing", new Flowing(fog, tint, isInfinite, source));
+			var still = AMFluids.register(name, new Still(fog, tint, isInfinite, source));
 
 			flowing.flowing = flowing;
 			still.flowing = flowing;

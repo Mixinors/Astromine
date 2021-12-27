@@ -144,7 +144,7 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 
 		FabricTagBuilder<Block> cauldronsTagBuilder = getOrCreateTagBuilder(BlockTags.CAULDRONS);
 		AMDatagen.FLUIDS.forEach((fluid) -> {
-			String fluidName = Registry.FLUID.getId(fluid.getStill()).getPath();
+			var fluidName = Registry.FLUID.getId(fluid.getStill()).getPath();
 			FabricTagBuilder<Block> tagBuilder = getOrCreateTagBuilder(AMDatagen.createCommonBlockTag(fluidName));
 			Tag.Identified<Block> cauldronTag = AMDatagen.createCommonBlockTag(fluidName + "_cauldrons");
 			FabricTagBuilder<Block> cauldronTagBuilder = getOrCreateTagBuilder(cauldronTag);

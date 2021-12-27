@@ -92,7 +92,7 @@ public abstract class RocketEntity extends ExtendedEntity {
 	@Override
 	public void updatePassengerPosition(Entity passenger) {
 		if (this.hasPassenger(passenger)) {
-			Vec3f position = getPassengerPosition();
+			var position = getPassengerPosition();
 			passenger.setPosition(getX() + position.getX(), getY() + position.getY(), getZ() + position.getZ());
 		}
 	}
@@ -105,18 +105,18 @@ public abstract class RocketEntity extends ExtendedEntity {
 			if (isFuelMatching()) {
 				consumeFuel();
 
-				Vector3d acceleration = getAcceleration();
+				var acceleration = getAcceleration();
 
 				this.addVelocity(0, acceleration.y, 0);
 				this.move(MovementType.SELF, this.getVelocity());
 
 				if (!this.world.isClient) {
-					Box box = getBoundingBox();
+					var box = getBoundingBox();
 
-					double y = getY();
+					var y = getY();
 
-					for (double x = box.minX; x < box.maxX; x += 0.0625) {
-						for (double z = box.minZ; z < box.maxZ; z += 0.0625) {
+					for (var x = box.minX; x < box.maxX; x += 0.0625) {
+						for (var z = box.minZ; z < box.maxZ; z += 0.0625) {
 							((ServerWorld) world).spawnParticles(AMParticles.ROCKET_FLAME.get(), x, y, z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
 						}
 					}
@@ -167,7 +167,7 @@ public abstract class RocketEntity extends ExtendedEntity {
 	}
 
 	public Vec3d updatePassengerForDismount(LivingEntity passenger) {
-		Vec3d vec3d = getPassengerDismountOffset(this.getWidth(), passenger.getWidth(), this.getYaw() + (passenger.getMainArm() == Arm.RIGHT ? 90.0F : -90.0F));
+		var vec3d = getPassengerDismountOffset(this.getWidth(), passenger.getWidth(), this.getYaw() + (passenger.getMainArm() == Arm.RIGHT ? 90.0F : -90.0F));
 		return new Vec3d(vec3d.getX() + this.getX(), vec3d.getY() + this.getY(), vec3d.getZ() + this.getZ());
 	}
 

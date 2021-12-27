@@ -39,35 +39,35 @@ public class LineUtils {
 	public static Collection<Vec3f> getBezierSegments(Vec3f posA, Vec3f posB, Vec3f posC, float segments) {
 		ArrayList<Vec3f> positions = new ArrayList<>();
 
-		double x1 = posA.getX();
-		double y1 = posA.getY();
-		double z1 = posA.getZ();
+		var x1 = posA.getX();
+		var y1 = posA.getY();
+		var z1 = posA.getZ();
 
-		double x3 = posB.getX();
-		double y3 = posB.getY();
-		double z3 = posB.getZ();
+		var x3 = posB.getX();
+		var y3 = posB.getY();
+		var z3 = posB.getZ();
 
-		double x2 = posC.getX();
-		double y2 = posC.getY();
+		var x2 = posC.getX();
+		var y2 = posC.getY();
 
-		double dZ = (z3 - z1) / segments;
-		double cZ = 0;
+		var dZ = (z3 - z1) / segments;
+		var cZ = 0;
 
-		for (double t = 0; t < 1; t += (1f / segments)) {
-			double p0M = Math.pow(1 - t, 2);
-			double p0X = x1 * p0M;
-			double p0Y = y1 * p0M;
+		for (var t = 0; t < 1; t += (1f / segments)) {
+			var p0M = Math.pow(1 - t, 2);
+			var p0X = x1 * p0M;
+			var p0Y = y1 * p0M;
 
-			double p1M = 2 * t * (1 - t);
-			double p1X = p1M * x2;
-			double p1Y = p1M * y2;
+			var p1M = 2 * t * (1 - t);
+			var p1X = p1M * x2;
+			var p1Y = p1M * y2;
 
-			double p2M = Math.pow(t, 2);
-			double p2X = p2M * x3;
-			double p2Y = p2M * y3;
+			var p2M = Math.pow(t, 2);
+			var p2X = p2M * x3;
+			var p2Y = p2M * y3;
 
-			double pX = p0X + p1X + p2X;
-			double pY = p0Y + p1Y + p2Y;
+			var pX = p0X + p1X + p2X;
+			var pY = p0Y + p1Y + p2Y;
 
 			if (t == 0) {
 				positions.add(new Vec3f((float) x1, (float) y1, (float) z1));
@@ -87,21 +87,21 @@ public class LineUtils {
 	 * Returns points of a Bresenham line between the two given points with the specified amount of segments.
 	 */
 	public static Collection<Vec3f> getBresenhamSegments(Vec3f posA, Vec3f posB, float segments) {
-		float x1 = posA.getX();
-		float y1 = posA.getY();
-		float z1 = posA.getZ();
+		var x1 = posA.getX();
+		var y1 = posA.getY();
+		var z1 = posA.getZ();
 
-		float x2 = posB.getX();
-		float y2 = posB.getY();
-		float z2 = posB.getZ();
+		var x2 = posB.getX();
+		var y2 = posB.getY();
+		var z2 = posB.getZ();
 
 		List<Vec3f> points = Lists.newArrayList();
 
 		points.add(posA);
 
-		float dx = Math.abs(x2 - x1);
-		float dy = Math.abs(y2 - y1);
-		float dz = Math.abs(z2 - z1);
+		var dx = Math.abs(x2 - x1);
+		var dy = Math.abs(y2 - y1);
+		var dz = Math.abs(z2 - z1);
 
 		float xs;
 		float ys;
@@ -126,8 +126,8 @@ public class LineUtils {
 		}
 
 		if (dx >= dy && dx >= dz) {
-			float p1 = 2 * dy - dx;
-			float p2 = 2 * dz - dx;
+			var p1 = 2 * dy - dx;
+			var p2 = 2 * dz - dx;
 
 			while (posA.getX() < posB.getX() ? x1 < x2 : x1 > x2) {
 				x1 += xs;
@@ -148,8 +148,8 @@ public class LineUtils {
 				points.add(new Vec3f(x1, y1, z1));
 			}
 		} else if (dy >= dx && dy >= dz) {
-			float p1 = 2 * dx - dy;
-			float p2 = 2 * dz - dy;
+			var p1 = 2 * dx - dy;
+			var p2 = 2 * dz - dy;
 
 			while (posA.getY() < posB.getY() ? y1 < y2 : y1 > y2) {
 				y1 += ys;
@@ -170,8 +170,8 @@ public class LineUtils {
 				points.add(new Vec3f(x1, y1, z1));
 			}
 		} else {
-			float p1 = 2 * dy - dz;
-			float p2 = 2 * dx - dz;
+			var p1 = 2 * dy - dz;
+			var p2 = 2 * dx - dz;
 
 			while (posA.getZ() < posB.getZ() ? z1 < z2 : z1 > z2) {
 				z1 += zs;

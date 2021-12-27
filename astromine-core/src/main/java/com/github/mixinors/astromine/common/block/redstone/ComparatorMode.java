@@ -46,7 +46,7 @@ public interface ComparatorMode {
 			return false;
 		}
 	};
-
+	
 	ComparatorMode ITEMS = ComparatorOutput::forItems;
 	ComparatorMode FLUIDS = ComparatorOutput::forFluids;
 	ComparatorMode ENERGY = ComparatorOutput::forEnergy;

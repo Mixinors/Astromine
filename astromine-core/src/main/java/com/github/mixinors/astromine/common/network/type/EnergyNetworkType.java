@@ -55,27 +55,27 @@ public final class EnergyNetworkType implements NetworkType {
 //		Reference2DoubleMap<EnergyHandler> requesters = new Reference2DoubleOpenHashMap<>();
 //
 //		for (NetworkMemberNode memberNode : instance.members) {
-//			WorldPos memberPos = WorldPos.of(instance.getWorld(), memberNode.getBlockPosition());
-//			NetworkMember networkMember = NetworkMemberRegistry.get(memberPos, memberNode.getDirection());
-//			BlockEntity blockEntity = memberPos.getBlockEntity();
+//			var memberPos = WorldPos.of(instance.getWorld(), memberNode.getBlockPosition());
+//			var networkMember = NetworkMemberRegistry.get(memberPos, memberNode.getDirection());
+//			var blockEntity = memberPos.getBlockEntity();
 //
-//			WorldPos nodePosition = memberPos.offset(memberNode.getDirection());
+//			var nodePosition = memberPos.offset(memberNode.getDirection());
 //
-//			double speed = nodePosition.getBlock() instanceof NodeSpeedProvider ? ((NodeSpeedProvider) nodePosition.getBlock()).getNodeSpeed() : 0.0D;
+//			var speed = nodePosition.getBlock() instanceof NodeSpeedProvider ? ((NodeSpeedProvider) nodePosition.getBlock()).getNodeSpeed() : 0.0D;
 //
 //			if (speed <= 0)
 //				continue;
 //
 //			if (networkMember.acceptsType(this)) {
-//				TransferType type = TransferType.NONE;
+//				var type = TransferType.NONE;
 //
-//				TransferComponent transferComponent = TransferComponent.get(blockEntity);
+//				var transferComponent = TransferComponent.get(blockEntity);
 //
 //				if (transferComponent != null && transferComponent.get(AMComponents.ENERGY_INVENTORY_COMPONENT) != null) {
 //					type = transferComponent.getEnergy(memberNode.getDirection());
 //				}
 //
-//				EnergyHandler volume = Energy.of(blockEntity).side(memberNode.getDirection());
+//				var volume = Energy.of(blockEntity).side(memberNode.getDirection());
 //
 //				if (!type.isNone()) {
 //					if (type.canExtract() && (networkMember.isProvider(this) || networkMember.isBuffer(this))) {
@@ -93,23 +93,23 @@ public final class EnergyNetworkType implements NetworkType {
 //		requesterKeys.sort(Comparator.comparingDouble(EnergyHandler::getEnergy));
 //
 //		for (Reference2DoubleMap.Entry<EnergyHandler> inputEntry : providers.reference2DoubleEntrySet()) {
-//			EnergyHandler input = inputEntry.getKey();
+//			var input = inputEntry.getKey();
 //
-//			double inputSpeed = inputEntry.getDoubleValue();
+//			var inputSpeed = inputEntry.getDoubleValue();
 //
-//			for (int i = requesterKeys.size() - 1; i >= 0; i--) {
-//				EnergyHandler output = requesterKeys.get(i);
+//			for (var i = requesterKeys.size() - 1; i >= 0; i--) {
+//				var output = requesterKeys.get(i);
 //
-//				double outputSpeed = requesters.getOrDefault(output, 0.0D);
+//				var outputSpeed = requesters.getOrDefault(output, 0.0D);
 //
-//				double a = inputSpeed / requesters.size();
-//				double b = outputSpeed / requesters.size();
-//				double c = input.getEnergy() / (i + 1);
-//				double d = output.getMaxStored() - output.getEnergy();
-//				double e = input.getMaxOutput();
-//				double f = output.getMaxInput();
+//				var a = inputSpeed / requesters.size();
+//				var b = outputSpeed / requesters.size();
+//				var c = input.getEnergy() / (i + 1);
+//				var d = output.getMaxStored() - output.getEnergy();
+//				var e = input.getMaxOutput();
+//				var f = output.getMaxInput();
 //
-//				double speed = Collections.min(Arrays.asList(a, b, c, d, e, f));
+//				var speed = Collections.min(Arrays.asList(a, b, c, d, e, f));
 //
 //				input.into(output).move(speed);
 //			}

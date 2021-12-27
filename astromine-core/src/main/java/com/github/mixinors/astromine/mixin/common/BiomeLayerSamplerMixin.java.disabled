@@ -56,7 +56,7 @@ public class BiomeLayerSamplerMixin {
 	private RegistryKey<Biome> modifyBiome(RegistryKey<Biome> original) {
 		if (original != null)
 			return original;
-		Biome biome = registry.get(storedLastBiomeId);
+		var biome = registry.get(storedLastBiomeId);
 		if (biome == null)
 			return original;
 		return registry.getKey(biome).filter(key -> key.getValue().getNamespace().equals(AMCommon.MOD_ID)).orElse(original);

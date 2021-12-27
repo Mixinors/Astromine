@@ -108,8 +108,8 @@ public class DrillItem extends EnergyStorageItem implements DynamicAttributeTool
 	
 	@Override
 	public boolean isSuitableFor(BlockState state) {
-		float pickaxeSpeed = pickaxe.getMiningSpeedMultiplier(ItemStack.EMPTY, state);
-		float shovelSpeed = shovel.getMiningSpeedMultiplier(ItemStack.EMPTY, state);
+		var pickaxeSpeed = pickaxe.getMiningSpeedMultiplier(ItemStack.EMPTY, state);
+		var shovelSpeed = shovel.getMiningSpeedMultiplier(ItemStack.EMPTY, state);
 		
 		return pickaxeSpeed > 1.0F || shovelSpeed > 1.0F;
 	}
@@ -121,8 +121,8 @@ public class DrillItem extends EnergyStorageItem implements DynamicAttributeTool
 
 	@Override
 	public float getMiningSpeedMultiplier(ItemStack stack, BlockState state) {
-		float pickaxeSpeed = pickaxe.getMiningSpeedMultiplier(ItemStack.EMPTY, state);
-		float shovelSpeed = shovel.getMiningSpeedMultiplier(ItemStack.EMPTY, state);
+		var pickaxeSpeed = pickaxe.getMiningSpeedMultiplier(ItemStack.EMPTY, state);
+		var shovelSpeed = shovel.getMiningSpeedMultiplier(ItemStack.EMPTY, state);
 		
 		return Math.max(pickaxeSpeed, shovelSpeed);
 	}

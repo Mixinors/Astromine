@@ -57,7 +57,7 @@ public class ElectrolyzerScreenHandler extends ExtendedBlockEntityScreenHandler 
 
 		secondOutputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(2));
 
-		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
+		var arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(fluidBar, fluidBar.getWidth() + 7, fluidBar.getHeight() / 2 - 8));
 		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> electrolyzer.limit);

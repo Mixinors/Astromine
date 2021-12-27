@@ -87,7 +87,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 		// }
 //
 		// if (!entity.getType().isIn(AMTags.DOES_NOT_BREATHE)) {
-		// 	ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(entity.world.getChunk(entity.getBlockPos()));
+		// 	var atmosphereComponent = ChunkAtmosphereComponent.get(entity.world.getChunk(entity.getBlockPos()));
 //
 		// 	if (atmosphereComponent != null) {
 		// 		FluidVolume breathingVolume;
@@ -102,13 +102,13 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 		// 			breathingVolume = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));
 		// 		}
 		//
-		// 		EntityOxygenComponent oxygenComponent = EntityOxygenComponent.get(entity);
+		// 		var oxygenComponent = EntityOxygenComponent.get(entity);
 		//
 		// 		if (oxygenComponent != null) {
-		// 			ItemStack helmetStack = ItemStack.EMPTY;
-		// 			ItemStack chestplateStack = ItemStack.EMPTY;
-		// 			ItemStack leggingsStack = ItemStack.EMPTY;
-		// 			ItemStack bootsStack = ItemStack.EMPTY;
+		// 			var helmetStack = ItemStack.EMPTY;
+		// 			var chestplateStack = ItemStack.EMPTY;
+		// 			var leggingsStack = ItemStack.EMPTY;
+		// 			var bootsStack = ItemStack.EMPTY;
 //
 		// 			for (ItemStack stack : getArmorItems()) {
 		// 				if (stack.getItem() == AMItems.SPACE_SUIT_HELMET.get()) helmetStack = stack;
@@ -117,9 +117,9 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 		// 				if (stack.getItem() == AMItems.SPACE_SUIT_BOOTS.get()) bootsStack = stack;
 		// 			}
 //
-		// 			boolean hasSuit = !helmetStack.isEmpty() && !chestplateStack.isEmpty() && !leggingsStack.isEmpty() && !bootsStack.isEmpty();
+		// 			var hasSuit = !helmetStack.isEmpty() && !chestplateStack.isEmpty() && !leggingsStack.isEmpty() && !bootsStack.isEmpty();
 		//
-		// 			SimpleFluidStorage fluidStorage = null;
+		// 			var fluidStorage = null;
 		//
 		// 			if (hasSuit) {
 		// 				fluidStorage = SimpleFluidStorage.get(chestplateStack);
@@ -129,13 +129,13 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 		// 				}
 		// 			}
 		//
-		// 			EntityAccessor entityAccessor = (EntityAccessor) this;
+		// 			var entityAccessor = (EntityAccessor) this;
 		//
 		// 			if (entityAccessor.getSubmergedFluidTag() != null && breathingVolume.isEmpty()) {
 		// 				breathingVolume = FluidVolume.of(FluidVolume.BUCKET, entityAccessor.getSubmergedFluidTag().values().get(0));
 		// 			}
 		//
-		// 			boolean isBreathing = BreathableRegistry.INSTANCE.canBreathe(entity.getType(), breathingVolume.getFluid());
+		// 			var isBreathing = BreathableRegistry.INSTANCE.canBreathe(entity.getType(), breathingVolume.getFluid());
 		//
 		// 			if ((!(entity instanceof PlayerEntity) || !entity.isSpectator() && !((PlayerEntity) entity).isCreative()) && isBreathing && fluidStorage != null && age % 5 == 0) {
 		// 				fluidStorage.getFirst().take(81L);

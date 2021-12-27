@@ -127,7 +127,7 @@ public final class WorldHoloBridgeComponent implements Component {
 		if (vectors == null)
 			return VoxelShapes.fullCube();
 
-		VoxelShape shape = getShape(vectors);
+		var shape = getShape(vectors);
 
 		cache.put(pos, shape);
 
@@ -137,12 +137,12 @@ public final class WorldHoloBridgeComponent implements Component {
 	/** Returns the {@link VoxelShape} formed by the given {@link Set} of steps.
 	 * I made this work months ago; and I don't know how. Accept it, or suffer. */
 	private VoxelShape getShape(Set<Vec3i> vecs) {
-		VoxelShape shape = VoxelShapes.empty();
+		var shape = VoxelShapes.empty();
 
-		boolean a = vecs.stream().allMatch(vec -> vec.getZ() == 0);
-		boolean b = vecs.stream().allMatch(vec -> vec.getX() == 0);
-		boolean c = false;
-		boolean d = false;
+		var a = vecs.stream().allMatch(vec -> vec.getZ() == 0);
+		var b = vecs.stream().allMatch(vec -> vec.getX() == 0);
+		var c = false;
+		var d = false;
 
 		for (Vec3i vec : vecs) {
 			if (!c && vec.getX() < 0)
@@ -163,13 +163,13 @@ public final class WorldHoloBridgeComponent implements Component {
 	/** Serializes this {@link WorldHoloBridgeComponent} to a {@link NbtCompound}. */
 	@Override
 	public void writeToNbt(NbtCompound tag) {
-		NbtList dataTag = new NbtList();
+		var dataTag = new NbtList();
 
 		for (Long2ObjectMap.Entry<Set<Vec3i>> entry : entries.long2ObjectEntrySet()) {
-			NbtCompound pointTag = new NbtCompound();
+			var pointTag = new NbtCompound();
 			long[] vecs = new long[entry.getValue().size()];
 			
-			int i = 0;
+			var i = 0;
 			for (Vec3i vec : entry.getValue()) {
 				vecs[i++] = BlockPos.asLong(vec.getX(), vec.getY(), vec.getZ());
 			}
@@ -186,12 +186,12 @@ public final class WorldHoloBridgeComponent implements Component {
 	/** Deserializes this {@link WorldHoloBridgeComponent} from a {@link NbtCompound}. */
 	@Override
 	public void readFromNbt(NbtCompound tag) {
-		NbtList dataTag = tag.getList("Data", NbtType.COMPOUND);
+		var dataTag = tag.getList("Data", NbtType.COMPOUND);
 
 		for (NbtElement pointTag : dataTag) {
 			long[] vecs = ((NbtCompound) pointTag).getLongArray("Vectors");
 
-			long pos = ((NbtCompound) pointTag).getLong("Position");
+			var pos = ((NbtCompound) pointTag).getLong("Position");
 
 			for (long vec : vecs) {
 				add(pos, BlockPos.fromLong(vec));

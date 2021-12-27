@@ -40,7 +40,7 @@ public abstract class EnergyGeneratingCategory<T extends EnergyGeneratingDisplay
 	@Override
 	public List<Widget> setupDisplay(T recipeDisplay, Rectangle bounds) {
 		List<Widget> widgets = Lists.newArrayList();
-		Rectangle innerBounds = new Rectangle(bounds.getCenterX() - 55, bounds.y, 110, bounds.height);
+		var innerBounds = new Rectangle(bounds.getCenterX() - 55, bounds.y, 110, bounds.height);
 		widgets.add(Widgets.createRecipeBase(innerBounds));
 		widgets.addAll(AMRoughlyEnoughItemsPlugin.createEnergyDisplay(new Rectangle(innerBounds.getMaxX() - 32, innerBounds.getCenterY() - 23, 12, 48), recipeDisplay.getEnergyGeneratedPerTick(), true, 5000));
 		return widgets;

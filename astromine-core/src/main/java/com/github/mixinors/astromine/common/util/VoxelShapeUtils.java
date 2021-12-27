@@ -56,7 +56,7 @@ public class VoxelShapeUtils {
 	 * Returns an union of all the given {@link VoxelShape}s.
 	 */
 	public static VoxelShape union(Collection<VoxelShape> shapes) {
-		VoxelShape collision = VoxelShapes.empty();
+		var collision = VoxelShapes.empty();
 		for (VoxelShape shape : shapes) {
 			collision = VoxelShapes.union(shape, collision);
 		}
@@ -67,7 +67,7 @@ public class VoxelShapeUtils {
 	 * Returns the given {@link VoxelShape} rotated the supplied radians in the specified {@link Direction.Axis}.
 	 */
 	public static VoxelShape rotate(Direction.Axis axis, double radians, VoxelShape shape) {
-		VoxelShape collision = VoxelShapes.empty();
+		var collision = VoxelShapes.empty();
 
 		for (Box box : shape.getBoundingBoxes()) {
 			Pair<Double, Double> min = axis == Direction.Axis.X ? rotatePoint(box.minY, box.minZ, radians) : (axis == Direction.Axis.Z ? rotatePoint(box.minX, box.minY, radians) : rotatePoint(box.minX, box.minZ, radians));
@@ -82,7 +82,7 @@ public class VoxelShapeUtils {
 	 * Returns the given {@link VoxelShape}s rotated the supplied radians in the specified {@link Direction.Axis}.
 	 */
 	public static VoxelShape rotate(Direction.Axis axis, double radians, Collection<VoxelShape> shapes) {
-		VoxelShape collision = VoxelShapes.empty();
+		var collision = VoxelShapes.empty();
 		for (VoxelShape shape : shapes) {
 			collision = VoxelShapes.union(collision, rotate(axis, radians, shape));
 		}

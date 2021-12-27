@@ -54,33 +54,33 @@ public class SpriteRenderer {
 	 * used for rendering sprites.
 	 */
 	public static class RenderPass {
-		float x1 = 0;
-		float x2 = 1;
+		private float x1 = 0.0F;
+		private float x2 = 0.0F;
 
-		float y1 = 0;
-		float y2 = 0;
+		private float y1 = 0.0F;
+		private float y2 = 0.0F;
 
-		float z1 = 0;
+		private float z1 = 0.0F;
 
-		float uStart = 0F;
-		float uEnd = 1F;
+		private float uStart = 0.0F;
+		private float uEnd = 1.0F;
 
-		float vStart = 0F;
-		float vEnd = 1F;
+		private float vStart = 0.0F;
+		private float vEnd = 1.0F;
 
-		int u = 0;
-		int v = 1;
+		private int u = 0;
+		private int v = 1;
 
-		int r = 0xff;
-		int g = 0xff;
-		int b = 0xff;
-		int a = 0xff;
+		private int r = 0xff;
+		private int g = 0xff;
+		private int b = 0xff;
+		private int a = 0xff;
 
-		int l = 0;
+		private int l = 0;
 
-		float nX = 0;
-		float nY = 0;
-		float nZ = 0;
+		private float nX = 0.0F;
+		private float nY = 0.0F;
+		private float nZ = 0.0F;
 
 		Sprite sprite;
 
@@ -271,21 +271,21 @@ public class SpriteRenderer {
 				this.normal = this.matrices.peek().getNormalMatrix();
 			}
 
-			float sX = sprite.getWidth();
-			float sY = sprite.getHeight();
+			var sX = sprite.getWidth();
+			var sY = sprite.getHeight();
 
 			ClientUtils.getInstance().getTextureManager().bindTexture(texture);
 
-			for (float y = y1; y < y2; y += Math.min(y2 - y, sY)) {
-				for (float x = x1; x < x2; x += Math.min(x2 - x, sX)) {
-					float nSX = Math.min(x2 - x, sX);
-					float nSY = Math.min(y2 - y, sY);
+			for (var y = y1; y < y2; y += Math.min(y2 - y, sY)) {
+				for (var x = x1; x < x2; x += Math.min(x2 - x, sX)) {
+					var nSX = Math.min(x2 - x, sX);
+					var nSY = Math.min(y2 - y, sY);
 
-					boolean isOverX = nSX < sX;
-					boolean isOverY = nSY < sY;
+					var isOverX = nSX < sX;
+					var isOverY = nSY < sY;
 
-					float dX = 0;
-					float dY = 0;
+					var dX = 0.0F;
+					var dY = 0.0F;
 
 					if (isOverX) {
 						dX = (uEnd - uStart) * (1 - (nSX / sX));

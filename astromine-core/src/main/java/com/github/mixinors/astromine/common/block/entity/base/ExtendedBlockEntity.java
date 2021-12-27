@@ -83,7 +83,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	}
 	
 	public boolean shouldRun() {
-		boolean powered = world.getReceivedRedstonePower(getPos()) > 0;
+		var powered = world.getReceivedRedstonePower(getPos()) > 0;
 		
 		switch (redstoneControl) {
 			case WORK_WHEN_ON -> {

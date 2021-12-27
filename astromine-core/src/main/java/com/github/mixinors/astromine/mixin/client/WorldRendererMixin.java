@@ -70,7 +70,7 @@ public abstract class WorldRendererMixin {
 
 	@Inject(at = @At("HEAD"), method = "renderSky(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/util/math/Matrix4f;FLjava/lang/Runnable;)V", cancellable = true)
 	void astromine_renderSky(MatrixStack matrices, Matrix4f projectionMatrix, float tickDelta, Runnable runnable, CallbackInfo callbackInformation) {
-		Skybox skybox = SkyboxRegistry.INSTANCE.get(this.client.world.getRegistryKey());
+		var skybox = SkyboxRegistry.INSTANCE.get(this.client.world.getRegistryKey());
 
 		if (skybox != null) {
 			skybox.render(matrices, tickDelta);

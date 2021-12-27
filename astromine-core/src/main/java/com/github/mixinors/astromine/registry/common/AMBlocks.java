@@ -262,8 +262,8 @@ public class AMBlocks {
 		RegistrySupplier<T> b = register(AMCommon.id(name), block);
 		if (item != null) {
 			AMCommon.registry(Registry.ITEM_KEY).register(b.getId(), () -> {
-				T t = b.get();
-				BlockItem blockItem = item.apply(t);
+				var t = b.get();
+				var blockItem = item.apply(t);
 				Item.BLOCK_ITEMS.put(t, blockItem);
 				return blockItem;
 			});

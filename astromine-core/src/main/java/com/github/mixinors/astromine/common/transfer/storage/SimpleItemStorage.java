@@ -73,7 +73,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		this.stacks = new ArrayList<>(size);
 		this.storages = new ArrayList<>(size);
 
-		for (int i = 0; i < size; ++i) {
+		for (var i = 0; i < size; ++i) {
 			this.stacks.add(i, ItemStack.EMPTY);
 			this.storages.add(i, new SimpleItemVariantStorage(this, i));
 		}
@@ -89,7 +89,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	public SimpleItemStorage(ItemStack... stacks) {
 		this(stacks.length);
 
-		for (int i = 0; i < stacks.length; ++i) {
+		for (var i = 0; i < stacks.length; ++i) {
 			this.stacks.set(i, stacks[i]);
 		}
 	}
@@ -292,7 +292,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	
 	@Override
 	public void clear() {
-		for (int i = 0; i < size; ++i) {
+		for (var i = 0; i < size; ++i) {
 			stacks.set(i, ItemStack.EMPTY);
 		}
 	}

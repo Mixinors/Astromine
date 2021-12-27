@@ -55,7 +55,7 @@ public class AMNetworkMembers {
 			@Override
 			public Collection<NetworkMemberType> get(WorldPos pos, @Nullable Direction direction) {
 				// if (!this.types.containsKey(pos.getBlock())) {
-				// 	BlockEntity blockEntity = pos.getBlockEntity();
+				// 	var blockEntity = pos.getBlockEntity();
 				// 	if (blockEntity instanceof EnergyStorage) {
 				// 		return NetworkMember.REQUESTER_PROVIDER;
 				// 	}
@@ -68,7 +68,7 @@ public class AMNetworkMembers {
 			@Override
 			public Collection<NetworkMemberType> get(WorldPos pos, @Nullable Direction direction) {
 				// if (!this.types.containsKey(pos.getBlock())) {
-				// 	BlockEntity blockEntity = pos.getBlockEntity();
+				// 	var blockEntity = pos.getBlockEntity();
 				// 	if (blockEntity instanceof InventoryProvider) {
 				// 		return NetworkMember.REQUESTER_PROVIDER;
 				// 	}
@@ -93,7 +93,7 @@ public class AMNetworkMembers {
 		NetworkMemberRegistry.NetworkTypeProvider<NetworkType> fluid = NetworkMemberRegistry.INSTANCE.get(AMNetworkTypes.FLUID);
 
 		BLOCK_CONSUMER.put(block -> block instanceof NetworkBlock, block -> {
-			NetworkBlock networkBlock = (NetworkBlock)block;
+			var networkBlock = (NetworkBlock)block;
 			if (networkBlock.isMember(AMNetworkTypes.ENERGY)) energy.register(block, networkBlock.getEnergyNetworkMemberType());
 			if (networkBlock.isMember(AMNetworkTypes.FLUID)) fluid.register(block, networkBlock.getFluidNetworkMemberType());
 		});

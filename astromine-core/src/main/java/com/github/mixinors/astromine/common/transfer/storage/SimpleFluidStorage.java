@@ -64,7 +64,7 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		this.listeners = new ArrayList<>();
 		this.storages = new ArrayList<>(size);
 
-		for (int i = 0; i < size; ++i) {
+		for (var i = 0; i < size; ++i) {
 			this.storages.add(i, new SimpleFluidVariantStorage());
 		}
 		

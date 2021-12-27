@@ -59,46 +59,46 @@ public class NetworkUtils {
 		 * Interconnected networks will be merged if necessary.
 		 */
 		public static void trace(NetworkType type, WorldPos initialPosition) {
-			World world = initialPosition.getWorld();
+			var world = initialPosition.getWorld();
 
-			WorldNetworkComponent networkComponent = WorldNetworkComponent.get(world);
+			var networkComponent = WorldNetworkComponent.get(world);
 
-			NetworkMember initialMember = NetworkMemberRegistry.get(initialPosition, null);
+			var initialMember = NetworkMemberRegistry.get(initialPosition, null);
 
 			if (!initialMember.acceptsType(type) || !initialMember.isNode(type) || networkComponent.contains(type, initialPosition.getBlockPos())) {
 				return;
 			}
 
-			LongSet tracedPositions = new LongOpenHashSet();
+			var tracedPositions = new LongOpenHashSet();
 
 			tracedPositions.add(initialPosition.getBlockPos().asLong());
 
 			ArrayDeque<BlockPos> positionsToTrace = new ArrayDeque<>(Collections.singleton(initialPosition.getBlockPos()));
 
-			NetworkInstance instance = new NetworkInstance(world, type);
+			var instance = new NetworkInstance(world, type);
 
 			instance.addNode(NetworkNode.of(initialPosition.getBlockPos()));
 
 			while (!positionsToTrace.isEmpty()) {
-				BlockPos position = positionsToTrace.pop();
+				var position = positionsToTrace.pop();
 
-				boolean joined = false;
+				var joined = false;
 
-				WorldPos initialObject = WorldPos.of(world, position);
+				var initialObject = WorldPos.of(world, position);
 
 				for (Direction direction : Direction.values()) {
-					BlockPos offsetPosition = position.offset(direction);
-					long offsetPositionLong = offsetPosition.asLong();
+					var offsetPosition = position.offset(direction);
+					var offsetPositionLong = offsetPosition.asLong();
 
 					if (tracedPositions.contains(offsetPositionLong)) {
 						continue;
 					}
 
-					WorldPos offsetObject = WorldPos.of(world, offsetPosition);
+					var offsetObject = WorldPos.of(world, offsetPosition);
 
-					NetworkMember offsetMember = NetworkMemberRegistry.get(offsetObject, direction.getOpposite());
+					var offsetMember = NetworkMemberRegistry.get(offsetObject, direction.getOpposite());
 
-					NetworkInstance existingInstance = networkComponent.get(type, offsetPosition);
+					var existingInstance = networkComponent.get(type, offsetPosition);
 
 					if (existingInstance != NetworkInstance.EMPTY) {
 						existingInstance.join(instance);
@@ -140,7 +140,7 @@ public class NetworkUtils {
 		protected static final VoxelShape[] SHAPE_CACHE = new VoxelShape[64];
 
 		public static int of(BlockState blockState) {
-			int i = 0;
+			var i = 0;
 
 			for (Map.Entry<Direction, BooleanProperty> property : CableBlock.PROPERTIES.entrySet()) {
 				if (blockState.get(property.getValue())) {
@@ -154,12 +154,12 @@ public class NetworkUtils {
 		public static Set<Direction> of(NetworkType type, BlockPos initialPosition, World world) {
 			Set<Direction> directions = EnumSet.noneOf(Direction.class);
 
-			WorldPos initialObject = WorldPos.of(world, initialPosition);
+			var initialObject = WorldPos.of(world, initialPosition);
 
 			for (Direction direction : Direction.values()) {
-				WorldPos pos = WorldPos.of(world, initialPosition.offset(direction));
+				var pos = WorldPos.of(world, initialPosition.offset(direction));
 
-				NetworkMember offsetMember = NetworkMemberRegistry.get(pos, direction.getOpposite());
+				var offsetMember = NetworkMemberRegistry.get(pos, direction.getOpposite());
 
 				if (offsetMember.acceptsType(type) && (!offsetMember.isNode(type) || pos.getBlock() == initialObject.getBlock())) {
 					directions.add(direction);
@@ -200,7 +200,7 @@ public class NetworkUtils {
 		 * as {@link CableBlock} shapes, also caches the shapes.
 		 */
 		public static VoxelShape getVoxelShape(Set<Direction> directions) {
-			int i = 0;
+			var i = 0;
 
 			for (Direction direction : directions) {
 				i |= 1 << direction.getId();
@@ -214,7 +214,7 @@ public class NetworkUtils {
 		 * as {@link CableBlock} shapes, also caches the shapes.
 		 */
 		public static VoxelShape getVoxelShape(int directions) {
-			VoxelShape shape = SHAPE_CACHE[directions];
+			var shape = SHAPE_CACHE[directions];
 			if (shape != null) {
 				return shape;
 			}

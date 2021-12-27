@@ -98,20 +98,20 @@ public final class WorldNetworkComponent implements Component {
 	/** Serializes this {@link WorldNetworkComponent} to a {@link NbtCompound}. */
 	@Override
 	public void writeToNbt(NbtCompound tag) {
-		NbtList instanceTags = new NbtList();
+		var instanceTags = new NbtList();
 
 		for (NetworkInstance instance : instances) {
-			NbtList nodeList = new NbtList();
+			var nodeList = new NbtList();
 			for (NetworkNode node : instance.nodes) {
 				nodeList.add(NbtLong.of(node.getLongPosition()));
 			}
 
-			NbtList memberList = new NbtList();
+			var memberList = new NbtList();
 			for (NetworkMemberNode member : instance.members) {
 				memberList.add(member.toTag());
 			}
 
-			NbtCompound data = new NbtCompound();
+			var data = new NbtCompound();
 
 			data.putString("type", NetworkTypeRegistry.INSTANCE.getKey(instance.getType()).toString());
 			data.put("nodes", nodeList);
@@ -126,14 +126,14 @@ public final class WorldNetworkComponent implements Component {
 	/** Deserializes this {@link WorldNetworkComponent} from a {@link NbtCompound}. */
 	@Override
 	public void readFromNbt(NbtCompound tag) {
-		NbtList instanceTags = tag.getList("instanceTags", NbtType.COMPOUND);
+		var instanceTags = tag.getList("instanceTags", NbtType.COMPOUND);
 		for (NbtElement instanceTag : instanceTags) {
-			NbtCompound dataTag = (NbtCompound) instanceTag;
-			NbtList nodeList = dataTag.getList("nodes", NbtType.LONG);
-			NbtList memberList = dataTag.getList("members", NbtType.COMPOUND);
+			var dataTag = (NbtCompound) instanceTag;
+			var nodeList = dataTag.getList("nodes", NbtType.LONG);
+			var memberList = dataTag.getList("members", NbtType.COMPOUND);
 
-			NetworkType type = NetworkTypeRegistry.INSTANCE.get(new Identifier(dataTag.getString("type")));
-			NetworkInstance instance = new NetworkInstance(world, type);
+			var type = NetworkTypeRegistry.INSTANCE.get(new Identifier(dataTag.getString("type")));
+			var instance = new NetworkInstance(world, type);
 
 			for (NbtElement nodeKey : nodeList) {
 				instance.addNode(NetworkNode.of(((NbtLong) nodeKey).longValue()));

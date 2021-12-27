@@ -54,25 +54,25 @@ public class AMCallbacks {
 			// ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(pos));
 //
 			// if (atmosphereComponent != null) {
-			// 	BlockPos centerPos = pos;
-			// 	BlockState centerState = world.getBlockState(centerPos);
-			// 	FluidVolume centerVolume = atmosphereComponent.get(centerPos);
+			// 	var centerPos = pos;
+			// 	var centerState = world.getBlockState(centerPos);
+			// 	var centerVolume = atmosphereComponent.get(centerPos);
 //
 			// 	List<Direction> directions = Lists.newArrayList(Direction.values());
 //
 			// 	Collections.shuffle(directions);
 //
 			// 	for (Direction direction : directions) {
-			// 		BlockPos sidePos = pos.offset(direction);
-			// 		BlockState sideState = world.getBlockState(sidePos);
+			// 		var sidePos = pos.offset(direction);
+			// 		var sideState = world.getBlockState(sidePos);
 //
-			// 		ChunkAtmosphereComponent sideAtmosphereComponent = atmosphereComponent;
+			// 		var sideAtmosphereComponent = atmosphereComponent;
 //
 			// 		if (!atmosphereComponent.isInChunk(sidePos)) {
 			// 			sideAtmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(sidePos));
 			// 		}
 //
-			// 		FluidVolume sideVolume = sideAtmosphereComponent.get(sidePos);
+			// 		var sideVolume = sideAtmosphereComponent.get(sidePos);
 //
 			// 		if (atmosphereComponent.isTraversableForDisplacement(centerState, centerPos, sideState, sidePos, centerVolume, sideVolume, direction)) {
 			// 			sideVolume.take(centerVolume);
@@ -92,7 +92,7 @@ public class AMCallbacks {
 		TickEvent.SERVER_PRE.register(( server) -> {
 			for (PlayerEntity playerEntity : server.getPlayerManager().getPlayerList()) {
 				if (playerEntity.currentScreenHandler instanceof ExtendedBlockEntityScreenHandler) {
-					ExtendedBlockEntityScreenHandler screenHandler = (ExtendedBlockEntityScreenHandler) playerEntity.currentScreenHandler;
+					var screenHandler = (ExtendedBlockEntityScreenHandler) playerEntity.currentScreenHandler;
 
 					if (screenHandler.getBlockEntity() != null) {
 						screenHandler.getBlockEntity().syncData();
@@ -103,7 +103,7 @@ public class AMCallbacks {
 		});
 
 		TickEvent.SERVER_LEVEL_PRE.register((world -> {
-			WorldNetworkComponent component = WorldNetworkComponent.get(world);
+			var component = WorldNetworkComponent.get(world);
 
 			if (component != null) {
 				component.tick();

@@ -62,10 +62,10 @@ public class MeltingCategory implements DisplayCategory<MeltingDisplay> {
 
 	@Override
 	public List<Widget> setupDisplay(MeltingDisplay display, Rectangle bounds) {
-		Point startPoint = new Point(bounds.getCenterX() - 41, bounds.getCenterY() - 27);
-		DecimalFormat df = new DecimalFormat("###.##");
+		var startPoint = new Point(bounds.getCenterX() - 41, bounds.getCenterY() - 27);
+		var df = new DecimalFormat("###.##");
 		List<Widget> widgets = Lists.newArrayList();
-		Rectangle innerBounds = new Rectangle(bounds.getCenterX() - 55 - 35, bounds.y, 36 + 110 + 57 + 7 + 6, bounds.height);
+		var innerBounds = new Rectangle(bounds.getCenterX() - 55 - 35, bounds.y, 36 + 110 + 57 + 7 + 6, bounds.height);
 		widgets.add(Widgets.createRecipeBase(bounds));
 		widgets.addAll(AMRoughlyEnoughItemsPlugin.createEnergyDisplay(new Rectangle(bounds.getX() + 10, bounds.getCenterY() - 23, 12, 48), display.getEnergyRequired(), false, display.getTimeRequired() * 500));
 		widgets.add(Widgets.createLabel(new Point(bounds.x + bounds.width - 5, bounds.y + 5), new TranslatableText("category.astromine.cooking.time", df.format(display.getTimeRequired() / 20d))).noShadow().rightAligned().color(0xFF404040, 0xFFBBBBBB));

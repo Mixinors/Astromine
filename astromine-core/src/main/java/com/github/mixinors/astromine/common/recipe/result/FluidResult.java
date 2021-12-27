@@ -73,13 +73,13 @@ public record FluidResult(FluidVariant variant, long amount) {
 
 			var variant = FluidVariant.of(variantFluid);
 			
+			var variantAmount = 81000L;
+			
 			if (jsonObject.has("amount")) {
-				var variantAmount = jsonObject.get("amount").getAsInt();
-				
-				return new FluidResult(variant, variantAmount);
-			} else {
-				return new FluidResult(variant, 81000L);
+				variantAmount = jsonObject.get("amount").getAsInt();
 			}
+			
+			return new FluidResult(variant, variantAmount);
 		}
 	}
 

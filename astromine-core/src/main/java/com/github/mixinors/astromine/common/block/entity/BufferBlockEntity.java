@@ -81,7 +81,7 @@ public abstract class BufferBlockEntity extends ExtendedBlockEntity {
 		@Override
 		public void tick() {
 			if (itemStorage != null) {
-				for (int i = 0; i < itemStorage.getSize(); ++i) {
+				for (var i = 0; i < itemStorage.getSize(); ++i) {
 					var stack = itemStorage.getStack(i);
 					
 					stack.setCount(stack.getMaxCount());

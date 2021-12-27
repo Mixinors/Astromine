@@ -51,7 +51,7 @@ public abstract class PiglinBrainMixin {
 		if (stack.isIn(AMTags.TRICKS_PIGLINS)) { //TODO: make sure this works correctly
 			Optional<PlayerEntity> optional = piglin.getBrain().getOptionalMemory(MemoryModuleType.NEAREST_VISIBLE_PLAYER);
 			if (optional.isPresent() && optional.get() instanceof ServerPlayerEntity player) {
-				boolean noticed = piglin.getRandom().nextInt(AMConfig.get().piglinAngerChance) == 0;
+				var noticed = piglin.getRandom().nextInt(AMConfig.get().piglinAngerChance) == 0;
 				AMCriteria.TRICKED_PIGLIN.trigger(player, !noticed);
 				if (noticed) {
 					piglin.playSound(SoundEvents.ENTITY_PIGLIN_ANGRY, 1.0f, 1.0f);

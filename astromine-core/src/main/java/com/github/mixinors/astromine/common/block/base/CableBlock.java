@@ -123,12 +123,12 @@ public abstract class CableBlock extends Block implements Waterloggable {
 		world.setBlockState(position, NetworkUtils.Modeller.toBlockState(set, stateA));
 
 		for (Direction direction : Direction.values()) {
-			BlockPos offsetPos = position.offset(direction);
-			WorldPos offsetBlock = WorldPos.of(world, offsetPos);
+			var offsetPos = position.offset(direction);
+			var offsetBlock = WorldPos.of(world, offsetPos);
 
 			if (!(offsetBlock.getBlock() instanceof CableBlock))
 				continue;
-			NetworkMember member = NetworkMemberRegistry.get(offsetBlock, direction.getOpposite());
+			var member = NetworkMemberRegistry.get(offsetBlock, direction.getOpposite());
 			if (member.acceptsType(getNetworkType()))
 				continue;
 
@@ -149,13 +149,13 @@ public abstract class CableBlock extends Block implements Waterloggable {
 		if (state.getBlock() == newState.getBlock())
 			return;
 
-		WorldNetworkComponent networkComponent = WorldNetworkComponent.get(world);
+		var networkComponent = WorldNetworkComponent.get(world);
 
 		networkComponent.remove(networkComponent.get(getNetworkType(), position));
 
 		for (Direction directionA : Direction.values()) {
-			BlockPos offsetPos = position.offset(directionA);
-			Block offsetBlock = world.getBlockState(offsetPos).getBlock();
+			var offsetPos = position.offset(directionA);
+			var offsetBlock = world.getBlockState(offsetPos).getBlock();
 
 			if (!(offsetBlock instanceof CableBlock))
 				continue;
@@ -177,7 +177,7 @@ public abstract class CableBlock extends Block implements Waterloggable {
 	public void neighborUpdate(BlockState state, World world, BlockPos position, Block block, BlockPos neighborPosition, boolean moved) {
 		super.neighborUpdate(state, world, position, block, neighborPosition, moved);
 
-		WorldNetworkComponent networkComponent = WorldNetworkComponent.get(world);
+		var networkComponent = WorldNetworkComponent.get(world);
 
 		networkComponent.remove(networkComponent.get(getNetworkType(), position));
 		NetworkUtils.Tracer.trace(getNetworkType(), WorldPos.of(world, position));

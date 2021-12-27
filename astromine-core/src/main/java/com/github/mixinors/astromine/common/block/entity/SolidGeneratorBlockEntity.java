@@ -90,7 +90,7 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 					
 					var produced = 5;
 					
-					for (int i = 0; i < 3 * getMachineSpeed(); ++i) {
+					for (var i = 0; i < 3 * getMachineSpeed(); ++i) {
 						if (progress < limit) {
 							var nestedTransacation = transaction.openNested();
 							

@@ -150,7 +150,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 
 	@Override
 	public Packet<?> createSpawnPacket() {
-		PacketByteBuf packet = new PacketByteBuf(Unpooled.buffer());
+		var packet = new PacketByteBuf(Unpooled.buffer());
 
 		packet.writeDouble(this.getX());
 		packet.writeDouble(this.getY());

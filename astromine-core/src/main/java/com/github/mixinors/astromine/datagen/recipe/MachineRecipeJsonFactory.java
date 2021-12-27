@@ -63,8 +63,8 @@ public abstract class MachineRecipeJsonFactory<T extends EnergyConsumingRecipe> 
 
 	@Override
 	public void offerTo(Consumer<RecipeJsonProvider> exporter, String recipePath) {
-		Identifier defaultId = getRecipeId();
-		Identifier givenId = new Identifier(recipePath);
+		var defaultId = getRecipeId();
+		var givenId = new Identifier(recipePath);
 		if (givenId.equals(defaultId)) {
 			throw new IllegalStateException("Recipe " + recipePath + " should remove its 'recipePath' argument as it is equal to default one");
 		} else {

@@ -62,8 +62,8 @@ public class AlloySmeltingCategory implements DisplayCategory<AlloySmeltingDispl
 
 	@Override
 	public List<Widget> setupDisplay(AlloySmeltingDisplay display, Rectangle bounds) {
-		Point startPoint = new Point(bounds.getCenterX() - 41, bounds.getCenterY() - 27);
-		DecimalFormat df = new DecimalFormat("###.##");
+		var startPoint = new Point(bounds.getCenterX() - 41, bounds.getCenterY() - 27);
+		var df = new DecimalFormat("###.##");
 		List<Widget> widgets = Lists.newArrayList();
 		widgets.add(Widgets.createRecipeBase(bounds));
 		widgets.addAll(AMRoughlyEnoughItemsPlugin.createEnergyDisplay(new Rectangle(bounds.getX() + 10, bounds.getCenterY() - 23, 12, 48), display.getEnergyRequired(), false, display.getTimeRequired() * 500));

@@ -28,20 +28,20 @@ public class SimpleFluidItemStorage extends SingleVariantItemStorage<FluidVarian
 
 	@Override
 	protected FluidVariant getResource(ItemVariant currentVariant) {
-		ItemStack stack = currentVariant.toStack();
-		NbtCompound nbt = stack.getNbt();
+		var stack = currentVariant.toStack();
+		var nbt = stack.getNbt();
 		if(nbt == null || !nbt.contains(FLUID_KEY, NbtElement.COMPOUND_TYPE)) return getBlankResource();
-		NbtCompound fluidNbt = nbt.getCompound(FLUID_KEY);
+		var fluidNbt = nbt.getCompound(FLUID_KEY);
 		if(!fluidNbt.contains(VARIANT_KEY, NbtElement.COMPOUND_TYPE)) return getBlankResource();
 		return FluidVariant.fromNbt(fluidNbt.getCompound(VARIANT_KEY));
 	}
 
 	@Override
 	protected long getAmount(ItemVariant currentVariant) {
-		ItemStack stack = currentVariant.toStack();
-		NbtCompound nbt = stack.getNbt();
+		var stack = currentVariant.toStack();
+		var nbt = stack.getNbt();
 		if(nbt == null || !nbt.contains(FLUID_KEY, NbtElement.COMPOUND_TYPE)) return 0;
-		NbtCompound fluidNbt = nbt.getCompound(FLUID_KEY);
+		var fluidNbt = nbt.getCompound(FLUID_KEY);
 		if(!fluidNbt.contains(AMOUNT_KEY, NbtElement.LONG_TYPE)) return 0;
 		return fluidNbt.getLong(AMOUNT_KEY);
 	}
@@ -53,9 +53,9 @@ public class SimpleFluidItemStorage extends SingleVariantItemStorage<FluidVarian
 
 	@Override
 	protected ItemVariant getUpdatedVariant(ItemVariant currentVariant, FluidVariant newResource, long newAmount) {
-		ItemStack stack = currentVariant.toStack();
-		NbtCompound nbt = stack.getOrCreateNbt();
-		NbtCompound fluidNbt = new NbtCompound();
+		var stack = currentVariant.toStack();
+		var nbt = stack.getOrCreateNbt();
+		var fluidNbt = new NbtCompound();
 		fluidNbt.put(VARIANT_KEY, newResource.toNbt());
 		fluidNbt.putLong(AMOUNT_KEY, newAmount);
 		nbt.put(FLUID_KEY, fluidNbt);

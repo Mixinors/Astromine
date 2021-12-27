@@ -71,9 +71,11 @@ public record ItemResult(ItemVariant variant, int count) {
 
 			var variant = ItemVariant.of(variantItem);
 
-			int variantCount;
-			if(jsonObject.has("count")) variantCount = jsonObject.get("count").getAsInt();
-			else variantCount = 1;
+			var variantCount = 1;
+			
+			if (jsonObject.has("count")) {
+				variantCount = jsonObject.get("count").getAsInt();
+			}
 
 			return new ItemResult(variant, variantCount);
 		}

@@ -58,9 +58,9 @@ public class ConditionalRecipeManager extends RecipeManager {
 		
 		for (Map.Entry<Identifier, JsonElement> entry : map.entrySet()) {
 			if (entry.getValue() instanceof JsonObject) {
-				JsonObject object = entry.getValue().getAsJsonObject();
+				var object = entry.getValue().getAsJsonObject();
 				
-				RecipeCondition condition = AMCommon.GSON.fromJson(object.get("condition"), RecipeCondition.class);
+				var condition = AMCommon.GSON.fromJson(object.get("condition"), RecipeCondition.class);
 				
 				if (condition.isAllowed()) {
 					allowed.put(new Identifier(entry.getKey().getNamespace(), "conditional_" + entry.getKey().getPath()), object.get("recipe"));
@@ -95,7 +95,7 @@ public class ConditionalRecipeManager extends RecipeManager {
 		Map<RecipeType<?>, ImmutableMap.Builder<Identifier, Recipe<?>>> recipeMap = new HashMap<>();
 		
 		for (Map.Entry<Identifier, JsonElement> identifierJsonElementEntry : map.entrySet()) {
-			Identifier identifier = identifierJsonElementEntry.getKey();
+			var identifier = identifierJsonElementEntry.getKey();
 			
 			try {
 				Recipe<?> recipe = deserialize(identifier, JsonHelper.asObject(identifierJsonElementEntry.getValue(), "top element"));

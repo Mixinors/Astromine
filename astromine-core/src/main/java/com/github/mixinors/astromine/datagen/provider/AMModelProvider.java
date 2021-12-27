@@ -165,8 +165,8 @@ public class AMModelProvider extends FabricBlockStateDefinitionProvider {
 	}
 
 	public static void registerCubeColumn(BlockStateModelGenerator blockStateModelGenerator, Block cubeColumn, Block endTexture) {
-		Texture texture = Texture.sideEnd(Texture.getId(cubeColumn), Texture.getId(endTexture));
-		Identifier identifier = Models.CUBE_COLUMN.upload(cubeColumn, texture, blockStateModelGenerator.modelCollector);
+		var texture = Texture.sideEnd(Texture.getId(cubeColumn), Texture.getId(endTexture));
+		var identifier = Models.CUBE_COLUMN.upload(cubeColumn, texture, blockStateModelGenerator.modelCollector);
 		blockStateModelGenerator.blockStateCollector.accept(BlockStateModelGenerator.createSingletonBlockState(cubeColumn, identifier));
 	}
 
@@ -270,21 +270,21 @@ public class AMModelProvider extends FabricBlockStateDefinitionProvider {
 	}
 
 	public static void registerMachine(BlockStateModelGenerator blockStateModelGenerator, Block machine) {
-		Texture inactiveTexture = new Texture().put(TextureKey.TOP, Texture.getSubId(machine, "_top")).put(TextureKey.BOTTOM, Texture.getSubId(machine, "_bottom")).put(LEFT, Texture.getSubId(machine, "_left")).put(RIGHT, Texture.getSubId(machine, "_right")).put(TextureKey.FRONT, Texture.getSubId(machine, "_front")).put(TextureKey.BACK, Texture.getSubId(machine, "_back"));
-		Texture activeTexture = new Texture().put(TextureKey.TOP, Texture.getSubId(machine, "_top_active")).put(TextureKey.BOTTOM, Texture.getSubId(machine, "_bottom_active")).put(LEFT, Texture.getSubId(machine, "_left_active")).put(RIGHT, Texture.getSubId(machine, "_right_active")).put(TextureKey.FRONT, Texture.getSubId(machine, "_front_active")).put(TextureKey.BACK, Texture.getSubId(machine, "_back_active"));
-		Identifier inactiveId = MACHINE.upload(machine, inactiveTexture, blockStateModelGenerator.modelCollector);
-		Identifier activeId = MACHINE_ACTIVE.upload(machine, activeTexture, blockStateModelGenerator.modelCollector);
+		var inactiveTexture = new Texture().put(TextureKey.TOP, Texture.getSubId(machine, "_top")).put(TextureKey.BOTTOM, Texture.getSubId(machine, "_bottom")).put(LEFT, Texture.getSubId(machine, "_left")).put(RIGHT, Texture.getSubId(machine, "_right")).put(TextureKey.FRONT, Texture.getSubId(machine, "_front")).put(TextureKey.BACK, Texture.getSubId(machine, "_back"));
+		var activeTexture = new Texture().put(TextureKey.TOP, Texture.getSubId(machine, "_top_active")).put(TextureKey.BOTTOM, Texture.getSubId(machine, "_bottom_active")).put(LEFT, Texture.getSubId(machine, "_left_active")).put(RIGHT, Texture.getSubId(machine, "_right_active")).put(TextureKey.FRONT, Texture.getSubId(machine, "_front_active")).put(TextureKey.BACK, Texture.getSubId(machine, "_back_active"));
+		var inactiveId = MACHINE.upload(machine, inactiveTexture, blockStateModelGenerator.modelCollector);
+		var activeId = MACHINE_ACTIVE.upload(machine, activeTexture, blockStateModelGenerator.modelCollector);
 
-		BlockStateVariant inactiveVariant = BlockStateVariant.create().put(VariantSettings.MODEL, inactiveId);
-		BlockStateVariant activeVariant = BlockStateVariant.create().put(VariantSettings.MODEL, activeId);
-		BlockStateVariant northVariant = BlockStateVariant.create();
-		BlockStateVariant eastVariant = BlockStateVariant.create().put(VariantSettings.Y, VariantSettings.Rotation.R90);
-		BlockStateVariant southVariant = BlockStateVariant.create().put(VariantSettings.Y, VariantSettings.Rotation.R180);
-		BlockStateVariant westVariant = BlockStateVariant.create().put(VariantSettings.Y, VariantSettings.Rotation.R270);
+		var inactiveVariant = BlockStateVariant.create().put(VariantSettings.MODEL, inactiveId);
+		var activeVariant = BlockStateVariant.create().put(VariantSettings.MODEL, activeId);
+		var northVariant = BlockStateVariant.create();
+		var eastVariant = BlockStateVariant.create().put(VariantSettings.Y, VariantSettings.Rotation.R90);
+		var southVariant = BlockStateVariant.create().put(VariantSettings.Y, VariantSettings.Rotation.R180);
+		var westVariant = BlockStateVariant.create().put(VariantSettings.Y, VariantSettings.Rotation.R270);
 
 		blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(machine).coordinate(BlockStateVariantMap.create(Properties.HORIZONTAL_FACING, BlockWithEntity.ACTIVE)
 				.register((facing, active) -> {
-					BlockStateVariant facingVariant = switch (facing) {
+					var facingVariant = switch (facing) {
 						case EAST -> eastVariant;
 						case SOUTH -> southVariant;
 						case WEST -> westVariant;

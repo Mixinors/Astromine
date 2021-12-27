@@ -119,14 +119,14 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 		super.tick();
 
 		if (this.onGround && !this.onGroundLastTick) {
-			int size = 10;
+			var size = 10;
 
 			// spawn random landing particles around this entity's hitbox base
-			for (int j = 0; j < size * 8; ++j) {
-				float f = this.random.nextFloat() * 6.2831855F;
-				float g = this.random.nextFloat() * 0.5F + 0.5F;
-				float particleX = MathHelper.sin(f) * (float) size * 0.5F * g;
-				float particleZ = MathHelper.cos(f) * (float) size * 0.5F * g;
+			for (var j = 0; j < size * 8; ++j) {
+				var f = this.random.nextFloat() * 6.2831855F;
+				var g = this.random.nextFloat() * 0.5F + 0.5F;
+				var particleX = MathHelper.sin(f) * (float) size * 0.5F * g;
+				var particleZ = MathHelper.cos(f) * (float) size * 0.5F * g;
 				this.world.addParticle(this.getParticles(), this.getX() + (double) particleX, this.getY(), this.getZ() + (double) particleZ, 0.0D, 0.0D, 0.0D);
 			}
 
@@ -188,8 +188,8 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 	 * need to set random velocities on the new slimes.
 	 */
 	public void explode() {
-		for (int i = 0; i < 50; i++) {
-			SpaceSlimeEntity spaceSlime = AMEntityTypes.SPACE_SLIME.get().create(this.world);
+		for (var i = 0; i < 50; i++) {
+			var spaceSlime = AMEntityTypes.SPACE_SLIME.get().create(this.world);
 			spaceSlime.initialize((ServerWorldAccess) this.world, this.world.getLocalDifficulty(this.getBlockPos()), SpawnReason.NATURAL, null, null);
 			this.world.spawnEntity(spaceSlime);
 			spaceSlime.requestTeleport(this.getX(), this.getY(), this.getZ());
@@ -239,7 +239,7 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 
 	protected void damage(LivingEntity target) {
 		if (this.isAlive()) {
-			int size = 10;
+			var size = 10;
 
 			if (this.squaredDistanceTo(target) < 0.6D * (double) size * 0.6D * (double) size && this.canSee(target) && target.damage(DamageSource.mob(this), this.getDamageAmount())) {
 				this.playSound(SoundEvents.ENTITY_SLIME_ATTACK, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
@@ -254,7 +254,7 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 
 	@Override
 	public void jump() {
-		Vec3d vec3d = this.getVelocity();
+		var vec3d = this.getVelocity();
 		this.setVelocity(vec3d.x, this.getJumpVelocity(), vec3d.z);
 		this.velocityDirty = true;
 	}
@@ -274,7 +274,7 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 	}
 
 	public float getJumpSoundPitch() {
-		float f = 0.8F;
+		var f = 0.8F;
 		return ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) * f;
 	}
 

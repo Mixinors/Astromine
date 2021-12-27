@@ -62,23 +62,23 @@ public class TankScreenHandler extends ExtendedBlockEntityScreenHandler {
 
 		fluidBar.setPosition( Position.of(width / 2F - fluidBar.getWidth() / 2F, fluidBar.getY()));
 
-		SlotWidget input = new SlotWidget(0, blockEntity.getItemStorage());
+		var input = new SlotWidget(0, blockEntity.getItemStorage());
 		input.setPosition(Position.of(fluidBar, -18 - 3, 0));
 		input.setSize( Size.of(18, 18));
 
-		SlotWidget output = new SlotWidget(1, blockEntity.getItemStorage());
+		var output = new SlotWidget(1, blockEntity.getItemStorage());
 		output.setPosition(Position.of(fluidBar, -18 - 3, fluidBar.getHeight() - 18));
 		output.setSize(Size.of(18, 18));
 
-		HorizontalArrowWidget leftArrow = new HorizontalArrowWidget();
+		var leftArrow = new HorizontalArrowWidget();
 		leftArrow.setPosition(Position.of(input, 28, 0));
 		leftArrow.setSize(Size.of(22, 16));
 		
-		HorizontalArrowWidget rightArrow = new HorizontalArrowWidget();
+		var rightArrow = new HorizontalArrowWidget();
 		rightArrow.setPosition(Position.of(output, -34, 0));
 		rightArrow.setSize(Size.of(22, 16));
 
-		FluidFilterWidget filter = new FluidFilterWidget();
+		var filter = new FluidFilterWidget();
 		filter.setPosition(Position.of(input, 5F, 18F + 2F));
 		filter.setSize(Size.of(8, 8));
 		filter.setFluidConsumer(fluid -> {

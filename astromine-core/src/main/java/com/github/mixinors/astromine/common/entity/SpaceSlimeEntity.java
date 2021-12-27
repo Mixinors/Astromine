@@ -63,7 +63,7 @@ public class SpaceSlimeEntity extends SlimeEntity {
 		if (world.getLightLevel(LightType.SKY, pos) > random.nextInt(32)) {
 			return false;
 		} else {
-			int i = ((ServerWorld) world).isThundering() ? world.getLightLevel(pos, 10) : world.getLightLevel(pos);
+			var i = ((ServerWorld) world).isThundering() ? world.getLightLevel(pos, 10) : world.getLightLevel(pos);
 			return i <= random.nextInt(8);
 		}
 	}

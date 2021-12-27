@@ -49,18 +49,18 @@ public class WireMillScreenHandler extends ExtendedBlockEntityScreenHandler {
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		SlotWidget output = new SlotWidget(0, blockEntity.getItemStorage(), ExtractionSlot::new);
+		var output = new SlotWidget(0, blockEntity.getItemStorage(), ExtractionSlot::new);
 		output.setPosition( Position.of(energyBar.getX(), energyBar.getY()));
 		output.setSize( Size.of(18, 18));
 
-		SlotWidget input = new SlotWidget(1, blockEntity.getItemStorage());
+		var input = new SlotWidget(1, blockEntity.getItemStorage());
 		input.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
 		input.setSize(Size.of(18, 18));
 
 		output.setPosition(Position.of(width / 2F - output.getWidth() / 2F, output.getY()));
 		output.setPosition(Position.of(output.getX() + 27, output.getY() + 15));
 
-		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
+		var arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(output.getX() - 31, output.getY()));
 		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> wiremill.limit);

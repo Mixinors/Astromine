@@ -133,7 +133,7 @@ public final class NetworkMemberNode {
 		if (!(object instanceof NetworkMemberNode))
 			return false;
 
-		NetworkMemberNode that = (NetworkMemberNode) object;
+		var that = (NetworkMemberNode) object;
 
 		if (directionId == -1) {
 			return this.pos == that.pos;
@@ -162,7 +162,7 @@ public final class NetworkMemberNode {
 
 	/** Serializes a {@link NetworkMemberNode} to a {@link NbtCompound}. */
 	public NbtCompound toTag() {
-		NbtCompound tag = new NbtCompound();
+		var tag = new NbtCompound();
 
 		tag.putLong("pos", pos);
 		tag.putInt("dir", directionId);

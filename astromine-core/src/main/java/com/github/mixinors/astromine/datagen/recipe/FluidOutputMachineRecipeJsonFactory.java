@@ -72,7 +72,7 @@ public abstract class FluidOutputMachineRecipeJsonFactory<T extends EnergyConsum
 
 		@Override
 		public void serialize(JsonObject json) {
-			JsonObject outputJson = new JsonObject();
+			var outputJson = new JsonObject();
 			outputJson.addProperty("fluid", Registry.FLUID.getId(this.output).toString());
 			outputJson.addProperty("amount", outputAmount);
 			json.add("output", outputJson);

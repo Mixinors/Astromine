@@ -57,13 +57,13 @@ public class CrudeOilFeature extends Feature<DefaultFeatureConfig> {
 
 	@Override
 	public boolean generate(FeatureContext<DefaultFeatureConfig> context) {
-		Random random = context.getRandom();
-		StructureWorldAccess world = context.getWorld();
-		BlockPos pos = context.getOrigin();
+		var random = context.getRandom();
+		var world = context.getWorld();
+		var pos = context.getOrigin();
 		if (random.nextInt(AMConfig.get().crudeOilThreshold) > 1)
 			return false;
 
-		int offsetY = MathHelper.clamp(random.nextInt(20), 8, 20);
+		var offsetY = MathHelper.clamp(random.nextInt(20), 8, 20);
 
 		Shapes.ellipsoid(8, 8, 8).applyLayer(TranslateLayer.of(Position.of(pos.offset(Direction.UP, offsetY)))).stream().forEach(position -> {
 			world.setBlockState(position.toBlockPos(), CRUDE_OIL_BLOCK.get().getDefaultState(), 0);
@@ -75,9 +75,9 @@ public class CrudeOilFeature extends Feature<DefaultFeatureConfig> {
 			}
 		});
 
-		int airBlocks = 0;
+		var airBlocks = 0;
 
-		for (int y = pos.getY() + offsetY; !world.getBlockState(pos.offset(Direction.UP, y)).isAir() || (world.getBlockState(pos.offset(Direction.UP, y)).isAir() && ++airBlocks < offsetY); ++y) {
+		for (var y = pos.getY() + offsetY; !world.getBlockState(pos.offset(Direction.UP, y)).isAir() || (world.getBlockState(pos.offset(Direction.UP, y)).isAir() && ++airBlocks < offsetY); ++y) {
 			world.setBlockState(pos.offset(Direction.UP, y), CRUDE_OIL_BLOCK.get().getDefaultState(), 0);
 
 			for (Direction direction : new Direction[]{ Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST }) {

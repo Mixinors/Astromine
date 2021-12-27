@@ -80,13 +80,13 @@ public class IngredientUtils {
 
 	public static JsonElement toJsonWithCount(Ingredient ingredient, int count) {
 		if (ingredient.entries.length == 1) {
-			JsonObject entryObject = ingredient.entries[0].toJson();
+			var entryObject = ingredient.entries[0].toJson();
 			entryObject.addProperty("count", count);
 			return entryObject;
 		}
-		JsonArray jsonArray = new JsonArray();
+		var jsonArray = new JsonArray();
 		for (Ingredient.Entry entry : ingredient.entries) {
-			JsonObject entryObject = entry.toJson();
+			var entryObject = entry.toJson();
 			entryObject.addProperty("count", count);
 			jsonArray.add(entryObject);
 		}

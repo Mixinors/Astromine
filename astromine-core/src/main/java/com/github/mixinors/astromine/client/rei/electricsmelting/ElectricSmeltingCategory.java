@@ -49,9 +49,9 @@ public class ElectricSmeltingCategory extends DefaultCookingCategory {
 
 	@Override
 	public List<Widget> setupDisplay(DefaultCookingDisplay display, Rectangle bounds) {
-		Point startPoint = new Point(bounds.getCenterX() - 41, bounds.getCenterY() - 27);
-		double cookingTime = display.getCookingTime();
-		DecimalFormat df = new DecimalFormat("###.##");
+		var startPoint = new Point(bounds.getCenterX() - 41, bounds.getCenterY() - 27);
+		var cookingTime = display.getCookingTime();
+		var df = new DecimalFormat("###.##");
 		List<Widget> widgets = Lists.newArrayList();
 		widgets.add(Widgets.createRecipeBase(bounds));
 		widgets.add(Widgets.createResultSlotBackground(new Point(startPoint.x + 61, startPoint.y + 19)));

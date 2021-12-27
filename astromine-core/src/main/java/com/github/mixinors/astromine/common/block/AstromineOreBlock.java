@@ -52,7 +52,7 @@ public class AstromineOreBlock extends Block {
 	public void onStacksDropped(BlockState state, ServerWorld world, BlockPos pos, ItemStack stack) {
 		super.onStacksDropped(state, world, pos, stack);
 		if (EnchantmentHelper.getLevel(Enchantments.SILK_TOUCH, stack) == 0) {
-			int i = getExperienceWhenMined(world.random);
+			var i = getExperienceWhenMined(world.random);
 			if (i > 0) {
 				this.dropExperience(world, pos, i);
 			}
@@ -72,7 +72,7 @@ public class AstromineOreBlock extends Block {
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		super.onBreak(world, pos, state, player);
 		if (this == AMBlocks.METEOR_METITE_ORE.get() && player instanceof ServerPlayerEntity) {
-			ItemStack stack = player.getStackInHand(Hand.MAIN_HAND);
+			var stack = player.getStackInHand(Hand.MAIN_HAND);
 			if (!stack.isSuitableFor(state) && stack.isSuitableFor(Blocks.STONE.getDefaultState())) {
 				AMCriteria.UNDERESTIMATE_METITE.trigger((ServerPlayerEntity) player);
 			}

@@ -51,12 +51,12 @@ public class MelterScreenHandler extends ExtendedBlockEntityScreenHandler {
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		SlotWidget input = new SlotWidget(0, melter.getItemStorage(), Slot::new);
+		var input = new SlotWidget(0, melter.getItemStorage(), Slot::new);
 		input.setSize( Size.of(18, 18));
 
 		fluidBar.setPosition( Position.of(energyBar, 102, 0));
 		
-		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
+		var arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(fluidBar, -31, fluidBar.getHeight() / 2 - 16 / 2));
 		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> melter.limit);
