@@ -157,14 +157,16 @@ public class StorageSidingWidget extends Widget {
 	public @NotNull List<Text> getTooltip() {
 		var offset = MirrorUtils.rotate(direction, rotation);
 		
-		var name = switch (siding) {
+		var sidings = blockEntity.getItemStorage().getSidings();
+		
+		var name = switch (sidings[direction.ordinal()]) {
 			case INSERT -> new TranslatableText("text.astromine.siding.insert").styled(style -> style.withColor(0x0078FF));
 			case EXTRACT -> new TranslatableText("text.astromine.siding.insert").styled(style -> style.withColor(0xFF6100));
 			case INSERT_EXTRACT ->
-				new TranslatableText("text.astromine.siding.insert").styled(style -> style.withColor(0x0078FF)).append(
-						new LiteralText(" & ").styled(style -> style.withColor(0x9800FF))
+				new TranslatableText("text.astromine.siding.insert").styled(style -> style.withColor(0x9800FF)).append(
+						new LiteralText(" / ").styled(style -> style.withColor(0x9800FF))
 				).append(
-						new TranslatableText("text.astromine.siding").styled(style -> style.withColor(0xFF6100))
+						new TranslatableText("text.astromine.siding.extract").styled(style -> style.withColor(0x9800FF))
 				);
 			
 			case NONE -> new TranslatableText("text.astromine.siding.none").styled(style -> style.withColor(0x909090));

@@ -1019,5 +1019,7 @@
   "advancements.astromine.destroy_rocket.title": "We Have a Problem",
   "advancements.astromine.destroy_rocket.description": "Have a Rocket you're riding experience rapid unscheduled disassembly",
   "advancements.astromine.eat_lead_apple.title": "Why Would You Do That?",
-  "advancements.astromine.eat_lead_apple.description": "Get lead poisoning by ingesting a Lead Apple"
+  "advancements.astromine.eat_lead_apple.description": "Get lead poisoning by ingesting a Lead Apple",
+
+  "text.hammer.energy": "Energy"
 }
