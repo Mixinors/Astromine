@@ -30,7 +30,7 @@ import com.github.mixinors.astromine.common.transfer.RedstoneControl;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.StorageType;
 import dev.architectury.networking.NetworkManager;
-import net.minecraft.block.entity.BlockEntity;
+
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -45,16 +45,16 @@ public class AMNetworks {
 	public static void init() {
 		NetworkManager.registerReceiver(NetworkManager.c2s(), STORAGE_SIDING_UPDATE, ((buf, context) -> {
 			buf.retain();
-			
-			var siding = buf.readEnumConstant(StorageSiding.class);
-			var type = buf.readEnumConstant(StorageType.class);
-			var direction = buf.readEnumConstant(Direction.class);
-			var pos = buf.readBlockPos();
+
+			StorageSiding siding = buf.readEnumConstant(StorageSiding.class);
+			StorageType type = buf.readEnumConstant(StorageType.class);
+			Direction direction = buf.readEnumConstant(Direction.class);
+			BlockPos pos = buf.readBlockPos();
 
 			context.queue(() -> {
-				var blockEntity = (ExtendedBlockEntity) context.getPlayer().world.getBlockEntity(pos);
-				
-				var sidings = (StorageSiding[]) null;
+				ExtendedBlockEntity blockEntity = (ExtendedBlockEntity) context.getPlayer().world.getBlockEntity(pos);
+
+				StorageSiding[] sidings = null;
 				
 				if (type == StorageType.ITEM) {
 					sidings = blockEntity.getItemStorage().getSidings();
@@ -72,12 +72,12 @@ public class AMNetworks {
 		
 		NetworkManager.registerReceiver(NetworkManager.c2s(), REDSTONE_CONTROL_UPDATE, ((buf, context) -> {
 			buf.retain();
-			
-			var control = buf.readEnumConstant(RedstoneControl.class);
-			var pos = buf.readBlockPos();
+
+			RedstoneControl control = buf.readEnumConstant(RedstoneControl.class);
+			BlockPos pos = buf.readBlockPos();
 			
 			context.queue(() -> {
-				var blockEntity = (ExtendedBlockEntity) context.getPlayer().world.getBlockEntity(pos);
+				ExtendedBlockEntity blockEntity = (ExtendedBlockEntity) context.getPlayer().world.getBlockEntity(pos);
 				
 				blockEntity.setRedstoneControl(control);
 				

@@ -58,6 +58,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
+import net.minecraft.world.WorldEvents;
 import net.minecraft.world.WorldView;
 
 import com.github.mixinors.astromine.common.util.VoxelShapeUtils;
@@ -184,21 +185,18 @@ public class AirlockBlock extends Block implements Waterloggable {
 
 	@Override
 	public boolean canPathfindThrough(BlockState state, BlockView world, BlockPos pos, NavigationType type) {
-		switch (type) {
-			case LAND:
-			case AIR:
-				return state.get(POWERED);
-			default:
-				return false;
-		}
+		return switch (type) {
+			case LAND, AIR -> state.get(POWERED);
+			default -> false;
+		};
 	}
 
 	private int getOpenSoundEventId() {
-		return 1011;
+		return WorldEvents.IRON_DOOR_OPENS;
 	}
 
 	private int getCloseSoundEventId() {
-		return 1005;
+		return WorldEvents.IRON_DOOR_CLOSES;
 	}
 
 	@Nullable

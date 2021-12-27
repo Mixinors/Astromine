@@ -30,12 +30,9 @@ import com.github.mixinors.astromine.common.transfer.StorageType;
 import com.google.common.collect.ImmutableMap;
 
 import com.github.mixinors.astromine.common.widget.blade.StorageSidingWidget;
-import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
-import dev.vini2003.hammer.common.widget.tab.TabWidget;
 
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 import java.util.ArrayList;
@@ -43,14 +40,14 @@ import java.util.List;
 
 public class WidgetUtils {
 	public static List<StorageSidingWidget> createStorageSiding(Position anchor, ExtendedBlockEntity blockEntity, StorageSiding[] sidings, StorageType type, Direction rotation) {
-		var north = Position.of(anchor, 7.0F + 22.0F, 31.0F + 22.0F, 0.0F);
-		var south = Position.of(anchor, 7.0F, 31.0F + 44, 0.0F);
-		var up = Position.of(anchor, 7.0F + 22.0F, 31.0F, 0.0F);
-		var down = Position.of(anchor, 7.0F + 22.0F, 31.0F + 44.0F, 0.0F);
-		var west = Position.of(anchor, 7.0F + 44.0F, 31.0F + 22.0F, 0.0F);
-		var east = Position.of(anchor, 7.0F, 31.0F + 22.0F, 0.0F);
+		Position north = Position.of(anchor, 7.0F + 22.0F, 31.0F + 22.0F, 0.0F);
+		Position south = Position.of(anchor, 7.0F, 31.0F + 44, 0.0F);
+		Position up = Position.of(anchor, 7.0F + 22.0F, 31.0F, 0.0F);
+		Position down = Position.of(anchor, 7.0F + 22.0F, 31.0F + 44.0F, 0.0F);
+		Position west = Position.of(anchor, 7.0F + 44.0F, 31.0F + 22.0F, 0.0F);
+		Position east = Position.of(anchor, 7.0F, 31.0F + 22.0F, 0.0F);
 
-		var positions = ImmutableMap.<Direction, Position>builder()
+		ImmutableMap<Direction, Position> positions = ImmutableMap.<Direction, Position>builder()
 				.put(Direction.NORTH, north)
 				.put(Direction.SOUTH, south)
 				.put(Direction.WEST, west)
@@ -59,10 +56,10 @@ public class WidgetUtils {
 				.put(Direction.DOWN, down)
 				.build();
 
-		var list = new ArrayList<StorageSidingWidget>();
+		ArrayList<StorageSidingWidget> list = new ArrayList<StorageSidingWidget>();
 		
-		for (var direction : Direction.values()) {
-			var button = new StorageSidingWidget();
+		for (Direction direction : Direction.values()) {
+			StorageSidingWidget button = new StorageSidingWidget();
 			button.setPosition(positions.get(MirrorUtils.rotate(direction, rotation)));
 			button.setSize(Size.of(18.0F, 18.0F, 0.0F));
 			button.setBlockEntity(blockEntity);

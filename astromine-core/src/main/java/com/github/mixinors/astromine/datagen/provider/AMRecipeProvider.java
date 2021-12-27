@@ -24,7 +24,6 @@
 
 package com.github.mixinors.astromine.datagen.provider;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -50,7 +49,6 @@ import com.github.mixinors.astromine.datagen.recipe.WireMillingRecipeJsonFactory
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMFluids;
 import com.github.mixinors.astromine.registry.common.AMItems;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import org.apache.logging.log4j.util.TriConsumer;
 
 import net.minecraft.block.Block;

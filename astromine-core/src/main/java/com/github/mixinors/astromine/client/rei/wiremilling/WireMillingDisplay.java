@@ -24,19 +24,21 @@
 
 package com.github.mixinors.astromine.client.rei.wiremilling;
 
-import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
-import com.github.mixinors.astromine.client.rei.EnergyConsumingDisplay;
-import com.github.mixinors.astromine.common.recipe.WireMillingRecipe;
-import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import me.shedaniel.rei.api.common.util.EntryIngredients;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import java.util.Arrays;
 import java.util.Collections;
 
+import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
+import com.github.mixinors.astromine.client.rei.base.input.EnergyInputDisplay;
+import com.github.mixinors.astromine.common.recipe.WireMillingRecipe;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.util.EntryIngredients;
+
 @Environment(EnvType.CLIENT)
-public class WireMillingDisplay extends EnergyConsumingDisplay {
+public class WireMillingDisplay extends EnergyInputDisplay {
 	public WireMillingDisplay(WireMillingRecipe recipe) {
 		super(
 				Collections.singletonList(EntryIngredients.ofItemStacks(Arrays.stream(recipe.getInput().getMatchingVariants()).map(variant -> variant.toStack(recipe.getInput().getAmount())).toList())),

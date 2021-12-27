@@ -81,14 +81,16 @@ public class OpenSimplexNoise extends Noise {
 		perm = new short[256];
 		permGradIndex3D = new short[256];
 		short[] source = new short[256];
+
 		for (var i = 0; i < 256; i++)
 			source[i] = (short) i;
-		seed = seed * 6364136223846793005l + 1442695040888963407l;
-		seed = seed * 6364136223846793005l + 1442695040888963407l;
-		seed = seed * 6364136223846793005l + 1442695040888963407l;
-		for (var i = 255; i >= 0; i--) {
-			seed = seed * 6364136223846793005l + 1442695040888963407l;
-			var r = (int) ((seed + 31) % (i + 1));
+		seed = seed * 6364136223846793005L + 1442695040888963407L;
+		seed = seed * 6364136223846793005L + 1442695040888963407L;
+		seed = seed * 6364136223846793005L + 1442695040888963407L;
+		for (int i = 255; i >= 0; i--) {
+			seed = seed * 6364136223846793005L + 1442695040888963407L;
+			int r = (int) ((seed + 31) % (i + 1));
+
 			if (r < 0)
 				r += (i + 1);
 			perm[i] = source[r];
@@ -1241,7 +1243,7 @@ public class OpenSimplexNoise extends Noise {
 				bPoint = 0x0A;
 			}
 
-			// Closer between (1,0,0,1) and (0,1,1,0) will replace the further of a and b, if closer.
+			// Closer between (1,0,0,1) and (0,1,1,0) will replace the farthest of a and b, if closer.
 			if (xins + wins > yins + zins) {
 				var score = xins + wins;
 				if (aScore >= bScore && score > bScore) {
@@ -1667,7 +1669,7 @@ public class OpenSimplexNoise extends Noise {
 				bPoint = 0x05;
 			}
 
-			// Closer between (0,1,1,0) and (1,0,0,1) will replace the further of a and b, if closer.
+			// Closer between (0,1,1,0) and (1,0,0,1) will replace the farthest of a and b, if closer.
 			if (xins + wins < yins + zins) {
 				var score = xins + wins;
 				if (aScore <= bScore && score < bScore) {

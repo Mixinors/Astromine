@@ -24,27 +24,8 @@
 
 package com.github.mixinors.astromine.common.network.type;
 
-import com.github.mixinors.astromine.registry.common.AMComponents;
-import net.minecraft.block.entity.BlockEntity;
-
-import com.github.mixinors.astromine.common.block.transfer.TransferType;
 import com.github.mixinors.astromine.common.network.NetworkInstance;
-import com.github.mixinors.astromine.common.network.NetworkMember;
-import com.github.mixinors.astromine.common.network.NetworkMemberNode;
-import com.github.mixinors.astromine.common.network.NetworkNode;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
-import com.github.mixinors.astromine.common.registry.NetworkMemberRegistry;
-import com.github.mixinors.astromine.common.util.data.position.WorldPos;
-import it.unimi.dsi.fastutil.objects.Reference2DoubleMap;
-import it.unimi.dsi.fastutil.objects.Reference2DoubleOpenHashMap;
-import team.reborn.energy.Energy;
-import team.reborn.energy.EnergyHandler;
-
-import com.google.common.collect.Lists;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 public final class EnergyNetworkType implements NetworkType {
 	@Override

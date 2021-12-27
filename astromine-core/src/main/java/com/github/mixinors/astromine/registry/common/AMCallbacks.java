@@ -29,22 +29,13 @@ import com.github.mixinors.astromine.common.callback.ServerChunkManagerCallback;
 
 import com.github.mixinors.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
 
-import dev.architectury.event.EventResult;
-import dev.architectury.event.events.common.BlockEvent;
 import dev.architectury.event.events.common.TickEvent;
-import net.minecraft.block.BlockState;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 
-import com.github.mixinors.astromine.common.block.transfer.TransferType;
 import com.github.mixinors.astromine.common.component.world.WorldNetworkComponent;
 import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
-
-import com.google.common.collect.Lists;
-import java.util.Collections;
-import java.util.List;
 
 public class AMCallbacks {
 	public static void init() {
@@ -91,8 +82,7 @@ public class AMCallbacks {
 
 		TickEvent.SERVER_PRE.register(( server) -> {
 			for (PlayerEntity playerEntity : server.getPlayerManager().getPlayerList()) {
-				if (playerEntity.currentScreenHandler instanceof ExtendedBlockEntityScreenHandler) {
-					var screenHandler = (ExtendedBlockEntityScreenHandler) playerEntity.currentScreenHandler;
+				if (playerEntity.currentScreenHandler instanceof ExtendedBlockEntityScreenHandler screenHandler) {
 
 					if (screenHandler.getBlockEntity() != null) {
 						screenHandler.getBlockEntity().syncData();

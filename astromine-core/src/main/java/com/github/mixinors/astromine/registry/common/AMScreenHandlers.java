@@ -107,7 +107,7 @@ public class AMScreenHandlers {
 		return new PressScreenHandler(syncId, inventory.player, buffer.readBlockPos());
 	}));
 
-	public static final RegistrySupplier<ScreenHandlerType<WireMillScreenHandler>> WIREMILL = registerExtended(AMCommon.id("wire_mill"), ((syncId, inventory, buffer) -> {
+	public static final RegistrySupplier<ScreenHandlerType<WireMillScreenHandler>> WIRE_MILL = registerExtended(AMCommon.id("wire_mill"), ((syncId, inventory, buffer) -> {
 		return new WireMillScreenHandler(syncId, inventory.player, buffer.readBlockPos());
 	}));
 

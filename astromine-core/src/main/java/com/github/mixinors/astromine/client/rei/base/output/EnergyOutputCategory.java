@@ -22,51 +22,29 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.client.rei;
+package com.github.mixinors.astromine.client.rei.base.output;
 
 import java.util.List;
-import java.util.Optional;
 
-import net.minecraft.util.Identifier;
+import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
+import com.github.mixinors.astromine.client.rei.base.AMCategory;
 
-import me.shedaniel.rei.api.common.display.Display;
-import me.shedaniel.rei.api.common.entry.EntryIngredient;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
-public abstract class EnergyConsumingDisplay implements Display {
-	private final List<EntryIngredient> inputs;
-	private final List<EntryIngredient> outputs;
-	private final int timeRequired;
-	private final long energyRequired;
-	private final Identifier recipeId;
+import me.shedaniel.math.Point;
+import me.shedaniel.math.Rectangle;
+import me.shedaniel.rei.api.client.gui.widgets.Widget;
 
-	public EnergyConsumingDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, int timeRequired, long energyRequired, Identifier recipeId) {
-		this.inputs = inputs;
-		this.outputs = outputs;
-		this.timeRequired = timeRequired;
-		this.energyRequired = energyRequired;
-		this.recipeId = recipeId;
+@Environment(EnvType.CLIENT)
+public interface EnergyOutputCategory<T extends EnergyOutputDisplay> extends AMCategory<T> {
+	@Override
+	default void addEnergyInputWidgets(List<Widget> widgets, T display, Point startPoint, Rectangle bounds) {
+		// No.
 	}
 
 	@Override
-	public List<EntryIngredient> getInputEntries() {
-		return inputs;
-	}
-
-	@Override
-	public List<EntryIngredient> getOutputEntries() {
-		return outputs;
-	}
-
-	public int getTimeRequired() {
-		return timeRequired;
-	}
-
-	public long getEnergyRequired() {
-		return energyRequired;
-	}
-
-	@Override
-	public Optional<Identifier> getDisplayLocation() {
-		return Optional.ofNullable(this.recipeId);
+	default void addOutputWidgets(List<Widget> widgets, T display, Point startPoint, Rectangle bounds) {
+		widgets.addAll(AMRoughlyEnoughItemsPlugin.createEnergyDisplay(new Rectangle(startPoint.x + 61, bounds.getCenterY() - 23, 12, 48), display.getEnergyGeneratedPerTick(), true, 5000));
 	}
 }

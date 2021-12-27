@@ -124,7 +124,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 
 		ArrayList<Vec3f> segments = (ArrayList<Vec3f>) LineUtils.getBresenhamSegments(VectorUtils.toVector3f(bOP.offset(Direction.UP)), VectorUtils.toVector3f(nCP.offset(Direction.UP)), 32);
 
-		for (Vec3f v : segments) {
+		for (var v : segments) {
 			var nP = new BlockPos(v.getX(), v.getY(), v.getZ());
 
 			if ((nP.getX() != bCP.getX() && nP.getX() != bOP.getX()) || (nP.getZ() != bCP.getZ() && nP.getZ() != bOP.getZ())) {
@@ -164,7 +164,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 		this.segments = (ArrayList<Vec3f>) LineUtils.getBresenhamSegments(VectorUtils.toVector3f(bOP.offset(Direction.UP)), VectorUtils.toVector3f(nCP.offset(Direction.UP)), 32);
 		var bridgeComponent = WorldHoloBridgeComponent.get(world);
 
-		for (Vec3f v : this.segments) {
+		for (var v : this.segments) {
 			var nP = new BlockPos(v.getX(), v.getY(), v.getZ());
 
 			if ((nP.getX() != bCP.getX() && nP.getX() != bOP.getX()) || (nP.getZ() != bCP.getZ() && nP.getZ() != bOP.getZ())) {
@@ -233,7 +233,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 		if (this.segments != null && this.world != null) {
 			var bridgeComponent = WorldHoloBridgeComponent.get(world);
 
-			for (Vec3f vec : this.segments) {
+			for (var vec : this.segments) {
 				var pos = new BlockPos(vec.getX(), vec.getY(), vec.getZ());
 
 				bridgeComponent.remove(pos);

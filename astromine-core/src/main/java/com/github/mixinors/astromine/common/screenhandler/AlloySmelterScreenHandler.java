@@ -37,7 +37,7 @@ import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
 import com.github.mixinors.astromine.common.block.entity.AlloySmelterBlockEntity;
 
 public class AlloySmelterScreenHandler extends ExtendedBlockEntityScreenHandler {
-	private AlloySmelterBlockEntity smelter;
+	private final AlloySmelterBlockEntity smelter;
 
 	public AlloySmelterScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.ALLOY_SMELTER, syncId, player, position);

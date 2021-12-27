@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemVariantStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
@@ -92,31 +93,31 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 			return;
 
 		if (itemStorage != null && energyStorage != null) {
-			if (!optionalRecipe.isPresent() && shouldTry) {
+			if (optionalRecipe.isEmpty() && shouldTry) {
 				optionalRecipe = AlloySmeltingRecipe.matching(world, itemStorage.slice(INPUT_SLOT_1, INPUT_SLOT_2, OUTPUT_SLOT));
 				shouldTry = false;
 
-				if (!optionalRecipe.isPresent()) {
+				if (optionalRecipe.isEmpty()) {
 					progress = 0;
 					limit = 100;
 				}
 			}
 
 			if (optionalRecipe.isPresent()) {
-				var recipe = optionalRecipe.get();
+				AlloySmeltingRecipe recipe = optionalRecipe.get();
 
 				limit = recipe.time();
 
-				var speed = min(getMachineSpeed(), limit - progress);
-				var consumed = (long) (recipe.energyInput() * speed / limit);
+				double speed = min(getMachineSpeed(), limit - progress);
+				long consumed = (long) (recipe.energyInput() * speed / limit);
 
-				try (var transaction = Transaction.openOuter()) {
+				try (Transaction transaction = Transaction.openOuter()) {
 					if (energyStorage.extract(consumed, transaction) == consumed) {
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
-							
-							var firstInputStorage = itemStorage.getStorage(INPUT_SLOT_1);
-							var secondInputStorage = itemStorage.getStorage(INPUT_SLOT_2);
+
+							SimpleItemVariantStorage firstInputStorage = itemStorage.getStorage(INPUT_SLOT_1);
+							SimpleItemVariantStorage secondInputStorage = itemStorage.getStorage(INPUT_SLOT_2);
 							
 							if (recipe.firstInput().test(firstInputStorage) && recipe.secondInput().test(secondInputStorage)) {
 								firstInputStorage.extract(firstInputStorage.getResource(), recipe.firstInput().getAmount(), transaction);
@@ -127,8 +128,8 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 								firstInputStorage.extract(firstInputStorage.getResource(), recipe.secondInput().getAmount(), transaction);
 								secondInputStorage.extract(secondInputStorage.getResource(), recipe.firstInput().getAmount(), transaction);
 							}
-							
-							var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
+
+							SimpleItemVariantStorage outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
 							
 							outputStorage.insert(recipe.output().variant(), recipe.output().count(), transaction);
 

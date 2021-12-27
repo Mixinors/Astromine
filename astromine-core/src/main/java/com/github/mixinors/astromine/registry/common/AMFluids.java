@@ -25,13 +25,11 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.common.fluid.ExtendedFluid;
-import com.google.common.collect.Lists;
+
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.registry.Registry;
 
 import com.github.mixinors.astromine.AMCommon;
-
-import java.util.List;
 
 public class AMFluids {
 	public static final ExtendedFluid OIL = ExtendedFluid.builder().fog(0x7e121212).tint(0x7e121212).damage(0).toxic(false).infinite(false).name("oil").group(AMItemGroups.ASTROMINE).build();

@@ -35,7 +35,7 @@ import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.block.entity.FluidGeneratorBlockEntity;
 
 public class FluidGeneratorScreenHandler extends ExtendedBlockEntityScreenHandler {
-	private FluidGeneratorBlockEntity generator;
+	private final FluidGeneratorBlockEntity generator;
 
 	public FluidGeneratorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.LIQUID_GENERATOR, syncId, player, position);

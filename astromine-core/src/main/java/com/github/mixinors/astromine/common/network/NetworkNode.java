@@ -84,10 +84,9 @@ public final class NetworkNode {
 	public boolean equals(Object object) {
 		if (this == object)
 			return true;
-		if (!(object instanceof NetworkNode))
+		if (!(object instanceof NetworkNode that))
 			return false;
-
-		var that = (NetworkNode) object;
+		
 		return this.pos == that.pos;
 	}
 

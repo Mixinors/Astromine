@@ -25,58 +25,34 @@
 package com.github.mixinors.astromine.client.rei.fluidmixing;
 
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
-import com.google.common.collect.Lists;
-import me.shedaniel.math.Point;
-import me.shedaniel.math.Rectangle;
-import me.shedaniel.rei.api.client.gui.Renderer;
-import me.shedaniel.rei.api.client.gui.widgets.Widget;
-import me.shedaniel.rei.api.client.gui.widgets.Widgets;
-import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
-import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import com.github.mixinors.astromine.client.rei.base.input.DoubleFluidInputCategory;
+import com.github.mixinors.astromine.client.rei.base.output.SingleFluidOutputCategory;
+import com.github.mixinors.astromine.registry.common.AMBlocks;
+
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 
-import java.util.List;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import me.shedaniel.rei.api.client.gui.Renderer;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.util.EntryStacks;
 
 @Environment(EnvType.CLIENT)
-public class FluidMixingCategory implements DisplayCategory<FluidMixingDisplay> {
-	private final CategoryIdentifier<? extends FluidMixingDisplay> id;
-	private final String translationKey;
-	private final Renderer logo;
-
-	public FluidMixingCategory(CategoryIdentifier<? extends FluidMixingDisplay> id, String translationKey, Renderer logo) {
-		this.id = id;
-		this.translationKey = translationKey;
-		this.logo = logo;
-	}
-
+public class FluidMixingCategory implements DoubleFluidInputCategory<FluidMixingDisplay>, SingleFluidOutputCategory<FluidMixingDisplay> {
 	@Override
 	public CategoryIdentifier<? extends FluidMixingDisplay> getCategoryIdentifier() {
-		return id;
+		return AMRoughlyEnoughItemsPlugin.FLUID_MIXING;
 	}
 
 	@Override
 	public Text getTitle() {
-		return new TranslatableText(translationKey);
+		return new TranslatableText("category.astromine.fluid_mixing");
 	}
 
 	@Override
 	public Renderer getIcon() {
-		return logo;
-	}
-
-	@Override
-	public List<Widget> setupDisplay(FluidMixingDisplay recipeDisplay, Rectangle bounds) {
-		List<Widget> widgets = Lists.newArrayList();
-		var innerBounds = new Rectangle(bounds.getCenterX() - 65, bounds.y, 130, bounds.height);
-		widgets.add(Widgets.createRecipeBase(innerBounds));
-		widgets.addAll(AMRoughlyEnoughItemsPlugin.createEnergyDisplay(new Rectangle(innerBounds.x + 10, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getEnergyRequired(), false, 12500));
-		widgets.addAll(AMRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.x + 24, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getInputEntries().get(0), false, 5000));
-		widgets.addAll(AMRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.x + 38, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getInputEntries().get(1), false, 5000));
-		widgets.add(Widgets.createArrow(new Point(innerBounds.getX() + 61, innerBounds.getY() + 26)));
-		widgets.addAll(AMRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 32, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getOutputEntries().get(0), true, 5000));
-		return widgets;
+		return EntryStacks.of(AMBlocks.ADVANCED_FLUID_MIXER.get());
 	}
 }

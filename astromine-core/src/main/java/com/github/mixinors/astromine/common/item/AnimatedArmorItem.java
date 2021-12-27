@@ -30,7 +30,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderPhase;
 import net.minecraft.client.texture.AbstractTexture;
@@ -138,8 +137,10 @@ public class AnimatedArmorItem extends ArmorItem {
 			return this.id.hashCode();
 		}
 
-		/** Returns this texture's string representation.
-		* For example, it may be "texture [minecraft:textures/models/armor/asterite_layer_1.png". */
+		/**
+		 * Returns this texture's string representation.
+		 * For example, it may be "texture [minecraft:textures/models/armor/asterite_layer_1.png]".
+		 */
 		@Override
 		public String toString() {
 			return this.name + '[' + this.id + "]";

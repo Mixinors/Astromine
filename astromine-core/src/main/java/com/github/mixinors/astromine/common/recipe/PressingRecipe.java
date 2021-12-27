@@ -89,9 +89,9 @@ public record PressingRecipe(Identifier id,
 	}
 
 	public boolean matches(SingleSlotStorage<ItemVariant>... storages) {
-		var inputStorage = storages[0];
+		SingleSlotStorage<ItemVariant> inputStorage = storages[0];
 
-		var outputStorage = storages[1];
+		SingleSlotStorage<ItemVariant> outputStorage = storages[1];
 
 		if (!input.test(inputStorage)) {
 			return false;

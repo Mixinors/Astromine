@@ -24,7 +24,6 @@
 
 package com.github.mixinors.astromine.common.transfer.storage;
 
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.base.SingleStackStorage;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;

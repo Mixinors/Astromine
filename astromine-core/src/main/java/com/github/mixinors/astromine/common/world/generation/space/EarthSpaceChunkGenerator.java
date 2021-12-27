@@ -136,7 +136,7 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 
 	@Override
 	public int getSeaLevel() {
-		return 0; // there is no ocean in space, or maybe all of space is an ocean, after all we travel in space with space SHIPs :tiny_potato:
+		return 0; // there is no ocean in space, or maybe all of space is an ocean, after all we travel in space with spaceSHIPs :tiny_potato:
 	}
 
 	@Override

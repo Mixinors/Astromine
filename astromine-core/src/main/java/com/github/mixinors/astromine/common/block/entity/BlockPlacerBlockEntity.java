@@ -26,13 +26,17 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemVariantStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergyConsumedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
@@ -88,7 +92,7 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Energ
 			return;
 
 		if (itemStorage != null && itemStorage != null) {
-			var consumed = getEnergyConsumed();
+			long consumed = getEnergyConsumed();
 			
 			if (energyStorage.getAmount() < consumed) {
 				cooldown = 0L;
@@ -96,24 +100,24 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Energ
 				isActive = false;
 			} else {
 				if (cooldown >= getMachineSpeed()) {
-					try (var transaction = Transaction.openOuter()) {
+					try (Transaction transaction = Transaction.openOuter()) {
 						if (energyStorage.extract(consumed, transaction) == consumed) {
-							var stored = itemStorage.getStack(0);
-							
-							var direction = getCachedState().get(HorizontalFacingBlock.FACING);
-							
-							var targetPos = pos.offset(direction);
-							
-							var targetState = world.getBlockState(targetPos);
+							ItemStack stored = itemStorage.getStack(0);
+
+							Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
+
+							BlockPos targetPos = pos.offset(direction);
+
+							BlockState targetState = world.getBlockState(targetPos);
 							
 							if (stored.getItem() instanceof BlockItem blockItem && targetState.isAir()) {
 								cooldown = 0;
-								
-								var newState = blockItem.getBlock().getDefaultState();
+
+								BlockState newState = blockItem.getBlock().getDefaultState();
 								
 								world.setBlockState(targetPos, newState);
-								
-								var inputStorage = itemStorage.getStorage(INPUT_SLOT);
+
+								SimpleItemVariantStorage inputStorage = itemStorage.getStorage(INPUT_SLOT);
 								
 								itemStorage.extract(inputStorage.getResource(), 1, transaction);
 								

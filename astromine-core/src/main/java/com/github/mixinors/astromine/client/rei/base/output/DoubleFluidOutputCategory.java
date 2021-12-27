@@ -22,27 +22,22 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.client.rei.generating;
-
-import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
-import com.google.common.collect.Lists;
-import me.shedaniel.math.Rectangle;
-import me.shedaniel.rei.api.client.gui.widgets.Widget;
-import me.shedaniel.rei.api.client.gui.widgets.Widgets;
-import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+package com.github.mixinors.astromine.client.rei.base.output;
 
 import java.util.List;
 
-@Environment(EnvType.CLIENT)
-public abstract class EnergyGeneratingCategory<T extends EnergyGeneratingDisplay> implements DisplayCategory<T> {
+import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
+import com.github.mixinors.astromine.client.rei.base.input.EnergyInputCategory;
+import com.github.mixinors.astromine.client.rei.base.input.EnergyInputDisplay;
+
+import me.shedaniel.math.Point;
+import me.shedaniel.math.Rectangle;
+import me.shedaniel.rei.api.client.gui.widgets.Widget;
+
+public interface DoubleFluidOutputCategory<T extends EnergyInputDisplay> extends EnergyInputCategory<T> {
 	@Override
-	public List<Widget> setupDisplay(T recipeDisplay, Rectangle bounds) {
-		List<Widget> widgets = Lists.newArrayList();
-		var innerBounds = new Rectangle(bounds.getCenterX() - 55, bounds.y, 110, bounds.height);
-		widgets.add(Widgets.createRecipeBase(innerBounds));
-		widgets.addAll(AMRoughlyEnoughItemsPlugin.createEnergyDisplay(new Rectangle(innerBounds.getMaxX() - 32, innerBounds.getCenterY() - 23, 12, 48), recipeDisplay.getEnergyGeneratedPerTick(), true, 5000));
-		return widgets;
+	default void addOutputWidgets(List<Widget> widgets, T display, Point startPoint, Rectangle bounds) {
+		widgets.addAll(AMRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(startPoint.x + 61, bounds.getCenterY() - 23, 12, 48), display.getOutputEntries().get(0), true, 5000));
+		widgets.addAll(AMRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(startPoint.x + 73, bounds.getCenterY() - 23, 12, 48), display.getOutputEntries().get(1), true, 5000));
 	}
 }

@@ -29,7 +29,6 @@ import com.google.gson.JsonObject;
 import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
 import dev.architectury.core.AbstractRecipeSerializer;
 
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.recipe.RecipeSerializer;

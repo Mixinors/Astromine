@@ -29,22 +29,19 @@ import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
 import dev.vini2003.hammer.common.widget.slot.SlotWidget;
-import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.widget.blade.FluidFilterWidget;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.block.entity.TankBlockEntity;
-import team.reborn.energy.api.EnergyStorage;
 
 import java.util.function.Supplier;
 
 public class TankScreenHandler extends ExtendedBlockEntityScreenHandler {
-	private TankBlockEntity tank;
+	private final TankBlockEntity tank;
 
 	public TankScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.TANK, syncId, player, position);

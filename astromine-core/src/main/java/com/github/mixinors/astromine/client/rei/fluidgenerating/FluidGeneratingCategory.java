@@ -25,25 +25,22 @@
 package com.github.mixinors.astromine.client.rei.fluidgenerating;
 
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
-import com.github.mixinors.astromine.client.rei.generating.EnergyGeneratingCategory;
+import com.github.mixinors.astromine.client.rei.base.input.SingleFluidInputCategory;
+import com.github.mixinors.astromine.client.rei.base.output.EnergyOutputCategory;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-import me.shedaniel.math.Point;
-import me.shedaniel.math.Rectangle;
-import me.shedaniel.rei.api.client.gui.Renderer;
-import me.shedaniel.rei.api.client.gui.widgets.Widget;
-import me.shedaniel.rei.api.client.gui.widgets.Widgets;
-import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import me.shedaniel.rei.api.common.util.EntryStacks;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 
-import java.util.Collections;
-import java.util.List;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import me.shedaniel.rei.api.client.gui.Renderer;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.util.EntryStacks;
 
 @Environment(EnvType.CLIENT)
-public class FluidGeneratingCategory extends EnergyGeneratingCategory<FluidGeneratingDisplay> {
+public class FluidGeneratingCategory implements SingleFluidInputCategory<FluidGeneratingDisplay>, EnergyOutputCategory<FluidGeneratingDisplay> {
 	@Override
 	public CategoryIdentifier<? extends FluidGeneratingDisplay> getCategoryIdentifier() {
 		return AMRoughlyEnoughItemsPlugin.FLUID_GENERATING;
@@ -57,14 +54,5 @@ public class FluidGeneratingCategory extends EnergyGeneratingCategory<FluidGener
 	@Override
 	public Renderer getIcon() {
 		return EntryStacks.of(AMBlocks.ADVANCED_FLUID_GENERATOR.get());
-	}
-
-	@Override
-	public List<Widget> setupDisplay(FluidGeneratingDisplay recipeDisplay, Rectangle bounds) {
-		List<Widget> widgets = super.setupDisplay(recipeDisplay, bounds);
-		var innerBounds = new Rectangle(bounds.getCenterX() - 55, bounds.y, 110, bounds.height);
-		widgets.addAll(AMRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getX() + 24, innerBounds.getCenterY() - 23, 12, 48), recipeDisplay.getInputEntries().get(0), false, 5000));
-		widgets.add(Widgets.createArrow(new Point(innerBounds.getX() + 45, innerBounds.getY() + 26)));
-		return widgets;
 	}
 }

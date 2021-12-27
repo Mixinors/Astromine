@@ -72,7 +72,7 @@ public abstract class CableBlock extends Block implements Waterloggable {
 	public static final BooleanProperty UP = BooleanProperty.of("up");
 	public static final BooleanProperty DOWN = BooleanProperty.of("down");
 
-	public static final Map<Direction, BooleanProperty> PROPERTIES = new HashMap<Direction, BooleanProperty>() {
+	public static final Map<Direction, BooleanProperty> PROPERTIES = new HashMap<>() {
 		{
 			put(Direction.EAST, EAST);
 			put(Direction.WEST, WEST);

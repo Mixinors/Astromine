@@ -37,7 +37,7 @@ import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
 import com.github.mixinors.astromine.common.block.entity.SolidifierBlockEntity;
 
 public class SolidifierScreenHandler extends ExtendedBlockEntityScreenHandler {
-	private SolidifierBlockEntity solidifier;
+	private final SolidifierBlockEntity solidifier;
 
 	public SolidifierScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.SOLIDIFIER, syncId, player, position);

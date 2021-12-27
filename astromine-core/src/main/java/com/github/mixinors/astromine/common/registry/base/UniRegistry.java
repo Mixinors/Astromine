@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * An unidirectional registry,
+ * A unidirectional registry,
  * where all keys must be unique and values may be
  * repeated.
  */

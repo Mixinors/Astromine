@@ -24,14 +24,12 @@
 
 package com.github.mixinors.astromine.registry.client;
 
-import dev.architectury.registry.level.entity.fabric.EntityRendererRegistryImpl;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 
 import com.github.mixinors.astromine.client.render.entity.PrimitiveRocketEntityRenderer;
 import com.github.mixinors.astromine.client.render.entity.SpaceSlimeEntityRenderer;
 import com.github.mixinors.astromine.client.render.entity.SuperSpaceSlimeEntityRenderer;
 import com.github.mixinors.astromine.registry.common.AMEntityTypes;
-import net.minecraft.client.render.entity.EntityRenderers;
 
 public class AMEntityRenderers {
 	public static void init() {

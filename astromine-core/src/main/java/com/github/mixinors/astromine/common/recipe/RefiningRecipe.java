@@ -89,9 +89,9 @@ public record RefiningRecipe(Identifier id,
 	}
 
 	public boolean matches(SingleSlotStorage<FluidVariant>... storages) {
-		var inputStorage = storages[0];
+		SingleSlotStorage<FluidVariant> inputStorage = storages[0];
 
-		var outputStorage = storages[1];
+		SingleSlotStorage<FluidVariant> outputStorage = storages[1];
 
 		if (!input.test(inputStorage)) {
 			return false;

@@ -72,8 +72,9 @@ public class HolographicConnectorItem extends Item {
 					world.playSound(context.getPlayer(), context.getBlockPos(), AMSoundEvents.HOLOGRAPHIC_CONNECTOR_CLICK.get(), SoundCategory.PLAYERS, 0.5f, 0.33f);
 				}
 			} else {
+
 				var blockEntity = world.getBlockEntity(pair.getRight());
-				if (!(blockEntity instanceof HoloBridgeProjectorBlockEntity)) {
+				if (!(blockEntity instanceof HoloBridgeProjectorBlockEntity parent)) {
 					if (!world.isClient) {
 						context.getPlayer().setStackInHand(context.getHand(), selectBlock(context.getStack(), entity.getWorld().getRegistryKey(), entity.getPos()));
 					} else {
@@ -82,7 +83,6 @@ public class HolographicConnectorItem extends Item {
 					}
 					return ActionResult.SUCCESS;
 				}
-				var parent = (HoloBridgeProjectorBlockEntity) blockEntity;
 
 				var nP = entity.getPos();
 				var oP = parent.getPos();
@@ -190,6 +190,6 @@ public class HolographicConnectorItem extends Item {
 	}
 
 	public String toShortString(BlockPos pos) {
-		return "" + pos.getX() + ", " + pos.getY() + ", " + pos.getZ();
+		return pos.getX() + ", " + pos.getY() + ", " + pos.getZ();
 	}
 }

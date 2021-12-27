@@ -24,33 +24,25 @@
 
 package com.github.mixinors.astromine.client.rei.electrolyzing;
 
-import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
-import com.github.mixinors.astromine.client.rei.EnergyConsumingDisplay;
-import com.github.mixinors.astromine.common.recipe.ElectrolyzingRecipe;
-import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
-import com.github.mixinors.astromine.common.recipe.result.FluidResult;
-import dev.architectury.fluid.FluidStack;
-
-import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import me.shedaniel.rei.api.common.display.Display;
-import me.shedaniel.rei.api.common.entry.EntryIngredient;
-import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
-import me.shedaniel.rei.api.common.util.EntryIngredients;
-
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.util.Identifier;
-
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import com.google.common.collect.Lists;
 
+import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
+import com.github.mixinors.astromine.client.rei.base.input.EnergyInputDisplay;
+import com.github.mixinors.astromine.common.recipe.ElectrolyzingRecipe;
+import dev.architectury.fluid.FluidStack;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
+import me.shedaniel.rei.api.common.util.EntryIngredients;
+
 @Environment(EnvType.CLIENT)
-public class ElectrolyzingDisplay extends EnergyConsumingDisplay {
+public class ElectrolyzingDisplay extends EnergyInputDisplay {
 
 	public ElectrolyzingDisplay(ElectrolyzingRecipe recipe) {
 		super(

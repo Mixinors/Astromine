@@ -36,7 +36,7 @@ import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.block.entity.ElectrolyzerBlockEntity;
 
 public class ElectrolyzerScreenHandler extends ExtendedBlockEntityScreenHandler {
-	private ElectrolyzerBlockEntity electrolyzer;
+	private final ElectrolyzerBlockEntity electrolyzer;
 
 	public ElectrolyzerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.ELECTROLYZER, syncId, player, position);
@@ -48,11 +48,11 @@ public class ElectrolyzerScreenHandler extends ExtendedBlockEntityScreenHandler 
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		var firstOutputFluidBar = new FluidBarWidget();
+		FluidBarWidget firstOutputFluidBar = new FluidBarWidget();
 		firstOutputFluidBar.setSize( Size.of(fluidBar));
 		firstOutputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(1));
 
-		var secondOutputFluidBar = new FluidBarWidget();
+		FluidBarWidget secondOutputFluidBar = new FluidBarWidget();
 		secondOutputFluidBar.setSize(Size.of(fluidBar));
 
 		secondOutputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(2));

@@ -159,21 +159,19 @@ public interface DoubleStackInventory extends Inventory {
 		return true;
 	}
 
-	class DoubleStackInventoryImpl implements DoubleStackInventory {
-		private final DefaultedList<ItemStack> items;
-
-		/** Instantiates a {@link DoubleStackInventoryImpl}. */
-		private DoubleStackInventoryImpl(DefaultedList<ItemStack> items) {
-			this.items = items;
-		}
-
-		/** Returns this inventory's {@link ItemStack}s. */
+	record DoubleStackInventoryImpl(
+			DefaultedList<ItemStack> items) implements DoubleStackInventory {
+		/**
+		 * Returns this inventory's {@link ItemStack}s.
+		 */
 		@Override
 		public DefaultedList<ItemStack> getItems() {
 			return items;
 		}
 
-		/** Returns this inventory's string representation. */
+		/**
+		 * Returns this inventory's string representation.
+		 */
 		@Override
 		public String toString() {
 			var slot = new AtomicInteger(0);

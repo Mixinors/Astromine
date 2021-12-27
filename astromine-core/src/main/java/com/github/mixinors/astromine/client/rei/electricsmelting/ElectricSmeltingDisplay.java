@@ -25,11 +25,14 @@
 package com.github.mixinors.astromine.client.rei.electricsmelting;
 
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
-import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import me.shedaniel.rei.plugin.common.displays.cooking.DefaultCookingDisplay;
+
+import net.minecraft.recipe.AbstractCookingRecipe;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.recipe.AbstractCookingRecipe;
+
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.plugin.common.displays.cooking.DefaultCookingDisplay;
 
 @Environment(EnvType.CLIENT)
 public class ElectricSmeltingDisplay extends DefaultCookingDisplay {

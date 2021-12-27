@@ -34,7 +34,7 @@ import net.minecraft.util.math.Vec3f;
 
 public class LineUtils {
 	/**
-	 * Returns points of a Bezier curve between the three given points with the specified amount of segments.
+	 * Returns points of a Bézier curve between the three given points with the specified amount of segments.
 	 */
 	public static Collection<Vec3f> getBezierSegments(Vec3f posA, Vec3f posB, Vec3f posC, float segments) {
 		ArrayList<Vec3f> positions = new ArrayList<>();

@@ -46,14 +46,14 @@ public class AsteroidOreRegistry {
 	}
 
 	public void register(Range<Integer> weightRange, Range<Integer> sizeRange, Block block) {
-		if (weightRange.getMinimum() > weightRange.getMaximum()) {
-			weightRange = Range.of(weightRange.getMaximum(), weightRange.getMinimum());
-		} else if (weightRange.getMinimum().equals(weightRange.getMaximum())) {
+		if (weightRange.minimum() > weightRange.maximum()) {
+			weightRange = Range.of(weightRange.maximum(), weightRange.minimum());
+		} else if (weightRange.minimum().equals(weightRange.maximum())) {
 			weightRange = null;
 		}
-		if (sizeRange.getMinimum() > sizeRange.getMaximum()) {
-			sizeRange = Range.of(sizeRange.getMaximum(), sizeRange.getMinimum());
-		} else if (sizeRange.getMinimum().equals(sizeRange.getMaximum())) {
+		if (sizeRange.minimum() > sizeRange.maximum()) {
+			sizeRange = Range.of(sizeRange.maximum(), sizeRange.minimum());
+		} else if (sizeRange.minimum().equals(sizeRange.maximum())) {
 			sizeRange = null;
 		}
 
@@ -73,6 +73,6 @@ public class AsteroidOreRegistry {
 		Pair<Range<Integer>, Range<Integer>> pair = diameters.get(block);
 		if (pair == null)
 			return 0;
-		return (int) (((pair.getRight().getMaximum() - pair.getRight().getMinimum()) * Objects.requireNonNull(random, "random").nextFloat() + pair.getRight().getMinimum()) * 0.9);
+		return (int) (((pair.getRight().maximum() - pair.getRight().minimum()) * Objects.requireNonNull(random, "random").nextFloat() + pair.getRight().minimum()) * 0.9);
 	}
 }

@@ -28,7 +28,6 @@ import com.github.mixinors.astromine.common.util.ClientUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -97,7 +96,7 @@ public class SpriteRenderer {
 		RenderLayer layer;
 
 		/** We only want {@link #beginPass()} to
-		 * able able to instantiate a {@link RenderPass}. */
+		 * be able to instantiate a {@link RenderPass}. */
 		private RenderPass() {}
 
 		/** Sets the {@link VertexConsumer} of this pass,

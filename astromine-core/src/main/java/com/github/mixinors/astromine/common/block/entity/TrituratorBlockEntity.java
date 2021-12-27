@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemVariantStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
@@ -87,34 +88,34 @@ public abstract class TrituratorBlockEntity extends ExtendedBlockEntity implemen
 			return;
 		
 		if (itemStorage != null && itemStorage != null) {
-			if (!optionalRecipe.isPresent() && shouldTry) {
+			if (optionalRecipe.isEmpty() && shouldTry) {
 				optionalRecipe = TrituratingRecipe.matching(world, itemStorage.slice(INPUT_SLOT, OUTPUT_SLOT));
 				shouldTry = false;
 
-				if (!optionalRecipe.isPresent()) {
+				if (optionalRecipe.isEmpty()) {
 					progress = 0;
 					limit = 100;
 				}
 			}
 
 			if (optionalRecipe.isPresent()) {
-				var recipe = optionalRecipe.get();
+				TrituratingRecipe recipe = optionalRecipe.get();
 
 				limit = recipe.time();
 
-				var speed = Math.min(getMachineSpeed(), limit - progress);
-				var consumed = (long) (recipe.energyInput() * speed / limit);
+				double speed = Math.min(getMachineSpeed(), limit - progress);
+				long consumed = (long) (recipe.energyInput() * speed / limit);
 				
-				try (var transaction = Transaction.openOuter()) {
+				try (Transaction transaction = Transaction.openOuter()) {
 					if (energyStorage.extract(consumed, transaction) == consumed) {
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
-							
-							var inputStorage = itemStorage.getStorage(INPUT_SLOT);
+
+							SimpleItemVariantStorage inputStorage = itemStorage.getStorage(INPUT_SLOT);
 							
 							inputStorage.extract(inputStorage.getResource(), recipe.input().getAmount(), transaction);
-							
-							var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
+
+							SimpleItemVariantStorage outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
 							
 							outputStorage.insert(recipe.output().variant(), recipe.output().count(), transaction);
 							

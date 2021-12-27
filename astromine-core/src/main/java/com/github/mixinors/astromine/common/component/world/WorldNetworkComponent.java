@@ -100,14 +100,14 @@ public final class WorldNetworkComponent implements Component {
 	public void writeToNbt(NbtCompound tag) {
 		var instanceTags = new NbtList();
 
-		for (NetworkInstance instance : instances) {
+		for (var instance : instances) {
 			var nodeList = new NbtList();
-			for (NetworkNode node : instance.nodes) {
+			for (var node : instance.nodes) {
 				nodeList.add(NbtLong.of(node.getLongPosition()));
 			}
 
 			var memberList = new NbtList();
-			for (NetworkMemberNode member : instance.members) {
+			for (var member : instance.members) {
 				memberList.add(member.toTag());
 			}
 
@@ -127,7 +127,7 @@ public final class WorldNetworkComponent implements Component {
 	@Override
 	public void readFromNbt(NbtCompound tag) {
 		var instanceTags = tag.getList("instanceTags", NbtType.COMPOUND);
-		for (NbtElement instanceTag : instanceTags) {
+		for (var instanceTag : instanceTags) {
 			var dataTag = (NbtCompound) instanceTag;
 			var nodeList = dataTag.getList("nodes", NbtType.LONG);
 			var memberList = dataTag.getList("members", NbtType.COMPOUND);
@@ -135,11 +135,11 @@ public final class WorldNetworkComponent implements Component {
 			var type = NetworkTypeRegistry.INSTANCE.get(new Identifier(dataTag.getString("type")));
 			var instance = new NetworkInstance(world, type);
 
-			for (NbtElement nodeKey : nodeList) {
+			for (var nodeKey : nodeList) {
 				instance.addNode(NetworkNode.of(((NbtLong) nodeKey).longValue()));
 			}
 
-			for (NbtElement memberTag : memberList) {
+			for (var memberTag : memberList) {
 				instance.addMember(NetworkMemberNode.fromTag((NbtCompound) memberTag));
 			}
 

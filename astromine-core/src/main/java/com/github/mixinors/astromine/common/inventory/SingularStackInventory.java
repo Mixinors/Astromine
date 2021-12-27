@@ -158,21 +158,19 @@ public interface SingularStackInventory extends Inventory {
 		return true;
 	}
 
-	class SingularStackInventoryImpl implements SingularStackInventory {
-		private final DefaultedList<ItemStack> items;
-
-		/** Instantiates a {@link SingularStackInventory}. */
-		private SingularStackInventoryImpl(DefaultedList<ItemStack> items) {
-			this.items = items;
-		}
-
-		/** Returns this inventory's {@link ItemStack}s. */
+	record SingularStackInventoryImpl(
+			DefaultedList<ItemStack> items) implements SingularStackInventory {
+		/**
+		 * Returns this inventory's {@link ItemStack}s.
+		 */
 		@Override
 		public DefaultedList<ItemStack> getItems() {
 			return items;
 		}
 
-		/** Returns this inventory's string representation. */
+		/**
+		 * Returns this inventory's string representation.
+		 */
 		@Override
 		public String toString() {
 			var slot = new AtomicInteger(0);

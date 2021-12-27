@@ -1,23 +1,48 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2020, 2021 Mixinors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.github.mixinors.astromine.registry.common;
 
-import com.github.mixinors.astromine.common.block.entity.*;
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
-import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
-import dev.architectury.registry.registries.RegistrySupplier;
+import com.github.mixinors.astromine.common.transfer.StorageSiding;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
+
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
-import net.minecraft.block.entity.BlockEntityType;
+
 import team.reborn.energy.api.EnergyStorage;
 
 public class AMLookups {
 	public static void init() {
 		ItemStorage.SIDED.registerForBlockEntities((blockEntity, direction) -> {
 			if (blockEntity instanceof ExtendedBlockEntity extendedBlockEntity) {
-				var itemStorage = extendedBlockEntity.getItemStorage();
-				
-				var sidings = itemStorage.getSidings();
-				
-				var siding = sidings[direction.ordinal()];
+				SimpleItemStorage itemStorage = extendedBlockEntity.getItemStorage();
+
+				StorageSiding[] sidings = itemStorage.getSidings();
+
+				StorageSiding siding = sidings[direction.ordinal()];
 				
 				return switch (siding) {
 					case INSERT, EXTRACT, INSERT_EXTRACT -> itemStorage;
@@ -85,11 +110,11 @@ public class AMLookups {
 		
 		FluidStorage.SIDED.registerForBlockEntities((blockEntity, direction) -> {
 			if (blockEntity instanceof ExtendedBlockEntity extendedBlockEntity) {
-				var fluidStorage = extendedBlockEntity.getFluidStorage();
-				
-				var sidings = fluidStorage.getSidings();
-				
-				var siding = sidings[direction.ordinal()];
+				SimpleFluidStorage fluidStorage = extendedBlockEntity.getFluidStorage();
+
+				StorageSiding[] sidings = fluidStorage.getSidings();
+
+				StorageSiding siding = sidings[direction.ordinal()];
 				
 				return switch (siding) {
 					case INSERT, EXTRACT, INSERT_EXTRACT -> fluidStorage;

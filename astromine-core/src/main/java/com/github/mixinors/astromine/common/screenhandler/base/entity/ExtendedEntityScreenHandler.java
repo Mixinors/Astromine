@@ -33,15 +33,12 @@ import dev.vini2003.hammer.common.widget.bar.FluidBarWidget;
 import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 import dev.vini2003.hammer.common.widget.tab.TabWidget;
 import dev.vini2003.hammer.common.widget.text.TextWidget;
-import net.minecraft.entity.Entity;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 
-import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.entity.base.ExtendedEntity;
-import com.github.mixinors.astromine.common.screenhandler.base.block.BlockStateScreenHandler;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -88,16 +85,16 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 		mainTab.setPosition(Position.of(tabs, 0.0F, 25.0F + 7.0F, 0.0F));
 		mainTab.setSize(Size.of(176.0F, 184.0F, 0.0F));
 
-		var title = new TextWidget();
+		TextWidget title = new TextWidget();
 		title.setPosition(Position.of(mainTab, 8.0F, 0.0F, 0.0F));
 		title.setText(entity.getDisplayName());
 		title.setColor(4210752);
 		
 		mainTab.add(title);
 
-		var invPos = Position.of(tabs, 7.0F, 25.0F + 7.0F + (184.0F - 18.0F - 18.0F - (18.0F * 4.0F) - 3.0F + getTabWidgetExtendedHeight()), 0.0F);
-		
-		var invTitle = new TextWidget();
+		Position invPos = Position.of(tabs, 7.0F, 25.0F + 7.0F + (184.0F - 18.0F - 18.0F - (18.0F * 4.0F) - 3.0F + getTabWidgetExtendedHeight()), 0.0F);
+
+		TextWidget invTitle = new TextWidget();
 		invTitle.setPosition(Position.of(invPos, 0.0F, -10.0F, 0.0F));
 		invTitle.setText(getPlayer().getInventory().getName());
 		invTitle.setColor(4210752);

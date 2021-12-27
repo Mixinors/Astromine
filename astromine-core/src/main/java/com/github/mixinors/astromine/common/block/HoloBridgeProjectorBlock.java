@@ -41,7 +41,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.block.entity.HoloBridgeProjectorBlockEntity;
@@ -55,10 +54,8 @@ public class HoloBridgeProjectorBlock extends HorizontalFacingBlockWithEntity {
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos position, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		var stack = player.getStackInHand(hand);
-
-		if (stack.getItem() instanceof DyeItem) {
-			var dye = (DyeItem) stack.getItem();
-
+		
+		if (stack.getItem() instanceof DyeItem dye) {
 			var originalEntity = (HoloBridgeProjectorBlockEntity) world.getBlockEntity(position);
 
 			for (HoloBridgeProjectorBlockEntity entity : new HoloBridgeProjectorBlockEntity[] {originalEntity.getChild(), originalEntity, originalEntity.getParent()}) {

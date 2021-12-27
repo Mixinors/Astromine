@@ -92,9 +92,9 @@ public record SolidifyingRecipe(Identifier id,
 	}
 
 	public boolean matches(SingleSlotStorage<ItemVariant>[] itemStorages, SingleSlotStorage<FluidVariant>[] fluidStorages) {
-		var fluidInputStorage = fluidStorages[0];
+		SingleSlotStorage<FluidVariant> fluidInputStorage = fluidStorages[0];
 
-		var itemOutputStorage = itemStorages[0];
+		SingleSlotStorage<ItemVariant> itemOutputStorage = itemStorages[0];
 
 		if (!input.test(fluidInputStorage)) {
 			return false;

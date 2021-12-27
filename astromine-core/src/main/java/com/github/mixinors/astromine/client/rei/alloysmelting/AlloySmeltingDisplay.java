@@ -24,24 +24,23 @@
 
 package com.github.mixinors.astromine.client.rei.alloysmelting;
 
-import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
-import com.github.mixinors.astromine.client.rei.EnergyConsumingDisplay;
-import com.github.mixinors.astromine.common.recipe.AlloySmeltingRecipe;
-import com.google.common.collect.Lists;
-import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import me.shedaniel.rei.api.common.entry.EntryIngredient;
-import me.shedaniel.rei.api.common.util.EntryIngredients;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.util.Identifier;
-
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+
+import com.google.common.collect.Lists;
+
+import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
+import com.github.mixinors.astromine.client.rei.base.input.EnergyInputDisplay;
+import com.github.mixinors.astromine.common.recipe.AlloySmeltingRecipe;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.util.EntryIngredients;
 
 @Environment(EnvType.CLIENT)
-public class AlloySmeltingDisplay extends EnergyConsumingDisplay {
+public class AlloySmeltingDisplay extends EnergyInputDisplay {
 	public AlloySmeltingDisplay(AlloySmeltingRecipe recipe) {
 		super(
 				Lists.newArrayList(

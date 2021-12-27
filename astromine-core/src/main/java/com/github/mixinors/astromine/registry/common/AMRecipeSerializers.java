@@ -39,7 +39,7 @@ public class AMRecipeSerializers {
 
 	public static final RegistrySupplier<RecipeSerializer<PressingRecipe>> PRESSING = register(PressingRecipe.Serializer.ID, PressingRecipe.Serializer.INSTANCE);
 
-	public static final RegistrySupplier<RecipeSerializer<WireMillingRecipe>> WIREMILLING = register(WireMillingRecipe.Serializer.ID, WireMillingRecipe.Serializer.INSTANCE);
+	public static final RegistrySupplier<RecipeSerializer<WireMillingRecipe>> WIRE_MILLING = register(WireMillingRecipe.Serializer.ID, WireMillingRecipe.Serializer.INSTANCE);
 
 	public static final RegistrySupplier<RecipeSerializer<FluidGeneratingRecipe>> LIQUID_GENERATING = register(FluidGeneratingRecipe.Serializer.ID, FluidGeneratingRecipe.Serializer.INSTANCE);
 

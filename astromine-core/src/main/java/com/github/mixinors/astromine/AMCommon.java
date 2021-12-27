@@ -31,7 +31,6 @@ import dev.architectury.registry.registries.Registrar;
 import dev.architectury.registry.registries.Registries;
 import net.fabricmc.api.ModInitializer;
 
-import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.minecraft.util.Identifier;
 
 import net.minecraft.util.registry.Registry;
@@ -58,7 +57,7 @@ public class AMCommon implements ModInitializer {
 		return new Identifier(MOD_ID, name);
 	}
 	
-	public static <T> Registrar<T> registry( RegistryKey<Registry<T>> key) {
+	public static <T> Registrar<T> registry(RegistryKey<Registry<T>> key) {
 		return REGISTRIES.get().get(key);
 	}
 

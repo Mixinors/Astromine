@@ -29,6 +29,7 @@ import com.google.gson.JsonObject;
 
 import dev.architectury.fluid.FluidStack;
 
+import net.minecraft.fluid.Fluid;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -73,13 +74,13 @@ public record FluidResult(FluidVariant variant, long amount) {
 
 			var variant = FluidVariant.of(variantFluid);
 			
-			var variantAmount = 81000L;
-			
 			if (jsonObject.has("amount")) {
-				variantAmount = jsonObject.get("amount").getAsInt();
+				var variantAmount = jsonObject.get("amount").getAsInt();
+				
+				return new FluidResult(variant, variantAmount);
+			} else {
+				return new FluidResult(variant, FluidConstants.BUCKET);
 			}
-			
-			return new FluidResult(variant, variantAmount);
 		}
 	}
 

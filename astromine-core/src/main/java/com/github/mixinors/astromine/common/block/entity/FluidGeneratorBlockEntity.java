@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidVariantStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
@@ -87,30 +88,30 @@ public abstract class FluidGeneratorBlockEntity extends ExtendedBlockEntity impl
 			return;
 		
 		if (fluidStorage != null && energyStorage != null) {
-			if (!optionalRecipe.isPresent() && shouldTry) {
+			if (optionalRecipe.isEmpty() && shouldTry) {
 				optionalRecipe = FluidGeneratingRecipe.matching(world, fluidStorage.slice(INPUT_SLOT));
 				shouldTry = false;
 
-				if (!optionalRecipe.isPresent()) {
+				if (optionalRecipe.isEmpty()) {
 					progress = 0;
 					limit = 100;
 				}
 			}
 
 			if (optionalRecipe.isPresent()) {
-				var recipe = optionalRecipe.get();
+				FluidGeneratingRecipe recipe = optionalRecipe.get();
 
 				limit = recipe.time();
 
-				var speed = Math.min(getMachineSpeed(), limit - progress);
-				var generated = (long) (recipe.energyOutput() * speed / limit);
+				double speed = Math.min(getMachineSpeed(), limit - progress);
+				long generated = (long) (recipe.energyOutput() * speed / limit);
 				
-				try (var transaction = Transaction.openOuter()) {
+				try (Transaction transaction = Transaction.openOuter()) {
 					if (energyStorage.insert(generated, transaction) == generated) {
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
-							
-							var inputStorage = fluidStorage.getStorage(INPUT_SLOT);
+
+							SimpleFluidVariantStorage inputStorage = fluidStorage.getStorage(INPUT_SLOT);
 							
 							fluidStorage.extract(inputStorage.getResource(), recipe.input().getAmount(), transaction);
 							

@@ -27,11 +27,8 @@ package com.github.mixinors.astromine.common.block.entity;
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import com.google.common.base.Predicates;
+
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -41,6 +38,8 @@ import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
+
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import team.reborn.energy.api.EnergyStorage;
 import team.reborn.energy.api.EnergyStorageUtil;
@@ -76,13 +75,13 @@ public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implement
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		var inputStack = itemStorage.getStack(INPUT_SLOT);
-		var inputEnergyStorage = EnergyStorage.ITEM.find(inputStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(INPUT_SLOT)));
+		ItemStack inputStack = itemStorage.getStack(INPUT_SLOT);
+		EnergyStorage inputEnergyStorage = EnergyStorage.ITEM.find(inputStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(INPUT_SLOT)));
+
+		ItemStack outputStack = itemStorage.getStack(OUTPUT_SLOT);
+		EnergyStorage outputEnergyStorage = EnergyStorage.ITEM.find(outputStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(OUTPUT_SLOT)));
 		
-		var outputStack = itemStorage.getStack(OUTPUT_SLOT);
-		var outputEnergyStorage = EnergyStorage.ITEM.find(outputStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(OUTPUT_SLOT)));
-		
-		try (var transaction = Transaction.openOuter()) {
+		try (Transaction transaction = Transaction.openOuter()) {
 			EnergyStorageUtil.move(inputEnergyStorage, energyStorage, (long) (1024 * getMachineSpeed()), transaction);
 			EnergyStorageUtil.move(energyStorage, outputEnergyStorage, (long) (1024 * getMachineSpeed()), transaction);
 			

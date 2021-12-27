@@ -26,7 +26,10 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidVariantStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -34,6 +37,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 
 import com.github.mixinors.astromine.registry.common.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergyConsumedProvider;
@@ -85,7 +89,8 @@ public class FluidPlacerBlockEntity extends ExtendedBlockEntity implements Energ
 		if (world == null || world.isClient || !shouldRun())
 			return;
 
-		if (fluidStorage != null && energyStorage != null) {			var consumed = getEnergyConsumed();
+		if (fluidStorage != null && energyStorage != null) {
+			long consumed = getEnergyConsumed();
 			
 			if (energyStorage.getAmount() < consumed) {
 				cooldown = 0L;
@@ -93,18 +98,18 @@ public class FluidPlacerBlockEntity extends ExtendedBlockEntity implements Energ
 				isActive = false;
 			} else {
 				if (cooldown >= getMachineSpeed()) {
-					try (var transaction = Transaction.openOuter()) {
+					try (Transaction transaction = Transaction.openOuter()) {
 						if (energyStorage.extract(consumed, transaction) == consumed) {
-							var direction = getCachedState().get(HorizontalFacingBlock.FACING);
+							Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
+
+							BlockPos targetPos = pos.offset(direction);
+
+							BlockState targetState = world.getBlockState(targetPos);
+
+							SimpleFluidVariantStorage inputStorage = fluidStorage.getStorage(INPUT_SLOT);
 							
-							var targetPos = pos.offset(direction);
-							
-							var targetState = world.getBlockState(targetPos);
-							
-							var inputStorage = fluidStorage.getStorage(INPUT_SLOT);
-							
-							if (inputStorage.getAmount() >= 81000 && targetState.isAir()) {
-								if (fluidStorage.extract(inputStorage.getResource(), 81000, transaction) == 81000) {
+							if (inputStorage.getAmount() >= FluidConstants.BUCKET && targetState.isAir()) {
+								if (fluidStorage.extract(inputStorage.getResource(), FluidConstants.BUCKET, transaction) == FluidConstants.BUCKET) {
 									world.setBlockState(targetPos, inputStorage.getResource().getFluid().getDefaultState().getBlockState());
 									world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1, 1);
 									

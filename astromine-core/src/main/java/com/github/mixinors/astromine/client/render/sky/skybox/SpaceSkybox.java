@@ -96,48 +96,36 @@ public class SpaceSkybox extends Skybox {
 
         for (var i = 0; i < 6; ++i) {
             matrices.push();
-            switch (i) {
-                case 0:
+			switch (i) {
+				case 0 -> {
 					RenderSystem.setShaderTexture(0, textures.get(DOWN));
-
 					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(rotation));
-
-					break;
-				case 1:
+				}
+				case 1 -> {
 					RenderSystem.setShaderTexture(0, textures.get(WEST));
-
 					matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90.0F));
 					matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(rotation));
-
-					break;
-				case 2:
+				}
+				case 2 -> {
 					RenderSystem.setShaderTexture(0, textures.get(EAST));
-
 					matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90.0F));
 					matrices.multiply(Vec3f.NEGATIVE_Y.getDegreesQuaternion(rotation));
-
-					break;
-				case 3:
+				}
+				case 3 -> {
 					RenderSystem.setShaderTexture(0, textures.get(UP));
-
 					matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(180.0F));
 					matrices.multiply(Vec3f.NEGATIVE_Z.getDegreesQuaternion(rotation));
-
-					break;
-				case 4:
+				}
+				case 4 -> {
 					RenderSystem.setShaderTexture(0, textures.get(NORTH));
-
 					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(90.0F));
 					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(rotation));
-
-					break;
-				case 5:
+				}
+				case 5 -> {
 					RenderSystem.setShaderTexture(0, textures.get(SOUTH));
-
 					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(-90.0F));
 					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(rotation));
-
-					break;
+				}
 			}
 
             buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT);

@@ -37,7 +37,7 @@ import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
 import com.github.mixinors.astromine.common.block.entity.TrituratorBlockEntity;
 
 public class TrituratorScreenHandler extends ExtendedBlockEntityScreenHandler {
-	private TrituratorBlockEntity triturator;
+	private final TrituratorBlockEntity triturator;
 
 	public TrituratorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.TRITURATOR, syncId, player, position);

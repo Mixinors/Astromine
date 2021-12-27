@@ -30,15 +30,9 @@ import net.minecraft.world.TeleportTarget;
 
 import com.github.mixinors.astromine.registry.common.AMConfig;
 
-public class SpaceEntityPlacer implements EntityPlacer {
+public record SpaceEntityPlacer(int y) implements EntityPlacer {
 	public static final SpaceEntityPlacer TO_PLANET = new SpaceEntityPlacer(AMConfig.get().overworldSpawnYLevel);
 	public static final SpaceEntityPlacer TO_SPACE = new SpaceEntityPlacer(AMConfig.get().spaceSpawnYLevel);
-
-	public final int y;
-
-	public SpaceEntityPlacer(int y) {
-		this.y = y;
-	}
 
 	@Override
 	public TeleportTarget placeEntity(Entity entity) {

@@ -49,7 +49,6 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.WaterFluid;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -294,7 +293,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 			CauldronLib.registerBehaviorMap(cauldronBehaviorMap);
 			CauldronLib.registerFillFromBucketBehavior(this.bucket.get(), this.cauldron.get());
 			cauldronBehaviorMap.put(Items.BUCKET, CauldronLib.createEmptyIntoBucketBehavior(this.bucket.get()));
-			CauldronFluidContent.registerCauldron(this.cauldron.get(), this.still, FluidConstants.BUCKET, null); // Fabric only! If we're gonna do a Forge version, make sure this only runs on Fabric!
+			CauldronFluidContent.registerCauldron(this.cauldron.get(), this.still, FluidConstants.BUCKET, null); // Fabric only! If we're going to do a Forge version, make sure this only runs on Fabric!
 
 			if (Platform.getEnv() == EnvType.CLIENT) {
 				ClientUtils.registerExtendedFluid(name, tint, still, flowing);

@@ -40,7 +40,7 @@ public class AMParticles {
 	 * @param name
 	 *        Name of {@link DefaultParticleType} to register
 	 * @param alwaysShow
-	 *        Whether or not the com.github.chainmailstudios.astromine.client.particle should always appear visible
+	 *        Whether the particle should always appear visible
 	 *
 	 * @return Registered {@link DefaultParticleType}
 	 */

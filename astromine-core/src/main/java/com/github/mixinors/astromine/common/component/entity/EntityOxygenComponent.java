@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.component.entity;
 
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
@@ -41,12 +42,12 @@ import org.jetbrains.annotations.Nullable;
  * - {@link NbtCompound} - through {@link #writeToNbt(NbtCompound)} and {@link #readFromNbt(NbtCompound)}.
  */
 public final class EntityOxygenComponent implements AutoSyncedComponent {
-	private int oxygen = 0;
-	
-	private int minimumOxygen = -20;
-	private int maximumOxygen = 180;
+	int oxygen = 0;
 
-	private Entity entity;
+	int minimumOxygen = -20;
+	int maximumOxygen = 180;
+
+	Entity entity;
 
 	/** Instantiates an {@link EntityOxygenComponent}. */
 	private EntityOxygenComponent(Entity entity) {
@@ -70,8 +71,7 @@ public final class EntityOxygenComponent implements AutoSyncedComponent {
 
 	/** Simulate behavior, damaging the entity if out of oxygen. */
 	public void simulate(boolean isBreathing) {
-		if (entity instanceof PlayerEntity) {
-			var player = (PlayerEntity) entity;
+		if (entity instanceof PlayerEntity player) {
 
 			if (player.isCreative() || player.isSpectator()) {
 				return;
@@ -81,7 +81,7 @@ public final class EntityOxygenComponent implements AutoSyncedComponent {
 		oxygen = nextOxygen(isBreathing, oxygen);
 
 		if (oxygen == getMinimumOxygen()) {
-			var isAK9 = false;
+			boolean isAK9 = false;
 
 			if (entity instanceof PlayerEntity) {
 				isAK9 = ((PlayerEntity) entity).getGameProfile().getId().toString().equals("38113444-0bc0-4502-9a4c-17903067907c");
@@ -130,7 +130,7 @@ public final class EntityOxygenComponent implements AutoSyncedComponent {
 		this.maximumOxygen = maximumOxygen;
 	}
 
-	/** Returns this componetn's entity. */
+	/** Returns this component's entity. */
 	public Entity getEntity() {
 		return entity;
 	}

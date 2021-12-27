@@ -82,7 +82,7 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 	}
 
 	/**
-	 * Creates a {@link DefaultAttributeContainer.Builder} instance used for registering this entities' default
+	 * Creates a {@link DefaultAttributeContainer.Builder} instance used for registering this entity's default
 	 * attributes.
 	 *
 	 * @return a {@link DefaultAttributeContainer.Builder} with default attribute information

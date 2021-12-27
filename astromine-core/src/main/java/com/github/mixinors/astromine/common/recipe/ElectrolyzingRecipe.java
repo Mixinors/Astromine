@@ -90,10 +90,10 @@ public record ElectrolyzingRecipe(Identifier id,
 	}
 
 	public boolean matches(SingleSlotStorage<FluidVariant>... variants) {
-		var inputStorage = variants[0];
+		SingleSlotStorage<FluidVariant> inputStorage = variants[0];
 
-		var firstOutputStorage = variants[1];
-		var secondOutputStorage = variants[2];
+		SingleSlotStorage<FluidVariant> firstOutputStorage = variants[1];
+		SingleSlotStorage<FluidVariant> secondOutputStorage = variants[2];
 
 		if (!input.test(inputStorage)) {
 			return false;
