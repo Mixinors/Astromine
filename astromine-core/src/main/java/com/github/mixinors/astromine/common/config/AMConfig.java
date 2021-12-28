@@ -27,9 +27,8 @@ package com.github.mixinors.astromine.common.config;
 import com.github.mixinors.astromine.common.config.section.BatteriesConfigSection;
 import com.github.mixinors.astromine.common.config.section.MachinesConfigSection;
 import com.github.mixinors.astromine.common.config.section.PortableTanksConfigSection;
-import com.github.mixinors.astromine.common.config.tiered.SimpleMachineTieredConfig;
+import com.github.mixinors.astromine.common.config.tiered.CapacitorTieredConfig;
 import com.github.mixinors.astromine.common.config.tiered.TankTieredConfig;
-import com.github.mixinors.astromine.common.util.tier.MachineTier;
 
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 
@@ -76,17 +75,7 @@ public class AMConfig implements ConfigData {
 
 	@Comment("Settings for Capacitors")
 	@ConfigEntry.Gui.CollapsibleObject
-	public SimpleMachineTieredConfig capacitors = new SimpleMachineTieredConfig() {
-		@Override
-		public double getBaseSpeed() {
-			return 10D;
-		}
-
-		@Override
-		public long getDefaultEnergyStorage(MachineTier tier) {
-			return super.getDefaultEnergyStorage(tier) * 4;
-		}
-	};
+	public CapacitorTieredConfig capacitors = new CapacitorTieredConfig();
 
 	@Comment("Settings for Tanks")
 	@ConfigEntry.Gui.CollapsibleObject

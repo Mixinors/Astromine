@@ -2,7 +2,6 @@ package com.github.mixinors.astromine.common.config.section;
 
 import com.github.mixinors.astromine.common.config.DefaultConfigValues;
 
-import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 
 public class PortableTanksConfigSection {

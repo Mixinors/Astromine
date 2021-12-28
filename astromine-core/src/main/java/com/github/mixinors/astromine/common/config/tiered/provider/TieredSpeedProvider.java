@@ -7,6 +7,7 @@ public interface TieredSpeedProvider {
 	double getSpeedModifier(MachineTier tier);
 
 	default double getSpeed(MachineTier tier) {
+		if(tier == MachineTier.CREATIVE) return Double.MAX_VALUE;
 		return getBaseSpeed() * getSpeedModifier(tier);
 	}
 }

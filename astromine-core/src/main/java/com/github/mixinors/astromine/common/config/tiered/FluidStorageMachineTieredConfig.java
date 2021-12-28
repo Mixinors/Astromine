@@ -1,6 +1,5 @@
 package com.github.mixinors.astromine.common.config.tiered;
 
-import com.github.mixinors.astromine.common.config.DefaultConfigValues;
 import com.github.mixinors.astromine.common.config.tiered.provider.DefaultedTieredFluidStorageProvider;
 import com.github.mixinors.astromine.common.config.tiered.tier.FluidStorageMachineTierConfig;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;

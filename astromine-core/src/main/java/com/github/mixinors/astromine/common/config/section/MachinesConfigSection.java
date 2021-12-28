@@ -1,8 +1,8 @@
 package com.github.mixinors.astromine.common.config.section;
 
+import com.github.mixinors.astromine.common.config.tiered.AlloySmelterTieredConfig;
 import com.github.mixinors.astromine.common.config.tiered.FluidStorageMachineTieredConfig;
 import com.github.mixinors.astromine.common.config.tiered.SimpleMachineTieredConfig;
-import com.github.mixinors.astromine.common.util.tier.MachineTier;
 
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
@@ -46,12 +46,7 @@ public class MachinesConfigSection {
 
 	@Comment("Settings for the Alloy Smelter")
 	@ConfigEntry.Gui.CollapsibleObject
-	public SimpleMachineTieredConfig alloySmelter = new SimpleMachineTieredConfig() {
-		@Override
-		public long getDefaultEnergyStorage(MachineTier tier) {
-			return super.getDefaultEnergyStorage(tier) + (electricFurnace.getEnergyStorage(tier) * 2);
-		}
-	};
+	public AlloySmelterTieredConfig alloySmelter = new AlloySmelterTieredConfig();
 
 	@Comment("Settings for the Melter")
 	@ConfigEntry.Gui.CollapsibleObject

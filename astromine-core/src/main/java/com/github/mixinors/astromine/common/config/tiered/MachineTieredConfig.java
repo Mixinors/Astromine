@@ -1,6 +1,5 @@
 package com.github.mixinors.astromine.common.config.tiered;
 
-import com.github.mixinors.astromine.common.config.DefaultConfigValues;
 import com.github.mixinors.astromine.common.config.tiered.provider.DefaultedTieredEnergyStorageProvider;
 import com.github.mixinors.astromine.common.config.tiered.provider.DefaultedTieredSpeedProvider;
 import com.github.mixinors.astromine.common.config.tiered.tier.MachineTierConfig;
