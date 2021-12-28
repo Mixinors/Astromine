@@ -25,14 +25,15 @@
 package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
-import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvider;
+import com.github.mixinors.astromine.common.block.entity.machine.FluidStorageSizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
+import com.github.mixinors.astromine.common.block.entity.machine.TankConfigProvider;
+import com.github.mixinors.astromine.common.config.tiered.TankTieredConfig;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import com.github.mixinors.astromine.registry.common.AMConfig;
+import com.github.mixinors.astromine.common.config.AMConfig;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
@@ -50,7 +51,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
-public abstract class TankBlockEntity extends ExtendedBlockEntity implements TierProvider, FluidSizeProvider, SpeedProvider {
+public abstract class TankBlockEntity extends ExtendedBlockEntity implements TankConfigProvider {
 	private static final int FLUID_INPUT_SLOT = 0;
 	
 	private static final int FLUID_OUTPUT_SLOT = 0;
@@ -88,7 +89,7 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tie
 			return FluidStorage.ITEM.getProvider(variant.getItem()) != null;
 		}).insertSlots(ITEM_INSERT_SLOTS).extractSlots(ITEM_EXTRACT_SLOTS);
 		
-		fluidStorage.getStorage(FLUID_INPUT_SLOT).setCapacity(getFluidSize());
+		fluidStorage.getStorage(FLUID_INPUT_SLOT).setCapacity(getFluidStorageSize());
 	}
 
 	private Fluid filter = Fluids.EMPTY;
@@ -144,19 +145,14 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tie
 		super.readNbt(nbt);
 	}
 
+	@Override
+	public TankTieredConfig getTieredConfig() {
+		return AMConfig.get().tanks;
+	}
+
 	public static class Primitive extends TankBlockEntity {
 		public Primitive(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.PRIMITIVE_TANK, blockPos, blockState);
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().primitiveTankSpeed;
-		}
-
-		@Override
-		public long getFluidSize() {
-			return AMConfig.get().primitiveTankFluid;
 		}
 
 		@Override
@@ -171,16 +167,6 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tie
 		}
 
 		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().basicTankSpeed;
-		}
-
-		@Override
-		public long getFluidSize() {
-			return AMConfig.get().basicTankFluid;
-		}
-
-		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.BASIC;
 		}
@@ -189,16 +175,6 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tie
 	public static class Advanced extends TankBlockEntity {
 		public Advanced(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ADVANCED_TANK, blockPos, blockState);
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().advancedTankSpeed;
-		}
-
-		@Override
-		public long getFluidSize() {
-			return AMConfig.get().advancedTankFluid;
 		}
 
 		@Override
@@ -213,16 +189,6 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tie
 		}
 
 		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().eliteTankSpeed;
-		}
-
-		@Override
-		public long getFluidSize() {
-			return AMConfig.get().eliteTankFluid;
-		}
-
-		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.ELITE;
 		}
@@ -231,16 +197,6 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tie
 	public static class Creative extends TankBlockEntity {
 		public Creative(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.CREATIVE_TANK, blockPos, blockState);
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return Double.MAX_VALUE;
-		}
-
-		@Override
-		public long getFluidSize() {
-			return Long.MAX_VALUE;
 		}
 
 		@Override
@@ -254,7 +210,7 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tie
 
 			if(fluidStorage.getStorage(FLUID_OUTPUT_SLOT).getResource().getFluid() != Fluids.EMPTY) {
 				try (var transaction = Transaction.openOuter()) {
-					fluidStorage.getStorage(FLUID_OUTPUT_SLOT).insert(fluidStorage.getStorage(FLUID_OUTPUT_SLOT).getResource(), Long.MAX_VALUE, transaction);
+					fluidStorage.getStorage(FLUID_OUTPUT_SLOT).insert(fluidStorage.getStorage(FLUID_OUTPUT_SLOT).getResource(), getFluidStorageSize(), transaction);
 
 					transaction.commit();
 				}

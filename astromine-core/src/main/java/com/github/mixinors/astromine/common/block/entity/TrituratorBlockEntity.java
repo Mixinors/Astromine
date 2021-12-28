@@ -25,8 +25,9 @@
 package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.MachineConfigProvider;
+import com.github.mixinors.astromine.common.config.tiered.SimpleMachineTieredConfig;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
-import com.github.mixinors.astromine.common.transfer.storage.SimpleItemVariantStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
@@ -34,10 +35,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
-import com.github.mixinors.astromine.registry.common.AMConfig;
-import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
+import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.recipe.TrituratingRecipe;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
@@ -46,7 +44,7 @@ import team.reborn.energy.api.base.SimpleEnergyStorage;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public abstract class TrituratorBlockEntity extends ExtendedBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
+public abstract class TrituratorBlockEntity extends ExtendedBlockEntity implements MachineConfigProvider<SimpleMachineTieredConfig> {
 	public double progress = 0;
 	public int limit = 100;
 	public boolean shouldTry = true;
@@ -64,7 +62,7 @@ public abstract class TrituratorBlockEntity extends ExtendedBlockEntity implemen
 	public TrituratorBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergySize(), Long.MAX_VALUE, Long.MAX_VALUE);
+		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, Long.MAX_VALUE);
 		
 		itemStorage = new SimpleItemStorage(2).insertPredicate((variant, slot) -> {
 			if (slot != INPUT_SLOT) {
@@ -103,7 +101,7 @@ public abstract class TrituratorBlockEntity extends ExtendedBlockEntity implemen
 
 				limit = recipe.time();
 				
-				var speed = Math.min(getMachineSpeed(), limit - progress);
+				var speed = Math.min(getSpeed(), limit - progress);
 				var consumed = (long) (recipe.energyInput() * speed / limit);
 				
 				try (var transaction = Transaction.openOuter()) {
@@ -153,19 +151,14 @@ public abstract class TrituratorBlockEntity extends ExtendedBlockEntity implemen
 		super.readNbt(nbt);
 	}
 
+	@Override
+	public SimpleMachineTieredConfig getTieredConfig() {
+		return AMConfig.get().machines.triturator;
+	}
+
 	public static class Primitive extends TrituratorBlockEntity {
 		public Primitive(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.PRIMITIVE_TRITURATOR, blockPos, blockState);
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().primitiveTrituratorSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().primitiveTrituratorEnergy;
 		}
 
 		@Override
@@ -180,16 +173,6 @@ public abstract class TrituratorBlockEntity extends ExtendedBlockEntity implemen
 		}
 
 		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().basicTrituratorSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().basicTrituratorEnergy;
-		}
-
-		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.BASIC;
 		}
@@ -201,16 +184,6 @@ public abstract class TrituratorBlockEntity extends ExtendedBlockEntity implemen
 		}
 
 		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().advancedTrituratorSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().advancedTrituratorEnergy;
-		}
-
-		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.ADVANCED;
 		}
@@ -219,16 +192,6 @@ public abstract class TrituratorBlockEntity extends ExtendedBlockEntity implemen
 	public static class Elite extends TrituratorBlockEntity {
 		public Elite(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ELITE_TRITURATOR, blockPos, blockState);
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().eliteTrituratorSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().eliteTrituratorEnergy;
 		}
 
 		@Override

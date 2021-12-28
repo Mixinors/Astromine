@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.client.modmenu;
 
-import com.github.mixinors.astromine.registry.common.AMConfig;
+import com.github.mixinors.astromine.common.config.AMConfig;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import me.shedaniel.autoconfig.AutoConfig;

@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.registry.common;
 
+import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.entity.placer.SpaceEntityPlacer;
 import com.github.mixinors.astromine.common.registry.DimensionLayerRegistry;
 import net.minecraft.world.World;

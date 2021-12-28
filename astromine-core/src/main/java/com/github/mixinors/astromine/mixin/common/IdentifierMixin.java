@@ -36,7 +36,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.util.Identifier;
 
 import com.github.mixinors.astromine.common.registry.IdentifierFixRegistry;
-import com.github.mixinors.astromine.registry.common.AMConfig;
+import com.github.mixinors.astromine.common.config.AMConfig;
 
 @Mixin(Identifier.class)
 public class IdentifierMixin {

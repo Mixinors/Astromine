@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.world.feature;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.registry.common.AMConfig;
+import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.registry.common.AMFluids;
 import com.mojang.serialization.Codec;
 import com.terraformersmc.terraform.shapes.api.Position;
@@ -35,17 +35,13 @@ import com.terraformersmc.terraform.shapes.impl.layer.transform.TranslateLayer;
 import net.minecraft.block.Block;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.util.Lazy;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.util.FeatureContext;
 import net.minecraft.world.tick.OrderedTick;
-
-import java.util.Random;
 
 public class CrudeOilFeature extends Feature<DefaultFeatureConfig> {
 	private static final Lazy<Block> CRUDE_OIL_BLOCK = new Lazy<>(() -> Registry.BLOCK.get(AMCommon.id("crude_oil")));

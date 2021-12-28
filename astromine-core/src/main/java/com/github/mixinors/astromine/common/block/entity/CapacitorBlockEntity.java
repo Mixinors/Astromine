@@ -25,23 +25,20 @@
 package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.MachineConfigProvider;
+import com.github.mixinors.astromine.common.config.tiered.SimpleMachineTieredConfig;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
-import com.github.mixinors.astromine.registry.common.AMConfig;
-import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
+import com.github.mixinors.astromine.common.config.AMConfig;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import team.reborn.energy.api.EnergyStorage;
 import team.reborn.energy.api.EnergyStorageUtil;
@@ -49,7 +46,7 @@ import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 import java.util.function.Supplier;
 
-public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
+public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implements MachineConfigProvider<SimpleMachineTieredConfig> {
 	private static final int INPUT_SLOT = 0;
 	
 	private static final int OUTPUT_SLOT = 1;
@@ -61,7 +58,7 @@ public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implement
 	public CapacitorBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergySize(), getMaxTransferRate(), getMaxTransferRate());
+		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), getMaxTransferRate());
 		
 		itemStorage = new SimpleItemStorage(2).insertPredicate((variant, slot) -> {
 			return slot == INPUT_SLOT;
@@ -84,30 +81,25 @@ public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implement
 		var outputEnergyStorage = EnergyStorage.ITEM.find(outputStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(OUTPUT_SLOT)));
 		
 		try (var transaction = Transaction.openOuter()) {
-			EnergyStorageUtil.move(inputEnergyStorage, energyStorage, (long) (1024 * getMachineSpeed()), transaction);
-			EnergyStorageUtil.move(energyStorage, outputEnergyStorage, (long) (1024 * getMachineSpeed()), transaction);
+			EnergyStorageUtil.move(inputEnergyStorage, energyStorage, (long) (1024 * getSpeed()), transaction);
+			EnergyStorageUtil.move(energyStorage, outputEnergyStorage, (long) (1024 * getSpeed()), transaction);
 			
 			transaction.commit();
 		}
 	}
 
 	public long getMaxTransferRate() {
-		return (long) (AMConfig.get().capcitorTransferRate * getMachineSpeed());
+		return (long) (getSpeed());
+	}
+
+	@Override
+	public SimpleMachineTieredConfig getTieredConfig() {
+		return AMConfig.get().capacitors;
 	}
 
 	public static class Primitive extends CapacitorBlockEntity {
 		public Primitive(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.PRIMITIVE_CAPACITOR, blockPos, blockState);
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().primitiveCapacitorEnergy;
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().primitiveCapacitorSpeed;
 		}
 
 		@Override
@@ -122,16 +114,6 @@ public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implement
 		}
 
 		@Override
-		public long getEnergySize() {
-			return AMConfig.get().basicCapacitorEnergy;
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().basicCapacitorSpeed;
-		}
-
-		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.BASIC;
 		}
@@ -140,16 +122,6 @@ public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implement
 	public static class Advanced extends CapacitorBlockEntity {
 		public Advanced(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ADVANCED_CAPACITOR, blockPos, blockState);
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().advancedCapacitorEnergy;
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().advancedCapacitorSpeed;
 		}
 
 		@Override
@@ -164,16 +136,6 @@ public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implement
 		}
 
 		@Override
-		public long getEnergySize() {
-			return AMConfig.get().eliteCapacitorEnergy;
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().eliteCapacitorSpeed;
-		}
-
-		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.ELITE;
 		}
@@ -185,16 +147,6 @@ public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implement
 		}
 
 		@Override
-		public long getEnergySize() {
-			return Long.MAX_VALUE;
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return Long.MAX_VALUE;
-		}
-
-		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.CREATIVE;
 		}
@@ -202,9 +154,9 @@ public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implement
 		@Override
 		public void tick() {
 			super.tick();
-			if(energyStorage.getAmount() < Long.MAX_VALUE) {
+			if(energyStorage.getAmount() < getEnergyStorageSize()) {
 				try (Transaction transaction = Transaction.openOuter()) {
-					energyStorage.insert(Long.MAX_VALUE, transaction);
+					energyStorage.insert(getEnergyStorageSize(), transaction);
 					transaction.commit();
 				}
 			}

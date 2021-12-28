@@ -25,19 +25,16 @@
 package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.FluidStorageMachineConfigProvider;
+import com.github.mixinors.astromine.common.config.tiered.FluidStorageMachineTieredConfig;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
-import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidVariantStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
-import com.github.mixinors.astromine.registry.common.AMConfig;
-import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
+import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.recipe.FluidMixingRecipe;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
@@ -46,7 +43,7 @@ import team.reborn.energy.api.base.SimpleEnergyStorage;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public abstract class FluidMixerBlockEntity extends ExtendedBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider, FluidSizeProvider {
+public abstract class FluidMixerBlockEntity extends ExtendedBlockEntity implements FluidStorageMachineConfigProvider {
 	public double progress = 0;
 	public int limit = 100;
 	public boolean shouldTry = false;
@@ -65,7 +62,7 @@ public abstract class FluidMixerBlockEntity extends ExtendedBlockEntity implemen
 	public FluidMixerBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergySize(), Long.MAX_VALUE, Long.MAX_VALUE);
+		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, Long.MAX_VALUE);
 		
 		fluidStorage = new SimpleFluidStorage(3).extractPredicate((variant, slot) -> {
 			return slot == OUTPUT_SLOT;
@@ -81,9 +78,9 @@ public abstract class FluidMixerBlockEntity extends ExtendedBlockEntity implemen
 			optionalRecipe = Optional.empty();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 		
-		fluidStorage.getStorage(INPUT_SLOT_1).setCapacity(getFluidSize());
-		fluidStorage.getStorage(INPUT_SLOT_2).setCapacity(getFluidSize());
-		fluidStorage.getStorage(OUTPUT_SLOT).setCapacity(getFluidSize());
+		fluidStorage.getStorage(INPUT_SLOT_1).setCapacity(getFluidStorageSize());
+		fluidStorage.getStorage(INPUT_SLOT_2).setCapacity(getFluidStorageSize());
+		fluidStorage.getStorage(OUTPUT_SLOT).setCapacity(getFluidStorageSize());
 	}
 
 	@Override
@@ -109,7 +106,7 @@ public abstract class FluidMixerBlockEntity extends ExtendedBlockEntity implemen
 
 				limit = recipe.time();
 				
-				var speed = Math.min(getMachineSpeed(), limit - progress);
+				var speed = Math.min(getSpeed(), limit - progress);
 				var consumed = (long) (recipe.energyInput() * speed / limit);
 				
 				try (var transaction = Transaction.openOuter()) {
@@ -166,24 +163,14 @@ public abstract class FluidMixerBlockEntity extends ExtendedBlockEntity implemen
 		super.readNbt(nbt);
 	}
 
+	@Override
+	public FluidStorageMachineTieredConfig getTieredConfig() {
+		return AMConfig.get().machines.fluidMixer;
+	}
+
 	public static class Primitive extends FluidMixerBlockEntity {
 		public Primitive(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.PRIMITIVE_FLUID_MIXER, blockPos, blockState);
-		}
-
-		@Override
-		public long getFluidSize() {
-			return AMConfig.get().primitiveFluidMixerFluid;
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().primitiveFluidMixerSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().primitiveFluidMixerEnergy;
 		}
 
 		@Override
@@ -198,21 +185,6 @@ public abstract class FluidMixerBlockEntity extends ExtendedBlockEntity implemen
 		}
 
 		@Override
-		public long getFluidSize() {
-			return AMConfig.get().basicFluidMixerFluid;
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().basicFluidMixerSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().basicFluidMixerEnergy;
-		}
-
-		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.BASIC;
 		}
@@ -224,21 +196,6 @@ public abstract class FluidMixerBlockEntity extends ExtendedBlockEntity implemen
 		}
 
 		@Override
-		public long getFluidSize() {
-			return AMConfig.get().advancedFluidMixerFluid;
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().advancedFluidMixerSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().advancedFluidMixerEnergy;
-		}
-
-		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.ADVANCED;
 		}
@@ -247,21 +204,6 @@ public abstract class FluidMixerBlockEntity extends ExtendedBlockEntity implemen
 	public static class Elite extends FluidMixerBlockEntity {
 		public Elite(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ELITE_FLUID_MIXER, blockPos, blockState);
-		}
-
-		@Override
-		public long getFluidSize() {
-			return AMConfig.get().eliteFluidMixerFluid;
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().eliteFluidMixerSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().eliteFluidMixerEnergy;
 		}
 
 		@Override

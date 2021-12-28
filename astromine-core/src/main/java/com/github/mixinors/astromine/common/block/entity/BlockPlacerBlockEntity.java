@@ -26,25 +26,22 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
-import com.github.mixinors.astromine.common.transfer.storage.SimpleItemVariantStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 
-import com.github.mixinors.astromine.registry.common.AMConfig;
+import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergyConsumedProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
+import com.github.mixinors.astromine.common.block.entity.machine.EnergyStorageSizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import org.jetbrains.annotations.NotNull;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
+public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements EnergyStorageSizeProvider, SpeedProvider, EnergyConsumedProvider {
 	private long cooldown = 0L;
 	
 	public static final int INPUT_SLOT = 0;
@@ -56,7 +53,7 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Energ
 	public BlockPlacerBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.BLOCK_PLACER, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergySize(), Long.MAX_VALUE, Long.MAX_VALUE);
+		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, Long.MAX_VALUE);
 		
 		itemStorage = new SimpleItemStorage(1).extractPredicate((variant, slot) -> {
 			return false;
@@ -70,7 +67,7 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Energ
 	}
 
 	@Override
-	public long getEnergySize() {
+	public long getEnergyStorageSize() {
 		return AMConfig.get().blockPlacerEnergy;
 	}
 
@@ -80,7 +77,7 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Energ
 	}
 
 	@Override
-	public double getMachineSpeed() {
+	public double getSpeed() {
 		return AMConfig.get().blockPlacerSpeed;
 	}
 
@@ -99,7 +96,7 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Energ
 				
 				isActive = false;
 			} else {
-				if (cooldown >= getMachineSpeed()) {
+				if (cooldown >= getSpeed()) {
 					try (var transaction = Transaction.openOuter()) {
 						if (energyStorage.extract(consumed, transaction) == consumed) {
 							var stored = itemStorage.getStack(0);

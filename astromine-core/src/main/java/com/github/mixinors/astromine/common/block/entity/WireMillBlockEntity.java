@@ -25,9 +25,10 @@
 package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.MachineConfigProvider;
+import com.github.mixinors.astromine.common.config.tiered.SimpleMachineTieredConfig;
 import com.github.mixinors.astromine.common.recipe.TrituratingRecipe;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
-import com.github.mixinors.astromine.common.transfer.storage.SimpleItemVariantStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
@@ -35,10 +36,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
-import com.github.mixinors.astromine.registry.common.AMConfig;
-import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
+import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.recipe.WireMillingRecipe;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
@@ -47,7 +45,7 @@ import team.reborn.energy.api.base.SimpleEnergyStorage;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
+public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements MachineConfigProvider<SimpleMachineTieredConfig> {
 	public double progress = 0;
 	public int limit = 100;
 	private boolean shouldTry = true;
@@ -65,7 +63,7 @@ public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements
 	public WireMillBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergySize(), Long.MAX_VALUE, Long.MAX_VALUE);
+		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, Long.MAX_VALUE);
 		
 		itemStorage = new SimpleItemStorage(2).insertPredicate((variant, slot) -> {
 			if (slot != INPUT_SLOT) {
@@ -104,7 +102,7 @@ public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements
 				
 				limit = recipe.time();
 				
-				var speed = Math.min(getMachineSpeed(), limit - progress);
+				var speed = Math.min(getSpeed(), limit - progress);
 				var consumed = (long) (recipe.energyInput() * speed / limit);
 				
 				try (var transaction = Transaction.openOuter()) {
@@ -155,19 +153,14 @@ public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements
 		super.readNbt(nbt);
 	}
 
+	@Override
+	public SimpleMachineTieredConfig getTieredConfig() {
+		return AMConfig.get().machines.wireMill;
+	}
+
 	public static class Primitive extends WireMillBlockEntity {
 		public Primitive(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.PRIMITIVE_WIRE_MILL, blockPos, blockState);
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().primitiveWireMillSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().primitiveWireMillEnergy;
 		}
 
 		@Override
@@ -182,16 +175,6 @@ public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements
 		}
 
 		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().basicWireMillSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().basicWireMillEnergy;
-		}
-
-		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.BASIC;
 		}
@@ -203,16 +186,6 @@ public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements
 		}
 
 		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().advancedWireMillSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().advancedWireMillEnergy;
-		}
-
-		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.ADVANCED;
 		}
@@ -221,16 +194,6 @@ public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements
 	public static class Elite extends WireMillBlockEntity {
 		public Elite(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ELITE_WIRE_MILL, blockPos, blockState);
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().eliteWireMillSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().eliteWireMillEnergy;
 		}
 
 		@Override

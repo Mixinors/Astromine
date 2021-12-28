@@ -30,7 +30,7 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.registry.base.BiRegistry;
-import com.github.mixinors.astromine.registry.common.AMConfig;
+import com.github.mixinors.astromine.common.config.AMConfig;
 
 import java.util.Optional;
 

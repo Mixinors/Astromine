@@ -24,6 +24,6 @@
 
 package com.github.mixinors.astromine.common.block.entity.machine;
 
-public interface EnergySizeProvider {
-	long getEnergySize();
+public interface FluidStorageSizeProvider {
+	long getFluidStorageSize();
 }

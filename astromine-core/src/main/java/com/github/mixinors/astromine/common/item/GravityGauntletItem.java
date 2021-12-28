@@ -40,7 +40,7 @@ import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
-import com.github.mixinors.astromine.registry.common.AMConfig;
+import com.github.mixinors.astromine.common.config.AMConfig;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;

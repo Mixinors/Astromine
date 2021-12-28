@@ -25,21 +25,17 @@
 package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.FluidStorageMachineConfigProvider;
+import com.github.mixinors.astromine.common.config.tiered.FluidStorageMachineTieredConfig;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
-import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidVariantStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
-import com.github.mixinors.astromine.common.transfer.storage.SimpleItemVariantStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
-import com.github.mixinors.astromine.registry.common.AMConfig;
-import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.FluidSizeProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
+import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.recipe.MeltingRecipe;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
@@ -48,7 +44,7 @@ import team.reborn.energy.api.base.SimpleEnergyStorage;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public abstract class MelterBlockEntity extends ExtendedBlockEntity implements TierProvider, EnergySizeProvider, FluidSizeProvider, SpeedProvider {
+public abstract class MelterBlockEntity extends ExtendedBlockEntity implements FluidStorageMachineConfigProvider {
 	public double progress = 0;
 	public int limit = 100;
 	public boolean shouldTry = true;
@@ -70,7 +66,7 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements T
 	public MelterBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergySize(), Long.MAX_VALUE, Long.MAX_VALUE);
+		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, Long.MAX_VALUE);
 		
 		fluidStorage = new SimpleFluidStorage(1).extractPredicate((variant, slot) -> {
 			return slot == FLUID_OUTPUT_SLOT;
@@ -81,7 +77,7 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements T
 			optionalRecipe = Optional.empty();
 		}).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
 		
-		fluidStorage.getStorage(FLUID_OUTPUT_SLOT).setCapacity(getFluidSize());
+		fluidStorage.getStorage(FLUID_OUTPUT_SLOT).setCapacity(getFluidStorageSize());
 		
 		itemStorage = new SimpleItemStorage(1).extractPredicate((variant, slot) -> {
 			return false;
@@ -120,7 +116,7 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements T
 
 				limit = recipe.time();
 				
-				var speed = Math.min(getMachineSpeed(), limit - progress);
+				var speed = Math.min(getSpeed(), limit - progress);
 				var consumed = (long) (recipe.energyInput() * speed / limit);
 
 				try (var transaction = Transaction.openOuter()) {
@@ -170,24 +166,14 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements T
 		super.readNbt(nbt);
 	}
 
+	@Override
+	public FluidStorageMachineTieredConfig getTieredConfig() {
+		return AMConfig.get().machines.melter;
+	}
+
 	public static class Primitive extends MelterBlockEntity {
 		public Primitive(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.PRIMITIVE_MELTER, blockPos, blockState);
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().primitiveMelterSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().primitiveMelterEnergy;
-		}
-
-		@Override
-		public long getFluidSize() {
-			return AMConfig.get().primitiveMelterFluid;
 		}
 
 		@Override
@@ -202,21 +188,6 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements T
 		}
 
 		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().basicMelterSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().basicMelterEnergy;
-		}
-
-		@Override
-		public long getFluidSize() {
-			return AMConfig.get().basicMelterFluid;
-		}
-
-		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.BASIC;
 		}
@@ -228,21 +199,6 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements T
 		}
 
 		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().advancedMelterSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().advancedMelterEnergy;
-		}
-
-		@Override
-		public long getFluidSize() {
-			return AMConfig.get().advancedMelterFluid;
-		}
-
-		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.ADVANCED;
 		}
@@ -251,21 +207,6 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements T
 	public static class Elite extends MelterBlockEntity {
 		public Elite(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ELITE_MELTER, blockPos, blockState);
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().eliteMelterSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().eliteMelterEnergy;
-		}
-
-		@Override
-		public long getFluidSize() {
-			return AMConfig.get().eliteMelterFluid;
 		}
 
 		@Override

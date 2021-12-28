@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.registry.common;
 
+import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.registry.GravityRegistry;
 
 public class AMGravities {

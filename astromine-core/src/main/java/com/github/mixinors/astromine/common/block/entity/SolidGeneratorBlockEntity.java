@@ -25,6 +25,8 @@
 package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.MachineConfigProvider;
+import com.github.mixinors.astromine.common.config.tiered.SimpleMachineTieredConfig;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
@@ -33,20 +35,17 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BucketItem;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
-import com.github.mixinors.astromine.registry.common.AMConfig;
-import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
+import com.github.mixinors.astromine.common.config.AMConfig;
+
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 import java.util.function.Supplier;
 
-public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
+public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity implements MachineConfigProvider<SimpleMachineTieredConfig> {
 	private double available = 0;
 	public double progress = 0;
 	public int limit = 100;
@@ -60,7 +59,7 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 	public SolidGeneratorBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergySize(), Long.MAX_VALUE, Long.MAX_VALUE);
+		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, Long.MAX_VALUE);
 		
 		itemStorage = new SimpleItemStorage(1).insertPredicate((variant, slot) -> {
 			if (slot != INPUT_SLOT) {
@@ -91,7 +90,7 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 					
 					var produced = 5;
 					
-					for (var i = 0; i < 3 * getMachineSpeed(); ++i) {
+					for (var i = 0; i < 3 * getSpeed(); ++i) {
 						if (progress < limit) {
 							var nestedTransaction = transaction.openNested();
 							
@@ -169,19 +168,14 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 		super.readNbt(nbt);
 	}
 
+	@Override
+	public SimpleMachineTieredConfig getTieredConfig() {
+		return AMConfig.get().machines.solidGenerator;
+	}
+
 	public static class Primitive extends SolidGeneratorBlockEntity {
 		public Primitive(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.PRIMITIVE_SOLID_GENERATOR, blockPos, blockState);
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().primitiveSolidGeneratorSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().primitiveSolidGeneratorEnergy;
 		}
 
 		@Override
@@ -196,16 +190,6 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 		}
 
 		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().basicSolidGeneratorSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().basicSolidGeneratorEnergy;
-		}
-
-		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.BASIC;
 		}
@@ -217,16 +201,6 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 		}
 
 		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().advancedSolidGeneratorSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().advancedSolidGeneratorEnergy;
-		}
-
-		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.ADVANCED;
 		}
@@ -235,16 +209,6 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 	public static class Elite extends SolidGeneratorBlockEntity {
 		public Elite(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ELITE_SOLID_GENERATOR, blockPos, blockState);
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().eliteSolidGeneratorSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().eliteSolidGeneratorEnergy;
 		}
 
 		@Override

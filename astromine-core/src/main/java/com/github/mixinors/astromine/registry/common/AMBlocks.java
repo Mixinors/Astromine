@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.common.block.*;
+import com.github.mixinors.astromine.common.config.AMConfig;
 import dev.architectury.registry.block.BlockProperties;
 import dev.architectury.registry.registries.RegistrySupplier;
 

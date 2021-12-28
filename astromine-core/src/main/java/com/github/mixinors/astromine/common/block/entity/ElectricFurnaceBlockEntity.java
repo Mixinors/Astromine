@@ -25,6 +25,8 @@
 package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.MachineConfigProvider;
+import com.github.mixinors.astromine.common.config.tiered.SimpleMachineTieredConfig;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
@@ -37,10 +39,8 @@ import net.minecraft.recipe.SmeltingRecipe;
 
 import com.github.mixinors.astromine.common.inventory.BaseInventory;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
-import com.github.mixinors.astromine.registry.common.AMConfig;
-import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
+import com.github.mixinors.astromine.common.config.AMConfig;
+
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
@@ -51,7 +51,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
+public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity implements MachineConfigProvider<SimpleMachineTieredConfig> {
 	public double progress = 0;
 	public int limit = 100;
 	public boolean shouldTry = true;
@@ -63,7 +63,7 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 	public ElectricFurnaceBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergySize(), Long.MAX_VALUE, Long.MAX_VALUE);
+		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, Long.MAX_VALUE);
 		
 		itemStorage = new SimpleItemStorage(2).insertPredicate((variant, slot) -> {
 			if (slot != 1) {
@@ -128,7 +128,7 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 				if (recipe.matches(inputInventory, world)) {
 					limit = recipe.getCookTime();
 					
-					var speed = Math.min(getMachineSpeed() * 2, limit - progress);
+					var speed = Math.min(getSpeed() * 2, limit - progress);
 					
 					var output = recipe.getOutput().copy();
 					
@@ -190,19 +190,14 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 		super.writeNbt(nbt);
 	}
 
+	@Override
+	public SimpleMachineTieredConfig getTieredConfig() {
+		return AMConfig.get().machines.electricFurnace;
+	}
+
 	public static class Primitive extends ElectricFurnaceBlockEntity {
 		public Primitive(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.PRIMITIVE_ELECTRIC_FURNACE, blockPos, blockState);
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().primitiveElectricFurnaceSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().primitiveElectricFurnaceEnergy;
 		}
 
 		@Override
@@ -217,16 +212,6 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 		}
 
 		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().basicElectricFurnaceSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().basicElectricFurnaceEnergy;
-		}
-
-		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.BASIC;
 		}
@@ -238,16 +223,6 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 		}
 
 		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().advancedElectricFurnaceSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().advancedElectricFurnaceEnergy;
-		}
-
-		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.ADVANCED;
 		}
@@ -256,16 +231,6 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 	public static class Elite extends ElectricFurnaceBlockEntity {
 		public Elite(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ELITE_ELECTRIC_FURNACE, blockPos, blockState);
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().eliteElectricFurnaceSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().eliteElectricFurnaceEnergy;
 		}
 
 		@Override

@@ -25,8 +25,9 @@
 package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.MachineConfigProvider;
+import com.github.mixinors.astromine.common.config.tiered.SimpleMachineTieredConfig;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
-import com.github.mixinors.astromine.common.transfer.storage.SimpleItemVariantStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
@@ -35,10 +36,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
-import com.github.mixinors.astromine.registry.common.AMConfig;
-import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
+import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.recipe.AlloySmeltingRecipe;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
@@ -49,7 +47,7 @@ import java.util.function.Supplier;
 
 import static java.lang.Math.min;
 
-public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
+public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implements MachineConfigProvider<SimpleMachineTieredConfig> {
 	public double progress = 0;
 	public int limit = 100;
 	private boolean shouldTry = false;
@@ -68,7 +66,7 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 	public AlloySmelterBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergySize(), Long.MAX_VALUE, Long.MAX_VALUE);
+		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, Long.MAX_VALUE);
 		
 		itemStorage = new SimpleItemStorage(3).insertPredicate((variant, slot) -> {
 			if (slot != INPUT_SLOT_1 && slot != INPUT_SLOT_2) {
@@ -108,7 +106,7 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 
 				limit = recipe.time();
 				
-				var speed = min(getMachineSpeed(), limit - progress);
+				var speed = min(getSpeed(), limit - progress);
 				var consumed = (long) (recipe.energyInput() * speed / limit);
 
 				try (var transaction = Transaction.openOuter()) {
@@ -167,19 +165,14 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 		super.readNbt(nbt);
 	}
 
+	@Override
+	public SimpleMachineTieredConfig getTieredConfig() {
+		return AMConfig.get().machines.alloySmelter;
+	}
+
 	public static class Primitive extends AlloySmelterBlockEntity {
 		public Primitive(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.PRIMITIVE_ALLOY_SMELTER, blockPos, blockState);
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().primitiveAlloySmelterSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().primitiveAlloySmelterEnergy;
 		}
 
 		@Override
@@ -194,16 +187,6 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 		}
 
 		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().basicAlloySmelterSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().basicAlloySmelterEnergy;
-		}
-
-		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.BASIC;
 		}
@@ -215,16 +198,6 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 		}
 
 		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().advancedAlloySmelterSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().advancedAlloySmelterEnergy;
-		}
-
-		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.ADVANCED;
 		}
@@ -233,16 +206,6 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 	public static class Elite extends AlloySmelterBlockEntity {
 		public Elite(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ELITE_ALLOY_SMELTER, blockPos, blockState);
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().eliteAlloySmelterSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().eliteAlloySmelterEnergy;
 		}
 
 		@Override

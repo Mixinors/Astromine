@@ -26,6 +26,7 @@ package com.github.mixinors.astromine;
 
 import java.util.function.Supplier;
 
+import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.registry.common.*;
 import dev.architectury.registry.registries.Registrar;
 import dev.architectury.registry.registries.Registries;
@@ -63,6 +64,8 @@ public class AMCommon implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		AMConfig.get(); // ensure config is registered
+
 		AMAttributes.init();
 		AMIdentifierFixes.init();
 		AMDimensions.init();

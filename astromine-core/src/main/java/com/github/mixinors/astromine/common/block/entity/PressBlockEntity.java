@@ -25,8 +25,9 @@
 package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.MachineConfigProvider;
+import com.github.mixinors.astromine.common.config.tiered.SimpleMachineTieredConfig;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
-import com.github.mixinors.astromine.common.transfer.storage.SimpleItemVariantStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
@@ -34,10 +35,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
-import com.github.mixinors.astromine.registry.common.AMConfig;
-import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.TierProvider;
+import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.recipe.PressingRecipe;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
@@ -46,7 +44,7 @@ import team.reborn.energy.api.base.SimpleEnergyStorage;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public abstract class PressBlockEntity extends ExtendedBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
+public abstract class PressBlockEntity extends ExtendedBlockEntity implements MachineConfigProvider<SimpleMachineTieredConfig> {
 	public double progress = 0;
 	public int limit = 100;
 	private boolean shouldTry = true;
@@ -64,7 +62,7 @@ public abstract class PressBlockEntity extends ExtendedBlockEntity implements En
 	public PressBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergySize(), Long.MAX_VALUE, Long.MAX_VALUE);
+		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, Long.MAX_VALUE);
 		
 		itemStorage = new SimpleItemStorage(2).insertPredicate((variant, slot) -> {
 			if (slot == INPUT_SLOT) {
@@ -106,7 +104,7 @@ public abstract class PressBlockEntity extends ExtendedBlockEntity implements En
 
 				limit = recipe.time();
 				
-				var speed = Math.min(getMachineSpeed(), limit - progress);
+				var speed = Math.min(getSpeed(), limit - progress);
 				var consumed = (long) (recipe.energyInput() * speed / limit);
 
 				try (var transaction = Transaction.openOuter()) {
@@ -156,19 +154,14 @@ public abstract class PressBlockEntity extends ExtendedBlockEntity implements En
 		super.readNbt(nbt);
 	}
 
+	@Override
+	public SimpleMachineTieredConfig getTieredConfig() {
+		return AMConfig.get().machines.press;
+	}
+
 	public static class Primitive extends PressBlockEntity {
 		public Primitive(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.PRIMITIVE_PRESSER, blockPos, blockState);
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().primitivePressSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().primitivePressEnergy;
 		}
 
 		@Override
@@ -183,16 +176,6 @@ public abstract class PressBlockEntity extends ExtendedBlockEntity implements En
 		}
 
 		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().basicPressSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().basicPressEnergy;
-		}
-
-		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.BASIC;
 		}
@@ -204,16 +187,6 @@ public abstract class PressBlockEntity extends ExtendedBlockEntity implements En
 		}
 
 		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().advancedPressSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().advancedPressEnergy;
-		}
-
-		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.ADVANCED;
 		}
@@ -222,16 +195,6 @@ public abstract class PressBlockEntity extends ExtendedBlockEntity implements En
 	public static class Elite extends PressBlockEntity {
 		public Elite(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ELITE_PRESSER, blockPos, blockState);
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AMConfig.get().elitePressSpeed;
-		}
-
-		@Override
-		public long getEnergySize() {
-			return AMConfig.get().elitePressEnergy;
 		}
 
 		@Override

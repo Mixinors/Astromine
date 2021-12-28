@@ -26,7 +26,6 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
-import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidVariantStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
@@ -37,16 +36,15 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 
-import com.github.mixinors.astromine.registry.common.AMConfig;
+import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.block.entity.machine.EnergyConsumedProvider;
-import com.github.mixinors.astromine.common.block.entity.machine.EnergySizeProvider;
+import com.github.mixinors.astromine.common.block.entity.machine.EnergyStorageSizeProvider;
 import com.github.mixinors.astromine.common.block.entity.machine.SpeedProvider;
 import org.jetbrains.annotations.NotNull;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-public class FluidPlacerBlockEntity extends ExtendedBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
+public class FluidPlacerBlockEntity extends ExtendedBlockEntity implements EnergyStorageSizeProvider, SpeedProvider, EnergyConsumedProvider {
 	private long cooldown = 0L;
 	
 	private static final int INPUT_SLOT = 0;
@@ -58,7 +56,7 @@ public class FluidPlacerBlockEntity extends ExtendedBlockEntity implements Energ
 	public FluidPlacerBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.FLUID_INSERTER, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergySize(), Long.MAX_VALUE, Long.MAX_VALUE);
+		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, Long.MAX_VALUE);
 		
 		fluidStorage = new SimpleFluidStorage(1).extractPredicate((variant, slot) -> {
 			return false;
@@ -73,12 +71,12 @@ public class FluidPlacerBlockEntity extends ExtendedBlockEntity implements Energ
 	}
 
 	@Override
-	public long getEnergySize() {
+	public long getEnergyStorageSize() {
 		return AMConfig.get().fluidPlacerEnergy;
 	}
 
 	@Override
-	public double getMachineSpeed() {
+	public double getSpeed() {
 		return AMConfig.get().fluidPlacerSpeed;
 	}
 
@@ -97,7 +95,7 @@ public class FluidPlacerBlockEntity extends ExtendedBlockEntity implements Energ
 				
 				isActive = false;
 			} else {
-				if (cooldown >= getMachineSpeed()) {
+				if (cooldown >= getSpeed()) {
 					try (var transaction = Transaction.openOuter()) {
 						if (energyStorage.extract(consumed, transaction) == consumed) {
 							var direction = getCachedState().get(HorizontalFacingBlock.FACING);
