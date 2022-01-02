@@ -37,7 +37,7 @@ import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.block.redstone.ComparatorMode;
 import com.github.mixinors.astromine.common.network.NetworkBlock;
-import com.github.mixinors.astromine.common.block.entity.FluidCollectorBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.utility.FluidCollectorBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.FluidCollectorScreenHandler;
 
 public class FluidCollectorBlock extends HorizontalFacingBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.FluidProvider {

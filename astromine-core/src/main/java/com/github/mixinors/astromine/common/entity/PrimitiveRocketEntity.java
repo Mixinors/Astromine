@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.entity;
 import com.github.mixinors.astromine.common.entity.base.RocketEntity;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.screenhandler.PrimitiveRocketScreenHandler;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMDimensions;
 import com.github.mixinors.astromine.registry.common.AMFluids;
@@ -78,30 +79,25 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 
 	public PrimitiveRocketEntity(EntityType<?> type, World world) {
 		super(type, world);
-		
+
 		fluidStorage.getStorage(FLUID_INPUT_SLOT_1).setCapacity(FluidConstants.BUCKET * 16);
 		fluidStorage.getStorage(FLUID_INPUT_SLOT_2).setCapacity(FluidConstants.BUCKET * 16);
 		
-		itemStorage = new SimpleItemStorage(4).extractPredicate((variant, slot) -> {
-			return slot == ITEM_OUTPUT_SLOT_1 || slot == ITEM_OUTPUT_SLOT_2;
-		}).insertPredicate((variant, slot) -> {
-			return FluidStorage.ITEM.getProvider(variant.getItem()) != null && (slot == ITEM_INPUT_SLOT_1 || slot == ITEM_INPUT_SLOT_2);
-		}).insertSlots(ITEM_INSERT_SLOTS).extractSlots(ITEM_EXTRACT_SLOTS);
+		itemStorage = new SimpleItemStorage(4).extractPredicate((variant, slot) ->
+			slot == ITEM_OUTPUT_SLOT_1 || slot == ITEM_OUTPUT_SLOT_2
+		).insertPredicate((variant, slot) ->
+			FluidStorage.ITEM.getProvider(variant.getItem()) != null && (slot == ITEM_INPUT_SLOT_1 || slot == ITEM_INPUT_SLOT_2)
+		).insertSlots(ITEM_INSERT_SLOTS).extractSlots(ITEM_EXTRACT_SLOTS);
 	}
 
 	@Override
-	protected boolean isFuelMatching() {
-		return FUEL_INGREDIENT.test(fluidStorage.getStorage(FLUID_INPUT_SLOT_1)) && OXYGEN_INGREDIENT.test(fluidStorage.getStorage(FLUID_INPUT_SLOT_2));
+	protected FluidIngredient getPrimaryFuelIngredient() {
+		return FUEL_INGREDIENT;
 	}
 
 	@Override
-	protected void consumeFuel() {
-		try (var transaction = Transaction.openOuter()) {
-			fluidStorage.getStorage(FLUID_INPUT_SLOT_1).extract(FluidVariant.of(AMFluids.FUEL), FUEL_INGREDIENT.getAmount(), transaction);
-			fluidStorage.getStorage(FLUID_INPUT_SLOT_2).extract(FluidVariant.of(AMFluids.OXYGEN), OXYGEN_INGREDIENT.getAmount(), transaction);
-			
-			transaction.commit();
-		}
+	protected FluidIngredient getSecondaryFuelIngredient() {
+		return OXYGEN_INGREDIENT;
 	}
 
 	@Override

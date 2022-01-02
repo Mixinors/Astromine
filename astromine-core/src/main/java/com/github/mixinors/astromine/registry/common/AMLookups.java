@@ -25,9 +25,6 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
-import com.github.mixinors.astromine.common.transfer.StorageSiding;
-import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
-import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
@@ -160,8 +157,8 @@ public class AMLookups {
 				AMBlockEntityTypes.ADVANCED_MELTER.get(),
 				AMBlockEntityTypes.ELITE_MELTER.get(),
 				
-				AMBlockEntityTypes.FLUID_EXTRACTOR.get(),
-				AMBlockEntityTypes.FLUID_INSERTER.get(),
+				AMBlockEntityTypes.FLUID_COLLECTOR.get(),
+				AMBlockEntityTypes.FLUID_PLACER.get(),
 				
 				AMBlockEntityTypes.DRAIN.get()
 				);
@@ -239,8 +236,8 @@ public class AMLookups {
 				AMBlockEntityTypes.ELITE_CAPACITOR.get(),
 				AMBlockEntityTypes.CREATIVE_CAPACITOR.get(),
 				
-				AMBlockEntityTypes.FLUID_EXTRACTOR.get(),
-				AMBlockEntityTypes.FLUID_INSERTER.get(),
+				AMBlockEntityTypes.FLUID_COLLECTOR.get(),
+				AMBlockEntityTypes.FLUID_PLACER.get(),
 				
 				AMBlockEntityTypes.BLOCK_BREAKER.get(),
 				AMBlockEntityTypes.BLOCK_PLACER.get()

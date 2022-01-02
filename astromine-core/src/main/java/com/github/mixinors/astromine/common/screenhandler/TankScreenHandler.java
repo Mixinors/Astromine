@@ -36,7 +36,7 @@ import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.widget.blade.FluidFilterWidget;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
-import com.github.mixinors.astromine.common.block.entity.TankBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.TankBlockEntity;
 
 import java.util.function.Supplier;
 

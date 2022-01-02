@@ -37,7 +37,7 @@ import net.minecraft.world.World;
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
 import com.github.mixinors.astromine.common.block.redstone.ComparatorMode;
 import com.github.mixinors.astromine.common.network.NetworkBlock;
-import com.github.mixinors.astromine.common.block.entity.ElectrolyzerBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.ElectrolyzerBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.ElectrolyzerScreenHandler;
 
 public abstract class ElectrolyzerBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.FluidBuffer {

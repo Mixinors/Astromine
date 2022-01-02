@@ -36,10 +36,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.network.NetworkBlock;
-import com.github.mixinors.astromine.common.block.entity.BlockPlacerBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.utility.BlockPlacerBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.BlockPlacerScreenHandler;
 
-public class BlockPlacerBlock extends HorizontalFacingBlockWithEntity implements NetworkBlock.EnergyRequester {
+public class BlockPlacerBlock extends HorizontalFacingBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.ItemRequester {
 	public BlockPlacerBlock(Settings settings) {
 		super(settings);
 	}

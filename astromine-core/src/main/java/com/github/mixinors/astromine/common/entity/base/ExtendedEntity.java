@@ -24,6 +24,8 @@
 
 package com.github.mixinors.astromine.common.entity.base;
 
+import com.github.mixinors.astromine.common.provider.EnergyStorageSizeProvider;
+import com.github.mixinors.astromine.common.provider.FluidStorageSizeProvider;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import net.minecraft.entity.Entity;
@@ -35,7 +37,7 @@ import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 import javax.annotation.Nullable;
 
-public abstract class ExtendedEntity extends Entity {
+public abstract class ExtendedEntity extends Entity implements FluidStorageSizeProvider, EnergyStorageSizeProvider {
 	protected SimpleEnergyStorage energyStorage = null;
 	protected SimpleItemStorage itemStorage = null;
 	protected SimpleFluidStorage fluidStorage = null;
@@ -103,7 +105,8 @@ public abstract class ExtendedEntity extends Entity {
 			var fluidStorageNbt = nbt.getCompound("FluidStorage");
 			
 			fluidStorage = new SimpleFluidStorage(
-					fluidStorageNbt.getInt("Size")
+					fluidStorageNbt.getInt("Size"),
+					getFluidStorageSize()
 			);
 			
 			fluidStorage.readFromNbt(fluidStorageNbt);
@@ -135,5 +138,15 @@ public abstract class ExtendedEntity extends Entity {
 	@Nullable
 	public SimpleFluidStorage getFluidStorage() {
 		return fluidStorage;
+	}
+
+	@Override
+	public long getEnergyStorageSize() {
+		return 0;
+	}
+
+	@Override
+	public long getFluidStorageSize() {
+		return 0;
 	}
 }

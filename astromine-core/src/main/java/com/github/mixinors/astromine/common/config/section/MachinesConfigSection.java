@@ -1,8 +1,8 @@
 package com.github.mixinors.astromine.common.config.section;
 
-import com.github.mixinors.astromine.common.config.tiered.AlloySmelterTieredConfig;
-import com.github.mixinors.astromine.common.config.tiered.FluidStorageMachineTieredConfig;
-import com.github.mixinors.astromine.common.config.tiered.SimpleMachineTieredConfig;
+import com.github.mixinors.astromine.common.config.entry.tiered.AlloySmelterConfig;
+import com.github.mixinors.astromine.common.config.entry.tiered.FluidStorageMachineConfig;
+import com.github.mixinors.astromine.common.config.entry.tiered.SimpleMachineConfig;
 
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
@@ -10,49 +10,49 @@ import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 public class MachinesConfigSection {
 	@Comment("Settings for the Triturator")
 	@ConfigEntry.Gui.CollapsibleObject
-	public SimpleMachineTieredConfig triturator = new SimpleMachineTieredConfig();
+	public SimpleMachineConfig triturator = new SimpleMachineConfig();
 
 	@Comment("Settings for the Solid Generator")
 	@ConfigEntry.Gui.CollapsibleObject
-	public SimpleMachineTieredConfig solidGenerator = new SimpleMachineTieredConfig();
+	public SimpleMachineConfig solidGenerator = new SimpleMachineConfig();
 
 	@Comment("Settings for the Press")
 	@ConfigEntry.Gui.CollapsibleObject
-	public SimpleMachineTieredConfig press = new SimpleMachineTieredConfig();
+	public SimpleMachineConfig press = new SimpleMachineConfig();
 
 	@Comment("Settings for the Wire Mill")
 	@ConfigEntry.Gui.CollapsibleObject
-	public SimpleMachineTieredConfig wireMill = new SimpleMachineTieredConfig();
+	public SimpleMachineConfig wireMill = new SimpleMachineConfig();
 
 	@Comment("Settings for the Fluid Generator")
 	@ConfigEntry.Gui.CollapsibleObject
-	public FluidStorageMachineTieredConfig fluidGenerator = new FluidStorageMachineTieredConfig();
+	public FluidStorageMachineConfig fluidGenerator = new FluidStorageMachineConfig();
 
 	@Comment("Settings for the Fluid Mixer")
 	@ConfigEntry.Gui.CollapsibleObject
-	public FluidStorageMachineTieredConfig fluidMixer = new FluidStorageMachineTieredConfig();
+	public FluidStorageMachineConfig fluidMixer = new FluidStorageMachineConfig();
 
 	@Comment("Settings for the Electrolyzer")
 	@ConfigEntry.Gui.CollapsibleObject
-	public FluidStorageMachineTieredConfig electrolyzer = new FluidStorageMachineTieredConfig();
+	public FluidStorageMachineConfig electrolyzer = new FluidStorageMachineConfig();
 
 	@Comment("Settings for the Refinery")
 	@ConfigEntry.Gui.CollapsibleObject
-	public FluidStorageMachineTieredConfig refinery = new FluidStorageMachineTieredConfig();
+	public FluidStorageMachineConfig refinery = new FluidStorageMachineConfig();
 
 	@Comment("Settings for the Electric Furnace")
 	@ConfigEntry.Gui.CollapsibleObject
-	public SimpleMachineTieredConfig electricFurnace = new SimpleMachineTieredConfig();
+	public SimpleMachineConfig electricFurnace = new SimpleMachineConfig();
 
 	@Comment("Settings for the Alloy Smelter")
 	@ConfigEntry.Gui.CollapsibleObject
-	public AlloySmelterTieredConfig alloySmelter = new AlloySmelterTieredConfig();
+	public AlloySmelterConfig alloySmelter = new AlloySmelterConfig();
 
 	@Comment("Settings for the Melter")
 	@ConfigEntry.Gui.CollapsibleObject
-	public FluidStorageMachineTieredConfig melter = new FluidStorageMachineTieredConfig();
+	public FluidStorageMachineConfig melter = new FluidStorageMachineConfig();
 
 	@Comment("Settings for the Solidifier")
 	@ConfigEntry.Gui.CollapsibleObject
-	public FluidStorageMachineTieredConfig solidifier = new FluidStorageMachineTieredConfig();
+	public FluidStorageMachineConfig solidifier = new FluidStorageMachineConfig();
 }

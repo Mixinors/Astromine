@@ -33,7 +33,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
-import com.github.mixinors.astromine.common.block.entity.RefineryBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.RefineryBlockEntity;
 
 public class RefineryScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final RefineryBlockEntity refinery;

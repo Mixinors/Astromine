@@ -36,10 +36,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.network.NetworkBlock;
-import com.github.mixinors.astromine.common.block.entity.BlockBreakerBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.utility.BlockBreakerBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.BlockBreakerScreenHandler;
 
-public class BlockBreakerBlock extends HorizontalFacingBlockWithEntity implements NetworkBlock.EnergyRequester {
+public class BlockBreakerBlock extends HorizontalFacingBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.ItemProvider {
 	public BlockBreakerBlock(Settings settings) {
 		super(settings);
 	}

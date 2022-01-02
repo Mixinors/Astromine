@@ -24,6 +24,8 @@
 
 package com.github.mixinors.astromine.common.entity.base;
 
+import com.github.mixinors.astromine.common.config.AMConfig;
+import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.registry.common.AMCriteria;
 import com.github.mixinors.astromine.registry.common.AMParticles;
@@ -36,6 +38,7 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -54,6 +57,9 @@ import java.util.Collection;
 
 import static java.lang.Math.min;
 
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+
 public abstract class RocketEntity extends ExtendedEntity {
 	protected static final int FLUID_INPUT_SLOT_1 = 0;
 	protected static final int FLUID_INPUT_SLOT_2 = 1;
@@ -67,16 +73,32 @@ public abstract class RocketEntity extends ExtendedEntity {
 	public RocketEntity(EntityType<?> type, World world) {
 		super(type, world);
 		
-		fluidStorage = new SimpleFluidStorage(1).extractPredicate((variant, slot) -> {
-			return false;
-		}).insertPredicate((variant, slot) -> {
-			return slot == FLUID_INPUT_SLOT_1 || slot == FLUID_INPUT_SLOT_2;
-		}).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
+		fluidStorage = new SimpleFluidStorage(1, getFluidStorageSize()).extractPredicate((variant, slot) ->
+			false
+		).insertPredicate((variant, slot) ->
+			(slot == FLUID_INPUT_SLOT_1 && getPrimaryFuelIngredient().testVariant(variant)) || (slot == FLUID_INPUT_SLOT_2 && getSecondaryFuelIngredient().testVariant(variant))
+		).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
 	}
 
-	protected abstract boolean isFuelMatching();
+	protected abstract FluidIngredient getPrimaryFuelIngredient();
 
-	protected abstract void consumeFuel();
+	protected abstract FluidIngredient getSecondaryFuelIngredient();
+
+	protected boolean isFuelMatching() {
+		return getPrimaryFuelIngredient().test(fluidStorage.getStorage(FLUID_INPUT_SLOT_1)) && getSecondaryFuelIngredient().test(fluidStorage.getStorage(FLUID_INPUT_SLOT_2));
+	}
+
+	protected void consumeFuel() {
+		try (var transaction = Transaction.openOuter()) {
+			var firstInputStorage = fluidStorage.getStorage(FLUID_INPUT_SLOT_1);
+			var secondInputStorage = fluidStorage.getStorage(FLUID_INPUT_SLOT_2);
+
+			firstInputStorage.extract(firstInputStorage.getResource(), getPrimaryFuelIngredient().getAmount(), transaction);
+			secondInputStorage.extract(secondInputStorage.getResource(), getSecondaryFuelIngredient().getAmount(), transaction);
+
+			transaction.commit();
+		}
+	}
 
 	protected abstract Vector3d getAcceleration();
 
@@ -181,5 +203,10 @@ public abstract class RocketEntity extends ExtendedEntity {
 				AMCriteria.LAUNCH_ROCKET.trigger(serverLauncher);
 			}
 		}
+	}
+
+	@Override
+	public long getFluidStorageSize() {
+		return AMConfig.get().primitiveRocketFluid;
 	}
 }

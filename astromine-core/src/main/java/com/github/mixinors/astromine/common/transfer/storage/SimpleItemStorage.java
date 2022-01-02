@@ -138,57 +138,65 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	
 	@Override
 	public long insert(ItemVariant resource, long maxAmount, TransactionContext transaction) {
+		return insert(resource, maxAmount, transaction, false);
+	}
+
+	public long insert(ItemVariant resource, long maxAmount, TransactionContext transaction, boolean force) {
 		StoragePreconditions.notBlank(resource);
 		StoragePreconditions.notNegative(maxAmount);
-		
+
 		transaction.addCloseCallback((($, result) -> {
 			if (result.wasCommitted()) {
 				listeners.forEach(Runnable::run);
-				
+
 				incrementVersion();
 			}
 		}));
-		
+
 		var amount = 0;
-		
+
 		for (var slot : insertSlots) {
-			if (!insertPredicate.test(resource, slot)) continue;
-			
+			if (!insertPredicate.test(resource, slot) && !force) continue;
+
 			var storage = storages.get(slot);
-			
+
 			amount += storage.insert(resource, maxAmount - amount, transaction);
-			
+
 			if (amount == maxAmount) break;
 		}
-		
+
 		return amount;
 	}
 	
 	@Override
 	public long extract(ItemVariant resource, long maxAmount, TransactionContext transaction) {
+		return extract(resource, maxAmount, transaction, false);
+	}
+
+	public long extract(ItemVariant resource, long maxAmount, TransactionContext transaction, boolean force) {
 		StoragePreconditions.notBlank(resource);
 		StoragePreconditions.notNegative(maxAmount);
-		
+
 		transaction.addCloseCallback((($, result) -> {
 			if (result.wasCommitted()) {
 				listeners.forEach(Runnable::run);
-				
+
 				incrementVersion();
 			}
 		}));
-		
+
 		var amount = 0;
-		
+
 		for (var slot : extractSlots) {
-			if (!extractPredicate.test(resource, slot)) continue;
-			
+			if (!extractPredicate.test(resource, slot) && !force) continue;
+
 			var storage = storages.get(slot);
-			
+
 			amount += storage.extract(resource, maxAmount - amount, transaction);
-			
+
 			if (amount == maxAmount) break;
 		}
-		
+
 		return amount;
 	}
 	
@@ -359,7 +367,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	}
 	
 	public void incrementVersion() {
-		version += 1;
+		version++;
 	}
 	
 	/**

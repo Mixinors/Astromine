@@ -37,10 +37,10 @@ import net.minecraft.world.World;
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
 import com.github.mixinors.astromine.common.block.redstone.ComparatorMode;
 import com.github.mixinors.astromine.common.network.NetworkBlock;
-import com.github.mixinors.astromine.common.block.entity.MelterBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.MelterBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.MelterScreenHandler;
 
-public abstract class MelterBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.FluidBuffer{
+public abstract class MelterBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.FluidProvider, NetworkBlock.ItemRequester {
 	public MelterBlock(Settings settings) {
 		super(settings);
 	}

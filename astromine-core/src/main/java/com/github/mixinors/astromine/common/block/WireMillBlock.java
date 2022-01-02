@@ -36,10 +36,10 @@ import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
 import com.github.mixinors.astromine.common.network.NetworkBlock;
-import com.github.mixinors.astromine.common.block.entity.WireMillBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.WireMillBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.WireMillScreenHandler;
 
-public abstract class WireMillBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester {
+public abstract class WireMillBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.ItemBuffer {
 	public WireMillBlock(Settings settings) {
 		super(settings);
 	}

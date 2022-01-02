@@ -36,10 +36,10 @@ import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
 import com.github.mixinors.astromine.common.network.NetworkBlock;
-import com.github.mixinors.astromine.common.block.entity.AlloySmelterBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.AlloySmelterBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.AlloySmelterScreenHandler;
 
-public abstract class AlloySmelterBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester {
+public abstract class AlloySmelterBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.ItemBuffer {
 	public AlloySmelterBlock(Settings settings) {
 		super(settings);
 	}

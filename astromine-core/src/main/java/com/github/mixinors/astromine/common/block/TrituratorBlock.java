@@ -36,10 +36,10 @@ import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
 import com.github.mixinors.astromine.common.network.NetworkBlock;
-import com.github.mixinors.astromine.common.block.entity.TrituratorBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.TrituratorBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.TrituratorScreenHandler;
 
-public abstract class TrituratorBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester {
+public abstract class TrituratorBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.ItemBuffer {
 	public TrituratorBlock(Settings settings) {
 		super(settings);
 	}

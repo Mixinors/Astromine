@@ -34,7 +34,7 @@ import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
-import com.github.mixinors.astromine.common.block.entity.WireMillBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.WireMillBlockEntity;
 
 public class WireMillScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final WireMillBlockEntity wire_mill;

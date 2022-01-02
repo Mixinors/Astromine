@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.base;
 
-import com.github.mixinors.astromine.common.block.entity.TickableBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.base.Tickable;
 
 import com.github.mixinors.astromine.common.block.redstone.ComparatorMode;
 import dev.architectury.registry.menu.ExtendedMenuProvider;
@@ -198,7 +198,7 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
 		// We might not need this, but whatever, we are astromine
 		return (world1, blockPos, blockState, blockEntity) -> {
-			if (blockEntity instanceof TickableBlockEntity tickableBlockEntity) {
+			if (blockEntity instanceof Tickable tickableBlockEntity) {
 				tickableBlockEntity.tick();
 			}
 		};

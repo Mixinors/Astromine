@@ -25,7 +25,6 @@
 package com.github.mixinors.astromine.common.block.entity.base;
 
 import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
-import com.github.mixinors.astromine.common.block.entity.TickableBlockEntity;
 import com.github.mixinors.astromine.common.transfer.RedstoneControl;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
@@ -34,10 +33,7 @@ import dev.architectury.hooks.block.BlockEntityHooks;
 
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
@@ -57,7 +53,7 @@ import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 import java.util.function.Supplier;
 
-public abstract class ExtendedBlockEntity extends BlockEntity implements TickableBlockEntity {
+public abstract class ExtendedBlockEntity extends BlockEntity implements Tickable {
 	protected boolean isActive = false;
 
 	private final boolean[] activity = { false, false, false, false, false };
@@ -88,23 +84,10 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	
 	public boolean shouldRun() {
 		var powered = world.getReceivedRedstonePower(getPos()) > 0;
-		
-		switch (redstoneControl) {
-			case WORK_WHEN_ON -> {
-				isActive = powered;
-				return powered;
-			}
-			
-			case WORK_WHEN_OFF -> {
-				isActive = !powered;
-				return !powered;
-			}
-			
-			default -> {
-				isActive = true;
-				return true;
-			}
-		}
+		var shouldRun = redstoneControl.shouldRun(powered);
+
+		isActive = shouldRun;
+		return shouldRun;
 	}
 
 	public void syncData() {
@@ -113,7 +96,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	
 	@Override
 	public void tick() {
-		if (!hasWorld() || world.isClient) {
+		if (!hasWorld() || world.isClient()) {
 			return;
 		}
 		
@@ -125,18 +108,18 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 				var ourItemStorage = ItemStorage.SIDED.find(world, pos, direction);
 				
 				if (ourItemStorage != null && theirItemStorage != null) {
-					StorageUtil.move(ourItemStorage, theirItemStorage, (variant) -> {
-						return ourItemStorage.exactView(transaction, variant).getAmount() > theirItemStorage.exactView(transaction, variant).getAmount();
-					}, 1, transaction);
+					StorageUtil.move(ourItemStorage, theirItemStorage, (variant) ->
+						ourItemStorage.exactView(transaction, variant).getAmount() > theirItemStorage.exactView(transaction, variant).getAmount()
+					, 1, transaction);
 				}
 				
 				var theirFluidStorage = FluidStorage.SIDED.find(world, theirPos, direction.getOpposite());
 				var ourFluidStorage = FluidStorage.SIDED.find(world, pos, direction);
 				
 				if (ourFluidStorage != null && theirFluidStorage != null) {
-					StorageUtil.move(ourFluidStorage, theirFluidStorage, (variant) -> {
-						return ourFluidStorage.exactView(transaction, variant).getAmount() > theirFluidStorage.exactView(transaction, variant).getAmount();
-					}, FluidConstants.BUCKET, transaction);
+					StorageUtil.move(ourFluidStorage, theirFluidStorage, (variant) ->
+						ourFluidStorage.exactView(transaction, variant).getAmount() > theirFluidStorage.exactView(transaction, variant).getAmount()
+					, FluidConstants.BUCKET, transaction);
 				}
 				
 				var theirEnergyStorage = EnergyStorage.SIDED.find(world, theirPos, direction.getOpposite());
@@ -159,9 +142,10 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 
 			activity[4] = isActive;
 
-			if (isActive && !activity[0]) {
+			boolean blockStateActive = world.getBlockState(getPos()).get(BlockWithEntity.ACTIVE);
+			if (!blockStateActive && isActive && !activity[0]) {
 				world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, true));
-			} else if (!isActive && activity[0]) {
+			} else if (blockStateActive && !isActive && activity[0]) {
 				world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, false));
 			}
 		}

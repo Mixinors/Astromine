@@ -24,7 +24,6 @@
 
 package com.github.mixinors.astromine.common.transfer.storage;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 

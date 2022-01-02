@@ -36,10 +36,10 @@ import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
 import com.github.mixinors.astromine.common.network.NetworkBlock;
-import com.github.mixinors.astromine.common.block.entity.ElectricFurnaceBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.ElectricFurnaceBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.ElectricFurnaceScreenHandler;
 
-public abstract class ElectricFurnaceBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester {
+public abstract class ElectricFurnaceBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.ItemBuffer {
 	public ElectricFurnaceBlock(Settings settings) {
 		super(settings);
 	}

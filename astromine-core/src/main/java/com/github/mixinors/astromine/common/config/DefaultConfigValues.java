@@ -21,13 +21,17 @@ public class DefaultConfigValues {
 	public static final long ADVANCED_FLUID_STORAGE = LARGE_PORTABLE_TANK_FLUID * 8L;
 	public static final long ELITE_FLUID_STORAGE = LARGE_PORTABLE_TANK_FLUID * 16L;
 	
-	public static final double PRIMITIVE_TANK_SPEED = 1.0D;
-	public static final double BASIC_TANK_SPEED = 2.0D;
-	public static final double ADVANCED_TANK_SPEED = 4.0D;
-	public static final double ELITE_TANK_SPEED = 16.0D;
-	
 	public static final double PRIMITIVE_SPEED_MODIFIER = 0.5D;
 	public static final double BASIC_SPEED_MODIFIER = 1.0D;
 	public static final double ADVANCED_SPEED_MODIFIER = 2.0D;
 	public static final double ELITE_SPEED_MODIFIER = 4.0D;
+
+	public static final double BASE_SPEED = 1.0D;
+	public static final double TANK_BASE_SPEED = 10.0D;
+	public static final double CAPACITOR_BASE_SPEED = 10.0D;
+
+	public static final long UTILITY_DELAY = 40L;
+	public static final long UTILITY_ENERGY = PRIMITIVE_BATTERY_PACK_ENERGY;
+	public static final long UTILITY_FLUID = PORTABLE_TANK_FLUID;
+	public static final long UTILITY_ENERGY_CONSUMED = 1024L;
 }

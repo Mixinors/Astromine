@@ -37,7 +37,7 @@ import net.minecraft.world.World;
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
 import com.github.mixinors.astromine.common.block.redstone.ComparatorMode;
 import com.github.mixinors.astromine.common.network.NetworkBlock;
-import com.github.mixinors.astromine.common.block.entity.FluidMixerBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.FluidMixerBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.FluidMixerScreenHandler;
 
 public abstract class FluidMixerBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.FluidBuffer {

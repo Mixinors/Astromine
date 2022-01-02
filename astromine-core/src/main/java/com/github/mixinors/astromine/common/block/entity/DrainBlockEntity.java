@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
-import com.github.mixinors.astromine.common.block.entity.machine.FluidStorageSizeProvider;
+import com.github.mixinors.astromine.common.provider.FluidStorageSizeProvider;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
@@ -46,11 +46,11 @@ public class DrainBlockEntity extends ExtendedBlockEntity implements FluidStorag
 	public DrainBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.DRAIN, blockPos, blockState);
 		
-		fluidStorage = new SimpleFluidStorage(1).insertPredicate((variant, slot) -> {
-			return shouldRun();
-		}).extractPredicate((variant, slot) -> {
-			return false;
-		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
+		fluidStorage = new SimpleFluidStorage(1, getFluidStorageSize()).insertPredicate((variant, slot) ->
+			shouldRun()
+		).extractPredicate((variant, slot) ->
+			false
+		).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 		
 		fluidStorage.getStorage(INPUT_SLOT).setCapacity(getFluidStorageSize());
 		
@@ -63,7 +63,9 @@ public class DrainBlockEntity extends ExtendedBlockEntity implements FluidStorag
 			return;
 
 		try (var transaction = Transaction.openOuter()) {
-			fluidStorage.extract(fluidStorage.getStorage(0).getResource(), Long.MAX_VALUE, transaction);
+			var inputStorage = fluidStorage.getStorage(INPUT_SLOT);
+
+			inputStorage.extract(inputStorage.getResource(), Long.MAX_VALUE, transaction);
 			
 			transaction.commit();
 		}

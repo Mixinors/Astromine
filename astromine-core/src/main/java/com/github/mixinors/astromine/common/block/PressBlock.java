@@ -36,10 +36,10 @@ import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
 import com.github.mixinors.astromine.common.network.NetworkBlock;
-import com.github.mixinors.astromine.common.block.entity.PressBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.PressBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.PressScreenHandler;
 
-public abstract class PressBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester {
+public abstract class PressBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.ItemBuffer {
 	public PressBlock(Settings settings) {
 		super(settings);
 	}

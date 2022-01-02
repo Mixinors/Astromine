@@ -25,6 +25,13 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.common.block.entity.*;
+import com.github.mixinors.astromine.common.block.entity.machine.*;
+import com.github.mixinors.astromine.common.block.entity.machine.generator.FluidGeneratorBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.generator.SolidGeneratorBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.utility.BlockBreakerBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.utility.BlockPlacerBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.utility.FluidCollectorBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.utility.FluidPlacerBlockEntity;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
@@ -117,8 +124,8 @@ public class AMBlockEntityTypes {
 	public static final RegistrySupplier<BlockEntityType<CapacitorBlockEntity.Elite>> ELITE_CAPACITOR = register("elite_capacitor", CapacitorBlockEntity.Elite::new, AMBlocks.ELITE_CAPACITOR);
 	public static final RegistrySupplier<BlockEntityType<CapacitorBlockEntity.Creative>> CREATIVE_CAPACITOR = register("creative_capacitor", CapacitorBlockEntity.Creative::new, AMBlocks.CREATIVE_CAPACITOR);
 	
-	public static final RegistrySupplier<BlockEntityType<FluidCollectorBlockEntity>> FLUID_EXTRACTOR = register("fluid_collector", FluidCollectorBlockEntity::new, AMBlocks.FLUID_EXTRACTOR);
-	public static final RegistrySupplier<BlockEntityType<FluidPlacerBlockEntity>> FLUID_INSERTER = register("fluid_placer", FluidPlacerBlockEntity::new, AMBlocks.FLUID_INSERTER);
+	public static final RegistrySupplier<BlockEntityType<FluidCollectorBlockEntity>> FLUID_COLLECTOR = register("fluid_collector", FluidCollectorBlockEntity::new, AMBlocks.FLUID_EXTRACTOR);
+	public static final RegistrySupplier<BlockEntityType<FluidPlacerBlockEntity>> FLUID_PLACER = register("fluid_placer", FluidPlacerBlockEntity::new, AMBlocks.FLUID_INSERTER);
 	
 	public static final RegistrySupplier<BlockEntityType<BlockBreakerBlockEntity>> BLOCK_BREAKER = register("block_breaker", BlockBreakerBlockEntity::new, AMBlocks.BLOCK_BREAKER);
 	public static final RegistrySupplier<BlockEntityType<BlockPlacerBlockEntity>> BLOCK_PLACER = register("block_placer", BlockPlacerBlockEntity::new, AMBlocks.BLOCK_PLACER);

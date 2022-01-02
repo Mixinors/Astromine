@@ -34,6 +34,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -54,17 +55,25 @@ public class HoloBridgeProjectorBlock extends HorizontalFacingBlockWithEntity {
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos position, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		var stack = player.getStackInHand(hand);
-		
+
+		boolean changeColor = false;
+		Color color = null;
+
 		if (stack.getItem() instanceof DyeItem dye) {
+			changeColor = true;
+			var dyeColor = dye.getColor().getColorComponents();
+			color = new Color(dyeColor[0], dyeColor[1], dyeColor[2], 0x7E);
+		} else if(stack.getItem() == Items.WATER_BUCKET) {
+			changeColor = true;
+			color = HoloBridgeProjectorBlockEntity.DEFAULT_COLOR;
+		}
+
+		if(changeColor) {
 			var originalEntity = (HoloBridgeProjectorBlockEntity) world.getBlockEntity(position);
 
 			for (var entity : new HoloBridgeProjectorBlockEntity[] {originalEntity.getChild(), originalEntity, originalEntity.getParent()}) {
 				if (entity != null) {
-					var color = dye.getColor().getColorComponents();
-					
-					var colorColor = new Color(color[0], color[1], color[2], 0x7E);
-
-					entity.color = colorColor;
+					entity.color = color;
 
 					entity.markDirty();
 
@@ -72,7 +81,7 @@ public class HoloBridgeProjectorBlock extends HorizontalFacingBlockWithEntity {
 						BlockEntityHooks.syncData(entity);
 
 					if (entity.hasChild()) {
-						entity.getChild().color = colorColor;
+						entity.getChild().color = color;
 
 						entity.getChild().markDirty();
 
@@ -86,9 +95,11 @@ public class HoloBridgeProjectorBlock extends HorizontalFacingBlockWithEntity {
 					}
 				}
 			}
+
+			return ActionResult.PASS;
 		}
 
-		return ActionResult.PASS;
+		return super.onUse(state, world, position, player, hand, hit);
 	}
 
 	@Override

@@ -38,10 +38,10 @@ import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlo
 import com.github.mixinors.astromine.common.block.redstone.ComparatorMode;
 import com.github.mixinors.astromine.common.network.NetworkBlock;
 import com.github.mixinors.astromine.common.network.NetworkMemberType;
-import com.github.mixinors.astromine.common.block.entity.TankBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.TankBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.TankScreenHandler;
 
-public abstract class TankBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.FluidBuffer {
+public abstract class TankBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.FluidBuffer, NetworkBlock.ItemBuffer {
 	public TankBlock(Settings settings) {
 		super(settings);
 	}

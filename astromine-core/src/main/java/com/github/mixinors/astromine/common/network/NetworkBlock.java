@@ -131,6 +131,54 @@ public interface NetworkBlock {
 		}
 	}
 
+	/**
+	 * A {@link NetworkBlock} whose
+	 * {@link #getItemNetworkMemberType()}} defaults to
+	 * {@link NetworkMemberType#REQUESTER}.
+	 */
+	interface ItemRequester extends NetworkBlock {
+		@Override
+		default NetworkMemberType getItemNetworkMemberType() {
+			return NetworkMemberType.REQUESTER;
+		}
+	}
+
+	/**
+	 * A {@link NetworkBlock} whose
+	 * {@link #getItemNetworkMemberType()}} defaults to
+	 * {@link NetworkMemberType#PROVIDER}.
+	 */
+	interface ItemProvider extends NetworkBlock {
+		@Override
+		default NetworkMemberType getItemNetworkMemberType() {
+			return NetworkMemberType.PROVIDER;
+		}
+	}
+
+	/**
+	 * A {@link NetworkBlock} whose
+	 * {@link #getItemNetworkMemberType()}} defaults to
+	 * {@link NetworkMemberType#BUFFER}.
+	 */
+	interface ItemBuffer extends NetworkBlock {
+		@Override
+		default NetworkMemberType getItemNetworkMemberType() {
+			return NetworkMemberType.BUFFER;
+		}
+	}
+
+	/**
+	 * A {@link NetworkBlock} whose
+	 * {@link #getItemNetworkMemberType()}} defaults to
+	 * {@link NetworkMemberType#NODE}.
+	 */
+	interface ItemNode extends NetworkBlock {
+		@Override
+		default NetworkMemberType getItemNetworkMemberType() {
+			return NetworkMemberType.NODE;
+		}
+	}
+
 	/** Returns the {@link NetworkMemberType} of the given
 	 * {@link NetworkType}, or {@link NetworkMemberType#NODE}
 	 * if the type is unknown. */

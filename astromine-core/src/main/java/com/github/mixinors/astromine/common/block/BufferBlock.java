@@ -36,9 +36,11 @@ import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
 import com.github.mixinors.astromine.common.block.entity.BufferBlockEntity;
+import com.github.mixinors.astromine.common.network.NetworkBlock;
+import com.github.mixinors.astromine.common.network.NetworkMemberType;
 import com.github.mixinors.astromine.common.screenhandler.BufferScreenHandler;
 
-public abstract class BufferBlock extends HorizontalFacingTieredBlockWithEntity {
+public abstract class BufferBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.ItemBuffer {
 	public BufferBlock(Settings settings) {
 		super(settings);
 	}
@@ -116,6 +118,11 @@ public abstract class BufferBlock extends HorizontalFacingTieredBlockWithEntity 
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new BufferBlockEntity.Creative(pos, state);
+		}
+
+		@Override
+		public NetworkMemberType getItemNetworkMemberType() {
+			return NetworkMemberType.PROVIDER;
 		}
 	}
 }

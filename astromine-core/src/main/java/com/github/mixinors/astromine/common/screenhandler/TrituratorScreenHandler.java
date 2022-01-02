@@ -34,7 +34,7 @@ import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
-import com.github.mixinors.astromine.common.block.entity.TrituratorBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.TrituratorBlockEntity;
 
 public class TrituratorScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final TrituratorBlockEntity triturator;

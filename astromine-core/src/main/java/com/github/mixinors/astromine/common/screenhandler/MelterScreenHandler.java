@@ -34,7 +34,7 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
-import com.github.mixinors.astromine.common.block.entity.MelterBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.MelterBlockEntity;
 
 public class MelterScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final MelterBlockEntity melter;

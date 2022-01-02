@@ -36,10 +36,10 @@ import net.minecraft.world.World;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
 import com.github.mixinors.astromine.common.network.NetworkBlock;
-import com.github.mixinors.astromine.common.block.entity.SolidifierBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.SolidifierBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.SolidifierScreenHandler;
 
-public abstract class SolidifierBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.FluidRequester {
+public abstract class SolidifierBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.FluidRequester, NetworkBlock.ItemProvider {
 	public SolidifierBlock(Settings settings) {
 		super(settings);
 	}

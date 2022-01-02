@@ -28,7 +28,15 @@ public enum RedstoneControl {
 	WORK_WHEN_ON,
 	WORK_WHEN_OFF,
 	WORK_ALWAYS;
-	
+
+	public boolean shouldRun(boolean powered) {
+		return switch (this) {
+			case WORK_WHEN_ON -> powered;
+			case WORK_WHEN_OFF -> !powered;
+			case WORK_ALWAYS -> true;
+		};
+	}
+
 	public RedstoneControl next() {
 		return switch (this) {
 			case WORK_WHEN_ON -> WORK_WHEN_OFF;

@@ -37,7 +37,7 @@ import net.minecraft.world.World;
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
 import com.github.mixinors.astromine.common.block.redstone.ComparatorMode;
 import com.github.mixinors.astromine.common.network.NetworkBlock;
-import com.github.mixinors.astromine.common.block.entity.FluidGeneratorBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.generator.FluidGeneratorBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.FluidGeneratorScreenHandler;
 
 public abstract class FluidGeneratorBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyProvider, NetworkBlock.FluidRequester {

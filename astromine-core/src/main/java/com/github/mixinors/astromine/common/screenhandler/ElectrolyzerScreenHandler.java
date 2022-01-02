@@ -33,7 +33,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
-import com.github.mixinors.astromine.common.block.entity.ElectrolyzerBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.ElectrolyzerBlockEntity;
 
 public class ElectrolyzerScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final ElectrolyzerBlockEntity electrolyzer;

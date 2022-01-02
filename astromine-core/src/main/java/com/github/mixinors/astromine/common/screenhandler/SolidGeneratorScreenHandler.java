@@ -33,7 +33,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
-import com.github.mixinors.astromine.common.block.entity.SolidGeneratorBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.generator.SolidGeneratorBlockEntity;
 
 public class SolidGeneratorScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final SolidGeneratorBlockEntity generator;

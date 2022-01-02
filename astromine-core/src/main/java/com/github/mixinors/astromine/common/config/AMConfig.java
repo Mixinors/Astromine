@@ -27,8 +27,9 @@ package com.github.mixinors.astromine.common.config;
 import com.github.mixinors.astromine.common.config.section.BatteriesConfigSection;
 import com.github.mixinors.astromine.common.config.section.MachinesConfigSection;
 import com.github.mixinors.astromine.common.config.section.PortableTanksConfigSection;
-import com.github.mixinors.astromine.common.config.tiered.CapacitorTieredConfig;
-import com.github.mixinors.astromine.common.config.tiered.TankTieredConfig;
+import com.github.mixinors.astromine.common.config.section.UtilitiesConfigSection;
+import com.github.mixinors.astromine.common.config.entry.tiered.CapacitorConfig;
+import com.github.mixinors.astromine.common.config.entry.tiered.TankConfig;
 
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 
@@ -75,54 +76,19 @@ public class AMConfig implements ConfigData {
 
 	@Comment("Settings for Capacitors")
 	@ConfigEntry.Gui.CollapsibleObject
-	public CapacitorTieredConfig capacitors = new CapacitorTieredConfig();
+	public CapacitorConfig capacitors = new CapacitorConfig();
 
 	@Comment("Settings for Tanks")
 	@ConfigEntry.Gui.CollapsibleObject
-	public TankTieredConfig tanks = new TankTieredConfig();
+	public TankConfig tanks = new TankConfig();
 
 	@Comment("Settings for Portable Tanks")
 	@ConfigEntry.Gui.CollapsibleObject
 	public PortableTanksConfigSection portableTanks = new PortableTanksConfigSection();
 
-	@Comment("Energy for the Block Placer.")
-	public long blockPlacerEnergy = batteries.batteryPacks.primitive;
-
-	@Comment("Energy for the Block Breaker.")
-	public long blockBreakerEnergy = batteries.batteryPacks.primitive;
-
-	@Comment("Energy for the Fluid Placer.")
-	public long fluidPlacerEnergy = batteries.batteryPacks.primitive;
-
-	@Comment("Energy for the Fluid Collector.")
-	public long fluidCollectorEnergy = batteries.batteryPacks.primitive;
-	
-	@Comment("Fluid for the Fluid Collector.")
-	public long fluidCollectorFluid = FluidConstants.BUCKET * 8;
-
-	@Comment("Energy for the Block Placer actions.")
-	public long blockPlacerEnergyConsumed = 1024;
-
-	@Comment("Energy for the Block Breaker actions.")
-	public long blockBreakerEnergyConsumed = 1024;
-
-	@Comment("Energy for the Fluid Placer actions.")
-	public long fluidPlacerEnergyConsumed = 1024;
-
-	@Comment("Energy for the Fluid Collector actions.")
-	public long fluidCollectorEnergyConsumed = 1024;
-
-	@Comment("Delay for the Block Placer actions (smaller is faster).")
-	public long blockPlacerSpeed = 40L;
-
-	@Comment("Delay for the Block Breaker actions (smaller is faster).")
-	public long blockBreakerSpeed = 40L;
-
-	@Comment("Delay for the Fluid Placer actions (smaller is faster).")
-	public long fluidPlacerSpeed = 40L;
-
-	@Comment("Delay for the Fluid Collector actions (smaller is faster).")
-	public long fluidCollectorSpeed = 40L;
+	@Comment("Settings for utilities")
+	@ConfigEntry.Gui.CollapsibleObject
+	public UtilitiesConfigSection utilities = new UtilitiesConfigSection();
 
 	@Comment("Energy for the Gravity Gauntlet.")
 	public long gravityGauntletEnergy = batteries.singleBatteries.advanced;
@@ -402,6 +368,9 @@ public class AMConfig implements ConfigData {
 	
 	@Comment("Maximum Size of Asteroid Galaxium Ore veins.")
 	public int asteroidGalaxiumOreMaximumSize = 48;
+
+	@Comment("The maximum fuel a Primitive Rocket can hold.")
+	public long primitiveRocketFluid = FluidConstants.BUCKET * 16L;
 
 	public static AMConfig get() {
 		if (INSTANCE == null) {

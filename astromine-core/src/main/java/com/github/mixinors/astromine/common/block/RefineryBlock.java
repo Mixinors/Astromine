@@ -37,7 +37,7 @@ import net.minecraft.world.World;
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
 import com.github.mixinors.astromine.common.block.redstone.ComparatorMode;
 import com.github.mixinors.astromine.common.network.NetworkBlock;
-import com.github.mixinors.astromine.common.block.entity.RefineryBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.RefineryBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.RefineryScreenHandler;
 
 public abstract class RefineryBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.FluidBuffer {

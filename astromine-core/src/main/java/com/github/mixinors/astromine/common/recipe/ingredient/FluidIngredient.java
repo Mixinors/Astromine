@@ -67,6 +67,10 @@ public final class FluidIngredient {
 	public boolean test(FluidVariant testVariant, Long testAmount) {
 		return entry.test(testVariant, testAmount);
 	}
+
+	public boolean testVariant(FluidVariant testVariant) {
+		return entry.testVariant(testVariant);
+	}
 	
 	public Entry getEntry() {
 		return entry;
@@ -197,6 +201,8 @@ public final class FluidIngredient {
 		public abstract long getAmount();
 
 		public abstract Collection<FluidVariant> getVariants();
+
+		public abstract boolean testVariant(FluidVariant testVariant);
 	}
 	
 	public static class VariantEntry extends Entry {
@@ -215,9 +221,14 @@ public final class FluidIngredient {
 		
 		@Override
 		public boolean test(FluidVariant testVariant, Long testAmount) {
-			return testVariant.equals(requiredVariant) && testAmount >= requiredAmount;
+			return testVariant(testVariant) && testAmount >= requiredAmount;
 		}
-		
+
+		@Override
+		public boolean testVariant(FluidVariant testVariant) {
+			return testVariant.equals(requiredVariant);
+		}
+
 		@Override
 		public long getAmount() {
 			return requiredAmount;
@@ -246,23 +257,28 @@ public final class FluidIngredient {
 		
 		@Override
 		public boolean test(FluidVariant testVariant, Long testAmount) {
+			return testVariant(testVariant) && testAmount >= requiredAmount;
+		}
+
+		@Override
+		public boolean testVariant(FluidVariant testVariant) {
 			if (requiredVariants == null) {
 				requiredVariants = new ArrayList<>();
-				
+
 				for (var fluid : requiredTag.values()) {
 					requiredVariants.add(FluidVariant.of(fluid));
 				}
 			}
-			
+
 			for (var requiredVariant : requiredVariants) {
-				if (requiredVariant.equals(testVariant) && testAmount >= requiredAmount) {
+				if (requiredVariant.equals(testVariant)) {
 					return true;
 				}
 			}
-			
+
 			return false;
 		}
-		
+
 		@Override
 		public long getAmount() {
 			return requiredAmount;

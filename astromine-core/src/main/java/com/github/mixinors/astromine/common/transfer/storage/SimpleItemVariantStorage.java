@@ -40,12 +40,12 @@ public class SimpleItemVariantStorage extends SingleStackStorage {
 	}
 	
 	@Override
-	protected ItemStack getStack() {
+	public ItemStack getStack() {
 		return inventory.getStack(slot);
 	}
 	
 	@Override
-	protected void setStack(ItemStack stack) {
+	public void setStack(ItemStack stack) {
 		inventory.setStack(slot, stack);
 	}
 	

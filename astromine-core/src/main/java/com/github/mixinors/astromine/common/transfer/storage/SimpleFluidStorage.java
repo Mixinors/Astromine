@@ -56,14 +56,14 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	
 	private long version = 0L;
 	
-	public SimpleFluidStorage(int size) {
+	public SimpleFluidStorage(int size, long capacity) {
 		this.size = size;
 		
 		this.listeners = new ArrayList<>();
 		this.storages = new ArrayList<>(size);
 
 		for (var i = 0; i < size; ++i) {
-			var storage = new SimpleFluidVariantStorage();
+			var storage = new SimpleFluidVariantStorage(capacity);
 			storage.setOuterStorage(this);
 			
 			this.storages.add(i, storage);
@@ -117,9 +117,13 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		
 		return storages;
 	}
-	
+
 	@Override
 	public long insert(FluidVariant resource, long maxAmount, TransactionContext transaction) {
+		return insert(resource, maxAmount, transaction, false);
+	}
+
+	public long insert(FluidVariant resource, long maxAmount, TransactionContext transaction, boolean force) {
 		StoragePreconditions.notBlank(resource);
 		StoragePreconditions.notNegative(maxAmount);
 		
@@ -134,7 +138,7 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		var amount = 0;
 		
 		for (var slot : insertSlots) {
-			if (!insertPredicate.test(resource, slot)) continue;
+			if (!insertPredicate.test(resource, slot) && !force) continue;
 			
 			var storage = storages.get(slot);
 			
@@ -145,9 +149,13 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		
 		return amount;
 	}
-	
+
 	@Override
 	public long extract(FluidVariant resource, long maxAmount, TransactionContext transaction) {
+		return extract(resource, maxAmount, transaction, false);
+	}
+
+	public long extract(FluidVariant resource, long maxAmount, TransactionContext transaction, boolean force) {
 		StoragePreconditions.notBlank(resource);
 		StoragePreconditions.notNegative(maxAmount);
 		
@@ -162,7 +170,7 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		var amount = 0;
 		
 		for (var slot : extractSlots) {
-			if (!extractPredicate.test(resource, slot)) continue;
+			if (!extractPredicate.test(resource, slot) && !force) continue;
 			
 			var storage = storages.get(slot);
 			

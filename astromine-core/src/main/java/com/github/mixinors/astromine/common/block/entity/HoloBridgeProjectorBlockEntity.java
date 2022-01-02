@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import com.github.mixinors.astromine.common.block.entity.base.Tickable;
 import com.github.mixinors.astromine.common.component.world.WorldHoloBridgeComponent;
 import com.github.mixinors.astromine.common.util.LineUtils;
 import com.github.mixinors.astromine.common.util.VectorUtils;
@@ -48,10 +49,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
-public class HoloBridgeProjectorBlockEntity extends BlockEntity implements TickableBlockEntity {
+public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Tickable {
+	public static final Color DEFAULT_COLOR = Color.of("0x7e80cad4");
+
 	public ArrayList<Vec3f> segments = null;
 
-	public Color color = Color.of("0x7e80cad4");
+	public Color color = DEFAULT_COLOR;
 
 	private HoloBridgeProjectorBlockEntity child = null;
 	private HoloBridgeProjectorBlockEntity parent = null;
