@@ -179,7 +179,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 			
 			fluidStorage.writeToNbt(fluidStorageNbt);
 			
-			nbt.put("ItemStorage", fluidStorageNbt);
+			nbt.put("FluidStorage", fluidStorageNbt);
 		}
 
 		super.writeNbt(nbt);
