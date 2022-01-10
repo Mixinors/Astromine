@@ -70,7 +70,7 @@ public abstract class RocketEntity extends ExtendedEntity {
 	public RocketEntity(EntityType<?> type, World world) {
 		super(type, world);
 		
-		fluidStorage = new SimpleFluidStorage(1, getFluidStorageSize()).extractPredicate((variant, slot) ->
+		fluidStorage = new SimpleFluidStorage(2, getFluidStorageSize()).extractPredicate((variant, slot) ->
 			false
 		).insertPredicate((variant, slot) ->
 			(slot == FLUID_INPUT_SLOT_1 && getPrimaryFuelIngredient().testVariant(variant)) || (slot == FLUID_INPUT_SLOT_2 && getSecondaryFuelIngredient().testVariant(variant))

@@ -58,8 +58,10 @@ import net.fabricmc.fabric.api.structure.v1.FabricStructureBuilder;
 
 public class AMFeatures {
 	public static final Identifier ASTEROID_ORES_ID = AMCommon.id("asteroid_ores");
-	public static final RegistrySupplier<Feature<DefaultFeatureConfig>> ASTEROID_ORES = registerFeature(ASTEROID_ORES_ID, () -> new AsteroidOreFeature(DefaultFeatureConfig.CODEC));
-	public static final RegistryKey<ConfiguredFeature<?, ?>> ASTEROID_ORES_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, ASTEROID_ORES_ID);
+	public static final RegistrySupplier<Feature<DefaultFeatureConfig>> ASTEROID_ORES_FEATURE = registerFeature(ASTEROID_ORES_ID, () -> new AsteroidOreFeature(DefaultFeatureConfig.CODEC));
+	public static final ConfiguredFeature<DefaultFeatureConfig, ?> ASTEROID_ORES_CONFIGURED_FEATURE = registerConfiguredFeature(ASTEROID_ORES_ID, ASTEROID_ORES_FEATURE.get().configure(DefaultFeatureConfig.INSTANCE));
+	public static final PlacedFeature ASTEROID_ORES_PLACED_FEATURE = registerPlacedFeature(ASTEROID_ORES_ID, ASTEROID_ORES_CONFIGURED_FEATURE.withPlacement(BiomePlacementModifier.of()));
+	public static final RegistryKey<PlacedFeature> ASTEROID_ORES_KEY = RegistryKey.of(Registry.PLACED_FEATURE_KEY, ASTEROID_ORES_ID);
 	
 	public static final Identifier METEOR_ID = AMCommon.id("meteor");
 	public static final RegistrySupplier<StructurePieceType> METEOR_STRUCTURE_PIECE = registerStructurePiece(METEOR_ID, () -> (StructurePieceType.Simple) MeteorGenerator::new);

@@ -50,6 +50,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
@@ -70,7 +71,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 	private static final int ITEM_INPUT_SLOT_2 = 2;
 	
 	private static final int ITEM_OUTPUT_SLOT_1 = 1;
-	private static final int ITEM_OUTPUT_SLOT_2 = 2;
+	private static final int ITEM_OUTPUT_SLOT_2 = 3;
 	
 	private static final int[] ITEM_INSERT_SLOTS = new int[] { ITEM_INPUT_SLOT_1, ITEM_INPUT_SLOT_2 };
 	
@@ -145,15 +146,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 
 	@Override
 	public Packet<?> createSpawnPacket() {
-		var packet = new PacketByteBuf(Unpooled.buffer());
-
-		packet.writeDouble(this.getX());
-		packet.writeDouble(this.getY());
-		packet.writeDouble(this.getZ());
-		packet.writeUuid(this.getUuid());
-		packet.writeInt(this.getId());
-
-		return NetworkManager.toPacket(NetworkManager.s2c(), AMNetworks.PRIMITIVE_ROCKET_SPAWN, packet);
+		return new EntitySpawnS2CPacket(this);
 	}
 	
 	@Override
@@ -196,6 +189,8 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 			
 			if (firstItemOutputStorage.getResource().isBlank()) {
 				StorageUtil.move(firstItemInputStorage, firstItemOutputStorage, (variant) -> {
+					if(firstItemOutputStorage.isResourceBlank()) return true;
+
 					var storage = FluidStorage.ITEM.find(variant.toStack(), ContainerItemContext.ofSingleSlot(firstItemOutputStorage));
 					
 					return storage == null || storage.iterator(transaction).next().isResourceBlank();
@@ -204,6 +199,8 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 			
 			if (secondItemOutputStorage.getResource().isBlank()) {
 				StorageUtil.move(secondItemInputStorage, secondItemOutputStorage, (variant) -> {
+					if(secondItemOutputStorage.isResourceBlank()) return true;
+
 					var storage = FluidStorage.ITEM.find(variant.toStack(), ContainerItemContext.ofSingleSlot(firstItemOutputStorage));
 					
 					return storage == null || storage.iterator(transaction).next().isResourceBlank();

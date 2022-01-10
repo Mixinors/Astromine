@@ -29,6 +29,7 @@ import java.util.Set;
 
 import com.github.mixinors.astromine.AMCommon;
 
+import net.minecraft.entity.SpawnGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
@@ -37,6 +38,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.GenerationSettings;
 import net.minecraft.world.biome.SpawnSettings;
+import net.minecraft.world.gen.GenerationStep;
 
 public class AMBiomes {
 	private static final Set<RegistryKey<?>> KEYS = new HashSet<>();
@@ -50,9 +52,13 @@ public class AMBiomes {
 		//   custom entities, these are mostly the same for each biome.
 		// Vanilla configured features for biomes are defined in DefaultBiomeFeatures.
 		
-		var spawnSettings = new SpawnSettings.Builder();
+		var spawnSettings = new SpawnSettings.Builder()
+				.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(AMEntityTypes.SPACE_SLIME.get(), 10, 3, 8))
+				.build();
 		
-		var generationSettings = new GenerationSettings.Builder();
+		var generationSettings = new GenerationSettings.Builder()
+				.feature(GenerationStep.Feature.UNDERGROUND_ORES, AMFeatures.ASTEROID_ORES_PLACED_FEATURE)
+				.build();
 
 		return (new Biome.Builder())
 			.precipitation(Biome.Precipitation.RAIN)
@@ -65,13 +71,13 @@ public class AMBiomes {
 				.fogColor(0xc0d8ff)
 				.skyColor(0x77adff)
 				.build())
-			.spawnSettings(spawnSettings.build())
-			.generationSettings(generationSettings.build())
+			.spawnSettings(spawnSettings)
+			.generationSettings(generationSettings)
 			.build();
 	}
 
 	public static void init() {
-		Registry.register( BuiltinRegistries.BIOME, ASTEROID_BELT_KEY.getValue(), createAsteroidBelt());
+		Registry.register(BuiltinRegistries.BIOME, ASTEROID_BELT_KEY.getValue(), createAsteroidBelt());
 	}
 
 	public static <T> RegistryKey<T> register(RegistryKey<Registry<T>> registry, Identifier identifier) {

@@ -94,8 +94,6 @@ public class CrudeOilFeature extends Feature<DefaultFeatureConfig> {
 			world.createAndScheduleFluidTick(mutablePos, AMFluids.OIL, 0);
 		}
 
-		AMCommon.LOGGER.info("haha yes oil at "+pos);
-
 		return true;
 	}
 }

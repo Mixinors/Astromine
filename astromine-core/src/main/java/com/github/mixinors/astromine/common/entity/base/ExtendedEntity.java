@@ -72,9 +72,8 @@ public abstract class ExtendedEntity extends Entity implements FluidStorageSizeP
 			
 			fluidStorage.writeToNbt(fluidStorageNbt);
 			
-			nbt.put("ItemStorage", fluidStorageNbt);
+			nbt.put("FluidStorage", fluidStorageNbt);
 		}
-
 	}
 	
 	@Override
