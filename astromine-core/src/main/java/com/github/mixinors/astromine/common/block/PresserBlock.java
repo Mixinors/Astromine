@@ -24,6 +24,14 @@
 
 package com.github.mixinors.astromine.common.block;
 
+import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.PressBlockEntity;
+import com.github.mixinors.astromine.common.network.NetworkBlock;
+import com.github.mixinors.astromine.common.screenhandler.PresserScreenHandler;
+import com.github.mixinors.astromine.common.util.tier.MachineTier;
+import com.github.mixinors.astromine.registry.common.AMBlocks;
+
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -34,38 +42,43 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
-import com.github.mixinors.astromine.common.network.NetworkBlock;
-import com.github.mixinors.astromine.common.block.entity.machine.PressBlockEntity;
-import com.github.mixinors.astromine.common.screenhandler.PressScreenHandler;
-
-public abstract class PressBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.ItemBuffer {
-	public PressBlock(Settings settings) {
+public abstract class PresserBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.ItemBuffer {
+	public PresserBlock(Settings settings) {
 		super(settings);
 	}
 
-	public abstract static class Base extends PressBlock {
-		public Base(Settings settings) {
-			super(settings);
-		}
-
-		@Override
-		public boolean hasScreenHandler() {
-			return true;
-		}
-
-		@Override
-		public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-			return new PressScreenHandler(syncId, playerInventory.player, pos);
-		}
-
-		@Override
-		public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
-			buffer.writeBlockPos(pos);
-		}
+	@Override
+	public SavedData getSavedDataForDroppedItem() {
+		return ITEM_MACHINE;
 	}
 
-	public static class Primitive extends PressBlock.Base {
+	@Override
+	public Block getForTier(MachineTier tier) {
+		return switch(tier) {
+			case PRIMITIVE -> AMBlocks.PRIMITIVE_PRESSER.get();
+			case BASIC -> AMBlocks.BASIC_PRESSER.get();
+			case ADVANCED -> AMBlocks.ADVANCED_PRESSER.get();
+			case ELITE -> AMBlocks.ELITE_PRESSER.get();
+			case CREATIVE -> null;
+		};
+	}
+
+	@Override
+	public boolean hasScreenHandler() {
+		return true;
+	}
+
+	@Override
+	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+		return new PresserScreenHandler(syncId, playerInventory.player, pos);
+	}
+
+	@Override
+	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
+		buffer.writeBlockPos(pos);
+	}
+
+	public static class Primitive extends PresserBlock {
 		public Primitive(Settings settings) {
 			super(settings);
 		}
@@ -74,9 +87,14 @@ public abstract class PressBlock extends HorizontalFacingTieredBlockWithEntity i
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new PressBlockEntity.Primitive(pos, state);
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.PRIMITIVE;
+		}
 	}
 
-	public static class Basic extends PressBlock.Base {
+	public static class Basic extends PresserBlock {
 		public Basic(Settings settings) {
 			super(settings);
 		}
@@ -85,9 +103,14 @@ public abstract class PressBlock extends HorizontalFacingTieredBlockWithEntity i
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new PressBlockEntity.Basic(pos, state);
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.BASIC;
+		}
 	}
 
-	public static class Advanced extends PressBlock.Base {
+	public static class Advanced extends PresserBlock {
 		public Advanced(Settings settings) {
 			super(settings);
 		}
@@ -96,9 +119,14 @@ public abstract class PressBlock extends HorizontalFacingTieredBlockWithEntity i
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new PressBlockEntity.Advanced(pos, state);
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.ADVANCED;
+		}
 	}
 
-	public static class Elite extends PressBlock.Base {
+	public static class Elite extends PresserBlock {
 		public Elite(Settings settings) {
 			super(settings);
 		}
@@ -106,6 +134,11 @@ public abstract class PressBlock extends HorizontalFacingTieredBlockWithEntity i
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new PressBlockEntity.Elite(pos, state);
+		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.ELITE;
 		}
 	}
 }

@@ -24,8 +24,7 @@
 
 package com.github.mixinors.astromine.common.block;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import com.github.mixinors.astromine.common.component.world.WorldHoloBridgeComponent;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -41,7 +40,8 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.component.world.WorldHoloBridgeComponent;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 public class HoloBridgeInvisibleBlock extends Block {
 	public static final Material MATERIAL = new Material.Builder(MapColor.CLEAR).build();

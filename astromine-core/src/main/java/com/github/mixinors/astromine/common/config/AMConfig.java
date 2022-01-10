@@ -24,12 +24,12 @@
 
 package com.github.mixinors.astromine.common.config;
 
+import com.github.mixinors.astromine.common.config.entry.tiered.CapacitorConfig;
+import com.github.mixinors.astromine.common.config.entry.tiered.TankConfig;
 import com.github.mixinors.astromine.common.config.section.BatteriesConfigSection;
 import com.github.mixinors.astromine.common.config.section.MachinesConfigSection;
 import com.github.mixinors.astromine.common.config.section.PortableTanksConfigSection;
 import com.github.mixinors.astromine.common.config.section.UtilitiesConfigSection;
-import com.github.mixinors.astromine.common.config.entry.tiered.CapacitorConfig;
-import com.github.mixinors.astromine.common.config.entry.tiered.TankConfig;
 
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 

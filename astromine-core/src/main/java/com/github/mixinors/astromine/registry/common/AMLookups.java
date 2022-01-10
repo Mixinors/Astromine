@@ -25,11 +25,10 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import team.reborn.energy.api.EnergyStorage;
 
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
-
-import team.reborn.energy.api.EnergyStorage;
 
 public class AMLookups {
 	public static void init() {

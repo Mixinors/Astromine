@@ -25,17 +25,12 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.common.callback.ServerChunkManagerCallback;
-
-
-import com.github.mixinors.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
-
-import dev.architectury.event.events.common.TickEvent;
-
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-
 import com.github.mixinors.astromine.common.component.world.WorldNetworkComponent;
 import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
+import com.github.mixinors.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
+import dev.architectury.event.events.common.TickEvent;
+
+import net.minecraft.server.world.ServerWorld;
 
 public class AMCallbacks {
 	public static void init() {

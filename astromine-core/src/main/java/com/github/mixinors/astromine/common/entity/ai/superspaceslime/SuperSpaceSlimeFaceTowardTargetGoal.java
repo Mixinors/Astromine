@@ -24,13 +24,12 @@
 
 package com.github.mixinors.astromine.common.entity.ai.superspaceslime;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.player.PlayerEntity;
+import java.util.EnumSet;
 
 import com.github.mixinors.astromine.common.entity.SuperSpaceSlimeEntity;
 
-import java.util.EnumSet;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.player.PlayerEntity;
 
 /**
  * This goal instructs the given {@link SuperSpaceSlimeEntity} to look at its target for up to 300 ticks.

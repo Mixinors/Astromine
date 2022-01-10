@@ -26,7 +26,6 @@ package com.github.mixinors.astromine.datagen.provider.tag;
 
 import com.github.mixinors.astromine.datagen.AMDatagen;
 
-import net.minecraft.fluid.Fluid;
 import net.minecraft.util.registry.Registry;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;

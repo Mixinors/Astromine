@@ -24,6 +24,10 @@
 
 package com.github.mixinors.astromine.common.block;
 
+import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
+import com.github.mixinors.astromine.common.block.entity.DrainBlockEntity;
+import com.github.mixinors.astromine.common.network.NetworkBlock;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -34,13 +38,14 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
-import com.github.mixinors.astromine.common.network.NetworkBlock;
-import com.github.mixinors.astromine.common.block.entity.DrainBlockEntity;
-
 public class DrainBlock extends BlockWithEntity implements NetworkBlock.FluidRequester {
 	public DrainBlock(Settings settings) {
 		super(settings);
+	}
+
+	@Override
+	public SavedData getSavedDataForDroppedItem() {
+		return new SavedData(true, false, false, true);
 	}
 
 	@Override

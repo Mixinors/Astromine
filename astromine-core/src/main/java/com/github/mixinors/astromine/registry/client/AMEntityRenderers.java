@@ -24,12 +24,12 @@
 
 package com.github.mixinors.astromine.registry.client;
 
-import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-
 import com.github.mixinors.astromine.client.render.entity.PrimitiveRocketEntityRenderer;
 import com.github.mixinors.astromine.client.render.entity.SpaceSlimeEntityRenderer;
 import com.github.mixinors.astromine.client.render.entity.SuperSpaceSlimeEntityRenderer;
 import com.github.mixinors.astromine.registry.common.AMEntityTypes;
+
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 
 public class AMEntityRenderers {
 	public static void init() {

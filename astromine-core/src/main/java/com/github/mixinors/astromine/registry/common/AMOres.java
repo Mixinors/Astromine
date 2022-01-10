@@ -24,15 +24,13 @@
 
 package com.github.mixinors.astromine.registry.common;
 
+import java.util.function.Predicate;
+
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.registry.AsteroidOreRegistry;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.util.data.Range;
 import com.github.mixinors.astromine.common.world.ore.OreDistribution;
-
-import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
-import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
-import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -40,7 +38,9 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.PlacedFeature;
 
-import java.util.function.Predicate;
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
+import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 
 public class AMOres {
 	public static final Identifier ORES_ID = AMCommon.id("astromine_ores");

@@ -24,12 +24,12 @@
 
 package com.github.mixinors.astromine.client.screen.base.entity;
 
-import dev.vini2003.hammer.common.screen.handler.BaseScreenHandler;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.text.Text;
-
 import com.github.mixinors.astromine.client.screen.base.CustomForegroundBaseHandledScreen;
 import com.github.mixinors.astromine.common.screenhandler.base.entity.ExtendedEntityScreenHandler;
+import dev.vini2003.hammer.common.screen.handler.BaseScreenHandler;
+
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.text.Text;
 
 public class ExtendedEntityHandledScreen<T extends ExtendedEntityScreenHandler> extends CustomForegroundBaseHandledScreen<T> {
 	public ExtendedEntityHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {

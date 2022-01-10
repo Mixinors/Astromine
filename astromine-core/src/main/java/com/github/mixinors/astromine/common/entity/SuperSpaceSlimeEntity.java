@@ -24,8 +24,15 @@
 
 package com.github.mixinors.astromine.common.entity;
 
+import com.github.mixinors.astromine.common.entity.ai.superspaceslime.SuperSpaceSlimeExplosionGoal;
+import com.github.mixinors.astromine.common.entity.ai.superspaceslime.SuperSpaceSlimeFaceTowardTargetGoal;
+import com.github.mixinors.astromine.common.entity.ai.superspaceslime.SuperSpaceSlimeMoveControl;
+import com.github.mixinors.astromine.common.entity.ai.superspaceslime.SuperSpaceSlimeMoveGoal;
+import com.github.mixinors.astromine.common.entity.ai.superspaceslime.SuperSpaceSlimeRandomLookGoal;
+import com.github.mixinors.astromine.common.entity.ai.superspaceslime.SuperSpaceSlimeSwimmingGoal;
 import com.github.mixinors.astromine.registry.common.AMEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMParticles;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityPose;
@@ -51,16 +58,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
-
-import com.github.mixinors.astromine.common.entity.ai.superspaceslime.SuperSpaceSlimeExplosionGoal;
-import com.github.mixinors.astromine.common.entity.ai.superspaceslime.SuperSpaceSlimeFaceTowardTargetGoal;
-import com.github.mixinors.astromine.common.entity.ai.superspaceslime.SuperSpaceSlimeMoveControl;
-import com.github.mixinors.astromine.common.entity.ai.superspaceslime.SuperSpaceSlimeMoveGoal;
-import com.github.mixinors.astromine.common.entity.ai.superspaceslime.SuperSpaceSlimeRandomLookGoal;
-import com.github.mixinors.astromine.common.entity.ai.superspaceslime.SuperSpaceSlimeSwimmingGoal;
 
 public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 

@@ -32,7 +32,6 @@ import com.github.mixinors.astromine.common.transfer.StorageType;
 import dev.architectury.networking.NetworkManager;
 
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 public class AMNetworks {

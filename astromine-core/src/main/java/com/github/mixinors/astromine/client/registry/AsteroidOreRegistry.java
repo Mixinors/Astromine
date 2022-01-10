@@ -24,17 +24,17 @@
 
 package com.github.mixinors.astromine.client.registry;
 
-import net.minecraft.block.Block;
-import net.minecraft.util.Pair;
+import java.util.Objects;
+import java.util.Random;
+import java.util.Set;
 
 import com.github.mixinors.astromine.common.util.data.Range;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
-import java.util.Random;
-import java.util.Set;
+import net.minecraft.block.Block;
+import net.minecraft.util.Pair;
 
 public class AsteroidOreRegistry {
 	public static final AsteroidOreRegistry INSTANCE = new AsteroidOreRegistry();

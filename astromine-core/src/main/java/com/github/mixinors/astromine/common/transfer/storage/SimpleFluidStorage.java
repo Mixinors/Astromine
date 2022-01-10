@@ -24,18 +24,24 @@
 
 package com.github.mixinors.astromine.common.transfer.storage;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
+import java.util.function.BiPredicate;
+import java.util.stream.IntStream;
+
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
+
+import net.minecraft.nbt.NbtCompound;
+
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
-import net.minecraft.nbt.NbtCompound;
-
-import java.util.*;
-import java.util.function.BiPredicate;
-import java.util.stream.IntStream;
 
 public class SimpleFluidStorage implements Storage<FluidVariant> {
 	private final int size;

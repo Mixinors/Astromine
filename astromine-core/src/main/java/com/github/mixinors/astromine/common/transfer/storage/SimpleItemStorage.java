@@ -24,23 +24,28 @@
 
 package com.github.mixinors.astromine.common.transfer.storage;
 
-import com.github.mixinors.astromine.common.transfer.StorageSiding;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
+import java.util.function.BiPredicate;
+import java.util.stream.IntStream;
 
+import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.registry.common.AMItems;
+
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.inventory.Inventory;
-
-import java.util.*;
-import java.util.function.BiPredicate;
-import java.util.stream.IntStream;
 
 public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	private final int size;

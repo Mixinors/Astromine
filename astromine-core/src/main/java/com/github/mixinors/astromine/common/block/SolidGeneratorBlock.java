@@ -24,6 +24,15 @@
 
 package com.github.mixinors.astromine.common.block;
 
+import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.generator.SolidGeneratorBlockEntity;
+import com.github.mixinors.astromine.common.block.redstone.ComparatorMode;
+import com.github.mixinors.astromine.common.network.NetworkBlock;
+import com.github.mixinors.astromine.common.screenhandler.SolidGeneratorScreenHandler;
+import com.github.mixinors.astromine.common.util.tier.MachineTier;
+import com.github.mixinors.astromine.registry.common.AMBlocks;
+
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -34,15 +43,14 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
-import com.github.mixinors.astromine.common.block.redstone.ComparatorMode;
-import com.github.mixinors.astromine.common.network.NetworkBlock;
-import com.github.mixinors.astromine.common.block.entity.machine.generator.SolidGeneratorBlockEntity;
-import com.github.mixinors.astromine.common.screenhandler.SolidGeneratorScreenHandler;
-
 public abstract class SolidGeneratorBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyProvider, NetworkBlock.ItemRequester {
 	public SolidGeneratorBlock(Settings settings) {
 		super(settings);
+	}
+
+	@Override
+	public SavedData getSavedDataForDroppedItem() {
+		return ITEM_MACHINE;
 	}
 
 	@Override
@@ -50,28 +58,33 @@ public abstract class SolidGeneratorBlock extends HorizontalFacingTieredBlockWit
 		return ComparatorMode.ENERGY;
 	}
 
-	public abstract static class Base extends SolidGeneratorBlock {
-		public Base(Settings settings) {
-			super(settings);
-		}
-
-		@Override
-		public boolean hasScreenHandler() {
-			return true;
-		}
-
-		@Override
-		public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-			return new SolidGeneratorScreenHandler(syncId, playerInventory.player, pos);
-		}
-
-		@Override
-		public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
-			buffer.writeBlockPos(pos);
-		}
+	@Override
+	public Block getForTier(MachineTier tier) {
+		return switch(tier) {
+			case PRIMITIVE -> AMBlocks.PRIMITIVE_SOLID_GENERATOR.get();
+			case BASIC -> AMBlocks.BASIC_SOLID_GENERATOR.get();
+			case ADVANCED -> AMBlocks.ADVANCED_SOLID_GENERATOR.get();
+			case ELITE -> AMBlocks.ELITE_SOLID_GENERATOR.get();
+			case CREATIVE -> null;
+		};
 	}
 
-	public static class Primitive extends Base {
+	@Override
+	public boolean hasScreenHandler() {
+		return true;
+	}
+
+	@Override
+	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+		return new SolidGeneratorScreenHandler(syncId, playerInventory.player, pos);
+	}
+
+	@Override
+	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
+		buffer.writeBlockPos(pos);
+	}
+
+	public static class Primitive extends SolidGeneratorBlock {
 		public Primitive(Settings settings) {
 			super(settings);
 		}
@@ -80,9 +93,14 @@ public abstract class SolidGeneratorBlock extends HorizontalFacingTieredBlockWit
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new SolidGeneratorBlockEntity.Primitive(pos, state);
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.PRIMITIVE;
+		}
 	}
 
-	public static class Basic extends Base {
+	public static class Basic extends SolidGeneratorBlock {
 		public Basic(Settings settings) {
 			super(settings);
 		}
@@ -91,9 +109,14 @@ public abstract class SolidGeneratorBlock extends HorizontalFacingTieredBlockWit
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new SolidGeneratorBlockEntity.Basic(pos, state);
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.BASIC;
+		}
 	}
 
-	public static class Advanced extends Base {
+	public static class Advanced extends SolidGeneratorBlock {
 		public Advanced(Settings settings) {
 			super(settings);
 		}
@@ -102,9 +125,14 @@ public abstract class SolidGeneratorBlock extends HorizontalFacingTieredBlockWit
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new SolidGeneratorBlockEntity.Advanced(pos, state);
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.ADVANCED;
+		}
 	}
 
-	public static class Elite extends Base {
+	public static class Elite extends SolidGeneratorBlock {
 		public Elite(Settings settings) {
 			super(settings);
 		}
@@ -112,6 +140,11 @@ public abstract class SolidGeneratorBlock extends HorizontalFacingTieredBlockWit
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new SolidGeneratorBlockEntity.Elite(pos, state);
+		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.ELITE;
 		}
 	}
 }

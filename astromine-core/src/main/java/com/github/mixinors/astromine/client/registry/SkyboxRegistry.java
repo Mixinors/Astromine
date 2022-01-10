@@ -24,12 +24,12 @@
 
 package com.github.mixinors.astromine.client.registry;
 
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.World;
-
 import com.github.mixinors.astromine.client.render.sky.skybox.Skybox;
 import com.github.mixinors.astromine.common.registry.base.BiRegistry;
 import com.github.mixinors.astromine.mixin.client.WorldRendererMixin;
+
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.World;
 
 /**
  * A {@link BiRegistry} for registration of

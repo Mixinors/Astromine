@@ -24,25 +24,26 @@
 
 package com.github.mixinors.astromine.mixin.client;
 
+import java.util.function.Supplier;
+
+import com.google.common.base.Suppliers;
+
+import com.github.mixinors.astromine.client.model.PrimitiveRocketEntityModel;
 import com.github.mixinors.astromine.registry.client.AMEntityModelLayers;
 import com.github.mixinors.astromine.registry.common.AMItems;
-import com.google.common.base.Suppliers;
-import net.minecraft.client.MinecraftClient;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 
-import com.github.mixinors.astromine.client.model.PrimitiveRocketEntityModel;
-
-import java.util.function.Supplier;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BuiltinModelItemRenderer.class)
 public class BuiltinModelItemRendererMixin {

@@ -24,15 +24,23 @@
 
 package com.github.mixinors.astromine.common.registry;
 
-import com.github.mixinors.astromine.mixin.common.*;
-import com.github.mixinors.astromine.mixin.common.gravity.*;
+import java.util.Optional;
+
+import com.github.mixinors.astromine.common.config.AMConfig;
+import com.github.mixinors.astromine.common.registry.base.BiRegistry;
+import com.github.mixinors.astromine.mixin.common.EntityMixin;
+import com.github.mixinors.astromine.mixin.common.LivingEntityMixin;
+import com.github.mixinors.astromine.mixin.common.gravity.AbstractMinecartEntityMixin;
+import com.github.mixinors.astromine.mixin.common.gravity.EggEntityMixin;
+import com.github.mixinors.astromine.mixin.common.gravity.FishingBobberEntityMixin;
+import com.github.mixinors.astromine.mixin.common.gravity.GravityEntityMixin;
+import com.github.mixinors.astromine.mixin.common.gravity.HoneyBlockMixin;
+import com.github.mixinors.astromine.mixin.common.gravity.ItemEntityMixin;
+import com.github.mixinors.astromine.mixin.common.gravity.SquidEntityMixin;
+import com.github.mixinors.astromine.mixin.common.gravity.StepAndDestroyBlockGoalMixin;
+
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
-
-import com.github.mixinors.astromine.common.registry.base.BiRegistry;
-import com.github.mixinors.astromine.common.config.AMConfig;
-
-import java.util.Optional;
 
 /**
  * A {@link BiRegistry} for registration of

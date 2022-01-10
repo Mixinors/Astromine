@@ -24,14 +24,14 @@
 
 package com.github.mixinors.astromine.mixin.common;
 
+import com.github.mixinors.astromine.common.item.EnchantableToolItem;
+
+import net.minecraft.item.Item;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import net.minecraft.item.Item;
-
-import com.github.mixinors.astromine.common.item.EnchantableToolItem;
 
 /**
  * for future reference, the inner class numbers of the EnchantmentTarget enum: 1 = armor 2 = breakable 3 = bow 4 =

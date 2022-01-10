@@ -27,10 +27,12 @@ package com.github.mixinors.astromine.client.modmenu;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.gui.ConfigScreenProvider;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.gui.ConfigScreenProvider;
 
 @Environment(EnvType.CLIENT)
 public class AstromineModMenuSupport implements ModMenuApi {

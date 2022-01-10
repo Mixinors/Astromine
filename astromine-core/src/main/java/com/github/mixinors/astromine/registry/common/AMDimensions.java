@@ -24,16 +24,17 @@
 
 package com.github.mixinors.astromine.registry.common;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.github.mixinors.astromine.AMCommon;
+
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class AMDimensions {
 	private static final Set<RegistryKey<?>> KEYS = new HashSet<>();

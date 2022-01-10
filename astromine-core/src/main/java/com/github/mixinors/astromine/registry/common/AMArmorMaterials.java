@@ -24,9 +24,9 @@
 
 package com.github.mixinors.astromine.registry.common;
 
+import java.util.function.Supplier;
+
 import dev.architectury.hooks.tags.TagHooks;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorMaterial;
@@ -34,7 +34,8 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 
-import java.util.function.Supplier;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 public class AMArmorMaterials {
 	public static final ArmorMaterial SPACE_SUIT = register("space_suit", 50, new int[]{ 1, 2, 3, 1 }, 2, AMSoundEvents.SPACE_SUIT_EQUIPPED.get(), 0.0f, 0.0f, () -> Ingredient.fromTag( TagHooks.optionalItem(Identifier.tryParse("c:metite_ingots"))));

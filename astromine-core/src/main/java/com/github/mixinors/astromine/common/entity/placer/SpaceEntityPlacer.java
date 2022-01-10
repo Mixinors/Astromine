@@ -24,11 +24,11 @@
 
 package com.github.mixinors.astromine.common.entity.placer;
 
+import com.github.mixinors.astromine.common.config.AMConfig;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.TeleportTarget;
-
-import com.github.mixinors.astromine.common.config.AMConfig;
 
 public record SpaceEntityPlacer(int y) implements EntityPlacer {
 	public static final SpaceEntityPlacer TO_PLANET = new SpaceEntityPlacer(AMConfig.get().overworldSpawnYLevel);

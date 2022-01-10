@@ -25,6 +25,11 @@
 package com.github.mixinors.astromine.common.block;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWithEntity;
+import com.github.mixinors.astromine.common.block.entity.utility.FluidCollectorBlockEntity;
+import com.github.mixinors.astromine.common.block.redstone.ComparatorMode;
+import com.github.mixinors.astromine.common.network.NetworkBlock;
+import com.github.mixinors.astromine.common.screenhandler.FluidCollectorScreenHandler;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -35,14 +40,14 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.block.redstone.ComparatorMode;
-import com.github.mixinors.astromine.common.network.NetworkBlock;
-import com.github.mixinors.astromine.common.block.entity.utility.FluidCollectorBlockEntity;
-import com.github.mixinors.astromine.common.screenhandler.FluidCollectorScreenHandler;
-
 public class FluidCollectorBlock extends HorizontalFacingBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.FluidProvider {
 	public FluidCollectorBlock(Settings settings) {
 		super(settings);
+	}
+
+	@Override
+	public SavedData getSavedDataForDroppedItem() {
+		return FLUID_MACHINE;
 	}
 
 	@Override

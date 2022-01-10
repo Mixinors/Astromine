@@ -24,7 +24,12 @@
 
 package com.github.mixinors.astromine.registry.common;
 
-import com.github.mixinors.astromine.common.block.entity.*;
+import java.util.function.Supplier;
+
+import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.common.block.entity.BufferBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.DrainBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.HoloBridgeProjectorBlockEntity;
 import com.github.mixinors.astromine.common.block.entity.machine.*;
 import com.github.mixinors.astromine.common.block.entity.machine.generator.FluidGeneratorBlockEntity;
 import com.github.mixinors.astromine.common.block.entity.machine.generator.SolidGeneratorBlockEntity;
@@ -33,15 +38,13 @@ import com.github.mixinors.astromine.common.block.entity.utility.BlockPlacerBloc
 import com.github.mixinors.astromine.common.block.entity.utility.FluidCollectorBlockEntity;
 import com.github.mixinors.astromine.common.block.entity.utility.FluidPlacerBlockEntity;
 import dev.architectury.registry.registries.RegistrySupplier;
-import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.registry.Registry;
 
-import com.github.mixinors.astromine.AMCommon;
-
-import java.util.function.Supplier;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 
 public class AMBlockEntityTypes {
 	public static final RegistrySupplier<BlockEntityType<HoloBridgeProjectorBlockEntity>> HOLOGRAPHIC_BRIDGE = register("holographic_bridge", HoloBridgeProjectorBlockEntity::new, AMBlocks.HOLOGRAPHIC_BRIDGE_PROJECTOR);

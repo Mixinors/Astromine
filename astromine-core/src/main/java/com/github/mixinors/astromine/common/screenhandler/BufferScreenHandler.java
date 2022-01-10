@@ -29,6 +29,7 @@ import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
 import dev.vini2003.hammer.common.widget.list.slot.SlotListWidget;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 

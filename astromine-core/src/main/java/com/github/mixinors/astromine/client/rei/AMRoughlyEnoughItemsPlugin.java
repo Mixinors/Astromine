@@ -26,7 +26,6 @@ package com.github.mixinors.astromine.client.rei;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import com.google.common.collect.ImmutableList;
 
@@ -68,11 +67,8 @@ import org.jetbrains.annotations.Nullable;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.item.BucketItem;
-import net.minecraft.item.Item;
 import net.minecraft.recipe.SmeltingRecipe;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.text.TranslatableText;

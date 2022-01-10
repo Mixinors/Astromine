@@ -24,6 +24,11 @@
 
 package com.github.mixinors.astromine.common.screenhandler.base.entity;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.function.Supplier;
+
+import com.github.mixinors.astromine.common.entity.base.ExtendedEntity;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
 import dev.vini2003.hammer.common.screen.handler.BaseScreenHandler;
@@ -37,12 +42,6 @@ import dev.vini2003.hammer.common.widget.text.TextWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
-
-import com.github.mixinors.astromine.common.entity.base.ExtendedEntity;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.function.Supplier;
 
 public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 	protected final ExtendedEntity entity;

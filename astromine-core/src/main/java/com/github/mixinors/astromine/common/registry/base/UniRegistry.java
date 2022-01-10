@@ -24,9 +24,10 @@
 
 package com.github.mixinors.astromine.common.registry.base;
 
-import com.google.common.collect.Maps;
 import java.util.Collection;
 import java.util.Map;
+
+import com.google.common.collect.Maps;
 
 /**
  * A unidirectional registry,

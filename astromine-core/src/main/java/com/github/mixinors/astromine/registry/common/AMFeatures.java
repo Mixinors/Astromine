@@ -24,22 +24,31 @@
 
 package com.github.mixinors.astromine.registry.common;
 
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.world.feature.*;
+import com.github.mixinors.astromine.common.world.feature.AsteroidOreFeature;
+import com.github.mixinors.astromine.common.world.feature.CrudeOilFeature;
+import com.github.mixinors.astromine.common.world.feature.MeteorFeature;
+import com.github.mixinors.astromine.common.world.feature.MeteorGenerator;
 import dev.architectury.registry.registries.RegistrySupplier;
 
-import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
-import net.fabricmc.fabric.api.structure.v1.FabricStructureBuilder;
 import net.minecraft.structure.StructurePieceType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.ConfiguredStructureFeature;
+import net.minecraft.world.gen.feature.DefaultFeatureConfig;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.FeatureConfig;
+import net.minecraft.world.gen.feature.PlacedFeature;
 
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
+import net.fabricmc.fabric.api.structure.v1.FabricStructureBuilder;
 
 public class AMFeatures {
 	public static final Identifier ASTEROID_ORES_ID = AMCommon.id("asteroid_ores");

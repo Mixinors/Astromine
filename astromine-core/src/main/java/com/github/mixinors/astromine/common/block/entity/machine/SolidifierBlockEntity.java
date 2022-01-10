@@ -24,27 +24,27 @@
 
 package com.github.mixinors.astromine.common.block.entity.machine;
 
+import java.util.Optional;
+import java.util.function.Supplier;
+
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
-import com.github.mixinors.astromine.common.provider.config.tiered.FluidStorageMachineConfigProvider;
+import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.config.entry.tiered.FluidStorageMachineConfig;
+import com.github.mixinors.astromine.common.provider.config.tiered.FluidStorageMachineConfigProvider;
+import com.github.mixinors.astromine.common.recipe.SolidifyingRecipe;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
-import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.nbt.NbtCompound;
-
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
-import com.github.mixinors.astromine.common.config.AMConfig;
-import com.github.mixinors.astromine.common.recipe.SolidifyingRecipe;
-
-import net.minecraft.util.math.BlockPos;
+import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import org.jetbrains.annotations.NotNull;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-import java.util.Optional;
-import java.util.function.Supplier;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.math.BlockPos;
+
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 
 public abstract class SolidifierBlockEntity extends ExtendedBlockEntity implements FluidStorageMachineConfigProvider {
 	public double progress = 0;

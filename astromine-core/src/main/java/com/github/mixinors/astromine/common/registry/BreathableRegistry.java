@@ -24,12 +24,12 @@
 
 package com.github.mixinors.astromine.common.registry;
 
+import com.github.mixinors.astromine.common.registry.base.MultiRegistry;
+import com.github.mixinors.astromine.mixin.common.LivingEntityMixin;
+
 import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.tag.Tag;
-
-import com.github.mixinors.astromine.common.registry.base.MultiRegistry;
-import com.github.mixinors.astromine.mixin.common.LivingEntityMixin;
 
 /**
  * A {@link MultiRegistry} for registration of

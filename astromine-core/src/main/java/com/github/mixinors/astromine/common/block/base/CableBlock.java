@@ -24,6 +24,19 @@
 
 package com.github.mixinors.astromine.common.block.base;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Nullable;
+
+import com.google.common.collect.ImmutableMap;
+
+import com.github.mixinors.astromine.common.component.world.WorldNetworkComponent;
+import com.github.mixinors.astromine.common.network.type.base.NetworkType;
+import com.github.mixinors.astromine.common.registry.NetworkMemberRegistry;
+import com.github.mixinors.astromine.common.util.NetworkUtils;
+import com.github.mixinors.astromine.common.util.data.position.WorldPos;
+
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -43,19 +56,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-
-import com.github.mixinors.astromine.common.component.world.WorldNetworkComponent;
-import com.github.mixinors.astromine.common.network.NetworkMember;
-import com.github.mixinors.astromine.common.network.type.base.NetworkType;
-import com.github.mixinors.astromine.common.registry.NetworkMemberRegistry;
-import com.github.mixinors.astromine.common.util.NetworkUtils;
-import com.github.mixinors.astromine.common.util.data.position.WorldPos;
-
-import com.google.common.collect.ImmutableMap;
-import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * A {@link Block} which is composed of six {@link BlockState} properties,

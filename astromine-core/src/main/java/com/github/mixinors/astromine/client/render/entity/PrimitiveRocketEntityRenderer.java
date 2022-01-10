@@ -24,20 +24,18 @@
 
 package com.github.mixinors.astromine.client.render.entity;
 
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.EntityRenderer;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Vec3f;
-
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.model.PrimitiveRocketEntityModel;
 import com.github.mixinors.astromine.common.entity.PrimitiveRocketEntity;
 import com.github.mixinors.astromine.registry.client.AMEntityModelLayers;
 
+import net.minecraft.client.render.OverlayTexture;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory.Context;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Vec3f;
 
 public class PrimitiveRocketEntityRenderer extends EntityRenderer<PrimitiveRocketEntity> {
 	public static final Identifier ID = AMCommon.id("textures/entity/rocket/primitive_rocket.png");

@@ -25,14 +25,13 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
-
+import com.github.mixinors.astromine.mixin.common.FluidTagsAccessor;
 import dev.architectury.hooks.tags.TagHooks;
+
 import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.tag.Tag;
-
-import com.github.mixinors.astromine.mixin.common.FluidTagsAccessor;
 
 public class AMTags {
 	public static final Tag<Item> TRICKS_PIGLINS = TagHooks.optionalItem(AMCommon.id("tricks_piglins"));

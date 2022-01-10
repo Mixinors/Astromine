@@ -24,8 +24,11 @@
 
 package com.github.mixinors.astromine.mixin.client;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import com.github.mixinors.astromine.common.callback.SkyPropertiesCallback;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+
+import net.minecraft.client.render.DimensionEffects;
+import net.minecraft.util.Identifier;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,11 +36,9 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.minecraft.client.render.DimensionEffects;
-import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.common.callback.SkyPropertiesCallback;
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
 @Mixin(DimensionEffects.class)

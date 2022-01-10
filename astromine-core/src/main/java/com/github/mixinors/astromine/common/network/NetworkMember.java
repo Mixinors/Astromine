@@ -24,12 +24,13 @@
 
 package com.github.mixinors.astromine.common.network;
 
-import com.github.mixinors.astromine.common.network.type.base.NetworkType;
-
-import com.google.common.collect.Sets;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
+
+import com.google.common.collect.Sets;
+
+import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 
 /**
  * A member of a network.

@@ -24,8 +24,18 @@
 
 package com.github.mixinors.astromine.common.screenhandler.base.block;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
+
+import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWithEntity;
+import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.StorageType;
+import com.github.mixinors.astromine.common.util.WidgetUtils;
+import com.github.mixinors.astromine.common.widget.blade.RedstoneControlWidget;
 import dev.architectury.hooks.block.BlockEntityHooks;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
@@ -36,24 +46,11 @@ import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 import dev.vini2003.hammer.common.widget.tab.TabWidget;
 import dev.vini2003.hammer.common.widget.text.TextWidget;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-
-import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWithEntity;
-import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
-import com.github.mixinors.astromine.common.util.WidgetUtils;
-import com.github.mixinors.astromine.common.widget.blade.RedstoneControlWidget;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.function.BiConsumer;
-import java.util.function.Supplier;
 
 public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenHandler {
 	protected final ExtendedBlockEntity blockEntity;

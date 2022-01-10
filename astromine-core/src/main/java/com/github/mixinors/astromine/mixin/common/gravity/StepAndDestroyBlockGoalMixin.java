@@ -24,16 +24,16 @@
 
 package com.github.mixinors.astromine.mixin.common.gravity;
 
+import com.github.mixinors.astromine.common.entity.GravityEntity;
+
+import net.minecraft.entity.ai.goal.StepAndDestroyBlockGoal;
+import net.minecraft.entity.mob.MobEntity;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
-
-import net.minecraft.entity.ai.goal.StepAndDestroyBlockGoal;
-import net.minecraft.entity.mob.MobEntity;
-
-import com.github.mixinors.astromine.common.entity.GravityEntity;
 
 @Mixin(StepAndDestroyBlockGoal.class)
 public class StepAndDestroyBlockGoalMixin {

@@ -24,7 +24,11 @@
 
 package com.github.mixinors.astromine.registry.common;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.github.mixinors.astromine.AMCommon;
+
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
@@ -33,9 +37,6 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.GenerationSettings;
 import net.minecraft.world.biome.SpawnSettings;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class AMBiomes {
 	private static final Set<RegistryKey<?>> KEYS = new HashSet<>();

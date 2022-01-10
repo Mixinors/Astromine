@@ -24,19 +24,19 @@
 
 package com.github.mixinors.astromine.common.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.common.collect.ImmutableMap;
+
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.StorageType;
-import com.google.common.collect.ImmutableMap;
-
 import com.github.mixinors.astromine.common.widget.blade.StorageSidingWidget;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
 
 import net.minecraft.util.math.Direction;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class WidgetUtils {
 	public static List<StorageSidingWidget> createStorageSiding(Position anchor, ExtendedBlockEntity blockEntity, StorageSiding[] sidings, StorageType type, Direction rotation) {

@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.transfer;
 
 import com.github.mixinors.astromine.registry.common.AMItems;
+
 import net.minecraft.item.Item;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;

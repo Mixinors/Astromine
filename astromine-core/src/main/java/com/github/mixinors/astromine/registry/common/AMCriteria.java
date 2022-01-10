@@ -29,12 +29,11 @@ import com.github.mixinors.astromine.common.criterion.DestroyRocketCriterion;
 import com.github.mixinors.astromine.common.criterion.LaunchRocketCriterion;
 import com.github.mixinors.astromine.common.criterion.MetiteOreUnderestimationCriterion;
 import com.github.mixinors.astromine.common.criterion.ProperlyUseFireExtinguisherCriterion;
-import com.github.mixinors.astromine.common.criterion.UseFireExtinguisherCriterion;
-
-import dev.architectury.registry.level.advancement.CriteriaTriggersRegistry;
-import net.minecraft.advancement.criterion.Criterion;
-
 import com.github.mixinors.astromine.common.criterion.TrickedPiglinCriterion;
+import com.github.mixinors.astromine.common.criterion.UseFireExtinguisherCriterion;
+import dev.architectury.registry.level.advancement.CriteriaTriggersRegistry;
+
+import net.minecraft.advancement.criterion.Criterion;
 
 public class AMCriteria {
 	public static final TrickedPiglinCriterion TRICKED_PIGLIN = register(new TrickedPiglinCriterion(AMCommon.id("tricked_piglin")));

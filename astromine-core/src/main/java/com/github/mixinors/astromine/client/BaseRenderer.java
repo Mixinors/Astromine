@@ -28,8 +28,12 @@ import com.github.mixinors.astromine.common.util.ClientUtils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.vini2003.hammer.client.util.Layers;
 import dev.vini2003.hammer.common.color.Color;
+
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.render.*;
+import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.OverlayTexture;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.util.math.MatrixStack;

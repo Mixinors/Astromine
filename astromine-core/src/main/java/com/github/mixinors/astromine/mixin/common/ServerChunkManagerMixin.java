@@ -24,10 +24,11 @@
 
 package com.github.mixinors.astromine.mixin.common;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import java.util.concurrent.Executor;
+import java.util.function.Supplier;
+
+import com.github.mixinors.astromine.common.callback.ServerChunkManagerCallback;
+import com.mojang.datafixers.DataFixer;
 
 import net.minecraft.server.WorldGenerationProgressListener;
 import net.minecraft.server.world.ServerChunkManager;
@@ -37,12 +38,11 @@ import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.chunk.ChunkStatusChangeListener;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.level.storage.LevelStorage;
-import com.mojang.datafixers.DataFixer;
 
-import com.github.mixinors.astromine.common.callback.ServerChunkManagerCallback;
-
-import java.util.concurrent.Executor;
-import java.util.function.Supplier;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerChunkManager.class)
 public class ServerChunkManagerMixin {

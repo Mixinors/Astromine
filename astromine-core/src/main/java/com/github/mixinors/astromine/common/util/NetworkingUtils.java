@@ -27,10 +27,12 @@ package com.github.mixinors.astromine.common.util;
 import com.github.mixinors.astromine.common.transfer.RedstoneControl;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.StorageType;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 
 public class NetworkingUtils {
 	public static PacketByteBuf ofStorageSiding(StorageSiding siding, StorageType type, Direction direction, BlockPos pos) {

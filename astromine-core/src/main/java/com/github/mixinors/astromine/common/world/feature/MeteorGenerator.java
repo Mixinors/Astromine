@@ -24,34 +24,37 @@
 
 package com.github.mixinors.astromine.common.world.feature;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Random;
+import java.util.stream.Collectors;
+
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.noise.OpenSimplexNoise;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMFeatures;
 import com.terraformersmc.terraform.shapes.api.Position;
 import com.terraformersmc.terraform.shapes.api.Quaternion;
-import com.terraformersmc.terraform.shapes.api.Shape;
 import com.terraformersmc.terraform.shapes.impl.Shapes;
 import com.terraformersmc.terraform.shapes.impl.layer.transform.RotateLayer;
 import com.terraformersmc.terraform.shapes.impl.layer.transform.TranslateLayer;
-import net.minecraft.block.Block;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.structure.ShiftableStructurePiece;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.BlockBox;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Random;
-import java.util.stream.Collectors;
 
 public class MeteorGenerator extends ShiftableStructurePiece {
 

@@ -24,6 +24,8 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import java.util.ArrayList;
+
 import com.github.mixinors.astromine.common.block.entity.base.Tickable;
 import com.github.mixinors.astromine.common.component.world.WorldHoloBridgeComponent;
 import com.github.mixinors.astromine.common.util.LineUtils;
@@ -32,6 +34,9 @@ import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.architectury.hooks.block.BlockEntityHooks;
 import dev.vini2003.hammer.common.color.Color;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -44,10 +49,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.math.Vec3i;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
 
 public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Tickable {
 	public static final Color DEFAULT_COLOR = Color.of("0x7e80cad4");

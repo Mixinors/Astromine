@@ -24,15 +24,16 @@
 
 package com.github.mixinors.astromine.common.world.generation.space;
 
+import com.google.common.collect.ImmutableList;
+
 import com.github.mixinors.astromine.registry.common.AMBiomes;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import net.minecraft.util.dynamic.RegistryLookupCodec;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-
-import com.google.common.collect.ImmutableList;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 
 public class EarthSpaceBiomeSource extends BiomeSource {

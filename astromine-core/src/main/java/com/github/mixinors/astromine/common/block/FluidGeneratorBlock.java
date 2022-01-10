@@ -24,6 +24,15 @@
 
 package com.github.mixinors.astromine.common.block;
 
+import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.generator.FluidGeneratorBlockEntity;
+import com.github.mixinors.astromine.common.block.redstone.ComparatorMode;
+import com.github.mixinors.astromine.common.network.NetworkBlock;
+import com.github.mixinors.astromine.common.screenhandler.FluidGeneratorScreenHandler;
+import com.github.mixinors.astromine.common.util.tier.MachineTier;
+import com.github.mixinors.astromine.registry.common.AMBlocks;
+
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -34,15 +43,14 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
-import com.github.mixinors.astromine.common.block.redstone.ComparatorMode;
-import com.github.mixinors.astromine.common.network.NetworkBlock;
-import com.github.mixinors.astromine.common.block.entity.machine.generator.FluidGeneratorBlockEntity;
-import com.github.mixinors.astromine.common.screenhandler.FluidGeneratorScreenHandler;
-
 public abstract class FluidGeneratorBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyProvider, NetworkBlock.FluidRequester {
 	public FluidGeneratorBlock(Settings settings) {
 		super(settings);
+	}
+
+	@Override
+	public SavedData getSavedDataForDroppedItem() {
+		return FLUID_MACHINE;
 	}
 
 	@Override
@@ -50,28 +58,33 @@ public abstract class FluidGeneratorBlock extends HorizontalFacingTieredBlockWit
 		return ComparatorMode.ENERGY;
 	}
 
-	public abstract static class Base extends FluidGeneratorBlock {
-		public Base(Settings settings) {
-			super(settings);
-		}
-
-		@Override
-		public boolean hasScreenHandler() {
-			return true;
-		}
-
-		@Override
-		public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-			return new FluidGeneratorScreenHandler(syncId, playerInventory.player, pos);
-		}
-
-		@Override
-		public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
-			buffer.writeBlockPos(pos);
-		}
+	@Override
+	public Block getForTier(MachineTier tier) {
+		return switch(tier) {
+			case PRIMITIVE -> AMBlocks.PRIMITIVE_FLUID_GENERATOR.get();
+			case BASIC -> AMBlocks.BASIC_FLUID_GENERATOR.get();
+			case ADVANCED -> AMBlocks.ADVANCED_FLUID_GENERATOR.get();
+			case ELITE -> AMBlocks.ELITE_FLUID_GENERATOR.get();
+			case CREATIVE -> null;
+		};
 	}
 
-	public static class Primitive extends FluidGeneratorBlock.Base {
+	@Override
+	public boolean hasScreenHandler() {
+		return true;
+	}
+
+	@Override
+	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+		return new FluidGeneratorScreenHandler(syncId, playerInventory.player, pos);
+	}
+
+	@Override
+	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
+		buffer.writeBlockPos(pos);
+	}
+
+	public static class Primitive extends FluidGeneratorBlock {
 		public Primitive(Settings settings) {
 			super(settings);
 		}
@@ -80,9 +93,14 @@ public abstract class FluidGeneratorBlock extends HorizontalFacingTieredBlockWit
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new FluidGeneratorBlockEntity.Primitive(pos, state);
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.PRIMITIVE;
+		}
 	}
 
-	public static class Basic extends FluidGeneratorBlock.Base {
+	public static class Basic extends FluidGeneratorBlock {
 		public Basic(Settings settings) {
 			super(settings);
 		}
@@ -91,9 +109,14 @@ public abstract class FluidGeneratorBlock extends HorizontalFacingTieredBlockWit
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new FluidGeneratorBlockEntity.Basic(pos, state);
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.BASIC;
+		}
 	}
 
-	public static class Advanced extends FluidGeneratorBlock.Base {
+	public static class Advanced extends FluidGeneratorBlock {
 		public Advanced(Settings settings) {
 			super(settings);
 		}
@@ -102,9 +125,14 @@ public abstract class FluidGeneratorBlock extends HorizontalFacingTieredBlockWit
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new FluidGeneratorBlockEntity.Advanced(pos, state);
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.ADVANCED;
+		}
 	}
 
-	public static class Elite extends FluidGeneratorBlock.Base {
+	public static class Elite extends FluidGeneratorBlock {
 		public Elite(Settings settings) {
 			super(settings);
 		}
@@ -112,6 +140,11 @@ public abstract class FluidGeneratorBlock extends HorizontalFacingTieredBlockWit
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new FluidGeneratorBlockEntity.Elite(pos, state);
+		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.ELITE;
 		}
 	}
 }

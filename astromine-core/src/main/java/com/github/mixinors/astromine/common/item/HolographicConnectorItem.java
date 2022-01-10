@@ -24,10 +24,12 @@
 
 package com.github.mixinors.astromine.common.item;
 
+import com.github.mixinors.astromine.common.block.HoloBridgeProjectorBlock;
+import com.github.mixinors.astromine.common.block.entity.HoloBridgeProjectorBlockEntity;
 import com.github.mixinors.astromine.registry.common.AMSoundEvents;
 import dev.architectury.hooks.block.BlockEntityHooks;
+
 import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
@@ -42,9 +44,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
-
-import com.github.mixinors.astromine.common.block.HoloBridgeProjectorBlock;
-import com.github.mixinors.astromine.common.block.entity.HoloBridgeProjectorBlockEntity;
 
 public class HolographicConnectorItem extends Item {
 	public HolographicConnectorItem(Settings settings) {

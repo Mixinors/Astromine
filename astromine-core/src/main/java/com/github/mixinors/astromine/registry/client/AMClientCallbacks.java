@@ -24,28 +24,23 @@
 
 package com.github.mixinors.astromine.registry.client;
 
+import com.google.common.collect.Lists;
+
 import com.github.mixinors.astromine.client.render.sky.SpaceSkyProperties;
 import com.github.mixinors.astromine.common.callback.SkyPropertiesCallback;
 import com.github.mixinors.astromine.common.item.HolographicConnectorItem;
+import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
 import com.github.mixinors.astromine.common.network.type.EnergyNetworkType;
 import com.github.mixinors.astromine.common.util.TextUtils;
 import com.github.mixinors.astromine.registry.common.AMDimensions;
+import team.reborn.energy.api.base.SimpleBatteryItem;
 
-import com.google.common.collect.Lists;
-
-import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.item.BlockItem;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
-import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
-import team.reborn.energy.api.base.SimpleBatteryItem;
-
-import net.minecraft.util.Pair;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.World;
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 
 public class AMClientCallbacks {
 	public static void init() {

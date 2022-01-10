@@ -24,26 +24,27 @@
 
 package com.github.mixinors.astromine.common.world.feature;
 
+import java.util.Objects;
+import java.util.Random;
+import java.util.stream.Collectors;
+
 import com.github.mixinors.astromine.client.registry.AsteroidOreRegistry;
+import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.util.WeightedList;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-import com.github.mixinors.astromine.common.config.AMConfig;
 import com.mojang.serialization.Codec;
 import com.terraformersmc.terraform.shapes.api.Position;
 import com.terraformersmc.terraform.shapes.api.Quaternion;
 import com.terraformersmc.terraform.shapes.impl.Shapes;
 import com.terraformersmc.terraform.shapes.impl.layer.transform.RotateLayer;
 import com.terraformersmc.terraform.shapes.impl.layer.transform.TranslateLayer;
+
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.util.FeatureContext;
-
-import java.util.Objects;
-import java.util.Random;
-import java.util.stream.Collectors;
 
 public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 	public AsteroidOreFeature(Codec<DefaultFeatureConfig> codec) {

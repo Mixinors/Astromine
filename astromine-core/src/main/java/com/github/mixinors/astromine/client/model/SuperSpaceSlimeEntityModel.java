@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.client.model;
 
+import com.github.mixinors.astromine.common.entity.SuperSpaceSlimeEntity;
 import com.github.mixinors.astromine.common.util.ClientUtils;
 
 import net.minecraft.client.model.ModelPart;
@@ -33,8 +34,6 @@ import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-
-import com.github.mixinors.astromine.common.entity.SuperSpaceSlimeEntity;
 
 public class SuperSpaceSlimeEntityModel extends SlimeEntityModel<SuperSpaceSlimeEntity> {
 

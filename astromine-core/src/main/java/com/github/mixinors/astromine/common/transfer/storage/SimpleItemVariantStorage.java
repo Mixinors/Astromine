@@ -24,9 +24,10 @@
 
 package com.github.mixinors.astromine.common.transfer.storage;
 
-import net.fabricmc.fabric.api.transfer.v1.item.base.SingleStackStorage;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+
+import net.fabricmc.fabric.api.transfer.v1.item.base.SingleStackStorage;
 
 public class SimpleItemVariantStorage extends SingleStackStorage {
 	private final Inventory inventory;

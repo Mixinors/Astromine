@@ -27,13 +27,11 @@ package com.github.mixinors.astromine.common.util;
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.EnumSet;
-import java.util.Map;
 import java.util.Set;
 
 import com.github.mixinors.astromine.common.block.base.CableBlock;
 import com.github.mixinors.astromine.common.component.world.WorldNetworkComponent;
 import com.github.mixinors.astromine.common.network.NetworkInstance;
-import com.github.mixinors.astromine.common.network.NetworkMember;
 import com.github.mixinors.astromine.common.network.NetworkMemberNode;
 import com.github.mixinors.astromine.common.network.NetworkNode;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
@@ -42,7 +40,6 @@ import com.github.mixinors.astromine.common.util.data.position.WorldPos;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;

@@ -24,12 +24,12 @@
 
 package com.github.mixinors.astromine.common.registry;
 
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.World;
+import java.util.Optional;
 
 import com.github.mixinors.astromine.common.registry.base.UniRegistry;
 
-import java.util.Optional;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.World;
 
 /**
  * An {@link UniRegistry}, for registration of

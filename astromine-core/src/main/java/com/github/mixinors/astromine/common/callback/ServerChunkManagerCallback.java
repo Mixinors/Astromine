@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.callback;
 
 import dev.architectury.event.Event;
 import dev.architectury.event.EventFactory;
+
 import net.minecraft.server.world.ServerChunkManager;
 
 /**

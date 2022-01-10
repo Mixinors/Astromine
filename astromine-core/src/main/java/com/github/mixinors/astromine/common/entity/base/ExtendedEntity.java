@@ -24,18 +24,18 @@
 
 package com.github.mixinors.astromine.common.entity.base;
 
+import javax.annotation.Nullable;
+
 import com.github.mixinors.astromine.common.provider.EnergyStorageSizeProvider;
 import com.github.mixinors.astromine.common.provider.FluidStorageSizeProvider;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
-
-import team.reborn.energy.api.base.SimpleEnergyStorage;
-
-import javax.annotation.Nullable;
 
 public abstract class ExtendedEntity extends Entity implements FluidStorageSizeProvider, EnergyStorageSizeProvider {
 	protected SimpleEnergyStorage energyStorage = null;

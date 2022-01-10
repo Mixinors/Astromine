@@ -24,6 +24,15 @@
 
 package com.github.mixinors.astromine.common.block;
 
+import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.MelterBlockEntity;
+import com.github.mixinors.astromine.common.block.redstone.ComparatorMode;
+import com.github.mixinors.astromine.common.network.NetworkBlock;
+import com.github.mixinors.astromine.common.screenhandler.MelterScreenHandler;
+import com.github.mixinors.astromine.common.util.tier.MachineTier;
+import com.github.mixinors.astromine.registry.common.AMBlocks;
+
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -34,15 +43,14 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
-import com.github.mixinors.astromine.common.block.redstone.ComparatorMode;
-import com.github.mixinors.astromine.common.network.NetworkBlock;
-import com.github.mixinors.astromine.common.block.entity.machine.MelterBlockEntity;
-import com.github.mixinors.astromine.common.screenhandler.MelterScreenHandler;
-
 public abstract class MelterBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.FluidProvider, NetworkBlock.ItemRequester {
 	public MelterBlock(Settings settings) {
 		super(settings);
+	}
+
+	@Override
+	public SavedData getSavedDataForDroppedItem() {
+		return ITEM_AND_FLUID_MACHINE;
 	}
 
 	@Override
@@ -50,28 +58,33 @@ public abstract class MelterBlock extends HorizontalFacingTieredBlockWithEntity 
 		return ComparatorMode.FLUIDS;
 	}
 
-	public abstract static class Base extends MelterBlock {
-		public Base(Settings settings) {
-			super(settings);
-		}
-
-		@Override
-		public boolean hasScreenHandler() {
-			return true;
-		}
-
-		@Override
-		public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-			return new MelterScreenHandler(syncId, playerInventory.player, pos);
-		}
-
-		@Override
-		public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
-			buffer.writeBlockPos(pos);
-		}
+	@Override
+	public Block getForTier(MachineTier tier) {
+		return switch(tier) {
+			case PRIMITIVE -> AMBlocks.PRIMITIVE_MELTER.get();
+			case BASIC -> AMBlocks.BASIC_MELTER.get();
+			case ADVANCED -> AMBlocks.ADVANCED_MELTER.get();
+			case ELITE -> AMBlocks.ELITE_MELTER.get();
+			case CREATIVE -> null;
+		};
 	}
 
-	public static class Primitive extends MelterBlock.Base {
+	@Override
+	public boolean hasScreenHandler() {
+		return true;
+	}
+
+	@Override
+	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+		return new MelterScreenHandler(syncId, playerInventory.player, pos);
+	}
+
+	@Override
+	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
+		buffer.writeBlockPos(pos);
+	}
+
+	public static class Primitive extends MelterBlock {
 		public Primitive(Settings settings) {
 			super(settings);
 		}
@@ -80,9 +93,14 @@ public abstract class MelterBlock extends HorizontalFacingTieredBlockWithEntity 
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new MelterBlockEntity.Primitive(pos, state);
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.PRIMITIVE;
+		}
 	}
 
-	public static class Basic extends MelterBlock.Base {
+	public static class Basic extends MelterBlock {
 		public Basic(Settings settings) {
 			super(settings);
 		}
@@ -91,9 +109,14 @@ public abstract class MelterBlock extends HorizontalFacingTieredBlockWithEntity 
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new MelterBlockEntity.Basic(pos, state);
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.BASIC;
+		}
 	}
 
-	public static class Advanced extends MelterBlock.Base {
+	public static class Advanced extends MelterBlock {
 		public Advanced(Settings settings) {
 			super(settings);
 		}
@@ -102,9 +125,14 @@ public abstract class MelterBlock extends HorizontalFacingTieredBlockWithEntity 
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new MelterBlockEntity.Advanced(pos, state);
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.ADVANCED;
+		}
 	}
 
-	public static class Elite extends MelterBlock.Base {
+	public static class Elite extends MelterBlock {
 		public Elite(Settings settings) {
 			super(settings);
 		}
@@ -112,6 +140,11 @@ public abstract class MelterBlock extends HorizontalFacingTieredBlockWithEntity 
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new MelterBlockEntity.Elite(pos, state);
+		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.ELITE;
 		}
 	}
 }

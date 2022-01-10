@@ -24,11 +24,11 @@
 
 package com.github.mixinors.astromine.common.entity.ai.superspaceslime;
 
-import net.minecraft.entity.ai.goal.Goal;
+import java.util.EnumSet;
 
 import com.github.mixinors.astromine.common.entity.SuperSpaceSlimeEntity;
 
-import java.util.EnumSet;
+import net.minecraft.entity.ai.goal.Goal;
 
 public class SuperSpaceSlimeSwimmingGoal extends Goal {
 

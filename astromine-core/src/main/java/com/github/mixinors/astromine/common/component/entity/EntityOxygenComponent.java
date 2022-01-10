@@ -24,16 +24,17 @@
 
 package com.github.mixinors.astromine.common.component.entity;
 
+import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
+import com.github.mixinors.astromine.registry.common.AMComponents;
+import dev.onyxstudios.cca.api.v3.component.Component;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import com.github.mixinors.astromine.registry.common.AMComponents;
-import com.github.mixinors.astromine.common.config.AMConfig;
-import dev.onyxstudios.cca.api.v3.component.Component;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * A {@link Component} containing oxygen levels for an entity.

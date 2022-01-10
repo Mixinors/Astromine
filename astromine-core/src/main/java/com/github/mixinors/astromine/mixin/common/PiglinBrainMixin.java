@@ -24,11 +24,9 @@
 
 package com.github.mixinors.astromine.mixin.common;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+import com.github.mixinors.astromine.common.config.AMConfig;
+import com.github.mixinors.astromine.registry.common.AMCriteria;
+import com.github.mixinors.astromine.registry.common.AMTags;
 
 import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.mob.PiglinBrain;
@@ -37,9 +35,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvents;
 
-import com.github.mixinors.astromine.common.config.AMConfig;
-import com.github.mixinors.astromine.registry.common.AMCriteria;
-import com.github.mixinors.astromine.registry.common.AMTags;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(PiglinBrain.class)
 public abstract class PiglinBrainMixin {

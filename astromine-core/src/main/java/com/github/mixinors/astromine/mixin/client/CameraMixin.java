@@ -24,16 +24,16 @@
 
 package com.github.mixinors.astromine.mixin.client;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import com.github.mixinors.astromine.registry.common.AMTags;
 
 import net.minecraft.client.render.Camera;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.tag.Tag;
 
-import com.github.mixinors.astromine.registry.common.AMTags;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Camera.class)
 public abstract class CameraMixin {

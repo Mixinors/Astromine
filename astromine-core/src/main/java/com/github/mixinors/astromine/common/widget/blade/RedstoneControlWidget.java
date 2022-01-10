@@ -24,29 +24,28 @@
 
 package com.github.mixinors.astromine.common.widget.blade;
 
+import java.util.Collections;
+import java.util.List;
+
+import com.github.mixinors.astromine.client.BaseRenderer;
+import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.transfer.RedstoneControl;
 import com.github.mixinors.astromine.common.util.NetworkingUtils;
 import com.github.mixinors.astromine.registry.common.AMNetworks;
 import dev.architectury.networking.NetworkManager;
 import dev.vini2003.hammer.client.texture.PartitionedTexture;
 import dev.vini2003.hammer.common.widget.button.ButtonWidget;
+import org.jetbrains.annotations.NotNull;
+import org.lwjgl.glfw.GLFW;
+
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
-
-import com.github.mixinors.astromine.client.BaseRenderer;
-import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.NotNull;
-import org.lwjgl.glfw.GLFW;
-
-import java.util.Collections;
-import java.util.List;
 
 public class RedstoneControlWidget extends ButtonWidget {
     private ExtendedBlockEntity blockEntity;

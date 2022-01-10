@@ -24,14 +24,14 @@
 
 package com.github.mixinors.astromine.common.inventory;
 
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
-
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 /**
  * A simple {@link Inventory} with helper methods

@@ -24,13 +24,14 @@
 
 package com.github.mixinors.astromine.registry.common;
 
+import java.util.function.Supplier;
+
 import dev.architectury.hooks.tags.TagHooks;
+
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Lazy;
-
-import java.util.function.Supplier;
 
 public class AMToolMaterials {
 	public static final ToolMaterial BRONZE = register(2, 539, 7f, 2.5f, 18, () -> Ingredient.fromTag( TagHooks.optionalItem(Identifier.tryParse("c:bronze_ingots"))));

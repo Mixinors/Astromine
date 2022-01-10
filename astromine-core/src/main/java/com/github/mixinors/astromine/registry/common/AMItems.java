@@ -24,22 +24,30 @@
 
 package com.github.mixinors.astromine.registry.common;
 
+import java.util.function.Supplier;
+
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.item.*;
 import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
 import com.github.mixinors.astromine.common.item.base.FluidStorageItem;
+import com.github.mixinors.astromine.common.util.tier.MachineTier;
 import dev.architectury.registry.registries.RegistrySupplier;
 
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.*;
+import net.minecraft.item.ArmorItem;
+import net.minecraft.item.AxeItem;
+import net.minecraft.item.FoodComponent;
+import net.minecraft.item.HoeItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.PickaxeItem;
+import net.minecraft.item.ShovelItem;
+import net.minecraft.item.SwordItem;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
-
-import java.util.function.Supplier;
 
 public class AMItems {
 	public static final RegistrySupplier<Item> ENERGY = register("energy", () -> new Item(new Item.Settings()));
@@ -348,9 +356,9 @@ public class AMItems {
 	
 	public static final RegistrySupplier<Item> MACHINE_CHASSIS = register("machine_chassis", () -> new Item(getSettings()));
 	
-	public static final RegistrySupplier<Item> BASIC_MACHINE_UPGRADE_KIT = register("basic_machine_upgrade_kit", () -> new Item(getSettings()));
-	public static final RegistrySupplier<Item> ADVANCED_MACHINE_UPGRADE_KIT = register("advanced_machine_upgrade_kit", () -> new Item(getSettings()));
-	public static final RegistrySupplier<Item> ELITE_MACHINE_UPGRADE_KIT = register("elite_machine_upgrade_kit", () -> new Item(getSettings()));
+	public static final RegistrySupplier<Item> BASIC_MACHINE_UPGRADE_KIT = register("basic_machine_upgrade_kit", () -> new MachineUpgradeKitItem(MachineTier.BASIC, getSettings()));
+	public static final RegistrySupplier<Item> ADVANCED_MACHINE_UPGRADE_KIT = register("advanced_machine_upgrade_kit", () -> new MachineUpgradeKitItem(MachineTier.ADVANCED, getSettings()));
+	public static final RegistrySupplier<Item> ELITE_MACHINE_UPGRADE_KIT = register("elite_machine_upgrade_kit", () -> new MachineUpgradeKitItem(MachineTier.ELITE, getSettings()));
 	
 	public static final RegistrySupplier<Item> PRIMITIVE_PLATING = register("primitive_plating", () -> new Item(getSettings()));
 	public static final RegistrySupplier<Item> BASIC_PLATING = register("basic_plating", () -> new Item(getSettings()));

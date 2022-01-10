@@ -24,13 +24,13 @@
 
 package com.github.mixinors.astromine.mixin.common.gravity;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import com.github.mixinors.astromine.common.entity.GravityEntity;
 
 import net.minecraft.entity.passive.SquidEntity;
 
-import com.github.mixinors.astromine.common.entity.GravityEntity;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 @Mixin(SquidEntity.class)
 public abstract class SquidEntityMixin implements GravityEntity {

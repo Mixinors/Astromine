@@ -24,8 +24,12 @@
 
 package com.github.mixinors.astromine.common.item;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+
+import com.github.mixinors.astromine.common.config.AMConfig;
+import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
 import com.github.mixinors.astromine.registry.common.AMItems;
-import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
 
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -39,11 +43,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
-import com.github.mixinors.astromine.common.config.AMConfig;
-
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
+import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
 
 public class GravityGauntletItem extends EnergyStorageItem implements DynamicAttributeTool {
 	private static final Multimap<EntityAttribute, EntityAttributeModifier> EAMS = HashMultimap.create();

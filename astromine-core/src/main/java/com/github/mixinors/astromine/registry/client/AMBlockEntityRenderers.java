@@ -24,15 +24,15 @@
 
 package com.github.mixinors.astromine.registry.client;
 
-import com.github.mixinors.astromine.client.render.block.*;
+import java.util.function.Supplier;
+
+import com.github.mixinors.astromine.client.render.block.HoloBridgeBlockEntityRenderer;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import dev.architectury.registry.client.rendering.fabric.BlockEntityRendererRegistryImpl;
 
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-
-import java.util.function.Supplier;
 
 public class AMBlockEntityRenderers {
 	public static void init() {

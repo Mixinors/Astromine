@@ -36,7 +36,6 @@ import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant
 import com.github.mixinors.astromine.registry.common.AMItems;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.tag.ItemTags;

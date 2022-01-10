@@ -24,15 +24,15 @@
 
 package com.github.mixinors.astromine.mixin.common.gravity;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import com.github.mixinors.astromine.common.entity.GravityEntity;
 
 import net.minecraft.block.HoneyBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.mixinors.astromine.common.entity.GravityEntity;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 @Mixin(HoneyBlock.class)
 public class HoneyBlockMixin {

@@ -24,9 +24,13 @@
 
 package com.github.mixinors.astromine.registry.common;
 
+import com.github.mixinors.astromine.common.screenhandler.RecipeCreatorScreenHandler;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
 import dev.architectury.registry.menu.ExtendedMenuProvider;
 import dev.architectury.registry.menu.MenuRegistry;
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketByteBuf;
@@ -34,10 +38,6 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-
-import com.github.mixinors.astromine.common.screenhandler.RecipeCreatorScreenHandler;
-import org.jetbrains.annotations.NotNull;
 
 public class AMCommands {
 	public static void init() {

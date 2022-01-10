@@ -24,9 +24,9 @@
 
 package com.github.mixinors.astromine.registry.common;
 
-import net.minecraft.entity.*;
-
 import com.github.mixinors.astromine.common.registry.BreathableRegistry;
+
+import net.minecraft.entity.EntityType;
 
 public class AMBreathables {
 	public static void init() {

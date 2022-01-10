@@ -24,23 +24,28 @@
 
 package com.github.mixinors.astromine.registry.common;
 
+import java.util.function.Supplier;
+
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.entity.PrimitiveRocketEntity;
 import com.github.mixinors.astromine.common.entity.SpaceSlimeEntity;
 import com.github.mixinors.astromine.common.entity.SuperSpaceSlimeEntity;
 import dev.architectury.registry.registries.RegistrySupplier;
-import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
-import net.minecraft.entity.*;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityDimensions;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.SpawnRestriction;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-
 import net.minecraft.world.Heightmap;
 
-import java.util.function.Supplier;
+import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 
 public class AMEntityTypes {
 	public static final RegistrySupplier<EntityType<PrimitiveRocketEntity>> PRIMITIVE_ROCKET = register("primitive_rocket", () -> FabricEntityTypeBuilder.create(SpawnGroup.MISC, PrimitiveRocketEntity::new).dimensions(EntityDimensions.changing(1.5f, 22.5f)).trackable(256, 4).build());

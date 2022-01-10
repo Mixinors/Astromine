@@ -24,7 +24,11 @@
 
 package com.github.mixinors.astromine.common.item;
 
-import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
+
+import com.github.mixinors.astromine.common.config.AMConfig;
+import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EquipmentSlot;
@@ -32,16 +36,17 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.PickaxeItem;
+import net.minecraft.item.ShovelItem;
+import net.minecraft.item.ToolMaterial;
+import net.minecraft.item.Vanishable;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
-import com.github.mixinors.astromine.common.config.AMConfig;
-
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
+import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
 
 public class DrillItem extends EnergyStorageItem implements DynamicAttributeTool, Vanishable, EnchantableToolItem {
 	private final int radius;

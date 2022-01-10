@@ -24,7 +24,6 @@
 
 package com.github.mixinors.astromine.common.item;
 
-import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.FluidBlock;
@@ -39,9 +38,8 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;

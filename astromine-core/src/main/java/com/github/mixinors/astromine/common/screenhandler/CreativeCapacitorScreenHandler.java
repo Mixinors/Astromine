@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.screenhandler;
 
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 

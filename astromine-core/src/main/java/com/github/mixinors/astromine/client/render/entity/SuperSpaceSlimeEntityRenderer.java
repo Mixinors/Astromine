@@ -25,6 +25,9 @@
 package com.github.mixinors.astromine.client.render.entity;
 
 import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.client.model.SuperSpaceSlimeEntityModel;
+import com.github.mixinors.astromine.common.entity.SuperSpaceSlimeEntity;
+
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.MobEntityRenderer;
@@ -33,9 +36,6 @@ import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
-
-import com.github.mixinors.astromine.client.model.SuperSpaceSlimeEntityModel;
-import com.github.mixinors.astromine.common.entity.SuperSpaceSlimeEntity;
 
 public class SuperSpaceSlimeEntityRenderer extends MobEntityRenderer<SuperSpaceSlimeEntity, SuperSpaceSlimeEntityModel> {
 

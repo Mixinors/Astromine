@@ -24,16 +24,16 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
+import com.github.mixinors.astromine.common.block.entity.machine.ElectrolyzerBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
+import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
 import dev.vini2003.hammer.common.widget.bar.FluidBarWidget;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
-
-import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
-import com.github.mixinors.astromine.common.block.entity.machine.ElectrolyzerBlockEntity;
 
 public class ElectrolyzerScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final ElectrolyzerBlockEntity electrolyzer;

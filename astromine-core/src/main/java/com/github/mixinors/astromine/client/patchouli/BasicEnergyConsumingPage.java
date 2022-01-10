@@ -24,13 +24,13 @@
 
 package com.github.mixinors.astromine.client.patchouli;
 
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.text.TranslatableText;
-
 import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
 import vazkii.patchouli.client.book.gui.GuiBook;
 import vazkii.patchouli.client.book.page.abstr.PageSimpleProcessingRecipe;
+
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.text.TranslatableText;
 
 public abstract class BasicEnergyConsumingPage<T extends EnergyConsumingRecipe> extends PageSimpleProcessingRecipe<T> {
 	public static final int ENERGY_CONSUMED_TEXT_COLOR = 0x999999;

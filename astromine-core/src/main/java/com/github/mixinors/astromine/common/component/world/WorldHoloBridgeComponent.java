@@ -24,26 +24,28 @@
 
 package com.github.mixinors.astromine.common.component.world;
 
-import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import java.util.Map;
+import java.util.Set;
+
+import com.google.common.collect.Sets;
+
+import com.github.mixinors.astromine.common.util.VoxelShapeUtils;
+import com.github.mixinors.astromine.registry.common.AMComponents;
+import dev.architectury.utils.NbtType;
+import dev.onyxstudios.cca.api.v3.component.Component;
+import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.block.Block;
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtLongArray;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
-import dev.architectury.utils.NbtType;
-
-import com.github.mixinors.astromine.common.util.VoxelShapeUtils;
-import com.github.mixinors.astromine.registry.common.AMComponents;
-import dev.onyxstudios.cca.api.v3.component.Component;
-import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
-import org.jetbrains.annotations.Nullable;
-
-import com.google.common.collect.Sets;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * A {@link Component} which stores information about

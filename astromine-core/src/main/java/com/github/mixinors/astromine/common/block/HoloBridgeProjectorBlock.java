@@ -25,15 +25,17 @@
 package com.github.mixinors.astromine.common.block;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWithEntity;
+import com.github.mixinors.astromine.common.block.entity.HoloBridgeProjectorBlockEntity;
 import dev.architectury.hooks.block.BlockEntityHooks;
 import dev.vini2003.hammer.common.color.Color;
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.DyeItem;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
@@ -44,12 +46,14 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.block.entity.HoloBridgeProjectorBlockEntity;
-import org.jetbrains.annotations.Nullable;
-
 public class HoloBridgeProjectorBlock extends HorizontalFacingBlockWithEntity {
 	public HoloBridgeProjectorBlock(AbstractBlock.Settings settings) {
 		super(settings);
+	}
+
+	@Override
+	public SavedData getSavedDataForDroppedItem() {
+		return new SavedData(false, false, false, false);
 	}
 
 	@Override
@@ -122,7 +126,7 @@ public class HoloBridgeProjectorBlock extends HorizontalFacingBlockWithEntity {
 	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {}
 
 	@Override
-	protected boolean saveTagToDroppedItem() {
+	public boolean saveTagToDroppedItem() {
 		return false;
 	}
 }

@@ -24,13 +24,13 @@
 
 package com.github.mixinors.astromine.mixin.common.gravity;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import com.github.mixinors.astromine.common.entity.GravityEntity;
 
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 
-import com.github.mixinors.astromine.common.entity.GravityEntity;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 @Mixin(AbstractMinecartEntity.class)
 public abstract class AbstractMinecartEntityMixin implements GravityEntity {

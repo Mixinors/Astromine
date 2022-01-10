@@ -24,9 +24,9 @@
 
 package com.github.mixinors.astromine.common.access;
 
-import net.minecraft.world.chunk.WorldChunk;
-
 import com.github.mixinors.astromine.mixin.common.WorldChunkMixin;
+
+import net.minecraft.world.chunk.WorldChunk;
 
 /**
  * A mixin helper class, used by {@link WorldChunkMixin}.

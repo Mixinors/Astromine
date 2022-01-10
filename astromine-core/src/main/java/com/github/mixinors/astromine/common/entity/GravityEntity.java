@@ -24,10 +24,10 @@
 
 package com.github.mixinors.astromine.common.entity;
 
+import com.github.mixinors.astromine.common.registry.GravityRegistry;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
-
-import com.github.mixinors.astromine.common.registry.GravityRegistry;
 
 /**
  * An interface meant to be implemented by mixins

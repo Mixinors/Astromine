@@ -25,6 +25,10 @@
 package com.github.mixinors.astromine.common.block;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWithEntity;
+import com.github.mixinors.astromine.common.block.entity.utility.BlockBreakerBlockEntity;
+import com.github.mixinors.astromine.common.network.NetworkBlock;
+import com.github.mixinors.astromine.common.screenhandler.BlockBreakerScreenHandler;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -35,13 +39,14 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.network.NetworkBlock;
-import com.github.mixinors.astromine.common.block.entity.utility.BlockBreakerBlockEntity;
-import com.github.mixinors.astromine.common.screenhandler.BlockBreakerScreenHandler;
-
 public class BlockBreakerBlock extends HorizontalFacingBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.ItemProvider {
 	public BlockBreakerBlock(Settings settings) {
 		super(settings);
+	}
+
+	@Override
+	public SavedData getSavedDataForDroppedItem() {
+		return ITEM_MACHINE;
 	}
 
 	@Override

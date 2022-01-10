@@ -24,7 +24,11 @@
 
 package com.github.mixinors.astromine.common.entity;
 
+import java.util.Random;
+
+import com.github.mixinors.astromine.common.entity.ai.superspaceslime.SpaceSlimeJumpHoverGoal;
 import com.github.mixinors.astromine.registry.common.AMParticles;
+
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.data.DataTracker;
@@ -40,10 +44,6 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
-
-import com.github.mixinors.astromine.common.entity.ai.superspaceslime.SpaceSlimeJumpHoverGoal;
-
-import java.util.Random;
 
 public class SpaceSlimeEntity extends SlimeEntity {
 	private static final TrackedData<Integer> FLOATING_PROGRESS = DataTracker.registerData(SpaceSlimeEntity.class, TrackedDataHandlerRegistry.INTEGER);

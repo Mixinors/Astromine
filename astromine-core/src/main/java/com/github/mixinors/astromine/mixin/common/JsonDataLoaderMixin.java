@@ -24,9 +24,12 @@
 
 package com.github.mixinors.astromine.mixin.common;
 
-import com.github.mixinors.astromine.common.recipe.condition.manager.ConditionalRecipeManager;
 import com.google.gson.Gson;
+
+import com.github.mixinors.astromine.common.recipe.condition.manager.ConditionalRecipeManager;
+
 import net.minecraft.resource.JsonDataLoader;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;

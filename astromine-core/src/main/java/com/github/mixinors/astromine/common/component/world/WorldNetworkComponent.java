@@ -24,25 +24,26 @@
 
 package com.github.mixinors.astromine.common.component.world;
 
+import java.util.Set;
+
+import com.google.common.collect.Sets;
+
 import com.github.mixinors.astromine.common.network.NetworkInstance;
 import com.github.mixinors.astromine.common.network.NetworkMemberNode;
 import com.github.mixinors.astromine.common.network.NetworkNode;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.registry.NetworkTypeRegistry;
 import com.github.mixinors.astromine.registry.common.AMComponents;
-import com.google.common.collect.Sets;
 import dev.architectury.utils.NbtType;
 import dev.onyxstudios.cca.api.v3.component.Component;
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtLong;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Set;
 
 /**
  * A {@link Component} which stores information about

@@ -24,14 +24,14 @@
 
 package com.github.mixinors.astromine.common.registry;
 
-import net.minecraft.util.Pair;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.World;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.github.mixinors.astromine.common.entity.placer.EntityPlacer;
 
-import java.util.HashMap;
-import java.util.Map;
+import net.minecraft.util.Pair;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.World;
 
 /**
  * A specialized registry for

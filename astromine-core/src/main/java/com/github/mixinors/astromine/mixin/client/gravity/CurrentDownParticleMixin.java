@@ -24,15 +24,15 @@
 
 package com.github.mixinors.astromine.mixin.client.gravity;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import com.github.mixinors.astromine.common.registry.GravityRegistry;
 
 import net.minecraft.client.particle.CurrentDownParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.world.ClientWorld;
 
-import com.github.mixinors.astromine.common.registry.GravityRegistry;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 @Mixin(CurrentDownParticle.class)
 public abstract class CurrentDownParticleMixin extends Particle {

@@ -24,8 +24,11 @@
 
 package com.github.mixinors.astromine.common.block;
 
+import java.util.Random;
+
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMCriteria;
+
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -40,8 +43,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-
-import java.util.Random;
 
 public class AstromineOreBlock extends Block {
 	public AstromineOreBlock(AbstractBlock.Settings settings) {

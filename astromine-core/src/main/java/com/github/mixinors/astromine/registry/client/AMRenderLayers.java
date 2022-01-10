@@ -25,9 +25,9 @@
 package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-
 import dev.architectury.event.events.client.ClientLifecycleEvent;
 import dev.architectury.registry.client.rendering.fabric.RenderTypeRegistryImpl;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.render.RenderLayer;
 

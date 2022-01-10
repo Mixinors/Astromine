@@ -24,41 +24,38 @@
 
 package com.github.mixinors.astromine.common.widget.blade;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.client.BaseRenderer;
+import com.github.mixinors.astromine.client.render.sprite.SpriteRenderer;
 import com.github.mixinors.astromine.common.util.ClientUtils;
+import com.github.mixinors.astromine.common.util.FluidUtils;
+import com.github.mixinors.astromine.common.util.TextUtils;
 import dev.vini2003.hammer.client.util.Layers;
 import dev.vini2003.hammer.common.widget.button.ButtonWidget;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import org.jetbrains.annotations.NotNull;
 
-import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
-import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.item.ItemStack;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-import com.github.mixinors.astromine.client.BaseRenderer;
-import com.github.mixinors.astromine.client.render.sprite.SpriteRenderer;
-import com.github.mixinors.astromine.common.util.FluidUtils;
-import com.github.mixinors.astromine.common.util.TextUtils;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
 
 /**
  * A filter widget depicting

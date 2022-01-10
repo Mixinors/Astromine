@@ -24,14 +24,14 @@
 
 package com.github.mixinors.astromine.client.render.layer;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderPhase;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.util.Identifier;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class Layer extends RenderLayer {
 	private static final Map<Identifier, RenderLayer> CACHE = new HashMap<>();

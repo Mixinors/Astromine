@@ -25,6 +25,8 @@
 package com.github.mixinors.astromine.mixin.common;
 
 import com.github.mixinors.astromine.common.access.WorldChunkAccessor;
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.ChunkPos;
@@ -32,9 +34,13 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.*;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.ChunkSection;
+import net.minecraft.world.chunk.PalettedContainer;
+import net.minecraft.world.chunk.UpgradeData;
+import net.minecraft.world.chunk.WorldChunk;
 import net.minecraft.world.gen.chunk.BlendingData;
-import org.jetbrains.annotations.Nullable;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

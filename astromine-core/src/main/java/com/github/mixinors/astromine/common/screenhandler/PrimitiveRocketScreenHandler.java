@@ -33,9 +33,9 @@ import dev.vini2003.hammer.common.geometry.size.Size;
 import dev.vini2003.hammer.common.widget.bar.FluidBarWidget;
 import dev.vini2003.hammer.common.widget.button.ButtonWidget;
 import dev.vini2003.hammer.common.widget.slot.SlotWidget;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 

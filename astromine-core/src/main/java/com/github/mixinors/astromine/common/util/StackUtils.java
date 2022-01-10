@@ -24,6 +24,11 @@
 
 package com.github.mixinors.astromine.common.util;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import io.netty.buffer.ByteBuf;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -32,12 +37,6 @@ import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.registry.Registry;
-
-import io.netty.buffer.ByteBuf;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 
 public class StackUtils {
 	public static boolean fits(ItemStack source, ItemStack target) {

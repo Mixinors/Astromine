@@ -24,12 +24,12 @@
 
 package com.github.mixinors.astromine.registry.common;
 
-import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
+import java.util.Collection;
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
-import net.minecraft.block.Block;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
+import com.google.common.collect.Maps;
 
 import com.github.mixinors.astromine.common.network.NetworkBlock;
 import com.github.mixinors.astromine.common.network.NetworkMemberType;
@@ -38,11 +38,12 @@ import com.github.mixinors.astromine.common.registry.NetworkMemberRegistry;
 import com.github.mixinors.astromine.common.util.data.position.WorldPos;
 import org.jetbrains.annotations.Nullable;
 
-import com.google.common.collect.Maps;
-import java.util.Collection;
-import java.util.Map;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
+import net.minecraft.block.Block;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
+
+import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 
 public class AMNetworkMembers {
 	protected static final Map<Predicate<Block>, Consumer<Block>> BLOCK_CONSUMER = Maps.newHashMap();

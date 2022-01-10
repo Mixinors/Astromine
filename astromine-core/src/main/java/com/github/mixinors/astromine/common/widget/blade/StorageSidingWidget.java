@@ -24,34 +24,32 @@
 
 package com.github.mixinors.astromine.common.widget.blade;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.client.BaseRenderer;
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.StorageType;
+import com.github.mixinors.astromine.common.util.MirrorUtils;
 import com.github.mixinors.astromine.common.util.NetworkingUtils;
 import com.github.mixinors.astromine.registry.common.AMNetworks;
 import dev.architectury.networking.NetworkManager;
 import dev.vini2003.hammer.common.widget.Widget;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import org.jetbrains.annotations.NotNull;
+import org.lwjgl.glfw.GLFW;
 
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.LiteralText;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
-import com.github.mixinors.astromine.client.BaseRenderer;
-import com.github.mixinors.astromine.common.util.MirrorUtils;
-import org.jetbrains.annotations.NotNull;
-import org.lwjgl.glfw.GLFW;
-
-import java.util.Arrays;
-import java.util.List;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 public class StorageSidingWidget extends Widget {
 	private ExtendedBlockEntity blockEntity;

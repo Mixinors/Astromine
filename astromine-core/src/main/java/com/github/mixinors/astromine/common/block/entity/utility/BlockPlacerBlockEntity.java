@@ -25,23 +25,21 @@
 package com.github.mixinors.astromine.common.block.entity.utility;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.config.entry.utility.UtilityConfig;
 import com.github.mixinors.astromine.common.provider.config.UtilityConfigProvider;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import org.jetbrains.annotations.NotNull;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.item.BlockItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.mixinors.astromine.common.config.AMConfig;
-import com.github.mixinors.astromine.common.provider.EnergyConsumedProvider;
-import com.github.mixinors.astromine.common.provider.EnergyStorageSizeProvider;
-import com.github.mixinors.astromine.common.provider.SpeedProvider;
-import org.jetbrains.annotations.NotNull;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 
 public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements UtilityConfigProvider<UtilityConfig> {
 	private long cooldown = 0L;

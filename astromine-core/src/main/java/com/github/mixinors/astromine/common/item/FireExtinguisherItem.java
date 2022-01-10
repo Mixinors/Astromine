@@ -24,7 +24,9 @@
 
 package com.github.mixinors.astromine.common.item;
 
+import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.registry.common.AMCriteria;
+import com.github.mixinors.astromine.registry.common.AMSoundEvents;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CampfireBlock;
@@ -45,9 +47,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-
-import com.github.mixinors.astromine.registry.common.AMSoundEvents;
-import com.github.mixinors.astromine.common.config.AMConfig;
 
 public class FireExtinguisherItem extends Item {
 	public FireExtinguisherItem(Item.Settings settings) {

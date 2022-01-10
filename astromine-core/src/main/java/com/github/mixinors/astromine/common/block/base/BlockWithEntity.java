@@ -25,10 +25,13 @@
 package com.github.mixinors.astromine.common.block.base;
 
 import com.github.mixinors.astromine.common.block.entity.base.Tickable;
-
 import com.github.mixinors.astromine.common.block.redstone.ComparatorMode;
+import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
+import com.github.mixinors.astromine.common.item.base.FluidStorageItem;
 import dev.architectury.registry.menu.ExtendedMenuProvider;
 import dev.architectury.registry.menu.MenuRegistry;
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
@@ -42,8 +45,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.context.LootContext;
-import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
@@ -59,12 +60,6 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
-import com.github.mixinors.astromine.common.item.base.FluidStorageItem;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
-
 /**
  * A {@link Block} with an attached {@link BlockEntity} provided
  * through {@link BlockEntityProvider}, providing {@link #ACTIVE}
@@ -72,6 +67,10 @@ import java.util.List;
  */
 public abstract class BlockWithEntity extends Block implements BlockEntityProvider {
 	public static final BooleanProperty ACTIVE = BooleanProperty.of("active");
+
+	public static final SavedData ITEM_MACHINE = new SavedData(true, true, true, false);
+	public static final SavedData FLUID_MACHINE = new SavedData(true, true, false, true);
+	public static final SavedData ITEM_AND_FLUID_MACHINE = new SavedData(true, true, true, true);
 
 	/** Instantiates a {@link BlockWithEntity}. */
 	protected BlockWithEntity(AbstractBlock.Settings settings) {
@@ -204,27 +203,11 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 		};
 	}
 
-	/** Override behavior to write {@link BlockEntity} contents to {@link ItemStack} {@link NbtCompound}. */
-	@Override
-	public List<ItemStack> getDroppedStacks(BlockState state, LootContext.Builder builder) {
-		var stacks = super.getDroppedStacks(state, builder);
-		var blockEntity = builder.getNullable(LootContextParameters.BLOCK_ENTITY);
-		if (blockEntity != null && saveTagToDroppedItem()) {
-			for (var drop : stacks) {
-				if (drop.getItem() == asItem()) {
-					var tag = blockEntity.createNbt();
-					tag.remove("x");
-					tag.remove("y");
-					tag.remove("z");
-					drop.setNbt(tag);
-					break;
-				}
-			}
-		}
-		return stacks;
-	}
-
-	protected boolean saveTagToDroppedItem() {
+	public boolean saveTagToDroppedItem() {
 		return true;
 	}
+
+	public abstract SavedData getSavedDataForDroppedItem();
+
+	public record SavedData(boolean redstoneControl, boolean energyStorage, boolean itemStorage, boolean fluidStorage) {}
 }

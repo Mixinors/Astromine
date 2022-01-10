@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.datagen.provider;
 
 import java.util.List;
 
+import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
 import com.github.mixinors.astromine.datagen.AMDatagen;
 import com.github.mixinors.astromine.datagen.family.block.AMBlockFamilies;
 import com.github.mixinors.astromine.datagen.family.material.MaterialFamilies;
@@ -39,6 +40,7 @@ import net.minecraft.item.Item;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.entry.ItemEntry;
+import net.minecraft.loot.function.CopyNameLootFunction;
 import net.minecraft.loot.function.CopyNbtLootFunction;
 import net.minecraft.loot.provider.nbt.ContextLootNbtProvider;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
@@ -71,12 +73,25 @@ public class AMBlockLootTableProvider extends FabricBlockLootTablesProvider {
 	}
 
 	public static LootTable.Builder machineDrops(Block drop) {
-		return LootTable.builder().pool(addSurvivesExplosionCondition(drop, LootPool.builder().rolls(ConstantLootNumberProvider.create(1.0f)).with(ItemEntry.builder(drop)).apply(CopyNbtLootFunction.builder(ContextLootNbtProvider.BLOCK_ENTITY))));
+		if(drop instanceof BlockWithEntity machine && machine.saveTagToDroppedItem()) {
+			LootTable.Builder builder = LootTable.builder().pool(addSurvivesExplosionCondition(machine, LootPool.builder().rolls(ConstantLootNumberProvider.create(1.0f)).with(ItemEntry.builder(machine))));
+
+			CopyNbtLootFunction.Builder copyNbtBuilder = CopyNbtLootFunction.builder(ContextLootNbtProvider.BLOCK_ENTITY);
+			BlockWithEntity.SavedData savedData = machine.getSavedDataForDroppedItem();
+			if(savedData.redstoneControl()) copyNbtBuilder = copyNbtBuilder.withOperation("RedstoneControl", "BlockEntityTag.RedstoneControl");
+			if(savedData.energyStorage()) copyNbtBuilder = copyNbtBuilder.withOperation("EnergyStorage", "BlockEntityTag.EnergyStorage");
+			if(savedData.itemStorage()) copyNbtBuilder = copyNbtBuilder.withOperation("ItemStorage", "BlockEntityTag.ItemStorage");
+			if(savedData.fluidStorage()) copyNbtBuilder = copyNbtBuilder.withOperation("FluidStorage", "BlockEntityTag.FluidStorage");
+
+			builder.apply(CopyNameLootFunction.builder(CopyNameLootFunction.Source.BLOCK_ENTITY)).apply(copyNbtBuilder);
+			return builder;
+		}
+		return drops(drop);
 	}
 
 	@Override
 	protected void generateBlockLootTables() {
-		MaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateLootTables).forEachOrdered((family) -> {
+		MaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateLootTables).forEachOrdered((family) ->
 			family.getBlockVariants().forEach((variant, block) -> {
 				if (family.shouldGenerateLootTable(variant)) {
 					switch (variant) {
@@ -94,8 +109,8 @@ public class AMBlockLootTableProvider extends FabricBlockLootTablesProvider {
 						case ASTEROID_ORE -> this.addDrop(block, oreDrops(block, family.getVariant(ItemVariant.ASTEROID_ORE_CLUSTER)));
 					}
 				}
-			});
-		});
+			})
+		);
 
 		AMBlockFamilies.getFamilies().forEachOrdered((family) -> {
 			addDrop(family.getBaseBlock());

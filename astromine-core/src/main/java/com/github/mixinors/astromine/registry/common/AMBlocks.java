@@ -24,6 +24,10 @@
 
 package com.github.mixinors.astromine.registry.common;
 
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.block.*;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import dev.architectury.registry.block.BlockProperties;
@@ -36,11 +40,6 @@ import net.minecraft.item.TallBlockItem;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-
-import com.github.mixinors.astromine.AMCommon;
-
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class AMBlocks {
 	public static final RegistrySupplier<Block> ASTEROID_STONE = register("asteroid_stone", () -> new Block( BlockProperties.of(Material.STONE, MapColor.GRAY).requiresTool().strength(1.5F, 3F)), AMItems.getSettings().fireproof());
@@ -167,10 +166,10 @@ public class AMBlocks {
 	public static final RegistrySupplier<Block> ADVANCED_TRITURATOR = register("advanced_triturator", () -> new TrituratorBlock.Advanced(getAdvancedSettings()), AMItems.getSettings());
 	public static final RegistrySupplier<Block> ELITE_TRITURATOR = register("elite_triturator", () -> new TrituratorBlock.Elite(getEliteSettings()), AMItems.getSettings());
 	
-	public static final RegistrySupplier<Block> PRIMITIVE_PRESSER = register("primitive_press", () -> new PressBlock.Primitive(getPrimitiveSettings()), AMItems.getSettings());
-	public static final RegistrySupplier<Block> BASIC_PRESSER = register("basic_press", () -> new PressBlock.Basic(getBasicSettings()), AMItems.getSettings());
-	public static final RegistrySupplier<Block> ADVANCED_PRESSER = register("advanced_press", () -> new PressBlock.Advanced(getAdvancedSettings()), AMItems.getSettings());
-	public static final RegistrySupplier<Block> ELITE_PRESSER = register("elite_press", () -> new PressBlock.Elite(getEliteSettings()), AMItems.getSettings());
+	public static final RegistrySupplier<Block> PRIMITIVE_PRESSER = register("primitive_press", () -> new PresserBlock.Primitive(getPrimitiveSettings()), AMItems.getSettings());
+	public static final RegistrySupplier<Block> BASIC_PRESSER = register("basic_press", () -> new PresserBlock.Basic(getBasicSettings()), AMItems.getSettings());
+	public static final RegistrySupplier<Block> ADVANCED_PRESSER = register("advanced_press", () -> new PresserBlock.Advanced(getAdvancedSettings()), AMItems.getSettings());
+	public static final RegistrySupplier<Block> ELITE_PRESSER = register("elite_press", () -> new PresserBlock.Elite(getEliteSettings()), AMItems.getSettings());
 	
 	public static final RegistrySupplier<Block> PRIMITIVE_WIRE_MILL = register("primitive_wire_mill", () -> new WireMillBlock.Primitive(getPrimitiveSettings()), AMItems.getSettings());
 	public static final RegistrySupplier<Block> BASIC_WIRE_MILL = register("basic_wire_mill", () -> new WireMillBlock.Basic(getBasicSettings()), AMItems.getSettings());

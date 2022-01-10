@@ -24,13 +24,13 @@
 
 package com.github.mixinors.astromine.common.entity.ai.superspaceslime;
 
-import net.minecraft.entity.MovementType;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.math.Vec3d;
+import java.util.EnumSet;
 
 import com.github.mixinors.astromine.common.entity.SpaceSlimeEntity;
 
-import java.util.EnumSet;
+import net.minecraft.entity.MovementType;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.util.math.Vec3d;
 
 public class SpaceSlimeJumpHoverGoal extends Goal {
 

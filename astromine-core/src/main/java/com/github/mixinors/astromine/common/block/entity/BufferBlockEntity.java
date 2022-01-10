@@ -24,16 +24,15 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
+import java.util.function.Supplier;
+
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
-
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-
-import java.util.function.Supplier;
 
 public abstract class BufferBlockEntity extends ExtendedBlockEntity {
 	public BufferBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {

@@ -24,16 +24,23 @@
 
 package com.github.mixinors.astromine.registry.common;
 
+import java.util.stream.Collectors;
+
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.rei.alloysmelting.AlloySmeltingDisplay;
 import com.github.mixinors.astromine.client.rei.electricsmelting.ElectricSmeltingDisplay;
 import com.github.mixinors.astromine.client.rei.pressing.PressingDisplay;
 import com.github.mixinors.astromine.client.rei.solidgenerating.SolidGeneratingDisplay;
 import com.github.mixinors.astromine.client.rei.triturating.TrituratingDisplay;
-import com.github.mixinors.astromine.common.screenhandler.*;
+import com.github.mixinors.astromine.common.screenhandler.AlloySmelterScreenHandler;
+import com.github.mixinors.astromine.common.screenhandler.ElectricFurnaceScreenHandler;
+import com.github.mixinors.astromine.common.screenhandler.PresserScreenHandler;
+import com.github.mixinors.astromine.common.screenhandler.SolidGeneratorScreenHandler;
+import com.github.mixinors.astromine.common.screenhandler.TrituratorScreenHandler;
 import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
+
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.Display;
 import me.shedaniel.rei.api.common.plugins.REIServerPlugin;
@@ -42,8 +49,6 @@ import me.shedaniel.rei.api.common.transfer.info.MenuInfoRegistry;
 import me.shedaniel.rei.api.common.transfer.info.simple.SimpleMenuInfoProvider;
 import me.shedaniel.rei.api.common.transfer.info.simple.SimplePlayerInventoryMenuInfo;
 import me.shedaniel.rei.api.common.transfer.info.stack.SlotAccessor;
-
-import java.util.stream.Collectors;
 
 public class AMContainersInfoHandlers implements REIServerPlugin {
 	public static final CategoryIdentifier<TrituratingDisplay> TRITURATING = CategoryIdentifier.of(AMCommon.id("triturating"));
@@ -60,7 +65,7 @@ public class AMContainersInfoHandlers implements REIServerPlugin {
 			SimpleMenuInfoProvider.of(display -> new SimpleContainerInfo<>(display, 1)));
 		registry.register(SOLID_GENERATING, SolidGeneratorScreenHandler.class,
 			SimpleMenuInfoProvider.of(display -> new SimpleContainerInfo<>(display, 0)));
-		registry.register(PRESSING, PressScreenHandler.class,
+		registry.register(PRESSING, PresserScreenHandler.class,
 			SimpleMenuInfoProvider.of(display -> new SimpleContainerInfo<>(display, 1)));
 		registry.register(ALLOY_SMELTING, AlloySmelterScreenHandler.class,
 			SimpleMenuInfoProvider.of(display -> new SimpleContainerInfo<>(display, 0, 1)));

@@ -24,13 +24,13 @@
 
 package com.github.mixinors.astromine.client.screen;
 
+import com.github.mixinors.astromine.common.screenhandler.RecipeCreatorScreenHandler;
 import dev.vini2003.hammer.client.screen.BaseHandledScreen;
 import dev.vini2003.hammer.common.screen.handler.BaseScreenHandler;
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
-
-import com.github.mixinors.astromine.common.screenhandler.RecipeCreatorScreenHandler;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * A {@link BaseHandledScreen} used by {@link RecipeCreatorScreenHandler}.

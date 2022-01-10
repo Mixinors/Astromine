@@ -24,26 +24,26 @@
 
 package com.github.mixinors.astromine.common.block.entity.machine.generator;
 
-import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
-import com.github.mixinors.astromine.common.provider.config.tiered.MachineConfigProvider;
-import com.github.mixinors.astromine.common.config.entry.tiered.SimpleMachineConfig;
-import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
-import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import net.fabricmc.fabric.api.registry.FuelRegistry;
+import java.util.function.Supplier;
 
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.config.AMConfig;
+import com.github.mixinors.astromine.common.config.entry.tiered.SimpleMachineConfig;
+import com.github.mixinors.astromine.common.provider.config.tiered.MachineConfigProvider;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
+import com.github.mixinors.astromine.common.util.tier.MachineTier;
+import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+import org.jetbrains.annotations.NotNull;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BucketItem;
 import net.minecraft.nbt.NbtCompound;
-import com.github.mixinors.astromine.common.util.tier.MachineTier;
-import com.github.mixinors.astromine.common.config.AMConfig;
-
 import net.minecraft.util.math.BlockPos;
-import org.jetbrains.annotations.NotNull;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-import java.util.function.Supplier;
+import net.fabricmc.fabric.api.registry.FuelRegistry;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 
 public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity implements MachineConfigProvider<SimpleMachineConfig> {
 	private double available = 0;

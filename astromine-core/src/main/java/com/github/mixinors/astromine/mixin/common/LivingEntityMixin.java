@@ -24,7 +24,16 @@
 
 package com.github.mixinors.astromine.mixin.common;
 
-import com.github.mixinors.astromine.registry.common.*;
+import com.github.mixinors.astromine.common.entity.GravityEntity;
+import com.github.mixinors.astromine.registry.common.AMAttributes;
+import com.github.mixinors.astromine.registry.common.AMTags;
+
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.DefaultAttributeContainer;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tag.Tag;
+import net.minecraft.util.math.Vec3d;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -37,15 +46,6 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tag.Tag;
-import net.minecraft.util.math.Vec3d;
-
-import com.github.mixinors.astromine.common.entity.GravityEntity;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends EntityMixin implements GravityEntity {

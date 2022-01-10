@@ -24,10 +24,11 @@
 
 package com.github.mixinors.astromine.common.block;
 
-import com.github.mixinors.astromine.registry.common.AMBlocks;
-import net.minecraft.util.math.MathHelper;
-
 import java.util.Random;
+
+import com.github.mixinors.astromine.registry.common.AMBlocks;
+
+import net.minecraft.util.math.MathHelper;
 
 public class AsteroidOreBlock extends AstromineOreBlock {
 	public AsteroidOreBlock(Settings settings) {

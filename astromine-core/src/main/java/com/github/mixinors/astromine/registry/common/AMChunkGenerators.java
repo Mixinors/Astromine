@@ -26,10 +26,11 @@ package com.github.mixinors.astromine.registry.common;
 
 
 import com.github.mixinors.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
+import com.mojang.serialization.Codec;
+
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
-import com.mojang.serialization.Codec;
 
 public class AMChunkGenerators {
 	public static void init() {

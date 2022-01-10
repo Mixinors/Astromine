@@ -24,7 +24,20 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.google.common.collect.Lists;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+import com.github.mixinors.astromine.common.inventory.BaseInventory;
 import com.github.mixinors.astromine.common.util.WordUtils;
+import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
 import dev.vini2003.hammer.common.screen.handler.BaseScreenHandler;
@@ -33,28 +46,14 @@ import dev.vini2003.hammer.common.widget.WidgetCollection;
 import dev.vini2003.hammer.common.widget.button.ButtonWidget;
 import dev.vini2003.hammer.common.widget.panel.PanelWidget;
 import dev.vini2003.hammer.common.widget.slot.SlotWidget;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.LiteralText;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-
-import com.github.mixinors.astromine.common.inventory.BaseInventory;
-import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.collect.Lists;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.text.LiteralText;
+import net.minecraft.util.registry.Registry;
 
 public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 	public static final Inventory[] craftingInventories = new Inventory[] { BaseInventory.of(10), BaseInventory.of(10) };

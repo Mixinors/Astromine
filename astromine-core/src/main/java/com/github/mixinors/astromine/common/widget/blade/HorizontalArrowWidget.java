@@ -24,27 +24,26 @@
 
 package com.github.mixinors.astromine.common.widget.blade;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.function.IntSupplier;
+
+import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.client.BaseRenderer;
 import com.github.mixinors.astromine.common.util.ClientUtils;
 import com.github.mixinors.astromine.common.util.TextUtils;
 import dev.vini2003.hammer.client.scissor.Scissors;
 import dev.vini2003.hammer.client.util.Layers;
 import dev.vini2003.hammer.common.widget.Widget;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import org.jetbrains.annotations.NotNull;
 
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.client.BaseRenderer;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.function.IntSupplier;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 /**
  * A horizontal arrow widget depicting

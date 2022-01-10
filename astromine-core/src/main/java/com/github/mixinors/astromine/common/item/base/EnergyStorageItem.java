@@ -24,13 +24,13 @@
 
 package com.github.mixinors.astromine.common.item.base;
 
+import team.reborn.energy.api.EnergyStorage;
+import team.reborn.energy.api.base.SimpleBatteryItem;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
-
-import team.reborn.energy.api.EnergyStorage;
-import team.reborn.energy.api.base.SimpleBatteryItem;
 
 /**
  * An {@link Item} with an attached {@link EnergyStorage}.

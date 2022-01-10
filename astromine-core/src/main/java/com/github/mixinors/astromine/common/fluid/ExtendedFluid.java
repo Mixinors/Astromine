@@ -34,7 +34,6 @@ import dev.architectury.platform.Platform;
 import dev.architectury.registry.block.BlockProperties;
 import dev.architectury.registry.registries.RegistrySupplier;
 import dev.vini2003.hammer.common.color.Color;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.AbstractBlock;
@@ -45,7 +44,6 @@ import net.minecraft.block.FluidBlock;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
 import net.minecraft.block.cauldron.CauldronBehavior;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.fluid.Fluid;

@@ -24,14 +24,11 @@
 
 package com.github.mixinors.astromine.registry.client;
 
-import com.github.mixinors.astromine.common.entity.PrimitiveRocketEntity;
+import static com.github.mixinors.astromine.registry.common.AMNetworks.PRIMITIVE_ROCKET_SPAWN;
+
 import com.github.mixinors.astromine.common.util.ClientUtils;
 import com.github.mixinors.astromine.registry.common.AMEntityTypes;
 import dev.architectury.networking.NetworkManager;
-
-import java.util.UUID;
-
-import static com.github.mixinors.astromine.registry.common.AMNetworks.*;
 
 public class AMClientNetworks {
 	public static void init() {

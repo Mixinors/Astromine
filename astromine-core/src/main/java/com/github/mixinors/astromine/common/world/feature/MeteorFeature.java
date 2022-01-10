@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.world.feature;
 
 import com.mojang.serialization.Codec;
+
 import net.minecraft.structure.StructureGeneratorFactory;
 import net.minecraft.structure.StructurePiecesCollector;
 import net.minecraft.structure.StructurePiecesGenerator;

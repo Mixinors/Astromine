@@ -24,9 +24,10 @@
 
 package com.github.mixinors.astromine.common.registry.base;
 
+import java.util.Collection;
+
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import java.util.Collection;
 
 /**
  * A unidirectional registry,

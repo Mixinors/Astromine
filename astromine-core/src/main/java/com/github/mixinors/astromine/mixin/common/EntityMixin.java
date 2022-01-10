@@ -24,13 +24,13 @@
 
 package com.github.mixinors.astromine.mixin.common;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import java.util.ArrayList;
+
+import com.github.mixinors.astromine.common.access.EntityAccessor;
+import com.github.mixinors.astromine.common.entity.GravityEntity;
+import com.github.mixinors.astromine.common.registry.DimensionLayerRegistry;
+import com.github.mixinors.astromine.registry.common.AMTags;
+import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.data.DataTracker;
@@ -43,13 +43,13 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.access.EntityAccessor;
-import com.github.mixinors.astromine.common.entity.GravityEntity;
-import com.github.mixinors.astromine.common.registry.DimensionLayerRegistry;
-import com.github.mixinors.astromine.registry.common.AMTags;
-import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
-
-import java.util.ArrayList;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin implements GravityEntity, EntityAccessor {

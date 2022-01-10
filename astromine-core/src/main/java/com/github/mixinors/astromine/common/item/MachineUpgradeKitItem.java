@@ -24,35 +24,55 @@
 
 package com.github.mixinors.astromine.common.item;
 
-import com.github.mixinors.astromine.AMCommon;
-import vazkii.patchouli.api.PatchouliAPI;
+import com.github.mixinors.astromine.common.block.base.TieredBlock;
+import com.github.mixinors.astromine.common.util.tier.MachineTier;
+import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.world.World;
 
-/**
- * Our Patchouli book.
- */
-public class ManualItem extends Item {
-	/** Instantiates a {@link ManualItem}. */
-	public ManualItem(Settings settings) {
+public class MachineUpgradeKitItem extends Item {
+	private final MachineTier from, to;
+
+	public MachineUpgradeKitItem(MachineTier from, MachineTier to, Settings settings) {
 		super(settings);
+		this.from = from;
+		this.to = to;
 	}
 
-	/** Override behavior to open our book interface. */
-	@Override
-	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-		if (!world.isClient && user instanceof ServerPlayerEntity) {
-			PatchouliAPI.get().openBookGUI((ServerPlayerEntity) user, AMCommon.id("manual"));
+	public MachineUpgradeKitItem(MachineTier to, Settings settings) {
+		this(MachineTier.values()[to.ordinal()-1], to, settings);
+	}
 
-			return TypedActionResult.success(user.getStackInHand(hand));
-		} else {
-			return TypedActionResult.consume(user.getStackInHand(hand));
-		}
+	public MachineTier from() {
+		return from;
+	}
+
+	public MachineTier to() {
+		return to;
+	}
+
+	public boolean isValidFor(MachineTier tier) {
+		return tier == from;
+	}
+
+	public boolean isValidFor(TieredBlock block) {
+		return isValidFor(block.getTier()) && block.hasTier(to());
+	}
+
+	public boolean isValidFor(Block block) {
+		return block instanceof TieredBlock tieredBlock && isValidFor(tieredBlock);
+	}
+
+	@Nullable
+	public Block getUpgrade(TieredBlock block) {
+		if(isValidFor(block)) return block.getForTier(to());
+		else return null;
+	}
+
+	@Nullable
+	public Block getUpgrade(Block block) {
+		if(block instanceof TieredBlock tieredBlock) return getUpgrade(tieredBlock);
+		else return null;
 	}
 }

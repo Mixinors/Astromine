@@ -24,20 +24,76 @@
 
 package com.github.mixinors.astromine.common.block.base;
 
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.state.property.Properties;
+import net.minecraft.util.BlockMirror;
+import net.minecraft.util.BlockRotation;
 
 /**
- * A {@link HorizontalFacingBlockWithEntity} whose
- * {@link DirectionProperty} is {@link Properties#FACING}.
+ * A {@link BlockWithEntity} with a {@link DirectionProperty}.
  */
-public abstract class FacingBlockWithEntity extends HorizontalFacingBlockWithEntity {
-	public FacingBlockWithEntity(Settings settings) {
+public abstract class FacingBlockWithEntity extends BlockWithEntity {
+	/**
+	 * Instantiates a {@link FacingBlockWithEntity}.
+	 */
+	protected FacingBlockWithEntity(Settings settings) {
 		super(settings);
 	}
 
+	/** Override behavior to add the {@link DirectionProperty}. */
 	@Override
-	public DirectionProperty getDirectionProperty() {
-		return Properties.FACING;
+	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+		var directionProperty = getDirectionProperty();
+
+		if (directionProperty != null) {
+			builder.add(directionProperty);
+		}
+
+		super.appendProperties(builder);
 	}
+
+	/** Override behavior to add the {@link DirectionProperty}. */
+	@Override
+	public BlockState getPlacementState(ItemPlacementContext context) {
+		var directionProperty = getDirectionProperty();
+
+		if (directionProperty != null) {
+			return super.getPlacementState(context).with(getDirectionProperty(), context.getPlayerFacing().getOpposite());
+		}
+
+		return super.getPlacementState(context);
+	}
+
+	/** Override behavior to add the {@link DirectionProperty}. */
+	@Override
+	public BlockState rotate(BlockState state, BlockRotation rotation) {
+		var directionProperty = getDirectionProperty();
+
+		if (directionProperty != null) {
+			return state.with(getDirectionProperty(), rotation.rotate(state.get(getDirectionProperty())));
+		}
+
+		return super.rotate(state, rotation);
+	}
+
+	/** Override behavior to add the {@link DirectionProperty}. */
+	@Override
+	public BlockState mirror(BlockState state, BlockMirror mirror) {
+		var directionProperty = getDirectionProperty();
+
+		if (directionProperty != null) {
+			return state.rotate(mirror.getRotation(state.get(getDirectionProperty())));
+		}
+
+		return super.mirror(state, mirror);
+	}
+
+	/** Returns the {@link DirectionProperty} of this block. */
+	@Nullable
+	public abstract DirectionProperty getDirectionProperty();
 }

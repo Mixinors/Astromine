@@ -24,12 +24,12 @@
 
 package com.github.mixinors.astromine;
 
+import com.github.mixinors.astromine.registry.client.*;
+import com.github.mixinors.astromine.registry.common.AMKeybinds;
+
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import com.github.mixinors.astromine.registry.common.AMKeybinds;
-import com.github.mixinors.astromine.registry.client.*;
 
 @Environment(EnvType.CLIENT)
 public class AMClient implements ClientModInitializer {

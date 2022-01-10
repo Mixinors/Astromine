@@ -25,14 +25,13 @@
 package com.github.mixinors.astromine.common.block.entity.utility;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.config.entry.utility.FluidStorageUtilityConfig;
 import com.github.mixinors.astromine.common.provider.config.FluidStorageUtilityConfigProvider;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import org.jetbrains.annotations.NotNull;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidDrainable;
@@ -42,9 +41,9 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.mixinors.astromine.common.config.AMConfig;
-import org.jetbrains.annotations.NotNull;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 
 public class FluidCollectorBlockEntity extends ExtendedBlockEntity implements FluidStorageUtilityConfigProvider {
 	private long cooldown = 0L;

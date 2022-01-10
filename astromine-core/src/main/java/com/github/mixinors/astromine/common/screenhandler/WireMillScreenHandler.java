@@ -24,17 +24,17 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
+import com.github.mixinors.astromine.common.block.entity.machine.WireMillBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
+import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
+import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
 import dev.vini2003.hammer.common.widget.slot.SlotWidget;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
-
-import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
-import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
-import com.github.mixinors.astromine.common.block.entity.machine.WireMillBlockEntity;
 
 public class WireMillScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final WireMillBlockEntity wire_mill;

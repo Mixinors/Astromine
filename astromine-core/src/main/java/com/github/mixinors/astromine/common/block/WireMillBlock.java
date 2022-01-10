@@ -24,6 +24,14 @@
 
 package com.github.mixinors.astromine.common.block;
 
+import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.WireMillBlockEntity;
+import com.github.mixinors.astromine.common.network.NetworkBlock;
+import com.github.mixinors.astromine.common.screenhandler.WireMillScreenHandler;
+import com.github.mixinors.astromine.common.util.tier.MachineTier;
+import com.github.mixinors.astromine.registry.common.AMBlocks;
+
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -34,38 +42,43 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
-import com.github.mixinors.astromine.common.network.NetworkBlock;
-import com.github.mixinors.astromine.common.block.entity.machine.WireMillBlockEntity;
-import com.github.mixinors.astromine.common.screenhandler.WireMillScreenHandler;
-
 public abstract class WireMillBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.ItemBuffer {
 	public WireMillBlock(Settings settings) {
 		super(settings);
 	}
 
-	public abstract static class Base extends WireMillBlock {
-		public Base(Settings settings) {
-			super(settings);
-		}
-
-		@Override
-		public boolean hasScreenHandler() {
-			return true;
-		}
-
-		@Override
-		public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-			return new WireMillScreenHandler(syncId, playerInventory.player, pos);
-		}
-
-		@Override
-		public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
-			buffer.writeBlockPos(pos);
-		}
+	@Override
+	public SavedData getSavedDataForDroppedItem() {
+		return ITEM_MACHINE;
 	}
 
-	public static class Primitive extends WireMillBlock.Base {
+	@Override
+	public Block getForTier(MachineTier tier) {
+		return switch(tier) {
+			case PRIMITIVE -> AMBlocks.PRIMITIVE_WIRE_MILL.get();
+			case BASIC -> AMBlocks.BASIC_WIRE_MILL.get();
+			case ADVANCED -> AMBlocks.ADVANCED_WIRE_MILL.get();
+			case ELITE -> AMBlocks.ELITE_WIRE_MILL.get();
+			case CREATIVE -> null;
+		};
+	}
+
+	@Override
+	public boolean hasScreenHandler() {
+		return true;
+	}
+
+	@Override
+	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+		return new WireMillScreenHandler(syncId, playerInventory.player, pos);
+	}
+
+	@Override
+	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
+		buffer.writeBlockPos(pos);
+	}
+
+	public static class Primitive extends WireMillBlock {
 		public Primitive(Settings settings) {
 			super(settings);
 		}
@@ -74,9 +87,14 @@ public abstract class WireMillBlock extends HorizontalFacingTieredBlockWithEntit
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new WireMillBlockEntity.Primitive(pos, state);
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.PRIMITIVE;
+		}
 	}
 
-	public static class Basic extends WireMillBlock.Base {
+	public static class Basic extends WireMillBlock {
 		public Basic(Settings settings) {
 			super(settings);
 		}
@@ -85,9 +103,14 @@ public abstract class WireMillBlock extends HorizontalFacingTieredBlockWithEntit
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new WireMillBlockEntity.Basic(pos, state);
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.BASIC;
+		}
 	}
 
-	public static class Advanced extends WireMillBlock.Base {
+	public static class Advanced extends WireMillBlock {
 		public Advanced(Settings settings) {
 			super(settings);
 		}
@@ -96,9 +119,14 @@ public abstract class WireMillBlock extends HorizontalFacingTieredBlockWithEntit
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new WireMillBlockEntity.Advanced(pos, state);
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.ADVANCED;
+		}
 	}
 
-	public static class Elite extends WireMillBlock.Base {
+	public static class Elite extends WireMillBlock {
 		public Elite(Settings settings) {
 			super(settings);
 		}
@@ -106,6 +134,11 @@ public abstract class WireMillBlock extends HorizontalFacingTieredBlockWithEntit
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new WireMillBlockEntity.Elite(pos, state);
+		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.ELITE;
 		}
 	}
 }

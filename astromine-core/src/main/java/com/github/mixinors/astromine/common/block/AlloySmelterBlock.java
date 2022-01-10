@@ -24,6 +24,14 @@
 
 package com.github.mixinors.astromine.common.block;
 
+import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.AlloySmelterBlockEntity;
+import com.github.mixinors.astromine.common.network.NetworkBlock;
+import com.github.mixinors.astromine.common.screenhandler.AlloySmelterScreenHandler;
+import com.github.mixinors.astromine.common.util.tier.MachineTier;
+import com.github.mixinors.astromine.registry.common.AMBlocks;
+
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -34,38 +42,43 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
-import com.github.mixinors.astromine.common.network.NetworkBlock;
-import com.github.mixinors.astromine.common.block.entity.machine.AlloySmelterBlockEntity;
-import com.github.mixinors.astromine.common.screenhandler.AlloySmelterScreenHandler;
-
 public abstract class AlloySmelterBlock extends HorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.ItemBuffer {
 	public AlloySmelterBlock(Settings settings) {
 		super(settings);
 	}
 
-	public abstract static class Base extends AlloySmelterBlock {
-		public Base(Settings settings) {
-			super(settings);
-		}
-
-		@Override
-		public boolean hasScreenHandler() {
-			return true;
-		}
-
-		@Override
-		public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-			return new AlloySmelterScreenHandler(syncId, playerInventory.player, pos);
-		}
-
-		@Override
-		public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
-			buffer.writeBlockPos(pos);
-		}
+	@Override
+	public SavedData getSavedDataForDroppedItem() {
+		return ITEM_MACHINE;
 	}
 
-	public static class Primitive extends AlloySmelterBlock.Base {
+	@Override
+	public Block getForTier(MachineTier tier) {
+		return switch(tier) {
+			case PRIMITIVE -> AMBlocks.PRIMITIVE_ALLOY_SMELTER.get();
+			case BASIC -> AMBlocks.BASIC_ALLOY_SMELTER.get();
+			case ADVANCED -> AMBlocks.ADVANCED_ALLOY_SMELTER.get();
+			case ELITE -> AMBlocks.ELITE_ALLOY_SMELTER.get();
+			case CREATIVE -> null;
+		};
+	}
+
+	@Override
+	public boolean hasScreenHandler() {
+		return true;
+	}
+
+	@Override
+	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+		return new AlloySmelterScreenHandler(syncId, playerInventory.player, pos);
+	}
+
+	@Override
+	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
+		buffer.writeBlockPos(pos);
+	}
+
+	public static class Primitive extends AlloySmelterBlock {
 		public Primitive(Settings settings) {
 			super(settings);
 		}
@@ -74,9 +87,14 @@ public abstract class AlloySmelterBlock extends HorizontalFacingTieredBlockWithE
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new AlloySmelterBlockEntity.Primitive(pos, state);
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.PRIMITIVE;
+		}
 	}
 
-	public static class Basic extends AlloySmelterBlock.Base {
+	public static class Basic extends AlloySmelterBlock {
 		public Basic(Settings settings) {
 			super(settings);
 		}
@@ -85,9 +103,14 @@ public abstract class AlloySmelterBlock extends HorizontalFacingTieredBlockWithE
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new AlloySmelterBlockEntity.Basic(pos, state);
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.BASIC;
+		}
 	}
 
-	public static class Advanced extends AlloySmelterBlock.Base {
+	public static class Advanced extends AlloySmelterBlock {
 		public Advanced(Settings settings) {
 			super(settings);
 		}
@@ -96,9 +119,14 @@ public abstract class AlloySmelterBlock extends HorizontalFacingTieredBlockWithE
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new AlloySmelterBlockEntity.Advanced(pos, state);
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.ADVANCED;
+		}
 	}
 
-	public static class Elite extends AlloySmelterBlock.Base {
+	public static class Elite extends AlloySmelterBlock {
 		public Elite(Settings settings) {
 			super(settings);
 		}
@@ -106,6 +134,11 @@ public abstract class AlloySmelterBlock extends HorizontalFacingTieredBlockWithE
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new AlloySmelterBlockEntity.Elite(pos, state);
+		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.ELITE;
 		}
 	}
 }

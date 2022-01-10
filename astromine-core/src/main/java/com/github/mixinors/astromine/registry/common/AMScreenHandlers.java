@@ -26,9 +26,9 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.screenhandler.*;
-
 import dev.architectury.registry.menu.MenuRegistry;
 import dev.architectury.registry.registries.RegistrySupplier;
+
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
@@ -103,8 +103,8 @@ public class AMScreenHandlers {
 		return new TrituratorScreenHandler(syncId, inventory.player, buffer.readBlockPos());
 	}));
 
-	public static final RegistrySupplier<ScreenHandlerType<PressScreenHandler>> PRESSER = registerExtended(AMCommon.id("press"), ((syncId, inventory, buffer) -> {
-		return new PressScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	public static final RegistrySupplier<ScreenHandlerType<PresserScreenHandler>> PRESSER = registerExtended(AMCommon.id("press"), ((syncId, inventory, buffer) -> {
+		return new PresserScreenHandler(syncId, inventory.player, buffer.readBlockPos());
 	}));
 
 	public static final RegistrySupplier<ScreenHandlerType<WireMillScreenHandler>> WIRE_MILL = registerExtended(AMCommon.id("wire_mill"), ((syncId, inventory, buffer) -> {

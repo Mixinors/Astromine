@@ -24,8 +24,9 @@
 
 package com.github.mixinors.astromine.common.block;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import javax.annotation.Nullable;
+
+import com.github.mixinors.astromine.common.util.VoxelShapeUtils;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -61,9 +62,8 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldEvents;
 import net.minecraft.world.WorldView;
 
-import com.github.mixinors.astromine.common.util.VoxelShapeUtils;
-
-import javax.annotation.Nullable;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 public class AirlockBlock extends Block implements Waterloggable {
 	public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;

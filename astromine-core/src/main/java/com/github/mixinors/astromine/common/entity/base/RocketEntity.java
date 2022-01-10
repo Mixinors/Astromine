@@ -24,11 +24,17 @@
 
 package com.github.mixinors.astromine.common.entity.base;
 
+import static java.lang.Math.min;
+
+import java.util.Collection;
+
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
+import com.github.mixinors.astromine.common.registry.GravityRegistry;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.registry.common.AMCriteria;
 import com.github.mixinors.astromine.registry.common.AMParticles;
+
 import net.minecraft.client.util.math.Vector3d;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -38,26 +44,17 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Arm;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
-import com.github.mixinors.astromine.common.registry.GravityRegistry;
-
-import java.util.Collection;
-
-import static java.lang.Math.min;
-
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 
 public abstract class RocketEntity extends ExtendedEntity {

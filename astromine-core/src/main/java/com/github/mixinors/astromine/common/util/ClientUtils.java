@@ -24,8 +24,6 @@
 
 package com.github.mixinors.astromine.common.util;
 
-import java.util.function.Function;
-
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.fluid.ExtendedFluid;
 

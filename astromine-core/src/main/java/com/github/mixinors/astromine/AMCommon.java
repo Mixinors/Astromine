@@ -26,21 +26,21 @@ package com.github.mixinors.astromine;
 
 import java.util.function.Supplier;
 
+import com.google.common.base.Suppliers;
+import com.google.gson.Gson;
+
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.registry.common.*;
 import dev.architectury.registry.registries.Registrar;
 import dev.architectury.registry.registries.Registries;
-import net.fabricmc.api.ModInitializer;
-
-import net.minecraft.util.Identifier;
-
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.gson.Gson;
-import com.google.common.base.Suppliers;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
+
+import net.fabricmc.api.ModInitializer;
 
 public class AMCommon implements ModInitializer {
 	public static final String LOG_ID = "Astromine";

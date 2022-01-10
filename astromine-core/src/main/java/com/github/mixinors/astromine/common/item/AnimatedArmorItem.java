@@ -24,28 +24,27 @@
 
 package com.github.mixinors.astromine.common.item;
 
+import java.io.IOException;
+import java.util.Optional;
+
 import com.github.mixinors.astromine.common.util.ClientUtils;
 import com.mojang.blaze3d.platform.TextureUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import org.apache.logging.log4j.LogManager;
 
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderPhase;
 import net.minecraft.client.texture.AbstractTexture;
 import net.minecraft.client.texture.NativeImage;
-import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.texture.TextureTickListener;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
-import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
-import org.apache.logging.log4j.LogManager;
 
-import java.io.IOException;
-import java.util.Optional;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 /**
  * An {@link ArmorItem} with an animated texture.

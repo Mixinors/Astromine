@@ -24,9 +24,10 @@
 
 package com.github.mixinors.astromine.common.registry.base;
 
+import java.util.Collection;
+
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import java.util.Collection;
 
 /**
  * A bidirectional registry,

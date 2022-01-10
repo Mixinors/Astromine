@@ -25,8 +25,6 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
-import net.minecraft.entity.LivingEntity;
-
 import com.github.mixinors.astromine.common.component.entity.EntityOxygenComponent;
 import com.github.mixinors.astromine.common.component.world.WorldHoloBridgeComponent;
 import com.github.mixinors.astromine.common.component.world.WorldNetworkComponent;
@@ -42,6 +40,8 @@ import dev.onyxstudios.cca.api.v3.item.ItemComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.item.ItemComponentInitializer;
 import dev.onyxstudios.cca.api.v3.world.WorldComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.world.WorldComponentInitializer;
+
+import net.minecraft.entity.LivingEntity;
 
 public class AMComponents implements WorldComponentInitializer, ChunkComponentInitializer, ItemComponentInitializer, EntityComponentInitializer, BlockComponentInitializer {
 	public static final ComponentKey<WorldNetworkComponent> WORLD_NETWORK_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("world_network_component"), WorldNetworkComponent.class);
