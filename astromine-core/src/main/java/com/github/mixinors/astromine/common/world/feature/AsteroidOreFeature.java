@@ -98,7 +98,7 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 		for (var streamPosition : vein.stream().collect(Collectors.toSet())) {
 			var orePosition = streamPosition.toBlockPos();
 
-			if (world.getBlockState(orePosition).getBlock() == AMBlocks.ASTEROID_STONE.get()) {
+			if (world.getBlockState(orePosition).isOf(AMBlocks.ASTEROID_STONE.get())) {
 				if (random.nextInt(AMConfig.get().asteroidOreThreshold) == 0) {
 					world.setBlockState(orePosition, ore.getDefaultState(), 0b0110100);
 				}

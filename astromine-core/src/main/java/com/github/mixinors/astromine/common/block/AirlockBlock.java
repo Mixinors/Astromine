@@ -205,7 +205,7 @@ public class AirlockBlock extends Block implements Waterloggable {
 		if (blockPos.getY() < 255 && ctx.getWorld().getBlockState(blockPos.up()).canReplace(ctx)) {
 			var world = ctx.getWorld();
 			var bl = world.isReceivingRedstonePower(blockPos) || world.isReceivingRedstonePower(blockPos.up());
-			return this.getDefaultState().with(FACING, ctx.getPlayerFacing()).with(POWERED, bl).with(HALF, DoubleBlockHalf.LOWER).with(Properties.WATERLOGGED, world.getBlockState(blockPos).getBlock() == Blocks.WATER);
+			return this.getDefaultState().with(FACING, ctx.getPlayerFacing()).with(POWERED, bl).with(HALF, DoubleBlockHalf.LOWER).with(Properties.WATERLOGGED, world.getFluidState(blockPos).isEqualAndStill(Fluids.WATER));
 		} else {
 			return null;
 		}
@@ -216,26 +216,24 @@ public class AirlockBlock extends Block implements Waterloggable {
 		world.setBlockState(pos.up(), state.with(HALF, DoubleBlockHalf.UPPER), 3);
 	}
 
-	public boolean method_30841(BlockState blockState) {
-		return blockState.get(POWERED);
+	public boolean isPowered(BlockState state) {
+		return state.get(POWERED);
 	}
 
-	public void setOpen(World world, BlockState blockState, BlockPos blockPos, boolean bl) {
-		if (blockState.isOf(this) && blockState.get(POWERED) != bl) {
-			world.setBlockState(blockPos, blockState.with(POWERED, bl), 10);
-			this.playOpenCloseSound(world, blockPos, bl);
+	public void setOpen(World world, BlockState state, BlockPos blockPos, boolean open, boolean notify) {
+		if (state.isOf(this) && isPowered(state) != open) {
+			byte flags = Block.REDRAW_ON_MAIN_THREAD;
+			if(notify) flags |= Block.NOTIFY_LISTENERS;
+			world.setBlockState(blockPos, state.with(POWERED, open), flags);
+			this.playOpenCloseSound(world, blockPos, open);
 		}
 	}
 
 	@Override
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
-		var bl = world.isReceivingRedstonePower(pos) || world.isReceivingRedstonePower(pos.offset(state.get(HALF) == DoubleBlockHalf.LOWER ? Direction.UP : Direction.DOWN));
-		if (block != this && bl != state.get(POWERED)) {
-			if (bl != state.get(POWERED)) {
-				this.playOpenCloseSound(world, pos, bl);
-			}
-
-			world.setBlockState(pos, state.with(POWERED, bl), 2);
+		var open = world.isReceivingRedstonePower(pos) || world.isReceivingRedstonePower(pos.offset(state.get(HALF) == DoubleBlockHalf.LOWER ? Direction.UP : Direction.DOWN));
+		if (block != this) {
+			setOpen(world, state, pos, open, notify);
 		}
 	}
 

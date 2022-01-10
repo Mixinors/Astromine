@@ -43,7 +43,7 @@ import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 
 public class AMOres {
-	public static final Identifier ORES_ID = AMCommon.id("astromine_ores");
+	public static final Identifier ORES_ID = AMCommon.id("ores");
 
 	public static final Identifier TIN_ORE_ID = AMCommon.id("tin_ore");
 	public static final Identifier TIN_ORE_SMALL_ID = AMCommon.id("tin_ore_small");

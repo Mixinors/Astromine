@@ -24,6 +24,8 @@
 
 package com.github.mixinors.astromine.common.world.feature;
 
+import java.util.function.Supplier;
+
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.registry.common.AMFluids;
@@ -34,18 +36,25 @@ import com.terraformersmc.terraform.shapes.impl.layer.transform.NoiseTranslateLa
 import com.terraformersmc.terraform.shapes.impl.layer.transform.TranslateLayer;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.FluidBlock;
-import net.minecraft.util.Lazy;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.world.Heightmap;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.util.FeatureContext;
-import net.minecraft.world.tick.OrderedTick;
 
 public class CrudeOilFeature extends Feature<DefaultFeatureConfig> {
-	private static final Lazy<Block> CRUDE_OIL_BLOCK = new Lazy<>(() -> Registry.BLOCK.get(AMCommon.id("crude_oil")));
+	private static final Supplier<Block> CRUDE_OIL_BLOCK = AMFluids.OIL::getBlock;
+
+	private static final int BOTTOM_WELL_SIZE = 8;
+	private static final int BOTTOM_WELL_MAX_OFFSET = 20;
+	private static final int TOP_WELL_WIDTH = 12;
+	private static final int TOP_WELL_HEIGHT = 4;
+	private static final int TOP_WELL_NOISE = 2;
+	private static final int GEYSER_MIN_HEIGHT = 3;
+	private static final int GEYSER_MAX_HEIGHT = 10;
 
 	public CrudeOilFeature(Codec<DefaultFeatureConfig> configCodec) {
 		super(configCodec);
@@ -59,29 +68,33 @@ public class CrudeOilFeature extends Feature<DefaultFeatureConfig> {
 		if (random.nextInt(AMConfig.get().crudeOilThreshold) > 1)
 			return false;
 		
-		var offsetY = MathHelper.clamp(random.nextInt(20), 8, 20);
+		var offsetY = random.nextInt(BOTTOM_WELL_SIZE, BOTTOM_WELL_MAX_OFFSET);
 
-		Shapes.ellipsoid(8, 8, 8).applyLayer(TranslateLayer.of(Position.of(pos.offset(Direction.UP, offsetY)))).stream().forEach(position -> {
-			world.setBlockState(position.toBlockPos(), CRUDE_OIL_BLOCK.get().getDefaultState(), 0);
-		});
+		Shapes.ellipsoid(BOTTOM_WELL_SIZE, BOTTOM_WELL_SIZE, BOTTOM_WELL_SIZE).applyLayer(TranslateLayer.of(Position.of(pos.offset(Direction.UP, offsetY)))).stream().forEach(position ->
+			world.setBlockState(position.toBlockPos(), CRUDE_OIL_BLOCK.get().getDefaultState(), 0)
+		);
 
-		Shapes.ellipsoid(12, 12, 4).applyLayer(TranslateLayer.of(Position.of(pos.offset(Direction.UP, 64)))).applyLayer(NoiseTranslateLayer.of(8, random)).stream().forEach(position -> {
+		BlockPos oceanTop = world.getTopPosition(Heightmap.Type.WORLD_SURFACE_WG, pos);
+
+		Shapes.ellipsoid(TOP_WELL_WIDTH, TOP_WELL_WIDTH, TOP_WELL_HEIGHT).applyLayer(NoiseTranslateLayer.of(TOP_WELL_NOISE, random)).applyLayer(TranslateLayer.of(Position.of(oceanTop))).stream().forEach(position -> {
 			if (world.getBlockState(position.toBlockPos()).getBlock() instanceof FluidBlock) {
 				world.setBlockState(position.toBlockPos(), CRUDE_OIL_BLOCK.get().getDefaultState(), 0);
 			}
 		});
-		
-		var airBlocks = 0;
 
-		for (var y = pos.getY() + offsetY; !world.getBlockState(pos.offset(Direction.UP, y)).isAir() || (world.getBlockState(pos.offset(Direction.UP, y)).isAir() && ++airBlocks < offsetY); ++y) {
-			world.setBlockState(pos.offset(Direction.UP, y), CRUDE_OIL_BLOCK.get().getDefaultState(), 0);
+		int geyserHeight = random.nextInt(GEYSER_MIN_HEIGHT, GEYSER_MAX_HEIGHT);
+
+		for (var mutablePos = new BlockPos.Mutable(pos.getX(), pos.getY() + offsetY + BOTTOM_WELL_SIZE, pos.getZ()); mutablePos.getY() < oceanTop.getY() + geyserHeight; mutablePos.move(Direction.UP)) {
+			world.setBlockState(mutablePos, CRUDE_OIL_BLOCK.get().getDefaultState(), 0);
 
 			for (var direction : new Direction[]{ Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST }) {
-				world.removeBlock(pos.offset(Direction.UP, y).offset(direction), false);
+				world.setBlockState(mutablePos.offset(direction), Blocks.AIR.getDefaultState(), 0);
 			}
 
-			world.getFluidTickScheduler().scheduleTick(OrderedTick.create(AMFluids.OIL, pos.offset(Direction.UP, y)));
+			world.createAndScheduleFluidTick(mutablePos, AMFluids.OIL, 0);
 		}
+
+		AMCommon.LOGGER.info("haha yes oil at "+pos);
 
 		return true;
 	}

@@ -61,11 +61,11 @@ public class MeteorGenerator extends ShiftableStructurePiece {
 	private static OpenSimplexNoise noise;
 
 	public MeteorGenerator(Random random, int x, int z) {
-		super(AMFeatures.METEOR_STRUCTURE.get(), x, 64, z, 16, 16, 16, getRandomHorizontalDirection(random));
+		super(AMFeatures.METEOR_STRUCTURE_PIECE.get(), x, 64, z, 16, 16, 16, getRandomHorizontalDirection(random));
 	}
 
 	public MeteorGenerator(NbtCompound tag) {
-		super(AMFeatures.METEOR_STRUCTURE.get(), tag);
+		super(AMFeatures.METEOR_STRUCTURE_PIECE.get(), tag);
 	}
 
 	public static void buildSphere(StructureWorldAccess world, BlockPos originPos, int radius, BlockState state) {
