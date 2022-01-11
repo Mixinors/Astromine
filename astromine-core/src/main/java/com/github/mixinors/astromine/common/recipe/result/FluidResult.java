@@ -45,7 +45,7 @@ public record FluidResult(FluidVariant variant, long amount) {
 	}
 
 	public boolean equalsAndFitsIn(SingleSlotStorage<FluidVariant> storage) {
-		return storage.getCapacity() - storage.getAmount() >= amount && storage.getResource().equals(variant);
+		return storage.getCapacity() - storage.getAmount() >= amount && (storage.getResource().equals(variant) || storage.isResourceBlank());
 	}
 
 	public static JsonObject toJson(FluidResult result) {

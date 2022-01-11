@@ -86,10 +86,10 @@ public class AMBlockEntityTypes {
 	public static final RegistrySupplier<BlockEntityType<TrituratorBlockEntity.Advanced>> ADVANCED_TRITURATOR = register("advanced_triturator", TrituratorBlockEntity.Advanced::new, AMBlocks.ADVANCED_TRITURATOR);
 	public static final RegistrySupplier<BlockEntityType<TrituratorBlockEntity.Elite>> ELITE_TRITURATOR = register("elite_triturator", TrituratorBlockEntity.Elite::new, AMBlocks.ELITE_TRITURATOR);
 	
-	public static final RegistrySupplier<BlockEntityType<PressBlockEntity.Primitive>> PRIMITIVE_PRESSER = register("primitive_press", PressBlockEntity.Primitive::new, AMBlocks.PRIMITIVE_PRESSER);
-	public static final RegistrySupplier<BlockEntityType<PressBlockEntity.Basic>> BASIC_PRESSER = register("basic_press", PressBlockEntity.Basic::new, AMBlocks.BASIC_PRESSER);
-	public static final RegistrySupplier<BlockEntityType<PressBlockEntity.Advanced>> ADVANCED_PRESSER = register("advanced_press", PressBlockEntity.Advanced::new, AMBlocks.ADVANCED_PRESSER);
-	public static final RegistrySupplier<BlockEntityType<PressBlockEntity.Elite>> ELITE_PRESSER = register("elite_press", PressBlockEntity.Elite::new, AMBlocks.ELITE_PRESSER);
+	public static final RegistrySupplier<BlockEntityType<PresserBlockEntity.Primitive>> PRIMITIVE_PRESSER = register("primitive_press", PresserBlockEntity.Primitive::new, AMBlocks.PRIMITIVE_PRESSER);
+	public static final RegistrySupplier<BlockEntityType<PresserBlockEntity.Basic>> BASIC_PRESSER = register("basic_press", PresserBlockEntity.Basic::new, AMBlocks.BASIC_PRESSER);
+	public static final RegistrySupplier<BlockEntityType<PresserBlockEntity.Advanced>> ADVANCED_PRESSER = register("advanced_press", PresserBlockEntity.Advanced::new, AMBlocks.ADVANCED_PRESSER);
+	public static final RegistrySupplier<BlockEntityType<PresserBlockEntity.Elite>> ELITE_PRESSER = register("elite_press", PresserBlockEntity.Elite::new, AMBlocks.ELITE_PRESSER);
 	
 	public static final RegistrySupplier<BlockEntityType<WireMillBlockEntity.Primitive>> PRIMITIVE_WIRE_MILL = register("primitive_wire_mill", WireMillBlockEntity.Primitive::new, AMBlocks.PRIMITIVE_WIRE_MILL);
 	public static final RegistrySupplier<BlockEntityType<WireMillBlockEntity.Basic>> BASIC_WIRE_MILL = register("basic_wire_mill", WireMillBlockEntity.Basic::new, AMBlocks.BASIC_WIRE_MILL);

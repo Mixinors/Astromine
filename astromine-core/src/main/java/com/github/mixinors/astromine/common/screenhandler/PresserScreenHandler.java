@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
-import com.github.mixinors.astromine.common.block.entity.machine.PressBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.PresserBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
@@ -37,12 +37,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 public class PresserScreenHandler extends ExtendedBlockEntityScreenHandler {
-	private final PressBlockEntity press;
+	private final PresserBlockEntity press;
 	
 	public PresserScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.PRESSER, syncId, player, position);
 		
-		press = (PressBlockEntity) blockEntity;
+		press = (PresserBlockEntity) blockEntity;
 	}
 	
 	@Override

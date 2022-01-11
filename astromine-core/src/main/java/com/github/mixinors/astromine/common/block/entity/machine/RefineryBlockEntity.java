@@ -48,7 +48,6 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 public abstract class RefineryBlockEntity extends ExtendedBlockEntity implements FluidStorageMachineConfigProvider {
 	public double progress = 0;
 	public int limit = 100;
-	public boolean shouldTry = false;
 	
 	private static final int INPUT_SLOT = 0;
 	
@@ -74,8 +73,9 @@ public abstract class RefineryBlockEntity extends ExtendedBlockEntity implements
 			
 			return RefiningRecipe.allows(world, variant);
 		}).listener(() -> {
-			shouldTry = true;
-			optionalRecipe = Optional.empty();
+			if (optionalRecipe.isPresent() && !optionalRecipe.get().matches(fluidStorage.slice(INPUT_SLOT, OUTPUT_SLOT))) {
+				optionalRecipe = Optional.empty();
+			}
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 
@@ -87,14 +87,8 @@ public abstract class RefineryBlockEntity extends ExtendedBlockEntity implements
 			return;
 		
 		if (fluidStorage != null && energyStorage != null) {
-			if (optionalRecipe.isEmpty() && shouldTry) {
+			if (optionalRecipe.isEmpty()) {
 				optionalRecipe = RefiningRecipe.matching(world, fluidStorage.slice(INPUT_SLOT, OUTPUT_SLOT));
-				shouldTry = false;
-
-				if (optionalRecipe.isEmpty()) {
-					progress = 0;
-					limit = 100;
-				}
 			}
 
 			if (optionalRecipe.isPresent()) {
@@ -132,6 +126,8 @@ public abstract class RefineryBlockEntity extends ExtendedBlockEntity implements
 				}
 			} else {
 				isActive = false;
+				progress = 0;
+				limit = 100;
 			}
 		}
 	}

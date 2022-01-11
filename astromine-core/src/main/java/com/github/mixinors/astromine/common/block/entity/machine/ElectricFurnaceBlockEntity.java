@@ -49,12 +49,14 @@ import net.minecraft.recipe.SmeltingRecipe;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 
 public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity implements MachineConfigProvider<SimpleMachineConfig> {
 	public double progress = 0;
 	public int limit = 100;
-	public boolean shouldTry = true;
 
 	private static final int INPUT_SLOT = 1;
 
@@ -96,9 +98,31 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 		}).extractPredicate((variant, slot) ->
 			slot == OUTPUT_SLOT
 		).listener(() -> {
-			shouldTry = true;
-			optionalRecipe = Optional.empty();
+			if (optionalRecipe.isPresent() && !recipeMatches(world, optionalRecipe.get(), itemStorage.slice(INPUT_SLOT, OUTPUT_SLOT))) {
+				optionalRecipe = Optional.empty();
+			}
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
+	}
+
+	public static boolean recipeMatches(World world, SmeltingRecipe recipe, SingleSlotStorage<ItemVariant>... storages) {
+		var inputStorage = storages[0];
+
+		var outputStorage = storages[1];
+
+		var inputInventory = BaseInventory.of(inputStorage.getResource().toStack((int) inputStorage.getAmount()));
+
+		if (!recipe.matches(inputInventory, world)) {
+			return false;
+		}
+
+		var storageOutput = outputStorage.getResource().toStack((int) outputStorage.getAmount());
+		var output = recipe.getOutput();
+
+		var isEmpty = outputStorage.isResourceBlank();
+		var isEqual = ItemStack.areItemsEqual(storageOutput, output) && ItemStack.areNbtEqual(storageOutput, output);
+		var canFit = storageOutput.getCount() + output.getCount() <= storageOutput.getMaxCount();
+
+		return (isEmpty || isEqual) && canFit;
 	}
 
 	@Override
@@ -111,22 +135,21 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 		if (itemStorage != null && energyStorage != null) {
 			var inputInventory = BaseInventory.of(itemStorage.getStack(1));
 
-			if (optionalRecipe.isEmpty() && shouldTry) {
+			if (optionalRecipe.isEmpty()) {
 				if (RECIPE_CACHE.get(world) == null) {
 					RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(RecipeType.SMELTING).values().stream().map(it -> (SmeltingRecipe) it).toArray(SmeltingRecipe[]::new));
 				}
 
 				for (var recipe : RECIPE_CACHE.get(world)) {
 					if (recipe.matches(inputInventory, world)) {
-						optionalRecipe = Optional.of(recipe);
+						var output = recipe.getOutput().copy();
+
+						var isEmpty = itemStorage.getStack(0).isEmpty();
+						var isEqual = ItemStack.areItemsEqual(itemStorage.getStack(0), output) && ItemStack.areNbtEqual(itemStorage.getStack(0), output);
+						var canFit = itemStorage.getStack(0).getCount() + output.getCount() <= itemStorage.getStack(0).getMaxCount();
+
+						if((isEmpty || isEqual) && canFit) optionalRecipe = Optional.of(recipe);
 					}
-				}
-
-				shouldTry = false;
-
-				if (optionalRecipe.isEmpty()) {
-					progress = 0;
-					limit = 100;
 				}
 			}
 
@@ -137,47 +160,39 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 					limit = recipe.getCookTime();
 					
 					var speed = Math.min(getSpeed() * 2, limit - progress);
-					
-					var output = recipe.getOutput().copy();
-					
-					var isEmpty = itemStorage.getStack(0).isEmpty();
-					var isEqual = ItemStack.areItemsEqual(itemStorage.getStack(0), output) && ItemStack.areNbtEqual(itemStorage.getStack(0), output);
+					var consumed = (long) (500.0D * speed / limit);
 
-					if (energyStorage.getAmount() > 500.0D / limit * speed) {
-						try (var transaction = Transaction.openOuter()) {
-							energyStorage.extract((long) (500.0D / limit * speed), transaction);
-							
-							if ((isEmpty || isEqual) && itemStorage.getStack(0).getCount() + output.getCount() <= itemStorage.getStack(0).getMaxCount()) {
-								if (progress + speed >= limit) {
-									optionalRecipe = Optional.empty();
-									
-									itemStorage.getStack(1).decrement(1);
-									
-									if (isEmpty) {
-										itemStorage.setStack(0, output);
-									} else {
-										itemStorage.getStack(0).increment(output.getCount());
-										
-										shouldTry = true; // Vanilla is garbage; if we don't do it here, it only triggers the listener on #setStack.
-									}
-									
-									progress = 0;
-								} else {
-									progress += speed;
-								}
-								
-								isActive = true;
+					try (var transaction = Transaction.openOuter()) {
+						if (energyStorage.extract(consumed, transaction) == consumed) {
+							if (progress + speed >= limit) {
+								optionalRecipe = Optional.empty();
+
+								var inputStorage = itemStorage.getStorage(INPUT_SLOT);
+
+								inputStorage.extract(inputStorage.getResource(), 1, transaction);
+
+								var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
+
+								outputStorage.insert(ItemVariant.of(recipe.getOutput()), recipe.getOutput().getCount(), transaction);
+
+								transaction.commit();
+
+								progress = 0;
 							} else {
-								isActive = false;
+								progress += speed;
 							}
+
+							isActive = true;
+						} else {
+							isActive = false;
 						}
-					} else {
-						isActive = false;
 					}
 				} else {
 					isActive = false;
 				}
 			} else {
+				progress = 0;
+				limit = 100;
 				isActive = false;
 			}
 		}
@@ -188,7 +203,6 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 		super.readNbt(nbt);
 		progress = nbt.getDouble("progress");
 		limit = nbt.getInt("limit");
-		shouldTry = true;
 	}
 
 	@Override

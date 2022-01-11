@@ -50,7 +50,6 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implements MachineConfigProvider<SimpleMachineConfig> {
 	public double progress = 0;
 	public int limit = 100;
-	private boolean shouldTry = false;
 	
 	private static final int INPUT_SLOT_1 = 0;
 	private static final int INPUT_SLOT_2 = 1;
@@ -78,8 +77,9 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 		}).extractPredicate((variant, slot) ->
 			slot == OUTPUT_SLOT
 		).listener(() -> {
-			shouldTry = true;
-			optionalRecipe = Optional.empty();
+			if (optionalRecipe.isPresent() && !optionalRecipe.get().matches(itemStorage.slice(INPUT_SLOT_1, INPUT_SLOT_2, OUTPUT_SLOT))) {
+				optionalRecipe = Optional.empty();
+			}
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 
@@ -91,14 +91,8 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 			return;
 
 		if (itemStorage != null && energyStorage != null) {
-			if (optionalRecipe.isEmpty() && shouldTry) {
+			if (optionalRecipe.isEmpty()) {
 				optionalRecipe = AlloySmeltingRecipe.matching(world, itemStorage.slice(INPUT_SLOT_1, INPUT_SLOT_2, OUTPUT_SLOT));
-				shouldTry = false;
-
-				if (optionalRecipe.isEmpty()) {
-					progress = 0;
-					limit = 100;
-				}
 			}
 
 			if (optionalRecipe.isPresent()) {
@@ -120,9 +114,7 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 							if (recipe.firstInput().test(firstInputStorage) && recipe.secondInput().test(secondInputStorage)) {
 								firstInputStorage.extract(firstInputStorage.getResource(), recipe.firstInput().getAmount(), transaction);
 								secondInputStorage.extract(secondInputStorage.getResource(), recipe.secondInput().getAmount(), transaction);
-							} else if (recipe.firstInput().test(secondInputStorage.getResource(), secondInputStorage.getAmount()) &&
-									   recipe.secondInput().test(firstInputStorage.getResource(), firstInputStorage.getAmount())) {
-								
+							} else if (recipe.firstInput().test(secondInputStorage) && recipe.secondInput().test(firstInputStorage)) {
 								firstInputStorage.extract(firstInputStorage.getResource(), recipe.secondInput().getAmount(), transaction);
 								secondInputStorage.extract(secondInputStorage.getResource(), recipe.firstInput().getAmount(), transaction);
 							}
@@ -144,6 +136,8 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 					}
 				}
 			} else {
+				progress = 0;
+				limit = 100;
 				isActive = false;
 			}
 		}

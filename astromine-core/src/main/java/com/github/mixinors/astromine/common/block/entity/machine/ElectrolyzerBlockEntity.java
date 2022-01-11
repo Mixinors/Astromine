@@ -48,7 +48,6 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 public abstract class ElectrolyzerBlockEntity extends ExtendedBlockEntity implements FluidStorageMachineConfigProvider {
 	public double progress = 0;
 	public int limit = 100;
-	public boolean shouldTry = false;
 
 	private static final int INPUT_SLOT = 0;
 	
@@ -75,8 +74,9 @@ public abstract class ElectrolyzerBlockEntity extends ExtendedBlockEntity implem
 		}).extractPredicate((variant, slot) ->
 			slot == OUTPUT_SLOT_1 || slot == OUTPUT_SLOT_2
 		).listener(() -> {
-			shouldTry = true;
-			optionalRecipe = Optional.empty();
+			if (optionalRecipe.isPresent() && !optionalRecipe.get().matches(fluidStorage.slice(INPUT_SLOT, OUTPUT_SLOT_1, OUTPUT_SLOT_2))) {
+				optionalRecipe = Optional.empty();
+			}
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 
@@ -88,13 +88,11 @@ public abstract class ElectrolyzerBlockEntity extends ExtendedBlockEntity implem
 			return;
 
 		if (fluidStorage != null && energyStorage != null) {
-			if (optionalRecipe.isEmpty() && shouldTry) {
+			if (optionalRecipe.isEmpty()) {
 				optionalRecipe = ElectrolyzingRecipe.matching(world, fluidStorage.slice(INPUT_SLOT, OUTPUT_SLOT_1, OUTPUT_SLOT_2));
-				shouldTry = false;
 
 				if (optionalRecipe.isEmpty()) {
-					progress = 0;
-					limit = 100;
+
 				}
 			}
 
@@ -142,6 +140,10 @@ public abstract class ElectrolyzerBlockEntity extends ExtendedBlockEntity implem
 						isActive = false;
 					}
 				}
+			} else {
+				isActive = false;
+				progress = 0;
+				limit = 100;
 			}
 		}
 	}

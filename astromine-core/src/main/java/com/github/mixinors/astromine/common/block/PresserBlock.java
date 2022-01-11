@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.block;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
-import com.github.mixinors.astromine.common.block.entity.machine.PressBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.machine.PresserBlockEntity;
 import com.github.mixinors.astromine.common.network.NetworkBlock;
 import com.github.mixinors.astromine.common.screenhandler.PresserScreenHandler;
 import com.github.mixinors.astromine.common.util.tier.MachineTier;
@@ -85,7 +85,7 @@ public abstract class PresserBlock extends HorizontalFacingTieredBlockWithEntity
 
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-			return new PressBlockEntity.Primitive(pos, state);
+			return new PresserBlockEntity.Primitive(pos, state);
 		}
 
 		@Override
@@ -101,7 +101,7 @@ public abstract class PresserBlock extends HorizontalFacingTieredBlockWithEntity
 
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-			return new PressBlockEntity.Basic(pos, state);
+			return new PresserBlockEntity.Basic(pos, state);
 		}
 
 		@Override
@@ -117,7 +117,7 @@ public abstract class PresserBlock extends HorizontalFacingTieredBlockWithEntity
 
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-			return new PressBlockEntity.Advanced(pos, state);
+			return new PresserBlockEntity.Advanced(pos, state);
 		}
 
 		@Override
@@ -133,7 +133,7 @@ public abstract class PresserBlock extends HorizontalFacingTieredBlockWithEntity
 
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-			return new PressBlockEntity.Elite(pos, state);
+			return new PresserBlockEntity.Elite(pos, state);
 		}
 
 		@Override

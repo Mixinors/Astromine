@@ -43,7 +43,11 @@ public record ItemResult(ItemVariant variant, int count) {
 	}
 
 	public boolean equalsAndFitsIn(SingleSlotStorage<ItemVariant> storage) {
-		return storage.getCapacity() - storage.getAmount() >= count && storage.getResource().equals(variant);
+		return equalsAndFitsIn(storage, false);
+	}
+
+	public boolean equalsAndFitsIn(SingleSlotStorage<ItemVariant> storage, boolean ignoreMaxCount) {
+		return storage.getAmount() + count <= storage.getCapacity() && (storage.getAmount() + count <= variant.getItem().getMaxCount() || ignoreMaxCount) && (storage.getResource().equals(variant) || storage.isResourceBlank());
 	}
 
 	public static JsonObject toJson(ItemResult result) {

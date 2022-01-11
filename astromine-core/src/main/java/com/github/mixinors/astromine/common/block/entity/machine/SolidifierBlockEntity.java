@@ -49,7 +49,6 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 public abstract class SolidifierBlockEntity extends ExtendedBlockEntity implements FluidStorageMachineConfigProvider {
 	public double progress = 0;
 	public int limit = 100;
-	public boolean shouldTry = true;
 	
 	private static final int FLUID_INPUT_SLOT = 0;
 	
@@ -79,8 +78,9 @@ public abstract class SolidifierBlockEntity extends ExtendedBlockEntity implemen
 			
 			return SolidifyingRecipe.allows(world, variant);
 		}).listener(() -> {
-			shouldTry = true;
-			optionalRecipe = Optional.empty();
+			if (optionalRecipe.isPresent() && !optionalRecipe.get().matches(itemStorage.slice(ITEM_OUTPUT_SLOT), fluidStorage.slice(FLUID_INPUT_SLOT))) {
+				optionalRecipe = Optional.empty();
+			}
 		}).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
 		
 		itemStorage = new SimpleItemStorage(1).extractPredicate((variant, slot) ->
@@ -88,8 +88,9 @@ public abstract class SolidifierBlockEntity extends ExtendedBlockEntity implemen
 		).insertPredicate((variant, slot) ->
 			false
 		).listener(() -> {
-			shouldTry = true;
-			optionalRecipe = Optional.empty();
+			if (optionalRecipe.isPresent() && !optionalRecipe.get().matches(itemStorage.slice(ITEM_OUTPUT_SLOT), fluidStorage.slice(FLUID_INPUT_SLOT))) {
+				optionalRecipe = Optional.empty();
+			}
 		}).insertSlots(ITEM_INSERT_SLOTS).extractSlots(ITEM_EXTRACT_SLOTS);
 	}
 	
@@ -101,14 +102,8 @@ public abstract class SolidifierBlockEntity extends ExtendedBlockEntity implemen
 			return;
 
 		if (fluidStorage != null && itemStorage != null && energyStorage != null) {
-			if (optionalRecipe.isEmpty() && shouldTry) {
+			if (optionalRecipe.isEmpty()) {
 				optionalRecipe = SolidifyingRecipe.matching(world, itemStorage.slice(ITEM_OUTPUT_SLOT), fluidStorage.slice(FLUID_INPUT_SLOT));
-				shouldTry = false;
-
-				if (optionalRecipe.isEmpty()) {
-					progress = 0;
-					limit = 100;
-				}
 			}
 
 			if (optionalRecipe.isPresent()) {
@@ -146,6 +141,8 @@ public abstract class SolidifierBlockEntity extends ExtendedBlockEntity implemen
 				}
 			} else {
 				isActive = false;
+				progress = 0;
+				limit = 100;
 			}
 		}
 	}

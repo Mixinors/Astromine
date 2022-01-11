@@ -135,7 +135,7 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		
 		transaction.addCloseCallback((($, result) -> {
 			if (result.wasCommitted()) {
-				listeners.forEach(Runnable::run);
+				notifyListeners();
 				
 				incrementVersion();
 			}
@@ -167,7 +167,7 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		
 		transaction.addCloseCallback((($, result) -> {
 			if (result.wasCommitted()) {
-				listeners.forEach(Runnable::run);
+				notifyListeners();
 				
 				incrementVersion();
 			}
@@ -277,6 +277,10 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	
 	public void incrementVersion() {
 		version += 1;
+	}
+
+	public void notifyListeners() {
+		listeners.forEach(Runnable::run);
 	}
 	
 	/**

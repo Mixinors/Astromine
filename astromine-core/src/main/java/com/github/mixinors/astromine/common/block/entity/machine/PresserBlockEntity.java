@@ -45,10 +45,9 @@ import net.minecraft.util.math.BlockPos;
 
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 
-public abstract class PressBlockEntity extends ExtendedBlockEntity implements MachineConfigProvider<SimpleMachineConfig> {
+public abstract class PresserBlockEntity extends ExtendedBlockEntity implements MachineConfigProvider<SimpleMachineConfig> {
 	public double progress = 0;
 	public int limit = 100;
-	private boolean shouldTry = true;
 	
 	private static final int INPUT_SLOT = 1;
 	
@@ -60,7 +59,7 @@ public abstract class PressBlockEntity extends ExtendedBlockEntity implements Ma
 	
 	private Optional<PressingRecipe> optionalRecipe = Optional.empty();
 
-	public PressBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
+	public PresserBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
 		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, Long.MAX_VALUE);
@@ -74,11 +73,9 @@ public abstract class PressBlockEntity extends ExtendedBlockEntity implements Ma
 		}).extractPredicate((variant, slot) ->
 			slot == OUTPUT_SLOT
 		).listener(() -> {
-			shouldTry = true;
-			optionalRecipe = Optional.empty();
-		}).listener(() -> {
-			shouldTry = true;
-			optionalRecipe = Optional.empty();
+			if (optionalRecipe.isPresent() && !optionalRecipe.get().matches(itemStorage.slice(INPUT_SLOT, OUTPUT_SLOT))) {
+				optionalRecipe = Optional.empty();
+			}
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 
@@ -86,25 +83,19 @@ public abstract class PressBlockEntity extends ExtendedBlockEntity implements Ma
 	public void tick() {
 		super.tick();
 
-		if (world == null || world.isClient || !shouldRun())
+		if (!hasWorld() || world.isClient() || !shouldRun())
 			return;
-		
-		if (itemStorage != null && energyStorage != null) {
-			if (optionalRecipe.isEmpty() && shouldTry) {
-				optionalRecipe = PressingRecipe.matching(world, itemStorage.slice(INPUT_SLOT, OUTPUT_SLOT));
-				shouldTry = false;
 
-				if (optionalRecipe.isEmpty()) {
-					progress = 0;
-					limit = 100;
-				}
+		if (itemStorage != null && energyStorage != null) {
+			if (optionalRecipe.isEmpty()) {
+				optionalRecipe = PressingRecipe.matching(world, itemStorage.slice(INPUT_SLOT, OUTPUT_SLOT));
 			}
 
 			if (optionalRecipe.isPresent()) {
 				var recipe = optionalRecipe.get();
 
 				limit = recipe.time();
-				
+
 				var speed = Math.min(getSpeed(), limit - progress);
 				var consumed = (long) (recipe.energyInput() * speed / limit);
 
@@ -112,28 +103,30 @@ public abstract class PressBlockEntity extends ExtendedBlockEntity implements Ma
 					if (energyStorage.extract(consumed, transaction) == consumed) {
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
-							
+
 							var inputStorage = itemStorage.getStorage(INPUT_SLOT);
-							
+
 							inputStorage.extract(inputStorage.getResource(), recipe.input().getAmount(), transaction);
-							
+
 							var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
-							
+
 							outputStorage.insert(recipe.output().variant(), recipe.output().count(), transaction);
-							
+
 							transaction.commit();
-							
+
 							progress = 0;
 						} else {
 							progress += speed;
 						}
-						
+
 						isActive = true;
 					} else {
 						isActive = false;
 					}
 				}
 			} else {
+				progress = 0;
+				limit = 100;
 				isActive = false;
 			}
 		}
@@ -160,7 +153,7 @@ public abstract class PressBlockEntity extends ExtendedBlockEntity implements Ma
 		return AMConfig.get().machines.press;
 	}
 
-	public static class Primitive extends PressBlockEntity {
+	public static class Primitive extends PresserBlockEntity {
 		public Primitive(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.PRIMITIVE_PRESSER, blockPos, blockState);
 		}
@@ -171,7 +164,7 @@ public abstract class PressBlockEntity extends ExtendedBlockEntity implements Ma
 		}
 	}
 
-	public static class Basic extends PressBlockEntity {
+	public static class Basic extends PresserBlockEntity {
 		public Basic(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.BASIC_PRESSER, blockPos, blockState);
 		}
@@ -182,7 +175,7 @@ public abstract class PressBlockEntity extends ExtendedBlockEntity implements Ma
 		}
 	}
 
-	public static class Advanced extends PressBlockEntity {
+	public static class Advanced extends PresserBlockEntity {
 		public Advanced(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ADVANCED_PRESSER, blockPos, blockState);
 		}
@@ -193,7 +186,7 @@ public abstract class PressBlockEntity extends ExtendedBlockEntity implements Ma
 		}
 	}
 
-	public static class Elite extends PressBlockEntity {
+	public static class Elite extends PresserBlockEntity {
 		public Elite(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ELITE_PRESSER, blockPos, blockState);
 		}

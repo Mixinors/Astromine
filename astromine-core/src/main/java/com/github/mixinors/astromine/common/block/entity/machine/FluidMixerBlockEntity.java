@@ -48,7 +48,6 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 public abstract class FluidMixerBlockEntity extends ExtendedBlockEntity implements FluidStorageMachineConfigProvider {
 	public double progress = 0;
 	public int limit = 100;
-	public boolean shouldTry = false;
 	
 	private static final int INPUT_SLOT_1 = 0;
 	private static final int INPUT_SLOT_2 = 1;
@@ -76,8 +75,9 @@ public abstract class FluidMixerBlockEntity extends ExtendedBlockEntity implemen
 			return FluidMixingRecipe.allows(world, variant, fluidStorage.getVariant(1)) ||
 				   FluidMixingRecipe.allows(world, fluidStorage.getVariant(0), variant);
 		}).listener(() -> {
-			shouldTry = true;
-			optionalRecipe = Optional.empty();
+			if (optionalRecipe.isPresent() && !optionalRecipe.get().matches(fluidStorage.slice(INPUT_SLOT_1, INPUT_SLOT_2, OUTPUT_SLOT))) {
+				optionalRecipe = Optional.empty();
+			}
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 		
 		fluidStorage.getStorage(INPUT_SLOT_1).setCapacity(getFluidStorageSize());
@@ -93,14 +93,8 @@ public abstract class FluidMixerBlockEntity extends ExtendedBlockEntity implemen
 			return;
 		
 		if (fluidStorage != null && energyStorage != null) {
-			if (optionalRecipe.isEmpty() && shouldTry) {
+			if (optionalRecipe.isEmpty()) {
 				optionalRecipe = FluidMixingRecipe.matching(world, fluidStorage.slice(INPUT_SLOT_1, INPUT_SLOT_2));
-				shouldTry = false;
-
-				if (optionalRecipe.isEmpty()) {
-					progress = 0;
-					limit = 100;
-				}
 			}
 
 			if (optionalRecipe.isPresent()) {
@@ -145,6 +139,8 @@ public abstract class FluidMixerBlockEntity extends ExtendedBlockEntity implemen
 				}
 			} else {
 				isActive = false;
+				progress = 0;
+				limit = 100;
 			}
 		}
 	}

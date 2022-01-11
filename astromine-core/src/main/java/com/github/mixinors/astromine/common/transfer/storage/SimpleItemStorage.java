@@ -152,7 +152,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 
 		transaction.addCloseCallback((($, result) -> {
 			if (result.wasCommitted()) {
-				listeners.forEach(Runnable::run);
+				notifyListeners();
 
 				incrementVersion();
 			}
@@ -184,7 +184,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 
 		transaction.addCloseCallback((($, result) -> {
 			if (result.wasCommitted()) {
-				listeners.forEach(Runnable::run);
+				notifyListeners();
 
 				incrementVersion();
 			}
@@ -277,7 +277,9 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		removedStack.setCount(Math.min(existingStack.getCount(), amount));
 
 		existingStack.setCount(Math.max(0, existingStack.getCount() - amount));
-		
+
+		notifyListeners();
+
 		incrementVersion();
 		
 		return removedStack;
@@ -288,7 +290,9 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		var stack = stacks.get(slot);
 		
 		stacks.set(slot, ItemStack.EMPTY);
-		
+
+		notifyListeners();
+
 		incrementVersion();
 		
 		return stack;
@@ -297,7 +301,9 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	@Override
 	public void setStack(int slot, ItemStack stack) {
 		stacks.set(slot, stack);
-		
+
+		notifyListeners();
+
 		incrementVersion();
 	}
 	
@@ -316,7 +322,9 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		for (var i = 0; i < size; ++i) {
 			stacks.set(i, ItemStack.EMPTY);
 		}
-		
+
+		notifyListeners();
+
 		incrementVersion();
 	}
 	
@@ -373,6 +381,10 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	
 	public void incrementVersion() {
 		version++;
+	}
+
+	public void notifyListeners() {
+		listeners.forEach(Runnable::run);
 	}
 	
 	/**

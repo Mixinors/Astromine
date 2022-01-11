@@ -58,11 +58,11 @@ public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implement
 		
 		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), getMaxTransferRate());
 		
-		itemStorage = new SimpleItemStorage(2).insertPredicate((variant, slot) -> {
-			return slot == INPUT_SLOT;
-		}).extractPredicate((stack, slot) -> {
-			return slot == OUTPUT_SLOT;
-		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
+		itemStorage = new SimpleItemStorage(2).insertPredicate((variant, slot) ->
+			slot == INPUT_SLOT
+		).extractPredicate((stack, slot) ->
+			slot == OUTPUT_SLOT
+		).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 	
 	@Override

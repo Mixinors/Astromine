@@ -49,7 +49,6 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements MachineConfigProvider<SimpleMachineConfig> {
 	public double progress = 0;
 	public int limit = 100;
-	private boolean shouldTry = true;
 	
 	private static final int INPUT_SLOT = 1;
 	
@@ -75,63 +74,60 @@ public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements
 		}).extractPredicate((variant, slot) ->
 			slot == OUTPUT_SLOT
 		).listener(() -> {
-			shouldTry = true;
-			optionalRecipe = Optional.empty();
+			if (optionalRecipe.isPresent() && !optionalRecipe.get().matches(itemStorage.slice(INPUT_SLOT, OUTPUT_SLOT))) {
+				optionalRecipe = Optional.empty();
+			}
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 	
 	@Override
 	public void tick() {
 		super.tick();
-		
-		if (world == null || world.isClient || !shouldRun())
+
+		if (!hasWorld() || world.isClient() || !shouldRun())
 			return;
-		
+
 		if (itemStorage != null && energyStorage != null) {
-			if (optionalRecipe.isEmpty() && shouldTry) {
+			if (optionalRecipe.isEmpty()) {
 				optionalRecipe = WireMillingRecipe.matching(world, itemStorage.slice(INPUT_SLOT, OUTPUT_SLOT));
-				shouldTry = false;
-				
-				if (optionalRecipe.isEmpty()) {
-					progress = 0;
-					limit = 100;
-				}
 			}
-			
+
 			if (optionalRecipe.isPresent()) {
 				var recipe = optionalRecipe.get();
-				
+
 				limit = recipe.time();
-				
+
 				var speed = Math.min(getSpeed(), limit - progress);
 				var consumed = (long) (recipe.energyInput() * speed / limit);
-				
+
 				try (var transaction = Transaction.openOuter()) {
 					if (energyStorage.extract(consumed, transaction) == consumed) {
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
-							
+
 							var inputStorage = itemStorage.getStorage(INPUT_SLOT);
-							
+
 							inputStorage.extract(inputStorage.getResource(), recipe.input().getAmount(), transaction);
-							
+
 							var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
-							
+
 							outputStorage.insert(recipe.output().variant(), recipe.output().count(), transaction);
-							
+
 							transaction.commit();
-							
+
 							progress = 0;
 						} else {
 							progress += speed;
 						}
-						
+
 						isActive = true;
 					} else {
 						isActive = false;
 					}
 				}
 			} else {
+				progress = 0;
+				limit = 100;
 				isActive = false;
 			}
 		}

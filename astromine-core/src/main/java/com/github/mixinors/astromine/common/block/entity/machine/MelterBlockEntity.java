@@ -49,7 +49,6 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 public abstract class MelterBlockEntity extends ExtendedBlockEntity implements FluidStorageMachineConfigProvider {
 	public double progress = 0;
 	public int limit = 100;
-	public boolean shouldTry = true;
 	
 	private static final int FLUID_OUTPUT_SLOT = 0;
 	
@@ -75,8 +74,9 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements F
 		).insertPredicate((variant, slot) ->
 			false
 		).listener(() -> {
-			shouldTry = true;
-			optionalRecipe = Optional.empty();
+			if (optionalRecipe.isPresent() && !optionalRecipe.get().matches(itemStorage.slice(ITEM_INPUT_SLOT), fluidStorage.slice(FLUID_OUTPUT_SLOT))) {
+				optionalRecipe = Optional.empty();
+			}
 		}).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
 		
 		fluidStorage.getStorage(FLUID_OUTPUT_SLOT).setCapacity(getFluidStorageSize());
@@ -89,9 +89,10 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements F
 			}
 			
 			return MeltingRecipe.allows(world, variant);
-		}).listener(() -> {
-			shouldTry = true;
-			optionalRecipe = Optional.empty();
+		}).listener(() ->  {
+			if (optionalRecipe.isPresent() && !optionalRecipe.get().matches(itemStorage.slice(ITEM_INPUT_SLOT), fluidStorage.slice(FLUID_OUTPUT_SLOT))) {
+				optionalRecipe = Optional.empty();
+			}
 		}).insertSlots(ITEM_INSERT_SLOTS).extractSlots(ITEM_EXTRACT_SLOTS);
 	}
 	
@@ -103,14 +104,8 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements F
 			return;
 
 		if (itemStorage != null && fluidStorage != null && energyStorage != null) {
-			if (optionalRecipe.isEmpty() && shouldTry) {
+			if (optionalRecipe.isEmpty()) {
 				optionalRecipe = MeltingRecipe.matching(world, itemStorage.slice(ITEM_INPUT_SLOT), fluidStorage.slice(FLUID_OUTPUT_SLOT));
-				shouldTry = false;
-
-				if (optionalRecipe.isEmpty()) {
-					progress = 0;
-					limit = 100;
-				}
 			}
 
 			if (optionalRecipe.isPresent()) {
@@ -148,6 +143,8 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements F
 				}
 			} else {
 				isActive = false;
+				progress = 0;
+				limit = 100;
 			}
 		}
 	}
