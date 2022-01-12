@@ -300,9 +300,6 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
-            subprojects.each {
-                from components.java
-            }
         }
     }
     repositories {
