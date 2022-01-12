@@ -25,7 +25,11 @@
 package com.github.mixinors.astromine.datagen.provider.tag;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Stream;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.datagen.AMDatagen;
@@ -88,7 +92,7 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 		var guardedByPiglinsTagBuilder = getOrCreateTagBuilder(BlockTags.GUARDED_BY_PIGLINS);
 
 		MaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateTags).forEachOrdered(family -> {
-			family.getBlockTags().forEach((variant, tag) -> {
+			AMDatagen.toTreeMap(family.getBlockTags()).forEach((variant, tag) -> {
 				getOrCreateTagBuilder(tag).add(family.getVariant(variant));
 
 				if (family.hasAlias()) {
@@ -279,7 +283,7 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 		INFINIBURN_BLOCKS.forEach(infiniburnTagBuilder::add);
 		INFINIBURN_TAGS.forEach(infiniburnTagBuilder::addTag);
 
-		SPACE_STONE_FAMILIES.forEach((family) -> family.getVariants().forEach((variant, block) -> {
+		SPACE_STONE_FAMILIES.forEach((family) -> AMDatagen.toTreeMap(family.getVariants()).forEach((variant, block) -> {
 			infiniburnTagBuilder.add(block);
 			addHarvestData(SPACE_STONE_HARVEST_DATA, block);
 		}));

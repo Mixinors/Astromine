@@ -53,6 +53,6 @@ public class AMBlockFamilies {
 	}
 
 	public static Stream<BlockFamily> getFamilies() {
-		return BlockFamilies.getFamilies().filter(AMBlockFamilies::isAstromineFamily).sorted(Comparator.comparing(family -> Registry.BLOCK.getId(family.getBaseBlock())));
+		return BlockFamilies.getFamilies().filter(AMBlockFamilies::isAstromineFamily).sorted(Comparator.comparing(family -> Registry.BLOCK.getId(family.getBaseBlock()).toString()));
 	}
 }

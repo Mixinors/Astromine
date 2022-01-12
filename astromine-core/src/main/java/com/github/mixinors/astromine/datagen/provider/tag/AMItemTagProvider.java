@@ -187,7 +187,7 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 		var piglinSafeArmorTagBuilder = getOrCreateTagBuilder(Piglib.PIGLIN_SAFE_ARMOR);
 
 		MaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateTags).forEachOrdered(family -> {
-			family.getItemTags().forEach((variant, tag) -> {
+			AMDatagen.toTreeMap(family.getItemTags()).forEach((variant, tag) -> {
 				getOrCreateTagBuilder(tag).add(family.getVariant(variant));
 
 				if (family.hasAlias()) {
@@ -218,7 +218,7 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 					}
 				}
 			});
-			family.getBlockItemTags().forEach((variant, tag) -> {
+			AMDatagen.toTreeMap(family.getBlockItemTags()).forEach((variant, tag) -> {
 				var blockTag = family.getTag(variant);
 
 				copy(blockTag, tag);

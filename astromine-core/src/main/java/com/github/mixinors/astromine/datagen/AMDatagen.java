@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.datagen;
 
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -287,5 +288,9 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 			case 3 -> BlockTags.NEEDS_DIAMOND_TOOL;
 			default -> createBlockTag(new Identifier("fabric", "needs_tool_level_" + miningLevel));
 		};
+	}
+
+	public static <T extends Comparable<?>, U> TreeMap<T, U> toTreeMap(Map<T, U> map) {
+		return new TreeMap<>(map);
 	}
 }

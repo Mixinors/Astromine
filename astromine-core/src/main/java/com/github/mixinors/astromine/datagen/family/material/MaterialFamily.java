@@ -27,8 +27,10 @@ package com.github.mixinors.astromine.datagen.family.material;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
+import java.util.NavigableMap;
 import java.util.Optional;
 import java.util.Set;
+import java.util.SortedMap;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
