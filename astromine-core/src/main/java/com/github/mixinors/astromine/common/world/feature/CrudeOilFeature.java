@@ -46,8 +46,6 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.util.FeatureContext;
 
 public class CrudeOilFeature extends Feature<DefaultFeatureConfig> {
-	private static final Supplier<Block> CRUDE_OIL_BLOCK = AMFluids.OIL::getBlock;
-
 	private static final int BOTTOM_WELL_SIZE = 8;
 	private static final int BOTTOM_WELL_MAX_OFFSET = 20;
 	private static final int TOP_WELL_WIDTH = 12;
@@ -70,22 +68,24 @@ public class CrudeOilFeature extends Feature<DefaultFeatureConfig> {
 		
 		var offsetY = random.nextInt(BOTTOM_WELL_SIZE, BOTTOM_WELL_MAX_OFFSET);
 
+		var oilState = AMFluids.OIL.getBlock().getDefaultState();
+
 		Shapes.ellipsoid(BOTTOM_WELL_SIZE, BOTTOM_WELL_SIZE, BOTTOM_WELL_SIZE).applyLayer(TranslateLayer.of(Position.of(pos.offset(Direction.UP, offsetY)))).stream().forEach(position ->
-			world.setBlockState(position.toBlockPos(), CRUDE_OIL_BLOCK.get().getDefaultState(), 0)
+			world.setBlockState(position.toBlockPos(), oilState, 0)
 		);
 
 		BlockPos oceanTop = world.getTopPosition(Heightmap.Type.WORLD_SURFACE_WG, pos);
 
 		Shapes.ellipsoid(TOP_WELL_WIDTH, TOP_WELL_WIDTH, TOP_WELL_HEIGHT).applyLayer(NoiseTranslateLayer.of(TOP_WELL_NOISE, random)).applyLayer(TranslateLayer.of(Position.of(oceanTop))).stream().forEach(position -> {
 			if (world.getBlockState(position.toBlockPos()).getBlock() instanceof FluidBlock) {
-				world.setBlockState(position.toBlockPos(), CRUDE_OIL_BLOCK.get().getDefaultState(), 0);
+				world.setBlockState(position.toBlockPos(), oilState, 0);
 			}
 		});
 
 		int geyserHeight = random.nextInt(GEYSER_MIN_HEIGHT, GEYSER_MAX_HEIGHT);
 
 		for (var mutablePos = new BlockPos.Mutable(pos.getX(), pos.getY() + offsetY + BOTTOM_WELL_SIZE, pos.getZ()); mutablePos.getY() < oceanTop.getY() + geyserHeight; mutablePos.move(Direction.UP)) {
-			world.setBlockState(mutablePos, CRUDE_OIL_BLOCK.get().getDefaultState(), 0);
+			world.setBlockState(mutablePos, oilState, 0);
 
 			for (var direction : new Direction[]{ Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST }) {
 				world.setBlockState(mutablePos.offset(direction), Blocks.AIR.getDefaultState(), 0);
