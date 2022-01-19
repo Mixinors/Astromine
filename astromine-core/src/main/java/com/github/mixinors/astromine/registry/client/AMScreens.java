@@ -50,7 +50,6 @@ public class AMScreens {
 		registerSimple(AMScreenHandlers.BLOCK_PLACER);
 		registerSimple(AMScreenHandlers.LIQUID_GENERATOR);
 		registerSimple(AMScreenHandlers.SOLID_GENERATOR);
-		registerSimple(AMScreenHandlers.VENT);
 		registerSimple(AMScreenHandlers.TANK);
 		registerSimple(AMScreenHandlers.NUCLEAR_WARHEAD);
 		registerSimple(AMScreenHandlers.CAPACITOR);
