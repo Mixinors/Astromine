@@ -57,9 +57,9 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 	public double progress = 0;
 	public int limit = 100;
 
-	private static final int INPUT_SLOT = 0;
+	private static final int INPUT_SLOT = 1;
 
-	private static final int OUTPUT_SLOT = 1;
+	private static final int OUTPUT_SLOT = 0;
 
 	private static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
 
