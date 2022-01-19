@@ -33,7 +33,7 @@ import com.github.mixinors.astromine.client.BaseRenderer;
 import com.github.mixinors.astromine.common.util.ClientUtils;
 import com.github.mixinors.astromine.common.util.TextUtils;
 import dev.vini2003.hammer.client.scissor.Scissors;
-import dev.vini2003.hammer.client.util.Layers;
+import dev.vini2003.hammer.client.util.LayerUtils;
 import dev.vini2003.hammer.common.widget.Widget;
 import org.jetbrains.annotations.NotNull;
 
@@ -104,8 +104,8 @@ public class HorizontalArrowWidget extends Widget
 		
 		var sBGX = (int) (((sX / limitSupplier.getAsInt()) * progressSupplier.getAsInt()));
 		
-		var backgroundLayer = Layers.get(BACKGROUND);
-		var foregroundLayer = Layers.get(FOREGROUND);
+		var backgroundLayer = LayerUtils.get(BACKGROUND);
+		var foregroundLayer = LayerUtils.get(FOREGROUND);
 		
 		var area = new Scissors(provider, (int) (x * scale), (int) (rawHeight - ((y + sY) * scale)), (int) (sX * scale), (int) (sY * scale));
 

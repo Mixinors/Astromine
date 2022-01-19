@@ -39,12 +39,12 @@ import com.github.mixinors.astromine.common.widget.blade.RedstoneControlWidget;
 import dev.architectury.hooks.block.BlockEntityHooks;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
-import dev.vini2003.hammer.common.util.Slots;
-import dev.vini2003.hammer.common.widget.bar.EnergyBarWidget;
+import dev.vini2003.hammer.common.util.SlotUtils;
 import dev.vini2003.hammer.common.widget.bar.FluidBarWidget;
 import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 import dev.vini2003.hammer.common.widget.tab.TabWidget;
 import dev.vini2003.hammer.common.widget.text.TextWidget;
+import dev.vini2003.hammerenergy.common.widget.bar.EnergyBarWidget;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
@@ -120,7 +120,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 		invTitle.setText(getPlayer().getInventory().getName());
 		invTitle.setColor(4210752);
 		mainTab.add(invTitle);
-		playerSlots = Slots.addPlayerInventory(invPos, Size.of(18.0F, 18.0F, 0.0F), mainTab, getPlayer().getInventory());
+		playerSlots = SlotUtils.addPlayerInventory(invPos, Size.of(18.0F, 18.0F, 0.0F), mainTab, getPlayer().getInventory());
 		
 		var rotation = new Direction[] { Direction.NORTH };
 		var block = blockEntity.getCachedState().getBlock();
@@ -154,7 +154,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 			
 			tabCollection.add(invTabTitle);
 			
-			playerSlots.addAll(Slots.addPlayerInventory(invPos, Size.of(18.0F, 18.0F, 0.0F), tabCollection, getPlayer().getInventory()));
+			playerSlots.addAll(SlotUtils.addPlayerInventory(invPos, Size.of(18.0F, 18.0F, 0.0F), tabCollection, getPlayer().getInventory()));
 			
 			var tabTitle = new TextWidget();
 			tabTitle.setPosition(Position.of(mainTab, 8.0F, 0.0F, 0.0F));

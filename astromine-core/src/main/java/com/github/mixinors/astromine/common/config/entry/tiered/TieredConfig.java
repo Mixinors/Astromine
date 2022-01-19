@@ -48,7 +48,8 @@ public abstract class TieredConfig<T extends TierConfig> implements AMConfigEntr
 	@ConfigEntry.Gui.CollapsibleObject
 	public T elite = createTierConfig(MachineTier.ELITE);
 
-	@ConfigEntry.Gui.Excluded
+	@Comment("Settings for the creative tier of this machine if it exists.")
+	@ConfigEntry.Gui.CollapsibleObject
 	public T creative = createTierConfig(MachineTier.CREATIVE);
 
 	public T getTierConfig(MachineTier tier) {

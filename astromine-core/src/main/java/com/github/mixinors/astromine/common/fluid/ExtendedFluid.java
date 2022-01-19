@@ -78,7 +78,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 	final int fogColor;
 	final int tintColor;
 
-	final boolean isInfinite;
+	final boolean infinite;
 
 	RegistrySupplier<Block> block;
 
@@ -92,10 +92,10 @@ public abstract class ExtendedFluid extends FlowableFluid {
 
 	final DamageSource source;
 
-	public ExtendedFluid(int fogColor, int tintColor, boolean isInfinite, @Nullable DamageSource source) {
+	public ExtendedFluid(int fogColor, int tintColor, boolean infinite, @Nullable DamageSource source) {
 		this.fogColor = fogColor;
 		this.tintColor = tintColor;
-		this.isInfinite = isInfinite;
+		this.infinite = infinite;
 		this.source = source == null ? DamageSource.GENERIC : source;
 	}
 	
@@ -119,7 +119,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 	
 	@Override
 	protected boolean isInfinite() {
-		return isInfinite;
+		return infinite;
 	}
 	
 	public int getFogColor() {
@@ -189,9 +189,9 @@ public abstract class ExtendedFluid extends FlowableFluid {
 	}
 	
 	public static class Builder {
-		private int fog = Color.STANDARD.toInt();
-		private int  tint = Color.STANDARD.toInt();
-		private int  damage = 0;
+		private int fog = Color.WHITE.toInt();
+		private int tint = Color.WHITE.toInt();
+		private int damage = 0;
 
 		private boolean isInfinite = false;
 		private boolean isToxic = false;

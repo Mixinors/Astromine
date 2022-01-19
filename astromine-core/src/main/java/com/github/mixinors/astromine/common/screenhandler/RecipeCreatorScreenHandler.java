@@ -41,7 +41,7 @@ import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
 import dev.vini2003.hammer.common.screen.handler.BaseScreenHandler;
-import dev.vini2003.hammer.common.util.Slots;
+import dev.vini2003.hammer.common.util.SlotUtils;
 import dev.vini2003.hammer.common.widget.WidgetCollection;
 import dev.vini2003.hammer.common.widget.button.ButtonWidget;
 import dev.vini2003.hammer.common.widget.panel.PanelWidget;
@@ -99,9 +99,9 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 
 		add(panel);
 
-		Slots.addPlayerInventory(Position.of(panel.getX() + 7, panel.getY() + 7 + 9 + 18 + 18 + 18 + 7 + 18 + 7), Size.of(18, 18), (WidgetCollection) this, getPlayer().getInventory());
+		SlotUtils.addPlayerInventory(Position.of(panel.getX() + 7, panel.getY() + 7 + 9 + 18 + 18 + 18 + 7 + 18 + 7), Size.of(18, 18), (WidgetCollection) this, getPlayer().getInventory());
 		
-		var inputSlots = Lists.newArrayList(Slots.addArray(Position.of(panel.getX() + 7, panel.getY() + 7 + 9), Size.of(18, 18), panel, 0, 3, 3, getInventory()));
+		var inputSlots = Lists.newArrayList(SlotUtils.addArray(Position.of(panel.getX() + 7, panel.getY() + 7 + 9), Size.of(18, 18), panel, 0, 3, 3, getInventory()));
 		
 		var outputSlot = new SlotWidget(9, getInventory());
 		outputSlot.setPosition(Position.of(panel.getX() + 7 + 18 * 3 + 7, panel.getY() + 7 + 18 + 9));

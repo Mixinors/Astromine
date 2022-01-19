@@ -32,12 +32,12 @@ import com.github.mixinors.astromine.common.entity.base.ExtendedEntity;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
 import dev.vini2003.hammer.common.screen.handler.BaseScreenHandler;
-import dev.vini2003.hammer.common.util.Slots;
-import dev.vini2003.hammer.common.widget.bar.EnergyBarWidget;
+import dev.vini2003.hammer.common.util.SlotUtils;
 import dev.vini2003.hammer.common.widget.bar.FluidBarWidget;
 import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 import dev.vini2003.hammer.common.widget.tab.TabWidget;
 import dev.vini2003.hammer.common.widget.text.TextWidget;
+import dev.vini2003.hammerenergy.common.widget.bar.EnergyBarWidget;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -100,7 +100,7 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 		
 		mainTab.add(invTitle);
 		
-		playerSlots = Slots.addPlayerInventory(invPos, Size.of(18.0F, 18.0F, 0.0F), mainTab, getPlayer().getInventory());
+		playerSlots = SlotUtils.addPlayerInventory(invPos, Size.of(18.0F, 18.0F, 0.0F), mainTab, getPlayer().getInventory());
 		
 		if (entity.hasEnergyStorage()) {
 			energyBar = new EnergyBarWidget();

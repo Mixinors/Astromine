@@ -35,7 +35,7 @@ import com.github.mixinors.astromine.client.render.sprite.SpriteRenderer;
 import com.github.mixinors.astromine.common.util.ClientUtils;
 import com.github.mixinors.astromine.common.util.FluidUtils;
 import com.github.mixinors.astromine.common.util.TextUtils;
-import dev.vini2003.hammer.client.util.Layers;
+import dev.vini2003.hammer.client.util.LayerUtils;
 import dev.vini2003.hammer.common.widget.button.ButtonWidget;
 import org.jetbrains.annotations.NotNull;
 
@@ -147,7 +147,7 @@ public class FluidFilterWidget extends ButtonWidget
 		var sX = getSize().getWidth();
 		var sY = getSize().getHeight();
 		
-		var layer = Layers.get(FLUID_BACKGROUND);
+		var layer = LayerUtils.get(FLUID_BACKGROUND);
 
 		BaseRenderer.drawTexturedQuad(matrices, provider, layer, x, y, getSize().getWidth(), getSize().getHeight(), FLUID_BACKGROUND);
 
