@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.entity.base;
 
+import java.util.Arrays;
 import java.util.function.Supplier;
 
 import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
@@ -67,7 +68,9 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	protected SimpleItemStorage itemStorage = null;
 	protected SimpleFluidStorage fluidStorage = null;
 	
-	protected long lastEnergyStorageVersion = 0;
+	protected StorageSiding[] lastItemStorageSidings = new StorageSiding[6];
+	protected StorageSiding[] lastFluidStorageSidings = new StorageSiding[6];
+	
 	protected long lastItemStorageVersion = 0;
 	protected long lastFluidStorageVersion = 0;
 	
@@ -99,6 +102,31 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	public void tick() {
 		if (!hasWorld() || world.isClient()) {
 			return;
+		}
+		
+		// Sync with nearby players.
+		for (var player : world.getPlayers()) {
+			if (player.squaredDistanceTo(getPos().getX(), getPos().getY(), getPos().getZ()) < 8 * 8) {
+				syncData();
+			}
+		}
+		
+		// Trigger a block update if item sidings have changed.
+		if (itemStorage != null) {
+			if (!Arrays.equals(lastItemStorageSidings, itemStorage.getSidings())) {
+				world.getBlockState(getPos()).neighborUpdate(world, getPos(), getCachedState().getBlock(), getPos(), false);
+			}
+			
+			lastItemStorageSidings = itemStorage.getSidings();
+		}
+		
+		// Trigger a block update if fluid sidings have changed.
+		if (fluidStorage != null) {
+			if (!Arrays.equals(lastFluidStorageSidings, fluidStorage.getSidings())) {
+				world.getBlockState(getPos()).neighborUpdate(world, getPos(), getCachedState().getBlock(), getPos(), false);
+			}
+			
+			lastFluidStorageSidings = fluidStorage.getSidings();
 		}
 		
 		try (var transaction = Transaction.openOuter()) {

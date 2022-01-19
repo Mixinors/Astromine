@@ -57,7 +57,7 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Util
 	public BlockBreakerBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.BLOCK_BREAKER, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, Long.MAX_VALUE);
+		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, 0L);
 
 		itemStorage = new SimpleItemStorage(1).extractPredicate((variant, slot) ->
 			slot == OUTPUT_SLOT
@@ -83,7 +83,9 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Util
 			} else {
 				if (cooldown >= getSpeed()) {
 					try (var transaction = Transaction.openOuter()) {
-						if (energyStorage.extract(consumed, transaction) == consumed) {
+						if (energyStorage.amount >= consumed) {
+							energyStorage.amount -= consumed;
+
 							var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
 
 							var stored = outputStorage.getStack();

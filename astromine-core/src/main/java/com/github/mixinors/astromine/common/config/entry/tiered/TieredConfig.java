@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.common.config.entry.tiered;
 
 import com.github.mixinors.astromine.common.config.entry.AMConfigEntry;
 import com.github.mixinors.astromine.common.config.entry.tiered.tier.TierConfig;
-import com.github.mixinors.astromine.common.util.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
@@ -52,7 +52,7 @@ public abstract class TieredConfig<T extends TierConfig> implements AMConfigEntr
 	public T creative = createTierConfig(MachineTier.CREATIVE);
 
 	public T getTierConfig(MachineTier tier) {
-		return switch(tier) {
+		return switch (tier) {
 			case PRIMITIVE -> primitive;
 			case BASIC -> basic;
 			case ADVANCED -> advanced;

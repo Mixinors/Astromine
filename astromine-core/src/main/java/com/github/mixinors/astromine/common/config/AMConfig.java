@@ -151,16 +151,16 @@ public class AMConfig implements ConfigData {
 	public long eliteDrillEnergy = batteries.batteryPacks.elite * 2;
 
 	@Comment("Energy rate for the Primitive Energy Cable.")
-	public long primitiveEnergyCableEnergy = 256;
+	public long primitiveEnergyNetworkTransferRate = 256;
 
 	@Comment("Energy for the Basic Energy Cable.")
-	public long basicEnergyCableEnergy = 512;
+	public long basicEnergyNetworkTransferRate = 512;
 
 	@Comment("Energy for the Advanced Energy Cable.")
-	public long advancedEnergyCableEnergy = 1024;
+	public long advancedEnergyNetworkTransferRate = 1024;
 
 	@Comment("Energy for the Elite Energy Cable.")
-	public long eliteEnergyCableEnergy = 4096;
+	public long eliteEnergyNetworkTransferRate = 4096;
 
 	@Comment("Fluid for the Space Suit.")
 	public long spaceSuitFluid = portableTanks.regular;
@@ -172,7 +172,7 @@ public class AMConfig implements ConfigData {
 	public boolean asphyxiateAK9 = true;
 
 	@Comment("Fluid amount for the Fluid Pipe and inter-machine transfer.")
-	public long fluidTransfer = FluidConstants.BUCKET * 4;
+	public long fluidNetworkTransferRate = FluidConstants.BUCKET * 4;
 
 	@Comment("Default gravity for non-Astromine dimensions.")
 	public double defaultGravity = 0.08D;

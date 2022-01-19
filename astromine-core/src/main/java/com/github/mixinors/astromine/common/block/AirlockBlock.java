@@ -223,7 +223,7 @@ public class AirlockBlock extends Block implements Waterloggable {
 	public void setOpen(World world, BlockState state, BlockPos blockPos, boolean open, boolean notify) {
 		if (state.isOf(this) && isPowered(state) != open) {
 			byte flags = Block.REDRAW_ON_MAIN_THREAD;
-			if(notify) flags |= Block.NOTIFY_LISTENERS;
+			if (notify) flags |= Block.NOTIFY_LISTENERS;
 			world.setBlockState(blockPos, state.with(POWERED, open), flags);
 			this.playOpenCloseSound(world, blockPos, open);
 		}

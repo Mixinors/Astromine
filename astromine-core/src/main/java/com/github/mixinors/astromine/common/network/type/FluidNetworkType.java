@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2020 - 2022 Mixinors
+ * Copyright (c) 2020, 2021 Mixinors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,55 +24,86 @@
 
 package com.github.mixinors.astromine.common.network.type;
 
-import com.github.mixinors.astromine.common.network.NetworkInstance;
-import com.github.mixinors.astromine.common.network.type.base.NetworkType;
+import com.github.mixinors.astromine.common.config.AMConfig;
+import com.github.mixinors.astromine.common.network.Network;
+import com.github.mixinors.astromine.common.util.data.position.WorldPos;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.minecraft.util.math.Direction;
+import org.jetbrains.annotations.Nullable;
 
-public final class FluidNetworkType implements NetworkType {
+import java.util.ArrayList;
+import java.util.List;
+
+public final class FluidNetworkType implements NetworkType<Storage<FluidVariant>> {
 	@Override
-	public void tick(NetworkInstance instance) {
-		// TODO: Rewrite this.
-//		List<Pair<SimpleFluidStorage, Direction>> providers = Lists.newArrayList();
-//		List<Pair<SimpleFluidStorage, Direction>> requesters = Lists.newArrayList();
-//
-//		for (var memberNode : instance.members) {
-//			var memberPos = WorldPos.of(instance.getWorld(), memberNode.getBlockPosition());
-//
-//			var networkMember = NetworkMemberRegistry.get(memberPos, memberNode.getDirection());
-//
-//			if (networkMember.acceptsType(this)) {
-//				var blockEntity = memberPos.getBlockEntity();
-//
-//				var fluidStorage = SimpleFluidStorage.get(blockEntity);
-//
-//				var type = TransferType.NONE;
-//
-//				var transferComponent = TransferComponent.get(blockEntity);
-//
-//				if (transferComponent != null) {
-//					type = transferComponent.getFluid(memberNode.getDirection());
-//				}
-//
-//				if (!type.isNone()) {
-//					if (type.canExtract() && (networkMember.isProvider(this) || networkMember.isBuffer(this))) {
-//						providers.add(new Pair<>(fluidStorage, memberNode.getDirection()));
-//					}
-//
-//					if (type.canInsert() && (networkMember.isRequester(this) || networkMember.isBuffer(this))) {
-//						requesters.add(new Pair<>(fluidStorage, memberNode.getDirection()));
-//					}
-//				}
-//			}
-//		}
-//
-//		for (Pair<SimpleFluidStorage, Direction> provider : providers) {
-//			for (Pair<SimpleFluidStorage, Direction> requester : requesters) {
-//				provider.getLeft().into(requester.getLeft(), FluidVolume.getTransfer(), requester.getRight().getOpposite());
-//			}
-//		}
+	public Storage<FluidVariant> find(WorldPos pos, @Nullable Direction direction) {
+		return FluidStorage.SIDED.find(pos.getWorld(), pos.getBlockPos(), direction);
+	}
+	
+	private void move(List<Storage<FluidVariant>> extractableStorages, List<Storage<FluidVariant>> insertableStorages) {
+		try (var transaction = Transaction.openOuter()) {
+			for (var extractableStorage : extractableStorages) {
+				for (var insertableStorage : insertableStorages) {
+					StorageUtil.move(extractableStorage, insertableStorage, ($) -> true, getTransferRate(), transaction);
+				}
+			}
+			
+			transaction.commit();
+		}
 	}
 	
 	@Override
-	public String toString() {
-		return "Fluid";
+	public void tick(Network instance) {
+		var world = instance.getWorld();
+		
+		var extractableStorages = new ArrayList<Storage<FluidVariant>>();
+		var bufferStorages = new ArrayList<Storage<FluidVariant>>();
+		var insertableStorages = new ArrayList<Storage<FluidVariant>>();
+		
+		// First, we extract from extractableStorages into insertableStorages.
+		// Then, we extract from extractableStorages into bufferStorages.
+		// Then, we extract from bufferStorages into insertableStorages.
+		
+		// We ignore how much has been moved for the sake of simplicity.
+		
+		// We must also remove inaccessible members.
+		var membersToRemove = new ArrayList<Network.Member>();
+		
+		for (var memberNode : instance.members) {
+			var member = (Network.Member) memberNode;
+			
+			var storage = find(new WorldPos(world, member.blockPos()), member.direction());
+			
+			if (storage == null) {
+				membersToRemove.add(member);
+				
+				world.getBlockState(member.blockPos()).neighborUpdate(world, member.blockPos(), world.getBlockState(member.blockPos()).getBlock(), member.blockPos(), false);
+				
+				continue;
+			}
+			
+			if (storage.supportsInsertion() && storage.supportsExtraction()) {
+				bufferStorages.add(storage);
+			} else if (storage.supportsInsertion()) {
+				insertableStorages.add(storage);
+			} if (storage.supportsExtraction()) {
+				extractableStorages.add(storage);
+			}
+		}
+		
+		membersToRemove.forEach(instance::removeMember);
+		
+		move(extractableStorages, insertableStorages);
+		move(extractableStorages, bufferStorages);
+		move(bufferStorages, insertableStorages);
+	}
+	
+	@Override
+	public long getTransferRate() {
+		return AMConfig.get().fluidNetworkTransferRate;
 	}
 }

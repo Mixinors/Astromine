@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.block.base;
 
 import com.github.mixinors.astromine.common.item.MachineUpgradeKitItem;
-import com.github.mixinors.astromine.common.util.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
@@ -56,7 +56,7 @@ public interface TieredBlock {
 		if (stack.getItem() instanceof MachineUpgradeKitItem upgradeKitItem && upgradeKitItem.isValidFor(this)) {
 			var newBlock = upgradeKitItem.getUpgrade(this);
 
-			if(newBlock != null) {
+			if (newBlock != null) {
 				if (world.isClient) {
 					var random = world.random;
 

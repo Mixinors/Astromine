@@ -31,7 +31,7 @@ import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.item.*;
 import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
 import com.github.mixinors.astromine.common.item.base.FluidStorageItem;
-import com.github.mixinors.astromine.common.util.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 import dev.architectury.registry.registries.RegistrySupplier;
 
 import net.minecraft.entity.EquipmentSlot;

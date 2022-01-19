@@ -59,36 +59,47 @@ public class RocketItem extends Item {
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		var itemStack = user.getStackInHand(hand);
 		var hitResult = SpawnEggItem.raycast(world, user, RaycastContext.FluidHandling.SOURCE_ONLY);
-		if (((HitResult)hitResult).getType() != HitResult.Type.BLOCK) {
+		if (((HitResult) hitResult).getType() != HitResult.Type.BLOCK) {
 			return TypedActionResult.pass(itemStack);
 		}
+		
 		if (!(world instanceof ServerWorld)) {
 			return TypedActionResult.success(itemStack);
 		}
+		
 		var blockPos = hitResult.getBlockPos();
-		if ( world.getBlockState(blockPos).getBlock() instanceof FluidBlock ) {
+		
+		if ( world.getBlockState(blockPos).getBlock() instanceof FluidBlock) {
 			return TypedActionResult.pass(itemStack);
 		}
+		
 		if (!world.canPlayerModifyAt(user, blockPos) || !user.canPlaceOn(blockPos, hitResult.getSide(), itemStack)) {
 			return TypedActionResult.fail(itemStack);
 		}
+		
 		var entityType = this.getEntityType(itemStack.getNbt());
+		
 		if (entityType.spawnFromItemStack((ServerWorld)world, itemStack, user, blockPos.offset(Direction.UP), SpawnReason.SPAWN_EGG, false, false) == null) {
 			return TypedActionResult.pass(itemStack);
 		}
+		
 		if (!user.getAbilities().creativeMode) {
 			itemStack.decrement(1);
 		}
+		
 		user.incrementStat(Stats.USED.getOrCreateStat(this));
 		world.emitGameEvent(GameEvent.ENTITY_PLACE, user);
+		
 		return TypedActionResult.consume(itemStack);
 	}
 
 	public EntityType<?> getEntityType(@Nullable NbtCompound nbt) {
 		NbtCompound nbtCompound;
+		
 		if (nbt != null && nbt.contains("EntityTag", 10) && (nbtCompound = nbt.getCompound("EntityTag")).contains("id", 8)) {
 			return EntityType.get(nbtCompound.getString("id")).orElse(this.type);
 		}
+		
 		return this.type;
 	}
 }

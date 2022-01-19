@@ -89,7 +89,6 @@ public class AMCommon implements ModInitializer {
 		AMAtmospheres.init();
 		AMBlockEntityTypes.init();
 		AMSoundEvents.init();
-		AMNetworkMembers.init();
 		AMCriteria.init();
 		AMToolMaterials.init();
 		AMOres.init();

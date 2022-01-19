@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.config.entry.tiered;
 
 import com.github.mixinors.astromine.common.config.DefaultConfigValues;
-import com.github.mixinors.astromine.common.util.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 
 public class CapacitorConfig extends SimpleMachineConfig {
 	@Override
@@ -35,7 +35,7 @@ public class CapacitorConfig extends SimpleMachineConfig {
 
 	@Override
 	public long getDefaultEnergyStorageSize(MachineTier tier) {
-		if(tier == MachineTier.CREATIVE) return super.getDefaultEnergyStorageSize(tier);
+		if (tier == MachineTier.CREATIVE) return super.getDefaultEnergyStorageSize(tier);
 		return super.getDefaultEnergyStorageSize(tier) * 4;
 	}
 }

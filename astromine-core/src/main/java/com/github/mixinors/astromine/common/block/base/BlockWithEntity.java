@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.block.base;
 
 import com.github.mixinors.astromine.common.block.entity.base.Tickable;
-import com.github.mixinors.astromine.common.block.redstone.ComparatorMode;
+import com.github.mixinors.astromine.common.util.data.redstone.ComparatorMode;
 import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
 import com.github.mixinors.astromine.common.item.base.FluidStorageItem;
 import dev.architectury.registry.menu.ExtendedMenuProvider;

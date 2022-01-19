@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.item;
 
 import com.github.mixinors.astromine.common.block.base.TieredBlock;
-import com.github.mixinors.astromine.common.util.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
@@ -66,13 +66,13 @@ public class MachineUpgradeKitItem extends Item {
 
 	@Nullable
 	public Block getUpgrade(TieredBlock block) {
-		if(isValidFor(block)) return block.getForTier(to());
+		if (isValidFor(block)) return block.getForTier(to());
 		else return null;
 	}
 
 	@Nullable
 	public Block getUpgrade(Block block) {
-		if(block instanceof TieredBlock tieredBlock) return getUpgrade(tieredBlock);
+		if (block instanceof TieredBlock tieredBlock) return getUpgrade(tieredBlock);
 		else return null;
 	}
 }

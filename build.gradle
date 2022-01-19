@@ -47,32 +47,39 @@ allprojects {
     }
 
     repositories {
+        // Architectury
         maven {
             name = "Architectury"
             url = "https://maven.architectury.dev"
         }
 
+        // TerraformersMC
         maven {
-            name = "TerraFormersMC"
+            name = "TerraformersMC"
             url = "https://maven.terraformersmc.com/releases/"
         }
 
+        // JitPack
         maven {
             name = "JitPack"
             url = "https://jitpack.io"
         }
 
+        // Ladysnake
         maven {
             name = "Ladysnake Libs"
             url = 'https://ladysnake.jfrog.io/artifactory/mods'
+
             content {
                 includeGroup "io.github.onyxstudios.Cardinal-Components-API"
             }
         }
 
+        // BlameJared
         maven {
             name = "BlameJared"
             url = "https://maven.blamejared.com"
+
             content {
                 includeGroup "vazkii.patchouli"
             }
@@ -85,54 +92,70 @@ allprojects {
                 if (!dep.contains("net.fabricmc.fabric-api")) {
                     exclude group: "net.fabricmc.fabric-api"
                 }
+
                 exclude group: "net.fabricmc"
                 exclude group: "com.jamieswhiteshirt"
+
                 if (!dep.contains("me.shedaniel")) {
                     exclude group: "me.shedaniel"
                 }
+
                 exclude group: "me.shedaniel.cloth", module: "cloth-config"
                 exclude group: "io.github.prospector", module: "modmenu"
             }
         }
+
         dependencies.ext.useAsApiOptionally = { dep ->
             modApi(dep) {
                 if (!dep.contains("net.fabricmc.fabric-api")) {
                     exclude group: "net.fabricmc.fabric-api"
                 }
+
                 exclude group: "net.fabricmc"
                 exclude group: "com.jamieswhiteshirt"
+
                 if (!dep.contains("me.shedaniel")) {
                     exclude group: "me.shedaniel"
                 }
+
                 // tmp
                 exclude group: "com.github.Draylar.omega-config", module: "omega-config-base"
                 exclude group: "me.shedaniel.cloth", module: "cloth-config"
                 exclude group: "io.github.prospector", module: "modmenu"
             }
         }
+
         dependencies.ext.useAsApi = { dep ->
             useAsApiOptionally(dep)
             include(dep)
         }
+
         dependencies.ext.useAsRuntimeOnly = { dep ->
             modRuntimeOnly(dep) {
                 if (!dep.contains("net.fabricmc.fabric-api")) {
                     exclude group: "net.fabricmc.fabric-api"
                 }
+
                 exclude group: "net.fabricmc"
                 exclude group: "com.jamieswhiteshirt"
+
                 if (!dep.contains("me.shedaniel")) {
                     exclude group: "me.shedaniel"
                 }
+
                 exclude group: "me.shedaniel.cloth", module: "cloth-config"
                 exclude group: "io.github.prospector", module: "modmenu"
             }
         }
 
         minecraft group: 'com.mojang', name: 'minecraft', version: minecraftVersion
+
         mappings group: 'net.fabricmc', name: 'yarn', version: yarnVersion, classifier: 'v2'
+
         modImplementation "net.fabricmc:fabric-loader:$fabricLoaderVersion"
+
         useAsApiOptionally "net.fabricmc.fabric-api:fabric-api:$fabricApiVersion"
+
         modImplementation "com.google.code.findbugs:jsr305:3.0.2"
 
         tap(rootProject.ext.setDefaultApis)
@@ -143,6 +166,7 @@ allprojects {
             filesMatching('fabric.mod.json') {
                 expand 'version': project.version
             }
+
             inputs.property "version", project.version
         }
 
@@ -157,6 +181,7 @@ allprojects {
 
     task sourcesJar(type: Jar, dependsOn: classes) {
         classifier("sources")
+
         from sourceSets.main.allSource
     }
 
@@ -200,11 +225,15 @@ subprojects {
             if ((project.hasProperty('curse_api_key') || System.getenv('curse_api_key') != null) && cfProjectId >= 0) {
                 project {
                     id = cfProjectId.toString()
+
                     releaseType = rootProject.releaseCycle
+
                     changelog = "View the changelog at https://github.com/Mixinors/Astromine"
+
                     ((String) rootProject.taggedVersions).split(",").each {
                         addGameVersion it
                     }
+
                     relations {
                         requiredDependency "fabric-api"
                         embeddedLibrary "cloth-api"
@@ -216,9 +245,11 @@ subprojects {
 						embeddedLibrary "piglib"
 						embeddedLibrary "cauldronlib"
                     }
+
                     mainArtifact(file("${project.buildDir}/libs/${project.archivesBaseName}-${project.version}.jar"))
                 }
             }
+
             options {
                 forgeGradleIntegration = false
                 javaVersionAutoDetect = false
@@ -293,6 +324,7 @@ dependencies {
     }
 
     modRuntime "net.fabricmc:dev-launch-injector:+"
+
     tap(rootProject.ext.setRuntimeTestMods)
 }
 
@@ -302,13 +334,20 @@ publishing {
             from components.java
         }
     }
+
     repositories {
-        if (System.getenv("MAVEN_PASS") != null) {
+        if (System.getenv("MVN_USERNAME") != null && System.getenv("MVN_TOKEN") != null) {
             maven {
-                url = "https://deploy.shedaniel.me/"
+                name = "vini2003"
+                url = "https://maven.vini2003.dev/releases"
+
                 credentials {
-                    username = "shedaniel"
-                    password = System.getenv("MAVEN_PASS")
+                    username = System.getenv("MVN_USERNAME")
+                    password = System.getenv("MVN_TOKEN")
+                }
+
+                authentication {
+                    basic(BasicAuthentication)
                 }
             }
         }
@@ -320,11 +359,15 @@ curseforge {
         apiKey = project.hasProperty('curse_api_key') ? project.property('curse_api_key') : System.getenv('curse_api_key')
         project {
             id = "391739"
+
             releaseType = rootProject.releaseCycle
+
             changelog = "View the changelog at https://github.com/Mixinors/Astromine"
+
             ((String) rootProject.taggedVersions).split(",").each {
                 addGameVersion it
             }
+
             relations {
                 requiredDependency "fabric-api"
                 embeddedLibrary "cloth-api"
@@ -336,6 +379,7 @@ curseforge {
                 embeddedLibrary "piglib"
                 embeddedLibrary "cauldronlib"
             }
+
             mainArtifact(file("${project.buildDir}/libs/${project.archivesBaseName}-${project.version}.jar"))
         }
     }
@@ -346,4 +390,5 @@ curseforge {
 }
 
 task licenseFormatAll
+
 subprojects { p -> licenseFormatAll.dependsOn("${p.path}:licenseFormat") }

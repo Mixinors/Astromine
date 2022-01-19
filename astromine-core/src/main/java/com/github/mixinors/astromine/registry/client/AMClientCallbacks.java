@@ -24,13 +24,13 @@
 
 package com.github.mixinors.astromine.registry.client;
 
+import com.github.mixinors.astromine.common.block.network.EnergyCableBlock;
 import com.google.common.collect.Lists;
 
 import com.github.mixinors.astromine.client.render.sky.SpaceSkyProperties;
 import com.github.mixinors.astromine.common.callback.SkyPropertiesCallback;
 import com.github.mixinors.astromine.common.item.HolographicConnectorItem;
 import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
-import com.github.mixinors.astromine.common.network.type.EnergyNetworkType;
 import com.github.mixinors.astromine.common.util.TextUtils;
 import com.github.mixinors.astromine.registry.common.AMDimensions;
 import team.reborn.energy.api.base.SimpleBatteryItem;
@@ -48,7 +48,7 @@ public class AMClientCallbacks {
 			// if (stack.getItem() instanceof FluidVolumeItem) {
 			// 	var fluidStorage = SimpleFluidStorage.get(stack);
 //
-			// 	if(fluidStorage != null) {
+			// 	if (fluidStorage != null) {
 			// 		var volume = fluidStorage.getFirst();
 			// 		var fluidId = volume.getFluidId();
 //
@@ -77,10 +77,10 @@ public class AMClientCallbacks {
 				}
 			}
 		});
-
+		
 		ItemTooltipCallback.EVENT.register( ( stack, context, tooltip ) -> {
-			if (stack.getItem() instanceof BlockItem && ((BlockItem) stack.getItem()).getBlock() instanceof EnergyNetworkType.NodeSpeedProvider) {
-				tooltip.add(new TranslatableText("text.astromine.tooltip.cable.speed", ((EnergyNetworkType.NodeSpeedProvider) ((BlockItem) stack.getItem()).getBlock()).getNodeSpeed()).formatted(Formatting.GRAY));
+			if (stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof EnergyCableBlock cableBlock) {
+				tooltip.add(new TranslatableText("text.astromine.tooltip.cable.speed", cableBlock.getNetworkType().getTransferRate()).formatted(Formatting.GRAY));
 			}
 		});
 
@@ -88,7 +88,7 @@ public class AMClientCallbacks {
 			// if (stack.getItem() instanceof SpaceSuitItem) {
 			// 	if (stack.getItem() == AMItems.SPACE_SUIT_CHESTPLATE.get()) {
 			// 		var fluidStorage = SimpleFluidStorage.get(stack);
-			// 		if(fluidStorage != null) {
+			// 		if (fluidStorage != null) {
 			// 			fluidStorage.forEachIndexed((slot, volume) -> {
 			// 				tooltip.add(((MutableText) TextUtils.getFluidVolume(volume)).append(new LiteralText(" ")).append(((MutableText) TextUtils.getFluid(volume.getFluidId())).formatted(Formatting.GRAY)));
 			// 			});

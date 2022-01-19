@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2020 - 2022 Mixinors
+ * Copyright (c) 2020, 2021 Mixinors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,40 +36,33 @@ import net.minecraft.world.World;
  */
 public final class WorldPos {
 	private final World world;
-
+	
 	private final BlockPos pos;
-
+	
 	private BlockState blockState;
-
+	
 	/**
 	 * Instantiates a {@link WorldPos}.
 	 */
-	private WorldPos(World world, BlockPos pos) {
+	public WorldPos(World world, BlockPos pos) {
 		this.world = world;
 		this.pos = pos;
 	}
-
-	/**
-	 * Instantiates a {@link WorldPos}.
-	 */
-	public static WorldPos of(World world, BlockPos pos) {
-		return new WorldPos(world, pos);
-	}
-
+	
 	/**
 	 * Returns a position offset to this one by the given {@link Direction}.
 	 */
 	public WorldPos offset(Direction direction) {
-		return of(world, getBlockPos().offset(direction));
+		return new WorldPos(world, getBlockPos().offset(direction));
 	}
-
+	
 	/**
 	 * Returns the {@link Block} at this position's {@link BlockPos}.
 	 */
 	public Block getBlock() {
 		return getBlockState().getBlock();
 	}
-
+	
 	/**
 	 * Returns the {@link BlockState} at this position's {@link BlockPos}.
 	 */
@@ -77,45 +70,45 @@ public final class WorldPos {
 		if (blockState == null) {
 			this.blockState = world.getBlockState(pos);
 		}
-
+		
 		return blockState;
 	}
-
+	
 	/**
 	 * Returns the {@link BlockEntity} at this position's {@link BlockPos}.
 	 */
 	public BlockEntity getBlockEntity() {
 		return world.getBlockEntity(pos);
 	}
-
+	
 	/**
 	 * Returns this position's {@link World}.
 	 */
 	public World getWorld() {
 		return world;
 	}
-
+	
 	/**
 	 * Returns this position's {@link BlockPos}.
 	 */
 	public BlockPos getBlockPos() {
 		return pos;
 	}
-
+	
 	/**
 	 * Returns this position's {@link BlockPos}'s X-axis coordinate.
 	 */
 	public int getX() {
 		return pos.getX();
 	}
-
+	
 	/**
 	 * Returns this position's {@link BlockPos}'s Y-axis coordinate.
 	 */
 	public int getY() {
 		return pos.getY();
 	}
-
+	
 	/**
 	 * Returns this position's {@link BlockPos}'s Z-axis coordinate.
 	 */

@@ -169,7 +169,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 		}
 
 		if (blockEntity.hasFluidStorage()) {
-			tabAdder.accept(blockEntity.getItemStorage().getSidings(), StorageType.FLUID);
+			tabAdder.accept(blockEntity.getFluidStorage().getSidings(), StorageType.FLUID);
 		}
 		
 		if (blockEntity.hasEnergyStorage()) {
@@ -188,7 +188,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 			if (energyBar == null) {
 				fluidBar.setPosition(Position.of(mainTab, 7.0F, 11.0F, 0.0F));
 			} else {
-				fluidBar.setPosition(Position.of(energyBar, 7.0F, 0.0F, 0.0F));
+				fluidBar.setPosition(Position.of(energyBar, energyBar.getWidth() + 7.0F, 0.0F, 0.0F));
 			}
 			
 			fluidBar.setSize(Size.of(24.0F, 48.0F, 0.0F));

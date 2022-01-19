@@ -189,7 +189,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 			
 			if (firstItemOutputStorage.getResource().isBlank()) {
 				StorageUtil.move(firstItemInputStorage, firstItemOutputStorage, (variant) -> {
-					if(firstItemOutputStorage.isResourceBlank()) return true;
+					if (firstItemOutputStorage.isResourceBlank()) return true;
 
 					var storage = FluidStorage.ITEM.find(variant.toStack(), ContainerItemContext.ofSingleSlot(firstItemOutputStorage));
 					
@@ -199,7 +199,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 			
 			if (secondItemOutputStorage.getResource().isBlank()) {
 				StorageUtil.move(secondItemInputStorage, secondItemOutputStorage, (variant) -> {
-					if(secondItemOutputStorage.isResourceBlank()) return true;
+					if (secondItemOutputStorage.isResourceBlank()) return true;
 
 					var storage = FluidStorage.ITEM.find(variant.toStack(), ContainerItemContext.ofSingleSlot(firstItemOutputStorage));
 					

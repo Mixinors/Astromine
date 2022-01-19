@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.common.config.entry.tiered;
 import com.github.mixinors.astromine.common.config.DefaultConfigValues;
 import com.github.mixinors.astromine.common.config.entry.provider.tiered.DefaultedTieredFluidStorageSizeProvider;
 import com.github.mixinors.astromine.common.config.entry.tiered.tier.TankTierConfig;
-import com.github.mixinors.astromine.common.util.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 
 public class TankConfig extends SpeedTieredConfig<TankTierConfig> implements DefaultedTieredFluidStorageSizeProvider {
 	@Override

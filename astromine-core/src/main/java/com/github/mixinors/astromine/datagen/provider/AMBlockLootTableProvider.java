@@ -73,15 +73,15 @@ public class AMBlockLootTableProvider extends FabricBlockLootTablesProvider {
 	}
 
 	public static LootTable.Builder machineDrops(Block drop) {
-		if(drop instanceof BlockWithEntity machine && machine.saveTagToDroppedItem()) {
+		if (drop instanceof BlockWithEntity machine && machine.saveTagToDroppedItem()) {
 			LootTable.Builder builder = LootTable.builder().pool(addSurvivesExplosionCondition(machine, LootPool.builder().rolls(ConstantLootNumberProvider.create(1.0f)).with(ItemEntry.builder(machine))));
 
 			CopyNbtLootFunction.Builder copyNbtBuilder = CopyNbtLootFunction.builder(ContextLootNbtProvider.BLOCK_ENTITY);
 			BlockWithEntity.SavedData savedData = machine.getSavedDataForDroppedItem();
-			if(savedData.redstoneControl()) copyNbtBuilder = copyNbtBuilder.withOperation("RedstoneControl", "BlockEntityTag.RedstoneControl");
-			if(savedData.energyStorage()) copyNbtBuilder = copyNbtBuilder.withOperation("EnergyStorage", "BlockEntityTag.EnergyStorage");
-			if(savedData.itemStorage()) copyNbtBuilder = copyNbtBuilder.withOperation("ItemStorage", "BlockEntityTag.ItemStorage");
-			if(savedData.fluidStorage()) copyNbtBuilder = copyNbtBuilder.withOperation("FluidStorage", "BlockEntityTag.FluidStorage");
+			if (savedData.redstoneControl()) copyNbtBuilder = copyNbtBuilder.withOperation("RedstoneControl", "BlockEntityTag.RedstoneControl");
+			if (savedData.energyStorage()) copyNbtBuilder = copyNbtBuilder.withOperation("EnergyStorage", "BlockEntityTag.EnergyStorage");
+			if (savedData.itemStorage()) copyNbtBuilder = copyNbtBuilder.withOperation("ItemStorage", "BlockEntityTag.ItemStorage");
+			if (savedData.fluidStorage()) copyNbtBuilder = copyNbtBuilder.withOperation("FluidStorage", "BlockEntityTag.FluidStorage");
 
 			builder.apply(CopyNameLootFunction.builder(CopyNameLootFunction.Source.BLOCK_ENTITY)).apply(copyNbtBuilder);
 			return builder;

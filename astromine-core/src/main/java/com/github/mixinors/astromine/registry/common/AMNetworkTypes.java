@@ -27,17 +27,16 @@ package com.github.mixinors.astromine.registry.common;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.network.type.EnergyNetworkType;
 import com.github.mixinors.astromine.common.network.type.FluidNetworkType;
-import com.github.mixinors.astromine.common.network.type.base.NetworkType;
+import com.github.mixinors.astromine.common.network.type.NetworkType;
 import com.github.mixinors.astromine.common.registry.NetworkTypeRegistry;
 
 public class AMNetworkTypes {
-	public static final NetworkType ENERGY = register("energy_network", new EnergyNetworkType());
+	public static final NetworkType PRIMITIVE_ENERGY = register("primitive_energy_network", new EnergyNetworkType.Primitive());
+	public static final NetworkType BASIC_ENERGY = register("basic_energy_network", new EnergyNetworkType.Primitive());
+	public static final NetworkType ADVANCED_ENERGY = register("advanced_energy_network", new EnergyNetworkType.Primitive());
+	public static final NetworkType ELITE_ENERGY = register("elite_energy_network", new EnergyNetworkType.Primitive());
+	
 	public static final NetworkType FLUID = register("fluid_network", new FluidNetworkType());
-	public static final NetworkType ITEM = register("item_network", instance -> {
-		// TODO: item network
-		// TODO: still todo two months later
-		// TODO: still todo six months later
-	});
 
 	public static void init() {
 

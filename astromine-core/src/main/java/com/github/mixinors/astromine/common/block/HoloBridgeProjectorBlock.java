@@ -72,7 +72,7 @@ public class HoloBridgeProjectorBlock extends HorizontalFacingBlockWithEntity {
 			color = HoloBridgeProjectorBlockEntity.DEFAULT_COLOR;
 		}
 
-		if(changeColor) {
+		if (changeColor) {
 			var originalEntity = (HoloBridgeProjectorBlockEntity) world.getBlockEntity(position);
 
 			for (var entity : new HoloBridgeProjectorBlockEntity[] {originalEntity.getChild(), originalEntity, originalEntity.getParent()}) {

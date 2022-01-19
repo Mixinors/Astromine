@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.common.config.entry.tiered;
 
 import com.github.mixinors.astromine.common.config.entry.provider.tiered.DefaultedTieredSpeedProvider;
 import com.github.mixinors.astromine.common.config.entry.tiered.tier.SpeedModifierTierConfig;
-import com.github.mixinors.astromine.common.util.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 

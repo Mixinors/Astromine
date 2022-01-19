@@ -57,8 +57,8 @@ public class FluidCollectorBlockEntity extends ExtendedBlockEntity implements Fl
 	public FluidCollectorBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.FLUID_COLLECTOR, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, Long.MAX_VALUE);
-		
+		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, 0L);
+
 		fluidStorage = new SimpleFluidStorage(1, getFluidStorageSize()).extractPredicate((variant, slot) ->
 			slot == OUTPUT_SLOT
 		).insertPredicate((variant, slot) ->
@@ -78,14 +78,14 @@ public class FluidCollectorBlockEntity extends ExtendedBlockEntity implements Fl
 		if (fluidStorage != null && energyStorage != null) {
 			var consumed = getEnergyConsumed();
 			
-			if (energyStorage.getAmount() < consumed) {
+			if (energyStorage.amount < consumed) {
 				cooldown = 0L;
 				
 				isActive = false;
 			} else {
 				if (cooldown >= getSpeed()) {
 					try (var transaction = Transaction.openOuter()) {
-						if (energyStorage.extract(consumed, transaction) == consumed) {
+						if (energyStorage.amount >= consumed) {
 							var direction = getCachedState().get(HorizontalFacingBlock.FACING);
 							
 							var targetPos = pos.offset(direction);
@@ -101,9 +101,11 @@ public class FluidCollectorBlockEntity extends ExtendedBlockEntity implements Fl
 								var outputStorage = fluidStorage.getStorage(OUTPUT_SLOT);
 
 								if (outputStorage.insert(FluidVariant.of(targetFluid), FluidConstants.BUCKET, transaction) == FluidConstants.BUCKET) {
-									((FluidDrainable)targetBlock).tryDrainFluid(world, targetPos, targetBlockState);
+									((FluidDrainable) targetBlock).tryDrainFluid(world, targetPos, targetBlockState);
 									
 									world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);
+									
+									energyStorage.amount -= consumed;
 									
 									transaction.commit();
 								} else {

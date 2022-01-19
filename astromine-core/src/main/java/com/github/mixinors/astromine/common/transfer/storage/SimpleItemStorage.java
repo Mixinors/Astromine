@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2020 - 2022 Mixinors
+ * Copyright (c) 2020, 2021 Mixinors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,28 +24,23 @@
 
 package com.github.mixinors.astromine.common.transfer.storage;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
-import java.util.function.BiPredicate;
-import java.util.stream.IntStream;
-
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
+
 import com.github.mixinors.astromine.registry.common.AMItems;
-
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.inventory.Inventory;
+
+import java.util.*;
+import java.util.function.BiPredicate;
+import java.util.stream.IntStream;
 
 public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	private final int size;
@@ -143,65 +138,57 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	
 	@Override
 	public long insert(ItemVariant resource, long maxAmount, TransactionContext transaction) {
-		return insert(resource, maxAmount, transaction, false);
-	}
-
-	public long insert(ItemVariant resource, long maxAmount, TransactionContext transaction, boolean force) {
 		StoragePreconditions.notBlank(resource);
 		StoragePreconditions.notNegative(maxAmount);
-
+		
 		transaction.addCloseCallback((($, result) -> {
 			if (result.wasCommitted()) {
-				notifyListeners();
-
+				listeners.forEach(Runnable::run);
+				
 				incrementVersion();
 			}
 		}));
-
+		
 		var amount = 0;
-
+		
 		for (var slot : insertSlots) {
-			if (!insertPredicate.test(resource, slot) && !force) continue;
-
+			if (!insertPredicate.test(resource, slot)) continue;
+			
 			var storage = storages.get(slot);
-
+			
 			amount += storage.insert(resource, maxAmount - amount, transaction);
-
+			
 			if (amount == maxAmount) break;
 		}
-
+		
 		return amount;
 	}
 	
 	@Override
 	public long extract(ItemVariant resource, long maxAmount, TransactionContext transaction) {
-		return extract(resource, maxAmount, transaction, false);
-	}
-
-	public long extract(ItemVariant resource, long maxAmount, TransactionContext transaction, boolean force) {
 		StoragePreconditions.notBlank(resource);
 		StoragePreconditions.notNegative(maxAmount);
-
+		
 		transaction.addCloseCallback((($, result) -> {
 			if (result.wasCommitted()) {
-				notifyListeners();
-
+				listeners.forEach(Runnable::run);
+				
 				incrementVersion();
 			}
 		}));
-
+		
 		var amount = 0;
-
+		
 		for (var slot : extractSlots) {
-			if (!extractPredicate.test(resource, slot) && !force) continue;
-
+			if (!extractPredicate.test(resource, slot)) continue;
+			
 			var storage = storages.get(slot);
-
+			
 			amount += storage.extract(resource, maxAmount - amount, transaction);
-
+			
 			if (amount == maxAmount) break;
 		}
-
+		
 		return amount;
 	}
 	
@@ -277,10 +264,10 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		removedStack.setCount(Math.min(existingStack.getCount(), amount));
 
 		existingStack.setCount(Math.max(0, existingStack.getCount() - amount));
-
-		notifyListeners();
-
+		
 		incrementVersion();
+		
+		listeners.forEach(Runnable::run);
 		
 		return removedStack;
 	}
@@ -290,10 +277,10 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		var stack = stacks.get(slot);
 		
 		stacks.set(slot, ItemStack.EMPTY);
-
-		notifyListeners();
-
+		
 		incrementVersion();
+		
+		listeners.forEach(Runnable::run);
 		
 		return stack;
 	}
@@ -301,10 +288,10 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	@Override
 	public void setStack(int slot, ItemStack stack) {
 		stacks.set(slot, stack);
-
-		notifyListeners();
-
+		
 		incrementVersion();
+		
+		listeners.forEach(Runnable::run);
 	}
 	
 	@Override
@@ -322,10 +309,10 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		for (var i = 0; i < size; ++i) {
 			stacks.set(i, ItemStack.EMPTY);
 		}
-
-		notifyListeners();
-
+		
 		incrementVersion();
+		
+		listeners.forEach(Runnable::run);
 	}
 	
 	public void writeToNbt(NbtCompound nbt) {
@@ -380,11 +367,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	}
 	
 	public void incrementVersion() {
-		version++;
-	}
-
-	public void notifyListeners() {
-		listeners.forEach(Runnable::run);
+		version += 1;
 	}
 	
 	/**

@@ -29,7 +29,17 @@ import java.util.function.Supplier;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.block.*;
-import com.github.mixinors.astromine.common.config.AMConfig;
+import com.github.mixinors.astromine.common.block.machine.*;
+import com.github.mixinors.astromine.common.block.machine.generator.FluidGeneratorBlock;
+import com.github.mixinors.astromine.common.block.machine.generator.SolidGeneratorBlock;
+import com.github.mixinors.astromine.common.block.network.EnergyCableBlock;
+import com.github.mixinors.astromine.common.block.network.FluidPipeBlock;
+import com.github.mixinors.astromine.common.block.ore.AsteroidOreBlock;
+import com.github.mixinors.astromine.common.block.ore.AstromineOreBlock;
+import com.github.mixinors.astromine.common.block.storage.BufferBlock;
+import com.github.mixinors.astromine.common.block.storage.CapacitorBlock;
+import com.github.mixinors.astromine.common.block.storage.TankBlock;
+import com.github.mixinors.astromine.common.block.utility.*;
 import dev.architectury.registry.block.BlockProperties;
 import dev.architectury.registry.registries.RegistrySupplier;
 
@@ -226,10 +236,10 @@ public class AMBlocks {
 	
 	public static final RegistrySupplier<Block> FLUID_PIPE = register("fluid_pipe", () -> new FluidPipeBlock(BlockProperties.of(Material.METAL).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
 	
-	public static final RegistrySupplier<Block> PRIMITIVE_ENERGY_CABLE = register("primitive_energy_cable", () -> new EnergyCableBlock(AMConfig.get().primitiveEnergyCableEnergy, BlockProperties.of(Material.METAL).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
-	public static final RegistrySupplier<Block> BASIC_ENERGY_CABLE = register("basic_energy_cable", () -> new EnergyCableBlock(AMConfig.get().basicEnergyCableEnergy, BlockProperties.of(Material.METAL).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
-	public static final RegistrySupplier<Block> ADVANCED_ENERGY_CABLE = register("advanced_energy_cable", () -> new EnergyCableBlock(AMConfig.get().advancedEnergyCableEnergy, BlockProperties.of(Material.METAL).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
-	public static final RegistrySupplier<Block> ELITE_ENERGY_CABLE = register("elite_energy_cable", () -> new EnergyCableBlock(AMConfig.get().eliteEnergyCableEnergy, BlockProperties.of(Material.METAL).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> PRIMITIVE_ENERGY_CABLE = register("primitive_energy_cable", () -> new EnergyCableBlock.Primitive(BlockProperties.of(Material.METAL).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> BASIC_ENERGY_CABLE = register("basic_energy_cable", () -> new EnergyCableBlock.Basic(BlockProperties.of(Material.METAL).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> ADVANCED_ENERGY_CABLE = register("advanced_energy_cable", () -> new EnergyCableBlock.Advanced(BlockProperties.of(Material.METAL).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> ELITE_ENERGY_CABLE = register("elite_energy_cable", () -> new EnergyCableBlock.Elite(BlockProperties.of(Material.METAL).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
 	
 	public static void init() {
 	}

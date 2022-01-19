@@ -53,9 +53,9 @@ public class SimpleFluidItemStorage extends SingleVariantItemStorage<FluidVarian
 	protected FluidVariant getResource(ItemVariant currentVariant) {
 		var stack = currentVariant.toStack();
 		var nbt = stack.getNbt();
-		if(nbt == null || !nbt.contains(FLUID_KEY, NbtElement.COMPOUND_TYPE)) return getBlankResource();
+		if (nbt == null || !nbt.contains(FLUID_KEY, NbtElement.COMPOUND_TYPE)) return getBlankResource();
 		var fluidNbt = nbt.getCompound(FLUID_KEY);
-		if(!fluidNbt.contains(VARIANT_KEY, NbtElement.COMPOUND_TYPE)) return getBlankResource();
+		if (!fluidNbt.contains(VARIANT_KEY, NbtElement.COMPOUND_TYPE)) return getBlankResource();
 		return FluidVariant.fromNbt(fluidNbt.getCompound(VARIANT_KEY));
 	}
 
@@ -63,9 +63,9 @@ public class SimpleFluidItemStorage extends SingleVariantItemStorage<FluidVarian
 	protected long getAmount(ItemVariant currentVariant) {
 		var stack = currentVariant.toStack();
 		var nbt = stack.getNbt();
-		if(nbt == null || !nbt.contains(FLUID_KEY, NbtElement.COMPOUND_TYPE)) return 0;
+		if (nbt == null || !nbt.contains(FLUID_KEY, NbtElement.COMPOUND_TYPE)) return 0;
 		var fluidNbt = nbt.getCompound(FLUID_KEY);
-		if(!fluidNbt.contains(AMOUNT_KEY, NbtElement.LONG_TYPE)) return 0;
+		if (!fluidNbt.contains(AMOUNT_KEY, NbtElement.LONG_TYPE)) return 0;
 		return fluidNbt.getLong(AMOUNT_KEY);
 	}
 

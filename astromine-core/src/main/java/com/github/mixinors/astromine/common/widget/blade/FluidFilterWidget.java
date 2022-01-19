@@ -111,7 +111,7 @@ public class FluidFilterWidget extends ButtonWidget
 					var fluidVariant = StorageUtil.findStoredResource(fluidStorage, null);
 
 					Fluid fluid;
-					if(fluidVariant == null) fluid = Fluids.EMPTY;
+					if (fluidVariant == null) fluid = Fluids.EMPTY;
 					else fluid = fluidVariant.getFluid();
 					
 					fluidSupplier = () -> fluid;

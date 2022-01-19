@@ -27,14 +27,13 @@ package com.github.mixinors.astromine.common.block.entity.machine;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.config.entry.tiered.SimpleMachineConfig;
 import com.github.mixinors.astromine.common.provider.config.tiered.MachineConfigProvider;
 import com.github.mixinors.astromine.common.recipe.TrituratingRecipe;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
-import com.github.mixinors.astromine.common.util.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import org.jetbrains.annotations.NotNull;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
@@ -50,9 +49,9 @@ public abstract class TrituratorBlockEntity extends ExtendedBlockEntity implemen
 	public double progress = 0;
 	public int limit = 100;
 
-	private static final int INPUT_SLOT = 1;
+	private static final int INPUT_SLOT = 0;
 	
-	private static final int OUTPUT_SLOT = 0;
+	private static final int OUTPUT_SLOT = 1;
 	
 	private static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
 	
@@ -63,8 +62,8 @@ public abstract class TrituratorBlockEntity extends ExtendedBlockEntity implemen
 	public TrituratorBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, Long.MAX_VALUE);
-		
+		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, 0L);
+
 		itemStorage = new SimpleItemStorage(2).insertPredicate((variant, slot) -> {
 			if (slot != INPUT_SLOT) {
 				return false;
@@ -101,7 +100,9 @@ public abstract class TrituratorBlockEntity extends ExtendedBlockEntity implemen
 				var consumed = (long) (recipe.energyInput() * speed / limit);
 
 				try (var transaction = Transaction.openOuter()) {
-					if (energyStorage.extract(consumed, transaction) == consumed) {
+					if (energyStorage.amount >= consumed) {
+						energyStorage.amount -= consumed;
+
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
 

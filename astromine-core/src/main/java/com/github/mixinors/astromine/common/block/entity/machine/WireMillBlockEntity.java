@@ -34,7 +34,7 @@ import com.github.mixinors.astromine.common.provider.config.tiered.MachineConfig
 import com.github.mixinors.astromine.common.recipe.TrituratingRecipe;
 import com.github.mixinors.astromine.common.recipe.WireMillingRecipe;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
-import com.github.mixinors.astromine.common.util.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import org.jetbrains.annotations.NotNull;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
@@ -50,9 +50,9 @@ public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements
 	public double progress = 0;
 	public int limit = 100;
 	
-	private static final int INPUT_SLOT = 1;
+	private static final int INPUT_SLOT = 0;
 	
-	private static final int OUTPUT_SLOT = 0;
+	private static final int OUTPUT_SLOT = 1;
 	
 	private static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
 	
@@ -63,8 +63,8 @@ public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements
 	public WireMillBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, Long.MAX_VALUE);
-		
+		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, 0L);
+
 		itemStorage = new SimpleItemStorage(2).insertPredicate((variant, slot) -> {
 			if (slot != INPUT_SLOT) {
 				return false;
@@ -101,7 +101,9 @@ public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements
 				var consumed = (long) (recipe.energyInput() * speed / limit);
 
 				try (var transaction = Transaction.openOuter()) {
-					if (energyStorage.extract(consumed, transaction) == consumed) {
+					if (energyStorage.amount >= consumed) {
+						energyStorage.amount -= consumed;
+
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
 

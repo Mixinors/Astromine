@@ -53,8 +53,8 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Utili
 	public BlockPlacerBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.BLOCK_PLACER, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, Long.MAX_VALUE);
-		
+		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, 0L);
+
 		itemStorage = new SimpleItemStorage(1).extractPredicate((variant, slot) ->
 			false
 		).insertPredicate((variant, slot) -> {
@@ -83,7 +83,9 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Utili
 			} else {
 				if (cooldown >= getSpeed()) {
 					try (var transaction = Transaction.openOuter()) {
-						if (energyStorage.extract(consumed, transaction) == consumed) {
+						if (energyStorage.amount >= consumed) {
+							energyStorage.amount -= consumed;
+
 							var stored = itemStorage.getStack(0);
 							
 							var direction = getCachedState().get(HorizontalFacingBlock.FACING);

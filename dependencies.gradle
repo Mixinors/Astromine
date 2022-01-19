@@ -58,6 +58,18 @@ project.ext.setDefaultApis = {
     // RoughlyEnoughItems
     useAsApi "me.shedaniel:RoughlyEnoughItems-api-fabric:${roughlyEnoughItemsVersion}"
     useAsApi "me.shedaniel:RoughlyEnoughItems-fabric:${roughlyEnoughItemsVersion}"
+
+    // Hammer
+    useAsCompileOnly("dev.vini2003:hammer:${hammerVersion}")
+    useAsRuntimeOnly("dev.vini2003:hammer:${hammerVersion}")
+
+    include("dev.vini2003:hammer:${hammerVersion}")
+
+    // Hammer Energy
+    useAsCompileOnly("dev.vini2003:hammer-energy:${hammerVersion}")
+    useAsRuntimeOnly("dev.vini2003:hammer-energy:${hammerVersion}")
+
+    include("dev.vini2003:hammer-energy:${hammerVersion}")
 }
 
 project.ext.setRuntimeTestMods = {

@@ -35,7 +35,7 @@ import com.github.mixinors.astromine.common.config.entry.tiered.SimpleMachineCon
 import com.github.mixinors.astromine.common.inventory.BaseInventory;
 import com.github.mixinors.astromine.common.provider.config.tiered.MachineConfigProvider;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
-import com.github.mixinors.astromine.common.util.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import org.jetbrains.annotations.NotNull;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
@@ -49,7 +49,6 @@ import net.minecraft.recipe.SmeltingRecipe;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
@@ -58,9 +57,9 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 	public double progress = 0;
 	public int limit = 100;
 
-	private static final int INPUT_SLOT = 1;
+	private static final int INPUT_SLOT = 0;
 
-	private static final int OUTPUT_SLOT = 0;
+	private static final int OUTPUT_SLOT = 1;
 
 	private static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
 
@@ -73,7 +72,7 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 	public ElectricFurnaceBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, Long.MAX_VALUE);
+		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, 0L);
 		
 		itemStorage = new SimpleItemStorage(2).insertPredicate((variant, slot) -> {
 			if (slot != INPUT_SLOT) {
@@ -148,7 +147,7 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 						var isEqual = ItemStack.areItemsEqual(itemStorage.getStack(0), output) && ItemStack.areNbtEqual(itemStorage.getStack(0), output);
 						var canFit = itemStorage.getStack(0).getCount() + output.getCount() <= itemStorage.getStack(0).getMaxCount();
 
-						if((isEmpty || isEqual) && canFit) optionalRecipe = Optional.of(recipe);
+						if ((isEmpty || isEqual) && canFit) optionalRecipe = Optional.of(recipe);
 					}
 				}
 			}
@@ -163,7 +162,9 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 					var consumed = (long) (500.0D * speed / limit);
 
 					try (var transaction = Transaction.openOuter()) {
-						if (energyStorage.extract(consumed, transaction) == consumed) {
+						if (energyStorage.amount >= consumed) {
+							energyStorage.amount -= consumed;
+
 							if (progress + speed >= limit) {
 								optionalRecipe = Optional.empty();
 

@@ -34,7 +34,7 @@ import com.github.mixinors.astromine.common.provider.config.tiered.FluidStorageM
 import com.github.mixinors.astromine.common.recipe.MeltingRecipe;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
-import com.github.mixinors.astromine.common.util.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import org.jetbrains.annotations.NotNull;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
@@ -67,7 +67,7 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements F
 	public MelterBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, Long.MAX_VALUE);
+		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, 0L);
 		
 		fluidStorage = new SimpleFluidStorage(1, getFluidStorageSize()).extractPredicate((variant, slot) ->
 			slot == FLUID_OUTPUT_SLOT
@@ -117,7 +117,9 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements F
 				var consumed = (long) (recipe.energyInput() * speed / limit);
 
 				try (var transaction = Transaction.openOuter()) {
-					if (energyStorage.extract(consumed, transaction) == consumed) {
+					if (energyStorage.amount >= consumed) {
+						energyStorage.amount -= consumed;
+
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
 							

@@ -31,7 +31,7 @@ import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.config.entry.tiered.SimpleMachineConfig;
 import com.github.mixinors.astromine.common.provider.config.tiered.MachineConfigProvider;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
-import com.github.mixinors.astromine.common.util.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import org.jetbrains.annotations.NotNull;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
@@ -59,7 +59,7 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 	public SolidGeneratorBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, Long.MAX_VALUE);
+		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), 0L, Long.MAX_VALUE);
 		
 		itemStorage = new SimpleItemStorage(1).insertPredicate((variant, slot) -> {
 			if (slot != INPUT_SLOT) {
@@ -94,7 +94,9 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 						if (progress < limit) {
 							var nestedTransaction = transaction.openNested();
 							
-							if (energyStorage.insert(produced, nestedTransaction) == produced) {
+							if (energyStorage.amount + produced <= energyStorage.capacity) {
+								energyStorage.amount += produced;
+
 								--available;
 								
 								++produced;

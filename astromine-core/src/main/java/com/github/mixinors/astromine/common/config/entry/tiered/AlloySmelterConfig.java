@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.config.entry.tiered;
 
-import com.github.mixinors.astromine.common.util.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 
 public class AlloySmelterConfig extends SimpleMachineConfig {
 	@Override

@@ -190,7 +190,7 @@ public record OreDistribution(
 	}
 
 	private HeightRangePlacementModifier heightRangePlacementModifier() {
-		return switch(type) {
+		return switch (type) {
 			case UNIFORM -> HeightRangePlacementModifier.uniform(min, max);
 			case TRAPEZOID -> HeightRangePlacementModifier.trapezoid(min, max);
 		};

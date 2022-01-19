@@ -55,8 +55,8 @@ public class FluidPlacerBlockEntity extends ExtendedBlockEntity implements Fluid
 	public FluidPlacerBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.FLUID_PLACER, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, Long.MAX_VALUE);
-		
+		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, 0L);
+
 		fluidStorage = new SimpleFluidStorage(1, getFluidStorageSize()).extractPredicate((variant, slot) ->
 			false
 		).insertPredicate((variant, slot) ->
@@ -81,7 +81,9 @@ public class FluidPlacerBlockEntity extends ExtendedBlockEntity implements Fluid
 			} else {
 				if (cooldown >= getSpeed()) {
 					try (var transaction = Transaction.openOuter()) {
-						if (energyStorage.extract(consumed, transaction) == consumed) {
+						if (energyStorage.amount >= consumed) {
+							energyStorage.amount -= consumed;
+
 							var direction = getCachedState().get(HorizontalFacingBlock.FACING);
 							
 							var targetPos = pos.offset(direction);

@@ -27,8 +27,10 @@ package com.github.mixinors.astromine.registry.common;
 import java.util.function.Supplier;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.block.entity.BufferBlockEntity;
-import com.github.mixinors.astromine.common.block.entity.DrainBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.storage.BufferBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.storage.CapacitorBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.storage.TankBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.utility.DrainBlockEntity;
 import com.github.mixinors.astromine.common.block.entity.HoloBridgeProjectorBlockEntity;
 import com.github.mixinors.astromine.common.block.entity.machine.*;
 import com.github.mixinors.astromine.common.block.entity.machine.generator.FluidGeneratorBlockEntity;

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2020 - 2022 Mixinors
+ * Copyright (c) 2020, 2021 Mixinors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,85 +24,151 @@
 
 package com.github.mixinors.astromine.common.network.type;
 
-import com.github.mixinors.astromine.common.network.NetworkInstance;
-import com.github.mixinors.astromine.common.network.type.base.NetworkType;
+import com.github.mixinors.astromine.common.config.AMConfig;
+import com.github.mixinors.astromine.common.network.Network;
+import com.github.mixinors.astromine.common.util.data.position.WorldPos;
+import it.unimi.dsi.fastutil.objects.*;
+import it.unimi.dsi.fastutil.objects.Reference2LongOpenHashMap;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.minecraft.util.math.Direction;
+import org.jetbrains.annotations.Nullable;
+import team.reborn.energy.api.EnergyStorage;
+import team.reborn.energy.api.EnergyStorageUtil;
 
-public final class EnergyNetworkType implements NetworkType {
+import java.util.ArrayList;
+
+public abstract sealed class EnergyNetworkType implements NetworkType<EnergyStorage> permits EnergyNetworkType.Primitive, EnergyNetworkType.Basic, EnergyNetworkType.Advanced, EnergyNetworkType.Elite {
 	@Override
-	public void tick(NetworkInstance instance) {
-		// TODO: Rewrite this.
+	public EnergyStorage find(WorldPos pos, @Nullable Direction direction) {
+		return EnergyStorage.SIDED.find(pos.getWorld(), pos.getBlockPos(), direction);
+	}
+	
+	private void move(Reference2LongMap<EnergyStorage> extractableStorages, Reference2LongMap<EnergyStorage> insertableStorages) {
+		try (var transaction = Transaction.openOuter()) {
+			for (var extractableEntry : extractableStorages.reference2LongEntrySet()) {
+				var extractableStorage = extractableEntry.getKey();
+				var extractedAmount = extractableEntry.getLongValue();
+				
+				for (var insertableEntry : insertableStorages.reference2LongEntrySet()) {
+					var insertableStorage = insertableEntry.getKey();
+					var insertedAmount = insertableEntry.getLongValue();
+					
+					var availableToExtract = Math.min(extractableStorage.getAmount(), getTransferRate() - extractedAmount);
+					
+					// Skip if nothing can be extracted.
+					if (availableToExtract == 0L) {
+						break;
+					}
+					
+					var availableToInsert = Math.min(insertableStorage.getCapacity() - insertableStorage.getAmount(), getTransferRate() -  insertedAmount);
+					
+					// Skip if nothing can be inserted.
+					if (availableToInsert == 0L) {
+						continue;
+					}
+					
+					var availableToMove = Math.min(availableToExtract, availableToInsert);
+					
+					var moved = EnergyStorageUtil.move(extractableStorage, insertableStorage, availableToMove, transaction);
+					
+					insertedAmount -= moved;
+					
+					extractedAmount += moved;
+					
+					insertableStorages.put(insertableStorage, insertedAmount);
+				}
+				
+				extractableStorages.put(extractableStorage, extractedAmount);
+			}
+			
+			transaction.commit();
+		}
+	}
+	
+	@Override
+	public void tick(Network instance) {
+		var world = instance.getWorld();
 		
-//		var providers = new Reference2DoubleOpenHashMap<>();
-//		var requesters = new Reference2DoubleOpenHashMap<>();
-//
-//		for (var memberNode : instance.members) {
-//			var memberPos = WorldPos.of(instance.getWorld(), memberNode.getBlockPosition());
-//			var networkMember = NetworkMemberRegistry.get(memberPos, memberNode.getDirection());
-//			var blockEntity = memberPos.getBlockEntity();
-//
-//			var nodePosition = memberPos.offset(memberNode.getDirection());
-//
-//			var speed = nodePosition.getBlock() instanceof NodeSpeedProvider ? ((NodeSpeedProvider) nodePosition.getBlock()).getNodeSpeed() : 0.0D;
-//
-//			if (speed <= 0)
-//				continue;
-//
-//			if (networkMember.acceptsType(this)) {
-//				var type = TransferType.NONE;
-//
-//				var transferComponent = TransferComponent.get(blockEntity);
-//
-//				if (transferComponent != null && transferComponent.get(AMComponents.ENERGY_INVENTORY_COMPONENT) != null) {
-//					type = transferComponent.getEnergy(memberNode.getDirection());
-//				}
-//
-//				var volume = Energy.of(blockEntity).side(memberNode.getDirection());
-//
-//				if (!type.isNone()) {
-//					if (type.canExtract() && (networkMember.isProvider(this) || networkMember.isBuffer(this))) {
-//						providers.put(volume, speed);
-//					}
-//
-//					if (type.canInsert() && (networkMember.isRequester(this) || networkMember.isBuffer(this))) {
-//						requesters.put(volume, speed);
-//					}
-//				}
-//			}
-//		}
-//
-//		var requesterKeys = Lists.newArrayList(requesters.keySet());
-//		requesterKeys.sort(Comparator.comparingDouble(EnergyHandler::getEnergy));
-//
-//		for (var inputEntry : providers.reference2DoubleEntrySet()) {
-//			var input = inputEntry.getKey();
-//
-//			var inputSpeed = inputEntry.getDoubleValue();
-//
-//			for (var i = requesterKeys.size() - 1; i >= 0; i--) {
-//				var output = requesterKeys.get(i);
-//
-//				var outputSpeed = requesters.getOrDefault(output, 0.0D);
-//
-//				var a = inputSpeed / requesters.size();
-//				var b = outputSpeed / requesters.size();
-//				var c = input.getEnergy() / (i + 1);
-//				var d = output.getMaxStored() - output.getEnergy();
-//				var e = input.getMaxOutput();
-//				var f = output.getMaxInput();
-//
-//				var speed = Collections.min(Arrays.asList(a, b, c, d, e, f));
-//
-//				input.into(output).move(speed);
-//			}
-//		}
+		var extractableStorages = new Reference2LongOpenHashMap<EnergyStorage>();
+		var bufferStorages = new Reference2LongOpenHashMap<EnergyStorage>();
+		var insertableStorages = new Reference2LongOpenHashMap<EnergyStorage>();
+		
+		// First, we extract from extractableStorages into insertableStorages.
+		// Then, we extract from extractableStorages into bufferStorages.
+		// Then, we extract from bufferStorages into insertableStorages.
+		
+		// We must keep track of how much has been extracted
+		// from extractableStorages and bufferStorages.
+		
+		// We must keep track of how much has been inserted
+		// into insertableStorages.
+		
+		// We must also remove inaccessible members.
+		var membersToRemove = new ArrayList<Network.Member>();
+		
+		for (var memberNode : instance.members) {
+			var member = (Network.Member) memberNode;
+			
+			var storage = find(new WorldPos(world, member.blockPos()), member.direction());
+			
+			if (storage == null) {
+				membersToRemove.add(member);
+				
+				world.getBlockState(member.blockPos()).neighborUpdate(world, member.blockPos(), world.getBlockState(member.blockPos()).getBlock(), member.blockPos(), false);
+				
+				continue;
+			}
+			
+			if (storage.supportsInsertion() && storage.supportsExtraction()) {
+				bufferStorages.put(storage, 0L);
+			} else if (storage.supportsInsertion()) {
+				insertableStorages.put(storage, 0L);
+			} if (storage.supportsExtraction()) {
+				extractableStorages.put(storage, 0L);
+			}
+		}
+		
+		membersToRemove.forEach(instance::removeMember);
+		
+		move(extractableStorages, insertableStorages);
+		move(extractableStorages, bufferStorages);
+		
+		// Clean the map as we are now using it to store the extracted
+		// amount rather than the inserted amount.
+		var cleanBufferStorages = new Reference2LongOpenHashMap<EnergyStorage>();
+		
+		for (var entry : bufferStorages.reference2LongEntrySet()) {
+			cleanBufferStorages.put(entry.getKey(), 0L);
+		}
+		
+		move(cleanBufferStorages, insertableStorages);
 	}
 	
-	@Override
-	public String toString() {
-		return "Energy";
+	public static final class Primitive extends EnergyNetworkType {
+		@Override
+		public long getTransferRate() {
+			return AMConfig.get().primitiveEnergyNetworkTransferRate;
+		}
 	}
 	
-	public interface NodeSpeedProvider {
-		double getNodeSpeed();
+	public static final class Basic extends EnergyNetworkType {
+		@Override
+		public long getTransferRate() {
+			return AMConfig.get().basicEnergyNetworkTransferRate;
+		}
+	}
+	
+	public static final class Advanced extends EnergyNetworkType {
+		@Override
+		public long getTransferRate() {
+			return AMConfig.get().advancedEnergyNetworkTransferRate;
+		}
+	}
+	
+	public static final class Elite extends EnergyNetworkType {
+		@Override
+		public long getTransferRate() {
+			return AMConfig.get().eliteEnergyNetworkTransferRate;
+		}
 	}
 }

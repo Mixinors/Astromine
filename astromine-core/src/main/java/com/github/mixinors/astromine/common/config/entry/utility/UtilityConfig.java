@@ -34,8 +34,10 @@ import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 public class UtilityConfig implements AMConfigEntry, DefaultedSpeedProvider, DefaultedEnergyStorageSizeProvider, DefaultedEnergyConsumedProvider {
 	@Comment("The delay between actions of the utility. (smaller = faster)")
 	public double delay = getDefaultSpeed();
+	
 	@Comment("The maximum energy able to be stored by this utility.")
 	public long energyStorageSize = getDefaultEnergyStorageSize();
+	
 	@Comment("The energy consumed by each action of this utility.")
 	public long energyConsumed = getDefaultEnergyConsumed();
 

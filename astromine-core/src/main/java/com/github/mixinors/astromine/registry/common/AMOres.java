@@ -102,7 +102,7 @@ public class AMOres {
 	}
 	
 	private static Predicate<BiomeSelectionContext> overworldPredicate() {
-		return context -> switch(context.getBiome().getCategory()) {
+		return context -> switch (context.getBiome().getCategory()) {
 			case NETHER, THEEND, NONE -> false;
 			default -> true;
 		};

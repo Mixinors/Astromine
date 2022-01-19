@@ -33,7 +33,7 @@ import com.github.mixinors.astromine.common.config.entry.tiered.FluidStorageMach
 import com.github.mixinors.astromine.common.provider.config.tiered.FluidStorageMachineConfigProvider;
 import com.github.mixinors.astromine.common.recipe.FluidGeneratingRecipe;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
-import com.github.mixinors.astromine.common.util.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import org.jetbrains.annotations.NotNull;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
@@ -61,7 +61,7 @@ public abstract class FluidGeneratorBlockEntity extends ExtendedBlockEntity impl
 	public FluidGeneratorBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, Long.MAX_VALUE);
+		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), 0L, Long.MAX_VALUE);
 		
 		fluidStorage = new SimpleFluidStorage(1, getFluidStorageSize()).extractPredicate((variant, slot) ->
 			false
@@ -106,7 +106,9 @@ public abstract class FluidGeneratorBlockEntity extends ExtendedBlockEntity impl
 				var generated = (long) (recipe.energyOutput() * speed / limit);
 				
 				try (var transaction = Transaction.openOuter()) {
-					if (energyStorage.insert(generated, transaction) == generated) {
+					if (energyStorage.amount + generated <= energyStorage.capacity) {
+						energyStorage.amount += generated;
+
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
 							
