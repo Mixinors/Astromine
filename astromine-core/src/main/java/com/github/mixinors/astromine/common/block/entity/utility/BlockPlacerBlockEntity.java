@@ -83,8 +83,6 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Utili
 			} else {
 				try (var transaction = Transaction.openOuter()) {
 					if (energyStorage.amount >= consumed) {
-						energyStorage.amount -= consumed;
-						
 						var stored = itemStorage.getStack(0);
 						
 						var direction = getCachedState().get(HorizontalFacingBlock.FACING);
@@ -95,8 +93,6 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Utili
 						
 						if (stored.getItem() instanceof BlockItem blockItem && targetState.isAir()) {
 							if (cooldown >= getSpeed()) {
-								cooldown = 0;
-								
 								var newState = blockItem.getBlock().getDefaultState();
 								
 								world.setBlockState(targetPos, newState);
@@ -104,6 +100,10 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Utili
 								var inputStorage = itemStorage.getStorage(INPUT_SLOT);
 								
 								inputStorage.extract(inputStorage.getResource(), 1, transaction);
+								
+								energyStorage.amount -= consumed;
+								
+								cooldown = 0;
 								
 								transaction.commit();
 							} else {

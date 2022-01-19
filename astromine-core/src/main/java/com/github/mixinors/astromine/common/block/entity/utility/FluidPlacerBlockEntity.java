@@ -81,8 +81,6 @@ public class FluidPlacerBlockEntity extends ExtendedBlockEntity implements Fluid
 			} else {
 				try (var transaction = Transaction.openOuter()) {
 					if (energyStorage.amount >= consumed) {
-						energyStorage.amount -= consumed;
-						
 						var direction = getCachedState().get(HorizontalFacingBlock.FACING);
 						
 						var targetPos = pos.offset(direction);
@@ -94,8 +92,13 @@ public class FluidPlacerBlockEntity extends ExtendedBlockEntity implements Fluid
 						if (inputStorage.getAmount() >= FluidConstants.BUCKET && targetState.isAir()) {
 							if (cooldown >= getSpeed()) {
 								if (inputStorage.extract(inputStorage.getResource(), FluidConstants.BUCKET, transaction) == FluidConstants.BUCKET) {
-									world.setBlockState(targetPos, inputStorage.getResource().getFluid().getDefaultState().getBlockState());
+									var state = inputStorage.getResource().getFluid().getDefaultState().getBlockState();
+									
+									world.setBlockState(targetPos, state);
+									
 									world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1, 1);
+									
+									energyStorage.amount -= consumed;
 									
 									cooldown = 0L;
 									

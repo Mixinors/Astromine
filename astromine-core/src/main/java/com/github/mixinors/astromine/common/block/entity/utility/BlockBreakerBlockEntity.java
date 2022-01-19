@@ -83,8 +83,6 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Util
 			} else {
 				try (var transaction = Transaction.openOuter()) {
 					if (energyStorage.amount >= consumed) {
-						energyStorage.amount -= consumed;
-						
 						var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
 						
 						var stored = outputStorage.getStack();
@@ -99,8 +97,6 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Util
 							++cooldown;
 							
 							if (cooldown >= getSpeed()) {
-								cooldown = 0;
-								
 								isActive = true;
 								
 								var targetEntity = world.getBlockEntity(targetPos);
@@ -124,6 +120,10 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Util
 								});
 								
 								world.breakBlock(targetPos, false);
+								
+								energyStorage.amount -= consumed;
+								
+								cooldown = 0;
 								
 								transaction.commit();
 							} else {
