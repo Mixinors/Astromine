@@ -72,8 +72,6 @@ public class SpaceSkybox extends Skybox {
     public void render(MatrixStack matrices, float tickDelta) {
 		var client = ClientUtils.getInstance();
 	
-		var textureManager = client.getTextureManager();
-	
 		var tessellator = Tessellator.getInstance();
 	
 		var buffer = tessellator.getBuffer();
@@ -102,30 +100,36 @@ public class SpaceSkybox extends Skybox {
 			switch (i) {
 				case 0 -> {
 					RenderSystem.setShaderTexture(0, textures.get(DOWN));
+					
 					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(rotation));
 				}
 				case 1 -> {
 					RenderSystem.setShaderTexture(0, textures.get(WEST));
+					
 					matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90.0F));
 					matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(rotation));
 				}
 				case 2 -> {
 					RenderSystem.setShaderTexture(0, textures.get(EAST));
+					
 					matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90.0F));
 					matrices.multiply(Vec3f.NEGATIVE_Y.getDegreesQuaternion(rotation));
 				}
 				case 3 -> {
 					RenderSystem.setShaderTexture(0, textures.get(UP));
+					
 					matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(180.0F));
 					matrices.multiply(Vec3f.NEGATIVE_Z.getDegreesQuaternion(rotation));
 				}
 				case 4 -> {
 					RenderSystem.setShaderTexture(0, textures.get(NORTH));
+					
 					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(90.0F));
 					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(rotation));
 				}
 				case 5 -> {
 					RenderSystem.setShaderTexture(0, textures.get(SOUTH));
+					
 					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(-90.0F));
 					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(rotation));
 				}
