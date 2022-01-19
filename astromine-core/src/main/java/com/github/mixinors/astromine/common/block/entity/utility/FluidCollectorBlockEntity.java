@@ -83,23 +83,25 @@ public class FluidCollectorBlockEntity extends ExtendedBlockEntity implements Fl
 				
 				isActive = false;
 			} else {
-				if (cooldown >= getSpeed()) {
-					try (var transaction = Transaction.openOuter()) {
-						if (energyStorage.amount >= consumed) {
-							var direction = getCachedState().get(HorizontalFacingBlock.FACING);
-							
-							var targetPos = pos.offset(direction);
-							
-							var targetBlockState = world.getBlockState(targetPos);
-							var targetFluidState = world.getFluidState(targetPos);
-							
-							var targetBlock = targetBlockState.getBlock();
-							
-							if (targetBlock instanceof FluidDrainable && targetFluidState.isStill()) {
+				try (var transaction = Transaction.openOuter()) {
+					if (energyStorage.amount >= consumed) {
+						var direction = getCachedState().get(HorizontalFacingBlock.FACING);
+						
+						var targetPos = pos.offset(direction);
+						
+						var targetBlockState = world.getBlockState(targetPos);
+						var targetFluidState = world.getFluidState(targetPos);
+						
+						var targetBlock = targetBlockState.getBlock();
+						
+						if (targetBlock instanceof FluidDrainable && targetFluidState.isStill()) {
+							if (cooldown >= getSpeed()) {
+								cooldown = 0L;
+								
 								var targetFluid = targetFluidState.getFluid();
-
+								
 								var outputStorage = fluidStorage.getStorage(OUTPUT_SLOT);
-
+								
 								if (outputStorage.insert(FluidVariant.of(targetFluid), FluidConstants.BUCKET, transaction) == FluidConstants.BUCKET) {
 									((FluidDrainable) targetBlock).tryDrainFluid(world, targetPos, targetBlockState);
 									
@@ -116,16 +118,20 @@ public class FluidCollectorBlockEntity extends ExtendedBlockEntity implements Fl
 									transaction.abort();
 								}
 							} else {
-								isActive = false;
+								++cooldown;
+								
+								isActive = true;
 							}
 						} else {
 							isActive = false;
+							
+							transaction.abort();
 						}
+					} else {
+						isActive = false;
+						
+						transaction.abort();
 					}
-				} else {
-					cooldown++;
-					
-					isActive = true;
 				}
 			}
 		}

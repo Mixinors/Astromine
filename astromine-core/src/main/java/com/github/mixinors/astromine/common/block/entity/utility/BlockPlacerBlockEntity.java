@@ -81,20 +81,20 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Utili
 				
 				isActive = false;
 			} else {
-				if (cooldown >= getSpeed()) {
-					try (var transaction = Transaction.openOuter()) {
-						if (energyStorage.amount >= consumed) {
-							energyStorage.amount -= consumed;
-
-							var stored = itemStorage.getStack(0);
-							
-							var direction = getCachedState().get(HorizontalFacingBlock.FACING);
-							
-							var targetPos = pos.offset(direction);
-							
-							var targetState = world.getBlockState(targetPos);
-							
-							if (stored.getItem() instanceof BlockItem blockItem && targetState.isAir()) {
+				try (var transaction = Transaction.openOuter()) {
+					if (energyStorage.amount >= consumed) {
+						energyStorage.amount -= consumed;
+						
+						var stored = itemStorage.getStack(0);
+						
+						var direction = getCachedState().get(HorizontalFacingBlock.FACING);
+						
+						var targetPos = pos.offset(direction);
+						
+						var targetState = world.getBlockState(targetPos);
+						
+						if (stored.getItem() instanceof BlockItem blockItem && targetState.isAir()) {
+							if (cooldown >= getSpeed()) {
 								cooldown = 0;
 								
 								var newState = blockItem.getBlock().getDefaultState();
@@ -102,23 +102,25 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Utili
 								world.setBlockState(targetPos, newState);
 								
 								var inputStorage = itemStorage.getStorage(INPUT_SLOT);
-
+								
 								inputStorage.extract(inputStorage.getResource(), 1, transaction);
 								
 								transaction.commit();
 							} else {
-								isActive = false;
+								++cooldown;
 								
-								transaction.abort();
+								isActive = true;
 							}
 						} else {
 							isActive = false;
+							
+							transaction.abort();
 						}
+					} else {
+						isActive = false;
+						
+						transaction.abort();
 					}
-				} else {
-					cooldown++;
-					
-					isActive = true;
 				}
 			}
 		}

@@ -81,22 +81,24 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Util
 
 				isActive = false;
 			} else {
-				if (cooldown >= getSpeed()) {
-					try (var transaction = Transaction.openOuter()) {
-						if (energyStorage.amount >= consumed) {
-							energyStorage.amount -= consumed;
-
-							var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
-
-							var stored = outputStorage.getStack();
+				try (var transaction = Transaction.openOuter()) {
+					if (energyStorage.amount >= consumed) {
+						energyStorage.amount -= consumed;
+						
+						var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
+						
+						var stored = outputStorage.getStack();
+						
+						var direction = getCachedState().get(HorizontalFacingBlock.FACING);
+						
+						var targetPos = getPos().offset(direction);
+						
+						var targetState = world.getBlockState(targetPos);
+						
+						if (!targetState.isAir()) {
+							++cooldown;
 							
-							var direction = getCachedState().get(HorizontalFacingBlock.FACING);
-							
-							var targetPos = getPos().offset(direction);
-							
-							var targetState = world.getBlockState(targetPos);
-
-							if (!targetState.isAir()) {
+							if (cooldown >= getSpeed()) {
 								cooldown = 0;
 								
 								isActive = true;
@@ -108,7 +110,7 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Util
 								var storedCopy = stored.copy();
 								
 								var matching = drops.stream().filter(stack -> storedCopy.isEmpty() || (StackUtils.areItemsAndTagsEqual(stack, storedCopy) && storedCopy.getMaxCount() - storedCopy.getCount() >= stack.getCount())).findFirst();
-
+								
 								matching.ifPresent(match -> {
 									drops.remove(match);
 									match.decrement((int) outputStorage.insert(ItemVariant.of(match), match.getCount(), transaction));
@@ -125,16 +127,20 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Util
 								
 								transaction.commit();
 							} else {
-								isActive = false;
+								++cooldown;
 								
-								transaction.abort();
+								isActive = true;
 							}
+						} else {
+							isActive = false;
+							
+							transaction.abort();
 						}
+					} else {
+						isActive = false;
+						
+						transaction.abort();
 					}
-				} else {
-					cooldown++;
-					
-					isActive = true;
 				}
 			}
 		}

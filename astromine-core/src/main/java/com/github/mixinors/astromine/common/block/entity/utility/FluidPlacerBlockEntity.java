@@ -79,20 +79,20 @@ public class FluidPlacerBlockEntity extends ExtendedBlockEntity implements Fluid
 				
 				isActive = false;
 			} else {
-				if (cooldown >= getSpeed()) {
-					try (var transaction = Transaction.openOuter()) {
-						if (energyStorage.amount >= consumed) {
-							energyStorage.amount -= consumed;
-
-							var direction = getCachedState().get(HorizontalFacingBlock.FACING);
-							
-							var targetPos = pos.offset(direction);
-							
-							var targetState = world.getBlockState(targetPos);
-							
-							var inputStorage = fluidStorage.getStorage(INPUT_SLOT);
-							
-							if (inputStorage.getAmount() >= FluidConstants.BUCKET && targetState.isAir()) {
+				try (var transaction = Transaction.openOuter()) {
+					if (energyStorage.amount >= consumed) {
+						energyStorage.amount -= consumed;
+						
+						var direction = getCachedState().get(HorizontalFacingBlock.FACING);
+						
+						var targetPos = pos.offset(direction);
+						
+						var targetState = world.getBlockState(targetPos);
+						
+						var inputStorage = fluidStorage.getStorage(INPUT_SLOT);
+						
+						if (inputStorage.getAmount() >= FluidConstants.BUCKET && targetState.isAir()) {
+							if (cooldown >= getSpeed()) {
 								if (inputStorage.extract(inputStorage.getResource(), FluidConstants.BUCKET, transaction) == FluidConstants.BUCKET) {
 									world.setBlockState(targetPos, inputStorage.getResource().getFluid().getDefaultState().getBlockState());
 									world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1, 1);
@@ -106,16 +106,20 @@ public class FluidPlacerBlockEntity extends ExtendedBlockEntity implements Fluid
 									transaction.abort();
 								}
 							} else {
-								isActive = false;
+								++cooldown;
+								
+								isActive = true;
 							}
 						} else {
 							isActive = false;
+							
+							transaction.abort();
 						}
+					} else {
+						isActive = false;
+						
+						transaction.abort();
 					}
-				} else {
-					cooldown++;
-					
-					isActive = true;
 				}
 			}
 		}
