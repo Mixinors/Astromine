@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.common.block.utility;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.mixinors.astromine.common.block.entity.utility.BlockPlacerBlockEntity;
-import com.github.mixinors.astromine.common.screenhandler.BlockPlacerScreenHandler;
+import com.github.mixinors.astromine.common.screenhandler.utility.BlockPlacerScreenHandler;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;

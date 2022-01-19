@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.common.block.machine;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
 import com.github.mixinors.astromine.common.block.entity.machine.ElectricFurnaceBlockEntity;
-import com.github.mixinors.astromine.common.screenhandler.ElectricFurnaceScreenHandler;
+import com.github.mixinors.astromine.common.screenhandler.machine.ElectricFurnaceScreenHandler;
 import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 

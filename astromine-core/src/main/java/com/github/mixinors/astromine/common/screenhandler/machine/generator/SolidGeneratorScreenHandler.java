@@ -22,50 +22,45 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.common.screenhandler;
+package com.github.mixinors.astromine.common.screenhandler.machine.generator;
 
-import com.github.mixinors.astromine.common.block.entity.machine.FluidMixerBlockEntity;
-import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
+import com.github.mixinors.astromine.common.block.entity.machine.generator.SolidGeneratorBlockEntity;
+import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
-import dev.vini2003.hammer.common.widget.bar.FluidBarWidget;
+import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-public class FluidMixerScreenHandler extends ExtendedBlockEntityScreenHandler {
-	private final FluidMixerBlockEntity mixer;
+public class SolidGeneratorScreenHandler extends ExtendedBlockEntityScreenHandler {
+	private final SolidGeneratorBlockEntity generator;
 
-	public FluidMixerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.FLUID_MIXER, syncId, player, position);
+	public SolidGeneratorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+		super(AMScreenHandlers.SOLID_GENERATOR, syncId, player, position);
 
-		mixer = (FluidMixerBlockEntity) blockEntity;
+		generator = (SolidGeneratorBlockEntity) blockEntity;
 	}
 
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		
-		var secondInputFluidBar = new FluidBarWidget();
-		secondInputFluidBar.setPosition( Position.of(fluidBar, fluidBar.getWidth() + 7, 0));
-		secondInputFluidBar.setSize( Size.of(fluidBar));
-		secondInputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(1));
-		
 		var arrow = new HorizontalArrowWidget();
-		arrow.setPosition(Position.of(secondInputFluidBar, secondInputFluidBar.getWidth() + 9, secondInputFluidBar.getHeight() / 2F - 8));
-		arrow.setSize(Size.of(22, 16));
-		arrow.setLimitSupplier(() -> mixer.limit);
-		arrow.setProgressSupplier(() -> (int) mixer.progress);
+		arrow.setPosition(Position.of( energyBar, energyBar.getWidth() + 3, energyBar.getHeight() / 2F - 8));
+		arrow.setSize( Size.of(22, 16));
+		arrow.setLimitSupplier(() -> generator.limit);
+		arrow.setProgressSupplier(() -> (int) generator.progress);
 		
-		var outputFluidBar = new FluidBarWidget();
-		outputFluidBar.setPosition(Position.of(secondInputFluidBar, secondInputFluidBar.getWidth() + 9 + arrow.getWidth() + 7, 0));
-		outputFluidBar.setSize(Size.of(fluidBar));
-		outputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(2));
+		var input = new SlotWidget(0, blockEntity.getItemStorage());
+		input.setPosition(Position.of(arrow, -26, 0));
+		input.setSize(Size.of(18, 18));
 
-		mainTab.add(secondInputFluidBar);
+		energyBar.setPosition(Position.of(mainTab, 68, 11));
+
+		mainTab.add(input);
 		mainTab.add(arrow);
-		mainTab.add(outputFluidBar);
 	}
 }

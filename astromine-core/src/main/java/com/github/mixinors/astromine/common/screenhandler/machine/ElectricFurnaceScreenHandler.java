@@ -22,47 +22,51 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.common.screenhandler;
+package com.github.mixinors.astromine.common.screenhandler.machine;
 
-import com.github.mixinors.astromine.common.block.entity.machine.MelterBlockEntity;
-import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
+import com.github.mixinors.astromine.common.block.entity.machine.ElectricFurnaceBlockEntity;
+import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
+import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
 import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.math.BlockPos;
 
-public class MelterScreenHandler extends ExtendedBlockEntityScreenHandler {
-	private final MelterBlockEntity melter;
+public class ElectricFurnaceScreenHandler extends ExtendedBlockEntityScreenHandler {
+	private final ElectricFurnaceBlockEntity smelter;
 
-	public MelterScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.MELTER, syncId, player, position);
+	public ElectricFurnaceScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+		super(AMScreenHandlers.ELECTRIC_FURNACE, syncId, player, position);
 
-		melter = (MelterBlockEntity) blockEntity;
+		smelter = (ElectricFurnaceBlockEntity) blockEntity;
 	}
 
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		
-		var input = new SlotWidget(0, melter.getItemStorage(), Slot::new);
-		input.setSize( Size.of(18, 18));
-
-		fluidBar.setPosition( Position.of(energyBar, 102, 0));
+		var input = new SlotWidget(1, smelter.getItemStorage());
+		input.setSize(Size.of(18, 18));
+		
+		var output = new SlotWidget(0, smelter.getItemStorage(), ExtractionSlot::new);
+		output.setSize( Size.of(18, 18));
+		
+		output.setPosition( Position.of(energyBar, 102, 15));
 		
 		var arrow = new HorizontalArrowWidget();
-		arrow.setPosition(Position.of(fluidBar, -31, fluidBar.getHeight() / 2 - 16 / 2));
+		arrow.setPosition(Position.of(output, -31, 0));
 		arrow.setSize(Size.of(22, 16));
-		arrow.setLimitSupplier(() -> melter.limit);
-		arrow.setProgressSupplier(() -> (int) melter.progress);
-		
+		arrow.setLimitSupplier(() -> smelter.limit);
+		arrow.setProgressSupplier(() -> (int) smelter.progress);
+
 		input.setPosition(Position.of(arrow, -27, 0));
-		
+
 		mainTab.add(input);
+		mainTab.add(output);
 		mainTab.add(arrow);
 	}
 }

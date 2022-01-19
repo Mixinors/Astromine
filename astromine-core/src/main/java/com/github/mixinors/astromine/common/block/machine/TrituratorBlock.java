@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.common.block.machine;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
 import com.github.mixinors.astromine.common.block.entity.machine.TrituratorBlockEntity;
-import com.github.mixinors.astromine.common.screenhandler.TrituratorScreenHandler;
+import com.github.mixinors.astromine.common.screenhandler.machine.TrituratorScreenHandler;
 import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 

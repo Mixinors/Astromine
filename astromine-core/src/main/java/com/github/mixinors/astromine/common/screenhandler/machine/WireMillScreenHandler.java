@@ -22,10 +22,10 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.common.screenhandler;
+package com.github.mixinors.astromine.common.screenhandler.machine;
 
-import com.github.mixinors.astromine.common.block.entity.machine.TrituratorBlockEntity;
-import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
+import com.github.mixinors.astromine.common.block.entity.machine.WireMillBlockEntity;
+import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
@@ -36,13 +36,13 @@ import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-public class TrituratorScreenHandler extends ExtendedBlockEntityScreenHandler {
-	private final TrituratorBlockEntity triturator;
+public class WireMillScreenHandler extends ExtendedBlockEntityScreenHandler {
+	private final WireMillBlockEntity wire_mill;
 
-	public TrituratorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.TRITURATOR, syncId, player, position);
+	public WireMillScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+		super(AMScreenHandlers.WIRE_MILL, syncId, player, position);
 
-		triturator = (TrituratorBlockEntity) blockEntity;
+		wire_mill = (WireMillBlockEntity) blockEntity;
 	}
 
 	@Override
@@ -58,13 +58,13 @@ public class TrituratorScreenHandler extends ExtendedBlockEntityScreenHandler {
 		output.setSize( Size.of(18, 18));
 		
 		output.setPosition(Position.of(width / 2F - output.getWidth() / 2F, output.getY()));
-		output.setPosition(Position.of(output.getX() + 29, output.getY() + 15));
+		output.setPosition(Position.of(output.getX() + 27, output.getY() + 15));
 		
 		var arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(output.getX() - 31, output.getY()));
 		arrow.setSize(Size.of(22, 16));
-		arrow.setLimitSupplier(() -> triturator.limit);
-		arrow.setProgressSupplier(() -> (int) triturator.progress);
+		arrow.setLimitSupplier(() -> wire_mill.limit);
+		arrow.setProgressSupplier(() -> (int) wire_mill.progress);
 
 		input.setPosition(Position.of(arrow.getX() - 27, arrow.getY()));
 

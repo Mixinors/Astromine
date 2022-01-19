@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.common.screenhandler.base.block;
+package com.github.mixinors.astromine.common.screenhandler.base.block.entity;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -32,6 +32,7 @@ import java.util.function.Supplier;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.screenhandler.base.block.BlockStateScreenHandler;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.StorageType;
 import com.github.mixinors.astromine.common.util.WidgetUtils;

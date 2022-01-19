@@ -22,30 +22,47 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.common.screenhandler;
+package com.github.mixinors.astromine.common.screenhandler.machine;
 
-import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
+import com.github.mixinors.astromine.common.block.entity.machine.MelterBlockEntity;
+import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
+import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
 import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.math.BlockPos;
 
-public class BlockPlacerScreenHandler extends ExtendedBlockEntityScreenHandler {
-	public BlockPlacerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.BLOCK_PLACER, syncId, player, position);
+public class MelterScreenHandler extends ExtendedBlockEntityScreenHandler {
+	private final MelterBlockEntity melter;
+
+	public MelterScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+		super(AMScreenHandlers.MELTER, syncId, player, position);
+
+		melter = (MelterBlockEntity) blockEntity;
 	}
 
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		
-		var slot = new SlotWidget(0, blockEntity.getItemStorage());
-		slot.setPosition( Position.of(mainTab, mainTab.getWidth() / 2F - 9F, 26));
-		slot.setSize( Size.of(18, 18));
+		var input = new SlotWidget(0, melter.getItemStorage(), Slot::new);
+		input.setSize( Size.of(18, 18));
 
-		mainTab.add(slot);
+		fluidBar.setPosition( Position.of(energyBar, 102, 0));
+		
+		var arrow = new HorizontalArrowWidget();
+		arrow.setPosition(Position.of(fluidBar, -31, fluidBar.getHeight() / 2 - 16 / 2));
+		arrow.setSize(Size.of(22, 16));
+		arrow.setLimitSupplier(() -> melter.limit);
+		arrow.setProgressSupplier(() -> (int) melter.progress);
+		
+		input.setPosition(Position.of(arrow, -27, 0));
+		
+		mainTab.add(input);
+		mainTab.add(arrow);
 	}
 }

@@ -22,54 +22,40 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.common.screenhandler;
+package com.github.mixinors.astromine.common.screenhandler.machine.generator;
 
-import com.github.mixinors.astromine.common.block.entity.machine.WireMillBlockEntity;
-import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
+import com.github.mixinors.astromine.common.block.entity.machine.generator.FluidGeneratorBlockEntity;
+import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
-import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
-import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-public class WireMillScreenHandler extends ExtendedBlockEntityScreenHandler {
-	private final WireMillBlockEntity wire_mill;
+public class FluidGeneratorScreenHandler extends ExtendedBlockEntityScreenHandler {
+	private final FluidGeneratorBlockEntity generator;
 
-	public WireMillScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.WIRE_MILL, syncId, player, position);
+	public FluidGeneratorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+		super(AMScreenHandlers.LIQUID_GENERATOR, syncId, player, position);
 
-		wire_mill = (WireMillBlockEntity) blockEntity;
+		generator = (FluidGeneratorBlockEntity) blockEntity;
 	}
 
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
-		
-		var input = new SlotWidget(0, blockEntity.getItemStorage());
-		input.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
-		input.setSize(Size.of(18, 18));
-		
-		var output = new SlotWidget(1, blockEntity.getItemStorage(), ExtractionSlot::new);
-		output.setPosition( Position.of(energyBar.getX(), energyBar.getY()));
-		output.setSize( Size.of(18, 18));
-		
-		output.setPosition(Position.of(width / 2F - output.getWidth() / 2F, output.getY()));
-		output.setPosition(Position.of(output.getX() + 27, output.getY() + 15));
+
+		energyBar.setPosition( Position.of(mainTab, 68, 11));
+		fluidBar.setPosition(Position.of(mainTab, 7, 11));
 		
 		var arrow = new HorizontalArrowWidget();
-		arrow.setPosition(Position.of(output.getX() - 31, output.getY()));
-		arrow.setSize(Size.of(22, 16));
-		arrow.setLimitSupplier(() -> wire_mill.limit);
-		arrow.setProgressSupplier(() -> (int) wire_mill.progress);
+		arrow.setPosition(Position.of(fluidBar, fluidBar.getWidth() + 7, fluidBar.getHeight() / 2F - 8));
+		arrow.setSize( Size.of(22, 16));
+		arrow.setLimitSupplier(() -> generator.limit);
+		arrow.setProgressSupplier(() -> (int) generator.progress);
 
-		input.setPosition(Position.of(arrow.getX() - 27, arrow.getY()));
-
-		mainTab.add(input);
-		mainTab.add(output);
 		mainTab.add(arrow);
 	}
 }

@@ -22,16 +22,30 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.common.screenhandler;
+package com.github.mixinors.astromine.common.screenhandler.utility;
 
-import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
+import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
+import dev.vini2003.hammer.common.geometry.position.Position;
+import dev.vini2003.hammer.common.geometry.size.Size;
+import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-public class FluidCollectorScreenHandler extends ExtendedBlockEntityScreenHandler {
-	public FluidCollectorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.FLUID_EXTRACTOR, syncId, player, position);
+public class BlockPlacerScreenHandler extends ExtendedBlockEntityScreenHandler {
+	public BlockPlacerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+		super(AMScreenHandlers.BLOCK_PLACER, syncId, player, position);
+	}
+
+	@Override
+	public void initialize(int width, int height) {
+		super.initialize(width, height);
+		
+		var slot = new SlotWidget(0, blockEntity.getItemStorage());
+		slot.setPosition( Position.of(mainTab, mainTab.getWidth() / 2F - 9F, 26));
+		slot.setSize( Size.of(18, 18));
+
+		mainTab.add(slot);
 	}
 }

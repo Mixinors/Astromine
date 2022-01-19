@@ -22,10 +22,10 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.common.screenhandler;
+package com.github.mixinors.astromine.common.screenhandler.machine;
 
-import com.github.mixinors.astromine.common.block.entity.machine.AlloySmelterBlockEntity;
-import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
+import com.github.mixinors.astromine.common.block.entity.machine.TrituratorBlockEntity;
+import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
@@ -36,48 +36,39 @@ import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-public class AlloySmelterScreenHandler extends ExtendedBlockEntityScreenHandler {
-	private final AlloySmelterBlockEntity smelter;
+public class TrituratorScreenHandler extends ExtendedBlockEntityScreenHandler {
+	private final TrituratorBlockEntity triturator;
 
-	public AlloySmelterScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.ALLOY_SMELTER, syncId, player, position);
+	public TrituratorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+		super(AMScreenHandlers.TRITURATOR, syncId, player, position);
 
-		smelter = (AlloySmelterBlockEntity) blockEntity;
+		triturator = (TrituratorBlockEntity) blockEntity;
 	}
 
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		
-		var firstInput = new SlotWidget(0, smelter.getItemStorage());
-		firstInput.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
-		firstInput.setSize( Size.of(18, 18));
+		var input = new SlotWidget(0, blockEntity.getItemStorage());
+		input.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
+		input.setSize(Size.of(18, 18));
 		
-		var secondInput = new SlotWidget(1, smelter.getItemStorage());
-		secondInput.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
-		secondInput.setSize(Size.of(18, 18));
+		var output = new SlotWidget(1, blockEntity.getItemStorage(), ExtractionSlot::new);
+		output.setPosition( Position.of(energyBar.getX(), energyBar.getY()));
+		output.setSize( Size.of(18, 18));
 		
-		var output = new SlotWidget(2, smelter.getItemStorage(), ExtractionSlot::new);
-		output.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
-		output.setSize(Size.of(18, 18));
-
-		firstInput.setPosition(Position.of(width / 2F - firstInput.getWidth() / 2, firstInput.getY()));
-		firstInput.setPosition(Position.of(firstInput.getX() - 22, firstInput.getY() + 15 - 9));
-
-		secondInput.setPosition(Position.of(width / 2F - secondInput.getWidth() / 2, secondInput.getY()));
-		secondInput.setPosition(Position.of(secondInput.getX() - 22, secondInput.getY() + 15 + 18 - 9));
-
-		output.setPosition(Position.of(width / 2F - output.getWidth() / 2, output.getY()));
-		output.setPosition(Position.of(secondInput.getX() + 57, secondInput.getY() - 9));
+		output.setPosition(Position.of(width / 2F - output.getWidth() / 2F, output.getY()));
+		output.setPosition(Position.of(output.getX() + 29, output.getY() + 15));
 		
 		var arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(output.getX() - 31, output.getY()));
 		arrow.setSize(Size.of(22, 16));
-		arrow.setLimitSupplier(() -> smelter.limit);
-		arrow.setProgressSupplier(() -> (int) smelter.progress);
+		arrow.setLimitSupplier(() -> triturator.limit);
+		arrow.setProgressSupplier(() -> (int) triturator.progress);
 
-		mainTab.add(firstInput);
-		mainTab.add(secondInput);
+		input.setPosition(Position.of(arrow.getX() - 27, arrow.getY()));
+
+		mainTab.add(input);
 		mainTab.add(output);
 		mainTab.add(arrow);
 	}

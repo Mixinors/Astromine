@@ -22,16 +22,15 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.common.screenhandler;
+package com.github.mixinors.astromine.common.screenhandler.storage;
 
-import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-public class FluidPlacerScreenHandler extends ExtendedBlockEntityScreenHandler {
-	public FluidPlacerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.FLUID_INSERTER, syncId, player, position);
+public class CreativeCapacitorScreenHandler extends CapacitorScreenHandler {
+	public CreativeCapacitorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+		super(AMScreenHandlers.CREATIVE_CAPACITOR, syncId, player, position);
 	}
 }

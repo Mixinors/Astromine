@@ -65,6 +65,7 @@ public class WireCuttingRecipe extends SpecialCraftingRecipe {
 
 		for (var k = 0; k < inv.size(); ++k) {
 			var itemStack = inv.getStack(k);
+			
 			if (!itemStack.isEmpty()) {
 				if (this.input.test(itemStack)) {
 					++inputCount;
@@ -119,14 +120,17 @@ public class WireCuttingRecipe extends SpecialCraftingRecipe {
 
 		for (var i = 0; i < remainingStacks.size(); ++i) {
 			var itemStack = inv.getStack(i);
+			
 			if (itemStack.getItem().hasRecipeRemainder()) {
 				remainingStacks.set(i, new ItemStack(itemStack.getItem().getRecipeRemainder()));
 			} else if (tool.test(itemStack)) {
 				var remainingTool = itemStack.copy();
 				remainingTool.setCount(1);
+				
 				if (!remainingTool.damage(1, RANDOM, null)) {
 					remainingStacks.set(i, remainingTool);
 				}
+				
 				break;
 			}
 		}
@@ -134,8 +138,7 @@ public class WireCuttingRecipe extends SpecialCraftingRecipe {
 		return remainingStacks;
 	}
 
-	public static final class Serializer extends AbstractRecipeSerializer<WireCuttingRecipe>
-	{
+	public static final class Serializer extends AbstractRecipeSerializer<WireCuttingRecipe> {
 		public static final Identifier ID = AMCommon.id("wire_cutting");
 
 		public static final Serializer INSTANCE = new Serializer();

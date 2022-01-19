@@ -32,12 +32,12 @@ import com.github.mixinors.astromine.client.rei.electricsmelting.ElectricSmeltin
 import com.github.mixinors.astromine.client.rei.pressing.PressingDisplay;
 import com.github.mixinors.astromine.client.rei.solidgenerating.SolidGeneratingDisplay;
 import com.github.mixinors.astromine.client.rei.triturating.TrituratingDisplay;
-import com.github.mixinors.astromine.common.screenhandler.AlloySmelterScreenHandler;
-import com.github.mixinors.astromine.common.screenhandler.ElectricFurnaceScreenHandler;
-import com.github.mixinors.astromine.common.screenhandler.PresserScreenHandler;
-import com.github.mixinors.astromine.common.screenhandler.SolidGeneratorScreenHandler;
-import com.github.mixinors.astromine.common.screenhandler.TrituratorScreenHandler;
-import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
+import com.github.mixinors.astromine.common.screenhandler.machine.AlloySmelterScreenHandler;
+import com.github.mixinors.astromine.common.screenhandler.machine.ElectricFurnaceScreenHandler;
+import com.github.mixinors.astromine.common.screenhandler.machine.PresserScreenHandler;
+import com.github.mixinors.astromine.common.screenhandler.machine.generator.SolidGeneratorScreenHandler;
+import com.github.mixinors.astromine.common.screenhandler.machine.TrituratorScreenHandler;
+import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 

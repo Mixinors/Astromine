@@ -26,6 +26,11 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.screenhandler.*;
+import com.github.mixinors.astromine.common.screenhandler.machine.*;
+import com.github.mixinors.astromine.common.screenhandler.machine.generator.FluidGeneratorScreenHandler;
+import com.github.mixinors.astromine.common.screenhandler.machine.generator.SolidGeneratorScreenHandler;
+import com.github.mixinors.astromine.common.screenhandler.storage.*;
+import com.github.mixinors.astromine.common.screenhandler.utility.*;
 import dev.architectury.registry.menu.MenuRegistry;
 import dev.architectury.registry.registries.RegistrySupplier;
 
@@ -65,10 +70,6 @@ public class AMScreenHandlers {
 
 	public static final RegistrySupplier<ScreenHandlerType<SolidGeneratorScreenHandler>> SOLID_GENERATOR = registerExtended(AMCommon.id("solid_generator"), ((syncId, inventory, buffer) -> {
 		return new SolidGeneratorScreenHandler(syncId, inventory.player, buffer.readBlockPos());
-	}));
-
-	public static final RegistrySupplier<ScreenHandlerType<VentScreenHandler>> VENT = registerExtended(AMCommon.id("vent"), ((syncId, inventory, buffer) -> {
-		return new VentScreenHandler(syncId, inventory.player, buffer.readBlockPos());
 	}));
 
 	public static final RegistrySupplier<ScreenHandlerType<TankScreenHandler>> TANK = registerExtended(AMCommon.id("tank"), ((syncId, inventory, buffer) -> {

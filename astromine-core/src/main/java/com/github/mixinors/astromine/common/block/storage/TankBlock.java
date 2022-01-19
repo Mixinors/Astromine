@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.common.block.storage;
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
 import com.github.mixinors.astromine.common.block.entity.storage.TankBlockEntity;
 import com.github.mixinors.astromine.common.util.data.redstone.ComparatorMode;
-import com.github.mixinors.astromine.common.screenhandler.TankScreenHandler;
+import com.github.mixinors.astromine.common.screenhandler.storage.TankScreenHandler;
 import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 

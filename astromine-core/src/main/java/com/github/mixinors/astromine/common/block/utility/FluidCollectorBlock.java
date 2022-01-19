@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.common.block.utility;
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.mixinors.astromine.common.block.entity.utility.FluidCollectorBlockEntity;
 import com.github.mixinors.astromine.common.util.data.redstone.ComparatorMode;
-import com.github.mixinors.astromine.common.screenhandler.FluidCollectorScreenHandler;
+import com.github.mixinors.astromine.common.screenhandler.utility.FluidCollectorScreenHandler;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;

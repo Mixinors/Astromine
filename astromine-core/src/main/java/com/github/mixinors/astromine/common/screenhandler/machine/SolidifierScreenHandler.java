@@ -22,11 +22,12 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.common.screenhandler;
+package com.github.mixinors.astromine.common.screenhandler.machine;
 
-import com.github.mixinors.astromine.common.block.entity.machine.generator.SolidGeneratorBlockEntity;
-import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
+import com.github.mixinors.astromine.common.block.entity.machine.SolidifierBlockEntity;
+import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
+import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
@@ -35,32 +36,32 @@ import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-public class SolidGeneratorScreenHandler extends ExtendedBlockEntityScreenHandler {
-	private final SolidGeneratorBlockEntity generator;
+public class SolidifierScreenHandler extends ExtendedBlockEntityScreenHandler {
+	private final SolidifierBlockEntity solidifier;
 
-	public SolidGeneratorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.SOLID_GENERATOR, syncId, player, position);
+	public SolidifierScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+		super(AMScreenHandlers.SOLIDIFIER, syncId, player, position);
 
-		generator = (SolidGeneratorBlockEntity) blockEntity;
+		solidifier = (SolidifierBlockEntity) blockEntity;
 	}
 
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		
-		var arrow = new HorizontalArrowWidget();
-		arrow.setPosition(Position.of( energyBar, energyBar.getWidth() + 3, energyBar.getHeight() / 2F - 8));
-		arrow.setSize( Size.of(22, 16));
-		arrow.setLimitSupplier(() -> generator.limit);
-		arrow.setProgressSupplier(() -> (int) generator.progress);
+		var output = new SlotWidget(0, solidifier.getItemStorage(), ExtractionSlot::new);
+		output.setSize( Size.of(18, 18));
+		output.setPosition(Position.of(fluidBar, 102, 15));
 		
-		var input = new SlotWidget(0, blockEntity.getItemStorage());
-		input.setPosition(Position.of(arrow, -26, 0));
-		input.setSize(Size.of(18, 18));
+		var arrow = new HorizontalArrowWidget();
+		arrow.setPosition( Position.of(output, -31, 0));
+		arrow.setSize(Size.of(22, 16));
+		arrow.setLimitSupplier(() -> solidifier.limit);
+		arrow.setProgressSupplier(() -> (int) solidifier.progress);
 
-		energyBar.setPosition(Position.of(mainTab, 68, 11));
+		fluidBar.setPosition(Position.of(arrow, -27 - 6, -fluidBar.getHeight() / 2 + output.getHeight() / 2));
 
-		mainTab.add(input);
+		mainTab.add(output);
 		mainTab.add(arrow);
 	}
 }

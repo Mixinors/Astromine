@@ -22,30 +22,19 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.common.screenhandler;
+package com.github.mixinors.astromine.common.screenhandler.storage;
 
-import com.github.mixinors.astromine.common.screenhandler.base.block.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import dev.vini2003.hammer.common.geometry.position.Position;
-import dev.vini2003.hammer.common.geometry.size.Size;
-import dev.vini2003.hammer.common.widget.slot.SlotWidget;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-public class CreativeBufferScreenHandler extends ExtendedBlockEntityScreenHandler {
-	public CreativeBufferScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AMScreenHandlers.CREATIVE_BUFFER, syncId, player, position);
-	}
-
-	@Override
-	public void initialize(int width, int height) {
-		super.initialize(width, height);
-		
-		var slot = new SlotWidget(0, blockEntity.getItemStorage());
-		slot.setPosition( Position.of(mainTab, 70, 20));
-		slot.setSize( Size.of(36, 36));
-
-		mainTab.add(slot);
+// TODO! - 07/08/2020 - 17:13:28
+// TODO! - 21/08/2020 - 17:31:08
+// TODO! - 27/08/2020 - 07:56:00
+// DONE? - 20/11/2020 - 05:47:47
+public class CreativeTankScreenHandler extends TankScreenHandler {
+	public CreativeTankScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+		super(AMScreenHandlers.CREATIVE_TANK, syncId, player, position);
 	}
 }
