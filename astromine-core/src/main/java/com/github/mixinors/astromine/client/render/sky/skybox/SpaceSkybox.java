@@ -37,6 +37,7 @@ import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
@@ -145,17 +146,19 @@ public class SpaceSkybox extends Skybox {
 
             matrices.pop();
         }
-
-        RenderSystem.setShaderTexture(0, textures.get(PLANET));
+		
+		RenderSystem.setShaderTexture(0, textures.get(PLANET));
 
         matrices.push();
 
         buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT);
 
-        buffer.vertex(matrices.peek().getPositionMatrix(), -100.0F, (float) (-64.0F - (client.player.getY())), -100.0F).color(255, 255, 255, 255).texture(u0P, 0.0F).light(vertexLight).next();
-        buffer.vertex(matrices.peek().getPositionMatrix(), -100.0F, (float) (-64.0F - (client.player.getY())), 100.0F).color(255, 255, 255, 255).texture(u0P, 1.0F).light(vertexLight).next();
-        buffer.vertex(matrices.peek().getPositionMatrix(), 100.0F, (float) (-64.0F - (client.player.getY())), 100.0F).color(255, 255, 255, 255).texture(u1P, 1.0F).light(vertexLight).next();
-        buffer.vertex(matrices.peek().getPositionMatrix(), 100.0F, (float) (-64.0F - (client.player.getY())), -100.0F).color(255, 255, 255, 255).texture(u1P, 0.0F).light(vertexLight).next();
+		var lerpPlayerY = MathHelper.lerp(tickDelta, client.player.prevY, client.player.getY());
+		
+        buffer.vertex(matrices.peek().getPositionMatrix(), -100.0F, (float) (-64.0F - (lerpPlayerY)), -100.0F).color(255, 255, 255, 255).texture(u0P, 0.0F).light(vertexLight).next();
+        buffer.vertex(matrices.peek().getPositionMatrix(), -100.0F, (float) (-64.0F - (lerpPlayerY)), 100.0F).color(255, 255, 255, 255).texture(u0P, 1.0F).light(vertexLight).next();
+        buffer.vertex(matrices.peek().getPositionMatrix(), 100.0F, (float) (-64.0F - (lerpPlayerY)), 100.0F).color(255, 255, 255, 255).texture(u1P, 1.0F).light(vertexLight).next();
+        buffer.vertex(matrices.peek().getPositionMatrix(), 100.0F, (float) (-64.0F - (lerpPlayerY)), -100.0F).color(255, 255, 255, 255).texture(u1P, 0.0F).light(vertexLight).next();
 
         tessellator.draw();
 
@@ -170,10 +173,10 @@ public class SpaceSkybox extends Skybox {
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
 
-        buffer.vertex(matrices.peek().getPositionMatrix(), -100.0F, (float) (-60.0F - (client.player.getY())), -100.0F).color(255, 255, 255, 255).texture(u0C, 0).light(vertexLight).next();
-        buffer.vertex(matrices.peek().getPositionMatrix(), -100.0F, (float) (-60.0F - (client.player.getY())), 100.0F).color(255, 255, 255, 255).texture(u0C, 1).light(vertexLight).next();
-        buffer.vertex(matrices.peek().getPositionMatrix(), 100.0F, (float) (-60.0F - (client.player.getY())), 100.0F).color(255, 255, 255, 255).texture(u1C, 1).light(vertexLight).next();
-        buffer.vertex(matrices.peek().getPositionMatrix(), 100.0F, (float) (-60.0F - (client.player.getY())), -100.0F).color(255, 255, 255, 255).texture(u1C, 0).light(vertexLight).next();
+        buffer.vertex(matrices.peek().getPositionMatrix(), -100.0F, (float) (-60.0F - (lerpPlayerY)), -100.0F).color(255, 255, 255, 255).texture(u0C, 0).light(vertexLight).next();
+        buffer.vertex(matrices.peek().getPositionMatrix(), -100.0F, (float) (-60.0F - (lerpPlayerY)), 100.0F).color(255, 255, 255, 255).texture(u0C, 1).light(vertexLight).next();
+        buffer.vertex(matrices.peek().getPositionMatrix(), 100.0F, (float) (-60.0F - (lerpPlayerY)), 100.0F).color(255, 255, 255, 255).texture(u1C, 1).light(vertexLight).next();
+        buffer.vertex(matrices.peek().getPositionMatrix(), 100.0F, (float) (-60.0F - (lerpPlayerY)), -100.0F).color(255, 255, 255, 255).texture(u1C, 0).light(vertexLight).next();
 
         tessellator.draw();
 
