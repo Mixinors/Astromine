@@ -107,6 +107,8 @@ public class FluidCollectorBlockEntity extends ExtendedBlockEntity implements Fl
 									
 									energyStorage.amount -= consumed;
 									
+									cooldown = 0L;
+									
 									transaction.commit();
 								} else {
 									isActive = false;

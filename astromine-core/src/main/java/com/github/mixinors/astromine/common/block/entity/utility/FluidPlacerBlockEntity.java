@@ -97,6 +97,8 @@ public class FluidPlacerBlockEntity extends ExtendedBlockEntity implements Fluid
 									world.setBlockState(targetPos, inputStorage.getResource().getFluid().getDefaultState().getBlockState());
 									world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1, 1);
 									
+									cooldown = 0L;
+									
 									transaction.commit();
 								} else {
 									isActive = false;

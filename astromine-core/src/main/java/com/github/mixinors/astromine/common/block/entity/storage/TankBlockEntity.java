@@ -73,7 +73,7 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 	public TankBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
-		fluidStorage = new SimpleFluidStorage(1, getFluidStorageSize()).extractPredicate((variant, slot) ->
+		fluidStorage = new SimpleFluidStorage(1, getFluidStorageSize()).insertPredicate((variant, slot) ->
 			slot == FLUID_INPUT_SLOT
 		).extractPredicate((variant, slot) ->
 			slot == FLUID_OUTPUT_SLOT

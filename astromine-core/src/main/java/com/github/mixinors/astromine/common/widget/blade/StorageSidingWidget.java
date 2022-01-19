@@ -66,57 +66,24 @@ public class StorageSidingWidget extends Widget {
 	public static final Identifier TEXTURE_EXTRACT = AMCommon.id("textures/widget/extract.png");
 	public static final Identifier TEXTURE_INSERT_EXTRACT = AMCommon.id("textures/widget/insert_extract.png");
 	public static final Identifier TEXTURE_NONE = AMCommon.id("textures/widget/none.png");
-	
-	private String getSideName() {
-		if (type == StorageType.ITEM) {
-			var sidings = blockEntity.getItemStorage().getSidings();
-			
-			return switch (sidings[direction.ordinal()]) {
-				case INSERT -> "insert";
-				case EXTRACT -> "extract";
-				case INSERT_EXTRACT -> "insert_extract";
-				case NONE -> "none";
-			};
-		}
-		
-		if (type == StorageType.FLUID) {
-			var sidings = blockEntity.getFluidStorage().getSidings();
-			
-			return switch (sidings[direction.ordinal()]) {
-				case INSERT -> "insert";
-				case EXTRACT -> "extract";
-				case INSERT_EXTRACT -> "insert_extract";
-				case NONE -> "none";
-			};
-		}
-		
-		return null;
-	}
 
 	private Identifier getTexture() {
+		var sidings = new StorageSiding[6];
+		
 		if (type == StorageType.ITEM) {
-			var sidings = blockEntity.getItemStorage().getSidings();
-			
-			return switch (sidings[direction.ordinal()]) {
-				case INSERT -> TEXTURE_INSERT;
-				case EXTRACT -> TEXTURE_EXTRACT;
-				case INSERT_EXTRACT ->  TEXTURE_INSERT_EXTRACT;
-				case NONE -> TEXTURE_NONE;
-			};
+			sidings = blockEntity.getItemStorage().getSidings();
 		}
 		
 		if (type == StorageType.FLUID) {
-			var sidings = blockEntity.getFluidStorage().getSidings();
-			
-			return switch (sidings[direction.ordinal()]) {
-				case INSERT -> TEXTURE_INSERT;
-				case EXTRACT -> TEXTURE_EXTRACT;
-				case INSERT_EXTRACT ->  TEXTURE_INSERT_EXTRACT;
-				case NONE -> TEXTURE_NONE;
-			};
+			sidings = blockEntity.getFluidStorage().getSidings();
 		}
 		
-		return null;
+		return switch (sidings[direction.ordinal()]) {
+			case INSERT -> TEXTURE_INSERT;
+			case EXTRACT -> TEXTURE_EXTRACT;
+			case INSERT_EXTRACT ->  TEXTURE_INSERT_EXTRACT;
+			case NONE -> TEXTURE_NONE;
+		};
 	}
 	
 	@Override
@@ -155,7 +122,15 @@ public class StorageSidingWidget extends Widget {
 	public @NotNull List<Text> getTooltip() {
 		var offset = MirrorUtils.rotate(direction, rotation);
 		
-		var sidings = blockEntity.getItemStorage().getSidings();
+		var sidings = new StorageSiding[6];
+		
+		if (type == StorageType.ITEM) {
+			sidings = blockEntity.getItemStorage().getSidings();
+		}
+		
+		if (type == StorageType.FLUID) {
+			sidings = blockEntity.getFluidStorage().getSidings();
+		}
 		
 		var name = switch (sidings[direction.ordinal()]) {
 			case INSERT -> new TranslatableText("text.astromine.siding.insert").styled(style -> style.withColor(0x0078FF));

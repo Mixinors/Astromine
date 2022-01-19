@@ -114,19 +114,23 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 		// Trigger a block update if item sidings have changed.
 		if (itemStorage != null) {
 			if (!Arrays.equals(lastItemStorageSidings, itemStorage.getSidings())) {
-				world.getBlockState(getPos()).neighborUpdate(world, getPos(), getCachedState().getBlock(), getPos(), false);
+				for (var dir : Direction.values()) {
+					world.getBlockState(getPos().offset(dir)).neighborUpdate(world, getPos().offset(dir), getCachedState().getBlock(), getPos(), false);
+				}
 			}
 			
-			lastItemStorageSidings = itemStorage.getSidings();
+			lastItemStorageSidings = itemStorage.getSidings().clone();
 		}
 		
 		// Trigger a block update if fluid sidings have changed.
 		if (fluidStorage != null) {
 			if (!Arrays.equals(lastFluidStorageSidings, fluidStorage.getSidings())) {
-				world.getBlockState(getPos()).neighborUpdate(world, getPos(), getCachedState().getBlock(), getPos(), false);
+				for (var dir : Direction.values()) {
+					world.getBlockState(getPos().offset(dir)).neighborUpdate(world, getPos().offset(dir), getCachedState().getBlock(), getPos(), false);
+				}
 			}
 			
-			lastFluidStorageSidings = fluidStorage.getSidings();
+			lastFluidStorageSidings = fluidStorage.getSidings().clone();
 		}
 		
 		try (var transaction = Transaction.openOuter()) {
