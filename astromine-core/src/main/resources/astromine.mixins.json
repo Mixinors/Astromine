@@ -42,6 +42,7 @@
     "client.InGameOverlayRendererMixin",
     "client.SkyPropertiesMixin",
     "client.WorldRendererMixin",
+    "client.BackgroundRendererMixin",
     "client.gravity.CurrentDownParticleMixin"
   ],
   "injectors": {
