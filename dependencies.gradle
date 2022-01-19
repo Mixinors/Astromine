@@ -10,11 +10,6 @@ project.ext.setDefaultApis = {
     // Shapes
     useAsApi("com.terraformersmc.terraform-api:terraform-shapes-api-v1:${shapesVersion}")
 
-    // Hammer
-    useAsCompileOnly("com.github.vini2003:hammer:${hammerVersion}")
-    useAsRuntimeOnly("com.github.vini2003:hammer:${hammerVersion}")
-    include("com.github.vini2003:hammer:${hammerVersion}")
-
     // Fabric Language Kotlin
     useAsCompileOnly("net.fabricmc:fabric-language-kotlin:${fabricLanguageKotlinVersion}")
     useAsRuntimeOnly("net.fabricmc:fabric-language-kotlin:${fabricLanguageKotlinVersion}")

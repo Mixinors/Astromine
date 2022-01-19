@@ -234,8 +234,14 @@ public abstract class CableBlock extends Block implements Waterloggable {
 	@Nullable
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
-		var directions = NetworkUtils.Modeller.of(getNetworkType(), context.getBlockPos(), context.getWorld());
+		var world = context.getWorld();
 		
-		return NetworkUtils.Modeller.toBlockState(directions, super.getPlacementState(context)).with(WATERLOGGED, false);
+		if (!world.isClient) {
+			var directions = NetworkUtils.Modeller.of(getNetworkType(), context.getBlockPos(), context.getWorld());
+			
+			return NetworkUtils.Modeller.toBlockState(directions, super.getPlacementState(context)).with(WATERLOGGED, false);
+		} else {
+			return super.getPlacementState(context).with(WATERLOGGED, false).with(NORTH, false).with(SOUTH, false).with(WEST, false).with(EAST, false).with(UP, false).with(DOWN, false);
+		}
 	}
 }
