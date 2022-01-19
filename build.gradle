@@ -47,6 +47,12 @@ allprojects {
     }
 
     repositories {
+        // vini2003
+        maven {
+            name = "vini2003"
+            url = "https://maven.vini2003.dev/releases"
+        }
+
         // Architectury
         maven {
             name = "Architectury"
