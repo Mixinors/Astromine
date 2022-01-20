@@ -7,6 +7,6 @@
     "item": "astromine:biofuel",
     "count": 1
   },
-  "energy_input": 100,
-  "time": 140
+  "energy_input": 50,
+  "time": 100
 }

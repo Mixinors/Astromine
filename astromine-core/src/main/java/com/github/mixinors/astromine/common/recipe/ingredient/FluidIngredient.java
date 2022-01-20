@@ -262,15 +262,7 @@ public final class FluidIngredient {
 
 		@Override
 		public boolean testVariant(FluidVariant testVariant) {
-			if (requiredVariants == null) {
-				requiredVariants = new ArrayList<>();
-
-				for (var fluid : requiredTag.values()) {
-					requiredVariants.add(FluidVariant.of(fluid));
-				}
-			}
-
-			for (var requiredVariant : requiredVariants) {
+			for (var requiredVariant : getVariants()) {
 				if (requiredVariant.equals(testVariant)) {
 					return true;
 				}
@@ -286,15 +278,17 @@ public final class FluidIngredient {
 
 		@Override
 		public Collection<FluidVariant> getVariants() {
-			var list = new ArrayList<FluidVariant>();
-			
-			for (var fluid : this.requiredTag.values()) {
-				if (fluid.isStill(fluid.getDefaultState())) {
-					list.add(FluidVariant.of(fluid));
+			if(requiredVariants == null) {
+				requiredVariants = new ArrayList<>();
+
+				for (var fluid : this.requiredTag.values()) {
+					if (fluid.isStill(fluid.getDefaultState())) {
+						requiredVariants.add(FluidVariant.of(fluid));
+					}
 				}
 			}
 			
-			return list;
+			return requiredVariants;
 		}
 	}
 }

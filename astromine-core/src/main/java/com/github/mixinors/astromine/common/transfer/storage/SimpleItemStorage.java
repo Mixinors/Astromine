@@ -51,9 +51,9 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	
 	private final List<Storage<ItemVariant>> storages;
 	
-	private BiPredicate<ItemVariant, Integer> insertPredicate = null;
+	private BiPredicate<ItemVariant, Integer> insertPredicate = (variant, amount) -> false;
 	
-	private BiPredicate<ItemVariant, Integer> extractPredicate = null;
+	private BiPredicate<ItemVariant, Integer> extractPredicate = (variant, amount) -> false;
 	
 	private StorageSiding[] sidings;
 	
@@ -143,7 +143,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		
 		transaction.addCloseCallback((($, result) -> {
 			if (result.wasCommitted()) {
-				listeners.forEach(Runnable::run);
+				notifyListeners();
 				
 				incrementVersion();
 			}
@@ -171,7 +171,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		
 		transaction.addCloseCallback((($, result) -> {
 			if (result.wasCommitted()) {
-				listeners.forEach(Runnable::run);
+				notifyListeners();
 				
 				incrementVersion();
 			}
@@ -264,10 +264,10 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		removedStack.setCount(Math.min(existingStack.getCount(), amount));
 
 		existingStack.setCount(Math.max(0, existingStack.getCount() - amount));
-		
+
+		notifyListeners();
+
 		incrementVersion();
-		
-		listeners.forEach(Runnable::run);
 		
 		return removedStack;
 	}
@@ -277,10 +277,10 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		var stack = stacks.get(slot);
 		
 		stacks.set(slot, ItemStack.EMPTY);
-		
+
+		notifyListeners();
+
 		incrementVersion();
-		
-		listeners.forEach(Runnable::run);
 		
 		return stack;
 	}
@@ -288,10 +288,10 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	@Override
 	public void setStack(int slot, ItemStack stack) {
 		stacks.set(slot, stack);
-		
+
+		notifyListeners();
+
 		incrementVersion();
-		
-		listeners.forEach(Runnable::run);
 	}
 	
 	@Override
@@ -309,10 +309,10 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		for (var i = 0; i < size; ++i) {
 			stacks.set(i, ItemStack.EMPTY);
 		}
-		
+
+		notifyListeners();
+
 		incrementVersion();
-		
-		listeners.forEach(Runnable::run);
 	}
 	
 	public void writeToNbt(NbtCompound nbt) {
@@ -369,7 +369,11 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	public void incrementVersion() {
 		version += 1;
 	}
-	
+
+	public void notifyListeners() {
+		listeners.forEach(Runnable::run);
+	}
+
 	/**
 	 * {@link Object}
 	 */

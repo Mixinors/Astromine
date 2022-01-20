@@ -66,7 +66,7 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 				return false;
 			}
 			
-			if (!itemStorage.getVariant(INPUT_SLOT).equals(variant)) {
+			if (!itemStorage.isEmpty() && !itemStorage.getVariant(INPUT_SLOT).equals(variant)) {
 				return false;
 			}
 			

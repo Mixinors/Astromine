@@ -53,6 +53,7 @@ public class DefaultConfigValues {
 	public static final double BASE_SPEED = 1.0D;
 	public static final double TANK_BASE_SPEED = 10.0D;
 	public static final double CAPACITOR_BASE_SPEED = 10.0D;
+	public static final double FLUID_RECIPE_MACHINE_BASE_SPEED = 1000.0D;
 
 	public static final long UTILITY_DELAY = 40L;
 	public static final long UTILITY_ENERGY = PRIMITIVE_BATTERY_PACK_ENERGY;

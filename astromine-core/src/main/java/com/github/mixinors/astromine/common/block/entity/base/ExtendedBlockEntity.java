@@ -136,13 +136,13 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 		try (var transaction = Transaction.openOuter()) {
 			for (var direction : Direction.values()) {
 				var theirPos = getPos().offset(direction);
-				
+
 				var theirItemStorage = ItemStorage.SIDED.find(world, theirPos, direction.getOpposite());
 				var ourItemStorage = ItemStorage.SIDED.find(world, pos, direction);
-				
+
 				if (ourItemStorage != null && theirItemStorage != null) {
 					StorageUtil.move(ourItemStorage, theirItemStorage, (variant) ->
-						ourItemStorage.exactView(transaction, variant).getAmount() > theirItemStorage.exactView(transaction, variant).getAmount()
+						theirItemStorage.exactView(transaction, variant) == null || ourItemStorage.exactView(transaction, variant).getAmount() > theirItemStorage.exactView(transaction, variant).getAmount()
 					, 1, transaction);
 				}
 				
@@ -151,7 +151,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 				
 				if (ourFluidStorage != null && theirFluidStorage != null) {
 					StorageUtil.move(ourFluidStorage, theirFluidStorage, (variant) ->
-						ourFluidStorage.exactView(transaction, variant).getAmount() > theirFluidStorage.exactView(transaction, variant).getAmount()
+						theirFluidStorage.exactView(transaction, variant) == null || ourFluidStorage.exactView(transaction, variant).getAmount() > theirFluidStorage.exactView(transaction, variant).getAmount()
 					, FluidConstants.BUCKET, transaction);
 				}
 				

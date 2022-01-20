@@ -30,11 +30,6 @@ project.ext.setDefaultApis = {
 
     // RoughlyEnoughItems
     useAsApiOptionally("me.shedaniel:RoughlyEnoughItems-fabric:${roughlyEnoughItemsVersion}")
-	
-	//modImplementation("com.github.Draylar.omega-config:omega-config:${omega_config_version}")
-
-    // Magna
-    //useAsApi("com.github.Draylar:magna:${magna_version}")
 
     // Kotlin
     useAsApi("org.jetbrains.kotlin:kotlin-stdlib:${project.kotlinVersion}")
@@ -68,6 +63,5 @@ project.ext.setDefaultApis = {
 }
 
 project.ext.setRuntimeTestMods = {
-    // DataBreaker
-    // useAsRuntimeOnly("com.github.SuperCoder7979:databreaker:${dataBreakerVersion}")
+
 }

@@ -48,7 +48,6 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 public abstract class FluidGeneratorBlockEntity extends ExtendedBlockEntity implements FluidStorageMachineConfigProvider {
 	public double progress = 0;
 	public int limit = 100;
-	public boolean shouldTry;
 	
 	private static final int INPUT_SLOT = 0;
 	
@@ -72,8 +71,9 @@ public abstract class FluidGeneratorBlockEntity extends ExtendedBlockEntity impl
 			
 			return FluidGeneratingRecipe.allows(world, variant);
 		}).listener(() -> {
-			shouldTry = true;
-			optionalRecipe = Optional.empty();
+			if (optionalRecipe.isPresent() && !optionalRecipe.get().matches(fluidStorage.slice(INPUT_SLOT))) {
+				optionalRecipe = Optional.empty();
+			}
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 		
 		fluidStorage.getStorage(INPUT_SLOT).setCapacity(getFluidStorageSize());
@@ -87,14 +87,8 @@ public abstract class FluidGeneratorBlockEntity extends ExtendedBlockEntity impl
 			return;
 		
 		if (fluidStorage != null && energyStorage != null) {
-			if (optionalRecipe.isEmpty() && shouldTry) {
+			if (optionalRecipe.isEmpty()) {
 				optionalRecipe = FluidGeneratingRecipe.matching(world, fluidStorage.slice(INPUT_SLOT));
-				shouldTry = false;
-
-				if (optionalRecipe.isEmpty()) {
-					progress = 0;
-					limit = 100;
-				}
 			}
 
 			if (optionalRecipe.isPresent()) {
@@ -129,6 +123,8 @@ public abstract class FluidGeneratorBlockEntity extends ExtendedBlockEntity impl
 					}
 				}
 			} else {
+				progress = 0;
+				limit = 100;
 				isActive = false;
 			}
 		}

@@ -13,7 +13,7 @@
       "item": "astromine:primitive_battery"
     },
     "4": {
-      "item": "minecraft:slime_ball"
+      "tag": "c:slime_balls"
     }
   },
   "result": {

@@ -709,10 +709,10 @@ public class AMRecipeProvider extends FabricRecipesProvider {
 		});
 
 		BIOFUEL_TAGS.forEach((tag, count) -> {
-			offerTrituratingRecipe(exporter, tag, AMItems.BIOFUEL.get(), count, 100 + (40 * count), 100 * count);
+			offerTrituratingRecipe(exporter, tag, AMItems.BIOFUEL.get(), count, 60 + (40 * count), 50 * count);
 		});
 
-		offerMeltingRecipe(exporter, AMDatagen.createCommonItemTag("biofuel"), AMFluids.BIOMASS.getStill(), 810, 100, 8000);
+		offerMeltingRecipe(exporter, AMDatagen.createCommonItemTag("biofuel"), AMFluids.BIOMASS.getStill(), 810, 80, 800);
 	}
 
 	@FunctionalInterface

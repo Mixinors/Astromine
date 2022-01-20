@@ -251,7 +251,7 @@ public class MaterialFamilies {
 			.armor(AMItems.FOOLS_GOLD_HELMET.get(), AMItems.FOOLS_GOLD_CHESTPLATE.get(), AMItems.FOOLS_GOLD_LEGGINGS.get(), AMItems.FOOLS_GOLD_BOOTS.get())
 			.gear(AMItems.FOOLS_GOLD_GEAR.get()).plate(AMItems.FOOLS_GOLD_PLATE.get())
 			.apple(AMItems.FOOLS_GOLD_APPLE.get())
-			.alloyIngredients(IRON, GUNPOWDER, 150, 600)
+			.alloyIngredients(IRON, GUNPOWDER, 1, 150, 600)
 			.piglinLoved()
 			.alias("pyrite")
 			.miningLevel(MiningLevels.STONE).build();
