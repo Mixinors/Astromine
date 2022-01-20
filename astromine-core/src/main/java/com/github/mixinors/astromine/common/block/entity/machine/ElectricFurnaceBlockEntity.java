@@ -104,9 +104,9 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 	}
 
 	public static boolean recipeMatches(World world, SmeltingRecipe recipe, SingleSlotStorage<ItemVariant>... storages) {
-		var inputStorage = storages[0];
+		var inputStorage = storages[INPUT_SLOT];
 
-		var outputStorage = storages[1];
+		var outputStorage = storages[OUTPUT_SLOT];
 
 		var inputInventory = BaseInventory.of(inputStorage.getResource().toStack((int) inputStorage.getAmount()));
 
@@ -132,7 +132,7 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 			return;
 
 		if (itemStorage != null && energyStorage != null) {
-			var inputInventory = BaseInventory.of(itemStorage.getStack(1));
+			var inputInventory = BaseInventory.of(itemStorage.getStack(INPUT_SLOT));
 
 			if (optionalRecipe.isEmpty()) {
 				if (RECIPE_CACHE.get(world) == null) {
@@ -143,9 +143,9 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 					if (recipe.matches(inputInventory, world)) {
 						var output = recipe.getOutput().copy();
 
-						var isEmpty = itemStorage.getStack(0).isEmpty();
-						var isEqual = ItemStack.areItemsEqual(itemStorage.getStack(0), output) && ItemStack.areNbtEqual(itemStorage.getStack(0), output);
-						var canFit = itemStorage.getStack(0).getCount() + output.getCount() <= itemStorage.getStack(0).getMaxCount();
+						var isEmpty = itemStorage.getStack(OUTPUT_SLOT).isEmpty();
+						var isEqual = ItemStack.areItemsEqual(itemStorage.getStack(OUTPUT_SLOT), output) && ItemStack.areNbtEqual(itemStorage.getStack(OUTPUT_SLOT), output);
+						var canFit = itemStorage.getStack(OUTPUT_SLOT).getCount() + output.getCount() <= itemStorage.getStack(OUTPUT_SLOT).getMaxCount();
 
 						if ((isEmpty || isEqual) && canFit) optionalRecipe = Optional.of(recipe);
 					}
