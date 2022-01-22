@@ -71,25 +71,15 @@ allprojects {
             }
         }
         maven {
-            name = "Ladysnake Libs"
-            url = 'https://dl.bintray.com/ladysnake/libs'
+            name = 'Ladysnake Mods'
+            url = 'https://ladysnake.jfrog.io/artifactory/mods'
             content {
                 includeGroup "io.github.onyxstudios.Cardinal-Components-API"
             }
         }
         maven {
-            name = "Wrenchable"
-            url = "https://dl.bintray.com/zundrel/wrenchable"
-            content {
-                includeGroup "com.zundrel"
-            }
-        }
-        maven {
-            name = "Cloth"
-            url = "https://dl.bintray.com/shedaniel/cloth"
-            content {
-                includeGroup "me.shedaniel.cloth.api"
-            }
+            name = "shedaniel"
+            url = "https://maven.shedaniel.me"
         }
         maven {
             name = "Earthcomputer"
@@ -109,6 +99,10 @@ allprojects {
             name = "dblsaiko"
             url = "https://maven.dblsaiko.net/"
         }
+        maven {
+            name = "terraformersmc"
+            url = "https://maven.terraformersmc.com/releases/"
+        }
     }
 
     dependencies {
@@ -118,6 +112,7 @@ allprojects {
                     exclude group: "net.fabricmc.fabric-api"
                 }
                 exclude group: "net.fabricmc"
+                exclude group: "io.github.prospector", module: "modmenu"
                 if (!dep.contains("me.shedaniel")) {
                     exclude group: "me.shedaniel"
                 }
@@ -134,6 +129,7 @@ allprojects {
                     exclude group: "net.fabricmc.fabric-api"
                 }
                 exclude group: "net.fabricmc"
+                exclude group: "io.github.prospector", module: "modmenu"
                 if (!dep.contains("me.shedaniel")) {
                     exclude group: "me.shedaniel"
                 }
@@ -147,6 +143,8 @@ allprojects {
         modImplementation "com.google.code.findbugs:jsr305:3.0.2"
 
         tap(rootProject.ext.setDefaultApis)
+        
+        annotationProcessor "net.fabricmc:fabric-mixin-compile-extensions:0.4.6"
     }
 
     afterEvaluate {

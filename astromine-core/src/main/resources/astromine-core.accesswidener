@@ -1,7 +1,7 @@
 accessWidener v1 named
 
 accessible method net/minecraft/block/FluidBlock <init> (Lnet/minecraft/fluid/FlowableFluid;Lnet/minecraft/block/AbstractBlock$Settings;)V
-accessible method net/minecraft/com.github.chainmailstudios.astromine.technologies.client.particle/DefaultParticleType <init> (Z)V
+accessible method net/minecraft/particle/DefaultParticleType <init> (Z)V
 accessible method net/minecraft/item/Item rayTrace (Lnet/minecraft/world/World;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/world/RayTraceContext$FluidHandling;)Lnet/minecraft/util/hit/BlockHitResult
 accessible method net/minecraft/recipe/RecipeManager getAllOfType (Lnet/minecraft/recipe/RecipeType;)Ljava/util/Map;
 accessible field net/minecraft/block/EntityShapeContext heldItem Lnet/minecraft/item/Item;

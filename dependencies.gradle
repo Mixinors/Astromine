@@ -19,7 +19,7 @@ project.ext.setDefaultApis = {
     useAsApi("vazkii.patchouli:Patchouli:${patchouli_version}")
 
     // ModMenu
-    useAsApiOptionally("io.github.prospector:modmenu:${modmenu_version}")
+    useAsApiOptionally("com.terraformersmc:modmenu:${modmenu_version}")
 
     // AutoConfig
     useAsApi("me.sargunvohra.mcmods:autoconfig1u:${auto_config_version}")

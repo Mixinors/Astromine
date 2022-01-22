@@ -36,7 +36,7 @@ import java.util.function.Function;
 public class AstromineBlockEntityRenderers {
 	public static void initialize() {}
 
-	public static <B extends BlockEntity, C extends BlockEntityType<B>> void register(C c, Function<BlockEntityRenderDispatcher, BlockEntityRenderer<B>> b) {
+	public static <B extends BlockEntity, C extends BlockEntityType<B>> void register(C c, Function<BlockEntityRenderDispatcher, BlockEntityRenderer<? super B>> b) {
 		BlockEntityRendererRegistry.INSTANCE.register(c, b);
 	}
 }

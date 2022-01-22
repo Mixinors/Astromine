@@ -42,7 +42,7 @@ public class AstromineDiscoveriesBlockEntityRenderers {
 		register(AstromineDiscoveriesBlockEntityTypes.ALTAR, AltarBlockEntityRenderer::new);
 	}
 
-	public static <B extends BlockEntity, C extends BlockEntityType<B>> void register(C c, Function<BlockEntityRenderDispatcher, BlockEntityRenderer<B>> b) {
+	public static <B extends BlockEntity, C extends BlockEntityType<B>> void register(C c, Function<BlockEntityRenderDispatcher, BlockEntityRenderer<? super B>> b) {
 		AstromineBlockEntityRenderers.register(c, b);
 	}
 }
