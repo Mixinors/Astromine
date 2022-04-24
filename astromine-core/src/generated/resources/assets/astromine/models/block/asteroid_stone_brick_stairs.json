@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/stairs",
-  "textures": {
-    "bottom": "astromine:block/asteroid_stone_bricks",
-    "top": "astromine:block/asteroid_stone_bricks",
-    "side": "astromine:block/asteroid_stone_bricks"
-  }
-}

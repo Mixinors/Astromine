@@ -9,4 +9,4 @@ pluginManagement {
 
 rootProject.name = "astromine"
 
-include 'astromine-core'
+include 'src'

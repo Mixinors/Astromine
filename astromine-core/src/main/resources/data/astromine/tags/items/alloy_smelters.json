@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "astromine:primitive_alloy_smelter",
-    "astromine:basic_alloy_smelter",
-    "astromine:advanced_alloy_smelter",
-    "astromine:elite_alloy_smelter"
-  ]
-}

@@ -1,8 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "#c:galaxium_asteroid_ores",
-    "#c:galaxium_blocks",
-    "astromine:nuclear_warhead"
-  ]
-}
