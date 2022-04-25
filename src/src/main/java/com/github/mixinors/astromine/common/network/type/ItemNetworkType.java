@@ -86,12 +86,18 @@ public final class ItemNetworkType implements NetworkType<Storage<ItemVariant>> 
 				continue;
 			}
 			
-			if (storage.supportsInsertion() && storage.supportsExtraction()) {
-				bufferStorages.add(storage);
-			} else if (storage.supportsInsertion()) {
-				insertableStorages.add(storage);
-			} else if (storage.supportsExtraction()) {
-				extractableStorages.add(storage);
+			if (member.isInsert()) {
+				if (storage.supportsInsertion()) {
+					insertableStorages.add(storage);
+				}
+			} else if (member.isExtract()) {
+				if (storage.supportsExtraction()) {
+					extractableStorages.add(storage);
+				}
+			} else if (member.isInsertExtract()) {
+				if (storage.supportsInsertion() && storage.supportsExtraction()) {
+					bufferStorages.add(storage);
+				}
 			}
 		}
 		

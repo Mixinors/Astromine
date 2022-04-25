@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "astromine:block/item_conduit_connector",
-		"particle": "astromine:block/item_conduit_connector"
+		"0": "astromine:block/cable_connector_extract",
+		"particle": "astromine:block/cable_connector_extract"
 	},
 	"elements": [
 		{
