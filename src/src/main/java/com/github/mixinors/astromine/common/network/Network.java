@@ -269,14 +269,14 @@ public final class Network<T extends NetworkType> {
 	
 		/** Deserializes a {@link Node} from a {@link NbtCompound}. */
 		public static Node fromTag(NbtCompound tag) {
-			return new Node(tag.getLong("longPos"));
+			return new Node(tag.getLong("Position"));
 		}
 	
 		/** Serializes a {@link Node} to a {@link NbtCompound}. */
 		public NbtCompound toTag() {
 			var tag = new NbtCompound();
 	
-			tag.putLong("longPos", longPos);
+			tag.putLong("Position", longPos);
 	
 			return tag;
 		}

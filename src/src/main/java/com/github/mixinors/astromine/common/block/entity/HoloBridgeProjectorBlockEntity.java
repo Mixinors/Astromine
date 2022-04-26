@@ -65,6 +65,8 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 
 	private boolean hasCheckedChild = false;
 	private boolean hasCheckedParent = false;
+	
+	private boolean shouldInitialize = false;
 
 	public HoloBridgeProjectorBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.HOLOGRAPHIC_BRIDGE.get(), blockPos, blockState);
@@ -76,6 +78,20 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 
 	@Override
 	public void tick() {
+		if (world != null && world.isClient) {
+			if (shouldInitialize) {
+				this.destroyBridge();
+				
+				if (this.childPosition != null) {
+					this.child = (HoloBridgeProjectorBlockEntity) this.world.getBlockEntity(this.childPosition);
+				}
+				
+				this.buildBridge();
+				
+				shouldInitialize = false;
+			}
+		}
+		
 		if (this.world == null || this.world.isClient)
 			return;
 
@@ -107,17 +123,17 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	}
 
 	public boolean attemptToBuildBridge(HoloBridgeProjectorBlockEntity child) {
-		var bCP = child.getPos();
-		var bOP = this.getPos();
+		var childPos = child.getPos();
+		var pos = this.getPos();
 		
-		var nCP = bCP;
+		var offsetChildPos = childPos;
 		
-		var cD = child.getCachedState().get(HorizontalFacingBlock.FACING);
+		var childFacing = child.getCachedState().get(HorizontalFacingBlock.FACING);
 
-		if (cD == Direction.EAST) {
-			nCP = nCP.add(1, 0, 0);
-		} else if (cD == Direction.SOUTH) {
-			nCP = nCP.add(0, 0, 1);
+		if (childFacing == Direction.EAST) {
+			offsetChildPos = offsetChildPos.add(1, 0, 0);
+		} else if (childFacing == Direction.SOUTH) {
+			offsetChildPos = offsetChildPos.add(0, 0, 1);
 		}
 		
 		var distance = (int) Math.sqrt(this.getPos().getSquaredDistance(child.getPos()));
@@ -126,13 +142,13 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			return false;
 		}
 		
-		var segments = (ArrayList<Vec3f>) LineUtils.getBresenhamSegments(VectorUtils.toVector3f(bOP.offset(Direction.UP)), VectorUtils.toVector3f(nCP.offset(Direction.UP)), 32);
+		var segments = (ArrayList<Vec3f>) LineUtils.getBresenhamSegments(VectorUtils.toVector3f(pos.offset(Direction.UP)), VectorUtils.toVector3f(offsetChildPos.offset(Direction.UP)), 32);
 
-		for (var v : segments) {
-			var nP = new BlockPos(v.getX(), v.getY(), v.getZ());
+		for (var segment : segments) {
+			var segmentPos = new BlockPos(segment.getX(), segment.getY(), segment.getZ());
 
-			if ((nP.getX() != bCP.getX() && nP.getX() != bOP.getX()) || (nP.getZ() != bCP.getZ() && nP.getZ() != bOP.getZ())) {
-				if (!this.world.getBlockState(nP).isAir()) {
+			if ((segmentPos.getX() != childPos.getX() && segmentPos.getX() != pos.getX()) || (segmentPos.getZ() != childPos.getZ() && segmentPos.getZ() != pos.getZ())) {
+				if (!this.world.getBlockState(segmentPos).isAir()) {
 					return false;
 				}
 			}
@@ -146,17 +162,17 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			return;
 		}
 		
-		var bCP = this.getChild().getPos();
-		var bOP = this.getPos();
+		var childPos = this.getChild().getPos();
+		var pos = this.getPos();
 		
-		var nCP = bCP;
+		var offsetChildPos = childPos;
 		
-		var cD = this.getChild().getCachedState().get(HorizontalFacingBlock.FACING);
+		var childFacing = this.getChild().getCachedState().get(HorizontalFacingBlock.FACING);
 
-		if (cD == Direction.EAST) {
-			nCP = nCP.add(1, 0, 0);
-		} else if (cD == Direction.SOUTH) {
-			nCP = nCP.add(0, 0, 1);
+		if (childFacing == Direction.EAST) {
+			offsetChildPos = offsetChildPos.add(1, 0, 0);
+		} else if (childFacing == Direction.SOUTH) {
+			offsetChildPos = offsetChildPos.add(0, 0, 1);
 		}
 		
 		var distance = (int) Math.sqrt(this.getPos().getSquaredDistance(this.getChild().getPos()));
@@ -165,19 +181,19 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			return;
 		}
 
-		this.segments = (ArrayList<Vec3f>) LineUtils.getBresenhamSegments(VectorUtils.toVector3f(bOP.offset(Direction.UP)), VectorUtils.toVector3f(nCP.offset(Direction.UP)), 32);
+		this.segments = (ArrayList<Vec3f>) LineUtils.getBresenhamSegments(VectorUtils.toVector3f(pos.offset(Direction.UP)), VectorUtils.toVector3f(offsetChildPos.offset(Direction.UP)), 32);
 		var bridgeComponent = WorldHoloBridgeComponent.get(world);
 
-		for (var v : this.segments) {
-			var nP = new BlockPos(v.getX(), v.getY(), v.getZ());
+		for (var segment : this.segments) {
+			var segmentPos = new BlockPos(segment.getX(), segment.getY(), segment.getZ());
 
-			if ((nP.getX() != bCP.getX() && nP.getX() != bOP.getX()) || (nP.getZ() != bCP.getZ() && nP.getZ() != bOP.getZ())) {
-				if (this.world.getBlockState(nP).isAir()) {
-					this.world.setBlockState(nP, AMBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.get().getDefaultState());
+			if ((segmentPos.getX() != childPos.getX() && segmentPos.getX() != pos.getX()) || (segmentPos.getZ() != childPos.getZ() && segmentPos.getZ() != pos.getZ())) {
+				if (this.world.getBlockState(segmentPos).isAir()) {
+					this.world.setBlockState(segmentPos, AMBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.get().getDefaultState());
 				}
 			}
 			
-			bridgeComponent.add(nP, new Vec3i((v.getX() - (int) v.getX()) * 16.0F, (v.getY() - (int) v.getY()) * 16.0F, (v.getZ() - (int) v.getZ()) * 16.0F));
+			bridgeComponent.add(segmentPos, new Vec3i((segment.getX() - (int) segment.getX()) * 16.0F, (segment.getY() - (int) segment.getY()) * 16.0F, (segment.getZ() - (int) segment.getZ()) * 16.0F));
 		}
 	}
 
@@ -251,29 +267,21 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 
 	@Override
 	public void readNbt(@NotNull NbtCompound tag) {
-		if (tag.contains("child_position")) {
-			this.childPosition = BlockPos.fromLong(tag.getLong("child_position"));
+		if (tag.contains("ChildPosition")) {
+			this.childPosition = BlockPos.fromLong(tag.getLong("ChildPosition"));
 		}
 
-		if (tag.contains("parent_position")) {
-			this.parentPosition = BlockPos.fromLong(tag.getLong("parent_position"));
+		if (tag.contains("ParentPosition")) {
+			this.parentPosition = BlockPos.fromLong(tag.getLong("ParentPosition"));
 		}
 
-		if (tag.contains("color")) {
-			var colorTag = tag.getCompound("color");
+		if (tag.contains("Color")) {
+			var colorTag = tag.getCompound("Color");
 
-			color = new Color(colorTag.getFloat("r"), colorTag.getFloat("g"), colorTag.getFloat("b"), colorTag.getFloat("a"));
+			color = new Color(colorTag.getFloat("R"), colorTag.getFloat("G"), colorTag.getFloat("B"), colorTag.getFloat("A"));
 		}
 		
-		if (world.isClient) {
-			this.destroyBridge();
-
-			if (this.childPosition != null) {
-				this.child = (HoloBridgeProjectorBlockEntity) this.world.getBlockEntity(this.childPosition);
-			}
-
-			this.buildBridge();
-		}
+		shouldInitialize = true;
 
 		super.readNbt(tag);
 	}
@@ -281,24 +289,24 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	@Override
 	public void writeNbt(NbtCompound tag) {
 		if (this.child != null) {
-			tag.putLong("child_position", this.child.getPos().asLong());
+			tag.putLong("ChildPosition", this.child.getPos().asLong());
 		} else if (this.childPosition != null) {
-			tag.putLong("child_position", this.childPosition.asLong());
+			tag.putLong("ChildPosition", this.childPosition.asLong());
 		}
 
 		if (this.parent != null) {
-			tag.putLong("parent_position", this.parent.getPos().asLong());
+			tag.putLong("ParentPosition", this.parent.getPos().asLong());
 		} else if (this.parentPosition != null) {
-			tag.putLong("parent_position", this.parentPosition.asLong());
+			tag.putLong("ParentPosition", this.parentPosition.asLong());
 		}
 		
 		var colorTag = new NbtCompound();
-		colorTag.putFloat("r", color.getR());
-		colorTag.putFloat("g", color.getG());
-		colorTag.putFloat("b", color.getB());
-		colorTag.putFloat("a", color.getA());
+		colorTag.putFloat("R", color.getR());
+		colorTag.putFloat("G", color.getG());
+		colorTag.putFloat("B", color.getB());
+		colorTag.putFloat("A", color.getA());
 
-		tag.put("color", colorTag);
+		tag.put("Color", colorTag);
 
 		super.writeNbt(tag);
 	}

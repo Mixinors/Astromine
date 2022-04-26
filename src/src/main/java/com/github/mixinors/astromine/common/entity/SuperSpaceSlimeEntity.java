@@ -143,15 +143,15 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 	@Override
 	public void writeCustomDataToNbt(NbtCompound tag) {
 		super.writeCustomDataToNbt(tag);
-		tag.putBoolean("hasExploded", this.hasExploded());
-		tag.putBoolean("wasOnGround", this.onGroundLastTick);
+		tag.putBoolean("HasExploded", this.hasExploded());
+		tag.putBoolean("WasOnGround", this.onGroundLastTick);
 	}
 
 	@Override
 	public void readCustomDataFromNbt(NbtCompound tag) {
 		super.readCustomDataFromNbt(tag);
-		this.setHasExploded(tag.getBoolean("hasExploded"));
-		this.onGroundLastTick = tag.getBoolean("wasOnGround");
+		this.setHasExploded(tag.getBoolean("HasExploded"));
+		this.onGroundLastTick = tag.getBoolean("WasOnGround");
 	}
 
 	@Override
