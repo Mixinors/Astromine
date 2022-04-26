@@ -76,27 +76,33 @@ public final class ItemNetworkType implements NetworkType<Storage<ItemVariant>> 
 		for (var memberNode : instance.members) {
 			var member = (Network.Member) memberNode;
 			
-			var storage = find(new WorldPos(world, member.blockPos()), member.direction());
+			var storage = find(new WorldPos(world, member.getBlockPos()), member.getDirection());
 			
 			if (storage == null) {
 				membersToRemove.add(member);
 				
-				world.getBlockState(member.blockPos()).neighborUpdate(world, member.blockPos(), world.getBlockState(member.blockPos()).getBlock(), member.blockPos(), false);
+				world.getBlockState(member.getBlockPos()).neighborUpdate(world, member.getBlockPos(), world.getBlockState(member.getBlockPos()).getBlock(), member.getBlockPos(), false);
 				
 				continue;
 			}
 			
-			if (member.isInsert()) {
-				if (storage.supportsInsertion()) {
-					insertableStorages.add(storage);
+			switch (member.getSiding()) {
+				case INSERT -> {
+					if (storage.supportsInsertion()) {
+						insertableStorages.add(storage);
+					}
 				}
-			} else if (member.isExtract()) {
-				if (storage.supportsExtraction()) {
-					extractableStorages.add(storage);
+				
+				case EXTRACT -> {
+					if (storage.supportsExtraction()) {
+						extractableStorages.add(storage);
+					}
 				}
-			} else if (member.isInsertExtract()) {
-				if (storage.supportsInsertion() && storage.supportsExtraction()) {
-					bufferStorages.add(storage);
+				
+				case INSERT_EXTRACT -> {
+					if (storage.supportsInsertion() && storage.supportsExtraction()) {
+						bufferStorages.add(storage);
+					}
 				}
 			}
 		}
@@ -112,5 +118,10 @@ public final class ItemNetworkType implements NetworkType<Storage<ItemVariant>> 
 	@Override
 	public long getTransferRate() {
 		return AMConfig.get().networks.itemNetwork.transferRate;
+	}
+	
+	@Override
+	public boolean hasSiding() {
+		return true;
 	}
 }
