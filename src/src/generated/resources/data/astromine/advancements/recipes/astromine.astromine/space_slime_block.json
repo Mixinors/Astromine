@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "astromine:space_slime_block"
+    ]
+  },
+  "criteria": {
+    "has_space_slime_balls": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:space_slime_balls"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "astromine:space_slime_block"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_space_slime_balls",
+      "has_the_recipe"
+    ]
+  ]
+}

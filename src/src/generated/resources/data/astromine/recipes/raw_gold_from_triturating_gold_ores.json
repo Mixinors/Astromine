@@ -1,0 +1,12 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "tag": "c:gold_ores"
+  },
+  "output": {
+    "item": "minecraft:raw_gold",
+    "count": 2
+  },
+  "energy_input": 340,
+  "time": 180
+}

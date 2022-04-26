@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "astromine:bronze_tiny_dust"
+    ]
+  },
+  "criteria": {
+    "has_bronze_dusts": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:bronze_dusts"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "astromine:bronze_tiny_dust"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_bronze_dusts",
+      "has_the_recipe"
+    ]
+  ]
+}

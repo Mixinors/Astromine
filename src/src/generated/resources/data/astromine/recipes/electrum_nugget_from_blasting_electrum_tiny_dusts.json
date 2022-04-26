@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "tag": "c:electrum_tiny_dusts"
+  },
+  "result": "astromine:electrum_nugget",
+  "experience": 0.0,
+  "cookingtime": 100
+}

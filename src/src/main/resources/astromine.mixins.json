@@ -1,0 +1,51 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.github.mixinors.astromine.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "common.EnchantmentTargetMixin",
+    "common.EntityAccessor",
+    "common.EntityMixin",
+    "common.EntityNavigationMixin",
+    "common.FluidTagsAccessor",
+    "common.IdentifierMixin",
+    "common.JsonDataLoaderMixin",
+    "common.LivingEntityMixin",
+    "common.PiglinBrainMixin",
+    "common.PistonHandlerMixin",
+    "common.RecipeManagerAccessor",
+    "common.ServerChunkManagerMixin",
+    "common.ServerPlayNetworkHandlerMixin",
+    "common.ServerResourceManagerMixin",
+    "common.ServerWorldMixin",
+    "common.StayAboveWaterTaskMixin",
+    "common.SwimGoalAccessor",
+    "common.SwimGoalMixin",
+    "common.WorldChunkMixin",
+    "common.gravity.AbstractMinecartEntityMixin",
+    "common.gravity.EggEntityMixin",
+    "common.gravity.FishingBobberEntityMixin",
+    "common.gravity.GravityEntityMixin",
+    "common.gravity.HoneyBlockMixin",
+    "common.gravity.ItemEntityMixin",
+    "common.gravity.SquidEntityMixin",
+    "common.gravity.StepAndDestroyBlockGoalMixin"
+  ],
+  "client": [
+    "client.ArmorFeatureRendererMixin",
+    "client.CameraMixin",
+    "client.BossBarHudMixin",
+    "client.BuiltinModelItemRendererMixin",
+    "client.ClientPlayerInteractionManagerMixin",
+    "client.ClientRecipeBookMixin",
+    "client.InGameOverlayRendererMixin",
+    "client.SkyPropertiesMixin",
+    "client.WorldRendererMixin",
+    "client.BackgroundRendererMixin",
+    "client.gravity.CurrentDownParticleMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

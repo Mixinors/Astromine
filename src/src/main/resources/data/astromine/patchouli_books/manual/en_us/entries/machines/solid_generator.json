@@ -1,0 +1,23 @@
+{
+  "name": "Solid Generator",
+  "icon": "astromine:primitive_solid_generator",
+  "category": "astromine:machines",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:primitive_solid_generator",
+      "text": "A $(item)Solid Generator$() transforms solid fuels into electrical energy."
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:primitive_solid_generator",
+      "recipe2": "astromine:basic_solid_generator"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:advanced_solid_generator",
+      "recipe2": "astromine:elite_solid_generator"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "tag": "c:asterite_ores"
+  },
+  "result": "astromine:asterite",
+  "experience": 2.0,
+  "cookingtime": 200
+}

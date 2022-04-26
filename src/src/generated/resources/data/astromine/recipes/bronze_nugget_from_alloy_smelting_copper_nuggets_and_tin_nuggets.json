@@ -1,0 +1,17 @@
+{
+  "type": "astromine:alloy_smelting",
+  "first_input": {
+    "tag": "c:copper_nuggets",
+    "count": 3
+  },
+  "second_input": {
+    "tag": "c:tin_nuggets",
+    "count": 1
+  },
+  "output": {
+    "item": "astromine:bronze_nugget",
+    "count": 4
+  },
+  "energy_input": 100,
+  "time": 25
+}

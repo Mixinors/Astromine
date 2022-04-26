@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "#c:netherite_helmets",
+    "#c:netherite_chestplates",
+    "#c:netherite_leggings",
+    "#c:netherite_boots"
+  ]
+}

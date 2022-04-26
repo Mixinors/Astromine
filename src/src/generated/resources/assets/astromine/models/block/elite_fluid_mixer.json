@@ -1,0 +1,11 @@
+{
+  "parent": "astromine:block/machine",
+  "textures": {
+    "top": "astromine:block/elite_fluid_mixer_top",
+    "bottom": "astromine:block/elite_fluid_mixer_bottom",
+    "left": "astromine:block/elite_fluid_mixer_left",
+    "right": "astromine:block/elite_fluid_mixer_right",
+    "front": "astromine:block/elite_fluid_mixer_front",
+    "back": "astromine:block/elite_fluid_mixer_back"
+  }
+}

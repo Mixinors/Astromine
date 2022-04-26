@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "tag": "c:copper_tiny_dusts"
+  },
+  "result": "astromine:copper_nugget",
+  "experience": 0.0,
+  "cookingtime": 200
+}

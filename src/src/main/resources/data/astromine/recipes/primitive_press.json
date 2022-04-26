@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "010",
+    "343",
+    "878"
+  ],
+  "key": {
+    "0": {
+      "item": "minecraft:brick"
+    },
+    "1": {
+      "item": "astromine:primitive_circuit"
+    },
+    "3": {
+      "tag": "c:iron_plates"
+    },
+    "4": {
+      "item": "astromine:machine_chassis"
+    },
+    "7": {
+      "item": "astromine:primitive_battery_pack"
+    },
+    "8": {
+      "item": "minecraft:sticky_piston"
+    }
+  },
+  "result": {
+    "item": "astromine:primitive_press",
+    "count": 1
+  }
+}

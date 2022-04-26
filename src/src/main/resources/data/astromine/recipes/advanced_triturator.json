@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "616",
+    "343",
+    "616"
+  ],
+  "key": {
+    "1": {
+      "tag": "c:gold_ingots"
+    },
+    "3": {
+      "item": "astromine:advanced_circuit"
+    },
+    "4": {
+      "item": "astromine:basic_triturator"
+    },
+    "6": {
+      "item": "astromine:advanced_plating"
+    }
+  },
+  "result": {
+    "item": "astromine:advanced_triturator",
+    "count": 1
+  }
+}

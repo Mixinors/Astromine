@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "616",
+    "343",
+    "616"
+  ],
+  "key": {
+    "1": {
+      "item": "minecraft:diamond"
+    },
+    "3": {
+      "item": "astromine:elite_circuit"
+    },
+    "4": {
+      "item": "astromine:advanced_refinery"
+    },
+    "6": {
+      "item": "astromine:elite_plating"
+    }
+  },
+  "result": {
+    "item": "astromine:elite_refinery",
+    "count": 1
+  }
+}

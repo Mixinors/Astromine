@@ -1,0 +1,11 @@
+{
+  "parent": "astromine:block/machine_active",
+  "textures": {
+    "top": "astromine:block/primitive_fluid_mixer_top_active",
+    "bottom": "astromine:block/primitive_fluid_mixer_bottom_active",
+    "left": "astromine:block/primitive_fluid_mixer_left_active",
+    "right": "astromine:block/primitive_fluid_mixer_right_active",
+    "front": "astromine:block/primitive_fluid_mixer_front_active",
+    "back": "astromine:block/primitive_fluid_mixer_back_active"
+  }
+}

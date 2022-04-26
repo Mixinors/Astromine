@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:stellum_nugget_from_blasting_stellum_salvageables"
+    ]
+  },
+  "criteria": {
+    "has_stellum_salvageables": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:stellum_salvageables"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:stellum_nugget_from_blasting_stellum_salvageables"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_stellum_salvageables",
+      "has_the_recipe"
+    ]
+  ]
+}

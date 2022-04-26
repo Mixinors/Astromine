@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X",
+    "X"
+  ],
+  "key": {
+    "X": {
+      "tag": "c:silver_ingots"
+    }
+  },
+  "result": {
+    "item": "astromine:silver_plate"
+  }
+}

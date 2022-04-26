@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "010",
+    "141",
+    "010"
+  ],
+  "key": {
+    "0": {
+      "tag": "c:iron_ingots"
+    },
+    "1": {
+      "item": "astromine:primitive_battery_pack"
+    },
+    "4": {
+      "item": "astromine:machine_chassis"
+    }
+  },
+  "result": {
+    "item": "astromine:primitive_capacitor",
+    "count": 1
+  }
+}

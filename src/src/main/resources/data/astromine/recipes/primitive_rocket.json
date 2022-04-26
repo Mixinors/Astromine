@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "010",
+    "545",
+    "8 8"
+  ],
+  "key": {
+    "0": {
+      "item": "astromine:primitive_rocket_plating"
+    },
+    "1": {
+      "item": "astromine:primitive_rocket_hull"
+    },
+    "4": {
+      "item": "minecraft:furnace"
+    },
+    "5": {
+      "item": "astromine:primitive_rocket_fuel_tank"
+    },
+    "8": {
+      "item": "astromine:primitive_rocket_booster"
+    }
+  },
+  "result": {
+    "item": "astromine:rocket",
+    "count": 1
+  }
+}

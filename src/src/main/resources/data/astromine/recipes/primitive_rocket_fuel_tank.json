@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " 56",
+    "565",
+    "65 "
+  ],
+  "key": {
+    "5": {
+      "tag": "c:steel_plates"
+    },
+    "6": {
+      "tag": "c:steel_ingots"
+    }
+  },
+  "result": {
+    "item": "astromine:primitive_rocket_fuel_tank",
+    "count": 1
+  }
+}

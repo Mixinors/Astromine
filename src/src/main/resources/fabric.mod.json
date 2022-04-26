@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "id": "astromine",
+  "version": "${version}",
+  "name": "Astromine",
+  "description": "A space-themed tech mod with exploration and progression in mind.",
+  "authors": [
+    "vini2003",
+    "Shnupbups",
+    "Zundrel",
+    "shedaniel",
+    "SuperCoder79",
+    "Draylar",
+    "HalfOf2",
+    "Martmists",
+    "AK9"
+  ],
+  "contact": {
+    "sources": "https://github.com/Mixinors/Astromine",
+    "issues": "https://github.com/Mixinors/Astromine/issues",
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/astromine-fabric"
+  },
+  "license": "MIT",
+  "icon": "icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.github.mixinors.astromine.AMCommon"
+    ],
+    "client": [
+      "com.github.mixinors.astromine.AMClient"
+    ],
+    "server": [
+      "com.github.mixinors.astromine.AMDedicated"
+    ],
+    "modmenu": [
+      "com.github.mixinors.astromine.client.modmenu.AstromineModMenuSupport"
+    ],
+    "cardinal-components-item": [
+      "com.github.mixinors.astromine.registry.common.AMComponents"
+    ],
+    "cardinal-components-entity": [
+      "com.github.mixinors.astromine.registry.common.AMComponents"
+    ],
+    "cardinal-components-world": [
+      "com.github.mixinors.astromine.registry.common.AMComponents"
+    ],
+    "cardinal-components-chunk": [
+      "com.github.mixinors.astromine.registry.common.AMComponents"
+    ],
+    "cardinal-components-block": [
+      "com.github.mixinors.astromine.registry.common.AMComponents"
+    ],
+    "rei_plugins": [
+      "com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin"
+    ],
+    "rei_containers": [
+      "com.github.mixinors.astromine.registry.common.AMContainersInfoHandlers"
+    ],
+    "fabric-datagen": [
+      "com.github.mixinors.astromine.datagen.AMDatagen"
+    ]
+  },
+  "mixins": [
+    "astromine.mixins.json"
+  ],
+  "accessWidener": "astromine.accesswidener",
+  "depends": {
+    "fabricloader": ">=0.9.2",
+    "fabric": ">=0.21.0",
+    "minecraft": ">=1.18"
+  },
+  "custom": {
+    "cardinal-components": [
+      "astromine:world_network_component",
+      "astromine:chunk_atmosphere_component",
+      "astromine:world_holo_bridge_component",
+      "astromine:item_inventory_component",
+      "astromine:fluid_inventory_component",
+      "astromine:energy_inventory_component",
+      "astromine:block_entity_transfer_component",
+      "astromine:block_entity_redstone_component",
+      "astromine:entity_oxygen_component"
+    ]
+  }
+}

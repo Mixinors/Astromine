@@ -1,0 +1,12 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "tag": "c:emerald_blocks"
+  },
+  "output": {
+    "item": "astromine:emerald_dust",
+    "count": 9
+  },
+  "energy_input": 540,
+  "time": 240
+}

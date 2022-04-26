@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:meteoric_steel_nugget_from_smelting_meteoric_steel_salvageables"
+    ]
+  },
+  "criteria": {
+    "has_meteoric_steel_salvageables": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:meteoric_steel_salvageables"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:meteoric_steel_nugget_from_smelting_meteoric_steel_salvageables"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_meteoric_steel_salvageables",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "astromine:galaxium_helmet"
+  },
+  "addition": {
+    "item": "astromine:univite_ingot"
+  },
+  "result": {
+    "item": "astromine:univite_helmet"
+  }
+}

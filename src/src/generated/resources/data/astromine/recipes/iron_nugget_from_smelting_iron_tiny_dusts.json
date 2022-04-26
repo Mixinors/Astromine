@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "tag": "c:iron_tiny_dusts"
+  },
+  "result": "minecraft:iron_nugget",
+  "experience": 0.0,
+  "cookingtime": 200
+}

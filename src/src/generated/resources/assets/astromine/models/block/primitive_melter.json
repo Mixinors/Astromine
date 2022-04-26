@@ -1,0 +1,11 @@
+{
+  "parent": "astromine:block/machine",
+  "textures": {
+    "top": "astromine:block/primitive_melter_top",
+    "bottom": "astromine:block/primitive_melter_bottom",
+    "left": "astromine:block/primitive_melter_left",
+    "right": "astromine:block/primitive_melter_right",
+    "front": "astromine:block/primitive_melter_front",
+    "back": "astromine:block/primitive_melter_back"
+  }
+}

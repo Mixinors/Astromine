@@ -1,0 +1,12 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "tag": "c:lapis_blocks"
+  },
+  "output": {
+    "item": "astromine:lapis_dust",
+    "count": 9
+  },
+  "energy_input": 540,
+  "time": 240
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:asterite_fragment_from_smelting_asterite_salvageables"
+    ]
+  },
+  "criteria": {
+    "has_asterite_salvageables": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:asterite_salvageables"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:asterite_fragment_from_smelting_asterite_salvageables"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_asterite_salvageables",
+      "has_the_recipe"
+    ]
+  ]
+}

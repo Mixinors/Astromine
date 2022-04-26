@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "astromine:stellum_hoe"
+    ]
+  },
+  "criteria": {
+    "has_stellum_ingots": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:stellum_ingots"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "astromine:stellum_hoe"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_stellum_ingots",
+      "has_the_recipe"
+    ]
+  ]
+}

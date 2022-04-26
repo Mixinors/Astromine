@@ -1,0 +1,23 @@
+{
+  "name": "Alloy Smelter",
+  "icon": "astromine:primitive_alloy_smelter",
+  "category": "astromine:machines",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:primitive_alloy_smelter",
+      "text": "An $(item)Alloy Smelter$() smelts items into alloys, with electrical energy."
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:primitive_alloy_smelter",
+      "recipe2": "astromine:basic_alloy_smelter"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:advanced_alloy_smelter",
+      "recipe2": "astromine:elite_alloy_smelter"
+    }
+  ]
+}

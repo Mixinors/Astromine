@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:tin_nugget_from_smelting_tin_tiny_dusts"
+    ]
+  },
+  "criteria": {
+    "has_tin_tiny_dusts": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:tin_tiny_dusts"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:tin_nugget_from_smelting_tin_tiny_dusts"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_tin_tiny_dusts",
+      "has_the_recipe"
+    ]
+  ]
+}

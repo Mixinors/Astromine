@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "astromine:asterite_helmet"
+    ]
+  },
+  "criteria": {
+    "has_asterites": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:asterites"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "astromine:asterite_helmet"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_asterites",
+      "has_the_recipe"
+    ]
+  ]
+}

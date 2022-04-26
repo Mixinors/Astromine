@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "tag": "c:tin_tiny_dusts"
+  },
+  "result": "astromine:tin_nugget",
+  "experience": 0.0,
+  "cookingtime": 100
+}

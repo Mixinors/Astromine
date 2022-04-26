@@ -1,0 +1,13 @@
+{
+  "type": "astromine:wire_cutting",
+  "input": {
+    "tag": "c:gold_plates"
+  },
+  "tool": {
+    "tag": "fabric:shears"
+  },
+  "output": {
+    "item": "astromine:gold_wire",
+    "count": 1
+  }
+}

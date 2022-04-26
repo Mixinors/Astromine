@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#c:steel_pickaxes",
+    "#c:steel_axes",
+    "#c:steel_shovels",
+    "#c:steel_swords",
+    "#c:steel_hoes"
+  ]
+}

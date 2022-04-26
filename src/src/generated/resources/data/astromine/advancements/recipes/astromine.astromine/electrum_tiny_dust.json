@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "astromine:electrum_tiny_dust"
+    ]
+  },
+  "criteria": {
+    "has_electrum_dusts": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:electrum_dusts"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "astromine:electrum_tiny_dust"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_electrum_dusts",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "parent": "astromine:block/machine_active",
+  "textures": {
+    "top": "astromine:block/advanced_capacitor_top_active",
+    "bottom": "astromine:block/advanced_capacitor_bottom_active",
+    "left": "astromine:block/advanced_capacitor_left_active",
+    "right": "astromine:block/advanced_capacitor_right_active",
+    "front": "astromine:block/advanced_capacitor_front_active",
+    "back": "astromine:block/advanced_capacitor_back_active"
+  }
+}

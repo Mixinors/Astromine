@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "$#$",
+    "#B#",
+    "$#$"
+  ],
+  "key": {
+    "#": {
+      "tag": "c:tin_nuggets"
+    },
+    "$": {
+      "tag": "c:copper_nuggets"
+    },
+    "B": {
+      "item": "minecraft:book"
+    }
+  },
+  "result": {
+    "item": "astromine:manual"
+  }
+}

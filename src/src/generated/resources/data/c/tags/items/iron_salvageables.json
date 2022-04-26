@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "#c:iron_armor",
+    "#c:iron_tools",
+    "minecraft:iron_horse_armor"
+  ]
+}

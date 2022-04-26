@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "astromine:iron_tiny_dust"
+    ]
+  },
+  "criteria": {
+    "has_iron_dusts": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:iron_dusts"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "astromine:iron_tiny_dust"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_iron_dusts",
+      "has_the_recipe"
+    ]
+  ]
+}

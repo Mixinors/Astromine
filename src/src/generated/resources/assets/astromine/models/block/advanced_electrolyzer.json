@@ -1,0 +1,11 @@
+{
+  "parent": "astromine:block/machine",
+  "textures": {
+    "top": "astromine:block/advanced_electrolyzer_top",
+    "bottom": "astromine:block/advanced_electrolyzer_bottom",
+    "left": "astromine:block/advanced_electrolyzer_left",
+    "right": "astromine:block/advanced_electrolyzer_right",
+    "front": "astromine:block/advanced_electrolyzer_front",
+    "back": "astromine:block/advanced_electrolyzer_back"
+  }
+}

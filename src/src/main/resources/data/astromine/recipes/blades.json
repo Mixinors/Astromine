@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " 3 ",
+    "343",
+    " 3 "
+  ],
+  "key": {
+    "3": {
+      "tag": "c:iron_plates"
+    },
+    "4": {
+      "item": "minecraft:iron_bars"
+    }
+  },
+  "result": {
+    "item": "astromine:blades",
+    "count": 1
+  }
+}

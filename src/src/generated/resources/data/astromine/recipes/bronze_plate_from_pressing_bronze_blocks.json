@@ -1,0 +1,12 @@
+{
+  "type": "astromine:pressing",
+  "input": {
+    "tag": "c:bronze_blocks"
+  },
+  "output": {
+    "item": "astromine:bronze_plate",
+    "count": 9
+  },
+  "energy_input": 2900,
+  "time": 680
+}

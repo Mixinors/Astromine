@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "010",
+    "343",
+    "010"
+  ],
+  "key": {
+    "0": {
+      "item": "astromine:advanced_plating"
+    },
+    "1": {
+      "tag": "c:gold_ingots"
+    },
+    "3": {
+      "item": "astromine:advanced_circuit"
+    },
+    "4": {
+      "item": "astromine:basic_solidifier"
+    }
+  },
+  "result": {
+    "item": "astromine:advanced_solidifier",
+    "count": 1
+  }
+}

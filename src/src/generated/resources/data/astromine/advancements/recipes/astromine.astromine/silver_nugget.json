@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "astromine:silver_nugget"
+    ]
+  },
+  "criteria": {
+    "has_silver_ingots": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:silver_ingots"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "astromine:silver_nugget"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_silver_ingots",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "052",
+    "345",
+    "430"
+  ],
+  "key": {
+    "0": {
+      "tag": "c:lead_ingots"
+    },
+    "2": {
+      "tag": "c:lead_gears"
+    },
+    "3": {
+      "tag": "c:iron_ingots"
+    },
+    "4": {
+      "item": "astromine:primitive_battery_pack"
+    },
+    "5": {
+      "tag": "c:lead_plates"
+    }
+  },
+  "result": {
+    "item": "astromine:primitive_drill_base",
+    "count": 1
+  }
+}

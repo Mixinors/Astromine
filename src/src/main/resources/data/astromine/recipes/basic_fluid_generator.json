@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "616",
+    "343",
+    "616"
+  ],
+  "key": {
+    "1": {
+      "tag": "c:bronze_ingots"
+    },
+    "3": {
+      "item": "astromine:basic_circuit"
+    },
+    "4": {
+      "item": "astromine:primitive_fluid_generator"
+    },
+    "6": {
+      "item": "astromine:basic_plating"
+    }
+  },
+  "result": {
+    "item": "astromine:basic_fluid_generator",
+    "count": 1
+  }
+}

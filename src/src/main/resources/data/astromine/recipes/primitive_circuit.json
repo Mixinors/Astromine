@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "888",
+    "555",
+    "888"
+  ],
+  "key": {
+    "5": {
+      "tag": "c:tin_wires"
+    },
+    "8": {
+      "item": "minecraft:stone"
+    }
+  },
+  "result": {
+    "item": "astromine:primitive_circuit",
+    "count": 2
+  }
+}

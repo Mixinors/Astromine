@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "121",
+    "2 2",
+    "121"
+  ],
+  "key": {
+    "1": {
+      "item": "minecraft:red_dye"
+    },
+    "2": {
+      "tag": "c:iron_plates"
+    }
+  },
+  "result": {
+    "item": "astromine:fire_extinguisher"
+  }
+}

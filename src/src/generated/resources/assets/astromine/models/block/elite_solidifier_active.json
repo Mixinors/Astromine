@@ -1,0 +1,11 @@
+{
+  "parent": "astromine:block/machine_active",
+  "textures": {
+    "top": "astromine:block/elite_solidifier_top_active",
+    "bottom": "astromine:block/elite_solidifier_bottom_active",
+    "left": "astromine:block/elite_solidifier_left_active",
+    "right": "astromine:block/elite_solidifier_right_active",
+    "front": "astromine:block/elite_solidifier_front_active",
+    "back": "astromine:block/elite_solidifier_back_active"
+  }
+}

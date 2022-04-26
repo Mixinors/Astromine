@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "010",
+    "343",
+    "010"
+  ],
+  "key": {
+    "0": {
+      "item": "astromine:basic_plating"
+    },
+    "1": {
+      "tag": "c:bronze_ingots"
+    },
+    "3": {
+      "item": "astromine:basic_circuit"
+    },
+    "4": {
+      "item": "astromine:primitive_melter"
+    }
+  },
+  "result": {
+    "item": "astromine:basic_melter",
+    "count": 1
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "astromine:polished_asteroid_stone"
+    ]
+  },
+  "criteria": {
+    "has_asteroid_stone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:asteroid_stone"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "astromine:polished_asteroid_stone"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_asteroid_stone",
+      "has_the_recipe"
+    ]
+  ]
+}

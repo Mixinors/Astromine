@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "astromine:univite_ingot_from_univite_nuggets"
+    ]
+  },
+  "criteria": {
+    "has_univite_nuggets": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:univite_nuggets"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "astromine:univite_ingot_from_univite_nuggets"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_univite_nuggets",
+      "has_the_recipe"
+    ]
+  ]
+}

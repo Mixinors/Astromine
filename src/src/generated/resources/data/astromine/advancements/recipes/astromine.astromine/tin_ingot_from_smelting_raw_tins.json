@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:tin_ingot_from_smelting_raw_tins"
+    ]
+  },
+  "criteria": {
+    "has_raw_tins": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:raw_tins"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:tin_ingot_from_smelting_raw_tins"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_raw_tins",
+      "has_the_recipe"
+    ]
+  ]
+}

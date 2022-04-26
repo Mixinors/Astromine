@@ -1,0 +1,21 @@
+{
+  "condition": {
+    "modid": "techreborn"
+  },
+  "recipe": {
+    "type": "astromine:alloy_smelting",
+    "first_input": {
+      "tag": "c:copper_ingots",
+      "count": 3
+    },
+    "second_input": {
+      "tag": "c:zinc_ingots"
+    },
+    "output": {
+      "item": "techreborn:brass_ingot",
+      "count": 4
+    },
+    "time": 200,
+    "energy_input": 800
+  }
+}

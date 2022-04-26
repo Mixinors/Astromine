@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "010",
+    "343",
+    "010"
+  ],
+  "key": {
+    "0": {
+      "item": "astromine:elite_plating"
+    },
+    "1": {
+      "item": "minecraft:diamond"
+    },
+    "3": {
+      "item": "astromine:elite_circuit"
+    },
+    "4": {
+      "item": "astromine:advanced_solidifier"
+    }
+  },
+  "result": {
+    "item": "astromine:elite_solidifier",
+    "count": 1
+  }
+}

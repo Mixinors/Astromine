@@ -1,0 +1,12 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "tag": "c:coal_clusters"
+  },
+  "output": {
+    "item": "astromine:coal_dust",
+    "count": 2
+  },
+  "energy_input": 300,
+  "time": 90
+}

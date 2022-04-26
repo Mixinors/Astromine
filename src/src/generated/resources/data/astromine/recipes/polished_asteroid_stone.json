@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SS",
+    "SS"
+  ],
+  "key": {
+    "S": {
+      "item": "astromine:asteroid_stone"
+    }
+  },
+  "result": {
+    "item": "astromine:polished_asteroid_stone",
+    "count": 4
+  }
+}

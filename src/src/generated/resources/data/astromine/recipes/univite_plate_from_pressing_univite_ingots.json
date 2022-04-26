@@ -1,0 +1,12 @@
+{
+  "type": "astromine:pressing",
+  "input": {
+    "tag": "c:univite_ingots"
+  },
+  "output": {
+    "item": "astromine:univite_plate",
+    "count": 1
+  },
+  "energy_input": 340,
+  "time": 80
+}

@@ -1,0 +1,9 @@
+{
+  "type": "astromine:fluid_generating",
+  "input": {
+    "tag": "c:oil",
+    "amount": 81
+  },
+  "energy_output": 200,
+  "time": 2
+}

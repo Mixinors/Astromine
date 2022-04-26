@@ -1,0 +1,20 @@
+{
+  "replace": false,
+  "values": [
+    "astromine:elite_tank",
+    "astromine:elite_solid_generator",
+    "astromine:elite_fluid_generator",
+    "astromine:elite_electric_furnace",
+    "astromine:elite_alloy_smelter",
+    "astromine:elite_triturator",
+    "astromine:elite_press",
+    "astromine:elite_wire_mill",
+    "astromine:elite_electrolyzer",
+    "astromine:elite_refinery",
+    "astromine:elite_fluid_mixer",
+    "astromine:elite_solidifier",
+    "astromine:elite_melter",
+    "astromine:elite_buffer",
+    "astromine:elite_capacitor"
+  ]
+}

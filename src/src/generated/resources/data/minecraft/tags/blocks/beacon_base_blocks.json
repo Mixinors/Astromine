@@ -1,0 +1,20 @@
+{
+  "replace": false,
+  "values": [
+    "#c:asterite_blocks",
+    "#c:bronze_blocks",
+    "#c:diamond_blocks",
+    "#c:electrum_blocks",
+    "#c:emerald_blocks",
+    "#c:galaxium_blocks",
+    "#c:gold_blocks",
+    "#c:iron_blocks",
+    "#c:meteoric_steel_blocks",
+    "#c:metite_blocks",
+    "#c:netherite_blocks",
+    "#c:silver_blocks",
+    "#c:steel_blocks",
+    "#c:stellum_blocks",
+    "#c:univite_blocks"
+  ]
+}

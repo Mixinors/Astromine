@@ -1,0 +1,18 @@
+{
+  "ultrawarm": false,
+  "natural": false,
+  "coordinate_scale": 1.0,
+  "ambient_light": 0.025,
+  "has_skylight": false,
+  "has_ceiling": false,
+  "infiniburn": "astromine:infiniburn_space",
+  "logical_height": 512,
+  "min_y": 0,
+  "height": 512,
+  "has_raids": false,
+  "respawn_anchor_works": false,
+  "bed_works": false,
+  "piglin_safe": false,
+  "fixed_time": 15000,
+  "effects": "astromine:earth_space"
+}

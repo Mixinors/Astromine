@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "818",
+    "141",
+    "818"
+  ],
+  "key": {
+    "1": {
+      "item": "astromine:fluid_pipe"
+    },
+    "4": {
+      "item": "minecraft:iron_bars"
+    },
+    "8": {
+      "tag": "c:iron_ingots"
+    }
+  },
+  "result": {
+    "item": "astromine:drain",
+    "count": 1
+  }
+}
