@@ -25,24 +25,20 @@
 package com.github.mixinors.astromine.mixin.client.gravity;
 
 import com.github.mixinors.astromine.common.registry.GravityRegistry;
-
-import net.minecraft.client.particle.CurrentDownParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.world.ClientWorld;
-
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
-@Mixin(CurrentDownParticle.class)
-public abstract class CurrentDownParticleMixin extends Particle {
-	public CurrentDownParticleMixin(ClientWorld world, double x, double y, double z) {
-		super(world, x, y, z);
-		throw new UnsupportedOperationException("Cannot instantiate Mixin class!");
-	}
-
-	@ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = 0.08D))
+@Mixin(Particle.class)
+public abstract class ParticleMixin {
+	@Shadow @Final protected ClientWorld world;
+	
+	@ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = 0.04D))
 	double getGravity(double original) {
-		return GravityRegistry.INSTANCE.get(world.getRegistryKey());
+		return GravityRegistry.INSTANCE.get(world.getRegistryKey()) / 2;
 	}
 }

@@ -9,7 +9,6 @@
     "common.EntityAccessor",
     "common.EntityMixin",
     "common.EntityNavigationMixin",
-    "common.FluidTagsAccessor",
     "common.IdentifierMixin",
     "common.JsonDataLoaderMixin",
     "common.LivingEntityMixin",
@@ -43,7 +42,7 @@
     "client.SkyPropertiesMixin",
     "client.WorldRendererMixin",
     "client.BackgroundRendererMixin",
-    "client.gravity.CurrentDownParticleMixin"
+    "client.gravity.ParticleMixin"
   ],
   "injectors": {
     "defaultRequire": 1
