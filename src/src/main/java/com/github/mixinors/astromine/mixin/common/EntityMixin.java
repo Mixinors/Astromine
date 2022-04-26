@@ -24,25 +24,22 @@
 
 package com.github.mixinors.astromine.mixin.common;
 
-import java.util.ArrayList;
-
 import com.github.mixinors.astromine.common.access.EntityAccessor;
 import com.github.mixinors.astromine.common.entity.GravityEntity;
 import com.github.mixinors.astromine.common.registry.DimensionLayerRegistry;
 import com.github.mixinors.astromine.registry.common.AMTags;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -50,6 +47,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.ArrayList;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin implements GravityEntity, EntityAccessor {
@@ -68,13 +67,13 @@ public abstract class EntityMixin implements GravityEntity, EntityAccessor {
 	public abstract BlockPos getBlockPos();
 
 	@Shadow
-	public abstract boolean updateMovementInFluid(Tag<Fluid> tag, double d);
+	public abstract boolean updateMovementInFluid(TagKey<Fluid> tag, double d);
 
 	@Shadow
-	public abstract double getFluidHeight(Tag<Fluid> fluid);
+	public abstract double getFluidHeight(TagKey<Fluid> fluid);
 
 	@Shadow
-	public abstract boolean isSubmergedIn(Tag<Fluid> tag);
+	public abstract boolean isSubmergedIn(TagKey<Fluid> tag);
 	
 	@Shadow public int age;
 	

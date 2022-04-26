@@ -24,9 +24,6 @@
 
 package com.github.mixinors.astromine.datagen.provider;
 
-import java.util.Optional;
-import java.util.Set;
-
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
 import com.github.mixinors.astromine.datagen.AMDatagen;
@@ -35,19 +32,19 @@ import com.github.mixinors.astromine.datagen.family.material.MaterialFamilies;
 import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMItems;
-
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockStateDefinitionProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.data.client.ItemModelGenerator;
-import net.minecraft.data.client.model.*;
+import net.minecraft.data.client.*;
 import net.minecraft.data.family.BlockFamilies;
 import net.minecraft.data.family.BlockFamily;
 import net.minecraft.item.Item;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockStateDefinitionProvider;
+import java.util.Optional;
+import java.util.Set;
 
 public class AMModelProvider extends FabricBlockStateDefinitionProvider {
 	/**
@@ -165,7 +162,7 @@ public class AMModelProvider extends FabricBlockStateDefinitionProvider {
 	}
 
 	public static void registerCubeColumn(BlockStateModelGenerator blockStateModelGenerator, Block cubeColumn, Block endTexture) {
-		var texture = Texture.sideEnd(Texture.getId(cubeColumn), Texture.getId(endTexture));
+		var texture = TextureMap.sideEnd(TextureMap.getId(cubeColumn), TextureMap.getId(endTexture));
 		var identifier = Models.CUBE_COLUMN.upload(cubeColumn, texture, blockStateModelGenerator.modelCollector);
 		blockStateModelGenerator.blockStateCollector.accept(BlockStateModelGenerator.createSingletonBlockState(cubeColumn, identifier));
 	}
@@ -179,7 +176,7 @@ public class AMModelProvider extends FabricBlockStateDefinitionProvider {
 	}
 
 	public static void registerCauldron(BlockStateModelGenerator blockStateModelGenerator, Block cauldron) {
-		blockStateModelGenerator.blockStateCollector.accept(BlockStateModelGenerator.createSingletonBlockState(cauldron, Models.TEMPLATE_CAULDRON_FULL.upload(cauldron, Texture.cauldron(Texture.getSubId(Blocks.WATER, "_still")), blockStateModelGenerator.modelCollector)));
+		blockStateModelGenerator.blockStateCollector.accept(BlockStateModelGenerator.createSingletonBlockState(cauldron, Models.TEMPLATE_CAULDRON_FULL.upload(cauldron, TextureMap.cauldron(TextureMap.getSubId(Blocks.WATER, "_still")), blockStateModelGenerator.modelCollector)));
 	}
 
 	public static Model model(Identifier parent, String variant, TextureKey... requiredTextures) {
@@ -270,8 +267,8 @@ public class AMModelProvider extends FabricBlockStateDefinitionProvider {
 	}
 
 	public static void registerMachine(BlockStateModelGenerator blockStateModelGenerator, Block machine) {
-		var inactiveTexture = new Texture().put(TextureKey.TOP, Texture.getSubId(machine, "_top")).put(TextureKey.BOTTOM, Texture.getSubId(machine, "_bottom")).put(LEFT, Texture.getSubId(machine, "_left")).put(RIGHT, Texture.getSubId(machine, "_right")).put(TextureKey.FRONT, Texture.getSubId(machine, "_front")).put(TextureKey.BACK, Texture.getSubId(machine, "_back"));
-		var activeTexture = new Texture().put(TextureKey.TOP, Texture.getSubId(machine, "_top_active")).put(TextureKey.BOTTOM, Texture.getSubId(machine, "_bottom_active")).put(LEFT, Texture.getSubId(machine, "_left_active")).put(RIGHT, Texture.getSubId(machine, "_right_active")).put(TextureKey.FRONT, Texture.getSubId(machine, "_front_active")).put(TextureKey.BACK, Texture.getSubId(machine, "_back_active"));
+		var inactiveTexture = new TextureMap().put(TextureKey.TOP, TextureMap.getSubId(machine, "_top")).put(TextureKey.BOTTOM, TextureMap.getSubId(machine, "_bottom")).put(LEFT, TextureMap.getSubId(machine, "_left")).put(RIGHT, TextureMap.getSubId(machine, "_right")).put(TextureKey.FRONT, TextureMap.getSubId(machine, "_front")).put(TextureKey.BACK, TextureMap.getSubId(machine, "_back"));
+		var activeTexture = new TextureMap().put(TextureKey.TOP, TextureMap.getSubId(machine, "_top_active")).put(TextureKey.BOTTOM, TextureMap.getSubId(machine, "_bottom_active")).put(LEFT, TextureMap.getSubId(machine, "_left_active")).put(RIGHT, TextureMap.getSubId(machine, "_right_active")).put(TextureKey.FRONT, TextureMap.getSubId(machine, "_front_active")).put(TextureKey.BACK, TextureMap.getSubId(machine, "_back_active"));
 		var inactiveId = MACHINE.upload(machine, inactiveTexture, blockStateModelGenerator.modelCollector);
 		var activeId = MACHINE_ACTIVE.upload(machine, activeTexture, blockStateModelGenerator.modelCollector);
 		

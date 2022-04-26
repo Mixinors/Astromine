@@ -25,28 +25,41 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.mixin.common.FluidTagsAccessor;
-import dev.architectury.hooks.tags.TagHooks;
-
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
-import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagKey;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 public class AMTags {
-	public static final Tag<Item> TRICKS_PIGLINS = TagHooks.optionalItem(AMCommon.id("tricks_piglins"));
+	public static final TagKey<Item> TRICKS_PIGLINS = ofItem(AMCommon.id("tricks_piglins"));
+	public static final TagKey<Block> DRILL_MINEABLES = ofBlock(AMCommon.id("drill_mineables"));
 	
-	public static final Tag<Fluid> INDUSTRIAL_FLUID = registerRequired("industrial_fluid");
-
-	public static final Tag<Fluid> NORMAL_BREATHABLE = TagHooks.optionalFluid(AMCommon.id("normal_breathable"));
-	public static final Tag<Fluid> WATER_BREATHABLE = TagHooks.optionalFluid(AMCommon.id("water_breathable"));
-	public static final Tag<Fluid> LAVA_BREATHABLE = TagHooks.optionalFluid(AMCommon.id("lava_breathable"));
+	public static final TagKey<Fluid> INDUSTRIAL_FLUID = ofFluid(AMCommon.id("industrial_fluid"));
 	
-	public static final Tag<Fluid> ROCKET_FUELS = TagHooks.optionalFluid(AMCommon.id("rocket_fuels"));
+	public static final TagKey<Fluid> NORMAL_BREATHABLE = ofFluid(AMCommon.id("normal_breathable"));
+	public static final TagKey<Fluid> WATER_BREATHABLE = ofFluid(AMCommon.id("water_breathable"));
+	public static final TagKey<Fluid> LAVA_BREATHABLE = ofFluid(AMCommon.id("lava_breathable"));
 	
-	public static final Tag<EntityType<?>> DOES_NOT_BREATHE = TagHooks.optionalEntityType(AMCommon.id("does_not_breathe"));
+	public static final TagKey<Fluid> ROCKET_FUELS = ofFluid(AMCommon.id("rocket_fuels"));
 	
-	private static Tag.Identified<Fluid> registerRequired(String path) {
-		return FluidTagsAccessor.invokeRegister(AMCommon.MOD_ID + ":" + path);
+	public static final TagKey<EntityType<?>> DOES_NOT_BREATHE = ofEntityType(AMCommon.id("does_not_breathe"));
+	
+	public static TagKey<Item> ofItem(Identifier id) {
+		return TagKey.of(Registry.ITEM_KEY, id);
+	}
+	
+	public static TagKey<Block> ofBlock(Identifier id) {
+		return TagKey.of(Registry.BLOCK_KEY, id);
+	}
+	
+	public static TagKey<Fluid> ofFluid(Identifier id) {
+		return TagKey.of(Registry.FLUID_KEY, id);
+	}
+	
+	public static TagKey<EntityType<?>> ofEntityType(Identifier id) {
+		return TagKey.of(Registry.ENTITY_TYPE_KEY, id);
 	}
 }

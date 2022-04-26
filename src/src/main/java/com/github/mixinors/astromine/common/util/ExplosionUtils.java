@@ -25,7 +25,6 @@
 package com.github.mixinors.astromine.common.util;
 
 import com.github.mixinors.astromine.AMCommon;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.network.packet.s2c.play.ChunkDataS2CPacket;
@@ -73,7 +72,7 @@ public class ExplosionUtils {
 					
 					var chunk = access.getChunk(cx, cz);
 					blocks += forSubchunks(chunk, box, boz, x, y, z, radius);
-					chunk.setShouldSave(true);
+					chunk.setNeedsSaving(true);
 					var manager = (ServerChunkManager) access.getChunkManager();
 					manager.threadedAnvilChunkStorage.getPlayersWatchingChunk(new ChunkPos(cx, cz), false).forEach(s -> s.networkHandler.sendPacket(
 							new ChunkDataS2CPacket(chunk, manager.getLightingProvider(), null, null, true)

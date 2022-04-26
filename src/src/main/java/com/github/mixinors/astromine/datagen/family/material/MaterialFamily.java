@@ -32,6 +32,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.SortedMap;
 
+import com.github.mixinors.astromine.registry.common.AMTags;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
@@ -40,6 +41,7 @@ import com.github.mixinors.astromine.datagen.AMDatagen;
 import com.github.mixinors.astromine.datagen.family.material.variant.BlockVariant;
 import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant;
 import com.github.mixinors.astromine.datagen.family.material.variant.Variant;
+import net.minecraft.tag.TagKey;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -49,8 +51,6 @@ import net.minecraft.item.ItemConvertible;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-
-import net.fabricmc.fabric.api.tag.TagFactory;
 
 public class MaterialFamily implements Comparable<MaterialFamily> {
 	final Map<ItemVariant, Item> itemVariants = Maps.newHashMap();
@@ -106,15 +106,15 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 		return this.blockVariants;
 	}
 
-	public Map<ItemVariant, Tag.Identified<Item>> getItemTags() {
+	public Map<ItemVariant, TagKey<Item>> getItemTags() {
 		return Maps.toMap(this.itemVariants.keySet(), this::getTag);
 	}
 
-	public Map<BlockVariant, Tag.Identified<Block>> getBlockTags() {
+	public Map<BlockVariant, TagKey<Block>> getBlockTags() {
 		return Maps.toMap(this.blockVariants.keySet(), this::getTag);
 	}
 
-	public Map<BlockVariant, Tag.Identified<Item>> getBlockItemTags() {
+	public Map<BlockVariant, TagKey<Item>> getBlockItemTags() {
 		return Maps.toMap(this.blockVariants.keySet(), this::getItemTag);
 	}
 
@@ -314,43 +314,43 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 		return new Identifier("c", alias + "_" + variant);
 	}
 
-	public <T extends ItemConvertible> Tag.Identified<T> getTag(Variant<T> variant) {
+	public <T extends ItemConvertible> TagKey<T> getTag(Variant<T> variant) {
 		return variant.getTag(this);
 	}
 
-	public <T extends ItemConvertible> Tag.Identified<T> getAliasTag(Variant<T> variant) {
+	public <T extends ItemConvertible> TagKey<T> getAliasTag(Variant<T> variant) {
 		return variant.getTag(alias);
 	}
 
-	public Tag.Identified<Item> getItemTag(BlockVariant variant) {
-		return TagFactory.ITEM.create(getTagId(variant));
+	public TagKey<Item> getItemTag(BlockVariant variant) {
+		return AMTags.ofItem(getTagId(variant));
 	}
 
-	public Tag.Identified<Item> getItemTag(String variant) {
-		return TagFactory.ITEM.create(getTagId(variant));
+	public TagKey<Item> getItemTag(String variant) {
+		return AMTags.ofItem(getTagId(variant));
 	}
 
-	public Tag.Identified<Block> getBlockTag(String variant) {
-		return TagFactory.BLOCK.create(getTagId(variant));
+	public TagKey<Block> getBlockTag(String variant) {
+		return AMTags.ofBlock(getTagId(variant));
 	}
 
-	public Tag.Identified<Item> getAliasItemTag(BlockVariant variant) {
-		return TagFactory.ITEM.create(getAliasTagId(variant));
+	public TagKey<Item> getAliasItemTag(BlockVariant variant) {
+		return AMTags.ofItem(getAliasTagId(variant));
 	}
 
-	public Tag.Identified<Item> getAliasItemTag(String variant) {
-		return TagFactory.ITEM.create(getAliasTagId(variant));
+	public TagKey<Item> getAliasItemTag(String variant) {
+		return AMTags.ofItem(getAliasTagId(variant));
 	}
 
-	public Tag.Identified<Block> getAliasBlockTag(String variant) {
-		return TagFactory.BLOCK.create(getAliasTagId(variant));
+	public TagKey<Block> getAliasBlockTag(String variant) {
+		return AMTags.ofBlock(getAliasTagId(variant));
 	}
 
-	public Tag.Identified<Item> getBaseTag() {
+	public TagKey<Item> getBaseTag() {
 		return getTag(getBaseVariant());
 	}
 
-	public Tag.Identified<Item> getAliasBaseTag() {
+	public TagKey<Item> getAliasBaseTag() {
 		return getAliasTag(getBaseVariant());
 	}
 

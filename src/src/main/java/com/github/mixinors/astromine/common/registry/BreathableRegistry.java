@@ -26,28 +26,28 @@ package com.github.mixinors.astromine.common.registry;
 
 import com.github.mixinors.astromine.common.registry.base.MultiRegistry;
 import com.github.mixinors.astromine.mixin.common.LivingEntityMixin;
-
 import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagKey;
 
 /**
  * A {@link MultiRegistry} for registration of
  * {@link EntityType}s to {@link Tag<Fluid>}.
  *
- * The specified {@link Tag<Fluid>}(s) registered for
+ * The specified {@link TagKey<Fluid>}(s) registered for
  * the {@link EntityType} are used to verify if the entity
  * can breathe, in {@link LivingEntityMixin}.
  */
-public class BreathableRegistry extends MultiRegistry<EntityType<?>, Tag<Fluid>> {
+public class BreathableRegistry extends MultiRegistry<EntityType<?>, TagKey<Fluid>> {
 	public static final BreathableRegistry INSTANCE = new BreathableRegistry();
 
 	/** We only want one instance of this. */
 	private BreathableRegistry() {}
 
-	/** Registers a variable amount of {@link Tag<Fluid>}. */
+	/** Registers a variable amount of {@link TagKey<Fluid>}. */
 	@SafeVarargs
-	public final void register(EntityType<?> type, Tag<Fluid>... tags) {
+	public final void register(EntityType<?> type, TagKey<Fluid>... tags) {
 		for (var tag : tags) {
 			register(type, tag);
 		}
@@ -55,6 +55,6 @@ public class BreathableRegistry extends MultiRegistry<EntityType<?>, Tag<Fluid>>
 
 	/** Asserts whether the given {@link EntityType} can breathe in the specified {@link Fluid}, or not. */
 	public boolean canBreathe(EntityType<?> type, Fluid fluid) {
-		return get(type).stream().anyMatch(tag -> tag.contains(fluid)) || get(type).isEmpty();
+		return get(type).stream().anyMatch(fluid::isIn) || get(type).isEmpty();
 	}
 }

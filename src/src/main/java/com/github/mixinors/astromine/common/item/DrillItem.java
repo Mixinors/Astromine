@@ -24,53 +24,31 @@
 
 package com.github.mixinors.astromine.common.item;
 
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
-
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
-
+import com.github.mixinors.astromine.registry.common.AMTags;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.PickaxeItem;
-import net.minecraft.item.ShovelItem;
+import net.minecraft.item.MiningToolItem;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.item.Vanishable;
-import net.minecraft.tag.Tag;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import team.reborn.energy.api.base.SimpleBatteryItem;
 
-import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
-
-public class DrillItem extends EnergyStorageItem implements DynamicAttributeTool, Vanishable, EnchantableToolItem {
+public class DrillItem extends MiningToolItem implements SimpleBatteryItem {
 	private final int radius;
 	private final ToolMaterial material;
-	private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
-	
-	private final PickaxeItem pickaxe;
-	private final ShovelItem shovel;
+	private final long capacity;
 
 	public DrillItem(ToolMaterial material, float attackDamage, float attackSpeed, int radius, long capacity, Settings settings) {
-		super(settings, capacity);
-		
-		this.pickaxe = new PickaxeItem(material, (int) attackDamage, attackSpeed, settings);
-		this.shovel = new ShovelItem(material, attackDamage, attackSpeed, settings);
+		super(attackDamage, attackSpeed, material, AMTags.DRILL_MINEABLES, settings);
 		
 		this.radius = radius;
 		this.material = material;
-		
-		var builder = ImmutableMultimap.<EntityAttribute, EntityAttributeModifier>builder();
-
-		builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Tool modifier", attackDamage, EntityAttributeModifier.Operation.ADDITION));
-		builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Tool modifier", attackSpeed, EntityAttributeModifier.Operation.ADDITION));
-
-		this.attributeModifiers = builder.build();
+		this.capacity = capacity;
 	}
 
 	@Override
@@ -95,44 +73,65 @@ public class DrillItem extends EnergyStorageItem implements DynamicAttributeTool
 
 		return true;
 	}
-
-	@Override
-	public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot) {
-		return slot == EquipmentSlot.MAINHAND ? this.attributeModifiers : super.getAttributeModifiers(slot);
-	}
-
-	@Override
-	public float getMiningSpeedMultiplier(Tag<Item> tag, BlockState state, ItemStack stack, LivingEntity user) {
-		return material.getMiningSpeedMultiplier();
-	}
-
-	@Override
-	public int getMiningLevel(Tag<Item> tag, BlockState state, ItemStack stack, LivingEntity user) {
-		return material.getMiningLevel();
-	}
 	
-	@Override
-	public boolean isSuitableFor(BlockState state) {
-		var pickaxeSpeed = pickaxe.getMiningSpeedMultiplier(ItemStack.EMPTY, state);
-		var shovelSpeed = shovel.getMiningSpeedMultiplier(ItemStack.EMPTY, state);
-		
-		return pickaxeSpeed > 1.0F || shovelSpeed > 1.0F;
-	}
-	
-	@Override
-	public float postProcessMiningSpeed(Tag<Item> tag, BlockState state, ItemStack stack, LivingEntity user, float currentSpeed, boolean isEffective) {
-		return getStoredEnergy(stack) <= getEnergyConsumed() ? 0F : currentSpeed;
-	}
-
 	@Override
 	public float getMiningSpeedMultiplier(ItemStack stack, BlockState state) {
-		var pickaxeSpeed = pickaxe.getMiningSpeedMultiplier(ItemStack.EMPTY, state);
-		var shovelSpeed = shovel.getMiningSpeedMultiplier(ItemStack.EMPTY, state);
-		
-		return Math.max(pickaxeSpeed, shovelSpeed);
+		return getStoredEnergy(stack) <= getEnergyConsumed() ? 0F : super.getMiningSpeedMultiplier(stack, state);
 	}
-
+	
 	public long getEnergyConsumed() {
 		return (long) (AMConfig.get().items.drillConsumed * material.getMiningSpeedMultiplier());
+	}
+	
+	@Override
+	public long getEnergyCapacity() {
+		return capacity;
+	}
+	
+	@Override
+	public long getEnergyMaxInput() {
+		return capacity;
+	}
+	
+	@Override
+	public long getEnergyMaxOutput() {
+		return capacity;
+	}
+	
+	/** Override behavior to return our progress. */
+	@Override
+	public int getItemBarStep(ItemStack stack) {
+		if (getEnergyCapacity() == 0) {
+			return 0;
+		}
+		
+		return (int) (13 * ((float) SimpleBatteryItem.getStoredEnergyUnchecked(stack) / (float) getEnergyCapacity()));
+	}
+	
+	/** Override behavior to return true. */
+	@Override
+	public boolean isItemBarVisible(ItemStack stack) {
+		return true;
+	}
+	
+	/** Override behavior to return a median red. */
+	@Override
+	public int getItemBarColor(ItemStack stack) {
+		return 0x91261f;
+	}
+	
+	/** Override behavior to add instances of {@link EnergyStorageItem}
+	 * as {@link ItemStack}s to {@link ItemGroup}s with full energy. */
+	@Override
+	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
+		super.appendStacks(group, stacks);
+		
+		if (this.isIn(group)) {
+			var stack = new ItemStack(this);
+			
+			setStoredEnergy(stack, getEnergyCapacity());
+			
+			stacks.add(stack);
+		}
 	}
 }

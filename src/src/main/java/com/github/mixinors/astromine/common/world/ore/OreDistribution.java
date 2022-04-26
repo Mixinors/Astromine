@@ -24,26 +24,18 @@
 
 package com.github.mixinors.astromine.common.world.ore;
 
-import java.util.List;
-
+import com.github.mixinors.astromine.registry.common.AMFeatures;
 import net.minecraft.block.Block;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.intprovider.ConstantIntProvider;
 import net.minecraft.util.math.intprovider.IntProvider;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
-import net.minecraft.util.registry.BuiltinRegistries;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.gen.YOffset;
-import net.minecraft.world.gen.decorator.BiomePlacementModifier;
-import net.minecraft.world.gen.decorator.CountPlacementModifier;
-import net.minecraft.world.gen.decorator.HeightRangePlacementModifier;
-import net.minecraft.world.gen.decorator.PlacementModifier;
-import net.minecraft.world.gen.decorator.SquarePlacementModifier;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.OreConfiguredFeatures;
-import net.minecraft.world.gen.feature.OreFeatureConfig;
-import net.minecraft.world.gen.feature.PlacedFeature;
+import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.placementmodifier.*;
+
+import java.util.List;
 
 public record OreDistribution(
 		int veinSize, IntProvider veinsPerChunk,
@@ -171,12 +163,12 @@ public record OreDistribution(
 		return trapezoid(veinSize, veinsPerChunk, min, max, 0.0f);
 	}
 
-	private ConfiguredFeature<?, ?> registerConfiguredFeature(Identifier id, Block stoneOre, Block deepslateOre) {
+	private RegistryEntry<ConfiguredFeature<OreFeatureConfig, ?>> registerConfiguredFeature(Identifier id, Block stoneOre, Block deepslateOre) {
 		var targets = List.of(
 				OreFeatureConfig.createTarget(OreConfiguredFeatures.STONE_ORE_REPLACEABLES, stoneOre.getDefaultState()),
 				OreFeatureConfig.createTarget(OreConfiguredFeatures.DEEPSLATE_ORE_REPLACEABLES, deepslateOre.getDefaultState())
 		);
-		return Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, id, Feature.ORE.configure(new OreFeatureConfig(targets, veinSize, discardOnAirChance)));
+		return AMFeatures.registerConfiguredFeature(id, Feature.ORE, new OreFeatureConfig(targets, veinSize, discardOnAirChance));
 	}
 
 	/**
@@ -185,8 +177,8 @@ public record OreDistribution(
 	 * @param stoneOre the stone variant of the ore
 	 * @param deepslateOre the deepslate variant of the ore
 	 */
-	public PlacedFeature registerPlacedFeature(Identifier id, Block stoneOre, Block deepslateOre) {
-		return Registry.register(BuiltinRegistries.PLACED_FEATURE, id, registerConfiguredFeature(id, stoneOre, deepslateOre).withPlacement(modifiers()));
+	public RegistryEntry<PlacedFeature> registerPlacedFeature(Identifier id, Block stoneOre, Block deepslateOre) {
+		return AMFeatures.registerPlacedFeature(id, registerConfiguredFeature(id, stoneOre, deepslateOre), modifiers());
 	}
 
 	private HeightRangePlacementModifier heightRangePlacementModifier() {

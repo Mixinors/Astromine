@@ -24,23 +24,23 @@
 
 package com.github.mixinors.astromine.registry.common;
 
-import java.util.function.Predicate;
-
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.registry.AsteroidOreRegistry;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.util.data.Range;
 import com.github.mixinors.astromine.common.world.ore.OreDistribution;
-
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.feature.PlacedFeature;
-
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryEntry;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.GenerationStep;
+import net.minecraft.world.gen.feature.PlacedFeature;
+
+import java.util.function.Predicate;
 
 public class AMOres {
 	public static final Identifier ORES_ID = AMCommon.id("ores");
@@ -52,12 +52,12 @@ public class AMOres {
 	public static final Identifier LEAD_ORE_ID = AMCommon.id("lead_ore");
 	public static final Identifier LEAD_ORE_SMALL_ID = AMCommon.id("lead_ore_small");
 
-	public static final PlacedFeature TIN_ORE_PLACED_FEATURE = OreDistribution.TIN.registerPlacedFeature(TIN_ORE_ID, AMBlocks.TIN_ORE.get(), AMBlocks.DEEPSLATE_TIN_ORE.get());
-	public static final PlacedFeature TIN_ORE_SMALL_PLACED_FEATURE = OreDistribution.TIN_SMALL.registerPlacedFeature(TIN_ORE_SMALL_ID, AMBlocks.TIN_ORE.get(), AMBlocks.DEEPSLATE_TIN_ORE.get());
-	public static final PlacedFeature SILVER_ORE_PLACED_FEATURE = OreDistribution.SILVER.registerPlacedFeature(SILVER_ORE_ID, AMBlocks.SILVER_ORE.get(), AMBlocks.DEEPSLATE_SILVER_ORE.get());
-	public static final PlacedFeature SILVER_ORE_LOWER_PLACED_FEATURE = OreDistribution.SILVER_LOWER.registerPlacedFeature(SILVER_ORE_LOWER_ID, AMBlocks.SILVER_ORE.get(), AMBlocks.DEEPSLATE_SILVER_ORE.get());
-	public static final PlacedFeature LEAD_ORE_PLACED_FEATURE = OreDistribution.LEAD.registerPlacedFeature(LEAD_ORE_ID, AMBlocks.LEAD_ORE.get(), AMBlocks.DEEPSLATE_LEAD_ORE.get());
-	public static final PlacedFeature LEAD_ORE_SMALL_PLACED_FEATURE = OreDistribution.LEAD_SMALL.registerPlacedFeature(LEAD_ORE_SMALL_ID, AMBlocks.LEAD_ORE.get(), AMBlocks.DEEPSLATE_LEAD_ORE.get());
+	public static final RegistryEntry<PlacedFeature> TIN_ORE_PLACED_FEATURE = OreDistribution.TIN.registerPlacedFeature(TIN_ORE_ID, AMBlocks.TIN_ORE.get(), AMBlocks.DEEPSLATE_TIN_ORE.get());
+	public static final RegistryEntry<PlacedFeature> TIN_ORE_SMALL_PLACED_FEATURE = OreDistribution.TIN_SMALL.registerPlacedFeature(TIN_ORE_SMALL_ID, AMBlocks.TIN_ORE.get(), AMBlocks.DEEPSLATE_TIN_ORE.get());
+	public static final RegistryEntry<PlacedFeature> SILVER_ORE_PLACED_FEATURE = OreDistribution.SILVER.registerPlacedFeature(SILVER_ORE_ID, AMBlocks.SILVER_ORE.get(), AMBlocks.DEEPSLATE_SILVER_ORE.get());
+	public static final RegistryEntry<PlacedFeature> SILVER_ORE_LOWER_PLACED_FEATURE = OreDistribution.SILVER_LOWER.registerPlacedFeature(SILVER_ORE_LOWER_ID, AMBlocks.SILVER_ORE.get(), AMBlocks.DEEPSLATE_SILVER_ORE.get());
+	public static final RegistryEntry<PlacedFeature> LEAD_ORE_PLACED_FEATURE = OreDistribution.LEAD.registerPlacedFeature(LEAD_ORE_ID, AMBlocks.LEAD_ORE.get(), AMBlocks.DEEPSLATE_LEAD_ORE.get());
+	public static final RegistryEntry<PlacedFeature> LEAD_ORE_SMALL_PLACED_FEATURE = OreDistribution.LEAD_SMALL.registerPlacedFeature(LEAD_ORE_SMALL_ID, AMBlocks.LEAD_ORE.get(), AMBlocks.DEEPSLATE_LEAD_ORE.get());
 
 	public static final RegistryKey<PlacedFeature> TIN_ORE_KEY = RegistryKey.of(Registry.PLACED_FEATURE_KEY, TIN_ORE_ID);
 	public static final RegistryKey<PlacedFeature> TIN_ORE_SMALL_KEY = RegistryKey.of(Registry.PLACED_FEATURE_KEY, TIN_ORE_SMALL_ID);
@@ -102,7 +102,7 @@ public class AMOres {
 	}
 	
 	private static Predicate<BiomeSelectionContext> overworldPredicate() {
-		return context -> switch (context.getBiome().getCategory()) {
+		return context -> switch (Biome.getCategory(context.getBiomeRegistryEntry())) {
 			case NETHER, THEEND, NONE -> false;
 			default -> true;
 		};

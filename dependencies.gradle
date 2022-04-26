@@ -1,11 +1,11 @@
 project.ext.setDefaultApis = {
     // Cardinal-Components API
-    useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${cardinalComponentsVersion}")
-    useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-block:${cardinalComponentsVersion}")
-    useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:${cardinalComponentsVersion}")
-    useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${cardinalComponentsVersion}")
-    useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-item:${cardinalComponentsVersion}")
-    useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-world:${cardinalComponentsVersion}")
+    useAsApi("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinalComponentsVersion}")
+    useAsApi("dev.onyxstudios.cardinal-components-api:cardinal-components-block:${cardinalComponentsVersion}")
+    useAsApi("dev.onyxstudios.cardinal-components-api:cardinal-components-chunk:${cardinalComponentsVersion}")
+    useAsApi("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinalComponentsVersion}")
+    useAsApi("dev.onyxstudios.cardinal-components-api:cardinal-components-item:${cardinalComponentsVersion}")
+    useAsApi("dev.onyxstudios.cardinal-components-api:cardinal-components-world:${cardinalComponentsVersion}")
 
     // Shapes
     useAsApi("com.terraformersmc.terraform-api:terraform-shapes-api-v1:${shapesVersion}")
@@ -28,9 +28,6 @@ project.ext.setDefaultApis = {
     useAsCompileOnly("me.shedaniel.cloth:cloth-config:${clothConfigApiVersion}")
     useAsRuntimeOnly("me.shedaniel.cloth:cloth-config-fabric:${clothConfigApiVersion}")
 
-    // RoughlyEnoughItems
-    useAsApiOptionally("me.shedaniel:RoughlyEnoughItems-fabric:${roughlyEnoughItemsVersion}")
-
     // Kotlin
     useAsApi("org.jetbrains.kotlin:kotlin-stdlib:${project.kotlinVersion}")
     useAsApi("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${project.kotlinVersion}")
@@ -46,8 +43,7 @@ project.ext.setDefaultApis = {
     useAsApi("dev.architectury:architectury-fabric:${architecturyApiVersion}")
 
     // RoughlyEnoughItems
-    useAsApi "me.shedaniel:RoughlyEnoughItems-api-fabric:${roughlyEnoughItemsVersion}"
-    useAsApi "me.shedaniel:RoughlyEnoughItems-fabric:${roughlyEnoughItemsVersion}"
+    useAsApiOptionally "me.shedaniel:RoughlyEnoughItems-fabric:${roughlyEnoughItemsVersion}"
 
     // Hammer
     useAsCompileOnly("dev.vini2003:hammer:${hammerVersion}")

@@ -24,13 +24,6 @@
 
 package com.github.mixinors.astromine.datagen;
 
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-
 import com.github.mixinors.astromine.common.fluid.ExtendedFluid;
 import com.github.mixinors.astromine.datagen.family.block.AMBlockFamilies;
 import com.github.mixinors.astromine.datagen.family.material.MaterialFamilies;
@@ -44,20 +37,24 @@ import com.github.mixinors.astromine.datagen.provider.tag.AMFluidTagProvider;
 import com.github.mixinors.astromine.datagen.provider.tag.AMItemTagProvider;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMFluids;
-import org.jetbrains.annotations.Nullable;
-
+import com.github.mixinors.astromine.registry.common.AMTags;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.yarn.constants.MiningLevels;
 import net.minecraft.block.Block;
 import net.minecraft.data.family.BlockFamily;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.tag.BlockTags;
-import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
 
-import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.fabricmc.fabric.api.tag.TagFactory;
-import net.fabricmc.yarn.constants.MiningLevels;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class AMDatagen implements DataGeneratorEntrypoint {
 	public static final List<ExtendedFluid> FLUIDS = List.of(
@@ -237,31 +234,31 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 		return new Identifier(COMMON_TAG_NAMESPACE, path);
 	}
 
-	public static Tag.Identified<Block> createBlockTag(Identifier id) {
-		return TagFactory.BLOCK.create(id);
+	public static TagKey<Block> createBlockTag(Identifier id) {
+		return AMTags.ofBlock(id);
 	}
 
-	public static Tag.Identified<Item> createItemTag(Identifier id) {
-		return TagFactory.ITEM.create(id);
+	public static TagKey<Item> createItemTag(Identifier id) {
+		return AMTags.ofItem(id);
 	}
 
-	public static Tag.Identified<Fluid> createFluidTag(Identifier id) {
-		return TagFactory.FLUID.create(id);
+	public static TagKey<Fluid> createFluidTag(Identifier id) {
+		return AMTags.ofFluid(id);
 	}
 
-	public static Tag.Identified<Block> createCommonBlockTag(String path) {
+	public static TagKey<Block> createCommonBlockTag(String path) {
 		return createBlockTag(createCommonTagId(path));
 	}
 
-	public static Tag.Identified<Item> createCommonItemTag(String path) {
+	public static TagKey<Item> createCommonItemTag(String path) {
 		return createItemTag(createCommonTagId(path));
 	}
 
-	public static Tag.Identified<Fluid> createCommonFluidTag(String path) {
+	public static TagKey<Fluid> createCommonFluidTag(String path) {
 		return createFluidTag(createCommonTagId(path));
 	}
 
-	public record HarvestData(Tag.Identified<Block> mineableTag, int miningLevel) {
+	public record HarvestData(TagKey<Block> mineableTag, int miningLevel) {
 		public static final HarvestData PICKAXE = new HarvestData(MiningLevels.WOOD);
 		public static final HarvestData STONE_PICKAXE = new HarvestData(MiningLevels.STONE);
 		public static final HarvestData IRON_PICKAXE = new HarvestData(MiningLevels.IRON);
@@ -274,13 +271,13 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 			this(BlockTags.PICKAXE_MINEABLE, miningLevel);
 		}
 
-		public Tag.Identified<Block> miningLevelTag() {
+		public TagKey<Block> miningLevelTag() {
 			return getMiningLevelTag(miningLevel());
 		}
 	}
 
 	@Nullable
-	public static Tag.Identified<Block> getMiningLevelTag(int miningLevel) {
+	public static TagKey<Block> getMiningLevelTag(int miningLevel) {
 		if (miningLevel <= 0) return null;
 		return switch (miningLevel) {
 			case 1 -> BlockTags.NEEDS_STONE_TOOL;

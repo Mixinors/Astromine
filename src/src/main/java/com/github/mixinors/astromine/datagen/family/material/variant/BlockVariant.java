@@ -24,21 +24,19 @@
 
 package com.github.mixinors.astromine.datagen.family.material.variant;
 
-import java.util.function.BiConsumer;
-
 import com.github.mixinors.astromine.common.util.WordUtils;
 import com.github.mixinors.astromine.datagen.AMDatagen;
 import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
 import com.github.mixinors.astromine.datagen.provider.AMModelProvider;
-
+import com.github.mixinors.astromine.registry.common.AMTags;
 import net.minecraft.block.Block;
-import net.minecraft.data.client.model.BlockStateModelGenerator;
+import net.minecraft.data.client.BlockStateModelGenerator;
 import net.minecraft.item.Item;
 import net.minecraft.tag.BlockTags;
-import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 
-import net.fabricmc.fabric.api.tag.TagFactory;
+import java.util.function.BiConsumer;
 
 public enum BlockVariant implements Variant<Block> {
 	BLOCK("block"),
@@ -102,13 +100,8 @@ public enum BlockVariant implements Variant<Block> {
 		return suffix;
 	}
 
-	@Override
-	public TagFactory<Block> getTagFactory() {
-		return TagFactory.BLOCK;
-	}
-
-	public Tag.Identified<Item> getItemTag() {
-		return TagFactory.ITEM.create(new Identifier("c", getTagPath()));
+	public TagKey<Item> getItemTag() {
+		return AMTags.ofItem(new Identifier("c", getTagPath()));
 	}
 
 	public int getMiningLevel() {
@@ -122,7 +115,7 @@ public enum BlockVariant implements Variant<Block> {
 		return Math.max(family.getMiningLevel(), getMiningLevel());
 	}
 
-	public Tag.Identified<Block> getMineableTag() {
+	public TagKey<Block> getMineableTag() {
 		return BlockTags.PICKAXE_MINEABLE;
 	}
 
@@ -132,5 +125,10 @@ public enum BlockVariant implements Variant<Block> {
 
 	public AMDatagen.HarvestData getHarvestData(MaterialFamily family) {
 		return new AMDatagen.HarvestData(getMineableTag(), getMiningLevel(family));
+	}
+	
+	@Override
+	public TagKey<Block> createTag(Identifier id) {
+		return AMTags.ofBlock(id);
 	}
 }

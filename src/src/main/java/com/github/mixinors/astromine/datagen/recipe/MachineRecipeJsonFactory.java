@@ -24,17 +24,12 @@
 
 package com.github.mixinors.astromine.datagen.recipe;
 
-import java.util.function.Consumer;
-
-import com.google.gson.JsonObject;
-
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
+import com.google.gson.JsonObject;
 import dev.architectury.core.AbstractRecipeSerializer;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.advancement.criterion.CriterionConditions;
-import net.minecraft.data.server.recipe.CraftingRecipeJsonFactory;
+import net.minecraft.data.server.recipe.CraftingRecipeJsonBuilder;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
@@ -45,8 +40,11 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import org.jetbrains.annotations.Nullable;
 
-public abstract class MachineRecipeJsonFactory<T extends EnergyConsumingRecipe> implements CraftingRecipeJsonFactory {
+import java.util.function.Consumer;
+
+public abstract class MachineRecipeJsonFactory<T extends EnergyConsumingRecipe> implements CraftingRecipeJsonBuilder {
 	protected final int processingTime;
 	protected final AbstractRecipeSerializer<T> serializer;
 
@@ -84,7 +82,7 @@ public abstract class MachineRecipeJsonFactory<T extends EnergyConsumingRecipe> 
 
 	public Identifier getOutputId() {
 		return switch (getOutputType()) {
-			case ITEM -> CraftingRecipeJsonFactory.getItemId(getOutputItem());
+			case ITEM -> CraftingRecipeJsonBuilder.getItemId(getOutputItem());
 			case FLUID -> getFluidId(getOutputFluid());
 			case ENERGY -> AMCommon.id("energy");
 		};
@@ -95,13 +93,13 @@ public abstract class MachineRecipeJsonFactory<T extends EnergyConsumingRecipe> 
 	}
 
 	@Override
-	public CraftingRecipeJsonFactory criterion(String name, CriterionConditions conditions) {
+	public CraftingRecipeJsonBuilder criterion(String name, CriterionConditions conditions) {
 		// we don't use recipe advancements here!
 		return this;
 	}
 
 	@Override
-	public CraftingRecipeJsonFactory group(@Nullable String group) {
+	public CraftingRecipeJsonBuilder group(@Nullable String group) {
 		// we don't use groups here!
 		return this;
 	}

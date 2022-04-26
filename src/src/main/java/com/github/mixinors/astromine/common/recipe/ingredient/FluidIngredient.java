@@ -24,27 +24,23 @@
 
 package com.github.mixinors.astromine.common.recipe.ingredient;
 
+import com.github.mixinors.astromine.registry.common.AMTags;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.tag.TagKey;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.BiPredicate;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
-import dev.architectury.hooks.tags.TagHooks;
-import org.jetbrains.annotations.Nullable;
-
-import net.minecraft.fluid.Fluid;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.tag.ServerTagManagerHolder;
-import net.minecraft.tag.Tag;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 
 public final class FluidIngredient {
 	private final Entry entry;
@@ -124,14 +120,14 @@ public final class FluidIngredient {
 			if (jsonObject.has("tag")) {
 				if (jsonObject.has("amount")) {
 					var entryAsId = new Identifier(jsonObject.get("tag").getAsString());
-					var entryAsTag = TagHooks.optionalFluid(entryAsId);
+					var entryAsTag = AMTags.ofFluid(entryAsId);
 					
 					var entryAmount = jsonObject.get("amount").getAsLong();
 					
 					return new FluidIngredient(new TagEntry(entryAsTag, entryAmount));
 				} else {
 					var entryAsId = new Identifier(jsonObject.get("tag").getAsString());
-					var entryAsTag = TagHooks.optionalFluid(entryAsId);
+					var entryAsTag = AMTags.ofFluid(entryAsId);
 					
 					return new FluidIngredient(new TagEntry(entryAsTag));
 				}
@@ -154,7 +150,7 @@ public final class FluidIngredient {
 		if (ingredient.entry instanceof TagEntry tagEntry) {
 			var entryJsonObject = new JsonObject();
 			
-			entryJsonObject.addProperty("tag", ServerTagManagerHolder.getTagManager().getOrCreateTagGroup(Registry.FLUID_KEY).getUncheckedTagId(tagEntry.requiredTag).toString());
+			entryJsonObject.addProperty("tag", tagEntry.requiredTag.id().toString());
 			entryJsonObject.addProperty("amount", tagEntry.requiredAmount);
 		}
 		
@@ -175,7 +171,7 @@ public final class FluidIngredient {
 		}
 		
 		if (entryType.equals("tag")) {
-			var entryTag = TagHooks.optionalFluid(entryTypeId);
+			var entryTag = AMTags.ofFluid(entryTypeId);
 			
 			return new FluidIngredient(new TagEntry(entryTag, entryAmount));
 		}
@@ -192,7 +188,7 @@ public final class FluidIngredient {
 		
 		if (ingredient.entry instanceof TagEntry tagEntry) {
 			buf.writeString("tag");
-			buf.writeString(ServerTagManagerHolder.getTagManager().getOrCreateTagGroup(Registry.FLUID_KEY).getUncheckedTagId(tagEntry.requiredTag).toString());
+			buf.writeString(tagEntry.requiredTag.id().toString());
 			buf.writeLong(tagEntry.requiredAmount);
 		}
 	}
@@ -241,16 +237,16 @@ public final class FluidIngredient {
 	}
 	
 	public static class TagEntry extends Entry {
-		private final Tag<Fluid> requiredTag;
+		private final TagKey<Fluid> requiredTag;
 		private List<FluidVariant> requiredVariants;
 		private final long requiredAmount;
 		
-		public TagEntry(Tag<Fluid> tag) {
+		public TagEntry(TagKey<Fluid> tag) {
 			this.requiredTag = tag;
 			this.requiredAmount = 1;
 		}
 		
-		public TagEntry(Tag<Fluid> tag, long amount) {
+		public TagEntry(TagKey<Fluid> tag, long amount) {
 			this.requiredTag = tag;
 			this.requiredAmount = amount;
 		}
@@ -281,7 +277,8 @@ public final class FluidIngredient {
 			if(requiredVariants == null) {
 				requiredVariants = new ArrayList<>();
 
-				for (var fluid : this.requiredTag.values()) {
+				for (var entry : Registry.FLUID.iterateEntries(requiredTag)) {
+					var fluid = entry.value();
 					if (fluid.isStill(fluid.getDefaultState())) {
 						requiredVariants.add(FluidVariant.of(fluid));
 					}
