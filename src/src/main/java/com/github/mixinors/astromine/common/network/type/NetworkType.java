@@ -30,7 +30,7 @@ import net.minecraft.util.math.Direction;
 
 import javax.annotation.Nullable;
 
-public sealed interface NetworkType<T> permits EnergyNetworkType, FluidNetworkType, ItemNetworkType {
+public sealed interface NetworkType<T> permits TransferNetworkType, EnergyNetworkType {
 	long getTransferRate();
 	
 	T find(WorldPos pos, @Nullable Direction direction);

@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.network.type;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.network.Network;
 import com.github.mixinors.astromine.common.util.data.position.WorldPos;
+import it.unimi.dsi.fastutil.longs.Long2ObjectLinkedOpenHashMap;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
@@ -38,31 +39,20 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class FluidNetworkType implements NetworkType<Storage<FluidVariant>> {
+@SuppressWarnings("UnstableApiUsage")
+public final class FluidNetworkType implements TransferNetworkType<FluidVariant> {
 	@Override
 	public Storage<FluidVariant> find(WorldPos pos, @Nullable Direction direction) {
 		return FluidStorage.SIDED.find(pos.getWorld(), pos.getBlockPos(), direction);
-	}
-	
-	private void move(List<Storage<FluidVariant>> extractableStorages, List<Storage<FluidVariant>> insertableStorages) {
-		try (var transaction = Transaction.openOuter()) {
-			for (var extractableStorage : extractableStorages) {
-				for (var insertableStorage : insertableStorages) {
-					StorageUtil.move(extractableStorage, insertableStorage, ($) -> true, getTransferRate(), transaction);
-				}
-			}
-			
-			transaction.commit();
-		}
 	}
 	
 	@Override
 	public void tick(Network instance) {
 		var world = instance.getWorld();
 		
-		var extractableStorages = new ArrayList<Storage<FluidVariant>>();
-		var bufferStorages = new ArrayList<Storage<FluidVariant>>();
-		var insertableStorages = new ArrayList<Storage<FluidVariant>>();
+		var extractableStorages = new Long2ObjectLinkedOpenHashMap<Storage<FluidVariant>>();
+		var bufferStorages = new Long2ObjectLinkedOpenHashMap<Storage<FluidVariant>>();
+		var insertableStorages = new Long2ObjectLinkedOpenHashMap<Storage<FluidVariant>>();
 		
 		// First, we extract from extractableStorages into insertableStorages.
 		// Then, we extract from extractableStorages into bufferStorages.
@@ -89,19 +79,23 @@ public final class FluidNetworkType implements NetworkType<Storage<FluidVariant>
 			switch (member.getSiding()) {
 				case INSERT -> {
 					if (storage.supportsInsertion()) {
-						insertableStorages.add(storage);
+						insertableStorages.put(member.getBlockPos().asLong(), storage);
 					}
 				}
 				
 				case EXTRACT -> {
 					if (storage.supportsExtraction()) {
-						extractableStorages.add(storage);
+						extractableStorages.put(member.getBlockPos().asLong(), storage);
 					}
 				}
 				
 				case INSERT_EXTRACT -> {
 					if (storage.supportsInsertion() && storage.supportsExtraction()) {
-						bufferStorages.add(storage);
+						bufferStorages.put(member.getBlockPos().asLong(), storage);
+					} else if (storage.supportsInsertion()) {
+						insertableStorages.put(member.getBlockPos().asLong(), storage);
+					} else if (storage.supportsExtraction()) {
+						extractableStorages.put(member.getBlockPos().asLong(), storage);
 					}
 				}
 			}
@@ -109,10 +103,10 @@ public final class FluidNetworkType implements NetworkType<Storage<FluidVariant>
 		
 		membersToRemove.forEach(instance::removeMember);
 		
-		move(extractableStorages, insertableStorages);
-		move(extractableStorages, bufferStorages);
-		move(bufferStorages, insertableStorages);
-		move(bufferStorages, bufferStorages);
+		move(instance, extractableStorages, insertableStorages);
+		move(instance, extractableStorages, bufferStorages);
+		move(instance, bufferStorages, insertableStorages);
+		move(instance, bufferStorages, bufferStorages);
 	}
 	
 	@Override

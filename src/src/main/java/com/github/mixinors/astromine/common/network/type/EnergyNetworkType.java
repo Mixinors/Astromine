@@ -39,6 +39,7 @@ import team.reborn.energy.api.EnergyStorageUtil;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+@SuppressWarnings("UnstableApiUsage")
 public abstract sealed class EnergyNetworkType implements NetworkType<EnergyStorage> permits EnergyNetworkType.Primitive, EnergyNetworkType.Basic, EnergyNetworkType.Advanced, EnergyNetworkType.Elite {
 	@Override
 	public EnergyStorage find(WorldPos pos, @Nullable Direction direction) {
@@ -97,9 +98,17 @@ public abstract sealed class EnergyNetworkType implements NetworkType<EnergyStor
 					var moved = EnergyStorageUtil.move(extractableStorage, pair.their, move, transaction);
 					insertableStorages.put(pair.their, insertableStorages.getLong(pair.their) + moved);
 					extractedAmount += moved;
+					
+					if (extractedAmount >= getTransferRate()) {
+						break;
+					}
 				}
 				
 				extractableStorages.put(extractableStorage, extractedAmount);
+				
+				if (extractedAmount >= getTransferRate()) {
+					break;
+				}
 			}
 			
 			transaction.commit();
