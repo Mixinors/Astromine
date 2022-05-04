@@ -24,7 +24,6 @@
 
 package com.github.mixinors.astromine.mixin.common;
 
-import com.github.mixinors.astromine.common.entity.GravityEntity;
 import com.github.mixinors.astromine.registry.common.AMAttributes;
 import com.github.mixinors.astromine.registry.common.AMTags;
 
@@ -32,7 +31,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tag.Tag;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.math.Vec3d;
 
@@ -49,7 +47,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin extends EntityMixin implements GravityEntity {
+public abstract class LivingEntityMixin extends EntityMixin {
 	@Unique
 	private static final ThreadLocal<Boolean> FAKE_BEING_IN_LAVA = ThreadLocal.withInitial(() -> Boolean.FALSE);
 
@@ -60,18 +58,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 
 	@Shadow
 	public abstract Iterable<ItemStack> getArmorItems();
-
-	@ModifyConstant(method = "travel(Lnet/minecraft/util/math/Vec3d;)V", constant = @Constant(doubleValue = 0.08D, ordinal = 0))
-	private double modifyGravity(double original) {
-		return am_getGravity();
-	}
-
-	@Override
-	@ModifyVariable(at = @At("HEAD"), method = "handleFallDamage(FFLnet/minecraft/entity/damage/DamageSource;)Z", index = 1)
-	float getDamageMultiplier(float damageMultiplier) {
-		return (float) (damageMultiplier * am_getGravity() * am_getGravity());
-	}
-
+	
 	@Inject(at = @At("HEAD"), method = "tick()V")
 	void onTick(CallbackInfo callbackInformation) {
 		// TODO: Rewrite Atmosphere stuff, incl. this.

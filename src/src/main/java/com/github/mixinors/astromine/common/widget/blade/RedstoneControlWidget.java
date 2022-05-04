@@ -27,14 +27,14 @@ package com.github.mixinors.astromine.common.widget.blade;
 import java.util.Collections;
 import java.util.List;
 
-import com.github.mixinors.astromine.client.BaseRenderer;
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.transfer.RedstoneControl;
 import com.github.mixinors.astromine.common.util.NetworkingUtils;
 import com.github.mixinors.astromine.registry.common.AMNetworks;
 import dev.architectury.networking.NetworkManager;
 import dev.vini2003.hammer.client.texture.PartitionedTexture;
-import dev.vini2003.hammer.common.widget.button.ButtonWidget;
+import dev.vini2003.hammer.client.util.DrawingUtils;
+import dev.vini2003.hammer.gui.common.widget.button.ButtonWidget;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
@@ -106,9 +106,9 @@ public class RedstoneControlWidget extends ButtonWidget {
         TEXTURE.draw(matrices, provider, x, y, sX, sY);
     
         switch (blockEntity.getRedstoneControl()) {
-            case WORK_WHEN_ON -> BaseRenderer.getDefaultItemRenderer().renderGuiItemIcon(REDSTONE, (int) x + (int) Math.max((sX - 16.0F) / 2.0F, 0.0F), (int) y + (int) Math.max((sY - 16.0F) / 2.0F, 0.0F));
-            case WORK_WHEN_OFF -> BaseRenderer.getDefaultItemRenderer().renderGuiItemIcon(GUNPOWDER, (int) x + (int) Math.max((sX - 16.0F) / 2.0F, 0.0F), (int) y + (int) Math.max((sY - 16.0F) / 2.0F, 0.0F));
-            case WORK_ALWAYS -> BaseRenderer.getDefaultItemRenderer().renderGuiItemIcon(GLOWSTONE, (int) x + (int) Math.max((sX - 16.0F) / 2.0F, 0.0F), (int) y + (int) Math.max((sY - 16.0F) / 2.0F, 0.0F));
+            case WORK_WHEN_ON -> DrawingUtils.getItemRenderer().renderGuiItemIcon(REDSTONE, (int) x + (int) Math.max((sX - 16.0F) / 2.0F, 0.0F), (int) y + (int) Math.max((sY - 16.0F) / 2.0F, 0.0F));
+            case WORK_WHEN_OFF -> DrawingUtils.getItemRenderer().renderGuiItemIcon(GUNPOWDER, (int) x + (int) Math.max((sX - 16.0F) / 2.0F, 0.0F), (int) y + (int) Math.max((sY - 16.0F) / 2.0F, 0.0F));
+            case WORK_ALWAYS -> DrawingUtils.getItemRenderer().renderGuiItemIcon(GLOWSTONE, (int) x + (int) Math.max((sX - 16.0F) / 2.0F, 0.0F), (int) y + (int) Math.max((sY - 16.0F) / 2.0F, 0.0F));
         }
     }
     

@@ -29,7 +29,7 @@ import com.github.mixinors.astromine.client.screen.base.CustomForegroundBaseHand
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.architectury.registry.menu.MenuRegistry;
 import dev.architectury.registry.registries.RegistrySupplier;
-import dev.vini2003.hammer.common.screen.handler.BaseScreenHandler;
+import dev.vini2003.hammer.gui.common.screen.handler.BaseScreenHandler;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;

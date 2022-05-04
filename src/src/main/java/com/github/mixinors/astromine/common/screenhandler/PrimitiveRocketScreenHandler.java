@@ -30,9 +30,9 @@ import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
-import dev.vini2003.hammer.common.widget.bar.FluidBarWidget;
-import dev.vini2003.hammer.common.widget.button.ButtonWidget;
-import dev.vini2003.hammer.common.widget.slot.SlotWidget;
+import dev.vini2003.hammer.gui.common.widget.bar.FluidBarWidget;
+import dev.vini2003.hammer.gui.common.widget.button.ButtonWidget;
+import dev.vini2003.hammer.gui.common.widget.slot.SlotWidget;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;

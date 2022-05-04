@@ -30,7 +30,7 @@ import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
-import dev.vini2003.hammer.common.widget.bar.FluidBarWidget;
+import dev.vini2003.hammer.gui.common.widget.bar.FluidBarWidget;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;

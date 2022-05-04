@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.common.screenhandler.base.block;
 
 import java.util.function.Supplier;
 
-import dev.vini2003.hammer.common.screen.handler.BaseScreenHandler;
+import dev.vini2003.hammer.gui.common.screen.handler.BaseScreenHandler;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;

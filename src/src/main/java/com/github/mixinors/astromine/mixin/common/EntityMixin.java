@@ -25,7 +25,6 @@
 package com.github.mixinors.astromine.mixin.common;
 
 import com.github.mixinors.astromine.common.access.EntityAccessor;
-import com.github.mixinors.astromine.common.entity.GravityEntity;
 import com.github.mixinors.astromine.common.registry.DimensionLayerRegistry;
 import com.github.mixinors.astromine.registry.common.AMTags;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
@@ -51,7 +50,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.ArrayList;
 
 @Mixin(Entity.class)
-public abstract class EntityMixin implements GravityEntity, EntityAccessor {
+public abstract class EntityMixin implements EntityAccessor {
 	@Shadow
 	public World world;
 	@Shadow
@@ -76,17 +75,6 @@ public abstract class EntityMixin implements GravityEntity, EntityAccessor {
 	public abstract boolean isSubmergedIn(TagKey<Fluid> tag);
 	
 	@Shadow public int age;
-	
-	@ModifyVariable(at = @At("HEAD"), method = "handleFallDamage(FFLnet/minecraft/entity/damage/DamageSource;)Z", index = 1)
-	float getDamageMultiplier(float damageMultiplier) {
-		return (float) (damageMultiplier * am_getGravity() * am_getGravity());
-	}
-
-	@Override
-	public double am_getGravity() {
-		var world = ((Entity) (Object) this).world;
-		return am_getGravity(world);
-	}
 
 	@Override
 	public boolean am_isInIndustrialFluid() {

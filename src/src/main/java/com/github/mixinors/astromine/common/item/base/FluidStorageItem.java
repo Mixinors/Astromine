@@ -27,19 +27,19 @@ package com.github.mixinors.astromine.common.item.base;
 import net.minecraft.item.Item;
 
 public class FluidStorageItem extends Item {
-	private final long size;
+	private final long capacity;
 
-	private FluidStorageItem(Item.Settings settings, long size) {
+	private FluidStorageItem(Item.Settings settings, long capacity) {
 		super(settings);
 
-		this.size = size;
+		this.capacity = capacity;
 	}
 
 	public static FluidStorageItem of(Item.Settings settings, long size) {
 		return new FluidStorageItem(settings, size);
 	}
 
-	public long getSize() {
-		return size;
+	public long getCapacity() {
+		return capacity;
 	}
 }

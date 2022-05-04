@@ -28,7 +28,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.client.BaseRenderer;
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.StorageType;
@@ -36,7 +35,9 @@ import com.github.mixinors.astromine.common.util.MirrorUtils;
 import com.github.mixinors.astromine.common.util.NetworkingUtils;
 import com.github.mixinors.astromine.registry.common.AMNetworks;
 import dev.architectury.networking.NetworkManager;
-import dev.vini2003.hammer.common.widget.Widget;
+import dev.vini2003.hammer.client.util.DrawingUtils;
+import dev.vini2003.hammer.client.util.LayerUtils;
+import dev.vini2003.hammer.gui.common.widget.Widget;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
@@ -154,8 +155,8 @@ public class StorageSidingWidget extends Widget {
 		if (getHidden()) {
 			return;
 		}
-
-		BaseRenderer.drawTexturedQuad(matrices, provider, getPosition().getX(), getPosition().getY(), getSize().getWidth(), getSize().getHeight(), getTexture());
+		
+		DrawingUtils.drawTexturedQuad(matrices, provider, LayerUtils.get(getTexture()), getPosition().getX(), getPosition().getY(), getSize().getWidth(), getSize().getHeight(), getTexture());
 	}
 	
 	public ExtendedBlockEntity getBlockEntity() {

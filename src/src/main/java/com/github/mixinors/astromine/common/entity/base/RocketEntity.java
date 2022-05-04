@@ -30,11 +30,11 @@ import java.util.Collection;
 
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
-import com.github.mixinors.astromine.common.registry.GravityRegistry;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.registry.common.AMCriteria;
 import com.github.mixinors.astromine.registry.common.AMParticles;
 
+import dev.vini2003.hammer.gravity.common.manager.GravityManager;
 import net.minecraft.client.util.math.Vector3d;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -145,10 +145,10 @@ public abstract class RocketEntity extends ExtendedEntity {
 					this.tryDisassemble(false);
 				}
 			} else if (!world.isClient) {
-				this.addVelocity(0, -GravityRegistry.INSTANCE.get(world.getRegistryKey()), 0);
+				this.addVelocity(0, -GravityManager.get(world.getRegistryKey()), 0);
 				this.move(MovementType.SELF, this.getVelocity());
 
-				if (getVelocity().y < -GravityRegistry.INSTANCE.get(world.getRegistryKey())) {
+				if (getVelocity().y < -GravityManager.get(world.getRegistryKey())) {
 					if (BlockPos.Mutable.stream(getBoundingBox().offset(0, -1, 0)).anyMatch(pos -> !world.getBlockState(pos).isAir()) && !world.isClient) {
 						this.tryDisassemble(false);
 					}

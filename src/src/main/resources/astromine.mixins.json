@@ -21,15 +21,7 @@
     "common.StayAboveWaterTaskMixin",
     "common.SwimGoalAccessor",
     "common.SwimGoalMixin",
-    "common.WorldChunkMixin",
-    "common.gravity.AbstractMinecartEntityMixin",
-    "common.gravity.EggEntityMixin",
-    "common.gravity.FishingBobberEntityMixin",
-    "common.gravity.GravityEntityMixin",
-    "common.gravity.HoneyBlockMixin",
-    "common.gravity.ItemEntityMixin",
-    "common.gravity.SquidEntityMixin",
-    "common.gravity.StepAndDestroyBlockGoalMixin"
+    "common.WorldChunkMixin"
   ],
   "client": [
     "client.ArmorFeatureRendererMixin",
@@ -41,8 +33,7 @@
     "client.InGameOverlayRendererMixin",
     "client.SkyPropertiesMixin",
     "client.WorldRendererMixin",
-    "client.BackgroundRendererMixin",
-    "client.gravity.ParticleMixin"
+    "client.BackgroundRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

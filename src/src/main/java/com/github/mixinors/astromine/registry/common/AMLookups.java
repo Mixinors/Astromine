@@ -25,6 +25,9 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import com.github.mixinors.astromine.common.item.base.FluidStorageItem;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidItemStorage;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidVariantStorage;
 import team.reborn.energy.api.EnergyStorage;
 
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
@@ -246,6 +249,17 @@ public class AMLookups {
 				
 				AMBlockEntityTypes.BLOCK_BREAKER.get(),
 				AMBlockEntityTypes.BLOCK_PLACER.get()
+		);
+		
+		FluidStorage.ITEM.registerForItems((storage, context) -> {
+			if (storage.getItem() instanceof FluidStorageItem fluidStorageItem) {
+				return new SimpleFluidItemStorage(context, fluidStorageItem.getCapacity());
+			}
+			
+			return null;
+		},
+				AMItems.PORTABLE_TANK.get(),
+				AMItems.LARGE_PORTABLE_TANK.get()
 		);
 	}
 }

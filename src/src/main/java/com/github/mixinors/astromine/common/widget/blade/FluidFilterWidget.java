@@ -30,13 +30,13 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.client.BaseRenderer;
 import com.github.mixinors.astromine.client.render.sprite.SpriteRenderer;
 import com.github.mixinors.astromine.common.util.ClientUtils;
 import com.github.mixinors.astromine.common.util.FluidUtils;
 import com.github.mixinors.astromine.common.util.TextUtils;
+import dev.vini2003.hammer.client.util.DrawingUtils;
 import dev.vini2003.hammer.client.util.LayerUtils;
-import dev.vini2003.hammer.common.widget.button.ButtonWidget;
+import dev.vini2003.hammer.gui.common.widget.button.ButtonWidget;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.client.render.OverlayTexture;
@@ -148,16 +148,21 @@ public class FluidFilterWidget extends ButtonWidget
 		var sY = getSize().getHeight();
 		
 		var layer = LayerUtils.get(FLUID_BACKGROUND);
-
-		BaseRenderer.drawTexturedQuad(matrices, provider, layer, x, y, getSize().getWidth(), getSize().getHeight(), FLUID_BACKGROUND);
+		
+		DrawingUtils.drawTexturedQuad(matrices, provider, layer, x, y, getSize().getWidth(), getSize().getHeight(), FLUID_BACKGROUND);
 
 		if (fluidSupplier.get() != Fluids.EMPTY) {
 			SpriteRenderer
 					.beginPass()
 					.setup(provider, RenderLayer.getSolid())
 					.sprite(FluidUtils.getSprite(fluidSupplier.get()))
-					.color(FluidUtils.getColor(ClientUtils.getPlayer(), fluidSupplier.get())).light(0x00f000f0).overlay(OverlayTexture.DEFAULT_UV).alpha(
-				0xff).normal(matrices.peek().getNormalMatrix(), 0, 0, 0).position(matrices.peek().getPositionMatrix(), x + 1, y + 1, x + sX - 1, y + sY - 1, 0F).next(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
+					.color(FluidUtils.getColor(ClientUtils.getPlayer(), fluidSupplier.get()))
+					.light(0x00f000f0)
+					.overlay(OverlayTexture.DEFAULT_UV)
+					.alpha(0xff)
+					.normal(matrices.peek().getNormalMatrix(), 0, 0, 0)
+					.position(matrices.peek().getPositionMatrix(), x + 1, y + 1, x + sX - 1, y + sY - 1, 0F)
+					.next(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
 		}
 	}
 }

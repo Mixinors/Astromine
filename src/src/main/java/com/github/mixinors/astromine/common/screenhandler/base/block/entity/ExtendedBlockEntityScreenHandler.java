@@ -40,12 +40,12 @@ import com.github.mixinors.astromine.common.widget.blade.RedstoneControlWidget;
 import dev.architectury.hooks.block.BlockEntityHooks;
 import dev.vini2003.hammer.common.geometry.position.Position;
 import dev.vini2003.hammer.common.geometry.size.Size;
-import dev.vini2003.hammer.common.util.SlotUtils;
-import dev.vini2003.hammer.common.widget.bar.FluidBarWidget;
-import dev.vini2003.hammer.common.widget.slot.SlotWidget;
-import dev.vini2003.hammer.common.widget.tab.TabWidget;
-import dev.vini2003.hammer.common.widget.text.TextWidget;
-import dev.vini2003.hammerenergy.common.widget.bar.EnergyBarWidget;
+import dev.vini2003.hammer.gui.common.util.SlotUtils;
+import dev.vini2003.hammer.gui.common.widget.bar.FluidBarWidget;
+import dev.vini2003.hammer.gui.common.widget.slot.SlotWidget;
+import dev.vini2003.hammer.gui.common.widget.tab.TabWidget;
+import dev.vini2003.hammer.gui.common.widget.text.TextWidget;
+import dev.vini2003.hammer.gui.energy.common.widget.bar.EnergyBarWidget;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;

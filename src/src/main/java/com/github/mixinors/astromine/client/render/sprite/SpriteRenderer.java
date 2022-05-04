@@ -38,6 +38,8 @@ import net.minecraft.util.math.Matrix4f;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
+// TODO: Migrate to Hammer GUI!
+
 /**
  * An advanced sprite renderer, which does
  * processing in render passes.

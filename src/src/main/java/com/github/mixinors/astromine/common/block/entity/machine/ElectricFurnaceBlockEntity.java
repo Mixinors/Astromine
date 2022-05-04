@@ -204,14 +204,14 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 	@Override
 	public void readNbt(@NotNull NbtCompound nbt) {
 		super.readNbt(nbt);
-		progress = nbt.getDouble("progress");
-		limit = nbt.getInt("limit");
+		progress = nbt.getDouble("Progress");
+		limit = nbt.getInt("Limit");
 	}
 
 	@Override
 	public void writeNbt(NbtCompound nbt) {
-		nbt.putDouble("progress", progress);
-		nbt.putInt("limit", limit);
+		nbt.putDouble("Progress", progress);
+		nbt.putInt("Limit", limit);
 		super.writeNbt(nbt);
 	}
 

@@ -29,12 +29,12 @@ import java.util.List;
 import java.util.function.IntSupplier;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.client.BaseRenderer;
 import com.github.mixinors.astromine.common.util.ClientUtils;
 import com.github.mixinors.astromine.common.util.TextUtils;
 import dev.vini2003.hammer.client.scissor.Scissors;
+import dev.vini2003.hammer.client.util.DrawingUtils;
 import dev.vini2003.hammer.client.util.LayerUtils;
-import dev.vini2003.hammer.common.widget.Widget;
+import dev.vini2003.hammer.gui.common.widget.Widget;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -109,13 +109,13 @@ public class HorizontalArrowWidget extends Widget
 		
 		var area = new Scissors(provider, (int) (x * scale), (int) (rawHeight - ((y + sY) * scale)), (int) (sX * scale), (int) (sY * scale));
 
-		BaseRenderer.drawTexturedQuad(matrices, provider, backgroundLayer, getPosition().getX(), getPosition().getY(), getSize().getWidth(), getSize().getHeight(), BACKGROUND);
+		DrawingUtils.drawTexturedQuad(matrices, provider, backgroundLayer, getPosition().getX(), getPosition().getY(), getSize().getWidth(), getSize().getHeight(), BACKGROUND);
 
 		area.destroy(provider);
 
 		area = new Scissors(provider, (int) (x * scale), (int) (rawHeight - ((y + sY) * scale)), (int) (sBGX * scale), (int) (sY * scale));
-
-		BaseRenderer.drawTexturedQuad(matrices, provider, foregroundLayer, getPosition().getX(), getPosition().getY(), getSize().getWidth(), getSize().getHeight(), FOREGROUND);
+		
+		DrawingUtils.drawTexturedQuad(matrices, provider, foregroundLayer, getPosition().getX(), getPosition().getY(), getSize().getWidth(), getSize().getHeight(), FOREGROUND);
 
 		area.destroy(provider);
 	}
