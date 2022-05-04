@@ -29,9 +29,30 @@ import dev.architectury.event.events.client.ClientLifecycleEvent;
 import dev.architectury.registry.client.rendering.fabric.RenderTypeRegistryImpl;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.*;
+import net.minecraft.util.Identifier;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AMRenderLayers {
+	private static final Map<Identifier, RenderLayer> CACHE = new HashMap<>();
+	
+	private static final RenderLayer HOLOGRAPHIC_BRIDGE = RenderLayer.of(
+			"holographic_bridge",
+			VertexFormats.POSITION_COLOR_LIGHT,
+			VertexFormat.DrawMode.QUADS,
+			256,
+			false,
+			true,
+			RenderLayer.MultiPhaseParameters.builder()
+					.cull(RenderPhase.DISABLE_CULLING)
+					.lightmap(RenderPhase.ENABLE_LIGHTMAP)
+					.transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)
+					.layering(RenderPhase.VIEW_OFFSET_Z_LAYERING)
+					.shader(new RenderPhase.Shader(GameRenderer::getPositionColorLightmapShader))
+					.build(false));
+	
 	public static void init() {
 		ClientLifecycleEvent.CLIENT_SETUP.register( client -> {
 			register(AMBlocks.AIRLOCK.get(), RenderLayer.getTranslucent());
@@ -39,17 +60,31 @@ public class AMRenderLayers {
 			register(AMBlocks.SPACE_SLIME_BLOCK.get(), RenderLayer.getTranslucent());
 		});
 	}
-
-	/**
-	 * @param block
-	 *        Block instance to be registered
-	 * @param renderLayer
-	 *        RenderLayer of block instance to be registered
-	 *
-	 * @return Block instance registered
-	 */
+	
 	public static <T extends Block> T register(T block, RenderLayer renderLayer) {
 		RenderTypeRegistryImpl.register(renderLayer, block);
 		return block;
+	}
+	
+	public static RenderLayer get(Identifier texture) {
+		CACHE.computeIfAbsent(texture, (key) -> RenderLayer.of(
+				"entity_cutout",
+				VertexFormats.POSITION_COLOR_TEXTURE_LIGHT,
+				VertexFormat.DrawMode.QUADS,
+				256,
+				true,
+				true,
+				RenderLayer.MultiPhaseParameters.builder()
+						.texture(new RenderPhase.Texture(texture, false, false))
+						.transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)
+						.lightmap(RenderPhase.DISABLE_LIGHTMAP)
+						.overlay(RenderPhase.DISABLE_OVERLAY_COLOR)
+						.build(true)));
+		
+		return CACHE.get(texture);
+	}
+	
+	public static RenderLayer getHolographicBridge() {
+		return HOLOGRAPHIC_BRIDGE;
 	}
 }

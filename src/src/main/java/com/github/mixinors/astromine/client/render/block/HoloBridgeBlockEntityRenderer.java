@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.client.render.block;
 
-import com.github.mixinors.astromine.client.render.layer.Layer;
+import com.github.mixinors.astromine.registry.client.AMRenderLayers;
 import com.github.mixinors.astromine.common.block.HoloBridgeProjectorBlock;
 import com.github.mixinors.astromine.common.block.entity.HoloBridgeProjectorBlockEntity;
 
@@ -65,7 +65,7 @@ public class HoloBridgeBlockEntityRenderer implements BlockEntityRenderer<HoloBr
 
 			matrices.push();
 			
-			var consumer = provider.getBuffer(Layer.getHolographicBridge());
+			var consumer = provider.getBuffer(AMRenderLayers.getHolographicBridge());
 			
 			var xA = end.getX() - pA.getX();
 			var xB = start.getX() - pA.getX();
