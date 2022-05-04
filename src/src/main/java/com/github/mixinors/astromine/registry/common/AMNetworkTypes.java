@@ -33,9 +33,9 @@ import com.github.mixinors.astromine.common.registry.NetworkTypeRegistry;
 
 public class AMNetworkTypes {
 	public static final NetworkType PRIMITIVE_ENERGY = register("primitive_energy_network", new EnergyNetworkType.Primitive());
-	public static final NetworkType BASIC_ENERGY = register("basic_energy_network", new EnergyNetworkType.Primitive());
-	public static final NetworkType ADVANCED_ENERGY = register("advanced_energy_network", new EnergyNetworkType.Primitive());
-	public static final NetworkType ELITE_ENERGY = register("elite_energy_network", new EnergyNetworkType.Primitive());
+	public static final NetworkType BASIC_ENERGY = register("basic_energy_network", new EnergyNetworkType.Basic());
+	public static final NetworkType ADVANCED_ENERGY = register("advanced_energy_network", new EnergyNetworkType.Advanced());
+	public static final NetworkType ELITE_ENERGY = register("elite_energy_network", new EnergyNetworkType.Elite());
 	
 	public static final NetworkType FLUID = register("fluid_network", new FluidNetworkType());
 	public static final NetworkType ITEM = register("item_network", new ItemNetworkType());

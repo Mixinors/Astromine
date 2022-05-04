@@ -57,7 +57,7 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Util
 	public BlockBreakerBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.BLOCK_BREAKER, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, 0L);
+		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), 0L);
 
 		itemStorage = new SimpleItemStorage(1).extractPredicate((variant, slot) ->
 			slot == OUTPUT_SLOT

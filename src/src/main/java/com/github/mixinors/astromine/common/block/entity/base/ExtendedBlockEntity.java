@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.entity.base;
 
-import java.util.Arrays;
+import java.util.*;
 import java.util.function.Supplier;
 
 import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
@@ -33,6 +33,10 @@ import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import dev.architectury.hooks.block.BlockEntityHooks;
+import it.unimi.dsi.fastutil.Pair;
+import it.unimi.dsi.fastutil.ints.IntObjectPair;
+import it.unimi.dsi.fastutil.objects.ObjectObjectImmutablePair;
+import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.api.EnergyStorage;
@@ -54,6 +58,8 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+
+import javax.swing.plaf.metal.MetalTheme;
 
 public abstract class ExtendedBlockEntity extends BlockEntity implements Tickable {
 	protected boolean isActive = false;
@@ -131,14 +137,9 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 				if (ourFluidStorage != null && theirFluidStorage != null) {
 					StorageUtil.move(ourFluidStorage, theirFluidStorage, (variant) -> theirFluidStorage.exactView(transaction, variant) == null || ourFluidStorage.exactView(transaction, variant).getAmount() > theirFluidStorage.exactView(transaction, variant).getAmount(), FluidConstants.BUCKET, transaction);
 				}
-				
-				var theirEnergyStorage = EnergyStorage.SIDED.find(world, theirPos, direction.getOpposite());
-				var ourEnergyStorage = EnergyStorage.SIDED.find(world, pos, direction);
-				
-				if (ourEnergyStorage != null && theirEnergyStorage != null && ourEnergyStorage.getAmount() > theirEnergyStorage.getAmount()) {
-					EnergyStorageUtil.move(ourEnergyStorage, theirEnergyStorage, ourEnergyStorage.getAmount() - theirEnergyStorage.getAmount(), transaction);
-				}
 			}
+			
+			moveEnergyAveraged(transaction);
 			
 			transaction.commit();
 		}
@@ -157,6 +158,56 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 			} else if (blockStateActive && !isActive && activity[0]) {
 				world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, false));
 			}
+		}
+	}
+	
+	// Transacts energy to the neighboring blocks by averaging the available energy.
+	// This will make sure everyone has the same amount of energy.
+	private void moveEnergyAveraged(Transaction transaction) {
+		record EnergyPair(long maxAmount, EnergyStorage our, EnergyStorage their) {}
+		var list = new ArrayList<EnergyPair>();
+		var offering = 0L;
+		var requesting = 0L;
+		
+		for (var direction : Direction.values()) {
+			var theirPos = getPos().offset(direction);
+			var ourEnergyStorage = EnergyStorage.SIDED.find(world, pos, direction);
+			
+			if (ourEnergyStorage != null && ourEnergyStorage.supportsExtraction() && ourEnergyStorage.getAmount() > 0) {
+				var theirEnergyStorage = EnergyStorage.SIDED.find(world, theirPos, direction.getOpposite());
+				
+				if (theirEnergyStorage != null && theirEnergyStorage.supportsInsertion()) {
+					// We are an output only block entity, so we should transfer all energy to the other storage.
+					long maxAmount = !ourEnergyStorage.supportsInsertion() ? Long.MAX_VALUE
+						// We should maintain an equilibrium of energy between us.
+						: ourEnergyStorage.getAmount() - theirEnergyStorage.getAmount();
+					
+					if (maxAmount > 0) {
+						try (Transaction extractionTestTransaction = Transaction.openNested(transaction)) {
+							maxAmount = ourEnergyStorage.extract(maxAmount, extractionTestTransaction);
+						}
+					}
+					
+					if (maxAmount > 0) {
+						try (Transaction insertionTestTransaction = Transaction.openNested(transaction)) {
+							maxAmount = theirEnergyStorage.insert(maxAmount, insertionTestTransaction);
+						}
+					}
+					
+					if (maxAmount > 0) {
+						offering = Math.max(offering, ourEnergyStorage.getAmount());
+						requesting += maxAmount;
+						list.add(new EnergyPair(maxAmount, ourEnergyStorage, theirEnergyStorage));
+					}
+				}
+			}
+		}
+		
+		list.sort((a, b) -> Long.compare(b.maxAmount, a.maxAmount));
+		
+		for (var pair : list) {
+			var move = (long) Math.ceil(pair.maxAmount * MathHelper.clamp(requesting <= 0 ? 0.0 : (double) offering / requesting, 0.0, 1.0));
+			EnergyStorageUtil.move(pair.our, pair.their, move, transaction);
 		}
 	}
 	
@@ -243,52 +294,56 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 		
 		writeNbt(nbt);
 		
-		if (syncItemStorage || (hasItemStorage() && getItemStorage().getVersion() != lastItemStorageVersion)) {
-			syncItemStorage = false;
-			
-			lastItemStorageVersion = getItemStorage().getVersion();
-			
-			var itemStorageNbt = new NbtCompound();
-			
-			itemStorage.writeToNbt(itemStorageNbt);
-			
-			nbt.put("ItemStorage", itemStorageNbt);
-		} else if (hasItemStorage()) {
-			nbt.remove("ItemStorage");
-			
-			var sidings = getItemStorage().getSidings();
-			
-			var sidingsNbt = new NbtCompound();
-			
-			for (var i = 0; i < sidings.length; ++i) {
-				sidingsNbt.putInt(String.valueOf(i), sidings[i].ordinal());
+		if (hasItemStorage()) {
+			if (syncItemStorage || getItemStorage().getVersion() != lastItemStorageVersion) {
+				syncItemStorage = false;
+				
+				lastItemStorageVersion = getItemStorage().getVersion();
+				
+				var itemStorageNbt = new NbtCompound();
+				
+				itemStorage.writeToNbt(itemStorageNbt);
+				
+				nbt.put("ItemStorage", itemStorageNbt);
+			} else {
+				nbt.remove("ItemStorage");
+				
+				var sidings = getItemStorage().getSidings();
+				
+				var sidingsNbt = new NbtCompound();
+				
+				for (var i = 0; i < sidings.length; ++i) {
+					sidingsNbt.putInt(String.valueOf(i), sidings[i].ordinal());
+				}
+				
+				nbt.put("ItemStorageSidings", sidingsNbt);
 			}
-			
-			nbt.put("ItemStorageSidings", sidingsNbt);
 		}
 		
-		if (syncFluidStorage || (hasFluidStorage() && getFluidStorage().getVersion() != lastFluidStorageVersion)) {
-			syncItemStorage = false;
-			
-			lastFluidStorageVersion = getFluidStorage().getVersion();
-			
-			var fluidStorageNbt = new NbtCompound();
-			
-			fluidStorage.writeToNbt(fluidStorageNbt);
-			
-			nbt.put("FluidStorage", fluidStorageNbt);
-		} else if (hasFluidStorage()) {
-			nbt.remove("FluidStorage");
-			
-			var sidings = getFluidStorage().getSidings();
-			
-			var sidingsNbt = new NbtCompound();
-			
-			for (var i = 0; i < sidings.length; ++i) {
-				sidingsNbt.putInt(String.valueOf(i), sidings[i].ordinal());
+		if (hasFluidStorage()) {
+			if (syncFluidStorage || getFluidStorage().getVersion() != lastFluidStorageVersion) {
+				syncItemStorage = false;
+				
+				lastFluidStorageVersion = getFluidStorage().getVersion();
+				
+				var fluidStorageNbt = new NbtCompound();
+				
+				fluidStorage.writeToNbt(fluidStorageNbt);
+				
+				nbt.put("FluidStorage", fluidStorageNbt);
+			} else {
+				nbt.remove("FluidStorage");
+				
+				var sidings = getFluidStorage().getSidings();
+				
+				var sidingsNbt = new NbtCompound();
+				
+				for (var i = 0; i < sidings.length; ++i) {
+					sidingsNbt.putInt(String.valueOf(i), sidings[i].ordinal());
+				}
+				
+				nbt.put("FluidStorageSidings", sidingsNbt);
 			}
-			
-			nbt.put("FluidStorageSidings", sidingsNbt);
 		}
 		
 		return nbt;

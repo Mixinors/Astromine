@@ -59,7 +59,7 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 	public SolidGeneratorBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), 0L, Long.MAX_VALUE);
+		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), 0L, getMaxTransferRate());
 		
 		itemStorage = new SimpleItemStorage(1).insertPredicate((variant, slot) -> {
 			if (slot != INPUT_SLOT) {

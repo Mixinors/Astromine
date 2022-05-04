@@ -82,12 +82,12 @@ public abstract class ExtendedEntity extends Entity implements FluidStorageSizeP
 			var energyStorageNbt = nbt.getCompound("EnergyStorage");
 			
 			energyStorage = new SimpleEnergyStorage(
-					energyStorageNbt.getInt("Capacity"),
-					energyStorageNbt.getInt("MaxInsert"),
-					energyStorageNbt.getInt("MaxExtract")
+					energyStorageNbt.getLong("Capacity"),
+					energyStorageNbt.getLong("MaxInsert"),
+					energyStorageNbt.getLong("MaxExtract")
 			);
 			
-			energyStorage.amount = energyStorageNbt.getInt("Amount");
+			energyStorage.amount = energyStorageNbt.getLong("Amount");
 		}
 		
 		if (nbt.contains("ItemStorage")) {

@@ -60,7 +60,7 @@ public abstract sealed class EnergyNetworkType implements NetworkType<EnergyStor
 						break;
 					}
 					
-					var availableToInsert = Math.min(insertableStorage.getCapacity() - insertableStorage.getAmount(), getTransferRate() -  insertedAmount);
+					var availableToInsert = Math.min(insertableStorage.getCapacity() - insertableStorage.getAmount(), getTransferRate() - insertedAmount);
 					
 					// Skip if nothing can be inserted.
 					if (availableToInsert == 0L) {

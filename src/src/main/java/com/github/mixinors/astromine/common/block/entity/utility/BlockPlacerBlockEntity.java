@@ -53,7 +53,7 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Utili
 	public BlockPlacerBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.BLOCK_PLACER, blockPos, blockState);
 		
-		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), Long.MAX_VALUE, 0L);
+		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), 0L);
 
 		itemStorage = new SimpleItemStorage(1).extractPredicate((variant, slot) ->
 			false

@@ -27,12 +27,18 @@ package com.github.mixinors.astromine.common.provider.config;
 import com.github.mixinors.astromine.common.config.entry.utility.UtilityConfig;
 import com.github.mixinors.astromine.common.provider.EnergyConsumedProvider;
 import com.github.mixinors.astromine.common.provider.EnergyStorageSizeProvider;
+import com.github.mixinors.astromine.common.provider.EnergyStorageSpeedProvider;
 import com.github.mixinors.astromine.common.provider.SpeedProvider;
 
-public interface UtilityConfigProvider<T extends UtilityConfig> extends ConfigProvider<T>, SpeedProvider, EnergyStorageSizeProvider, EnergyConsumedProvider {
+public interface UtilityConfigProvider<T extends UtilityConfig> extends ConfigProvider<T>, SpeedProvider, EnergyStorageSizeProvider, EnergyConsumedProvider, EnergyStorageSpeedProvider {
 	@Override
 	default long getEnergyStorageSize() {
 		return getConfig().getEnergyStorageSize();
+	}
+
+	@Override
+	default long getMaxTransferRate() {
+		return (long) (2048 * getSpeed());
 	}
 
 	@Override
