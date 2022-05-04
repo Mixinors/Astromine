@@ -66,7 +66,7 @@ public abstract sealed class EnergyNetworkType implements NetworkType<EnergyStor
 					
 					// Skip if nothing can be extracted or inserted.
 					if (availableToExtract == 0L || availableToInsert == 0L) {
-						break;
+						continue;
 					}
 					
 					if (availableToExtract > 0) {
