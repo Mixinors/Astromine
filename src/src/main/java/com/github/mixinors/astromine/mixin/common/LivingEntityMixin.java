@@ -33,6 +33,7 @@ import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.math.Vec3d;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -143,8 +144,8 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 	}
 
 	// A redirect would be the most efficient, but ModifyArg is the only compatible option
-	@ModifyArg(method = "baseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isSubmergedIn(Lnet/minecraft/tag/Tag;)Z"))
-	private Tag<Fluid> am_tickAirInFluid(Tag<Fluid> tag) {
+	@ModifyArg(method = "baseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isSubmergedIn(Lnet/minecraft/tag/TagKey;)Z"))
+	private TagKey<Fluid> am_tickAirInFluid(TagKey<Fluid> tag) {
 		if (this.isSubmergedIn(AMTags.INDUSTRIAL_FLUID)) {
 			return AMTags.INDUSTRIAL_FLUID;
 		}

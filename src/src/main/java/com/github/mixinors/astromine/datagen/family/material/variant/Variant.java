@@ -24,16 +24,13 @@
 
 package com.github.mixinors.astromine.datagen.family.material.variant;
 
-import java.util.function.BiConsumer;
-
 import com.github.mixinors.astromine.common.util.WordUtils;
 import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
-
 import net.minecraft.item.ItemConvertible;
-import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 
-import net.fabricmc.fabric.api.tag.TagFactory;
+import java.util.function.BiConsumer;
 
 public interface Variant<T extends ItemConvertible> {
 	/**
@@ -111,24 +108,24 @@ public interface Variant<T extends ItemConvertible> {
 	}
 
 	/**
-	 * This variant's family-independent tag, as an {@link Tag.Identified identified tag}
+	 * This variant's family-independent tag, as an {@link TagKey identified tag}
 	 */
-	default Tag.Identified<T> getTag() {
-		return getTagFactory().create(getTagId());
+	default TagKey<T> getTag() {
+		return createTag(getTagId());
 	}
 
 	/**
-	 * This variant's family-dependent tag, as an {@link Tag.Identified identified tag}, for the given family
+	 * This variant's family-dependent tag, as an {@link TagKey identified tag}, for the given family
 	 */
-	default Tag.Identified<T> getTag(MaterialFamily family) {
+	default TagKey<T> getTag(MaterialFamily family) {
 		return getTag(family.getName());
 	}
 
 	/**
-	 * This variant's family-dependent tag, as an {@link Tag.Identified identified tag}, for the given family name
+	 * This variant's family-dependent tag, as an {@link TagKey identified tag}, for the given family name
 	 */
-	default Tag.Identified<T> getTag(String family) {
-		return getTagFactory().create(getTagId(family));
+	default TagKey<T> getTag(String family) {
+		return createTag(getTagId(family));
 	}
 
 	/**
@@ -168,5 +165,5 @@ public interface Variant<T extends ItemConvertible> {
 	/**
 	 * The tag factory for this variant, should be effectively static
 	 */
-	TagFactory<T> getTagFactory();
+	TagKey<T> createTag(Identifier id);
 }

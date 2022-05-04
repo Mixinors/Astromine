@@ -24,10 +24,8 @@
 
 package com.github.mixinors.astromine.registry.common;
 
-
 import com.github.mixinors.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
 import com.mojang.serialization.Codec;
-
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
@@ -35,9 +33,8 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 public class AMChunkGenerators {
 	public static void init() {
 		register(AMWorlds.EARTH_SPACE_ID, EarthSpaceChunkGenerator.CODEC);
-		
 	}
-
+	
 	public static void register(Identifier id, Codec<? extends ChunkGenerator> codec) {
 		Registry.register(Registry.CHUNK_GENERATOR, id, codec);
 	}

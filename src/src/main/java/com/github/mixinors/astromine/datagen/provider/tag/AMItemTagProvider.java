@@ -24,9 +24,6 @@
 
 package com.github.mixinors.astromine.datagen.provider.tag;
 
-import java.util.List;
-import java.util.Map;
-
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.datagen.AMDatagen;
 import com.github.mixinors.astromine.datagen.family.block.AMBlockFamilies;
@@ -34,19 +31,19 @@ import com.github.mixinors.astromine.datagen.family.material.MaterialFamilies;
 import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
 import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant;
 import com.github.mixinors.astromine.registry.common.AMItems;
-import org.jetbrains.annotations.Nullable;
-
+import com.shnupbups.piglib.Piglib;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.tag.ItemTags;
-import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import org.jetbrains.annotations.Nullable;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-
-import com.shnupbups.piglib.Piglib;
+import java.util.List;
+import java.util.Map;
 
 public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 	public static final Map<List<ItemVariant>, Identifier> GENERIC_TAGS = Map.of(
@@ -85,7 +82,7 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 			AMItems.ELITE_DRILL.get()
 	);
 
-	public static final List<Tag.Identified<Item>> ONE_BIOFUEL_TAGS = List.of(
+	public static final List<TagKey<Item>> ONE_BIOFUEL_TAGS = List.of(
 			ItemTags.SMALL_FLOWERS,
 			ItemTags.LEAVES,
 			AMDatagen.createCommonItemTag("mushrooms"),
@@ -122,7 +119,7 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 			Items.HONEYCOMB
 	);
 
-	public static final List<Tag.Identified<Item>> TWO_BIOFUEL_TAGS = List.of(
+	public static final List<TagKey<Item>> TWO_BIOFUEL_TAGS = List.of(
 			ItemTags.TALL_FLOWERS,
 			ItemTags.SAPLINGS
 	);
@@ -153,7 +150,7 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 			Items.CHORUS_PLANT
 	);
 
-	public static final List<Tag.Identified<Item>> FOUR_BIOFUEL_TAGS = List.of(
+	public static final List<TagKey<Item>> FOUR_BIOFUEL_TAGS = List.of(
 			ItemTags.FISHES,
 			AMDatagen.createCommonItemTag("metal_apples")
 	);
@@ -163,7 +160,7 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 			Items.SPORE_BLOSSOM
 	);
 
-	public static final List<Tag.Identified<Item>> NINE_BIOFUEL_TAGS = List.of(
+	public static final List<TagKey<Item>> NINE_BIOFUEL_TAGS = List.of(
 			AMDatagen.createCommonItemTag("gourds")
 	);
 

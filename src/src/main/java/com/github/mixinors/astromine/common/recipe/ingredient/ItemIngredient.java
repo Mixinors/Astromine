@@ -24,28 +24,24 @@
 
 package com.github.mixinors.astromine.common.recipe.ingredient;
 
+import com.github.mixinors.astromine.registry.common.AMTags;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
+import net.minecraft.item.Item;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.tag.TagKey;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.BiPredicate;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
-import dev.architectury.hooks.tags.TagHooks;
-import org.jetbrains.annotations.Nullable;
-
-import net.minecraft.item.Item;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.tag.ServerTagManagerHolder;
-import net.minecraft.tag.Tag;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 
 public final class ItemIngredient {
 	private final Entry entry;
@@ -62,7 +58,7 @@ public final class ItemIngredient {
 	}
 	
 	public boolean test(SingleSlotStorage<ItemVariant> testStorage) {
-		if(testStorage.isResourceBlank()) return false;
+		if (testStorage.isResourceBlank()) return false;
 		return test(testStorage.getResource(), testStorage.getAmount());
 	}
 	
@@ -77,16 +73,16 @@ public final class ItemIngredient {
 	public int getAmount() {
 		return entry.getAmount();
 	}
-
+	
 	public Ingredient asIngredient() {
 		return Ingredient.ofStacks(entry.getVariants().stream().map(variant -> variant.toStack(entry.getAmount())));
 	}
-
+	
 	public ItemVariant[] getMatchingVariants() {
 		this.cacheMatchingVariants();
 		return this.matchingVariants;
 	}
-
+	
 	private void cacheMatchingVariants() {
 		if (this.matchingVariants == null) {
 			this.matchingVariants = entry.getVariants().stream().distinct().toArray(ItemVariant[]::new);
@@ -126,14 +122,14 @@ public final class ItemIngredient {
 			if (jsonObject.has("tag")) {
 				if (jsonObject.has("count")) {
 					var entryAsId = new Identifier(jsonObject.get("tag").getAsString());
-					var entryAsTag = TagHooks.optionalItem(entryAsId);
+					var entryAsTag = AMTags.ofItem(entryAsId);
 					
 					var entryAmount = jsonObject.get("count").getAsInt();
 					
 					return new ItemIngredient(new TagEntry(entryAsTag, entryAmount));
 				} else {
 					var entryAsId = new Identifier(jsonObject.get("tag").getAsString());
-					var entryAsTag = TagHooks.optionalItem(entryAsId);
+					var entryAsTag = AMTags.ofItem(entryAsId);
 					
 					return new ItemIngredient(new TagEntry(entryAsTag));
 				}
@@ -156,7 +152,7 @@ public final class ItemIngredient {
 		if (ingredient.entry instanceof TagEntry tagEntry) {
 			var entryJsonObject = new JsonObject();
 			
-			entryJsonObject.addProperty("tag", ServerTagManagerHolder.getTagManager().getOrCreateTagGroup(Registry.ITEM_KEY).getUncheckedTagId(tagEntry.requiredTag).toString());
+			entryJsonObject.addProperty("tag", tagEntry.requiredTag.id().toString());
 			entryJsonObject.addProperty("count", tagEntry.requiredAmount);
 		}
 		
@@ -177,7 +173,7 @@ public final class ItemIngredient {
 		}
 		
 		if (entryType.equals("tag")) {
-			var entryTag = TagHooks.optionalItem(entryTypeId);
+			var entryTag = AMTags.ofItem(entryTypeId);
 			
 			return new ItemIngredient(new TagEntry(entryTag, entryAmount));
 		}
@@ -194,14 +190,14 @@ public final class ItemIngredient {
 		
 		if (ingredient.entry instanceof TagEntry tagEntry) {
 			buf.writeString("tag");
-			buf.writeString(ServerTagManagerHolder.getTagManager().getOrCreateTagGroup(Registry.ITEM_KEY).getUncheckedTagId(tagEntry.requiredTag).toString());
+			buf.writeString(tagEntry.requiredTag.id().toString());
 			buf.writeLong(tagEntry.requiredAmount);
 		}
 	}
 	
 	public static abstract class Entry implements BiPredicate<ItemVariant, Long> {
 		public abstract int getAmount();
-
+		
 		public abstract Collection<ItemVariant> getVariants();
 	}
 	
@@ -228,7 +224,7 @@ public final class ItemIngredient {
 		public int getAmount() {
 			return requiredAmount;
 		}
-
+		
 		@Override
 		public Collection<ItemVariant> getVariants() {
 			return Collections.singleton(requiredVariant);
@@ -236,16 +232,16 @@ public final class ItemIngredient {
 	}
 	
 	public static class TagEntry extends Entry {
-		private final Tag<Item> requiredTag;
+		private final TagKey<Item> requiredTag;
 		private List<ItemVariant> requiredVariants;
 		private final int requiredAmount;
 		
-		public TagEntry(Tag<Item> tag) {
+		public TagEntry(TagKey<Item> tag) {
 			this.requiredTag = tag;
 			this.requiredAmount = 1;
 		}
 		
-		public TagEntry(Tag<Item> tag, int amount) {
+		public TagEntry(TagKey<Item> tag, int amount) {
 			this.requiredTag = tag;
 			this.requiredAmount = amount;
 		}
@@ -255,8 +251,8 @@ public final class ItemIngredient {
 			if (requiredVariants == null) {
 				requiredVariants = new ArrayList<>();
 				
-				for (var item : requiredTag.values()) {
-					requiredVariants.add(ItemVariant.of(item));
+				for (var item : Registry.ITEM.iterateEntries(requiredTag)) {
+					requiredVariants.add(ItemVariant.of(item.value()));
 				}
 			}
 			
@@ -273,13 +269,13 @@ public final class ItemIngredient {
 		public int getAmount() {
 			return requiredAmount;
 		}
-
+		
 		@Override
 		public Collection<ItemVariant> getVariants() {
 			var list = new ArrayList<ItemVariant>();
 			
-			for (var item : this.requiredTag.values()) {
-				list.add(ItemVariant.of(item));
+			for (var item : Registry.ITEM.iterateEntries(requiredTag)) {
+				list.add(ItemVariant.of(item.value()));
 			}
 			
 			return list;

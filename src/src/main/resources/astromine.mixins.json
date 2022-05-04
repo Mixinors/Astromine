@@ -4,11 +4,11 @@
   "package": "com.github.mixinors.astromine.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "common.DataPackContentsMixin",
     "common.EnchantmentTargetMixin",
     "common.EntityAccessor",
     "common.EntityMixin",
     "common.EntityNavigationMixin",
-    "common.FluidTagsAccessor",
     "common.IdentifierMixin",
     "common.JsonDataLoaderMixin",
     "common.LivingEntityMixin",
@@ -17,7 +17,6 @@
     "common.RecipeManagerAccessor",
     "common.ServerChunkManagerMixin",
     "common.ServerPlayNetworkHandlerMixin",
-    "common.ServerResourceManagerMixin",
     "common.ServerWorldMixin",
     "common.StayAboveWaterTaskMixin",
     "common.SwimGoalAccessor",
@@ -43,7 +42,7 @@
     "client.SkyPropertiesMixin",
     "client.WorldRendererMixin",
     "client.BackgroundRendererMixin",
-    "client.gravity.CurrentDownParticleMixin"
+    "client.gravity.ParticleMixin"
   ],
   "injectors": {
     "defaultRequire": 1

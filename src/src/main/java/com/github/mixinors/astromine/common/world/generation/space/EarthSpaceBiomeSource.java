@@ -24,20 +24,19 @@
 
 package com.github.mixinors.astromine.common.world.generation.space;
 
-import com.google.common.collect.ImmutableList;
-
 import com.github.mixinors.astromine.registry.common.AMBiomes;
+import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-
-import net.minecraft.util.dynamic.RegistryLookupCodec;
+import net.minecraft.util.dynamic.RegistryOps;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 
 public class EarthSpaceBiomeSource extends BiomeSource {
-	public static final Codec<EarthSpaceBiomeSource> CODEC = RecordCodecBuilder.create((instance) -> instance.group(RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter((biomeSource) -> biomeSource.registry), Codec.LONG.fieldOf("seed").stable().forGetter((
+	public static final Codec<EarthSpaceBiomeSource> CODEC = RecordCodecBuilder.create((instance) -> instance.group(RegistryOps.createRegistryCodec(Registry.BIOME_KEY).forGetter((biomeSource) -> biomeSource.registry), Codec.LONG.fieldOf("seed").stable().forGetter((
 		biomeSource) -> biomeSource.seed)).apply(instance, instance.stable(EarthSpaceBiomeSource::new)));
 	private final long seed;
 	private final Registry<Biome> registry;
@@ -59,7 +58,7 @@ public class EarthSpaceBiomeSource extends BiomeSource {
 	}
 
 	@Override
-	public Biome getBiome(int x, int y, int z, MultiNoiseUtil.MultiNoiseSampler noise) {
-		return registry.get(AMBiomes.ASTEROID_BELT_KEY );
+	public RegistryEntry<Biome> getBiome(int x, int y, int z, MultiNoiseUtil.MultiNoiseSampler noise) {
+		return registry.getEntry(AMBiomes.ASTEROID_BELT_KEY).orElseThrow();
 	}
 }

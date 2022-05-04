@@ -26,13 +26,14 @@ package com.github.mixinors.astromine.mixin.common;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.tag.Tag;
-
+import net.minecraft.tag.TagKey;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
+
+import java.util.Set;
 
 @Mixin(Entity.class)
 public interface EntityAccessor {
 	@Accessor
-	Tag<Fluid> getSubmergedFluidTag();
+	Set<TagKey<Fluid>> getSubmergedFluidTag();
 }

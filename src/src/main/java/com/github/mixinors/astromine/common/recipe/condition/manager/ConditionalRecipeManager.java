@@ -24,32 +24,28 @@
 
 package com.github.mixinors.astromine.common.recipe.condition.manager;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.common.recipe.condition.RecipeCondition;
+import com.github.mixinors.astromine.mixin.common.RecipeManagerAccessor;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-
-import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.recipe.condition.RecipeCondition;
-import com.github.mixinors.astromine.mixin.common.RecipeManagerAccessor;
-
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeManager;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.resource.ResourceManager;
-import net.minecraft.resource.ServerResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.profiler.Profiler;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ConditionalRecipeManager extends RecipeManager {
-	private final ServerResourceManager resourceManager;
-	
-	public ConditionalRecipeManager(ServerResourceManager resourceManager) {
-		this.resourceManager = resourceManager;
+	private final RecipeManager recipeManager;
+	public ConditionalRecipeManager(RecipeManager recipeManager) {
+		this.recipeManager = recipeManager;
 	}
 	
 	@Override
@@ -66,7 +62,7 @@ public class ConditionalRecipeManager extends RecipeManager {
 			}
 		}
 		
-		var existing = ((RecipeManagerAccessor) this.resourceManager.getRecipeManager()).getRecipes();
+		var existing = ((RecipeManagerAccessor) recipeManager).getRecipes();
 		var parsed = parse(allowed);
 		var combined = new HashMap<RecipeType<?>, Map<Identifier, Recipe<?>>>();
 		
@@ -86,7 +82,7 @@ public class ConditionalRecipeManager extends RecipeManager {
 			combined.get(entry.getKey()).putAll(entry.getValue());
 		}
 		
-		((RecipeManagerAccessor) this.resourceManager.getRecipeManager()).setRecipes(combined);
+		((RecipeManagerAccessor) recipeManager).setRecipes(combined);
 	}
 	
 	public ImmutableMap<? extends RecipeType<?>, ImmutableMap<Identifier, Recipe<?>>> parse(Map<Identifier, JsonElement> map) {

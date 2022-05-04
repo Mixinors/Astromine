@@ -22,29 +22,23 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.mixin.common;
+package com.github.mixinors.astromine.mixin.client.gravity;
 
-import com.github.mixinors.astromine.common.recipe.condition.manager.ConditionalRecipeManager;
-
-import net.minecraft.resource.ReloadableResourceManager;
-import net.minecraft.resource.ServerResourceManager;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.util.registry.DynamicRegistryManager;
-
+import com.github.mixinors.astromine.common.registry.GravityRegistry;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.world.ClientWorld;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
-@Mixin(ServerResourceManager.class)
-public class ServerResourceManagerMixin {
-	@Mutable @Shadow @Final private ReloadableResourceManager resourceManager;
+@Mixin(Particle.class)
+public abstract class ParticleMixin {
+	@Shadow @Final protected ClientWorld world;
 	
-	@Inject(at = @At("RETURN"), method = "<init>")
-	void am_init(DynamicRegistryManager registryManager, CommandManager.RegistrationEnvironment commandEnvironment, int functionPermissionLevel, CallbackInfo ci) {
-		resourceManager.registerReloader(new ConditionalRecipeManager((ServerResourceManager) (Object) this));
+	@ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = 0.04D))
+	double getGravity(double original) {
+		return GravityRegistry.INSTANCE.get(world.getRegistryKey()) / 2;
 	}
 }

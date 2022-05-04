@@ -24,15 +24,15 @@
 
 package com.github.mixinors.astromine.datagen.family.material.variant;
 
-import java.util.function.BiConsumer;
-
 import com.github.mixinors.astromine.common.util.WordUtils;
-
+import com.github.mixinors.astromine.registry.common.AMTags;
 import net.minecraft.data.client.ItemModelGenerator;
-import net.minecraft.data.client.model.Models;
+import net.minecraft.data.client.Models;
 import net.minecraft.item.Item;
+import net.minecraft.tag.TagKey;
+import net.minecraft.util.Identifier;
 
-import net.fabricmc.fabric.api.tag.TagFactory;
+import java.util.function.BiConsumer;
 
 public enum ItemVariant implements Variant<Item> {
 	INGOT("ingot"),
@@ -127,9 +127,9 @@ public enum ItemVariant implements Variant<Item> {
 			default -> true;
 		};
 	}
-
+	
 	@Override
-	public TagFactory<Item> getTagFactory() {
-		return TagFactory.ITEM;
+	public TagKey<Item> createTag(Identifier id) {
+		return AMTags.ofItem(id);
 	}
 }

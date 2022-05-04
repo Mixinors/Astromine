@@ -6,7 +6,7 @@ buildscript {
 
 plugins {
     id 'maven-publish'
-    id 'dev.architectury.loom' version '0.10.0-SNAPSHOT'
+    id 'dev.architectury.loom' version '0.11.0-SNAPSHOT'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
     id "org.cadixdev.licenser" version "0.6.1"
 }
@@ -75,7 +75,8 @@ allprojects {
             url = 'https://ladysnake.jfrog.io/artifactory/mods'
 
             content {
-                includeGroup "io.github.onyxstudios.Cardinal-Components-API"
+                includeGroup "dev.onyxstudios"
+                includeGroup "dev.onyxstudios.cardinal-components-api"
             }
         }
 
@@ -327,7 +328,7 @@ dependencies {
         implementation project(path: ":${it.path}", configuration: "namedElements")
     }
 
-    modRuntime "net.fabricmc:dev-launch-injector:+"
+    modRuntimeOnly "net.fabricmc:dev-launch-injector:+"
 
     tap(rootProject.ext.setRuntimeTestMods)
 }

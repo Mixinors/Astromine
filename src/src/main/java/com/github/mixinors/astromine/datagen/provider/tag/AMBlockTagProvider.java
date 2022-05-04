@@ -24,13 +24,6 @@
 
 package com.github.mixinors.astromine.datagen.provider.tag;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.stream.Stream;
-
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.datagen.AMDatagen;
 import com.github.mixinors.astromine.datagen.AMDatagen.HarvestData;
@@ -39,23 +32,24 @@ import com.github.mixinors.astromine.datagen.family.material.MaterialFamilies;
 import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
 import com.github.mixinors.astromine.datagen.family.material.variant.BlockVariant;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.family.BlockFamily;
 import net.minecraft.tag.BlockTags;
-import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.registry.Registry;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import java.util.Arrays;
+import java.util.List;
 
 public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 	public static final List<Block> INFINIBURN_BLOCKS = List.of(
 			AMBlocks.BLAZING_ASTEROID_STONE.get()
 	);
 
-	public static final List<Tag.Identified<Block>> INFINIBURN_TAGS = List.of(
+	public static final List<TagKey<Block>> INFINIBURN_TAGS = List.of(
 			AMDatagen.createCommonBlockTag("meteor_ores"),
 			AMDatagen.createCommonBlockTag("asteroid_ores")
 	);
@@ -347,7 +341,7 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 		Arrays.stream(blocks).forEach((block) -> addHarvestData(harvestData, block));
 	}
 
-	public void addHarvestData(HarvestData harvestData, Tag.Identified<Block> tag) {
+	public void addHarvestData(HarvestData harvestData, TagKey<Block> tag) {
 		getOrCreateTagBuilder(harvestData.mineableTag()).addTag(tag);
 		if (harvestData.miningLevel() > 0) getOrCreateTagBuilder(harvestData.miningLevelTag()).addTag(tag);
 	}
