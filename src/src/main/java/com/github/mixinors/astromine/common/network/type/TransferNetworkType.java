@@ -60,39 +60,41 @@ public sealed interface TransferNetworkType<T> extends NetworkType<Storage<T>> p
 						list.add(new TransactionPair<>(availableToMove, posLong, extractableView, insertableStorage));
 					}
 					
-					var needsRoundRobin = offering < requesting;
-					Iterable<TransactionPair<T>> iterable;
-					
-					if (needsRoundRobin) {
-						list.sort(Comparator.comparingLong(TransactionPair::posLong));
-						var skip = worldTickCount % list.size();
+					if (offering != 0 && !list.isEmpty()) {
+						var needsRoundRobin = offering != 0 && (getTransferRate() - transacted) / (requesting / offering) <= 0;
+						Iterable<TransactionPair<T>> iterable;
 						
-						iterable = () -> new AbstractIterator<>() {
-							int cursor = 0;
+						if (needsRoundRobin) {
+							list.sort(Comparator.comparingLong(TransactionPair::posLong));
+							var skip = worldTickCount % list.size();
 							
-							@Nullable
-							@Override
-							protected TransactionPair<T> computeNext() {
-								int i = cursor++ + skip;
-								if (cursor >= list.size()) {
-									return endOfData();
-								} else {
-									return list.get(i % list.size());
+							iterable = () -> new AbstractIterator<>() {
+								int cursor = 0;
+								
+								@Nullable
+								@Override
+								protected TransactionPair<T> computeNext() {
+									int i = cursor++ + skip;
+									if (cursor > list.size()) {
+										return endOfData();
+									} else {
+										return list.get(i % list.size());
+									}
 								}
-							}
-						};
-					} else {
-						list.sort(Comparator.comparingLong(TransactionPair::maxAmount));
-						iterable = list;
-					}
-					
-					for (var pair : iterable) {
-						var move = (long) Math.ceil(pair.maxAmount * MathHelper.clamp(requesting <= 0 ? 0.0 : (double) offering / requesting, 0.0, 1.0));
-						var moved = move(resource, pair.our, pair.their, move, transaction);
-						transacted += moved;
+							};
+						} else {
+							list.sort(Comparator.comparingLong(TransactionPair::maxAmount));
+							iterable = list;
+						}
 						
-						if (transacted >= getTransferRate()) {
-							break;
+						for (var pair : iterable) {
+							var move = (long) Math.ceil(pair.maxAmount * MathHelper.clamp(requesting <= 0 ? 0.0 : (double) offering / requesting, 0.0, 1.0));
+							var moved = move(resource, pair.our, pair.their, move, transaction);
+							transacted += moved;
+							
+							if (transacted >= getTransferRate()) {
+								break;
+							}
 						}
 					}
 					
