@@ -203,7 +203,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 			}
 		}
 		
-		list.sort((a, b) -> Long.compare(b.maxAmount, a.maxAmount));
+		list.sort(Comparator.comparingLong(EnergyPair::maxAmount));
 		
 		for (var pair : list) {
 			var move = (long) Math.ceil(pair.maxAmount * MathHelper.clamp(requesting <= 0 ? 0.0 : (double) offering / requesting, 0.0, 1.0));

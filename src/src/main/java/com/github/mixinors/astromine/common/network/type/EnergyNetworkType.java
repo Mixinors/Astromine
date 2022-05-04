@@ -27,15 +27,17 @@ package com.github.mixinors.astromine.common.network.type;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.network.Network;
 import com.github.mixinors.astromine.common.util.data.position.WorldPos;
-import it.unimi.dsi.fastutil.objects.*;
+import it.unimi.dsi.fastutil.objects.Reference2LongMap;
 import it.unimi.dsi.fastutil.objects.Reference2LongOpenHashMap;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.api.EnergyStorage;
 import team.reborn.energy.api.EnergyStorageUtil;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public abstract sealed class EnergyNetworkType implements NetworkType<EnergyStorage> permits EnergyNetworkType.Primitive, EnergyNetworkType.Basic, EnergyNetworkType.Advanced, EnergyNetworkType.Elite {
 	@Override
@@ -44,38 +46,57 @@ public abstract sealed class EnergyNetworkType implements NetworkType<EnergyStor
 	}
 	
 	private void move(Reference2LongMap<EnergyStorage> extractableStorages, Reference2LongMap<EnergyStorage> insertableStorages) {
+		record EnergyPair(long maxAmount, EnergyStorage their) {}
+		
 		try (var transaction = Transaction.openOuter()) {
 			for (var extractableEntry : extractableStorages.reference2LongEntrySet()) {
 				var extractableStorage = extractableEntry.getKey();
 				var extractedAmount = extractableEntry.getLongValue();
+				
+				var list = new ArrayList<EnergyPair>();
+				var offering = 0L;
+				var requesting = 0L;
 				
 				for (var insertableEntry : insertableStorages.reference2LongEntrySet()) {
 					var insertableStorage = insertableEntry.getKey();
 					var insertedAmount = insertableEntry.getLongValue();
 					
 					var availableToExtract = Math.min(extractableStorage.getAmount(), getTransferRate() - extractedAmount);
+					var availableToInsert = Math.min(insertableStorage.getCapacity() - insertableStorage.getAmount(), getTransferRate() - insertedAmount);
 					
-					// Skip if nothing can be extracted.
-					if (availableToExtract == 0L) {
+					// Skip if nothing can be extracted or inserted.
+					if (availableToExtract == 0L || availableToInsert == 0L) {
 						break;
 					}
 					
-					var availableToInsert = Math.min(insertableStorage.getCapacity() - insertableStorage.getAmount(), getTransferRate() - insertedAmount);
+					if (availableToExtract > 0) {
+						try (Transaction extractionTestTransaction = Transaction.openNested(transaction)) {
+							availableToExtract = extractableStorage.extract(availableToExtract, extractionTestTransaction);
+						}
+					}
 					
-					// Skip if nothing can be inserted.
-					if (availableToInsert == 0L) {
-						continue;
+					if (availableToInsert > 0) {
+						try (Transaction insertionTestTransaction = Transaction.openNested(transaction)) {
+							availableToInsert = insertableStorage.insert(availableToInsert, insertionTestTransaction);
+						}
 					}
 					
 					var availableToMove = Math.min(availableToExtract, availableToInsert);
 					
-					var moved = EnergyStorageUtil.move(extractableStorage, insertableStorage, availableToMove, transaction);
-					
-					insertedAmount -= moved;
-					
+					if (availableToMove > 0) {
+						offering = Math.max(offering, extractableStorage.getAmount());
+						requesting += availableToMove;
+						list.add(new EnergyPair(availableToMove, insertableStorage));
+					}
+				}
+				
+				list.sort(Comparator.comparingLong(EnergyPair::maxAmount));
+				
+				for (var pair : list) {
+					var move = (long) Math.ceil(pair.maxAmount * MathHelper.clamp(requesting <= 0 ? 0.0 : (double) offering / requesting, 0.0, 1.0));
+					var moved = EnergyStorageUtil.move(extractableStorage, pair.their, move, transaction);
+					insertableStorages.put(pair.their, insertableStorages.getLong(pair.their) + moved);
 					extractedAmount += moved;
-					
-					insertableStorages.put(insertableStorage, insertedAmount);
 				}
 				
 				extractableStorages.put(extractableStorage, extractedAmount);
