@@ -13,7 +13,7 @@ Run `./gradlew build`, the resulting jar will appear at `build/libs`.
 Run `./gradlew generateDataAll`
 
 ### Staging Releases
-Find the artifacts at [Github Actions](https://github.com/Chainmail-Studios/Astromine/actions?query=workflow%3A%22Staging+Build%22).  
+Find the artifacts at [Github Actions](https://github.com/Chainmail-Studios/Astromendmne/actions?query=workflow%3A%22Staging+Build%22).  
 Please note that the latest development builds are not supported and are more prone to errors.
 
 ### Contributing
