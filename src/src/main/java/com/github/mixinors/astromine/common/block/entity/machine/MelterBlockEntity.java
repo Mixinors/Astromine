@@ -77,6 +77,8 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements F
 			if (optionalRecipe.isPresent() && !optionalRecipe.get().matches(itemStorage.slice(ITEM_INPUT_SLOT), fluidStorage.slice(FLUID_OUTPUT_SLOT))) {
 				optionalRecipe = Optional.empty();
 			}
+			
+			markDirty();
 		}).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
 		
 		fluidStorage.getStorage(FLUID_OUTPUT_SLOT).setCapacity(getFluidStorageSize());
@@ -93,6 +95,8 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements F
 			if (optionalRecipe.isPresent() && !optionalRecipe.get().matches(itemStorage.slice(ITEM_INPUT_SLOT), fluidStorage.slice(FLUID_OUTPUT_SLOT))) {
 				optionalRecipe = Optional.empty();
 			}
+			
+			markDirty();
 		}).insertSlots(ITEM_INSERT_SLOTS).extractSlots(ITEM_EXTRACT_SLOTS);
 	}
 	

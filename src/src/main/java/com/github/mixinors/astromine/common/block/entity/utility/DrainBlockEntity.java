@@ -51,7 +51,9 @@ public class DrainBlockEntity extends ExtendedBlockEntity implements FluidStorag
 			shouldRun()
 		).extractPredicate((variant, slot) ->
 			false
-		).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
+		).listener(() -> {
+			markDirty();
+		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 		
 		fluidStorage.getStorage(INPUT_SLOT).setCapacity(getFluidStorageSize());
 		

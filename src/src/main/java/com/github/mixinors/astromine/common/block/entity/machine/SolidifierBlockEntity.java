@@ -81,6 +81,8 @@ public abstract class SolidifierBlockEntity extends ExtendedBlockEntity implemen
 			if (optionalRecipe.isPresent() && !optionalRecipe.get().matches(itemStorage.slice(ITEM_OUTPUT_SLOT), fluidStorage.slice(FLUID_INPUT_SLOT))) {
 				optionalRecipe = Optional.empty();
 			}
+			
+			markDirty();
 		}).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
 		
 		itemStorage = new SimpleItemStorage(1).extractPredicate((variant, slot) ->
@@ -91,6 +93,8 @@ public abstract class SolidifierBlockEntity extends ExtendedBlockEntity implemen
 			if (optionalRecipe.isPresent() && !optionalRecipe.get().matches(itemStorage.slice(ITEM_OUTPUT_SLOT), fluidStorage.slice(FLUID_INPUT_SLOT))) {
 				optionalRecipe = Optional.empty();
 			}
+			
+			markDirty();
 		}).insertSlots(ITEM_INSERT_SLOTS).extractSlots(ITEM_EXTRACT_SLOTS);
 	}
 	

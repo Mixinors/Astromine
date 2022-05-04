@@ -30,6 +30,10 @@ import net.minecraft.item.Item;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 
+/**
+ * A {@link StorageType} which dictates which of a machine's storages
+ * should be used.
+ */
 public enum StorageType {
 	ITEM,
 	FLUID,

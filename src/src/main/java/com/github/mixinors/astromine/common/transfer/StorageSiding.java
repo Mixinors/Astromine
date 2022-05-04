@@ -24,10 +24,25 @@
 
 package com.github.mixinors.astromine.common.transfer;
 
+/**
+ * A {@link StorageSiding} which dictates a machine's siding.
+ */
 public enum StorageSiding {
+	/**
+	 * <b>Insertion</b> is allowed, <b>extraction</b> is denied.
+	 */
 	INSERT,
+	/**
+	 * <b>Extraction</b> is allowed, <b>insertion</b> is denied.
+	 */
 	EXTRACT,
+	/**
+	 * <b>Insertion</b> and <b>extraction</b> are both allowed.
+	 */
 	INSERT_EXTRACT,
+	/**
+	 * <b>Insertion</b> and <b>extraction</b> are both denied.
+	 */
 	NONE;
 	
 	public StorageSiding next() {

@@ -76,6 +76,8 @@ public abstract class RefineryBlockEntity extends ExtendedBlockEntity implements
 			if (optionalRecipe.isPresent() && !optionalRecipe.get().matches(fluidStorage.slice(INPUT_SLOT, OUTPUT_SLOT))) {
 				optionalRecipe = Optional.empty();
 			}
+			
+			markDirty();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 

@@ -43,7 +43,9 @@ public abstract class BufferBlockEntity extends ExtendedBlockEntity {
 		public Primitive(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.PRIMITIVE_BUFFER, blockPos, blockState);
 			
-			itemStorage = new SimpleItemStorage(6 * 9);
+			itemStorage = new SimpleItemStorage(6 * 9).listener(() -> {
+				markDirty();
+			});
 		}
 	}
 
@@ -51,7 +53,9 @@ public abstract class BufferBlockEntity extends ExtendedBlockEntity {
 		public Basic(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.BASIC_BUFFER, blockPos, blockState);
 			
-			itemStorage = new SimpleItemStorage(12 * 9);
+			itemStorage = new SimpleItemStorage(12 * 9).listener(() -> {
+				markDirty();
+			});
 		}
 	}
 
@@ -59,7 +63,9 @@ public abstract class BufferBlockEntity extends ExtendedBlockEntity {
 		public Advanced(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ADVANCED_BUFFER, blockPos, blockState);
 			
-			itemStorage = new SimpleItemStorage(18 * 9);
+			itemStorage = new SimpleItemStorage(18 * 9).listener(() -> {
+				markDirty();
+			});
 		}
 	}
 
@@ -67,7 +73,9 @@ public abstract class BufferBlockEntity extends ExtendedBlockEntity {
 		public Elite(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ELITE_BUFFER, blockPos, blockState);
 			
-			itemStorage = new SimpleItemStorage(24 * 9);
+			itemStorage = new SimpleItemStorage(24 * 9).listener(() -> {
+				markDirty();
+			});
 		}
 	}
 
@@ -75,7 +83,9 @@ public abstract class BufferBlockEntity extends ExtendedBlockEntity {
 		public Creative(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.CREATIVE_BUFFER, blockPos, blockState);
 			
-			itemStorage = new SimpleItemStorage(6 * 9);
+			itemStorage = new SimpleItemStorage(6 * 9).listener(() -> {
+				markDirty();
+			});
 		}
 
 		@Override

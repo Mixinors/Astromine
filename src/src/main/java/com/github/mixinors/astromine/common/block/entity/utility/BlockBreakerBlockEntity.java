@@ -63,7 +63,9 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Util
 			slot == OUTPUT_SLOT
 		).insertPredicate((variant, slot) ->
 			false
-		).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
+		).listener(() -> {
+			markDirty();
+		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 
 	@Override

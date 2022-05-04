@@ -74,6 +74,8 @@ public abstract class FluidGeneratorBlockEntity extends ExtendedBlockEntity impl
 			if (optionalRecipe.isPresent() && !optionalRecipe.get().matches(fluidStorage.slice(INPUT_SLOT))) {
 				optionalRecipe = Optional.empty();
 			}
+			
+			markDirty();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 		
 		fluidStorage.getStorage(INPUT_SLOT).setCapacity(getFluidStorageSize());

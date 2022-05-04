@@ -62,7 +62,9 @@ public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implement
 			slot == INPUT_SLOT
 		).extractPredicate((stack, slot) ->
 			slot == OUTPUT_SLOT
-		).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
+		).listener(() -> {
+			markDirty();
+		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 	
 	@Override

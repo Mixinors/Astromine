@@ -61,7 +61,9 @@ public class FluidPlacerBlockEntity extends ExtendedBlockEntity implements Fluid
 			false
 		).insertPredicate((variant, slot) ->
 			slot == INPUT_SLOT
-		).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
+		).listener(() -> {
+			markDirty();
+		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 
 	@Override

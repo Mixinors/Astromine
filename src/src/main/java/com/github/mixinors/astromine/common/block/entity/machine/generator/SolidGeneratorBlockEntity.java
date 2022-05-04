@@ -73,7 +73,9 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 			return FuelRegistry.INSTANCE.get(variant.getItem()) != null;
 		}).extractPredicate((variant, slot) ->
 			false
-		).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
+		).listener(() -> {
+			markDirty();
+		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 
 	@Override

@@ -100,6 +100,8 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 			if (optionalRecipe.isPresent() && !recipeMatches(world, optionalRecipe.get(), itemStorage.slice(INPUT_SLOT, OUTPUT_SLOT))) {
 				optionalRecipe = Optional.empty();
 			}
+			
+			markDirty();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 

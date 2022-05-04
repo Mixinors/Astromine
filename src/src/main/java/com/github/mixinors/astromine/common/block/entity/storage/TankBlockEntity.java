@@ -32,8 +32,13 @@ import com.github.mixinors.astromine.common.config.entry.tiered.TankConfig;
 import com.github.mixinors.astromine.common.provider.config.tiered.TankConfigProvider;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemVariantStorage;
 import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
+import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.item.BucketItem;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.block.BlockState;
@@ -77,16 +82,20 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 			slot == FLUID_INPUT_SLOT
 		).extractPredicate((variant, slot) ->
 			slot == FLUID_OUTPUT_SLOT
-		).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
+		).listener(() -> {
+			markDirty();
+		}).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
 		
-		itemStorage = new SimpleItemStorage(3).extractPredicate((variant, slot) ->
-			slot == ITEM_OUTPUT_SLOT_1 || slot == ITEM_OUTPUT_SLOT_2
-		).insertPredicate((variant, slot) -> {
+		itemStorage = new SimpleItemStorage(3).extractPredicate((variant, slot) -> {
+			return slot == ITEM_INPUT_SLOT || slot == ITEM_OUTPUT_SLOT_1 || slot == ITEM_OUTPUT_SLOT_2;
+		}).insertPredicate((variant, slot) -> {
 			if (slot != ITEM_INPUT_SLOT) {
 				return false;
 			}
 			
 			return FluidStorage.ITEM.getProvider(variant.getItem()) != null;
+		}).listener(() -> {
+			markDirty();
 		}).insertSlots(ITEM_INSERT_SLOTS).extractSlots(ITEM_EXTRACT_SLOTS);
 		
 		fluidStorage.getStorage(FLUID_INPUT_SLOT).setCapacity(getFluidStorageSize());
@@ -108,22 +117,29 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 
 		if (world == null || world.isClient || !shouldRun())
 			return;
+
+		var wildItemStorage = itemStorage.getWildProxy();
+		var wildFluidStorage = fluidStorage.getWildProxy();
 		
-		var unloadStack = itemStorage.getStack(ITEM_INPUT_SLOT);
-		var unloadItemStorage = itemStorage.getStorage(ITEM_INPUT_SLOT);
-		var unloadFluidStorage = FluidStorage.ITEM.find(unloadStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(ITEM_INPUT_SLOT)));
+		var itemInputStorage = wildItemStorage.getStorage(ITEM_INPUT_SLOT);
 		
-		var middleItemStorage = itemStorage.getStorage(ITEM_OUTPUT_SLOT_1);
+		var itemOutputStorage1 = wildItemStorage.getStorage(ITEM_OUTPUT_SLOT_1);
+		var itemOutputStorage2 = wildItemStorage.getStorage(ITEM_OUTPUT_SLOT_2);
 		
-		var loadStack = itemStorage.getStack(ITEM_OUTPUT_SLOT_2);
-		var loadFluidStorage = FluidStorage.ITEM.find(loadStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(ITEM_OUTPUT_SLOT_2)));
+		var fluidInputStorage = wildFluidStorage.getStorage(FLUID_INPUT_SLOT);
+		
+		var fluidOutputStorage = wildFluidStorage.getStorage(FLUID_OUTPUT_SLOT);
+		
+		var unloadFluidStorages = FluidStorage.ITEM.find(itemInputStorage.getStack(), ContainerItemContext.ofSingleSlot(itemInputStorage));
+		
+		var loadFluidStorages = FluidStorage.ITEM.find(itemOutputStorage2.getStack(), ContainerItemContext.ofSingleSlot(itemOutputStorage2));
 		
 		try (var transaction = Transaction.openOuter()) {
-			StorageUtil.move(unloadFluidStorage, fluidStorage.getStorage(FLUID_INPUT_SLOT), fluidVariant -> true, FluidConstants.BUCKET, transaction);
-			StorageUtil.move(fluidStorage.getStorage(FLUID_OUTPUT_SLOT), loadFluidStorage, fluidVariant -> true, FluidConstants.BUCKET, transaction);
+			StorageUtil.move(unloadFluidStorages, fluidInputStorage, fluidVariant -> !fluidVariant.isBlank(), FluidConstants.BUCKET, transaction);
+			StorageUtil.move(fluidOutputStorage, loadFluidStorages, fluidVariant -> !fluidVariant.isBlank(), FluidConstants.BUCKET, transaction);
 			
-			StorageUtil.move(unloadItemStorage, middleItemStorage, (variant) -> {
-				var stored = StorageUtil.findStoredResource(unloadFluidStorage, transaction);
+			 StorageUtil.move(itemInputStorage, itemOutputStorage1, (variant) -> {
+				var stored = StorageUtil.findStoredResource(unloadFluidStorages, transaction);
 				return stored == null || stored.isBlank();
 			}, 1, transaction);
 			

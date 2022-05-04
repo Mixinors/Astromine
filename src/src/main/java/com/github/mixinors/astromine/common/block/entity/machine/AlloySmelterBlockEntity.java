@@ -80,6 +80,8 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 			if (optionalRecipe.isPresent() && !optionalRecipe.get().matches(itemStorage.slice(INPUT_SLOT_1, INPUT_SLOT_2, OUTPUT_SLOT))) {
 				optionalRecipe = Optional.empty();
 			}
+			
+			markDirty();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 

@@ -60,9 +60,10 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 
 	private final boolean[] activity = { false, false, false, false, false };
 
-	protected boolean skipInventory;
+	protected boolean syncItemStorage = true;
+	protected boolean syncFluidStorage = true;
 	
-	protected RedstoneControl redstoneControl;
+	protected RedstoneControl redstoneControl = RedstoneControl.WORK_ALWAYS;
 	
 	protected SimpleEnergyStorage energyStorage = null;
 	protected SimpleItemStorage itemStorage = null;
@@ -76,26 +77,6 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	
 	public ExtendedBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type.get(), blockPos, blockState);
-
-		this.skipInventory = true;
-		
-		this.redstoneControl = RedstoneControl.WORK_ALWAYS;
-	}
-	
-	public void doNotSkipInventory() {
-		this.skipInventory = false;
-	}
-	
-	public boolean shouldRun() {
-		var powered = world.getReceivedRedstonePower(getPos()) > 0;
-		var shouldRun = redstoneControl.shouldRun(powered);
-
-		isActive = shouldRun;
-		return shouldRun;
-	}
-
-	public void syncData() {
-		BlockEntityHooks.syncData(this);
 	}
 	
 	@Override
@@ -161,8 +142,6 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 			
 			transaction.commit();
 		}
-		
-		// TODO: Share items, fluids and energy with neighbors.
 
 		if (world.getBlockState(getPos()).contains(BlockWithEntity.ACTIVE)) {
 			if (activity.length - 1 >= 0) {
@@ -264,7 +243,9 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 		
 		writeNbt(nbt);
 		
-		if (hasItemStorage() && getItemStorage().getVersion() != lastItemStorageVersion) {
+		if (syncItemStorage || (hasItemStorage() && getItemStorage().getVersion() != lastItemStorageVersion)) {
+			syncItemStorage = false;
+			
 			lastItemStorageVersion = getItemStorage().getVersion();
 			
 			var itemStorageNbt = new NbtCompound();
@@ -286,7 +267,9 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 			nbt.put("ItemStorageSidings", sidingsNbt);
 		}
 		
-		if (hasFluidStorage() && getFluidStorage().getVersion() != lastFluidStorageVersion) {
+		if (syncFluidStorage || (hasFluidStorage() && getFluidStorage().getVersion() != lastFluidStorageVersion)) {
+			syncItemStorage = false;
+			
 			lastFluidStorageVersion = getFluidStorage().getVersion();
 			
 			var fluidStorageNbt = new NbtCompound();
@@ -316,37 +299,96 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	public Packet<ClientPlayPacketListener> toUpdatePacket() {
 		return BlockEntityUpdateS2CPacket.create(this);
 	}
-
+	
+	/**
+	 * Marks this block entity as requiring a full {@link #itemStorage} sync
+	 * in the next server to client packet.
+	 */
+	public void setSyncItemStorage(boolean syncItemStorage) {
+		this.syncItemStorage = syncItemStorage;
+	}
+	
+	/**
+	 * Marks this block entity as requiring a full {@link #fluidStorage} sync
+	 * in the next server to client packet.
+	 */
+	public void setSyncFluidStorage(boolean syncFluidStorage) {
+		this.syncFluidStorage = syncFluidStorage;
+	}
+	
+	/**
+	 * Asserts whether this block entity should run or not.
+	 */
+	public boolean shouldRun() {
+		var powered = world.getReceivedRedstonePower(getPos()) > 0;
+		var shouldRun = redstoneControl.shouldRun(powered);
+		
+		isActive = shouldRun;
+		
+		return shouldRun;
+	}
+	
+	/**
+	 * Schedules this block entity for server to client sync.
+	 */
+	public void syncData() {
+		BlockEntityHooks.syncData(this);
+	}
+	
+	/**
+	 * Returns this block entity's {@link #redstoneControl}.
+	 */
 	public RedstoneControl getRedstoneControl() {
 		return redstoneControl;
 	}
 	
+	/**
+	 * Sets this block entity's {@link #redstoneControl}.
+	 */
 	public void setRedstoneControl(RedstoneControl redstoneControl) {
 		this.redstoneControl = redstoneControl;
 	}
-
+	
+	/**
+	 * Asserts whether this block entity has a {@link SimpleEnergyStorage} or not.
+	 */
 	public boolean hasEnergyStorage() {
 		return getEnergyStorage() != null;
 	}
-
+	
+	/**
+	 * Asserts whether this block entity has a {@link SimpleFluidStorage} or not.
+	 */
 	public boolean hasFluidStorage() {
 		return getFluidStorage() != null;
 	}
-
+	
+	/**
+	 * Asserts whether this block entity has a {@link SimpleItemStorage} or not.
+	 */
 	public boolean hasItemStorage() {
 		return getItemStorage() != null;
 	}
-
+	
+	/**
+	 * Returns this block entity's {@link SimpleEnergyStorage}.
+	 */
 	@Nullable
 	public SimpleEnergyStorage getEnergyStorage() {
 		return energyStorage;
 	}
 	
+	/**
+	 * Returns this block entity's {@link SimpleFluidStorage}.
+	 */
 	@Nullable
 	public SimpleFluidStorage getFluidStorage() {
 		return fluidStorage;
 	}
-
+	
+	/**
+	 * Returns this block entity's {@link SimpleItemStorage}.
+	 */
 	@Nullable
 	public SimpleItemStorage getItemStorage() {
 		return itemStorage;

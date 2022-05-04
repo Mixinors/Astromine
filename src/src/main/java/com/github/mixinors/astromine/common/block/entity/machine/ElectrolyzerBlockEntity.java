@@ -77,6 +77,8 @@ public abstract class ElectrolyzerBlockEntity extends ExtendedBlockEntity implem
 			if (optionalRecipe.isPresent() && !optionalRecipe.get().matches(fluidStorage.slice(INPUT_SLOT, OUTPUT_SLOT_1, OUTPUT_SLOT_2))) {
 				optionalRecipe = Optional.empty();
 			}
+			
+			markDirty();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 

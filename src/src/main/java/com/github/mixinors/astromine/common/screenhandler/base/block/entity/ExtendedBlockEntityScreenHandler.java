@@ -71,7 +71,9 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 		this.blockEntity = (ExtendedBlockEntity) player.world.getBlockEntity(position);
 
 		if (!player.world.isClient) {
-			blockEntity.doNotSkipInventory();
+			blockEntity.setSyncItemStorage(true);
+			blockEntity.setSyncFluidStorage(true);
+			
 			BlockEntityHooks.syncData(blockEntity);
 		}
 	}

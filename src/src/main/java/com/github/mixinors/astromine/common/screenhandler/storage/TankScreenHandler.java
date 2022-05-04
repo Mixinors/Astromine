@@ -63,7 +63,7 @@ public class TankScreenHandler extends ExtendedBlockEntityScreenHandler {
 		unload.setSize( Size.of(18, 18));
 		
 		var buffer = new SlotWidget(1, blockEntity.getItemStorage());
-		buffer.setPosition(Position.of(unload, -18 - 3, 18 - 3.5F));
+		buffer.setPosition(Position.of(unload, -18 - 3, 18 - 4F));
 		buffer.setSize(Size.of(18, 18));
 		
 		var load = new SlotWidget(2, blockEntity.getItemStorage());

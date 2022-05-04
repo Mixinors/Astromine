@@ -24,9 +24,11 @@
 
 package com.github.mixinors.astromine.common.transfer.storage;
 
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.fabricmc.fabric.api.transfer.v1.transaction.base.SnapshotParticipant;
 import net.minecraft.inventory.Inventory;
@@ -34,6 +36,9 @@ import net.minecraft.item.ItemStack;
 
 import net.fabricmc.fabric.api.transfer.v1.item.base.SingleStackStorage;
 
+/**
+ * <p>A {@link SingleVariantStorage} implementation for {@link ItemVariant}s, backed by an {@link Inventory}.</p>
+ */
 public class SimpleItemVariantStorage  extends SnapshotParticipant<ItemStack> implements SingleSlotStorage<ItemVariant> {
 	private final Inventory inventory;
 	private final int slot;
@@ -45,43 +50,83 @@ public class SimpleItemVariantStorage  extends SnapshotParticipant<ItemStack> im
 		this.slot = slot;
 	}
 	
+	/**
+	 * Returns this storage's stack.
+	 */
 	public ItemStack getStack() {
 		return inventory.getStack(slot);
 	}
 	
+	/**
+	 * Sets this storage's stack.
+	 * @param stack the stack to be set.
+	 */
 	public void setStack(ItemStack stack) {
 		inventory.setStack(slot, stack);
 	}
 	
-	public int getCapacity(ItemVariant itemVariant) {
-		return itemVariant.getItem().getMaxCount();
+	/**
+	 * Returns this storage's capacity for the given variant.
+	 * @param variant the variant.
+	 */
+	public int getCapacity(ItemVariant variant) {
+		return variant.getItem().getMaxCount();
 	}
 	
+	/**
+	 * Asserts whether this storage's variant is blank or not.
+	 */
 	@Override
 	public boolean isResourceBlank() {
 		return getResource().isBlank();
 	}
 	
+	/**
+	 * Returns this storage's variant.
+	 */
 	@Override
 	public ItemVariant getResource() {
 		return ItemVariant.of(getStack());
 	}
 	
+	/**
+	 * Returns this storage's amount.
+	 */
 	@Override
 	public long getAmount() {
 		return getStack().getCount();
 	}
 	
+	/**
+	 * Returns this storage's capacity.
+	 */
 	@Override
 	public final long getCapacity() {
 		return getCapacity(getResource());
 	}
 	
-	@Override
-	public long insert(ItemVariant variant, long maxAmount, TransactionContext transaction) {
-		return insert(variant, maxAmount, transaction, false);
+	/**
+	 * Returns this storage's {@link #outerStorage}.
+	 */
+	public SimpleItemStorage getOuterStorage() {
+		return outerStorage;
 	}
 	
+	/**
+	 * Sets this storage's {@link #outerStorage}
+	 * @param outerStorage the storage to be set.
+	 */
+	public void setOuterStorage(SimpleItemStorage outerStorage) {
+		this.outerStorage = outerStorage;
+	}
+	
+	/**
+	 * <p>An implementation of {@link #insert(ItemVariant, long, TransactionContext)}
+	 * which allows insertion to ignore this storage's {@link #outerStorage}'s insertion predicate if
+	 * <b>force</b> is <code>true</code>.</p>
+	 *
+	 * <p>See original implementation for detailed documentation.</p>
+	 */
 	public long insert(ItemVariant variant, long maxAmount, TransactionContext transaction, boolean force) {
 		StoragePreconditions.notBlankNotNegative(variant, maxAmount);
 		
@@ -120,11 +165,13 @@ public class SimpleItemVariantStorage  extends SnapshotParticipant<ItemStack> im
 		return 0;
 	}
 	
-	@Override
-	public long extract(ItemVariant variant, long maxAmount, TransactionContext transaction) {
-		return extract(variant, maxAmount, transaction, false);
-	}
-	
+	/**
+	 * <p>An implementation of {@link #extract(ItemVariant, long, TransactionContext)}
+	 * which allows extraction to ignore this storage's {@link #outerStorage}'s extraction predicate if
+	 * <b>force</b> is <code>true</code>.</p>
+	 *
+	 * <p>See original implementation for detailed documentation.</p>
+	 */
 	public long extract(ItemVariant variant, long maxAmount, TransactionContext transaction, boolean force) {
 		StoragePreconditions.notBlankNotNegative(variant, maxAmount);
 		
@@ -159,6 +206,16 @@ public class SimpleItemVariantStorage  extends SnapshotParticipant<ItemStack> im
 		return 0;
 	}
 	
+	@Override
+	public long insert(ItemVariant variant, long maxAmount, TransactionContext transaction) {
+		return insert(variant, maxAmount, transaction, false);
+	}
+	
+	@Override
+	public long extract(ItemVariant variant, long maxAmount, TransactionContext transaction) {
+		return extract(variant, maxAmount, transaction, false);
+	}
+	
 	public final ItemStack createSnapshot() {
 		var original = getStack();
 		
@@ -169,13 +226,5 @@ public class SimpleItemVariantStorage  extends SnapshotParticipant<ItemStack> im
 	
 	public final void readSnapshot(ItemStack snapshot) {
 		setStack(snapshot);
-	}
-	
-	public SimpleItemStorage getOuterStorage() {
-		return outerStorage;
-	}
-	
-	public void setOuterStorage(SimpleItemStorage outerStorage) {
-		this.outerStorage = outerStorage;
 	}
 }

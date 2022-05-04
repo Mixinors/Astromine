@@ -63,7 +63,9 @@ public class FluidCollectorBlockEntity extends ExtendedBlockEntity implements Fl
 			slot == OUTPUT_SLOT
 		).insertPredicate((variant, slot) ->
 			false
-		).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
+		).listener(() -> {
+			markDirty();
+		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 		
 		fluidStorage.getStorage(OUTPUT_SLOT).setCapacity(getFluidStorageSize());
 	}

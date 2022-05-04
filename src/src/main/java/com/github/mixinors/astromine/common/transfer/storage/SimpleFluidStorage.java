@@ -43,12 +43,34 @@ import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
+import net.minecraft.util.math.Direction;
 
+/**
+ * <p>A {@link Storage} implementation for {@link FluidVariant}s, backed
+ * by a list of storages, with a proxy system.</p>
+ * <p>A proxy is defined as a {@link Storage} whose insertion and/or extraction
+ * rules are different from this one's, but whose entries should be shared.</p>
+ * <ul>
+ *     <li>The {@link #wildProxy} is a proxy with both <b>insertion</b> and <b>extraction</b>.</li>
+ *     <li>The {@link #extractableProxy} is a proxy with <b>extraction</b> and no <b>insertion</b>.</li>
+ *     <li>The {@link #insertableProxy} is a proxy with <b>insertion</b> and no <b>extraction</b>.</li>
+ * </ul>
+ * <p>Therefore, all insertion and/or extraction rules can be bypassed by using a proxy,
+ * which is useful for internal use of Fabric API's storage utilities.</p>
+ * <p>Serialization and deserialization methods are provided for:</p>
+ * <ul>
+ * 		<li>- {@link NbtCompound} - through {@link #writeToNbt(NbtCompound)} and {@link #readFromNbt(NbtCompound)}.</li>
+ * </ul>
+ */
 public class SimpleFluidStorage implements Storage<FluidVariant> {
 	private int size;
 	private long capacity;
 	
 	private List<Runnable> listeners;
+	
+	private SimpleFluidStorage proxy;
+	
+	private List<SimpleFluidVariantStorage.Proxy> proxyStorages;
 	
 	private List<SimpleFluidVariantStorage> storages;
 	
@@ -64,27 +86,36 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	
 	private long version = 0L;
 	
+	private SimpleFluidStorage wildProxy;
+	
 	private SimpleFluidStorage extractableProxy;
 	private SimpleFluidStorage insertableProxy;
 	
 	private boolean allowsInsertion = true;
 	private boolean allowsExtraction = true;
 	
-	private boolean proxy;
+	public SimpleFluidStorage(int size, long capacity) {
+		this(size, capacity, null);
+	}
 	
-	public SimpleFluidStorage(int size, long capacity, boolean proxy) {
+	public SimpleFluidStorage(int size, long capacity, SimpleFluidStorage proxy) {
 		this.size = size;
 		this.capacity = capacity;
-		this.proxy = proxy;
 		
 		this.listeners = new ArrayList<>();
 		this.storages = new ArrayList<>(size);
-
-		for (var i = 0; i < size; ++i) {
-			var storage = new SimpleFluidVariantStorage(capacity, i);
-			storage.setOuterStorage(this);
-			
-			this.storages.add(i, storage);
+		this.proxyStorages = new ArrayList<>(size);
+		
+		this.proxy = proxy;
+		
+		if (proxy == null) {
+			for (var i = 0; i < size; ++i) {
+				var storage = new SimpleFluidVariantStorage(capacity, i);
+				var storageProxy = new SimpleFluidVariantStorage.Proxy(this, storage);
+				
+				this.storages.add(i, storage);
+				this.proxyStorages.add(i, storageProxy);
+			}
 		}
 		
 		this.sidings = new StorageSiding[6];
@@ -97,108 +128,205 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		updateProxies();
 	}
 	
-	public SimpleFluidStorage(int size, long capacity) {
-		this(size, capacity, false);
-	}
-	
+	/**
+	 * Adds an insertion predicate to this storage, which must
+	 * be satisfied for insertion of resources.
+	 * @param slotInsertPredicate the predicate to be added.
+	 */
 	public SimpleFluidStorage insertPredicate(BiPredicate<FluidVariant, Integer> slotInsertPredicate) {
 		this.insertPredicate = slotInsertPredicate;
 		updateProxies();
 		return this;
 	}
 	
+	/**
+	 * Adds an extraction predicate to this storage, which must
+	 * be satisfied for insertion of resources.
+	 * @param slotExtractPredicate the predicate to be added.
+	 */
 	public SimpleFluidStorage extractPredicate(BiPredicate<FluidVariant, Integer> slotExtractPredicate) {
 		this.extractPredicate = slotExtractPredicate;
 		updateProxies();
 		return this;
 	}
 	
+	/**
+	 * Adds sidings to this storage.
+	 * @param sidings the sidings to be added.
+	 */
 	public SimpleFluidStorage sidings(StorageSiding[] sidings) {
 		this.sidings = sidings;
 		updateProxies();
 		return this;
 	}
 	
+	/**
+	 * Adds insertion slots to this storage.
+	 * @param insertSlots the slots to be added.
+	 */
 	public SimpleFluidStorage insertSlots(int[] insertSlots) {
 		this.insertSlots = insertSlots;
 		updateProxies();
 		return this;
 	}
 	
+	/**
+	 * Adds extraction slots to this storage.
+	 * @param extractSlots the slots to be added.
+	 */
 	public SimpleFluidStorage extractSlots(int[] extractSlots) {
 		this.extractSlots = extractSlots;
 		updateProxies();
 		return this;
 	}
 	
+	/**
+	 * Adds a listener to this storage.
+	 * @param listener the listener to be added.
+	 */
 	public SimpleFluidStorage listener(Runnable listener) {
 		this.listeners.add(listener);
 		updateProxies();
 		return this;
 	}
 	
+	/**
+	 * Returns this storage's {@link #proxy}.
+	 */
+	public SimpleFluidStorage getProxy() {
+		return proxy;
+	}
+	
+	/**
+	 * Returns this storage's proxies.
+	 */
+	public SimpleFluidStorage[] getProxies() {
+		return new SimpleFluidStorage[] { wildProxy, extractableProxy, insertableProxy };
+	}
+	
+	/**
+	 * <p>Returns this storage's {@link #wildProxy}.</p>
+	 *
+	 * <p>This proxy allows <b>insertion</b> and <b>extraction</b>,
+	 * regardless of this storage's {@link #insertPredicate}
+	 * and {@link #extractPredicate}.</p>
+	 */
+	public SimpleFluidStorage getWildProxy() {
+		return wildProxy;
+	}
+	
+	/**
+	 * <p>Returns this storage's {@link #extractableProxy}.</p>
+	 *
+	 * <p>This proxy allows <b>extraction</b> and denies <b>insertion</b>,
+	 * regardless of this storage's {@link #extractPredicate}.</p>
+	 */
 	public SimpleFluidStorage getExtractableProxy() {
 		return extractableProxy;
 	}
 	
+	/**
+	 * <p>Returns this storage's {@link #insertableProxy}.</p>
+	 *
+	 * <p>This proxy allows <b>insertion</b> and denies <b>extraction</b>,
+	 * regardless of this storage's {@link #insertPredicate}.</p>
+	 */
 	public SimpleFluidStorage getInsertableProxy() {
 		return insertableProxy;
 	}
 	
-	public void updateProxies() {
-		if (proxy) return;
-		
-		extractableProxy = new SimpleFluidStorage(size, capacity, true);
-		
-		extractableProxy.allowsInsertion = false;
-		
-		extractableProxy.size = this.size;
-		extractableProxy.listeners = this.listeners;
-		extractableProxy.storages = new ArrayList<>();
-		
-		for (var i = 0; i < storages.size(); ++i) {
-			var proxyStorage = new SimpleFluidVariantStorage(capacity, i);
-			proxyStorage.setOuterStorage(extractableProxy);
-			
-			extractableProxy.storages.add(proxyStorage);
-		}
-		
-		extractableProxy.insertPredicate = this.insertPredicate;
-		extractableProxy.extractPredicate = this.extractPredicate;
-		extractableProxy.sidings = this.sidings;
-		extractableProxy.insertSlots = this.insertSlots;
-		extractableProxy.extractSlots = this.extractSlots;
-		
-		insertableProxy = new SimpleFluidStorage(size, capacity, true);
-		
-		insertableProxy.allowsExtraction = false;
-		
-		insertableProxy.size = this.size;
-		insertableProxy.listeners = this.listeners;
-		insertableProxy.storages = new ArrayList<>();
-		
-		for (var i = 0; i < storages.size(); ++i) {
-			var proxyStorage = new SimpleFluidVariantStorage(capacity, i);
-			proxyStorage.setOuterStorage(insertableProxy);
-			
-			insertableProxy.storages.add(proxyStorage);
-		}
-		
-		insertableProxy.insertPredicate = this.insertPredicate;
-		insertableProxy.extractPredicate = this.extractPredicate;
-		insertableProxy.sidings = this.sidings;
-		insertableProxy.insertSlots = this.insertSlots;
-		insertableProxy.extractSlots = this.extractSlots;
+	/**
+	 * Returns this storage's the storage at the given slot.
+	 * @param slot the slot.
+	 */
+	public SimpleFluidVariantStorage.Proxy getStorage(int slot) {
+		return proxyStorages.get(slot);
 	}
 	
+	/**
+	 * Returns this storage's the variant at the given slot.
+	 * @param slot the slot.
+	 */
+	public FluidVariant getVariant(int slot) {
+		return getStorage(slot).getResource();
+	}
+	
+	/**
+	 * Returns this storage's size.
+	 */
+	public int getSize() {
+		return size;
+	}
+	
+	/**
+	 * Returns this storage's listeners.
+	 */
+	public List<Runnable> getListeners() {
+		return listeners;
+	}
+	
+	/**
+	 * Returns this storage's sidings.
+	 */
+	public StorageSiding[] getSidings() {
+		return sidings;
+	}
+	
+	/**
+	 * Sets this storage's sidings.
+	 * @param sidings the sidings to be set.
+	 */
+	public void setSidings(StorageSiding[] sidings) {
+		this.sidings = sidings;
+	}
+	
+
+	/**
+	 * Updates this storage's version.
+	 */
+	public void incrementVersion() {
+		if (proxy != null) {
+			proxy.incrementVersion();
+		} else {
+			version += 1;
+		}
+	}
+	
+	/**
+	 * Notifies this storage's listeners.
+	 */
+	public void notifyListeners() {
+		if (proxy != null) {
+			proxy.notifyListeners();
+		} else {
+			listeners.forEach(Runnable::run);
+		}
+	}
+	
+	/**
+	 * Asserts whether the given variant can be inserted
+	 * into the given slot, taking this storage's {@link #insertPredicate} into account.
+	 * @param variant the variant to be inserted.
+	 * @param slot the slot from which the variant is to be extracted.
+	 */
 	public boolean canInsert(FluidVariant variant, int slot) {
 		return insertPredicate.test(variant, slot) && allowsInsertion;
 	}
 	
+	/**
+	 * Asserts whether the given variant can be extracted
+	 * from the given slot, taking this storage's {@link #extractPredicate} into account.
+	 * @param variant the variant to be extracted.
+	 * @param slot the slot from which the variant is to be extracted.
+	 */
 	public boolean canExtract(FluidVariant variant, int slot) {
 		return extractPredicate.test(variant, slot) && allowsExtraction;
 	}
 	
+	/**
+	 * Returns a slice of this storage.
+	 * @param slots the slots from which to create the slice.
+	 */
 	public SingleSlotStorage<FluidVariant>[] slice(int... slots) {
 		var storages = new SingleSlotStorage[slots.length];
 		
@@ -209,22 +337,41 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		
 		return storages;
 	}
-
-	@Override
-	public long insert(FluidVariant resource, long maxAmount, TransactionContext transaction) {
-		return insert(resource, maxAmount, transaction, false);
-	}
-
+	
+	/**
+	 * <p>An implementation of {@link #insert(FluidVariant, long, TransactionContext)}
+	 * which allows insertion to ignore this storage's {@link #insertPredicate} if
+	 * <b>force</b> is <code>true</code>.</p>
+	 *
+	 * <p>See original implementation for detailed documentation.</p>
+	 */
 	public long insert(FluidVariant resource, long maxAmount, TransactionContext transaction, boolean force) {
 		StoragePreconditions.notBlankNotNegative(resource, maxAmount);
 		
 		if (!allowsInsertion) return 0;
 		
 		transaction.addCloseCallback((($, result) -> {
-			if (result.wasCommitted()) {
+			if (proxy == null && result.wasCommitted()) {
 				notifyListeners();
 				
 				incrementVersion();
+			} else if (result.wasCommitted()) {
+				var proxies = (SimpleFluidStorage[]) null;
+				
+				if (proxy.getProxy() != null) {
+					proxies = proxy.getProxy().getProxies();
+				} else {
+					proxies = proxy.getProxies();
+				}
+				
+				for (var proxy : proxies) {
+					for (var i = 0; i < proxy.getSize(); ++i) {
+						var storage = proxy.getStorage(i);
+						
+						storage.amount = storage.getProxyStorage().amount;
+						storage.variant = storage.getProxyStorage().variant;
+					}
+				}
 			}
 		}));
 		
@@ -233,7 +380,7 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		for (var slot : insertSlots) {
 			if (!insertPredicate.test(resource, slot) && !force) continue;
 			
-			var storage = storages.get(slot);
+			var storage = proxyStorages.get(slot);
 			
 			amount += storage.insert(resource, maxAmount - amount, transaction, force);
 			
@@ -242,22 +389,41 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		
 		return amount;
 	}
-
-	@Override
-	public long extract(FluidVariant resource, long maxAmount, TransactionContext transaction) {
-		return extract(resource, maxAmount, transaction, false);
-	}
-
+	
+	/**
+	 * <p>An implementation of {@link #extract(FluidVariant, long, TransactionContext)}
+	 * which allows extraction to ignore this storage's {@link #extractPredicate} if
+	 * <b>force</b> is <code>true</code>.</p>
+	 *
+	 * <p>See original implementation for detailed documentation.</p>
+	 */
 	public long extract(FluidVariant resource, long maxAmount, TransactionContext transaction, boolean force) {
 		StoragePreconditions.notBlankNotNegative(resource, maxAmount);
 		
 		if (!allowsExtraction) return 0;
 		
 		transaction.addCloseCallback((($, result) -> {
-			if (result.wasCommitted()) {
+			if (proxy == null && result.wasCommitted()) {
 				notifyListeners();
 				
 				incrementVersion();
+			} else if (result.wasCommitted()) {
+				var proxies = (SimpleFluidStorage[]) null;
+				
+				if (proxy.getProxy() != null) {
+					proxies = proxy.getProxy().getProxies();
+				} else {
+					proxies = proxy.getProxies();
+				}
+				
+				for (var proxy : proxies) {
+					for (var i = 0; i < proxy.getSize(); ++i) {
+						var storage = proxy.getStorage(i);
+						
+						storage.amount = storage.getProxyStorage().amount;
+						storage.variant = storage.getProxyStorage().variant;
+					}
+				}
 			}
 		}));
 		
@@ -266,7 +432,7 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		for (var slot : extractSlots) {
 			if (!extractPredicate.test(resource, slot) && !force) continue;
 			
-			var storage = storages.get(slot);
+			var storage = proxyStorages.get(slot);
 			
 			amount += storage.extract(resource, maxAmount - amount, transaction, force);
 			
@@ -276,9 +442,156 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		return amount;
 	}
 	
+	/**
+	 * Serializes this storage to the given {@link NbtCompound}.
+	 * @param nbt the {@link NbtCompound}.
+	 */
+	public void writeToNbt(NbtCompound nbt) {
+		if (proxy == null) {
+			var sidingsNbt = new NbtCompound();
+			
+			for (var i = 0; i < sidings.length; ++i) {
+				sidingsNbt.putInt(String.valueOf(i), sidings[i].ordinal());
+			}
+			
+			nbt.put("Sidings", sidingsNbt);
+			
+			var storagesNbt = new NbtCompound();
+			
+			for (var i = 0; i < size; ++i) {
+				var storageNbt = new NbtCompound();
+				
+				storageNbt.putLong("Amount", storages.get(i).getAmount());
+				storageNbt.put("Variant", storages.get(i).getResource().toNbt());
+				
+				storagesNbt.put(String.valueOf(i), storageNbt);
+			}
+			
+			nbt.put("Storages", storagesNbt);
+		}
+	}
+	
+	/**
+	 * Deserializes this storage from the given {@link NbtCompound}.
+	 * @param nbt the {@link NbtCompound}.
+	 */
+	public void readFromNbt(NbtCompound nbt) {
+		if (proxy == null) {
+			var sidingsNbt = nbt.getCompound("Sidings");
+			
+			for (var i = 0; i < sidings.length; ++i) {
+				sidings[i] = StorageSiding.values()[sidingsNbt.getInt(String.valueOf(i))];
+			}
+			
+			var storagesNbt = nbt.getCompound("Storages");
+			
+			for (var i = 0; i < size; ++i) {
+				var storageNbt = storagesNbt.getCompound(String.valueOf(i));
+				
+				var amount = storageNbt.getLong("Amount");
+				var variant = FluidVariant.fromNbt(storageNbt.getCompound("Variant"));
+				
+				storages.get(i).setAmount(amount);
+				storages.get(i).setVariant(variant);
+			}
+			
+			updateProxies();
+		}
+	}
+	
+	public void updateProxies() {
+		if (proxy != null) return;
+		
+		wildProxy = new SimpleFluidStorage(size, capacity, this);
+		
+		wildProxy.allowsInsertion = true;
+		wildProxy.allowsExtraction = true;
+		
+		wildProxy.size = this.size;
+		wildProxy.listeners = this.listeners;
+		wildProxy.proxyStorages = new ArrayList<>();
+		
+		for (var i = 0; i < proxyStorages.size(); ++ i) {
+			var proxyStorage = new SimpleFluidVariantStorage.Proxy(wildProxy, storages.get(i));
+			
+			wildProxy.proxyStorages.add(i, proxyStorage);
+		}
+		
+		wildProxy.insertPredicate = ($, $$) -> true;
+		wildProxy.extractPredicate = ($, $$) -> true;
+		
+		var wildProxySidings = new StorageSiding[6];
+		
+		for (var direction : Direction.values()) {
+			wildProxySidings[direction.ordinal()] = StorageSiding.INSERT_EXTRACT;
+		}
+		
+		wildProxy.sidings = wildProxySidings;
+		
+		var wildProxySlots = new int[insertSlots.length + extractSlots.length];
+		
+		for (var i = 0; i < insertSlots.length; ++i) {
+			wildProxySlots[i] = insertSlots[i];
+		}
+		
+		for (var i = 0; i < extractSlots.length; ++i) {
+			wildProxySlots[i + insertSlots.length] = extractSlots[i];
+		}
+		
+		wildProxy.insertSlots = wildProxySlots;
+		wildProxy.extractSlots = wildProxySlots;
+		
+		extractableProxy = new SimpleFluidStorage(size, capacity, this);
+		
+		extractableProxy.allowsInsertion = false;
+		
+		extractableProxy.size = this.size;
+		extractableProxy.listeners = this.listeners;
+		extractableProxy.proxyStorages = new ArrayList<>();
+		
+		for (var i = 0; i < proxyStorages.size(); ++i) {
+			var proxyStorage = new SimpleFluidVariantStorage.Proxy(extractableProxy, storages.get(i));
+			
+			extractableProxy.proxyStorages.add(i, proxyStorage);
+		}
+		
+		extractableProxy.insertPredicate = this.insertPredicate;
+		extractableProxy.extractPredicate = this.extractPredicate;
+		extractableProxy.sidings = this.sidings;
+		extractableProxy.insertSlots = this.insertSlots;
+		extractableProxy.extractSlots = this.extractSlots;
+		
+		insertableProxy = new SimpleFluidStorage(size, capacity, this);
+		
+		insertableProxy.allowsExtraction = false;
+		
+		insertableProxy.size = this.size;
+		insertableProxy.listeners = this.listeners;
+		insertableProxy.proxyStorages = new ArrayList<>();
+		
+		for (var i = 0; i < proxyStorages.size(); ++i) {
+			var proxyStorage = new SimpleFluidVariantStorage.Proxy(insertableProxy, storages.get(i));
+			
+			insertableProxy.proxyStorages.add(i, proxyStorage);
+		}
+		
+		insertableProxy.insertPredicate = this.insertPredicate;
+		insertableProxy.extractPredicate = this.extractPredicate;
+		insertableProxy.sidings = this.sidings;
+		insertableProxy.insertSlots = this.insertSlots;
+		insertableProxy.extractSlots = this.extractSlots;
+	}
+	
+
+
 	@Override
-	public Iterator<StorageView<FluidVariant>> iterator(TransactionContext transaction) {
-		return (Iterator) storages.iterator();
+	public long insert(FluidVariant resource, long maxAmount, TransactionContext transaction) {
+		return insert(resource, maxAmount, transaction, false);
+	}
+
+	@Override
+	public long extract(FluidVariant resource, long maxAmount, TransactionContext transaction) {
+		return extract(resource, maxAmount, transaction, false);
 	}
 	
 	@Override
@@ -291,89 +604,19 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		return extractSlots.length > 0 && allowsExtraction;
 	}
 	
-	public SimpleFluidVariantStorage getStorage(int index) {
-		return (SimpleFluidVariantStorage) storages.get(index);
-	}
-	
-	public FluidVariant getVariant(int index) {
-		return getStorage(index).getResource();
-	}
-	
-	public int getSize() {
-		return size;
-	}
-	
-	public List<Runnable> getListeners() {
-		return listeners;
-	}
-	
-	public StorageSiding[] getSidings() {
-		return sidings;
-	}
-	
-	public void setSidings(StorageSiding[] sidings) {
-		this.sidings = sidings;
-	}
-	
-	public void writeToNbt(NbtCompound nbt) {
-		var sidingsNbt = new NbtCompound();
-		
-		for (var i = 0; i < sidings.length; ++i) {
-			sidingsNbt.putInt(String.valueOf(i), sidings[i].ordinal());
-		}
-		
-		nbt.put("Sidings", sidingsNbt);
-		
-		var storagesNbt = new NbtCompound();
-		
-		for (var i = 0; i < size; ++i) {
-			var storageNbt = new NbtCompound();
-			
-			storageNbt.putLong("Amount", getStorage(i).getAmount());
-			storageNbt.put("Variant", getStorage(i).getResource().toNbt());
-			
-			storagesNbt.put(String.valueOf(i), storageNbt);
-		}
-		
-		nbt.put("Storages", storagesNbt);
-	}
-	
-	public void readFromNbt(NbtCompound nbt) {
-		var sidingsNbt = nbt.getCompound("Sidings");
-		
-		for (var i = 0; i < sidings.length; ++i) {
-			sidings[i] = StorageSiding.values()[sidingsNbt.getInt(String.valueOf(i))];
-		}
-		
-		var storagesNbt = nbt.getCompound("Storages");
-		
-		for (var i = 0; i < size; ++i) {
-			var storageNbt = storagesNbt.getCompound(String.valueOf(i));
-			
-			var amount = storageNbt.getLong("Amount");
-			var variant = FluidVariant.fromNbt(storageNbt.getCompound("Variant"));
-			
-			getStorage(i).amount = amount;
-			getStorage(i).variant = variant;
+	@Override
+	public long getVersion() {
+		if (proxy != null) {
+			return proxy.getVersion();
+		} else {
+			return version;
 		}
 	}
 	
 	@Override
-	public long getVersion() {
-		return version;
+	public Iterator<StorageView<FluidVariant>> iterator(TransactionContext transaction) {
+		return (Iterator) proxyStorages.iterator();
 	}
-	
-	public void incrementVersion() {
-		version += 1;
-	}
-
-	public void notifyListeners() {
-		listeners.forEach(Runnable::run);
-	}
-	
-	/**
-	 * {@link Object}
-	 */
 	
 	@Override
 	public boolean equals(Object object) {
@@ -381,11 +624,11 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 
 		if (!(object instanceof SimpleFluidStorage component)) return false;
 		
-		return Objects.equals(storages, component.storages);
+		return Objects.equals(proxyStorages, component.proxyStorages);
 	}
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(storages);
+		return Objects.hash(proxyStorages);
 	}
 }

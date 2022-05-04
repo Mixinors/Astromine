@@ -63,6 +63,8 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Utili
 			}
 			
 			return variant.getItem() instanceof BlockItem;
+		}).listener(() -> {
+			markDirty();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
 

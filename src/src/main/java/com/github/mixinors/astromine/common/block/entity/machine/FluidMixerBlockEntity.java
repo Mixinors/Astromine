@@ -78,6 +78,8 @@ public abstract class FluidMixerBlockEntity extends ExtendedBlockEntity implemen
 			if (optionalRecipe.isPresent() && !optionalRecipe.get().matches(fluidStorage.slice(INPUT_SLOT_1, INPUT_SLOT_2, OUTPUT_SLOT))) {
 				optionalRecipe = Optional.empty();
 			}
+			
+			markDirty();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 		
 		fluidStorage.getStorage(INPUT_SLOT_1).setCapacity(getFluidStorageSize());

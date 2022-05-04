@@ -24,9 +24,11 @@
 
 package com.github.mixinors.astromine.common.transfer.storage;
 
+import com.github.mixinors.astromine.common.transfer.RedstoneControl;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 
 import com.github.mixinors.astromine.registry.common.AMItems;
+import com.google.common.base.Predicates;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
@@ -37,17 +39,37 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.util.math.Direction;
 
 import java.util.*;
 import java.util.function.BiPredicate;
 import java.util.stream.IntStream;
 
+/**
+ * <p>A {@link Storage} implementation for {@link ItemVariant}s, backed
+ * by a list of storages, with a proxy system.</p>
+ * <p>A proxy is defined as a {@link Storage} whose insertion and/or extraction
+ * rules are different from this one's, but whose entries should be shared.</p>
+ * <ul>
+ *     <li>The {@link #wildProxy} is a proxy with both <b>insertion</b> and <b>extraction</b>.</li>
+ *     <li>The {@link #extractableProxy} is a proxy with <b>extraction</b> and no <b>insertion</b>.</li>
+ *     <li>The {@link #insertableProxy} is a proxy with <b>insertion</b> and no <b>extraction</b>.</li>
+ * </ul>
+ * <p>Therefore, all insertion and/or extraction rules can be bypassed by using a proxy,
+ * which is useful for internal use of Fabric API's storage utilities.</p>
+ * <p>Serialization and deserialization methods are provided for:</p>
+ * <ul>
+ * 		<li>- {@link NbtCompound} - through {@link #writeToNbt(NbtCompound)} and {@link #readFromNbt(NbtCompound)}.</li>
+ * </ul>
+ */
 public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	private int size;
 	
 	private List<Runnable> listeners;
 	
 	private List<ItemStack> stacks;
+	
+	private SimpleItemStorage proxy;
 	
 	private List<SimpleItemVariantStorage> storages;
 	
@@ -63,15 +85,27 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	
 	private long version = 0L;
 	
+	private SimpleItemStorage wildProxy;
+	
 	private SimpleItemStorage extractableProxy;
 	private SimpleItemStorage insertableProxy;
 	
 	private boolean allowsInsertion = true;
 	private boolean allowsExtraction = true;
 	
-	private boolean proxy;
+	public SimpleItemStorage(int size) {
+		this(size, null);
+	}
 	
-	public SimpleItemStorage(int size, boolean proxy) {
+	public SimpleItemStorage(ItemStack... stacks) {
+		this(stacks.length, null);
+		
+		for (var i = 0; i < stacks.length; ++i) {
+			this.stacks.set(i, stacks[i]);
+		}
+	}
+	
+	public SimpleItemStorage(int size, SimpleItemStorage proxy) {
 		this.size = size;
 		this.proxy = proxy;
 		
@@ -98,120 +132,196 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		updateProxies();
 	}
 	
-	public SimpleItemStorage(int size) {
-		this(size, false);
-	}
-	
-	public SimpleItemStorage(ItemStack... stacks) {
-		this(stacks.length, false);
-
-		for (var i = 0; i < stacks.length; ++i) {
-			this.stacks.set(i, stacks[i]);
-		}
-		
-		updateProxies();
-	}
-	
+	/**
+	 * Adds an insertion predicate to this storage, which must
+	 * be satisfied for insertion of resources.
+	 * @param slotInsertPredicate the predicate to be added.
+	 */
 	public SimpleItemStorage insertPredicate(BiPredicate<ItemVariant, Integer> slotInsertPredicate) {
 		this.insertPredicate = slotInsertPredicate;
 		updateProxies();
 		return this;
 	}
 	
+	/**
+	 * Adds an extraction predicate to this storage, which must
+	 * be satisfied for insertion of resources.
+	 * @param slotExtractPredicate the predicate to be added.
+	 */
 	public SimpleItemStorage extractPredicate(BiPredicate<ItemVariant, Integer> slotExtractPredicate) {
 		this.extractPredicate = slotExtractPredicate;
 		updateProxies();
 		return this;
 	}
 	
+	/**
+	 * Adds sidings to this storage.
+	 * @param sidings the sidings to be added.
+	 */
 	public SimpleItemStorage sidings(StorageSiding[] sidings) {
 		this.sidings = sidings;
 		updateProxies();
 		return this;
 	}
 	
+	/**
+	 * Adds insertion slots to this storage.
+	 * @param insertSlots the slots to be added.
+	 */
 	public SimpleItemStorage insertSlots(int[] insertSlots) {
 		this.insertSlots = insertSlots;
 		updateProxies();
 		return this;
 	}
 	
+	/**
+	 * Adds extraction slots to this storage.
+	 * @param extractSlots the slots to be added.
+	 */
 	public SimpleItemStorage extractSlots(int[] extractSlots) {
 		this.extractSlots = extractSlots;
 		updateProxies();
 		return this;
 	}
 	
+	/**
+	 * Adds a listener to this storage.
+	 * @param listener the listener to be added.
+	 */
 	public SimpleItemStorage listener(Runnable listener) {
 		this.listeners.add(listener);
 		updateProxies();
 		return this;
 	}
 	
+	/**
+	 * Returns this storage's {@link #proxy}.
+	 */
+	public SimpleItemStorage getProxy() {
+		return proxy;
+	}
+	
+	/**
+	 * Returns this storage's proxies.
+	 */
+	public SimpleItemStorage[] getProxies() {
+		return new SimpleItemStorage[] { wildProxy, extractableProxy, insertableProxy };
+	}
+	
+	/**
+	 * <p>Returns this storage's {@link #wildProxy}.</p>
+	 *
+	 * <p>This proxy allows <b>insertion</b> and <b>extraction</b>,
+	 * regardless of this storage's {@link #insertPredicate}
+	 * and {@link #extractPredicate}.</p>
+	 */
+	public SimpleItemStorage getWildProxy() {
+		return wildProxy;
+	}
+	
+	/**
+	 * <p>Returns this storage's {@link #extractableProxy}.</p>
+	 *
+	 * <p>This proxy allows <b>extraction</b> and denies <b>insertion</b>,
+	 * regardless of this storage's {@link #extractPredicate}.</p>
+	 */
 	public SimpleItemStorage getExtractableProxy() {
 		return extractableProxy;
 	}
 	
+	/**
+	 * <p>Returns this storage's {@link #insertableProxy}.</p>
+	 *
+	 * <p>This proxy allows <b>insertion</b> and denies <b>extraction</b>,
+	 * regardless of this storage's {@link #insertPredicate}.</p>
+	 */
 	public SimpleItemStorage getInsertableProxy() {
 		return insertableProxy;
 	}
 	
-	public void updateProxies() {
-		if (proxy) return;
-		
-		extractableProxy = new SimpleItemStorage(size, true);
-		
-		extractableProxy.allowsInsertion = false;
-		
-		extractableProxy.size = this.size;
-		extractableProxy.listeners = this.listeners;
-		extractableProxy.stacks = this.stacks;
-		extractableProxy.storages = new ArrayList<>();
-		
-		for (var i = 0; i < storages.size(); ++i) {
-			var proxyStorage = new SimpleItemVariantStorage(this, i);
-			proxyStorage.setOuterStorage(extractableProxy);
-			
-			extractableProxy.storages.add(proxyStorage);
-		}
-		
-		extractableProxy.insertPredicate = this.insertPredicate;
-		extractableProxy.extractPredicate = this.extractPredicate;
-		extractableProxy.sidings = this.sidings;
-		extractableProxy.insertSlots = this.insertSlots;
-		extractableProxy.extractSlots = this.extractSlots;
-		
-		insertableProxy = new SimpleItemStorage(size, true);
-		
-		insertableProxy.allowsExtraction = false;
-		
-		insertableProxy.size = this.size;
-		insertableProxy.listeners = this.listeners;
-		insertableProxy.stacks = this.stacks;
-		insertableProxy.storages = new ArrayList<>();
-		
-		for (var i = 0; i < storages.size(); ++i) {
-			var proxyStorage = new SimpleItemVariantStorage(this, i);
-			proxyStorage.setOuterStorage(insertableProxy);
-			
-			insertableProxy.storages.add(proxyStorage);
-		}
-		
-		insertableProxy.insertPredicate = this.insertPredicate;
-		insertableProxy.extractPredicate = this.extractPredicate;
-		insertableProxy.sidings = this.sidings;
-		insertableProxy.insertSlots = this.insertSlots;
-		insertableProxy.extractSlots = this.extractSlots;
+	/**
+	 * Returns this storage's the storage at the given slot.
+	 * @param slot the slot.
+	 */
+	public SimpleItemVariantStorage getStorage(int slot) {
+		return storages.get(slot);
 	}
 	
+	/**
+	 * Returns this storage's the variant at the given slot.
+	 * @param slot the slot.
+	 */
+	public ItemVariant getVariant(int slot) {
+		return getStorage(slot).getResource();
+	}
+	
+	/**
+	 * Returns this storage's size.
+	 */
+	public int getSize() {
+		return size;
+	}
+	
+	/**
+	 * Returns this storage's listeners.
+	 */
+	public List<Runnable> getListeners() {
+		return listeners;
+	}
+	
+	/**
+	 * Returns this storage's sidings.
+	 */
+	public StorageSiding[] getSidings() {
+		return sidings;
+	}
+	
+	/**
+	 * Sets this storage's sidings.
+	 * @param sidings the sidings to be set.
+	 */
+	public void setSidings(StorageSiding[] sidings) {
+		this.sidings = sidings;
+	}
+	
+	/**
+	 * Updates this storage's version.
+	 */
+	public void incrementVersion() {
+		version += 1;
+	}
+	
+	/**
+	 * Notifies this storage's listeners.
+	 */
+	public void notifyListeners() {
+		listeners.forEach(Runnable::run);
+	}
+	
+	/**
+	 * Asserts whether the given variant can be inserted
+	 * into the given slot, taking this storage's {@link #insertPredicate} into account.
+	 * @param variant the variant to be inserted.
+	 * @param slot the slot from which the variant is to be extracted.
+	 */
 	public boolean canInsert(ItemVariant variant, int slot) {
 		return insertPredicate.test(variant, slot) && allowsInsertion;
 	}
 	
+	/**
+	 * Asserts whether the given variant can be extracted
+	 * from the given slot, taking this storage's {@link #extractPredicate} into account.
+	 * @param variant the variant to be extracted.
+	 * @param slot the slot from which the variant is to be extracted.
+	 */
 	public boolean canExtract(ItemVariant variant, int slot) {
 		return extractPredicate.test(variant, slot) && allowsExtraction;
 	}
 	
+	/**
+	 * Returns a slice of this storage.
+	 * @param slots the slots from which to create the slice.
+	 */
 	public SingleSlotStorage<ItemVariant>[] slice(int... slots) {
 		var storages = new SingleSlotStorage[slots.length];
 		
@@ -223,11 +333,13 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		return storages;
 	}
 	
-	@Override
-	public long insert(ItemVariant variant, long maxAmount, TransactionContext transaction) {
-		return insert(variant, maxAmount, transaction, false);
-	}
-	
+	/**
+	 * <p>An implementation of {@link #insert(ItemVariant, long, TransactionContext)}
+	 * which allows insertion to ignore this storage's {@link #insertPredicate} if
+	 * <b>force</b> is <code>true</code>.</p>
+	 *
+	 * <p>See original implementation for detailed documentation.</p>
+	 */
 	public long insert(ItemVariant variant, long maxAmount, TransactionContext transaction, boolean force) {
 		StoragePreconditions.notBlankNotNegative(variant, maxAmount);
 		
@@ -256,11 +368,13 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		return amount;
 	}
 	
-	@Override
-	public long extract(ItemVariant variant, long maxAmount, TransactionContext transaction) {
-		return extract(variant, maxAmount, transaction, false);
-	}
-	
+	/**
+	 * <p>An implementation of {@link #extract(ItemVariant, long, TransactionContext)}
+	 * which allows extraction to ignore this storage's {@link #extractPredicate} if
+	 * <b>force</b> is <code>true</code>.</p>
+	 *
+	 * <p>See original implementation for detailed documentation.</p>
+	 */
 	public long extract(ItemVariant variant, long maxAmount, TransactionContext transaction, boolean force) {
 		StoragePreconditions.notBlankNotNegative(variant, maxAmount);
 		
@@ -289,9 +403,149 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		return amount;
 	}
 	
+	/**
+	 * Serializes this storage to the given {@link NbtCompound}.
+	 * @param nbt the {@link NbtCompound}.
+	 */
+	public void writeToNbt(NbtCompound nbt) {
+		var sidingsNbt = new NbtCompound();
+		
+		for (var i = 0; i < sidings.length; ++i) {
+			sidingsNbt.putInt(String.valueOf(i), sidings[i].ordinal());
+		}
+		
+		nbt.put("Sidings", sidingsNbt);
+		
+		var storagesNbt = new NbtCompound();
+		
+		for (var i = 0; i < size; ++i) {
+			var storageNbt = new NbtCompound();
+			
+			storageNbt.putLong("Amount", getStorage(i).getAmount());
+			storageNbt.put("Variant", getStorage(i).getResource().toNbt());
+			
+			storagesNbt.put(String.valueOf(i), storageNbt);
+		}
+		
+		nbt.put("Storages", storagesNbt);
+	}
+	
+	/**
+	 * Deserializes this storage from the given {@link NbtCompound}.
+	 * @param nbt the {@link NbtCompound}.
+	 */
+	public void readFromNbt(NbtCompound nbt) {
+		var sidingsNbt = nbt.getCompound("Sidings");
+		
+		for (var i = 0; i < sidings.length; ++i) {
+			sidings[i] = StorageSiding.values()[sidingsNbt.getInt(String.valueOf(i))];
+		}
+		
+		var storagesNbt = nbt.getCompound("Storages");
+		
+		for (var i = 0; i < size; ++i) {
+			var storageNbt = storagesNbt.getCompound(String.valueOf(i));
+			
+			var amount = storageNbt.getLong("Amount");
+			var variant = ItemVariant.fromNbt(storageNbt.getCompound("Variant"));
+			
+			setStack(i, variant.toStack((int) amount));
+		}
+	}
+	
+	private void updateProxies() {
+		if (proxy != null) return;
+		
+		wildProxy = new SimpleItemStorage(size, this);
+		
+		wildProxy.allowsInsertion = true;
+		wildProxy.allowsExtraction = true;
+		
+		wildProxy.size = this.size;
+		wildProxy.listeners = this.listeners;
+		wildProxy.stacks = this.stacks;
+		wildProxy.storages = new ArrayList<>();
+		
+		for (var i = 0; i < storages.size(); ++ i) {
+			var proxyStorage = new SimpleItemVariantStorage(this, i);
+			proxyStorage.setOuterStorage(wildProxy);
+			
+			wildProxy.storages.add(proxyStorage);
+		}
+		
+		wildProxy.insertPredicate = ($, $$) -> true;
+		wildProxy.extractPredicate = ($, $$) -> true;
+		
+		var wildProxySidings = new StorageSiding[6];
+		
+		for (var direction : Direction.values()) {
+			wildProxySidings[direction.ordinal()] = StorageSiding.INSERT_EXTRACT;
+		}
+		
+		wildProxy.sidings = wildProxySidings;
+		
+		var wildProxySlots = new int[insertSlots.length + extractSlots.length];
+		
+		System.arraycopy(insertSlots, 0, wildProxySlots, 0, insertSlots.length);
+		
+		System.arraycopy(extractSlots, 0, wildProxySlots, insertSlots.length, extractSlots.length);
+		
+		wildProxy.insertSlots = wildProxySlots;
+		wildProxy.extractSlots = wildProxySlots;
+		
+		extractableProxy = new SimpleItemStorage(size, this);
+		
+		extractableProxy.allowsInsertion = false;
+		
+		extractableProxy.size = this.size;
+		extractableProxy.listeners = this.listeners;
+		extractableProxy.stacks = this.stacks;
+		extractableProxy.storages = new ArrayList<>();
+		
+		for (var i = 0; i < storages.size(); ++i) {
+			var proxyStorage = new SimpleItemVariantStorage(this, i);
+			proxyStorage.setOuterStorage(extractableProxy);
+			
+			extractableProxy.storages.add(proxyStorage);
+		}
+		
+		extractableProxy.insertPredicate = this.insertPredicate;
+		extractableProxy.extractPredicate = this.extractPredicate;
+		extractableProxy.sidings = this.sidings;
+		extractableProxy.insertSlots = this.insertSlots;
+		extractableProxy.extractSlots = this.extractSlots;
+		
+		insertableProxy = new SimpleItemStorage(size, this);
+		
+		insertableProxy.allowsExtraction = false;
+		
+		insertableProxy.size = this.size;
+		insertableProxy.listeners = this.listeners;
+		insertableProxy.stacks = this.stacks;
+		insertableProxy.storages = new ArrayList<>();
+		
+		for (var i = 0; i < storages.size(); ++i) {
+			var proxyStorage = new SimpleItemVariantStorage(this, i);
+			proxyStorage.setOuterStorage(insertableProxy);
+			
+			insertableProxy.storages.add(proxyStorage);
+		}
+		
+		insertableProxy.insertPredicate = this.insertPredicate;
+		insertableProxy.extractPredicate = this.extractPredicate;
+		insertableProxy.sidings = this.sidings;
+		insertableProxy.insertSlots = this.insertSlots;
+		insertableProxy.extractSlots = this.extractSlots;
+	}
+	
 	@Override
-	public Iterator<StorageView<ItemVariant>> iterator(TransactionContext transaction) {
-		return (Iterator) storages.iterator();
+	public long insert(ItemVariant variant, long maxAmount, TransactionContext transaction) {
+		return insert(variant, maxAmount, transaction, false);
+	}
+	
+	@Override
+	public long extract(ItemVariant variant, long maxAmount, TransactionContext transaction) {
+		return extract(variant, maxAmount, transaction, false);
 	}
 	
 	@Override
@@ -304,33 +558,15 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		return extractSlots.length > 0 && allowsExtraction;
 	}
 	
-	public SimpleItemVariantStorage getStorage(int index) {
-		return (SimpleItemVariantStorage) storages.get(index);
+	@Override
+	public long getVersion() {
+		return version;
 	}
 	
-	public ItemVariant getVariant(int index) {
-		return getStorage(index).getResource();
+	@Override
+	public Iterator<StorageView<ItemVariant>> iterator(TransactionContext transaction) {
+		return (Iterator) storages.iterator();
 	}
-	
-	public int getSize() {
-		return size;
-	}
-	
-	public List<Runnable> getListeners() {
-		return listeners;
-	}
-	
-	public StorageSiding[] getSidings() {
-		return sidings;
-	}
-	
-	public void setSidings(StorageSiding[] sidings) {
-		this.sidings = sidings;
-	}
-	
-	/**
-	 * {@link Inventory}
-	 */
 	
 	@Override
 	public int size() {
@@ -411,69 +647,6 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 
 		incrementVersion();
 	}
-	
-	public void writeToNbt(NbtCompound nbt) {
-		var sidingsNbt = new NbtCompound();
-		
-		for (var i = 0; i < sidings.length; ++i) {
-			sidingsNbt.putInt(String.valueOf(i), sidings[i].ordinal());
-		}
-		
-		nbt.put("Sidings", sidingsNbt);
-		
-		var storagesNbt = new NbtCompound();
-		
-		for (var i = 0; i < size; ++i) {
-			var storageNbt = new NbtCompound();
-			
-			storageNbt.putLong("Amount", getStorage(i).getAmount());
-			storageNbt.put("Variant", getStorage(i).getResource().toNbt());
-			
-			if (getStorage(i).getStack().getItem() == AMItems.ADVANCED_DRILL.get()) {
-				var f = 0;
-			}
-			
-			storagesNbt.put(String.valueOf(i), storageNbt);
-		}
-		
-		nbt.put("Storages", storagesNbt);
-	}
-	
-	public void readFromNbt(NbtCompound nbt) {
-		var sidingsNbt = nbt.getCompound("Sidings");
-		
-		for (var i = 0; i < sidings.length; ++i) {
-			sidings[i] = StorageSiding.values()[sidingsNbt.getInt(String.valueOf(i))];
-		}
-		
-		var storagesNbt = nbt.getCompound("Storages");
-		
-		for (var i = 0; i < size; ++i) {
-			var storageNbt = storagesNbt.getCompound(String.valueOf(i));
-			
-			var amount = storageNbt.getLong("Amount");
-			var variant = ItemVariant.fromNbt(storageNbt.getCompound("Variant"));
-			
-			setStack(i, variant.toStack((int) amount));
-		}
-	}
-	
-	@Override
-	public long getVersion() {
-		return version;
-	}
-	
-	public void incrementVersion() {
-		version += 1;
-	}
-
-	public void notifyListeners() {
-		listeners.forEach(Runnable::run);
-	}
-
-	/**
-	 * {@link Object}
-	 */
 	
 	@Override
 	public boolean equals(Object object) {
