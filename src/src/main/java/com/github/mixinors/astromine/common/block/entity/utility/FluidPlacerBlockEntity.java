@@ -93,8 +93,10 @@ public class FluidPlacerBlockEntity extends ExtendedBlockEntity implements Fluid
 						
 						if (inputStorage.getAmount() >= FluidConstants.BUCKET && targetState.isAir()) {
 							if (cooldown >= getSpeed()) {
-								if (inputStorage.extract(inputStorage.getResource(), FluidConstants.BUCKET, transaction) == FluidConstants.BUCKET) {
-									var state = inputStorage.getResource().getFluid().getDefaultState().getBlockState();
+								var inputVariant = inputStorage.getResource();
+								
+								if (inputStorage.extract(inputStorage.getResource(), FluidConstants.BUCKET, transaction, true) == FluidConstants.BUCKET) {
+									var state = inputVariant.getFluid().getDefaultState().getBlockState();
 									
 									world.setBlockState(targetPos, state);
 									
