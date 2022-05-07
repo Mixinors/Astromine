@@ -78,10 +78,8 @@ public class HoloBridgeBlockEntityRenderer implements BlockEntityRenderer<HoloBr
 
 			consumer.vertex(matrices.peek().getPositionMatrix(), xA, yA, zA).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).texture(0, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormalMatrix(), 0, 1, 0).next();
 			consumer.vertex(matrices.peek().getPositionMatrix(), xB, yB, zB).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).texture(0, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormalMatrix(), 0, 1, 0).next();
-			consumer.vertex(matrices.peek().getPositionMatrix(), xB + offsetX, yB, zB + offsetZ).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).texture(1, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormalMatrix(),
-				0, 1, 0).next();
-			consumer.vertex(matrices.peek().getPositionMatrix(), xA + offsetX, yA, zA + offsetZ).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).texture(1, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormalMatrix(),
-				0, 1, 0).next();
+			consumer.vertex(matrices.peek().getPositionMatrix(), xB + offsetX, yB, zB + offsetZ).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).texture(1, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormalMatrix(), 0, 1, 0).next();
+			consumer.vertex(matrices.peek().getPositionMatrix(), xA + offsetX, yA, zA + offsetZ).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).texture(1, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormalMatrix(), 0, 1, 0).next();
 
 			matrices.pop();
 		}

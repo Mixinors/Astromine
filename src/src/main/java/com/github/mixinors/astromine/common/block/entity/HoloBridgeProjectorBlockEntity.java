@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.block.entity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.github.mixinors.astromine.common.block.entity.base.Tickable;
 import com.github.mixinors.astromine.common.component.world.WorldHoloBridgeComponent;
@@ -51,9 +52,9 @@ import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.math.Vec3i;
 
 public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Tickable {
-	public static final Color DEFAULT_COLOR = new Color(0x7E80CAD4);
+	public static final Color DEFAULT_COLOR = new Color((long) 0x7E80CAD4);
 
-	public ArrayList<Vec3f> segments = null;
+	public List<Vec3f> segments = null;
 
 	public Color color = DEFAULT_COLOR;
 
