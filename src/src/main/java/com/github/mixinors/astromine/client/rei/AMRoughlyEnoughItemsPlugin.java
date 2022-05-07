@@ -55,7 +55,6 @@ import com.github.mixinors.astromine.client.rei.triturating.TrituratingDisplay;
 import com.github.mixinors.astromine.client.rei.wiremilling.WireMillingCategory;
 import com.github.mixinors.astromine.client.rei.wiremilling.WireMillingDisplay;
 import com.github.mixinors.astromine.common.recipe.*;
-import com.github.mixinors.astromine.common.util.TextUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.architectury.fluid.FluidStack;
@@ -63,7 +62,10 @@ import dev.vini2003.hammer.core.api.client.scissor.Scissors;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtils;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
 import dev.vini2003.hammer.core.api.common.color.Color;
+import dev.vini2003.hammer.gui.energy.api.common.util.EnergyTextUtils;
 import net.fabricmc.fabric.api.transfer.v1.client.fluid.FluidVariantRendering;
+import net.minecraft.text.LiteralText;
+import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
@@ -93,10 +95,11 @@ import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import me.shedaniel.rei.impl.client.gui.widget.EntryWidget;
 import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCustomDisplay;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 @Environment(EnvType.CLIENT)
 public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
-	private static final Identifier THIN_ENERGY_BACKGROUND_TEXTURE = AMCommon.id("textures/widget/thin_energy_background.png");
+	private static final Identifier THIN_ENERGY_BACKGROUND_TEXTURE = AMCommon.id("textures/widget/thin_energy_bar_background.png");
 	private static final Identifier THIN_ENERGY_FOREGROUND_TEXTURE = AMCommon.id("textures/widget/thin_energy_bar_foreground.png");
 
 	public static final CategoryIdentifier<TrituratingDisplay> TRITURATING = CategoryIdentifier.of(AMCommon.id("triturating"));
@@ -184,7 +187,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 
 			@Override
 			public @Nullable Tooltip getTooltip(Point mouse) {
-				return Tooltip.create(mouse, new TranslatableText("text.astromine.energy"), TextUtils.getEnergyAmount(energy), TextUtils.getAstromine());
+				return Tooltip.create(mouse, EnergyTextUtils.ENERGY.styled(style -> style.withColor(EnergyTextUtils.COLOR_OVERRIDE.toRGB())), new LiteralText("" + energy + "E").formatted(Formatting.GRAY));
 			}
 		})).notFavoritesInteractable());
 	}
@@ -215,10 +218,10 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 				
 				var provider = InstanceUtils.getClient().getBufferBuilders().getEntityVertexConsumers();
 				
-				var height = (float) bounds.height - ((double) System.currentTimeMillis() / (double) (speed / bounds.height) % (double) bounds.height);
+				var height = (float) Math.ceil((float) bounds.height - ((double) System.currentTimeMillis() / (double) (speed / bounds.height) % (double) bounds.height));
 				
 				if (generating) {
-					height = (float) (((double)System.currentTimeMillis() / (double) (speed / bounds.height) % (double) bounds.height));
+					height = (float) Math.ceil((float) ((double) System.currentTimeMillis() / (double) (speed / bounds.height) % (double) bounds.height));
 				}
 				
 				DrawingUtils.drawTexturedQuad(
@@ -231,12 +234,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 						bounds.height
 				);
 				
-				var client = InstanceUtils.getClient();
-				
-				var windowHeight = (float) client.getWindow().getHeight();
-				var windowScale = (float) client.getWindow().getScaleFactor();
-				
-				var scissors = new Scissors((int) (bounds.x * windowScale), (int) (windowHeight - (bounds.y + bounds.height) * windowScale), (int) (bounds.width * windowScale), (int) (height * windowScale), provider);
+				var scissors = new Scissors((float) bounds.x, (float) bounds.y + ((float) bounds.height - height), (float) bounds.width, height, provider);
 				
 				DrawingUtils.drawTexturedQuad(
 						matrices,
@@ -268,7 +266,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 			this.speed = speed;
 			this.generating = generating;
 		}
-
+		
 		@Override
 		protected void drawBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 			if (background) {
@@ -287,10 +285,10 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 			if (entry.getType() == VanillaEntryTypes.FLUID && !entry.isEmpty()) {
 				var bounds = getBounds();
 				
-				var height = (float) ((double) System.currentTimeMillis() / (double) (speed / bounds.height) % (double) bounds.height);
+				var height = (float) Math.ceil((float) ((double) System.currentTimeMillis() / (double) (speed / bounds.height) % (double) bounds.height));
 				
 				if (!generating)
-					height = (float) (bounds.height - ((double) System.currentTimeMillis() / (double) (speed / bounds.height)  % (double) bounds.height));
+					height = (float) Math.ceil(((float) (bounds.height - ((double) System.currentTimeMillis() / (double) (speed / bounds.height)  % (double) bounds.height))));
 				
 				var provider = InstanceUtils.getClient().getBufferBuilders().getEntityVertexConsumers();
 				
@@ -308,8 +306,8 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 						sprite.getId(),
 						bounds.x + 1.0F,
 						bounds.y + (bounds.height - height) + 1.0F,
-						height - 2.0F, // Yeah, the width is the height - it works.
-						bounds.width - 2.0F, // And, of course, the height is the width - because somehow that, too, works.
+						bounds.width - 2.0F,
+						height - 2.0F,
 						sprite.getWidth(),
 						sprite.getHeight(),
 						getZOffset() + 1.0F,
