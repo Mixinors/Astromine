@@ -104,7 +104,7 @@ public class FluidCollectorBlockEntity extends ExtendedBlockEntity implements Fl
 								
 								var outputStorage = fluidStorage.getStorage(OUTPUT_SLOT);
 								
-								if (outputStorage.insert(FluidVariant.of(targetFluid), FluidConstants.BUCKET, transaction) == FluidConstants.BUCKET) {
+								if (outputStorage.insert(FluidVariant.of(targetFluid), FluidConstants.BUCKET, transaction, true) == FluidConstants.BUCKET) {
 									((FluidDrainable) targetBlock).tryDrainFluid(world, targetPos, targetBlockState);
 									
 									world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);
