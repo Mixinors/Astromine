@@ -61,6 +61,7 @@ public abstract class ExtendedEntity extends Entity implements FluidStorageSizeP
 		
 		if (itemStorage != null) {
 			var itemStorageNbt = new NbtCompound();
+			itemStorageNbt.putInt("Size", itemStorage.getSize());
 			
 			itemStorage.writeToNbt(itemStorageNbt);
 			
@@ -69,6 +70,7 @@ public abstract class ExtendedEntity extends Entity implements FluidStorageSizeP
 		
 		if (fluidStorage != null) {
 			var fluidStorageNbt = new NbtCompound();
+			fluidStorageNbt.putInt("Size", fluidStorage.getSize());
 			
 			fluidStorage.writeToNbt(fluidStorageNbt);
 			
