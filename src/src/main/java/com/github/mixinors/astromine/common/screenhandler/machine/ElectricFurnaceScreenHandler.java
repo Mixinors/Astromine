@@ -29,9 +29,9 @@ import com.github.mixinors.astromine.common.screenhandler.base.block.entity.Exte
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import dev.vini2003.hammer.common.geometry.position.Position;
-import dev.vini2003.hammer.common.geometry.size.Size;
-import dev.vini2003.hammer.gui.common.widget.slot.SlotWidget;
+import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
+import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -50,20 +50,20 @@ public class ElectricFurnaceScreenHandler extends ExtendedBlockEntityScreenHandl
 		super.initialize(width, height);
 		
 		var input = new SlotWidget(1, smelter.getItemStorage());
-		input.setSize(Size.of(18, 18));
+		input.setSize(new Size(18.0F, 18.0F));
 		
 		var output = new SlotWidget(0, smelter.getItemStorage(), ExtractionSlot::new);
-		output.setSize( Size.of(18, 18));
+		output.setSize(new Size(18.0F, 18.0F));
 		
-		output.setPosition( Position.of(energyBar, 102, 15));
+		output.setPosition( new Position(energyBar, 102, 15));
 		
 		var arrow = new HorizontalArrowWidget();
-		arrow.setPosition(Position.of(output, -31, 0));
-		arrow.setSize(Size.of(22, 16));
+		arrow.setPosition(new Position(output, -31.0F, 0.0F));
+		arrow.setSize(new Size(22.0F, 16.0F));
 		arrow.setLimitSupplier(() -> smelter.limit);
 		arrow.setProgressSupplier(() -> (int) smelter.progress);
 
-		input.setPosition(Position.of(arrow, -27, 0));
+		input.setPosition(new Position(arrow, -27.0F, 0.0F));
 
 		mainTab.add(input);
 		mainTab.add(output);

@@ -31,10 +31,13 @@ import java.util.function.IntSupplier;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.util.ClientUtils;
 import com.github.mixinors.astromine.common.util.TextUtils;
-import dev.vini2003.hammer.client.scissor.Scissors;
-import dev.vini2003.hammer.client.util.DrawingUtils;
-import dev.vini2003.hammer.client.util.LayerUtils;
-import dev.vini2003.hammer.gui.common.widget.Widget;
+import dev.vini2003.hammer.core.api.client.scissor.Scissors;
+import dev.vini2003.hammer.core.api.client.texture.BaseTexture;
+import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
+import dev.vini2003.hammer.core.api.client.util.DrawingUtils;
+import dev.vini2003.hammer.core.api.client.util.LayerUtils;
+import dev.vini2003.hammer.gui.api.common.widget.BaseWidget;
+import dev.vini2003.hammer.gui.api.common.widget.bar.TextureBarWidget;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -45,78 +48,39 @@ import net.minecraft.util.Identifier;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-/**
- * A horizontal arrow widget depicting
- * the progress level of the {@link #progressSupplier} relative
- * to the {@link #limitSupplier}.
- */
-public class HorizontalArrowWidget extends Widget
-{
-	private static final Identifier BACKGROUND = AMCommon.id("textures/widget/horizontal_arrow_background.png");
-	private static final Identifier FOREGROUND = AMCommon.id("textures/widget/horizontal_arrow_foreground.png");
-
+public class HorizontalArrowWidget extends TextureBarWidget {
+	private static final BaseTexture STANDARD_BACKGROUND_TEXTURE = new ImageTexture(AMCommon.id("textures/widget/horizontal_arrow_background.png"));
+	private static final BaseTexture STANDARD_FOREGROUND_TEXTURE = new ImageTexture(AMCommon.id("textures/widget/horizontal_arrow_foreground.png"));
+	
+	public HorizontalArrowWidget() {
+		this.setHorizontal(true);
+		
+		this.setBackgroundTexture(STANDARD_BACKGROUND_TEXTURE);
+		this.setForegroundTexture(STANDARD_FOREGROUND_TEXTURE);
+	}
+	
 	private IntSupplier progressSupplier = () -> 0;
 	private IntSupplier limitSupplier = () -> 100;
-
-	/** Returns this widget's {@link #progressSupplier}. */
-	public IntSupplier getProgressSupplier() {
-		return progressSupplier;
-	}
-
-	/** Sets this widget's {@link #progressSupplier} to the specified one. */
-	public void setProgressSupplier(IntSupplier progressSupplier) {
-		this.progressSupplier = progressSupplier;
-	}
-
-	/** Returns this widget's {@link #limitSupplier}. */
-	public IntSupplier getLimitSupplier() {
-		return limitSupplier;
-	}
-
-	/** Sets this widget's {@link #limitSupplier} to the specified one. */
-	public void setLimitSupplier(IntSupplier limitSupplier) {
-		this.limitSupplier = limitSupplier;
-	}
-
-	/** Returns this widget's tooltip. */
+	
 	@NotNull
 	@Override
 	public List<Text> getTooltip() {
 		return Collections.singletonList(TextUtils.getRatio(progressSupplier.getAsInt(), limitSupplier.getAsInt()));
 	}
-
-	/** Renders this widget. */
-	@Environment(EnvType.CLIENT)
-	@Override
-	public void drawWidget(MatrixStack matrices, VertexConsumerProvider provider, float delta) {
-		if (getHidden()) {
-			return;
-		}
-		
-		var x = getPosition().getX();
-		var y = getPosition().getY();
-		
-		var sX = getSize().getWidth();
-		var sY = getSize().getHeight();
-		
-		var rawHeight = ClientUtils.getInstance().getWindow().getHeight();
-		var scale = (float) ClientUtils.getInstance().getWindow().getScaleFactor();
-		
-		var sBGX = (int) (((sX / limitSupplier.getAsInt()) * progressSupplier.getAsInt()));
-		
-		var backgroundLayer = LayerUtils.get(BACKGROUND);
-		var foregroundLayer = LayerUtils.get(FOREGROUND);
-		
-		var area = new Scissors(provider, (int) (x * scale), (int) (rawHeight - ((y + sY) * scale)), (int) (sX * scale), (int) (sY * scale));
-
-		DrawingUtils.drawTexturedQuad(matrices, provider, backgroundLayer, getPosition().getX(), getPosition().getY(), getSize().getWidth(), getSize().getHeight(), BACKGROUND);
-
-		area.destroy(provider);
-
-		area = new Scissors(provider, (int) (x * scale), (int) (rawHeight - ((y + sY) * scale)), (int) (sBGX * scale), (int) (sY * scale));
-		
-		DrawingUtils.drawTexturedQuad(matrices, provider, foregroundLayer, getPosition().getX(), getPosition().getY(), getSize().getWidth(), getSize().getHeight(), FOREGROUND);
-
-		area.destroy(provider);
+	
+	public IntSupplier getProgressSupplier() {
+		return progressSupplier;
+	}
+	
+	public void setProgressSupplier(IntSupplier progressSupplier) {
+		this.progressSupplier = progressSupplier;
+	}
+	
+	public IntSupplier getLimitSupplier() {
+		return limitSupplier;
+	}
+	
+	public void setLimitSupplier(IntSupplier limitSupplier) {
+		this.limitSupplier = limitSupplier;
 	}
 }

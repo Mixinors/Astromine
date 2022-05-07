@@ -30,6 +30,7 @@ import java.util.Optional;
 import com.github.mixinors.astromine.common.util.ClientUtils;
 import com.mojang.blaze3d.platform.TextureUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
+import dev.vini2003.hammer.core.api.client.util.DrawingUtils;
 import org.apache.logging.log4j.LogManager;
 
 import net.minecraft.client.render.RenderLayer;
@@ -82,7 +83,7 @@ public class AnimatedArmorItem extends ArmorItem {
 			beginAction = () -> {
 				RenderSystem.enableTexture();
 				
-				var textureManager = ClientUtils.getInstance().getTextureManager();
+				var textureManager = DrawingUtils.getTextureManager();
 				
 				var texture = textureManager.getTexture(id);
 

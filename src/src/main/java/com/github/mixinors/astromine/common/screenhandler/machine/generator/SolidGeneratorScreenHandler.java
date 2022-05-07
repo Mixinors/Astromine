@@ -28,9 +28,9 @@ import com.github.mixinors.astromine.common.block.entity.machine.generator.Solid
 import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import dev.vini2003.hammer.common.geometry.position.Position;
-import dev.vini2003.hammer.common.geometry.size.Size;
-import dev.vini2003.hammer.gui.common.widget.slot.SlotWidget;
+import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
+import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -49,16 +49,16 @@ public class SolidGeneratorScreenHandler extends ExtendedBlockEntityScreenHandle
 		super.initialize(width, height);
 		
 		var arrow = new HorizontalArrowWidget();
-		arrow.setPosition(Position.of( energyBar, energyBar.getWidth() + 3, energyBar.getHeight() / 2F - 8));
-		arrow.setSize( Size.of(22, 16));
+		arrow.setPosition(new Position( energyBar, energyBar.getWidth() + 3.0F, energyBar.getHeight() / 2.0F - 8.0F));
+		arrow.setSize(new Size(0.0F, 16.0F));
 		arrow.setLimitSupplier(() -> generator.limit);
 		arrow.setProgressSupplier(() -> (int) generator.progress);
 		
 		var input = new SlotWidget(0, blockEntity.getItemStorage());
-		input.setPosition(Position.of(arrow, -26, 0));
-		input.setSize(Size.of(18, 18));
+		input.setPosition(new Position(arrow, -26.0F, 0.0F));
+		input.setSize(new Size(18.0F, 18.0F));
 
-		energyBar.setPosition(Position.of(mainTab, 68, 11));
+		energyBar.setPosition(new Position(mainTab, 68.0F, 11.0F));
 
 		mainTab.add(input);
 		mainTab.add(arrow);

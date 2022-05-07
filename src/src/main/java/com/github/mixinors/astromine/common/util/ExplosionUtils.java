@@ -35,29 +35,15 @@ import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.WorldChunk;
 
-/**
- * This is a concerning utility class - vini2003.
- *
- * @author HalfOf2
- */
 public class ExplosionUtils {
 	private static final BlockState AIR = Blocks.AIR.getDefaultState();
-
-	/**
-	 * Attempts to explode at specified position with the given power.
-	 */
+	
 	public static void attemptExplosion(World world, int x, int y, int z, int power) {
 		if (!world.isClient) {
-			var start = System.currentTimeMillis();
-			var blocks = explode(world, x, y, z, power);
-			var end = System.currentTimeMillis();
-			AMCommon.LOGGER.info(String.format("Took %dms to destroy %d blocks from explosion with power %d.", end - start, blocks, power));
+			explode(world, x, y, z, power);
 		}
 	}
-
-	/**
-	 * Explodes at specified position with the given power.
-	 */
+	
 	private static long explode(World access, int x, int y, int z, int radius) {
 		var cr = radius >> 4;
 		var blocks = 0;
@@ -71,15 +57,20 @@ public class ExplosionUtils {
 					var cz = (z >> 4) + coz;
 					
 					var chunk = access.getChunk(cx, cz);
-					blocks += forSubchunks(chunk, box, boz, x, y, z, radius);
+					
+					blocks += forSubChunks(chunk, box, boz, x, y, z, radius);
+					
 					chunk.setNeedsSaving(true);
+					
 					var manager = (ServerChunkManager) access.getChunkManager();
-					manager.threadedAnvilChunkStorage.getPlayersWatchingChunk(new ChunkPos(cx, cz), false).forEach(s -> s.networkHandler.sendPacket(
-							new ChunkDataS2CPacket(chunk, manager.getLightingProvider(), null, null, true)
+					
+					manager.threadedAnvilChunkStorage.getPlayersWatchingChunk(new ChunkPos(cx, cz), false).forEach(player ->
+							player.networkHandler.sendPacket(new ChunkDataS2CPacket(chunk, manager.getLightingProvider(), null, null, true)
 					));
 				}
 			}
 		}
+		
 		return blocks;
 	}
 
@@ -96,56 +87,65 @@ public class ExplosionUtils {
 		} else if (0 > x2) {
 			squared -= x2 * x2;
 		}
+		
 		if (0 < y1) {
 			squared -= y1 * y1;
 		} else if (0 > y2) {
 			squared -= y2 * y2;
 		}
+		
 		if (0 < z1) {
 			squared -= z1 * z1;
 		} else if (0 > z2) {
 			squared -= z2 * z2;
 		}
+		
 		return squared > 0;
 	}
 
 	/**
-	 * Explodes all subchunks in the given sphere.
+	 * Explodes all sub chunks in the given sphere.
 	 */
-	private static long forSubchunks(WorldChunk chunk, int bx, int bz, int x, int y, int z, int radius) {
+	private static long forSubChunks(WorldChunk chunk, int bx, int bz, int x, int y, int z, int radius) {
 		var scr = radius >> 4;
+		
 		var sc = y >> 4;
+		
 		var destroyed = 0;
+		
 		var sections = chunk.getSectionArray();
+		
 		for (var i = -scr; i <= scr; i++) {
 			var by = i * 16;
 			var val = i + sc;
+			
 			if (val >= 0 && val < 16) {
 				var section = sections[val];
+				
 				if (section != null) {
 					for (var ox = 0; ox < 16; ox++) {
 						for (var oy = 0; oy < 16; oy++) {
 							for (var oz = 0; oz < 16; oz++) {
-								if (in(bx + ox, by + oy, bz + oz, radius)) {
+								if (isIn(bx + ox, by + oy, bz + oz, radius)) {
 									if (section.getBlockState(ox, oy, oz).getHardness(chunk, BlockPos.ORIGIN) != -1) {
 										section.setBlockState(ox, oy, oz, AIR);
+										
 										destroyed++;
 									}
 								}
 							}
 						}
 					}
+					
 					chunk.getWorld().getLightingProvider().setSectionStatus(ChunkSectionPos.from(bx >> 4, i, bz >> 4), false);
 				}
 			}
 		}
+		
 		return destroyed;
 	}
-
-	/**
-	 * Asserts... something?!
-	 */
-	private static boolean in(int ox, int oy, int oz, int radius) {
+	
+	private static boolean isIn(int ox, int oy, int oz, int radius) {
 		return ox * ox + oy * oy + oz * oz <= radius * radius;
 	}
 }

@@ -25,10 +25,10 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.common.config.AMConfig;
-import dev.vini2003.hammer.gravity.common.manager.GravityManager;
+import dev.vini2003.hammer.gravity.api.common.manager.GravityManager;
 
 public class AMGravities {
 	public static void init() {
-		GravityManager.set(AMWorlds.EARTH_SPACE_WORLD, (float) AMConfig.get().world.spaceGravity, null);
+		GravityManager.set(AMWorlds.EARTH_SPACE_WORLD, AMConfig.get().world.spaceGravity);
 	}
 }

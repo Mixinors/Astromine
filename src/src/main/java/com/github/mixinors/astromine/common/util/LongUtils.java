@@ -33,30 +33,18 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.network.PacketByteBuf;
 
 public class LongUtils {
-	/**
-	 * Serializes the given integer to a {@link ByteBuf}.
-	 */
 	public static void toPacket(PacketByteBuf buffer, long number) {
 		buffer.writeLong(number);
 	}
-
-	/**
-	 * Deserializes an integer from a {@link ByteBuf}.
-	 */
+	
 	public static long fromPacket(PacketByteBuf buffer) {
 		return buffer.readLong();
 	}
-
-	/**
-	 * Serializes the given integer to a {@link JsonElement}.
-	 */
+	
 	public static JsonElement toJson(long number) {
 		return new JsonPrimitive(number);
 	}
-
-	/**
-	 * Deserializes an integer from a {@link JsonElement}.
-	 */
+	
 	public static long fromJson(JsonElement json) {
 		return AMCommon.GSON.fromJson(json, Long.class);
 	}

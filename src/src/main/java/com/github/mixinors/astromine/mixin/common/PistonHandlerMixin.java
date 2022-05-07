@@ -44,16 +44,18 @@ public abstract class PistonHandlerMixin {
 	}
 
 	@Inject(method = "isBlockSticky(Lnet/minecraft/block/BlockState;)Z", at = @At("HEAD"), cancellable = true)
-	private static void isBlockStickyInject(BlockState state, CallbackInfoReturnable<Boolean> cir) {
-		if (state.getBlock() == AMBlocks.SPACE_SLIME_BLOCK.get())
+	private static void astromine$isBlockSticky(BlockState state, CallbackInfoReturnable<Boolean> cir) {
+		if (state.getBlock() == AMBlocks.SPACE_SLIME_BLOCK.get()) {
 			cir.setReturnValue(true);
+		}
 	}
 
 	@Inject(method = "isAdjacentBlockStuck(Lnet/minecraft/block/BlockState;Lnet/minecraft/block/BlockState;)Z", at = @At("HEAD"), cancellable = true)
-	private static void isAdjacentBlockStuckInject(BlockState state, BlockState adjacentState, CallbackInfoReturnable<Boolean> cir) {
-		if (state.getBlock() == AMBlocks.SPACE_SLIME_BLOCK.get() && !isBlockSticky(adjacentState))
+	private static void astromine$isAdjacentBlockStuck(BlockState state, BlockState adjacentState, CallbackInfoReturnable<Boolean> cir) {
+		if (state.getBlock() == AMBlocks.SPACE_SLIME_BLOCK.get() && !isBlockSticky(adjacentState)) {
 			cir.setReturnValue(false);
-		else if (adjacentState.getBlock() == AMBlocks.SPACE_SLIME_BLOCK.get() && !isBlockSticky(state))
+		} else if (adjacentState.getBlock() == AMBlocks.SPACE_SLIME_BLOCK.get() && !isBlockSticky(state)) {
 			cir.setReturnValue(false);
+		}
 	}
 }

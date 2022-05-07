@@ -57,11 +57,14 @@ import com.github.mixinors.astromine.client.rei.wiremilling.WireMillingDisplay;
 import com.github.mixinors.astromine.client.render.sprite.SpriteRenderer;
 import com.github.mixinors.astromine.common.recipe.*;
 import com.github.mixinors.astromine.common.util.ClientUtils;
-import com.github.mixinors.astromine.common.util.FluidUtils;
 import com.github.mixinors.astromine.common.util.TextUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.architectury.fluid.FluidStack;
+import dev.vini2003.hammer.core.api.client.util.DrawingUtils;
+import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
+import dev.vini2003.hammer.core.api.common.color.Color;
+import net.fabricmc.fabric.api.transfer.v1.client.fluid.FluidVariantRendering;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
@@ -144,7 +147,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 		registry.addWorkstations(SOLIDIFYING, EntryStacks.of(AMBlocks.PRIMITIVE_SOLIDIFIER.get()), EntryStacks.of(AMBlocks.BASIC_SOLIDIFIER.get()), EntryStacks.of(AMBlocks.ADVANCED_SOLIDIFIER.get()), EntryStacks.of(AMBlocks.ELITE_SOLIDIFIER.get()));
 			
 		registry.removePlusButton(FLUID_GENERATING);
-		registry.setPlusButtonArea(SOLID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
+		registry.setPlusButtonArea(SOLID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55.0F + 110.0F - 16.0F, bounds.getMaxY() - 16.0F, 10.0F, 10.0F));
 		registry.removePlusButton(FLUID_MIXING);
 		registry.removePlusButton(ELECTROLYZING);
 		registry.removePlusButton(REFINING);
@@ -170,7 +173,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 
 		for (var entry : AbstractFurnaceBlockEntity.createFuelTimeMap().entrySet()) {
 			if (!(entry.getKey() instanceof BucketItem) && entry.getValue() > 0) {
-				registry.add(new SolidGeneratingDisplay(Collections.singletonList(EntryIngredients.of(entry.getKey())), (entry.getValue() / 2) / 6, (long) ((entry.getValue() / 2F * 5) / (entry.getValue() / 2F) * 6), null));
+				registry.add(new SolidGeneratingDisplay(Collections.singletonList(EntryIngredients.of(entry.getKey())), (int) ((entry.getValue() / 2.0F) / 6.0F), (long) ((entry.getValue() / 2.0F * 5.0F) / (entry.getValue() / 2.0F) * 6.0F), null));
 			}
 		}
 	}
@@ -214,12 +217,17 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 		protected void drawBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 			if (background) {
 				var bounds = getBounds();
+				
 				RenderSystem.setShaderTexture(0, ENERGY_BACKGROUND);
+				
 				drawTexture(matrices, bounds.x, bounds.y, 0, 0, bounds.width, bounds.height, bounds.width, bounds.height);
+				
 				RenderSystem.setShaderTexture(0, ENERGY_FOREGROUND);
-				var height = MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
+				
+				var height = MathHelper.ceil((System.currentTimeMillis() / (float) (speed / bounds.height) % bounds.height));
+				
 				if (generating) {
-					height = bounds.height - MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
+					height = bounds.height - MathHelper.ceil((System.currentTimeMillis() / (float) (speed / bounds.height) % bounds.height));
 				}
 				
 				drawTexture(matrices, bounds.x, bounds.y + height, 0, height, bounds.width - 1, bounds.height - height - 1, bounds.width, bounds.height);
@@ -236,7 +244,9 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 
 		protected FluidEntryWidget(Rectangle rectangle, long speed, boolean generating) {
 			super(new Point(rectangle.x, rectangle.y));
+			
 			this.getBounds().setBounds(rectangle);
+			
 			this.speed = speed;
 			this.generating = generating;
 		}
@@ -245,7 +255,9 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 		protected void drawBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 			if (background) {
 				var bounds = getBounds();
+				
 				RenderSystem.setShaderTexture(0, ENERGY_BACKGROUND);
+				
 				drawTexture(matrices, bounds.x, bounds.y, 0, 0, bounds.width, bounds.height, bounds.width, bounds.height);
 			}
 		}
@@ -253,17 +265,49 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 		@Override
 		protected void drawCurrentEntry(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 			var entry = getCurrentEntry();
+			
 			if (entry.getType() == VanillaEntryTypes.FLUID && !entry.isEmpty()) {
 				var bounds = getBounds();
-				var height = MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
+				
+				var height = MathHelper.ceil((System.currentTimeMillis() / (float) (speed / bounds.height) % bounds.height));
+				
 				if (!generating)
-					height = bounds.height - MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
-				var consumers = ClientUtils.getInstance().getBufferBuilders().getEntityVertexConsumers();
-				var fluid = entry.<FluidStack>castValue().getFluid();
-				SpriteRenderer.beginPass().setup(consumers, RenderLayer.getSolid()).sprite(FluidUtils.getSprite(fluid)).color(FluidUtils.getColor(ClientUtils.getPlayer(), fluid)).light(0x00f000f0).overlay(OverlayTexture.DEFAULT_UV).alpha(
-					0xff).normal(matrices.peek().getNormalMatrix(), 0, 0, 0).position(matrices.peek().getPositionMatrix(), bounds.x + 1, bounds.y + bounds.height - height + 1, bounds.x + bounds.width - 1, bounds.y + bounds.height - 1, getZOffset() + 1).next(
-					PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
-				consumers.draw();
+					height = bounds.height - MathHelper.ceil((System.currentTimeMillis() / (float) (speed / bounds.height) % bounds.height));
+				
+				var provider = InstanceUtils.getClient().getBufferBuilders().getEntityVertexConsumers();
+				
+				var fluidStack = (FluidStack) entry.getValue();
+				var fluid = fluidStack.getFluid();
+				
+				var fluidVariant = FluidVariant.of(fluid);
+				
+				var sprite = FluidVariantRendering.getSprite(fluidVariant);
+				var spriteColor = FluidVariantRendering.getColor(fluidVariant);
+				
+				DrawingUtils.drawTiledTexturedQuad(
+						matrices,
+						provider,
+						sprite.getId(),
+						bounds.x + 1,
+						bounds.y + bounds.height - height + 1,
+						(bounds.x + bounds.width - 1) - (bounds.x + 1),
+						(bounds.y + bounds.height - 1) - (bounds.y + bounds.height - height + 1),
+						sprite.getWidth(),
+						sprite.getHeight(),
+						getZOffset() + 1,
+						sprite.getMinU(),
+						sprite.getMinV(),
+						sprite.getMaxU(),
+						sprite.getMaxV(),
+						0.0F,
+						0.0F,
+						0.0F,
+						DrawingUtils.DEFAULT_OVERLAY,
+						DrawingUtils.DEFAULT_LIGHT,
+						new Color(spriteColor)
+				);
+				
+				provider.draw();
 			}
 		}
 	}

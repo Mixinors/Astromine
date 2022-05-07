@@ -30,6 +30,7 @@ import com.github.mixinors.astromine.common.util.ClientUtils;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
 import net.minecraft.client.option.Option;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.Tessellator;
@@ -70,7 +71,7 @@ public class SpaceSkybox extends Skybox {
 
     @Override
     public void render(MatrixStack matrices, float tickDelta) {
-		var client = ClientUtils.getInstance();
+		var client = InstanceUtils.getClient();
 	
 		var tessellator = Tessellator.getInstance();
 	
@@ -83,7 +84,7 @@ public class SpaceSkybox extends Skybox {
 
         RenderSystem.setShader(GameRenderer::getPositionColorTexLightmapShader);
 
-        World world = client.world;
+        var world = client.world;
 
         if (world == null) {
             return;
@@ -136,8 +137,8 @@ public class SpaceSkybox extends Skybox {
 			}
 
             buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT);
-	
-			var options = ClientUtils.getInstance().options;
+			
+			var options = client.options;
 	
 			var distance = 16F * (float) Option.RENDER_DISTANCE.get(options) - 8F;
 

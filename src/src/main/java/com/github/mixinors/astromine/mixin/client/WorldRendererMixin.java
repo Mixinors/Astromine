@@ -51,19 +51,17 @@ public abstract class WorldRendererMixin {
 	@Shadow
 	@Final
 	private MinecraftClient client;
-
-	@Shadow
-	protected abstract void renderLayer(RenderLayer renderLayer, MatrixStack matrixStack, double d, double e, double f, Matrix4f positionMatrix);
-
+	
 	@Shadow
 	public abstract void render(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f);
 
 	@Inject(at = @At("HEAD"), method = "renderSky(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/util/math/Matrix4f;FLnet/minecraft/client/render/Camera;ZLjava/lang/Runnable;)V", cancellable = true)
-	void am_renderSky(MatrixStack matrices, Matrix4f projectionMatrix, float tickDelta, Camera camera, boolean bl, Runnable runnable, CallbackInfo ci) {
+	void astromine$renderSky(MatrixStack matrices, Matrix4f projectionMatrix, float tickDelta, Camera camera, boolean bl, Runnable runnable, CallbackInfo ci) {
 		var skybox = SkyboxRegistry.INSTANCE.get(this.client.world.getRegistryKey());
 
 		if (skybox != null) {
 			skybox.render(matrices, tickDelta);
+			
 			ci.cancel();
 		}
 	}

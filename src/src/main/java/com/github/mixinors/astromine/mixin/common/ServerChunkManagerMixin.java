@@ -47,7 +47,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerChunkManager.class)
 public class ServerChunkManagerMixin {
 	@Inject(method = "<init>", at = @At("RETURN"))
-	private void am_init( ServerWorld world, LevelStorage.Session session, DataFixer dataFixer, StructureManager structureManager, Executor workerExecutor, ChunkGenerator chunkGenerator, int viewDistance, int simulationDistance, boolean bl, WorldGenerationProgressListener worldGenerationProgressListener, ChunkStatusChangeListener changeListener, Supplier<PersistentStateManager> supplier, CallbackInfo ci) {
+	private void astromine$init(ServerWorld world, LevelStorage.Session session, DataFixer dataFixer, StructureManager structureManager, Executor workerExecutor, ChunkGenerator chunkGenerator, int viewDistance, int simulationDistance, boolean bl, WorldGenerationProgressListener worldGenerationProgressListener, ChunkStatusChangeListener changeListener, Supplier<PersistentStateManager> supplier, CallbackInfo ci) {
 		ServerChunkManagerCallback.EVENT.invoker().handle((ServerChunkManager) (Object) this);
 	}
 }

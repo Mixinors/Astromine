@@ -43,8 +43,8 @@ public abstract class EntityNavigationMixin {
 	protected MobEntity entity;
 
 	@Inject(method = "isInLiquid", at = @At("RETURN"), cancellable = true)
-	private void am_isInLiquid(CallbackInfoReturnable<Boolean> cir) {
-		if (!cir.getReturnValueZ() && ((EntityAccessor) this.entity).am_isInIndustrialFluid()) {
+	private void astromine$isInLiquid(CallbackInfoReturnable<Boolean> cir) {
+		if (!cir.getReturnValueZ() && ((EntityAccessor) this.entity).astromine$isInIndustrialFluid()) {
 			cir.setReturnValue(true);
 		}
 	}

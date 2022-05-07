@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.client.screen.base;
 
-import dev.vini2003.hammer.gui.client.screen.BaseHandledScreen;
-import dev.vini2003.hammer.gui.common.screen.handler.BaseScreenHandler;
+import dev.vini2003.hammer.gui.api.client.screen.BaseHandledScreen;
+import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

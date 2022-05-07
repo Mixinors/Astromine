@@ -29,6 +29,9 @@ import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * <p>A {@link SingleVariantStorage} implementation for {@link FluidVariant}s.</p>
  */
@@ -144,12 +147,14 @@ public class SimpleFluidVariantStorage extends SingleVariantStorage<FluidVariant
 					
 					proxy.incrementVersion();
 					
-					var proxies = (SimpleFluidStorage[]) null;
+					var proxies = new ArrayList<SimpleFluidStorage>();
 					
 					if (proxy.getProxy() != null) {
-						proxies = proxy.getProxy().getProxies();
+						proxies.addAll(List.of(proxy.getProxy().getProxies()));
+						proxies.add(proxy.getProxy());
 					} else {
-						proxies = proxy.getProxies();
+						proxies.addAll(List.of(proxy.getProxies()));
+						proxies.add(proxy);
 					}
 					
 					for (var proxy : proxies) {

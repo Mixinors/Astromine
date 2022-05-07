@@ -29,9 +29,9 @@ import java.util.function.Supplier;
 import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import dev.vini2003.hammer.common.geometry.position.Position;
-import dev.vini2003.hammer.common.geometry.size.Size;
-import dev.vini2003.hammer.gui.common.widget.slot.SlotWidget;
+import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
+import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
@@ -50,23 +50,23 @@ public class CapacitorScreenHandler extends ExtendedBlockEntityScreenHandler {
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		energyBar.setPosition( Position.of(width / 2F - energyBar.getWidth() / 2F, energyBar.getY()));
+		energyBar.setPosition( new Position(width / 2.0F - energyBar.getWidth() / 2.0F, energyBar.getY()));
 		
 		var input = new SlotWidget(0, blockEntity.getItemStorage());
-		input.setPosition(Position.of(mainTab, 12, 26));
-		input.setSize( Size.of(18, 18));
+		input.setPosition(new Position(mainTab, 12.0F, 26.0F));
+		input.setSize(new Size(18.0F, 18.0F));
 		
 		var output = new SlotWidget(1, blockEntity.getItemStorage());
-		output.setPosition(Position.of(mainTab, 146, 26));
-		output.setSize(Size.of(18, 18));
+		output.setPosition(new Position(mainTab, 146.0F, 26.0F));
+		output.setSize(new Size(18.0F, 18.0F));
 		
 		var leftArrow = new HorizontalArrowWidget();
-		leftArrow.setPosition(Position.of(input, 28, 0));
-		leftArrow.setSize(Size.of(22, 16));
+		leftArrow.setPosition(new Position(input, 28.0F, 0.0F));
+		leftArrow.setSize(new Size(22.0F, 16.0F));
 		
 		var rightArrow = new HorizontalArrowWidget();
-		rightArrow.setPosition(Position.of(output, -34, 0));
-		rightArrow.setSize(Size.of(22, 16));
+		rightArrow.setPosition(new Position(output, -34.0F, 0.0F));
+		rightArrow.setSize(new Size(22.0F, 16.0F));
 
 		mainTab.add(input);
 		mainTab.add(output);

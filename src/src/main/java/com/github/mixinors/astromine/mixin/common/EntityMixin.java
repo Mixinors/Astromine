@@ -43,7 +43,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -57,10 +56,12 @@ public abstract class EntityMixin implements EntityAccessor {
 	protected boolean firstUpdate;
 	@Shadow
 	protected Object2DoubleMap<Tag<Fluid>> fluidHeight;
-	private int am_lastY = 0;
-	private Entity am_lastVehicle = null;
-	private TeleportTarget am_nextTeleportTarget = null;
-	private World am_lastWorld = null;
+	
+	private int astromine$lastY = 0;
+	
+	private Entity astromine$lastVehicle = null;
+	
+	private TeleportTarget astromine$nextTeleportTarget = null;
 
 	@Shadow
 	public abstract BlockPos getBlockPos();
@@ -69,48 +70,45 @@ public abstract class EntityMixin implements EntityAccessor {
 	public abstract boolean updateMovementInFluid(TagKey<Fluid> tag, double d);
 
 	@Shadow
-	public abstract double getFluidHeight(TagKey<Fluid> fluid);
-
-	@Shadow
 	public abstract boolean isSubmergedIn(TagKey<Fluid> tag);
 	
 	@Shadow public int age;
 
 	@Override
-	public boolean am_isInIndustrialFluid() {
+	public boolean astromine$isInIndustrialFluid() {
 		return !this.firstUpdate && this.fluidHeight.getDouble(AMTags.INDUSTRIAL_FLUID) > 0.0D;
 	}
 
 	@Inject(at = @At("HEAD"), method = "tickNetherPortal()V")
-	void am_tickNetherPortal(CallbackInfo callbackInformation) {
+	void astromine$tickNetherPortal(CallbackInfo callbackInformation) {
 		var entity = (Entity) (Object) this;
 
-		if ((int) entity.getPos().getY() != am_lastY && !entity.world.isClient && entity.getVehicle() == null) {
-			am_lastY = (int) entity.getPos().getY();
+		if ((int) entity.getPos().getY() != astromine$lastY && !entity.world.isClient && entity.getVehicle() == null) {
+			astromine$lastY = (int) entity.getPos().getY();
 			
 			var bottomPortal = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.BOTTOM, entity.world.getRegistryKey());
 			var topPortal = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey());
 
-			if (am_lastY <= bottomPortal && bottomPortal != Integer.MIN_VALUE) {
+			if (astromine$lastY <= bottomPortal && bottomPortal != Integer.MIN_VALUE) {
 				var worldKey = RegistryKey.of(Registry.WORLD_KEY, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.BOTTOM, entity.world.getRegistryKey()).getValue());
 
-				am_teleport(entity, worldKey, DimensionLayerRegistry.Type.BOTTOM);
-			} else if (am_lastY >= topPortal && topPortal != Integer.MIN_VALUE) {
+				astromine$teleport(entity, worldKey, DimensionLayerRegistry.Type.BOTTOM);
+			} else if (astromine$lastY >= topPortal && topPortal != Integer.MIN_VALUE) {
 				var worldKey = RegistryKey.of(Registry.WORLD_KEY, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey()).getValue());
 
-				am_teleport(entity, worldKey, DimensionLayerRegistry.Type.TOP);
+				astromine$teleport(entity, worldKey, DimensionLayerRegistry.Type.TOP);
 			}
 		}
 
 		if (entity.getVehicle() != null)
-			am_lastVehicle = null;
-		if (am_lastVehicle != null) {
-			entity.startRiding(am_lastVehicle);
-			am_lastVehicle = null;
+			astromine$lastVehicle = null;
+		if (astromine$lastVehicle != null) {
+			entity.startRiding(astromine$lastVehicle);
+			astromine$lastVehicle = null;
 		}
 	}
 
-	void am_teleport(Entity entity, RegistryKey<World> destinationKey, DimensionLayerRegistry.Type type) {
+	void astromine$teleport(Entity entity, RegistryKey<World> destinationKey, DimensionLayerRegistry.Type type) {
 		var serverWorld = entity.world.getServer().getWorld(destinationKey);
 		
 		var existingPassengers = new ArrayList<>(entity.getPassengerList());
@@ -120,7 +118,7 @@ public abstract class EntityMixin implements EntityAccessor {
 			entries.add(entry.copy());
 		}
 
-		am_nextTeleportTarget = DimensionLayerRegistry.INSTANCE.getPlacer(type, entity.world.getRegistryKey()).placeEntity(entity);
+		astromine$nextTeleportTarget = DimensionLayerRegistry.INSTANCE.getPlacer(type, entity.world.getRegistryKey()).placeEntity(entity);
 		var newEntity = entity.moveToWorld(serverWorld);
 
 		for (var entry : entries) {
@@ -128,15 +126,16 @@ public abstract class EntityMixin implements EntityAccessor {
 		}
 
 		for (var existingEntity : existingPassengers) {
-			((EntityMixin) (Object) existingEntity).am_lastVehicle = newEntity;
+			((EntityMixin) (Object) existingEntity).astromine$lastVehicle = newEntity;
 		}
 	}
 
 	@Inject(method = "getTeleportTarget", at = @At("HEAD"), cancellable = true)
-	protected void am_getTeleportTarget(ServerWorld destination, CallbackInfoReturnable<TeleportTarget> cir) {
-		if (am_nextTeleportTarget != null) {
-			cir.setReturnValue(am_nextTeleportTarget);
-			am_nextTeleportTarget = null;
+	protected void astromine$getTeleportTarget(ServerWorld destination, CallbackInfoReturnable<TeleportTarget> cir) {
+		if (astromine$nextTeleportTarget != null) {
+			cir.setReturnValue(astromine$nextTeleportTarget);
+			
+			astromine$nextTeleportTarget = null;
 		}
 	}
 
@@ -159,14 +158,14 @@ public abstract class EntityMixin implements EntityAccessor {
 	}
 
 	@Inject(method = "updateWaterState", at = @At("RETURN"), cancellable = true)
-	private void am_updateIndustrialFluidState(CallbackInfoReturnable<Boolean> cir) {
+	private void astromine$updateIndustrialFluidState(CallbackInfoReturnable<Boolean> cir) {
 		if (this.updateMovementInFluid(AMTags.INDUSTRIAL_FLUID, 0.014)) {
 			cir.setReturnValue(true);
 		}
 	}
 
 	@Inject(method = "isInLava", at = @At("RETURN"), cancellable = true)
-	protected void am_fakeLava(CallbackInfoReturnable<Boolean> cir) {
+	protected void astromine$fakeLava(CallbackInfoReturnable<Boolean> cir) {
 		// NO-OP
 	}
 }

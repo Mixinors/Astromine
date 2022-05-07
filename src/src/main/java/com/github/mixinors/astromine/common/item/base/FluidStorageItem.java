@@ -24,7 +24,21 @@
 
 package com.github.mixinors.astromine.common.item.base;
 
+import dev.vini2003.hammer.core.api.common.util.FluidTextUtils;
+import dev.vini2003.hammer.core.api.common.util.TextUtils;
+import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
+import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FluidStorageItem extends Item {
 	private final long capacity;
@@ -41,5 +55,32 @@ public class FluidStorageItem extends Item {
 
 	public long getCapacity() {
 		return capacity;
+	}
+	
+	@Override
+	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+		super.appendTooltip(stack, world, tooltip, context);
+		
+		var storages = FluidStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
+		
+		var emptyTooltip = new ArrayList<Text>();
+		
+		try (var transaction = Transaction.openOuter()) {
+			for (var storage : storages.iterable(transaction)) {
+				if (storage.isResourceBlank()) {
+					emptyTooltip.add(TextUtils.EMPTY);
+				} else {
+					if (context.isAdvanced()) {
+						tooltip.addAll(FluidTextUtils.getDetailedStorageTooltips(storage));
+					} else {
+						tooltip.addAll(FluidTextUtils.getShortenedStorageTooltips(storage));
+					}
+				}
+			}
+			
+			transaction.abort();
+		}
+		
+		tooltip.addAll(emptyTooltip);
 	}
 }

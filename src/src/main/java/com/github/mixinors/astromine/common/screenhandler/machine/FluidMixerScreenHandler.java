@@ -28,9 +28,9 @@ import com.github.mixinors.astromine.common.block.entity.machine.FluidMixerBlock
 import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import dev.vini2003.hammer.common.geometry.position.Position;
-import dev.vini2003.hammer.common.geometry.size.Size;
-import dev.vini2003.hammer.gui.common.widget.bar.FluidBarWidget;
+import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
+import dev.vini2003.hammer.gui.api.common.widget.bar.FluidBarWidget;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -49,19 +49,19 @@ public class FluidMixerScreenHandler extends ExtendedBlockEntityScreenHandler {
 		super.initialize(width, height);
 		
 		var secondInputFluidBar = new FluidBarWidget();
-		secondInputFluidBar.setPosition( Position.of(fluidBar, fluidBar.getWidth() + 7, 0));
-		secondInputFluidBar.setSize( Size.of(fluidBar));
+		secondInputFluidBar.setPosition( new Position(fluidBar, fluidBar.getWidth() + 7.0F, 0));
+		secondInputFluidBar.setSize( new Size(fluidBar));
 		secondInputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(1));
 		
 		var arrow = new HorizontalArrowWidget();
-		arrow.setPosition(Position.of(secondInputFluidBar, secondInputFluidBar.getWidth() + 9, secondInputFluidBar.getHeight() / 2F - 8));
-		arrow.setSize(Size.of(22, 16));
+		arrow.setPosition(new Position(secondInputFluidBar, secondInputFluidBar.getWidth() + 9.0F, secondInputFluidBar.getHeight() / 2.0F - 8.0F));
+		arrow.setSize(new Size(22.0F, 16.0F));
 		arrow.setLimitSupplier(() -> mixer.limit);
 		arrow.setProgressSupplier(() -> (int) mixer.progress);
 		
 		var outputFluidBar = new FluidBarWidget();
-		outputFluidBar.setPosition(Position.of(secondInputFluidBar, secondInputFluidBar.getWidth() + 9 + arrow.getWidth() + 7, 0));
-		outputFluidBar.setSize(Size.of(fluidBar));
+		outputFluidBar.setPosition(new Position(secondInputFluidBar, secondInputFluidBar.getWidth() + 9.0F + arrow.getWidth() + 7.0F, 0.0F));
+		outputFluidBar.setSize(new Size(fluidBar));
 		outputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(2));
 
 		mainTab.add(secondInputFluidBar);

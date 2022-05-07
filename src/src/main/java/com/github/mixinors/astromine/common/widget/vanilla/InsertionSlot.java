@@ -28,16 +28,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.screen.slot.Slot;
 
-/**
- * A slot with no extraction.
- */
 public class InsertionSlot extends Slot {
-	/** Instantiates an {@link InsertionSlot}. */
 	public InsertionSlot(Inventory inventory, int index, int x, int y) {
 		super(inventory, index, x, y);
 	}
-
-	/** Override behavior to stop extraction. */
+	
 	@Override
 	public boolean canTakeItems(PlayerEntity playerEntity) {
 		return false;

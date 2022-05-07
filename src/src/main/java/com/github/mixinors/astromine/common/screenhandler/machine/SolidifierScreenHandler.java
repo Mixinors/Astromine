@@ -29,9 +29,9 @@ import com.github.mixinors.astromine.common.screenhandler.base.block.entity.Exte
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import dev.vini2003.hammer.common.geometry.position.Position;
-import dev.vini2003.hammer.common.geometry.size.Size;
-import dev.vini2003.hammer.gui.common.widget.slot.SlotWidget;
+import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
+import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -50,16 +50,16 @@ public class SolidifierScreenHandler extends ExtendedBlockEntityScreenHandler {
 		super.initialize(width, height);
 		
 		var output = new SlotWidget(0, solidifier.getItemStorage(), ExtractionSlot::new);
-		output.setSize( Size.of(18, 18));
-		output.setPosition(Position.of(fluidBar, 102, 15));
+		output.setSize(new Size(18.0F, 18.0F));
+		output.setPosition(new Position(fluidBar, 102.0F, 15.0F));
 		
 		var arrow = new HorizontalArrowWidget();
-		arrow.setPosition( Position.of(output, -31, 0));
-		arrow.setSize(Size.of(22, 16));
+		arrow.setPosition( new Position(output, -31.0F, 0.0F));
+		arrow.setSize(new Size(22.0F, 16.0F));
 		arrow.setLimitSupplier(() -> solidifier.limit);
 		arrow.setProgressSupplier(() -> (int) solidifier.progress);
 
-		fluidBar.setPosition(Position.of(arrow, -27 - 6, -fluidBar.getHeight() / 2 + output.getHeight() / 2));
+		fluidBar.setPosition(new Position(arrow, -27.0F - 6.0F, -fluidBar.getHeight() / 2.0F + output.getHeight() / 2.0F));
 
 		mainTab.add(output);
 		mainTab.add(arrow);

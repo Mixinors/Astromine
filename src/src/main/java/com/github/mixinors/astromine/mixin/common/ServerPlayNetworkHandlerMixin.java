@@ -43,9 +43,9 @@ public abstract class ServerPlayNetworkHandlerMixin implements ServerPlayPacketL
 	public ServerPlayerEntity player;
 
 	@Inject(method = "onClientCommand(Lnet/minecraft/network/packet/c2s/play/ClientCommandC2SPacket;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;updateLastActionTime()V"))
-	public void onClientCommandInject(ClientCommandC2SPacket packet, CallbackInfo ci) {
-		if (packet.getMode().equals(ClientCommandC2SPacket.Mode.OPEN_INVENTORY) && this.player.getVehicle() instanceof RocketEntity) {
-			((RocketEntity) this.player.getVehicle()).openInventory(this.player);
+	public void astromine$onClientCommand(ClientCommandC2SPacket packet, CallbackInfo ci) {
+		if (packet.getMode().equals(ClientCommandC2SPacket.Mode.OPEN_INVENTORY) && this.player.getVehicle() instanceof RocketEntity rocketEntity) {
+			rocketEntity.openInventory(this.player);
 		}
 	}
 }

@@ -75,11 +75,13 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 	
 	private static final int[] ITEM_EXTRACT_SLOTS = new int[] {ITEM_OUTPUT_SLOT_1, ITEM_OUTPUT_SLOT_2 };
 	
+	private FluidVariant filter = FluidVariant.blank();
+	
 	public TankBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
 		fluidStorage = new SimpleFluidStorage(1, getFluidStorageSize()).insertPredicate((variant, slot) ->
-			slot == FLUID_INPUT_SLOT
+			slot == FLUID_INPUT_SLOT && (filter == Fluids.EMPTY || variant.getFluid() == filter)
 		).extractPredicate((variant, slot) ->
 			slot == FLUID_OUTPUT_SLOT
 		).listener(() -> {
@@ -100,14 +102,12 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 		
 		fluidStorage.getStorage(FLUID_INPUT_SLOT).setCapacity(getFluidStorageSize());
 	}
-
-	private Fluid filter = Fluids.EMPTY;
-
-	public Fluid getFilter() {
+	
+	public FluidVariant getFilter() {
 		return filter;
 	}
 
-	public void setFilter(Fluid filter) {
+	public void setFilter(FluidVariant filter) {
 		this.filter = filter;
 	}
 
@@ -135,7 +135,7 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 		var loadFluidStorages = FluidStorage.ITEM.find(itemOutputStorage2.getStack(), ContainerItemContext.ofSingleSlot(itemOutputStorage2));
 		
 		try (var transaction = Transaction.openOuter()) {
-			StorageUtil.move(unloadFluidStorages, fluidInputStorage, fluidVariant -> !fluidVariant.isBlank(), FluidConstants.BUCKET, transaction);
+			StorageUtil.move(unloadFluidStorages, fluidInputStorage, fluidVariant -> !fluidVariant.isBlank() && (filter.isBlank() || fluidVariant.equals(filter)), FluidConstants.BUCKET, transaction);
 			StorageUtil.move(fluidOutputStorage, loadFluidStorages, fluidVariant -> !fluidVariant.isBlank(), FluidConstants.BUCKET, transaction);
 			
 			 StorageUtil.move(itemInputStorage, itemOutputStorage1, (variant) -> {
@@ -149,14 +149,14 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 
 	@Override
 	public void writeNbt(NbtCompound nbt) {
-		nbt.putString("Fluid", Registry.FLUID.getId(filter).toString());
+		nbt.put("Filter", filter.toNbt());
 		
 		super.writeNbt(nbt);
 	}
 
 	@Override
 	public void readNbt(@NotNull NbtCompound nbt) {
-		Registry.FLUID.getOrEmpty(new Identifier(nbt.getString("Fluid"))).ifPresent(filter -> this.filter = filter);
+		filter = FluidVariant.fromNbt(nbt.getCompound("Filter"));
 
 		super.readNbt(nbt);
 	}

@@ -36,13 +36,19 @@ import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 
 public class EarthSpaceBiomeSource extends BiomeSource {
-	public static final Codec<EarthSpaceBiomeSource> CODEC = RecordCodecBuilder.create((instance) -> instance.group(RegistryOps.createRegistryCodec(Registry.BIOME_KEY).forGetter((biomeSource) -> biomeSource.registry), Codec.LONG.fieldOf("seed").stable().forGetter((
-		biomeSource) -> biomeSource.seed)).apply(instance, instance.stable(EarthSpaceBiomeSource::new)));
+	public static final Codec<EarthSpaceBiomeSource> CODEC = RecordCodecBuilder.create((instance) ->
+			instance.group(
+					RegistryOps.createRegistryCodec(Registry.BIOME_KEY).forGetter((biomeSource) -> biomeSource.registry),
+					Codec.LONG.fieldOf("seed").stable().forGetter((biomeSource) -> biomeSource.seed)
+			).apply(instance, instance.stable(EarthSpaceBiomeSource::new)));
+	
 	private final long seed;
+	
 	private final Registry<Biome> registry;
 
 	public EarthSpaceBiomeSource(Registry<Biome> registry, long seed) {
 		super(ImmutableList.of());
+		
 		this.seed = seed;
 		this.registry = registry;
 	}

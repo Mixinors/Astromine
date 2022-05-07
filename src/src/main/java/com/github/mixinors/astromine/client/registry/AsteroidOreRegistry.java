@@ -24,27 +24,26 @@
 
 package com.github.mixinors.astromine.client.registry;
 
+import com.github.mixinors.astromine.common.util.data.Range;
+import it.unimi.dsi.fastutil.objects.Reference2ReferenceMap;
+import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
+import net.minecraft.block.Block;
+import net.minecraft.util.Pair;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
-import com.github.mixinors.astromine.common.util.data.Range;
-import it.unimi.dsi.fastutil.objects.Reference2ReferenceMap;
-import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
-import org.jetbrains.annotations.Nullable;
-
-import net.minecraft.block.Block;
-import net.minecraft.util.Pair;
-
 public class AsteroidOreRegistry {
 	public static final AsteroidOreRegistry INSTANCE = new AsteroidOreRegistry();
-
+	
 	public final Reference2ReferenceMap<Block, @Nullable Pair<Range<Integer>, Range<Integer>>> diameters = new Reference2ReferenceOpenHashMap<>();
-
+	
 	private AsteroidOreRegistry() {
 		// Locked.
 	}
-
+	
 	public void register(Range<Integer> weightRange, Range<Integer> sizeRange, Block block) {
 		if (weightRange.minimum() > weightRange.maximum()) {
 			weightRange = Range.of(weightRange.maximum(), weightRange.minimum());
@@ -56,23 +55,25 @@ public class AsteroidOreRegistry {
 		} else if (sizeRange.minimum().equals(sizeRange.maximum())) {
 			sizeRange = null;
 		}
-
+		
 		if (weightRange == null || sizeRange == null) {
 			diameters.remove(block);
 		} else {
 			diameters.put(block, new Pair<>(weightRange, sizeRange));
 		}
 	}
-
+	
 	public Set<Block> keySet() {
 		return diameters.keySet();
 	}
-
+	
 	public int getDiameter(Random random, Block block) {
-		@Nullable
-		Pair<Range<Integer>, Range<Integer>> pair = diameters.get(block);
-		if (pair == null)
+		var pair = diameters.get(block);
+		
+		if (pair == null) {
 			return 0;
+		}
+		
 		return (int) (((pair.getRight().maximum() - pair.getRight().minimum()) * Objects.requireNonNull(random, "random").nextFloat() + pair.getRight().minimum()) * 0.9);
 	}
 }

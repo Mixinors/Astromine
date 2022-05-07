@@ -63,6 +63,11 @@ import java.util.stream.IntStream;
  * </ul>
  */
 public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
+	public static final String SIDINGS_KEY = "Sidings";
+	public static final String AMOUNT_KEY = "Amount";
+	public static final String VARIANT_KEY = "Variant";
+	public static final String STORAGES_KEY = "Storages";
+	
 	private int size;
 	
 	private List<Runnable> listeners;
@@ -414,20 +419,20 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 			sidingsNbt.putInt(String.valueOf(i), sidings[i].ordinal());
 		}
 		
-		nbt.put("Sidings", sidingsNbt);
+		nbt.put(SIDINGS_KEY, sidingsNbt);
 		
 		var storagesNbt = new NbtCompound();
 		
 		for (var i = 0; i < size; ++i) {
 			var storageNbt = new NbtCompound();
 			
-			storageNbt.putLong("Amount", getStorage(i).getAmount());
-			storageNbt.put("Variant", getStorage(i).getResource().toNbt());
+			storageNbt.putLong(AMOUNT_KEY, getStorage(i).getAmount());
+			storageNbt.put(VARIANT_KEY, getStorage(i).getResource().toNbt());
 			
 			storagesNbt.put(String.valueOf(i), storageNbt);
 		}
 		
-		nbt.put("Storages", storagesNbt);
+		nbt.put(STORAGES_KEY, storagesNbt);
 	}
 	
 	/**
@@ -435,19 +440,19 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	 * @param nbt the {@link NbtCompound}.
 	 */
 	public void readFromNbt(NbtCompound nbt) {
-		var sidingsNbt = nbt.getCompound("Sidings");
+		var sidingsNbt = nbt.getCompound(SIDINGS_KEY);
 		
 		for (var i = 0; i < sidings.length; ++i) {
 			sidings[i] = StorageSiding.values()[sidingsNbt.getInt(String.valueOf(i))];
 		}
 		
-		var storagesNbt = nbt.getCompound("Storages");
+		var storagesNbt = nbt.getCompound(STORAGES_KEY);
 		
 		for (var i = 0; i < size; ++i) {
 			var storageNbt = storagesNbt.getCompound(String.valueOf(i));
 			
-			var amount = storageNbt.getLong("Amount");
-			var variant = ItemVariant.fromNbt(storageNbt.getCompound("Variant"));
+			var amount = storageNbt.getLong(AMOUNT_KEY);
+			var variant = ItemVariant.fromNbt(storageNbt.getCompound(VARIANT_KEY));
 			
 			setStack(i, variant.toStack((int) amount));
 		}

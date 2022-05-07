@@ -36,34 +36,20 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 
 public class IngredientUtils {
-	/**
-	 * Deserializes an {@link Ingredient} from a {@link JsonElement}.
-	 */
+	private static final String COUNT_KEY = "count";
+	
 	public static Ingredient fromIngredientJson(JsonElement jsonElement) {
 		return Ingredient.fromJson(jsonElement);
 	}
-
-	/**
-	 * Deserializes an {@link Ingredient} from a {@link ByteBuf}.
-	 */
+	
 	public static Ingredient fromIngredientPacket(PacketByteBuf buffer) {
 		return Ingredient.fromPacket(buffer);
 	}
-
-	/**
-	 * Serializes an {@link Ingredient} to a {@link ByteBuf}.
-	 */
+	
 	public static void toIngredientPacket(PacketByteBuf buffer, Ingredient ingredient) {
 		ingredient.write(buffer);
 	}
-
-	/**
-	 * Returns an {@link ItemStack} from the specified {@link Ingredient}
-	 * which is compatible with the given {@link ItemStack}.
-	 * <p>
-	 * This method is already implemented in {@link ItemIngredient} and
-	 * {@link FluidIngredient}, but not present in the default {@link Ingredient}.
-	 */
+	
 	public static ItemStack testMatching(Ingredient input, ItemStack stack) {
 		if (stack != null) {
 			if (input.matchingStacks.length != 0) {
@@ -81,15 +67,20 @@ public class IngredientUtils {
 	public static JsonElement toJsonWithCount(Ingredient ingredient, int count) {
 		if (ingredient.entries.length == 1) {
 			var entryObject = ingredient.entries[0].toJson();
-			entryObject.addProperty("count", count);
+			entryObject.addProperty(COUNT_KEY, count);
+			
 			return entryObject;
 		}
+		
 		var jsonArray = new JsonArray();
+		
 		for (var entry : ingredient.entries) {
 			var entryObject = entry.toJson();
-			entryObject.addProperty("count", count);
+			entryObject.addProperty(COUNT_KEY, count);
+			
 			jsonArray.add(entryObject);
 		}
+		
 		return jsonArray;
 	}
 }

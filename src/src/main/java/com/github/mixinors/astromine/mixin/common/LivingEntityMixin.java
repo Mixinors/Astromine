@@ -30,19 +30,14 @@ import com.github.mixinors.astromine.registry.common.AMTags;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.math.Vec3d;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -52,15 +47,12 @@ public abstract class LivingEntityMixin extends EntityMixin {
 	private static final ThreadLocal<Boolean> FAKE_BEING_IN_LAVA = ThreadLocal.withInitial(() -> Boolean.FALSE);
 
 	@Inject(at = @At("RETURN"), method = "createLivingAttributes()Lnet/minecraft/entity/attribute/DefaultAttributeContainer$Builder;")
-	private static void createLivingAttributesInject(CallbackInfoReturnable<DefaultAttributeContainer.Builder> cir) {
+	private static void astromine$createLivingAttributes(CallbackInfoReturnable<DefaultAttributeContainer.Builder> cir) {
 		cir.getReturnValue().add(AMAttributes.GRAVITY_MULTIPLIER.get());
 	}
-
-	@Shadow
-	public abstract Iterable<ItemStack> getArmorItems();
 	
 	@Inject(at = @At("HEAD"), method = "tick()V")
-	void onTick(CallbackInfo callbackInformation) {
+	void astromine$tick(CallbackInfo callbackInformation) {
 		// TODO: Rewrite Atmosphere stuff, incl. this.
 		
 		// Entity entity = (Entity) (Object) this;
@@ -132,10 +124,11 @@ public abstract class LivingEntityMixin extends EntityMixin {
 
 	// A redirect would be the most efficient, but ModifyArg is the only compatible option
 	@ModifyArg(method = "baseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isSubmergedIn(Lnet/minecraft/tag/TagKey;)Z"))
-	private TagKey<Fluid> am_tickAirInFluid(TagKey<Fluid> tag) {
+	private TagKey<Fluid> astromine$tickAirInFluid(TagKey<Fluid> tag) {
 		if (this.isSubmergedIn(AMTags.INDUSTRIAL_FLUID)) {
 			return AMTags.INDUSTRIAL_FLUID;
 		}
+		
 		return tag;
 	}
 
@@ -146,15 +139,20 @@ public abstract class LivingEntityMixin extends EntityMixin {
 	}*/
 
 	@Inject(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isInLava()Z"))
-	private void am_travelInIndustrialFluids(Vec3d movementInput, CallbackInfo ci) {
+	private void astromine$travel(Vec3d movementInput, CallbackInfo ci) {
 		FAKE_BEING_IN_LAVA.set(Boolean.TRUE);
 	}
-
-	@Override // overrides the inject in EntityMixin
-	protected void am_fakeLava(CallbackInfoReturnable<Boolean> cir) {
+	
+	/**
+	 * Overrides the inject in {@link EntityMixin}.
+	 * @param cir
+	 */
+	@Override
+	protected void astromine$fakeLava(CallbackInfoReturnable<Boolean> cir) {
 		if (FAKE_BEING_IN_LAVA.get()) {
 			FAKE_BEING_IN_LAVA.set(Boolean.FALSE);
-			if (!cir.getReturnValueZ() && this.am_isInIndustrialFluid()) {
+			
+			if (!cir.getReturnValueZ() && this.astromine$isInIndustrialFluid()) {
 				cir.setReturnValue(true);
 			}
 		}

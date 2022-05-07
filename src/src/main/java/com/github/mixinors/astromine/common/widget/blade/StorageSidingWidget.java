@@ -35,9 +35,9 @@ import com.github.mixinors.astromine.common.util.MirrorUtils;
 import com.github.mixinors.astromine.common.util.NetworkingUtils;
 import com.github.mixinors.astromine.registry.common.AMNetworks;
 import dev.architectury.networking.NetworkManager;
-import dev.vini2003.hammer.client.util.DrawingUtils;
-import dev.vini2003.hammer.client.util.LayerUtils;
-import dev.vini2003.hammer.gui.common.widget.Widget;
+import dev.vini2003.hammer.core.api.client.texture.BaseTexture;
+import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
+import dev.vini2003.hammer.gui.api.common.widget.BaseWidget;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
@@ -52,23 +52,21 @@ import net.minecraft.util.math.Direction;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-public class StorageSidingWidget extends Widget {
+public class StorageSidingWidget extends BaseWidget {
+	private static final BaseTexture STANDARD_TEXTURE_INSERT = new ImageTexture(AMCommon.id("textures/widget/insert.png"));
+	private static final BaseTexture STANDARD_TEXTURE_EXTRACT = new ImageTexture(AMCommon.id("textures/widget/extract.png"));
+	private static final BaseTexture STANDARD_TEXTURE_INSERT_EXTRACT = new ImageTexture(AMCommon.id("textures/widget/insert_extract.png"));
+	private static final BaseTexture STANDARD_TEXTURE_NONE = new ImageTexture(AMCommon.id("textures/widget/none.png"));
+	
 	private ExtendedBlockEntity blockEntity;
 	
 	private StorageSiding siding;
-	
 	private StorageType type;
 	
 	private Direction direction;
-	
 	private Direction rotation;
 	
-	public static final Identifier TEXTURE_INSERT= AMCommon.id("textures/widget/insert.png");
-	public static final Identifier TEXTURE_EXTRACT = AMCommon.id("textures/widget/extract.png");
-	public static final Identifier TEXTURE_INSERT_EXTRACT = AMCommon.id("textures/widget/insert_extract.png");
-	public static final Identifier TEXTURE_NONE = AMCommon.id("textures/widget/none.png");
-
-	private Identifier getTexture() {
+	private BaseTexture getTexture() {
 		var sidings = new StorageSiding[6];
 		
 		if (type == StorageType.ITEM) {
@@ -80,10 +78,10 @@ public class StorageSidingWidget extends Widget {
 		}
 		
 		return switch (sidings[direction.ordinal()]) {
-			case INSERT -> TEXTURE_INSERT;
-			case EXTRACT -> TEXTURE_EXTRACT;
-			case INSERT_EXTRACT ->  TEXTURE_INSERT_EXTRACT;
-			case NONE -> TEXTURE_NONE;
+			case INSERT -> STANDARD_TEXTURE_INSERT;
+			case EXTRACT -> STANDARD_TEXTURE_EXTRACT;
+			case INSERT_EXTRACT ->  STANDARD_TEXTURE_INSERT_EXTRACT;
+			case NONE -> STANDARD_TEXTURE_NONE;
 		};
 	}
 	
@@ -91,7 +89,9 @@ public class StorageSidingWidget extends Widget {
 	public void onMouseClicked(float mouseX, float mouseY, int button) {
 		super.onMouseClicked(mouseX, mouseY, button);
 		
-		if (!getHidden() && getFocused() && getHandled().getClient()) {
+		var handled = getHandled();
+		
+		if (!isHidden() && isFocused() && handled.isClient()) {
 			var sidings = (StorageSiding[]) null;
 			
 			if (type == StorageType.ITEM) {
@@ -117,8 +117,7 @@ public class StorageSidingWidget extends Widget {
 			NetworkManager.sendToServer(AMNetworks.STORAGE_SIDING_UPDATE, buf);
 		}
 	}
-
-	@Environment(EnvType.CLIENT)
+	
 	@Override
 	public @NotNull List<Text> getTooltip() {
 		var offset = MirrorUtils.rotate(direction, rotation);
@@ -152,11 +151,15 @@ public class StorageSidingWidget extends Widget {
 	@Environment(EnvType.CLIENT)
 	@Override
 	public void drawWidget(@NotNull MatrixStack matrices, @NotNull VertexConsumerProvider provider, float delta) {
-		if (getHidden()) {
-			return;
-		}
+		var x = getX();
+		var y = getY();
 		
-		DrawingUtils.drawTexturedQuad(matrices, provider, LayerUtils.get(getTexture()), getPosition().getX(), getPosition().getY(), getSize().getWidth(), getSize().getHeight(), getTexture());
+		var width = getWidth();
+		var height = getHeight();
+		
+		var texture = getTexture();
+		
+		texture.draw(matrices, provider, x, y, width, height);
 	}
 	
 	public ExtendedBlockEntity getBlockEntity() {

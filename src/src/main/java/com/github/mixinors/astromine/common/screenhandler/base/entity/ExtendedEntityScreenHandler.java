@@ -29,16 +29,17 @@ import java.util.HashSet;
 import java.util.function.Supplier;
 
 import com.github.mixinors.astromine.common.entity.base.ExtendedEntity;
-import dev.vini2003.hammer.common.geometry.position.Position;
-import dev.vini2003.hammer.common.geometry.size.Size;
-import dev.vini2003.hammer.gui.common.screen.handler.BaseScreenHandler;
-import dev.vini2003.hammer.gui.common.util.SlotUtils;
-import dev.vini2003.hammer.gui.common.widget.bar.FluidBarWidget;
-import dev.vini2003.hammer.gui.common.widget.slot.SlotWidget;
-import dev.vini2003.hammer.gui.common.widget.tab.TabWidget;
-import dev.vini2003.hammer.gui.common.widget.text.TextWidget;
-import dev.vini2003.hammer.gui.energy.common.widget.bar.EnergyBarWidget;
+import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
+import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
+import dev.vini2003.hammer.gui.api.common.util.SlotUtils;
+import dev.vini2003.hammer.gui.api.common.widget.bar.FluidBarWidget;
+import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
+import dev.vini2003.hammer.gui.api.common.widget.tab.TabWidget;
+import dev.vini2003.hammer.gui.api.common.widget.text.TextWidget;
 
+
+import dev.vini2003.hammer.gui.energy.api.common.widget.bar.EnergyBarWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
@@ -61,6 +62,11 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 		entity = (ExtendedEntity) player.world.getEntityById(entityId);
 	}
 	
+	@Override
+	public boolean isClient() {
+		return getClient();
+	}
+	
 	public abstract ItemStack getSymbol();
 	
 	public int getTabWidgetExtendedHeight() {
@@ -75,37 +81,38 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 	@Override
 	public void initialize(int width, int height) {
 		tabs = new TabWidget();
-		tabs.setSize( Size.of(176.0F, 188F + getTabWidgetExtendedHeight(), 0.0F));
-		tabs.setPosition( Position.of(width / 2.0F - tabs.getWidth() / 2.0F, height / 2.0F - tabs.getHeight() / 2.0F, 0.0F));
+		tabs.setSize( new Size(176.0F, 188F + getTabWidgetExtendedHeight(), 0.0F));
+		tabs.setPosition( new Position(width / 2.0F - tabs.getWidth() / 2.0F, height / 2.0F - tabs.getHeight() / 2.0F, 0.0F));
 
 		add(tabs);
 
 		mainTab = (TabWidget.TabWidgetCollection) tabs.addTab(getSymbol());
-		mainTab.setPosition(Position.of(tabs, 0.0F, 25.0F + 7.0F, 0.0F));
-		mainTab.setSize(Size.of(176.0F, 184.0F, 0.0F));
+		mainTab.setPosition(new Position(tabs, 0.0F, 25.0F + 7.0F, 0.0F));
+		mainTab.setSize(new Size(176.0F, 184.0F, 0.0F));
 		
 		var title = new TextWidget();
-		title.setPosition(Position.of(mainTab, 8.0F, 0.0F, 0.0F));
+		title.setPosition(new Position(mainTab, 8.0F, 0.0F, 0.0F));
 		title.setText(entity.getDisplayName());
 		title.setColor(4210752);
 		
 		mainTab.add(title);
 		
-		var invPos = Position.of(tabs, 7.0F, 25.0F + 7.0F + (184.0F - 18.0F - 18.0F - (18.0F * 4.0F) - 3.0F + getTabWidgetExtendedHeight()), 0.0F);
+		var invPos = new Position(tabs, 7.0F, 25.0F + 7.0F + (184.0F - 18.0F - 18.0F - (18.0F * 4.0F) - 3.0F + getTabWidgetExtendedHeight()), 0.0F);
 		
 		var invTitle = new TextWidget();
-		invTitle.setPosition(Position.of(invPos, 0.0F, -10.0F, 0.0F));
+		invTitle.setPosition(new Position(invPos, 0.0F, -10.0F, 0.0F));
 		invTitle.setText(getPlayer().getInventory().getName());
 		invTitle.setColor(4210752);
 		
 		mainTab.add(invTitle);
 		
-		playerSlots = SlotUtils.addPlayerInventory(invPos, Size.of(18.0F, 18.0F, 0.0F), mainTab, getPlayer().getInventory());
+		playerSlots = SlotUtils.addPlayerInventory(invPos, new Size(18.0F, 18.0F, 0.0F), mainTab, getPlayer().getInventory());
 		
 		if (entity.hasEnergyStorage()) {
 			energyBar = new EnergyBarWidget();
-			energyBar.setPosition( Position.of(mainTab, 7.0F, 11.0F, 0.0F));
-			energyBar.setSize( Size.of(24.0F, 48.0F, 0.0F));
+			energyBar.setPosition( new Position(mainTab, 7.0F, 11.0F, 0.0F));
+			energyBar.setSize( new Size(24.0F, 48.0F, 0.0F));
+			energyBar.setStorage(entity.getEnergyStorage());
 			energyBar.setCurrent(() -> (float) entity.getEnergyStorage().getAmount());
 			energyBar.setMaximum(() -> (float) entity.getEnergyStorage().getCapacity());
 			
@@ -116,12 +123,12 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 			fluidBar = new FluidBarWidget();
 			
 			if (energyBar == null) {
-				fluidBar.setPosition(Position.of(mainTab, 7.0F, 0.0F, 0.0F));
+				fluidBar.setPosition(new Position(mainTab, 7.0F, 0.0F, 0.0F));
 			} else {
-				fluidBar.setPosition(Position.of(energyBar, 7.0F, 0.0F, 0.0F));
+				fluidBar.setPosition(new Position(energyBar, 7.0F, 0.0F, 0.0F));
 			}
 			
-			fluidBar.setSize(Size.of(24.0F, 48.0F, 0.0F));
+			fluidBar.setSize(new Size(24.0F, 48.0F, 0.0F));
 			fluidBar.setStorage(entity.getFluidStorage().getStorage(0));
 		}
 	}

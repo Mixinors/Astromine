@@ -33,7 +33,7 @@ import com.github.mixinors.astromine.common.util.VectorUtils;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.architectury.hooks.block.BlockEntityHooks;
-import dev.vini2003.hammer.common.color.Color;
+import dev.vini2003.hammer.core.api.common.color.Color;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,7 +51,7 @@ import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.math.Vec3i;
 
 public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Tickable {
-	public static final Color DEFAULT_COLOR = Color.of("0x7e80cad4");
+	public static final Color DEFAULT_COLOR = new Color("0x7E80CAD4");
 
 	public ArrayList<Vec3f> segments = null;
 

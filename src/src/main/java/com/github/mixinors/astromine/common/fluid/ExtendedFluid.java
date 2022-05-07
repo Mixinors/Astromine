@@ -33,7 +33,7 @@ import com.github.mixinors.astromine.registry.common.AMItems;
 import dev.architectury.platform.Platform;
 import dev.architectury.registry.block.BlockProperties;
 import dev.architectury.registry.registries.RegistrySupplier;
-import dev.vini2003.hammer.common.color.Color;
+import dev.vini2003.hammer.core.api.common.color.Color;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.AbstractBlock;
@@ -189,8 +189,8 @@ public abstract class ExtendedFluid extends FlowableFluid {
 	}
 	
 	public static class Builder {
-		private int fog = Color.WHITE.toInt();
-		private int tint = Color.WHITE.toInt();
+		private int fog = Color.WHITE.toRGB();
+		private int tint = Color.WHITE.toRGB();
 		private int damage = 0;
 
 		private boolean isInfinite = false;

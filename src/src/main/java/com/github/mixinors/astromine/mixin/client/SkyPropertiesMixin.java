@@ -43,13 +43,12 @@ import net.fabricmc.api.Environment;
 @Environment(EnvType.CLIENT)
 @Mixin(DimensionEffects.class)
 public class SkyPropertiesMixin {
-
 	@Shadow
 	@Final
 	private static Object2ObjectMap<Identifier, DimensionEffects> BY_IDENTIFIER;
 
 	@Inject(method = "<clinit>", at = @At("RETURN"))
-	private static void am_init(CallbackInfo info) {
+	private static void astromine$clinit(CallbackInfo info) {
 		SkyPropertiesCallback.EVENT.invoker().handle(BY_IDENTIFIER);
 	}
 }

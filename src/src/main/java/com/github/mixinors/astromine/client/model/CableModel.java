@@ -2,7 +2,7 @@ package com.github.mixinors.astromine.client.model;
 
 import com.github.mixinors.astromine.common.block.entity.cable.CableBlockEntity;
 import com.mojang.datafixers.util.Pair;
-import dev.vini2003.hammer.client.util.InstanceUtils;
+import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
 import net.fabricmc.fabric.api.client.model.BakedModelManagerHelper;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;

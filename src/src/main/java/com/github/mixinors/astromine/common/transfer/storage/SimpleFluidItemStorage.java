@@ -36,9 +36,9 @@ import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantItemStorage
  * A {@link SingleVariantItemStorage} implementation, backed by an {@link ItemStack}.
  */
 public class SimpleFluidItemStorage extends SingleVariantItemStorage<FluidVariant> {
-	public static final String FLUID_KEY = "fluid";
-	public static final String VARIANT_KEY = "variant";
-	public static final String AMOUNT_KEY = "amount";
+	public static final String FLUID_KEY = "Fluid";
+	public static final String VARIANT_KEY = "Variant";
+	public static final String AMOUNT_KEY = "Amount";
 
 	private final long capacity;
 
@@ -95,6 +95,8 @@ public class SimpleFluidItemStorage extends SingleVariantItemStorage<FluidVarian
 		var nbt = stack.getOrCreateNbt();
 		
 		var fluidNbt = new NbtCompound();
+		
+		if (newAmount == 0) newResource = getBlankResource();
 		
 		fluidNbt.put(VARIANT_KEY, newResource.toNbt());
 		

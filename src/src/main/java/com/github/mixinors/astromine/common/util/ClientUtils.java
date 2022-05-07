@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.util;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.fluid.ExtendedFluid;
 
+import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.texture.Sprite;
@@ -49,34 +50,11 @@ import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 
 public class ClientUtils {
-	/**
-	 * Returns Minecraft's client's instance.
-	 */
-	public static MinecraftClient getInstance() {
-		return MinecraftClient.getInstance();
-	}
-
-	/**
-	 * Returns Minecraft's client's player.
-	 */
-	public static ClientPlayerEntity getPlayer() {
-		return getInstance().player;
-	}
-
-	/**
-	 * Returns Minecraft's client's world.
-	 **/
-	public static ClientWorld getWorld() {
-		return getInstance().world;
-	}
-
-	/**
-	 * Registers the necessary data for an {@link ExtendedFluid} on the client side.
-	 */
 	@Environment(EnvType.CLIENT)
 	public static void registerExtendedFluid(String name, int tint, Fluid still, Fluid flowing) {
 		var stillSpriteIdentifier = new Identifier("block/water_still");
 		var flowingSpriteIdentifier = new Identifier("block/water_flow");
+		
 		var listenerIdentifier = AMCommon.id(name + "_reload_listener");
 		
 		var fluidSprites = new Sprite[] { null, null };
@@ -94,7 +72,10 @@ public class ClientUtils {
 
 			@Override
 			public void reload(ResourceManager resourceManager) {
-				final var atlas = ClientUtils.getInstance().getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
+				var client = InstanceUtils.getClient();
+				
+				var atlas = client.getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
+				
 				fluidSprites[0] = atlas.apply(stillSpriteIdentifier);
 				fluidSprites[1] = atlas.apply(flowingSpriteIdentifier);
 			}

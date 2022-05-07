@@ -43,7 +43,7 @@ public class JsonDataLoaderMixin {
 	@Mutable @Shadow @Final private String dataType;
 	
 	@Inject(at = @At("RETURN"), method = "<init>")
-	void am_init(Gson gson, String dataType, CallbackInfo ci) {
+	void astromine$init(Gson gson, String dataType, CallbackInfo ci) {
 		if ((Object) this instanceof ConditionalRecipeManager) {
 			this.dataType = "conditional";
 		}

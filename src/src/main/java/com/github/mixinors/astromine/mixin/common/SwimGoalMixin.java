@@ -36,8 +36,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value = { SwimGoal.class }, targets = { "net.minecraft.entity.passive.FoxEntity$FoxSwimGoal" })
 public abstract class SwimGoalMixin implements SwimGoalAccessor {
 	@Inject(method = "canStart()Z", at = @At("RETURN"), cancellable = true)
-	private void shouldRun(CallbackInfoReturnable<Boolean> cir) {
-		if (!cir.getReturnValueZ() && ((EntityAccessor) this.getMob()).am_isInIndustrialFluid()) {
+	private void astromine$canStart(CallbackInfoReturnable<Boolean> cir) {
+		if (!cir.getReturnValueZ() && ((EntityAccessor) this.getMob()).astromine$isInIndustrialFluid()) {
 			cir.setReturnValue(true);
 		}
 	}

@@ -32,9 +32,10 @@ import com.github.mixinors.astromine.common.transfer.RedstoneControl;
 import com.github.mixinors.astromine.common.util.NetworkingUtils;
 import com.github.mixinors.astromine.registry.common.AMNetworks;
 import dev.architectury.networking.NetworkManager;
-import dev.vini2003.hammer.client.texture.PartitionedTexture;
-import dev.vini2003.hammer.client.util.DrawingUtils;
-import dev.vini2003.hammer.gui.common.widget.button.ButtonWidget;
+import dev.vini2003.hammer.core.api.client.texture.BaseTexture;
+import dev.vini2003.hammer.core.api.client.util.DrawingUtils;
+import dev.vini2003.hammer.gui.api.common.widget.button.ButtonWidget;
+import dev.vini2003.hammer.gui.api.common.widget.panel.PanelWidget;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
@@ -45,24 +46,29 @@ import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
 
 public class RedstoneControlWidget extends ButtonWidget {
-    private ExtendedBlockEntity blockEntity;
-
     private static final ItemStack GLOWSTONE = new ItemStack(Items.GLOWSTONE_DUST);
-
     private static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
-
     private static final ItemStack GUNPOWDER = new ItemStack(Items.GUNPOWDER);
-
-    public static final PartitionedTexture TEXTURE = new PartitionedTexture(new Identifier("hammer", "textures/widget/panel.png"), 18.0F, 18.0F, 0.25F, 0.25F, 0.25F, 0.25F);
+    
+    public static final BaseTexture STANDARD_TEXTURE = PanelWidget.STANDARD_TEXTURE;
+    
+    private ExtendedBlockEntity blockEntity;
+    
+    public RedstoneControlWidget() {
+        setOnTexture(STANDARD_TEXTURE);
+        setOffTexture(STANDARD_TEXTURE);
+        setFocusedTexture(STANDARD_TEXTURE);
+    }
     
     @Override
     public void onMouseClicked(float x, float y, int button) {
         super.onMouseClicked(x, y, button);
+        
+        var handled = getHandled();
     
-        if (getFocused() && getHandled().getClient()) {
+        if (isFocused() && handled.isClient()) {
             var control = blockEntity.getRedstoneControl();
 
             RedstoneControl next;
@@ -93,22 +99,18 @@ public class RedstoneControlWidget extends ButtonWidget {
     
     @Override
     public void drawWidget(@NotNull MatrixStack matrices, @NotNull VertexConsumerProvider provider, float delta) {
-        if (getHidden()) {
-            return;
-        }
+        var x = getX();
+        var y = getY();
     
-        var x = getPosition().getX();
-        var y = getPosition().getY();
-    
-        var sX = getSize().getWidth();
-        var sY = getSize().getHeight();
+        var width = getWidth();
+        var height = getHeight();
 
-        TEXTURE.draw(matrices, provider, x, y, sX, sY);
+        STANDARD_TEXTURE.draw(matrices, provider, x, y, width, height);
     
         switch (blockEntity.getRedstoneControl()) {
-            case WORK_WHEN_ON -> DrawingUtils.getItemRenderer().renderGuiItemIcon(REDSTONE, (int) x + (int) Math.max((sX - 16.0F) / 2.0F, 0.0F), (int) y + (int) Math.max((sY - 16.0F) / 2.0F, 0.0F));
-            case WORK_WHEN_OFF -> DrawingUtils.getItemRenderer().renderGuiItemIcon(GUNPOWDER, (int) x + (int) Math.max((sX - 16.0F) / 2.0F, 0.0F), (int) y + (int) Math.max((sY - 16.0F) / 2.0F, 0.0F));
-            case WORK_ALWAYS -> DrawingUtils.getItemRenderer().renderGuiItemIcon(GLOWSTONE, (int) x + (int) Math.max((sX - 16.0F) / 2.0F, 0.0F), (int) y + (int) Math.max((sY - 16.0F) / 2.0F, 0.0F));
+            case WORK_WHEN_ON -> DrawingUtils.getItemRenderer().renderGuiItemIcon(REDSTONE, (int) x + (int) Math.max((width - 16.0F) / 2.0F, 0.0F), (int) y + (int) Math.max((height - 16.0F) / 2.0F, 0.0F));
+            case WORK_WHEN_OFF -> DrawingUtils.getItemRenderer().renderGuiItemIcon(GUNPOWDER, (int) x + (int) Math.max((width - 16.0F) / 2.0F, 0.0F), (int) y + (int) Math.max((height - 16.0F) / 2.0F, 0.0F));
+            case WORK_ALWAYS -> DrawingUtils.getItemRenderer().renderGuiItemIcon(GLOWSTONE, (int) x + (int) Math.max((width - 16.0F) / 2.0F, 0.0F), (int) y + (int) Math.max((height - 16.0F) / 2.0F, 0.0F));
         }
     }
     

@@ -13,7 +13,7 @@ public class WorldConfigSection {
 	public OresConfigSection ores = new OresConfigSection();
 	
 	@Comment("Gravity level in Space")
-	public double spaceGravity = 0.01D;
+	public float spaceGravity = 0.01F;
 	
 	@Comment("Gravity for non-Astromine dimensions")
 	public double gravity = 0.08D;

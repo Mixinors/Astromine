@@ -34,7 +34,6 @@ import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.StructureFeature;
 
 public class MeteorFeature extends StructureFeature<DefaultFeatureConfig> {
-
 	public MeteorFeature(Codec<DefaultFeatureConfig> codec) {
 		super(codec, StructureGeneratorFactory.simple(StructureGeneratorFactory.checkForBiomeOnTop(Heightmap.Type.WORLD_SURFACE_WG), MeteorFeature::addPieces));
 	}

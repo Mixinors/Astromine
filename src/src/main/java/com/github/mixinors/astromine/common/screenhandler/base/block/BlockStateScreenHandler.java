@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.common.screenhandler.base.block;
 
 import java.util.function.Supplier;
 
-import dev.vini2003.hammer.gui.common.screen.handler.BaseScreenHandler;
+import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
@@ -47,6 +47,11 @@ public abstract class BlockStateScreenHandler extends BaseScreenHandler {
 		this.state = player.getWorld().getBlockState(position);
 		this.originalBlock = state.getBlock();
 		this.position = position;
+	}
+	
+	@Override
+	public boolean isClient() {
+		return getClient();
 	}
 	
 	@Override

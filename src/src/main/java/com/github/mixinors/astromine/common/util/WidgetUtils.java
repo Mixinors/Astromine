@@ -33,19 +33,19 @@ import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntit
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.StorageType;
 import com.github.mixinors.astromine.common.widget.blade.StorageSidingWidget;
-import dev.vini2003.hammer.common.geometry.position.Position;
-import dev.vini2003.hammer.common.geometry.size.Size;
+import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
 
 import net.minecraft.util.math.Direction;
 
 public class WidgetUtils {
 	public static List<StorageSidingWidget> createStorageSiding(Position anchor, ExtendedBlockEntity blockEntity, StorageSiding[] sidings, StorageType type, Direction rotation) {
-		var north = Position.of(anchor, 7.0F + 22.0F, 31.0F + 22.0F, 0.0F);
-		var south = Position.of(anchor, 7.0F, 31.0F + 44, 0.0F);
-		var up = Position.of(anchor, 7.0F + 22.0F, 31.0F, 0.0F);
-		var down = Position.of(anchor, 7.0F + 22.0F, 31.0F + 44.0F, 0.0F);
-		var west = Position.of(anchor, 7.0F + 44.0F, 31.0F + 22.0F, 0.0F);
-		var east = Position.of(anchor, 7.0F, 31.0F + 22.0F, 0.0F);
+		var north = new Position(anchor, 7.0F + 22.0F, 31.0F + 22.0F, 0.0F);
+		var south = new Position(anchor, 7.0F, 31.0F + 44, 0.0F);
+		var up = new Position(anchor, 7.0F + 22.0F, 31.0F, 0.0F);
+		var down = new Position(anchor, 7.0F + 22.0F, 31.0F + 44.0F, 0.0F);
+		var west = new Position(anchor, 7.0F + 44.0F, 31.0F + 22.0F, 0.0F);
+		var east = new Position(anchor, 7.0F, 31.0F + 22.0F, 0.0F);
 		
 		var positions = ImmutableMap.<Direction, Position>builder()
 				.put(Direction.NORTH, north)
@@ -61,7 +61,7 @@ public class WidgetUtils {
 		for (var direction : Direction.values()) {
 			var button = new StorageSidingWidget();
 			button.setPosition(positions.get(MirrorUtils.rotate(direction, rotation)));
-			button.setSize(Size.of(18.0F, 18.0F, 0.0F));
+			button.setSize(new Size(18.0F, 18.0F, 0.0F));
 			button.setBlockEntity(blockEntity);
 			button.setSiding(sidings[direction.ordinal()]);
 			button.setType(type);

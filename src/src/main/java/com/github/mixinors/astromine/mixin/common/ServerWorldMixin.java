@@ -37,7 +37,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerWorld.class)
 public class ServerWorldMixin {
 	@Inject(method = "tickChunk", at = @At("HEAD"))
-	private void am_tickChunk(WorldChunk chunk, int randomTickSpeed, CallbackInfo ci) {
+	private void astromine$tickChunk(WorldChunk chunk, int randomTickSpeed, CallbackInfo ci) {
 		ServerChunkTickCallback.EVENT.invoker().tickChunk((ServerWorld) (Object) this, chunk);
 	}
 }

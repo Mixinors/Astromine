@@ -49,14 +49,16 @@ public class DataPackContentsMixin {
 	private ConditionalRecipeManager conditionalRecipeManager;
 
 	@Inject(at = @At("RETURN"), method = "<init>")
-	void am_init(DynamicRegistryManager.Immutable dynamicRegistryManager, CommandManager.RegistrationEnvironment commandEnvironment, int functionPermissionLevel, CallbackInfo ci) {
+	void astromine$init(DynamicRegistryManager.Immutable dynamicRegistryManager, CommandManager.RegistrationEnvironment commandEnvironment, int functionPermissionLevel, CallbackInfo ci) {
 		conditionalRecipeManager = new ConditionalRecipeManager(recipeManager);
 	}
 
 	@Inject(at = @At("RETURN"), method = "getContents", cancellable = true)
-	void am_getContents(CallbackInfoReturnable<List<ResourceReloader>> cir) {
-		List<ResourceReloader> reloaders = new ArrayList<>(cir.getReturnValue());
+	void astromine$getContents(CallbackInfoReturnable<List<ResourceReloader>> cir) {
+		var reloaders = new ArrayList<>(cir.getReturnValue());
+		
 		reloaders.add(conditionalRecipeManager);
+		
 		cir.setReturnValue(reloaders);
 	}
 }

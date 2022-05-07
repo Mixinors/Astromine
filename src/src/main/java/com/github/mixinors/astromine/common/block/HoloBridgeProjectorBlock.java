@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.common.block;
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.mixinors.astromine.common.block.entity.HoloBridgeProjectorBlockEntity;
 import dev.architectury.hooks.block.BlockEntityHooks;
-import dev.vini2003.hammer.common.color.Color;
+import dev.vini2003.hammer.core.api.common.color.Color;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.AbstractBlock;

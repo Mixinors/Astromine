@@ -39,6 +39,9 @@ import com.mojang.serialization.Dynamic;
 import com.mojang.serialization.DynamicOps;
 
 public class WeightedList<U> {
+	private static final String DATA_KEY = "data";
+	private static final String WEIGHT_KEY = "weight";
+	
 	protected final List<WeightedList.Entry<U>> entries;
 
 	public WeightedList() {
@@ -111,15 +114,17 @@ public class WeightedList<U> {
 				@Override
 				public <T> DataResult<Pair<WeightedList.Entry<E>, T>> decode(DynamicOps<T> dynamicOps, T object) {
 					Objects.requireNonNull(codec);
+					
 					var dynamic = new Dynamic<T>(dynamicOps, object);
-					return dynamic.get("data").flatMap(codec::parse).map((data) -> {
-						return new WeightedList.Entry<>(data, dynamic.get("weight").asInt(1));
+					
+					return dynamic.get(DATA_KEY).flatMap(codec::parse).map((data) -> {
+						return new WeightedList.Entry<>(data, dynamic.get(WEIGHT_KEY).asInt(1));
 					}).map((entry) -> Pair.of(entry, dynamicOps.empty()));
 				}
 
 				@Override
 				public <T> DataResult<T> encode(WeightedList.Entry<E> entry, DynamicOps<T> dynamicOps, T object) {
-					return dynamicOps.mapBuilder().add("weight", dynamicOps.createInt(entry.weight)).add("data", codec.encodeStart(dynamicOps, entry.data)).build(object);
+					return dynamicOps.mapBuilder().add(WEIGHT_KEY, dynamicOps.createInt(entry.weight)).add(DATA_KEY, codec.encodeStart(dynamicOps, entry.data)).build(object);
 				}
 			};
 		}

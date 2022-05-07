@@ -29,9 +29,9 @@ import com.github.mixinors.astromine.common.screenhandler.base.block.entity.Exte
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import dev.vini2003.hammer.common.geometry.position.Position;
-import dev.vini2003.hammer.common.geometry.size.Size;
-import dev.vini2003.hammer.gui.common.widget.slot.SlotWidget;
+import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
+import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -50,29 +50,29 @@ public class AlloySmelterScreenHandler extends ExtendedBlockEntityScreenHandler 
 		super.initialize(width, height);
 		
 		var firstInput = new SlotWidget(0, smelter.getItemStorage());
-		firstInput.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
-		firstInput.setSize( Size.of(18, 18));
+		firstInput.setPosition(new Position(energyBar.getX(), energyBar.getY()));
+		firstInput.setSize( new Size(18.0F, 18.0F));
 		
 		var secondInput = new SlotWidget(1, smelter.getItemStorage());
-		secondInput.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
-		secondInput.setSize(Size.of(18, 18));
+		secondInput.setPosition(new Position(energyBar.getX(), energyBar.getY()));
+		secondInput.setSize(new Size(18.0F, 18.0F));
 		
 		var output = new SlotWidget(2, smelter.getItemStorage(), ExtractionSlot::new);
-		output.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
-		output.setSize(Size.of(18, 18));
+		output.setPosition(new Position(energyBar.getX(), energyBar.getY()));
+		output.setSize(new Size(18.0F, 18.0F));
 
-		firstInput.setPosition(Position.of(width / 2F - firstInput.getWidth() / 2, firstInput.getY()));
-		firstInput.setPosition(Position.of(firstInput.getX() - 22, firstInput.getY() + 15 - 9));
+		firstInput.setPosition(new Position(width / 2.0F - firstInput.getWidth() / 2.0F, firstInput.getY()));
+		firstInput.setPosition(new Position(firstInput.getX() - 22.0F, firstInput.getY() + 15.0F - 9.0F));
 
-		secondInput.setPosition(Position.of(width / 2F - secondInput.getWidth() / 2, secondInput.getY()));
-		secondInput.setPosition(Position.of(secondInput.getX() - 22, secondInput.getY() + 15 + 18 - 9));
+		secondInput.setPosition(new Position(width / 2.0F - secondInput.getWidth() / 2.0F, secondInput.getY()));
+		secondInput.setPosition(new Position(secondInput.getX() - 22.0F, secondInput.getY() + 15.0F + 18.0F - 9.0F));
 
-		output.setPosition(Position.of(width / 2F - output.getWidth() / 2, output.getY()));
-		output.setPosition(Position.of(secondInput.getX() + 57, secondInput.getY() - 9));
+		output.setPosition(new Position(width / 2.0F - output.getWidth() / 2.0F, output.getY()));
+		output.setPosition(new Position(secondInput.getX() + 57.0F, secondInput.getY() - 9.0F));
 		
 		var arrow = new HorizontalArrowWidget();
-		arrow.setPosition(Position.of(output.getX() - 31, output.getY()));
-		arrow.setSize(Size.of(22, 16));
+		arrow.setPosition(new Position(output.getX() - 31.0F, output.getY()));
+		arrow.setSize(new Size(22.0F, 16.0F));
 		arrow.setLimitSupplier(() -> smelter.limit);
 		arrow.setProgressSupplier(() -> (int) smelter.progress);
 

@@ -42,8 +42,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(targets = { "net/minecraft/enchantment/EnchantmentTarget$12" })
 public class EnchantmentTargetMixin {
 	@Inject(at = @At("HEAD"), method = "isAcceptableItem(Lnet/minecraft/item/Item;)Z", cancellable = true)
-	public void am_makeMultiToolEnchantable(Item item, CallbackInfoReturnable<Boolean> cir) {
-		if (item instanceof EnchantableToolItem)
+	public void astromine$isAcceptableItem(Item item, CallbackInfoReturnable<Boolean> cir) {
+		if (item instanceof EnchantableToolItem) {
 			cir.setReturnValue(true);
+		}
 	}
 }

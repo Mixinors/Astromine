@@ -44,15 +44,20 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Mixin(PiglinBrain.class)
 public abstract class PiglinBrainMixin {
 	@Inject(method = "consumeOffHandItem(Lnet/minecraft/entity/mob/PiglinEntity;Z)V", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/mob/PiglinBrain;acceptsForBarter(Lnet/minecraft/item/ItemStack;)Z"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
-	private static void am_consumeOffHandItem(PiglinEntity piglin, boolean barter, CallbackInfo ci, ItemStack stack) {
+	private static void astromine$consumeOffHandItem(PiglinEntity piglin, boolean barter, CallbackInfo ci, ItemStack stack) {
 		if (stack.isIn(AMTags.TRICKS_PIGLINS)) { //TODO: make sure this works correctly
 			var optional = piglin.getBrain().getOptionalMemory(MemoryModuleType.NEAREST_VISIBLE_PLAYER);
+			
 			if (optional.isPresent() && optional.get() instanceof ServerPlayerEntity player) {
 				var noticed = piglin.getRandom().nextInt(AMConfig.get().entities.piglinAngerChance) == 0;
+				
 				AMCriteria.TRICKED_PIGLIN.trigger(player, !noticed);
+				
 				if (noticed) {
 					piglin.playSound(SoundEvents.ENTITY_PIGLIN_ANGRY, 1.0f, 1.0f);
+					
 					PiglinBrain.becomeAngryWith(piglin, player);
+					
 					ci.cancel();
 				}
 			}

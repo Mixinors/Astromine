@@ -29,10 +29,12 @@ import static com.github.mixinors.astromine.registry.common.AMNetworks.PRIMITIVE
 import com.github.mixinors.astromine.common.util.ClientUtils;
 import com.github.mixinors.astromine.registry.common.AMEntityTypes;
 import dev.architectury.networking.NetworkManager;
+import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
+import net.minecraft.client.world.ClientWorld;
 
 public class AMClientNetworks {
 	public static void init() {
-		NetworkManager.registerReceiver(NetworkManager.s2c(), PRIMITIVE_ROCKET_SPAWN, (( buf, context) -> {
+		NetworkManager.registerReceiver(NetworkManager.s2c(), PRIMITIVE_ROCKET_SPAWN, ((buf, context) -> {
 			var x = buf.readDouble();
 			var y = buf.readDouble();
 			var z = buf.readDouble();
@@ -40,20 +42,24 @@ public class AMClientNetworks {
 			var id = buf.readInt();
 
 			context.queue(() -> {
-				var rocketEntity = AMEntityTypes.PRIMITIVE_ROCKET.get().create(ClientUtils.getWorld());
+				var player = context.getPlayer();
+				var world = (ClientWorld) player.world;
+				
+				var rocketEntity = AMEntityTypes.PRIMITIVE_ROCKET.get().create(world);
 				
 				rocketEntity.setUuid(uuid);
 				rocketEntity.setId(id);
 				rocketEntity.setPosition(x, y, z);
 				rocketEntity.updateTrackedPosition(x, y, z);
 				
-				ClientUtils.getWorld().addEntity(id, rocketEntity);
+				world.addEntity(id, rocketEntity);
 			});
 		}));
 		
 		// TODO: 08/08/2020 - 11:00:51
 		// TODO: 27/08/2020 - 21:15:05
 		// TODO: 08/05/2021 - 09:47:18
+		// TODO: 06/05/2022 - 20:06:53
 		// ClientSidePacketRegistry.INSTANCE.register(AstromineCommonPackets.PRESSURE_UPDATE, ((context, buffer) -> {
 		// Identifier identifier = buffer.readIdentifier();
 		//

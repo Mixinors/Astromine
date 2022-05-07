@@ -28,11 +28,11 @@ import com.github.mixinors.astromine.common.entity.base.RocketEntity;
 import com.github.mixinors.astromine.common.screenhandler.base.entity.ExtendedEntityScreenHandler;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import dev.vini2003.hammer.common.geometry.position.Position;
-import dev.vini2003.hammer.common.geometry.size.Size;
-import dev.vini2003.hammer.gui.common.widget.bar.FluidBarWidget;
-import dev.vini2003.hammer.gui.common.widget.button.ButtonWidget;
-import dev.vini2003.hammer.gui.common.widget.slot.SlotWidget;
+import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
+import dev.vini2003.hammer.gui.api.common.widget.bar.FluidBarWidget;
+import dev.vini2003.hammer.gui.api.common.widget.button.ButtonWidget;
+import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -59,8 +59,8 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 			return null;
 		});
 
-		launchButtonWidget.setPosition(Position.of(mainTab, 3.0F + 4.0F, 11.0F, 0.0F));
-		launchButtonWidget.setSize(Size.of(48.0F, 18.0F, 0.0F));
+		launchButtonWidget.setPosition(new Position(mainTab, 3.0F + 4.0F, 11.0F, 0.0F));
+		launchButtonWidget.setSize(new Size(48.0F, 18.0F, 0.0F));
 		launchButtonWidget.setLabel(new TranslatableText("text.astromine.rocket.launch"));
 		launchButtonWidget.setDisabled(() -> entity.getDataTracker().get(RocketEntity.IS_RUNNING) || (entity.getFluidStorage().getStorage(0).isResourceBlank() && entity.getFluidStorage().getStorage(1).isResourceBlank()));
 		
@@ -70,32 +70,32 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 			return null;
 		});
 
-		abortButtonWidget.setPosition(Position.of(mainTab, 3.0F + 4.0F, 11.0F + fluidBar.getHeight() - 18.0F, 0.0F));
-		abortButtonWidget.setSize(Size.of(48.0F, 18.0F, 0.0F));
+		abortButtonWidget.setPosition(new Position(mainTab, 3.0F + 4.0F, 11.0F + fluidBar.getHeight() - 18.0F, 0.0F));
+		abortButtonWidget.setSize(new Size(48.0F, 18.0F, 0.0F));
 		abortButtonWidget.setLabel(new TranslatableText("text.astromine.rocket.destroy").formatted(Formatting.RED));
 
-		fluidBar.setPosition( Position.of(width / 2.0F - fluidBar.getWidth() / 2.0F + 2.0F, fluidBar.getY(), 0.0F));
+		fluidBar.setPosition( new Position(width / 2.0F - fluidBar.getWidth() / 2.0F + 2.0F, fluidBar.getY(), 0.0F));
 		
 		var firstInput = new SlotWidget(0, entity.getItemStorage());
-		firstInput.setPosition(Position.of(fluidBar, -18.0F - 3.0F, 0.0F, 0.0F));
-		firstInput.setSize(Size.of(18.0F, 18.0F, 0.0F));
+		firstInput.setPosition(new Position(fluidBar, -18.0F - 3.0F, 0.0F, 0.0F));
+		firstInput.setSize(new Size(18.0F, 18.0F, 0.0F));
 		
 		var firstOutput = new SlotWidget(1, entity.getItemStorage());
-		firstOutput.setPosition(Position.of(fluidBar, -18.0F - 3.0F, fluidBar.getHeight() - 18.0F, 0.0F));
-		firstOutput.setSize(Size.of(18.0F, 18.0F, 0.0F));
+		firstOutput.setPosition(new Position(fluidBar, -18.0F - 3.0F, fluidBar.getHeight() - 18.0F, 0.0F));
+		firstOutput.setSize(new Size(18.0F, 18.0F, 0.0F));
 		
 		var secondFluidBar = new FluidBarWidget();
-		secondFluidBar.setPosition(Position.of(fluidBar, 24.0F + 18.0F + 3.0F + 3.0F, 0.0F, 0.0F));
-		secondFluidBar.setSize(Size.of(24.0F, 48.0F, 0.0F));
+		secondFluidBar.setPosition(new Position(fluidBar, 24.0F + 18.0F + 3.0F + 3.0F, 0.0F, 0.0F));
+		secondFluidBar.setSize(new Size(24.0F, 48.0F, 0.0F));
 		secondFluidBar.setStorage(entity.getFluidStorage().getStorage(1));
 		
 		var secondInput = new SlotWidget(2, entity.getItemStorage());
-		secondInput.setPosition(Position.of(secondFluidBar, -18.0F - 3.0F, 0.0F, 0.0F));
-		secondInput.setSize(Size.of(18.0F, 18.0F, 0.0F));
+		secondInput.setPosition(new Position(secondFluidBar, -18.0F - 3.0F, 0.0F, 0.0F));
+		secondInput.setSize(new Size(18.0F, 18.0F, 0.0F));
 		
 		var secondOutput = new SlotWidget(3, entity.getItemStorage());
-		secondOutput.setPosition(Position.of(secondFluidBar, -18.0F - 3.0F, secondFluidBar.getHeight() - 18.0F, 0.0F));
-		secondOutput.setSize(Size.of(18.0F, 18.0F, 0.0F));
+		secondOutput.setPosition(new Position(secondFluidBar, -18.0F - 3.0F, secondFluidBar.getHeight() - 18.0F, 0.0F));
+		secondOutput.setSize(new Size(18.0F, 18.0F, 0.0F));
 
 		mainTab.add(launchButtonWidget);
 		mainTab.add(abortButtonWidget);

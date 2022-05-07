@@ -34,7 +34,7 @@ import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.registry.common.AMCriteria;
 import com.github.mixinors.astromine.registry.common.AMParticles;
 
-import dev.vini2003.hammer.gravity.common.manager.GravityManager;
+import dev.vini2003.hammer.gravity.api.common.manager.GravityManager;
 import net.minecraft.client.util.math.Vector3d;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;

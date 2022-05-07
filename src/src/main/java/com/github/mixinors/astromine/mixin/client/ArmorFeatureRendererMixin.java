@@ -54,7 +54,7 @@ public abstract class ArmorFeatureRendererMixin {
 	protected abstract Identifier getArmorTexture(ArmorItem armorItem, boolean bl, @Nullable String string);
 
 	@Inject(method = "renderArmorParts", at = @At("HEAD"), cancellable = true)
-	private void renderArmorParts(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, ArmorItem armorItem, boolean bl, BipedEntityModel<LivingEntity> bipedEntityModel, boolean bl2, float f, float g, float h, @Nullable String string, CallbackInfo ci) {
+	private void astromine$renderArmorParts(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, ArmorItem armorItem, boolean bl, BipedEntityModel<LivingEntity> bipedEntityModel, boolean bl2, float f, float g, float h, @Nullable String string, CallbackInfo ci) {
 		if (armorItem instanceof AnimatedArmorItem animatedArmorItem) {
 			var vertexConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider, getArmorCutoutNoCull(this.getArmorTexture(armorItem, bl2, string), animatedArmorItem.getFrames()), false, bl);
 			bipedEntityModel.render(matrixStack, vertexConsumer, i, OverlayTexture.DEFAULT_UV, f, g, h, 1.0F);
@@ -73,6 +73,7 @@ public abstract class ArmorFeatureRendererMixin {
 			.overlay(RenderLayer.ENABLE_OVERLAY_COLOR)
 			.layering(RenderLayer.VIEW_OFFSET_Z_LAYERING)
 			.build(true);
+		
 		return RenderLayer.of("astromine:armor_cutout_no_cull", VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS, 256, true, false, multiPhaseParameters);
 	}
 }

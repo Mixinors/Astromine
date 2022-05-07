@@ -28,9 +28,9 @@ import com.github.mixinors.astromine.common.block.entity.machine.MelterBlockEnti
 import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import dev.vini2003.hammer.common.geometry.position.Position;
-import dev.vini2003.hammer.common.geometry.size.Size;
-import dev.vini2003.hammer.gui.common.widget.slot.SlotWidget;
+import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
+import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.slot.Slot;
@@ -50,17 +50,17 @@ public class MelterScreenHandler extends ExtendedBlockEntityScreenHandler {
 		super.initialize(width, height);
 		
 		var input = new SlotWidget(0, melter.getItemStorage(), Slot::new);
-		input.setSize( Size.of(18, 18));
+		input.setSize( new Size(18.0F, 18.0F));
 
-		fluidBar.setPosition( Position.of(energyBar, 102, 0));
+		fluidBar.setPosition( new Position(energyBar, 102.0F, 0.0F));
 		
 		var arrow = new HorizontalArrowWidget();
-		arrow.setPosition(Position.of(fluidBar, -31, fluidBar.getHeight() / 2 - 16 / 2));
-		arrow.setSize(Size.of(22, 16));
+		arrow.setPosition(new Position(fluidBar, -31.0F, fluidBar.getHeight() / 2.0F - 16.0F / 2.0F));
+		arrow.setSize(new Size(22.0F, 16.0F));
 		arrow.setLimitSupplier(() -> melter.limit);
 		arrow.setProgressSupplier(() -> (int) melter.progress);
 		
-		input.setPosition(Position.of(arrow, -27, 0));
+		input.setPosition(new Position(arrow, -27.0F, 0.0F));
 		
 		mainTab.add(input);
 		mainTab.add(arrow);

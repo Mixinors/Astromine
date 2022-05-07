@@ -25,14 +25,18 @@
 package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.common.block.network.EnergyCableBlock;
+import com.github.mixinors.astromine.common.item.base.FluidStorageItem;
 import com.google.common.collect.Lists;
 
 import com.github.mixinors.astromine.client.render.sky.SpaceSkyProperties;
 import com.github.mixinors.astromine.common.callback.SkyPropertiesCallback;
 import com.github.mixinors.astromine.common.item.HolographicConnectorItem;
 import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
-import com.github.mixinors.astromine.common.util.TextUtils;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
+import dev.vini2003.hammer.core.api.common.util.TextUtils;
+import dev.vini2003.hammer.gui.energy.api.common.util.EnergyTextUtils;
+import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
+import team.reborn.energy.api.EnergyStorage;
 import team.reborn.energy.api.base.SimpleBatteryItem;
 
 import net.minecraft.item.BlockItem;
@@ -44,57 +48,38 @@ import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 
 public class AMClientCallbacks {
 	public static void init() {
-		ItemTooltipCallback.EVENT.register( ( stack, context, tooltip ) -> {
-			// if (stack.getItem() instanceof FluidVolumeItem) {
-			// 	var fluidStorage = SimpleFluidStorage.get(stack);
-//
-			// 	if (fluidStorage != null) {
-			// 		var volume = fluidStorage.getFirst();
-			// 		var fluidId = volume.getFluidId();
-//
-			// 		tooltip.addAll(Math.min(tooltip.size(), 1), Lists.newArrayList(
-			// 				((MutableText) TextUtils.getFluidVolume(FluidVolume.of(volume.getAmount() / 81L, volume.getSize() / 81L, volume.getFluid()))).append(new LiteralText(" ")).append(
-			// 						((MutableText) TextUtils.getFluid(fluidId)).formatted(Formatting.GRAY))));
-			// 	}
-			// }
-		});
-
-		ItemTooltipCallback.EVENT.register( ( stack, context, tooltip ) -> {
-			if (stack.getItem() instanceof EnergyStorageItem item) {
-				tooltip.addAll(Math.min(tooltip.size(), 1), Lists.newArrayList(
-						TextUtils.getEnergy(SimpleBatteryItem.getStoredEnergyUnchecked(stack), item.getEnergyCapacity())
-				));
+		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
+			if (stack.getItem() instanceof EnergyStorageItem) {
+				var energyStorage = EnergyStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
+				
+				if (energyStorage != null) {
+					if (context.isAdvanced()) {
+						tooltip.addAll(EnergyTextUtils.getDetailedTooltips(energyStorage));
+					} else {
+						tooltip.addAll(EnergyTextUtils.getShortenedTooltips(energyStorage));
+					}
+				}
 			}
 		});
 
-		ItemTooltipCallback.EVENT.register( ( stack, context, tooltip ) -> {
+		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
 			if (stack.getItem() instanceof HolographicConnectorItem) {
 				var pair = ((HolographicConnectorItem) stack.getItem()).readBlock(stack);
 				
 				if (pair != null) {
-					tooltip.add(Text.of(null));
-					tooltip.add(new TranslatableText("text.astromine.selected.dimension.pos", pair.getLeft().getValue(), pair.getRight().getX(), pair.getRight().getY(), pair.getRight().getZ()).formatted(Formatting.GRAY));
+					var key = pair.getLeft();
+					var pos = pair.getRight();
+					
+					tooltip.add(TextUtils.EMPTY);
+					tooltip.add(new TranslatableText("text.astromine.selected.dimension.pos", key, pos.getX(), pos.getY(), pos.getZ()).formatted(Formatting.GRAY));
 				}
 			}
 		});
 		
-		ItemTooltipCallback.EVENT.register( ( stack, context, tooltip ) -> {
+		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
 			if (stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof EnergyCableBlock cableBlock) {
 				tooltip.add(new TranslatableText("text.astromine.tooltip.cable.speed", cableBlock.getNetworkType().getTransferRate()).formatted(Formatting.GRAY));
 			}
-		});
-
-		ItemTooltipCallback.EVENT.register( ( stack, context, tooltip ) -> {
-			// if (stack.getItem() instanceof SpaceSuitItem) {
-			// 	if (stack.getItem() == AMItems.SPACE_SUIT_CHESTPLATE.get()) {
-			// 		var fluidStorage = SimpleFluidStorage.get(stack);
-			// 		if (fluidStorage != null) {
-			// 			fluidStorage.forEachIndexed((slot, volume) -> {
-			// 				tooltip.add(((MutableText) TextUtils.getFluidVolume(volume)).append(new LiteralText(" ")).append(((MutableText) TextUtils.getFluid(volume.getFluidId())).formatted(Formatting.GRAY)));
-			// 			});
-			// 		}
-			// 	}
-			// }
 		});
 		
 		SkyPropertiesCallback.EVENT.register((properties) -> properties.put(AMWorlds.EARTH_SPACE_ID, new SpaceSkyProperties()));

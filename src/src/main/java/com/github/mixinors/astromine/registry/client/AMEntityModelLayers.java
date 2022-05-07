@@ -40,7 +40,9 @@ public class AMEntityModelLayers {
 
 	public static EntityModelLayer register(String id, EntityModelLayerRegistry.TexturedModelDataProvider texturedModelDataProvider) {
 		var entityModelLayer = new EntityModelLayer(AMCommon.id(id), "main");
+		
 		EntityModelLayerRegistry.registerModelLayer(entityModelLayer, texturedModelDataProvider);
+		
 		return entityModelLayer;
 	}
 }

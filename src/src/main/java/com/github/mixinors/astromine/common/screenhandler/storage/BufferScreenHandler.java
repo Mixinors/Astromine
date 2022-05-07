@@ -26,9 +26,9 @@ package com.github.mixinors.astromine.common.screenhandler.storage;
 
 import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import dev.vini2003.hammer.common.geometry.position.Position;
-import dev.vini2003.hammer.common.geometry.size.Size;
-import dev.vini2003.hammer.gui.common.widget.list.slot.SlotListWidget;
+import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
+import dev.vini2003.hammer.gui.api.common.widget.list.slot.SlotListWidget;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -45,12 +45,12 @@ public class BufferScreenHandler extends ExtendedBlockEntityScreenHandler {
 		var slotWidth = 9 * 18;
 		var slotHeight = 6 * 18;
 		
-		var leftPadding = 7;
-		var topPadding = 10;
+		var leftPadding = 7.0F;
+		var topPadding = 10.0F;
 		
 		var slotList = new SlotListWidget(blockEntity.getItemStorage(), slotWidth, slotHeight, 0);
-		slotList.setPosition( Position.of(mainTab.getX() + leftPadding, mainTab.getY() + topPadding));
-		slotList.setSize( Size.of(slotWidth, slotHeight));
+		slotList.setPosition( new Position(mainTab.getX() + leftPadding, mainTab.getY() + topPadding));
+		slotList.setSize( new Size(slotWidth, slotHeight));
 
 		mainTab.add(slotList);
 	}

@@ -29,10 +29,9 @@ import com.github.mixinors.astromine.common.screenhandler.base.block.entity.Exte
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.widget.vanilla.ExtractionSlot;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import dev.vini2003.hammer.common.geometry.position.Position;
-import dev.vini2003.hammer.common.geometry.size.Size;
-import dev.vini2003.hammer.gui.common.widget.slot.SlotWidget;
-
+import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
+import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
@@ -50,23 +49,23 @@ public class PresserScreenHandler extends ExtendedBlockEntityScreenHandler {
 		super.initialize(width, height);
 		
 		var input = new SlotWidget(0, blockEntity.getItemStorage());
-		input.setPosition( Position.of(energyBar.getX(), energyBar.getY()));
-		input.setSize(Size.of(18, 18));
+		input.setPosition(new Position(energyBar.getX(), energyBar.getY()));
+		input.setSize(new Size(18.0F, 18.0F));
 		
 		var output = new SlotWidget(1, blockEntity.getItemStorage(), ExtractionSlot::new);
-		output.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
-		output.setSize( Size.of(18, 18));
+		output.setPosition(new Position(energyBar.getX(), energyBar.getY()));
+		output.setSize(new Size(18.0F, 18.0F));
 		
-		output.setPosition(Position.of(width / 2F - output.getWidth() / 2F, output.getY()));
-		output.setPosition(Position.of(output.getX() + 27, output.getY() + 15));
+		output.setPosition(new Position(width / 2.0F - output.getWidth() / 2.0F, output.getY()));
+		output.setPosition(new Position(output.getX() + 27.0F, output.getY() + 15.0F));
 		
 		var arrow = new HorizontalArrowWidget();
-		arrow.setPosition(Position.of(output.getX() - 31, output.getY()));
-		arrow.setSize(Size.of(22, 16));
+		arrow.setPosition(new Position(output.getX() - 31.0F, output.getY()));
+		arrow.setSize(new Size(22.0F, 16.0F));
 		arrow.setLimitSupplier(() -> press.limit);
 		arrow.setProgressSupplier(() -> (int) press.progress);
 		
-		input.setPosition(Position.of(arrow.getX() - 27, arrow.getY()));
+		input.setPosition(new Position(arrow.getX() - 27.0F, arrow.getY()));
 		
 		mainTab.add(input);
 		mainTab.add(output);

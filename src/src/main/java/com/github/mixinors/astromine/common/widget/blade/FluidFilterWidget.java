@@ -24,145 +24,105 @@
 
 package com.github.mixinors.astromine.common.widget.blade;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.client.render.sprite.SpriteRenderer;
-import com.github.mixinors.astromine.common.util.ClientUtils;
-import com.github.mixinors.astromine.common.util.FluidUtils;
-import com.github.mixinors.astromine.common.util.TextUtils;
-import dev.vini2003.hammer.client.util.DrawingUtils;
-import dev.vini2003.hammer.client.util.LayerUtils;
-import dev.vini2003.hammer.gui.common.widget.button.ButtonWidget;
+import dev.vini2003.hammer.core.api.client.texture.BaseTexture;
+import dev.vini2003.hammer.core.api.client.texture.FluidTexture;
+import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
+import dev.vini2003.hammer.core.api.client.texture.TiledFluidTexture;
+import dev.vini2003.hammer.core.api.common.util.FluidTextUtils;
+import dev.vini2003.hammer.gui.api.common.widget.button.ButtonWidget;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import org.jetbrains.annotations.NotNull;
 
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
 
-/**
- * A filter widget depicting
- * the filter {@link Fluid} for a related object.
- *
- * The {@link #fluidSupplier} supplies the {@link Fluid}
- * displayed by this widget.
- *
- * When clicked, the fluid is changed, triggering the
- * {@link #fluidConsumer} to update the related object.
- */
-public class FluidFilterWidget extends ButtonWidget
-{
-	private static final Identifier FLUID_BACKGROUND = AMCommon.id("textures/widget/fluid_filter_background.png");
+public class FluidFilterWidget extends ButtonWidget {
+	private static final BaseTexture STANDARD_BACKGROUND_TEXTURE = new ImageTexture(AMCommon.id("textures/widget/fluid_filter_background.png"));
+	private static final BaseTexture STANDARD_FOREGROUND_TEXTURE = new FluidTexture(FluidVariant.blank());
+	
+	private BaseTexture backgroundTexture = STANDARD_BACKGROUND_TEXTURE;
+	private BaseTexture foregroundtexture = STANDARD_FOREGROUND_TEXTURE;
 
-	private Supplier<Fluid> fluidSupplier = () -> Fluids.EMPTY;
-
-	private Consumer<Fluid> fluidConsumer = fluid -> {};
-
-	/** Returns this widget's {@link #fluidSupplier}. */
-	public Supplier<Fluid> getFluidSupplier() {
-		return fluidSupplier;
-	}
-
-	/** Sets this widget's {@link #fluidSupplier} to the specified one. */
-	public void setFluidSupplier(Supplier<Fluid> fluidSupplier) {
-		this.fluidSupplier = fluidSupplier;
-	}
-
-	/** Returns this widget's {@link #fluidConsumer}. */
-	public Consumer<Fluid> getFluidConsumer() {
-		return fluidConsumer;
-	}
-
-	/** Sets this widget's {@link #fluidConsumer} to the specified one. */
-	public void setFluidConsumer(Consumer<Fluid> fluidConsumer) {
-		this.fluidConsumer = fluidConsumer;
-	}
-
-	/** Override mouse click behavior to set contents on left mouse click. */
-	@Environment(EnvType.CLIENT)
+	private Supplier<FluidVariant> fluidSupplier = FluidVariant::blank;
+	private Consumer<FluidVariant> fluidConsumer = fluid -> {};
+	
 	@Override
 	public void onMouseClicked(float x, float y, int button) {
 		super.onMouseClicked(x, y, button);
 		
+		var handled = getHandled();
+		
+		var handler = handled.getHandler();
+		
 		var stack = getHandled().getHandler().getCursorStack();
 
-		if (isWithin(x, y)) {
+		if (isPointWithin(x, y)) {
 			if (!stack.isEmpty()) {
-				var fluidStorage = FluidStorage.ITEM.find(stack, ContainerItemContext.ofPlayerCursor(getHandled().getHandler().getPlayer(), getHandled().getHandler()));
+				var fluidStorage = FluidStorage.ITEM.find(stack, ContainerItemContext.ofPlayerCursor(handler.getPlayer(), handler));
 				
 				if (fluidStorage != null) {
 					var fluidVariant = StorageUtil.findStoredResource(fluidStorage, null);
-
-					Fluid fluid;
-					if (fluidVariant == null) fluid = Fluids.EMPTY;
-					else fluid = fluidVariant.getFluid();
 					
-					fluidSupplier = () -> fluid;
+					fluidSupplier = () -> fluidVariant;
 					fluidConsumer.accept(fluidSupplier.get());
 				}
 			} else if (button == 2) {
-				fluidSupplier = () -> Fluids.EMPTY;
+				fluidSupplier = FluidVariant::blank;
 				fluidConsumer.accept(fluidSupplier.get());
 			}
 		}
 	}
-
-	/** Returns this widget's tooltip. */
+	
 	@NotNull
 	@Override
 	public List<Text> getTooltip() {
-		var fluidId = Registry.FLUID.getId(fluidSupplier.get());
+		var fluidTooltip = FluidTextUtils.getVariantTooltips(fluidSupplier.get()).get(0);
 
-		return Collections.singletonList(new TranslatableText("text.astromine.filter", TextUtils.getFluid(fluidId)));
+		return List.of(new TranslatableText("text.astromine.filter", fluidTooltip));
 	}
-
-	/** Renders this widget. */
-	@Environment(EnvType.CLIENT)
+	
 	@Override
 	public void drawWidget(@NotNull MatrixStack matrices, @NotNull VertexConsumerProvider provider, float delta) {
-		if (getHidden()) {
-			return;
-		}
-		
-		var x = getPosition().getX();
-		var y = getPosition().getY();
-		
-		var sX = getSize().getWidth();
-		var sY = getSize().getHeight();
-		
-		var layer = LayerUtils.get(FLUID_BACKGROUND);
-		
-		DrawingUtils.drawTexturedQuad(matrices, provider, layer, x, y, getSize().getWidth(), getSize().getHeight(), FLUID_BACKGROUND);
+		var x = getX();
+		var y=  getY();
 
-		if (fluidSupplier.get() != Fluids.EMPTY) {
-			SpriteRenderer
-					.beginPass()
-					.setup(provider, RenderLayer.getSolid())
-					.sprite(FluidUtils.getSprite(fluidSupplier.get()))
-					.color(FluidUtils.getColor(ClientUtils.getPlayer(), fluidSupplier.get()))
-					.light(0x00f000f0)
-					.overlay(OverlayTexture.DEFAULT_UV)
-					.alpha(0xff)
-					.normal(matrices.peek().getNormalMatrix(), 0, 0, 0)
-					.position(matrices.peek().getPositionMatrix(), x + 1, y + 1, x + sX - 1, y + sY - 1, 0F)
-					.next(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
-		}
+		var width = getWidth();
+		var height = getHeight();
+		
+		backgroundTexture.draw(matrices, provider, x, y, width, height);
+		
+		if (fluidSupplier.get().isBlank()) return;
+		
+		foregroundtexture = new TiledFluidTexture(fluidSupplier.get());
+		
+		foregroundtexture.draw(matrices, provider, x + 1, y + 1, width - 2, height - 2);
+	}
+	
+	public Supplier<FluidVariant> getFluidSupplier() {
+		return fluidSupplier;
+	}
+	
+	public void setFluidSupplier(Supplier<FluidVariant> fluidSupplier) {
+		this.fluidSupplier = fluidSupplier;
+	}
+	
+	public Consumer<FluidVariant> getFluidConsumer() {
+		return fluidConsumer;
+	}
+	
+	public void setFluidConsumer(Consumer<FluidVariant> fluidConsumer) {
+		this.fluidConsumer = fluidConsumer;
 	}
 }

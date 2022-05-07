@@ -43,17 +43,11 @@ public class VoxelShapeUtils {
 	private static final double NINETY_DEGREES = Math.toRadians(90);
 	private static final double ONE_HUNDRED_EIGHTY_DEGREES = Math.toRadians(180);
 	private static final double TWO_HUNDRED_SEVENTY_DEGREES = Math.toRadians(270);
-
-	/**
-	 * Returns a union of all the given {@link VoxelShape}s.
-	 */
+	
 	public static VoxelShape union(VoxelShape... shapes) {
 		return union(Lists.newArrayList(shapes));
 	}
-
-	/**
-	 * Returns a union of all the given {@link VoxelShape}s.
-	 */
+	
 	public static VoxelShape union(Collection<VoxelShape> shapes) {
 		var collision = VoxelShapes.empty();
 		for (var shape : shapes) {
@@ -61,10 +55,7 @@ public class VoxelShapeUtils {
 		}
 		return collision;
 	}
-
-	/**
-	 * Returns the given {@link VoxelShape} rotated the supplied radians in the specified {@link Direction.Axis}.
-	 */
+	
 	public static VoxelShape rotate(Direction.Axis axis, double radians, VoxelShape shape) {
 		var collision = VoxelShapes.empty();
 
@@ -76,10 +67,7 @@ public class VoxelShapeUtils {
 		}
 		return collision;
 	}
-
-	/**
-	 * Returns the given {@link VoxelShape}s rotated the supplied radians in the specified {@link Direction.Axis}.
-	 */
+	
 	public static VoxelShape rotate(Direction.Axis axis, double radians, Collection<VoxelShape> shapes) {
 		var collision = VoxelShapes.empty();
 		for (var shape : shapes) {
@@ -87,17 +75,11 @@ public class VoxelShapeUtils {
 		}
 		return collision;
 	}
-
-	/**
-	 * Returns the given {@link VoxelShape}s rotated the supplied radians in the specified {@link Direction.Axis}.
-	 */
+	
 	public static VoxelShape rotate(Direction.Axis axis, double radians, VoxelShape... shapes) {
 		return rotate(axis, radians, Lists.newArrayList(shapes));
 	}
-
-	/**
-	 * Returns the given {@link VoxelShape} rotated towards the specified {@link Direction}.
-	 */
+	
 	public static VoxelShape rotate(Direction direction, VoxelShape shape) {
 		if (direction == Direction.EAST)
 			return rotateNinety(Direction.Axis.Y, shape);
@@ -108,59 +90,35 @@ public class VoxelShapeUtils {
 
 		return shape;
 	}
-
-	/**
-	 * Rotates the given points according to the specified rotation.
-	 */
+	
 	private static Pair<Double, Double> rotatePoint(double p1, double p2, double rotation) {
 		return rotatePoint(p1, p2, rotation, CENTER);
 	}
-
-	/**
-	 * Rotates the given points according to the specified rotation.
-	 */
+	
 	private static Pair<Double, Double> rotatePoint(double p1, double p2, double rotation, double center) {
 		return Pair.of(((p1 - center) * Math.cos(rotation) - ((p2 - center) * Math.sin(rotation))) + center, ((p1 - center) * Math.sin(rotation)) + ((p2 - center) * Math.cos(rotation)) + center);
 	}
 
-	/**
-	 * Returns the given {@link VoxelShape}s rotated 90 degrees in the specified {@link Direction.Axis}.
-	 */
 	public static VoxelShape rotateNinety(Direction.Axis axis, Collection<VoxelShape> shapes) {
 		return rotate(axis, NINETY_DEGREES, shapes);
 	}
-
-	/**
-	 * Returns the given {@link VoxelShape}s rotated 90 degrees in the specified {@link Direction.Axis}.
-	 */
+	
 	public static VoxelShape rotateNinety(Direction.Axis axis, VoxelShape... shapes) {
 		return rotate(axis, NINETY_DEGREES, shapes);
 	}
-
-	/**
-	 * Returns the given {@link VoxelShape}s rotated 180 degrees in the specified {@link Direction.Axis}.
-	 */
+	
 	public static VoxelShape rotateOneHundredAndEighty(Direction.Axis axis, Collection<VoxelShape> shapes) {
 		return rotate(axis, ONE_HUNDRED_EIGHTY_DEGREES, shapes);
 	}
-
-	/**
-	 * Returns the given {@link VoxelShape}s rotated 180 degrees in the specified {@link Direction.Axis}.
-	 */
+	
 	public static VoxelShape rotateOneHundredAndEighty(Direction.Axis axis, VoxelShape... shapes) {
 		return rotate(axis, ONE_HUNDRED_EIGHTY_DEGREES, shapes);
 	}
-
-	/**
-	 * Returns the given {@link VoxelShape}s rotated 270 degrees in the specified {@link Direction.Axis}.
-	 */
+	
 	public static VoxelShape rotateTwoHundredAndSeventy(Direction.Axis axis, Collection<VoxelShape> shapes) {
 		return rotate(axis, TWO_HUNDRED_SEVENTY_DEGREES, shapes);
 	}
-
-	/**
-	 * Returns the given {@link VoxelShape}s rotated 270 degrees in the specified {@link Direction.Axis}.
-	 */
+	
 	public static VoxelShape rotateTwoHundredAndSeventy(Direction.Axis axis, VoxelShape... shapes) {
 		return rotate(axis, TWO_HUNDRED_SEVENTY_DEGREES, shapes);
 	}

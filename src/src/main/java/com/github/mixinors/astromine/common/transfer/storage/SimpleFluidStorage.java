@@ -63,6 +63,11 @@ import net.minecraft.util.math.Direction;
  * </ul>
  */
 public class SimpleFluidStorage implements Storage<FluidVariant> {
+	public static final String SIDINGS_KEY = "Sidings";
+	public static final String AMOUNT_KEY = "Amount";
+	public static final String VARIANT_KEY = "Variant";
+	public static final String STORAGES_KEY = "Storages";
+	
 	private int size;
 	private long capacity;
 	
@@ -454,20 +459,20 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 				sidingsNbt.putInt(String.valueOf(i), sidings[i].ordinal());
 			}
 			
-			nbt.put("Sidings", sidingsNbt);
+			nbt.put(SIDINGS_KEY, sidingsNbt);
 			
 			var storagesNbt = new NbtCompound();
 			
 			for (var i = 0; i < size; ++i) {
 				var storageNbt = new NbtCompound();
 				
-				storageNbt.putLong("Amount", storages.get(i).getAmount());
-				storageNbt.put("Variant", storages.get(i).getResource().toNbt());
+				storageNbt.putLong(AMOUNT_KEY, storages.get(i).getAmount());
+				storageNbt.put(VARIANT_KEY, storages.get(i).getResource().toNbt());
 				
 				storagesNbt.put(String.valueOf(i), storageNbt);
 			}
 			
-			nbt.put("Storages", storagesNbt);
+			nbt.put(STORAGES_KEY, storagesNbt);
 		}
 	}
 	
@@ -477,19 +482,19 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	 */
 	public void readFromNbt(NbtCompound nbt) {
 		if (proxy == null) {
-			var sidingsNbt = nbt.getCompound("Sidings");
+			var sidingsNbt = nbt.getCompound(SIDINGS_KEY);
 			
 			for (var i = 0; i < sidings.length; ++i) {
 				sidings[i] = StorageSiding.values()[sidingsNbt.getInt(String.valueOf(i))];
 			}
 			
-			var storagesNbt = nbt.getCompound("Storages");
+			var storagesNbt = nbt.getCompound(STORAGES_KEY);
 			
 			for (var i = 0; i < size; ++i) {
 				var storageNbt = storagesNbt.getCompound(String.valueOf(i));
 				
-				var amount = storageNbt.getLong("Amount");
-				var variant = FluidVariant.fromNbt(storageNbt.getCompound("Variant"));
+				var amount = storageNbt.getLong(AMOUNT_KEY);
+				var variant = FluidVariant.fromNbt(storageNbt.getCompound(VARIANT_KEY));
 				
 				storages.get(i).setAmount(amount);
 				storages.get(i).setVariant(variant);
@@ -501,6 +506,14 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	
 	public void updateProxies() {
 		if (proxy != null) return;
+		
+		for (var i = 0; i < storages.size(); ++i) {
+			var storage = storages.get(i);
+			var proxyStorage = proxyStorages.get(i);
+			
+			proxyStorage.amount = storage.amount;
+			proxyStorage.variant = storage.variant;
+		}
 		
 		wildProxy = new SimpleFluidStorage(size, capacity, this);
 		

@@ -43,8 +43,8 @@ public class ClientPlayerInteractionManagerMixin {
 	private MinecraftClient client;
 
 	@Inject(method = "hasRidingInventory()Z", at = @At("HEAD"), cancellable = true)
-	public void hasRidingInventoryInject(CallbackInfoReturnable<Boolean> cir) {
-		if (this.client.player.hasVehicle() && this.client.player.getVehicle() instanceof RocketEntity)
+	public void astromine$hasRidingInventory(CallbackInfoReturnable<Boolean> cir) {
+		if (client.player.hasVehicle() && client.player.getVehicle() instanceof RocketEntity)
 			cir.setReturnValue(true);
 	}
 }

@@ -38,14 +38,14 @@ import com.google.gson.JsonObject;
 import com.github.mixinors.astromine.common.inventory.BaseInventory;
 import com.github.mixinors.astromine.common.util.WordUtils;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import dev.vini2003.hammer.common.geometry.position.Position;
-import dev.vini2003.hammer.common.geometry.size.Size;
-import dev.vini2003.hammer.gui.common.screen.handler.BaseScreenHandler;
-import dev.vini2003.hammer.gui.common.util.SlotUtils;
-import dev.vini2003.hammer.gui.common.widget.WidgetCollection;
-import dev.vini2003.hammer.gui.common.widget.button.ButtonWidget;
-import dev.vini2003.hammer.gui.common.widget.panel.PanelWidget;
-import dev.vini2003.hammer.gui.common.widget.slot.SlotWidget;
+import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
+import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
+import dev.vini2003.hammer.gui.api.common.util.SlotUtils;
+import dev.vini2003.hammer.gui.api.common.widget.BaseWidgetCollection;
+import dev.vini2003.hammer.gui.api.common.widget.button.ButtonWidget;
+import dev.vini2003.hammer.gui.api.common.widget.panel.PanelWidget;
+import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
@@ -66,6 +66,11 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 		super(AMScreenHandlers.RECIPE_CREATOR.get(), syncId, player);
 	}
 
+	@Override
+	public boolean isClient() {
+		return getClient();
+	}
+	
 	@Override
 	public void initialize(int width, int height) {
 		final List<String> TYPES = new ArrayList<>() {
@@ -94,24 +99,26 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 			}
 		};
 		var panel = new PanelWidget();
-		panel.setPosition( Position.of(width / 2 - 88.5, height / 2 - 92));
-		panel.setSize( Size.of(93 + 84, 100 + 84));
+		panel.setPosition(new Position(width / 2.0F - 88.5F, height / 2.0F - 92F));
+		panel.setSize(new Size(93.0F + 84.0F, 100.0F + 84.0F));
 
 		add(panel);
-
-		SlotUtils.addPlayerInventory(Position.of(panel.getX() + 7, panel.getY() + 7 + 9 + 18 + 18 + 18 + 7 + 18 + 7), Size.of(18, 18), (WidgetCollection) this, getPlayer().getInventory());
 		
-		var inputSlots = Lists.newArrayList(SlotUtils.addArray(Position.of(panel.getX() + 7, panel.getY() + 7 + 9), Size.of(18, 18), panel, 0, 3, 3, getInventory()));
+		var player = getPlayer();
+
+		SlotUtils.addPlayerInventory(new Position(panel.getX() + 7.0F, panel.getY() + 7.0F + 9.0F + 18.0F + 18.0F + 18.0F + 7.0F + 18.0F + 7.0F), new Size(18.0F, 18.0F), (BaseWidgetCollection) this, player.getInventory());
+		
+		var inputSlots = Lists.newArrayList(SlotUtils.addArray(new Position(panel.getX() + 7.0F, panel.getY() + 7.0F + 9.0F), new Size(18.0F, 18.0F), panel, getInventory(), 3, 3, 0));
 		
 		var outputSlot = new SlotWidget(9, getInventory());
-		outputSlot.setPosition(Position.of(panel.getX() + 7 + 18 * 3 + 7, panel.getY() + 7 + 18 + 9));
-		outputSlot.setSize(Size.of(18, 18));
+		outputSlot.setPosition(new Position(panel.getX() + 7.0F + 18.0F * 3.0F + 7.0F, panel.getY() + 7.0F + 18.0F + 9.0F));
+		outputSlot.setSize(new Size(18.0F, 18.0F));
 
 		panel.add(outputSlot);
 		
 		var saveButton = new ButtonWidget();
-		saveButton.setPosition(Position.of(panel.getX() + 7, panel.getY() + 7 + 14 + 18 * 3));
-		saveButton.setSize(Size.of(18 * 3, 18));
+		saveButton.setPosition(new Position(panel.getX() + 7.0F, panel.getY() + 7.0F + 14.0F + 18.0F * 3.0F));
+		saveButton.setSize(new Size(18.0F * 3.0F, 18.0F));
 		saveButton.setLabel(new LiteralText("Save"));
 		saveButton.setClickAction(() -> {
 			Map<Integer, String> table = new HashMap<>();

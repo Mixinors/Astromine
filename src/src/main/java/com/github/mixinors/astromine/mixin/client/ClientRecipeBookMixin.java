@@ -38,11 +38,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ClientRecipeBook.class)
 public class ClientRecipeBookMixin {
 	/**
-	 * @reason We are doing this to tell minecraft to shut up
+	 * @reason We are doing this to tell minecraft to shut up.
 	 */
 	@Inject(method = "getGroupForRecipe", cancellable = true, at = @At("HEAD"))
-	private static void am_getGroupForRecipe(Recipe<?> recipe, CallbackInfoReturnable<RecipeBookGroup> cir) {
-		if (recipe.getType() instanceof AMRecipeType)
+	private static void astromine$getGroupForRecipe(Recipe<?> recipe, CallbackInfoReturnable<RecipeBookGroup> cir) {
+		if (recipe.getType() instanceof AMRecipeType) {
 			cir.setReturnValue(RecipeBookGroup.UNKNOWN);
+		}
 	}
 }

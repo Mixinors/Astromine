@@ -27,6 +27,8 @@ package com.github.mixinors.astromine.client.model;
 import com.github.mixinors.astromine.common.entity.SpaceSlimeEntity;
 import com.github.mixinors.astromine.common.util.ClientUtils;
 
+import dev.vini2003.hammer.core.api.client.util.DrawingUtils;
+import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.SlimeEntityModel;
@@ -50,7 +52,7 @@ public class SpaceSlimeEntityModel extends SlimeEntityModel<SpaceSlimeEntity> {
 		matrices.scale(1.25f, 1.25f, 1.25f);
 
 		// render glass block
-		ClientUtils.getInstance().getItemRenderer().renderItem(new ItemStack(Items.GLASS), ModelTransformation.Mode.FIXED, light, overlay, matrices, ClientUtils.getInstance().getBufferBuilders().getEffectVertexConsumers(), 0);
+		DrawingUtils.getItemRenderer().renderItem(new ItemStack(Items.GLASS), ModelTransformation.Mode.FIXED, light, overlay, matrices, InstanceUtils.getClient().getBufferBuilders().getEffectVertexConsumers(), 0);
 
 		// undo translation & scale
 		matrices.scale(.75f, .75f, .75f);

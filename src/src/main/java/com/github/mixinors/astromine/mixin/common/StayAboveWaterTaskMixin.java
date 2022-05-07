@@ -38,8 +38,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(StayAboveWaterTask.class)
 public abstract class StayAboveWaterTaskMixin {
 	@Inject(method = "shouldRun", at = @At("RETURN"), cancellable = true)
-	private void shouldRun(ServerWorld serverWorld, MobEntity mobEntity, CallbackInfoReturnable<Boolean> cir) {
-		if (!cir.getReturnValueZ() && ((EntityAccessor) mobEntity).am_isInIndustrialFluid()) {
+	private void astromine$shouldRun(ServerWorld serverWorld, MobEntity mobEntity, CallbackInfoReturnable<Boolean> cir) {
+		if (!cir.getReturnValueZ() && ((EntityAccessor) mobEntity).astromine$isInIndustrialFluid()) {
 			cir.setReturnValue(true);
 		}
 	}

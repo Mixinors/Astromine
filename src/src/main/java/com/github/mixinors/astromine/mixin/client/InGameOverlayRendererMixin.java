@@ -42,8 +42,8 @@ public abstract class InGameOverlayRendererMixin {
 	private static native void renderUnderwaterOverlay(MinecraftClient minecraftClient, MatrixStack matrixStack);
 
 	@Inject(method = "renderOverlays", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isSubmergedIn(Lnet/minecraft/tag/TagKey;)Z"))
-	private static void am_renderFluidOverlay(MinecraftClient client, MatrixStack matrixStack, CallbackInfo ci) {
-		if (client.player.isSubmergedIn(AMTags.INDUSTRIAL_FLUID)) {
+	private static void astromine$renderFluidOverlay(MinecraftClient client, MatrixStack matrixStack, CallbackInfo ci) {
+		if (client.player != null && client.player.isSubmergedIn(AMTags.INDUSTRIAL_FLUID)) {
 			renderUnderwaterOverlay(client, matrixStack);
 		}
 	}

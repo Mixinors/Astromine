@@ -31,9 +31,9 @@ import com.github.mixinors.astromine.common.screenhandler.base.block.entity.Exte
 import com.github.mixinors.astromine.common.widget.blade.FluidFilterWidget;
 import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
-import dev.vini2003.hammer.common.geometry.position.Position;
-import dev.vini2003.hammer.common.geometry.size.Size;
-import dev.vini2003.hammer.gui.common.widget.slot.SlotWidget;
+import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
+import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
@@ -56,31 +56,31 @@ public class TankScreenHandler extends ExtendedBlockEntityScreenHandler {
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		fluidBar.setPosition( Position.of(width / 2F - fluidBar.getWidth() / 2F, fluidBar.getY()));
+		fluidBar.setPosition( new Position(width / 2.0F - fluidBar.getWidth() / 2F, fluidBar.getY()));
 		
 		var unload = new SlotWidget(0, blockEntity.getItemStorage());
-		unload.setPosition(Position.of(fluidBar, -18 - 3, 0));
-		unload.setSize( Size.of(18, 18));
+		unload.setPosition(new Position(fluidBar, -18 - 3, 0));
+		unload.setSize( new Size(18, 18));
 		
 		var buffer = new SlotWidget(1, blockEntity.getItemStorage());
-		buffer.setPosition(Position.of(unload, -18 - 3, 18 - 4F));
-		buffer.setSize(Size.of(18, 18));
+		buffer.setPosition(new Position(unload, -18 - 3, 18 - 4F));
+		buffer.setSize(new Size(18.0F, 18.0F));
 		
 		var load = new SlotWidget(2, blockEntity.getItemStorage());
-		load.setPosition(Position.of(fluidBar, -18 - 3, fluidBar.getHeight() - 18));
-		load.setSize(Size.of(18, 18));
+		load.setPosition(new Position(fluidBar, -18 - 3, fluidBar.getHeight() - 18));
+		load.setSize(new Size(18.0F, 18.0F));
 		
 		var leftArrow = new HorizontalArrowWidget();
-		leftArrow.setPosition(Position.of(unload, 28, 0));
-		leftArrow.setSize(Size.of(22, 16));
+		leftArrow.setPosition(new Position(unload, 28, 0));
+		leftArrow.setSize(new Size(22, 16));
 		
 		var rightArrow = new HorizontalArrowWidget();
-		rightArrow.setPosition(Position.of(load, -34, 0));
-		rightArrow.setSize(Size.of(22, 16));
+		rightArrow.setPosition(new Position(load, -34, 0));
+		rightArrow.setSize(new Size(22, 16));
 		
 		var filter = new FluidFilterWidget();
-		filter.setPosition(Position.of(unload, 5F, 18F + 2F));
-		filter.setSize(Size.of(8, 8));
+		filter.setPosition(new Position(unload, 5F, 18F + 2F));
+		filter.setSize(new Size(8, 8));
 		filter.setFluidConsumer(tank::setFilter);
 		filter.setFluidSupplier(() -> tank.getFilter());
 		

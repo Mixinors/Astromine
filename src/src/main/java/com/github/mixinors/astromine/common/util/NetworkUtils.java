@@ -45,12 +45,6 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
 
 public class NetworkUtils {
-	/**
-	 * Traces a network of the given {@link NetworkType}
-	 * from the specified initial {@link WorldPos}.
-	 * <p>
-	 * Interconnected networks will be merged if necessary.
-	 */
 	public static void trace(NetworkType type, WorldPos startPos) {
 		var world = startPos.getWorld();
 		
@@ -103,11 +97,15 @@ public class NetworkUtils {
 				
 				var existingInstance = network.get(type, offsetPos);
 				
+				// Merge networks if necessary.
 				if (existingInstance != null) {
 					existingInstance.join(instance);
+					
 					network.remove(instance);
 					network.add(existingInstance);
+					
 					instance = existingInstance;
+					
 					joined = true;
 				}
 				

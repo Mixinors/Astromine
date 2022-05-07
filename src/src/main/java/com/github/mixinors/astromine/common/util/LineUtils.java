@@ -30,9 +30,6 @@ import java.util.Collection;
 import net.minecraft.util.math.Vec3f;
 
 public class LineUtils {
-	/**
-	 * Returns points of a Bézier curve between the three given points with the specified amount of segments.
-	 */
 	public static Collection<Vec3f> getBezierSegments(Vec3f posA, Vec3f posB, Vec3f posC, float segments) {
 		var positions = new ArrayList<Vec3f>();
 		
@@ -79,10 +76,7 @@ public class LineUtils {
 
 		return positions;
 	}
-
-	/**
-	 * Returns points of a Bresenham line between the two given points with the specified amount of segments.
-	 */
+	
 	public static Collection<Vec3f> getBresenhamSegments(Vec3f posA, Vec3f posB, float segments) {
 		var x1 = posA.getX();
 		var y1 = posA.getY();

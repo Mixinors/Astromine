@@ -39,6 +39,7 @@ import com.terraformersmc.terraform.shapes.impl.Shapes;
 import com.terraformersmc.terraform.shapes.impl.layer.transform.RotateLayer;
 import com.terraformersmc.terraform.shapes.impl.layer.transform.TranslateLayer;
 
+import dev.vini2003.hammer.core.api.common.math.shape.Shape;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.fluid.Fluids;
@@ -57,7 +58,6 @@ import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 
 public class MeteorGenerator extends ShiftableStructurePiece {
-
 	private static OpenSimplexNoise noise;
 
 	public MeteorGenerator(Random random, int x, int z) {
@@ -91,8 +91,11 @@ public class MeteorGenerator extends ShiftableStructurePiece {
 	public boolean generate(StructureWorldAccess world, ChunkPos chunkPos, Random random, BlockPos blockPos) {
 		if (!world.toServerWorld().getRegistryKey().equals(World.OVERWORLD))
 			return false;
+		
 		noise = new OpenSimplexNoise(world.getSeed());
+		
 		var originPos = world.getTopPosition(Heightmap.Type.OCEAN_FLOOR_WG, new BlockPos(chunkPos.getStartX() + 8, 0, chunkPos.getStartZ() + 8));
+		
 		originPos = emptySphere(world, originPos, 16, state -> {
 			if (world.getRandom().nextInt(10) == 0) {
 				return Blocks.FIRE.getDefaultState();
@@ -104,14 +107,10 @@ public class MeteorGenerator extends ShiftableStructurePiece {
 		
 		var vein = Shapes.ellipsoid((float) 4, (float) 4, (float) 4).applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true))).applyLayer(TranslateLayer.of(Position.of(originPos)));
 		
-		var metiteOre = Registry.BLOCK.getOrEmpty(AMCommon.id("meteor_metite_ore")).orElse(null);
-		if (metiteOre != null) {
 			for (var streamPosition : vein.stream().collect(Collectors.toSet())) {
-				var orePosition = streamPosition.toBlockPos();
-
-				if (world.getBlockState(orePosition).getBlock() == AMBlocks.METEOR_STONE.get()) {
-					world.setBlockState(orePosition, metiteOre.getDefaultState(), 0b0110100);
-				}
+			var orePosition = streamPosition.toBlockPos();
+			if (world.getBlockState(orePosition).getBlock() == AMBlocks.METEOR_STONE.get()) {
+				world.setBlockState(orePosition, AMBlocks.METEOR_METITE_ORE.get().getDefaultState(), 0b0110100);
 			}
 		}
 

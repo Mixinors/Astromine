@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.client.render.sprite;
 
 import com.github.mixinors.astromine.common.util.ClientUtils;
 
+import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -276,7 +277,7 @@ public class SpriteRenderer {
 			var sX = sprite.getWidth();
 			var sY = sprite.getHeight();
 
-			ClientUtils.getInstance().getTextureManager().bindTexture(texture);
+			InstanceUtils.getClient().getTextureManager().bindTexture(texture);
 
 			for (var y = y1; y < y2; y += Math.min(y2 - y, sY)) {
 				for (var x = x1; x < x2; x += Math.min(x2 - x, sX)) {
