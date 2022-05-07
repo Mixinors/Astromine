@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.common.widget.vanilla;
+package com.github.mixinors.astromine.common.slot;
 
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;

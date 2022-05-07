@@ -36,7 +36,7 @@ import com.github.mixinors.astromine.common.screenhandler.base.block.BlockStateS
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.StorageType;
 import com.github.mixinors.astromine.common.util.WidgetUtils;
-import com.github.mixinors.astromine.common.widget.blade.RedstoneControlWidget;
+import com.github.mixinors.astromine.common.widget.RedstoneControlWidget;
 import dev.architectury.hooks.block.BlockEntityHooks;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;

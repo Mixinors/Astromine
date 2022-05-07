@@ -32,7 +32,7 @@ import com.google.common.collect.ImmutableMap;
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.StorageType;
-import com.github.mixinors.astromine.common.widget.blade.StorageSidingWidget;
+import com.github.mixinors.astromine.common.widget.StorageSidingWidget;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 

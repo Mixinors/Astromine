@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.common.widget.blade;
+package com.github.mixinors.astromine.common.widget;
 
 import java.util.Collections;
 import java.util.List;

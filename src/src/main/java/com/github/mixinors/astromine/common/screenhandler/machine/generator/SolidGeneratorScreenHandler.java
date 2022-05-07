@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.common.screenhandler.machine.generator;
 
 import com.github.mixinors.astromine.common.block.entity.machine.generator.SolidGeneratorBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
-import com.github.mixinors.astromine.common.widget.blade.HorizontalArrowWidget;
+import com.github.mixinors.astromine.common.widget.HorizontalArrowWidget;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
