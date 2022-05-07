@@ -30,11 +30,13 @@ import com.github.mixinors.astromine.common.config.entry.utility.UtilityConfig;
 import com.github.mixinors.astromine.common.provider.config.UtilityConfigProvider;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+import net.minecraft.block.*;
+import net.minecraft.block.enums.BlockHalf;
+import net.minecraft.block.enums.DoubleBlockHalf;
+import net.minecraft.state.property.Property;
 import org.jetbrains.annotations.NotNull;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.item.BlockItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
@@ -93,30 +95,40 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Utili
 						
 						var targetState = world.getBlockState(targetPos);
 						
-						if (stored.getItem() instanceof BlockItem blockItem && targetState.isAir()) {
-							if (cooldown >= getSpeed()) {
-								var newState = blockItem.getBlock().getDefaultState();
-								
-								world.setBlockState(targetPos, newState);
-								
-								var inputStorage = itemStorage.getStorage(INPUT_SLOT);
-								
-								inputStorage.extract(inputStorage.getResource(), 1, transaction, true);
-								
-								energyStorage.amount -= consumed;
-								
-								cooldown = 0;
-								
-								transaction.commit();
-							} else {
-								++cooldown;
-								
-								isActive = true;
-							}
-						} else {
-							isActive = false;
+						if (stored.getItem() instanceof BlockItem blockItem) {
+							var storedBlock = blockItem.getBlock();
 							
-							transaction.abort();
+							var storedState = blockItem.getBlock().getDefaultState();
+							
+							if (storedBlock instanceof DoorBlock || storedBlock instanceof SlabBlock || storedBlock instanceof PlantBlock || storedBlock instanceof BedBlock || storedBlock instanceof BannerBlock) {
+								return;
+							}
+							
+							if (storedState.canPlaceAt(world, targetPos) && targetState.isAir()){
+								if (cooldown >= getSpeed()) {
+									world.setBlockState(targetPos, storedState);
+									
+									blockItem.getBlock().onPlaced(world, targetPos, storedState, null, stored);
+									
+									var inputStorage = itemStorage.getStorage(INPUT_SLOT);
+									
+									inputStorage.extract(inputStorage.getResource(), 1, transaction, true);
+									
+									energyStorage.amount -= consumed;
+									
+									cooldown = 0;
+									
+									transaction.commit();
+								} else {
+									++cooldown;
+									
+									isActive = true;
+								}
+							} else{
+								isActive = false;
+								
+								transaction.abort();
+							}
 						}
 					} else {
 						isActive = false;
