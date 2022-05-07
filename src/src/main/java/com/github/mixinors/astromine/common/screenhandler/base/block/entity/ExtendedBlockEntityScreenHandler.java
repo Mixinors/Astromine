@@ -180,6 +180,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 			energyBar.setPosition( new Position(mainTab, 7.0F, 11.0F, 0.0F));
 			energyBar.setSize( new Size(24.0F, 48.0F, 0.0F));
 			energyBar.setStorage(blockEntity.getEnergyStorage());
+			energyBar.setSmooth(false);
 			energyBar.setCurrent(() -> (float) blockEntity.getEnergyStorage().getAmount());
 			energyBar.setMaximum(() -> (float) blockEntity.getEnergyStorage().getCapacity());
 			
@@ -197,6 +198,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 			
 			fluidBar.setSize(new Size(24.0F, 48.0F, 0.0F));
 			fluidBar.setStorage(blockEntity.getFluidStorage().getStorage(0));
+			fluidBar.setSmooth(false);
 			
 			mainTab.add(fluidBar);
 		}

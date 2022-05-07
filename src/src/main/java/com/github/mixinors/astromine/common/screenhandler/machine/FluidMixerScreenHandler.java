@@ -52,6 +52,7 @@ public class FluidMixerScreenHandler extends ExtendedBlockEntityScreenHandler {
 		secondInputFluidBar.setPosition( new Position(fluidBar, fluidBar.getWidth() + 7.0F, 0));
 		secondInputFluidBar.setSize( new Size(fluidBar));
 		secondInputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(1));
+		secondInputFluidBar.setSmooth(false);
 		
 		var arrow = new HorizontalArrowWidget();
 		arrow.setPosition(new Position(secondInputFluidBar, secondInputFluidBar.getWidth() + 9.0F, secondInputFluidBar.getHeight() / 2.0F - 8.0F));

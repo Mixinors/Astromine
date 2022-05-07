@@ -88,6 +88,7 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 		secondFluidBar.setPosition(new Position(fluidBar, 24.0F + 18.0F + 3.0F + 3.0F, 0.0F, 0.0F));
 		secondFluidBar.setSize(new Size(24.0F, 48.0F, 0.0F));
 		secondFluidBar.setStorage(entity.getFluidStorage().getStorage(1));
+		secondFluidBar.setSmooth(false);
 		
 		var secondInput = new SlotWidget(2, entity.getItemStorage());
 		secondInput.setPosition(new Position(secondFluidBar, -18.0F - 3.0F, 0.0F, 0.0F));

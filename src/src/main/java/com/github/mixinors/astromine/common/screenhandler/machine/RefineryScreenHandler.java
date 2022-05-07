@@ -51,6 +51,7 @@ public class RefineryScreenHandler extends ExtendedBlockEntityScreenHandler {
 		var outputFluidBar = new FluidBarWidget();
 		outputFluidBar.setSize( new Size(fluidBar));
 		outputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(1));
+		outputFluidBar.setSmooth(false);
 		
 		var arrow = new HorizontalArrowWidget();
 		arrow.setPosition( new Position(fluidBar, fluidBar.getWidth() + 7.0F, fluidBar.getHeight() / 2.0F - 8.0F));

@@ -54,6 +54,7 @@ public class HorizontalArrowWidget extends TextureBarWidget {
 	
 	public HorizontalArrowWidget() {
 		this.setHorizontal(true);
+		this.setSmooth(false);
 		
 		this.setBackgroundTexture(STANDARD_BACKGROUND_TEXTURE);
 		this.setForegroundTexture(STANDARD_FOREGROUND_TEXTURE);

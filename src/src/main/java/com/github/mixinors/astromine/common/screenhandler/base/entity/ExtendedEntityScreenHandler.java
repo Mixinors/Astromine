@@ -113,6 +113,7 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 			energyBar.setPosition( new Position(mainTab, 7.0F, 11.0F, 0.0F));
 			energyBar.setSize( new Size(24.0F, 48.0F, 0.0F));
 			energyBar.setStorage(entity.getEnergyStorage());
+			energyBar.setSmooth(false);
 			energyBar.setCurrent(() -> (float) entity.getEnergyStorage().getAmount());
 			energyBar.setMaximum(() -> (float) entity.getEnergyStorage().getCapacity());
 			
@@ -130,6 +131,7 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 			
 			fluidBar.setSize(new Size(24.0F, 48.0F, 0.0F));
 			fluidBar.setStorage(entity.getFluidStorage().getStorage(0));
+			fluidBar.setSmooth(false);
 		}
 	}
 }
