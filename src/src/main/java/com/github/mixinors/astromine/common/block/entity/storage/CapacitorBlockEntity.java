@@ -74,11 +74,13 @@ public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implement
 		if (world == null || world.isClient || !shouldRun())
 			return;
 		
-		var inputStack = itemStorage.getStack(INPUT_SLOT);
-		var inputEnergyStorage = EnergyStorage.ITEM.find(inputStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(INPUT_SLOT)));
+		var wildItemStorage = itemStorage.getWildProxy();
 		
-		var outputStack = itemStorage.getStack(OUTPUT_SLOT);
-		var outputEnergyStorage = EnergyStorage.ITEM.find(outputStack, ContainerItemContext.ofSingleSlot(itemStorage.getStorage(OUTPUT_SLOT)));
+		var inputStack = wildItemStorage.getStack(INPUT_SLOT);
+		var inputEnergyStorage = EnergyStorage.ITEM.find(inputStack, ContainerItemContext.ofSingleSlot(wildItemStorage.getStorage(INPUT_SLOT)));
+		
+		var outputStack = wildItemStorage.getStack(OUTPUT_SLOT);
+		var outputEnergyStorage = EnergyStorage.ITEM.find(outputStack, ContainerItemContext.ofSingleSlot(wildItemStorage.getStorage(OUTPUT_SLOT)));
 		
 		try (var transaction = Transaction.openOuter()) {
 			EnergyStorageUtil.move(inputEnergyStorage, energyStorage, getMaxTransferRate(), transaction);
