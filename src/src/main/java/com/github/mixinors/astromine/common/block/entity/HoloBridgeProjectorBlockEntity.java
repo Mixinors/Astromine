@@ -52,7 +52,7 @@ import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.math.Vec3i;
 
 public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Tickable {
-	public static final Color DEFAULT_COLOR = new Color((long) 0x7E80CAD4);
+	public static final Color DEFAULT_COLOR = new Color(0.5F, 0.79F, 0.83F, 0.5F);
 
 	public List<Vec3f> segments = null;
 
