@@ -101,7 +101,7 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Utili
 								
 								var inputStorage = itemStorage.getStorage(INPUT_SLOT);
 								
-								inputStorage.extract(inputStorage.getResource(), 1, transaction);
+								inputStorage.extract(inputStorage.getResource(), 1, transaction, true);
 								
 								energyStorage.amount -= consumed;
 								
