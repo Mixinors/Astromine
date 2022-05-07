@@ -111,7 +111,7 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Util
 								
 								matching.ifPresent(match -> {
 									drops.remove(match);
-									match.decrement((int) outputStorage.insert(ItemVariant.of(match), match.getCount(), transaction));
+									match.decrement((int) outputStorage.insert(ItemVariant.of(match), match.getCount(), transaction, true));
 									drops.add(match);
 								});
 								
