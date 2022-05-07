@@ -31,6 +31,7 @@ import com.github.mixinors.astromine.common.provider.config.UtilityConfigProvide
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.common.util.StackUtils;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+import net.minecraft.block.Blocks;
 import org.jetbrains.annotations.NotNull;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
@@ -95,7 +96,7 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Util
 						
 						var targetState = world.getBlockState(targetPos);
 						
-						if (!targetState.isAir()) {
+						if (!targetState.isAir() && targetState.getHardness(world, pos) <= Blocks.OBSIDIAN.getHardness()) {
 							++cooldown;
 							
 							if (cooldown >= getSpeed()) {
