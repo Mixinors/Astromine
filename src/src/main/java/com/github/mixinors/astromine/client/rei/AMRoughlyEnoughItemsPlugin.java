@@ -61,6 +61,7 @@ import com.github.mixinors.astromine.common.util.TextUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.architectury.fluid.FluidStack;
+import dev.vini2003.hammer.core.api.client.scissor.Scissors;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtils;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
 import dev.vini2003.hammer.core.api.common.color.Color;
@@ -218,19 +219,42 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 			if (background) {
 				var bounds = getBounds();
 				
-				RenderSystem.setShaderTexture(0, ENERGY_BACKGROUND);
+				var provider = InstanceUtils.getClient().getBufferBuilders().getEntityVertexConsumers();
 				
-				drawTexture(matrices, bounds.x, bounds.y, 0, 0, bounds.width, bounds.height, bounds.width, bounds.height);
-				
-				RenderSystem.setShaderTexture(0, ENERGY_FOREGROUND);
-				
-				var height = MathHelper.ceil((System.currentTimeMillis() / (float) (speed / bounds.height) % bounds.height));
+				var height = (float) bounds.height - ((double) System.currentTimeMillis() / (double) (speed / bounds.height) % (double) bounds.height);
 				
 				if (generating) {
-					height = bounds.height - MathHelper.ceil((System.currentTimeMillis() / (float) (speed / bounds.height) % bounds.height));
+					height = (float) (((double)System.currentTimeMillis() / (double) (speed / bounds.height) % (double) bounds.height));
 				}
 				
-				drawTexture(matrices, bounds.x, bounds.y + height, 0, height, bounds.width - 1, bounds.height - height - 1, bounds.width, bounds.height);
+				DrawingUtils.drawTexturedQuad(
+						matrices,
+						provider,
+						ENERGY_BACKGROUND,
+						bounds.x,
+						bounds.y,
+						bounds.width,
+						bounds.height
+				);
+				
+				var client = InstanceUtils.getClient();
+				
+				var windowHeight = (float) client.getWindow().getHeight();
+				var windowScale = (float) client.getWindow().getScaleFactor();
+				
+				var scissors = new Scissors((int) (bounds.x * windowScale), (int) (windowHeight - (bounds.y + bounds.height) * windowScale), (int) (bounds.width * windowScale), (int) (height * windowScale), provider);
+				
+				DrawingUtils.drawTexturedQuad(
+						matrices,
+						provider,
+						ENERGY_FOREGROUND,
+						bounds.x,
+						bounds.y,
+						bounds.width,
+						bounds.height
+				);
+				
+				scissors.destroy();
 			}
 		}
 
@@ -288,13 +312,13 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 						matrices,
 						provider,
 						sprite.getId(),
-						bounds.x + 1,
-						bounds.y + (bounds.height - height) + 1,
-						height - 2, // Yeah, the width is the height - it works.
-						bounds.width - 2, // And, of course, the height is the width - because somehow that, too, works.
+						bounds.x + 1.0F,
+						bounds.y + (bounds.height - height) + 1.0F,
+						height - 2.0F, // Yeah, the width is the height - it works.
+						bounds.width - 2.0F, // And, of course, the height is the width - because somehow that, too, works.
 						sprite.getWidth(),
 						sprite.getHeight(),
-						getZOffset() + 1,
+						getZOffset() + 1.0F,
 						sprite.getMinU(),
 						sprite.getMinV(),
 						sprite.getMaxU(),
