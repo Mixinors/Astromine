@@ -269,10 +269,10 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 			if (entry.getType() == VanillaEntryTypes.FLUID && !entry.isEmpty()) {
 				var bounds = getBounds();
 				
-				var height = MathHelper.ceil((System.currentTimeMillis() / (float) (speed / bounds.height) % bounds.height));
+				var height = (float) ((double) System.currentTimeMillis() / (double) (speed / bounds.height) % (double) bounds.height);
 				
 				if (!generating)
-					height = bounds.height - MathHelper.ceil((System.currentTimeMillis() / (float) (speed / bounds.height) % bounds.height));
+					height = (float) (bounds.height - ((double) System.currentTimeMillis() / (double) (speed / bounds.height)  % (double) bounds.height));
 				
 				var provider = InstanceUtils.getClient().getBufferBuilders().getEntityVertexConsumers();
 				
@@ -289,9 +289,9 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 						provider,
 						sprite.getId(),
 						bounds.x + 1,
-						bounds.y + bounds.height - height + 1,
-						(bounds.x + bounds.width - 1) - (bounds.x + 1),
-						(bounds.y + bounds.height - 1) - (bounds.y + bounds.height - height + 1),
+						bounds.y + (bounds.height - height) + 1,
+						height - 2, // Yeah, the width is the height - it works.
+						bounds.width - 2, // And, of course, the height is the width - because somehow that, too, works.
 						sprite.getWidth(),
 						sprite.getHeight(),
 						getZOffset() + 1,
