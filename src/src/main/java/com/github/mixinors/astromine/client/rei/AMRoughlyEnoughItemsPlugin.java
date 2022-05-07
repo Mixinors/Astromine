@@ -54,9 +54,7 @@ import com.github.mixinors.astromine.client.rei.triturating.TrituratingCategory;
 import com.github.mixinors.astromine.client.rei.triturating.TrituratingDisplay;
 import com.github.mixinors.astromine.client.rei.wiremilling.WireMillingCategory;
 import com.github.mixinors.astromine.client.rei.wiremilling.WireMillingDisplay;
-import com.github.mixinors.astromine.client.render.sprite.SpriteRenderer;
 import com.github.mixinors.astromine.common.recipe.*;
-import com.github.mixinors.astromine.common.util.ClientUtils;
 import com.github.mixinors.astromine.common.util.TextUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -69,15 +67,11 @@ import net.fabricmc.fabric.api.transfer.v1.client.fluid.FluidVariantRendering;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.BucketItem;
 import net.minecraft.recipe.SmeltingRecipe;
-import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -102,8 +96,8 @@ import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCustomDisplay;
 
 @Environment(EnvType.CLIENT)
 public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
-	private static final Identifier ENERGY_BACKGROUND = AMCommon.id("textures/widget/energy_volume_fractional_vertical_bar_background_thin.png");
-	private static final Identifier ENERGY_FOREGROUND = AMCommon.id("textures/widget/energy_volume_fractional_vertical_bar_foreground_thin.png");
+	private static final Identifier THIN_ENERGY_BACKGROUND_TEXTURE = AMCommon.id("textures/widget/thin_energy_background.png");
+	private static final Identifier THIN_ENERGY_FOREGROUND_TEXTURE = AMCommon.id("textures/widget/thin_energy_bar_foreground.png");
 
 	public static final CategoryIdentifier<TrituratingDisplay> TRITURATING = CategoryIdentifier.of(AMCommon.id("triturating"));
 	public static final CategoryIdentifier<ElectricSmeltingDisplay> ELECTRIC_SMELTING = CategoryIdentifier.of(AMCommon.id("electric_smelting"));
@@ -230,7 +224,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 				DrawingUtils.drawTexturedQuad(
 						matrices,
 						provider,
-						ENERGY_BACKGROUND,
+						THIN_ENERGY_BACKGROUND_TEXTURE,
 						bounds.x,
 						bounds.y,
 						bounds.width,
@@ -247,7 +241,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 				DrawingUtils.drawTexturedQuad(
 						matrices,
 						provider,
-						ENERGY_FOREGROUND,
+						THIN_ENERGY_FOREGROUND_TEXTURE,
 						bounds.x,
 						bounds.y,
 						bounds.width,
@@ -280,7 +274,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 			if (background) {
 				var bounds = getBounds();
 				
-				RenderSystem.setShaderTexture(0, ENERGY_BACKGROUND);
+				RenderSystem.setShaderTexture(0, THIN_ENERGY_BACKGROUND_TEXTURE);
 				
 				drawTexture(matrices, bounds.x, bounds.y, 0, 0, bounds.width, bounds.height, bounds.width, bounds.height);
 			}
