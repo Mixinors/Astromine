@@ -44,9 +44,9 @@ import team.reborn.energy.api.base.SimpleEnergyStorage;
 import java.util.function.Supplier;
 
 public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity implements MachineConfigProvider<SimpleMachineConfig> {
+	public static final String AVAILABLE_KEY = "Available";
+	
 	private double available = 0;
-	public double progress = 0;
-	public int limit = 100;
 	
 	public static final int INPUT_SLOT = 0;
 	
@@ -102,25 +102,25 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 								
 								++produced;
 								
-								isActive = true;
+								active = true;
 								
 								nestedTransaction.commit();
 							} else {
 								nestedTransaction.abort();
 								
-								isActive = false;
+								active = false;
 							}
 							
 							if (progress >= limit || available <= 0) {
-								progress = 0;
+								progress = 0.0D;
 								limit = 0;
 								
-								isActive = false;
+								active = false;
 							}
 						}
 					}
 				} else {
-					progress = 0;
+					progress = 0.0D;
 					
 					var inputStack = itemStorage.getStack(INPUT_SLOT);
 					
@@ -133,7 +133,7 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 							available = inputBurnTime;
 							limit = inputBurnTime;
 							
-							progress = 0;
+							progress = 0.0D;
 							
 							var nestedTransaction = transaction.openNested();
 							
@@ -142,9 +142,9 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 							nestedTransaction.commit();
 						}
 						
-						isActive = isFuel || progress != 0;
+						active = isFuel || progress != 0;
 					} else {
-						isActive = false;
+						active = false;
 					}
 				}
 				
@@ -155,18 +155,14 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 	
 	@Override
 	public void writeNbt(NbtCompound nbt) {
-		nbt.putDouble("Progress", progress);
-		nbt.putInt("Limit", limit);
-		nbt.putDouble("Available", available);
+		nbt.putDouble(AVAILABLE_KEY, available);
 		
 		super.writeNbt(nbt);
 	}
 	
 	@Override
 	public void readNbt(@NotNull NbtCompound nbt) {
-		progress = nbt.getDouble("Progress");
-		limit = nbt.getInt("Limit");
-		available = nbt.getDouble("Available");
+		available = nbt.getDouble(AVAILABLE_KEY);
 		
 		super.readNbt(nbt);
 	}

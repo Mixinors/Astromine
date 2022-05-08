@@ -44,9 +44,6 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public abstract class ElectrolyzerBlockEntity extends ExtendedBlockEntity implements FluidStorageMachineConfigProvider {
-	public double progress = 0;
-	public int limit = 100;
-	
 	public static final int INPUT_SLOT = 0;
 	
 	public static final int OUTPUT_SLOT_1 = 1;
@@ -133,38 +130,23 @@ public abstract class ElectrolyzerBlockEntity extends ExtendedBlockEntity implem
 							
 							transaction.commit();
 							
-							progress = 0;
+							progress = 0.0D;
 						} else {
 							progress += speed;
 						}
 						
-						isActive = true;
+						active = true;
 					} else {
-						isActive = false;
+						active = false;
 					}
 				}
 			} else {
-				isActive = false;
-				progress = 0;
-				limit = 100;
+				progress = 0.0D;
+				limit = 100.0D;
+				
+				active = false;
 			}
 		}
-	}
-	
-	@Override
-	public void writeNbt(NbtCompound nbt) {
-		nbt.putDouble("Progress", progress);
-		nbt.putInt("Limit", limit);
-		
-		super.writeNbt(nbt);
-	}
-	
-	@Override
-	public void readNbt(@NotNull NbtCompound nbt) {
-		progress = nbt.getDouble("Progress");
-		limit = nbt.getInt("Limit");
-		
-		super.readNbt(nbt);
 	}
 	
 	@Override

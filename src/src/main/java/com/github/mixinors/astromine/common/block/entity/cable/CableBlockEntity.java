@@ -40,6 +40,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.BitSet;
 
 public class CableBlockEntity extends BlockEntity implements RenderAttachmentBlockEntity {
+	public static final String DATA_KEY = "Data";
+	
 	private Connections connections = new Connections();
 	
 	private long lastToggledMs = 0;
@@ -69,14 +71,14 @@ public class CableBlockEntity extends BlockEntity implements RenderAttachmentBlo
 	protected void writeNbt(NbtCompound nbt) {
 		super.writeNbt(nbt);
 		
-		nbt.putLongArray("Data", connections.data.toLongArray());
+		nbt.putLongArray(DATA_KEY, connections.data.toLongArray());
 	}
 	
 	@Override
 	public void readNbt(NbtCompound nbt) {
 		super.readNbt(nbt);
 		
-		connections = new Connections(BitSet.valueOf(nbt.getLongArray("Data")));
+		connections = new Connections(BitSet.valueOf(nbt.getLongArray(DATA_KEY)));
 		
 		if (world != null && world.isClient()) {
 			world.scheduleBlockRerenderIfNeeded(getPos(), Blocks.AIR.getDefaultState(), Blocks.BEDROCK.getDefaultState());

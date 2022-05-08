@@ -37,6 +37,13 @@ import team.reborn.energy.api.base.SimpleEnergyStorage;
 import javax.annotation.Nullable;
 
 public abstract class ExtendedEntity extends Entity implements FluidStorageSizeProvider, EnergyStorageSizeProvider {
+	public static final String AMOUNT_KEY = "Amount";
+	public static final String SIZE_KEY = "Size";
+	
+	public static final String ENERGY_STORAGE_KEY = "EnergyStorage";
+	public static final String ITEM_STORAGE_KEY = "ItemStorage";
+	public static final String FLUID_STORAGE_KEY = "FluidStorage";
+	
 	protected SimpleEnergyStorage energyStorage = null;
 	protected SimpleItemStorage itemStorage = null;
 	protected SimpleFluidStorage fluidStorage = null;
@@ -50,62 +57,53 @@ public abstract class ExtendedEntity extends Entity implements FluidStorageSizeP
 		if (energyStorage != null) {
 			var energyStorageNbt = new NbtCompound();
 			
-			energyStorageNbt.putLong("Amount", energyStorage.amount);
-			energyStorageNbt.putLong("Capacity", energyStorage.capacity);
-			energyStorageNbt.putLong("MaxInsert", energyStorage.maxInsert);
-			energyStorageNbt.putLong("MaxExtract", energyStorage.maxExtract);
+			energyStorageNbt.putLong(AMOUNT_KEY, energyStorage.amount);
 			
-			nbt.put("EnergyStorage", energyStorageNbt);
+			nbt.put(ENERGY_STORAGE_KEY, energyStorageNbt);
 		}
 		
 		if (itemStorage != null) {
 			var itemStorageNbt = new NbtCompound();
-			itemStorageNbt.putInt("Size", itemStorage.getSize());
+			itemStorageNbt.putInt(SIZE_KEY, itemStorage.getSize());
 			
 			itemStorage.writeToNbt(itemStorageNbt);
 			
-			nbt.put("ItemStorage", itemStorageNbt);
+			nbt.put(ITEM_STORAGE_KEY, itemStorageNbt);
 		}
 		
 		if (fluidStorage != null) {
 			var fluidStorageNbt = new NbtCompound();
-			fluidStorageNbt.putInt("Size", fluidStorage.getSize());
+			fluidStorageNbt.putInt(SIZE_KEY, fluidStorage.getSize());
 			
 			fluidStorage.writeToNbt(fluidStorageNbt);
 			
-			nbt.put("FluidStorage", fluidStorageNbt);
+			nbt.put(FLUID_STORAGE_KEY, fluidStorageNbt);
 		}
 	}
 	
 	@Override
 	protected void readCustomDataFromNbt(NbtCompound nbt) {
-		if (nbt.contains("EnergyStorage")) {
-			var energyStorageNbt = nbt.getCompound("EnergyStorage");
+		if (nbt.contains(ENERGY_STORAGE_KEY)) {
+			var energyStorageNbt = nbt.getCompound(ENERGY_STORAGE_KEY);
 			
-			energyStorage = new SimpleEnergyStorage(
-					energyStorageNbt.getLong("Capacity"),
-					energyStorageNbt.getLong("MaxInsert"),
-					energyStorageNbt.getLong("MaxExtract")
-			);
-			
-			energyStorage.amount = energyStorageNbt.getLong("Amount");
+			energyStorage.amount = energyStorageNbt.getLong(AMOUNT_KEY);
 		}
 		
-		if (nbt.contains("ItemStorage")) {
-			var itemStorageNbt = nbt.getCompound("ItemStorage");
+		if (nbt.contains(ITEM_STORAGE_KEY)) {
+			var itemStorageNbt = nbt.getCompound(ITEM_STORAGE_KEY);
 			
 			itemStorage = new SimpleItemStorage(
-					itemStorageNbt.getInt("Size")
+					itemStorageNbt.getInt(SIZE_KEY)
 			);
 			
 			itemStorage.readFromNbt(itemStorageNbt);
 		}
 		
-		if (nbt.contains("FluidStorage")) {
-			var fluidStorageNbt = nbt.getCompound("FluidStorage");
+		if (nbt.contains(FLUID_STORAGE_KEY)) {
+			var fluidStorageNbt = nbt.getCompound(FLUID_STORAGE_KEY);
 			
 			fluidStorage = new SimpleFluidStorage(
-					fluidStorageNbt.getInt("Size"),
+					fluidStorageNbt.getInt(SIZE_KEY),
 					getFluidStorageSize()
 			);
 			

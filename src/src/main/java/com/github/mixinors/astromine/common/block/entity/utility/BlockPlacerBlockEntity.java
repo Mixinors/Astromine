@@ -39,13 +39,15 @@ import org.jetbrains.annotations.NotNull;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements UtilityConfigProvider<UtilityConfig> {
-	private long cooldown = 0L;
+	public static final String COOLDOWN_KEY = "Cooldown";
 	
 	public static final int INPUT_SLOT = 0;
 	
 	public static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
 	
 	public static final int[] EXTRACT_SLOTS = new int[] { };
+	
+	private long cooldown = 0L;
 	
 	public BlockPlacerBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.BLOCK_PLACER, blockPos, blockState);
@@ -79,7 +81,7 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Utili
 			if (energyStorage.getAmount() < consumed) {
 				cooldown = 0L;
 				
-				isActive = false;
+				active = false;
 			} else {
 				try (var transaction = Transaction.openOuter()) {
 					if (energyStorage.amount >= consumed) {
@@ -118,16 +120,16 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Utili
 								} else {
 									++cooldown;
 									
-									isActive = true;
+									active = true;
 								}
 							} else {
-								isActive = false;
+								active = false;
 								
 								transaction.abort();
 							}
 						}
 					} else {
-						isActive = false;
+						active = false;
 						
 						transaction.abort();
 					}
@@ -138,14 +140,14 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Utili
 	
 	@Override
 	public void writeNbt(NbtCompound nbt) {
-		nbt.putLong("Cooldown", cooldown);
+		nbt.putLong(COOLDOWN_KEY, cooldown);
 		
 		super.writeNbt(nbt);
 	}
 	
 	@Override
 	public void readNbt(@NotNull NbtCompound nbt) {
-		cooldown = nbt.getLong("Cooldown");
+		cooldown = nbt.getLong(COOLDOWN_KEY);
 		
 		super.readNbt(nbt);
 	}

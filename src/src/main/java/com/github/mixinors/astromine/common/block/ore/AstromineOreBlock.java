@@ -71,8 +71,10 @@ public class AstromineOreBlock extends Block {
 	@Override
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		super.onBreak(world, pos, state, player);
+		
 		if (this == AMBlocks.METEOR_METITE_ORE.get() && player instanceof ServerPlayerEntity) {
 			var stack = player.getStackInHand(Hand.MAIN_HAND);
+			
 			if (!stack.isSuitableFor(state) && stack.isSuitableFor(Blocks.STONE.getDefaultState())) {
 				AMCriteria.UNDERESTIMATE_METITE.trigger((ServerPlayerEntity) player);
 			}

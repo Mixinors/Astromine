@@ -51,11 +51,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Tickable {
+	public static final String CHILD_POSITION_KEY = "ChildPosition";
+	public static final String PARENT_POSITION_KEY = "ParentPosition";
+	public static final String COLOR_KEY = "Color";
+	
+	public static final String R_KEY = "R";
+	public static final String G_KEY = "G";
+	public static final String B_KEY = "B";
+	public static final String A_KEY = "A";
+	
 	public static final Color DEFAULT_COLOR = new Color(0.5F, 0.79F, 0.83F, 0.5F);
-	
-	public List<Vec3f> segments = null;
-	
-	public Color color = DEFAULT_COLOR;
 	
 	private HoloBridgeProjectorBlockEntity child = null;
 	private HoloBridgeProjectorBlockEntity parent = null;
@@ -67,6 +72,10 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	private boolean hasCheckedParent = false;
 	
 	private boolean shouldInitialize = false;
+	
+	public List<Vec3f> segments = null;
+	
+	public Color color = DEFAULT_COLOR;
 	
 	public HoloBridgeProjectorBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.HOLOGRAPHIC_BRIDGE.get(), blockPos, blockState);
@@ -268,18 +277,23 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	
 	@Override
 	public void readNbt(@NotNull NbtCompound tag) {
-		if (tag.contains("ChildPosition")) {
-			this.childPosition = BlockPos.fromLong(tag.getLong("ChildPosition"));
+		if (tag.contains(CHILD_POSITION_KEY)) {
+			this.childPosition = BlockPos.fromLong(tag.getLong(CHILD_POSITION_KEY));
 		}
 		
-		if (tag.contains("ParentPosition")) {
-			this.parentPosition = BlockPos.fromLong(tag.getLong("ParentPosition"));
+		if (tag.contains(PARENT_POSITION_KEY)) {
+			this.parentPosition = BlockPos.fromLong(tag.getLong(PARENT_POSITION_KEY));
 		}
 		
-		if (tag.contains("Color")) {
-			var colorTag = tag.getCompound("Color");
+		if (tag.contains(COLOR_KEY)) {
+			var colorTag = tag.getCompound(COLOR_KEY);
 			
-			color = new Color(colorTag.getFloat("R"), colorTag.getFloat("G"), colorTag.getFloat("B"), colorTag.getFloat("A"));
+			color = new Color(
+					colorTag.getFloat(R_KEY),
+					colorTag.getFloat(G_KEY),
+					colorTag.getFloat(B_KEY),
+					colorTag.getFloat(A_KEY)
+			);
 		}
 		
 		shouldInitialize = true;
@@ -290,24 +304,24 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	@Override
 	public void writeNbt(NbtCompound tag) {
 		if (this.child != null) {
-			tag.putLong("ChildPosition", this.child.getPos().asLong());
+			tag.putLong(CHILD_POSITION_KEY, this.child.getPos().asLong());
 		} else if (this.childPosition != null) {
-			tag.putLong("ChildPosition", this.childPosition.asLong());
+			tag.putLong(CHILD_POSITION_KEY, this.childPosition.asLong());
 		}
 		
 		if (this.parent != null) {
-			tag.putLong("ParentPosition", this.parent.getPos().asLong());
+			tag.putLong(PARENT_POSITION_KEY, this.parent.getPos().asLong());
 		} else if (this.parentPosition != null) {
-			tag.putLong("ParentPosition", this.parentPosition.asLong());
+			tag.putLong(PARENT_POSITION_KEY, this.parentPosition.asLong());
 		}
 		
 		var colorTag = new NbtCompound();
-		colorTag.putFloat("R", color.getR());
-		colorTag.putFloat("G", color.getG());
-		colorTag.putFloat("B", color.getB());
-		colorTag.putFloat("A", color.getA());
+		colorTag.putFloat(R_KEY, color.getR());
+		colorTag.putFloat(G_KEY, color.getG());
+		colorTag.putFloat(B_KEY, color.getB());
+		colorTag.putFloat(A_KEY, color.getA());
 		
-		tag.put("Color", colorTag);
+		tag.put(COLOR_KEY, colorTag);
 		
 		super.writeNbt(tag);
 	}

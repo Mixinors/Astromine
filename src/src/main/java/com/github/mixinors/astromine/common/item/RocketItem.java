@@ -32,6 +32,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
@@ -47,6 +48,10 @@ import org.jetbrains.annotations.Nullable;
  * Based on SpawnEggItem
  */
 public class RocketItem extends Item {
+	public static final String ENTITY_TAG_KEY = "EntityTag";
+	
+	public static final String ID_KEY = "Id";
+	
 	private final EntityType<?> type;
 	
 	public RocketItem(EntityType<?> type, Item.Settings settings) {
@@ -58,6 +63,7 @@ public class RocketItem extends Item {
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		var itemStack = user.getStackInHand(hand);
 		var hitResult = SpawnEggItem.raycast(world, user, RaycastContext.FluidHandling.SOURCE_ONLY);
+		
 		if (((HitResult) hitResult).getType() != HitResult.Type.BLOCK) {
 			return TypedActionResult.pass(itemStack);
 		}
@@ -93,10 +99,10 @@ public class RocketItem extends Item {
 	}
 	
 	public EntityType<?> getEntityType(@Nullable NbtCompound nbt) {
-		NbtCompound nbtCompound;
+		var nbtCompound = (NbtCompound) null;
 		
-		if (nbt != null && nbt.contains("EntityTag", 10) && (nbtCompound = nbt.getCompound("EntityTag")).contains("id", 8)) {
-			return EntityType.get(nbtCompound.getString("id")).orElse(this.type);
+		if (nbt != null && nbt.contains(ENTITY_TAG_KEY, NbtElement.COMPOUND_TYPE) && (nbtCompound = nbt.getCompound(ENTITY_TAG_KEY)).contains(ID_KEY, NbtElement.STRING_TYPE)) {
+			return EntityType.get(nbtCompound.getString(ID_KEY)).orElse(this.type);
 		}
 		
 		return this.type;

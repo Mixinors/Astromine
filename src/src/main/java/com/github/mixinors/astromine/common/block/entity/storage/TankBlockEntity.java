@@ -48,6 +48,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Supplier;
 
 public abstract class TankBlockEntity extends ExtendedBlockEntity implements TankConfigProvider {
+	public static final String FILTER_KEY = "Filter";
+	
 	public static final int FLUID_INPUT_SLOT = 0;
 	
 	public static final int FLUID_OUTPUT_SLOT = 0;
@@ -141,14 +143,14 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 	
 	@Override
 	public void writeNbt(NbtCompound nbt) {
-		nbt.put("Filter", filter.toNbt());
+		nbt.put(FILTER_KEY, filter.toNbt());
 		
 		super.writeNbt(nbt);
 	}
 	
 	@Override
 	public void readNbt(@NotNull NbtCompound nbt) {
-		filter = FluidVariant.fromNbt(nbt.getCompound("Filter"));
+		filter = FluidVariant.fromNbt(nbt.getCompound(FILTER_KEY));
 		
 		super.readNbt(nbt);
 	}

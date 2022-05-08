@@ -44,13 +44,15 @@ import org.jetbrains.annotations.NotNull;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 public class FluidCollectorBlockEntity extends ExtendedBlockEntity implements FluidStorageUtilityConfigProvider {
-	private long cooldown = 0L;
+	public static final String COOLDOWN_KEY = "Cooldown";
 	
 	public static final int OUTPUT_SLOT = 0;
 	
 	public static final int[] INSERT_SLOTS = new int[] { };
 	
 	public static final int[] EXTRACT_SLOTS = new int[] { OUTPUT_SLOT };
+	
+	private long cooldown = 0L;
 	
 	public FluidCollectorBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.FLUID_COLLECTOR, blockPos, blockState);
@@ -82,7 +84,7 @@ public class FluidCollectorBlockEntity extends ExtendedBlockEntity implements Fl
 			if (energyStorage.amount < consumed) {
 				cooldown = 0L;
 				
-				isActive = false;
+				active = false;
 			} else {
 				try (var transaction = Transaction.openOuter()) {
 					if (energyStorage.amount >= consumed) {
@@ -114,22 +116,22 @@ public class FluidCollectorBlockEntity extends ExtendedBlockEntity implements Fl
 									
 									transaction.commit();
 								} else {
-									isActive = false;
+									active = false;
 									
 									transaction.abort();
 								}
 							} else {
 								++cooldown;
 								
-								isActive = true;
+								active = true;
 							}
 						} else {
-							isActive = false;
+							active = false;
 							
 							transaction.abort();
 						}
 					} else {
-						isActive = false;
+						active = false;
 						
 						transaction.abort();
 					}
@@ -140,14 +142,14 @@ public class FluidCollectorBlockEntity extends ExtendedBlockEntity implements Fl
 	
 	@Override
 	public void writeNbt(NbtCompound nbt) {
-		nbt.putLong("Cooldown", cooldown);
+		nbt.putLong(COOLDOWN_KEY, cooldown);
 		
 		super.writeNbt(nbt);
 	}
 	
 	@Override
 	public void readNbt(@NotNull NbtCompound nbt) {
-		cooldown = nbt.getLong("Cooldown");
+		cooldown = nbt.getLong(COOLDOWN_KEY);
 		
 		super.readNbt(nbt);
 	}

@@ -45,13 +45,15 @@ import org.jetbrains.annotations.NotNull;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements UtilityConfigProvider<UtilityConfig> {
-	private long cooldown = 0L;
+	public static final String COOLDOWN_KEY = "Cooldown";
 	
 	public static final int OUTPUT_SLOT = 0;
 	
 	public static final int[] INSERT_SLOTS = new int[] { };
 	
 	public static final int[] EXTRACT_SLOTS = new int[] { OUTPUT_SLOT };
+	
+	private long cooldown = 0L;
 	
 	public BlockBreakerBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.BLOCK_BREAKER, blockPos, blockState);
@@ -81,7 +83,7 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Util
 			if (energyStorage.getAmount() < consumed) {
 				cooldown = 0L;
 				
-				isActive = false;
+				active = false;
 			} else {
 				try (var transaction = Transaction.openOuter()) {
 					if (energyStorage.amount >= consumed) {
@@ -99,7 +101,7 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Util
 							++cooldown;
 							
 							if (cooldown >= getSpeed()) {
-								isActive = true;
+								active = true;
 								
 								var targetEntity = world.getBlockEntity(targetPos);
 								
@@ -131,15 +133,15 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Util
 							} else {
 								++cooldown;
 								
-								isActive = true;
+								active = true;
 							}
 						} else {
-							isActive = false;
+							active = false;
 							
 							transaction.abort();
 						}
 					} else {
-						isActive = false;
+						active = false;
 						
 						transaction.abort();
 					}
@@ -150,14 +152,14 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Util
 	
 	@Override
 	public void writeNbt(NbtCompound nbt) {
-		nbt.putLong("Cooldown", cooldown);
+		nbt.putLong(COOLDOWN_KEY, cooldown);
 		
 		super.writeNbt(nbt);
 	}
 	
 	@Override
 	public void readNbt(@NotNull NbtCompound nbt) {
-		cooldown = nbt.getLong("Cooldown");
+		cooldown = nbt.getLong(COOLDOWN_KEY);
 		
 		super.readNbt(nbt);
 	}

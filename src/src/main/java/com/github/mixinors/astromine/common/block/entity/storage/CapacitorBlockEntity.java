@@ -151,6 +151,7 @@ public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implement
 		@Override
 		public void tick() {
 			super.tick();
+			
 			if (energyStorage.getAmount() < getEnergyStorageSize()) {
 				try (Transaction transaction = Transaction.openOuter()) {
 					energyStorage.insert(getEnergyStorageSize(), transaction);
