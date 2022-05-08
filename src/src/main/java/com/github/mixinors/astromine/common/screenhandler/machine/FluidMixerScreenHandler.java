@@ -44,6 +44,11 @@ public class FluidMixerScreenHandler extends ExtendedBlockEntityScreenHandler {
 	}
 	
 	@Override
+	public int getDefaultFluidSlotForBar() {
+		return FluidMixerBlockEntity.INPUT_SLOT_1;
+	}
+	
+	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		

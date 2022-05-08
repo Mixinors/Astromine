@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.screenhandler.base.entity;
 
 import com.github.mixinors.astromine.common.entity.base.ExtendedEntity;
+import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
@@ -37,12 +38,44 @@ import dev.vini2003.hammer.gui.energy.api.common.widget.bar.EnergyBarWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.text.TranslatableText;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.function.Supplier;
 
 public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
+	public static final float SLOT_WIDTH = ExtendedBlockEntityScreenHandler.SLOT_WIDTH;
+	public static final float SLOT_HEIGHT = ExtendedBlockEntityScreenHandler.SLOT_HEIGHT;
+	
+	public static final float BAR_HEIGHT = ExtendedBlockEntityScreenHandler.BAR_HEIGHT;
+	public static final float BAR_WIDTH = ExtendedBlockEntityScreenHandler.BAR_WIDTH;
+	
+	public static final float REDSTONE_WIDTH = ExtendedBlockEntityScreenHandler.REDSTONE_WIDTH;
+	public static final float REDSTONE_HEIGHT = ExtendedBlockEntityScreenHandler.REDSTONE_HEIGHT;
+	
+	public static final float TABS_WIDTH = ExtendedBlockEntityScreenHandler.TABS_WIDTH;
+	public static final float TABS_HEIGHT = ExtendedBlockEntityScreenHandler.TABS_HEIGHT;
+	
+	public static final float ARROW_WIDTH = ExtendedBlockEntityScreenHandler.ARROW_WIDTH;
+	public static final float ARROW_HEIGHT = ExtendedBlockEntityScreenHandler.ARROW_HEIGHT;
+	
+	public static final float FILTER_WIDTH = ExtendedBlockEntityScreenHandler.FILTER_WIDTH;
+	public static final float FILTER_HEIGHT = ExtendedBlockEntityScreenHandler.FILTER_HEIGHT;
+	
+	public static final float PAD_2 = ExtendedBlockEntityScreenHandler.PAD_2;
+	public static final float PAD_3 = ExtendedBlockEntityScreenHandler.PAD_3;
+	public static final float PAD_4 = ExtendedBlockEntityScreenHandler.PAD_4;
+	public static final float PAD_5 = ExtendedBlockEntityScreenHandler.PAD_5;
+	public static final float PAD_7 = ExtendedBlockEntityScreenHandler.PAD_7;
+	public static final float PAD_8 = ExtendedBlockEntityScreenHandler.PAD_8;
+	public static final float PAD_10 = ExtendedBlockEntityScreenHandler.PAD_10;
+	public static final float PAD_11 = ExtendedBlockEntityScreenHandler.PAD_11;
+	public static final float PAD_25 = ExtendedBlockEntityScreenHandler.PAD_25;
+	public static final float PAD_38 = ExtendedBlockEntityScreenHandler.PAD_38;
+	public static final float PAD_68 = ExtendedBlockEntityScreenHandler.PAD_68;
+	
 	protected final ExtendedEntity entity;
 	
 	protected EnergyBarWidget energyBar = null;
@@ -52,7 +85,7 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 	
 	protected TabWidget tabs;
 	
-	protected TabWidget.TabWidgetCollection mainTab;
+	protected TabWidget.TabWidgetCollection tab;
 	
 	public ExtendedEntityScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, int entityId) {
 		super(type.get(), syncId, player);
@@ -62,8 +95,81 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 	
 	public abstract ItemStack getSymbol();
 	
-	public int getTabWidgetExtendedHeight() {
+	public Size getTabsSizeExtension() {
+		return new Size(0.0F, 0.0F);
+	}
+	
+	public int getDefaultFluidSlotForBar() {
 		return 0;
+	}
+	
+	@Override
+	public void initialize(int width, int height) {
+		var symbol = getSymbol();
+		
+		var player = getPlayer();
+		var inventory = player.getInventory();
+		
+		var tabsExtension = getTabsSizeExtension();
+		
+		tabs = new TabWidget();
+		tabs.setSize(new Size(TABS_WIDTH + tabsExtension.getWidth(), TABS_HEIGHT + tabsExtension.getHeight(), 0.0F));
+		tabs.setPosition(new Position(width / 2.0F - tabs.getWidth() / 2.0F, height / 2.0F - tabs.getHeight() / 2.0F, 0.0F));
+		
+		add(tabs);
+		
+		tab = (TabWidget.TabWidgetCollection) tabs.addTab(symbol, () -> Collections.singletonList(entity.getDisplayName()));
+		tab.setPosition(new Position(tabs, 0.0F, PAD_25 + PAD_7));
+		tab.setSize(new Size(TABS_WIDTH, TABS_HEIGHT));
+		
+		var title = new TextWidget();
+		title.setPosition(new Position(tab, PAD_8, 0.0F));
+		title.setText(entity.getDisplayName());
+		title.setColor(0x404040);
+		
+		tab.add(title);
+		
+		var inventoryPos = new Position(tabs,
+				PAD_7 + (tabs.getWidth() / 2.0F - ((9.0F * SLOT_WIDTH) / 2.0F) - PAD_7),
+				PAD_8 + PAD_25 + PAD_7 + (TABS_WIDTH - SLOT_WIDTH - SLOT_WIDTH - (SLOT_WIDTH * 4.0F) - PAD_3 + tabsExtension.getHeight())
+		);
+		
+		var inventoryTitle = new TextWidget();
+		inventoryTitle.setPosition(new Position(inventoryPos, 0.0F, -PAD_10));
+		inventoryTitle.setText(getPlayer().getInventory().getName());
+		inventoryTitle.setColor(0x404040);
+		
+		tab.add(inventoryTitle);
+		
+		playerSlots = SlotUtils.addPlayerInventory(inventoryPos, new Size(SLOT_WIDTH, SLOT_HEIGHT), tab, inventory);
+		
+		if (entity.hasEnergyStorage()) {
+			energyBar = new EnergyBarWidget();
+			energyBar.setPosition(new Position(tab, PAD_7, PAD_11));
+			energyBar.setSize(new Size(BAR_WIDTH, BAR_HEIGHT));
+			energyBar.setStorage(entity.getEnergyStorage());
+			energyBar.setSmooth(false);
+			energyBar.setCurrent(() -> (float) entity.getEnergyStorage().getAmount());
+			energyBar.setMaximum(() -> (float) entity.getEnergyStorage().getCapacity());
+			
+			tab.add(energyBar);
+		}
+		
+		if (entity.hasFluidStorage()) {
+			fluidBar = new FluidBarWidget();
+			
+			if (energyBar == null) {
+				fluidBar.setPosition(new Position(tab, PAD_7, PAD_11));
+			} else {
+				fluidBar.setPosition(new Position(energyBar, energyBar.getWidth() + PAD_7, 0.0F));
+			}
+			
+			fluidBar.setSize(new Size(BAR_WIDTH, BAR_HEIGHT));
+			fluidBar.setStorage(entity.getFluidStorage().getStorage(getDefaultFluidSlotForBar()));
+			fluidBar.setSmooth(false);
+			
+			tab.add(fluidBar);
+		}
 	}
 	
 	@Override
@@ -72,59 +178,7 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 	}
 	
 	@Override
-	public void initialize(int width, int height) {
-		tabs = new TabWidget();
-		tabs.setSize(new Size(176.0F, 188.0F + getTabWidgetExtendedHeight(), 0.0F));
-		tabs.setPosition(new Position(width / 2.0F - tabs.getWidth() / 2.0F, height / 2.0F - tabs.getHeight() / 2.0F, 0.0F));
-		
-		add(tabs);
-		
-		mainTab = (TabWidget.TabWidgetCollection) tabs.addTab(getSymbol());
-		mainTab.setPosition(new Position(tabs, 0.0F, 25.0F + 7.0F, 0.0F));
-		mainTab.setSize(new Size(176.0F, 184.0F, 0.0F));
-		
-		var title = new TextWidget();
-		title.setPosition(new Position(mainTab, 8.0F, 0.0F, 0.0F));
-		title.setText(entity.getDisplayName());
-		title.setColor(4210752);
-		
-		mainTab.add(title);
-		
-		var invPos = new Position(tabs, 7.0F, 25.0F + 7.0F + (184.0F - 18.0F - 18.0F - (18.0F * 4.0F) - 3.0F + getTabWidgetExtendedHeight()), 0.0F);
-		
-		var invTitle = new TextWidget();
-		invTitle.setPosition(new Position(invPos, 0.0F, -10.0F, 0.0F));
-		invTitle.setText(getPlayer().getInventory().getName());
-		invTitle.setColor(4210752);
-		
-		mainTab.add(invTitle);
-		
-		playerSlots = SlotUtils.addPlayerInventory(invPos, new Size(18.0F, 18.0F, 0.0F), mainTab, getPlayer().getInventory());
-		
-		if (entity.hasEnergyStorage()) {
-			energyBar = new EnergyBarWidget();
-			energyBar.setPosition(new Position(mainTab, 7.0F, 11.0F, 0.0F));
-			energyBar.setSize(new Size(24.0F, 48.0F, 0.0F));
-			energyBar.setStorage(entity.getEnergyStorage());
-			energyBar.setSmooth(false);
-			energyBar.setCurrent(() -> (float) entity.getEnergyStorage().getAmount());
-			energyBar.setMaximum(() -> (float) entity.getEnergyStorage().getCapacity());
-			
-			mainTab.add(energyBar);
-		}
-		
-		if (entity.hasFluidStorage()) {
-			fluidBar = new FluidBarWidget();
-			
-			if (energyBar == null) {
-				fluidBar.setPosition(new Position(mainTab, 7.0F, 0.0F, 0.0F));
-			} else {
-				fluidBar.setPosition(new Position(energyBar, 7.0F, 0.0F, 0.0F));
-			}
-			
-			fluidBar.setSize(new Size(24.0F, 48.0F, 0.0F));
-			fluidBar.setStorage(entity.getFluidStorage().getStorage(0));
-			fluidBar.setSmooth(false);
-		}
+	public boolean isClient() {
+		return getClient();
 	}
 }

@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.screenhandler.utility;
 
+import com.github.mixinors.astromine.common.block.entity.utility.FluidPlacerBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,5 +33,10 @@ import net.minecraft.util.math.BlockPos;
 public class FluidPlacerScreenHandler extends ExtendedBlockEntityScreenHandler {
 	public FluidPlacerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.FLUID_INSERTER, syncId, player, position);
+	}
+	
+	@Override
+	public int getDefaultFluidSlotForBar() {
+		return FluidPlacerBlockEntity.INPUT_SLOT;
 	}
 }

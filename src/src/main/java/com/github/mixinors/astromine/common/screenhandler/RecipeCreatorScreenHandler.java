@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.screenhandler;
 
 import com.github.mixinors.astromine.common.inventory.BaseInventory;
+import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.util.WordUtils;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import com.google.common.collect.Lists;
@@ -53,14 +54,41 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler.SLOT_HEIGHT;
-import static com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler.SLOT_WIDTH;
-
 public class RecipeCreatorScreenHandler extends BaseScreenHandler {
-	public static final Inventory[] craftingInventories = new Inventory[] { BaseInventory.of(10), BaseInventory.of(10) };
+	public static final float SLOT_WIDTH = ExtendedBlockEntityScreenHandler.SLOT_WIDTH;
+	public static final float SLOT_HEIGHT = ExtendedBlockEntityScreenHandler.SLOT_HEIGHT;
+	
+	public static final float BAR_HEIGHT = ExtendedBlockEntityScreenHandler.BAR_HEIGHT;
+	public static final float BAR_WIDTH = ExtendedBlockEntityScreenHandler.BAR_WIDTH;
+	
+	public static final float REDSTONE_WIDTH = ExtendedBlockEntityScreenHandler.REDSTONE_WIDTH;
+	public static final float REDSTONE_HEIGHT = ExtendedBlockEntityScreenHandler.REDSTONE_HEIGHT;
+	
+	public static final float TABS_WIDTH = ExtendedBlockEntityScreenHandler.TABS_WIDTH;
+	public static final float TABS_HEIGHT = ExtendedBlockEntityScreenHandler.TABS_HEIGHT;
+	
+	public static final float ARROW_WIDTH = ExtendedBlockEntityScreenHandler.ARROW_WIDTH;
+	public static final float ARROW_HEIGHT = ExtendedBlockEntityScreenHandler.ARROW_HEIGHT;
+	
+	public static final float FILTER_WIDTH = ExtendedBlockEntityScreenHandler.FILTER_WIDTH;
+	public static final float FILTER_HEIGHT = ExtendedBlockEntityScreenHandler.FILTER_HEIGHT;
+	
+	public static final float PAD_2 = ExtendedBlockEntityScreenHandler.PAD_2;
+	public static final float PAD_3 = ExtendedBlockEntityScreenHandler.PAD_3;
+	public static final float PAD_4 = ExtendedBlockEntityScreenHandler.PAD_4;
+	public static final float PAD_5 = ExtendedBlockEntityScreenHandler.PAD_5;
+	public static final float PAD_7 = ExtendedBlockEntityScreenHandler.PAD_7;
+	public static final float PAD_8 = ExtendedBlockEntityScreenHandler.PAD_8;
+	public static final float PAD_10 = ExtendedBlockEntityScreenHandler.PAD_10;
+	public static final float PAD_11 = ExtendedBlockEntityScreenHandler.PAD_11;
+	public static final float PAD_25 = ExtendedBlockEntityScreenHandler.PAD_25;
+	public static final float PAD_38 = ExtendedBlockEntityScreenHandler.PAD_38;
+	public static final float PAD_68 = ExtendedBlockEntityScreenHandler.PAD_68;
+	
+	public static final Inventory[] CRAFTING_INVENTORIES = new Inventory[] { BaseInventory.of(10), BaseInventory.of(10) };
 	
 	public Inventory getInventory() {
-		return getClient() ? craftingInventories[0] : craftingInventories[1];
+		return isClient() ? CRAFTING_INVENTORIES[0] : CRAFTING_INVENTORIES[1];
 	}
 	
 	public RecipeCreatorScreenHandler(int syncId, @NotNull PlayerEntity player) {
@@ -68,13 +96,8 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 	}
 	
 	@Override
-	public boolean isClient() {
-		return getClient();
-	}
-	
-	@Override
 	public void initialize(int width, int height) {
-		final List<String> TYPES = new ArrayList<>() {
+		var types = new ArrayList<String>() {
 			{
 				add("nugget");
 				add("wire");
@@ -86,12 +109,12 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 			}
 		};
 		
-		final Map<String, String> TAGS = new HashMap<>() {
+		var tags = new HashMap<String, String>() {
 			{
 				Registry.ITEM.forEach((item) -> {
 					var id = Registry.ITEM.getId(item);
 					
-					TYPES.forEach((type) -> {
+					types.forEach((type) -> {
 						if (id.getPath().contains(type)) {
 							put(id.toString(), "c:" + WordUtils.pluralize(id.getPath()));
 						}
@@ -99,6 +122,7 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 				});
 			}
 		};
+		
 		var panel = new PanelWidget();
 		panel.setPosition(new Position(width / 2.0F - 88.5F, height / 2.0F - 92F));
 		panel.setSize(new Size(93.0F + 84.0F, 100.0F + 84.0F));
@@ -107,29 +131,29 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 		
 		var player = getPlayer();
 		
-		SlotUtils.addPlayerInventory(new Position(panel.getX() + 7.0F, panel.getY() + 7.0F + 9.0F + 18.0F + 18.0F + 18.0F + 7.0F + 18.0F + 7.0F), new Size(SLOT_WIDTH, SLOT_HEIGHT), (BaseWidgetCollection) this, player.getInventory());
+		SlotUtils.addPlayerInventory(new Position(panel.getX() + PAD_7, panel.getY() + PAD_7 + 9.0F + SLOT_WIDTH + SLOT_WIDTH + SLOT_WIDTH + PAD_7 + SLOT_WIDTH + PAD_7), new Size(SLOT_WIDTH, SLOT_HEIGHT), (BaseWidgetCollection) this, player.getInventory());
 		
-		var inputSlots = Lists.newArrayList(SlotUtils.addArray(new Position(panel.getX() + 7.0F, panel.getY() + 7.0F + 9.0F), new Size(SLOT_WIDTH, SLOT_HEIGHT), panel, getInventory(), 3, 3, 0));
+		var inputSlots = Lists.newArrayList(SlotUtils.addArray(new Position(panel.getX() + PAD_7, panel.getY() + PAD_7 + 9.0F), new Size(SLOT_WIDTH, SLOT_HEIGHT), panel, getInventory(), 3, 3, 0));
 		
 		var outputSlot = new SlotWidget(9, getInventory());
-		outputSlot.setPosition(new Position(panel.getX() + 7.0F + 18.0F * 3.0F + 7.0F, panel.getY() + 7.0F + 18.0F + 9.0F));
+		outputSlot.setPosition(new Position(panel.getX() + PAD_7 + SLOT_WIDTH * 3.0F + PAD_7, panel.getY() + PAD_7 + SLOT_WIDTH + 9.0F));
 		outputSlot.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
 		panel.add(outputSlot);
 		
 		var saveButton = new ButtonWidget();
-		saveButton.setPosition(new Position(panel.getX() + 7.0F, panel.getY() + 7.0F + 14.0F + 18.0F * 3.0F));
-		saveButton.setSize(new Size(18.0F * 3.0F, 18.0F));
+		saveButton.setPosition(new Position(panel.getX() + PAD_7, panel.getY() + PAD_7 + 14.0F + SLOT_WIDTH * 3.0F));
+		saveButton.setSize(new Size(SLOT_WIDTH * 3.0F, SLOT_WIDTH));
 		saveButton.setLabel(new LiteralText("Save"));
 		saveButton.setClickAction(() -> {
-			Map<Integer, String> table = new HashMap<>();
-			Map<String, Integer> inverseTable = new HashMap<>();
-			Map<Integer, String> grid = new HashMap<>();
+			var table = new HashMap<Integer, String>();
+			var inverseTable = new HashMap<String, Integer>();
+			var grid = new HashMap<Integer, String>();
 			
-			inputSlots.forEach((it) -> {
-				var slot = it.getSlot();
+			inputSlots.forEach((widget) -> {
+				var slot = widget.getSlot();
 				
-				var stack = it.getBackendSlot().getStack();
+				var stack = widget.getBackendSlot().getStack();
 				
 				if (!stack.isEmpty()) {
 					var name = Registry.ITEM.getId(stack.getItem()).toString();
@@ -138,7 +162,9 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 						grid.put(slot, Integer.toString(inverseTable.get(name)));
 					} else {
 						grid.put(slot, Integer.toString(slot));
+						
 						table.put(slot, name);
+						
 						inverseTable.put(name, slot);
 					}
 				} else {
@@ -167,8 +193,8 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 			table.forEach((slot, name) -> {
 				var entry = new JsonObject();
 				
-				if (TAGS.containsKey(name)) {
-					entry.addProperty("tag", TAGS.get(name));
+				if (tags.containsKey(name)) {
+					entry.addProperty("tag", tags.get(name));
 				} else {
 					entry.addProperty("item", name);
 				}
@@ -208,5 +234,11 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 	@Override
 	public boolean canUse(PlayerEntity player) {
 		return true;
+	}
+	
+	
+	@Override
+	public boolean isClient() {
+		return getClient();
 	}
 }

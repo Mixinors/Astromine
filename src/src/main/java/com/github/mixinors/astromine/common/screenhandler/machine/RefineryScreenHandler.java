@@ -44,6 +44,11 @@ public class RefineryScreenHandler extends ExtendedBlockEntityScreenHandler {
 	}
 	
 	@Override
+	public int getDefaultFluidSlotForBar() {
+		return RefineryBlockEntity.INPUT_SLOT;
+	}
+	
+	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		

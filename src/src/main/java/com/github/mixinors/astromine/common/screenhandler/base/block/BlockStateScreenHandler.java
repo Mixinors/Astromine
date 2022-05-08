@@ -49,16 +49,16 @@ public abstract class BlockStateScreenHandler extends BaseScreenHandler {
 	}
 	
 	@Override
-	public boolean isClient() {
-		return getClient();
-	}
-	
-	@Override
 	public boolean canUse(@Nullable PlayerEntity player) {
 		if (player == null) {
 			return false;
 		}
 		
 		return canUse(ScreenHandlerContext.create(player.getWorld(), position), player, originalBlock);
+	}
+	
+	@Override
+	public boolean isClient() {
+		return getClient();
 	}
 }

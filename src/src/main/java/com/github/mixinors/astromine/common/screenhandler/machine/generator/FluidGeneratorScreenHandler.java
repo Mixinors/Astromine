@@ -43,6 +43,11 @@ public class FluidGeneratorScreenHandler extends ExtendedBlockEntityScreenHandle
 	}
 	
 	@Override
+	public int getDefaultFluidSlotForBar() {
+		return FluidGeneratorBlockEntity.INPUT_SLOT;
+	}
+	
+	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		

@@ -45,6 +45,11 @@ public class SolidifierScreenHandler extends ExtendedBlockEntityScreenHandler {
 	}
 	
 	@Override
+	public int getDefaultFluidSlotForBar() {
+		return SolidifierBlockEntity.FLUID_INPUT_SLOT;
+	}
+	
+	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		

@@ -73,6 +73,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 	
 	public static final float PAD_2 = 2.0F;
 	public static final float PAD_3 = 3.0F;
+	public static final float PAD_4 = 4.0F;
 	public static final float PAD_5 = 5.0F;
 	public static final float PAD_7 = 7.0F;
 	public static final float PAD_8 = 8.0F;
@@ -114,11 +115,15 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 		return new Size(0.0F, 0.0F);
 	}
 	
+	public int getDefaultFluidSlotForBar() {
+		return 0;
+	}
+	
 	@Override
 	public void initialize(int width, int height) {
 		var state = blockEntity.getCachedState();
 		var block = state.getBlock();
-		var item = block.asItem();
+		var symbol = block.asItem();
 		
 		var player = getPlayer();
 		var inventory = player.getInventory();
@@ -131,7 +136,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 		
 		add(tabs);
 		
-		tab = (TabWidget.TabWidgetCollection) tabs.addTab(item, () -> Collections.singletonList(new TranslatableText(block.getTranslationKey())));
+		tab = (TabWidget.TabWidgetCollection) tabs.addTab(symbol, () -> Collections.singletonList(new TranslatableText(block.getTranslationKey())));
 		tab.setPosition(new Position(tabs, 0.0F, PAD_25 + PAD_7));
 		tab.setSize(new Size(TABS_WIDTH, TABS_HEIGHT));
 		
@@ -219,7 +224,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 			}
 			
 			fluidBar.setSize(new Size(BAR_WIDTH, BAR_HEIGHT));
-			fluidBar.setStorage(blockEntity.getFluidStorage().getStorage(0));
+			fluidBar.setStorage(blockEntity.getFluidStorage().getStorage(getDefaultFluidSlotForBar()));
 			fluidBar.setSmooth(false);
 			
 			tab.add(fluidBar);

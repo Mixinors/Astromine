@@ -46,6 +46,11 @@ public class MelterScreenHandler extends ExtendedBlockEntityScreenHandler {
 	}
 	
 	@Override
+	public int getDefaultFluidSlotForBar() {
+		return MelterBlockEntity.FLUID_OUTPUT_SLOT;
+	}
+	
+	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		

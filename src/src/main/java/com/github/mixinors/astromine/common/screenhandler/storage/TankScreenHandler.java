@@ -44,12 +44,13 @@ public class TankScreenHandler extends ExtendedBlockEntityScreenHandler {
 	
 	public TankScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.TANK, syncId, player, position);
+		
 		tank = (TankBlockEntity) blockEntity;
 	}
 	
-	public TankScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
-		super(type, syncId, player, position);
-		tank = (TankBlockEntity) blockEntity;
+	@Override
+	public int getDefaultFluidSlotForBar() {
+		return TankBlockEntity.FLUID_INPUT_SLOT;
 	}
 	
 	@Override

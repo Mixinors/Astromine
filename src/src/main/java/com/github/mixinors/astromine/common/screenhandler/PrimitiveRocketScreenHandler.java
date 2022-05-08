@@ -48,12 +48,6 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 		return new ItemStack(AMItems.PRIMITIVE_ROCKET.get());
 	}
 	
-	
-	@Override
-	public boolean isClient() {
-		return getClient();
-	}
-	
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
@@ -64,7 +58,7 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 			return null;
 		});
 		
-		launchButtonWidget.setPosition(new Position(mainTab, 3.0F + 4.0F, 11.0F, 0.0F));
+		launchButtonWidget.setPosition(new Position(tab, 3.0F + 4.0F, 11.0F, 0.0F));
 		launchButtonWidget.setSize(new Size(48.0F, 18.0F, 0.0F));
 		launchButtonWidget.setLabel(new TranslatableText("text.astromine.rocket.launch"));
 		launchButtonWidget.setDisabled(() -> entity.getDataTracker().get(RocketEntity.IS_RUNNING) || (entity.getFluidStorage().getStorage(0).isResourceBlank() && entity.getFluidStorage().getStorage(1).isResourceBlank()));
@@ -75,7 +69,7 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 			return null;
 		});
 		
-		abortButtonWidget.setPosition(new Position(mainTab, 3.0F + 4.0F, 11.0F + fluidBar.getHeight() - 18.0F, 0.0F));
+		abortButtonWidget.setPosition(new Position(tab, 3.0F + 4.0F, 11.0F + fluidBar.getHeight() - 18.0F, 0.0F));
 		abortButtonWidget.setSize(new Size(48.0F, 18.0F, 0.0F));
 		abortButtonWidget.setLabel(new TranslatableText("text.astromine.rocket.destroy").formatted(Formatting.RED));
 		
@@ -103,15 +97,15 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 		secondOutput.setPosition(new Position(secondFluidBar, -18.0F - 3.0F, secondFluidBar.getHeight() - 18.0F, 0.0F));
 		secondOutput.setSize(new Size(18.0F, 18.0F, 0.0F));
 		
-		mainTab.add(launchButtonWidget);
-		mainTab.add(abortButtonWidget);
+		tab.add(launchButtonWidget);
+		tab.add(abortButtonWidget);
 		
-		mainTab.add(secondFluidBar);
+		tab.add(secondFluidBar);
 		
-		mainTab.add(firstInput);
-		mainTab.add(firstOutput);
+		tab.add(firstInput);
+		tab.add(firstOutput);
 		
-		mainTab.add(secondInput);
-		mainTab.add(secondOutput);
+		tab.add(secondInput);
+		tab.add(secondOutput);
 	}
 }

@@ -44,6 +44,11 @@ public class ElectrolyzerScreenHandler extends ExtendedBlockEntityScreenHandler 
 	}
 	
 	@Override
+	public int getDefaultFluidSlotForBar() {
+		return ElectrolyzerBlockEntity.INPUT_SLOT;
+	}
+	
+	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		
