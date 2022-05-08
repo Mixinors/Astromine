@@ -5,34 +5,49 @@ buildscript {
 }
 
 plugins {
-    id 'maven-publish'
-    id 'dev.architectury.loom' version '0.11.0-SNAPSHOT'
-    id 'com.matthewprenger.cursegradle' version '1.4.0'
-    id "org.cadixdev.licenser" version "0.6.1"
+	// Maven Publish
+	id "maven-publish"
+
+	// Loom
+	id "dev.architectury.loom"
+
+	// CurseGradle
+	id "com.matthewprenger.cursegradle"
+
+	// Licenser
+	id "org.cadixdev.licenser"
+
+	// Kotlin
+	id "org.jetbrains.kotlin.jvm"
+
+	// KotlinX Serialization
+	id "org.jetbrains.kotlin.plugin.serialization"
 }
 
 apply from: 'dependencies.gradle'
 
 allprojects {
-    gradle.projectsEvaluated {
-        tasks.withType(JavaCompile) {
-            options.compilerArgs << "-Xmaxerrs" << "4096"
-        }
-    }
+	gradle.projectsEvaluated {
+		tasks.withType(JavaCompile) {
+			options.compilerArgs << "-Xmaxerrs" << "4096"
+		}
+	}
 
-    apply plugin: 'maven-publish'
-    apply plugin: 'dev.architectury.loom'
-    apply plugin: 'com.matthewprenger.cursegradle'
+	apply plugin: "maven-publish"
+	apply plugin: "dev.architectury.loom"
+	apply plugin: "com.matthewprenger.cursegradle"
+	apply plugin: "org.jetbrains.kotlin.jvm"
+	apply plugin: "org.jetbrains.kotlin.plugin.serialization"
 
-    ext {
-        isSnapshot = System.getenv("PR_NUM") != null || true
-    }
+	ext {
+		isSnapshot = System.getenv("PR_NUM") != null || true
+	}
 
-    def runNumber = System.getenv("GITHUB_RUN_NUMBER") ?: "9999"
-    archivesBaseName = project.modName
+	def runNumber = System.getenv("GITHUB_RUN_NUMBER") ?: "9999"
+	archivesBaseName = project.modName
 
-    if (isSnapshot) {
-        group = rootProject.modGroup + "-snapshot"
+	if (isSnapshot) {
+		group = rootProject.modGroup + "-snapshot"
         version = rootProject.modVersion + '-alpha.' + runNumber + "+" + project.minecraftVersion
     } else {
         group = project.modGroup

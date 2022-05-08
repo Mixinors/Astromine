@@ -53,6 +53,35 @@ import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenHandler {
+	public static final float SLOT_WIDTH = 18.0F;
+	public static final float SLOT_HEIGHT = 18.0F;
+	
+	public static final float BAR_HEIGHT = 48.0F;
+	public static final float BAR_WIDTH = 24.0F;
+	
+	public static final float REDSTONE_WIDTH = 20.0F;
+	public static final float REDSTONE_HEIGHT = 19.0F;
+	
+	public static final float TABS_WIDTH = 176.0F;
+	public static final float TABS_HEIGHT = 188.0F;
+	
+	public static final float ARROW_WIDTH = 22.0F;
+	public static final float ARROW_HEIGHT = 16.0F;
+	
+	public static final float FILTER_WIDTH = 8.0F;
+	public static final float FILTER_HEIGHT = 8.0F;
+	
+	public static final float PAD_2 = 2.0F;
+	public static final float PAD_3 = 3.0F;
+	public static final float PAD_5 = 5.0F;
+	public static final float PAD_7 = 7.0F;
+	public static final float PAD_8 = 8.0F;
+	public static final float PAD_10 = 10.0F;
+	public static final float PAD_11 = 11.0F;
+	public static final float PAD_25 = 25.0F;
+	public static final float PAD_38 = 38.0F;
+	public static final float PAD_68 = 68.0F;
+	
 	protected final ExtendedBlockEntity blockEntity;
 	
 	protected EnergyBarWidget energyBar = null;
@@ -62,7 +91,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 	
 	protected TabWidget tabs;
 	
-	protected TabWidget.TabWidgetCollection mainTab;
+	protected TabWidget.TabWidgetCollection tab;
 	
 	public ExtendedBlockEntityScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
@@ -81,63 +110,57 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 		return blockEntity;
 	}
 	
-	public Position getTabsPosition(int width, int height) {
-		return new Position(width / 2 - tabs.getWidth() / 2, height / 2 - tabs.getHeight() / 2, 0.0F);
-	}
-	
-	public Size getTabsSize(int width, int height) {
-		return new Size(176.0F, 188.0F + getTabWidgetExtendedHeight(), 0.0F);
-	}
-	
-	public int getTabWidgetExtendedHeight() {
-		return 0;
+	public Size getTabsSizeExtension() {
+		return new Size(0.0F, 0.0F);
 	}
 	
 	@Override
 	public void initialize(int width, int height) {
+		var state = blockEntity.getCachedState();
+		var block = state.getBlock();
+		var item = block.asItem();
+		
+		var player = getPlayer();
+		var inventory = player.getInventory();
+		
+		var tabsExtension = getTabsSizeExtension();
+		
 		tabs = new TabWidget();
-		tabs.setSize(getTabsSize(width, height));
-		tabs.setPosition(getTabsPosition(width, height));
+		tabs.setSize(new Size(TABS_WIDTH + tabsExtension.getWidth(), TABS_HEIGHT + tabsExtension.getHeight()));
+		tabs.setPosition(new Position(width / 2.0F - tabs.getWidth() / 2.0F, height / 2.0F - tabs.getHeight() / 2.0F));
 		
 		add(tabs);
 		
-		mainTab = (TabWidget.TabWidgetCollection) tabs.addTab(blockEntity.getCachedState().getBlock().asItem(), () -> Collections.singletonList(new TranslatableText(blockEntity.getCachedState().getBlock().getTranslationKey())));
-		mainTab.setPosition(new Position(tabs, 0, 25.0F + 7.0F, 0.0F));
-		mainTab.setSize(new Size(176.0F, 184.0F, 0.0F));
+		tab = (TabWidget.TabWidgetCollection) tabs.addTab(item, () -> Collections.singletonList(new TranslatableText(block.getTranslationKey())));
+		tab.setPosition(new Position(tabs, 0.0F, PAD_25 + PAD_7));
+		tab.setSize(new Size(TABS_WIDTH, TABS_HEIGHT));
 		
 		var title = new TextWidget();
-		title.setPosition(new Position(mainTab, 8, 0, 0.0F));
-		title.setText(new TranslatableText(blockEntity.getCachedState().getBlock().asItem().getTranslationKey()));
-		title.setColor(4210752);
-		mainTab.add(title);
+		title.setPosition(new Position(tab, PAD_8, 0.0F));
+		title.setText(new TranslatableText(block.getTranslationKey()));
+		title.setColor(0x404040);
 		
-		var invPos = new Position(tabs,
-				7.0F + (tabs.getWidth() / 2.0F - ((9.0F * 18.0F) / 2.0F) - 7.0F),
-				25.0F + 7.0F + (184.0F - 18.0F - 18.0F - (18.0F * 4.0F) - 3.0F + getTabWidgetExtendedHeight()),
-				0.0F
+		tab.add(title);
+		
+		var inventoryPos = new Position(tabs,
+				PAD_7 + (tabs.getWidth() / 2.0F - ((9.0F * SLOT_WIDTH) / 2.0F) - PAD_7),
+				PAD_8 + PAD_25 + PAD_7 + (TABS_WIDTH - SLOT_WIDTH - SLOT_WIDTH - (SLOT_WIDTH * 4.0F) - PAD_3 + tabsExtension.getHeight())
 		);
 		
-		var invTitle = new TextWidget();
-		invTitle.setPosition(new Position(invPos, 0.0F, -10.0F, 0.0F));
-		invTitle.setText(getPlayer().getInventory().getName());
-		invTitle.setColor(4210752);
-		mainTab.add(invTitle);
-		playerSlots = SlotUtils.addPlayerInventory(invPos, new Size(18.0F, 18.0F, 0.0F), mainTab, getPlayer().getInventory());
+		var inventoryTitle = new TextWidget();
+		inventoryTitle.setPosition(new Position(inventoryPos, 0.0F, -PAD_10));
+		inventoryTitle.setText(getPlayer().getInventory().getName());
+		inventoryTitle.setColor(0x404040);
 		
-		var rotation = new Direction[] { Direction.NORTH };
-		var block = blockEntity.getCachedState().getBlock();
+		tab.add(inventoryTitle);
 		
-		if (block instanceof HorizontalFacingBlockWithEntity) {
-			var property = ((HorizontalFacingBlockWithEntity) block).getDirectionProperty();
-			
-			if (property != null) {
-				rotation[0] = blockEntity.getCachedState().get(property);
-			}
-		}
+		playerSlots = SlotUtils.addPlayerInventory(inventoryPos, new Size(SLOT_WIDTH, SLOT_HEIGHT), tab, inventory);
+		
+		var rotation = block instanceof HorizontalFacingBlockWithEntity blockWithEntity ? (state.get(blockWithEntity.getDirectionProperty())) : Direction.NORTH;
 		
 		var redstoneWidget = new RedstoneControlWidget();
-		redstoneWidget.setPosition(new Position(tabs, tabs.getWidth() - 20.0F, 0.0F, 0.0F));
-		redstoneWidget.setSize(new Size(20.0F, 19.0F, 0.0F));
+		redstoneWidget.setPosition(new Position(tabs, tabs.getWidth() - REDSTONE_WIDTH, 0.0F));
+		redstoneWidget.setSize(new Size(REDSTONE_WIDTH, REDSTONE_HEIGHT));
 		redstoneWidget.setBlockEntity(blockEntity);
 		
 		add(redstoneWidget);
@@ -145,23 +168,23 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 		var tabAdder = (BiConsumer<StorageSiding[], StorageType>) (sidings, type) -> {
 			var tabCollection = (TabWidget.TabWidgetCollection) tabs.addTab(type.getItem(), () -> Collections.singletonList(type.getName()));
 			
-			WidgetUtils.createStorageSiding(
-					new Position(tabs, tabs.getWidth() / 2.0F - 38.0F, getTabWidgetExtendedHeight() / 2.0F, 0.0F), blockEntity, sidings, type, rotation[0]
-			).forEach(tabCollection::add);
+			for (var widget : WidgetUtils.createStorageSiding(new Position(tabs, tabs.getWidth() / 2.0F - PAD_38, tabsExtension.getWidth() / 2.0F), blockEntity, type, rotation)) {
+				tabCollection.add(widget);
+			}
 			
 			var invTabTitle = new TextWidget();
-			invTabTitle.setPosition(new Position(invPos, 0.0F, -10.0F, 0.0F));
+			invTabTitle.setPosition(new Position(inventoryPos, 0.0F, -PAD_10));
 			invTabTitle.setText(getPlayer().getInventory().getName());
-			invTabTitle.setColor(4210752);
+			invTabTitle.setColor(0x404040);
 			
 			tabCollection.add(invTabTitle);
 			
-			playerSlots.addAll(SlotUtils.addPlayerInventory(invPos, new Size(18.0F, 18.0F, 0.0F), tabCollection, getPlayer().getInventory()));
+			playerSlots.addAll(SlotUtils.addPlayerInventory(inventoryPos, new Size(SLOT_WIDTH, SLOT_HEIGHT), tabCollection, inventory));
 			
 			var tabTitle = new TextWidget();
-			tabTitle.setPosition(new Position(mainTab, 8.0F, 0.0F, 0.0F));
+			tabTitle.setPosition(new Position(tab, PAD_8, 0.0F));
 			tabTitle.setText(type.getName());
-			tabTitle.setColor(4210752);
+			tabTitle.setColor(0x404040);
 			
 			tabCollection.add(tabTitle);
 		};
@@ -176,30 +199,30 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 		
 		if (blockEntity.hasEnergyStorage()) {
 			energyBar = new EnergyBarWidget();
-			energyBar.setPosition(new Position(mainTab, 7.0F, 11.0F, 0.0F));
-			energyBar.setSize(new Size(24.0F, 48.0F, 0.0F));
+			energyBar.setPosition(new Position(tab, PAD_7, PAD_11));
+			energyBar.setSize(new Size(BAR_WIDTH, BAR_HEIGHT));
 			energyBar.setStorage(blockEntity.getEnergyStorage());
 			energyBar.setSmooth(false);
 			energyBar.setCurrent(() -> (float) blockEntity.getEnergyStorage().getAmount());
 			energyBar.setMaximum(() -> (float) blockEntity.getEnergyStorage().getCapacity());
 			
-			mainTab.add(energyBar);
+			tab.add(energyBar);
 		}
 		
 		if (blockEntity.hasFluidStorage()) {
 			fluidBar = new FluidBarWidget();
 			
 			if (energyBar == null) {
-				fluidBar.setPosition(new Position(mainTab, 7.0F, 11.0F, 0.0F));
+				fluidBar.setPosition(new Position(tab, PAD_7, PAD_11));
 			} else {
-				fluidBar.setPosition(new Position(energyBar, energyBar.getWidth() + 7.0F, 0.0F, 0.0F));
+				fluidBar.setPosition(new Position(energyBar, energyBar.getWidth() + PAD_7, 0.0F));
 			}
 			
-			fluidBar.setSize(new Size(24.0F, 48.0F, 0.0F));
+			fluidBar.setSize(new Size(BAR_WIDTH, BAR_HEIGHT));
 			fluidBar.setStorage(blockEntity.getFluidStorage().getStorage(0));
 			fluidBar.setSmooth(false);
 			
-			mainTab.add(fluidBar);
+			tab.add(fluidBar);
 		}
 	}
 }

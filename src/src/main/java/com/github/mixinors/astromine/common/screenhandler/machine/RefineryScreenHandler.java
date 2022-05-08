@@ -47,19 +47,19 @@ public class RefineryScreenHandler extends ExtendedBlockEntityScreenHandler {
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		
+		var arrow = new HorizontalArrowWidget();
+		arrow.setPosition(new Position(fluidBar, BAR_WIDTH + PAD_7, BAR_HEIGHT / 2.0F - PAD_8));
+		arrow.setSize(new Size(ARROW_WIDTH, ARROW_HEIGHT));
+		arrow.setMaximum(() -> (float) refinery.limit);
+		arrow.setCurrent(() -> (float) refinery.progress);
+		
 		var outputFluidBar = new FluidBarWidget();
+		outputFluidBar.setPosition(new Position(arrow, ARROW_WIDTH + PAD_7, -(BAR_HEIGHT / 2.0F - ARROW_HEIGHT / 2.0F)));
 		outputFluidBar.setSize(new Size(fluidBar));
-		outputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(1));
+		outputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(RefineryBlockEntity.OUTPUT_SLOT));
 		outputFluidBar.setSmooth(false);
 		
-		var arrow = new HorizontalArrowWidget();
-		arrow.setPosition(new Position(fluidBar, fluidBar.getWidth() + 7.0F, fluidBar.getHeight() / 2.0F - 8.0F));
-		arrow.setSize(new Size(22.0F, 16.0F));
-		arrow.setLimitSupplier(() -> refinery.limit);
-		arrow.setProgressSupplier(() -> (int) refinery.progress);
-		
-		outputFluidBar.setPosition(new Position(arrow.getPosition(), 7.0F + fluidBar.getWidth(), -fluidBar.getHeight() / 2.0F + arrow.getHeight() / 2.0F));
-		mainTab.add(outputFluidBar);
-		mainTab.add(arrow);
+		tab.add(outputFluidBar);
+		tab.add(arrow);
 	}
 }

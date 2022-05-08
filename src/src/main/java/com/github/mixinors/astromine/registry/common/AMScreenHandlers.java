@@ -88,18 +88,6 @@ public class AMScreenHandlers {
 		return new CapacitorScreenHandler(syncId, inventory.player, buffer.readBlockPos());
 	}));
 	
-	public static final RegistrySupplier<ScreenHandlerType<CreativeCapacitorScreenHandler>> CREATIVE_CAPACITOR = registerExtended(AMCommon.id("creative_capacitor"), ((syncId, inventory, buffer) -> {
-		return new CreativeCapacitorScreenHandler(syncId, inventory.player, buffer.readBlockPos());
-	}));
-	
-	public static final RegistrySupplier<ScreenHandlerType<CreativeTankScreenHandler>> CREATIVE_TANK = registerExtended(AMCommon.id("creative_tank"), ((syncId, inventory, buffer) -> {
-		return new CreativeTankScreenHandler(syncId, inventory.player, buffer.readBlockPos());
-	}));
-	
-	public static final RegistrySupplier<ScreenHandlerType<CreativeBufferScreenHandler>> CREATIVE_BUFFER = registerExtended(AMCommon.id("creative_buffer"), ((syncId, inventory, buffer) -> {
-		return new CreativeBufferScreenHandler(syncId, inventory.player, buffer.readBlockPos());
-	}));
-	
 	public static final RegistrySupplier<ScreenHandlerType<BufferScreenHandler>> BUFFER = registerExtended(AMCommon.id("buffer"), ((syncId, inventory, buffer) -> {
 		return new BufferScreenHandler(syncId, inventory.player, buffer.readBlockPos());
 	}));

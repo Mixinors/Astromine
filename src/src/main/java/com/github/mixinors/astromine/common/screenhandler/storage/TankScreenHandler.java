@@ -32,6 +32,7 @@ import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
+import kotlin.Unit;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
@@ -55,38 +56,34 @@ public class TankScreenHandler extends ExtendedBlockEntityScreenHandler {
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		
-		fluidBar.setPosition(new Position(width / 2.0F - fluidBar.getWidth() / 2F, fluidBar.getY()));
+		fluidBar.setPosition(new Position(width / 2.0F - BAR_WIDTH / 2.0F, fluidBar.getY()));
 		
-		var unload = new SlotWidget(0, blockEntity.getItemStorage());
-		unload.setPosition(new Position(fluidBar, -18 - 3, 0));
-		unload.setSize(new Size(18, 18));
+		var unload = new SlotWidget(TankBlockEntity.ITEM_INPUT_SLOT, tank.getItemStorage());
+		unload.setPosition(new Position(fluidBar, -SLOT_WIDTH - PAD_3, 0));
+		unload.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
-		var buffer = new SlotWidget(1, blockEntity.getItemStorage());
-		buffer.setPosition(new Position(unload, -18 - 3, 18 - 4F));
-		buffer.setSize(new Size(18.0F, 18.0F));
+		var buffer = new SlotWidget(TankBlockEntity.ITEM_OUTPUT_SLOT_1, tank.getItemStorage());
+		buffer.setPosition(new Position(unload, -SLOT_WIDTH - PAD_3, SLOT_HEIGHT - 4.0F)); // 4.0F centers the buffer slot against the two other slots.
+		buffer.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
-		var load = new SlotWidget(2, blockEntity.getItemStorage());
-		load.setPosition(new Position(fluidBar, -18 - 3, fluidBar.getHeight() - 18));
-		load.setSize(new Size(18.0F, 18.0F));
-		
-		var leftArrow = new HorizontalArrowWidget();
-		leftArrow.setPosition(new Position(unload, 28, 0));
-		leftArrow.setSize(new Size(22, 16));
-		
-		var rightArrow = new HorizontalArrowWidget();
-		rightArrow.setPosition(new Position(load, -34, 0));
-		rightArrow.setSize(new Size(22, 16));
+		var load = new SlotWidget(TankBlockEntity.ITEM_OUTPUT_SLOT_2, tank.getItemStorage());
+		load.setPosition(new Position(fluidBar, -SLOT_WIDTH - PAD_3, BAR_HEIGHT - SLOT_HEIGHT));
+		load.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
 		var filter = new FluidFilterWidget();
-		filter.setPosition(new Position(unload, 5F, 18F + 2F));
-		filter.setSize(new Size(8, 8));
-		filter.setFluidConsumer(tank::setFilter);
-		filter.setFluidSupplier(() -> tank.getFilter());
+		filter.setPosition(new Position(unload, PAD_3, SLOT_WIDTH + 2.0F)); // 2.0F centers the filter against the upper and lower slots.
+		filter.setSize(new Size(FILTER_WIDTH, FILTER_HEIGHT));
+		filter.setFluidVariantConsumer((variant) -> {
+			tank.setFilter(variant);
+			
+			return Unit.INSTANCE;
+		});
+		filter.setFluidVariantSupplier(tank::getFilter);
 		
-		mainTab.add(unload);
-		mainTab.add(buffer);
-		mainTab.add(load);
+		tab.add(unload);
+		tab.add(buffer);
+		tab.add(load);
 		
-		mainTab.add(filter);
+		tab.add(filter);
 	}
 }

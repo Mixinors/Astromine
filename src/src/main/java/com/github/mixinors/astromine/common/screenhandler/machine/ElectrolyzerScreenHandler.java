@@ -47,27 +47,26 @@ public class ElectrolyzerScreenHandler extends ExtendedBlockEntityScreenHandler 
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		
+		var arrow = new HorizontalArrowWidget();
+		arrow.setPosition(new Position(fluidBar, BAR_WIDTH + PAD_7, BAR_HEIGHT / 2.0F - PAD_8));
+		arrow.setSize(new Size(ARROW_WIDTH, ARROW_HEIGHT));
+		arrow.setMaximum(() -> (float) electrolyzer.limit);
+		arrow.setCurrent(() -> (float) electrolyzer.progress);
+		
 		var firstOutputFluidBar = new FluidBarWidget();
-		firstOutputFluidBar.setSize(new Size(fluidBar));
-		firstOutputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(1));
+		firstOutputFluidBar.setPosition(new Position(arrow, ARROW_WIDTH + PAD_7, -(BAR_HEIGHT / 2.0F - ARROW_HEIGHT / 2.0F)));
+		firstOutputFluidBar.setSize(new Size(BAR_WIDTH, BAR_HEIGHT));
+		firstOutputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(ElectrolyzerBlockEntity.OUTPUT_SLOT_1));
 		firstOutputFluidBar.setSmooth(false);
 		
 		var secondOutputFluidBar = new FluidBarWidget();
+		secondOutputFluidBar.setPosition(new Position(arrow, ARROW_WIDTH + PAD_7 + BAR_WIDTH + PAD_7, -(BAR_HEIGHT / 2.0F - ARROW_HEIGHT / 2.0F)));
 		secondOutputFluidBar.setSize(new Size(fluidBar));
-		secondOutputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(2));
+		secondOutputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(ElectrolyzerBlockEntity.OUTPUT_SLOT_2));
 		secondOutputFluidBar.setSmooth(false);
 		
-		var arrow = new HorizontalArrowWidget();
-		arrow.setPosition(new Position(fluidBar, fluidBar.getWidth() + 7.0F, fluidBar.getHeight() / 2.0F - 8.0F));
-		arrow.setSize(new Size(22.0F, 16.0F));
-		arrow.setLimitSupplier(() -> electrolyzer.limit);
-		arrow.setProgressSupplier(() -> (int) electrolyzer.progress);
-		
-		firstOutputFluidBar.setPosition(new Position(arrow.getPosition(), 7.0F + fluidBar.getWidth(), -fluidBar.getHeight() / 2.0F + arrow.getHeight() / 2.0F));
-		secondOutputFluidBar.setPosition(new Position(arrow.getPosition(), 7.0F + fluidBar.getWidth() + 7.0F + fluidBar.getWidth(), -fluidBar.getHeight() / 2.0F + arrow.getHeight() / 2.0F));
-		
-		mainTab.add(firstOutputFluidBar);
-		mainTab.add(secondOutputFluidBar);
-		mainTab.add(arrow);
+		tab.add(firstOutputFluidBar);
+		tab.add(secondOutputFluidBar);
+		tab.add(arrow);
 	}
 }

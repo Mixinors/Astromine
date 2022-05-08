@@ -49,14 +49,14 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 	public double progress = 0;
 	public int limit = 100;
 	
-	private static final int INPUT_SLOT_1 = 0;
-	private static final int INPUT_SLOT_2 = 1;
+	public static final int INPUT_SLOT_1 = 0;
+	public static final int INPUT_SLOT_2 = 1;
 	
-	private static final int OUTPUT_SLOT = 2;
+	public static final int OUTPUT_SLOT = 2;
 	
-	private static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT_1, INPUT_SLOT_2 };
+	public static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT_1, INPUT_SLOT_2 };
 	
-	private static final int[] EXTRACT_SLOTS = new int[] { OUTPUT_SLOT };
+	public static final int[] EXTRACT_SLOTS = new int[] { OUTPUT_SLOT };
 	
 	private Optional<AlloySmeltingRecipe> optionalRecipe = Optional.empty();
 	

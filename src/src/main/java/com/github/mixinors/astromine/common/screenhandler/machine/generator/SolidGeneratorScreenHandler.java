@@ -47,19 +47,19 @@ public class SolidGeneratorScreenHandler extends ExtendedBlockEntityScreenHandle
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		
+		var input = new SlotWidget(SolidGeneratorBlockEntity.INPUT_SLOT, generator.getItemStorage());
+		input.setPosition(new Position(tab, PAD_7, PAD_11 + (BAR_HEIGHT / 2.0F) - (SLOT_HEIGHT / 2.0F)));
+		input.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
+		
 		var arrow = new HorizontalArrowWidget();
-		arrow.setPosition(new Position(energyBar, energyBar.getWidth() + 3.0F, energyBar.getHeight() / 2.0F - 8.0F));
-		arrow.setSize(new Size(0.0F, 16.0F));
-		arrow.setLimitSupplier(() -> generator.limit);
-		arrow.setProgressSupplier(() -> (int) generator.progress);
+		arrow.setPosition(new Position(input, SLOT_WIDTH + PAD_7, (SLOT_HEIGHT - ARROW_HEIGHT) / 2.0F));
+		arrow.setSize(new Size(ARROW_WIDTH, ARROW_HEIGHT));
+		arrow.setMaximum(() -> (float) generator.limit);
+		arrow.setCurrent(() -> (float) generator.progress);
 		
-		var input = new SlotWidget(0, blockEntity.getItemStorage());
-		input.setPosition(new Position(arrow, -26.0F, 0.0F));
-		input.setSize(new Size(18.0F, 18.0F));
+		energyBar.setPosition(new Position(arrow, ARROW_WIDTH + PAD_7, -(BAR_HEIGHT / 2.0F - ARROW_HEIGHT / 2.0F)));
 		
-		energyBar.setPosition(new Position(mainTab, 68.0F, 11.0F));
-		
-		mainTab.add(input);
-		mainTab.add(arrow);
+		tab.add(input);
+		tab.add(arrow);
 	}
 }

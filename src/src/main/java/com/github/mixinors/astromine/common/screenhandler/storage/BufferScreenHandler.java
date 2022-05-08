@@ -41,21 +41,15 @@ public class BufferScreenHandler extends ExtendedBlockEntityScreenHandler {
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		
-		var slotWidth = 9 * 18;
-		var slotHeight = 6 * 18;
+		var slotList = new SlotListWidget(blockEntity.getItemStorage(), 9 * 18, 6 * 18, 0);
+		slotList.setPosition(new Position(tab, PAD_7, PAD_10));
+		slotList.setSize(new Size(SLOT_WIDTH * 9.0F, SLOT_HEIGHT * 6.0F));
 		
-		var leftPadding = 7.0F;
-		var topPadding = 10.0F;
-		
-		var slotList = new SlotListWidget(blockEntity.getItemStorage(), slotWidth, slotHeight, 0);
-		slotList.setPosition(new Position(mainTab.getX() + leftPadding, mainTab.getY() + topPadding));
-		slotList.setSize(new Size(slotWidth, slotHeight));
-		
-		mainTab.add(slotList);
+		tab.add(slotList);
 	}
 	
 	@Override
-	public int getTabWidgetExtendedHeight() {
-		return 58;
+	public Size getTabsSizeExtension() {
+		return new Size(0.0F, 58.0F);
 	}
 }

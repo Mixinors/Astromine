@@ -47,14 +47,14 @@ public abstract class ElectrolyzerBlockEntity extends ExtendedBlockEntity implem
 	public double progress = 0;
 	public int limit = 100;
 	
-	private static final int INPUT_SLOT = 0;
+	public static final int INPUT_SLOT = 0;
 	
-	private static final int OUTPUT_SLOT_1 = 1;
-	private static final int OUTPUT_SLOT_2 = 2;
+	public static final int OUTPUT_SLOT_1 = 1;
+	public static final int OUTPUT_SLOT_2 = 2;
 	
-	private static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
+	public static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
 	
-	private static final int[] EXTRACT_SLOTS = new int[] { OUTPUT_SLOT_1, OUTPUT_SLOT_2 };
+	public static final int[] EXTRACT_SLOTS = new int[] { OUTPUT_SLOT_1, OUTPUT_SLOT_2 };
 	
 	private Optional<ElectrolyzingRecipe> optionalRecipe = Optional.empty();
 	

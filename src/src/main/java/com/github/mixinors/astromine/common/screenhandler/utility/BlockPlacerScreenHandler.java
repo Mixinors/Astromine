@@ -42,9 +42,9 @@ public class BlockPlacerScreenHandler extends ExtendedBlockEntityScreenHandler {
 		super.initialize(width, height);
 		
 		var slot = new SlotWidget(0, blockEntity.getItemStorage());
-		slot.setPosition(new Position(mainTab, mainTab.getWidth() / 2.0F - 9.0F, 26.0F));
-		slot.setSize(new Size(18.0F, 18.0F));
+		slot.setPosition(new Position(energyBar, (TABS_WIDTH / 2.0F - SLOT_WIDTH / 2.0F) - SLOT_WIDTH / 2.0F, BAR_HEIGHT / 2.0F - SLOT_HEIGHT / 2.0F));
+		slot.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
-		mainTab.add(slot);
+		tab.add(slot);
 	}
 }

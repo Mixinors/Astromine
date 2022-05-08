@@ -36,36 +36,34 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 public class ElectricFurnaceScreenHandler extends ExtendedBlockEntityScreenHandler {
-	private final ElectricFurnaceBlockEntity smelter;
+	private final ElectricFurnaceBlockEntity furnace;
 	
 	public ElectricFurnaceScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.ELECTRIC_FURNACE, syncId, player, position);
 		
-		smelter = (ElectricFurnaceBlockEntity) blockEntity;
+		furnace = (ElectricFurnaceBlockEntity) blockEntity;
 	}
 	
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		
-		var input = new SlotWidget(1, smelter.getItemStorage());
-		input.setSize(new Size(18.0F, 18.0F));
-		
-		var output = new SlotWidget(0, smelter.getItemStorage(), ExtractionSlot::new);
-		output.setSize(new Size(18.0F, 18.0F));
-		
-		output.setPosition(new Position(energyBar, 102, 15));
+		var input = new SlotWidget(ElectricFurnaceBlockEntity.INPUT_SLOT, furnace.getItemStorage());
+		input.setPosition(new Position(energyBar, (TABS_WIDTH / 2.0F - (SLOT_WIDTH + PAD_7 + ARROW_WIDTH + PAD_7 + SLOT_WIDTH) / 2.0F - SLOT_WIDTH / 2.0F), BAR_HEIGHT / 2.0F - SLOT_HEIGHT / 2.0F));
+		input.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
 		var arrow = new HorizontalArrowWidget();
-		arrow.setPosition(new Position(output, -31.0F, 0.0F));
-		arrow.setSize(new Size(22.0F, 16.0F));
-		arrow.setLimitSupplier(() -> smelter.limit);
-		arrow.setProgressSupplier(() -> (int) smelter.progress);
+		arrow.setPosition(new Position(input, SLOT_WIDTH + PAD_7, (SLOT_HEIGHT - ARROW_HEIGHT) / 2.0F - 0.5F)); // 0.5F centers the arrow against the input slot.
+		arrow.setSize(new Size(ARROW_WIDTH, ARROW_HEIGHT));
+		arrow.setMaximum(() -> (float) furnace.limit);
+		arrow.setCurrent(() -> (float) furnace.progress);
 		
-		input.setPosition(new Position(arrow, -27.0F, 0.0F));
+		var output = new SlotWidget(ElectricFurnaceBlockEntity.OUTPUT_SLOT, furnace.getItemStorage(), ExtractionSlot::new);
+		output.setPosition(new Position(arrow, ARROW_WIDTH + PAD_7, (ARROW_HEIGHT - SLOT_HEIGHT) / 2.0F + 1.0F)); // 1.0F centers the slot against the arrow.
+		output.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
-		mainTab.add(input);
-		mainTab.add(output);
-		mainTab.add(arrow);
+		tab.add(input);
+		tab.add(output);
+		tab.add(arrow);
 	}
 }

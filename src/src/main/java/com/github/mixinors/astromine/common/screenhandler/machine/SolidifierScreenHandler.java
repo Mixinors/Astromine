@@ -48,19 +48,17 @@ public class SolidifierScreenHandler extends ExtendedBlockEntityScreenHandler {
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		
-		var output = new SlotWidget(0, solidifier.getItemStorage(), ExtractionSlot::new);
-		output.setSize(new Size(18.0F, 18.0F));
-		output.setPosition(new Position(fluidBar, 102.0F, 15.0F));
-		
 		var arrow = new HorizontalArrowWidget();
-		arrow.setPosition(new Position(output, -31.0F, 0.0F));
-		arrow.setSize(new Size(22.0F, 16.0F));
-		arrow.setLimitSupplier(() -> solidifier.limit);
-		arrow.setProgressSupplier(() -> (int) solidifier.progress);
+		arrow.setPosition(new Position(fluidBar, BAR_WIDTH + PAD_7, BAR_HEIGHT / 2.0F - PAD_8));
+		arrow.setSize(new Size(ARROW_WIDTH, ARROW_HEIGHT));
+		arrow.setMaximum(() -> (float) solidifier.limit);
+		arrow.setCurrent(() -> (float) solidifier.progress);
 		
-		fluidBar.setPosition(new Position(arrow, -27.0F - 6.0F, -fluidBar.getHeight() / 2.0F + output.getHeight() / 2.0F));
+		var output = new SlotWidget(SolidifierBlockEntity.ITEM_OUTPUT_SLOT, solidifier.getItemStorage(), ExtractionSlot::new);
+		output.setPosition(new Position(arrow, ARROW_WIDTH + PAD_7, (ARROW_HEIGHT - SLOT_HEIGHT) / 2.0F + 1.0F)); // 1.0F centers the slot against the arrow.
+		output.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
-		mainTab.add(output);
-		mainTab.add(arrow);
+		tab.add(output);
+		tab.add(arrow);
 	}
 }

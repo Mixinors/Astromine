@@ -53,6 +53,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler.SLOT_HEIGHT;
+import static com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler.SLOT_WIDTH;
+
 public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 	public static final Inventory[] craftingInventories = new Inventory[] { BaseInventory.of(10), BaseInventory.of(10) };
 	
@@ -104,13 +107,13 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 		
 		var player = getPlayer();
 		
-		SlotUtils.addPlayerInventory(new Position(panel.getX() + 7.0F, panel.getY() + 7.0F + 9.0F + 18.0F + 18.0F + 18.0F + 7.0F + 18.0F + 7.0F), new Size(18.0F, 18.0F), (BaseWidgetCollection) this, player.getInventory());
+		SlotUtils.addPlayerInventory(new Position(panel.getX() + 7.0F, panel.getY() + 7.0F + 9.0F + 18.0F + 18.0F + 18.0F + 7.0F + 18.0F + 7.0F), new Size(SLOT_WIDTH, SLOT_HEIGHT), (BaseWidgetCollection) this, player.getInventory());
 		
-		var inputSlots = Lists.newArrayList(SlotUtils.addArray(new Position(panel.getX() + 7.0F, panel.getY() + 7.0F + 9.0F), new Size(18.0F, 18.0F), panel, getInventory(), 3, 3, 0));
+		var inputSlots = Lists.newArrayList(SlotUtils.addArray(new Position(panel.getX() + 7.0F, panel.getY() + 7.0F + 9.0F), new Size(SLOT_WIDTH, SLOT_HEIGHT), panel, getInventory(), 3, 3, 0));
 		
 		var outputSlot = new SlotWidget(9, getInventory());
 		outputSlot.setPosition(new Position(panel.getX() + 7.0F + 18.0F * 3.0F + 7.0F, panel.getY() + 7.0F + 18.0F + 9.0F));
-		outputSlot.setSize(new Size(18.0F, 18.0F));
+		outputSlot.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
 		panel.add(outputSlot);
 		

@@ -48,23 +48,23 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Supplier;
 
 public abstract class TankBlockEntity extends ExtendedBlockEntity implements TankConfigProvider {
-	private static final int FLUID_INPUT_SLOT = 0;
+	public static final int FLUID_INPUT_SLOT = 0;
 	
-	private static final int FLUID_OUTPUT_SLOT = 0;
+	public static final int FLUID_OUTPUT_SLOT = 0;
 	
-	private static final int[] FLUID_INSERT_SLOTS = new int[] { FLUID_INPUT_SLOT };
+	public static final int[] FLUID_INSERT_SLOTS = new int[] { FLUID_INPUT_SLOT };
 	
-	private static final int[] FLUID_EXTRACT_SLOTS = new int[] { FLUID_OUTPUT_SLOT };
+	public static final int[] FLUID_EXTRACT_SLOTS = new int[] { FLUID_OUTPUT_SLOT };
 	
-	private static final int ITEM_INPUT_SLOT = 0;
+	public static final int ITEM_INPUT_SLOT = 0;
 	
-	private static final int ITEM_OUTPUT_SLOT_1 = 1;
+	public static final int ITEM_OUTPUT_SLOT_1 = 1;
 	
-	private static final int ITEM_OUTPUT_SLOT_2 = 2;
+	public static final int ITEM_OUTPUT_SLOT_2 = 2;
 	
-	private static final int[] ITEM_INSERT_SLOTS = new int[] { ITEM_INPUT_SLOT };
+	public static final int[] ITEM_INSERT_SLOTS = new int[] { ITEM_INPUT_SLOT };
 	
-	private static final int[] ITEM_EXTRACT_SLOTS = new int[] { ITEM_OUTPUT_SLOT_1, ITEM_OUTPUT_SLOT_2 };
+	public static final int[] ITEM_EXTRACT_SLOTS = new int[] { ITEM_OUTPUT_SLOT_1, ITEM_OUTPUT_SLOT_2 };
 	
 	private FluidVariant filter = FluidVariant.blank();
 	
@@ -72,7 +72,7 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 		super(type, blockPos, blockState);
 		
 		fluidStorage = new SimpleFluidStorage(1, getFluidStorageSize()).insertPredicate((variant, slot) ->
-				slot == FLUID_INPUT_SLOT && (filter == Fluids.EMPTY || variant.getFluid() == filter)
+				slot == FLUID_INPUT_SLOT && (filter.isBlank() || variant.equals(filter))
 		).extractPredicate((variant, slot) ->
 				slot == FLUID_OUTPUT_SLOT
 		).listener(() -> {

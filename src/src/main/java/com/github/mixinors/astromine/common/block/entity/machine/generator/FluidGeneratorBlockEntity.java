@@ -47,11 +47,11 @@ public abstract class FluidGeneratorBlockEntity extends ExtendedBlockEntity impl
 	public double progress = 0;
 	public int limit = 100;
 	
-	private static final int INPUT_SLOT = 0;
+	public static final int INPUT_SLOT = 0;
 	
-	private static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
+	public static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
 	
-	private static final int[] EXTRACT_SLOTS = new int[] { };
+	public static final int[] EXTRACT_SLOTS = new int[] { };
 	
 	private Optional<FluidGeneratingRecipe> optionalRecipe = Optional.empty();
 	

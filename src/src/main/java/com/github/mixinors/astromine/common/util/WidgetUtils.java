@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WidgetUtils {
-	public static List<StorageSidingWidget> createStorageSiding(Position anchor, ExtendedBlockEntity blockEntity, StorageSiding[] sidings, StorageType type, Direction rotation) {
+	public static List<StorageSidingWidget> createStorageSiding(Position anchor, ExtendedBlockEntity blockEntity, StorageType type, Direction rotation) {
 		var north = new Position(anchor, 7.0F + 22.0F, 31.0F + 22.0F, 0.0F);
 		var south = new Position(anchor, 7.0F, 31.0F + 44, 0.0F);
 		var up = new Position(anchor, 7.0F + 22.0F, 31.0F, 0.0F);
@@ -61,7 +61,6 @@ public class WidgetUtils {
 			button.setPosition(positions.get(MirrorUtils.rotate(direction, rotation)));
 			button.setSize(new Size(18.0F, 18.0F, 0.0F));
 			button.setBlockEntity(blockEntity);
-			button.setSiding(sidings[direction.ordinal()]);
 			button.setType(type);
 			button.setRotation(rotation);
 			button.setDirection(direction);

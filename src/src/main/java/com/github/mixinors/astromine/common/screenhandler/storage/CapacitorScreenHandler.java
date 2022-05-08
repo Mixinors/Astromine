@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.screenhandler.storage;
 
+import com.github.mixinors.astromine.common.block.entity.storage.CapacitorBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.widget.HorizontalArrowWidget;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
@@ -37,39 +38,39 @@ import net.minecraft.util.math.BlockPos;
 import java.util.function.Supplier;
 
 public class CapacitorScreenHandler extends ExtendedBlockEntityScreenHandler {
+	private final CapacitorBlockEntity capacitor;
+	
 	public CapacitorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.CAPACITOR, syncId, player, position);
-	}
-	
-	public CapacitorScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
-		super(type, syncId, player, position);
+		
+		capacitor = (CapacitorBlockEntity) blockEntity;
 	}
 	
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		
-		energyBar.setPosition(new Position(width / 2.0F - energyBar.getWidth() / 2.0F, energyBar.getY()));
-		
-		var input = new SlotWidget(0, blockEntity.getItemStorage());
-		input.setPosition(new Position(mainTab, 12.0F, 26.0F));
-		input.setSize(new Size(18.0F, 18.0F));
-		
-		var output = new SlotWidget(1, blockEntity.getItemStorage());
-		output.setPosition(new Position(mainTab, 146.0F, 26.0F));
-		output.setSize(new Size(18.0F, 18.0F));
+		energyBar.setPosition(new Position(width / 2.0F - BAR_WIDTH / 2.0F, energyBar.getY()));
 		
 		var leftArrow = new HorizontalArrowWidget();
-		leftArrow.setPosition(new Position(input, 28.0F, 0.0F));
-		leftArrow.setSize(new Size(22.0F, 16.0F));
+		leftArrow.setPosition(new Position(energyBar, -PAD_7 - ARROW_WIDTH, (BAR_HEIGHT / 2.0F) - (ARROW_HEIGHT / 2.0F)));
+		leftArrow.setSize(new Size(ARROW_WIDTH, ARROW_HEIGHT));
+		
+		var input = new SlotWidget(CapacitorBlockEntity.INPUT_SLOT, capacitor.getItemStorage());
+		input.setPosition(new Position(leftArrow, -PAD_7 - SLOT_WIDTH, (ARROW_HEIGHT - SLOT_HEIGHT) / 2.0F + 1.0F));
+		input.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
 		var rightArrow = new HorizontalArrowWidget();
-		rightArrow.setPosition(new Position(output, -34.0F, 0.0F));
-		rightArrow.setSize(new Size(22.0F, 16.0F));
+		rightArrow.setPosition(new Position(energyBar, BAR_WIDTH + PAD_7, (BAR_HEIGHT / 2.0F) - (ARROW_HEIGHT / 2.0F)));
+		rightArrow.setSize(new Size(ARROW_WIDTH, ARROW_HEIGHT));
 		
-		mainTab.add(input);
-		mainTab.add(output);
-		mainTab.add(leftArrow);
-		mainTab.add(rightArrow);
+		var output = new SlotWidget(CapacitorBlockEntity.OUTPUT_SLOT, capacitor.getItemStorage());
+		output.setPosition(new Position(rightArrow, PAD_7 + ARROW_WIDTH, (ARROW_HEIGHT - SLOT_HEIGHT) / 2.0F + 1.0F));
+		output.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
+		
+		tab.add(input);
+		tab.add(output);
+		tab.add(leftArrow);
+		tab.add(rightArrow);
 	}
 }

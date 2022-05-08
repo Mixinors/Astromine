@@ -48,6 +48,12 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 		return new ItemStack(AMItems.PRIMITIVE_ROCKET.get());
 	}
 	
+	
+	@Override
+	public boolean isClient() {
+		return getClient();
+	}
+	
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);

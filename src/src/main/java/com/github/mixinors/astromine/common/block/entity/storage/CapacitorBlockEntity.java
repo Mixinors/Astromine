@@ -43,13 +43,13 @@ import team.reborn.energy.api.base.SimpleEnergyStorage;
 import java.util.function.Supplier;
 
 public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implements MachineConfigProvider<SimpleMachineConfig> {
-	private static final int INPUT_SLOT = 0;
+	public static final int INPUT_SLOT = 0;
 	
-	private static final int OUTPUT_SLOT = 1;
+	public static final int OUTPUT_SLOT = 1;
 	
-	private static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
+	public static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
 	
-	private static final int[] EXTRACT_SLOTS = new int[] { OUTPUT_SLOT };
+	public static final int[] EXTRACT_SLOTS = new int[] { OUTPUT_SLOT };
 	
 	public CapacitorBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);

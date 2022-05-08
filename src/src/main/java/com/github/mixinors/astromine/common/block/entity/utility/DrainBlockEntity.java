@@ -36,11 +36,11 @@ import net.minecraft.util.math.BlockPos;
 import java.util.Arrays;
 
 public class DrainBlockEntity extends ExtendedBlockEntity implements FluidStorageSizeProvider {
-	private static final int INPUT_SLOT = 0;
+	public static final int INPUT_SLOT = 0;
 	
-	private static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
+	public static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
 	
-	private static final int[] EXTRACT_SLOTS = new int[] { };
+	public static final int[] EXTRACT_SLOTS = new int[] { };
 	
 	public DrainBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.DRAIN, blockPos, blockState);

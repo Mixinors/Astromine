@@ -44,11 +44,11 @@ import team.reborn.energy.api.base.SimpleEnergyStorage;
 public class FluidPlacerBlockEntity extends ExtendedBlockEntity implements FluidStorageUtilityConfigProvider {
 	private long cooldown = 0L;
 	
-	private static final int INPUT_SLOT = 0;
+	public static final int INPUT_SLOT = 0;
 	
-	private static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
+	public static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
 	
-	private static final int[] EXTRACT_SLOTS = new int[] { };
+	public static final int[] EXTRACT_SLOTS = new int[] { };
 	
 	public FluidPlacerBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.FLUID_PLACER, blockPos, blockState);

@@ -48,36 +48,27 @@ public class AlloySmelterScreenHandler extends ExtendedBlockEntityScreenHandler 
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		
-		var firstInput = new SlotWidget(0, smelter.getItemStorage());
-		firstInput.setPosition(new Position(energyBar.getX(), energyBar.getY()));
-		firstInput.setSize(new Size(18.0F, 18.0F));
+		var firstInput = new SlotWidget(AlloySmelterBlockEntity.INPUT_SLOT_1, smelter.getItemStorage());
+		firstInput.setPosition(new Position(energyBar, (TABS_WIDTH / 2.0F - (SLOT_WIDTH + PAD_7 + ARROW_WIDTH + PAD_7 + SLOT_WIDTH) / 2.0F - SLOT_WIDTH / 2.0F), BAR_HEIGHT / 2.0F - SLOT_HEIGHT / 2.0F - (SLOT_HEIGHT / 2.0F) - PAD_3));
+		firstInput.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
-		var secondInput = new SlotWidget(1, smelter.getItemStorage());
-		secondInput.setPosition(new Position(energyBar.getX(), energyBar.getY()));
-		secondInput.setSize(new Size(18.0F, 18.0F));
-		
-		var output = new SlotWidget(2, smelter.getItemStorage(), ExtractionSlot::new);
-		output.setPosition(new Position(energyBar.getX(), energyBar.getY()));
-		output.setSize(new Size(18.0F, 18.0F));
-		
-		firstInput.setPosition(new Position(width / 2.0F - firstInput.getWidth() / 2.0F, firstInput.getY()));
-		firstInput.setPosition(new Position(firstInput.getX() - 22.0F, firstInput.getY() + 15.0F - 9.0F));
-		
-		secondInput.setPosition(new Position(width / 2.0F - secondInput.getWidth() / 2.0F, secondInput.getY()));
-		secondInput.setPosition(new Position(secondInput.getX() - 22.0F, secondInput.getY() + 15.0F + 18.0F - 9.0F));
-		
-		output.setPosition(new Position(width / 2.0F - output.getWidth() / 2.0F, output.getY()));
-		output.setPosition(new Position(secondInput.getX() + 57.0F, secondInput.getY() - 9.0F));
+		var secondInput = new SlotWidget(AlloySmelterBlockEntity.INPUT_SLOT_2, smelter.getItemStorage());
+		secondInput.setPosition(new Position(energyBar, (TABS_WIDTH / 2.0F - (SLOT_WIDTH + PAD_7 + ARROW_WIDTH + PAD_7 + SLOT_WIDTH) / 2.0F - SLOT_WIDTH / 2.0F), BAR_HEIGHT / 2.0F - SLOT_HEIGHT / 2.0F + (SLOT_HEIGHT / 2.0F) + PAD_3));
+		secondInput.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
 		var arrow = new HorizontalArrowWidget();
-		arrow.setPosition(new Position(output.getX() - 31.0F, output.getY()));
-		arrow.setSize(new Size(22.0F, 16.0F));
-		arrow.setLimitSupplier(() -> smelter.limit);
-		arrow.setProgressSupplier(() -> (int) smelter.progress);
+		arrow.setPosition(new Position(secondInput, SLOT_WIDTH + PAD_7, -(SLOT_HEIGHT / 2.0F + PAD_3) + 0.5F)); // 0.5F centers the arrow against the input slots.
+		arrow.setSize(new Size(ARROW_WIDTH, ARROW_HEIGHT));
+		arrow.setMaximum(() -> (float) smelter.limit);
+		arrow.setCurrent(() -> (float) smelter.progress);
 		
-		mainTab.add(firstInput);
-		mainTab.add(secondInput);
-		mainTab.add(output);
-		mainTab.add(arrow);
+		var output = new SlotWidget(AlloySmelterBlockEntity.OUTPUT_SLOT, smelter.getItemStorage(), ExtractionSlot::new);
+		output.setPosition(new Position(arrow, ARROW_WIDTH + PAD_7, (ARROW_HEIGHT - SLOT_HEIGHT) / 2.0F + 1.0F)); // 1.0F centers the slot against the arrow.
+		output.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
+		
+		tab.add(firstInput);
+		tab.add(secondInput);
+		tab.add(output);
+		tab.add(arrow);
 	}
 }

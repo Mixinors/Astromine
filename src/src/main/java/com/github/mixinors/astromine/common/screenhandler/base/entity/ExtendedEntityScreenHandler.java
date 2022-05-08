@@ -60,11 +60,6 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 		entity = (ExtendedEntity) player.world.getEntityById(entityId);
 	}
 	
-	@Override
-	public boolean isClient() {
-		return getClient();
-	}
-	
 	public abstract ItemStack getSymbol();
 	
 	public int getTabWidgetExtendedHeight() {
@@ -79,7 +74,7 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 	@Override
 	public void initialize(int width, int height) {
 		tabs = new TabWidget();
-		tabs.setSize(new Size(176.0F, 188F + getTabWidgetExtendedHeight(), 0.0F));
+		tabs.setSize(new Size(176.0F, 188.0F + getTabWidgetExtendedHeight(), 0.0F));
 		tabs.setPosition(new Position(width / 2.0F - tabs.getWidth() / 2.0F, height / 2.0F - tabs.getHeight() / 2.0F, 0.0F));
 		
 		add(tabs);

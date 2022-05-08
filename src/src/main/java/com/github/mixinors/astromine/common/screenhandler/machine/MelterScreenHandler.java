@@ -30,6 +30,7 @@ import com.github.mixinors.astromine.common.widget.HorizontalArrowWidget;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
+import dev.vini2003.hammer.gui.api.common.widget.bar.FluidBarWidget;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.slot.Slot;
@@ -48,20 +49,19 @@ public class MelterScreenHandler extends ExtendedBlockEntityScreenHandler {
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		
-		var input = new SlotWidget(0, melter.getItemStorage(), Slot::new);
-		input.setSize(new Size(18.0F, 18.0F));
-		
-		fluidBar.setPosition(new Position(energyBar, 102.0F, 0.0F));
+		var input = new SlotWidget(MelterBlockEntity.ITEM_INPUT_SLOT, melter.getItemStorage());
+		input.setPosition(new Position(energyBar, (TABS_WIDTH / 2.0F - (SLOT_WIDTH + PAD_7 + ARROW_WIDTH + PAD_7 + SLOT_WIDTH) / 2.0F - SLOT_WIDTH / 2.0F), BAR_HEIGHT / 2.0F - SLOT_HEIGHT / 2.0F));
+		input.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
 		var arrow = new HorizontalArrowWidget();
-		arrow.setPosition(new Position(fluidBar, -31.0F, fluidBar.getHeight() / 2.0F - 16.0F / 2.0F));
-		arrow.setSize(new Size(22.0F, 16.0F));
-		arrow.setLimitSupplier(() -> melter.limit);
-		arrow.setProgressSupplier(() -> (int) melter.progress);
+		arrow.setPosition(new Position(input, SLOT_WIDTH + PAD_7, (SLOT_HEIGHT - ARROW_HEIGHT) / 2.0F - 0.5F)); // 0.5F centers the arrow against the input slot.
+		arrow.setSize(new Size(ARROW_WIDTH, ARROW_HEIGHT));
+		arrow.setMaximum(() -> (float) melter.limit);
+		arrow.setCurrent(() -> (float) melter.progress);
 		
-		input.setPosition(new Position(arrow, -27.0F, 0.0F));
+		fluidBar.setPosition(new Position(arrow, ARROW_WIDTH + PAD_7, -(BAR_HEIGHT / 2.0F - ARROW_HEIGHT / 2.0F)));
 		
-		mainTab.add(input);
-		mainTab.add(arrow);
+		tab.add(input);
+		tab.add(arrow);
 	}
 }

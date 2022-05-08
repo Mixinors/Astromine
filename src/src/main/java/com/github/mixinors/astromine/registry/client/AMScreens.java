@@ -51,9 +51,6 @@ public class AMScreens {
 		registerSimple(AMScreenHandlers.TANK);
 		registerSimple(AMScreenHandlers.NUCLEAR_WARHEAD);
 		registerSimple(AMScreenHandlers.CAPACITOR);
-		registerSimple(AMScreenHandlers.CREATIVE_CAPACITOR);
-		registerSimple(AMScreenHandlers.CREATIVE_TANK);
-		registerSimple(AMScreenHandlers.CREATIVE_BUFFER);
 		registerSimple(AMScreenHandlers.BUFFER);
 		registerSimple(AMScreenHandlers.TRITURATOR);
 		registerSimple(AMScreenHandlers.PRESSER);

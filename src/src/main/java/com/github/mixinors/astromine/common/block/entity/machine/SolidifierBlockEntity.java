@@ -48,17 +48,17 @@ public abstract class SolidifierBlockEntity extends ExtendedBlockEntity implemen
 	public double progress = 0;
 	public int limit = 100;
 	
-	private static final int FLUID_INPUT_SLOT = 0;
+	public static final int FLUID_INPUT_SLOT = 0;
 	
-	private static final int[] FLUID_INSERT_SLOTS = new int[] { FLUID_INPUT_SLOT };
+	public static final int[] FLUID_INSERT_SLOTS = new int[] { FLUID_INPUT_SLOT };
 	
-	private static final int[] FLUID_EXTRACT_SLOTS = new int[] { };
+	public static final int[] FLUID_EXTRACT_SLOTS = new int[] { };
 	
-	private static final int ITEM_OUTPUT_SLOT = 0;
+	public static final int ITEM_OUTPUT_SLOT = 0;
 	
-	private static final int[] ITEM_INSERT_SLOTS = new int[] { };
+	public static final int[] ITEM_INSERT_SLOTS = new int[] { };
 	
-	private static final int[] ITEM_EXTRACT_SLOTS = new int[] { ITEM_OUTPUT_SLOT };
+	public static final int[] ITEM_EXTRACT_SLOTS = new int[] { ITEM_OUTPUT_SLOT };
 	
 	private Optional<SolidifyingRecipe> optionalRecipe = Optional.empty();
 	

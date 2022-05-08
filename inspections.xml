@@ -1,0 +1,28 @@
+<component name="InspectionProjectProfileManager">
+    <profile version="1.0">
+        <option name="myName" value="Project Default"/>
+        <inspection_tool class="AmbiguousFieldAccess" enabled="true" level="WARNING" enabled_by_default="true"/>
+        <inspection_tool class="AnonymousClassVariableHidesContainingMethodVariable" enabled="true" level="WARNING" enabled_by_default="true"/>
+        <inspection_tool class="DeclareCollectionAsInterface" enabled="true" level="WARNING" enabled_by_default="true">
+            <option name="ignoreLocalVariables" value="false"/>
+            <option name="ignorePrivateMethodsAndFields" value="false"/>
+        </inspection_tool>
+        <inspection_tool class="LocalVariableHidingMemberVariable" enabled="true" level="WARNING" enabled_by_default="true">
+            <option name="m_ignoreInvisibleFields" value="true"/>
+            <option name="m_ignoreStaticMethods" value="true"/>
+        </inspection_tool>
+        <inspection_tool class="ObsoleteCollection" enabled="true" level="WARNING" enabled_by_default="true">
+            <option name="ignoreRequiredObsoleteCollectionTypes" value="true"/>
+        </inspection_tool>
+        <inspection_tool class="RedundantExplicitVariableType" enabled="true" level="WARNING" enabled_by_default="true"/>
+        <inspection_tool class="TypeMayBeWeakened" enabled="true" level="WARNING" enabled_by_default="true">
+            <option name="useRighthandTypeAsWeakestTypeInAssignments" value="true"/>
+            <option name="useParameterizedTypeForCollectionMethods" value="true"/>
+            <option name="doNotWeakenToJavaLangObject" value="true"/>
+            <option name="onlyWeakentoInterface" value="true"/>
+        </inspection_tool>
+        <inspection_tool class="UnnecessaryFinalOnLocalVariableOrParameter" enabled="true" level="WARNING" enabled_by_default="true"/>
+        <inspection_tool class="UnstableApiUsage" enabled="false" level="WARNING" enabled_by_default="false"/>
+        <inspection_tool class="VariableTypeCanBeExplicit" enabled="false" level="INFORMATION" enabled_by_default="false"/>
+    </profile>
+</component>

@@ -48,24 +48,25 @@ public class FluidMixerScreenHandler extends ExtendedBlockEntityScreenHandler {
 		super.initialize(width, height);
 		
 		var secondInputFluidBar = new FluidBarWidget();
-		secondInputFluidBar.setPosition(new Position(fluidBar, fluidBar.getWidth() + 7.0F, 0));
-		secondInputFluidBar.setSize(new Size(fluidBar));
-		secondInputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(1));
+		secondInputFluidBar.setPosition(new Position(fluidBar, BAR_WIDTH + PAD_7, 0.0F));
+		secondInputFluidBar.setSize(new Size(BAR_WIDTH, BAR_HEIGHT));
+		secondInputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(FluidMixerBlockEntity.INPUT_SLOT_2));
 		secondInputFluidBar.setSmooth(false);
 		
 		var arrow = new HorizontalArrowWidget();
-		arrow.setPosition(new Position(secondInputFluidBar, secondInputFluidBar.getWidth() + 9.0F, secondInputFluidBar.getHeight() / 2.0F - 8.0F));
-		arrow.setSize(new Size(22.0F, 16.0F));
-		arrow.setLimitSupplier(() -> mixer.limit);
-		arrow.setProgressSupplier(() -> (int) mixer.progress);
+		arrow.setPosition(new Position(secondInputFluidBar, BAR_WIDTH + PAD_7, BAR_HEIGHT / 2.0F - PAD_8));
+		arrow.setSize(new Size(ARROW_WIDTH, ARROW_HEIGHT));
+		arrow.setMaximum(() -> (float) mixer.limit);
+		arrow.setCurrent(() -> (float) mixer.progress);
 		
 		var outputFluidBar = new FluidBarWidget();
-		outputFluidBar.setPosition(new Position(secondInputFluidBar, secondInputFluidBar.getWidth() + 9.0F + arrow.getWidth() + 7.0F, 0.0F));
-		outputFluidBar.setSize(new Size(fluidBar));
-		outputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(2));
+		outputFluidBar.setPosition(new Position(arrow, ARROW_WIDTH + PAD_7, -(BAR_HEIGHT / 2.0F - ARROW_HEIGHT / 2.0F)));
+		outputFluidBar.setSize(new Size(BAR_WIDTH, BAR_HEIGHT));
+		outputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(FluidMixerBlockEntity.OUTPUT_SLOT));
+		outputFluidBar.setSmooth(false);
 		
-		mainTab.add(secondInputFluidBar);
-		mainTab.add(arrow);
-		mainTab.add(outputFluidBar);
+		tab.add(secondInputFluidBar);
+		tab.add(arrow);
+		tab.add(outputFluidBar);
 	}
 }

@@ -36,39 +36,34 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 public class WireMillScreenHandler extends ExtendedBlockEntityScreenHandler {
-	private final WireMillBlockEntity wire_mill;
+	private final WireMillBlockEntity wireMill;
 	
 	public WireMillScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.WIRE_MILL, syncId, player, position);
 		
-		wire_mill = (WireMillBlockEntity) blockEntity;
+		wireMill = (WireMillBlockEntity) blockEntity;
 	}
 	
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		
-		var input = new SlotWidget(0, blockEntity.getItemStorage());
-		input.setPosition(new Position(energyBar.getX(), energyBar.getY()));
-		input.setSize(new Size(18.0F, 18.0F));
-		
-		var output = new SlotWidget(1, blockEntity.getItemStorage(), ExtractionSlot::new);
-		output.setPosition(new Position(energyBar.getX(), energyBar.getY()));
-		output.setSize(new Size(18.0F, 18.0F));
-		
-		output.setPosition(new Position(width / 2.0F - output.getWidth() / 2.0F, output.getY()));
-		output.setPosition(new Position(output.getX() + 27.0F, output.getY() + 15.0F));
+		var input = new SlotWidget(WireMillBlockEntity.INPUT_SLOT, wireMill.getItemStorage());
+		input.setPosition(new Position(energyBar, (TABS_WIDTH / 2.0F - (SLOT_WIDTH + PAD_7 + ARROW_WIDTH + PAD_7 + SLOT_WIDTH) / 2.0F - SLOT_WIDTH / 2.0F), BAR_HEIGHT / 2.0F - SLOT_HEIGHT / 2.0F));
+		input.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
 		var arrow = new HorizontalArrowWidget();
-		arrow.setPosition(new Position(output.getX() - 31.0F, output.getY()));
-		arrow.setSize(new Size(22.0F, 16.0F));
-		arrow.setLimitSupplier(() -> wire_mill.limit);
-		arrow.setProgressSupplier(() -> (int) wire_mill.progress);
+		arrow.setPosition(new Position(input, SLOT_WIDTH + PAD_7, (SLOT_HEIGHT - ARROW_HEIGHT) / 2.0F - 0.5F)); // 0.5F centers the arrow against the input slot.
+		arrow.setSize(new Size(ARROW_WIDTH, ARROW_HEIGHT));
+		arrow.setMaximum(() -> (float) wireMill.limit);
+		arrow.setCurrent(() -> (float) wireMill.progress);
 		
-		input.setPosition(new Position(arrow.getX() - 27.0F, arrow.getY()));
+		var output = new SlotWidget(WireMillBlockEntity.OUTPUT_SLOT, wireMill.getItemStorage(), ExtractionSlot::new);
+		output.setPosition(new Position(arrow, ARROW_WIDTH + PAD_7, (ARROW_HEIGHT - SLOT_HEIGHT) / 2.0F + 1.0F)); // 1.0F centers the slot against the arrow.
+		output.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
-		mainTab.add(input);
-		mainTab.add(output);
-		mainTab.add(arrow);
+		tab.add(input);
+		tab.add(output);
+		tab.add(arrow);
 	}
 }
