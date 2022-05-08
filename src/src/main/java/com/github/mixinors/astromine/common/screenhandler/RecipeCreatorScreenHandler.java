@@ -24,7 +24,6 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
-import com.github.mixinors.astromine.common.inventory.BaseInventory;
 import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.util.WordUtils;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
