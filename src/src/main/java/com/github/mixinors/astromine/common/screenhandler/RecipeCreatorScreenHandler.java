@@ -41,6 +41,7 @@ import dev.vini2003.hammer.gui.api.common.widget.panel.PanelWidget;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.registry.Registry;
 import org.apache.commons.io.Charsets;
@@ -85,7 +86,7 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 	public static final float PAD_38 = ExtendedBlockEntityScreenHandler.PAD_38;
 	public static final float PAD_68 = ExtendedBlockEntityScreenHandler.PAD_68;
 	
-	public static final Inventory[] CRAFTING_INVENTORIES = new Inventory[] { BaseInventory.of(10), BaseInventory.of(10) };
+	public static final Inventory[] CRAFTING_INVENTORIES = new Inventory[] { new SimpleInventory(10), new SimpleInventory(10) };
 	
 	public Inventory getInventory() {
 		return isClient() ? CRAFTING_INVENTORIES[0] : CRAFTING_INVENTORIES[1];

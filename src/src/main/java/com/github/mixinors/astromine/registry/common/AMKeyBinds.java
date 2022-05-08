@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.registry.common;
 
-public class AMKeybinds {
+public class AMKeyBinds {
 	public static void init() {
-
+	
 	}
 }

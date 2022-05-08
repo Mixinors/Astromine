@@ -48,8 +48,6 @@ public class AMComponents implements WorldComponentInitializer, ChunkComponentIn
 	
 	public static final ComponentKey<EntityOxygenComponent> ENTITY_OXYGEN_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("entity_oxygen_component"), EntityOxygenComponent.class);
 	
-	public static void initialize() {}
-	
 	@Override
 	public void registerWorldComponentFactories(WorldComponentFactoryRegistry registry) {
 		registry.register(WORLD_NETWORK_COMPONENT, WorldNetworkComponent::new);

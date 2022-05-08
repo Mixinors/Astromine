@@ -33,7 +33,6 @@ public class AMEntityModelLayers {
 	public static final EntityModelLayer ROCKET = register("rocket", PrimitiveRocketEntityModel::getTexturedModelData);
 	
 	public static void init() {
-	
 	}
 	
 	public static EntityModelLayer register(String id, EntityModelLayerRegistry.TexturedModelDataProvider texturedModelDataProvider) {

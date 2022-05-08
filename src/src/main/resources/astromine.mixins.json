@@ -17,7 +17,6 @@
     "common.RecipeManagerAccessor",
     "common.ServerChunkManagerMixin",
     "common.ServerPlayNetworkHandlerMixin",
-    "common.ServerWorldMixin",
     "common.StayAboveWaterTaskMixin",
     "common.SwimGoalAccessor",
     "common.SwimGoalMixin"

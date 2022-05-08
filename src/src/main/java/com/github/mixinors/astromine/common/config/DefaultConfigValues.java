@@ -27,10 +27,10 @@ package com.github.mixinors.astromine.common.config;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 
 public class DefaultConfigValues {
-	public static final long PRIMITIVE_BATTERY_ENERGY = 8000;
-	public static final long BASIC_BATTERY_ENERGY = 16000;
-	public static final long ADVANCED_BATTERY_ENERGY = 32000;
-	public static final long ELITE_BATTERY_ENERGY = 64000;
+	public static final long PRIMITIVE_BATTERY_ENERGY = 8000L;
+	public static final long BASIC_BATTERY_ENERGY = 16000L;
+	public static final long ADVANCED_BATTERY_ENERGY = 32000L;
+	public static final long ELITE_BATTERY_ENERGY = 64000L;
 	
 	public static final long PRIMITIVE_BATTERY_PACK_ENERGY = PRIMITIVE_BATTERY_ENERGY * 6;
 	public static final long BASIC_BATTERY_PACK_ENERGY = BASIC_BATTERY_ENERGY * 6;

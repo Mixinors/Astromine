@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.client.registry;
+package com.github.mixinors.astromine.common.registry;
 
 import com.github.mixinors.astromine.common.util.data.Range;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceMap;

@@ -39,7 +39,7 @@ import net.minecraft.world.World;
 import team.reborn.energy.api.base.SimpleBatteryItem;
 
 public class DrillItem extends MiningToolItem implements SimpleBatteryItem {
-	private final int radius;
+	private final int radius; // TODO: Reimplement!
 	private final ToolMaterial material;
 	private final long capacity;
 	

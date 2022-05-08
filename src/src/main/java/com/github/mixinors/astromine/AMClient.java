@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine;
 
 import com.github.mixinors.astromine.registry.client.*;
-import com.github.mixinors.astromine.registry.common.AMKeybinds;
+import com.github.mixinors.astromine.registry.common.AMKeyBinds;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -47,7 +47,7 @@ public class AMClient implements ClientModInitializer {
 		AMClientNetworks.init();
 		AMRenderLayers.init();
 		AMPatchouliPages.init();
-		AMKeybinds.init();
+		AMKeyBinds.init();
 		AMColorProviders.init();
 	}
 }

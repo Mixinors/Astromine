@@ -34,6 +34,5 @@ import net.minecraft.server.world.ServerChunkManager;
 public interface ServerChunkManagerCallback {
 	Event<ServerChunkManagerCallback> EVENT = EventFactory.createLoop();
 	
-	/** Handle the {@link ServerChunkManager}. */
 	void handle(ServerChunkManager manager);
 }

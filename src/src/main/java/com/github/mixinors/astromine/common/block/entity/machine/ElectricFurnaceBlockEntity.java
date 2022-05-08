@@ -37,6 +37,7 @@ import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.RecipeType;
@@ -77,7 +78,7 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 				return false;
 			}
 			
-			var inputInventory = BaseInventory.of(variant.toStack());
+			var inputInventory = new SimpleInventory(variant.toStack());
 			
 			if (world != null) {
 				if (RECIPE_CACHE.get(world) == null) {
@@ -108,7 +109,7 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 		
 		var outputStorage = storages[OUTPUT_SLOT];
 		
-		var inputInventory = BaseInventory.of(inputStorage.getResource().toStack((int) inputStorage.getAmount()));
+		var inputInventory = new SimpleInventory(inputStorage.getResource().toStack((int) inputStorage.getAmount()));
 		
 		if (!recipe.matches(inputInventory, world)) {
 			return false;
@@ -133,7 +134,7 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 		}
 		
 		if (itemStorage != null && energyStorage != null) {
-			var inputInventory = BaseInventory.of(itemStorage.getStack(INPUT_SLOT));
+			var inputInventory = new SimpleInventory(itemStorage.getStack(INPUT_SLOT));
 			
 			if (optionalRecipe.isEmpty()) {
 				if (RECIPE_CACHE.get(world) == null) {

@@ -36,6 +36,5 @@ import net.minecraft.util.Identifier;
 public interface SkyPropertiesCallback {
 	Event<SkyPropertiesCallback> EVENT = EventFactory.createLoop();
 	
-	/** Handle the properties. */
 	void handle(Object2ObjectMap<Identifier, DimensionEffects> properties);
 }
