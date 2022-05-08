@@ -26,32 +26,31 @@ package com.github.mixinors.astromine.common.screenhandler.machine;
 
 import com.github.mixinors.astromine.common.block.entity.machine.AlloySmelterBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
-import com.github.mixinors.astromine.common.widget.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.slot.ExtractionSlot;
+import com.github.mixinors.astromine.common.widget.HorizontalArrowWidget;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
-
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 public class AlloySmelterScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final AlloySmelterBlockEntity smelter;
-
+	
 	public AlloySmelterScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.ALLOY_SMELTER, syncId, player, position);
-
+		
 		smelter = (AlloySmelterBlockEntity) blockEntity;
 	}
-
+	
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		
 		var firstInput = new SlotWidget(0, smelter.getItemStorage());
 		firstInput.setPosition(new Position(energyBar.getX(), energyBar.getY()));
-		firstInput.setSize( new Size(18.0F, 18.0F));
+		firstInput.setSize(new Size(18.0F, 18.0F));
 		
 		var secondInput = new SlotWidget(1, smelter.getItemStorage());
 		secondInput.setPosition(new Position(energyBar.getX(), energyBar.getY()));
@@ -60,13 +59,13 @@ public class AlloySmelterScreenHandler extends ExtendedBlockEntityScreenHandler 
 		var output = new SlotWidget(2, smelter.getItemStorage(), ExtractionSlot::new);
 		output.setPosition(new Position(energyBar.getX(), energyBar.getY()));
 		output.setSize(new Size(18.0F, 18.0F));
-
+		
 		firstInput.setPosition(new Position(width / 2.0F - firstInput.getWidth() / 2.0F, firstInput.getY()));
 		firstInput.setPosition(new Position(firstInput.getX() - 22.0F, firstInput.getY() + 15.0F - 9.0F));
-
+		
 		secondInput.setPosition(new Position(width / 2.0F - secondInput.getWidth() / 2.0F, secondInput.getY()));
 		secondInput.setPosition(new Position(secondInput.getX() - 22.0F, secondInput.getY() + 15.0F + 18.0F - 9.0F));
-
+		
 		output.setPosition(new Position(width / 2.0F - output.getWidth() / 2.0F, output.getY()));
 		output.setPosition(new Position(secondInput.getX() + 57.0F, secondInput.getY() - 9.0F));
 		
@@ -75,7 +74,7 @@ public class AlloySmelterScreenHandler extends ExtendedBlockEntityScreenHandler 
 		arrow.setSize(new Size(22.0F, 16.0F));
 		arrow.setLimitSupplier(() -> smelter.limit);
 		arrow.setProgressSupplier(() -> (int) smelter.progress);
-
+		
 		mainTab.add(firstInput);
 		mainTab.add(secondInput);
 		mainTab.add(output);

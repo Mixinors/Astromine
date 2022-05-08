@@ -46,36 +46,36 @@ public enum BlockVariant implements Variant<Block> {
 	METEOR_ORE("meteor_ore"),
 	ASTEROID_ORE("asteroid_ore"),
 	RAW_ORE_BLOCK("raw_ore_block", "raw", "blocks");
-
+	
 	private final String name;
 	private final String path;
 	private final String prefix;
 	private final String suffix;
-
+	
 	BlockVariant(String name) {
 		this(name, WordUtils.pluralize(name));
 	}
-
+	
 	BlockVariant(String name, String path) {
 		this(name, path, "", path);
 	}
-
+	
 	BlockVariant(String name, String prefix, String suffix) {
 		this(name, WordUtils.pluralize(name), prefix, suffix);
 	}
-
+	
 	BlockVariant(String name, String path, String prefix, String suffix) {
 		this.name = name;
 		this.path = path;
 		this.prefix = prefix;
 		this.suffix = suffix;
 	}
-
+	
 	@Override
 	public String getName() {
 		return this.name;
 	}
-
+	
 	@Override
 	public BiConsumer<BlockStateModelGenerator, Block> getModelRegistrar() {
 		return switch (this) {
@@ -84,45 +84,45 @@ public enum BlockVariant implements Variant<Block> {
 			default -> BlockStateModelGenerator::registerSimpleCubeAll;
 		};
 	}
-
+	
 	@Override
 	public String getTagPath() {
 		return path;
 	}
-
+	
 	@Override
 	public String getTagPrefix() {
 		return prefix;
 	}
-
+	
 	@Override
 	public String getTagSuffix() {
 		return suffix;
 	}
-
+	
 	public TagKey<Item> getItemTag() {
 		return AMTags.ofItem(new Identifier("c", getTagPath()));
 	}
-
+	
 	public int getMiningLevel() {
 		return switch (this) {
 			case ASTEROID_ORE, METEOR_ORE -> 4;
 			default -> 0;
 		};
 	}
-
+	
 	public int getMiningLevel(MaterialFamily family) {
 		return Math.max(family.getMiningLevel(), getMiningLevel());
 	}
-
+	
 	public TagKey<Block> getMineableTag() {
 		return BlockTags.PICKAXE_MINEABLE;
 	}
-
+	
 	public AMDatagen.HarvestData getHarvestData() {
 		return new AMDatagen.HarvestData(getMineableTag(), getMiningLevel());
 	}
-
+	
 	public AMDatagen.HarvestData getHarvestData(MaterialFamily family) {
 		return new AMDatagen.HarvestData(getMineableTag(), getMiningLevel(family));
 	}

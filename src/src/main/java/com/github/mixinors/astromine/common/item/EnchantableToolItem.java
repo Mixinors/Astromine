@@ -25,12 +25,9 @@
 package com.github.mixinors.astromine.common.item;
 
 import com.github.mixinors.astromine.mixin.common.EnchantmentTargetMixin;
-
 import net.minecraft.item.ToolItem;
 
 /**
- * A {@link ToolItem}
- * which may be enchanted, used in
- * {@link EnchantmentTargetMixin}.
+ * A {@link ToolItem} which may be enchanted, used in {@link EnchantmentTargetMixin}.
  */
 public interface EnchantableToolItem {}

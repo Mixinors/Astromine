@@ -24,9 +24,8 @@
 
 package com.github.mixinors.astromine.common.util.data.redstone;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.block.entity.BlockEntity;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Comparator behavior.
@@ -39,7 +38,7 @@ public interface ComparatorMode {
 		public int getOutput(@Nullable BlockEntity entity) {
 			return 0;
 		}
-
+		
 		/** Override behavior to have no output. */
 		@Override
 		public boolean hasOutput() {
@@ -50,10 +49,10 @@ public interface ComparatorMode {
 	ComparatorMode ITEMS = ComparatorOutput::forItems;
 	ComparatorMode FLUIDS = ComparatorOutput::forFluids;
 	ComparatorMode ENERGY = ComparatorOutput::forEnergy;
-
+	
 	/** Returns the output level for the given {@link BlockEntity}. */
 	int getOutput(@Nullable BlockEntity entity);
-
+	
 	/** Asserts whether this mode has an output or not. */
 	default boolean hasOutput() {
 		return true;

@@ -24,10 +24,8 @@
 
 package com.github.mixinors.astromine.common.criterion;
 
-import com.google.gson.JsonObject;
-
 import com.github.mixinors.astromine.registry.common.AMCriteria;
-
+import com.google.gson.JsonObject;
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
@@ -37,30 +35,30 @@ import net.minecraft.util.Identifier;
 
 public class ProperlyUseFireExtinguisherCriterion extends AbstractCriterion<ProperlyUseFireExtinguisherCriterion.Conditions> {
 	private final Identifier id;
-
+	
 	public ProperlyUseFireExtinguisherCriterion(Identifier id) {
 		this.id = id;
 	}
-
+	
 	@Override
 	public Identifier getId() {
 		return id;
 	}
-
+	
 	@Override
 	protected Conditions conditionsFromJson(JsonObject obj, EntityPredicate.Extended extended, AdvancementEntityPredicateDeserializer predicateDeserializer) {
 		return new Conditions(this.id, extended);
 	}
-
+	
 	public void trigger(ServerPlayerEntity player) {
 		this.trigger(player, conditions -> true);
 	}
-
+	
 	public static class Conditions extends AbstractCriterionConditions {
 		public Conditions(Identifier id, EntityPredicate.Extended playerPredicate) {
 			super(id, playerPredicate);
 		}
-
+		
 		public static Conditions create() {
 			return new Conditions(AMCriteria.PROPERLY_USE_FIRE_EXTINGUISHER.id, EntityPredicate.Extended.EMPTY);
 		}

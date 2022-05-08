@@ -24,23 +24,22 @@
 
 package com.github.mixinors.astromine.client.render.sky;
 
-import net.minecraft.client.render.DimensionEffects;
-import net.minecraft.util.math.Vec3d;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.render.DimensionEffects;
+import net.minecraft.util.math.Vec3d;
 
 @Environment(EnvType.CLIENT)
 public class SpaceSkyProperties extends DimensionEffects {
 	public SpaceSkyProperties() {
 		super(Float.NaN, false, SkyType.NONE, true, true);
 	}
-
+	
 	@Override
 	public Vec3d adjustFogColor(Vec3d color, float sunHeight) {
 		return color.multiply(0.15000000596046448D);
 	}
-
+	
 	@Override
 	public boolean useThickFog(int camX, int camY) {
 		return false;

@@ -25,10 +25,8 @@
 package com.github.mixinors.astromine.mixin.common;
 
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.piston.PistonHandler;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,19 +35,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PistonHandler.class)
 public abstract class PistonHandlerMixin {
-
+	
 	@Shadow
-	private static boolean isBlockSticky( BlockState state ) {
+	private static boolean isBlockSticky(BlockState state) {
 		return false;
 	}
-
+	
 	@Inject(method = "isBlockSticky(Lnet/minecraft/block/BlockState;)Z", at = @At("HEAD"), cancellable = true)
 	private static void astromine$isBlockSticky(BlockState state, CallbackInfoReturnable<Boolean> cir) {
 		if (state.getBlock() == AMBlocks.SPACE_SLIME_BLOCK.get()) {
 			cir.setReturnValue(true);
 		}
 	}
-
+	
 	@Inject(method = "isAdjacentBlockStuck(Lnet/minecraft/block/BlockState;Lnet/minecraft/block/BlockState;)Z", at = @At("HEAD"), cancellable = true)
 	private static void astromine$isAdjacentBlockStuck(BlockState state, BlockState adjacentState, CallbackInfoReturnable<Boolean> cir) {
 		if (state.getBlock() == AMBlocks.SPACE_SLIME_BLOCK.get() && !isBlockSticky(adjacentState)) {

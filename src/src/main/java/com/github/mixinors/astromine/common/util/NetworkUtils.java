@@ -24,25 +24,17 @@
 
 package com.github.mixinors.astromine.common.util;
 
-import java.util.ArrayDeque;
-import java.util.EnumSet;
-import java.util.Set;
-
 import com.github.mixinors.astromine.common.block.entity.cable.CableBlockEntity;
-import com.github.mixinors.astromine.common.block.network.CableBlock;
 import com.github.mixinors.astromine.common.component.world.WorldNetworkComponent;
 import com.github.mixinors.astromine.common.network.Network;
 import com.github.mixinors.astromine.common.network.type.NetworkType;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.util.data.position.WorldPos;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
-
-import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.World;
+
+import java.util.ArrayDeque;
 
 public class NetworkUtils {
 	public static void trace(NetworkType type, WorldPos startPos) {
@@ -77,11 +69,15 @@ public class NetworkUtils {
 			
 			var cableBlockEntity = (CableBlockEntity) initialWorldPos.getBlockEntity();
 			
-			if (cableBlockEntity == null) continue;
+			if (cableBlockEntity == null) {
+				continue;
+			}
 			
 			var connections = cableBlockEntity.getConnections();
 			
-			if (connections == null) continue;
+			if (connections == null) {
+				continue;
+			}
 			
 			for (var dir : Direction.values()) {
 				var offsetPos = pos.offset(dir);

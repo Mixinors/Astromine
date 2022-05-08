@@ -48,23 +48,23 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 	public static final List<Block> INFINIBURN_BLOCKS = List.of(
 			AMBlocks.BLAZING_ASTEROID_STONE.get()
 	);
-
+	
 	public static final List<TagKey<Block>> INFINIBURN_TAGS = List.of(
 			AMDatagen.createCommonBlockTag("meteor_ores"),
 			AMDatagen.createCommonBlockTag("asteroid_ores")
 	);
-
+	
 	public static final HarvestData SPACE_STONE_HARVEST_DATA = HarvestData.DIAMOND_PICKAXE;
-
+	
 	public static final HarvestData PRIMITIVE_MACHINE_HARVEST_DATA = HarvestData.STONE_PICKAXE;
 	public static final HarvestData BASIC_MACHINE_HARVEST_DATA = HarvestData.IRON_PICKAXE;
 	public static final HarvestData ADVANCED_MACHINE_HARVEST_DATA = HarvestData.IRON_PICKAXE;
 	public static final HarvestData ELITE_MACHINE_HARVEST_DATA = HarvestData.NETHERITE_PICKAXE;
-
+	
 	public static final HarvestData MISC_MACHINE_HARVEST_DATA = HarvestData.IRON_PICKAXE;
-
+	
 	public static final HarvestData PIPE_AND_CABLE_HARVEST_DATA = HarvestData.STONE_PICKAXE;
-
+	
 	public static final List<BlockFamily> SPACE_STONE_FAMILIES = List.of(
 			AMBlockFamilies.METEOR_STONE,
 			AMBlockFamilies.SMOOTH_METEOR_STONE,
@@ -75,43 +75,45 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 			AMBlockFamilies.POLISHED_ASTEROID_STONE,
 			AMBlockFamilies.ASTEROID_STONE_BRICK
 	);
-
+	
 	public AMBlockTagProvider(FabricDataGenerator dataGenerator) {
 		super(dataGenerator);
 	}
-
+	
 	@Override
 	protected void generateTags() {
 		var beaconBaseTagBuilder = getOrCreateTagBuilder(BlockTags.BEACON_BASE_BLOCKS);
 		var guardedByPiglinsTagBuilder = getOrCreateTagBuilder(BlockTags.GUARDED_BY_PIGLINS);
-
+		
 		MaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateTags).forEachOrdered(family -> {
 			AMDatagen.toTreeMap(family.getBlockTags()).forEach((variant, tag) -> {
 				getOrCreateTagBuilder(tag).add(family.getVariant(variant));
-
+				
 				if (family.hasAlias()) {
 					getOrCreateTagBuilder(family.getAliasTag(variant)).addTag(tag);
 				}
-
+				
 				if (family.isPiglinLoved()) {
 					guardedByPiglinsTagBuilder.addTag(tag);
-
+					
 					if (family.hasAlias()) {
 						guardedByPiglinsTagBuilder.addTag(family.getAliasTag(variant));
 					}
 				}
-
+				
 				if (variant.hasTag()) {
 					getOrCreateTagBuilder(variant.getTag()).addTag(tag);
-
+					
 					if (family.hasAlias()) {
 						getOrCreateTagBuilder(variant.getTag()).addTag(family.getAliasTag(variant));
 					}
 				}
-
-				if (family.shouldGenerateHarvestTags(variant)) addHarvestData(family.getHarvestData(variant), tag);
+				
+				if (family.shouldGenerateHarvestTags(variant)) {
+					addHarvestData(family.getHarvestData(variant), tag);
+				}
 			});
-
+			
 			if (family.hasAnyBlockVariants(AMDatagen.ORE_VARIANTS)) {
 				var oresTag = family.getBlockTag("ores");
 				var oresTagBuilder = getOrCreateTagBuilder(oresTag);
@@ -124,16 +126,16 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 					getOrCreateTagBuilder(family.getAliasBlockTag("ores")).addTag(oresTag);
 				}
 			}
-
+			
 			if (family.isValidForBeacon() && family.hasVariant(BlockVariant.BLOCK)) {
 				beaconBaseTagBuilder.addTag(family.getTag(BlockVariant.BLOCK));
-
+				
 				if (family.hasAlias()) {
 					beaconBaseTagBuilder.addTag(family.getAliasTag(BlockVariant.BLOCK));
 				}
 			}
 		});
-
+		
 		AMBlockFamilies.getFamilies().forEachOrdered(family -> family.getVariants().forEach((variant, block) -> {
 			if (AMDatagen.VANILLA_BLOCK_TAG_VARIANTS.containsKey(variant)) {
 				getOrCreateTagBuilder(AMDatagen.createBlockTag(AMDatagen.VANILLA_BLOCK_TAG_VARIANTS.get(variant))).add(block);
@@ -171,11 +173,11 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 				.add(Blocks.CHISELED_RED_SANDSTONE)
 				.add(Blocks.CUT_RED_SANDSTONE)
 				.add(Blocks.SMOOTH_RED_SANDSTONE);
-
+		
 		getOrCreateTagBuilder(AMDatagen.createCommonBlockTag("sandstones"))
 				.addTag(yellowSandstonesTag)
 				.addTag(redSandstonesTag);
-
+		
 		getOrCreateTagBuilder(AMDatagen.createCommonBlockTag("quartz_blocks"))
 				.add(Blocks.QUARTZ_BLOCK)
 				.add(Blocks.QUARTZ_BRICKS)
@@ -195,7 +197,7 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 				.add(Blocks.WAXED_EXPOSED_COPPER)
 				.add(Blocks.WAXED_WEATHERED_COPPER)
 				.add(Blocks.WAXED_OXIDIZED_COPPER);
-
+		
 		getOrCreateTagBuilder(AMDatagen.createCommonBlockTag("copper_blocks"))
 				.addTag(unwaxedCopperBlocksTag)
 				.addTag(waxedCopperBlocksTag);
@@ -213,27 +215,27 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 				.add(Blocks.WAXED_EXPOSED_CUT_COPPER)
 				.add(Blocks.WAXED_WEATHERED_CUT_COPPER)
 				.add(Blocks.WAXED_OXIDIZED_CUT_COPPER);
-
+		
 		getOrCreateTagBuilder(AMDatagen.createCommonBlockTag("cut_copper"))
 				.addTag(unwaxedCutCopperTag)
 				.addTag(waxedCutCopperTag);
-
+		
 		getOrCreateTagBuilder(AMDatagen.createCommonBlockTag("purpur_blocks"))
 				.add(Blocks.PURPUR_BLOCK)
 				.add(Blocks.PURPUR_PILLAR);
-
+		
 		getOrCreateTagBuilder(AMDatagen.createCommonBlockTag("mushrooms"))
 				.add(Blocks.BROWN_MUSHROOM)
 				.add(Blocks.RED_MUSHROOM);
-
+		
 		getOrCreateTagBuilder(AMDatagen.createCommonBlockTag("mushroom_blocks"))
 				.add(Blocks.BROWN_MUSHROOM_BLOCK)
 				.add(Blocks.RED_MUSHROOM_BLOCK);
-
+		
 		getOrCreateTagBuilder(AMDatagen.createCommonBlockTag("nether_fungi"))
 				.add(Blocks.WARPED_FUNGUS)
 				.add(Blocks.CRIMSON_FUNGUS);
-
+		
 		getOrCreateTagBuilder(AMDatagen.createCommonBlockTag("nether_roots"))
 				.add(Blocks.WARPED_ROOTS)
 				.add(Blocks.CRIMSON_ROOTS);
@@ -257,7 +259,7 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 		getOrCreateTagBuilder(caveVinesTag)
 				.add(Blocks.CAVE_VINES)
 				.add(Blocks.CAVE_VINES_PLANT);
-
+		
 		getOrCreateTagBuilder(AMDatagen.createCommonBlockTag("vines"))
 				.addTag(netherVinesTag)
 				.addTag(caveVinesTag)
@@ -268,7 +270,7 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 				.add(Blocks.PUMPKIN)
 				.add(Blocks.CARVED_PUMPKIN)
 				.add(Blocks.JACK_O_LANTERN);
-
+		
 		getOrCreateTagBuilder(AMDatagen.createCommonBlockTag("gourds"))
 				.addTag(pumpkinsTag)
 				.add(Blocks.MELON);
@@ -276,7 +278,7 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 		var infiniburnTagBuilder = getOrCreateTagBuilder(BlockTags.INFINIBURN_OVERWORLD);
 		INFINIBURN_BLOCKS.forEach(infiniburnTagBuilder::add);
 		INFINIBURN_TAGS.forEach(infiniburnTagBuilder::addTag);
-
+		
 		SPACE_STONE_FAMILIES.forEach((family) -> AMDatagen.toTreeMap(family.getVariants()).forEach((variant, block) -> {
 			infiniburnTagBuilder.add(block);
 			addHarvestData(SPACE_STONE_HARVEST_DATA, block);
@@ -324,25 +326,29 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 		AMDatagen.ENERGY_CABLES.forEach(energyCablesTagBuilder::add);
 		addHarvestData(PIPE_AND_CABLE_HARVEST_DATA, energyCablesTag);
 		addHarvestData(PIPE_AND_CABLE_HARVEST_DATA, AMBlocks.FLUID_PIPE.get());
-
+		
 		addHarvestData(HarvestData.IRON_PICKAXE, AMBlocks.HOLOGRAPHIC_BRIDGE_PROJECTOR.get());
-
+		
 		addHarvestData(HarvestData.STONE_PICKAXE, AMBlocks.AIRLOCK.get(), AMBlocks.DRAIN.get());
-
+		
 		addHarvestData(HarvestData.LEVEL_5_PICKAXE, AMBlocks.NUCLEAR_WARHEAD.get());
 	}
-
+	
 	public void addHarvestData(HarvestData harvestData, Block block) {
 		getOrCreateTagBuilder(harvestData.mineableTag()).add(block);
-		if (harvestData.miningLevel() > 0) getOrCreateTagBuilder(harvestData.miningLevelTag()).add(block);
+		if (harvestData.miningLevel() > 0) {
+			getOrCreateTagBuilder(harvestData.miningLevelTag()).add(block);
+		}
 	}
-
+	
 	public void addHarvestData(HarvestData harvestData, Block... blocks) {
 		Arrays.stream(blocks).forEach((block) -> addHarvestData(harvestData, block));
 	}
-
+	
 	public void addHarvestData(HarvestData harvestData, TagKey<Block> tag) {
 		getOrCreateTagBuilder(harvestData.mineableTag()).addTag(tag);
-		if (harvestData.miningLevel() > 0) getOrCreateTagBuilder(harvestData.miningLevelTag()).addTag(tag);
+		if (harvestData.miningLevel() > 0) {
+			getOrCreateTagBuilder(harvestData.miningLevelTag()).addTag(tag);
+		}
 	}
 }

@@ -26,25 +26,24 @@ package com.github.mixinors.astromine.common.screenhandler.machine;
 
 import com.github.mixinors.astromine.common.block.entity.machine.ElectricFurnaceBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
-import com.github.mixinors.astromine.common.widget.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.slot.ExtractionSlot;
+import com.github.mixinors.astromine.common.widget.HorizontalArrowWidget;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
-
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 public class ElectricFurnaceScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final ElectricFurnaceBlockEntity smelter;
-
+	
 	public ElectricFurnaceScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.ELECTRIC_FURNACE, syncId, player, position);
-
+		
 		smelter = (ElectricFurnaceBlockEntity) blockEntity;
 	}
-
+	
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
@@ -55,16 +54,16 @@ public class ElectricFurnaceScreenHandler extends ExtendedBlockEntityScreenHandl
 		var output = new SlotWidget(0, smelter.getItemStorage(), ExtractionSlot::new);
 		output.setSize(new Size(18.0F, 18.0F));
 		
-		output.setPosition( new Position(energyBar, 102, 15));
+		output.setPosition(new Position(energyBar, 102, 15));
 		
 		var arrow = new HorizontalArrowWidget();
 		arrow.setPosition(new Position(output, -31.0F, 0.0F));
 		arrow.setSize(new Size(22.0F, 16.0F));
 		arrow.setLimitSupplier(() -> smelter.limit);
 		arrow.setProgressSupplier(() -> (int) smelter.progress);
-
+		
 		input.setPosition(new Position(arrow, -27.0F, 0.0F));
-
+		
 		mainTab.add(input);
 		mainTab.add(output);
 		mainTab.add(arrow);

@@ -32,10 +32,12 @@ public class CapacitorConfig extends SimpleMachineConfig {
 	public double getDefaultBaseSpeed() {
 		return DefaultConfigValues.CAPACITOR_BASE_SPEED;
 	}
-
+	
 	@Override
 	public long getDefaultEnergyStorageSize(MachineTier tier) {
-		if (tier == MachineTier.CREATIVE) return super.getDefaultEnergyStorageSize(tier);
+		if (tier == MachineTier.CREATIVE) {
+			return super.getDefaultEnergyStorageSize(tier);
+		}
 		return super.getDefaultEnergyStorageSize(tier) * 4;
 	}
 }

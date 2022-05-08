@@ -24,18 +24,16 @@
 
 package com.github.mixinors.astromine.client.rei.melting;
 
-import java.util.Arrays;
-import java.util.Collections;
-
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.client.rei.base.input.EnergyInputDisplay;
 import com.github.mixinors.astromine.common.recipe.MeltingRecipe;
-
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.util.EntryIngredients;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import me.shedaniel.rei.api.common.util.EntryIngredients;
+import java.util.Arrays;
+import java.util.Collections;
 
 @Environment(EnvType.CLIENT)
 public class MeltingDisplay extends EnergyInputDisplay {
@@ -46,7 +44,7 @@ public class MeltingDisplay extends EnergyInputDisplay {
 				recipe.getTime(), recipe.getEnergyInput(), recipe.getId()
 		);
 	}
-
+	
 	@Override
 	public CategoryIdentifier<?> getCategoryIdentifier() {
 		return AMRoughlyEnoughItemsPlugin.MELTING;

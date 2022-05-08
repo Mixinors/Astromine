@@ -24,15 +24,14 @@
 
 package com.github.mixinors.astromine.client.rei.base.input;
 
-import java.util.List;
-
 import com.github.mixinors.astromine.client.rei.base.AMCategory;
 import com.github.mixinors.astromine.client.rei.base.AMDisplay;
-
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
 import me.shedaniel.rei.api.client.gui.widgets.Widgets;
+
+import java.util.List;
 
 public interface DoubleItemInputCategory<T extends AMDisplay> extends AMCategory<T> {
 	@Override

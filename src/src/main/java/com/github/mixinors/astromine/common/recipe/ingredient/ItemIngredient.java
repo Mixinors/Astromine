@@ -58,7 +58,9 @@ public final class ItemIngredient {
 	}
 	
 	public boolean test(SingleSlotStorage<ItemVariant> testStorage) {
-		if (testStorage.isResourceBlank()) return false;
+		if (testStorage.isResourceBlank()) {
+			return false;
+		}
 		return test(testStorage.getResource(), testStorage.getAmount());
 	}
 	

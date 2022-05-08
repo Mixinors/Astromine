@@ -29,8 +29,6 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
 import dev.architectury.registry.menu.ExtendedMenuProvider;
 import dev.architectury.registry.menu.MenuRegistry;
-import org.jetbrains.annotations.NotNull;
-
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketByteBuf;
@@ -38,28 +36,29 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
 
 public class AMCommands {
 	public static void init() {
-		CommandRegistrationEvent.EVENT.register(( dispatcher, environment) -> {
-			dispatcher.register(LiteralArgumentBuilder.<ServerCommandSource> literal("recipe").then(LiteralArgumentBuilder.<ServerCommandSource> literal("creator").executes((context) -> {
+		CommandRegistrationEvent.EVENT.register((dispatcher, environment) -> {
+			dispatcher.register(LiteralArgumentBuilder.<ServerCommandSource>literal("recipe").then(LiteralArgumentBuilder.<ServerCommandSource>literal("creator").executes((context) -> {
 				MenuRegistry.openExtendedMenu(context.getSource().getPlayer(), new ExtendedMenuProvider() {
 					@Override
 					public void saveExtraData(PacketByteBuf packetByteBuf) {
 						
 					}
-
+					
 					@Override
 					public Text getDisplayName() {
 						return new LiteralText("Recipe Creator");
 					}
-
+					
 					@Override
 					public @NotNull ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
 						return new RecipeCreatorScreenHandler(syncId, player);
 					}
 				});
-
+				
 				return 1;
 			})));
 		});

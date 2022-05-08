@@ -25,8 +25,7 @@
 package com.github.mixinors.astromine.common.util.data;
 
 /**
- * A range between
- * {@link #minimum} and {@link #maximum}.
+ * A range between {@link #minimum} and {@link #maximum}.
  */
 public record Range<T extends Number>(T minimum, T maximum) {
 	/**

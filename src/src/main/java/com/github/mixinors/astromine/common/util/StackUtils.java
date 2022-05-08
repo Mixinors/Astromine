@@ -26,16 +26,10 @@ package com.github.mixinors.astromine.common.util;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
-import io.netty.buffer.ByteBuf;
-
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Pair;
 import net.minecraft.util.registry.Registry;
 
 public class StackUtils {
@@ -50,7 +44,7 @@ public class StackUtils {
 		if (!jsonElement.isJsonObject()) {
 			if (jsonElement.isJsonPrimitive()) {
 				var primitive = jsonElement.getAsJsonPrimitive();
-
+				
 				if (primitive.isString()) {
 					return new ItemStack(Registry.ITEM.get(new Identifier(primitive.getAsString())));
 				} else {
@@ -76,7 +70,7 @@ public class StackUtils {
 	public static ItemStack fromPacket(PacketByteBuf buffer) {
 		return buffer.readItemStack();
 	}
-
+	
 	public static void toPacket(PacketByteBuf buffer, ItemStack stack) {
 		buffer.writeItemStack(stack);
 	}

@@ -24,30 +24,24 @@
 
 package com.github.mixinors.astromine.registry.common;
 
-import java.util.function.Supplier;
-
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.block.entity.cable.CableBlockEntity;
-import com.github.mixinors.astromine.common.block.entity.storage.BufferBlockEntity;
-import com.github.mixinors.astromine.common.block.entity.storage.CapacitorBlockEntity;
-import com.github.mixinors.astromine.common.block.entity.storage.TankBlockEntity;
-import com.github.mixinors.astromine.common.block.entity.utility.DrainBlockEntity;
 import com.github.mixinors.astromine.common.block.entity.HoloBridgeProjectorBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.cable.CableBlockEntity;
 import com.github.mixinors.astromine.common.block.entity.machine.*;
 import com.github.mixinors.astromine.common.block.entity.machine.generator.FluidGeneratorBlockEntity;
 import com.github.mixinors.astromine.common.block.entity.machine.generator.SolidGeneratorBlockEntity;
-import com.github.mixinors.astromine.common.block.entity.utility.BlockBreakerBlockEntity;
-import com.github.mixinors.astromine.common.block.entity.utility.BlockPlacerBlockEntity;
-import com.github.mixinors.astromine.common.block.entity.utility.FluidCollectorBlockEntity;
-import com.github.mixinors.astromine.common.block.entity.utility.FluidPlacerBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.storage.BufferBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.storage.CapacitorBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.storage.TankBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.utility.*;
 import dev.architectury.registry.registries.RegistrySupplier;
-
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.registry.Registry;
 
-import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
+import java.util.function.Supplier;
 
 public class AMBlockEntityTypes {
 	public static final RegistrySupplier<BlockEntityType<CableBlockEntity>> CABLE = register("cable", CableBlockEntity::new, AMBlocks.PRIMITIVE_ENERGY_CABLE, AMBlocks.BASIC_ENERGY_CABLE, AMBlocks.ADVANCED_ENERGY_CABLE, AMBlocks.ELITE_ENERGY_CABLE, AMBlocks.FLUID_PIPE, AMBlocks.ITEM_CONDUIT);
@@ -141,16 +135,13 @@ public class AMBlockEntityTypes {
 	public static final RegistrySupplier<BlockEntityType<DrainBlockEntity>> DRAIN = register("drain", DrainBlockEntity::new, AMBlocks.DRAIN);
 	
 	public static void init() {
-
+	
 	}
-
+	
 	/**
-	 * @param name
-	 *        Name of BlockEntityType instance to be registered
-	 * @param supplier
-	 *        Supplier of BlockEntity to use for BlockEntityType
-	 * @param supportedBlocks
-	 *        Blocks the BlockEntity can be attached to
+	 * @param name            Name of BlockEntityType instance to be registered
+	 * @param supplier        Supplier of BlockEntity to use for BlockEntityType
+	 * @param supportedBlocks Blocks the BlockEntity can be attached to
 	 *
 	 * @return Registered BlockEntityType
 	 */
@@ -158,7 +149,7 @@ public class AMBlockEntityTypes {
 	public static <B extends BlockEntity> RegistrySupplier<BlockEntityType<B>> register(String name, FabricBlockEntityTypeBuilder.Factory<B> supplier, Supplier<Block>... supportedBlocks) {
 		return AMCommon.registry(Registry.BLOCK_ENTITY_TYPE_KEY).register(AMCommon.id(name), () -> FabricBlockEntityTypeBuilder.create(supplier, resolveBlocks(supportedBlocks)).build(null));
 	}
-
+	
 	private static Block[] resolveBlocks(Supplier<Block>[] supportedBlocks) {
 		var blocks = new Block[supportedBlocks.length];
 		for (var i = 0; i < supportedBlocks.length; i++) {

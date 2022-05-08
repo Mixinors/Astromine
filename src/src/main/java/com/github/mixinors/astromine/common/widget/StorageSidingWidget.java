@@ -24,9 +24,6 @@
 
 package com.github.mixinors.astromine.common.widget;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
@@ -38,19 +35,19 @@ import dev.architectury.networking.NetworkManager;
 import dev.vini2003.hammer.core.api.client.texture.BaseTexture;
 import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
 import dev.vini2003.hammer.gui.api.common.widget.BaseWidget;
-import org.jetbrains.annotations.NotNull;
-import org.lwjgl.glfw.GLFW;
-
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
+import org.jetbrains.annotations.NotNull;
+import org.lwjgl.glfw.GLFW;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import java.util.Arrays;
+import java.util.List;
 
 public class StorageSidingWidget extends BaseWidget {
 	private static final BaseTexture STANDARD_TEXTURE_INSERT = new ImageTexture(AMCommon.id("textures/widget/insert.png"));
@@ -80,7 +77,7 @@ public class StorageSidingWidget extends BaseWidget {
 		return switch (sidings[direction.ordinal()]) {
 			case INSERT -> STANDARD_TEXTURE_INSERT;
 			case EXTRACT -> STANDARD_TEXTURE_EXTRACT;
-			case INSERT_EXTRACT ->  STANDARD_TEXTURE_INSERT_EXTRACT;
+			case INSERT_EXTRACT -> STANDARD_TEXTURE_INSERT_EXTRACT;
 			case NONE -> STANDARD_TEXTURE_NONE;
 		};
 	}
@@ -135,19 +132,18 @@ public class StorageSidingWidget extends BaseWidget {
 		var name = switch (sidings[direction.ordinal()]) {
 			case INSERT -> new TranslatableText("text.astromine.siding.insert").styled(style -> style.withColor(0x0078FF));
 			case EXTRACT -> new TranslatableText("text.astromine.siding.extract").styled(style -> style.withColor(0xFF6100));
-			case INSERT_EXTRACT ->
-				new TranslatableText("text.astromine.siding.insert").styled(style -> style.withColor(0x9800FF)).append(
-						new LiteralText(" / ").styled(style -> style.withColor(0x9800FF))
-				).append(
-						new TranslatableText("text.astromine.siding.extract").styled(style -> style.withColor(0x9800FF))
-				);
+			case INSERT_EXTRACT -> new TranslatableText("text.astromine.siding.insert").styled(style -> style.withColor(0x9800FF)).append(
+					new LiteralText(" / ").styled(style -> style.withColor(0x9800FF))
+			).append(
+					new TranslatableText("text.astromine.siding.extract").styled(style -> style.withColor(0x9800FF))
+			);
 			
 			case NONE -> new TranslatableText("text.astromine.siding.none").styled(style -> style.withColor(0x909090));
 		};
 		
 		return Arrays.asList(new TranslatableText("text.astromine.siding." + offset.getName()), name);
 	}
-
+	
 	@Environment(EnvType.CLIENT)
 	@Override
 	public void drawWidget(@NotNull MatrixStack matrices, @NotNull VertexConsumerProvider provider, float delta) {

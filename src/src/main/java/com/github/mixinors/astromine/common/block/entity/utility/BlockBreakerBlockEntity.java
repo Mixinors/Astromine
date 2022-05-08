@@ -31,57 +31,56 @@ import com.github.mixinors.astromine.common.provider.config.UtilityConfigProvide
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.common.util.StackUtils;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import net.minecraft.block.Blocks;
-import org.jetbrains.annotations.NotNull;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
-
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
-
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import org.jetbrains.annotations.NotNull;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements UtilityConfigProvider<UtilityConfig> {
 	private long cooldown = 0L;
-
+	
 	public static final int OUTPUT_SLOT = 0;
-
+	
 	public static final int[] INSERT_SLOTS = new int[] { };
-
+	
 	public static final int[] EXTRACT_SLOTS = new int[] { OUTPUT_SLOT };
-
+	
 	public BlockBreakerBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.BLOCK_BREAKER, blockPos, blockState);
 		
 		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), 0L);
-
+		
 		itemStorage = new SimpleItemStorage(1).extractPredicate((variant, slot) ->
-			slot == OUTPUT_SLOT
+				slot == OUTPUT_SLOT
 		).insertPredicate((variant, slot) ->
-			false
+				false
 		).listener(() -> {
 			markDirty();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
-
+	
 	@Override
 	public void tick() {
 		super.tick();
-
-		if (world == null || world.isClient || !shouldRun())
+		
+		if (world == null || world.isClient || !shouldRun()) {
 			return;
-
+		}
+		
 		if (itemStorage != null && energyStorage != null) {
 			var consumed = getEnergyConsumed();
 			
 			if (energyStorage.getAmount() < consumed) {
 				cooldown = 0L;
-
+				
 				isActive = false;
 			} else {
 				try (var transaction = Transaction.openOuter()) {
@@ -148,21 +147,21 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Util
 			}
 		}
 	}
-
+	
 	@Override
 	public void writeNbt(NbtCompound nbt) {
 		nbt.putLong("Cooldown", cooldown);
 		
 		super.writeNbt(nbt);
 	}
-
+	
 	@Override
 	public void readNbt(@NotNull NbtCompound nbt) {
 		cooldown = nbt.getLong("Cooldown");
 		
 		super.readNbt(nbt);
 	}
-
+	
 	@Override
 	public UtilityConfig getConfig() {
 		return AMConfig.get().blocks.utilities.blockBreaker;

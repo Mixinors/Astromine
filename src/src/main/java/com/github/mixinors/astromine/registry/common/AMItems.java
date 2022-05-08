@@ -24,8 +24,6 @@
 
 package com.github.mixinors.astromine.registry.common;
 
-import java.util.function.Supplier;
-
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.item.*;
@@ -33,27 +31,21 @@ import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
 import com.github.mixinors.astromine.common.item.base.FluidStorageItem;
 import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 import dev.architectury.registry.registries.RegistrySupplier;
-
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.AxeItem;
-import net.minecraft.item.FoodComponent;
-import net.minecraft.item.HoeItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.PickaxeItem;
-import net.minecraft.item.ShovelItem;
-import net.minecraft.item.SwordItem;
+import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
+
+import java.util.function.Supplier;
 
 public class AMItems {
 	public static final RegistrySupplier<Item> ENERGY = register("energy", () -> new Item(new Item.Settings()));
 	public static final RegistrySupplier<Item> FLUID = register("fluid", () -> new Item(new Item.Settings()));
 	public static final RegistrySupplier<Item> ITEM = register("item", () -> new Item(new Item.Settings()));
-
+	
 	public static final RegistrySupplier<Item> MANUAL = register("manual", () -> new ManualItem(getSettings().maxCount(1)));
 	
 	public static final RegistrySupplier<Item> SPACE_SLIME_SPAWN_EGG = register("space_slime_spawn_egg", () -> new UncoloredSpawnEggItem(AMEntityTypes.SPACE_SLIME.get(), AMItems.getSettings()));
@@ -64,22 +56,22 @@ public class AMItems {
 	public static final RegistrySupplier<Item> ASTEROID_ASTERITE_ORE_CLUSTER = register("asteroid_asterite_ore_cluster", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> ASTEROID_STELLUM_ORE_CLUSTER = register("asteroid_stellum_ore_cluster", () -> new Item(AMItems.getSettings().fireproof()));
 	public static final RegistrySupplier<Item> ASTEROID_GALAXIUM_ORE_CLUSTER = register("asteroid_galaxium_ore_cluster", () -> new Item(AMItems.getSettings()));
-
+	
 	public static final RegistrySupplier<Item> ASTEROID_TIN_ORE_CLUSTER = register("asteroid_tin_ore_cluster", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> ASTEROID_SILVER_ORE_CLUSTER = register("asteroid_silver_ore_cluster", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> ASTEROID_LEAD_ORE_CLUSTER = register("asteroid_lead_ore_cluster", () -> new Item(AMItems.getSettings()));
-
+	
 	public static final RegistrySupplier<Item> ASTEROID_IRON_ORE_CLUSTER = register("asteroid_iron_ore_cluster", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> ASTEROID_GOLD_ORE_CLUSTER = register("asteroid_gold_ore_cluster", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> ASTEROID_COPPER_ORE_CLUSTER = register("asteroid_copper_ore_cluster", () -> new Item(AMItems.getSettings()));
-
+	
 	public static final RegistrySupplier<Item> ASTEROID_DIAMOND_ORE_CLUSTER = register("asteroid_diamond_ore_cluster", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> ASTEROID_EMERALD_ORE_CLUSTER = register("asteroid_emerald_ore_cluster", () -> new Item(AMItems.getSettings()));
-
+	
 	public static final RegistrySupplier<Item> ASTEROID_COAL_ORE_CLUSTER = register("asteroid_coal_ore_cluster", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> ASTEROID_LAPIS_ORE_CLUSTER = register("asteroid_lapis_ore_cluster", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> ASTEROID_REDSTONE_ORE_CLUSTER = register("asteroid_redstone_ore_cluster", () -> new Item(AMItems.getSettings()));
-
+	
 	public static final RegistrySupplier<Item> PRIMITIVE_ROCKET_FUEL_TANK = register("primitive_rocket_fuel_tank", () -> new Item(AMItems.getSettings().maxCount(1)));
 	public static final RegistrySupplier<Item> PRIMITIVE_ROCKET_PLATING = register("primitive_rocket_plating", () -> new Item(AMItems.getSettings().maxCount(1)));
 	public static final RegistrySupplier<Item> PRIMITIVE_ROCKET_HULL = register("primitive_rocket_hull", () -> new Item(AMItems.getSettings().maxCount(1)));
@@ -91,11 +83,11 @@ public class AMItems {
 	public static final RegistrySupplier<Item> SPACE_SUIT_BOOTS = register("space_suit_boots", () -> new SpaceSuitItem(AMArmorMaterials.SPACE_SUIT, EquipmentSlot.FEET, AMItems.getSettings()));
 	
 	public static final RegistrySupplier<Item> PRIMITIVE_ROCKET = register("rocket", () -> new RocketItem(AMEntityTypes.PRIMITIVE_ROCKET.get(), AMItems.getSettings()));
-
+	
 	public static final RegistrySupplier<Item> METITE_NUGGET = register("metite_nugget", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> STELLUM_NUGGET = register("stellum_nugget", () -> new Item(AMItems.getSettings().fireproof()));
 	public static final RegistrySupplier<Item> UNIVITE_NUGGET = register("univite_nugget", () -> new Item(AMItems.getSettings().fireproof()));
-
+	
 	public static final RegistrySupplier<Item> TIN_NUGGET = register("tin_nugget", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> SILVER_NUGGET = register("silver_nugget", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> LEAD_NUGGET = register("lead_nugget", () -> new Item(AMItems.getSettings()));
@@ -105,13 +97,13 @@ public class AMItems {
 	public static final RegistrySupplier<Item> ELECTRUM_NUGGET = register("electrum_nugget", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> FOOLS_GOLD_NUGGET = register("fools_gold_nugget", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> METEORIC_STEEL_NUGGET = register("meteoric_steel_nugget", () -> new Item(AMItems.getSettings()));
-
+	
 	public static final RegistrySupplier<Item> COPPER_NUGGET = register("copper_nugget", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> NETHERITE_NUGGET = register("netherite_nugget", () -> new Item(AMItems.getSettings().fireproof()));
 	
 	public static final RegistrySupplier<Item> ASTERITE_FRAGMENT = register("asterite_fragment", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> GALAXIUM_FRAGMENT = register("galaxium_fragment", () -> new Item(AMItems.getSettings()));
-
+	
 	public static final RegistrySupplier<Item> DIAMOND_FRAGMENT = register("diamond_fragment", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> EMERALD_FRAGMENT = register("emerald_fragment", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> QUARTZ_FRAGMENT = register("quartz_fragment", () -> new Item(AMItems.getSettings()));
@@ -129,7 +121,7 @@ public class AMItems {
 	public static final RegistrySupplier<Item> METITE_INGOT = register("metite_ingot", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> STELLUM_INGOT = register("stellum_ingot", () -> new Item(AMItems.getSettings().fireproof()));
 	public static final RegistrySupplier<Item> UNIVITE_INGOT = register("univite_ingot", () -> new Item(AMItems.getSettings().fireproof()));
-
+	
 	public static final RegistrySupplier<Item> TIN_INGOT = register("tin_ingot", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> SILVER_INGOT = register("silver_ingot", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> LEAD_INGOT = register("lead_ingot", () -> new Item(AMItems.getSettings()));
@@ -139,7 +131,7 @@ public class AMItems {
 	public static final RegistrySupplier<Item> ELECTRUM_INGOT = register("electrum_ingot", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> FOOLS_GOLD_INGOT = register("fools_gold_ingot", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> METEORIC_STEEL_INGOT = register("meteoric_steel_ingot", () -> new Item(AMItems.getSettings()));
-
+	
 	public static final RegistrySupplier<Item> RAW_TIN = register("raw_tin", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> RAW_SILVER = register("raw_silver", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> RAW_LEAD = register("raw_lead", () -> new Item(AMItems.getSettings()));
@@ -149,7 +141,7 @@ public class AMItems {
 	public static final RegistrySupplier<Item> STELLUM_DUST = register("stellum_dust", () -> new Item(AMItems.getSettings().fireproof()));
 	public static final RegistrySupplier<Item> GALAXIUM_DUST = register("galaxium_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> UNIVITE_DUST = register("univite_dust", () -> new Item(AMItems.getSettings().fireproof()));
-
+	
 	public static final RegistrySupplier<Item> TIN_DUST = register("tin_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> SILVER_DUST = register("silver_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> LEAD_DUST = register("lead_dust", () -> new Item(AMItems.getSettings()));
@@ -164,15 +156,15 @@ public class AMItems {
 	public static final RegistrySupplier<Item> GOLD_DUST = register("gold_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> COPPER_DUST = register("copper_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> NETHERITE_DUST = register("netherite_dust", () -> new Item(AMItems.getSettings().fireproof()));
-
+	
 	public static final RegistrySupplier<Item> DIAMOND_DUST = register("diamond_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> EMERALD_DUST = register("emerald_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> QUARTZ_DUST = register("quartz_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> AMETHYST_DUST = register("amethyst_dust", () -> new Item(AMItems.getSettings()));
-
+	
 	public static final RegistrySupplier<Item> COAL_DUST = register("coal_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> LAPIS_DUST = register("lapis_dust", () -> new Item(AMItems.getSettings()));
-
+	
 	public static final RegistrySupplier<Item> CHARCOAL_DUST = register("charcoal_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> RAW_NETHERITE_DUST = register("raw_netherite_dust", () -> new Item(AMItems.getSettings().fireproof()));
 	
@@ -181,7 +173,7 @@ public class AMItems {
 	public static final RegistrySupplier<Item> STELLUM_TINY_DUST = register("stellum_tiny_dust", () -> new Item(AMItems.getSettings().fireproof()));
 	public static final RegistrySupplier<Item> GALAXIUM_TINY_DUST = register("galaxium_tiny_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> UNIVITE_TINY_DUST = register("univite_tiny_dust", () -> new Item(AMItems.getSettings().fireproof()));
-
+	
 	public static final RegistrySupplier<Item> TIN_TINY_DUST = register("tin_tiny_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> SILVER_TINY_DUST = register("silver_tiny_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> LEAD_TINY_DUST = register("lead_tiny_dust", () -> new Item(AMItems.getSettings()));
@@ -191,29 +183,29 @@ public class AMItems {
 	public static final RegistrySupplier<Item> ELECTRUM_TINY_DUST = register("electrum_tiny_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> FOOLS_GOLD_TINY_DUST = register("fools_gold_tiny_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> METEORIC_STEEL_TINY_DUST = register("meteoric_steel_tiny_dust", () -> new Item(AMItems.getSettings()));
-
+	
 	public static final RegistrySupplier<Item> IRON_TINY_DUST = register("iron_tiny_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> GOLD_TINY_DUST = register("gold_tiny_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> COPPER_TINY_DUST = register("copper_tiny_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> NETHERITE_TINY_DUST = register("netherite_tiny_dust", () -> new Item(AMItems.getSettings().fireproof()));
-
+	
 	public static final RegistrySupplier<Item> DIAMOND_TINY_DUST = register("diamond_tiny_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> EMERALD_TINY_DUST = register("emerald_tiny_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> QUARTZ_TINY_DUST = register("quartz_tiny_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> AMETHYST_TINY_DUST = register("amethyst_tiny_dust", () -> new Item(AMItems.getSettings()));
-
+	
 	public static final RegistrySupplier<Item> COAL_TINY_DUST = register("coal_tiny_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> LAPIS_TINY_DUST = register("lapis_tiny_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> REDSTONE_TINY_DUST = register("redstone_tiny_dust", () -> new Item(AMItems.getSettings()));
-
+	
 	public static final RegistrySupplier<Item> CHARCOAL_TINY_DUST = register("charcoal_tiny_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> RAW_NETHERITE_TINY_DUST = register("raw_netherite_tiny_dust", () -> new Item(AMItems.getSettings().fireproof()));
 	public static final RegistrySupplier<Item> GLOWSTONE_TINY_DUST = register("glowstone_tiny_dust", () -> new Item(AMItems.getSettings()));
-
+	
 	public static final RegistrySupplier<Item> METITE_PLATE = register("metite_plate", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> STELLUM_PLATE = register("stellum_plate", () -> new Item(AMItems.getSettings().fireproof()));
 	public static final RegistrySupplier<Item> UNIVITE_PLATE = register("univite_plate", () -> new Item(AMItems.getSettings().fireproof()));
-
+	
 	public static final RegistrySupplier<Item> TIN_PLATE = register("tin_plate", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> SILVER_PLATE = register("silver_plate", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> LEAD_PLATE = register("lead_plate", () -> new Item(AMItems.getSettings()));
@@ -228,11 +220,11 @@ public class AMItems {
 	public static final RegistrySupplier<Item> GOLD_PLATE = register("gold_plate", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> COPPER_PLATE = register("copper_plate", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> NETHERITE_PLATE = register("netherite_plate", () -> new Item(AMItems.getSettings().fireproof()));
-
+	
 	public static final RegistrySupplier<Item> METITE_GEAR = register("metite_gear", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> STELLUM_GEAR = register("stellum_gear", () -> new Item(AMItems.getSettings().fireproof()));
 	public static final RegistrySupplier<Item> UNIVITE_GEAR = register("univite_gear", () -> new Item(AMItems.getSettings().fireproof()));
-
+	
 	public static final RegistrySupplier<Item> TIN_GEAR = register("tin_gear", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> SILVER_GEAR = register("silver_gear", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> LEAD_GEAR = register("lead_gear", () -> new Item(AMItems.getSettings()));
@@ -289,7 +281,7 @@ public class AMItems {
 	public static final RegistrySupplier<ShovelItem> UNIVITE_SHOVEL = register("univite_shovel", () -> new ShovelItem(AMToolMaterials.UNIVITE, 1.5f, -3.0f, AMItems.getSettings().fireproof()));
 	public static final RegistrySupplier<HoeItem> UNIVITE_HOE = register("univite_hoe", () -> new HoeItem(AMToolMaterials.UNIVITE, -6, 0f, AMItems.getSettings().fireproof()));
 	public static final RegistrySupplier<Item> UNIVITE_SWORD = register("univite_sword", () -> new SwordItem(AMToolMaterials.UNIVITE, 3, -2.4f, AMItems.getSettings().fireproof()));
-
+	
 	public static final RegistrySupplier<PickaxeItem> METEORIC_STEEL_PICKAXE = register("meteoric_steel_pickaxe", () -> new PickaxeItem(AMToolMaterials.METEORIC_STEEL, 1, -2.8f, AMItems.getSettings()));
 	public static final RegistrySupplier<AxeItem> METEORIC_STEEL_AXE = register("meteoric_steel_axe", () -> new AxeItem(AMToolMaterials.METEORIC_STEEL, 5f, -3.0f, AMItems.getSettings()));
 	public static final RegistrySupplier<ShovelItem> METEORIC_STEEL_SHOVEL = register("meteoric_steel_shovel", () -> new ShovelItem(AMToolMaterials.METEORIC_STEEL, 1.5f, -3.0f, AMItems.getSettings()));
@@ -402,33 +394,29 @@ public class AMItems {
 	public static final RegistrySupplier<Item> GRAVITY_GAUNTLET = register("gravity_gauntlet", () -> new GravityGauntletItem(getSettings().maxCount(1), AMConfig.get().items.gravityGauntletEnergy));
 	
 	public static void init() {
-
+	
 	}
-
+	
 	/**
-	 * @param name
-	 *        Name of item instance to be registered
-	 * @param item
-	 *        Item instance to be registered
+	 * @param name Name of item instance to be registered
+	 * @param item Item instance to be registered
 	 *
 	 * @return Item instance registered
 	 */
 	public static <T extends Item> RegistrySupplier<T> register(String name, Supplier<T> item) {
 		return register(AMCommon.id(name), item);
 	}
-
+	
 	/**
-	 * @param name
-	 *        Identifier of item instance to be registered
-	 * @param item
-	 *        Item instance to be registered
+	 * @param name Identifier of item instance to be registered
+	 * @param item Item instance to be registered
 	 *
 	 * @return Item instance registered
 	 */
 	public static <T extends Item> RegistrySupplier<T> register(Identifier name, Supplier<T> item) {
 		return AMCommon.registry(Registry.ITEM_KEY).register(name, item);
 	}
-
+	
 	public static Item.Settings getSettings() {
 		return new Item.Settings().group(AMItemGroups.ASTROMINE);
 	}

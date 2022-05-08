@@ -24,22 +24,19 @@
 
 package com.github.mixinors.astromine.client.rei.fluidmixing;
 
-import java.util.Arrays;
-import java.util.Collections;
-
-import com.google.common.collect.Lists;
-
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.client.rei.base.input.EnergyInputDisplay;
 import com.github.mixinors.astromine.common.recipe.FluidMixingRecipe;
+import com.google.common.collect.Lists;
 import dev.architectury.fluid.FluidStack;
-
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 @Environment(EnvType.CLIENT)
 public class FluidMixingDisplay extends EnergyInputDisplay {
@@ -53,7 +50,7 @@ public class FluidMixingDisplay extends EnergyInputDisplay {
 				recipe.getTime(), recipe.getEnergyInput(), recipe.getId()
 		);
 	}
-
+	
 	@Override
 	public CategoryIdentifier<?> getCategoryIdentifier() {
 		return AMRoughlyEnoughItemsPlugin.FLUID_MIXING;

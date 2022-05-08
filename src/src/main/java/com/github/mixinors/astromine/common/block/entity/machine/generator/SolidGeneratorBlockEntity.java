@@ -24,8 +24,6 @@
 
 package com.github.mixinors.astromine.common.block.entity.machine.generator;
 
-import java.util.function.Supplier;
-
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.config.entry.tiered.SimpleMachineConfig;
@@ -33,17 +31,17 @@ import com.github.mixinors.astromine.common.provider.config.tiered.MachineConfig
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import org.jetbrains.annotations.NotNull;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
-
+import net.fabricmc.fabric.api.registry.FuelRegistry;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BucketItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
+import org.jetbrains.annotations.NotNull;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-import net.fabricmc.fabric.api.registry.FuelRegistry;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import java.util.function.Supplier;
 
 public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity implements MachineConfigProvider<SimpleMachineConfig> {
 	private double available = 0;
@@ -55,7 +53,7 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 	private static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
 	
 	private static final int[] EXTRACT_SLOTS = new int[] { };
-
+	
 	public SolidGeneratorBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
@@ -72,19 +70,20 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 			
 			return FuelRegistry.INSTANCE.get(variant.getItem()) != null;
 		}).extractPredicate((variant, slot) ->
-			false
+				false
 		).listener(() -> {
 			markDirty();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
-
+	
 	@Override
 	public void tick() {
 		super.tick();
-
-		if (world == null || world.isClient || !shouldRun())
+		
+		if (world == null || world.isClient || !shouldRun()) {
 			return;
-
+		}
+		
 		if (itemStorage != null && energyStorage != null) {
 			try (var transaction = Transaction.openOuter()) {
 				if (available > 0) {
@@ -98,7 +97,7 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 							
 							if (energyStorage.amount + produced <= energyStorage.capacity) {
 								energyStorage.amount += produced;
-
+								
 								--available;
 								
 								++produced;
@@ -142,7 +141,7 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 							
 							nestedTransaction.commit();
 						}
-
+						
 						isActive = isFuel || progress != 0;
 					} else {
 						isActive = false;
@@ -153,7 +152,7 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 			}
 		}
 	}
-
+	
 	@Override
 	public void writeNbt(NbtCompound nbt) {
 		nbt.putDouble("Progress", progress);
@@ -162,7 +161,7 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 		
 		super.writeNbt(nbt);
 	}
-
+	
 	@Override
 	public void readNbt(@NotNull NbtCompound nbt) {
 		progress = nbt.getDouble("Progress");
@@ -171,50 +170,50 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 		
 		super.readNbt(nbt);
 	}
-
+	
 	@Override
 	public SimpleMachineConfig getConfig() {
 		return AMConfig.get().blocks.machines.solidGenerator;
 	}
-
+	
 	public static class Primitive extends SolidGeneratorBlockEntity {
 		public Primitive(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.PRIMITIVE_SOLID_GENERATOR, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.PRIMITIVE;
 		}
 	}
-
+	
 	public static class Basic extends SolidGeneratorBlockEntity {
 		public Basic(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.BASIC_SOLID_GENERATOR, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.BASIC;
 		}
 	}
-
+	
 	public static class Advanced extends SolidGeneratorBlockEntity {
 		public Advanced(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ADVANCED_SOLID_GENERATOR, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.ADVANCED;
 		}
 	}
-
+	
 	public static class Elite extends SolidGeneratorBlockEntity {
 		public Elite(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ELITE_SOLID_GENERATOR, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.ELITE;

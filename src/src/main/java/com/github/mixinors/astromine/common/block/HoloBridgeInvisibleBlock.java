@@ -25,14 +25,9 @@
 package com.github.mixinors.astromine.common.block;
 
 import com.github.mixinors.astromine.common.component.world.WorldHoloBridgeComponent;
-
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.MapColor;
-import net.minecraft.block.Material;
-import net.minecraft.block.ShapeContext;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.block.*;
 import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
@@ -40,44 +35,41 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 public class HoloBridgeInvisibleBlock extends Block {
 	public static final Material MATERIAL = new Material.Builder(MapColor.CLEAR).build();
-
+	
 	public HoloBridgeInvisibleBlock(AbstractBlock.Settings settings) {
 		super(settings);
 	}
-
+	
 	@Override
 	public boolean isTranslucent(BlockState state, BlockView world, BlockPos pos) {
 		return true;
 	}
-
+	
 	@Override
 	public BlockRenderType getRenderType(BlockState state) {
 		return BlockRenderType.INVISIBLE;
 	}
-
+	
 	@Override
 	@Environment(EnvType.CLIENT)
 	public float getAmbientOcclusionLightLevel(BlockState state, BlockView world, BlockPos pos) {
 		return 1.0F;
 	}
-
+	
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos position, ShapeContext context) {
 		return context.isHolding(Items.DEBUG_STICK) ? getCollisionShape(state, world, position, context) : VoxelShapes.empty();
 	}
-
+	
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos position, ShapeContext context) {
 		if (!(world instanceof World)) {
 			return VoxelShapes.empty();
 		} else {
 			var bridgeComponent = WorldHoloBridgeComponent.get(world);
-
+			
 			return bridgeComponent.getShape(position);
 		}
 	}

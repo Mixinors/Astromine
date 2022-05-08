@@ -43,20 +43,21 @@ import net.minecraft.world.World;
 
 public class GravityGauntletItem extends EnergyStorageItem {
 	private static final Multimap<EntityAttribute, EntityAttributeModifier> EAMS = HashMultimap.create();
-
+	
 	static {
 		EAMS.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "attack", 4f, EntityAttributeModifier.Operation.ADDITION));
 	}
-
+	
 	public GravityGauntletItem(Settings settings, long capacity) {
 		super(settings, capacity);
 	}
-
+	
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		var stack = user.getStackInHand(hand);
-		if (hand == Hand.OFF_HAND)
+		if (hand == Hand.OFF_HAND) {
 			return TypedActionResult.pass(stack);
+		}
 		var offStack = user.getStackInHand(Hand.OFF_HAND);
 		if (offStack.isOf(AMItems.GRAVITY_GAUNTLET.get())) {
 			if (getStoredEnergy(stack) >= AMConfig.get().items.gravityGauntletConsumed && getStoredEnergy(offStack) >= AMConfig.get().items.gravityGauntletConsumed) {
@@ -66,11 +67,12 @@ public class GravityGauntletItem extends EnergyStorageItem {
 		}
 		return super.use(world, user, hand);
 	}
-
+	
 	@Override
 	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
-		if (world.isClient)
+		if (world.isClient) {
 			return stack;
+		}
 		var offStack = user.getStackInHand(Hand.OFF_HAND);
 		if (offStack.isOf(AMItems.GRAVITY_GAUNTLET.get())) {
 			if (getStoredEnergy(stack) >= AMConfig.get().items.gravityGauntletConsumed && getStoredEnergy(offStack) >= AMConfig.get().items.gravityGauntletConsumed) {
@@ -83,21 +85,22 @@ public class GravityGauntletItem extends EnergyStorageItem {
 		}
 		return super.finishUsing(stack, world, user);
 	}
-
+	
 	@Override
 	public UseAction getUseAction(ItemStack stack) {
 		return UseAction.BLOCK;
 	}
-
+	
 	@Override
 	public int getMaxUseTime(ItemStack stack) {
 		return 30;
 	}
-
+	
 	@Override
 	public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		if (attacker.world.isClient)
+		if (attacker.world.isClient) {
 			return super.postHit(stack, target, attacker);
+		}
 		var offStack = attacker.getStackInHand(Hand.OFF_HAND);
 		if (offStack.getItem() == AMItems.GRAVITY_GAUNTLET.get()) {
 			if (stack.getOrCreateNbt().getBoolean("Charged") && offStack.getOrCreateNbt().getBoolean("Charged")) {
@@ -110,7 +113,7 @@ public class GravityGauntletItem extends EnergyStorageItem {
 		}
 		return super.postHit(stack, target, attacker);
 	}
-
+	
 	@Override
 	public boolean hasGlint(ItemStack stack) {
 		return stack.getOrCreateNbt().getBoolean("Charged");

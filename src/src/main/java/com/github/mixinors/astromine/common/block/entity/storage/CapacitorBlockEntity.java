@@ -24,8 +24,6 @@
 
 package com.github.mixinors.astromine.common.block.entity.storage;
 
-import java.util.function.Supplier;
-
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.config.entry.tiered.SimpleMachineConfig;
@@ -33,16 +31,16 @@ import com.github.mixinors.astromine.common.provider.config.tiered.MachineConfig
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.util.math.BlockPos;
 import team.reborn.energy.api.EnergyStorage;
 import team.reborn.energy.api.EnergyStorageUtil;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.util.math.BlockPos;
-
-import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import java.util.function.Supplier;
 
 public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implements MachineConfigProvider<SimpleMachineConfig> {
 	private static final int INPUT_SLOT = 0;
@@ -59,9 +57,9 @@ public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implement
 		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), getMachineTier() == MachineTier.CREATIVE ? 0L : getMaxTransferRate(), getMaxTransferRate());
 		
 		itemStorage = new SimpleItemStorage(2).insertPredicate((variant, slot) ->
-			slot == INPUT_SLOT
+				slot == INPUT_SLOT
 		).extractPredicate((stack, slot) ->
-			slot == OUTPUT_SLOT
+				slot == OUTPUT_SLOT
 		).listener(() -> {
 			markDirty();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
@@ -70,9 +68,10 @@ public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implement
 	@Override
 	public void tick() {
 		super.tick();
-
-		if (world == null || world.isClient || !shouldRun())
+		
+		if (world == null || world.isClient || !shouldRun()) {
 			return;
+		}
 		
 		var wildItemStorage = itemStorage.getWildProxy();
 		
@@ -89,66 +88,66 @@ public abstract class CapacitorBlockEntity extends ExtendedBlockEntity implement
 			transaction.commit();
 		}
 	}
-
+	
 	@Override
 	public SimpleMachineConfig getConfig() {
 		return AMConfig.get().blocks.utilities.capacitors;
 	}
-
+	
 	public static class Primitive extends CapacitorBlockEntity {
 		public Primitive(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.PRIMITIVE_CAPACITOR, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.PRIMITIVE;
 		}
 	}
-
+	
 	public static class Basic extends CapacitorBlockEntity {
 		public Basic(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.BASIC_CAPACITOR, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.BASIC;
 		}
 	}
-
+	
 	public static class Advanced extends CapacitorBlockEntity {
 		public Advanced(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ADVANCED_CAPACITOR, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.ADVANCED;
 		}
 	}
-
+	
 	public static class Elite extends CapacitorBlockEntity {
 		public Elite(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ELITE_CAPACITOR, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.ELITE;
 		}
 	}
-
+	
 	public static class Creative extends CapacitorBlockEntity {
 		public Creative(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.CREATIVE_CAPACITOR, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.CREATIVE;
 		}
-
+		
 		@Override
 		public void tick() {
 			super.tick();

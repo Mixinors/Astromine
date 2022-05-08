@@ -29,7 +29,9 @@ public sealed interface TransferNetworkType<T> extends NetworkType<Storage<T>> p
 					var offering = 0L;
 					var requesting = 0L;
 					
-					if (extractableView.isResourceBlank()) continue;
+					if (extractableView.isResourceBlank()) {
+						continue;
+					}
 					var resource = extractableView.getResource();
 					
 					var availableToExtract = Math.min(getTransferRate() - transacted, extractableView.getAmount());
@@ -40,7 +42,9 @@ public sealed interface TransferNetworkType<T> extends NetworkType<Storage<T>> p
 						availableToExtract = extractableView.extract(resource, availableToExtract, extractionTestTransaction);
 					}
 					
-					if (availableToExtract <= 0) continue;
+					if (availableToExtract <= 0) {
+						continue;
+					}
 					
 					for (var insertableStorageEntry : insertableStorages.long2ObjectEntrySet()) {
 						var posLong = insertableStorageEntry.getLongKey();
@@ -109,7 +113,9 @@ public sealed interface TransferNetworkType<T> extends NetworkType<Storage<T>> p
 	}
 	
 	private static <T> long move(T resource, @Nullable StorageView<T> from, @Nullable Storage<T> to, long maxAmount, @Nullable TransactionContext transaction) {
-		if (from == null || to == null) return 0;
+		if (from == null || to == null) {
+			return 0;
+		}
 		
 		StoragePreconditions.notNegative(maxAmount);
 		

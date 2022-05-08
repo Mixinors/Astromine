@@ -24,19 +24,17 @@
 
 package com.github.mixinors.astromine.common.util;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.common.collect.ImmutableMap;
-
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.StorageType;
 import com.github.mixinors.astromine.common.widget.StorageSidingWidget;
+import com.google.common.collect.ImmutableMap;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
-
 import net.minecraft.util.math.Direction;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class WidgetUtils {
 	public static List<StorageSidingWidget> createStorageSiding(Position anchor, ExtendedBlockEntity blockEntity, StorageSiding[] sidings, StorageType type, Direction rotation) {
@@ -48,13 +46,13 @@ public class WidgetUtils {
 		var east = new Position(anchor, 7.0F, 31.0F + 22.0F, 0.0F);
 		
 		var positions = ImmutableMap.<Direction, Position>builder()
-				.put(Direction.NORTH, north)
-				.put(Direction.SOUTH, south)
-				.put(Direction.WEST, west)
-				.put(Direction.EAST, east)
-				.put(Direction.UP, up)
-				.put(Direction.DOWN, down)
-				.build();
+									.put(Direction.NORTH, north)
+									.put(Direction.SOUTH, south)
+									.put(Direction.WEST, west)
+									.put(Direction.EAST, east)
+									.put(Direction.UP, up)
+									.put(Direction.DOWN, down)
+									.build();
 		
 		var list = new ArrayList<StorageSidingWidget>();
 		
@@ -67,7 +65,7 @@ public class WidgetUtils {
 			button.setType(type);
 			button.setRotation(rotation);
 			button.setDirection(direction);
-
+			
 			list.add(button);
 		}
 		

@@ -26,7 +26,6 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
 import dev.architectury.registry.registries.RegistrySupplier;
-
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.util.registry.Registry;
 
@@ -37,10 +36,8 @@ public class AMParticles {
 	/**
 	 * Registers a new {@link DefaultParticleType} instance under the given name.
 	 *
-	 * @param name
-	 *        Name of {@link DefaultParticleType} to register
-	 * @param alwaysShow
-	 *        Whether the particle should always appear visible
+	 * @param name       Name of {@link DefaultParticleType} to register
+	 * @param alwaysShow Whether the particle should always appear visible
 	 *
 	 * @return Registered {@link DefaultParticleType}
 	 */

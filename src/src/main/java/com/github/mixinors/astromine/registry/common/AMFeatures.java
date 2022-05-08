@@ -73,28 +73,28 @@ public class AMFeatures {
 	
 	public static void init() {
 		// TODO: Asteroid ores
-
+		
 		BiomeModifications.create(ASTROMINE_BIOME_MODIFICATIONS)
-				.add(ModificationPhase.ADDITIONS, overworldPredicate(), context -> {
-					if (AMConfig.get().world.meteorGeneration) {
+						  .add(ModificationPhase.ADDITIONS, overworldPredicate(), context -> {
+							  if (AMConfig.get().world.meteorGeneration) {
 //						context.getGenerationSettings().addStructure(METEOR_KEY);
-					}
-				})
-				.add(ModificationPhase.ADDITIONS, oceanPredicate(), context -> {
-					if (AMConfig.get().world.crudeOilWellsGeneration) {
-						context.getGenerationSettings().addFeature(GenerationStep.Feature.FLUID_SPRINGS, CRUDE_OIL_KEY);
-					}
-				});
+							  }
+						  })
+						  .add(ModificationPhase.ADDITIONS, oceanPredicate(), context -> {
+							  if (AMConfig.get().world.crudeOilWellsGeneration) {
+								  context.getGenerationSettings().addFeature(GenerationStep.Feature.FLUID_SPRINGS, CRUDE_OIL_KEY);
+							  }
+						  });
 	}
 	
 	public static <T extends FeatureConfig> RegistrySupplier<Feature<T>> registerFeature(Identifier id, Supplier<Feature<T>> feature) {
 		return AMCommon.registry(Registry.FEATURE_KEY).register(id, feature);
 	}
-
+	
 	public static <T extends FeatureConfig, F extends Feature<T>> RegistryEntry<ConfiguredFeature<T, ?>> registerConfiguredFeature(Identifier id, F feature, T config) {
 		return ConfiguredFeatures.register(id.toString(), feature, config);
 	}
-
+	
 	public static <T extends FeatureConfig> RegistryEntry<PlacedFeature> registerPlacedFeature(Identifier id, RegistryEntry<ConfiguredFeature<T, ?>> feature, PlacementModifier... mods) {
 		return PlacedFeatures.register(id.toString(), feature, mods);
 	}
@@ -102,7 +102,7 @@ public class AMFeatures {
 	public static <T extends FeatureConfig> RegistryEntry<PlacedFeature> registerPlacedFeature(Identifier id, RegistryEntry<ConfiguredFeature<T, ?>> feature, List<PlacementModifier> mods) {
 		return PlacedFeatures.register(id.toString(), feature, mods);
 	}
-
+	
 	public static <T extends StructurePieceType> RegistrySupplier<T> registerStructurePiece(Identifier id, Supplier<T> pieceType) {
 		return AMCommon.registry(Registry.STRUCTURE_PIECE_KEY).register(id, pieceType);
 	}
@@ -114,7 +114,7 @@ public class AMFeatures {
 //				.enableSuperflat()
 //				.register();
 //	}
-
+	
 	public static <T extends FeatureConfig> ConfiguredStructureFeature<T, ?> registerConfiguredStructureFeature(Identifier id, ConfiguredStructureFeature<T, ?> feature) {
 		return Registry.register(BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE, id, feature);
 	}

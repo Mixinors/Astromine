@@ -26,7 +26,6 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.fluid.ExtendedFluid;
-
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.registry.Registry;
 
@@ -42,9 +41,9 @@ public class AMFluids {
 	public static final ExtendedFluid HYDROGEN = ExtendedFluid.builder().fog(0x7eff0019).tint(0xffff0019).damage(0).toxic(false).infinite(false).name("hydrogen").group(AMItemGroups.ASTROMINE).build();
 	
 	public static void init() {
-
+	
 	}
-
+	
 	public static <T extends Fluid> T register(String name, T fluid) {
 		return Registry.register(Registry.FLUID, AMCommon.id(name), fluid);
 	}

@@ -24,29 +24,17 @@
 
 package com.github.mixinors.astromine.common.widget;
 
+import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.common.util.TextUtils;
+import dev.vini2003.hammer.core.api.client.texture.BaseTexture;
+import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
+import dev.vini2003.hammer.gui.api.common.widget.bar.TextureBarWidget;
+import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.function.IntSupplier;
-
-import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.util.ClientUtils;
-import com.github.mixinors.astromine.common.util.TextUtils;
-import dev.vini2003.hammer.core.api.client.scissor.Scissors;
-import dev.vini2003.hammer.core.api.client.texture.BaseTexture;
-import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
-import dev.vini2003.hammer.core.api.client.util.DrawingUtils;
-import dev.vini2003.hammer.core.api.client.util.LayerUtils;
-import dev.vini2003.hammer.gui.api.common.widget.BaseWidget;
-import dev.vini2003.hammer.gui.api.common.widget.bar.TextureBarWidget;
-import org.jetbrains.annotations.NotNull;
-
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 public class HorizontalArrowWidget extends TextureBarWidget {
 	private static final BaseTexture STANDARD_BACKGROUND_TEXTURE = new ImageTexture(AMCommon.id("textures/widget/horizontal_arrow_background.png"));

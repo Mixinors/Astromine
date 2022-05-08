@@ -25,17 +25,14 @@
 package com.github.mixinors.astromine.common.util.data.redstone;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.ComparatorBlockEntity;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.api.EnergyStorage;
 
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.ComparatorBlockEntity;
-
-import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
-
 /**
- * A handler of {@link ComparatorBlockEntity}
- * output levels.
+ * A handler of {@link ComparatorBlockEntity} output levels.
  */
 public class ComparatorOutput {
 	public static int forItems(BlockEntity blockEntity) {
@@ -44,21 +41,21 @@ public class ComparatorOutput {
 		}
 		return 0;
 	}
-
+	
 	public static int forFluids(BlockEntity blockEntity) {
 		if (blockEntity instanceof ExtendedBlockEntity extendedBlockEntity) {
 			return StorageUtil.calculateComparatorOutput(extendedBlockEntity.getFluidStorage(), null);
 		}
 		return 0;
 	}
-
+	
 	public static int forEnergy(BlockEntity blockEntity) {
 		if (blockEntity instanceof ExtendedBlockEntity extendedBlockEntity) {
 			return forEnergy(extendedBlockEntity.getEnergyStorage());
 		}
 		return 0;
 	}
-
+	
 	/**
 	 * Returns the output level for an {@link EnergyStorage}.
 	 */
@@ -66,11 +63,11 @@ public class ComparatorOutput {
 		if (storage == null) {
 			return 0;
 		}
-
+		
 		if (storage.getAmount() <= 0.0001) {
 			return 0;
 		}
-
+		
 		return 1 + (int) (storage.getAmount() / storage.getCapacity() * 14.0);
 	}
 }

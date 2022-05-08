@@ -24,13 +24,11 @@
 
 package com.github.mixinors.astromine.registry.client;
 
-import static com.github.mixinors.astromine.registry.common.AMNetworks.PRIMITIVE_ROCKET_SPAWN;
-
-import com.github.mixinors.astromine.common.util.ClientUtils;
 import com.github.mixinors.astromine.registry.common.AMEntityTypes;
 import dev.architectury.networking.NetworkManager;
-import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
 import net.minecraft.client.world.ClientWorld;
+
+import static com.github.mixinors.astromine.registry.common.AMNetworks.PRIMITIVE_ROCKET_SPAWN;
 
 public class AMClientNetworks {
 	public static void init() {
@@ -40,7 +38,7 @@ public class AMClientNetworks {
 			var z = buf.readDouble();
 			var uuid = buf.readUuid();
 			var id = buf.readInt();
-
+			
 			context.queue(() -> {
 				var player = context.getPlayer();
 				var world = (ClientWorld) player.world;

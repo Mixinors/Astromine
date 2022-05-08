@@ -24,9 +24,6 @@
 
 package com.github.mixinors.astromine.common.block.entity.machine;
 
-import java.util.Optional;
-import java.util.function.Supplier;
-
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.config.entry.tiered.FluidStorageMachineConfig;
@@ -35,20 +32,21 @@ import com.github.mixinors.astromine.common.recipe.ElectrolyzingRecipe;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import org.jetbrains.annotations.NotNull;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
-
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
+import org.jetbrains.annotations.NotNull;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 public abstract class ElectrolyzerBlockEntity extends ExtendedBlockEntity implements FluidStorageMachineConfigProvider {
 	public double progress = 0;
 	public int limit = 100;
-
+	
 	private static final int INPUT_SLOT = 0;
 	
 	private static final int OUTPUT_SLOT_1 = 1;
@@ -59,7 +57,7 @@ public abstract class ElectrolyzerBlockEntity extends ExtendedBlockEntity implem
 	private static final int[] EXTRACT_SLOTS = new int[] { OUTPUT_SLOT_1, OUTPUT_SLOT_2 };
 	
 	private Optional<ElectrolyzingRecipe> optionalRecipe = Optional.empty();
-
+	
 	public ElectrolyzerBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
@@ -72,7 +70,7 @@ public abstract class ElectrolyzerBlockEntity extends ExtendedBlockEntity implem
 			
 			return ElectrolyzingRecipe.allows(world, variant);
 		}).extractPredicate((variant, slot) ->
-			slot == OUTPUT_SLOT_1 || slot == OUTPUT_SLOT_2
+				slot == OUTPUT_SLOT_1 || slot == OUTPUT_SLOT_2
 		).listener(() -> {
 			if (optionalRecipe.isPresent() && !optionalRecipe.get().matches(fluidStorage.slice(INPUT_SLOT, OUTPUT_SLOT_1, OUTPUT_SLOT_2))) {
 				optionalRecipe = Optional.empty();
@@ -81,26 +79,27 @@ public abstract class ElectrolyzerBlockEntity extends ExtendedBlockEntity implem
 			markDirty();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
-
+	
 	@Override
 	public void tick() {
 		super.tick();
-
-		if (world == null || world.isClient || !shouldRun())
+		
+		if (world == null || world.isClient || !shouldRun()) {
 			return;
-
+		}
+		
 		if (fluidStorage != null && energyStorage != null) {
 			if (optionalRecipe.isEmpty()) {
 				optionalRecipe = ElectrolyzingRecipe.matching(world, fluidStorage.slice(INPUT_SLOT, OUTPUT_SLOT_1, OUTPUT_SLOT_2));
-
+				
 				if (optionalRecipe.isEmpty()) {
-
+				
 				}
 			}
-
+			
 			if (optionalRecipe.isPresent()) {
 				var recipe = optionalRecipe.get();
-
+				
 				limit = recipe.time();
 				
 				var speed = Math.min(getSpeed(), limit - progress);
@@ -109,7 +108,7 @@ public abstract class ElectrolyzerBlockEntity extends ExtendedBlockEntity implem
 				try (var transaction = Transaction.openOuter()) {
 					if (energyStorage.amount >= consumed) {
 						energyStorage.amount -= consumed;
-
+						
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
 							
@@ -121,12 +120,12 @@ public abstract class ElectrolyzerBlockEntity extends ExtendedBlockEntity implem
 							var secondOutputStorage = fluidStorage.getStorage(OUTPUT_SLOT_2);
 							
 							if (recipe.firstOutput().equalsAndFitsIn(firstOutputStorage) &&
-								recipe.secondOutput().equalsAndFitsIn(secondOutputStorage)) {
+									recipe.secondOutput().equalsAndFitsIn(secondOutputStorage)) {
 								
 								firstOutputStorage.insert(recipe.firstOutput().variant(), recipe.firstOutput().amount(), transaction, true);
 								secondOutputStorage.insert(recipe.secondOutput().variant(), recipe.secondOutput().amount(), transaction, true);
 							} else if (recipe.firstOutput().equalsAndFitsIn(secondOutputStorage) &&
-									   recipe.secondOutput().equalsAndFitsIn(firstOutputStorage)) {
+									recipe.secondOutput().equalsAndFitsIn(firstOutputStorage)) {
 								
 								firstOutputStorage.insert(recipe.secondOutput().variant(), recipe.secondOutput().amount(), transaction, true);
 								secondOutputStorage.insert(recipe.firstOutput().variant(), recipe.firstOutput().amount(), transaction, true);
@@ -167,50 +166,50 @@ public abstract class ElectrolyzerBlockEntity extends ExtendedBlockEntity implem
 		
 		super.readNbt(nbt);
 	}
-
+	
 	@Override
 	public FluidStorageMachineConfig getConfig() {
 		return AMConfig.get().blocks.machines.electrolyzer;
 	}
-
+	
 	public static class Primitive extends ElectrolyzerBlockEntity {
 		public Primitive(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.PRIMITIVE_ELECTROLYZER, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.PRIMITIVE;
 		}
 	}
-
+	
 	public static class Basic extends ElectrolyzerBlockEntity {
 		public Basic(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.BASIC_ELECTROLYZER, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.BASIC;
 		}
 	}
-
+	
 	public static class Advanced extends ElectrolyzerBlockEntity {
 		public Advanced(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ADVANCED_ELECTROLYZER, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.ADVANCED;
 		}
 	}
-
+	
 	public static class Elite extends ElectrolyzerBlockEntity {
 		public Elite(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ELITE_ELECTROLYZER, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.ELITE;

@@ -24,27 +24,20 @@
 
 package com.github.mixinors.astromine.registry.client;
 
-import com.github.mixinors.astromine.common.block.network.EnergyCableBlock;
-import com.github.mixinors.astromine.common.item.base.FluidStorageItem;
-import com.google.common.collect.Lists;
-
 import com.github.mixinors.astromine.client.render.sky.SpaceSkyProperties;
+import com.github.mixinors.astromine.common.block.network.EnergyCableBlock;
 import com.github.mixinors.astromine.common.callback.SkyPropertiesCallback;
 import com.github.mixinors.astromine.common.item.HolographicConnectorItem;
 import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
 import dev.vini2003.hammer.core.api.common.util.TextUtils;
 import dev.vini2003.hammer.gui.energy.api.common.util.EnergyTextUtils;
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import team.reborn.energy.api.EnergyStorage;
-import team.reborn.energy.api.base.SimpleBatteryItem;
-
 import net.minecraft.item.BlockItem;
-import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
-
-import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import team.reborn.energy.api.EnergyStorage;
 
 public class AMClientCallbacks {
 	public static void init() {
@@ -61,7 +54,7 @@ public class AMClientCallbacks {
 				}
 			}
 		});
-
+		
 		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
 			if (stack.getItem() instanceof HolographicConnectorItem) {
 				var pair = ((HolographicConnectorItem) stack.getItem()).readBlock(stack);

@@ -26,11 +26,6 @@ package com.github.mixinors.astromine.common.util;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-
-import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
-import com.github.mixinors.astromine.common.recipe.ingredient.ItemIngredient;
-import io.netty.buffer.ByteBuf;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
@@ -60,10 +55,10 @@ public class IngredientUtils {
 				}
 			}
 		}
-
+		
 		return ItemStack.EMPTY;
 	}
-
+	
 	public static JsonElement toJsonWithCount(Ingredient ingredient, int count) {
 		if (ingredient.entries.length == 1) {
 			var entryObject = ingredient.entries[0].toJson();

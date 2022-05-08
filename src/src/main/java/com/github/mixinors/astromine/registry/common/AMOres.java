@@ -44,28 +44,28 @@ import java.util.function.Predicate;
 
 public class AMOres {
 	public static final Identifier ORES_ID = AMCommon.id("ores");
-
+	
 	public static final Identifier TIN_ORE_ID = AMCommon.id("tin_ore");
 	public static final Identifier TIN_ORE_SMALL_ID = AMCommon.id("tin_ore_small");
 	public static final Identifier SILVER_ORE_ID = AMCommon.id("silver_ore");
 	public static final Identifier SILVER_ORE_LOWER_ID = AMCommon.id("silver_ore_lower");
 	public static final Identifier LEAD_ORE_ID = AMCommon.id("lead_ore");
 	public static final Identifier LEAD_ORE_SMALL_ID = AMCommon.id("lead_ore_small");
-
+	
 	public static final RegistryEntry<PlacedFeature> TIN_ORE_PLACED_FEATURE = OreDistribution.TIN.registerPlacedFeature(TIN_ORE_ID, AMBlocks.TIN_ORE.get(), AMBlocks.DEEPSLATE_TIN_ORE.get());
 	public static final RegistryEntry<PlacedFeature> TIN_ORE_SMALL_PLACED_FEATURE = OreDistribution.TIN_SMALL.registerPlacedFeature(TIN_ORE_SMALL_ID, AMBlocks.TIN_ORE.get(), AMBlocks.DEEPSLATE_TIN_ORE.get());
 	public static final RegistryEntry<PlacedFeature> SILVER_ORE_PLACED_FEATURE = OreDistribution.SILVER.registerPlacedFeature(SILVER_ORE_ID, AMBlocks.SILVER_ORE.get(), AMBlocks.DEEPSLATE_SILVER_ORE.get());
 	public static final RegistryEntry<PlacedFeature> SILVER_ORE_LOWER_PLACED_FEATURE = OreDistribution.SILVER_LOWER.registerPlacedFeature(SILVER_ORE_LOWER_ID, AMBlocks.SILVER_ORE.get(), AMBlocks.DEEPSLATE_SILVER_ORE.get());
 	public static final RegistryEntry<PlacedFeature> LEAD_ORE_PLACED_FEATURE = OreDistribution.LEAD.registerPlacedFeature(LEAD_ORE_ID, AMBlocks.LEAD_ORE.get(), AMBlocks.DEEPSLATE_LEAD_ORE.get());
 	public static final RegistryEntry<PlacedFeature> LEAD_ORE_SMALL_PLACED_FEATURE = OreDistribution.LEAD_SMALL.registerPlacedFeature(LEAD_ORE_SMALL_ID, AMBlocks.LEAD_ORE.get(), AMBlocks.DEEPSLATE_LEAD_ORE.get());
-
+	
 	public static final RegistryKey<PlacedFeature> TIN_ORE_KEY = RegistryKey.of(Registry.PLACED_FEATURE_KEY, TIN_ORE_ID);
 	public static final RegistryKey<PlacedFeature> TIN_ORE_SMALL_KEY = RegistryKey.of(Registry.PLACED_FEATURE_KEY, TIN_ORE_SMALL_ID);
 	public static final RegistryKey<PlacedFeature> SILVER_ORE_KEY = RegistryKey.of(Registry.PLACED_FEATURE_KEY, SILVER_ORE_ID);
 	public static final RegistryKey<PlacedFeature> SILVER_ORE_LOWER_KEY = RegistryKey.of(Registry.PLACED_FEATURE_KEY, SILVER_ORE_LOWER_ID);
 	public static final RegistryKey<PlacedFeature> LEAD_ORE_KEY = RegistryKey.of(Registry.PLACED_FEATURE_KEY, LEAD_ORE_ID);
 	public static final RegistryKey<PlacedFeature> LEAD_ORE_SMALL_KEY = RegistryKey.of(Registry.PLACED_FEATURE_KEY, LEAD_ORE_SMALL_ID);
-
+	
 	public static void init() {
 		AsteroidOreRegistry.INSTANCE.register(Range.of(AMConfig.get().world.ores.asteroidCoalOre.minRange, AMConfig.get().world.ores.asteroidCoalOre.maxRange), Range.of(AMConfig.get().world.ores.asteroidCoalOre.minSize, AMConfig.get().world.ores.asteroidCoalOre.maxSize), AMBlocks.ASTEROID_COAL_ORE.get());
 		AsteroidOreRegistry.INSTANCE.register(Range.of(AMConfig.get().world.ores.asteroidIronOre.minRange, AMConfig.get().world.ores.asteroidIronOre.maxRange), Range.of(AMConfig.get().world.ores.asteroidIronOre.minSize, AMConfig.get().world.ores.asteroidIronOre.maxSize), AMBlocks.ASTEROID_IRON_ORE.get());
@@ -85,20 +85,20 @@ public class AMOres {
 		AsteroidOreRegistry.INSTANCE.register(Range.of(AMConfig.get().world.ores.asteroidAsteriteOre.minRange, AMConfig.get().world.ores.asteroidAsteriteOre.maxRange), Range.of(AMConfig.get().world.ores.asteroidAsteriteOre.minSize, AMConfig.get().world.ores.asteroidAsteriteOre.maxSize), AMBlocks.ASTEROID_ASTERITE_ORE.get());
 		AsteroidOreRegistry.INSTANCE.register(Range.of(AMConfig.get().world.ores.asteroidStellumOre.minRange, AMConfig.get().world.ores.asteroidStellumOre.maxRange), Range.of(AMConfig.get().world.ores.asteroidStellumOre.minSize, AMConfig.get().world.ores.asteroidStellumOre.maxSize), AMBlocks.ASTEROID_STELLUM_ORE.get());
 		AsteroidOreRegistry.INSTANCE.register(Range.of(AMConfig.get().world.ores.asteroidGalaxiumOre.minRange, AMConfig.get().world.ores.asteroidGalaxiumOre.maxRange), Range.of(AMConfig.get().world.ores.asteroidGalaxiumOre.minSize, AMConfig.get().world.ores.asteroidGalaxiumOre.maxSize), AMBlocks.ASTEROID_GALAXIUM_ORE.get());
-
+		
 		BiomeModifications.create(ORES_ID)
-				.add(ModificationPhase.ADDITIONS, overworldPredicate().and(context -> AMConfig.get().world.ores.overworldTinOre), context -> {
-					context.getGenerationSettings().addFeature(GenerationStep.Feature.UNDERGROUND_ORES, TIN_ORE_KEY);
-					context.getGenerationSettings().addFeature(GenerationStep.Feature.UNDERGROUND_ORES, TIN_ORE_SMALL_KEY);
-				})
-				.add(ModificationPhase.ADDITIONS, overworldPredicate().and(context -> AMConfig.get().world.ores.overworldSilverOre), context -> {
-					context.getGenerationSettings().addFeature(GenerationStep.Feature.UNDERGROUND_ORES, SILVER_ORE_KEY);
-					context.getGenerationSettings().addFeature(GenerationStep.Feature.UNDERGROUND_ORES, SILVER_ORE_LOWER_KEY);
-				})
-				.add(ModificationPhase.ADDITIONS, overworldPredicate().and(context -> AMConfig.get().world.ores.overworldLeadOre), context -> {
-					context.getGenerationSettings().addFeature(GenerationStep.Feature.UNDERGROUND_ORES, LEAD_ORE_KEY);
-					context.getGenerationSettings().addFeature(GenerationStep.Feature.UNDERGROUND_ORES, LEAD_ORE_SMALL_KEY);
-				});
+						  .add(ModificationPhase.ADDITIONS, overworldPredicate().and(context -> AMConfig.get().world.ores.overworldTinOre), context -> {
+							  context.getGenerationSettings().addFeature(GenerationStep.Feature.UNDERGROUND_ORES, TIN_ORE_KEY);
+							  context.getGenerationSettings().addFeature(GenerationStep.Feature.UNDERGROUND_ORES, TIN_ORE_SMALL_KEY);
+						  })
+						  .add(ModificationPhase.ADDITIONS, overworldPredicate().and(context -> AMConfig.get().world.ores.overworldSilverOre), context -> {
+							  context.getGenerationSettings().addFeature(GenerationStep.Feature.UNDERGROUND_ORES, SILVER_ORE_KEY);
+							  context.getGenerationSettings().addFeature(GenerationStep.Feature.UNDERGROUND_ORES, SILVER_ORE_LOWER_KEY);
+						  })
+						  .add(ModificationPhase.ADDITIONS, overworldPredicate().and(context -> AMConfig.get().world.ores.overworldLeadOre), context -> {
+							  context.getGenerationSettings().addFeature(GenerationStep.Feature.UNDERGROUND_ORES, LEAD_ORE_KEY);
+							  context.getGenerationSettings().addFeature(GenerationStep.Feature.UNDERGROUND_ORES, LEAD_ORE_SMALL_KEY);
+						  });
 	}
 	
 	private static Predicate<BiomeSelectionContext> overworldPredicate() {

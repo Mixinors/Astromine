@@ -24,22 +24,21 @@
 
 package com.github.mixinors.astromine.common.entity.ai.superspaceslime;
 
-import java.util.EnumSet;
-
 import com.github.mixinors.astromine.common.entity.SuperSpaceSlimeEntity;
-
 import net.minecraft.entity.ai.goal.Goal;
 
-public class SuperSpaceSlimeExplosionGoal extends Goal {
+import java.util.EnumSet;
 
+public class SuperSpaceSlimeExplosionGoal extends Goal {
+	
 	private final SuperSpaceSlimeEntity slime;
 	private int ticksLeft = 0;
-
+	
 	public SuperSpaceSlimeExplosionGoal(SuperSpaceSlimeEntity slime) {
 		this.slime = slime;
 		this.setControls(EnumSet.of(Control.MOVE, Control.JUMP));
 	}
-
+	
 	/**
 	 * Returns whether this goal is valid for the current {@link SuperSpaceSlimeEntity}.
 	 * <p>
@@ -55,12 +54,12 @@ public class SuperSpaceSlimeExplosionGoal extends Goal {
 	public boolean canStart() {
 		return this.slime.getHealth() <= this.slime.getMaxHealth() * .5 && !this.slime.hasExploded();
 	}
-
+	
 	@Override
 	public boolean shouldContinue() {
 		return this.ticksLeft > 0;
 	}
-
+	
 	@Override
 	public void start() {
 		this.slime.setExploding(true);
@@ -68,17 +67,17 @@ public class SuperSpaceSlimeExplosionGoal extends Goal {
 		this.slime.setExplodingProgress(100);
 		super.start();
 	}
-
+	
 	@Override
 	public void stop() {
 		this.slime.setExploding(false);
 		this.slime.setExplodingProgress(0);
 		this.slime.setHasExploded(true);
 		this.slime.explode();
-
+		
 		super.stop();
 	}
-
+	
 	@Override
 	public void tick() {
 		this.ticksLeft--;

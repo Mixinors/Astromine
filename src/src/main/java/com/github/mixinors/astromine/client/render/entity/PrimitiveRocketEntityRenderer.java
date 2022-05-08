@@ -28,7 +28,6 @@ import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.model.PrimitiveRocketEntityModel;
 import com.github.mixinors.astromine.common.entity.PrimitiveRocketEntity;
 import com.github.mixinors.astromine.registry.client.AMEntityModelLayers;
-
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
@@ -39,35 +38,35 @@ import net.minecraft.util.math.Vec3f;
 
 public class PrimitiveRocketEntityRenderer extends EntityRenderer<PrimitiveRocketEntity> {
 	public static final Identifier ID = AMCommon.id("textures/entity/rocket/primitive_rocket.png");
-
+	
 	private final PrimitiveRocketEntityModel model;
-
+	
 	public PrimitiveRocketEntityRenderer(Context context) {
 		super(context);
 		this.model = new PrimitiveRocketEntityModel(context.getPart(AMEntityModelLayers.ROCKET));
 	}
-
+	
 	@Override
 	public void render(PrimitiveRocketEntity rocket, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider provider, int light) {
 		matrices.push();
-
+		
 		matrices.scale(-1.0F, -1.0F, 1.0F);
-
+		
 		matrices.scale(2, 2, 2);
-
+		
 		matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(90.0F));
-
+		
 		model.setAngles(rocket, 0, 0.0F, -0.1F, rocket.getYaw(tickDelta), rocket.getPitch(tickDelta));
 		
-		var vertexConsumer = provider.getBuffer(model.getLayer( getTexture(rocket)));
-
+		var vertexConsumer = provider.getBuffer(model.getLayer(getTexture(rocket)));
+		
 		model.render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
-
+		
 		matrices.pop();
-
+		
 		super.render(rocket, yaw, tickDelta, matrices, provider, light);
 	}
-
+	
 	@Override
 	public Identifier getTexture(PrimitiveRocketEntity entity) {
 		return ID;

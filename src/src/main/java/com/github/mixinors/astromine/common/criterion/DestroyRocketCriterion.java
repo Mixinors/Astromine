@@ -24,10 +24,8 @@
 
 package com.github.mixinors.astromine.common.criterion;
 
-import com.google.gson.JsonObject;
-
 import com.github.mixinors.astromine.registry.common.AMCriteria;
-
+import com.google.gson.JsonObject;
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
@@ -37,52 +35,54 @@ import net.minecraft.util.Identifier;
 
 public class DestroyRocketCriterion extends AbstractCriterion<DestroyRocketCriterion.Conditions> {
 	public final Identifier id;
-
+	
 	public DestroyRocketCriterion(Identifier id) {
 		this.id = id;
 	}
-
+	
 	@Override
 	protected DestroyRocketCriterion.Conditions conditionsFromJson(JsonObject obj, EntityPredicate.Extended playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
-		if (obj.has("intentional"))
+		if (obj.has("intentional")) {
 			return new Conditions(this.id, playerPredicate, obj.get("intentional").getAsBoolean());
-		else return new Conditions(this.id, playerPredicate);
+		} else {
+			return new Conditions(this.id, playerPredicate);
+		}
 	}
-
+	
 	@Override
 	public Identifier getId() {
 		return id;
 	}
-
+	
 	public void trigger(ServerPlayerEntity player, boolean intentional) {
 		this.trigger(player, conditions -> conditions.matches(intentional));
 	}
-
+	
 	public static class Conditions extends AbstractCriterionConditions {
 		private final Boolean intentional;
-
+		
 		public Conditions(Identifier id, EntityPredicate.Extended playerPredicate, Boolean intentional) {
 			super(id, playerPredicate);
 			this.intentional = intentional;
 		}
-
+		
 		public Conditions(Identifier id, EntityPredicate.Extended playerPredicate) {
 			super(id, playerPredicate);
 			this.intentional = null;
 		}
-
+		
 		public boolean matches(boolean intentional) {
 			return intentional() == null || intentional == intentional();
 		}
-
+		
 		public Boolean intentional() {
 			return intentional;
 		}
-
+		
 		public static Conditions create(boolean intentional) {
 			return new Conditions(AMCriteria.DESTROY_ROCKET.getId(), EntityPredicate.Extended.EMPTY, intentional);
 		}
-
+		
 		public static Conditions create() {
 			return new Conditions(AMCriteria.DESTROY_ROCKET.getId(), EntityPredicate.Extended.EMPTY);
 		}

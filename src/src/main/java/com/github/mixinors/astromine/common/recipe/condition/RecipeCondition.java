@@ -25,21 +25,20 @@
 package com.github.mixinors.astromine.common.recipe.condition;
 
 import dev.architectury.platform.Platform;
-
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public record RecipeCondition(String modId, String itemId) {
-
+	
 	public boolean isAllowed() {
 		if (!modId.isEmpty()) {
 			return Platform.isModLoaded(modId);
 		}
-
+		
 		if (!itemId.isEmpty()) {
 			return Registry.ITEM.getIds().contains(new Identifier(itemId));
 		}
-
+		
 		return false;
 	}
 }

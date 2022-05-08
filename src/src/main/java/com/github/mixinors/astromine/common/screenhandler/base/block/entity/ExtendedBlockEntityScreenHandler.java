@@ -24,12 +24,6 @@
 
 package com.github.mixinors.astromine.common.screenhandler.base.block.entity;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.function.BiConsumer;
-import java.util.function.Supplier;
-
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.base.block.BlockStateScreenHandler;
@@ -45,13 +39,18 @@ import dev.vini2003.hammer.gui.api.common.widget.bar.FluidBarWidget;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 import dev.vini2003.hammer.gui.api.common.widget.tab.TabWidget;
 import dev.vini2003.hammer.gui.api.common.widget.text.TextWidget;
-
 import dev.vini2003.hammer.gui.energy.api.common.widget.bar.EnergyBarWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 
 public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenHandler {
 	protected final ExtendedBlockEntity blockEntity;
@@ -60,16 +59,16 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 	protected FluidBarWidget fluidBar = null;
 	
 	protected Collection<SlotWidget> playerSlots = new HashSet<>();
-
+	
 	protected TabWidget tabs;
-
+	
 	protected TabWidget.TabWidgetCollection mainTab;
 	
 	public ExtendedBlockEntityScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
-
+		
 		this.blockEntity = (ExtendedBlockEntity) player.world.getBlockEntity(position);
-
+		
 		if (!player.world.isClient) {
 			blockEntity.setSyncItemStorage(true);
 			blockEntity.setSyncFluidStorage(true);
@@ -82,7 +81,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 		return blockEntity;
 	}
 	
-	public Position getTabsPosition( int width, int height) {
+	public Position getTabsPosition(int width, int height) {
 		return new Position(width / 2 - tabs.getWidth() / 2, height / 2 - tabs.getHeight() / 2, 0.0F);
 	}
 	
@@ -99,9 +98,9 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 		tabs = new TabWidget();
 		tabs.setSize(getTabsSize(width, height));
 		tabs.setPosition(getTabsPosition(width, height));
-
+		
 		add(tabs);
-
+		
 		mainTab = (TabWidget.TabWidgetCollection) tabs.addTab(blockEntity.getCachedState().getBlock().asItem(), () -> Collections.singletonList(new TranslatableText(blockEntity.getCachedState().getBlock().getTranslationKey())));
 		mainTab.setPosition(new Position(tabs, 0, 25.0F + 7.0F, 0.0F));
 		mainTab.setSize(new Size(176.0F, 184.0F, 0.0F));
@@ -127,7 +126,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 		
 		var rotation = new Direction[] { Direction.NORTH };
 		var block = blockEntity.getCachedState().getBlock();
-
+		
 		if (block instanceof HorizontalFacingBlockWithEntity) {
 			var property = ((HorizontalFacingBlockWithEntity) block).getDirectionProperty();
 			
@@ -140,7 +139,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 		redstoneWidget.setPosition(new Position(tabs, tabs.getWidth() - 20.0F, 0.0F, 0.0F));
 		redstoneWidget.setSize(new Size(20.0F, 19.0F, 0.0F));
 		redstoneWidget.setBlockEntity(blockEntity);
-
+		
 		add(redstoneWidget);
 		
 		var tabAdder = (BiConsumer<StorageSiding[], StorageType>) (sidings, type) -> {
@@ -166,19 +165,19 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 			
 			tabCollection.add(tabTitle);
 		};
-
+		
 		if (blockEntity.hasItemStorage()) {
 			tabAdder.accept(blockEntity.getItemStorage().getSidings(), StorageType.ITEM);
 		}
-
+		
 		if (blockEntity.hasFluidStorage()) {
 			tabAdder.accept(blockEntity.getFluidStorage().getSidings(), StorageType.FLUID);
 		}
 		
 		if (blockEntity.hasEnergyStorage()) {
 			energyBar = new EnergyBarWidget();
-			energyBar.setPosition( new Position(mainTab, 7.0F, 11.0F, 0.0F));
-			energyBar.setSize( new Size(24.0F, 48.0F, 0.0F));
+			energyBar.setPosition(new Position(mainTab, 7.0F, 11.0F, 0.0F));
+			energyBar.setSize(new Size(24.0F, 48.0F, 0.0F));
 			energyBar.setStorage(blockEntity.getEnergyStorage());
 			energyBar.setSmooth(false);
 			energyBar.setCurrent(() -> (float) blockEntity.getEnergyStorage().getAmount());

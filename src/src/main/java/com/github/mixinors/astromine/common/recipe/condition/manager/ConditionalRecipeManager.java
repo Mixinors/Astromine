@@ -44,6 +44,7 @@ import java.util.Map;
 
 public class ConditionalRecipeManager extends RecipeManager {
 	private final RecipeManager recipeManager;
+	
 	public ConditionalRecipeManager(RecipeManager recipeManager) {
 		this.recipeManager = recipeManager;
 	}

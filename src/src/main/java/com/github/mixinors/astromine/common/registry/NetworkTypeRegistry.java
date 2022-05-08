@@ -26,16 +26,14 @@ package com.github.mixinors.astromine.common.registry;
 
 import com.github.mixinors.astromine.common.network.type.NetworkType;
 import com.github.mixinors.astromine.common.registry.base.BiRegistry;
-
 import net.minecraft.util.Identifier;
 
 /**
- * A {@link BiRegistry} for registration of
- * {@link NetworkType}s mapped to {@link Identifier}s.
+ * A {@link BiRegistry} for registration of {@link NetworkType}s mapped to {@link Identifier}s.
  */
 public class NetworkTypeRegistry extends BiRegistry<Identifier, NetworkType> {
 	public static final NetworkTypeRegistry INSTANCE = new NetworkTypeRegistry();
-
+	
 	/** We only want one instance of this. */
 	private NetworkTypeRegistry() {}
 }

@@ -25,7 +25,6 @@
 package com.github.mixinors.astromine.common.recipe.base.input;
 
 import com.github.mixinors.astromine.common.recipe.ingredient.ItemIngredient;
-
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 
 public interface DoubleItemInputRecipe extends ItemInputRecipe {
@@ -33,20 +32,20 @@ public interface DoubleItemInputRecipe extends ItemInputRecipe {
 	default ItemIngredient getInput() {
 		return getFirstInput();
 	}
-
+	
 	ItemIngredient getFirstInput();
-
+	
 	ItemIngredient getSecondInput();
-
+	
 	@Override
 	default boolean allows(ItemVariant... variants) {
 		var firstInputVariant = variants[0];
 		var secondInputVariant = variants[1];
-
+		
 		if (!getFirstInput().test(firstInputVariant, Long.MAX_VALUE) && !getSecondInput().test(firstInputVariant, Long.MAX_VALUE)) {
 			return false;
 		}
-
+		
 		return getSecondInput().test(secondInputVariant, Long.MAX_VALUE) || getFirstInput().test(secondInputVariant, Long.MAX_VALUE);
 	}
 }

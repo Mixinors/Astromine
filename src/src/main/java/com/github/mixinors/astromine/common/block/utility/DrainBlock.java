@@ -26,7 +26,6 @@ package com.github.mixinors.astromine.common.block.utility;
 
 import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
 import com.github.mixinors.astromine.common.block.entity.utility.DrainBlockEntity;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -41,29 +40,29 @@ public class DrainBlock extends BlockWithEntity {
 	public DrainBlock(Settings settings) {
 		super(settings);
 	}
-
+	
 	@Override
 	public SavedData getSavedDataForDroppedItem() {
 		return new SavedData(true, false, false, true);
 	}
-
+	
 	@Override
 	public boolean hasScreenHandler() {
 		return false;
 	}
-
+	
 	@Override
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 		return new DrainBlockEntity(pos, state);
 	}
-
+	
 	@Override
 	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
 		return null;
 	}
-
+	
 	@Override
 	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
-
+	
 	}
 }

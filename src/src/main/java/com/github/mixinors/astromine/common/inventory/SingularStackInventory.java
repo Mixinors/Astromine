@@ -24,18 +24,17 @@
 
 package com.github.mixinors.astromine.common.inventory;
 
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
-
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
 
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+
 /**
- * A simple {@link Inventory} with helper
- * methods for a single stack.
- *
+ * A simple {@link Inventory} with helper methods for a single stack.
+ * <p>
  * Originally by {@author Juuz}.
  */
 public interface SingularStackInventory extends Inventory {
@@ -43,22 +42,22 @@ public interface SingularStackInventory extends Inventory {
 	static SingularStackInventory of(DefaultedList<ItemStack> items) {
 		return new SingularStackInventoryImpl(items);
 	}
-
+	
 	/** Returns this inventory's {@link ItemStack}s. */
 	DefaultedList<ItemStack> getItems();
-
+	
 	/** Returns this inventory's size. */
 	@Override
 	default int size() {
 		return 1;
 	}
-
+	
 	/** Asserts whether this inventory's {@link ItemStack} is empty. */
 	@Override
 	default boolean isEmpty() {
 		return getStack(0).isEmpty();
 	}
-
+	
 	/** Returns the {@link ItemStack} at the given slot. */
 	@Override
 	default ItemStack getStack(int slot) {
@@ -68,19 +67,20 @@ public interface SingularStackInventory extends Inventory {
 			return getItems().get(0);
 		}
 	}
-
+	
 	/** Returns this inventory's {@link ItemStack}. */
 	default ItemStack getStack() {
 		return getStack(0);
 	}
-
+	
 	/** Sets this inventory's {@link ItemStack} to the specified value. */
 	default void setStack(ItemStack stack) {
 		setStack(0, stack);
 	}
-
-	/** Removes the {@link ItemStack} at the given slot,
-	 * or a part of it as per the specified count, and returns it. */
+	
+	/**
+	 * Removes the {@link ItemStack} at the given slot, or a part of it as per the specified count, and returns it.
+	 */
 	@Override
 	default ItemStack removeStack(int slot, int count) {
 		if (slot != 0) {
@@ -88,7 +88,7 @@ public interface SingularStackInventory extends Inventory {
 		}
 		
 		var stack = getStack();
-
+		
 		if (count > stack.getCount()) {
 			setStack(ItemStack.EMPTY);
 			return stack;
@@ -96,15 +96,16 @@ public interface SingularStackInventory extends Inventory {
 			stack.decrement(count);
 			
 			var copy = stack.copy();
-
+			
 			copy.setCount(count);
-
+			
 			return copy;
 		}
 	}
-
-	/** Removes the {@link ItemStack} at the given slot
-	 * and returns it. */
+	
+	/**
+	 * Removes the {@link ItemStack} at the given slot and returns it.
+	 */
 	@Override
 	default ItemStack removeStack(int slot) {
 		if (slot != 0) {
@@ -112,52 +113,53 @@ public interface SingularStackInventory extends Inventory {
 		}
 		
 		var stack = getStack();
-
+		
 		markDirty();
-
+		
 		return stack;
 	}
-
+	
 	/** Removes this inventory's {@link ItemStack} and returns it. */
 	default ItemStack removeStack() {
 		return removeStack(0);
 	}
-
-	/** Sets the {@link ItemStack} at the given slot to the specified value.
-	 * If the count is bigger than this inventory allows, it is set to the maximum allowed. */
+	
+	/**
+	 * Sets the {@link ItemStack} at the given slot to the specified value. If the count is bigger than this inventory allows, it is set to the maximum allowed.
+	 */
 	@Override
 	default void setStack(int slot, ItemStack stack) {
 		if (slot != 0) {
 			throw new ArrayIndexOutOfBoundsException("Cannot access slot bigger than inventory size");
 		}
-
+		
 		getItems().set(slot, stack);
-
+		
 		if (stack.getCount() > getMaxCountPerStack()) {
 			stack.setCount(getMaxCountPerStack());
 		}
-
+		
 		markDirty();
 	}
-
+	
 	/** Clear this inventory's content. */
 	@Override
 	default void clear() {
 		setStack(0, ItemStack.EMPTY);
-
+		
 		markDirty();
 	}
-
+	
 	/** Override to do nothing. */
 	@Override
 	default void markDirty() {}
-
+	
 	/** Allow the player to use this inventory by default. */
 	@Override
 	default boolean canPlayerUse(PlayerEntity player) {
 		return true;
 	}
-
+	
 	record SingularStackInventoryImpl(
 			DefaultedList<ItemStack> items) implements SingularStackInventory {
 		/**
@@ -167,14 +169,14 @@ public interface SingularStackInventory extends Inventory {
 		public DefaultedList<ItemStack> getItems() {
 			return items;
 		}
-
+		
 		/**
 		 * Returns this inventory's string representation.
 		 */
 		@Override
 		public String toString() {
 			var slot = new AtomicInteger(0);
-
+			
 			return getItems().stream().map(stack -> String.format("%s - [%s]", slot.getAndIncrement(), stack.toString())).collect(Collectors.joining(", "));
 		}
 	}

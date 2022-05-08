@@ -24,21 +24,20 @@
 
 package com.github.mixinors.astromine.registry.client;
 
-import java.util.function.Supplier;
-
 import com.github.mixinors.astromine.client.render.block.HoloBridgeBlockEntityRenderer;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import dev.architectury.registry.client.rendering.fabric.BlockEntityRendererRegistryImpl;
-
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
+
+import java.util.function.Supplier;
 
 public class AMBlockEntityRenderers {
 	public static void init() {
 		register(AMBlockEntityTypes.HOLOGRAPHIC_BRIDGE, HoloBridgeBlockEntityRenderer::new);
 	}
-
+	
 	public static <B extends BlockEntity, C extends BlockEntityType<B>> void register(Supplier<C> c, BlockEntityRendererFactory<? super B> b) {
 		BlockEntityRendererRegistryImpl.register(c.get(), b);
 	}

@@ -24,11 +24,7 @@
 
 package com.github.mixinors.astromine.registry.common;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.github.mixinors.astromine.AMCommon;
-
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
@@ -40,12 +36,15 @@ import net.minecraft.world.biome.GenerationSettings;
 import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.gen.GenerationStep;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class AMBiomes {
 	private static final Set<RegistryKey<?>> KEYS = new HashSet<>();
 	
 	public static final Identifier ASTEROID_BELT_ID = AMCommon.id("asteroid_belt");
 	public static final RegistryKey<Biome> ASTEROID_BELT_KEY = register(Registry.BIOME_KEY, ASTEROID_BELT_ID);
-
+	
 	private static Biome createAsteroidBelt() {
 		// We specify what entities spawn and what features generate in the biome.
 		// Aside from some structures, trees, rocks, plants and
@@ -59,33 +58,33 @@ public class AMBiomes {
 		var generationSettings = new GenerationSettings.Builder()
 				.feature(GenerationStep.Feature.UNDERGROUND_ORES, AMFeatures.ASTEROID_ORES_PLACED_FEATURE)
 				.build();
-
+		
 		return (new Biome.Builder())
-			.precipitation(Biome.Precipitation.RAIN)
-			.category(Biome.Category.NONE)
-			.temperature(0F)
-			.downfall(0F)
-			.effects((new BiomeEffects.Builder())
-				.waterColor(0x3f76e4)
-				.waterFogColor(0x050533)
-				.fogColor(0xc0d8ff)
-				.skyColor(0x77adff)
-				.build())
-			.spawnSettings(spawnSettings)
-			.generationSettings(generationSettings)
-			.build();
+				.precipitation(Biome.Precipitation.RAIN)
+				.category(Biome.Category.NONE)
+				.temperature(0F)
+				.downfall(0F)
+				.effects((new BiomeEffects.Builder())
+						.waterColor(0x3f76e4)
+						.waterFogColor(0x050533)
+						.fogColor(0xc0d8ff)
+						.skyColor(0x77adff)
+						.build())
+				.spawnSettings(spawnSettings)
+				.generationSettings(generationSettings)
+				.build();
 	}
-
+	
 	public static void init() {
 		Registry.register(BuiltinRegistries.BIOME, ASTEROID_BELT_KEY.getValue(), createAsteroidBelt());
 	}
-
+	
 	public static <T> RegistryKey<T> register(RegistryKey<Registry<T>> registry, Identifier identifier) {
 		var key = RegistryKey.of(registry, identifier);
 		KEYS.add(key);
 		return key;
 	}
-
+	
 	public static boolean isAstromine(RegistryKey<?> key) {
 		return KEYS.contains(key);
 	}

@@ -24,23 +24,20 @@
 
 package com.github.mixinors.astromine.registry.common;
 
-import java.util.stream.Collectors;
-
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.rei.alloysmelting.AlloySmeltingDisplay;
 import com.github.mixinors.astromine.client.rei.electricsmelting.ElectricSmeltingDisplay;
 import com.github.mixinors.astromine.client.rei.pressing.PressingDisplay;
 import com.github.mixinors.astromine.client.rei.solidgenerating.SolidGeneratingDisplay;
 import com.github.mixinors.astromine.client.rei.triturating.TrituratingDisplay;
+import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.screenhandler.machine.AlloySmelterScreenHandler;
 import com.github.mixinors.astromine.common.screenhandler.machine.ElectricFurnaceScreenHandler;
 import com.github.mixinors.astromine.common.screenhandler.machine.PresserScreenHandler;
-import com.github.mixinors.astromine.common.screenhandler.machine.generator.SolidGeneratorScreenHandler;
 import com.github.mixinors.astromine.common.screenhandler.machine.TrituratorScreenHandler;
-import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
+import com.github.mixinors.astromine.common.screenhandler.machine.generator.SolidGeneratorScreenHandler;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
-
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.Display;
 import me.shedaniel.rei.api.common.plugins.REIServerPlugin;
@@ -50,46 +47,48 @@ import me.shedaniel.rei.api.common.transfer.info.simple.SimpleMenuInfoProvider;
 import me.shedaniel.rei.api.common.transfer.info.simple.SimplePlayerInventoryMenuInfo;
 import me.shedaniel.rei.api.common.transfer.info.stack.SlotAccessor;
 
+import java.util.stream.Collectors;
+
 public class AMContainersInfoHandlers implements REIServerPlugin {
 	public static final CategoryIdentifier<TrituratingDisplay> TRITURATING = CategoryIdentifier.of(AMCommon.id("triturating"));
 	public static final CategoryIdentifier<ElectricSmeltingDisplay> ELECTRIC_SMELTING = CategoryIdentifier.of(AMCommon.id("electric_smelting"));
 	public static final CategoryIdentifier<SolidGeneratingDisplay> SOLID_GENERATING = CategoryIdentifier.of(AMCommon.id("solid_generating"));
 	public static final CategoryIdentifier<PressingDisplay> PRESSING = CategoryIdentifier.of(AMCommon.id("pressing"));
 	public static final CategoryIdentifier<AlloySmeltingDisplay> ALLOY_SMELTING = CategoryIdentifier.of(AMCommon.id("alloy_smelting"));
-
+	
 	@Override
 	public void registerMenuInfo(MenuInfoRegistry registry) {
 		registry.register(TRITURATING, TrituratorScreenHandler.class,
-			SimpleMenuInfoProvider.of(display -> new SimpleContainerInfo<>(display, 1)));
+				SimpleMenuInfoProvider.of(display -> new SimpleContainerInfo<>(display, 1)));
 		registry.register(ELECTRIC_SMELTING, ElectricFurnaceScreenHandler.class,
-			SimpleMenuInfoProvider.of(display -> new SimpleContainerInfo<>(display, 1)));
+				SimpleMenuInfoProvider.of(display -> new SimpleContainerInfo<>(display, 1)));
 		registry.register(SOLID_GENERATING, SolidGeneratorScreenHandler.class,
-			SimpleMenuInfoProvider.of(display -> new SimpleContainerInfo<>(display, 0)));
+				SimpleMenuInfoProvider.of(display -> new SimpleContainerInfo<>(display, 0)));
 		registry.register(PRESSING, PresserScreenHandler.class,
-			SimpleMenuInfoProvider.of(display -> new SimpleContainerInfo<>(display, 1)));
+				SimpleMenuInfoProvider.of(display -> new SimpleContainerInfo<>(display, 1)));
 		registry.register(ALLOY_SMELTING, AlloySmelterScreenHandler.class,
-			SimpleMenuInfoProvider.of(display -> new SimpleContainerInfo<>(display, 0, 1)));
+				SimpleMenuInfoProvider.of(display -> new SimpleContainerInfo<>(display, 0, 1)));
 	}
-
+	
 	private static class SimpleContainerInfo<T extends ExtendedBlockEntityScreenHandler, D extends Display> implements SimplePlayerInventoryMenuInfo<T, D> {
 		private final D display;
 		private final IntList gridStacks;
-
+		
 		public SimpleContainerInfo(D display, int... gridStacks) {
 			this.display = display;
 			this.gridStacks = new IntArrayList(gridStacks);
 		}
-
+		
 		@Override
 		public D getDisplay() {
 			return display;
 		}
-
+		
 		@Override
 		public Iterable<SlotAccessor> getInputSlots(MenuInfoContext<T, ?, D> context) {
 			return gridStacks.intStream()
-				.mapToObj(value -> SlotAccessor.fromSlot(context.getMenu().getSlot(value)))
-				.collect(Collectors.toList());
+							 .mapToObj(value -> SlotAccessor.fromSlot(context.getMenu().getSlot(value)))
+							 .collect(Collectors.toList());
 		}
 	}
 }

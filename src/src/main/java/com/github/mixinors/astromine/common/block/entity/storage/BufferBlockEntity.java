@@ -24,21 +24,20 @@
 
 package com.github.mixinors.astromine.common.block.entity.storage;
 
-import java.util.function.Supplier;
-
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.math.BlockPos;
+
+import java.util.function.Supplier;
 
 public abstract class BufferBlockEntity extends ExtendedBlockEntity {
 	public BufferBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 	}
-
+	
 	public static class Primitive extends BufferBlockEntity {
 		public Primitive(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.PRIMITIVE_BUFFER, blockPos, blockState);
@@ -48,7 +47,7 @@ public abstract class BufferBlockEntity extends ExtendedBlockEntity {
 			});
 		}
 	}
-
+	
 	public static class Basic extends BufferBlockEntity {
 		public Basic(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.BASIC_BUFFER, blockPos, blockState);
@@ -58,7 +57,7 @@ public abstract class BufferBlockEntity extends ExtendedBlockEntity {
 			});
 		}
 	}
-
+	
 	public static class Advanced extends BufferBlockEntity {
 		public Advanced(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ADVANCED_BUFFER, blockPos, blockState);
@@ -68,7 +67,7 @@ public abstract class BufferBlockEntity extends ExtendedBlockEntity {
 			});
 		}
 	}
-
+	
 	public static class Elite extends BufferBlockEntity {
 		public Elite(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ELITE_BUFFER, blockPos, blockState);
@@ -78,7 +77,7 @@ public abstract class BufferBlockEntity extends ExtendedBlockEntity {
 			});
 		}
 	}
-
+	
 	public static class Creative extends BufferBlockEntity {
 		public Creative(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.CREATIVE_BUFFER, blockPos, blockState);
@@ -87,7 +86,7 @@ public abstract class BufferBlockEntity extends ExtendedBlockEntity {
 				markDirty();
 			});
 		}
-
+		
 		@Override
 		public void tick() {
 			if (itemStorage != null) {

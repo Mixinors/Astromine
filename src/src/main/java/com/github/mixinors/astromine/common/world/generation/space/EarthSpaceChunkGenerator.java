@@ -62,11 +62,11 @@ import java.util.concurrent.Executor;
 
 public class EarthSpaceChunkGenerator extends ChunkGenerator {
 	public static final Codec<EarthSpaceChunkGenerator> CODEC = RecordCodecBuilder.create(instance ->
-		EarthSpaceChunkGenerator.method_41042(instance).and(
-				instance.group(
-						Codec.LONG.fieldOf("seed").forGetter(gen -> gen.field_37261),
-						RegistryOps.createRegistryCodec(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry)
-				)).apply(instance, EarthSpaceChunkGenerator::new));
+			EarthSpaceChunkGenerator.method_41042(instance).and(
+					instance.group(
+							Codec.LONG.fieldOf("seed").forGetter(gen -> gen.field_37261),
+							RegistryOps.createRegistryCodec(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry)
+					)).apply(instance, EarthSpaceChunkGenerator::new));
 	
 	private final Registry<Biome> biomeRegistry;
 	
@@ -96,11 +96,11 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 	
 	@Override
 	public void carve(ChunkRegion chunkRegion,
-		long seed,
-		BiomeAccess biomeAccess,
-		StructureAccessor structureAccessor,
-		Chunk chunk,
-		GenerationStep.Carver generationStep) {
+			long seed,
+			BiomeAccess biomeAccess,
+			StructureAccessor structureAccessor,
+			Chunk chunk,
+			GenerationStep.Carver generationStep) {
 		// hm yes today I will carve space
 		// yes yes hyperspace lanes in astromine when
 	}

@@ -28,16 +28,13 @@ import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.client.rei.base.input.DoubleItemInputCategory;
 import com.github.mixinors.astromine.client.rei.base.output.SingleItemOutputCategory;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import me.shedaniel.rei.api.client.gui.Renderer;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 
 @Environment(EnvType.CLIENT)
 public class AlloySmeltingCategory implements DoubleItemInputCategory<AlloySmeltingDisplay>, SingleItemOutputCategory<AlloySmeltingDisplay> {
@@ -45,12 +42,12 @@ public class AlloySmeltingCategory implements DoubleItemInputCategory<AlloySmelt
 	public CategoryIdentifier<? extends AlloySmeltingDisplay> getCategoryIdentifier() {
 		return AMRoughlyEnoughItemsPlugin.ALLOY_SMELTING;
 	}
-
+	
 	@Override
 	public Text getTitle() {
 		return new TranslatableText("category.astromine.alloy_smelting");
 	}
-
+	
 	@Override
 	public Renderer getIcon() {
 		return EntryStacks.of(AMBlocks.ADVANCED_ALLOY_SMELTER.get());

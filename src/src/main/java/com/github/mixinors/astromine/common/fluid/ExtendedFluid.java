@@ -24,25 +24,21 @@
 
 package com.github.mixinors.astromine.common.fluid;
 
-import java.util.Map;
-
 import com.github.mixinors.astromine.common.util.ClientUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMFluids;
 import com.github.mixinors.astromine.registry.common.AMItems;
+import com.shnupbups.cauldronlib.CauldronLib;
+import com.shnupbups.cauldronlib.block.FullCauldronBlock;
 import dev.architectury.platform.Platform;
 import dev.architectury.registry.block.BlockProperties;
 import dev.architectury.registry.registries.RegistrySupplier;
 import dev.vini2003.hammer.core.api.common.color.Color;
-import org.jetbrains.annotations.Nullable;
-
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FluidBlock;
-import net.minecraft.block.MapColor;
-import net.minecraft.block.Material;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricMaterialBuilder;
+import net.fabricmc.fabric.api.transfer.v1.fluid.CauldronFluidContent;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
+import net.minecraft.block.*;
 import net.minecraft.block.cauldron.CauldronBehavior;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.fluid.FlowableFluid;
@@ -58,40 +54,35 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
+import org.jetbrains.annotations.Nullable;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricMaterialBuilder;
-import net.fabricmc.fabric.api.transfer.v1.fluid.CauldronFluidContent;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
-
-import com.shnupbups.cauldronlib.CauldronLib;
-import com.shnupbups.cauldronlib.block.FullCauldronBlock;
+import java.util.Map;
 
 public abstract class ExtendedFluid extends FlowableFluid {
 	public static final Material INDUSTRIAL_FLUID_MATERIAL = new FabricMaterialBuilder(MapColor.WATER_BLUE).allowsMovement()
-			.lightPassesThrough()
-			.destroyedByPiston()
-			.replaceable()
-			.liquid()
-			.notSolid().build();
-
+																										   .lightPassesThrough()
+																										   .destroyedByPiston()
+																										   .replaceable()
+																										   .liquid()
+																										   .notSolid().build();
+	
 	final int fogColor;
 	final int tintColor;
-
+	
 	final boolean infinite;
-
+	
 	RegistrySupplier<Block> block;
-
+	
 	Fluid flowing;
 	Fluid still;
-
+	
 	RegistrySupplier<Item> bucket;
-
+	
 	Map<Item, CauldronBehavior> cauldronBehaviorMap;
 	RegistrySupplier<Block> cauldron;
-
+	
 	final DamageSource source;
-
+	
 	public ExtendedFluid(int fogColor, int tintColor, boolean infinite, @Nullable DamageSource source) {
 		this.fogColor = fogColor;
 		this.tintColor = tintColor;
@@ -179,11 +170,11 @@ public abstract class ExtendedFluid extends FlowableFluid {
 	protected BlockState toBlockState(FluidState state) {
 		return block.get().getDefaultState().with(FluidBlock.LEVEL, getBlockStateLevel(state));
 	}
-
+	
 	public Map<Item, CauldronBehavior> getCauldronBehaviorMap() {
 		return cauldronBehaviorMap;
 	}
-
+	
 	public Block getCauldron() {
 		return cauldron.get();
 	}
@@ -192,19 +183,19 @@ public abstract class ExtendedFluid extends FlowableFluid {
 		private int fog = Color.WHITE.toRGB();
 		private int tint = Color.WHITE.toRGB();
 		private int damage = 0;
-
+		
 		private boolean isInfinite = false;
 		private boolean isToxic = false;
-
+		
 		private String name = "";
 		
 		private RegistrySupplier<Block> block;
-
+		
 		private Fluid flowing;
 		private Fluid still;
 		
 		private RegistrySupplier<Item> bucket;
-
+		
 		private Map<Item, CauldronBehavior> cauldronBehaviorMap;
 		private RegistrySupplier<Block> cauldron;
 		
@@ -219,7 +210,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 			this.fog = fog;
 			return this;
 		}
-
+		
 		public Builder tint(int tint) {
 			this.tint = tint;
 			return this;
@@ -234,12 +225,12 @@ public abstract class ExtendedFluid extends FlowableFluid {
 			this.isInfinite = isInfinite;
 			return this;
 		}
-
+		
 		public Builder toxic(boolean isToxic) {
 			this.isToxic = isToxic;
 			return this;
 		}
-
+		
 		public Builder name(String name) {
 			this.name = name;
 			return this;
@@ -258,11 +249,11 @@ public abstract class ExtendedFluid extends FlowableFluid {
 		public ExtendedFluid build() {
 			var flowing = AMFluids.register(name + "_flowing", new Flowing(fog, tint, isInfinite, source));
 			var still = AMFluids.register(name, new Still(fog, tint, isInfinite, source));
-
+			
 			flowing.flowing = flowing;
 			still.flowing = flowing;
 			this.flowing = flowing;
-
+			
 			flowing.still = still;
 			still.still = still;
 			this.still = still;
@@ -270,18 +261,18 @@ public abstract class ExtendedFluid extends FlowableFluid {
 			var block = AMBlocks.register(name, () -> new FluidBlock(still, AbstractBlock.Settings.of(INDUSTRIAL_FLUID_MATERIAL).noCollision().strength(100.0F).dropsNothing()));
 			
 			var bucket = AMItems.register(name + "_bucket", () -> new BucketItem(still, (new Item.Settings()).recipeRemainder(Items.BUCKET).maxCount(1).group(group)));
-
+			
 			flowing.block = (RegistrySupplier) block;
 			still.block = (RegistrySupplier) block;
 			this.block = (RegistrySupplier) block;
-
+			
 			flowing.bucket = (RegistrySupplier) bucket;
 			still.bucket = (RegistrySupplier) bucket;
 			this.bucket = (RegistrySupplier) bucket;
 			
 			var cauldronBehaviorMap = CauldronBehavior.createMap();
 			var cauldron = AMBlocks.register(name + "_cauldron", () -> new FullCauldronBlock(BlockProperties.copy(Blocks.CAULDRON), cauldronBehaviorMap));
-
+			
 			flowing.cauldronBehaviorMap = cauldronBehaviorMap;
 			still.cauldronBehaviorMap = cauldronBehaviorMap;
 			this.cauldronBehaviorMap = cauldronBehaviorMap;
@@ -289,16 +280,16 @@ public abstract class ExtendedFluid extends FlowableFluid {
 			flowing.cauldron = (RegistrySupplier) cauldron;
 			still.cauldron = (RegistrySupplier) cauldron;
 			this.cauldron = (RegistrySupplier) cauldron;
-
+			
 			CauldronLib.registerBehaviorMap(cauldronBehaviorMap);
 			CauldronLib.registerFillFromBucketBehavior(this.bucket.get(), this.cauldron.get());
 			cauldronBehaviorMap.put(Items.BUCKET, CauldronLib.createEmptyIntoBucketBehavior(this.bucket.get()));
 			CauldronFluidContent.registerCauldron(this.cauldron.get(), this.still, FluidConstants.BUCKET, null); // Fabric only! If we're going to do a Forge version, make sure this only runs on Fabric!
-
+			
 			if (Platform.getEnv() == EnvType.CLIENT) {
 				ClientUtils.registerExtendedFluid(name, tint, still, flowing);
 			}
-
+			
 			return still;
 		}
 	}

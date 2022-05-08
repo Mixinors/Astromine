@@ -57,7 +57,9 @@ public class CableModel implements FabricBakedModel, BakedModel, UnbakedModel {
 		
 		var connections = (CableBlockEntity.Connections) ((RenderAttachedBlockView) blockView).getBlockEntityRenderAttachment(pos);
 		
-		if (connections == null) return;
+		if (connections == null) {
+			return;
+		}
 		
 		// Emit Center
 		centerModel.emitBlockQuads(blockView, state, pos, randomSupplier, context);

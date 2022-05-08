@@ -28,7 +28,6 @@ import com.github.mixinors.astromine.common.network.Network;
 import com.github.mixinors.astromine.common.network.type.NetworkType;
 import com.github.mixinors.astromine.common.registry.NetworkTypeRegistry;
 import com.github.mixinors.astromine.registry.common.AMComponents;
-import com.google.common.collect.Sets;
 import dev.architectury.utils.NbtType;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import net.minecraft.nbt.NbtCompound;
@@ -40,16 +39,12 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
- * A {@link Component} which stores information about
- * a {@link World}'s networks.
- *
- * Serialization and deserialization methods are provided for:
- * - {@link NbtCompound} - through {@link #writeToNbt(NbtCompound)} and {@link #readFromNbt(NbtCompound)}.
+ * A {@link Component} which stores information about a {@link World}'s networks.
+ * <p>
+ * Serialization and deserialization methods are provided for: - {@link NbtCompound} - through {@link #writeToNbt(NbtCompound)} and {@link #readFromNbt(NbtCompound)}.
  */
 public final class WorldNetworkComponent implements Component {
 	private final List<Network> instances = new ArrayList<>();
@@ -68,8 +63,9 @@ public final class WorldNetworkComponent implements Component {
 	
 	/** Adds the given {@link Network} to this component. */
 	public void add(Network instance) {
-		if (!instance.nodes.isEmpty())
+		if (!instance.nodes.isEmpty()) {
 			this.instances.add(instance);
+		}
 	}
 	
 	/** Removes the given {@link Network} from this component. */
@@ -77,14 +73,16 @@ public final class WorldNetworkComponent implements Component {
 		this.instances.remove(instance);
 	}
 	
-	/** Returns the {@link Network} of the given {@link NetworkType}
-	 * at the specified {@link BlockPos}. */
+	/**
+	 * Returns the {@link Network} of the given {@link NetworkType} at the specified {@link BlockPos}.
+	 */
 	public Network get(NetworkType type, BlockPos position) {
 		return this.instances.stream().filter(instance -> instance.getType() == type && instance.nodes.stream().anyMatch(node -> ((Network.Node) node).blockPos().equals(position))).findFirst().orElse(null);
 	}
 	
-	/** Asserts whether any {@link Network} exists for the given {@link NetworkType}
-	 * at the specified {@link BlockPos}. */
+	/**
+	 * Asserts whether any {@link Network} exists for the given {@link NetworkType} at the specified {@link BlockPos}.
+	 */
 	public boolean contains(NetworkType type, BlockPos position) {
 		return get(type, position) != null;
 	}
@@ -117,7 +115,9 @@ public final class WorldNetworkComponent implements Component {
 			var type = instance.getType();
 			
 			// Ignore networks whose type has been removed.
-			if (type == null) continue;
+			if (type == null) {
+				continue;
+			}
 			
 			var data = new NbtCompound();
 			
@@ -144,7 +144,9 @@ public final class WorldNetworkComponent implements Component {
 			var type = NetworkTypeRegistry.INSTANCE.get(new Identifier(dataTag.getString("Type")));
 			
 			// Ignore networks whose type has been removed.
-			if (type == null) continue;
+			if (type == null) {
+				continue;
+			}
 			
 			var instance = new Network(world, type);
 			

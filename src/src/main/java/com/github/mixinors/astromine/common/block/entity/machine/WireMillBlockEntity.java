@@ -24,9 +24,6 @@
 
 package com.github.mixinors.astromine.common.block.entity.machine;
 
-import java.util.Optional;
-import java.util.function.Supplier;
-
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.config.entry.tiered.SimpleMachineConfig;
@@ -36,15 +33,16 @@ import com.github.mixinors.astromine.common.recipe.WireMillingRecipe;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import org.jetbrains.annotations.NotNull;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
-
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
+import org.jetbrains.annotations.NotNull;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements MachineConfigProvider<SimpleMachineConfig> {
 	public double progress = 0;
@@ -59,12 +57,12 @@ public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements
 	private static final int[] EXTRACT_SLOTS = new int[] { OUTPUT_SLOT };
 	
 	private Optional<WireMillingRecipe> optionalRecipe = Optional.empty();
-
+	
 	public WireMillBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
 		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), 0L);
-
+		
 		itemStorage = new SimpleItemStorage(2).insertPredicate((variant, slot) -> {
 			if (slot != INPUT_SLOT) {
 				return false;
@@ -72,7 +70,7 @@ public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements
 			
 			return TrituratingRecipe.allows(world, variant);
 		}).extractPredicate((variant, slot) ->
-			slot == OUTPUT_SLOT
+				slot == OUTPUT_SLOT
 		).listener(() -> {
 			if (optionalRecipe.isPresent() && !optionalRecipe.get().matches(itemStorage.slice(INPUT_SLOT, OUTPUT_SLOT))) {
 				optionalRecipe = Optional.empty();
@@ -85,45 +83,46 @@ public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements
 	@Override
 	public void tick() {
 		super.tick();
-
-		if (!hasWorld() || world.isClient() || !shouldRun())
+		
+		if (!hasWorld() || world.isClient() || !shouldRun()) {
 			return;
-
+		}
+		
 		if (itemStorage != null && energyStorage != null) {
 			if (optionalRecipe.isEmpty()) {
 				optionalRecipe = WireMillingRecipe.matching(world, itemStorage.slice(INPUT_SLOT, OUTPUT_SLOT));
 			}
-
+			
 			if (optionalRecipe.isPresent()) {
 				var recipe = optionalRecipe.get();
-
+				
 				limit = recipe.time();
-
+				
 				var speed = Math.min(getSpeed(), limit - progress);
 				var consumed = (long) (recipe.energyInput() * speed / limit);
-
+				
 				try (var transaction = Transaction.openOuter()) {
 					if (energyStorage.amount >= consumed) {
 						energyStorage.amount -= consumed;
-
+						
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
-
+							
 							var inputStorage = itemStorage.getStorage(INPUT_SLOT);
-
+							
 							inputStorage.extract(inputStorage.getResource(), recipe.input().getAmount(), transaction, true);
-
+							
 							var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
-
+							
 							outputStorage.insert(recipe.output().variant(), recipe.output().count(), transaction, true);
-
+							
 							transaction.commit();
-
+							
 							progress = 0;
 						} else {
 							progress += speed;
 						}
-
+						
 						isActive = true;
 					} else {
 						isActive = false;
@@ -136,7 +135,7 @@ public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements
 			}
 		}
 	}
-
+	
 	
 	@Override
 	public void writeNbt(NbtCompound nbt) {
@@ -153,50 +152,50 @@ public abstract class WireMillBlockEntity extends ExtendedBlockEntity implements
 		
 		super.readNbt(nbt);
 	}
-
+	
 	@Override
 	public SimpleMachineConfig getConfig() {
 		return AMConfig.get().blocks.machines.wireMill;
 	}
-
+	
 	public static class Primitive extends WireMillBlockEntity {
 		public Primitive(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.PRIMITIVE_WIRE_MILL, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.PRIMITIVE;
 		}
 	}
-
+	
 	public static class Basic extends WireMillBlockEntity {
 		public Basic(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.BASIC_WIRE_MILL, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.BASIC;
 		}
 	}
-
+	
 	public static class Advanced extends WireMillBlockEntity {
 		public Advanced(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ADVANCED_WIRE_MILL, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.ADVANCED;
 		}
 	}
-
+	
 	public static class Elite extends WireMillBlockEntity {
 		public Elite(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ELITE_WIRE_MILL, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.ELITE;

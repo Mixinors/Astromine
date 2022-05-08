@@ -28,16 +28,13 @@ import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.client.rei.base.input.DoubleFluidInputCategory;
 import com.github.mixinors.astromine.client.rei.base.output.SingleFluidOutputCategory;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import me.shedaniel.rei.api.client.gui.Renderer;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 
 @Environment(EnvType.CLIENT)
 public class FluidMixingCategory implements DoubleFluidInputCategory<FluidMixingDisplay>, SingleFluidOutputCategory<FluidMixingDisplay> {
@@ -45,12 +42,12 @@ public class FluidMixingCategory implements DoubleFluidInputCategory<FluidMixing
 	public CategoryIdentifier<? extends FluidMixingDisplay> getCategoryIdentifier() {
 		return AMRoughlyEnoughItemsPlugin.FLUID_MIXING;
 	}
-
+	
 	@Override
 	public Text getTitle() {
 		return new TranslatableText("category.astromine.fluid_mixing");
 	}
-
+	
 	@Override
 	public Renderer getIcon() {
 		return EntryStacks.of(AMBlocks.ADVANCED_FLUID_MIXER.get());

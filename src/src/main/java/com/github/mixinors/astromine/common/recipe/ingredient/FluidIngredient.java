@@ -63,7 +63,7 @@ public final class FluidIngredient {
 	public boolean test(FluidVariant testVariant, Long testAmount) {
 		return entry.test(testVariant, testAmount);
 	}
-
+	
 	public boolean testVariant(FluidVariant testVariant) {
 		return entry.testVariant(testVariant);
 	}
@@ -75,12 +75,12 @@ public final class FluidIngredient {
 	public long getAmount() {
 		return entry.getAmount();
 	}
-
+	
 	public FluidVariant[] getMatchingVariants() {
 		this.cacheMatchingVariants();
 		return this.matchingVariants;
 	}
-
+	
 	private void cacheMatchingVariants() {
 		if (this.matchingVariants == null) {
 			this.matchingVariants = entry.getVariants().stream().distinct().toArray(FluidVariant[]::new);
@@ -195,9 +195,9 @@ public final class FluidIngredient {
 	
 	public static abstract class Entry implements BiPredicate<FluidVariant, Long> {
 		public abstract long getAmount();
-
+		
 		public abstract Collection<FluidVariant> getVariants();
-
+		
 		public abstract boolean testVariant(FluidVariant testVariant);
 	}
 	
@@ -219,17 +219,17 @@ public final class FluidIngredient {
 		public boolean test(FluidVariant testVariant, Long testAmount) {
 			return testVariant(testVariant) && testAmount >= requiredAmount;
 		}
-
+		
 		@Override
 		public boolean testVariant(FluidVariant testVariant) {
 			return testVariant.equals(requiredVariant);
 		}
-
+		
 		@Override
 		public long getAmount() {
 			return requiredAmount;
 		}
-
+		
 		@Override
 		public Collection<FluidVariant> getVariants() {
 			return Collections.singleton(requiredVariant);
@@ -255,7 +255,7 @@ public final class FluidIngredient {
 		public boolean test(FluidVariant testVariant, Long testAmount) {
 			return testVariant(testVariant) && testAmount >= requiredAmount;
 		}
-
+		
 		@Override
 		public boolean testVariant(FluidVariant testVariant) {
 			for (var requiredVariant : getVariants()) {
@@ -263,20 +263,20 @@ public final class FluidIngredient {
 					return true;
 				}
 			}
-
+			
 			return false;
 		}
-
+		
 		@Override
 		public long getAmount() {
 			return requiredAmount;
 		}
-
+		
 		@Override
 		public Collection<FluidVariant> getVariants() {
-			if(requiredVariants == null) {
+			if (requiredVariants == null) {
 				requiredVariants = new ArrayList<>();
-
+				
 				for (var entry : Registry.FLUID.iterateEntries(requiredTag)) {
 					var fluid = entry.value();
 					if (fluid.isStill(fluid.getDefaultState())) {

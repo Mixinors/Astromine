@@ -31,7 +31,7 @@ public final class FluidPipeBlock extends CableBlock {
 	public FluidPipeBlock(Settings settings) {
 		super(settings);
 	}
-
+	
 	@Override
 	public <T extends NetworkType> T getNetworkType() {
 		return (T) AMNetworkTypes.FLUID;

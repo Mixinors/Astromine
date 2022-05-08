@@ -33,7 +33,6 @@ import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.bar.FluidBarWidget;
 import dev.vini2003.hammer.gui.api.common.widget.button.ButtonWidget;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
-
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.TranslatableText;
@@ -43,22 +42,22 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 	public PrimitiveRocketScreenHandler(int syncId, PlayerEntity player, int entityId) {
 		super(AMScreenHandlers.ROCKET, syncId, player, entityId);
 	}
-
+	
 	@Override
 	public ItemStack getSymbol() {
 		return new ItemStack(AMItems.PRIMITIVE_ROCKET.get());
 	}
-
+	
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		
 		var launchButtonWidget = new ButtonWidget(() -> {
 			((RocketEntity) entity).tryLaunch(this.getPlayer());
-
+			
 			return null;
 		});
-
+		
 		launchButtonWidget.setPosition(new Position(mainTab, 3.0F + 4.0F, 11.0F, 0.0F));
 		launchButtonWidget.setSize(new Size(48.0F, 18.0F, 0.0F));
 		launchButtonWidget.setLabel(new TranslatableText("text.astromine.rocket.launch"));
@@ -66,15 +65,15 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 		
 		var abortButtonWidget = new ButtonWidget(() -> {
 			((RocketEntity) entity).tryDisassemble(true);
-
+			
 			return null;
 		});
-
+		
 		abortButtonWidget.setPosition(new Position(mainTab, 3.0F + 4.0F, 11.0F + fluidBar.getHeight() - 18.0F, 0.0F));
 		abortButtonWidget.setSize(new Size(48.0F, 18.0F, 0.0F));
 		abortButtonWidget.setLabel(new TranslatableText("text.astromine.rocket.destroy").formatted(Formatting.RED));
-
-		fluidBar.setPosition( new Position(width / 2.0F - fluidBar.getWidth() / 2.0F + 2.0F, fluidBar.getY(), 0.0F));
+		
+		fluidBar.setPosition(new Position(width / 2.0F - fluidBar.getWidth() / 2.0F + 2.0F, fluidBar.getY(), 0.0F));
 		
 		var firstInput = new SlotWidget(0, entity.getItemStorage());
 		firstInput.setPosition(new Position(fluidBar, -18.0F - 3.0F, 0.0F, 0.0F));
@@ -97,15 +96,15 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 		var secondOutput = new SlotWidget(3, entity.getItemStorage());
 		secondOutput.setPosition(new Position(secondFluidBar, -18.0F - 3.0F, secondFluidBar.getHeight() - 18.0F, 0.0F));
 		secondOutput.setSize(new Size(18.0F, 18.0F, 0.0F));
-
+		
 		mainTab.add(launchButtonWidget);
 		mainTab.add(abortButtonWidget);
-
+		
 		mainTab.add(secondFluidBar);
-
+		
 		mainTab.add(firstInput);
 		mainTab.add(firstOutput);
-
+		
 		mainTab.add(secondInput);
 		mainTab.add(secondOutput);
 	}

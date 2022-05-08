@@ -40,18 +40,16 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * A collection of {@link Node}s
- * and {@link Member}s, representing a simple
- * network structure.
+ * A collection of {@link Node}s and {@link Member}s, representing a simple network structure.
  */
 public final class Network<T extends NetworkType> {
 	public final Set<Member> members = Sets.newConcurrentHashSet();
-
+	
 	public final Set<Node> nodes = Sets.newConcurrentHashSet();
-
+	
 	@Nullable
 	private final World world;
-
+	
 	@Nullable
 	private final T type;
 	
@@ -60,97 +58,99 @@ public final class Network<T extends NetworkType> {
 		this.type = type;
 		this.world = world;
 	}
-
+	
 	/** Adds the given node to this instance. */
 	public void addNode(Node node) {
 		this.nodes.add(node);
 	}
-
+	
 	/** Adds the given position as a node to this instance. */
 	public void addBlockPos(BlockPos position) {
 		this.nodes.add(new Node(position));
 	}
-
+	
 	/** Adds the given node as a member node to this instance. */
 	public void addMember(Member member) {
 		this.members.add(member);
 	}
-
+	
 	/** Removes the given node from this instance. */
 	public void removeNode(Node node) {
 		this.nodes.remove(node);
 	}
-
+	
 	/** Removes the given member node from this instance. */
 	public void removeMember(Member node) {
 		this.members.remove(node);
 	}
-
-	/** Joins this instance with another, taking
-	 * their nodes and member nodes. */
+	
+	/**
+	 * Joins this instance with another, taking their nodes and member nodes.
+	 */
 	public Network join(Network controller) {
 		this.nodes.addAll(controller.nodes);
 		this.members.addAll(controller.members);
-
+		
 		return this;
 	}
-
+	
 	/** Returns this instance's type. */
-	public @Nullable NetworkType getType() {
+	public @Nullable
+	NetworkType getType() {
 		return this.type;
 	}
-
+	
 	/** Returns this instance's world. */
-	public @Nullable World getWorld() {
+	public @Nullable
+	World getWorld() {
 		return world;
 	}
-
+	
 	/** Returns this instance's size. */
 	public int size() {
 		return this.nodes.size();
 	}
-
+	
 	/** Asserts whether this instance is empty, or not. */
 	public boolean isEmpty() {
 		return this.type == null || (this.nodes.isEmpty() && this.members.isEmpty());
 	}
-
+	
 	/** Override behavior to tick network via our {@link NetworkType}. */
 	public void tick() {
 		if (type != null) {
 			this.type.tick(this);
 		}
 	}
-
+	
 	/** Asserts the equality of the objects. */
 	@Override
 	public boolean equals(Object object) {
-		if (this == object) return true;
-
-		if (object == null || getClass() != object.getClass()) return false;
+		if (this == object) {
+			return true;
+		}
+		
+		if (object == null || getClass() != object.getClass()) {
+			return false;
+		}
 		
 		var that = (Network) object;
-
+		
 		return Objects.equal(members, that.members) &&
 				Objects.equal(nodes, that.nodes) &&
 				Objects.equal(world, that.world) &&
 				Objects.equal(type, that.type);
 	}
-
+	
 	/** Returns the hash for this instance. */
 	@Override
 	public int hashCode() {
 		return Objects.hashCode(members, nodes, world, type);
 	}
-
-	/** Returns this node's string representation.
-	 * For example, it may be
-	 * "astromine:fluid_network, minecraft:overworld
-	 *  [323, 54, 73], NORTH
-	 *  [595, 58, 27], SOUTH
-	 *  [4933, 93, 4]
-	 *  [593, 58, 95]"
-	 * */
+	
+	/**
+	 * Returns this node's string representation. For example, it may be "astromine:fluid_network, minecraft:overworld [323, 54, 73], NORTH [595, 58, 27], SOUTH [4933, 93, 4] [593, 58, 95]"
+	 */
 	@Override
 	public String toString() {
 		if (type == null) {
@@ -169,8 +169,7 @@ public final class Network<T extends NetworkType> {
 	/**
 	 * A node for a {@link Member} of a network.
 	 * <br>
-	 * Serialization and deserialization methods are provided for:
-	 * - {@link NbtCompound} - through {@link #toTag()} and {@link #fromTag(NbtCompound)}.
+	 * Serialization and deserialization methods are provided for: - {@link NbtCompound} - through {@link #toTag()} and {@link #fromTag(NbtCompound)}.
 	 */
 	public static class Member {
 		private long longPos;
@@ -189,7 +188,7 @@ public final class Network<T extends NetworkType> {
 		public Member(BlockPos blockPos, Direction direction, StorageSiding siding) {
 			this(blockPos.asLong(), direction, siding);
 		}
-	
+		
 		/** Returns this node's {@link BlockPos} from its long representation. */
 		public BlockPos getBlockPos() {
 			return BlockPos.fromLong(this.longPos);
@@ -212,14 +211,15 @@ public final class Network<T extends NetworkType> {
 		public BlockEntity blockEntity(World world) {
 			return world.getBlockEntity(getBlockPos());
 		}
-	
-		/** Returns this node's string representation.
-		 * For example, it may be "[273, 98, -479], NORTH" */
+		
+		/**
+		 * Returns this node's string representation. For example, it may be "[273, 98, -479], NORTH"
+		 */
 		@Override
 		public String toString() {
 			return String.format("[%s, %s, %s], %s", getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getY(), direction.asString().toUpperCase());
 		}
-	
+		
 		/** Deserializes a {@link Member} from a {@link NbtCompound}. */
 		public static Member fromTag(NbtCompound tag) {
 			return new Member(
@@ -228,26 +228,24 @@ public final class Network<T extends NetworkType> {
 					StorageSiding.valueOf(tag.getString("Siding"))
 			);
 		}
-	
+		
 		/** Serializes a {@link Member} to a {@link NbtCompound}. */
 		public NbtCompound toTag() {
 			var tag = new NbtCompound();
-	
+			
 			tag.putLong("Position", longPos);
 			
 			tag.putString("Direction", direction.name());
 			tag.putString("Siding", siding.name());
-	
+			
 			return tag;
 		}
 	}
 	
 	/**
-	 * A node for
-	 * a network, with no attached {@link Node}.
+	 * A node for a network, with no attached {@link Node}.
 	 * <br>
-	 * Serialization and deserialization methods are provided for:
-	 * - {@link NbtCompound} - through {@link #toTag()} and {@link #fromTag(NbtCompound)}.
+	 * Serialization and deserialization methods are provided for: - {@link NbtCompound} - through {@link #toTag()} and {@link #fromTag(NbtCompound)}.
 	 */
 	public record Node(long longPos) {
 		/** Instantiates a {@link Member}. */
@@ -259,25 +257,26 @@ public final class Network<T extends NetworkType> {
 		public BlockPos blockPos() {
 			return BlockPos.fromLong(this.longPos);
 		}
-	
-		/** Returns this node's string representation.
-		 * For example, it may be "[184, 47, -759]" */
+		
+		/**
+		 * Returns this node's string representation. For example, it may be "[184, 47, -759]"
+		 */
 		@Override
 		public String toString() {
 			return String.format("[%s, %s, %s]", blockPos().getX(), blockPos().getY(), blockPos().getY());
 		}
-	
+		
 		/** Deserializes a {@link Node} from a {@link NbtCompound}. */
 		public static Node fromTag(NbtCompound tag) {
 			return new Node(tag.getLong("Position"));
 		}
-	
+		
 		/** Serializes a {@link Node} to a {@link NbtCompound}. */
 		public NbtCompound toTag() {
 			var tag = new NbtCompound();
-	
+			
 			tag.putLong("Position", longPos);
-	
+			
 			return tag;
 		}
 	}

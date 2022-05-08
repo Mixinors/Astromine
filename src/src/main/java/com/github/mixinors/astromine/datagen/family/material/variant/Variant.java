@@ -37,26 +37,26 @@ public interface Variant<T extends ItemConvertible> {
 	 * The name of this variant
 	 */
 	String getName();
-
+	
 	/**
 	 * The consumer that registers this variant's model
 	 */
 	BiConsumer<?, T> getModelRegistrar();
-
+	
 	/**
 	 * The path of this variant's family-independent tag, e.g. {@code raw_ore_blocks}, {@code gems}
 	 */
 	default String getTagPath() {
 		return WordUtils.pluralize(getName());
 	}
-
+	
 	/**
 	 * The prefix of a family-dependent tag, e.g. {@code raw}
 	 */
 	default String getTagPrefix() {
 		return "";
 	}
-
+	
 	/**
 	 * The centre of a family-dependent tag, e.g. {@code iron}, {@code diamonds}
 	 *
@@ -65,14 +65,14 @@ public interface Variant<T extends ItemConvertible> {
 	default String getTagCentre(String material) {
 		return shouldPluralizeTagCentre() ? WordUtils.pluralize(material) : material;
 	}
-
+	
 	/**
 	 * The suffix of a family-dependent tag, e.g. {@code blocks}
 	 */
 	default String getTagSuffix() {
 		return getTagPath();
 	}
-
+	
 	/**
 	 * The path of a family-dependent tag, e.g. {@code raw_iron_blocks}, {@code diamonds}
 	 *
@@ -83,21 +83,21 @@ public interface Variant<T extends ItemConvertible> {
 		var suffix = hasTagSuffix() ? "_" + getTagSuffix() : "";
 		return prefix + getTagCentre(material) + suffix;
 	}
-
+	
 	/**
 	 * The {@link Identifier} of this variant's family-independent tag, e.g. {@code c:raw_ore_blocks}, {@code c:gems}
 	 */
 	default Identifier getTagId() {
 		return new Identifier("c", getTagPath());
 	}
-
+	
 	/**
 	 * The {@link Identifier} of a family-dependent tag for the given family, e.g. {@code c:raw_iron_blocks}, {@code c:diamonds}
 	 */
 	default Identifier getTagId(MaterialFamily family) {
 		return getTagId(family.getName());
 	}
-
+	
 	/**
 	 * The {@link Identifier} of a family-dependent tag for the given family name, e.g. {@code c:raw_iron_blocks}, {@code c:diamonds}
 	 *
@@ -106,35 +106,35 @@ public interface Variant<T extends ItemConvertible> {
 	default Identifier getTagId(String family) {
 		return new Identifier("c", getTagPath(family));
 	}
-
+	
 	/**
 	 * This variant's family-independent tag, as an {@link TagKey identified tag}
 	 */
 	default TagKey<T> getTag() {
 		return createTag(getTagId());
 	}
-
+	
 	/**
 	 * This variant's family-dependent tag, as an {@link TagKey identified tag}, for the given family
 	 */
 	default TagKey<T> getTag(MaterialFamily family) {
 		return getTag(family.getName());
 	}
-
+	
 	/**
 	 * This variant's family-dependent tag, as an {@link TagKey identified tag}, for the given family name
 	 */
 	default TagKey<T> getTag(String family) {
 		return createTag(getTagId(family));
 	}
-
+	
 	/**
 	 * Whether the variant has a family-independent tag, e.g. {@code c:raw_ore_blocks}, {@code c:gems}
 	 */
 	default boolean hasTag() {
 		return true;
 	}
-
+	
 	/**
 	 * Whether this variant's family-dependent tags have a prefix
 	 *
@@ -143,7 +143,7 @@ public interface Variant<T extends ItemConvertible> {
 	default boolean hasTagPrefix() {
 		return !getTagPrefix().isEmpty();
 	}
-
+	
 	/**
 	 * Whether this variant's family-dependent tags have a suffix
 	 *
@@ -152,7 +152,7 @@ public interface Variant<T extends ItemConvertible> {
 	default boolean hasTagSuffix() {
 		return !getTagSuffix().isEmpty();
 	}
-
+	
 	/**
 	 * Whether this variant's family-dependent tags should have their centre pluralized
 	 *
@@ -161,7 +161,7 @@ public interface Variant<T extends ItemConvertible> {
 	default boolean shouldPluralizeTagCentre() {
 		return !hasTagSuffix();
 	}
-
+	
 	/**
 	 * The tag factory for this variant, should be effectively static
 	 */

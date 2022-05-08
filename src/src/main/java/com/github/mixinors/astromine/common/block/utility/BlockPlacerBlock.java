@@ -27,7 +27,6 @@ package com.github.mixinors.astromine.common.block.utility;
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.mixinors.astromine.common.block.entity.utility.BlockPlacerBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.utility.BlockPlacerScreenHandler;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -42,27 +41,27 @@ public class BlockPlacerBlock extends HorizontalFacingBlockWithEntity {
 	public BlockPlacerBlock(Settings settings) {
 		super(settings);
 	}
-
+	
 	@Override
 	public SavedData getSavedDataForDroppedItem() {
 		return ITEM_MACHINE;
 	}
-
+	
 	@Override
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 		return new BlockPlacerBlockEntity(pos, state);
 	}
-
+	
 	@Override
 	public boolean hasScreenHandler() {
 		return true;
 	}
-
+	
 	@Override
 	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
 		return new BlockPlacerScreenHandler(syncId, playerInventory.player, pos);
 	}
-
+	
 	@Override
 	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
 		buffer.writeBlockPos(pos);

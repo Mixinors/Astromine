@@ -24,7 +24,6 @@
 
 package com.github.mixinors.astromine.common.transfer.storage;
 
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
@@ -34,12 +33,10 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.base.SnapshotParticipant;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 
-import net.fabricmc.fabric.api.transfer.v1.item.base.SingleStackStorage;
-
 /**
  * <p>A {@link SingleVariantStorage} implementation for {@link ItemVariant}s, backed by an {@link Inventory}.</p>
  */
-public class SimpleItemVariantStorage  extends SnapshotParticipant<ItemStack> implements SingleSlotStorage<ItemVariant> {
+public class SimpleItemVariantStorage extends SnapshotParticipant<ItemStack> implements SingleSlotStorage<ItemVariant> {
 	private final Inventory inventory;
 	private final int slot;
 	
@@ -59,6 +56,7 @@ public class SimpleItemVariantStorage  extends SnapshotParticipant<ItemStack> im
 	
 	/**
 	 * Sets this storage's stack.
+	 *
 	 * @param stack the stack to be set.
 	 */
 	public void setStack(ItemStack stack) {
@@ -67,6 +65,7 @@ public class SimpleItemVariantStorage  extends SnapshotParticipant<ItemStack> im
 	
 	/**
 	 * Returns this storage's capacity for the given variant.
+	 *
 	 * @param variant the variant.
 	 */
 	public int getCapacity(ItemVariant variant) {
@@ -114,6 +113,7 @@ public class SimpleItemVariantStorage  extends SnapshotParticipant<ItemStack> im
 	
 	/**
 	 * Sets this storage's {@link #outerStorage}
+	 *
 	 * @param outerStorage the storage to be set.
 	 */
 	public void setOuterStorage(SimpleItemStorage outerStorage) {
@@ -141,7 +141,9 @@ public class SimpleItemVariantStorage  extends SnapshotParticipant<ItemStack> im
 		var stack = getStack();
 		
 		if (variant.matches(stack) || stack.isEmpty()) {
-			if (outerStorage != null && !outerStorage.canInsert(variant, slot) && !force) return 0;
+			if (outerStorage != null && !outerStorage.canInsert(variant, slot) && !force) {
+				return 0;
+			}
 			
 			var amount = (int) Math.min(maxAmount, getCapacity(variant) - stack.getCount());
 			
@@ -186,7 +188,9 @@ public class SimpleItemVariantStorage  extends SnapshotParticipant<ItemStack> im
 		var stack = getStack();
 		
 		if (variant.matches(stack)) {
-			if (outerStorage != null && !outerStorage.canExtract(variant, slot) && !force) return 0;
+			if (outerStorage != null && !outerStorage.canExtract(variant, slot) && !force) {
+				return 0;
+			}
 			
 			var amount = (int) Math.min(stack.getCount(), maxAmount);
 			

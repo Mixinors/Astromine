@@ -28,7 +28,6 @@ import com.github.mixinors.astromine.common.block.HoloBridgeProjectorBlock;
 import com.github.mixinors.astromine.common.block.entity.HoloBridgeProjectorBlockEntity;
 import com.github.mixinors.astromine.registry.common.AMSoundEvents;
 import dev.architectury.hooks.block.BlockEntityHooks;
-
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -49,16 +48,17 @@ public class HolographicConnectorItem extends Item {
 	public HolographicConnectorItem(Settings settings) {
 		super(settings);
 	}
-
+	
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
 		var world = context.getWorld();
 		
 		var position = context.getBlockPos();
-
-		if (context.shouldCancelInteraction())
+		
+		if (context.shouldCancelInteraction()) {
 			return super.useOnBlock(context);
-
+		}
+		
 		if (world.getBlockState(position).getBlock() instanceof HoloBridgeProjectorBlock) {
 			var entity = (HoloBridgeProjectorBlockEntity) world.getBlockEntity(position);
 			
@@ -85,13 +85,13 @@ public class HolographicConnectorItem extends Item {
 				
 				var nP = entity.getPos();
 				var oP = parent.getPos();
-
+				
 				if (parent.getPos().getZ() < entity.getPos().getZ() || parent.getPos().getX() < entity.getPos().getX()) {
 					var temporary = parent;
 					parent = entity;
 					entity = temporary;
 				}
-
+				
 				if ((parent.getPos().getX() != entity.getPos().getX() && parent.getPos().getZ() != entity.getPos().getZ()) || oP.getSquaredDistance(nP) > 65536) {
 					if (!world.isClient) {
 						context.getPlayer().setStackInHand(context.getHand(), unselect(context.getStack()));
@@ -109,7 +109,7 @@ public class HolographicConnectorItem extends Item {
 					}
 					return ActionResult.SUCCESS;
 				}
-
+				
 				if (!parent.attemptToBuildBridge(entity)) {
 					if (!world.isClient) {
 						context.getPlayer().setStackInHand(context.getHand(), unselect(context.getStack()));
@@ -119,18 +119,18 @@ public class HolographicConnectorItem extends Item {
 					}
 					return ActionResult.SUCCESS;
 				}
-
+				
 				if (world.isClient) {
 					context.getPlayer().sendMessage(new TranslatableText("text.astromine.message.holographic_connection_successful", toShortString(parent.getPos()), toShortString(entity.getPos())).formatted(Formatting.GREEN), true);
 					world.playSound(context.getPlayer(), context.getBlockPos(), AMSoundEvents.HOLOGRAPHIC_CONNECTOR_CLICK.get(), SoundCategory.PLAYERS, 0.5f, 0.33f);
 				} else {
 					parent.setChild(entity);
 					entity.setParent(parent);
-
+					
 					if (parent.getParent() == entity.getParent()) {
 						parent.setParent(null);
 					}
-
+					
 					parent.buildBridge();
 					BlockEntityHooks.syncData(parent);
 					context.getPlayer().setStackInHand(context.getHand(), unselect(context.getStack()));
@@ -146,14 +146,14 @@ public class HolographicConnectorItem extends Item {
 		}
 		return ActionResult.SUCCESS;
 	}
-
+	
 	private ItemStack unselect(ItemStack stack) {
 		stack = stack.copy();
 		var tag = stack.getOrCreateNbt();
 		tag.remove("SelectedConnectorBlock");
 		return stack;
 	}
-
+	
 	private ItemStack selectBlock(ItemStack stack, RegistryKey<World> registryKey, BlockPos pos) {
 		stack = stack.copy();
 		var tag = stack.getOrCreateNbt();
@@ -161,16 +161,18 @@ public class HolographicConnectorItem extends Item {
 		tag.put("SelectedConnectorBlock", writePos(registryKey, pos));
 		return stack;
 	}
-
+	
 	public Pair<RegistryKey<World>, BlockPos> readBlock(ItemStack stack) {
 		var tag = stack.getNbt();
-		if (tag == null)
+		if (tag == null) {
 			return null;
-		if (!tag.contains("SelectedConnectorBlock"))
+		}
+		if (!tag.contains("SelectedConnectorBlock")) {
 			return null;
+		}
 		return readPos(tag.getCompound("SelectedConnectorBlock"));
 	}
-
+	
 	private NbtCompound writePos(RegistryKey<World> registryKey, BlockPos pos) {
 		var tag = new NbtCompound();
 		tag.putString("World", registryKey.getValue().toString());
@@ -179,7 +181,7 @@ public class HolographicConnectorItem extends Item {
 		tag.putInt("Z", pos.getZ());
 		return tag;
 	}
-
+	
 	private Pair<RegistryKey<World>, BlockPos> readPos(NbtCompound tag) {
 		var registryKey = RegistryKey.of(Registry.WORLD_KEY, Identifier.tryParse(tag.getString("World")));
 		var x = tag.getInt("X");
@@ -187,7 +189,7 @@ public class HolographicConnectorItem extends Item {
 		var z = tag.getInt("Z");
 		return new Pair<>(registryKey, new BlockPos(x, y, z));
 	}
-
+	
 	public String toShortString(BlockPos pos) {
 		return pos.getX() + ", " + pos.getY() + ", " + pos.getZ();
 	}

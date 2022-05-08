@@ -34,12 +34,12 @@ public interface MachineConfigProvider<T extends MachineConfig<?>> extends Tiere
 	default long getEnergyStorageSize() {
 		return getConfig().getEnergyStorageSize(getMachineTier());
 	}
-
+	
 	@Override
 	default long getMaxTransferRate() {
 		return (long) (2048 * getSpeed());
 	}
-
+	
 	@Override
 	default double getSpeed() {
 		return getConfig().getSpeed(getMachineTier());

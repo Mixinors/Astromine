@@ -24,10 +24,8 @@
 
 package com.github.mixinors.astromine.common.criterion;
 
-import com.google.gson.JsonObject;
-
 import com.github.mixinors.astromine.registry.common.AMCriteria;
-
+import com.google.gson.JsonObject;
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
@@ -37,30 +35,30 @@ import net.minecraft.util.Identifier;
 
 public class LaunchRocketCriterion extends AbstractCriterion<LaunchRocketCriterion.Conditions> {
 	public final Identifier id;
-
+	
 	public LaunchRocketCriterion(Identifier id) {
 		this.id = id;
 	}
-
+	
 	@Override
 	protected LaunchRocketCriterion.Conditions conditionsFromJson(JsonObject obj, EntityPredicate.Extended playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
 		return new Conditions(this.id, playerPredicate);
 	}
-
+	
 	@Override
 	public Identifier getId() {
 		return id;
 	}
-
+	
 	public void trigger(ServerPlayerEntity player) {
 		this.trigger(player, conditions -> true);
 	}
-
+	
 	public static class Conditions extends AbstractCriterionConditions {
 		public Conditions(Identifier id, EntityPredicate.Extended playerPredicate) {
 			super(id, playerPredicate);
 		}
-
+		
 		public static Conditions create() {
 			return new Conditions(AMCriteria.LAUNCH_ROCKET.getId(), EntityPredicate.Extended.EMPTY);
 		}

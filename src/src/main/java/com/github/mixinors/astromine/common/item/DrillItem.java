@@ -42,7 +42,7 @@ public class DrillItem extends MiningToolItem implements SimpleBatteryItem {
 	private final int radius;
 	private final ToolMaterial material;
 	private final long capacity;
-
+	
 	public DrillItem(ToolMaterial material, float attackDamage, float attackSpeed, int radius, long capacity, Settings settings) {
 		super(attackDamage, attackSpeed, material, AMTags.DRILL_MINEABLES, settings);
 		
@@ -50,27 +50,27 @@ public class DrillItem extends MiningToolItem implements SimpleBatteryItem {
 		this.material = material;
 		this.capacity = capacity;
 	}
-
+	
 	@Override
 	public int getEnchantability() {
 		return material.getEnchantability();
 	}
-
+	
 	@Override
 	public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		if (!target.world.isClient) {
 			return tryUseEnergy(stack, (long) (getEnergyConsumed() * AMConfig.get().items.drillEntityHitMultiplier));
 		}
-
+		
 		return true;
 	}
-
+	
 	@Override
 	public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
 		if (!world.isClient && state.getHardness(world, pos) != 0.0F) {
 			return tryUseEnergy(stack, getEnergyConsumed());
 		}
-
+		
 		return true;
 	}
 	
@@ -120,8 +120,9 @@ public class DrillItem extends MiningToolItem implements SimpleBatteryItem {
 		return 0x91261f;
 	}
 	
-	/** Override behavior to add instances of {@link EnergyStorageItem}
-	 * as {@link ItemStack}s to {@link ItemGroup}s with full energy. */
+	/**
+	 * Override behavior to add instances of {@link EnergyStorageItem} as {@link ItemStack}s to {@link ItemGroup}s with full energy.
+	 */
 	@Override
 	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
 		super.appendStacks(group, stacks);

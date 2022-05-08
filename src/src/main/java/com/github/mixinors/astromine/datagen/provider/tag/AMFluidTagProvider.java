@@ -25,18 +25,16 @@
 package com.github.mixinors.astromine.datagen.provider.tag;
 
 import com.github.mixinors.astromine.datagen.AMDatagen;
-
-import net.minecraft.util.registry.Registry;
-
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.minecraft.util.registry.Registry;
 
 public class AMFluidTagProvider extends FabricTagProvider.FluidTagProvider {
-
+	
 	public AMFluidTagProvider(FabricDataGenerator dataGenerator) {
 		super(dataGenerator);
 	}
-
+	
 	@Override
 	protected void generateTags() {
 		AMDatagen.FLUIDS.forEach((fluid) -> {

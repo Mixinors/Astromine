@@ -25,7 +25,6 @@
 package com.github.mixinors.astromine.common.world.feature;
 
 import com.mojang.serialization.Codec;
-
 import net.minecraft.structure.StructureGeneratorFactory;
 import net.minecraft.structure.StructurePiecesCollector;
 import net.minecraft.structure.StructurePiecesGenerator;
@@ -37,7 +36,7 @@ public class MeteorFeature extends StructureFeature<DefaultFeatureConfig> {
 	public MeteorFeature(Codec<DefaultFeatureConfig> codec) {
 		super(codec, StructureGeneratorFactory.simple(StructureGeneratorFactory.checkForBiomeOnTop(Heightmap.Type.WORLD_SURFACE_WG), MeteorFeature::addPieces));
 	}
-
+	
 	private static void addPieces(StructurePiecesCollector collector, StructurePiecesGenerator.Context<DefaultFeatureConfig> context) {
 		collector.addPiece(new MeteorGenerator(context.random(), context.chunkPos().getStartX(), context.chunkPos().getStartZ()));
 	}

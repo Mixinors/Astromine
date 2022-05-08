@@ -59,44 +59,44 @@ public enum ItemVariant implements Variant<Item> {
 	APPLE("apple", "metal_apples", "", "apples"),
 	HORSE_ARMOR("horse_armor", "horse_armor"),
 	BALL("ball");
-
+	
 	private final String name;
 	private final String path;
 	private final String prefix;
 	private final String suffix;
-
+	
 	ItemVariant(String name) {
 		this(name, true);
 	}
-
+	
 	ItemVariant(String name, boolean pluralize) {
 		this(name, pluralize ? WordUtils.pluralize(name) : name);
 	}
-
+	
 	ItemVariant(String name, boolean pluralize, boolean simple) {
 		this(name, pluralize ? WordUtils.pluralize(name) : name, "", simple ? "" : pluralize ? WordUtils.pluralize(name) : name);
 	}
-
+	
 	ItemVariant(String name, String path) {
 		this(name, path, "", path);
 	}
-
+	
 	ItemVariant(String name, String prefix, String suffix) {
 		this(name, WordUtils.pluralize(name), prefix, suffix);
 	}
-
+	
 	ItemVariant(String name, String path, String prefix, String suffix) {
 		this.name = name;
 		this.path = path;
 		this.prefix = prefix;
 		this.suffix = suffix;
 	}
-
+	
 	@Override
 	public String getName() {
 		return this.name;
 	}
-
+	
 	@Override
 	public BiConsumer<ItemModelGenerator, Item> getModelRegistrar() {
 		return switch (this) {
@@ -104,22 +104,22 @@ public enum ItemVariant implements Variant<Item> {
 			default -> (itemModelGenerator, item) -> itemModelGenerator.register(item, Models.GENERATED);
 		};
 	}
-
+	
 	@Override
 	public String getTagPath() {
 		return path;
 	}
-
+	
 	@Override
 	public String getTagPrefix() {
 		return prefix;
 	}
-
+	
 	@Override
 	public String getTagSuffix() {
 		return suffix;
 	}
-
+	
 	@Override
 	public boolean hasTag() {
 		return switch (this) {

@@ -29,7 +29,6 @@ import com.github.mixinors.astromine.common.block.entity.machine.ElectricFurnace
 import com.github.mixinors.astromine.common.screenhandler.machine.ElectricFurnaceScreenHandler;
 import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -45,12 +44,12 @@ public abstract class ElectricFurnaceBlock extends HorizontalFacingTieredBlockWi
 	public ElectricFurnaceBlock(Settings settings) {
 		super(settings);
 	}
-
+	
 	@Override
 	public SavedData getSavedDataForDroppedItem() {
 		return ITEM_MACHINE;
 	}
-
+	
 	@Override
 	public Block getForTier(MachineTier tier) {
 		return switch (tier) {
@@ -66,75 +65,75 @@ public abstract class ElectricFurnaceBlock extends HorizontalFacingTieredBlockWi
 	public boolean hasScreenHandler() {
 		return true;
 	}
-
+	
 	@Override
 	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
 		return new ElectricFurnaceScreenHandler(syncId, playerInventory.player, pos);
 	}
-
+	
 	@Override
 	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
 		buffer.writeBlockPos(pos);
 	}
-
+	
 	public static class Primitive extends ElectricFurnaceBlock {
 		public Primitive(Settings settings) {
 			super(settings);
 		}
-
+		
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new ElectricFurnaceBlockEntity.Primitive(pos, state);
 		}
-
+		
 		@Override
 		public MachineTier getTier() {
 			return MachineTier.PRIMITIVE;
 		}
 	}
-
+	
 	public static class Basic extends ElectricFurnaceBlock {
 		public Basic(Settings settings) {
 			super(settings);
 		}
-
+		
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new ElectricFurnaceBlockEntity.Basic(pos, state);
 		}
-
+		
 		@Override
 		public MachineTier getTier() {
 			return MachineTier.BASIC;
 		}
 	}
-
+	
 	public static class Advanced extends ElectricFurnaceBlock {
 		public Advanced(Settings settings) {
 			super(settings);
 		}
-
+		
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new ElectricFurnaceBlockEntity.Advanced(pos, state);
 		}
-
+		
 		@Override
 		public MachineTier getTier() {
 			return MachineTier.ADVANCED;
 		}
 	}
-
+	
 	public static class Elite extends ElectricFurnaceBlock {
 		public Elite(Settings settings) {
 			super(settings);
 		}
-
+		
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new ElectricFurnaceBlockEntity.Elite(pos, state);
 		}
-
+		
 		@Override
 		public MachineTier getTier() {
 			return MachineTier.ELITE;

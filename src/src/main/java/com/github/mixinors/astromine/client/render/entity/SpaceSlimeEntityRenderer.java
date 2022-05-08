@@ -27,7 +27,6 @@ package com.github.mixinors.astromine.client.render.entity;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.model.SpaceSlimeEntityModel;
 import com.github.mixinors.astromine.common.entity.SpaceSlimeEntity;
-
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.MobEntityRenderer;
@@ -40,42 +39,42 @@ import net.minecraft.util.math.Vec3f;
 
 public class SpaceSlimeEntityRenderer extends MobEntityRenderer<SpaceSlimeEntity, SpaceSlimeEntityModel> {
 	private static final Identifier TEXTURE = AMCommon.id("textures/entity/space_slime/space_slime.png");
-
+	
 	public SpaceSlimeEntityRenderer(EntityRendererFactory.Context context) {
 		super(context, new SpaceSlimeEntityModel(context.getPart(EntityModelLayers.SLIME)), 0.25F);
 		this.addFeature(new SlimeOverlayFeatureRenderer(this, context.getModelLoader()));
 		// I don't get why it's complaining, MobEntityRenderer implements FeatureRendererContext through LivingEntityRenderer
 	}
-
+	
 	@Override
 	public void render(SpaceSlimeEntity slimeEntity, float f, float g, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int i) {
 		this.shadowRadius = 0.25F * (float) slimeEntity.getSize();
-
+		
 		// if the slime is floating, we rotate it around the x axis for 1 full rotation
 		// todo: random axis rotation
 		if (slimeEntity.isFloating()) {
 			var progress = slimeEntity.getFloatingProgress() / 200f;
 			matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(progress * 360));
 		}
-
+		
 		super.render(slimeEntity, f, g, matrices, vertexConsumerProvider, i);
 	}
-
+	
 	@Override
 	public void scale(SpaceSlimeEntity slimeEntity, MatrixStack matrices, float f) {
 		var scale = 0.999F;
 		matrices.scale(scale, scale, scale);
 		matrices.translate(0.0D, -0.125D, 0.0D);
-
+		
 		// calculate stretch slime size
 		var slimeSize = (float) slimeEntity.getSize();
 		var i = MathHelper.lerp(f, slimeEntity.lastStretch, slimeEntity.stretch) / (slimeSize * 0.5F + 1.0F);
 		var j = 1.0F / (i + 1.0F);
-
+		
 		// scale matrix based on slime size
 		matrices.scale(j * slimeSize, 1.0F / j * slimeSize, j * slimeSize);
 	}
-
+	
 	@Override
 	public Identifier getTexture(SpaceSlimeEntity slimeEntity) {
 		return TEXTURE;

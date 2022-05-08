@@ -24,11 +24,6 @@
 
 package com.github.mixinors.astromine.client.rei;
 
-import java.util.Collections;
-import java.util.List;
-
-import com.google.common.collect.ImmutableList;
-
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.rei.alloysmelting.AlloySmeltingCategory;
 import com.github.mixinors.astromine.client.rei.alloysmelting.AlloySmeltingDisplay;
@@ -56,6 +51,7 @@ import com.github.mixinors.astromine.client.rei.wiremilling.WireMillingCategory;
 import com.github.mixinors.astromine.client.rei.wiremilling.WireMillingDisplay;
 import com.github.mixinors.astromine.common.recipe.*;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.architectury.fluid.FluidStack;
 import dev.vini2003.hammer.core.api.client.scissor.Scissors;
@@ -63,22 +59,6 @@ import dev.vini2003.hammer.core.api.client.util.DrawingUtils;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
 import dev.vini2003.hammer.core.api.common.color.Color;
 import dev.vini2003.hammer.gui.energy.api.common.util.EnergyTextUtils;
-import net.fabricmc.fabric.api.transfer.v1.client.fluid.FluidVariantRendering;
-import net.minecraft.text.LiteralText;
-import net.minecraft.util.Formatting;
-import org.jetbrains.annotations.Nullable;
-
-import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.BucketItem;
-import net.minecraft.recipe.SmeltingRecipe;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
-
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.AbstractRenderer;
@@ -95,13 +75,27 @@ import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import me.shedaniel.rei.impl.client.gui.widget.EntryWidget;
 import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCustomDisplay;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.transfer.v1.client.fluid.FluidVariantRendering;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.BucketItem;
+import net.minecraft.recipe.SmeltingRecipe;
+import net.minecraft.text.LiteralText;
+import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Collections;
+import java.util.List;
 
 @Environment(EnvType.CLIENT)
 public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 	private static final Identifier THIN_ENERGY_BACKGROUND_TEXTURE = AMCommon.id("textures/widget/thin_energy_bar_background.png");
 	private static final Identifier THIN_ENERGY_FOREGROUND_TEXTURE = AMCommon.id("textures/widget/thin_energy_bar_foreground.png");
-
+	
 	public static final CategoryIdentifier<TrituratingDisplay> TRITURATING = CategoryIdentifier.of(AMCommon.id("triturating"));
 	public static final CategoryIdentifier<ElectricSmeltingDisplay> ELECTRIC_SMELTING = CategoryIdentifier.of(AMCommon.id("electric_smelting"));
 	public static final CategoryIdentifier<FluidGeneratingDisplay> FLUID_GENERATING = CategoryIdentifier.of(AMCommon.id("fluid_generating"));
@@ -114,23 +108,23 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 	public static final CategoryIdentifier<WireMillingDisplay> WIRE_MILLING = CategoryIdentifier.of(AMCommon.id("wire_milling"));
 	public static final CategoryIdentifier<AlloySmeltingDisplay> ALLOY_SMELTING = CategoryIdentifier.of(AMCommon.id("alloy_smelting"));
 	public static final CategoryIdentifier<SolidifyingDisplay> SOLIDIFYING = CategoryIdentifier.of(AMCommon.id("solidifying"));
-
+	
 	@Override
 	public void registerCategories(CategoryRegistry registry) {
 		registry.add(new SolidifyingCategory(),
-			new TrituratingCategory(),
-			new ElectricSmeltingCategory(),
-			new FluidGeneratingCategory(),
-			new SolidGeneratingCategory(),
-			new PressingCategory(),
-			new MeltingCategory(),
-			new WireMillingCategory(),
-			new AlloySmeltingCategory(),
-			new FluidMixingCategory(),
-			new ElectrolyzingCategory(),
-			new RefiningCategory()
+				new TrituratingCategory(),
+				new ElectricSmeltingCategory(),
+				new FluidGeneratingCategory(),
+				new SolidGeneratingCategory(),
+				new PressingCategory(),
+				new MeltingCategory(),
+				new WireMillingCategory(),
+				new AlloySmeltingCategory(),
+				new FluidMixingCategory(),
+				new ElectrolyzingCategory(),
+				new RefiningCategory()
 		);
-
+		
 		registry.addWorkstations(TRITURATING, EntryStacks.of(AMBlocks.PRIMITIVE_TRITURATOR.get()), EntryStacks.of(AMBlocks.BASIC_TRITURATOR.get()), EntryStacks.of(AMBlocks.ADVANCED_TRITURATOR.get()), EntryStacks.of(AMBlocks.ELITE_TRITURATOR.get()));
 		registry.addWorkstations(ELECTRIC_SMELTING, EntryStacks.of(AMBlocks.PRIMITIVE_ELECTRIC_FURNACE.get()), EntryStacks.of(AMBlocks.BASIC_ELECTRIC_FURNACE.get()), EntryStacks.of(AMBlocks.ADVANCED_ELECTRIC_FURNACE.get()), EntryStacks.of(AMBlocks.ELITE_ELECTRIC_FURNACE.get()));
 		registry.addWorkstations(FLUID_GENERATING, EntryStacks.of(AMBlocks.PRIMITIVE_FLUID_GENERATOR.get()), EntryStacks.of(AMBlocks.BASIC_FLUID_GENERATOR.get()), EntryStacks.of(AMBlocks.ADVANCED_FLUID_GENERATOR.get()), EntryStacks.of(AMBlocks.ELITE_FLUID_GENERATOR.get()));
@@ -143,14 +137,14 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 		registry.addWorkstations(WIRE_MILLING, EntryStacks.of(AMBlocks.PRIMITIVE_WIRE_MILL.get()), EntryStacks.of(AMBlocks.BASIC_WIRE_MILL.get()), EntryStacks.of(AMBlocks.ADVANCED_WIRE_MILL.get()), EntryStacks.of(AMBlocks.ELITE_WIRE_MILL.get()));
 		registry.addWorkstations(ALLOY_SMELTING, EntryStacks.of(AMBlocks.PRIMITIVE_ALLOY_SMELTER.get()), EntryStacks.of(AMBlocks.BASIC_ALLOY_SMELTER.get()), EntryStacks.of(AMBlocks.ADVANCED_ALLOY_SMELTER.get()), EntryStacks.of(AMBlocks.ELITE_ALLOY_SMELTER.get()));
 		registry.addWorkstations(SOLIDIFYING, EntryStacks.of(AMBlocks.PRIMITIVE_SOLIDIFIER.get()), EntryStacks.of(AMBlocks.BASIC_SOLIDIFIER.get()), EntryStacks.of(AMBlocks.ADVANCED_SOLIDIFIER.get()), EntryStacks.of(AMBlocks.ELITE_SOLIDIFIER.get()));
-			
+		
 		registry.removePlusButton(FLUID_GENERATING);
 		registry.setPlusButtonArea(SOLID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55.0F + 110.0F - 16.0F, bounds.getMaxY() - 16.0F, 10.0F, 10.0F));
 		registry.removePlusButton(FLUID_MIXING);
 		registry.removePlusButton(ELECTROLYZING);
 		registry.removePlusButton(REFINING);
 	}
-
+	
 	@Override
 	public void registerDisplays(DisplayRegistry registry) {
 		registry.registerFiller(TrituratingRecipe.class, TrituratingDisplay::new);
@@ -164,53 +158,55 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 		registry.registerFiller(WireMillingRecipe.class, WireMillingDisplay::new);
 		registry.registerFiller(AlloySmeltingRecipe.class, AlloySmeltingDisplay::new);
 		registry.registerFiller(SolidifyingRecipe.class, SolidifyingDisplay::new);
-
+		
 		registry.registerFiller(WireCuttingRecipe.class, recipe -> {
 			return new DefaultCustomDisplay(recipe, EntryIngredients.ofIngredients(ImmutableList.of(recipe.getInput(), recipe.getTool())), Collections.singletonList(EntryIngredients.of(recipe.getOutput())));
 		});
-
+		
 		for (var entry : AbstractFurnaceBlockEntity.createFuelTimeMap().entrySet()) {
 			if (!(entry.getKey() instanceof BucketItem) && entry.getValue() > 0) {
 				registry.add(new SolidGeneratingDisplay(Collections.singletonList(EntryIngredients.of(entry.getKey())), (int) ((entry.getValue() / 2.0F) / 6.0F), (long) ((entry.getValue() / 2.0F * 5.0F) / (entry.getValue() / 2.0F) * 6.0F), null));
 			}
 		}
 	}
-
+	
 	public static EntryStack<FluidStack> convertToEntryStack(FluidVariant variant, long amount) {
 		return EntryStacks.of(variant.getFluid(), amount);
 	}
-
+	
 	public static List<Widget> createEnergyDisplay(Rectangle bounds, long energy, boolean generating, int speed) {
 		return Collections.singletonList(new EnergyEntryWidget(bounds, speed, generating).entry(ClientEntryStacks.of(new AbstractRenderer() {
 			@Override
 			public void render(MatrixStack matrices, Rectangle bounds, int mouseX, int mouseY, float delta) {}
-
+			
 			@Override
 			public @Nullable Tooltip getTooltip(Point mouse) {
 				return Tooltip.create(mouse, EnergyTextUtils.ENERGY.styled(style -> style.withColor(EnergyTextUtils.COLOR_OVERRIDE.toRGB())), new LiteralText("" + energy + "E").formatted(Formatting.GRAY));
 			}
 		})).notFavoritesInteractable());
 	}
-
+	
 	public static List<Widget> createFluidDisplay(Rectangle bounds, List<EntryStack<?>> fluidStacks, boolean generating, long speed) {
 		var entry = new FluidEntryWidget(bounds, speed, generating).entries(fluidStacks);
-		if (generating)
+		if (generating) {
 			entry.markOutput();
-		else entry.markInput();
+		} else {
+			entry.markInput();
+		}
 		return Collections.singletonList(entry);
 	}
-
+	
 	private static class EnergyEntryWidget extends EntryWidget {
 		private final long speed;
 		private final boolean generating;
-
+		
 		protected EnergyEntryWidget(Rectangle rectangle, long speed, boolean generating) {
 			super(new Point(rectangle.x, rectangle.y));
 			this.getBounds().setBounds(rectangle);
 			this.speed = speed;
 			this.generating = generating;
 		}
-
+		
 		@Override
 		protected void drawBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 			if (background) {
@@ -249,15 +245,15 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 				scissors.destroy();
 			}
 		}
-
+		
 		@Override
 		protected void drawCurrentEntry(MatrixStack matrices, int mouseX, int mouseY, float delta) {}
 	}
-
+	
 	private static class FluidEntryWidget extends EntryWidget {
 		private final long speed;
 		private final boolean generating;
-
+		
 		protected FluidEntryWidget(Rectangle rectangle, long speed, boolean generating) {
 			super(new Point(rectangle.x, rectangle.y));
 			
@@ -277,7 +273,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 				drawTexture(matrices, bounds.x, bounds.y, 0, 0, bounds.width, bounds.height, bounds.width, bounds.height);
 			}
 		}
-
+		
 		@Override
 		protected void drawCurrentEntry(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 			var entry = getCurrentEntry();
@@ -287,8 +283,9 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 				
 				var height = (float) Math.ceil((float) ((double) System.currentTimeMillis() / (double) (speed / bounds.height) % (double) bounds.height));
 				
-				if (!generating)
-					height = (float) Math.ceil(((float) (bounds.height - ((double) System.currentTimeMillis() / (double) (speed / bounds.height)  % (double) bounds.height))));
+				if (!generating) {
+					height = (float) Math.ceil(((float) (bounds.height - ((double) System.currentTimeMillis() / (double) (speed / bounds.height) % (double) bounds.height))));
+				}
 				
 				var provider = InstanceUtils.getClient().getBufferBuilders().getEntityVertexConsumers();
 				

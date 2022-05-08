@@ -64,7 +64,7 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 			AMFluids.OXYGEN,
 			AMFluids.HYDROGEN
 	);
-
+	
 	public static final List<BlockVariant> ORE_VARIANTS = List.of(
 			BlockVariant.STONE_ORE,
 			BlockVariant.DEEPSLATE_ORE,
@@ -72,14 +72,14 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 			BlockVariant.METEOR_ORE,
 			BlockVariant.ASTEROID_ORE
 	);
-
+	
 	public static final List<ItemVariant> ARMOR_VARIANTS = List.of(
 			ItemVariant.HELMET,
 			ItemVariant.CHESTPLATE,
 			ItemVariant.LEGGINGS,
 			ItemVariant.BOOTS
 	);
-
+	
 	public static final List<ItemVariant> TOOL_VARIANTS = List.of(
 			ItemVariant.PICKAXE,
 			ItemVariant.AXE,
@@ -87,16 +87,16 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 			ItemVariant.SWORD,
 			ItemVariant.HOE
 	);
-
+	
 	public static final List<ItemVariant> EQUIPMENT_VARIANTS = new ImmutableList.Builder<ItemVariant>().add(
 			ItemVariant.HORSE_ARMOR
 	).addAll(ARMOR_VARIANTS).addAll(TOOL_VARIANTS).build();
-
+	
 	public static final List<ItemVariant> CLUSTER_VARIANTS = List.of(
 			ItemVariant.METEOR_ORE_CLUSTER,
 			ItemVariant.ASTEROID_ORE_CLUSTER
 	);
-
+	
 	public static final List<Block> PRIMITIVE_MACHINES = List.of(
 			AMBlocks.PRIMITIVE_TANK.get(),
 			AMBlocks.PRIMITIVE_SOLID_GENERATOR.get(),
@@ -114,7 +114,7 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 			AMBlocks.PRIMITIVE_BUFFER.get(),
 			AMBlocks.PRIMITIVE_CAPACITOR.get()
 	);
-
+	
 	public static final List<Block> BASIC_MACHINES = List.of(
 			AMBlocks.BASIC_TANK.get(),
 			AMBlocks.BASIC_SOLID_GENERATOR.get(),
@@ -132,7 +132,7 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 			AMBlocks.BASIC_BUFFER.get(),
 			AMBlocks.BASIC_CAPACITOR.get()
 	);
-
+	
 	public static final List<Block> ADVANCED_MACHINES = List.of(
 			AMBlocks.ADVANCED_TANK.get(),
 			AMBlocks.ADVANCED_SOLID_GENERATOR.get(),
@@ -150,7 +150,7 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 			AMBlocks.ADVANCED_BUFFER.get(),
 			AMBlocks.ADVANCED_CAPACITOR.get()
 	);
-
+	
 	public static final List<Block> ELITE_MACHINES = List.of(
 			AMBlocks.ELITE_TANK.get(),
 			AMBlocks.ELITE_SOLID_GENERATOR.get(),
@@ -168,17 +168,17 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 			AMBlocks.ELITE_BUFFER.get(),
 			AMBlocks.ELITE_CAPACITOR.get()
 	);
-
+	
 	public static final List<Block> CREATIVE_MACHINES = List.of(
 			AMBlocks.CREATIVE_TANK.get(),
 			AMBlocks.CREATIVE_BUFFER.get(),
 			AMBlocks.CREATIVE_CAPACITOR.get()
 	);
-
+	
 	public static final List<Block> MISC_MACHINES = List.of(
 			AMBlocks.FLUID_EXTRACTOR.get(),
 			AMBlocks.FLUID_INSERTER.get(),
-
+			
 			AMBlocks.BLOCK_BREAKER.get(),
 			AMBlocks.BLOCK_PLACER.get()
 	);
@@ -190,14 +190,14 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 			.addAll(ELITE_MACHINES)
 			.addAll(CREATIVE_MACHINES)
 			.addAll(MISC_MACHINES).build();
-
+	
 	public static final List<Block> ENERGY_CABLES = List.of(
 			AMBlocks.PRIMITIVE_ENERGY_CABLE.get(),
 			AMBlocks.BASIC_ENERGY_CABLE.get(),
 			AMBlocks.ADVANCED_ENERGY_CABLE.get(),
 			AMBlocks.ELITE_ENERGY_CABLE.get()
 	);
-
+	
 	public static final Map<BlockFamily.Variant, Identifier> VANILLA_ITEM_TAG_VARIANTS = Map.of(
 			BlockFamily.Variant.SLAB, new Identifier("slabs"),
 			BlockFamily.Variant.STAIRS, new Identifier("stairs"),
@@ -208,13 +208,13 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 			BlockFamily.Variant.SIGN, new Identifier("signs"),
 			BlockFamily.Variant.TRAPDOOR, new Identifier("trapdoors")
 	);
-
+	
 	public static final Map<BlockFamily.Variant, Identifier> VANILLA_BLOCK_TAG_VARIANTS = new ImmutableMap.Builder<BlockFamily.Variant, Identifier>().putAll(Map.of(
 			BlockFamily.Variant.FENCE_GATE, new Identifier("fence_gates"),
 			BlockFamily.Variant.PRESSURE_PLATE, new Identifier("pressure_plates"),
 			BlockFamily.Variant.WALL_SIGN, new Identifier("wall_signs")
 	)).putAll(VANILLA_ITEM_TAG_VARIANTS).build();
-
+	
 	@Override
 	public void onInitializeDataGenerator(FabricDataGenerator dataGenerator) {
 		AMBlockFamilies.init();
@@ -227,37 +227,37 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 		dataGenerator.addProvider(AMFluidTagProvider::new);
 		dataGenerator.addProvider(AMBlockLootTableProvider::new);
 	}
-
+	
 	public static final String COMMON_TAG_NAMESPACE = "c";
-
+	
 	public static Identifier createCommonTagId(String path) {
 		return new Identifier(COMMON_TAG_NAMESPACE, path);
 	}
-
+	
 	public static TagKey<Block> createBlockTag(Identifier id) {
 		return AMTags.ofBlock(id);
 	}
-
+	
 	public static TagKey<Item> createItemTag(Identifier id) {
 		return AMTags.ofItem(id);
 	}
-
+	
 	public static TagKey<Fluid> createFluidTag(Identifier id) {
 		return AMTags.ofFluid(id);
 	}
-
+	
 	public static TagKey<Block> createCommonBlockTag(String path) {
 		return createBlockTag(createCommonTagId(path));
 	}
-
+	
 	public static TagKey<Item> createCommonItemTag(String path) {
 		return createItemTag(createCommonTagId(path));
 	}
-
+	
 	public static TagKey<Fluid> createCommonFluidTag(String path) {
 		return createFluidTag(createCommonTagId(path));
 	}
-
+	
 	public record HarvestData(TagKey<Block> mineableTag, int miningLevel) {
 		public static final HarvestData PICKAXE = new HarvestData(MiningLevels.WOOD);
 		public static final HarvestData STONE_PICKAXE = new HarvestData(MiningLevels.STONE);
@@ -266,19 +266,21 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 		public static final HarvestData NETHERITE_PICKAXE = new HarvestData(MiningLevels.NETHERITE);
 		public static final HarvestData LEVEL_5_PICKAXE = new HarvestData(5);
 		public static final HarvestData LEVEL_6_PICKAXE = new HarvestData(6);
-
+		
 		public HarvestData(int miningLevel) {
 			this(BlockTags.PICKAXE_MINEABLE, miningLevel);
 		}
-
+		
 		public TagKey<Block> miningLevelTag() {
 			return getMiningLevelTag(miningLevel());
 		}
 	}
-
+	
 	@Nullable
 	public static TagKey<Block> getMiningLevelTag(int miningLevel) {
-		if (miningLevel <= 0) return null;
+		if (miningLevel <= 0) {
+			return null;
+		}
 		return switch (miningLevel) {
 			case 1 -> BlockTags.NEEDS_STONE_TOOL;
 			case 2 -> BlockTags.NEEDS_IRON_TOOL;
@@ -286,7 +288,7 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 			default -> createBlockTag(new Identifier("fabric", "needs_tool_level_" + miningLevel));
 		};
 	}
-
+	
 	public static <T extends Comparable<?>, U> TreeMap<T, U> toTreeMap(Map<T, U> map) {
 		return new TreeMap<>(map);
 	}

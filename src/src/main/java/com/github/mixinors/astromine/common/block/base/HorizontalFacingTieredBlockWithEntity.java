@@ -41,13 +41,15 @@ public abstract class HorizontalFacingTieredBlockWithEntity extends HorizontalFa
 	public HorizontalFacingTieredBlockWithEntity(Settings settings) {
 		super(settings);
 	}
-
+	
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		ActionResult result = tryUpgrade(state, world, pos, player, hand, hit);
-
-		if (result.isAccepted()) return result;
-
+		
+		if (result.isAccepted()) {
+			return result;
+		}
+		
 		return super.onUse(state, world, pos, player, hand, hit);
 	}
 }

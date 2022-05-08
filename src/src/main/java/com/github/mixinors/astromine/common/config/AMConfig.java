@@ -24,12 +24,7 @@
 
 package com.github.mixinors.astromine.common.config;
 
-import com.github.mixinors.astromine.common.config.entry.tiered.CapacitorConfig;
-import com.github.mixinors.astromine.common.config.entry.tiered.TankConfig;
 import com.github.mixinors.astromine.common.config.section.*;
-
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
-
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
@@ -41,10 +36,10 @@ import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 public class AMConfig implements ConfigData {
 	@ConfigEntry.Gui.Excluded
 	public static AMConfig INSTANCE;
-
+	
 	@Comment("Whether Nuclear Warheads are enabled")
 	public boolean nuclearWarheadEnabled = true;
-
+	
 	@Comment("Whether to attempt to migrate old, broken data to new data. Usage recommended when first loading old chunks after an update")
 	public boolean compatibilityMode = true;
 	
@@ -90,7 +85,7 @@ public class AMConfig implements ConfigData {
 				INSTANCE = new AMConfig();
 			}
 		}
-
+		
 		return INSTANCE;
 	}
 }

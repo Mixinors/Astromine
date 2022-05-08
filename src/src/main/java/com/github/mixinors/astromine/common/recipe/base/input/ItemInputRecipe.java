@@ -26,15 +26,14 @@ package com.github.mixinors.astromine.common.recipe.base.input;
 
 import com.github.mixinors.astromine.common.recipe.base.AMRecipe;
 import com.github.mixinors.astromine.common.recipe.ingredient.ItemIngredient;
-
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 
 public interface ItemInputRecipe extends AMRecipe {
 	ItemIngredient getInput();
-
+	
 	default boolean allows(ItemVariant... variants) {
 		var inputVariant = variants[0];
-
+		
 		return getInput().test(inputVariant, Long.MAX_VALUE);
 	}
 }

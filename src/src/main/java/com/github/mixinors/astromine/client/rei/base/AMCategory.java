@@ -24,17 +24,16 @@
 
 package com.github.mixinors.astromine.client.rei.base;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.text.TranslatableText;
-
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
 import me.shedaniel.rei.api.client.gui.widgets.Widgets;
 import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
+import net.minecraft.text.TranslatableText;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public interface AMCategory<T extends AMDisplay> extends DisplayCategory<T> {
 	@Override
@@ -50,8 +49,10 @@ public interface AMCategory<T extends AMDisplay> extends DisplayCategory<T> {
 		addOutputWidgets(widgets, display, startPoint, bounds);
 		return widgets;
 	}
-
+	
 	void addEnergyInputWidgets(List<Widget> widgets, T display, Point startPoint, Rectangle bounds);
+	
 	void addInputWidgets(List<Widget> widgets, T display, Point startPoint, Rectangle bounds);
+	
 	void addOutputWidgets(List<Widget> widgets, T display, Point startPoint, Rectangle bounds);
 }

@@ -31,8 +31,8 @@ public interface DoubleFluidOutputRecipe extends FluidOutputRecipe {
 	default FluidResult getFluidOutput() {
 		return getFirstOutput();
 	}
-
+	
 	FluidResult getFirstOutput();
-
+	
 	FluidResult getSecondOutput();
 }

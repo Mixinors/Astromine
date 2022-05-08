@@ -24,42 +24,41 @@
 
 package com.github.mixinors.astromine.common.entity.ai.superspaceslime;
 
-import java.util.EnumSet;
-
 import com.github.mixinors.astromine.common.entity.SpaceSlimeEntity;
-
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.Vec3d;
 
-public class SpaceSlimeJumpHoverGoal extends Goal {
+import java.util.EnumSet;
 
+public class SpaceSlimeJumpHoverGoal extends Goal {
+	
 	private final SpaceSlimeEntity slime;
 	private int ticksLeft;
-
+	
 	public SpaceSlimeJumpHoverGoal(SpaceSlimeEntity slime) {
 		this.slime = slime;
 		this.setControls(EnumSet.of(Control.JUMP, Control.LOOK, Control.MOVE));
 	}
-
+	
 	@Override
 	public boolean canStart() {
 		// todo: ensure slime has space
 		return this.slime.getFloatingCooldown() <= 0 && this.slime.world.random.nextInt(10) == 0;
 	}
-
+	
 	@Override
 	public boolean shouldContinue() {
 		return --this.ticksLeft > 0 && !this.slime.isOnGround() && this.slime.world.getBlockState(this.slime.getBlockPos().down()).isAir();
 	}
-
+	
 	@Override
 	public void start() {
 		this.slime.setFloating(true);
 		this.ticksLeft = 20 * 10;
 		super.start();
 	}
-
+	
 	@Override
 	public void stop() {
 		this.slime.setFloating(false);
@@ -67,14 +66,14 @@ public class SpaceSlimeJumpHoverGoal extends Goal {
 		this.slime.setFloatingProgress(0);
 		super.stop();
 	}
-
+	
 	@Override
 	public void tick() {
 		// wait till slime is on ground
 		if (this.slime.isOnGround()) {
 			this.slime.move(MovementType.SELF, new Vec3d(0, 0.1, 0));
 		}
-
+		
 		this.slime.setFloatingProgress(this.slime.getFloatingProgress() + 1);
 	}
 }

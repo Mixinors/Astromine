@@ -24,17 +24,16 @@
 
 package com.github.mixinors.astromine.common.screenhandler.base.block;
 
-import java.util.function.Supplier;
-
 import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Supplier;
 
 public abstract class BlockStateScreenHandler extends BaseScreenHandler {
 	protected final BlockPos position;
@@ -43,7 +42,7 @@ public abstract class BlockStateScreenHandler extends BaseScreenHandler {
 	
 	public BlockStateScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type.get(), syncId, player);
-
+		
 		this.state = player.getWorld().getBlockState(position);
 		this.originalBlock = state.getBlock();
 		this.position = position;

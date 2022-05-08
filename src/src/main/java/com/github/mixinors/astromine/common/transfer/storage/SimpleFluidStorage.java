@@ -24,26 +24,19 @@
 
 package com.github.mixinors.astromine.common.transfer.storage;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
-import java.util.function.BiPredicate;
-import java.util.stream.IntStream;
-
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
-
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.minecraft.nbt.NbtCompound;
-
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.Direction;
+
+import java.util.*;
+import java.util.function.BiPredicate;
+import java.util.stream.IntStream;
 
 /**
  * <p>A {@link Storage} implementation for {@link FluidVariant}s, backed
@@ -134,8 +127,8 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	}
 	
 	/**
-	 * Adds an insertion predicate to this storage, which must
-	 * be satisfied for insertion of resources.
+	 * Adds an insertion predicate to this storage, which must be satisfied for insertion of resources.
+	 *
 	 * @param slotInsertPredicate the predicate to be added.
 	 */
 	public SimpleFluidStorage insertPredicate(BiPredicate<FluidVariant, Integer> slotInsertPredicate) {
@@ -145,8 +138,8 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	}
 	
 	/**
-	 * Adds an extraction predicate to this storage, which must
-	 * be satisfied for insertion of resources.
+	 * Adds an extraction predicate to this storage, which must be satisfied for insertion of resources.
+	 *
 	 * @param slotExtractPredicate the predicate to be added.
 	 */
 	public SimpleFluidStorage extractPredicate(BiPredicate<FluidVariant, Integer> slotExtractPredicate) {
@@ -157,6 +150,7 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	
 	/**
 	 * Adds sidings to this storage.
+	 *
 	 * @param sidings the sidings to be added.
 	 */
 	public SimpleFluidStorage sidings(StorageSiding[] sidings) {
@@ -167,6 +161,7 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	
 	/**
 	 * Adds insertion slots to this storage.
+	 *
 	 * @param insertSlots the slots to be added.
 	 */
 	public SimpleFluidStorage insertSlots(int[] insertSlots) {
@@ -177,6 +172,7 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	
 	/**
 	 * Adds extraction slots to this storage.
+	 *
 	 * @param extractSlots the slots to be added.
 	 */
 	public SimpleFluidStorage extractSlots(int[] extractSlots) {
@@ -187,6 +183,7 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	
 	/**
 	 * Adds a listener to this storage.
+	 *
 	 * @param listener the listener to be added.
 	 */
 	public SimpleFluidStorage listener(Runnable listener) {
@@ -213,8 +210,7 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	 * <p>Returns this storage's {@link #wildProxy}.</p>
 	 *
 	 * <p>This proxy allows <b>insertion</b> and <b>extraction</b>,
-	 * regardless of this storage's {@link #insertPredicate}
-	 * and {@link #extractPredicate}.</p>
+	 * regardless of this storage's {@link #insertPredicate} and {@link #extractPredicate}.</p>
 	 */
 	public SimpleFluidStorage getWildProxy() {
 		return wildProxy;
@@ -242,6 +238,7 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	
 	/**
 	 * Returns this storage's the storage at the given slot.
+	 *
 	 * @param slot the slot.
 	 */
 	public SimpleFluidVariantStorage.Proxy getStorage(int slot) {
@@ -250,6 +247,7 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	
 	/**
 	 * Returns this storage's the variant at the given slot.
+	 *
 	 * @param slot the slot.
 	 */
 	public FluidVariant getVariant(int slot) {
@@ -279,13 +277,14 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	
 	/**
 	 * Sets this storage's sidings.
+	 *
 	 * @param sidings the sidings to be set.
 	 */
 	public void setSidings(StorageSiding[] sidings) {
 		this.sidings = sidings;
 	}
 	
-
+	
 	/**
 	 * Updates this storage's version.
 	 */
@@ -309,20 +308,20 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	}
 	
 	/**
-	 * Asserts whether the given variant can be inserted
-	 * into the given slot, taking this storage's {@link #insertPredicate} into account.
+	 * Asserts whether the given variant can be inserted into the given slot, taking this storage's {@link #insertPredicate} into account.
+	 *
 	 * @param variant the variant to be inserted.
-	 * @param slot the slot from which the variant is to be extracted.
+	 * @param slot    the slot from which the variant is to be extracted.
 	 */
 	public boolean canInsert(FluidVariant variant, int slot) {
 		return insertPredicate.test(variant, slot) && allowsInsertion;
 	}
 	
 	/**
-	 * Asserts whether the given variant can be extracted
-	 * from the given slot, taking this storage's {@link #extractPredicate} into account.
+	 * Asserts whether the given variant can be extracted from the given slot, taking this storage's {@link #extractPredicate} into account.
+	 *
 	 * @param variant the variant to be extracted.
-	 * @param slot the slot from which the variant is to be extracted.
+	 * @param slot    the slot from which the variant is to be extracted.
 	 */
 	public boolean canExtract(FluidVariant variant, int slot) {
 		return extractPredicate.test(variant, slot) && allowsExtraction;
@@ -330,6 +329,7 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	
 	/**
 	 * Returns a slice of this storage.
+	 *
 	 * @param slots the slots from which to create the slice.
 	 */
 	public SingleSlotStorage<FluidVariant>[] slice(int... slots) {
@@ -353,7 +353,9 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	public long insert(FluidVariant resource, long maxAmount, TransactionContext transaction, boolean force) {
 		StoragePreconditions.notBlankNotNegative(resource, maxAmount);
 		
-		if (!allowsInsertion) return 0;
+		if (!allowsInsertion) {
+			return 0;
+		}
 		
 		transaction.addCloseCallback((($, result) -> {
 			if (proxy == null && result.wasCommitted()) {
@@ -383,13 +385,17 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		var amount = 0;
 		
 		for (var slot : insertSlots) {
-			if (!insertPredicate.test(resource, slot) && !force) continue;
+			if (!insertPredicate.test(resource, slot) && !force) {
+				continue;
+			}
 			
 			var storage = proxyStorages.get(slot);
 			
 			amount += storage.insert(resource, maxAmount - amount, transaction, force);
 			
-			if (amount == maxAmount) break;
+			if (amount == maxAmount) {
+				break;
+			}
 		}
 		
 		return amount;
@@ -405,7 +411,9 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	public long extract(FluidVariant resource, long maxAmount, TransactionContext transaction, boolean force) {
 		StoragePreconditions.notBlankNotNegative(resource, maxAmount);
 		
-		if (!allowsExtraction) return 0;
+		if (!allowsExtraction) {
+			return 0;
+		}
 		
 		transaction.addCloseCallback((($, result) -> {
 			if (proxy == null && result.wasCommitted()) {
@@ -435,13 +443,17 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		var amount = 0;
 		
 		for (var slot : extractSlots) {
-			if (!extractPredicate.test(resource, slot) && !force) continue;
+			if (!extractPredicate.test(resource, slot) && !force) {
+				continue;
+			}
 			
 			var storage = proxyStorages.get(slot);
 			
 			amount += storage.extract(resource, maxAmount - amount, transaction, force);
 			
-			if (amount == maxAmount) break;
+			if (amount == maxAmount) {
+				break;
+			}
 		}
 		
 		return amount;
@@ -449,6 +461,7 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	
 	/**
 	 * Serializes this storage to the given {@link NbtCompound}.
+	 *
 	 * @param nbt the {@link NbtCompound}.
 	 */
 	public void writeToNbt(NbtCompound nbt) {
@@ -478,6 +491,7 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	
 	/**
 	 * Deserializes this storage from the given {@link NbtCompound}.
+	 *
 	 * @param nbt the {@link NbtCompound}.
 	 */
 	public void readFromNbt(NbtCompound nbt) {
@@ -505,7 +519,9 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	}
 	
 	public void updateProxies() {
-		if (proxy != null) return;
+		if (proxy != null) {
+			return;
+		}
 		
 		for (var i = 0; i < storages.size(); ++i) {
 			var storage = storages.get(i);
@@ -524,7 +540,7 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		wildProxy.listeners = this.listeners;
 		wildProxy.proxyStorages = new ArrayList<>();
 		
-		for (var i = 0; i < proxyStorages.size(); ++ i) {
+		for (var i = 0; i < proxyStorages.size(); ++i) {
 			var proxyStorage = new SimpleFluidVariantStorage.Proxy(wildProxy, storages.get(i));
 			
 			wildProxy.proxyStorages.add(i, proxyStorage);
@@ -595,13 +611,12 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		insertableProxy.extractSlots = this.extractSlots;
 	}
 	
-
-
+	
 	@Override
 	public long insert(FluidVariant resource, long maxAmount, TransactionContext transaction) {
 		return insert(resource, maxAmount, transaction, false);
 	}
-
+	
 	@Override
 	public long extract(FluidVariant resource, long maxAmount, TransactionContext transaction) {
 		return extract(resource, maxAmount, transaction, false);
@@ -633,9 +648,13 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	
 	@Override
 	public boolean equals(Object object) {
-		if (this == object) return true;
-
-		if (!(object instanceof SimpleFluidStorage component)) return false;
+		if (this == object) {
+			return true;
+		}
+		
+		if (!(object instanceof SimpleFluidStorage component)) {
+			return false;
+		}
 		
 		return Objects.equals(proxyStorages, component.proxyStorages);
 	}

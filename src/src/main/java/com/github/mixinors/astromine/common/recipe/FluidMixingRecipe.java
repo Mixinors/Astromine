@@ -24,15 +24,6 @@
 
 package com.github.mixinors.astromine.common.recipe;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.annotations.SerializedName;
-
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
 import com.github.mixinors.astromine.common.recipe.base.input.DoubleFluidInputRecipe;
@@ -41,53 +32,59 @@ import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.recipe.result.FluidResult;
 import com.github.mixinors.astromine.common.util.IntegerUtils;
 import com.github.mixinors.astromine.common.util.LongUtils;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.annotations.SerializedName;
 import dev.architectury.core.AbstractRecipeSerializer;
-
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public record FluidMixingRecipe(Identifier id,
-								FluidIngredient firstInput,
-								FluidIngredient secondInput,
-								FluidResult output,
-								long energyInput, int time) implements DoubleFluidInputRecipe,FluidOutputRecipe {
-
+		FluidIngredient firstInput,
+		FluidIngredient secondInput,
+		FluidResult output,
+		long energyInput, int time) implements DoubleFluidInputRecipe, FluidOutputRecipe {
+	
 	private static final Map<World, FluidMixingRecipe[]> RECIPE_CACHE = new HashMap<>();
-
+	
 	public static boolean allows(World world, FluidVariant... variants) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidMixingRecipe) it).toArray(FluidMixingRecipe[]::new));
 		}
-
+		
 		for (var recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.allows(variants)) {
 				return true;
 			}
 		}
-
+		
 		return false;
 	}
-
+	
 	public static Optional<FluidMixingRecipe> matching(World world, SingleSlotStorage<FluidVariant>... storages) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidMixingRecipe) it).toArray(FluidMixingRecipe[]::new));
 		}
-
+		
 		for (var recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.matches(storages)) {
 				return Optional.of(recipe);
 			}
 		}
-
+		
 		return Optional.empty();
 	}
-
+	
 	public boolean matches(SingleSlotStorage<FluidVariant>... storages) {
 		var firstInputStorage = storages[0];
 		var secondInputStorage = storages[1];
@@ -104,55 +101,55 @@ public record FluidMixingRecipe(Identifier id,
 		
 		return output.equalsAndFitsIn(outputStorage);
 	}
-
+	
 	@Override
 	public Identifier getId() {
 		return id;
 	}
-
+	
 	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return Serializer.INSTANCE;
 	}
-
+	
 	@Override
 	public RecipeType<?> getType() {
 		return Type.INSTANCE;
 	}
-
+	
 	@Override
 	public long getEnergyInput() {
 		return energyInput;
 	}
-
+	
 	@Override
 	public int getTime() {
 		return time;
 	}
-
+	
 	public FluidIngredient getFirstInput() {
 		return firstInput;
 	}
-
+	
 	public FluidIngredient getSecondInput() {
 		return secondInput;
 	}
-
+	
 	public FluidResult getFluidOutput() {
 		return output;
 	}
-
+	
 	public static final class Serializer extends AbstractRecipeSerializer<FluidMixingRecipe> {
 		public static final Identifier ID = AMCommon.id("fluid_mixing");
-
+		
 		public static final Serializer INSTANCE = new Serializer();
-
+		
 		private Serializer() {}
-
+		
 		@Override
 		public FluidMixingRecipe read(Identifier identifier, JsonObject object) {
 			var format = new Gson().fromJson(object, FluidMixingRecipe.Format.class);
-
+			
 			return new FluidMixingRecipe(
 					identifier,
 					FluidIngredient.fromJson(format.firstInput),
@@ -162,7 +159,7 @@ public record FluidMixingRecipe(Identifier id,
 					IntegerUtils.fromJson(format.time)
 			);
 		}
-
+		
 		@Override
 		public FluidMixingRecipe read(Identifier identifier, PacketByteBuf buffer) {
 			return new FluidMixingRecipe(
@@ -174,7 +171,7 @@ public record FluidMixingRecipe(Identifier id,
 					IntegerUtils.fromPacket(buffer)
 			);
 		}
-
+		
 		@Override
 		public void write(PacketByteBuf buffer, FluidMixingRecipe recipe) {
 			FluidIngredient.toPacket(buffer, recipe.firstInput);
@@ -184,25 +181,25 @@ public record FluidMixingRecipe(Identifier id,
 			IntegerUtils.toPacket(buffer, recipe.time);
 		}
 	}
-
+	
 	public static final class Type implements AMRecipeType<FluidMixingRecipe> {
 		public static final Type INSTANCE = new Type();
-
+		
 		private Type() {}
 	}
-
+	
 	public static final class Format {
 		@SerializedName("first_input")
 		JsonElement firstInput;
-
+		
 		@SerializedName("second_input")
 		JsonElement secondInput;
-
+		
 		JsonElement output;
-
+		
 		@SerializedName("energy_input")
 		JsonElement energyInput;
-
+		
 		JsonElement time;
 	}
 }

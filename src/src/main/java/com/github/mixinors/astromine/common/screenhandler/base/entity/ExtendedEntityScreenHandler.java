@@ -24,10 +24,6 @@
 
 package com.github.mixinors.astromine.common.screenhandler.base.entity;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.function.Supplier;
-
 import com.github.mixinors.astromine.common.entity.base.ExtendedEntity;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
@@ -37,28 +33,30 @@ import dev.vini2003.hammer.gui.api.common.widget.bar.FluidBarWidget;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 import dev.vini2003.hammer.gui.api.common.widget.tab.TabWidget;
 import dev.vini2003.hammer.gui.api.common.widget.text.TextWidget;
-
-
 import dev.vini2003.hammer.gui.energy.api.common.widget.bar.EnergyBarWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.function.Supplier;
+
 public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 	protected final ExtendedEntity entity;
-
+	
 	protected EnergyBarWidget energyBar = null;
 	protected FluidBarWidget fluidBar = null;
 	
 	protected Collection<SlotWidget> playerSlots = new HashSet<>();
-
+	
 	protected TabWidget tabs;
-
+	
 	protected TabWidget.TabWidgetCollection mainTab;
 	
 	public ExtendedEntityScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, int entityId) {
 		super(type.get(), syncId, player);
-
+		
 		entity = (ExtendedEntity) player.world.getEntityById(entityId);
 	}
 	
@@ -81,11 +79,11 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 	@Override
 	public void initialize(int width, int height) {
 		tabs = new TabWidget();
-		tabs.setSize( new Size(176.0F, 188F + getTabWidgetExtendedHeight(), 0.0F));
-		tabs.setPosition( new Position(width / 2.0F - tabs.getWidth() / 2.0F, height / 2.0F - tabs.getHeight() / 2.0F, 0.0F));
-
+		tabs.setSize(new Size(176.0F, 188F + getTabWidgetExtendedHeight(), 0.0F));
+		tabs.setPosition(new Position(width / 2.0F - tabs.getWidth() / 2.0F, height / 2.0F - tabs.getHeight() / 2.0F, 0.0F));
+		
 		add(tabs);
-
+		
 		mainTab = (TabWidget.TabWidgetCollection) tabs.addTab(getSymbol());
 		mainTab.setPosition(new Position(tabs, 0.0F, 25.0F + 7.0F, 0.0F));
 		mainTab.setSize(new Size(176.0F, 184.0F, 0.0F));
@@ -110,8 +108,8 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 		
 		if (entity.hasEnergyStorage()) {
 			energyBar = new EnergyBarWidget();
-			energyBar.setPosition( new Position(mainTab, 7.0F, 11.0F, 0.0F));
-			energyBar.setSize( new Size(24.0F, 48.0F, 0.0F));
+			energyBar.setPosition(new Position(mainTab, 7.0F, 11.0F, 0.0F));
+			energyBar.setSize(new Size(24.0F, 48.0F, 0.0F));
 			energyBar.setStorage(entity.getEnergyStorage());
 			energyBar.setSmooth(false);
 			energyBar.setCurrent(() -> (float) entity.getEnergyStorage().getAmount());

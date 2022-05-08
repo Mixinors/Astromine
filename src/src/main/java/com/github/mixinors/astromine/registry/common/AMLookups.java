@@ -27,34 +27,32 @@ package com.github.mixinors.astromine.registry.common;
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.item.base.FluidStorageItem;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidItemStorage;
-import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidVariantStorage;
-import team.reborn.energy.api.EnergyStorage;
-
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
+import team.reborn.energy.api.EnergyStorage;
 
 public class AMLookups {
 	public static void init() {
 		ItemStorage.SIDED.registerForBlockEntities((blockEntity, direction) -> {
-			if (blockEntity instanceof ExtendedBlockEntity extendedBlockEntity) {
-				var itemStorage = extendedBlockEntity.getItemStorage();
-				
-				var sidings = itemStorage.getSidings();
-				
-				var siding = sidings[direction.ordinal()];
-				
-				return switch (siding) {
-					case INSERT -> itemStorage.getInsertableProxy();
-					case EXTRACT -> itemStorage.getExtractableProxy();
+					if (blockEntity instanceof ExtendedBlockEntity extendedBlockEntity) {
+						var itemStorage = extendedBlockEntity.getItemStorage();
+						
+						var sidings = itemStorage.getSidings();
+						
+						var siding = sidings[direction.ordinal()];
+						
+						return switch (siding) {
+							case INSERT -> itemStorage.getInsertableProxy();
+							case EXTRACT -> itemStorage.getExtractableProxy();
+							
+							case INSERT_EXTRACT -> itemStorage;
+							
+							default -> null;
+						};
+					}
 					
-					case INSERT_EXTRACT -> itemStorage;
-					
-					default -> null;
-				};
-			}
-			
-			return null;
-		},
+					return null;
+				},
 				AMBlockEntityTypes.PRIMITIVE_BUFFER.get(),
 				AMBlockEntityTypes.BASIC_BUFFER.get(),
 				AMBlockEntityTypes.ADVANCED_BUFFER.get(),
@@ -111,25 +109,25 @@ public class AMLookups {
 		);
 		
 		FluidStorage.SIDED.registerForBlockEntities((blockEntity, direction) -> {
-			if (blockEntity instanceof ExtendedBlockEntity extendedBlockEntity) {
-				var fluidStorage = extendedBlockEntity.getFluidStorage();
-				
-				var sidings = fluidStorage.getSidings();
-				
-				var siding = sidings[direction.ordinal()];
-				
-				return switch (siding) {
-					case INSERT -> fluidStorage.getInsertableProxy();
-					case EXTRACT -> fluidStorage.getExtractableProxy();
+					if (blockEntity instanceof ExtendedBlockEntity extendedBlockEntity) {
+						var fluidStorage = extendedBlockEntity.getFluidStorage();
+						
+						var sidings = fluidStorage.getSidings();
+						
+						var siding = sidings[direction.ordinal()];
+						
+						return switch (siding) {
+							case INSERT -> fluidStorage.getInsertableProxy();
+							case EXTRACT -> fluidStorage.getExtractableProxy();
+							
+							case INSERT_EXTRACT -> fluidStorage;
+							
+							default -> null;
+						};
+					}
 					
-					case INSERT_EXTRACT -> fluidStorage;
-					
-					default -> null;
-				};
-			}
-			
-			return null;
-		},
+					return null;
+				},
 				AMBlockEntityTypes.PRIMITIVE_TANK.get(),
 				AMBlockEntityTypes.BASIC_TANK.get(),
 				AMBlockEntityTypes.ADVANCED_TANK.get(),
@@ -169,15 +167,15 @@ public class AMLookups {
 				AMBlockEntityTypes.FLUID_PLACER.get(),
 				
 				AMBlockEntityTypes.DRAIN.get()
-				);
+		);
 		
 		EnergyStorage.SIDED.registerForBlockEntities((blockEntity, direction) -> {
-			if (blockEntity instanceof ExtendedBlockEntity extendedBlockEntity) {
-				return extendedBlockEntity.getEnergyStorage();
-			}
-			
-			return null;
-		},
+					if (blockEntity instanceof ExtendedBlockEntity extendedBlockEntity) {
+						return extendedBlockEntity.getEnergyStorage();
+					}
+					
+					return null;
+				},
 				AMBlockEntityTypes.PRIMITIVE_SOLID_GENERATOR.get(),
 				AMBlockEntityTypes.BASIC_SOLID_GENERATOR.get(),
 				AMBlockEntityTypes.ADVANCED_SOLID_GENERATOR.get(),
@@ -252,12 +250,12 @@ public class AMLookups {
 		);
 		
 		FluidStorage.ITEM.registerForItems((storage, context) -> {
-			if (storage.getItem() instanceof FluidStorageItem fluidStorageItem) {
-				return new SimpleFluidItemStorage(context, fluidStorageItem.getCapacity());
-			}
-			
-			return null;
-		},
+					if (storage.getItem() instanceof FluidStorageItem fluidStorageItem) {
+						return new SimpleFluidItemStorage(context, fluidStorageItem.getCapacity());
+					}
+					
+					return null;
+				},
 				AMItems.PORTABLE_TANK.get(),
 				AMItems.LARGE_PORTABLE_TANK.get()
 		);

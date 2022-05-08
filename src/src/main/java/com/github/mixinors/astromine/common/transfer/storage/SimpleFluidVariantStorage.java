@@ -46,6 +46,7 @@ public class SimpleFluidVariantStorage extends SingleVariantStorage<FluidVariant
 	
 	/**
 	 * Sets this storage's amount.
+	 *
 	 * @param amount the amount to be set.
 	 */
 	public void setAmount(long amount) {
@@ -54,6 +55,7 @@ public class SimpleFluidVariantStorage extends SingleVariantStorage<FluidVariant
 	
 	/**
 	 * Sets this storage's variant.
+	 *
 	 * @param variant the variant to be set.
 	 */
 	public void setVariant(FluidVariant variant) {
@@ -77,6 +79,7 @@ public class SimpleFluidVariantStorage extends SingleVariantStorage<FluidVariant
 	
 	/**
 	 * Sets this storage's capacity.
+	 *
 	 * @param capacity the capacity to be set.
 	 */
 	public void setCapacity(long capacity) {
@@ -93,6 +96,7 @@ public class SimpleFluidVariantStorage extends SingleVariantStorage<FluidVariant
 	
 	/**
 	 * Returns this storage's capacity for the given variant.
+	 *
 	 * @param variant the variant.
 	 */
 	@Override
@@ -101,8 +105,7 @@ public class SimpleFluidVariantStorage extends SingleVariantStorage<FluidVariant
 	}
 	
 	/**
-	 * A proxied {@link SimpleFluidVariantStorage} implementation, backed by a proxy
-	 * {@link SimpleFluidStorage} and {@link SimpleFluidVariantStorage}.
+	 * A proxied {@link SimpleFluidVariantStorage} implementation, backed by a proxy {@link SimpleFluidStorage} and {@link SimpleFluidVariantStorage}.
 	 */
 	public static class Proxy extends SimpleFluidVariantStorage {
 		private SimpleFluidStorage proxy;
@@ -168,7 +171,9 @@ public class SimpleFluidVariantStorage extends SingleVariantStorage<FluidVariant
 				}
 			});
 			
-			if (proxy != null && !proxy.canInsert(insertedVariant, getSlot()) && !force) return 0;
+			if (proxy != null && !proxy.canInsert(insertedVariant, getSlot()) && !force) {
+				return 0;
+			}
 			
 			return proxyStorage.insert(insertedVariant, maxAmount, transaction);
 		}
@@ -206,7 +211,9 @@ public class SimpleFluidVariantStorage extends SingleVariantStorage<FluidVariant
 				}
 			});
 			
-			if (proxy != null && !proxy.canExtract(extractedVariant, getSlot()) && !force) return 0;
+			if (proxy != null && !proxy.canExtract(extractedVariant, getSlot()) && !force) {
+				return 0;
+			}
 			
 			return proxyStorage.extract(extractedVariant, maxAmount, transaction);
 		}
@@ -219,13 +226,17 @@ public class SimpleFluidVariantStorage extends SingleVariantStorage<FluidVariant
 		@Override
 		public void setAmount(long amount) {
 			this.amount = amount;
-			if (proxyStorage != null) proxyStorage.setAmount(amount);
+			if (proxyStorage != null) {
+				proxyStorage.setAmount(amount);
+			}
 		}
 		
 		@Override
 		public void setVariant(FluidVariant variant) {
 			this.variant = variant;
-			if (proxy != null) proxyStorage.setVariant(variant);
+			if (proxy != null) {
+				proxyStorage.setVariant(variant);
+			}
 		}
 		
 		@Override

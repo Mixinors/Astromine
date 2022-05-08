@@ -24,33 +24,32 @@
 
 package com.github.mixinors.astromine.common.screenhandler.storage;
 
-import java.util.function.Supplier;
-
 import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.widget.HorizontalArrowWidget;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
-
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
+
+import java.util.function.Supplier;
 
 public class CapacitorScreenHandler extends ExtendedBlockEntityScreenHandler {
 	public CapacitorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.CAPACITOR, syncId, player, position);
 	}
-
+	
 	public CapacitorScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
 	}
-
+	
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
-
-		energyBar.setPosition( new Position(width / 2.0F - energyBar.getWidth() / 2.0F, energyBar.getY()));
+		
+		energyBar.setPosition(new Position(width / 2.0F - energyBar.getWidth() / 2.0F, energyBar.getY()));
 		
 		var input = new SlotWidget(0, blockEntity.getItemStorage());
 		input.setPosition(new Position(mainTab, 12.0F, 26.0F));
@@ -67,7 +66,7 @@ public class CapacitorScreenHandler extends ExtendedBlockEntityScreenHandler {
 		var rightArrow = new HorizontalArrowWidget();
 		rightArrow.setPosition(new Position(output, -34.0F, 0.0F));
 		rightArrow.setSize(new Size(22.0F, 16.0F));
-
+		
 		mainTab.add(input);
 		mainTab.add(output);
 		mainTab.add(leftArrow);

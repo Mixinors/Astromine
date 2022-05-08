@@ -24,18 +24,15 @@
 
 package com.github.mixinors.astromine.client.rei.base.output;
 
+import com.github.mixinors.astromine.client.rei.base.AMDisplay;
+import me.shedaniel.rei.api.common.entry.EntryIngredient;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.util.Identifier;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
-import com.github.mixinors.astromine.client.rei.base.AMDisplay;
-
-import net.minecraft.util.Identifier;
-
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
-import me.shedaniel.rei.api.common.entry.EntryIngredient;
 
 @Environment(EnvType.CLIENT)
 public abstract class EnergyOutputDisplay implements AMDisplay {
@@ -43,32 +40,32 @@ public abstract class EnergyOutputDisplay implements AMDisplay {
 	private final int timeRequired;
 	private final long energyGeneratedPerTick;
 	private final Identifier recipeId;
-
+	
 	public EnergyOutputDisplay(List<EntryIngredient> inputs, int timeRequired, long energyGeneratedPerTick, Identifier recipeId) {
 		this.inputs = inputs;
 		this.timeRequired = timeRequired;
 		this.energyGeneratedPerTick = energyGeneratedPerTick;
 		this.recipeId = recipeId;
 	}
-
+	
 	@Override
 	public List<EntryIngredient> getInputEntries() {
 		return inputs;
 	}
-
+	
 	@Override
 	public List<EntryIngredient> getOutputEntries() {
 		return Collections.emptyList();
 	}
-
+	
 	public int getTimeRequired() {
 		return timeRequired;
 	}
-
+	
 	public long getEnergyGeneratedPerTick() {
 		return energyGeneratedPerTick;
 	}
-
+	
 	@Override
 	public Optional<Identifier> getDisplayLocation() {
 		return Optional.ofNullable(this.recipeId);

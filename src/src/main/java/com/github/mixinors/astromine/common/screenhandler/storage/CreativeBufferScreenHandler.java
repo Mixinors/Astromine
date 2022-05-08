@@ -29,7 +29,6 @@ import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
-
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
@@ -37,15 +36,15 @@ public class CreativeBufferScreenHandler extends ExtendedBlockEntityScreenHandle
 	public CreativeBufferScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.CREATIVE_BUFFER, syncId, player, position);
 	}
-
+	
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		
 		var slot = new SlotWidget(0, blockEntity.getItemStorage());
-		slot.setPosition( new Position(mainTab, 70.0F, 20.0F));
+		slot.setPosition(new Position(mainTab, 70.0F, 20.0F));
 		slot.setSize(new Size(36.0F, 36.0F));
-
+		
 		mainTab.add(slot);
 	}
 }

@@ -24,9 +24,6 @@
 
 package com.github.mixinors.astromine.common.block.entity.machine;
 
-import java.util.Optional;
-import java.util.function.Supplier;
-
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.config.entry.tiered.FluidStorageMachineConfig;
@@ -36,15 +33,16 @@ import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import org.jetbrains.annotations.NotNull;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
-
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
+import org.jetbrains.annotations.NotNull;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 public abstract class SolidifierBlockEntity extends ExtendedBlockEntity implements FluidStorageMachineConfigProvider {
 	public double progress = 0;
@@ -61,16 +59,16 @@ public abstract class SolidifierBlockEntity extends ExtendedBlockEntity implemen
 	private static final int[] ITEM_INSERT_SLOTS = new int[] { };
 	
 	private static final int[] ITEM_EXTRACT_SLOTS = new int[] { ITEM_OUTPUT_SLOT };
-
+	
 	private Optional<SolidifyingRecipe> optionalRecipe = Optional.empty();
-
+	
 	public SolidifierBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
 		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), 0L);
-
+		
 		fluidStorage = new SimpleFluidStorage(1, getFluidStorageSize()).extractPredicate((variant, slot) ->
-			false
+				false
 		).insertPredicate((variant, slot) -> {
 			if (slot != FLUID_INPUT_SLOT) {
 				return false;
@@ -86,9 +84,9 @@ public abstract class SolidifierBlockEntity extends ExtendedBlockEntity implemen
 		}).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
 		
 		itemStorage = new SimpleItemStorage(1).extractPredicate((variant, slot) ->
-			slot == ITEM_OUTPUT_SLOT
+				slot == ITEM_OUTPUT_SLOT
 		).insertPredicate((variant, slot) ->
-			false
+				false
 		).listener(() -> {
 			if (optionalRecipe.isPresent() && !optionalRecipe.get().matches(itemStorage.slice(ITEM_OUTPUT_SLOT), fluidStorage.slice(FLUID_INPUT_SLOT))) {
 				optionalRecipe = Optional.empty();
@@ -101,18 +99,19 @@ public abstract class SolidifierBlockEntity extends ExtendedBlockEntity implemen
 	@Override
 	public void tick() {
 		super.tick();
-
-		if (world == null || world.isClient || !shouldRun())
+		
+		if (world == null || world.isClient || !shouldRun()) {
 			return;
-
+		}
+		
 		if (fluidStorage != null && itemStorage != null && energyStorage != null) {
 			if (optionalRecipe.isEmpty()) {
 				optionalRecipe = SolidifyingRecipe.matching(world, itemStorage.slice(ITEM_OUTPUT_SLOT), fluidStorage.slice(FLUID_INPUT_SLOT));
 			}
-
+			
 			if (optionalRecipe.isPresent()) {
 				var recipe = optionalRecipe.get();
-
+				
 				limit = recipe.time();
 				
 				var speed = Math.min(getSpeed(), limit - progress);
@@ -121,7 +120,7 @@ public abstract class SolidifierBlockEntity extends ExtendedBlockEntity implemen
 				try (var transaction = Transaction.openOuter()) {
 					if (energyStorage.amount >= consumed) {
 						energyStorage.amount -= consumed;
-
+						
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
 							
@@ -168,7 +167,7 @@ public abstract class SolidifierBlockEntity extends ExtendedBlockEntity implemen
 		
 		super.readNbt(nbt);
 	}
-
+	
 	@Override
 	public FluidStorageMachineConfig getConfig() {
 		return AMConfig.get().blocks.machines.solidifier;
@@ -178,40 +177,40 @@ public abstract class SolidifierBlockEntity extends ExtendedBlockEntity implemen
 		public Primitive(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.PRIMITIVE_SOLIDIFIER, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.PRIMITIVE;
 		}
 	}
-
+	
 	public static class Basic extends SolidifierBlockEntity {
 		public Basic(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.BASIC_SOLIDIFIER, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.BASIC;
 		}
 	}
-
+	
 	public static class Advanced extends SolidifierBlockEntity {
 		public Advanced(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ADVANCED_SOLIDIFIER, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.ADVANCED;
 		}
 	}
-
+	
 	public static class Elite extends SolidifierBlockEntity {
 		public Elite(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ELITE_SOLIDIFIER, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.ELITE;

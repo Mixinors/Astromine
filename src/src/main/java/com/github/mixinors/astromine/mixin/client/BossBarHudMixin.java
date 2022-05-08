@@ -25,7 +25,8 @@
 package com.github.mixinors.astromine.mixin.client;
 
 import com.github.mixinors.astromine.AMCommon;
-
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.hud.BossBarHud;
@@ -34,7 +35,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.boss.BossBar;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
-
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -42,13 +42,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 @Environment(EnvType.CLIENT)
 @Mixin(BossBarHud.class)
 public abstract class BossBarHudMixin extends DrawableHelper {
-
+	
 	private static final Identifier CUSTOM_BAR_TEX = AMCommon.id("textures/gui/bars.png");
 	@Shadow
 	@Final
@@ -56,23 +53,23 @@ public abstract class BossBarHudMixin extends DrawableHelper {
 	@Shadow
 	@Final
 	private MinecraftClient client;
-
+	
 	@Inject(method = "renderBossBar", at = @At("HEAD"), cancellable = true)
 	private void astromine$renderCustomBossBar(MatrixStack matrices, int i, int j, BossBar bossBar, CallbackInfo ci) {
 		if (bossBar instanceof ClientBossBar && bossBar.getName() instanceof TranslatableText && ((TranslatableText) bossBar.getName()).getKey().contains("super_space_slim")) {
 			this.client.getTextureManager().bindTexture(CUSTOM_BAR_TEX);
-
+			
 			// draw empty background bar
 			this.drawTexture(matrices, i, j, 0, 0, 185, 12);
-
+			
 			// percentage -> texture width
 			var overlayBarWidth = (int) (bossBar.getPercent() * 185.0F);
-
+			
 			// draw overlay
 			this.drawTexture(matrices, i, j, 0, 12, overlayBarWidth, 12);
-
+			
 			ci.cancel();
-
+			
 			this.client.getTextureManager().bindTexture(BARS_TEXTURE);
 		}
 	}

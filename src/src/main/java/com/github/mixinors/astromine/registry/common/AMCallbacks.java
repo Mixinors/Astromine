@@ -29,7 +29,6 @@ import com.github.mixinors.astromine.common.component.world.WorldNetworkComponen
 import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
 import dev.architectury.event.events.common.TickEvent;
-
 import net.minecraft.server.world.ServerWorld;
 
 public class AMCallbacks {
@@ -37,48 +36,48 @@ public class AMCallbacks {
 		// TODO: Rewrite Atmosphere stuff, incl. this.
 		
 		// BlockEvent.PLACE.register(( world, pos, blockState, entity) -> {
-			// ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(pos));
+		// ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(pos));
 //
-			// if (atmosphereComponent != null) {
-			// 	var centerPos = pos;
-			// 	var centerState = world.getBlockState(centerPos);
-			// 	var centerVolume = atmosphereComponent.get(centerPos);
+		// if (atmosphereComponent != null) {
+		// 	var centerPos = pos;
+		// 	var centerState = world.getBlockState(centerPos);
+		// 	var centerVolume = atmosphereComponent.get(centerPos);
 //
-			// 	var directions = Lists.newArrayList(Direction.values());
+		// 	var directions = Lists.newArrayList(Direction.values());
 //
-			// 	Collections.shuffle(directions);
+		// 	Collections.shuffle(directions);
 //
-			// 	for (var direction : directions) {
-			// 		var sidePos = pos.offset(direction);
-			// 		var sideState = world.getBlockState(sidePos);
+		// 	for (var direction : directions) {
+		// 		var sidePos = pos.offset(direction);
+		// 		var sideState = world.getBlockState(sidePos);
 //
-			// 		var sideAtmosphereComponent = atmosphereComponent;
+		// 		var sideAtmosphereComponent = atmosphereComponent;
 //
-			// 		if (!atmosphereComponent.isInChunk(sidePos)) {
-			// 			sideAtmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(sidePos));
-			// 		}
+		// 		if (!atmosphereComponent.isInChunk(sidePos)) {
+		// 			sideAtmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(sidePos));
+		// 		}
 //
-			// 		var sideVolume = sideAtmosphereComponent.get(sidePos);
+		// 		var sideVolume = sideAtmosphereComponent.get(sidePos);
 //
-			// 		if (atmosphereComponent.isTraversableForDisplacement(centerState, centerPos, sideState, sidePos, centerVolume, sideVolume, direction)) {
-			// 			sideVolume.take(centerVolume);
-			// 			sideAtmosphereComponent.add(sidePos, sideVolume);
+		// 		if (atmosphereComponent.isTraversableForDisplacement(centerState, centerPos, sideState, sidePos, centerVolume, sideVolume, direction)) {
+		// 			sideVolume.take(centerVolume);
+		// 			sideAtmosphereComponent.add(sidePos, sideVolume);
 //
-			// 			break;
+		// 			break;
 //
-			// 		}
-			// 	}
+		// 		}
+		// 	}
 //
-			// 	atmosphereComponent.remove(centerPos);
-			// }
-
-			// return EventResult.pass();
+		// 	atmosphereComponent.remove(centerPos);
+		// }
+		
+		// return EventResult.pass();
 		// });
-
-		TickEvent.SERVER_PRE.register(( server) -> {
+		
+		TickEvent.SERVER_PRE.register((server) -> {
 			for (var playerEntity : server.getPlayerManager().getPlayerList()) {
 				if (playerEntity.currentScreenHandler instanceof ExtendedBlockEntityScreenHandler screenHandler) {
-
+					
 					if (screenHandler.getBlockEntity() != null) {
 						screenHandler.getBlockEntity().syncData();
 						break;
@@ -86,10 +85,10 @@ public class AMCallbacks {
 				}
 			}
 		});
-
+		
 		TickEvent.SERVER_LEVEL_PRE.register((world -> {
 			var component = WorldNetworkComponent.get(world);
-
+			
 			if (component != null) {
 				component.tick();
 			}

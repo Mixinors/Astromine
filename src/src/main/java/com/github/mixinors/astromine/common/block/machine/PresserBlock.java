@@ -29,7 +29,6 @@ import com.github.mixinors.astromine.common.block.entity.machine.PresserBlockEnt
 import com.github.mixinors.astromine.common.screenhandler.machine.PresserScreenHandler;
 import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -45,12 +44,12 @@ public abstract class PresserBlock extends HorizontalFacingTieredBlockWithEntity
 	public PresserBlock(Settings settings) {
 		super(settings);
 	}
-
+	
 	@Override
 	public SavedData getSavedDataForDroppedItem() {
 		return ITEM_MACHINE;
 	}
-
+	
 	@Override
 	public Block getForTier(MachineTier tier) {
 		return switch (tier) {
@@ -61,80 +60,80 @@ public abstract class PresserBlock extends HorizontalFacingTieredBlockWithEntity
 			case CREATIVE -> null;
 		};
 	}
-
+	
 	@Override
 	public boolean hasScreenHandler() {
 		return true;
 	}
-
+	
 	@Override
 	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
 		return new PresserScreenHandler(syncId, playerInventory.player, pos);
 	}
-
+	
 	@Override
 	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
 		buffer.writeBlockPos(pos);
 	}
-
+	
 	public static class Primitive extends PresserBlock {
 		public Primitive(Settings settings) {
 			super(settings);
 		}
-
+		
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new PresserBlockEntity.Primitive(pos, state);
 		}
-
+		
 		@Override
 		public MachineTier getTier() {
 			return MachineTier.PRIMITIVE;
 		}
 	}
-
+	
 	public static class Basic extends PresserBlock {
 		public Basic(Settings settings) {
 			super(settings);
 		}
-
+		
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new PresserBlockEntity.Basic(pos, state);
 		}
-
+		
 		@Override
 		public MachineTier getTier() {
 			return MachineTier.BASIC;
 		}
 	}
-
+	
 	public static class Advanced extends PresserBlock {
 		public Advanced(Settings settings) {
 			super(settings);
 		}
-
+		
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new PresserBlockEntity.Advanced(pos, state);
 		}
-
+		
 		@Override
 		public MachineTier getTier() {
 			return MachineTier.ADVANCED;
 		}
 	}
-
+	
 	public static class Elite extends PresserBlock {
 		public Elite(Settings settings) {
 			super(settings);
 		}
-
+		
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new PresserBlockEntity.Elite(pos, state);
 		}
-
+		
 		@Override
 		public MachineTier getTier() {
 			return MachineTier.ELITE;

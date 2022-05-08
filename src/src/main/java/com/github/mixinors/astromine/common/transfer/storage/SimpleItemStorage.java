@@ -24,11 +24,7 @@
 
 package com.github.mixinors.astromine.common.transfer.storage;
 
-import com.github.mixinors.astromine.common.transfer.RedstoneControl;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
-
-import com.github.mixinors.astromine.registry.common.AMItems;
-import com.google.common.base.Predicates;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
@@ -36,9 +32,9 @@ import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.util.math.Direction;
 
 import java.util.*;
@@ -117,7 +113,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		this.listeners = new ArrayList<>();
 		this.stacks = new ArrayList<>(size);
 		this.storages = new ArrayList<>(size);
-
+		
 		for (var i = 0; i < size; ++i) {
 			this.stacks.add(i, ItemStack.EMPTY);
 			
@@ -138,8 +134,8 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	}
 	
 	/**
-	 * Adds an insertion predicate to this storage, which must
-	 * be satisfied for insertion of resources.
+	 * Adds an insertion predicate to this storage, which must be satisfied for insertion of resources.
+	 *
 	 * @param slotInsertPredicate the predicate to be added.
 	 */
 	public SimpleItemStorage insertPredicate(BiPredicate<ItemVariant, Integer> slotInsertPredicate) {
@@ -149,8 +145,8 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	}
 	
 	/**
-	 * Adds an extraction predicate to this storage, which must
-	 * be satisfied for insertion of resources.
+	 * Adds an extraction predicate to this storage, which must be satisfied for insertion of resources.
+	 *
 	 * @param slotExtractPredicate the predicate to be added.
 	 */
 	public SimpleItemStorage extractPredicate(BiPredicate<ItemVariant, Integer> slotExtractPredicate) {
@@ -161,6 +157,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	
 	/**
 	 * Adds sidings to this storage.
+	 *
 	 * @param sidings the sidings to be added.
 	 */
 	public SimpleItemStorage sidings(StorageSiding[] sidings) {
@@ -171,6 +168,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	
 	/**
 	 * Adds insertion slots to this storage.
+	 *
 	 * @param insertSlots the slots to be added.
 	 */
 	public SimpleItemStorage insertSlots(int[] insertSlots) {
@@ -181,6 +179,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	
 	/**
 	 * Adds extraction slots to this storage.
+	 *
 	 * @param extractSlots the slots to be added.
 	 */
 	public SimpleItemStorage extractSlots(int[] extractSlots) {
@@ -191,6 +190,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	
 	/**
 	 * Adds a listener to this storage.
+	 *
 	 * @param listener the listener to be added.
 	 */
 	public SimpleItemStorage listener(Runnable listener) {
@@ -217,8 +217,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	 * <p>Returns this storage's {@link #wildProxy}.</p>
 	 *
 	 * <p>This proxy allows <b>insertion</b> and <b>extraction</b>,
-	 * regardless of this storage's {@link #insertPredicate}
-	 * and {@link #extractPredicate}.</p>
+	 * regardless of this storage's {@link #insertPredicate} and {@link #extractPredicate}.</p>
 	 */
 	public SimpleItemStorage getWildProxy() {
 		return wildProxy;
@@ -246,6 +245,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	
 	/**
 	 * Returns this storage's the storage at the given slot.
+	 *
 	 * @param slot the slot.
 	 */
 	public SimpleItemVariantStorage getStorage(int slot) {
@@ -254,6 +254,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	
 	/**
 	 * Returns this storage's the variant at the given slot.
+	 *
 	 * @param slot the slot.
 	 */
 	public ItemVariant getVariant(int slot) {
@@ -283,6 +284,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	
 	/**
 	 * Sets this storage's sidings.
+	 *
 	 * @param sidings the sidings to be set.
 	 */
 	public void setSidings(StorageSiding[] sidings) {
@@ -304,20 +306,20 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	}
 	
 	/**
-	 * Asserts whether the given variant can be inserted
-	 * into the given slot, taking this storage's {@link #insertPredicate} into account.
+	 * Asserts whether the given variant can be inserted into the given slot, taking this storage's {@link #insertPredicate} into account.
+	 *
 	 * @param variant the variant to be inserted.
-	 * @param slot the slot from which the variant is to be extracted.
+	 * @param slot    the slot from which the variant is to be extracted.
 	 */
 	public boolean canInsert(ItemVariant variant, int slot) {
 		return insertPredicate.test(variant, slot) && allowsInsertion;
 	}
 	
 	/**
-	 * Asserts whether the given variant can be extracted
-	 * from the given slot, taking this storage's {@link #extractPredicate} into account.
+	 * Asserts whether the given variant can be extracted from the given slot, taking this storage's {@link #extractPredicate} into account.
+	 *
 	 * @param variant the variant to be extracted.
-	 * @param slot the slot from which the variant is to be extracted.
+	 * @param slot    the slot from which the variant is to be extracted.
 	 */
 	public boolean canExtract(ItemVariant variant, int slot) {
 		return extractPredicate.test(variant, slot) && allowsExtraction;
@@ -325,6 +327,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	
 	/**
 	 * Returns a slice of this storage.
+	 *
 	 * @param slots the slots from which to create the slice.
 	 */
 	public SingleSlotStorage<ItemVariant>[] slice(int... slots) {
@@ -348,7 +351,9 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	public long insert(ItemVariant variant, long maxAmount, TransactionContext transaction, boolean force) {
 		StoragePreconditions.notBlankNotNegative(variant, maxAmount);
 		
-		if (!allowsInsertion) return 0;
+		if (!allowsInsertion) {
+			return 0;
+		}
 		
 		transaction.addCloseCallback((($, result) -> {
 			if (result.wasCommitted()) {
@@ -361,13 +366,17 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		var amount = 0;
 		
 		for (var slot : insertSlots) {
-			if (!insertPredicate.test(variant, slot) && !force) continue;
+			if (!insertPredicate.test(variant, slot) && !force) {
+				continue;
+			}
 			
 			var storage = storages.get(slot);
 			
 			amount += storage.insert(variant, maxAmount - amount, transaction, force);
 			
-			if (amount == maxAmount) break;
+			if (amount == maxAmount) {
+				break;
+			}
 		}
 		
 		return amount;
@@ -383,7 +392,9 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	public long extract(ItemVariant variant, long maxAmount, TransactionContext transaction, boolean force) {
 		StoragePreconditions.notBlankNotNegative(variant, maxAmount);
 		
-		if (!allowsExtraction) return 0;
+		if (!allowsExtraction) {
+			return 0;
+		}
 		
 		transaction.addCloseCallback((($, result) -> {
 			if (result.wasCommitted()) {
@@ -396,13 +407,17 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		var amount = 0;
 		
 		for (var slot : extractSlots) {
-			if (!extractPredicate.test(variant, slot) && !force) continue;
+			if (!extractPredicate.test(variant, slot) && !force) {
+				continue;
+			}
 			
 			var storage = storages.get(slot);
 			
 			amount += storage.extract(variant, maxAmount - amount, transaction, force);
 			
-			if (amount == maxAmount) break;
+			if (amount == maxAmount) {
+				break;
+			}
 		}
 		
 		return amount;
@@ -410,6 +425,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	
 	/**
 	 * Serializes this storage to the given {@link NbtCompound}.
+	 *
 	 * @param nbt the {@link NbtCompound}.
 	 */
 	public void writeToNbt(NbtCompound nbt) {
@@ -437,6 +453,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	
 	/**
 	 * Deserializes this storage from the given {@link NbtCompound}.
+	 *
 	 * @param nbt the {@link NbtCompound}.
 	 */
 	public void readFromNbt(NbtCompound nbt) {
@@ -459,7 +476,9 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	}
 	
 	private void updateProxies() {
-		if (proxy != null) return;
+		if (proxy != null) {
+			return;
+		}
 		
 		wildProxy = new SimpleItemStorage(size, this);
 		
@@ -471,7 +490,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		wildProxy.stacks = this.stacks;
 		wildProxy.storages = new ArrayList<>();
 		
-		for (var i = 0; i < storages.size(); ++ i) {
+		for (var i = 0; i < storages.size(); ++i) {
 			var proxyStorage = new SimpleItemVariantStorage(this, i);
 			proxyStorage.setOuterStorage(wildProxy);
 			
@@ -600,11 +619,11 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		
 		var removedStack = existingStack.copy();
 		removedStack.setCount(Math.min(existingStack.getCount(), amount));
-
+		
 		existingStack.setCount(Math.max(0, existingStack.getCount() - amount));
-
+		
 		notifyListeners();
-
+		
 		incrementVersion();
 		
 		return removedStack;
@@ -615,9 +634,9 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		var stack = stacks.get(slot);
 		
 		stacks.set(slot, ItemStack.EMPTY);
-
+		
 		notifyListeners();
-
+		
 		incrementVersion();
 		
 		return stack;
@@ -626,9 +645,9 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	@Override
 	public void setStack(int slot, ItemStack stack) {
 		stacks.set(slot, stack);
-
+		
 		notifyListeners();
-
+		
 		incrementVersion();
 	}
 	
@@ -647,17 +666,21 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		for (var i = 0; i < size; ++i) {
 			stacks.set(i, ItemStack.EMPTY);
 		}
-
+		
 		notifyListeners();
-
+		
 		incrementVersion();
 	}
 	
 	@Override
 	public boolean equals(Object object) {
-		if (this == object) return true;
-
-		if (!(object instanceof SimpleItemStorage component)) return false;
+		if (this == object) {
+			return true;
+		}
+		
+		if (!(object instanceof SimpleItemStorage component)) {
+			return false;
+		}
 		
 		return Objects.equals(stacks, component.stacks);
 	}

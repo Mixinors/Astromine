@@ -25,7 +25,6 @@
 package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.registry.common.AMFluids;
-
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 
 public class AMColorProviders {

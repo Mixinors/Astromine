@@ -24,11 +24,6 @@
 
 package com.github.mixinors.astromine.common.block.entity.machine;
 
-import static java.lang.Math.min;
-
-import java.util.Optional;
-import java.util.function.Supplier;
-
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.config.entry.tiered.SimpleMachineConfig;
@@ -37,15 +32,18 @@ import com.github.mixinors.astromine.common.recipe.AlloySmeltingRecipe;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import org.jetbrains.annotations.NotNull;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
-
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
+import org.jetbrains.annotations.NotNull;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import java.util.Optional;
+import java.util.function.Supplier;
+
+import static java.lang.Math.min;
 
 public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implements MachineConfigProvider<SimpleMachineConfig> {
 	public double progress = 0;
@@ -59,9 +57,9 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 	private static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT_1, INPUT_SLOT_2 };
 	
 	private static final int[] EXTRACT_SLOTS = new int[] { OUTPUT_SLOT };
-
+	
 	private Optional<AlloySmeltingRecipe> optionalRecipe = Optional.empty();
-
+	
 	public AlloySmelterBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
@@ -73,9 +71,9 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 			}
 			
 			return AlloySmeltingRecipe.allows(world, variant, itemStorage.getVariant(INPUT_SLOT_2)) ||
-				   AlloySmeltingRecipe.allows(world, itemStorage.getVariant(INPUT_SLOT_1), variant);
+					AlloySmeltingRecipe.allows(world, itemStorage.getVariant(INPUT_SLOT_1), variant);
 		}).extractPredicate((variant, slot) ->
-			slot == OUTPUT_SLOT
+				slot == OUTPUT_SLOT
 		).listener(() -> {
 			if (optionalRecipe.isPresent() && !optionalRecipe.get().matches(itemStorage.slice(INPUT_SLOT_1, INPUT_SLOT_2, OUTPUT_SLOT))) {
 				optionalRecipe = Optional.empty();
@@ -84,31 +82,32 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 			markDirty();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
-
+	
 	@Override
 	public void tick() {
 		super.tick();
-
-		if (world == null || world.isClient || !shouldRun())
+		
+		if (world == null || world.isClient || !shouldRun()) {
 			return;
-
+		}
+		
 		if (itemStorage != null && energyStorage != null) {
 			if (optionalRecipe.isEmpty()) {
 				optionalRecipe = AlloySmeltingRecipe.matching(world, itemStorage.slice(INPUT_SLOT_1, INPUT_SLOT_2, OUTPUT_SLOT));
 			}
-
+			
 			if (optionalRecipe.isPresent()) {
 				var recipe = optionalRecipe.get();
-
+				
 				limit = recipe.time();
 				
 				var speed = min(getSpeed(), limit - progress);
 				var consumed = (long) (recipe.energyInput() * speed / limit);
-
+				
 				try (var transaction = Transaction.openOuter()) {
 					if (energyStorage.amount >= consumed) {
 						energyStorage.amount -= consumed;
-
+						
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
 							
@@ -126,7 +125,7 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 							var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
 							
 							outputStorage.insert(recipe.output().variant(), recipe.output().count(), transaction, true);
-
+							
 							transaction.commit();
 							
 							progress = 0;
@@ -146,7 +145,7 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 			}
 		}
 	}
-
+	
 	@Override
 	public void writeNbt(NbtCompound nbt) {
 		nbt.putDouble("Progress", progress);
@@ -154,7 +153,7 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 		
 		super.writeNbt(nbt);
 	}
-
+	
 	@Override
 	public void readNbt(@NotNull NbtCompound nbt) {
 		progress = nbt.getDouble("Progress");
@@ -162,50 +161,50 @@ public abstract class AlloySmelterBlockEntity extends ExtendedBlockEntity implem
 		
 		super.readNbt(nbt);
 	}
-
+	
 	@Override
 	public SimpleMachineConfig getConfig() {
 		return AMConfig.get().blocks.machines.alloySmelter;
 	}
-
+	
 	public static class Primitive extends AlloySmelterBlockEntity {
 		public Primitive(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.PRIMITIVE_ALLOY_SMELTER, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.PRIMITIVE;
 		}
 	}
-
+	
 	public static class Basic extends AlloySmelterBlockEntity {
 		public Basic(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.BASIC_ALLOY_SMELTER, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.BASIC;
 		}
 	}
-
+	
 	public static class Advanced extends AlloySmelterBlockEntity {
 		public Advanced(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ADVANCED_ALLOY_SMELTER, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.ADVANCED;
 		}
 	}
-
+	
 	public static class Elite extends AlloySmelterBlockEntity {
 		public Elite(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ELITE_ALLOY_SMELTER, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.ELITE;

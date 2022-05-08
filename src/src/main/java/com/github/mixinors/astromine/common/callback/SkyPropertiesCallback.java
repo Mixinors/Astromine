@@ -27,18 +27,15 @@ package com.github.mixinors.astromine.common.callback;
 import dev.architectury.event.Event;
 import dev.architectury.event.EventFactory;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
-
 import net.minecraft.client.render.DimensionEffects;
 import net.minecraft.util.Identifier;
 
 /**
- * A callback called when initializing {@link DimensionEffects}
- * statically and adding new properties for custom
- * dimensions.
+ * A callback called when initializing {@link DimensionEffects} statically and adding new properties for custom dimensions.
  */
 public interface SkyPropertiesCallback {
 	Event<SkyPropertiesCallback> EVENT = EventFactory.createLoop();
-
+	
 	/** Handle the properties. */
 	void handle(Object2ObjectMap<Identifier, DimensionEffects> properties);
 }

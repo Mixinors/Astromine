@@ -25,19 +25,14 @@
 package com.github.mixinors.astromine.mixin.common;
 
 import com.github.mixinors.astromine.common.item.EnchantableToolItem;
-
 import net.minecraft.item.Item;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
- * for future reference, the inner class numbers of the EnchantmentTarget enum: 1 = armor 2 = breakable 3 = bow 4 =
- * wearable 5 = crossbow 6 = vanishable 7 = boots 8 = not sure if chestplate or leggings 9 = not sure if chestplate or
- * leggings 10 = helmet 11 = sword 12 = digger 13 = fishing rod 14 = trident Note that these are for some reason in a
- * different order to what they appear in the class itself...
+ * for future reference, the inner class numbers of the EnchantmentTarget enum: 1 = armor 2 = breakable 3 = bow 4 = wearable 5 = crossbow 6 = vanishable 7 = boots 8 = not sure if chestplate or leggings 9 = not sure if chestplate or leggings 10 = helmet 11 = sword 12 = digger 13 = fishing rod 14 = trident Note that these are for some reason in a different order to what they appear in the class itself...
  */
 @Mixin(targets = { "net/minecraft/enchantment/EnchantmentTarget$12" })
 public class EnchantmentTargetMixin {

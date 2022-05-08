@@ -24,25 +24,17 @@
 
 package com.github.mixinors.astromine.common.block.entity.base;
 
-import java.util.*;
-import java.util.function.Supplier;
-
 import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
 import com.github.mixinors.astromine.common.transfer.RedstoneControl;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import dev.architectury.hooks.block.BlockEntityHooks;
-import it.unimi.dsi.fastutil.Pair;
-import it.unimi.dsi.fastutil.ints.IntObjectPair;
-import it.unimi.dsi.fastutil.objects.ObjectObjectImmutablePair;
-import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import team.reborn.energy.api.EnergyStorage;
-import team.reborn.energy.api.EnergyStorageUtil;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
-
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -52,20 +44,23 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import team.reborn.energy.api.EnergyStorage;
+import team.reborn.energy.api.EnergyStorageUtil;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
-import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-
-import javax.swing.plaf.metal.MetalTheme;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.function.Supplier;
 
 public abstract class ExtendedBlockEntity extends BlockEntity implements Tickable {
 	protected boolean isActive = false;
-
+	
 	private final boolean[] activity = { false, false, false, false, false };
-
+	
 	protected boolean syncItemStorage = true;
 	protected boolean syncFluidStorage = true;
 	
@@ -123,10 +118,10 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 		try (var transaction = Transaction.openOuter()) {
 			for (var direction : Direction.values()) {
 				var theirPos = getPos().offset(direction);
-
+				
 				var theirItemStorage = ItemStorage.SIDED.find(world, theirPos, direction.getOpposite());
 				var ourItemStorage = ItemStorage.SIDED.find(world, pos, direction);
-
+				
 				if (ourItemStorage != null && theirItemStorage != null) {
 					StorageUtil.move(ourItemStorage, theirItemStorage, (variant) -> theirItemStorage.exactView(transaction, variant) == null || ourItemStorage.exactView(transaction, variant).getAmount() > theirItemStorage.exactView(transaction, variant).getAmount(), 1, transaction);
 				}
@@ -143,14 +138,14 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 			
 			transaction.commit();
 		}
-
+		
 		if (world.getBlockState(getPos()).contains(BlockWithEntity.ACTIVE)) {
 			if (activity.length - 1 >= 0) {
 				System.arraycopy(activity, 1, activity, 0, activity.length - 1);
 			}
-
+			
 			activity[4] = isActive;
-
+			
 			var blockStateActive = world.getBlockState(getPos()).get(BlockWithEntity.ACTIVE);
 			
 			if (!blockStateActive && isActive && !activity[0]) {
@@ -179,8 +174,8 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 				if (theirEnergyStorage != null && theirEnergyStorage.supportsInsertion()) {
 					// We are an output only block entity, so we should transfer all energy to the other storage.
 					long maxAmount = !ourEnergyStorage.supportsInsertion() ? Long.MAX_VALUE
-						// We should maintain an equilibrium of energy between us.
-						: ourEnergyStorage.getAmount() - theirEnergyStorage.getAmount();
+							// We should maintain an equilibrium of energy between us.
+							: ourEnergyStorage.getAmount() - theirEnergyStorage.getAmount();
 					
 					if (maxAmount > 0) {
 						try (Transaction extractionTestTransaction = Transaction.openNested(transaction)) {
@@ -241,7 +236,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 			
 			nbt.put("FluidStorage", fluidStorageNbt);
 		}
-
+		
 		super.writeNbt(nbt);
 	}
 	
@@ -284,7 +279,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 				sidings[i] = StorageSiding.values()[sidingsNbt.getInt(String.valueOf(i))];
 			}
 		}
-
+		
 		super.readNbt(nbt);
 	}
 	
@@ -348,7 +343,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 		
 		return nbt;
 	}
-
+	
 	@Nullable
 	@Override
 	public Packet<ClientPlayPacketListener> toUpdatePacket() {
@@ -356,16 +351,14 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	}
 	
 	/**
-	 * Marks this block entity as requiring a full {@link #itemStorage} sync
-	 * in the next server to client packet.
+	 * Marks this block entity as requiring a full {@link #itemStorage} sync in the next server to client packet.
 	 */
 	public void setSyncItemStorage(boolean syncItemStorage) {
 		this.syncItemStorage = syncItemStorage;
 	}
 	
 	/**
-	 * Marks this block entity as requiring a full {@link #fluidStorage} sync
-	 * in the next server to client packet.
+	 * Marks this block entity as requiring a full {@link #fluidStorage} sync in the next server to client packet.
 	 */
 	public void setSyncFluidStorage(boolean syncFluidStorage) {
 		this.syncFluidStorage = syncFluidStorage;

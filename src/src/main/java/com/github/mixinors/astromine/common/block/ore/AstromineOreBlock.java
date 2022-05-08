@@ -24,11 +24,8 @@
 
 package com.github.mixinors.astromine.common.block.ore;
 
-import java.util.Random;
-
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMCriteria;
-
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -44,11 +41,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
+import java.util.Random;
+
 public class AstromineOreBlock extends Block {
 	public AstromineOreBlock(AbstractBlock.Settings settings) {
 		super(settings);
 	}
-
+	
 	@Override
 	public void onStacksDropped(BlockState state, ServerWorld world, BlockPos pos, ItemStack stack) {
 		super.onStacksDropped(state, world, pos, stack);
@@ -58,9 +57,9 @@ public class AstromineOreBlock extends Block {
 				this.dropExperience(world, pos, i);
 			}
 		}
-
+		
 	}
-
+	
 	protected int getExperienceWhenMined(Random random) {
 		if (this == AMBlocks.METEOR_METITE_ORE.get()) {
 			return MathHelper.nextInt(random, 2, 3);
@@ -68,7 +67,7 @@ public class AstromineOreBlock extends Block {
 			return 0;
 		}
 	}
-
+	
 	@Override
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		super.onBreak(world, pos, state, player);

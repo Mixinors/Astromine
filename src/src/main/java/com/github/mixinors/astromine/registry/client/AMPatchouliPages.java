@@ -28,10 +28,9 @@ import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.patchouli.AlloySmeltingPage;
 import com.github.mixinors.astromine.client.patchouli.PressingPage;
 import com.github.mixinors.astromine.client.patchouli.TrituratingPage;
-import vazkii.patchouli.client.book.ClientBookRegistry;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import vazkii.patchouli.client.book.ClientBookRegistry;
 
 @Environment(EnvType.CLIENT)
 public class AMPatchouliPages {

@@ -28,16 +28,13 @@ import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.client.rei.base.input.SingleItemInputCategory;
 import com.github.mixinors.astromine.client.rei.base.output.EnergyOutputCategory;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import me.shedaniel.rei.api.client.gui.Renderer;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 
 @Environment(EnvType.CLIENT)
 public class SolidGeneratingCategory implements SingleItemInputCategory<SolidGeneratingDisplay>, EnergyOutputCategory<SolidGeneratingDisplay> {
@@ -45,12 +42,12 @@ public class SolidGeneratingCategory implements SingleItemInputCategory<SolidGen
 	public CategoryIdentifier<? extends SolidGeneratingDisplay> getCategoryIdentifier() {
 		return AMRoughlyEnoughItemsPlugin.SOLID_GENERATING;
 	}
-
+	
 	@Override
 	public Text getTitle() {
 		return new TranslatableText("category.astromine.solid_generating");
 	}
-
+	
 	@Override
 	public Renderer getIcon() {
 		return EntryStacks.of(AMBlocks.ADVANCED_SOLID_GENERATOR.get());

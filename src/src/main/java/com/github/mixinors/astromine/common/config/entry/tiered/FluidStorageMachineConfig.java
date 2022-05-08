@@ -33,7 +33,7 @@ public class FluidStorageMachineConfig extends MachineConfig<FluidStorageMachine
 	public FluidStorageMachineTierConfig createTierConfig(MachineTier tier) {
 		return new FluidStorageMachineTierConfig(getDefaultSpeedModifier(tier), getDefaultEnergyStorageSize(tier), getDefaultFluidStorageSize(tier));
 	}
-
+	
 	@Override
 	public long getFluidStorageSize(MachineTier tier) {
 		return getTierConfig(tier).getFluidStorageSize();

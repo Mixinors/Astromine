@@ -28,16 +28,13 @@ import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.client.rei.base.input.SingleItemInputCategory;
 import com.github.mixinors.astromine.client.rei.base.output.SingleItemOutputCategory;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import me.shedaniel.rei.api.client.gui.Renderer;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 
 @Environment(EnvType.CLIENT)
 public class PressingCategory implements SingleItemInputCategory<PressingDisplay>, SingleItemOutputCategory<PressingDisplay> {
@@ -45,12 +42,12 @@ public class PressingCategory implements SingleItemInputCategory<PressingDisplay
 	public CategoryIdentifier<? extends PressingDisplay> getCategoryIdentifier() {
 		return AMRoughlyEnoughItemsPlugin.PRESSING;
 	}
-
+	
 	@Override
 	public Text getTitle() {
 		return new TranslatableText("category.astromine.pressing");
 	}
-
+	
 	@Override
 	public Renderer getIcon() {
 		return EntryStacks.of(AMBlocks.ADVANCED_PRESSER.get());

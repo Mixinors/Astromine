@@ -51,7 +51,7 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 			AMDatagen.ARMOR_VARIANTS, AMDatagen.createCommonTagId("armor"),
 			AMDatagen.TOOL_VARIANTS, AMDatagen.createCommonTagId("tools")
 	);
-
+	
 	public static final List<Identifier> COPY = List.of(
 			AMDatagen.createCommonTagId("yellow_sandstones"),
 			AMDatagen.createCommonTagId("red_sandstones"),
@@ -74,14 +74,14 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 			AMDatagen.createCommonTagId("weeping_vines"),
 			AMDatagen.createCommonTagId("twisting_vines")
 	);
-
+	
 	public static final List<Item> DRILLS = List.of(
 			AMItems.PRIMITIVE_DRILL.get(),
 			AMItems.BASIC_DRILL.get(),
 			AMItems.ADVANCED_DRILL.get(),
 			AMItems.ELITE_DRILL.get()
 	);
-
+	
 	public static final List<TagKey<Item>> ONE_BIOFUEL_TAGS = List.of(
 			ItemTags.SMALL_FLOWERS,
 			ItemTags.LEAVES,
@@ -92,7 +92,7 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 			AMDatagen.createCommonItemTag("berries"),
 			AMDatagen.createCommonItemTag("seeds")
 	);
-
+	
 	public static final List<Item> ONE_BIOFUEL_ITEMS = List.of(
 			Items.GRASS,
 			Items.FERN,
@@ -118,12 +118,12 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 			Items.SUGAR,
 			Items.HONEYCOMB
 	);
-
+	
 	public static final List<TagKey<Item>> TWO_BIOFUEL_TAGS = List.of(
 			ItemTags.TALL_FLOWERS,
 			ItemTags.SAPLINGS
 	);
-
+	
 	public static final List<Item> TWO_BIOFUEL_ITEMS = List.of(
 			Items.PORKCHOP,
 			Items.COOKED_PORKCHOP,
@@ -149,32 +149,32 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 			Items.CHORUS_FLOWER,
 			Items.CHORUS_PLANT
 	);
-
+	
 	public static final List<TagKey<Item>> FOUR_BIOFUEL_TAGS = List.of(
 			ItemTags.FISHES,
 			AMDatagen.createCommonItemTag("metal_apples")
 	);
-
+	
 	public static final List<Item> FOUR_BIOFUEL_ITEMS = List.of(
 			Items.CAKE,
 			Items.SPORE_BLOSSOM
 	);
-
+	
 	public static final List<TagKey<Item>> NINE_BIOFUEL_TAGS = List.of(
 			AMDatagen.createCommonItemTag("gourds")
 	);
-
+	
 	public static final List<Item> NINE_BIOFUEL_ITEMS = List.of(
 			Items.HONEY_BLOCK,
 			Items.HONEYCOMB_BLOCK,
 			Items.PUMPKIN_PIE,
 			Items.MOSS_BLOCK
 	);
-
+	
 	public AMItemTagProvider(FabricDataGenerator dataGenerator, @Nullable BlockTagProvider blockTagProvider) {
 		super(dataGenerator, blockTagProvider);
 	}
-
+	
 	@Override
 	protected void generateTags() {
 		var beaconPaymentTagBuilder = getOrCreateTagBuilder(ItemTags.BEACON_PAYMENT_ITEMS);
@@ -182,34 +182,34 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 		var piglinLovedNuggetsTagBuilder = getOrCreateTagBuilder(Piglib.PIGLIN_LOVED_NUGGETS);
 		var piglinBarteringItemsTagBuilder = getOrCreateTagBuilder(Piglib.PIGLIN_BARTERING_ITEMS);
 		var piglinSafeArmorTagBuilder = getOrCreateTagBuilder(Piglib.PIGLIN_SAFE_ARMOR);
-
+		
 		MaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateTags).forEachOrdered(family -> {
 			AMDatagen.toTreeMap(family.getItemTags()).forEach((variant, tag) -> {
 				getOrCreateTagBuilder(tag).add(family.getVariant(variant));
-
+				
 				if (family.hasAlias()) {
 					getOrCreateTagBuilder(family.getAliasTag(variant)).addTag(tag);
 				}
-
+				
 				if (family.isPiglinLoved()) {
 					if (variant.equals(ItemVariant.NUGGET)) {
 						piglinLovedNuggetsTagBuilder.addTag(tag);
-
+						
 						if (family.hasAlias()) {
 							piglinLovedNuggetsTagBuilder.addTag(family.getAliasTag(variant));
 						}
 					} else {
 						piglinLovedTagBuilder.addTag(tag);
-
+						
 						if (family.hasAlias()) {
 							piglinLovedTagBuilder.addTag(family.getAliasTag(variant));
 						}
 					}
 				}
-
+				
 				if (variant.hasTag()) {
 					getOrCreateTagBuilder(variant.getTag()).addTag(tag);
-
+					
 					if (family.hasAlias()) {
 						getOrCreateTagBuilder(variant.getTag()).addTag(family.getAliasTag(variant));
 					}
@@ -217,36 +217,36 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 			});
 			AMDatagen.toTreeMap(family.getBlockItemTags()).forEach((variant, tag) -> {
 				var blockTag = family.getTag(variant);
-
+				
 				copy(blockTag, tag);
-
+				
 				if (family.hasAlias()) {
 					copy(family.getAliasTag(variant), family.getAliasItemTag(variant));
 				}
-
+				
 				if (family.isPiglinLoved()) {
 					piglinLovedTagBuilder.addTag(tag);
 				}
-
+				
 				if (variant.hasTag()) {
 					getOrCreateTagBuilder(variant.getItemTag()).addTag(tag);
-
+					
 					if (family.hasAlias()) {
 						getOrCreateTagBuilder(variant.getItemTag()).addTag(family.getAliasItemTag(variant));
 					}
 				}
 			});
-
+			
 			if (family.hasAnyBlockVariants(AMDatagen.ORE_VARIANTS)) {
 				var oresBlockTag = family.getBlockTag("ores");
 				var oresItemTag = family.getItemTag("ores");
 				copy(oresBlockTag, oresItemTag);
-
+				
 				if (family.hasAlias()) {
 					copy(family.getAliasBlockTag("ores"), family.getAliasItemTag("ores"));
 				}
 			}
-
+			
 			if (family.hasAnyItemVariants(AMDatagen.CLUSTER_VARIANTS)) {
 				var clustersTag = family.getItemTag("clusters");
 				var clustersTagBuilder = getOrCreateTagBuilder(clustersTag);
@@ -259,14 +259,14 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 					getOrCreateTagBuilder(family.getAliasItemTag("clusters")).addTag(clustersTag);
 				}
 			}
-
+			
 			if (family.hasAnyItemVariants(AMDatagen.EQUIPMENT_VARIANTS)) {
 				var armorTag = family.getItemTag("armor");
 				var toolsTag = family.getItemTag("tools");
 				
 				var salvageablesTag = family.getItemTag("salvageables");
 				var salvageablesTagBuilder = getOrCreateTagBuilder(salvageablesTag);
-
+				
 				if (family.hasAnyItemVariants(AMDatagen.ARMOR_VARIANTS)) {
 					var armorTagBuilder = getOrCreateTagBuilder(armorTag);
 					AMDatagen.ARMOR_VARIANTS.forEach((variant) -> {
@@ -274,22 +274,22 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 							armorTagBuilder.addTag(family.getTag(variant));
 						}
 					});
-
+					
 					if (family.isPiglinLoved()) {
 						piglinSafeArmorTagBuilder.addTag(armorTag);
-
+						
 						if (family.hasAlias()) {
 							piglinSafeArmorTagBuilder.addTag(family.getAliasItemTag("armor"));
 						}
 					}
-
+					
 					salvageablesTagBuilder.addTag(armorTag);
-
+					
 					if (family.hasAlias()) {
 						getOrCreateTagBuilder(family.getAliasItemTag("armor")).addTag(armorTag);
 					}
 				}
-
+				
 				if (family.hasAnyItemVariants(AMDatagen.TOOL_VARIANTS)) {
 					var toolsTagBuilder = getOrCreateTagBuilder(toolsTag);
 					AMDatagen.TOOL_VARIANTS.forEach((variant) -> {
@@ -297,87 +297,89 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 							toolsTagBuilder.addTag(family.getTag(variant));
 						}
 					});
-
+					
 					salvageablesTagBuilder.addTag(toolsTag);
-
+					
 					if (family.hasAlias()) {
 						getOrCreateTagBuilder(family.getAliasItemTag("tools")).addTag(toolsTag);
 					}
 				}
-
+				
 				if (family.hasVariant(ItemVariant.HORSE_ARMOR)) {
 					salvageablesTagBuilder.add(family.getVariant(ItemVariant.HORSE_ARMOR));
 				}
-
+				
 				if (family.hasAlias()) {
 					getOrCreateTagBuilder(family.getAliasItemTag("salvageables")).addTag(salvageablesTag);
 				}
 			}
-
+			
 			if (family.isValidForBeacon()) {
 				beaconPaymentTagBuilder.addTag(family.getBaseTag());
-
+				
 				if (family.hasAlias()) {
 					beaconPaymentTagBuilder.addTag(family.getAliasBaseTag());
 				}
 			}
-
+			
 			if (family.isPiglinLoved()) {
 				piglinBarteringItemsTagBuilder.addTag(family.getBaseTag());
-
+				
 				if (family.hasAlias()) {
 					piglinBarteringItemsTagBuilder.addTag(family.getAliasBaseTag());
 				}
 			}
 		});
-
+		
 		AMBlockFamilies.getFamilies().forEachOrdered(family -> family.getVariants().forEach((variant, block) -> {
 			if (AMDatagen.VANILLA_ITEM_TAG_VARIANTS.containsKey(variant)) {
 				getOrCreateTagBuilder(AMDatagen.createItemTag(AMDatagen.VANILLA_ITEM_TAG_VARIANTS.get(variant))).add(block.asItem());
 			}
 		}));
-
+		
 		AMDatagen.FLUIDS.forEach((fluid) -> {
 			var bucketTagBuilder = getOrCreateTagBuilder(AMDatagen.createCommonItemTag(Registry.FLUID.getId(fluid.getStill()).getPath() + "_buckets"));
 			bucketTagBuilder.add(fluid.getBucketItem());
 		});
-
+		
 		copy(AMDatagen.createCommonBlockTag("ores"), AMDatagen.createCommonItemTag("ores"));
-
+		
 		GENERIC_TAGS.forEach((variantSet, id) -> {
 			var tag = getOrCreateTagBuilder(AMDatagen.createItemTag(id));
 			variantSet.forEach((variant) -> {
-				if (variant.hasTag()) tag.addTag(variant.getTag());
+				if (variant.hasTag()) {
+					tag.addTag(variant.getTag());
+				}
 			});
 		});
-
+		
 		AMDatagen.TOOL_VARIANTS.forEach((variant) -> getOrCreateTagBuilder(AMDatagen.createItemTag(new Identifier("fabric", variant.getTagPath()))).addTag(variant.getTag()));
 		
 		var drillsTagBuilder = getOrCreateTagBuilder(AMDatagen.createItemTag(AMCommon.id("drills")));
 		DRILLS.forEach(drillsTagBuilder::add);
-
+		
 		COPY.forEach((id -> copy(AMDatagen.createBlockTag(id), AMDatagen.createItemTag(id))));
-
+		
 		getOrCreateTagBuilder(AMDatagen.createCommonItemTag("gold_apples"))
 				.add(Items.ENCHANTED_GOLDEN_APPLE);
-
+		
 		getOrCreateTagBuilder(AMDatagen.createCommonItemTag("seeds"))
 				.add(Items.WHEAT_SEEDS)
 				.add(Items.BEETROOT_SEEDS)
 				.add(Items.MELON_SEEDS)
 				.add(Items.PUMPKIN_SEEDS);
-
+		
 		getOrCreateTagBuilder(AMDatagen.createCommonItemTag("berries"))
 				.add(Items.SWEET_BERRIES)
 				.add(Items.GLOW_BERRIES);
-
+		
 		getOrCreateTagBuilder(AMDatagen.createCommonItemTag("vines"))
 				.addTag(AMDatagen.createCommonItemTag("nether_vines"))
 				.add(Items.VINE);
-
+		
 		getOrCreateTagBuilder(AMDatagen.createCommonItemTag("biofuel"))
 				.add(AMItems.BIOFUEL.get());
-
+		
 		getOrCreateTagBuilder(AMDatagen.createCommonItemTag("carbon_dusts"))
 				.addTag(AMDatagen.createCommonItemTag("coal_dusts"))
 				.addTag(AMDatagen.createCommonItemTag("charcoal_dusts"));

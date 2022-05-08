@@ -26,9 +26,8 @@ package com.github.mixinors.astromine.common.block.utility;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.mixinors.astromine.common.block.entity.utility.FluidPlacerBlockEntity;
-import com.github.mixinors.astromine.common.util.data.redstone.ComparatorMode;
 import com.github.mixinors.astromine.common.screenhandler.utility.FluidPlacerScreenHandler;
-
+import com.github.mixinors.astromine.common.util.data.redstone.ComparatorMode;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -43,32 +42,32 @@ public class FluidPlacerBlock extends HorizontalFacingBlockWithEntity {
 	public FluidPlacerBlock(Settings settings) {
 		super(settings);
 	}
-
+	
 	@Override
 	public SavedData getSavedDataForDroppedItem() {
 		return FLUID_MACHINE;
 	}
-
+	
 	@Override
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 		return new FluidPlacerBlockEntity(pos, state);
 	}
-
+	
 	@Override
 	public boolean hasScreenHandler() {
 		return true;
 	}
-
+	
 	@Override
 	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
 		return new FluidPlacerScreenHandler(syncId, playerInventory.player, pos);
 	}
-
+	
 	@Override
 	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
 		buffer.writeBlockPos(pos);
 	}
-
+	
 	@Override
 	protected ComparatorMode getComparatorMode() {
 		return ComparatorMode.FLUIDS;

@@ -26,18 +26,16 @@ package com.github.mixinors.astromine.common.callback;
 
 import dev.architectury.event.Event;
 import dev.architectury.event.EventFactory;
-
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.chunk.WorldChunk;
 
 /**
- * A callback called when a {@link ServerWorld}'s
- * {@link WorldChunk} is ticked.
+ * A callback called when a {@link ServerWorld}'s {@link WorldChunk} is ticked.
  */
 @FunctionalInterface
 public interface ServerChunkTickCallback {
 	Event<ServerChunkTickCallback> EVENT = EventFactory.createLoop();
-
+	
 	/** Handle the {@link ServerWorld} and its {@link WorldChunk}. */
 	void tickChunk(ServerWorld world, WorldChunk chunk);
 }

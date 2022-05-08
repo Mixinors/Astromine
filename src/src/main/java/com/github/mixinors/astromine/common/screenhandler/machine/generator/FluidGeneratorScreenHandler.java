@@ -30,24 +30,23 @@ import com.github.mixinors.astromine.common.widget.HorizontalArrowWidget;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
-
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 public class FluidGeneratorScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final FluidGeneratorBlockEntity generator;
-
+	
 	public FluidGeneratorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.LIQUID_GENERATOR, syncId, player, position);
-
+		
 		generator = (FluidGeneratorBlockEntity) blockEntity;
 	}
-
+	
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
-
-		energyBar.setPosition( new Position(mainTab, 68.0F, 11.0F));
+		
+		energyBar.setPosition(new Position(mainTab, 68.0F, 11.0F));
 		fluidBar.setPosition(new Position(mainTab, 7.0F, 11.0F));
 		
 		var arrow = new HorizontalArrowWidget();
@@ -55,7 +54,7 @@ public class FluidGeneratorScreenHandler extends ExtendedBlockEntityScreenHandle
 		arrow.setSize(new Size(22.0F, 16.0F));
 		arrow.setLimitSupplier(() -> generator.limit);
 		arrow.setProgressSupplier(() -> (int) generator.progress);
-
+		
 		mainTab.add(arrow);
 	}
 }

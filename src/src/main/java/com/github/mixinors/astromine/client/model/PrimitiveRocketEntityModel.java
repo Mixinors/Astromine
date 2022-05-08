@@ -26,12 +26,7 @@ package com.github.mixinors.astromine.client.model;
 
 import com.github.mixinors.astromine.client.render.entity.PrimitiveRocketEntityRenderer;
 import com.github.mixinors.astromine.common.entity.PrimitiveRocketEntity;
-
-import net.minecraft.client.model.ModelData;
-import net.minecraft.client.model.ModelPart;
-import net.minecraft.client.model.ModelPartBuilder;
-import net.minecraft.client.model.ModelTransform;
-import net.minecraft.client.model.TexturedModelData;
+import net.minecraft.client.model.*;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.model.SinglePartEntityModel;
 import net.minecraft.client.render.item.ItemRenderer;
@@ -42,7 +37,7 @@ import net.minecraft.util.math.Vec3f;
 
 public class PrimitiveRocketEntityModel extends SinglePartEntityModel<PrimitiveRocketEntity> {
 	private final ModelPart root;
-
+	
 	public PrimitiveRocketEntityModel(ModelPart root) {
 		this.root = root;
 	}
@@ -50,7 +45,7 @@ public class PrimitiveRocketEntityModel extends SinglePartEntityModel<PrimitiveR
 	public static TexturedModelData getTexturedModelData() {
 		var modelData = new ModelData();
 		var modelPartData = modelData.getRoot();
-
+		
 		modelPartData.addChild("rocket", ModelPartBuilder.create().uv(48, 0).cuboid(-6.0F, -11.0F, -6.0F, 12, 11, 12), ModelTransform.NONE);
 		modelPartData.addChild("rocket1", ModelPartBuilder.create().uv(78, 84).cuboid(-5.0F, -18.0F, -5.0F, 10, 7, 10), ModelTransform.NONE);
 		modelPartData.addChild("rocket2", ModelPartBuilder.create().uv(84, 0).cuboid(-4.0F, -21.0F, -4.0F, 8, 3, 8), ModelTransform.NONE);
@@ -66,26 +61,26 @@ public class PrimitiveRocketEntityModel extends SinglePartEntityModel<PrimitiveR
 		modelPartData.addChild("rocket12", ModelPartBuilder.create().uv(48, 94).cuboid(6.0F, -33.0F, -1.0F, 9, 15, 2), ModelTransform.NONE);
 		modelPartData.addChild("rocket13", ModelPartBuilder.create().uv(98, 101).cuboid(-11.0F, -48.0F, -1.0F, 5, 15, 2), ModelTransform.NONE);
 		modelPartData.addChild("rocket14", ModelPartBuilder.create().uv(101, 11).cuboid(6.0F, -48.0F, -1.0F, 5, 15, 2), ModelTransform.NONE);
-
+		
 		return TexturedModelData.of(modelData, 128, 128);
 	}
-
+	
 	public void setRotationAngle(ModelPart modelRenderer, float x, float y, float z) {
 		modelRenderer.pitch = x;
 		modelRenderer.yaw = y;
 		modelRenderer.roll = z;
 	}
-
+	
 	@Override
 	public void setAngles(PrimitiveRocketEntity entity, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch) {
-
+	
 	}
-
+	
 	@Override
 	public ModelPart getPart() {
 		return this.root;
 	}
-
+	
 	public static void renderItem(PrimitiveRocketEntityModel primitiveRocketEntityModel, ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
 		matrices.push();
 		

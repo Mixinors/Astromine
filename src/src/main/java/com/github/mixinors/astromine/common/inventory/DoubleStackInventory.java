@@ -24,19 +24,18 @@
 
 package com.github.mixinors.astromine.common.inventory;
 
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
-
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
 
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+
 /**
- * A simple {@link Inventory} with helper methods
- * for a left and a right stack.
- *
+ * A simple {@link Inventory} with helper methods for a left and a right stack.
+ * <p>
  * Originally by {@author Juuz}.
  */
 public interface DoubleStackInventory extends Inventory {
@@ -44,21 +43,21 @@ public interface DoubleStackInventory extends Inventory {
 	static DoubleStackInventory of(DefaultedList<ItemStack> items) {
 		return new DoubleStackInventoryImpl(items);
 	}
-
+	
 	/** Instantiates a {@link DoubleStackInventory}. */
 	static DoubleStackInventory ofSize(int size) {
 		return of(DefaultedList.ofSize(size, ItemStack.EMPTY));
 	}
-
+	
 	/** Returns this inventory's {@link ItemStack}s. */
 	DefaultedList<ItemStack> getItems();
-
+	
 	/** Returns this inventory's size. */
 	@Override
 	default int size() {
 		return getItems().size();
 	}
-
+	
 	/** Asserts whether this inventory's {@link ItemStack}s are all empty or not. */
 	@Override
 	default boolean isEmpty() {
@@ -70,23 +69,24 @@ public interface DoubleStackInventory extends Inventory {
 		}
 		return true;
 	}
-
+	
 	/** Returns the {@link ItemStack} at the given slot. */
 	@Override
 	default ItemStack getStack(int slot) {
 		return getItems().get(slot);
 	}
-
-	/** Sets the {@link ItemStack} at the given slot to the specified value.
-	 * If the count is bigger than this inventory allows, it is set to the maximum allowed. */
+	
+	/**
+	 * Sets the {@link ItemStack} at the given slot to the specified value. If the count is bigger than this inventory allows, it is set to the maximum allowed.
+	 */
 	@Override
 	default void setStack(int slot, ItemStack stack) {
 		getItems().set(slot, stack);
-
+		
 		if (stack.getCount() > getMaxCountPerStack()) {
 			stack.setCount(getMaxCountPerStack());
 		}
-
+		
 		markDirty();
 	}
 	
@@ -94,24 +94,25 @@ public interface DoubleStackInventory extends Inventory {
 	default ItemStack getFirst() {
 		return getStack(0);
 	}
-
+	
 	/** Sets the {@link ItemStack} at the first slot to the specified value. */
 	default void setFirst(ItemStack stack) {
 		setStack(0, stack);
 	}
-
+	
 	/** Returns the {@link ItemStack} at the second slot. */
 	default ItemStack getSecond() {
 		return getStack(1);
 	}
-
+	
 	/** Sets the {@link ItemStack} at the second slot to the specified value. */
 	default void setSecond(ItemStack stack) {
 		setStack(1, stack);
 	}
-
-	/** Removes the {@link ItemStack} at the given slot,
-	 * or a part of it as per the specified count, and returns it. */
+	
+	/**
+	 * Removes the {@link ItemStack} at the given slot, or a part of it as per the specified count, and returns it.
+	 */
 	@Override
 	default ItemStack removeStack(int slot, int count) {
 		var result = Inventories.splitStack(getItems(), slot, count);
@@ -120,26 +121,27 @@ public interface DoubleStackInventory extends Inventory {
 		}
 		return result;
 	}
-
-	/** Removes the {@link ItemStack} at the given slot
-	 * and returns it. */
+	
+	/**
+	 * Removes the {@link ItemStack} at the given slot and returns it.
+	 */
 	@Override
 	default ItemStack removeStack(int slot) {
 		var stack = Inventories.removeStack(getItems(), slot);
 		markDirty();
 		return stack;
 	}
-
+	
 	/** Removes the {@link ItemStack} at the first slot. */
 	default ItemStack removeLeftStack() {
 		return removeStack(0);
 	}
-
+	
 	/** Removes the {@link ItemStack} at the second slot. */
 	default ItemStack removeRightStack() {
 		return removeStack(1);
 	}
-
+	
 	/**
 	 * Clears {@linkplain #getItems() the item list}}.
 	 */
@@ -148,17 +150,17 @@ public interface DoubleStackInventory extends Inventory {
 		getItems().clear();
 		markDirty();
 	}
-
+	
 	/** Override to do nothing. */
 	@Override
 	default void markDirty() {}
-
+	
 	/** Allow the player to use this inventory by default. */
 	@Override
 	default boolean canPlayerUse(PlayerEntity player) {
 		return true;
 	}
-
+	
 	record DoubleStackInventoryImpl(
 			DefaultedList<ItemStack> items) implements DoubleStackInventory {
 		/**
@@ -168,14 +170,14 @@ public interface DoubleStackInventory extends Inventory {
 		public DefaultedList<ItemStack> getItems() {
 			return items;
 		}
-
+		
 		/**
 		 * Returns this inventory's string representation.
 		 */
 		@Override
 		public String toString() {
 			var slot = new AtomicInteger(0);
-
+			
 			return getItems().stream().map(stack -> String.format("%s - [%s]", slot.getAndIncrement(), stack.toString())).collect(Collectors.joining(", "));
 		}
 	}

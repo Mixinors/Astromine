@@ -24,17 +24,15 @@
 
 package com.github.mixinors.astromine.client.rei.base.output;
 
-import java.util.List;
-
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.client.rei.base.AMCategory;
-
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import java.util.List;
 
 @Environment(EnvType.CLIENT)
 public interface EnergyOutputCategory<T extends EnergyOutputDisplay> extends AMCategory<T> {
@@ -42,7 +40,7 @@ public interface EnergyOutputCategory<T extends EnergyOutputDisplay> extends AMC
 	default void addEnergyInputWidgets(List<Widget> widgets, T display, Point startPoint, Rectangle bounds) {
 		// No.
 	}
-
+	
 	@Override
 	default void addOutputWidgets(List<Widget> widgets, T display, Point startPoint, Rectangle bounds) {
 		widgets.addAll(AMRoughlyEnoughItemsPlugin.createEnergyDisplay(new Rectangle(startPoint.x + 61, bounds.getCenterY() - 23, 12, 48), display.getEnergyGeneratedPerTick(), true, 5000));

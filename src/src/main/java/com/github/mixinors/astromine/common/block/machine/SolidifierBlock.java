@@ -29,7 +29,6 @@ import com.github.mixinors.astromine.common.block.entity.machine.SolidifierBlock
 import com.github.mixinors.astromine.common.screenhandler.machine.SolidifierScreenHandler;
 import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -45,12 +44,12 @@ public abstract class SolidifierBlock extends HorizontalFacingTieredBlockWithEnt
 	public SolidifierBlock(Settings settings) {
 		super(settings);
 	}
-
+	
 	@Override
 	public SavedData getSavedDataForDroppedItem() {
 		return ITEM_AND_FLUID_MACHINE;
 	}
-
+	
 	@Override
 	public Block getForTier(MachineTier tier) {
 		return switch (tier) {
@@ -61,80 +60,80 @@ public abstract class SolidifierBlock extends HorizontalFacingTieredBlockWithEnt
 			case CREATIVE -> null;
 		};
 	}
-
+	
 	@Override
 	public boolean hasScreenHandler() {
 		return true;
 	}
-
+	
 	@Override
 	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
 		return new SolidifierScreenHandler(syncId, playerInventory.player, pos);
 	}
-
+	
 	@Override
 	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
 		buffer.writeBlockPos(pos);
 	}
-
+	
 	public static class Primitive extends SolidifierBlock {
 		public Primitive(Settings settings) {
 			super(settings);
 		}
-
+		
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new SolidifierBlockEntity.Primitive(pos, state);
 		}
-
+		
 		@Override
 		public MachineTier getTier() {
 			return MachineTier.PRIMITIVE;
 		}
 	}
-
+	
 	public static class Basic extends SolidifierBlock {
 		public Basic(Settings settings) {
 			super(settings);
 		}
-
+		
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new SolidifierBlockEntity.Basic(pos, state);
 		}
-
+		
 		@Override
 		public MachineTier getTier() {
 			return MachineTier.BASIC;
 		}
 	}
-
+	
 	public static class Advanced extends SolidifierBlock {
 		public Advanced(Settings settings) {
 			super(settings);
 		}
-
+		
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new SolidifierBlockEntity.Advanced(pos, state);
 		}
-
+		
 		@Override
 		public MachineTier getTier() {
 			return MachineTier.ADVANCED;
 		}
 	}
-
+	
 	public static class Elite extends SolidifierBlock {
 		public Elite(Settings settings) {
 			super(settings);
 		}
-
+		
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new SolidifierBlockEntity.Elite(pos, state);
 		}
-
+		
 		@Override
 		public MachineTier getTier() {
 			return MachineTier.ELITE;

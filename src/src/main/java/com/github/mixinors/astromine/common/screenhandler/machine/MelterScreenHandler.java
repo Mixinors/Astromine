@@ -31,28 +31,27 @@ import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
-
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.math.BlockPos;
 
 public class MelterScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final MelterBlockEntity melter;
-
+	
 	public MelterScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.MELTER, syncId, player, position);
-
+		
 		melter = (MelterBlockEntity) blockEntity;
 	}
-
+	
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		
 		var input = new SlotWidget(0, melter.getItemStorage(), Slot::new);
-		input.setSize( new Size(18.0F, 18.0F));
-
-		fluidBar.setPosition( new Position(energyBar, 102.0F, 0.0F));
+		input.setSize(new Size(18.0F, 18.0F));
+		
+		fluidBar.setPosition(new Position(energyBar, 102.0F, 0.0F));
 		
 		var arrow = new HorizontalArrowWidget();
 		arrow.setPosition(new Position(fluidBar, -31.0F, fluidBar.getHeight() / 2.0F - 16.0F / 2.0F));

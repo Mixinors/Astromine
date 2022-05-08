@@ -40,39 +40,39 @@ package com.github.mixinors.astromine.common.noise;
  */
 
 public class OpenSimplexNoise extends Noise {
-
+	
 	private static final double STRETCH_CONSTANT_2D = -0.211324865405187; // (1/Math.sqrt(2+1)-1)/2;
 	private static final double SQUISH_CONSTANT_2D = 0.366025403784439; // (Math.sqrt(2+1)-1)/2;
 	private static final double STRETCH_CONSTANT_3D = -1.0 / 6; // (1/Math.sqrt(3+1)-1)/3;
 	private static final double SQUISH_CONSTANT_3D = 1.0 / 3; // (Math.sqrt(3+1)-1)/3;
 	private static final double STRETCH_CONSTANT_4D = -0.138196601125011; // (1/Math.sqrt(4+1)-1)/4;
 	private static final double SQUISH_CONSTANT_4D = 0.309016994374947; // (Math.sqrt(4+1)-1)/4;
-
+	
 	private static final double NORM_CONSTANT_2D = 47;
 	private static final double NORM_CONSTANT_3D = 103;
 	private static final double NORM_CONSTANT_4D = 30;
-
+	
 	private static final long DEFAULT_SEED = 0;
 	// Gradients for 2D. They approximate the directions to the
 	// vertices of an octagon from the center.
-	private static final byte[] gradients2D = new byte[]{ 5, 2, 2, 5, -5, 2, -2, 5, 5, -2, 2, -5, -5, -2, -2, -5, };
+	private static final byte[] gradients2D = new byte[] { 5, 2, 2, 5, -5, 2, -2, 5, 5, -2, 2, -5, -5, -2, -2, -5, };
 	// Gradients for 3D. They approximate the directions to the
 	// vertices of a rhombicuboctahedron from the center, skewed so
 	// that the triangular and square facets can be inscribed inside
 	// circles of the same radius.
-	private static final byte[] gradients3D = new byte[]{ -11, 4, 4, -4, 11, 4, -4, 4, 11, 11, 4, 4, 4, 11, 4, 4, 4, 11, -11, -4, 4, -4, -11, 4, -4, -4, 11, 11, -4, 4, 4, -11, 4, 4, -4, 11, -11, 4, -4, -4, 11, -4, -4, 4, -11, 11, 4, -4, 4, 11, -4, 4, 4, -11, -11, -4, -4, -4, -11,
-		-4, -4, -4, -11, 11, -4, -4, 4, -11, -4, 4, -4, -11, };
+	private static final byte[] gradients3D = new byte[] { -11, 4, 4, -4, 11, 4, -4, 4, 11, 11, 4, 4, 4, 11, 4, 4, 4, 11, -11, -4, 4, -4, -11, 4, -4, -4, 11, 11, -4, 4, 4, -11, 4, 4, -4, 11, -11, 4, -4, -4, 11, -4, -4, 4, -11, 11, 4, -4, 4, 11, -4, 4, 4, -11, -11, -4, -4, -4, -11,
+			-4, -4, -4, -11, 11, -4, -4, 4, -11, -4, 4, -4, -11, };
 	// Gradients for 4D. They approximate the directions to the
 	// vertices of a disprismatotesseractihexadecachoron from the center,
 	// skewed so that the tetrahedral and cubic facets can be inscribed inside
 	// spheres of the same radius.
-	private static final byte[] gradients4D = new byte[]{ 3, 1, 1, 1, 1, 3, 1, 1, 1, 1, 3, 1, 1, 1, 1, 3, -3, 1, 1, 1, -1, 3, 1, 1, -1, 1, 3, 1, -1, 1, 1, 3, 3, -1, 1, 1, 1, -3, 1, 1, 1, -1, 3, 1, 1, -1, 1, 3, -3, -1, 1, 1, -1, -3, 1, 1, -1, -1, 3, 1, -1, -1, 1, 3, 3, 1, -1, 1,
-		1, 3, -1, 1, 1, 1, -3, 1, 1, 1, -1, 3, -3, 1, -1, 1, -1, 3, -1, 1, -1, 1, -3, 1, -1, 1, -1, 3, 3, -1, -1, 1, 1, -3, -1, 1, 1, -1, -3, 1, 1, -1, -1, 3, -3, -1, -1, 1, -1, -3, -1, 1, -1, -1, -3, 1, -1, -1, -1, 3, 3, 1, 1, -1, 1, 3, 1, -1, 1, 1, 3, -1, 1, 1, 1, -3, -3, 1, 1,
-		-1, -1, 3, 1, -1, -1, 1, 3, -1, -1, 1, 1, -3, 3, -1, 1, -1, 1, -3, 1, -1, 1, -1, 3, -1, 1, -1, 1, -3, -3, -1, 1, -1, -1, -3, 1, -1, -1, -1, 3, -1, -1, -1, 1, -3, 3, 1, -1, -1, 1, 3, -1, -1, 1, 1, -3, -1, 1, 1, -1, -3, -3, 1, -1, -1, -1, 3, -1, -1, -1, 1, -3, -1, -1, 1,
-		-1, -3, 3, -1, -1, -1, 1, -3, -1, -1, 1, -1, -3, -1, 1, -1, -1, -3, -3, -1, -1, -1, -1, -3, -1, -1, -1, -1, -3, -1, -1, -1, -1, -3, };
+	private static final byte[] gradients4D = new byte[] { 3, 1, 1, 1, 1, 3, 1, 1, 1, 1, 3, 1, 1, 1, 1, 3, -3, 1, 1, 1, -1, 3, 1, 1, -1, 1, 3, 1, -1, 1, 1, 3, 3, -1, 1, 1, 1, -3, 1, 1, 1, -1, 3, 1, 1, -1, 1, 3, -3, -1, 1, 1, -1, -3, 1, 1, -1, -1, 3, 1, -1, -1, 1, 3, 3, 1, -1, 1,
+			1, 3, -1, 1, 1, 1, -3, 1, 1, 1, -1, 3, -3, 1, -1, 1, -1, 3, -1, 1, -1, 1, -3, 1, -1, 1, -1, 3, 3, -1, -1, 1, 1, -3, -1, 1, 1, -1, -3, 1, 1, -1, -1, 3, -3, -1, -1, 1, -1, -3, -1, 1, -1, -1, -3, 1, -1, -1, -1, 3, 3, 1, 1, -1, 1, 3, 1, -1, 1, 1, 3, -1, 1, 1, 1, -3, -3, 1, 1,
+			-1, -1, 3, 1, -1, -1, 1, 3, -1, -1, 1, 1, -3, 3, -1, 1, -1, 1, -3, 1, -1, 1, -1, 3, -1, 1, -1, 1, -3, -3, -1, 1, -1, -1, -3, 1, -1, -1, -1, 3, -1, -1, -1, 1, -3, 3, 1, -1, -1, 1, 3, -1, -1, 1, 1, -3, -1, 1, 1, -1, -3, -3, 1, -1, -1, -1, 3, -1, -1, -1, 1, -3, -1, -1, 1,
+			-1, -3, 3, -1, -1, -1, 1, -3, -1, -1, 1, -1, -3, -1, 1, -1, -1, -3, -3, -1, -1, -1, -1, -3, -1, -1, -1, -1, -3, -1, -1, -1, -1, -3, };
 	private final short[] perm;
 	private final short[] permGradIndex3D;
-
+	
 	// Initializes the class using a permutation array generated from a 64-bit seed.
 	// Generates a proper permutation (i.e. doesn't merely perform N successive pair swaps on a base array)
 	// Uses a simple 64-bit LCG.
@@ -81,64 +81,66 @@ public class OpenSimplexNoise extends Noise {
 		perm = new short[256];
 		permGradIndex3D = new short[256];
 		var source = new short[256];
-
-		for (var i = 0; i < 256; i++)
+		
+		for (var i = 0; i < 256; i++) {
 			source[i] = (short) i;
+		}
 		seed = seed * 6364136223846793005L + 1442695040888963407L;
 		seed = seed * 6364136223846793005L + 1442695040888963407L;
 		seed = seed * 6364136223846793005L + 1442695040888963407L;
 		for (var i = 255; i >= 0; i--) {
 			seed = seed * 6364136223846793005L + 1442695040888963407L;
 			var r = (int) ((seed + 31) % (i + 1));
-
-			if (r < 0)
+			
+			if (r < 0) {
 				r += (i + 1);
+			}
 			perm[i] = source[r];
 			permGradIndex3D[i] = (short) ((perm[i] % (gradients3D.length / 3)) * 3);
 			source[r] = source[i];
 		}
 	}
-
+	
 	private static int fastFloor(double x) {
 		var xi = (int) x;
 		return x < xi ? xi - 1 : xi;
 	}
-
+	
 	// 2D OpenSimplex Noise.
 	@Override
 	public double sample(double x, double y) {
-
+		
 		// Place input coordinates onto grid.
 		var stretchOffset = (x + y) * STRETCH_CONSTANT_2D;
 		var xs = x + stretchOffset;
 		var ys = y + stretchOffset;
-
+		
 		// Floor to get grid coordinates of rhombus (stretched square) super-cell origin.
 		var xsb = fastFloor(xs);
 		var ysb = fastFloor(ys);
-
+		
 		// Skew out to get actual coordinates of rhombus origin. We'll need these later.
 		var squishOffset = (xsb + ysb) * SQUISH_CONSTANT_2D;
 		var xb = xsb + squishOffset;
 		var yb = ysb + squishOffset;
-
+		
 		// Compute grid coordinates relative to rhombus origin.
 		var xins = xs - xsb;
 		var yins = ys - ysb;
-
+		
 		// Sum those together to get a value that determines which region we're in.
 		var inSum = xins + yins;
-
+		
 		// Positions relative to origin point.
 		var dx0 = x - xb;
 		var dy0 = y - yb;
-
+		
 		// We'll be defining these inside the next block and using them afterwards.
 		double dx_ext, dy_ext;
 		int xsv_ext, ysv_ext;
 		
 		var value = 0;
-
+		
 		// Contribution (1,0)
 		var dx1 = dx0 - 1 - SQUISH_CONSTANT_2D;
 		var dy1 = dy0 - 0 - SQUISH_CONSTANT_2D;
@@ -147,7 +149,7 @@ public class OpenSimplexNoise extends Noise {
 			attn1 *= attn1;
 			value += attn1 * attn1 * extrapolate(xsb + 1, ysb, dx1, dy1);
 		}
-
+		
 		// Contribution (0,1)
 		var dx2 = dx0 - 0 - SQUISH_CONSTANT_2D;
 		var dy2 = dy0 - 1 - SQUISH_CONSTANT_2D;
@@ -156,7 +158,7 @@ public class OpenSimplexNoise extends Noise {
 			attn2 *= attn2;
 			value += attn2 * attn2 * extrapolate(xsb, ysb + 1, dx2, dy2);
 		}
-
+		
 		if (inSum <= 1) { // We're inside the triangle (2-Simplex) at (0,0)
 			var zins = 1 - inSum;
 			if (zins > xins || zins > yins) { // (0,0) is one of the closest two triangular vertices
@@ -202,58 +204,58 @@ public class OpenSimplexNoise extends Noise {
 			dx0 = dx0 - 1 - 2 * SQUISH_CONSTANT_2D;
 			dy0 = dy0 - 1 - 2 * SQUISH_CONSTANT_2D;
 		}
-
+		
 		// Contribution (0,0) or (1,1)
 		var attn0 = 2 - dx0 * dx0 - dy0 * dy0;
 		if (attn0 > 0) {
 			attn0 *= attn0;
 			value += attn0 * attn0 * extrapolate(xsb, ysb, dx0, dy0);
 		}
-
+		
 		// Extra Vertex
 		var attn_ext = 2 - dx_ext * dx_ext - dy_ext * dy_ext;
 		if (attn_ext > 0) {
 			attn_ext *= attn_ext;
 			value += attn_ext * attn_ext * extrapolate(xsv_ext, ysv_ext, dx_ext, dy_ext);
 		}
-
+		
 		return value / NORM_CONSTANT_2D;
 	}
-
+	
 	// 3D OpenSimplex Noise.
 	@Override
 	public double sample(double x, double y, double z) {
-
+		
 		// Place input coordinates on simplectic honeycomb.
 		var stretchOffset = (x + y + z) * STRETCH_CONSTANT_3D;
 		var xs = x + stretchOffset;
 		var ys = y + stretchOffset;
 		var zs = z + stretchOffset;
-
+		
 		// Floor to get simplectic honeycomb coordinates of rhombohedron (stretched cube) super-cell origin.
 		var xsb = fastFloor(xs);
 		var ysb = fastFloor(ys);
 		var zsb = fastFloor(zs);
-
+		
 		// Skew out to get actual coordinates of rhombohedron origin. We'll need these later.
 		var squishOffset = (xsb + ysb + zsb) * SQUISH_CONSTANT_3D;
 		var xb = xsb + squishOffset;
 		var yb = ysb + squishOffset;
 		var zb = zsb + squishOffset;
-
+		
 		// Compute simplectic honeycomb coordinates relative to rhombohedral origin.
 		var xins = xs - xsb;
 		var yins = ys - ysb;
 		var zins = zs - zsb;
-
+		
 		// Sum those together to get a value that determines which region we're in.
 		var inSum = xins + yins + zins;
-
+		
 		// Positions relative to origin point.
 		var dx0 = x - xb;
 		var dy0 = y - yb;
 		var dz0 = z - zb;
-
+		
 		// We'll be defining these inside the next block and using them afterwards.
 		double dx_ext0, dy_ext0, dz_ext0;
 		double dx_ext1, dy_ext1, dz_ext1;
@@ -262,7 +264,7 @@ public class OpenSimplexNoise extends Noise {
 		
 		var value = 0;
 		if (inSum <= 1) { // We're inside the tetrahedron (3-Simplex) at (0,0,0)
-
+			
 			// Determine which two of (0,0,1), (0,1,0), (1,0,0) are closest.
 			var aPoint = 0x01;
 			var aScore = xins;
@@ -275,13 +277,13 @@ public class OpenSimplexNoise extends Noise {
 				aScore = zins;
 				aPoint = 0x04;
 			}
-
+			
 			// Now we determine the two lattice points not part of the tetrahedron that may contribute.
 			// This depends on the closest two tetrahedral vertices, including (0,0,0)
 			var wins = 1 - inSum;
 			if (wins > aScore || wins > bScore) { // (0,0,0) is one of the closest two tetrahedral vertices.
 				var c = (bScore > aScore ? bPoint : aPoint); // Our other closest vertex is the closest out of a and b.
-
+				
 				if ((c & 0x01) == 0) {
 					xsv_ext0 = xsb - 1;
 					xsv_ext1 = xsb;
@@ -291,7 +293,7 @@ public class OpenSimplexNoise extends Noise {
 					xsv_ext0 = xsv_ext1 = xsb + 1;
 					dx_ext0 = dx_ext1 = dx0 - 1;
 				}
-
+				
 				if ((c & 0x02) == 0) {
 					ysv_ext0 = ysv_ext1 = ysb;
 					dy_ext0 = dy_ext1 = dy0;
@@ -306,7 +308,7 @@ public class OpenSimplexNoise extends Noise {
 					ysv_ext0 = ysv_ext1 = ysb + 1;
 					dy_ext0 = dy_ext1 = dy0 - 1;
 				}
-
+				
 				if ((c & 0x04) == 0) {
 					zsv_ext0 = zsb;
 					zsv_ext1 = zsb - 1;
@@ -318,7 +320,7 @@ public class OpenSimplexNoise extends Noise {
 				}
 			} else { // (0,0,0) is not one of the closest two tetrahedral vertices.
 				var c = (byte) (aPoint | bPoint); // Our two extra vertices are determined by the closest two.
-
+				
 				if ((c & 0x01) == 0) {
 					xsv_ext0 = xsb;
 					xsv_ext1 = xsb - 1;
@@ -329,7 +331,7 @@ public class OpenSimplexNoise extends Noise {
 					dx_ext0 = dx0 - 1 - 2 * SQUISH_CONSTANT_3D;
 					dx_ext1 = dx0 - 1 - SQUISH_CONSTANT_3D;
 				}
-
+				
 				if ((c & 0x02) == 0) {
 					ysv_ext0 = ysb;
 					ysv_ext1 = ysb - 1;
@@ -340,7 +342,7 @@ public class OpenSimplexNoise extends Noise {
 					dy_ext0 = dy0 - 1 - 2 * SQUISH_CONSTANT_3D;
 					dy_ext1 = dy0 - 1 - SQUISH_CONSTANT_3D;
 				}
-
+				
 				if ((c & 0x04) == 0) {
 					zsv_ext0 = zsb;
 					zsv_ext1 = zsb - 1;
@@ -352,14 +354,14 @@ public class OpenSimplexNoise extends Noise {
 					dz_ext1 = dz0 - 1 - SQUISH_CONSTANT_3D;
 				}
 			}
-
+			
 			// Contribution (0,0,0)
 			var attn0 = 2 - dx0 * dx0 - dy0 * dy0 - dz0 * dz0;
 			if (attn0 > 0) {
 				attn0 *= attn0;
 				value += attn0 * attn0 * extrapolate(xsb, ysb, zsb, dx0, dy0, dz0);
 			}
-
+			
 			// Contribution (1,0,0)
 			var dx1 = dx0 - 1 - SQUISH_CONSTANT_3D;
 			var dy1 = dy0 - 0 - SQUISH_CONSTANT_3D;
@@ -369,7 +371,7 @@ public class OpenSimplexNoise extends Noise {
 				attn1 *= attn1;
 				value += attn1 * attn1 * extrapolate(xsb + 1, ysb, zsb, dx1, dy1, dz1);
 			}
-
+			
 			// Contribution (0,1,0)
 			var dx2 = dx0 - 0 - SQUISH_CONSTANT_3D;
 			var dy2 = dy0 - 1 - SQUISH_CONSTANT_3D;
@@ -378,7 +380,7 @@ public class OpenSimplexNoise extends Noise {
 				attn2 *= attn2;
 				value += attn2 * attn2 * extrapolate(xsb, ysb + 1, zsb, dx2, dy2, dz1);
 			}
-
+			
 			// Contribution (0,0,1)
 			var dz3 = dz0 - 1 - SQUISH_CONSTANT_3D;
 			var attn3 = 2 - dx2 * dx2 - dy1 * dy1 - dz3 * dz3;
@@ -387,7 +389,7 @@ public class OpenSimplexNoise extends Noise {
 				value += attn3 * attn3 * extrapolate(xsb, ysb, zsb + 1, dx2, dy1, dz3);
 			}
 		} else if (inSum >= 2) { // We're inside the tetrahedron (3-Simplex) at (1,1,1)
-
+			
 			// Determine which two tetrahedral vertices are the closest, out of (1,1,0), (1,0,1), (0,1,1) but not (1,1,1).
 			var aPoint = 0x06;
 			var aScore = xins;
@@ -400,13 +402,13 @@ public class OpenSimplexNoise extends Noise {
 				aScore = zins;
 				aPoint = 0x03;
 			}
-
+			
 			// Now we determine the two lattice points not part of the tetrahedron that may contribute.
 			// This depends on the closest two tetrahedral vertices, including (1,1,1)
 			var wins = 3 - inSum;
 			if (wins < aScore || wins < bScore) { // (1,1,1) is one of the closest two tetrahedral vertices.
 				var c = (bScore < aScore ? bPoint : aPoint); // Our other closest vertex is the closest out of a and b.
-
+				
 				if ((c & 0x01) != 0) {
 					xsv_ext0 = xsb + 2;
 					xsv_ext1 = xsb + 1;
@@ -416,7 +418,7 @@ public class OpenSimplexNoise extends Noise {
 					xsv_ext0 = xsv_ext1 = xsb;
 					dx_ext0 = dx_ext1 = dx0 - 3 * SQUISH_CONSTANT_3D;
 				}
-
+				
 				if ((c & 0x02) != 0) {
 					ysv_ext0 = ysv_ext1 = ysb + 1;
 					dy_ext0 = dy_ext1 = dy0 - 1 - 3 * SQUISH_CONSTANT_3D;
@@ -431,7 +433,7 @@ public class OpenSimplexNoise extends Noise {
 					ysv_ext0 = ysv_ext1 = ysb;
 					dy_ext0 = dy_ext1 = dy0 - 3 * SQUISH_CONSTANT_3D;
 				}
-
+				
 				if ((c & 0x04) != 0) {
 					zsv_ext0 = zsb + 1;
 					zsv_ext1 = zsb + 2;
@@ -443,7 +445,7 @@ public class OpenSimplexNoise extends Noise {
 				}
 			} else { // (1,1,1) is not one of the closest two tetrahedral vertices.
 				var c = (byte) (aPoint & bPoint); // Our two extra vertices are determined by the closest two.
-
+				
 				if ((c & 0x01) != 0) {
 					xsv_ext0 = xsb + 1;
 					xsv_ext1 = xsb + 2;
@@ -454,7 +456,7 @@ public class OpenSimplexNoise extends Noise {
 					dx_ext0 = dx0 - SQUISH_CONSTANT_3D;
 					dx_ext1 = dx0 - 2 * SQUISH_CONSTANT_3D;
 				}
-
+				
 				if ((c & 0x02) != 0) {
 					ysv_ext0 = ysb + 1;
 					ysv_ext1 = ysb + 2;
@@ -465,7 +467,7 @@ public class OpenSimplexNoise extends Noise {
 					dy_ext0 = dy0 - SQUISH_CONSTANT_3D;
 					dy_ext1 = dy0 - 2 * SQUISH_CONSTANT_3D;
 				}
-
+				
 				if ((c & 0x04) != 0) {
 					zsv_ext0 = zsb + 1;
 					zsv_ext1 = zsb + 2;
@@ -477,7 +479,7 @@ public class OpenSimplexNoise extends Noise {
 					dz_ext1 = dz0 - 2 * SQUISH_CONSTANT_3D;
 				}
 			}
-
+			
 			// Contribution (1,1,0)
 			var dx3 = dx0 - 1 - 2 * SQUISH_CONSTANT_3D;
 			var dy3 = dy0 - 1 - 2 * SQUISH_CONSTANT_3D;
@@ -487,7 +489,7 @@ public class OpenSimplexNoise extends Noise {
 				attn3 *= attn3;
 				value += attn3 * attn3 * extrapolate(xsb + 1, ysb + 1, zsb, dx3, dy3, dz3);
 			}
-
+			
 			// Contribution (1,0,1)
 			var dy2 = dy0 - 0 - 2 * SQUISH_CONSTANT_3D;
 			var dz2 = dz0 - 1 - 2 * SQUISH_CONSTANT_3D;
@@ -496,7 +498,7 @@ public class OpenSimplexNoise extends Noise {
 				attn2 *= attn2;
 				value += attn2 * attn2 * extrapolate(xsb + 1, ysb, zsb + 1, dx3, dy2, dz2);
 			}
-
+			
 			// Contribution (0,1,1)
 			var dx1 = dx0 - 0 - 2 * SQUISH_CONSTANT_3D;
 			var attn1 = 2 - dx1 * dx1 - dy3 * dy3 - dz2 * dz2;
@@ -504,7 +506,7 @@ public class OpenSimplexNoise extends Noise {
 				attn1 *= attn1;
 				value += attn1 * attn1 * extrapolate(xsb, ysb + 1, zsb + 1, dx1, dy3, dz2);
 			}
-
+			
 			// Contribution (1,1,1)
 			dx0 = dx0 - 1 - 3 * SQUISH_CONSTANT_3D;
 			dy0 = dy0 - 1 - 3 * SQUISH_CONSTANT_3D;
@@ -521,7 +523,7 @@ public class OpenSimplexNoise extends Noise {
 			double bScore;
 			byte bPoint;
 			boolean bIsFurtherSide;
-
+			
 			// Decide between point (0,0,1) and (1,1,0) as closest
 			var p1 = xins + yins;
 			if (p1 > 1) {
@@ -533,7 +535,7 @@ public class OpenSimplexNoise extends Noise {
 				aPoint = 0x04;
 				aIsFurtherSide = false;
 			}
-
+			
 			// Decide between point (0,1,0) and (1,0,1) as closest
 			var p2 = xins + zins;
 			if (p2 > 1) {
@@ -545,7 +547,7 @@ public class OpenSimplexNoise extends Noise {
 				bPoint = 0x02;
 				bIsFurtherSide = false;
 			}
-
+			
 			// The closest out of the two (1,0,0) and (0,1,1) will replace the furthest out of the two decided above, if closer.
 			var p3 = yins + zins;
 			if (p3 > 1) {
@@ -567,11 +569,11 @@ public class OpenSimplexNoise extends Noise {
 					bIsFurtherSide = false;
 				}
 			}
-
+			
 			// Where each of the two closest points are determines how the extra two vertices are calculated.
 			if (aIsFurtherSide == bIsFurtherSide) {
 				if (aIsFurtherSide) { // Both closest points on (1,1,1) side
-
+					
 					// One of the two extra points is (1,1,1)
 					dx_ext0 = dx0 - 1 - 3 * SQUISH_CONSTANT_3D;
 					dy_ext0 = dy0 - 1 - 3 * SQUISH_CONSTANT_3D;
@@ -579,7 +581,7 @@ public class OpenSimplexNoise extends Noise {
 					xsv_ext0 = xsb + 1;
 					ysv_ext0 = ysb + 1;
 					zsv_ext0 = zsb + 1;
-
+					
 					// Other extra point is based on the shared axis.
 					var c = (byte) (aPoint & bPoint);
 					if ((c & 0x01) != 0) {
@@ -605,7 +607,7 @@ public class OpenSimplexNoise extends Noise {
 						zsv_ext1 = zsb + 2;
 					}
 				} else {// Both closest points on (0,0,0) side
-
+					
 					// One of the two extra points is (0,0,0)
 					dx_ext0 = dx0;
 					dy_ext0 = dy0;
@@ -613,7 +615,7 @@ public class OpenSimplexNoise extends Noise {
 					xsv_ext0 = xsb;
 					ysv_ext0 = ysb;
 					zsv_ext0 = zsb;
-
+					
 					// Other extra point is based on the omitted axis.
 					var c = (byte) (aPoint | bPoint);
 					if ((c & 0x01) == 0) {
@@ -648,7 +650,7 @@ public class OpenSimplexNoise extends Noise {
 					c1 = bPoint;
 					c2 = aPoint;
 				}
-
+				
 				// One contribution is a permutation of (1,1,-1)
 				if ((c1 & 0x01) == 0) {
 					dx_ext0 = dx0 + 1 - SQUISH_CONSTANT_3D;
@@ -672,7 +674,7 @@ public class OpenSimplexNoise extends Noise {
 					ysv_ext0 = ysb + 1;
 					zsv_ext0 = zsb - 1;
 				}
-
+				
 				// One contribution is a permutation of (0,0,2)
 				dx_ext1 = dx0 - 2 * SQUISH_CONSTANT_3D;
 				dy_ext1 = dy0 - 2 * SQUISH_CONSTANT_3D;
@@ -691,7 +693,7 @@ public class OpenSimplexNoise extends Noise {
 					zsv_ext1 += 2;
 				}
 			}
-
+			
 			// Contribution (1,0,0)
 			var dx1 = dx0 - 1 - SQUISH_CONSTANT_3D;
 			var dy1 = dy0 - 0 - SQUISH_CONSTANT_3D;
@@ -701,7 +703,7 @@ public class OpenSimplexNoise extends Noise {
 				attn1 *= attn1;
 				value += attn1 * attn1 * extrapolate(xsb + 1, ysb, zsb, dx1, dy1, dz1);
 			}
-
+			
 			// Contribution (0,1,0)
 			var dx2 = dx0 - 0 - SQUISH_CONSTANT_3D;
 			var dy2 = dy0 - 1 - SQUISH_CONSTANT_3D;
@@ -710,7 +712,7 @@ public class OpenSimplexNoise extends Noise {
 				attn2 *= attn2;
 				value += attn2 * attn2 * extrapolate(xsb, ysb + 1, zsb, dx2, dy2, dz1);
 			}
-
+			
 			// Contribution (0,0,1)
 			var dz3 = dz0 - 1 - SQUISH_CONSTANT_3D;
 			var attn3 = 2 - dx2 * dx2 - dy1 * dy1 - dz3 * dz3;
@@ -718,7 +720,7 @@ public class OpenSimplexNoise extends Noise {
 				attn3 *= attn3;
 				value += attn3 * attn3 * extrapolate(xsb, ysb, zsb + 1, dx2, dy1, dz3);
 			}
-
+			
 			// Contribution (1,1,0)
 			var dx4 = dx0 - 1 - 2 * SQUISH_CONSTANT_3D;
 			var dy4 = dy0 - 1 - 2 * SQUISH_CONSTANT_3D;
@@ -728,7 +730,7 @@ public class OpenSimplexNoise extends Noise {
 				attn4 *= attn4;
 				value += attn4 * attn4 * extrapolate(xsb + 1, ysb + 1, zsb, dx4, dy4, dz4);
 			}
-
+			
 			// Contribution (1,0,1)
 			var dy5 = dy0 - 0 - 2 * SQUISH_CONSTANT_3D;
 			var dz5 = dz0 - 1 - 2 * SQUISH_CONSTANT_3D;
@@ -737,7 +739,7 @@ public class OpenSimplexNoise extends Noise {
 				attn5 *= attn5;
 				value += attn5 * attn5 * extrapolate(xsb + 1, ysb, zsb + 1, dx4, dy5, dz5);
 			}
-
+			
 			// Contribution (0,1,1)
 			var dx6 = dx0 - 0 - 2 * SQUISH_CONSTANT_3D;
 			var attn6 = 2 - dx6 * dx6 - dy4 * dy4 - dz5 * dz5;
@@ -746,62 +748,62 @@ public class OpenSimplexNoise extends Noise {
 				value += attn6 * attn6 * extrapolate(xsb, ysb + 1, zsb + 1, dx6, dy4, dz5);
 			}
 		}
-
+		
 		// First extra vertex
 		var attn_ext0 = 2 - dx_ext0 * dx_ext0 - dy_ext0 * dy_ext0 - dz_ext0 * dz_ext0;
 		if (attn_ext0 > 0) {
 			attn_ext0 *= attn_ext0;
 			value += attn_ext0 * attn_ext0 * extrapolate(xsv_ext0, ysv_ext0, zsv_ext0, dx_ext0, dy_ext0, dz_ext0);
 		}
-
+		
 		// Second extra vertex
 		var attn_ext1 = 2 - dx_ext1 * dx_ext1 - dy_ext1 * dy_ext1 - dz_ext1 * dz_ext1;
 		if (attn_ext1 > 0) {
 			attn_ext1 *= attn_ext1;
 			value += attn_ext1 * attn_ext1 * extrapolate(xsv_ext1, ysv_ext1, zsv_ext1, dx_ext1, dy_ext1, dz_ext1);
 		}
-
+		
 		return value / NORM_CONSTANT_3D;
 	}
-
+	
 	// 4D OpenSimplex Noise.
 	public double sample(double x, double y, double z, double w) {
-
+		
 		// Place input coordinates on simplectic honeycomb.
 		var stretchOffset = (x + y + z + w) * STRETCH_CONSTANT_4D;
 		var xs = x + stretchOffset;
 		var ys = y + stretchOffset;
 		var zs = z + stretchOffset;
 		var ws = w + stretchOffset;
-
+		
 		// Floor to get simplectic honeycomb coordinates of rhombo-hypercube super-cell origin.
 		var xsb = fastFloor(xs);
 		var ysb = fastFloor(ys);
 		var zsb = fastFloor(zs);
 		var wsb = fastFloor(ws);
-
+		
 		// Skew out to get actual coordinates of stretched rhombo-hypercube origin. We'll need these later.
 		var squishOffset = (xsb + ysb + zsb + wsb) * SQUISH_CONSTANT_4D;
 		var xb = xsb + squishOffset;
 		var yb = ysb + squishOffset;
 		var zb = zsb + squishOffset;
 		var wb = wsb + squishOffset;
-
+		
 		// Compute simplectic honeycomb coordinates relative to rhombo-hypercube origin.
 		var xins = xs - xsb;
 		var yins = ys - ysb;
 		var zins = zs - zsb;
 		var wins = ws - wsb;
-
+		
 		// Sum those together to get a value that determines which region we're in.
 		var inSum = xins + yins + zins + wins;
-
+		
 		// Positions relative to origin point.
 		var dx0 = x - xb;
 		var dy0 = y - yb;
 		var dz0 = z - zb;
 		var dw0 = w - wb;
-
+		
 		// We'll be defining these inside the next block and using them afterwards.
 		double dx_ext0, dy_ext0, dz_ext0, dw_ext0;
 		double dx_ext1, dy_ext1, dz_ext1, dw_ext1;
@@ -812,7 +814,7 @@ public class OpenSimplexNoise extends Noise {
 		
 		var value = 0;
 		if (inSum <= 1) { // We're inside the pentachoron (4-Simplex) at (0,0,0,0)
-
+			
 			// Determine which two of (0,0,0,1), (0,0,1,0), (0,1,0,0), (1,0,0,0) are closest.
 			var aPoint = 0x01;
 			var aScore = xins;
@@ -832,7 +834,7 @@ public class OpenSimplexNoise extends Noise {
 				aScore = wins;
 				aPoint = 0x08;
 			}
-
+			
 			// Now we determine the three lattice points not part of the pentachoron that may contribute.
 			// This depends on the closest two pentachoron vertices, including (0,0,0,0)
 			var uins = 1 - inSum;
@@ -847,7 +849,7 @@ public class OpenSimplexNoise extends Noise {
 					xsv_ext0 = xsv_ext1 = xsv_ext2 = xsb + 1;
 					dx_ext0 = dx_ext1 = dx_ext2 = dx0 - 1;
 				}
-
+				
 				if ((c & 0x02) == 0) {
 					ysv_ext0 = ysv_ext1 = ysv_ext2 = ysb;
 					dy_ext0 = dy_ext1 = dy_ext2 = dy0;
@@ -862,7 +864,7 @@ public class OpenSimplexNoise extends Noise {
 					ysv_ext0 = ysv_ext1 = ysv_ext2 = ysb + 1;
 					dy_ext0 = dy_ext1 = dy_ext2 = dy0 - 1;
 				}
-
+				
 				if ((c & 0x04) == 0) {
 					zsv_ext0 = zsv_ext1 = zsv_ext2 = zsb;
 					dz_ext0 = dz_ext1 = dz_ext2 = dz0;
@@ -882,7 +884,7 @@ public class OpenSimplexNoise extends Noise {
 					zsv_ext0 = zsv_ext1 = zsv_ext2 = zsb + 1;
 					dz_ext0 = dz_ext1 = dz_ext2 = dz0 - 1;
 				}
-
+				
 				if ((c & 0x08) == 0) {
 					wsv_ext0 = wsv_ext1 = wsb;
 					wsv_ext2 = wsb - 1;
@@ -894,7 +896,7 @@ public class OpenSimplexNoise extends Noise {
 				}
 			} else { // (0,0,0,0) is not one of the closest two pentachoron vertices.
 				var c = (byte) (aPoint | bPoint); // Our three extra vertices are determined by the closest two.
-
+				
 				if ((c & 0x01) == 0) {
 					xsv_ext0 = xsv_ext2 = xsb;
 					xsv_ext1 = xsb - 1;
@@ -906,7 +908,7 @@ public class OpenSimplexNoise extends Noise {
 					dx_ext0 = dx0 - 1 - 2 * SQUISH_CONSTANT_4D;
 					dx_ext1 = dx_ext2 = dx0 - 1 - SQUISH_CONSTANT_4D;
 				}
-
+				
 				if ((c & 0x02) == 0) {
 					ysv_ext0 = ysv_ext1 = ysv_ext2 = ysb;
 					dy_ext0 = dy0 - 2 * SQUISH_CONSTANT_4D;
@@ -923,7 +925,7 @@ public class OpenSimplexNoise extends Noise {
 					dy_ext0 = dy0 - 1 - 2 * SQUISH_CONSTANT_4D;
 					dy_ext1 = dy_ext2 = dy0 - 1 - SQUISH_CONSTANT_4D;
 				}
-
+				
 				if ((c & 0x04) == 0) {
 					zsv_ext0 = zsv_ext1 = zsv_ext2 = zsb;
 					dz_ext0 = dz0 - 2 * SQUISH_CONSTANT_4D;
@@ -940,7 +942,7 @@ public class OpenSimplexNoise extends Noise {
 					dz_ext0 = dz0 - 1 - 2 * SQUISH_CONSTANT_4D;
 					dz_ext1 = dz_ext2 = dz0 - 1 - SQUISH_CONSTANT_4D;
 				}
-
+				
 				if ((c & 0x08) == 0) {
 					wsv_ext0 = wsv_ext1 = wsb;
 					wsv_ext2 = wsb - 1;
@@ -953,14 +955,14 @@ public class OpenSimplexNoise extends Noise {
 					dw_ext1 = dw_ext2 = dw0 - 1 - SQUISH_CONSTANT_4D;
 				}
 			}
-
+			
 			// Contribution (0,0,0,0)
 			var attn0 = 2 - dx0 * dx0 - dy0 * dy0 - dz0 * dz0 - dw0 * dw0;
 			if (attn0 > 0) {
 				attn0 *= attn0;
 				value += attn0 * attn0 * extrapolate(xsb, ysb, zsb, wsb, dx0, dy0, dz0, dw0);
 			}
-
+			
 			// Contribution (1,0,0,0)
 			var dx1 = dx0 - 1 - SQUISH_CONSTANT_4D;
 			var dy1 = dy0 - 0 - SQUISH_CONSTANT_4D;
@@ -971,7 +973,7 @@ public class OpenSimplexNoise extends Noise {
 				attn1 *= attn1;
 				value += attn1 * attn1 * extrapolate(xsb + 1, ysb, zsb, wsb, dx1, dy1, dz1, dw1);
 			}
-
+			
 			// Contribution (0,1,0,0)
 			var dx2 = dx0 - 0 - SQUISH_CONSTANT_4D;
 			var dy2 = dy0 - 1 - SQUISH_CONSTANT_4D;
@@ -980,7 +982,7 @@ public class OpenSimplexNoise extends Noise {
 				attn2 *= attn2;
 				value += attn2 * attn2 * extrapolate(xsb, ysb + 1, zsb, wsb, dx2, dy2, dz1, dw1);
 			}
-
+			
 			// Contribution (0,0,1,0)
 			var dz3 = dz0 - 1 - SQUISH_CONSTANT_4D;
 			var attn3 = 2 - dx2 * dx2 - dy1 * dy1 - dz3 * dz3 - dw1 * dw1;
@@ -988,7 +990,7 @@ public class OpenSimplexNoise extends Noise {
 				attn3 *= attn3;
 				value += attn3 * attn3 * extrapolate(xsb, ysb, zsb + 1, wsb, dx2, dy1, dz3, dw1);
 			}
-
+			
 			// Contribution (0,0,0,1)
 			var dw4 = dw0 - 1 - SQUISH_CONSTANT_4D;
 			var attn4 = 2 - dx2 * dx2 - dy1 * dy1 - dz1 * dz1 - dw4 * dw4;
@@ -1016,13 +1018,13 @@ public class OpenSimplexNoise extends Noise {
 				aScore = wins;
 				aPoint = 0x07;
 			}
-
+			
 			// Now we determine the three lattice points not part of the pentachoron that may contribute.
 			// This depends on the closest two pentachoron vertices, including (0,0,0,0)
 			var uins = 4 - inSum;
 			if (uins < aScore || uins < bScore) { // (1,1,1,1) is one of the closest two pentachoron vertices.
 				var c = (bScore < aScore ? bPoint : aPoint); // Our other closest vertex is the closest out of a and b.
-
+				
 				if ((c & 0x01) != 0) {
 					xsv_ext0 = xsb + 2;
 					xsv_ext1 = xsv_ext2 = xsb + 1;
@@ -1032,7 +1034,7 @@ public class OpenSimplexNoise extends Noise {
 					xsv_ext0 = xsv_ext1 = xsv_ext2 = xsb;
 					dx_ext0 = dx_ext1 = dx_ext2 = dx0 - 4 * SQUISH_CONSTANT_4D;
 				}
-
+				
 				if ((c & 0x02) != 0) {
 					ysv_ext0 = ysv_ext1 = ysv_ext2 = ysb + 1;
 					dy_ext0 = dy_ext1 = dy_ext2 = dy0 - 1 - 4 * SQUISH_CONSTANT_4D;
@@ -1047,7 +1049,7 @@ public class OpenSimplexNoise extends Noise {
 					ysv_ext0 = ysv_ext1 = ysv_ext2 = ysb;
 					dy_ext0 = dy_ext1 = dy_ext2 = dy0 - 4 * SQUISH_CONSTANT_4D;
 				}
-
+				
 				if ((c & 0x04) != 0) {
 					zsv_ext0 = zsv_ext1 = zsv_ext2 = zsb + 1;
 					dz_ext0 = dz_ext1 = dz_ext2 = dz0 - 1 - 4 * SQUISH_CONSTANT_4D;
@@ -1067,7 +1069,7 @@ public class OpenSimplexNoise extends Noise {
 					zsv_ext0 = zsv_ext1 = zsv_ext2 = zsb;
 					dz_ext0 = dz_ext1 = dz_ext2 = dz0 - 4 * SQUISH_CONSTANT_4D;
 				}
-
+				
 				if ((c & 0x08) != 0) {
 					wsv_ext0 = wsv_ext1 = wsb + 1;
 					wsv_ext2 = wsb + 2;
@@ -1079,7 +1081,7 @@ public class OpenSimplexNoise extends Noise {
 				}
 			} else { // (1,1,1,1) is not one of the closest two pentachoron vertices.
 				var c = (byte) (aPoint & bPoint); // Our three extra vertices are determined by the closest two.
-
+				
 				if ((c & 0x01) != 0) {
 					xsv_ext0 = xsv_ext2 = xsb + 1;
 					xsv_ext1 = xsb + 2;
@@ -1091,7 +1093,7 @@ public class OpenSimplexNoise extends Noise {
 					dx_ext0 = dx0 - 2 * SQUISH_CONSTANT_4D;
 					dx_ext1 = dx_ext2 = dx0 - 3 * SQUISH_CONSTANT_4D;
 				}
-
+				
 				if ((c & 0x02) != 0) {
 					ysv_ext0 = ysv_ext1 = ysv_ext2 = ysb + 1;
 					dy_ext0 = dy0 - 1 - 2 * SQUISH_CONSTANT_4D;
@@ -1108,7 +1110,7 @@ public class OpenSimplexNoise extends Noise {
 					dy_ext0 = dy0 - 2 * SQUISH_CONSTANT_4D;
 					dy_ext1 = dy_ext2 = dy0 - 3 * SQUISH_CONSTANT_4D;
 				}
-
+				
 				if ((c & 0x04) != 0) {
 					zsv_ext0 = zsv_ext1 = zsv_ext2 = zsb + 1;
 					dz_ext0 = dz0 - 1 - 2 * SQUISH_CONSTANT_4D;
@@ -1125,7 +1127,7 @@ public class OpenSimplexNoise extends Noise {
 					dz_ext0 = dz0 - 2 * SQUISH_CONSTANT_4D;
 					dz_ext1 = dz_ext2 = dz0 - 3 * SQUISH_CONSTANT_4D;
 				}
-
+				
 				if ((c & 0x08) != 0) {
 					wsv_ext0 = wsv_ext1 = wsb + 1;
 					wsv_ext2 = wsb + 2;
@@ -1138,7 +1140,7 @@ public class OpenSimplexNoise extends Noise {
 					dw_ext1 = dw_ext2 = dw0 - 3 * SQUISH_CONSTANT_4D;
 				}
 			}
-
+			
 			// Contribution (1,1,1,0)
 			var dx4 = dx0 - 1 - 3 * SQUISH_CONSTANT_4D;
 			var dy4 = dy0 - 1 - 3 * SQUISH_CONSTANT_4D;
@@ -1149,7 +1151,7 @@ public class OpenSimplexNoise extends Noise {
 				attn4 *= attn4;
 				value += attn4 * attn4 * extrapolate(xsb + 1, ysb + 1, zsb + 1, wsb, dx4, dy4, dz4, dw4);
 			}
-
+			
 			// Contribution (1,1,0,1)
 			var dz3 = dz0 - 3 * SQUISH_CONSTANT_4D;
 			var dw3 = dw0 - 1 - 3 * SQUISH_CONSTANT_4D;
@@ -1158,7 +1160,7 @@ public class OpenSimplexNoise extends Noise {
 				attn3 *= attn3;
 				value += attn3 * attn3 * extrapolate(xsb + 1, ysb + 1, zsb, wsb + 1, dx4, dy4, dz3, dw3);
 			}
-
+			
 			// Contribution (1,0,1,1)
 			var dy2 = dy0 - 3 * SQUISH_CONSTANT_4D;
 			var attn2 = 2 - dx4 * dx4 - dy2 * dy2 - dz4 * dz4 - dw3 * dw3;
@@ -1166,7 +1168,7 @@ public class OpenSimplexNoise extends Noise {
 				attn2 *= attn2;
 				value += attn2 * attn2 * extrapolate(xsb + 1, ysb, zsb + 1, wsb + 1, dx4, dy2, dz4, dw3);
 			}
-
+			
 			// Contribution (0,1,1,1)
 			var dx1 = dx0 - 3 * SQUISH_CONSTANT_4D;
 			var attn1 = 2 - dx1 * dx1 - dy4 * dy4 - dz4 * dz4 - dw3 * dw3;
@@ -1174,7 +1176,7 @@ public class OpenSimplexNoise extends Noise {
 				attn1 *= attn1;
 				value += attn1 * attn1 * extrapolate(xsb, ysb + 1, zsb + 1, wsb + 1, dx1, dy4, dz4, dw3);
 			}
-
+			
 			// Contribution (1,1,1,1)
 			dx0 = dx0 - 1 - 4 * SQUISH_CONSTANT_4D;
 			dy0 = dy0 - 1 - 4 * SQUISH_CONSTANT_4D;
@@ -1192,7 +1194,7 @@ public class OpenSimplexNoise extends Noise {
 			double bScore;
 			byte bPoint;
 			var bIsBiggerSide = true;
-
+			
 			// Decide between (1,1,0,0) and (0,0,1,1)
 			if (xins + yins > zins + wins) {
 				aScore = xins + yins;
@@ -1201,7 +1203,7 @@ public class OpenSimplexNoise extends Noise {
 				aScore = zins + wins;
 				aPoint = 0x0C;
 			}
-
+			
 			// Decide between (1,0,1,0) and (0,1,0,1)
 			if (xins + zins > yins + wins) {
 				bScore = xins + zins;
@@ -1210,7 +1212,7 @@ public class OpenSimplexNoise extends Noise {
 				bScore = yins + wins;
 				bPoint = 0x0A;
 			}
-
+			
 			// Closer between (1,0,0,1) and (0,1,1,0) will replace the farthest of a and b, if closer.
 			if (xins + wins > yins + zins) {
 				var score = xins + wins;
@@ -1231,7 +1233,7 @@ public class OpenSimplexNoise extends Noise {
 					aPoint = 0x06;
 				}
 			}
-
+			
 			// Decide if (1,0,0,0) is closer.
 			var p1 = 2 - inSum + xins;
 			if (aScore >= bScore && p1 > bScore) {
@@ -1243,7 +1245,7 @@ public class OpenSimplexNoise extends Noise {
 				aPoint = 0x01;
 				aIsBiggerSide = false;
 			}
-
+			
 			// Decide if (0,1,0,0) is closer.
 			var p2 = 2 - inSum + yins;
 			if (aScore >= bScore && p2 > bScore) {
@@ -1255,7 +1257,7 @@ public class OpenSimplexNoise extends Noise {
 				aPoint = 0x02;
 				aIsBiggerSide = false;
 			}
-
+			
 			// Decide if (0,0,1,0) is closer.
 			var p3 = 2 - inSum + zins;
 			if (aScore >= bScore && p3 > bScore) {
@@ -1267,7 +1269,7 @@ public class OpenSimplexNoise extends Noise {
 				aPoint = 0x04;
 				aIsBiggerSide = false;
 			}
-
+			
 			// Decide if (0,0,0,1) is closer.
 			var p4 = 2 - inSum + wins;
 			if (aScore >= bScore && p4 > bScore) {
@@ -1277,7 +1279,7 @@ public class OpenSimplexNoise extends Noise {
 				aPoint = 0x08;
 				aIsBiggerSide = false;
 			}
-
+			
 			// Where each of the two closest points are determines how the extra three vertices are calculated.
 			if (aIsBiggerSide == bIsBiggerSide) {
 				if (aIsBiggerSide) { // Both closest points on the bigger side
@@ -1293,7 +1295,7 @@ public class OpenSimplexNoise extends Noise {
 						dx_ext0 = dx0 - 1 - 3 * SQUISH_CONSTANT_4D;
 						dx_ext1 = dx0 - 1 - 2 * SQUISH_CONSTANT_4D;
 					}
-
+					
 					if ((c1 & 0x02) == 0) {
 						ysv_ext0 = ysb;
 						ysv_ext1 = ysb - 1;
@@ -1304,7 +1306,7 @@ public class OpenSimplexNoise extends Noise {
 						dy_ext0 = dy0 - 1 - 3 * SQUISH_CONSTANT_4D;
 						dy_ext1 = dy0 - 1 - 2 * SQUISH_CONSTANT_4D;
 					}
-
+					
 					if ((c1 & 0x04) == 0) {
 						zsv_ext0 = zsb;
 						zsv_ext1 = zsb - 1;
@@ -1315,7 +1317,7 @@ public class OpenSimplexNoise extends Noise {
 						dz_ext0 = dz0 - 1 - 3 * SQUISH_CONSTANT_4D;
 						dz_ext1 = dz0 - 1 - 2 * SQUISH_CONSTANT_4D;
 					}
-
+					
 					if ((c1 & 0x08) == 0) {
 						wsv_ext0 = wsb;
 						wsv_ext1 = wsb - 1;
@@ -1326,7 +1328,7 @@ public class OpenSimplexNoise extends Noise {
 						dw_ext0 = dw0 - 1 - 3 * SQUISH_CONSTANT_4D;
 						dw_ext1 = dw0 - 1 - 2 * SQUISH_CONSTANT_4D;
 					}
-
+					
 					// One combination is a permutation of (0,0,0,2) based on c2
 					xsv_ext2 = xsb;
 					ysv_ext2 = ysb;
@@ -1349,7 +1351,7 @@ public class OpenSimplexNoise extends Noise {
 						wsv_ext2 += 2;
 						dw_ext2 -= 2;
 					}
-
+					
 				} else { // Both closest points on the smaller side
 					// One of the two extra points is (0,0,0,0)
 					xsv_ext2 = xsb;
@@ -1360,10 +1362,10 @@ public class OpenSimplexNoise extends Noise {
 					dy_ext2 = dy0;
 					dz_ext2 = dz0;
 					dw_ext2 = dw0;
-
+					
 					// Other two points are based on the omitted axes.
 					var c = (byte) (aPoint | bPoint);
-
+					
 					if ((c & 0x01) == 0) {
 						xsv_ext0 = xsb - 1;
 						xsv_ext1 = xsb;
@@ -1373,7 +1375,7 @@ public class OpenSimplexNoise extends Noise {
 						xsv_ext0 = xsv_ext1 = xsb + 1;
 						dx_ext0 = dx_ext1 = dx0 - 1 - SQUISH_CONSTANT_4D;
 					}
-
+					
 					if ((c & 0x02) == 0) {
 						ysv_ext0 = ysv_ext1 = ysb;
 						dy_ext0 = dy_ext1 = dy0 - SQUISH_CONSTANT_4D;
@@ -1388,7 +1390,7 @@ public class OpenSimplexNoise extends Noise {
 						ysv_ext0 = ysv_ext1 = ysb + 1;
 						dy_ext0 = dy_ext1 = dy0 - 1 - SQUISH_CONSTANT_4D;
 					}
-
+					
 					if ((c & 0x04) == 0) {
 						zsv_ext0 = zsv_ext1 = zsb;
 						dz_ext0 = dz_ext1 = dz0 - SQUISH_CONSTANT_4D;
@@ -1403,7 +1405,7 @@ public class OpenSimplexNoise extends Noise {
 						zsv_ext0 = zsv_ext1 = zsb + 1;
 						dz_ext0 = dz_ext1 = dz0 - 1 - SQUISH_CONSTANT_4D;
 					}
-
+					
 					if ((c & 0x08) == 0) {
 						wsv_ext0 = wsb;
 						wsv_ext1 = wsb - 1;
@@ -1413,7 +1415,7 @@ public class OpenSimplexNoise extends Noise {
 						wsv_ext0 = wsv_ext1 = wsb + 1;
 						dw_ext0 = dw_ext1 = dw0 - 1 - SQUISH_CONSTANT_4D;
 					}
-
+					
 				}
 			} else { // One point on each "side"
 				byte c1, c2;
@@ -1424,7 +1426,7 @@ public class OpenSimplexNoise extends Noise {
 					c1 = bPoint;
 					c2 = aPoint;
 				}
-
+				
 				// Two contributions are the bigger-sided point with each 0 replaced with -1.
 				if ((c1 & 0x01) == 0) {
 					xsv_ext0 = xsb - 1;
@@ -1435,7 +1437,7 @@ public class OpenSimplexNoise extends Noise {
 					xsv_ext0 = xsv_ext1 = xsb + 1;
 					dx_ext0 = dx_ext1 = dx0 - 1 - SQUISH_CONSTANT_4D;
 				}
-
+				
 				if ((c1 & 0x02) == 0) {
 					ysv_ext0 = ysv_ext1 = ysb;
 					dy_ext0 = dy_ext1 = dy0 - SQUISH_CONSTANT_4D;
@@ -1450,7 +1452,7 @@ public class OpenSimplexNoise extends Noise {
 					ysv_ext0 = ysv_ext1 = ysb + 1;
 					dy_ext0 = dy_ext1 = dy0 - 1 - SQUISH_CONSTANT_4D;
 				}
-
+				
 				if ((c1 & 0x04) == 0) {
 					zsv_ext0 = zsv_ext1 = zsb;
 					dz_ext0 = dz_ext1 = dz0 - SQUISH_CONSTANT_4D;
@@ -1465,7 +1467,7 @@ public class OpenSimplexNoise extends Noise {
 					zsv_ext0 = zsv_ext1 = zsb + 1;
 					dz_ext0 = dz_ext1 = dz0 - 1 - SQUISH_CONSTANT_4D;
 				}
-
+				
 				if ((c1 & 0x08) == 0) {
 					wsv_ext0 = wsb;
 					wsv_ext1 = wsb - 1;
@@ -1475,7 +1477,7 @@ public class OpenSimplexNoise extends Noise {
 					wsv_ext0 = wsv_ext1 = wsb + 1;
 					dw_ext0 = dw_ext1 = dw0 - 1 - SQUISH_CONSTANT_4D;
 				}
-
+				
 				// One contribution is a permutation of (0,0,0,2) based on the smaller-sided point
 				xsv_ext2 = xsb;
 				ysv_ext2 = ysb;
@@ -1499,7 +1501,7 @@ public class OpenSimplexNoise extends Noise {
 					dw_ext2 -= 2;
 				}
 			}
-
+			
 			// Contribution (1,0,0,0)
 			var dx1 = dx0 - 1 - SQUISH_CONSTANT_4D;
 			var dy1 = dy0 - 0 - SQUISH_CONSTANT_4D;
@@ -1510,7 +1512,7 @@ public class OpenSimplexNoise extends Noise {
 				attn1 *= attn1;
 				value += attn1 * attn1 * extrapolate(xsb + 1, ysb, zsb, wsb, dx1, dy1, dz1, dw1);
 			}
-
+			
 			// Contribution (0,1,0,0)
 			var dx2 = dx0 - 0 - SQUISH_CONSTANT_4D;
 			var dy2 = dy0 - 1 - SQUISH_CONSTANT_4D;
@@ -1519,7 +1521,7 @@ public class OpenSimplexNoise extends Noise {
 				attn2 *= attn2;
 				value += attn2 * attn2 * extrapolate(xsb, ysb + 1, zsb, wsb, dx2, dy2, dz1, dw1);
 			}
-
+			
 			// Contribution (0,0,1,0)
 			var dz3 = dz0 - 1 - SQUISH_CONSTANT_4D;
 			var attn3 = 2 - dx2 * dx2 - dy1 * dy1 - dz3 * dz3 - dw1 * dw1;
@@ -1527,7 +1529,7 @@ public class OpenSimplexNoise extends Noise {
 				attn3 *= attn3;
 				value += attn3 * attn3 * extrapolate(xsb, ysb, zsb + 1, wsb, dx2, dy1, dz3, dw1);
 			}
-
+			
 			// Contribution (0,0,0,1)
 			var dw4 = dw0 - 1 - SQUISH_CONSTANT_4D;
 			var attn4 = 2 - dx2 * dx2 - dy1 * dy1 - dz1 * dz1 - dw4 * dw4;
@@ -1535,7 +1537,7 @@ public class OpenSimplexNoise extends Noise {
 				attn4 *= attn4;
 				value += attn4 * attn4 * extrapolate(xsb, ysb, zsb, wsb + 1, dx2, dy1, dz1, dw4);
 			}
-
+			
 			// Contribution (1,1,0,0)
 			var dx5 = dx0 - 1 - 2 * SQUISH_CONSTANT_4D;
 			var dy5 = dy0 - 1 - 2 * SQUISH_CONSTANT_4D;
@@ -1546,7 +1548,7 @@ public class OpenSimplexNoise extends Noise {
 				attn5 *= attn5;
 				value += attn5 * attn5 * extrapolate(xsb + 1, ysb + 1, zsb, wsb, dx5, dy5, dz5, dw5);
 			}
-
+			
 			// Contribution (1,0,1,0)
 			var dx6 = dx0 - 1 - 2 * SQUISH_CONSTANT_4D;
 			var dy6 = dy0 - 0 - 2 * SQUISH_CONSTANT_4D;
@@ -1557,7 +1559,7 @@ public class OpenSimplexNoise extends Noise {
 				attn6 *= attn6;
 				value += attn6 * attn6 * extrapolate(xsb + 1, ysb, zsb + 1, wsb, dx6, dy6, dz6, dw6);
 			}
-
+			
 			// Contribution (1,0,0,1)
 			var dx7 = dx0 - 1 - 2 * SQUISH_CONSTANT_4D;
 			var dy7 = dy0 - 0 - 2 * SQUISH_CONSTANT_4D;
@@ -1568,7 +1570,7 @@ public class OpenSimplexNoise extends Noise {
 				attn7 *= attn7;
 				value += attn7 * attn7 * extrapolate(xsb + 1, ysb, zsb, wsb + 1, dx7, dy7, dz7, dw7);
 			}
-
+			
 			// Contribution (0,1,1,0)
 			var dx8 = dx0 - 0 - 2 * SQUISH_CONSTANT_4D;
 			var dy8 = dy0 - 1 - 2 * SQUISH_CONSTANT_4D;
@@ -1579,7 +1581,7 @@ public class OpenSimplexNoise extends Noise {
 				attn8 *= attn8;
 				value += attn8 * attn8 * extrapolate(xsb, ysb + 1, zsb + 1, wsb, dx8, dy8, dz8, dw8);
 			}
-
+			
 			// Contribution (0,1,0,1)
 			var dx9 = dx0 - 0 - 2 * SQUISH_CONSTANT_4D;
 			var dy9 = dy0 - 1 - 2 * SQUISH_CONSTANT_4D;
@@ -1590,7 +1592,7 @@ public class OpenSimplexNoise extends Noise {
 				attn9 *= attn9;
 				value += attn9 * attn9 * extrapolate(xsb, ysb + 1, zsb, wsb + 1, dx9, dy9, dz9, dw9);
 			}
-
+			
 			// Contribution (0,0,1,1)
 			var dx10 = dx0 - 0 - 2 * SQUISH_CONSTANT_4D;
 			var dy10 = dy0 - 0 - 2 * SQUISH_CONSTANT_4D;
@@ -1608,7 +1610,7 @@ public class OpenSimplexNoise extends Noise {
 			double bScore;
 			byte bPoint;
 			var bIsBiggerSide = true;
-
+			
 			// Decide between (0,0,1,1) and (1,1,0,0)
 			if (xins + yins < zins + wins) {
 				aScore = xins + yins;
@@ -1617,7 +1619,7 @@ public class OpenSimplexNoise extends Noise {
 				aScore = zins + wins;
 				aPoint = 0x03;
 			}
-
+			
 			// Decide between (0,1,0,1) and (1,0,1,0)
 			if (xins + zins < yins + wins) {
 				bScore = xins + zins;
@@ -1626,7 +1628,7 @@ public class OpenSimplexNoise extends Noise {
 				bScore = yins + wins;
 				bPoint = 0x05;
 			}
-
+			
 			// Closer between (0,1,1,0) and (1,0,0,1) will replace the farthest of a and b, if closer.
 			if (xins + wins < yins + zins) {
 				var score = xins + wins;
@@ -1647,7 +1649,7 @@ public class OpenSimplexNoise extends Noise {
 					aPoint = 0x09;
 				}
 			}
-
+			
 			// Decide if (0,1,1,1) is closer.
 			var p1 = 3 - inSum + xins;
 			if (aScore <= bScore && p1 < bScore) {
@@ -1659,7 +1661,7 @@ public class OpenSimplexNoise extends Noise {
 				aPoint = 0x0E;
 				aIsBiggerSide = false;
 			}
-
+			
 			// Decide if (1,0,1,1) is closer.
 			var p2 = 3 - inSum + yins;
 			if (aScore <= bScore && p2 < bScore) {
@@ -1671,7 +1673,7 @@ public class OpenSimplexNoise extends Noise {
 				aPoint = 0x0D;
 				aIsBiggerSide = false;
 			}
-
+			
 			// Decide if (1,1,0,1) is closer.
 			var p3 = 3 - inSum + zins;
 			if (aScore <= bScore && p3 < bScore) {
@@ -1683,7 +1685,7 @@ public class OpenSimplexNoise extends Noise {
 				aPoint = 0x0B;
 				aIsBiggerSide = false;
 			}
-
+			
 			// Decide if (1,1,1,0) is closer.
 			var p4 = 3 - inSum + wins;
 			if (aScore <= bScore && p4 < bScore) {
@@ -1693,13 +1695,13 @@ public class OpenSimplexNoise extends Noise {
 				aPoint = 0x07;
 				aIsBiggerSide = false;
 			}
-
+			
 			// Where each of the two closest points are determines how the extra three vertices are calculated.
 			if (aIsBiggerSide == bIsBiggerSide) {
 				if (aIsBiggerSide) { // Both closest points on the bigger side
 					var c1 = (byte) (aPoint & bPoint);
 					var c2 = (byte) (aPoint | bPoint);
-
+					
 					// Two contributions are permutations of (0,0,0,1) and (0,0,0,2) based on c1
 					xsv_ext0 = xsv_ext1 = xsb;
 					ysv_ext0 = ysv_ext1 = ysb;
@@ -1734,7 +1736,7 @@ public class OpenSimplexNoise extends Noise {
 						wsv_ext1 += 2;
 						dw_ext1 -= 2;
 					}
-
+					
 					// One contribution is a permutation of (1,1,1,-1) based on c2
 					xsv_ext2 = xsb + 1;
 					ysv_ext2 = ysb + 1;
@@ -1767,10 +1769,10 @@ public class OpenSimplexNoise extends Noise {
 					dy_ext2 = dy0 - 1 - 4 * SQUISH_CONSTANT_4D;
 					dz_ext2 = dz0 - 1 - 4 * SQUISH_CONSTANT_4D;
 					dw_ext2 = dw0 - 1 - 4 * SQUISH_CONSTANT_4D;
-
+					
 					// Other two points are based on the shared axes.
 					var c = (byte) (aPoint & bPoint);
-
+					
 					if ((c & 0x01) != 0) {
 						xsv_ext0 = xsb + 2;
 						xsv_ext1 = xsb + 1;
@@ -1780,7 +1782,7 @@ public class OpenSimplexNoise extends Noise {
 						xsv_ext0 = xsv_ext1 = xsb;
 						dx_ext0 = dx_ext1 = dx0 - 3 * SQUISH_CONSTANT_4D;
 					}
-
+					
 					if ((c & 0x02) != 0) {
 						ysv_ext0 = ysv_ext1 = ysb + 1;
 						dy_ext0 = dy_ext1 = dy0 - 1 - 3 * SQUISH_CONSTANT_4D;
@@ -1795,7 +1797,7 @@ public class OpenSimplexNoise extends Noise {
 						ysv_ext0 = ysv_ext1 = ysb;
 						dy_ext0 = dy_ext1 = dy0 - 3 * SQUISH_CONSTANT_4D;
 					}
-
+					
 					if ((c & 0x04) != 0) {
 						zsv_ext0 = zsv_ext1 = zsb + 1;
 						dz_ext0 = dz_ext1 = dz0 - 1 - 3 * SQUISH_CONSTANT_4D;
@@ -1810,7 +1812,7 @@ public class OpenSimplexNoise extends Noise {
 						zsv_ext0 = zsv_ext1 = zsb;
 						dz_ext0 = dz_ext1 = dz0 - 3 * SQUISH_CONSTANT_4D;
 					}
-
+					
 					if ((c & 0x08) != 0) {
 						wsv_ext0 = wsb + 1;
 						wsv_ext1 = wsb + 2;
@@ -1830,7 +1832,7 @@ public class OpenSimplexNoise extends Noise {
 					c1 = bPoint;
 					c2 = aPoint;
 				}
-
+				
 				// Two contributions are the bigger-sided point with each 1 replaced with 2.
 				if ((c1 & 0x01) != 0) {
 					xsv_ext0 = xsb + 2;
@@ -1841,7 +1843,7 @@ public class OpenSimplexNoise extends Noise {
 					xsv_ext0 = xsv_ext1 = xsb;
 					dx_ext0 = dx_ext1 = dx0 - 3 * SQUISH_CONSTANT_4D;
 				}
-
+				
 				if ((c1 & 0x02) != 0) {
 					ysv_ext0 = ysv_ext1 = ysb + 1;
 					dy_ext0 = dy_ext1 = dy0 - 1 - 3 * SQUISH_CONSTANT_4D;
@@ -1856,7 +1858,7 @@ public class OpenSimplexNoise extends Noise {
 					ysv_ext0 = ysv_ext1 = ysb;
 					dy_ext0 = dy_ext1 = dy0 - 3 * SQUISH_CONSTANT_4D;
 				}
-
+				
 				if ((c1 & 0x04) != 0) {
 					zsv_ext0 = zsv_ext1 = zsb + 1;
 					dz_ext0 = dz_ext1 = dz0 - 1 - 3 * SQUISH_CONSTANT_4D;
@@ -1871,7 +1873,7 @@ public class OpenSimplexNoise extends Noise {
 					zsv_ext0 = zsv_ext1 = zsb;
 					dz_ext0 = dz_ext1 = dz0 - 3 * SQUISH_CONSTANT_4D;
 				}
-
+				
 				if ((c1 & 0x08) != 0) {
 					wsv_ext0 = wsb + 1;
 					wsv_ext1 = wsb + 2;
@@ -1881,7 +1883,7 @@ public class OpenSimplexNoise extends Noise {
 					wsv_ext0 = wsv_ext1 = wsb;
 					dw_ext0 = dw_ext1 = dw0 - 3 * SQUISH_CONSTANT_4D;
 				}
-
+				
 				// One contribution is a permutation of (1,1,1,-1) based on the smaller-sided point
 				xsv_ext2 = xsb + 1;
 				ysv_ext2 = ysb + 1;
@@ -1905,7 +1907,7 @@ public class OpenSimplexNoise extends Noise {
 					dw_ext2 += 2;
 				}
 			}
-
+			
 			// Contribution (1,1,1,0)
 			var dx4 = dx0 - 1 - 3 * SQUISH_CONSTANT_4D;
 			var dy4 = dy0 - 1 - 3 * SQUISH_CONSTANT_4D;
@@ -1916,7 +1918,7 @@ public class OpenSimplexNoise extends Noise {
 				attn4 *= attn4;
 				value += attn4 * attn4 * extrapolate(xsb + 1, ysb + 1, zsb + 1, wsb, dx4, dy4, dz4, dw4);
 			}
-
+			
 			// Contribution (1,1,0,1)
 			var dz3 = dz0 - 3 * SQUISH_CONSTANT_4D;
 			var dw3 = dw0 - 1 - 3 * SQUISH_CONSTANT_4D;
@@ -1925,7 +1927,7 @@ public class OpenSimplexNoise extends Noise {
 				attn3 *= attn3;
 				value += attn3 * attn3 * extrapolate(xsb + 1, ysb + 1, zsb, wsb + 1, dx4, dy4, dz3, dw3);
 			}
-
+			
 			// Contribution (1,0,1,1)
 			var dy2 = dy0 - 3 * SQUISH_CONSTANT_4D;
 			var attn2 = 2 - dx4 * dx4 - dy2 * dy2 - dz4 * dz4 - dw3 * dw3;
@@ -1933,7 +1935,7 @@ public class OpenSimplexNoise extends Noise {
 				attn2 *= attn2;
 				value += attn2 * attn2 * extrapolate(xsb + 1, ysb, zsb + 1, wsb + 1, dx4, dy2, dz4, dw3);
 			}
-
+			
 			// Contribution (0,1,1,1)
 			var dx1 = dx0 - 3 * SQUISH_CONSTANT_4D;
 			var attn1 = 2 - dx1 * dx1 - dy4 * dy4 - dz4 * dz4 - dw3 * dw3;
@@ -1941,7 +1943,7 @@ public class OpenSimplexNoise extends Noise {
 				attn1 *= attn1;
 				value += attn1 * attn1 * extrapolate(xsb, ysb + 1, zsb + 1, wsb + 1, dx1, dy4, dz4, dw3);
 			}
-
+			
 			// Contribution (1,1,0,0)
 			var dx5 = dx0 - 1 - 2 * SQUISH_CONSTANT_4D;
 			var dy5 = dy0 - 1 - 2 * SQUISH_CONSTANT_4D;
@@ -1952,7 +1954,7 @@ public class OpenSimplexNoise extends Noise {
 				attn5 *= attn5;
 				value += attn5 * attn5 * extrapolate(xsb + 1, ysb + 1, zsb, wsb, dx5, dy5, dz5, dw5);
 			}
-
+			
 			// Contribution (1,0,1,0)
 			var dx6 = dx0 - 1 - 2 * SQUISH_CONSTANT_4D;
 			var dy6 = dy0 - 0 - 2 * SQUISH_CONSTANT_4D;
@@ -1963,7 +1965,7 @@ public class OpenSimplexNoise extends Noise {
 				attn6 *= attn6;
 				value += attn6 * attn6 * extrapolate(xsb + 1, ysb, zsb + 1, wsb, dx6, dy6, dz6, dw6);
 			}
-
+			
 			// Contribution (1,0,0,1)
 			var dx7 = dx0 - 1 - 2 * SQUISH_CONSTANT_4D;
 			var dy7 = dy0 - 0 - 2 * SQUISH_CONSTANT_4D;
@@ -1974,7 +1976,7 @@ public class OpenSimplexNoise extends Noise {
 				attn7 *= attn7;
 				value += attn7 * attn7 * extrapolate(xsb + 1, ysb, zsb, wsb + 1, dx7, dy7, dz7, dw7);
 			}
-
+			
 			// Contribution (0,1,1,0)
 			var dx8 = dx0 - 0 - 2 * SQUISH_CONSTANT_4D;
 			var dy8 = dy0 - 1 - 2 * SQUISH_CONSTANT_4D;
@@ -1985,7 +1987,7 @@ public class OpenSimplexNoise extends Noise {
 				attn8 *= attn8;
 				value += attn8 * attn8 * extrapolate(xsb, ysb + 1, zsb + 1, wsb, dx8, dy8, dz8, dw8);
 			}
-
+			
 			// Contribution (0,1,0,1)
 			var dx9 = dx0 - 0 - 2 * SQUISH_CONSTANT_4D;
 			var dy9 = dy0 - 1 - 2 * SQUISH_CONSTANT_4D;
@@ -1996,7 +1998,7 @@ public class OpenSimplexNoise extends Noise {
 				attn9 *= attn9;
 				value += attn9 * attn9 * extrapolate(xsb, ysb + 1, zsb, wsb + 1, dx9, dy9, dz9, dw9);
 			}
-
+			
 			// Contribution (0,0,1,1)
 			var dx10 = dx0 - 0 - 2 * SQUISH_CONSTANT_4D;
 			var dy10 = dy0 - 0 - 2 * SQUISH_CONSTANT_4D;
@@ -2008,41 +2010,41 @@ public class OpenSimplexNoise extends Noise {
 				value += attn10 * attn10 * extrapolate(xsb, ysb, zsb + 1, wsb + 1, dx10, dy10, dz10, dw10);
 			}
 		}
-
+		
 		// First extra vertex
 		var attn_ext0 = 2 - dx_ext0 * dx_ext0 - dy_ext0 * dy_ext0 - dz_ext0 * dz_ext0 - dw_ext0 * dw_ext0;
 		if (attn_ext0 > 0) {
 			attn_ext0 *= attn_ext0;
 			value += attn_ext0 * attn_ext0 * extrapolate(xsv_ext0, ysv_ext0, zsv_ext0, wsv_ext0, dx_ext0, dy_ext0, dz_ext0, dw_ext0);
 		}
-
+		
 		// Second extra vertex
 		var attn_ext1 = 2 - dx_ext1 * dx_ext1 - dy_ext1 * dy_ext1 - dz_ext1 * dz_ext1 - dw_ext1 * dw_ext1;
 		if (attn_ext1 > 0) {
 			attn_ext1 *= attn_ext1;
 			value += attn_ext1 * attn_ext1 * extrapolate(xsv_ext1, ysv_ext1, zsv_ext1, wsv_ext1, dx_ext1, dy_ext1, dz_ext1, dw_ext1);
 		}
-
+		
 		// Third extra vertex
 		var attn_ext2 = 2 - dx_ext2 * dx_ext2 - dy_ext2 * dy_ext2 - dz_ext2 * dz_ext2 - dw_ext2 * dw_ext2;
 		if (attn_ext2 > 0) {
 			attn_ext2 *= attn_ext2;
 			value += attn_ext2 * attn_ext2 * extrapolate(xsv_ext2, ysv_ext2, zsv_ext2, wsv_ext2, dx_ext2, dy_ext2, dz_ext2, dw_ext2);
 		}
-
+		
 		return value / NORM_CONSTANT_4D;
 	}
-
+	
 	private double extrapolate(int xsb, int ysb, double dx, double dy) {
 		var index = perm[(perm[xsb & 0xFF] + ysb) & 0xFF] & 0x0E;
 		return gradients2D[index] * dx + gradients2D[index + 1] * dy;
 	}
-
+	
 	private double extrapolate(int xsb, int ysb, int zsb, double dx, double dy, double dz) {
 		var index = permGradIndex3D[(perm[(perm[xsb & 0xFF] + ysb) & 0xFF] + zsb) & 0xFF];
 		return gradients3D[index] * dx + gradients3D[index + 1] * dy + gradients3D[index + 2] * dz;
 	}
-
+	
 	private double extrapolate(int xsb, int ysb, int zsb, int wsb, double dx, double dy, double dz, double dw) {
 		var index = perm[(perm[(perm[(perm[xsb & 0xFF] + ysb) & 0xFF] + zsb) & 0xFF] + wsb) & 0xFF] & 0xFC;
 		return gradients4D[index] * dx + gradients4D[index + 1] * dy + gradients4D[index + 2] * dz + gradients4D[index + 3] * dw;

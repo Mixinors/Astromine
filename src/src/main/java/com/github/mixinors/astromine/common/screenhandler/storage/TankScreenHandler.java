@@ -24,8 +24,6 @@
 
 package com.github.mixinors.astromine.common.screenhandler.storage;
 
-import java.util.function.Supplier;
-
 import com.github.mixinors.astromine.common.block.entity.storage.TankBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.widget.FluidFilterWidget;
@@ -34,33 +32,34 @@ import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
-
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
+import java.util.function.Supplier;
+
 public class TankScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final TankBlockEntity tank;
-
+	
 	public TankScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.TANK, syncId, player, position);
 		tank = (TankBlockEntity) blockEntity;
 	}
-
+	
 	public TankScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
 		tank = (TankBlockEntity) blockEntity;
 	}
-
+	
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
-
-		fluidBar.setPosition( new Position(width / 2.0F - fluidBar.getWidth() / 2F, fluidBar.getY()));
+		
+		fluidBar.setPosition(new Position(width / 2.0F - fluidBar.getWidth() / 2F, fluidBar.getY()));
 		
 		var unload = new SlotWidget(0, blockEntity.getItemStorage());
 		unload.setPosition(new Position(fluidBar, -18 - 3, 0));
-		unload.setSize( new Size(18, 18));
+		unload.setSize(new Size(18, 18));
 		
 		var buffer = new SlotWidget(1, blockEntity.getItemStorage());
 		buffer.setPosition(new Position(unload, -18 - 3, 18 - 4F));
@@ -87,7 +86,7 @@ public class TankScreenHandler extends ExtendedBlockEntityScreenHandler {
 		mainTab.add(unload);
 		mainTab.add(buffer);
 		mainTab.add(load);
-
+		
 		mainTab.add(filter);
 	}
 }

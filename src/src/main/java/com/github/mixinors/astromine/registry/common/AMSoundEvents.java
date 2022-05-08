@@ -26,7 +26,6 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
 import dev.architectury.registry.registries.RegistrySupplier;
-
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.registry.Registry;
 
@@ -57,7 +56,7 @@ public class AMSoundEvents {
 	public static final RegistrySupplier<SoundEvent> INCINERATE = register("block.shredder.shred");
 	
 	public static void init() {
-
+	
 	}
 	
 	public static RegistrySupplier<SoundEvent> register(String id) {

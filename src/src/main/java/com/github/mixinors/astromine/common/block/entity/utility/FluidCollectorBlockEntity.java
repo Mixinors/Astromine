@@ -30,9 +30,9 @@ import com.github.mixinors.astromine.common.config.entry.utility.FluidStorageUti
 import com.github.mixinors.astromine.common.provider.config.FluidStorageUtilityConfigProvider;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import org.jetbrains.annotations.NotNull;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
-
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidDrainable;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -40,10 +40,8 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import org.jetbrains.annotations.NotNull;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 public class FluidCollectorBlockEntity extends ExtendedBlockEntity implements FluidStorageUtilityConfigProvider {
 	private long cooldown = 0L;
@@ -52,17 +50,17 @@ public class FluidCollectorBlockEntity extends ExtendedBlockEntity implements Fl
 	
 	public static final int[] INSERT_SLOTS = new int[] { };
 	
-	public static final int[] EXTRACT_SLOTS = new int[] {OUTPUT_SLOT};
-
+	public static final int[] EXTRACT_SLOTS = new int[] { OUTPUT_SLOT };
+	
 	public FluidCollectorBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.FLUID_COLLECTOR, blockPos, blockState);
 		
 		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), 0L);
-
+		
 		fluidStorage = new SimpleFluidStorage(1, getFluidStorageSize()).extractPredicate((variant, slot) ->
-			slot == OUTPUT_SLOT
+				slot == OUTPUT_SLOT
 		).insertPredicate((variant, slot) ->
-			false
+				false
 		).listener(() -> {
 			markDirty();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
@@ -73,10 +71,11 @@ public class FluidCollectorBlockEntity extends ExtendedBlockEntity implements Fl
 	@Override
 	public void tick() {
 		super.tick();
-
-		if (world == null || world.isClient || !shouldRun())
+		
+		if (world == null || world.isClient || !shouldRun()) {
 			return;
-
+		}
+		
 		if (fluidStorage != null && energyStorage != null) {
 			var consumed = getEnergyConsumed();
 			
@@ -138,21 +137,21 @@ public class FluidCollectorBlockEntity extends ExtendedBlockEntity implements Fl
 			}
 		}
 	}
-
+	
 	@Override
 	public void writeNbt(NbtCompound nbt) {
 		nbt.putLong("Cooldown", cooldown);
 		
 		super.writeNbt(nbt);
 	}
-
+	
 	@Override
 	public void readNbt(@NotNull NbtCompound nbt) {
 		cooldown = nbt.getLong("Cooldown");
 		
 		super.readNbt(nbt);
 	}
-
+	
 	@Override
 	public FluidStorageUtilityConfig getConfig() {
 		return AMConfig.get().blocks.utilities.fluidCollector;

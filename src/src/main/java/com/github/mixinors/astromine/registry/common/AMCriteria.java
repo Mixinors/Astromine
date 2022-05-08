@@ -25,14 +25,8 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.criterion.DestroyRocketCriterion;
-import com.github.mixinors.astromine.common.criterion.LaunchRocketCriterion;
-import com.github.mixinors.astromine.common.criterion.MetiteOreUnderestimationCriterion;
-import com.github.mixinors.astromine.common.criterion.ProperlyUseFireExtinguisherCriterion;
-import com.github.mixinors.astromine.common.criterion.TrickedPiglinCriterion;
-import com.github.mixinors.astromine.common.criterion.UseFireExtinguisherCriterion;
+import com.github.mixinors.astromine.common.criterion.*;
 import dev.architectury.registry.level.advancement.CriteriaTriggersRegistry;
-
 import net.minecraft.advancement.criterion.Criterion;
 
 public class AMCriteria {
@@ -46,9 +40,9 @@ public class AMCriteria {
 	public static final ProperlyUseFireExtinguisherCriterion PROPERLY_USE_FIRE_EXTINGUISHER = register(new ProperlyUseFireExtinguisherCriterion(AMCommon.id("properly_use_fire_extinguisher")));
 	
 	public static void init() {
-
+	
 	}
-
+	
 	public static <T extends Criterion<?>> T register(T criterion) {
 		return CriteriaTriggersRegistry.register(criterion);
 	}

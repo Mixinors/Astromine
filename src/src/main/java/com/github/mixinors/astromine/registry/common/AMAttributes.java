@@ -24,22 +24,21 @@
 
 package com.github.mixinors.astromine.registry.common;
 
-import java.util.function.Supplier;
-
 import com.github.mixinors.astromine.AMCommon;
 import dev.architectury.registry.registries.RegistrySupplier;
-
 import net.minecraft.entity.attribute.ClampedEntityAttribute;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
+import java.util.function.Supplier;
+
 public class AMAttributes {
 	public static final RegistrySupplier<EntityAttribute> GRAVITY_MULTIPLIER = register(AMCommon.id("gravity_multiplier"), () -> new ClampedEntityAttribute("attribute.name.generic.astromine.gravity_multiplier", 1d, -100d, 100d));
-
+	
 	public static void init() {
 	}
-
+	
 	public static RegistrySupplier<EntityAttribute> register(Identifier id, Supplier<EntityAttribute> supplier) {
 		return AMCommon.registry(Registry.ATTRIBUTE_KEY).register(id, supplier);
 	}

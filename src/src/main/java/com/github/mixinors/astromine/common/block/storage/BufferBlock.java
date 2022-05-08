@@ -29,7 +29,6 @@ import com.github.mixinors.astromine.common.block.entity.storage.BufferBlockEnti
 import com.github.mixinors.astromine.common.screenhandler.storage.BufferScreenHandler;
 import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -45,17 +44,17 @@ public abstract class BufferBlock extends HorizontalFacingTieredBlockWithEntity 
 	public BufferBlock(Settings settings) {
 		super(settings);
 	}
-
+	
 	@Override
 	public SavedData getSavedDataForDroppedItem() {
 		return new SavedData(true, false, true, false);
 	}
-
+	
 	@Override
 	public boolean hasScreenHandler() {
 		return true;
 	}
-
+	
 	@Override
 	public Block getForTier(MachineTier tier) {
 		return switch (tier) {
@@ -66,91 +65,91 @@ public abstract class BufferBlock extends HorizontalFacingTieredBlockWithEntity 
 			case CREATIVE -> AMBlocks.CREATIVE_BUFFER.get();
 		};
 	}
-
+	
 	@Override
 	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
 		return new BufferScreenHandler(syncId, playerInventory.player, pos);
 	}
-
+	
 	@Override
 	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
 		buffer.writeBlockPos(pos);
 	}
-
+	
 	public static class Primitive extends BufferBlock {
 		public Primitive(Settings settings) {
 			super(settings);
 		}
-
+		
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new BufferBlockEntity.Primitive(pos, state);
 		}
-
+		
 		@Override
 		public MachineTier getTier() {
 			return MachineTier.PRIMITIVE;
 		}
 	}
-
+	
 	public static class Basic extends BufferBlock {
 		public Basic(Settings settings) {
 			super(settings);
 		}
-
+		
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new BufferBlockEntity.Basic(pos, state);
 		}
-
+		
 		@Override
 		public MachineTier getTier() {
 			return MachineTier.BASIC;
 		}
 	}
-
+	
 	public static class Advanced extends BufferBlock {
 		public Advanced(Settings settings) {
 			super(settings);
 		}
-
+		
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new BufferBlockEntity.Advanced(pos, state);
 		}
-
+		
 		@Override
 		public MachineTier getTier() {
 			return MachineTier.ADVANCED;
 		}
 	}
-
+	
 	public static class Elite extends BufferBlock {
 		public Elite(Settings settings) {
 			super(settings);
 		}
-
+		
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new BufferBlockEntity.Elite(pos, state);
 		}
-
+		
 		@Override
 		public MachineTier getTier() {
 			return MachineTier.ELITE;
 		}
 	}
-
+	
 	public static class Creative extends BufferBlock {
 		public Creative(Settings settings) {
 			super(settings);
 		}
-
+		
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 			return new BufferBlockEntity.Creative(pos, state);
 		}
-
+		
 		@Override
 		public MachineTier getTier() {
 			return MachineTier.CREATIVE;

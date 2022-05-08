@@ -26,12 +26,11 @@ package com.github.mixinors.astromine.client.screen.base;
 
 import dev.vini2003.hammer.gui.api.client.screen.BaseHandledScreen;
 import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class CustomForegroundBaseHandledScreen<T extends BaseScreenHandler> extends BaseHandledScreen<T> {
 	public CustomForegroundBaseHandledScreen(@NotNull BaseScreenHandler handler, @NotNull PlayerInventory inventory, @NotNull Text title) {

@@ -24,8 +24,6 @@
 
 package com.github.mixinors.astromine.common.item;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.block.FluidBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
@@ -43,18 +41,19 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Based on SpawnEggItem
  */
 public class RocketItem extends Item {
 	private final EntityType<?> type;
-
+	
 	public RocketItem(EntityType<?> type, Item.Settings settings) {
 		super(settings);
 		this.type = type;
 	}
-
+	
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		var itemStack = user.getStackInHand(hand);
@@ -69,7 +68,7 @@ public class RocketItem extends Item {
 		
 		var blockPos = hitResult.getBlockPos();
 		
-		if ( world.getBlockState(blockPos).getBlock() instanceof FluidBlock) {
+		if (world.getBlockState(blockPos).getBlock() instanceof FluidBlock) {
 			return TypedActionResult.pass(itemStack);
 		}
 		
@@ -79,7 +78,7 @@ public class RocketItem extends Item {
 		
 		var entityType = this.getEntityType(itemStack.getNbt());
 		
-		if (entityType.spawnFromItemStack((ServerWorld)world, itemStack, user, blockPos.offset(Direction.UP), SpawnReason.SPAWN_EGG, false, false) == null) {
+		if (entityType.spawnFromItemStack((ServerWorld) world, itemStack, user, blockPos.offset(Direction.UP), SpawnReason.SPAWN_EGG, false, false) == null) {
 			return TypedActionResult.pass(itemStack);
 		}
 		
@@ -92,7 +91,7 @@ public class RocketItem extends Item {
 		
 		return TypedActionResult.consume(itemStack);
 	}
-
+	
 	public EntityType<?> getEntityType(@Nullable NbtCompound nbt) {
 		NbtCompound nbtCompound;
 		

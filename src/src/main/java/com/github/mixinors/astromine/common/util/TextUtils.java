@@ -24,23 +24,12 @@
 
 package com.github.mixinors.astromine.common.util;
 
-import dev.architectury.platform.Platform;
 import dev.vini2003.hammer.core.api.common.util.NumberUtils;
-import team.reborn.energy.api.EnergyStorage;
-
-import net.minecraft.fluid.Fluid;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.text.TextColor;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 
 @SuppressWarnings("unstable")
 public class TextUtils {
@@ -58,7 +47,7 @@ public class TextUtils {
 	public static Text getEnergy(long amount, long capacity) {
 		return getEnergyAmount(amount).append(new LiteralText(" / ").formatted(Formatting.GRAY)).append(getEnergyAmount(capacity));
 	}
-
+	
 	public static Text getRatio(int progress, int limit) {
 		return new LiteralText((int) ((float) progress / (float) limit * 100) + "%");
 	}
@@ -66,7 +55,7 @@ public class TextUtils {
 	public static LiteralText getAmount(long amount, char unit) {
 		return new LiteralText(NumberUtils.getPrettyShortenedString(amount, "" + unit));
 	}
-
+	
 	public static MutableText getEnergyAmount(long amount) {
 		return getAmount(amount, ENERGY_UNIT).formatted(Formatting.GREEN);
 	}

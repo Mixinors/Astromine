@@ -31,8 +31,8 @@ public interface DoubleItemOutputRecipe extends ItemOutputRecipe {
 	default ItemResult getItemOutput() {
 		return getFirstOutput();
 	}
-
+	
 	ItemResult getFirstOutput();
-
+	
 	ItemResult getSecondOutput();
 }

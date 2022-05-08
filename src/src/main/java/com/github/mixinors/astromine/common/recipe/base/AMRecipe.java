@@ -34,21 +34,21 @@ public interface AMRecipe extends Recipe<Inventory> {
 	default boolean matches(Inventory inventory, World world) {
 		return false;
 	}
-
+	
 	@Override
 	default ItemStack craft(Inventory inventory) {
 		return getOutput().copy();
 	}
-
+	
 	@Override
 	default boolean fits(int width, int height) {
 		return false;
 	}
-
+	
 	@Override
 	default ItemStack getOutput() {
 		return ItemStack.EMPTY;
 	}
-
+	
 	int getTime();
 }

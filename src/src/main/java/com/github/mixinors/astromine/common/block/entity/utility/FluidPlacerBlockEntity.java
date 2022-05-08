@@ -30,18 +30,16 @@ import com.github.mixinors.astromine.common.config.entry.utility.FluidStorageUti
 import com.github.mixinors.astromine.common.provider.config.FluidStorageUtilityConfigProvider;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import org.jetbrains.annotations.NotNull;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
-
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import org.jetbrains.annotations.NotNull;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 public class FluidPlacerBlockEntity extends ExtendedBlockEntity implements FluidStorageUtilityConfigProvider {
 	private long cooldown = 0L;
@@ -56,23 +54,24 @@ public class FluidPlacerBlockEntity extends ExtendedBlockEntity implements Fluid
 		super(AMBlockEntityTypes.FLUID_PLACER, blockPos, blockState);
 		
 		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), 0L);
-
+		
 		fluidStorage = new SimpleFluidStorage(1, getFluidStorageSize()).extractPredicate((variant, slot) ->
-			false
+				false
 		).insertPredicate((variant, slot) ->
-			slot == INPUT_SLOT
+				slot == INPUT_SLOT
 		).listener(() -> {
 			markDirty();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
-
+	
 	@Override
 	public void tick() {
 		super.tick();
-
-		if (world == null || world.isClient || !shouldRun())
+		
+		if (world == null || world.isClient || !shouldRun()) {
 			return;
-
+		}
+		
 		if (fluidStorage != null && energyStorage != null) {
 			var consumed = getEnergyConsumed();
 			
@@ -145,7 +144,7 @@ public class FluidPlacerBlockEntity extends ExtendedBlockEntity implements Fluid
 		
 		super.readNbt(nbt);
 	}
-
+	
 	@Override
 	public FluidStorageUtilityConfig getConfig() {
 		return AMConfig.get().blocks.utilities.fluidPlacer;

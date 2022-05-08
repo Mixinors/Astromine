@@ -25,29 +25,26 @@
 package com.github.mixinors.astromine.client.rei.electricsmelting;
 
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
-
-import net.minecraft.recipe.AbstractCookingRecipe;
-
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.plugin.common.displays.cooking.DefaultCookingDisplay;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.recipe.AbstractCookingRecipe;
 
 @Environment(EnvType.CLIENT)
 public class ElectricSmeltingDisplay extends DefaultCookingDisplay {
 	private final long energyRequired;
-
+	
 	public ElectricSmeltingDisplay(AbstractCookingRecipe recipe) {
 		super(recipe);
 		this.energyRequired = 500;
 	}
-
+	
 	@Override
 	public CategoryIdentifier<?> getCategoryIdentifier() {
 		return AMRoughlyEnoughItemsPlugin.ELECTRIC_SMELTING;
 	}
-
+	
 	public long getEnergyRequired() {
 		return energyRequired;
 	}

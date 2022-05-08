@@ -25,7 +25,6 @@
 package com.github.mixinors.astromine.common.entity.placer;
 
 import com.github.mixinors.astromine.common.config.AMConfig;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.TeleportTarget;
@@ -33,7 +32,7 @@ import net.minecraft.world.TeleportTarget;
 public record SpaceEntityPlacer(int y) implements EntityPlacer {
 	public static final SpaceEntityPlacer TO_PLANET = new SpaceEntityPlacer(AMConfig.get().world.layers.overworld.spawnY);
 	public static final SpaceEntityPlacer TO_SPACE = new SpaceEntityPlacer(AMConfig.get().world.layers.space.spawnY);
-
+	
 	@Override
 	public TeleportTarget placeEntity(Entity entity) {
 		return new TeleportTarget(new Vec3d(entity.getX(), y, entity.getZ()), entity.getVelocity(), entity.getHeadYaw(), entity.getPitch());

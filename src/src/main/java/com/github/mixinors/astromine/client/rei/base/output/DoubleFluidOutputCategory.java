@@ -24,15 +24,14 @@
 
 package com.github.mixinors.astromine.client.rei.base.output;
 
-import java.util.List;
-
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.client.rei.base.input.EnergyInputCategory;
 import com.github.mixinors.astromine.client.rei.base.input.EnergyInputDisplay;
-
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
+
+import java.util.List;
 
 public interface DoubleFluidOutputCategory<T extends EnergyInputDisplay> extends EnergyInputCategory<T> {
 	@Override

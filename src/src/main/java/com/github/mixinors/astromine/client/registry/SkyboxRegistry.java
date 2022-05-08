@@ -27,20 +27,17 @@ package com.github.mixinors.astromine.client.registry;
 import com.github.mixinors.astromine.client.render.sky.skybox.Skybox;
 import com.github.mixinors.astromine.common.registry.base.BiRegistry;
 import com.github.mixinors.astromine.mixin.client.WorldRendererMixin;
-
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 /**
- * A {@link BiRegistry} for registration of
- * {@link RegistryKey<World>}s mapped to {@link Skybox}s.
- *
- * The registered gravity value will then be used for {@link Skybox}
- * rendering, through {@link WorldRendererMixin}.
+ * A {@link BiRegistry} for registration of {@link RegistryKey<World>}s mapped to {@link Skybox}s.
+ * <p>
+ * The registered gravity value will then be used for {@link Skybox} rendering, through {@link WorldRendererMixin}.
  */
 public class SkyboxRegistry extends BiRegistry<RegistryKey<World>, Skybox> {
 	public static final SkyboxRegistry INSTANCE = new SkyboxRegistry();
-
+	
 	/** We only want one instance of this. */
 	private SkyboxRegistry() {}
 }

@@ -24,9 +24,6 @@
 
 package com.github.mixinors.astromine.common.world.feature;
 
-import java.util.function.Supplier;
-
-import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.registry.common.AMFluids;
 import com.mojang.serialization.Codec;
@@ -34,8 +31,6 @@ import com.terraformersmc.terraform.shapes.api.Position;
 import com.terraformersmc.terraform.shapes.impl.Shapes;
 import com.terraformersmc.terraform.shapes.impl.layer.transform.NoiseTranslateLayer;
 import com.terraformersmc.terraform.shapes.impl.layer.transform.TranslateLayer;
-
-import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.util.math.BlockPos;
@@ -53,47 +48,48 @@ public class CrudeOilFeature extends Feature<DefaultFeatureConfig> {
 	private static final int TOP_WELL_NOISE = 2;
 	private static final int GEYSER_MIN_HEIGHT = 3;
 	private static final int GEYSER_MAX_HEIGHT = 10;
-
+	
 	public CrudeOilFeature(Codec<DefaultFeatureConfig> configCodec) {
 		super(configCodec);
 	}
-
+	
 	@Override
 	public boolean generate(FeatureContext<DefaultFeatureConfig> context) {
 		var random = context.getRandom();
 		var world = context.getWorld();
 		var pos = context.getOrigin();
-		if (random.nextInt(AMConfig.get().world.crudeOilWellGenerationThreshold) > 1)
+		if (random.nextInt(AMConfig.get().world.crudeOilWellGenerationThreshold) > 1) {
 			return false;
+		}
 		
 		var offsetY = random.nextInt(BOTTOM_WELL_SIZE, BOTTOM_WELL_MAX_OFFSET);
-
+		
 		var oilState = AMFluids.OIL.getBlock().getDefaultState();
-
+		
 		Shapes.ellipsoid(BOTTOM_WELL_SIZE, BOTTOM_WELL_SIZE, BOTTOM_WELL_SIZE).applyLayer(TranslateLayer.of(Position.of(pos.offset(Direction.UP, offsetY)))).stream().forEach(position ->
-			world.setBlockState(position.toBlockPos(), oilState, 0)
+				world.setBlockState(position.toBlockPos(), oilState, 0)
 		);
-
+		
 		BlockPos oceanTop = world.getTopPosition(Heightmap.Type.WORLD_SURFACE_WG, pos);
-
+		
 		Shapes.ellipsoid(TOP_WELL_WIDTH, TOP_WELL_WIDTH, TOP_WELL_HEIGHT).applyLayer(NoiseTranslateLayer.of(TOP_WELL_NOISE, random)).applyLayer(TranslateLayer.of(Position.of(oceanTop))).stream().forEach(position -> {
 			if (world.getBlockState(position.toBlockPos()).getBlock() instanceof FluidBlock) {
 				world.setBlockState(position.toBlockPos(), oilState, 0);
 			}
 		});
-
+		
 		int geyserHeight = random.nextInt(GEYSER_MIN_HEIGHT, GEYSER_MAX_HEIGHT);
-
+		
 		for (var mutablePos = new BlockPos.Mutable(pos.getX(), pos.getY() + offsetY + BOTTOM_WELL_SIZE, pos.getZ()); mutablePos.getY() < oceanTop.getY() + geyserHeight; mutablePos.move(Direction.UP)) {
 			world.setBlockState(mutablePos, oilState, 0);
-
-			for (var direction : new Direction[]{ Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST }) {
+			
+			for (var direction : new Direction[] { Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST }) {
 				world.setBlockState(mutablePos.offset(direction), Blocks.AIR.getDefaultState(), 0);
 			}
-
+			
 			world.createAndScheduleFluidTick(mutablePos, AMFluids.OIL, 0);
 		}
-
+		
 		return true;
 	}
 }

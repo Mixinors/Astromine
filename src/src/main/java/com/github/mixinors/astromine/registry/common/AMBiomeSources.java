@@ -27,7 +27,6 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.world.generation.space.EarthSpaceBiomeSource;
-
 import net.minecraft.util.registry.Registry;
 
 public class AMBiomeSources {

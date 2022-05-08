@@ -1,9 +1,8 @@
 package com.github.mixinors.astromine.common.config.section;
 
+import com.github.mixinors.astromine.common.config.entry.ore.OreConfig;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
-
-import com.github.mixinors.astromine.common.config.entry.ore.OreConfig;
 
 public class OresConfigSection {
 	@Comment("Settings for Asteroid Coal Ore")

@@ -24,18 +24,16 @@
 
 package com.github.mixinors.astromine.common.block.entity.utility;
 
-import java.util.Arrays;
-
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.provider.FluidStorageSizeProvider;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import java.util.Arrays;
 
 public class DrainBlockEntity extends ExtendedBlockEntity implements FluidStorageSizeProvider {
 	private static final int INPUT_SLOT = 0;
@@ -48,9 +46,9 @@ public class DrainBlockEntity extends ExtendedBlockEntity implements FluidStorag
 		super(AMBlockEntityTypes.DRAIN, blockPos, blockState);
 		
 		fluidStorage = new SimpleFluidStorage(1, getFluidStorageSize()).insertPredicate((variant, slot) ->
-			shouldRun()
+				shouldRun()
 		).extractPredicate((variant, slot) ->
-			false
+				false
 		).listener(() -> {
 			markDirty();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
@@ -62,15 +60,16 @@ public class DrainBlockEntity extends ExtendedBlockEntity implements FluidStorag
 	
 	@Override
 	public void tick() {
-		if (world == null)
+		if (world == null) {
 			return;
-
+		}
+		
 		var inputStorage = fluidStorage.getStorage(INPUT_SLOT);
-
+		
 		if (!inputStorage.isResourceBlank()) {
 			try (var transaction = Transaction.openOuter()) {
 				inputStorage.extract(inputStorage.getResource(), Long.MAX_VALUE, transaction);
-
+				
 				transaction.commit();
 			}
 		}

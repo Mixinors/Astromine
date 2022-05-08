@@ -31,25 +31,24 @@ import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.bar.FluidBarWidget;
-
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 public class ElectrolyzerScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final ElectrolyzerBlockEntity electrolyzer;
-
+	
 	public ElectrolyzerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.ELECTROLYZER, syncId, player, position);
-
+		
 		electrolyzer = (ElectrolyzerBlockEntity) blockEntity;
 	}
-
+	
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		
 		var firstOutputFluidBar = new FluidBarWidget();
-		firstOutputFluidBar.setSize( new Size(fluidBar));
+		firstOutputFluidBar.setSize(new Size(fluidBar));
 		firstOutputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(1));
 		firstOutputFluidBar.setSmooth(false);
 		
@@ -63,10 +62,10 @@ public class ElectrolyzerScreenHandler extends ExtendedBlockEntityScreenHandler 
 		arrow.setSize(new Size(22.0F, 16.0F));
 		arrow.setLimitSupplier(() -> electrolyzer.limit);
 		arrow.setProgressSupplier(() -> (int) electrolyzer.progress);
-
+		
 		firstOutputFluidBar.setPosition(new Position(arrow.getPosition(), 7.0F + fluidBar.getWidth(), -fluidBar.getHeight() / 2.0F + arrow.getHeight() / 2.0F));
-		secondOutputFluidBar.setPosition( new Position(arrow.getPosition(), 7.0F + fluidBar.getWidth() + 7.0F + fluidBar.getWidth(), -fluidBar.getHeight() / 2.0F + arrow.getHeight() / 2.0F));
-
+		secondOutputFluidBar.setPosition(new Position(arrow.getPosition(), 7.0F + fluidBar.getWidth() + 7.0F + fluidBar.getWidth(), -fluidBar.getHeight() / 2.0F + arrow.getHeight() / 2.0F));
+		
 		mainTab.add(firstOutputFluidBar);
 		mainTab.add(secondOutputFluidBar);
 		mainTab.add(arrow);

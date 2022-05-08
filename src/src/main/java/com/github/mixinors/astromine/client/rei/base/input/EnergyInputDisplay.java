@@ -24,14 +24,12 @@
 
 package com.github.mixinors.astromine.client.rei.base.input;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.github.mixinors.astromine.client.rei.base.AMDisplay;
-
+import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import net.minecraft.util.Identifier;
 
-import me.shedaniel.rei.api.common.entry.EntryIngredient;
+import java.util.List;
+import java.util.Optional;
 
 public abstract class EnergyInputDisplay implements AMDisplay {
 	private final List<EntryIngredient> inputs;
@@ -39,7 +37,7 @@ public abstract class EnergyInputDisplay implements AMDisplay {
 	private final int timeRequired;
 	private final long energyRequired;
 	private final Identifier recipeId;
-
+	
 	public EnergyInputDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, int timeRequired, long energyRequired, Identifier recipeId) {
 		this.inputs = inputs;
 		this.outputs = outputs;
@@ -47,25 +45,25 @@ public abstract class EnergyInputDisplay implements AMDisplay {
 		this.energyRequired = energyRequired;
 		this.recipeId = recipeId;
 	}
-
+	
 	@Override
 	public List<EntryIngredient> getInputEntries() {
 		return inputs;
 	}
-
+	
 	@Override
 	public List<EntryIngredient> getOutputEntries() {
 		return outputs;
 	}
-
+	
 	public int getTimeRequired() {
 		return timeRequired;
 	}
-
+	
 	public long getEnergyRequired() {
 		return energyRequired;
 	}
-
+	
 	@Override
 	public Optional<Identifier> getDisplayLocation() {
 		return Optional.ofNullable(this.recipeId);

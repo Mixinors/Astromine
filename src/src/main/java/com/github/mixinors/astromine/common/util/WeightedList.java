@@ -24,91 +24,90 @@
 
 package com.github.mixinors.astromine.common.util;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
-import java.util.stream.Stream;
-
 import com.google.common.collect.Lists;
-
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Dynamic;
 import com.mojang.serialization.DynamicOps;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.Random;
+import java.util.stream.Stream;
+
 public class WeightedList<U> {
 	private static final String DATA_KEY = "data";
 	private static final String WEIGHT_KEY = "weight";
 	
 	protected final List<WeightedList.Entry<U>> entries;
-
+	
 	public WeightedList() {
 		this.entries = Lists.newArrayList();
 	}
-
+	
 	private WeightedList(List<WeightedList.Entry<U>> list) {
 		this.entries = Lists.newArrayList(list);
 	}
-
+	
 	public static <U> Codec<WeightedList<U>> createCodec(Codec<U> codec) {
 		return WeightedList.Entry.createCodec(codec).listOf().xmap(WeightedList::new, (weightedList) -> weightedList.entries);
 	}
-
+	
 	public WeightedList<U> add(U data, int weight) {
 		this.entries.add(new WeightedList.Entry<>(data, weight));
 		return this;
 	}
-
+	
 	public WeightedList<U> shuffle(Random random) {
 		this.entries.forEach((entry) -> entry.setShuffledOrder(random.nextFloat()));
 		this.entries.sort(Comparator.comparingDouble(WeightedList.Entry::getShuffledOrder));
 		return this;
 	}
-
+	
 	public Stream<U> stream() {
 		return this.entries.stream().map(WeightedList.Entry::getElement);
 	}
-
+	
 	public String toString() {
 		return "WeightedList[" + this.entries + "]";
 	}
-
+	
 	public boolean isEmpty() {
 		return this.entries.isEmpty();
 	}
-
+	
 	public static class Entry<T> {
 		final T data;
 		final int weight;
 		private double shuffledOrder;
-
+		
 		Entry(T object, int i) {
 			this.weight = i;
 			this.data = object;
 		}
-
+		
 		private double getShuffledOrder() {
 			return this.shuffledOrder;
 		}
-
+		
 		void setShuffledOrder(float random) {
 			this.shuffledOrder = -Math.pow(random, 1.0F / (float) this.weight);
 		}
-
+		
 		public T getElement() {
 			return this.data;
 		}
-
+		
 		public int getWeight() {
 			return this.weight;
 		}
-
+		
 		public String toString() {
 			return this.weight + ":" + this.data;
 		}
-
+		
 		public static <E> Codec<WeightedList.Entry<E>> createCodec(Codec<E> codec) {
 			return new Codec<>() {
 				@Override
@@ -121,7 +120,7 @@ public class WeightedList<U> {
 						return new WeightedList.Entry<>(data, dynamic.get(WEIGHT_KEY).asInt(1));
 					}).map((entry) -> Pair.of(entry, dynamicOps.empty()));
 				}
-
+				
 				@Override
 				public <T> DataResult<T> encode(WeightedList.Entry<E> entry, DynamicOps<T> dynamicOps, T object) {
 					return dynamicOps.mapBuilder().add(WEIGHT_KEY, dynamicOps.createInt(entry.weight)).add(DATA_KEY, codec.encodeStart(dynamicOps, entry.data)).build(object);

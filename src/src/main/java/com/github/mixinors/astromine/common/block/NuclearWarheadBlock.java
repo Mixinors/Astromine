@@ -26,7 +26,6 @@ package com.github.mixinors.astromine.common.block;
 
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.util.ExplosionUtils;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
@@ -36,20 +35,21 @@ public class NuclearWarheadBlock extends Block {
 	public NuclearWarheadBlock(Settings settings) {
 		super(settings);
 	}
-
+	
 	@Override
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
 		this.tryDetonate(world, pos);
 	}
-
+	
 	@Override
 	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
 		this.tryDetonate(world, pos);
 	}
-
+	
 	private void tryDetonate(World world, BlockPos pos) {
-		if (world.isClient)
+		if (world.isClient) {
 			return;
+		}
 		if (world.isReceivingRedstonePower(pos)) {
 			if (AMConfig.get().nuclearWarheadEnabled) {
 				ExplosionUtils.attemptExplosion(world, pos.getX(), pos.getY(), pos.getZ(), 128);

@@ -30,18 +30,13 @@ import com.github.mixinors.astromine.common.config.entry.utility.UtilityConfig;
 import com.github.mixinors.astromine.common.provider.config.UtilityConfigProvider;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.*;
-import net.minecraft.block.enums.BlockHalf;
-import net.minecraft.block.enums.DoubleBlockHalf;
-import net.minecraft.state.property.Property;
-import org.jetbrains.annotations.NotNull;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
-
 import net.minecraft.item.BlockItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
-
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import org.jetbrains.annotations.NotNull;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements UtilityConfigProvider<UtilityConfig> {
 	private long cooldown = 0L;
@@ -51,14 +46,14 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Utili
 	public static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
 	
 	public static final int[] EXTRACT_SLOTS = new int[] { };
-
+	
 	public BlockPlacerBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.BLOCK_PLACER, blockPos, blockState);
 		
 		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), getMaxTransferRate(), 0L);
-
+		
 		itemStorage = new SimpleItemStorage(1).extractPredicate((variant, slot) ->
-			false
+				false
 		).insertPredicate((variant, slot) -> {
 			if (slot != INPUT_SLOT) {
 				return false;
@@ -69,14 +64,15 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Utili
 			markDirty();
 		}).insertSlots(INSERT_SLOTS).extractSlots(EXTRACT_SLOTS);
 	}
-
+	
 	@Override
 	public void tick() {
 		super.tick();
-
-		if (world == null || world.isClient || !shouldRun())
+		
+		if (world == null || world.isClient || !shouldRun()) {
 			return;
-
+		}
+		
 		if (itemStorage != null && itemStorage != null) {
 			var consumed = getEnergyConsumed();
 			
@@ -104,7 +100,7 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Utili
 								return;
 							}
 							
-							if (storedState.canPlaceAt(world, targetPos) && targetState.isAir()){
+							if (storedState.canPlaceAt(world, targetPos) && targetState.isAir()) {
 								if (cooldown >= getSpeed()) {
 									world.setBlockState(targetPos, storedState);
 									
@@ -124,7 +120,7 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Utili
 									
 									isActive = true;
 								}
-							} else{
+							} else {
 								isActive = false;
 								
 								transaction.abort();
@@ -139,21 +135,21 @@ public class BlockPlacerBlockEntity extends ExtendedBlockEntity implements Utili
 			}
 		}
 	}
-
+	
 	@Override
 	public void writeNbt(NbtCompound nbt) {
 		nbt.putLong("Cooldown", cooldown);
 		
 		super.writeNbt(nbt);
 	}
-
+	
 	@Override
 	public void readNbt(@NotNull NbtCompound nbt) {
 		cooldown = nbt.getLong("Cooldown");
 		
 		super.readNbt(nbt);
 	}
-
+	
 	@Override
 	public UtilityConfig getConfig() {
 		return AMConfig.get().blocks.utilities.blockPlacer;

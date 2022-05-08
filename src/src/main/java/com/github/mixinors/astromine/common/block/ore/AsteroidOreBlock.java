@@ -24,17 +24,16 @@
 
 package com.github.mixinors.astromine.common.block.ore;
 
-import java.util.Random;
-
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-
 import net.minecraft.util.math.MathHelper;
+
+import java.util.Random;
 
 public class AsteroidOreBlock extends AstromineOreBlock {
 	public AsteroidOreBlock(Settings settings) {
 		super(settings);
 	}
-
+	
 	@Override
 	protected int getExperienceWhenMined(Random random) {
 		if (this == AMBlocks.ASTEROID_ASTERITE_ORE.get()) {

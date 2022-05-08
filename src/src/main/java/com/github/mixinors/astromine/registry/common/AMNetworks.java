@@ -30,7 +30,6 @@ import com.github.mixinors.astromine.common.transfer.RedstoneControl;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.StorageType;
 import dev.architectury.networking.NetworkManager;
-
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
@@ -49,7 +48,7 @@ public class AMNetworks {
 			var type = buf.readEnumConstant(StorageType.class);
 			var direction = buf.readEnumConstant(Direction.class);
 			var pos = buf.readBlockPos();
-
+			
 			context.queue(() -> {
 				var blockEntity = (ExtendedBlockEntity) context.getPlayer().world.getBlockEntity(pos);
 				

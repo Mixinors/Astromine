@@ -32,19 +32,16 @@ import net.minecraft.tag.Tag;
 import net.minecraft.tag.TagKey;
 
 /**
- * A {@link MultiRegistry} for registration of
- * {@link EntityType}s to {@link Tag<Fluid>}.
- *
- * The specified {@link TagKey<Fluid>}(s) registered for
- * the {@link EntityType} are used to verify if the entity
- * can breathe, in {@link LivingEntityMixin}.
+ * A {@link MultiRegistry} for registration of {@link EntityType}s to {@link Tag<Fluid>}.
+ * <p>
+ * The specified {@link TagKey<Fluid>}(s) registered for the {@link EntityType} are used to verify if the entity can breathe, in {@link LivingEntityMixin}.
  */
 public class BreathableRegistry extends MultiRegistry<EntityType<?>, TagKey<Fluid>> {
 	public static final BreathableRegistry INSTANCE = new BreathableRegistry();
-
+	
 	/** We only want one instance of this. */
 	private BreathableRegistry() {}
-
+	
 	/** Registers a variable amount of {@link TagKey<Fluid>}. */
 	@SafeVarargs
 	public final void register(EntityType<?> type, TagKey<Fluid>... tags) {
@@ -52,7 +49,7 @@ public class BreathableRegistry extends MultiRegistry<EntityType<?>, TagKey<Flui
 			register(type, tag);
 		}
 	}
-
+	
 	/** Asserts whether the given {@link EntityType} can breathe in the specified {@link Fluid}, or not. */
 	public boolean canBreathe(EntityType<?> type, Fluid fluid) {
 		return get(type).stream().anyMatch(fluid::isIn) || get(type).isEmpty();

@@ -28,8 +28,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.world.TeleportTarget;
 
 /**
- * An interface describing a placer for
- * {@link Entity}-ies.
+ * An interface describing a placer for {@link Entity}-ies.
  */
 public interface EntityPlacer {
 	/** Returns a {@link TeleportTarget} for the given entity. */

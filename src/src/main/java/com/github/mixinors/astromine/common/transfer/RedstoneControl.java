@@ -25,8 +25,7 @@
 package com.github.mixinors.astromine.common.transfer;
 
 /**
- * A {@link RedstoneControl} which dictates in which
- * Redstone power states a machine should run.
+ * A {@link RedstoneControl} which dictates in which Redstone power states a machine should run.
  */
 public enum RedstoneControl {
 	/**
@@ -43,8 +42,8 @@ public enum RedstoneControl {
 	WORK_ALWAYS;
 	
 	/**
-	 * Returns whether the given Redstone state
-	 * allows for machines to run in this control.
+	 * Returns whether the given Redstone state allows for machines to run in this control.
+	 *
 	 * @param powered the state.
 	 */
 	public boolean shouldRun(boolean powered) {

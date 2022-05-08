@@ -24,52 +24,51 @@
 
 package com.github.mixinors.astromine.common.item.base;
 
-import team.reborn.energy.api.EnergyStorage;
-import team.reborn.energy.api.base.SimpleBatteryItem;
-
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
+import team.reborn.energy.api.EnergyStorage;
+import team.reborn.energy.api.base.SimpleBatteryItem;
 
 /**
  * An {@link Item} with an attached {@link EnergyStorage}.
  */
 public class EnergyStorageItem extends Item implements SimpleBatteryItem {
 	private final long capacity;
-
+	
 	/** Instantiates an {@link EnergyStorageItem}s. */
 	protected EnergyStorageItem(Item.Settings settings, long capacity) {
 		super(settings);
-
+		
 		this.capacity = capacity;
 	}
-
+	
 	/** Instantiates an {@link EnergyStorageItem}. */
 	public static EnergyStorageItem ofCreative(Item.Settings settings) {
 		return new EnergyStorageItem(settings, Long.MAX_VALUE);
 	}
-
+	
 	/** Instantiates an {@link EnergyStorageItem}s. */
 	public static EnergyStorageItem of(Settings settings, long size) {
 		return new EnergyStorageItem(settings, size);
 	}
-
+	
 	@Override
 	public long getEnergyCapacity() {
 		return capacity;
 	}
-
+	
 	@Override
 	public long getEnergyMaxInput() {
 		return capacity;
 	}
-
+	
 	@Override
 	public long getEnergyMaxOutput() {
 		return capacity;
 	}
-
+	
 	/** Override behavior to return our progress. */
 	@Override
 	public int getItemBarStep(ItemStack stack) {
@@ -79,30 +78,31 @@ public class EnergyStorageItem extends Item implements SimpleBatteryItem {
 		
 		return (int) (13 * ((float) SimpleBatteryItem.getStoredEnergyUnchecked(stack) / (float) getEnergyCapacity()));
 	}
-
+	
 	/** Override behavior to return true. */
 	@Override
 	public boolean isItemBarVisible(ItemStack stack) {
 		return true;
 	}
-
+	
 	/** Override behavior to return a median red. */
 	@Override
 	public int getItemBarColor(ItemStack stack) {
 		return 0x91261f;
 	}
-
-	/** Override behavior to add instances of {@link EnergyStorageItem}
-	 * as {@link ItemStack}s to {@link ItemGroup}s with full energy. */
+	
+	/**
+	 * Override behavior to add instances of {@link EnergyStorageItem} as {@link ItemStack}s to {@link ItemGroup}s with full energy.
+	 */
 	@Override
 	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
 		super.appendStacks(group, stacks);
-
+		
 		if (this.isIn(group)) {
 			var stack = new ItemStack(this);
-
+			
 			setStoredEnergy(stack, getEnergyCapacity());
-
+			
 			stacks.add(stack);
 		}
 	}

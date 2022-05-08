@@ -26,13 +26,11 @@ package com.github.mixinors.astromine.mixin.common;
 
 import com.github.mixinors.astromine.registry.common.AMAttributes;
 import com.github.mixinors.astromine.registry.common.AMTags;
-
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.math.Vec3d;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -45,7 +43,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class LivingEntityMixin extends EntityMixin {
 	@Unique
 	private static final ThreadLocal<Boolean> FAKE_BEING_IN_LAVA = ThreadLocal.withInitial(() -> Boolean.FALSE);
-
+	
 	@Inject(at = @At("RETURN"), method = "createLivingAttributes()Lnet/minecraft/entity/attribute/DefaultAttributeContainer$Builder;")
 	private static void astromine$createLivingAttributes(CallbackInfoReturnable<DefaultAttributeContainer.Builder> cir) {
 		cir.getReturnValue().add(AMAttributes.GRAVITY_MULTIPLIER.get());
@@ -121,7 +119,7 @@ public abstract class LivingEntityMixin extends EntityMixin {
 		// 	}
 		// }
 	}
-
+	
 	// A redirect would be the most efficient, but ModifyArg is the only compatible option
 	@ModifyArg(method = "baseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isSubmergedIn(Lnet/minecraft/tag/TagKey;)Z"))
 	private TagKey<Fluid> astromine$tickAirInFluid(TagKey<Fluid> tag) {
@@ -137,7 +135,7 @@ public abstract class LivingEntityMixin extends EntityMixin {
 	private boolean am_allowIndustrialFluidSwimming(boolean touchingWater) {
 		return touchingWater || this.getFluidHeight(AMTags.INDUSTRIAL_FLUID) > 0;
 	}*/
-
+	
 	@Inject(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isInLava()Z"))
 	private void astromine$travel(Vec3d movementInput, CallbackInfo ci) {
 		FAKE_BEING_IN_LAVA.set(Boolean.TRUE);
@@ -145,6 +143,7 @@ public abstract class LivingEntityMixin extends EntityMixin {
 	
 	/**
 	 * Overrides the inject in {@link EntityMixin}.
+	 *
 	 * @param cir
 	 */
 	@Override

@@ -47,17 +47,17 @@ import java.util.function.Consumer;
 public abstract class MachineRecipeJsonFactory<T extends EnergyConsumingRecipe> implements CraftingRecipeJsonBuilder {
 	protected final int processingTime;
 	protected final AbstractRecipeSerializer<T> serializer;
-
+	
 	protected MachineRecipeJsonFactory(int processingTime, AbstractRecipeSerializer<T> serializer) {
 		this.processingTime = processingTime;
 		this.serializer = serializer;
 	}
-
+	
 	@Override
 	public void offerTo(Consumer<RecipeJsonProvider> exporter) {
 		this.offerTo(exporter, getRecipeId());
 	}
-
+	
 	@Override
 	public void offerTo(Consumer<RecipeJsonProvider> exporter, String recipePath) {
 		var defaultId = getRecipeId();
@@ -68,18 +68,18 @@ public abstract class MachineRecipeJsonFactory<T extends EnergyConsumingRecipe> 
 			this.offerTo(exporter, givenId);
 		}
 	}
-
+	
 	public abstract String getName();
-
+	
 	@Override
 	public Item getOutputItem() {
 		return Items.AIR;
 	}
-
+	
 	public Fluid getOutputFluid() {
 		return Fluids.EMPTY;
 	}
-
+	
 	public Identifier getOutputId() {
 		return switch (getOutputType()) {
 			case ITEM -> CraftingRecipeJsonBuilder.getItemId(getOutputItem());
@@ -87,90 +87,90 @@ public abstract class MachineRecipeJsonFactory<T extends EnergyConsumingRecipe> 
 			case ENERGY -> AMCommon.id("energy");
 		};
 	}
-
+	
 	public Identifier getRecipeId() {
 		return new Identifier(getOutputId() + "_from_" + getName());
 	}
-
+	
 	@Override
 	public CraftingRecipeJsonBuilder criterion(String name, CriterionConditions conditions) {
 		// we don't use recipe advancements here!
 		return this;
 	}
-
+	
 	@Override
 	public CraftingRecipeJsonBuilder group(@Nullable String group) {
 		// we don't use groups here!
 		return this;
 	}
-
+	
 	static Identifier getFluidId(Fluid fluid) {
 		return Registry.FLUID.getId(fluid);
 	}
-
+	
 	public abstract OutputType getOutputType();
-
+	
 	public static PressingRecipeJsonFactory createPressing(Ingredient input, ItemConvertible output, int outputCount, int processingTime, int energy) {
 		return new PressingRecipeJsonFactory(input, output, outputCount, processingTime, energy);
 	}
-
+	
 	public static TrituratingRecipeJsonFactory createTriturating(Ingredient input, ItemConvertible output, int outputCount, int processingTime, int energy) {
 		return new TrituratingRecipeJsonFactory(input, output, outputCount, processingTime, energy);
 	}
-
+	
 	public static WireMillingRecipeJsonFactory createWireMilling(Ingredient input, ItemConvertible output, int outputCount, int processingTime, int energy) {
 		return new WireMillingRecipeJsonFactory(input, output, outputCount, processingTime, energy);
 	}
-
+	
 	public static AlloySmeltingRecipeJsonFactory createAlloySmelting(Ingredient firstInput, int firstCount, Ingredient secondInput, int secondCount, ItemConvertible output, int outputCount, int processingTime, int energy) {
 		return new AlloySmeltingRecipeJsonFactory(firstInput, firstCount, secondInput, secondCount, output, outputCount, processingTime, energy);
 	}
-
+	
 	public static MeltingRecipeJsonFactory createMelting(Ingredient input, Fluid output, int outputAmount, int processingTime, int energy) {
 		return new MeltingRecipeJsonFactory(input, output, outputAmount, processingTime, energy);
 	}
-
+	
 	public abstract static class MachineRecipeJsonProvider<T extends EnergyConsumingRecipe> implements RecipeJsonProvider {
 		protected final Identifier recipeId;
 		protected final int processingTime;
 		protected final RecipeSerializer<T> serializer;
-
+		
 		public MachineRecipeJsonProvider(Identifier recipeId, int processingTime, RecipeSerializer<T> serializer) {
 			this.recipeId = recipeId;
 			this.processingTime = processingTime;
 			this.serializer = serializer;
 		}
-
+		
 		@Override
 		public void serialize(JsonObject json) {
 			json.addProperty("time", this.processingTime);
 		}
-
+		
 		@Override
 		public RecipeSerializer<?> getSerializer() {
 			return this.serializer;
 		}
-
+		
 		@Nullable
 		@Override
 		public JsonObject toAdvancementJson() {
 			// we don't use recipe advancements here!
 			return null;
 		}
-
+		
 		@Nullable
 		@Override
 		public Identifier getAdvancementId() {
 			// we don't use recipe advancements here!
 			return null;
 		}
-
+		
 		@Override
 		public Identifier getRecipeId() {
 			return this.recipeId;
 		}
 	}
-
+	
 	public enum OutputType {
 		ITEM,
 		FLUID,

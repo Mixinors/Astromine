@@ -24,10 +24,6 @@
 
 package com.github.mixinors.astromine.common.widget;
 
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
 import com.github.mixinors.astromine.AMCommon;
 import dev.vini2003.hammer.core.api.client.texture.BaseTexture;
 import dev.vini2003.hammer.core.api.client.texture.FluidTexture;
@@ -35,18 +31,19 @@ import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
 import dev.vini2003.hammer.core.api.client.texture.TiledFluidTexture;
 import dev.vini2003.hammer.core.api.common.util.FluidTextUtils;
 import dev.vini2003.hammer.gui.api.common.widget.button.ButtonWidget;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import org.jetbrains.annotations.NotNull;
-
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class FluidFilterWidget extends ButtonWidget {
 	private static final BaseTexture STANDARD_BACKGROUND_TEXTURE = new ImageTexture(AMCommon.id("textures/widget/fluid_filter_background.png"));
@@ -54,7 +51,7 @@ public class FluidFilterWidget extends ButtonWidget {
 	
 	private BaseTexture backgroundTexture = STANDARD_BACKGROUND_TEXTURE;
 	private BaseTexture foregroundtexture = STANDARD_FOREGROUND_TEXTURE;
-
+	
 	private Supplier<FluidVariant> fluidSupplier = FluidVariant::blank;
 	private Consumer<FluidVariant> fluidConsumer = fluid -> {};
 	
@@ -67,7 +64,7 @@ public class FluidFilterWidget extends ButtonWidget {
 		var handler = handled.getHandler();
 		
 		var stack = getHandled().getHandler().getCursorStack();
-
+		
 		if (isPointWithin(x, y)) {
 			if (!stack.isEmpty()) {
 				var fluidStorage = FluidStorage.ITEM.find(stack, ContainerItemContext.ofPlayerCursor(handler.getPlayer(), handler));
@@ -89,21 +86,23 @@ public class FluidFilterWidget extends ButtonWidget {
 	@Override
 	public List<Text> getTooltip() {
 		var fluidTooltip = FluidTextUtils.getVariantTooltips(fluidSupplier.get()).get(0);
-
+		
 		return List.of(new TranslatableText("text.astromine.filter", fluidTooltip));
 	}
 	
 	@Override
 	public void drawWidget(@NotNull MatrixStack matrices, @NotNull VertexConsumerProvider provider, float delta) {
 		var x = getX();
-		var y=  getY();
-
+		var y = getY();
+		
 		var width = getWidth();
 		var height = getHeight();
 		
 		backgroundTexture.draw(matrices, provider, x, y, width, height);
 		
-		if (fluidSupplier.get().isBlank()) return;
+		if (fluidSupplier.get().isBlank()) {
+			return;
+		}
 		
 		foregroundtexture = new TiledFluidTexture(fluidSupplier.get());
 		

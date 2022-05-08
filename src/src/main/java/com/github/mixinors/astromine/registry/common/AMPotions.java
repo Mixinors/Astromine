@@ -26,6 +26,6 @@ package com.github.mixinors.astromine.registry.common;
 
 public class AMPotions {
 	public static void init() {
-
+	
 	}
 }

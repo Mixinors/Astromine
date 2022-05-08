@@ -62,52 +62,54 @@ public abstract class EntityMixin implements EntityAccessor {
 	private Entity astromine$lastVehicle = null;
 	
 	private TeleportTarget astromine$nextTeleportTarget = null;
-
+	
 	@Shadow
 	public abstract BlockPos getBlockPos();
-
+	
 	@Shadow
 	public abstract boolean updateMovementInFluid(TagKey<Fluid> tag, double d);
-
+	
 	@Shadow
 	public abstract boolean isSubmergedIn(TagKey<Fluid> tag);
 	
-	@Shadow public int age;
-
+	@Shadow
+	public int age;
+	
 	@Override
 	public boolean astromine$isInIndustrialFluid() {
 		return !this.firstUpdate && this.fluidHeight.getDouble(AMTags.INDUSTRIAL_FLUID) > 0.0D;
 	}
-
+	
 	@Inject(at = @At("HEAD"), method = "tickNetherPortal()V")
 	void astromine$tickNetherPortal(CallbackInfo callbackInformation) {
 		var entity = (Entity) (Object) this;
-
+		
 		if ((int) entity.getPos().getY() != astromine$lastY && !entity.world.isClient && entity.getVehicle() == null) {
 			astromine$lastY = (int) entity.getPos().getY();
 			
 			var bottomPortal = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.BOTTOM, entity.world.getRegistryKey());
 			var topPortal = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey());
-
+			
 			if (astromine$lastY <= bottomPortal && bottomPortal != Integer.MIN_VALUE) {
 				var worldKey = RegistryKey.of(Registry.WORLD_KEY, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.BOTTOM, entity.world.getRegistryKey()).getValue());
-
+				
 				astromine$teleport(entity, worldKey, DimensionLayerRegistry.Type.BOTTOM);
 			} else if (astromine$lastY >= topPortal && topPortal != Integer.MIN_VALUE) {
 				var worldKey = RegistryKey.of(Registry.WORLD_KEY, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey()).getValue());
-
+				
 				astromine$teleport(entity, worldKey, DimensionLayerRegistry.Type.TOP);
 			}
 		}
-
-		if (entity.getVehicle() != null)
+		
+		if (entity.getVehicle() != null) {
 			astromine$lastVehicle = null;
+		}
 		if (astromine$lastVehicle != null) {
 			entity.startRiding(astromine$lastVehicle);
 			astromine$lastVehicle = null;
 		}
 	}
-
+	
 	void astromine$teleport(Entity entity, RegistryKey<World> destinationKey, DimensionLayerRegistry.Type type) {
 		var serverWorld = entity.world.getServer().getWorld(destinationKey);
 		
@@ -117,19 +119,19 @@ public abstract class EntityMixin implements EntityAccessor {
 		for (var entry : entity.getDataTracker().getAllEntries()) {
 			entries.add(entry.copy());
 		}
-
+		
 		astromine$nextTeleportTarget = DimensionLayerRegistry.INSTANCE.getPlacer(type, entity.world.getRegistryKey()).placeEntity(entity);
 		var newEntity = entity.moveToWorld(serverWorld);
-
+		
 		for (var entry : entries) {
 			newEntity.getDataTracker().set(entry.getData(), entry.get());
 		}
-
+		
 		for (var existingEntity : existingPassengers) {
 			((EntityMixin) (Object) existingEntity).astromine$lastVehicle = newEntity;
 		}
 	}
-
+	
 	@Inject(method = "getTeleportTarget", at = @At("HEAD"), cancellable = true)
 	protected void astromine$getTeleportTarget(ServerWorld destination, CallbackInfoReturnable<TeleportTarget> cir) {
 		if (astromine$nextTeleportTarget != null) {
@@ -138,7 +140,7 @@ public abstract class EntityMixin implements EntityAccessor {
 			astromine$nextTeleportTarget = null;
 		}
 	}
-
+	
 	@Inject(at = @At("HEAD"), method = "tick()V")
 	void am_tick(CallbackInfo ci) {
 		// TODO: Rewrite Atmosphere stuff, incl. this.
@@ -156,14 +158,14 @@ public abstract class EntityMixin implements EntityAccessor {
 		// 	}));
 		// }
 	}
-
+	
 	@Inject(method = "updateWaterState", at = @At("RETURN"), cancellable = true)
 	private void astromine$updateIndustrialFluidState(CallbackInfoReturnable<Boolean> cir) {
 		if (this.updateMovementInFluid(AMTags.INDUSTRIAL_FLUID, 0.014)) {
 			cir.setReturnValue(true);
 		}
 	}
-
+	
 	@Inject(method = "isInLava", at = @At("RETURN"), cancellable = true)
 	protected void astromine$fakeLava(CallbackInfoReturnable<Boolean> cir) {
 		// NO-OP

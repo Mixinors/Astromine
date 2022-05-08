@@ -24,17 +24,13 @@
 
 package com.github.mixinors.astromine.common.recipe;
 
-import java.util.Random;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
 import com.github.mixinors.astromine.common.util.IngredientUtils;
 import com.github.mixinors.astromine.common.util.StackUtils;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import dev.architectury.core.AbstractRecipeSerializer;
-
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -45,24 +41,26 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
+import java.util.Random;
+
 public class WireCuttingRecipe extends SpecialCraftingRecipe {
 	private static final Random RANDOM = new Random();
 	private final Ingredient input;
 	private final Ingredient tool;
 	private final ItemStack output;
-
+	
 	public WireCuttingRecipe(Identifier id, Ingredient input, Ingredient tool, ItemStack output) {
 		super(id);
 		this.input = input;
 		this.tool = tool;
 		this.output = output;
 	}
-
+	
 	@Override
 	public boolean matches(CraftingInventory inv, World world) {
 		var inputCount = 0;
 		var shearsCount = 0;
-
+		
 		for (var k = 0; k < inv.size(); ++k) {
 			var itemStack = inv.getStack(k);
 			
@@ -73,19 +71,19 @@ public class WireCuttingRecipe extends SpecialCraftingRecipe {
 					if (!tool.test(itemStack)) {
 						return false;
 					}
-
+					
 					++shearsCount;
 				}
-
+				
 				if (shearsCount > 1 || inputCount > 1) {
 					return false;
 				}
 			}
 		}
-
+		
 		return inputCount == 1 && shearsCount == 1;
 	}
-
+	
 	@Override
 	public ItemStack craft(CraftingInventory inv) {
 		return this.output.copy();
@@ -94,30 +92,30 @@ public class WireCuttingRecipe extends SpecialCraftingRecipe {
 	public Ingredient getInput() {
 		return input;
 	}
-
+	
 	public Ingredient getTool() {
 		return tool;
 	}
-
+	
 	@Override
 	public ItemStack getOutput() {
 		return output;
 	}
-
+	
 	@Override
 	public boolean fits(int width, int height) {
 		return width * height >= 2;
 	}
-
+	
 	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return Serializer.INSTANCE;
 	}
-
+	
 	@Override
 	public DefaultedList<ItemStack> getRemainder(CraftingInventory inv) {
 		var remainingStacks = DefaultedList.ofSize(inv.size(), ItemStack.EMPTY);
-
+		
 		for (var i = 0; i < remainingStacks.size(); ++i) {
 			var itemStack = inv.getStack(i);
 			
@@ -134,35 +132,35 @@ public class WireCuttingRecipe extends SpecialCraftingRecipe {
 				break;
 			}
 		}
-
+		
 		return remainingStacks;
 	}
-
+	
 	public static final class Serializer extends AbstractRecipeSerializer<WireCuttingRecipe> {
 		public static final Identifier ID = AMCommon.id("wire_cutting");
-
+		
 		public static final Serializer INSTANCE = new Serializer();
-
+		
 		private Serializer() {}
-
+		
 		@Override
 		public WireCuttingRecipe read(Identifier identifier, JsonObject object) {
 			var format = new Gson().fromJson(object, WireCuttingRecipe.Format.class);
-
+			
 			return new WireCuttingRecipe(identifier,
-				IngredientUtils.fromIngredientJson(format.input),
-				IngredientUtils.fromIngredientJson(format.tool),
-				StackUtils.fromJson(format.output));
+					IngredientUtils.fromIngredientJson(format.input),
+					IngredientUtils.fromIngredientJson(format.tool),
+					StackUtils.fromJson(format.output));
 		}
-
+		
 		@Override
 		public WireCuttingRecipe read(Identifier identifier, PacketByteBuf buffer) {
 			return new WireCuttingRecipe(identifier,
-				IngredientUtils.fromIngredientPacket(buffer),
-				IngredientUtils.fromIngredientPacket(buffer),
-				StackUtils.fromPacket(buffer));
+					IngredientUtils.fromIngredientPacket(buffer),
+					IngredientUtils.fromIngredientPacket(buffer),
+					StackUtils.fromPacket(buffer));
 		}
-
+		
 		@Override
 		public void write(PacketByteBuf buffer, WireCuttingRecipe recipe) {
 			IngredientUtils.toIngredientPacket(buffer, recipe.input);
@@ -170,18 +168,18 @@ public class WireCuttingRecipe extends SpecialCraftingRecipe {
 			StackUtils.toPacket(buffer, recipe.output);
 		}
 	}
-
+	
 	public static final class Type implements AMRecipeType<WireCuttingRecipe> {
 		public static final Type INSTANCE = new Type();
-
+		
 		private Type() {}
 	}
-
+	
 	public static final class Format {
 		JsonObject input;
-
+		
 		JsonObject tool;
-
+		
 		JsonObject output;
 	}
 }

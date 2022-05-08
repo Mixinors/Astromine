@@ -35,17 +35,17 @@ public interface UtilityConfigProvider<T extends UtilityConfig> extends ConfigPr
 	default long getEnergyStorageSize() {
 		return getConfig().getEnergyStorageSize();
 	}
-
+	
 	@Override
 	default long getMaxTransferRate() {
 		return (long) (2048 * getSpeed());
 	}
-
+	
 	@Override
 	default long getEnergyConsumed() {
 		return getConfig().getEnergyConsumed();
 	}
-
+	
 	@Override
 	default double getSpeed() {
 		return getConfig().getSpeed();

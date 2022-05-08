@@ -28,8 +28,6 @@ import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWith
 import com.github.mixinors.astromine.common.block.entity.HoloBridgeProjectorBlockEntity;
 import dev.architectury.hooks.block.BlockEntityHooks;
 import dev.vini2003.hammer.core.api.common.color.Color;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -45,86 +43,88 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 public class HoloBridgeProjectorBlock extends HorizontalFacingBlockWithEntity {
 	public HoloBridgeProjectorBlock(AbstractBlock.Settings settings) {
 		super(settings);
 	}
-
+	
 	@Override
 	public SavedData getSavedDataForDroppedItem() {
 		return new SavedData(false, false, false, false);
 	}
-
+	
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos position, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		var stack = player.getStackInHand(hand);
-
+		
 		boolean changeColor = false;
 		Color color = null;
-
+		
 		if (stack.getItem() instanceof DyeItem dye) {
 			changeColor = true;
 			var dyeColor = dye.getColor().getColorComponents();
 			color = new Color(dyeColor[0], dyeColor[1], dyeColor[2], 0x7E);
-		} else if(stack.getItem() == Items.WATER_BUCKET) {
+		} else if (stack.getItem() == Items.WATER_BUCKET) {
 			changeColor = true;
 			color = HoloBridgeProjectorBlockEntity.DEFAULT_COLOR;
 		}
-
+		
 		if (changeColor) {
 			var originalEntity = (HoloBridgeProjectorBlockEntity) world.getBlockEntity(position);
-
-			for (var entity : new HoloBridgeProjectorBlockEntity[] {originalEntity.getChild(), originalEntity, originalEntity.getParent()}) {
+			
+			for (var entity : new HoloBridgeProjectorBlockEntity[] { originalEntity.getChild(), originalEntity, originalEntity.getParent() }) {
 				if (entity != null) {
 					entity.color = color;
-
+					
 					entity.markDirty();
-
-					if (!world.isClient)
+					
+					if (!world.isClient) {
 						BlockEntityHooks.syncData(entity);
-
+					}
+					
 					if (entity.hasChild()) {
 						entity.getChild().color = color;
-
+						
 						entity.getChild().markDirty();
-
+						
 						if (!world.isClient) {
 							BlockEntityHooks.syncData(entity.getChild());
 						}
 					}
-
+					
 					if (!player.isCreative()) {
 						stack.decrement(1);
 					}
 				}
 			}
-
+			
 			return ActionResult.PASS;
 		}
-
+		
 		return ActionResult.PASS;
 	}
-
+	
 	@Override
 	public boolean hasScreenHandler() {
 		return false;
 	}
-
+	
 	@Nullable
 	@Override
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 		return new HoloBridgeProjectorBlockEntity(pos, state);
 	}
-
+	
 	@Override
 	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
 		return null;
 	}
-
+	
 	@Override
 	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {}
-
+	
 	@Override
 	public boolean saveTagToDroppedItem() {
 		return false;

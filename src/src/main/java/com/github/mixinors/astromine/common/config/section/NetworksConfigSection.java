@@ -1,7 +1,6 @@
 package com.github.mixinors.astromine.common.config.section;
 
 import com.github.mixinors.astromine.common.config.entry.network.NetworkConfig;
-import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 

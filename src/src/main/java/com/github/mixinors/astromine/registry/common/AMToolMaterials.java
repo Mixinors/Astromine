@@ -32,7 +32,7 @@ import net.minecraft.util.Lazy;
 import java.util.function.Supplier;
 
 public class AMToolMaterials {
-	public static final ToolMaterial BRONZE = register(2, 539, 7f, 2.5f, 18, () -> Ingredient.fromTag( AMTags.ofItem(Identifier.tryParse("c:bronze_ingots"))));
+	public static final ToolMaterial BRONZE = register(2, 539, 7f, 2.5f, 18, () -> Ingredient.fromTag(AMTags.ofItem(Identifier.tryParse("c:bronze_ingots"))));
 	public static final ToolMaterial STEEL = register(3, 1043, 7.5f, 3f, 16, () -> Ingredient.fromTag(AMTags.ofItem(Identifier.tryParse("c:steel_ingots"))));
 	
 	public static final ToolMaterial METITE = register(1, 853, 13f, 4.0f, 5, () -> Ingredient.fromTag(AMTags.ofItem(Identifier.tryParse("c:metite_ingots"))));
@@ -56,7 +56,7 @@ public class AMToolMaterials {
 	public static ToolMaterial register(int miningLevel, int itemDurability, float miningSpeed, float attackDamage, int enchantability, Supplier<Ingredient> repairIngredient) {
 		return new AstromineToolMaterial(miningLevel, itemDurability, miningSpeed, attackDamage, enchantability, repairIngredient);
 	}
-
+	
 	public static class AstromineToolMaterial implements ToolMaterial {
 		private final int miningLevel;
 		private final int itemDurability;
@@ -64,7 +64,7 @@ public class AMToolMaterials {
 		private final float attackDamage;
 		private final int enchantability;
 		private final Lazy<Ingredient> repairIngredient;
-
+		
 		AstromineToolMaterial(int miningLevel, int itemDurability, float miningSpeed, float attackDamage, int enchantability, Supplier<Ingredient> repairIngredient) {
 			this.miningLevel = miningLevel;
 			this.itemDurability = itemDurability;
@@ -73,32 +73,32 @@ public class AMToolMaterials {
 			this.enchantability = enchantability;
 			this.repairIngredient = new Lazy(repairIngredient);
 		}
-
+		
 		@Override
 		public int getDurability() {
 			return this.itemDurability;
 		}
-
+		
 		@Override
 		public float getMiningSpeedMultiplier() {
 			return this.miningSpeed;
 		}
-
+		
 		@Override
 		public float getAttackDamage() {
 			return this.attackDamage;
 		}
-
+		
 		@Override
 		public int getMiningLevel() {
 			return this.miningLevel;
 		}
-
+		
 		@Override
 		public int getEnchantability() {
 			return this.enchantability;
 		}
-
+		
 		@Override
 		public Ingredient getRepairIngredient() {
 			return this.repairIngredient.get();

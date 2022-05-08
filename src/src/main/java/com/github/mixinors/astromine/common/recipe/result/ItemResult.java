@@ -26,46 +26,44 @@ package com.github.mixinors.astromine.common.recipe.result;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
-
 public record ItemResult(ItemVariant variant, int count) {
 	public static final ItemResult EMPTY = new ItemResult(ItemVariant.blank(), 0);
-
+	
 	public ItemStack toStack() {
 		return variant.toStack(count);
 	}
-
+	
 	public boolean equalsAndFitsIn(SingleSlotStorage<ItemVariant> storage) {
 		return equalsAndFitsIn(storage, false);
 	}
-
+	
 	public boolean equalsAndFitsIn(SingleSlotStorage<ItemVariant> storage, boolean ignoreMaxCount) {
 		return storage.getAmount() + count <= storage.getCapacity() && (storage.getAmount() + count <= variant.getItem().getMaxCount() || ignoreMaxCount) && (storage.getResource().equals(variant) || storage.isResourceBlank());
 	}
-
+	
 	public static JsonObject toJson(ItemResult result) {
 		var jsonObject = new JsonObject();
-
+		
 		jsonObject.addProperty("item", Registry.ITEM.getId(result.variant.getItem()).toString());
 		jsonObject.addProperty("count", result.count);
-
+		
 		return jsonObject;
 	}
-
+	
 	public static ItemResult fromJson(JsonElement jsonElement) {
 		if (!jsonElement.isJsonObject()) {
 			var variantId = new Identifier(jsonElement.getAsString());
 			var variantItem = Registry.ITEM.get(variantId);
 			
 			var variant = ItemVariant.of(variantItem);
-
+			
 			return new ItemResult(variant, 1);
 		} else {
 			var jsonObject = jsonElement.getAsJsonObject();
@@ -80,16 +78,16 @@ public record ItemResult(ItemVariant variant, int count) {
 			if (jsonObject.has("count")) {
 				variantCount = jsonObject.get("count").getAsInt();
 			}
-
+			
 			return new ItemResult(variant, variantCount);
 		}
 	}
-
+	
 	public static void toPacket(PacketByteBuf buf, ItemResult result) {
 		buf.writeString(Registry.ITEM.getId(result.variant.getItem()).toString());
 		buf.writeLong(result.count);
 	}
-
+	
 	public static ItemResult fromPacket(PacketByteBuf buf) {
 		var variantId = new Identifier(buf.readString());
 		var variantItem = Registry.ITEM.get(variantId);
@@ -97,7 +95,7 @@ public record ItemResult(ItemVariant variant, int count) {
 		var variant = ItemVariant.of(variantItem);
 		
 		var variantAmount = buf.readInt();
-
+		
 		return new ItemResult(variant, variantAmount);
 	}
 }

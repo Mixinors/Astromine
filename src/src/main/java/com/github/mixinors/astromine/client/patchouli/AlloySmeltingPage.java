@@ -26,42 +26,41 @@ package com.github.mixinors.astromine.client.patchouli;
 
 import com.github.mixinors.astromine.common.recipe.AlloySmeltingRecipe;
 import com.mojang.blaze3d.systems.RenderSystem;
-import vazkii.patchouli.client.book.gui.GuiBook;
-import vazkii.patchouli.client.book.page.abstr.PageDoubleRecipeRegistry;
-
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.TranslatableText;
+import vazkii.patchouli.client.book.gui.GuiBook;
+import vazkii.patchouli.client.book.page.abstr.PageDoubleRecipeRegistry;
 
 public class AlloySmeltingPage extends PageDoubleRecipeRegistry<AlloySmeltingRecipe> {
 	public AlloySmeltingPage() {
 		super(AlloySmeltingRecipe.Type.INSTANCE);
 	}
-
+	
 	@Override
 	public void drawRecipe(MatrixStack ms, AlloySmeltingRecipe recipe, int recipeX, int recipeY, int mouseX, int mouseY, boolean second) {
 		mc.getTextureManager().bindTexture(book.craftingTexture);
 		RenderSystem.enableBlend();
 		DrawableHelper.drawTexture(ms, recipeX, recipeY, 11, 135, 96, 43, 128, 256);
 		parent.drawCenteredStringNoShadow(ms, getTitle(second).asOrderedText(), GuiBook.PAGE_WIDTH / 2, recipeY - 10, book.headerColor);
-
+		
 		parent.renderIngredient(ms, recipeX + 4, recipeY + 4, mouseX, mouseY, recipe.getFirstInput().asIngredient());
 		parent.renderIngredient(ms, recipeX + 4, recipeY + 23, mouseX, mouseY, recipe.getSecondInput().asIngredient());
 		parent.renderItemStack(ms, recipeX + 40, recipeY + 13, mouseX, mouseY, recipe.createIcon());
 		parent.renderItemStack(ms, recipeX + 76, recipeY + 13, mouseX, mouseY, recipe.getOutput());
 		parent.drawCenteredStringNoShadow(ms, new TranslatableText("category.astromine.consuming.energy", String.valueOf(recipe.getEnergyInput())).asOrderedText(), GuiBook.PAGE_WIDTH / 2, recipeY + 45, BasicEnergyConsumingPage.ENERGY_CONSUMED_TEXT_COLOR);
 	}
-
+	
 	@Override
 	protected ItemStack getRecipeOutput(AlloySmeltingRecipe recipe) {
 		if (recipe == null) {
 			return ItemStack.EMPTY;
 		}
-
+		
 		return recipe.getOutput();
 	}
-
+	
 	@Override
 	protected int getRecipeHeight() {
 		return 70;

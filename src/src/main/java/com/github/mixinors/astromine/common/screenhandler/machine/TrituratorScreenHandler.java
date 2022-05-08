@@ -26,25 +26,24 @@ package com.github.mixinors.astromine.common.screenhandler.machine;
 
 import com.github.mixinors.astromine.common.block.entity.machine.TrituratorBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
-import com.github.mixinors.astromine.common.widget.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.slot.ExtractionSlot;
+import com.github.mixinors.astromine.common.widget.HorizontalArrowWidget;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
-
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 public class TrituratorScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final TrituratorBlockEntity triturator;
-
+	
 	public TrituratorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.TRITURATOR, syncId, player, position);
-
+		
 		triturator = (TrituratorBlockEntity) blockEntity;
 	}
-
+	
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
@@ -54,7 +53,7 @@ public class TrituratorScreenHandler extends ExtendedBlockEntityScreenHandler {
 		input.setSize(new Size(18.0F, 18.0F));
 		
 		var output = new SlotWidget(1, blockEntity.getItemStorage(), ExtractionSlot::new);
-		output.setPosition( new Position(energyBar.getX(), energyBar.getY()));
+		output.setPosition(new Position(energyBar.getX(), energyBar.getY()));
 		output.setSize(new Size(18.0F, 18.0F));
 		
 		output.setPosition(new Position(width / 2.0F - output.getWidth() / 2.0F, output.getY()));
@@ -65,9 +64,9 @@ public class TrituratorScreenHandler extends ExtendedBlockEntityScreenHandler {
 		arrow.setSize(new Size(22.0F, 16.0F));
 		arrow.setLimitSupplier(() -> triturator.limit);
 		arrow.setProgressSupplier(() -> (int) triturator.progress);
-
+		
 		input.setPosition(new Position(arrow.getX() - 27.0F, arrow.getY()));
-
+		
 		mainTab.add(input);
 		mainTab.add(output);
 		mainTab.add(arrow);

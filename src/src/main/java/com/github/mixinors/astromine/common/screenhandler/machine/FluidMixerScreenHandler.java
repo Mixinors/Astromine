@@ -31,26 +31,25 @@ import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.bar.FluidBarWidget;
-
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 public class FluidMixerScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final FluidMixerBlockEntity mixer;
-
+	
 	public FluidMixerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.FLUID_MIXER, syncId, player, position);
-
+		
 		mixer = (FluidMixerBlockEntity) blockEntity;
 	}
-
+	
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		
 		var secondInputFluidBar = new FluidBarWidget();
-		secondInputFluidBar.setPosition( new Position(fluidBar, fluidBar.getWidth() + 7.0F, 0));
-		secondInputFluidBar.setSize( new Size(fluidBar));
+		secondInputFluidBar.setPosition(new Position(fluidBar, fluidBar.getWidth() + 7.0F, 0));
+		secondInputFluidBar.setSize(new Size(fluidBar));
 		secondInputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(1));
 		secondInputFluidBar.setSmooth(false);
 		
@@ -64,7 +63,7 @@ public class FluidMixerScreenHandler extends ExtendedBlockEntityScreenHandler {
 		outputFluidBar.setPosition(new Position(secondInputFluidBar, secondInputFluidBar.getWidth() + 9.0F + arrow.getWidth() + 7.0F, 0.0F));
 		outputFluidBar.setSize(new Size(fluidBar));
 		outputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(2));
-
+		
 		mainTab.add(secondInputFluidBar);
 		mainTab.add(arrow);
 		mainTab.add(outputFluidBar);

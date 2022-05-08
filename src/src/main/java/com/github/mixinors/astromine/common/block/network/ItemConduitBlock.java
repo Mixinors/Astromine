@@ -31,7 +31,7 @@ public final class ItemConduitBlock extends CableBlock {
 	public ItemConduitBlock(Settings settings) {
 		super(settings);
 	}
-
+	
 	@Override
 	public <T extends NetworkType> T getNetworkType() {
 		return (T) AMNetworkTypes.ITEM;

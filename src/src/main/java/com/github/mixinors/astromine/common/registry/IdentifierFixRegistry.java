@@ -24,42 +24,39 @@
 
 package com.github.mixinors.astromine.common.registry;
 
-import java.util.Optional;
-
 import com.github.mixinors.astromine.common.registry.base.UniRegistry;
 import com.github.mixinors.astromine.mixin.common.IdentifierMixin;
-
 import net.minecraft.util.Identifier;
 
+import java.util.Optional;
+
 /**
- * An {@link UniRegistry} for registration of
- * {@link String}s mapped to {@link String}s.
- *
- * The registered path will then be replaced by the new one,
- * through {@link IdentifierMixin}.
+ * An {@link UniRegistry} for registration of {@link String}s mapped to {@link String}s.
+ * <p>
+ * The registered path will then be replaced by the new one, through {@link IdentifierMixin}.
  */
 public class IdentifierFixRegistry extends UniRegistry<String, String> {
 	public static final IdentifierFixRegistry INSTANCE = new IdentifierFixRegistry();
-
+	
 	/** We only want one instance of this. */
 	private IdentifierFixRegistry() {}
-
-	/** Returns the fixed path for an {@link Identifier#getPath()},
-	 * or the value passed if no fixes are registered. */
+	
+	/**
+	 * Returns the fixed path for an {@link Identifier#getPath()}, or the value passed if no fixes are registered.
+	 */
 	@Override
 	public String get(String oldPath) {
 		var newPath = Optional.ofNullable(super.get(oldPath)).orElse(oldPath);
-
+		
 		return containsKey(newPath) ? get(newPath) : newPath;
 	}
-
+	
 	/** Register a fix for an {@link Identifier#getPath()}. */
 	@Override
 	public String register(String oldPath, String newPath) {
-		if (oldPath.equals(newPath))
-			{
-			throw new IllegalArgumentException(String.format("Invalid Identifier path fix attempted: '%s' and '%s' are the same!", newPath , oldPath));
-		}  else if (containsKey(newPath)) {
+		if (oldPath.equals(newPath)) {
+			throw new IllegalArgumentException(String.format("Invalid Identifier path fix attempted: '%s' and '%s' are the same!", newPath, oldPath));
+		} else if (containsKey(newPath)) {
 			if (get(newPath).equals(oldPath)) {
 				throw new IllegalArgumentException(String.format("Invalid Identifier path fix attempted: '%s' and '%s' would cause recursion!", oldPath, newPath));
 			} else {

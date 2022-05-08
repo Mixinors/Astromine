@@ -26,25 +26,24 @@ package com.github.mixinors.astromine.common.screenhandler.machine;
 
 import com.github.mixinors.astromine.common.block.entity.machine.SolidifierBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
-import com.github.mixinors.astromine.common.widget.HorizontalArrowWidget;
 import com.github.mixinors.astromine.common.slot.ExtractionSlot;
+import com.github.mixinors.astromine.common.widget.HorizontalArrowWidget;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
-
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 public class SolidifierScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final SolidifierBlockEntity solidifier;
-
+	
 	public SolidifierScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.SOLIDIFIER, syncId, player, position);
-
+		
 		solidifier = (SolidifierBlockEntity) blockEntity;
 	}
-
+	
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
@@ -54,13 +53,13 @@ public class SolidifierScreenHandler extends ExtendedBlockEntityScreenHandler {
 		output.setPosition(new Position(fluidBar, 102.0F, 15.0F));
 		
 		var arrow = new HorizontalArrowWidget();
-		arrow.setPosition( new Position(output, -31.0F, 0.0F));
+		arrow.setPosition(new Position(output, -31.0F, 0.0F));
 		arrow.setSize(new Size(22.0F, 16.0F));
 		arrow.setLimitSupplier(() -> solidifier.limit);
 		arrow.setProgressSupplier(() -> (int) solidifier.progress);
-
+		
 		fluidBar.setPosition(new Position(arrow, -27.0F - 6.0F, -fluidBar.getHeight() / 2.0F + output.getHeight() / 2.0F));
-
+		
 		mainTab.add(output);
 		mainTab.add(arrow);
 	}

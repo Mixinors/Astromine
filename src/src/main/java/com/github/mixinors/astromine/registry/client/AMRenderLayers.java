@@ -27,7 +27,6 @@ package com.github.mixinors.astromine.registry.client;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.architectury.event.events.client.ClientLifecycleEvent;
 import dev.architectury.registry.client.rendering.fabric.RenderTypeRegistryImpl;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.render.*;
 import net.minecraft.util.Identifier;
@@ -46,15 +45,15 @@ public class AMRenderLayers {
 			false,
 			true,
 			RenderLayer.MultiPhaseParameters.builder()
-					.cull(RenderPhase.DISABLE_CULLING)
-					.lightmap(RenderPhase.ENABLE_LIGHTMAP)
-					.transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)
-					.layering(RenderPhase.VIEW_OFFSET_Z_LAYERING)
-					.shader(new RenderPhase.Shader(GameRenderer::getPositionColorLightmapShader))
-					.build(false));
+											.cull(RenderPhase.DISABLE_CULLING)
+											.lightmap(RenderPhase.ENABLE_LIGHTMAP)
+											.transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)
+											.layering(RenderPhase.VIEW_OFFSET_Z_LAYERING)
+											.shader(new RenderPhase.Shader(GameRenderer::getPositionColorLightmapShader))
+											.build(false));
 	
 	public static void init() {
-		ClientLifecycleEvent.CLIENT_SETUP.register( client -> {
+		ClientLifecycleEvent.CLIENT_SETUP.register(client -> {
 			register(AMBlocks.AIRLOCK.get(), RenderLayer.getTranslucent());
 			
 			register(AMBlocks.SPACE_SLIME_BLOCK.get(), RenderLayer.getTranslucent());
@@ -75,11 +74,11 @@ public class AMRenderLayers {
 				true,
 				true,
 				RenderLayer.MultiPhaseParameters.builder()
-						.texture(new RenderPhase.Texture(texture, false, false))
-						.transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)
-						.lightmap(RenderPhase.DISABLE_LIGHTMAP)
-						.overlay(RenderPhase.DISABLE_OVERLAY_COLOR)
-						.build(true)));
+												.texture(new RenderPhase.Texture(texture, false, false))
+												.transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)
+												.lightmap(RenderPhase.DISABLE_LIGHTMAP)
+												.overlay(RenderPhase.DISABLE_OVERLAY_COLOR)
+												.build(true)));
 		
 		return CACHE.get(texture);
 	}

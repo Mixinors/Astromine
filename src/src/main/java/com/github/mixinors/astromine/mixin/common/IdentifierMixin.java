@@ -27,9 +27,7 @@ package com.github.mixinors.astromine.mixin.common;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.registry.IdentifierFixRegistry;
-
 import net.minecraft.util.Identifier;
-
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -47,7 +45,7 @@ public class IdentifierMixin {
 	@Shadow
 	@Final
 	protected String namespace;
-
+	
 	@Inject(method = "<init>([Ljava/lang/String;)V", at = @At("RETURN"))
 	private void astromine$init(String[] strings, CallbackInfo ci) {
 		if (namespace.equals(AMCommon.MOD_ID) && AMConfig.get().compatibilityMode && IdentifierFixRegistry.INSTANCE.containsKey(path)) {

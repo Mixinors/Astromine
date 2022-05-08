@@ -32,7 +32,7 @@ public interface DefaultedTieredSpeedProvider extends TieredSpeedProvider {
 	default double getDefaultBaseSpeed() {
 		return DefaultConfigValues.BASE_SPEED;
 	}
-
+	
 	default double getDefaultSpeedModifier(MachineTier tier) {
 		return switch (tier) {
 			case PRIMITIVE -> DefaultConfigValues.PRIMITIVE_SPEED_MODIFIER;

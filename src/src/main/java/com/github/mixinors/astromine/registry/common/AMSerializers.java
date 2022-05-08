@@ -26,6 +26,6 @@ package com.github.mixinors.astromine.registry.common;
 
 public class AMSerializers {
 	public static void initialize() {
-
+	
 	}
 }

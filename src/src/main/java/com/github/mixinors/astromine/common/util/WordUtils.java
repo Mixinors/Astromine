@@ -27,15 +27,13 @@ package com.github.mixinors.astromine.common.util;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.github.mixinors.astromine.AMCommon;
-
 public class WordUtils {
 	private static final Map<String, String> PLURALS_CACHE = new HashMap<>();
-
+	
 	public static String pluralize(String singular) {
 		return PLURALS_CACHE.computeIfAbsent(singular, WordUtils::findPlural);
 	}
-
+	
 	// tons of edge cases not covered but eh
 	private static String findPlural(String singular) {
 		var base = singular;
@@ -60,10 +58,10 @@ public class WordUtils {
 		}
 		
 		var plural = base + suffix;
-
+		
 		return plural;
 	}
-
+	
 	public static boolean isVowel(char c) {
 		var lc = Character.toLowerCase(c);
 		

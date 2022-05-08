@@ -24,12 +24,9 @@
 
 package com.github.mixinors.astromine.common.util;
 
+import com.github.mixinors.astromine.AMCommon;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
-
-import com.github.mixinors.astromine.AMCommon;
-import io.netty.buffer.ByteBuf;
-
 import net.minecraft.network.PacketByteBuf;
 
 public class IntegerUtils {

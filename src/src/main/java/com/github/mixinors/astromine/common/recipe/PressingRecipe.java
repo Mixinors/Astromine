@@ -24,15 +24,6 @@
 
 package com.github.mixinors.astromine.common.recipe;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.annotations.SerializedName;
-
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.recipe.base.AMRecipeType;
 import com.github.mixinors.astromine.common.recipe.base.input.ItemInputRecipe;
@@ -42,8 +33,13 @@ import com.github.mixinors.astromine.common.recipe.result.ItemResult;
 import com.github.mixinors.astromine.common.util.IntegerUtils;
 import com.github.mixinors.astromine.common.util.LongUtils;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.annotations.SerializedName;
 import dev.architectury.core.AbstractRecipeSerializer;
-
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.RecipeSerializer;
@@ -51,105 +47,106 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public record PressingRecipe(Identifier id,
-							 ItemIngredient input,
-							 ItemResult output, long energyInput,
-							 int time) implements ItemInputRecipe, ItemOutputRecipe {
+		ItemIngredient input,
+		ItemResult output, long energyInput,
+		int time) implements ItemInputRecipe, ItemOutputRecipe {
 	private static final Map<World, PressingRecipe[]> RECIPE_CACHE = new HashMap<>();
-
+	
 	public static boolean allows(World world, ItemVariant... variants) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (PressingRecipe) it).toArray(PressingRecipe[]::new));
 		}
-
+		
 		for (var recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.allows(variants)) {
 				return true;
 			}
 		}
-
+		
 		return false;
 	}
-
+	
 	public static Optional<PressingRecipe> matching(World world, SingleSlotStorage<ItemVariant>... storages) {
 		if (RECIPE_CACHE.get(world) == null) {
 			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (PressingRecipe) it).toArray(PressingRecipe[]::new));
 		}
-
+		
 		for (var recipe : RECIPE_CACHE.get(world)) {
 			if (recipe.matches(storages)) {
 				return Optional.of(recipe);
 			}
 		}
-
+		
 		return Optional.empty();
 	}
-
+	
 	public boolean matches(SingleSlotStorage<ItemVariant>... storages) {
 		var inputStorage = storages[0];
 		
 		var outputStorage = storages[1];
-
+		
 		if (!input.test(inputStorage)) {
 			return false;
 		}
-
+		
 		return output.equalsAndFitsIn(outputStorage);
 	}
-
+	
 	@Override
 	public Identifier getId() {
 		return id;
 	}
-
+	
 	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return Serializer.INSTANCE;
 	}
-
+	
 	@Override
 	public RecipeType<?> getType() {
 		return Type.INSTANCE;
 	}
-
+	
 	@Override
 	public ItemStack createIcon() {
 		return new ItemStack(AMBlocks.ADVANCED_PRESSER.get());
 	}
-
+	
 	@Override
 	public long getEnergyInput() {
 		return energyInput;
 	}
-
+	
 	@Override
 	public int getTime() {
 		return time;
 	}
-
+	
 	public ItemIngredient getInput() {
 		return input;
 	}
-
+	
 	public ItemResult getItemOutput() {
 		return output;
 	}
-
+	
 	public static final class Serializer extends AbstractRecipeSerializer<PressingRecipe> {
 		public static final Identifier ID = AMCommon.id("pressing");
-
+		
 		public static final Serializer INSTANCE = new Serializer();
-
+		
 		private Serializer() {
 		}
-
+		
 		@Override
 		public PressingRecipe read(Identifier identifier, JsonObject object) {
 			var format = new Gson().fromJson(object, PressingRecipe.Format.class);
-
+			
 			return new PressingRecipe(
 					identifier,
 					ItemIngredient.fromJson(format.input),
@@ -158,7 +155,7 @@ public record PressingRecipe(Identifier id,
 					IntegerUtils.fromJson(format.time)
 			);
 		}
-
+		
 		@Override
 		public PressingRecipe read(Identifier identifier, PacketByteBuf buffer) {
 			return new PressingRecipe(
@@ -169,7 +166,7 @@ public record PressingRecipe(Identifier id,
 					IntegerUtils.fromPacket(buffer)
 			);
 		}
-
+		
 		@Override
 		public void write(PacketByteBuf buffer, PressingRecipe recipe) {
 			ItemIngredient.toPacket(buffer, recipe.input);
@@ -178,22 +175,22 @@ public record PressingRecipe(Identifier id,
 			IntegerUtils.toPacket(buffer, recipe.time);
 		}
 	}
-
+	
 	public static final class Type implements AMRecipeType<PressingRecipe> {
 		public static final Type INSTANCE = new Type();
-
+		
 		private Type() {
 		}
 	}
-
+	
 	public static final class Format {
 		JsonElement input;
-
+		
 		JsonElement output;
-
+		
 		@SerializedName("energy_input")
 		JsonElement energyInput;
-
+		
 		JsonElement time;
 	}
 }

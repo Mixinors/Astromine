@@ -1,7 +1,5 @@
 package com.github.mixinors.astromine.common.config.section;
 
-import com.github.mixinors.astromine.common.config.entry.tiered.CapacitorConfig;
-import com.github.mixinors.astromine.common.config.entry.tiered.TankConfig;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 

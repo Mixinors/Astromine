@@ -24,10 +24,9 @@
 
 package com.github.mixinors.astromine.client.render.block;
 
-import com.github.mixinors.astromine.registry.client.AMRenderLayers;
 import com.github.mixinors.astromine.common.block.HoloBridgeProjectorBlock;
 import com.github.mixinors.astromine.common.block.entity.HoloBridgeProjectorBlockEntity;
-
+import com.github.mixinors.astromine.registry.client.AMRenderLayers;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -39,15 +38,15 @@ import net.minecraft.util.math.Direction;
 public class HoloBridgeBlockEntityRenderer implements BlockEntityRenderer<HoloBridgeProjectorBlockEntity> {
 	public HoloBridgeBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
 	}
-
+	
 	@Override
 	public void render(HoloBridgeProjectorBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider provider, int light, int overlay) {
 		var state = entity.getWorld().getBlockState(entity.getPos());
-
+		
 		if (!(state.getBlock() instanceof HoloBridgeProjectorBlock)) {
 			return;
 		}
-
+		
 		if (entity.hasChild()) {
 			var pA = entity.getPos();
 			
@@ -55,14 +54,14 @@ public class HoloBridgeBlockEntityRenderer implements BlockEntityRenderer<HoloBr
 			
 			var offsetX = direction == Direction.NORTH ? 1 : 0;
 			var offsetZ = direction == Direction.WEST ? 1 : 0;
-
+			
 			if (entity.segments == null || entity.segments.size() == 0) {
 				return;
 			}
 			
 			var start = entity.segments.get(0);
 			var end = entity.segments.get(entity.segments.size() - 1);
-
+			
 			matrices.push();
 			
 			var consumer = provider.getBuffer(AMRenderLayers.getHolographicBridge());
@@ -75,16 +74,16 @@ public class HoloBridgeBlockEntityRenderer implements BlockEntityRenderer<HoloBr
 			
 			var zA = end.getZ() - pA.getZ();
 			var zB = start.getZ() - pA.getZ();
-
+			
 			consumer.vertex(matrices.peek().getPositionMatrix(), xA, yA, zA).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).texture(0, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormalMatrix(), 0, 1, 0).next();
 			consumer.vertex(matrices.peek().getPositionMatrix(), xB, yB, zB).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).texture(0, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormalMatrix(), 0, 1, 0).next();
 			consumer.vertex(matrices.peek().getPositionMatrix(), xB + offsetX, yB, zB + offsetZ).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).texture(1, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormalMatrix(), 0, 1, 0).next();
 			consumer.vertex(matrices.peek().getPositionMatrix(), xA + offsetX, yA, zA + offsetZ).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).texture(1, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormalMatrix(), 0, 1, 0).next();
-
+			
 			matrices.pop();
 		}
 	}
-
+	
 	@Override
 	public boolean rendersOutsideBoundingBox(HoloBridgeProjectorBlockEntity blockEntity) {
 		return true;

@@ -30,21 +30,25 @@ public class Vec3f {
 	public final float x;
 	public final float y;
 	public final float z;
-
+	
 	public Vec3f(float x, float y, float z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
 	}
-
+	
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 		var vec2f = (Vec3f) o;
 		return Float.compare(vec2f.x, x) == 0 && Float.compare(vec2f.y, y) == 0 && Float.compare(vec2f.z, z) == 0;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(x, y, z);

@@ -27,7 +27,6 @@ package com.github.mixinors.astromine.common.item;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.registry.common.AMCriteria;
 import com.github.mixinors.astromine.registry.common.AMSoundEvents;
-
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.block.FireBlock;
@@ -52,29 +51,29 @@ public class FireExtinguisherItem extends Item {
 	public FireExtinguisherItem(Item.Settings settings) {
 		super(settings);
 	}
-
+	
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
 		this.use(context.getWorld(), context.getPlayer(), context.getHand());
-
+		
 		return ActionResult.PASS;
 	}
-
+	
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		var placeVec = user.getCameraPosVec(0);
 		
 		var thrustVec = new Vec3d(0.8, 0.8, 0.8);
-
+		
 		thrustVec = thrustVec.multiply(user.getRotationVector());
-
+		
 		for (var i = 0; i < world.random.nextInt(64); ++i) {
 			var r = world.random.nextFloat();
 			world.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, placeVec.x + thrustVec.x, placeVec.y + thrustVec.y, placeVec.z + thrustVec.z, thrustVec.x * r, thrustVec.y * r, thrustVec.z * r);
 		}
-
+		
 		thrustVec = thrustVec.multiply(-1);
-
+		
 		if (!user.isSneaking()) {
 			user.addVelocity(thrustVec.x, thrustVec.y, thrustVec.z);
 			if (user instanceof ServerPlayerEntity) {
@@ -87,18 +86,19 @@ public class FireExtinguisherItem extends Item {
 		}
 		
 		var result = (BlockHitResult) user.raycast(6, 0, false);
-
+		
 		BlockPos.Mutable.stream(new Box(result.getBlockPos()).expand(2)).forEach(position -> {
 			var state = world.getBlockState(position);
-
+			
 			if (state.getBlock() instanceof FireBlock) {
 				world.setBlockState(position, Blocks.AIR.getDefaultState());
 			} else if (state.getBlock() instanceof CampfireBlock) {
-				if (state.get(CampfireBlock.LIT))
+				if (state.get(CampfireBlock.LIT)) {
 					world.setBlockState(position, state.with(CampfireBlock.LIT, false));
+				}
 			}
 		});
-
+		
 		world.getOtherEntities(null, new Box(result.getBlockPos()).expand(3)).forEach(entity -> {
 			if (entity.isOnFire()) {
 				entity.setFireTicks(0);
@@ -107,18 +107,18 @@ public class FireExtinguisherItem extends Item {
 				}
 			}
 		});
-
+		
 		if (world.isClient) {
 			world.playSound(user, user.getBlockPos(), AMSoundEvents.FIRE_EXTINGUISHER_OPEN.get(), SoundCategory.PLAYERS, 1f, 1f);
 		}
-
+		
 		return super.use(world, user, hand);
 	}
-
+	
 	@Override
 	public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
 		this.use(user.world, user, hand);
-
+		
 		return ActionResult.PASS;
 	}
 }

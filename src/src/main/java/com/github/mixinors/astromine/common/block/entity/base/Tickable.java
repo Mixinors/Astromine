@@ -26,5 +26,5 @@ package com.github.mixinors.astromine.common.block.entity.base;
 
 @FunctionalInterface
 public interface Tickable {
-    void tick();
+	void tick();
 }

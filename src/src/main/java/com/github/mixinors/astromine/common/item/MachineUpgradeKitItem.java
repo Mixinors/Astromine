@@ -26,53 +26,58 @@ package com.github.mixinors.astromine.common.item;
 
 import com.github.mixinors.astromine.common.block.base.TieredBlock;
 import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import org.jetbrains.annotations.Nullable;
 
 public class MachineUpgradeKitItem extends Item {
 	private final MachineTier from, to;
-
+	
 	public MachineUpgradeKitItem(MachineTier from, MachineTier to, Settings settings) {
 		super(settings);
 		this.from = from;
 		this.to = to;
 	}
-
+	
 	public MachineUpgradeKitItem(MachineTier to, Settings settings) {
-		this(MachineTier.values()[to.ordinal()-1], to, settings);
+		this(MachineTier.values()[to.ordinal() - 1], to, settings);
 	}
-
+	
 	public MachineTier from() {
 		return from;
 	}
-
+	
 	public MachineTier to() {
 		return to;
 	}
-
+	
 	public boolean isValidFor(MachineTier tier) {
 		return tier == from;
 	}
-
+	
 	public boolean isValidFor(TieredBlock block) {
 		return isValidFor(block.getTier()) && block.hasTier(to());
 	}
-
+	
 	public boolean isValidFor(Block block) {
 		return block instanceof TieredBlock tieredBlock && isValidFor(tieredBlock);
 	}
-
+	
 	@Nullable
 	public Block getUpgrade(TieredBlock block) {
-		if (isValidFor(block)) return block.getForTier(to());
-		else return null;
+		if (isValidFor(block)) {
+			return block.getForTier(to());
+		} else {
+			return null;
+		}
 	}
-
+	
 	@Nullable
 	public Block getUpgrade(Block block) {
-		if (block instanceof TieredBlock tieredBlock) return getUpgrade(tieredBlock);
-		else return null;
+		if (block instanceof TieredBlock tieredBlock) {
+			return getUpgrade(tieredBlock);
+		} else {
+			return null;
+		}
 	}
 }

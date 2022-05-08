@@ -45,24 +45,24 @@ public class EarthSpaceBiomeSource extends BiomeSource {
 	private final long seed;
 	
 	private final Registry<Biome> registry;
-
+	
 	public EarthSpaceBiomeSource(Registry<Biome> registry, long seed) {
 		super(ImmutableList.of());
 		
 		this.seed = seed;
 		this.registry = registry;
 	}
-
+	
 	@Override
 	protected Codec<? extends BiomeSource> getCodec() {
 		return CODEC;
 	}
-
+	
 	@Override
 	public BiomeSource withSeed(long seed) {
 		return new EarthSpaceBiomeSource(registry, seed);
 	}
-
+	
 	@Override
 	public RegistryEntry<Biome> getBiome(int x, int y, int z, MultiNoiseUtil.MultiNoiseSampler noise) {
 		return registry.getEntry(AMBiomes.ASTEROID_BELT_KEY).orElseThrow();

@@ -24,48 +24,46 @@
 
 package com.github.mixinors.astromine;
 
-import java.util.function.Supplier;
-
-import com.google.common.base.Suppliers;
-import com.google.gson.Gson;
-
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.registry.common.*;
+import com.google.common.base.Suppliers;
+import com.google.gson.Gson;
 import dev.architectury.registry.registries.Registrar;
 import dev.architectury.registry.registries.Registries;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import net.fabricmc.api.ModInitializer;
+import java.util.function.Supplier;
 
 public class AMCommon implements ModInitializer {
 	public static final String LOG_ID = "Astromine";
 	public static final String MOD_ID = "astromine";
 	
 	public static final Gson GSON = new Gson();
-
+	
 	public static final Logger LOGGER = LogManager.getLogger(LOG_ID);
 	
 	public static final Supplier<Registries> REGISTRIES = Suppliers.memoize(() -> Registries.get(MOD_ID));
-
+	
 	public static Identifier id(String name) {
-		if (name.indexOf(':') >= 0)
+		if (name.indexOf(':') >= 0) {
 			return new Identifier(name);
+		}
 		return new Identifier(MOD_ID, name);
 	}
 	
 	public static <T> Registrar<T> registry(RegistryKey<Registry<T>> key) {
 		return REGISTRIES.get().get(key);
 	}
-
+	
 	@Override
 	public void onInitialize() {
 		AMConfig.get(); // ensure config is registered
-
+		
 		AMAttributes.init();
 		AMIdentifierFixes.init();
 		AMWorlds.init();

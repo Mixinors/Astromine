@@ -29,7 +29,6 @@ import dev.vini2003.hammer.core.api.common.util.TextUtils;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -42,17 +41,17 @@ import java.util.List;
 
 public class FluidStorageItem extends Item {
 	private final long capacity;
-
+	
 	private FluidStorageItem(Item.Settings settings, long capacity) {
 		super(settings);
-
+		
 		this.capacity = capacity;
 	}
-
+	
 	public static FluidStorageItem of(Item.Settings settings, long size) {
 		return new FluidStorageItem(settings, size);
 	}
-
+	
 	public long getCapacity() {
 		return capacity;
 	}

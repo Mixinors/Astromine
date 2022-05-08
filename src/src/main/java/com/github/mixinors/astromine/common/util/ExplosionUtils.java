@@ -24,7 +24,6 @@
 
 package com.github.mixinors.astromine.common.util;
 
-import com.github.mixinors.astromine.AMCommon;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.network.packet.s2c.play.ChunkDataS2CPacket;
@@ -66,21 +65,20 @@ public class ExplosionUtils {
 					
 					manager.threadedAnvilChunkStorage.getPlayersWatchingChunk(new ChunkPos(cx, cz), false).forEach(player ->
 							player.networkHandler.sendPacket(new ChunkDataS2CPacket(chunk, manager.getLightingProvider(), null, null, true)
-					));
+							));
 				}
 			}
 		}
 		
 		return blocks;
 	}
-
+	
 	/**
-	 * Asserts whether a certain point is inside a given sphere or not.
-	 * Originally from {@see https://stackoverflow.com/a/4579069/9773993}, adapted to Java.
+	 * Asserts whether a certain point is inside a given sphere or not. Originally from {@see https://stackoverflow.com/a/4579069/9773993}, adapted to Java.
 	 */
 	private static boolean touchesOrIsIn(int x1, int y1, int z1, int x2, int y2, int z2, int radius) {
 		var squared = radius * radius;
-
+		
 		// Assume C1 and C2 are element-wise sorted. If not, sort them now.
 		if (0 < x1) {
 			squared -= x1 * x1;
@@ -102,7 +100,7 @@ public class ExplosionUtils {
 		
 		return squared > 0;
 	}
-
+	
 	/**
 	 * Explodes all sub chunks in the given sphere.
 	 */

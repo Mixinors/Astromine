@@ -24,9 +24,6 @@
 
 package com.github.mixinors.astromine.common.block.entity.machine.generator;
 
-import java.util.Optional;
-import java.util.function.Supplier;
-
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.config.entry.tiered.FluidStorageMachineConfig;
@@ -35,15 +32,16 @@ import com.github.mixinors.astromine.common.recipe.FluidGeneratingRecipe;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import org.jetbrains.annotations.NotNull;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
-
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
+import org.jetbrains.annotations.NotNull;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 public abstract class FluidGeneratorBlockEntity extends ExtendedBlockEntity implements FluidStorageMachineConfigProvider {
 	public double progress = 0;
@@ -54,16 +52,16 @@ public abstract class FluidGeneratorBlockEntity extends ExtendedBlockEntity impl
 	private static final int[] INSERT_SLOTS = new int[] { INPUT_SLOT };
 	
 	private static final int[] EXTRACT_SLOTS = new int[] { };
-
+	
 	private Optional<FluidGeneratingRecipe> optionalRecipe = Optional.empty();
-
+	
 	public FluidGeneratorBlockEntity(Supplier<? extends BlockEntityType<?>> type, BlockPos blockPos, BlockState blockState) {
 		super(type, blockPos, blockState);
 		
 		energyStorage = new SimpleEnergyStorage(getEnergyStorageSize(), 0L, getMaxTransferRate());
 		
 		fluidStorage = new SimpleFluidStorage(1, getFluidStorageSize()).extractPredicate((variant, slot) ->
-			false
+				false
 		).insertPredicate((variant, slot) -> {
 			if (slot != INPUT_SLOT) {
 				return false;
@@ -80,22 +78,23 @@ public abstract class FluidGeneratorBlockEntity extends ExtendedBlockEntity impl
 		
 		fluidStorage.getStorage(INPUT_SLOT).setCapacity(getFluidStorageSize());
 	}
-
+	
 	@Override
 	public void tick() {
 		super.tick();
-
-		if (world == null || world.isClient || !shouldRun())
+		
+		if (world == null || world.isClient || !shouldRun()) {
 			return;
+		}
 		
 		if (fluidStorage != null && energyStorage != null) {
 			if (optionalRecipe.isEmpty()) {
 				optionalRecipe = FluidGeneratingRecipe.matching(world, fluidStorage.slice(INPUT_SLOT));
 			}
-
+			
 			if (optionalRecipe.isPresent()) {
 				var recipe = optionalRecipe.get();
-
+				
 				limit = recipe.time();
 				
 				var speed = Math.min(getSpeed(), limit - progress);
@@ -104,7 +103,7 @@ public abstract class FluidGeneratorBlockEntity extends ExtendedBlockEntity impl
 				try (var transaction = Transaction.openOuter()) {
 					if (energyStorage.amount + generated <= energyStorage.capacity) {
 						energyStorage.amount += generated;
-
+						
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
 							
@@ -147,50 +146,50 @@ public abstract class FluidGeneratorBlockEntity extends ExtendedBlockEntity impl
 		
 		super.readNbt(nbt);
 	}
-
+	
 	@Override
 	public FluidStorageMachineConfig getConfig() {
 		return AMConfig.get().blocks.machines.fluidGenerator;
 	}
-
+	
 	public static class Primitive extends FluidGeneratorBlockEntity {
 		public Primitive(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.PRIMITIVE_LIQUID_GENERATOR, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.PRIMITIVE;
 		}
 	}
-
+	
 	public static class Basic extends FluidGeneratorBlockEntity {
 		public Basic(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.BASIC_LIQUID_GENERATOR, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.BASIC;
 		}
 	}
-
+	
 	public static class Advanced extends FluidGeneratorBlockEntity {
 		public Advanced(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ADVANCED_LIQUID_GENERATOR, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.ADVANCED;
 		}
 	}
-
+	
 	public static class Elite extends FluidGeneratorBlockEntity {
 		public Elite(BlockPos blockPos, BlockState blockState) {
 			super(AMBlockEntityTypes.ELITE_LIQUID_GENERATOR, blockPos, blockState);
 		}
-
+		
 		@Override
 		public MachineTier getMachineTier() {
 			return MachineTier.ELITE;

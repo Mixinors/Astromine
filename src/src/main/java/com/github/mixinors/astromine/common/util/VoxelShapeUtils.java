@@ -24,22 +24,20 @@
 
 package com.github.mixinors.astromine.common.util;
 
-import java.util.Collection;
-
 import com.google.common.collect.Lists;
-
 import com.mojang.datafixers.util.Pair;
-
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
+
+import java.util.Collection;
 
 /**
  * Originally from {@see https://www.youtube.com/watch?v=I9Qn_oIx6Oo}, adapted to Fabric.
  */
 public class VoxelShapeUtils {
 	private static final double CENTER = 0.5;
-
+	
 	private static final double NINETY_DEGREES = Math.toRadians(90);
 	private static final double ONE_HUNDRED_EIGHTY_DEGREES = Math.toRadians(180);
 	private static final double TWO_HUNDRED_SEVENTY_DEGREES = Math.toRadians(270);
@@ -58,7 +56,7 @@ public class VoxelShapeUtils {
 	
 	public static VoxelShape rotate(Direction.Axis axis, double radians, VoxelShape shape) {
 		var collision = VoxelShapes.empty();
-
+		
 		for (var box : shape.getBoundingBoxes()) {
 			var min = axis == Direction.Axis.X ? rotatePoint(box.minY, box.minZ, radians) : (axis == Direction.Axis.Z ? rotatePoint(box.minX, box.minY, radians) : rotatePoint(box.minX, box.minZ, radians));
 			var max = axis == Direction.Axis.X ? rotatePoint(box.maxY, box.maxZ, radians) : (axis == Direction.Axis.Z ? rotatePoint(box.maxX, box.maxY, radians) : rotatePoint(box.maxX, box.maxZ, radians));
@@ -81,13 +79,14 @@ public class VoxelShapeUtils {
 	}
 	
 	public static VoxelShape rotate(Direction direction, VoxelShape shape) {
-		if (direction == Direction.EAST)
+		if (direction == Direction.EAST) {
 			return rotateNinety(Direction.Axis.Y, shape);
-		else if (direction == Direction.SOUTH)
+		} else if (direction == Direction.SOUTH) {
 			return rotateOneHundredAndEighty(Direction.Axis.Y, shape);
-		else if (direction == Direction.WEST)
+		} else if (direction == Direction.WEST) {
 			return rotateTwoHundredAndSeventy(Direction.Axis.Y, shape);
-
+		}
+		
 		return shape;
 	}
 	
@@ -98,7 +97,7 @@ public class VoxelShapeUtils {
 	private static Pair<Double, Double> rotatePoint(double p1, double p2, double rotation, double center) {
 		return Pair.of(((p1 - center) * Math.cos(rotation) - ((p2 - center) * Math.sin(rotation))) + center, ((p1 - center) * Math.sin(rotation)) + ((p2 - center) * Math.cos(rotation)) + center);
 	}
-
+	
 	public static VoxelShape rotateNinety(Direction.Axis axis, Collection<VoxelShape> shapes) {
 		return rotate(axis, NINETY_DEGREES, shapes);
 	}

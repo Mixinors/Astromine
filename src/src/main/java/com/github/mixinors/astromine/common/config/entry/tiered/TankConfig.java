@@ -34,12 +34,12 @@ public class TankConfig extends SpeedTieredConfig<TankTierConfig> implements Def
 	public double getDefaultBaseSpeed() {
 		return DefaultConfigValues.TANK_BASE_SPEED;
 	}
-
+	
 	@Override
 	public long getFluidStorageSize(MachineTier tier) {
 		return getTierConfig(tier).getFluidStorageSize();
 	}
-
+	
 	@Override
 	public TankTierConfig createTierConfig(MachineTier tier) {
 		return new TankTierConfig(getDefaultSpeedModifier(tier), getDefaultFluidStorageSize(tier));

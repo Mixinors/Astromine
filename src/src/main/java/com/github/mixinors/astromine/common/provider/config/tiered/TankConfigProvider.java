@@ -33,7 +33,7 @@ public interface TankConfigProvider extends TieredConfigProvider<TankConfig>, Sp
 	default long getFluidStorageSize() {
 		return getConfig().getFluidStorageSize(getMachineTier());
 	}
-
+	
 	@Override
 	default double getSpeed() {
 		return getConfig().getSpeed(getMachineTier());

@@ -25,7 +25,6 @@
 package com.github.mixinors.astromine.common.recipe.base.input;
 
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
-
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 
 public interface DoubleFluidInputRecipe extends FluidInputRecipe {
@@ -33,20 +32,20 @@ public interface DoubleFluidInputRecipe extends FluidInputRecipe {
 	default FluidIngredient getInput() {
 		return getFirstInput();
 	}
-
+	
 	FluidIngredient getFirstInput();
-
+	
 	FluidIngredient getSecondInput();
-
+	
 	@Override
 	default boolean allows(FluidVariant... variants) {
 		var firstInputVariant = variants[0];
 		var secondInputVariant = variants[1];
-
+		
 		if (!getFirstInput().test(firstInputVariant, Long.MAX_VALUE) && !getSecondInput().test(firstInputVariant, Long.MAX_VALUE)) {
 			return false;
 		}
-
+		
 		return getSecondInput().test(secondInputVariant, Long.MAX_VALUE) || getFirstInput().test(secondInputVariant, Long.MAX_VALUE);
 	}
 }

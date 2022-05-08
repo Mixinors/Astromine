@@ -40,7 +40,6 @@ import dev.onyxstudios.cca.api.v3.item.ItemComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.item.ItemComponentInitializer;
 import dev.onyxstudios.cca.api.v3.world.WorldComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.world.WorldComponentInitializer;
-
 import net.minecraft.entity.LivingEntity;
 
 public class AMComponents implements WorldComponentInitializer, ChunkComponentInitializer, ItemComponentInitializer, EntityComponentInitializer, BlockComponentInitializer {
@@ -48,28 +47,28 @@ public class AMComponents implements WorldComponentInitializer, ChunkComponentIn
 	public static final ComponentKey<WorldHoloBridgeComponent> WORLD_BRIDGE_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("world_holo_bridge_component"), WorldHoloBridgeComponent.class);
 	
 	public static final ComponentKey<EntityOxygenComponent> ENTITY_OXYGEN_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("entity_oxygen_component"), EntityOxygenComponent.class);
-
+	
 	public static void initialize() {}
-
+	
 	@Override
 	public void registerWorldComponentFactories(WorldComponentFactoryRegistry registry) {
 		registry.register(WORLD_NETWORK_COMPONENT, WorldNetworkComponent::new);
 		registry.register(WORLD_BRIDGE_COMPONENT, WorldHoloBridgeComponent::new);
 	}
-
+	
 	@Override
 	public void registerChunkComponentFactories(ChunkComponentFactoryRegistry registry) {
 	}
-
+	
 	@Override
 	public void registerItemComponentFactories(ItemComponentFactoryRegistry registry) {
 	}
-
+	
 	@Override
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
 		registry.registerFor(LivingEntity.class, ENTITY_OXYGEN_COMPONENT, EntityOxygenComponent::of);
 	}
-
+	
 	@Override
 	public void registerBlockComponentFactories(BlockComponentFactoryRegistry registry) {
 	}

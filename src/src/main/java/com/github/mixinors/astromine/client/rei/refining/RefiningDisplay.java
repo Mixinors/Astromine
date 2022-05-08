@@ -24,20 +24,18 @@
 
 package com.github.mixinors.astromine.client.rei.refining;
 
-import java.util.Arrays;
-import java.util.Collections;
-
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.client.rei.base.input.EnergyInputDisplay;
 import com.github.mixinors.astromine.common.recipe.RefiningRecipe;
 import dev.architectury.fluid.FluidStack;
-
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 @Environment(EnvType.CLIENT)
 public class RefiningDisplay extends EnergyInputDisplay {
@@ -48,7 +46,7 @@ public class RefiningDisplay extends EnergyInputDisplay {
 				recipe.getTime(), recipe.getEnergyInput(), recipe.getId()
 		);
 	}
-
+	
 	@Override
 	public CategoryIdentifier<?> getCategoryIdentifier() {
 		return AMRoughlyEnoughItemsPlugin.REFINING;
