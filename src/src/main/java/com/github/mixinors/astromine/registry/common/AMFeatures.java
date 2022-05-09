@@ -57,7 +57,7 @@ public class AMFeatures {
 	
 	public static final Feature<DefaultFeatureConfig> OIL_WELL_FEATURE = registerFeature(OIL_WELL_ID, new OilWellFeature(DefaultFeatureConfig.CODEC));
 	public static final RegistryEntry<ConfiguredFeature<DefaultFeatureConfig, ?>> OIL_WELL_CONFIGURED_FEATURE = registerConfiguredFeature(OIL_WELL_ID, OIL_WELL_FEATURE, DefaultFeatureConfig.INSTANCE);
-	public static final RegistryEntry<PlacedFeature> OIL_WELL_PLACED_FEATURE = registerPlacedFeature(OIL_WELL_ID, OIL_WELL_CONFIGURED_FEATURE, RarityFilterPlacementModifier.of(30), SquarePlacementModifier.of(), PlacedFeatures.WORLD_SURFACE_WG_HEIGHTMAP, BiomePlacementModifier.of());
+	public static final RegistryEntry<PlacedFeature> OIL_WELL_PLACED_FEATURE = registerPlacedFeature(OIL_WELL_ID, OIL_WELL_CONFIGURED_FEATURE, RarityFilterPlacementModifier.of(5), SquarePlacementModifier.of(), PlacedFeatures.WORLD_SURFACE_WG_HEIGHTMAP, BiomePlacementModifier.of());
 	
 	public static final Identifier METEOR_ID = AMCommon.id("meteor");
 	
@@ -65,14 +65,6 @@ public class AMFeatures {
 	public static final RegistrySupplier<StructurePieceType> METEOR_STRUCTURE_PIECE = registerStructurePiece(METEOR_ID, () -> (StructurePieceType.Simple) MeteorGenerator::new);
 	
 	public static void init() {
-		BiomeModifications.create(ASTEROID_ORES_ID).add(ModificationPhase.ADDITIONS, (biomeSelectionContext) -> {
-			var entry = biomeSelectionContext.getBiomeRegistryEntry();
-			
-			return entry.isIn(AMTags.SPACE);
-		}, ((biomeSelectionContext, biomeModificationContext) -> {
-			biomeModificationContext.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.UNDERGROUND_ORES, ASTEROID_ORES_PLACED_FEATURE.value());
-		}));
-		
 		BiomeModifications.create(OIL_WELL_ID).add(ModificationPhase.ADDITIONS, (biomeSelectionContext) -> {
 			var entry = biomeSelectionContext.getBiomeRegistryEntry();
 			

@@ -47,7 +47,7 @@ public class EarthSpaceBiomeSource extends BiomeSource {
 	private final Registry<Biome> registry;
 	
 	public EarthSpaceBiomeSource(Registry<Biome> registry, long seed) {
-		super(ImmutableList.of());
+		super(ImmutableList.of(registry.getOrCreateEntry(AMBiomes.ASTEROID_BELT_KEY)));
 		
 		this.seed = seed;
 		this.registry = registry;
