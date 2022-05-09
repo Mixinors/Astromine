@@ -1,5 +1,7 @@
 accessWidener v2 named
 
+accessible field net/minecraft/world/gen/feature/StructureFeature STRUCTURE_TO_GENERATION_STEP Ljava/util/Map;
+
 accessible class net/minecraft/data/client/BlockStateModelGenerator$BlockTexturePool
 
 accessible field net/minecraft/block/EntityShapeContext heldItem Lnet/minecraft/item/ItemStack;

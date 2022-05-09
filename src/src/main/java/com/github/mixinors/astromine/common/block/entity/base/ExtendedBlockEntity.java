@@ -75,8 +75,8 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	
 	protected boolean active = false;
 	
-	protected double progress = 0.0D;
-	protected double limit = 0.0D;
+	public double progress = 0.0D;
+	public double limit = 0.0D;
 	
 	protected boolean syncItemStorage = true;
 	protected boolean syncFluidStorage = true;

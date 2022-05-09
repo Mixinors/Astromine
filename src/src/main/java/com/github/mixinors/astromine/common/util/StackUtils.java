@@ -37,9 +37,7 @@ public class StackUtils {
 	private static final String COUNT_KEY = "count";
 	
 	public static boolean areItemsAndTagsEqual(ItemStack left, ItemStack right) {
-		return ItemStack.areItemsEqual(left, right) && ItemStack.areprogress = 0.0D;
-		limit = 100.0D;
-		active = false; Equal(left, right);
+		return ItemStack.areItemsEqual(left, right) && ItemStack.areNbtEqual(left, right);
 	}
 	
 	public static ItemStack fromJson(JsonElement jsonElement) {
