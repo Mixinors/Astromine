@@ -32,6 +32,7 @@ import net.minecraft.item.Item;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.biome.Biome;
 
 public class AMTags {
 	public static final TagKey<Item> TRICKS_PIGLINS = ofItem(AMCommon.id("tricks_piglins"));
@@ -47,6 +48,8 @@ public class AMTags {
 	
 	public static final TagKey<EntityType<?>> DOES_NOT_BREATHE = ofEntityType(AMCommon.id("does_not_breathe"));
 	
+	public static final TagKey<Biome> SPACE = ofBiome(AMCommon.id("space"));
+	
 	public static TagKey<Item> ofItem(Identifier id) {
 		return TagKey.of(Registry.ITEM_KEY, id);
 	}
@@ -61,5 +64,9 @@ public class AMTags {
 	
 	public static TagKey<EntityType<?>> ofEntityType(Identifier id) {
 		return TagKey.of(Registry.ENTITY_TYPE_KEY, id);
+	}
+	
+	public static TagKey<Biome> ofBiome(Identifier id) {
+		return TagKey.of(Registry.BIOME_KEY, id);
 	}
 }

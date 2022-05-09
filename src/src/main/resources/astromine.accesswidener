@@ -1,4 +1,7 @@
 accessWidener v2 named
+
+accessible method net/minecraft/world/gen/feature/StructureFeature register (Ljava/lang/String;Lnet/minecraft/world/gen/feature/StructureFeature;Lnet/minecraft/world/gen/GenerationStep$Feature;)Lnet/minecraft/world/gen/feature/StructureFeature;
+
 accessible method net/minecraft/world/gen/feature/Feature register (Ljava/lang/String;Lnet/minecraft/world/gen/feature/Feature;)Lnet/minecraft/world/gen/feature/Feature;
 
 accessible field net/minecraft/world/gen/feature/StructureFeature STRUCTURE_TO_GENERATION_STEP Ljava/util/Map;

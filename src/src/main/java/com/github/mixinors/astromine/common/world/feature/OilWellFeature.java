@@ -35,6 +35,8 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
@@ -59,25 +61,46 @@ public class OilWellFeature extends Feature<DefaultFeatureConfig> {
 		var world = context.getWorld();
 		var pos = context.getOrigin();
 		
+		var oceanFloorPos = world.getTopPosition(Heightmap.Type.WORLD_SURFACE, pos);
+		
 		var offsetY = random.nextInt(BOTTOM_WELL_SIZE, BOTTOM_WELL_MAX_OFFSET);
+		
+		if (pos.getY() - offsetY > oceanFloorPos.getY() - BOTTOM_WELL_MAX_OFFSET - BOTTOM_WELL_SIZE) {
+			pos = new BlockPos(pos.getX(), oceanFloorPos.getY() - offsetY - BOTTOM_WELL_MAX_OFFSET - BOTTOM_WELL_SIZE, pos.getZ());
+		}
 		
 		var oilState = AMFluids.OIL.getBlock().getDefaultState();
 		
-		Shapes.ellipsoid(BOTTOM_WELL_SIZE, BOTTOM_WELL_SIZE, BOTTOM_WELL_SIZE).applyLayer(TranslateLayer.of(Position.of(pos.offset(Direction.UP, offsetY)))).stream().forEach(position ->
-				world.setBlockState(position.toBlockPos(), oilState, 0)
+		Shapes.ellipsoid(BOTTOM_WELL_SIZE, BOTTOM_WELL_SIZE, BOTTOM_WELL_SIZE).applyLayer(TranslateLayer.of(Position.of(pos.offset(Direction.UP, offsetY)))).stream().forEach(wellPos ->
+				world.setBlockState(wellPos.toBlockPos(), oilState, 0)
 		);
 		
-		BlockPos oceanTop = world.getTopPosition(Heightmap.Type.WORLD_SURFACE_WG, pos);
+		var topPos = world.getTopPosition(Heightmap.Type.WORLD_SURFACE, pos);
 		
-		Shapes.ellipsoid(TOP_WELL_WIDTH, TOP_WELL_WIDTH, TOP_WELL_HEIGHT).applyLayer(NoiseTranslateLayer.of(TOP_WELL_NOISE, random)).applyLayer(TranslateLayer.of(Position.of(oceanTop))).stream().forEach(position -> {
-			if (world.getBlockState(position.toBlockPos()).getBlock() instanceof FluidBlock) {
-				world.setBlockState(position.toBlockPos(), oilState, 0);
+		for (var x = pos.getX() - (TOP_WELL_WIDTH); x < pos.getX() + (TOP_WELL_WIDTH); ++x) {
+			for (var z = pos.getZ() - (TOP_WELL_WIDTH); z < pos.getZ() + (TOP_WELL_WIDTH); ++z) {
+				var dX = (x - pos.getX());
+				var dZ = (z - pos.getZ());
+				
+				var distance = (int) (1.0D + Math.ceil(Math.sqrt(dX * dX + dZ * dZ)));
+				
+				if (random.nextInt(TOP_WELL_WIDTH) > distance || random.nextInt(TOP_WELL_WIDTH) > distance) {
+					var offsetTopPos = world.getTopPosition(Heightmap.Type.WORLD_SURFACE, new BlockPos(x, topPos.getY(), z)).down();
+					
+					var offsetTopState = world.getBlockState(offsetTopPos);
+					
+					if (!offsetTopState.getFluidState().isEmpty()) {
+						world.setBlockState(offsetTopPos, oilState, 0);
+						
+						world.createAndScheduleFluidTick(offsetTopPos, AMFluids.OIL, 0);
+					}
+				}
 			}
-		});
+		}
 		
 		int geyserHeight = random.nextInt(GEYSER_MIN_HEIGHT, GEYSER_MAX_HEIGHT);
 		
-		for (var mutablePos = new BlockPos.Mutable(pos.getX(), pos.getY() + offsetY + BOTTOM_WELL_SIZE, pos.getZ()); mutablePos.getY() < oceanTop.getY() + geyserHeight; mutablePos.move(Direction.UP)) {
+		for (var mutablePos = new BlockPos.Mutable(pos.getX(), pos.getY() + offsetY + BOTTOM_WELL_SIZE, pos.getZ()); mutablePos.getY() < topPos.getY() + geyserHeight; mutablePos.move(Direction.UP)) {
 			world.setBlockState(mutablePos, oilState, 0);
 			
 			for (var direction : new Direction[] { Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST }) {
