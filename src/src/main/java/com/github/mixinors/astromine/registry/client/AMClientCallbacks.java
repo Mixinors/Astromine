@@ -24,36 +24,77 @@
 
 package com.github.mixinors.astromine.registry.client;
 
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.render.sky.SpaceSkyProperties;
 import com.github.mixinors.astromine.common.block.network.EnergyCableBlock;
 import com.github.mixinors.astromine.common.callback.SkyPropertiesCallback;
 import com.github.mixinors.astromine.common.item.HolographicConnectorItem;
 import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
+import dev.architectury.event.events.client.ClientTooltipEvent;
+import dev.vini2003.hammer.core.api.common.util.FluidTextUtils;
 import dev.vini2003.hammer.core.api.common.util.TextUtils;
 import dev.vini2003.hammer.gui.energy.api.common.util.EnergyTextUtils;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.item.BlockItem;
+import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.registry.Registry;
 import team.reborn.energy.api.EnergyStorage;
+
+import java.util.ArrayList;
 
 public class AMClientCallbacks {
 	public static void init() {
-		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
-			if (stack.getItem() instanceof EnergyStorageItem) {
-				var energyStorage = EnergyStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
+		ClientTooltipEvent.ITEM.register(((stack, tooltips, context) -> {
+			var item = stack.getItem();
+			
+			var id = Registry.ITEM.getId(item);
+			
+			if (id.getNamespace().equals(AMCommon.MOD_ID)) {
+				var empty = tooltips.stream().filter(text -> text.asString().isEmpty()).findFirst().orElse(null);
 				
-				if (energyStorage != null) {
+				var index = empty == null ? tooltips.size() : tooltips.indexOf(empty) + 1;
+				
+				var fluidStorages = FluidStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
+				
+				if (fluidStorages != null) {
+					var emptyTooltip = new ArrayList<Text>();
+					
+					try (var transaction = Transaction.openOuter()) {
+						for (var storage : fluidStorages.iterable(transaction)) {
+							if (storage.isResourceBlank()) {
+								emptyTooltip.add(TextUtils.EMPTY);
+							} else {
+								if (context.isAdvanced()) {
+									tooltips.addAll(index, FluidTextUtils.getDetailedStorageTooltips(storage));
+								} else {
+									tooltips.addAll(index, FluidTextUtils.getShortenedStorageTooltips(storage));
+								}
+							}
+						}
+						
+						transaction.abort();
+					}
+					
+					tooltips.addAll(emptyTooltip);
+				}
+				
+				var energyStorages = EnergyStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
+				
+				if (energyStorages != null) {
 					if (context.isAdvanced()) {
-						tooltip.addAll(EnergyTextUtils.getDetailedTooltips(energyStorage));
+						tooltips.addAll(index, EnergyTextUtils.getDetailedTooltips(energyStorages));
 					} else {
-						tooltip.addAll(EnergyTextUtils.getShortenedTooltips(energyStorage));
+						tooltips.addAll(index, EnergyTextUtils.getShortenedTooltips(energyStorages));
 					}
 				}
 			}
-		});
+		}));
 		
 		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
 			if (stack.getItem() instanceof HolographicConnectorItem) {

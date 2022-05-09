@@ -24,12 +24,25 @@
 
 package com.github.mixinors.astromine.registry.common;
 
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.callback.ServerChunkManagerCallback;
 import com.github.mixinors.astromine.common.component.world.WorldNetworkComponent;
 import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
+import dev.architectury.event.events.client.ClientTooltipEvent;
 import dev.architectury.event.events.common.TickEvent;
+import dev.vini2003.hammer.core.api.common.util.FluidTextUtils;
+import dev.vini2003.hammer.core.api.common.util.TextUtils;
+import dev.vini2003.hammer.gui.energy.api.common.util.EnergyTextUtils;
+import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
+import net.minecraft.util.registry.Registry;
+import team.reborn.energy.api.EnergyStorage;
+
+import java.util.ArrayList;
 
 public class AMCallbacks {
 	public static void init() {

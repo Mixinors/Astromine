@@ -60,7 +60,7 @@ public class AMBiomes {
 				.build();
 		
 		return (new Biome.Builder())
-				.precipitation(Biome.Precipitation.RAIN)
+				.precipitation(Biome.Precipitation.NONE)
 				.category(Biome.Category.NONE)
 				.temperature(0F)
 				.downfall(0F)

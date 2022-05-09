@@ -31,27 +31,17 @@ import net.minecraft.util.collection.DefaultedList;
 import team.reborn.energy.api.EnergyStorage;
 import team.reborn.energy.api.base.SimpleBatteryItem;
 
-/**
- * An {@link Item} with an attached {@link EnergyStorage}.
- */
 public class EnergyStorageItem extends Item implements SimpleBatteryItem {
 	private final long capacity;
 	
-	/** Instantiates an {@link EnergyStorageItem}s. */
-	protected EnergyStorageItem(Item.Settings settings, long capacity) {
+	public EnergyStorageItem(Item.Settings settings, long capacity) {
 		super(settings);
 		
 		this.capacity = capacity;
 	}
 	
-	/** Instantiates an {@link EnergyStorageItem}. */
-	public static EnergyStorageItem ofCreative(Item.Settings settings) {
-		return new EnergyStorageItem(settings, Long.MAX_VALUE);
-	}
-	
-	/** Instantiates an {@link EnergyStorageItem}s. */
-	public static EnergyStorageItem of(Settings settings, long size) {
-		return new EnergyStorageItem(settings, size);
+	public EnergyStorageItem(Item.Settings settings) {
+		this(settings, Long.MAX_VALUE);
 	}
 	
 	@Override
@@ -69,7 +59,6 @@ public class EnergyStorageItem extends Item implements SimpleBatteryItem {
 		return capacity;
 	}
 	
-	/** Override behavior to return our progress. */
 	@Override
 	public int getItemBarStep(ItemStack stack) {
 		if (getEnergyCapacity() == 0) {
@@ -79,21 +68,16 @@ public class EnergyStorageItem extends Item implements SimpleBatteryItem {
 		return (int) (13 * ((float) SimpleBatteryItem.getStoredEnergyUnchecked(stack) / (float) getEnergyCapacity()));
 	}
 	
-	/** Override behavior to return true. */
 	@Override
 	public boolean isItemBarVisible(ItemStack stack) {
 		return true;
 	}
 	
-	/** Override behavior to return a median red. */
 	@Override
 	public int getItemBarColor(ItemStack stack) {
 		return 0x91261f;
 	}
 	
-	/**
-	 * Override behavior to add instances of {@link EnergyStorageItem} as {@link ItemStack}s to {@link ItemGroup}s with full energy.
-	 */
 	@Override
 	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
 		super.appendStacks(group, stacks);

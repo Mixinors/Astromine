@@ -42,44 +42,13 @@ import java.util.List;
 public class FluidStorageItem extends Item {
 	private final long capacity;
 	
-	private FluidStorageItem(Item.Settings settings, long capacity) {
+	public FluidStorageItem(Item.Settings settings, long capacity) {
 		super(settings);
 		
 		this.capacity = capacity;
 	}
 	
-	public static FluidStorageItem of(Item.Settings settings, long size) {
-		return new FluidStorageItem(settings, size);
-	}
-	
 	public long getCapacity() {
 		return capacity;
-	}
-	
-	@Override
-	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-		super.appendTooltip(stack, world, tooltip, context);
-		
-		var storages = FluidStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
-		
-		var emptyTooltip = new ArrayList<Text>();
-		
-		try (var transaction = Transaction.openOuter()) {
-			for (var storage : storages.iterable(transaction)) {
-				if (storage.isResourceBlank()) {
-					emptyTooltip.add(TextUtils.EMPTY);
-				} else {
-					if (context.isAdvanced()) {
-						tooltip.addAll(FluidTextUtils.getDetailedStorageTooltips(storage));
-					} else {
-						tooltip.addAll(FluidTextUtils.getShortenedStorageTooltips(storage));
-					}
-				}
-			}
-			
-			transaction.abort();
-		}
-		
-		tooltip.addAll(emptyTooltip);
 	}
 }
