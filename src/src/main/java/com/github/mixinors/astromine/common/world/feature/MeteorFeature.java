@@ -29,6 +29,7 @@ import net.minecraft.structure.StructureGeneratorFactory;
 import net.minecraft.structure.StructurePiecesCollector;
 import net.minecraft.structure.StructurePiecesGenerator;
 import net.minecraft.world.Heightmap;
+import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.StructureFeature;
 
@@ -39,5 +40,10 @@ public class MeteorFeature extends StructureFeature<DefaultFeatureConfig> {
 	
 	private static void addPieces(StructurePiecesCollector collector, StructurePiecesGenerator.Context<DefaultFeatureConfig> context) {
 		collector.addPiece(new MeteorGenerator(context.random(), context.chunkPos().getStartX(), context.chunkPos().getStartZ()));
+	}
+	
+	@Override
+	public GenerationStep.Feature getGenerationStep() {
+		return GenerationStep.Feature.SURFACE_STRUCTURES;
 	}
 }

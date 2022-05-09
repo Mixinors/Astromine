@@ -40,7 +40,7 @@ import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.util.FeatureContext;
 
-public class CrudeOilFeature extends Feature<DefaultFeatureConfig> {
+public class OilWellFeature extends Feature<DefaultFeatureConfig> {
 	private static final int BOTTOM_WELL_SIZE = 8;
 	private static final int BOTTOM_WELL_MAX_OFFSET = 20;
 	private static final int TOP_WELL_WIDTH = 12;
@@ -49,7 +49,7 @@ public class CrudeOilFeature extends Feature<DefaultFeatureConfig> {
 	private static final int GEYSER_MIN_HEIGHT = 3;
 	private static final int GEYSER_MAX_HEIGHT = 10;
 	
-	public CrudeOilFeature(Codec<DefaultFeatureConfig> configCodec) {
+	public OilWellFeature(Codec<DefaultFeatureConfig> configCodec) {
 		super(configCodec);
 	}
 	
@@ -58,9 +58,6 @@ public class CrudeOilFeature extends Feature<DefaultFeatureConfig> {
 		var random = context.getRandom();
 		var world = context.getWorld();
 		var pos = context.getOrigin();
-		if (random.nextInt(AMConfig.get().world.crudeOilWellGenerationThreshold) > 1) {
-			return false;
-		}
 		
 		var offsetY = random.nextInt(BOTTOM_WELL_SIZE, BOTTOM_WELL_MAX_OFFSET);
 		

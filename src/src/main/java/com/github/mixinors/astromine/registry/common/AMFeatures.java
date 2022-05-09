@@ -25,18 +25,16 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.world.feature.AsteroidOreFeature;
-import com.github.mixinors.astromine.common.world.feature.CrudeOilFeature;
+import com.github.mixinors.astromine.common.world.feature.OilWellFeature;
 import com.github.mixinors.astromine.common.world.feature.MeteorFeature;
 import com.github.mixinors.astromine.common.world.feature.MeteorGenerator;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
-import net.minecraft.structure.Structure;
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
 import net.minecraft.structure.StructurePieceType;
-import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.*;
 import net.minecraft.world.biome.Biome;
@@ -44,9 +42,10 @@ import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.placementmodifier.BiomePlacementModifier;
 import net.minecraft.world.gen.placementmodifier.PlacementModifier;
+import net.minecraft.world.gen.placementmodifier.RarityFilterPlacementModifier;
+import net.minecraft.world.gen.placementmodifier.SquarePlacementModifier;
 
 import java.util.List;
-import java.util.Map;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -57,58 +56,25 @@ public class AMFeatures {
 	public static final RegistryEntry<PlacedFeature> ASTEROID_ORES_PLACED_FEATURE = registerPlacedFeature(ASTEROID_ORES_ID, ASTEROID_ORES_CONFIGURED_FEATURE, BiomePlacementModifier.of());
 	public static final RegistryKey<PlacedFeature> ASTEROID_ORES_KEY = RegistryKey.of(Registry.PLACED_FEATURE_KEY, ASTEROID_ORES_ID);
 	
-	// TODO: 1.18.2 structures
 	public static final Identifier METEOR_ID = AMCommon.id("meteor");
 	
-	public static final StructureFeature<DefaultFeatureConfig> METEOR = new MeteorFeature(DefaultFeatureConfig.CODEC);
-	
+	public static final RegistrySupplier<StructureFeature<DefaultFeatureConfig>> METEOR = registerStructureFeature(METEOR_ID, () -> new MeteorFeature(DefaultFeatureConfig.CODEC), GenerationStep.Feature.SURFACE_STRUCTURES);
 	public static final RegistrySupplier<StructurePieceType> METEOR_STRUCTURE_PIECE = registerStructurePiece(METEOR_ID, () -> (StructurePieceType.Simple) MeteorGenerator::new);
-	// public static final RegistrySupplier<StructureFeature<DefaultFeatureConfig>> METEOR_STRUCTURE_FEATURE = registerStructureFeature(METEOR_ID, new MeteorFeature(DefaultFeatureConfig.CODEC));
-	//public static final ConfiguredStructureFeature<DefaultFeatureConfig, ?> METEOR_CONFIGURED_STRUCTURE_FEATURE = registerConfiguredStructureFeature(METEOR_ID, configureForAnyBiome(METEOR_STRUCTURE_FEATURE.get()));
-	//public static final RegistryKey<ConfiguredStructureFeature<?, ?>> METEOR_KEY = RegistryKey.of(Registry.CONFIGURED_STRUCTURE_FEATURE_KEY, METEOR_ID);
 	
-	public static final Identifier CRUDE_OIL_ID = AMCommon.id("crude_oil");
-	public static final RegistrySupplier<Feature<DefaultFeatureConfig>> CRUDE_OIL_FEATURE = registerFeature(CRUDE_OIL_ID, () -> new CrudeOilFeature(DefaultFeatureConfig.CODEC));
-	public static final RegistryEntry<ConfiguredFeature<DefaultFeatureConfig, ?>> CRUDE_OIL_CONFIGURED_FEATURE = registerConfiguredFeature(CRUDE_OIL_ID, CRUDE_OIL_FEATURE.get(), DefaultFeatureConfig.INSTANCE);
-	public static final RegistryEntry<PlacedFeature> CRUDE_OIL_PLACED_FEATURE = registerPlacedFeature(CRUDE_OIL_ID, CRUDE_OIL_CONFIGURED_FEATURE, BiomePlacementModifier.of());
-	public static final RegistryKey<PlacedFeature> CRUDE_OIL_KEY = RegistryKey.of(Registry.PLACED_FEATURE_KEY, CRUDE_OIL_ID);
+	public static final Identifier OIL_WELL_ID = AMCommon.id("oil_well");
 	
-	public static final Identifier ASTROMINE_BIOME_MODIFICATIONS = AMCommon.id("biome_modifications");
+	public static final Feature<DefaultFeatureConfig> OIL_WELL_FEATURE = Feature.register(OIL_WELL_ID.toString(), new OilWellFeature(DefaultFeatureConfig.CODEC));
+	public static final RegistryEntry<ConfiguredFeature<DefaultFeatureConfig, ?>> OIL_WELL_CONFIGURED_FEATURE = ConfiguredFeatures.register(OIL_WELL_ID.toString(), OIL_WELL_FEATURE, DefaultFeatureConfig.INSTANCE);
+	public static final RegistryEntry<PlacedFeature> OIL_WELL_PLACED_FEATURE = PlacedFeatures.register(OIL_WELL_ID.toString(), OIL_WELL_CONFIGURED_FEATURE, RarityFilterPlacementModifier.of(5), SquarePlacementModifier.of(), PlacedFeatures.WORLD_SURFACE_WG_HEIGHTMAP, BiomePlacementModifier.of());
 	
 	public static void init() {
-		// TODO: Asteroid ores
-		
-		Registry.register(Registry.STRUCTURE_FEATURE, AMCommon.id("meteor"), METEOR);
-		
-		BiomeModifications.create(ASTROMINE_BIOME_MODIFICATIONS)
-						  .add(ModificationPhase.ADDITIONS, overworldPredicate(), context -> {
-							  if (AMConfig.get().world.meteorGeneration) {
-//						context.getGenerationSettings().addStructure(METEOR_KEY);
-							  }
-						  })
-						  .add(ModificationPhase.ADDITIONS, oceanPredicate(), context -> {
-							  if (AMConfig.get().world.crudeOilWellsGeneration) {
-								  context.getGenerationSettings().addFeature(GenerationStep.Feature.FLUID_SPRINGS, CRUDE_OIL_KEY);
-							  }
-						  });
-		
-		StructureFeature.STRUCTURE_TO_GENERATION_STEP.put(METEOR, GenerationStep.Feature.SURFACE_STRUCTURES);
-	}
-	
-	public static <C extends FeatureConfig, S extends StructureFeature<C>> ConfiguredStructureFeature<C, S> configureForAnyBiome(S structure) {
-		var entrySet = BuiltinRegistries.BIOME.getEntrySet();
-		var entryArray = new RegistryEntry[entrySet.size()];
-		
-		var entryIndex = 0;
-		
-		for (var entry : entrySet) {
-			var registryEntry = RegistryEntry.of(entry.getValue());
-			entryArray[entryIndex] = registryEntry;
+		BiomeModifications.create(OIL_WELL_ID).add(ModificationPhase.ADDITIONS, (biomeSelectionContext) -> {
+			var entry = biomeSelectionContext.getBiomeRegistryEntry();
 			
-			entryIndex += 1;
-		}
-		
-		return new ConfiguredStructureFeature<C, S>(structure, (C) DefaultFeatureConfig.INSTANCE, RegistryEntryList.of(entryArray), true, Map.of());
+			return entry.isIn(ConventionalBiomeTags.DESERT) || entry.isIn(ConventionalBiomeTags.DESERT) || entry.isIn(ConventionalBiomeTags.ICY);
+		}, ((biomeSelectionContext, biomeModificationContext) -> {
+			biomeModificationContext.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.SURFACE_STRUCTURES, OIL_WELL_PLACED_FEATURE.value());
+		}));
 	}
 	
 	public static <T extends FeatureConfig> RegistrySupplier<Feature<T>> registerFeature(Identifier id, Supplier<Feature<T>> feature) {
@@ -131,8 +97,10 @@ public class AMFeatures {
 		return AMCommon.registry(Registry.STRUCTURE_PIECE_KEY).register(id, pieceType);
 	}
 	
-	public static <T extends FeatureConfig> RegistrySupplier<StructureFeature<T>> registerStructureFeature(Identifier id, StructureFeature<T> feature) {
-		return AMCommon.registry(Registry.STRUCTURE_FEATURE_KEY).register(id, () -> feature);
+	public static <T extends FeatureConfig> RegistrySupplier<StructureFeature<T>> registerStructureFeature(Identifier id, Supplier<StructureFeature<T>> feature, GenerationStep.Feature step) {
+		StructureFeature.STRUCTURE_TO_GENERATION_STEP.put(feature.get(), step);
+		
+		return AMCommon.registry(Registry.STRUCTURE_FEATURE_KEY).register(id, feature);
 	}
 	
 	//public static <T extends FeatureConfig> ConfiguredStructureFeature<T, ?> registerConfiguredStructureFeature(Identifier id, ConfiguredStructureFeature<T, ?> feature) {
