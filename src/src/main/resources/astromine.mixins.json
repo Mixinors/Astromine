@@ -22,16 +22,17 @@
     "common.SwimGoalMixin"
   ],
   "client": [
-    "client.ArmorFeatureRendererMixin",
-    "client.CameraMixin",
-    "client.BossBarHudMixin",
-    "client.BuiltinModelItemRendererMixin",
-    "client.ClientPlayerInteractionManagerMixin",
-    "client.ClientRecipeBookMixin",
-    "client.InGameOverlayRendererMixin",
-    "client.SkyPropertiesMixin",
-    "client.WorldRendererMixin",
-    "client.BackgroundRendererMixin"
+	  "client.AbstractSoundInstanceMixin",
+	  "client.ArmorFeatureRendererMixin",
+	  "client.CameraMixin",
+	  "client.BossBarHudMixin",
+	  "client.BuiltinModelItemRendererMixin",
+	  "client.ClientPlayerInteractionManagerMixin",
+	  "client.ClientRecipeBookMixin",
+	  "client.InGameOverlayRendererMixin",
+	  "client.SkyPropertiesMixin",
+	  "client.WorldRendererMixin",
+	  "client.BackgroundRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

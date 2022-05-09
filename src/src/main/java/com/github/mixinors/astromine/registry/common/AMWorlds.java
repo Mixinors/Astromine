@@ -53,6 +53,10 @@ public class AMWorlds {
 		return key;
 	}
 	
+	public static boolean isSpace(RegistryKey<World> key) {
+		return key.equals(EARTH_SPACE_WORLD);
+	}
+	
 	public static boolean isAstromine(RegistryKey<?> key) {
 		return KEYS.contains(key);
 	}
