@@ -103,7 +103,8 @@ public abstract class RocketEntity extends ExtendedEntity {
 	protected abstract FluidIngredient getSecondaryFuelIngredient();
 	
 	protected boolean isFuelMatching() {
-		return getPrimaryFuelIngredient().test(fluidStorage.getStorage(FLUID_INPUT_SLOT_1)) && getSecondaryFuelIngredient().test(fluidStorage.getStorage(FLUID_INPUT_SLOT_2));
+		return getPrimaryFuelIngredient().test(fluidStorage.getStorage(FLUID_INPUT_SLOT_1)) && getSecondaryFuelIngredient().test(fluidStorage.getStorage(FLUID_INPUT_SLOT_2)) ||
+				getSecondaryFuelIngredient().test(fluidStorage.getStorage(FLUID_INPUT_SLOT_1)) && getPrimaryFuelIngredient().test(fluidStorage.getStorage(FLUID_INPUT_SLOT_2));
 	}
 	
 	protected void consumeFuel() {
@@ -111,8 +112,13 @@ public abstract class RocketEntity extends ExtendedEntity {
 			var firstInputStorage = fluidStorage.getStorage(FLUID_INPUT_SLOT_1);
 			var secondInputStorage = fluidStorage.getStorage(FLUID_INPUT_SLOT_2);
 			
-			firstInputStorage.extract(firstInputStorage.getResource(), getPrimaryFuelIngredient().getAmount(), transaction);
-			secondInputStorage.extract(secondInputStorage.getResource(), getSecondaryFuelIngredient().getAmount(), transaction);
+			if (getPrimaryFuelIngredient().test(fluidStorage.getStorage(FLUID_INPUT_SLOT_1)) && getSecondaryFuelIngredient().test(fluidStorage.getStorage(FLUID_INPUT_SLOT_2))) {
+				firstInputStorage.extract(firstInputStorage.getResource(), getPrimaryFuelIngredient().getAmount(), transaction, true);
+				secondInputStorage.extract(secondInputStorage.getResource(), getSecondaryFuelIngredient().getAmount(), transaction, true);
+			} else if (getSecondaryFuelIngredient().test(fluidStorage.getStorage(FLUID_INPUT_SLOT_1)) && getPrimaryFuelIngredient().test(fluidStorage.getStorage(FLUID_INPUT_SLOT_2))) {
+				secondInputStorage.extract(secondInputStorage.getResource(), getPrimaryFuelIngredient().getAmount(), transaction, true);
+				firstInputStorage.extract(firstInputStorage.getResource(), getSecondaryFuelIngredient().getAmount(), transaction, true);
+			}
 			
 			transaction.commit();
 		}

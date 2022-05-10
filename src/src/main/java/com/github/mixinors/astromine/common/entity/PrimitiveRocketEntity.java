@@ -60,9 +60,9 @@ import javax.annotation.Nullable;
 import java.util.Collection;
 
 public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuProvider {
-	private static final FluidIngredient FUEL_INGREDIENT = new FluidIngredient(FluidVariant.of(AMFluids.FUEL), FluidConstants.BUCKET / 9);
+	private static final FluidIngredient FUEL_INGREDIENT = new FluidIngredient(FluidVariant.of(AMFluids.FUEL), FluidConstants.BUCKET / 9 / 20 / 2);
 	
-	private static final FluidIngredient OXYGEN_INGREDIENT = new FluidIngredient(FluidVariant.of(AMFluids.OXYGEN), FluidConstants.BUCKET / 27);
+	private static final FluidIngredient OXYGEN_INGREDIENT = new FluidIngredient(FluidVariant.of(AMFluids.OXYGEN), FluidConstants.BUCKET / 27 / 20 / 2);
 	
 	public PrimitiveRocketEntity(EntityType<?> type, World world) {
 		super(type, world);
@@ -83,7 +83,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 	
 	@Override
 	protected Vector3d getAcceleration() {
-		return new Vector3d(0D, 0.000025 / (getY() / 1024D), 0D);
+		return new Vector3d(0.0D, 0.000025 / (Math.abs(getY()) / 1024.0D), 0.0D);
 	}
 	
 	@Override

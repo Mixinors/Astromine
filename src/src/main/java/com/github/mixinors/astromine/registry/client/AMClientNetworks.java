@@ -63,10 +63,13 @@ public class AMClientNetworks {
 			
 			context.queue(() -> {
 				var player = context.getPlayer();
-				var world = (ClientWorld) player.getWorld();
 				
-				if (world.getEntityById(id) instanceof ExtendedEntity entity) {
-					entity.readFromNbt(nbt);
+				if (player != null) {
+					var world = (ClientWorld) player.getWorld();
+					
+					if (world.getEntityById(id) instanceof ExtendedEntity entity) {
+						entity.readFromNbt(nbt);
+					}
 				}
 			});
 		});
