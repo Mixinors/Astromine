@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.entity.base;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMCriteria;
 import com.github.mixinors.astromine.registry.common.AMParticles;
 import dev.vini2003.hammer.gravity.api.common.manager.GravityManager;
@@ -56,23 +57,45 @@ import java.util.Collection;
 import static java.lang.Math.min;
 
 public abstract class RocketEntity extends ExtendedEntity {
-	protected static final int FLUID_INPUT_SLOT_1 = 0;
-	protected static final int FLUID_INPUT_SLOT_2 = 1;
+	public static final int FLUID_INPUT_SLOT_1 = 0;
+	public static final int FLUID_INPUT_SLOT_2 = 1;
 	
-	protected static final int[] FLUID_INSERT_SLOTS = new int[] { FLUID_INPUT_SLOT_1, FLUID_INPUT_SLOT_2 };
+	public static final int ITEM_INPUT_SLOT_1 = 0;
+	public static final int ITEM_INPUT_SLOT_2 = 2;
 	
-	protected static final int[] FLUID_EXTRACT_SLOTS = new int[] { };
+	public static final int ITEM_BUFFER_SLOT_1 = 4;
+	
+	public static final int ITEM_OUTPUT_SLOT_1 = 1;
+	public static final int ITEM_OUTPUT_SLOT_2 = 3;
+	
+	public static final int[] ITEM_INSERT_SLOTS = new int[] { ITEM_INPUT_SLOT_1, ITEM_INPUT_SLOT_2 };
+	
+	public static final int[] ITEM_EXTRACT_SLOTS = new int[] { ITEM_BUFFER_SLOT_1, ITEM_OUTPUT_SLOT_1, ITEM_OUTPUT_SLOT_2 };
+	
+	public static final int[] FLUID_INSERT_SLOTS = new int[] { FLUID_INPUT_SLOT_1, FLUID_INPUT_SLOT_2 };
+	
+	public static final int[] FLUID_EXTRACT_SLOTS = new int[] { };
 	
 	public static final TrackedData<Boolean> IS_RUNNING = DataTracker.registerData(RocketEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	
 	public RocketEntity(EntityType<?> type, World world) {
 		super(type, world);
 		
+		itemStorage = new SimpleItemStorage(5).extractPredicate((variant, slot) ->
+				slot == ITEM_BUFFER_SLOT_1 || slot == ITEM_OUTPUT_SLOT_1 || slot == ITEM_OUTPUT_SLOT_2
+		).insertPredicate((variant, slot) ->
+				slot == ITEM_INPUT_SLOT_1 || slot == ITEM_INPUT_SLOT_2
+		).listener(() -> {
+			syncData();
+		}).insertSlots(ITEM_INSERT_SLOTS).extractSlots(ITEM_EXTRACT_SLOTS);
+		
 		fluidStorage = new SimpleFluidStorage(2, getFluidStorageSize()).extractPredicate((variant, slot) ->
 				false
 		).insertPredicate((variant, slot) ->
 				(slot == FLUID_INPUT_SLOT_1 && getPrimaryFuelIngredient().testVariant(variant)) || (slot == FLUID_INPUT_SLOT_2 && getSecondaryFuelIngredient().testVariant(variant))
-		).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
+		).listener(() -> {
+			syncData();
+		}).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
 	}
 	
 	protected abstract FluidIngredient getPrimaryFuelIngredient();
@@ -118,44 +141,46 @@ public abstract class RocketEntity extends ExtendedEntity {
 	public void tick() {
 		super.tick();
 		
-		if (this.getDataTracker().get(IS_RUNNING)) {
-			if (isFuelMatching()) {
-				consumeFuel();
-				
-				var acceleration = getAcceleration();
-				
-				this.addVelocity(0, acceleration.y, 0);
-				this.move(MovementType.SELF, this.getVelocity());
-				
-				if (!this.world.isClient) {
-					var box = getBoundingBox();
+		if (!world.isClient) {
+			if (this.getDataTracker().get(IS_RUNNING)) {
+				if (isFuelMatching()) {
+					consumeFuel();
 					
-					var y = getY();
+					var acceleration = getAcceleration();
 					
-					for (var x = box.minX; x < box.maxX; x += 0.0625) {
-						for (var z = box.minZ; z < box.maxZ; z += 0.0625) {
-							((ServerWorld) world).spawnParticles(AMParticles.ROCKET_FLAME.get(), x, y, z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
+					this.addVelocity(0, acceleration.y, 0);
+					this.move(MovementType.SELF, this.getVelocity());
+					
+					if (!this.world.isClient) {
+						var box = getBoundingBox();
+						
+						var y = getY();
+						
+						for (var x = box.minX; x < box.maxX; x += 0.0625) {
+							for (var z = box.minZ; z < box.maxZ; z += 0.0625) {
+								((ServerWorld) world).spawnParticles(AMParticles.ROCKET_FLAME.get(), x, y, z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
+							}
+						}
+					}
+					
+					if (BlockPos.Mutable.stream(getBoundingBox()).anyMatch(pos -> !world.getBlockState(pos).isAir()) && !world.isClient) {
+						this.tryDisassemble(false);
+					}
+				} else if (!world.isClient) {
+					this.addVelocity(0, -GravityManager.get(world.getRegistryKey()), 0);
+					this.move(MovementType.SELF, this.getVelocity());
+					
+					if (getVelocity().y < -GravityManager.get(world.getRegistryKey())) {
+						if (BlockPos.Mutable.stream(getBoundingBox().offset(0, -1, 0)).anyMatch(pos -> !world.getBlockState(pos).isAir()) && !world.isClient) {
+							this.tryDisassemble(false);
 						}
 					}
 				}
+			} else {
+				setVelocity(Vec3d.ZERO);
 				
-				if (BlockPos.Mutable.stream(getBoundingBox()).anyMatch(pos -> !world.getBlockState(pos).isAir()) && !world.isClient) {
-					this.tryDisassemble(false);
-				}
-			} else if (!world.isClient) {
-				this.addVelocity(0, -GravityManager.get(world.getRegistryKey()), 0);
-				this.move(MovementType.SELF, this.getVelocity());
-				
-				if (getVelocity().y < -GravityManager.get(world.getRegistryKey())) {
-					if (BlockPos.Mutable.stream(getBoundingBox().offset(0, -1, 0)).anyMatch(pos -> !world.getBlockState(pos).isAir()) && !world.isClient) {
-						this.tryDisassemble(false);
-					}
-				}
+				this.velocityDirty = true;
 			}
-		} else {
-			setVelocity(Vec3d.ZERO);
-			
-			this.velocityDirty = true;
 		}
 	}
 	

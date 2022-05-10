@@ -27,17 +27,13 @@ package com.github.mixinors.astromine.common.screenhandler.storage;
 import com.github.mixinors.astromine.common.block.entity.storage.TankBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.widget.FluidFilterWidget;
-import com.github.mixinors.astromine.common.widget.HorizontalArrowWidget;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 import kotlin.Unit;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
-
-import java.util.function.Supplier;
 
 public class TankScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final TankBlockEntity tank;
@@ -63,7 +59,7 @@ public class TankScreenHandler extends ExtendedBlockEntityScreenHandler {
 		unload.setPosition(new Position(fluidBar, -SLOT_WIDTH - PAD_3, 0));
 		unload.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
-		var buffer = new SlotWidget(TankBlockEntity.ITEM_OUTPUT_SLOT_1, tank.getItemStorage());
+		var buffer = new SlotWidget(TankBlockEntity.ITEM_BUFFER_STORAGE, tank.getItemStorage());
 		buffer.setPosition(new Position(unload, -SLOT_WIDTH - PAD_3, SLOT_HEIGHT - 4.0F)); // 4.0F centers the buffer slot against the two other slots.
 		buffer.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		

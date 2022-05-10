@@ -24,15 +24,17 @@
 
 package com.github.mixinors.astromine.registry.client;
 
+import com.github.mixinors.astromine.common.entity.base.ExtendedEntity;
 import com.github.mixinors.astromine.registry.common.AMEntityTypes;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.client.world.ClientWorld;
 
 import static com.github.mixinors.astromine.registry.common.AMNetworks.PRIMITIVE_ROCKET_SPAWN;
+import static com.github.mixinors.astromine.registry.common.AMNetworks.SYNC_ENTITY;
 
 public class AMClientNetworks {
 	public static void init() {
-		NetworkManager.registerReceiver(NetworkManager.s2c(), PRIMITIVE_ROCKET_SPAWN, ((buf, context) -> {
+		NetworkManager.registerReceiver(NetworkManager.s2c(), PRIMITIVE_ROCKET_SPAWN, (buf, context) -> {
 			var x = buf.readDouble();
 			var y = buf.readDouble();
 			var z = buf.readDouble();
@@ -52,7 +54,22 @@ public class AMClientNetworks {
 				
 				world.addEntity(id, rocketEntity);
 			});
-		}));
+		});
+		
+		NetworkManager.registerReceiver(NetworkManager.s2c(), SYNC_ENTITY, (buf, context) -> {
+			var id = buf.readInt();
+			
+			var nbt = buf.readNbt();
+			
+			context.queue(() -> {
+				var player = context.getPlayer();
+				var world = (ClientWorld) player.getWorld();
+				
+				if (world.getEntityById(id) instanceof ExtendedEntity entity) {
+					entity.readFromNbt(nbt);
+				}
+			});
+		});
 		
 		// TODO: 08/08/2020 - 11:00:51
 		// TODO: 27/08/2020 - 21:15:05

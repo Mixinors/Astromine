@@ -181,4 +181,8 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 	public boolean isClient() {
 		return getClient();
 	}
+	
+	public ExtendedEntity getEntity() {
+		return entity;
+	}
 }

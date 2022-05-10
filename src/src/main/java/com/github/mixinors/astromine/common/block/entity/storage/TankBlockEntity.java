@@ -60,13 +60,13 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 	
 	public static final int ITEM_INPUT_SLOT = 0;
 	
-	public static final int ITEM_OUTPUT_SLOT_1 = 1;
+	public static final int ITEM_BUFFER_STORAGE = 1;
 	
 	public static final int ITEM_OUTPUT_SLOT_2 = 2;
 	
 	public static final int[] ITEM_INSERT_SLOTS = new int[] { ITEM_INPUT_SLOT };
 	
-	public static final int[] ITEM_EXTRACT_SLOTS = new int[] { ITEM_OUTPUT_SLOT_1, ITEM_OUTPUT_SLOT_2 };
+	public static final int[] ITEM_EXTRACT_SLOTS = new int[] { ITEM_BUFFER_STORAGE, ITEM_OUTPUT_SLOT_2 };
 	
 	private FluidVariant filter = FluidVariant.blank();
 	
@@ -82,7 +82,7 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 		}).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
 		
 		itemStorage = new SimpleItemStorage(3).extractPredicate((variant, slot) -> {
-			return slot == ITEM_INPUT_SLOT || slot == ITEM_OUTPUT_SLOT_1 || slot == ITEM_OUTPUT_SLOT_2;
+			return slot == ITEM_INPUT_SLOT || slot == ITEM_BUFFER_STORAGE || slot == ITEM_OUTPUT_SLOT_2;
 		}).insertPredicate((variant, slot) -> {
 			if (slot != ITEM_INPUT_SLOT) {
 				return false;
@@ -117,7 +117,8 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 		
 		var itemInputStorage = wildItemStorage.getStorage(ITEM_INPUT_SLOT);
 		
-		var itemOutputStorage1 = wildItemStorage.getStorage(ITEM_OUTPUT_SLOT_1);
+		var itemBufferStorage = wildItemStorage.getStorage(ITEM_BUFFER_STORAGE);
+		
 		var itemOutputStorage2 = wildItemStorage.getStorage(ITEM_OUTPUT_SLOT_2);
 		
 		var fluidInputStorage = wildFluidStorage.getStorage(FLUID_INPUT_SLOT);
@@ -132,7 +133,7 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 			StorageUtil.move(unloadFluidStorages, fluidInputStorage, fluidVariant -> !fluidVariant.isBlank() && (filter.isBlank() || fluidVariant.equals(filter)), FluidConstants.BUCKET, transaction);
 			StorageUtil.move(fluidOutputStorage, loadFluidStorages, fluidVariant -> !fluidVariant.isBlank(), FluidConstants.BUCKET, transaction);
 			
-			StorageUtil.move(itemInputStorage, itemOutputStorage1, (variant) -> {
+			StorageUtil.move(itemInputStorage, itemBufferStorage, (variant) -> {
 				var stored = StorageUtil.findStoredResource(unloadFluidStorages, transaction);
 				return stored == null || stored.isBlank();
 			}, 1, transaction);

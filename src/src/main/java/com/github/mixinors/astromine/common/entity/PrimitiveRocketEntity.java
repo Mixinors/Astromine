@@ -60,16 +60,6 @@ import javax.annotation.Nullable;
 import java.util.Collection;
 
 public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuProvider {
-	private static final int ITEM_INPUT_SLOT_1 = 0;
-	private static final int ITEM_INPUT_SLOT_2 = 2;
-	
-	private static final int ITEM_OUTPUT_SLOT_1 = 1;
-	private static final int ITEM_OUTPUT_SLOT_2 = 3;
-	
-	private static final int[] ITEM_INSERT_SLOTS = new int[] { ITEM_INPUT_SLOT_1, ITEM_INPUT_SLOT_2 };
-	
-	private static final int[] ITEM_EXTRACT_SLOTS = new int[] { ITEM_OUTPUT_SLOT_1, ITEM_OUTPUT_SLOT_2 };
-	
 	private static final FluidIngredient FUEL_INGREDIENT = new FluidIngredient(FluidVariant.of(AMFluids.FUEL), FluidConstants.BUCKET / 9);
 	
 	private static final FluidIngredient OXYGEN_INGREDIENT = new FluidIngredient(FluidVariant.of(AMFluids.OXYGEN), FluidConstants.BUCKET / 27);
@@ -79,12 +69,6 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 		
 		fluidStorage.getStorage(FLUID_INPUT_SLOT_1).setCapacity(FluidConstants.BUCKET * 16);
 		fluidStorage.getStorage(FLUID_INPUT_SLOT_2).setCapacity(FluidConstants.BUCKET * 16);
-		
-		itemStorage = new SimpleItemStorage(4).extractPredicate((variant, slot) ->
-				slot == ITEM_OUTPUT_SLOT_1 || slot == ITEM_OUTPUT_SLOT_2
-		).insertPredicate((variant, slot) ->
-				FluidStorage.ITEM.getProvider(variant.getItem()) != null && (slot == ITEM_INPUT_SLOT_1 || slot == ITEM_INPUT_SLOT_2)
-		).insertSlots(ITEM_INSERT_SLOTS).extractSlots(ITEM_EXTRACT_SLOTS);
 	}
 	
 	@Override
@@ -155,58 +139,54 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 	
 	@Override
 	public void tick() {
-		if (world.getRegistryKey().equals(AMWorlds.EARTH_SPACE_WORLD)) {
-			setVelocity(0, 0, 0);
-			
-			getDataTracker().set(IS_RUNNING, false);
-		}
-		
-		try (var transaction = Transaction.openOuter()) {
-			var firstItemInputStack = itemStorage.getStack(ITEM_INPUT_SLOT_1);
-			var secondItemInputStack = itemStorage.getStack(ITEM_INPUT_SLOT_2);
-			
-			var firstItemInputStorage = itemStorage.getStorage(ITEM_INPUT_SLOT_1);
-			var secondItemInputStorage = itemStorage.getStorage(ITEM_INPUT_SLOT_2);
-			
-			var firstItemOutputStorage = itemStorage.getStorage(ITEM_OUTPUT_SLOT_1);
-			var secondItemOutputStorage = itemStorage.getStorage(ITEM_OUTPUT_SLOT_2);
-			
-			var firstFluidInputStorage = fluidStorage.getStorage(FLUID_INPUT_SLOT_1);
-			var secondFluidInputStorage = fluidStorage.getStorage(FLUID_INPUT_SLOT_2);
-			
-			var firstFluidOutputStorage = FluidStorage.ITEM.find(firstItemInputStack, ContainerItemContext.ofSingleSlot(firstItemInputStorage));
-			var secondFluidOutputStorage = FluidStorage.ITEM.find(secondItemInputStack, ContainerItemContext.ofSingleSlot(secondItemInputStorage));
-			
-			StorageUtil.move(firstFluidOutputStorage, firstFluidInputStorage, fluidVariant -> true, FluidConstants.BUCKET, transaction);
-			StorageUtil.move(secondFluidOutputStorage, secondFluidInputStorage, fluidVariant -> true, FluidConstants.BUCKET, transaction);
-			
-			if (firstItemOutputStorage.getResource().isBlank()) {
-				StorageUtil.move(firstItemInputStorage, firstItemOutputStorage, (variant) -> {
-					if (firstItemOutputStorage.isResourceBlank()) {
-						return true;
-					}
-					
-					var storage = FluidStorage.ITEM.find(variant.toStack(), ContainerItemContext.ofSingleSlot(firstItemOutputStorage));
-					
-					return storage == null || storage.iterator(transaction).next().isResourceBlank();
-				}, 1, transaction);
-			}
-			
-			if (secondItemOutputStorage.getResource().isBlank()) {
-				StorageUtil.move(secondItemInputStorage, secondItemOutputStorage, (variant) -> {
-					if (secondItemOutputStorage.isResourceBlank()) {
-						return true;
-					}
-					
-					var storage = FluidStorage.ITEM.find(variant.toStack(), ContainerItemContext.ofSingleSlot(firstItemOutputStorage));
-					
-					return storage == null || storage.iterator(transaction).next().isResourceBlank();
-				}, 1, transaction);
-			}
-			
-			transaction.commit();
-		}
-		
 		super.tick();
+		
+		if (!world.isClient) {
+			if (world.getRegistryKey().equals(AMWorlds.EARTH_SPACE_WORLD)) {
+				setVelocity(0.0F, 0.0F, 0.0F);
+				
+				dataTracker.set(IS_RUNNING, false);
+			}
+			
+			try (var transaction = Transaction.openOuter()) {
+				var wildItemStorage = itemStorage.getWildProxy();
+				var wildFluidStorage = fluidStorage.getWildProxy();
+				
+				var itemInputStorage1 = wildItemStorage.getStorage(ITEM_INPUT_SLOT_1);
+				var itemInputStorage2 = wildItemStorage.getStorage(ITEM_INPUT_SLOT_2);
+				
+				var itemBufferStorage = wildItemStorage.getStorage(ITEM_BUFFER_SLOT_1);
+				
+				var itemOutputStorage1 = wildItemStorage.getStorage(ITEM_OUTPUT_SLOT_1);
+				var itemOutputStorage2 = wildItemStorage.getStorage(ITEM_OUTPUT_SLOT_2);
+				
+				var fluidInputStorage1 = wildFluidStorage.getStorage(FLUID_INPUT_SLOT_1);
+				var fluidInputStorage2 = wildFluidStorage.getStorage(FLUID_INPUT_SLOT_2);
+				
+				var itemInputFluidStorage1 = FluidStorage.ITEM.find(itemInputStorage1.getStack(), ContainerItemContext.ofSingleSlot(itemInputStorage1));
+				var itemInputFluidStorage2 = FluidStorage.ITEM.find(itemInputStorage2.getStack(), ContainerItemContext.ofSingleSlot(itemInputStorage2));
+				
+				var itemOutputFluidStorage1 = FluidStorage.ITEM.find(itemOutputStorage1.getStack(), ContainerItemContext.ofSingleSlot(itemOutputStorage1));
+				var itemOutputFluidStorage2 = FluidStorage.ITEM.find(itemOutputStorage2.getStack(), ContainerItemContext.ofSingleSlot(itemOutputStorage2));
+				
+				StorageUtil.move(itemInputFluidStorage1, fluidInputStorage1, fluidVariant -> true, FluidConstants.BUCKET, transaction);
+				StorageUtil.move(itemInputFluidStorage2, fluidInputStorage2, fluidVariant -> true, FluidConstants.BUCKET, transaction);
+				
+				StorageUtil.move(fluidInputStorage1, itemOutputFluidStorage1, fluidVariant -> true, FluidConstants.BUCKET, transaction);
+				StorageUtil.move(fluidInputStorage2, itemOutputFluidStorage2, fluidVariant -> true, FluidConstants.BUCKET, transaction);
+				
+				StorageUtil.move(itemInputStorage1, itemBufferStorage, (variant) -> {
+					var stored = StorageUtil.findStoredResource(itemInputFluidStorage1, transaction);
+					return stored == null || stored.isBlank();
+				}, 1, transaction);
+				
+				StorageUtil.move(itemInputStorage2, itemBufferStorage, (variant) -> {
+					var stored = StorageUtil.findStoredResource(itemInputFluidStorage2, transaction);
+					return stored == null || stored.isBlank();
+				}, 1, transaction);
+				
+				transaction.commit();
+			}
+		}
 	}
 }

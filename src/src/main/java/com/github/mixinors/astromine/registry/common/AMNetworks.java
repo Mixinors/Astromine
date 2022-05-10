@@ -40,6 +40,8 @@ public class AMNetworks {
 	
 	public static final Identifier PRIMITIVE_ROCKET_SPAWN = AMCommon.id("primitive_rocket_spawn");
 	
+	public static final Identifier SYNC_ENTITY = AMCommon.id("sync_entity");
+	
 	public static void init() {
 		NetworkManager.registerReceiver(NetworkManager.c2s(), STORAGE_SIDING_UPDATE, ((buf, context) -> {
 			buf.retain();
