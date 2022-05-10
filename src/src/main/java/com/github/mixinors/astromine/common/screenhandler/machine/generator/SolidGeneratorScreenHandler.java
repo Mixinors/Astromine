@@ -48,7 +48,7 @@ public class SolidGeneratorScreenHandler extends ExtendedBlockEntityScreenHandle
 		super.initialize(width, height);
 		
 		var input = new SlotWidget(SolidGeneratorBlockEntity.INPUT_SLOT, generator.getItemStorage());
-		input.setPosition(new Position(tab, PAD_7, PAD_11 + (BAR_HEIGHT / 2.0F) - (SLOT_HEIGHT / 2.0F)));
+		input.setPosition(new Position(tab, TABS_WIDTH / 2.0F - (SLOT_WIDTH + PAD_7 + ARROW_WIDTH + PAD_7 + BAR_WIDTH) / 2.0F, PAD_11 + (BAR_HEIGHT / 2.0F) - (SLOT_HEIGHT / 2.0F)));
 		input.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
 		var arrow = new HorizontalArrowWidget();
