@@ -68,7 +68,7 @@ public class TankScreenHandler extends ExtendedBlockEntityScreenHandler {
 		load.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
 		var filter = new FluidFilterWidget();
-		filter.setPosition(new Position(unload, PAD_3, SLOT_WIDTH + 2.0F)); // 2.0F centers the filter against the upper and lower slots.
+		filter.setPosition(new Position(unload, (SLOT_WIDTH / 2.0F - FILTER_WIDTH / 2.0F), SLOT_WIDTH + 2.0F)); // 2.0F centers the filter against the upper and lower slots.
 		filter.setSize(new Size(FILTER_WIDTH, FILTER_HEIGHT));
 		filter.setFluidVariantConsumer((variant) -> {
 			tank.setFilter(variant);
