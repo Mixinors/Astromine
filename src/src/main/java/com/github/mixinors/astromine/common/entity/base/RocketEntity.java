@@ -102,7 +102,7 @@ public abstract class RocketEntity extends ExtendedEntity {
 	
 	protected abstract FluidIngredient getSecondaryFuelIngredient();
 	
-	protected boolean isFuelMatching() {
+	public boolean isFuelMatching() {
 		return getPrimaryFuelIngredient().test(fluidStorage.getStorage(FLUID_INPUT_SLOT_1)) && getSecondaryFuelIngredient().test(fluidStorage.getStorage(FLUID_INPUT_SLOT_2)) ||
 				getSecondaryFuelIngredient().test(fluidStorage.getStorage(FLUID_INPUT_SLOT_1)) && getPrimaryFuelIngredient().test(fluidStorage.getStorage(FLUID_INPUT_SLOT_2));
 	}
@@ -148,7 +148,7 @@ public abstract class RocketEntity extends ExtendedEntity {
 		super.tick();
 		
 		if (!world.isClient) {
-			if (this.getDataTracker().get(IS_RUNNING)) {
+			if (dataTracker.get(IS_RUNNING)) {
 				if (isFuelMatching()) {
 					consumeFuel();
 					
@@ -157,15 +157,11 @@ public abstract class RocketEntity extends ExtendedEntity {
 					this.addVelocity(0, acceleration.y, 0);
 					this.move(MovementType.SELF, this.getVelocity());
 					
-					if (!this.world.isClient) {
-						var box = getBoundingBox();
-						
-						var y = getY();
-						
-						for (var x = box.minX; x < box.maxX; x += 0.0625) {
-							for (var z = box.minZ; z < box.maxZ; z += 0.0625) {
-								((ServerWorld) world).spawnParticles(AMParticles.ROCKET_FLAME.get(), x, y, z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
-							}
+					var box = getBoundingBox();
+					
+					for (var x = box.minX; x < box.maxX; x += 0.0625) {
+						for (var z = box.minZ; z < box.maxZ; z += 0.0625) {
+							((ServerWorld) world).spawnParticles(AMParticles.ROCKET_FLAME.get(), x, getY(), z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
 						}
 					}
 					
@@ -181,11 +177,20 @@ public abstract class RocketEntity extends ExtendedEntity {
 							this.tryDisassemble(false);
 						}
 					}
+					
+					velocityDirty = true;
 				}
 			} else {
-				setVelocity(Vec3d.ZERO);
+				this.addVelocity(0, -GravityManager.get(world.getRegistryKey()), 0);
+				this.move(MovementType.SELF, this.getVelocity());
 				
-				this.velocityDirty = true;
+				if (getVelocity().y < -GravityManager.get(world.getRegistryKey())) {
+					if (BlockPos.Mutable.stream(getBoundingBox().offset(0, -1, 0)).anyMatch(pos -> !world.getBlockState(pos).isAir()) && !world.isClient) {
+						this.tryDisassemble(false);
+					}
+				}
+				
+				velocityDirty = true;
 			}
 		}
 	}

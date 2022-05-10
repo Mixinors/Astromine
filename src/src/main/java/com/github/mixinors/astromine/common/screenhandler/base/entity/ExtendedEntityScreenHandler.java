@@ -64,6 +64,9 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 	public static final float FILTER_WIDTH = ExtendedBlockEntityScreenHandler.FILTER_WIDTH;
 	public static final float FILTER_HEIGHT = ExtendedBlockEntityScreenHandler.FILTER_HEIGHT;
 	
+	public static final float LAUNCH_BUTTON_WIDTH = ExtendedBlockEntityScreenHandler.LAUNCH_BUTTON_WIDTH;
+	public static final float LAUNCH_BUTTON_HEIGHT = ExtendedBlockEntityScreenHandler.LAUNCH_BUTTON_HEIGHT;
+	
 	public static final float PAD_2 = ExtendedBlockEntityScreenHandler.PAD_2;
 	public static final float PAD_3 = ExtendedBlockEntityScreenHandler.PAD_3;
 	public static final float PAD_4 = ExtendedBlockEntityScreenHandler.PAD_4;

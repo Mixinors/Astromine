@@ -43,11 +43,8 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
 public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
-	public static final BaseTexture GREEN_BUTTON_FOCUSED = new PartitionedTexture(AMCommon.id("textures/widget/green_button_focused.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.16F);
-	public static final BaseTexture GREEN_BUTTON_ON = new PartitionedTexture(AMCommon.id("textures/widget/green_button_on.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.16F);
-	
-	public static final BaseTexture RED_BUTTON_FOCUSED = new PartitionedTexture(AMCommon.id("textures/widget/red_button_focused.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.16F);
-	public static final BaseTexture RED_BUTTON_ON = new PartitionedTexture(AMCommon.id("textures/widget/red_button_on.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.16F);
+	public static final BaseTexture GREEN_BUTTON_FOCUSED = new PartitionedTexture(AMCommon.id("textures/widget/rocket_launch_button_focused.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.16F);
+	public static final BaseTexture GREEN_BUTTON_ON = new PartitionedTexture(AMCommon.id("textures/widget/rocket_launch_button_on.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.16F);
 	
 	private RocketEntity rocketEntity;
 	
@@ -73,30 +70,13 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 			return Unit.INSTANCE;
 		});
 		
-		launchButton.setPosition(new Position(tab, PAD_7, PAD_11));
-		launchButton.setSize(new Size(44.0F, 18.0F));
-		launchButton.setLabel(new TranslatableText("text.astromine.rocket.launch"));
-		launchButton.setDisabled(() -> entity.getDataTracker().get(RocketEntity.IS_RUNNING) || (entity.getFluidStorage().getStorage(0).isResourceBlank() && entity.getFluidStorage().getStorage(1).isResourceBlank()));
+		launchButton.setPosition(new Position(tab, PAD_7, PAD_11 + (BAR_HEIGHT - LAUNCH_BUTTON_HEIGHT) / 2.0F));
+		launchButton.setSize(new Size(LAUNCH_BUTTON_WIDTH, LAUNCH_BUTTON_HEIGHT));
+		launchButton.setLabel(new TranslatableText("text.astromine.rocket.go").formatted(Formatting.BOLD));
+		launchButton.setDisabled(() -> entity.getDataTracker().get(RocketEntity.IS_RUNNING) || !rocketEntity.isFuelMatching());
 		
 		launchButton.setFocusedTexture(GREEN_BUTTON_FOCUSED);
 		launchButton.setOnTexture(GREEN_BUTTON_ON);
-		
-		var destroyButton = new ButtonWidget(() -> {
-			rocketEntity.tryDisassemble(true);
-			
-			var player = getPlayer();
-			
-			player.closeHandledScreen();
-			
-			return Unit.INSTANCE;
-		});
-		
-		destroyButton.setPosition(new Position(tab, PAD_7, PAD_11 + BAR_HEIGHT - SLOT_HEIGHT));
-		destroyButton.setSize(new Size(44.0F, 18.0F));
-		destroyButton.setLabel(new TranslatableText("text.astromine.rocket.rud"));
-		
-		destroyButton.setFocusedTexture(RED_BUTTON_FOCUSED);
-		destroyButton.setOnTexture(RED_BUTTON_ON);
 		
 		fluidBar.setPosition(new Position(tab, TABS_WIDTH - PAD_7 - (BAR_WIDTH + PAD_3 + SLOT_WIDTH + PAD_3 + SLOT_WIDTH + PAD_3 + SLOT_WIDTH + PAD_3 + BAR_WIDTH), PAD_11));
 		
@@ -129,7 +109,6 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 		tab.add(buffer);
 		
 		tab.add(launchButton);
-		tab.add(destroyButton);
 		
 		tab.add(secondFluidBar);
 		
