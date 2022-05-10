@@ -28,6 +28,7 @@ import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.model.PrimitiveRocketEntityModel;
 import com.github.mixinors.astromine.common.entity.PrimitiveRocketEntity;
 import com.github.mixinors.astromine.registry.client.AMEntityModelLayers;
+import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
@@ -43,16 +44,29 @@ public class PrimitiveRocketEntityRenderer extends EntityRenderer<PrimitiveRocke
 	
 	public PrimitiveRocketEntityRenderer(Context context) {
 		super(context);
+		
 		this.model = new PrimitiveRocketEntityModel(context.getPart(AMEntityModelLayers.ROCKET));
 	}
 	
 	@Override
 	public void render(PrimitiveRocketEntity rocket, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider provider, int light) {
+		matrices.pop();
+		
 		matrices.push();
+		
+		var client = InstanceUtils.getClient();
+		
+		var gameRenderer = client.gameRenderer;
+		
+		var cameraPos = gameRenderer.getCamera().getPos();
+		
+		var lerpedPos = rocket.getLerpedPos(tickDelta);
+		
+		matrices.translate(lerpedPos.getX() - cameraPos.getX(), lerpedPos.getY() - cameraPos.getY(), lerpedPos.getZ() - cameraPos.getZ());
 		
 		matrices.scale(-1.0F, -1.0F, 1.0F);
 		
-		matrices.scale(2, 2, 2);
+		matrices.scale(2.0F, 2.0F, 2.0F);
 		
 		matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(90.0F));
 		
@@ -63,6 +77,8 @@ public class PrimitiveRocketEntityRenderer extends EntityRenderer<PrimitiveRocke
 		model.render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
 		
 		matrices.pop();
+		
+		matrices.push();
 		
 		super.render(rocket, yaw, tickDelta, matrices, provider, light);
 	}

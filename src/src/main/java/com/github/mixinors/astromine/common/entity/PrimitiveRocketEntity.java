@@ -40,6 +40,7 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.fabricmc.loader.impl.lib.sat4j.core.Vec;
 import net.minecraft.client.util.math.Vector3d;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -69,6 +70,28 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 		
 		fluidStorage.getStorage(FLUID_INPUT_SLOT_1).setCapacity(FluidConstants.BUCKET * 16);
 		fluidStorage.getStorage(FLUID_INPUT_SLOT_2).setCapacity(FluidConstants.BUCKET * 16);
+	}
+	
+	@Override
+	public Vec3d getLerpedPos(float delta) {
+		if (hasPassengers()) {
+			var passengers = getPassengerList();
+			var passenger = passengers.get(0);
+			
+			var passengerPosition = getPassengerPosition();
+			
+			prevX = passenger.prevX;
+			prevY = passenger.prevY;
+			prevZ = passenger.prevZ;
+			
+			lastRenderX = passenger.lastRenderX;
+			lastRenderY = passenger.lastRenderY;
+			lastRenderZ = passenger.lastRenderZ;
+			
+			return passenger.getLerpedPos(delta).subtract(passengerPosition.getX(), passengerPosition.getY(), passengerPosition.getZ());
+		}
+		
+		return super.getLerpedPos(delta);
 	}
 	
 	@Override
