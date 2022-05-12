@@ -22,33 +22,65 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.common.item.base;
+package com.github.mixinors.astromine.common.item.storage;
 
-import dev.vini2003.hammer.core.api.common.util.FluidTextUtils;
-import dev.vini2003.hammer.core.api.common.util.TextUtils;
+import com.github.mixinors.astromine.common.transfer.storage.EnergyStorageItem;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.util.collection.DefaultedList;
+import team.reborn.energy.api.EnergyStorage;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class FluidStorageItem extends Item {
+public class SimpleEnergyStorageItem extends Item implements EnergyStorageItem {
 	private final long capacity;
 	
-	public FluidStorageItem(Item.Settings settings, long capacity) {
+	public SimpleEnergyStorageItem(Item.Settings settings, long capacity) {
 		super(settings);
 		
 		this.capacity = capacity;
 	}
 	
-	public long getCapacity() {
+	public SimpleEnergyStorageItem(Item.Settings settings) {
+		this(settings, Long.MAX_VALUE);
+	}
+	
+	@Override
+	public long getEnergyCapacity() {
 		return capacity;
+	}
+	
+	@Override
+	public int getItemBarStep(ItemStack stack) {
+		if (getEnergyCapacity() == 0) {
+			return 0;
+		}
+		
+		var energyStorage = EnergyStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
+		
+		return (int) (13 * ((float) energyStorage.getAmount() / (float) getEnergyCapacity()));
+	}
+	
+	@Override
+	public boolean isItemBarVisible(ItemStack stack) {
+		return true;
+	}
+	
+	@Override
+	public int getItemBarColor(ItemStack stack) {
+		return 0x91261F;
+	}
+	
+	@Override
+	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
+		super.appendStacks(group, stacks);
+		
+		if (this.isIn(group)) {
+			var stack = new ItemStack(this);
+			
+			setStoredEnergy(stack, getEnergyCapacity());
+			
+			stacks.add(stack);
+		}
 	}
 }

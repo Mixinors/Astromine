@@ -58,16 +58,11 @@ public class AMContainersInfoHandlers implements REIServerPlugin {
 	
 	@Override
 	public void registerMenuInfo(MenuInfoRegistry registry) {
-		registry.register(TRITURATING, TrituratorScreenHandler.class,
-				SimpleMenuInfoProvider.of(display -> new SimpleContainerInfo<>(display, 1)));
-		registry.register(ELECTRIC_SMELTING, ElectricFurnaceScreenHandler.class,
-				SimpleMenuInfoProvider.of(display -> new SimpleContainerInfo<>(display, 1)));
-		registry.register(SOLID_GENERATING, SolidGeneratorScreenHandler.class,
-				SimpleMenuInfoProvider.of(display -> new SimpleContainerInfo<>(display, 0)));
-		registry.register(PRESSING, PresserScreenHandler.class,
-				SimpleMenuInfoProvider.of(display -> new SimpleContainerInfo<>(display, 1)));
-		registry.register(ALLOY_SMELTING, AlloySmelterScreenHandler.class,
-				SimpleMenuInfoProvider.of(display -> new SimpleContainerInfo<>(display, 0, 1)));
+		registry.register(TRITURATING, TrituratorScreenHandler.class, SimpleMenuInfoProvider.of(display -> new SimpleContainerInfo<>(display, 1)));
+		registry.register(ELECTRIC_SMELTING, ElectricFurnaceScreenHandler.class, SimpleMenuInfoProvider.of(display -> new SimpleContainerInfo<>(display, 1)));
+		registry.register(SOLID_GENERATING, SolidGeneratorScreenHandler.class, SimpleMenuInfoProvider.of(display -> new SimpleContainerInfo<>(display, 0)));
+		registry.register(PRESSING, PresserScreenHandler.class, SimpleMenuInfoProvider.of(display -> new SimpleContainerInfo<>(display, 1)));
+		registry.register(ALLOY_SMELTING, AlloySmelterScreenHandler.class, SimpleMenuInfoProvider.of(display -> new SimpleContainerInfo<>(display, 0, 1)));
 	}
 	
 	private static class SimpleContainerInfo<T extends ExtendedBlockEntityScreenHandler, D extends Display> implements SimplePlayerInventoryMenuInfo<T, D> {

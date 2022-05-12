@@ -27,8 +27,8 @@ package com.github.mixinors.astromine.registry.common;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.item.*;
-import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
-import com.github.mixinors.astromine.common.item.base.FluidStorageItem;
+import com.github.mixinors.astromine.common.item.storage.SimpleEnergyStorageItem;
+import com.github.mixinors.astromine.common.item.storage.SimpleFluidStorageItem;
 import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.entity.EquipmentSlot;
@@ -78,7 +78,7 @@ public class AMItems {
 	public static final RegistrySupplier<Item> PRIMITIVE_ROCKET_BOOSTER = register("primitive_rocket_booster", () -> new Item(AMItems.getSettings().maxCount(1)));
 	
 	public static final RegistrySupplier<Item> SPACE_SUIT_HELMET = register("space_suit_helmet", () -> new SpaceSuitItem(AMArmorMaterials.SPACE_SUIT, EquipmentSlot.HEAD, AMItems.getSettings()));
-	public static final RegistrySupplier<Item> SPACE_SUIT_CHESTPLATE = register("space_suit_chestplate", () -> new SpaceSuitItem(AMArmorMaterials.SPACE_SUIT, EquipmentSlot.CHEST, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> SPACE_SUIT_CHESTPLATE = register("space_suit_chestplate", () -> new SpaceSuitItem.Chestplate(AMArmorMaterials.SPACE_SUIT, EquipmentSlot.CHEST, AMItems.getSettings(), AMConfig.get().items.spaceSuitChestplateFluid, AMConfig.get().items.spaceSuitChestplateEnergy));
 	public static final RegistrySupplier<Item> SPACE_SUIT_LEGGINGS = register("space_suit_leggings", () -> new SpaceSuitItem(AMArmorMaterials.SPACE_SUIT, EquipmentSlot.LEGS, AMItems.getSettings()));
 	public static final RegistrySupplier<Item> SPACE_SUIT_BOOTS = register("space_suit_boots", () -> new SpaceSuitItem(AMArmorMaterials.SPACE_SUIT, EquipmentSlot.FEET, AMItems.getSettings()));
 	
@@ -357,25 +357,25 @@ public class AMItems {
 	public static final RegistrySupplier<Item> ADVANCED_PLATING = register("advanced_plating", () -> new Item(getSettings()));
 	public static final RegistrySupplier<Item> ELITE_PLATING = register("elite_plating", () -> new Item(getSettings()));
 	
-	public static final RegistrySupplier<Item> PORTABLE_TANK = register("portable_tank", () -> new FluidStorageItem(getSettings().maxCount(1), AMConfig.get().items.portableTanks.regular));
-	public static final RegistrySupplier<Item> LARGE_PORTABLE_TANK = register("large_portable_tank", () -> new FluidStorageItem(getSettings().maxCount(1), AMConfig.get().items.portableTanks.large));
+	public static final RegistrySupplier<Item> PORTABLE_TANK = register("portable_tank", () -> new SimpleFluidStorageItem(getSettings().maxCount(1), AMConfig.get().items.portableTanks.regular));
+	public static final RegistrySupplier<Item> LARGE_PORTABLE_TANK = register("large_portable_tank", () -> new SimpleFluidStorageItem(getSettings().maxCount(1), AMConfig.get().items.portableTanks.large));
 	
 	public static final RegistrySupplier<Item> PRIMITIVE_CIRCUIT = register("primitive_circuit", () -> new Item(getSettings()));
 	public static final RegistrySupplier<Item> BASIC_CIRCUIT = register("basic_circuit", () -> new Item(getSettings()));
 	public static final RegistrySupplier<Item> ADVANCED_CIRCUIT = register("advanced_circuit", () -> new Item(getSettings()));
 	public static final RegistrySupplier<Item> ELITE_CIRCUIT = register("elite_circuit", () -> new Item(getSettings()));
 	
-	public static final RegistrySupplier<Item> PRIMITIVE_BATTERY = register("primitive_battery", () -> new EnergyStorageItem(getSettings().maxCount(1), AMConfig.get().items.batteries.singleBatteries.primitive));
-	public static final RegistrySupplier<Item> BASIC_BATTERY = register("basic_battery", () -> new EnergyStorageItem(getSettings().maxCount(1), AMConfig.get().items.batteries.singleBatteries.basic));
-	public static final RegistrySupplier<Item> ADVANCED_BATTERY = register("advanced_battery", () -> new EnergyStorageItem(getSettings().maxCount(1), AMConfig.get().items.batteries.singleBatteries.advanced));
-	public static final RegistrySupplier<Item> ELITE_BATTERY = register("elite_battery", () -> new EnergyStorageItem(getSettings().maxCount(1), AMConfig.get().items.batteries.singleBatteries.elite));
-	public static final RegistrySupplier<Item> CREATIVE_BATTERY = register("creative_battery", () -> new EnergyStorageItem(getSettings().maxCount(1)));
+	public static final RegistrySupplier<Item> PRIMITIVE_BATTERY = register("primitive_battery", () -> new SimpleEnergyStorageItem(getSettings().maxCount(1), AMConfig.get().items.batteries.singleBatteries.primitive));
+	public static final RegistrySupplier<Item> BASIC_BATTERY = register("basic_battery", () -> new SimpleEnergyStorageItem(getSettings().maxCount(1), AMConfig.get().items.batteries.singleBatteries.basic));
+	public static final RegistrySupplier<Item> ADVANCED_BATTERY = register("advanced_battery", () -> new SimpleEnergyStorageItem(getSettings().maxCount(1), AMConfig.get().items.batteries.singleBatteries.advanced));
+	public static final RegistrySupplier<Item> ELITE_BATTERY = register("elite_battery", () -> new SimpleEnergyStorageItem(getSettings().maxCount(1), AMConfig.get().items.batteries.singleBatteries.elite));
+	public static final RegistrySupplier<Item> CREATIVE_BATTERY = register("creative_battery", () -> new SimpleEnergyStorageItem(getSettings().maxCount(1)));
 	
-	public static final RegistrySupplier<Item> PRIMITIVE_BATTERY_PACK = register("primitive_battery_pack", () -> new EnergyStorageItem(getSettings().maxCount(1), AMConfig.get().items.batteries.batteryPacks.primitive));
-	public static final RegistrySupplier<Item> BASIC_BATTERY_PACK = register("basic_battery_pack", () -> new EnergyStorageItem(getSettings().maxCount(1), AMConfig.get().items.batteries.batteryPacks.basic));
-	public static final RegistrySupplier<Item> ADVANCED_BATTERY_PACK = register("advanced_battery_pack", () -> new EnergyStorageItem(getSettings().maxCount(1), AMConfig.get().items.batteries.batteryPacks.advanced));
-	public static final RegistrySupplier<Item> ELITE_BATTERY_PACK = register("elite_battery_pack", () -> new EnergyStorageItem(getSettings().maxCount(1), AMConfig.get().items.batteries.batteryPacks.elite));
-	public static final RegistrySupplier<Item> CREATIVE_BATTERY_PACK = register("creative_battery_pack", () -> new EnergyStorageItem(getSettings().maxCount(1)));
+	public static final RegistrySupplier<Item> PRIMITIVE_BATTERY_PACK = register("primitive_battery_pack", () -> new SimpleEnergyStorageItem(getSettings().maxCount(1), AMConfig.get().items.batteries.batteryPacks.primitive));
+	public static final RegistrySupplier<Item> BASIC_BATTERY_PACK = register("basic_battery_pack", () -> new SimpleEnergyStorageItem(getSettings().maxCount(1), AMConfig.get().items.batteries.batteryPacks.basic));
+	public static final RegistrySupplier<Item> ADVANCED_BATTERY_PACK = register("advanced_battery_pack", () -> new SimpleEnergyStorageItem(getSettings().maxCount(1), AMConfig.get().items.batteries.batteryPacks.advanced));
+	public static final RegistrySupplier<Item> ELITE_BATTERY_PACK = register("elite_battery_pack", () -> new SimpleEnergyStorageItem(getSettings().maxCount(1), AMConfig.get().items.batteries.batteryPacks.elite));
+	public static final RegistrySupplier<Item> CREATIVE_BATTERY_PACK = register("creative_battery_pack", () -> new SimpleEnergyStorageItem(getSettings().maxCount(1)));
 	
 	public static final RegistrySupplier<Item> PRIMITIVE_DRILL = register("primitive_drill", () -> new DrillItem(AMToolMaterials.PRIMITIVE_DRILL, 1.0F, -2.8F, 1, AMConfig.get().items.primitiveDrillEnergy, getSettings().maxCount(1)));
 	public static final RegistrySupplier<Item> BASIC_DRILL = register("basic_drill", () -> new DrillItem(AMToolMaterials.BASIC_DRILL, 1.0F, -2.8F, 1, AMConfig.get().items.basicDrillEnergy, getSettings().maxCount(1)));

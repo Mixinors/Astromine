@@ -30,7 +30,7 @@ import com.github.mixinors.astromine.common.transfer.StorageSiding
 import com.github.mixinors.astromine.common.transfer.StorageType
 import com.github.mixinors.astromine.common.util.MirrorUtils
 import com.github.mixinors.astromine.common.util.NetworkingUtils
-import com.github.mixinors.astromine.registry.common.AMNetworks
+import com.github.mixinors.astromine.registry.common.AMNetworking
 import dev.architectury.networking.NetworkManager
 import dev.vini2003.hammer.core.api.client.texture.BaseTexture
 import dev.vini2003.hammer.core.api.client.texture.ImageTexture
@@ -45,7 +45,6 @@ import net.minecraft.text.Text
 import net.minecraft.text.TranslatableText
 import net.minecraft.util.math.Direction
 import org.lwjgl.glfw.GLFW
-import java.util.*
 
 class StorageSidingWidget : BaseWidget() {
 	companion object {
@@ -123,7 +122,7 @@ class StorageSidingWidget : BaseWidget() {
 			
 			val buf = NetworkingUtils.ofStorageSiding(next, type, direction, blockEntity.pos)
 			
-			NetworkManager.sendToServer(AMNetworks.STORAGE_SIDING_UPDATE, buf)
+			NetworkManager.sendToServer(AMNetworking.STORAGE_SIDING_UPDATE, buf)
 		}
 	}
 	

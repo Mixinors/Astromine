@@ -42,27 +42,39 @@ public class ItemsConfigSection {
 	@Comment("Energy for the Gravity Gauntlet actions")
 	public long gravityGauntletConsumed = 512L;
 	
-	@Comment("Energy for the Drill actions")
-	public long drillConsumed = 6L;
-	
-	@Comment("Multiplier for the Drill entity hit actions")
-	public double drillEntityHitMultiplier = 2.0D;
-	
 	@Comment("Delay for the Fire Extinguisher sneaking actions")
 	public int fireExtinguisherSneakingDelay = 2;
 	
 	@Comment("Delay for the Fire Extinguisher standing actions")
 	public int fireExtinguisherStandingDelay = 10;
 	
+	@Comment("Energy for the Drill block breaking")
+	public long drillConsumedBlockBreak = 6L;
+	
+	@Comment("Energy for the Drill entity hits")
+	public long drillConsumedEntityHit = 12L;
+	
 	@Comment("Energy for the Primitive Drill")
-	public long primitiveDrillEnergy = batteries.batteryPacks.primitive * 2;
+	public long primitiveDrillEnergy = batteries.batteryPacks.primitive * 2L;
 	
 	@Comment("Energy for the Basic Drill")
-	public long basicDrillEnergy = batteries.batteryPacks.basic * 2;
+	public long basicDrillEnergy = batteries.batteryPacks.basic * 2L;
 	
 	@Comment("Energy for the Advanced Drill")
-	public long advancedDrillEnergy = batteries.batteryPacks.advanced * 2;
+	public long advancedDrillEnergy = batteries.batteryPacks.advanced * 2L;
 	
 	@Comment("Energy for the Elite Drill")
-	public long eliteDrillEnergy = batteries.batteryPacks.elite * 2;
+	public long eliteDrillEnergy = batteries.batteryPacks.elite * 2L;
+	
+	@Comment("Energy for the Space Suit Chestplate")
+	public long spaceSuitChestplateEnergy = batteries.batteryPacks.elite * 2L;
+	
+	@Comment("Fluid for the Space Suit Chestplate")
+	public long spaceSuitChestplateFluid = portableTanks.large * 2L;
+	
+	@Comment("Fluid consumption for the Space Suit Chestplate")
+	public long spaceSuitChestplateFluidConsumption = spaceSuitChestplateFluid / (20L * 60L * 30L);
+	
+	@Comment("Energy consumption for the Space Suit Chestplate")
+	public long spaceSuitChestplateEnergyConsumption = spaceSuitChestplateEnergy / (20L * 60L * 30L);
 }

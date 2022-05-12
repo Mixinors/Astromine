@@ -32,10 +32,7 @@ import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
-
-import java.util.function.Supplier;
 
 public class CapacitorScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final CapacitorBlockEntity capacitor;
@@ -50,7 +47,11 @@ public class CapacitorScreenHandler extends ExtendedBlockEntityScreenHandler {
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		
-		energyBar.setPosition(new Position(width / 2.0F - BAR_WIDTH / 2.0F, energyBar.getY()));
+		if (!(capacitor instanceof CapacitorBlockEntity.Creative)) {
+			energyBar.setPosition(new Position(tab, TABS_WIDTH / 2.0F - BAR_WIDTH / 2.0F, PAD_11));
+		} else {
+			energyBar.setPosition(new Position(tab, TABS_WIDTH / 2.0F - (BAR_WIDTH + PAD_7 + ARROW_WIDTH + PAD_7 + SLOT_WIDTH) / 2.0F, PAD_11));
+		}
 		
 		var leftArrow = new HorizontalArrowWidget();
 		leftArrow.setPosition(new Position(energyBar, -PAD_7 - ARROW_WIDTH, (BAR_HEIGHT / 2.0F) - (ARROW_HEIGHT / 2.0F)));
@@ -68,9 +69,12 @@ public class CapacitorScreenHandler extends ExtendedBlockEntityScreenHandler {
 		output.setPosition(new Position(rightArrow, PAD_7 + ARROW_WIDTH, (ARROW_HEIGHT - SLOT_HEIGHT) / 2.0F + 1.0F));
 		output.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
-		tab.add(input);
-		tab.add(output);
-		tab.add(leftArrow);
+		if (!(capacitor instanceof CapacitorBlockEntity.Creative)) {
+			tab.add(input);
+			tab.add(leftArrow);
+		}
+		
 		tab.add(rightArrow);
+		tab.add(output);
 	}
 }

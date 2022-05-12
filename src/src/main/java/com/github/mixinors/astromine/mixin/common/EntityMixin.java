@@ -29,8 +29,10 @@ import com.github.mixinors.astromine.common.registry.DimensionLayerRegistry;
 import com.github.mixinors.astromine.registry.common.AMTags;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.tag.Tag;
 import net.minecraft.tag.TagKey;
@@ -39,6 +41,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -47,6 +50,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin implements EntityAccessor {
@@ -74,6 +78,25 @@ public abstract class EntityMixin implements EntityAccessor {
 	
 	@Shadow
 	public int age;
+	
+	@Shadow
+	public abstract EntityType<?> getType();
+	
+	@Shadow
+	public abstract Iterable<ItemStack> getArmorItems();
+	
+	@Shadow
+	public abstract double getFluidHeight(TagKey<Fluid> fluid);
+	
+	@Shadow
+	@Final
+	private Set<TagKey<Fluid>> submergedFluidTag;
+	
+	@Shadow
+	public abstract void setAir(int air);
+	
+	@Shadow
+	public abstract int getMaxAir();
 	
 	@Override
 	public boolean astromine$isInIndustrialFluid() {

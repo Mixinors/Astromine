@@ -81,7 +81,7 @@ public class AMCommon implements ModInitializer {
 		AMChunkGenerators.init();
 		AMGravities.init();
 		AMDimensionLayers.init();
-		AMCallbacks.init();
+		AMEvents.init();
 		AMRecipeSerializers.init();
 		AMCommands.init();
 		AMAtmospheres.init();
@@ -91,7 +91,7 @@ public class AMCommon implements ModInitializer {
 		AMToolMaterials.init();
 		AMOres.init();
 		AMItemGroups.init();
-		AMNetworks.init();
+		AMNetworking.init();
 		AMLookups.init();
 	}
 }

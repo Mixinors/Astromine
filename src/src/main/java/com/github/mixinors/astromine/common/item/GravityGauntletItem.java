@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.item;
 
 import com.github.mixinors.astromine.common.config.AMConfig;
-import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
+import com.github.mixinors.astromine.common.item.storage.SimpleEnergyStorageItem;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -41,7 +41,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 
-public class GravityGauntletItem extends EnergyStorageItem {
+public class GravityGauntletItem extends SimpleEnergyStorageItem {
 	private static final Multimap<EntityAttribute, EntityAttributeModifier> EAMS = HashMultimap.create();
 	
 	static {

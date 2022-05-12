@@ -56,29 +56,46 @@ public class TankScreenHandler extends ExtendedBlockEntityScreenHandler {
 		fluidBar.setPosition(new Position(width / 2.0F - BAR_WIDTH / 2.0F, fluidBar.getY()));
 		
 		var unload = new SlotWidget(TankBlockEntity.ITEM_INPUT_SLOT, tank.getItemStorage());
-		unload.setPosition(new Position(fluidBar, -SLOT_WIDTH - PAD_3, 0));
 		unload.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
+		
+		if (!(tank instanceof TankBlockEntity.Creative)) {
+			unload.setPosition(new Position(fluidBar, -SLOT_WIDTH - PAD_3, 0.0F));
+		} else {
+			unload.setPosition(new Position(fluidBar, -SLOT_WIDTH - PAD_3, -(((BAR_HEIGHT - (SLOT_HEIGHT + PAD_3 + FILTER_HEIGHT)) / 2.0F))));
+		}
 		
 		var buffer = new SlotWidget(TankBlockEntity.ITEM_BUFFER_STORAGE, tank.getItemStorage());
 		buffer.setPosition(new Position(unload, -SLOT_WIDTH - PAD_3, SLOT_HEIGHT - 4.0F)); // 4.0F centers the buffer slot against the two other slots.
 		buffer.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
 		var load = new SlotWidget(TankBlockEntity.ITEM_OUTPUT_SLOT_2, tank.getItemStorage());
-		load.setPosition(new Position(fluidBar, -SLOT_WIDTH - PAD_3, BAR_HEIGHT - SLOT_HEIGHT));
+		load.setPosition(new Position(unload, 0.0F, SLOT_HEIGHT + PAD_3 + FILTER_HEIGHT + PAD_3));
 		load.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
 		var filter = new FluidFilterWidget();
 		filter.setPosition(new Position(unload, (SLOT_WIDTH / 2.0F - FILTER_WIDTH / 2.0F), SLOT_WIDTH + 2.0F)); // 2.0F centers the filter against the upper and lower slots.
 		filter.setSize(new Size(FILTER_WIDTH, FILTER_HEIGHT));
 		filter.setFluidVariantConsumer((variant) -> {
-			tank.setFilter(variant);
+			if (!(tank instanceof TankBlockEntity.Creative)) {
+				tank.setFilter(variant);
+			} else {
+				var storage = tank.getFluidStorage().getStorage(TankBlockEntity.FLUID_INPUT_SLOT);
+				
+				storage.setAmount(Long.MAX_VALUE);
+				storage.setVariant(variant);
+				
+				tank.setFilter(variant);
+			}
 			
 			return Unit.INSTANCE;
 		});
 		filter.setFluidVariantSupplier(tank::getFilter);
 		
-		tab.add(unload);
-		tab.add(buffer);
+		if (!(tank instanceof TankBlockEntity.Creative)) {
+			tab.add(unload);
+			tab.add(buffer);
+		}
+		
 		tab.add(load);
 		
 		tab.add(filter);

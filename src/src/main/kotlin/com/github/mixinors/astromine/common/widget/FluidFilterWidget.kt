@@ -83,7 +83,7 @@ class FluidFilterWidget(
 	override fun getTooltip(): List<Text> {
 		val fluidTooltip = FluidTextUtils.getVariantTooltips(fluidVariantSupplier())
 		
-		return listOf(TranslatableText("text.astromine.filter", fluidTooltip))
+		return listOf(TranslatableText("text.astromine.filter")) + fluidTooltip
 	}
 	
 	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider, delta: Float) {

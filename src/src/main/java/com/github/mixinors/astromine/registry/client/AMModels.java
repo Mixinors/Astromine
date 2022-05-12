@@ -46,7 +46,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.function.Function;
 
-public class AMClientModels {
+public class AMModels {
 	public static final Identifier PRIMITIVE_ENERGY_CABLE_CENTER_MODEL_ID = AMCommon.id("block/primitive_energy_cable_center");
 	
 	public static final Identifier BASIC_ENERGY_CABLE_CENTER_MODEL_ID = AMCommon.id("block/basic_energy_cable_center");

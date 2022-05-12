@@ -22,50 +22,52 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.common.item.base;
+package com.github.mixinors.astromine.common.item.storage;
 
+import com.github.mixinors.astromine.common.transfer.storage.FluidStorageItem;
+import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.collection.DefaultedList;
-import team.reborn.energy.api.EnergyStorage;
-import team.reborn.energy.api.base.SimpleBatteryItem;
 
-public class EnergyStorageItem extends Item implements SimpleBatteryItem {
+public class SimpleFluidStorageItem extends Item implements FluidStorageItem {
 	private final long capacity;
 	
-	public EnergyStorageItem(Item.Settings settings, long capacity) {
+	public SimpleFluidStorageItem(Item.Settings settings, long capacity) {
 		super(settings);
 		
 		this.capacity = capacity;
 	}
 	
-	public EnergyStorageItem(Item.Settings settings) {
-		this(settings, Long.MAX_VALUE);
-	}
-	
 	@Override
-	public long getEnergyCapacity() {
-		return capacity;
-	}
-	
-	@Override
-	public long getEnergyMaxInput() {
-		return capacity;
-	}
-	
-	@Override
-	public long getEnergyMaxOutput() {
+	public long getFluidCapacity() {
 		return capacity;
 	}
 	
 	@Override
 	public int getItemBarStep(ItemStack stack) {
-		if (getEnergyCapacity() == 0) {
+		if (getFluidCapacity() == 0) {
 			return 0;
 		}
 		
-		return (int) (13 * ((float) SimpleBatteryItem.getStoredEnergyUnchecked(stack) / (float) getEnergyCapacity()));
+		var fluidStorages = FluidStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
+		
+		var totalAmount = 0L;
+		var totalCapacity = 0L;
+		
+		try (var transaction = Transaction.openOuter()) {
+			for (var fluidStorage : fluidStorages.iterable(transaction)) {
+				totalAmount += fluidStorage.getAmount();
+				totalCapacity += fluidStorage.getCapacity();
+			}
+			
+			transaction.abort();
+		}
+		
+		totalCapacity = totalCapacity == 0L ? 1L : totalCapacity;
+		
+		return (int) (13 * ((float) totalAmount / (float) totalCapacity));
 	}
 	
 	@Override
@@ -75,19 +77,6 @@ public class EnergyStorageItem extends Item implements SimpleBatteryItem {
 	
 	@Override
 	public int getItemBarColor(ItemStack stack) {
-		return 0x91261f;
-	}
-	
-	@Override
-	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
-		super.appendStacks(group, stacks);
-		
-		if (this.isIn(group)) {
-			var stack = new ItemStack(this);
-			
-			setStoredEnergy(stack, getEnergyCapacity());
-			
-			stacks.add(stack);
-		}
+		return 0x91261F;
 	}
 }

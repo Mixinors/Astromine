@@ -33,7 +33,7 @@ import dev.architectury.networking.NetworkManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
-public class AMNetworks {
+public class AMNetworking {
 	public static final Identifier STORAGE_SIDING_UPDATE = AMCommon.id("storage_siding_update");
 	
 	public static final Identifier REDSTONE_CONTROL_UPDATE = AMCommon.id("redstone_control_update");

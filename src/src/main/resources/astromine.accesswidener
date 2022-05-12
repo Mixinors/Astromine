@@ -1,5 +1,7 @@
 accessWidener v2 named
 
+accessible field net/minecraft/entity/Entity submergedFluidTag Ljava/util/Set;
+
 extendable method net/minecraft/entity/Entity getLerpedPos (F)Lnet/minecraft/util/math/Vec3d;
 
 accessible method net/minecraft/world/gen/feature/StructureFeature register (Ljava/lang/String;Lnet/minecraft/world/gen/feature/StructureFeature;Lnet/minecraft/world/gen/GenerationStep$Feature;)Lnet/minecraft/world/gen/feature/StructureFeature;

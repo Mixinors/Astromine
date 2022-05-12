@@ -28,10 +28,10 @@ import com.github.mixinors.astromine.AMCommon
 import com.github.mixinors.astromine.common.util.TextUtils
 import dev.vini2003.hammer.core.api.client.texture.BaseTexture
 import dev.vini2003.hammer.core.api.client.texture.ImageTexture
-import dev.vini2003.hammer.gui.api.common.widget.bar.TextureBarWidget
+import dev.vini2003.hammer.gui.api.common.widget.bar.ImageBarWidget
 import net.minecraft.text.Text
 
-class HorizontalArrowWidget : TextureBarWidget() {
+class HorizontalArrowWidget : ImageBarWidget() {
 	companion object {
 		private val STANDARD_BACKGROUND_TEXTURE: BaseTexture = ImageTexture(AMCommon.id("textures/widget/horizontal_arrow_background.png"))
 		private val STANDARD_FOREGROUND_TEXTURE: BaseTexture = ImageTexture(AMCommon.id("textures/widget/horizontal_arrow_foreground.png"))
@@ -42,7 +42,10 @@ class HorizontalArrowWidget : TextureBarWidget() {
 	
 	init {
 		horizontal = true
+		
 		smooth = false
+		
+		scissor = true
 	}
 	
 	override fun getTooltip(): List<Text> {

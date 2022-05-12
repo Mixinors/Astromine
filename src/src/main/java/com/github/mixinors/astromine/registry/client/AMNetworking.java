@@ -29,10 +29,10 @@ import com.github.mixinors.astromine.registry.common.AMEntityTypes;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.client.world.ClientWorld;
 
-import static com.github.mixinors.astromine.registry.common.AMNetworks.PRIMITIVE_ROCKET_SPAWN;
-import static com.github.mixinors.astromine.registry.common.AMNetworks.SYNC_ENTITY;
+import static com.github.mixinors.astromine.registry.common.AMNetworking.PRIMITIVE_ROCKET_SPAWN;
+import static com.github.mixinors.astromine.registry.common.AMNetworking.SYNC_ENTITY;
 
-public class AMClientNetworks {
+public class AMNetworking {
 	public static void init() {
 		NetworkManager.registerReceiver(NetworkManager.s2c(), PRIMITIVE_ROCKET_SPAWN, (buf, context) -> {
 			var x = buf.readDouble();

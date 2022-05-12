@@ -316,20 +316,12 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 		writeNbt(nbt);
 		
 		if (hasItemStorage()) {
-			if (syncItemStorage || getItemStorage().getVersion() != lastItemStorageVersion) {
-				syncItemStorage = false;
-				
-				lastItemStorageVersion = getItemStorage().getVersion();
-				
-				var itemStorageNbt = new NbtCompound();
-				
-				itemStorage.writeToNbt(itemStorageNbt);
-				
-				nbt.put(ITEM_STORAGE_KEY, itemStorageNbt);
-			} else {
+			var itemStorage = getItemStorage();
+			
+			if (!syncItemStorage && itemStorage.getVersion() == lastItemStorageVersion) {
 				nbt.remove(ITEM_STORAGE_KEY);
 				
-				var sidings = getItemStorage().getSidings();
+				var sidings = itemStorage.getSidings();
 				
 				var sidingsNbt = new NbtCompound();
 				
@@ -338,24 +330,20 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 				}
 				
 				nbt.put(ITEM_STORAGE_SIDINGS_KEY, sidingsNbt);
+			} else {
+				syncItemStorage = false;
+				
+				lastItemStorageVersion = itemStorage.getVersion();
 			}
 		}
 		
 		if (hasFluidStorage()) {
-			if (syncFluidStorage || getFluidStorage().getVersion() != lastFluidStorageVersion) {
-				syncItemStorage = false;
-				
-				lastFluidStorageVersion = getFluidStorage().getVersion();
-				
-				var fluidStorageNbt = new NbtCompound();
-				
-				fluidStorage.writeToNbt(fluidStorageNbt);
-				
-				nbt.put(FLUID_STORAGE_KEY, fluidStorageNbt);
-			} else {
+			var fluidStorage = getFluidStorage();
+			
+			if (!syncFluidStorage && fluidStorage.getVersion() == lastFluidStorageVersion) {
 				nbt.remove(FLUID_STORAGE_KEY);
 				
-				var sidings = getFluidStorage().getSidings();
+				var sidings = fluidStorage.getSidings();
 				
 				var sidingsNbt = new NbtCompound();
 				
@@ -364,6 +352,10 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 				}
 				
 				nbt.put(FLUID_STORAGE_SIDINGS_KEY, sidingsNbt);
+			} else {
+				syncItemStorage = false;
+				
+				lastFluidStorageVersion = fluidStorage.getVersion();
 			}
 		}
 		

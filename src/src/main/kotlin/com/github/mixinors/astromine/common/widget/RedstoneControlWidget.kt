@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.common.widget
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity
 import com.github.mixinors.astromine.common.transfer.RedstoneControl
 import com.github.mixinors.astromine.common.util.NetworkingUtils
-import com.github.mixinors.astromine.registry.common.AMNetworks
+import com.github.mixinors.astromine.registry.common.AMNetworking
 import dev.architectury.networking.NetworkManager
 import dev.vini2003.hammer.core.api.client.util.DrawingUtils.ITEM_RENDERER
 import dev.vini2003.hammer.core.api.common.util.extension.green
@@ -81,7 +81,7 @@ class RedstoneControlWidget : ButtonWidget() {
 			
 			val buf = NetworkingUtils.ofRedstoneControl(next, blockEntity.getPos())
 			
-			NetworkManager.sendToServer(AMNetworks.REDSTONE_CONTROL_UPDATE, buf)
+			NetworkManager.sendToServer(AMNetworking.REDSTONE_CONTROL_UPDATE, buf)
 		}
 	}
 	

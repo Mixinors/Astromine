@@ -38,13 +38,13 @@ public class AMClient implements ClientModInitializer {
 		AMEntityModelLayers.init();
 		AMEntityRenderers.init();
 		AMBlockEntityRenderers.init();
-		AMClientModels.init();
-		AMClientCallbacks.init();
-		AMClientNetworks.init();
+		AMModels.init();
+		AMEvents.init();
+		AMNetworking.init();
 		AMParticleFactories.init();
 		AMSkyboxes.init();
 		AMScreens.init();
-		AMClientNetworks.init();
+		AMNetworking.init();
 		AMRenderLayers.init();
 		AMPatchouliPages.init();
 		AMKeyBinds.init();

@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
-import com.github.mixinors.astromine.common.item.base.FluidStorageItem;
+import com.github.mixinors.astromine.common.transfer.storage.FluidStorageItem;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidItemStorage;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
@@ -53,6 +53,7 @@ public class AMLookups {
 					
 					return null;
 				},
+				
 				AMBlockEntityTypes.PRIMITIVE_BUFFER.get(),
 				AMBlockEntityTypes.BASIC_BUFFER.get(),
 				AMBlockEntityTypes.ADVANCED_BUFFER.get(),
@@ -132,6 +133,7 @@ public class AMLookups {
 				AMBlockEntityTypes.BASIC_TANK.get(),
 				AMBlockEntityTypes.ADVANCED_TANK.get(),
 				AMBlockEntityTypes.ELITE_TANK.get(),
+				AMBlockEntityTypes.CREATIVE_TANK.get(),
 				
 				AMBlockEntityTypes.PRIMITIVE_LIQUID_GENERATOR.get(),
 				AMBlockEntityTypes.BASIC_LIQUID_GENERATOR.get(),
@@ -176,6 +178,7 @@ public class AMLookups {
 					
 					return null;
 				},
+				
 				AMBlockEntityTypes.PRIMITIVE_SOLID_GENERATOR.get(),
 				AMBlockEntityTypes.BASIC_SOLID_GENERATOR.get(),
 				AMBlockEntityTypes.ADVANCED_SOLID_GENERATOR.get(),
@@ -251,13 +254,16 @@ public class AMLookups {
 		
 		FluidStorage.ITEM.registerForItems((storage, context) -> {
 					if (storage.getItem() instanceof FluidStorageItem fluidStorageItem) {
-						return new SimpleFluidItemStorage(context, fluidStorageItem.getCapacity());
+						return new SimpleFluidItemStorage(context, fluidStorageItem.getFluidCapacity());
 					}
 					
 					return null;
 				},
+				
 				AMItems.PORTABLE_TANK.get(),
-				AMItems.LARGE_PORTABLE_TANK.get()
+				AMItems.LARGE_PORTABLE_TANK.get(),
+				
+				AMItems.SPACE_SUIT_CHESTPLATE.get()
 		);
 	}
 }

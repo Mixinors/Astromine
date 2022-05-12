@@ -28,7 +28,7 @@ import com.github.mixinors.astromine.common.provider.EnergyStorageSizeProvider;
 import com.github.mixinors.astromine.common.provider.FluidStorageSizeProvider;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
-import com.github.mixinors.astromine.registry.common.AMNetworks;
+import com.github.mixinors.astromine.registry.common.AMNetworking;
 import dev.architectury.networking.NetworkManager;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
@@ -49,9 +49,15 @@ public abstract class ExtendedEntity extends Entity implements FluidStorageSizeP
 	public static final String ITEM_STORAGE_KEY = "ItemStorage";
 	public static final String FLUID_STORAGE_KEY = "FluidStorage";
 	
+	protected boolean syncItemStorage = true;
+	protected boolean syncFluidStorage = true;
+	
 	protected SimpleEnergyStorage energyStorage = null;
 	protected SimpleItemStorage itemStorage = null;
 	protected SimpleFluidStorage fluidStorage = null;
+	
+	protected long lastItemStorageVersion = 0;
+	protected long lastFluidStorageVersion = 0;
 	
 	public ExtendedEntity(EntityType<?> type, World world) {
 		super(type, world);
@@ -123,13 +129,37 @@ public abstract class ExtendedEntity extends Entity implements FluidStorageSizeP
 			
 			writeToNbt(nbt);
 			
+			if (hasItemStorage()) {
+				var itemStorage = getItemStorage();
+				
+				if (!syncItemStorage && itemStorage.getVersion() == lastItemStorageVersion) {
+					nbt.remove(ITEM_STORAGE_KEY);
+				} else {
+					syncItemStorage = false;
+					
+					lastItemStorageVersion = itemStorage.getVersion();
+				}
+			}
+			
+			if (hasFluidStorage()) {
+				var fluidStorage = getFluidStorage();
+				
+				if (!syncFluidStorage && fluidStorage.getVersion() == lastFluidStorageVersion) {
+					nbt.remove(FLUID_STORAGE_KEY);
+				} else {
+					syncFluidStorage = false;
+					
+					lastFluidStorageVersion = fluidStorage.getVersion();
+				}
+			}
+			
 			var buf = PacketByteBufs.create();
 			
 			buf.writeInt(id);
 			buf.writeNbt(nbt);
 			
 			PlayerLookup.tracking(this).forEach(player -> {
-				NetworkManager.sendToPlayer(player, AMNetworks.SYNC_ENTITY, PacketByteBufs.duplicate(buf));
+				NetworkManager.sendToPlayer(player, AMNetworking.SYNC_ENTITY, PacketByteBufs.duplicate(buf));
 			});
 		}
 	}
@@ -149,7 +179,21 @@ public abstract class ExtendedEntity extends Entity implements FluidStorageSizeP
 		buf.writeInt(id);
 		buf.writeNbt(nbt);
 		
-		NetworkManager.sendToPlayer(player, AMNetworks.SYNC_ENTITY, PacketByteBufs.duplicate(buf));
+		NetworkManager.sendToPlayer(player, AMNetworking.SYNC_ENTITY, PacketByteBufs.duplicate(buf));
+	}
+	
+	/**
+	 * Marks this block entity as requiring a full {@link #itemStorage} sync in the next server to client packet.
+	 */
+	public void setSyncItemStorage(boolean syncItemStorage) {
+		this.syncItemStorage = syncItemStorage;
+	}
+	
+	/**
+	 * Marks this block entity as requiring a full {@link #fluidStorage} sync in the next server to client packet.
+	 */
+	public void setSyncFluidStorage(boolean syncFluidStorage) {
+		this.syncFluidStorage = syncFluidStorage;
 	}
 	
 	public boolean hasEnergyStorage() {

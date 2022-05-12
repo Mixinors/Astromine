@@ -25,8 +25,8 @@
 package com.github.mixinors.astromine.common.block.base;
 
 import com.github.mixinors.astromine.common.block.entity.base.Tickable;
-import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
-import com.github.mixinors.astromine.common.item.base.FluidStorageItem;
+import com.github.mixinors.astromine.common.item.storage.SimpleEnergyStorageItem;
+import com.github.mixinors.astromine.common.item.storage.SimpleFluidStorageItem;
 import com.github.mixinors.astromine.common.util.data.redstone.ComparatorMode;
 import dev.architectury.registry.menu.ExtendedMenuProvider;
 import dev.architectury.registry.menu.MenuRegistry;
@@ -90,7 +90,7 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 	
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if (!world.isClient && (!(player.getStackInHand(hand).getItem() instanceof BucketItem) && !(player.getStackInHand(hand).getItem() instanceof EnergyStorageItem) && !(player.getStackInHand(hand).getItem() instanceof FluidStorageItem)) && hasScreenHandler()) {
+		if (!world.isClient && (!(player.getStackInHand(hand).getItem() instanceof BucketItem) && !(player.getStackInHand(hand).getItem() instanceof SimpleEnergyStorageItem) && !(player.getStackInHand(hand).getItem() instanceof SimpleFluidStorageItem)) && hasScreenHandler()) {
 			MenuRegistry.openExtendedMenu((ServerPlayerEntity) player, createScreenHandlerFactory((ServerPlayerEntity) player, state, world, pos));
 			
 			return ActionResult.CONSUME;

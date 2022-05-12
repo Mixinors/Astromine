@@ -33,8 +33,14 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.UUID;
+
 
 public final class EntityOxygenComponent implements AutoSyncedComponent {
+	private static final UUID AK9_UUID = UUID.fromString("38113444-0bc0-4502-9a4c-17903067907c");
+	
+	public static final String OXYGEN_KEY = "Oxygen";
+	
 	private int oxygen = 0;
 	
 	private int minimumOxygen = -20;
@@ -59,9 +65,8 @@ public final class EntityOxygenComponent implements AutoSyncedComponent {
 		return new EntityOxygenComponent(entity);
 	}
 	
-	public void simulate(boolean isBreathing) {
+	public void tick(boolean isBreathing) {
 		if (entity instanceof PlayerEntity player) {
-			
 			if (player.isCreative() || player.isSpectator()) {
 				return;
 			}
@@ -72,8 +77,8 @@ public final class EntityOxygenComponent implements AutoSyncedComponent {
 		if (oxygen == getMinimumOxygen()) {
 			var isAK9 = false;
 			
-			if (entity instanceof PlayerEntity) {
-				isAK9 = ((PlayerEntity) entity).getGameProfile().getId().toString().equals("38113444-0bc0-4502-9a4c-17903067907c");
+			if (entity instanceof PlayerEntity playerEntity) {
+				isAK9 = playerEntity.getGameProfile().getId().equals(AK9_UUID);
 			}
 			
 			if (!isAK9 || AMConfig.get().secret.asphyxiateAK9) {
@@ -82,8 +87,8 @@ public final class EntityOxygenComponent implements AutoSyncedComponent {
 		}
 	}
 	
-	private int nextOxygen(boolean isPositive, int oxygen) {
-		return isPositive ? oxygen < getMaximumOxygen() ? oxygen + 1 : getMaximumOxygen() : oxygen > getMinimumOxygen() ? oxygen - 1 : getMinimumOxygen();
+	private int nextOxygen(boolean breathing, int oxygen) {
+		return breathing ? oxygen < getMaximumOxygen() ? oxygen + 1 : getMaximumOxygen() : oxygen > getMinimumOxygen() ? oxygen - 1 : getMinimumOxygen();
 	}
 	
 	public int getOxygen() {
@@ -120,11 +125,11 @@ public final class EntityOxygenComponent implements AutoSyncedComponent {
 	
 	@Override
 	public void writeToNbt(NbtCompound tag) {
-		tag.putInt("Oxygen", oxygen);
+		tag.putInt(OXYGEN_KEY, oxygen);
 	}
 	
 	@Override
 	public void readFromNbt(NbtCompound tag) {
-		this.oxygen = tag.getInt("Oxygen");
+		this.oxygen = tag.getInt(OXYGEN_KEY);
 	}
 }

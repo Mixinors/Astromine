@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.item;
 
 import com.github.mixinors.astromine.common.config.AMConfig;
-import com.github.mixinors.astromine.common.item.base.EnergyStorageItem;
+import com.github.mixinors.astromine.common.item.storage.SimpleEnergyStorageItem;
 import com.github.mixinors.astromine.registry.common.AMTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -59,7 +59,7 @@ public class DrillItem extends MiningToolItem implements SimpleBatteryItem {
 	@Override
 	public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		if (!target.world.isClient) {
-			return tryUseEnergy(stack, (long) (getEnergyConsumed() * AMConfig.get().items.drillEntityHitMultiplier));
+			return tryUseEnergy(stack, getEnergyConsumedOnEntityHit());
 		}
 		
 		return true;
@@ -68,7 +68,7 @@ public class DrillItem extends MiningToolItem implements SimpleBatteryItem {
 	@Override
 	public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
 		if (!world.isClient && state.getHardness(world, pos) != 0.0F) {
-			return tryUseEnergy(stack, getEnergyConsumed());
+			return tryUseEnergy(stack, getEnergyConsumedOnBlockBreak());
 		}
 		
 		return true;
@@ -76,11 +76,15 @@ public class DrillItem extends MiningToolItem implements SimpleBatteryItem {
 	
 	@Override
 	public float getMiningSpeedMultiplier(ItemStack stack, BlockState state) {
-		return getStoredEnergy(stack) <= getEnergyConsumed() ? 0F : super.getMiningSpeedMultiplier(stack, state);
+		return getStoredEnergy(stack) <= getEnergyConsumedOnBlockBreak() ? 0F : super.getMiningSpeedMultiplier(stack, state);
 	}
 	
-	public long getEnergyConsumed() {
-		return (long) (AMConfig.get().items.drillConsumed * material.getMiningSpeedMultiplier());
+	public long getEnergyConsumedOnBlockBreak() {
+		return (long) (AMConfig.get().items.drillConsumedBlockBreak * material.getMiningSpeedMultiplier());
+	}
+	
+	public long getEnergyConsumedOnEntityHit() {
+		return (long) (AMConfig.get().items.drillConsumedEntityHit * material.getMiningSpeedMultiplier());
 	}
 	
 	@Override
@@ -121,7 +125,7 @@ public class DrillItem extends MiningToolItem implements SimpleBatteryItem {
 	}
 	
 	/**
-	 * Override behavior to add instances of {@link EnergyStorageItem} as {@link ItemStack}s to {@link ItemGroup}s with full energy.
+	 * Override behavior to add instances of {@link SimpleEnergyStorageItem} as {@link ItemStack}s to {@link ItemGroup}s with full energy.
 	 */
 	@Override
 	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
