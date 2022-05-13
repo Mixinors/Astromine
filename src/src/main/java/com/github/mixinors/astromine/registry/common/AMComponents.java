@@ -41,6 +41,7 @@ import dev.onyxstudios.cca.api.v3.item.ItemComponentInitializer;
 import dev.onyxstudios.cca.api.v3.world.WorldComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.world.WorldComponentInitializer;
 import net.minecraft.entity.LivingEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class AMComponents implements WorldComponentInitializer, ChunkComponentInitializer, ItemComponentInitializer, EntityComponentInitializer, BlockComponentInitializer {
 	public static final ComponentKey<WorldNetworkComponent> WORLD_NETWORK_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("world_network_component"), WorldNetworkComponent.class);
@@ -55,11 +56,11 @@ public class AMComponents implements WorldComponentInitializer, ChunkComponentIn
 	}
 	
 	@Override
-	public void registerChunkComponentFactories(ChunkComponentFactoryRegistry registry) {
+	public void registerChunkComponentFactories(@NotNull ChunkComponentFactoryRegistry registry) {
 	}
 	
 	@Override
-	public void registerItemComponentFactories(ItemComponentFactoryRegistry registry) {
+	public void registerItemComponentFactories(@NotNull ItemComponentFactoryRegistry registry) {
 	}
 	
 	@Override
@@ -68,6 +69,6 @@ public class AMComponents implements WorldComponentInitializer, ChunkComponentIn
 	}
 	
 	@Override
-	public void registerBlockComponentFactories(BlockComponentFactoryRegistry registry) {
+	public void registerBlockComponentFactories(@NotNull BlockComponentFactoryRegistry registry) {
 	}
 }

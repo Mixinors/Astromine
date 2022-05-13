@@ -70,7 +70,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	
 	private List<ItemStack> stacks;
 	
-	private SimpleItemStorage proxy;
+	private final SimpleItemStorage proxy;
 	
 	private List<SimpleItemVariantStorage> storages;
 	

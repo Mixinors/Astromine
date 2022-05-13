@@ -31,6 +31,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -61,7 +62,7 @@ public final class EntityOxygenComponent implements AutoSyncedComponent {
 		}
 	}
 	
-	public static EntityOxygenComponent of(Entity entity) {
+	public static @NotNull EntityOxygenComponent of(Entity entity) {
 		return new EntityOxygenComponent(entity);
 	}
 	

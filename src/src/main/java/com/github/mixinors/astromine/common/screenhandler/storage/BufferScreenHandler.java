@@ -39,7 +39,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 
 public class BufferScreenHandler extends ExtendedBlockEntityScreenHandler {
-	private BufferBlockEntity buffer;
+	private final BufferBlockEntity buffer;
 	
 	public BufferScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.BUFFER, syncId, player, position);

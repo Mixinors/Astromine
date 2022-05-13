@@ -40,11 +40,12 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 
-
+// TODO: Re-add cache!
 public final class WorldHoloBridgeComponent implements Component {
 	private static final String POSITION_KEY = "Positions";
 	private static final String VECTORS_KEY = "Vectors";
@@ -175,7 +176,7 @@ public final class WorldHoloBridgeComponent implements Component {
 	}
 	
 	@Override
-	public void writeToNbt(NbtCompound tag) {
+	public void writeToNbt(@NotNull NbtCompound tag) {
 		var dataTag = new NbtList();
 		
 		for (var entry : entries.long2ObjectEntrySet()) {

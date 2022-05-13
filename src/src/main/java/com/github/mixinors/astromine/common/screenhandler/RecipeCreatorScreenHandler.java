@@ -51,8 +51,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 	public static final float SLOT_WIDTH = ExtendedBlockEntityScreenHandler.SLOT_WIDTH;

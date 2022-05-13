@@ -38,7 +38,6 @@ import dev.vini2003.hammer.gui.energy.api.common.widget.bar.EnergyBarWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.text.TranslatableText;
 
 import java.util.Collection;
 import java.util.Collections;

@@ -35,7 +35,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PistonHandler.class)
 public abstract class PistonHandlerMixin {
-	
 	@Shadow
 	private static boolean isBlockSticky(BlockState state) {
 		return false;

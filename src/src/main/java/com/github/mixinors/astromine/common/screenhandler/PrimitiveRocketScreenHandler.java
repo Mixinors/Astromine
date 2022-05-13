@@ -46,7 +46,7 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 	public static final BaseTexture GREEN_BUTTON_FOCUSED = new PartitionedTexture(AMCommon.id("textures/widget/rocket_launch_button_focused.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.16F);
 	public static final BaseTexture GREEN_BUTTON_ON = new PartitionedTexture(AMCommon.id("textures/widget/rocket_launch_button_on.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.16F);
 	
-	private RocketEntity rocketEntity;
+	private final RocketEntity rocketEntity;
 	
 	public PrimitiveRocketScreenHandler(int syncId, PlayerEntity player, int entityId) {
 		super(AMScreenHandlers.ROCKET, syncId, player, entityId);

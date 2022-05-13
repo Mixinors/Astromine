@@ -55,7 +55,7 @@ public class SpaceSkybox extends Skybox {
 	public static float u0P = 0.0f;
 	public static float u1P = 1.0f;
 	
-	public ImmutableMap<Identifier, Identifier> textures;
+	public final ImmutableMap<Identifier, Identifier> textures;
 	
 	private SpaceSkybox(Builder builder) {
 		textures = builder.textures.build();
@@ -198,7 +198,7 @@ public class SpaceSkybox extends Skybox {
 	}
 	
 	public static class Builder {
-		ImmutableMap.Builder<Identifier, Identifier> textures = ImmutableMap.builder();
+		final ImmutableMap.Builder<Identifier, Identifier> textures = ImmutableMap.builder();
 		
 		public Builder() {
 		}

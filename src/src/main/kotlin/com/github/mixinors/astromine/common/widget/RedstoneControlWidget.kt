@@ -79,7 +79,7 @@ class RedstoneControlWidget : ButtonWidget() {
 				else -> return
 			}
 			
-			val buf = NetworkingUtils.ofRedstoneControl(next, blockEntity.getPos())
+			val buf = NetworkingUtils.ofRedstoneControl(next, blockEntity.pos)
 			
 			NetworkManager.sendToServer(AMNetworking.REDSTONE_CONTROL_UPDATE, buf)
 		}
@@ -100,7 +100,7 @@ class RedstoneControlWidget : ButtonWidget() {
 		
 		val itemRenderer = ITEM_RENDERER ?: return
 		
-		RedstoneControlWidget.STANDARD_TEXTURE.draw(matrices, provider, x, y, width, height)
+		STANDARD_TEXTURE.draw(matrices, provider, x, y, width, height)
 		
 		when (blockEntity.redstoneControl) {
 			RedstoneControl.WORK_WHEN_ON -> itemRenderer.renderGuiItemIcon(REDSTONE, x.toInt() + ((width - 16.0F) / 2.0F).coerceAtLeast(0.0F).toInt(), y.toInt() + ((height - 16.0F) / 2.0F).coerceAtLeast(0.0F).toInt())

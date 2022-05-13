@@ -108,9 +108,9 @@ public class SimpleFluidVariantStorage extends SingleVariantStorage<FluidVariant
 	 * A proxied {@link SimpleFluidVariantStorage} implementation, backed by a proxy {@link SimpleFluidStorage} and {@link SimpleFluidVariantStorage}.
 	 */
 	public static class Proxy extends SimpleFluidVariantStorage {
-		private SimpleFluidStorage proxy;
+		private final SimpleFluidStorage proxy;
 		
-		private SimpleFluidVariantStorage proxyStorage;
+		private final SimpleFluidVariantStorage proxyStorage;
 		
 		public Proxy(SimpleFluidStorage proxy, SimpleFluidVariantStorage proxiedStorage) {
 			super(proxiedStorage.getCapacity(), proxiedStorage.getSlot());

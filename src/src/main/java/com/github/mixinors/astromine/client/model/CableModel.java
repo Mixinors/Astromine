@@ -52,12 +52,12 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class CableModel implements FabricBakedModel, BakedModel, UnbakedModel {
-	private Identifier centerModelId;
-	private Identifier sideModelId;
-	private Identifier connectorModelId;
-	private Identifier insertConnectorModelId;
-	private Identifier extractConnectorModelId;
-	private Identifier insertExtractConnectorModelId;
+	private final Identifier centerModelId;
+	private final Identifier sideModelId;
+	private final Identifier connectorModelId;
+	private final Identifier insertConnectorModelId;
+	private final Identifier extractConnectorModelId;
+	private final Identifier insertExtractConnectorModelId;
 	
 	public CableModel(Identifier centerModelId, Identifier sideModelId, Identifier connectorModelId, Identifier insertConnectorModelId, Identifier extractConnectorModelId, Identifier insertConnectorExtractModelid) {
 		this.centerModelId = centerModelId;

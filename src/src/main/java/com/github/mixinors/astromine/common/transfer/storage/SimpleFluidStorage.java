@@ -559,13 +559,9 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 		
 		var wildProxySlots = new int[insertSlots.length + extractSlots.length];
 		
-		for (var i = 0; i < insertSlots.length; ++i) {
-			wildProxySlots[i] = insertSlots[i];
-		}
+		System.arraycopy(insertSlots, 0, wildProxySlots, 0, insertSlots.length);
 		
-		for (var i = 0; i < extractSlots.length; ++i) {
-			wildProxySlots[i + insertSlots.length] = extractSlots[i];
-		}
+		System.arraycopy(extractSlots, 0, wildProxySlots, 0 + insertSlots.length, extractSlots.length);
 		
 		wildProxy.insertSlots = wildProxySlots;
 		wildProxy.extractSlots = wildProxySlots;

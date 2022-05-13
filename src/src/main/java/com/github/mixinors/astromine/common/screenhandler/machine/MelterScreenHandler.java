@@ -30,10 +30,8 @@ import com.github.mixinors.astromine.common.widget.HorizontalArrowWidget;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
-import dev.vini2003.hammer.gui.api.common.widget.bar.FluidBarWidget;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.math.BlockPos;
 
 public class MelterScreenHandler extends ExtendedBlockEntityScreenHandler {

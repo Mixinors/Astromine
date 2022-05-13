@@ -165,7 +165,7 @@ public abstract class EntityMixin implements EntityAccessor {
 	}
 	
 	@Inject(at = @At("HEAD"), method = "tick()V")
-	void am_tick(CallbackInfo ci) {
+	void astromine$tick(CallbackInfo ci) {
 		// TODO: Rewrite Atmosphere stuff, incl. this.
 		
 		// TODO Make this sync all visible chunks around the player.
