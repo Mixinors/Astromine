@@ -68,7 +68,7 @@ public class SimpleEnergyStorageItem extends Item implements EnergyStorageItem {
 	
 	@Override
 	public int getItemBarColor(ItemStack stack) {
-		return 0x91261F;
+		return 0xACE379;
 	}
 	
 	@Override

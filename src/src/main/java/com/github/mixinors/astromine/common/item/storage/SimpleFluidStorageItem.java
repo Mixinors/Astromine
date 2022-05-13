@@ -25,6 +25,8 @@
 package com.github.mixinors.astromine.common.item.storage;
 
 import com.github.mixinors.astromine.common.transfer.storage.FluidStorageItem;
+import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidItemStorage;
+import net.fabricmc.fabric.api.transfer.v1.client.fluid.FluidVariantRendering;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
@@ -77,6 +79,8 @@ public class SimpleFluidStorageItem extends Item implements FluidStorageItem {
 	
 	@Override
 	public int getItemBarColor(ItemStack stack) {
-		return 0x91261F;
+		var fluidStorage = (SimpleFluidItemStorage) FluidStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
+		
+		return FluidVariantRendering.getColor(fluidStorage.getResource());
 	}
 }

@@ -121,7 +121,7 @@ public class DrillItem extends MiningToolItem implements SimpleBatteryItem {
 	/** Override behavior to return a median red. */
 	@Override
 	public int getItemBarColor(ItemStack stack) {
-		return 0x91261f;
+		return 0xACE379;
 	}
 	
 	/**
