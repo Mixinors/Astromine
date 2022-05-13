@@ -43,6 +43,11 @@ import java.util.List;
 
 
 public final class WorldNetworkComponent implements Component {
+	private static final String TYPE_KEY = "Type";
+	private static final String NODES_KEY = "Nodes";
+	private static final String MEMBERS_KEY = "Members";
+	private static final String INSTANCES = "Instances";
+	
 	private final List<Network> instances = new ArrayList<>();
 	
 	private final World world;
@@ -112,26 +117,26 @@ public final class WorldNetworkComponent implements Component {
 			
 			var data = new NbtCompound();
 			
-			data.putString("Type", NetworkTypeRegistry.INSTANCE.getKey(type).toString());
-			data.put("Nodes", nodeList);
-			data.put("Members", memberList);
+			data.putString(TYPE_KEY, NetworkTypeRegistry.INSTANCE.getKey(type).toString());
+			data.put(NODES_KEY, nodeList);
+			data.put(MEMBERS_KEY, memberList);
 			
 			instanceTags.add(data);
 		}
 		
-		tag.put("Instances", instanceTags);
+		tag.put(INSTANCES, instanceTags);
 	}
 	
 	@Override
 	public void readFromNbt(NbtCompound tag) {
-		var instanceTags = tag.getList("Instances", NbtType.COMPOUND);
+		var instanceTags = tag.getList(INSTANCES, NbtType.COMPOUND);
 		
 		for (var instanceTag : instanceTags) {
 			var dataTag = (NbtCompound) instanceTag;
-			var nodeList = dataTag.getList("Nodes", NbtType.LONG);
-			var memberList = dataTag.getList("Members", NbtType.COMPOUND);
+			var nodeList = dataTag.getList(NODES_KEY, NbtType.LONG);
+			var memberList = dataTag.getList(MEMBERS_KEY, NbtType.COMPOUND);
 			
-			var type = NetworkTypeRegistry.INSTANCE.get(new Identifier(dataTag.getString("Type")));
+			var type = NetworkTypeRegistry.INSTANCE.get(new Identifier(dataTag.getString(TYPE_KEY)));
 			
 			if (type == null) {
 				continue;

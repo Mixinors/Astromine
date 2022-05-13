@@ -46,6 +46,10 @@ import java.util.Set;
 
 
 public final class WorldHoloBridgeComponent implements Component {
+	private static final String POSITION_KEY = "Positions";
+	private static final String VECTORS_KEY = "Vectors";
+	private static final String DATA_KEY = "Data";
+	
 	private final Long2ObjectArrayMap<Set<Vec3i>> entries = new Long2ObjectArrayMap<>();
 	
 	private final Long2ObjectArrayMap<VoxelShape> cache = new Long2ObjectArrayMap<>();
@@ -184,23 +188,23 @@ public final class WorldHoloBridgeComponent implements Component {
 				vecs[i++] = BlockPos.asLong(vec.getX(), vec.getY(), vec.getZ());
 			}
 			
-			pointTag.putLong("Positions", entry.getLongKey());
-			pointTag.put("Vectors", new NbtLongArray(vecs));
+			pointTag.putLong(POSITION_KEY, entry.getLongKey());
+			pointTag.put(VECTORS_KEY, new NbtLongArray(vecs));
 			
 			dataTag.add(pointTag);
 		}
 		
-		tag.put("Data", dataTag);
+		tag.put(DATA_KEY, dataTag);
 	}
 	
 	@Override
 	public void readFromNbt(NbtCompound tag) {
-		var dataTag = tag.getList("Data", NbtType.COMPOUND);
+		var dataTag = tag.getList(DATA_KEY, NbtType.COMPOUND);
 		
 		for (var pointTag : dataTag) {
-			var vecs = ((NbtCompound) pointTag).getLongArray("Vectors");
+			var vecs = ((NbtCompound) pointTag).getLongArray(VECTORS_KEY);
 			
-			var pos = ((NbtCompound) pointTag).getLong("Position");
+			var pos = ((NbtCompound) pointTag).getLong(POSITION_KEY);
 			
 			for (var vec : vecs) {
 				add(pos, BlockPos.fromLong(vec));

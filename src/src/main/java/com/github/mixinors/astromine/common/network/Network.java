@@ -43,6 +43,10 @@ import java.util.stream.Collectors;
  * A collection of {@link Node}s and {@link Member}s, representing a simple network structure.
  */
 public final class Network<T extends NetworkType> {
+	private static final String POSITION_KEY = "Position";
+	private static final String DIRECTION_KEY = "Direction";
+	private static final String SIDING_KEY = "Siding";
+	
 	public final Set<Member> members = Sets.newConcurrentHashSet();
 	
 	public final Set<Node> nodes = Sets.newConcurrentHashSet();
@@ -223,9 +227,9 @@ public final class Network<T extends NetworkType> {
 		/** Deserializes a {@link Member} from a {@link NbtCompound}. */
 		public static Member fromTag(NbtCompound tag) {
 			return new Member(
-					tag.getLong("Position"),
-					Direction.valueOf(tag.getString("Direction")),
-					StorageSiding.valueOf(tag.getString("Siding"))
+					tag.getLong(POSITION_KEY),
+					Direction.valueOf(tag.getString(DIRECTION_KEY)),
+					StorageSiding.valueOf(tag.getString(SIDING_KEY))
 			);
 		}
 		
@@ -233,10 +237,10 @@ public final class Network<T extends NetworkType> {
 		public NbtCompound toTag() {
 			var tag = new NbtCompound();
 			
-			tag.putLong("Position", longPos);
+			tag.putLong(POSITION_KEY, longPos);
 			
-			tag.putString("Direction", direction.name());
-			tag.putString("Siding", siding.name());
+			tag.putString(DIRECTION_KEY, direction.name());
+			tag.putString(SIDING_KEY, siding.name());
 			
 			return tag;
 		}
@@ -268,14 +272,14 @@ public final class Network<T extends NetworkType> {
 		
 		/** Deserializes a {@link Node} from a {@link NbtCompound}. */
 		public static Node fromTag(NbtCompound tag) {
-			return new Node(tag.getLong("Position"));
+			return new Node(tag.getLong(POSITION_KEY));
 		}
 		
 		/** Serializes a {@link Node} to a {@link NbtCompound}. */
 		public NbtCompound toTag() {
 			var tag = new NbtCompound();
 			
-			tag.putLong("Position", longPos);
+			tag.putLong(POSITION_KEY, longPos);
 			
 			return tag;
 		}

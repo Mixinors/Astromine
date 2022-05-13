@@ -28,6 +28,7 @@ import com.github.mixinors.astromine.common.block.HoloBridgeProjectorBlock;
 import com.github.mixinors.astromine.common.block.entity.HoloBridgeProjectorBlockEntity;
 import com.github.mixinors.astromine.registry.common.AMSoundEvents;
 import dev.architectury.hooks.block.BlockEntityHooks;
+import dev.vini2003.hammer.core.api.common.util.NbtUtils;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -37,14 +38,20 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 public class HolographicConnectorItem extends Item {
+	private static final String SELECTOR_CONNECTOR_BLOCK_KEY = "SelectedConnectorBlock";
+	
+	private static final String WORLD_KEY = "World";
+	
+	private static final String X_KEY = "X";
+	private static final String Y_KEY = "Y";
+	private static final String Z_KEY = "Z";
+	
 	public HolographicConnectorItem(Settings settings) {
 		super(settings);
 	}
@@ -149,44 +156,58 @@ public class HolographicConnectorItem extends Item {
 	
 	private ItemStack unselect(ItemStack stack) {
 		stack = stack.copy();
+		
 		var tag = stack.getOrCreateNbt();
-		tag.remove("SelectedConnectorBlock");
+		
+		tag.remove(SELECTOR_CONNECTOR_BLOCK_KEY);
+		
 		return stack;
 	}
 	
 	private ItemStack selectBlock(ItemStack stack, RegistryKey<World> registryKey, BlockPos pos) {
 		stack = stack.copy();
+		
 		var tag = stack.getOrCreateNbt();
-		tag.remove("SelectedConnectorBlock");
-		tag.put("SelectedConnectorBlock", writePos(registryKey, pos));
+		
+		tag.remove(SELECTOR_CONNECTOR_BLOCK_KEY);
+		tag.put(SELECTOR_CONNECTOR_BLOCK_KEY, writePos(registryKey, pos));
+		
 		return stack;
 	}
 	
 	public Pair<RegistryKey<World>, BlockPos> readBlock(ItemStack stack) {
 		var tag = stack.getNbt();
+		
 		if (tag == null) {
 			return null;
 		}
-		if (!tag.contains("SelectedConnectorBlock")) {
+		
+		if (!tag.contains(SELECTOR_CONNECTOR_BLOCK_KEY)) {
 			return null;
 		}
-		return readPos(tag.getCompound("SelectedConnectorBlock"));
+		
+		return readPos(tag.getCompound(SELECTOR_CONNECTOR_BLOCK_KEY));
 	}
 	
 	private NbtCompound writePos(RegistryKey<World> registryKey, BlockPos pos) {
 		var tag = new NbtCompound();
-		tag.putString("World", registryKey.getValue().toString());
-		tag.putInt("X", pos.getX());
-		tag.putInt("Y", pos.getY());
-		tag.putInt("Z", pos.getZ());
+		
+		NbtUtils.putRegistryKey(tag, WORLD_KEY, registryKey);
+		
+		tag.putInt(X_KEY, pos.getX());
+		tag.putInt(Y_KEY, pos.getY());
+		tag.putInt(Z_KEY, pos.getZ());
+		
 		return tag;
 	}
 	
 	private Pair<RegistryKey<World>, BlockPos> readPos(NbtCompound tag) {
-		var registryKey = RegistryKey.of(Registry.WORLD_KEY, Identifier.tryParse(tag.getString("World")));
-		var x = tag.getInt("X");
-		var y = tag.getInt("Y");
-		var z = tag.getInt("Z");
+		var registryKey = NbtUtils.<World>getRegistryKey(tag, WORLD_KEY);
+		
+		var x = tag.getInt(X_KEY);
+		var y = tag.getInt(Y_KEY);
+		var z = tag.getInt(Z_KEY);
+		
 		return new Pair<>(registryKey, new BlockPos(x, y, z));
 	}
 	

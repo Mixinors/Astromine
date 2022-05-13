@@ -51,6 +51,8 @@ import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 
 public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
+	private static final String HAS_EXPLODED_KEY = "HasExploded";
+	private static final String WAS_ON_GROUND_KEY = "WasOnGround";
 	
 	// data for slime explosion mechanic
 	private static final TrackedData<Integer> EXPLOSION_PROGRESS = DataTracker.registerData(SpaceSlimeEntity.class, TrackedDataHandlerRegistry.INTEGER);
@@ -65,7 +67,9 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 	
 	public SuperSpaceSlimeEntity(EntityType<? extends SuperSpaceSlimeEntity> entityType, World world) {
 		super(entityType, world);
+		
 		this.bossBar = (ServerBossBar) (new ServerBossBar(this.getDisplayName(), BossBar.Color.PURPLE, BossBar.Style.PROGRESS)).setDarkenSky(true);
+		
 		this.moveControl = new SuperSpaceSlimeMoveControl(this);
 	}
 	
@@ -101,6 +105,7 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 	@Override
 	public void tick() {
 		this.stretch += (this.targetStretch - this.stretch) * 0.5F;
+		
 		this.lastStretch = this.stretch;
 		
 		super.tick();
@@ -112,34 +117,41 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 			for (var j = 0; j < size * 8; ++j) {
 				var f = this.random.nextFloat() * 6.2831855F;
 				var g = this.random.nextFloat() * 0.5F + 0.5F;
+				
 				var particleX = MathHelper.sin(f) * (float) size * 0.5F * g;
 				var particleZ = MathHelper.cos(f) * (float) size * 0.5F * g;
+				
 				this.world.addParticle(this.getParticles(), this.getX() + (double) particleX, this.getY(), this.getZ() + (double) particleZ, 0.0D, 0.0D, 0.0D);
 			}
 			
 			this.playSound(this.getSquishSound(), this.getSoundVolume(), ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) / 0.8F);
 			this.playSound(SoundEvents.BLOCK_GLASS_BREAK, this.getSoundVolume(), ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) / 0.8F);
+			
 			this.targetStretch = -0.5F;
 		} else if (!this.onGround && this.onGroundLastTick) {
 			this.targetStretch = 1.0F;
 		}
 		
 		this.onGroundLastTick = this.onGround;
+		
 		this.updateStretch();
 	}
 	
 	@Override
 	public void writeCustomDataToNbt(NbtCompound tag) {
 		super.writeCustomDataToNbt(tag);
-		tag.putBoolean("HasExploded", this.hasExploded());
-		tag.putBoolean("WasOnGround", this.onGroundLastTick);
+		
+		tag.putBoolean(HAS_EXPLODED_KEY, this.hasExploded());
+		tag.putBoolean(WAS_ON_GROUND_KEY, this.onGroundLastTick);
 	}
 	
 	@Override
 	public void readCustomDataFromNbt(NbtCompound tag) {
 		super.readCustomDataFromNbt(tag);
-		this.setHasExploded(tag.getBoolean("HasExploded"));
-		this.onGroundLastTick = tag.getBoolean("WasOnGround");
+		
+		this.setHasExploded(tag.getBoolean(HAS_EXPLODED_KEY));
+		
+		this.onGroundLastTick = tag.getBoolean(WAS_ON_GROUND_KEY);
 	}
 	
 	@Override
@@ -175,10 +187,13 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 	 */
 	public void explode() {
 		for (var i = 0; i < 50; i++) {
-			var spaceSlime = AMEntityTypes.SPACE_SLIME.get().create(this.world);
-			spaceSlime.initialize((ServerWorldAccess) this.world, this.world.getLocalDifficulty(this.getBlockPos()), SpawnReason.NATURAL, null, null);
-			this.world.spawnEntity(spaceSlime);
-			spaceSlime.requestTeleport(this.getX(), this.getY(), this.getZ());
+			var spaceSlime = AMEntityTypes.SPACE_SLIME.get().create(world);
+			
+			spaceSlime.initialize((ServerWorldAccess) world, world.getLocalDifficulty(this.getBlockPos()), SpawnReason.NATURAL, null, null);
+			
+			world.spawnEntity(spaceSlime);
+			
+			spaceSlime.requestTeleport(getX(), getY(), getZ());
 		}
 	}
 	
@@ -190,12 +205,14 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 	@Override
 	public void onStartedTrackingBy(ServerPlayerEntity player) {
 		super.onStartedTrackingBy(player);
+		
 		this.bossBar.addPlayer(player);
 	}
 	
 	@Override
 	public void onStoppedTrackingBy(ServerPlayerEntity player) {
 		super.onStoppedTrackingBy(player);
+		
 		this.bossBar.removePlayer(player);
 	}
 	

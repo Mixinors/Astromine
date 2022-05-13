@@ -42,10 +42,12 @@ import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 
 public class GravityGauntletItem extends SimpleEnergyStorageItem {
-	private static final Multimap<EntityAttribute, EntityAttributeModifier> EAMS = HashMultimap.create();
+	private static final String CHARGED_KEY = "Charged";
+	
+	private static final Multimap<EntityAttribute, EntityAttributeModifier> ATTRIBUTE_MODIFIERS = HashMultimap.create();
 	
 	static {
-		EAMS.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "attack", 4f, EntityAttributeModifier.Operation.ADDITION));
+		ATTRIBUTE_MODIFIERS.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "attack", 4f, EntityAttributeModifier.Operation.ADDITION));
 	}
 	
 	public GravityGauntletItem(Settings settings, long capacity) {
@@ -55,13 +57,17 @@ public class GravityGauntletItem extends SimpleEnergyStorageItem {
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		var stack = user.getStackInHand(hand);
+		
 		if (hand == Hand.OFF_HAND) {
 			return TypedActionResult.pass(stack);
 		}
+		
 		var offStack = user.getStackInHand(Hand.OFF_HAND);
+		
 		if (offStack.isOf(AMItems.GRAVITY_GAUNTLET.get())) {
 			if (getStoredEnergy(stack) >= AMConfig.get().items.gravityGauntletConsumed && getStoredEnergy(offStack) >= AMConfig.get().items.gravityGauntletConsumed) {
 				user.setCurrentHand(hand);
+				
 				return TypedActionResult.success(stack);
 			}
 		}
@@ -74,15 +80,20 @@ public class GravityGauntletItem extends SimpleEnergyStorageItem {
 			return stack;
 		}
 		var offStack = user.getStackInHand(Hand.OFF_HAND);
+		
 		if (offStack.isOf(AMItems.GRAVITY_GAUNTLET.get())) {
 			if (getStoredEnergy(stack) >= AMConfig.get().items.gravityGauntletConsumed && getStoredEnergy(offStack) >= AMConfig.get().items.gravityGauntletConsumed) {
 				tryUseEnergy(stack, AMConfig.get().items.gravityGauntletConsumed);
 				tryUseEnergy(offStack, AMConfig.get().items.gravityGauntletConsumed);
-				stack.getOrCreateNbt().putBoolean("Charged", true);
-				offStack.getOrCreateNbt().putBoolean("Charged", true);
+				
+				stack.getOrCreateNbt().putBoolean(CHARGED_KEY, true);
+				
+				offStack.getOrCreateNbt().putBoolean(CHARGED_KEY, true);
+				
 				return stack;
 			}
 		}
+		
 		return super.finishUsing(stack, world, user);
 	}
 	
@@ -101,13 +112,19 @@ public class GravityGauntletItem extends SimpleEnergyStorageItem {
 		if (attacker.world.isClient) {
 			return super.postHit(stack, target, attacker);
 		}
+		
 		var offStack = attacker.getStackInHand(Hand.OFF_HAND);
+		
 		if (offStack.getItem() == AMItems.GRAVITY_GAUNTLET.get()) {
-			if (stack.getOrCreateNbt().getBoolean("Charged") && offStack.getOrCreateNbt().getBoolean("Charged")) {
+			if (stack.getOrCreateNbt().getBoolean(CHARGED_KEY) && offStack.getOrCreateNbt().getBoolean(CHARGED_KEY)) {
 				target.takeKnockback(1, attacker.getX() - target.getX(), attacker.getZ() - target.getZ());
+				
 				target.addVelocity(0f, 0.5f, 0f);
-				stack.getOrCreateNbt().putBoolean("Charged", false);
-				offStack.getOrCreateNbt().putBoolean("Charged", false);
+				
+				stack.getOrCreateNbt().putBoolean(CHARGED_KEY, false);
+				
+				offStack.getOrCreateNbt().putBoolean(CHARGED_KEY, false);
+				
 				return true;
 			}
 		}
@@ -116,14 +133,15 @@ public class GravityGauntletItem extends SimpleEnergyStorageItem {
 	
 	@Override
 	public boolean hasGlint(ItemStack stack) {
-		return stack.getOrCreateNbt().getBoolean("Charged");
+		return stack.getOrCreateNbt().getBoolean(CHARGED_KEY);
 	}
 	
 	@Override
 	public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(ItemStack stack, EquipmentSlot slot) {
 		if (slot == EquipmentSlot.MAINHAND) {
-			return EAMS;
+			return ATTRIBUTE_MODIFIERS;
 		}
+		
 		return super.getAttributeModifiers(slot);
 	}
 }

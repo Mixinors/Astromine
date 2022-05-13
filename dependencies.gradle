@@ -33,7 +33,7 @@ project.ext.setDefaultApis = {
     useAsApi("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${project.kotlinVersion}")
     useAsApi("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${project.kotlinVersion}")
 
-    // Piglib
+    // PigLib
     useAsApi("com.shnupbups:Piglib:${pigLibVersion}")
 
     // CauldronLib

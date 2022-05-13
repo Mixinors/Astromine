@@ -41,6 +41,10 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public interface TieredBlock {
+	String X_KEY = "x";
+	String Y_KEY = "y";
+	String Z_KEY = "z";
+	
 	MachineTier getTier();
 	
 	@Nullable
@@ -80,9 +84,10 @@ public interface TieredBlock {
 					
 					if (blockEntity != null) {
 						beTag = blockEntity.createNbtWithId();
-						beTag.putInt("x", pos.getX());
-						beTag.putInt("y", pos.getY());
-						beTag.putInt("z", pos.getZ());
+						
+						beTag.putInt(X_KEY, pos.getX());
+						beTag.putInt(Y_KEY, pos.getY());
+						beTag.putInt(Z_KEY, pos.getZ());
 					}
 					
 					world.removeBlockEntity(pos);

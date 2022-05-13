@@ -291,8 +291,8 @@ public class AMEvents {
 		}));
 		
 		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
-			if (stack.getItem() instanceof HolographicConnectorItem) {
-				var pair = ((HolographicConnectorItem) stack.getItem()).readBlock(stack);
+			if (stack.getItem() instanceof HolographicConnectorItem holographicConnectorItem) {
+				var pair = holographicConnectorItem.readBlock(stack);
 				
 				if (pair != null) {
 					var key = pair.getLeft();
