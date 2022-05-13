@@ -34,11 +34,13 @@ import com.github.mixinors.astromine.registry.common.AMTags;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.PlayerInventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tag.TagKey;
@@ -69,7 +71,7 @@ public abstract class LivingEntityMixin extends EntityMixin {
 	
 	@Inject(at = @At("HEAD"), method = "tick()V")
 	void astromine$tick(CallbackInfo callbackInformation) {
-		if (AMWorlds.isSpace(world.getRegistryKey())) {
+		if (AMWorlds.isSpace(world.getRegistryKey()) && (Object) this instanceof PlayerEntity player) {
 			var entityType = getType();
 			
 			var entityBreathables = BreathableRegistry.INSTANCE.get(entityType);
@@ -86,11 +88,13 @@ public abstract class LivingEntityMixin extends EntityMixin {
 			breathing = breathing && (legsStack.getItem() instanceof SpaceSuitItem);
 			breathing = breathing && (feetStack.getItem() instanceof SpaceSuitItem);
 			
-			var chestFluidStorage = (SimpleFluidItemStorage) FluidStorage.ITEM.find(chestStack, ContainerItemContext.withInitial(chestStack));
+			var context = ContainerItemContext.ofSingleSlot(PlayerInventoryStorage.of(player).getSlot(36 + EquipmentSlot.CHEST.getEntitySlotId()));
+			
+			var chestFluidStorage = (SimpleFluidItemStorage) context.find(FluidStorage.ITEM);
 			
 			breathing = breathing && chestFluidStorage != null && entityBreathables.stream().anyMatch(tag -> chestFluidStorage.getResource().getFluid().isIn(tag));
 			
-			var chestEnergyStorage = EnergyStorage.ITEM.find(chestStack, ContainerItemContext.withInitial(chestStack));
+			var chestEnergyStorage = context.find(EnergyStorage.ITEM);
 			
 			breathing = breathing && chestEnergyStorage != null && chestEnergyStorage.getAmount() > 0L;
 			

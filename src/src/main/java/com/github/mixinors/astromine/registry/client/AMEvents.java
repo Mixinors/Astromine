@@ -162,6 +162,13 @@ public class AMEvents {
 				
 				spaceSuitEnergyBar.setHidden(hidden);
 				spaceSuitOxygenBar.setHidden(hidden);
+				
+				if (!hidden) {
+					var itemRenderer = DrawingUtils.getItemRenderer();
+					
+					itemRenderer.renderGuiItemIcon(new ItemStack(AMItems.ENERGY.get()), (int) spaceSuitEnergyBar.getX() - 4, (int) (spaceSuitEnergyBar.getY() + 81.0F + 1.0F));
+					itemRenderer.renderGuiItemIcon(new ItemStack(AMItems.FLUID.get()), (int) spaceSuitOxygenBar.getX() - 4, (int) (spaceSuitOxygenBar.getY() + 81.0F + 1.0F));
+				}
 			}
 			
 			var scaledHeight = client.getWindow().getScaledHeight();
@@ -174,17 +181,6 @@ public class AMEvents {
 			
 			spaceSuitEnergyBar.setSize(new Size(9.0F, 81.0F));
 			spaceSuitOxygenBar.setSize(new Size(9.0F, 81.0F));
-			
-			var itemRenderer = DrawingUtils.getItemRenderer();
-			
-			matrices.push();
-			
-			matrices.scale(0.5F, 0.5F, 0.5F);
-			
-			itemRenderer.renderGuiItemIcon(new ItemStack(AMItems.ENERGY.get()), (int) energyBarPos.getX() - 4, (int) (energyBarPos.getY() + 81.0F + 1.0F));
-			itemRenderer.renderGuiItemIcon(new ItemStack(AMItems.FLUID.get()), (int) oxygenBarPos.getX() - 4, (int) (oxygenBarPos.getY() + 81.0F + 1.0F));
-			
-			matrices.pop();
 		}));
 		
 		InGameHudEvents.INIT.register((hud, collection) -> {
