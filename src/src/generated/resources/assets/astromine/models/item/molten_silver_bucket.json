@@ -1,0 +1,6 @@
+{
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "astromine:item/molten_silver_bucket"
+	}
+}
