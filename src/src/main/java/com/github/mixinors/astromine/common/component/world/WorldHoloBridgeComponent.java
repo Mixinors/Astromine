@@ -45,7 +45,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 
-// TODO: Re-add cache!
 public final class WorldHoloBridgeComponent implements Component {
 	private static final String POSITION_KEY = "Positions";
 	private static final String VECTORS_KEY = "Vectors";
@@ -112,6 +111,10 @@ public final class WorldHoloBridgeComponent implements Component {
 		
 		if (vectors == null) {
 			return VoxelShapes.fullCube();
+		}
+		
+		if (cache.containsKey(pos)) {
+			return cache.get(pos);
 		}
 		
 		var shape = getShape(vectors);

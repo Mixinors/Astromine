@@ -32,8 +32,6 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-// TODO: This is concerning code and does not allow upgrades to work on non-horizontal machinery.
-
 /**
  * A {@link HorizontalFacingBlockWithEntity} with machine tiers.
  */
@@ -44,7 +42,7 @@ public abstract class HorizontalFacingTieredBlockWithEntity extends HorizontalFa
 	
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		ActionResult result = tryUpgrade(state, world, pos, player, hand, hit);
+		var result = tryUpgrade(state, world, pos, player, hand, hit);
 		
 		if (result.isAccepted()) {
 			return result;

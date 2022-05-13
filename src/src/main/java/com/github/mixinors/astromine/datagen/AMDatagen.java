@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.datagen;
 
-import com.github.mixinors.astromine.common.fluid.ExtendedFluid;
+import com.github.mixinors.astromine.common.fluid.SimpleFluid;
 import com.github.mixinors.astromine.datagen.family.block.AMBlockFamilies;
 import com.github.mixinors.astromine.datagen.family.material.MaterialFamilies;
 import com.github.mixinors.astromine.datagen.family.material.variant.BlockVariant;
@@ -57,12 +57,35 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class AMDatagen implements DataGeneratorEntrypoint {
-	public static final List<ExtendedFluid> FLUIDS = List.of(
+	public static final List<SimpleFluid> FLUIDS = List.of(
 			AMFluids.OIL,
 			AMFluids.FUEL,
 			AMFluids.BIOMASS,
 			AMFluids.OXYGEN,
-			AMFluids.HYDROGEN
+			AMFluids.HYDROGEN,
+			AMFluids.MOLTEN_AMETHYST,
+			AMFluids.MOLTEN_ASTERITE,
+			AMFluids.MOLTEN_BRONZE,
+			AMFluids.MOLTEN_COPPER,
+			AMFluids.MOLTEN_DIAMOND,
+			AMFluids.MOLTEN_ELECTRUM,
+			AMFluids.MOLTEN_EMERALD,
+			AMFluids.MOLTEN_FOOLS_GOLD,
+			AMFluids.MOLTEN_GALAXIUM,
+			AMFluids.MOLTEN_GOLD,
+			AMFluids.MOLTEN_IRON,
+			AMFluids.MOLTEN_LAPIS,
+			AMFluids.MOLTEN_LEAD,
+			AMFluids.MOLTEN_METEORIC_STEEL,
+			AMFluids.MOLTEN_METITE,
+			AMFluids.MOLTEN_NETHERITE,
+			AMFluids.MOLTEN_QUARTZ,
+			AMFluids.MOLTEN_REDSTONE,
+			AMFluids.MOLTEN_SILVER,
+			AMFluids.MOLTEN_STEEL,
+			AMFluids.MOLTEN_STELLUM,
+			AMFluids.MOLTEN_TIN,
+			AMFluids.MOLTEN_UNIVITE
 	);
 	
 	public static final List<BlockVariant> ORE_VARIANTS = List.of(

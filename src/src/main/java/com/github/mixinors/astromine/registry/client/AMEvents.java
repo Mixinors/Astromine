@@ -223,7 +223,7 @@ public class AMEvents {
 			bar.setShow(() -> {
 				var client = InstanceUtils.getClient();
 				
-				if (client != null && client.player != null && !client.player.isCreative() && !client.player.isSpectator()) {
+				if (client != null && client.player != null && !client.player.isCreative() && !client.player.isSpectator() && AMWorlds.isSpace(client.player.world.getRegistryKey())) {
 					var component = EntityOxygenComponent.get(client.player);
 					
 					if (component != null) {

@@ -279,10 +279,14 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 		INFINIBURN_BLOCKS.forEach(infiniburnTagBuilder::add);
 		INFINIBURN_TAGS.forEach(infiniburnTagBuilder::addTag);
 		
-		SPACE_STONE_FAMILIES.forEach((family) -> AMDatagen.toTreeMap(family.getVariants()).forEach((variant, block) -> {
-			infiniburnTagBuilder.add(block);
-			addHarvestData(SPACE_STONE_HARVEST_DATA, block);
-		}));
+		SPACE_STONE_FAMILIES.forEach((family) -> {
+			AMDatagen.toTreeMap(family.getVariants()).forEach((variant, block) -> {
+				infiniburnTagBuilder.add(block);
+				addHarvestData(SPACE_STONE_HARVEST_DATA, block);
+			});
+			
+			addHarvestData(SPACE_STONE_HARVEST_DATA, family.getBaseBlock());
+		});
 		
 		var primitiveMachinesTag = AMDatagen.createBlockTag(AMCommon.id("primitive_machines"));
 		var primitiveMachinesTagBuilder = getOrCreateTagBuilder(primitiveMachinesTag);
