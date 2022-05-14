@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:lapis_dusts"
+  },
+  "output": {
+    "fluid": "astromine:molten_lapis",
+    "amount": 9000
+  },
+  "energy_input": 2048,
+  "time": 256
+}

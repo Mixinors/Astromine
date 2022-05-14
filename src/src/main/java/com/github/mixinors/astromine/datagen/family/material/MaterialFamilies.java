@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.datagen.family.material;
 
 import com.github.mixinors.astromine.datagen.family.material.MaterialFamily.MaterialType;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
+import com.github.mixinors.astromine.registry.common.AMFluids;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.google.common.collect.Maps;
 import net.fabricmc.yarn.constants.MiningLevels;
@@ -51,7 +52,8 @@ public class MaterialFamilies {
 			.tools(Items.DIAMOND_PICKAXE, Items.DIAMOND_AXE, Items.DIAMOND_SHOVEL, Items.DIAMOND_SWORD, Items.DIAMOND_HOE)
 			.armor(Items.DIAMOND_HELMET, Items.DIAMOND_CHESTPLATE, Items.DIAMOND_LEGGINGS, Items.DIAMOND_BOOTS).horseArmor(Items.DIAMOND_HORSE_ARMOR)
 			.validForBeacon()
-			.miningLevel(MiningLevels.IRON).oreSmeltingExperience(1f).build();
+			.miningLevel(MiningLevels.IRON).oreSmeltingExperience(1f)
+			.moltenFluid(AMFluids.MOLTEN_DIAMOND, 3.8f).build();
 	
 	public static final MaterialFamily EMERALD = register("emerald", Items.EMERALD, MaterialType.GEM)
 			.block(Blocks.EMERALD_BLOCK).nugget(AMItems.EMERALD_FRAGMENT.get())
@@ -59,17 +61,20 @@ public class MaterialFamilies {
 			.asteroidOre(AMBlocks.ASTEROID_EMERALD_ORE.get(), AMItems.ASTEROID_EMERALD_ORE_CLUSTER.get())
 			.dust(AMItems.EMERALD_DUST.get(), AMItems.EMERALD_TINY_DUST.get())
 			.validForBeacon()
-			.miningLevel(MiningLevels.IRON).oreSmeltingExperience(1f).build();
+			.miningLevel(MiningLevels.IRON).oreSmeltingExperience(1f)
+			.moltenFluid(AMFluids.MOLTEN_EMERALD, 2.8f).build();
 	
 	public static final MaterialFamily QUARTZ = register("quartz", Items.QUARTZ, MaterialType.GEM)
 			.block2x2(Blocks.QUARTZ_BLOCK).nugget(AMItems.QUARTZ_FRAGMENT.get())
 			.netherOre(Blocks.NETHER_QUARTZ_ORE)
 			.dust(AMItems.QUARTZ_DUST.get(), AMItems.QUARTZ_TINY_DUST.get())
-			.oreSmeltingExperience(0.2f).build();
+			.oreSmeltingExperience(0.2f)
+			.moltenFluid(AMFluids.MOLTEN_QUARTZ, 1.75f).build();
 	
 	public static final MaterialFamily AMETHYST = register("amethyst", Items.AMETHYST_SHARD, MaterialType.GEM)
 			.block2x2(Blocks.AMETHYST_BLOCK).nugget(AMItems.AMETHYST_FRAGMENT.get())
-			.dust(AMItems.AMETHYST_DUST.get(), AMItems.AMETHYST_TINY_DUST.get()).build();
+			.dust(AMItems.AMETHYST_DUST.get(), AMItems.AMETHYST_TINY_DUST.get())
+			.moltenFluid(AMFluids.MOLTEN_AMETHYST, 2).build();
 	
 	// Vanilla Ingots
 	
@@ -82,7 +87,8 @@ public class MaterialFamilies {
 			.armor(Items.IRON_HELMET, Items.IRON_CHESTPLATE, Items.IRON_LEGGINGS, Items.IRON_BOOTS).horseArmor(Items.IRON_HORSE_ARMOR)
 			.gear(AMItems.IRON_GEAR.get()).plate(AMItems.IRON_PLATE.get())
 			.validForBeacon()
-			.miningLevel(MiningLevels.STONE).build();
+			.miningLevel(MiningLevels.STONE)
+			.moltenFluid(AMFluids.MOLTEN_IRON).build();
 	
 	public static final MaterialFamily GOLD = register("gold", Items.GOLD_INGOT, MaterialType.INGOT)
 			.block(Blocks.GOLD_BLOCK).nugget(Items.GOLD_NUGGET)
@@ -95,7 +101,8 @@ public class MaterialFamilies {
 			.wire(AMItems.GOLD_WIRE.get())
 			.apple(Items.GOLDEN_APPLE)
 			.piglinLoved().validForBeacon()
-			.miningLevel(MiningLevels.IRON).oreSmeltingExperience(1f).build();
+			.miningLevel(MiningLevels.IRON).oreSmeltingExperience(1f)
+			.moltenFluid(AMFluids.MOLTEN_GOLD, 0.85f).build();
 	
 	public static final MaterialFamily COPPER = register("copper", Items.COPPER_INGOT, MaterialType.INGOT)
 			.block(Blocks.COPPER_BLOCK).nugget(AMItems.COPPER_NUGGET.get())
@@ -104,7 +111,8 @@ public class MaterialFamilies {
 			.dust(AMItems.COPPER_DUST.get(), AMItems.COPPER_TINY_DUST.get())
 			.gear(AMItems.COPPER_GEAR.get()).plate(AMItems.COPPER_PLATE.get())
 			.wire(AMItems.COPPER_WIRE.get())
-			.miningLevel(MiningLevels.STONE).build();
+			.miningLevel(MiningLevels.STONE)
+			.moltenFluid(AMFluids.MOLTEN_COPPER, 0.875f).build();
 	
 	// Vanilla Misc
 	
@@ -128,7 +136,8 @@ public class MaterialFamilies {
 			.asteroidOre(AMBlocks.ASTEROID_LAPIS_ORE.get(), AMItems.ASTEROID_LAPIS_ORE_CLUSTER.get())
 			.dust(AMItems.LAPIS_DUST.get(), AMItems.LAPIS_TINY_DUST.get())
 			.alias("lapis_lazuli")
-			.miningLevel(MiningLevels.STONE).oreSmeltingExperience(0.2f).build();
+			.miningLevel(MiningLevels.STONE).oreSmeltingExperience(0.2f)
+			.moltenFluid(AMFluids.MOLTEN_LAPIS, 1.6f).build();
 	
 	public static final MaterialFamily RAW_NETHERITE = register("raw_netherite", Items.NETHERITE_SCRAP, MaterialType.MISC)
 			.netherOre(Blocks.ANCIENT_DEBRIS)
@@ -159,7 +168,8 @@ public class MaterialFamilies {
 			.smithingBase(DIAMOND)
 			.alloyIngredients(GOLD, 4, RAW_NETHERITE, 4, 1, 100, 100)
 			.validForBeacon()
-			.miningLevel(MiningLevels.DIAMOND).build();
+			.miningLevel(MiningLevels.DIAMOND)
+			.moltenFluid(AMFluids.MOLTEN_NETHERITE, 2).build();
 	
 	// Astromine Gems
 	
@@ -170,7 +180,8 @@ public class MaterialFamilies {
 			.tools(AMItems.ASTERITE_PICKAXE.get(), AMItems.ASTERITE_AXE.get(), AMItems.ASTERITE_SHOVEL.get(), AMItems.ASTERITE_SWORD.get(), AMItems.ASTERITE_HOE.get())
 			.armor(AMItems.ASTERITE_HELMET.get(), AMItems.ASTERITE_CHESTPLATE.get(), AMItems.ASTERITE_LEGGINGS.get(), AMItems.ASTERITE_BOOTS.get())
 			.validForBeacon()
-			.miningLevel(MiningLevels.NETHERITE).oreSmeltingExperience(2f).build();
+			.miningLevel(MiningLevels.NETHERITE).oreSmeltingExperience(2f)
+			.moltenFluid(AMFluids.MOLTEN_ASTERITE, 14).build();
 	
 	public static final MaterialFamily GALAXIUM = register("galaxium", AMItems.GALAXIUM.get(), MaterialType.GEM)
 			.block(AMBlocks.GALAXIUM_BLOCK.get()).nugget(AMItems.GALAXIUM_FRAGMENT.get())
@@ -179,7 +190,8 @@ public class MaterialFamilies {
 			.tools(AMItems.GALAXIUM_PICKAXE.get(), AMItems.GALAXIUM_AXE.get(), AMItems.GALAXIUM_SHOVEL.get(), AMItems.GALAXIUM_SWORD.get(), AMItems.GALAXIUM_HOE.get())
 			.armor(AMItems.GALAXIUM_HELMET.get(), AMItems.GALAXIUM_CHESTPLATE.get(), AMItems.GALAXIUM_LEGGINGS.get(), AMItems.GALAXIUM_BOOTS.get())
 			.validForBeacon()
-			.miningLevel(5).oreSmeltingExperience(3f).build();
+			.miningLevel(5).oreSmeltingExperience(3f)
+			.moltenFluid(AMFluids.MOLTEN_GALAXIUM, 18).build();
 	
 	// Astromine Overworld Ingots
 	
@@ -190,7 +202,8 @@ public class MaterialFamilies {
 			.dust(AMItems.TIN_DUST.get(), AMItems.TIN_TINY_DUST.get())
 			.gear(AMItems.TIN_GEAR.get()).plate(AMItems.TIN_PLATE.get())
 			.wire(AMItems.TIN_WIRE.get())
-			.miningLevel(MiningLevels.STONE).build();
+			.miningLevel(MiningLevels.STONE)
+			.moltenFluid(AMFluids.MOLTEN_TIN, 0.6f).build();
 	
 	public static final MaterialFamily SILVER = register("silver", AMItems.SILVER_INGOT.get(), MaterialType.INGOT)
 			.block(AMBlocks.SILVER_BLOCK.get()).nugget(AMItems.SILVER_NUGGET.get())
@@ -200,7 +213,8 @@ public class MaterialFamilies {
 			.gear(AMItems.SILVER_GEAR.get()).plate(AMItems.SILVER_PLATE.get())
 			.wire(AMItems.SILVER_WIRE.get())
 			.validForBeacon()
-			.miningLevel(MiningLevels.IRON).oreSmeltingExperience(0.8f).build();
+			.miningLevel(MiningLevels.IRON).oreSmeltingExperience(0.8f)
+			.moltenFluid(AMFluids.MOLTEN_SILVER, 0.8f).build();
 	
 	public static final MaterialFamily LEAD = register("lead", AMItems.LEAD_INGOT.get(), MaterialType.INGOT)
 			.block(AMBlocks.LEAD_BLOCK.get()).nugget(AMItems.LEAD_NUGGET.get())
@@ -209,7 +223,8 @@ public class MaterialFamilies {
 			.dust(AMItems.LEAD_DUST.get(), AMItems.LEAD_TINY_DUST.get())
 			.gear(AMItems.LEAD_GEAR.get()).plate(AMItems.LEAD_PLATE.get())
 			.apple(AMItems.LEAD_APPLE.get())
-			.miningLevel(MiningLevels.IRON).oreSmeltingExperience(0.8f).build();
+			.miningLevel(MiningLevels.IRON).oreSmeltingExperience(0.8f)
+			.moltenFluid(AMFluids.MOLTEN_LEAD, 0.775f).build();
 	
 	// Astromine Overworld Alloys
 	
@@ -221,7 +236,8 @@ public class MaterialFamilies {
 			.gear(AMItems.STEEL_GEAR.get()).plate(AMItems.STEEL_PLATE.get())
 			.alloyIngredients(IRON, 1, COAL, 2, 1, 250, 900).alloyIngredients(IRON, 1, CHARCOAL, 2, 1, 250, 900)
 			.validForBeacon()
-			.miningLevel(MiningLevels.IRON).build();
+			.miningLevel(MiningLevels.IRON)
+			.moltenFluid(AMFluids.MOLTEN_STEEL, 1.1f).build();
 	
 	public static final MaterialFamily BRONZE = register("bronze", AMItems.BRONZE_INGOT.get(), MaterialType.INGOT)
 			.block(AMBlocks.BRONZE_BLOCK.get()).nugget(AMItems.BRONZE_NUGGET.get())
@@ -231,7 +247,8 @@ public class MaterialFamilies {
 			.gear(AMItems.BRONZE_GEAR.get()).plate(AMItems.BRONZE_PLATE.get())
 			.alloyIngredients(COPPER, 3, TIN, 1, 200, 800)
 			.validForBeacon()
-			.miningLevel(MiningLevels.IRON).build();
+			.miningLevel(MiningLevels.IRON)
+			.moltenFluid(AMFluids.MOLTEN_BRONZE, 0.9f).build();
 	
 	public static final MaterialFamily ELECTRUM = register("electrum", AMItems.ELECTRUM_INGOT.get(), MaterialType.INGOT)
 			.block(AMBlocks.ELECTRUM_BLOCK.get()).nugget(AMItems.ELECTRUM_NUGGET.get())
@@ -240,7 +257,8 @@ public class MaterialFamilies {
 			.wire(AMItems.ELECTRUM_WIRE.get())
 			.alloyIngredients(GOLD, SILVER, 180, 750)
 			.validForBeacon()
-			.miningLevel(MiningLevels.IRON).build();
+			.miningLevel(MiningLevels.IRON)
+			.moltenFluid(AMFluids.MOLTEN_ELECTRUM, 1.1f).build();
 	
 	public static final MaterialFamily FOOLS_GOLD = register("fools_gold", AMItems.FOOLS_GOLD_INGOT.get(), MaterialType.INGOT)
 			.block(AMBlocks.FOOLS_GOLD_BLOCK.get()).nugget(AMItems.FOOLS_GOLD_NUGGET.get())
@@ -251,7 +269,8 @@ public class MaterialFamilies {
 			.alloyIngredients(IRON, GUNPOWDER, 1, 150, 600)
 			.piglinLoved()
 			.alias("pyrite")
-			.miningLevel(MiningLevels.STONE).build();
+			.miningLevel(MiningLevels.STONE)
+			.moltenFluid(AMFluids.MOLTEN_FOOLS_GOLD).build();
 	
 	// Astromine Space Ingots
 	
@@ -264,7 +283,8 @@ public class MaterialFamilies {
 			.armor(AMItems.METITE_HELMET.get(), AMItems.METITE_CHESTPLATE.get(), AMItems.METITE_LEGGINGS.get(), AMItems.METITE_BOOTS.get())
 			.gear(AMItems.METITE_GEAR.get()).plate(AMItems.METITE_PLATE.get())
 			.validForBeacon()
-			.miningLevel(MiningLevels.NETHERITE).oreSmeltingExperience(0.5f).build();
+			.miningLevel(MiningLevels.NETHERITE).oreSmeltingExperience(0.5f)
+			.moltenFluid(AMFluids.MOLTEN_METITE, 2.5f).build();
 	
 	public static final MaterialFamily STELLUM = register("stellum", AMItems.STELLUM_INGOT.get(), MaterialType.INGOT)
 			.block(AMBlocks.STELLUM_BLOCK.get()).nugget(AMItems.STELLUM_NUGGET.get())
@@ -274,7 +294,8 @@ public class MaterialFamilies {
 			.armor(AMItems.STELLUM_HELMET.get(), AMItems.STELLUM_CHESTPLATE.get(), AMItems.STELLUM_LEGGINGS.get(), AMItems.STELLUM_BOOTS.get())
 			.gear(AMItems.STELLUM_GEAR.get()).plate(AMItems.STELLUM_PLATE.get())
 			.validForBeacon()
-			.miningLevel(MiningLevels.NETHERITE).oreSmeltingExperience(1.5f).build();
+			.miningLevel(MiningLevels.NETHERITE).oreSmeltingExperience(1.5f)
+			.moltenFluid(AMFluids.MOLTEN_STELLUM, 8).build();
 	
 	// Astromine Space Alloys
 	
@@ -286,7 +307,8 @@ public class MaterialFamilies {
 			.gear(AMItems.UNIVITE_GEAR.get()).plate(AMItems.UNIVITE_PLATE.get())
 			.smithingBase(GALAXIUM)
 			.validForBeacon()
-			.miningLevel(6).build();
+			.miningLevel(6)
+			.moltenFluid(AMFluids.MOLTEN_UNIVITE, 20).build();
 	
 	public static final MaterialFamily METEORIC_STEEL = register("meteoric_steel", AMItems.METEORIC_STEEL_INGOT.get(), MaterialType.INGOT)
 			.block(AMBlocks.METEORIC_STEEL_BLOCK.get()).nugget(AMItems.METEORIC_STEEL_NUGGET.get())
@@ -296,7 +318,8 @@ public class MaterialFamilies {
 			.gear(AMItems.METEORIC_STEEL_GEAR.get()).plate(AMItems.METEORIC_STEEL_PLATE.get())
 			.alloyIngredients(METITE, 2, STEEL, 1, 300, 1000)
 			.validForBeacon()
-			.miningLevel(MiningLevels.NETHERITE).build();
+			.miningLevel(MiningLevels.NETHERITE)
+			.moltenFluid(AMFluids.MOLTEN_METEORIC_STEEL, 2.6f).build();
 	
 	// Astromine Misc
 	

@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.datagen;
 
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.fluid.SimpleFluid;
 import com.github.mixinors.astromine.datagen.family.block.AMBlockFamilies;
 import com.github.mixinors.astromine.datagen.family.material.MaterialFamilies;
@@ -42,6 +43,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.mininglevel.v1.MiningLevelManager;
 import net.fabricmc.yarn.constants.MiningLevels;
 import net.minecraft.block.Block;
 import net.minecraft.data.family.BlockFamily;
@@ -221,23 +223,6 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 			AMBlocks.ELITE_ENERGY_CABLE.get()
 	);
 	
-	public static final Map<BlockFamily.Variant, Identifier> VANILLA_ITEM_TAG_VARIANTS = Map.of(
-			BlockFamily.Variant.SLAB, new Identifier("slabs"),
-			BlockFamily.Variant.STAIRS, new Identifier("stairs"),
-			BlockFamily.Variant.WALL, new Identifier("walls"),
-			BlockFamily.Variant.BUTTON, new Identifier("buttons"),
-			BlockFamily.Variant.DOOR, new Identifier("doors"),
-			BlockFamily.Variant.FENCE, new Identifier("fences"),
-			BlockFamily.Variant.SIGN, new Identifier("signs"),
-			BlockFamily.Variant.TRAPDOOR, new Identifier("trapdoors")
-	);
-	
-	public static final Map<BlockFamily.Variant, Identifier> VANILLA_BLOCK_TAG_VARIANTS = new ImmutableMap.Builder<BlockFamily.Variant, Identifier>().putAll(Map.of(
-			BlockFamily.Variant.FENCE_GATE, new Identifier("fence_gates"),
-			BlockFamily.Variant.PRESSURE_PLATE, new Identifier("pressure_plates"),
-			BlockFamily.Variant.WALL_SIGN, new Identifier("wall_signs")
-	)).putAll(VANILLA_ITEM_TAG_VARIANTS).build();
-	
 	@Override
 	public void onInitializeDataGenerator(FabricDataGenerator dataGenerator) {
 		AMBlockFamilies.init();
@@ -249,36 +234,6 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 		dataGenerator.addProvider(new AMItemTagProvider(dataGenerator, blockTagProvider));
 		dataGenerator.addProvider(AMFluidTagProvider::new);
 		dataGenerator.addProvider(AMBlockLootTableProvider::new);
-	}
-	
-	public static final String COMMON_TAG_NAMESPACE = "c";
-	
-	public static Identifier createCommonTagId(String path) {
-		return new Identifier(COMMON_TAG_NAMESPACE, path);
-	}
-	
-	public static TagKey<Block> createBlockTag(Identifier id) {
-		return AMTags.ofBlock(id);
-	}
-	
-	public static TagKey<Item> createItemTag(Identifier id) {
-		return AMTags.ofItem(id);
-	}
-	
-	public static TagKey<Fluid> createFluidTag(Identifier id) {
-		return AMTags.ofFluid(id);
-	}
-	
-	public static TagKey<Block> createCommonBlockTag(String path) {
-		return createBlockTag(createCommonTagId(path));
-	}
-	
-	public static TagKey<Item> createCommonItemTag(String path) {
-		return createItemTag(createCommonTagId(path));
-	}
-	
-	public static TagKey<Fluid> createCommonFluidTag(String path) {
-		return createFluidTag(createCommonTagId(path));
 	}
 	
 	public record HarvestData(TagKey<Block> mineableTag, int miningLevel) {
@@ -295,21 +250,8 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 		}
 		
 		public TagKey<Block> miningLevelTag() {
-			return getMiningLevelTag(miningLevel());
+			return MiningLevelManager.getBlockTag(miningLevel());
 		}
-	}
-	
-	@Nullable
-	public static TagKey<Block> getMiningLevelTag(int miningLevel) {
-		if (miningLevel <= 0) {
-			return null;
-		}
-		return switch (miningLevel) {
-			case 1 -> BlockTags.NEEDS_STONE_TOOL;
-			case 2 -> BlockTags.NEEDS_IRON_TOOL;
-			case 3 -> BlockTags.NEEDS_DIAMOND_TOOL;
-			default -> createBlockTag(new Identifier("fabric", "needs_tool_level_" + miningLevel));
-		};
 	}
 	
 	public static <T extends Comparable<?>, U> TreeMap<T, U> toTreeMap(Map<T, U> map) {

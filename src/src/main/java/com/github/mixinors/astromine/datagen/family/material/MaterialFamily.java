@@ -25,11 +25,14 @@
 package com.github.mixinors.astromine.datagen.family.material;
 
 import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.common.fluid.SimpleFluid;
 import com.github.mixinors.astromine.datagen.AMDatagen;
 import com.github.mixinors.astromine.datagen.family.material.variant.BlockVariant;
 import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant;
 import com.github.mixinors.astromine.datagen.family.material.variant.Variant;
 import com.github.mixinors.astromine.registry.common.AMTags;
+
+import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
@@ -44,6 +47,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class MaterialFamily implements Comparable<MaterialFamily> {
+	public static final float DEFAULT_ORE_SMELTING_EXPERIENCE = 0.7F;
+	public static final int DEFAULT_BASE_MELTING_TIME = 200;
+	public static final int DEFAULT_BASE_MELTING_ENERGY = 1600;
+
 	final Map<ItemVariant, Item> itemVariants = Maps.newHashMap();
 	final Map<BlockVariant, Block> blockVariants = Maps.newHashMap();
 	final Set<AlloyInfo> alloyInfos = Sets.newHashSet();
@@ -58,7 +65,7 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 	boolean generateTags = true;
 	boolean generateHarvestTags = true;
 	boolean generateLootTables = true;
-	float oreSmeltingExperience = 0.7f;
+	float oreSmeltingExperience = DEFAULT_ORE_SMELTING_EXPERIENCE;
 	@Nullable
 	String baseTagPathOverride;
 	boolean validForBeacon = false;
@@ -66,6 +73,10 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 	String alias;
 	private boolean block2x2;
 	private int miningLevel = 0;
+	@Nullable
+	SimpleFluid moltenFluid;
+	int baseMeltingTime = DEFAULT_BASE_MELTING_TIME;
+	int baseMeltingEnergy = DEFAULT_BASE_MELTING_ENERGY;
 	
 	MaterialFamily(String name, Item baseItem, MaterialType type) {
 		this.baseItem = baseItem;
@@ -375,7 +386,23 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 	public AMDatagen.HarvestData getHarvestData(BlockVariant variant) {
 		return variant.getHarvestData(this);
 	}
-	
+
+	public Optional<SimpleFluid> getMoltenFluid() {
+		return Optional.ofNullable(moltenFluid);
+	}
+
+	public int getBaseMeltingTime() {
+		return baseMeltingTime;
+	}
+
+	public boolean hasMoltenFluid() {
+		return moltenFluid != null;
+	}
+
+	public float getBaseMeltingEnergy() {
+		return baseMeltingEnergy;
+	}
+
 	public enum MaterialType {
 		INGOT(ItemVariant.INGOT),
 		GEM(ItemVariant.GEM),
@@ -507,6 +534,25 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 		
 		public MaterialFamily.Builder horseArmor(Item horseArmor) {
 			this.family.itemVariants.put(ItemVariant.HORSE_ARMOR, horseArmor);
+			return this;
+		}
+
+		public MaterialFamily.Builder moltenFluid(SimpleFluid moltenFluid) {
+			this.family.moltenFluid = moltenFluid;
+			return this;
+		}
+
+		public MaterialFamily.Builder moltenFluid(SimpleFluid moltenFluid, float meltingMultiplier) {
+			this.moltenFluid(moltenFluid);
+			this.family.baseMeltingTime = (int) (DEFAULT_BASE_MELTING_TIME * meltingMultiplier);
+			this.family.baseMeltingEnergy = (int) (DEFAULT_BASE_MELTING_ENERGY * meltingMultiplier);
+			return this;
+		}
+
+		public MaterialFamily.Builder moltenFluid(SimpleFluid moltenFluid, int baseMeltingTime, int baseMeltingEnergy) {
+			this.moltenFluid(moltenFluid);
+			this.family.baseMeltingTime = baseMeltingTime;
+			this.family.baseMeltingEnergy = baseMeltingEnergy;
 			return this;
 		}
 		

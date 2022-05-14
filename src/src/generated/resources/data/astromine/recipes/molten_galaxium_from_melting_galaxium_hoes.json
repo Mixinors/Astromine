@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:galaxium_hoes"
+  },
+  "output": {
+    "fluid": "astromine:molten_galaxium",
+    "amount": 4000
+  },
+  "energy_input": 31680,
+  "time": 3960
+}

@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:iron_pickaxes"
+  },
+  "output": {
+    "fluid": "astromine:molten_iron",
+    "amount": 6000
+  },
+  "energy_input": 1760,
+  "time": 220
+}

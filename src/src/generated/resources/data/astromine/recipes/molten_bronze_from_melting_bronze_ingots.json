@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:bronze_ingots"
+  },
+  "output": {
+    "fluid": "astromine:molten_bronze",
+    "amount": 9000
+  },
+  "energy_input": 1440,
+  "time": 180
+}

@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:iron_nuggets"
+  },
+  "output": {
+    "fluid": "astromine:molten_iron",
+    "amount": 1000
+  },
+  "energy_input": 160,
+  "time": 20
+}

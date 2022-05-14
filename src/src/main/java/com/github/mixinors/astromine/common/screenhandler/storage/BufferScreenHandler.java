@@ -69,7 +69,7 @@ public class BufferScreenHandler extends ExtendedBlockEntityScreenHandler {
 			});
 			
 			launchButton.setPosition(new Position(slot, -(32.0F - SLOT_WIDTH) / 2.0F, SLOT_HEIGHT + PAD_3));
-			launchButton.setSize(new Size(32.0F, CLEAR_BUTTON_HEIGHT));
+			launchButton.setSize(new Size(CLEAR_BUTTON_WIDTH, CLEAR_BUTTON_HEIGHT));
 			launchButton.setLabel(new TranslatableText("text.astromine.clear"));
 			
 			tab.add(launchButton);

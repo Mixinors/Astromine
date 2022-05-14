@@ -24,6 +24,8 @@
 
 package com.github.mixinors.astromine.common.util;
 
+import java.util.Random;
+
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.registry.common.AMFluids;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
@@ -182,7 +184,7 @@ public class FluidUtils {
 				
 				var client = InstanceUtils.getClient();
 				
-				return UNIVITE_COLORS[client.world.random.nextInt(UNIVITE_COLORS.length)];
+				return UNIVITE_COLORS[new Random().nextInt(UNIVITE_COLORS.length)];
 			}
 		};
 		

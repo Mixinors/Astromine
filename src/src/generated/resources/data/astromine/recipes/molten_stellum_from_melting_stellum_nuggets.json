@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:stellum_nuggets"
+  },
+  "output": {
+    "fluid": "astromine:molten_stellum",
+    "amount": 1000
+  },
+  "energy_input": 1280,
+  "time": 160
+}

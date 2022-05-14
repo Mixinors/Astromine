@@ -37,7 +37,7 @@ public class DefaultConfigValues {
 	public static final long ADVANCED_BATTERY_PACK_ENERGY = ADVANCED_BATTERY_ENERGY * 6;
 	public static final long ELITE_BATTERY_PACK_ENERGY = ELITE_BATTERY_ENERGY * 6;
 	
-	public static final long PORTABLE_TANK_FLUID = FluidConstants.BUCKET * 8L;
+	public static final long PORTABLE_TANK_FLUID = FluidConstants.BUCKET * 4L;
 	public static final long LARGE_PORTABLE_TANK_FLUID = PORTABLE_TANK_FLUID * 2;
 	
 	public static final long PRIMITIVE_FLUID_STORAGE = LARGE_PORTABLE_TANK_FLUID * 2L;

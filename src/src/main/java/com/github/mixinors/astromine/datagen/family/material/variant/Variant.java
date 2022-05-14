@@ -166,4 +166,30 @@ public interface Variant<T extends ItemConvertible> {
 	 * The tag factory for this variant, should be effectively static
 	 */
 	TagKey<T> createTag(Identifier id);
+
+	/**
+	 * The amount of molten fluid produced when melted, in droplets.
+	 */
+	default long getMeltedFluidAmount(MaterialFamily family) {
+		return getMeltedFluidAmount(family.isBlock2x2());
+	}
+
+	/**
+	 * The amount of molten fluid produced when melted, in droplets.
+	 */
+	long getMeltedFluidAmount(boolean block2x2);
+
+	default int getMeltingTime(MaterialFamily family) {
+		return (int) (getMeltingTimeMultiplier() * family.getBaseMeltingTime());
+	}
+
+	float getMeltingTimeMultiplier();
+
+	default int getMeltingEnergy(MaterialFamily family) {
+		return (int) (getMeltingEnergyMultiplier() * family.getBaseMeltingEnergy());
+	}
+
+	default float getMeltingEnergyMultiplier() {
+		return getMeltingTimeMultiplier();
+	}
 }

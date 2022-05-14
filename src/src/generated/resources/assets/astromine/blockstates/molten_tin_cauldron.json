@@ -1,7 +1,7 @@
 {
-	"variants": {
-		"": {
-			"model": "astromine:block/molten_tin_cauldron"
-		}
-	}
+  "variants": {
+    "": {
+      "model": "astromine:block/molten_tin_cauldron"
+    }
+  }
 }

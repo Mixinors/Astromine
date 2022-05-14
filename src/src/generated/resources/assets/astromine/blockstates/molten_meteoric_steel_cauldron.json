@@ -1,7 +1,7 @@
 {
-	"variants": {
-		"": {
-			"model": "astromine:block/molten_meteoric_steel_cauldron"
-		}
-	}
+  "variants": {
+    "": {
+      "model": "astromine:block/molten_meteoric_steel_cauldron"
+    }
+  }
 }

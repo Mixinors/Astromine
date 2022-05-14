@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:gold_gears"
+  },
+  "output": {
+    "fluid": "astromine:molten_gold",
+    "amount": 9000
+  },
+  "energy_input": 1224,
+  "time": 153
+}

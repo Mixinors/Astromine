@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:diamond_asteroid_ore_clusters"
+  },
+  "output": {
+    "fluid": "astromine:molten_diamond",
+    "amount": 15000
+  },
+  "energy_input": 13376,
+  "time": 1672
+}

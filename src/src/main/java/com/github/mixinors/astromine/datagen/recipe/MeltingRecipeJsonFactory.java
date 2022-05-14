@@ -38,7 +38,7 @@ import java.util.function.Consumer;
 public class MeltingRecipeJsonFactory extends FluidOutputMachineRecipeJsonFactory<MeltingRecipe> {
 	private final Ingredient input;
 	
-	protected MeltingRecipeJsonFactory(Ingredient input, Fluid output, int outputAmount, int processingTime, int energy) {
+	protected MeltingRecipeJsonFactory(Ingredient input, Fluid output, long outputAmount, int processingTime, int energy) {
 		super(output, outputAmount, processingTime, energy, MeltingRecipe.Serializer.INSTANCE);
 		this.input = input;
 	}
@@ -56,7 +56,7 @@ public class MeltingRecipeJsonFactory extends FluidOutputMachineRecipeJsonFactor
 	public static class MeltingRecipeJsonProvider<T extends EnergyConsumingRecipe> extends FluidOutputMachineRecipeJsonProvider<T> {
 		private final Ingredient input;
 		
-		public MeltingRecipeJsonProvider(Identifier recipeId, Ingredient input, Fluid output, int outputAmount, int processingTime, int energy, RecipeSerializer<T> serializer) {
+		public MeltingRecipeJsonProvider(Identifier recipeId, Ingredient input, Fluid output, long outputAmount, int processingTime, int energy, RecipeSerializer<T> serializer) {
 			super(recipeId, output, outputAmount, processingTime, energy, serializer);
 			this.input = input;
 		}

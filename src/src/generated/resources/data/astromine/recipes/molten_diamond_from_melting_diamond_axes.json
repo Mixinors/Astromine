@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:diamond_axes"
+  },
+  "output": {
+    "fluid": "astromine:molten_diamond",
+    "amount": 6000
+  },
+  "energy_input": 6688,
+  "time": 836
+}

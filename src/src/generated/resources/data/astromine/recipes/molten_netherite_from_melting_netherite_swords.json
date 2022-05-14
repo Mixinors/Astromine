@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:netherite_swords"
+  },
+  "output": {
+    "fluid": "astromine:molten_netherite",
+    "amount": 4000
+  },
+  "energy_input": 3520,
+  "time": 440
+}

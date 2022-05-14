@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:asterite_helmets"
+  },
+  "output": {
+    "fluid": "astromine:molten_asterite",
+    "amount": 10000
+  },
+  "energy_input": 31360,
+  "time": 3920
+}

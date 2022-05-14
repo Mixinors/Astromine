@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.datagen.family.material.variant;
 
+import com.github.mixinors.astromine.common.fluid.ExtraFluidConstants;
 import com.github.mixinors.astromine.common.util.WordUtils;
 import com.github.mixinors.astromine.datagen.AMDatagen;
 import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
@@ -37,6 +38,8 @@ import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 
 import java.util.function.BiConsumer;
+
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 
 public enum BlockVariant implements Variant<Block> {
 	BLOCK("block"),
@@ -130,5 +133,34 @@ public enum BlockVariant implements Variant<Block> {
 	@Override
 	public TagKey<Block> createTag(Identifier id) {
 		return AMTags.ofBlock(id);
+	}
+
+	public boolean isOre() {
+		return switch(this) {
+			case STONE_ORE, DEEPSLATE_ORE, METEOR_ORE, ASTEROID_ORE, NETHER_ORE -> true;
+			default -> false;
+		};
+	}
+
+	@Override
+	public long getMeltedFluidAmount(boolean block2x2) {
+		return switch(this) {
+			case BLOCK -> FluidConstants.BLOCK;
+			case STONE_ORE, DEEPSLATE_ORE, METEOR_ORE, ASTEROID_ORE, NETHER_ORE -> ExtraFluidConstants.nuggets(12, block2x2);
+			case RAW_ORE_BLOCK -> ExtraFluidConstants.ingots(12, block2x2);
+		};
+	}
+
+	@Override
+	public float getMeltingTimeMultiplier() {
+		return switch(this) {
+			case BLOCK -> 10.0f;
+			case STONE_ORE -> 2.5f;
+			case DEEPSLATE_ORE -> 3.0f;
+			case NETHER_ORE -> 2.2f;
+			case METEOR_ORE -> 4.5f;
+			case ASTEROID_ORE -> 5.0f;
+			case RAW_ORE_BLOCK -> 12.0f;
+		};
 	}
 }

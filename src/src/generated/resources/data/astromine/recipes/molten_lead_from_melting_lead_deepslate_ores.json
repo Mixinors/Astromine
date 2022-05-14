@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:lead_deepslate_ores"
+  },
+  "output": {
+    "fluid": "astromine:molten_lead",
+    "amount": 12000
+  },
+  "energy_input": 3720,
+  "time": 465
+}

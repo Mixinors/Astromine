@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:meteoric_steel_shovels"
+  },
+  "output": {
+    "fluid": "astromine:molten_meteoric_steel",
+    "amount": 2000
+  },
+  "energy_input": 4576,
+  "time": 572
+}

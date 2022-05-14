@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:amethyst_blocks"
+  },
+  "output": {
+    "fluid": "astromine:molten_amethyst",
+    "amount": 81000
+  },
+  "energy_input": 32000,
+  "time": 4000
+}

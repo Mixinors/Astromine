@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:lead_apples"
+  },
+  "output": {
+    "fluid": "astromine:molten_lead",
+    "amount": 72000
+  },
+  "energy_input": 9920,
+  "time": 1240
+}
