@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.screenhandler;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.entity.base.RocketEntity;
 import com.github.mixinors.astromine.common.screenhandler.base.entity.ExtendedEntityScreenHandler;
+import com.github.mixinors.astromine.common.slot.ExtractionSlot;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.core.api.client.texture.BaseTexture;
@@ -102,7 +103,7 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 		secondOutput.setPosition(new Position(secondFluidBar, -SLOT_WIDTH - PAD_3, BAR_HEIGHT - SLOT_HEIGHT));
 		secondOutput.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
-		var buffer = new SlotWidget(RocketEntity.ITEM_BUFFER_SLOT_1, entity.getItemStorage());
+		var buffer = new SlotWidget(RocketEntity.ITEM_BUFFER_SLOT_1, entity.getItemStorage(), ExtractionSlot::new);
 		buffer.setPosition(new Position(firstInput, PAD_3 + SLOT_WIDTH, SLOT_HEIGHT - 4.0F));
 		buffer.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		

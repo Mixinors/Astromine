@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.screenhandler.storage;
 
 import com.github.mixinors.astromine.common.block.entity.storage.TankBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
+import com.github.mixinors.astromine.common.slot.ExtractionSlot;
 import com.github.mixinors.astromine.common.widget.FluidFilterWidget;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
@@ -64,7 +65,7 @@ public class TankScreenHandler extends ExtendedBlockEntityScreenHandler {
 			unload.setPosition(new Position(fluidBar, -SLOT_WIDTH - PAD_3, -(((BAR_HEIGHT - (SLOT_HEIGHT + PAD_3 + FILTER_HEIGHT)) / 2.0F))));
 		}
 		
-		var buffer = new SlotWidget(TankBlockEntity.ITEM_BUFFER_STORAGE, tank.getItemStorage());
+		var buffer = new SlotWidget(TankBlockEntity.ITEM_BUFFER_STORAGE, tank.getItemStorage(), ExtractionSlot::new);
 		buffer.setPosition(new Position(unload, -SLOT_WIDTH - PAD_3, SLOT_HEIGHT - 4.0F)); // 4.0F centers the buffer slot against the two other slots.
 		buffer.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
