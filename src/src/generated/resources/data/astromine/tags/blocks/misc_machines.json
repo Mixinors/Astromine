@@ -1,9 +1,10 @@
 {
   "replace": false,
   "values": [
-    "astromine:fluid_collector",
-    "astromine:fluid_placer",
-    "astromine:block_breaker",
-    "astromine:block_placer"
+	  "astromine:fluid_collector",
+	  "astromine:fluid_placer",
+	  "astromine:block_breaker",
+	  "astromine:block_placer",
+	  "astromine:pump"
   ]
 }
