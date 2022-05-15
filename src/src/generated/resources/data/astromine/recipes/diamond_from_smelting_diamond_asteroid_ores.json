@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "ingredient": {
-    "tag": "c:diamond_asteroid_ores"
-  },
-  "result": "minecraft:diamond",
-  "experience": 1.0,
-  "cookingtime": 200
-}

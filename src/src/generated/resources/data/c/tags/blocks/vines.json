@@ -1,8 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "#c:nether_vines",
-    "#c:cave_vines",
-    "minecraft:vine"
-  ]
-}

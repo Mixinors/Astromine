@@ -1,9 +1,0 @@
-{
-  "parent": "block/orientable_with_bottom",
-  "textures": {
-    "east": "#left",
-    "west": "#right",
-    "south": "#back",
-    "particle": "astromine:block/generic_machine_top"
-  }
-}

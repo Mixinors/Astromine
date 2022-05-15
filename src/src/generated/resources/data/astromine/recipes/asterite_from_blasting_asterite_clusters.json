@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "tag": "c:asterite_clusters"
-  },
-  "result": "astromine:asterite",
-  "experience": 2.0,
-  "cookingtime": 100
-}

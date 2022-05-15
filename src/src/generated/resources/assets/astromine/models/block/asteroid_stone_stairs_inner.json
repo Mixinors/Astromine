@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/inner_stairs",
-  "textures": {
-    "bottom": "astromine:block/asteroid_stone",
-    "top": "astromine:block/asteroid_stone",
-    "side": "astromine:block/asteroid_stone"
-  }
-}

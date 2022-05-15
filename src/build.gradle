@@ -1,5 +1,0 @@
-cfProjectId = 405058
-
-loom {
-    accessWidenerPath = file("src/main/resources/astromine.accesswidener")
-}

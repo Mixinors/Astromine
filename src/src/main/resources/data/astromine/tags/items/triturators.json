@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "astromine:primitive_triturator",
-    "astromine:basic_triturator",
-    "astromine:advanced_triturator",
-    "astromine:elite_triturator"
-  ]
-}

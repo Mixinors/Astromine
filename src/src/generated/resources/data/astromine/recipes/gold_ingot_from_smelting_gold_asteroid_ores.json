@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "ingredient": {
-    "tag": "c:gold_asteroid_ores"
-  },
-  "result": "minecraft:gold_ingot",
-  "experience": 1.0,
-  "cookingtime": 200
-}

@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "tag": "c:netherite_tiny_dusts"
-  },
-  "result": "astromine:netherite_nugget",
-  "experience": 0.0,
-  "cookingtime": 100
-}

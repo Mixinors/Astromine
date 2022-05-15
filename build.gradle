@@ -1,7 +1,7 @@
 buildscript {
-    configurations.classpath {
-        resolutionStrategy.cacheChangingModulesFor 5, 'minutes'
-    }
+	configurations.classpath {
+		resolutionStrategy.cacheChangingModulesFor 5, 'minutes'
+	}
 }
 
 plugins {
@@ -24,391 +24,313 @@ plugins {
 	id "org.jetbrains.kotlin.plugin.serialization"
 }
 
+apply plugin: "maven-publish"
+apply plugin: "dev.architectury.loom"
+apply plugin: "com.matthewprenger.cursegradle"
+apply plugin: "org.jetbrains.kotlin.jvm"
+apply plugin: "org.jetbrains.kotlin.plugin.serialization"
+apply plugin: 'org.cadixdev.licenser'
+
 apply from: 'dependencies.gradle'
 
-allprojects {
-	gradle.projectsEvaluated {
-		tasks.withType(JavaCompile) {
-			options.compilerArgs << "-Xmaxerrs" << "4096"
+archivesBaseName = project.modName
+
+ext {
+	isSnapshot = System.getenv("PR_NUM") != null || true
+}
+
+if (isSnapshot) {
+	group = rootProject.modGroup + "-snapshot"
+	version = rootProject.modVersion + '-alpha.' + System.getenv("GITHUB_RUN_NUMBER") ?: "9999" + "+" + project.minecraftVersion
+} else {
+	group = project.modGroup
+	version = project.modVersion + "+" + project.minecraftVersion
+}
+
+license {
+	header = rootProject.file("LICENSE")
+
+	ignoreFailures = true
+}
+
+loom {
+	accessWidenerPath = file("src/main/resources/astromine.accesswidener")
+
+	runs {
+		datagenClient {
+			client()
+			name "Data Generation"
+			vmArg "-Dfabric-api.datagen"
+			vmArg "-Dfabric-api.datagen.output-dir=${file("src/generated/resources")}"
+
+			ideConfigGenerated = true
+			runDir "build/datagen"
+			source sourceSets.main
+		}
+	}
+}
+
+
+java {
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
+}
+
+repositories {
+	// vini2003
+	maven {
+		name = "vini2003"
+		url = "https://maven.vini2003.dev/releases"
+	}
+
+	// Architectury
+	maven {
+		name = "Architectury"
+		url = "https://maven.architectury.dev"
+	}
+
+	// TerraformersMC
+	maven {
+		name = "TerraformersMC"
+		url = "https://maven.terraformersmc.com/releases/"
+	}
+
+	// JitPack
+	maven {
+		name = "JitPack"
+		url = "https://jitpack.io"
+	}
+
+	// Ladysnake
+	maven {
+		name = "Ladysnake Libs"
+		url = 'https://ladysnake.jfrog.io/artifactory/mods'
+
+		content {
+			includeGroup "dev.onyxstudios"
+			includeGroup "dev.onyxstudios.cardinal-components-api"
 		}
 	}
 
-	apply plugin: "maven-publish"
-	apply plugin: "dev.architectury.loom"
-	apply plugin: "com.matthewprenger.cursegradle"
-	apply plugin: "org.jetbrains.kotlin.jvm"
-	apply plugin: "org.jetbrains.kotlin.plugin.serialization"
+	// BlameJared
+	maven {
+		name = "BlameJared"
+		url = "https://maven.blamejared.com"
 
-	ext {
-		isSnapshot = System.getenv("PR_NUM") != null || true
+		content {
+			includeGroup "vazkii.patchouli"
+		}
 	}
-
-	def runNumber = System.getenv("GITHUB_RUN_NUMBER") ?: "9999"
-	archivesBaseName = project.modName
-
-	if (isSnapshot) {
-		group = rootProject.modGroup + "-snapshot"
-        version = rootProject.modVersion + '-alpha.' + runNumber + "+" + project.minecraftVersion
-    } else {
-        group = project.modGroup
-        version = project.modVersion + "+" + project.minecraftVersion
-    }
-
-    java {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    repositories {
-        // vini2003
-        maven {
-            name = "vini2003"
-            url = "https://maven.vini2003.dev/releases"
-        }
-
-        // Architectury
-        maven {
-            name = "Architectury"
-            url = "https://maven.architectury.dev"
-        }
-
-        // TerraformersMC
-        maven {
-            name = "TerraformersMC"
-            url = "https://maven.terraformersmc.com/releases/"
-        }
-
-        // JitPack
-        maven {
-            name = "JitPack"
-            url = "https://jitpack.io"
-        }
-
-        // Ladysnake
-        maven {
-            name = "Ladysnake Libs"
-            url = 'https://ladysnake.jfrog.io/artifactory/mods'
-
-            content {
-                includeGroup "dev.onyxstudios"
-                includeGroup "dev.onyxstudios.cardinal-components-api"
-            }
-        }
-
-        // BlameJared
-        maven {
-            name = "BlameJared"
-            url = "https://maven.blamejared.com"
-
-            content {
-                includeGroup "vazkii.patchouli"
-            }
-        }
-    }
-
-    dependencies {
-        dependencies.ext.useAsCompileOnly = { dep ->
-            modCompileOnly(dep) {
-                if (!dep.contains("net.fabricmc.fabric-api")) {
-                    exclude group: "net.fabricmc.fabric-api"
-                }
-
-                exclude group: "net.fabricmc"
-                exclude group: "com.jamieswhiteshirt"
-
-                if (!dep.contains("me.shedaniel")) {
-                    exclude group: "me.shedaniel"
-                }
-
-                exclude group: "me.shedaniel.cloth", module: "cloth-config"
-                exclude group: "io.github.prospector", module: "modmenu"
-            }
-        }
-
-        dependencies.ext.useAsApiOptionally = { dep ->
-            modApi(dep) {
-                if (!dep.contains("net.fabricmc.fabric-api")) {
-                    exclude group: "net.fabricmc.fabric-api"
-                }
-
-                exclude group: "net.fabricmc"
-                exclude group: "com.jamieswhiteshirt"
-
-                if (!dep.contains("me.shedaniel")) {
-                    exclude group: "me.shedaniel"
-                }
-
-                // tmp
-                exclude group: "com.github.Draylar.omega-config", module: "omega-config-base"
-                exclude group: "me.shedaniel.cloth", module: "cloth-config"
-                exclude group: "io.github.prospector", module: "modmenu"
-            }
-        }
-
-        dependencies.ext.useAsApi = { dep ->
-            useAsApiOptionally(dep)
-            include(dep)
-        }
-
-        dependencies.ext.useAsRuntimeOnly = { dep ->
-            modRuntimeOnly(dep) {
-                if (!dep.contains("net.fabricmc.fabric-api")) {
-                    exclude group: "net.fabricmc.fabric-api"
-                }
-
-                exclude group: "net.fabricmc"
-                exclude group: "com.jamieswhiteshirt"
-
-                if (!dep.contains("me.shedaniel")) {
-                    exclude group: "me.shedaniel"
-                }
-
-                exclude group: "me.shedaniel.cloth", module: "cloth-config"
-                exclude group: "io.github.prospector", module: "modmenu"
-            }
-        }
-
-        minecraft group: 'com.mojang', name: 'minecraft', version: minecraftVersion
-
-        mappings group: 'net.fabricmc', name: 'yarn', version: yarnVersion, classifier: 'v2'
-
-        modImplementation "net.fabricmc:fabric-loader:$fabricLoaderVersion"
-
-        useAsApiOptionally "net.fabricmc.fabric-api:fabric-api:$fabricApiVersion"
-
-        modImplementation "com.google.code.findbugs:jsr305:3.0.2"
-
-        tap(rootProject.ext.setDefaultApis)
-    }
-
-    afterEvaluate {
-        processResources {
-            filesMatching('fabric.mod.json') {
-                expand 'version': project.version
-            }
-
-            inputs.property "version", project.version
-        }
-
-        remapJar {
-            addNestedDependencies = project.rootProject != project
-        }
-    }
-
-    tasks.withType(JavaCompile) {
-        options.encoding = "UTF-8"
-    }
-
-    task sourcesJar(type: Jar, dependsOn: classes) {
-        classifier("sources")
-
-        from sourceSets.main.allSource
-    }
-
-    apply plugin: 'org.cadixdev.licenser'
-
-    license {
-        header = rootProject.file("LICENSE")
-
-        ignoreFailures = true
-    }
 }
-
-subprojects {
-    archivesBaseName = project.name
-
-    ext {
-        cfProjectId = -1
-    }
-
-    configurations {
-        dev
-        remapped
-    }
-
-    jar {
-        classifier("dev")
-    }
-
-    remapJar {
-        input.set(jar.archiveFile)
-        classifier(null)
-    }
-
-    artifacts {
-        dev file: file("${project.buildDir}/libs/$archivesBaseName-${version}-dev.jar"), type: "jar", builtBy: jar
-        remapped file: file("${project.buildDir}/libs/$archivesBaseName-${version}.jar"), type: "jar", builtBy: remapJar
-    }
-
-    afterEvaluate {
-        curseforge {
-            if ((project.hasProperty('curse_api_key') || System.getenv('curse_api_key') != null) && cfProjectId >= 0) {
-                project {
-                    id = cfProjectId.toString()
-
-                    releaseType = rootProject.releaseCycle
-
-                    changelog = "View the changelog at https://github.com/Mixinors/Astromine"
-
-                    ((String) rootProject.taggedVersions).split(",").each {
-                        addGameVersion it
-                    }
-
-                    relations {
-                        requiredDependency "fabric-api"
-                        embeddedLibrary "cloth-api"
-                        embeddedLibrary "cloth-config"
-                        embeddedLibrary "auto-config-updated-api"
-                        embeddedLibrary "cardinal-components"
-                        embeddedLibrary "libblockattributes"
-                        embeddedLibrary "patchouli-fabric"
-						embeddedLibrary "piglib"
-						embeddedLibrary "cauldronlib"
-                    }
-
-                    mainArtifact(file("${project.buildDir}/libs/${project.archivesBaseName}-${project.version}.jar"))
-                }
-            }
-
-            options {
-                forgeGradleIntegration = false
-                javaVersionAutoDetect = false
-            }
-        }
-    }
-
-    publishing {
-        publications {
-            create("${archivesBaseName}_mavenJava", MavenPublication) {
-                afterEvaluate {
-                    artifact(jar) {
-                        builtBy remapJar
-                    }
-                    artifact(sourcesJar) {
-                        builtBy remapSourcesJar
-                    }
-                }
-            }
-        }
-    }
-
-    loom {
-        runs {
-            datagenClient {
-                client()
-                name "Data Generation"
-                vmArg "-Dfabric-api.datagen"
-                vmArg "-Dfabric-api.datagen.output-dir=${file("src/generated/resources")}"
-
-                ideConfigGenerated = true
-                runDir "build/datagen"
-                source sourceSets.main
-            }
-        }
-    }
-
-    sourceSets {
-        main {
-            resources {
-                srcDir "src/generated/resources"
-            }
-        }
-    }
-
-    task copyBuiltToMain(type: Copy) {
-        from "${project.buildDir}/libs/"
-        into "${rootProject.buildDir}/libs/"
-        include "*.jar"
-    }
-    build.finalizedBy(copyBuiltToMain)
-}
-
-task deleteBuildFolderAll {
-    doLast {
-        allprojects {
-            delete it.buildDir
-            mkdir "${it.buildDir}/libs"
-        }
-    }
-}
-build.mustRunAfter(deleteBuildFolderAll)
-
-task releaseOnCf
-releaseOnCf.dependsOn(":curseforge")
-subprojects { releaseOnCf.dependsOn("${it.path}:curseforge") }
-subprojects { rootProject.remapJar.dependsOn("${it.path}:remapJar") }
 
 dependencies {
-    subprojects.each {
-        implementation project(path: ":${it.path}", configuration: "namedElements")
-    }
+	dependencies.ext.useAsCompileOnly = { dep ->
+		modCompileOnly(dep) {
+			if (!dep.contains("net.fabricmc.fabric-api")) {
+				exclude group: "net.fabricmc.fabric-api"
+			}
 
-    modRuntimeOnly "net.fabricmc:dev-launch-injector:+"
+			exclude group: "net.fabricmc"
+			exclude group: "com.jamieswhiteshirt"
 
-    tap(rootProject.ext.setRuntimeTestMods)
+			if (!dep.contains("me.shedaniel")) {
+				exclude group: "me.shedaniel"
+			}
+
+			exclude group: "me.shedaniel.cloth", module: "cloth-config"
+			exclude group: "io.github.prospector", module: "modmenu"
+		}
+	}
+
+	dependencies.ext.useAsApiOptionally = { dep ->
+		modApi(dep) {
+			if (!dep.contains("net.fabricmc.fabric-api")) {
+				exclude group: "net.fabricmc.fabric-api"
+			}
+
+			exclude group: "net.fabricmc"
+			exclude group: "com.jamieswhiteshirt"
+
+			if (!dep.contains("me.shedaniel")) {
+				exclude group: "me.shedaniel"
+			}
+
+			// tmp
+			exclude group: "com.github.Draylar.omega-config", module: "omega-config-base"
+			exclude group: "me.shedaniel.cloth", module: "cloth-config"
+			exclude group: "io.github.prospector", module: "modmenu"
+		}
+	}
+
+	dependencies.ext.useAsApi = { dep ->
+		useAsApiOptionally(dep)
+		include(dep)
+	}
+
+	dependencies.ext.useAsRuntimeOnly = { dep ->
+		modRuntimeOnly(dep) {
+			if (!dep.contains("net.fabricmc.fabric-api")) {
+				exclude group: "net.fabricmc.fabric-api"
+			}
+
+			exclude group: "net.fabricmc"
+			exclude group: "com.jamieswhiteshirt"
+
+			if (!dep.contains("me.shedaniel")) {
+				exclude group: "me.shedaniel"
+			}
+
+			exclude group: "me.shedaniel.cloth", module: "cloth-config"
+			exclude group: "io.github.prospector", module: "modmenu"
+		}
+	}
+
+	minecraft group: 'com.mojang', name: 'minecraft', version: minecraftVersion
+
+	mappings group: 'net.fabricmc', name: 'yarn', version: yarnVersion, classifier: 'v2'
+
+	modImplementation "net.fabricmc:fabric-loader:$fabricLoaderVersion"
+
+	useAsApiOptionally "net.fabricmc.fabric-api:fabric-api:$fabricApiVersion"
+
+	modImplementation "com.google.code.findbugs:jsr305:3.0.2"
+
+	modRuntimeOnly "net.fabricmc:dev-launch-injector:+"
+
+	tap(rootProject.ext.setDefaultApis)
+
+	tap(rootProject.ext.setRuntimeTestMods)
+}
+
+afterEvaluate {
+	processResources {
+		filesMatching('fabric.mod.json') {
+			expand 'version': project.version
+		}
+
+		inputs.property "version", project.version
+	}
+
+	remapJar {
+		addNestedDependencies = project.rootProject != project
+	}
+}
+
+tasks.withType(JavaCompile) {
+	options.encoding = "UTF-8"
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+	classifier("sources")
+
+	from sourceSets.main.allSource
+}
+
+
+configurations {
+	dev
+	remapped
+}
+
+jar {
+	classifier("dev")
+}
+
+remapJar {
+	input.set(jar.archiveFile)
+	classifier(null)
+}
+
+artifacts {
+	dev file: file("${project.buildDir}/libs/$archivesBaseName-${version}-dev.jar"), type: "jar", builtBy: jar
+	remapped file: file("${project.buildDir}/libs/$archivesBaseName-${version}.jar"), type: "jar", builtBy: remapJar
 }
 
 publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
+	publications {
+		create("${archivesBaseName}_mavenJava", MavenPublication) {
+			afterEvaluate {
+				artifact(jar) {
+					builtBy remapJar
+				}
+				artifact(sourcesJar) {
+					builtBy remapSourcesJar
+				}
+			}
+		}
+	}
+}
 
-    repositories {
-        if (System.getenv("MVN_USERNAME") != null && System.getenv("MVN_TOKEN") != null) {
-            maven {
-                name = "vini2003"
-                url = "https://maven.vini2003.dev/releases"
+sourceSets {
+	main {
+		resources {
+			srcDir "src/generated/resources"
+		}
+	}
+}
 
-                credentials {
-                    username = System.getenv("MVN_USERNAME")
-                    password = System.getenv("MVN_TOKEN")
-                }
+task releaseOnCf
 
-                authentication {
-                    basic(BasicAuthentication)
-                }
-            }
-        }
-    }
+releaseOnCf.dependsOn(":curseforge")
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+		}
+	}
+
+	repositories {
+		if (System.getenv("MVN_USERNAME") != null && System.getenv("MVN_TOKEN") != null) {
+			maven {
+				name = "vini2003"
+				url = "https://maven.vini2003.dev/releases"
+
+				credentials {
+					username = System.getenv("MVN_USERNAME")
+					password = System.getenv("MVN_TOKEN")
+				}
+
+				authentication {
+					basic(BasicAuthentication)
+				}
+			}
+		}
+	}
 }
 
 curseforge {
-    if (project.hasProperty('curse_api_key') || System.getenv('curse_api_key') != null) {
-        apiKey = project.hasProperty('curse_api_key') ? project.property('curse_api_key') : System.getenv('curse_api_key')
-        project {
-            id = "391739"
+	if (project.hasProperty('curse_api_key') || System.getenv('curse_api_key') != null) {
+		apiKey = project.hasProperty('curse_api_key') ? project.property('curse_api_key') : System.getenv('curse_api_key')
+		project {
+			id = "391739"
 
-            releaseType = rootProject.releaseCycle
+			releaseType = rootProject.releaseCycle
 
-            changelog = "View the changelog at https://github.com/Mixinors/Astromine"
+			changelog = "View the changelog at https://github.com/Mixinors/Astromine"
 
-            ((String) rootProject.taggedVersions).split(",").each {
-                addGameVersion it
-            }
+			((String) rootProject.taggedVersions).split(",").each {
+				addGameVersion it
+			}
 
-            relations {
-                requiredDependency "fabric-api"
-                embeddedLibrary "cloth-api"
-                embeddedLibrary "cloth-config"
-                embeddedLibrary "auto-config-updated-api"
-                embeddedLibrary "cardinal-components"
-                embeddedLibrary "libblockattributes"
-                embeddedLibrary "patchouli-fabric"
-                embeddedLibrary "piglib"
-                embeddedLibrary "cauldronlib"
-            }
+			relations {
+				requiredDependency "fabric-api"
+				embeddedLibrary "cloth-api"
+				embeddedLibrary "cloth-config"
+				embeddedLibrary "auto-config-updated-api"
+				embeddedLibrary "cardinal-components"
+				embeddedLibrary "libblockattributes"
+				embeddedLibrary "patchouli-fabric"
+				embeddedLibrary "piglib"
+				embeddedLibrary "cauldronlib"
+			}
 
-            mainArtifact(file("${project.buildDir}/libs/${project.archivesBaseName}-${project.version}.jar"))
-        }
-    }
-    options {
-        forgeGradleIntegration = false
-        javaVersionAutoDetect = false
-    }
+			mainArtifact(file("${project.buildDir}/libs/${project.archivesBaseName}-${project.version}.jar"))
+		}
+	}
+
+	options {
+		forgeGradleIntegration = false
+		javaVersionAutoDetect = false
+	}
 }
-
-task licenseFormatAll
-
-subprojects { p -> licenseFormatAll.dependsOn("${p.path}:licenseFormat") }
