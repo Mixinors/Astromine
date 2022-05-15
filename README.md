@@ -1,12 +1,26 @@
-![](https://img.shields.io/badge/-Astromine-darkred?style=for-the-badge&logo=appveyor)
-
-[![Staging Build](https://github.com/Chainmail-Studios/Astromine/workflows/Staging%20Build/badge.svg)](https://github.com/Chainmail-Studios/Astromine/actions?query=workflow%3A%22Staging+Build%22)
+![](https://img.shields.io/badge/-Astromine-A3254C?style=for-the-badge&logo=appveyor)
 
 Astromine is an exploration and technology mod for Minecraft 1.18.2, in which you can do anything from production chains to flying to space on a rocket!
 
 Please refer to the in-game manual for documentation.
 
 <img src="https://i.imgur.com/qolQ8du.png" width="384" height="169"/>
+
+![](https://img.shields.io/badge/-Features-A3254C?style=for-the-badge&logo=appveyor)
+
+- **Machines!**
+
+As with all good technology mods, we've got your standard trio - the Solid Fuel Generator, Electric Furnace and Triturator; and many more! Even Pumps!
+
+- **Dimensions!** 
+
+As an exploration mod, we felt we could go a bit above and beyond, if you catch my drift! That's why you can build a rocket and head for Space!
+
+- **Utilities!** 
+
+As usual, there's Drills! Block Placers! Block Breakers! Tanks! And guns - wait, no, we removed those.
+
+**We've got a lot to offer; so check it out and let us know you think!**
 
 ![](https://img.shields.io/badge/-Releases-green?style=for-the-badge&logo=appveyor)
 
