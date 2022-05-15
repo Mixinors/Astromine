@@ -173,16 +173,17 @@ public class FluidUtils {
 			
 			@Override
 			public int getFluidColor(BlockRenderView view, BlockPos pos, FluidState state) {
-				// if (System.currentTimeMillis() - LAST_TIME_MS > 50) {
-				// 	LAST_COLOR_INDEX += 1;
-				// 	LAST_COLOR_INDEX %= UNIVITE_COLORS.length;
-				//
-				// 	LAST_TIME_MS = System.currentTimeMillis();
-				// }
-				
 				var client = InstanceUtils.getClient();
 				
-				return UNIVITE_COLORS[client.world.random.nextInt(UNIVITE_COLORS.length)];
+				if (client == null || client.world == null) {
+					return UNIVITE_COLORS[0];
+				}
+				
+				if (System.currentTimeMillis() - LAST_TIME_MS > 50) {
+					LAST_COLOR_INDEX = client.world.random.nextInt(UNIVITE_COLORS.length);
+				}
+				
+				return UNIVITE_COLORS[LAST_COLOR_INDEX];
 			}
 		};
 		
