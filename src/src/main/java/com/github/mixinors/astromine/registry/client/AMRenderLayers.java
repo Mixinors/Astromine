@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.registry.client;
 
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.architectury.event.events.client.ClientLifecycleEvent;
 import dev.architectury.registry.client.rendering.fabric.RenderTypeRegistryImpl;
@@ -51,6 +52,20 @@ public class AMRenderLayers {
 											.layering(RenderPhase.VIEW_OFFSET_Z_LAYERING)
 											.shader(new RenderPhase.Shader(GameRenderer::getPositionColorLightmapShader))
 											.build(false));
+	
+	private static final RenderLayer PUMP_TUBE = RenderLayer.of(
+			"pump_tube",
+			VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL,
+			VertexFormat.DrawMode.QUADS,
+			256,
+			true,
+			false,
+			RenderLayer.MultiPhaseParameters.builder()
+											.shader(new RenderPhase.Shader(GameRenderer::getPositionColorTexLightmapShader))
+											.texture(new RenderPhase.Texture(AMCommon.id("textures/block/pump_tube.png"), false, false))
+											.cull(RenderPhase.DISABLE_CULLING)
+											.build(true)
+	);
 	
 	public static void init() {
 		ClientLifecycleEvent.CLIENT_SETUP.register(client -> {
@@ -85,5 +100,9 @@ public class AMRenderLayers {
 	
 	public static RenderLayer getHolographicBridge() {
 		return HOLOGRAPHIC_BRIDGE;
+	}
+	
+	public static RenderLayer getPumpTube() {
+		return PUMP_TUBE;
 	}
 }

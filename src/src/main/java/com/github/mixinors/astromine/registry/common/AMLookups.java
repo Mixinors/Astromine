@@ -168,6 +168,8 @@ public class AMLookups {
 				AMBlockEntityTypes.FLUID_COLLECTOR.get(),
 				AMBlockEntityTypes.FLUID_PLACER.get(),
 				
+				AMBlockEntityTypes.PUMP.get(),
+				
 				AMBlockEntityTypes.DRAIN.get()
 		);
 		
@@ -249,7 +251,9 @@ public class AMLookups {
 				AMBlockEntityTypes.FLUID_PLACER.get(),
 				
 				AMBlockEntityTypes.BLOCK_BREAKER.get(),
-				AMBlockEntityTypes.BLOCK_PLACER.get()
+				AMBlockEntityTypes.BLOCK_PLACER.get(),
+				
+				AMBlockEntityTypes.PUMP.get()
 		);
 		
 		FluidStorage.ITEM.registerForItems((storage, context) -> {

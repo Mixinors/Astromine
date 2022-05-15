@@ -225,6 +225,8 @@ public class AMBlocks {
 	public static final RegistrySupplier<Block> BLOCK_BREAKER = register("block_breaker", () -> new BlockBreakerBlock(getAdvancedSettings()), AMItems.getSettings());
 	public static final RegistrySupplier<Block> BLOCK_PLACER = register("block_placer", () -> new BlockPlacerBlock(getAdvancedSettings()), AMItems.getSettings());
 	
+	public static final RegistrySupplier<Block> PUMP = register("pump", () -> new PumpBlock(getAdvancedSettings()), AMItems.getSettings());
+	
 	public static final RegistrySupplier<Block> NUCLEAR_WARHEAD = register("nuclear_warhead", () -> new NuclearWarheadBlock(BlockProperties.of(Material.METAL).requiresTool().strength(1F, 4F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
 	
 	public static final RegistrySupplier<Block> PRIMITIVE_CAPACITOR = register("primitive_capacitor", () -> new CapacitorBlock.Primitive(getPrimitiveSettings()), AMItems.getSettings());

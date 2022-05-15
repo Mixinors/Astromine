@@ -132,6 +132,8 @@ public class AMBlockEntityTypes {
 	public static final RegistrySupplier<BlockEntityType<BlockBreakerBlockEntity>> BLOCK_BREAKER = register("block_breaker", BlockBreakerBlockEntity::new, AMBlocks.BLOCK_BREAKER);
 	public static final RegistrySupplier<BlockEntityType<BlockPlacerBlockEntity>> BLOCK_PLACER = register("block_placer", BlockPlacerBlockEntity::new, AMBlocks.BLOCK_PLACER);
 	
+	public static final RegistrySupplier<BlockEntityType<PumpBlockEntity>> PUMP = register("pump", PumpBlockEntity::new, AMBlocks.PUMP);
+	
 	public static final RegistrySupplier<BlockEntityType<DrainBlockEntity>> DRAIN = register("drain", DrainBlockEntity::new, AMBlocks.DRAIN);
 	
 	public static void init() {

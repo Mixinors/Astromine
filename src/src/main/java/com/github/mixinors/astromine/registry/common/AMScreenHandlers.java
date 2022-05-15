@@ -31,11 +31,10 @@ import com.github.mixinors.astromine.common.screenhandler.RecipeCreatorScreenHan
 import com.github.mixinors.astromine.common.screenhandler.machine.*;
 import com.github.mixinors.astromine.common.screenhandler.machine.generator.FluidGeneratorScreenHandler;
 import com.github.mixinors.astromine.common.screenhandler.machine.generator.SolidGeneratorScreenHandler;
-import com.github.mixinors.astromine.common.screenhandler.storage.*;
-import com.github.mixinors.astromine.common.screenhandler.utility.BlockBreakerScreenHandler;
-import com.github.mixinors.astromine.common.screenhandler.utility.BlockPlacerScreenHandler;
-import com.github.mixinors.astromine.common.screenhandler.utility.FluidCollectorScreenHandler;
-import com.github.mixinors.astromine.common.screenhandler.utility.FluidPlacerScreenHandler;
+import com.github.mixinors.astromine.common.screenhandler.storage.BufferScreenHandler;
+import com.github.mixinors.astromine.common.screenhandler.storage.CapacitorScreenHandler;
+import com.github.mixinors.astromine.common.screenhandler.storage.TankScreenHandler;
+import com.github.mixinors.astromine.common.screenhandler.utility.*;
 import dev.architectury.registry.menu.MenuRegistry;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.screen.ScreenHandler;
@@ -66,6 +65,10 @@ public class AMScreenHandlers {
 	
 	public static final RegistrySupplier<ScreenHandlerType<BlockPlacerScreenHandler>> BLOCK_PLACER = registerExtended(AMCommon.id("block_placer"), ((syncId, inventory, buffer) -> {
 		return new BlockPlacerScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+	
+	public static final RegistrySupplier<ScreenHandlerType<PumpScreenHandler>> PUMP = registerExtended(AMCommon.id("pump"), ((syncId, inventory, buffer) -> {
+		return new PumpScreenHandler(syncId, inventory.player, buffer.readBlockPos());
 	}));
 	
 	public static final RegistrySupplier<ScreenHandlerType<FluidGeneratorScreenHandler>> LIQUID_GENERATOR = registerExtended(AMCommon.id("fluid_generator"), ((syncId, inventory, buffer) -> {

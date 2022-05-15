@@ -62,6 +62,7 @@ public class AMScreens {
 		registerSimple(AMScreenHandlers.ALLOY_SMELTER);
 		registerSimple(AMScreenHandlers.SOLIDIFIER);
 		registerSimple(AMScreenHandlers.MELTER);
+		registerSimple(AMScreenHandlers.PUMP);
 	}
 	
 	public static <H extends BaseScreenHandler> void registerSimple(RegistrySupplier<? extends ScreenHandlerType<? extends H>> type) {

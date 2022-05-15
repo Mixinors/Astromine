@@ -22,25 +22,21 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.registry.client;
+package com.github.mixinors.astromine.common.screenhandler.utility;
 
-import com.github.mixinors.astromine.client.render.block.HoloBridgeBlockEntityRenderer;
-import com.github.mixinors.astromine.client.render.block.PumpBlockEntityRenderer;
-import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
-import dev.architectury.registry.client.rendering.fabric.BlockEntityRendererRegistryImpl;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
+import com.github.mixinors.astromine.common.block.entity.utility.PumpBlockEntity;
+import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
+import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.BlockPos;
 
-import java.util.function.Supplier;
-
-public class AMBlockEntityRenderers {
-	public static void init() {
-		register(AMBlockEntityTypes.HOLOGRAPHIC_BRIDGE, HoloBridgeBlockEntityRenderer::new);
-		register(AMBlockEntityTypes.PUMP, PumpBlockEntityRenderer::new);
+public class PumpScreenHandler extends ExtendedBlockEntityScreenHandler {
+	public PumpScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+		super(AMScreenHandlers.PUMP, syncId, player, position);
 	}
 	
-	public static <B extends BlockEntity, C extends BlockEntityType<B>> void register(Supplier<C> c, BlockEntityRendererFactory<? super B> b) {
-		BlockEntityRendererRegistryImpl.register(c.get(), b);
+	@Override
+	public int getDefaultFluidSlotForBar() {
+		return PumpBlockEntity.OUTPUT_SLOT;
 	}
 }

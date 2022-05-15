@@ -203,7 +203,9 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 			AMBlocks.FLUID_INSERTER.get(),
 			
 			AMBlocks.BLOCK_BREAKER.get(),
-			AMBlocks.BLOCK_PLACER.get()
+			AMBlocks.BLOCK_PLACER.get(),
+			
+			AMBlocks.PUMP.get()
 	);
 	
 	public static final List<Block> MACHINES = new ImmutableList.Builder<Block>()
