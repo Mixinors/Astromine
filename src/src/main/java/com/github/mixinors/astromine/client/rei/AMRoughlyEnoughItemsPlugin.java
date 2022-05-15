@@ -58,6 +58,8 @@ import dev.vini2003.hammer.core.api.client.scissor.Scissors;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtils;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
 import dev.vini2003.hammer.core.api.common.color.Color;
+import dev.vini2003.hammer.gui.api.client.screen.BaseHandledScreen;
+import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
 import dev.vini2003.hammer.gui.energy.api.common.util.EnergyTextUtils;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
@@ -67,6 +69,8 @@ import me.shedaniel.rei.api.client.gui.widgets.Widget;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
+import me.shedaniel.rei.api.client.registry.screen.DisplayBoundsProvider;
+import me.shedaniel.rei.api.client.registry.screen.ScreenRegistry;
 import me.shedaniel.rei.api.client.util.ClientEntryStacks;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.entry.EntryStack;
@@ -80,6 +84,8 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.transfer.v1.client.fluid.FluidVariantRendering;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.BucketItem;
 import net.minecraft.recipe.SmeltingRecipe;
@@ -111,7 +117,8 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 	
 	@Override
 	public void registerCategories(CategoryRegistry registry) {
-		registry.add(new SolidifyingCategory(),
+		registry.add(
+				new SolidifyingCategory(),
 				new TrituratingCategory(),
 				new ElectricSmeltingCategory(),
 				new FluidGeneratingCategory(),
@@ -194,6 +201,27 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 			entry.markInput();
 		}
 		return Collections.singletonList(entry);
+	}
+	
+	@Override
+	public void registerScreens(ScreenRegistry registry) {
+		REIClientPlugin.super.registerScreens(registry);
+		
+		registry.registerDecider(new DisplayBoundsProvider<BaseHandledScreen>() {
+			@Override
+			public @Nullable Rectangle getScreenBounds(BaseHandledScreen screen) {
+				var handler = (BaseScreenHandler) screen.getScreenHandler();
+				
+				var rectangle = handler.getHandler().getRectangle();
+				
+				return new Rectangle(rectangle.getStartPos().getX(), rectangle.getStartPos().getY(), rectangle.getWidth(), rectangle.getHeight());
+			}
+			
+			@Override
+			public <R extends Screen> boolean isHandingScreen(Class<R> screen) {
+				return BaseScreenHandler.class.isAssignableFrom(screen);
+			}
+		});
 	}
 	
 	private static class EnergyEntryWidget extends EntryWidget {
@@ -317,7 +345,12 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 						0.0F,
 						DrawingUtils.DEFAULT_OVERLAY,
 						DrawingUtils.DEFAULT_LIGHT,
-						new Color(spriteColor)
+						new Color(spriteColor),
+						() -> Integer.MAX_VALUE,
+						() -> Integer.MAX_VALUE,
+						0.0F,
+						0.0F,
+						RenderLayer.getSolid()
 				);
 				
 				provider.draw();
