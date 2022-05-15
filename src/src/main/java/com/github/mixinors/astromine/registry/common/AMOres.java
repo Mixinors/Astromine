@@ -25,8 +25,8 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.registry.AsteroidOreRegistry;
 import com.github.mixinors.astromine.common.config.AMConfig;
+import com.github.mixinors.astromine.common.registry.AsteroidOreRegistry;
 import com.github.mixinors.astromine.common.util.data.Range;
 import com.github.mixinors.astromine.common.world.ore.OreDistribution;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;

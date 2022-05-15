@@ -42,8 +42,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockRenderView;
 
-import java.util.Random;
-
 public class FluidUtils {
 	private static final int[] UNIVITE_COLORS = new int[] {
 			0x7EF52DFF,

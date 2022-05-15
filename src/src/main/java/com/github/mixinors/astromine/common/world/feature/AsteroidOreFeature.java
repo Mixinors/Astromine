@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.common.world.feature;
 
-import com.github.mixinors.astromine.common.registry.AsteroidOreRegistry;
 import com.github.mixinors.astromine.common.config.AMConfig;
+import com.github.mixinors.astromine.common.registry.AsteroidOreRegistry;
 import com.github.mixinors.astromine.common.util.WeightedList;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.mojang.serialization.Codec;

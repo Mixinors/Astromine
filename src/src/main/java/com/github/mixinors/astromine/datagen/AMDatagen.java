@@ -24,7 +24,6 @@
 
 package com.github.mixinors.astromine.datagen;
 
-import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.fluid.SimpleFluid;
 import com.github.mixinors.astromine.datagen.family.block.AMBlockFamilies;
 import com.github.mixinors.astromine.datagen.family.material.MaterialFamilies;

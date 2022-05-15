@@ -26,7 +26,6 @@ package com.github.mixinors.astromine.datagen.family.material.variant;
 
 import com.github.mixinors.astromine.common.fluid.ExtraFluidConstants;
 import com.github.mixinors.astromine.common.util.WordUtils;
-import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
 import com.github.mixinors.astromine.registry.common.AMTags;
 import net.minecraft.data.client.ItemModelGenerator;
 import net.minecraft.data.client.Models;
@@ -35,8 +34,6 @@ import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 
 import java.util.function.BiConsumer;
-
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 
 public enum ItemVariant implements Variant<Item> {
 	INGOT("ingot"),
@@ -136,10 +133,10 @@ public enum ItemVariant implements Variant<Item> {
 	public TagKey<Item> createTag(Identifier id) {
 		return AMTags.ofItem(id);
 	}
-
+	
 	@Override
 	public long getMeltedFluidAmount(boolean block2x2) {
-		return switch(this) {
+		return switch (this) {
 			case INGOT, GEM, MISC, DUST, PLATE, BALL, GEAR -> ExtraFluidConstants.ingot(block2x2);
 			case NUGGET, TINY_DUST -> ExtraFluidConstants.nugget(block2x2);
 			case RAW_ORE -> ExtraFluidConstants.nuggets(12, block2x2);
@@ -155,10 +152,10 @@ public enum ItemVariant implements Variant<Item> {
 			case APPLE -> ExtraFluidConstants.ingots(8, block2x2);
 		};
 	}
-
+	
 	@Override
 	public float getMeltingTimeMultiplier() {
-		return switch(this) {
+		return switch (this) {
 			case INGOT, GEM, MISC, BALL -> 1F;
 			case DUST -> 0.8F;
 			case PLATE, GEAR -> 0.9F;

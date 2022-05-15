@@ -1,14 +1,14 @@
 {
-	"structures": [
-		{
-			"structure": "astromine:meteor",
-			"weight": 1
-		}
-	],
-	"placement": {
-		"type": "minecraft:random_spread",
-		"spacing": 12,
-		"separation": 6,
-		"salt": 29483148
-	}
+  "structures": [
+    {
+      "structure": "astromine:meteor",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 12,
+    "separation": 6,
+    "salt": 29483148
+  }
 }
