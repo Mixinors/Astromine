@@ -63,7 +63,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	
 	public static final String ENERGY_STORAGE_KEY = "EnergyStorage";
 	public static final String ITEM_STORAGE_KEY = "ItemStorage";
-	public static final String FLUID_STORAGE_KEY = "FuidStorage";
+	public static final String FLUID_STORAGE_KEY = "FluidStorage";
 	
 	public static final String ITEM_STORAGE_SIDINGS_KEY = "ItemStorageSidings";
 	public static final String FLUID_STORAGE_SIDINGS_KEY = "FluidStorageSidings";
