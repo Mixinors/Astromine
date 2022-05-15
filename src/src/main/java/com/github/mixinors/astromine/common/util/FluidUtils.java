@@ -177,7 +177,6 @@ public class FluidUtils {
 			public int getFluidColor(BlockRenderView view, BlockPos pos, FluidState state) {
 				var client = InstanceUtils.getClient();
 				
-<<<<<<< HEAD
 				if (client == null || client.world == null) {
 					return UNIVITE_COLORS[0];
 				}
@@ -187,9 +186,6 @@ public class FluidUtils {
 				}
 				
 				return UNIVITE_COLORS[LAST_COLOR_INDEX];
-=======
-				return UNIVITE_COLORS[new Random().nextInt(UNIVITE_COLORS.length)];
->>>>>>> e44ea96eaf52114839e655b7993abed36a91a4b1
 			}
 		};
 		
