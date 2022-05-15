@@ -74,7 +74,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 	public static final float LAUNCH_BUTTON_WIDTH = 44.0F;
 	public static final float LAUNCH_BUTTON_HEIGHT = 44.0F;
 	
-	public static final float CLEAR_BUTTON_WIDTH = 44.0F;
+	public static final float CLEAR_BUTTON_WIDTH = 32.0F;
 	public static final float CLEAR_BUTTON_HEIGHT = 18.0F;
 	
 	public static final float PAD_2 = 2.0F;

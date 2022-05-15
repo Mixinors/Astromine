@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:bronze_leggings"
+  },
+  "output": {
+    "fluid": "astromine:molten_bronze",
+    "amount": 14000
+  },
+  "energy_input": 2016,
+  "time": 252
+}

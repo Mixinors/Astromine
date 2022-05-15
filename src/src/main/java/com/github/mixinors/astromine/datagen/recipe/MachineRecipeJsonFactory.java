@@ -126,7 +126,7 @@ public abstract class MachineRecipeJsonFactory<T extends EnergyConsumingRecipe> 
 		return new AlloySmeltingRecipeJsonFactory(firstInput, firstCount, secondInput, secondCount, output, outputCount, processingTime, energy);
 	}
 	
-	public static MeltingRecipeJsonFactory createMelting(Ingredient input, Fluid output, int outputAmount, int processingTime, int energy) {
+	public static MeltingRecipeJsonFactory createMelting(Ingredient input, Fluid output, long outputAmount, int processingTime, int energy) {
 		return new MeltingRecipeJsonFactory(input, output, outputAmount, processingTime, energy);
 	}
 	

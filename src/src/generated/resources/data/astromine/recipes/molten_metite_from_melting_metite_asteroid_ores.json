@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:metite_asteroid_ores"
+  },
+  "output": {
+    "fluid": "astromine:molten_metite",
+    "amount": 12000
+  },
+  "energy_input": 20000,
+  "time": 2500
+}

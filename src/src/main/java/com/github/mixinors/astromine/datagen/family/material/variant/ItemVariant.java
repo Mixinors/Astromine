@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.datagen.family.material.variant;
 
+import com.github.mixinors.astromine.common.fluid.ExtraFluidConstants;
 import com.github.mixinors.astromine.common.util.WordUtils;
 import com.github.mixinors.astromine.registry.common.AMTags;
 import net.minecraft.data.client.ItemModelGenerator;
@@ -131,5 +132,42 @@ public enum ItemVariant implements Variant<Item> {
 	@Override
 	public TagKey<Item> createTag(Identifier id) {
 		return AMTags.ofItem(id);
+	}
+
+	@Override
+	public long getMeltedFluidAmount(boolean block2x2) {
+		return switch(this) {
+			case INGOT, GEM, MISC, DUST, PLATE, BALL, GEAR -> ExtraFluidConstants.ingot(block2x2);
+			case NUGGET, TINY_DUST -> ExtraFluidConstants.nugget(block2x2);
+			case RAW_ORE -> ExtraFluidConstants.nuggets(12, block2x2);
+			case METEOR_ORE_CLUSTER, ASTEROID_ORE_CLUSTER -> ExtraFluidConstants.nuggets(15, block2x2);
+			case WIRE -> ExtraFluidConstants.nuggets(3, block2x2);
+			case PICKAXE, AXE -> ExtraFluidConstants.nuggets(6, block2x2);
+			case SHOVEL -> ExtraFluidConstants.nuggets(2, block2x2);
+			case SWORD, HOE -> ExtraFluidConstants.nuggets(4, block2x2);
+			case HELMET -> ExtraFluidConstants.nuggets(10, block2x2);
+			case CHESTPLATE -> ExtraFluidConstants.nuggets(16, block2x2);
+			case LEGGINGS, HORSE_ARMOR -> ExtraFluidConstants.nuggets(14, block2x2);
+			case BOOTS -> ExtraFluidConstants.nuggets(8, block2x2);
+			case APPLE -> ExtraFluidConstants.ingots(8, block2x2);
+		};
+	}
+
+	@Override
+	public float getMeltingTimeMultiplier() {
+		return switch(this) {
+			case INGOT, GEM, MISC, BALL -> 1F;
+			case DUST -> 0.8F;
+			case PLATE, GEAR -> 0.9F;
+			case NUGGET -> 0.1F;
+			case TINY_DUST -> 0.08F;
+			case RAW_ORE -> 1.8F;
+			case METEOR_ORE_CLUSTER -> 2.0F;
+			case ASTEROID_ORE_CLUSTER -> 2.2F;
+			case WIRE -> 0.3F;
+			case PICKAXE, HOE, SWORD, SHOVEL, AXE -> 1.1F;
+			case HELMET, HORSE_ARMOR, BOOTS, LEGGINGS, CHESTPLATE -> 1.4F;
+			case APPLE -> 8.0F;
+		};
 	}
 }

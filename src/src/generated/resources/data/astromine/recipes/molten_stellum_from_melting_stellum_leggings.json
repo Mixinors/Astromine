@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:stellum_leggings"
+  },
+  "output": {
+    "fluid": "astromine:molten_stellum",
+    "amount": 14000
+  },
+  "energy_input": 17920,
+  "time": 2240
+}

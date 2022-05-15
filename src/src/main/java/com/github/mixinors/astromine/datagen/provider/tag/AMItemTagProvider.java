@@ -31,9 +31,11 @@ import com.github.mixinors.astromine.datagen.family.material.MaterialFamilies;
 import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
 import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant;
 import com.github.mixinors.astromine.registry.common.AMItems;
+import com.google.common.collect.ImmutableMap;
 import com.shnupbups.piglib.Piglib;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.tag.ItemTags;
@@ -47,33 +49,37 @@ import java.util.Map;
 
 public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 	public static final Map<List<ItemVariant>, Identifier> GENERIC_TAGS = Map.of(
-			AMDatagen.CLUSTER_VARIANTS, AMDatagen.createCommonTagId("clusters"),
-			AMDatagen.ARMOR_VARIANTS, AMDatagen.createCommonTagId("armor"),
-			AMDatagen.TOOL_VARIANTS, AMDatagen.createCommonTagId("tools")
+			AMDatagen.CLUSTER_VARIANTS, AMTagKeys.createCommonTagId("clusters"),
+			AMDatagen.ARMOR_VARIANTS, AMTagKeys.createCommonTagId("armor"),
+			AMDatagen.TOOL_VARIANTS, AMTagKeys.createCommonTagId("tools")
 	);
 	
-	public static final List<Identifier> COPY = List.of(
-			AMDatagen.createCommonTagId("yellow_sandstones"),
-			AMDatagen.createCommonTagId("red_sandstones"),
-			AMDatagen.createCommonTagId("sandstones"),
-			AMDatagen.createCommonTagId("quartz_blocks"),
-			AMDatagen.createCommonTagId("unwaxed_copper_blocks"),
-			AMDatagen.createCommonTagId("waxed_copper_blocks"),
-			AMDatagen.createCommonTagId("copper_blocks"),
-			AMDatagen.createCommonTagId("unwaxed_cut_copper"),
-			AMDatagen.createCommonTagId("waxed_cut_copper"),
-			AMDatagen.createCommonTagId("cut_copper"),
-			AMDatagen.createCommonTagId("purpur_blocks"),
-			AMDatagen.createCommonTagId("mushrooms"),
-			AMDatagen.createCommonTagId("mushroom_blocks"),
-			AMDatagen.createCommonTagId("nether_fungi"),
-			AMDatagen.createCommonTagId("nether_roots"),
-			AMDatagen.createCommonTagId("nether_vines"),
-			AMDatagen.createCommonTagId("pumpkins"),
-			AMDatagen.createCommonTagId("gourds"),
-			AMDatagen.createCommonTagId("weeping_vines"),
-			AMDatagen.createCommonTagId("twisting_vines")
-	);
+	public static final Map<TagKey<Block>, TagKey<Item>> COPY = ImmutableMap.<TagKey<Block>, TagKey<Item>>builder()
+																			.putAll(Map.of(
+																					AMTagKeys.Blocks.YELLOW_SANDSTONES, AMTagKeys.Items.YELLOW_SANDSTONES,
+																					AMTagKeys.Blocks.RED_SANDSTONES, AMTagKeys.Items.RED_SANDSTONES,
+																					AMTagKeys.Blocks.SANDSTONES, AMTagKeys.Items.SANDSTONES,
+																					AMTagKeys.Blocks.QUARTZ_BLOCKS, AMTagKeys.Items.QUARTZ_BLOCKS,
+																					AMTagKeys.Blocks.UNWAXED_COPPER_BLOCKS, AMTagKeys.Items.UNWAXED_COPPER_BLOCKS,
+																					AMTagKeys.Blocks.WAXED_COPPER_BLOCKS, AMTagKeys.Items.WAXED_COPPER_BLOCKS,
+																					AMTagKeys.Blocks.COPPER_BLOCKS, AMTagKeys.Items.COPPER_BLOCKS,
+																					AMTagKeys.Blocks.UNWAXED_CUT_COPPER, AMTagKeys.Items.UNWAXED_CUT_COPPER,
+																					AMTagKeys.Blocks.WAXED_CUT_COPPER, AMTagKeys.Items.WAXED_CUT_COPPER,
+																					AMTagKeys.Blocks.CUT_COPPER, AMTagKeys.Items.CUT_COPPER
+																			)).putAll(Map.of(
+					AMTagKeys.Blocks.PURPUR_BLOCKS, AMTagKeys.Items.PURPUR_BLOCKS,
+					AMTagKeys.Blocks.MUSHROOMS, AMTagKeys.Items.MUSHROOMS,
+					AMTagKeys.Blocks.MUSHROOM_BLOCKS, AMTagKeys.Items.MUSHROOM_BLOCKS,
+					AMTagKeys.Blocks.NETHER_FUNGI, AMTagKeys.Items.NETHER_FUNGI,
+					AMTagKeys.Blocks.NETHER_ROOTS, AMTagKeys.Items.NETHER_ROOTS,
+					AMTagKeys.Blocks.NETHER_VINES, AMTagKeys.Items.NETHER_VINES,
+					AMTagKeys.Blocks.PUMPKINS, AMTagKeys.Items.PUMPKINS,
+					AMTagKeys.Blocks.GOURDS, AMTagKeys.Items.GOURDS,
+					AMTagKeys.Blocks.WEEPING_VINES, AMTagKeys.Items.WEEPING_VINES,
+					AMTagKeys.Blocks.TWISTING_VINES, AMTagKeys.Items.TWISTING_VINES
+			)).putAll(Map.of(
+					AMTagKeys.Blocks.ORES, AMTagKeys.Items.ORES
+			)).build();
 	
 	public static final List<Item> DRILLS = List.of(
 			AMItems.PRIMITIVE_DRILL.get(),
@@ -83,14 +89,17 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 	);
 	
 	public static final List<TagKey<Item>> ONE_BIOFUEL_TAGS = List.of(
+			AMTagKeys.createCommonItemTag("mushrooms"),
+			AMTagKeys.createCommonItemTag("nether_fungi"),
+			AMTagKeys.createCommonItemTag("nether_roots"),
+			AMTagKeys.createCommonItemTag("vines"),
+			AMTagKeys.createCommonItemTag("berries"),
+			AMTagKeys.createCommonItemTag("seeds")
+	);
+	
+	public static final List<TagKey<Item>> ONE_BIOFUEL_TAGS_FORCED = List.of(
 			ItemTags.SMALL_FLOWERS,
-			ItemTags.LEAVES,
-			AMDatagen.createCommonItemTag("mushrooms"),
-			AMDatagen.createCommonItemTag("nether_fungi"),
-			AMDatagen.createCommonItemTag("nether_roots"),
-			AMDatagen.createCommonItemTag("vines"),
-			AMDatagen.createCommonItemTag("berries"),
-			AMDatagen.createCommonItemTag("seeds")
+			ItemTags.LEAVES
 	);
 	
 	public static final List<Item> ONE_BIOFUEL_ITEMS = List.of(
@@ -119,7 +128,7 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 			Items.HONEYCOMB
 	);
 	
-	public static final List<TagKey<Item>> TWO_BIOFUEL_TAGS = List.of(
+	public static final List<TagKey<Item>> TWO_BIOFUEL_TAGS_FORCED = List.of(
 			ItemTags.TALL_FLOWERS,
 			ItemTags.SAPLINGS
 	);
@@ -151,8 +160,11 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 	);
 	
 	public static final List<TagKey<Item>> FOUR_BIOFUEL_TAGS = List.of(
-			ItemTags.FISHES,
-			AMDatagen.createCommonItemTag("metal_apples")
+			AMTagKeys.createCommonItemTag("metal_apples")
+	);
+	
+	public static final List<TagKey<Item>> FOUR_BIOFUEL_TAGS_FORCED = List.of(
+			ItemTags.FISHES
 	);
 	
 	public static final List<Item> FOUR_BIOFUEL_ITEMS = List.of(
@@ -161,7 +173,7 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 	);
 	
 	public static final List<TagKey<Item>> NINE_BIOFUEL_TAGS = List.of(
-			AMDatagen.createCommonItemTag("gourds")
+			AMTagKeys.createCommonItemTag("gourds")
 	);
 	
 	public static final List<Item> NINE_BIOFUEL_ITEMS = List.of(
@@ -332,20 +344,18 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 		});
 		
 		AMBlockFamilies.getFamilies().forEachOrdered(family -> family.getVariants().forEach((variant, block) -> {
-			if (AMDatagen.VANILLA_ITEM_TAG_VARIANTS.containsKey(variant)) {
-				getOrCreateTagBuilder(AMDatagen.createItemTag(AMDatagen.VANILLA_ITEM_TAG_VARIANTS.get(variant))).add(block.asItem());
+			if (AMTagKeys.VANILLA_ITEM_TAG_VARIANTS.containsKey(variant)) {
+				getOrCreateTagBuilder(AMTagKeys.createItemTag(AMTagKeys.VANILLA_ITEM_TAG_VARIANTS.get(variant))).add(block.asItem());
 			}
 		}));
 		
 		AMDatagen.FLUIDS.forEach((fluid) -> {
-			var bucketTagBuilder = getOrCreateTagBuilder(AMDatagen.createCommonItemTag(Registry.FLUID.getId(fluid.getStill()).getPath() + "_buckets"));
+			var bucketTagBuilder = getOrCreateTagBuilder(AMTagKeys.createCommonItemTag(Registry.FLUID.getId(fluid.getStill()).getPath() + "_buckets"));
 			bucketTagBuilder.add(fluid.getBucketItem());
 		});
 		
-		copy(AMDatagen.createCommonBlockTag("ores"), AMDatagen.createCommonItemTag("ores"));
-		
 		GENERIC_TAGS.forEach((variantSet, id) -> {
-			var tag = getOrCreateTagBuilder(AMDatagen.createItemTag(id));
+			var tag = getOrCreateTagBuilder(AMTagKeys.createItemTag(id));
 			variantSet.forEach((variant) -> {
 				if (variant.hasTag()) {
 					tag.addTag(variant.getTag());
@@ -353,50 +363,52 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 			});
 		});
 		
-		AMDatagen.TOOL_VARIANTS.forEach((variant) -> getOrCreateTagBuilder(AMDatagen.createItemTag(new Identifier("fabric", variant.getTagPath()))).addTag(variant.getTag()));
+		AMDatagen.TOOL_VARIANTS.forEach((variant) -> getOrCreateTagBuilder(AMTagKeys.createItemTag(new Identifier("fabric", variant.getTagPath()))).addTag(variant.getTag()));
 		
-		var drillsTagBuilder = getOrCreateTagBuilder(AMDatagen.createItemTag(AMCommon.id("drills")));
+		var drillsTagBuilder = getOrCreateTagBuilder(AMTagKeys.createItemTag(AMCommon.id("drills")));
 		DRILLS.forEach(drillsTagBuilder::add);
 		
-		COPY.forEach((id -> copy(AMDatagen.createBlockTag(id), AMDatagen.createItemTag(id))));
+		COPY.forEach(this::copy);
 		
-		getOrCreateTagBuilder(AMDatagen.createCommonItemTag("gold_apples"))
+		getOrCreateTagBuilder(AMTagKeys.createCommonItemTag("gold_apples"))
 				.add(Items.ENCHANTED_GOLDEN_APPLE);
 		
-		getOrCreateTagBuilder(AMDatagen.createCommonItemTag("seeds"))
+		getOrCreateTagBuilder(AMTagKeys.createCommonItemTag("seeds"))
 				.add(Items.WHEAT_SEEDS)
 				.add(Items.BEETROOT_SEEDS)
 				.add(Items.MELON_SEEDS)
 				.add(Items.PUMPKIN_SEEDS);
 		
-		getOrCreateTagBuilder(AMDatagen.createCommonItemTag("berries"))
+		getOrCreateTagBuilder(AMTagKeys.createCommonItemTag("berries"))
 				.add(Items.SWEET_BERRIES)
 				.add(Items.GLOW_BERRIES);
 		
-		getOrCreateTagBuilder(AMDatagen.createCommonItemTag("vines"))
-				.addTag(AMDatagen.createCommonItemTag("nether_vines"))
+		getOrCreateTagBuilder(AMTagKeys.createCommonItemTag("vines"))
+				.addTag(AMTagKeys.Items.NETHER_VINES)
 				.add(Items.VINE);
 		
-		getOrCreateTagBuilder(AMDatagen.createCommonItemTag("biofuel"))
+		getOrCreateTagBuilder(AMTagKeys.Items.BIOFUEL)
 				.add(AMItems.BIOFUEL.get());
 		
-		getOrCreateTagBuilder(AMDatagen.createCommonItemTag("carbon_dusts"))
-				.addTag(AMDatagen.createCommonItemTag("coal_dusts"))
-				.addTag(AMDatagen.createCommonItemTag("charcoal_dusts"));
+		getOrCreateTagBuilder(AMTagKeys.createCommonItemTag("carbon_dusts"))
+				.addTag(AMTagKeys.createCommonItemTag("coal_dusts"))
+				.addTag(AMTagKeys.createCommonItemTag("charcoal_dusts"));
 		
-		var oneBiofuelTagBuilder = getOrCreateTagBuilder(AMDatagen.createCommonItemTag("one_biofuel"));
+		var oneBiofuelTagBuilder = getOrCreateTagBuilder(AMTagKeys.Items.MAKES_ONE_BIOFUEL);
 		ONE_BIOFUEL_ITEMS.forEach(oneBiofuelTagBuilder::add);
 		ONE_BIOFUEL_TAGS.forEach(oneBiofuelTagBuilder::addTag);
+		ONE_BIOFUEL_TAGS_FORCED.forEach(oneBiofuelTagBuilder::forceAddTag);
 		
-		var twoBiofuelTagBuilder = getOrCreateTagBuilder(AMDatagen.createCommonItemTag("two_biofuel"));
+		var twoBiofuelTagBuilder = getOrCreateTagBuilder(AMTagKeys.Items.MAKES_TWO_BIOFUEL);
 		TWO_BIOFUEL_ITEMS.forEach(twoBiofuelTagBuilder::add);
-		TWO_BIOFUEL_TAGS.forEach(twoBiofuelTagBuilder::addTag);
+		TWO_BIOFUEL_TAGS_FORCED.forEach(twoBiofuelTagBuilder::forceAddTag);
 		
-		var fourBiofuelTagBuilder = getOrCreateTagBuilder(AMDatagen.createCommonItemTag("four_biofuel"));
+		var fourBiofuelTagBuilder = getOrCreateTagBuilder(AMTagKeys.Items.MAKES_FOUR_BIOFUEL);
 		FOUR_BIOFUEL_ITEMS.forEach(fourBiofuelTagBuilder::add);
 		FOUR_BIOFUEL_TAGS.forEach(fourBiofuelTagBuilder::addTag);
+		FOUR_BIOFUEL_TAGS_FORCED.forEach(fourBiofuelTagBuilder::forceAddTag);
 		
-		var nineBiofuelTagBuilder = getOrCreateTagBuilder(AMDatagen.createCommonItemTag("nine_biofuel"));
+		var nineBiofuelTagBuilder = getOrCreateTagBuilder(AMTagKeys.Items.MAKES_NINE_BIOFUEL);
 		NINE_BIOFUEL_ITEMS.forEach(nineBiofuelTagBuilder::add);
 		NINE_BIOFUEL_TAGS.forEach(nineBiofuelTagBuilder::addTag);
 	}

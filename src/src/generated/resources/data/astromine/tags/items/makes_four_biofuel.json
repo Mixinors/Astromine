@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:cake",
+    "minecraft:spore_blossom",
+    "#c:metal_apples",
+    "#minecraft:fishes"
+  ]
+}

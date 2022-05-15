@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:stellum_pickaxes"
+  },
+  "output": {
+    "fluid": "astromine:molten_stellum",
+    "amount": 6000
+  },
+  "energy_input": 14080,
+  "time": 1760
+}

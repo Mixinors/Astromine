@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:gold_chestplates"
+  },
+  "output": {
+    "fluid": "astromine:molten_gold",
+    "amount": 16000
+  },
+  "energy_input": 1904,
+  "time": 238
+}

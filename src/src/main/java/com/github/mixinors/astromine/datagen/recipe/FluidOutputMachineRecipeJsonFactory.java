@@ -34,9 +34,9 @@ import net.minecraft.util.registry.Registry;
 
 public abstract class FluidOutputMachineRecipeJsonFactory<T extends EnergyConsumingRecipe> extends EnergyInputMachineRecipeJsonFactory<T> {
 	protected final Fluid output;
-	protected final int outputAmount;
+	protected final long outputAmount;
 	
-	protected FluidOutputMachineRecipeJsonFactory(Fluid output, int outputAmount, int processingTime, int energy, AbstractRecipeSerializer<T> serializer) {
+	protected FluidOutputMachineRecipeJsonFactory(Fluid output, long outputAmount, int processingTime, int energy, AbstractRecipeSerializer<T> serializer) {
 		super(processingTime, energy, serializer);
 		this.output = output;
 		this.outputAmount = outputAmount;
@@ -59,9 +59,9 @@ public abstract class FluidOutputMachineRecipeJsonFactory<T extends EnergyConsum
 	
 	public abstract static class FluidOutputMachineRecipeJsonProvider<T extends EnergyConsumingRecipe> extends EnergyInputMachineRecipeJsonProvider<T> {
 		private final Fluid output;
-		private final int outputAmount;
+		private final long outputAmount;
 		
-		public FluidOutputMachineRecipeJsonProvider(Identifier recipeId, Fluid output, int outputAmount, int processingTime, int energy, RecipeSerializer<T> serializer) {
+		public FluidOutputMachineRecipeJsonProvider(Identifier recipeId, Fluid output, long outputAmount, int processingTime, int energy, RecipeSerializer<T> serializer) {
 			super(recipeId, processingTime, energy, serializer);
 			this.output = output;
 			this.outputAmount = outputAmount;

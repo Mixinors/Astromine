@@ -32,6 +32,7 @@ import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
 import com.github.mixinors.astromine.datagen.family.material.MaterialFamily.MaterialType;
 import com.github.mixinors.astromine.datagen.family.material.variant.BlockVariant;
 import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant;
+import com.github.mixinors.astromine.datagen.provider.tag.AMTagKeys;
 import com.github.mixinors.astromine.datagen.recipe.*;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMFluids;
@@ -53,6 +54,7 @@ import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.tag.ItemTags;
 import net.minecraft.tag.TagKey;
+import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.util.TriConsumer;
 
 import java.util.List;
@@ -201,10 +203,10 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 	);
 	
 	public static final Map<TagKey<Item>, Integer> BIOFUEL_TAGS = Map.of(
-			AMDatagen.createCommonItemTag("one_biofuel"), 1,
-			AMDatagen.createCommonItemTag("two_biofuel"), 2,
-			AMDatagen.createCommonItemTag("four_biofuel"), 4,
-			AMDatagen.createCommonItemTag("nine_biofuel"), 9
+			AMTagKeys.Items.MAKES_ONE_BIOFUEL, 1,
+			AMTagKeys.Items.MAKES_TWO_BIOFUEL, 2,
+			AMTagKeys.Items.MAKES_FOUR_BIOFUEL, 4,
+			AMTagKeys.Items.MAKES_NINE_BIOFUEL, 9
 	);
 	
 	public AMRecipeProvider(FabricDataGenerator dataGenerator) {
@@ -441,20 +443,20 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 		createAlloySmeltingRecipe(firstInput, firstCount, secondInput, secondCount, output, outputCount, processingTime, energy).offerTo(exporter, convertBetween(output, "alloy_smelting", getRecipeName(firstInput) + "_and_" + getRecipeName(secondInput)));
 	}
 	
-	public static MeltingRecipeJsonFactory createMeltingRecipe(TagKey<Item> input, Fluid output, int outputAmount, int processingTime, int energy) {
+	public static MeltingRecipeJsonFactory createMeltingRecipe(TagKey<Item> input, Fluid output, long outputAmount, int processingTime, int energy) {
 		return MachineRecipeJsonFactory.createMelting(Ingredient.fromTag(input), output, outputAmount, processingTime, energy);
 	}
 	
-	public static MeltingRecipeJsonFactory createMeltingRecipe(ItemConvertible input, Fluid output, int outputAmount, int processingTime, int energy) {
+	public static MeltingRecipeJsonFactory createMeltingRecipe(ItemConvertible input, Fluid output, long outputAmount, int processingTime, int energy) {
 		return MachineRecipeJsonFactory.createMelting(Ingredient.ofItems(input), output, outputAmount, processingTime, energy);
 	}
 	
-	public static void offerMeltingRecipe(Consumer<RecipeJsonProvider> exporter, TagKey<Item> input, Fluid output, int outputAmount, int processingTime, int energy) {
-		createMeltingRecipe(input, output, outputAmount, processingTime, energy).offerTo(exporter);
+	public static void offerMeltingRecipe(Consumer<RecipeJsonProvider> exporter, TagKey<Item> input, Fluid output, long outputAmount, int processingTime, int energy) {
+		createMeltingRecipe(input, output, outputAmount, processingTime, energy).offerTo(exporter, Registry.FLUID.getId(output).getPath() + "_from_melting_" + getRecipeName(input));
 	}
 	
-	public static void offerMeltingRecipe(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, Fluid output, int outputAmount, int processingTime, int energy) {
-		createMeltingRecipe(input, output, outputAmount, processingTime, energy).offerTo(exporter);
+	public static void offerMeltingRecipe(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, Fluid output, long outputAmount, int processingTime, int energy) {
+		createMeltingRecipe(input, output, outputAmount, processingTime, energy).offerTo(exporter, Registry.FLUID.getId(output).getPath() + "_from_melting_" + getRecipeName(input));
 	}
 	
 	public static CraftingRecipeJsonBuilder withCriterion(CraftingRecipeJsonBuilder factory, ItemConvertible input) {
@@ -670,16 +672,27 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 				}));
 			}
 			
+			if (family.hasMoltenFluid()) {
+				family.getItemVariants().forEach((variant, item) -> {
+					AMCommon.LOGGER.info("Offering melting for " + variant.getName() + " to molten fluid");
+					offerMeltingRecipe(exporter, family.getTag(variant), family.getMoltenFluid().get().getStill(), variant.getMeltedFluidAmount(family), variant.getMeltingTime(family), variant.getMeltingEnergy(family));
+				});
+				family.getBlockVariants().forEach((variant, block) -> {
+					AMCommon.LOGGER.info("Offering melting for " + variant.getName() + " to molten fluid");
+					offerMeltingRecipe(exporter, family.getItemTag(variant), family.getMoltenFluid().get().getStill(), variant.getMeltedFluidAmount(family), variant.getMeltingTime(family), variant.getMeltingEnergy(family));
+				});
+			}
+			
 			AMCommon.LOGGER.info("Finished offering recipes for " + family.getName());
 		});
 		
 		offerTrituratingRecipe(exporter, Items.BLAZE_ROD, Items.BLAZE_POWDER, 4, 60, 270);
 		offerTrituratingRecipe(exporter, Items.BONE, Items.BONE_MEAL, 4, 60, 270);
 		offerTrituratingRecipe(exporter, Items.SUGAR_CANE, Items.SUGAR, 2, 60, 270);
-		offerTrituratingRecipe(exporter, AMDatagen.createCommonItemTag("yellow_sandstones"), Blocks.SAND, 4, 240, 440);
-		offerTrituratingRecipe(exporter, AMDatagen.createCommonItemTag("red_sandstones"), Blocks.RED_SAND, 4, 240, 440);
-		offerTrituratingRecipe(exporter, AMDatagen.createCommonItemTag("cut_copper"), AMItems.COPPER_DUST.get(), 1, 240, 440);
-		offerTrituratingRecipe(exporter, AMDatagen.createCommonItemTag("purpur_blocks"), Items.POPPED_CHORUS_FRUIT, 4, 80, 300);
+		offerTrituratingRecipe(exporter, AMTagKeys.Items.YELLOW_SANDSTONES, Blocks.SAND, 4, 240, 440);
+		offerTrituratingRecipe(exporter, AMTagKeys.Items.RED_SANDSTONES, Blocks.RED_SAND, 4, 240, 440);
+		offerTrituratingRecipe(exporter, AMTagKeys.Items.CUT_COPPER, AMItems.COPPER_DUST.get(), 1, 240, 440);
+		offerTrituratingRecipe(exporter, AMTagKeys.Items.PURPUR_BLOCKS, Items.POPPED_CHORUS_FRUIT, 4, 80, 300);
 		offerTrituratingRecipe(exporter, ItemTags.WOOL, Items.STRING, 4, 80, 300);
 		
 		TRITURATED_BLOCK_FAMILIES.forEach((inputFamily, outputFamily) -> {
@@ -704,7 +717,7 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 			offerTrituratingRecipe(exporter, tag, AMItems.BIOFUEL.get(), count, 60 + (40 * count), 50 * count);
 		});
 		
-		offerMeltingRecipe(exporter, AMDatagen.createCommonItemTag("biofuel"), AMFluids.BIOMASS.getStill(), 810, 80, 800);
+		offerMeltingRecipe(exporter, AMTagKeys.Items.BIOFUEL, AMFluids.BIOMASS.getStill(), 810, 80, 800);
 	}
 	
 	@FunctionalInterface
