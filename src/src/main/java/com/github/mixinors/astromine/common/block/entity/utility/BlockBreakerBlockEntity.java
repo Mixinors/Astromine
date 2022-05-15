@@ -39,7 +39,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
@@ -101,6 +100,8 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Util
 							++cooldown;
 							
 							if (cooldown >= getSpeed()) {
+								cooldown = 0;
+								
 								active = true;
 								
 								var targetEntity = world.getBlockEntity(targetPos);
@@ -117,19 +118,25 @@ public class BlockBreakerBlockEntity extends ExtendedBlockEntity implements Util
 									drops.add(match);
 								});
 								
-								drops.forEach(stack -> {
+								var finished = true;
+								
+								for (var stack : drops) {
 									if (!stack.isEmpty()) {
-										ItemScatterer.spawn(world, targetPos.getX(), targetPos.getY(), targetPos.getZ(), stack);
+										finished = false;
+										
+										break;
 									}
-								});
+								}
 								
-								world.breakBlock(targetPos, false);
-								
-								energyStorage.amount -= consumed;
-								
-								cooldown = 0;
-								
-								transaction.commit();
+								if (finished) {
+									world.breakBlock(targetPos, false);
+									
+									energyStorage.amount -= consumed;
+									
+									transaction.commit();
+								} else {
+									transaction.abort();
+								}
 							} else {
 								++cooldown;
 								
