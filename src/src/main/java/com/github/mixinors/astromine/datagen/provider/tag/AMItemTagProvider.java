@@ -31,10 +31,10 @@ import com.github.mixinors.astromine.datagen.family.material.MaterialFamilies;
 import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
 import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant;
 import com.github.mixinors.astromine.registry.common.AMItems;
-import com.google.common.collect.ImmutableMap;
 import com.shnupbups.piglib.Piglib;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -47,26 +47,28 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableMap;
+
 public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 	public static final Map<List<ItemVariant>, Identifier> GENERIC_TAGS = Map.of(
 			AMDatagen.CLUSTER_VARIANTS, AMTagKeys.createCommonTagId("clusters"),
 			AMDatagen.ARMOR_VARIANTS, AMTagKeys.createCommonTagId("armor"),
 			AMDatagen.TOOL_VARIANTS, AMTagKeys.createCommonTagId("tools")
 	);
-	
+
 	public static final Map<TagKey<Block>, TagKey<Item>> COPY = ImmutableMap.<TagKey<Block>, TagKey<Item>>builder()
-																			.putAll(Map.of(
-																					AMTagKeys.Blocks.YELLOW_SANDSTONES, AMTagKeys.Items.YELLOW_SANDSTONES,
-																					AMTagKeys.Blocks.RED_SANDSTONES, AMTagKeys.Items.RED_SANDSTONES,
-																					AMTagKeys.Blocks.SANDSTONES, AMTagKeys.Items.SANDSTONES,
-																					AMTagKeys.Blocks.QUARTZ_BLOCKS, AMTagKeys.Items.QUARTZ_BLOCKS,
-																					AMTagKeys.Blocks.UNWAXED_COPPER_BLOCKS, AMTagKeys.Items.UNWAXED_COPPER_BLOCKS,
-																					AMTagKeys.Blocks.WAXED_COPPER_BLOCKS, AMTagKeys.Items.WAXED_COPPER_BLOCKS,
-																					AMTagKeys.Blocks.COPPER_BLOCKS, AMTagKeys.Items.COPPER_BLOCKS,
-																					AMTagKeys.Blocks.UNWAXED_CUT_COPPER, AMTagKeys.Items.UNWAXED_CUT_COPPER,
-																					AMTagKeys.Blocks.WAXED_CUT_COPPER, AMTagKeys.Items.WAXED_CUT_COPPER,
-																					AMTagKeys.Blocks.CUT_COPPER, AMTagKeys.Items.CUT_COPPER
-																			)).putAll(Map.of(
+			.putAll(Map.of(
+					AMTagKeys.Blocks.YELLOW_SANDSTONES, AMTagKeys.Items.YELLOW_SANDSTONES,
+					AMTagKeys.Blocks.RED_SANDSTONES, AMTagKeys.Items.RED_SANDSTONES,
+					AMTagKeys.Blocks.SANDSTONES, AMTagKeys.Items.SANDSTONES,
+					AMTagKeys.Blocks.QUARTZ_BLOCKS, AMTagKeys.Items.QUARTZ_BLOCKS,
+					AMTagKeys.Blocks.UNWAXED_COPPER_BLOCKS, AMTagKeys.Items.UNWAXED_COPPER_BLOCKS,
+					AMTagKeys.Blocks.WAXED_COPPER_BLOCKS, AMTagKeys.Items.WAXED_COPPER_BLOCKS,
+					AMTagKeys.Blocks.COPPER_BLOCKS, AMTagKeys.Items.COPPER_BLOCKS,
+					AMTagKeys.Blocks.UNWAXED_CUT_COPPER, AMTagKeys.Items.UNWAXED_CUT_COPPER,
+					AMTagKeys.Blocks.WAXED_CUT_COPPER, AMTagKeys.Items.WAXED_CUT_COPPER,
+					AMTagKeys.Blocks.CUT_COPPER, AMTagKeys.Items.CUT_COPPER
+			)).putAll(Map.of(
 					AMTagKeys.Blocks.PURPUR_BLOCKS, AMTagKeys.Items.PURPUR_BLOCKS,
 					AMTagKeys.Blocks.MUSHROOMS, AMTagKeys.Items.MUSHROOMS,
 					AMTagKeys.Blocks.MUSHROOM_BLOCKS, AMTagKeys.Items.MUSHROOM_BLOCKS,
@@ -96,7 +98,7 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 			AMTagKeys.createCommonItemTag("berries"),
 			AMTagKeys.createCommonItemTag("seeds")
 	);
-	
+
 	public static final List<TagKey<Item>> ONE_BIOFUEL_TAGS_FORCED = List.of(
 			ItemTags.SMALL_FLOWERS,
 			ItemTags.LEAVES
@@ -162,7 +164,7 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 	public static final List<TagKey<Item>> FOUR_BIOFUEL_TAGS = List.of(
 			AMTagKeys.createCommonItemTag("metal_apples")
 	);
-	
+
 	public static final List<TagKey<Item>> FOUR_BIOFUEL_TAGS_FORCED = List.of(
 			ItemTags.FISHES
 	);

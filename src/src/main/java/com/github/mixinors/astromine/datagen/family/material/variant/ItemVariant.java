@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.datagen.family.material.variant;
 
 import com.github.mixinors.astromine.common.fluid.ExtraFluidConstants;
 import com.github.mixinors.astromine.common.util.WordUtils;
+import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
 import com.github.mixinors.astromine.registry.common.AMTags;
 import net.minecraft.data.client.ItemModelGenerator;
 import net.minecraft.data.client.Models;
@@ -34,6 +35,8 @@ import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 
 import java.util.function.BiConsumer;
+
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 
 public enum ItemVariant implements Variant<Item> {
 	INGOT("ingot"),

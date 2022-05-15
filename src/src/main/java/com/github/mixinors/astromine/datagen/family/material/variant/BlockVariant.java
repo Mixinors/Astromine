@@ -40,6 +40,8 @@ import net.minecraft.util.Identifier;
 
 import java.util.function.BiConsumer;
 
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
+
 public enum BlockVariant implements Variant<Block> {
 	BLOCK("block"),
 	STONE_ORE("stone_ore"),

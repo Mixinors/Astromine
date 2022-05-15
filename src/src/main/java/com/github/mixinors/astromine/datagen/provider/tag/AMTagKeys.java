@@ -1,8 +1,13 @@
 package com.github.mixinors.astromine.datagen.provider.tag;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.google.common.collect.ImmutableMap;
+
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.registry.common.AMTags;
-import com.google.common.collect.ImmutableMap;
+
 import net.minecraft.block.Block;
 import net.minecraft.data.family.BlockFamily;
 import net.minecraft.fluid.Fluid;
@@ -10,11 +15,9 @@ import net.minecraft.item.Item;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 
-import java.util.Map;
-
 public class AMTagKeys {
 	public static final String COMMON_TAG_NAMESPACE = "c";
-	
+
 	public static final Map<BlockFamily.Variant, Identifier> VANILLA_ITEM_TAG_VARIANTS = Map.of(
 			BlockFamily.Variant.SLAB, new Identifier("slabs"),
 			BlockFamily.Variant.STAIRS, new Identifier("stairs"),
@@ -25,7 +28,7 @@ public class AMTagKeys {
 			BlockFamily.Variant.SIGN, new Identifier("signs"),
 			BlockFamily.Variant.TRAPDOOR, new Identifier("trapdoors")
 	);
-	
+
 	public static final Map<BlockFamily.Variant, Identifier> VANILLA_BLOCK_TAG_VARIANTS = new ImmutableMap.Builder<BlockFamily.Variant, Identifier>().putAll(Map.of(
 			BlockFamily.Variant.FENCE_GATE, new Identifier("fence_gates"),
 			BlockFamily.Variant.PRESSURE_PLATE, new Identifier("pressure_plates"),
@@ -53,7 +56,7 @@ public class AMTagKeys {
 	public static final Identifier WEEPING_VINES_ID = AMTagKeys.createCommonTagId("weeping_vines");
 	public static final Identifier TWISTING_VINES_ID = AMTagKeys.createCommonTagId("twisting_vines");
 	public static final Identifier ORES_ID = AMTagKeys.createCommonTagId("ores");
-	
+
 	public static class Blocks {
 		public static final TagKey<Block> YELLOW_SANDSTONES = AMTagKeys.createBlockTag(YELLOW_SANDSTONES_ID);
 		public static final TagKey<Block> RED_SANDSTONES = AMTagKeys.createBlockTag(RED_SANDSTONES_ID);
@@ -105,46 +108,46 @@ public class AMTagKeys {
 		public static final TagKey<Item> MAKES_TWO_BIOFUEL = createItemTag("makes_two_biofuel");
 		public static final TagKey<Item> MAKES_FOUR_BIOFUEL = createItemTag("makes_four_biofuel");
 		public static final TagKey<Item> MAKES_NINE_BIOFUEL = createItemTag("makes_nine_biofuel");
-		
+
 		public static final TagKey<Item> BIOFUEL = createCommonItemTag("biofuel");
 	}
-	
+
 	public static Identifier createCommonTagId(String path) {
 		return new Identifier(COMMON_TAG_NAMESPACE, path);
 	}
-	
+
 	public static TagKey<Block> createBlockTag(Identifier id) {
 		return AMTags.ofBlock(id);
 	}
-	
+
 	public static TagKey<Item> createItemTag(Identifier id) {
 		return AMTags.ofItem(id);
 	}
-	
+
 	public static TagKey<Fluid> createFluidTag(Identifier id) {
 		return AMTags.ofFluid(id);
 	}
-	
+
 	public static TagKey<Block> createCommonBlockTag(String path) {
 		return createBlockTag(createCommonTagId(path));
 	}
-	
+
 	public static TagKey<Item> createCommonItemTag(String path) {
 		return createItemTag(createCommonTagId(path));
 	}
-	
+
 	public static TagKey<Fluid> createCommonFluidTag(String path) {
 		return createFluidTag(createCommonTagId(path));
 	}
-	
+
 	public static TagKey<Block> createBlockTag(String path) {
 		return createBlockTag(AMCommon.id(path));
 	}
-	
+
 	public static TagKey<Item> createItemTag(String path) {
 		return createItemTag(AMCommon.id(path));
 	}
-	
+
 	public static TagKey<Fluid> createFluidTag(String path) {
 		return createFluidTag(AMCommon.id(path));
 	}

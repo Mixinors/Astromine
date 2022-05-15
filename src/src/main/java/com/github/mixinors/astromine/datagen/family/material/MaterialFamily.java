@@ -31,6 +31,8 @@ import com.github.mixinors.astromine.datagen.family.material.variant.BlockVarian
 import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant;
 import com.github.mixinors.astromine.datagen.family.material.variant.Variant;
 import com.github.mixinors.astromine.registry.common.AMTags;
+
+import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import net.minecraft.block.Block;

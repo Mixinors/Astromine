@@ -55,6 +55,7 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.tag.ItemTags;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.registry.Registry;
+
 import org.apache.logging.log4j.util.TriConsumer;
 
 import java.util.List;
@@ -452,11 +453,11 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 	}
 	
 	public static void offerMeltingRecipe(Consumer<RecipeJsonProvider> exporter, TagKey<Item> input, Fluid output, long outputAmount, int processingTime, int energy) {
-		createMeltingRecipe(input, output, outputAmount, processingTime, energy).offerTo(exporter, Registry.FLUID.getId(output).getPath() + "_from_melting_" + getRecipeName(input));
+		createMeltingRecipe(input, output, outputAmount, processingTime, energy).offerTo(exporter, Registry.FLUID.getId(output).getPath()+"_from_melting_"+getRecipeName(input));
 	}
 	
 	public static void offerMeltingRecipe(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, Fluid output, long outputAmount, int processingTime, int energy) {
-		createMeltingRecipe(input, output, outputAmount, processingTime, energy).offerTo(exporter, Registry.FLUID.getId(output).getPath() + "_from_melting_" + getRecipeName(input));
+		createMeltingRecipe(input, output, outputAmount, processingTime, energy).offerTo(exporter, Registry.FLUID.getId(output).getPath()+"_from_melting_"+getRecipeName(input));
 	}
 	
 	public static CraftingRecipeJsonBuilder withCriterion(CraftingRecipeJsonBuilder factory, ItemConvertible input) {
@@ -671,14 +672,14 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 					}
 				}));
 			}
-			
+
 			if (family.hasMoltenFluid()) {
 				family.getItemVariants().forEach((variant, item) -> {
-					AMCommon.LOGGER.info("Offering melting for " + variant.getName() + " to molten fluid");
+					AMCommon.LOGGER.info("Offering melting for "+variant.getName()+" to molten fluid");
 					offerMeltingRecipe(exporter, family.getTag(variant), family.getMoltenFluid().get().getStill(), variant.getMeltedFluidAmount(family), variant.getMeltingTime(family), variant.getMeltingEnergy(family));
 				});
 				family.getBlockVariants().forEach((variant, block) -> {
-					AMCommon.LOGGER.info("Offering melting for " + variant.getName() + " to molten fluid");
+					AMCommon.LOGGER.info("Offering melting for "+variant.getName()+" to molten fluid");
 					offerMeltingRecipe(exporter, family.getItemTag(variant), family.getMoltenFluid().get().getStill(), variant.getMeltedFluidAmount(family), variant.getMeltingTime(family), variant.getMeltingEnergy(family));
 				});
 			}
