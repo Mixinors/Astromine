@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:iron_chestplates"
+  },
+  "output": {
+    "fluid": "astromine:molten_iron",
+    "amount": 16000
+  },
+  "energy_input": 2240,
+  "time": 280
+}

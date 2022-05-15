@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:lapis_asteroid_ore_clusters"
+  },
+  "output": {
+    "fluid": "astromine:molten_lapis",
+    "amount": 15000
+  },
+  "energy_input": 5632,
+  "time": 704
+}

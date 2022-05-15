@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:honey_block",
+    "minecraft:honeycomb_block",
+    "minecraft:pumpkin_pie",
+    "minecraft:moss_block",
+    "#c:gourds"
+  ]
+}

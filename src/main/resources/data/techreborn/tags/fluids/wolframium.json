@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "techreborn:wolframium",
+      "required": false
+    }
+  ]
+}

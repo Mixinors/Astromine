@@ -1,0 +1,12 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "tag": "c:tin_ores"
+  },
+  "output": {
+    "item": "astromine:raw_tin",
+    "count": 2
+  },
+  "energy_input": 340,
+  "time": 180
+}

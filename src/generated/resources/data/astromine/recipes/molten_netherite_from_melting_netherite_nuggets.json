@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:netherite_nuggets"
+  },
+  "output": {
+    "fluid": "astromine:molten_netherite",
+    "amount": 1000
+  },
+  "energy_input": 320,
+  "time": 40
+}

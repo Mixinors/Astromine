@@ -1,0 +1,12 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "tag": "c:diamond_salvageables"
+  },
+  "output": {
+    "item": "astromine:diamond_tiny_dust",
+    "count": 2
+  },
+  "energy_input": 200,
+  "time": 30
+}

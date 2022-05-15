@@ -1,0 +1,17 @@
+{
+  "type": "astromine:alloy_smelting",
+  "first_input": {
+    "tag": "c:iron_ingots",
+    "count": 1
+  },
+  "second_input": {
+    "tag": "c:gunpowder_dusts",
+    "count": 1
+  },
+  "output": {
+    "item": "astromine:fools_gold_ingot",
+    "count": 1
+  },
+  "energy_input": 600,
+  "time": 150
+}

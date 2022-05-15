@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "astromine:primitive_electric_furnace",
+    "astromine:basic_electric_furnace",
+    "astromine:advanced_electric_furnace",
+    "astromine:elite_electric_furnace"
+  ]
+}

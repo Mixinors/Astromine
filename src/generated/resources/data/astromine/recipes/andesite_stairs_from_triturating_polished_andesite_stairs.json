@@ -1,0 +1,12 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "item": "minecraft:polished_andesite_stairs"
+  },
+  "output": {
+    "item": "minecraft:andesite_stairs",
+    "count": 1
+  },
+  "energy_input": 300,
+  "time": 80
+}

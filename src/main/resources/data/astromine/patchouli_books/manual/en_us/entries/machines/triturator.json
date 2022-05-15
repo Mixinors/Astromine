@@ -1,0 +1,23 @@
+{
+  "name": "Triturator",
+  "icon": "astromine:primitive_triturator",
+  "category": "astromine:machines",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:primitive_triturator",
+      "text": "A $(item)Triturator$() crushes items, with electrical energy."
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:primitive_triturator",
+      "recipe2": "astromine:basic_triturator"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:advanced_triturator",
+      "recipe2": "astromine:elite_triturator"
+    }
+  ]
+}

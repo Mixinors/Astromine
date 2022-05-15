@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "astromine:amethyst_tiny_dust"
+    ]
+  },
+  "criteria": {
+    "has_amethyst_dusts": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:amethyst_dusts"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "astromine:amethyst_tiny_dust"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_amethyst_dusts",
+      "has_the_recipe"
+    ]
+  ]
+}

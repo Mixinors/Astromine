@@ -1,0 +1,23 @@
+{
+  "name": "Fluid Generator",
+  "icon": "astromine:primitive_fluid_generator",
+  "category": "astromine:machines",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:primitive_fluid_generator",
+      "text": "A $(item)Fluid Generator$() transforms fluid fuels into electrical energy."
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:primitive_fluid_generator",
+      "recipe2": "astromine:basic_fluid_generator"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:advanced_fluid_generator",
+      "recipe2": "astromine:elite_fluid_generator"
+    }
+  ]
+}

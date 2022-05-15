@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "#c:diamond_horse_armor",
+    "#c:gold_horse_armor",
+    "#c:iron_horse_armor"
+  ]
+}

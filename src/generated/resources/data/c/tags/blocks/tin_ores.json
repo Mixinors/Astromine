@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "#c:tin_stone_ores",
+    "#c:tin_deepslate_ores",
+    "#c:tin_asteroid_ores"
+  ]
+}

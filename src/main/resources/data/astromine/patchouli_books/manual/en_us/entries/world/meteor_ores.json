@@ -1,0 +1,12 @@
+{
+  "name": "Meteor Ores",
+  "icon": "astromine:meteor_metite_ore",
+  "category": "astromine:world",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "text",
+      "text": "$(thing)Meteor Ores$() are found in $(thing)meteors$() in the $(thing)world$().."
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "tag": "c:diamond_nuggets"
+  },
+  "output": {
+    "item": "astromine:diamond_tiny_dust",
+    "count": 1
+  },
+  "energy_input": 200,
+  "time": 30
+}

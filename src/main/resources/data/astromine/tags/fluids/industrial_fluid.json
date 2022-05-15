@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "astromine:oxygen",
+    "astromine:oxygen_flowing",
+    "astromine:oil",
+    "astromine:oil_flowing",
+    "astromine:fuel",
+    "astromine:fuel_flowing",
+    "astromine:biomass",
+    "astromine:biomass_flowing"
+  ]
+}

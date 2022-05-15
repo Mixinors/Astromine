@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:steel_ingots"
+  },
+  "output": {
+    "fluid": "astromine:molten_steel",
+    "amount": 9000
+  },
+  "energy_input": 1760,
+  "time": 220
+}

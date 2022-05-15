@@ -1,0 +1,11 @@
+{
+  "parent": "astromine:block/machine",
+  "textures": {
+    "top": "astromine:block/advanced_tank_top",
+    "bottom": "astromine:block/advanced_tank_bottom",
+    "left": "astromine:block/advanced_tank_left",
+    "right": "astromine:block/advanced_tank_right",
+    "front": "astromine:block/advanced_tank_front",
+    "back": "astromine:block/advanced_tank_back"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "astromine:fools_gold_helmet"
+    ]
+  },
+  "criteria": {
+    "has_fools_gold_ingots": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:fools_gold_ingots"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "astromine:fools_gold_helmet"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_fools_gold_ingots",
+      "has_the_recipe"
+    ]
+  ]
+}

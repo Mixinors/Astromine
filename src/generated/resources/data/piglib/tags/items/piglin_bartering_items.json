@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "#c:fools_gold_ingots",
+    "#c:pyrite_ingots",
+    "#c:gold_ingots"
+  ]
+}

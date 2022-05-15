@@ -1,0 +1,29 @@
+{
+  "name": "Circuits",
+  "icon": "astromine:primitive_circuit",
+  "category": "astromine:components",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:primitive_circuit",
+      "text": "$(item)Circuits$() are important components of tools and machines."
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:primitive_circuit"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:basic_circuit"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:advanced_circuit"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:elite_circuit"
+    }
+  ]
+}

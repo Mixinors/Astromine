@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "878",
+    "7 7",
+    "878"
+  ],
+  "key": {
+    "7": {
+      "item": "minecraft:copper_ingot"
+    },
+    "8": {
+      "tag": "c:iron_ingots"
+    }
+  },
+  "result": {
+    "item": "astromine:portable_tank",
+    "count": 1
+  }
+}

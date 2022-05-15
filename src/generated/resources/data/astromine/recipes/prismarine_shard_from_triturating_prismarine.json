@@ -1,0 +1,12 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "item": "minecraft:prismarine"
+  },
+  "output": {
+    "item": "minecraft:prismarine_shard",
+    "count": 4
+  },
+  "energy_input": 300,
+  "time": 80
+}

@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:steel_leggings"
+  },
+  "output": {
+    "fluid": "astromine:molten_steel",
+    "amount": 14000
+  },
+  "energy_input": 2464,
+  "time": 308
+}

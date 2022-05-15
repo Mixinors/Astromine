@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:diamond_blocks"
+  },
+  "output": {
+    "fluid": "astromine:molten_diamond",
+    "amount": 81000
+  },
+  "energy_input": 60800,
+  "time": 7600
+}

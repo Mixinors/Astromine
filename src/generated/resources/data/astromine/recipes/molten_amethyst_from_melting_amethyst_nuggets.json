@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:amethyst_nuggets"
+  },
+  "output": {
+    "fluid": "astromine:molten_amethyst",
+    "amount": 2250
+  },
+  "energy_input": 320,
+  "time": 40
+}

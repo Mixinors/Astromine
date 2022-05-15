@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:asteroid_stone_stairs_from_asteroid_stone_stonecutting"
+    ]
+  },
+  "criteria": {
+    "has_asteroid_stone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:asteroid_stone"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:asteroid_stone_stairs_from_asteroid_stone_stonecutting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_asteroid_stone",
+      "has_the_recipe"
+    ]
+  ]
+}

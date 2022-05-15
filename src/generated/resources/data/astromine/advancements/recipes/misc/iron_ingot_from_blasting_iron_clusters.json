@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:iron_ingot_from_blasting_iron_clusters"
+    ]
+  },
+  "criteria": {
+    "has_iron_clusters": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:iron_clusters"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:iron_ingot_from_blasting_iron_clusters"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_iron_clusters",
+      "has_the_recipe"
+    ]
+  ]
+}

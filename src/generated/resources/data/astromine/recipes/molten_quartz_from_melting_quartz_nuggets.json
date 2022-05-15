@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:quartz_nuggets"
+  },
+  "output": {
+    "fluid": "astromine:molten_quartz",
+    "amount": 2250
+  },
+  "energy_input": 280,
+  "time": 35
+}

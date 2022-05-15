@@ -1,0 +1,12 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "item": "minecraft:nether_wart_block"
+  },
+  "output": {
+    "item": "minecraft:nether_wart",
+    "count": 9
+  },
+  "energy_input": 300,
+  "time": 80
+}

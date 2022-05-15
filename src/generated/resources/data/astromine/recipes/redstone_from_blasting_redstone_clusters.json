@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "tag": "c:redstone_clusters"
+  },
+  "result": "minecraft:redstone",
+  "experience": 0.7,
+  "cookingtime": 100
+}

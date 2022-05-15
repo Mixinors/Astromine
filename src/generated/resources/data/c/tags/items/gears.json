@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "#c:bronze_gears",
+    "#c:copper_gears",
+    "#c:electrum_gears",
+    "#c:fools_gold_gears",
+    "#c:pyrite_gears",
+    "#c:gold_gears",
+    "#c:iron_gears",
+    "#c:lead_gears",
+    "#c:meteoric_steel_gears",
+    "#c:metite_gears",
+    "#c:netherite_gears",
+    "#c:silver_gears",
+    "#c:steel_gears",
+    "#c:stellum_gears",
+    "#c:tin_gears",
+    "#c:univite_gears"
+  ]
+}

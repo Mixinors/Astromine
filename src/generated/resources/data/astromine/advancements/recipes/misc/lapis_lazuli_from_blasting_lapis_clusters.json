@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:lapis_lazuli_from_blasting_lapis_clusters"
+    ]
+  },
+  "criteria": {
+    "has_lapis_clusters": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:lapis_clusters"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:lapis_lazuli_from_blasting_lapis_clusters"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_lapis_clusters",
+      "has_the_recipe"
+    ]
+  ]
+}

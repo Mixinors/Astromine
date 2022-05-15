@@ -1,0 +1,11 @@
+{
+  "parent": "astromine:block/machine_active",
+  "textures": {
+    "top": "astromine:block/primitive_electric_furnace_top_active",
+    "bottom": "astromine:block/primitive_electric_furnace_bottom_active",
+    "left": "astromine:block/primitive_electric_furnace_left_active",
+    "right": "astromine:block/primitive_electric_furnace_right_active",
+    "front": "astromine:block/primitive_electric_furnace_front_active",
+    "back": "astromine:block/primitive_electric_furnace_back_active"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "techreborn:biofuel",
+      "required": false
+    },
+    {
+      "id": "astromine:biomass",
+      "required": false
+    }
+  ]
+}

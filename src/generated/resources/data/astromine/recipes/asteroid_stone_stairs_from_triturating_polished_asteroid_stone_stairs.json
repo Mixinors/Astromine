@@ -1,0 +1,12 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "item": "astromine:polished_asteroid_stone_stairs"
+  },
+  "output": {
+    "item": "astromine:asteroid_stone_stairs",
+    "count": 1
+  },
+  "energy_input": 300,
+  "time": 80
+}

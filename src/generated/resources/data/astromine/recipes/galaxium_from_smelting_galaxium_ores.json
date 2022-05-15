@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "tag": "c:galaxium_ores"
+  },
+  "result": "astromine:galaxium",
+  "experience": 3.0,
+  "cookingtime": 200
+}

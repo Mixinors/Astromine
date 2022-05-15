@@ -1,0 +1,9 @@
+{
+  "type": "astromine:fluid_generating",
+  "input": {
+    "tag": "c:biomass",
+    "amount": 81
+  },
+  "energy_output": 80,
+  "time": 2
+}

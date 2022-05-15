@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "astromine:metite_block"
+    ]
+  },
+  "criteria": {
+    "has_metite_ingots": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:metite_ingots"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "astromine:metite_block"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_metite_ingots",
+      "has_the_recipe"
+    ]
+  ]
+}

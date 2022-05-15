@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "010",
+    "545",
+    "010"
+  ],
+  "key": {
+    "0": {
+      "item": "astromine:advanced_plating"
+    },
+    "1": {
+      "tag": "c:gold_ingots"
+    },
+    "4": {
+      "item": "astromine:basic_capacitor"
+    },
+    "5": {
+      "item": "astromine:advanced_battery_pack"
+    }
+  },
+  "result": {
+    "item": "astromine:advanced_capacitor",
+    "count": 1
+  }
+}

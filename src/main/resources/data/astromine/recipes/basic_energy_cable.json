@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "222",
+    "242",
+    "222"
+  ],
+  "key": {
+    "2": {
+      "item": "astromine:primitive_energy_cable"
+    },
+    "4": {
+      "item": "astromine:basic_plating"
+    }
+  },
+  "result": {
+    "item": "astromine:basic_energy_cable",
+    "count": 8
+  }
+}

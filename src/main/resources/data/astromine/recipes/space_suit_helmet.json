@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "212",
+    "525",
+    "   "
+  ],
+  "key": {
+    "1": {
+      "item": "minecraft:glass"
+    },
+    "2": {
+      "item": "minecraft:white_wool"
+    },
+    "5": {
+      "tag": "c:steel_plates"
+    }
+  },
+  "result": {
+    "item": "astromine:space_suit_helmet",
+    "count": 1
+  }
+}

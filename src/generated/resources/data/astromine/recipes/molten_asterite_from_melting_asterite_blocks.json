@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:asterite_blocks"
+  },
+  "output": {
+    "fluid": "astromine:molten_asterite",
+    "amount": 81000
+  },
+  "energy_input": 224000,
+  "time": 28000
+}

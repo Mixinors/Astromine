@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:galaxium_blocks"
+  },
+  "output": {
+    "fluid": "astromine:molten_galaxium",
+    "amount": 81000
+  },
+  "energy_input": 288000,
+  "time": 36000
+}

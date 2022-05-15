@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "252",
+    "5 5",
+    "5 5"
+  ],
+  "key": {
+    "2": {
+      "tag": "c:steel_plates"
+    },
+    "5": {
+      "item": "minecraft:white_wool"
+    }
+  },
+  "result": {
+    "item": "astromine:space_suit_leggings",
+    "count": 1
+  }
+}

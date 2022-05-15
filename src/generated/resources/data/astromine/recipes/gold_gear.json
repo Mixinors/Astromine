@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " X ",
+    "X X",
+    " X "
+  ],
+  "key": {
+    "X": {
+      "tag": "c:gold_ingots"
+    }
+  },
+  "result": {
+    "item": "astromine:gold_gear",
+    "count": 2
+  }
+}

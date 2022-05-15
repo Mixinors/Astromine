@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:gold_blocks"
+  },
+  "output": {
+    "fluid": "astromine:molten_gold",
+    "amount": 81000
+  },
+  "energy_input": 13600,
+  "time": 1700
+}

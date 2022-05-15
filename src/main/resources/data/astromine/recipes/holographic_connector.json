@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "012",
+    " 4 ",
+    " 7 "
+  ],
+  "key": {
+    "0": {
+      "tag": "c:steel_plates"
+    },
+    "1": {
+      "item": "astromine:advanced_circuit"
+    },
+    "2": {
+      "tag": "c:steel_plates"
+    },
+    "4": {
+      "tag": "c:copper_gears"
+    },
+    "7": {
+      "tag": "c:iron_plates"
+    }
+  },
+  "result": {
+    "item": "astromine:holographic_connector",
+    "count": 1
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "tag": "c:metite_dusts"
+  },
+  "result": "astromine:metite_ingot",
+  "experience": 0.0,
+  "cookingtime": 100
+}

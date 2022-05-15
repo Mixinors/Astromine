@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "tag": "c:lead_ores"
+  },
+  "result": "astromine:lead_ingot",
+  "experience": 0.8,
+  "cookingtime": 200
+}

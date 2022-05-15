@@ -1,0 +1,29 @@
+{
+  "name": "Platings",
+  "icon": "astromine:primitive_plating",
+  "category": "astromine:components",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:primitive_plating",
+      "text": "$(item)Platings$() are important components of tools and machines."
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:primitive_plating"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:basic_plating"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:advanced_plating"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:elite_plating"
+    }
+  ]
+}

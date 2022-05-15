@@ -1,0 +1,13 @@
+{
+  "name": "Rocket",
+  "icon": "astromine:rocket",
+  "category": "astromine:astronautics",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "entity",
+      "entity": "astromine:primitive_rocket",
+      "text": "A $(thing)Rocket$() will get you to space, but it won't be coming back, when provided with $(thing)Oxygen$() and $(thing)Kerosene$()."
+    }
+  ]
+}

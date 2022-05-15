@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "818",
+    "545",
+    "878"
+  ],
+  "key": {
+    "1": {
+      "item": "astromine:primitive_circuit"
+    },
+    "4": {
+      "item": "astromine:machine_chassis"
+    },
+    "5": {
+      "item": "astromine:large_portable_tank"
+    },
+    "7": {
+      "item": "astromine:primitive_battery_pack"
+    },
+    "8": {
+      "item": "astromine:blades"
+    }
+  },
+  "result": {
+    "item": "astromine:primitive_fluid_mixer",
+    "count": 1
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "Portable Tank",
+  "icon": "astromine:portable_tank",
+  "category": "astromine:gadgets",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:portable_tank",
+      "text": "A $(thing)Portable Tank$() holds fluids and gasses."
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:portable_tank"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:large_portable_tank"
+    }
+  ]
+}

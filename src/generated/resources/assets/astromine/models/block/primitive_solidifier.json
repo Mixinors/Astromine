@@ -1,0 +1,11 @@
+{
+  "parent": "astromine:block/machine",
+  "textures": {
+    "top": "astromine:block/primitive_solidifier_top",
+    "bottom": "astromine:block/primitive_solidifier_bottom",
+    "left": "astromine:block/primitive_solidifier_left",
+    "right": "astromine:block/primitive_solidifier_right",
+    "front": "astromine:block/primitive_solidifier_front",
+    "back": "astromine:block/primitive_solidifier_back"
+  }
+}

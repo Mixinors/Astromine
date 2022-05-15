@@ -1,0 +1,11 @@
+{
+  "parent": "astromine:block/machine",
+  "textures": {
+    "top": "astromine:block/advanced_buffer_top",
+    "bottom": "astromine:block/advanced_buffer_bottom",
+    "left": "astromine:block/advanced_buffer_left",
+    "right": "astromine:block/advanced_buffer_right",
+    "front": "astromine:block/advanced_buffer_front",
+    "back": "astromine:block/advanced_buffer_back"
+  }
+}
