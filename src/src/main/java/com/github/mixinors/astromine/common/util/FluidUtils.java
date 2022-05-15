@@ -181,8 +181,11 @@ public class FluidUtils {
 					return UNIVITE_COLORS[0];
 				}
 				
-				if (System.currentTimeMillis() - LAST_TIME_MS > 50) {
-					LAST_COLOR_INDEX = client.world.random.nextInt(UNIVITE_COLORS.length);
+				if (System.currentTimeMillis() - LAST_TIME_MS > 20) {
+					LAST_TIME_MS = System.currentTimeMillis();
+					
+					LAST_COLOR_INDEX += 1;
+					LAST_COLOR_INDEX %= UNIVITE_COLORS.length;
 				}
 				
 				return UNIVITE_COLORS[LAST_COLOR_INDEX];

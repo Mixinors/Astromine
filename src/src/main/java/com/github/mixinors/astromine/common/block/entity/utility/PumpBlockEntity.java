@@ -99,7 +99,7 @@ public class PumpBlockEntity extends ExtendedBlockEntity implements FluidStorage
 			
 			if (age % 5 == 0) {
 				if (world.getBlockState(pos.add(0, (int) -Math.ceil(Math.max(depth, 1.0D) / 20.0D), 0)).isAir()) {
-					depth += 1.0D;
+					depth += 2.5D;
 				}
 			}
 			

@@ -1,11 +1,11 @@
 {
-	"parent": "astromine:block/machine_active",
-	"textures": {
-		"top": "astromine:block/pump_top_active",
-		"bottom": "astromine:block/pump_bottom_active",
-		"left": "astromine:block/pump_left_active",
-		"right": "astromine:block/pump_right_active",
-		"front": "astromine:block/pump_front_active",
-		"back": "astromine:block/pump_back_active"
-	}
+  "parent": "astromine:block/machine_active",
+  "textures": {
+    "top": "astromine:block/pump_top_active",
+    "bottom": "astromine:block/pump_bottom_active",
+    "left": "astromine:block/pump_left_active",
+    "right": "astromine:block/pump_right_active",
+    "front": "astromine:block/pump_front_active",
+    "back": "astromine:block/pump_back_active"
+  }
 }
