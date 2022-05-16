@@ -25,14 +25,15 @@
 package com.github.mixinors.astromine.datagen.provider;
 
 import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
-import com.github.mixinors.astromine.datagen.AMDatagen;
+import com.github.mixinors.astromine.datagen.DatagenLists;
 import com.github.mixinors.astromine.datagen.family.block.AMBlockFamilies;
 import com.github.mixinors.astromine.datagen.family.material.MaterialFamilies;
 import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
 import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTablesProvider;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
+
 import net.minecraft.block.Block;
 import net.minecraft.data.server.BlockLootTableGenerator;
 import net.minecraft.item.Item;
@@ -46,7 +47,7 @@ import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 
 import java.util.List;
 
-public class AMBlockLootTableProvider extends FabricBlockLootTablesProvider {
+public class AMBlockLootTableProvider extends FabricBlockLootTableProvider {
 	public static final List<Block> DROPS_SELF = List.of(
 			AMBlocks.BLAZING_ASTEROID_STONE.get(),
 			
@@ -135,6 +136,6 @@ public class AMBlockLootTableProvider extends FabricBlockLootTablesProvider {
 		
 		addDoorDrop(AMBlocks.AIRLOCK.get());
 		
-		AMDatagen.MACHINES.forEach((block) -> this.addDrop(block, machineDrops(block)));
+		DatagenLists.BlockLists.MACHINES.forEach((block) -> this.addDrop(block, machineDrops(block)));
 	}
 }

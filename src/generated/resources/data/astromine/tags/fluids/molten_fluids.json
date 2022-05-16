@@ -1,0 +1,28 @@
+{
+  "replace": false,
+  "values": [
+    "#c:molten_amethyst",
+    "#c:molten_asterite",
+    "#c:molten_bronze",
+    "#c:molten_copper",
+    "#c:molten_diamond",
+    "#c:molten_electrum",
+    "#c:molten_emerald",
+    "#c:molten_fools_gold",
+    "#c:molten_galaxium",
+    "#c:molten_gold",
+    "#c:molten_iron",
+    "#c:molten_lapis",
+    "#c:molten_lead",
+    "#c:molten_meteoric_steel",
+    "#c:molten_metite",
+    "#c:molten_netherite",
+    "#c:molten_quartz",
+    "#c:molten_redstone",
+    "#c:molten_silver",
+    "#c:molten_steel",
+    "#c:molten_stellum",
+    "#c:molten_tin",
+    "#c:molten_univite"
+  ]
+}

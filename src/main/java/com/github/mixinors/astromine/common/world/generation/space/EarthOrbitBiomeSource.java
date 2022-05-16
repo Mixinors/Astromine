@@ -35,18 +35,18 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 
-public class EarthSpaceBiomeSource extends BiomeSource {
-	public static final Codec<EarthSpaceBiomeSource> CODEC = RecordCodecBuilder.create((instance) ->
+public class EarthOrbitBiomeSource extends BiomeSource {
+	public static final Codec<EarthOrbitBiomeSource> CODEC = RecordCodecBuilder.create((instance) ->
 			instance.group(
 					RegistryOps.createRegistryCodec(Registry.BIOME_KEY).forGetter((biomeSource) -> biomeSource.registry),
 					Codec.LONG.fieldOf("seed").stable().forGetter((biomeSource) -> biomeSource.seed)
-			).apply(instance, instance.stable(EarthSpaceBiomeSource::new)));
+			).apply(instance, instance.stable(EarthOrbitBiomeSource::new)));
 	
 	private final long seed;
 	
 	private final Registry<Biome> registry;
 	
-	public EarthSpaceBiomeSource(Registry<Biome> registry, long seed) {
+	public EarthOrbitBiomeSource(Registry<Biome> registry, long seed) {
 		super(ImmutableList.of(registry.getOrCreateEntry(AMBiomes.ASTEROID_BELT_KEY)));
 		
 		this.seed = seed;
@@ -60,7 +60,7 @@ public class EarthSpaceBiomeSource extends BiomeSource {
 	
 	@Override
 	public BiomeSource withSeed(long seed) {
-		return new EarthSpaceBiomeSource(registry, seed);
+		return new EarthOrbitBiomeSource(registry, seed);
 	}
 	
 	@Override

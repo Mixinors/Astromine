@@ -135,7 +135,7 @@ public class MaterialFamilies {
 			.overworldOre(Blocks.LAPIS_ORE, Blocks.DEEPSLATE_LAPIS_ORE)
 			.asteroidOre(AMBlocks.ASTEROID_LAPIS_ORE.get(), AMItems.ASTEROID_LAPIS_ORE_CLUSTER.get())
 			.dust(AMItems.LAPIS_DUST.get(), AMItems.LAPIS_TINY_DUST.get())
-			.alias("lapis_lazuli")
+			.alias("lapis_lazuli").baseTagPathOverride("lapis")
 			.miningLevel(MiningLevels.STONE).oreSmeltingExperience(0.2f)
 			.moltenFluid(AMFluids.MOLTEN_LAPIS, 1.6f).build();
 	

@@ -26,10 +26,10 @@ package com.github.mixinors.astromine.datagen.family.material.variant;
 
 import com.github.mixinors.astromine.common.fluid.ExtraFluidConstants;
 import com.github.mixinors.astromine.common.util.WordUtils;
-import com.github.mixinors.astromine.datagen.AMDatagen;
+import com.github.mixinors.astromine.datagen.HarvestData;
 import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
 import com.github.mixinors.astromine.datagen.provider.AMModelProvider;
-import com.github.mixinors.astromine.registry.common.AMTags;
+import com.github.mixinors.astromine.registry.common.AMTagKeys;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.minecraft.block.Block;
 import net.minecraft.data.client.BlockStateModelGenerator;
@@ -103,7 +103,7 @@ public enum BlockVariant implements Variant<Block> {
 	}
 	
 	public TagKey<Item> getItemTag() {
-		return AMTags.ofItem(new Identifier("c", getTagPath()));
+		return AMTagKeys.createCommonItemTag(getTagPath());
 	}
 	
 	public int getMiningLevel() {
@@ -121,17 +121,17 @@ public enum BlockVariant implements Variant<Block> {
 		return BlockTags.PICKAXE_MINEABLE;
 	}
 	
-	public AMDatagen.HarvestData getHarvestData() {
-		return new AMDatagen.HarvestData(getMineableTag(), getMiningLevel());
+	public HarvestData getHarvestData() {
+		return new HarvestData(getMineableTag(), getMiningLevel());
 	}
 	
-	public AMDatagen.HarvestData getHarvestData(MaterialFamily family) {
-		return new AMDatagen.HarvestData(getMineableTag(), getMiningLevel(family));
+	public HarvestData getHarvestData(MaterialFamily family) {
+		return new HarvestData(getMineableTag(), getMiningLevel(family));
 	}
 	
 	@Override
 	public TagKey<Block> createTag(Identifier id) {
-		return AMTags.ofBlock(id);
+		return AMTagKeys.createBlockTag(id);
 	}
 	
 	public boolean isOre() {

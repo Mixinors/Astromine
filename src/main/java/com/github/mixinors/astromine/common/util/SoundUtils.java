@@ -33,6 +33,6 @@ public class SoundUtils {
 			return 1.0F;
 		}
 		
-		return AMWorlds.isSpace(player.world.getRegistryKey()) ? 0.25F : 1.0F;
+		return AMWorlds.isSpace(player.world.method_40134()) ? 0.25F : 1.0F;
 	}
 }

@@ -1,0 +1,7 @@
+{
+  "generator": {
+    "type": "astromine:earth_orbit",
+    "seed": -1
+  },
+  "type": "astromine:earth_orbit"
+}

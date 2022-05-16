@@ -26,7 +26,8 @@ package com.github.mixinors.astromine.mixin.common;
 
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.registry.common.AMCriteria;
-import com.github.mixinors.astromine.registry.common.AMTags;
+import com.github.mixinors.astromine.registry.common.AMTagKeys;
+
 import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.mob.PiglinBrain;
 import net.minecraft.entity.mob.PiglinEntity;
@@ -43,7 +44,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 public abstract class PiglinBrainMixin {
 	@Inject(method = "consumeOffHandItem(Lnet/minecraft/entity/mob/PiglinEntity;Z)V", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/mob/PiglinBrain;acceptsForBarter(Lnet/minecraft/item/ItemStack;)Z"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
 	private static void astromine$consumeOffHandItem(PiglinEntity piglin, boolean barter, CallbackInfo ci, ItemStack stack) {
-		if (stack.isIn(AMTags.TRICKS_PIGLINS)) { //TODO: make sure this works correctly
+		if (stack.isIn(AMTagKeys.ItemTags.TRICKS_PIGLINS)) { //TODO: make sure this works correctly
 			var optional = piglin.getBrain().getOptionalMemory(MemoryModuleType.NEAREST_VISIBLE_PLAYER);
 			
 			if (optional.isPresent() && optional.get() instanceof ServerPlayerEntity player) {

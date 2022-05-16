@@ -163,7 +163,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 		super.tick();
 		
 		if (!world.isClient) {
-			if (world.getRegistryKey().equals(AMWorlds.EARTH_SPACE_WORLD)) {
+			if (world.getRegistryKey().equals(AMWorlds.EARTH_ORBIT_WORLD)) {
 				setVelocity(0.0F, 0.0F, 0.0F);
 				
 				dataTracker.set(IS_RUNNING, false);

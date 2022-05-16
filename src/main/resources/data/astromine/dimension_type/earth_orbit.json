@@ -14,5 +14,5 @@
   "bed_works": false,
   "piglin_safe": false,
   "fixed_time": 15000,
-  "effects": "astromine:earth_space"
+  "effects": "astromine:earth_orbit"
 }

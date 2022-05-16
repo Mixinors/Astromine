@@ -26,7 +26,6 @@ package com.github.mixinors.astromine.common.item;
 
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.item.storage.SimpleEnergyStorageItem;
-import com.github.mixinors.astromine.registry.common.AMTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemGroup;
@@ -36,6 +35,8 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import com.github.mixinors.astromine.registry.common.AMTagKeys;
 import team.reborn.energy.api.base.SimpleBatteryItem;
 
 public class DrillItem extends MiningToolItem implements SimpleBatteryItem {
@@ -44,7 +45,7 @@ public class DrillItem extends MiningToolItem implements SimpleBatteryItem {
 	private final long capacity;
 	
 	public DrillItem(ToolMaterial material, float attackDamage, float attackSpeed, int radius, long capacity, Settings settings) {
-		super(attackDamage, attackSpeed, material, AMTags.DRILL_MINEABLES, settings);
+		super(attackDamage, attackSpeed, material, AMTagKeys.BlockTags.DRILL_MINEABLE, settings);
 		
 		this.radius = radius;
 		this.material = material;

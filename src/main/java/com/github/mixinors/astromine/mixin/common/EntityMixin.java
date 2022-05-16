@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.mixin.common;
 
 import com.github.mixinors.astromine.common.access.EntityAccessor;
 import com.github.mixinors.astromine.common.registry.DimensionLayerRegistry;
-import com.github.mixinors.astromine.registry.common.AMTags;
+import com.github.mixinors.astromine.registry.common.AMTagKeys;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -100,7 +100,7 @@ public abstract class EntityMixin implements EntityAccessor {
 	
 	@Override
 	public boolean astromine$isInIndustrialFluid() {
-		return !this.firstUpdate && this.fluidHeight.getDouble(AMTags.INDUSTRIAL_FLUID) > 0.0D;
+		return !this.firstUpdate && this.fluidHeight.getDouble(AMTagKeys.FluidTags.INDUSTRIAL_FLUIDS) > 0.0D;
 	}
 	
 	@Inject(at = @At("HEAD"), method = "tickNetherPortal()V")
@@ -184,7 +184,7 @@ public abstract class EntityMixin implements EntityAccessor {
 	
 	@Inject(method = "updateWaterState", at = @At("RETURN"), cancellable = true)
 	private void astromine$updateIndustrialFluidState(CallbackInfoReturnable<Boolean> cir) {
-		if (this.updateMovementInFluid(AMTags.INDUSTRIAL_FLUID, 0.014)) {
+		if (this.updateMovementInFluid(AMTagKeys.FluidTags.INDUSTRIAL_FLUIDS, 0.014)) {
 			cir.setReturnValue(true);
 		}
 	}

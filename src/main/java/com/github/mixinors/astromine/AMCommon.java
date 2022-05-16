@@ -77,7 +77,6 @@ public class AMCommon implements ModInitializer {
 		AMBiomeSources.init();
 		AMBiomes.init();
 		AMFluids.init();
-		AMBreathables.init();
 		AMChunkGenerators.init();
 		AMGravities.init();
 		AMDimensionLayers.init();

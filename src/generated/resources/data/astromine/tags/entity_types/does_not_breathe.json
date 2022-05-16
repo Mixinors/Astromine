@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:armor_stand",
+    "minecraft:iron_golem",
+    "#c:skeletons",
+    "#c:space_slimes"
+  ]
+}
