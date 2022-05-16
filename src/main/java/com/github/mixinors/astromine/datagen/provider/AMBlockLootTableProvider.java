@@ -33,7 +33,6 @@ import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
-
 import net.minecraft.block.Block;
 import net.minecraft.data.server.BlockLootTableGenerator;
 import net.minecraft.item.Item;
@@ -75,10 +74,10 @@ public class AMBlockLootTableProvider extends FabricBlockLootTableProvider {
 	
 	public static LootTable.Builder machineDrops(Block drop) {
 		if (drop instanceof BlockWithEntity machine && machine.saveTagToDroppedItem()) {
-			LootTable.Builder builder = LootTable.builder().pool(addSurvivesExplosionCondition(machine, LootPool.builder().rolls(ConstantLootNumberProvider.create(1.0f)).with(ItemEntry.builder(machine))));
+			var builder = LootTable.builder().pool(addSurvivesExplosionCondition(machine, LootPool.builder().rolls(ConstantLootNumberProvider.create(1.0f)).with(ItemEntry.builder(machine))));
 			
-			CopyNbtLootFunction.Builder copyNbtBuilder = CopyNbtLootFunction.builder(ContextLootNbtProvider.BLOCK_ENTITY);
-			BlockWithEntity.SavedData savedData = machine.getSavedDataForDroppedItem();
+			var copyNbtBuilder = CopyNbtLootFunction.builder(ContextLootNbtProvider.BLOCK_ENTITY);
+			var savedData = machine.getSavedDataForDroppedItem();
 			if (savedData.redstoneControl()) {
 				copyNbtBuilder = copyNbtBuilder.withOperation("RedstoneControl", "BlockEntityTag.RedstoneControl");
 			}

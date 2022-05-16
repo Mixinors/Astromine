@@ -160,13 +160,13 @@ public sealed interface TransferNetworkType<T> extends NetworkType<Storage<T>> p
 		// Simulate extraction first.
 		long maxExtracted;
 		
-		try (Transaction extractionTestTransaction = Transaction.openNested(transaction)) {
+		try (var extractionTestTransaction = Transaction.openNested(transaction)) {
 			maxExtracted = from.extract(resource, maxAmount, extractionTestTransaction);
 		}
 		
-		try (Transaction moveTransaction = Transaction.openNested(transaction)) {
+		try (var moveTransaction = Transaction.openNested(transaction)) {
 			// Then insert what can be extracted.
-			long accepted = to.insert(resource, maxExtracted, moveTransaction);
+			var accepted = to.insert(resource, maxExtracted, moveTransaction);
 			
 			// Extract for real.
 			if (from.extract(resource, accepted, moveTransaction) == accepted) {

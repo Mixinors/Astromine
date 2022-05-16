@@ -72,9 +72,6 @@ public class EarthOrbitChunkGenerator extends ChunkGenerator {
 	
 	private final OctaveNoiseSampler<OpenSimplexNoise> noise;
 	
-	public EarthSpaceChunkGenerator(Registry<StructureSet> structureFeatureRegistry, long seed, Registry<Biome> biomeRegistry) {
-		super(structureFeatureRegistry, Optional.empty(), new EarthSpaceBiomeSource(biomeRegistry, seed));
-		
 	public EarthOrbitChunkGenerator(Registry<StructureSet> structureFeatureRegistry, long seed, Registry<Biome> biomeRegistry) {
 		super(structureFeatureRegistry, Optional.empty(), new EarthOrbitBiomeSource(biomeRegistry, seed));
 		

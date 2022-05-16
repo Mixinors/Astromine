@@ -32,20 +32,17 @@ import com.github.mixinors.astromine.datagen.family.material.MaterialFamilies;
 import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
 import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant;
 import com.github.mixinors.astromine.registry.common.AMItems;
-
+import com.github.mixinors.astromine.registry.common.AMTagKeys;
 import com.shnupbups.piglib.Piglib;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-
-import com.github.mixinors.astromine.registry.common.AMTagKeys;
 import org.jetbrains.annotations.Nullable;
 
 public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
-
+	
 	
 	public AMItemTagProvider(FabricDataGenerator dataGenerator, @Nullable BlockTagProvider blockTagProvider) {
 		super(dataGenerator, blockTagProvider);
@@ -212,12 +209,12 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 				getOrCreateTagBuilder(DatagenLists.ItemTagLists.BLOCK_FAMILY_VARIANTS.get(variant)).add(block.asItem());
 			}
 		}));
-
+		
 		DatagenLists.FluidLists.FLUIDS.forEach((fluid) -> {
 			var bucketTagBuilder = getOrCreateTagBuilder(AMTagKeys.createCommonItemTag(Registry.FLUID.getId(fluid.getStill()).getPath() + "_buckets"));
 			bucketTagBuilder.add(fluid.getBucketItem());
 		});
-
+		
 		DatagenLists.ItemTagLists.GENERIC_TAGS.forEach((variantSet, tagKey) -> {
 			var tag = getOrCreateTagBuilder(tagKey);
 			variantSet.forEach((variant) -> {
@@ -226,12 +223,12 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 				}
 			});
 		});
-
+		
 		DatagenLists.ItemVariantLists.TOOL_VARIANTS.forEach((variant) -> getOrCreateTagBuilder(AMTagKeys.createItemTag(new Identifier("fabric", variant.getTagPath()))).addTag(variant.getTag()));
 		
 		var drillsTagBuilder = getOrCreateTagBuilder(AMTagKeys.createItemTag(AMCommon.id("drills")));
 		DatagenLists.ItemLists.DRILLS.forEach(drillsTagBuilder::add);
-
+		
 		DatagenLists.ItemTagLists.COPY.forEach(this::copy);
 		
 		getOrCreateTagBuilder(AMTagKeys.createCommonItemTag("gold_apples"))

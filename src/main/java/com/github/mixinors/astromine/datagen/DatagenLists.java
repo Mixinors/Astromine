@@ -1,21 +1,14 @@
 package com.github.mixinors.astromine.datagen;
 
-import java.util.List;
-import java.util.Map;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-
 import com.github.mixinors.astromine.common.fluid.SimpleFluid;
 import com.github.mixinors.astromine.datagen.family.block.AMBlockFamilies;
 import com.github.mixinors.astromine.datagen.family.material.variant.BlockVariant;
 import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant;
-import com.github.mixinors.astromine.registry.common.AMEntityTypes;
-import com.github.mixinors.astromine.registry.common.AMTagKeys;
-import com.github.mixinors.astromine.registry.common.AMBlocks;
-import com.github.mixinors.astromine.registry.common.AMFluids;
-import com.github.mixinors.astromine.registry.common.AMItems;
-
+import com.github.mixinors.astromine.registry.common.*;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBlockTags;
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
 import net.minecraft.block.Block;
 import net.minecraft.data.family.BlockFamily;
 import net.minecraft.entity.EntityType;
@@ -23,8 +16,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.tag.TagKey;
 
-import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBlockTags;
-import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
+import java.util.List;
+import java.util.Map;
 
 public class DatagenLists {
 	public static class BlockLists {
@@ -45,7 +38,7 @@ public class DatagenLists {
 				AMBlocks.PRIMITIVE_BUFFER.get(),
 				AMBlocks.PRIMITIVE_CAPACITOR.get()
 		);
-
+		
 		public static final List<Block> BASIC_MACHINES = List.of(
 				AMBlocks.BASIC_TANK.get(),
 				AMBlocks.BASIC_SOLID_GENERATOR.get(),
@@ -63,7 +56,7 @@ public class DatagenLists {
 				AMBlocks.BASIC_BUFFER.get(),
 				AMBlocks.BASIC_CAPACITOR.get()
 		);
-
+		
 		public static final List<Block> ADVANCED_MACHINES = List.of(
 				AMBlocks.ADVANCED_TANK.get(),
 				AMBlocks.ADVANCED_SOLID_GENERATOR.get(),
@@ -81,7 +74,7 @@ public class DatagenLists {
 				AMBlocks.ADVANCED_BUFFER.get(),
 				AMBlocks.ADVANCED_CAPACITOR.get()
 		);
-
+		
 		public static final List<Block> ELITE_MACHINES = List.of(
 				AMBlocks.ELITE_TANK.get(),
 				AMBlocks.ELITE_SOLID_GENERATOR.get(),
@@ -99,23 +92,23 @@ public class DatagenLists {
 				AMBlocks.ELITE_BUFFER.get(),
 				AMBlocks.ELITE_CAPACITOR.get()
 		);
-
+		
 		public static final List<Block> CREATIVE_MACHINES = List.of(
 				AMBlocks.CREATIVE_TANK.get(),
 				AMBlocks.CREATIVE_BUFFER.get(),
 				AMBlocks.CREATIVE_CAPACITOR.get()
 		);
-
+		
 		public static final List<Block> MISC_MACHINES = List.of(
 				AMBlocks.FLUID_EXTRACTOR.get(),
 				AMBlocks.FLUID_INSERTER.get(),
-
+				
 				AMBlocks.BLOCK_BREAKER.get(),
 				AMBlocks.BLOCK_PLACER.get(),
-
+				
 				AMBlocks.PUMP.get()
 		);
-
+		
 		public static final List<Block> MACHINES = new ImmutableList.Builder<Block>()
 				.addAll(PRIMITIVE_MACHINES)
 				.addAll(BASIC_MACHINES)
@@ -124,19 +117,19 @@ public class DatagenLists {
 				.addAll(CREATIVE_MACHINES)
 				.addAll(MISC_MACHINES)
 				.build();
-
+		
 		public static final List<Block> ENERGY_CABLES = List.of(
 				AMBlocks.PRIMITIVE_ENERGY_CABLE.get(),
 				AMBlocks.BASIC_ENERGY_CABLE.get(),
 				AMBlocks.ADVANCED_ENERGY_CABLE.get(),
 				AMBlocks.ELITE_ENERGY_CABLE.get()
 		);
-
+		
 		public static final List<Block> INFINIBURN_BLOCKS = List.of(
 				AMBlocks.BLAZING_ASTEROID_STONE.get()
 		);
 	}
-
+	
 	public static class ItemLists {
 		public static final List<Item> DRILLS = List.of(
 				AMItems.PRIMITIVE_DRILL.get(),
@@ -144,7 +137,7 @@ public class DatagenLists {
 				AMItems.ADVANCED_DRILL.get(),
 				AMItems.ELITE_DRILL.get()
 		);
-
+		
 		public static final List<Item> ONE_BIOFUEL_ITEMS = List.of(
 				Items.GRASS,
 				Items.FERN,
@@ -170,7 +163,7 @@ public class DatagenLists {
 				Items.SUGAR,
 				Items.HONEYCOMB
 		);
-
+		
 		public static final List<Item> TWO_BIOFUEL_ITEMS = List.of(
 				Items.PORKCHOP,
 				Items.COOKED_PORKCHOP,
@@ -196,12 +189,12 @@ public class DatagenLists {
 				Items.CHORUS_FLOWER,
 				Items.CHORUS_PLANT
 		);
-
+		
 		public static final List<Item> FOUR_BIOFUEL_ITEMS = List.of(
 				Items.CAKE,
 				Items.SPORE_BLOSSOM
 		);
-
+		
 		public static final List<Item> NINE_BIOFUEL_ITEMS = List.of(
 				Items.HONEY_BLOCK,
 				Items.HONEYCOMB_BLOCK,
@@ -209,7 +202,7 @@ public class DatagenLists {
 				Items.MOSS_BLOCK
 		);
 	}
-
+	
 	public static class FluidLists {
 		public static final List<SimpleFluid> INDUSTRIAL_FLUIDS = List.of(
 				AMFluids.OIL,
@@ -218,7 +211,7 @@ public class DatagenLists {
 				AMFluids.OXYGEN,
 				AMFluids.HYDROGEN
 		);
-
+		
 		public static final List<SimpleFluid> MOLTEN_FLUIDS = List.of(
 				AMFluids.MOLTEN_AMETHYST,
 				AMFluids.MOLTEN_ASTERITE,
@@ -244,13 +237,13 @@ public class DatagenLists {
 				AMFluids.MOLTEN_TIN,
 				AMFluids.MOLTEN_UNIVITE
 		);
-
+		
 		public static final List<SimpleFluid> FLUIDS = ImmutableList.<SimpleFluid>builder()
-				.addAll(INDUSTRIAL_FLUIDS)
-				.addAll(MOLTEN_FLUIDS)
-				.build();
+																	.addAll(INDUSTRIAL_FLUIDS)
+																	.addAll(MOLTEN_FLUIDS)
+																	.build();
 	}
-
+	
 	public static class EntityTypeLists {
 		public static final List<EntityType<?>> FISH = List.of(
 				EntityType.COD,
@@ -258,24 +251,24 @@ public class DatagenLists {
 				EntityType.SALMON,
 				EntityType.TROPICAL_FISH
 		);
-
+		
 		public static final List<EntityType<?>> SQUIDS = List.of(
 				EntityType.SQUID,
 				EntityType.GLOW_SQUID
 		);
-
+		
 		public static final List<EntityType<?>> GUARDIANS = List.of(
 				EntityType.GUARDIAN,
 				EntityType.ELDER_GUARDIAN
 		);
-
+		
 		public static final List<EntityType<?>> SKELETONS = List.of(
 				EntityType.SKELETON,
 				EntityType.WITHER_SKELETON,
 				EntityType.STRAY,
 				EntityType.SKELETON_HORSE
 		);
-
+		
 		public static final List<EntityType<?>> ZOMBIES = List.of(
 				EntityType.ZOMBIE,
 				EntityType.ZOMBIE_VILLAGER,
@@ -285,23 +278,23 @@ public class DatagenLists {
 				EntityType.ZOMBIE_HORSE,
 				EntityType.DROWNED
 		);
-
+		
 		public static final List<EntityType<?>> SPACE_SLIMES = List.of(
 				AMEntityTypes.SPACE_SLIME.get(),
 				AMEntityTypes.SUPER_SPACE_SLIME.get()
 		);
-
+		
 		public static final List<EntityType<?>> DOES_NOT_BREATHE_ENTITY_TYPES = List.of(
 				EntityType.ARMOR_STAND,
 				EntityType.IRON_GOLEM
 		);
-
+		
 		public static final List<EntityType<?>> CAN_BREATHE_WATER_ENTITY_TYPES = List.of(
 				EntityType.AXOLOTL,
 				EntityType.DOLPHIN, // not scientifically accurate, but shut up
 				EntityType.TURTLE
 		);
-
+		
 		public static final List<EntityType<?>> CAN_BREATHE_LAVA_ENTITY_TYPES = List.of(
 				EntityType.VEX,
 				EntityType.MAGMA_CUBE,
@@ -313,7 +306,7 @@ public class DatagenLists {
 				EntityType.STRIDER
 		);
 	}
-
+	
 	public static class ItemTagLists {
 		public static final List<TagKey<Item>> ONE_BIOFUEL_TAGS = List.of(
 				AMTagKeys.createCommonItemTag("mushrooms"),
@@ -323,15 +316,15 @@ public class DatagenLists {
 				AMTagKeys.createCommonItemTag("berries"),
 				AMTagKeys.createCommonItemTag("seeds")
 		);
-
+		
 		public static final List<TagKey<Item>> FOUR_BIOFUEL_TAGS = List.of(
 				AMTagKeys.createCommonItemTag("metal_apples")
 		);
-
+		
 		public static final List<TagKey<Item>> NINE_BIOFUEL_TAGS = List.of(
 				AMTagKeys.createCommonItemTag("gourds")
 		);
-
+		
 		/**
 		 * To add vanilla tags to an Astromine tag they need to be 'forced'
 		 */
@@ -339,35 +332,35 @@ public class DatagenLists {
 				net.minecraft.tag.ItemTags.SMALL_FLOWERS,
 				net.minecraft.tag.ItemTags.LEAVES
 		);
-
+		
 		public static final List<TagKey<Item>> TWO_BIOFUEL_TAGS_FORCED = List.of(
 				net.minecraft.tag.ItemTags.TALL_FLOWERS,
 				net.minecraft.tag.ItemTags.SAPLINGS
 		);
-
+		
 		public static final List<TagKey<Item>> FOUR_BIOFUEL_TAGS_FORCED = List.of(
 				net.minecraft.tag.ItemTags.FISHES
 		);
-
+		
 		public static final Map<List<ItemVariant>, TagKey<Item>> GENERIC_TAGS = Map.of(
 				ItemVariantLists.CLUSTER_VARIANTS, AMTagKeys.createCommonItemTag("clusters"),
 				ItemVariantLists.ARMOR_VARIANTS, AMTagKeys.createCommonItemTag("armor"),
 				ItemVariantLists.TOOL_VARIANTS, AMTagKeys.createCommonItemTag("tools")
 		);
-
+		
 		public static final Map<TagKey<Block>, TagKey<Item>> COPY = ImmutableMap.<TagKey<Block>, TagKey<Item>>builder()
-				.putAll(Map.of(
-						AMTagKeys.BlockTags.YELLOW_SANDSTONES, AMTagKeys.ItemTags.YELLOW_SANDSTONES,
-						AMTagKeys.BlockTags.RED_SANDSTONES, AMTagKeys.ItemTags.RED_SANDSTONES,
-						AMTagKeys.BlockTags.SANDSTONES, AMTagKeys.ItemTags.SANDSTONES,
-						AMTagKeys.BlockTags.QUARTZ_BLOCKS, AMTagKeys.ItemTags.QUARTZ_BLOCKS,
-						AMTagKeys.BlockTags.UNWAXED_COPPER_BLOCKS, AMTagKeys.ItemTags.UNWAXED_COPPER_BLOCKS,
-						AMTagKeys.BlockTags.WAXED_COPPER_BLOCKS, AMTagKeys.ItemTags.WAXED_COPPER_BLOCKS,
-						AMTagKeys.BlockTags.COPPER_BLOCKS, AMTagKeys.ItemTags.COPPER_BLOCKS,
-						AMTagKeys.BlockTags.UNWAXED_CUT_COPPER, AMTagKeys.ItemTags.UNWAXED_CUT_COPPER,
-						AMTagKeys.BlockTags.WAXED_CUT_COPPER, AMTagKeys.ItemTags.WAXED_CUT_COPPER,
-						AMTagKeys.BlockTags.CUT_COPPER, AMTagKeys.ItemTags.CUT_COPPER
-				)).putAll(Map.of(
+																				.putAll(Map.of(
+																						AMTagKeys.BlockTags.YELLOW_SANDSTONES, AMTagKeys.ItemTags.YELLOW_SANDSTONES,
+																						AMTagKeys.BlockTags.RED_SANDSTONES, AMTagKeys.ItemTags.RED_SANDSTONES,
+																						AMTagKeys.BlockTags.SANDSTONES, AMTagKeys.ItemTags.SANDSTONES,
+																						AMTagKeys.BlockTags.QUARTZ_BLOCKS, AMTagKeys.ItemTags.QUARTZ_BLOCKS,
+																						AMTagKeys.BlockTags.UNWAXED_COPPER_BLOCKS, AMTagKeys.ItemTags.UNWAXED_COPPER_BLOCKS,
+																						AMTagKeys.BlockTags.WAXED_COPPER_BLOCKS, AMTagKeys.ItemTags.WAXED_COPPER_BLOCKS,
+																						AMTagKeys.BlockTags.COPPER_BLOCKS, AMTagKeys.ItemTags.COPPER_BLOCKS,
+																						AMTagKeys.BlockTags.UNWAXED_CUT_COPPER, AMTagKeys.ItemTags.UNWAXED_CUT_COPPER,
+																						AMTagKeys.BlockTags.WAXED_CUT_COPPER, AMTagKeys.ItemTags.WAXED_CUT_COPPER,
+																						AMTagKeys.BlockTags.CUT_COPPER, AMTagKeys.ItemTags.CUT_COPPER
+																				)).putAll(Map.of(
 						AMTagKeys.BlockTags.PURPUR_BLOCKS, AMTagKeys.ItemTags.PURPUR_BLOCKS,
 						AMTagKeys.BlockTags.MUSHROOMS, AMTagKeys.ItemTags.MUSHROOMS,
 						AMTagKeys.BlockTags.MUSHROOM_BLOCKS, AMTagKeys.ItemTags.MUSHROOM_BLOCKS,
@@ -381,7 +374,7 @@ public class DatagenLists {
 				)).putAll(Map.of(
 						ConventionalBlockTags.ORES, ConventionalItemTags.ORES
 				)).build();
-
+		
 		public static final Map<BlockFamily.Variant, TagKey<Item>> BLOCK_FAMILY_VARIANTS = Map.of(
 				BlockFamily.Variant.SLAB, net.minecraft.tag.ItemTags.SLABS,
 				BlockFamily.Variant.STAIRS, net.minecraft.tag.ItemTags.STAIRS,
@@ -393,47 +386,47 @@ public class DatagenLists {
 				BlockFamily.Variant.TRAPDOOR, net.minecraft.tag.ItemTags.TRAPDOORS
 		);
 	}
-
+	
 	public static class BlockTagLists {
 		public static final List<TagKey<Block>> INFINIBURN_TAGS = List.of(
 				AMTagKeys.createCommonBlockTag("meteor_ores"),
 				AMTagKeys.createCommonBlockTag("asteroid_ores")
 		);
-
+		
 		public static final Map<BlockFamily.Variant, TagKey<Block>> BLOCK_FAMILY_VARIANTS = ImmutableMap.<BlockFamily.Variant, TagKey<Block>>builder()
-				.put(BlockFamily.Variant.SLAB, net.minecraft.tag.BlockTags.SLABS)
-				.put(BlockFamily.Variant.STAIRS, net.minecraft.tag.BlockTags.STAIRS)
-				.put(BlockFamily.Variant.WALL, net.minecraft.tag.BlockTags.WALLS)
-				.put(BlockFamily.Variant.BUTTON, net.minecraft.tag.BlockTags.BUTTONS)
-				.put(BlockFamily.Variant.DOOR, net.minecraft.tag.BlockTags.DOORS)
-				.put(BlockFamily.Variant.FENCE, net.minecraft.tag.BlockTags.FENCES)
-				.put(BlockFamily.Variant.SIGN, net.minecraft.tag.BlockTags.SIGNS)
-				.put(BlockFamily.Variant.TRAPDOOR, net.minecraft.tag.BlockTags.TRAPDOORS)
-				.put(BlockFamily.Variant.PRESSURE_PLATE, net.minecraft.tag.BlockTags.PRESSURE_PLATES)
-				.put(BlockFamily.Variant.FENCE_GATE, net.minecraft.tag.BlockTags.FENCE_GATES)
-				.put(BlockFamily.Variant.WALL_SIGN, net.minecraft.tag.BlockTags.WALL_SIGNS)
-				.build();
+																										.put(BlockFamily.Variant.SLAB, net.minecraft.tag.BlockTags.SLABS)
+																										.put(BlockFamily.Variant.STAIRS, net.minecraft.tag.BlockTags.STAIRS)
+																										.put(BlockFamily.Variant.WALL, net.minecraft.tag.BlockTags.WALLS)
+																										.put(BlockFamily.Variant.BUTTON, net.minecraft.tag.BlockTags.BUTTONS)
+																										.put(BlockFamily.Variant.DOOR, net.minecraft.tag.BlockTags.DOORS)
+																										.put(BlockFamily.Variant.FENCE, net.minecraft.tag.BlockTags.FENCES)
+																										.put(BlockFamily.Variant.SIGN, net.minecraft.tag.BlockTags.SIGNS)
+																										.put(BlockFamily.Variant.TRAPDOOR, net.minecraft.tag.BlockTags.TRAPDOORS)
+																										.put(BlockFamily.Variant.PRESSURE_PLATE, net.minecraft.tag.BlockTags.PRESSURE_PLATES)
+																										.put(BlockFamily.Variant.FENCE_GATE, net.minecraft.tag.BlockTags.FENCE_GATES)
+																										.put(BlockFamily.Variant.WALL_SIGN, net.minecraft.tag.BlockTags.WALL_SIGNS)
+																										.build();
 	}
-
+	
 	public static class EntityTypeTagLists {
 		public static final List<TagKey<EntityType<?>>> DOES_NOT_BREATHE_TAGS = List.of(
 				AMTagKeys.EntityTypeTags.SKELETONS,
 				AMTagKeys.EntityTypeTags.SPACE_SLIMES
 		);
-
+		
 		public static final List<TagKey<EntityType<?>>> CAN_BREATHE_WATER_TAGS = List.of(
 				AMTagKeys.EntityTypeTags.FISH,
 				AMTagKeys.EntityTypeTags.SQUIDS,
 				AMTagKeys.EntityTypeTags.GUARDIANS,
 				AMTagKeys.EntityTypeTags.ZOMBIES // note: need to do special handling for husk -> zombie -> drowned
 		);
-
+		
 		public static final List<TagKey<EntityType<?>>> CANNOT_BREATHE_OXYGEN_TAGS = List.of(
 				AMTagKeys.EntityTypeTags.FISH,
 				AMTagKeys.EntityTypeTags.SQUIDS
 		);
 	}
-
+	
 	public static class BlockVariantLists {
 		public static final List<BlockVariant> ORE_VARIANTS = List.of(
 				BlockVariant.STONE_ORE,
@@ -443,7 +436,7 @@ public class DatagenLists {
 				BlockVariant.ASTEROID_ORE
 		);
 	}
-
+	
 	public static class ItemVariantLists {
 		public static final List<ItemVariant> ARMOR_VARIANTS = List.of(
 				ItemVariant.HELMET,
@@ -451,7 +444,7 @@ public class DatagenLists {
 				ItemVariant.LEGGINGS,
 				ItemVariant.BOOTS
 		);
-
+		
 		public static final List<ItemVariant> TOOL_VARIANTS = List.of(
 				ItemVariant.PICKAXE,
 				ItemVariant.AXE,
@@ -459,19 +452,19 @@ public class DatagenLists {
 				ItemVariant.SWORD,
 				ItemVariant.HOE
 		);
-
+		
 		public static final List<ItemVariant> EQUIPMENT_VARIANTS = ImmutableList.<ItemVariant>builder()
-				.addAll(ARMOR_VARIANTS)
-				.addAll(TOOL_VARIANTS)
-				.add(ItemVariant.HORSE_ARMOR)
-				.build();
-
+																				.addAll(ARMOR_VARIANTS)
+																				.addAll(TOOL_VARIANTS)
+																				.add(ItemVariant.HORSE_ARMOR)
+																				.build();
+		
 		public static final List<ItemVariant> CLUSTER_VARIANTS = List.of(
 				ItemVariant.METEOR_ORE_CLUSTER,
 				ItemVariant.ASTEROID_ORE_CLUSTER
 		);
 	}
-
+	
 	public static class BlockFamilyLists {
 		public static final List<BlockFamily> SPACE_STONE_FAMILIES = List.of(
 				AMBlockFamilies.METEOR_STONE,

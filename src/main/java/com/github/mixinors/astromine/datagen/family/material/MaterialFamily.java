@@ -632,7 +632,13 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 		}
 	}
 	
-	public record AlloyInfo(MaterialFamily firstIngredient, int firstCount, MaterialFamily secondIngredient,
-			int secondCount, int outputCount, int time, int energy) {
-	}
+	public record AlloyInfo(
+			MaterialFamily firstIngredient,
+			int firstCount,
+			MaterialFamily secondIngredient,
+			int secondCount,
+			int outputCount,
+			int time,
+			int energy
+	) {}
 }

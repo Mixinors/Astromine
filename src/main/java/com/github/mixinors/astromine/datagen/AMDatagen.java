@@ -24,32 +24,16 @@
 
 package com.github.mixinors.astromine.datagen;
 
-import com.github.mixinors.astromine.common.fluid.SimpleFluid;
 import com.github.mixinors.astromine.datagen.family.block.AMBlockFamilies;
 import com.github.mixinors.astromine.datagen.family.material.MaterialFamilies;
-import com.github.mixinors.astromine.datagen.family.material.variant.BlockVariant;
-import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant;
 import com.github.mixinors.astromine.datagen.provider.AMBlockLootTableProvider;
 import com.github.mixinors.astromine.datagen.provider.AMEntityLootTableProvider;
 import com.github.mixinors.astromine.datagen.provider.AMModelProvider;
 import com.github.mixinors.astromine.datagen.provider.AMRecipeProvider;
-import com.github.mixinors.astromine.datagen.provider.tag.AMBlockTagProvider;
-import com.github.mixinors.astromine.datagen.provider.tag.AMDimensionTypeTagProvider;
-import com.github.mixinors.astromine.datagen.provider.tag.AMEntityTypeTagProvider;
-import com.github.mixinors.astromine.datagen.provider.tag.AMFluidTagProvider;
-import com.github.mixinors.astromine.datagen.provider.tag.AMItemTagProvider;
-import com.github.mixinors.astromine.registry.common.AMBlocks;
-import com.github.mixinors.astromine.registry.common.AMFluids;
-import com.google.common.collect.ImmutableList;
+import com.github.mixinors.astromine.datagen.provider.tag.*;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.fabricmc.fabric.api.mininglevel.v1.MiningLevelManager;
-import net.fabricmc.yarn.constants.MiningLevels;
-import net.minecraft.block.Block;
-import net.minecraft.tag.BlockTags;
-import net.minecraft.tag.TagKey;
 
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -58,18 +42,23 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 	public void onInitializeDataGenerator(FabricDataGenerator dataGenerator) {
 		AMBlockFamilies.init();
 		MaterialFamilies.init();
+		
 		dataGenerator.addProvider(AMModelProvider::new);
 		dataGenerator.addProvider(AMRecipeProvider::new);
+		
 		var blockTagProvider = new AMBlockTagProvider(dataGenerator);
+		
 		dataGenerator.addProvider(blockTagProvider);
+		
 		dataGenerator.addProvider(new AMItemTagProvider(dataGenerator, blockTagProvider));
+		
 		dataGenerator.addProvider(AMFluidTagProvider::new);
 		dataGenerator.addProvider(AMEntityTypeTagProvider::new);
 		dataGenerator.addProvider(AMDimensionTypeTagProvider::new);
 		dataGenerator.addProvider(AMBlockLootTableProvider::new);
 		dataGenerator.addProvider(AMEntityLootTableProvider::new);
 	}
-
+	
 	public static <T extends Comparable<?>, U> TreeMap<T, U> toTreeMap(Map<T, U> map) {
 		return new TreeMap<>(map);
 	}

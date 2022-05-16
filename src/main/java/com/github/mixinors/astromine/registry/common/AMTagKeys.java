@@ -25,7 +25,6 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluid;
@@ -33,7 +32,6 @@ import net.minecraft.item.Item;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.dimension.DimensionType;
 
 public class AMTagKeys {
@@ -81,7 +79,7 @@ public class AMTagKeys {
 		public static final TagKey<Block> GOURDS = createBlockTag(GOURDS_ID);
 		public static final TagKey<Block> WEEPING_VINES = createBlockTag(WEEPING_VINES_ID);
 		public static final TagKey<Block> TWISTING_VINES = createBlockTag(TWISTING_VINES_ID);
-
+		
 		public static final TagKey<Block> DRILL_MINEABLE = createBlockTag("mineable/drill");
 	}
 	
@@ -113,13 +111,13 @@ public class AMTagKeys {
 		public static final TagKey<Item> MAKES_NINE_BIOFUEL = createItemTag("makes_nine_biofuel");
 		
 		public static final TagKey<Item> BIOFUEL = createCommonItemTag("biofuel");
-
+		
 		public static final TagKey<Item> TRICKS_PIGLINS = createItemTag("tricks_piglins");
 	}
 	
 	public static class FluidTags {
 		public static final TagKey<Fluid> OXYGEN = createCommonFluidTag("oxygen");
-
+		
 		public static final TagKey<Fluid> INDUSTRIAL_FLUIDS = createFluidTag("industrial_fluids");
 		public static final TagKey<Fluid> MOLTEN_FLUIDS = createFluidTag("molten_fluids");
 		public static final TagKey<Fluid> ROCKET_FUELS = createFluidTag("rocket_fuels");
@@ -132,7 +130,7 @@ public class AMTagKeys {
 		public static final TagKey<EntityType<?>> SKELETONS = createCommonEntityTypeTag("skeletons");
 		public static final TagKey<EntityType<?>> ZOMBIES = createCommonEntityTypeTag("zombies");
 		public static final TagKey<EntityType<?>> SPACE_SLIMES = createCommonEntityTypeTag("space_slimes");
-
+		
 		public static final TagKey<EntityType<?>> DOES_NOT_BREATHE = createEntityTypeTag("does_not_breathe");
 		public static final TagKey<EntityType<?>> CAN_BREATHE_WATER = createEntityTypeTag("can_breathe_water");
 		public static final TagKey<EntityType<?>> CAN_BREATHE_LAVA = createEntityTypeTag("can_breathe_lava");
@@ -150,9 +148,11 @@ public class AMTagKeys {
 	public static TagKey<Block> createBlockTag(Identifier id) {
 		return TagKey.of(Registry.BLOCK_KEY, id);
 	}
+	
 	public static TagKey<Block> createBlockTag(String path) {
 		return createBlockTag(AMCommon.id(path));
 	}
+	
 	public static TagKey<Block> createCommonBlockTag(String path) {
 		return createBlockTag(createCommonTagId(path));
 	}
@@ -160,9 +160,11 @@ public class AMTagKeys {
 	public static TagKey<Item> createItemTag(Identifier id) {
 		return TagKey.of(Registry.ITEM_KEY, id);
 	}
+	
 	public static TagKey<Item> createItemTag(String path) {
 		return createItemTag(AMCommon.id(path));
 	}
+	
 	public static TagKey<Item> createCommonItemTag(String path) {
 		return createItemTag(createCommonTagId(path));
 	}
@@ -170,29 +172,35 @@ public class AMTagKeys {
 	public static TagKey<Fluid> createFluidTag(Identifier id) {
 		return TagKey.of(Registry.FLUID_KEY, id);
 	}
+	
 	public static TagKey<Fluid> createFluidTag(String path) {
 		return createFluidTag(AMCommon.id(path));
 	}
+	
 	public static TagKey<Fluid> createCommonFluidTag(String path) {
 		return createFluidTag(createCommonTagId(path));
 	}
-
+	
 	public static TagKey<EntityType<?>> createEntityTypeTag(Identifier id) {
 		return TagKey.of(Registry.ENTITY_TYPE_KEY, id);
 	}
+	
 	public static TagKey<EntityType<?>> createEntityTypeTag(String path) {
 		return createEntityTypeTag(AMCommon.id(path));
 	}
+	
 	public static TagKey<EntityType<?>> createCommonEntityTypeTag(String path) {
 		return createEntityTypeTag(createCommonTagId(path));
 	}
-
+	
 	public static TagKey<DimensionType> createDimensionTypeTag(Identifier id) {
 		return TagKey.of(Registry.DIMENSION_TYPE_KEY, id);
 	}
+	
 	public static TagKey<DimensionType> createDimensionTypeTag(String path) {
 		return createDimensionTypeTag(AMCommon.id(path));
 	}
+	
 	public static TagKey<DimensionType> createCommonDimensionTypeTag(String path) {
 		return createDimensionTypeTag(createCommonTagId(path));
 	}

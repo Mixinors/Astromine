@@ -34,11 +34,9 @@ import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
 import com.github.mixinors.astromine.datagen.family.material.variant.BlockVariant;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
-
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBlockTags;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.tag.TagKey;
@@ -47,7 +45,6 @@ import net.minecraft.util.registry.Registry;
 import java.util.Arrays;
 
 public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
-
 	public AMBlockTagProvider(FabricDataGenerator dataGenerator) {
 		super(dataGenerator);
 	}
@@ -107,7 +104,7 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 				}
 			}
 		});
-
+		
 		AMBlockFamilies.getFamilies().forEachOrdered(family -> family.getVariants().forEach((variant, block) -> {
 			if (DatagenLists.BlockTagLists.BLOCK_FAMILY_VARIANTS.containsKey(variant)) {
 				getOrCreateTagBuilder(DatagenLists.BlockTagLists.BLOCK_FAMILY_VARIANTS.get(variant)).add(block);

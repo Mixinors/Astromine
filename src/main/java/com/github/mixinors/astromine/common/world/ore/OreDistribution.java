@@ -38,10 +38,13 @@ import net.minecraft.world.gen.placementmodifier.*;
 import java.util.List;
 
 public record OreDistribution(
-		int veinSize, IntProvider veinsPerChunk,
-		YOffset min, YOffset max,
-		float discardOnAirChance, HeightRangePlacementModifierType type) {
-
+		int veinSize,
+		IntProvider veinsPerChunk,
+		YOffset min,
+		YOffset max,
+		float discardOnAirChance,
+		HeightRangePlacementModifierType type
+) {
 	/*
 		For reference, vanilla values:
 		- COAL_UPPER = uniform(17, 30, YOffset.fixed(136), YOffset.getTop());

@@ -59,7 +59,7 @@ public class HoloBridgeProjectorBlock extends HorizontalFacingBlockWithEntity {
 	public ActionResult onUse(BlockState state, World world, BlockPos position, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		var stack = player.getStackInHand(hand);
 		
-		boolean changeColor = false;
+		var changeColor = false;
 		Color color = null;
 		
 		if (stack.getItem() instanceof DyeItem dye) {

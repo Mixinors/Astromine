@@ -93,7 +93,7 @@ public class OilWellFeature extends Feature<DefaultFeatureConfig> {
 			}
 		}
 		
-		int geyserHeight = random.nextInt(GEYSER_MIN_HEIGHT, GEYSER_MAX_HEIGHT);
+		var geyserHeight = random.nextInt(GEYSER_MIN_HEIGHT, GEYSER_MAX_HEIGHT);
 		
 		for (var mutablePos = new BlockPos.Mutable(pos.getX(), pos.getY() + offsetY + BOTTOM_WELL_SIZE, pos.getZ()); mutablePos.getY() < topPos.getY() + geyserHeight; mutablePos.move(Direction.UP)) {
 			world.setBlockState(mutablePos, oilState, 0);

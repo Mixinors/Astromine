@@ -190,18 +190,18 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 				
 				if (theirEnergyStorage != null && theirEnergyStorage.supportsInsertion()) {
 					// We are an output only block entity, so we should transfer all energy to the other storage.
-					long maxAmount = !ourEnergyStorage.supportsInsertion() ? Long.MAX_VALUE
+					var maxAmount = !ourEnergyStorage.supportsInsertion() ? Long.MAX_VALUE
 							// We should maintain an equilibrium of energy between us.
 							: ourEnergyStorage.getAmount() - theirEnergyStorage.getAmount();
 					
 					if (maxAmount > 0) {
-						try (Transaction extractionTestTransaction = Transaction.openNested(transaction)) {
+						try (var extractionTestTransaction = Transaction.openNested(transaction)) {
 							maxAmount = ourEnergyStorage.extract(maxAmount, extractionTestTransaction);
 						}
 					}
 					
 					if (maxAmount > 0) {
-						try (Transaction insertionTestTransaction = Transaction.openNested(transaction)) {
+						try (var insertionTestTransaction = Transaction.openNested(transaction)) {
 							maxAmount = theirEnergyStorage.insert(maxAmount, insertionTestTransaction);
 						}
 					}

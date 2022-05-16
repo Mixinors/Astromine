@@ -33,8 +33,9 @@ import com.github.mixinors.astromine.common.util.EntityStorageUtils;
 import com.github.mixinors.astromine.registry.common.AMAttributes;
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
-import team.reborn.energy.api.EnergyStorage;
-
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalFluidTags;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -43,21 +44,13 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.math.Vec3d;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.Slice;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import net.fabricmc.fabric.api.tag.convention.v1.ConventionalFluidTags;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import team.reborn.energy.api.EnergyStorage;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends EntityMixin {
@@ -91,43 +84,43 @@ public abstract class LivingEntityMixin extends EntityMixin {
 			breathing = breathing && (chestStack.getItem() instanceof SpaceSuitItem);
 			breathing = breathing && (legsStack.getItem() instanceof SpaceSuitItem);
 			breathing = breathing && (feetStack.getItem() instanceof SpaceSuitItem);
-
-			var context = EntityStorageUtils.getContextForSlot((LivingEntity)(Object)this, EquipmentSlot.CHEST);
-
+			
+			var context = EntityStorageUtils.getContextForSlot((LivingEntity) (Object) this, EquipmentSlot.CHEST);
+			
 			if (context != null) {
 				var chestFluidStorage = (SimpleFluidItemStorage) context.find(FluidStorage.ITEM);
-
-				if(chestFluidStorage != null) {
-					Fluid fluid = chestFluidStorage.getResource().getFluid();
-					if(fluid.isIn(ConventionalFluidTags.WATER)) {
+				
+				if (chestFluidStorage != null) {
+					var fluid = chestFluidStorage.getResource().getFluid();
+					if (fluid.isIn(ConventionalFluidTags.WATER)) {
 						breathing = breathing && entityType.isIn(AMTagKeys.EntityTypeTags.CAN_BREATHE_WATER);
-					} else if(fluid.isIn(ConventionalFluidTags.LAVA)) {
+					} else if (fluid.isIn(ConventionalFluidTags.LAVA)) {
 						breathing = breathing && entityType.isIn(AMTagKeys.EntityTypeTags.CAN_BREATHE_LAVA);
-					} else if(fluid.isIn(AMTagKeys.FluidTags.OXYGEN)) {
+					} else if (fluid.isIn(AMTagKeys.FluidTags.OXYGEN)) {
 						breathing = breathing && !entityType.isIn(AMTagKeys.EntityTypeTags.CANNOT_BREATHE_OXYGEN);
 					}
 				}
-
+				
 				var chestEnergyStorage = context.find(EnergyStorage.ITEM);
-
+				
 				breathing = breathing && chestEnergyStorage != null && chestEnergyStorage.getAmount() > 0L;
-
+				
 				try (var transaction = Transaction.openOuter()) {
 					if (chestFluidStorage != null && !chestFluidStorage.isResourceBlank()) {
-						AMCommon.LOGGER.info("extract go brrr "+chestFluidStorage.getResource()+" x "+chestFluidStorage.getAmount());
+						AMCommon.LOGGER.info("extract go brrr " + chestFluidStorage.getResource() + " x " + chestFluidStorage.getAmount());
 						chestFluidStorage.extract(chestFluidStorage.getResource(), AMConfig.get().items.spaceSuitChestplateFluidConsumption, transaction);
 					}
-
+					
 					if (chestEnergyStorage != null) {
 						chestEnergyStorage.extract(AMConfig.get().items.spaceSuitChestplateEnergyConsumption, transaction);
 					}
-
+					
 					transaction.commit();
 				}
 			} else {
 				breathing = false;
 			}
-
+			
 			var component = EntityOxygenComponent.get(this);
 			
 			component.tick(breathing);
