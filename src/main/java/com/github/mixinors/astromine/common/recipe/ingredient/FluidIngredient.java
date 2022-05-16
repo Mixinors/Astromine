@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.recipe.ingredient;
 
-import com.github.mixinors.astromine.registry.common.AMTags;
+import com.github.mixinors.astromine.registry.common.AMTagKeys;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
@@ -125,14 +125,14 @@ public final class FluidIngredient {
 			if (jsonObject.has(TAG_KEY)) {
 				if (jsonObject.has(AMOUNT_KEY)) {
 					var entryAsId = new Identifier(jsonObject.get(TAG_KEY).getAsString());
-					var entryAsTag = AMTags.ofFluid(entryAsId);
+					var entryAsTag = AMTagKeys.createFluidTag(entryAsId);
 					
 					var entryAmount = jsonObject.get(AMOUNT_KEY).getAsLong();
 					
 					return new FluidIngredient(new TagEntry(entryAsTag, entryAmount));
 				} else {
 					var entryAsId = new Identifier(jsonObject.get(TAG_KEY).getAsString());
-					var entryAsTag = AMTags.ofFluid(entryAsId);
+					var entryAsTag = AMTagKeys.createFluidTag(entryAsId);
 					
 					return new FluidIngredient(new TagEntry(entryAsTag));
 				}
@@ -176,7 +176,7 @@ public final class FluidIngredient {
 		}
 		
 		if (entryType.equals(TAG_KEY)) {
-			var entryTag = AMTags.ofFluid(entryTypeId);
+			var entryTag = AMTagKeys.createFluidTag(entryTypeId);
 			
 			return new FluidIngredient(new TagEntry(entryTag, entryAmount));
 		}
