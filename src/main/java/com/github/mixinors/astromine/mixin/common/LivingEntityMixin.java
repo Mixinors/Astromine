@@ -24,34 +24,40 @@
 
 package com.github.mixinors.astromine.mixin.common;
 
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.component.entity.EntityOxygenComponent;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.item.SpaceSuitItem;
-import com.github.mixinors.astromine.common.registry.BreathableRegistry;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidItemStorage;
+import com.github.mixinors.astromine.common.util.EntityStorageUtils;
 import com.github.mixinors.astromine.registry.common.AMAttributes;
-import com.github.mixinors.astromine.registry.common.AMTags;
+import com.github.mixinors.astromine.registry.common.AMTagKeys;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
-import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
-import net.fabricmc.fabric.api.transfer.v1.item.PlayerInventoryStorage;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import team.reborn.energy.api.EnergyStorage;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.math.Vec3d;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import team.reborn.energy.api.EnergyStorage;
+
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalFluidTags;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends EntityMixin {
@@ -71,10 +77,8 @@ public abstract class LivingEntityMixin extends EntityMixin {
 	
 	@Inject(at = @At("HEAD"), method = "tick()V")
 	void astromine$tick(CallbackInfo callbackInformation) {
-		if (AMWorlds.isSpace(world.getRegistryKey()) && (Object) this instanceof PlayerEntity player) {
-			var entityType = getType();
-			
-			var entityBreathables = BreathableRegistry.INSTANCE.get(entityType);
+		var entityType = getType();
+		if (AMWorlds.isSpace(world.method_40134()) && !entityType.isIn(AMTagKeys.EntityTypeTags.DOES_NOT_BREATHE)) {
 			
 			var headStack = getEquippedStack(EquipmentSlot.HEAD);
 			var chestStack = getEquippedStack(EquipmentSlot.CHEST);
@@ -87,17 +91,43 @@ public abstract class LivingEntityMixin extends EntityMixin {
 			breathing = breathing && (chestStack.getItem() instanceof SpaceSuitItem);
 			breathing = breathing && (legsStack.getItem() instanceof SpaceSuitItem);
 			breathing = breathing && (feetStack.getItem() instanceof SpaceSuitItem);
-			
-			var context = ContainerItemContext.ofSingleSlot(PlayerInventoryStorage.of(player).getSlot(36 + EquipmentSlot.CHEST.getEntitySlotId()));
-			
-			var chestFluidStorage = (SimpleFluidItemStorage) context.find(FluidStorage.ITEM);
-			
-			breathing = breathing && chestFluidStorage != null && entityBreathables.stream().anyMatch(tag -> chestFluidStorage.getResource().getFluid().isIn(tag));
-			
-			var chestEnergyStorage = context.find(EnergyStorage.ITEM);
-			
-			breathing = breathing && chestEnergyStorage != null && chestEnergyStorage.getAmount() > 0L;
-			
+
+			var context = EntityStorageUtils.getContextForSlot((LivingEntity)(Object)this, EquipmentSlot.CHEST);
+
+			if (context != null) {
+				var chestFluidStorage = (SimpleFluidItemStorage) context.find(FluidStorage.ITEM);
+
+				if(chestFluidStorage != null) {
+					Fluid fluid = chestFluidStorage.getResource().getFluid();
+					if(fluid.isIn(ConventionalFluidTags.WATER)) {
+						breathing = breathing && entityType.isIn(AMTagKeys.EntityTypeTags.CAN_BREATHE_WATER);
+					} else if(fluid.isIn(ConventionalFluidTags.LAVA)) {
+						breathing = breathing && entityType.isIn(AMTagKeys.EntityTypeTags.CAN_BREATHE_LAVA);
+					} else if(fluid.isIn(AMTagKeys.FluidTags.OXYGEN)) {
+						breathing = breathing && !entityType.isIn(AMTagKeys.EntityTypeTags.CANNOT_BREATHE_OXYGEN);
+					}
+				}
+
+				var chestEnergyStorage = context.find(EnergyStorage.ITEM);
+
+				breathing = breathing && chestEnergyStorage != null && chestEnergyStorage.getAmount() > 0L;
+
+				try (var transaction = Transaction.openOuter()) {
+					if (chestFluidStorage != null && !chestFluidStorage.isResourceBlank()) {
+						AMCommon.LOGGER.info("extract go brrr "+chestFluidStorage.getResource()+" x "+chestFluidStorage.getAmount());
+						chestFluidStorage.extract(chestFluidStorage.getResource(), AMConfig.get().items.spaceSuitChestplateFluidConsumption, transaction);
+					}
+
+					if (chestEnergyStorage != null) {
+						chestEnergyStorage.extract(AMConfig.get().items.spaceSuitChestplateEnergyConsumption, transaction);
+					}
+
+					transaction.commit();
+				}
+			} else {
+				breathing = false;
+			}
+
 			var component = EntityOxygenComponent.get(this);
 			
 			component.tick(breathing);
@@ -105,26 +135,14 @@ public abstract class LivingEntityMixin extends EntityMixin {
 			if (breathing && !((Entity) (Object) this).submergedFluidTag.isEmpty()) {
 				setAir(getMaxAir());
 			}
-			
-			try (var transaction = Transaction.openOuter()) {
-				if (chestFluidStorage != null && !chestFluidStorage.isResourceBlank()) {
-					chestFluidStorage.extract(chestFluidStorage.getResource(), AMConfig.get().items.spaceSuitChestplateFluidConsumption, transaction);
-				}
-				
-				if (chestEnergyStorage != null) {
-					chestEnergyStorage.extract(AMConfig.get().items.spaceSuitChestplateEnergyConsumption, transaction);
-				}
-				
-				transaction.commit();
-			}
 		}
 	}
 	
 	// A redirect would be the most efficient, but ModifyArg is the only compatible option
 	@ModifyArg(method = "baseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isSubmergedIn(Lnet/minecraft/tag/TagKey;)Z"))
 	private TagKey<Fluid> astromine$tickAirInFluid(TagKey<Fluid> tag) {
-		if (this.isSubmergedIn(AMTags.INDUSTRIAL_FLUID)) {
-			return AMTags.INDUSTRIAL_FLUID;
+		if (this.isSubmergedIn(AMTagKeys.FluidTags.INDUSTRIAL_FLUIDS)) {
+			return AMTagKeys.FluidTags.INDUSTRIAL_FLUIDS;
 		}
 		
 		return tag;
@@ -132,7 +150,7 @@ public abstract class LivingEntityMixin extends EntityMixin {
 	
 	@ModifyVariable(method = "tickMovement", slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;shouldSwimInFluids()Z")), at = @At(value = "STORE", ordinal = 0)) // result from "isTouchingWater && l > 0.0"
 	private boolean astromine$tickMovement$shouldSwimInFluids(boolean touchingWater) {
-		return touchingWater || this.getFluidHeight(AMTags.INDUSTRIAL_FLUID) > 0;
+		return touchingWater || this.getFluidHeight(AMTagKeys.FluidTags.INDUSTRIAL_FLUIDS) > 0;
 	}
 	
 	@Inject(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isInLava()Z"))

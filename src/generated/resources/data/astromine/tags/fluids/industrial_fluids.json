@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#c:oil",
+    "#c:fuel",
+    "#c:biomass",
+    "#c:oxygen",
+    "#c:hydrogen"
+  ]
+}

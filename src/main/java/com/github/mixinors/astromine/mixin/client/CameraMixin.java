@@ -24,7 +24,8 @@
 
 package com.github.mixinors.astromine.mixin.client;
 
-import com.github.mixinors.astromine.registry.common.AMTags;
+import com.github.mixinors.astromine.registry.common.AMTagKeys;
+
 import net.minecraft.client.render.Camera;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
@@ -37,6 +38,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class CameraMixin {
 	@Redirect(method = "getSubmersionType", at = @At(value = "INVOKE", target = "Lnet/minecraft/fluid/FluidState;isIn(Lnet/minecraft/tag/TagKey;)Z", ordinal = 0))
 	private boolean astromine$getSubmersionType$isIn(FluidState fluidState, TagKey<Fluid> tag) {
-		return fluidState.isIn(tag) || fluidState.isIn(AMTags.INDUSTRIAL_FLUID); // steal the water background rendering
+		return fluidState.isIn(tag) || fluidState.isIn(AMTagKeys.FluidTags.INDUSTRIAL_FLUIDS); // steal the water background rendering
 	}
 }

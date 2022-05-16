@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.recipe.ingredient;
 
-import com.github.mixinors.astromine.registry.common.AMTags;
+import com.github.mixinors.astromine.registry.common.AMTagKeys;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
@@ -124,14 +124,14 @@ public final class ItemIngredient {
 			if (jsonObject.has("tag")) {
 				if (jsonObject.has("count")) {
 					var entryAsId = new Identifier(jsonObject.get("tag").getAsString());
-					var entryAsTag = AMTags.ofItem(entryAsId);
+					var entryAsTag = AMTagKeys.createItemTag(entryAsId);
 					
 					var entryAmount = jsonObject.get("count").getAsInt();
 					
 					return new ItemIngredient(new TagEntry(entryAsTag, entryAmount));
 				} else {
 					var entryAsId = new Identifier(jsonObject.get("tag").getAsString());
-					var entryAsTag = AMTags.ofItem(entryAsId);
+					var entryAsTag = AMTagKeys.createItemTag(entryAsId);
 					
 					return new ItemIngredient(new TagEntry(entryAsTag));
 				}
@@ -175,7 +175,7 @@ public final class ItemIngredient {
 		}
 		
 		if (entryType.equals("tag")) {
-			var entryTag = AMTags.ofItem(entryTypeId);
+			var entryTag = AMTagKeys.createItemTag(entryTypeId);
 			
 			return new ItemIngredient(new TagEntry(entryTag, entryAmount));
 		}

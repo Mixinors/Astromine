@@ -26,11 +26,11 @@ package com.github.mixinors.astromine.datagen.family.material;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.fluid.SimpleFluid;
-import com.github.mixinors.astromine.datagen.AMDatagen;
+import com.github.mixinors.astromine.datagen.HarvestData;
 import com.github.mixinors.astromine.datagen.family.material.variant.BlockVariant;
 import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant;
 import com.github.mixinors.astromine.datagen.family.material.variant.Variant;
-import com.github.mixinors.astromine.registry.common.AMTags;
+import com.github.mixinors.astromine.registry.common.AMTagKeys;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
@@ -329,27 +329,27 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 	}
 	
 	public TagKey<Item> getItemTag(BlockVariant variant) {
-		return AMTags.ofItem(getTagId(variant));
+		return AMTagKeys.createItemTag(getTagId(variant));
 	}
 	
 	public TagKey<Item> getItemTag(String variant) {
-		return AMTags.ofItem(getTagId(variant));
+		return AMTagKeys.createItemTag(getTagId(variant));
 	}
 	
 	public TagKey<Block> getBlockTag(String variant) {
-		return AMTags.ofBlock(getTagId(variant));
+		return AMTagKeys.createBlockTag(getTagId(variant));
 	}
 	
 	public TagKey<Item> getAliasItemTag(BlockVariant variant) {
-		return AMTags.ofItem(getAliasTagId(variant));
+		return AMTagKeys.createItemTag(getAliasTagId(variant));
 	}
 	
 	public TagKey<Item> getAliasItemTag(String variant) {
-		return AMTags.ofItem(getAliasTagId(variant));
+		return AMTagKeys.createItemTag(getAliasTagId(variant));
 	}
 	
 	public TagKey<Block> getAliasBlockTag(String variant) {
-		return AMTags.ofBlock(getAliasTagId(variant));
+		return AMTagKeys.createBlockTag(getAliasTagId(variant));
 	}
 	
 	public TagKey<Item> getBaseTag() {
@@ -381,7 +381,7 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 		return miningLevel;
 	}
 	
-	public AMDatagen.HarvestData getHarvestData(BlockVariant variant) {
+	public HarvestData getHarvestData(BlockVariant variant) {
 		return variant.getHarvestData(this);
 	}
 	

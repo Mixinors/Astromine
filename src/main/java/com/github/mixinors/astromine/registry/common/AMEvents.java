@@ -28,7 +28,7 @@ import com.github.mixinors.astromine.common.callback.ServerChunkManagerCallback;
 import com.github.mixinors.astromine.common.component.world.WorldNetworkComponent;
 import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.screenhandler.base.entity.ExtendedEntityScreenHandler;
-import com.github.mixinors.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
+import com.github.mixinors.astromine.common.world.generation.space.EarthOrbitChunkGenerator;
 import dev.architectury.event.events.common.TickEvent;
 import net.minecraft.server.world.ServerWorld;
 
@@ -101,8 +101,8 @@ public class AMEvents {
 		}));
 		
 		ServerChunkManagerCallback.EVENT.register(manager -> {
-			if (manager.threadedAnvilChunkStorage.chunkGenerator instanceof EarthSpaceChunkGenerator) {
-				manager.threadedAnvilChunkStorage.chunkGenerator = ((EarthSpaceChunkGenerator) manager.threadedAnvilChunkStorage.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
+			if (manager.threadedAnvilChunkStorage.chunkGenerator instanceof EarthOrbitChunkGenerator) {
+				manager.threadedAnvilChunkStorage.chunkGenerator = ((EarthOrbitChunkGenerator) manager.threadedAnvilChunkStorage.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
 			}
 		});
 	}

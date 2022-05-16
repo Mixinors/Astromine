@@ -223,7 +223,7 @@ public class AMEvents {
 			bar.setShow(() -> {
 				var client = InstanceUtils.getClient();
 				
-				if (client != null && client.player != null && !client.player.isCreative() && !client.player.isSpectator() && AMWorlds.isSpace(client.player.world.getRegistryKey())) {
+				if (client != null && client.player != null && !client.player.isCreative() && !client.player.isSpectator() && AMWorlds.isSpace(client.player.world.method_40134())) {
 					var component = EntityOxygenComponent.get(client.player);
 					
 					if (component != null) {
@@ -310,6 +310,6 @@ public class AMEvents {
 			}
 		});
 		
-		SkyPropertiesCallback.EVENT.register((properties) -> properties.put(AMWorlds.EARTH_SPACE_ID, new SpaceSkyProperties()));
+		SkyPropertiesCallback.EVENT.register((properties) -> properties.put(AMWorlds.EARTH_ORBIT_ID, new SpaceSkyProperties()));
 	}
 }

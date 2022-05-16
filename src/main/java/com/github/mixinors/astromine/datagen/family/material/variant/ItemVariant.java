@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.datagen.family.material.variant;
 
 import com.github.mixinors.astromine.common.fluid.ExtraFluidConstants;
 import com.github.mixinors.astromine.common.util.WordUtils;
-import com.github.mixinors.astromine.registry.common.AMTags;
+import com.github.mixinors.astromine.registry.common.AMTagKeys;
 import net.minecraft.data.client.ItemModelGenerator;
 import net.minecraft.data.client.Models;
 import net.minecraft.item.Item;
@@ -131,7 +131,7 @@ public enum ItemVariant implements Variant<Item> {
 	
 	@Override
 	public TagKey<Item> createTag(Identifier id) {
-		return AMTags.ofItem(id);
+		return AMTagKeys.createItemTag(id);
 	}
 	
 	@Override

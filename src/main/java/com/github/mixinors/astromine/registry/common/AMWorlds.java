@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.registry.common;
 import com.github.mixinors.astromine.AMCommon;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionOptions;
@@ -38,10 +39,10 @@ import java.util.Set;
 public class AMWorlds {
 	private static final Set<RegistryKey<?>> KEYS = new HashSet<>();
 	
-	public static final Identifier EARTH_SPACE_ID = AMCommon.id("earth_space");
-	public static final RegistryKey<DimensionOptions> EARTH_SPACE_OPTIONS = register(Registry.DIMENSION_KEY, EARTH_SPACE_ID);
-	public static final RegistryKey<DimensionType> EARTH_SPACE_TYPE_KEY = register(Registry.DIMENSION_TYPE_KEY, EARTH_SPACE_ID);
-	public static final RegistryKey<World> EARTH_SPACE_WORLD = register(Registry.WORLD_KEY, EARTH_SPACE_ID);
+	public static final Identifier EARTH_ORBIT_ID = AMCommon.id("earth_orbit");
+	public static final RegistryKey<DimensionOptions> EARTH_ORBIT_OPTIONS = register(Registry.DIMENSION_KEY, EARTH_ORBIT_ID);
+	public static final RegistryKey<DimensionType> EARTH_ORBIT_TYPE_KEY = register(Registry.DIMENSION_TYPE_KEY, EARTH_ORBIT_ID);
+	public static final RegistryKey<World> EARTH_ORBIT_WORLD = register(Registry.WORLD_KEY, EARTH_ORBIT_ID);
 	
 	public static void init() {
 	
@@ -53,8 +54,8 @@ public class AMWorlds {
 		return key;
 	}
 	
-	public static boolean isSpace(RegistryKey<World> key) {
-		return key.equals(EARTH_SPACE_WORLD);
+	public static boolean isSpace(RegistryEntry<DimensionType> dimensionType) {
+		return dimensionType.isIn(AMTagKeys.DimensionTypeTags.IS_SPACE);
 	}
 	
 	public static boolean isAstromine(RegistryKey<?> key) {

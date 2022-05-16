@@ -60,20 +60,20 @@ import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
-public class EarthSpaceChunkGenerator extends ChunkGenerator {
-	public static final Codec<EarthSpaceChunkGenerator> CODEC = RecordCodecBuilder.create(instance ->
-			EarthSpaceChunkGenerator.method_41042(instance).and(
+public class EarthOrbitChunkGenerator extends ChunkGenerator {
+	public static final Codec<EarthOrbitChunkGenerator> CODEC = RecordCodecBuilder.create(instance ->
+			EarthOrbitChunkGenerator.method_41042(instance).and(
 					instance.group(
 							Codec.LONG.fieldOf("seed").forGetter(gen -> gen.field_37261),
 							RegistryOps.createRegistryCodec(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry)
-					)).apply(instance, EarthSpaceChunkGenerator::new));
+					)).apply(instance, EarthOrbitChunkGenerator::new));
 	
 	private final Registry<Biome> biomeRegistry;
 	
 	private final OctaveNoiseSampler<OpenSimplexNoise> noise;
 	
-	public EarthSpaceChunkGenerator(Registry<StructureSet> structureFeatureRegistry, long seed, Registry<Biome> biomeRegistry) {
-		super(structureFeatureRegistry, Optional.empty(), new EarthSpaceBiomeSource(biomeRegistry, seed));
+	public EarthOrbitChunkGenerator(Registry<StructureSet> structureFeatureRegistry, long seed, Registry<Biome> biomeRegistry) {
+		super(structureFeatureRegistry, Optional.empty(), new EarthOrbitBiomeSource(biomeRegistry, seed));
 		this.field_37261 = seed;
 		this.biomeRegistry = biomeRegistry;
 		this.noise = new OctaveNoiseSampler<>(OpenSimplexNoise.class, new Random(seed), 3, 200, 1.225, 1);
@@ -106,7 +106,7 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 	}
 	
 	public ChunkGenerator withSeedCommon(long seed) {
-		return new EarthSpaceChunkGenerator(field_37053, seed, biomeRegistry);
+		return new EarthOrbitChunkGenerator(field_37053, seed, biomeRegistry);
 	}
 	
 	@Override

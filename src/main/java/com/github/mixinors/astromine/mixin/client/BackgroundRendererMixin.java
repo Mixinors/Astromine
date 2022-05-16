@@ -40,7 +40,7 @@ public class BackgroundRendererMixin {
 	private static void astromine$applyFog(Camera camera, BackgroundRenderer.FogType fogType, float viewDistance, boolean thickFog, CallbackInfo ci) {
 		var client = InstanceUtils.getClient();
 		
-		if (client != null && client.world.getRegistryKey().equals(AMWorlds.EARTH_SPACE_WORLD)) {
+		if (client != null && client.world.getRegistryKey().equals(AMWorlds.EARTH_ORBIT_WORLD)) {
 			ci.cancel();
 		}
 	}
@@ -49,7 +49,7 @@ public class BackgroundRendererMixin {
 	private static void astromine$render(Camera camera, float tickDelta, ClientWorld world, int i, float f, CallbackInfo ci) {
 		var client = InstanceUtils.getClient();
 		
-		if (client != null && client.world.getRegistryKey().equals(AMWorlds.EARTH_SPACE_WORLD)) {
+		if (client != null && client.world.getRegistryKey().equals(AMWorlds.EARTH_ORBIT_WORLD)) {
 			ci.cancel();
 		}
 	}
