@@ -26,10 +26,10 @@ package com.github.mixinors.astromine.common.screenhandler.machine.generator;
 
 import com.github.mixinors.astromine.common.block.entity.machine.generator.SolidGeneratorBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
-import com.github.mixinors.astromine.common.widget.HorizontalArrowWidget;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
+import dev.vini2003.hammer.gui.api.common.widget.arrow.ArrowWidget;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -51,7 +51,8 @@ public class SolidGeneratorScreenHandler extends ExtendedBlockEntityScreenHandle
 		input.setPosition(new Position(tab, TABS_WIDTH / 2.0F - (SLOT_WIDTH + PAD_7 + ARROW_WIDTH + PAD_7 + BAR_WIDTH) / 2.0F, PAD_11 + (BAR_HEIGHT / 2.0F) - (SLOT_HEIGHT / 2.0F)));
 		input.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
-		var arrow = new HorizontalArrowWidget();
+		var arrow = new ArrowWidget();
+		arrow.setHorizontal(true);
 		arrow.setPosition(new Position(input, SLOT_WIDTH + PAD_7, (SLOT_HEIGHT - ARROW_HEIGHT) / 2.0F));
 		arrow.setSize(new Size(ARROW_WIDTH, ARROW_HEIGHT));
 		arrow.setMaximum(() -> (float) generator.limit);

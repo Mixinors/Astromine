@@ -26,10 +26,10 @@ package com.github.mixinors.astromine.common.screenhandler.machine;
 
 import com.github.mixinors.astromine.common.block.entity.machine.FluidMixerBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
-import com.github.mixinors.astromine.common.widget.HorizontalArrowWidget;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
+import dev.vini2003.hammer.gui.api.common.widget.arrow.ArrowWidget;
 import dev.vini2003.hammer.gui.api.common.widget.bar.FluidBarWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -58,7 +58,8 @@ public class FluidMixerScreenHandler extends ExtendedBlockEntityScreenHandler {
 		secondInputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(FluidMixerBlockEntity.INPUT_SLOT_2));
 		secondInputFluidBar.setSmooth(false);
 		
-		var arrow = new HorizontalArrowWidget();
+		var arrow = new ArrowWidget();
+		arrow.setHorizontal(true);
 		arrow.setPosition(new Position(secondInputFluidBar, BAR_WIDTH + PAD_7, BAR_HEIGHT / 2.0F - PAD_8));
 		arrow.setSize(new Size(ARROW_WIDTH, ARROW_HEIGHT));
 		arrow.setMaximum(() -> (float) mixer.limit);
