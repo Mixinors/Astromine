@@ -58,7 +58,7 @@ public class SimpleFluidVariantStorage extends SingleVariantStorage<FluidVariant
 	 *
 	 * @param variant the variant to be set.
 	 */
-	public void setVariant(FluidVariant variant) {
+	public void setResource(FluidVariant variant) {
 		this.variant = variant;
 	}
 	
@@ -137,6 +137,36 @@ public class SimpleFluidVariantStorage extends SingleVariantStorage<FluidVariant
 		}
 		
 		@Override
+		protected void onFinalCommit() {
+			super.onFinalCommit();
+			
+			if (proxy != null) {
+				proxy.notifyListeners();
+				
+				proxy.incrementVersion();
+				
+				var proxies = new ArrayList<SimpleFluidStorage>();
+				
+				if (proxy.getProxy() != null) {
+					proxies.addAll(List.of(proxy.getProxy().getProxies()));
+					proxies.add(proxy.getProxy());
+				} else {
+					proxies.addAll(List.of(proxy.getProxies()));
+					proxies.add(proxy);
+				}
+				
+				for (var proxy : proxies) {
+					for (var i = 0; i < proxy.getSize(); ++i) {
+						var storage = proxy.getStorage(i);
+						
+						storage.setAmount(storage.getProxyStorage().getAmount());
+						storage.setResource(storage.getProxyStorage().getResource());
+					}
+				}
+			}
+		}
+		
+		@Override
 		public long insert(FluidVariant insertedVariant, long maxAmount, TransactionContext transaction) {
 			return insert(insertedVariant, maxAmount, transaction, false);
 		}
@@ -144,38 +174,17 @@ public class SimpleFluidVariantStorage extends SingleVariantStorage<FluidVariant
 		public long insert(FluidVariant insertedVariant, long maxAmount, TransactionContext transaction, boolean force) {
 			StoragePreconditions.notBlankNotNegative(insertedVariant, maxAmount);
 			
-			transaction.addCloseCallback(($, result) -> {
-				if (proxy != null && result.wasCommitted()) {
-					proxy.notifyListeners();
-					
-					proxy.incrementVersion();
-					
-					var proxies = new ArrayList<SimpleFluidStorage>();
-					
-					if (proxy.getProxy() != null) {
-						proxies.addAll(List.of(proxy.getProxy().getProxies()));
-						proxies.add(proxy.getProxy());
-					} else {
-						proxies.addAll(List.of(proxy.getProxies()));
-						proxies.add(proxy);
-					}
-					
-					for (var proxy : proxies) {
-						for (var i = 0; i < proxy.getSize(); ++i) {
-							var storage = proxy.getStorage(i);
-							
-							storage.amount = storage.proxyStorage.amount;
-							storage.variant = storage.proxyStorage.variant;
-						}
-					}
-				}
-			});
-			
 			if (proxy != null && !proxy.canInsert(insertedVariant, getSlot()) && !force) {
 				return 0;
 			}
 			
-			return proxyStorage.insert(insertedVariant, maxAmount, transaction);
+			var inserted = proxyStorage.insert(insertedVariant, maxAmount, transaction);
+			
+			if (inserted > 0) {
+				updateSnapshots(transaction);
+			}
+			
+			return inserted;
 		}
 		
 		@Override
@@ -186,36 +195,17 @@ public class SimpleFluidVariantStorage extends SingleVariantStorage<FluidVariant
 		public long extract(FluidVariant extractedVariant, long maxAmount, TransactionContext transaction, boolean force) {
 			StoragePreconditions.notBlankNotNegative(extractedVariant, maxAmount);
 			
-			transaction.addCloseCallback(($, result) -> {
-				if (proxy != null && result.wasCommitted()) {
-					proxy.notifyListeners();
-					
-					proxy.incrementVersion();
-					
-					var proxies = (SimpleFluidStorage[]) null;
-					
-					if (proxy.getProxy() != null) {
-						proxies = proxy.getProxy().getProxies();
-					} else {
-						proxies = proxy.getProxies();
-					}
-					
-					for (var proxy : proxies) {
-						for (var i = 0; i < proxy.getSize(); ++i) {
-							var storage = proxy.getStorage(i);
-							
-							storage.amount = storage.proxyStorage.amount;
-							storage.variant = storage.proxyStorage.variant;
-						}
-					}
-				}
-			});
-			
 			if (proxy != null && !proxy.canExtract(extractedVariant, getSlot()) && !force) {
 				return 0;
 			}
 			
-			return proxyStorage.extract(extractedVariant, maxAmount, transaction);
+			var extracted = proxyStorage.extract(extractedVariant, maxAmount, transaction);
+			
+			if (extracted > 0) {
+				updateSnapshots(transaction);
+			}
+			
+			return extracted;
 		}
 		
 		@Override
@@ -226,16 +216,18 @@ public class SimpleFluidVariantStorage extends SingleVariantStorage<FluidVariant
 		@Override
 		public void setAmount(long amount) {
 			this.amount = amount;
+			
 			if (proxyStorage != null) {
 				proxyStorage.setAmount(amount);
 			}
 		}
 		
 		@Override
-		public void setVariant(FluidVariant variant) {
+		public void setResource(FluidVariant variant) {
 			this.variant = variant;
+			
 			if (proxy != null) {
-				proxyStorage.setVariant(variant);
+				proxyStorage.setResource(variant);
 			}
 		}
 		

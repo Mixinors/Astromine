@@ -93,6 +93,11 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 		super(type.get(), syncId, player);
 		
 		entity = (ExtendedEntity) player.world.getEntityById(entityId);
+		
+		if (!player.world.isClient) {
+			entity.setSyncItemStorage(true);
+			entity.setSyncFluidStorage(true);
+		}
 	}
 	
 	public abstract ItemStack getSymbol();

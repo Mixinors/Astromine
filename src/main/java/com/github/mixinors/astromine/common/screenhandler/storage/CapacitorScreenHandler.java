@@ -26,13 +26,16 @@ package com.github.mixinors.astromine.common.screenhandler.storage;
 
 import com.github.mixinors.astromine.common.block.entity.storage.CapacitorBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
+import com.github.mixinors.astromine.common.slot.FilterSlot;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.arrow.ArrowWidget;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
+import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
+import team.reborn.energy.api.EnergyStorage;
 
 public class CapacitorScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final CapacitorBlockEntity capacitor;
@@ -58,7 +61,17 @@ public class CapacitorScreenHandler extends ExtendedBlockEntityScreenHandler {
 		leftArrow.setPosition(new Position(energyBar, -PAD_7 - ARROW_WIDTH, (BAR_HEIGHT / 2.0F) - (ARROW_HEIGHT / 2.0F)));
 		leftArrow.setSize(new Size(ARROW_WIDTH, ARROW_HEIGHT));
 		
-		var input = new SlotWidget(CapacitorBlockEntity.INPUT_SLOT, capacitor.getItemStorage());
+		var input = new SlotWidget(CapacitorBlockEntity.INPUT_SLOT, capacitor.getItemStorage(), (inventory, id, x, y) -> {
+			var slot = new FilterSlot(inventory, id, x, y);
+			
+			slot.setInsertPredicate((stack) -> {
+				var energyStorage = EnergyStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
+				
+				return energyStorage != null;
+			});
+			
+			return slot;
+		});
 		input.setPosition(new Position(leftArrow, -PAD_7 - SLOT_WIDTH, (ARROW_HEIGHT - SLOT_HEIGHT) / 2.0F + 1.0F));
 		input.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
@@ -67,7 +80,17 @@ public class CapacitorScreenHandler extends ExtendedBlockEntityScreenHandler {
 		rightArrow.setPosition(new Position(energyBar, BAR_WIDTH + PAD_7, (BAR_HEIGHT / 2.0F) - (ARROW_HEIGHT / 2.0F)));
 		rightArrow.setSize(new Size(ARROW_WIDTH, ARROW_HEIGHT));
 		
-		var output = new SlotWidget(CapacitorBlockEntity.OUTPUT_SLOT, capacitor.getItemStorage());
+		var output = new SlotWidget(CapacitorBlockEntity.OUTPUT_SLOT, capacitor.getItemStorage(), (inventory, id, x, y) -> {
+			var slot = new FilterSlot(inventory, id, x, y);
+			
+			slot.setInsertPredicate((stack) -> {
+				var energyStorage = EnergyStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
+				
+				return energyStorage != null;
+			});
+			
+			return slot;
+		});
 		output.setPosition(new Position(rightArrow, PAD_7 + ARROW_WIDTH, (ARROW_HEIGHT - SLOT_HEIGHT) / 2.0F + 1.0F));
 		output.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		

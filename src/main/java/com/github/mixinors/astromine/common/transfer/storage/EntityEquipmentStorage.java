@@ -44,6 +44,7 @@ public class EntityEquipmentStorage extends CombinedStorage<ItemVariant, SingleS
 	public static EntityEquipmentStorage of(MobEntity entity) {
 		var storage = WRAPPERS.computeIfAbsent(entity, EntityEquipmentStorage::new);
 		storage.updateSlotList();
+		
 		return storage;
 	}
 	
@@ -86,6 +87,7 @@ public class EntityEquipmentStorage extends CombinedStorage<ItemVariant, SingleS
 	
 	public void offerOrDrop(ItemVariant variant, long amount, TransactionContext transaction) {
 		var offered = offer(variant, amount, transaction);
+		
 		drop(variant, amount - offered, transaction);
 	}
 	
@@ -96,6 +98,7 @@ public class EntityEquipmentStorage extends CombinedStorage<ItemVariant, SingleS
 	
 	public long offer(ItemVariant variant, long maxAmount, TransactionContext transaction) {
 		StoragePreconditions.notBlankNotNegative(variant, maxAmount);
+		
 		var initialAmount = maxAmount;
 		
 		// Stack into the main stack first and the offhand stack second.

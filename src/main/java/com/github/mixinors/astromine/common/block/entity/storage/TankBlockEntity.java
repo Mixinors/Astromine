@@ -60,13 +60,13 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 	
 	public static final int ITEM_INPUT_SLOT = 0;
 	
-	public static final int ITEM_BUFFER_STORAGE = 1;
+	public static final int ITEM_BUFFER_SLOT = 1;
 	
-	public static final int ITEM_OUTPUT_SLOT_2 = 2;
+	public static final int ITEM_OUTPUT_SLOT = 2;
 	
 	public static final int[] ITEM_INSERT_SLOTS = new int[] { ITEM_INPUT_SLOT };
 	
-	public static final int[] ITEM_EXTRACT_SLOTS = new int[] { ITEM_BUFFER_STORAGE, ITEM_OUTPUT_SLOT_2 };
+	public static final int[] ITEM_EXTRACT_SLOTS = new int[] { ITEM_BUFFER_SLOT, ITEM_OUTPUT_SLOT };
 	
 	private FluidVariant filter = FluidVariant.blank();
 	
@@ -82,7 +82,7 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 		}).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
 		
 		itemStorage = new SimpleItemStorage(3).extractPredicate((variant, slot) -> {
-			return slot == ITEM_INPUT_SLOT || slot == ITEM_BUFFER_STORAGE || slot == ITEM_OUTPUT_SLOT_2;
+			return slot == ITEM_INPUT_SLOT || slot == ITEM_BUFFER_SLOT || slot == ITEM_OUTPUT_SLOT;
 		}).insertPredicate((variant, slot) -> {
 			if (slot != ITEM_INPUT_SLOT) {
 				return false;
@@ -117,9 +117,9 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 		
 		var itemInputStorage = wildItemStorage.getStorage(ITEM_INPUT_SLOT);
 		
-		var itemBufferStorage = wildItemStorage.getStorage(ITEM_BUFFER_STORAGE);
+		var itemBufferStorage = wildItemStorage.getStorage(ITEM_BUFFER_SLOT);
 		
-		var itemOutputStorage2 = wildItemStorage.getStorage(ITEM_OUTPUT_SLOT_2);
+		var itemOutputStorage2 = wildItemStorage.getStorage(ITEM_OUTPUT_SLOT);
 		
 		var fluidInputStorage = wildFluidStorage.getStorage(FLUID_INPUT_SLOT);
 		

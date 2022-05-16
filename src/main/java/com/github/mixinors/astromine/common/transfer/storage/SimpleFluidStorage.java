@@ -31,6 +31,7 @@ import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
+import net.fabricmc.fabric.api.transfer.v1.transaction.base.SnapshotParticipant;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.Direction;
 
@@ -55,7 +56,7 @@ import java.util.stream.IntStream;
  * 		<li>- {@link NbtCompound} - through {@link #writeToNbt(NbtCompound)} and {@link #readFromNbt(NbtCompound)}.</li>
  * </ul>
  */
-public class SimpleFluidStorage implements Storage<FluidVariant> {
+public class SimpleFluidStorage extends SnapshotParticipant<SimpleFluidStorage.Snapshot> implements Storage<FluidVariant> {
 	public static final String SIDINGS_KEY = "Sidings";
 	public static final String AMOUNT_KEY = "Amount";
 	public static final String VARIANT_KEY = "Variant";
@@ -285,6 +286,68 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 	}
 	
 	
+	public record SnapshotEntry(
+			FluidVariant variant,
+			long amount
+	) {}
+	
+	public record Snapshot(
+			List<SnapshotEntry> entries
+	) {
+		public Snapshot() {
+			this(new ArrayList<>());
+		}
+	}
+	
+	@Override
+	protected Snapshot createSnapshot() {
+		var snapshot = new Snapshot();
+		
+		for (var storage : storages) {
+			snapshot.entries.add(new SnapshotEntry(storage.variant, storage.amount));
+		}
+		
+		return snapshot;
+	}
+	
+	@Override
+	protected void readSnapshot(Snapshot snapshot) {
+		var index = 0;
+		
+		for (var entry : snapshot.entries) {
+			var storage = storages.get(index);
+			
+			storage.setResource(entry.variant);
+			storage.setAmount(entry.amount);
+		}
+	}
+	
+	@Override
+	protected void onFinalCommit() {
+		if (proxy == null) {
+			notifyListeners();
+			
+			incrementVersion();
+		} else {
+			var proxies = (SimpleFluidStorage[]) null;
+			
+			if (proxy.getProxy() != null) {
+				proxies = proxy.getProxy().getProxies();
+			} else {
+				proxies = proxy.getProxies();
+			}
+			
+			for (var proxy : proxies) {
+				for (var i = 0; i < proxy.getSize(); ++i) {
+					var storage = proxy.getStorage(i);
+					
+					storage.setAmount(storage.getProxyStorage().getAmount());
+					storage.setResource(storage.getProxyStorage().getResource());
+				}
+			}
+		}
+	}
+	
 	/**
 	 * Updates this storage's version.
 	 */
@@ -357,31 +420,6 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 			return 0;
 		}
 		
-		transaction.addCloseCallback((($, result) -> {
-			if (proxy == null && result.wasCommitted()) {
-				notifyListeners();
-				
-				incrementVersion();
-			} else if (result.wasCommitted()) {
-				var proxies = (SimpleFluidStorage[]) null;
-				
-				if (proxy.getProxy() != null) {
-					proxies = proxy.getProxy().getProxies();
-				} else {
-					proxies = proxy.getProxies();
-				}
-				
-				for (var proxy : proxies) {
-					for (var i = 0; i < proxy.getSize(); ++i) {
-						var storage = proxy.getStorage(i);
-						
-						storage.amount = storage.getProxyStorage().amount;
-						storage.variant = storage.getProxyStorage().variant;
-					}
-				}
-			}
-		}));
-		
 		var amount = 0;
 		
 		for (var slot : insertSlots) {
@@ -396,6 +434,10 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 			if (amount == maxAmount) {
 				break;
 			}
+		}
+		
+		if (amount > 0) {
+			updateSnapshots(transaction);
 		}
 		
 		return amount;
@@ -415,31 +457,6 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 			return 0;
 		}
 		
-		transaction.addCloseCallback((($, result) -> {
-			if (proxy == null && result.wasCommitted()) {
-				notifyListeners();
-				
-				incrementVersion();
-			} else if (result.wasCommitted()) {
-				var proxies = (SimpleFluidStorage[]) null;
-				
-				if (proxy.getProxy() != null) {
-					proxies = proxy.getProxy().getProxies();
-				} else {
-					proxies = proxy.getProxies();
-				}
-				
-				for (var proxy : proxies) {
-					for (var i = 0; i < proxy.getSize(); ++i) {
-						var storage = proxy.getStorage(i);
-						
-						storage.amount = storage.getProxyStorage().amount;
-						storage.variant = storage.getProxyStorage().variant;
-					}
-				}
-			}
-		}));
-		
 		var amount = 0;
 		
 		for (var slot : extractSlots) {
@@ -454,6 +471,10 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 			if (amount == maxAmount) {
 				break;
 			}
+		}
+		
+		if (amount > 0) {
+			updateSnapshots(transaction);
 		}
 		
 		return amount;
@@ -511,7 +532,7 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 				var variant = FluidVariant.fromNbt(storageNbt.getCompound(VARIANT_KEY));
 				
 				storages.get(i).setAmount(amount);
-				storages.get(i).setVariant(variant);
+				storages.get(i).setResource(variant);
 			}
 			
 			updateProxies();
@@ -527,8 +548,8 @@ public class SimpleFluidStorage implements Storage<FluidVariant> {
 			var storage = storages.get(i);
 			var proxyStorage = proxyStorages.get(i);
 			
-			proxyStorage.amount = storage.amount;
-			proxyStorage.variant = storage.variant;
+			proxyStorage.setAmount(storage.getAmount());
+			proxyStorage.setResource(storage.getResource());
 		}
 		
 		wildProxy = new SimpleFluidStorage(size, capacity, this);

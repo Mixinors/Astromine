@@ -60,6 +60,9 @@ public abstract class RocketEntity extends ExtendedEntity {
 	public static final int FLUID_INPUT_SLOT_1 = 0;
 	public static final int FLUID_INPUT_SLOT_2 = 1;
 	
+	public static final int FLUID_OUTPUT_SLOT_1 = 0;
+	public static final int FLUID_OUTPUT_SLOT_2 = 1;
+	
 	public static final int ITEM_INPUT_SLOT_1 = 0;
 	public static final int ITEM_INPUT_SLOT_2 = 2;
 	
@@ -92,19 +95,18 @@ public abstract class RocketEntity extends ExtendedEntity {
 		fluidStorage = new SimpleFluidStorage(2, getFluidStorageSize()).extractPredicate((variant, slot) ->
 				false
 		).insertPredicate((variant, slot) ->
-				(slot == FLUID_INPUT_SLOT_1 && getPrimaryFuelIngredient().testVariant(variant)) || (slot == FLUID_INPUT_SLOT_2 && getSecondaryFuelIngredient().testVariant(variant))
+				(slot == FLUID_INPUT_SLOT_1 && getFirstFuel().testVariant(variant)) || (slot == FLUID_INPUT_SLOT_2 && getSecondFuel().testVariant(variant))
 		).listener(() -> {
 			syncData();
 		}).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
 	}
 	
-	protected abstract FluidIngredient getPrimaryFuelIngredient();
+	public abstract FluidIngredient getFirstFuel();
 	
-	protected abstract FluidIngredient getSecondaryFuelIngredient();
+	public abstract FluidIngredient getSecondFuel();
 	
 	public boolean isFuelMatching() {
-		return getPrimaryFuelIngredient().test(fluidStorage.getStorage(FLUID_INPUT_SLOT_1)) && getSecondaryFuelIngredient().test(fluidStorage.getStorage(FLUID_INPUT_SLOT_2)) ||
-				getSecondaryFuelIngredient().test(fluidStorage.getStorage(FLUID_INPUT_SLOT_1)) && getPrimaryFuelIngredient().test(fluidStorage.getStorage(FLUID_INPUT_SLOT_2));
+		return getFirstFuel().test(fluidStorage.getStorage(FLUID_INPUT_SLOT_1)) && getSecondFuel().test(fluidStorage.getStorage(FLUID_INPUT_SLOT_2));
 	}
 	
 	protected void consumeFuel() {
@@ -112,12 +114,9 @@ public abstract class RocketEntity extends ExtendedEntity {
 			var firstInputStorage = fluidStorage.getStorage(FLUID_INPUT_SLOT_1);
 			var secondInputStorage = fluidStorage.getStorage(FLUID_INPUT_SLOT_2);
 			
-			if (getPrimaryFuelIngredient().test(fluidStorage.getStorage(FLUID_INPUT_SLOT_1)) && getSecondaryFuelIngredient().test(fluidStorage.getStorage(FLUID_INPUT_SLOT_2))) {
-				firstInputStorage.extract(firstInputStorage.getResource(), getPrimaryFuelIngredient().getAmount(), transaction, true);
-				secondInputStorage.extract(secondInputStorage.getResource(), getSecondaryFuelIngredient().getAmount(), transaction, true);
-			} else if (getSecondaryFuelIngredient().test(fluidStorage.getStorage(FLUID_INPUT_SLOT_1)) && getPrimaryFuelIngredient().test(fluidStorage.getStorage(FLUID_INPUT_SLOT_2))) {
-				secondInputStorage.extract(secondInputStorage.getResource(), getPrimaryFuelIngredient().getAmount(), transaction, true);
-				firstInputStorage.extract(firstInputStorage.getResource(), getSecondaryFuelIngredient().getAmount(), transaction, true);
+			if (getFirstFuel().test(fluidStorage.getStorage(FLUID_INPUT_SLOT_1)) && getSecondFuel().test(fluidStorage.getStorage(FLUID_INPUT_SLOT_2))) {
+				firstInputStorage.extract(firstInputStorage.getResource(), getFirstFuel().getAmount(), transaction, true);
+				secondInputStorage.extract(secondInputStorage.getResource(), getSecondFuel().getAmount(), transaction, true);
 			}
 			
 			transaction.commit();
@@ -139,6 +138,7 @@ public abstract class RocketEntity extends ExtendedEntity {
 	public void updatePassengerPosition(Entity passenger) {
 		if (this.hasPassenger(passenger)) {
 			var position = getPassengerPosition();
+			
 			passenger.setPosition(getX() + position.getX(), getY() + position.getY(), getZ() + position.getZ());
 		}
 	}

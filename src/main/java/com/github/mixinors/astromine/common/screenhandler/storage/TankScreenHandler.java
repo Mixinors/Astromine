@@ -27,12 +27,17 @@ package com.github.mixinors.astromine.common.screenhandler.storage;
 import com.github.mixinors.astromine.common.block.entity.storage.TankBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.slot.ExtractionSlot;
+import com.github.mixinors.astromine.common.slot.FilterSlot;
+import com.github.mixinors.astromine.common.util.StorageUtils;
 import com.github.mixinors.astromine.common.widget.FluidFilterWidget;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 import kotlin.Unit;
+import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
@@ -56,25 +61,65 @@ public class TankScreenHandler extends ExtendedBlockEntityScreenHandler {
 		
 		fluidBar.setPosition(new Position(width / 2.0F - BAR_WIDTH / 2.0F, fluidBar.getY()));
 		
-		var unload = new SlotWidget(TankBlockEntity.ITEM_INPUT_SLOT, tank.getItemStorage());
-		unload.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
+		var input = new SlotWidget(TankBlockEntity.ITEM_INPUT_SLOT, tank.getItemStorage(), (inventory, id, x, y) -> {
+			var slot = new FilterSlot(inventory, id, x, y);
+			
+			slot.setInsertPredicate((stack) -> {
+				try (var transaction = Transaction.openOuter()) {
+					var tankFluidStorage = tank.getFluidStorage().getStorage(TankBlockEntity.FLUID_INPUT_SLOT);
+					
+					var itemFluidStorage = FluidStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
+					
+					if (itemFluidStorage == null) {
+						return false;
+					}
+					
+					var itemFluidStorageView = StorageUtils.first(itemFluidStorage, transaction, (view) -> !view.isResourceBlank() && (tankFluidStorage.isResourceBlank() || view.getResource() == tankFluidStorage.getResource()));
+					
+					return itemFluidStorageView != null;
+				}
+			});
+			
+			return slot;
+		});
+		input.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
 		if (!(tank instanceof TankBlockEntity.Creative)) {
-			unload.setPosition(new Position(fluidBar, -SLOT_WIDTH - PAD_3, 0.0F));
+			input.setPosition(new Position(fluidBar, -SLOT_WIDTH - PAD_3, 0.0F));
 		} else {
-			unload.setPosition(new Position(fluidBar, -SLOT_WIDTH - PAD_3, -(((BAR_HEIGHT - (SLOT_HEIGHT + PAD_3 + FILTER_HEIGHT)) / 2.0F))));
+			input.setPosition(new Position(fluidBar, -SLOT_WIDTH - PAD_3, -(((BAR_HEIGHT - (SLOT_HEIGHT + PAD_3 + FILTER_HEIGHT)) / 2.0F))));
 		}
 		
-		var buffer = new SlotWidget(TankBlockEntity.ITEM_BUFFER_STORAGE, tank.getItemStorage(), ExtractionSlot::new);
-		buffer.setPosition(new Position(unload, -SLOT_WIDTH - PAD_3, SLOT_HEIGHT - 4.0F)); // 4.0F centers the buffer slot against the two other slots.
+		var buffer = new SlotWidget(TankBlockEntity.ITEM_BUFFER_SLOT, tank.getItemStorage(), ExtractionSlot::new);
+		buffer.setPosition(new Position(input, -SLOT_WIDTH - PAD_3, SLOT_HEIGHT - 4.0F)); // 4.0F centers the buffer slot against the two other slots.
 		buffer.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
-		var load = new SlotWidget(TankBlockEntity.ITEM_OUTPUT_SLOT_2, tank.getItemStorage());
-		load.setPosition(new Position(unload, 0.0F, SLOT_HEIGHT + PAD_3 + FILTER_HEIGHT + PAD_3));
-		load.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
+		var output = new SlotWidget(TankBlockEntity.ITEM_OUTPUT_SLOT, tank.getItemStorage(), (inventory, id, x, y) -> {
+			var slot = new FilterSlot(inventory, id, x, y);
+			
+			slot.setInsertPredicate((stack) -> {
+				try (var transaction = Transaction.openOuter()) {
+					var tankFluidStorage = tank.getFluidStorage().getStorage(TankBlockEntity.FLUID_OUTPUT_SLOT);
+					
+					var itemFluidStorage = FluidStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
+					
+					if (itemFluidStorage == null) {
+						return false;
+					}
+					
+					var itemFluidStorageView = StorageUtils.first(itemFluidStorage, transaction, (view) -> view.isResourceBlank() || view.getResource() == tankFluidStorage.getResource());
+					
+					return itemFluidStorageView != null;
+				}
+			});
+			
+			return slot;
+		});
+		output.setPosition(new Position(input, 0.0F, SLOT_HEIGHT + PAD_3 + FILTER_HEIGHT + PAD_3));
+		output.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
 		var filter = new FluidFilterWidget();
-		filter.setPosition(new Position(unload, (SLOT_WIDTH / 2.0F - FILTER_WIDTH / 2.0F), SLOT_WIDTH + 2.0F)); // 2.0F centers the filter against the upper and lower slots.
+		filter.setPosition(new Position(input, (SLOT_WIDTH / 2.0F - FILTER_WIDTH / 2.0F), SLOT_WIDTH + 2.0F)); // 2.0F centers the filter against the upper and lower slots.
 		filter.setSize(new Size(FILTER_WIDTH, FILTER_HEIGHT));
 		filter.setFluidVariantConsumer((variant) -> {
 			if (!(tank instanceof TankBlockEntity.Creative)) {
@@ -83,7 +128,7 @@ public class TankScreenHandler extends ExtendedBlockEntityScreenHandler {
 				var storage = tank.getFluidStorage().getStorage(TankBlockEntity.FLUID_INPUT_SLOT);
 				
 				storage.setAmount(Long.MAX_VALUE);
-				storage.setVariant(variant);
+				storage.setResource(variant);
 				
 				tank.setFilter(variant);
 			}
@@ -93,11 +138,11 @@ public class TankScreenHandler extends ExtendedBlockEntityScreenHandler {
 		filter.setFluidVariantSupplier(tank::getFilter);
 		
 		if (!(tank instanceof TankBlockEntity.Creative)) {
-			tab.add(unload);
+			tab.add(input);
 			tab.add(buffer);
 		}
 		
-		tab.add(load);
+		tab.add(output);
 		
 		tab.add(filter);
 	}

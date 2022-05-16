@@ -27,11 +27,13 @@ package com.github.mixinors.astromine.common.screenhandler.machine;
 import com.github.mixinors.astromine.common.block.entity.machine.ElectricFurnaceBlockEntity;
 import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.slot.ExtractionSlot;
+import com.github.mixinors.astromine.common.slot.FilterSlot;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.arrow.ArrowWidget;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
@@ -48,7 +50,15 @@ public class ElectricFurnaceScreenHandler extends ExtendedBlockEntityScreenHandl
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 		
-		var input = new SlotWidget(ElectricFurnaceBlockEntity.INPUT_SLOT, furnace.getItemStorage());
+		var input = new SlotWidget(ElectricFurnaceBlockEntity.INPUT_SLOT, furnace.getItemStorage(), (inventory, id, x, y) -> {
+			var slot = new FilterSlot(inventory, id, x, y);
+			
+			slot.setInsertPredicate((stack) -> {
+				return furnace.getItemStorage().canInsert(ItemVariant.of(stack), ElectricFurnaceBlockEntity.INPUT_SLOT);
+			});
+			
+			return slot;
+		});
 		input.setPosition(new Position(energyBar, (TABS_WIDTH / 2.0F - (SLOT_WIDTH + PAD_7 + ARROW_WIDTH + PAD_7 + SLOT_WIDTH) / 2.0F - SLOT_WIDTH / 2.0F), BAR_HEIGHT / 2.0F - SLOT_HEIGHT / 2.0F));
 		input.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
