@@ -37,6 +37,7 @@ public class SuperSpaceSlimeMoveControl extends MoveControl {
 	
 	public SuperSpaceSlimeMoveControl(SuperSpaceSlimeEntity slime) {
 		super(slime);
+		
 		this.slime = slime;
 		this.targetYaw = 180.0F * slime.getYaw() / 3.1415927F;
 	}

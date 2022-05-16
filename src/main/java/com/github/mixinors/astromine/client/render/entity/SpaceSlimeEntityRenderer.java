@@ -42,37 +42,41 @@ public class SpaceSlimeEntityRenderer extends MobEntityRenderer<SpaceSlimeEntity
 	
 	public SpaceSlimeEntityRenderer(EntityRendererFactory.Context context) {
 		super(context, new SpaceSlimeEntityModel(context.getPart(EntityModelLayers.SLIME)), 0.25F);
+		
 		this.addFeature(new SlimeOverlayFeatureRenderer(this, context.getModelLoader()));
-		// I don't get why it's complaining, MobEntityRenderer implements FeatureRendererContext through LivingEntityRenderer
 	}
 	
 	@Override
-	public void render(SpaceSlimeEntity slimeEntity, float f, float g, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int i) {
-		this.shadowRadius = 0.25F * (float) slimeEntity.getSize();
+	public void render(SpaceSlimeEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider provider, int i) {
+		this.shadowRadius = 0.25F * (float) entity.getSize();
 		
 		// if the slime is floating, we rotate it around the x axis for 1 full rotation
 		// todo: random axis rotation
-		if (slimeEntity.isFloating()) {
-			var progress = slimeEntity.getFloatingProgress() / 200f;
-			matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(progress * 360));
+		if (entity.isFloating()) {
+			var floatingProgress = MathHelper.lerp(tickDelta, entity.prevFloatingProgress, entity.getFloatingProgress());
+			entity.prevFloatingProgress = floatingProgress;
+			
+			matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion((floatingProgress / 200.0F) * 360.0F));
 		}
 		
-		super.render(slimeEntity, f, g, matrices, vertexConsumerProvider, i);
+		super.render(entity, tickDelta, tickDelta, matrices, provider, i);
 	}
 	
 	@Override
-	public void scale(SpaceSlimeEntity slimeEntity, MatrixStack matrices, float f) {
+	public void scale(SpaceSlimeEntity slimeEntity, MatrixStack matrices, float tickDelta) {
 		var scale = 0.999F;
+		
 		matrices.scale(scale, scale, scale);
+		
 		matrices.translate(0.0D, -0.125D, 0.0D);
 		
-		// calculate stretch slime size
 		var slimeSize = (float) slimeEntity.getSize();
-		var i = MathHelper.lerp(f, slimeEntity.lastStretch, slimeEntity.stretch) / (slimeSize * 0.5F + 1.0F);
-		var j = 1.0F / (i + 1.0F);
 		
-		// scale matrix based on slime size
-		matrices.scale(j * slimeSize, 1.0F / j * slimeSize, j * slimeSize);
+		var stretch = MathHelper.lerp(tickDelta, slimeEntity.lastStretch, slimeEntity.stretch) / (slimeSize * 0.5F + 1.0F);
+		
+		var multiplier = 1.0F / (stretch + 1.0F);
+		
+		matrices.scale(multiplier * slimeSize, 1.0F / multiplier * slimeSize, multiplier * slimeSize);
 	}
 	
 	@Override

@@ -37,51 +37,45 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
 public class SuperSpaceSlimeEntityRenderer extends MobEntityRenderer<SuperSpaceSlimeEntity, SuperSpaceSlimeEntityModel> {
-	
 	private static final Identifier TEXTURE = AMCommon.id("textures/entity/space_slime/space_slime.png");
 	private static final Identifier EXPLODING_TEXTURE = AMCommon.id("textures/entity/space_slime/space_slime_exploding.png");
 	
 	public SuperSpaceSlimeEntityRenderer(EntityRendererFactory.Context context) {
 		super(context, new SuperSpaceSlimeEntityModel(context.getPart(EntityModelLayers.SLIME)), 0.25F);
+		
 		this.addFeature(new SlimeOverlayFeatureRenderer(this, context.getModelLoader()));
 	}
 	
 	@Override
-	public void render(SuperSpaceSlimeEntity slimeEntity, float f, float g, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int i) {
-		this.shadowRadius = 2.5f;
-		super.render(slimeEntity, f, g, matrices, vertexConsumerProvider, i);
+	public void render(SuperSpaceSlimeEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider provider, int light) {
+		this.shadowRadius = 2.5F;
+		
+		super.render(entity, yaw, tickDelta, matrices, provider, light);
 	}
 	
 	@Override
-	public void scale(SuperSpaceSlimeEntity slimeEntity, MatrixStack matrices, float f) {
+	public void scale(SuperSpaceSlimeEntity slimeEntity, MatrixStack matrices, float tickDelta) {
 		var scale = 0.999F;
+		
 		matrices.scale(scale, scale, scale);
+		
 		matrices.translate(0.0D, -0.525D, 0.0D);
 		
-		// calculate stretch slime size
-		var slimeSize = 10f;
-		var i = MathHelper.lerp(f, slimeEntity.lastStretch, slimeEntity.stretch) / (slimeSize * 0.5F + 1.0F);
-		var j = 1.0F / (i + 1.0F);
+		var slimeSize = 10.0F;
 		
-		// scale matrix based on slime size
-		matrices.scale(j * slimeSize, 1.0F / j * slimeSize, j * slimeSize);
+		var stretch = MathHelper.lerp(tickDelta, slimeEntity.prevStretch, slimeEntity.stretch) / (slimeSize * 0.5F + 1.0F);
 		
-		// if the slime is exploding, make it quickly scale in and out
+		var multiplier = 1.0F / (stretch + 1.0F);
+		
+		matrices.scale(multiplier * slimeSize, 1.0F / multiplier * slimeSize, multiplier * slimeSize);
+		
 		if (slimeEntity.isExploding()) {
-			var sin = 1 + (float) Math.sin(slimeEntity.getExplodingProgress() / 5f) / 10;
-			matrices.scale(sin, sin, sin);
+			var explodingScale = 1.0F + (float) Math.sin(slimeEntity.getExplodingProgress() / 5.0F) / 10.0F;
+			
+			matrices.scale(explodingScale, explodingScale, explodingScale);
 		}
 	}
 	
-	/**
-	 * Returns the current model texture for this {@link SuperSpaceSlimeEntityRenderer}.
-	 * <p>
-	 * The texture defaults to purple, but returns as red if {@link SuperSpaceSlimeEntity#isExploding}.
-	 *
-	 * @param slimeEntity Super Space Slime to return texture for
-	 *
-	 * @return texture of entity, accounting for current phase
-	 */
 	@Override
 	public Identifier getTexture(SuperSpaceSlimeEntity slimeEntity) {
 		return slimeEntity.isExploding() ? EXPLODING_TEXTURE : TEXTURE;

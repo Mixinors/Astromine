@@ -55,7 +55,9 @@ public class SpaceSlimeJumpHoverGoal extends Goal {
 	@Override
 	public void start() {
 		this.slime.setFloating(true);
+		
 		this.ticksLeft = 20 * 10;
+		
 		super.start();
 	}
 	
@@ -64,6 +66,7 @@ public class SpaceSlimeJumpHoverGoal extends Goal {
 		this.slime.setFloating(false);
 		this.slime.setFloatingCooldown(500);
 		this.slime.setFloatingProgress(0);
+		
 		super.stop();
 	}
 	
