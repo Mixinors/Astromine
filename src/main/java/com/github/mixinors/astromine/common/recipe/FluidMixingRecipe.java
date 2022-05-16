@@ -49,12 +49,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public record FluidMixingRecipe(Identifier id,
+public record FluidMixingRecipe(
+		Identifier id,
 		FluidIngredient firstInput,
 		FluidIngredient secondInput,
 		FluidResult output,
-		long energyInput, int time) implements DoubleFluidInputRecipe, FluidOutputRecipe {
-	
+		long energyInput,
+		int time
+) implements DoubleFluidInputRecipe, FluidOutputRecipe {
 	private static final Map<World, FluidMixingRecipe[]> RECIPE_CACHE = new HashMap<>();
 	
 	public static boolean allows(World world, FluidVariant... variants) {

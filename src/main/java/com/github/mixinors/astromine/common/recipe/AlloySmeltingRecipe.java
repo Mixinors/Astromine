@@ -51,11 +51,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public record AlloySmeltingRecipe(Identifier id,
+public record AlloySmeltingRecipe(
+		Identifier id,
 		ItemIngredient firstInput,
 		ItemIngredient secondInput,
 		ItemResult output,
-		long energyInput, int time) implements DoubleItemInputRecipe, ItemOutputRecipe {
+		long energyInput,
+		int time
+) implements DoubleItemInputRecipe, ItemOutputRecipe {
 	private static final Map<World, AlloySmeltingRecipe[]> RECIPE_CACHE = new HashMap<>();
 	
 	public static boolean allows(World world, ItemVariant... variants) {

@@ -22,8 +22,10 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.common.recipe.base;
+package com.github.mixinors.astromine.common.recipe.base.input;
 
-public interface EnergyConsumingRecipe extends AMRecipe {
+import com.github.mixinors.astromine.common.recipe.base.AMRecipe;
+
+public interface EnergyInputRecipe extends AMRecipe {
 	long getEnergyInput();
 }

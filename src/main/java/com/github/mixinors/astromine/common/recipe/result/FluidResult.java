@@ -34,7 +34,13 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-public record FluidResult(FluidVariant variant, long amount) {
+public record FluidResult(
+		FluidVariant variant,
+		long amount
+) {
+	private static final String FLUID_KEY = "fluid";
+	private static final String AMOUNT_KEY = "amount";
+	
 	public static final FluidResult EMPTY = new FluidResult(FluidVariant.blank(), 0);
 	
 	public FluidStack toStack() {
@@ -48,8 +54,8 @@ public record FluidResult(FluidVariant variant, long amount) {
 	public static JsonObject toJson(FluidResult result) {
 		var jsonObject = new JsonObject();
 		
-		jsonObject.addProperty("fluid", Registry.FLUID.getId(result.variant.getFluid()).toString());
-		jsonObject.addProperty("amount", result.amount);
+		jsonObject.addProperty(FLUID_KEY, Registry.FLUID.getId(result.variant.getFluid()).toString());
+		jsonObject.addProperty(AMOUNT_KEY, result.amount);
 		
 		return jsonObject;
 	}
@@ -65,13 +71,13 @@ public record FluidResult(FluidVariant variant, long amount) {
 		} else {
 			var jsonObject = jsonElement.getAsJsonObject();
 			
-			var variantId = new Identifier(jsonObject.get("fluid").getAsString());
+			var variantId = new Identifier(jsonObject.get(FLUID_KEY).getAsString());
 			var variantFluid = Registry.FLUID.get(variantId);
 			
 			var variant = FluidVariant.of(variantFluid);
 			
-			if (jsonObject.has("amount")) {
-				var variantAmount = jsonObject.get("amount").getAsInt();
+			if (jsonObject.has(AMOUNT_KEY)) {
+				var variantAmount = jsonObject.get(AMOUNT_KEY).getAsInt();
 				
 				return new FluidResult(variant, variantAmount);
 			} else {

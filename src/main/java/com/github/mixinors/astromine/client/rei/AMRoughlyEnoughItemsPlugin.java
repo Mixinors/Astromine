@@ -230,7 +230,9 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 		
 		protected EnergyEntryWidget(Rectangle rectangle, long speed, boolean generating) {
 			super(new Point(rectangle.x, rectangle.y));
+			
 			this.getBounds().setBounds(rectangle);
+			
 			this.speed = speed;
 			this.generating = generating;
 		}

@@ -24,11 +24,11 @@
 
 package com.github.mixinors.astromine.common.recipe.base.output;
 
-import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
+import com.github.mixinors.astromine.common.recipe.base.input.EnergyInputRecipe;
 import com.github.mixinors.astromine.common.recipe.result.ItemResult;
 import net.minecraft.item.ItemStack;
 
-public interface ItemOutputRecipe extends EnergyConsumingRecipe {
+public interface ItemOutputRecipe extends EnergyInputRecipe {
 	@Override
 	default ItemStack getOutput() {
 		return getItemOutput().toStack();

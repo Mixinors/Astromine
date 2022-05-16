@@ -52,10 +52,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public record MeltingRecipe(Identifier id,
+public record MeltingRecipe(
+		Identifier id,
 		ItemIngredient input,
-		FluidResult output, long energyInput,
-		int time) implements ItemInputRecipe, FluidOutputRecipe {
+		FluidResult output,
+		long energyInput,
+		int time
+) implements ItemInputRecipe, FluidOutputRecipe {
 	private static final Map<World, MeltingRecipe[]> RECIPE_CACHE = new HashMap<>();
 	
 	public static boolean allows(World world, ItemVariant... variants) {

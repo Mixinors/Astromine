@@ -33,7 +33,13 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-public record ItemResult(ItemVariant variant, int count) {
+public record ItemResult(
+		ItemVariant variant,
+		int count
+) {
+	private static final String ITEM_KEY = "item";
+	private static final String COUNT_KEY = "count";
+	
 	public static final ItemResult EMPTY = new ItemResult(ItemVariant.blank(), 0);
 	
 	public ItemStack toStack() {
@@ -51,8 +57,8 @@ public record ItemResult(ItemVariant variant, int count) {
 	public static JsonObject toJson(ItemResult result) {
 		var jsonObject = new JsonObject();
 		
-		jsonObject.addProperty("item", Registry.ITEM.getId(result.variant.getItem()).toString());
-		jsonObject.addProperty("count", result.count);
+		jsonObject.addProperty(ITEM_KEY, Registry.ITEM.getId(result.variant.getItem()).toString());
+		jsonObject.addProperty(COUNT_KEY, result.count);
 		
 		return jsonObject;
 	}
@@ -68,15 +74,15 @@ public record ItemResult(ItemVariant variant, int count) {
 		} else {
 			var jsonObject = jsonElement.getAsJsonObject();
 			
-			var variantId = new Identifier(jsonObject.get("item").getAsString());
+			var variantId = new Identifier(jsonObject.get(ITEM_KEY).getAsString());
 			var variantItem = Registry.ITEM.get(variantId);
 			
 			var variant = ItemVariant.of(variantItem);
 			
 			var variantCount = 1;
 			
-			if (jsonObject.has("count")) {
-				variantCount = jsonObject.get("count").getAsInt();
+			if (jsonObject.has(COUNT_KEY)) {
+				variantCount = jsonObject.get(COUNT_KEY).getAsInt();
 			}
 			
 			return new ItemResult(variant, variantCount);

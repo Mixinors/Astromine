@@ -75,12 +75,14 @@ public class TrickedPiglinCriterion extends AbstractCriterion<TrickedPiglinCrite
 		/** Instantiates {@link Conditions}. */
 		public Conditions(Identifier id, EntityPredicate.Extended playerPredicate, Boolean successful) {
 			super(id, playerPredicate);
+			
 			this.successful = successful;
 		}
 		
 		/** Instantiates {@link Conditions}. */
 		public Conditions(Identifier id, EntityPredicate.Extended playerPredicate) {
 			super(id, playerPredicate);
+			
 			this.successful = null;
 		}
 		

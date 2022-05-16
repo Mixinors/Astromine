@@ -78,6 +78,7 @@ public class OpenSimplexNoise extends Noise {
 	// Uses a simple 64-bit LCG.
 	public OpenSimplexNoise(long seed) {
 		super(seed);
+		
 		perm = new short[256];
 		permGradIndex3D = new short[256];
 		var source = new short[256];

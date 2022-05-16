@@ -45,12 +45,14 @@ import java.util.Random;
 
 public class WireCuttingRecipe extends SpecialCraftingRecipe {
 	private static final Random RANDOM = new Random();
+	
 	private final Ingredient input;
 	private final Ingredient tool;
 	private final ItemStack output;
 	
 	public WireCuttingRecipe(Identifier id, Ingredient input, Ingredient tool, ItemStack output) {
 		super(id);
+		
 		this.input = input;
 		this.tool = tool;
 		this.output = output;

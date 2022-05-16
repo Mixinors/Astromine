@@ -33,6 +33,7 @@ public class MachineTierConfig extends SpeedModifierTierConfig implements Energy
 	
 	public MachineTierConfig(double speedModifier, long energyStorageSize) {
 		super(speedModifier);
+		
 		this.energyStorageSize = energyStorageSize;
 	}
 	

@@ -56,8 +56,10 @@ import java.util.Optional;
 
 public record SolidifyingRecipe(Identifier id,
 		FluidIngredient input,
-		ItemResult output, long energyInput,
-		int time) implements FluidInputRecipe, ItemOutputRecipe {
+		ItemResult output,
+		long energyInput,
+		int time
+) implements FluidInputRecipe, ItemOutputRecipe {
 	private static final Map<World, SolidifyingRecipe[]> RECIPE_CACHE = new HashMap<>();
 	
 	public static boolean allows(World world, FluidVariant... variants) {

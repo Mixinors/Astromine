@@ -44,6 +44,7 @@ public class OctaveNoiseSampler<T extends Noise> extends Noise {
 	
 	public OctaveNoiseSampler(Class<T> classT, Random rand, int octaves, double frequency, double amplitudeHigh, double amplitudeLow) {
 		super(0);
+		
 		samplers = new Noise[octaves];
 		clamp = 1D / (1D - (1D / Math.pow(2, octaves)));
 		

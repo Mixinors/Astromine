@@ -24,9 +24,9 @@
 
 package com.github.mixinors.astromine.common.recipe.base.output;
 
-import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
+import com.github.mixinors.astromine.common.recipe.base.input.EnergyInputRecipe;
 import com.github.mixinors.astromine.common.recipe.result.FluidResult;
 
-public interface FluidOutputRecipe extends EnergyConsumingRecipe {
+public interface FluidOutputRecipe extends EnergyInputRecipe {
 	FluidResult getFluidOutput();
 }

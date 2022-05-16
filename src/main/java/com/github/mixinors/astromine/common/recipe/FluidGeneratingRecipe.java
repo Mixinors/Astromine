@@ -50,9 +50,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public record FluidGeneratingRecipe(Identifier id,
+public record FluidGeneratingRecipe(
+		Identifier id,
 		FluidIngredient input,
-		long energyOutput, int time) implements FluidInputRecipe, EnergyOutputRecipe {
+		long energyOutput,
+		int time
+) implements FluidInputRecipe, EnergyOutputRecipe {
 	private static final Map<World, FluidGeneratingRecipe[]> RECIPE_CACHE = new HashMap<>();
 	
 	public static boolean allows(World world, FluidVariant... variants) {

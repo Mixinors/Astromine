@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.datagen.recipe;
 
-import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
+import com.github.mixinors.astromine.common.recipe.base.input.EnergyInputRecipe;
 import com.google.gson.JsonObject;
 import dev.architectury.core.AbstractRecipeSerializer;
 import net.minecraft.item.Item;
@@ -33,12 +33,13 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-public abstract class ItemOutputMachineRecipeJsonFactory<T extends EnergyConsumingRecipe> extends EnergyInputMachineRecipeJsonFactory<T> {
+public abstract class ItemOutputMachineRecipeJsonFactory<T extends EnergyInputRecipe> extends EnergyInputMachineRecipeJsonFactory<T> {
 	protected final Item output;
 	protected final int outputCount;
 	
 	protected ItemOutputMachineRecipeJsonFactory(ItemConvertible output, int outputCount, int processingTime, int energy, AbstractRecipeSerializer<T> serializer) {
 		super(processingTime, energy, serializer);
+		
 		this.output = output.asItem();
 		this.outputCount = outputCount;
 	}
@@ -53,12 +54,13 @@ public abstract class ItemOutputMachineRecipeJsonFactory<T extends EnergyConsumi
 		return OutputType.ITEM;
 	}
 	
-	public abstract static class ItemOutputMachineRecipeJsonProvider<T extends EnergyConsumingRecipe> extends EnergyInputMachineRecipeJsonProvider<T> {
+	public abstract static class ItemOutputMachineRecipeJsonProvider<T extends EnergyInputRecipe> extends EnergyInputMachineRecipeJsonProvider<T> {
 		private final Item output;
 		private final int outputCount;
 		
 		public ItemOutputMachineRecipeJsonProvider(Identifier recipeId, Item output, int outputCount, int processingTime, int energy, RecipeSerializer<T> serializer) {
 			super(recipeId, processingTime, energy, serializer);
+			
 			this.output = output;
 			this.outputCount = outputCount;
 		}

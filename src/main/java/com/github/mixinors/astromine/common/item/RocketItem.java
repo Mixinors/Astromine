@@ -56,6 +56,7 @@ public class RocketItem extends Item {
 	
 	public RocketItem(EntityType<?> type, Item.Settings settings) {
 		super(settings);
+		
 		this.type = type;
 	}
 	

@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.datagen.recipe;
 
 import com.github.mixinors.astromine.common.recipe.MeltingRecipe;
-import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
+import com.github.mixinors.astromine.common.recipe.base.input.EnergyInputRecipe;
 import com.google.gson.JsonObject;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.fluid.Fluid;
@@ -40,6 +40,7 @@ public class MeltingRecipeJsonFactory extends FluidOutputMachineRecipeJsonFactor
 	
 	protected MeltingRecipeJsonFactory(Ingredient input, Fluid output, long outputAmount, int processingTime, int energy) {
 		super(output, outputAmount, processingTime, energy, MeltingRecipe.Serializer.INSTANCE);
+		
 		this.input = input;
 	}
 	
@@ -53,11 +54,12 @@ public class MeltingRecipeJsonFactory extends FluidOutputMachineRecipeJsonFactor
 		return "melting";
 	}
 	
-	public static class MeltingRecipeJsonProvider<T extends EnergyConsumingRecipe> extends FluidOutputMachineRecipeJsonProvider<T> {
+	public static class MeltingRecipeJsonProvider<T extends EnergyInputRecipe> extends FluidOutputMachineRecipeJsonProvider<T> {
 		private final Ingredient input;
 		
 		public MeltingRecipeJsonProvider(Identifier recipeId, Ingredient input, Fluid output, long outputAmount, int processingTime, int energy, RecipeSerializer<T> serializer) {
 			super(recipeId, output, outputAmount, processingTime, energy, serializer);
+			
 			this.input = input;
 		}
 		

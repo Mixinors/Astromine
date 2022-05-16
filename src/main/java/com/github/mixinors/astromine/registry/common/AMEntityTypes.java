@@ -42,7 +42,7 @@ import net.minecraft.world.Heightmap;
 import java.util.function.Supplier;
 
 public class AMEntityTypes {
-	public static final RegistrySupplier<EntityType<PrimitiveRocketEntity>> PRIMITIVE_ROCKET = register("primitive_rocket", () -> FabricEntityTypeBuilder.create(SpawnGroup.MISC, PrimitiveRocketEntity::new).dimensions(EntityDimensions.changing(1.5f, 22.5f)).trackable(256, 4).build());
+	public static final RegistrySupplier<EntityType<PrimitiveRocketEntity>> PRIMITIVE_ROCKET = register("primitive_rocket", () -> FabricEntityTypeBuilder.create(SpawnGroup.MISC, PrimitiveRocketEntity::new).dimensions(EntityDimensions.changing(1.5F, 22.5F)).trackable(256, 4).build());
 	
 	public static final RegistrySupplier<EntityType<SpaceSlimeEntity>> SPACE_SLIME = register("space_slime", () -> FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, SpaceSlimeEntity::new).dimensions(EntityDimensions.changing(2.04F, 2.04F)).trackable(128, 4).build());
 	

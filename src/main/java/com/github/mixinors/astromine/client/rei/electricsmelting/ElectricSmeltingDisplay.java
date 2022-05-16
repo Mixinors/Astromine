@@ -37,6 +37,7 @@ public class ElectricSmeltingDisplay extends DefaultCookingDisplay {
 	
 	public ElectricSmeltingDisplay(AbstractCookingRecipe recipe) {
 		super(recipe);
+		
 		this.energyRequired = 500;
 	}
 	

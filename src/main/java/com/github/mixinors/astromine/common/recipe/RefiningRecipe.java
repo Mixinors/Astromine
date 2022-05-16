@@ -51,10 +51,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public record RefiningRecipe(Identifier id,
+public record RefiningRecipe(
+		Identifier id,
 		FluidIngredient input,
-		FluidResult output, long energyInput,
-		int time) implements FluidInputRecipe, FluidOutputRecipe {
+		FluidResult output,
+		long energyInput,
+		int time
+) implements FluidInputRecipe, FluidOutputRecipe {
 	private static final Map<World, RefiningRecipe[]> RECIPE_CACHE = new HashMap<>();
 	
 	public static boolean allows(World world, FluidVariant... variants) {

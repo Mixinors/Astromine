@@ -31,10 +31,12 @@ import net.minecraft.item.Item;
 import org.jetbrains.annotations.Nullable;
 
 public class MachineUpgradeKitItem extends Item {
-	private final MachineTier from, to;
+	private final MachineTier from;
+	private final MachineTier to;
 	
 	public MachineUpgradeKitItem(MachineTier from, MachineTier to, Settings settings) {
 		super(settings);
+		
 		this.from = from;
 		this.to = to;
 	}

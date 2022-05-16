@@ -44,6 +44,7 @@ public class AlloySmeltingRecipeJsonFactory extends ItemOutputMachineRecipeJsonF
 	
 	protected AlloySmeltingRecipeJsonFactory(Ingredient firstInput, int firstCount, Ingredient secondInput, int secondCount, ItemConvertible output, int outputCount, int processingTime, int energy) {
 		super(output, outputCount, processingTime, energy, AlloySmeltingRecipe.Serializer.INSTANCE);
+		
 		this.firstInput = firstInput;
 		this.firstCount = firstCount;
 		this.secondInput = secondInput;
@@ -68,6 +69,7 @@ public class AlloySmeltingRecipeJsonFactory extends ItemOutputMachineRecipeJsonF
 		
 		public AlloySmeltingRecipeProvider(Identifier recipeId, Ingredient firstInput, int firstCount, Ingredient secondInput, int secondCount, Item output, int outputCount, int processingTime, int energy, RecipeSerializer<AlloySmeltingRecipe> serializer) {
 			super(recipeId, output, outputCount, processingTime, energy, serializer);
+			
 			this.firstInput = firstInput;
 			this.firstCount = firstCount;
 			this.secondInput = secondInput;

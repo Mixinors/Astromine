@@ -51,10 +51,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public record TrituratingRecipe(Identifier id,
+public record TrituratingRecipe(
+		Identifier id,
 		ItemIngredient input,
-		ItemResult output, long energyInput,
-		int time) implements ItemInputRecipe, ItemOutputRecipe {
+		ItemResult output,
+		long energyInput,
+		int time
+) implements ItemInputRecipe, ItemOutputRecipe {
 	private static final Map<World, TrituratingRecipe[]> RECIPE_CACHE = new HashMap<>();
 	
 	public static boolean allows(World world, ItemVariant... variants) {

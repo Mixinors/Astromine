@@ -74,6 +74,7 @@ public class AnimatedArmorItem extends ArmorItem {
 		/** Instantiates a {@link Texture}. */
 		public AnimatedTexturePhase(Identifier id, int frames) {
 			super(id, false, false);
+			
 			beginAction = () -> {
 				RenderSystem.enableTexture();
 				

@@ -63,11 +63,13 @@ public class DestroyRocketCriterion extends AbstractCriterion<DestroyRocketCrite
 		
 		public Conditions(Identifier id, EntityPredicate.Extended playerPredicate, Boolean intentional) {
 			super(id, playerPredicate);
+			
 			this.intentional = intentional;
 		}
 		
 		public Conditions(Identifier id, EntityPredicate.Extended playerPredicate) {
 			super(id, playerPredicate);
+			
 			this.intentional = null;
 		}
 		

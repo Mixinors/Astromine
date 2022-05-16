@@ -43,6 +43,10 @@ import java.util.List;
 import java.util.function.BiPredicate;
 
 public final class FluidIngredient {
+	private static final String FLUID_KEY = "fluid";
+	private static final String AMOUNT_KEY = "amount";
+	private static final String TAG_KEY = "tag";
+	
 	private final Entry entry;
 	
 	@Nullable
@@ -78,6 +82,7 @@ public final class FluidIngredient {
 	
 	public FluidVariant[] getMatchingVariants() {
 		this.cacheMatchingVariants();
+		
 		return this.matchingVariants;
 	}
 	
@@ -99,17 +104,17 @@ public final class FluidIngredient {
 		if (json.isJsonObject()) {
 			var jsonObject = json.getAsJsonObject();
 			
-			if (jsonObject.has("fluid")) {
-				if (jsonObject.has("amount")) {
-					var entryAsId = new Identifier(jsonObject.get("fluid").getAsString());
+			if (jsonObject.has(FLUID_KEY)) {
+				if (jsonObject.has(AMOUNT_KEY)) {
+					var entryAsId = new Identifier(jsonObject.get(FLUID_KEY).getAsString());
 					var entryAsFluid = Registry.FLUID.get(entryAsId);
 					var entryAsFluidVariant = FluidVariant.of(entryAsFluid);
 					
-					var entryAmount = jsonObject.get("amount").getAsLong();
+					var entryAmount = jsonObject.get(AMOUNT_KEY).getAsLong();
 					
 					return new FluidIngredient(new VariantEntry(entryAsFluidVariant, entryAmount));
 				} else {
-					var entryAsId = new Identifier(jsonObject.get("fluid").getAsString());
+					var entryAsId = new Identifier(jsonObject.get(FLUID_KEY).getAsString());
 					var entryAsFluid = Registry.FLUID.get(entryAsId);
 					var entryAsFluidVariant = FluidVariant.of(entryAsFluid);
 					
@@ -117,16 +122,16 @@ public final class FluidIngredient {
 				}
 			}
 			
-			if (jsonObject.has("tag")) {
-				if (jsonObject.has("amount")) {
-					var entryAsId = new Identifier(jsonObject.get("tag").getAsString());
+			if (jsonObject.has(TAG_KEY)) {
+				if (jsonObject.has(AMOUNT_KEY)) {
+					var entryAsId = new Identifier(jsonObject.get(TAG_KEY).getAsString());
 					var entryAsTag = AMTags.ofFluid(entryAsId);
 					
-					var entryAmount = jsonObject.get("amount").getAsLong();
+					var entryAmount = jsonObject.get(AMOUNT_KEY).getAsLong();
 					
 					return new FluidIngredient(new TagEntry(entryAsTag, entryAmount));
 				} else {
-					var entryAsId = new Identifier(jsonObject.get("tag").getAsString());
+					var entryAsId = new Identifier(jsonObject.get(TAG_KEY).getAsString());
 					var entryAsTag = AMTags.ofFluid(entryAsId);
 					
 					return new FluidIngredient(new TagEntry(entryAsTag));
@@ -143,15 +148,15 @@ public final class FluidIngredient {
 		if (ingredient.entry instanceof VariantEntry variantEntry) {
 			var entryJsonObject = new JsonObject();
 			
-			entryJsonObject.addProperty("fluid", Registry.FLUID.getId(variantEntry.requiredVariant.getFluid()).toString());
-			entryJsonObject.addProperty("amount", variantEntry.requiredAmount);
+			entryJsonObject.addProperty(FLUID_KEY, Registry.FLUID.getId(variantEntry.requiredVariant.getFluid()).toString());
+			entryJsonObject.addProperty(AMOUNT_KEY, variantEntry.requiredAmount);
 		}
 		
 		if (ingredient.entry instanceof TagEntry tagEntry) {
 			var entryJsonObject = new JsonObject();
 			
-			entryJsonObject.addProperty("tag", tagEntry.requiredTag.id().toString());
-			entryJsonObject.addProperty("amount", tagEntry.requiredAmount);
+			entryJsonObject.addProperty(TAG_KEY, tagEntry.requiredTag.id().toString());
+			entryJsonObject.addProperty(AMOUNT_KEY, tagEntry.requiredAmount);
 		}
 		
 		return jsonObject;
@@ -163,14 +168,14 @@ public final class FluidIngredient {
 		
 		var entryAmount = buf.readLong();
 		
-		if (entryType.equals("fluid")) {
+		if (entryType.equals(FLUID_KEY)) {
 			var entryFluid = Registry.FLUID.get(entryTypeId);
 			var entryVariant = FluidVariant.of(entryFluid);
 			
 			return new FluidIngredient(new VariantEntry(entryVariant, entryAmount));
 		}
 		
-		if (entryType.equals("tag")) {
+		if (entryType.equals(TAG_KEY)) {
 			var entryTag = AMTags.ofFluid(entryTypeId);
 			
 			return new FluidIngredient(new TagEntry(entryTag, entryAmount));
@@ -181,13 +186,13 @@ public final class FluidIngredient {
 	
 	public static void toPacket(PacketByteBuf buf, FluidIngredient ingredient) {
 		if (ingredient.entry instanceof VariantEntry variantEntry) {
-			buf.writeString("fluid");
+			buf.writeString(FLUID_KEY);
 			buf.writeString(Registry.FLUID.getId(variantEntry.requiredVariant.getFluid()).toString());
 			buf.writeLong(variantEntry.requiredAmount);
 		}
 		
 		if (ingredient.entry instanceof TagEntry tagEntry) {
-			buf.writeString("tag");
+			buf.writeString(TAG_KEY);
 			buf.writeString(tagEntry.requiredTag.id().toString());
 			buf.writeLong(tagEntry.requiredAmount);
 		}

@@ -71,6 +71,7 @@ public class GravityGauntletItem extends SimpleEnergyStorageItem {
 				return TypedActionResult.success(stack);
 			}
 		}
+		
 		return super.use(world, user, hand);
 	}
 	

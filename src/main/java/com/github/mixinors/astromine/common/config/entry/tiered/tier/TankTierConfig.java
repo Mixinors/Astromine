@@ -33,6 +33,7 @@ public class TankTierConfig extends SpeedModifierTierConfig implements FluidStor
 	
 	public TankTierConfig(double speedModifier, long fluidStorageSize) {
 		super(speedModifier);
+		
 		this.fluidStorageSize = fluidStorageSize;
 	}
 	

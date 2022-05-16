@@ -47,7 +47,10 @@ public abstract sealed class EnergyNetworkType implements NetworkType<EnergyStor
 	}
 	
 	private void move(Reference2LongMap<EnergyStorage> extractableStorages, Reference2LongMap<EnergyStorage> insertableStorages) {
-		record EnergyPair(long maxAmount, EnergyStorage their) {}
+		record EnergyPair(
+				long maxAmount,
+				EnergyStorage their
+		) {}
 		
 		try (var transaction = Transaction.openOuter()) {
 			for (var extractableEntry : extractableStorages.reference2LongEntrySet()) {
@@ -55,6 +58,7 @@ public abstract sealed class EnergyNetworkType implements NetworkType<EnergyStor
 				var extractedAmount = extractableEntry.getLongValue();
 				
 				var list = new ArrayList<EnergyPair>();
+				
 				var offering = 0L;
 				var requesting = 0L;
 				
@@ -71,13 +75,13 @@ public abstract sealed class EnergyNetworkType implements NetworkType<EnergyStor
 					}
 					
 					if (availableToExtract > 0) {
-						try (Transaction extractionTestTransaction = Transaction.openNested(transaction)) {
+						try (var extractionTestTransaction = Transaction.openNested(transaction)) {
 							availableToExtract = extractableStorage.extract(availableToExtract, extractionTestTransaction);
 						}
 					}
 					
 					if (availableToInsert > 0) {
-						try (Transaction insertionTestTransaction = Transaction.openNested(transaction)) {
+						try (var insertionTestTransaction = Transaction.openNested(transaction)) {
 							availableToInsert = insertableStorage.insert(availableToInsert, insertionTestTransaction);
 						}
 					}
@@ -86,7 +90,9 @@ public abstract sealed class EnergyNetworkType implements NetworkType<EnergyStor
 					
 					if (availableToMove > 0) {
 						offering = Math.max(offering, extractableStorage.getAmount());
+						
 						requesting += availableToMove;
+						
 						list.add(new EnergyPair(availableToMove, insertableStorage));
 					}
 				}
@@ -95,8 +101,11 @@ public abstract sealed class EnergyNetworkType implements NetworkType<EnergyStor
 				
 				for (var pair : list) {
 					var move = (long) Math.ceil(pair.maxAmount * MathHelper.clamp(requesting <= 0 ? 0.0 : (double) offering / requesting, 0.0, 1.0));
+					
 					var moved = EnergyStorageUtil.move(extractableStorage, pair.their, move, transaction);
+					
 					insertableStorages.put(pair.their, insertableStorages.getLong(pair.their) + moved);
+					
 					extractedAmount += moved;
 					
 					if (extractedAmount >= getTransferRate()) {

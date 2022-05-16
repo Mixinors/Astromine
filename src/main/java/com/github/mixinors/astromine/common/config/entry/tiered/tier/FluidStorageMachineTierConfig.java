@@ -33,6 +33,7 @@ public class FluidStorageMachineTierConfig extends MachineTierConfig implements 
 	
 	public FluidStorageMachineTierConfig(double speedModifier, long energyStorage, long fluidStorageSize) {
 		super(speedModifier, energyStorage);
+		
 		this.fluidStorageSize = fluidStorageSize;
 	}
 	

@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.datagen.recipe;
 
-import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
+import com.github.mixinors.astromine.common.recipe.base.input.EnergyInputRecipe;
 import com.google.gson.JsonObject;
 import dev.architectury.core.AbstractRecipeSerializer;
 import net.minecraft.fluid.Fluid;
@@ -32,12 +32,13 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-public abstract class FluidOutputMachineRecipeJsonFactory<T extends EnergyConsumingRecipe> extends EnergyInputMachineRecipeJsonFactory<T> {
+public abstract class FluidOutputMachineRecipeJsonFactory<T extends EnergyInputRecipe> extends EnergyInputMachineRecipeJsonFactory<T> {
 	protected final Fluid output;
 	protected final long outputAmount;
 	
 	protected FluidOutputMachineRecipeJsonFactory(Fluid output, long outputAmount, int processingTime, int energy, AbstractRecipeSerializer<T> serializer) {
 		super(processingTime, energy, serializer);
+		
 		this.output = output;
 		this.outputAmount = outputAmount;
 	}
@@ -57,12 +58,13 @@ public abstract class FluidOutputMachineRecipeJsonFactory<T extends EnergyConsum
 		return getFluidId(getOutputFluid());
 	}
 	
-	public abstract static class FluidOutputMachineRecipeJsonProvider<T extends EnergyConsumingRecipe> extends EnergyInputMachineRecipeJsonProvider<T> {
+	public abstract static class FluidOutputMachineRecipeJsonProvider<T extends EnergyInputRecipe> extends EnergyInputMachineRecipeJsonProvider<T> {
 		private final Fluid output;
 		private final long outputAmount;
 		
 		public FluidOutputMachineRecipeJsonProvider(Identifier recipeId, Fluid output, long outputAmount, int processingTime, int energy, RecipeSerializer<T> serializer) {
 			super(recipeId, processingTime, energy, serializer);
+			
 			this.output = output;
 			this.outputAmount = outputAmount;
 		}

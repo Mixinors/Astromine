@@ -44,6 +44,10 @@ import java.util.List;
 import java.util.function.BiPredicate;
 
 public final class ItemIngredient {
+	private static final String ITEM_KEY = "item";
+	private static final String COUNT_KEY = "count";
+	private static final String TAG_KEY = "tag";
+	
 	private final Entry entry;
 	
 	@Nullable
@@ -82,6 +86,7 @@ public final class ItemIngredient {
 	
 	public ItemVariant[] getMatchingVariants() {
 		this.cacheMatchingVariants();
+		
 		return this.matchingVariants;
 	}
 	
@@ -103,17 +108,17 @@ public final class ItemIngredient {
 		if (json.isJsonObject()) {
 			var jsonObject = json.getAsJsonObject();
 			
-			if (jsonObject.has("item")) {
-				if (jsonObject.has("count")) {
-					var entryAsId = new Identifier(jsonObject.get("item").getAsString());
+			if (jsonObject.has(ITEM_KEY)) {
+				if (jsonObject.has(COUNT_KEY)) {
+					var entryAsId = new Identifier(jsonObject.get(ITEM_KEY).getAsString());
 					var entryAsItem = Registry.ITEM.get(entryAsId);
 					var entryAsItemVariant = ItemVariant.of(entryAsItem);
 					
-					var entryAmount = jsonObject.get("count").getAsInt();
+					var entryAmount = jsonObject.get(COUNT_KEY).getAsInt();
 					
 					return new ItemIngredient(new VariantEntry(entryAsItemVariant, entryAmount));
 				} else {
-					var entryAsId = new Identifier(jsonObject.get("item").getAsString());
+					var entryAsId = new Identifier(jsonObject.get(ITEM_KEY).getAsString());
 					var entryAsItem = Registry.ITEM.get(entryAsId);
 					var entryAsItemVariant = ItemVariant.of(entryAsItem);
 					
@@ -121,16 +126,16 @@ public final class ItemIngredient {
 				}
 			}
 			
-			if (jsonObject.has("tag")) {
-				if (jsonObject.has("count")) {
-					var entryAsId = new Identifier(jsonObject.get("tag").getAsString());
+			if (jsonObject.has(TAG_KEY)) {
+				if (jsonObject.has(COUNT_KEY)) {
+					var entryAsId = new Identifier(jsonObject.get(TAG_KEY).getAsString());
 					var entryAsTag = AMTags.ofItem(entryAsId);
 					
-					var entryAmount = jsonObject.get("count").getAsInt();
+					var entryAmount = jsonObject.get(COUNT_KEY).getAsInt();
 					
 					return new ItemIngredient(new TagEntry(entryAsTag, entryAmount));
 				} else {
-					var entryAsId = new Identifier(jsonObject.get("tag").getAsString());
+					var entryAsId = new Identifier(jsonObject.get(TAG_KEY).getAsString());
 					var entryAsTag = AMTags.ofItem(entryAsId);
 					
 					return new ItemIngredient(new TagEntry(entryAsTag));
@@ -147,15 +152,15 @@ public final class ItemIngredient {
 		if (ingredient.entry instanceof VariantEntry variantEntry) {
 			var entryJsonObject = new JsonObject();
 			
-			entryJsonObject.addProperty("item", Registry.ITEM.getId(variantEntry.requiredVariant.getItem()).toString());
-			entryJsonObject.addProperty("count", variantEntry.requiredAmount);
+			entryJsonObject.addProperty(ITEM_KEY, Registry.ITEM.getId(variantEntry.requiredVariant.getItem()).toString());
+			entryJsonObject.addProperty(COUNT_KEY, variantEntry.requiredAmount);
 		}
 		
 		if (ingredient.entry instanceof TagEntry tagEntry) {
 			var entryJsonObject = new JsonObject();
 			
-			entryJsonObject.addProperty("tag", tagEntry.requiredTag.id().toString());
-			entryJsonObject.addProperty("count", tagEntry.requiredAmount);
+			entryJsonObject.addProperty(TAG_KEY, tagEntry.requiredTag.id().toString());
+			entryJsonObject.addProperty(COUNT_KEY, tagEntry.requiredAmount);
 		}
 		
 		return jsonObject;
@@ -167,14 +172,14 @@ public final class ItemIngredient {
 		
 		var entryAmount = buf.readInt();
 		
-		if (entryType.equals("item")) {
+		if (entryType.equals(ITEM_KEY)) {
 			var entryItem = Registry.ITEM.get(entryTypeId);
 			var entryVariant = ItemVariant.of(entryItem);
 			
 			return new ItemIngredient(new VariantEntry(entryVariant, entryAmount));
 		}
 		
-		if (entryType.equals("tag")) {
+		if (entryType.equals(TAG_KEY)) {
 			var entryTag = AMTags.ofItem(entryTypeId);
 			
 			return new ItemIngredient(new TagEntry(entryTag, entryAmount));
@@ -185,13 +190,13 @@ public final class ItemIngredient {
 	
 	public static void toPacket(PacketByteBuf buf, ItemIngredient ingredient) {
 		if (ingredient.entry instanceof VariantEntry variantEntry) {
-			buf.writeString("item");
+			buf.writeString(ITEM_KEY);
 			buf.writeString(Registry.ITEM.getId(variantEntry.requiredVariant.getItem()).toString());
 			buf.writeLong(variantEntry.requiredAmount);
 		}
 		
 		if (ingredient.entry instanceof TagEntry tagEntry) {
-			buf.writeString("tag");
+			buf.writeString(TAG_KEY);
 			buf.writeString(tagEntry.requiredTag.id().toString());
 			buf.writeLong(tagEntry.requiredAmount);
 		}

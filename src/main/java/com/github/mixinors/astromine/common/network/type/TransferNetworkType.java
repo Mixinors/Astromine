@@ -41,7 +41,13 @@ import java.util.Comparator;
 @SuppressWarnings("UnstableApiUsage")
 public sealed interface TransferNetworkType<T> extends NetworkType<Storage<T>> permits FluidNetworkType, ItemNetworkType {
 	default void move(Network<?> network, Long2ObjectSortedMap<Storage<T>> extractableStorages, Long2ObjectSortedMap<Storage<T>> insertableStorages) {
-		record TransactionPair<T>(long maxAmount, long posLong, StorageView<T> our, Storage<T> their) {}
+		record TransactionPair<T>(
+				long maxAmount,
+				long posLong,
+				StorageView<T> our,
+				Storage<T> their
+		) {}
+		
 		var worldTickCount = network.getWorld().getServer().getTicks();
 		
 		try (var transaction = Transaction.openOuter()) {
@@ -72,6 +78,7 @@ public sealed interface TransferNetworkType<T> extends NetworkType<Storage<T>> p
 					
 					for (var insertableStorageEntry : insertableStorages.long2ObjectEntrySet()) {
 						var posLong = insertableStorageEntry.getLongKey();
+						
 						var insertableStorage = insertableStorageEntry.getValue();
 						
 						try (var insertionTestTransaction = transaction.openNested()) {
@@ -83,8 +90,11 @@ public sealed interface TransferNetworkType<T> extends NetworkType<Storage<T>> p
 						}
 						
 						var availableToMove = Math.min(availableToExtract, availableToInsert);
+						
 						offering = Math.min(getTransferRate() - transacted, Math.max(offering, extractableView.getAmount()));
+						
 						requesting += availableToMove;
+						
 						list.add(new TransactionPair<>(availableToMove, posLong, extractableView, insertableStorage));
 					}
 					
@@ -102,22 +112,26 @@ public sealed interface TransferNetworkType<T> extends NetworkType<Storage<T>> p
 								@Nullable
 								@Override
 								protected TransactionPair<T> computeNext() {
-									int i = cursor++ + skip;
+									var index = cursor++ + skip;
+									
 									if (cursor > list.size()) {
 										return endOfData();
 									} else {
-										return list.get(i % list.size());
+										return list.get(index % list.size());
 									}
 								}
 							};
 						} else {
 							list.sort(Comparator.comparingLong(TransactionPair::maxAmount));
+							
 							iterable = list;
 						}
 						
 						for (var pair : iterable) {
 							var move = (long) Math.ceil(pair.maxAmount * MathHelper.clamp(requesting <= 0 ? 0.0 : (double) offering / requesting, 0.0, 1.0));
+							
 							var moved = move(resource, pair.our, pair.their, move, transaction);
+							
 							transacted += moved;
 							
 							if (transacted >= getTransferRate()) {

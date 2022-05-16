@@ -51,11 +51,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public record ElectrolyzingRecipe(Identifier id,
+public record ElectrolyzingRecipe(
+		Identifier id,
 		FluidIngredient input,
 		FluidResult firstOutput,
 		FluidResult secondOutput,
-		long energyInput, int time) implements FluidInputRecipe, DoubleFluidOutputRecipe {
+		long energyInput,
+		int time
+) implements FluidInputRecipe, DoubleFluidOutputRecipe {
 	private static final Map<World, ElectrolyzingRecipe[]> RECIPE_CACHE = new HashMap<>();
 	
 	public static boolean allows(World world, FluidVariant... variants) {

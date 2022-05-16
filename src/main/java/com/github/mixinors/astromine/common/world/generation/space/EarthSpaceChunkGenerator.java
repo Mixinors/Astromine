@@ -74,6 +74,7 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 	
 	public EarthSpaceChunkGenerator(Registry<StructureSet> structureFeatureRegistry, long seed, Registry<Biome> biomeRegistry) {
 		super(structureFeatureRegistry, Optional.empty(), new EarthSpaceBiomeSource(biomeRegistry, seed));
+		
 		this.field_37261 = seed;
 		this.biomeRegistry = biomeRegistry;
 		this.noise = new OctaveNoiseSampler<>(OpenSimplexNoise.class, new Random(seed), 3, 200, 1.225, 1);

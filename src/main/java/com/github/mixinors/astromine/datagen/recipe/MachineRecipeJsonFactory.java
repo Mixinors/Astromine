@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.datagen.recipe;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.recipe.base.EnergyConsumingRecipe;
+import com.github.mixinors.astromine.common.recipe.base.input.EnergyInputRecipe;
 import com.google.gson.JsonObject;
 import dev.architectury.core.AbstractRecipeSerializer;
 import net.minecraft.advancement.criterion.CriterionConditions;
@@ -44,7 +44,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
-public abstract class MachineRecipeJsonFactory<T extends EnergyConsumingRecipe> implements CraftingRecipeJsonBuilder {
+public abstract class MachineRecipeJsonFactory<T extends EnergyInputRecipe> implements CraftingRecipeJsonBuilder {
 	protected final int processingTime;
 	protected final AbstractRecipeSerializer<T> serializer;
 	
@@ -130,7 +130,7 @@ public abstract class MachineRecipeJsonFactory<T extends EnergyConsumingRecipe> 
 		return new MeltingRecipeJsonFactory(input, output, outputAmount, processingTime, energy);
 	}
 	
-	public abstract static class MachineRecipeJsonProvider<T extends EnergyConsumingRecipe> implements RecipeJsonProvider {
+	public abstract static class MachineRecipeJsonProvider<T extends EnergyInputRecipe> implements RecipeJsonProvider {
 		protected final Identifier recipeId;
 		protected final int processingTime;
 		protected final RecipeSerializer<T> serializer;
