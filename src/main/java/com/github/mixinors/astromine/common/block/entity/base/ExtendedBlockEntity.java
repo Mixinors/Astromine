@@ -99,7 +99,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	
 	@Override
 	public void tick() {
-		if (!hasWorld() || world.isClient()) {
+		if (!hasWorld() || world.isClient) {
 			return;
 		}
 		

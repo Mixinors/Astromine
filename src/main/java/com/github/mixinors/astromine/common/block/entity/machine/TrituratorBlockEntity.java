@@ -78,7 +78,7 @@ public abstract class TrituratorBlockEntity extends ExtendedBlockEntity implemen
 	public void tick() {
 		super.tick();
 		
-		if (!hasWorld() || world.isClient() || !shouldRun()) {
+		if (!hasWorld() || world.isClient || !shouldRun()) {
 			return;
 		}
 		

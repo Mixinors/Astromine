@@ -152,7 +152,7 @@ public abstract class CableBlock extends BlockWithEntity implements Waterloggabl
 	 * Toggles this {@link CableBlock}'s connection type.
 	 */
 	public void toggleConnectionType(World world, BlockPos pos, Direction direction) {
-		if (!world.isClient()) {
+		if (!world.isClient) {
 			var blockEntity = (CableBlockEntity) world.getBlockEntity(pos);
 			
 			if (blockEntity == null) {
@@ -235,7 +235,7 @@ public abstract class CableBlock extends BlockWithEntity implements Waterloggabl
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (getNetworkType().hasSiding()) {
-			if (!world.isClient()) {
+			if (!world.isClient) {
 				// Hit position is relative to the world.
 				var hitPos = hit.getPos();
 				

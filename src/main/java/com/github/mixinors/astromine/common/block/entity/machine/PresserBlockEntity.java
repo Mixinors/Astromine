@@ -78,7 +78,7 @@ public abstract class PresserBlockEntity extends ExtendedBlockEntity implements 
 	public void tick() {
 		super.tick();
 		
-		if (!hasWorld() || world.isClient() || !shouldRun()) {
+		if (!hasWorld() || world.isClient || !shouldRun()) {
 			return;
 		}
 		

@@ -80,7 +80,7 @@ public class CableBlockEntity extends BlockEntity implements RenderAttachmentBlo
 		
 		connections = new Connections(BitSet.valueOf(nbt.getLongArray(DATA_KEY)));
 		
-		if (world != null && world.isClient()) {
+		if (world != null && world.isClient) {
 			world.scheduleBlockRerenderIfNeeded(getPos(), Blocks.AIR.getDefaultState(), Blocks.BEDROCK.getDefaultState());
 		}
 	}

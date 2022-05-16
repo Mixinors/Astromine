@@ -122,7 +122,7 @@ public class EntityEquipmentStorage extends CombinedStorage<ItemVariant, SingleS
 		
 		// Drop in the world on the server side (will be synced by the game with the client).
 		// Dropping items is server-side only because it involves randomness.
-		if (amount > 0 && !mobEntity.world.isClient()) {
+		if (amount > 0 && !mobEntity.world.isClient) {
 			droppedStacks.addDrop(variant, amount, transaction);
 		}
 	}
