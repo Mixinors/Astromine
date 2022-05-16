@@ -6,7 +6,10 @@ import net.minecraft.block.Block;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.tag.TagKey;
 
-public record HarvestData(TagKey<Block> mineableTag, int miningLevel) {
+public record HarvestData(
+		TagKey<Block> mineableTag,
+		int miningLevel
+) {
 	public static final HarvestData PICKAXE = new HarvestData(BlockTags.PICKAXE_MINEABLE);
 	public static final HarvestData AXE = new HarvestData(BlockTags.AXE_MINEABLE);
 	public static final HarvestData SHOVEL = new HarvestData(BlockTags.SHOVEL_MINEABLE);

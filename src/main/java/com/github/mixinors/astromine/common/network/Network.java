@@ -251,7 +251,9 @@ public final class Network<T extends NetworkType> {
 	 * <br>
 	 * Serialization and deserialization methods are provided for: - {@link NbtCompound} - through {@link #toTag()} and {@link #fromTag(NbtCompound)}.
 	 */
-	public record Node(long longPos) {
+	public record Node(
+			long longPos
+	) {
 		/** Instantiates a {@link Member}. */
 		public Node(BlockPos blockPos) {
 			this(blockPos.asLong());

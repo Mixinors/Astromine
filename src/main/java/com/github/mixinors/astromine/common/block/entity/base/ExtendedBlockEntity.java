@@ -176,7 +176,12 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	// Transacts energy to the neighboring blocks by averaging the available energy.
 	// This will make sure everyone has the same amount of energy.
 	private void moveEnergyAveraged(Transaction transaction) {
-		record EnergyPair(long maxAmount, EnergyStorage our, EnergyStorage their) {}
+		record EnergyPair(
+				long maxAmount,
+				EnergyStorage our,
+				EnergyStorage their
+		) {}
+		
 		var list = new ArrayList<EnergyPair>();
 		var offering = 0L;
 		var requesting = 0L;

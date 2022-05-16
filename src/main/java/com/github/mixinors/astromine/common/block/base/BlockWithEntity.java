@@ -213,5 +213,10 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 	
 	public abstract SavedData getSavedDataForDroppedItem();
 	
-	public record SavedData(boolean redstoneControl, boolean energyStorage, boolean itemStorage, boolean fluidStorage) {}
+	public record SavedData(
+			boolean redstoneControl,
+			boolean energyStorage,
+			boolean itemStorage,
+			boolean fluidStorage
+	) {}
 }
