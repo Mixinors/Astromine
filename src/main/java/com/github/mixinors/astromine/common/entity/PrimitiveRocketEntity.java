@@ -191,10 +191,10 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedMenuP
 				var itemOutputFluidStorage2 = FluidStorage.ITEM.find(itemOutputStorage2.getStack(), ContainerItemContext.ofSingleSlot(itemOutputStorage2));
 				
 				StorageUtil.move(itemInputFluidStorage1, fluidInputStorage1, fluidVariant -> {
-					return (getPrimaryFuelIngredient().testVariant(fluidVariant) || getSecondaryFuelIngredient().testVariant(fluidVariant)) && (fluidInputStorage2.isResourceBlank());
+					return (getPrimaryFuelIngredient().testVariant(fluidVariant) && fluidInputStorage2.getResource() != fluidVariant) || (getSecondaryFuelIngredient().testVariant(fluidVariant) && fluidInputStorage1.getResource() != fluidVariant);
 				}, FluidConstants.BUCKET, transaction);
 				StorageUtil.move(itemInputFluidStorage2, fluidInputStorage2, fluidVariant -> {
-					return (getPrimaryFuelIngredient().testVariant(fluidVariant) || getSecondaryFuelIngredient().testVariant(fluidVariant)) && (fluidInputStorage1.isResourceBlank());
+					return (getPrimaryFuelIngredient().testVariant(fluidVariant) && fluidInputStorage2.getResource() != fluidVariant) || (getSecondaryFuelIngredient().testVariant(fluidVariant) && fluidInputStorage1.getResource() != fluidVariant);
 				}, FluidConstants.BUCKET, transaction);
 				
 				StorageUtil.move(fluidInputStorage1, itemOutputFluidStorage1, fluidVariant -> true, FluidConstants.BUCKET, transaction);
