@@ -36,7 +36,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
 public class SuperSpaceSlimeEntityModel extends SlimeEntityModel<SuperSpaceSlimeEntity> {
-	
 	private static final ItemStack GLASS = new ItemStack(Items.GLASS);
 	
 	public SuperSpaceSlimeEntityModel(ModelPart root) {
@@ -47,15 +46,12 @@ public class SuperSpaceSlimeEntityModel extends SlimeEntityModel<SuperSpaceSlime
 	public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha) {
 		this.getPart().render(matrices, vertices, light, overlay, red, green, blue, alpha);
 		
-		// translate & scale for glass outline
+		// Translate and scale for the glass outline.
 		matrices.translate(0, 1.25, 0);
 		matrices.scale(1.25f, 1.25f, 1.25f);
 		
-		// render glass block
 		DrawingUtils.getItemRenderer().renderItem(GLASS, ModelTransformation.Mode.FIXED, light, overlay, matrices, InstanceUtils.getClient().getBufferBuilders().getEffectVertexConsumers(), 0);
 		
-		// undo translation & scale
-		matrices.scale(.75f, .75f, .75f);
-		matrices.translate(0, -1.25, 0);
+		matrices.pop();
 	}
 }

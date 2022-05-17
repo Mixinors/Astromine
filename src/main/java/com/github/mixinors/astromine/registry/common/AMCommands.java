@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.registry.common;
 
-import com.github.mixinors.astromine.common.screenhandler.RecipeCreatorScreenHandler;
+import com.github.mixinors.astromine.common.screen.handler.RecipeCreatorScreenHandler;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
 import dev.architectury.registry.menu.ExtendedMenuProvider;

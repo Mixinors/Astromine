@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.entity.rocket;
 
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
-import com.github.mixinors.astromine.common.screenhandler.PrimitiveRocketScreenHandler;
+import com.github.mixinors.astromine.common.screen.handler.entity.PrimitiveRocketScreenHandler;
 import com.github.mixinors.astromine.registry.common.AMFluids;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMWorlds;

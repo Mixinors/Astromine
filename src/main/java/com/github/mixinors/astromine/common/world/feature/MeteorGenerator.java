@@ -59,8 +59,8 @@ public class MeteorGenerator extends ShiftableStructurePiece {
 		super(AMFeatures.METEOR_STRUCTURE_PIECE.get(), x, 64, z, 16, 16, 16, getRandomHorizontalDirection(random));
 	}
 	
-	public MeteorGenerator(NbtCompound tag) {
-		super(AMFeatures.METEOR_STRUCTURE_PIECE.get(), tag);
+	public MeteorGenerator(NbtCompound nbt) {
+		super(AMFeatures.METEOR_STRUCTURE_PIECE.get(), nbt);
 	}
 	
 	public static void buildSphere(StructureWorldAccess world, BlockPos originPos, int radius, BlockState state) {

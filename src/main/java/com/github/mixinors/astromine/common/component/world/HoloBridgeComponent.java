@@ -27,11 +27,11 @@ package com.github.mixinors.astromine.common.component.world;
 import com.github.mixinors.astromine.common.util.VoxelShapeUtils;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import com.google.common.collect.Sets;
-import dev.architectury.utils.NbtType;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtLongArray;
 import net.minecraft.util.math.BlockPos;
@@ -181,10 +181,11 @@ public final class HoloBridgeComponent implements Component {
 	
 	@Override
 	public void writeToNbt(@NotNull NbtCompound nbt) {
-		var dataTag = new NbtList();
+		var dataList = new NbtList();
 		
 		for (var entry : entries.long2ObjectEntrySet()) {
-			var pointTag = new NbtCompound();
+			var pointData = new NbtCompound();
+			
 			var vecs = new long[entry.getValue().size()];
 			
 			var i = 0;
@@ -193,18 +194,18 @@ public final class HoloBridgeComponent implements Component {
 				vecs[i++] = BlockPos.asLong(vec.getX(), vec.getY(), vec.getZ());
 			}
 			
-			pointTag.putLong(POSITION_KEY, entry.getLongKey());
-			pointTag.put(VECTORS_KEY, new NbtLongArray(vecs));
+			pointData.putLong(POSITION_KEY, entry.getLongKey());
+			pointData.put(VECTORS_KEY, new NbtLongArray(vecs));
 			
-			dataTag.add(pointTag);
+			dataList.add(pointData);
 		}
 		
-		nbt.put(DATA_KEY, dataTag);
+		nbt.put(DATA_KEY, dataList);
 	}
 	
 	@Override
 	public void readFromNbt(NbtCompound nbt) {
-		var dataTag = nbt.getList(DATA_KEY, NbtType.COMPOUND);
+		var dataTag = nbt.getList(DATA_KEY, NbtElement.COMPOUND_TYPE);
 		
 		for (var pointTag : dataTag) {
 			var vecs = ((NbtCompound) pointTag).getLongArray(VECTORS_KEY);

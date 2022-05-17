@@ -276,17 +276,17 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	}
 	
 	@Override
-	public void readNbt(@NotNull NbtCompound tag) {
-		if (tag.contains(CHILD_POSITION_KEY)) {
-			this.childPosition = BlockPos.fromLong(tag.getLong(CHILD_POSITION_KEY));
+	public void readNbt(@NotNull NbtCompound nbt) {
+		if (nbt.contains(CHILD_POSITION_KEY)) {
+			this.childPosition = BlockPos.fromLong(nbt.getLong(CHILD_POSITION_KEY));
 		}
 		
-		if (tag.contains(PARENT_POSITION_KEY)) {
-			this.parentPosition = BlockPos.fromLong(tag.getLong(PARENT_POSITION_KEY));
+		if (nbt.contains(PARENT_POSITION_KEY)) {
+			this.parentPosition = BlockPos.fromLong(nbt.getLong(PARENT_POSITION_KEY));
 		}
 		
-		if (tag.contains(COLOR_KEY)) {
-			var colorTag = tag.getCompound(COLOR_KEY);
+		if (nbt.contains(COLOR_KEY)) {
+			var colorTag = nbt.getCompound(COLOR_KEY);
 			
 			color = new Color(
 					colorTag.getFloat(R_KEY),
@@ -298,21 +298,21 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 		
 		shouldInitialize = true;
 		
-		super.readNbt(tag);
+		super.readNbt(nbt);
 	}
 	
 	@Override
-	public void writeNbt(NbtCompound tag) {
+	public void writeNbt(NbtCompound nbt) {
 		if (this.child != null) {
-			tag.putLong(CHILD_POSITION_KEY, this.child.getPos().asLong());
+			nbt.putLong(CHILD_POSITION_KEY, this.child.getPos().asLong());
 		} else if (this.childPosition != null) {
-			tag.putLong(CHILD_POSITION_KEY, this.childPosition.asLong());
+			nbt.putLong(CHILD_POSITION_KEY, this.childPosition.asLong());
 		}
 		
 		if (this.parent != null) {
-			tag.putLong(PARENT_POSITION_KEY, this.parent.getPos().asLong());
+			nbt.putLong(PARENT_POSITION_KEY, this.parent.getPos().asLong());
 		} else if (this.parentPosition != null) {
-			tag.putLong(PARENT_POSITION_KEY, this.parentPosition.asLong());
+			nbt.putLong(PARENT_POSITION_KEY, this.parentPosition.asLong());
 		}
 		
 		var colorTag = new NbtCompound();
@@ -321,9 +321,9 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 		colorTag.putFloat(B_KEY, color.getB());
 		colorTag.putFloat(A_KEY, color.getA());
 		
-		tag.put(COLOR_KEY, colorTag);
+		nbt.put(COLOR_KEY, colorTag);
 		
-		super.writeNbt(tag);
+		super.writeNbt(nbt);
 	}
 	
 	@Override

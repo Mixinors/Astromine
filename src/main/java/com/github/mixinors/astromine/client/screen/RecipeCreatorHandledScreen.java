@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.client.screen;
 
-import com.github.mixinors.astromine.common.screenhandler.RecipeCreatorScreenHandler;
+import com.github.mixinors.astromine.common.screen.handler.RecipeCreatorScreenHandler;
 import dev.vini2003.hammer.gui.api.client.screen.BaseHandledScreen;
 import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
 import net.minecraft.entity.player.PlayerInventory;

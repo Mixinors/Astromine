@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.client.screen.base.entity;
 
 import com.github.mixinors.astromine.client.screen.base.CustomForegroundBaseHandledScreen;
-import com.github.mixinors.astromine.common.screenhandler.base.entity.ExtendedEntityScreenHandler;
+import com.github.mixinors.astromine.common.screen.handler.base.entity.ExtendedEntityScreenHandler;
 import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;

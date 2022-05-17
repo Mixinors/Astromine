@@ -100,7 +100,9 @@ public class PrimitiveRocketEntityModel extends SinglePartEntityModel<PrimitiveR
 		matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(45));
 		
 		var glintConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, primitiveRocketEntityModel.getLayer(PrimitiveRocketEntityRenderer.ID), false, stack.hasGlint());
+		
 		primitiveRocketEntityModel.render(matrices, glintConsumer, i, j, 1.0F, 1.0F, 1.0F, 1.0F);
+		
 		matrices.pop();
 	}
 }

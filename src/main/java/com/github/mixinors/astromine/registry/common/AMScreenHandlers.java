@@ -25,16 +25,16 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.screenhandler.NuclearWarheadScreenHandler;
-import com.github.mixinors.astromine.common.screenhandler.PrimitiveRocketScreenHandler;
-import com.github.mixinors.astromine.common.screenhandler.RecipeCreatorScreenHandler;
-import com.github.mixinors.astromine.common.screenhandler.machine.*;
-import com.github.mixinors.astromine.common.screenhandler.machine.generator.FluidGeneratorScreenHandler;
-import com.github.mixinors.astromine.common.screenhandler.machine.generator.SolidGeneratorScreenHandler;
-import com.github.mixinors.astromine.common.screenhandler.storage.BufferScreenHandler;
-import com.github.mixinors.astromine.common.screenhandler.storage.CapacitorScreenHandler;
-import com.github.mixinors.astromine.common.screenhandler.storage.TankScreenHandler;
-import com.github.mixinors.astromine.common.screenhandler.utility.*;
+import com.github.mixinors.astromine.common.screen.handler.NuclearWarheadScreenHandler;
+import com.github.mixinors.astromine.common.screen.handler.RecipeCreatorScreenHandler;
+import com.github.mixinors.astromine.common.screen.handler.entity.PrimitiveRocketScreenHandler;
+import com.github.mixinors.astromine.common.screen.handler.machine.*;
+import com.github.mixinors.astromine.common.screen.handler.machine.generator.FluidGeneratorScreenHandler;
+import com.github.mixinors.astromine.common.screen.handler.machine.generator.SolidGeneratorScreenHandler;
+import com.github.mixinors.astromine.common.screen.handler.storage.BufferScreenHandler;
+import com.github.mixinors.astromine.common.screen.handler.storage.CapacitorScreenHandler;
+import com.github.mixinors.astromine.common.screen.handler.storage.TankScreenHandler;
+import com.github.mixinors.astromine.common.screen.handler.utility.*;
 import dev.architectury.registry.menu.MenuRegistry;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.screen.ScreenHandler;
