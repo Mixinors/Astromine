@@ -61,23 +61,19 @@ import java.util.Set;
 import static net.minecraft.state.property.Properties.WATERLOGGED;
 
 public abstract class CableBlock extends BlockWithEntity implements Waterloggable {
-	public static final Map<Direction, VoxelShape> SIDE_SHAPE_MAP = ImmutableMap.<Direction, VoxelShape>builder()
-																				.put(Direction.UP, Block.createCuboidShape(6D, 10D, 6D, 10D, 16D, 10D))
-																				.put(Direction.DOWN, Block.createCuboidShape(6D, 0D, 6D, 10D, 6D, 10D))
-																				.put(Direction.NORTH, Block.createCuboidShape(6D, 6D, 0D, 10D, 10D, 6D))
-																				.put(Direction.SOUTH, Block.createCuboidShape(6D, 6D, 10D, 10D, 10D, 16D))
-																				.put(Direction.EAST, Block.createCuboidShape(10D, 6D, 6D, 16D, 10D, 10D))
-																				.put(Direction.WEST, Block.createCuboidShape(0D, 6D, 6D, 6D, 10D, 10D))
-																				.build();
+	public static final Map<Direction, VoxelShape> SIDE_SHAPE_MAP = ImmutableMap.of(Direction.UP, Block.createCuboidShape(6D, 10D, 6D, 10D, 16D, 10D),
+																		   			Direction.DOWN, Block.createCuboidShape(6D, 0D, 6D, 10D, 6D, 10D),
+																		   			Direction.NORTH, Block.createCuboidShape(6D, 6D, 0D, 10D, 10D, 6D),
+																		   			Direction.SOUTH, Block.createCuboidShape(6D, 6D, 10D, 10D, 10D, 16D),
+																		   			Direction.EAST, Block.createCuboidShape(10D, 6D, 6D, 16D, 10D, 10D),
+																		   			Direction.WEST, Block.createCuboidShape(0D, 6D, 6D, 6D, 10D, 10D));
 	
-	public static final Map<Direction, VoxelShape> CONNECTOR_SHAPE_MAP = ImmutableMap.<Direction, VoxelShape>builder()
-																					 .put(Direction.UP, VoxelShapes.cuboid(0.375D, 0.875D, 0.3125D, 0.75D, 1.0625D, 0.6875D))
-																					 .put(Direction.DOWN, VoxelShapes.cuboid(0.3125D, -0.0625D, 0.3125D, 0.6875D, 0.125D, 0.6875D))
-																					 .put(Direction.NORTH, VoxelShapes.cuboid(0.3125D, 0.3125D, -0.0625D, 0.6875D, 0.6875D, 0.125D))
-																					 .put(Direction.SOUTH, VoxelShapes.cuboid(0.3125D, 0.3125D, 0.875D, 0.6875D, 0.6875D, 1.0625D))
-																					 .put(Direction.EAST, VoxelShapes.cuboid(0.875D, 0.3125D, 0.3125D, 1.0625D, 0.6875D, 0.6875D))
-																					 .put(Direction.WEST, VoxelShapes.cuboid(-0.0625D, 0.3125D, 0.3125D, 0.125D, 0.6875D, 0.6875D))
-																					 .build();
+	public static final Map<Direction, VoxelShape> CONNECTOR_SHAPE_MAP = ImmutableMap.of(Direction.UP, VoxelShapes.cuboid(0.375D, 0.875D, 0.3125D, 0.75D, 1.0625D, 0.6875D),
+																						 Direction.DOWN, VoxelShapes.cuboid(0.3125D, -0.0625D, 0.3125D, 0.6875D, 0.125D, 0.6875D),
+																						 Direction.NORTH, VoxelShapes.cuboid(0.3125D, 0.3125D, -0.0625D, 0.6875D, 0.6875D, 0.125D),
+																						 Direction.SOUTH, VoxelShapes.cuboid(0.3125D, 0.3125D, 0.875D, 0.6875D, 0.6875D, 1.0625D),
+																						 Direction.EAST, VoxelShapes.cuboid(0.875D, 0.3125D, 0.3125D, 1.0625D, 0.6875D, 0.6875D),
+																						 Direction.WEST, VoxelShapes.cuboid(-0.0625D, 0.3125D, 0.3125D, 0.125D, 0.6875D, 0.6875D));
 	
 	public static final VoxelShape CENTER_SHAPE = Block.createCuboidShape(6.0D, 6.0D, 6.0D, 10.0D, 10.0D, 10.0D);
 	

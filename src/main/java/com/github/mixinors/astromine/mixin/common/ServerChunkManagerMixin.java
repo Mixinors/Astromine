@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.mixin.common;
 
-import com.github.mixinors.astromine.common.callback.ServerChunkManagerCallback;
+import com.github.mixinors.astromine.common.event.ServerChunkManagerEvents;
 import com.mojang.datafixers.DataFixer;
 import net.minecraft.server.WorldGenerationProgressListener;
 import net.minecraft.server.world.ServerChunkManager;
@@ -46,6 +46,6 @@ import java.util.function.Supplier;
 public class ServerChunkManagerMixin {
 	@Inject(method = "<init>", at = @At("RETURN"))
 	private void astromine$init(ServerWorld world, LevelStorage.Session session, DataFixer dataFixer, StructureManager structureManager, Executor workerExecutor, ChunkGenerator chunkGenerator, int viewDistance, int simulationDistance, boolean bl, WorldGenerationProgressListener worldGenerationProgressListener, ChunkStatusChangeListener changeListener, Supplier<PersistentStateManager> supplier, CallbackInfo ci) {
-		ServerChunkManagerCallback.EVENT.invoker().handle((ServerChunkManager) (Object) this);
+		ServerChunkManagerEvents.INIT.invoker().init((ServerChunkManager) (Object) this);
 	}
 }

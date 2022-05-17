@@ -34,21 +34,12 @@
       "com.github.mixinors.astromine.AMDedicated"
     ],
     "modmenu": [
-      "com.github.mixinors.astromine.client.modmenu.AstromineModMenuSupport"
-    ],
-    "cardinal-components-item": [
-      "com.github.mixinors.astromine.registry.common.AMComponents"
+      "com.github.mixinors.astromine.client.modmenu.AMModMenuPlugin"
     ],
     "cardinal-components-entity": [
       "com.github.mixinors.astromine.registry.common.AMComponents"
     ],
     "cardinal-components-world": [
-      "com.github.mixinors.astromine.registry.common.AMComponents"
-    ],
-    "cardinal-components-chunk": [
-      "com.github.mixinors.astromine.registry.common.AMComponents"
-    ],
-    "cardinal-components-block": [
       "com.github.mixinors.astromine.registry.common.AMComponents"
     ],
     "rei_plugins": [
@@ -72,15 +63,10 @@
   },
   "custom": {
     "cardinal-components": [
-      "astromine:world_network_component",
-      "astromine:chunk_atmosphere_component",
-      "astromine:world_holo_bridge_component",
-      "astromine:item_inventory_component",
-      "astromine:fluid_inventory_component",
-      "astromine:energy_inventory_component",
-      "astromine:block_entity_transfer_component",
-      "astromine:block_entity_redstone_component",
-      "astromine:entity_oxygen_component"
+      "astromine:network_component",
+      "astromine:atmosphere_component",
+      "astromine:holo_bridge_component",
+      "astromine:oxygen_component"
     ]
   }
 }

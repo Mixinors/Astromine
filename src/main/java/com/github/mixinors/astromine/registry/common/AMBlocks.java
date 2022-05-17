@@ -36,7 +36,7 @@ import com.github.mixinors.astromine.common.block.network.EnergyCableBlock;
 import com.github.mixinors.astromine.common.block.network.FluidPipeBlock;
 import com.github.mixinors.astromine.common.block.network.ItemConduitBlock;
 import com.github.mixinors.astromine.common.block.ore.AsteroidOreBlock;
-import com.github.mixinors.astromine.common.block.ore.AstromineOreBlock;
+import com.github.mixinors.astromine.common.block.ore.base.ExtendedOreBlock;
 import com.github.mixinors.astromine.common.block.storage.BufferBlock;
 import com.github.mixinors.astromine.common.block.storage.CapacitorBlock;
 import com.github.mixinors.astromine.common.block.storage.TankBlock;
@@ -96,19 +96,19 @@ public class AMBlocks {
 	
 	public static final RegistrySupplier<Block> SPACE_SLIME_BLOCK = register("space_slime_block", () -> new SlimeBlock(BlockProperties.copy(Blocks.SLIME_BLOCK).mapColor(MapColor.PURPLE)), AMItems.getSettings());
 	
-	public static final RegistrySupplier<Block> TIN_ORE = register("tin_ore", () -> new AstromineOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(3, 3).sounds(BlockSoundGroup.STONE)), AMItems.getSettings());
-	public static final RegistrySupplier<Block> SILVER_ORE = register("silver_ore", () -> new AstromineOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(3, 3).sounds(BlockSoundGroup.STONE)), AMItems.getSettings());
-	public static final RegistrySupplier<Block> LEAD_ORE = register("lead_ore", () -> new AstromineOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(3, 3).sounds(BlockSoundGroup.STONE)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> TIN_ORE = register("tin_ore", () -> new ExtendedOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(3, 3).sounds(BlockSoundGroup.STONE)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> SILVER_ORE = register("silver_ore", () -> new ExtendedOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(3, 3).sounds(BlockSoundGroup.STONE)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> LEAD_ORE = register("lead_ore", () -> new ExtendedOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(3, 3).sounds(BlockSoundGroup.STONE)), AMItems.getSettings());
 	
-	public static final RegistrySupplier<Block> DEEPSLATE_TIN_ORE = register("deepslate_tin_ore", () -> new AstromineOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(4.5f, 3).sounds(BlockSoundGroup.DEEPSLATE).mapColor(MapColor.DEEPSLATE_GRAY)), AMItems.getSettings());
-	public static final RegistrySupplier<Block> DEEPSLATE_SILVER_ORE = register("deepslate_silver_ore", () -> new AstromineOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(4.5f, 3).sounds(BlockSoundGroup.DEEPSLATE).mapColor(MapColor.DEEPSLATE_GRAY)), AMItems.getSettings());
-	public static final RegistrySupplier<Block> DEEPSLATE_LEAD_ORE = register("deepslate_lead_ore", () -> new AstromineOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(4.5f, 3).sounds(BlockSoundGroup.DEEPSLATE).mapColor(MapColor.DEEPSLATE_GRAY)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> DEEPSLATE_TIN_ORE = register("deepslate_tin_ore", () -> new ExtendedOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(4.5f, 3).sounds(BlockSoundGroup.DEEPSLATE).mapColor(MapColor.DEEPSLATE_GRAY)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> DEEPSLATE_SILVER_ORE = register("deepslate_silver_ore", () -> new ExtendedOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(4.5f, 3).sounds(BlockSoundGroup.DEEPSLATE).mapColor(MapColor.DEEPSLATE_GRAY)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> DEEPSLATE_LEAD_ORE = register("deepslate_lead_ore", () -> new ExtendedOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(4.5f, 3).sounds(BlockSoundGroup.DEEPSLATE).mapColor(MapColor.DEEPSLATE_GRAY)), AMItems.getSettings());
 	
 	public static final RegistrySupplier<Block> RAW_TIN_BLOCK = register("raw_tin_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.LIGHT_GRAY).requiresTool().strength(4, 6).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
 	public static final RegistrySupplier<Block> RAW_SILVER_BLOCK = register("raw_silver_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.LIGHT_GRAY).requiresTool().strength(5, 6).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
 	public static final RegistrySupplier<Block> RAW_LEAD_BLOCK = register("raw_lead_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.TERRACOTTA_BLUE).requiresTool().strength(6, 8).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
 	
-	public static final RegistrySupplier<Block> METEOR_METITE_ORE = register("meteor_metite_ore", () -> new AstromineOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> METEOR_METITE_ORE = register("meteor_metite_ore", () -> new ExtendedOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
 	
 	public static final RegistrySupplier<Block> METITE_BLOCK = register("metite_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.PINK).requiresTool().strength(8, 100).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
 	public static final RegistrySupplier<Block> ASTERITE_BLOCK = register("asterite_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.RED).requiresTool().strength(25, 1000).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());

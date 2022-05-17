@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.client.render.block;
+package com.github.mixinors.astromine.client.render.block.entity;
 
 import com.github.mixinors.astromine.common.block.entity.utility.PumpBlockEntity;
 import com.github.mixinors.astromine.registry.client.AMRenderLayers;
@@ -57,6 +57,7 @@ public class PumpBlockEntityRenderer implements BlockEntityRenderer<PumpBlockEnt
 			var normMatrix = matrices.peek().getNormalMatrix();
 			
 			var dY = y;
+			
 			if (dY > maxY - 1.0F) {
 				dY = (float) maxY - 1.0F;
 			}
@@ -83,21 +84,6 @@ public class PumpBlockEntityRenderer implements BlockEntityRenderer<PumpBlockEnt
 			
 			prevY = y;
 			prevV = v;
-		}
-		
-		for (var y = 0; y < lerpDepth; ++y) {
-			
-			matrices.push();
-			
-			
-			//
-			
-			//
-			
-			
-			matrices.pop();
-			
-			prevY = y;
 		}
 	}
 	

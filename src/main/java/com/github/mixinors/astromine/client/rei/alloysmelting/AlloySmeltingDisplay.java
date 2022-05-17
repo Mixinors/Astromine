@@ -27,23 +27,21 @@ package com.github.mixinors.astromine.client.rei.alloysmelting;
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.client.rei.base.input.EnergyInputDisplay;
 import com.github.mixinors.astromine.common.recipe.AlloySmeltingRecipe;
+import com.google.common.collect.ImmutableList;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 import java.util.Arrays;
-import java.util.List;
 
 @Environment(EnvType.CLIENT)
 public class AlloySmeltingDisplay extends EnergyInputDisplay {
 	public AlloySmeltingDisplay(AlloySmeltingRecipe recipe) {
 		super(
-				List.of(
-						EntryIngredients.ofItemStacks(Arrays.stream(recipe.getFirstInput().getMatchingVariants()).map(variant -> variant.toStack(recipe.getFirstInput().getAmount())).toList()),
-						EntryIngredients.ofItemStacks(Arrays.stream(recipe.getSecondInput().getMatchingVariants()).map(variant -> variant.toStack(recipe.getSecondInput().getAmount())).toList())
-				),
-				List.of(EntryIngredients.of(recipe.getItemOutput().toStack())),
+				ImmutableList.of(EntryIngredients.ofItemStacks(Arrays.stream(recipe.getFirstInput().getMatchingVariants()).map(variant -> variant.toStack(recipe.getFirstInput().getAmount())).toList()),
+						EntryIngredients.ofItemStacks(Arrays.stream(recipe.getSecondInput().getMatchingVariants()).map(variant -> variant.toStack(recipe.getSecondInput().getAmount())).toList())),
+				ImmutableList.of(EntryIngredients.of(recipe.getItemOutput().toStack())),
 				recipe.getTime(),
 				recipe.getEnergyInput(),
 				recipe.getId()

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.client.render.block;
+package com.github.mixinors.astromine.client.render.block.entity;
 
 import com.github.mixinors.astromine.common.block.HoloBridgeProjectorBlock;
 import com.github.mixinors.astromine.common.block.entity.HoloBridgeProjectorBlockEntity;

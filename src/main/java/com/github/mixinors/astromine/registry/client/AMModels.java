@@ -25,7 +25,8 @@
 package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.client.model.CableModel;
+import com.github.mixinors.astromine.client.model.block.CableModel;
+import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
@@ -42,7 +43,6 @@ import net.minecraft.util.Lazy;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -100,12 +100,12 @@ public class AMModels {
 				return new UnbakedModel() {
 					@Override
 					public Collection<Identifier> getModelDependencies() {
-						return Collections.emptyList();
+						return ImmutableList.of();
 					}
 					
 					@Override
 					public Collection<SpriteIdentifier> getTextureDependencies(Function<Identifier, UnbakedModel> unbakedModelGetter, Set<Pair<String, String>> unresolvedTextureReferences) {
-						return Collections.emptyList();
+						return ImmutableList.of();
 					}
 					
 					@Override

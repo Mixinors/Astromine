@@ -22,10 +22,11 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.client.model;
+package com.github.mixinors.astromine.client.model.block;
 
 import com.github.mixinors.astromine.common.block.entity.cable.CableBlockEntity;
 import com.github.mixinors.astromine.common.util.DirectionUtils;
+import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
 import net.fabricmc.fabric.api.client.model.BakedModelManagerHelper;
@@ -48,7 +49,10 @@ import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.BlockRenderView;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -166,12 +170,12 @@ public class CableModel implements FabricBakedModel, BakedModel, UnbakedModel {
 	
 	@Override
 	public Collection<Identifier> getModelDependencies() {
-		return Collections.emptyList();
+		return ImmutableList.of();
 	}
 	
 	@Override
 	public Collection<SpriteIdentifier> getTextureDependencies(Function<Identifier, UnbakedModel> unbakedModelGetter, Set<Pair<String, String>> unresolvedTextureReferences) {
-		return Collections.emptyList();
+		return ImmutableList.of();
 	}
 	
 	@Nullable
@@ -182,7 +186,7 @@ public class CableModel implements FabricBakedModel, BakedModel, UnbakedModel {
 	
 	@Override
 	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction face, Random random) {
-		return Collections.emptyList();
+		return ImmutableList.of();
 	}
 	
 	@Override

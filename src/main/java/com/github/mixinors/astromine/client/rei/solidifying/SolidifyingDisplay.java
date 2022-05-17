@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.client.rei.solidifying;
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.client.rei.base.input.EnergyInputDisplay;
 import com.github.mixinors.astromine.common.recipe.SolidifyingRecipe;
+import com.google.common.collect.ImmutableList;
 import dev.architectury.fluid.FluidStack;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
@@ -35,15 +36,16 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 @Environment(EnvType.CLIENT)
 public class SolidifyingDisplay extends EnergyInputDisplay {
 	public SolidifyingDisplay(SolidifyingRecipe recipe) {
 		super(
-				Collections.singletonList(EntryIngredients.of(VanillaEntryTypes.FLUID, Arrays.stream(recipe.getInput().getMatchingVariants()).map(variant -> FluidStack.create(variant.getFluid(), recipe.getInput().getAmount())).toList())),
-				Collections.singletonList(EntryIngredients.of(recipe.getItemOutput().toStack())),
-				recipe.getTime(), recipe.getEnergyInput(), recipe.getId()
+				ImmutableList.of(EntryIngredients.of(VanillaEntryTypes.FLUID, Arrays.stream(recipe.getInput().getMatchingVariants()).map(variant -> FluidStack.create(variant.getFluid(), recipe.getInput().getAmount())).toList())),
+				ImmutableList.of(EntryIngredients.of(recipe.getItemOutput().toStack())),
+				recipe.getTime(),
+				recipe.getEnergyInput(),
+				recipe.getId()
 		);
 	}
 	

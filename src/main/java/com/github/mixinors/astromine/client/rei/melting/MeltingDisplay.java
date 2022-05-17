@@ -27,21 +27,23 @@ package com.github.mixinors.astromine.client.rei.melting;
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.client.rei.base.input.EnergyInputDisplay;
 import com.github.mixinors.astromine.common.recipe.MeltingRecipe;
+import com.google.common.collect.ImmutableList;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 @Environment(EnvType.CLIENT)
 public class MeltingDisplay extends EnergyInputDisplay {
 	public MeltingDisplay(MeltingRecipe recipe) {
 		super(
-				Collections.singletonList(EntryIngredients.ofItemStacks(Arrays.stream(recipe.getInput().getMatchingVariants()).map(variant -> variant.toStack(recipe.getInput().getAmount())).toList())),
-				Collections.singletonList(EntryIngredients.of(recipe.getFluidOutput().toStack())),
-				recipe.getTime(), recipe.getEnergyInput(), recipe.getId()
+				ImmutableList.of(EntryIngredients.ofItemStacks(Arrays.stream(recipe.getInput().getMatchingVariants()).map(variant -> variant.toStack(recipe.getInput().getAmount())).toList())),
+				ImmutableList.of(EntryIngredients.of(recipe.getFluidOutput().toStack())),
+				recipe.getTime(),
+				recipe.getEnergyInput(),
+				recipe.getId()
 		);
 	}
 	

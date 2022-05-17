@@ -31,6 +31,7 @@ import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.StorageType;
 import com.github.mixinors.astromine.common.util.WidgetUtils;
 import com.github.mixinors.astromine.common.widget.RedstoneControlWidget;
+import com.google.common.collect.ImmutableList;
 import dev.architectury.hooks.block.BlockEntityHooks;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
@@ -48,7 +49,6 @@ import net.minecraft.util.math.Direction;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
@@ -142,7 +142,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 		
 		add(tabs);
 		
-		tab = (TabWidget.TabWidgetCollection) tabs.addTab(symbol, () -> List.of(new TranslatableText(block.getTranslationKey())));
+		tab = (TabWidget.TabWidgetCollection) tabs.addTab(symbol, () -> ImmutableList.of(new TranslatableText(block.getTranslationKey())));
 		tab.setPosition(new Position(tabs, 0.0F, PAD_25 + PAD_7));
 		tab.setSize(new Size(TABS_WIDTH, TABS_HEIGHT));
 		
@@ -177,7 +177,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 		add(redstoneWidget);
 		
 		var tabAdder = (BiConsumer<StorageSiding[], StorageType>) (sidings, type) -> {
-			var tabCollection = (TabWidget.TabWidgetCollection) tabs.addTab(type.getItem(), () -> List.of(type.getName()));
+			var tabCollection = (TabWidget.TabWidgetCollection) tabs.addTab(type.getItem(), () -> ImmutableList.of(type.getName()));
 			
 			for (var widget : WidgetUtils.createStorageSiding(new Position(tabs, tabs.getWidth() / 2.0F - PAD_38, tabsExtension.getWidth() / 2.0F), blockEntity, type, rotation)) {
 				tabCollection.add(widget);

@@ -22,14 +22,26 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.client.render.sky.skybox;
+package com.github.mixinors.astromine.client.render.sky;
 
-import net.minecraft.client.util.math.MatrixStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.render.DimensionEffects;
+import net.minecraft.util.math.Vec3d;
 
-/**
- * Skybox rendering logic.
- */
-public abstract class Skybox {
-	/** Renders the {@link Skybox}. */
-	public abstract void render(MatrixStack matrices, float tickDelta);
+@Environment(EnvType.CLIENT)
+public class SpaceDimensionEffects extends DimensionEffects {
+	public SpaceDimensionEffects() {
+		super(Float.NaN, false, SkyType.NONE, true, true);
+	}
+	
+	@Override
+	public Vec3d adjustFogColor(Vec3d color, float sunHeight) {
+		return color.multiply(0.15000000596046448D);
+	}
+	
+	@Override
+	public boolean useThickFog(int camX, int camY) {
+		return false;
+	}
 }

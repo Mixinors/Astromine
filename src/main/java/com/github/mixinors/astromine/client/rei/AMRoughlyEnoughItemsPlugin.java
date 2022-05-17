@@ -94,7 +94,6 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
@@ -167,12 +166,12 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 		registry.registerFiller(SolidifyingRecipe.class, SolidifyingDisplay::new);
 		
 		registry.registerFiller(WireCuttingRecipe.class, recipe -> {
-			return new DefaultCustomDisplay(recipe, EntryIngredients.ofIngredients(ImmutableList.of(recipe.getInput(), recipe.getTool())), Collections.singletonList(EntryIngredients.of(recipe.getOutput())));
+			return new DefaultCustomDisplay(recipe, EntryIngredients.ofIngredients(ImmutableList.of(recipe.getInput(), recipe.getTool())), ImmutableList.of(EntryIngredients.of(recipe.getOutput())));
 		});
 		
 		for (var entry : AbstractFurnaceBlockEntity.createFuelTimeMap().entrySet()) {
 			if (!(entry.getKey() instanceof BucketItem) && entry.getValue() > 0) {
-				registry.add(new SolidGeneratingDisplay(Collections.singletonList(EntryIngredients.of(entry.getKey())), (int) ((entry.getValue() / 2.0F) / 6.0F), (long) ((entry.getValue() / 2.0F * 5.0F) / (entry.getValue() / 2.0F) * 6.0F), null));
+				registry.add(new SolidGeneratingDisplay(ImmutableList.of(EntryIngredients.of(entry.getKey())), (int) ((entry.getValue() / 2.0F) / 6.0F), (long) ((entry.getValue() / 2.0F * 5.0F) / (entry.getValue() / 2.0F) * 6.0F), null));
 			}
 		}
 	}
@@ -181,8 +180,8 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 		return EntryStacks.of(variant.getFluid(), amount);
 	}
 	
-	public static List<Widget> createEnergyDisplay(Rectangle bounds, long energy, boolean generating, int speed) {
-		return Collections.singletonList(new EnergyEntryWidget(bounds, speed, generating).entry(ClientEntryStacks.of(new AbstractRenderer() {
+	public static ImmutableList<Widget> createEnergyDisplay(Rectangle bounds, long energy, boolean generating, int speed) {
+		return ImmutableList.of(new EnergyEntryWidget(bounds, speed, generating).entry(ClientEntryStacks.of(new AbstractRenderer() {
 			@Override
 			public void render(MatrixStack matrices, Rectangle bounds, int mouseX, int mouseY, float delta) {}
 			
@@ -193,14 +192,16 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 		})).notFavoritesInteractable());
 	}
 	
-	public static List<Widget> createFluidDisplay(Rectangle bounds, List<EntryStack<?>> fluidStacks, boolean generating, long speed) {
+	public static ImmutableList<Widget> createFluidDisplay(Rectangle bounds, List<EntryStack<?>> fluidStacks, boolean generating, long speed) {
 		var entry = new FluidEntryWidget(bounds, speed, generating).entries(fluidStacks);
+		
 		if (generating) {
 			entry.markOutput();
 		} else {
 			entry.markInput();
 		}
-		return Collections.singletonList(entry);
+		
+		return ImmutableList.of(entry);
 	}
 	
 	@Override

@@ -34,15 +34,21 @@ import java.util.Optional;
 public abstract class EnergyInputDisplay implements AMDisplay {
 	private final List<EntryIngredient> inputs;
 	private final List<EntryIngredient> outputs;
+	
 	private final int timeRequired;
+	
 	private final long energyRequired;
+	
 	private final Identifier recipeId;
 	
 	public EnergyInputDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, int timeRequired, long energyRequired, Identifier recipeId) {
 		this.inputs = inputs;
 		this.outputs = outputs;
+		
 		this.timeRequired = timeRequired;
+		
 		this.energyRequired = energyRequired;
+		
 		this.recipeId = recipeId;
 	}
 	

@@ -25,6 +25,8 @@
 package com.github.mixinors.astromine.common.recipe.ingredient;
 
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
@@ -36,9 +38,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.BiPredicate;
 
@@ -208,6 +208,7 @@ public final class FluidIngredient {
 	
 	public static class VariantEntry extends Entry {
 		private final FluidVariant requiredVariant;
+		
 		private final long requiredAmount;
 		
 		public VariantEntry(FluidVariant variant) {
@@ -236,14 +237,16 @@ public final class FluidIngredient {
 		}
 		
 		@Override
-		public Collection<FluidVariant> getVariants() {
-			return Collections.singleton(requiredVariant);
+		public ImmutableCollection<FluidVariant> getVariants() {
+			return ImmutableList.of(requiredVariant);
 		}
 	}
 	
 	public static class TagEntry extends Entry {
-		private final TagKey<Fluid> requiredTag;
 		private List<FluidVariant> requiredVariants;
+		
+		private final TagKey<Fluid> requiredTag;
+		
 		private final long requiredAmount;
 		
 		public TagEntry(TagKey<Fluid> tag) {
@@ -280,14 +283,17 @@ public final class FluidIngredient {
 		@Override
 		public Collection<FluidVariant> getVariants() {
 			if (requiredVariants == null) {
-				requiredVariants = new ArrayList<>();
+				var builder = ImmutableList.<FluidVariant>builder();
 				
 				for (var entry : Registry.FLUID.iterateEntries(requiredTag)) {
 					var fluid = entry.value();
+					
 					if (fluid.isStill(fluid.getDefaultState())) {
-						requiredVariants.add(FluidVariant.of(fluid));
+						builder.add(FluidVariant.of(fluid));
 					}
 				}
+				
+				requiredVariants = builder.build();
 			}
 			
 			return requiredVariants;

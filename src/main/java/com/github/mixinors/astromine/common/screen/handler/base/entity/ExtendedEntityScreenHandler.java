@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.screen.handler.base.entity;
 
 import com.github.mixinors.astromine.common.entity.base.ExtendedEntity;
 import com.github.mixinors.astromine.common.screen.handler.base.block.entity.ExtendedBlockEntityScreenHandler;
+import com.google.common.collect.ImmutableList;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
@@ -41,7 +42,6 @@ import net.minecraft.screen.ScreenHandlerType;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.function.Supplier;
 
 public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
@@ -125,7 +125,7 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 		
 		add(tabs);
 		
-		tab = (TabWidget.TabWidgetCollection) tabs.addTab(symbol, () -> List.of(entity.getDisplayName()));
+		tab = (TabWidget.TabWidgetCollection) tabs.addTab(symbol, () -> ImmutableList.of(entity.getDisplayName()));
 		tab.setPosition(new Position(tabs, 0.0F, PAD_25 + PAD_7));
 		tab.setSize(new Size(TABS_WIDTH, TABS_HEIGHT));
 		

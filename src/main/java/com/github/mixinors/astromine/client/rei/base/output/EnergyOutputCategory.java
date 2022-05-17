@@ -38,7 +38,6 @@ import java.util.List;
 public interface EnergyOutputCategory<T extends EnergyOutputDisplay> extends AMCategory<T> {
 	@Override
 	default void addEnergyInputWidgets(List<Widget> widgets, T display, Point startPoint, Rectangle bounds) {
-		// No.
 	}
 	
 	@Override

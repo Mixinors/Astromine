@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.client.model.PrimitiveRocketEntityModel;
+import com.github.mixinors.astromine.client.model.entity.PrimitiveRocketEntityModel;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 

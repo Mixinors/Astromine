@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.client.rei.fluidmixing;
 import com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin;
 import com.github.mixinors.astromine.client.rei.base.input.EnergyInputDisplay;
 import com.github.mixinors.astromine.common.recipe.FluidMixingRecipe;
+import com.google.common.collect.ImmutableList;
 import dev.architectury.fluid.FluidStack;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
@@ -35,18 +36,17 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 import java.util.Arrays;
-import java.util.List;
 
 @Environment(EnvType.CLIENT)
 public class FluidMixingDisplay extends EnergyInputDisplay {
 	public FluidMixingDisplay(FluidMixingRecipe recipe) {
 		super(
-				List.of(
-						EntryIngredients.of(VanillaEntryTypes.FLUID, Arrays.stream(recipe.getFirstInput().getMatchingVariants()).map(variant -> FluidStack.create(variant.getFluid(), recipe.getFirstInput().getAmount())).toList()),
-						EntryIngredients.of(VanillaEntryTypes.FLUID, Arrays.stream(recipe.getSecondInput().getMatchingVariants()).map(variant -> FluidStack.create(variant.getFluid(), recipe.getSecondInput().getAmount())).toList())
-				),
-				List.of(EntryIngredients.of(recipe.getFluidOutput().toStack())),
-				recipe.getTime(), recipe.getEnergyInput(), recipe.getId()
+				ImmutableList.of(EntryIngredients.of(VanillaEntryTypes.FLUID, Arrays.stream(recipe.getFirstInput().getMatchingVariants()).map(variant -> FluidStack.create(variant.getFluid(), recipe.getFirstInput().getAmount())).toList()),
+							     EntryIngredients.of(VanillaEntryTypes.FLUID, Arrays.stream(recipe.getSecondInput().getMatchingVariants()).map(variant -> FluidStack.create(variant.getFluid(), recipe.getSecondInput().getAmount())).toList())),
+				ImmutableList.of(EntryIngredients.of(recipe.getFluidOutput().toStack())),
+				recipe.getTime(),
+				recipe.getEnergyInput(),
+				recipe.getId()
 		);
 	}
 	

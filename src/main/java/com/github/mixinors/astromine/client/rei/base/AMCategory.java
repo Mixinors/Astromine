@@ -39,14 +39,21 @@ public interface AMCategory<T extends AMDisplay> extends DisplayCategory<T> {
 	@Override
 	default List<Widget> setupDisplay(T display, Rectangle bounds) {
 		var startPoint = new Point(bounds.getCenterX() - 41, bounds.getCenterY() - 27);
-		var df = new DecimalFormat("###.##");
+		
+		var format = new DecimalFormat("###.##");
+		
 		var widgets = new ArrayList<Widget>();
+		
 		widgets.add(Widgets.createRecipeBase(bounds));
+		
 		addEnergyInputWidgets(widgets, display, startPoint, bounds);
-		widgets.add(Widgets.createLabel(new Point(bounds.x + bounds.width - 5, bounds.y + 5), new TranslatableText("category.astromine.cooking.time", df.format(display.getTimeRequired() / 20d))).noShadow().rightAligned().color(0xFF404040, 0xFFBBBBBB));
+		
+		widgets.add(Widgets.createLabel(new Point(bounds.x + bounds.width - 5, bounds.y + 5), new TranslatableText("category.astromine.cooking.time", format.format(display.getTimeRequired() / 20.0D))).noShadow().rightAligned().color(0xFF404040, 0xFFBBBBBB));
 		widgets.add(Widgets.createArrow(new Point(startPoint.x + 27, startPoint.y + 18)).animationDurationTicks(display.getTimeRequired()));
+		
 		addInputWidgets(widgets, display, startPoint, bounds);
 		addOutputWidgets(widgets, display, startPoint, bounds);
+		
 		return widgets;
 	}
 	

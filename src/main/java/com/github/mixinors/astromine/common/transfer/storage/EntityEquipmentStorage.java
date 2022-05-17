@@ -1,5 +1,6 @@
 package com.github.mixinors.astromine.common.transfer.storage;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.MapMaker;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.base.SingleStackStorage;
@@ -15,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +23,9 @@ public class EntityEquipmentStorage extends CombinedStorage<ItemVariant, SingleS
 	private static final int ARMOR_INVENTORY_SIZE = 4;
 	private static final int HELD_ITEMS_INVENTORY_SIZE = 2;
 	private static final int INVENTORY_SIZE = ARMOR_INVENTORY_SIZE + HELD_ITEMS_INVENTORY_SIZE;
+	
 	private static final Map<MobEntity, EntityEquipmentStorage> WRAPPERS = new MapMaker().weakValues().makeMap();
+	
 	private final DroppedStacks droppedStacks;
 	
 	final MobEntity mobEntity;
@@ -34,7 +36,7 @@ public class EntityEquipmentStorage extends CombinedStorage<ItemVariant, SingleS
 	final List<SimpleStackWrapper> backingList;
 	
 	EntityEquipmentStorage(MobEntity entity) {
-		super(Collections.emptyList());
+		super(ImmutableList.of());
 		
 		this.mobEntity = entity;
 		
@@ -67,7 +69,7 @@ public class EntityEquipmentStorage extends CombinedStorage<ItemVariant, SingleS
 			backingList.add(new SimpleStackWrapper(this, EquipmentSlot.HEAD));
 			backingList.add(new SimpleStackWrapper(this, EquipmentSlot.OFFHAND));
 			
-			parts = Collections.unmodifiableList(backingList);
+			parts = List.copyOf(backingList);
 		}
 	}
 	

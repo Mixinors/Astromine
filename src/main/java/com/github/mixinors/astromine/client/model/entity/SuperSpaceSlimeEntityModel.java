@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.client.model;
+package com.github.mixinors.astromine.client.model.entity;
 
-import com.github.mixinors.astromine.common.entity.slime.SpaceSlimeEntity;
+import com.github.mixinors.astromine.common.entity.slime.SuperSpaceSlimeEntity;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtils;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
 import net.minecraft.client.model.ModelPart;
@@ -35,8 +35,8 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
-public class SpaceSlimeEntityModel extends SlimeEntityModel<SpaceSlimeEntity> {
-	public SpaceSlimeEntityModel(ModelPart root) {
+public class SuperSpaceSlimeEntityModel extends SlimeEntityModel<SuperSpaceSlimeEntity> {
+	public SuperSpaceSlimeEntityModel(ModelPart root) {
 		super(root);
 	}
 	
@@ -44,10 +44,8 @@ public class SpaceSlimeEntityModel extends SlimeEntityModel<SpaceSlimeEntity> {
 	public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha) {
 		this.getPart().render(matrices, vertices, light, overlay, red, green, blue, alpha);
 		
-		matrices.push();
-		
 		// Translate and scale for the glass outline.
-		matrices.translate(0.0F, 1.25F, 0.0F);
+		matrices.translate(0, 1.25, 0);
 		matrices.scale(1.25F, 1.25F, 1.25F);
 		
 		DrawingUtils.getItemRenderer().renderItem(new ItemStack(Items.GLASS), ModelTransformation.Mode.FIXED, light, overlay, matrices, InstanceUtils.getClient().getBufferBuilders().getEffectVertexConsumers(), 0);

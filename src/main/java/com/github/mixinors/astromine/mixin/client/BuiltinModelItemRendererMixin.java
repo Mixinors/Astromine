@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.mixin.client;
 
-import com.github.mixinors.astromine.client.model.PrimitiveRocketEntityModel;
+import com.github.mixinors.astromine.client.model.entity.PrimitiveRocketEntityModel;
 import com.github.mixinors.astromine.registry.client.AMEntityModelLayers;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.google.common.base.Suppliers;

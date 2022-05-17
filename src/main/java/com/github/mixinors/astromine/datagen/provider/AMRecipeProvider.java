@@ -32,11 +32,12 @@ import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
 import com.github.mixinors.astromine.datagen.family.material.MaterialFamily.MaterialType;
 import com.github.mixinors.astromine.datagen.family.material.variant.BlockVariant;
 import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant;
-import com.github.mixinors.astromine.registry.common.AMTagKeys;
 import com.github.mixinors.astromine.datagen.recipe.*;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMFluids;
 import com.github.mixinors.astromine.registry.common.AMItems;
+import com.github.mixinors.astromine.registry.common.AMTagKeys;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
@@ -62,7 +63,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 public class AMRecipeProvider extends FabricRecipeProvider {
-	public static final Map<ItemVariant, TagOfferer> EQUIPMENT_OFFERERS = Map.of(
+	public static final Map<ItemVariant, TagOfferer> EQUIPMENT_OFFERERS = ImmutableMap.of(
 			ItemVariant.HELMET, AMRecipeProvider::offerHelmetRecipe,
 			ItemVariant.CHESTPLATE, AMRecipeProvider::offerChestplateRecipe,
 			ItemVariant.LEGGINGS, AMRecipeProvider::offerLeggingsRecipe,
@@ -74,99 +75,97 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 			ItemVariant.HOE, AMRecipeProvider::offerHoeRecipe
 	);
 	
-	public static final Map<ItemVariant, TagOfferer> MISC_OFFERERS = Map.of(
+	public static final Map<ItemVariant, TagOfferer> MISC_OFFERERS = ImmutableMap.of(
 			ItemVariant.GEAR, AMRecipeProvider::offerGearRecipe,
 			ItemVariant.PLATE, AMRecipeProvider::offerPlateRecipe,
 			ItemVariant.APPLE, AMRecipeProvider::offerMaterialAppleRecipe
 	);
 	
-	private static final Map<BlockFamily.Variant, BasicOfferer> STONECUTTING_OFFERERS = Map.of(
+	private static final Map<BlockFamily.Variant, BasicOfferer> STONECUTTING_OFFERERS = ImmutableMap.of(
 			BlockFamily.Variant.STAIRS, RecipeProvider::offerStonecuttingRecipe,
 			BlockFamily.Variant.SLAB, (exporter, output, input) -> offerStonecuttingRecipe(exporter, output, input, 2),
 			BlockFamily.Variant.WALL, RecipeProvider::offerStonecuttingRecipe,
 			BlockFamily.Variant.POLISHED, RecipeProvider::offerStonecuttingRecipe
 	);
 	
-	public static final Map<Block, Block> REGULAR_TO_SMOOTH = Map.of(
+	public static final Map<Block, Block> REGULAR_TO_SMOOTH = ImmutableMap.of(
 			AMBlocks.METEOR_STONE.get(), AMBlocks.SMOOTH_METEOR_STONE.get(),
 			AMBlocks.ASTEROID_STONE.get(), AMBlocks.SMOOTH_ASTEROID_STONE.get()
 	);
 	
-	public static final Map<BlockFamily, BlockFamily> REGULAR_TO_POLISHED = Map.of(
+	public static final Map<BlockFamily, BlockFamily> REGULAR_TO_POLISHED = ImmutableMap.of(
 			AMBlockFamilies.METEOR_STONE, AMBlockFamilies.POLISHED_METEOR_STONE,
 			AMBlockFamilies.ASTEROID_STONE, AMBlockFamilies.POLISHED_ASTEROID_STONE
 	);
 	
-	public static final Map<BlockFamily, BlockFamily> POLISHED_TO_BRICK = Map.of(
+	public static final Map<BlockFamily, BlockFamily> POLISHED_TO_BRICK = ImmutableMap.of(
 			AMBlockFamilies.POLISHED_METEOR_STONE, AMBlockFamilies.METEOR_STONE_BRICK,
 			AMBlockFamilies.POLISHED_ASTEROID_STONE, AMBlockFamilies.ASTEROID_STONE_BRICK
 	);
 	
-	public static final Map<BlockFamily, BlockFamily> REGULAR_TO_BRICK = Map.of(
+	public static final Map<BlockFamily, BlockFamily> REGULAR_TO_BRICK = ImmutableMap.of(
 			AMBlockFamilies.METEOR_STONE, AMBlockFamilies.METEOR_STONE_BRICK,
 			AMBlockFamilies.ASTEROID_STONE, AMBlockFamilies.ASTEROID_STONE_BRICK
 	);
 	
-	public static final Set<Map<BlockFamily, BlockFamily>> VARIANT_FAMILIES = Set.of(
+	public static final Set<Map<BlockFamily, BlockFamily>> VARIANT_FAMILIES = ImmutableSet.of(
 			REGULAR_TO_POLISHED,
 			POLISHED_TO_BRICK
 	);
 	
-	public static final Set<Map<BlockFamily, BlockFamily>> STONECUT_FAMILIES = new ImmutableSet.Builder<Map<BlockFamily, BlockFamily>>().addAll(Set.of(
-			REGULAR_TO_BRICK
-	)).addAll(VARIANT_FAMILIES).build();
+	public static final Set<Map<BlockFamily, BlockFamily>> STONECUT_FAMILIES = ImmutableSet.<Map<BlockFamily, BlockFamily>>builder()
+																						   .addAll(VARIANT_FAMILIES)
+																						   .add(REGULAR_TO_BRICK)
+																						   .build();
 	
-	public static final Map<BlockFamily, BlockFamily> TRITURATED_BLOCK_FAMILIES = new ImmutableMap.Builder<BlockFamily, BlockFamily>().putAll(Map.of(
-			BlockFamilies.STONE_BRICK, BlockFamilies.STONE,
-			BlockFamilies.DEEPSLATE_BRICK, BlockFamilies.POLISHED_DEEPSLATE,
-			BlockFamilies.POLISHED_BLACKSTONE_BRICK, BlockFamilies.POLISHED_BLACKSTONE,
-			AMBlockFamilies.ASTEROID_STONE_BRICK, AMBlockFamilies.POLISHED_ASTEROID_STONE,
-			AMBlockFamilies.METEOR_STONE_BRICK, AMBlockFamilies.POLISHED_METEOR_STONE
-	)).putAll(Map.of(
-			BlockFamilies.POLISHED_BLACKSTONE, BlockFamilies.BLACKSTONE,
-			BlockFamilies.POLISHED_ANDESITE, BlockFamilies.ANDESITE,
-			BlockFamilies.POLISHED_DIORITE, BlockFamilies.DIORITE,
-			BlockFamilies.POLISHED_GRANITE, BlockFamilies.GRANITE,
-			BlockFamilies.POLISHED_DEEPSLATE, BlockFamilies.COBBLED_DEEPSLATE,
-			AMBlockFamilies.POLISHED_ASTEROID_STONE, AMBlockFamilies.ASTEROID_STONE,
-			AMBlockFamilies.POLISHED_METEOR_STONE, AMBlockFamilies.METEOR_STONE
-	)).putAll(Map.of(
-			BlockFamilies.STONE, BlockFamilies.COBBLESTONE,
-			BlockFamilies.DEEPSLATE, BlockFamilies.COBBLED_DEEPSLATE
-	)).putAll(Map.of(
-			AMBlockFamilies.SMOOTH_ASTEROID_STONE, AMBlockFamilies.ASTEROID_STONE,
-			AMBlockFamilies.SMOOTH_METEOR_STONE, AMBlockFamilies.METEOR_STONE
-	)).build();
+	public static final Map<BlockFamily, BlockFamily> TRITURATED_BLOCK_FAMILIES = ImmutableMap.<BlockFamily, BlockFamily>builder()
+			.put(BlockFamilies.STONE_BRICK, BlockFamilies.STONE)
+			.put(BlockFamilies.DEEPSLATE_BRICK, BlockFamilies.POLISHED_DEEPSLATE)
+			.put(BlockFamilies.POLISHED_BLACKSTONE_BRICK, BlockFamilies.POLISHED_BLACKSTONE)
+			.put(AMBlockFamilies.ASTEROID_STONE_BRICK, AMBlockFamilies.POLISHED_ASTEROID_STONE)
+			.put(AMBlockFamilies.METEOR_STONE_BRICK, AMBlockFamilies.POLISHED_METEOR_STONE)
+			.put(BlockFamilies.POLISHED_BLACKSTONE, BlockFamilies.BLACKSTONE)
+			.put(BlockFamilies.POLISHED_ANDESITE, BlockFamilies.ANDESITE)
+			.put(BlockFamilies.POLISHED_DIORITE, BlockFamilies.DIORITE)
+			.put(BlockFamilies.POLISHED_GRANITE, BlockFamilies.GRANITE)
+			.put(BlockFamilies.POLISHED_DEEPSLATE, BlockFamilies.COBBLED_DEEPSLATE)
+			.put(AMBlockFamilies.POLISHED_ASTEROID_STONE, AMBlockFamilies.ASTEROID_STONE)
+			.put(AMBlockFamilies.POLISHED_METEOR_STONE, AMBlockFamilies.METEOR_STONE)
+			.put(BlockFamilies.STONE, BlockFamilies.COBBLESTONE)
+			.put(BlockFamilies.DEEPSLATE, BlockFamilies.COBBLED_DEEPSLATE)
+			.put(AMBlockFamilies.SMOOTH_ASTEROID_STONE, AMBlockFamilies.ASTEROID_STONE)
+			.put(AMBlockFamilies.SMOOTH_METEOR_STONE, AMBlockFamilies.METEOR_STONE)
+			.build();
 	
-	public static final Map<Block, ItemConvertible> CONCRETE_TO_CONCRETE_POWDER = new ImmutableMap.Builder<Block, ItemConvertible>().putAll(Map.of(
-			Blocks.WHITE_CONCRETE, Blocks.WHITE_CONCRETE_POWDER,
-			Blocks.ORANGE_CONCRETE, Blocks.ORANGE_CONCRETE_POWDER,
-			Blocks.MAGENTA_CONCRETE, Blocks.MAGENTA_CONCRETE_POWDER,
-			Blocks.LIGHT_BLUE_CONCRETE, Blocks.LIGHT_BLUE_CONCRETE_POWDER,
-			Blocks.YELLOW_CONCRETE, Blocks.YELLOW_CONCRETE_POWDER,
-			Blocks.LIME_CONCRETE, Blocks.LIME_CONCRETE_POWDER,
-			Blocks.PINK_CONCRETE, Blocks.PINK_CONCRETE_POWDER,
-			Blocks.GRAY_CONCRETE, Blocks.GRAY_CONCRETE_POWDER,
-			Blocks.LIGHT_GRAY_CONCRETE, Blocks.LIGHT_GRAY_CONCRETE_POWDER,
-			Blocks.CYAN_CONCRETE, Blocks.CYAN_CONCRETE_POWDER
-	)).putAll(Map.of(
-			Blocks.PURPLE_CONCRETE, Blocks.PURPLE_CONCRETE_POWDER,
-			Blocks.BLUE_CONCRETE, Blocks.BLUE_CONCRETE_POWDER,
-			Blocks.BROWN_CONCRETE, Blocks.BROWN_CONCRETE_POWDER,
-			Blocks.GREEN_CONCRETE, Blocks.GREEN_CONCRETE_POWDER,
-			Blocks.RED_CONCRETE, Blocks.RED_CONCRETE_POWDER,
-			Blocks.BLACK_CONCRETE, Blocks.BLACK_CONCRETE_POWDER
-	)).build();
+	public static final Map<Block, ItemConvertible> CONCRETE_TO_CONCRETE_POWDER = ImmutableMap.<Block, ItemConvertible>builder()
+			.put(Blocks.WHITE_CONCRETE, Blocks.WHITE_CONCRETE_POWDER)
+			.put(Blocks.ORANGE_CONCRETE, Blocks.ORANGE_CONCRETE_POWDER)
+			.put(Blocks.MAGENTA_CONCRETE, Blocks.MAGENTA_CONCRETE_POWDER)
+			.put(Blocks.LIGHT_BLUE_CONCRETE, Blocks.LIGHT_BLUE_CONCRETE_POWDER)
+			.put(Blocks.YELLOW_CONCRETE, Blocks.YELLOW_CONCRETE_POWDER)
+			.put(Blocks.LIME_CONCRETE, Blocks.LIME_CONCRETE_POWDER)
+			.put(Blocks.PINK_CONCRETE, Blocks.PINK_CONCRETE_POWDER)
+			.put(Blocks.GRAY_CONCRETE, Blocks.GRAY_CONCRETE_POWDER)
+			.put(Blocks.LIGHT_GRAY_CONCRETE, Blocks.LIGHT_GRAY_CONCRETE_POWDER)
+			.put(Blocks.CYAN_CONCRETE, Blocks.CYAN_CONCRETE_POWDER)
+			.put(Blocks.PURPLE_CONCRETE, Blocks.PURPLE_CONCRETE_POWDER)
+			.put(Blocks.BLUE_CONCRETE, Blocks.BLUE_CONCRETE_POWDER)
+			.put(Blocks.BROWN_CONCRETE, Blocks.BROWN_CONCRETE_POWDER)
+			.put(Blocks.GREEN_CONCRETE, Blocks.GREEN_CONCRETE_POWDER)
+			.put(Blocks.RED_CONCRETE, Blocks.RED_CONCRETE_POWDER)
+			.put(Blocks.BLACK_CONCRETE, Blocks.BLACK_CONCRETE_POWDER)
+			.build();
 	
-	public static final Map<Block, ItemConvertible> TRITURATED_BLOCKS_1_TO_1_CHEAP = new ImmutableMap.Builder<Block, ItemConvertible>().putAll(Map.of(
-			Blocks.END_STONE_BRICKS, Blocks.END_STONE,
-			Blocks.CHISELED_DEEPSLATE, Blocks.COBBLED_DEEPSLATE,
-			Blocks.SMOOTH_STONE, Blocks.STONE,
-			Blocks.SMOOTH_STONE_SLAB, Blocks.STONE_SLAB,
-			Blocks.SOUL_SOIL, Blocks.SOUL_SAND
-	)).putAll(CONCRETE_TO_CONCRETE_POWDER).build();
+	public static final Map<Block, ItemConvertible> TRITURATED_BLOCKS_1_TO_1_CHEAP = ImmutableMap.<Block, ItemConvertible>builder()
+			.putAll(CONCRETE_TO_CONCRETE_POWDER)
+			.put(Blocks.END_STONE_BRICKS, Blocks.END_STONE)
+			.put(Blocks.CHISELED_DEEPSLATE, Blocks.COBBLED_DEEPSLATE)
+			.put(Blocks.SMOOTH_STONE, Blocks.STONE)
+			.put(Blocks.SMOOTH_STONE_SLAB, Blocks.STONE_SLAB)
+			.put(Blocks.SOUL_SOIL, Blocks.SOUL_SAND)
+			.build();
 	
-	public static final Map<Block, ItemConvertible> TRITURATED_BLOCKS_1_TO_4 = Map.of(
+	public static final Map<Block, ItemConvertible> TRITURATED_BLOCKS_1_TO_4 = ImmutableMap.of(
 			Blocks.MAGMA_BLOCK, Items.MAGMA_CREAM,
 			Blocks.BROWN_MUSHROOM_BLOCK, Blocks.BROWN_MUSHROOM,
 			Blocks.RED_MUSHROOM_BLOCK, Blocks.RED_MUSHROOM,
@@ -176,32 +175,32 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 			Blocks.HONEYCOMB_BLOCK, Items.HONEYCOMB
 	);
 	
-	public static final Map<Block, ItemConvertible> TRITURATED_BLOCKS_1_TO_2 = Map.of(
+	public static final Map<Block, ItemConvertible> TRITURATED_BLOCKS_1_TO_2 = ImmutableMap.of(
 			Blocks.BRICK_SLAB, Items.BRICK,
 			Blocks.NETHER_BRICK_SLAB, Items.NETHER_BRICK,
 			Blocks.PRISMARINE_SLAB, Items.PRISMARINE_SHARD
 	);
 	
-	public static final Map<Block, ItemConvertible> TRITURATED_BLOCKS_1_TO_9 = Map.of(
+	public static final Map<Block, ItemConvertible> TRITURATED_BLOCKS_1_TO_9 = ImmutableMap.of(
 			Blocks.BONE_BLOCK, Items.BONE_MEAL,
 			Blocks.NETHER_WART_BLOCK, Items.NETHER_WART,
 			Blocks.HAY_BLOCK, Items.WHEAT,
 			Blocks.PRISMARINE_BRICKS, Items.PRISMARINE_SHARD
 	);
 	
-	public static final Map<Block, ItemConvertible> TRITURATED_BLOCKS_1_TO_1_EXPENSIVE = Map.of(
+	public static final Map<Block, ItemConvertible> TRITURATED_BLOCKS_1_TO_1_EXPENSIVE = ImmutableMap.of(
 			Blocks.COBBLESTONE, Blocks.GRAVEL,
 			Blocks.GRAVEL, Blocks.SAND
 	);
 	
-	public static final Map<Map<Block, ItemConvertible>, Integer> TRITURATED_BLOCKS_CHEAP = Map.of(
+	public static final Map<Map<Block, ItemConvertible>, Integer> TRITURATED_BLOCKS_CHEAP = ImmutableMap.of(
 			TRITURATED_BLOCKS_1_TO_1_CHEAP, 1,
 			TRITURATED_BLOCKS_1_TO_2, 2,
 			TRITURATED_BLOCKS_1_TO_4, 4,
 			TRITURATED_BLOCKS_1_TO_9, 9
 	);
 	
-	public static final Map<TagKey<Item>, Integer> BIOFUEL_TAGS = Map.of(
+	public static final Map<TagKey<Item>, Integer> BIOFUEL_TAGS = ImmutableMap.of(
 			AMTagKeys.ItemTags.MAKES_ONE_BIOFUEL, 1,
 			AMTagKeys.ItemTags.MAKES_TWO_BIOFUEL, 2,
 			AMTagKeys.ItemTags.MAKES_FOUR_BIOFUEL, 4,
@@ -253,7 +252,7 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 	}
 	
 	public static void offerSmeltingAndBlasting(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, ItemConvertible output, float experience) {
-		offerSmeltingAndBlasting(exporter, List.of(input), output, experience);
+		offerSmeltingAndBlasting(exporter, ImmutableList.of(input), output, experience);
 	}
 	
 	public static void offerSmeltingAndBlasting(Consumer<RecipeJsonProvider> exporter, List<ItemConvertible> input, ItemConvertible output, float experience) {
@@ -500,7 +499,7 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 		
 		REGULAR_TO_SMOOTH.forEach((regular, smooth) -> {
 			offerSmoothingRecipe(exporter, regular, smooth);
-			offerSmelting(exporter, List.of(regular), smooth, 0.1f, 200, getRecipeName(smooth));
+			offerSmelting(exporter, ImmutableList.of(regular), smooth, 0.1f, 200, getRecipeName(smooth));
 		});
 		
 		MaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateRecipes).forEach((family) -> {

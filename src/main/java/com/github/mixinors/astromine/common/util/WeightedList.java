@@ -24,17 +24,13 @@
 
 package com.github.mixinors.astromine.common.util;
 
-import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Dynamic;
 import com.mojang.serialization.DynamicOps;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class WeightedList<U> {
@@ -44,11 +40,11 @@ public class WeightedList<U> {
 	protected final List<WeightedList.Entry<U>> entries;
 	
 	public WeightedList() {
-		this.entries = Lists.newArrayList();
+		this.entries = new ArrayList<>();
 	}
 	
 	private WeightedList(List<WeightedList.Entry<U>> list) {
-		this.entries = Lists.newArrayList(list);
+		this.entries = new ArrayList<>(list);
 	}
 	
 	public static <U> Codec<WeightedList<U>> createCodec(Codec<U> codec) {

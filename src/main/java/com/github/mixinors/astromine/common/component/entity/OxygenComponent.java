@@ -51,7 +51,7 @@ public final class OxygenComponent implements AutoSyncedComponent {
 	@Nullable
 	public static <V> OxygenComponent get(V v) {
 		try {
-			return AMComponents.ENTITY_OXYGEN_COMPONENT.get(v);
+			return AMComponents.OXYGEN_COMPONENT.get(v);
 		} catch (Exception justShutUpAlready) {
 			return null;
 		}

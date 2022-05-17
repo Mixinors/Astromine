@@ -25,10 +25,10 @@
 package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.client.render.sky.SpaceSkyProperties;
+import com.github.mixinors.astromine.client.render.sky.SpaceDimensionEffects;
 import com.github.mixinors.astromine.common.block.network.EnergyCableBlock;
-import com.github.mixinors.astromine.common.callback.SkyPropertiesCallback;
 import com.github.mixinors.astromine.common.component.entity.OxygenComponent;
+import com.github.mixinors.astromine.common.event.DimensionEffectsEvents;
 import com.github.mixinors.astromine.common.item.armor.SpaceSuitArmorItem;
 import com.github.mixinors.astromine.common.item.utility.HolographicConnectorItem;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidItemStorage;
@@ -310,6 +310,6 @@ public class AMEvents {
 			}
 		});
 		
-		SkyPropertiesCallback.EVENT.register((properties) -> properties.put(AMWorlds.EARTH_ORBIT_ID, new SpaceSkyProperties()));
+		DimensionEffectsEvents.INIT.register((properties) -> properties.put(AMWorlds.EARTH_ORBIT_ID, new SpaceDimensionEffects()));
 	}
 }

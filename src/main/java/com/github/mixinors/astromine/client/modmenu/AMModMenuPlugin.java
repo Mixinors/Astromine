@@ -22,17 +22,27 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.common.callback;
+package com.github.mixinors.astromine.client.modmenu;
 
-import dev.architectury.event.Event;
-import dev.architectury.event.EventFactory;
-import net.minecraft.server.world.ServerChunkManager;
+import com.github.mixinors.astromine.common.config.AMConfig;
+import com.terraformersmc.modmenu.api.ConfigScreenFactory;
+import com.terraformersmc.modmenu.api.ModMenuApi;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.gui.ConfigScreenProvider;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
-/**
- * A callback called when initializing a {@link ServerChunkManager}.
- */
-public interface ServerChunkManagerCallback {
-	Event<ServerChunkManagerCallback> EVENT = EventFactory.createLoop();
-	
-	void handle(ServerChunkManager manager);
+@Environment(EnvType.CLIENT)
+public class AMModMenuPlugin implements ModMenuApi {
+	@SuppressWarnings("deprecation")
+	@Override
+	public ConfigScreenFactory<?> getModConfigScreenFactory() {
+		return screen -> {
+			var configScreen = (ConfigScreenProvider<AMConfig>) AutoConfig.getConfigScreen(AMConfig.class, screen);
+			
+			configScreen.setOptionFunction((s, field) -> field.getName());
+			
+			return configScreen.get();
+		};
+	}
 }

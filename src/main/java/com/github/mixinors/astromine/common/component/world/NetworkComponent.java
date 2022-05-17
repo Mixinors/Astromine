@@ -55,7 +55,7 @@ public final class NetworkComponent implements Component {
 	@Nullable
 	public static <V> NetworkComponent get(V v) {
 		try {
-			return AMComponents.WORLD_NETWORK_COMPONENT.get(v);
+			return AMComponents.NETWORK_COMPONENT.get(v);
 		} catch (Exception justShutUpAlready) {
 			return null;
 		}

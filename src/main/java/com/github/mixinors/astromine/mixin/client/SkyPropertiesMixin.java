@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.mixin.client;
 
-import com.github.mixinors.astromine.common.callback.SkyPropertiesCallback;
+import com.github.mixinors.astromine.common.event.DimensionEffectsEvents;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -46,6 +46,6 @@ public class SkyPropertiesMixin {
 	
 	@Inject(method = "<clinit>", at = @At("RETURN"))
 	private static void astromine$clinit(CallbackInfo info) {
-		SkyPropertiesCallback.EVENT.invoker().handle(BY_IDENTIFIER);
+		DimensionEffectsEvents.INIT.invoker().init(BY_IDENTIFIER);
 	}
 }

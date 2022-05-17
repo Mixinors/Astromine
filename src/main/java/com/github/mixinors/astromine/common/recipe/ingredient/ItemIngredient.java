@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.recipe.ingredient;
 
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
+import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
@@ -37,9 +38,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.BiPredicate;
 
@@ -210,6 +209,7 @@ public final class ItemIngredient {
 	
 	public static class VariantEntry extends Entry {
 		private final ItemVariant requiredVariant;
+		
 		private final int requiredAmount;
 		
 		public VariantEntry(ItemVariant variant) {
@@ -234,13 +234,15 @@ public final class ItemIngredient {
 		
 		@Override
 		public Collection<ItemVariant> getVariants() {
-			return Collections.singleton(requiredVariant);
+			return ImmutableList.of(requiredVariant);
 		}
 	}
 	
 	public static class TagEntry extends Entry {
-		private final TagKey<Item> requiredTag;
 		private List<ItemVariant> requiredVariants;
+		
+		private final TagKey<Item> requiredTag;
+		
 		private final int requiredAmount;
 		
 		public TagEntry(TagKey<Item> tag) {
@@ -255,15 +257,7 @@ public final class ItemIngredient {
 		
 		@Override
 		public boolean test(ItemVariant testVariant, Long testAmount) {
-			if (requiredVariants == null) {
-				requiredVariants = new ArrayList<>();
-				
-				for (var item : Registry.ITEM.iterateEntries(requiredTag)) {
-					requiredVariants.add(ItemVariant.of(item.value()));
-				}
-			}
-			
-			for (var requiredVariant : requiredVariants) {
+			for (var requiredVariant : getVariants()) {
 				if (requiredVariant.equals(testVariant) && testAmount >= requiredAmount) {
 					return true;
 				}
@@ -279,13 +273,17 @@ public final class ItemIngredient {
 		
 		@Override
 		public Collection<ItemVariant> getVariants() {
-			var list = new ArrayList<ItemVariant>();
-			
-			for (var item : Registry.ITEM.iterateEntries(requiredTag)) {
-				list.add(ItemVariant.of(item.value()));
+			if (requiredVariants == null) {
+				var builder = ImmutableList.<ItemVariant>builder();
+				
+				for (var item : Registry.ITEM.iterateEntries(requiredTag)) {
+					builder.add(ItemVariant.of(item.value()));
+				}
+				
+				requiredVariants = builder.build();
 			}
 			
-			return list;
+			return requiredVariants;
 		}
 	}
 }

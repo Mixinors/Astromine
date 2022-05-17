@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.common.block.ore;
+package com.github.mixinors.astromine.common.block.ore.base;
 
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMCriteria;
@@ -43,14 +43,15 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class AstromineOreBlock extends Block {
-	public AstromineOreBlock(AbstractBlock.Settings settings) {
+public class ExtendedOreBlock extends Block {
+	public ExtendedOreBlock(AbstractBlock.Settings settings) {
 		super(settings);
 	}
 	
 	@Override
 	public void onStacksDropped(BlockState state, ServerWorld world, BlockPos pos, ItemStack stack) {
 		super.onStacksDropped(state, world, pos, stack);
+		
 		if (EnchantmentHelper.getLevel(Enchantments.SILK_TOUCH, stack) == 0) {
 			var i = getExperienceWhenMined(world.random);
 			if (i > 0) {

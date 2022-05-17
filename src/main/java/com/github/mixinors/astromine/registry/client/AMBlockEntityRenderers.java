@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.registry.client;
 
-import com.github.mixinors.astromine.client.render.block.HoloBridgeBlockEntityRenderer;
-import com.github.mixinors.astromine.client.render.block.PumpBlockEntityRenderer;
+import com.github.mixinors.astromine.client.render.block.entity.HoloBridgeBlockEntityRenderer;
+import com.github.mixinors.astromine.client.render.block.entity.PumpBlockEntityRenderer;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import dev.architectury.registry.client.rendering.fabric.BlockEntityRendererRegistryImpl;
 import net.minecraft.block.entity.BlockEntity;

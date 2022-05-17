@@ -48,9 +48,11 @@ public class VoxelShapeUtils {
 	
 	public static VoxelShape union(Collection<VoxelShape> shapes) {
 		var collision = VoxelShapes.empty();
+		
 		for (var shape : shapes) {
 			collision = VoxelShapes.union(shape, collision);
 		}
+		
 		return collision;
 	}
 	
@@ -60,8 +62,8 @@ public class VoxelShapeUtils {
 		for (var box : shape.getBoundingBoxes()) {
 			var min = axis == Direction.Axis.X ? rotatePoint(box.minY, box.minZ, radians) : (axis == Direction.Axis.Z ? rotatePoint(box.minX, box.minY, radians) : rotatePoint(box.minX, box.minZ, radians));
 			var max = axis == Direction.Axis.X ? rotatePoint(box.maxY, box.maxZ, radians) : (axis == Direction.Axis.Z ? rotatePoint(box.maxX, box.maxY, radians) : rotatePoint(box.maxX, box.maxZ, radians));
-			collision = VoxelShapes.union(collision, axis == Direction.Axis.X ? VoxelShapes.cuboid(box.minX, min.getFirst(), min.getSecond(), box.maxX, max.getFirst(), max.getSecond()) : (axis == Direction.Axis.Z ? VoxelShapes.cuboid(min.getFirst(), min.getSecond(), box.minZ, max
-					.getFirst(), max.getSecond(), box.maxZ) : VoxelShapes.cuboid(Math.min(min.getFirst(), max.getFirst()), Math.min(box.minY, box.maxY), Math.min(min.getSecond(), max.getSecond()), Math.max(min.getFirst(), max.getFirst()), Math.max(box.minY, box.maxY), Math.max(min.getSecond(), max.getSecond()))));
+			
+			collision = VoxelShapes.union(collision, axis == Direction.Axis.X ? VoxelShapes.cuboid(box.minX, min.getFirst(), min.getSecond(), box.maxX, max.getFirst(), max.getSecond()) : (axis == Direction.Axis.Z ? VoxelShapes.cuboid(min.getFirst(), min.getSecond(), box.minZ, max.getFirst(), max.getSecond(), box.maxZ) : VoxelShapes.cuboid(Math.min(min.getFirst(), max.getFirst()), Math.min(box.minY, box.maxY), Math.min(min.getSecond(), max.getSecond()), Math.max(min.getFirst(), max.getFirst()), Math.max(box.minY, box.maxY), Math.max(min.getSecond(), max.getSecond()))));
 		}
 		return collision;
 	}

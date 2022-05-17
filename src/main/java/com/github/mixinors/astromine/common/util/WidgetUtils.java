@@ -44,14 +44,12 @@ public class WidgetUtils {
 		var west = new Position(anchor, 7.0F + 44.0F, 31.0F + 22.0F, 0.0F);
 		var east = new Position(anchor, 7.0F, 31.0F + 22.0F, 0.0F);
 		
-		var positions = ImmutableMap.<Direction, Position>builder()
-									.put(Direction.NORTH, north)
-									.put(Direction.SOUTH, south)
-									.put(Direction.WEST, west)
-									.put(Direction.EAST, east)
-									.put(Direction.UP, up)
-									.put(Direction.DOWN, down)
-									.build();
+		var positions = ImmutableMap.of(Direction.NORTH, north,
+												  				  Direction.SOUTH, south,
+												  				  Direction.WEST, west,
+												  				  Direction.EAST, east,
+												  				  Direction.UP, up,
+												  				  Direction.DOWN, down);
 		
 		var list = new ArrayList<StorageSidingWidget>();
 		

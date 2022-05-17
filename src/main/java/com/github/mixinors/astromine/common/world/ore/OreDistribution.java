@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.world.ore;
 
 import com.github.mixinors.astromine.registry.common.AMFeatures;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.intprovider.ConstantIntProvider;
@@ -34,8 +35,6 @@ import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.gen.YOffset;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.placementmodifier.*;
-
-import java.util.List;
 
 public record OreDistribution(
 		int veinSize,
@@ -175,10 +174,11 @@ public record OreDistribution(
 	}
 	
 	private RegistryEntry<ConfiguredFeature<OreFeatureConfig, ?>> registerConfiguredFeature(Identifier id, Block stoneOre, Block deepslateOre) {
-		var targets = List.of(
+		var targets = ImmutableList.of(
 				OreFeatureConfig.createTarget(OreConfiguredFeatures.STONE_ORE_REPLACEABLES, stoneOre.getDefaultState()),
 				OreFeatureConfig.createTarget(OreConfiguredFeatures.DEEPSLATE_ORE_REPLACEABLES, deepslateOre.getDefaultState())
 		);
+		
 		return AMFeatures.registerConfiguredFeature(id, Feature.ORE, new OreFeatureConfig(targets, veinSize, discardOnAirChance));
 	}
 	
@@ -204,8 +204,8 @@ public record OreDistribution(
 		return CountPlacementModifier.of(veinsPerChunk);
 	}
 	
-	private List<PlacementModifier> modifiers() {
-		return List.of(countPlacementModifier(), SquarePlacementModifier.of(), heightRangePlacementModifier(), BiomePlacementModifier.of());
+	private ImmutableList<PlacementModifier> modifiers() {
+		return ImmutableList.of(countPlacementModifier(), SquarePlacementModifier.of(), heightRangePlacementModifier(), BiomePlacementModifier.of());
 	}
 	
 	public enum HeightRangePlacementModifierType {

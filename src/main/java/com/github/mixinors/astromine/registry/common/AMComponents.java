@@ -28,47 +28,28 @@ import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.component.entity.OxygenComponent;
 import com.github.mixinors.astromine.common.component.world.HoloBridgeComponent;
 import com.github.mixinors.astromine.common.component.world.NetworkComponent;
-import dev.onyxstudios.cca.api.v3.block.BlockComponentFactoryRegistry;
-import dev.onyxstudios.cca.api.v3.block.BlockComponentInitializer;
-import dev.onyxstudios.cca.api.v3.chunk.ChunkComponentFactoryRegistry;
-import dev.onyxstudios.cca.api.v3.chunk.ChunkComponentInitializer;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
-import dev.onyxstudios.cca.api.v3.item.ItemComponentFactoryRegistry;
-import dev.onyxstudios.cca.api.v3.item.ItemComponentInitializer;
 import dev.onyxstudios.cca.api.v3.world.WorldComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.world.WorldComponentInitializer;
 import net.minecraft.entity.LivingEntity;
-import org.jetbrains.annotations.NotNull;
 
-public class AMComponents implements WorldComponentInitializer, ChunkComponentInitializer, ItemComponentInitializer, EntityComponentInitializer, BlockComponentInitializer {
-	public static final ComponentKey<NetworkComponent> WORLD_NETWORK_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("world_network_component"), NetworkComponent.class);
-	public static final ComponentKey<HoloBridgeComponent> WORLD_BRIDGE_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("world_holo_bridge_component"), HoloBridgeComponent.class);
+public class AMComponents implements WorldComponentInitializer, EntityComponentInitializer {
+	public static final ComponentKey<NetworkComponent> NETWORK_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("network_component"), NetworkComponent.class);
+	public static final ComponentKey<HoloBridgeComponent> HOLO_BRIDGE_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("holo_bridge_component"), HoloBridgeComponent.class);
 	
-	public static final ComponentKey<OxygenComponent> ENTITY_OXYGEN_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("entity_oxygen_component"), OxygenComponent.class);
+	public static final ComponentKey<OxygenComponent> OXYGEN_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("oxygen_component"), OxygenComponent.class);
 	
 	@Override
 	public void registerWorldComponentFactories(WorldComponentFactoryRegistry registry) {
-		registry.register(WORLD_NETWORK_COMPONENT, NetworkComponent::new);
-		registry.register(WORLD_BRIDGE_COMPONENT, HoloBridgeComponent::new);
-	}
-	
-	@Override
-	public void registerChunkComponentFactories(@NotNull ChunkComponentFactoryRegistry registry) {
-	}
-	
-	@Override
-	public void registerItemComponentFactories(@NotNull ItemComponentFactoryRegistry registry) {
+		registry.register(NETWORK_COMPONENT, NetworkComponent::new);
+		registry.register(HOLO_BRIDGE_COMPONENT, HoloBridgeComponent::new);
 	}
 	
 	@Override
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
-		registry.registerFor(LivingEntity.class, ENTITY_OXYGEN_COMPONENT, OxygenComponent::new);
-	}
-	
-	@Override
-	public void registerBlockComponentFactories(@NotNull BlockComponentFactoryRegistry registry) {
+		registry.registerFor(LivingEntity.class, OXYGEN_COMPONENT, OxygenComponent::new);
 	}
 }

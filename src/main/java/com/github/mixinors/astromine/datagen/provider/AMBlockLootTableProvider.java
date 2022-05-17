@@ -31,6 +31,7 @@ import com.github.mixinors.astromine.datagen.family.material.MaterialFamilies;
 import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
 import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
+import com.google.common.collect.ImmutableList;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.minecraft.block.Block;
@@ -47,7 +48,14 @@ import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import java.util.List;
 
 public class AMBlockLootTableProvider extends FabricBlockLootTableProvider {
-	public static final List<Block> DROPS_SELF = List.of(
+	private static final String BLOCK_ENTITY_TAG_KEY = "BlockEntityTag";
+	
+	private static final String REDSTONE_TYPE_KEY = "RedstoneType";
+	private static final String ENERGY_STORAGE_KEY = "EnergyStorage";
+	private static final String ITEM_STORAGE_KEY = "ItemStorage";
+	private static final String FLUID_STORAGE_KEY = "FliidStorage";
+	
+	public static final List<Block> DROPS_SELF = ImmutableList.of(
 			AMBlocks.BLAZING_ASTEROID_STONE.get(),
 			
 			AMBlocks.FLUID_PIPE.get(),
@@ -74,26 +82,30 @@ public class AMBlockLootTableProvider extends FabricBlockLootTableProvider {
 	
 	public static LootTable.Builder machineDrops(Block drop) {
 		if (drop instanceof BlockWithEntity machine && machine.saveTagToDroppedItem()) {
-			var builder = LootTable.builder().pool(addSurvivesExplosionCondition(machine, LootPool.builder().rolls(ConstantLootNumberProvider.create(1.0f)).with(ItemEntry.builder(machine))));
+			var builder = LootTable.builder().pool(addSurvivesExplosionCondition(machine, LootPool.builder().rolls(ConstantLootNumberProvider.create(1.0F)).with(ItemEntry.builder(machine))));
 			
 			var copyNbtBuilder = CopyNbtLootFunction.builder(ContextLootNbtProvider.BLOCK_ENTITY);
+			
 			var savedData = machine.getSavedDataForDroppedItem();
+			
 			if (savedData.redstoneControl()) {
-				copyNbtBuilder = copyNbtBuilder.withOperation("RedstoneType", "BlockEntityTag.RedstoneControl");
+				copyNbtBuilder = copyNbtBuilder.withOperation(REDSTONE_TYPE_KEY, BLOCK_ENTITY_TAG_KEY + "." + REDSTONE_TYPE_KEY);
 			}
 			if (savedData.energyStorage()) {
-				copyNbtBuilder = copyNbtBuilder.withOperation("EnergyStorage", "BlockEntityTag.EnergyStorage");
+				copyNbtBuilder = copyNbtBuilder.withOperation(ENERGY_STORAGE_KEY, BLOCK_ENTITY_TAG_KEY + "." + ENERGY_STORAGE_KEY);
 			}
 			if (savedData.itemStorage()) {
-				copyNbtBuilder = copyNbtBuilder.withOperation("ItemStorage", "BlockEntityTag.ItemStorage");
+				copyNbtBuilder = copyNbtBuilder.withOperation(ITEM_STORAGE_KEY, BLOCK_ENTITY_TAG_KEY + "." + ITEM_STORAGE_KEY);
 			}
 			if (savedData.fluidStorage()) {
-				copyNbtBuilder = copyNbtBuilder.withOperation("FluidStorage", "BlockEntityTag.FluidStorage");
+				copyNbtBuilder = copyNbtBuilder.withOperation(FLUID_STORAGE_KEY, BLOCK_ENTITY_TAG_KEY + "." + FLUID_STORAGE_KEY);
 			}
 			
 			builder.apply(CopyNameLootFunction.builder(CopyNameLootFunction.Source.BLOCK_ENTITY)).apply(copyNbtBuilder);
+			
 			return builder;
 		}
+		
 		return drops(drop);
 	}
 	
@@ -106,12 +118,14 @@ public class AMBlockLootTableProvider extends FabricBlockLootTableProvider {
 							case BLOCK, RAW_ORE_BLOCK -> addDrop(block);
 							case STONE_ORE, DEEPSLATE_ORE, NETHER_ORE -> {
 								Item drop;
+								
 								if (family.hasVariant(ItemVariant.RAW_ORE)) {
 									drop = family.getVariant(ItemVariant.RAW_ORE);
 								} else {
 									drop = family.getBaseItem();
 								}
-								addDrop(block, (b) -> oreDrops(block, drop));
+								
+								addDrop(block, ($) -> oreDrops(block, drop));
 							}
 							case METEOR_ORE -> this.addDrop(block, oreDrops(block, family.getVariant(ItemVariant.METEOR_ORE_CLUSTER)));
 							case ASTEROID_ORE -> this.addDrop(block, oreDrops(block, family.getVariant(ItemVariant.ASTEROID_ORE_CLUSTER)));
@@ -122,10 +136,12 @@ public class AMBlockLootTableProvider extends FabricBlockLootTableProvider {
 		
 		AMBlockFamilies.getFamilies().forEachOrdered((family) -> {
 			addDrop(family.getBaseBlock());
+			
 			family.getVariants().forEach((variant, block) -> {
 				switch (variant) {
 					case DOOR -> addDoorDrop(block);
 					case SLAB -> addDrop(block, BlockLootTableGenerator::slabDrops);
+					
 					default -> addDrop(block);
 				}
 			});

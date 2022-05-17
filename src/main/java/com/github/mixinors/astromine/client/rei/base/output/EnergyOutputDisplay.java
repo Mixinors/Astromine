@@ -25,26 +25,32 @@
 package com.github.mixinors.astromine.client.rei.base.output;
 
 import com.github.mixinors.astromine.client.rei.base.AMDisplay;
+import com.google.common.collect.ImmutableList;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
 public abstract class EnergyOutputDisplay implements AMDisplay {
 	private final List<EntryIngredient> inputs;
+	
 	private final int timeRequired;
+	
 	private final long energyGeneratedPerTick;
+	
 	private final Identifier recipeId;
 	
 	public EnergyOutputDisplay(List<EntryIngredient> inputs, int timeRequired, long energyGeneratedPerTick, Identifier recipeId) {
 		this.inputs = inputs;
+		
 		this.timeRequired = timeRequired;
+		
 		this.energyGeneratedPerTick = energyGeneratedPerTick;
+		
 		this.recipeId = recipeId;
 	}
 	
@@ -55,7 +61,7 @@ public abstract class EnergyOutputDisplay implements AMDisplay {
 	
 	@Override
 	public List<EntryIngredient> getOutputEntries() {
-		return Collections.emptyList();
+		return ImmutableList.of();
 	}
 	
 	public int getTimeRequired() {

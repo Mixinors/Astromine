@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.client.render.sky.skybox;
 
-import com.google.common.collect.ImmutableMap;
+import com.github.mixinors.astromine.client.render.sky.skybox.base.Skybox;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
@@ -37,6 +37,9 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3f;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SpaceSkybox extends Skybox {
 	public static final Identifier UP = new Identifier("skybox", "up");
@@ -55,10 +58,10 @@ public class SpaceSkybox extends Skybox {
 	public static float u0P = 0.0f;
 	public static float u1P = 1.0f;
 	
-	public final ImmutableMap<Identifier, Identifier> textures;
+	public final Map<Identifier, Identifier> textures;
 	
 	private SpaceSkybox(Builder builder) {
-		textures = builder.textures.build();
+		textures = Map.copyOf(builder.textures);
 		
 		if (textures.size() != 8) {
 			throw new UnsupportedOperationException("Skybox constructed without necessary information!");
@@ -198,7 +201,7 @@ public class SpaceSkybox extends Skybox {
 	}
 	
 	public static class Builder {
-		final ImmutableMap.Builder<Identifier, Identifier> textures = ImmutableMap.builder();
+		Map<Identifier, Identifier> textures = new HashMap<>();
 		
 		public Builder() {
 		}

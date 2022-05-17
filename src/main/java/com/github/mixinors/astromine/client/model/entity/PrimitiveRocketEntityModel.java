@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.client.model;
+package com.github.mixinors.astromine.client.model.entity;
 
 import com.github.mixinors.astromine.client.render.entity.PrimitiveRocketEntityRenderer;
 import com.github.mixinors.astromine.common.entity.rocket.PrimitiveRocketEntity;
