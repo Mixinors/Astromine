@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.datagen.family.material.variant;
 import com.github.mixinors.astromine.common.util.WordUtils;
 import com.github.mixinors.astromine.common.util.constant.fluid.ExtraFluidConstants;
 import com.github.mixinors.astromine.datagen.HarvestData;
-import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
+import com.github.mixinors.astromine.datagen.family.material.family.MaterialFamily;
 import com.github.mixinors.astromine.datagen.provider.AMModelProvider;
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
@@ -83,6 +83,7 @@ public enum BlockVariant implements Variant<Block> {
 		return switch (this) {
 			case METEOR_ORE -> AMModelProvider::registerMeteorOre;
 			case ASTEROID_ORE -> AMModelProvider::registerAsteroidOre;
+			
 			default -> BlockStateModelGenerator::registerSimpleCubeAll;
 		};
 	}
@@ -109,6 +110,7 @@ public enum BlockVariant implements Variant<Block> {
 	public int getMiningLevel() {
 		return switch (this) {
 			case ASTEROID_ORE, METEOR_ORE -> 4;
+			
 			default -> 0;
 		};
 	}
@@ -137,6 +139,7 @@ public enum BlockVariant implements Variant<Block> {
 	public boolean isOre() {
 		return switch (this) {
 			case STONE_ORE, DEEPSLATE_ORE, METEOR_ORE, ASTEROID_ORE, NETHER_ORE -> true;
+			
 			default -> false;
 		};
 	}
@@ -153,13 +156,13 @@ public enum BlockVariant implements Variant<Block> {
 	@Override
 	public float getMeltingTimeMultiplier() {
 		return switch (this) {
-			case BLOCK -> 10.0f;
-			case STONE_ORE -> 2.5f;
-			case DEEPSLATE_ORE -> 3.0f;
-			case NETHER_ORE -> 2.2f;
-			case METEOR_ORE -> 4.5f;
-			case ASTEROID_ORE -> 5.0f;
-			case RAW_ORE_BLOCK -> 12.0f;
+			case BLOCK -> 10.0F;
+			case STONE_ORE -> 2.5F;
+			case DEEPSLATE_ORE -> 3.0F;
+			case NETHER_ORE -> 2.2F;
+			case METEOR_ORE -> 4.5F;
+			case ASTEROID_ORE -> 5.0F;
+			case RAW_ORE_BLOCK -> 12.0F;
 		};
 	}
 }

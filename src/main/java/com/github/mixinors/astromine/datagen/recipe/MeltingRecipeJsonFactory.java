@@ -36,6 +36,8 @@ import net.minecraft.util.Identifier;
 import java.util.function.Consumer;
 
 public class MeltingRecipeJsonFactory extends FluidOutputMachineRecipeJsonFactory<MeltingRecipe> {
+	private static final String INPUT_KEY = "input";
+	
 	private final Ingredient input;
 	
 	protected MeltingRecipeJsonFactory(Ingredient input, Fluid output, long outputAmount, int processingTime, int energy) {
@@ -65,7 +67,8 @@ public class MeltingRecipeJsonFactory extends FluidOutputMachineRecipeJsonFactor
 		
 		@Override
 		public void serialize(JsonObject json) {
-			json.add("input", this.input.toJson());
+			json.add(INPUT_KEY, this.input.toJson());
+			
 			super.serialize(json);
 		}
 	}

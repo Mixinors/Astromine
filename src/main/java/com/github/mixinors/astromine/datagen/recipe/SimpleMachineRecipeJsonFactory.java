@@ -37,6 +37,8 @@ import net.minecraft.util.Identifier;
 import java.util.function.Consumer;
 
 public abstract class SimpleMachineRecipeJsonFactory<T extends EnergyInputRecipe> extends ItemOutputMachineRecipeJsonFactory<T> {
+	private static final String INPUT_KEY = "input";
+	
 	private final Ingredient input;
 	
 	protected SimpleMachineRecipeJsonFactory(Ingredient input, ItemConvertible output, int outputCount, int processingTime, int energy, AbstractRecipeSerializer<T> serializer) {
@@ -61,7 +63,8 @@ public abstract class SimpleMachineRecipeJsonFactory<T extends EnergyInputRecipe
 		
 		@Override
 		public void serialize(JsonObject json) {
-			json.add("input", this.input.toJson());
+			json.add(INPUT_KEY, this.input.toJson());
+			
 			super.serialize(json);
 		}
 	}

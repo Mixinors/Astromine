@@ -29,6 +29,5 @@ import net.fabricmc.api.DedicatedServerModInitializer;
 public class AMDedicated implements DedicatedServerModInitializer {
 	@Override
 	public void onInitializeServer() {
-	
 	}
 }

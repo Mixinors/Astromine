@@ -25,11 +25,11 @@
 package com.github.mixinors.astromine.datagen.provider;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.datagen.DatagenLists;
+import com.github.mixinors.astromine.datagen.AMDatagenLists;
 import com.github.mixinors.astromine.datagen.family.block.AMBlockFamilies;
-import com.github.mixinors.astromine.datagen.family.material.MaterialFamilies;
-import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
-import com.github.mixinors.astromine.datagen.family.material.MaterialFamily.MaterialType;
+import com.github.mixinors.astromine.datagen.family.material.AMMaterialFamilies;
+import com.github.mixinors.astromine.datagen.family.material.family.MaterialFamily;
+import com.github.mixinors.astromine.datagen.family.material.family.MaterialFamily.MaterialType;
 import com.github.mixinors.astromine.datagen.family.material.variant.BlockVariant;
 import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant;
 import com.github.mixinors.astromine.datagen.recipe.*;
@@ -502,7 +502,7 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 			offerSmelting(exporter, ImmutableList.of(regular), smooth, 0.1f, 200, getRecipeName(smooth));
 		});
 		
-		MaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateRecipes).forEach((family) -> {
+		AMMaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateRecipes).forEach((family) -> {
 			AMCommon.LOGGER.info("Offering recipes for " + family.getName());
 			if (family.shouldGenerateRecipe(BlockVariant.BLOCK)) {
 				if (family.isBlock2x2()) {
@@ -529,17 +529,17 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 				offerCompactingRecipe(exporter, family.getTag(ItemVariant.RAW_ORE), family.getVariant(BlockVariant.RAW_ORE_BLOCK));
 				offerReverseCompactingRecipeWithFullName(exporter, family.getItemTag(BlockVariant.RAW_ORE_BLOCK), family.getVariant(ItemVariant.RAW_ORE));
 			}
-			if (family.hasAnyBlockVariants(DatagenLists.BlockVariantLists.ORE_VARIANTS)) {
+			if (family.hasAnyBlockVariants(AMDatagenLists.BlockVariantLists.ORE_VARIANTS)) {
 				AMCommon.LOGGER.info("Offering smelting and blasting for ores -> base");
-				if (family.areAnyBlockVariantsVanilla(DatagenLists.BlockVariantLists.ORE_VARIANTS)) {
-					DatagenLists.BlockVariantLists.ORE_VARIANTS.stream().filter(family::isVariantAstromine).forEach((variant) -> {
+				if (family.areAnyBlockVariantsVanilla(AMDatagenLists.BlockVariantLists.ORE_VARIANTS)) {
+					AMDatagenLists.BlockVariantLists.ORE_VARIANTS.stream().filter(family::isVariantAstromine).forEach((variant) -> {
 						offerSmeltingAndBlasting(exporter, family.getItemTag(variant), family.getBaseItem(), family.getOreSmeltingExperience());
 					});
 				} else {
 					offerSmeltingAndBlasting(exporter, family.getItemTag("ores"), family.getBaseItem(), family.getOreSmeltingExperience());
 				}
 			}
-			if (family.hasAnyItemVariants(DatagenLists.ItemVariantLists.CLUSTER_VARIANTS)) {
+			if (family.hasAnyItemVariants(AMDatagenLists.ItemVariantLists.CLUSTER_VARIANTS)) {
 				AMCommon.LOGGER.info("Offering smelting and blasting for clusters -> base");
 				offerSmeltingAndBlasting(exporter, family.getItemTag("clusters"), family.getBaseItem(), family.getOreSmeltingExperience());
 			}
@@ -557,7 +557,7 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 					offerSmeltingAndBlasting(exporter, family.getTag(ItemVariant.TINY_DUST), family.getVariant(ItemVariant.NUGGET), 0.0f);
 				}
 			}
-			if (family.hasAnyItemVariants(DatagenLists.ItemVariantLists.EQUIPMENT_VARIANTS)) {
+			if (family.hasAnyItemVariants(AMDatagenLists.ItemVariantLists.EQUIPMENT_VARIANTS)) {
 				if (family.hasVariant(ItemVariant.NUGGET)) {
 					AMCommon.LOGGER.info("Offering smelting and blasting for salvagables -> nugget");
 				}
@@ -569,8 +569,8 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 			}
 			if (family.usesSmithing()) {
 				AMCommon.LOGGER.info("Offering smithing recipes for equipment");
-				var smithingBase = family.getSmithingBase().orElse(MaterialFamilies.DIAMOND);
-				DatagenLists.ItemVariantLists.EQUIPMENT_VARIANTS.forEach((variant) -> {
+				var smithingBase = family.getSmithingBase().orElse(AMMaterialFamilies.DIAMOND);
+				AMDatagenLists.ItemVariantLists.EQUIPMENT_VARIANTS.forEach((variant) -> {
 					if (family.shouldGenerateRecipe(variant)) {
 						offerSmithingRecipe(exporter, smithingBase.getVariant(variant), family.getBaseItem(), family.getVariant(variant));
 					}
@@ -608,11 +608,11 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 					offerTrituratingRecipe(exporter, family.getTag(ItemVariant.RAW_ORE), family.getVariant(ItemVariant.DUST), 2, 90, 300);
 					offerTrituratingRecipe(exporter, family.getItemTag(BlockVariant.RAW_ORE_BLOCK), family.getVariant(ItemVariant.DUST), 18, 760, 2550);
 				} else {
-					if (family.hasAnyBlockVariants(DatagenLists.BlockVariantLists.ORE_VARIANTS)) {
+					if (family.hasAnyBlockVariants(AMDatagenLists.BlockVariantLists.ORE_VARIANTS)) {
 						AMCommon.LOGGER.info("Offering triturating for ores -> dusts");
 						offerTrituratingRecipe(exporter, family.getItemTag("ores"), family.getVariant(ItemVariant.DUST), 2, 180, 340);
 					}
-					if (family.hasAnyItemVariants(DatagenLists.ItemVariantLists.CLUSTER_VARIANTS)) {
+					if (family.hasAnyItemVariants(AMDatagenLists.ItemVariantLists.CLUSTER_VARIANTS)) {
 						AMCommon.LOGGER.info("Offering triturating for clusters -> dusts");
 						offerTrituratingRecipe(exporter, family.getItemTag("clusters"), family.getVariant(ItemVariant.DUST), 2, 90, 300);
 					}
@@ -620,11 +620,11 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 			}
 			
 			if (family.hasVariant(ItemVariant.RAW_ORE)) {
-				if (family.hasAnyBlockVariants(DatagenLists.BlockVariantLists.ORE_VARIANTS)) {
+				if (family.hasAnyBlockVariants(AMDatagenLists.BlockVariantLists.ORE_VARIANTS)) {
 					AMCommon.LOGGER.info("Offering triturating for ores -> raw ores");
 					offerTrituratingRecipe(exporter, family.getItemTag("ores"), family.getVariant(ItemVariant.RAW_ORE), 2, 180, 340);
 				}
-				if (family.hasAnyItemVariants(DatagenLists.ItemVariantLists.CLUSTER_VARIANTS)) {
+				if (family.hasAnyItemVariants(AMDatagenLists.ItemVariantLists.CLUSTER_VARIANTS)) {
 					AMCommon.LOGGER.info("Offering triturating for clusters -> raw ores");
 					offerTrituratingRecipe(exporter, family.getItemTag("clusters"), family.getVariant(ItemVariant.RAW_ORE), 2, 90, 300);
 				}

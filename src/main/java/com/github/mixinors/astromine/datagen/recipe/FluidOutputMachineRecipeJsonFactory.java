@@ -33,7 +33,12 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public abstract class FluidOutputMachineRecipeJsonFactory<T extends EnergyInputRecipe> extends EnergyInputMachineRecipeJsonFactory<T> {
+	private static final String FLUID_KEY = "fluid";
+	private static final String AMOUNT_KEY = "amount";
+	private static final String OUTPUT_KEY = "output";
+	
 	protected final Fluid output;
+	
 	protected final long outputAmount;
 	
 	protected FluidOutputMachineRecipeJsonFactory(Fluid output, long outputAmount, int processingTime, int energy, AbstractRecipeSerializer<T> serializer) {
@@ -60,6 +65,7 @@ public abstract class FluidOutputMachineRecipeJsonFactory<T extends EnergyInputR
 	
 	public abstract static class FluidOutputMachineRecipeJsonProvider<T extends EnergyInputRecipe> extends EnergyInputMachineRecipeJsonProvider<T> {
 		private final Fluid output;
+		
 		private final long outputAmount;
 		
 		public FluidOutputMachineRecipeJsonProvider(Identifier recipeId, Fluid output, long outputAmount, int processingTime, int energy, RecipeSerializer<T> serializer) {
@@ -72,9 +78,12 @@ public abstract class FluidOutputMachineRecipeJsonFactory<T extends EnergyInputR
 		@Override
 		public void serialize(JsonObject json) {
 			var outputJson = new JsonObject();
-			outputJson.addProperty("fluid", Registry.FLUID.getId(this.output).toString());
-			outputJson.addProperty("amount", outputAmount);
-			json.add("output", outputJson);
+			
+			outputJson.addProperty(FLUID_KEY, Registry.FLUID.getId(this.output).toString());
+			outputJson.addProperty(AMOUNT_KEY, outputAmount);
+			
+			json.add(OUTPUT_KEY, outputJson);
+			
 			super.serialize(json);
 		}
 	}

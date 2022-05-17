@@ -31,6 +31,8 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
 
 public abstract class EnergyInputMachineRecipeJsonFactory<T extends EnergyInputRecipe> extends MachineRecipeJsonFactory<T> {
+	private static final String ENERGY_INPUT = "energy_input";
+	
 	protected final int energy;
 	
 	protected EnergyInputMachineRecipeJsonFactory(int processingTime, int energy, AbstractRecipeSerializer<T> serializer) {
@@ -54,7 +56,8 @@ public abstract class EnergyInputMachineRecipeJsonFactory<T extends EnergyInputR
 		
 		@Override
 		public void serialize(JsonObject json) {
-			json.addProperty("energy_input", energy);
+			json.addProperty(ENERGY_INPUT, energy);
+			
 			super.serialize(json);
 		}
 	}

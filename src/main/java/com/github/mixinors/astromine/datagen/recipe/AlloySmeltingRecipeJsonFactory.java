@@ -37,8 +37,12 @@ import net.minecraft.util.Identifier;
 import java.util.function.Consumer;
 
 public class AlloySmeltingRecipeJsonFactory extends ItemOutputMachineRecipeJsonFactory<AlloySmeltingRecipe> {
+	private static final String FIRST_INPUT_KEY = "first_input";
+	private static final String SECOND_INPUT_KEY = "second_input";
+	
 	private final Ingredient firstInput;
 	private final int firstCount;
+	
 	private final Ingredient secondInput;
 	private final int secondCount;
 	
@@ -47,6 +51,7 @@ public class AlloySmeltingRecipeJsonFactory extends ItemOutputMachineRecipeJsonF
 		
 		this.firstInput = firstInput;
 		this.firstCount = firstCount;
+		
 		this.secondInput = secondInput;
 		this.secondCount = secondCount;
 	}
@@ -64,6 +69,7 @@ public class AlloySmeltingRecipeJsonFactory extends ItemOutputMachineRecipeJsonF
 	public static class AlloySmeltingRecipeProvider extends ItemOutputMachineRecipeJsonProvider<AlloySmeltingRecipe> {
 		private final Ingredient firstInput;
 		private final int firstCount;
+		
 		private final Ingredient secondInput;
 		private final int secondCount;
 		
@@ -78,8 +84,8 @@ public class AlloySmeltingRecipeJsonFactory extends ItemOutputMachineRecipeJsonF
 		
 		@Override
 		public void serialize(JsonObject json) {
-			json.add("first_input", IngredientUtils.toJsonWithCount(this.firstInput, firstCount));
-			json.add("second_input", IngredientUtils.toJsonWithCount(this.secondInput, secondCount));
+			json.add(FIRST_INPUT_KEY, IngredientUtils.toJsonWithCount(this.firstInput, firstCount));
+			json.add(SECOND_INPUT_KEY, IngredientUtils.toJsonWithCount(this.secondInput, secondCount));
 			super.serialize(json);
 		}
 	}

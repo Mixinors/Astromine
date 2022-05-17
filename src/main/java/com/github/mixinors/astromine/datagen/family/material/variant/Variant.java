@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.datagen.family.material.variant;
 
 import com.github.mixinors.astromine.common.util.WordUtils;
-import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
+import com.github.mixinors.astromine.datagen.family.material.family.MaterialFamily;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;

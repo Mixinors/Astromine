@@ -21,7 +21,7 @@ import net.minecraft.tag.TagKey;
 import java.util.List;
 import java.util.Map;
 
-public class DatagenLists {
+public class AMDatagenLists {
 	public static class BlockLists {
 		public static final List<Block> PRIMITIVE_MACHINES = ImmutableList.of(
 				AMBlocks.PRIMITIVE_TANK.get(),

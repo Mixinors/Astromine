@@ -57,6 +57,7 @@ public class AMEntityTypes {
 				if (world.random.nextInt(10) == 0) {
 					var spaceSlimeEntity = AMEntityTypes.SPACE_SLIME.get().create(world);
 					spaceSlimeEntity.setPos(entity.getX(), entity.getY(), entity.getZ());
+					
 					world.spawnEntity(spaceSlimeEntity);
 				}
 			}

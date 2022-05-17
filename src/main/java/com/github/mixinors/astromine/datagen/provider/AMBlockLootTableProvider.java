@@ -25,10 +25,10 @@
 package com.github.mixinors.astromine.datagen.provider;
 
 import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
-import com.github.mixinors.astromine.datagen.DatagenLists;
+import com.github.mixinors.astromine.datagen.AMDatagenLists;
 import com.github.mixinors.astromine.datagen.family.block.AMBlockFamilies;
-import com.github.mixinors.astromine.datagen.family.material.MaterialFamilies;
-import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
+import com.github.mixinors.astromine.datagen.family.material.AMMaterialFamilies;
+import com.github.mixinors.astromine.datagen.family.material.family.MaterialFamily;
 import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.google.common.collect.ImmutableList;
@@ -111,7 +111,7 @@ public class AMBlockLootTableProvider extends FabricBlockLootTableProvider {
 	
 	@Override
 	protected void generateBlockLootTables() {
-		MaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateLootTables).forEachOrdered((family) ->
+		AMMaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateLootTables).forEachOrdered((family) ->
 				family.getBlockVariants().forEach((variant, block) -> {
 					if (family.shouldGenerateLootTable(variant)) {
 						switch (variant) {
@@ -151,6 +151,6 @@ public class AMBlockLootTableProvider extends FabricBlockLootTableProvider {
 		
 		addDoorDrop(AMBlocks.AIRLOCK.get());
 		
-		DatagenLists.BlockLists.MACHINES.forEach((block) -> this.addDrop(block, machineDrops(block)));
+		AMDatagenLists.BlockLists.MACHINES.forEach((block) -> this.addDrop(block, machineDrops(block)));
 	}
 }

@@ -24,16 +24,15 @@
 
 package com.github.mixinors.astromine.common.registry.base;
 
-import com.google.common.collect.Maps;
-
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * A unidirectional registry, where all keys must be unique and values may be repeated.
  */
 public class UniRegistry<K, V> {
-	private final Map<K, V> entries = Maps.newHashMap();
+	private final Map<K, V> entries = new HashMap<>();
 	
 	/** Returns the {@link V} value associated with the given {@link K} key. */
 	public V get(K k) {

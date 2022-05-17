@@ -41,7 +41,6 @@ public class AMNetworkTypes {
 	public static final NetworkType ITEM = register("item_network", new ItemNetworkType());
 	
 	public static void init() {
-	
 	}
 	
 	public static <T extends NetworkType> T register(String name, T type) {

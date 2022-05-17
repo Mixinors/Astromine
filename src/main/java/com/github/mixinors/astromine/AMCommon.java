@@ -53,6 +53,7 @@ public class AMCommon implements ModInitializer {
 		if (name.indexOf(':') >= 0) {
 			return new Identifier(name);
 		}
+		
 		return new Identifier(MOD_ID, name);
 	}
 	
@@ -62,8 +63,7 @@ public class AMCommon implements ModInitializer {
 	
 	@Override
 	public void onInitialize() {
-		AMConfig.get(); // ensure config is registered
-		
+		AMConfig.init();
 		AMAttributes.init();
 		AMIdentifierFixes.init();
 		AMWorlds.init();
@@ -73,7 +73,6 @@ public class AMCommon implements ModInitializer {
 		AMScreenHandlers.init();
 		AMEntityTypes.init();
 		AMNetworkTypes.init();
-		AMPotions.init();
 		AMBiomeSources.init();
 		AMBiomes.init();
 		AMFluids.init();

@@ -81,7 +81,9 @@ public class AMBiomes {
 	
 	public static <T> RegistryKey<T> register(RegistryKey<Registry<T>> registry, Identifier identifier) {
 		var key = RegistryKey.of(registry, identifier);
+		
 		KEYS.add(key);
+		
 		return key;
 	}
 	

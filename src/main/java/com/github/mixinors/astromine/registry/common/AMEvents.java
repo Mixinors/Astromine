@@ -34,47 +34,6 @@ import net.minecraft.server.world.ServerWorld;
 
 public class AMEvents {
 	public static void init() {
-		// TODO: Rewrite Atmosphere stuff, incl. this.
-		
-		// BlockEvent.PLACE.register(( world, blockPos, blockState, entity) -> {
-		// ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(blockPos));
-//
-		// if (atmosphereComponent != null) {
-		// 	var centerPos = blockPos;
-		// 	var centerState = world.getBlockState(centerPos);
-		// 	var centerVolume = atmosphereComponent.get(centerPos);
-//
-		// 	var directions = Lists.newArrayList(Direction.values());
-//
-		// 	Collections.shuffle(directions);
-//
-		// 	for (var direction : directions) {
-		// 		var sidePos = blockPos.offset(direction);
-		// 		var sideState = world.getBlockState(sidePos);
-//
-		// 		var sideAtmosphereComponent = atmosphereComponent;
-//
-		// 		if (!atmosphereComponent.isInChunk(sidePos)) {
-		// 			sideAtmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(sidePos));
-		// 		}
-//
-		// 		var sideVolume = sideAtmosphereComponent.get(sidePos);
-//
-		// 		if (atmosphereComponent.isTraversableForDisplacement(centerState, centerPos, sideState, sidePos, centerVolume, sideVolume, direction)) {
-		// 			sideVolume.take(centerVolume);
-		// 			sideAtmosphereComponent.add(sidePos, sideVolume);
-//
-		// 			break;
-//
-		// 		}
-		// 	}
-//
-		// 	atmosphereComponent.remove(centerPos);
-		// }
-		
-		// return EventResult.pass();
-		// });
-		
 		TickEvent.SERVER_PRE.register((server) -> {
 			for (var playerEntity : server.getPlayerManager().getPlayerList()) {
 				if (playerEntity.currentScreenHandler instanceof ExtendedBlockEntityScreenHandler screenHandler) {

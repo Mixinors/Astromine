@@ -136,7 +136,6 @@ public class AMScreenHandlers {
 	}));
 	
 	public static void init() {
-	
 	}
 	
 	public static <T extends ScreenHandler> RegistrySupplier<ScreenHandlerType<T>> registerExtended(Identifier id, MenuRegistry.ExtendedMenuTypeFactory<T> factory) {

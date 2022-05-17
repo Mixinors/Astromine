@@ -26,6 +26,5 @@ package com.github.mixinors.astromine.registry.common;
 
 public class AMKeyBinds {
 	public static void init() {
-	
 	}
 }

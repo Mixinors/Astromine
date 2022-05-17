@@ -56,7 +56,6 @@ public class AMSoundEvents {
 	public static final RegistrySupplier<SoundEvent> INCINERATE = register("block.shredder.shred");
 	
 	public static void init() {
-	
 	}
 	
 	public static RegistrySupplier<SoundEvent> register(String id) {

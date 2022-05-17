@@ -102,6 +102,7 @@ public enum ItemVariant implements Variant<Item> {
 	public BiConsumer<ItemModelGenerator, Item> getModelRegistrar() {
 		return switch (this) {
 			case PICKAXE, AXE, SHOVEL, SWORD, HOE -> (itemModelGenerator, item) -> itemModelGenerator.register(item, Models.HANDHELD);
+			
 			default -> (itemModelGenerator, item) -> itemModelGenerator.register(item, Models.GENERATED);
 		};
 	}
@@ -125,6 +126,7 @@ public enum ItemVariant implements Variant<Item> {
 	public boolean hasTag() {
 		return switch (this) {
 			case MISC, BALL -> false;
+			
 			default -> true;
 		};
 	}
@@ -156,7 +158,7 @@ public enum ItemVariant implements Variant<Item> {
 	@Override
 	public float getMeltingTimeMultiplier() {
 		return switch (this) {
-			case INGOT, GEM, MISC, BALL -> 1F;
+			case INGOT, GEM, MISC, BALL -> 1.0F;
 			case DUST -> 0.8F;
 			case PLATE, GEAR -> 0.9F;
 			case NUGGET -> 0.1F;

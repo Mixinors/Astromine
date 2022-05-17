@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.datagen.family.material;
+package com.github.mixinors.astromine.datagen.family.material.family;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.fluid.base.ExtendedFluid;
@@ -32,7 +32,6 @@ import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant
 import com.github.mixinors.astromine.datagen.family.material.variant.Variant;
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
@@ -46,33 +45,49 @@ import java.util.*;
 
 public class MaterialFamily implements Comparable<MaterialFamily> {
 	public static final float DEFAULT_ORE_SMELTING_EXPERIENCE = 0.7F;
+	
 	public static final int DEFAULT_BASE_MELTING_TIME = 200;
 	public static final int DEFAULT_BASE_MELTING_ENERGY = 1600;
 	
-	final Map<ItemVariant, Item> itemVariants = Maps.newHashMap();
-	final Map<BlockVariant, Block> blockVariants = Maps.newHashMap();
-	final Set<AlloyInfo> alloyInfos = Sets.newHashSet();
+	final Map<ItemVariant, Item> itemVariants = new HashMap<>();
+	final Map<BlockVariant, Block> blockVariants = new HashMap<>();
+	
+	final Set<AlloyInfo> alloyInfos = new HashSet<>();
+	
 	private final Item baseItem;
+	
 	private final MaterialType type;
+	
 	private final String name;
+	
 	@Nullable
 	MaterialFamily smithingBase;
+	
 	boolean piglinLoved = false;
+	
 	boolean generateModels = true;
 	boolean generateRecipes = true;
 	boolean generateTags = true;
 	boolean generateHarvestTags = true;
 	boolean generateLootTables = true;
+	
 	float oreSmeltingExperience = DEFAULT_ORE_SMELTING_EXPERIENCE;
+	
 	@Nullable
 	String baseTagPathOverride;
+	
 	boolean validForBeacon = false;
+	
 	@Nullable
 	String alias;
+	
 	private boolean block2x2;
+	
 	private int miningLevel = 0;
+	
 	@Nullable
 	ExtendedFluid moltenFluid;
+	
 	int baseMeltingTime = DEFAULT_BASE_MELTING_TIME;
 	int baseMeltingEnergy = DEFAULT_BASE_MELTING_ENERGY;
 	

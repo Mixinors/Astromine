@@ -34,7 +34,12 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public abstract class ItemOutputMachineRecipeJsonFactory<T extends EnergyInputRecipe> extends EnergyInputMachineRecipeJsonFactory<T> {
+	private static final String ITEM_KEY = "item";
+	private static final String COUNT_KEY = "count";
+	private static final String OUTPUT_KEY = "output";
+	
 	protected final Item output;
+	
 	protected final int outputCount;
 	
 	protected ItemOutputMachineRecipeJsonFactory(ItemConvertible output, int outputCount, int processingTime, int energy, AbstractRecipeSerializer<T> serializer) {
@@ -56,6 +61,7 @@ public abstract class ItemOutputMachineRecipeJsonFactory<T extends EnergyInputRe
 	
 	public abstract static class ItemOutputMachineRecipeJsonProvider<T extends EnergyInputRecipe> extends EnergyInputMachineRecipeJsonProvider<T> {
 		private final Item output;
+		
 		private final int outputCount;
 		
 		public ItemOutputMachineRecipeJsonProvider(Identifier recipeId, Item output, int outputCount, int processingTime, int energy, RecipeSerializer<T> serializer) {
@@ -68,9 +74,12 @@ public abstract class ItemOutputMachineRecipeJsonFactory<T extends EnergyInputRe
 		@Override
 		public void serialize(JsonObject json) {
 			var outputJson = new JsonObject();
-			outputJson.addProperty("item", Registry.ITEM.getId(this.output).toString());
-			outputJson.addProperty("count", outputCount);
-			json.add("output", outputJson);
+			
+			outputJson.addProperty(ITEM_KEY, Registry.ITEM.getId(this.output).toString());
+			outputJson.addProperty(COUNT_KEY, outputCount);
+			
+			json.add(OUTPUT_KEY, outputJson);
+			
 			super.serialize(json);
 		}
 	}

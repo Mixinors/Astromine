@@ -67,6 +67,10 @@ public class AMConfig implements ConfigData {
 	@ConfigEntry.Gui.CollapsibleObject
 	public SecretConfigSection secret = new SecretConfigSection();
 	
+	public static void init() {
+		get();
+	}
+	
 	public static AMConfig get() {
 		if (INSTANCE == null) {
 			try {

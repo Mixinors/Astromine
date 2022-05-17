@@ -26,10 +26,10 @@ package com.github.mixinors.astromine.datagen.provider;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
-import com.github.mixinors.astromine.datagen.DatagenLists;
+import com.github.mixinors.astromine.datagen.AMDatagenLists;
 import com.github.mixinors.astromine.datagen.family.block.AMBlockFamilies;
-import com.github.mixinors.astromine.datagen.family.material.MaterialFamilies;
-import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
+import com.github.mixinors.astromine.datagen.family.material.AMMaterialFamilies;
+import com.github.mixinors.astromine.datagen.family.material.family.MaterialFamily;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
@@ -231,17 +231,17 @@ public class AMModelProvider extends FabricBlockStateDefinitionProvider {
 			blockStateModelGenerator.registerParentedItemModel(block, ModelIds.getBlockModelId(block));
 		});
 		
-		DatagenLists.FluidLists.FLUIDS.forEach((fluid) -> {
+		AMDatagenLists.FluidLists.FLUIDS.forEach((fluid) -> {
 			blockStateModelGenerator.registerStateWithModelReference(fluid.getBlock(), Blocks.WATER);
 			registerCauldron(blockStateModelGenerator, fluid.getCauldron());
 		});
 		
-		DatagenLists.BlockLists.MACHINES.forEach((block) -> {
+		AMDatagenLists.BlockLists.MACHINES.forEach((block) -> {
 			registerMachine(blockStateModelGenerator, block);
 			blockStateModelGenerator.registerParentedItemModel(block, ModelIds.getBlockModelId(block));
 		});
 		
-		MaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateModels).forEach((family) -> {
+		AMMaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateModels).forEach((family) -> {
 			family.getBlockVariants().forEach(((variant, block) -> {
 				if (family.shouldGenerateModel(variant)) {
 					variant.getModelRegistrar().accept(blockStateModelGenerator, block);
@@ -253,7 +253,7 @@ public class AMModelProvider extends FabricBlockStateDefinitionProvider {
 	
 	@Override
 	public void generateItemModels(ItemModelGenerator itemModelGenerator) {
-		MaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateModels).forEach((family) -> {
+		AMMaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateModels).forEach((family) -> {
 			family.getItemVariants().forEach(((variant, item) -> {
 				if (family.shouldGenerateModel(variant)) {
 					variant.getModelRegistrar().accept(itemModelGenerator, item);
@@ -261,7 +261,7 @@ public class AMModelProvider extends FabricBlockStateDefinitionProvider {
 			}));
 		});
 		
-		DatagenLists.FluidLists.FLUIDS.forEach((fluid) -> itemModelGenerator.register(fluid.getBucketItem(), Models.GENERATED));
+		AMDatagenLists.FluidLists.FLUIDS.forEach((fluid) -> itemModelGenerator.register(fluid.getBucketItem(), Models.GENERATED));
 		
 		GENERATED.forEach((item) -> itemModelGenerator.register(item, Models.GENERATED));
 		

@@ -104,6 +104,7 @@ public class AMOres {
 	private static Predicate<BiomeSelectionContext> overworldPredicate() {
 		return context -> switch (Biome.getCategory(context.getBiomeRegistryEntry())) {
 			case NETHER, THEEND, NONE -> false;
+			
 			default -> true;
 		};
 	}

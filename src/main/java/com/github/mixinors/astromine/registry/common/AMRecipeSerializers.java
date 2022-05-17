@@ -57,7 +57,6 @@ public class AMRecipeSerializers {
 	
 	
 	public static void init() {
-	
 	}
 	
 	private static <T extends Recipe<?>> RegistrySupplier<RecipeSerializer<T>> register(Identifier id, RecipeSerializer<T> serializer) {

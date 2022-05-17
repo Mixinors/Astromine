@@ -46,10 +46,12 @@ import java.util.function.Consumer;
 
 public abstract class MachineRecipeJsonFactory<T extends EnergyInputRecipe> implements CraftingRecipeJsonBuilder {
 	protected final int processingTime;
+	
 	protected final AbstractRecipeSerializer<T> serializer;
 	
 	protected MachineRecipeJsonFactory(int processingTime, AbstractRecipeSerializer<T> serializer) {
 		this.processingTime = processingTime;
+		
 		this.serializer = serializer;
 	}
 	
@@ -61,7 +63,9 @@ public abstract class MachineRecipeJsonFactory<T extends EnergyInputRecipe> impl
 	@Override
 	public void offerTo(Consumer<RecipeJsonProvider> exporter, String recipePath) {
 		var defaultId = getRecipeId();
+		
 		var givenId = new Identifier(recipePath);
+		
 		if (givenId.equals(defaultId)) {
 			throw new IllegalStateException("Recipe " + recipePath + " should remove its 'recipePath' argument as it is equal to default one");
 		} else {

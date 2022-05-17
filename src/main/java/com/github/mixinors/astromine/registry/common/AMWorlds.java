@@ -45,7 +45,6 @@ public class AMWorlds {
 	public static final RegistryKey<World> EARTH_ORBIT_WORLD = register(Registry.WORLD_KEY, EARTH_ORBIT_ID);
 	
 	public static void init() {
-	
 	}
 	
 	public static <T> RegistryKey<T> register(RegistryKey<Registry<T>> registry, Identifier identifier) {

@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.datagen;
 
 import com.github.mixinors.astromine.datagen.family.block.AMBlockFamilies;
-import com.github.mixinors.astromine.datagen.family.material.MaterialFamilies;
+import com.github.mixinors.astromine.datagen.family.material.AMMaterialFamilies;
 import com.github.mixinors.astromine.datagen.provider.AMBlockLootTableProvider;
 import com.github.mixinors.astromine.datagen.provider.AMEntityLootTableProvider;
 import com.github.mixinors.astromine.datagen.provider.AMModelProvider;
@@ -41,7 +41,7 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 	@Override
 	public void onInitializeDataGenerator(FabricDataGenerator dataGenerator) {
 		AMBlockFamilies.init();
-		MaterialFamilies.init();
+		AMMaterialFamilies.init();
 		
 		dataGenerator.addProvider(AMModelProvider::new);
 		dataGenerator.addProvider(AMRecipeProvider::new);

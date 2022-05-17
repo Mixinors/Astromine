@@ -26,11 +26,11 @@ package com.github.mixinors.astromine.datagen.provider.tag;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.datagen.AMDatagen;
-import com.github.mixinors.astromine.datagen.DatagenLists;
+import com.github.mixinors.astromine.datagen.AMDatagenLists;
 import com.github.mixinors.astromine.datagen.HarvestData;
 import com.github.mixinors.astromine.datagen.family.block.AMBlockFamilies;
-import com.github.mixinors.astromine.datagen.family.material.MaterialFamilies;
-import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
+import com.github.mixinors.astromine.datagen.family.material.AMMaterialFamilies;
+import com.github.mixinors.astromine.datagen.family.material.family.MaterialFamily;
 import com.github.mixinors.astromine.datagen.family.material.variant.BlockVariant;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
@@ -52,9 +52,10 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 	@Override
 	protected void generateTags() {
 		var beaconBaseTagBuilder = getOrCreateTagBuilder(net.minecraft.tag.BlockTags.BEACON_BASE_BLOCKS);
+		
 		var guardedByPiglinsTagBuilder = getOrCreateTagBuilder(net.minecraft.tag.BlockTags.GUARDED_BY_PIGLINS);
 		
-		MaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateTags).forEachOrdered(family -> {
+		AMMaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateTags).forEachOrdered(family -> {
 			AMDatagen.toTreeMap(family.getBlockTags()).forEach((variant, tag) -> {
 				getOrCreateTagBuilder(tag).add(family.getVariant(variant));
 				
@@ -83,14 +84,16 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 				}
 			});
 			
-			if (family.hasAnyBlockVariants(DatagenLists.BlockVariantLists.ORE_VARIANTS)) {
+			if (family.hasAnyBlockVariants(AMDatagenLists.BlockVariantLists.ORE_VARIANTS)) {
 				var oresTag = family.getBlockTag("ores");
 				var oresTagBuilder = getOrCreateTagBuilder(oresTag);
-				DatagenLists.BlockVariantLists.ORE_VARIANTS.forEach((variant) -> {
+				
+				AMDatagenLists.BlockVariantLists.ORE_VARIANTS.forEach((variant) -> {
 					if (family.hasVariant(variant)) {
 						oresTagBuilder.addTag(family.getTag(variant));
 					}
 				});
+				
 				if (family.hasAlias()) {
 					getOrCreateTagBuilder(family.getAliasBlockTag("ores")).addTag(oresTag);
 				}
@@ -106,24 +109,28 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 		});
 		
 		AMBlockFamilies.getFamilies().forEachOrdered(family -> family.getVariants().forEach((variant, block) -> {
-			if (DatagenLists.BlockTagLists.BLOCK_FAMILY_VARIANTS.containsKey(variant)) {
-				getOrCreateTagBuilder(DatagenLists.BlockTagLists.BLOCK_FAMILY_VARIANTS.get(variant)).add(block);
+			if (AMDatagenLists.BlockTagLists.BLOCK_FAMILY_VARIANTS.containsKey(variant)) {
+				getOrCreateTagBuilder(AMDatagenLists.BlockTagLists.BLOCK_FAMILY_VARIANTS.get(variant)).add(block);
 			}
 		}));
 		
 		var cauldronsTagBuilder = getOrCreateTagBuilder(net.minecraft.tag.BlockTags.CAULDRONS);
-		DatagenLists.FluidLists.FLUIDS.forEach((fluid) -> {
+		AMDatagenLists.FluidLists.FLUIDS.forEach((fluid) -> {
 			var fluidName = Registry.FLUID.getId(fluid.getStill()).getPath();
+			
 			var tagBuilder = getOrCreateTagBuilder(AMTagKeys.createCommonBlockTag(fluidName));
+			
 			var cauldronTag = AMTagKeys.createCommonBlockTag(fluidName + "_cauldrons");
 			var cauldronTagBuilder = getOrCreateTagBuilder(cauldronTag);
+			
 			tagBuilder.add(fluid.getBlock());
+			
 			cauldronTagBuilder.add(fluid.getCauldron());
 			cauldronsTagBuilder.addTag(cauldronTag);
 		});
 		
 		var oresTagBuilder = getOrCreateTagBuilder(ConventionalBlockTags.ORES);
-		DatagenLists.BlockVariantLists.ORE_VARIANTS.forEach((variant) -> {
+		AMDatagenLists.BlockVariantLists.ORE_VARIANTS.forEach((variant) -> {
 			if (variant.hasTag()) {
 				oresTagBuilder.addTag(variant.getTag());
 			}
@@ -245,12 +252,14 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 				.add(Blocks.MELON);
 		
 		var infiniburnTagBuilder = getOrCreateTagBuilder(net.minecraft.tag.BlockTags.INFINIBURN_OVERWORLD);
-		DatagenLists.BlockLists.INFINIBURN_BLOCKS.forEach(infiniburnTagBuilder::add);
-		DatagenLists.BlockTagLists.INFINIBURN_TAGS.forEach(infiniburnTagBuilder::addTag);
 		
-		DatagenLists.BlockFamilyLists.SPACE_STONE_FAMILIES.forEach((family) -> {
+		AMDatagenLists.BlockLists.INFINIBURN_BLOCKS.forEach(infiniburnTagBuilder::add);
+		AMDatagenLists.BlockTagLists.INFINIBURN_TAGS.forEach(infiniburnTagBuilder::addTag);
+		
+		AMDatagenLists.BlockFamilyLists.SPACE_STONE_FAMILIES.forEach((family) -> {
 			AMDatagen.toTreeMap(family.getVariants()).forEach((variant, block) -> {
 				infiniburnTagBuilder.add(block);
+				
 				addHarvestData(HarvestData.SPACE_STONE_HARVEST_DATA, block);
 			});
 			
@@ -259,31 +268,42 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 		
 		var primitiveMachinesTag = AMTagKeys.createBlockTag(AMCommon.id("primitive_machines"));
 		var primitiveMachinesTagBuilder = getOrCreateTagBuilder(primitiveMachinesTag);
-		DatagenLists.BlockLists.PRIMITIVE_MACHINES.forEach(primitiveMachinesTagBuilder::add);
+		
+		AMDatagenLists.BlockLists.PRIMITIVE_MACHINES.forEach(primitiveMachinesTagBuilder::add);
+		
 		addHarvestData(HarvestData.PRIMITIVE_MACHINE_HARVEST_DATA, primitiveMachinesTag);
 		
 		var basicMachinesTag = AMTagKeys.createBlockTag(AMCommon.id("basic_machines"));
 		var basicMachinesTagBuilder = getOrCreateTagBuilder(basicMachinesTag);
-		DatagenLists.BlockLists.BASIC_MACHINES.forEach(basicMachinesTagBuilder::add);
+		
+		AMDatagenLists.BlockLists.BASIC_MACHINES.forEach(basicMachinesTagBuilder::add);
+		
 		addHarvestData(HarvestData.BASIC_MACHINE_HARVEST_DATA, basicMachinesTag);
 		
 		var advancedMachinesTag = AMTagKeys.createBlockTag(AMCommon.id("advanced_machines"));
 		var advancedMachinesTagBuilder = getOrCreateTagBuilder(advancedMachinesTag);
-		DatagenLists.BlockLists.ADVANCED_MACHINES.forEach(advancedMachinesTagBuilder::add);
+		
+		AMDatagenLists.BlockLists.ADVANCED_MACHINES.forEach(advancedMachinesTagBuilder::add);
+		
 		addHarvestData(HarvestData.ADVANCED_MACHINE_HARVEST_DATA, advancedMachinesTag);
 		
 		var eliteMachinesTag = AMTagKeys.createBlockTag(AMCommon.id("elite_machines"));
 		var eliteMachinesTagBuilder = getOrCreateTagBuilder(eliteMachinesTag);
-		DatagenLists.BlockLists.ELITE_MACHINES.forEach(eliteMachinesTagBuilder::add);
+		
+		AMDatagenLists.BlockLists.ELITE_MACHINES.forEach(eliteMachinesTagBuilder::add);
+		
 		addHarvestData(HarvestData.ELITE_MACHINE_HARVEST_DATA, eliteMachinesTag);
 		
 		var creativeMachinesTag = AMTagKeys.createBlockTag(AMCommon.id("creative_machines"));
 		var creativeMachinesTagBuilder = getOrCreateTagBuilder(creativeMachinesTag);
-		DatagenLists.BlockLists.CREATIVE_MACHINES.forEach(creativeMachinesTagBuilder::add);
+		
+		AMDatagenLists.BlockLists.CREATIVE_MACHINES.forEach(creativeMachinesTagBuilder::add);
 		
 		var miscMachinesTag = AMTagKeys.createBlockTag(AMCommon.id("misc_machines"));
 		var miscMachinesTagBuilder = getOrCreateTagBuilder(miscMachinesTag);
-		DatagenLists.BlockLists.MISC_MACHINES.forEach(miscMachinesTagBuilder::add);
+		
+		AMDatagenLists.BlockLists.MISC_MACHINES.forEach(miscMachinesTagBuilder::add);
+		
 		addHarvestData(HarvestData.MISC_MACHINE_HARVEST_DATA, miscMachinesTag);
 		
 		getOrCreateTagBuilder(AMTagKeys.createBlockTag(AMCommon.id("machines")))
@@ -296,7 +316,9 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 		
 		var energyCablesTag = AMTagKeys.createBlockTag(AMCommon.id("energy_cables"));
 		var energyCablesTagBuilder = getOrCreateTagBuilder(energyCablesTag);
-		DatagenLists.BlockLists.ENERGY_CABLES.forEach(energyCablesTagBuilder::add);
+		
+		AMDatagenLists.BlockLists.ENERGY_CABLES.forEach(energyCablesTagBuilder::add);
+		
 		addHarvestData(HarvestData.PIPE_AND_CABLE_HARVEST_DATA, energyCablesTag);
 		addHarvestData(HarvestData.PIPE_AND_CABLE_HARVEST_DATA, AMBlocks.FLUID_PIPE.get());
 		
@@ -309,6 +331,7 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 	
 	public void addHarvestData(HarvestData harvestData, Block block) {
 		getOrCreateTagBuilder(harvestData.mineableTag()).add(block);
+		
 		if (harvestData.miningLevel() > 0) {
 			getOrCreateTagBuilder(harvestData.miningLevelTag()).add(block);
 		}
@@ -320,6 +343,7 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 	
 	public void addHarvestData(HarvestData harvestData, TagKey<Block> tag) {
 		getOrCreateTagBuilder(harvestData.mineableTag()).addTag(tag);
+		
 		if (harvestData.miningLevel() > 0) {
 			getOrCreateTagBuilder(harvestData.miningLevelTag()).addTag(tag);
 		}

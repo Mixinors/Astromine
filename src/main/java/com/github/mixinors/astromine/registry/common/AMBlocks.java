@@ -303,22 +303,22 @@ public class AMBlocks {
 	}
 	
 	public static AbstractBlock.Settings getPrimitiveSettings() {
-		return BlockProperties.of(Material.METAL, MapColor.ORANGE).requiresTool().strength(4, 6).sounds(BlockSoundGroup.METAL);
+		return AbstractBlock.Settings.of(Material.METAL, MapColor.ORANGE).requiresTool().strength(4, 6).sounds(BlockSoundGroup.METAL);
 	}
 	
 	public static AbstractBlock.Settings getBasicSettings() {
-		return BlockProperties.of(Material.METAL, MapColor.TERRACOTTA_ORANGE).requiresTool().strength(6, 6).sounds(BlockSoundGroup.METAL);
+		return AbstractBlock.Settings.of(Material.METAL, MapColor.TERRACOTTA_ORANGE).requiresTool().strength(6, 6).sounds(BlockSoundGroup.METAL);
 	}
 	
 	public static AbstractBlock.Settings getAdvancedSettings() {
-		return BlockProperties.of(Material.METAL, MapColor.GRAY).requiresTool().strength(8, 6).sounds(BlockSoundGroup.METAL);
+		return AbstractBlock.Settings.of(Material.METAL, MapColor.GRAY).requiresTool().strength(8, 6).sounds(BlockSoundGroup.METAL);
 	}
 	
 	public static AbstractBlock.Settings getEliteSettings() {
-		return BlockProperties.of(Material.METAL, MapColor.PINK).requiresTool().strength(8, 100).sounds(BlockSoundGroup.METAL);
+		return AbstractBlock.Settings.of(Material.METAL, MapColor.PINK).requiresTool().strength(8, 100).sounds(BlockSoundGroup.METAL);
 	}
 	
 	public static AbstractBlock.Settings getCreativeSettings() {
-		return BlockProperties.of(Material.METAL, MapColor.LIME).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.METAL);
+		return AbstractBlock.Settings.of(Material.METAL, MapColor.LIME).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.METAL);
 	}
 }

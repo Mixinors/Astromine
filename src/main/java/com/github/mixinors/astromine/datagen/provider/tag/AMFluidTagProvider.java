@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.datagen.provider.tag;
 
 import com.github.mixinors.astromine.common.fluid.base.ExtendedFluid;
-import com.github.mixinors.astromine.datagen.DatagenLists;
+import com.github.mixinors.astromine.datagen.AMDatagenLists;
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
@@ -46,17 +46,21 @@ public class AMFluidTagProvider extends FabricTagProvider.FluidTagProvider {
 	
 	@Override
 	protected void generateTags() {
-		DatagenLists.FluidLists.FLUIDS.forEach((fluid) -> {
+		AMDatagenLists.FluidLists.FLUIDS.forEach((fluid) -> {
 			var tag = AMTagKeys.createCommonFluidTag(Registry.FLUID.getId(fluid.getStill()).getPath());
+			
 			FLUID_TAGS.put(fluid, tag);
+			
 			var tagBuilder = getOrCreateTagBuilder(tag);
 			tagBuilder.add(fluid.getStill(), fluid.getFlowing());
 		});
 		
 		var industrialFluidsTagBuilder = getOrCreateTagBuilder(AMTagKeys.FluidTags.INDUSTRIAL_FLUIDS);
-		DatagenLists.FluidLists.INDUSTRIAL_FLUIDS.forEach((fluid) -> industrialFluidsTagBuilder.addTag(FLUID_TAGS.get(fluid)));
+		
+		AMDatagenLists.FluidLists.INDUSTRIAL_FLUIDS.forEach((fluid) -> industrialFluidsTagBuilder.addTag(FLUID_TAGS.get(fluid)));
 		
 		var moltenFluidsTagBuilder = getOrCreateTagBuilder(AMTagKeys.FluidTags.MOLTEN_FLUIDS);
-		DatagenLists.FluidLists.MOLTEN_FLUIDS.forEach((fluid) -> moltenFluidsTagBuilder.addTag(FLUID_TAGS.get(fluid)));
+		
+		AMDatagenLists.FluidLists.MOLTEN_FLUIDS.forEach((fluid) -> moltenFluidsTagBuilder.addTag(FLUID_TAGS.get(fluid)));
 	}
 }

@@ -34,14 +34,53 @@ import java.util.Comparator;
 import java.util.stream.Stream;
 
 public class AMBlockFamilies {
-	public static final BlockFamily ASTEROID_STONE = BlockFamilies.register(AMBlocks.ASTEROID_STONE.get()).slab(AMBlocks.ASTEROID_STONE_SLAB.get()).stairs(AMBlocks.ASTEROID_STONE_STAIRS.get()).wall(AMBlocks.ASTEROID_STONE_WALL.get()).polished(AMBlocks.POLISHED_ASTEROID_STONE.get()).build();
-	public static final BlockFamily SMOOTH_ASTEROID_STONE = BlockFamilies.register(AMBlocks.SMOOTH_ASTEROID_STONE.get()).slab(AMBlocks.SMOOTH_ASTEROID_STONE_SLAB.get()).stairs(AMBlocks.SMOOTH_ASTEROID_STONE_STAIRS.get()).wall(AMBlocks.SMOOTH_ASTEROID_STONE_WALL.get()).build();
-	public static final BlockFamily POLISHED_ASTEROID_STONE = BlockFamilies.register(AMBlocks.POLISHED_ASTEROID_STONE.get()).slab(AMBlocks.POLISHED_ASTEROID_STONE_SLAB.get()).stairs(AMBlocks.POLISHED_ASTEROID_STONE_STAIRS.get()).build();
-	public static final BlockFamily ASTEROID_STONE_BRICK = BlockFamilies.register(AMBlocks.ASTEROID_STONE_BRICKS.get()).slab(AMBlocks.ASTEROID_STONE_BRICK_SLAB.get()).stairs(AMBlocks.ASTEROID_STONE_BRICK_STAIRS.get()).wall(AMBlocks.ASTEROID_STONE_BRICK_WALL.get()).build();
-	public static final BlockFamily METEOR_STONE = BlockFamilies.register(AMBlocks.METEOR_STONE.get()).slab(AMBlocks.METEOR_STONE_SLAB.get()).stairs(AMBlocks.METEOR_STONE_STAIRS.get()).wall(AMBlocks.METEOR_STONE_WALL.get()).polished(AMBlocks.POLISHED_METEOR_STONE.get()).build();
-	public static final BlockFamily SMOOTH_METEOR_STONE = BlockFamilies.register(AMBlocks.SMOOTH_METEOR_STONE.get()).slab(AMBlocks.SMOOTH_METEOR_STONE_SLAB.get()).stairs(AMBlocks.SMOOTH_METEOR_STONE_STAIRS.get()).wall(AMBlocks.SMOOTH_METEOR_STONE_WALL.get()).build();
-	public static final BlockFamily POLISHED_METEOR_STONE = BlockFamilies.register(AMBlocks.POLISHED_METEOR_STONE.get()).slab(AMBlocks.POLISHED_METEOR_STONE_SLAB.get()).stairs(AMBlocks.POLISHED_METEOR_STONE_STAIRS.get()).build();
-	public static final BlockFamily METEOR_STONE_BRICK = BlockFamilies.register(AMBlocks.METEOR_STONE_BRICKS.get()).slab(AMBlocks.METEOR_STONE_BRICK_SLAB.get()).stairs(AMBlocks.METEOR_STONE_BRICK_STAIRS.get()).wall(AMBlocks.METEOR_STONE_BRICK_WALL.get()).build();
+	public static final BlockFamily ASTEROID_STONE = BlockFamilies.register(AMBlocks.ASTEROID_STONE.get())
+																  .slab(AMBlocks.ASTEROID_STONE_SLAB.get())
+																  .stairs(AMBlocks.ASTEROID_STONE_STAIRS.get())
+																  .wall(AMBlocks.ASTEROID_STONE_WALL.get())
+																  .polished(AMBlocks.POLISHED_ASTEROID_STONE.get())
+																  .build();
+	
+	public static final BlockFamily SMOOTH_ASTEROID_STONE = BlockFamilies.register(AMBlocks.SMOOTH_ASTEROID_STONE.get())
+																		 .slab(AMBlocks.SMOOTH_ASTEROID_STONE_SLAB.get())
+																		 .stairs(AMBlocks.SMOOTH_ASTEROID_STONE_STAIRS.get())
+																		 .wall(AMBlocks.SMOOTH_ASTEROID_STONE_WALL.get())
+																		 .build();
+	
+	public static final BlockFamily POLISHED_ASTEROID_STONE = BlockFamilies.register(AMBlocks.POLISHED_ASTEROID_STONE.get())
+																		   .slab(AMBlocks.POLISHED_ASTEROID_STONE_SLAB.get())
+																		   .stairs(AMBlocks.POLISHED_ASTEROID_STONE_STAIRS.get())
+																		   .build();
+	
+	public static final BlockFamily ASTEROID_STONE_BRICK = BlockFamilies.register(AMBlocks.ASTEROID_STONE_BRICKS.get())
+																		.slab(AMBlocks.ASTEROID_STONE_BRICK_SLAB.get())
+																		.stairs(AMBlocks.ASTEROID_STONE_BRICK_STAIRS.get())
+																		.wall(AMBlocks.ASTEROID_STONE_BRICK_WALL.get())
+																		.build();
+	
+	public static final BlockFamily METEOR_STONE = BlockFamilies.register(AMBlocks.METEOR_STONE.get())
+																.slab(AMBlocks.METEOR_STONE_SLAB.get())
+																.stairs(AMBlocks.METEOR_STONE_STAIRS.get())
+																.wall(AMBlocks.METEOR_STONE_WALL.get())
+																.polished(AMBlocks.POLISHED_METEOR_STONE.get())
+																.build();
+	
+	public static final BlockFamily SMOOTH_METEOR_STONE = BlockFamilies.register(AMBlocks.SMOOTH_METEOR_STONE.get())
+																	   .slab(AMBlocks.SMOOTH_METEOR_STONE_SLAB.get())
+																	   .stairs(AMBlocks.SMOOTH_METEOR_STONE_STAIRS.get())
+																	   .wall(AMBlocks.SMOOTH_METEOR_STONE_WALL.get())
+																	   .build();
+	
+	public static final BlockFamily POLISHED_METEOR_STONE = BlockFamilies.register(AMBlocks.POLISHED_METEOR_STONE.get())
+																		 .slab(AMBlocks.POLISHED_METEOR_STONE_SLAB.get())
+																		 .stairs(AMBlocks.POLISHED_METEOR_STONE_STAIRS.get())
+																		 .build();
+	
+	public static final BlockFamily METEOR_STONE_BRICK = BlockFamilies.register(AMBlocks.METEOR_STONE_BRICKS.get())
+																	  .slab(AMBlocks.METEOR_STONE_BRICK_SLAB.get())
+																	  .stairs(AMBlocks.METEOR_STONE_BRICK_STAIRS.get())
+																	  .wall(AMBlocks.METEOR_STONE_BRICK_WALL.get())
+																	  .build();
 	
 	public static void init() {
 	
@@ -52,6 +91,8 @@ public class AMBlockFamilies {
 	}
 	
 	public static Stream<BlockFamily> getFamilies() {
-		return BlockFamilies.getFamilies().filter(AMBlockFamilies::isAstromineFamily).sorted(Comparator.comparing(family -> Registry.BLOCK.getId(family.getBaseBlock()).toString()));
+		return BlockFamilies.getFamilies()
+							.filter(AMBlockFamilies::isAstromineFamily)
+							.sorted(Comparator.comparing(family -> Registry.BLOCK.getId(family.getBaseBlock()).toString()));
 	}
 }
