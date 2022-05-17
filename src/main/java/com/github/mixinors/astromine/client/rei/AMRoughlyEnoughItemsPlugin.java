@@ -220,7 +220,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 			
 			@Override
 			public <R extends Screen> boolean isHandingScreen(Class<R> screen) {
-				return BaseScreenHandler.class.isAssignableFrom(screen);
+				return BaseHandledScreen.class.isAssignableFrom(screen);
 			}
 		});
 	}
