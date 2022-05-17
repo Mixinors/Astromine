@@ -52,13 +52,13 @@ public class AMFeatures {
 	
 	public static final Feature<DefaultFeatureConfig> ASTEROID_ORES_FEATURE = registerFeature(ASTEROID_ORES_ID, new AsteroidOreFeature(DefaultFeatureConfig.CODEC));
 	public static final RegistryEntry<ConfiguredFeature<DefaultFeatureConfig, ?>> ASTEROID_ORES_CONFIGURED_FEATURE = registerConfiguredFeature(ASTEROID_ORES_ID, ASTEROID_ORES_FEATURE, DefaultFeatureConfig.INSTANCE);
-	public static final RegistryEntry<PlacedFeature> ASTEROID_ORES_PLACED_FEATURE = registerPlacedFeature(ASTEROID_ORES_ID, ASTEROID_ORES_CONFIGURED_FEATURE, RarityFilterPlacementModifier.of(25), SquarePlacementModifier.of(), BiomePlacementModifier.of());
+	public static final RegistryEntry<PlacedFeature> ASTEROID_ORES_PLACED_FEATURE = registerPlacedFeature(ASTEROID_ORES_ID, ASTEROID_ORES_CONFIGURED_FEATURE, RarityFilterPlacementModifier.of(20), SquarePlacementModifier.of(), BiomePlacementModifier.of());
 	
 	public static final Identifier OIL_WELL_ID = AMCommon.id("oil_well");
 	
 	public static final Feature<DefaultFeatureConfig> OIL_WELL_FEATURE = registerFeature(OIL_WELL_ID, new OilWellFeature(DefaultFeatureConfig.CODEC));
 	public static final RegistryEntry<ConfiguredFeature<DefaultFeatureConfig, ?>> OIL_WELL_CONFIGURED_FEATURE = registerConfiguredFeature(OIL_WELL_ID, OIL_WELL_FEATURE, DefaultFeatureConfig.INSTANCE);
-	public static final RegistryEntry<PlacedFeature> OIL_WELL_PLACED_FEATURE = registerPlacedFeature(OIL_WELL_ID, OIL_WELL_CONFIGURED_FEATURE, RarityFilterPlacementModifier.of(5), SquarePlacementModifier.of(), PlacedFeatures.WORLD_SURFACE_WG_HEIGHTMAP, BiomePlacementModifier.of());
+	public static final RegistryEntry<PlacedFeature> OIL_WELL_PLACED_FEATURE = registerPlacedFeature(OIL_WELL_ID, OIL_WELL_CONFIGURED_FEATURE, RarityFilterPlacementModifier.of(100), SquarePlacementModifier.of(), PlacedFeatures.WORLD_SURFACE_WG_HEIGHTMAP, BiomePlacementModifier.of());
 	
 	public static final Identifier METEOR_ID = AMCommon.id("meteor");
 	
