@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.network;
 
-import com.github.mixinors.astromine.common.network.type.NetworkType;
+import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.registry.common.AMNetworkTypes;
 
 public abstract class EnergyCableBlock extends CableBlock {

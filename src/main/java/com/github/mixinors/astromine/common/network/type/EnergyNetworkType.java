@@ -26,12 +26,14 @@ package com.github.mixinors.astromine.common.network.type;
 
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.network.Network;
-import com.github.mixinors.astromine.common.util.data.position.WorldPos;
+import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import it.unimi.dsi.fastutil.objects.Reference2LongMap;
 import it.unimi.dsi.fastutil.objects.Reference2LongOpenHashMap;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.api.EnergyStorage;
 import team.reborn.energy.api.EnergyStorageUtil;
@@ -40,10 +42,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 @SuppressWarnings("UnstableApiUsage")
-public abstract sealed class EnergyNetworkType implements NetworkType<EnergyStorage> permits EnergyNetworkType.Primitive, EnergyNetworkType.Basic, EnergyNetworkType.Advanced, EnergyNetworkType.Elite {
+public abstract class EnergyNetworkType extends NetworkType<EnergyStorage> {
 	@Override
-	public EnergyStorage find(WorldPos pos, @Nullable Direction direction) {
-		return EnergyStorage.SIDED.find(pos.getWorld(), pos.getBlockPos(), direction);
+	public EnergyStorage find(World world, BlockPos pos, @Nullable Direction direction) {
+		return EnergyStorage.SIDED.find(world, pos, direction);
 	}
 	
 	private void move(Reference2LongMap<EnergyStorage> extractableStorages, Reference2LongMap<EnergyStorage> insertableStorages) {
@@ -57,7 +59,7 @@ public abstract sealed class EnergyNetworkType implements NetworkType<EnergyStor
 				var extractableStorage = extractableEntry.getKey();
 				var extractedAmount = extractableEntry.getLongValue();
 				
-				var list = new ArrayList<EnergyPair>();
+				var pairs = new ArrayList<EnergyPair>();
 				
 				var offering = 0L;
 				var requesting = 0L;
@@ -74,13 +76,13 @@ public abstract sealed class EnergyNetworkType implements NetworkType<EnergyStor
 						continue;
 					}
 					
-					if (availableToExtract > 0) {
+					if (availableToExtract > 0L) {
 						try (var extractionTestTransaction = Transaction.openNested(transaction)) {
 							availableToExtract = extractableStorage.extract(availableToExtract, extractionTestTransaction);
 						}
 					}
 					
-					if (availableToInsert > 0) {
+					if (availableToInsert > 0L) {
 						try (var insertionTestTransaction = Transaction.openNested(transaction)) {
 							availableToInsert = insertableStorage.insert(availableToInsert, insertionTestTransaction);
 						}
@@ -88,19 +90,19 @@ public abstract sealed class EnergyNetworkType implements NetworkType<EnergyStor
 					
 					var availableToMove = Math.min(availableToExtract, availableToInsert);
 					
-					if (availableToMove > 0) {
+					if (availableToMove > 0L) {
 						offering = Math.max(offering, extractableStorage.getAmount());
 						
 						requesting += availableToMove;
 						
-						list.add(new EnergyPair(availableToMove, insertableStorage));
+						pairs.add(new EnergyPair(availableToMove, insertableStorage));
 					}
 				}
 				
-				list.sort(Comparator.comparingLong(EnergyPair::maxAmount));
+				pairs.sort(Comparator.comparingLong(EnergyPair::maxAmount));
 				
-				for (var pair : list) {
-					var move = (long) Math.ceil(pair.maxAmount * MathHelper.clamp(requesting <= 0 ? 0.0 : (double) offering / requesting, 0.0, 1.0));
+				for (var pair : pairs) {
+					var move = (long) Math.ceil(pair.maxAmount * MathHelper.clamp(requesting <= 0.0D ? 0.0D : (double) offering / Math.min(1.0D, requesting), 0.0D, 1.0D));
 					
 					var moved = EnergyStorageUtil.move(extractableStorage, pair.their, move, transaction);
 					
@@ -125,49 +127,34 @@ public abstract sealed class EnergyNetworkType implements NetworkType<EnergyStor
 	}
 	
 	@Override
-	public void tick(Network instance) {
-		var world = instance.getWorld();
+	public void tick(Network<EnergyStorage> network) {
+		var world = network.getWorld();
 		
 		var extractableStorages = new Reference2LongOpenHashMap<EnergyStorage>();
 		var bufferStorages = new Reference2LongOpenHashMap<EnergyStorage>();
 		var insertableStorages = new Reference2LongOpenHashMap<EnergyStorage>();
+
+		var toRemove = new ArrayList<Network.Member>();
 		
-		// First, we extract from extractableStorages into insertableStorages.
-		// Then, we extract from extractableStorages into bufferStorages.
-		// Then, we extract from bufferStorages into insertableStorages.
-		
-		// We must keep track of how much has been extracted
-		// from extractableStorages and bufferStorages.
-		
-		// We must keep track of how much has been inserted
-		// into insertableStorages.
-		
-		// We must also remove inaccessible members.
-		var membersToRemove = new ArrayList<Network.Member>();
-		
-		for (var memberNode : instance.members) {
-			var member = (Network.Member) memberNode;
-			
-			var storage = find(new WorldPos(world, member.getBlockPos()), member.getDirection());
+		for (var member : network.getMembers()) {
+			var storage = find(world, member.blockPos(), member.direction());
 			
 			if (storage == null) {
-				membersToRemove.add(member);
+				toRemove.add(member);
 				
-				world.getBlockState(member.getBlockPos()).neighborUpdate(world, member.getBlockPos(), world.getBlockState(member.getBlockPos()).getBlock(), member.getBlockPos(), false);
-				
-				continue;
-			}
-			
-			if (storage.supportsInsertion() && storage.supportsExtraction()) {
-				bufferStorages.put(storage, 0L);
-			} else if (storage.supportsInsertion()) {
-				insertableStorages.put(storage, 0L);
-			} else if (storage.supportsExtraction()) {
-				extractableStorages.put(storage, 0L);
+				world.getBlockState(member.blockPos()).neighborUpdate(world, member.blockPos(), world.getBlockState(member.blockPos()).getBlock(), member.blockPos(), false);
+			} else {
+				if (storage.supportsInsertion() && storage.supportsExtraction()) {
+					bufferStorages.put(storage, 0L);
+				} else if (storage.supportsInsertion()) {
+					insertableStorages.put(storage, 0L);
+				} else if (storage.supportsExtraction()) {
+					extractableStorages.put(storage, 0L);
+				}
 			}
 		}
 		
-		membersToRemove.forEach(instance::removeMember);
+		network.getMembers().removeAll(toRemove);
 		
 		move(extractableStorages, insertableStorages);
 		move(extractableStorages, bufferStorages);
@@ -185,6 +172,11 @@ public abstract sealed class EnergyNetworkType implements NetworkType<EnergyStor
 	
 	@Override
 	public boolean hasSiding() {
+		return false;
+	}
+	
+	@Override
+	public boolean hasFiltering() {
 		return false;
 	}
 	

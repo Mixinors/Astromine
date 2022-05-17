@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.entity.ai.superspaceslime;
 
-import com.github.mixinors.astromine.common.entity.SpaceSlimeEntity;
+import com.github.mixinors.astromine.common.entity.slime.SpaceSlimeEntity;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.Vec3d;
@@ -32,51 +32,51 @@ import net.minecraft.util.math.Vec3d;
 import java.util.EnumSet;
 
 public class SpaceSlimeJumpHoverGoal extends Goal {
-	
 	private final SpaceSlimeEntity slime;
+	
 	private int ticksLeft;
 	
 	public SpaceSlimeJumpHoverGoal(SpaceSlimeEntity slime) {
 		this.slime = slime;
+		
 		this.setControls(EnumSet.of(Control.JUMP, Control.LOOK, Control.MOVE));
 	}
 	
 	@Override
 	public boolean canStart() {
-		// todo: ensure slime has space
-		return this.slime.getFloatingCooldown() <= 0 && this.slime.world.random.nextInt(10) == 0;
+		// TODO: Ensure Slime has space to float in.
+		return slime.getFloatingCooldown() <= 0 && slime.world.random.nextInt(10) == 0;
 	}
 	
 	@Override
 	public boolean shouldContinue() {
-		return --this.ticksLeft > 0 && !this.slime.isOnGround() && this.slime.world.getBlockState(this.slime.getBlockPos().down()).isAir();
+		return --ticksLeft > 0 && !slime.isOnGround() && slime.world.getBlockState(slime.getBlockPos().down()).isAir();
 	}
 	
 	@Override
 	public void start() {
-		this.slime.setFloating(true);
+		slime.setFloating(true);
 		
-		this.ticksLeft = 20 * 10;
+		ticksLeft = 20 * 10;
 		
 		super.start();
 	}
 	
 	@Override
 	public void stop() {
-		this.slime.setFloating(false);
-		this.slime.setFloatingCooldown(500);
-		this.slime.setFloatingProgress(0);
+		slime.setFloating(false);
+		slime.setFloatingCooldown(500);
+		slime.setFloatingProgress(0);
 		
 		super.stop();
 	}
 	
 	@Override
 	public void tick() {
-		// wait till slime is on ground
-		if (this.slime.isOnGround()) {
-			this.slime.move(MovementType.SELF, new Vec3d(0, 0.1, 0));
+		if (slime.isOnGround()) {
+			slime.move(MovementType.SELF, new Vec3d(0.0D, 0.1D, 0.0D));
 		}
 		
-		this.slime.setFloatingProgress(this.slime.getFloatingProgress() + 1);
+		this.slime.setFloatingProgress(slime.getFloatingProgress() + 1);
 	}
 }

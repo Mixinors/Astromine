@@ -25,13 +25,13 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.common.config.AMConfig;
-import com.github.mixinors.astromine.common.entity.placer.SpaceEntityPlacer;
+import com.github.mixinors.astromine.common.entity.placer.EarthOrbitEntityPlacer;
 import com.github.mixinors.astromine.common.registry.DimensionLayerRegistry;
 import net.minecraft.world.World;
 
 public class AMDimensionLayers {
 	public static void init() {
-		DimensionLayerRegistry.INSTANCE.register(DimensionLayerRegistry.Type.BOTTOM, AMWorlds.EARTH_ORBIT_WORLD, AMConfig.get().world.layers.overworld.travelY, World.OVERWORLD, SpaceEntityPlacer.TO_PLANET);
-		DimensionLayerRegistry.INSTANCE.register(DimensionLayerRegistry.Type.TOP, World.OVERWORLD, AMConfig.get().world.layers.space.travelY, AMWorlds.EARTH_ORBIT_WORLD, SpaceEntityPlacer.TO_SPACE);
+		DimensionLayerRegistry.INSTANCE.register(DimensionLayerRegistry.Type.BOTTOM, AMWorlds.EARTH_ORBIT_WORLD, AMConfig.get().world.layers.overworld.travelY, World.OVERWORLD, EarthOrbitEntityPlacer.TO_PLANET);
+		DimensionLayerRegistry.INSTANCE.register(DimensionLayerRegistry.Type.TOP, World.OVERWORLD, AMConfig.get().world.layers.earthOrbit.travelY, AMWorlds.EARTH_ORBIT_WORLD, EarthOrbitEntityPlacer.TO_EARTH_ORBIT);
 	}
 }

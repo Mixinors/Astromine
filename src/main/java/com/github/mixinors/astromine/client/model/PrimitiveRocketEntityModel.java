@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.client.model;
 
 import com.github.mixinors.astromine.client.render.entity.PrimitiveRocketEntityRenderer;
-import com.github.mixinors.astromine.common.entity.PrimitiveRocketEntity;
+import com.github.mixinors.astromine.common.entity.rocket.PrimitiveRocketEntity;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.model.SinglePartEntityModel;

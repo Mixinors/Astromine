@@ -32,9 +32,6 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-/**
- * A {@link HorizontalFacingBlockWithEntity} with machine tiers.
- */
 public abstract class HorizontalFacingTieredBlockWithEntity extends HorizontalFacingBlockWithEntity implements TieredBlock {
 	public HorizontalFacingTieredBlockWithEntity(Settings settings) {
 		super(settings);

@@ -79,7 +79,7 @@ public class AMBlockLootTableProvider extends FabricBlockLootTableProvider {
 			var copyNbtBuilder = CopyNbtLootFunction.builder(ContextLootNbtProvider.BLOCK_ENTITY);
 			var savedData = machine.getSavedDataForDroppedItem();
 			if (savedData.redstoneControl()) {
-				copyNbtBuilder = copyNbtBuilder.withOperation("RedstoneControl", "BlockEntityTag.RedstoneControl");
+				copyNbtBuilder = copyNbtBuilder.withOperation("RedstoneType", "BlockEntityTag.RedstoneControl");
 			}
 			if (savedData.energyStorage()) {
 				copyNbtBuilder = copyNbtBuilder.withOperation("EnergyStorage", "BlockEntityTag.EnergyStorage");

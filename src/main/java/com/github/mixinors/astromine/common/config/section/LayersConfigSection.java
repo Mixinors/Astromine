@@ -33,7 +33,7 @@ public class LayersConfigSection {
 	@ConfigEntry.Gui.CollapsibleObject
 	public LayerConfig overworld = new LayerConfig(-58, 992);
 	
-	@Comment("Settings for the Space layer")
+	@Comment("Settings for the Earth Orbit layer")
 	@ConfigEntry.Gui.CollapsibleObject
-	public LayerConfig space = new LayerConfig(1024, 32);
+	public LayerConfig earthOrbit = new LayerConfig(1024, 32);
 }

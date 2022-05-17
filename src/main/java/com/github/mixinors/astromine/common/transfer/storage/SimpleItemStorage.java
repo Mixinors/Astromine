@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.transfer.storage;
 
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
+import com.github.mixinors.astromine.common.util.DirectionUtils;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
@@ -35,7 +36,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.math.Direction;
 
 import java.util.*;
 import java.util.function.BiPredicate;
@@ -502,7 +502,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 		
 		var wildProxySidings = new StorageSiding[6];
 		
-		for (var direction : Direction.values()) {
+		for (var direction : DirectionUtils.VALUES) {
 			wildProxySidings[direction.ordinal()] = StorageSiding.INSERT_EXTRACT;
 		}
 		

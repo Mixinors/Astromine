@@ -24,53 +24,60 @@
 
 package com.github.mixinors.astromine.common.entity.ai.superspaceslime;
 
-import com.github.mixinors.astromine.common.entity.SuperSpaceSlimeEntity;
+import com.github.mixinors.astromine.common.entity.slime.SuperSpaceSlimeEntity;
 import net.minecraft.entity.ai.control.MoveControl;
 import net.minecraft.entity.attribute.EntityAttributes;
 
 public class SuperSpaceSlimeMoveControl extends MoveControl {
-	
 	private final SuperSpaceSlimeEntity slime;
+	
 	private float targetYaw;
+	
 	private int ticksUntilJump;
+	
 	private boolean jumpOften;
 	
 	public SuperSpaceSlimeMoveControl(SuperSpaceSlimeEntity slime) {
 		super(slime);
 		
 		this.slime = slime;
-		this.targetYaw = 180.0F * slime.getYaw() / 3.1415927F;
+		
+		this.targetYaw = 180.0F * slime.getYaw() / (float) Math.PI;
 	}
 	
 	@Override
 	public void tick() {
-		this.entity.setYaw(this.wrapDegrees(this.entity.getYaw(), this.targetYaw, 90.0F));
-		this.entity.headYaw = this.entity.getYaw();
-		this.entity.bodyYaw = this.entity.getYaw();
+		entity.setYaw(wrapDegrees(entity.getYaw(), targetYaw, 90.0F));
 		
-		if (this.state != MoveControl.State.MOVE_TO) {
-			this.entity.setForwardSpeed(0.0F);
+		entity.headYaw = entity.getYaw();
+		entity.bodyYaw = entity.getYaw();
+		
+		if (state != MoveControl.State.MOVE_TO) {
+			entity.setForwardSpeed(0.0F);
 		} else {
-			this.state = MoveControl.State.WAIT;
+			state = MoveControl.State.WAIT;
 			
-			if (this.entity.isOnGround()) {
-				this.entity.setMovementSpeed((float) (this.speed * this.entity.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED)));
-				if (this.ticksUntilJump-- <= 0) {
-					this.ticksUntilJump = this.slime.getTicksUntilNextJump();
+			if (entity.isOnGround()) {
+				entity.setMovementSpeed((float) (speed * entity.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED)));
+				
+				if (ticksUntilJump-- <= 0) {
+					ticksUntilJump = slime.getTicksUntilNextJump();
 					
-					if (this.jumpOften) {
-						this.ticksUntilJump /= 3;
+					if (jumpOften) {
+						ticksUntilJump /= 3;
 					}
 					
-					this.slime.getJumpControl().setActive();
-					this.slime.playSound(this.slime.getJumpSound(), this.slime.getSoundVolume(), this.slime.getJumpSoundPitch());
+					slime.getJumpControl().setActive();
+					
+					slime.playSound(slime.getJumpSound(), slime.getSoundVolume(), slime.getJumpSoundPitch());
 				} else {
-					this.slime.sidewaysSpeed = 0.0F;
-					this.slime.forwardSpeed = 0.0F;
-					this.entity.setMovementSpeed(0.0F);
+					slime.sidewaysSpeed = 0.0F;
+					slime.forwardSpeed = 0.0F;
+					
+					entity.setMovementSpeed(0.0F);
 				}
 			} else {
-				this.entity.setMovementSpeed((float) (this.speed * this.entity.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED)));
+				entity.setMovementSpeed((float) (speed * entity.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED)));
 			}
 		}
 	}

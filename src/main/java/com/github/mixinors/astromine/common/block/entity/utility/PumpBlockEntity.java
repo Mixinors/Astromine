@@ -29,6 +29,7 @@ import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.config.entry.utility.FluidStorageUtilityConfig;
 import com.github.mixinors.astromine.common.provider.config.FluidStorageUtilityConfigProvider;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
+import com.github.mixinors.astromine.common.util.DirectionUtils;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
@@ -42,7 +43,6 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.NotNull;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
@@ -165,8 +165,8 @@ public class PumpBlockEntity extends ExtendedBlockEntity implements FluidStorage
 									}
 									
 									if (!posToPump.contains(checkPos) && !posToCheck.contains(checkPos) && !checkFluidState.isEmpty() && checkFluidState.equals(mainCheckFluidState)) {
-										for (var dir : Direction.values()) {
-											posToCheck.add(checkPos.offset(dir));
+										for (var directions : DirectionUtils.VALUES) {
+											posToCheck.add(checkPos.offset(directions));
 										}
 										
 										posToPump.add(checkPos);

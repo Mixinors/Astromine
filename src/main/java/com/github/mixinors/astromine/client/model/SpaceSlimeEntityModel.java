@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.client.model;
 
-import com.github.mixinors.astromine.common.entity.SpaceSlimeEntity;
+import com.github.mixinors.astromine.common.entity.slime.SpaceSlimeEntity;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtils;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
 import net.minecraft.client.model.ModelPart;

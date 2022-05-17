@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.registry;
 
-import com.github.mixinors.astromine.common.network.type.NetworkType;
+import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.registry.base.BiRegistry;
 import net.minecraft.util.Identifier;
 

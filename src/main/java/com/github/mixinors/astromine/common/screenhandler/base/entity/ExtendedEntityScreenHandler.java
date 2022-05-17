@@ -40,8 +40,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.function.Supplier;
 
 public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
@@ -125,7 +125,7 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 		
 		add(tabs);
 		
-		tab = (TabWidget.TabWidgetCollection) tabs.addTab(symbol, () -> Collections.singletonList(entity.getDisplayName()));
+		tab = (TabWidget.TabWidgetCollection) tabs.addTab(symbol, () -> List.of(entity.getDisplayName()));
 		tab.setPosition(new Position(tabs, 0.0F, PAD_25 + PAD_7));
 		tab.setSize(new Size(TABS_WIDTH, TABS_HEIGHT));
 		

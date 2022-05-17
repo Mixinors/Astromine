@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.datagen.family.material.variant;
 
-import com.github.mixinors.astromine.common.fluid.ExtraFluidConstants;
 import com.github.mixinors.astromine.common.util.WordUtils;
+import com.github.mixinors.astromine.common.util.constant.fluid.ExtraFluidConstants;
 import com.github.mixinors.astromine.datagen.HarvestData;
 import com.github.mixinors.astromine.datagen.family.material.MaterialFamily;
 import com.github.mixinors.astromine.datagen.provider.AMModelProvider;

@@ -24,13 +24,13 @@
 
 package com.github.mixinors.astromine.common.config.entry.tiered;
 
-import com.github.mixinors.astromine.common.config.DefaultConfigValues;
+import com.github.mixinors.astromine.common.util.constant.config.ConfigConstants;
 import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 
 public class CapacitorConfig extends SimpleMachineConfig {
 	@Override
 	public double getDefaultBaseSpeed() {
-		return DefaultConfigValues.CAPACITOR_BASE_SPEED;
+		return ConfigConstants.CAPACITOR_BASE_SPEED;
 	}
 	
 	@Override

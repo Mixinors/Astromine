@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.client.render.entity;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.model.PrimitiveRocketEntityModel;
-import com.github.mixinors.astromine.common.entity.PrimitiveRocketEntity;
+import com.github.mixinors.astromine.common.entity.rocket.PrimitiveRocketEntity;
 import com.github.mixinors.astromine.registry.client.AMEntityModelLayers;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
 import net.minecraft.client.render.OverlayTexture;

@@ -26,8 +26,8 @@ package com.github.mixinors.astromine.common.block.machine;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
 import com.github.mixinors.astromine.common.block.entity.machine.RefineryBlockEntity;
+import com.github.mixinors.astromine.common.comparator.ComparatorMode;
 import com.github.mixinors.astromine.common.screenhandler.machine.RefineryScreenHandler;
-import com.github.mixinors.astromine.common.util.data.redstone.ComparatorMode;
 import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import net.minecraft.block.Block;

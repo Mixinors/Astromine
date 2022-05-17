@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.registry;
 
-import com.github.mixinors.astromine.common.util.data.Range;
+import com.github.mixinors.astromine.common.util.data.range.Range;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import net.minecraft.block.Block;
@@ -46,12 +46,12 @@ public class AsteroidOreRegistry {
 	
 	public void register(Range<Integer> weightRange, Range<Integer> sizeRange, Block block) {
 		if (weightRange.minimum() > weightRange.maximum()) {
-			weightRange = Range.of(weightRange.maximum(), weightRange.minimum());
+			weightRange = new Range(weightRange.maximum(), weightRange.minimum());
 		} else if (weightRange.minimum().equals(weightRange.maximum())) {
 			weightRange = null;
 		}
 		if (sizeRange.minimum() > sizeRange.maximum()) {
-			sizeRange = Range.of(sizeRange.maximum(), sizeRange.minimum());
+			sizeRange = new Range(sizeRange.maximum(), sizeRange.minimum());
 		} else if (sizeRange.minimum().equals(sizeRange.maximum())) {
 			sizeRange = null;
 		}

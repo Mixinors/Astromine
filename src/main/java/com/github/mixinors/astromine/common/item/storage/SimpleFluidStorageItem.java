@@ -49,7 +49,7 @@ public class SimpleFluidStorageItem extends Item implements FluidStorageItem {
 	
 	@Override
 	public int getItemBarStep(ItemStack stack) {
-		if (getFluidCapacity() == 0) {
+		if (getFluidCapacity() == 0L) {
 			return 0;
 		}
 		
@@ -69,7 +69,7 @@ public class SimpleFluidStorageItem extends Item implements FluidStorageItem {
 		
 		totalCapacity = totalCapacity == 0L ? 1L : totalCapacity;
 		
-		return (int) (13 * ((float) totalAmount / (float) totalCapacity));
+		return (int) (13.0F * ((float) totalAmount / (float) totalCapacity));
 	}
 	
 	@Override

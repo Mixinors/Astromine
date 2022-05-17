@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.common.callback.ServerChunkManagerCallback;
-import com.github.mixinors.astromine.common.component.world.WorldNetworkComponent;
+import com.github.mixinors.astromine.common.component.world.NetworkComponent;
 import com.github.mixinors.astromine.common.screenhandler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.screenhandler.base.entity.ExtendedEntityScreenHandler;
 import com.github.mixinors.astromine.common.world.generation.space.EarthOrbitChunkGenerator;
@@ -36,11 +36,11 @@ public class AMEvents {
 	public static void init() {
 		// TODO: Rewrite Atmosphere stuff, incl. this.
 		
-		// BlockEvent.PLACE.register(( world, pos, blockState, entity) -> {
-		// ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(pos));
+		// BlockEvent.PLACE.register(( world, blockPos, blockState, entity) -> {
+		// ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(blockPos));
 //
 		// if (atmosphereComponent != null) {
-		// 	var centerPos = pos;
+		// 	var centerPos = blockPos;
 		// 	var centerState = world.getBlockState(centerPos);
 		// 	var centerVolume = atmosphereComponent.get(centerPos);
 //
@@ -49,7 +49,7 @@ public class AMEvents {
 		// 	Collections.shuffle(directions);
 //
 		// 	for (var direction : directions) {
-		// 		var sidePos = pos.offset(direction);
+		// 		var sidePos = blockPos.offset(direction);
 		// 		var sideState = world.getBlockState(sidePos);
 //
 		// 		var sideAtmosphereComponent = atmosphereComponent;
@@ -93,7 +93,7 @@ public class AMEvents {
 		});
 		
 		TickEvent.SERVER_LEVEL_PRE.register((world -> {
-			var component = WorldNetworkComponent.get(world);
+			var component = NetworkComponent.get(world);
 			
 			if (component != null) {
 				component.tick();

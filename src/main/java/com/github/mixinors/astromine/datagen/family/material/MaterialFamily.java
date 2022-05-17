@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.datagen.family.material;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.fluid.SimpleFluid;
+import com.github.mixinors.astromine.common.fluid.base.ExtendedFluid;
 import com.github.mixinors.astromine.datagen.HarvestData;
 import com.github.mixinors.astromine.datagen.family.material.variant.BlockVariant;
 import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant;
@@ -72,7 +72,7 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 	private boolean block2x2;
 	private int miningLevel = 0;
 	@Nullable
-	SimpleFluid moltenFluid;
+	ExtendedFluid moltenFluid;
 	int baseMeltingTime = DEFAULT_BASE_MELTING_TIME;
 	int baseMeltingEnergy = DEFAULT_BASE_MELTING_ENERGY;
 	
@@ -385,7 +385,7 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 		return variant.getHarvestData(this);
 	}
 	
-	public Optional<SimpleFluid> getMoltenFluid() {
+	public Optional<ExtendedFluid> getMoltenFluid() {
 		return Optional.ofNullable(moltenFluid);
 	}
 	
@@ -535,19 +535,19 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 			return this;
 		}
 		
-		public MaterialFamily.Builder moltenFluid(SimpleFluid moltenFluid) {
+		public MaterialFamily.Builder moltenFluid(ExtendedFluid moltenFluid) {
 			this.family.moltenFluid = moltenFluid;
 			return this;
 		}
 		
-		public MaterialFamily.Builder moltenFluid(SimpleFluid moltenFluid, float meltingMultiplier) {
+		public MaterialFamily.Builder moltenFluid(ExtendedFluid moltenFluid, float meltingMultiplier) {
 			this.moltenFluid(moltenFluid);
 			this.family.baseMeltingTime = (int) (DEFAULT_BASE_MELTING_TIME * meltingMultiplier);
 			this.family.baseMeltingEnergy = (int) (DEFAULT_BASE_MELTING_ENERGY * meltingMultiplier);
 			return this;
 		}
 		
-		public MaterialFamily.Builder moltenFluid(SimpleFluid moltenFluid, int baseMeltingTime, int baseMeltingEnergy) {
+		public MaterialFamily.Builder moltenFluid(ExtendedFluid moltenFluid, int baseMeltingTime, int baseMeltingEnergy) {
 			this.moltenFluid(moltenFluid);
 			this.family.baseMeltingTime = baseMeltingTime;
 			this.family.baseMeltingEnergy = baseMeltingEnergy;

@@ -27,6 +27,7 @@ public class EntityEquipmentStorage extends CombinedStorage<ItemVariant, SingleS
 	private final DroppedStacks droppedStacks;
 	
 	final MobEntity mobEntity;
+	
 	/**
 	 * This {@code backingList} is the real list of wrappers. The {@code parts} in the superclass is the public-facing unmodifiable sublist with exactly the right amount of slots.
 	 */

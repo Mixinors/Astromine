@@ -28,7 +28,7 @@ import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.network.type.EnergyNetworkType;
 import com.github.mixinors.astromine.common.network.type.FluidNetworkType;
 import com.github.mixinors.astromine.common.network.type.ItemNetworkType;
-import com.github.mixinors.astromine.common.network.type.NetworkType;
+import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.registry.NetworkTypeRegistry;
 
 public class AMNetworkTypes {

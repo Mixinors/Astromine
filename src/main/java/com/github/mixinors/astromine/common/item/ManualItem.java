@@ -34,16 +34,11 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import vazkii.patchouli.api.PatchouliAPI;
 
-/**
- * Our Patchouli book.
- */
 public class ManualItem extends Item {
-	/** Instantiates a {@link ManualItem}. */
 	public ManualItem(Settings settings) {
 		super(settings);
 	}
 	
-	/** Override behavior to open our book interface. */
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		if (!world.isClient && user instanceof ServerPlayerEntity) {

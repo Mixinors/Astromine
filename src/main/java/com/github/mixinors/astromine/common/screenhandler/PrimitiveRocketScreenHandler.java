@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.screenhandler;
 
-import com.github.mixinors.astromine.common.entity.base.RocketEntity;
+import com.github.mixinors.astromine.common.entity.rocket.RocketEntity;
 import com.github.mixinors.astromine.common.screenhandler.base.entity.ExtendedEntityScreenHandler;
 import com.github.mixinors.astromine.common.slot.ExtractionSlot;
 import com.github.mixinors.astromine.common.slot.FilterSlot;

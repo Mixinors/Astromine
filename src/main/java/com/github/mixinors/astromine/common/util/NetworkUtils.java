@@ -25,49 +25,46 @@
 package com.github.mixinors.astromine.common.util;
 
 import com.github.mixinors.astromine.common.block.entity.cable.CableBlockEntity;
-import com.github.mixinors.astromine.common.component.world.WorldNetworkComponent;
+import com.github.mixinors.astromine.common.component.world.NetworkComponent;
 import com.github.mixinors.astromine.common.network.Network;
-import com.github.mixinors.astromine.common.network.type.NetworkType;
+import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
-import com.github.mixinors.astromine.common.util.data.position.WorldPos;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
 
 import java.util.ArrayDeque;
 
 public class NetworkUtils {
-	public static void trace(NetworkType type, WorldPos startPos) {
-		var world = startPos.getWorld();
+	public static void trace(NetworkType<?> type, World world, BlockPos startPos) {
+		var network = NetworkComponent.get(world);
 		
-		var network = WorldNetworkComponent.get(world);
-		
-		if (network.contains(type, startPos.getBlockPos())) {
-			// Starting position already exists.
+		// Starting position already exists.
+		if (network.contains(type, startPos)) {
 			return;
 		}
 		
-		var startNode = new Network.Node(startPos.getBlockPos());
+		var startNode = new Network.Node(startPos);
 		
 		// Store traced positions so we don't repeat them.
 		var tracedPos = new LongOpenHashSet();
-		tracedPos.add(startPos.getBlockPos().asLong());
+		tracedPos.add(startPos.asLong());
 		
 		// Store positions to trace, so we can go back to them.
 		var posToTrace = new ArrayDeque<BlockPos>();
-		posToTrace.add(startPos.getBlockPos());
+		posToTrace.add(startPos);
 		
 		var instance = new Network(world, type);
-		instance.addNode(startNode);
+		instance.getNodes().add(startNode);
 		
 		while (!posToTrace.isEmpty()) {
 			var pos = posToTrace.pop();
 			
 			var joined = false;
 			
-			var initialWorldPos = new WorldPos(world, pos);
+			var initialBlockState = world.getBlockState(pos);
 			
-			var cableBlockEntity = (CableBlockEntity) initialWorldPos.getBlockEntity();
+			var cableBlockEntity = (CableBlockEntity) world.getBlockEntity(pos);
 			
 			if (cableBlockEntity == null) {
 				continue;
@@ -79,23 +76,21 @@ public class NetworkUtils {
 				continue;
 			}
 			
-			for (var dir : Direction.values()) {
-				var offsetPos = pos.offset(dir);
+			for (var directions : DirectionUtils.VALUES) {
+				var offsetPos = pos.offset(directions);
 				var offsetPosLong = offsetPos.asLong();
 				
 				if (tracedPos.contains(offsetPosLong)) {
 					continue;
 				}
 				
-				var offsetWorldPos = new WorldPos(world, offsetPos);
-				
-				var offsetStorage = type.find(offsetWorldPos, dir.getOpposite());
+				var offsetStorage = type.find(world, offsetPos, directions.getOpposite());
 				
 				var existingInstance = network.get(type, offsetPos);
 				
 				// Merge networks if necessary.
 				if (existingInstance != null) {
-					existingInstance.join(instance);
+					existingInstance.addNetwork(instance);
 					
 					network.remove(instance);
 					network.add(existingInstance);
@@ -105,24 +100,26 @@ public class NetworkUtils {
 					joined = true;
 				}
 				
+				var offsetBlockState = world.getBlockState(offsetPos);
+				
 				// Add a member if a storage is present.
 				// Otherwise, it must be a cable block.
 				if (offsetStorage != null) {
 					var siding = StorageSiding.NONE;
 					
-					if (connections.isInsert(dir)) {
+					if (connections.isInsert(directions)) {
 						siding = StorageSiding.INSERT;
-					} else if (connections.isExtract(dir)) {
+					} else if (connections.isExtract(directions)) {
 						siding = StorageSiding.EXTRACT;
-					} else if (connections.isInsertExtract(dir)) {
+					} else if (connections.isInsertExtract(directions)) {
 						siding = StorageSiding.INSERT_EXTRACT;
 					}
 					
-					instance.addMember(new Network.Member(offsetPos, dir.getOpposite(), siding));
-				} else if (offsetWorldPos.getBlock() == initialWorldPos.getBlock()) {
+					instance.getMembers().add(new Network.Member(offsetPos, directions.getOpposite(), siding));
+				} else if (offsetBlockState.getBlock() == initialBlockState.getBlock()) {
 					posToTrace.addLast(offsetPos);
 					
-					instance.addNode(new Network.Node(offsetPos));
+					instance.getNodes().add(new Network.Node(offsetPos));
 				}
 				
 				tracedPos.add(offsetPosLong);

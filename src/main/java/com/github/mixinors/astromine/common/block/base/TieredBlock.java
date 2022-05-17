@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.base;
 
-import com.github.mixinors.astromine.common.item.MachineUpgradeKitItem;
+import com.github.mixinors.astromine.common.item.utility.MachineUpgradeKitItem;
 import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -64,15 +64,15 @@ public interface TieredBlock {
 				if (world.isClient) {
 					var random = world.random;
 					
-					var x = pos.getX() - 0.3;
-					var y = pos.getY() - 0.3;
-					var z = pos.getZ() - 0.3;
+					var x = pos.getX() - 0.3F;
+					var y = pos.getY() - 0.3F;
+					var z = pos.getZ() - 0.3F;
 					
 					for (var i = 0; i < 20; i++) {
-						world.addParticle(ParticleTypes.COMPOSTER, x + random.nextDouble() * 1.6, y + random.nextDouble() * 1.6, z + random.nextDouble() * 1.6, -0.2 + random.nextDouble() * 0.4, -0.2 + random.nextDouble() * 0.4, -0.2 + random.nextDouble() * 0.4);
+						world.addParticle(ParticleTypes.COMPOSTER, x + random.nextDouble() * 1.6F, y + random.nextDouble() * 1.6F, z + random.nextDouble() * 1.6F, -0.2F + random.nextDouble() * 0.4F, -0.2F + random.nextDouble() * 0.4F, -0.2F + random.nextDouble() * 0.4F);
 					}
 					
-					world.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 1, 1, false);
+					world.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
 				} else {
 					if (!player.isCreative()) {
 						stack.decrement(1);
@@ -80,14 +80,14 @@ public interface TieredBlock {
 					
 					var blockEntity = world.getBlockEntity(pos);
 					
-					var beTag = (NbtCompound) null;
+					var blockEntityNbt = (NbtCompound) null;
 					
 					if (blockEntity != null) {
-						beTag = blockEntity.createNbtWithId();
+						blockEntityNbt = blockEntity.createNbtWithId();
 						
-						beTag.putInt(X_KEY, pos.getX());
-						beTag.putInt(Y_KEY, pos.getY());
-						beTag.putInt(Z_KEY, pos.getZ());
+						blockEntityNbt.putInt(X_KEY, pos.getX());
+						blockEntityNbt.putInt(Y_KEY, pos.getY());
+						blockEntityNbt.putInt(Z_KEY, pos.getZ());
 					}
 					
 					world.removeBlockEntity(pos);
@@ -98,8 +98,8 @@ public interface TieredBlock {
 					
 					var newBlockEntity = world.getBlockEntity(pos);
 					
-					if (newBlockEntity != null && beTag != null) {
-						newBlockEntity.readNbt(beTag);
+					if (newBlockEntity != null && blockEntityNbt != null) {
+						newBlockEntity.readNbt(blockEntityNbt);
 					}
 				}
 				

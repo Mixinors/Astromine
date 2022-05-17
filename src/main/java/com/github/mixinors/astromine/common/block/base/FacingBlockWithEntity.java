@@ -33,18 +33,11 @@ import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * A {@link BlockWithEntity} with a {@link DirectionProperty}.
- */
 public abstract class FacingBlockWithEntity extends BlockWithEntity {
-	/**
-	 * Instantiates a {@link FacingBlockWithEntity}.
-	 */
 	protected FacingBlockWithEntity(Settings settings) {
 		super(settings);
 	}
-	
-	/** Override behavior to add the {@link DirectionProperty}. */
+
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		var directionProperty = getDirectionProperty();
@@ -56,7 +49,6 @@ public abstract class FacingBlockWithEntity extends BlockWithEntity {
 		super.appendProperties(builder);
 	}
 	
-	/** Override behavior to add the {@link DirectionProperty}. */
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
 		var directionProperty = getDirectionProperty();
@@ -68,7 +60,6 @@ public abstract class FacingBlockWithEntity extends BlockWithEntity {
 		return super.getPlacementState(context);
 	}
 	
-	/** Override behavior to add the {@link DirectionProperty}. */
 	@Override
 	public BlockState rotate(BlockState state, BlockRotation rotation) {
 		var directionProperty = getDirectionProperty();
@@ -80,7 +71,6 @@ public abstract class FacingBlockWithEntity extends BlockWithEntity {
 		return super.rotate(state, rotation);
 	}
 	
-	/** Override behavior to add the {@link DirectionProperty}. */
 	@Override
 	public BlockState mirror(BlockState state, BlockMirror mirror) {
 		var directionProperty = getDirectionProperty();
@@ -92,7 +82,6 @@ public abstract class FacingBlockWithEntity extends BlockWithEntity {
 		return super.mirror(state, mirror);
 	}
 	
-	/** Returns the {@link DirectionProperty} of this block. */
 	@Nullable
 	public abstract DirectionProperty getDirectionProperty();
 }

@@ -26,84 +26,75 @@ package com.github.mixinors.astromine.common.network.type;
 
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.network.Network;
-import com.github.mixinors.astromine.common.util.data.position.WorldPos;
+import com.github.mixinors.astromine.common.network.type.base.TransferNetworkType;
 import it.unimi.dsi.fastutil.longs.Long2ObjectLinkedOpenHashMap;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
 @SuppressWarnings("UnstableApiUsage")
-public final class ItemNetworkType implements TransferNetworkType<ItemVariant> {
+public class ItemNetworkType extends TransferNetworkType<ItemVariant> {
 	@Override
-	public Storage<ItemVariant> find(WorldPos pos, @Nullable Direction direction) {
-		return ItemStorage.SIDED.find(pos.getWorld(), pos.getBlockPos(), direction);
+	public Storage<ItemVariant> find(World world, BlockPos pos, @Nullable Direction direction) {
+		return ItemStorage.SIDED.find(world, pos, direction);
 	}
 	
 	@Override
-	public void tick(Network instance) {
-		var world = instance.getWorld();
+	public void tick(Network<Storage<ItemVariant>> network) {
+		var world = network.getWorld();
 		
 		var extractableStorages = new Long2ObjectLinkedOpenHashMap<Storage<ItemVariant>>();
 		var bufferStorages = new Long2ObjectLinkedOpenHashMap<Storage<ItemVariant>>();
 		var insertableStorages = new Long2ObjectLinkedOpenHashMap<Storage<ItemVariant>>();
 		
-		// First, we extract from extractableStorages into insertableStorages.
-		// Then, we extract from extractableStorages into bufferStorages.
-		// Then, we extract from bufferStorages into insertableStorages.
+		var toRemove = new ArrayList<Network.Member>();
 		
-		// We ignore how much has been moved for the sake of simplicity.
-		
-		// We must also remove inaccessible members.
-		var membersToRemove = new ArrayList<Network.Member>();
-		
-		for (var memberNode : instance.members) {
-			var member = (Network.Member) memberNode;
-			
-			var storage = find(new WorldPos(world, member.getBlockPos()), member.getDirection());
+		for (var member : network.getMembers()) {
+			var storage = find(world, member.blockPos(), member.direction());
 			
 			if (storage == null) {
-				membersToRemove.add(member);
+				toRemove.add(member);
 				
-				world.getBlockState(member.getBlockPos()).neighborUpdate(world, member.getBlockPos(), world.getBlockState(member.getBlockPos()).getBlock(), member.getBlockPos(), false);
-				
-				continue;
-			}
-			
-			switch (member.getSiding()) {
-				case INSERT -> {
-					if (storage.supportsInsertion()) {
-						insertableStorages.put(member.getBlockPos().asLong(), storage);
+				world.getBlockState(member.blockPos()).neighborUpdate(world, member.blockPos(), world.getBlockState(member.blockPos()).getBlock(), member.blockPos(), false);
+			} else {
+				switch (member.siding()) {
+					case INSERT -> {
+						if (storage.supportsInsertion()) {
+							insertableStorages.put(member.blockPos().asLong(), storage);
+						}
 					}
-				}
-				
-				case EXTRACT -> {
-					if (storage.supportsExtraction()) {
-						extractableStorages.put(member.getBlockPos().asLong(), storage);
+					
+					case EXTRACT -> {
+						if (storage.supportsExtraction()) {
+							extractableStorages.put(member.blockPos().asLong(), storage);
+						}
 					}
-				}
-				
-				case INSERT_EXTRACT -> {
-					if (storage.supportsInsertion() && storage.supportsExtraction()) {
-						bufferStorages.put(member.getBlockPos().asLong(), storage);
-					} else if (storage.supportsInsertion()) {
-						insertableStorages.put(member.getBlockPos().asLong(), storage);
-					} else if (storage.supportsExtraction()) {
-						extractableStorages.put(member.getBlockPos().asLong(), storage);
+					
+					case INSERT_EXTRACT -> {
+						if (storage.supportsInsertion() && storage.supportsExtraction()) {
+							bufferStorages.put(member.blockPos().asLong(), storage);
+						} else if (storage.supportsInsertion()) {
+							insertableStorages.put(member.blockPos().asLong(), storage);
+						} else if (storage.supportsExtraction()) {
+							extractableStorages.put(member.blockPos().asLong(), storage);
+						}
 					}
 				}
 			}
 		}
 		
-		membersToRemove.forEach(instance::removeMember);
+		network.getMembers().removeAll(toRemove);
 		
-		move(instance, extractableStorages, insertableStorages);
-		move(instance, extractableStorages, bufferStorages);
-		move(instance, bufferStorages, insertableStorages);
-		move(instance, bufferStorages, bufferStorages);
+		move(network, extractableStorages, insertableStorages);
+		move(network, extractableStorages, bufferStorages);
+		move(network, bufferStorages, insertableStorages);
+		move(network, bufferStorages, bufferStorages);
 	}
 	
 	@Override
@@ -113,6 +104,11 @@ public final class ItemNetworkType implements TransferNetworkType<ItemVariant> {
 	
 	@Override
 	public boolean hasSiding() {
+		return true;
+	}
+	
+	@Override
+	public boolean hasFiltering() {
 		return true;
 	}
 }

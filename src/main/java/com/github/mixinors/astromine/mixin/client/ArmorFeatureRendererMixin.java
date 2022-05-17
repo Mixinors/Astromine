@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.mixin.client;
 
-import com.github.mixinors.astromine.common.item.AnimatedArmorItem;
+import com.github.mixinors.astromine.common.item.armor.AnimatedArmorItem;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.entity.feature.ArmorFeatureRenderer;
 import net.minecraft.client.render.entity.model.BipedEntityModel;

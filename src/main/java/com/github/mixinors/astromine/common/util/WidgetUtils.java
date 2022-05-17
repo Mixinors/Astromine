@@ -55,8 +55,9 @@ public class WidgetUtils {
 		
 		var list = new ArrayList<StorageSidingWidget>();
 		
-		for (var direction : Direction.values()) {
+		for (var direction : DirectionUtils.VALUES) {
 			var button = new StorageSidingWidget();
+			
 			button.setPosition(positions.get(MirrorUtils.rotate(direction, rotation)));
 			button.setSize(new Size(18.0F, 18.0F, 0.0F));
 			button.setBlockEntity(blockEntity);

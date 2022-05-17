@@ -24,11 +24,11 @@
 
 package com.github.mixinors.astromine.common.config.entry.provider;
 
-import com.github.mixinors.astromine.common.config.DefaultConfigValues;
 import com.github.mixinors.astromine.common.provider.FluidStorageSizeProvider;
+import com.github.mixinors.astromine.common.util.constant.config.ConfigConstants;
 
 public interface DefaultedFluidStorageSizeProvider extends FluidStorageSizeProvider {
 	default double getDefaultFluidStorageSize() {
-		return DefaultConfigValues.UTILITY_FLUID;
+		return ConfigConstants.UTILITY_FLUID;
 	}
 }

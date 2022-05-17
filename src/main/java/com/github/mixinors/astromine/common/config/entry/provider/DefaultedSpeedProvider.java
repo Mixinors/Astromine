@@ -24,11 +24,11 @@
 
 package com.github.mixinors.astromine.common.config.entry.provider;
 
-import com.github.mixinors.astromine.common.config.DefaultConfigValues;
 import com.github.mixinors.astromine.common.provider.SpeedProvider;
+import com.github.mixinors.astromine.common.util.constant.config.ConfigConstants;
 
 public interface DefaultedSpeedProvider extends SpeedProvider {
 	default double getDefaultSpeed() {
-		return DefaultConfigValues.UTILITY_DELAY;
+		return ConfigConstants.UTILITY_DELAY;
 	}
 }

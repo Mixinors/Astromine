@@ -24,10 +24,10 @@
 
 package com.github.mixinors.astromine.common.block.base;
 
-import com.github.mixinors.astromine.common.block.entity.base.Tickable;
+import com.github.mixinors.astromine.common.comparator.ComparatorMode;
 import com.github.mixinors.astromine.common.item.storage.SimpleEnergyStorageItem;
 import com.github.mixinors.astromine.common.item.storage.SimpleFluidStorageItem;
-import com.github.mixinors.astromine.common.util.data.redstone.ComparatorMode;
+import com.github.mixinors.astromine.common.tick.Tickable;
 import dev.architectury.registry.menu.ExtendedMenuProvider;
 import dev.architectury.registry.menu.MenuRegistry;
 import net.minecraft.block.AbstractBlock;
@@ -43,10 +43,8 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerFactory;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
@@ -59,9 +57,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * A {@link Block} with an attached {@link BlockEntity} provided through {@link BlockEntityProvider}, providing {@link #ACTIVE} {@link BlockState} property by default.
- */
 public abstract class BlockWithEntity extends Block implements BlockEntityProvider {
 	public static final BooleanProperty ACTIVE = BooleanProperty.of("active");
 	
@@ -69,21 +64,14 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 	public static final SavedData FLUID_MACHINE = new SavedData(true, true, false, true);
 	public static final SavedData ITEM_AND_FLUID_MACHINE = new SavedData(true, true, true, true);
 	
-	/** Instantiates a {@link BlockWithEntity}. */
 	protected BlockWithEntity(AbstractBlock.Settings settings) {
 		super(settings);
 	}
 	
-	/**
-	 * Sets the {@link BlockState} at the {@link BlockPos} in the given {@link World} to have {@link #ACTIVE} as true.
-	 */
 	public static void markActive(World world, BlockPos pos) {
 		world.setBlockState(pos, world.getBlockState(pos).with(ACTIVE, true));
 	}
 	
-	/**
-	 * Sets the {@link BlockState} at the {@link BlockPos} in the given {@link World} to have {@link #ACTIVE} as false.
-	 */
 	public static void markInactive(World world, BlockPos pos) {
 		world.setBlockState(pos, world.getBlockState(pos).with(ACTIVE, false));
 	}
@@ -101,40 +89,24 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 		}
 	}
 	
-	/**
-	 * Asserts whether this {@link BlockWithEntity} has a {@link ScreenHandler} or not.
-	 */
 	public abstract boolean hasScreenHandler();
 	
-	/**
-	 * Returns the {@link ScreenHandler} this {@link Block} will open.
-	 */
 	public abstract ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player);
 	
-	/**
-	 * Populates the {@link PacketByteBuf} which will be passed onto {@link ExtendedMenuProvider#saveExtraData(PacketByteBuf)}.
-	 */
 	public abstract void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer);
 	
-	/**
-	 * Returns the {@link ScreenHandlerFactory} this {@link Block} will use.
-	 */
 	public ExtendedMenuProvider createScreenHandlerFactory(ServerPlayerEntity player, BlockState state, World world, BlockPos pos) {
 		return new ExtendedMenuProvider() {
-			/** Writes data from {@link BlockWithEntity#populateScreenHandlerBuffer(BlockState, World, BlockPos, ServerPlayerEntity, PacketByteBuf)}
-			 * to the given {@link PacketByteBuf}. */
 			@Override
 			public void saveExtraData(PacketByteBuf buffer) {
 				populateScreenHandlerBuffer(state, world, pos, player, buffer);
 			}
 			
-			/** Returns the name of the created {@link ScreenHandler}. */
 			@Override
 			public Text getDisplayName() {
 				return new TranslatableText(getTranslationKey());
 			}
 			
-			/** Returns the created {@link ScreenHandler}. */
 			@Override
 			public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
 				return createScreenHandler(state, world, pos, syncId, playerInventory, player);
@@ -142,9 +114,6 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 		};
 	}
 	
-	/**
-	 * Repasses the synced block event to the {@link BlockEntity} in the given {@link World} at the given {@link BlockPos}.
-	 */
 	@Override
 	public boolean onSyncedBlockEvent(BlockState state, World world, BlockPos pos, int type, int data) {
 		super.onSyncedBlockEvent(state, world, pos, type, data);
@@ -154,37 +123,32 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 		return blockEntity != null && blockEntity.onSyncedBlockEvent(type, data);
 	}
 	
-	/** Override behavior to add the {@link #ACTIVE} property. */
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		builder.add(ACTIVE);
+		
 		super.appendProperties(builder);
 	}
 	
-	/** Override behavior to set {@link #ACTIVE} to false by default. */
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
 		return super.getPlacementState(context).with(ACTIVE, false);
 	}
 	
-	/** Return this {@link BlockWithEntity}'s {@link ComparatorMode}. */
 	protected ComparatorMode getComparatorMode() {
 		return ComparatorMode.ITEMS;
 	}
 	
-	/** Override behavior to use {@link ComparatorMode}. */
 	@Override
 	public boolean hasComparatorOutput(BlockState state) {
 		return getComparatorMode().hasOutput();
 	}
-	
-	/** Override behavior to use {@link ComparatorMode}. */
+
 	@Override
 	public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
 		return getComparatorMode().getOutput(world.getBlockEntity(pos));
 	}
 	
-	/** Override behavior to read {@link BlockEntity} contents from {@link ItemStack} {@link NbtCompound}. */
 	@Override
 	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		super.onPlaced(world, pos, state, placer, stack);
@@ -199,7 +163,6 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-		// We might not need this, but whatever, we are astromine
 		return (world1, blockPos, blockState, blockEntity) -> {
 			if (blockEntity instanceof Tickable tickableBlockEntity) {
 				tickableBlockEntity.tick();

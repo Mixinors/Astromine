@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.client.render.entity;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.model.SuperSpaceSlimeEntityModel;
-import com.github.mixinors.astromine.common.entity.SuperSpaceSlimeEntity;
+import com.github.mixinors.astromine.common.entity.slime.SuperSpaceSlimeEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.MobEntityRenderer;

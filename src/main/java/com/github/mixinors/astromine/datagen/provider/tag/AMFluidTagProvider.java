@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.datagen.provider.tag;
 
-import com.github.mixinors.astromine.common.fluid.SimpleFluid;
+import com.github.mixinors.astromine.common.fluid.base.ExtendedFluid;
 import com.github.mixinors.astromine.datagen.DatagenLists;
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
@@ -42,7 +42,7 @@ public class AMFluidTagProvider extends FabricTagProvider.FluidTagProvider {
 		super(dataGenerator);
 	}
 	
-	public static final Map<SimpleFluid, TagKey<Fluid>> FLUID_TAGS = new HashMap<>();
+	public static final Map<ExtendedFluid, TagKey<Fluid>> FLUID_TAGS = new HashMap<>();
 	
 	@Override
 	protected void generateTags() {

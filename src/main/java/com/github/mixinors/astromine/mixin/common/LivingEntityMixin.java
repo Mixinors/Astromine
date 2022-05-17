@@ -25,9 +25,9 @@
 package com.github.mixinors.astromine.mixin.common;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.component.entity.EntityOxygenComponent;
+import com.github.mixinors.astromine.common.component.entity.OxygenComponent;
 import com.github.mixinors.astromine.common.config.AMConfig;
-import com.github.mixinors.astromine.common.item.SpaceSuitItem;
+import com.github.mixinors.astromine.common.item.armor.SpaceSuitArmorItem;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidItemStorage;
 import com.github.mixinors.astromine.common.util.EntityStorageUtils;
 import com.github.mixinors.astromine.registry.common.AMAttributes;
@@ -80,10 +80,10 @@ public abstract class LivingEntityMixin extends EntityMixin {
 			
 			var breathing = true;
 			
-			breathing = breathing && (headStack.getItem() instanceof SpaceSuitItem);
-			breathing = breathing && (chestStack.getItem() instanceof SpaceSuitItem);
-			breathing = breathing && (legsStack.getItem() instanceof SpaceSuitItem);
-			breathing = breathing && (feetStack.getItem() instanceof SpaceSuitItem);
+			breathing = breathing && (headStack.getItem() instanceof SpaceSuitArmorItem);
+			breathing = breathing && (chestStack.getItem() instanceof SpaceSuitArmorItem);
+			breathing = breathing && (legsStack.getItem() instanceof SpaceSuitArmorItem);
+			breathing = breathing && (feetStack.getItem() instanceof SpaceSuitArmorItem);
 			
 			var context = EntityStorageUtils.getContextForSlot((LivingEntity) (Object) this, EquipmentSlot.CHEST);
 			
@@ -121,7 +121,7 @@ public abstract class LivingEntityMixin extends EntityMixin {
 				breathing = false;
 			}
 			
-			var component = EntityOxygenComponent.get(this);
+			var component = OxygenComponent.get(this);
 			
 			component.tick(breathing);
 			

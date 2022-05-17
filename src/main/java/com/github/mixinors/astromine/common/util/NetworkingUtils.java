@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.util;
 
-import com.github.mixinors.astromine.common.transfer.RedstoneControl;
+import com.github.mixinors.astromine.common.transfer.RedstonType;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.StorageType;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -44,7 +44,7 @@ public class NetworkingUtils {
 		return buf;
 	}
 	
-	public static PacketByteBuf ofRedstoneControl(RedstoneControl control, BlockPos pos) {
+	public static PacketByteBuf ofRedstoneControl(RedstonType control, BlockPos pos) {
 		var buf = PacketByteBufs.create();
 		
 		buf.writeEnumConstant(control);

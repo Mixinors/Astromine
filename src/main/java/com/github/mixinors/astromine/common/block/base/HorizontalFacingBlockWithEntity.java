@@ -27,16 +27,11 @@ package com.github.mixinors.astromine.common.block.base;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
 
-/**
- * A {@link BlockWithEntity} with a {@link DirectionProperty} of {@link Properties#HORIZONTAL_FACING}.
- */
 public abstract class HorizontalFacingBlockWithEntity extends FacingBlockWithEntity {
-	/** Instantiates a {@link HorizontalFacingBlockWithEntity}. */
 	public HorizontalFacingBlockWithEntity(Settings settings) {
 		super(settings);
 	}
 	
-	/** Returns the {@link DirectionProperty} of this block. */
 	@Override
 	public DirectionProperty getDirectionProperty() {
 		return Properties.HORIZONTAL_FACING;

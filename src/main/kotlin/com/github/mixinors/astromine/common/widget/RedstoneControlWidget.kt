@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.widget
 
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity
-import com.github.mixinors.astromine.common.transfer.RedstoneControl
+import com.github.mixinors.astromine.common.transfer.RedstonType
 import com.github.mixinors.astromine.common.util.NetworkingUtils
 import com.github.mixinors.astromine.registry.common.AMNetworking
 import dev.architectury.networking.NetworkManager
@@ -70,7 +70,7 @@ class RedstoneControlWidget : ButtonWidget() {
 		if (focused && handled.client) {
 			val control = blockEntity.redstoneControl
 			
-			val next: RedstoneControl
+			val next: RedstonType
 			
 			when (button) {
 				GLFW.GLFW_MOUSE_BUTTON_1 -> next = control.next()
@@ -89,9 +89,9 @@ class RedstoneControlWidget : ButtonWidget() {
 		val blockEntity = blockEntity ?: return super.getTooltip()
 		
 		return when (blockEntity.redstoneControl) {
-			RedstoneControl.WORK_WHEN_ON -> listOf(TranslatableText("tooltip.astromine.work_when_on").green())
-			RedstoneControl.WORK_WHEN_OFF -> listOf(TranslatableText("tooltip.astromine.work_when_off").red())
-			RedstoneControl.WORK_ALWAYS -> listOf(TranslatableText("tooltip.astromine.work_always").yellow())
+			RedstonType.WORK_WHEN_ON -> listOf(TranslatableText("tooltip.astromine.work_when_on").green())
+			RedstonType.WORK_WHEN_OFF -> listOf(TranslatableText("tooltip.astromine.work_when_off").red())
+			RedstonType.WORK_ALWAYS -> listOf(TranslatableText("tooltip.astromine.work_always").yellow())
 		}
 	}
 	
@@ -103,9 +103,9 @@ class RedstoneControlWidget : ButtonWidget() {
 		STANDARD_TEXTURE.draw(matrices, provider, x, y, width, height)
 		
 		when (blockEntity.redstoneControl) {
-			RedstoneControl.WORK_WHEN_ON -> itemRenderer.renderGuiItemIcon(REDSTONE, x.toInt() + ((width - 16.0F) / 2.0F).coerceAtLeast(0.0F).toInt(), y.toInt() + ((height - 16.0F) / 2.0F).coerceAtLeast(0.0F).toInt())
-			RedstoneControl.WORK_WHEN_OFF -> itemRenderer.renderGuiItemIcon(GUNPOWDER, x.toInt() + ((width - 16.0F) / 2.0F).coerceAtLeast(0.0F).toInt(), y.toInt() + ((height - 16.0F) / 2.0F).coerceAtLeast(0.0F).toInt())
-			RedstoneControl.WORK_ALWAYS -> itemRenderer.renderGuiItemIcon(GLOWSTONE, x.toInt() + ((width - 16.0F) / 2.0F).coerceAtLeast(0.0F).toInt(), y.toInt() + ((height - 16.0F) / 2.0F).coerceAtLeast(0.0F).toInt())
+			RedstonType.WORK_WHEN_ON -> itemRenderer.renderGuiItemIcon(REDSTONE, x.toInt() + ((width - 16.0F) / 2.0F).coerceAtLeast(0.0F).toInt(), y.toInt() + ((height - 16.0F) / 2.0F).coerceAtLeast(0.0F).toInt())
+			RedstonType.WORK_WHEN_OFF -> itemRenderer.renderGuiItemIcon(GUNPOWDER, x.toInt() + ((width - 16.0F) / 2.0F).coerceAtLeast(0.0F).toInt(), y.toInt() + ((height - 16.0F) / 2.0F).coerceAtLeast(0.0F).toInt())
+			RedstonType.WORK_ALWAYS -> itemRenderer.renderGuiItemIcon(GLOWSTONE, x.toInt() + ((width - 16.0F) / 2.0F).coerceAtLeast(0.0F).toInt(), y.toInt() + ((height - 16.0F) / 2.0F).coerceAtLeast(0.0F).toInt())
 		}
 	}
 }

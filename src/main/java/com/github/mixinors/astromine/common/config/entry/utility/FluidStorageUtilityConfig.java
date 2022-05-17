@@ -24,13 +24,13 @@
 
 package com.github.mixinors.astromine.common.config.entry.utility;
 
-import com.github.mixinors.astromine.common.config.DefaultConfigValues;
 import com.github.mixinors.astromine.common.config.entry.provider.DefaultedFluidStorageSizeProvider;
+import com.github.mixinors.astromine.common.util.constant.config.ConfigConstants;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 
 public class FluidStorageUtilityConfig extends UtilityConfig implements DefaultedFluidStorageSizeProvider {
 	@Comment("The maximum fluid able to be stored by this utility")
-	public long fluidStorageSize = DefaultConfigValues.UTILITY_FLUID;
+	public long fluidStorageSize = ConfigConstants.UTILITY_FLUID;
 	
 	@Override
 	public long getFluidStorageSize() {

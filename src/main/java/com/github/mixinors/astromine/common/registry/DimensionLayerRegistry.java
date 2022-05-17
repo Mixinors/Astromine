@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.registry;
 
-import com.github.mixinors.astromine.common.entity.placer.EntityPlacer;
+import com.github.mixinors.astromine.common.entity.placer.base.EntityPlacer;
 import net.minecraft.util.Pair;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;

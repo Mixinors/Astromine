@@ -24,27 +24,27 @@
 
 package com.github.mixinors.astromine.common.entity.ai.superspaceslime;
 
-import com.github.mixinors.astromine.common.entity.SuperSpaceSlimeEntity;
+import com.github.mixinors.astromine.common.entity.slime.SuperSpaceSlimeEntity;
 import net.minecraft.entity.ai.goal.Goal;
 
 import java.util.EnumSet;
 
 public class SuperSpaceSlimeMoveGoal extends Goal {
-	
 	private final SuperSpaceSlimeEntity slime;
 	
 	public SuperSpaceSlimeMoveGoal(SuperSpaceSlimeEntity slime) {
 		this.slime = slime;
+		
 		this.setControls(EnumSet.of(Goal.Control.JUMP, Goal.Control.MOVE));
 	}
 	
 	@Override
 	public boolean canStart() {
-		return !this.slime.hasVehicle();
+		return !slime.hasVehicle();
 	}
 	
 	@Override
 	public void tick() {
-		((SuperSpaceSlimeMoveControl) this.slime.getMoveControl()).move(1.0D);
+		((SuperSpaceSlimeMoveControl) slime.getMoveControl()).move(1.0D);
 	}
 }

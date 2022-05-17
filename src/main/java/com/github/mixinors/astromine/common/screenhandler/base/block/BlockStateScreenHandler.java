@@ -31,21 +31,29 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
 public abstract class BlockStateScreenHandler extends BaseScreenHandler {
-	protected final BlockPos position;
-	protected final Block originalBlock;
-	protected final BlockState state;
+	protected final World world;
 	
-	public BlockStateScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
+	protected final BlockPos blockPos;
+	protected final BlockState blockState;
+	protected final Block block;
+	
+	public BlockStateScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos blockPos) {
 		super(type.get(), syncId, player);
 		
-		this.state = player.getWorld().getBlockState(position);
-		this.originalBlock = state.getBlock();
-		this.position = position;
+		this.world = player.getWorld();
+		
+		this.blockPos = blockPos;
+		
+		this.blockState = world.getBlockState(blockPos);
+		
+		this.block = blockState.getBlock();
+		
 	}
 	
 	@Override
@@ -54,7 +62,7 @@ public abstract class BlockStateScreenHandler extends BaseScreenHandler {
 			return false;
 		}
 		
-		return canUse(ScreenHandlerContext.create(player.getWorld(), position), player, originalBlock);
+		return canUse(ScreenHandlerContext.create(player.getWorld(), blockPos), player, block);
 	}
 	
 	@Override

@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.client.model;
 
 import com.github.mixinors.astromine.common.block.entity.cable.CableBlockEntity;
+import com.github.mixinors.astromine.common.util.DirectionUtils;
 import com.mojang.datafixers.util.Pair;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
 import net.fabricmc.fabric.api.client.model.BakedModelManagerHelper;
@@ -88,7 +89,7 @@ public class CableModel implements FabricBakedModel, BakedModel, UnbakedModel {
 		// Emit Center
 		centerModel.emitBlockQuads(blockView, state, pos, randomSupplier, context);
 		
-		for (var direction : Direction.values()) {
+		for (var direction : DirectionUtils.VALUES) {
 			var hasSide = connections.hasSide(direction);
 			var hasConnector = connections.hasConnector(direction);
 			

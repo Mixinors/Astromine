@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
-import com.github.mixinors.astromine.common.transfer.RedstoneControl;
+import com.github.mixinors.astromine.common.transfer.RedstonType;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.StorageType;
 import dev.architectury.networking.NetworkManager;
@@ -73,7 +73,7 @@ public class AMNetworking {
 		NetworkManager.registerReceiver(NetworkManager.c2s(), REDSTONE_CONTROL_UPDATE, ((buf, context) -> {
 			buf.retain();
 			
-			var control = buf.readEnumConstant(RedstoneControl.class);
+			var control = buf.readEnumConstant(RedstonType.class);
 			var pos = buf.readBlockPos();
 			
 			context.queue(() -> {

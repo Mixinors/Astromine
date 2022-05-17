@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.datagen.family.material.variant;
 
-import com.github.mixinors.astromine.common.fluid.ExtraFluidConstants;
 import com.github.mixinors.astromine.common.util.WordUtils;
+import com.github.mixinors.astromine.common.util.constant.fluid.ExtraFluidConstants;
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
 import net.minecraft.data.client.ItemModelGenerator;
 import net.minecraft.data.client.Models;

@@ -41,10 +41,6 @@ public class SimpleEnergyStorageItem extends Item implements EnergyStorageItem {
 		this.capacity = capacity;
 	}
 	
-	public SimpleEnergyStorageItem(Item.Settings settings) {
-		this(settings, Long.MAX_VALUE);
-	}
-	
 	@Override
 	public long getEnergyCapacity() {
 		return capacity;
@@ -52,13 +48,13 @@ public class SimpleEnergyStorageItem extends Item implements EnergyStorageItem {
 	
 	@Override
 	public int getItemBarStep(ItemStack stack) {
-		if (getEnergyCapacity() == 0) {
+		if (getEnergyCapacity() == 0L) {
 			return 0;
 		}
 		
 		var energyStorage = EnergyStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
 		
-		return (int) (13 * ((float) energyStorage.getAmount() / (float) getEnergyCapacity()));
+		return (int) (13.0F * ((float) energyStorage.getAmount() / (float) getEnergyCapacity()));
 	}
 	
 	@Override

@@ -1,6 +1,6 @@
 package com.github.mixinors.astromine.datagen;
 
-import com.github.mixinors.astromine.common.fluid.SimpleFluid;
+import com.github.mixinors.astromine.common.fluid.base.ExtendedFluid;
 import com.github.mixinors.astromine.datagen.family.block.AMBlockFamilies;
 import com.github.mixinors.astromine.datagen.family.material.variant.BlockVariant;
 import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant;
@@ -204,7 +204,7 @@ public class DatagenLists {
 	}
 	
 	public static class FluidLists {
-		public static final List<SimpleFluid> INDUSTRIAL_FLUIDS = List.of(
+		public static final List<ExtendedFluid> INDUSTRIAL_FLUIDS = List.of(
 				AMFluids.OIL,
 				AMFluids.FUEL,
 				AMFluids.BIOMASS,
@@ -212,7 +212,7 @@ public class DatagenLists {
 				AMFluids.HYDROGEN
 		);
 		
-		public static final List<SimpleFluid> MOLTEN_FLUIDS = List.of(
+		public static final List<ExtendedFluid> MOLTEN_FLUIDS = List.of(
 				AMFluids.MOLTEN_AMETHYST,
 				AMFluids.MOLTEN_ASTERITE,
 				AMFluids.MOLTEN_BRONZE,
@@ -238,10 +238,10 @@ public class DatagenLists {
 				AMFluids.MOLTEN_UNIVITE
 		);
 		
-		public static final List<SimpleFluid> FLUIDS = ImmutableList.<SimpleFluid>builder()
-																	.addAll(INDUSTRIAL_FLUIDS)
-																	.addAll(MOLTEN_FLUIDS)
-																	.build();
+		public static final List<ExtendedFluid> FLUIDS = ImmutableList.<ExtendedFluid>builder()
+																	  .addAll(INDUSTRIAL_FLUIDS)
+																	  .addAll(MOLTEN_FLUIDS)
+																	  .build();
 	}
 	
 	public static class EntityTypeLists {

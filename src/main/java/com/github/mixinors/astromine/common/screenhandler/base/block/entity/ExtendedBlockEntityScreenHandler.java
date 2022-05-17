@@ -47,8 +47,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
@@ -142,7 +142,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 		
 		add(tabs);
 		
-		tab = (TabWidget.TabWidgetCollection) tabs.addTab(symbol, () -> Collections.singletonList(new TranslatableText(block.getTranslationKey())));
+		tab = (TabWidget.TabWidgetCollection) tabs.addTab(symbol, () -> List.of(new TranslatableText(block.getTranslationKey())));
 		tab.setPosition(new Position(tabs, 0.0F, PAD_25 + PAD_7));
 		tab.setSize(new Size(TABS_WIDTH, TABS_HEIGHT));
 		
@@ -177,7 +177,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 		add(redstoneWidget);
 		
 		var tabAdder = (BiConsumer<StorageSiding[], StorageType>) (sidings, type) -> {
-			var tabCollection = (TabWidget.TabWidgetCollection) tabs.addTab(type.getItem(), () -> Collections.singletonList(type.getName()));
+			var tabCollection = (TabWidget.TabWidgetCollection) tabs.addTab(type.getItem(), () -> List.of(type.getName()));
 			
 			for (var widget : WidgetUtils.createStorageSiding(new Position(tabs, tabs.getWidth() / 2.0F - PAD_38, tabsExtension.getWidth() / 2.0F), blockEntity, type, rotation)) {
 				tabCollection.add(widget);

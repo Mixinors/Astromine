@@ -25,9 +25,9 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.entity.PrimitiveRocketEntity;
-import com.github.mixinors.astromine.common.entity.SpaceSlimeEntity;
-import com.github.mixinors.astromine.common.entity.SuperSpaceSlimeEntity;
+import com.github.mixinors.astromine.common.entity.rocket.PrimitiveRocketEntity;
+import com.github.mixinors.astromine.common.entity.slime.SpaceSlimeEntity;
+import com.github.mixinors.astromine.common.entity.slime.SuperSpaceSlimeEntity;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;

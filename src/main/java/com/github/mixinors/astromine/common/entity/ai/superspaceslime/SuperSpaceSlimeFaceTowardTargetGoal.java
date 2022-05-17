@@ -24,47 +24,45 @@
 
 package com.github.mixinors.astromine.common.entity.ai.superspaceslime;
 
-import com.github.mixinors.astromine.common.entity.SuperSpaceSlimeEntity;
+import com.github.mixinors.astromine.common.entity.slime.SuperSpaceSlimeEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.player.PlayerEntity;
 
 import java.util.EnumSet;
 
-/**
- * This goal instructs the given {@link SuperSpaceSlimeEntity} to look at its target for up to 300 ticks.
- */
 public class SuperSpaceSlimeFaceTowardTargetGoal extends Goal {
-	
 	private final SuperSpaceSlimeEntity slime;
+	
 	private int ticksLeft;
 	
 	public SuperSpaceSlimeFaceTowardTargetGoal(SuperSpaceSlimeEntity slime) {
 		this.slime = slime;
+		
 		this.setControls(EnumSet.of(Goal.Control.LOOK));
 	}
 	
 	@Override
 	public boolean canStart() {
-		var livingEntity = this.slime.getTarget();
+		var target = slime.getTarget();
 		
-		if (livingEntity == null) {
+		if (target == null) {
 			return false;
-		} else if (!livingEntity.isAlive()) {
+		} else if (!target.isAlive()) {
 			return false;
 		} else {
-			return (!(livingEntity instanceof PlayerEntity) || !((PlayerEntity) livingEntity).getAbilities().invulnerable) && this.slime.getMoveControl() instanceof SuperSpaceSlimeMoveControl;
+			return (!(target instanceof PlayerEntity player)) || !(player.getAbilities().invulnerable) && slime.getMoveControl() instanceof SuperSpaceSlimeMoveControl;
 		}
 	}
 	
 	@Override
 	public boolean shouldContinue() {
-		var livingEntity = this.slime.getTarget();
+		var target = slime.getTarget();
 		
-		if (livingEntity == null) {
+		if (target == null) {
 			return false;
-		} else if (!livingEntity.isAlive()) {
+		} else if (!target.isAlive()) {
 			return false;
-		} else if (livingEntity instanceof PlayerEntity && ((PlayerEntity) livingEntity).getAbilities().invulnerable) {
+		} else if (target instanceof PlayerEntity player && player.getAbilities().invulnerable) {
 			return false;
 		} else {
 			return --this.ticksLeft > 0;
@@ -73,13 +71,15 @@ public class SuperSpaceSlimeFaceTowardTargetGoal extends Goal {
 	
 	@Override
 	public void start() {
-		this.ticksLeft = 300;
+		ticksLeft = 300;
+		
 		super.start();
 	}
 	
 	@Override
 	public void tick() {
-		this.slime.lookAtEntity(this.slime.getTarget(), 10.0F, 10.0F);
-		((SuperSpaceSlimeMoveControl) this.slime.getMoveControl()).look(this.slime.getYaw(), true);
+		slime.lookAtEntity(slime.getTarget(), 10.0F, 10.0F);
+		
+		((SuperSpaceSlimeMoveControl) slime.getMoveControl()).look(slime.getYaw(), true);
 	}
 }

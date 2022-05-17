@@ -24,11 +24,11 @@
 
 package com.github.mixinors.astromine.common.config.entry.tiered;
 
-import com.github.mixinors.astromine.common.config.DefaultConfigValues;
+import com.github.mixinors.astromine.common.util.constant.config.ConfigConstants;
 
 public class SpeedyFluidStorageMachineConfig extends FluidStorageMachineConfig {
 	@Override
 	public double getDefaultBaseSpeed() {
-		return DefaultConfigValues.FLUID_RECIPE_MACHINE_BASE_SPEED;
+		return ConfigConstants.FLUID_RECIPE_MACHINE_BASE_SPEED;
 	}
 }

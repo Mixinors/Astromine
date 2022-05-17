@@ -25,10 +25,12 @@
 package com.github.mixinors.astromine.common.block.entity.base;
 
 import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
-import com.github.mixinors.astromine.common.transfer.RedstoneControl;
+import com.github.mixinors.astromine.common.tick.Tickable;
+import com.github.mixinors.astromine.common.transfer.RedstonType;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
+import com.github.mixinors.astromine.common.util.DirectionUtils;
 import dev.architectury.hooks.block.BlockEntityHooks;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
@@ -43,7 +45,6 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -57,7 +58,7 @@ import java.util.Comparator;
 import java.util.function.Supplier;
 
 public abstract class ExtendedBlockEntity extends BlockEntity implements Tickable {
-	public static final String REDSTONE_CONTROL_KEY = "RedstoneControl";
+	public static final String REDSTONE_TYPE_KEY = "RedstoneType";
 	
 	public static final String AMOUNT_KEY = "Amount";
 	
@@ -81,7 +82,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	protected boolean syncItemStorage = true;
 	protected boolean syncFluidStorage = true;
 	
-	protected RedstoneControl redstoneControl = RedstoneControl.WORK_ALWAYS;
+	protected RedstonType redstonType = RedstonType.WORK_ALWAYS;
 	
 	protected SimpleEnergyStorage energyStorage = null;
 	protected SimpleItemStorage itemStorage = null;
@@ -113,8 +114,8 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 		// Trigger a block update if item sidings have changed.
 		if (itemStorage != null) {
 			if (!Arrays.equals(lastItemStorageSidings, itemStorage.getSidings())) {
-				for (var dir : Direction.values()) {
-					world.getBlockState(getPos().offset(dir)).neighborUpdate(world, getPos().offset(dir), getCachedState().getBlock(), getPos(), false);
+				for (var directions : DirectionUtils.VALUES) {
+					world.getBlockState(getPos().offset(directions)).neighborUpdate(world, getPos().offset(directions), getCachedState().getBlock(), getPos(), false);
 				}
 			}
 			
@@ -124,8 +125,8 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 		// Trigger a block update if fluid sidings have changed.
 		if (fluidStorage != null) {
 			if (!Arrays.equals(lastFluidStorageSidings, fluidStorage.getSidings())) {
-				for (var dir : Direction.values()) {
-					world.getBlockState(getPos().offset(dir)).neighborUpdate(world, getPos().offset(dir), getCachedState().getBlock(), getPos(), false);
+				for (var directions : DirectionUtils.VALUES) {
+					world.getBlockState(getPos().offset(directions)).neighborUpdate(world, getPos().offset(directions), getCachedState().getBlock(), getPos(), false);
 				}
 			}
 			
@@ -133,7 +134,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 		}
 		
 		try (var transaction = Transaction.openOuter()) {
-			for (var direction : Direction.values()) {
+			for (var direction : DirectionUtils.VALUES) {
 				var theirPos = getPos().offset(direction);
 				
 				var theirItemStorage = ItemStorage.SIDED.find(world, theirPos, direction.getOpposite());
@@ -186,7 +187,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 		var offering = 0L;
 		var requesting = 0L;
 		
-		for (var direction : Direction.values()) {
+		for (var direction : DirectionUtils.VALUES) {
 			var theirPos = getPos().offset(direction);
 			var ourEnergyStorage = EnergyStorage.SIDED.find(world, pos, direction);
 			
@@ -231,7 +232,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	
 	@Override
 	public void writeNbt(NbtCompound nbt) {
-		nbt.putString(REDSTONE_CONTROL_KEY, redstoneControl.name());
+		nbt.putString(REDSTONE_TYPE_KEY, redstonType.name());
 		
 		nbt.putDouble(PROGRESS_KEY, progress);
 		nbt.putDouble(LIMIT_KEY, limit);
@@ -265,8 +266,8 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	
 	@Override
 	public void readNbt(@NotNull NbtCompound nbt) {
-		if (nbt.contains(REDSTONE_CONTROL_KEY)) {
-			redstoneControl = RedstoneControl.valueOf(nbt.getString(REDSTONE_CONTROL_KEY));
+		if (nbt.contains(REDSTONE_TYPE_KEY)) {
+			redstonType = RedstonType.valueOf(nbt.getString(REDSTONE_TYPE_KEY));
 		}
 		
 		if (nbt.contains(PROGRESS_KEY)) {
@@ -392,7 +393,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	 */
 	public boolean shouldRun() {
 		var powered = world.getReceivedRedstonePower(getPos()) > 0;
-		var shouldRun = redstoneControl.shouldRun(powered);
+		var shouldRun = redstonType.shouldRun(powered);
 		
 		active = shouldRun;
 		
@@ -407,17 +408,17 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	}
 	
 	/**
-	 * Returns this block entity's {@link #redstoneControl}.
+	 * Returns this block entity's {@link #redstonType}.
 	 */
-	public RedstoneControl getRedstoneControl() {
-		return redstoneControl;
+	public RedstonType getRedstoneControl() {
+		return redstonType;
 	}
 	
 	/**
-	 * Sets this block entity's {@link #redstoneControl}.
+	 * Sets this block entity's {@link #redstonType}.
 	 */
-	public void setRedstoneControl(RedstoneControl redstoneControl) {
-		this.redstoneControl = redstoneControl;
+	public void setRedstoneControl(RedstonType redstonType) {
+		this.redstonType = redstonType;
 	}
 	
 	/**

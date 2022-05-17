@@ -28,9 +28,9 @@ import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.render.sky.SpaceSkyProperties;
 import com.github.mixinors.astromine.common.block.network.EnergyCableBlock;
 import com.github.mixinors.astromine.common.callback.SkyPropertiesCallback;
-import com.github.mixinors.astromine.common.component.entity.EntityOxygenComponent;
-import com.github.mixinors.astromine.common.item.HolographicConnectorItem;
-import com.github.mixinors.astromine.common.item.SpaceSuitItem;
+import com.github.mixinors.astromine.common.component.entity.OxygenComponent;
+import com.github.mixinors.astromine.common.item.armor.SpaceSuitArmorItem;
+import com.github.mixinors.astromine.common.item.utility.HolographicConnectorItem;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidItemStorage;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
@@ -70,7 +70,7 @@ public class AMEvents {
 					if (client != null && client.player != null) {
 						var chestStack = client.player.getEquippedStack(EquipmentSlot.CHEST);
 						
-						if (chestStack.getItem() instanceof SpaceSuitItem.Chestplate) {
+						if (chestStack.getItem() instanceof SpaceSuitArmorItem.Chestplate) {
 							var energyStorage = EnergyStorage.ITEM.find(chestStack, ContainerItemContext.withInitial(chestStack));
 							
 							if (energyStorage != null) {
@@ -87,7 +87,7 @@ public class AMEvents {
 					if (client != null && client.player != null) {
 						var chestStack = client.player.getEquippedStack(EquipmentSlot.CHEST);
 						
-						if (chestStack.getItem() instanceof SpaceSuitItem.Chestplate) {
+						if (chestStack.getItem() instanceof SpaceSuitArmorItem.Chestplate) {
 							var energyStorage = EnergyStorage.ITEM.find(chestStack, ContainerItemContext.withInitial(chestStack));
 							
 							if (energyStorage != null) {
@@ -114,7 +114,7 @@ public class AMEvents {
 					if (client != null && client.player != null) {
 						var chestStack = client.player.getEquippedStack(EquipmentSlot.CHEST);
 						
-						if (chestStack.getItem() instanceof SpaceSuitItem.Chestplate) {
+						if (chestStack.getItem() instanceof SpaceSuitArmorItem.Chestplate) {
 							var fluidStorages = FluidStorage.ITEM.find(chestStack, ContainerItemContext.withInitial(chestStack));
 							
 							if (fluidStorages instanceof SimpleFluidItemStorage fluidStorage) {
@@ -131,7 +131,7 @@ public class AMEvents {
 					if (client != null && client.player != null) {
 						var chestStack = client.player.getEquippedStack(EquipmentSlot.CHEST);
 						
-						if (chestStack.getItem() instanceof SpaceSuitItem.Chestplate) {
+						if (chestStack.getItem() instanceof SpaceSuitArmorItem.Chestplate) {
 							var fluidStorages = FluidStorage.ITEM.find(chestStack, ContainerItemContext.withInitial(chestStack));
 							
 							if (fluidStorages instanceof SimpleFluidItemStorage fluidStorage) {
@@ -158,7 +158,7 @@ public class AMEvents {
 			if (client != null && client.player != null) {
 				var chestStack = client.player.getEquippedStack(EquipmentSlot.CHEST);
 				
-				var hidden = !(chestStack.getItem() instanceof SpaceSuitItem.Chestplate);
+				var hidden = !(chestStack.getItem() instanceof SpaceSuitArmorItem.Chestplate);
 				
 				spaceSuitEnergyBar.setHidden(hidden);
 				spaceSuitOxygenBar.setHidden(hidden);
@@ -194,7 +194,7 @@ public class AMEvents {
 						var client = InstanceUtils.getClient();
 						
 						if (client != null && client.player != null) {
-							var component = EntityOxygenComponent.get(client.player);
+							var component = OxygenComponent.get(client.player);
 							
 							if (component != null) {
 								return (float) component.getMaximumOxygen();
@@ -207,7 +207,7 @@ public class AMEvents {
 						var client = InstanceUtils.getClient();
 						
 						if (client != null && client.player != null) {
-							var component = EntityOxygenComponent.get(client.player);
+							var component = OxygenComponent.get(client.player);
 							
 							if (component != null) {
 								return (float) component.getOxygen();
@@ -224,7 +224,7 @@ public class AMEvents {
 				var client = InstanceUtils.getClient();
 				
 				if (client != null && client.player != null && !client.player.isCreative() && !client.player.isSpectator() && AMWorlds.isSpace(client.player.world.method_40134())) {
-					var component = EntityOxygenComponent.get(client.player);
+					var component = OxygenComponent.get(client.player);
 					
 					if (component != null) {
 						return component.getOxygen() != component.getMaximumOxygen();
@@ -292,14 +292,14 @@ public class AMEvents {
 		
 		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
 			if (stack.getItem() instanceof HolographicConnectorItem holographicConnectorItem) {
-				var pair = holographicConnectorItem.readBlock(stack);
+				var pair = holographicConnectorItem.fromStack(stack);
 				
 				if (pair != null) {
-					var key = pair.getLeft();
-					var pos = pair.getRight();
+					var key = pair.registryKey();
+					var pos = pair.blockPos();
 					
 					tooltip.add(TextUtils.EMPTY);
-					tooltip.add(new TranslatableText("text.astromine.selected.dimension.pos", key, pos.getX(), pos.getY(), pos.getZ()).formatted(Formatting.GRAY));
+					tooltip.add(new TranslatableText("text.astromine.selected.dimension.blockPos", key, pos.getX(), pos.getY(), pos.getZ()).formatted(Formatting.GRAY));
 				}
 			}
 		});
