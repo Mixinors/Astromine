@@ -103,6 +103,10 @@ public class SimpleFluidItemStorage extends SingleVariantItemStorage<FluidVarian
 		
 		var fluidNbt = new NbtCompound();
 		
+		if (newAmount == 0) {
+			newResource = getBlankResource();
+		}
+		
 		fluidNbt.put(VARIANT_KEY, newResource.toNbt());
 		
 		fluidNbt.putLong(AMOUNT_KEY, newAmount);

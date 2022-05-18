@@ -99,6 +99,8 @@ public abstract class LivingEntityMixin extends EntityMixin {
 						breathing = breathing && entityType.isIn(AMTagKeys.EntityTypeTags.CAN_BREATHE_LAVA);
 					} else if (fluid.isIn(AMTagKeys.FluidTags.OXYGEN)) {
 						breathing = breathing && !entityType.isIn(AMTagKeys.EntityTypeTags.CANNOT_BREATHE_OXYGEN);
+					} else {
+						breathing = false;
 					}
 				}
 				
