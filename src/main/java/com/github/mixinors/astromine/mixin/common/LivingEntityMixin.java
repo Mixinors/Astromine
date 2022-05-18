@@ -39,6 +39,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tag.TagKey;
@@ -127,7 +128,7 @@ public abstract class LivingEntityMixin extends EntityMixin {
 			
 			component.tick(breathing);
 			
-			if (breathing && !((Entity) (Object) this).submergedFluidTag.isEmpty()) {
+			if ((breathing && !((Entity) (Object) this).submergedFluidTag.isEmpty()) || (Object) this instanceof PlayerEntity player && (player.isCreative() || player.isSpectator())) {
 				setAir(getMaxAir());
 			}
 		}
