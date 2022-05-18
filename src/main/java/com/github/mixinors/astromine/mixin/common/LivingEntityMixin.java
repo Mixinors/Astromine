@@ -24,7 +24,6 @@
 
 package com.github.mixinors.astromine.mixin.common;
 
-import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.component.entity.OxygenComponent;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.item.armor.SpaceSuitArmorItem;
@@ -71,6 +70,7 @@ public abstract class LivingEntityMixin extends EntityMixin {
 	@Inject(at = @At("HEAD"), method = "tick()V")
 	void astromine$tick(CallbackInfo callbackInformation) {
 		var entityType = getType();
+		
 		if (AMWorlds.isSpace(world.method_40134()) && !entityType.isIn(AMTagKeys.EntityTypeTags.DOES_NOT_BREATHE)) {
 			
 			var headStack = getEquippedStack(EquipmentSlot.HEAD);
@@ -92,6 +92,7 @@ public abstract class LivingEntityMixin extends EntityMixin {
 				
 				if (chestFluidStorage != null) {
 					var fluid = chestFluidStorage.getResource().getFluid();
+					
 					if (fluid.isIn(ConventionalFluidTags.WATER)) {
 						breathing = breathing && entityType.isIn(AMTagKeys.EntityTypeTags.CAN_BREATHE_WATER);
 					} else if (fluid.isIn(ConventionalFluidTags.LAVA)) {
@@ -107,7 +108,6 @@ public abstract class LivingEntityMixin extends EntityMixin {
 				
 				try (var transaction = Transaction.openOuter()) {
 					if (chestFluidStorage != null && !chestFluidStorage.isResourceBlank()) {
-						AMCommon.LOGGER.info("extract go brrr " + chestFluidStorage.getResource() + " x " + chestFluidStorage.getAmount());
 						chestFluidStorage.extract(chestFluidStorage.getResource(), AMConfig.get().items.spaceSuitChestplateFluidConsumption, transaction);
 					}
 					

@@ -132,8 +132,10 @@ public class EntityEquipmentStorage extends CombinedStorage<ItemVariant, SingleS
 	
 	static class SimpleStackWrapper extends SingleStackStorage {
 		private final EntityEquipmentStorage storage;
+		
+		private ItemStack lastReleasedSnapshot = ItemStack.EMPTY;
+		
 		final EquipmentSlot slot;
-		private ItemStack lastReleasedSnapshot = null;
 		
 		SimpleStackWrapper(EntityEquipmentStorage storage, EquipmentSlot slot) {
 			this.storage = storage;
