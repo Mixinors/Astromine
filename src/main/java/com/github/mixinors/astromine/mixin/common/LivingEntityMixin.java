@@ -104,10 +104,6 @@ public abstract class LivingEntityMixin extends EntityMixin {
 				
 				var chestEnergyStorage = context.find(EnergyStorage.ITEM);
 				
-				if (context.getItemVariant().isBlank() && chestEnergyStorage != null) {
-					System.out.println("Blank storage for " + this + "!");
-				}
-				
 				breathing = breathing && chestEnergyStorage != null && chestEnergyStorage.getAmount() > 0L;
 				
 				try (var transaction = Transaction.openOuter()) {
