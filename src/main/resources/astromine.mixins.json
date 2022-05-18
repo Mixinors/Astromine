@@ -11,6 +11,7 @@
     "common.IdentifierMixin",
     "common.JsonDataLoaderMixin",
     "common.LivingEntityMixin",
+    "common.MobEntityMixin",
     "common.PiglinBrainMixin",
     "common.PistonHandlerMixin",
     "common.RecipeManagerAccessor",

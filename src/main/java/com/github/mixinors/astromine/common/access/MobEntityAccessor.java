@@ -24,6 +24,8 @@
 
 package com.github.mixinors.astromine.common.access;
 
-public interface EntityAccessor {
-	boolean astromine$isInIndustrialFluid();
+import com.github.mixinors.astromine.common.transfer.storage.EntityEquipmentStorage;
+
+public interface MobEntityAccessor {
+	EntityEquipmentStorage astromine$getEquipmentStorage();
 }

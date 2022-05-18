@@ -1,7 +1,6 @@
 package com.github.mixinors.astromine.common.transfer.storage;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.MapMaker;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.base.SingleStackStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
@@ -15,16 +14,14 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class EntityEquipmentStorage extends CombinedStorage<ItemVariant, SingleSlotStorage<ItemVariant>> {
 	private static final int ARMOR_INVENTORY_SIZE = 4;
 	private static final int HELD_ITEMS_INVENTORY_SIZE = 2;
 	private static final int INVENTORY_SIZE = ARMOR_INVENTORY_SIZE + HELD_ITEMS_INVENTORY_SIZE;
-	
-	private static final Map<MobEntity, EntityEquipmentStorage> WRAPPERS = new MapMaker().weakValues().makeMap();
 	
 	private final DroppedStacks droppedStacks;
 	
@@ -35,20 +32,15 @@ public class EntityEquipmentStorage extends CombinedStorage<ItemVariant, SingleS
 	 */
 	final List<SimpleStackWrapper> backingList;
 	
-	EntityEquipmentStorage(MobEntity entity) {
+	public EntityEquipmentStorage(MobEntity entity) {
 		super(ImmutableList.of());
 		
 		this.mobEntity = entity;
 		
 		this.backingList = new ArrayList<>();
 		this.droppedStacks = new DroppedStacks();
-	}
-	
-	public static EntityEquipmentStorage of(MobEntity entity) {
-		var storage = WRAPPERS.computeIfAbsent(entity, EntityEquipmentStorage::new);
-		storage.updateSlotList();
 		
-		return storage;
+		updateSlotList();
 	}
 	
 	public List<SingleSlotStorage<ItemVariant>> getSlots() {
@@ -133,6 +125,7 @@ public class EntityEquipmentStorage extends CombinedStorage<ItemVariant, SingleS
 	static class SimpleStackWrapper extends SingleStackStorage {
 		private final EntityEquipmentStorage storage;
 		
+		@Nonnull
 		private ItemStack lastReleasedSnapshot = ItemStack.EMPTY;
 		
 		final EquipmentSlot slot;
