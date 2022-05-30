@@ -81,6 +81,54 @@ public class AMBlockFamilies {
 																	  .stairs(AMBlocks.METEOR_STONE_BRICK_STAIRS.get())
 																	  .wall(AMBlocks.METEOR_STONE_BRICK_WALL.get())
 																	  .build();
+
+	public static final BlockFamily MOON_STONE = BlockFamilies.register(AMBlocks.MOON_STONE.get())
+			.slab(AMBlocks.MOON_STONE_SLAB.get())
+			.stairs(AMBlocks.MOON_STONE_STAIRS.get())
+			.wall(AMBlocks.MOON_STONE_WALL.get())
+			.polished(AMBlocks.POLISHED_MOON_STONE.get())
+			.build();
+
+	public static final BlockFamily SMOOTH_MOON_STONE = BlockFamilies.register(AMBlocks.SMOOTH_MOON_STONE.get())
+			.slab(AMBlocks.SMOOTH_MOON_STONE_SLAB.get())
+			.stairs(AMBlocks.SMOOTH_MOON_STONE_STAIRS.get())
+			.wall(AMBlocks.SMOOTH_MOON_STONE_WALL.get())
+			.build();
+
+	public static final BlockFamily POLISHED_MOON_STONE = BlockFamilies.register(AMBlocks.POLISHED_MOON_STONE.get())
+			.slab(AMBlocks.POLISHED_MOON_STONE_SLAB.get())
+			.stairs(AMBlocks.POLISHED_MOON_STONE_STAIRS.get())
+			.build();
+
+	public static final BlockFamily MOON_STONE_BRICK = BlockFamilies.register(AMBlocks.MOON_STONE_BRICKS.get())
+			.slab(AMBlocks.MOON_STONE_BRICK_SLAB.get())
+			.stairs(AMBlocks.MOON_STONE_BRICK_STAIRS.get())
+			.wall(AMBlocks.MOON_STONE_BRICK_WALL.get())
+			.build();
+
+	public static final BlockFamily DARK_MOON_STONE = BlockFamilies.register(AMBlocks.DARK_MOON_STONE.get())
+			.slab(AMBlocks.DARK_MOON_STONE_SLAB.get())
+			.stairs(AMBlocks.DARK_MOON_STONE_STAIRS.get())
+			.wall(AMBlocks.DARK_MOON_STONE_WALL.get())
+			.polished(AMBlocks.POLISHED_DARK_MOON_STONE.get())
+			.build();
+
+	public static final BlockFamily SMOOTH_DARK_MOON_STONE = BlockFamilies.register(AMBlocks.SMOOTH_DARK_MOON_STONE.get())
+			.slab(AMBlocks.SMOOTH_DARK_MOON_STONE_SLAB.get())
+			.stairs(AMBlocks.SMOOTH_DARK_MOON_STONE_STAIRS.get())
+			.wall(AMBlocks.SMOOTH_DARK_MOON_STONE_WALL.get())
+			.build();
+
+	public static final BlockFamily POLISHED_DARK_MOON_STONE = BlockFamilies.register(AMBlocks.POLISHED_DARK_MOON_STONE.get())
+			.slab(AMBlocks.POLISHED_DARK_MOON_STONE_SLAB.get())
+			.stairs(AMBlocks.POLISHED_DARK_MOON_STONE_STAIRS.get())
+			.build();
+
+	public static final BlockFamily DARK_MOON_STONE_BRICK = BlockFamilies.register(AMBlocks.DARK_MOON_STONE_BRICKS.get())
+			.slab(AMBlocks.DARK_MOON_STONE_BRICK_SLAB.get())
+			.stairs(AMBlocks.DARK_MOON_STONE_BRICK_STAIRS.get())
+			.wall(AMBlocks.DARK_MOON_STONE_BRICK_WALL.get())
+			.build();
 	
 	public static void init() {
 	

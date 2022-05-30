@@ -53,7 +53,7 @@ public class AMBlockLootTableProvider extends FabricBlockLootTableProvider {
 	private static final String REDSTONE_TYPE_KEY = "RedstoneType";
 	private static final String ENERGY_STORAGE_KEY = "EnergyStorage";
 	private static final String ITEM_STORAGE_KEY = "ItemStorage";
-	private static final String FLUID_STORAGE_KEY = "FliidStorage";
+	private static final String FLUID_STORAGE_KEY = "FluidStorage";
 	
 	public static final List<Block> DROPS_SELF = ImmutableList.of(
 			AMBlocks.BLAZING_ASTEROID_STONE.get(),

@@ -90,33 +90,37 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 	
 	public static final Map<Block, Block> REGULAR_TO_SMOOTH = ImmutableMap.of(
 			AMBlocks.METEOR_STONE.get(), AMBlocks.SMOOTH_METEOR_STONE.get(),
-			AMBlocks.ASTEROID_STONE.get(), AMBlocks.SMOOTH_ASTEROID_STONE.get()
+			AMBlocks.ASTEROID_STONE.get(), AMBlocks.SMOOTH_ASTEROID_STONE.get(),
+			AMBlocks.MOON_STONE.get(), AMBlocks.SMOOTH_MOON_STONE.get(),
+			AMBlocks.DARK_MOON_STONE.get(), AMBlocks.SMOOTH_DARK_MOON_STONE.get()
 	);
 	
-	public static final Map<BlockFamily, BlockFamily> REGULAR_TO_POLISHED = ImmutableMap.of(
-			AMBlockFamilies.METEOR_STONE, AMBlockFamilies.POLISHED_METEOR_STONE,
-			AMBlockFamilies.ASTEROID_STONE, AMBlockFamilies.POLISHED_ASTEROID_STONE
+	public static final Map<BlockFamily, BlockFamily> SMOOTH_TO_POLISHED = ImmutableMap.of(
+			AMBlockFamilies.SMOOTH_METEOR_STONE, AMBlockFamilies.POLISHED_METEOR_STONE,
+			AMBlockFamilies.SMOOTH_ASTEROID_STONE, AMBlockFamilies.POLISHED_ASTEROID_STONE,
+			AMBlockFamilies.SMOOTH_MOON_STONE, AMBlockFamilies.POLISHED_MOON_STONE,
+			AMBlockFamilies.SMOOTH_DARK_MOON_STONE, AMBlockFamilies.POLISHED_DARK_MOON_STONE
 	);
 	
 	public static final Map<BlockFamily, BlockFamily> POLISHED_TO_BRICK = ImmutableMap.of(
 			AMBlockFamilies.POLISHED_METEOR_STONE, AMBlockFamilies.METEOR_STONE_BRICK,
-			AMBlockFamilies.POLISHED_ASTEROID_STONE, AMBlockFamilies.ASTEROID_STONE_BRICK
+			AMBlockFamilies.POLISHED_ASTEROID_STONE, AMBlockFamilies.ASTEROID_STONE_BRICK,
+			AMBlockFamilies.POLISHED_MOON_STONE, AMBlockFamilies.MOON_STONE_BRICK,
+			AMBlockFamilies.POLISHED_DARK_MOON_STONE, AMBlockFamilies.DARK_MOON_STONE_BRICK
 	);
 	
-	public static final Map<BlockFamily, BlockFamily> REGULAR_TO_BRICK = ImmutableMap.of(
-			AMBlockFamilies.METEOR_STONE, AMBlockFamilies.METEOR_STONE_BRICK,
-			AMBlockFamilies.ASTEROID_STONE, AMBlockFamilies.ASTEROID_STONE_BRICK
+	public static final Map<BlockFamily, BlockFamily> SMOOTH_TO_BRICK = ImmutableMap.of(
+			AMBlockFamilies.SMOOTH_METEOR_STONE, AMBlockFamilies.METEOR_STONE_BRICK,
+			AMBlockFamilies.SMOOTH_ASTEROID_STONE, AMBlockFamilies.ASTEROID_STONE_BRICK,
+			AMBlockFamilies.SMOOTH_MOON_STONE, AMBlockFamilies.MOON_STONE_BRICK,
+			AMBlockFamilies.SMOOTH_DARK_MOON_STONE, AMBlockFamilies.DARK_MOON_STONE_BRICK
 	);
 	
-	public static final Set<Map<BlockFamily, BlockFamily>> VARIANT_FAMILIES = ImmutableSet.of(
-			REGULAR_TO_POLISHED,
-			POLISHED_TO_BRICK
+	public static final Set<Map<BlockFamily, BlockFamily>> STONECUT_FAMILIES = ImmutableSet.of(
+			SMOOTH_TO_POLISHED,
+			POLISHED_TO_BRICK,
+			SMOOTH_TO_BRICK
 	);
-	
-	public static final Set<Map<BlockFamily, BlockFamily>> STONECUT_FAMILIES = ImmutableSet.<Map<BlockFamily, BlockFamily>>builder()
-																						   .addAll(VARIANT_FAMILIES)
-																						   .add(REGULAR_TO_BRICK)
-																						   .build();
 	
 	public static final Map<BlockFamily, BlockFamily> TRITURATED_BLOCK_FAMILIES = ImmutableMap.<BlockFamily, BlockFamily>builder()
 			.put(BlockFamilies.STONE_BRICK, BlockFamilies.STONE)
@@ -124,6 +128,8 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 			.put(BlockFamilies.POLISHED_BLACKSTONE_BRICK, BlockFamilies.POLISHED_BLACKSTONE)
 			.put(AMBlockFamilies.ASTEROID_STONE_BRICK, AMBlockFamilies.POLISHED_ASTEROID_STONE)
 			.put(AMBlockFamilies.METEOR_STONE_BRICK, AMBlockFamilies.POLISHED_METEOR_STONE)
+			.put(AMBlockFamilies.MOON_STONE_BRICK, AMBlockFamilies.POLISHED_MOON_STONE)
+			.put(AMBlockFamilies.DARK_MOON_STONE_BRICK, AMBlockFamilies.POLISHED_DARK_MOON_STONE)
 			.put(BlockFamilies.POLISHED_BLACKSTONE, BlockFamilies.BLACKSTONE)
 			.put(BlockFamilies.POLISHED_ANDESITE, BlockFamilies.ANDESITE)
 			.put(BlockFamilies.POLISHED_DIORITE, BlockFamilies.DIORITE)
@@ -131,10 +137,14 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 			.put(BlockFamilies.POLISHED_DEEPSLATE, BlockFamilies.COBBLED_DEEPSLATE)
 			.put(AMBlockFamilies.POLISHED_ASTEROID_STONE, AMBlockFamilies.ASTEROID_STONE)
 			.put(AMBlockFamilies.POLISHED_METEOR_STONE, AMBlockFamilies.METEOR_STONE)
+			.put(AMBlockFamilies.POLISHED_MOON_STONE, AMBlockFamilies.MOON_STONE)
+			.put(AMBlockFamilies.POLISHED_DARK_MOON_STONE, AMBlockFamilies.DARK_MOON_STONE)
 			.put(BlockFamilies.STONE, BlockFamilies.COBBLESTONE)
 			.put(BlockFamilies.DEEPSLATE, BlockFamilies.COBBLED_DEEPSLATE)
 			.put(AMBlockFamilies.SMOOTH_ASTEROID_STONE, AMBlockFamilies.ASTEROID_STONE)
 			.put(AMBlockFamilies.SMOOTH_METEOR_STONE, AMBlockFamilies.METEOR_STONE)
+			.put(AMBlockFamilies.SMOOTH_MOON_STONE, AMBlockFamilies.MOON_STONE)
+			.put(AMBlockFamilies.SMOOTH_DARK_MOON_STONE, AMBlockFamilies.DARK_MOON_STONE)
 			.build();
 	
 	public static final Map<Block, ItemConvertible> CONCRETE_TO_CONCRETE_POWDER = ImmutableMap.<Block, ItemConvertible>builder()
@@ -483,6 +493,7 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 		BlockFamilies.getFamilies().filter(AMBlockFamilies::isAstromineFamily).filter(BlockFamily::shouldGenerateRecipes).forEach(family -> generateFamily(exporter, family));
 		
 		STONECUT_FAMILIES.forEach(map -> map.forEach((originalFamily, cutFamily) -> {
+			offerStonecuttingRecipe(exporter, cutFamily.getBaseBlock(), originalFamily.getBaseBlock());
 			STONECUTTING_OFFERERS.forEach((variant, offerer) -> {
 				if (cutFamily.getVariants().containsKey(variant)) {
 					offerer.accept(exporter, cutFamily.getVariant(variant), originalFamily.getBaseBlock());
@@ -497,10 +508,7 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 		
 		POLISHED_TO_BRICK.forEach((polishedFamily, brickFamily) -> offerBricksRecipe(exporter, polishedFamily.getBaseBlock(), brickFamily.getBaseBlock()));
 		
-		REGULAR_TO_SMOOTH.forEach((regular, smooth) -> {
-			offerSmoothingRecipe(exporter, regular, smooth);
-			offerSmelting(exporter, ImmutableList.of(regular), smooth, 0.1f, 200, getRecipeName(smooth));
-		});
+		REGULAR_TO_SMOOTH.forEach((regular, smooth) -> offerSmoothingRecipe(exporter, regular, smooth));
 		
 		AMMaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateRecipes).forEach((family) -> {
 			AMCommon.LOGGER.info("Offering recipes for " + family.getName());

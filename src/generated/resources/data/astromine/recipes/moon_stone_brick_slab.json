@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "astromine:moon_stone_bricks"
+    }
+  },
+  "result": {
+    "item": "astromine:moon_stone_brick_slab",
+    "count": 6
+  }
+}

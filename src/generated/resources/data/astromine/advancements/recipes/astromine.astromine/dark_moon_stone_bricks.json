@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "astromine:dark_moon_stone_bricks"
+    ]
+  },
+  "criteria": {
+    "has_polished_dark_moon_stone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:polished_dark_moon_stone"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "astromine:dark_moon_stone_bricks"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_polished_dark_moon_stone",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -475,5 +475,16 @@ public class AMDatagenLists {
 				AMBlockFamilies.POLISHED_ASTEROID_STONE,
 				AMBlockFamilies.ASTEROID_STONE_BRICK
 		);
+
+		public static final List<BlockFamily> MOON_STONE_FAMILIES = ImmutableList.of(
+				AMBlockFamilies.MOON_STONE,
+				AMBlockFamilies.SMOOTH_MOON_STONE,
+				AMBlockFamilies.POLISHED_MOON_STONE,
+				AMBlockFamilies.MOON_STONE_BRICK,
+				AMBlockFamilies.DARK_MOON_STONE,
+				AMBlockFamilies.SMOOTH_DARK_MOON_STONE,
+				AMBlockFamilies.POLISHED_DARK_MOON_STONE,
+				AMBlockFamilies.DARK_MOON_STONE_BRICK
+		);
 	}
 }

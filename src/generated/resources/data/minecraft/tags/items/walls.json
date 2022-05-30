@@ -3,9 +3,15 @@
   "values": [
     "astromine:asteroid_stone_wall",
     "astromine:asteroid_stone_brick_wall",
+    "astromine:dark_moon_stone_wall",
+    "astromine:dark_moon_stone_brick_wall",
     "astromine:meteor_stone_wall",
     "astromine:meteor_stone_brick_wall",
+    "astromine:moon_stone_wall",
+    "astromine:moon_stone_brick_wall",
     "astromine:smooth_asteroid_stone_wall",
-    "astromine:smooth_meteor_stone_wall"
+    "astromine:smooth_dark_moon_stone_wall",
+    "astromine:smooth_meteor_stone_wall",
+    "astromine:smooth_moon_stone_wall"
   ]
 }
