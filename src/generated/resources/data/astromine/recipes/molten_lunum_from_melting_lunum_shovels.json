@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:lunum_shovels"
+  },
+  "output": {
+    "fluid": "astromine:molten_lunum",
+    "amount": 2000
+  },
+  "energy_input": 1760,
+  "time": 220
+}

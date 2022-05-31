@@ -5,6 +5,8 @@
     "#c:deepslate_ores",
     "#c:nether_ores",
     "#c:meteor_ores",
-    "#c:asteroid_ores"
+    "#c:asteroid_ores",
+    "#c:moon_ores",
+    "#c:dark_moon_ores"
   ]
 }

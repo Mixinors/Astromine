@@ -61,7 +61,8 @@ public class AMFluids {
 	public static final ExtendedFluid MOLTEN_STELLUM = ExtendedFluid.builder().fogColor(0x7EFCC181).tintColor(0x7EFCC181).name("molten_stellum").group(AMItemGroups.ASTROMINE).build();
 	public static final ExtendedFluid MOLTEN_TIN = ExtendedFluid.builder().fogColor(0x7EA4AAAA).tintColor(0x7EA4AAAA).name("molten_tin").group(AMItemGroups.ASTROMINE).build();
 	public static final ExtendedFluid MOLTEN_UNIVITE = ExtendedFluid.builder().fogColor(0x7EFF83DB).tintColor(0x7EFF83DB).name("molten_univite").group(AMItemGroups.ASTROMINE).customSprite(true).customHandler(true).build();
-	
+	public static final ExtendedFluid MOLTEN_LUNUM = ExtendedFluid.builder().fogColor(0x7E9ECCD3).tintColor(0x7E9ECCD3).name("molten_lunum").group(AMItemGroups.ASTROMINE).build();
+
 	public static final ExtendedFluid OIL = ExtendedFluid.builder().fogColor(0x7e121212).tintColor(0x7e121212).damage(0).toxic(false).infinite(false).name("oil").group(AMItemGroups.ASTROMINE).build();
 	
 	public static final ExtendedFluid FUEL = ExtendedFluid.builder().fogColor(0x7e968048).tintColor(0x7e968048).damage(0).toxic(false).infinite(false).name("fuel").group(AMItemGroups.ASTROMINE).build();

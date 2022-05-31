@@ -46,7 +46,7 @@ public class AMSoundEvents {
 	public static final RegistrySupplier<SoundEvent> STELLUM_ARMOR_EQUIPPED = register("item.armor.equip_stellum");
 	public static final RegistrySupplier<SoundEvent> GALAXIUM_ARMOR_EQUIPPED = register("item.armor.equip_galaxium");
 	public static final RegistrySupplier<SoundEvent> UNIVITE_ARMOR_EQUIPPED = register("item.armor.equip_univite");
-	
+	public static final RegistrySupplier<SoundEvent> LUNUM_ARMOR_EQUIPPED = register("item.armor.equip_lunum");
 	
 	public static final RegistrySupplier<SoundEvent> METEORIC_STEEL_ARMOR_EQUIPPED = register("item.armor.equip_meteoric_steel");
 	

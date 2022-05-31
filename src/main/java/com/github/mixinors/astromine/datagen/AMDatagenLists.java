@@ -237,7 +237,8 @@ public class AMDatagenLists {
 				AMFluids.MOLTEN_STEEL,
 				AMFluids.MOLTEN_STELLUM,
 				AMFluids.MOLTEN_TIN,
-				AMFluids.MOLTEN_UNIVITE
+				AMFluids.MOLTEN_UNIVITE,
+				AMFluids.MOLTEN_LUNUM
 		);
 		
 		public static final List<ExtendedFluid> FLUIDS = ImmutableList.<ExtendedFluid>builder()
@@ -432,7 +433,9 @@ public class AMDatagenLists {
 				BlockVariant.DEEPSLATE_ORE,
 				BlockVariant.NETHER_ORE,
 				BlockVariant.METEOR_ORE,
-				BlockVariant.ASTEROID_ORE
+				BlockVariant.ASTEROID_ORE,
+				BlockVariant.MOON_ORE,
+				BlockVariant.DARK_MOON_ORE
 		);
 	}
 	

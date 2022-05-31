@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:lunum_nugget_from_smelting_lunum_salvageables"
+    ]
+  },
+  "criteria": {
+    "has_lunum_salvageables": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:lunum_salvageables"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:lunum_nugget_from_smelting_lunum_salvageables"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_lunum_salvageables",
+      "has_the_recipe"
+    ]
+  ]
+}

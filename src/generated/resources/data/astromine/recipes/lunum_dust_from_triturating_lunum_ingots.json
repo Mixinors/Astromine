@@ -1,0 +1,12 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "tag": "c:lunum_ingots"
+  },
+  "output": {
+    "item": "astromine:lunum_dust",
+    "count": 1
+  },
+  "energy_input": 270,
+  "time": 60
+}

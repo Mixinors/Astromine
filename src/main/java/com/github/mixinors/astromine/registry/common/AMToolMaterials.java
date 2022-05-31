@@ -39,8 +39,8 @@ public class AMToolMaterials {
 	public static final ToolMaterial STELLUM = register(5, 2643, 8.0F, 6.0F, 15, () -> Ingredient.fromTag(AMTagKeys.createCommonItemTag("stellum_ingots")));
 	public static final ToolMaterial GALAXIUM = register(6, 3072, 11.0F, 5.0F, 18, () -> Ingredient.fromTag(AMTagKeys.createCommonItemTag("galaxiums")));
 	public static final ToolMaterial UNIVITE = register(7, 3918, 12.0F, 6.0F, 22, () -> Ingredient.fromTag(AMTagKeys.createCommonItemTag("univite_ingots")));
-	
-	
+	public static final ToolMaterial LUNUM = register(5, 534, 7.0F, 4.5F, 8, () -> Ingredient.fromTag(AMTagKeys.createCommonItemTag("lunum_ingots")));
+
 	public static final ToolMaterial METEORIC_STEEL = register(3, 949, 10.5F, 3.5f, 10, () -> Ingredient.fromTag(AMTagKeys.createCommonItemTag("meteoric_steel_ingots")));
 	
 	public static final ToolMaterial PRIMITIVE_DRILL = register(2, Integer.MAX_VALUE, 5.0F, 1.5F, 12, () -> Ingredient.EMPTY);

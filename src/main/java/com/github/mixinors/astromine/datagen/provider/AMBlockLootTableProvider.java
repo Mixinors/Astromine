@@ -116,7 +116,7 @@ public class AMBlockLootTableProvider extends FabricBlockLootTableProvider {
 					if (family.shouldGenerateLootTable(variant)) {
 						switch (variant) {
 							case BLOCK, RAW_ORE_BLOCK -> addDrop(block);
-							case STONE_ORE, DEEPSLATE_ORE, NETHER_ORE -> {
+							case STONE_ORE, DEEPSLATE_ORE, NETHER_ORE, MOON_ORE, DARK_MOON_ORE -> {
 								Item drop;
 								
 								if (family.hasVariant(ItemVariant.RAW_ORE)) {
@@ -125,7 +125,7 @@ public class AMBlockLootTableProvider extends FabricBlockLootTableProvider {
 									drop = family.getBaseItem();
 								}
 								
-								addDrop(block, ($) -> oreDrops(block, drop));
+								addDrop(block, oreDrops(block, drop));
 							}
 							case METEOR_ORE -> this.addDrop(block, oreDrops(block, family.getVariant(ItemVariant.METEOR_ORE_CLUSTER)));
 							case ASTEROID_ORE -> this.addDrop(block, oreDrops(block, family.getVariant(ItemVariant.ASTEROID_ORE_CLUSTER)));

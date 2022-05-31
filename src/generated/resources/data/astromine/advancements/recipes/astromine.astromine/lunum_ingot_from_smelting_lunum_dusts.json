@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:lunum_ingot_from_smelting_lunum_dusts"
+    ]
+  },
+  "criteria": {
+    "has_lunum_dusts": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:lunum_dusts"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:lunum_ingot_from_smelting_lunum_dusts"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_lunum_dusts",
+      "has_the_recipe"
+    ]
+  ]
+}

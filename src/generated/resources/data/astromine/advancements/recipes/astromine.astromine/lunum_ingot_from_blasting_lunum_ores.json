@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:lunum_ingot_from_blasting_lunum_ores"
+    ]
+  },
+  "criteria": {
+    "has_lunum_ores": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:lunum_ores"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:lunum_ingot_from_blasting_lunum_ores"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_lunum_ores",
+      "has_the_recipe"
+    ]
+  ]
+}

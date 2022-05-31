@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "astromine:raw_lunum_from_raw_lunum_blocks"
+    ]
+  },
+  "criteria": {
+    "has_raw_lunum_blocks": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:raw_lunum_blocks"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "astromine:raw_lunum_from_raw_lunum_blocks"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_raw_lunum_blocks",
+      "has_the_recipe"
+    ]
+  ]
+}

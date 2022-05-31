@@ -404,6 +404,23 @@ public class AMMaterialFamilies {
 			.miningLevel(MiningLevels.NETHERITE)
 			.moltenFluid(AMFluids.MOLTEN_METEORIC_STEEL, 2.6F)
 			.build();
+
+	// Astromine Moon Ingots
+
+	public static final MaterialFamily LUNUM = register("lunum", AMItems.LUNUM_INGOT.get(), MaterialType.INGOT)
+			.block(AMBlocks.LUNUM_BLOCK.get())
+			.nugget(AMItems.LUNUM_NUGGET.get())
+			.moonOre(AMBlocks.LUNUM_ORE.get(), AMBlocks.DARK_LUNUM_ORE.get())
+			.rawOre(AMItems.RAW_LUNUM.get(), AMBlocks.RAW_LUNUM_BLOCK.get())
+			.dust(AMItems.LUNUM_DUST.get(), AMItems.LUNUM_TINY_DUST.get())
+			.tools(AMItems.LUNUM_PICKAXE.get(), AMItems.LUNUM_AXE.get(), AMItems.LUNUM_SHOVEL.get(), AMItems.LUNUM_SWORD.get(), AMItems.LUNUM_HOE.get())
+			.armor(AMItems.LUNUM_HELMET.get(), AMItems.LUNUM_CHESTPLATE.get(), AMItems.LUNUM_LEGGINGS.get(), AMItems.LUNUM_BOOTS.get())
+			.gear(AMItems.LUNUM_GEAR.get())
+			.plate(AMItems.LUNUM_PLATE.get())
+			.validForBeacon()
+			.miningLevel(MiningLevels.STONE)
+			.moltenFluid(AMFluids.MOLTEN_LUNUM)
+			.build();
 	
 	// Astromine Misc
 	

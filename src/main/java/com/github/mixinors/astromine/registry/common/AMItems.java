@@ -95,6 +95,7 @@ public class AMItems {
 	public static final RegistrySupplier<Item> METITE_NUGGET = register("metite_nugget", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> STELLUM_NUGGET = register("stellum_nugget", () -> new Item(AMItems.getSettings().fireproof()));
 	public static final RegistrySupplier<Item> UNIVITE_NUGGET = register("univite_nugget", () -> new Item(AMItems.getSettings().fireproof()));
+	public static final RegistrySupplier<Item> LUNUM_NUGGET = register("lunum_nugget", () -> new Item(AMItems.getSettings()));
 	
 	public static final RegistrySupplier<Item> TIN_NUGGET = register("tin_nugget", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> SILVER_NUGGET = register("silver_nugget", () -> new Item(AMItems.getSettings()));
@@ -129,6 +130,7 @@ public class AMItems {
 	public static final RegistrySupplier<Item> METITE_INGOT = register("metite_ingot", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> STELLUM_INGOT = register("stellum_ingot", () -> new Item(AMItems.getSettings().fireproof()));
 	public static final RegistrySupplier<Item> UNIVITE_INGOT = register("univite_ingot", () -> new Item(AMItems.getSettings().fireproof()));
+	public static final RegistrySupplier<Item> LUNUM_INGOT = register("lunum_ingot", () -> new Item(AMItems.getSettings()));
 	
 	public static final RegistrySupplier<Item> TIN_INGOT = register("tin_ingot", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> SILVER_INGOT = register("silver_ingot", () -> new Item(AMItems.getSettings()));
@@ -144,11 +146,14 @@ public class AMItems {
 	public static final RegistrySupplier<Item> RAW_SILVER = register("raw_silver", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> RAW_LEAD = register("raw_lead", () -> new Item(AMItems.getSettings()));
 	
+	public static final RegistrySupplier<Item> RAW_LUNUM = register("raw_lunum", () -> new Item(AMItems.getSettings()));
+	
 	public static final RegistrySupplier<Item> METITE_DUST = register("metite_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> ASTERITE_DUST = register("asterite_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> STELLUM_DUST = register("stellum_dust", () -> new Item(AMItems.getSettings().fireproof()));
 	public static final RegistrySupplier<Item> GALAXIUM_DUST = register("galaxium_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> UNIVITE_DUST = register("univite_dust", () -> new Item(AMItems.getSettings().fireproof()));
+	public static final RegistrySupplier<Item> LUNUM_DUST = register("lunum_dust", () -> new Item(AMItems.getSettings()));
 	
 	public static final RegistrySupplier<Item> TIN_DUST = register("tin_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> SILVER_DUST = register("silver_dust", () -> new Item(AMItems.getSettings()));
@@ -181,6 +186,7 @@ public class AMItems {
 	public static final RegistrySupplier<Item> STELLUM_TINY_DUST = register("stellum_tiny_dust", () -> new Item(AMItems.getSettings().fireproof()));
 	public static final RegistrySupplier<Item> GALAXIUM_TINY_DUST = register("galaxium_tiny_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> UNIVITE_TINY_DUST = register("univite_tiny_dust", () -> new Item(AMItems.getSettings().fireproof()));
+	public static final RegistrySupplier<Item> LUNUM_TINY_DUST = register("lunum_tiny_dust", () -> new Item(AMItems.getSettings()));
 	
 	public static final RegistrySupplier<Item> TIN_TINY_DUST = register("tin_tiny_dust", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> SILVER_TINY_DUST = register("silver_tiny_dust", () -> new Item(AMItems.getSettings()));
@@ -213,6 +219,7 @@ public class AMItems {
 	public static final RegistrySupplier<Item> METITE_PLATE = register("metite_plate", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> STELLUM_PLATE = register("stellum_plate", () -> new Item(AMItems.getSettings().fireproof()));
 	public static final RegistrySupplier<Item> UNIVITE_PLATE = register("univite_plate", () -> new Item(AMItems.getSettings().fireproof()));
+	public static final RegistrySupplier<Item> LUNUM_PLATE = register("lunum_plate", () -> new Item(AMItems.getSettings()));
 	
 	public static final RegistrySupplier<Item> TIN_PLATE = register("tin_plate", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> SILVER_PLATE = register("silver_plate", () -> new Item(AMItems.getSettings()));
@@ -232,6 +239,7 @@ public class AMItems {
 	public static final RegistrySupplier<Item> METITE_GEAR = register("metite_gear", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> STELLUM_GEAR = register("stellum_gear", () -> new Item(AMItems.getSettings().fireproof()));
 	public static final RegistrySupplier<Item> UNIVITE_GEAR = register("univite_gear", () -> new Item(AMItems.getSettings().fireproof()));
+	public static final RegistrySupplier<Item> LUNUM_GEAR = register("lunum_gear", () -> new Item(AMItems.getSettings()));
 	
 	public static final RegistrySupplier<Item> TIN_GEAR = register("tin_gear", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> SILVER_GEAR = register("silver_gear", () -> new Item(AMItems.getSettings()));
@@ -289,6 +297,12 @@ public class AMItems {
 	public static final RegistrySupplier<ShovelItem> UNIVITE_SHOVEL = register("univite_shovel", () -> new ShovelItem(AMToolMaterials.UNIVITE, 1.5f, -3.0f, AMItems.getSettings().fireproof()));
 	public static final RegistrySupplier<HoeItem> UNIVITE_HOE = register("univite_hoe", () -> new HoeItem(AMToolMaterials.UNIVITE, -6, 0f, AMItems.getSettings().fireproof()));
 	public static final RegistrySupplier<Item> UNIVITE_SWORD = register("univite_sword", () -> new SwordItem(AMToolMaterials.UNIVITE, 3, -2.4f, AMItems.getSettings().fireproof()));
+
+	public static final RegistrySupplier<PickaxeItem> LUNUM_PICKAXE = register("lunum_pickaxe", () -> new PickaxeItem(AMToolMaterials.LUNUM, 1, -2.8f, AMItems.getSettings()));
+	public static final RegistrySupplier<AxeItem> LUNUM_AXE = register("lunum_axe", () -> new AxeItem(AMToolMaterials.LUNUM, 5f, -3.0f, AMItems.getSettings()));
+	public static final RegistrySupplier<ShovelItem> LUNUM_SHOVEL = register("lunum_shovel", () -> new ShovelItem(AMToolMaterials.LUNUM, 1.5f, -3.0f, AMItems.getSettings()));
+	public static final RegistrySupplier<HoeItem> LUNUM_HOE = register("lunum_hoe", () -> new HoeItem(AMToolMaterials.LUNUM, -4, 0f, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> LUNUM_SWORD = register("lunum_sword", () -> new SwordItem(AMToolMaterials.LUNUM, 3, -2.4f, AMItems.getSettings()));
 	
 	public static final RegistrySupplier<PickaxeItem> METEORIC_STEEL_PICKAXE = register("meteoric_steel_pickaxe", () -> new PickaxeItem(AMToolMaterials.METEORIC_STEEL, 1, -2.8f, AMItems.getSettings()));
 	public static final RegistrySupplier<AxeItem> METEORIC_STEEL_AXE = register("meteoric_steel_axe", () -> new AxeItem(AMToolMaterials.METEORIC_STEEL, 5f, -3.0f, AMItems.getSettings()));
@@ -335,6 +349,11 @@ public class AMItems {
 	public static final RegistrySupplier<Item> UNIVITE_CHESTPLATE = register("univite_chestplate", () -> new AnimatedArmorItem(AMArmorMaterials.UNIVITE, EquipmentSlot.CHEST, AMItems.getSettings().fireproof(), 18));
 	public static final RegistrySupplier<Item> UNIVITE_LEGGINGS = register("univite_leggings", () -> new AnimatedArmorItem(AMArmorMaterials.UNIVITE, EquipmentSlot.LEGS, AMItems.getSettings().fireproof(), 18));
 	public static final RegistrySupplier<Item> UNIVITE_BOOTS = register("univite_boots", () -> new AnimatedArmorItem(AMArmorMaterials.UNIVITE, EquipmentSlot.FEET, AMItems.getSettings().fireproof(), 18));
+
+	public static final RegistrySupplier<Item> LUNUM_HELMET = register("lunum_helmet", () -> new ArmorItem(AMArmorMaterials.LUNUM, EquipmentSlot.HEAD, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> LUNUM_CHESTPLATE = register("lunum_chestplate", () -> new ArmorItem(AMArmorMaterials.LUNUM, EquipmentSlot.CHEST, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> LUNUM_LEGGINGS = register("lunum_leggings", () -> new ArmorItem(AMArmorMaterials.LUNUM, EquipmentSlot.LEGS, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> LUNUM_BOOTS = register("lunum_boots", () -> new ArmorItem(AMArmorMaterials.LUNUM, EquipmentSlot.FEET, AMItems.getSettings()));
 	
 	public static final RegistrySupplier<Item> METEORIC_STEEL_HELMET = register("meteoric_steel_helmet", () -> new ArmorItem(AMArmorMaterials.METEORIC_STEEL, EquipmentSlot.HEAD, AMItems.getSettings()));
 	public static final RegistrySupplier<Item> METEORIC_STEEL_CHESTPLATE = register("meteoric_steel_chestplate", () -> new ArmorItem(AMArmorMaterials.METEORIC_STEEL, EquipmentSlot.CHEST, AMItems.getSettings()));

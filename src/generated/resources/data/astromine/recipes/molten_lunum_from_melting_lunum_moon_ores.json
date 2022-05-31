@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:lunum_moon_ores"
+  },
+  "output": {
+    "fluid": "astromine:molten_lunum",
+    "amount": 12000
+  },
+  "energy_input": 5600,
+  "time": 700
+}
