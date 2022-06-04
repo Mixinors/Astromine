@@ -25,10 +25,6 @@ pluginManagement {
 	plugins {
 		id "dev.architectury.loom" version loomVersion
 
-		id "org.jetbrains.kotlin.jvm" version kotlinVersion
-
-		id "org.jetbrains.kotlin.plugin.serialization" version kotlinxSerilizationVersion
-
 		id "org.cadixdev.licenser" version licenserVersion
 
 		id "com.matthewprenger.cursegradle" version curseGradleVersion

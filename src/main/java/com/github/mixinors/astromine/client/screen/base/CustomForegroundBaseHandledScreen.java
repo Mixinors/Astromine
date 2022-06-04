@@ -33,7 +33,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class CustomForegroundBaseHandledScreen<T extends BaseScreenHandler> extends BaseHandledScreen<T> {
-	public CustomForegroundBaseHandledScreen(@NotNull BaseScreenHandler handler, @NotNull PlayerInventory inventory, @NotNull Text title) {
+	public CustomForegroundBaseHandledScreen(@NotNull T handler, @NotNull PlayerInventory inventory, @NotNull Text title) {
 		super(handler, inventory, title);
 	}
 	

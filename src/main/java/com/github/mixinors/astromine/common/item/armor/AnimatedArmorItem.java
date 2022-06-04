@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.common.item.armor;
 
 import com.mojang.blaze3d.platform.TextureUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
-import dev.vini2003.hammer.core.api.client.util.DrawingUtils;
+import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.RenderPhase;
@@ -66,7 +66,7 @@ public class AnimatedArmorItem extends ArmorItem {
 			beginAction = () -> {
 				RenderSystem.enableTexture();
 				
-				var textureManager = DrawingUtils.getTextureManager();
+				var textureManager = DrawingUtil.getTextureManager();
 				
 				var texture = textureManager.getTexture(id);
 				

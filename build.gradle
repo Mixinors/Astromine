@@ -16,19 +16,11 @@ plugins {
 
 	// Licenser
 	id "org.cadixdev.licenser"
-
-	// Kotlin
-	id "org.jetbrains.kotlin.jvm"
-
-	// KotlinX Serialization
-	id "org.jetbrains.kotlin.plugin.serialization"
 }
 
 apply plugin: "maven-publish"
 apply plugin: "dev.architectury.loom"
 apply plugin: "com.matthewprenger.cursegradle"
-apply plugin: "org.jetbrains.kotlin.jvm"
-apply plugin: "org.jetbrains.kotlin.plugin.serialization"
 apply plugin: 'org.cadixdev.licenser'
 
 apply from: 'dependencies.gradle'
@@ -234,11 +226,6 @@ configurations {
 
 jar {
 	classifier("dev")
-}
-
-remapJar {
-	input.set(jar.archiveFile)
-	classifier(null)
 }
 
 artifacts {

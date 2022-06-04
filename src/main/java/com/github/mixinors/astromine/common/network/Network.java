@@ -28,7 +28,7 @@ import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.google.common.base.Objects;
 import com.google.common.collect.Sets;
-import dev.vini2003.hammer.core.api.common.util.NbtUtils;
+import dev.vini2003.hammer.core.api.common.util.NbtUtil;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtLong;
 import net.minecraft.util.math.BlockPos;
@@ -125,7 +125,7 @@ public final class Network<T> {
 	) {
 		public static Member fromNbt(NbtCompound nbt) {
 			return new Member(
-					NbtUtils.getBlockPos(nbt, POSITION_KEY),
+					NbtUtil.getBlockPos(nbt, POSITION_KEY),
 					Direction.valueOf(nbt.getString(DIRECTION_KEY)),
 					StorageSiding.valueOf(nbt.getString(SIDING_KEY))
 			);
@@ -134,7 +134,7 @@ public final class Network<T> {
 		public NbtCompound toNbt() {
 			var nbt = new NbtCompound();
 			
-			NbtUtils.putBlockPos(nbt, POSITION_KEY, blockPos);
+			NbtUtil.putBlockPos(nbt, POSITION_KEY, blockPos);
 			
 			nbt.putString(DIRECTION_KEY, direction.name());
 			nbt.putString(SIDING_KEY, siding.name());

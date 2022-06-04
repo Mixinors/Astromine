@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.util;
 
-import dev.vini2003.hammer.core.api.common.util.NumberUtils;
+import dev.vini2003.hammer.core.api.common.util.NumberUtil;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -53,7 +53,7 @@ public class TextUtils {
 	}
 	
 	public static LiteralText getAmount(long amount, char unit) {
-		return new LiteralText(NumberUtils.getPrettyShortenedString(amount, "" + unit));
+		return new LiteralText(NumberUtil.getPrettyShortenedString(amount, "" + unit));
 	}
 	
 	public static MutableText getEnergyAmount(long amount) {

@@ -36,16 +36,16 @@ import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
 import dev.architectury.event.events.client.ClientTooltipEvent;
 import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
-import dev.vini2003.hammer.core.api.client.util.DrawingUtils;
-import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
+import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
+import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
-import dev.vini2003.hammer.core.api.common.util.FluidTextUtils;
-import dev.vini2003.hammer.core.api.common.util.TextUtils;
+import dev.vini2003.hammer.core.api.common.util.FluidTextUtil;
+import dev.vini2003.hammer.core.api.common.util.TextUtil;
 import dev.vini2003.hammer.gui.api.client.event.InGameHudEvents;
 import dev.vini2003.hammer.gui.api.common.widget.bar.HudBarWidget;
 import dev.vini2003.hammer.gui.api.common.widget.bar.ImageBarWidget;
-import dev.vini2003.hammer.gui.energy.api.common.util.EnergyTextUtils;
+import dev.vini2003.hammer.gui.energy.api.common.util.EnergyTextUtil;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
@@ -63,9 +63,10 @@ import java.util.ArrayList;
 
 public class AMEvents {
 	public static void init() {
-		var spaceSuitEnergyBar = new ImageBarWidget(
+		var spaceSuitEnergyBar = new ImageBarWidget();
+		spaceSuitEnergyBar.setMaximum(
 				() -> {
-					var client = InstanceUtils.getClient();
+					var client = InstanceUtil.getClient();
 					
 					if (client != null && client.player != null) {
 						var chestStack = client.player.getEquippedStack(EquipmentSlot.CHEST);
@@ -80,9 +81,11 @@ public class AMEvents {
 					}
 					
 					return 100.0F;
-				},
+				}
+		);
+		spaceSuitEnergyBar.setCurrent(
 				() -> {
-					var client = InstanceUtils.getClient();
+					var client = InstanceUtil.getClient();
 					
 					if (client != null && client.player != null) {
 						var chestStack = client.player.getEquippedStack(EquipmentSlot.CHEST);
@@ -107,9 +110,13 @@ public class AMEvents {
 		spaceSuitEnergyBar.setForegroundTexture(new ImageTexture(AMCommon.id("textures/widget/vertical_energy_bar_foreground.png")));
 		spaceSuitEnergyBar.setBackgroundTexture(new ImageTexture(AMCommon.id("textures/widget/vertical_energy_bar_background.png")));
 		
-		var spaceSuitOxygenBar = new ImageBarWidget(
+		spaceSuitEnergyBar.setPosition(new Position(0.0F, 0.0F));
+		spaceSuitEnergyBar.setSize(new Size(9.0F, 81.0F));
+		
+		var spaceSuitOxygenBar = new ImageBarWidget();
+		spaceSuitOxygenBar.setMaximum(
 				() -> {
-					var client = InstanceUtils.getClient();
+					var client = InstanceUtil.getClient();
 					
 					if (client != null && client.player != null) {
 						var chestStack = client.player.getEquippedStack(EquipmentSlot.CHEST);
@@ -124,9 +131,11 @@ public class AMEvents {
 					}
 					
 					return 100.0F;
-				},
+				}
+		);
+		spaceSuitOxygenBar.setCurrent(
 				() -> {
-					var client = InstanceUtils.getClient();
+					var client = InstanceUtil.getClient();
 					
 					if (client != null && client.player != null) {
 						var chestStack = client.player.getEquippedStack(EquipmentSlot.CHEST);
@@ -151,9 +160,11 @@ public class AMEvents {
 		spaceSuitOxygenBar.setForegroundTexture(new ImageTexture(AMCommon.id("textures/widget/vertical_oxygen_bar_foreground.png")));
 		spaceSuitOxygenBar.setBackgroundTexture(new ImageTexture(AMCommon.id("textures/widget/vertical_oxygen_bar_background.png")));
 		
+		spaceSuitOxygenBar.setPosition(new Position(0.0F, 0.0F));
+		spaceSuitOxygenBar.setSize(new Size(9.0F, 81.0F));
 		
 		InGameHudEvents.RENDER.register(((matrices, provider, hud, collection) -> {
-			var client = InstanceUtils.getClient();
+			var client = InstanceUtil.getClient();
 			
 			if (client != null && client.player != null) {
 				var chestStack = client.player.getEquippedStack(EquipmentSlot.CHEST);
@@ -164,7 +175,7 @@ public class AMEvents {
 				spaceSuitOxygenBar.setHidden(hidden);
 				
 				if (!hidden) {
-					var itemRenderer = DrawingUtils.getItemRenderer();
+					var itemRenderer = DrawingUtil.getItemRenderer();
 					
 					itemRenderer.renderGuiItemIcon(new ItemStack(AMItems.ENERGY.get()), (int) spaceSuitEnergyBar.getX() - 4, (int) (spaceSuitEnergyBar.getY() + 81.0F + 1.0F));
 					itemRenderer.renderGuiItemIcon(new ItemStack(AMItems.FLUID.get()), (int) spaceSuitOxygenBar.getX() - 4, (int) (spaceSuitOxygenBar.getY() + 81.0F + 1.0F));
@@ -187,11 +198,12 @@ public class AMEvents {
 			collection.add(spaceSuitEnergyBar);
 			collection.add(spaceSuitOxygenBar);
 			
-			var bar = new HudBarWidget(
-					HudBarWidget.Side.RIGHT,
-					HudBarWidget.Type.CONTINUOS,
+			var bar = new HudBarWidget();
+			bar.setSide(HudBarWidget.Side.RIGHT);
+			bar.setType(HudBarWidget.Type.CONTINUOS);
+			bar.setMaximum(
 					() -> {
-						var client = InstanceUtils.getClient();
+						var client = InstanceUtil.getClient();
 						
 						if (client != null && client.player != null) {
 							var component = OxygenComponent.get(client.player);
@@ -202,9 +214,11 @@ public class AMEvents {
 						}
 						
 						return 100.0F;
-					},
+					}
+			);
+			bar.setCurrent(
 					() -> {
-						var client = InstanceUtils.getClient();
+						var client = InstanceUtil.getClient();
 						
 						if (client != null && client.player != null) {
 							var component = OxygenComponent.get(client.player);
@@ -221,7 +235,7 @@ public class AMEvents {
 			bar.setHorizontal(true);
 			
 			bar.setShow(() -> {
-				var client = InstanceUtils.getClient();
+				var client = InstanceUtil.getClient();
 				
 				if (client != null && client.player != null && !client.player.isCreative() && !client.player.isSpectator() && AMWorlds.isSpace(client.player.world.method_40134())) {
 					var component = OxygenComponent.get(client.player);
@@ -265,9 +279,9 @@ public class AMEvents {
 								emptyTooltip.add(new TranslatableText("text.astromine.empty").formatted(Formatting.GRAY));
 							} else {
 								if (context.isAdvanced()) {
-									tooltips.addAll(index, FluidTextUtils.getDetailedStorageTooltips(storage));
+									tooltips.addAll(index, FluidTextUtil.getDetailedStorageTooltips(storage));
 								} else {
-									tooltips.addAll(index, FluidTextUtils.getShortenedStorageTooltips(storage));
+									tooltips.addAll(index, FluidTextUtil.getShortenedStorageTooltips(storage));
 								}
 							}
 						}
@@ -282,9 +296,9 @@ public class AMEvents {
 				
 				if (energyStorages != null) {
 					if (context.isAdvanced()) {
-						tooltips.addAll(index, EnergyTextUtils.getDetailedTooltips(energyStorages));
+						tooltips.addAll(index, EnergyTextUtil.getDetailedTooltips(energyStorages));
 					} else {
-						tooltips.addAll(index, EnergyTextUtils.getShortenedTooltips(energyStorages));
+						tooltips.addAll(index, EnergyTextUtil.getShortenedTooltips(energyStorages));
 					}
 				}
 			}
@@ -298,7 +312,7 @@ public class AMEvents {
 					var key = pair.registryKey();
 					var pos = pair.blockPos();
 					
-					tooltip.add(TextUtils.EMPTY);
+					tooltip.add(TextUtil.getEmpty());
 					tooltip.add(new TranslatableText("text.astromine.selected.dimension.blockPos", key, pos.getX(), pos.getY(), pos.getZ()).formatted(Formatting.GRAY));
 				}
 			}
@@ -306,7 +320,7 @@ public class AMEvents {
 		
 		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
 			if (stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof EnergyCableBlock cableBlock) {
-				tooltip.add(new TranslatableText("text.astromine.tooltip.cable.speed", cableBlock.getNetworkType().getTransferRate()).styled(style -> style.withColor(EnergyTextUtils.COLOR_OVERRIDE.toRGB())));
+				tooltip.add(new TranslatableText("text.astromine.tooltip.cable.speed", cableBlock.getNetworkType().getTransferRate()).styled(style -> style.withColor(EnergyTextUtil.COLOR.toRgb())));
 			}
 		});
 		

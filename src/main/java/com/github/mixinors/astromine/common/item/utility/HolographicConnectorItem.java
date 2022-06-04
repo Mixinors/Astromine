@@ -28,7 +28,7 @@ import com.github.mixinors.astromine.common.block.HoloBridgeProjectorBlock;
 import com.github.mixinors.astromine.common.block.entity.HoloBridgeProjectorBlockEntity;
 import com.github.mixinors.astromine.registry.common.AMSoundEvents;
 import dev.architectury.hooks.block.BlockEntityHooks;
-import dev.vini2003.hammer.core.api.common.util.NbtUtils;
+import dev.vini2003.hammer.core.api.common.util.NbtUtil;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -216,15 +216,15 @@ public class HolographicConnectorItem extends Item {
 	private NbtCompound toNbt(RegistryKey<World> registryKey, BlockPos pos) {
 		var nbt = new NbtCompound();
 		
-		NbtUtils.putRegistryKey(nbt, WORLD_KEY, registryKey);
-		NbtUtils.putBlockPos(nbt, POSITION_KEY, pos);
+		NbtUtil.putRegistryKey(nbt, WORLD_KEY, registryKey);
+		NbtUtil.putBlockPos(nbt, POSITION_KEY, pos);
 		
 		return nbt;
 	}
 	
 	private Selection fromNbt(NbtCompound nbt) {
-		var registryKey = NbtUtils.<World>getRegistryKey(nbt, WORLD_KEY);
-		var pos = NbtUtils.getBlockPos(nbt, POSITION_KEY);
+		var registryKey = NbtUtil.<World>getRegistryKey(nbt, WORLD_KEY);
+		var pos = NbtUtil.getBlockPos(nbt, POSITION_KEY);
 		
 		return new Selection(registryKey, pos);
 	}

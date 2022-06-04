@@ -33,7 +33,7 @@ import com.shnupbups.cauldronlib.block.FullCauldronBlock;
 import dev.architectury.platform.Platform;
 import dev.architectury.registry.block.BlockProperties;
 import dev.architectury.registry.registries.RegistrySupplier;
-import dev.vini2003.hammer.core.api.common.color.Color;
+import dev.vini2003.hammer.core.api.client.color.Color;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricMaterialBuilder;
 import net.fabricmc.fabric.api.transfer.v1.fluid.CauldronFluidContent;
@@ -181,8 +181,8 @@ public abstract class ExtendedFluid extends FlowableFluid {
 	}
 	
 	public static class Builder {
-		private int fogColor = Color.WHITE.toRGB();
-		private int tintColor = Color.WHITE.toRGB();
+		private int fogColor = Color.WHITE.toRgb();
+		private int tintColor = Color.WHITE.toRgb();
 		
 		private float damage = 0.0F;
 		

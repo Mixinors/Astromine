@@ -25,9 +25,9 @@
 package com.github.mixinors.astromine.common.transfer;
 
 /**
- * A {@link RedstonType} which dictates in which Redstone power states a machine should run.
+ * A {@link RedstoneType} which dictates in which Redstone power states a machine should run.
  */
-public enum RedstonType {
+public enum RedstoneType {
 	/**
 	 * The machine will run when powered by Redstone.
 	 */
@@ -54,7 +54,7 @@ public enum RedstonType {
 		};
 	}
 	
-	public RedstonType next() {
+	public RedstoneType next() {
 		return switch (this) {
 			case WORK_WHEN_ON -> WORK_WHEN_OFF;
 			case WORK_WHEN_OFF -> WORK_ALWAYS;
@@ -62,7 +62,7 @@ public enum RedstonType {
 		};
 	}
 	
-	public RedstonType previous() {
+	public RedstoneType previous() {
 		return switch (this) {
 			case WORK_WHEN_ON -> WORK_ALWAYS;
 			case WORK_ALWAYS -> WORK_WHEN_OFF;

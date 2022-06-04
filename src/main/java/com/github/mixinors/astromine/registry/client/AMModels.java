@@ -28,7 +28,7 @@ import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.model.block.CableModel;
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
-import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
+import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.minecraft.client.render.model.*;
 import net.minecraft.client.render.model.json.JsonUnbakedModel;
@@ -79,7 +79,7 @@ public class AMModels {
 	
 	public static final Lazy<ModelTransformation> ITEM_HANDHELD_TRANSFORMATION = new Lazy<>(() -> {
 		try {
-			var resource = InstanceUtils.getClient().getResourceManager().getResource(new Identifier("minecraft:models/item/handheld.json"));
+			var resource = InstanceUtil.getClient().getResourceManager().getResource(new Identifier("minecraft:models/item/handheld.json"));
 			
 			var stream = resource.getInputStream();
 			

@@ -30,7 +30,7 @@ import com.google.common.collect.ImmutableList;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
-import dev.vini2003.hammer.gui.api.common.util.SlotUtils;
+import dev.vini2003.hammer.gui.api.common.util.SlotUtil;
 import dev.vini2003.hammer.gui.api.common.widget.bar.FluidBarWidget;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 import dev.vini2003.hammer.gui.api.common.widget.tab.TabWidget;
@@ -87,7 +87,7 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 	
 	protected TabWidget tabs;
 	
-	protected TabWidget.TabWidgetCollection tab;
+	protected TabWidget.TabCollection tab;
 	
 	public ExtendedEntityScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, int entityId) {
 		super(type.get(), syncId, player);
@@ -111,7 +111,7 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 	}
 	
 	@Override
-	public void initialize(int width, int height) {
+	public void init(int width, int height) {
 		var symbol = getSymbol();
 		
 		var player = getPlayer();
@@ -125,7 +125,7 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 		
 		add(tabs);
 		
-		tab = (TabWidget.TabWidgetCollection) tabs.addTab(symbol, () -> ImmutableList.of(entity.getDisplayName()));
+		tab = tabs.addTab(() -> symbol, () -> ImmutableList.of(entity.getDisplayName()));
 		tab.setPosition(new Position(tabs, 0.0F, PAD_25 + PAD_7));
 		tab.setSize(new Size(TABS_WIDTH, TABS_HEIGHT));
 		
@@ -148,13 +148,13 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 		
 		tab.add(inventoryTitle);
 		
-		playerSlots = SlotUtils.addPlayerInventory(inventoryPos, new Size(SLOT_WIDTH, SLOT_HEIGHT), tab, inventory);
+		playerSlots = SlotUtil.addPlayerInventory(inventoryPos, new Size(SLOT_WIDTH, SLOT_HEIGHT), tab, inventory);
 		
 		if (entity.hasEnergyStorage()) {
 			energyBar = new EnergyBarWidget();
 			energyBar.setPosition(new Position(tab, PAD_7, PAD_11));
 			energyBar.setSize(new Size(BAR_WIDTH, BAR_HEIGHT));
-			energyBar.setStorage(entity.getEnergyStorage());
+			energyBar.setStorage(() -> entity.getEnergyStorage());
 			energyBar.setSmooth(false);
 			energyBar.setCurrent(() -> (float) entity.getEnergyStorage().getAmount());
 			energyBar.setMaximum(() -> (float) entity.getEnergyStorage().getCapacity());
@@ -172,7 +172,7 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 			}
 			
 			fluidBar.setSize(new Size(BAR_WIDTH, BAR_HEIGHT));
-			fluidBar.setStorage(entity.getFluidStorage().getStorage(getDefaultFluidSlotForBar()));
+			fluidBar.setStorageView(() -> entity.getFluidStorage().getStorage(getDefaultFluidSlotForBar()));
 			fluidBar.setSmooth(false);
 			
 			tab.add(fluidBar);
@@ -182,11 +182,6 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 	@Override
 	public boolean canUse(PlayerEntity player) {
 		return this.entity.isAlive() && this.entity.distanceTo(player) < 8.0F;
-	}
-	
-	@Override
-	public boolean isClient() {
-		return getClient();
 	}
 	
 	public ExtendedEntity getEntity() {

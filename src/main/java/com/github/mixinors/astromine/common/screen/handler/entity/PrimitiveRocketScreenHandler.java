@@ -33,10 +33,11 @@ import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
+import dev.vini2003.hammer.gui.api.common.event.MouseClickedEvent;
+import dev.vini2003.hammer.gui.api.common.event.type.EventType;
 import dev.vini2003.hammer.gui.api.common.widget.bar.FluidBarWidget;
 import dev.vini2003.hammer.gui.api.common.widget.button.ButtonWidget;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
-import kotlin.Unit;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
@@ -60,14 +61,13 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 	}
 	
 	@Override
-	public void initialize(int width, int height) {
-		super.initialize(width, height);
+	public void init(int width, int height) {
+		super.init(width, height);
 		
 		
-		var launchButton = new ButtonWidget(() -> {
+		var launchButton = new ButtonWidget();
+		launchButton.onEvent(EventType.MOUSE_CLICKED, (MouseClickedEvent event) -> {
 			rocket.tryLaunch(this.getPlayer());
-			
-			return Unit.INSTANCE;
 		});
 		
 		launchButton.setPosition(new Position(tab, PAD_7, PAD_11 + (BAR_HEIGHT - LAUNCH_BUTTON_HEIGHT) / 2.0F));
@@ -99,7 +99,7 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 		firstInput.setPosition(new Position(fluidBar, BAR_WIDTH + PAD_3, 0.0F));
 		firstInput.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
-		var firstOutput = new SlotWidget(RocketEntity.ITEM_OUTPUT_SLOT_1, entity.getItemStorage(), (inventory, id, x, y) -> {
+		var firstOutput = new SlotWidget(entity.getItemStorage(), RocketEntity.ITEM_OUTPUT_SLOT_1, (inventory, id, x, y) -> {
 			var slot = new FilterSlot(inventory, id, x, y);
 			
 			slot.setInsertPredicate((stack) -> {
@@ -126,7 +126,7 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 		var secondFluidBar = new FluidBarWidget();
 		secondFluidBar.setPosition(new Position(tab, TABS_WIDTH - PAD_7 - (BAR_WIDTH), PAD_11));
 		secondFluidBar.setSize(new Size(BAR_WIDTH, BAR_HEIGHT));
-		secondFluidBar.setStorage(entity.getFluidStorage().getStorage(RocketEntity.FLUID_INPUT_SLOT_2));
+		secondFluidBar.setStorageView(() -> entity.getFluidStorage().getStorage(RocketEntity.FLUID_INPUT_SLOT_2));
 		secondFluidBar.setSmooth(false);
 		
 		var secondInput = new SlotWidget(RocketEntity.ITEM_INPUT_SLOT_2, entity.getItemStorage(), (inventory, id, x, y) -> {

@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.common.util;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.registry.common.AMFluids;
-import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
+import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
@@ -107,7 +107,7 @@ public class FluidUtils {
 				
 				@Override
 				public void reload(ResourceManager resourceManager) {
-					var client = InstanceUtils.getClient();
+					var client = InstanceUtil.getClient();
 					
 					var atlas = client.getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
 					
@@ -156,7 +156,7 @@ public class FluidUtils {
 			
 			@Override
 			public void reload(ResourceManager resourceManager) {
-				var client = InstanceUtils.getClient();
+				var client = InstanceUtil.getClient();
 				
 				var atlas = client.getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
 				
@@ -173,7 +173,7 @@ public class FluidUtils {
 			
 			@Override
 			public int getFluidColor(BlockRenderView view, BlockPos pos, FluidState state) {
-				var client = InstanceUtils.getClient();
+				var client = InstanceUtil.getClient();
 				
 				if (client == null || client.world == null) {
 					return UNIVITE_COLORS[0];

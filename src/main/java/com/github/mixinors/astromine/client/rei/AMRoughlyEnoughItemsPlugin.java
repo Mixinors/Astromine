@@ -55,12 +55,13 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.architectury.fluid.FluidStack;
 import dev.vini2003.hammer.core.api.client.scissor.Scissors;
-import dev.vini2003.hammer.core.api.client.util.DrawingUtils;
-import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
-import dev.vini2003.hammer.core.api.common.color.Color;
+import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
+import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
+import dev.vini2003.hammer.core.api.client.color.Color;
+import dev.vini2003.hammer.core.api.client.util.LayerUtil;
 import dev.vini2003.hammer.gui.api.client.screen.BaseHandledScreen;
 import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
-import dev.vini2003.hammer.gui.energy.api.common.util.EnergyTextUtils;
+import dev.vini2003.hammer.gui.energy.api.common.util.EnergyTextUtil;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.AbstractRenderer;
@@ -187,7 +188,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 			
 			@Override
 			public @Nullable Tooltip getTooltip(Point mouse) {
-				return Tooltip.create(mouse, EnergyTextUtils.ENERGY.styled(style -> style.withColor(EnergyTextUtils.COLOR_OVERRIDE.toRGB())), new LiteralText("" + energy + "E").formatted(Formatting.GRAY));
+				return Tooltip.create(mouse, EnergyTextUtil.getEnergy().styled(style -> style.withColor(EnergyTextUtil.COLOR.toRgb())), new LiteralText("" + energy + "E").formatted(Formatting.GRAY));
 			}
 		})).notFavoritesInteractable());
 	}
@@ -213,7 +214,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 			public @Nullable Rectangle getScreenBounds(BaseHandledScreen screen) {
 				var handler = (BaseScreenHandler) screen.getScreenHandler();
 				
-				var rectangle = handler.getHandler().getRectangle();
+				var rectangle = handler.getScreenHandler().getShape();
 				
 				return new Rectangle(rectangle.getStartPos().getX(), rectangle.getStartPos().getY(), rectangle.getWidth(), rectangle.getHeight());
 			}
@@ -243,7 +244,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 			if (background) {
 				var bounds = getBounds();
 				
-				var provider = InstanceUtils.getClient().getBufferBuilders().getEntityVertexConsumers();
+				var provider = InstanceUtil.getClient().getBufferBuilders().getEntityVertexConsumers();
 				
 				var height = (float) Math.ceil((float) bounds.height - ((double) System.currentTimeMillis() / (double) (speed / bounds.height) % (double) bounds.height));
 				
@@ -251,27 +252,38 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 					height = (float) Math.ceil((float) ((double) System.currentTimeMillis() / (double) (speed / bounds.height) % (double) bounds.height));
 				}
 				
-				DrawingUtils.drawTexturedQuad(
+				DrawingUtil.drawTexturedQuad(
 						matrices,
 						provider,
 						THIN_ENERGY_BACKGROUND_TEXTURE,
-						bounds.x,
-						bounds.y,
-						bounds.width,
-						bounds.height
+						bounds.x, bounds.y, 0.0F,
+						bounds.width, bounds.height,
+						0.0F, 0.0F,
+						1.0F, 1.0F,
+						0.0F, 0.0F, 0.0F,
+						DrawingUtil.DEFAULT_OVERLAY,
+						DrawingUtil.DEFAULT_LIGHT,
+						Color.WHITE,
+						LayerUtil.get(THIN_ENERGY_BACKGROUND_TEXTURE)
 				);
 				
 				var scissors = new Scissors((float) bounds.x, (float) bounds.y + ((float) bounds.height - height), (float) bounds.width, height, provider);
 				
-				DrawingUtils.drawTexturedQuad(
+				DrawingUtil.drawTexturedQuad(
 						matrices,
 						provider,
 						THIN_ENERGY_FOREGROUND_TEXTURE,
-						bounds.x,
-						bounds.y,
-						bounds.width,
-						bounds.height
+						bounds.x, bounds.y, 0.0F,
+						bounds.width, bounds.height,
+						0.0F, 0.0F,
+						1.0F, 1.0F,
+						0.0F, 0.0F, 0.0F,
+						DrawingUtil.DEFAULT_OVERLAY,
+						DrawingUtil.DEFAULT_LIGHT,
+						Color.WHITE,
+						LayerUtil.get(THIN_ENERGY_FOREGROUND_TEXTURE)
 				);
+				
 				
 				scissors.destroy();
 			}
@@ -318,7 +330,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 					height = (float) Math.ceil(((float) (bounds.height - ((double) System.currentTimeMillis() / (double) (speed / bounds.height) % (double) bounds.height))));
 				}
 				
-				var provider = InstanceUtils.getClient().getBufferBuilders().getEntityVertexConsumers();
+				var provider = InstanceUtil.getClient().getBufferBuilders().getEntityVertexConsumers();
 				
 				var fluidStack = (FluidStack) entry.getValue();
 				var fluid = fluidStack.getFluid();
@@ -328,17 +340,16 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 				var sprite = FluidVariantRendering.getSprite(fluidVariant);
 				var spriteColor = FluidVariantRendering.getColor(fluidVariant);
 				
-				DrawingUtils.drawTiledTexturedQuad(
+				DrawingUtil.drawTiledTexturedQuad(
 						matrices,
 						provider,
 						sprite.getId(),
-						bounds.x + 1.0F,
-						bounds.y + (bounds.height - height) + 1.0F,
-						bounds.width - 2.0F,
-						height - 2.0F,
+						bounds.x + 1.0F, bounds.y + (bounds.height - height) + 1.0F, getZOffset() + 1.0F,
+						bounds.width - 2.0F, height - 2.0F,
 						sprite.getWidth(),
 						sprite.getHeight(),
-						getZOffset() + 1.0F,
+						Integer.MAX_VALUE, Integer.MAX_VALUE,
+						0.0F, 0.0F,
 						sprite.getMinU(),
 						sprite.getMinV(),
 						sprite.getMaxU(),
@@ -346,13 +357,9 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 						0.0F,
 						0.0F,
 						0.0F,
-						DrawingUtils.DEFAULT_OVERLAY,
-						DrawingUtils.DEFAULT_LIGHT,
+						DrawingUtil.DEFAULT_OVERLAY,
+						DrawingUtil.DEFAULT_LIGHT,
 						new Color(spriteColor),
-						() -> Integer.MAX_VALUE,
-						() -> Integer.MAX_VALUE,
-						0.0F,
-						0.0F,
 						RenderLayer.getSolid()
 				);
 				

@@ -47,8 +47,8 @@ public class TrituratorScreenHandler extends ExtendedBlockEntityScreenHandler {
 	}
 	
 	@Override
-	public void initialize(int width, int height) {
-		super.initialize(width, height);
+	public void init(int width, int height) {
+		super.init(width, height);
 		
 		var input = new SlotWidget(TrituratorBlockEntity.INPUT_SLOT, triturator.getItemStorage(), (inventory, id, x, y) -> {
 			var slot = new FilterSlot(inventory, id, x, y);

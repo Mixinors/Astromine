@@ -51,8 +51,8 @@ public class MelterScreenHandler extends ExtendedBlockEntityScreenHandler {
 	}
 	
 	@Override
-	public void initialize(int width, int height) {
-		super.initialize(width, height);
+	public void init(int width, int height) {
+		super.init(width, height);
 		
 		var input = new SlotWidget(MelterBlockEntity.ITEM_INPUT_SLOT, melter.getItemStorage(), (inventory, id, x, y) -> {
 			var slot = new FilterSlot(inventory, id, x, y);

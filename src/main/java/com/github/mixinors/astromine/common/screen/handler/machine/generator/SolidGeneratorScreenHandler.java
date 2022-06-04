@@ -46,8 +46,8 @@ public class SolidGeneratorScreenHandler extends ExtendedBlockEntityScreenHandle
 	}
 	
 	@Override
-	public void initialize(int width, int height) {
-		super.initialize(width, height);
+	public void init(int width, int height) {
+		super.init(width, height);
 		
 		var input = new SlotWidget(SolidGeneratorBlockEntity.INPUT_SLOT, generator.getItemStorage(), (inventory, id, x, y) -> {
 			var slot = new FilterSlot(inventory, id, x, y);

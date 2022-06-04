@@ -32,15 +32,18 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
+import dev.vini2003.hammer.gui.api.common.event.MouseClickedEvent;
+import dev.vini2003.hammer.gui.api.common.event.type.EventType;
 import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
-import dev.vini2003.hammer.gui.api.common.util.SlotUtils;
-import dev.vini2003.hammer.gui.api.common.widget.BaseWidgetCollection;
+import dev.vini2003.hammer.gui.api.common.util.SlotUtil;
+import dev.vini2003.hammer.gui.api.common.widget.WidgetCollection;
 import dev.vini2003.hammer.gui.api.common.widget.button.ButtonWidget;
 import dev.vini2003.hammer.gui.api.common.widget.panel.PanelWidget;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.registry.Registry;
 import org.apache.commons.io.Charsets;
@@ -97,7 +100,7 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 	}
 	
 	@Override
-	public void initialize(int width, int height) {
+	public void init(int width, int height) {
 		var types = new ArrayList<String>() {
 			{
 				add("nugget");
@@ -132,11 +135,11 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 		
 		var player = getPlayer();
 		
-		SlotUtils.addPlayerInventory(new Position(panel.getX() + PAD_7, panel.getY() + PAD_7 + 9.0F + SLOT_WIDTH + SLOT_WIDTH + SLOT_WIDTH + PAD_7 + SLOT_WIDTH + PAD_7), new Size(SLOT_WIDTH, SLOT_HEIGHT), (BaseWidgetCollection) this, player.getInventory());
+		SlotUtil.addPlayerInventory(new Position(panel.getX() + PAD_7, panel.getY() + PAD_7 + 9.0F + SLOT_WIDTH + SLOT_WIDTH + SLOT_WIDTH + PAD_7 + SLOT_WIDTH + PAD_7), new Size(SLOT_WIDTH, SLOT_HEIGHT), (WidgetCollection) this, player.getInventory());
 		
-		var inputSlots = Lists.newArrayList(SlotUtils.addArray(new Position(panel.getX() + PAD_7, panel.getY() + PAD_7 + 9.0F), new Size(SLOT_WIDTH, SLOT_HEIGHT), panel, getInventory(), 3, 3, 0));
+		var inputSlots = Lists.newArrayList(SlotUtil.addArray(new Position(panel.getX() + PAD_7, panel.getY() + PAD_7 + 9.0F), new Size(SLOT_WIDTH, SLOT_HEIGHT), panel, getInventory(), 3, 3, 0));
 		
-		var outputSlot = new SlotWidget(9, getInventory());
+		var outputSlot = new SlotWidget(getInventory(), 9, Slot::new);
 		outputSlot.setPosition(new Position(panel.getX() + PAD_7 + SLOT_WIDTH * 3.0F + PAD_7, panel.getY() + PAD_7 + SLOT_WIDTH + 9.0F));
 		outputSlot.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
@@ -146,15 +149,15 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 		saveButton.setPosition(new Position(panel.getX() + PAD_7, panel.getY() + PAD_7 + 14.0F + SLOT_WIDTH * 3.0F));
 		saveButton.setSize(new Size(SLOT_WIDTH * 3.0F, SLOT_WIDTH));
 		saveButton.setLabel(new LiteralText("Save"));
-		saveButton.setClickAction(() -> {
+		saveButton.onEvent(EventType.MOUSE_CLICKED, (MouseClickedEvent event) -> {
 			var table = new HashMap<Integer, String>();
 			var inverseTable = new HashMap<String, Integer>();
 			var grid = new HashMap<Integer, String>();
 			
 			inputSlots.forEach((widget) -> {
-				var slot = widget.getSlot();
+				var slot = widget.getSlot().getIndex();
 				
-				var stack = widget.getBackendSlot().getStack();
+				var stack = widget.getSlot().getStack();
 				
 				if (!stack.isEmpty()) {
 					var name = Registry.ITEM.getId(stack.getItem()).toString();
@@ -173,7 +176,7 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 				}
 			});
 			
-			var outputStack = outputSlot.getBackendSlot().getStack();
+			var outputStack = outputSlot.getSlot().getStack();
 			
 			var outputName = Registry.ITEM.getId(outputStack.getItem()).toString();
 			
@@ -225,8 +228,6 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 			} catch (IOException exception) {
 				exception.printStackTrace();
 			}
-			
-			return null;
 		});
 		
 		panel.add(saveButton);
@@ -235,11 +236,5 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 	@Override
 	public boolean canUse(PlayerEntity player) {
 		return true;
-	}
-	
-	
-	@Override
-	public boolean isClient() {
-		return getClient();
 	}
 }

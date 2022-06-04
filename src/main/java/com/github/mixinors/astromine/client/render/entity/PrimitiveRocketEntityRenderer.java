@@ -28,7 +28,7 @@ import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.model.entity.PrimitiveRocketEntityModel;
 import com.github.mixinors.astromine.common.entity.rocket.PrimitiveRocketEntity;
 import com.github.mixinors.astromine.registry.client.AMEntityModelLayers;
-import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
+import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
@@ -54,7 +54,7 @@ public class PrimitiveRocketEntityRenderer extends EntityRenderer<PrimitiveRocke
 		
 		matrices.push();
 		
-		var client = InstanceUtils.getClient();
+		var client = InstanceUtil.getClient();
 		
 		var gameRenderer = client.gameRenderer;
 		

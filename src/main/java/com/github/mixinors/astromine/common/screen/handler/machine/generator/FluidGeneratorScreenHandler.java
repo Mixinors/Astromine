@@ -48,8 +48,8 @@ public class FluidGeneratorScreenHandler extends ExtendedBlockEntityScreenHandle
 	}
 	
 	@Override
-	public void initialize(int width, int height) {
-		super.initialize(width, height);
+	public void init(int width, int height) {
+		super.init(width, height);
 		
 		fluidBar.setPosition(new Position(tab, TABS_WIDTH / 2.0F - (BAR_WIDTH + PAD_7 + ARROW_WIDTH + PAD_7 + BAR_WIDTH) / 2.0F, PAD_11));
 		

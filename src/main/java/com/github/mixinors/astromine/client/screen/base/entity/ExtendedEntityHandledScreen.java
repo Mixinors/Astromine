@@ -31,7 +31,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
 public class ExtendedEntityHandledScreen<T extends ExtendedEntityScreenHandler> extends CustomForegroundBaseHandledScreen<T> {
-	public ExtendedEntityHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
+	public ExtendedEntityHandledScreen(T handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 	}
 }

@@ -47,8 +47,8 @@ public class CapacitorScreenHandler extends ExtendedBlockEntityScreenHandler {
 	}
 	
 	@Override
-	public void initialize(int width, int height) {
-		super.initialize(width, height);
+	public void init(int width, int height) {
+		super.init(width, height);
 		
 		if (!(capacitor instanceof CapacitorBlockEntity.Creative)) {
 			energyBar.setPosition(new Position(tab, TABS_WIDTH / 2.0F - BAR_WIDTH / 2.0F, PAD_11));
@@ -60,6 +60,7 @@ public class CapacitorScreenHandler extends ExtendedBlockEntityScreenHandler {
 		leftArrow.setHorizontal(true);
 		leftArrow.setPosition(new Position(energyBar, -PAD_7 - ARROW_WIDTH, (BAR_HEIGHT / 2.0F) - (ARROW_HEIGHT / 2.0F)));
 		leftArrow.setSize(new Size(ARROW_WIDTH, ARROW_HEIGHT));
+		leftArrow.setCurrent(0.0D);
 		
 		var input = new SlotWidget(CapacitorBlockEntity.INPUT_SLOT, capacitor.getItemStorage(), (inventory, id, x, y) -> {
 			var slot = new FilterSlot(inventory, id, x, y);
@@ -79,6 +80,7 @@ public class CapacitorScreenHandler extends ExtendedBlockEntityScreenHandler {
 		rightArrow.setHorizontal(true);
 		rightArrow.setPosition(new Position(energyBar, BAR_WIDTH + PAD_7, (BAR_HEIGHT / 2.0F) - (ARROW_HEIGHT / 2.0F)));
 		rightArrow.setSize(new Size(ARROW_WIDTH, ARROW_HEIGHT));
+		rightArrow.setCurrent(0.0D);
 		
 		var output = new SlotWidget(CapacitorBlockEntity.OUTPUT_SLOT, capacitor.getItemStorage(), (inventory, id, x, y) -> {
 			var slot = new FilterSlot(inventory, id, x, y);

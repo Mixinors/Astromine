@@ -6,14 +6,16 @@ project.ext.setDefaultApis = {
     useAsApi("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinalComponentsVersion}")
     useAsApi("dev.onyxstudios.cardinal-components-api:cardinal-components-item:${cardinalComponentsVersion}")
     useAsApi("dev.onyxstudios.cardinal-components-api:cardinal-components-world:${cardinalComponentsVersion}")
+	include("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinalComponentsVersion}")
+	include("dev.onyxstudios.cardinal-components-api:cardinal-components-block:${cardinalComponentsVersion}")
+	include("dev.onyxstudios.cardinal-components-api:cardinal-components-chunk:${cardinalComponentsVersion}")
+	include("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinalComponentsVersion}")
+	include("dev.onyxstudios.cardinal-components-api:cardinal-components-item:${cardinalComponentsVersion}")
+	include("dev.onyxstudios.cardinal-components-api:cardinal-components-world:${cardinalComponentsVersion}")
 
     // Shapes
-    useAsApi("com.terraformersmc.terraform-api:terraform-shapes-api-v1:${shapesVersion}")
-
-    // Fabric Language Kotlin
-    useAsCompileOnly("net.fabricmc:fabric-language-kotlin:${fabricLanguageKotlinVersion}")
-    useAsRuntimeOnly("net.fabricmc:fabric-language-kotlin:${fabricLanguageKotlinVersion}")
-    include("net.fabricmc:fabric-language-kotlin:${fabricLanguageKotlinVersion}")
+	useAsApi("com.terraformersmc.terraform-api:terraform-shapes-api-v1:${shapesVersion}")
+	include("com.terraformersmc.terraform-api:terraform-shapes-api-v1:${shapesVersion}")
 
     // Patchouli
     useAsApi("vazkii.patchouli:Patchouli:${patchouliVersion}")
@@ -22,25 +24,23 @@ project.ext.setDefaultApis = {
     useAsApiOptionally("com.terraformersmc:modmenu:${modMenuVersion}")
 
     // Tech Reborn Energy
-    useAsApi("teamreborn:energy:${energyVersion}")
+	useAsApi("teamreborn:energy:${energyVersion}")
+	include("teamreborn:energy:${energyVersion}")
 
     // Cloth Config
     useAsCompileOnly("me.shedaniel.cloth:cloth-config:${clothConfigApiVersion}")
     useAsRuntimeOnly("me.shedaniel.cloth:cloth-config-fabric:${clothConfigApiVersion}")
 
-    // Kotlin
-    useAsApi("org.jetbrains.kotlin:kotlin-stdlib:${project.kotlinVersion}")
-    useAsApi("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${project.kotlinVersion}")
-    useAsApi("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${project.kotlinVersion}")
-
     // PigLib
-    useAsApi("com.shnupbups:Piglib:${pigLibVersion}")
+	useAsApi("com.shnupbups:Piglib:${pigLibVersion}")
+	include("com.shnupbups:Piglib:${pigLibVersion}")
 
     // CauldronLib
-    useAsApi("com.shnupbups:CauldronLib:${cauldronLibVersion}")
+	useAsApi("com.shnupbups:CauldronLib:${cauldronLibVersion}")
+	include("com.shnupbups:CauldronLib:${cauldronLibVersion}")
 
     // Architectury API
-    useAsApi("dev.architectury:architectury-fabric:${architecturyApiVersion}")
+	useAsApi("dev.architectury:architectury-fabric:${architecturyApiVersion}")
 
     // RoughlyEnoughItems
     useAsApiOptionally "me.shedaniel:RoughlyEnoughItems-fabric:${roughlyEnoughItemsVersion}"

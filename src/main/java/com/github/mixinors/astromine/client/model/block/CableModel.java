@@ -28,7 +28,7 @@ import com.github.mixinors.astromine.common.block.entity.cable.CableBlockEntity;
 import com.github.mixinors.astromine.common.util.DirectionUtils;
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
-import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
+import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.fabricmc.fabric.api.client.model.BakedModelManagerHelper;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
@@ -75,7 +75,7 @@ public class CableModel implements FabricBakedModel, BakedModel, UnbakedModel {
 	
 	@Override
 	public void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<Random> randomSupplier, RenderContext context) {
-		var client = InstanceUtils.getClient();
+		var client = InstanceUtil.getClient();
 		
 		var centerModel = (FabricBakedModel) BakedModelManagerHelper.getModel(client.getBakedModelManager(), centerModelId);
 		var sideModel = (FabricBakedModel) BakedModelManagerHelper.getModel(client.getBakedModelManager(), sideModelId);
@@ -161,7 +161,7 @@ public class CableModel implements FabricBakedModel, BakedModel, UnbakedModel {
 	
 	@Override
 	public void emitItemQuads(ItemStack stack, Supplier<Random> randomSupplier, RenderContext context) {
-		var client = InstanceUtils.getClient();
+		var client = InstanceUtil.getClient();
 		
 		var centerModel = (FabricBakedModel) BakedModelManagerHelper.getModel(client.getBakedModelManager(), centerModelId);
 		
@@ -211,7 +211,7 @@ public class CableModel implements FabricBakedModel, BakedModel, UnbakedModel {
 	
 	@Override
 	public Sprite getParticleSprite() {
-		return BakedModelManagerHelper.getModel(InstanceUtils.getClient().getBakedModelManager(), centerModelId).getParticleSprite();
+		return BakedModelManagerHelper.getModel(InstanceUtil.getClient().getBakedModelManager(), centerModelId).getParticleSprite();
 	}
 	
 	@Override

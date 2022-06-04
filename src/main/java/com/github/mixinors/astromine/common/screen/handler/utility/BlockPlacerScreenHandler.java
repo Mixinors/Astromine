@@ -30,6 +30,7 @@ import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.math.BlockPos;
 
 public class BlockPlacerScreenHandler extends ExtendedBlockEntityScreenHandler {
@@ -38,10 +39,10 @@ public class BlockPlacerScreenHandler extends ExtendedBlockEntityScreenHandler {
 	}
 	
 	@Override
-	public void initialize(int width, int height) {
-		super.initialize(width, height);
+	public void init(int width, int height) {
+		super.init(width, height);
 		
-		var slot = new SlotWidget(0, blockEntity.getItemStorage());
+		var slot = new SlotWidget(0, blockEntity.getItemStorage(), Slot::new);
 		slot.setPosition(new Position(energyBar, (TABS_WIDTH / 2.0F - SLOT_WIDTH / 2.0F) - SLOT_WIDTH / 2.0F, BAR_HEIGHT / 2.0F - SLOT_HEIGHT / 2.0F));
 		slot.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		

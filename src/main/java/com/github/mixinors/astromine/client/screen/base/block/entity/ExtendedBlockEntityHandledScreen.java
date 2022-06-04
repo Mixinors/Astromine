@@ -32,7 +32,7 @@ import net.minecraft.text.Text;
 
 public class ExtendedBlockEntityHandledScreen<T extends ExtendedBlockEntityScreenHandler> extends CustomForegroundBaseHandledScreen<T> {
 	/** Instantiates a {@link ExtendedBlockEntityHandledScreen}. */
-	public ExtendedBlockEntityHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
+	public ExtendedBlockEntityHandledScreen(T handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 	}
 }

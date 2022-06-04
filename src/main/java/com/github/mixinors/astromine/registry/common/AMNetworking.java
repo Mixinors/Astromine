@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
-import com.github.mixinors.astromine.common.transfer.RedstonType;
+import com.github.mixinors.astromine.common.transfer.RedstoneType;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.StorageType;
 import dev.architectury.networking.NetworkManager;
@@ -36,7 +36,7 @@ import net.minecraft.util.math.Direction;
 public class AMNetworking {
 	public static final Identifier STORAGE_SIDING_UPDATE = AMCommon.id("storage_siding_update");
 	
-	public static final Identifier REDSTONE_CONTROL_UPDATE = AMCommon.id("redstone_control_update");
+	public static final Identifier REDSTONE_TYPE_UPDATE = AMCommon.id("redstone_type_update");
 	
 	public static final Identifier PRIMITIVE_ROCKET_SPAWN = AMCommon.id("primitive_rocket_spawn");
 	
@@ -70,10 +70,10 @@ public class AMNetworking {
 			});
 		}));
 		
-		NetworkManager.registerReceiver(NetworkManager.c2s(), REDSTONE_CONTROL_UPDATE, ((buf, context) -> {
+		NetworkManager.registerReceiver(NetworkManager.c2s(), REDSTONE_TYPE_UPDATE, ((buf, context) -> {
 			buf.retain();
 			
-			var control = buf.readEnumConstant(RedstonType.class);
+			var control = buf.readEnumConstant(RedstoneType.class);
 			var pos = buf.readBlockPos();
 			
 			context.queue(() -> {

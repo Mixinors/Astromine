@@ -49,8 +49,8 @@ public class ElectrolyzerScreenHandler extends ExtendedBlockEntityScreenHandler 
 	}
 	
 	@Override
-	public void initialize(int width, int height) {
-		super.initialize(width, height);
+	public void init(int width, int height) {
+		super.init(width, height);
 		
 		var arrow = new ArrowWidget();
 		arrow.setHorizontal(true);
@@ -62,13 +62,13 @@ public class ElectrolyzerScreenHandler extends ExtendedBlockEntityScreenHandler 
 		var firstOutputFluidBar = new FluidBarWidget();
 		firstOutputFluidBar.setPosition(new Position(arrow, ARROW_WIDTH + PAD_7, -(BAR_HEIGHT / 2.0F - ARROW_HEIGHT / 2.0F)));
 		firstOutputFluidBar.setSize(new Size(BAR_WIDTH, BAR_HEIGHT));
-		firstOutputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(ElectrolyzerBlockEntity.OUTPUT_SLOT_1));
+		firstOutputFluidBar.setStorageView(() -> blockEntity.getFluidStorage().getStorage(ElectrolyzerBlockEntity.OUTPUT_SLOT_1));
 		firstOutputFluidBar.setSmooth(false);
 		
 		var secondOutputFluidBar = new FluidBarWidget();
 		secondOutputFluidBar.setPosition(new Position(arrow, ARROW_WIDTH + PAD_7 + BAR_WIDTH + PAD_7, -(BAR_HEIGHT / 2.0F - ARROW_HEIGHT / 2.0F)));
 		secondOutputFluidBar.setSize(new Size(fluidBar));
-		secondOutputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(ElectrolyzerBlockEntity.OUTPUT_SLOT_2));
+		secondOutputFluidBar.setStorageView(() -> blockEntity.getFluidStorage().getStorage(ElectrolyzerBlockEntity.OUTPUT_SLOT_2));
 		secondOutputFluidBar.setSmooth(false);
 		
 		tab.add(firstOutputFluidBar);

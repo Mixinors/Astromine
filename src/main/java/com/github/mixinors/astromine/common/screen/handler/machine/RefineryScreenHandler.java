@@ -49,8 +49,8 @@ public class RefineryScreenHandler extends ExtendedBlockEntityScreenHandler {
 	}
 	
 	@Override
-	public void initialize(int width, int height) {
-		super.initialize(width, height);
+	public void init(int width, int height) {
+		super.init(width, height);
 		
 		var arrow = new ArrowWidget();
 		arrow.setHorizontal(true);
@@ -62,7 +62,7 @@ public class RefineryScreenHandler extends ExtendedBlockEntityScreenHandler {
 		var outputFluidBar = new FluidBarWidget();
 		outputFluidBar.setPosition(new Position(arrow, ARROW_WIDTH + PAD_7, -(BAR_HEIGHT / 2.0F - ARROW_HEIGHT / 2.0F)));
 		outputFluidBar.setSize(new Size(fluidBar));
-		outputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(RefineryBlockEntity.OUTPUT_SLOT));
+		outputFluidBar.setStorageView(() -> blockEntity.getFluidStorage().getStorage(RefineryBlockEntity.OUTPUT_SLOT));
 		outputFluidBar.setSmooth(false);
 		
 		tab.add(outputFluidBar);

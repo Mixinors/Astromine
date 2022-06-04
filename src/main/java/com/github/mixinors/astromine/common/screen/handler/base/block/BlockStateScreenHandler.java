@@ -64,9 +64,4 @@ public abstract class BlockStateScreenHandler extends BaseScreenHandler {
 		
 		return canUse(ScreenHandlerContext.create(player.getWorld(), blockPos), player, block);
 	}
-	
-	@Override
-	public boolean isClient() {
-		return getClient();
-	}
 }

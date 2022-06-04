@@ -31,7 +31,7 @@ import com.github.mixinors.astromine.common.util.VectorUtils;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.architectury.hooks.block.BlockEntityHooks;
-import dev.vini2003.hammer.core.api.common.color.Color;
+import dev.vini2003.hammer.core.api.client.color.Color;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalFacingBlock;

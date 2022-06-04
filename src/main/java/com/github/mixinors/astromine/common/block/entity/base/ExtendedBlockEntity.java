@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.common.block.entity.base;
 
 import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
 import com.github.mixinors.astromine.common.tick.Tickable;
-import com.github.mixinors.astromine.common.transfer.RedstonType;
+import com.github.mixinors.astromine.common.transfer.RedstoneType;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
@@ -82,7 +82,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	protected boolean syncItemStorage = true;
 	protected boolean syncFluidStorage = true;
 	
-	protected RedstonType redstonType = RedstonType.WORK_ALWAYS;
+	protected RedstoneType redstoneType = RedstoneType.WORK_ALWAYS;
 	
 	protected SimpleEnergyStorage energyStorage = null;
 	protected SimpleItemStorage itemStorage = null;
@@ -232,7 +232,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	
 	@Override
 	public void writeNbt(NbtCompound nbt) {
-		nbt.putString(REDSTONE_TYPE_KEY, redstonType.name());
+		nbt.putString(REDSTONE_TYPE_KEY, redstoneType.name());
 		
 		nbt.putDouble(PROGRESS_KEY, progress);
 		nbt.putDouble(LIMIT_KEY, limit);
@@ -267,7 +267,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	@Override
 	public void readNbt(@NotNull NbtCompound nbt) {
 		if (nbt.contains(REDSTONE_TYPE_KEY)) {
-			redstonType = RedstonType.valueOf(nbt.getString(REDSTONE_TYPE_KEY));
+			redstoneType = RedstoneType.valueOf(nbt.getString(REDSTONE_TYPE_KEY));
 		}
 		
 		if (nbt.contains(PROGRESS_KEY)) {
@@ -393,7 +393,7 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	 */
 	public boolean shouldRun() {
 		var powered = world.getReceivedRedstonePower(getPos()) > 0;
-		var shouldRun = redstonType.shouldRun(powered);
+		var shouldRun = redstoneType.shouldRun(powered);
 		
 		active = shouldRun;
 		
@@ -408,17 +408,17 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 	}
 	
 	/**
-	 * Returns this block entity's {@link #redstonType}.
+	 * Returns this block entity's {@link #redstoneType}.
 	 */
-	public RedstonType getRedstoneControl() {
-		return redstonType;
+	public RedstoneType getRedstoneType() {
+		return redstoneType;
 	}
 	
 	/**
-	 * Sets this block entity's {@link #redstonType}.
+	 * Sets this block entity's {@link #redstoneType}.
 	 */
-	public void setRedstoneControl(RedstonType redstonType) {
-		this.redstonType = redstonType;
+	public void setRedstoneControl(RedstoneType redstoneType) {
+		this.redstoneType = redstoneType;
 	}
 	
 	/**

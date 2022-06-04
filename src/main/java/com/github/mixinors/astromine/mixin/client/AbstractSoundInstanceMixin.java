@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.mixin.client;
 
 import com.github.mixinors.astromine.common.util.SoundUtils;
-import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
+import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.minecraft.client.sound.AbstractSoundInstance;
 import net.minecraft.sound.SoundCategory;
 import org.spongepowered.asm.mixin.Final;
@@ -54,7 +54,7 @@ public class AbstractSoundInstanceMixin {
 	private void astromine$getVolume(CallbackInfoReturnable<Float> cir) {
 		switch (this.category) {
 			case RECORDS, WEATHER, BLOCKS, HOSTILE, NEUTRAL, PLAYERS, AMBIENT -> {
-				var client = InstanceUtils.getClient();
+				var client = InstanceUtil.getClient();
 				
 				if (client == null || client.player == null) {
 					return;
@@ -73,7 +73,7 @@ public class AbstractSoundInstanceMixin {
 	private void astromine$getPitch(CallbackInfoReturnable<Float> cir) {
 		switch (this.category) {
 			case RECORDS, WEATHER, BLOCKS, HOSTILE, NEUTRAL, PLAYERS, AMBIENT -> {
-				var client = InstanceUtils.getClient();
+				var client = InstanceUtil.getClient();
 				
 				if (client == null || client.player == null) {
 					return;

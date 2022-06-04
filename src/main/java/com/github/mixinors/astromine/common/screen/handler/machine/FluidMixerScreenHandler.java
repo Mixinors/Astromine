@@ -49,13 +49,13 @@ public class FluidMixerScreenHandler extends ExtendedBlockEntityScreenHandler {
 	}
 	
 	@Override
-	public void initialize(int width, int height) {
-		super.initialize(width, height);
+	public void init(int width, int height) {
+		super.init(width, height);
 		
 		var secondInputFluidBar = new FluidBarWidget();
 		secondInputFluidBar.setPosition(new Position(fluidBar, BAR_WIDTH + PAD_7, 0.0F));
 		secondInputFluidBar.setSize(new Size(BAR_WIDTH, BAR_HEIGHT));
-		secondInputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(FluidMixerBlockEntity.INPUT_SLOT_2));
+		secondInputFluidBar.setStorageView(() -> blockEntity.getFluidStorage().getStorage(FluidMixerBlockEntity.INPUT_SLOT_2));
 		secondInputFluidBar.setSmooth(false);
 		
 		var arrow = new ArrowWidget();
@@ -68,7 +68,7 @@ public class FluidMixerScreenHandler extends ExtendedBlockEntityScreenHandler {
 		var outputFluidBar = new FluidBarWidget();
 		outputFluidBar.setPosition(new Position(arrow, ARROW_WIDTH + PAD_7, -(BAR_HEIGHT / 2.0F - ARROW_HEIGHT / 2.0F)));
 		outputFluidBar.setSize(new Size(BAR_WIDTH, BAR_HEIGHT));
-		outputFluidBar.setStorage(blockEntity.getFluidStorage().getStorage(FluidMixerBlockEntity.OUTPUT_SLOT));
+		outputFluidBar.setStorageView(() -> blockEntity.getFluidStorage().getStorage(FluidMixerBlockEntity.OUTPUT_SLOT));
 		outputFluidBar.setSmooth(false);
 		
 		tab.add(secondInputFluidBar);

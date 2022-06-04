@@ -47,8 +47,8 @@ public class AlloySmelterScreenHandler extends ExtendedBlockEntityScreenHandler 
 	}
 	
 	@Override
-	public void initialize(int width, int height) {
-		super.initialize(width, height);
+	public void init(int width, int height) {
+		super.init(width, height);
 		
 		var firstInput = new SlotWidget(AlloySmelterBlockEntity.INPUT_SLOT_1, smelter.getItemStorage(), (inventory, id, x, y) -> {
 			var slot = new FilterSlot(inventory, id, x, y);

@@ -34,7 +34,6 @@ import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
-import kotlin.Unit;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
@@ -56,8 +55,8 @@ public class TankScreenHandler extends ExtendedBlockEntityScreenHandler {
 	}
 	
 	@Override
-	public void initialize(int width, int height) {
-		super.initialize(width, height);
+	public void init(int width, int height) {
+		super.init(width, height);
 		
 		fluidBar.setPosition(new Position(width / 2.0F - BAR_WIDTH / 2.0F, fluidBar.getY()));
 		
@@ -121,7 +120,7 @@ public class TankScreenHandler extends ExtendedBlockEntityScreenHandler {
 		var filter = new FluidFilterWidget();
 		filter.setPosition(new Position(input, (SLOT_WIDTH / 2.0F - FILTER_WIDTH / 2.0F), SLOT_WIDTH + 2.0F)); // 2.0F centers the filter against the upper and lower slots.
 		filter.setSize(new Size(FILTER_WIDTH, FILTER_HEIGHT));
-		filter.setFluidVariantConsumer((variant) -> {
+		filter.setAction((variant) -> {
 			if (!(tank instanceof TankBlockEntity.Creative)) {
 				tank.setFilter(variant);
 			} else {
@@ -132,10 +131,8 @@ public class TankScreenHandler extends ExtendedBlockEntityScreenHandler {
 				
 				tank.setFilter(variant);
 			}
-			
-			return Unit.INSTANCE;
 		});
-		filter.setFluidVariantSupplier(tank::getFilter);
+		filter.setFluidVariant(tank::getFilter);
 		
 		if (!(tank instanceof TankBlockEntity.Creative)) {
 			tab.add(input);

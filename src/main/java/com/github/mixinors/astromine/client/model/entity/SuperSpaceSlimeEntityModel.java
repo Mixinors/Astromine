@@ -25,8 +25,8 @@
 package com.github.mixinors.astromine.client.model.entity;
 
 import com.github.mixinors.astromine.common.entity.slime.SuperSpaceSlimeEntity;
-import dev.vini2003.hammer.core.api.client.util.DrawingUtils;
-import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
+import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
+import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.SlimeEntityModel;
@@ -48,7 +48,7 @@ public class SuperSpaceSlimeEntityModel extends SlimeEntityModel<SuperSpaceSlime
 		matrices.translate(0, 1.25, 0);
 		matrices.scale(1.25F, 1.25F, 1.25F);
 		
-		DrawingUtils.getItemRenderer().renderItem(new ItemStack(Items.GLASS), ModelTransformation.Mode.FIXED, light, overlay, matrices, InstanceUtils.getClient().getBufferBuilders().getEffectVertexConsumers(), 0);
+		DrawingUtil.getItemRenderer().renderItem(new ItemStack(Items.GLASS), ModelTransformation.Mode.FIXED, light, overlay, matrices, InstanceUtil.getClient().getBufferBuilders().getEffectVertexConsumers(), 0);
 		
 		matrices.pop();
 	}

@@ -35,13 +35,14 @@ import com.google.common.collect.ImmutableList;
 import dev.architectury.hooks.block.BlockEntityHooks;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
-import dev.vini2003.hammer.gui.api.common.util.SlotUtils;
+import dev.vini2003.hammer.gui.api.common.util.SlotUtil;
 import dev.vini2003.hammer.gui.api.common.widget.bar.FluidBarWidget;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 import dev.vini2003.hammer.gui.api.common.widget.tab.TabWidget;
 import dev.vini2003.hammer.gui.api.common.widget.text.TextWidget;
 import dev.vini2003.hammer.gui.energy.api.common.widget.bar.EnergyBarWidget;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
@@ -98,7 +99,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 	
 	protected TabWidget tabs;
 	
-	protected TabWidget.TabWidgetCollection tab;
+	protected TabWidget.TabCollection tab;
 	
 	public ExtendedBlockEntityScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
@@ -126,10 +127,10 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 	}
 	
 	@Override
-	public void initialize(int width, int height) {
+	public void init(int width, int height) {
 		var state = blockEntity.getCachedState();
 		var block = state.getBlock();
-		var symbol = block.asItem();
+		var symbol = block.asItem().getDefaultStack();
 		
 		var player = getPlayer();
 		var inventory = player.getInventory();
@@ -142,7 +143,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 		
 		add(tabs);
 		
-		tab = (TabWidget.TabWidgetCollection) tabs.addTab(symbol, () -> ImmutableList.of(new TranslatableText(block.getTranslationKey())));
+		tab = tabs.addTab(() -> symbol, () -> ImmutableList.of(new TranslatableText(block.getTranslationKey())));
 		tab.setPosition(new Position(tabs, 0.0F, PAD_25 + PAD_7));
 		tab.setSize(new Size(TABS_WIDTH, TABS_HEIGHT));
 		
@@ -165,7 +166,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 		
 		tab.add(inventoryTitle);
 		
-		playerSlots = SlotUtils.addPlayerInventory(inventoryPos, new Size(SLOT_WIDTH, SLOT_HEIGHT), tab, inventory);
+		playerSlots = SlotUtil.addPlayerInventory(inventoryPos, new Size(SLOT_WIDTH, SLOT_HEIGHT), tab, inventory);
 		
 		var rotation = block instanceof HorizontalFacingBlockWithEntity blockWithEntity ? (state.get(blockWithEntity.getDirectionProperty())) : Direction.NORTH;
 		
@@ -177,7 +178,8 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 		add(redstoneWidget);
 		
 		var tabAdder = (BiConsumer<StorageSiding[], StorageType>) (sidings, type) -> {
-			var tabCollection = (TabWidget.TabWidgetCollection) tabs.addTab(type.getItem(), () -> ImmutableList.of(type.getName()));
+			var typeSymbol = new ItemStack(type.getItem());
+			var tabCollection = (TabWidget.TabCollection) tabs.addTab(() -> typeSymbol, () -> ImmutableList.of(type.getName()));
 			
 			for (var widget : WidgetUtils.createStorageSiding(new Position(tabs, tabs.getWidth() / 2.0F - PAD_38, tabsExtension.getWidth() / 2.0F), blockEntity, type, rotation)) {
 				tabCollection.add(widget);
@@ -190,7 +192,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 			
 			tabCollection.add(invTabTitle);
 			
-			playerSlots.addAll(SlotUtils.addPlayerInventory(inventoryPos, new Size(SLOT_WIDTH, SLOT_HEIGHT), tabCollection, inventory));
+			playerSlots.addAll(SlotUtil.addPlayerInventory(inventoryPos, new Size(SLOT_WIDTH, SLOT_HEIGHT), tabCollection, inventory));
 			
 			var tabTitle = new TextWidget();
 			tabTitle.setPosition(new Position(tab, PAD_8, 0.0F));
@@ -212,7 +214,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 			energyBar = new EnergyBarWidget();
 			energyBar.setPosition(new Position(tab, PAD_7, PAD_11));
 			energyBar.setSize(new Size(BAR_WIDTH, BAR_HEIGHT));
-			energyBar.setStorage(blockEntity.getEnergyStorage());
+			energyBar.setStorage(() -> blockEntity.getEnergyStorage());
 			energyBar.setSmooth(false);
 			energyBar.setCurrent(() -> (float) blockEntity.getEnergyStorage().getAmount());
 			energyBar.setMaximum(() -> (float) blockEntity.getEnergyStorage().getCapacity());
@@ -230,7 +232,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 			}
 			
 			fluidBar.setSize(new Size(BAR_WIDTH, BAR_HEIGHT));
-			fluidBar.setStorage(blockEntity.getFluidStorage().getStorage(getDefaultFluidSlotForBar()));
+			fluidBar.setStorageView(() -> blockEntity.getFluidStorage().getStorage(getDefaultFluidSlotForBar()));
 			fluidBar.setSmooth(false);
 			
 			tab.add(fluidBar);

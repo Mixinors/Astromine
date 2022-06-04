@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.client.render.sky.skybox;
 import com.github.mixinors.astromine.client.render.sky.skybox.base.Skybox;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import dev.vini2003.hammer.core.api.client.util.InstanceUtils;
+import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.minecraft.client.option.Option;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.Tessellator;
@@ -70,7 +70,7 @@ public class SpaceSkybox extends Skybox {
 	
 	@Override
 	public void render(MatrixStack matrices, float tickDelta) {
-		var client = InstanceUtils.getClient();
+		var client = InstanceUtil.getClient();
 		
 		var tessellator = Tessellator.getInstance();
 		
