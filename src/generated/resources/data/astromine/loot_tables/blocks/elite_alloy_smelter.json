@@ -28,7 +28,7 @@
       "ops": [
         {
           "source": "RedstoneType",
-          "target": "BlockEntityTag.RedstoneControl",
+          "target": "BlockEntityTag.RedstoneType",
           "op": "replace"
         },
         {

@@ -41,7 +41,6 @@ import com.github.mixinors.astromine.common.block.storage.BufferBlock;
 import com.github.mixinors.astromine.common.block.storage.CapacitorBlock;
 import com.github.mixinors.astromine.common.block.storage.TankBlock;
 import com.github.mixinors.astromine.common.block.utility.*;
-import dev.architectury.registry.block.BlockProperties;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.block.*;
 import net.minecraft.item.BlockItem;
@@ -54,99 +53,145 @@ import net.minecraft.util.registry.Registry;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+
 public class AMBlocks {
-	public static final RegistrySupplier<Block> ASTEROID_STONE = register("asteroid_stone", () -> new Block(BlockProperties.of(Material.STONE, MapColor.GRAY).requiresTool().strength(1.5F, 3F)), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> ASTEROID_STONE_SLAB = register("asteroid_stone_slab", () -> new SlabBlock(BlockProperties.copy(ASTEROID_STONE.get())), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> ASTEROID_STONE_STAIRS = register("asteroid_stone_stairs", () -> new StairsBlock(ASTEROID_STONE.get().getDefaultState(), BlockProperties.copy(ASTEROID_STONE.get())), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> ASTEROID_STONE_WALL = register("asteroid_stone_wall", () -> new WallBlock(BlockProperties.copy(ASTEROID_STONE.get())), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> ASTEROID_STONE = register("asteroid_stone", () -> new Block(FabricBlockSettings.of(Material.STONE, MapColor.GRAY).requiresTool().strength(1.5F, 3F)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> ASTEROID_STONE_SLAB = register("asteroid_stone_slab", () -> new SlabBlock(FabricBlockSettings.copy(ASTEROID_STONE.get())), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> ASTEROID_STONE_STAIRS = register("asteroid_stone_stairs", () -> new StairsBlock(ASTEROID_STONE.get().getDefaultState(), FabricBlockSettings.copy(ASTEROID_STONE.get())), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> ASTEROID_STONE_WALL = register("asteroid_stone_wall", () -> new WallBlock(FabricBlockSettings.copy(ASTEROID_STONE.get())), AMItems.getSettings().fireproof());
 	
-	public static final RegistrySupplier<Block> SMOOTH_ASTEROID_STONE = register("smooth_asteroid_stone", () -> new Block(BlockProperties.copy(ASTEROID_STONE.get())), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> SMOOTH_ASTEROID_STONE_SLAB = register("smooth_asteroid_stone_slab", () -> new SlabBlock(BlockProperties.copy(SMOOTH_ASTEROID_STONE.get())), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> SMOOTH_ASTEROID_STONE_STAIRS = register("smooth_asteroid_stone_stairs", () -> new StairsBlock(SMOOTH_ASTEROID_STONE.get().getDefaultState(), BlockProperties.copy(SMOOTH_ASTEROID_STONE.get())), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> SMOOTH_ASTEROID_STONE_WALL = register("smooth_asteroid_stone_wall", () -> new WallBlock(BlockProperties.copy(SMOOTH_ASTEROID_STONE.get())), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> SMOOTH_ASTEROID_STONE = register("smooth_asteroid_stone", () -> new Block(FabricBlockSettings.copy(ASTEROID_STONE.get())), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> SMOOTH_ASTEROID_STONE_SLAB = register("smooth_asteroid_stone_slab", () -> new SlabBlock(FabricBlockSettings.copy(SMOOTH_ASTEROID_STONE.get())), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> SMOOTH_ASTEROID_STONE_STAIRS = register("smooth_asteroid_stone_stairs", () -> new StairsBlock(SMOOTH_ASTEROID_STONE.get().getDefaultState(), FabricBlockSettings.copy(SMOOTH_ASTEROID_STONE.get())), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> SMOOTH_ASTEROID_STONE_WALL = register("smooth_asteroid_stone_wall", () -> new WallBlock(FabricBlockSettings.copy(SMOOTH_ASTEROID_STONE.get())), AMItems.getSettings().fireproof());
 	
-	public static final RegistrySupplier<Block> POLISHED_ASTEROID_STONE = register("polished_asteroid_stone", () -> new Block(BlockProperties.copy(ASTEROID_STONE.get())), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> POLISHED_ASTEROID_STONE_SLAB = register("polished_asteroid_stone_slab", () -> new SlabBlock(BlockProperties.copy(POLISHED_ASTEROID_STONE.get())), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> POLISHED_ASTEROID_STONE_STAIRS = register("polished_asteroid_stone_stairs", () -> new StairsBlock(POLISHED_ASTEROID_STONE.get().getDefaultState(), BlockProperties.copy(POLISHED_ASTEROID_STONE.get())), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> POLISHED_ASTEROID_STONE = register("polished_asteroid_stone", () -> new Block(FabricBlockSettings.copy(ASTEROID_STONE.get())), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> POLISHED_ASTEROID_STONE_SLAB = register("polished_asteroid_stone_slab", () -> new SlabBlock(FabricBlockSettings.copy(POLISHED_ASTEROID_STONE.get())), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> POLISHED_ASTEROID_STONE_STAIRS = register("polished_asteroid_stone_stairs", () -> new StairsBlock(POLISHED_ASTEROID_STONE.get().getDefaultState(), FabricBlockSettings.copy(POLISHED_ASTEROID_STONE.get())), AMItems.getSettings().fireproof());
 	
-	public static final RegistrySupplier<Block> ASTEROID_STONE_BRICKS = register("asteroid_stone_bricks", () -> new Block(BlockProperties.copy(ASTEROID_STONE.get())), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> ASTEROID_STONE_BRICK_SLAB = register("asteroid_stone_brick_slab", () -> new SlabBlock(BlockProperties.copy(ASTEROID_STONE_BRICKS.get())), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> ASTEROID_STONE_BRICK_STAIRS = register("asteroid_stone_brick_stairs", () -> new StairsBlock(ASTEROID_STONE_BRICKS.get().getDefaultState(), BlockProperties.copy(ASTEROID_STONE_BRICKS.get())), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> ASTEROID_STONE_BRICK_WALL = register("asteroid_stone_brick_wall", () -> new WallBlock(BlockProperties.copy(ASTEROID_STONE_BRICKS.get())), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> ASTEROID_STONE_BRICKS = register("asteroid_stone_bricks", () -> new Block(FabricBlockSettings.copy(ASTEROID_STONE.get())), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> ASTEROID_STONE_BRICK_SLAB = register("asteroid_stone_brick_slab", () -> new SlabBlock(FabricBlockSettings.copy(ASTEROID_STONE_BRICKS.get())), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> ASTEROID_STONE_BRICK_STAIRS = register("asteroid_stone_brick_stairs", () -> new StairsBlock(ASTEROID_STONE_BRICKS.get().getDefaultState(), FabricBlockSettings.copy(ASTEROID_STONE_BRICKS.get())), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> ASTEROID_STONE_BRICK_WALL = register("asteroid_stone_brick_wall", () -> new WallBlock(FabricBlockSettings.copy(ASTEROID_STONE_BRICKS.get())), AMItems.getSettings().fireproof());
 	
-	public static final RegistrySupplier<Block> BLAZING_ASTEROID_STONE = register("blazing_asteroid_stone", () -> new MagmaBlock(BlockProperties.of(Material.STONE, MapColor.GRAY).requiresTool().strength(50, 1500).luminance((state) -> 3).ticksRandomly().allowsSpawning((state, world, pos, entityType) -> entityType.isFireImmune()).postProcess((state, world, pos) -> true).emissiveLighting((state, world, pos) -> true)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> BLAZING_ASTEROID_STONE = register("blazing_asteroid_stone", () -> new MagmaBlock(FabricBlockSettings.of(Material.STONE, MapColor.GRAY).requiresTool().strength(50, 1500).luminance((state) -> 3).ticksRandomly().allowsSpawning((state, world, pos, entityType) -> entityType.isFireImmune()).postProcess((state, world, pos) -> true).emissiveLighting((state, world, pos) -> true)), AMItems.getSettings().fireproof());
 	
-	public static final RegistrySupplier<Block> ASTEROID_METITE_ORE = register("asteroid_metite_ore", () -> new AsteroidOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> ASTEROID_ASTERITE_ORE = register("asteroid_asterite_ore", () -> new AsteroidOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(40, 1000).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> ASTEROID_STELLUM_ORE = register("asteroid_stellum_ore", () -> new AsteroidOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(25, 80).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> ASTEROID_GALAXIUM_ORE = register("asteroid_galaxium_ore", () -> new AsteroidOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(80, 1300).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> ASTEROID_METITE_ORE = register("asteroid_metite_ore", () -> new AsteroidOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> ASTEROID_ASTERITE_ORE = register("asteroid_asterite_ore", () -> new AsteroidOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(40, 1000).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> ASTEROID_STELLUM_ORE = register("asteroid_stellum_ore", () -> new AsteroidOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(25, 80).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> ASTEROID_GALAXIUM_ORE = register("asteroid_galaxium_ore", () -> new AsteroidOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(80, 1300).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
 	
-	public static final RegistrySupplier<Block> ASTEROID_TIN_ORE = register("asteroid_tin_ore", () -> new AsteroidOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> ASTEROID_SILVER_ORE = register("asteroid_silver_ore", () -> new AsteroidOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> ASTEROID_LEAD_ORE = register("asteroid_lead_ore", () -> new AsteroidOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> ASTEROID_TIN_ORE = register("asteroid_tin_ore", () -> new AsteroidOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> ASTEROID_SILVER_ORE = register("asteroid_silver_ore", () -> new AsteroidOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> ASTEROID_LEAD_ORE = register("asteroid_lead_ore", () -> new AsteroidOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
 	
-	public static final RegistrySupplier<Block> ASTEROID_COAL_ORE = register("asteroid_coal_ore", () -> new AsteroidOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> ASTEROID_IRON_ORE = register("asteroid_iron_ore", () -> new AsteroidOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> ASTEROID_GOLD_ORE = register("asteroid_gold_ore", () -> new AsteroidOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> ASTEROID_COPPER_ORE = register("asteroid_copper_ore", () -> new AsteroidOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> ASTEROID_REDSTONE_ORE = register("asteroid_redstone_ore", () -> new AsteroidOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> ASTEROID_LAPIS_ORE = register("asteroid_lapis_ore", () -> new AsteroidOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> ASTEROID_DIAMOND_ORE = register("asteroid_diamond_ore", () -> new AsteroidOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> ASTEROID_EMERALD_ORE = register("asteroid_emerald_ore", () -> new AsteroidOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> ASTEROID_COAL_ORE = register("asteroid_coal_ore", () -> new AsteroidOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> ASTEROID_IRON_ORE = register("asteroid_iron_ore", () -> new AsteroidOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> ASTEROID_GOLD_ORE = register("asteroid_gold_ore", () -> new AsteroidOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> ASTEROID_COPPER_ORE = register("asteroid_copper_ore", () -> new AsteroidOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> ASTEROID_REDSTONE_ORE = register("asteroid_redstone_ore", () -> new AsteroidOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> ASTEROID_LAPIS_ORE = register("asteroid_lapis_ore", () -> new AsteroidOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> ASTEROID_DIAMOND_ORE = register("asteroid_diamond_ore", () -> new AsteroidOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> ASTEROID_EMERALD_ORE = register("asteroid_emerald_ore", () -> new AsteroidOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
 	
-	public static final RegistrySupplier<Block> SPACE_SLIME_BLOCK = register("space_slime_block", () -> new SlimeBlock(BlockProperties.copy(Blocks.SLIME_BLOCK).mapColor(MapColor.PURPLE)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> SPACE_SLIME_BLOCK = register("space_slime_block", () -> new SlimeBlock(FabricBlockSettings.copy(Blocks.SLIME_BLOCK).mapColor(MapColor.PURPLE)), AMItems.getSettings());
 	
-	public static final RegistrySupplier<Block> TIN_ORE = register("tin_ore", () -> new ExtendedOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(3, 3).sounds(BlockSoundGroup.STONE)), AMItems.getSettings());
-	public static final RegistrySupplier<Block> SILVER_ORE = register("silver_ore", () -> new ExtendedOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(3, 3).sounds(BlockSoundGroup.STONE)), AMItems.getSettings());
-	public static final RegistrySupplier<Block> LEAD_ORE = register("lead_ore", () -> new ExtendedOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(3, 3).sounds(BlockSoundGroup.STONE)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> TIN_ORE = register("tin_ore", () -> new ExtendedOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(3, 3).sounds(BlockSoundGroup.STONE)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> SILVER_ORE = register("silver_ore", () -> new ExtendedOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(3, 3).sounds(BlockSoundGroup.STONE)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> LEAD_ORE = register("lead_ore", () -> new ExtendedOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(3, 3).sounds(BlockSoundGroup.STONE)), AMItems.getSettings());
 	
-	public static final RegistrySupplier<Block> DEEPSLATE_TIN_ORE = register("deepslate_tin_ore", () -> new ExtendedOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(4.5f, 3).sounds(BlockSoundGroup.DEEPSLATE).mapColor(MapColor.DEEPSLATE_GRAY)), AMItems.getSettings());
-	public static final RegistrySupplier<Block> DEEPSLATE_SILVER_ORE = register("deepslate_silver_ore", () -> new ExtendedOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(4.5f, 3).sounds(BlockSoundGroup.DEEPSLATE).mapColor(MapColor.DEEPSLATE_GRAY)), AMItems.getSettings());
-	public static final RegistrySupplier<Block> DEEPSLATE_LEAD_ORE = register("deepslate_lead_ore", () -> new ExtendedOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(4.5f, 3).sounds(BlockSoundGroup.DEEPSLATE).mapColor(MapColor.DEEPSLATE_GRAY)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> DEEPSLATE_TIN_ORE = register("deepslate_tin_ore", () -> new ExtendedOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(4.5f, 3).sounds(BlockSoundGroup.DEEPSLATE).mapColor(MapColor.DEEPSLATE_GRAY)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> DEEPSLATE_SILVER_ORE = register("deepslate_silver_ore", () -> new ExtendedOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(4.5f, 3).sounds(BlockSoundGroup.DEEPSLATE).mapColor(MapColor.DEEPSLATE_GRAY)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> DEEPSLATE_LEAD_ORE = register("deepslate_lead_ore", () -> new ExtendedOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(4.5f, 3).sounds(BlockSoundGroup.DEEPSLATE).mapColor(MapColor.DEEPSLATE_GRAY)), AMItems.getSettings());
 	
-	public static final RegistrySupplier<Block> RAW_TIN_BLOCK = register("raw_tin_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.LIGHT_GRAY).requiresTool().strength(4, 6).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
-	public static final RegistrySupplier<Block> RAW_SILVER_BLOCK = register("raw_silver_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.LIGHT_GRAY).requiresTool().strength(5, 6).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
-	public static final RegistrySupplier<Block> RAW_LEAD_BLOCK = register("raw_lead_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.TERRACOTTA_BLUE).requiresTool().strength(6, 8).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> RAW_TIN_BLOCK = register("raw_tin_block", () -> new Block(FabricBlockSettings.of(Material.METAL, MapColor.LIGHT_GRAY).requiresTool().strength(4, 6).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> RAW_SILVER_BLOCK = register("raw_silver_block", () -> new Block(FabricBlockSettings.of(Material.METAL, MapColor.LIGHT_GRAY).requiresTool().strength(5, 6).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> RAW_LEAD_BLOCK = register("raw_lead_block", () -> new Block(FabricBlockSettings.of(Material.METAL, MapColor.TERRACOTTA_BLUE).requiresTool().strength(6, 8).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+
+	public static final RegistrySupplier<Block> RAW_LUNUM_BLOCK = register("raw_lunum_block", () -> new Block(FabricBlockSettings.of(Material.METAL, MapColor.TERRACOTTA_LIGHT_BLUE).requiresTool().strength(6, 10).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+
+	public static final RegistrySupplier<Block> METEOR_METITE_ORE = register("meteor_metite_ore", () -> new ExtendedOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+
+	public static final RegistrySupplier<Block> LUNUM_ORE = register("lunum_ore", () -> new ExtendedOreBlock(FabricBlockSettings.of(Material.STONE, MapColor.STONE_GRAY).requiresTool().strength(6, 10).sounds(BlockSoundGroup.STONE)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> DARK_LUNUM_ORE = register("dark_lunum_ore", () -> new ExtendedOreBlock(FabricBlockSettings.of(Material.STONE, MapColor.DEEPSLATE_GRAY).requiresTool().strength(7, 11).sounds(BlockSoundGroup.STONE)), AMItems.getSettings());
+
+	public static final RegistrySupplier<Block> METITE_BLOCK = register("metite_block", () -> new Block(FabricBlockSettings.of(Material.METAL, MapColor.PINK).requiresTool().strength(8, 100).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> ASTERITE_BLOCK = register("asterite_block", () -> new Block(FabricBlockSettings.of(Material.METAL, MapColor.RED).requiresTool().strength(25, 1000).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> STELLUM_BLOCK = register("stellum_block", () -> new Block(FabricBlockSettings.of(Material.METAL, MapColor.ORANGE).requiresTool().strength(10, 80).sounds(BlockSoundGroup.METAL)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> GALAXIUM_BLOCK = register("galaxium_block", () -> new Block(FabricBlockSettings.of(Material.METAL, MapColor.PURPLE).requiresTool().strength(50, 1300).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> UNIVITE_BLOCK = register("univite_block", () -> new Block(FabricBlockSettings.of(Material.METAL, MapColor.WHITE).requiresTool().strength(80, 2000).sounds(BlockSoundGroup.METAL)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> LUNUM_BLOCK = register("lunum_block", () -> new Block(FabricBlockSettings.of(Material.METAL, MapColor.LIGHT_GRAY).requiresTool().strength(7, 25).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+
+	public static final RegistrySupplier<Block> TIN_BLOCK = register("tin_block", () -> new Block(FabricBlockSettings.of(Material.METAL, MapColor.LIGHT_GRAY).requiresTool().strength(4, 6).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> SILVER_BLOCK = register("silver_block", () -> new Block(FabricBlockSettings.of(Material.METAL, MapColor.LIGHT_GRAY).requiresTool().strength(5, 6).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> LEAD_BLOCK = register("lead_block", () -> new Block(FabricBlockSettings.of(Material.METAL, MapColor.TERRACOTTA_BLUE).requiresTool().strength(6, 8).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
 	
-	public static final RegistrySupplier<Block> METEOR_METITE_ORE = register("meteor_metite_ore", () -> new ExtendedOreBlock(BlockProperties.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> BRONZE_BLOCK = register("bronze_block", () -> new Block(FabricBlockSettings.of(Material.METAL, MapColor.TERRACOTTA_ORANGE).requiresTool().strength(6, 6).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> STEEL_BLOCK = register("steel_block", () -> new Block(FabricBlockSettings.of(Material.METAL, MapColor.GRAY).requiresTool().strength(8, 6).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> ELECTRUM_BLOCK = register("electrum_block", () -> new Block(FabricBlockSettings.of(Material.METAL, MapColor.YELLOW).requiresTool().strength(6, 6).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> FOOLS_GOLD_BLOCK = register("fools_gold_block", () -> new Block(FabricBlockSettings.of(Material.METAL, MapColor.GOLD).requiresTool().strength(5, 6).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> METEORIC_STEEL_BLOCK = register("meteoric_steel_block", () -> new Block(FabricBlockSettings.of(Material.METAL, MapColor.GOLD).requiresTool().strength(5, 6).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
 	
-	public static final RegistrySupplier<Block> METITE_BLOCK = register("metite_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.PINK).requiresTool().strength(8, 100).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
-	public static final RegistrySupplier<Block> ASTERITE_BLOCK = register("asterite_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.RED).requiresTool().strength(25, 1000).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
-	public static final RegistrySupplier<Block> STELLUM_BLOCK = register("stellum_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.ORANGE).requiresTool().strength(10, 80).sounds(BlockSoundGroup.METAL)), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> GALAXIUM_BLOCK = register("galaxium_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.PURPLE).requiresTool().strength(50, 1300).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
-	public static final RegistrySupplier<Block> UNIVITE_BLOCK = register("univite_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.WHITE).requiresTool().strength(80, 2000).sounds(BlockSoundGroup.METAL)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> METEOR_STONE = register("meteor_stone", () -> new Block(FabricBlockSettings.of(Material.STONE, MapColor.BLACK).requiresTool().strength(30, 1500)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> METEOR_STONE_SLAB = register("meteor_stone_slab", () -> new SlabBlock(FabricBlockSettings.copy(METEOR_STONE.get())), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> METEOR_STONE_STAIRS = register("meteor_stone_stairs", () -> new StairsBlock(METEOR_STONE.get().getDefaultState(), FabricBlockSettings.copy(METEOR_STONE.get())), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> METEOR_STONE_WALL = register("meteor_stone_wall", () -> new WallBlock(FabricBlockSettings.copy(METEOR_STONE.get())), AMItems.getSettings().fireproof());
 	
-	public static final RegistrySupplier<Block> TIN_BLOCK = register("tin_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.LIGHT_GRAY).requiresTool().strength(4, 6).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
-	public static final RegistrySupplier<Block> SILVER_BLOCK = register("silver_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.LIGHT_GRAY).requiresTool().strength(5, 6).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
-	public static final RegistrySupplier<Block> LEAD_BLOCK = register("lead_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.TERRACOTTA_BLUE).requiresTool().strength(6, 8).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> SMOOTH_METEOR_STONE = register("smooth_meteor_stone", () -> new Block(FabricBlockSettings.copy(METEOR_STONE.get())), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> SMOOTH_METEOR_STONE_SLAB = register("smooth_meteor_stone_slab", () -> new SlabBlock(FabricBlockSettings.copy(SMOOTH_METEOR_STONE.get())), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> SMOOTH_METEOR_STONE_STAIRS = register("smooth_meteor_stone_stairs", () -> new StairsBlock(SMOOTH_METEOR_STONE.get().getDefaultState(), FabricBlockSettings.copy(SMOOTH_METEOR_STONE.get())), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> SMOOTH_METEOR_STONE_WALL = register("smooth_meteor_stone_wall", () -> new WallBlock(FabricBlockSettings.copy(SMOOTH_METEOR_STONE.get())), AMItems.getSettings().fireproof());
 	
-	public static final RegistrySupplier<Block> BRONZE_BLOCK = register("bronze_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.TERRACOTTA_ORANGE).requiresTool().strength(6, 6).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
-	public static final RegistrySupplier<Block> STEEL_BLOCK = register("steel_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.GRAY).requiresTool().strength(8, 6).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
-	public static final RegistrySupplier<Block> ELECTRUM_BLOCK = register("electrum_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.YELLOW).requiresTool().strength(6, 6).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
-	public static final RegistrySupplier<Block> FOOLS_GOLD_BLOCK = register("fools_gold_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.GOLD).requiresTool().strength(5, 6).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
-	public static final RegistrySupplier<Block> METEORIC_STEEL_BLOCK = register("meteoric_steel_block", () -> new Block(BlockProperties.of(Material.METAL, MapColor.GOLD).requiresTool().strength(5, 6).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> POLISHED_METEOR_STONE = register("polished_meteor_stone", () -> new Block(FabricBlockSettings.copy(METEOR_STONE.get())), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> POLISHED_METEOR_STONE_SLAB = register("polished_meteor_stone_slab", () -> new SlabBlock(FabricBlockSettings.copy(POLISHED_METEOR_STONE.get())), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> POLISHED_METEOR_STONE_STAIRS = register("polished_meteor_stone_stairs", () -> new StairsBlock(POLISHED_METEOR_STONE.get().getDefaultState(), FabricBlockSettings.copy(POLISHED_METEOR_STONE.get())), AMItems.getSettings().fireproof());
 	
-	public static final RegistrySupplier<Block> METEOR_STONE = register("meteor_stone", () -> new Block(BlockProperties.of(Material.STONE, MapColor.BLACK).requiresTool().strength(30, 1500)), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> METEOR_STONE_SLAB = register("meteor_stone_slab", () -> new SlabBlock(BlockProperties.copy(METEOR_STONE.get())), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> METEOR_STONE_STAIRS = register("meteor_stone_stairs", () -> new StairsBlock(METEOR_STONE.get().getDefaultState(), BlockProperties.copy(METEOR_STONE.get())), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> METEOR_STONE_WALL = register("meteor_stone_wall", () -> new WallBlock(BlockProperties.copy(METEOR_STONE.get())), AMItems.getSettings().fireproof());
-	
-	public static final RegistrySupplier<Block> SMOOTH_METEOR_STONE = register("smooth_meteor_stone", () -> new Block(BlockProperties.copy(METEOR_STONE.get())), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> SMOOTH_METEOR_STONE_SLAB = register("smooth_meteor_stone_slab", () -> new SlabBlock(BlockProperties.copy(SMOOTH_METEOR_STONE.get())), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> SMOOTH_METEOR_STONE_STAIRS = register("smooth_meteor_stone_stairs", () -> new StairsBlock(SMOOTH_METEOR_STONE.get().getDefaultState(), BlockProperties.copy(SMOOTH_METEOR_STONE.get())), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> SMOOTH_METEOR_STONE_WALL = register("smooth_meteor_stone_wall", () -> new WallBlock(BlockProperties.copy(SMOOTH_METEOR_STONE.get())), AMItems.getSettings().fireproof());
-	
-	public static final RegistrySupplier<Block> POLISHED_METEOR_STONE = register("polished_meteor_stone", () -> new Block(BlockProperties.copy(METEOR_STONE.get())), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> POLISHED_METEOR_STONE_SLAB = register("polished_meteor_stone_slab", () -> new SlabBlock(BlockProperties.copy(POLISHED_METEOR_STONE.get())), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> POLISHED_METEOR_STONE_STAIRS = register("polished_meteor_stone_stairs", () -> new StairsBlock(POLISHED_METEOR_STONE.get().getDefaultState(), BlockProperties.copy(POLISHED_METEOR_STONE.get())), AMItems.getSettings().fireproof());
-	
-	public static final RegistrySupplier<Block> METEOR_STONE_BRICKS = register("meteor_stone_bricks", () -> new Block(BlockProperties.copy(METEOR_STONE.get())), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> METEOR_STONE_BRICK_SLAB = register("meteor_stone_brick_slab", () -> new SlabBlock(BlockProperties.copy(METEOR_STONE_BRICKS.get())), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> METEOR_STONE_BRICK_STAIRS = register("meteor_stone_brick_stairs", () -> new StairsBlock(METEOR_STONE_BRICKS.get().getDefaultState(), BlockProperties.copy(METEOR_STONE_BRICKS.get())), AMItems.getSettings().fireproof());
-	public static final RegistrySupplier<Block> METEOR_STONE_BRICK_WALL = register("meteor_stone_brick_wall", () -> new WallBlock(BlockProperties.copy(METEOR_STONE_BRICKS.get())), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> METEOR_STONE_BRICKS = register("meteor_stone_bricks", () -> new Block(FabricBlockSettings.copy(METEOR_STONE.get())), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> METEOR_STONE_BRICK_SLAB = register("meteor_stone_brick_slab", () -> new SlabBlock(FabricBlockSettings.copy(METEOR_STONE_BRICKS.get())), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> METEOR_STONE_BRICK_STAIRS = register("meteor_stone_brick_stairs", () -> new StairsBlock(METEOR_STONE_BRICKS.get().getDefaultState(), FabricBlockSettings.copy(METEOR_STONE_BRICKS.get())), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> METEOR_STONE_BRICK_WALL = register("meteor_stone_brick_wall", () -> new WallBlock(FabricBlockSettings.copy(METEOR_STONE_BRICKS.get())), AMItems.getSettings().fireproof());
+
+	public static final RegistrySupplier<Block> MOON_STONE = register("moon_stone", () -> new Block(FabricBlockSettings.of(Material.STONE, MapColor.STONE_GRAY).requiresTool().strength(2, 7)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> MOON_STONE_SLAB = register("moon_stone_slab", () -> new SlabBlock(FabricBlockSettings.copy(MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> MOON_STONE_STAIRS = register("moon_stone_stairs", () -> new StairsBlock(MOON_STONE.get().getDefaultState(), FabricBlockSettings.copy(MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> MOON_STONE_WALL = register("moon_stone_wall", () -> new WallBlock(FabricBlockSettings.copy(MOON_STONE.get())), AMItems.getSettings());
+
+	public static final RegistrySupplier<Block> SMOOTH_MOON_STONE = register("smooth_moon_stone", () -> new Block(FabricBlockSettings.copy(MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> SMOOTH_MOON_STONE_SLAB = register("smooth_moon_stone_slab", () -> new SlabBlock(FabricBlockSettings.copy(SMOOTH_MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> SMOOTH_MOON_STONE_STAIRS = register("smooth_moon_stone_stairs", () -> new StairsBlock(SMOOTH_MOON_STONE.get().getDefaultState(), FabricBlockSettings.copy(SMOOTH_MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> SMOOTH_MOON_STONE_WALL = register("smooth_moon_stone_wall", () -> new WallBlock(FabricBlockSettings.copy(SMOOTH_MOON_STONE.get())), AMItems.getSettings());
+
+	public static final RegistrySupplier<Block> POLISHED_MOON_STONE = register("polished_moon_stone", () -> new Block(FabricBlockSettings.copy(MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> POLISHED_MOON_STONE_SLAB = register("polished_moon_stone_slab", () -> new SlabBlock(FabricBlockSettings.copy(POLISHED_MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> POLISHED_MOON_STONE_STAIRS = register("polished_moon_stone_stairs", () -> new StairsBlock(POLISHED_MOON_STONE.get().getDefaultState(), FabricBlockSettings.copy(POLISHED_MOON_STONE.get())), AMItems.getSettings());
+
+	public static final RegistrySupplier<Block> MOON_STONE_BRICKS = register("moon_stone_bricks", () -> new Block(FabricBlockSettings.copy(MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> MOON_STONE_BRICK_SLAB = register("moon_stone_brick_slab", () -> new SlabBlock(FabricBlockSettings.copy(MOON_STONE_BRICKS.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> MOON_STONE_BRICK_STAIRS = register("moon_stone_brick_stairs", () -> new StairsBlock(MOON_STONE_BRICKS.get().getDefaultState(), FabricBlockSettings.copy(MOON_STONE_BRICKS.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> MOON_STONE_BRICK_WALL = register("moon_stone_brick_wall", () -> new WallBlock(FabricBlockSettings.copy(MOON_STONE_BRICKS.get())), AMItems.getSettings());
+
+	public static final RegistrySupplier<Block> DARK_MOON_STONE = register("dark_moon_stone", () -> new Block(FabricBlockSettings.of(Material.STONE, MapColor.DEEPSLATE_GRAY).requiresTool().strength(3, 8.5f)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> DARK_MOON_STONE_SLAB = register("dark_moon_stone_slab", () -> new SlabBlock(FabricBlockSettings.copy(DARK_MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> DARK_MOON_STONE_STAIRS = register("dark_moon_stone_stairs", () -> new StairsBlock(DARK_MOON_STONE.get().getDefaultState(), FabricBlockSettings.copy(DARK_MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> DARK_MOON_STONE_WALL = register("dark_moon_stone_wall", () -> new WallBlock(FabricBlockSettings.copy(DARK_MOON_STONE.get())), AMItems.getSettings());
+
+	public static final RegistrySupplier<Block> SMOOTH_DARK_MOON_STONE = register("smooth_dark_moon_stone", () -> new Block(FabricBlockSettings.copy(DARK_MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> SMOOTH_DARK_MOON_STONE_SLAB = register("smooth_dark_moon_stone_slab", () -> new SlabBlock(FabricBlockSettings.copy(SMOOTH_DARK_MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> SMOOTH_DARK_MOON_STONE_STAIRS = register("smooth_dark_moon_stone_stairs", () -> new StairsBlock(SMOOTH_DARK_MOON_STONE.get().getDefaultState(), FabricBlockSettings.copy(SMOOTH_DARK_MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> SMOOTH_DARK_MOON_STONE_WALL = register("smooth_dark_moon_stone_wall", () -> new WallBlock(FabricBlockSettings.copy(SMOOTH_DARK_MOON_STONE.get())), AMItems.getSettings());
+
+	public static final RegistrySupplier<Block> POLISHED_DARK_MOON_STONE = register("polished_dark_moon_stone", () -> new Block(FabricBlockSettings.copy(DARK_MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> POLISHED_DARK_MOON_STONE_SLAB = register("polished_dark_moon_stone_slab", () -> new SlabBlock(FabricBlockSettings.copy(POLISHED_DARK_MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> POLISHED_DARK_MOON_STONE_STAIRS = register("polished_dark_moon_stone_stairs", () -> new StairsBlock(POLISHED_DARK_MOON_STONE.get().getDefaultState(), FabricBlockSettings.copy(POLISHED_DARK_MOON_STONE.get())), AMItems.getSettings());
+
+	public static final RegistrySupplier<Block> DARK_MOON_STONE_BRICKS = register("dark_moon_stone_bricks", () -> new Block(FabricBlockSettings.copy(DARK_MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> DARK_MOON_STONE_BRICK_SLAB = register("dark_moon_stone_brick_slab", () -> new SlabBlock(FabricBlockSettings.copy(DARK_MOON_STONE_BRICKS.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> DARK_MOON_STONE_BRICK_STAIRS = register("dark_moon_stone_brick_stairs", () -> new StairsBlock(DARK_MOON_STONE_BRICKS.get().getDefaultState(), FabricBlockSettings.copy(DARK_MOON_STONE_BRICKS.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> DARK_MOON_STONE_BRICK_WALL = register("dark_moon_stone_brick_wall", () -> new WallBlock(FabricBlockSettings.copy(DARK_MOON_STONE_BRICKS.get())), AMItems.getSettings());
 	
 	public static final RegistrySupplier<Block> HOLOGRAPHIC_BRIDGE_PROJECTOR = register("holographic_bridge_projector", () -> new HoloBridgeProjectorBlock(getAdvancedSettings()), AMItems.getSettings());
-	public static final RegistrySupplier<Block> HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK = register("holographic_bridge_invisible", () -> new HoloBridgeInvisibleBlock(BlockProperties.of(HoloBridgeInvisibleBlock.MATERIAL).dropsNothing().strength(-1.0F, 3600000.8F).nonOpaque().luminance($ -> 15).allowsSpawning((a, b, c, d) -> false)));
+	public static final RegistrySupplier<Block> HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK = register("holographic_bridge_invisible", () -> new HoloBridgeInvisibleBlock(FabricBlockSettings.of(HoloBridgeInvisibleBlock.MATERIAL).dropsNothing().strength(-1.0F, 3600000.8F).nonOpaque().luminance($ -> 15).allowsSpawning((a, b, c, d) -> false)));
 	
 	public static final RegistrySupplier<Block> PRIMITIVE_TANK = register("primitive_tank", () -> new TankBlock.Primitive(getPrimitiveSettings()), AMItems.getSettings());
 	public static final RegistrySupplier<Block> BASIC_TANK = register("basic_tank", () -> new TankBlock.Basic(getBasicSettings()), AMItems.getSettings());
@@ -227,7 +272,7 @@ public class AMBlocks {
 	
 	public static final RegistrySupplier<Block> PUMP = register("pump", () -> new PumpBlock(getAdvancedSettings()), AMItems.getSettings());
 	
-	public static final RegistrySupplier<Block> NUCLEAR_WARHEAD = register("nuclear_warhead", () -> new NuclearWarheadBlock(BlockProperties.of(Material.METAL).requiresTool().strength(1F, 4F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> NUCLEAR_WARHEAD = register("nuclear_warhead", () -> new NuclearWarheadBlock(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1F, 4F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
 	
 	public static final RegistrySupplier<Block> PRIMITIVE_CAPACITOR = register("primitive_capacitor", () -> new CapacitorBlock.Primitive(getPrimitiveSettings()), AMItems.getSettings());
 	public static final RegistrySupplier<Block> BASIC_CAPACITOR = register("basic_capacitor", () -> new CapacitorBlock.Basic(getBasicSettings()), AMItems.getSettings());
@@ -239,14 +284,14 @@ public class AMBlocks {
 	
 	public static final RegistrySupplier<Block> DRAIN = register("drain", () -> new DrainBlock(getBasicSettings()), AMItems.getSettings());
 	
-	public static final RegistrySupplier<Block> FLUID_PIPE = register("fluid_pipe", () -> new FluidPipeBlock(BlockProperties.of(Material.METAL).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> FLUID_PIPE = register("fluid_pipe", () -> new FluidPipeBlock(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
 	
-	public static final RegistrySupplier<Block> ITEM_CONDUIT = register("item_conduit", () -> new ItemConduitBlock(BlockProperties.of(Material.METAL).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> ITEM_CONDUIT = register("item_conduit", () -> new ItemConduitBlock(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
 	
-	public static final RegistrySupplier<Block> PRIMITIVE_ENERGY_CABLE = register("primitive_energy_cable", () -> new EnergyCableBlock.Primitive(BlockProperties.of(Material.METAL).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
-	public static final RegistrySupplier<Block> BASIC_ENERGY_CABLE = register("basic_energy_cable", () -> new EnergyCableBlock.Basic(BlockProperties.of(Material.METAL).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
-	public static final RegistrySupplier<Block> ADVANCED_ENERGY_CABLE = register("advanced_energy_cable", () -> new EnergyCableBlock.Advanced(BlockProperties.of(Material.METAL).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
-	public static final RegistrySupplier<Block> ELITE_ENERGY_CABLE = register("elite_energy_cable", () -> new EnergyCableBlock.Elite(BlockProperties.of(Material.METAL).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> PRIMITIVE_ENERGY_CABLE = register("primitive_energy_cable", () -> new EnergyCableBlock.Primitive(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> BASIC_ENERGY_CABLE = register("basic_energy_cable", () -> new EnergyCableBlock.Basic(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> ADVANCED_ENERGY_CABLE = register("advanced_energy_cable", () -> new EnergyCableBlock.Advanced(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> ELITE_ENERGY_CABLE = register("elite_energy_cable", () -> new EnergyCableBlock.Elite(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
 	
 	public static void init() {
 	}

@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "astromine:polished_moon_stone"
+  },
+  "result": "astromine:moon_stone_brick_stairs",
+  "count": 1
+}

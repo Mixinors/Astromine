@@ -32,6 +32,8 @@ import com.github.mixinors.astromine.common.world.ore.OreDistribution;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
+
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryEntry;
@@ -102,10 +104,6 @@ public class AMOres {
 	}
 	
 	private static Predicate<BiomeSelectionContext> overworldPredicate() {
-		return context -> switch (Biome.getCategory(context.getBiomeRegistryEntry())) {
-			case NETHER, THEEND, NONE -> false;
-			
-			default -> true;
-		};
+		return context -> context.getBiomeRegistryEntry().isIn(ConventionalBiomeTags.IN_OVERWORLD);
 	}
 }

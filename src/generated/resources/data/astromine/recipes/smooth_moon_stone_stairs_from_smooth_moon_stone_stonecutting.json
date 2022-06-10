@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "astromine:smooth_moon_stone"
+  },
+  "result": "astromine:smooth_moon_stone_stairs",
+  "count": 1
+}

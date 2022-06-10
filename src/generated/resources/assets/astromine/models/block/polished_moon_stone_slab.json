@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "astromine:block/polished_moon_stone",
+    "top": "astromine:block/polished_moon_stone",
+    "side": "astromine:block/polished_moon_stone"
+  }
+}

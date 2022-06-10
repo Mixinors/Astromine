@@ -265,6 +265,14 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 			
 			addHarvestData(HarvestData.SPACE_STONE_HARVEST_DATA, family.getBaseBlock());
 		});
+
+		AMDatagenLists.BlockFamilyLists.MOON_STONE_FAMILIES.forEach((family) -> {
+			AMDatagen.toTreeMap(family.getVariants()).forEach((variant, block) -> {
+				addHarvestData(HarvestData.MOON_STONE_HARVEST_DATA, block);
+			});
+
+			addHarvestData(HarvestData.MOON_STONE_HARVEST_DATA, family.getBaseBlock());
+		});
 		
 		var primitiveMachinesTag = AMTagKeys.createBlockTag(AMCommon.id("primitive_machines"));
 		var primitiveMachinesTagBuilder = getOrCreateTagBuilder(primitiveMachinesTag);

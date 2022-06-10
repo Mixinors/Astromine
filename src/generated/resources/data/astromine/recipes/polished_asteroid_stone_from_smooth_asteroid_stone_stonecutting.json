@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "astromine:smooth_asteroid_stone"
+  },
+  "result": "astromine:polished_asteroid_stone",
+  "count": 1
+}

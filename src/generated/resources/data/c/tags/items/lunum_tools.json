@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#c:lunum_pickaxes",
+    "#c:lunum_axes",
+    "#c:lunum_shovels",
+    "#c:lunum_swords",
+    "#c:lunum_hoes"
+  ]
+}

@@ -47,7 +47,9 @@ public enum BlockVariant implements Variant<Block> {
 	NETHER_ORE("nether_ore"),
 	METEOR_ORE("meteor_ore"),
 	ASTEROID_ORE("asteroid_ore"),
-	RAW_ORE_BLOCK("raw_ore_block", "raw", "blocks");
+	RAW_ORE_BLOCK("raw_ore_block", "raw", "blocks"),
+	MOON_ORE("moon_ore"),
+	DARK_MOON_ORE("dark_moon_ore");
 	
 	private final String name;
 	private final String path;
@@ -138,7 +140,7 @@ public enum BlockVariant implements Variant<Block> {
 	
 	public boolean isOre() {
 		return switch (this) {
-			case STONE_ORE, DEEPSLATE_ORE, METEOR_ORE, ASTEROID_ORE, NETHER_ORE -> true;
+			case STONE_ORE, DEEPSLATE_ORE, METEOR_ORE, ASTEROID_ORE, NETHER_ORE, MOON_ORE, DARK_MOON_ORE -> true;
 			
 			default -> false;
 		};
@@ -148,7 +150,7 @@ public enum BlockVariant implements Variant<Block> {
 	public long getMeltedFluidAmount(boolean block2x2) {
 		return switch (this) {
 			case BLOCK -> FluidConstants.BLOCK;
-			case STONE_ORE, DEEPSLATE_ORE, METEOR_ORE, ASTEROID_ORE, NETHER_ORE -> ExtraFluidConstants.nuggets(12, block2x2);
+			case STONE_ORE, DEEPSLATE_ORE, METEOR_ORE, ASTEROID_ORE, NETHER_ORE, MOON_ORE, DARK_MOON_ORE -> ExtraFluidConstants.nuggets(12, block2x2);
 			case RAW_ORE_BLOCK -> ExtraFluidConstants.ingots(12, block2x2);
 		};
 	}
@@ -163,6 +165,8 @@ public enum BlockVariant implements Variant<Block> {
 			case METEOR_ORE -> 4.5F;
 			case ASTEROID_ORE -> 5.0F;
 			case RAW_ORE_BLOCK -> 12.0F;
+			case MOON_ORE -> 3.5F;
+			case DARK_MOON_ORE -> 4.0F;
 		};
 	}
 }

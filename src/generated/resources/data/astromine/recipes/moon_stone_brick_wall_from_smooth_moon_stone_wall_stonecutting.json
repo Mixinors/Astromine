@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "astromine:smooth_moon_stone_wall"
+  },
+  "result": "astromine:moon_stone_brick_wall",
+  "count": 1
+}

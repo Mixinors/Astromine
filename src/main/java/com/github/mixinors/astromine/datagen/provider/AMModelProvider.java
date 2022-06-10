@@ -32,8 +32,10 @@ import com.github.mixinors.astromine.datagen.family.material.AMMaterialFamilies;
 import com.github.mixinors.astromine.datagen.family.material.family.MaterialFamily;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMItems;
+
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockStateDefinitionProvider;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.client.*;
@@ -46,7 +48,7 @@ import net.minecraft.util.Identifier;
 import java.util.Optional;
 import java.util.Set;
 
-public class AMModelProvider extends FabricBlockStateDefinitionProvider {
+public class AMModelProvider extends FabricModelProvider {
 	/**
 	 * Blocks with a single cube model, with the same texture on all sides
 	 */

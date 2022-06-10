@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "astromine:dark_moon_stone_bricks"
+    }
+  },
+  "result": {
+    "item": "astromine:dark_moon_stone_brick_stairs",
+    "count": 4
+  }
+}

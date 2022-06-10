@@ -45,7 +45,8 @@ public class AMArmorMaterials {
 	public static final ArmorMaterial STELLUM = register("stellum", 41, new int[] { 3, 5, 6, 2 }, 15, AMSoundEvents.STELLUM_ARMOR_EQUIPPED.get(), 6.0F, 0.2F, () -> Ingredient.fromTag(AMTagKeys.createCommonItemTag("stellum_ingots")));
 	public static final ArmorMaterial GALAXIUM = register("galaxium", 44, new int[] { 4, 8, 9, 4 }, 18, AMSoundEvents.GALAXIUM_ARMOR_EQUIPPED.get(), 4.5F, 0.1F, () -> Ingredient.fromTag(AMTagKeys.createCommonItemTag("galaxiums")));
 	public static final ArmorMaterial UNIVITE = register("univite", 47, new int[] { 5, 8, 9, 5 }, 22, AMSoundEvents.UNIVITE_ARMOR_EQUIPPED.get(), 5.0F, 0.1F, () -> Ingredient.fromTag(AMTagKeys.createCommonItemTag("univite_ingots")));
-	
+	public static final ArmorMaterial LUNUM = register("lunum", 12, new int[] { 3, 4, 6, 3 }, 10, AMSoundEvents.LUNUM_ARMOR_EQUIPPED.get(), 0.0F, 0.0F, () -> Ingredient.fromTag(AMTagKeys.createCommonItemTag("lunum_ingots")));
+
 	public static final ArmorMaterial METEORIC_STEEL = register("meteoric_steel", 20, new int[] { 3, 5, 7, 2 }, 10, AMSoundEvents.METEORIC_STEEL_ARMOR_EQUIPPED.get(), 0.4F, 0.0F, () -> Ingredient.fromTag(AMTagKeys.createCommonItemTag("meteoric_steel_ingots")));
 	
 	public static ArmorMaterial register(String name, int durabilityMultiplier, int[] protectionAmounts, int enchantability, SoundEvent equipSound, float toughness, float knockbackResistance, Supplier<Ingredient> supplier) {

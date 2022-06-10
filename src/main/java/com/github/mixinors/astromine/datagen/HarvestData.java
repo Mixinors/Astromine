@@ -23,6 +23,7 @@ public record HarvestData(
 	public static final HarvestData LEVEL_6_PICKAXE = new HarvestData(6);
 	
 	public static final HarvestData SPACE_STONE_HARVEST_DATA = DIAMOND_PICKAXE;
+	public static final HarvestData MOON_STONE_HARVEST_DATA = PICKAXE;
 	
 	public static final HarvestData PIPE_AND_CABLE_HARVEST_DATA = STONE_PICKAXE;
 	

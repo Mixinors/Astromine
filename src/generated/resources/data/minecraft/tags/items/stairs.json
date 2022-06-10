@@ -3,11 +3,19 @@
   "values": [
     "astromine:asteroid_stone_stairs",
     "astromine:asteroid_stone_brick_stairs",
+    "astromine:dark_moon_stone_stairs",
+    "astromine:dark_moon_stone_brick_stairs",
     "astromine:meteor_stone_stairs",
     "astromine:meteor_stone_brick_stairs",
+    "astromine:moon_stone_stairs",
+    "astromine:moon_stone_brick_stairs",
     "astromine:polished_asteroid_stone_stairs",
+    "astromine:polished_dark_moon_stone_stairs",
     "astromine:polished_meteor_stone_stairs",
+    "astromine:polished_moon_stone_stairs",
     "astromine:smooth_asteroid_stone_stairs",
-    "astromine:smooth_meteor_stone_stairs"
+    "astromine:smooth_dark_moon_stone_stairs",
+    "astromine:smooth_meteor_stone_stairs",
+    "astromine:smooth_moon_stone_stairs"
   ]
 }

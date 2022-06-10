@@ -568,6 +568,12 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 			this.family.baseMeltingEnergy = baseMeltingEnergy;
 			return this;
 		}
+
+		public MaterialFamily.Builder moonOre(Block moonOre, Block darkMoonOre) {
+			this.family.blockVariants.put(BlockVariant.MOON_ORE, moonOre);
+			this.family.blockVariants.put(BlockVariant.DARK_MOON_ORE, darkMoonOre);
+			return this;
+		}
 		
 		public MaterialFamily.Builder noGenerateModels() {
 			this.family.generateModels = false;

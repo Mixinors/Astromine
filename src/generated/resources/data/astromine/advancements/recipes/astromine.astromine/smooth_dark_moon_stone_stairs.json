@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "astromine:smooth_dark_moon_stone_stairs"
+    ]
+  },
+  "criteria": {
+    "has_smooth_dark_moon_stone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "astromine:smooth_dark_moon_stone"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "astromine:smooth_dark_moon_stone_stairs"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_smooth_dark_moon_stone",
+      "has_the_recipe"
+    ]
+  ]
+}

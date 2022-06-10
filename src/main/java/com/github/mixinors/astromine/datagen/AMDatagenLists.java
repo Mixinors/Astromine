@@ -237,7 +237,8 @@ public class AMDatagenLists {
 				AMFluids.MOLTEN_STEEL,
 				AMFluids.MOLTEN_STELLUM,
 				AMFluids.MOLTEN_TIN,
-				AMFluids.MOLTEN_UNIVITE
+				AMFluids.MOLTEN_UNIVITE,
+				AMFluids.MOLTEN_LUNUM
 		);
 		
 		public static final List<ExtendedFluid> FLUIDS = ImmutableList.<ExtendedFluid>builder()
@@ -432,7 +433,9 @@ public class AMDatagenLists {
 				BlockVariant.DEEPSLATE_ORE,
 				BlockVariant.NETHER_ORE,
 				BlockVariant.METEOR_ORE,
-				BlockVariant.ASTEROID_ORE
+				BlockVariant.ASTEROID_ORE,
+				BlockVariant.MOON_ORE,
+				BlockVariant.DARK_MOON_ORE
 		);
 	}
 	
@@ -474,6 +477,17 @@ public class AMDatagenLists {
 				AMBlockFamilies.SMOOTH_ASTEROID_STONE,
 				AMBlockFamilies.POLISHED_ASTEROID_STONE,
 				AMBlockFamilies.ASTEROID_STONE_BRICK
+		);
+
+		public static final List<BlockFamily> MOON_STONE_FAMILIES = ImmutableList.of(
+				AMBlockFamilies.MOON_STONE,
+				AMBlockFamilies.SMOOTH_MOON_STONE,
+				AMBlockFamilies.POLISHED_MOON_STONE,
+				AMBlockFamilies.MOON_STONE_BRICK,
+				AMBlockFamilies.DARK_MOON_STONE,
+				AMBlockFamilies.SMOOTH_DARK_MOON_STONE,
+				AMBlockFamilies.POLISHED_DARK_MOON_STONE,
+				AMBlockFamilies.DARK_MOON_STONE_BRICK
 		);
 	}
 }

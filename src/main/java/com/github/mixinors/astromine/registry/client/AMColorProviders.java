@@ -24,15 +24,14 @@
 
 package com.github.mixinors.astromine.registry.client;
 
-import com.github.mixinors.astromine.registry.common.AMFluids;
+import com.github.mixinors.astromine.common.fluid.base.ExtendedFluid;
+import com.github.mixinors.astromine.datagen.AMDatagenLists;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 
 public class AMColorProviders {
 	public static void init() {
-		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> AMFluids.OIL.getTintColor(), AMFluids.OIL.getCauldron());
-		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> AMFluids.FUEL.getTintColor(), AMFluids.FUEL.getCauldron());
-		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> AMFluids.BIOMASS.getTintColor(), AMFluids.BIOMASS.getCauldron());
-		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> AMFluids.OXYGEN.getTintColor(), AMFluids.OXYGEN.getCauldron());
-		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> AMFluids.HYDROGEN.getTintColor(), AMFluids.HYDROGEN.getCauldron());
+		for(ExtendedFluid fluid : AMDatagenLists.FluidLists.FLUIDS) {
+			ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> fluid.getTintColor(), fluid.getCauldron());
+		}
 	}
 }
