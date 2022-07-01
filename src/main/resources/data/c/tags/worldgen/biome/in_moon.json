@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
-    "astromine:moon"
+    "astromine:moon_light_side",
+    "astromine:moon_dark_side",
+    "astromine:moon_crater_field"
   ]
 }

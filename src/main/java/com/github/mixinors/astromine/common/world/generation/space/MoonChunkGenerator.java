@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.world.generation.space;
 
 import com.github.mixinors.astromine.common.noise.OctaveNoiseSampler;
 import com.github.mixinors.astromine.common.noise.OpenSimplexNoise;
+import com.github.mixinors.astromine.registry.common.AMBiomes;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -41,6 +42,7 @@ import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeAccess;
+import net.minecraft.world.biome.source.BiomeCoords;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.GenerationStep;
@@ -144,6 +146,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 		return MIN_Y;
 	}
 	
+	// TODO: Fix biomes being sourced as a 4x4 block.
 	public void populateNoise(StructureAccessor accessor, Chunk chunk) {
 		var mutable = new BlockPos.Mutable();
 		
@@ -161,11 +164,13 @@ public class MoonChunkGenerator extends ChunkGenerator {
 			for (var z = z1; z <= z2; ++z) {
 				var maxY = MAX_Y - (int) ((noise.sample(x, 0, z)) * 16);
 				
+				var biome = chunk.getBiomeForNoiseGen(BiomeCoords.fromBlock(x), 0, BiomeCoords.fromBlock(z)).getKey().orElseThrow();
+				
 				for (var y = MIN_Y; y < maxY; ++y) {
-					if (noise.sample(x / 4.0F, 0, z / 4.0F) < 0.0F) {
-						chunk.setBlockState(mutable.set(x, y, z), AMBlocks.MOON_STONE.get().getDefaultState(), false);
-					} else {
+					if (biome.equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
 						chunk.setBlockState(mutable.set(x, y, z), AMBlocks.DARK_MOON_STONE.get().getDefaultState(), false);
+					} else {
+						chunk.setBlockState(mutable.set(x, y, z), AMBlocks.MOON_STONE.get().getDefaultState(), false);
 					}
 				}
 			}

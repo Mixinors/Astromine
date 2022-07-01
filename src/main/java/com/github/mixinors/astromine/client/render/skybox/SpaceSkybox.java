@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.client.render.sky.skybox;
+package com.github.mixinors.astromine.client.render.skybox;
 
-import com.github.mixinors.astromine.client.render.sky.skybox.base.Skybox;
+import com.github.mixinors.astromine.client.render.skybox.base.Skybox;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;

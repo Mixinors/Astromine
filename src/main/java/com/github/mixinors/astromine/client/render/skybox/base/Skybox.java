@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.client.render.sky.skybox.base;
+package com.github.mixinors.astromine.client.render.skybox.base;
 
 import net.minecraft.client.util.math.MatrixStack;
 

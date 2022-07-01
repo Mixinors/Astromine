@@ -24,8 +24,7 @@
 
 package com.github.mixinors.astromine.mixin.client;
 
-import com.github.mixinors.astromine.registry.common.AMWorlds;
-import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
+import com.github.mixinors.astromine.common.event.BackgroundEvents;
 import net.minecraft.client.render.BackgroundRenderer;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.world.ClientWorld;
@@ -37,24 +36,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(BackgroundRenderer.class)
 public class BackgroundRendererMixin {
 	@Inject(at = @At("HEAD"), method = "applyFog", cancellable = true)
-	private static void astromine$applyFog(Camera camera, BackgroundRenderer.FogType fogType, float viewDistance, boolean thickFog, CallbackInfo ci) {
-		var client = InstanceUtil.getClient();
+	private static void astromine$applyFog(Camera camera, BackgroundRenderer.FogType type, float viewDistance, boolean thickFog, CallbackInfo ci) {
+		var res = BackgroundEvents.FOG.invoker().calculate(camera, type);
 		
-		if (client != null && (AMWorlds.isAstromine(client.world.getRegistryKey()))) {
-			if (!AMWorlds.isAtmospheric(client.world.method_40134())) {
-				ci.cancel();
-			}
+		if (res.isFalse()) {
+			ci.cancel();
 		}
 	}
 	
 	@Inject(at = @At("HEAD"), method = "render", cancellable = true)
-	private static void astromine$render(Camera camera, float tickDelta, ClientWorld world, int i, float f, CallbackInfo ci) {
-		var client = InstanceUtil.getClient();
+	private static void astromine$render(Camera camera, float tickDelta, ClientWorld world, int viewDistance, float skyDarkness, CallbackInfo ci) {
+		var res = BackgroundEvents.RENDER.invoker().render(camera, tickDelta, world, viewDistance, skyDarkness);
 		
-		if (client != null && (AMWorlds.isAstromine(client.world.getRegistryKey()))) {
-			if (!AMWorlds.isAtmospheric(client.world.method_40134())) {
-				ci.cancel();
-			}
+		if (res.isFalse()) {
+			ci.cancel();
 		}
 	}
 }

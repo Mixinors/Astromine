@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.registry.SkyboxRegistry;
-import com.github.mixinors.astromine.client.render.sky.skybox.SpaceSkybox;
+import com.github.mixinors.astromine.client.render.skybox.SpaceSkybox;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;

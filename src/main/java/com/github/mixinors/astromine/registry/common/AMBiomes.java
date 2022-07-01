@@ -45,8 +45,14 @@ public class AMBiomes {
 	public static final Identifier ASTEROID_BELT_ID = AMCommon.id("asteroid_belt");
 	public static final RegistryKey<Biome> ASTEROID_BELT_KEY = register(Registry.BIOME_KEY, ASTEROID_BELT_ID);
 	
-	public static final Identifier MOON_ID = AMCommon.id("moon");
-	public static final RegistryKey<Biome> MOON_KEY = register(Registry.BIOME_KEY, MOON_ID);
+	public static final Identifier MOON_LIGHT_SIDE_ID = AMCommon.id("moon_light_side");
+	public static final RegistryKey<Biome> MOON_LIGHT_SIDE_KEY = register(Registry.BIOME_KEY, MOON_LIGHT_SIDE_ID);
+	
+	public static final Identifier MOON_DARK_SIDE_ID = AMCommon.id("moon_dark_side");
+	public static final RegistryKey<Biome> MOON_DARK_SIDE_KEY = register(Registry.BIOME_KEY, MOON_DARK_SIDE_ID);
+	
+	public static final Identifier MOON_CRATER_FIELD_ID = AMCommon.id("moon_crater_field");
+	public static final RegistryKey<Biome> MOON_CRATER_FIELD_KEY = register(Registry.BIOME_KEY, MOON_CRATER_FIELD_ID);
 	
 	// We specify what entities spawn and what features generate in the biome.
 	// Aside from some structures, trees, rocks, plants and
@@ -66,20 +72,20 @@ public class AMBiomes {
 		return (new Biome.Builder())
 				.precipitation(Biome.Precipitation.NONE)
 				.category(Biome.Category.NONE)
-				.temperature(0F)
-				.downfall(0F)
+				.temperature(0.0F)
+				.downfall(0.0F)
 				.effects((new BiomeEffects.Builder())
-						.waterColor(0x3f76e4)
+						.waterColor(0x3F76E4)
 						.waterFogColor(0x050533)
-						.fogColor(0xc0d8ff)
-						.skyColor(0x77adff)
+						.fogColor(0xC0D8FF)
+						.skyColor(0x77ADFF)
 						.build())
 				.spawnSettings(spawnSettings)
 				.generationSettings(generationSettings)
 				.build();
 	}
 	
-	private static Biome createMoon() {
+	private static Biome createMoonLightSide() {
 		var spawnSettings = new SpawnSettings.Builder()
 				.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(AMEntityTypes.SPACE_SLIME.get(), 10, 3, 8))
 				.build();
@@ -90,13 +96,62 @@ public class AMBiomes {
 		return (new Biome.Builder())
 				.precipitation(Biome.Precipitation.NONE)
 				.category(Biome.Category.NONE)
-				.temperature(0F)
-				.downfall(0F)
+				.temperature(0.0F)
+				.downfall(0.0F)
 				.effects((new BiomeEffects.Builder())
-						.waterColor(0x3f76e4)
+						.waterColor(0x3F76E4)
 						.waterFogColor(0x050533)
-						.fogColor(0xc0d8ff)
-						.skyColor(0x77adff)
+						.fogColor(0xC0D8FF)
+						.skyColor(0x77ADFF)
+						.build())
+				.spawnSettings(spawnSettings)
+				.generationSettings(generationSettings)
+				.build();
+	}
+	
+	// TODO: Add Dark versions of mobs to this biome!
+	private static Biome createMoonDarkSide() {
+		var spawnSettings = new SpawnSettings.Builder()
+				.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(AMEntityTypes.SPACE_SLIME.get(), 10, 3, 8))
+				.build();
+		
+		var generationSettings = new GenerationSettings.Builder()
+				.build();
+		
+		return (new Biome.Builder())
+				.precipitation(Biome.Precipitation.NONE)
+				.category(Biome.Category.NONE)
+				.temperature(0.0F)
+				.downfall(0.0F)
+				.effects((new BiomeEffects.Builder())
+						.waterColor(0x3F76E4)
+						.waterFogColor(0x050533)
+						.fogColor(0xC0D8FF)
+						.skyColor(0x77ADFF)
+						.build())
+				.spawnSettings(spawnSettings)
+				.generationSettings(generationSettings)
+				.build();
+	}
+	
+	private static Biome createMoonCraterField() {
+		var spawnSettings = new SpawnSettings.Builder()
+				.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(AMEntityTypes.SPACE_SLIME.get(), 10, 3, 8))
+				.build();
+		
+		var generationSettings = new GenerationSettings.Builder()
+				.build();
+		
+		return (new Biome.Builder())
+				.precipitation(Biome.Precipitation.NONE)
+				.category(Biome.Category.NONE)
+				.temperature(0.0F)
+				.downfall(0.0F)
+				.effects((new BiomeEffects.Builder())
+						.waterColor(0x3F76E4)
+						.waterFogColor(0x050533)
+						.fogColor(0xC0D8FF)
+						.skyColor(0x77ADFF)
 						.build())
 				.spawnSettings(spawnSettings)
 				.generationSettings(generationSettings)
@@ -105,7 +160,10 @@ public class AMBiomes {
 	
 	public static void init() {
 		Registry.register(BuiltinRegistries.BIOME, ASTEROID_BELT_KEY.getValue(), createAsteroidBelt());
-		Registry.register(BuiltinRegistries.BIOME, MOON_KEY.getValue(), createMoon());
+		
+		Registry.register(BuiltinRegistries.BIOME, MOON_LIGHT_SIDE_KEY.getValue(), createMoonLightSide());
+		Registry.register(BuiltinRegistries.BIOME, MOON_DARK_SIDE_KEY.getValue(), createMoonDarkSide());
+		Registry.register(BuiltinRegistries.BIOME, MOON_CRATER_FIELD_KEY.getValue(), createMoonCraterField());
 	}
 	
 	public static <T> RegistryKey<T> register(RegistryKey<Registry<T>> registry, Identifier identifier) {

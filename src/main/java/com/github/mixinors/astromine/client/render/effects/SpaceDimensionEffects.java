@@ -22,15 +22,12 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.client.render.sky;
+package com.github.mixinors.astromine.client.render.effects;
 
-import com.github.mixinors.astromine.registry.common.AMBlocks;
-import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.DimensionEffects;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.Heightmap;
 
 @Environment(EnvType.CLIENT)
 public class SpaceDimensionEffects extends DimensionEffects {
@@ -45,10 +42,6 @@ public class SpaceDimensionEffects extends DimensionEffects {
 	
 	@Override
 	public boolean useThickFog(int camX, int camY) {
-		var client = InstanceUtil.getClient();
-		if (client.player != null && client.player.world.getBlockState(client.player.world.getTopPosition(Heightmap.Type.WORLD_SURFACE_WG, client.player.getBlockPos()).down()).getBlock() == AMBlocks.DARK_MOON_STONE.get()) {
-			return true;
-		}
 		return false;
 	}
 }

@@ -25,15 +25,19 @@
 package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.client.render.sky.SpaceDimensionEffects;
+import com.github.mixinors.astromine.client.render.effects.MoonDimensionEffects;
+import com.github.mixinors.astromine.client.render.effects.SpaceDimensionEffects;
 import com.github.mixinors.astromine.common.block.network.EnergyCableBlock;
 import com.github.mixinors.astromine.common.component.entity.OxygenComponent;
+import com.github.mixinors.astromine.common.event.BackgroundEvents;
 import com.github.mixinors.astromine.common.event.DimensionEffectsEvents;
 import com.github.mixinors.astromine.common.item.armor.SpaceSuitArmorItem;
 import com.github.mixinors.astromine.common.item.utility.HolographicConnectorItem;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidItemStorage;
+import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
+import dev.architectury.event.EventResult;
 import dev.architectury.event.events.client.ClientTooltipEvent;
 import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
@@ -57,12 +61,35 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.Heightmap;
 import team.reborn.energy.api.EnergyStorage;
 
 import java.util.ArrayList;
 
 public class AMEvents {
 	public static void init() {
+		BackgroundEvents.RENDER.register((camera, tickDelta, world, viewDistnace, skyDarkness) -> {
+			if (AMWorlds.isAstromine(world.getRegistryKey())) {
+				if (world.getRegistryKey().equals(AMWorlds.MOON_ID)) {
+					var client = InstanceUtil.getClient();
+					
+					if (client.player != null && client.player.world.getBlockState(client.player.world.getTopPosition(Heightmap.Type.WORLD_SURFACE_WG, client.player.getBlockPos()).down()).getBlock() == AMBlocks.DARK_MOON_STONE.get()) {
+						return EventResult.pass();
+					} else {
+						return EventResult.interruptFalse();
+					}
+				} else {
+					if (AMWorlds.isAtmospheric(world.method_40134())) {
+						return EventResult.pass();
+					} else {
+						return EventResult.interruptFalse();
+					}
+				}
+			}
+			
+			return EventResult.pass();
+		});
+		
 		var spaceSuitEnergyBar = new ImageBarWidget();
 		spaceSuitEnergyBar.setMaximum(
 				() -> {
@@ -328,7 +355,7 @@ public class AMEvents {
 			properties.put(AMWorlds.EARTH_ORBIT_ID, new SpaceDimensionEffects());
 			properties.put(AMWorlds.MOON_ORBIT_ID, new SpaceDimensionEffects());
 			
-			properties.put(AMWorlds.MOON_ID, new SpaceDimensionEffects());
+			properties.put(AMWorlds.MOON_ID, new MoonDimensionEffects());
 		});
 	}
 }

@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.world.generation.space;
 
+import com.github.mixinors.astromine.common.noise.OpenSimplexNoise;
 import com.github.mixinors.astromine.registry.common.AMBiomes;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
@@ -46,11 +47,19 @@ public class MoonBiomeSource extends BiomeSource {
 	
 	private final Registry<Biome> registry;
 	
+	private final OpenSimplexNoise noise;
+	
 	public MoonBiomeSource(Registry<Biome> registry, long seed) {
-		super(ImmutableList.of(registry.getOrCreateEntry(AMBiomes.MOON_KEY)));
+		super(ImmutableList.of(
+				registry.getOrCreateEntry(AMBiomes.MOON_LIGHT_SIDE_KEY),
+				registry.getOrCreateEntry(AMBiomes.MOON_DARK_SIDE_KEY),
+				registry.getOrCreateEntry(AMBiomes.MOON_CRATER_FIELD_KEY)
+		));
 		
 		this.seed = seed;
 		this.registry = registry;
+		
+		this.noise = new OpenSimplexNoise(seed);
 	}
 	
 	@Override
@@ -63,8 +72,23 @@ public class MoonBiomeSource extends BiomeSource {
 		return new MoonBiomeSource(registry, seed);
 	}
 	
+	// TODO: Add 3D biomes and caves!
+	// TODO: Add caves to the moon, and clamp their top and bottoms to not hit bedrock!
 	@Override
 	public RegistryEntry<Biome> getBiome(int x, int y, int z, MultiNoiseUtil.MultiNoiseSampler noise) {
-		return registry.getEntry(AMBiomes.MOON_KEY).orElseThrow();
+		// Roughly 50% of the moon's surface should be light side,
+		// 30% crater fields, and 20% dark side.
+		
+		// The noise range is [0.0 .. 1.0], but I've seen it go negative.
+		
+		var sample = Math.abs(this.noise.sample(x / 128.0F, 0, z / 128.0F));
+		
+		if (sample > 0.5F) {
+			return registry.getEntry(AMBiomes.MOON_LIGHT_SIDE_KEY).orElseThrow();
+		} else if (sample > 0.2F) {
+			return registry.getEntry(AMBiomes.MOON_CRATER_FIELD_KEY).orElseThrow();
+		} else {
+			return registry.getEntry(AMBiomes.MOON_DARK_SIDE_KEY).orElseThrow();
+		}
 	}
 }
