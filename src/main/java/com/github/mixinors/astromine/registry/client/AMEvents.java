@@ -31,12 +31,15 @@ import com.github.mixinors.astromine.common.block.network.EnergyCableBlock;
 import com.github.mixinors.astromine.common.component.entity.OxygenComponent;
 import com.github.mixinors.astromine.common.event.BackgroundEvents;
 import com.github.mixinors.astromine.common.event.DimensionEffectsEvents;
+import com.github.mixinors.astromine.common.event.DimensionTypeEvents;
 import com.github.mixinors.astromine.common.item.armor.SpaceSuitArmorItem;
 import com.github.mixinors.astromine.common.item.utility.HolographicConnectorItem;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidItemStorage;
+import com.github.mixinors.astromine.registry.common.AMBiomes;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
+import dev.architectury.event.CompoundEventResult;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.client.ClientTooltipEvent;
 import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
@@ -51,6 +54,7 @@ import dev.vini2003.hammer.gui.api.common.widget.bar.HudBarWidget;
 import dev.vini2003.hammer.gui.api.common.widget.bar.ImageBarWidget;
 import dev.vini2003.hammer.gui.energy.api.common.util.EnergyTextUtil;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
@@ -60,6 +64,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.Heightmap;
 import team.reborn.energy.api.EnergyStorage;
@@ -67,7 +72,62 @@ import team.reborn.energy.api.EnergyStorage;
 import java.util.ArrayList;
 
 public class AMEvents {
+	private static float LAST_MOON_BRIGHTNESS = 0.0F;
+	private static float TARGET_MOON_BRIGHTNESS = 0.0F;
+	
 	public static void init() {
+		WorldRenderEvents.END.register(context -> {
+			AMValues.TICK_DELTA = context.tickDelta();
+		});
+		
+		DimensionTypeEvents.SKY_LIGHT.register(type -> {
+			var client = InstanceUtil.getClient();
+			
+			if (client.world != null && client.player != null) {
+				if (client.world.getBiome(client.player.getBlockPos()).getKey().orElseThrow().equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
+					// return CompoundEventResult.interruptTrue(false);
+				}
+			}
+			
+			return CompoundEventResult.pass();
+		});
+		
+		DimensionTypeEvents.BRIGHTNESS.register((type, lightLevel) -> {
+			var client = InstanceUtil.getClient();
+			
+			if (client.world.getRegistryKey().equals(AMWorlds.MOON_WORLD)) {
+				if (client.world != null && client.player != null) {
+					if (client.world.getBiome(client.player.getBlockPos()).getKey().orElseThrow().equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
+						TARGET_MOON_BRIGHTNESS = 0.0F;
+						
+						LAST_MOON_BRIGHTNESS = MathHelper.lerp(AMValues.TICK_DELTA / 2560.0F, LAST_MOON_BRIGHTNESS, TARGET_MOON_BRIGHTNESS);
+						
+						return CompoundEventResult.interruptTrue(LAST_MOON_BRIGHTNESS);
+					} else {
+						TARGET_MOON_BRIGHTNESS = 15.0F;
+						
+						LAST_MOON_BRIGHTNESS = MathHelper.lerp(AMValues.TICK_DELTA / 256000.0F, LAST_MOON_BRIGHTNESS, TARGET_MOON_BRIGHTNESS);
+						
+						return CompoundEventResult.interruptTrue(LAST_MOON_BRIGHTNESS);
+					}
+				}
+			}
+			
+			return CompoundEventResult.pass();
+		});
+		
+		BackgroundEvents.FOG.register((camera, type) -> {
+			var client = InstanceUtil.getClient();
+			
+			if (client.world != null && client.player != null) {
+				if (client.world.getBiome(client.player.getBlockPos()).getKey().orElseThrow().equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
+					return CompoundEventResult.interruptTrue(0x000000);
+				}
+			}
+			
+			return CompoundEventResult.pass();
+		});
+		
 		BackgroundEvents.RENDER.register((camera, tickDelta, world, viewDistnace, skyDarkness) -> {
 			if (AMWorlds.isAstromine(world.getRegistryKey())) {
 				if (world.getRegistryKey().equals(AMWorlds.MOON_ID)) {

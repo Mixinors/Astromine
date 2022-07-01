@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "common.DataPackContentsMixin",
+    "common.DimensionTypeMixin",
     "common.EntityAccessor",
     "common.EntityMixin",
     "common.EntityNavigationMixin",
