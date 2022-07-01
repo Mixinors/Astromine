@@ -33,8 +33,11 @@ import net.minecraft.world.TeleportTarget;
 public record EarthOrbitEntityPlacer(
 		int y
 ) implements EntityPlacer {
-	public static final EarthOrbitEntityPlacer TO_PLANET = new EarthOrbitEntityPlacer(AMConfig.get().world.layers.overworld.spawnY);
+	public static final EarthOrbitEntityPlacer TO_EARTH = new EarthOrbitEntityPlacer(AMConfig.get().world.layers.earth.spawnY);
 	public static final EarthOrbitEntityPlacer TO_EARTH_ORBIT = new EarthOrbitEntityPlacer(AMConfig.get().world.layers.earthOrbit.spawnY);
+	
+	public static final EarthOrbitEntityPlacer TO_MOON = new EarthOrbitEntityPlacer(AMConfig.get().world.layers.moon.spawnY);
+	public static final EarthOrbitEntityPlacer TO_MOON_ORBIT = new EarthOrbitEntityPlacer(AMConfig.get().world.layers.moonOrbit.spawnY);
 	
 	@Override
 	public TeleportTarget placeEntity(Entity entity) {

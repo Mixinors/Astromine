@@ -66,6 +66,7 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 		
 		
 		var launchButton = new ButtonWidget();
+		
 		launchButton.onEvent(EventType.MOUSE_CLICKED, (MouseClickedEvent event) -> {
 			rocket.tryLaunch(this.getPlayer());
 		});

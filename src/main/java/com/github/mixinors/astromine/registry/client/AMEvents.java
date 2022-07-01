@@ -324,6 +324,11 @@ public class AMEvents {
 			}
 		});
 		
-		DimensionEffectsEvents.INIT.register((properties) -> properties.put(AMWorlds.EARTH_ORBIT_ID, new SpaceDimensionEffects()));
+		DimensionEffectsEvents.INIT.register((properties) -> {
+			properties.put(AMWorlds.EARTH_ORBIT_ID, new SpaceDimensionEffects());
+			properties.put(AMWorlds.MOON_ORBIT_ID, new SpaceDimensionEffects());
+			
+			properties.put(AMWorlds.MOON_ID, new SpaceDimensionEffects());
+		});
 	}
 }

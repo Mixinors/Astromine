@@ -30,5 +30,8 @@ import dev.vini2003.hammer.gravity.api.common.manager.GravityManager;
 public class AMGravities {
 	public static void init() {
 		GravityManager.set(AMWorlds.EARTH_ORBIT_WORLD, AMConfig.get().world.spaceGravity);
+		GravityManager.set(AMWorlds.MOON_ORBIT_WORLD, AMConfig.get().world.spaceGravity);
+		
+		GravityManager.set(AMWorlds.MOON_WORLD, AMConfig.get().world.moonGravity);
 	}
 }

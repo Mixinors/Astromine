@@ -39,8 +39,8 @@ public class WorldConfigSection {
 	@Comment("Gravity level in Space")
 	public float spaceGravity = 0.01F;
 	
-	@Comment("Gravity for non-Astromine dimensions")
-	public double gravity = 0.08D;
+	@Comment("Gravity level in Space")
+	public float moonGravity = 0.015F;
 	
 	@Comment("Whether generation of Overworld Crude Oil Wells is enabled or not")
 	public boolean crudeOilWellsGeneration = true;

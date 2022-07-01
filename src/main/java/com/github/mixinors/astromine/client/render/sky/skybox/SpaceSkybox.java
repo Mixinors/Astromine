@@ -62,10 +62,6 @@ public class SpaceSkybox extends Skybox {
 	
 	private SpaceSkybox(Builder builder) {
 		textures = Map.copyOf(builder.textures);
-		
-		if (textures.size() != 8) {
-			throw new UnsupportedOperationException("Skybox constructed without necessary information!");
-		}
 	}
 	
 	@Override
@@ -151,49 +147,53 @@ public class SpaceSkybox extends Skybox {
 			matrices.pop();
 		}
 		
-		RenderSystem.setShaderTexture(0, textures.get(PLANET));
-		
-		matrices.push();
-		
-		buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT);
-		
 		var lerpPlayerY = MathHelper.lerp(tickDelta, client.player.prevY, client.player.getY());
 		
-		buffer.vertex(matrices.peek().getPositionMatrix(), -100.0F, (float) (-64.0F - (lerpPlayerY)), -100.0F).color(255, 255, 255, 255).texture(u0P, 0.0F).light(vertexLight).next();
-		buffer.vertex(matrices.peek().getPositionMatrix(), -100.0F, (float) (-64.0F - (lerpPlayerY)), 100.0F).color(255, 255, 255, 255).texture(u0P, 1.0F).light(vertexLight).next();
-		buffer.vertex(matrices.peek().getPositionMatrix(), 100.0F, (float) (-64.0F - (lerpPlayerY)), 100.0F).color(255, 255, 255, 255).texture(u1P, 1.0F).light(vertexLight).next();
-		buffer.vertex(matrices.peek().getPositionMatrix(), 100.0F, (float) (-64.0F - (lerpPlayerY)), -100.0F).color(255, 255, 255, 255).texture(u1P, 0.0F).light(vertexLight).next();
+		if (textures.containsKey(PLANET)) {
+			RenderSystem.setShaderTexture(0, textures.get(PLANET));
+			
+			matrices.push();
+			
+			buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT);
+			
+			buffer.vertex(matrices.peek().getPositionMatrix(), -100.0F, (float) (-64.0F - (lerpPlayerY)), -100.0F).color(255, 255, 255, 255).texture(u0P, 0.0F).light(vertexLight).next();
+			buffer.vertex(matrices.peek().getPositionMatrix(), -100.0F, (float) (-64.0F - (lerpPlayerY)), 100.0F).color(255, 255, 255, 255).texture(u0P, 1.0F).light(vertexLight).next();
+			buffer.vertex(matrices.peek().getPositionMatrix(), 100.0F, (float) (-64.0F - (lerpPlayerY)), 100.0F).color(255, 255, 255, 255).texture(u1P, 1.0F).light(vertexLight).next();
+			buffer.vertex(matrices.peek().getPositionMatrix(), 100.0F, (float) (-64.0F - (lerpPlayerY)), -100.0F).color(255, 255, 255, 255).texture(u1P, 0.0F).light(vertexLight).next();
+			
+			tessellator.draw();
+			
+			matrices.pop();
+		}
 		
-		tessellator.draw();
+		if (textures.containsKey(CLOUD)) {
+			RenderSystem.setShaderTexture(0, textures.get(CLOUD));
+			
+			matrices.push();
+			
+			buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT);
+			
+			RenderSystem.enableBlend();
+			RenderSystem.enableDepthTest();
+			
+			buffer.vertex(matrices.peek().getPositionMatrix(), -100.0F, (float) (-60.0F - (lerpPlayerY)), -100.0F).color(255, 255, 255, 255).texture(u0C, 0).light(vertexLight).next();
+			buffer.vertex(matrices.peek().getPositionMatrix(), -100.0F, (float) (-60.0F - (lerpPlayerY)), 100.0F).color(255, 255, 255, 255).texture(u0C, 1).light(vertexLight).next();
+			buffer.vertex(matrices.peek().getPositionMatrix(), 100.0F, (float) (-60.0F - (lerpPlayerY)), 100.0F).color(255, 255, 255, 255).texture(u1C, 1).light(vertexLight).next();
+			buffer.vertex(matrices.peek().getPositionMatrix(), 100.0F, (float) (-60.0F - (lerpPlayerY)), -100.0F).color(255, 255, 255, 255).texture(u1C, 0).light(vertexLight).next();
+			
+			tessellator.draw();
+			
+			RenderSystem.disableBlend();
+			RenderSystem.disableDepthTest();
+			
+			matrices.pop();
+		}
 		
-		matrices.pop();
+		u0C -= 0.00001F;
+		u1C -= 0.00001F;
 		
-		RenderSystem.setShaderTexture(0, textures.get(CLOUD));
-		
-		matrices.push();
-		
-		buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT);
-		
-		RenderSystem.enableBlend();
-		RenderSystem.enableDepthTest();
-		
-		buffer.vertex(matrices.peek().getPositionMatrix(), -100.0F, (float) (-60.0F - (lerpPlayerY)), -100.0F).color(255, 255, 255, 255).texture(u0C, 0).light(vertexLight).next();
-		buffer.vertex(matrices.peek().getPositionMatrix(), -100.0F, (float) (-60.0F - (lerpPlayerY)), 100.0F).color(255, 255, 255, 255).texture(u0C, 1).light(vertexLight).next();
-		buffer.vertex(matrices.peek().getPositionMatrix(), 100.0F, (float) (-60.0F - (lerpPlayerY)), 100.0F).color(255, 255, 255, 255).texture(u1C, 1).light(vertexLight).next();
-		buffer.vertex(matrices.peek().getPositionMatrix(), 100.0F, (float) (-60.0F - (lerpPlayerY)), -100.0F).color(255, 255, 255, 255).texture(u1C, 0).light(vertexLight).next();
-		
-		tessellator.draw();
-		
-		RenderSystem.disableBlend();
-		RenderSystem.disableDepthTest();
-		
-		matrices.pop();
-		
-		u0C -= 0.00001f;
-		u1C -= 0.00001f;
-		
-		u0P -= 0.0000066f;
-		u1P -= 0.0000066f;
+		u0P -= 0.0000066F;
+		u1P -= 0.0000066F;
 		
 		RenderSystem.depthMask(true);
 		RenderSystem.enableTexture();

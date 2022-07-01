@@ -44,6 +44,16 @@ public class AMWorlds {
 	public static final RegistryKey<DimensionType> EARTH_ORBIT_TYPE_KEY = register(Registry.DIMENSION_TYPE_KEY, EARTH_ORBIT_ID);
 	public static final RegistryKey<World> EARTH_ORBIT_WORLD = register(Registry.WORLD_KEY, EARTH_ORBIT_ID);
 	
+	public static final Identifier MOON_ORBIT_ID = AMCommon.id("moon_orbit");
+	public static final RegistryKey<DimensionOptions> MOON_ORBIT_OPTIONS = register(Registry.DIMENSION_KEY, MOON_ORBIT_ID);
+	public static final RegistryKey<DimensionType> MOON_ORBIT_TYPE_KEY = register(Registry.DIMENSION_TYPE_KEY, MOON_ORBIT_ID);
+	public static final RegistryKey<World> MOON_ORBIT_WORLD = register(Registry.WORLD_KEY, MOON_ORBIT_ID);
+	
+	public static final Identifier MOON_ID = AMCommon.id("moon");
+	public static final RegistryKey<DimensionOptions> MOON_OPTIONS = register(Registry.DIMENSION_KEY, MOON_ID);
+	public static final RegistryKey<DimensionType> MOON_TYPE_KEY = register(Registry.DIMENSION_TYPE_KEY, MOON_ID);
+	public static final RegistryKey<World> MOON_WORLD = register(Registry.WORLD_KEY, MOON_ID);
+	
 	public static void init() {
 	}
 	
@@ -55,6 +65,10 @@ public class AMWorlds {
 	
 	public static boolean isSpace(RegistryEntry<DimensionType> dimensionType) {
 		return dimensionType.isIn(AMTagKeys.DimensionTypeTags.IS_SPACE);
+	}
+	
+	public static boolean isAtmospheric(RegistryEntry<DimensionType> dimensionType) {
+		return dimensionType.isIn(AMTagKeys.DimensionTypeTags.IS_ATMOSPHERIC);
 	}
 	
 	public static boolean isAstromine(RegistryKey<?> key) {

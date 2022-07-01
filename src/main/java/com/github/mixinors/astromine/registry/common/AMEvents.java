@@ -29,6 +29,8 @@ import com.github.mixinors.astromine.common.event.ServerChunkManagerEvents;
 import com.github.mixinors.astromine.common.screen.handler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.screen.handler.base.entity.ExtendedEntityScreenHandler;
 import com.github.mixinors.astromine.common.world.generation.space.EarthOrbitChunkGenerator;
+import com.github.mixinors.astromine.common.world.generation.space.MoonChunkGenerator;
+import com.github.mixinors.astromine.common.world.generation.space.MoonOrbitChunkGenerator;
 import dev.architectury.event.events.common.TickEvent;
 import net.minecraft.server.world.ServerWorld;
 
@@ -62,6 +64,14 @@ public class AMEvents {
 		ServerChunkManagerEvents.INIT.register(manager -> {
 			if (manager.threadedAnvilChunkStorage.chunkGenerator instanceof EarthOrbitChunkGenerator) {
 				manager.threadedAnvilChunkStorage.chunkGenerator = ((EarthOrbitChunkGenerator) manager.threadedAnvilChunkStorage.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
+			}
+			
+			if (manager.threadedAnvilChunkStorage.chunkGenerator instanceof MoonOrbitChunkGenerator) {
+				manager.threadedAnvilChunkStorage.chunkGenerator = ((MoonOrbitChunkGenerator) manager.threadedAnvilChunkStorage.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
+			}
+			
+			if (manager.threadedAnvilChunkStorage.chunkGenerator instanceof MoonChunkGenerator) {
+				manager.threadedAnvilChunkStorage.chunkGenerator = ((MoonChunkGenerator) manager.threadedAnvilChunkStorage.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
 			}
 		});
 	}
