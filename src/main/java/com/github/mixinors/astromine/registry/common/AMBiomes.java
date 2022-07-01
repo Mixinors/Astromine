@@ -45,12 +45,16 @@ public class AMBiomes {
 	public static final Identifier ASTEROID_BELT_ID = AMCommon.id("asteroid_belt");
 	public static final RegistryKey<Biome> ASTEROID_BELT_KEY = register(Registry.BIOME_KEY, ASTEROID_BELT_ID);
 	
+	public static final Identifier MOON_ID = AMCommon.id("moon");
+	public static final RegistryKey<Biome> MOON_KEY = register(Registry.BIOME_KEY, MOON_ID);
+	
+	// We specify what entities spawn and what features generate in the biome.
+	// Aside from some structures, trees, rocks, plants and
+	// custom entities, these are mostly the same for each biome.
+	// Vanilla configured features for biomes are defined in DefaultBiomeFeatures.
+	
+	// Applies for all create<X> methods.
 	private static Biome createAsteroidBelt() {
-		// We specify what entities spawn and what features generate in the biome.
-		// Aside from some structures, trees, rocks, plants and
-		//   custom entities, these are mostly the same for each biome.
-		// Vanilla configured features for biomes are defined in DefaultBiomeFeatures.
-		
 		var spawnSettings = new SpawnSettings.Builder()
 				.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(AMEntityTypes.SPACE_SLIME.get(), 10, 3, 8))
 				.build();
@@ -75,8 +79,33 @@ public class AMBiomes {
 				.build();
 	}
 	
+	private static Biome createMoon() {
+		var spawnSettings = new SpawnSettings.Builder()
+				.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(AMEntityTypes.SPACE_SLIME.get(), 10, 3, 8))
+				.build();
+		
+		var generationSettings = new GenerationSettings.Builder()
+				.build();
+		
+		return (new Biome.Builder())
+				.precipitation(Biome.Precipitation.NONE)
+				.category(Biome.Category.NONE)
+				.temperature(0F)
+				.downfall(0F)
+				.effects((new BiomeEffects.Builder())
+						.waterColor(0x3f76e4)
+						.waterFogColor(0x050533)
+						.fogColor(0xc0d8ff)
+						.skyColor(0x77adff)
+						.build())
+				.spawnSettings(spawnSettings)
+				.generationSettings(generationSettings)
+				.build();
+	}
+	
 	public static void init() {
 		Registry.register(BuiltinRegistries.BIOME, ASTEROID_BELT_KEY.getValue(), createAsteroidBelt());
+		Registry.register(BuiltinRegistries.BIOME, MOON_KEY.getValue(), createMoon());
 	}
 	
 	public static <T> RegistryKey<T> register(RegistryKey<Registry<T>> registry, Identifier identifier) {

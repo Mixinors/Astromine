@@ -27,10 +27,15 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.world.generation.space.EarthOrbitBiomeSource;
+import com.github.mixinors.astromine.common.world.generation.space.MoonBiomeSource;
+import com.github.mixinors.astromine.common.world.generation.space.MoonOrbitBiomeSource;
 import net.minecraft.util.registry.Registry;
 
 public class AMBiomeSources {
 	public static void init() {
 		AMCommon.registry(Registry.BIOME_SOURCE_KEY).register(AMWorlds.EARTH_ORBIT_ID, () -> EarthOrbitBiomeSource.CODEC);
+		AMCommon.registry(Registry.BIOME_SOURCE_KEY).register(AMWorlds.MOON_ORBIT_ID, () -> MoonOrbitBiomeSource.CODEC);
+		
+		AMCommon.registry(Registry.BIOME_SOURCE_KEY).register(AMWorlds.MOON_ID, () -> MoonBiomeSource.CODEC);
 	}
 }

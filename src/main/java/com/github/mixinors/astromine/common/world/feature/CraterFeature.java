@@ -22,33 +22,28 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.client.render.sky;
+package com.github.mixinors.astromine.common.world.feature;
 
-import com.github.mixinors.astromine.registry.common.AMBlocks;
-import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.render.DimensionEffects;
-import net.minecraft.util.math.Vec3d;
+import com.mojang.serialization.Codec;
+import net.minecraft.structure.StructureGeneratorFactory;
+import net.minecraft.structure.StructurePiecesCollector;
+import net.minecraft.structure.StructurePiecesGenerator;
 import net.minecraft.world.Heightmap;
+import net.minecraft.world.gen.GenerationStep;
+import net.minecraft.world.gen.feature.DefaultFeatureConfig;
+import net.minecraft.world.gen.feature.StructureFeature;
 
-@Environment(EnvType.CLIENT)
-public class SpaceDimensionEffects extends DimensionEffects {
-	public SpaceDimensionEffects() {
-		super(Float.NaN, false, SkyType.NONE, true, true);
+public class CraterFeature extends StructureFeature<DefaultFeatureConfig> {
+	public CraterFeature(Codec<DefaultFeatureConfig> codec) {
+		super(codec, StructureGeneratorFactory.simple(StructureGeneratorFactory.checkForBiomeOnTop(Heightmap.Type.WORLD_SURFACE_WG), CraterFeature::addPieces));
+	}
+	
+	private static void addPieces(StructurePiecesCollector collector, StructurePiecesGenerator.Context<DefaultFeatureConfig> context) {
+		collector.addPiece(new CraterGenerator(context.random(), context.chunkPos().getStartX(), context.chunkPos().getStartZ()));
 	}
 	
 	@Override
-	public Vec3d adjustFogColor(Vec3d color, float sunHeight) {
-		return color.multiply(0.15000000596046448D);
-	}
-	
-	@Override
-	public boolean useThickFog(int camX, int camY) {
-		var client = InstanceUtil.getClient();
-		if (client.player != null && client.player.world.getBlockState(client.player.world.getTopPosition(Heightmap.Type.WORLD_SURFACE_WG, client.player.getBlockPos()).down()).getBlock() == AMBlocks.DARK_MOON_STONE.get()) {
-			return true;
-		}
-		return false;
+	public GenerationStep.Feature getGenerationStep() {
+		return GenerationStep.Feature.SURFACE_STRUCTURES;
 	}
 }

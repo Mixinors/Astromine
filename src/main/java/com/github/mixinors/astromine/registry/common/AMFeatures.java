@@ -25,10 +25,7 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.world.feature.AsteroidOreFeature;
-import com.github.mixinors.astromine.common.world.feature.MeteorFeature;
-import com.github.mixinors.astromine.common.world.feature.MeteorGenerator;
-import com.github.mixinors.astromine.common.world.feature.OilWellFeature;
+import com.github.mixinors.astromine.common.world.feature.*;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
@@ -64,6 +61,11 @@ public class AMFeatures {
 	
 	public static final StructureFeature<DefaultFeatureConfig> METEOR_STRUCTURE_FEATURE = registerStructureFeature(METEOR_ID, new MeteorFeature(DefaultFeatureConfig.CODEC), GenerationStep.Feature.SURFACE_STRUCTURES);
 	public static final RegistrySupplier<StructurePieceType> METEOR_STRUCTURE_PIECE = registerStructurePiece(METEOR_ID, () -> (StructurePieceType.Simple) MeteorGenerator::new);
+	
+	public static final Identifier CRATER_ID = AMCommon.id("crater");
+	
+	public static final StructureFeature<DefaultFeatureConfig> CRATER_STRUCTURE_FEATURE = registerStructureFeature(CRATER_ID, new CraterFeature(DefaultFeatureConfig.CODEC), GenerationStep.Feature.SURFACE_STRUCTURES);
+	public static final RegistrySupplier<StructurePieceType> CRATER_STRUCTURE_PIECE = registerStructurePiece(CRATER_ID, () -> (StructurePieceType.Simple) CraterGenerator::new);
 	
 	public static void init() {
 		BiomeModifications.create(OIL_WELL_ID).add(ModificationPhase.ADDITIONS, (biomeSelectionContext) -> {

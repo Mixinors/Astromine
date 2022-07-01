@@ -75,7 +75,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 	private static final int MAX_Y = 64;
 	
 	public MoonChunkGenerator(Registry<StructureSet> structureFeatureRegistry, long seed, Registry<Biome> biomeRegistry) {
-		super(structureFeatureRegistry, Optional.empty(), new EarthOrbitBiomeSource(biomeRegistry, seed));
+		super(structureFeatureRegistry, Optional.empty(), new MoonBiomeSource(biomeRegistry, seed));
 		
 		this.field_37261 = seed;
 		this.biomeRegistry = biomeRegistry;
@@ -162,7 +162,11 @@ public class MoonChunkGenerator extends ChunkGenerator {
 				var maxY = MAX_Y - (int) ((noise.sample(x, 0, z)) * 16);
 				
 				for (var y = MIN_Y; y < maxY; ++y) {
-					chunk.setBlockState(mutable.set(x, y, z), AMBlocks.MOON_STONE.get().getDefaultState(), false);
+					if (noise.sample(x / 4.0F, 0, z / 4.0F) < 0.0F) {
+						chunk.setBlockState(mutable.set(x, y, z), AMBlocks.MOON_STONE.get().getDefaultState(), false);
+					} else {
+						chunk.setBlockState(mutable.set(x, y, z), AMBlocks.DARK_MOON_STONE.get().getDefaultState(), false);
+					}
 				}
 			}
 		}

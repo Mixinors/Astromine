@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "astromine:crater",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 3,
+    "separation": 2,
+    "salt": 29483148
+  }
+}
