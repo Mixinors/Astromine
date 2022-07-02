@@ -1,6 +1,18 @@
 {
   "replace": false,
   "values": [
-    "#c:lunum_moon_ores"
+    "#c:coal_moon_ores",
+    "#c:copper_moon_ores",
+    "#c:diamond_moon_ores",
+    "#c:emerald_moon_ores",
+    "#c:gold_moon_ores",
+    "#c:iron_moon_ores",
+    "#c:lapis_moon_ores",
+    "#c:lapis_lazuli_moon_ores",
+    "#c:lead_moon_ores",
+    "#c:lunum_moon_ores",
+    "#c:redstone_moon_ores",
+    "#c:silver_moon_ores",
+    "#c:tin_moon_ores"
   ]
 }

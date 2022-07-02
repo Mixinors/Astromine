@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:lead_dark_moon_ores"
+  },
+  "output": {
+    "fluid": "astromine:molten_lead",
+    "amount": 12000
+  },
+  "energy_input": 4960,
+  "time": 620
+}

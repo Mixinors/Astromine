@@ -1,0 +1,27 @@
+{
+  "replace": false,
+  "values": [
+    "astromine:moon_tin_ore",
+    "astromine:moon_silver_ore",
+    "astromine:moon_lead_ore",
+    "astromine:moon_coal_ore",
+    "astromine:moon_iron_ore",
+    "astromine:moon_gold_ore",
+    "astromine:moon_copper_ore",
+    "astromine:moon_redstone_ore",
+    "astromine:moon_lapis_ore",
+    "astromine:moon_diamond_ore",
+    "astromine:moon_emerald_ore",
+    "astromine:moon_stone",
+    "astromine:moon_stone_slab",
+    "astromine:moon_stone_stairs",
+    "astromine:moon_stone_wall",
+    "astromine:smooth_moon_stone",
+    "astromine:smooth_moon_stone_slab",
+    "astromine:smooth_moon_stone_stairs",
+    "astromine:moon_stone_bricks",
+    "astromine:moon_stone_brick_slab",
+    "astromine:moon_stone_brick_stairs",
+    "astromine:moon_stone_brick_wall"
+  ]
+}

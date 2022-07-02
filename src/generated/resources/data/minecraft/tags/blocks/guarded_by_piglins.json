@@ -8,6 +8,8 @@
     "#c:gold_deepslate_ores",
     "#c:gold_nether_ores",
     "#c:gold_asteroid_ores",
-    "#c:raw_gold_blocks"
+    "#c:raw_gold_blocks",
+    "#c:gold_moon_ores",
+    "#c:gold_dark_moon_ores"
   ]
 }

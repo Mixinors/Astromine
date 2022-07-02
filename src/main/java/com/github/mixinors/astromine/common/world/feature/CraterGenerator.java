@@ -24,8 +24,12 @@
 
 package com.github.mixinors.astromine.common.world.feature;
 
+import com.github.mixinors.astromine.common.registry.DarkMoonOreRegistry;
+import com.github.mixinors.astromine.common.registry.MoonOreRegistry;
 import com.github.mixinors.astromine.registry.common.AMBiomes;
+import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMFeatures;
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.structure.ShiftableStructurePiece;
@@ -82,6 +86,16 @@ public class CraterGenerator extends ShiftableStructurePiece {
 			
 			// TODO: Fix ellipsoid in Hammer!
 			
+			var s = world.getBlockState(cP.down());
+			
+			Block ore = null;
+			
+			if (s.getBlock() == AMBlocks.MOON_STONE.get()) {
+				ore = MoonOreRegistry.INSTANCE.getRandom(random);
+			} if (s.getBlock() == AMBlocks.DARK_MOON_STONE.get()) {
+				ore = DarkMoonOreRegistry.INSTANCE.getRandom(random);
+			}
+			
 			for (var x = cX - (bD * 1.5F); x < cX + (bD * 1.5F); ++x) {
 				for (var z = cZ - (bD * 1.5F); z < cZ + (bD * 1.5F); ++z) {
 					var oTY = world.getTopPosition(Heightmap.Type.WORLD_SURFACE_WG, mutable.set(x, 0, z)).getY();
@@ -113,6 +127,15 @@ public class CraterGenerator extends ShiftableStructurePiece {
 						
 						for (var bY = tY; bY < tY + dB; ++bY) {
 							world.setBlockState(mutable.set(x, bY, z), oBS, 0);
+						}
+					}
+					
+					if (ore != null) {
+						// Add ores.
+						if (random.nextInt(4) == 0) {
+							var rP = world.getTopPosition(Heightmap.Type.WORLD_SURFACE_WG, mutable.set(x, 0, z));
+							
+							world.setBlockState(rP, ore.getDefaultState(), 0);
 						}
 					}
 				}

@@ -75,13 +75,81 @@ public class AMColorProviders {
 				g += (color & 0xFF00) >> 8;
 				b += color & 0xFF;
 			}
-			
-			if (blocks == 0) {
-				blocks = 1;
-			}
-			
-			return (r / blocks & 0xFF) << 16 | (g / blocks & 0xFF) << 8 | b / blocks & 0xFF;
-		}, AMBlocks.MOON_STONE.get(), AMBlocks.DARK_MOON_STONE.get());
+					
+					if (blocks == 0) {
+						blocks = 1;
+					}
+					
+					if (true) {
+						return 0xFF0000;
+					}
+					
+					return (r / blocks & 0xFF) << 16 | (g / blocks & 0xFF) << 8 | b / blocks & 0xFF;
+				},
+				
+				AMBlocks.MOON_TIN_ORE.get(),
+				AMBlocks.MOON_SILVER_ORE.get(),
+				AMBlocks.MOON_LEAD_ORE.get(),
+				
+				AMBlocks.MOON_COAL_ORE.get(),
+				AMBlocks.MOON_IRON_ORE.get(),
+				AMBlocks.MOON_GOLD_ORE.get(),
+				AMBlocks.MOON_COPPER_ORE.get(),
+				AMBlocks.MOON_REDSTONE_ORE.get(),
+				AMBlocks.MOON_LAPIS_ORE.get(),
+				AMBlocks.MOON_DIAMOND_ORE.get(),
+				AMBlocks.MOON_EMERALD_ORE.get(),
+				
+				AMBlocks.MOON_STONE.get(),
+				AMBlocks.MOON_STONE_SLAB.get(),
+				AMBlocks.MOON_STONE_STAIRS.get(),
+				AMBlocks.MOON_STONE_WALL.get(),
+				
+				AMBlocks.SMOOTH_MOON_STONE.get(),
+				AMBlocks.SMOOTH_MOON_STONE_SLAB.get(),
+				AMBlocks.SMOOTH_MOON_STONE_STAIRS.get(),
+				AMBlocks.SMOOTH_MOON_STONE_WALL.get(),
+				
+				AMBlocks.POLISHED_MOON_STONE.get(),
+				AMBlocks.POLISHED_MOON_STONE_SLAB.get(),
+				AMBlocks.POLISHED_MOON_STONE_STAIRS.get(),
+				
+				AMBlocks.MOON_STONE_BRICKS.get(),
+				AMBlocks.MOON_STONE_BRICK_SLAB.get(),
+				AMBlocks.MOON_STONE_BRICK_STAIRS.get(),
+				AMBlocks.MOON_STONE_BRICK_WALL.get(),
+				
+				AMBlocks.DARK_MOON_TIN_ORE.get(),
+				AMBlocks.DARK_MOON_SILVER_ORE.get(),
+				AMBlocks.DARK_MOON_LEAD_ORE.get(),
+				
+				AMBlocks.DARK_MOON_COAL_ORE.get(),
+				AMBlocks.DARK_MOON_IRON_ORE.get(),
+				AMBlocks.DARK_MOON_GOLD_ORE.get(),
+				AMBlocks.DARK_MOON_COPPER_ORE.get(),
+				AMBlocks.DARK_MOON_REDSTONE_ORE.get(),
+				AMBlocks.DARK_MOON_LAPIS_ORE.get(),
+				AMBlocks.DARK_MOON_DIAMOND_ORE.get(),
+				AMBlocks.DARK_MOON_EMERALD_ORE.get(),
+				
+				AMBlocks.DARK_MOON_STONE.get(),
+				AMBlocks.DARK_MOON_STONE_SLAB.get(),
+				AMBlocks.DARK_MOON_STONE_STAIRS.get(),
+				AMBlocks.DARK_MOON_STONE_WALL.get(),
+				
+				AMBlocks.SMOOTH_DARK_MOON_STONE.get(),
+				AMBlocks.SMOOTH_DARK_MOON_STONE_SLAB.get(),
+				AMBlocks.SMOOTH_DARK_MOON_STONE_STAIRS.get(),
+				AMBlocks.SMOOTH_DARK_MOON_STONE_WALL.get(),
+				
+				AMBlocks.POLISHED_DARK_MOON_STONE.get(),
+				AMBlocks.POLISHED_DARK_MOON_STONE_SLAB.get(),
+				AMBlocks.POLISHED_DARK_MOON_STONE_STAIRS.get(),
+				
+				AMBlocks.DARK_MOON_STONE_BRICKS.get(),
+				AMBlocks.DARK_MOON_STONE_BRICK_SLAB.get(),
+				AMBlocks.DARK_MOON_STONE_BRICK_STAIRS.get(),
+				AMBlocks.DARK_MOON_STONE_BRICK_WALL.get());
 		
 		for (var fluid : AMDatagenLists.FluidLists.FLUIDS) {
 			ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> fluid.getTintColor(), fluid.getCauldron());

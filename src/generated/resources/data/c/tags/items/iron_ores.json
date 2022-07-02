@@ -3,6 +3,8 @@
   "values": [
     "#c:iron_stone_ores",
     "#c:iron_deepslate_ores",
-    "#c:iron_asteroid_ores"
+    "#c:iron_asteroid_ores",
+    "#c:iron_moon_ores",
+    "#c:iron_dark_moon_ores"
   ]
 }

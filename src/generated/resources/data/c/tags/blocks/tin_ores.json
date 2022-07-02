@@ -3,6 +3,8 @@
   "values": [
     "#c:tin_stone_ores",
     "#c:tin_deepslate_ores",
-    "#c:tin_asteroid_ores"
+    "#c:tin_asteroid_ores",
+    "#c:tin_moon_ores",
+    "#c:tin_dark_moon_ores"
   ]
 }

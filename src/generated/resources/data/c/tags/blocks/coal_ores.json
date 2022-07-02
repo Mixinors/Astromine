@@ -3,6 +3,8 @@
   "values": [
     "#c:coal_stone_ores",
     "#c:coal_deepslate_ores",
-    "#c:coal_asteroid_ores"
+    "#c:coal_asteroid_ores",
+    "#c:coal_moon_ores",
+    "#c:coal_dark_moon_ores"
   ]
 }

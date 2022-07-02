@@ -36,12 +36,15 @@ import com.github.mixinors.astromine.common.block.network.EnergyCableBlock;
 import com.github.mixinors.astromine.common.block.network.FluidPipeBlock;
 import com.github.mixinors.astromine.common.block.network.ItemConduitBlock;
 import com.github.mixinors.astromine.common.block.ore.AsteroidOreBlock;
+import com.github.mixinors.astromine.common.block.ore.DarkMoonStoneOreBlock;
+import com.github.mixinors.astromine.common.block.ore.MoonStoneOreBlock;
 import com.github.mixinors.astromine.common.block.ore.base.ExtendedOreBlock;
 import com.github.mixinors.astromine.common.block.storage.BufferBlock;
 import com.github.mixinors.astromine.common.block.storage.CapacitorBlock;
 import com.github.mixinors.astromine.common.block.storage.TankBlock;
 import com.github.mixinors.astromine.common.block.utility.*;
 import dev.architectury.registry.registries.RegistrySupplier;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -52,8 +55,6 @@ import net.minecraft.util.registry.Registry;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
-
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 
 public class AMBlocks {
 	public static final RegistrySupplier<Block> ASTEROID_STONE = register("asteroid_stone", () -> new Block(FabricBlockSettings.of(Material.STONE, MapColor.GRAY).requiresTool().strength(1.5F, 3F)), AMItems.getSettings().fireproof());
@@ -94,6 +95,32 @@ public class AMBlocks {
 	public static final RegistrySupplier<Block> ASTEROID_LAPIS_ORE = register("asteroid_lapis_ore", () -> new AsteroidOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
 	public static final RegistrySupplier<Block> ASTEROID_DIAMOND_ORE = register("asteroid_diamond_ore", () -> new AsteroidOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
 	public static final RegistrySupplier<Block> ASTEROID_EMERALD_ORE = register("asteroid_emerald_ore", () -> new AsteroidOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	
+	public static final RegistrySupplier<Block> MOON_TIN_ORE = register("moon_tin_ore", () -> new MoonStoneOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(2, 7).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> MOON_SILVER_ORE = register("moon_silver_ore", () -> new MoonStoneOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(2, 7).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> MOON_LEAD_ORE = register("moon_lead_ore", () -> new MoonStoneOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(2, 7).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	
+	public static final RegistrySupplier<Block> MOON_COAL_ORE = register("moon_coal_ore", () -> new MoonStoneOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(2, 7).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> MOON_IRON_ORE = register("moon_iron_ore", () -> new MoonStoneOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(2, 7).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> MOON_GOLD_ORE = register("moon_gold_ore", () -> new MoonStoneOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(2, 7).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> MOON_COPPER_ORE = register("moon_copper_ore", () -> new MoonStoneOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(2, 7).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> MOON_REDSTONE_ORE = register("moon_redstone_ore", () -> new MoonStoneOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(2, 7).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> MOON_LAPIS_ORE = register("moon_lapis_ore", () -> new MoonStoneOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(2, 7).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> MOON_DIAMOND_ORE = register("moon_diamond_ore", () -> new MoonStoneOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(2, 7).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> MOON_EMERALD_ORE = register("moon_emerald_ore", () -> new MoonStoneOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(2, 7).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	
+	public static final RegistrySupplier<Block> DARK_MOON_TIN_ORE = register("dark_moon_tin_ore", () -> new DarkMoonStoneOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(2, 8).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> DARK_MOON_SILVER_ORE = register("dark_moon_silver_ore", () -> new DarkMoonStoneOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(3, 8.5F).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> DARK_MOON_LEAD_ORE = register("dark_moon_lead_ore", () -> new DarkMoonStoneOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(3, 8.5F).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	
+	public static final RegistrySupplier<Block> DARK_MOON_COAL_ORE = register("dark_moon_coal_ore", () -> new DarkMoonStoneOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(3, 8.5F).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> DARK_MOON_IRON_ORE = register("dark_moon_iron_ore", () -> new DarkMoonStoneOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(3, 8.5F).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> DARK_MOON_GOLD_ORE = register("dark_moon_gold_ore", () -> new DarkMoonStoneOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(3, 8.5F).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> DARK_MOON_COPPER_ORE = register("dark_moon_copper_ore", () -> new DarkMoonStoneOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(3, 8.5F).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> DARK_MOON_REDSTONE_ORE = register("dark_moon_redstone_ore", () -> new DarkMoonStoneOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(3, 8.5F).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> DARK_MOON_LAPIS_ORE = register("dark_moon_lapis_ore", () -> new DarkMoonStoneOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(3, 8.5F).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> DARK_MOON_DIAMOND_ORE = register("dark_moon_diamond_ore", () -> new DarkMoonStoneOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(3, 8.5F).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
+	public static final RegistrySupplier<Block> DARK_MOON_EMERALD_ORE = register("dark_moon_emerald_ore", () -> new DarkMoonStoneOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(3, 8.5F).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
 	
 	public static final RegistrySupplier<Block> SPACE_SLIME_BLOCK = register("space_slime_block", () -> new SlimeBlock(FabricBlockSettings.copy(Blocks.SLIME_BLOCK).mapColor(MapColor.PURPLE)), AMItems.getSettings());
 	
@@ -170,8 +197,8 @@ public class AMBlocks {
 	public static final RegistrySupplier<Block> MOON_STONE_BRICK_SLAB = register("moon_stone_brick_slab", () -> new SlabBlock(FabricBlockSettings.copy(MOON_STONE_BRICKS.get())), AMItems.getSettings());
 	public static final RegistrySupplier<Block> MOON_STONE_BRICK_STAIRS = register("moon_stone_brick_stairs", () -> new StairsBlock(MOON_STONE_BRICKS.get().getDefaultState(), FabricBlockSettings.copy(MOON_STONE_BRICKS.get())), AMItems.getSettings());
 	public static final RegistrySupplier<Block> MOON_STONE_BRICK_WALL = register("moon_stone_brick_wall", () -> new WallBlock(FabricBlockSettings.copy(MOON_STONE_BRICKS.get())), AMItems.getSettings());
-
-	public static final RegistrySupplier<Block> DARK_MOON_STONE = register("dark_moon_stone", () -> new Block(FabricBlockSettings.of(Material.STONE, MapColor.DEEPSLATE_GRAY).requiresTool().strength(3, 8.5f)), AMItems.getSettings());
+	
+	public static final RegistrySupplier<Block> DARK_MOON_STONE = register("dark_moon_stone", () -> new Block(FabricBlockSettings.of(Material.STONE, MapColor.DEEPSLATE_GRAY).requiresTool().strength(3, 8.5F)), AMItems.getSettings());
 	public static final RegistrySupplier<Block> DARK_MOON_STONE_SLAB = register("dark_moon_stone_slab", () -> new SlabBlock(FabricBlockSettings.copy(DARK_MOON_STONE.get())), AMItems.getSettings());
 	public static final RegistrySupplier<Block> DARK_MOON_STONE_STAIRS = register("dark_moon_stone_stairs", () -> new StairsBlock(DARK_MOON_STONE.get().getDefaultState(), FabricBlockSettings.copy(DARK_MOON_STONE.get())), AMItems.getSettings());
 	public static final RegistrySupplier<Block> DARK_MOON_STONE_WALL = register("dark_moon_stone_wall", () -> new WallBlock(FabricBlockSettings.copy(DARK_MOON_STONE.get())), AMItems.getSettings());

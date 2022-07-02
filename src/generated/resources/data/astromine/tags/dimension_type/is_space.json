@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "astromine:earth_orbit"
+    "astromine:earth_orbit",
+    "astromine:moon_orbit"
   ]
 }

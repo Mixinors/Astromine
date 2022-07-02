@@ -80,6 +80,36 @@ public class AMItems {
 	public static final RegistrySupplier<Item> ASTEROID_LAPIS_ORE_CLUSTER = register("asteroid_lapis_ore_cluster", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> ASTEROID_REDSTONE_ORE_CLUSTER = register("asteroid_redstone_ore_cluster", () -> new Item(AMItems.getSettings()));
 	
+	public static final RegistrySupplier<Item> MOON_TIN_ORE_CLUSTER = register("moon_tin_ore_cluster", () -> new Item(AMItems.getSettings()));
+	public static final RegistrySupplier<Item> MOON_SILVER_ORE_CLUSTER = register("moon_silver_ore_cluster", () -> new Item(AMItems.getSettings()));
+	public static final RegistrySupplier<Item> MOON_LEAD_ORE_CLUSTER = register("moon_lead_ore_cluster", () -> new Item(AMItems.getSettings()));
+	
+	public static final RegistrySupplier<Item> MOON_IRON_ORE_CLUSTER = register("moon_iron_ore_cluster", () -> new Item(AMItems.getSettings()));
+	public static final RegistrySupplier<Item> MOON_GOLD_ORE_CLUSTER = register("moon_gold_ore_cluster", () -> new Item(AMItems.getSettings()));
+	public static final RegistrySupplier<Item> MOON_COPPER_ORE_CLUSTER = register("moon_copper_ore_cluster", () -> new Item(AMItems.getSettings()));
+	
+	public static final RegistrySupplier<Item> MOON_DIAMOND_ORE_CLUSTER = register("moon_diamond_ore_cluster", () -> new Item(AMItems.getSettings()));
+	public static final RegistrySupplier<Item> MOON_EMERALD_ORE_CLUSTER = register("moon_emerald_ore_cluster", () -> new Item(AMItems.getSettings()));
+	
+	public static final RegistrySupplier<Item> MOON_COAL_ORE_CLUSTER = register("moon_coal_ore_cluster", () -> new Item(AMItems.getSettings()));
+	public static final RegistrySupplier<Item> MOON_LAPIS_ORE_CLUSTER = register("moon_lapis_ore_cluster", () -> new Item(AMItems.getSettings()));
+	public static final RegistrySupplier<Item> MOON_REDSTONE_ORE_CLUSTER = register("moon_redstone_ore_cluster", () -> new Item(AMItems.getSettings()));
+	
+	public static final RegistrySupplier<Item> DARK_MOON_TIN_ORE_CLUSTER = register("dark_moon_tin_ore_cluster", () -> new Item(AMItems.getSettings()));
+	public static final RegistrySupplier<Item> DARK_MOON_SILVER_ORE_CLUSTER = register("dark_moon_silver_ore_cluster", () -> new Item(AMItems.getSettings()));
+	public static final RegistrySupplier<Item> DARK_MOON_LEAD_ORE_CLUSTER = register("dark_moon_lead_ore_cluster", () -> new Item(AMItems.getSettings()));
+	
+	public static final RegistrySupplier<Item> DARK_MOON_IRON_ORE_CLUSTER = register("dark_moon_iron_ore_cluster", () -> new Item(AMItems.getSettings()));
+	public static final RegistrySupplier<Item> DARK_MOON_GOLD_ORE_CLUSTER = register("dark_moon_gold_ore_cluster", () -> new Item(AMItems.getSettings()));
+	public static final RegistrySupplier<Item> DARK_MOON_COPPER_ORE_CLUSTER = register("dark_moon_copper_ore_cluster", () -> new Item(AMItems.getSettings()));
+	
+	public static final RegistrySupplier<Item> DARK_MOON_DIAMOND_ORE_CLUSTER = register("dark_moon_diamond_ore_cluster", () -> new Item(AMItems.getSettings()));
+	public static final RegistrySupplier<Item> DARK_MOON_EMERALD_ORE_CLUSTER = register("dark_moon_emerald_ore_cluster", () -> new Item(AMItems.getSettings()));
+	
+	public static final RegistrySupplier<Item> DARK_MOON_COAL_ORE_CLUSTER = register("dark_moon_coal_ore_cluster", () -> new Item(AMItems.getSettings()));
+	public static final RegistrySupplier<Item> DARK_MOON_LAPIS_ORE_CLUSTER = register("dark_moon_lapis_ore_cluster", () -> new Item(AMItems.getSettings()));
+	public static final RegistrySupplier<Item> DARK_MOON_REDSTONE_ORE_CLUSTER = register("dark_moon_redstone_ore_cluster", () -> new Item(AMItems.getSettings()));
+	
 	public static final RegistrySupplier<Item> PRIMITIVE_ROCKET_FUEL_TANK = register("primitive_rocket_fuel_tank", () -> new Item(AMItems.getSettings().maxCount(1)));
 	public static final RegistrySupplier<Item> PRIMITIVE_ROCKET_PLATING = register("primitive_rocket_plating", () -> new Item(AMItems.getSettings().maxCount(1)));
 	public static final RegistrySupplier<Item> PRIMITIVE_ROCKET_HULL = register("primitive_rocket_hull", () -> new Item(AMItems.getSettings().maxCount(1)));

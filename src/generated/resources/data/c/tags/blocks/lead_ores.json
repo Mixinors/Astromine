@@ -3,6 +3,8 @@
   "values": [
     "#c:lead_stone_ores",
     "#c:lead_deepslate_ores",
-    "#c:lead_asteroid_ores"
+    "#c:lead_asteroid_ores",
+    "#c:lead_moon_ores",
+    "#c:lead_dark_moon_ores"
   ]
 }

@@ -3,6 +3,8 @@
   "values": [
     "#c:emerald_stone_ores",
     "#c:emerald_deepslate_ores",
-    "#c:emerald_asteroid_ores"
+    "#c:emerald_asteroid_ores",
+    "#c:emerald_moon_ores",
+    "#c:emerald_dark_moon_ores"
   ]
 }

@@ -1,0 +1,12 @@
+{
+  "type": "astromine:melting",
+  "input": {
+    "tag": "c:emerald_moon_ores"
+  },
+  "output": {
+    "fluid": "astromine:molten_emerald",
+    "amount": 12000
+  },
+  "energy_input": 15680,
+  "time": 1960
+}

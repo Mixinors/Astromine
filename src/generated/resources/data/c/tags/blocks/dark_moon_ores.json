@@ -1,6 +1,18 @@
 {
   "replace": false,
   "values": [
-    "#c:lunum_dark_moon_ores"
+    "#c:coal_dark_moon_ores",
+    "#c:copper_dark_moon_ores",
+    "#c:diamond_dark_moon_ores",
+    "#c:emerald_dark_moon_ores",
+    "#c:gold_dark_moon_ores",
+    "#c:iron_dark_moon_ores",
+    "#c:lapis_dark_moon_ores",
+    "#c:lapis_lazuli_dark_moon_ores",
+    "#c:lead_dark_moon_ores",
+    "#c:lunum_dark_moon_ores",
+    "#c:redstone_dark_moon_ores",
+    "#c:silver_dark_moon_ores",
+    "#c:tin_dark_moon_ores"
   ]
 }

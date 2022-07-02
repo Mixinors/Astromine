@@ -1,0 +1,27 @@
+{
+  "replace": false,
+  "values": [
+    "astromine:dark_moon_tin_ore",
+    "astromine:dark_moon_silver_ore",
+    "astromine:dark_moon_lead_ore",
+    "astromine:dark_moon_coal_ore",
+    "astromine:dark_moon_iron_ore",
+    "astromine:dark_moon_gold_ore",
+    "astromine:dark_moon_copper_ore",
+    "astromine:dark_moon_redstone_ore",
+    "astromine:dark_moon_lapis_ore",
+    "astromine:dark_moon_diamond_ore",
+    "astromine:dark_moon_emerald_ore",
+    "astromine:dark_moon_stone",
+    "astromine:dark_moon_stone_slab",
+    "astromine:dark_moon_stone_stairs",
+    "astromine:dark_moon_stone_wall",
+    "astromine:smooth_dark_moon_stone",
+    "astromine:smooth_dark_moon_stone_slab",
+    "astromine:smooth_dark_moon_stone_stairs",
+    "astromine:dark_moon_stone_bricks",
+    "astromine:dark_moon_stone_brick_slab",
+    "astromine:dark_moon_stone_brick_stairs",
+    "astromine:dark_moon_stone_brick_wall"
+  ]
+}

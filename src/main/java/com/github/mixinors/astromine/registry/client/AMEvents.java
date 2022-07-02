@@ -36,7 +36,6 @@ import com.github.mixinors.astromine.common.item.armor.SpaceSuitArmorItem;
 import com.github.mixinors.astromine.common.item.utility.HolographicConnectorItem;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidItemStorage;
 import com.github.mixinors.astromine.registry.common.AMBiomes;
-import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
 import dev.architectury.event.CompoundEventResult;
@@ -66,11 +65,11 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.Heightmap;
 import team.reborn.energy.api.EnergyStorage;
 
 import java.util.ArrayList;
 
+// TODO: Move Moon Stone and Dark Moon Stone models out of data generator!
 public class AMEvents {
 	private static float LAST_MOON_BRIGHTNESS = 0.0F;
 	private static float TARGET_MOON_BRIGHTNESS = 0.0F;
@@ -78,18 +77,6 @@ public class AMEvents {
 	public static void init() {
 		WorldRenderEvents.END.register(context -> {
 			AMValues.TICK_DELTA = context.tickDelta();
-		});
-		
-		DimensionTypeEvents.SKY_LIGHT.register(type -> {
-			var client = InstanceUtil.getClient();
-			
-			if (client.world != null && client.player != null) {
-				if (client.world.getBiome(client.player.getBlockPos()).getKey().orElseThrow().equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
-					// return CompoundEventResult.interruptTrue(false);
-				}
-			}
-			
-			return CompoundEventResult.pass();
 		});
 		
 		DimensionTypeEvents.BRIGHTNESS.register((type, lightLevel) -> {
@@ -133,10 +120,10 @@ public class AMEvents {
 				if (world.getRegistryKey().equals(AMWorlds.MOON_ID)) {
 					var client = InstanceUtil.getClient();
 					
-					if (client.player != null && client.player.world.getBlockState(client.player.world.getTopPosition(Heightmap.Type.WORLD_SURFACE_WG, client.player.getBlockPos()).down()).getBlock() == AMBlocks.DARK_MOON_STONE.get()) {
-						return EventResult.pass();
-					} else {
+					if (client.world.getBiome(client.player.getBlockPos()).getKey().orElseThrow().equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
 						return EventResult.interruptFalse();
+					} else {
+						return EventResult.pass();
 					}
 				} else {
 					if (AMWorlds.isAtmospheric(world.method_40134())) {

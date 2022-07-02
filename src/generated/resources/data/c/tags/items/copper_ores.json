@@ -3,6 +3,8 @@
   "values": [
     "#c:copper_stone_ores",
     "#c:copper_deepslate_ores",
-    "#c:copper_asteroid_ores"
+    "#c:copper_asteroid_ores",
+    "#c:copper_moon_ores",
+    "#c:copper_dark_moon_ores"
   ]
 }

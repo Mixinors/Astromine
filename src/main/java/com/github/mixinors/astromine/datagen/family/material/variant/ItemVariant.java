@@ -43,6 +43,8 @@ public enum ItemVariant implements Variant<Item> {
 	RAW_ORE("raw_ore", "raw", ""),
 	METEOR_ORE_CLUSTER("meteor_ore_cluster"),
 	ASTEROID_ORE_CLUSTER("asteroid_ore_cluster"),
+	MOON_ORE_CLUSTER("moon_ore_cluster"),
+	DARK_MOON_ORE_CLUSTER("dark_moon_ore_cluster"),
 	DUST("dust"),
 	TINY_DUST("tiny_dust"),
 	GEAR("gear"),
@@ -142,7 +144,7 @@ public enum ItemVariant implements Variant<Item> {
 			case INGOT, GEM, MISC, DUST, PLATE, BALL, GEAR -> ExtraFluidConstants.ingot(block2x2);
 			case NUGGET, TINY_DUST -> ExtraFluidConstants.nugget(block2x2);
 			case RAW_ORE -> ExtraFluidConstants.nuggets(12, block2x2);
-			case METEOR_ORE_CLUSTER, ASTEROID_ORE_CLUSTER -> ExtraFluidConstants.nuggets(15, block2x2);
+			case METEOR_ORE_CLUSTER, ASTEROID_ORE_CLUSTER, MOON_ORE_CLUSTER, DARK_MOON_ORE_CLUSTER -> ExtraFluidConstants.nuggets(15, block2x2);
 			case WIRE -> ExtraFluidConstants.nuggets(3, block2x2);
 			case PICKAXE, AXE -> ExtraFluidConstants.nuggets(6, block2x2);
 			case SHOVEL -> ExtraFluidConstants.nuggets(2, block2x2);
@@ -166,6 +168,7 @@ public enum ItemVariant implements Variant<Item> {
 			case RAW_ORE -> 1.8F;
 			case METEOR_ORE_CLUSTER -> 2.0F;
 			case ASTEROID_ORE_CLUSTER -> 2.2F;
+			case MOON_ORE_CLUSTER, DARK_MOON_ORE_CLUSTER -> 1.8F;
 			case WIRE -> 0.3F;
 			case PICKAXE, HOE, SWORD, SHOVEL, AXE -> 1.1F;
 			case HELMET, HORSE_ARMOR, BOOTS, LEGGINGS, CHESTPLATE -> 1.4F;

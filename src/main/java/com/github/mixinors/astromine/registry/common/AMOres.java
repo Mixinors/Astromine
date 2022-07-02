@@ -27,18 +27,18 @@ package com.github.mixinors.astromine.registry.common;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.registry.AsteroidOreRegistry;
+import com.github.mixinors.astromine.common.registry.DarkMoonOreRegistry;
+import com.github.mixinors.astromine.common.registry.MoonOreRegistry;
 import com.github.mixinors.astromine.common.util.data.range.Range;
 import com.github.mixinors.astromine.common.world.ore.OreDistribution;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
-
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.PlacedFeature;
 
@@ -87,6 +87,30 @@ public class AMOres {
 		AsteroidOreRegistry.INSTANCE.register(new Range(AMConfig.get().world.ores.asteroidAsteriteOre.minRange, AMConfig.get().world.ores.asteroidAsteriteOre.maxRange), new Range(AMConfig.get().world.ores.asteroidAsteriteOre.minSize, AMConfig.get().world.ores.asteroidAsteriteOre.maxSize), AMBlocks.ASTEROID_ASTERITE_ORE.get());
 		AsteroidOreRegistry.INSTANCE.register(new Range(AMConfig.get().world.ores.asteroidStellumOre.minRange, AMConfig.get().world.ores.asteroidStellumOre.maxRange), new Range(AMConfig.get().world.ores.asteroidStellumOre.minSize, AMConfig.get().world.ores.asteroidStellumOre.maxSize), AMBlocks.ASTEROID_STELLUM_ORE.get());
 		AsteroidOreRegistry.INSTANCE.register(new Range(AMConfig.get().world.ores.asteroidGalaxiumOre.minRange, AMConfig.get().world.ores.asteroidGalaxiumOre.maxRange), new Range(AMConfig.get().world.ores.asteroidGalaxiumOre.minSize, AMConfig.get().world.ores.asteroidGalaxiumOre.maxSize), AMBlocks.ASTEROID_GALAXIUM_ORE.get());
+		
+		MoonOreRegistry.INSTANCE.register(AMBlocks.MOON_COAL_ORE.get(), AMConfig.get().world.ores.moonCoalOre.weight);
+		MoonOreRegistry.INSTANCE.register(AMBlocks.MOON_IRON_ORE.get(), AMConfig.get().world.ores.moonIronOre.weight);
+		MoonOreRegistry.INSTANCE.register(AMBlocks.MOON_GOLD_ORE.get(), AMConfig.get().world.ores.moonGoldOre.weight);
+		MoonOreRegistry.INSTANCE.register(AMBlocks.MOON_COPPER_ORE.get(), AMConfig.get().world.ores.moonCopperOre.weight);
+		MoonOreRegistry.INSTANCE.register(AMBlocks.MOON_TIN_ORE.get(), AMConfig.get().world.ores.moonTinOre.weight);
+		MoonOreRegistry.INSTANCE.register(AMBlocks.MOON_SILVER_ORE.get(), AMConfig.get().world.ores.moonSilverOre.weight);
+		MoonOreRegistry.INSTANCE.register(AMBlocks.MOON_LEAD_ORE.get(), AMConfig.get().world.ores.moonLeadOre.weight);
+		MoonOreRegistry.INSTANCE.register(AMBlocks.MOON_REDSTONE_ORE.get(), AMConfig.get().world.ores.moonRedstoneOre.weight);
+		MoonOreRegistry.INSTANCE.register(AMBlocks.MOON_LAPIS_ORE.get(), AMConfig.get().world.ores.moonLapisOre.weight);
+		MoonOreRegistry.INSTANCE.register(AMBlocks.MOON_DIAMOND_ORE.get(), AMConfig.get().world.ores.moonDiamondOre.weight);
+		MoonOreRegistry.INSTANCE.register(AMBlocks.MOON_EMERALD_ORE.get(), AMConfig.get().world.ores.moonEmeraldOre.weight);
+		
+		DarkMoonOreRegistry.INSTANCE.register(AMBlocks.DARK_MOON_COAL_ORE.get(), AMConfig.get().world.ores.darkMoonCoalOre.weight);
+		DarkMoonOreRegistry.INSTANCE.register(AMBlocks.DARK_MOON_IRON_ORE.get(), AMConfig.get().world.ores.darkMoonIronOre.weight);
+		DarkMoonOreRegistry.INSTANCE.register(AMBlocks.DARK_MOON_GOLD_ORE.get(), AMConfig.get().world.ores.darkMoonGoldOre.weight);
+		DarkMoonOreRegistry.INSTANCE.register(AMBlocks.DARK_MOON_COPPER_ORE.get(), AMConfig.get().world.ores.darkMoonCopperOre.weight);
+		DarkMoonOreRegistry.INSTANCE.register(AMBlocks.DARK_MOON_TIN_ORE.get(), AMConfig.get().world.ores.darkMoonTinOre.weight);
+		DarkMoonOreRegistry.INSTANCE.register(AMBlocks.DARK_MOON_SILVER_ORE.get(), AMConfig.get().world.ores.darkMoonSilverOre.weight);
+		DarkMoonOreRegistry.INSTANCE.register(AMBlocks.DARK_MOON_LEAD_ORE.get(), AMConfig.get().world.ores.darkMoonLeadOre.weight);
+		DarkMoonOreRegistry.INSTANCE.register(AMBlocks.DARK_MOON_REDSTONE_ORE.get(), AMConfig.get().world.ores.darkMoonRedstoneOre.weight);
+		DarkMoonOreRegistry.INSTANCE.register(AMBlocks.DARK_MOON_LAPIS_ORE.get(), AMConfig.get().world.ores.darkMoonLapisOre.weight);
+		DarkMoonOreRegistry.INSTANCE.register(AMBlocks.DARK_MOON_DIAMOND_ORE.get(), AMConfig.get().world.ores.darkMoonDiamondOre.weight);
+		DarkMoonOreRegistry.INSTANCE.register(AMBlocks.DARK_MOON_EMERALD_ORE.get(), AMConfig.get().world.ores.darkMoonEmeraldOre.weight);
 		
 		BiomeModifications.create(ORES_ID)
 						  .add(ModificationPhase.ADDITIONS, overworldPredicate().and(context -> AMConfig.get().world.ores.overworldTinOre), context -> {

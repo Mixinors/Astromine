@@ -3,6 +3,8 @@
   "values": [
     "#c:diamond_stone_ores",
     "#c:diamond_deepslate_ores",
-    "#c:diamond_asteroid_ores"
+    "#c:diamond_asteroid_ores",
+    "#c:diamond_moon_ores",
+    "#c:diamond_dark_moon_ores"
   ]
 }

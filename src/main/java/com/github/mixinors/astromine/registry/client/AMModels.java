@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.model.block.CableModel;
+import com.github.mixinors.astromine.client.model.block.TintedModel;
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
@@ -143,6 +144,12 @@ public class AMModels {
 				return new CableModel(ITEM_CONDUIT_CENTER_MODEL_ID, CABLE_SIDE_ID, CABLE_CONNECTOR_ID, CABLE_INSERT_CONNECTOR_ID, CABLE_EXTRACT_CONNECTOR_ID, CABLE_INSERT_EXTRACT_CONNECTOR_ID);
 			}
 			
+			if (modelIdentifier.getNamespace().equals(AMCommon.MOD_ID)) {
+				if (modelIdentifier.getPath().contains("moon") && !modelIdentifier.getPath().contains("item")) {
+					return new TintedModel(AMCommon.id(modelIdentifier.getPath()));
+				}
+			}
+			
 			return null;
 		});
 		
@@ -164,5 +171,16 @@ public class AMModels {
 		ModelLoadingRegistry.INSTANCE.registerModelProvider((resourceManager, out) -> out.accept(CABLE_INSERT_CONNECTOR_ID));
 		ModelLoadingRegistry.INSTANCE.registerModelProvider((resourceManager, out) -> out.accept(CABLE_EXTRACT_CONNECTOR_ID));
 		ModelLoadingRegistry.INSTANCE.registerModelProvider((resourceManager, out) -> out.accept(CABLE_INSERT_EXTRACT_CONNECTOR_ID));
+		
+		ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
+			for (var id : manager.findResources("models/", s -> s.contains("moon") && !s.contains("item"))) {
+				if (!id.toString().contains("item")) {
+					out.accept(id);
+					
+					System.out.println("Loaded model with ID " + id);
+				}
+				
+			}
+		});
 	}
 }

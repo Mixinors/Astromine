@@ -58,6 +58,9 @@ public class AMTagKeys {
 	public static final Identifier WEEPING_VINES_ID = createCommonTagId("weeping_vines");
 	public static final Identifier TWISTING_VINES_ID = createCommonTagId("twisting_vines");
 	
+	public static final Identifier MOON_STONE_ID = createCommonTagId("moon_stone");
+	public static final Identifier DARK_MOON_STONE_ID = createCommonTagId("dark_moon_stone");
+	
 	public static class BlockTags {
 		public static final TagKey<Block> YELLOW_SANDSTONES = createBlockTag(YELLOW_SANDSTONES_ID);
 		public static final TagKey<Block> RED_SANDSTONES = createBlockTag(RED_SANDSTONES_ID);
@@ -79,6 +82,9 @@ public class AMTagKeys {
 		public static final TagKey<Block> GOURDS = createBlockTag(GOURDS_ID);
 		public static final TagKey<Block> WEEPING_VINES = createBlockTag(WEEPING_VINES_ID);
 		public static final TagKey<Block> TWISTING_VINES = createBlockTag(TWISTING_VINES_ID);
+		
+		public static final TagKey<Block> MOON_STONE = createBlockTag(MOON_STONE_ID);
+		public static final TagKey<Block> DARK_MOON_STONE = createBlockTag(DARK_MOON_STONE_ID);
 		
 		public static final TagKey<Block> DRILL_MINEABLE = createBlockTag("mineable/drill");
 	}

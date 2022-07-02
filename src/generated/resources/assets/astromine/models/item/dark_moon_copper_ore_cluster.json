@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "astromine:item/dark_moon_copper_ore_cluster"
+  }
+}

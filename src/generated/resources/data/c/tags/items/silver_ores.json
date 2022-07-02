@@ -3,6 +3,8 @@
   "values": [
     "#c:silver_stone_ores",
     "#c:silver_deepslate_ores",
-    "#c:silver_asteroid_ores"
+    "#c:silver_asteroid_ores",
+    "#c:silver_moon_ores",
+    "#c:silver_dark_moon_ores"
   ]
 }
