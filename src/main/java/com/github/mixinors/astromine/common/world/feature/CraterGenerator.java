@@ -102,14 +102,22 @@ public class CraterGenerator extends ShiftableStructurePiece {
 					
 					var oBS = world.getBlockState(mutable.set(x, oTY - 1, z));
 					
+					var lowestY = (int) (oTY + (bD * 0.5F));
+
 					// Place empty blocks when inside the ellipsoid defined by [a, b, c].
 					for (var y = oTY - (bD * 0.5F); y < oTY + (bD * 0.5F); ++y) {
 						if ((Math.pow(x - cX, 2.0D) / Math.pow(a, 2.0D)) +
 								(Math.pow(y - oTY, 2.0D) / Math.pow(b, 2.0D)) +
 								(Math.pow(z - cZ, 2.0D) / Math.pow(c, 2.0D)) < 1.0F) {
 							world.setBlockState(mutable.set(x, y, z), Blocks.AIR.getDefaultState(), 0);
+							
+							if (y < lowestY) {
+								lowestY = (int) y;
+							}
 						}
 					}
+					
+					--lowestY;
 					
 					// Get distance from center surface position of the chunk.
 					var dC = (Math.pow(x - cX, 2.0D) + Math.pow(z - cZ, 2.0D));
@@ -130,12 +138,10 @@ public class CraterGenerator extends ShiftableStructurePiece {
 						}
 					}
 					
-					if (ore != null) {
+					if (lowestY < oTY && ore != null) {
 						// Add ores.
 						if (random.nextInt(4) == 0) {
-							var rP = world.getTopPosition(Heightmap.Type.WORLD_SURFACE_WG, mutable.set(x, 0, z));
-							
-							world.setBlockState(rP, ore.getDefaultState(), 0);
+							world.setBlockState(mutable.set(x, lowestY, z), ore.getDefaultState(), 0);
 						}
 					}
 				}
