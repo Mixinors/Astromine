@@ -35,7 +35,6 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 public class AMChunkGenerators {
 	public static void init() {
 		register(AMWorlds.EARTH_ORBIT_ID, EarthOrbitChunkGenerator.CODEC);
-		register(AMWorlds.MOON_ORBIT_ID, MoonOrbitChunkGenerator.CODEC);
 		
 		register(AMWorlds.MOON_ID, MoonChunkGenerator.CODEC);
 	}

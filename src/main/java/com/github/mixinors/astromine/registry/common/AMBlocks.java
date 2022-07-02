@@ -140,8 +140,8 @@ public class AMBlocks {
 
 	public static final RegistrySupplier<Block> METEOR_METITE_ORE = register("meteor_metite_ore", () -> new ExtendedOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(15, 100).sounds(BlockSoundGroup.STONE)), AMItems.getSettings().fireproof());
 
-	public static final RegistrySupplier<Block> LUNUM_ORE = register("lunum_ore", () -> new ExtendedOreBlock(FabricBlockSettings.of(Material.STONE, MapColor.STONE_GRAY).requiresTool().strength(6, 10).sounds(BlockSoundGroup.STONE)), AMItems.getSettings());
-	public static final RegistrySupplier<Block> DARK_LUNUM_ORE = register("dark_lunum_ore", () -> new ExtendedOreBlock(FabricBlockSettings.of(Material.STONE, MapColor.DEEPSLATE_GRAY).requiresTool().strength(7, 11).sounds(BlockSoundGroup.STONE)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> MOON_LUNUM_ORE = register("moon_lunum_ore", () -> new MoonStoneOreBlock(FabricBlockSettings.of(Material.STONE, MapColor.STONE_GRAY).requiresTool().strength(6, 10).sounds(BlockSoundGroup.STONE)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> DARK_MOON_LUNUM_ORE = register("dark_moon_lunum_ore", () -> new DarkMoonStoneOreBlock(FabricBlockSettings.of(Material.STONE, MapColor.DEEPSLATE_GRAY).requiresTool().strength(7, 11).sounds(BlockSoundGroup.STONE)), AMItems.getSettings());
 
 	public static final RegistrySupplier<Block> METITE_BLOCK = register("metite_block", () -> new Block(FabricBlockSettings.of(Material.METAL, MapColor.PINK).requiresTool().strength(8, 100).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
 	public static final RegistrySupplier<Block> ASTERITE_BLOCK = register("asterite_block", () -> new Block(FabricBlockSettings.of(Material.METAL, MapColor.RED).requiresTool().strength(25, 1000).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());

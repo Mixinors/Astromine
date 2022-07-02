@@ -31,93 +31,29 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 
 public class OresConfigSection {
-	@Comment("Settings for Moon Coal Ore")
+	@Comment("Settings for Moon Lunum Ore")
 	@ConfigEntry.Gui.CollapsibleObject
-	public MoonOreConfig moonCoalOre = new MoonOreConfig(10);
+	public MoonOreConfig moonLunumOre = new MoonOreConfig(12);
 	
 	@Comment("Settings for Moon Iron Ore")
 	@ConfigEntry.Gui.CollapsibleObject
-	public MoonOreConfig moonIronOre = new MoonOreConfig(12);
-	
-	@Comment("Settings for Moon Gold Ore")
-	@ConfigEntry.Gui.CollapsibleObject
-	public MoonOreConfig moonGoldOre = new MoonOreConfig(8);
-	
-	@Comment("Settings for Moon Copper Ore")
-	@ConfigEntry.Gui.CollapsibleObject
-	public MoonOreConfig moonCopperOre = new MoonOreConfig(12);
-	
-	@Comment("Settings for Moon Tin Ore")
-	@ConfigEntry.Gui.CollapsibleObject
-	public MoonOreConfig moonTinOre = new MoonOreConfig(12);
-	
-	@Comment("Settings for Moon Silver Ore")
-	@ConfigEntry.Gui.CollapsibleObject
-	public MoonOreConfig moonSilverOre = new MoonOreConfig(8);
-	
-	@Comment("Settings for Moon Lead Ore")
-	@ConfigEntry.Gui.CollapsibleObject
-	public MoonOreConfig moonLeadOre = new MoonOreConfig(12);
+	public MoonOreConfig moonIronOre = new MoonOreConfig(6);
 	
 	@Comment("Settings for Moon Redstone Ore")
 	@ConfigEntry.Gui.CollapsibleObject
 	public MoonOreConfig moonRedstoneOre = new MoonOreConfig(6);
 	
-	@Comment("Settings for Moon Lapis Ore")
+	@Comment("Settings for Dark MoonLunum Ore")
 	@ConfigEntry.Gui.CollapsibleObject
-	public MoonOreConfig moonLapisOre = new MoonOreConfig(4);
+	public DarkMoonOreConfig darkMoonLunumOre = new DarkMoonOreConfig(12);
 	
-	@Comment("Settings for Moon Diamond Ore")
+	@Comment("Settings for Dark MoonIron Ore")
 	@ConfigEntry.Gui.CollapsibleObject
-	public MoonOreConfig moonDiamondOre = new MoonOreConfig(4);
+	public DarkMoonOreConfig darkMoonIronOre = new DarkMoonOreConfig(6);
 	
-	@Comment("Settings for Moon Emerald Ore")
-	@ConfigEntry.Gui.CollapsibleObject
-	public MoonOreConfig moonEmeraldOre = new MoonOreConfig(4);
-	
-	@Comment("Settings for Dark Moon Coal Ore")
-	@ConfigEntry.Gui.CollapsibleObject
-	public DarkMoonOreConfig darkMoonCoalOre = new DarkMoonOreConfig(10);
-	
-	@Comment("Settings for Dark Moon Iron Ore")
-	@ConfigEntry.Gui.CollapsibleObject
-	public DarkMoonOreConfig darkMoonIronOre = new DarkMoonOreConfig(12);
-	
-	@Comment("Settings for Dark Moon Gold Ore")
-	@ConfigEntry.Gui.CollapsibleObject
-	public DarkMoonOreConfig darkMoonGoldOre = new DarkMoonOreConfig(8);
-	
-	@Comment("Settings for Dark Moon Copper Ore")
-	@ConfigEntry.Gui.CollapsibleObject
-	public DarkMoonOreConfig darkMoonCopperOre = new DarkMoonOreConfig(12);
-	
-	@Comment("Settings for Dark Moon Tin Ore")
-	@ConfigEntry.Gui.CollapsibleObject
-	public DarkMoonOreConfig darkMoonTinOre = new DarkMoonOreConfig(12);
-	
-	@Comment("Settings for Dark Moon Silver Ore")
-	@ConfigEntry.Gui.CollapsibleObject
-	public DarkMoonOreConfig darkMoonSilverOre = new DarkMoonOreConfig(8);
-	
-	@Comment("Settings for Dark Moon Lead Ore")
-	@ConfigEntry.Gui.CollapsibleObject
-	public DarkMoonOreConfig darkMoonLeadOre = new DarkMoonOreConfig(12);
-	
-	@Comment("Settings for Dark Moon Redstone Ore")
+	@Comment("Settings for Dark MoonRedstone Ore")
 	@ConfigEntry.Gui.CollapsibleObject
 	public DarkMoonOreConfig darkMoonRedstoneOre = new DarkMoonOreConfig(6);
-	
-	@Comment("Settings for Dark Moon Lapis Ore")
-	@ConfigEntry.Gui.CollapsibleObject
-	public DarkMoonOreConfig darkMoonLapisOre = new DarkMoonOreConfig(4);
-	
-	@Comment("Settings for Dark Moon Diamond Ore")
-	@ConfigEntry.Gui.CollapsibleObject
-	public DarkMoonOreConfig darkMoonDiamondOre = new DarkMoonOreConfig(4);
-	
-	@Comment("Settings for Dark Moon Emerald Ore")
-	@ConfigEntry.Gui.CollapsibleObject
-	public DarkMoonOreConfig darkMoonEmeraldOre = new DarkMoonOreConfig(4);
 	
 	@Comment("Settings for Asteroid Coal Ore")
 	@ConfigEntry.Gui.CollapsibleObject

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "astromine:block/lunum_ore"
+    "all": "astromine:block/moon_lunum_ore"
   }
 }

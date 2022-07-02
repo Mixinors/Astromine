@@ -88,6 +88,8 @@ public class AMColorProviders {
 					return (r / blocks & 0xFF) << 16 | (g / blocks & 0xFF) << 8 | b / blocks & 0xFF;
 				},
 				
+				AMBlocks.MOON_LUNUM_ORE.get(),
+				
 				AMBlocks.MOON_TIN_ORE.get(),
 				AMBlocks.MOON_SILVER_ORE.get(),
 				AMBlocks.MOON_LEAD_ORE.get(),
@@ -119,6 +121,8 @@ public class AMColorProviders {
 				AMBlocks.MOON_STONE_BRICK_SLAB.get(),
 				AMBlocks.MOON_STONE_BRICK_STAIRS.get(),
 				AMBlocks.MOON_STONE_BRICK_WALL.get(),
+				
+				AMBlocks.DARK_MOON_LUNUM_ORE.get(),
 				
 				AMBlocks.DARK_MOON_TIN_ORE.get(),
 				AMBlocks.DARK_MOON_SILVER_ORE.get(),

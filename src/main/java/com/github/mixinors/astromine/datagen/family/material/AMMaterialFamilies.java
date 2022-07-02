@@ -432,7 +432,7 @@ public class AMMaterialFamilies {
 	public static final MaterialFamily LUNUM = register("lunum", AMItems.LUNUM_INGOT.get(), MaterialType.INGOT)
 			.block(AMBlocks.LUNUM_BLOCK.get())
 			.nugget(AMItems.LUNUM_NUGGET.get())
-			.moonOre(AMBlocks.LUNUM_ORE.get(), AMBlocks.DARK_LUNUM_ORE.get())
+			.moonOre(AMBlocks.MOON_LUNUM_ORE.get(), AMBlocks.DARK_MOON_LUNUM_ORE.get())
 			.rawOre(AMItems.RAW_LUNUM.get(), AMBlocks.RAW_LUNUM_BLOCK.get())
 			.dust(AMItems.LUNUM_DUST.get(), AMItems.LUNUM_TINY_DUST.get())
 			.tools(AMItems.LUNUM_PICKAXE.get(), AMItems.LUNUM_AXE.get(), AMItems.LUNUM_SHOVEL.get(), AMItems.LUNUM_SWORD.get(), AMItems.LUNUM_HOE.get())

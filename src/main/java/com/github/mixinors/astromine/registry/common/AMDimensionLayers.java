@@ -33,8 +33,5 @@ public class AMDimensionLayers {
 	public static void init() {
 		DimensionLayerRegistry.INSTANCE.register(DimensionLayerRegistry.Type.BOTTOM, AMWorlds.EARTH_ORBIT_WORLD, AMConfig.get().world.layers.earth.travelY, World.OVERWORLD, EarthOrbitEntityPlacer.TO_EARTH);
 		DimensionLayerRegistry.INSTANCE.register(DimensionLayerRegistry.Type.TOP, World.OVERWORLD, AMConfig.get().world.layers.earthOrbit.travelY, AMWorlds.EARTH_ORBIT_WORLD, EarthOrbitEntityPlacer.TO_EARTH_ORBIT);
-		
-		DimensionLayerRegistry.INSTANCE.register(DimensionLayerRegistry.Type.BOTTOM, AMWorlds.MOON_ORBIT_WORLD, AMConfig.get().world.layers.moon.travelY, AMWorlds.MOON_WORLD, EarthOrbitEntityPlacer.TO_MOON);
-		DimensionLayerRegistry.INSTANCE.register(DimensionLayerRegistry.Type.TOP, AMWorlds.MOON_WORLD, AMConfig.get().world.layers.moonOrbit.travelY, AMWorlds.MOON_ORBIT_WORLD, EarthOrbitEntityPlacer.TO_EARTH_ORBIT);
 	}
 }

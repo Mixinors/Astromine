@@ -36,9 +36,6 @@ public record EarthOrbitEntityPlacer(
 	public static final EarthOrbitEntityPlacer TO_EARTH = new EarthOrbitEntityPlacer(AMConfig.get().world.layers.earth.spawnY);
 	public static final EarthOrbitEntityPlacer TO_EARTH_ORBIT = new EarthOrbitEntityPlacer(AMConfig.get().world.layers.earthOrbit.spawnY);
 	
-	public static final EarthOrbitEntityPlacer TO_MOON = new EarthOrbitEntityPlacer(AMConfig.get().world.layers.moon.spawnY);
-	public static final EarthOrbitEntityPlacer TO_MOON_ORBIT = new EarthOrbitEntityPlacer(AMConfig.get().world.layers.moonOrbit.spawnY);
-	
 	@Override
 	public TeleportTarget placeEntity(Entity entity) {
 		return new TeleportTarget(new Vec3d(entity.getX(), y, entity.getZ()), entity.getVelocity(), entity.getHeadYaw(), entity.getPitch());

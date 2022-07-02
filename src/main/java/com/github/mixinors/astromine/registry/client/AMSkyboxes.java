@@ -34,7 +34,6 @@ import net.minecraft.world.World;
 public class AMSkyboxes {
 	public static void init() {
 		registerOrbitClouds(AMWorlds.EARTH_ORBIT_WORLD, "earth");
-		registerOrbit(AMWorlds.MOON_ORBIT_WORLD, "moon");
 		
 		registerPlanet(AMWorlds.MOON_WORLD, "moon");
 	}

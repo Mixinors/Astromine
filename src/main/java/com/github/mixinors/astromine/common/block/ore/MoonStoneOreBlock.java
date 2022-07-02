@@ -37,7 +37,9 @@ public class MoonStoneOreBlock extends ExtendedOreBlock {
 	
 	@Override
 	protected int getExperienceWhenMined(Random random) {
-		if (this == AMBlocks.MOON_COAL_ORE.get()) {
+		if (this == AMBlocks.MOON_LUNUM_ORE.get()) {
+			return MathHelper.nextInt(random,  1, 3);
+		} else if (this == AMBlocks.MOON_COAL_ORE.get()) {
 			return MathHelper.nextInt(random, 0, 2);
 		} else if (this == AMBlocks.MOON_TIN_ORE.get() || this == AMBlocks.MOON_COPPER_ORE.get()) {
 			return MathHelper.nextInt(random, 1, 2);
