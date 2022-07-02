@@ -653,7 +653,8 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	
 	@Override
 	public void markDirty() {
-		// TODO
+		// This should suffice, though it has not been tested.
+		incrementVersion();
 	}
 	
 	@Override

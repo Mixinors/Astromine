@@ -168,7 +168,6 @@ public abstract class EntityMixin implements EntityAccessor {
 	void astromine$tick(CallbackInfo ci) {
 		// TODO: Rewrite Atmosphere stuff, incl. this.
 		
-		// TODO Make this sync all visible chunks around the player.
 		// if (((Entity) (Object) this) instanceof ServerPlayerEntity && world != am_lastWorld) {
 		// 	am_lastWorld = world;
 		//

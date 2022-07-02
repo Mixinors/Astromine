@@ -434,10 +434,10 @@ public class AMItems {
 	public static final RegistrySupplier<Item> ELITE_BATTERY_PACK = register("elite_battery_pack", () -> new SimpleEnergyStorageItem(getSettings().maxCount(1), AMConfig.get().items.batteries.batteryPacks.elite));
 	public static final RegistrySupplier<Item> CREATIVE_BATTERY_PACK = register("creative_battery_pack", () -> new SimpleEnergyStorageItem(getSettings().maxCount(1), Long.MAX_VALUE));
 	
-	public static final RegistrySupplier<Item> PRIMITIVE_DRILL = register("primitive_drill", () -> new DrillItem(AMToolMaterials.PRIMITIVE_DRILL, 1.0F, -2.8F, 1, AMConfig.get().items.primitiveDrillEnergy, getSettings().maxCount(1)));
-	public static final RegistrySupplier<Item> BASIC_DRILL = register("basic_drill", () -> new DrillItem(AMToolMaterials.BASIC_DRILL, 1.0F, -2.8F, 1, AMConfig.get().items.basicDrillEnergy, getSettings().maxCount(1)));
-	public static final RegistrySupplier<Item> ADVANCED_DRILL = register("advanced_drill", () -> new DrillItem(AMToolMaterials.ADVANCED_DRILL, 1.0F, -2.8F, 1, AMConfig.get().items.advancedDrillEnergy, getSettings().maxCount(1)));
-	public static final RegistrySupplier<Item> ELITE_DRILL = register("elite_drill", () -> new DrillItem(AMToolMaterials.ELITE_DRILL, 1.0F, -2.8F, 1, AMConfig.get().items.eliteDrillEnergy, getSettings().maxCount(1)));
+	public static final RegistrySupplier<Item> PRIMITIVE_DRILL = register("primitive_drill", () -> new DrillItem(AMToolMaterials.PRIMITIVE_DRILL, 1.0F, -2.8F, AMConfig.get().items.primitiveDrillEnergy, getSettings().maxCount(1)));
+	public static final RegistrySupplier<Item> BASIC_DRILL = register("basic_drill", () -> new DrillItem(AMToolMaterials.BASIC_DRILL, 1.0F, -2.8F, AMConfig.get().items.basicDrillEnergy, getSettings().maxCount(1)));
+	public static final RegistrySupplier<Item> ADVANCED_DRILL = register("advanced_drill", () -> new DrillItem(AMToolMaterials.ADVANCED_DRILL, 1.0F, -2.8F, AMConfig.get().items.advancedDrillEnergy, getSettings().maxCount(1)));
+	public static final RegistrySupplier<Item> ELITE_DRILL = register("elite_drill", () -> new DrillItem(AMToolMaterials.ELITE_DRILL, 1.0F, -2.8F, AMConfig.get().items.eliteDrillEnergy, getSettings().maxCount(1)));
 	
 	public static final RegistrySupplier<Item> DRILL_HEAD = register("drill_head", () -> new Item(getSettings()));
 	

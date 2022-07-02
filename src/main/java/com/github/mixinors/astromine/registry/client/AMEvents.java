@@ -69,7 +69,6 @@ import team.reborn.energy.api.EnergyStorage;
 
 import java.util.ArrayList;
 
-// TODO: Move Moon Stone and Dark Moon Stone models out of data generator!
 public class AMEvents {
 	private static float LAST_MOON_BRIGHTNESS = 0.0F;
 	private static float TARGET_MOON_BRIGHTNESS = 0.0F;

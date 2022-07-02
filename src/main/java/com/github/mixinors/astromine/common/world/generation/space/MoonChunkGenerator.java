@@ -146,7 +146,6 @@ public class MoonChunkGenerator extends ChunkGenerator {
 		return MIN_Y;
 	}
 	
-	// TODO: Fix biomes being sourced as a 4x4 block.
 	public void populateNoise(StructureAccessor accessor, Chunk chunk) {
 		var mutable = new BlockPos.Mutable();
 		

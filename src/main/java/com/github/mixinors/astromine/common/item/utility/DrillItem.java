@@ -37,18 +37,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import team.reborn.energy.api.base.SimpleBatteryItem;
 
-// TODO: Reimplement 'radius'!
 public class DrillItem extends MiningToolItem implements SimpleBatteryItem {
 	private final long capacity;
 	
-	private final int radius;
-	
 	private final ToolMaterial material;
 	
-	public DrillItem(ToolMaterial material, float attackDamage, float attackSpeed, int radius, long capacity, Settings settings) {
+	public DrillItem(ToolMaterial material, float attackDamage, float attackSpeed, long capacity, Settings settings) {
 		super(attackDamage, attackSpeed, material, AMTagKeys.BlockTags.DRILL_MINEABLE, settings);
 		
-		this.radius = radius;
 		this.material = material;
 		this.capacity = capacity;
 	}

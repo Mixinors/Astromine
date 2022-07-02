@@ -84,8 +84,6 @@ public class CraterGenerator extends ShiftableStructurePiece {
 			var b = bR * random.nextFloat(0.5F, 0.75F);
 			var c = bR * 1.1F;
 			
-			// TODO: Fix ellipsoid in Hammer!
-			
 			var s = world.getBlockState(cP.down());
 			
 			Block ore = null;
@@ -107,8 +105,8 @@ public class CraterGenerator extends ShiftableStructurePiece {
 					// Place empty blocks when inside the ellipsoid defined by [a, b, c].
 					for (var y = oTY - (bD * 0.5F); y < oTY + (bD * 0.5F); ++y) {
 						if ((Math.pow(x - cX, 2.0D) / Math.pow(a, 2.0D)) +
-								(Math.pow(y - oTY, 2.0D) / Math.pow(b, 2.0D)) +
-								(Math.pow(z - cZ, 2.0D) / Math.pow(c, 2.0D)) < 1.0F) {
+							(Math.pow(y - oTY, 2.0D) / Math.pow(b, 2.0D)) +
+							(Math.pow(z - cZ, 2.0D) / Math.pow(c, 2.0D)) < 1.0F) {
 							world.setBlockState(mutable.set(x, y, z), Blocks.AIR.getDefaultState(), 0);
 							
 							if (y < lowestY) {

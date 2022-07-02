@@ -8,10 +8,6 @@ import net.minecraft.client.render.BackgroundRenderer;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.world.ClientWorld;
 
-// TODO: Improve MoonChunkGenerator code readability.
-// TODO: Add Moon Biomes and move checks to them.
-// TODO: Add transition into weaker/stronger fog.
-// TODO: Reduce sky light in dark moon areas.
 // TODO: Fix Skybox rendering without Z.
 public interface BackgroundEvents {
 	Event<Calculate> FOG = EventFactory.createCompoundEventResult(Calculate.class);
