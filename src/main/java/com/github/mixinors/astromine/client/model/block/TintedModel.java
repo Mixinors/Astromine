@@ -25,20 +25,21 @@
 package com.github.mixinors.astromine.client.model.block;
 
 import com.github.mixinors.astromine.client.accessor.BakedQuadAccessor;
+import com.github.mixinors.astromine.mixin.client.JsonUnbakedModelAccessor;
 import com.mojang.datafixers.util.Pair;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
-import net.fabricmc.fabric.api.renderer.v1.model.ForwardingBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.render.model.ModelBakeSettings;
-import net.minecraft.client.render.model.ModelLoader;
-import net.minecraft.client.render.model.UnbakedModel;
+import net.minecraft.client.render.model.*;
 import net.minecraft.client.render.model.json.JsonUnbakedModel;
+import net.minecraft.client.render.model.json.ModelOverride;
+import net.minecraft.client.render.model.json.ModelOverrideList;
+import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.SpriteIdentifier;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resource.Resource;
 import net.minecraft.util.Identifier;
@@ -49,57 +50,57 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.Collection;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class TintedModel extends ForwardingBakedModel implements UnbakedModel {
-	private final Identifier modelId;
+public class TintedModel extends JsonUnbakedModel {
+	private final JsonUnbakedModel unbakedModel;
 	
-	private FabricBakedModel model;
+	private static Map<Identifier, JsonUnbakedModel> UNBAKED_MODELS = new HashMap<>();
 	
-	private UnbakedModel unbakedModel;
+	private static JsonUnbakedModel getUnbakedModel(Identifier modelId) {
+		var unbakedModel = UNBAKED_MODELS.get(modelId);
+		
+		if (unbakedModel == null) {
+			var client = InstanceUtil.getClient();
+			
+			var resourceManager = client.getResourceManager();
+			
+			Resource resource = null;
+			
+			try {
+				if (modelId.getPath().contains("models/")) {
+					resource = resourceManager.getResource(modelId);
+				} else {
+					resource = resourceManager.getResource(new Identifier(modelId.getNamespace(), "models/" + modelId.getPath() + ".json"));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			var reader = new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8);
+			
+			unbakedModel = JsonUnbakedModel.deserialize(reader);
+			
+			UNBAKED_MODELS.put(modelId, unbakedModel);
+		}
+		
+		return unbakedModel;
+	}
 	
 	public TintedModel(Identifier modelId) {
-		this.modelId = modelId;
+		super(
+				((JsonUnbakedModelAccessor) getUnbakedModel(modelId)).getParentId(),
+				getUnbakedModel(modelId).getElements(),
+				((JsonUnbakedModelAccessor) getUnbakedModel(modelId)).getTextureMap(),
+				getUnbakedModel(modelId).useAmbientOcclusion(),
+				getUnbakedModel(modelId).getGuiLight(),
+				getUnbakedModel(modelId).getTransformations(),
+				getUnbakedModel(modelId).getOverrides()
+		);
 		
-		var client = InstanceUtil.getClient();
-		
-		var resourceManager = client.getResourceManager();
-		
-		Resource resource = null;
-		
-		try {
-			if (modelId.getPath().contains("models/")) {
-				resource = resourceManager.getResource(modelId);
-			} else {
-				resource = resourceManager.getResource(new Identifier(modelId.getNamespace(), "models/" + modelId.getPath() + ".json"));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		var reader = new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8);
-		
-		this.unbakedModel = JsonUnbakedModel.deserialize(reader);
-	}
-	
-	@Override
-	public void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<Random> randomSupplier, RenderContext context) {
-		if (model != null) {
-			for (var quad : ((BakedModel) model).getQuads(state, null, randomSupplier.get())) {
-				((BakedQuadAccessor) quad).setColorIndex(0);
-			}
-		}
-	}
-	
-	@Override
-	public void emitItemQuads(ItemStack stack, Supplier<Random> randomSupplier, RenderContext context) {
-		if (model != null) {
-			model.emitItemQuads(stack, randomSupplier, context);
-		}
+		this.unbakedModel = getUnbakedModel(modelId);
 	}
 	
 	@Override
@@ -116,18 +117,90 @@ public class TintedModel extends ForwardingBakedModel implements UnbakedModel {
 	@Override
 	public BakedModel bake(ModelLoader loader, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings rotationContainer, Identifier modelId) {
 		try {
-			this.model = (FabricBakedModel) unbakedModel.bake(loader, textureGetter, rotationContainer, modelId);
-			this.wrapped = (BakedModel) model;
+			var model = unbakedModel.bake(loader, textureGetter, rotationContainer, modelId);
 			
 			for (var dir : Direction.values()) {
-				for (var quad : ((BakedModel) model).getQuads(Blocks.STONE.getDefaultState(), dir, new Random())) {
+				for (var quad : model.getQuads(Blocks.STONE.getDefaultState(), dir, new Random())) {
 					((BakedQuadAccessor) quad).setColorIndex(0);
 				}
 			}
+			
+			return new Baked(model);
 		} catch (Exception ignore) {
 			return null;
 		}
+	}
+	
+	public static class Baked implements FabricBakedModel, BakedModel {
+		private final BakedModel model;
 		
-		return this;
+		public Baked(BakedModel model) {
+			this.model = model;
+		}
+		
+		@Override
+		public void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<Random> randomSupplier, RenderContext context) {
+			for (var quad : model.getQuads(state, null, randomSupplier.get())) {
+				((BakedQuadAccessor) quad).setColorIndex(0);
+			}
+			
+			((FabricBakedModel) model).emitBlockQuads(blockView, state, pos, randomSupplier, context);
+		}
+		
+		@Override
+		public void emitItemQuads(ItemStack stack, Supplier<Random> randomSupplier, RenderContext context) {
+			for (var dir : Direction.values()) {
+				for (var quad : model.getQuads(((BlockItem) stack.getItem()).getBlock().getDefaultState(), dir, new Random())) {
+					((BakedQuadAccessor) quad).setColorIndex(0);
+				}
+			}
+			
+			((FabricBakedModel) model).emitItemQuads(stack, randomSupplier, context);
+		}
+		
+		@Override
+		public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction face, Random random) {
+			return model.getQuads(state, face, random);
+		}
+		
+		@Override
+		public boolean useAmbientOcclusion() {
+			return model.useAmbientOcclusion();
+		}
+		
+		@Override
+		public boolean hasDepth() {
+			return model.hasDepth();
+		}
+		
+		@Override
+		public boolean isSideLit() {
+			return model.isSideLit();
+		}
+		
+		@Override
+		public boolean isBuiltin() {
+			return model.isBuiltin();
+		}
+		
+		@Override
+		public Sprite getParticleSprite() {
+			return model.getParticleSprite();
+		}
+		
+		@Override
+		public ModelTransformation getTransformation() {
+			return model.getTransformation();
+		}
+		
+		@Override
+		public ModelOverrideList getOverrides() {
+			return model.getOverrides();
+		}
+		
+		@Override
+		public boolean isVanillaAdapter() {
+			return false;
+		}
 	}
 }

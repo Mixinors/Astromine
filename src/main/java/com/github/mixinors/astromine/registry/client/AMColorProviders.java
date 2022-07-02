@@ -30,6 +30,7 @@ import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.util.CuboidBlockIterator;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Heightmap;
 
 public class AMColorProviders {
 	public static void init() {
@@ -59,6 +60,10 @@ public class AMColorProviders {
 			while (iterator.step()) {
 				mutable.set(iterator.getX(), iterator.getY(), iterator.getZ());
 				
+				var top = client.world.getTopPosition(Heightmap.Type.WORLD_SURFACE, mutable);
+				
+				mutable.set(iterator.getX(), top.getY() - 1, iterator.getZ());
+				
 				int color;
 				
 				if (world.getBlockState(mutable).getBlock() == AMBlocks.DARK_MOON_STONE.get()) {
@@ -78,10 +83,6 @@ public class AMColorProviders {
 					
 					if (blocks == 0) {
 						blocks = 1;
-					}
-					
-					if (true) {
-						return 0xFF0000;
 					}
 					
 					return (r / blocks & 0xFF) << 16 | (g / blocks & 0xFF) << 8 | b / blocks & 0xFF;

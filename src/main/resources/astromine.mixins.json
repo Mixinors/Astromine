@@ -23,6 +23,7 @@
     "common.SwimGoalMixin"
   ],
   "client": [
+    "client.JsonUnbakedModelAccessor",
     "client.AbstractSoundInstanceMixin",
     "client.ArmorFeatureRendererMixin",
     "client.BackgroundRendererMixin",
