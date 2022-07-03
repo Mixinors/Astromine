@@ -17,4 +17,13 @@ public class DimensionTypeMixin {
 			cir.setReturnValue(res.object());
 		}
 	}
+	
+	@Inject(at = @At("HEAD"), method = "getBrightness", cancellable = true)
+	private void astromine$getBrightness(int lightLevel, CallbackInfoReturnable<Float> cir) {
+		var res = DimensionTypeEvents.BRIGHTNESS.invoker().calculate((DimensionType) (Object) this, lightLevel);
+		
+		if (res.isPresent()) {
+			cir.setReturnValue(res.object());
+		}
+	}
 }

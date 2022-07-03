@@ -71,38 +71,35 @@ import team.reborn.energy.api.EnergyStorage;
 import java.util.ArrayList;
 
 // TODO: Move Moon Stone and Dark Moon Stone models out of data generator!
+// TODO: Swap brightness hacks for a color overlay.
+// TODO: Figure out why water's overlay is broken.
 public class AMEvents {
+	public static float LAST_MOON_BRIGHTNESS = 0.0F;
+	public static float TARGET_MOON_BRIGHTNESS = 0.0F;
 	
 	public static void init() {
 		WorldRenderEvents.END.register(context -> {
-			AMValues.LAST_TICK_DELTA = context.tickDelta();
+			AMValues.TICK_DELTA = context.tickDelta();
 		});
 		
-		ServerPlayerEvents.COPY_FROM.register((oldPlayer, newPlayer, alive) -> {
-			if (!oldPlayer.getWorld().getRegistryKey().equals(newPlayer.getWorld().getRegistryKey())) {
-				AMValues.LAST_FOG_START = Float.MAX_VALUE;
-				AMValues.LAST_FOG_END = Float.MAX_VALUE;
-			}
-		});
-		
-		DimensionTypeEvents.BRIGHTNESS.register((type) -> {
+		DimensionTypeEvents.BRIGHTNESS.register((type, lightLevel) -> {
 			var client = InstanceUtil.getClient();
 			
 			if (AMWorlds.isAstromine(client.world.getRegistryKey())) {
 				if (client.world.getRegistryKey().equals(AMWorlds.MOON_WORLD)) {
 					if (client.world != null && client.player != null) {
 						if (client.world.getBiome(client.player.getBlockPos()).getKey().orElseThrow().equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
-							AMValues.TARGET_MOON_BRIGHTNESS = 0.0F;
+							TARGET_MOON_BRIGHTNESS = 0.0F;
 							
-							AMValues.LAST_MOON_BRIGHTNESS = MathHelper.lerp(AMValues.LAST_TICK_DELTA / 2560.0F, AMValues.LAST_MOON_BRIGHTNESS, AMValues.TARGET_MOON_BRIGHTNESS);
+							LAST_MOON_BRIGHTNESS = MathHelper.lerp(AMValues.TICK_DELTA / 2560.0F, LAST_MOON_BRIGHTNESS, TARGET_MOON_BRIGHTNESS);
 							
-							return CompoundEventResult.interruptTrue(AMValues.LAST_MOON_BRIGHTNESS);
+							return CompoundEventResult.interruptTrue(LAST_MOON_BRIGHTNESS);
 						} else {
-							AMValues.TARGET_MOON_BRIGHTNESS = 15.0F;
+							TARGET_MOON_BRIGHTNESS = 15.0F;
 							
-							AMValues.LAST_MOON_BRIGHTNESS = MathHelper.lerp(AMValues.LAST_TICK_DELTA / 256000.0F, AMValues.LAST_MOON_BRIGHTNESS, AMValues.TARGET_MOON_BRIGHTNESS);
+							LAST_MOON_BRIGHTNESS = MathHelper.lerp(AMValues.TICK_DELTA / 256000.0F, LAST_MOON_BRIGHTNESS, TARGET_MOON_BRIGHTNESS);
 							
-							return CompoundEventResult.interruptTrue(AMValues.LAST_MOON_BRIGHTNESS);
+							return CompoundEventResult.interruptTrue(LAST_MOON_BRIGHTNESS);
 						}
 					}
 				}

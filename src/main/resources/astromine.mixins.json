@@ -4,6 +4,7 @@
   "package": "com.github.mixinors.astromine.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "common.BlockRenderViewMixin",
     "common.DataPackContentsMixin",
     "common.DimensionTypeMixin",
     "common.EntityAccessor",
