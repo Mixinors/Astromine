@@ -73,75 +73,13 @@ import java.util.ArrayList;
 // TODO: Move Moon Stone and Dark Moon Stone models out of data generator!
 // TODO: Swap brightness hacks for a color overlay.
 // TODO: Figure out why water's overlay is broken.
+// TODO: Fix Space Slime interpolation.
 public class AMEvents {
-	public static float LAST_MOON_BRIGHTNESS = 0.0F;
-	public static float TARGET_MOON_BRIGHTNESS = 0.0F;
-	
 	public static void init() {
 		WorldRenderEvents.END.register(context -> {
 			AMValues.TICK_DELTA = context.tickDelta();
 		});
-		
-		DimensionTypeEvents.BRIGHTNESS.register((type, lightLevel) -> {
-			var client = InstanceUtil.getClient();
-			
-			if (AMWorlds.isAstromine(client.world.getRegistryKey())) {
-				if (client.world.getRegistryKey().equals(AMWorlds.MOON_WORLD)) {
-					if (client.world != null && client.player != null) {
-						if (client.world.getBiome(client.player.getBlockPos()).getKey().orElseThrow().equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
-							TARGET_MOON_BRIGHTNESS = 0.0F;
-							
-							LAST_MOON_BRIGHTNESS = MathHelper.lerp(AMValues.TICK_DELTA / 2560.0F, LAST_MOON_BRIGHTNESS, TARGET_MOON_BRIGHTNESS);
-							
-							return CompoundEventResult.interruptTrue(LAST_MOON_BRIGHTNESS);
-						} else {
-							TARGET_MOON_BRIGHTNESS = 15.0F;
-							
-							LAST_MOON_BRIGHTNESS = MathHelper.lerp(AMValues.TICK_DELTA / 256000.0F, LAST_MOON_BRIGHTNESS, TARGET_MOON_BRIGHTNESS);
-							
-							return CompoundEventResult.interruptTrue(LAST_MOON_BRIGHTNESS);
-						}
-					}
-				}
-			}
-			
-			return CompoundEventResult.pass();
-		});
-		
-		BackgroundEvents.FOG.register((camera, type) -> {
-			var client = InstanceUtil.getClient();
-			
-			if (AMWorlds.isAstromine(client.world.getRegistryKey())) {
-				if (client.world.getRegistryKey().equals(AMWorlds.MOON_WORLD)) {
-					return CompoundEventResult.interruptTrue(0x000000);
-				}
-			}
-			
-			return CompoundEventResult.pass();
-		});
-		
-		BackgroundEvents.RENDER.register((camera, tickDelta, world, viewDistnace, skyDarkness) -> {
-			if (AMWorlds.isAstromine(world.getRegistryKey())) {
-				if (world.getRegistryKey().equals(AMWorlds.MOON_ID)) {
-					var client = InstanceUtil.getClient();
-					
-					if (client.world.getBiome(client.player.getBlockPos()).getKey().orElseThrow().equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
-						return EventResult.interruptFalse();
-					} else {
-						return EventResult.pass();
-					}
-				} else {
-					if (AMWorlds.isAtmospheric(world.method_40134())) {
-						return EventResult.pass();
-					} else {
-						return EventResult.interruptFalse();
-					}
-				}
-			}
-			
-			return EventResult.pass();
-		});
-		
+
 		var spaceSuitEnergyBar = new ImageBarWidget();
 		spaceSuitEnergyBar.setMaximum(
 				() -> {

@@ -29,6 +29,10 @@ import com.github.mixinors.astromine.common.block.AirlockBlock;
 import com.github.mixinors.astromine.common.block.HoloBridgeInvisibleBlock;
 import com.github.mixinors.astromine.common.block.HoloBridgeProjectorBlock;
 import com.github.mixinors.astromine.common.block.NuclearWarheadBlock;
+import com.github.mixinors.astromine.common.block.dynamic.DynamicBlock;
+import com.github.mixinors.astromine.common.block.dynamic.DynamicSlabBlock;
+import com.github.mixinors.astromine.common.block.dynamic.DynamicStairsBlock;
+import com.github.mixinors.astromine.common.block.dynamic.DynamicWallBlock;
 import com.github.mixinors.astromine.common.block.machine.*;
 import com.github.mixinors.astromine.common.block.machine.generator.FluidGeneratorBlock;
 import com.github.mixinors.astromine.common.block.machine.generator.SolidGeneratorBlock;
@@ -179,43 +183,43 @@ public class AMBlocks {
 	public static final RegistrySupplier<Block> METEOR_STONE_BRICK_STAIRS = register("meteor_stone_brick_stairs", () -> new StairsBlock(METEOR_STONE_BRICKS.get().getDefaultState(), FabricBlockSettings.copy(METEOR_STONE_BRICKS.get())), AMItems.getSettings().fireproof());
 	public static final RegistrySupplier<Block> METEOR_STONE_BRICK_WALL = register("meteor_stone_brick_wall", () -> new WallBlock(FabricBlockSettings.copy(METEOR_STONE_BRICKS.get())), AMItems.getSettings().fireproof());
 
-	public static final RegistrySupplier<Block> MOON_STONE = register("moon_stone", () -> new Block(FabricBlockSettings.of(Material.STONE, MapColor.STONE_GRAY).requiresTool().strength(2, 7)), AMItems.getSettings());
-	public static final RegistrySupplier<Block> MOON_STONE_SLAB = register("moon_stone_slab", () -> new SlabBlock(FabricBlockSettings.copy(MOON_STONE.get())), AMItems.getSettings());
-	public static final RegistrySupplier<Block> MOON_STONE_STAIRS = register("moon_stone_stairs", () -> new StairsBlock(MOON_STONE.get().getDefaultState(), FabricBlockSettings.copy(MOON_STONE.get())), AMItems.getSettings());
-	public static final RegistrySupplier<Block> MOON_STONE_WALL = register("moon_stone_wall", () -> new WallBlock(FabricBlockSettings.copy(MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> MOON_STONE = register("moon_stone", () -> new DynamicBlock(FabricBlockSettings.of(Material.STONE, MapColor.STONE_GRAY).requiresTool().strength(2, 7)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> MOON_STONE_SLAB = register("moon_stone_slab", () -> new DynamicSlabBlock(FabricBlockSettings.copy(MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> MOON_STONE_STAIRS = register("moon_stone_stairs", () -> new DynamicStairsBlock(MOON_STONE.get().getDefaultState(), FabricBlockSettings.copy(MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> MOON_STONE_WALL = register("moon_stone_wall", () -> new DynamicWallBlock(FabricBlockSettings.copy(MOON_STONE.get())), AMItems.getSettings());
 
-	public static final RegistrySupplier<Block> SMOOTH_MOON_STONE = register("smooth_moon_stone", () -> new Block(FabricBlockSettings.copy(MOON_STONE.get())), AMItems.getSettings());
-	public static final RegistrySupplier<Block> SMOOTH_MOON_STONE_SLAB = register("smooth_moon_stone_slab", () -> new SlabBlock(FabricBlockSettings.copy(SMOOTH_MOON_STONE.get())), AMItems.getSettings());
-	public static final RegistrySupplier<Block> SMOOTH_MOON_STONE_STAIRS = register("smooth_moon_stone_stairs", () -> new StairsBlock(SMOOTH_MOON_STONE.get().getDefaultState(), FabricBlockSettings.copy(SMOOTH_MOON_STONE.get())), AMItems.getSettings());
-	public static final RegistrySupplier<Block> SMOOTH_MOON_STONE_WALL = register("smooth_moon_stone_wall", () -> new WallBlock(FabricBlockSettings.copy(SMOOTH_MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> SMOOTH_MOON_STONE = register("smooth_moon_stone", () -> new DynamicBlock(FabricBlockSettings.copy(MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> SMOOTH_MOON_STONE_SLAB = register("smooth_moon_stone_slab", () -> new DynamicSlabBlock(FabricBlockSettings.copy(SMOOTH_MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> SMOOTH_MOON_STONE_STAIRS = register("smooth_moon_stone_stairs", () -> new DynamicStairsBlock(SMOOTH_MOON_STONE.get().getDefaultState(), FabricBlockSettings.copy(SMOOTH_MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> SMOOTH_MOON_STONE_WALL = register("smooth_moon_stone_wall", () -> new DynamicWallBlock(FabricBlockSettings.copy(SMOOTH_MOON_STONE.get())), AMItems.getSettings());
 
-	public static final RegistrySupplier<Block> POLISHED_MOON_STONE = register("polished_moon_stone", () -> new Block(FabricBlockSettings.copy(MOON_STONE.get())), AMItems.getSettings());
-	public static final RegistrySupplier<Block> POLISHED_MOON_STONE_SLAB = register("polished_moon_stone_slab", () -> new SlabBlock(FabricBlockSettings.copy(POLISHED_MOON_STONE.get())), AMItems.getSettings());
-	public static final RegistrySupplier<Block> POLISHED_MOON_STONE_STAIRS = register("polished_moon_stone_stairs", () -> new StairsBlock(POLISHED_MOON_STONE.get().getDefaultState(), FabricBlockSettings.copy(POLISHED_MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> POLISHED_MOON_STONE = register("polished_moon_stone", () -> new DynamicBlock(FabricBlockSettings.copy(MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> POLISHED_MOON_STONE_SLAB = register("polished_moon_stone_slab", () -> new DynamicSlabBlock(FabricBlockSettings.copy(POLISHED_MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> POLISHED_MOON_STONE_STAIRS = register("polished_moon_stone_stairs", () -> new DynamicStairsBlock(POLISHED_MOON_STONE.get().getDefaultState(), FabricBlockSettings.copy(POLISHED_MOON_STONE.get())), AMItems.getSettings());
 
-	public static final RegistrySupplier<Block> MOON_STONE_BRICKS = register("moon_stone_bricks", () -> new Block(FabricBlockSettings.copy(MOON_STONE.get())), AMItems.getSettings());
-	public static final RegistrySupplier<Block> MOON_STONE_BRICK_SLAB = register("moon_stone_brick_slab", () -> new SlabBlock(FabricBlockSettings.copy(MOON_STONE_BRICKS.get())), AMItems.getSettings());
-	public static final RegistrySupplier<Block> MOON_STONE_BRICK_STAIRS = register("moon_stone_brick_stairs", () -> new StairsBlock(MOON_STONE_BRICKS.get().getDefaultState(), FabricBlockSettings.copy(MOON_STONE_BRICKS.get())), AMItems.getSettings());
-	public static final RegistrySupplier<Block> MOON_STONE_BRICK_WALL = register("moon_stone_brick_wall", () -> new WallBlock(FabricBlockSettings.copy(MOON_STONE_BRICKS.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> MOON_STONE_BRICKS = register("moon_stone_bricks", () -> new DynamicBlock(FabricBlockSettings.copy(MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> MOON_STONE_BRICK_SLAB = register("moon_stone_brick_slab", () -> new DynamicSlabBlock(FabricBlockSettings.copy(MOON_STONE_BRICKS.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> MOON_STONE_BRICK_STAIRS = register("moon_stone_brick_stairs", () -> new DynamicStairsBlock(MOON_STONE_BRICKS.get().getDefaultState(), FabricBlockSettings.copy(MOON_STONE_BRICKS.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> MOON_STONE_BRICK_WALL = register("moon_stone_brick_wall", () -> new DynamicWallBlock(FabricBlockSettings.copy(MOON_STONE_BRICKS.get())), AMItems.getSettings());
 	
-	public static final RegistrySupplier<Block> DARK_MOON_STONE = register("dark_moon_stone", () -> new Block(FabricBlockSettings.of(Material.STONE, MapColor.DEEPSLATE_GRAY).requiresTool().strength(3, 8.5F)), AMItems.getSettings());
-	public static final RegistrySupplier<Block> DARK_MOON_STONE_SLAB = register("dark_moon_stone_slab", () -> new SlabBlock(FabricBlockSettings.copy(DARK_MOON_STONE.get())), AMItems.getSettings());
-	public static final RegistrySupplier<Block> DARK_MOON_STONE_STAIRS = register("dark_moon_stone_stairs", () -> new StairsBlock(DARK_MOON_STONE.get().getDefaultState(), FabricBlockSettings.copy(DARK_MOON_STONE.get())), AMItems.getSettings());
-	public static final RegistrySupplier<Block> DARK_MOON_STONE_WALL = register("dark_moon_stone_wall", () -> new WallBlock(FabricBlockSettings.copy(DARK_MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> DARK_MOON_STONE = register("dark_moon_stone", () -> new DynamicBlock(FabricBlockSettings.of(Material.STONE, MapColor.DEEPSLATE_GRAY).requiresTool().strength(3, 8.5F)), AMItems.getSettings());
+	public static final RegistrySupplier<Block> DARK_MOON_STONE_SLAB = register("dark_moon_stone_slab", () -> new DynamicSlabBlock(FabricBlockSettings.copy(DARK_MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> DARK_MOON_STONE_STAIRS = register("dark_moon_stone_stairs", () -> new DynamicStairsBlock(DARK_MOON_STONE.get().getDefaultState(), FabricBlockSettings.copy(DARK_MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> DARK_MOON_STONE_WALL = register("dark_moon_stone_wall", () -> new DynamicWallBlock(FabricBlockSettings.copy(DARK_MOON_STONE.get())), AMItems.getSettings());
 
-	public static final RegistrySupplier<Block> SMOOTH_DARK_MOON_STONE = register("smooth_dark_moon_stone", () -> new Block(FabricBlockSettings.copy(DARK_MOON_STONE.get())), AMItems.getSettings());
-	public static final RegistrySupplier<Block> SMOOTH_DARK_MOON_STONE_SLAB = register("smooth_dark_moon_stone_slab", () -> new SlabBlock(FabricBlockSettings.copy(SMOOTH_DARK_MOON_STONE.get())), AMItems.getSettings());
-	public static final RegistrySupplier<Block> SMOOTH_DARK_MOON_STONE_STAIRS = register("smooth_dark_moon_stone_stairs", () -> new StairsBlock(SMOOTH_DARK_MOON_STONE.get().getDefaultState(), FabricBlockSettings.copy(SMOOTH_DARK_MOON_STONE.get())), AMItems.getSettings());
-	public static final RegistrySupplier<Block> SMOOTH_DARK_MOON_STONE_WALL = register("smooth_dark_moon_stone_wall", () -> new WallBlock(FabricBlockSettings.copy(SMOOTH_DARK_MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> SMOOTH_DARK_MOON_STONE = register("smooth_dark_moon_stone", () -> new DynamicBlock(FabricBlockSettings.copy(DARK_MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> SMOOTH_DARK_MOON_STONE_SLAB = register("smooth_dark_moon_stone_slab", () -> new DynamicSlabBlock(FabricBlockSettings.copy(SMOOTH_DARK_MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> SMOOTH_DARK_MOON_STONE_STAIRS = register("smooth_dark_moon_stone_stairs", () -> new DynamicStairsBlock(SMOOTH_DARK_MOON_STONE.get().getDefaultState(), FabricBlockSettings.copy(SMOOTH_DARK_MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> SMOOTH_DARK_MOON_STONE_WALL = register("smooth_dark_moon_stone_wall", () -> new DynamicWallBlock(FabricBlockSettings.copy(SMOOTH_DARK_MOON_STONE.get())), AMItems.getSettings());
 
-	public static final RegistrySupplier<Block> POLISHED_DARK_MOON_STONE = register("polished_dark_moon_stone", () -> new Block(FabricBlockSettings.copy(DARK_MOON_STONE.get())), AMItems.getSettings());
-	public static final RegistrySupplier<Block> POLISHED_DARK_MOON_STONE_SLAB = register("polished_dark_moon_stone_slab", () -> new SlabBlock(FabricBlockSettings.copy(POLISHED_DARK_MOON_STONE.get())), AMItems.getSettings());
-	public static final RegistrySupplier<Block> POLISHED_DARK_MOON_STONE_STAIRS = register("polished_dark_moon_stone_stairs", () -> new StairsBlock(POLISHED_DARK_MOON_STONE.get().getDefaultState(), FabricBlockSettings.copy(POLISHED_DARK_MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> POLISHED_DARK_MOON_STONE = register("polished_dark_moon_stone", () -> new DynamicBlock(FabricBlockSettings.copy(DARK_MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> POLISHED_DARK_MOON_STONE_SLAB = register("polished_dark_moon_stone_slab", () -> new DynamicSlabBlock(FabricBlockSettings.copy(POLISHED_DARK_MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> POLISHED_DARK_MOON_STONE_STAIRS = register("polished_dark_moon_stone_stairs", () -> new DynamicStairsBlock(POLISHED_DARK_MOON_STONE.get().getDefaultState(), FabricBlockSettings.copy(POLISHED_DARK_MOON_STONE.get())), AMItems.getSettings());
 
-	public static final RegistrySupplier<Block> DARK_MOON_STONE_BRICKS = register("dark_moon_stone_bricks", () -> new Block(FabricBlockSettings.copy(DARK_MOON_STONE.get())), AMItems.getSettings());
-	public static final RegistrySupplier<Block> DARK_MOON_STONE_BRICK_SLAB = register("dark_moon_stone_brick_slab", () -> new SlabBlock(FabricBlockSettings.copy(DARK_MOON_STONE_BRICKS.get())), AMItems.getSettings());
-	public static final RegistrySupplier<Block> DARK_MOON_STONE_BRICK_STAIRS = register("dark_moon_stone_brick_stairs", () -> new StairsBlock(DARK_MOON_STONE_BRICKS.get().getDefaultState(), FabricBlockSettings.copy(DARK_MOON_STONE_BRICKS.get())), AMItems.getSettings());
-	public static final RegistrySupplier<Block> DARK_MOON_STONE_BRICK_WALL = register("dark_moon_stone_brick_wall", () -> new WallBlock(FabricBlockSettings.copy(DARK_MOON_STONE_BRICKS.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> DARK_MOON_STONE_BRICKS = register("dark_moon_stone_bricks", () -> new DynamicBlock(FabricBlockSettings.copy(DARK_MOON_STONE.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> DARK_MOON_STONE_BRICK_SLAB = register("dark_moon_stone_brick_slab", () -> new DynamicSlabBlock(FabricBlockSettings.copy(DARK_MOON_STONE_BRICKS.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> DARK_MOON_STONE_BRICK_STAIRS = register("dark_moon_stone_brick_stairs", () -> new DynamicStairsBlock(DARK_MOON_STONE_BRICKS.get().getDefaultState(), FabricBlockSettings.copy(DARK_MOON_STONE_BRICKS.get())), AMItems.getSettings());
+	public static final RegistrySupplier<Block> DARK_MOON_STONE_BRICK_WALL = register("dark_moon_stone_brick_wall", () -> new DynamicWallBlock(FabricBlockSettings.copy(DARK_MOON_STONE_BRICKS.get())), AMItems.getSettings());
 	
 	public static final RegistrySupplier<Block> HOLOGRAPHIC_BRIDGE_PROJECTOR = register("holographic_bridge_projector", () -> new HoloBridgeProjectorBlock(getAdvancedSettings()), AMItems.getSettings());
 	public static final RegistrySupplier<Block> HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK = register("holographic_bridge_invisible", () -> new HoloBridgeInvisibleBlock(FabricBlockSettings.of(HoloBridgeInvisibleBlock.MATERIAL).dropsNothing().strength(-1.0F, 3600000.8F).nonOpaque().luminance($ -> 15).allowsSpawning((a, b, c, d) -> false)));

@@ -65,7 +65,7 @@ public class MoonDimensionEffects extends DimensionEffects {
 		
 		if (client.player != null) {
 			if (client.world != null) {
-				if (client.world.getBiome(client.player.getBlockPos()).equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
+				if (client.world.getBiome(client.player.getBlockPos()).getKey().orElseThrow().equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
 					return true;
 				}
 			}

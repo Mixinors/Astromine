@@ -26,6 +26,10 @@ package com.github.mixinors.astromine.common.block.ore;
 
 import com.github.mixinors.astromine.common.block.ore.base.ExtendedOreBlock;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
+import com.github.mixinors.astromine.registry.common.AMProperties;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.state.StateManager;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.Random;
@@ -33,6 +37,13 @@ import java.util.Random;
 public class MoonStoneOreBlock extends ExtendedOreBlock {
 	public MoonStoneOreBlock(Settings settings) {
 		super(settings);
+	}
+	
+	@Override
+	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+		builder.add(AMProperties.DYNAMIC);
+		
+		super.appendProperties(builder);
 	}
 	
 	@Override

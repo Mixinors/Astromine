@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.model.block.CableModel;
-import com.github.mixinors.astromine.client.model.block.TintedModel;
+import com.github.mixinors.astromine.client.model.block.DynamicModel;
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
@@ -77,6 +77,11 @@ public class AMModels {
 	public static final ModelIdentifier ITEM_CONDUIT_BLOCK_MODEL = new ModelIdentifier("astromine:block/item_conduit");
 	
 	public static final ModelIdentifier ROCKET_INVENTORY = new ModelIdentifier(AMCommon.id("rocket"), "inventory");
+	
+	private static final String MOON = "moon";
+	private static final String ITEM = "item";
+	
+	private static final String MODELS_PREFIX = "models/";
 	
 	public static final Lazy<ModelTransformation> ITEM_HANDHELD_TRANSFORMATION = new Lazy<>(() -> {
 		try {
@@ -145,8 +150,8 @@ public class AMModels {
 			}
 			
 			if (modelIdentifier.getNamespace().equals(AMCommon.MOD_ID)) {
-				if (modelIdentifier.getPath().contains("moon") && !modelIdentifier.getPath().contains("item")) {
-					return new TintedModel(AMCommon.id(modelIdentifier.getPath()));
+				if (modelIdentifier.getPath().contains(MOON)) {
+					return new DynamicModel(AMCommon.id(modelIdentifier.getPath()));
 				}
 			}
 			
@@ -173,10 +178,8 @@ public class AMModels {
 		ModelLoadingRegistry.INSTANCE.registerModelProvider((resourceManager, out) -> out.accept(CABLE_INSERT_EXTRACT_CONNECTOR_ID));
 		
 		ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
-			for (var id : manager.findResources("models/", s -> s.contains("moon") && !s.contains("item"))) {
-				if (!id.toString().contains("item")) {
-					out.accept(id);
-				}
+			for (var id : manager.findResources(MODELS_PREFIX, path -> path.contains(MOON))) {
+				out.accept(id);
 			}
 		});
 	}

@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.mixin.client;
 import com.github.mixinors.astromine.common.event.BackgroundEvents;
 import com.github.mixinors.astromine.registry.client.AMValues;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
+import dev.architectury.event.CompoundEventResult;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.minecraft.client.render.BackgroundRenderer;
 import net.minecraft.client.render.Camera;
@@ -45,36 +46,16 @@ public class BackgroundRendererMixin {
 	private static float ASTROMINE$LAST_FOG_START = 0.0F;
 	private static float ASTROMINE$LAST_FOG_END = 0.0F;
 	
-	private static int ASTROMINE$LAST_RED = 0;
-	private static int ASTROMINE$LAST_GREEN = 0;
-	private static int ASTROMINE$LAST_BLUE = 0;
-	
-	@Inject(at = @At("HEAD"), method = "applyFog", cancellable = true)
-	private static void astromine$applyFog(Camera camera, BackgroundRenderer.FogType type, float viewDistance, boolean thickFog, CallbackInfo ci) {
-		var res = BackgroundEvents.FOG.invoker().calculate(camera, type);
-		
-		if (res.isFalse()) {
-			ci.cancel();
-		}
-	}
-	
-	@Inject(at = @At("HEAD"), method = "render", cancellable = true)
-	private static void astromine$render(Camera camera, float tickDelta, ClientWorld world, int viewDistance, float skyDarkness, CallbackInfo ci) {
-		var res = BackgroundEvents.RENDER.invoker().render(camera, tickDelta, world, viewDistance, skyDarkness);
-		
-		if (res.isFalse()) {
-			ci.cancel();
-		}
-	}
-	
 	@ModifyArg(at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;setShaderFogStart(F)V"), method = "applyFog")
 	private static float astromine$applyFog$setShaderFogStart(float original) {
 		var client = InstanceUtil.getClient();
 		
-		if (AMWorlds.isAstromine(client.world.getRegistryKey())) {
-			ASTROMINE$LAST_FOG_START = MathHelper.lerp(AMValues.TICK_DELTA / 2048.0F, ASTROMINE$LAST_FOG_START, original);
-		} else {
-			ASTROMINE$LAST_FOG_START = original;
+		if (client.world != null) {
+			if (AMWorlds.isAstromine(client.world.getRegistryKey())) {
+				ASTROMINE$LAST_FOG_START = MathHelper.lerp(AMValues.TICK_DELTA / 2048.0F, ASTROMINE$LAST_FOG_START, original);
+			} else {
+				ASTROMINE$LAST_FOG_START = original;
+			}
 		}
 		
 		return ASTROMINE$LAST_FOG_START;
@@ -84,23 +65,14 @@ public class BackgroundRendererMixin {
 	private static float astromine$applyFog$setShaderFogEnd(float original) {
 		var client = InstanceUtil.getClient();
 		
-		if (AMWorlds.isAstromine(client.world.getRegistryKey())) {
-			ASTROMINE$LAST_FOG_END = MathHelper.lerp(AMValues.TICK_DELTA / 2048.0F, ASTROMINE$LAST_FOG_END, original);
-		} else {
-			ASTROMINE$LAST_FOG_END = original;
+		if (client.world != null) {
+			if (AMWorlds.isAstromine(client.world.getRegistryKey())) {
+				ASTROMINE$LAST_FOG_END = MathHelper.lerp(AMValues.TICK_DELTA / 2048.0F, ASTROMINE$LAST_FOG_END, original);
+			} else {
+				ASTROMINE$LAST_FOG_END = original;
+			}
 		}
 		
 		return ASTROMINE$LAST_FOG_END;
-	}
-	
-	@ModifyArgs(at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;clearColor(FFFF)V"), method = "render")
-	private static void astromine$render$clearColor(Args args) {
-		ASTROMINE$LAST_RED = (int) MathHelper.lerp(AMValues.TICK_DELTA / 2048.0F, (double) ASTROMINE$LAST_RED, args.get(0));
-		ASTROMINE$LAST_GREEN = (int) MathHelper.lerp(AMValues.TICK_DELTA / 2048.0F, (double) ASTROMINE$LAST_GREEN, args.get(0));
-		ASTROMINE$LAST_BLUE = (int) MathHelper.lerp(AMValues.TICK_DELTA / 2048.0F, (double) ASTROMINE$LAST_BLUE, args.get(0));
-		
-		args.set(0, (float) ASTROMINE$LAST_RED);
-		args.set(1, (float) ASTROMINE$LAST_GREEN);
-		args.set(2, (float) ASTROMINE$LAST_BLUE);
 	}
 }

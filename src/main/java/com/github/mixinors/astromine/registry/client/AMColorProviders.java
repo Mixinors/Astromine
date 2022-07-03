@@ -161,7 +161,7 @@ public class AMColorProviders {
 		);
 		
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
-			return 0x242424;
+			return 0x7E7E7E;
 		},
 				AMBlocks.DARK_MOON_LUNUM_ORE.get().asItem(),
 				

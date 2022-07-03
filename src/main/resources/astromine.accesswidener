@@ -1,5 +1,14 @@
 accessWidener v2 named
 
+
+accessible method net/minecraft/block/WallBlock getShapeMap (FFFFFF)Ljava/util/Map;
+accessible method net/minecraft/block/WallBlock getVoxelShape (Lnet/minecraft/util/shape/VoxelShape;Lnet/minecraft/block/enums/WallShape;Lnet/minecraft/util/shape/VoxelShape;Lnet/minecraft/util/shape/VoxelShape;)Lnet/minecraft/util/shape/VoxelShape;
+
+accessible field net/minecraft/block/WallBlock shapeMap Ljava/util/Map;
+mutable field net/minecraft/block/WallBlock shapeMap Ljava/util/Map;
+accessible field net/minecraft/block/WallBlock collisionShapeMap Ljava/util/Map;
+mutable field net/minecraft/block/WallBlock collisionShapeMap Ljava/util/Map;
+
 accessible field net/minecraft/entity/Entity submergedFluidTag Ljava/util/Set;
 
 extendable method net/minecraft/entity/Entity getLerpedPos (F)Lnet/minecraft/util/math/Vec3d;

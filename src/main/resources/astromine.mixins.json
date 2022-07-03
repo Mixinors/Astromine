@@ -6,7 +6,6 @@
   "mixins": [
     "common.BlockRenderViewMixin",
     "common.DataPackContentsMixin",
-    "common.DimensionTypeMixin",
     "common.EntityAccessor",
     "common.EntityMixin",
     "common.EntityNavigationMixin",
