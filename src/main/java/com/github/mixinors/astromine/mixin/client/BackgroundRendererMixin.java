@@ -26,6 +26,8 @@ package com.github.mixinors.astromine.mixin.client;
 
 import com.github.mixinors.astromine.common.event.BackgroundEvents;
 import com.github.mixinors.astromine.registry.client.AMValues;
+import com.github.mixinors.astromine.registry.common.AMWorlds;
+import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.minecraft.client.render.BackgroundRenderer;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.world.ClientWorld;
@@ -67,26 +69,46 @@ public class BackgroundRendererMixin {
 	
 	@ModifyArg(at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;setShaderFogStart(F)V"), method = "applyFog")
 	private static float astromine$applyFog$setShaderFogStart(float original) {
-		ASTROMINE$LAST_FOG_START = MathHelper.lerp(AMValues.TICK_DELTA / 2048.0F, ASTROMINE$LAST_FOG_START, original);
+		var client = InstanceUtil.getClient();
 		
-		return ASTROMINE$LAST_FOG_START;
+		if (AMWorlds.isAstromine(client.world.getRegistryKey())) {
+			ASTROMINE$LAST_FOG_START = MathHelper.lerp(AMValues.TICK_DELTA / 2048.0F, ASTROMINE$LAST_FOG_START, original);
+			
+			return ASTROMINE$LAST_FOG_START;
+		} else {
+			ASTROMINE$LAST_FOG_START = original;
+			
+			return original;
+		}
 	}
 	
 	@ModifyArg(at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;setShaderFogEnd(F)V"), method = "applyFog")
 	private static float astromine$applyFog$setShaderFogEnd(float original) {
-		ASTROMINE$LAST_FOG_END = MathHelper.lerp(AMValues.TICK_DELTA / 2048.0F, ASTROMINE$LAST_FOG_END, original);
+		var client = InstanceUtil.getClient();
 		
-		return ASTROMINE$LAST_FOG_END;
+		if (AMWorlds.isAstromine(client.world.getRegistryKey())) {
+			ASTROMINE$LAST_FOG_END = MathHelper.lerp(AMValues.TICK_DELTA / 2048.0F, ASTROMINE$LAST_FOG_END, original);
+			
+			return ASTROMINE$LAST_FOG_END;
+		} else {
+			ASTROMINE$LAST_FOG_END = original;
+			
+			return original;
+		}
 	}
 	
 	@ModifyArgs(at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;clearColor(FFFF)V"), method = "render")
 	private static void astromine$render$clearColor(Args args) {
-		ASTROMINE$LAST_RED = (float) MathHelper.lerp(AMValues.TICK_DELTA / 2048.0F, ASTROMINE$LAST_RED, ((Float) args.get(0)).doubleValue());
-		ASTROMINE$LAST_GREEN = (float) MathHelper.lerp(AMValues.TICK_DELTA / 2048.0F, ASTROMINE$LAST_GREEN, ((Float) args.get(1)).doubleValue());
-		ASTROMINE$LAST_BLUE = (float) MathHelper.lerp(AMValues.TICK_DELTA / 2048.0F, ASTROMINE$LAST_BLUE, ((Float) args.get(2)).doubleValue());
+		var client = InstanceUtil.getClient();
 		
-		args.set(0, ASTROMINE$LAST_RED);
-		args.set(1, ASTROMINE$LAST_GREEN);
-		args.set(2, ASTROMINE$LAST_BLUE);
+		if (AMWorlds.isAstromine(client.world.getRegistryKey())) {
+			ASTROMINE$LAST_RED = (float) MathHelper.lerp(AMValues.TICK_DELTA / 2048.0F, ASTROMINE$LAST_RED, ((Float) args.get(0)).doubleValue());
+			ASTROMINE$LAST_GREEN = (float) MathHelper.lerp(AMValues.TICK_DELTA / 2048.0F, ASTROMINE$LAST_GREEN, ((Float) args.get(1)).doubleValue());
+			ASTROMINE$LAST_BLUE = (float) MathHelper.lerp(AMValues.TICK_DELTA / 2048.0F, ASTROMINE$LAST_BLUE, ((Float) args.get(2)).doubleValue());
+			
+			args.set(0, ASTROMINE$LAST_RED);
+			args.set(1, ASTROMINE$LAST_GREEN);
+			args.set(2, ASTROMINE$LAST_BLUE);
+		}
 	}
 }
