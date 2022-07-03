@@ -1,0 +1,12 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "tag": "c:emerald_ores"
+  },
+  "output": {
+    "item": "minecraft:emerald",
+    "count": 2
+  },
+  "energy_input": 340,
+  "time": 180
+}

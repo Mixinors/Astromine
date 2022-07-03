@@ -41,6 +41,6 @@ public interface DimensionTypeEvents {
 	
 	@FunctionalInterface
 	interface Brightness {
-		CompoundEventResult<Float> calculate(DimensionType type, int lightLevel);
+		CompoundEventResult<Float> calculate(DimensionType type);
 	}
 }

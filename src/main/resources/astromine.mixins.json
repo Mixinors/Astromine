@@ -23,7 +23,6 @@
     "common.SwimGoalMixin"
   ],
   "client": [
-    "client.JsonUnbakedModelAccessor",
     "client.AbstractSoundInstanceMixin",
     "client.ArmorFeatureRendererMixin",
     "client.BackgroundRendererMixin",
@@ -34,6 +33,7 @@
     "client.ClientPlayerInteractionManagerMixin",
     "client.ClientRecipeBookMixin",
     "client.InGameOverlayRendererMixin",
+    "client.JsonUnbakedModelAccessor",
     "client.ModelLoaderAccessor",
     "client.SkyPropertiesMixin",
     "client.WorldRendererMixin"

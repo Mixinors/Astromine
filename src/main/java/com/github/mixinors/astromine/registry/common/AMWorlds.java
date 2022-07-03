@@ -34,7 +34,9 @@ import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class AMWorlds {
 	private static final Set<RegistryKey<?>> KEYS = new HashSet<>();
@@ -48,6 +50,8 @@ public class AMWorlds {
 	public static final RegistryKey<DimensionOptions> MOON_OPTIONS = register(Registry.DIMENSION_KEY, MOON_ID);
 	public static final RegistryKey<DimensionType> MOON_TYPE_KEY = register(Registry.DIMENSION_TYPE_KEY, MOON_ID);
 	public static final RegistryKey<World> MOON_WORLD = register(Registry.WORLD_KEY, MOON_ID);
+	
+	private static final Map<RegistryKey<?>, Boolean> CACHE = new ConcurrentHashMap<>();
 	
 	public static void init() {
 	}
@@ -67,6 +71,7 @@ public class AMWorlds {
 	}
 	
 	public static boolean isAstromine(RegistryKey<?> key) {
-		return KEYS.contains(key);
+		CACHE.computeIfAbsent(key, k -> k.equals(EARTH_ORBIT_TYPE_KEY) || k.equals(MOON_TYPE_KEY) || k.equals(EARTH_ORBIT_WORLD) || k.equals(MOON_WORLD));
+		return CACHE.get(key);
 	}
 }

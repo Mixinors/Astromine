@@ -43,17 +43,25 @@ public class OresConfigSection {
 	@ConfigEntry.Gui.CollapsibleObject
 	public MoonOreConfig moonRedstoneOre = new MoonOreConfig(6);
 	
-	@Comment("Settings for Dark MoonLunum Ore")
+	@Comment("Settings for Moon Lapis Ore")
+	@ConfigEntry.Gui.CollapsibleObject
+	public MoonOreConfig moonLapisOre = new MoonOreConfig(6);
+	
+	@Comment("Settings for Dark Moon Lunum Ore")
 	@ConfigEntry.Gui.CollapsibleObject
 	public DarkMoonOreConfig darkMoonLunumOre = new DarkMoonOreConfig(12);
 	
-	@Comment("Settings for Dark MoonIron Ore")
+	@Comment("Settings for Dark Moon Iron Ore")
 	@ConfigEntry.Gui.CollapsibleObject
 	public DarkMoonOreConfig darkMoonIronOre = new DarkMoonOreConfig(6);
 	
-	@Comment("Settings for Dark MoonRedstone Ore")
+	@Comment("Settings for Dark Moon Redstone Ore")
 	@ConfigEntry.Gui.CollapsibleObject
 	public DarkMoonOreConfig darkMoonRedstoneOre = new DarkMoonOreConfig(6);
+	
+	@Comment("Settings for Dark Moon Lapis Ore")
+	@ConfigEntry.Gui.CollapsibleObject
+	public DarkMoonOreConfig darkMoonLapisOre = new DarkMoonOreConfig(6);
 	
 	@Comment("Settings for Asteroid Coal Ore")
 	@ConfigEntry.Gui.CollapsibleObject

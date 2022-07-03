@@ -36,19 +36,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(BackgroundRenderer.class)
 public class BackgroundRendererMixin {
-	private static float ASTROMINE$LAST_FOG_START = 0.0F;
-	private static float ASTROMINE$LAST_FOG_END = 0.0F;
-	
-	private static float ASTROMINE$LAST_RED = 0;
-	private static float ASTROMINE$LAST_GREEN = 0;
-	private static float ASTROMINE$LAST_BLUE = 0;
-	
 	@Inject(at = @At("HEAD"), method = "applyFog", cancellable = true)
 	private static void astromine$applyFog(Camera camera, BackgroundRenderer.FogType type, float viewDistance, boolean thickFog, CallbackInfo ci) {
 		var res = BackgroundEvents.FOG.invoker().calculate(camera, type);
@@ -72,14 +63,16 @@ public class BackgroundRendererMixin {
 		var client = InstanceUtil.getClient();
 		
 		if (AMWorlds.isAstromine(client.world.getRegistryKey())) {
-			ASTROMINE$LAST_FOG_START = MathHelper.lerp(AMValues.TICK_DELTA / 2048.0F, ASTROMINE$LAST_FOG_START, original);
-			
-			return ASTROMINE$LAST_FOG_START;
+			if (AMValues.LAST_FOG_START == Float.MAX_VALUE) {
+				AMValues.LAST_FOG_START = original;
+			} else {
+				AMValues.LAST_FOG_START = MathHelper.lerp(AMValues.LAST_TICK_DELTA / 2048.0F, AMValues.LAST_FOG_START, original);
+			}
 		} else {
-			ASTROMINE$LAST_FOG_START = original;
-			
-			return original;
+			AMValues.LAST_FOG_START = original;
 		}
+		
+		return AMValues.LAST_FOG_START;
 	}
 	
 	@ModifyArg(at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;setShaderFogEnd(F)V"), method = "applyFog")
@@ -87,28 +80,15 @@ public class BackgroundRendererMixin {
 		var client = InstanceUtil.getClient();
 		
 		if (AMWorlds.isAstromine(client.world.getRegistryKey())) {
-			ASTROMINE$LAST_FOG_END = MathHelper.lerp(AMValues.TICK_DELTA / 2048.0F, ASTROMINE$LAST_FOG_END, original);
-			
-			return ASTROMINE$LAST_FOG_END;
+			if (AMValues.LAST_FOG_END == Float.MAX_VALUE) {
+				AMValues.LAST_FOG_END = original;
+			} else {
+				AMValues.LAST_FOG_END = MathHelper.lerp(AMValues.LAST_TICK_DELTA / 2048.0F, AMValues.LAST_FOG_END, original);
+			}
 		} else {
-			ASTROMINE$LAST_FOG_END = original;
-			
-			return original;
+			AMValues.LAST_FOG_END = original;
 		}
-	}
-	
-	@ModifyArgs(at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;clearColor(FFFF)V"), method = "render")
-	private static void astromine$render$clearColor(Args args) {
-		var client = InstanceUtil.getClient();
 		
-		if (AMWorlds.isAstromine(client.world.getRegistryKey())) {
-			ASTROMINE$LAST_RED = (float) MathHelper.lerp(AMValues.TICK_DELTA / 2048.0F, ASTROMINE$LAST_RED, ((Float) args.get(0)).doubleValue());
-			ASTROMINE$LAST_GREEN = (float) MathHelper.lerp(AMValues.TICK_DELTA / 2048.0F, ASTROMINE$LAST_GREEN, ((Float) args.get(1)).doubleValue());
-			ASTROMINE$LAST_BLUE = (float) MathHelper.lerp(AMValues.TICK_DELTA / 2048.0F, ASTROMINE$LAST_BLUE, ((Float) args.get(2)).doubleValue());
-			
-			args.set(0, ASTROMINE$LAST_RED);
-			args.set(1, ASTROMINE$LAST_GREEN);
-			args.set(2, ASTROMINE$LAST_BLUE);
-		}
+		return AMValues.LAST_FOG_END;
 	}
 }

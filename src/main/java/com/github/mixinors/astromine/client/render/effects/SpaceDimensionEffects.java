@@ -37,7 +37,7 @@ public class SpaceDimensionEffects extends DimensionEffects {
 	
 	@Override
 	public Vec3d adjustFogColor(Vec3d color, float sunHeight) {
-		return color.multiply(0.15000000596046448D);
+		return Vec3d.ZERO;
 	}
 	
 	@Override

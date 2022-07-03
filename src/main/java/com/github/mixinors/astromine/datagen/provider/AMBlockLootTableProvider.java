@@ -37,6 +37,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.minecraft.block.Block;
 import net.minecraft.data.server.BlockLootTableGenerator;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.entry.ItemEntry;
@@ -116,7 +117,7 @@ public class AMBlockLootTableProvider extends FabricBlockLootTableProvider {
 					if (family.shouldGenerateLootTable(variant)) {
 						switch (variant) {
 							case BLOCK, RAW_ORE_BLOCK -> addDrop(block);
-							case STONE_ORE, DEEPSLATE_ORE, NETHER_ORE, MOON_ORE, DARK_MOON_ORE -> {
+							case STONE_ORE, DEEPSLATE_ORE, NETHER_ORE -> {
 								Item drop;
 								
 								if (family.hasVariant(ItemVariant.RAW_ORE)) {
@@ -129,6 +130,23 @@ public class AMBlockLootTableProvider extends FabricBlockLootTableProvider {
 							}
 							case METEOR_ORE -> this.addDrop(block, oreDrops(block, family.getVariant(ItemVariant.METEOR_ORE_CLUSTER)));
 							case ASTEROID_ORE -> this.addDrop(block, oreDrops(block, family.getVariant(ItemVariant.ASTEROID_ORE_CLUSTER)));
+							case MOON_ORE, DARK_MOON_ORE -> {
+								Item drop;
+								
+								if (family.hasVariant(ItemVariant.RAW_ORE)) {
+									drop = family.getVariant(ItemVariant.RAW_ORE);
+								} else {
+									drop = family.getBaseItem();
+								}
+								
+								if (drop == Items.REDSTONE) {
+									addDrop(block, redstoneOreDrops(block));
+								} else if (drop == Items.LAPIS_LAZULI) {
+									addDrop(block, lapisOreDrops(block));
+								} else {
+									addDrop(block, oreDrops(block,  drop));
+								}
+							}
 						}
 					}
 				})

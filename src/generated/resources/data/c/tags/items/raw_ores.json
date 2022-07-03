@@ -1,7 +1,10 @@
 {
   "replace": false,
   "values": [
+    "#c:raw_coals",
     "#c:raw_coppers",
+    "#c:raw_diamonds",
+    "#c:raw_emeralds",
     "#c:raw_golds",
     "#c:raw_irons",
     "#c:raw_leads",

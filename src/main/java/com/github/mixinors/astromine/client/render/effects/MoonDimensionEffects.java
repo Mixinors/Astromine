@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.client.render.effects;
 
+import com.github.mixinors.astromine.registry.common.AMBiomes;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.fabricmc.api.EnvType;
@@ -42,30 +43,32 @@ public class MoonDimensionEffects extends DimensionEffects {
 	public boolean isDarkened() {
 		var client = InstanceUtil.getClient();
 		
-		if (client.player != null && client.player.world.getBlockState(client.player.world.getTopPosition(Heightmap.Type.WORLD_SURFACE_WG, client.player.getBlockPos()).down()).getBlock() == AMBlocks.DARK_MOON_STONE.get()) {
-			return true;
+		if (client.player != null) {
+			if (client.world != null) {
+				if (client.world.getBiome(client.player.getBlockPos()).equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
+					return true;
+				}
+			}
 		}
-		
+
 		return super.isDarkened();
 	}
 	
 	@Override
 	public Vec3d adjustFogColor(Vec3d color, float sunHeight) {
-		var client = InstanceUtil.getClient();
-		
-		if (client.player != null && client.player.world.getBlockState(client.player.world.getTopPosition(Heightmap.Type.WORLD_SURFACE_WG, client.player.getBlockPos()).down()).getBlock() == AMBlocks.DARK_MOON_STONE.get()) {
-			return color.multiply(0.0D);
-		}
-		
-		return color.multiply(0.15000000596046448D);
+		return Vec3d.ZERO;
 	}
 	
 	@Override
 	public boolean useThickFog(int camX, int camY) {
 		var client = InstanceUtil.getClient();
 		
-		if (client.player != null && client.player.world.getBlockState(client.player.world.getTopPosition(Heightmap.Type.WORLD_SURFACE_WG, client.player.getBlockPos()).down()).getBlock() == AMBlocks.DARK_MOON_STONE.get()) {
-			return true;
+		if (client.player != null) {
+			if (client.world != null) {
+				if (client.world.getBiome(client.player.getBlockPos()).equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
+					return true;
+				}
+			}
 		}
 		
 		return false;

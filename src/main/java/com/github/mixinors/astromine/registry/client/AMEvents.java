@@ -54,6 +54,7 @@ import dev.vini2003.hammer.gui.api.common.widget.bar.ImageBarWidget;
 import dev.vini2003.hammer.gui.energy.api.common.util.EnergyTextUtil;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
@@ -69,32 +70,40 @@ import team.reborn.energy.api.EnergyStorage;
 
 import java.util.ArrayList;
 
+// TODO: Move Moon Stone and Dark Moon Stone models out of data generator!
 public class AMEvents {
-	private static float LAST_MOON_BRIGHTNESS = 0.0F;
-	private static float TARGET_MOON_BRIGHTNESS = 0.0F;
 	
 	public static void init() {
 		WorldRenderEvents.END.register(context -> {
-			AMValues.TICK_DELTA = context.tickDelta();
+			AMValues.LAST_TICK_DELTA = context.tickDelta();
 		});
 		
-		DimensionTypeEvents.BRIGHTNESS.register((type, lightLevel) -> {
+		ServerPlayerEvents.COPY_FROM.register((oldPlayer, newPlayer, alive) -> {
+			if (!oldPlayer.getWorld().getRegistryKey().equals(newPlayer.getWorld().getRegistryKey())) {
+				AMValues.LAST_FOG_START = Float.MAX_VALUE;
+				AMValues.LAST_FOG_END = Float.MAX_VALUE;
+			}
+		});
+		
+		DimensionTypeEvents.BRIGHTNESS.register((type) -> {
 			var client = InstanceUtil.getClient();
 			
-			if (client.world.getRegistryKey().equals(AMWorlds.MOON_WORLD)) {
-				if (client.world != null && client.player != null) {
-					if (client.world.getBiome(client.player.getBlockPos()).getKey().orElseThrow().equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
-						TARGET_MOON_BRIGHTNESS = 0.0F;
-						
-						LAST_MOON_BRIGHTNESS = MathHelper.lerp(AMValues.TICK_DELTA / 2560.0F, LAST_MOON_BRIGHTNESS, TARGET_MOON_BRIGHTNESS);
-						
-						return CompoundEventResult.interruptTrue(LAST_MOON_BRIGHTNESS);
-					} else {
-						TARGET_MOON_BRIGHTNESS = 15.0F;
-						
-						LAST_MOON_BRIGHTNESS = MathHelper.lerp(AMValues.TICK_DELTA / 256000.0F, LAST_MOON_BRIGHTNESS, TARGET_MOON_BRIGHTNESS);
-						
-						return CompoundEventResult.interruptTrue(LAST_MOON_BRIGHTNESS);
+			if (AMWorlds.isAstromine(client.world.getRegistryKey())) {
+				if (client.world.getRegistryKey().equals(AMWorlds.MOON_WORLD)) {
+					if (client.world != null && client.player != null) {
+						if (client.world.getBiome(client.player.getBlockPos()).getKey().orElseThrow().equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
+							AMValues.TARGET_MOON_BRIGHTNESS = 0.0F;
+							
+							AMValues.LAST_MOON_BRIGHTNESS = MathHelper.lerp(AMValues.LAST_TICK_DELTA / 2560.0F, AMValues.LAST_MOON_BRIGHTNESS, AMValues.TARGET_MOON_BRIGHTNESS);
+							
+							return CompoundEventResult.interruptTrue(AMValues.LAST_MOON_BRIGHTNESS);
+						} else {
+							AMValues.TARGET_MOON_BRIGHTNESS = 15.0F;
+							
+							AMValues.LAST_MOON_BRIGHTNESS = MathHelper.lerp(AMValues.LAST_TICK_DELTA / 256000.0F, AMValues.LAST_MOON_BRIGHTNESS, AMValues.TARGET_MOON_BRIGHTNESS);
+							
+							return CompoundEventResult.interruptTrue(AMValues.LAST_MOON_BRIGHTNESS);
+						}
 					}
 				}
 			}
@@ -105,11 +114,9 @@ public class AMEvents {
 		BackgroundEvents.FOG.register((camera, type) -> {
 			var client = InstanceUtil.getClient();
 			
-			if (client.world.getRegistryKey().equals(AMWorlds.MOON_WORLD)) {
-				if (client.world != null && client.player != null) {
-					if (client.world.getBiome(client.player.getBlockPos()).getKey().orElseThrow().equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
-						return CompoundEventResult.interruptTrue(0x000000);
-					}
+			if (AMWorlds.isAstromine(client.world.getRegistryKey())) {
+				if (client.world.getRegistryKey().equals(AMWorlds.MOON_WORLD)) {
+					return CompoundEventResult.interruptTrue(0x000000);
 				}
 			}
 			
@@ -401,7 +408,7 @@ public class AMEvents {
 		
 		DimensionEffectsEvents.INIT.register((properties) -> {
 			properties.put(AMWorlds.EARTH_ORBIT_ID, new SpaceDimensionEffects());
-			
+		
 			properties.put(AMWorlds.MOON_ID, new MoonDimensionEffects());
 		});
 	}

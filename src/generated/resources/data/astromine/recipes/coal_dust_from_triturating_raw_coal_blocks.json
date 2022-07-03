@@ -1,0 +1,12 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "tag": "c:raw_coal_blocks"
+  },
+  "output": {
+    "item": "astromine:coal_dust",
+    "count": 18
+  },
+  "energy_input": 2550,
+  "time": 760
+}

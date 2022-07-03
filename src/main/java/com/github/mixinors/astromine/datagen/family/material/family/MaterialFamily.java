@@ -511,15 +511,25 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 			return this;
 		}
 		
-		public MaterialFamily.Builder moonOre(Block moonOre, Item moonOreCluster) {
+		public MaterialFamily.Builder moonOre(Block moonOre, Item rawMoonOre) {
 			this.family.blockVariants.put(BlockVariant.MOON_ORE, moonOre);
-			this.family.itemVariants.put(ItemVariant.MOON_ORE_CLUSTER, moonOreCluster);
+			this.family.itemVariants.put(ItemVariant.RAW_ORE, rawMoonOre);
 			return this;
 		}
 		
-		public MaterialFamily.Builder darkMoonOre(Block darkMoonOre, Item darkMoonOreCluster) {
+		public MaterialFamily.Builder moonOreGem(Block moonOre) {
+			this.family.blockVariants.put(BlockVariant.MOON_ORE, moonOre);
+			return this;
+		}
+		
+		public MaterialFamily.Builder darkMoonOre(Block darkMoonOre, Item darkRawMoonOre) {
 			this.family.blockVariants.put(BlockVariant.DARK_MOON_ORE, darkMoonOre);
-			this.family.itemVariants.put(ItemVariant.DARK_MOON_ORE_CLUSTER, darkMoonOreCluster);
+			this.family.itemVariants.put(ItemVariant.RAW_ORE, darkRawMoonOre);
+			return this;
+		}
+		
+		public MaterialFamily.Builder darkMoonOreGem(Block darkMoonOre) {
+			this.family.blockVariants.put(BlockVariant.DARK_MOON_ORE, darkMoonOre);
 			return this;
 		}
 		

@@ -25,6 +25,8 @@
 package com.github.mixinors.astromine.client.render.skybox;
 
 import com.github.mixinors.astromine.client.render.skybox.base.Skybox;
+import com.github.mixinors.astromine.registry.client.AMValues;
+import com.github.mixinors.astromine.registry.common.AMBiomes;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
@@ -41,6 +43,7 @@ import net.minecraft.util.math.Vec3f;
 import java.util.HashMap;
 import java.util.Map;
 
+// TODO: Separate Moon's skybox.
 public class SpaceSkybox extends Skybox {
 	public static final Identifier UP = new Identifier("skybox", "up");
 	public static final Identifier DOWN = new Identifier("skybox", "down");

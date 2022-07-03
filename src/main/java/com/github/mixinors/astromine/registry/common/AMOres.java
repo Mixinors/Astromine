@@ -91,10 +91,12 @@ public class AMOres {
 		MoonOreRegistry.INSTANCE.register(AMBlocks.MOON_LUNUM_ORE.get(), AMConfig.get().world.ores.moonLunumOre.weight);
 		MoonOreRegistry.INSTANCE.register(AMBlocks.MOON_IRON_ORE.get(), AMConfig.get().world.ores.moonIronOre.weight);
 		MoonOreRegistry.INSTANCE.register(AMBlocks.MOON_REDSTONE_ORE.get(), AMConfig.get().world.ores.moonRedstoneOre.weight);
+		MoonOreRegistry.INSTANCE.register(AMBlocks.MOON_LAPIS_ORE.get(), AMConfig.get().world.ores.moonLapisOre.weight);
 		
 		DarkMoonOreRegistry.INSTANCE.register(AMBlocks.DARK_MOON_LUNUM_ORE.get(), AMConfig.get().world.ores.darkMoonLunumOre.weight);
 		DarkMoonOreRegistry.INSTANCE.register(AMBlocks.DARK_MOON_IRON_ORE.get(), AMConfig.get().world.ores.darkMoonIronOre.weight);
 		DarkMoonOreRegistry.INSTANCE.register(AMBlocks.DARK_MOON_REDSTONE_ORE.get(), AMConfig.get().world.ores.darkMoonRedstoneOre.weight);
+		DarkMoonOreRegistry.INSTANCE.register(AMBlocks.DARK_MOON_LAPIS_ORE.get(), AMConfig.get().world.ores.moonLapisOre.weight);
 		
 		BiomeModifications.create(ORES_ID)
 						  .add(ModificationPhase.ADDITIONS, overworldPredicate().and(context -> AMConfig.get().world.ores.overworldTinOre), context -> {

@@ -42,6 +42,10 @@ public class AMColorProviders {
 				return 0xFFFFFFFF;
 			}
 			
+			if (state == null) {
+				return 0x242424;
+			}
+			
 			var client = InstanceUtil.getClient();
 			
 			var gameOptions = client.options;
@@ -81,13 +85,12 @@ public class AMColorProviders {
 				b += color & 0xFF;
 			}
 					
-					if (blocks == 0) {
-						blocks = 1;
-					}
-					
-					return (r / blocks & 0xFF) << 16 | (g / blocks & 0xFF) << 8 | b / blocks & 0xFF;
-				},
+				if (blocks == 0) {
+					blocks = 1;
+				}
 				
+				return (r / blocks & 0xFF) << 16 | (g / blocks & 0xFF) << 8 | b / blocks & 0xFF;
+			},
 				AMBlocks.MOON_LUNUM_ORE.get(),
 				
 				AMBlocks.MOON_TIN_ORE.get(),
@@ -154,7 +157,46 @@ public class AMColorProviders {
 				AMBlocks.DARK_MOON_STONE_BRICKS.get(),
 				AMBlocks.DARK_MOON_STONE_BRICK_SLAB.get(),
 				AMBlocks.DARK_MOON_STONE_BRICK_STAIRS.get(),
-				AMBlocks.DARK_MOON_STONE_BRICK_WALL.get());
+				AMBlocks.DARK_MOON_STONE_BRICK_WALL.get()
+		);
+		
+		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
+			return 0x242424;
+		},
+				AMBlocks.DARK_MOON_LUNUM_ORE.get().asItem(),
+				
+				AMBlocks.DARK_MOON_TIN_ORE.get().asItem(),
+				AMBlocks.DARK_MOON_SILVER_ORE.get().asItem(),
+				AMBlocks.DARK_MOON_LEAD_ORE.get().asItem(),
+				
+				AMBlocks.DARK_MOON_COAL_ORE.get().asItem(),
+				AMBlocks.DARK_MOON_IRON_ORE.get().asItem(),
+				AMBlocks.DARK_MOON_GOLD_ORE.get().asItem(),
+				AMBlocks.DARK_MOON_COPPER_ORE.get().asItem(),
+				AMBlocks.DARK_MOON_REDSTONE_ORE.get().asItem(),
+				AMBlocks.DARK_MOON_LAPIS_ORE.get().asItem(),
+				AMBlocks.DARK_MOON_DIAMOND_ORE.get().asItem(),
+				AMBlocks.DARK_MOON_EMERALD_ORE.get().asItem(),
+				
+				AMBlocks.DARK_MOON_STONE.get().asItem(),
+				AMBlocks.DARK_MOON_STONE_SLAB.get().asItem(),
+				AMBlocks.DARK_MOON_STONE_STAIRS.get().asItem(),
+				AMBlocks.DARK_MOON_STONE_WALL.get().asItem(),
+				
+				AMBlocks.SMOOTH_DARK_MOON_STONE.get().asItem(),
+				AMBlocks.SMOOTH_DARK_MOON_STONE_SLAB.get().asItem(),
+				AMBlocks.SMOOTH_DARK_MOON_STONE_STAIRS.get().asItem(),
+				AMBlocks.SMOOTH_DARK_MOON_STONE_WALL.get().asItem(),
+				
+				AMBlocks.POLISHED_DARK_MOON_STONE.get().asItem(),
+				AMBlocks.POLISHED_DARK_MOON_STONE_SLAB.get().asItem(),
+				AMBlocks.POLISHED_DARK_MOON_STONE_STAIRS.get().asItem(),
+				
+				AMBlocks.DARK_MOON_STONE_BRICKS.get().asItem(),
+				AMBlocks.DARK_MOON_STONE_BRICK_SLAB.get().asItem(),
+				AMBlocks.DARK_MOON_STONE_BRICK_STAIRS.get().asItem(),
+				AMBlocks.DARK_MOON_STONE_BRICK_WALL.get().asItem()
+		);
 		
 		for (var fluid : AMDatagenLists.FluidLists.FLUIDS) {
 			ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> fluid.getTintColor(), fluid.getCauldron());
