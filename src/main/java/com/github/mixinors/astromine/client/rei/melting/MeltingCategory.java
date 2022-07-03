@@ -36,7 +36,6 @@ import net.fabricmc.api.Environment;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 
-@Environment(EnvType.CLIENT)
 public class MeltingCategory implements SingleItemInputCategory<MeltingDisplay>, SingleFluidOutputCategory<MeltingDisplay> {
 	@Override
 	public CategoryIdentifier<? extends MeltingDisplay> getCategoryIdentifier() {

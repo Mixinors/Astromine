@@ -36,7 +36,6 @@ import net.fabricmc.api.Environment;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 
-@Environment(EnvType.CLIENT)
 public class SolidifyingCategory implements SingleFluidInputCategory<SolidifyingDisplay>, SingleItemOutputCategory<SolidifyingDisplay> {
 	@Override
 	public CategoryIdentifier<? extends SolidifyingDisplay> getCategoryIdentifier() {

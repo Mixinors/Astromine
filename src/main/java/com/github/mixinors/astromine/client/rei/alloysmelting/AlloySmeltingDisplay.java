@@ -35,7 +35,6 @@ import net.fabricmc.api.Environment;
 
 import java.util.Arrays;
 
-@Environment(EnvType.CLIENT)
 public class AlloySmeltingDisplay extends EnergyInputDisplay {
 	public AlloySmeltingDisplay(AlloySmeltingRecipe recipe) {
 		super(

@@ -37,7 +37,6 @@ import net.fabricmc.api.Environment;
 
 import java.util.Arrays;
 
-@Environment(EnvType.CLIENT)
 public class FluidMixingDisplay extends EnergyInputDisplay {
 	public FluidMixingDisplay(FluidMixingRecipe recipe) {
 		super(

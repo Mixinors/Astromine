@@ -34,7 +34,6 @@ import net.minecraft.util.Identifier;
 import java.util.List;
 import java.util.Optional;
 
-@Environment(EnvType.CLIENT)
 public abstract class EnergyOutputDisplay implements AMDisplay {
 	private final List<EntryIngredient> inputs;
 	

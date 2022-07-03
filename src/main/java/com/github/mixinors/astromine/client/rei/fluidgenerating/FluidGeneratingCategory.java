@@ -36,7 +36,6 @@ import net.fabricmc.api.Environment;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 
-@Environment(EnvType.CLIENT)
 public class FluidGeneratingCategory implements SingleFluidInputCategory<FluidGeneratingDisplay>, EnergyOutputCategory<FluidGeneratingDisplay> {
 	@Override
 	public CategoryIdentifier<? extends FluidGeneratingDisplay> getCategoryIdentifier() {

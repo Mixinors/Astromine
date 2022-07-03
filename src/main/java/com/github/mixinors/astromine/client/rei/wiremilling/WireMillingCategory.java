@@ -36,7 +36,6 @@ import net.fabricmc.api.Environment;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 
-@Environment(EnvType.CLIENT)
 public class WireMillingCategory implements SingleItemInputCategory<WireMillingDisplay>, SingleItemOutputCategory<WireMillingDisplay> {
 	@Override
 	public CategoryIdentifier<? extends WireMillingDisplay> getCategoryIdentifier() {

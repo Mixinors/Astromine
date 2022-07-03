@@ -41,7 +41,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-@Environment(EnvType.CLIENT)
 public class ElectricSmeltingCategory extends DefaultCookingCategory {
 	public ElectricSmeltingCategory() {
 		super(AMRoughlyEnoughItemsPlugin.ELECTRIC_SMELTING, EntryStacks.of(AMBlocks.ADVANCED_ELECTRIC_FURNACE.get()), "category.astromine.electric_smelting");

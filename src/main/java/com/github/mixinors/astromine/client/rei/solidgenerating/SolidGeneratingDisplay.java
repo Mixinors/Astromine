@@ -34,7 +34,6 @@ import net.minecraft.util.Identifier;
 
 import java.util.List;
 
-@Environment(EnvType.CLIENT)
 public class SolidGeneratingDisplay extends EnergyOutputDisplay {
 	public SolidGeneratingDisplay(List<EntryIngredient> inputs, int timeRequired, long energyGeneratedPerTick, Identifier recipeId) {
 		super(inputs, timeRequired, energyGeneratedPerTick, recipeId);

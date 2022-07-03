@@ -176,10 +176,7 @@ public class AMModels {
 			for (var id : manager.findResources("models/", s -> s.contains("moon") && !s.contains("item"))) {
 				if (!id.toString().contains("item")) {
 					out.accept(id);
-					
-					System.out.println("Loaded model with ID " + id);
 				}
-				
 			}
 		});
 	}

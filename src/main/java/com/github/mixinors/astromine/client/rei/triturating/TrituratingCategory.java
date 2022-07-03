@@ -36,7 +36,6 @@ import net.fabricmc.api.Environment;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 
-@Environment(EnvType.CLIENT)
 public class TrituratingCategory implements SingleItemInputCategory<TrituratingDisplay>, SingleItemOutputCategory<TrituratingDisplay> {
 	@Override
 	public CategoryIdentifier<? extends TrituratingDisplay> getCategoryIdentifier() {

@@ -91,7 +91,7 @@ public record ItemResult(
 	
 	public static void toPacket(PacketByteBuf buf, ItemResult result) {
 		buf.writeString(Registry.ITEM.getId(result.variant.getItem()).toString());
-		buf.writeLong(result.count);
+		buf.writeInt(result.count);
 	}
 	
 	public static ItemResult fromPacket(PacketByteBuf buf) {

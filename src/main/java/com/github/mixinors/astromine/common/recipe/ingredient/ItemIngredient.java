@@ -191,13 +191,13 @@ public final class ItemIngredient {
 		if (ingredient.entry instanceof VariantEntry variantEntry) {
 			buf.writeString(ITEM_KEY);
 			buf.writeString(Registry.ITEM.getId(variantEntry.requiredVariant.getItem()).toString());
-			buf.writeLong(variantEntry.requiredAmount);
+			buf.writeInt(variantEntry.requiredAmount);
 		}
 		
 		if (ingredient.entry instanceof TagEntry tagEntry) {
 			buf.writeString(TAG_KEY);
 			buf.writeString(tagEntry.requiredTag.id().toString());
-			buf.writeLong(tagEntry.requiredAmount);
+			buf.writeInt(tagEntry.requiredAmount);
 		}
 	}
 	

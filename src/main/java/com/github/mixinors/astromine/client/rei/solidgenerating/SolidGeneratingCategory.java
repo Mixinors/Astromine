@@ -36,7 +36,6 @@ import net.fabricmc.api.Environment;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 
-@Environment(EnvType.CLIENT)
 public class SolidGeneratingCategory implements SingleItemInputCategory<SolidGeneratingDisplay>, EnergyOutputCategory<SolidGeneratingDisplay> {
 	@Override
 	public CategoryIdentifier<? extends SolidGeneratingDisplay> getCategoryIdentifier() {
