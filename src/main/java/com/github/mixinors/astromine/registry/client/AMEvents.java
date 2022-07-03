@@ -105,9 +105,11 @@ public class AMEvents {
 		BackgroundEvents.FOG.register((camera, type) -> {
 			var client = InstanceUtil.getClient();
 			
-			if (client.world != null && client.player != null) {
-				if (client.world.getBiome(client.player.getBlockPos()).getKey().orElseThrow().equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
-					return CompoundEventResult.interruptTrue(0x000000);
+			if (client.world.getRegistryKey().equals(AMWorlds.MOON_WORLD)) {
+				if (client.world != null && client.player != null) {
+					if (client.world.getBiome(client.player.getBlockPos()).getKey().orElseThrow().equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
+						return CompoundEventResult.interruptTrue(0x000000);
+					}
 				}
 			}
 			

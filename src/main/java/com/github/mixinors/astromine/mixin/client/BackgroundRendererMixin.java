@@ -43,9 +43,9 @@ public class BackgroundRendererMixin {
 	private static float ASTROMINE$LAST_FOG_START = 0.0F;
 	private static float ASTROMINE$LAST_FOG_END = 0.0F;
 	
-	private static int ASTROMINE$LAST_RED = 0;
-	private static int ASTROMINE$LAST_GREEN = 0;
-	private static int ASTROMINE$LAST_BLUE = 0;
+	private static float ASTROMINE$LAST_RED = 0;
+	private static float ASTROMINE$LAST_GREEN = 0;
+	private static float ASTROMINE$LAST_BLUE = 0;
 	
 	@Inject(at = @At("HEAD"), method = "applyFog", cancellable = true)
 	private static void astromine$applyFog(Camera camera, BackgroundRenderer.FogType type, float viewDistance, boolean thickFog, CallbackInfo ci) {
@@ -81,12 +81,12 @@ public class BackgroundRendererMixin {
 	
 	@ModifyArgs(at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;clearColor(FFFF)V"), method = "render")
 	private static void astromine$render$clearColor(Args args) {
-		ASTROMINE$LAST_RED = (int) MathHelper.lerp(AMValues.TICK_DELTA / 2048.0F, ASTROMINE$LAST_RED, ((Float) args.get(0)).doubleValue());
-		ASTROMINE$LAST_GREEN = (int) MathHelper.lerp(AMValues.TICK_DELTA / 2048.0F, ASTROMINE$LAST_GREEN, ((Float) args.get(1)).doubleValue());
-		ASTROMINE$LAST_BLUE = (int) MathHelper.lerp(AMValues.TICK_DELTA / 2048.0F, ASTROMINE$LAST_BLUE, ((Float) args.get(2)).doubleValue());
+		ASTROMINE$LAST_RED = (float) MathHelper.lerp(AMValues.TICK_DELTA / 2048.0F, ASTROMINE$LAST_RED, ((Float) args.get(0)).doubleValue());
+		ASTROMINE$LAST_GREEN = (float) MathHelper.lerp(AMValues.TICK_DELTA / 2048.0F, ASTROMINE$LAST_GREEN, ((Float) args.get(1)).doubleValue());
+		ASTROMINE$LAST_BLUE = (float) MathHelper.lerp(AMValues.TICK_DELTA / 2048.0F, ASTROMINE$LAST_BLUE, ((Float) args.get(2)).doubleValue());
 		
-		args.set(0, (float) ASTROMINE$LAST_RED);
-		args.set(1, (float) ASTROMINE$LAST_GREEN);
-		args.set(2, (float) ASTROMINE$LAST_BLUE);
+		args.set(0, ASTROMINE$LAST_RED);
+		args.set(1, ASTROMINE$LAST_GREEN);
+		args.set(2, ASTROMINE$LAST_BLUE);
 	}
 }
