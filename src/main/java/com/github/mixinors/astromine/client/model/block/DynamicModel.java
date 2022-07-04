@@ -269,7 +269,7 @@ public class DynamicModel extends JsonUnbakedModel {
 		public void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<Random> randomSupplier, RenderContext context) {
 			BakedModel model;
 			
-			if (state == null || (state.contains(AMProperties.DYNAMIC) && state.get(AMProperties.DYNAMIC)) || dynamicBakedModel == null) {
+			if (state == null || (state.contains(AMProperties.DYNAMIC) && !state.get(AMProperties.DYNAMIC)) || dynamicBakedModel == null) {
 				model = staticBakedModel;
 			} else {
 				model = dynamicBakedModel;
