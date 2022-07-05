@@ -29,17 +29,12 @@ import com.github.mixinors.astromine.client.render.effects.MoonDimensionEffects;
 import com.github.mixinors.astromine.client.render.effects.SpaceDimensionEffects;
 import com.github.mixinors.astromine.common.block.network.EnergyCableBlock;
 import com.github.mixinors.astromine.common.component.entity.OxygenComponent;
-import com.github.mixinors.astromine.common.event.BackgroundEvents;
 import com.github.mixinors.astromine.common.event.DimensionEffectsEvents;
-import com.github.mixinors.astromine.common.event.DimensionTypeEvents;
 import com.github.mixinors.astromine.common.item.armor.SpaceSuitArmorItem;
 import com.github.mixinors.astromine.common.item.utility.HolographicConnectorItem;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidItemStorage;
-import com.github.mixinors.astromine.registry.common.AMBiomes;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
-import dev.architectury.event.CompoundEventResult;
-import dev.architectury.event.EventResult;
 import dev.architectury.event.events.client.ClientTooltipEvent;
 import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
@@ -54,7 +49,6 @@ import dev.vini2003.hammer.gui.api.common.widget.bar.ImageBarWidget;
 import dev.vini2003.hammer.gui.energy.api.common.util.EnergyTextUtil;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
-import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
@@ -64,7 +58,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
 import team.reborn.energy.api.EnergyStorage;
 
@@ -254,7 +247,7 @@ public class AMEvents {
 			bar.setShow(() -> {
 				var client = InstanceUtil.getClient();
 				
-				if (client != null && client.player != null && !client.player.isCreative() && !client.player.isSpectator() && AMWorlds.isSpace(client.player.world.method_40134())) {
+				if (client != null && client.player != null && !client.player.isCreative() && !client.player.isSpectator() && AMWorlds.isVacuum(client.player.world.method_40134())) {
 					var component = OxygenComponent.get(client.player);
 					
 					if (component != null) {

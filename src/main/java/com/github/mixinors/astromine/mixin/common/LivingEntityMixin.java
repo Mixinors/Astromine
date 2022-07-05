@@ -63,16 +63,11 @@ public abstract class LivingEntityMixin extends EntityMixin {
 	@Unique
 	private static final ThreadLocal<Boolean> FAKE_BEING_IN_LAVA = ThreadLocal.withInitial(() -> Boolean.FALSE);
 	
-	@Inject(at = @At("RETURN"), method = "createLivingAttributes()Lnet/minecraft/entity/attribute/DefaultAttributeContainer$Builder;")
-	private static void astromine$createLivingAttributes(CallbackInfoReturnable<DefaultAttributeContainer.Builder> cir) {
-		cir.getReturnValue().add(AMAttributes.GRAVITY_MULTIPLIER.get());
-	}
-	
 	@Inject(at = @At("HEAD"), method = "tick()V")
 	void astromine$tick(CallbackInfo callbackInformation) {
 		var entityType = getType();
 		
-		if (AMWorlds.isSpace(world.method_40134()) && !entityType.isIn(AMTagKeys.EntityTypeTags.DOES_NOT_BREATHE)) {
+		if (AMWorlds.isVacuum(world.method_40134()) && !entityType.isIn(AMTagKeys.EntityTypeTags.DOES_NOT_BREATHE)) {
 			
 			var headStack = getEquippedStack(EquipmentSlot.HEAD);
 			var chestStack = getEquippedStack(EquipmentSlot.CHEST);

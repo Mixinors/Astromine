@@ -29,5 +29,7 @@ import com.github.mixinors.astromine.common.registry.AtmosphereRegistry;
 public class AMAtmospheres {
 	public static void init() {
 		AtmosphereRegistry.INSTANCE.register(AMWorlds.EARTH_ORBIT_WORLD, true);
+		
+		AtmosphereRegistry.INSTANCE.register(AMWorlds.MOON_WORLD, true);
 	}
 }

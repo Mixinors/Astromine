@@ -26,10 +26,10 @@ package com.github.mixinors.astromine.common.config.entry.provider.tiered;
 
 import com.github.mixinors.astromine.common.provider.tiered.TieredFluidStorageSizeProvider;
 import com.github.mixinors.astromine.common.util.constant.config.ConfigConstants;
-import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.Tier;
 
 public interface DefaultedTieredFluidStorageSizeProvider extends TieredFluidStorageSizeProvider {
-	default long getDefaultFluidStorageSize(MachineTier tier) {
+	default long getDefaultFluidStorageSize(Tier tier) {
 		return switch (tier) {
 			case PRIMITIVE -> ConfigConstants.PRIMITIVE_FLUID_STORAGE;
 			case BASIC -> ConfigConstants.BASIC_FLUID_STORAGE;

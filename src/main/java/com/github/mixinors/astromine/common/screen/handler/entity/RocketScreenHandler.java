@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.screen.handler.entity;
 
-import com.github.mixinors.astromine.common.entity.rocket.RocketEntity;
+import com.github.mixinors.astromine.common.entity.rocket.base.RocketEntity;
 import com.github.mixinors.astromine.common.screen.handler.base.entity.ExtendedEntityScreenHandler;
 import com.github.mixinors.astromine.common.slot.ExtractionSlot;
 import com.github.mixinors.astromine.common.slot.FilterSlot;
@@ -46,10 +46,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
-public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
+public class RocketScreenHandler extends ExtendedEntityScreenHandler {
 	private final RocketEntity rocket;
 	
-	public PrimitiveRocketScreenHandler(int syncId, PlayerEntity player, int entityId) {
+	public RocketScreenHandler(int syncId, PlayerEntity player, int entityId) {
 		super(AMScreenHandlers.ROCKET, syncId, player, entityId);
 		
 		rocket = (RocketEntity) entity;
@@ -57,7 +57,7 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 	
 	@Override
 	public ItemStack getSymbol() {
-		return new ItemStack(AMItems.PRIMITIVE_ROCKET.get());
+		return new ItemStack(AMItems.ROCKET.get());
 	}
 	
 	@Override
@@ -74,11 +74,11 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 		launchButton.setPosition(new Position(tab, PAD_7, PAD_11 + (BAR_HEIGHT - LAUNCH_BUTTON_HEIGHT) / 2.0F));
 		launchButton.setSize(new Size(LAUNCH_BUTTON_WIDTH, LAUNCH_BUTTON_HEIGHT));
 		launchButton.setLabel(new TranslatableText("text.astromine.rocket.go").formatted(Formatting.BOLD));
-		launchButton.setDisabled(() -> entity.getDataTracker().get(RocketEntity.IS_RUNNING) || !rocket.isFuelMatching());
+		launchButton.setDisabled(() -> entity.getDataTracker().get(RocketEntity.RUNNING) || !rocket.isFuelMatching());
 		
 		fluidBar.setPosition(new Position(tab, TABS_WIDTH - PAD_7 - (BAR_WIDTH + PAD_3 + SLOT_WIDTH + PAD_3 + SLOT_WIDTH + PAD_3 + SLOT_WIDTH + PAD_3 + BAR_WIDTH), PAD_11));
 		
-		var firstInput = new SlotWidget(RocketEntity.ITEM_INPUT_SLOT_1, entity.getItemStorage(), (inventory, id, x, y) -> {
+		var firstInput = new SlotWidget(RocketEntity.LIQUID_FUEL_ITEM_INPUT_SLOT_1, entity.getItemStorage(), (inventory, id, x, y) -> {
 			var slot = new FilterSlot(inventory, id, x, y);
 			
 			slot.setInsertPredicate((stack) -> {
@@ -89,9 +89,9 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 						return false;
 					}
 					
-					var itemFluidStorageView = StorageUtils.first(itemFluidStorage, transaction, (view) -> rocket.getFirstFuel().testVariant(view.getResource()));
+					//var itemFluidStorageView = StorageUtils.first(itemFluidStorage, transaction, (view) -> rocket.getFirstFuel().testVariant(view.getResource()));
 					
-					return itemFluidStorageView != null;
+					return false;//itemFluidStorageView != null;
 				}
 			});
 			
@@ -100,12 +100,12 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 		firstInput.setPosition(new Position(fluidBar, BAR_WIDTH + PAD_3, 0.0F));
 		firstInput.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
-		var firstOutput = new SlotWidget(entity.getItemStorage(), RocketEntity.ITEM_OUTPUT_SLOT_1, (inventory, id, x, y) -> {
+		var firstOutput = new SlotWidget(entity.getItemStorage(), RocketEntity.LIQUID_FUEL_ITEM_OUTPUT_SLOT_1, (inventory, id, x, y) -> {
 			var slot = new FilterSlot(inventory, id, x, y);
 			
 			slot.setInsertPredicate((stack) -> {
 				try (var transaction = Transaction.openOuter()) {
-					var rocketFluidStorage = rocket.getFluidStorage().getStorage(RocketEntity.FLUID_OUTPUT_SLOT_1);
+					var rocketFluidStorage = rocket.getFluidStorage().getStorage(RocketEntity.LIQUID_FUEL_FLUID_OUTPUT_SLOT_1);
 					
 					var itemFluidStorage = FluidStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
 					
@@ -127,10 +127,10 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 		var secondFluidBar = new FluidBarWidget();
 		secondFluidBar.setPosition(new Position(tab, TABS_WIDTH - PAD_7 - (BAR_WIDTH), PAD_11));
 		secondFluidBar.setSize(new Size(BAR_WIDTH, BAR_HEIGHT));
-		secondFluidBar.setStorageView(() -> entity.getFluidStorage().getStorage(RocketEntity.FLUID_INPUT_SLOT_2));
+		secondFluidBar.setStorageView(() -> entity.getFluidStorage().getStorage(RocketEntity.LIQUID_FUEL_FLUID_INPUT_SLOT_2));
 		secondFluidBar.setSmooth(false);
 		
-		var secondInput = new SlotWidget(RocketEntity.ITEM_INPUT_SLOT_2, entity.getItemStorage(), (inventory, id, x, y) -> {
+		var secondInput = new SlotWidget(RocketEntity.LIQUID_FUEL_ITEM_INPUT_SLOT_2, entity.getItemStorage(), (inventory, id, x, y) -> {
 			var slot = new FilterSlot(inventory, id, x, y);
 			
 			slot.setInsertPredicate((stack) -> {
@@ -141,9 +141,9 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 						return false;
 					}
 					
-					var itemFluidStorageView = StorageUtils.first(itemFluidStorage, transaction, (view) -> rocket.getSecondFuel().testVariant(view.getResource()));
+					//var itemFluidStorageView = StorageUtils.first(itemFluidStorage, transaction, (view) -> rocket.getSecondFuel().testVariant(view.getResource()));
 					
-					return itemFluidStorageView != null;
+					return false;// itemFluidStorageView != null;
 				}
 			});
 			
@@ -152,12 +152,12 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 		secondInput.setPosition(new Position(secondFluidBar, -SLOT_WIDTH - PAD_3, 0.0F));
 		secondInput.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
-		var secondOutput = new SlotWidget(RocketEntity.ITEM_OUTPUT_SLOT_2, entity.getItemStorage(), (inventory, id, x, y) -> {
+		var secondOutput = new SlotWidget(RocketEntity.LIQUID_FUEL_ITEM_OUTPUT_SLOT_2, entity.getItemStorage(), (inventory, id, x, y) -> {
 			var slot = new FilterSlot(inventory, id, x, y);
 			
 			slot.setInsertPredicate((stack) -> {
 				try (var transaction = Transaction.openOuter()) {
-					var rocketFluidStorage = rocket.getFluidStorage().getStorage(RocketEntity.FLUID_OUTPUT_SLOT_2);
+					var rocketFluidStorage = rocket.getFluidStorage().getStorage(RocketEntity.LIQUID_FUEL_FLUID_OUTPUT_SLOT_2);
 					
 					var itemFluidStorage = FluidStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
 					
@@ -165,9 +165,9 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 						return false;
 					}
 					
-					var itemFluidStorageView = StorageUtils.first(itemFluidStorage, transaction, (view) -> view.isResourceBlank() || view.getResource() == rocketFluidStorage.getResource());
+					//var itemFluidStorageView = StorageUtils.first(itemFluidStorage, transaction, (view) -> view.isResourceBlank() || view.getResource() == rocketFluidStorage.getResource());
 					
-					return itemFluidStorageView != null;
+					return false;//itemFluidStorageView != null;
 				}
 			});
 			
@@ -176,7 +176,7 @@ public class PrimitiveRocketScreenHandler extends ExtendedEntityScreenHandler {
 		secondOutput.setPosition(new Position(secondFluidBar, -SLOT_WIDTH - PAD_3, BAR_HEIGHT - SLOT_HEIGHT));
 		secondOutput.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
-		var buffer = new SlotWidget(RocketEntity.ITEM_BUFFER_SLOT_1, entity.getItemStorage(), ExtractionSlot::new);
+		var buffer = new SlotWidget(RocketEntity.LIQUID_FUEL_ITEM_BUFFER_SLOT_1, entity.getItemStorage(), ExtractionSlot::new);
 		buffer.setPosition(new Position(firstInput, PAD_3 + SLOT_WIDTH, SLOT_HEIGHT - 4.0F));
 		buffer.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		

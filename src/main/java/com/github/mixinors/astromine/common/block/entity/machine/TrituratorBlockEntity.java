@@ -30,7 +30,7 @@ import com.github.mixinors.astromine.common.config.entry.tiered.SimpleMachineCon
 import com.github.mixinors.astromine.common.provider.config.tiered.MachineConfigProvider;
 import com.github.mixinors.astromine.common.recipe.TrituratingRecipe;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
-import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.Tier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
@@ -142,8 +142,8 @@ public abstract class TrituratorBlockEntity extends ExtendedBlockEntity implemen
 		}
 		
 		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.PRIMITIVE;
+		public Tier getMachineTier() {
+			return Tier.PRIMITIVE;
 		}
 	}
 	
@@ -153,8 +153,8 @@ public abstract class TrituratorBlockEntity extends ExtendedBlockEntity implemen
 		}
 		
 		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.BASIC;
+		public Tier getMachineTier() {
+			return Tier.BASIC;
 		}
 	}
 	
@@ -164,8 +164,8 @@ public abstract class TrituratorBlockEntity extends ExtendedBlockEntity implemen
 		}
 		
 		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.ADVANCED;
+		public Tier getMachineTier() {
+			return Tier.ADVANCED;
 		}
 	}
 	
@@ -175,8 +175,8 @@ public abstract class TrituratorBlockEntity extends ExtendedBlockEntity implemen
 		}
 		
 		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.ELITE;
+		public Tier getMachineTier() {
+			return Tier.ELITE;
 		}
 	}
 }

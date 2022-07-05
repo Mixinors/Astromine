@@ -26,10 +26,10 @@ package com.github.mixinors.astromine.common.config.entry.provider.tiered;
 
 import com.github.mixinors.astromine.common.provider.tiered.TieredEnergyStorageSizeProvider;
 import com.github.mixinors.astromine.common.util.constant.config.ConfigConstants;
-import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.Tier;
 
 public interface DefaultedTieredEnergyStorageSizeProvider extends TieredEnergyStorageSizeProvider {
-	default long getDefaultEnergyStorageSize(MachineTier tier) {
+	default long getDefaultEnergyStorageSize(Tier tier) {
 		return switch (tier) {
 			case PRIMITIVE -> ConfigConstants.PRIMITIVE_BATTERY_PACK_ENERGY;
 			case BASIC -> ConfigConstants.BASIC_BATTERY_PACK_ENERGY;

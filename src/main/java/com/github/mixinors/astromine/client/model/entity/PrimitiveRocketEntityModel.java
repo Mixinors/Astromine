@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.client.model.entity;
 
 import com.github.mixinors.astromine.client.render.entity.PrimitiveRocketEntityRenderer;
-import com.github.mixinors.astromine.common.entity.rocket.PrimitiveRocketEntity;
+import com.github.mixinors.astromine.common.entity.rocket.RocketEntity;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.model.SinglePartEntityModel;
@@ -35,7 +35,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3f;
 
-public class PrimitiveRocketEntityModel extends SinglePartEntityModel<PrimitiveRocketEntity> {
+public class PrimitiveRocketEntityModel extends SinglePartEntityModel<RocketEntity> {
 	private final ModelPart root;
 	
 	public PrimitiveRocketEntityModel(ModelPart root) {
@@ -72,7 +72,7 @@ public class PrimitiveRocketEntityModel extends SinglePartEntityModel<PrimitiveR
 	}
 	
 	@Override
-	public void setAngles(PrimitiveRocketEntity entity, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch) {
+	public void setAngles(RocketEntity entity, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch) {
 	
 	}
 	

@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.client.render.entity;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.model.entity.PrimitiveRocketEntityModel;
-import com.github.mixinors.astromine.common.entity.rocket.PrimitiveRocketEntity;
+import com.github.mixinors.astromine.common.entity.rocket.RocketEntity;
 import com.github.mixinors.astromine.registry.client.AMEntityModelLayers;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.minecraft.client.render.OverlayTexture;
@@ -37,7 +37,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3f;
 
-public class PrimitiveRocketEntityRenderer extends EntityRenderer<PrimitiveRocketEntity> {
+public class PrimitiveRocketEntityRenderer extends EntityRenderer<RocketEntity> {
 	public static final Identifier ID = AMCommon.id("textures/entity/rocket/primitive_rocket.png");
 	
 	private final PrimitiveRocketEntityModel model;
@@ -49,7 +49,7 @@ public class PrimitiveRocketEntityRenderer extends EntityRenderer<PrimitiveRocke
 	}
 	
 	@Override
-	public void render(PrimitiveRocketEntity rocket, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider provider, int light) {
+	public void render(RocketEntity rocket, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider provider, int light) {
 		matrices.pop();
 		
 		matrices.push();
@@ -84,7 +84,7 @@ public class PrimitiveRocketEntityRenderer extends EntityRenderer<PrimitiveRocke
 	}
 	
 	@Override
-	public Identifier getTexture(PrimitiveRocketEntity entity) {
+	public Identifier getTexture(RocketEntity entity) {
 		return ID;
 	}
 }

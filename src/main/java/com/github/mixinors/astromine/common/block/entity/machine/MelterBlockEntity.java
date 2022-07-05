@@ -31,7 +31,7 @@ import com.github.mixinors.astromine.common.provider.config.tiered.FluidStorageM
 import com.github.mixinors.astromine.common.recipe.MeltingRecipe;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
-import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.Tier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
@@ -161,8 +161,8 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements F
 		}
 		
 		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.PRIMITIVE;
+		public Tier getMachineTier() {
+			return Tier.PRIMITIVE;
 		}
 	}
 	
@@ -172,8 +172,8 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements F
 		}
 		
 		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.BASIC;
+		public Tier getMachineTier() {
+			return Tier.BASIC;
 		}
 	}
 	
@@ -183,8 +183,8 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements F
 		}
 		
 		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.ADVANCED;
+		public Tier getMachineTier() {
+			return Tier.ADVANCED;
 		}
 	}
 	
@@ -194,8 +194,8 @@ public abstract class MelterBlockEntity extends ExtendedBlockEntity implements F
 		}
 		
 		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.ELITE;
+		public Tier getMachineTier() {
+			return Tier.ELITE;
 		}
 	}
 }

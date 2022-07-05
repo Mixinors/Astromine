@@ -29,7 +29,7 @@ import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.config.entry.tiered.SimpleMachineConfig;
 import com.github.mixinors.astromine.common.provider.config.tiered.MachineConfigProvider;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
-import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.Tier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
@@ -178,8 +178,8 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 		}
 		
 		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.PRIMITIVE;
+		public Tier getMachineTier() {
+			return Tier.PRIMITIVE;
 		}
 	}
 	
@@ -189,8 +189,8 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 		}
 		
 		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.BASIC;
+		public Tier getMachineTier() {
+			return Tier.BASIC;
 		}
 	}
 	
@@ -200,8 +200,8 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 		}
 		
 		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.ADVANCED;
+		public Tier getMachineTier() {
+			return Tier.ADVANCED;
 		}
 	}
 	
@@ -211,8 +211,8 @@ public abstract class SolidGeneratorBlockEntity extends ExtendedBlockEntity impl
 		}
 		
 		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.ELITE;
+		public Tier getMachineTier() {
+			return Tier.ELITE;
 		}
 	}
 }

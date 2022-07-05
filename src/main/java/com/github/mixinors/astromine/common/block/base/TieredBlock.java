@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.block.base;
 
 import com.github.mixinors.astromine.common.item.utility.MachineUpgradeKitItem;
-import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.Tier;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -45,12 +45,12 @@ public interface TieredBlock {
 	String Y_KEY = "y";
 	String Z_KEY = "z";
 	
-	MachineTier getTier();
+	Tier getTier();
 	
 	@Nullable
-	Block getForTier(MachineTier tier);
+	Block getForTier(Tier tier);
 	
-	default boolean hasTier(MachineTier tier) {
+	default boolean hasTier(Tier tier) {
 		return getForTier(tier) != null;
 	}
 	

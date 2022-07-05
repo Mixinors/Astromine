@@ -34,9 +34,8 @@ import net.minecraft.util.registry.Registry;
 import java.util.function.Supplier;
 
 public class AMAttributes {
-	public static final RegistrySupplier<EntityAttribute> GRAVITY_MULTIPLIER = register(AMCommon.id("gravity_multiplier"), () -> new ClampedEntityAttribute("attribute.name.generic.astromine.gravity_multiplier", 1d, -100d, 100d));
-	
 	public static void init() {
+	
 	}
 	
 	public static RegistrySupplier<EntityAttribute> register(Identifier id, Supplier<EntityAttribute> supplier) {

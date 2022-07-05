@@ -45,7 +45,7 @@ public class AMNetworking {
 				var player = context.getPlayer();
 				var world = (ClientWorld) player.world;
 				
-				var rocketEntity = AMEntityTypes.PRIMITIVE_ROCKET.get().create(world);
+				var rocketEntity = AMEntityTypes.ROCKET.get().create(world);
 				
 				rocketEntity.setUuid(uuid);
 				rocketEntity.setId(id);

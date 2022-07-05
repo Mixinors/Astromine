@@ -25,35 +25,35 @@
 package com.github.mixinors.astromine.common.item.utility;
 
 import com.github.mixinors.astromine.common.block.base.TieredBlock;
-import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.Tier;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import org.jetbrains.annotations.Nullable;
 
 public class MachineUpgradeKitItem extends Item {
-	private final MachineTier from;
-	private final MachineTier to;
+	private final Tier from;
+	private final Tier to;
 	
-	public MachineUpgradeKitItem(MachineTier from, MachineTier to, Settings settings) {
+	public MachineUpgradeKitItem(Tier from, Tier to, Settings settings) {
 		super(settings);
 		
 		this.from = from;
 		this.to = to;
 	}
 	
-	public MachineUpgradeKitItem(MachineTier to, Settings settings) {
-		this(MachineTier.values()[to.ordinal() - 1], to, settings);
+	public MachineUpgradeKitItem(Tier to, Settings settings) {
+		this(Tier.values()[to.ordinal() - 1], to, settings);
 	}
 	
-	public MachineTier from() {
+	public Tier from() {
 		return from;
 	}
 	
-	public MachineTier to() {
+	public Tier to() {
 		return to;
 	}
 	
-	public boolean isValidFor(MachineTier tier) {
+	public boolean isValidFor(Tier tier) {
 		return tier == from;
 	}
 	

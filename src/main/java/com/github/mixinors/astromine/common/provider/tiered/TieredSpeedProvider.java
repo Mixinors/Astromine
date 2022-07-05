@@ -24,14 +24,14 @@
 
 package com.github.mixinors.astromine.common.provider.tiered;
 
-import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.Tier;
 
 public interface TieredSpeedProvider {
 	double getBaseSpeed();
 	
-	double getSpeedModifier(MachineTier tier);
+	double getSpeedModifier(Tier tier);
 	
-	default double getSpeed(MachineTier tier) {
+	default double getSpeed(Tier tier) {
 		if (getBaseSpeed() == Double.MAX_VALUE) {
 			return Double.MAX_VALUE;
 		}

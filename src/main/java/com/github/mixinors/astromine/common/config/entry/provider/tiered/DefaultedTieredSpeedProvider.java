@@ -26,14 +26,14 @@ package com.github.mixinors.astromine.common.config.entry.provider.tiered;
 
 import com.github.mixinors.astromine.common.provider.tiered.TieredSpeedProvider;
 import com.github.mixinors.astromine.common.util.constant.config.ConfigConstants;
-import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.Tier;
 
 public interface DefaultedTieredSpeedProvider extends TieredSpeedProvider {
 	default double getDefaultBaseSpeed() {
 		return ConfigConstants.BASE_SPEED;
 	}
 	
-	default double getDefaultSpeedModifier(MachineTier tier) {
+	default double getDefaultSpeedModifier(Tier tier) {
 		return switch (tier) {
 			case PRIMITIVE -> ConfigConstants.PRIMITIVE_SPEED_MODIFIER;
 			case BASIC -> ConfigConstants.BASIC_SPEED_MODIFIER;

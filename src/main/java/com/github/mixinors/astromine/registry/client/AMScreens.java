@@ -41,6 +41,7 @@ import net.minecraft.screen.ScreenHandlerType;
 public class AMScreens {
 	public static void init() {
 		register(AMScreenHandlers.RECIPE_CREATOR, RecipeCreatorHandledScreen::new);
+		registerSimple(AMScreenHandlers.BODY_SELECTOR);
 		registerSimple(AMScreenHandlers.ROCKET);
 		registerSimple(AMScreenHandlers.FLUID_EXTRACTOR);
 		registerSimple(AMScreenHandlers.FLUID_INSERTER);

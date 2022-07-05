@@ -24,7 +24,9 @@
 
 package com.github.mixinors.astromine.registry.common;
 
+import com.github.mixinors.astromine.common.body.Body;
 import com.github.mixinors.astromine.common.screen.handler.RecipeCreatorScreenHandler;
+import com.github.mixinors.astromine.common.screen.handler.body.BodySelectorScreenHandler;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
 import dev.architectury.registry.menu.ExtendedMenuProvider;
@@ -36,11 +38,49 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 public class AMCommands {
 	public static void init() {
 		CommandRegistrationEvent.EVENT.register((dispatcher, environment) -> {
+			dispatcher.register(
+					LiteralArgumentBuilder.<ServerCommandSource>literal("body_selector").executes(context -> {
+						MenuRegistry.openExtendedMenu(context.getSource().getPlayer(), new ExtendedMenuProvider() {
+							@Override
+							public void saveExtraData(PacketByteBuf packetByteBuf) {
+							
+							}
+							
+							@Override
+							public Text getDisplayName() {
+								return new LiteralText("Recipe Creator");
+							}
+							
+							@Override
+							public @NotNull ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
+								
+								AMBodies.SUN.setPos(new Vec3d(192_000.0D, 0.0D, 192_000.0D));
+								AMBodies.SUN.setVelocity(new Vec3d(0.0D, 0.0D, 0.0D));
+								AMBodies.SUN.setMass(1000);
+								
+								AMBodies.EARTH.setPos(new Vec3d(192_000.0D + 24_000, 0.0D, 192_000.0D - 152_100.0D));
+								AMBodies.EARTH.setVelocity(new Vec3d(0.0D, 0.0D, 0.0D));
+								AMBodies.EARTH.setMass(10);
+								
+								AMBodies.MOON.setPos(new Vec3d(192_000.0D + 24_000, 0.0D, 192_000.0D - 152_484.0D));
+								AMBodies.MOON.setVelocity(new Vec3d(0.0D, 0.0D, 0.0D));
+								AMBodies.MOON.setMass(1);
+								
+								return new BodySelectorScreenHandler(syncId, player);
+							}
+						});
+						
+						return 1;
+					})
+			);
+			
 			dispatcher.register(LiteralArgumentBuilder.<ServerCommandSource>literal("recipe").then(LiteralArgumentBuilder.<ServerCommandSource>literal("creator").executes((context) -> {
 				MenuRegistry.openExtendedMenu(context.getSource().getPlayer(), new ExtendedMenuProvider() {
 					@Override

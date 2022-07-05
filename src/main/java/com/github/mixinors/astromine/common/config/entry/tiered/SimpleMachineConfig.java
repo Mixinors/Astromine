@@ -25,11 +25,11 @@
 package com.github.mixinors.astromine.common.config.entry.tiered;
 
 import com.github.mixinors.astromine.common.config.entry.tiered.tier.MachineTierConfig;
-import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.Tier;
 
 public class SimpleMachineConfig extends MachineConfig<MachineTierConfig> {
 	@Override
-	public MachineTierConfig createTierConfig(MachineTier tier) {
+	public MachineTierConfig createTierConfig(Tier tier) {
 		return new MachineTierConfig(getDefaultSpeedModifier(tier), getDefaultEnergyStorageSize(tier));
 	}
 }

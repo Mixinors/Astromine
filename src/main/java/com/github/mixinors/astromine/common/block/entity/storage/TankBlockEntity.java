@@ -30,7 +30,7 @@ import com.github.mixinors.astromine.common.config.entry.tiered.TankConfig;
 import com.github.mixinors.astromine.common.provider.config.tiered.TankConfigProvider;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
-import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.Tier;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
@@ -167,8 +167,8 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 		}
 		
 		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.PRIMITIVE;
+		public Tier getMachineTier() {
+			return Tier.PRIMITIVE;
 		}
 	}
 	
@@ -178,8 +178,8 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 		}
 		
 		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.BASIC;
+		public Tier getMachineTier() {
+			return Tier.BASIC;
 		}
 	}
 	
@@ -189,8 +189,8 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 		}
 		
 		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.ADVANCED;
+		public Tier getMachineTier() {
+			return Tier.ADVANCED;
 		}
 	}
 	
@@ -200,8 +200,8 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 		}
 		
 		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.ELITE;
+		public Tier getMachineTier() {
+			return Tier.ELITE;
 		}
 	}
 	
@@ -211,8 +211,8 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 		}
 		
 		@Override
-		public MachineTier getMachineTier() {
-			return MachineTier.CREATIVE;
+		public Tier getMachineTier() {
+			return Tier.CREATIVE;
 		}
 		
 		@Override

@@ -28,7 +28,7 @@ import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlo
 import com.github.mixinors.astromine.common.block.entity.machine.MelterBlockEntity;
 import com.github.mixinors.astromine.common.comparator.ComparatorMode;
 import com.github.mixinors.astromine.common.screen.handler.machine.MelterScreenHandler;
-import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.Tier;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -57,7 +57,7 @@ public abstract class MelterBlock extends HorizontalFacingTieredBlockWithEntity 
 	}
 	
 	@Override
-	public Block getForTier(MachineTier tier) {
+	public Block getForTier(Tier tier) {
 		return switch (tier) {
 			case PRIMITIVE -> AMBlocks.PRIMITIVE_MELTER.get();
 			case BASIC -> AMBlocks.BASIC_MELTER.get();
@@ -93,8 +93,8 @@ public abstract class MelterBlock extends HorizontalFacingTieredBlockWithEntity 
 		}
 		
 		@Override
-		public MachineTier getTier() {
-			return MachineTier.PRIMITIVE;
+		public Tier getTier() {
+			return Tier.PRIMITIVE;
 		}
 	}
 	
@@ -109,8 +109,8 @@ public abstract class MelterBlock extends HorizontalFacingTieredBlockWithEntity 
 		}
 		
 		@Override
-		public MachineTier getTier() {
-			return MachineTier.BASIC;
+		public Tier getTier() {
+			return Tier.BASIC;
 		}
 	}
 	
@@ -125,8 +125,8 @@ public abstract class MelterBlock extends HorizontalFacingTieredBlockWithEntity 
 		}
 		
 		@Override
-		public MachineTier getTier() {
-			return MachineTier.ADVANCED;
+		public Tier getTier() {
+			return Tier.ADVANCED;
 		}
 	}
 	
@@ -141,8 +141,8 @@ public abstract class MelterBlock extends HorizontalFacingTieredBlockWithEntity 
 		}
 		
 		@Override
-		public MachineTier getTier() {
-			return MachineTier.ELITE;
+		public Tier getTier() {
+			return Tier.ELITE;
 		}
 	}
 }

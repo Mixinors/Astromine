@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.entity.rocket.PrimitiveRocketEntity;
+import com.github.mixinors.astromine.common.entity.rocket.RocketEntity;
 import com.github.mixinors.astromine.common.entity.slime.SpaceSlimeEntity;
 import com.github.mixinors.astromine.common.entity.slime.SuperSpaceSlimeEntity;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -42,7 +42,7 @@ import net.minecraft.world.Heightmap;
 import java.util.function.Supplier;
 
 public class AMEntityTypes {
-	public static final RegistrySupplier<EntityType<PrimitiveRocketEntity>> PRIMITIVE_ROCKET = register("primitive_rocket", () -> FabricEntityTypeBuilder.create(SpawnGroup.MISC, PrimitiveRocketEntity::new).dimensions(EntityDimensions.changing(1.5F, 22.5F)).trackable(256, 4).build());
+	public static final RegistrySupplier<EntityType<RocketEntity>> ROCKET = register("primitive_rocket", () -> FabricEntityTypeBuilder.create(SpawnGroup.MISC, RocketEntity::new).dimensions(EntityDimensions.changing(1.5F, 22.5F)).trackable(256, 4).build());
 	
 	public static final RegistrySupplier<EntityType<SpaceSlimeEntity>> SPACE_SLIME = register("space_slime", () -> FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, SpaceSlimeEntity::new).dimensions(EntityDimensions.changing(2.04F, 2.04F)).trackable(128, 4).build());
 	

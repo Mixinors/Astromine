@@ -28,7 +28,7 @@ import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlo
 import com.github.mixinors.astromine.common.block.entity.storage.CapacitorBlockEntity;
 import com.github.mixinors.astromine.common.comparator.ComparatorMode;
 import com.github.mixinors.astromine.common.screen.handler.storage.CapacitorScreenHandler;
-import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.Tier;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -52,7 +52,7 @@ public abstract class CapacitorBlock extends HorizontalFacingTieredBlockWithEnti
 	}
 	
 	@Override
-	public Block getForTier(MachineTier tier) {
+	public Block getForTier(Tier tier) {
 		return switch (tier) {
 			case PRIMITIVE -> AMBlocks.PRIMITIVE_CAPACITOR.get();
 			case BASIC -> AMBlocks.BASIC_CAPACITOR.get();
@@ -93,8 +93,8 @@ public abstract class CapacitorBlock extends HorizontalFacingTieredBlockWithEnti
 		}
 		
 		@Override
-		public MachineTier getTier() {
-			return MachineTier.PRIMITIVE;
+		public Tier getTier() {
+			return Tier.PRIMITIVE;
 		}
 	}
 	
@@ -109,8 +109,8 @@ public abstract class CapacitorBlock extends HorizontalFacingTieredBlockWithEnti
 		}
 		
 		@Override
-		public MachineTier getTier() {
-			return MachineTier.BASIC;
+		public Tier getTier() {
+			return Tier.BASIC;
 		}
 	}
 	
@@ -125,8 +125,8 @@ public abstract class CapacitorBlock extends HorizontalFacingTieredBlockWithEnti
 		}
 		
 		@Override
-		public MachineTier getTier() {
-			return MachineTier.ADVANCED;
+		public Tier getTier() {
+			return Tier.ADVANCED;
 		}
 	}
 	
@@ -141,8 +141,8 @@ public abstract class CapacitorBlock extends HorizontalFacingTieredBlockWithEnti
 		}
 		
 		@Override
-		public MachineTier getTier() {
-			return MachineTier.ELITE;
+		public Tier getTier() {
+			return Tier.ELITE;
 		}
 	}
 	
@@ -157,8 +157,8 @@ public abstract class CapacitorBlock extends HorizontalFacingTieredBlockWithEnti
 		}
 		
 		@Override
-		public MachineTier getTier() {
-			return MachineTier.CREATIVE;
+		public Tier getTier() {
+			return Tier.CREATIVE;
 		}
 	}
 }

@@ -144,9 +144,7 @@ public class AMTagKeys {
 	}
 	
 	public static class DimensionTypeTags {
-		public static final TagKey<DimensionType> IS_SPACE = createDimensionTypeTag("is_space");
-		
-		public static final TagKey<DimensionType> IS_ATMOSPHERIC = createDimensionTypeTag("is_atmospheric");
+		public static final TagKey<DimensionType> IS_VACUUM = createDimensionTypeTag("is_space");
 	}
 	
 	public static Identifier createCommonTagId(String path) {

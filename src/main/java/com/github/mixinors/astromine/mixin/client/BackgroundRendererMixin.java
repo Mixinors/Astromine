@@ -24,22 +24,14 @@
 
 package com.github.mixinors.astromine.mixin.client;
 
-import com.github.mixinors.astromine.common.event.BackgroundEvents;
 import com.github.mixinors.astromine.registry.client.AMValues;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
-import dev.architectury.event.CompoundEventResult;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.minecraft.client.render.BackgroundRenderer;
-import net.minecraft.client.render.Camera;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.ModifyArgs;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(BackgroundRenderer.class)
 public class BackgroundRendererMixin {

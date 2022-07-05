@@ -22,25 +22,12 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.common.event;
+package com.github.mixinors.astromine.common.util.data.tier;
 
-import dev.architectury.event.CompoundEventResult;
-import dev.architectury.event.Event;
-import dev.architectury.event.EventFactory;
-import net.minecraft.world.dimension.DimensionType;
-
-public interface DimensionTypeEvents {
-	Event<SkyLight> SKY_LIGHT = EventFactory.createCompoundEventResult(SkyLight.class);
-	
-	Event<Brightness> BRIGHTNESS = EventFactory.createCompoundEventResult(Brightness.class);
-	
-	@FunctionalInterface
-	interface SkyLight {
-		CompoundEventResult<Boolean> calculate(DimensionType type);
-	}
-	
-	@FunctionalInterface
-	interface Brightness {
-		CompoundEventResult<Float> calculate(DimensionType type, int lightLevel);
-	}
+public enum Tier {
+	PRIMITIVE,
+	BASIC,
+	ADVANCED,
+	ELITE,
+	CREATIVE
 }

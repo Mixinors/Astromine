@@ -30,6 +30,10 @@ import com.github.mixinors.astromine.common.item.ManualItem;
 import com.github.mixinors.astromine.common.item.armor.AnimatedArmorItem;
 import com.github.mixinors.astromine.common.item.armor.SpaceSuitArmorItem;
 import com.github.mixinors.astromine.common.item.entity.RocketItem;
+import com.github.mixinors.astromine.common.item.rocket.RocketElectronicsItem;
+import com.github.mixinors.astromine.common.item.rocket.RocketFuelTankItem;
+import com.github.mixinors.astromine.common.item.rocket.RocketHullItem;
+import com.github.mixinors.astromine.common.item.rocket.RocketThrusterItem;
 import com.github.mixinors.astromine.common.item.storage.SimpleEnergyStorageItem;
 import com.github.mixinors.astromine.common.item.storage.SimpleFluidStorageItem;
 import com.github.mixinors.astromine.common.item.utility.DrillItem;
@@ -37,7 +41,7 @@ import com.github.mixinors.astromine.common.item.utility.FireExtinguisherItem;
 import com.github.mixinors.astromine.common.item.utility.HolographicConnectorItem;
 import com.github.mixinors.astromine.common.item.utility.MachineUpgradeKitItem;
 import com.github.mixinors.astromine.common.item.weapon.GravityGauntletItem;
-import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.Tier;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -80,17 +84,36 @@ public class AMItems {
 	public static final RegistrySupplier<Item> ASTEROID_LAPIS_ORE_CLUSTER = register("asteroid_lapis_ore_cluster", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> ASTEROID_REDSTONE_ORE_CLUSTER = register("asteroid_redstone_ore_cluster", () -> new Item(AMItems.getSettings()));
 	
-	public static final RegistrySupplier<Item> PRIMITIVE_ROCKET_FUEL_TANK = register("primitive_rocket_fuel_tank", () -> new Item(AMItems.getSettings().maxCount(1)));
-	public static final RegistrySupplier<Item> PRIMITIVE_ROCKET_PLATING = register("primitive_rocket_plating", () -> new Item(AMItems.getSettings().maxCount(1)));
-	public static final RegistrySupplier<Item> PRIMITIVE_ROCKET_HULL = register("primitive_rocket_hull", () -> new Item(AMItems.getSettings().maxCount(1)));
-	public static final RegistrySupplier<Item> PRIMITIVE_ROCKET_BOOSTER = register("primitive_rocket_booster", () -> new Item(AMItems.getSettings().maxCount(1)));
+	public static final RegistrySupplier<Item> PRIMITIVE_ROCKET_FUEL_TANK = register("primitive_rocket_fuel_tank", () -> new RocketFuelTankItem(AMItems.getSettings().maxCount(1), Tier.PRIMITIVE, AMConfig.get().items.primitiveRocketFuelTankCapacity));
+	public static final RegistrySupplier<Item> PRIMITIVE_ROCKET_HULL = register("primitive_rocket_hull", () -> new RocketHullItem(AMItems.getSettings().maxCount(1), Tier.PRIMITIVE, AMConfig.get().items.primitiveRocketHullMinimumTemperature, AMConfig.get().items.primitiveRocketHullMaximumTemperature));
+	public static final RegistrySupplier<Item> PRIMITIVE_ROCKET_ELECTRONICS = register("primitive_rocket_electronics", () -> new RocketElectronicsItem(AMItems.getSettings().maxCount(1), Tier.PRIMITIVE));
+	public static final RegistrySupplier<Item> PRIMITIVE_ROCKET_LIQUID_THRUSTER = register("primitive_rocket_liquid_thruster", () -> new RocketThrusterItem(AMItems.getSettings().maxCount(1), Tier.PRIMITIVE, AMConfig.get().items.primitiveRocketThrusterLiquidOxygenConsumptionCoefficient, AMConfig.get().items.primitiveRocketThrusterLiquidFuelConsumptionCoefficient));
+	public static final RegistrySupplier<Item> PRIMITIVE_ROCKET_SOLID_THRUSTER = register("primitive_rocket_solid_thruster", () -> new RocketThrusterItem(AMItems.getSettings().maxCount(1), Tier.PRIMITIVE, AMConfig.get().items.primitiveRocketThrusterSolidFuelConsumptionCoefficient));
+	
+	public static final RegistrySupplier<Item> BASIC_ROCKET_FUEL_TANK = register("basic_rocket_fuel_tank", () -> new RocketFuelTankItem(AMItems.getSettings().maxCount(1), Tier.BASIC, AMConfig.get().items.basicRocketFuelTankCapacity));
+	public static final RegistrySupplier<Item> BASIC_ROCKET_HULL = register("basic_rocket_hull", () -> new RocketHullItem(AMItems.getSettings().maxCount(1), Tier.BASIC, AMConfig.get().items.basicRocketHullMinimumTemperature, AMConfig.get().items.basicRocketHullMaximumTemperature));
+	public static final RegistrySupplier<Item> BASIC_ROCKET_ELECTRONICS = register("basic_rocket_electronics", () -> new RocketElectronicsItem(AMItems.getSettings().maxCount(1), Tier.BASIC));
+	public static final RegistrySupplier<Item> BASIC_ROCKET_LIQUID_THRUSTER = register("basic_rocket_liquid_thruster", () -> new RocketThrusterItem(AMItems.getSettings().maxCount(1), Tier.BASIC, AMConfig.get().items.basicRocketThrusterLiquidOxygenConsumptionCoefficient, AMConfig.get().items.basicRocketThrusterLiquidFuelConsumptionCoefficient));
+	public static final RegistrySupplier<Item> BASIC_ROCKET_SOLID_THRUSTER = register("basic_rocket_solid_thruster", () -> new RocketThrusterItem(AMItems.getSettings().maxCount(1), Tier.BASIC, AMConfig.get().items.basicRocketThrusterSolidFuelConsumptionCoefficient));
+	
+	public static final RegistrySupplier<Item> ADVANCED_ROCKET_FUEL_TANK = register("advanced_rocket_fuel_tank", () -> new RocketFuelTankItem(AMItems.getSettings().maxCount(1), Tier.ADVANCED, AMConfig.get().items.advancedRocketFuelTankCapacity));
+	public static final RegistrySupplier<Item> ADVANCED_ROCKET_HULL = register("advanced_rocket_hull", () -> new RocketHullItem(AMItems.getSettings().maxCount(1), Tier.ADVANCED, AMConfig.get().items.advancedRocketHullMinimumTemperature, AMConfig.get().items.advancedRocketHullMaximumTemperature));
+	public static final RegistrySupplier<Item> ADVANCED_ROCKET_ELECTRONICS = register("advanced_rocket_electronics", () -> new RocketElectronicsItem(AMItems.getSettings().maxCount(1), Tier.ADVANCED));
+	public static final RegistrySupplier<Item> ADVANCED_ROCKET_LIQUID_THRUSTER = register("advanced_rocket_liquid_thruster", () -> new RocketThrusterItem(AMItems.getSettings().maxCount(1), Tier.ADVANCED, AMConfig.get().items.advancedRocketThrusterLiquidOxygenConsumptionCoefficient, AMConfig.get().items.advancedRocketThrusterLiquidFuelConsumptionCoefficient));
+	public static final RegistrySupplier<Item> ADVANCED_ROCKET_SOLID_THRUSTER = register("advanced_rocket_solid_thruster", () -> new RocketThrusterItem(AMItems.getSettings().maxCount(1), Tier.ADVANCED, AMConfig.get().items.advancedRocketThrusterSolidFuelConsumptionCoefficient));
+	
+	public static final RegistrySupplier<Item> ELITE_ROCKET_FUEL_TANK = register("elite_rocket_fuel_tank", () -> new RocketFuelTankItem(AMItems.getSettings().maxCount(1), Tier.ELITE, AMConfig.get().items.eliteRocketFuelTankCapacity));
+	public static final RegistrySupplier<Item> ELITE_ROCKET_HULL = register("elite_rocket_hull", () -> new RocketHullItem(AMItems.getSettings().maxCount(1), Tier.ELITE, AMConfig.get().items.eliteRocketHullMinimumTemperature, AMConfig.get().items.eliteRocketHullMaximumTemperature));
+	public static final RegistrySupplier<Item> ELITE_ROCKET_ELECTRONICS = register("elite_rocket_electronics", () -> new RocketElectronicsItem(AMItems.getSettings().maxCount(1), Tier.ELITE));
+	public static final RegistrySupplier<Item> ELITE_ROCKET_LIQUID_THRUSTER = register("elite_rocket_liquid_thruster", () -> new RocketThrusterItem(AMItems.getSettings().maxCount(1), Tier.ELITE, AMConfig.get().items.eliteRocketThrusterLiquidOxygenConsumptionCoefficient, AMConfig.get().items.eliteRocketThrusterLiquidFuelConsumptionCoefficient));
+	public static final RegistrySupplier<Item> ELITE_ROCKET_SOLID_THRUSTER = register("elite_rocket_solid_thruster", () -> new RocketThrusterItem(AMItems.getSettings().maxCount(1), Tier.ELITE, AMConfig.get().items.eliteRocketThrusterSolidFuelConsumptionCoefficient));
 	
 	public static final RegistrySupplier<Item> SPACE_SUIT_HELMET = register("space_suit_helmet", () -> new SpaceSuitArmorItem(AMArmorMaterials.SPACE_SUIT, EquipmentSlot.HEAD, AMItems.getSettings()));
 	public static final RegistrySupplier<Item> SPACE_SUIT_CHESTPLATE = register("space_suit_chestplate", () -> new SpaceSuitArmorItem.Chestplate(AMArmorMaterials.SPACE_SUIT, EquipmentSlot.CHEST, AMItems.getSettings(), AMConfig.get().items.spaceSuitChestplateFluid, AMConfig.get().items.spaceSuitChestplateEnergy));
 	public static final RegistrySupplier<Item> SPACE_SUIT_LEGGINGS = register("space_suit_leggings", () -> new SpaceSuitArmorItem(AMArmorMaterials.SPACE_SUIT, EquipmentSlot.LEGS, AMItems.getSettings()));
 	public static final RegistrySupplier<Item> SPACE_SUIT_BOOTS = register("space_suit_boots", () -> new SpaceSuitArmorItem(AMArmorMaterials.SPACE_SUIT, EquipmentSlot.FEET, AMItems.getSettings()));
 	
-	public static final RegistrySupplier<Item> PRIMITIVE_ROCKET = register("rocket", () -> new RocketItem(AMEntityTypes.PRIMITIVE_ROCKET.get(), AMItems.getSettings()));
+	public static final RegistrySupplier<Item> ROCKET = register("rocket", () -> new RocketItem(AMEntityTypes.ROCKET.get(), AMItems.getSettings()));
 	
 	public static final RegistrySupplier<Item> METITE_NUGGET = register("metite_nugget", () -> new Item(AMItems.getSettings()));
 	public static final RegistrySupplier<Item> STELLUM_NUGGET = register("stellum_nugget", () -> new Item(AMItems.getSettings().fireproof()));
@@ -375,9 +398,9 @@ public class AMItems {
 	
 	public static final RegistrySupplier<Item> MACHINE_CHASSIS = register("machine_chassis", () -> new Item(getSettings()));
 	
-	public static final RegistrySupplier<Item> BASIC_MACHINE_UPGRADE_KIT = register("basic_machine_upgrade_kit", () -> new MachineUpgradeKitItem(MachineTier.BASIC, getSettings()));
-	public static final RegistrySupplier<Item> ADVANCED_MACHINE_UPGRADE_KIT = register("advanced_machine_upgrade_kit", () -> new MachineUpgradeKitItem(MachineTier.ADVANCED, getSettings()));
-	public static final RegistrySupplier<Item> ELITE_MACHINE_UPGRADE_KIT = register("elite_machine_upgrade_kit", () -> new MachineUpgradeKitItem(MachineTier.ELITE, getSettings()));
+	public static final RegistrySupplier<Item> BASIC_MACHINE_UPGRADE_KIT = register("basic_machine_upgrade_kit", () -> new MachineUpgradeKitItem(Tier.BASIC, getSettings()));
+	public static final RegistrySupplier<Item> ADVANCED_MACHINE_UPGRADE_KIT = register("advanced_machine_upgrade_kit", () -> new MachineUpgradeKitItem(Tier.ADVANCED, getSettings()));
+	public static final RegistrySupplier<Item> ELITE_MACHINE_UPGRADE_KIT = register("elite_machine_upgrade_kit", () -> new MachineUpgradeKitItem(Tier.ELITE, getSettings()));
 	
 	public static final RegistrySupplier<Item> PRIMITIVE_PLATING = register("primitive_plating", () -> new Item(getSettings()));
 	public static final RegistrySupplier<Item> BASIC_PLATING = register("basic_plating", () -> new Item(getSettings()));

@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.common.block.storage;
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
 import com.github.mixinors.astromine.common.block.entity.storage.BufferBlockEntity;
 import com.github.mixinors.astromine.common.screen.handler.storage.BufferScreenHandler;
-import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.Tier;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -56,7 +56,7 @@ public abstract class BufferBlock extends HorizontalFacingTieredBlockWithEntity 
 	}
 	
 	@Override
-	public Block getForTier(MachineTier tier) {
+	public Block getForTier(Tier tier) {
 		return switch (tier) {
 			case PRIMITIVE -> AMBlocks.PRIMITIVE_BUFFER.get();
 			case BASIC -> AMBlocks.BASIC_BUFFER.get();
@@ -87,8 +87,8 @@ public abstract class BufferBlock extends HorizontalFacingTieredBlockWithEntity 
 		}
 		
 		@Override
-		public MachineTier getTier() {
-			return MachineTier.PRIMITIVE;
+		public Tier getTier() {
+			return Tier.PRIMITIVE;
 		}
 	}
 	
@@ -103,8 +103,8 @@ public abstract class BufferBlock extends HorizontalFacingTieredBlockWithEntity 
 		}
 		
 		@Override
-		public MachineTier getTier() {
-			return MachineTier.BASIC;
+		public Tier getTier() {
+			return Tier.BASIC;
 		}
 	}
 	
@@ -119,8 +119,8 @@ public abstract class BufferBlock extends HorizontalFacingTieredBlockWithEntity 
 		}
 		
 		@Override
-		public MachineTier getTier() {
-			return MachineTier.ADVANCED;
+		public Tier getTier() {
+			return Tier.ADVANCED;
 		}
 	}
 	
@@ -135,8 +135,8 @@ public abstract class BufferBlock extends HorizontalFacingTieredBlockWithEntity 
 		}
 		
 		@Override
-		public MachineTier getTier() {
-			return MachineTier.ELITE;
+		public Tier getTier() {
+			return Tier.ELITE;
 		}
 	}
 	
@@ -151,8 +151,8 @@ public abstract class BufferBlock extends HorizontalFacingTieredBlockWithEntity 
 		}
 		
 		@Override
-		public MachineTier getTier() {
-			return MachineTier.CREATIVE;
+		public Tier getTier() {
+			return Tier.CREATIVE;
 		}
 	}
 }

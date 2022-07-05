@@ -14,10 +14,8 @@ public class AMDimensionTypeTagProvider extends FabricTagProvider.DynamicRegistr
 	
 	@Override
 	protected void generateTags() {
-		var isSpaceTag = getOrCreateTagBuilder(AMTagKeys.DimensionTypeTags.IS_SPACE);
+		var isSpaceTag = getOrCreateTagBuilder(AMTagKeys.DimensionTypeTags.IS_VACUUM);
 		
 		isSpaceTag.add(AMWorlds.EARTH_ORBIT_TYPE_KEY);
-		
-		var isAtmosphericTag = getOrCreateTagBuilder(AMTagKeys.DimensionTypeTags.IS_ATMOSPHERIC);
 	}
 }

@@ -27,7 +27,8 @@ package com.github.mixinors.astromine.registry.common;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.screen.handler.NuclearWarheadScreenHandler;
 import com.github.mixinors.astromine.common.screen.handler.RecipeCreatorScreenHandler;
-import com.github.mixinors.astromine.common.screen.handler.entity.PrimitiveRocketScreenHandler;
+import com.github.mixinors.astromine.common.screen.handler.body.BodySelectorScreenHandler;
+import com.github.mixinors.astromine.common.screen.handler.entity.RocketScreenHandler;
 import com.github.mixinors.astromine.common.screen.handler.machine.*;
 import com.github.mixinors.astromine.common.screen.handler.machine.generator.FluidGeneratorScreenHandler;
 import com.github.mixinors.astromine.common.screen.handler.machine.generator.SolidGeneratorScreenHandler;
@@ -47,8 +48,12 @@ public class AMScreenHandlers {
 		return new RecipeCreatorScreenHandler(syncId, inventory.player);
 	}));
 	
-	public static final RegistrySupplier<ScreenHandlerType<PrimitiveRocketScreenHandler>> ROCKET = registerExtended(AMCommon.id("rocket"), ((syncId, inventory, buffer) -> {
-		return new PrimitiveRocketScreenHandler(syncId, inventory.player, buffer.readInt());
+	public static final RegistrySupplier<ScreenHandlerType<BodySelectorScreenHandler>> BODY_SELECTOR = registerExtended(AMCommon.id("body_selector"), ((syncId, inventory, buffer) -> {
+		return new BodySelectorScreenHandler(syncId, inventory.player);
+	}));
+	
+	public static final RegistrySupplier<ScreenHandlerType<RocketScreenHandler>> ROCKET = registerExtended(AMCommon.id("rocket"), ((syncId, inventory, buffer) -> {
+		return new RocketScreenHandler(syncId, inventory.player, buffer.readInt());
 	}));
 	
 	public static final RegistrySupplier<ScreenHandlerType<FluidCollectorScreenHandler>> FLUID_EXTRACTOR = registerExtended(AMCommon.id("fluid_collector"), ((syncId, inventory, buffer) -> {

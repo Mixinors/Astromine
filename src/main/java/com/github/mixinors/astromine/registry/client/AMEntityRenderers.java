@@ -32,7 +32,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 
 public class AMEntityRenderers {
 	public static void init() {
-		EntityRendererRegistry.register(AMEntityTypes.PRIMITIVE_ROCKET.get(), PrimitiveRocketEntityRenderer::new);
+		EntityRendererRegistry.register(AMEntityTypes.ROCKET.get(), PrimitiveRocketEntityRenderer::new);
 		EntityRendererRegistry.register(AMEntityTypes.SPACE_SLIME.get(), SpaceSlimeEntityRenderer::new);
 		EntityRendererRegistry.register(AMEntityTypes.SUPER_SPACE_SLIME.get(), SuperSpaceSlimeEntityRenderer::new);
 	}

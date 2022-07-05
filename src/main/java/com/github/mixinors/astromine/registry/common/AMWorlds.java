@@ -54,6 +54,7 @@ public class AMWorlds {
 	private static final Map<RegistryKey<?>, Boolean> CACHE = new ConcurrentHashMap<>();
 	
 	public static void init() {
+	
 	}
 	
 	public static <T> RegistryKey<T> register(RegistryKey<Registry<T>> registry, Identifier identifier) {
@@ -62,16 +63,12 @@ public class AMWorlds {
 		return key;
 	}
 	
-	public static boolean isSpace(RegistryEntry<DimensionType> dimensionType) {
-		return dimensionType.isIn(AMTagKeys.DimensionTypeTags.IS_SPACE);
-	}
-	
-	public static boolean isAtmospheric(RegistryEntry<DimensionType> dimensionType) {
-		return dimensionType.isIn(AMTagKeys.DimensionTypeTags.IS_ATMOSPHERIC);
+	public static boolean isVacuum(RegistryEntry<DimensionType> dimensionType) {
+		return dimensionType.isIn(AMTagKeys.DimensionTypeTags.IS_VACUUM);
 	}
 	
 	public static boolean isAstromine(RegistryKey<?> key) {
-		CACHE.computeIfAbsent(key, k -> k.equals(EARTH_ORBIT_TYPE_KEY) || k.equals(MOON_TYPE_KEY) || k.equals(EARTH_ORBIT_WORLD) || k.equals(MOON_WORLD));
+		CACHE.computeIfAbsent(key, KEYS::contains);
 		return CACHE.get(key);
 	}
 }

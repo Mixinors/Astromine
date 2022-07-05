@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.common.provider.tiered;
 
-import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.Tier;
 
 public interface TieredFluidStorageSizeProvider {
-	long getFluidStorageSize(MachineTier tier);
+	long getFluidStorageSize(Tier tier);
 }

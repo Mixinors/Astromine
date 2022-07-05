@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.common.block.machine;
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingTieredBlockWithEntity;
 import com.github.mixinors.astromine.common.block.entity.machine.AlloySmelterBlockEntity;
 import com.github.mixinors.astromine.common.screen.handler.machine.AlloySmelterScreenHandler;
-import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.Tier;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -51,7 +51,7 @@ public abstract class AlloySmelterBlock extends HorizontalFacingTieredBlockWithE
 	}
 	
 	@Override
-	public Block getForTier(MachineTier tier) {
+	public Block getForTier(Tier tier) {
 		return switch (tier) {
 			case PRIMITIVE -> AMBlocks.PRIMITIVE_ALLOY_SMELTER.get();
 			case BASIC -> AMBlocks.BASIC_ALLOY_SMELTER.get();
@@ -87,8 +87,8 @@ public abstract class AlloySmelterBlock extends HorizontalFacingTieredBlockWithE
 		}
 		
 		@Override
-		public MachineTier getTier() {
-			return MachineTier.PRIMITIVE;
+		public Tier getTier() {
+			return Tier.PRIMITIVE;
 		}
 	}
 	
@@ -103,8 +103,8 @@ public abstract class AlloySmelterBlock extends HorizontalFacingTieredBlockWithE
 		}
 		
 		@Override
-		public MachineTier getTier() {
-			return MachineTier.BASIC;
+		public Tier getTier() {
+			return Tier.BASIC;
 		}
 	}
 	
@@ -119,8 +119,8 @@ public abstract class AlloySmelterBlock extends HorizontalFacingTieredBlockWithE
 		}
 		
 		@Override
-		public MachineTier getTier() {
-			return MachineTier.ADVANCED;
+		public Tier getTier() {
+			return Tier.ADVANCED;
 		}
 	}
 	
@@ -135,8 +135,8 @@ public abstract class AlloySmelterBlock extends HorizontalFacingTieredBlockWithE
 		}
 		
 		@Override
-		public MachineTier getTier() {
-			return MachineTier.ELITE;
+		public Tier getTier() {
+			return Tier.ELITE;
 		}
 	}
 }

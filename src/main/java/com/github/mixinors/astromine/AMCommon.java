@@ -91,5 +91,6 @@ public class AMCommon implements ModInitializer {
 		AMItemGroups.init();
 		AMNetworking.init();
 		AMLookups.init();
+		AMBodies.init();
 	}
 }

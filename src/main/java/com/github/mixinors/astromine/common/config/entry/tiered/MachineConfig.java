@@ -26,11 +26,11 @@ package com.github.mixinors.astromine.common.config.entry.tiered;
 
 import com.github.mixinors.astromine.common.config.entry.provider.tiered.DefaultedTieredEnergyStorageSizeProvider;
 import com.github.mixinors.astromine.common.config.entry.tiered.tier.MachineTierConfig;
-import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.Tier;
 
 public abstract class MachineConfig<T extends MachineTierConfig> extends SpeedTieredConfig<T> implements DefaultedTieredEnergyStorageSizeProvider {
 	@Override
-	public long getEnergyStorageSize(MachineTier tier) {
+	public long getEnergyStorageSize(Tier tier) {
 		return getTierConfig(tier).getEnergyStorageSize();
 	}
 }

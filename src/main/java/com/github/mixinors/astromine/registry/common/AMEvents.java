@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.common.component.world.NetworkComponent;
 import com.github.mixinors.astromine.common.event.ServerChunkManagerEvents;
+import com.github.mixinors.astromine.common.manager.BodyManager;
 import com.github.mixinors.astromine.common.screen.handler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.screen.handler.base.entity.ExtendedEntityScreenHandler;
 import com.github.mixinors.astromine.common.world.generation.space.EarthOrbitChunkGenerator;
@@ -36,6 +37,10 @@ import net.minecraft.server.world.ServerWorld;
 
 public class AMEvents {
 	public static void init() {
+		TickEvent.SERVER_POST.register((server) -> {
+			BodyManager.tick();
+		});
+		
 		TickEvent.SERVER_PRE.register((server) -> {
 			for (var playerEntity : server.getPlayerManager().getPlayerList()) {
 				if (playerEntity.currentScreenHandler instanceof ExtendedBlockEntityScreenHandler screenHandler) {

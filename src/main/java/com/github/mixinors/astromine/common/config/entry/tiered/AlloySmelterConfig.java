@@ -24,11 +24,11 @@
 
 package com.github.mixinors.astromine.common.config.entry.tiered;
 
-import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.Tier;
 
 public class AlloySmelterConfig extends SimpleMachineConfig {
 	@Override
-	public long getDefaultEnergyStorageSize(MachineTier tier) {
+	public long getDefaultEnergyStorageSize(Tier tier) {
 		return super.getDefaultEnergyStorageSize(tier) * 3;
 	}
 }

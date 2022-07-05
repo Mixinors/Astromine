@@ -29,8 +29,10 @@ import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMProperties;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.util.math.MathHelper;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
@@ -44,6 +46,12 @@ public class DarkMoonStoneOreBlock extends ExtendedOreBlock {
 		builder.add(AMProperties.DYNAMIC);
 		
 		super.appendProperties(builder);
+	}
+	
+	@Nullable
+	@Override
+	public BlockState getPlacementState(ItemPlacementContext ctx) {
+		return super.getPlacementState(ctx).with(AMProperties.DYNAMIC, false);
 	}
 	
 	@Override

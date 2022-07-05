@@ -24,8 +24,8 @@
 
 package com.github.mixinors.astromine.common.provider;
 
-import com.github.mixinors.astromine.common.util.data.tier.MachineTier;
+import com.github.mixinors.astromine.common.util.data.tier.Tier;
 
 public interface TierProvider {
-	MachineTier getMachineTier();
+	Tier getMachineTier();
 }

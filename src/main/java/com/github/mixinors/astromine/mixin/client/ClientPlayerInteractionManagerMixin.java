@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.mixin.client;
 
-import com.github.mixinors.astromine.common.entity.rocket.RocketEntity;
+import com.github.mixinors.astromine.common.entity.rocket.base.RocketEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import org.spongepowered.asm.mixin.Final;
