@@ -24,8 +24,11 @@
 
 package com.github.mixinors.astromine.mixin.client;
 
+import com.github.mixinors.astromine.common.item.armor.NightVisionGogglesItem;
+import com.github.mixinors.astromine.common.item.armor.NightVisionItem;
 import com.github.mixinors.astromine.registry.client.AMValues;
 import com.github.mixinors.astromine.registry.common.AMBiomes;
+import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -33,6 +36,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameOverlayRenderer;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -70,10 +74,43 @@ public abstract class InGameOverlayRendererMixin {
 		
 		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
 		
+		float green = 0.0F;
+		
+		ItemStack stack = client.player.getInventory().armor.get(3);
+		if (!stack.isEmpty() && stack.getItem() instanceof NightVisionItem && ((NightVisionItem) stack.getItem()).getStoredEnergy(stack) > 0) {
+			alpha /= 3;
+		}
+		
 		bufferBuilder.vertex(peek.getPositionMatrix(), -1.0F, -1.0F, -0.5F).color(0.0F, 0.0F, 0.0F, alpha).next();
 		bufferBuilder.vertex(peek.getPositionMatrix(), 1.0F, -1.0F, -0.5F).color(0.0F, 0.0F, 0.0F, alpha).next();
 		bufferBuilder.vertex(peek.getPositionMatrix(), 1.0F, 1.0F, -0.5F).color(0.0F, 0.0F, 0.0F, alpha).next();
 		bufferBuilder.vertex(peek.getPositionMatrix(), -1.0F, 1.0F, -0.5F).color(0.0F, 0.0F, 0.0F, alpha).next();
+		
+		bufferBuilder.end();
+		
+		BufferRenderer.draw(bufferBuilder);
+		
+		RenderSystem.disableBlend();
+	}
+	
+	private static void renderNightVisionOverlay(MinecraftClient client, MatrixStack matrices) {
+		RenderSystem.setShader(GameRenderer::getPositionColorShader);
+		
+		var bufferBuilder = Tessellator.getInstance().getBuffer();
+		
+		RenderSystem.enableBlend();
+		RenderSystem.defaultBlendFunc();
+		
+		float alpha = 0.25F;
+		
+		var peek = matrices.peek();
+		
+		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+		
+		bufferBuilder.vertex(peek.getPositionMatrix(), -1.0F, -1.0F, -0.5F).color(0.0F, 1.0F, 0.16F, alpha).next();
+		bufferBuilder.vertex(peek.getPositionMatrix(), 1.0F, -1.0F, -0.5F).color(0.0F, 1.0F, 0.16F, alpha).next();
+		bufferBuilder.vertex(peek.getPositionMatrix(), 1.0F, 1.0F, -0.5F).color(0.0F, 1.0F, 0.16F, alpha).next();
+		bufferBuilder.vertex(peek.getPositionMatrix(), -1.0F, 1.0F, -0.5F).color(0.0F, 1.0F, 0.16F, alpha).next();
 		
 		bufferBuilder.end();
 		
@@ -90,6 +127,14 @@ public abstract class InGameOverlayRendererMixin {
 			}
 			
 			renderMoonDarkSideOverlay(client, matrices);
+			
+			if (!client.player.getInventory().armor.get(3).isEmpty() && client.player.getInventory().armor.get(3).getItem() instanceof NightVisionItem) {
+				ItemStack stack = client.player.getInventory().armor.get(3);
+				NightVisionItem item = (NightVisionItem) stack.getItem();
+				if (item.getStoredEnergy(stack) > 0) {
+					renderNightVisionOverlay(client, matrices);
+				}
+			}
 		}
 	}
 }

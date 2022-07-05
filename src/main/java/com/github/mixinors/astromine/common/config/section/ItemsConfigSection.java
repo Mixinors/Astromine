@@ -66,6 +66,9 @@ public class ItemsConfigSection {
 	@Comment("Energy for the Elite Drill")
 	public long eliteDrillEnergy = batteries.batteryPacks.elite * 2L;
 	
+	@Comment("Energy for the Night Vision Goggles")
+	public long nightVisionGogglesEnergy = batteries.singleBatteries.basic * 2L;
+	
 	@Comment("Energy for the Space Suit Chestplate")
 	public long spaceSuitChestplateEnergy = batteries.batteryPacks.elite * 2L;
 	

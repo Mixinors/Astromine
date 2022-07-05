@@ -28,6 +28,7 @@ import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.item.ManualItem;
 import com.github.mixinors.astromine.common.item.armor.AnimatedArmorItem;
+import com.github.mixinors.astromine.common.item.armor.NightVisionGogglesItem;
 import com.github.mixinors.astromine.common.item.armor.SpaceSuitArmorItem;
 import com.github.mixinors.astromine.common.item.entity.RocketItem;
 import com.github.mixinors.astromine.common.item.storage.SimpleEnergyStorageItem;
@@ -85,7 +86,11 @@ public class AMItems {
 	public static final RegistrySupplier<Item> PRIMITIVE_ROCKET_HULL = register("primitive_rocket_hull", () -> new Item(AMItems.getSettings().maxCount(1)));
 	public static final RegistrySupplier<Item> PRIMITIVE_ROCKET_BOOSTER = register("primitive_rocket_booster", () -> new Item(AMItems.getSettings().maxCount(1)));
 	
+	// TODO custom armor material
+	public static final RegistrySupplier<Item> NIGHT_VISION_GOGGLES = register("night_vision_goggles", () -> new NightVisionGogglesItem(AMArmorMaterials.SPACE_SUIT, AMItems.getSettings(), AMConfig.get().items.nightVisionGogglesEnergy));
+
 	public static final RegistrySupplier<Item> SPACE_SUIT_HELMET = register("space_suit_helmet", () -> new SpaceSuitArmorItem(AMArmorMaterials.SPACE_SUIT, EquipmentSlot.HEAD, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> NIGHT_VISION_SPACE_SUIT_HELMET = register("night_vision_space_suit_helmet", () -> new SpaceSuitArmorItem.NightVisionHelmet(AMArmorMaterials.SPACE_SUIT, AMItems.getSettings(), AMConfig.get().items.nightVisionGogglesEnergy));
 	public static final RegistrySupplier<Item> SPACE_SUIT_CHESTPLATE = register("space_suit_chestplate", () -> new SpaceSuitArmorItem.Chestplate(AMArmorMaterials.SPACE_SUIT, EquipmentSlot.CHEST, AMItems.getSettings(), AMConfig.get().items.spaceSuitChestplateFluid, AMConfig.get().items.spaceSuitChestplateEnergy));
 	public static final RegistrySupplier<Item> SPACE_SUIT_LEGGINGS = register("space_suit_leggings", () -> new SpaceSuitArmorItem(AMArmorMaterials.SPACE_SUIT, EquipmentSlot.LEGS, AMItems.getSettings()));
 	public static final RegistrySupplier<Item> SPACE_SUIT_BOOTS = register("space_suit_boots", () -> new SpaceSuitArmorItem(AMArmorMaterials.SPACE_SUIT, EquipmentSlot.FEET, AMItems.getSettings()));

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "astromine:space_suit_helmet"
+    },
+	{
+      "item": "astromine:night_vision_goggles"
+    }
+  ],
+  "result": {
+    "item": "astromine:night_vision_space_suit_helmet",
+    "count": 1
+  }
+}
