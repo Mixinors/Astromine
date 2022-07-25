@@ -60,19 +60,6 @@ public class AMCommands {
 							
 							@Override
 							public @NotNull ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-								
-								AMBodies.SUN.setPos(new Vec3d(192_000.0D, 0.0D, 192_000.0D));
-								AMBodies.SUN.setVelocity(new Vec3d(0.0D, 0.0D, 0.0D));
-								AMBodies.SUN.setMass(1000);
-								
-								AMBodies.EARTH.setPos(new Vec3d(192_000.0D + 24_000, 0.0D, 192_000.0D - 152_100.0D));
-								AMBodies.EARTH.setVelocity(new Vec3d(0.0D, 0.0D, 0.0D));
-								AMBodies.EARTH.setMass(10);
-								
-								AMBodies.MOON.setPos(new Vec3d(192_000.0D + 24_000, 0.0D, 192_000.0D - 152_484.0D));
-								AMBodies.MOON.setVelocity(new Vec3d(0.0D, 0.0D, 0.0D));
-								AMBodies.MOON.setMass(1);
-								
 								return new BodySelectorScreenHandler(syncId, player);
 							}
 						});

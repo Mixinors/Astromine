@@ -37,10 +37,6 @@ import net.minecraft.server.world.ServerWorld;
 
 public class AMEvents {
 	public static void init() {
-		TickEvent.SERVER_POST.register((server) -> {
-			BodyManager.tick();
-		});
-		
 		TickEvent.SERVER_PRE.register((server) -> {
 			for (var playerEntity : server.getPlayerManager().getPlayerList()) {
 				if (playerEntity.currentScreenHandler instanceof ExtendedBlockEntityScreenHandler screenHandler) {

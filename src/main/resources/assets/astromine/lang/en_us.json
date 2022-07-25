@@ -1,4 +1,7 @@
 {
+  "text.astromine.moon": "Moon",
+  "text.astromine.sun": "Sun",
+  "text.astromine.earth": "Earth",
   "advancements.astromine.destroy_rocket.description": "Have a Rocket you're riding experience rapid unscheduled disassembly",
   "advancements.astromine.destroy_rocket.title": "We Have a Problem",
   "advancements.astromine.eat_lead_apple.description": "Get lead poisoning by ingesting a Lead Apple",
