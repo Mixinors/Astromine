@@ -26,7 +26,9 @@ public class Body {
 	private final double orbitWidth;
 	private final double orbitHeight;
 	
-	private final double orbitTime;
+	private final double orbitSpeed;
+	
+	private final boolean orbitTidalLocked;
 	
 	@Nullable
 	private final RegistryKey<World> worldKey;
@@ -42,7 +44,7 @@ public class Body {
 	@Nullable
 	private BodyWidget widget = null;
 	
-	Body(Position position, Size size, Body orbitedBody, double mass, double temperature, double orbitWidth, double orbitHeight, double orbitTime, @Nullable RegistryKey<World> worldKey, @Nullable RegistryKey<World> orbitWorldKey, @Nullable Identifier texture, Supplier<Collection<Text>> tooltip) {
+	Body(Position position, Size size, Body orbitedBody, double mass, double temperature, double orbitWidth, double orbitHeight, double orbitSpeed, boolean orbitTidalLocked, @Nullable RegistryKey<World> worldKey, @Nullable RegistryKey<World> orbitWorldKey, @Nullable Identifier texture, Supplier<Collection<Text>> tooltip) {
 		this.position = position;
 		
 		this.size = size;
@@ -55,7 +57,9 @@ public class Body {
 		this.orbitWidth = orbitWidth;
 		this.orbitHeight = orbitHeight;
 		
-		this.orbitTime = orbitTime;
+		this.orbitSpeed = orbitSpeed;
+		
+		this.orbitTidalLocked = orbitTidalLocked;
 		
 		this.worldKey = worldKey;
 		this.orbitWorldKey = orbitWorldKey;
@@ -94,8 +98,12 @@ public class Body {
 		return orbitHeight;
 	}
 	
-	public double getOrbitTime() {
-		return orbitTime;
+	public double getOrbitSpeed() {
+		return orbitSpeed;
+	}
+	
+	public boolean isOrbitTidalLocked() {
+		return orbitTidalLocked;
 	}
 	
 	@Nullable
@@ -141,6 +149,8 @@ public class Body {
 		private double orbitHeight;
 		
 		private double orbitTime;
+		
+		private boolean orbitTidalLocked;
 		
 		private RegistryKey<World> worldKey;
 		private RegistryKey<World> orbitWorldKey;
@@ -189,6 +199,11 @@ public class Body {
 			return this;
 		}
 		
+		public Builder setOrbitTidalLocked(boolean orbitTidalLocked) {
+			this.orbitTidalLocked = orbitTidalLocked;
+			return this;
+		}
+		
 		public Builder setWorldKey(RegistryKey<World> worldKey) {
 			this.worldKey = worldKey;
 			return this;
@@ -210,7 +225,7 @@ public class Body {
 		}
 		
 		public Body createBody() {
-			return new Body(position, size, orbitedBody, mass, temperature, orbitWidth, orbitHeight, orbitTime, worldKey, orbitWorldKey, texture, tooltip);
+			return new Body(position, size, orbitedBody, mass, temperature, orbitWidth, orbitHeight, orbitTime, orbitTidalLocked, worldKey, orbitWorldKey, texture, tooltip);
 		}
 	}
 }

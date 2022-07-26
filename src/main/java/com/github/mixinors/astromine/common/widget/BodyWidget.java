@@ -1,20 +1,19 @@
 package com.github.mixinors.astromine.common.widget;
 
-import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.client.util.DrawingUtil;
 import com.github.mixinors.astromine.common.body.Body;
-import com.github.mixinors.astromine.registry.common.AMBodies;
-import com.mojang.blaze3d.systems.RenderSystem;
-import dev.vini2003.hammer.core.HC;
+import com.github.mixinors.astromine.registry.client.AMRenderLayers;
+import dev.vini2003.hammer.core.api.client.color.Color;
 import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
-import dev.vini2003.hammer.core.api.client.texture.PartitionedTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
+import dev.vini2003.hammer.core.api.client.util.PositionUtil;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,15 +23,14 @@ import java.util.function.Supplier;
 public class BodyWidget extends Widget {
 	protected Supplier<Texture> foregroundTexture;
 	
-	protected Texture selectedTexture = new PartitionedTexture(AMCommon.id("textures/widget/body_selected.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.16F);
-	protected Texture unselectedTexture = new PartitionedTexture(AMCommon.id("textures/widget/body_unselected.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.16F);
-	
 	private final Body body;
 	
 	private double angle = 0.0D;
 	
 	private double prevOrbitX = 0.0D;
 	private double prevOrbitY = 0.0D;
+	
+	private double prevScale = 1.0D;
 	
 	private final List<Position> trailPositions = new ArrayList<>();
 	
@@ -120,60 +118,52 @@ public class BodyWidget extends Widget {
 			}
 		}
 		
-		angle += (180.0D / 360.0D) * tickDelta * 0.1D * speed;
+		angle += (body.getOrbitSpeed() / 360.0D * 16.0D) * tickDelta * 0.1D * speed;
 		angle %= 360.0D;
 		
-		if (trailPositions.size() > 0) {
-			var prevTrailPosition = trailPositions.get(trailPositions.size() - 1);
-			var trailPosition = new Position((float) orbitX + getWidth() / 2.0F, (float) orbitY + getHeight() / 2.0F);
+		matrices.push();
+		
+		matrices.translate(orbitX, orbitY, 10.0F);
+		
+		matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(45.0F));
+		matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(45.0F));
+
+		var minPos = new Vector4f((float) orbitX - getWidth(), (float) orbitY - getWidth(), -getWidth(), 1.0F);
+		var maxPos = new Vector4f((float) orbitX + getWidth(), (float) orbitY + getWidth(), +getWidth(), 1.0F);
+		
+		var mousePos = new Vec3f(PositionUtil.getMouseX(), PositionUtil.getMouseY(), 0.0F);
+		
+		var scale = 1.0F;
+		
+		if (mousePos.getX() > minPos.getX() && mousePos.getX() < maxPos.getX() && mousePos.getY() > minPos.getY() && mousePos.getY() < maxPos.getY()) {
+			scale = (float) MathHelper.lerp(tickDelta / 2.0D, prevScale, 1.25D);
 			
-			if (trailPosition.distanceTo(prevTrailPosition) > 1.0F) {
-				trailPositions.add(trailPosition);
-			}
+			setFocused(true);
 		} else {
-			trailPositions.add(new Position((float) orbitX + getWidth() / 2.0F, (float) orbitY + getHeight() / 2.0F));
-		}
-		if (trailPositions.size() >= 250) {
-			trailPositions.remove(0);
+			scale = (float) MathHelper.lerp(tickDelta / 2.0D, prevScale, 1.0D);
 		}
 		
-		if (trailPositions.size() >= 2) {
-			RenderSystem.lineWidth(10.0F);
-			
-			var tesselator = Tessellator.getInstance();
-			var builder = tesselator.getBuffer();
-			
-			builder.begin(VertexFormat.DrawMode.DEBUG_LINES, VertexFormats.POSITION_COLOR);
-			
-			var prevTrailPosition = trailPositions.get(0);
-			
-			var focused = isFocused();
-			
-			for (var i = 1; i < trailPositions.size(); ++i) {
-				var trailPosition = trailPositions.get(i);
-			
-				if (!isPointWithin(prevTrailPosition.getX(), prevTrailPosition.getY())) {
-					if (focused) {
-						builder.vertex(prevTrailPosition.getX(), prevTrailPosition.getY(), 0.0F).color(1.0F, 1.0F, 1.0F, 1.0F).next();
-						builder.vertex(trailPosition.getX(), trailPosition.getY(), 0.0F).color(1.0F, 1.0F, 1.0F, 1.0F).next();
-					} else {
-						builder.vertex(prevTrailPosition.getX(), prevTrailPosition.getY(), 0.0F).color(0.0F, 0.58F, 1.0F, 1.0F).next();
-						builder.vertex(trailPosition.getX(), trailPosition.getY(), 0.0F).color(0.0F, 0.58F, 1.0F, 1.0F).next();
-					}
-				}
-				
-				prevTrailPosition = trailPosition;
+		prevScale = scale;
+
+		if (body.getOrbitedBody() != null) {
+			if (body.isOrbitTidalLocked()) {
+				matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(45.0F - 360.0F + (float) Math.toDegrees(body.getWidget().angle)));
+			} else {
+				matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(45.0F - (float) Math.toDegrees(this.angle)));
 			}
-			
-			tesselator.draw();
 		}
+
+		matrices.scale(scale, scale, scale);
 		
-		foregroundTexture.get().draw(matrices, provider, (float) orbitX, (float) orbitY, getWidth(), getHeight());
+		DrawingUtil.drawCube(
+				matrices,
+				provider,
+				0.0F, 0.0F, 0.0F,
+				getWidth(), getWidth(), getWidth(),
+				new Color(0xEFEFEFFFL),
+				AMRenderLayers.getBody(body.getTexture())
+		);
 		
-		if (isFocused()) {
-			selectedTexture.draw(matrices, provider, (float) orbitX - 2.0F, (float) orbitY - 2.0F, getWidth() + 4.0F, getHeight() + 4.0F);
-		} else {
-			unselectedTexture.draw(matrices, provider, (float) orbitX - 2.0F, (float) orbitY - 2.0F, getWidth() + 4.0F, getHeight() + 4.0F);
-		}
+		matrices.pop();
 	}
 }

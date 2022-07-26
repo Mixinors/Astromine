@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.registry.client;
 
+import com.github.mixinors.astromine.client.screen.BodySelectorHandledScreen;
 import com.github.mixinors.astromine.client.screen.RecipeCreatorHandledScreen;
 import com.github.mixinors.astromine.client.screen.base.CustomForegroundBaseHandledScreen;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
@@ -41,7 +42,8 @@ import net.minecraft.screen.ScreenHandlerType;
 public class AMScreens {
 	public static void init() {
 		register(AMScreenHandlers.RECIPE_CREATOR, RecipeCreatorHandledScreen::new);
-		registerSimple(AMScreenHandlers.BODY_SELECTOR);
+		register(AMScreenHandlers.BODY_SELECTOR, BodySelectorHandledScreen::new);
+		
 		registerSimple(AMScreenHandlers.ROCKET);
 		registerSimple(AMScreenHandlers.FLUID_EXTRACTOR);
 		registerSimple(AMScreenHandlers.FLUID_INSERTER);

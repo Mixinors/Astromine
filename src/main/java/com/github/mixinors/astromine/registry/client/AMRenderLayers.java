@@ -98,6 +98,26 @@ public class AMRenderLayers {
 		return CACHE.get(texture);
 	}
 	
+	public static RenderLayer getBody(Identifier texture) {
+		CACHE.computeIfAbsent(texture, (key) -> RenderLayer.of(
+				texture.toUnderscoreSeparatedString(),
+				VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL,
+				VertexFormat.DrawMode.QUADS,
+				256,
+				true,
+				true,
+				RenderLayer.MultiPhaseParameters.builder()
+												.shader(new RenderPhase.Shader(GameRenderer::getPositionColorTexLightmapShader))
+												.texture(new RenderPhase.Texture(texture, false, false))
+												.cull(RenderPhase.DISABLE_CULLING)
+												.transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)
+												.overlay(RenderPhase.DISABLE_OVERLAY_COLOR)
+												.build(true)
+		));
+		
+		return CACHE.get(texture);
+	}
+	
 	public static RenderLayer getHolographicBridge() {
 		return HOLOGRAPHIC_BRIDGE;
 	}
