@@ -26,8 +26,6 @@ package com.github.mixinors.astromine.client.screen;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.screen.handler.body.BodySelectorScreenHandler;
-import com.github.mixinors.astromine.common.widget.BodyWidget;
-import com.github.mixinors.astromine.registry.common.AMBodies;
 import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
@@ -35,15 +33,19 @@ import dev.vini2003.hammer.gui.api.client.screen.BaseHandledScreen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 public class BodySelectorHandledScreen extends BaseHandledScreen<BodySelectorScreenHandler> {
-	public static float DRAG_DELTA_X = 0.0F;
-	public static float DRAG_DELTA_Y = 0.0F;
+	private static float OFFSET_X = 0.0F;
+	private static float OFFSET_Y = 0.0F;
 	
-	public static float SCROLL_DELTA = 0.0F;
+	private static float ZOOM = 0.0F;
+	private static float PREV_ZOOM = 0.0F;
 	
 	public static final Texture STANDARD_BACKGROUND_TEXTURE = new ImageTexture(AMCommon.id("textures/widget/space.png"));
 	
@@ -55,10 +57,24 @@ public class BodySelectorHandledScreen extends BaseHandledScreen<BodySelectorScr
 		playerInventoryTitleX = -Integer.MAX_VALUE;
 		playerInventoryTitleY = -Integer.MAX_VALUE;
 		
-		DRAG_DELTA_X = 0.0F;
-		DRAG_DELTA_Y = 0.0F;
+		OFFSET_X = 0.0F;
+		OFFSET_Y = 0.0F;
 		
-		SCROLL_DELTA = 1.0F;
+		ZOOM = 1.0F;
+	}
+	
+	public static float getOffsetX() {
+		return OFFSET_X;
+	}
+	
+	public static float getOffsetY() {
+		return OFFSET_Y;
+	}
+	
+	public static float getZoom(float tickDelta) {
+		PREV_ZOOM = MathHelper.lerp(tickDelta, PREV_ZOOM, ZOOM);
+		
+		return PREV_ZOOM;
 	}
 	
 	@Override
@@ -76,33 +92,31 @@ public class BodySelectorHandledScreen extends BaseHandledScreen<BodySelectorScr
 	
 	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-		BodySelectorHandledScreen.DRAG_DELTA_X += deltaX;
-		BodySelectorHandledScreen.DRAG_DELTA_Y += deltaY;
+		BodySelectorHandledScreen.OFFSET_X += deltaX;
+		BodySelectorHandledScreen.OFFSET_Y += deltaY;
 		
 		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 	}
 	
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
-		var client = InstanceUtil.getClient();
+		var scale = 1.0F + (amount / 4.0F);
 		
-		var window = client.getWindow();
-		
-		var scale = 1.0F + (amount / 12.0F);
-		
-		// Negative Delta X goes left.
-		// Positive Delta X goes right.
-		
-		// Negative Delta Y goes up.
-		// Positive Delta Y goes down.
-		
-		// X = 0 is screen top left.
-		// Y = 0 is screen top left.
-
-		DRAG_DELTA_X -= (mouseX * scale) - mouseX;
-		DRAG_DELTA_Y -= (mouseY * scale) - mouseY;
-		
-		SCROLL_DELTA += (scale - 1.0F);
+		if (amount > 0.0D) {
+			if (ZOOM < 5.0F) {
+				OFFSET_X -= (mouseX * scale) - mouseX;
+				OFFSET_Y -= (mouseY * scale) - mouseY;
+				
+				ZOOM += (scale - 1.0F);
+			}
+		} else {
+			if (ZOOM > 1.0F) {
+				OFFSET_X = 0.0F;
+				OFFSET_Y = 0.0F;
+				
+				ZOOM = 1.0F;
+			}
+		}
 		
 		return super.mouseScrolled(mouseX, mouseY, amount);
 	}

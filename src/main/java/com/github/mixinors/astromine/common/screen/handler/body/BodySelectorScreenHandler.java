@@ -17,11 +17,35 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Random;
 
 public class BodySelectorScreenHandler extends BaseScreenHandler {
+	private static final ThreadLocal<BodyWidget> SUN = ThreadLocal.withInitial(() -> new BodyWidget(AMBodies.SUN));
+	private static final ThreadLocal<BodyWidget> EARTH = ThreadLocal.withInitial(() -> new BodyWidget(AMBodies.EARTH));
+	private static final ThreadLocal<BodyWidget> MOON = ThreadLocal.withInitial(() -> new BodyWidget(AMBodies.MOON));
+	private static final ThreadLocal<BodyWidget> MARS = ThreadLocal.withInitial(() -> new BodyWidget(AMBodies.MARS));
+	
+	private static final ThreadLocal<Collection<ThreadLocal<BodyWidget>>> BODIES = ThreadLocal.withInitial(ArrayList::new);
+	
+	private static int PREV_WIDTH = -1;
+	private static int PREV_HEIGHT = -1;
+	
+	static {
+		BODIES.get().add(SUN);
+		BODIES.get().add(EARTH);
+		BODIES.get().add(MOON);
+		BODIES.get().add(MARS);
+	}
+	
 	public BodySelectorScreenHandler(int syncId, PlayerEntity player) {
 		super(AMScreenHandlers.BODY_SELECTOR.get(), syncId, player);
+	}
+	
+	public static void update(float tickDelta) {
+		for (var body : BODIES.get()) {
+			body.get().draw(null, null, tickDelta);
+		}
 	}
 	
 	@Override
@@ -34,34 +58,38 @@ public class BodySelectorScreenHandler extends BaseScreenHandler {
 			add(panel);
 			
 			// Add Sun.
-			var sun = new BodyWidget(AMBodies.SUN);
-			sun.setPosition(width / 2.0F - sun.getWidth() / 2.0F, height / 2.0F - sun.getHeight() / 2.0F);
+			var sun = SUN.get();
 			
-			sun.getBody().setWidget(sun);
+			if (width != PREV_WIDTH || height != PREV_HEIGHT) {
+				sun.setPosition(width / 2.0F - sun.getWidth() / 2.0F, height / 2.0F - sun.getHeight() / 2.0F);
+			}
 			
 			panel.add(sun);
 			
 			// Add Earth.
-			var earth = new BodyWidget(AMBodies.EARTH);
-			earth.setPosition(sun.getPosition().getX() + (width * 0.15F), sun.getPosition().getY() + (height * 0.15F));
+			var earth = EARTH.get();
 			
-			earth.getBody().setWidget(earth);
+			if (width != PREV_WIDTH || height != PREV_HEIGHT) {
+				earth.setPosition(sun.getPosition().getX() + (width * 0.15F), sun.getPosition().getY() + (height * 0.15F));
+			}
 			
 			panel.add(earth);
 			
 			// Add Moon.
-			var moon = new BodyWidget(AMBodies.MOON);
-			moon.setPosition(earth.getPosition().getX() + (width * 0.02F), earth.getPosition().getY() - (height * 0.02F));
+			var moon = MOON.get();
 			
-			moon.getBody().setWidget(moon);
-			
+			if (width != PREV_WIDTH || height != PREV_HEIGHT) {
+				moon.setPosition(earth.getPosition().getX() + (width * 0.02F), earth.getPosition().getY() - (height * 0.02F));
+			}
+
 			panel.add(moon);
 			
 			// Add Mars.
-			var mars = new BodyWidget(AMBodies.MARS);
-			mars.setPosition(earth.getPosition().getX() + (width * 0.15F + width * 0.02F), earth.getPosition().getY() + (height * 0.15F + height * 0.02F));
+			var mars = MARS.get();
 			
-			mars.getBody().setWidget(mars);
+			if (width != PREV_WIDTH || height != PREV_HEIGHT) {
+				mars.setPosition(earth.getPosition().getX() + (width * 0.15F + width * 0.02F), earth.getPosition().getY() + (height * 0.15F + height * 0.02F));
+			}
 			
 			panel.add(mars);
 		}

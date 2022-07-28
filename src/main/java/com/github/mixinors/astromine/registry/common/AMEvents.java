@@ -29,14 +29,25 @@ import com.github.mixinors.astromine.common.event.ServerChunkManagerEvents;
 import com.github.mixinors.astromine.common.manager.BodyManager;
 import com.github.mixinors.astromine.common.screen.handler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.screen.handler.base.entity.ExtendedEntityScreenHandler;
+import com.github.mixinors.astromine.common.screen.handler.body.BodySelectorScreenHandler;
 import com.github.mixinors.astromine.common.world.generation.space.EarthOrbitChunkGenerator;
 import com.github.mixinors.astromine.common.world.generation.space.MoonChunkGenerator;
 import com.github.mixinors.astromine.common.world.generation.space.MoonOrbitChunkGenerator;
 import dev.architectury.event.events.common.TickEvent;
+import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.server.world.ServerWorld;
 
 public class AMEvents {
 	public static void init() {
+		HudRenderCallback.EVENT.register((matrices, tickDelta) -> {
+			var client = InstanceUtil.getClient();
+			
+			if (client.player != null && !(client.player.currentScreenHandler instanceof BodySelectorScreenHandler)) {
+				BodySelectorScreenHandler.update(tickDelta);
+			}
+		});
+		
 		TickEvent.SERVER_PRE.register((server) -> {
 			for (var playerEntity : server.getPlayerManager().getPlayerList()) {
 				if (playerEntity.currentScreenHandler instanceof ExtendedBlockEntityScreenHandler screenHandler) {

@@ -3,23 +3,22 @@ package com.github.mixinors.astromine.common.widget;
 import com.github.mixinors.astromine.client.screen.BodySelectorHandledScreen;
 import com.github.mixinors.astromine.client.util.DrawingUtil;
 import com.github.mixinors.astromine.common.body.Body;
+import com.github.mixinors.astromine.common.screen.handler.body.BodySelectorScreenHandler;
 import com.github.mixinors.astromine.registry.client.AMRenderLayers;
 import dev.vini2003.hammer.core.api.client.color.Color;
 import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.client.util.PositionUtil;
-import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
-import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.render.*;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.Vector4f;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.function.Supplier;
 
 public class BodyWidget extends Widget {
@@ -34,7 +33,7 @@ public class BodyWidget extends Widget {
 	
 	private double prevScale = 1.0D;
 	
-	private final List<Position> trailPositions = new ArrayList<>();
+	private boolean focused = false;
 	
 	public BodyWidget(Body body) {
 		this.body = body;
@@ -47,6 +46,10 @@ public class BodyWidget extends Widget {
 		var bodyTexture = new ImageTexture(body.getTexture());
 		
 		this.foregroundTexture = () -> bodyTexture;
+	}
+	
+	public Body getBody() {
+		return body;
 	}
 	
 	@Override
@@ -78,17 +81,13 @@ public class BodyWidget extends Widget {
 	}
 	
 	@Override
-	public float getWidth() {
-		return super.getWidth() * BodySelectorHandledScreen.SCROLL_DELTA;
+	public boolean isFocused() {
+		return focused;
 	}
 	
 	@Override
-	public float getHeight() {
-		return super.getHeight() * BodySelectorHandledScreen.SCROLL_DELTA;
-	}
-	
-	public Body getBody() {
-		return body;
+	public void setFocused(boolean focused) {
+		this.focused = focused;
 	}
 	
 	@Override
@@ -118,64 +117,73 @@ public class BodyWidget extends Widget {
 		prevOrbitX = orbitX;
 		prevOrbitY = orbitY;
 		
-		orbitX *= BodySelectorHandledScreen.SCROLL_DELTA;
-		orbitY *= BodySelectorHandledScreen.SCROLL_DELTA;
+		var offsetX = BodySelectorHandledScreen.getOffsetX();
+		var offsetY = BodySelectorHandledScreen.getOffsetY();
 		
-		orbitX += BodySelectorHandledScreen.DRAG_DELTA_X;
-		orbitY += BodySelectorHandledScreen.DRAG_DELTA_Y;
+		var zoom = BodySelectorHandledScreen.getZoom(tickDelta);
+		
+		orbitX *= zoom;
+		orbitY *= zoom;
+		
+		orbitX += offsetX;
+		orbitY += offsetY;
 		
 		var speed = 1.0D;
 		
-		for (var child : rootCollection.getScreenHandler().getAllChildren()) {
-			if (child instanceof BodyWidget && child.isFocused()) {
-				speed = 0.0D;
+		if (rootCollection != null && rootCollection.getScreenHandler() instanceof BodySelectorScreenHandler screenHandler) {
+			for (var child : screenHandler.getAllChildren()) {
+				if (child instanceof BodyWidget && child.isFocused()) {
+					speed = 0.0D;
+				}
 			}
 		}
 		
-		angle += (body.getOrbitSpeed() / 360.0D * 4.0D) * tickDelta * 0.1D * speed;
+		angle += (body.getOrbitSpeed() / 360.0D) * tickDelta * 0.1D * speed;
 		angle %= 360.0D;
 		
-		matrices.push();
-		
-		matrices.translate(orbitX, orbitY, 10.0F);
-		
-		matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(45.0F));
-		matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(45.0F));
-
-		var minPos = new Vector4f((float) orbitX - getWidth(), (float) orbitY - getWidth(), -getWidth(), 1.0F);
-		var maxPos = new Vector4f((float) orbitX + getWidth(), (float) orbitY + getWidth(), +getWidth(), 1.0F);
-		
-		var mousePos = new Vec3f(PositionUtil.getMouseX() , PositionUtil.getMouseY(), 0.0F);
-		
-		var scale = 1.0F;
-		
-		if (mousePos.getX() > minPos.getX() && mousePos.getX() < maxPos.getX() && mousePos.getY() > minPos.getY() && mousePos.getY() < maxPos.getY()) {
-			scale = (float) MathHelper.lerp(tickDelta / 2.0D, prevScale, 1.25D);
+		if (matrices != null) {
+			matrices.push();
 			
-			setFocused(true);
-		} else {
-			scale = (float) MathHelper.lerp(tickDelta / 2.0D, prevScale, 1.0D);
-		}
-		
-		prevScale = scale;
-
-		if (body.getOrbitedBody() != null) {
-			if (body.isOrbitTidalLocked()) {
-				matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(45.0F - 360.0F + (float) Math.toDegrees(body.getWidget().angle)));
+			matrices.translate(orbitX, orbitY, 10.0F);
+			
+			matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(45.0F));
+			matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(45.0F));
+			
+			var minPos = new Vector4f((float) orbitX - getWidth() * zoom, (float) orbitY - getWidth() * zoom, -getWidth() * zoom, 1.0F);
+			var maxPos = new Vector4f((float) orbitX + getWidth() * zoom, (float) orbitY + getWidth() * zoom, +getWidth() * zoom, 1.0F);
+			
+			var mousePos = new Vec3f(PositionUtil.getMouseX(), PositionUtil.getMouseY(), 0.0F);
+			
+			var scale = 1.0F;
+			
+			if (mousePos.getX() > minPos.getX() && mousePos.getX() < maxPos.getX() && mousePos.getY() > minPos.getY() && mousePos.getY() < maxPos.getY()) {
+				scale = (float) MathHelper.lerp(tickDelta / 2.0D, prevScale, 1.25D);
+				
+				setFocused(true);
 			} else {
-				matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(45.0F - (float) Math.toDegrees(this.angle)));
+				scale = (float) MathHelper.lerp(tickDelta / 2.0D, prevScale, 1.0D);
 			}
+			
+			prevScale = scale;
+			
+			if (body.getOrbitedBody() != null) {
+				if (body.isOrbitTidalLocked()) {
+					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(45.0F - 360.0F + (float) Math.toDegrees(body.getWidget().angle)));
+				} else {
+					matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(45.0F - (float) Math.toDegrees(this.angle)));
+				}
+			}
+			
+			DrawingUtil.drawCube(
+					matrices,
+					provider,
+					0.0F, 0.0F, 0.0F,
+					getWidth() * zoom * scale, getWidth() * zoom * scale, getWidth() * zoom * scale,
+					new Color(0xEFEFEFFFL),
+					AMRenderLayers.getBody(body.getTexture())
+			);
+			
+			matrices.pop();
 		}
-		
-		DrawingUtil.drawCube(
-				matrices,
-				provider,
-				0.0F, 0.0F, 0.0F,
-				getWidth() * scale, getWidth() * scale, getWidth() * scale,
-				new Color(0xEFEFEFFFL),
-				AMRenderLayers.getBody(body.getTexture())
-		);
-		
-		matrices.pop();
 	}
 }
