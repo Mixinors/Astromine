@@ -29,7 +29,7 @@ import com.github.mixinors.astromine.common.screen.handler.body.BodySelectorScre
 import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
-import dev.vini2003.hammer.gui.api.client.screen.BaseHandledScreen;
+import dev.vini2003.hammer.gui.api.client.screen.base.BaseHandledScreen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;

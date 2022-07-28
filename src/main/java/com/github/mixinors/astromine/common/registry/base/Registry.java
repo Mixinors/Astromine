@@ -24,6 +24,10 @@
 
 package com.github.mixinors.astromine.common.registry.base;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.mojang.serialization.codecs.UnboundedMapCodec;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,8 +35,24 @@ import java.util.Map;
 /**
  * A unidirectional registry, where all keys must be unique and values may be repeated.
  */
-public class UniRegistry<K, V> {
-	private final Map<K, V> entries = new HashMap<>();
+public class Registry<K, V> {
+	public static <K, V> Codec<Registry<K, V>> createCodec(Codec<K> keyCodec, Codec<V> valueCodec) {
+		return RecordCodecBuilder.create(
+				instance -> instance.group(
+						Codec.unboundedMap(keyCodec, valueCodec).fieldOf("entries").forGetter(Registry::getEntries)
+				).apply(instance, Registry::new)
+		);
+	}
+	
+	private Map<K, V> entries;
+	
+	public Registry() {
+		this.entries = new HashMap<>();
+	}
+	
+	public Registry(Map<K, V> entries) {
+		this.entries = entries;
+	}
 	
 	/** Returns the {@link V} value associated with the given {@link K} key. */
 	public V get(K k) {
@@ -91,6 +111,13 @@ public class UniRegistry<K, V> {
 	}
 	
 	/**
+	 * Clears this registry's entries.
+	 */
+	public void clear() {
+		entries.clear();
+	}
+	
+	/**
 	 * Asserts whether this registry contains the given {@link K} key associated with the specified {@link V} value.
 	 */
 	public boolean contains(K k, V v) {
@@ -115,5 +142,20 @@ public class UniRegistry<K, V> {
 	/** Returns a collection of this registry's {@link V} values. */
 	public Collection<V> getValues() {
 		return entries.values();
+	}
+	
+	/**
+	 * Sets this registry's entries.
+	 * @param entries the new entries.
+	 */
+	public void setEntries(Map<K, V> entries) {
+		this.entries = entries;
+	}
+	
+	/**
+	 * Returns a map of this registry's entries.
+	 */
+	public Map<K, V> getEntries() {
+		return entries;
 	}
 }

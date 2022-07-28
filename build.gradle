@@ -113,6 +113,12 @@ repositories {
 			includeGroup "vazkii.patchouli"
 		}
 	}
+
+	// LadySnake
+	maven {
+		name = "Ladysnake"
+		url = "https://ladysnake.jfrog.io/artifactory/mods"
+	}
 }
 
 dependencies {

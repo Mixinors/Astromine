@@ -1,0 +1,22 @@
+{
+  "id": "astromine:sun",
+  "position": {
+    "x": 0.0, "y": 0.0, "z": 0.0
+  },
+  "size": {
+    "width": 24.0, "height": 24.0, "length": 24.0
+  },
+  "environment": {
+    "temperature": 5778.0
+  },
+  "texture": {
+    "up": "astromine:textures/star/sun_up.png",
+    "down": "astromine:textures/star/sun_down.png",
+    "north": "astromine:textures/star/sun_north.png",
+    "south": "astromine:textures/star/sun_south.png",
+    "east": "astromine:textures/star/sun_east.png",
+    "west": "astromine:textures/star/sun_west.png"
+  },
+  "name": "Sun",
+  "description": "The Sun is the star at the center of the Solar System. It is a nearly perfect ball of hot plasma."
+}

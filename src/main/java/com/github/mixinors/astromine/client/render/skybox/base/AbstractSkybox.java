@@ -29,7 +29,7 @@ import net.minecraft.client.util.math.MatrixStack;
 /**
  * Skybox rendering logic.
  */
-public abstract class Skybox {
-	/** Renders the {@link Skybox}. */
+public abstract class AbstractSkybox {
+	/** Renders the {@link AbstractSkybox}. */
 	public abstract void render(MatrixStack matrices, float tickDelta);
 }

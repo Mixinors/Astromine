@@ -24,13 +24,13 @@
 
 package com.github.mixinors.astromine.common.registry;
 
-import com.github.mixinors.astromine.common.registry.base.UniRegistry;
+import com.github.mixinors.astromine.common.registry.base.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 import java.util.Optional;
 
-public class AtmosphereRegistry extends UniRegistry<RegistryKey<World>, Boolean> {
+public class AtmosphereRegistry extends Registry<RegistryKey<World>, Boolean> {
 	public static final AtmosphereRegistry INSTANCE = new AtmosphereRegistry();
 	
 	private AtmosphereRegistry() {

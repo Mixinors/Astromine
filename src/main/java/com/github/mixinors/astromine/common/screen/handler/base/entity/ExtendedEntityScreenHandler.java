@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.screen.handler.base.entity;
 import com.github.mixinors.astromine.common.entity.base.ExtendedEntity;
 import com.github.mixinors.astromine.common.screen.handler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.google.common.collect.ImmutableList;
+import dev.vini2003.hammer.core.api.client.color.Color;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
@@ -132,7 +133,7 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 		var title = new TextWidget();
 		title.setPosition(new Position(tab, PAD_8, 0.0F));
 		title.setText(entity.getDisplayName());
-		title.setColor(0x404040);
+		title.setColor(new Color(0x404040));
 		
 		tab.add(title);
 		
@@ -144,7 +145,7 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 		var inventoryTitle = new TextWidget();
 		inventoryTitle.setPosition(new Position(inventoryPos, 0.0F, -PAD_10));
 		inventoryTitle.setText(getPlayer().getInventory().getName());
-		inventoryTitle.setColor(0x404040);
+		inventoryTitle.setColor(new Color(0x404040));
 		
 		tab.add(inventoryTitle);
 		

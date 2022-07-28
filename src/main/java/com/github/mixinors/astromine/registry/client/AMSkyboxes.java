@@ -26,58 +26,60 @@ package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.registry.SkyboxRegistry;
-import com.github.mixinors.astromine.client.render.skybox.SpaceSkybox;
+import com.github.mixinors.astromine.client.render.skybox.Skybox;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 public class AMSkyboxes {
-	public static void init() {
-		registerOrbitClouds(AMWorlds.EARTH_ORBIT_WORLD, "earth");
-		
-		registerPlanet(AMWorlds.MOON_WORLD, "moon");
-	}
+	// FIXME
 	
-	public static void registerOrbitClouds(RegistryKey<World> world, String planetName) {
-		SkyboxRegistry.INSTANCE.register(
-				world,
-				new SpaceSkybox.Builder()
-						.up(AMCommon.id("textures/skybox/" + planetName + "_orbit_up.png"))
-						.down(AMCommon.id("textures/skybox/" + planetName + "_orbit_down.png"))
-						.north(AMCommon.id("textures/skybox/" + planetName + "_orbit_north.png"))
-						.south(AMCommon.id("textures/skybox/" + planetName + "_orbit_south.png"))
-						.west(AMCommon.id("textures/skybox/" + planetName + "_orbit_west.png"))
-						.east(AMCommon.id("textures/skybox/" + planetName + "_orbit_east.png"))
-						.planet(AMCommon.id("textures/skybox/" + planetName + ".png"))
-						.cloud(AMCommon.id("textures/skybox/" + planetName + "_cloud.png"))
-						.build());
-	}
-	
-	
-	public static void registerOrbit(RegistryKey<World> world, String planetName) {
-		SkyboxRegistry.INSTANCE.register(
-				world,
-				new SpaceSkybox.Builder()
-						.up(AMCommon.id("textures/skybox/" + planetName + "_orbit_up.png"))
-						.down(AMCommon.id("textures/skybox/" + planetName + "_orbit_down.png"))
-						.north(AMCommon.id("textures/skybox/" + planetName + "_orbit_north.png"))
-						.south(AMCommon.id("textures/skybox/" + planetName + "_orbit_south.png"))
-						.west(AMCommon.id("textures/skybox/" + planetName + "_orbit_west.png"))
-						.east(AMCommon.id("textures/skybox/" + planetName + "_orbit_east.png"))
-						.planet(AMCommon.id("textures/skybox/" + planetName + ".png"))
-						.build());
-	}
-	
-	public static void registerPlanet(RegistryKey<World> world, String planetName) {
-		SkyboxRegistry.INSTANCE.register(
-				world,
-				new SpaceSkybox.Builder()
-						.up(AMCommon.id("textures/skybox/" + planetName + "_planet_up.png"))
-						.down(AMCommon.id("textures/skybox/" + planetName + "_planet_down.png"))
-						.north(AMCommon.id("textures/skybox/" + planetName + "_planet_north.png"))
-						.south(AMCommon.id("textures/skybox/" + planetName + "_planet_south.png"))
-						.west(AMCommon.id("textures/skybox/" + planetName + "_planet_west.png"))
-						.east(AMCommon.id("textures/skybox/" + planetName + "_planet_east.png"))
-						.build());
-	}
+	//public static void init() {
+	//	registerOrbitClouds(AMWorlds.EARTH_ORBIT_WORLD, "earth");
+	//
+	//	registerPlanet(AMWorlds.MOON_WORLD, "moon");
+	//}
+	//
+	//public static void registerOrbitClouds(RegistryKey<World> world, String planetName) {
+	//	SkyboxRegistry.INSTANCE.register(
+	//			world,
+	//			new Skybox.Builder()
+	//					.up(AMCommon.id("textures/skybox/" + planetName + "_orbit_up.png"))
+	//					.down(AMCommon.id("textures/skybox/" + planetName + "_orbit_down.png"))
+	//					.north(AMCommon.id("textures/skybox/" + planetName + "_orbit_north.png"))
+	//					.south(AMCommon.id("textures/skybox/" + planetName + "_orbit_south.png"))
+	//					.west(AMCommon.id("textures/skybox/" + planetName + "_orbit_west.png"))
+	//					.east(AMCommon.id("textures/skybox/" + planetName + "_orbit_east.png"))
+	//					.planet(AMCommon.id("textures/skybox/" + planetName + ".png"))
+	//					.cloud(AMCommon.id("textures/skybox/" + planetName + "_cloud.png"))
+	//					.build());
+	//}
+	//
+	//
+	//public static void registerOrbit(RegistryKey<World> world, String planetName) {
+	//	SkyboxRegistry.INSTANCE.register(
+	//			world,
+	//			new Skybox.Builder()
+	//					.up(AMCommon.id("textures/skybox/" + planetName + "_orbit_up.png"))
+	//					.down(AMCommon.id("textures/skybox/" + planetName + "_orbit_down.png"))
+	//					.north(AMCommon.id("textures/skybox/" + planetName + "_orbit_north.png"))
+	//					.south(AMCommon.id("textures/skybox/" + planetName + "_orbit_south.png"))
+	//					.west(AMCommon.id("textures/skybox/" + planetName + "_orbit_west.png"))
+	//					.east(AMCommon.id("textures/skybox/" + planetName + "_orbit_east.png"))
+	//					.planet(AMCommon.id("textures/skybox/" + planetName + ".png"))
+	//					.build());
+	//}
+	//
+	//public static void registerPlanet(RegistryKey<World> world, String planetName) {
+	//	SkyboxRegistry.INSTANCE.register(
+	//			world,
+	//			new Skybox.Builder()
+	//					.up(AMCommon.id("textures/skybox/" + planetName + "_planet_up.png"))
+	//					.down(AMCommon.id("textures/skybox/" + planetName + "_planet_down.png"))
+	//					.north(AMCommon.id("textures/skybox/" + planetName + "_planet_north.png"))
+	//					.south(AMCommon.id("textures/skybox/" + planetName + "_planet_south.png"))
+	//					.west(AMCommon.id("textures/skybox/" + planetName + "_planet_west.png"))
+	//					.east(AMCommon.id("textures/skybox/" + planetName + "_planet_east.png"))
+	//					.build());
+	//}
 }

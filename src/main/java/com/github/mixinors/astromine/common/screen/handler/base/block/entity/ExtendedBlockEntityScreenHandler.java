@@ -33,6 +33,7 @@ import com.github.mixinors.astromine.common.util.WidgetUtils;
 import com.github.mixinors.astromine.common.widget.RedstoneControlWidget;
 import com.google.common.collect.ImmutableList;
 import dev.architectury.hooks.block.BlockEntityHooks;
+import dev.vini2003.hammer.core.api.client.color.Color;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.util.SlotUtil;
@@ -150,7 +151,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 		var title = new TextWidget();
 		title.setPosition(new Position(tab, PAD_8, 0.0F));
 		title.setText(new TranslatableText(block.getTranslationKey()));
-		title.setColor(0x404040);
+		title.setColor(new Color(0x404040));
 		
 		tab.add(title);
 		
@@ -162,7 +163,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 		var inventoryTitle = new TextWidget();
 		inventoryTitle.setPosition(new Position(inventoryPos, 0.0F, -PAD_10));
 		inventoryTitle.setText(getPlayer().getInventory().getName());
-		inventoryTitle.setColor(0x404040);
+		inventoryTitle.setColor(new Color(0x404040));
 		
 		tab.add(inventoryTitle);
 		
@@ -188,7 +189,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 			var invTabTitle = new TextWidget();
 			invTabTitle.setPosition(new Position(inventoryPos, 0.0F, -PAD_10));
 			invTabTitle.setText(getPlayer().getInventory().getName());
-			invTabTitle.setColor(0x404040);
+			invTabTitle.setColor(new Color(0x404040));
 			
 			tabCollection.add(invTabTitle);
 			
@@ -197,7 +198,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 			var tabTitle = new TextWidget();
 			tabTitle.setPosition(new Position(tab, PAD_8, 0.0F));
 			tabTitle.setText(type.getName());
-			tabTitle.setColor(0x404040);
+			tabTitle.setColor(new Color(0x404040));
 			
 			tabCollection.add(tabTitle);
 		};

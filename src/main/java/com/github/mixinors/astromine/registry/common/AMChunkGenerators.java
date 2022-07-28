@@ -34,9 +34,11 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 
 public class AMChunkGenerators {
 	public static void init() {
-		register(AMWorlds.EARTH_ORBIT_ID, EarthOrbitChunkGenerator.CODEC);
+		// FIXME
+		// register(AMWorlds.EARTH_ORBIT_ID, EarthOrbitChunkGenerator.CODEC);
 		
-		register(AMWorlds.MOON_ID, MoonChunkGenerator.CODEC);
+		// FIXME
+		// register(AMWorlds.MOON_ID, MoonChunkGenerator.CODEC);
 	}
 	
 	public static void register(Identifier id, Codec<? extends ChunkGenerator> codec) {

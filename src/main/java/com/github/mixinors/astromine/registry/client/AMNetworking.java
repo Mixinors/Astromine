@@ -25,15 +25,18 @@
 package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.common.entity.base.ExtendedEntity;
+import com.github.mixinors.astromine.common.manager.BodyManager;
 import com.github.mixinors.astromine.registry.common.AMEntityTypes;
 import dev.architectury.networking.NetworkManager;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.world.ClientWorld;
 
-import static com.github.mixinors.astromine.registry.common.AMNetworking.PRIMITIVE_ROCKET_SPAWN;
-import static com.github.mixinors.astromine.registry.common.AMNetworking.SYNC_ENTITY;
+import static com.github.mixinors.astromine.registry.common.AMNetworking.*;
 
 public class AMNetworking {
 	public static void init() {
+		ClientPlayNetworking.registerGlobalReceiver(SYNC_BODIES, BodyManager.SyncListener.INSTANCE);
+		
 		NetworkManager.registerReceiver(NetworkManager.s2c(), PRIMITIVE_ROCKET_SPAWN, (buf, context) -> {
 			var x = buf.readDouble();
 			var y = buf.readDouble();

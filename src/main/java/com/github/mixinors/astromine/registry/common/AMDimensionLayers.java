@@ -31,7 +31,8 @@ import net.minecraft.world.World;
 
 public class AMDimensionLayers {
 	public static void init() {
-		DimensionLayerRegistry.INSTANCE.register(DimensionLayerRegistry.Type.BOTTOM, AMWorlds.EARTH_ORBIT_WORLD, AMConfig.get().world.layers.earth.travelY, World.OVERWORLD, EarthOrbitEntityPlacer.TO_EARTH);
-		DimensionLayerRegistry.INSTANCE.register(DimensionLayerRegistry.Type.TOP, World.OVERWORLD, AMConfig.get().world.layers.earthOrbit.travelY, AMWorlds.EARTH_ORBIT_WORLD, EarthOrbitEntityPlacer.TO_EARTH_ORBIT);
+		// FIXME
+		// DimensionLayerRegistry.INSTANCE.register(DimensionLayerRegistry.Type.BOTTOM, AMWorlds.EARTH_ORBIT_WORLD, AMConfig.get().world.layers.earth.travelY, World.OVERWORLD, EarthOrbitEntityPlacer.TO_EARTH);
+		// DimensionLayerRegistry.INSTANCE.register(DimensionLayerRegistry.Type.TOP, World.OVERWORLD, AMConfig.get().world.layers.earthOrbit.travelY, AMWorlds.EARTH_ORBIT_WORLD, EarthOrbitEntityPlacer.TO_EARTH_ORBIT);
 	}
 }

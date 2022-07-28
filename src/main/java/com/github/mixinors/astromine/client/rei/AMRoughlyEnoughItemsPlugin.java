@@ -59,7 +59,7 @@ import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.client.color.Color;
 import dev.vini2003.hammer.core.api.client.util.LayerUtil;
-import dev.vini2003.hammer.gui.api.client.screen.BaseHandledScreen;
+import dev.vini2003.hammer.gui.api.client.screen.base.BaseHandledScreen;
 import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
 import dev.vini2003.hammer.gui.energy.api.common.util.EnergyTextUtil;
 import me.shedaniel.math.Point;

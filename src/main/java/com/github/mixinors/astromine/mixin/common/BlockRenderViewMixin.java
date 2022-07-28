@@ -18,21 +18,23 @@ public interface BlockRenderViewMixin {
 	private void astromine$getLightLevel(LightType type, BlockPos pos, CallbackInfoReturnable<Integer> cir) {
 		var client = InstanceUtil.getClient();
 		
-		if (client.player != null && client.world != null && client.world.getRegistryKey().equals(AMWorlds.MOON_WORLD)) {
-			if (client.world.getBiome(client.player.getBlockPos()).getKey().orElseThrow().equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
-				cir.setReturnValue(0);
-			}
-		}
+		// FIXME
+		//if (client.player != null && client.world != null && client.world.getRegistryKey().equals(AMWorlds.MOON_WORLD)) {
+		//	if (client.world.getBiome(client.player.getBlockPos()).getKey().orElseThrow().equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
+		//		cir.setReturnValue(0);
+		//	}
+		//}
 	}
 	
 	@Inject(at = @At("HEAD"), method = "getBaseLightLevel", cancellable = true)
 	private void astromine$getBaseLightLevel(BlockPos pos, int ambientDarkness, CallbackInfoReturnable<Integer> cir) {
 		var client = InstanceUtil.getClient();
 		
-		if (client.player != null && client.world != null && client.world.getRegistryKey().equals(AMWorlds.MOON_WORLD)) {
-			if (client.world.getBiome(client.player.getBlockPos()).getKey().orElseThrow().equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
-				cir.setReturnValue(0);
-			}
-		}
+		// FIXME
+		//if (client.player != null && client.world != null && client.world.getRegistryKey().equals(AMWorlds.MOON_WORLD)) {
+		//	if (client.world.getBiome(client.player.getBlockPos()).getKey().orElseThrow().equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
+		//		cir.setReturnValue(0);
+		//	}
+		//}
 	}
 }

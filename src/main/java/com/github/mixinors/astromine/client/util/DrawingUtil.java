@@ -16,9 +16,14 @@ public class DrawingUtil {
 			float x, float y, float z,
 			float width, float height, float depth,
 			Color color,
-			RenderLayer layer
+			RenderLayer layerUp,
+			RenderLayer layerDown,
+			RenderLayer layerNorth,
+			RenderLayer layerSouth,
+			RenderLayer layerEast,
+			RenderLayer layerWest
 	) {
-		var consumer = provider.getBuffer(layer);
+		var consumer = provider.getBuffer(layerDown);
 		
 		var peek = matrices.peek();
 		
@@ -28,11 +33,15 @@ public class DrawingUtil {
 		consumer.vertex(peek.getPositionMatrix(), x - (width / 2.0F), y - (height / 2.0F), z - (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(1.0F, 1.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
 		consumer.vertex(peek.getPositionMatrix(), x + (width / 2.0F), y - (height / 2.0F), z - (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(0.0F, 1.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
 		
+		consumer = provider.getBuffer(layerUp);
+		
 		// Up
 		consumer.vertex(peek.getPositionMatrix(), x - (width / 2.0F), y + (height / 2.0F), z - (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(0.0F, 0.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
 		consumer.vertex(peek.getPositionMatrix(), x - (width / 2.0F), y + (height / 2.0F), z + (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(1.0F, 0.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
 		consumer.vertex(peek.getPositionMatrix(), x + (width / 2.0F), y + (height / 2.0F), z + (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(1.0F, 1.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
 		consumer.vertex(peek.getPositionMatrix(), x + (width / 2.0F), y + (height / 2.0F), z - (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(0.0F, 1.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
+		
+		consumer = provider.getBuffer(layerNorth);
 		
 		// North
 		consumer.vertex(peek.getPositionMatrix(), x - (width / 2.0F), y - (height / 2.0F), z - (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(0.0F, 0.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
@@ -40,6 +49,7 @@ public class DrawingUtil {
 		consumer.vertex(peek.getPositionMatrix(), x + (width / 2.0F), y + (height / 2.0F), z - (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(1.0F, 1.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
 		consumer.vertex(peek.getPositionMatrix(), x + (width / 2.0F), y - (height / 2.0F), z - (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(0.0F, 1.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
 		
+		consumer = provider.getBuffer(layerSouth);
 		
 		// South
 		consumer.vertex(peek.getPositionMatrix(), x - (width / 2.0F), y - (height / 2.0F), z + (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(0.0F, 0.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
@@ -47,11 +57,15 @@ public class DrawingUtil {
 		consumer.vertex(peek.getPositionMatrix(), x + (width / 2.0F), y + (height / 2.0F), z + (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(1.0F, 1.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
 		consumer.vertex(peek.getPositionMatrix(), x - (width / 2.0F), y + (height / 2.0F), z + (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(0.0F, 1.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
 		
+		consumer = provider.getBuffer(layerWest);
+		
 		// West
 		consumer.vertex(peek.getPositionMatrix(), x - (width / 2.0F), y + (height / 2.0F), z + (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(0.0F, 0.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
 		consumer.vertex(peek.getPositionMatrix(), x - (width / 2.0F), y + (height / 2.0F), z - (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(1.0F, 0.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
 		consumer.vertex(peek.getPositionMatrix(), x - (width / 2.0F), y - (height / 2.0F), z - (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(1.0F, 1.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
 		consumer.vertex(peek.getPositionMatrix(), x - (width / 2.0F), y - (height / 2.0F), z + (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(0.0F, 1.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();
+		
+		consumer = provider.getBuffer(layerEast);
 		
 		// East
 		consumer.vertex(peek.getPositionMatrix(), x + (width / 2.0F), y - (height / 2.0F), z - (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(0.0F, 0.0F).overlay(DEFAULT_OVERLAY).light(DEFAULT_LIGHT).normal(0.0F, 0.0F, 0.0F).next();

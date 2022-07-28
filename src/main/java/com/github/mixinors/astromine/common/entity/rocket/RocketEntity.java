@@ -66,11 +66,11 @@ public class RocketEntity extends com.github.mixinors.astromine.common.entity.ro
 		super.tick();
 		
 		if (!world.isClient) {
-			if (world.getRegistryKey().equals(AMWorlds.EARTH_ORBIT_WORLD)) {
-				setVelocity(0.0F, 0.0F, 0.0F);
-				
-				dataTracker.set(RUNNING, false);
-			}
+			//if (world.getRegistryKey().equals(AMWorlds.EARTH_ORBIT_WORLD)) {
+			//	setVelocity(0.0F, 0.0F, 0.0F);
+			//
+			//	dataTracker.set(RUNNING, false);
+			//}
 			
 			try (var transaction = Transaction.openOuter()) {
 				var wildItemStorage = itemStorage.getWildProxy();

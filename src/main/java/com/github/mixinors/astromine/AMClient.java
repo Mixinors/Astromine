@@ -42,7 +42,8 @@ public class AMClient implements ClientModInitializer {
 		AMEvents.init();
 		AMNetworking.init();
 		AMParticleFactories.init();
-		AMSkyboxes.init();
+		// FIXME
+		// AMSkyboxes.init();
 		AMScreens.init();
 		AMNetworking.init();
 		AMRenderLayers.init();

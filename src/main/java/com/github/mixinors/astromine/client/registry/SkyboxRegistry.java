@@ -24,12 +24,12 @@
 
 package com.github.mixinors.astromine.client.registry;
 
-import com.github.mixinors.astromine.client.render.skybox.base.Skybox;
+import com.github.mixinors.astromine.client.render.skybox.base.AbstractSkybox;
 import com.github.mixinors.astromine.common.registry.base.BiRegistry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
-public class SkyboxRegistry extends BiRegistry<RegistryKey<World>, Skybox> {
+public class SkyboxRegistry extends BiRegistry<RegistryKey<World>, AbstractSkybox> {
 	public static final SkyboxRegistry INSTANCE = new SkyboxRegistry();
 	
 	private SkyboxRegistry() {}

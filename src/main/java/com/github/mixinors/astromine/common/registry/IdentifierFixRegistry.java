@@ -24,18 +24,18 @@
 
 package com.github.mixinors.astromine.common.registry;
 
-import com.github.mixinors.astromine.common.registry.base.UniRegistry;
+import com.github.mixinors.astromine.common.registry.base.Registry;
 import com.github.mixinors.astromine.mixin.common.IdentifierMixin;
 import net.minecraft.util.Identifier;
 
 import java.util.Optional;
 
 /**
- * An {@link UniRegistry} for registration of {@link String}s mapped to {@link String}s.
+ * An {@link Registry} for registration of {@link String}s mapped to {@link String}s.
  * <p>
  * The registered path will then be replaced by the new one, through {@link IdentifierMixin}.
  */
-public class IdentifierFixRegistry extends UniRegistry<String, String> {
+public class IdentifierFixRegistry extends Registry<String, String> {
 	public static final IdentifierFixRegistry INSTANCE = new IdentifierFixRegistry();
 	
 	/** We only want one instance of this. */

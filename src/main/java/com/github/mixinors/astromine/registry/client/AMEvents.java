@@ -63,8 +63,6 @@ import team.reborn.energy.api.EnergyStorage;
 
 import java.util.ArrayList;
 
-// TODO: Move Moon Stone and Dark Moon Stone models out of data generator!
-// TODO: Swap brightness hacks for a color overlay.
 // TODO: Figure out why water's overlay is broken.
 // TODO: Fix Space Slime interpolation.
 public class AMEvents {
@@ -335,9 +333,11 @@ public class AMEvents {
 		});
 		
 		DimensionEffectsEvents.INIT.register((properties) -> {
-			properties.put(AMWorlds.EARTH_ORBIT_ID, new SpaceDimensionEffects());
-		
-			properties.put(AMWorlds.MOON_ID, new MoonDimensionEffects());
+			// FIXME
+			// properties.put(AMWorlds.EARTH_ORBIT_ID, new SpaceDimensionEffects());
+			
+			// FIXME
+			// properties.put(AMWorlds.MOON_ID, new MoonDimensionEffects());
 		});
 	}
 }

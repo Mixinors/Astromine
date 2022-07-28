@@ -36,17 +36,17 @@ import com.github.mixinors.astromine.common.world.generation.space.MoonOrbitChun
 import dev.architectury.event.events.common.TickEvent;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.minecraft.resource.ResourceType;
 import net.minecraft.server.world.ServerWorld;
 
 public class AMEvents {
 	public static void init() {
-		HudRenderCallback.EVENT.register((matrices, tickDelta) -> {
-			var client = InstanceUtil.getClient();
-			
-			if (client.player != null && !(client.player.currentScreenHandler instanceof BodySelectorScreenHandler)) {
-				BodySelectorScreenHandler.update(tickDelta);
-			}
-		});
+		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(BodyManager.ReloadListener.INSTANCE);
+		
+		ServerPlayConnectionEvents.JOIN.register(BodyManager.JoinListener.INSTANCE);
 		
 		TickEvent.SERVER_PRE.register((server) -> {
 			for (var playerEntity : server.getPlayerManager().getPlayerList()) {

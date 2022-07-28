@@ -1,0 +1,40 @@
+{
+  "id": "astromine:moon",
+  "position": {
+    "x": 384000.0, "y": 0.0, "z": 0.0
+  },
+  "size": {
+    "width": 4.5, "height": 4.5, "length": 4.5
+  },
+  "orbit": {
+    "orbitedBodyId": "astromine:earth",
+    "orbitedBodyOffset": {
+      "x": 40.0, "y": 0.0, "z": 0.0
+    },
+    "width": 24.0, "height": 24.0,
+    "speed": 40.0,
+    "tidalLocked": true
+  },
+  "environment": {
+    "temperature": 26.0,
+    "humidity": 0.0
+  },
+  "worldSkybox": {
+    "up": { "id": "astromine:textures/skybox/moon/moon_up.png" },
+    "down": { "id": "astromine:textures/skybox/moon/moon_down.png" },
+    "north": { "id": "astromine:textures/skybox/moon/moon_north.png" },
+    "south": { "id": "astromine:textures/skybox/moon/moon_south.png" },
+    "east": { "id": "astromine:textures/skybox/moon/moon_east.png" },
+    "west": { "id": "astromine:textures/skybox/moon/moon_west.png" }
+  },
+  "texture": {
+    "up": "astromine:textures/moon/moon_up.png",
+    "down": "astromine:textures/moon/moon_down.png",
+    "north": "astromine:textures/moon/moon_north.png",
+    "south": "astromine:textures/moon/moon_south.png",
+    "east": "astromine:textures/moon/moon_east.png",
+    "west": "astromine:textures/moon/moon_west.png"
+  },
+  "name": "Moon",
+  "description": "The Moon is Earth's only natural satellite."
+}

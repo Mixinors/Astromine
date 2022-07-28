@@ -41,16 +41,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AMWorlds {
 	private static final Set<RegistryKey<?>> KEYS = new HashSet<>();
 	
-	public static final Identifier EARTH_ORBIT_ID = AMCommon.id("earth_orbit");
-	public static final RegistryKey<DimensionOptions> EARTH_ORBIT_OPTIONS = register(Registry.DIMENSION_KEY, EARTH_ORBIT_ID);
-	public static final RegistryKey<DimensionType> EARTH_ORBIT_TYPE_KEY = register(Registry.DIMENSION_TYPE_KEY, EARTH_ORBIT_ID);
-	public static final RegistryKey<World> EARTH_ORBIT_WORLD = register(Registry.WORLD_KEY, EARTH_ORBIT_ID);
-	
-	public static final Identifier MOON_ID = AMCommon.id("moon");
-	public static final RegistryKey<DimensionOptions> MOON_OPTIONS = register(Registry.DIMENSION_KEY, MOON_ID);
-	public static final RegistryKey<DimensionType> MOON_TYPE_KEY = register(Registry.DIMENSION_TYPE_KEY, MOON_ID);
-	public static final RegistryKey<World> MOON_WORLD = register(Registry.WORLD_KEY, MOON_ID);
-	
 	private static final Map<RegistryKey<?>, Boolean> CACHE = new ConcurrentHashMap<>();
 	
 	public static void init() {

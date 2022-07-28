@@ -42,6 +42,9 @@ public class AMNetworking {
 	
 	public static final Identifier SYNC_ENTITY = AMCommon.id("sync_entity");
 	
+	public static final Identifier SYNC_BODIES = AMCommon.id("sync_bodies");
+	public static final Identifier SYNC_SKYBOXES = AMCommon.id("sync_bodies");
+	
 	public static void init() {
 		NetworkManager.registerReceiver(NetworkManager.c2s(), STORAGE_SIDING_UPDATE, ((buf, context) -> {
 			buf.retain();

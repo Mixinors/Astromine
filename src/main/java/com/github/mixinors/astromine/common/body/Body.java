@@ -1,6 +1,7 @@
 package com.github.mixinors.astromine.common.body;
 
-import com.github.mixinors.astromine.common.util.data.tier.Tier;
+import com.github.mixinors.astromine.client.render.skybox.Skybox;
+import com.github.mixinors.astromine.common.util.extra.Codecs;
 import com.github.mixinors.astromine.common.widget.BodyWidget;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -8,12 +9,14 @@ import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionOptions;
+import net.minecraft.world.dimension.DimensionType;
 
 import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.function.Supplier;
+import java.util.Optional;
 
 /**
  * <p>A {@link Body} represents a three-dimensional body in space,
@@ -22,68 +25,147 @@ import java.util.function.Supplier;
  * <p>Positions should be KM-based and fit within a <code>float</code>.</p>
  */
 public class Body {
-	private final Tier tier;
+	public static final Codec<Body> CODEC = RecordCodecBuilder.create(
+			instance -> instance.group(
+					Identifier.CODEC.fieldOf("id").forGetter(Body::getId),
+					Identifier.CODEC.optionalFieldOf("worldId").forGetter(body -> Optional.ofNullable(body.getWorldId())),
+					Identifier.CODEC.optionalFieldOf("orbitWorldId").forGetter(body -> Optional.ofNullable(body.getOrbitWorldId())),
+					Position.CODEC.fieldOf("position").forGetter(Body::getPosition),
+					Size.CODEC.fieldOf("size").forGetter(Body::getSize),
+					Orbit.CODEC.optionalFieldOf("orbit").forGetter(body -> Optional.ofNullable(body.getOrbit())),
+					Environment.CODEC.fieldOf("environment").forGetter(Body::getEnvironment),
+					Skybox.CODEC.optionalFieldOf("worldSkybox").forGetter(body -> Optional.ofNullable(body.getWorldSkybox())),
+					Skybox.CODEC.optionalFieldOf("orbitWorldSkybox").forGetter(body -> Optional.ofNullable(body.getOrbitWorldSkybox())),
+					Texture.CODEC.fieldOf("texture").forGetter(Body::getTexture),
+					Codecs.LITERAL_TEXT.fieldOf("name").forGetter(Body::getName),
+					Codecs.TRANSLATABLE_TEXT.fieldOf("description").forGetter(Body::getDescription)
+			).apply(instance, (id, worldId, orbitWorldId, position, size, orbit, environment, worldSkybox, orbitWorldSkybox, texture, name, description) -> new Body(id, worldId.orElse(null), orbitWorldId.orElse(null), position, size, orbit.orElse(null), environment, worldSkybox.orElse(null), orbitWorldSkybox.orElse(null), texture, name, description))
+	);
+	
+	public record Orbit(
+			@Nullable Identifier orbitedBodyId,
+			@Nullable Position orbitedBodyOffset,
+			double width, double height, double speed,
+			boolean tidalLocked
+	) {
+		public static final Codec<Orbit> CODEC = RecordCodecBuilder.create(
+				instance -> instance.group(
+						Identifier.CODEC.optionalFieldOf("orbitedBodyId").forGetter(orbit -> Optional.ofNullable(orbit.orbitedBodyId)),
+						Position.CODEC.optionalFieldOf("orbitedBodyOffset").forGetter(orbit -> Optional.ofNullable(orbit.orbitedBodyOffset)),
+						Codec.DOUBLE.fieldOf("width").forGetter(Orbit::width),
+						Codec.DOUBLE.fieldOf("height").forGetter(Orbit::height),
+						Codec.DOUBLE.fieldOf("speed").forGetter(Orbit::speed),
+						Codec.BOOL.fieldOf("tidalLocked").forGetter(Orbit::tidalLocked)
+				).apply(instance, ((orbitedBodyId, orbitedBodyOffset, width, height, speed, tidalLocked) -> new Orbit(orbitedBodyId.orElse(null), orbitedBodyOffset.orElse(null), width, height, speed, tidalLocked)))
+		);
+	}
+	
+	public record Environment(
+			double temperature,
+			double humidity
+	) {
+		public static final Codec<Environment> CODEC = RecordCodecBuilder.create(
+				instance -> instance.group(
+						Codec.DOUBLE.fieldOf("temperature").forGetter(Environment::temperature),
+						Codec.DOUBLE.optionalFieldOf("humidity", 0.0D).forGetter(Environment::humidity)
+				).apply(instance, Environment::new)
+		);
+	}
+	
+	public record Texture(
+			Identifier up,
+			Identifier down,
+			Identifier north,
+			Identifier south,
+			Identifier east,
+			Identifier west
+	) {
+		public static final Codec<Texture> CODEC = RecordCodecBuilder.create(
+				instance -> instance.group(
+						Identifier.CODEC.fieldOf("up").forGetter(Texture::up),
+						Identifier.CODEC.fieldOf("down").forGetter(Texture::down),
+						Identifier.CODEC.fieldOf("north").forGetter(Texture::north),
+						Identifier.CODEC.fieldOf("south").forGetter(Texture::south),
+						Identifier.CODEC.fieldOf("east").forGetter(Texture::east),
+						Identifier.CODEC.fieldOf("west").forGetter(Texture::west)
+				).apply(instance, Texture::new)
+		);
+	}
+	
+	private final Identifier id;
+	
+	@Nullable
+	private final Identifier worldId;
+	@Nullable
+	private final Identifier orbitWorldId;
 	
 	private final Position position;
-	
 	private final Size size;
 	
 	@Nullable
-	private final Body orbitedBody;
+	private final Orbit orbit;
+	private final Environment environment;
+	private final Skybox worldSkybox;
+	private final Skybox orbitWorldSkybox;
+	private final Texture texture;
 	
-	private final double mass;
-	private final double temperature;
+	private final Text name;
+	private final Text description;
 	
-	private final double orbitWidth;
-	private final double orbitHeight;
-	
-	private final double orbitSpeed;
-	
-	private final boolean orbitTidalLocked;
-	
-	@Nullable
 	private final RegistryKey<World> worldKey;
+	private final RegistryKey<DimensionOptions> worldOptionsKey;
+	private final RegistryKey<DimensionType> worldDimensionTypeKey;
 	
-	@Nullable
 	private final RegistryKey<World> orbitWorldKey;
+	private final RegistryKey<DimensionOptions> orbitWorldOptionsKey;
+	private final RegistryKey<DimensionType> orbitWorldDimensionTypeKey;
 	
-	@Nullable
-	private final Identifier texture;
+	private double angle = 0.0D;
 	
-	private final Supplier<Collection<Text>> tooltip;
+	private double orbitX = 0.0D;
+	private double prevOrbitX = 0.0D;
 	
-	@Nullable
-	private BodyWidget widget = null;
+	private double orbitY = 0.0D;
+	private double prevOrbitY = 0.0D;
 	
-	Body(Tier tier, Position position, Size size, Body orbitedBody, double mass, double temperature, double orbitWidth, double orbitHeight, double orbitSpeed, boolean orbitTidalLocked, @Nullable RegistryKey<World> worldKey, @Nullable RegistryKey<World> orbitWorldKey, @Nullable Identifier texture, Supplier<Collection<Text>> tooltip) {
-		this.tier = tier;
-		
+	private double scale = 0.0D;
+	private double prevScale = 1.0D;
+	
+	public Body(Identifier id, @Nullable Identifier worldId, @Nullable Identifier orbitWorldId, Position position, Size size, @Nullable Orbit orbit, Environment environment, @Nullable Skybox worldSkybox, @Nullable Skybox orbitWorldSkybox, Texture texture, Text name, Text description) {
+		this.id = id;
+		this.worldId = worldId;
+		this.orbitWorldId = orbitWorldId;
 		this.position = position;
-		
 		this.size = size;
-		
-		this.orbitedBody = orbitedBody;
-		
-		this.mass = mass;
-		this.temperature = temperature;
-		
-		this.orbitWidth = orbitWidth;
-		this.orbitHeight = orbitHeight;
-		
-		this.orbitSpeed = orbitSpeed;
-		
-		this.orbitTidalLocked = orbitTidalLocked;
-		
-		this.worldKey = worldKey;
-		this.orbitWorldKey = orbitWorldKey;
-		
+		this.orbit = orbit;
+		this.environment = environment;
+		this.worldSkybox = worldSkybox;
+		this.orbitWorldSkybox = orbitWorldSkybox;
 		this.texture = texture;
+		this.name = name;
+		this.description = description;
 		
-		this.tooltip = tooltip;
+		this.worldKey = RegistryKey.of(Registry.WORLD_KEY, worldId);
+		this.worldOptionsKey = RegistryKey.of(Registry.DIMENSION_KEY, worldId);
+		this.worldDimensionTypeKey = RegistryKey.of(Registry.DIMENSION_TYPE_KEY, worldId);
+		
+		this.orbitWorldKey = RegistryKey.of(Registry.WORLD_KEY, orbitWorldId);
+		this.orbitWorldOptionsKey = RegistryKey.of(Registry.DIMENSION_KEY, orbitWorldId);
+		this.orbitWorldDimensionTypeKey = RegistryKey.of(Registry.DIMENSION_TYPE_KEY, orbitWorldId);
 	}
 	
-	public Tier getTier() {
-		return tier;
+	public Identifier getId() {
+		return id;
+	}
+	
+	@Nullable
+	public Identifier getWorldId() {
+		return worldId;
+	}
+	
+	@Nullable
+	public Identifier getOrbitWorldId() {
+		return orbitWorldId;
 	}
 	
 	public Position getPosition() {
@@ -95,32 +177,26 @@ public class Body {
 	}
 	
 	@Nullable
-	public Body getOrbitedBody() {
-		return orbitedBody;
+	public Orbit getOrbit() {
+		return orbit;
 	}
 	
-	public double getMass() {
-		return mass;
+	public Environment getEnvironment() {
+		return environment;
 	}
 	
-	public double getTemperature() {
-		return temperature;
+	@Nullable
+	public Skybox getWorldSkybox() {
+		return worldSkybox;
 	}
 	
-	public double getOrbitWidth() {
-		return orbitWidth;
+	@Nullable
+	public Skybox getOrbitWorldSkybox() {
+		return orbitWorldSkybox;
 	}
 	
-	public double getOrbitHeight() {
-		return orbitHeight;
-	}
-	
-	public double getOrbitSpeed() {
-		return orbitSpeed;
-	}
-	
-	public boolean isOrbitTidalLocked() {
-		return orbitTidalLocked;
+	public Texture getTexture() {
+		return texture;
 	}
 	
 	@Nullable
@@ -133,123 +209,83 @@ public class Body {
 		return orbitWorldKey;
 	}
 	
-	@Nullable
-	public Identifier getTexture() {
-		return texture;
+	public Text getName() {
+		return name;
 	}
 	
-	public Collection<Text> getTooltips() {
-		return tooltip.get();
+	public Text getDescription() {
+		return description;
 	}
 	
-	@Nullable
-	public BodyWidget getWidget() {
-		return widget;
+	public RegistryKey<DimensionOptions> getWorldOptionsKey() {
+		return worldOptionsKey;
 	}
 	
-	public void setWidget(@Nullable BodyWidget widget) {
-		this.widget = widget;
+	public RegistryKey<DimensionType> getWorldDimensionTypeKey() {
+		return worldDimensionTypeKey;
 	}
 	
-	public static class Builder {
-		private Tier tier;
-		
-		private Position position;
-		
-		private Size size;
-		
-		@Nullable
-		private Body orbitedBody;
-		
-		private double mass;
-		private double temperature;
-		
-		private double orbitWidth;
-		private double orbitHeight;
-		
-		private double orbitTime;
-		
-		private boolean orbitTidalLocked;
-		
-		private RegistryKey<World> worldKey;
-		private RegistryKey<World> orbitWorldKey;
-		
-		private Identifier texture;
-		
-		private Supplier<Collection<Text>> tooltip;
-		
-		public Builder setTier(Tier tier) {
-			this.tier = tier;
-			return this;
-		}
-		
-		public Builder setPosition(Position position) {
-			this.position = position;
-			return this;
-		}
-		
-		public Builder setSize(Size size) {
-			this.size = size;
-			return this;
-		}
-		
-		public Builder setOrbitedBody(Body orbitedBody) {
-			this.orbitedBody = orbitedBody;
-			return this;
-		}
-		
-		public Builder setMass(double mass) {
-			this.mass = mass;
-			return this;
-		}
-		
-		public Builder setTemperature(double temperature) {
-			this.temperature = temperature;
-			return this;
-		}
-		
-		public Builder setOrbitWidth(double orbitWidth) {
-			this.orbitWidth = orbitWidth;
-			return this;
-		}
-		
-		public Builder setOrbitHeight(double orbitHeight) {
-			this.orbitHeight = orbitHeight;
-			return this;
-		}
-		
-		public Builder setOrbitTime(double orbitTime) {
-			this.orbitTime = orbitTime;
-			return this;
-		}
-		
-		public Builder setOrbitTidalLocked(boolean orbitTidalLocked) {
-			this.orbitTidalLocked = orbitTidalLocked;
-			return this;
-		}
-		
-		public Builder setWorldKey(RegistryKey<World> worldKey) {
-			this.worldKey = worldKey;
-			return this;
-		}
-		
-		public Builder setOrbitWorldKey(RegistryKey<World> orbitWorldKey) {
-			this.orbitWorldKey = orbitWorldKey;
-			return this;
-		}
-		
-		public Builder setTexture(Identifier texture) {
-			this.texture = texture;
-			return this;
-		}
-		
-		public Builder setTooltip(Supplier<Collection<Text>> tooltip) {
-			this.tooltip = tooltip;
-			return this;
-		}
-		
-		public Body createBody() {
-			return new Body(tier, position, size, orbitedBody, mass, temperature, orbitWidth, orbitHeight, orbitTime, orbitTidalLocked, worldKey, orbitWorldKey, texture, tooltip);
-		}
+	public RegistryKey<DimensionOptions> getOrbitWorldOptionsKey() {
+		return orbitWorldOptionsKey;
+	}
+	
+	public RegistryKey<DimensionType> getOrbitWorldDimensionTypeKey() {
+		return orbitWorldDimensionTypeKey;
+	}
+	
+	public double getAngle() {
+		return angle;
+	}
+	
+	public void setAngle(double angle) {
+		this.angle = angle;
+	}
+	
+	public double getOrbitX() {
+		return orbitX;
+	}
+	
+	public void setOrbitX(double orbitX) {
+		this.orbitX = orbitX;
+	}
+	
+	public double getPrevOrbitX() {
+		return prevOrbitX;
+	}
+	
+	public void setPrevOrbitX(double prevOrbitX) {
+		this.prevOrbitX = prevOrbitX;
+	}
+	
+	public double getOrbitY() {
+		return orbitY;
+	}
+	
+	public void setOrbitY(double orbitY) {
+		this.orbitY = orbitY;
+	}
+	
+	public double getPrevOrbitY() {
+		return prevOrbitY;
+	}
+	
+	public void setPrevOrbitY(double prevOrbitY) {
+		this.prevOrbitY = prevOrbitY;
+	}
+	
+	public double getScale() {
+		return scale;
+	}
+	
+	public void setScale(double scale) {
+		this.scale = scale;
+	}
+	
+	public double getPrevScale() {
+		return prevScale;
+	}
+	
+	public void setPrevScale(double prevScale) {
+		this.prevScale = prevScale;
 	}
 }
