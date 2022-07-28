@@ -68,7 +68,7 @@ public class RocketScreenHandler extends ExtendedEntityScreenHandler {
 		var launchButton = new ButtonWidget();
 		
 		launchButton.onEvent(EventType.MOUSE_CLICKED, (MouseClickedEvent event) -> {
-			rocket.tryLaunch(this.getPlayer());
+			rocket.travel(null, null, this.getPlayer());
 		});
 		
 		launchButton.setPosition(new Position(tab, PAD_7, PAD_11 + (BAR_HEIGHT - LAUNCH_BUTTON_HEIGHT) / 2.0F));

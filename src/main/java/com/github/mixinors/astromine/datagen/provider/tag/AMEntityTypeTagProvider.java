@@ -42,6 +42,11 @@ public class AMEntityTypeTagProvider extends FabricTagProvider.EntityTypeTagProv
 			spaceSlimesTag.add(entityType);
 		}
 		
+		var ignoresDimensionalLayersTag = getOrCreateTagBuilder(AMTagKeys.EntityTypeTags.IGNORES_DIMENSIONAL_LAYERS);
+		for (var entityType : AMDatagenLists.EntityTypeLists.IGNORES_DIMENSIONAL_LAYERS) {
+			ignoresDimensionalLayersTag.add(entityType);
+		}
+		
 		var doesNotBreatheTag = getOrCreateTagBuilder(AMTagKeys.EntityTypeTags.DOES_NOT_BREATHE);
 		for (var entityType : AMDatagenLists.EntityTypeLists.DOES_NOT_BREATHE_ENTITY_TYPES) {
 			doesNotBreatheTag.add(entityType);

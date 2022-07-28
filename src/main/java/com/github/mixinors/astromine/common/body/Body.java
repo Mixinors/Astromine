@@ -1,6 +1,9 @@
 package com.github.mixinors.astromine.common.body;
 
+import com.github.mixinors.astromine.common.util.data.tier.Tier;
 import com.github.mixinors.astromine.common.widget.BodyWidget;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import net.minecraft.text.Text;
@@ -12,7 +15,15 @@ import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.function.Supplier;
 
+/**
+ * <p>A {@link Body} represents a three-dimensional body in space,
+ * which may or may not be orbiting a point.</p>
+ *
+ * <p>Positions should be KM-based and fit within a <code>float</code>.</p>
+ */
 public class Body {
+	private final Tier tier;
+	
 	private final Position position;
 	
 	private final Size size;
@@ -44,7 +55,9 @@ public class Body {
 	@Nullable
 	private BodyWidget widget = null;
 	
-	Body(Position position, Size size, Body orbitedBody, double mass, double temperature, double orbitWidth, double orbitHeight, double orbitSpeed, boolean orbitTidalLocked, @Nullable RegistryKey<World> worldKey, @Nullable RegistryKey<World> orbitWorldKey, @Nullable Identifier texture, Supplier<Collection<Text>> tooltip) {
+	Body(Tier tier, Position position, Size size, Body orbitedBody, double mass, double temperature, double orbitWidth, double orbitHeight, double orbitSpeed, boolean orbitTidalLocked, @Nullable RegistryKey<World> worldKey, @Nullable RegistryKey<World> orbitWorldKey, @Nullable Identifier texture, Supplier<Collection<Text>> tooltip) {
+		this.tier = tier;
+		
 		this.position = position;
 		
 		this.size = size;
@@ -67,6 +80,10 @@ public class Body {
 		this.texture = texture;
 		
 		this.tooltip = tooltip;
+	}
+	
+	public Tier getTier() {
+		return tier;
 	}
 	
 	public Position getPosition() {
@@ -135,6 +152,8 @@ public class Body {
 	}
 	
 	public static class Builder {
+		private Tier tier;
+		
 		private Position position;
 		
 		private Size size;
@@ -158,6 +177,11 @@ public class Body {
 		private Identifier texture;
 		
 		private Supplier<Collection<Text>> tooltip;
+		
+		public Builder setTier(Tier tier) {
+			this.tier = tier;
+			return this;
+		}
 		
 		public Builder setPosition(Position position) {
 			this.position = position;
@@ -225,7 +249,7 @@ public class Body {
 		}
 		
 		public Body createBody() {
-			return new Body(position, size, orbitedBody, mass, temperature, orbitWidth, orbitHeight, orbitTime, orbitTidalLocked, worldKey, orbitWorldKey, texture, tooltip);
+			return new Body(tier, position, size, orbitedBody, mass, temperature, orbitWidth, orbitHeight, orbitTime, orbitTidalLocked, worldKey, orbitWorldKey, texture, tooltip);
 		}
 	}
 }

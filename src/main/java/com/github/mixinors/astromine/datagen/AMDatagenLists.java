@@ -308,6 +308,10 @@ public class AMDatagenLists {
 				EntityType.WITHER,
 				EntityType.STRIDER
 		);
+		
+		public static final List<EntityType<?>> IGNORES_DIMENSIONAL_LAYERS = ImmutableList.of(
+				AMEntityTypes.ROCKET.get()
+		);
 	}
 	
 	public static class ItemTagLists {

@@ -141,6 +141,8 @@ public class AMTagKeys {
 		public static final TagKey<EntityType<?>> CAN_BREATHE_WATER = createEntityTypeTag("can_breathe_water");
 		public static final TagKey<EntityType<?>> CAN_BREATHE_LAVA = createEntityTypeTag("can_breathe_lava");
 		public static final TagKey<EntityType<?>> CANNOT_BREATHE_OXYGEN = createEntityTypeTag("cannot_breathe_oxygen");
+		
+		public static final TagKey<EntityType<?>> IGNORES_DIMENSIONAL_LAYERS = createEntityTypeTag("ignore_dimensional_layers");
 	}
 	
 	public static class DimensionTypeTags {

@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.common.entity.rocket;
 
 import com.github.mixinors.astromine.common.screen.handler.entity.RocketScreenHandler;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
+import com.google.common.collect.Lists;
 import dev.architectury.registry.menu.ExtendedMenuProvider;
 import dev.architectury.registry.menu.MenuRegistry;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
@@ -52,90 +53,12 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.Collection;
 
-public class RocketEntity extends com.github.mixinors.astromine.common.entity.rocket.base.RocketEntity implements ExtendedMenuProvider {
+public class RocketEntity extends com.github.mixinors.astromine.common.entity.rocket.base.RocketEntity {
 	public RocketEntity(EntityType<?> type, World world) {
 		super(type, world);
 		
 		fluidStorage.getStorage(LIQUID_FUEL_FLUID_INPUT_SLOT_1).setCapacity(FluidConstants.BUCKET * 16);
 		fluidStorage.getStorage(LIQUID_FUEL_FLUID_INPUT_SLOT_2).setCapacity(FluidConstants.BUCKET * 16);
-	}
-	
-	@Override
-	public Vec3d getLerpedPos(float delta) {
-		if (hasPassengers()) {
-			var passengers = getPassengerList();
-			var passenger = passengers.get(0);
-			
-			var passengerPosition = getPassengerPosition();
-			
-			prevX = passenger.prevX;
-			prevY = passenger.prevY;
-			prevZ = passenger.prevZ;
-			
-			lastRenderX = passenger.lastRenderX;
-			lastRenderY = passenger.lastRenderY;
-			lastRenderZ = passenger.lastRenderZ;
-			
-			return passenger.getLerpedPos(delta).subtract(passengerPosition.getX(), passengerPosition.getY(), passengerPosition.getZ());
-		}
-		
-		return super.getLerpedPos(delta);
-	}
-	
-	@Override
-	protected Vector3d getAcceleration() {
-		return new Vector3d(0.0D, 0.000025 / (Math.abs(getY()) / 1024.0D), 0.0D);
-	}
-	
-	@Override
-	protected Vec3f getPassengerPosition() {
-		return new Vec3f(0.0F, 7.75F, 0.0F);
-	}
-	
-	@Override
-	protected Collection<ItemStack> getDroppedStacks() {
-		return null; // ..Lists.newArrayList(new ItemStack(AMItems.PRIMITIVE_ROCKET_BOOSTER.get()), new ItemStack(AMItems.PRIMITIVE_ROCKET_HULL.get()), new ItemStack(AMItems.PRIMITIVE_ROCKET_PLATING.get(), 2));
-	}
-	
-	@Override
-	public void openInventory(PlayerEntity player) {
-		MenuRegistry.openExtendedMenu((ServerPlayerEntity) player, this);
-	}
-	
-	@Override
-	public boolean collides() {
-		return !this.isRemoved();
-	}
-	
-	@Override
-	public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
-		if (player.world.isClient) {
-			return ActionResult.CONSUME;
-		}
-		
-		if (player.isSneaking()) {
-			this.openInventory(player);
-		} else {
-			player.startRiding(this);
-		}
-		
-		return super.interactAt(player, hitPos, hand);
-	}
-	
-	@Override
-	public Packet<?> createSpawnPacket() {
-		return new EntitySpawnS2CPacket(this);
-	}
-	
-	@Override
-	public void saveExtraData(PacketByteBuf buf) {
-		buf.writeInt(this.getId());
-	}
-	
-	@Nullable
-	@Override
-	public ScreenHandler createMenu(int syncId, PlayerInventory inventory, PlayerEntity player) {
-		return new RocketScreenHandler(syncId, player, getId());
 	}
 	
 	@Override

@@ -20,10 +20,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class BodySelectorScreenHandler extends BaseScreenHandler {
-	private BodyWidget sun;
-	private BodyWidget earth;
-	private BodyWidget moon;
-	
 	public BodySelectorScreenHandler(int syncId, PlayerEntity player) {
 		super(AMScreenHandlers.BODY_SELECTOR.get(), syncId, player);
 	}
@@ -38,7 +34,7 @@ public class BodySelectorScreenHandler extends BaseScreenHandler {
 			add(panel);
 			
 			// Add Sun.
-			sun = new BodyWidget(AMBodies.SUN);
+			var sun = new BodyWidget(AMBodies.SUN);
 			sun.setPosition(width / 2.0F - sun.getWidth() / 2.0F, height / 2.0F - sun.getHeight() / 2.0F);
 			
 			sun.getBody().setWidget(sun);
@@ -46,7 +42,7 @@ public class BodySelectorScreenHandler extends BaseScreenHandler {
 			panel.add(sun);
 			
 			// Add Earth.
-			earth = new BodyWidget(AMBodies.EARTH);
+			var earth = new BodyWidget(AMBodies.EARTH);
 			earth.setPosition(sun.getPosition().getX() + (width * 0.15F), sun.getPosition().getY() + (height * 0.15F));
 			
 			earth.getBody().setWidget(earth);
@@ -54,12 +50,20 @@ public class BodySelectorScreenHandler extends BaseScreenHandler {
 			panel.add(earth);
 			
 			// Add Moon.
-			moon = new BodyWidget(AMBodies.MOON);
+			var moon = new BodyWidget(AMBodies.MOON);
 			moon.setPosition(earth.getPosition().getX() + (width * 0.02F), earth.getPosition().getY() - (height * 0.02F));
 			
 			moon.getBody().setWidget(moon);
 			
 			panel.add(moon);
+			
+			// Add Mars.
+			var mars = new BodyWidget(AMBodies.MARS);
+			mars.setPosition(earth.getPosition().getX() + (width * 0.15F + width * 0.02F), earth.getPosition().getY() + (height * 0.15F + height * 0.02F));
+			
+			mars.getBody().setWidget(mars);
+			
+			panel.add(mars);
 		}
 	}
 	
@@ -68,9 +72,11 @@ public class BodySelectorScreenHandler extends BaseScreenHandler {
 		super.close(player);
 		
 		if (isClient()) {
-			sun.getBody().setWidget(null);
-			earth.getBody().setWidget(null);
-			moon.getBody().setWidget(null);
+			for (var child : getChildren()) {
+				if (child instanceof BodyWidget bodyWidget) {
+					bodyWidget.getBody().setWidget(null);
+				}
+			}
 		}
 	}
 	

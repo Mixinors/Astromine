@@ -1,5 +1,6 @@
 package com.github.mixinors.astromine.common.widget;
 
+import com.github.mixinors.astromine.client.screen.BodySelectorHandledScreen;
 import com.github.mixinors.astromine.client.util.DrawingUtil;
 import com.github.mixinors.astromine.common.body.Body;
 import com.github.mixinors.astromine.registry.client.AMRenderLayers;
@@ -10,6 +11,7 @@ import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.client.util.PositionUtil;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
@@ -37,6 +39,8 @@ public class BodyWidget extends Widget {
 	public BodyWidget(Body body) {
 		this.body = body;
 		
+		this.body.setWidget(this);
+		
 		this.setPosition(body.getPosition());
 		this.setSize(body.getSize());
 		
@@ -53,7 +57,7 @@ public class BodyWidget extends Widget {
 			
 			var windowWidth = window.getScaledWidth();
 			
-			return (windowWidth / 2.0F) - (getWidth() / 2.0F);
+			return ((windowWidth / 2.0F) - (getWidth() / 2.0F));
 		}
 		
 		return (float) prevOrbitX;
@@ -67,10 +71,20 @@ public class BodyWidget extends Widget {
 			
 			var windowHeight = window.getScaledHeight();
 			
-			return  (windowHeight / 2.0F) - (getHeight() / 2.0F);
+			return ((windowHeight / 2.0F) - (getWidth() / 2.0F));
 		}
 		
 		return (float) prevOrbitY;
+	}
+	
+	@Override
+	public float getWidth() {
+		return super.getWidth() * BodySelectorHandledScreen.SCROLL_DELTA;
+	}
+	
+	@Override
+	public float getHeight() {
+		return super.getHeight() * BodySelectorHandledScreen.SCROLL_DELTA;
 	}
 	
 	public Body getBody() {
@@ -97,18 +111,18 @@ public class BodyWidget extends Widget {
 				orbitY += body.getOrbitedBody().getWidget().getY() + (getHeight() / 2.0F);
 			}
 		} else {
-			var client = InstanceUtil.getClient();
-			var window = client.getWindow();
-			
-			var windowWidth = window.getScaledWidth();
-			var windowHeight = window.getScaledHeight();
-			
-			orbitX += (windowWidth / 2.0F) - (getWidth() / 2.0F);
-			orbitY += (windowHeight / 2.0F) - (getHeight() / 2.0F);
+			orbitX += getX();
+			orbitY += getY();
 		}
 		
 		prevOrbitX = orbitX;
 		prevOrbitY = orbitY;
+		
+		orbitX *= BodySelectorHandledScreen.SCROLL_DELTA;
+		orbitY *= BodySelectorHandledScreen.SCROLL_DELTA;
+		
+		orbitX += BodySelectorHandledScreen.DRAG_DELTA_X;
+		orbitY += BodySelectorHandledScreen.DRAG_DELTA_Y;
 		
 		var speed = 1.0D;
 		
@@ -118,7 +132,7 @@ public class BodyWidget extends Widget {
 			}
 		}
 		
-		angle += (body.getOrbitSpeed() / 360.0D * 16.0D) * tickDelta * 0.1D * speed;
+		angle += (body.getOrbitSpeed() / 360.0D * 4.0D) * tickDelta * 0.1D * speed;
 		angle %= 360.0D;
 		
 		matrices.push();
@@ -131,7 +145,7 @@ public class BodyWidget extends Widget {
 		var minPos = new Vector4f((float) orbitX - getWidth(), (float) orbitY - getWidth(), -getWidth(), 1.0F);
 		var maxPos = new Vector4f((float) orbitX + getWidth(), (float) orbitY + getWidth(), +getWidth(), 1.0F);
 		
-		var mousePos = new Vec3f(PositionUtil.getMouseX(), PositionUtil.getMouseY(), 0.0F);
+		var mousePos = new Vec3f(PositionUtil.getMouseX() , PositionUtil.getMouseY(), 0.0F);
 		
 		var scale = 1.0F;
 		
@@ -152,14 +166,12 @@ public class BodyWidget extends Widget {
 				matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(45.0F - (float) Math.toDegrees(this.angle)));
 			}
 		}
-
-		matrices.scale(scale, scale, scale);
 		
 		DrawingUtil.drawCube(
 				matrices,
 				provider,
 				0.0F, 0.0F, 0.0F,
-				getWidth(), getWidth(), getWidth(),
+				getWidth() * scale, getWidth() * scale, getWidth() * scale,
 				new Color(0xEFEFEFFFL),
 				AMRenderLayers.getBody(body.getTexture())
 		);
