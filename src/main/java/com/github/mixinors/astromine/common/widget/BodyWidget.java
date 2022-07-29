@@ -78,17 +78,14 @@ public class BodyWidget extends Widget {
 	
 	@Override
 	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
-		body.setPrevOrbitX(body.getOrbitX());
-		body.setPrevOrbitY(body.getOrbitY());
-		
 		var orbitX = 0.0D;
 		var orbitY = 0.0D;
 		
 		if (body.getOrbit() != null) {
 			var orbit = body.getOrbit();
 			
-			orbitX = orbit.width() * Math.cos(body.getAngle());
-			orbitY = orbit.height() * Math.sin(body.getAngle());
+			orbitX += orbit.width() * Math.cos(body.getAngle());
+			orbitY += orbit.height() * Math.sin(body.getAngle());
 			
 			if (orbit.orbitedBodyId() != null) {
 				var orbitedBody = AMRegistries.BODY.get(orbit.orbitedBodyId());
@@ -97,28 +94,25 @@ public class BodyWidget extends Widget {
 					orbitX += orbitedBody.getOrbitX() + getWidth() / 2.0F;
 					orbitY += orbitedBody.getOrbitY() + getHeight() / 2.0F;
 				}
-			} else {
-				orbitX += getX();
-				orbitY += getY();
 			}
 		} else {
 			orbitX += getX();
 			orbitY += getY();
 		}
 		
+		body.setOrbitX(orbitX);
+		body.setOrbitY(orbitY);
+		
 		var offsetX = BodySelectorHandledScreen.getOffsetX();
 		var offsetY = BodySelectorHandledScreen.getOffsetY();
 		
-		var zoom = BodySelectorHandledScreen.getZoom(tickDelta);
+		var zoom = BodySelectorHandledScreen.getZoom();
 		
 		orbitX *= zoom;
 		orbitY *= zoom;
 		
 		orbitX += offsetX;
 		orbitY += offsetY;
-		
-		body.setOrbitX(orbitX);
-		body.setOrbitY(orbitY);
 		
 		var speed = 1.0D;
 		
@@ -160,9 +154,9 @@ public class BodyWidget extends Widget {
 			if (body.getOrbit() != null) {
 				var orbit = body.getOrbit();
 				
-				var angle = 0.0D;
+				var angle = body.getAngle();
 				
-				angle += (orbit.speed() / 360.0D) * tickDelta * 0.1D * speed;
+				angle += (orbit.speed() / 360.0D * 16.0D) * tickDelta * 0.1D * speed;
 				angle %= 360.0D;
 				
 				body.setAngle(angle);

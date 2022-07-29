@@ -11,6 +11,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
+import dev.vini2003.hammer.gravity.api.common.manager.GravityManager;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -28,6 +29,7 @@ import net.minecraft.resource.ResourceManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.util.Identifier;
+import org.apache.commons.io.IOUtils;
 
 import java.io.InputStreamReader;
 import java.util.*;
@@ -76,23 +78,11 @@ public class BodyManager {
 	}
 	
 	public static class ReloadListener implements SimpleSynchronousResourceReloadListener {
-		public static final ReloadListener INSTANCE = new ReloadListener();
-		
-		private ReloadListener() {}
-		
 		private static final Identifier ID = AMCommon.id("body_reload_listener");
 		
 		@Override
 		public Identifier getFabricId() {
 			return ID;
-		}
-		
-		private MinecraftServer getServer() {
-			if (InstanceUtil.isServer()) return InstanceUtil.getServer(); else return getServerClient();
-		}
-		
-		private MinecraftServer getServerClient() {
-			return InstanceUtil.getClient().getServer();
 		}
 		
 		@Override
@@ -102,43 +92,51 @@ public class BodyManager {
 			manager.findResources("bodies", s -> s.endsWith(".json"))
 					.stream()
 					.map(id -> {
-						try (var resource = manager.getResource(id)) {
-							return resource;
+						try {
+							return manager.getResource(id);
 						} catch (Exception e) {
 							return null;
 						}
 					})
 					.filter(Objects::nonNull)
-					.map(Resource::getInputStream)
-					.map(InputStreamReader::new)
-					.map(reader -> {
-						var json = AMCommon.GSON.fromJson(reader, JsonObject.class);
-			
+					.map(resource -> {
 						try {
+							var stream = resource.getInputStream();
+							var reader = new InputStreamReader(stream);
+							var json = AMCommon.GSON.fromJson(reader, JsonObject.class);
+							
 							reader.close();
-						} catch (Exception ignored) {}
+							
+							return json;
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 						
-						return json;
+						return null;
 					})
 					.map(json -> Body.CODEC.decode(JsonOps.INSTANCE, json))
 					.map(DataResult::result)
 					.filter(Optional::isPresent)
 					.map(Optional::get)
 					.map(Pair::getFirst)
-					.forEach(body -> AMRegistries.BODY.register(body.getId(), body));
+					.forEach(body -> {
+						AMRegistries.BODY.register(body.getId(), body);
+					});
 			
-			var server = getServer();
+			var server = InstanceUtil.getServer();
 			
-			var result = REGISTRY_CODEC.encodeStart(NbtOps.INSTANCE, AMRegistries.BODY);
-			
-			var nbt = new NbtCompound();
-			nbt.put(BODIES, result.result().get());
-			
-			var buf = PacketByteBufs.create();
-			buf.writeNbt(nbt);
-			
-			for (var player : server.getPlayerManager().getPlayerList()) {
-				ServerPlayNetworking.send(player, AMNetworking.SYNC_BODIES, PacketByteBufs.duplicate(buf));
+			if (server != null) {
+				var result = REGISTRY_CODEC.encodeStart(NbtOps.INSTANCE, AMRegistries.BODY);
+				
+				var nbt = new NbtCompound();
+				nbt.put(BODIES, result.result().get());
+				
+				var buf = PacketByteBufs.create();
+				buf.writeNbt(nbt);
+				
+				for (var player : server.getPlayerManager().getPlayerList()) {
+					ServerPlayNetworking.send(player, AMNetworking.SYNC_BODIES, PacketByteBufs.duplicate(buf));
+				}
 			}
 		}
 	}

@@ -42,7 +42,10 @@ import java.util.function.Supplier;
 
 public class BodySelectorHandledScreen extends BaseHandledScreen<BodySelectorScreenHandler> {
 	private static float OFFSET_X = 0.0F;
+	private static float PREV_OFFSET_X = 0.0F;
+	
 	private static float OFFSET_Y = 0.0F;
+	private static float PREV_OFFSET_Y = 0.0F;
 	
 	private static float ZOOM = 0.0F;
 	private static float PREV_ZOOM = 0.0F;
@@ -64,16 +67,14 @@ public class BodySelectorHandledScreen extends BaseHandledScreen<BodySelectorScr
 	}
 	
 	public static float getOffsetX() {
-		return OFFSET_X;
+		return PREV_OFFSET_X;
 	}
 	
 	public static float getOffsetY() {
-		return OFFSET_Y;
+		return PREV_OFFSET_Y;
 	}
 	
-	public static float getZoom(float tickDelta) {
-		PREV_ZOOM = MathHelper.lerp(tickDelta, PREV_ZOOM, ZOOM);
-		
+	public static float getZoom() {
 		return PREV_ZOOM;
 	}
 	
@@ -88,12 +89,17 @@ public class BodySelectorHandledScreen extends BaseHandledScreen<BodySelectorScr
 		backgroundTexture.get().draw(matrices, provider, 0, 0, width, height);
 		
 		provider.draw();
+		
+		PREV_ZOOM = MathHelper.lerp(delta, PREV_ZOOM, ZOOM);
+		
+		PREV_OFFSET_X = MathHelper.lerp(delta, PREV_OFFSET_X, OFFSET_X);
+		PREV_OFFSET_Y = MathHelper.lerp(delta, PREV_OFFSET_Y, OFFSET_Y);
 	}
 	
 	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-		BodySelectorHandledScreen.OFFSET_X += deltaX;
-		BodySelectorHandledScreen.OFFSET_Y += deltaY;
+		OFFSET_X += deltaX;
+		OFFSET_Y += deltaY;
 		
 		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 	}

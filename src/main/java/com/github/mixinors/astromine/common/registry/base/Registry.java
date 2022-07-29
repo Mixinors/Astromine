@@ -31,6 +31,7 @@ import com.mojang.serialization.codecs.UnboundedMapCodec;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * A unidirectional registry, where all keys must be unique and values may be repeated.
@@ -52,6 +53,13 @@ public class Registry<K, V> {
 	
 	public Registry(Map<K, V> entries) {
 		this.entries = entries;
+	}
+	
+	/**
+	 * Returns a supplier for the {@link V} value associated with the given {@link K} key.
+	 */
+	public Supplier<V> getSupplier(K key) {
+		return () -> getEntries().get(key);
 	}
 	
 	/** Returns the {@link V} value associated with the given {@link K} key. */

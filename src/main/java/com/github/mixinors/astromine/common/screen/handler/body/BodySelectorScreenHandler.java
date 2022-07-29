@@ -41,14 +41,20 @@ public class BodySelectorScreenHandler extends BaseScreenHandler {
 				if (body.getOrbit() != null) {
 					var orbit = body.getOrbit();
 					
-					if (orbit.orbitedBodyOffset() != null) {
-						var orbitedBodyOffset = orbit.orbitedBodyOffset();
-						
-						widget.setPosition(orbitedBodyOffset.getX(), orbitedBodyOffset.getY());
+					if (orbit.orbitedBodyId() != null) {
+						if (orbit.orbitedBodyOffset() != null) {
+							var orbitedBodyOffset = orbit.orbitedBodyOffset();
+							
+							widget.setPosition(orbitedBodyOffset.getX(), orbitedBodyOffset.getY());
+						}
 					}
 				} else {
 					widget.setPosition(width / 2.0F, height / 2.0F);
 				}
+				
+				widget.setSize(body.getSize());
+				
+				panel.add(widget);
 			}
 		}
 	}

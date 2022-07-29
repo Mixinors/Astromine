@@ -2,7 +2,6 @@ package com.github.mixinors.astromine.common.body;
 
 import com.github.mixinors.astromine.client.render.skybox.Skybox;
 import com.github.mixinors.astromine.common.util.extra.Codecs;
-import com.github.mixinors.astromine.common.widget.BodyWidget;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
@@ -33,13 +32,14 @@ public class Body {
 					Position.CODEC.fieldOf("position").forGetter(Body::getPosition),
 					Size.CODEC.fieldOf("size").forGetter(Body::getSize),
 					Orbit.CODEC.optionalFieldOf("orbit").forGetter(body -> Optional.ofNullable(body.getOrbit())),
-					Environment.CODEC.fieldOf("environment").forGetter(Body::getEnvironment),
+					Environment.CODEC.optionalFieldOf("worldEnvironment").forGetter(body -> Optional.ofNullable(body.getWorldEnvironment())),
+					Environment.CODEC.optionalFieldOf("orbitWorldEnvironment").forGetter(body -> Optional.ofNullable(body.getOrbitWorldEnvironment())),
 					Skybox.CODEC.optionalFieldOf("worldSkybox").forGetter(body -> Optional.ofNullable(body.getWorldSkybox())),
 					Skybox.CODEC.optionalFieldOf("orbitWorldSkybox").forGetter(body -> Optional.ofNullable(body.getOrbitWorldSkybox())),
 					Texture.CODEC.fieldOf("texture").forGetter(Body::getTexture),
 					Codecs.LITERAL_TEXT.fieldOf("name").forGetter(Body::getName),
 					Codecs.TRANSLATABLE_TEXT.fieldOf("description").forGetter(Body::getDescription)
-			).apply(instance, (id, worldId, orbitWorldId, position, size, orbit, environment, worldSkybox, orbitWorldSkybox, texture, name, description) -> new Body(id, worldId.orElse(null), orbitWorldId.orElse(null), position, size, orbit.orElse(null), environment, worldSkybox.orElse(null), orbitWorldSkybox.orElse(null), texture, name, description))
+			).apply(instance, (id, worldId, orbitWorldId, position, size, orbit, worldEnvironment, orbitWorldEnvironment, worldSkybox, orbitWorldSkybox, texture, name, description) -> new Body(id, worldId.orElse(null), orbitWorldId.orElse(null), position, size, orbit.orElse(null), worldEnvironment.orElse(null), orbitWorldEnvironment.orElse(null), worldSkybox.orElse(null), orbitWorldSkybox.orElse(null), texture, name, description))
 	);
 	
 	public record Orbit(
@@ -104,21 +104,29 @@ public class Body {
 	
 	@Nullable
 	private final Orbit orbit;
-	private final Environment environment;
+	
+	@Nullable
+	private final Environment worldEnvironment;
+	@Nullable
+	private final Environment orbitWorldEnvironment;
+	
+	@Nullable
 	private final Skybox worldSkybox;
+	@Nullable
 	private final Skybox orbitWorldSkybox;
+	
 	private final Texture texture;
 	
 	private final Text name;
 	private final Text description;
 	
-	private final RegistryKey<World> worldKey;
-	private final RegistryKey<DimensionOptions> worldOptionsKey;
-	private final RegistryKey<DimensionType> worldDimensionTypeKey;
+	private RegistryKey<World> worldKey = null;
+	private RegistryKey<DimensionOptions> worldOptionsKey = null;
+	private RegistryKey<DimensionType> worldDimensionTypeKey = null;
 	
-	private final RegistryKey<World> orbitWorldKey;
-	private final RegistryKey<DimensionOptions> orbitWorldOptionsKey;
-	private final RegistryKey<DimensionType> orbitWorldDimensionTypeKey;
+	private RegistryKey<World> orbitWorldKey = null;
+	private RegistryKey<DimensionOptions> orbitWorldOptionsKey = null;
+	private RegistryKey<DimensionType> orbitWorldDimensionTypeKey = null;
 	
 	private double angle = 0.0D;
 	
@@ -131,27 +139,32 @@ public class Body {
 	private double scale = 0.0D;
 	private double prevScale = 1.0D;
 	
-	public Body(Identifier id, @Nullable Identifier worldId, @Nullable Identifier orbitWorldId, Position position, Size size, @Nullable Orbit orbit, Environment environment, @Nullable Skybox worldSkybox, @Nullable Skybox orbitWorldSkybox, Texture texture, Text name, Text description) {
+	public Body(Identifier id, @Nullable Identifier worldId, @Nullable Identifier orbitWorldId, Position position, Size size, @Nullable Orbit orbit, @Nullable Environment worldEnvironment, @Nullable Environment orbitWorldEnvironment, @Nullable Skybox worldSkybox, @Nullable Skybox orbitWorldSkybox, Texture texture, Text name, Text description) {
 		this.id = id;
 		this.worldId = worldId;
 		this.orbitWorldId = orbitWorldId;
 		this.position = position;
 		this.size = size;
 		this.orbit = orbit;
-		this.environment = environment;
+		this.worldEnvironment = worldEnvironment;
+		this.orbitWorldEnvironment = orbitWorldEnvironment;
 		this.worldSkybox = worldSkybox;
 		this.orbitWorldSkybox = orbitWorldSkybox;
 		this.texture = texture;
 		this.name = name;
 		this.description = description;
 		
-		this.worldKey = RegistryKey.of(Registry.WORLD_KEY, worldId);
-		this.worldOptionsKey = RegistryKey.of(Registry.DIMENSION_KEY, worldId);
-		this.worldDimensionTypeKey = RegistryKey.of(Registry.DIMENSION_TYPE_KEY, worldId);
+		if (worldId != null) {
+			this.worldKey = RegistryKey.of(Registry.WORLD_KEY, worldId);
+			this.worldOptionsKey = RegistryKey.of(Registry.DIMENSION_KEY, worldId);
+			this.worldDimensionTypeKey = RegistryKey.of(Registry.DIMENSION_TYPE_KEY, worldId);
+		}
 		
-		this.orbitWorldKey = RegistryKey.of(Registry.WORLD_KEY, orbitWorldId);
-		this.orbitWorldOptionsKey = RegistryKey.of(Registry.DIMENSION_KEY, orbitWorldId);
-		this.orbitWorldDimensionTypeKey = RegistryKey.of(Registry.DIMENSION_TYPE_KEY, orbitWorldId);
+		if (orbitWorldId != null) {
+			this.orbitWorldKey = RegistryKey.of(Registry.WORLD_KEY, orbitWorldId);
+			this.orbitWorldOptionsKey = RegistryKey.of(Registry.DIMENSION_KEY, orbitWorldId);
+			this.orbitWorldDimensionTypeKey = RegistryKey.of(Registry.DIMENSION_TYPE_KEY, orbitWorldId);
+		}
 	}
 	
 	public Identifier getId() {
@@ -181,8 +194,14 @@ public class Body {
 		return orbit;
 	}
 	
-	public Environment getEnvironment() {
-		return environment;
+	@Nullable
+	public Environment getWorldEnvironment() {
+		return worldEnvironment;
+	}
+	
+	@Nullable
+	public Environment getOrbitWorldEnvironment() {
+		return orbitWorldEnvironment;
 	}
 	
 	@Nullable

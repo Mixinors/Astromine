@@ -44,7 +44,7 @@ import net.minecraft.server.world.ServerWorld;
 
 public class AMEvents {
 	public static void init() {
-		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(BodyManager.ReloadListener.INSTANCE);
+		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new BodyManager.ReloadListener());
 		
 		ServerPlayConnectionEvents.JOIN.register(BodyManager.JoinListener.INSTANCE);
 		

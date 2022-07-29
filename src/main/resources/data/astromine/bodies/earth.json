@@ -1,5 +1,7 @@
 {
   "id": "astromine:earth",
+  "worldId": "minecraft:overworld",
+  "orbitWorldId": "astromine:earth_orbit",
   "position": {
     "x": 149600000.0, "y": 0.0, "z": 0.0
   },
