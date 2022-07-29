@@ -7,18 +7,22 @@ import com.github.mixinors.astromine.common.screen.handler.body.BodySelectorScre
 import com.github.mixinors.astromine.registry.client.AMRenderLayers;
 import com.github.mixinors.astromine.registry.common.AMRegistries;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.systems.RenderSystem;
 import dev.vini2003.hammer.core.api.client.color.Color;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.client.util.PositionUtil;
+import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.math.Vector4f;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BodyWidget extends Widget {
@@ -84,6 +88,64 @@ public class BodyWidget extends Widget {
 	
 	@Override
 	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+		var offsetX = BodySelectorHandledScreen.getOffsetX();
+		var offsetY = BodySelectorHandledScreen.getOffsetY();
+		
+		var zoom = BodySelectorHandledScreen.getZoom();
+		
+		if (body.orbit() != null) {
+			var orbit = body.orbit();
+			
+			Vec2f prevPos = null;
+			
+			var consumer = provider.getBuffer(RenderLayer.getLines());
+			
+			var focusedColor = new Color(1.0F, 1.0F, 1.0F, 1.0F);
+			var unfocusedColor = new Color(0.4F, 0.4F, 0.4F, 1.0F);
+			
+			for (var angle = 0.0F; angle <= 360.0F; angle += 1.0F) {
+				var trailX = orbit.width() * Math.cos(Math.toRadians(angle));
+				var trailY = orbit.height() * Math.sin(Math.toRadians(angle));
+				
+				if (orbit.orbitedBodyId() != null) {
+					var orbitedBody = AMRegistries.BODY.get(orbit.orbitedBodyId());
+					
+					if (orbitedBody != null) {
+						trailX += orbitedBody.getOrbitX() + orbitedBody.getScale();
+						trailY += orbitedBody.getOrbitY() + orbitedBody.getScale();
+					}
+				}
+				
+				trailX *= zoom;
+				trailY *= zoom;
+				
+				trailX += offsetX;
+				trailY += offsetY;
+				
+				var pos = new Vec2f((float) trailX, (float) trailY);
+				
+				if (prevPos == null) {
+					prevPos = pos;
+				} else {
+					if (isFocused()) {
+						consumer.vertex(pos.x, pos.y, 0.0F).color(focusedColor.getR(), focusedColor.getG(), focusedColor.getB(), focusedColor.getA()).normal(0.0F, 1.0F, 0.0F).next();
+						consumer.vertex(prevPos.x, prevPos.y, 0.0F).color(focusedColor.getR(), focusedColor.getG(), focusedColor.getB(), focusedColor.getA()).normal(0.0F, 1.0F, 0.0F).next();
+						
+						consumer.vertex(pos.x, pos.y, 0.0F).color(focusedColor.getR(), focusedColor.getG(), focusedColor.getB(), focusedColor.getA()).normal(1.0F, 0.0F, 0.0F).next();
+						consumer.vertex(prevPos.x, prevPos.y, 0.0F).color(focusedColor.getR(), focusedColor.getG(), focusedColor.getB(), focusedColor.getA()).normal(1.0F, 0.0F, 0.0F).next();
+					} else {
+						consumer.vertex(pos.x, pos.y, 0.0F).color(unfocusedColor.getR(), unfocusedColor.getG(), unfocusedColor.getB(), unfocusedColor.getA()).normal(0.0F, 1.0F, 0.0F).next();
+						consumer.vertex(prevPos.x, prevPos.y, 0.0F).color(unfocusedColor.getR(), unfocusedColor.getG(), unfocusedColor.getB(), unfocusedColor.getA()).normal(0.0F, 1.0F, 0.0F).next();
+						
+						consumer.vertex(pos.x, pos.y, 0.0F).color(unfocusedColor.getR(), unfocusedColor.getG(), unfocusedColor.getB(), unfocusedColor.getA()).normal(1.0F, 0.0F, 0.0F).next();
+						consumer.vertex(prevPos.x, prevPos.y, 0.0F).color(unfocusedColor.getR(), unfocusedColor.getG(), unfocusedColor.getB(), unfocusedColor.getA()).normal(1.0F, 0.0F, 0.0F).next();
+					}
+					
+					prevPos = pos;
+				}
+			}
+		}
+		
 		var orbitX = 0.0D;
 		var orbitY = 0.0D;
 		
@@ -97,8 +159,8 @@ public class BodyWidget extends Widget {
 				var orbitedBody = AMRegistries.BODY.get(orbit.orbitedBodyId());
 				
 				if (orbitedBody != null) {
-					orbitX += orbitedBody.getOrbitX() + getWidth() / 2.0F;
-					orbitY += orbitedBody.getOrbitY() + getHeight() / 2.0F;
+					orbitX += orbitedBody.getOrbitX();
+					orbitY += orbitedBody.getOrbitY();
 				}
 			}
 		} else {
@@ -108,11 +170,6 @@ public class BodyWidget extends Widget {
 		
 		body.setOrbitX(orbitX);
 		body.setOrbitY(orbitY);
-		
-		var offsetX = BodySelectorHandledScreen.getOffsetX();
-		var offsetY = BodySelectorHandledScreen.getOffsetY();
-		
-		var zoom = BodySelectorHandledScreen.getZoom();
 		
 		orbitX *= zoom;
 		orbitY *= zoom;
@@ -133,7 +190,7 @@ public class BodyWidget extends Widget {
 		if (matrices != null) {
 			matrices.push();
 			
-			matrices.translate(orbitX, orbitY, 10.0F);
+			matrices.translate(orbitX, orbitY, 100.0F);
 			
 			matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(45.0F));
 			matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(45.0F));
