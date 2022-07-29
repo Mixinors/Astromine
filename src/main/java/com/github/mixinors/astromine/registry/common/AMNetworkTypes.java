@@ -29,7 +29,6 @@ import com.github.mixinors.astromine.common.network.type.EnergyNetworkType;
 import com.github.mixinors.astromine.common.network.type.FluidNetworkType;
 import com.github.mixinors.astromine.common.network.type.ItemNetworkType;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
-import com.github.mixinors.astromine.common.registry.NetworkTypeRegistry;
 
 public class AMNetworkTypes {
 	public static final NetworkType PRIMITIVE_ENERGY = register("primitive_energy_network", new EnergyNetworkType.Primitive());
@@ -44,6 +43,7 @@ public class AMNetworkTypes {
 	}
 	
 	public static <T extends NetworkType> T register(String name, T type) {
-		return (T) NetworkTypeRegistry.INSTANCE.register(AMCommon.id(name), type);
+		// FIXME
+		return (T) AMRegistries.NETWORK_TYPE.register(AMCommon.id(name), type).get();
 	}
 }

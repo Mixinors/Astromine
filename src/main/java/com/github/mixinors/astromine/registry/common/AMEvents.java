@@ -37,16 +37,21 @@ import dev.architectury.event.events.common.TickEvent;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.world.gen.chunk.ChunkGenerator;
 
 public class AMEvents {
 	public static void init() {
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new BodyManager.ReloadListener());
 		
-		ServerPlayConnectionEvents.JOIN.register(BodyManager.JoinListener.INSTANCE);
+		ServerWorldEvents.LOAD.register(BodyManager::onWorldLoad);
+		ServerWorldEvents.UNLOAD.register(BodyManager::onWorldUnload);
+		
+		ServerPlayConnectionEvents.JOIN.register(BodyManager::onPlayerJoin);
 		
 		TickEvent.SERVER_PRE.register((server) -> {
 			for (var playerEntity : server.getPlayerManager().getPlayerList()) {
@@ -74,17 +79,18 @@ public class AMEvents {
 		}));
 		
 		ServerChunkManagerEvents.INIT.register(manager -> {
-			if (manager.threadedAnvilChunkStorage.chunkGenerator instanceof EarthOrbitChunkGenerator) {
-				manager.threadedAnvilChunkStorage.chunkGenerator = ((EarthOrbitChunkGenerator) manager.threadedAnvilChunkStorage.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
-			}
-			
-			if (manager.threadedAnvilChunkStorage.chunkGenerator instanceof MoonOrbitChunkGenerator) {
-				manager.threadedAnvilChunkStorage.chunkGenerator = ((MoonOrbitChunkGenerator) manager.threadedAnvilChunkStorage.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
-			}
-			
-			if (manager.threadedAnvilChunkStorage.chunkGenerator instanceof MoonChunkGenerator) {
-				manager.threadedAnvilChunkStorage.chunkGenerator = ((MoonChunkGenerator) manager.threadedAnvilChunkStorage.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
-			}
+			// TODO: See if Mojang fixed this!
+			// if (manager.threadedAnvilChunkStorage.chunkGenerator instanceof ChunkGenerator) {
+			// 	manager.threadedAnvilChunkStorage.chunkGenerator = manager.threadedAnvilChunkStorage.chunkGenerator.withSeed(((ServerWorld) manager.getWorld()).getSeed());
+			// }
+			//
+			// if (manager.threadedAnvilChunkStorage.chunkGenerator instanceof MoonOrbitChunkGenerator) {
+			// 	manager.threadedAnvilChunkStorage.chunkGenerator = ((MoonOrbitChunkGenerator) manager.threadedAnvilChunkStorage.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
+			// }
+			//
+			// if (manager.threadedAnvilChunkStorage.chunkGenerator instanceof MoonChunkGenerator) {
+			// 	manager.threadedAnvilChunkStorage.chunkGenerator = ((MoonChunkGenerator) manager.threadedAnvilChunkStorage.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
+			// }
 		});
 	}
 }

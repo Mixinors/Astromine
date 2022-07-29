@@ -24,146 +24,178 @@
 
 package com.github.mixinors.astromine.common.registry.base;
 
+import com.github.mixinors.astromine.AMCommon;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.mojang.serialization.codecs.UnboundedMapCodec;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.resource.ResourceManager;
+import net.minecraft.resource.ResourceType;
+import net.minecraft.util.Identifier;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Supplier;
+import java.util.*;
 
-/**
- * A unidirectional registry, where all keys must be unique and values may be repeated.
- */
-public class Registry<K, V> {
-	public static <K, V> Codec<Registry<K, V>> createCodec(Codec<K> keyCodec, Codec<V> valueCodec) {
+public class Registry<V> {
+	private static final String VALUES = "values";
+	
+	public static <V> Codec<Registry<V>> createCodec(Registry<V> registry, Codec<V> valueCodec) {
 		return RecordCodecBuilder.create(
 				instance -> instance.group(
-						Codec.unboundedMap(keyCodec, valueCodec).fieldOf("entries").forGetter(Registry::getEntries)
-				).apply(instance, Registry::new)
+						Codec.unboundedMap(Identifier.CODEC, valueCodec).fieldOf("values").forGetter(r -> r.values)
+				).apply(instance, (values) -> {
+					registry.values = values;
+					
+					return registry;
+				})
 		);
 	}
 	
-	private Map<K, V> entries;
+	private Map<Identifier, RegistryEntry<V>> entries = new HashMap<>();
+	private Map<Identifier, V> values = new HashMap<>();
 	
 	public Registry() {
-		this.entries = new HashMap<>();
-	}
-	
-	public Registry(Map<K, V> entries) {
-		this.entries = entries;
+		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new ReloadListener());
 	}
 	
 	/**
-	 * Returns a supplier for the {@link V} value associated with the given {@link K} key.
+	 * Clears this registry.
 	 */
-	public Supplier<V> getSupplier(K key) {
-		return () -> getEntries().get(key);
+	public void clear() {
+		this.entries.clear();
+		this.values.clear();
 	}
 	
-	/** Returns the {@link V} value associated with the given {@link K} key. */
-	public V get(K k) {
+	/**
+	 * Returns the given key's entry, creating a new once if necessary.
+	 * @param k the key.
+	 * @return the entry.
+	 */
+	public RegistryEntry<V> getEntry(Identifier k) {
+		entries.computeIfAbsent(k, $ -> new RegistryEntry<>(k, () -> values.get(k)));
 		return entries.get(k);
 	}
 	
 	/**
-	 * Associates the given {@link K} key with the specified {@link V} value. Returns the existing value for the {@link K} key, or null if none existed.
+	 * Returns the given key's value.
 	 */
-	public V set(K k, V v) {
-		return entries.put(k, v);
+	public V get(Identifier k) {
+		return values.get(k);
 	}
 	
 	/**
-	 * Associates the given {@link K} key with the specified {@link V} value. Returns the existing value for the {@link K} key, or null if none existed.
+	 * Returns the given value's first key.
+	 * @param v the value.
+	 * @return the key.
 	 */
-	public V add(K k, V v) {
-		return set(k, v);
+	public Identifier getKey(V v) {
+		var entry = entries.values().stream().filter(e -> e.getValue() == v).findFirst().orElse(null);
+		return entry == null ? null : entry.getKey();
 	}
 	
 	/**
-	 * Dissociates the given {@link K} key from the specified {@link V} value. Returns whether the operation was successful or not.
+	 * Registers the given key and value combination's entry.
+	 * @param k the key.
+	 * @param v the value.
+	 * @return the entry.
 	 */
-	public boolean remove(K k, V v) {
-		return entries.remove(k, v);
+	public RegistryEntry<V> register(Identifier k, V v) {
+		values.put(k, v);
+		return getEntry(k);
+	}
+	
+	 /**
+	 * Returns whether this registry contains the given key and value combination.
+	  * @param k the key.
+	  * @param v the value.
+	 * @return whether this registry contains the given key and value combination.
+	 */
+	public boolean contains(Identifier k, V v) {
+		return containsKey(k) && getEntry(k) == v;
 	}
 	
 	/**
-	 * Dissociates the given {@link K} key from its associated {@link V} value. Returns the existing value for the {@link K} key, or null if none existed.
+	 * Returns whether this registry contains the given key.
+	 * @param k the key.
+	 * @return whether this registry contains the given key.
 	 */
-	public V removeKey(K k) {
-		return entries.remove(k);
-	}
-	
-	/**
-	 * Associates the given {@link K} key with the specified {@link V} value. Returns the given {@link V} value.
-	 */
-	public V register(K k, V v) {
-		set(k, v);
-		
-		return v;
-	}
-	
-	/**
-	 * Dissociates the given {@link K} key from the specified {@link V} value. Returns whether the operation was successful or not.
-	 */
-	public boolean unregister(K k, V v) {
-		return remove(k, v);
-	}
-	
-	/**
-	 * Dissociates the given {@link K} key from its associated {@link V} value. Returns the existing value for the {@link K} key, or null if none existed.
-	 */
-	public V unregisterKey(K k) {
-		return removeKey(k);
-	}
-	
-	/**
-	 * Clears this registry's entries.
-	 */
-	public void clear() {
-		entries.clear();
-	}
-	
-	/**
-	 * Asserts whether this registry contains the given {@link K} key associated with the specified {@link V} value.
-	 */
-	public boolean contains(K k, V v) {
-		return containsKey(k) && get(k).equals(v);
-	}
-	
-	/** Asserts whether this registry contains the given {@link K} key. */
-	public boolean containsKey(K k) {
+	public boolean containsKey(Identifier k) {
 		return entries.containsKey(k);
 	}
 	
-	/** Asserts whether this registry contains the given {@link V} value. */
+	/**
+	 * Returns whether this registry contains the given value.
+	 * @param v the value.
+	 * @return whether this registry contains the given value.
+	 */
 	public boolean containsValue(V v) {
 		return entries.containsValue(v);
 	}
 	
-	/** Returns a collection of this registry's {@link K} keys. */
-	public Collection<K> getKeys() {
-		return entries.keySet();
+	/**
+	 * Returns a collection of this registry's keys.
+	 */
+	public Collection<Identifier> getKeys() {
+		return values.keySet();
 	}
 	
-	/** Returns a collection of this registry's {@link V} values. */
+	/**
+	 * Returns a collection of this registry's values.
+	 */
 	public Collection<V> getValues() {
+		return values.values();
+	}
+	
+	/**
+	 * Returns a collection of this registry's entries.
+	 */
+	public Collection<RegistryEntry<V>> getEntries() {
 		return entries.values();
 	}
 	
 	/**
-	 * Sets this registry's entries.
-	 * @param entries the new entries.
+	 * Serializes this registry to a {@link PacketByteBuf}.
+	 * @param codec the codec to use.
+	 * @param buf the buffer to serialize to.
 	 */
-	public void setEntries(Map<K, V> entries) {
-		this.entries = entries;
+	public void writeToBuf(Codec<Registry<V>> codec, PacketByteBuf buf) {
+		var result = codec.encodeStart(NbtOps.INSTANCE, this);
+		
+		var nbt = new NbtCompound();
+		nbt.put(VALUES, result.result().get());
+		
+		buf.writeNbt(nbt);
 	}
 	
 	/**
-	 * Returns a map of this registry's entries.
+	 * Deserializes this registry from a {@link PacketByteBuf}.
+	 * @param codec the codec to use.
+	 * @param buf the buffer to deserialize from.
 	 */
-	public Map<K, V> getEntries() {
-		return entries;
+	public void readFromBuf(Codec<Registry<V>> codec, PacketByteBuf buf) {
+		var nbt = buf.readNbt();
+		var entriesNbt = nbt.get(VALUES);
+		
+		codec.decode(NbtOps.INSTANCE, entriesNbt).result();
+	}
+	
+	private class ReloadListener implements SimpleSynchronousResourceReloadListener {
+		private final Identifier id;
+		
+		public ReloadListener() {
+			this.id = AMCommon.id("registry_reload_listener_" + hashCode());
+		}
+		
+		@Override
+		public Identifier getFabricId() {
+			return id;
+		}
+		
+		@Override
+		public void reload(ResourceManager manager) {
+			getEntries().forEach(RegistryEntry::invalidate);
+		}
 	}
 }

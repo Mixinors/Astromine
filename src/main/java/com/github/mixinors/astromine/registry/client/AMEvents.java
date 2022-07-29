@@ -25,15 +25,15 @@
 package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.client.render.effects.MoonDimensionEffects;
-import com.github.mixinors.astromine.client.render.effects.SpaceDimensionEffects;
 import com.github.mixinors.astromine.common.block.network.EnergyCableBlock;
 import com.github.mixinors.astromine.common.component.entity.OxygenComponent;
-import com.github.mixinors.astromine.common.event.DimensionEffectsEvents;
 import com.github.mixinors.astromine.common.item.armor.SpaceSuitArmorItem;
 import com.github.mixinors.astromine.common.item.utility.HolographicConnectorItem;
+import com.github.mixinors.astromine.common.manager.BodyManager;
+import com.github.mixinors.astromine.common.manager.DimensionEffectsManager;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidItemStorage;
 import com.github.mixinors.astromine.registry.common.AMItems;
+import com.github.mixinors.astromine.registry.common.AMNetworking;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
 import dev.architectury.event.events.client.ClientTooltipEvent;
 import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
@@ -47,7 +47,9 @@ import dev.vini2003.hammer.gui.api.client.event.InGameHudEvents;
 import dev.vini2003.hammer.gui.api.common.widget.bar.HudBarWidget;
 import dev.vini2003.hammer.gui.api.common.widget.bar.ImageBarWidget;
 import dev.vini2003.hammer.gui.energy.api.common.util.EnergyTextUtil;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
@@ -67,6 +69,8 @@ import java.util.ArrayList;
 // TODO: Fix Space Slime interpolation.
 public class AMEvents {
 	public static void init() {
+		ClientLifecycleEvents.CLIENT_STARTED.register(DimensionEffectsManager::onClientStarted);
+		
 		WorldRenderEvents.END.register(context -> {
 			AMValues.TICK_DELTA = context.tickDelta();
 		});
@@ -330,14 +334,6 @@ public class AMEvents {
 			if (stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof EnergyCableBlock cableBlock) {
 				tooltip.add(new TranslatableText("text.astromine.tooltip.cable.speed", cableBlock.getNetworkType().getTransferRate()).styled(style -> style.withColor(EnergyTextUtil.COLOR.toRgb())));
 			}
-		});
-		
-		DimensionEffectsEvents.INIT.register((properties) -> {
-			// FIXME
-			// properties.put(AMWorlds.EARTH_ORBIT_ID, new SpaceDimensionEffects());
-			
-			// FIXME
-			// properties.put(AMWorlds.MOON_ID, new MoonDimensionEffects());
 		});
 	}
 }

@@ -35,7 +35,6 @@
     "client.InGameOverlayRendererMixin",
     "client.JsonUnbakedModelAccessor",
     "client.ModelLoaderAccessor",
-    "client.SkyPropertiesMixin",
     "client.WorldRendererMixin"
   ],
   "injectors": {

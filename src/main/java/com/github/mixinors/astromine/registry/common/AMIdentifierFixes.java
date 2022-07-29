@@ -24,13 +24,12 @@
 
 package com.github.mixinors.astromine.registry.common;
 
-import com.github.mixinors.astromine.common.registry.IdentifierFixRegistry;
-
 public class AMIdentifierFixes {
 	public static void init() {
 	}
 	
 	public static void register(String oldPath, String newPath) {
-		IdentifierFixRegistry.INSTANCE.register(oldPath, newPath);
+		// FIXME
+		//IdentifierFixRegistry.INSTANCE.register(oldPath, newPath);
 	}
 }

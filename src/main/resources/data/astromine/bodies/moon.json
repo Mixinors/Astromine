@@ -16,17 +16,57 @@
     "speed": 40.0,
     "tidalLocked": true
   },
-  "environment": {
-    "temperature": 26.0,
-    "humidity": 0.0
+  "surfaceDimension": {
+    "worldKey": "astromine:moon",
+    "worldOptionsKey": "astromine:moon",
+    "worldDimensionTypeKey": "astromine:moon",
+    "atmosphere": {
+      "content": "minecraft:empty"
+    },
+    "environment": {
+      "temperature": 26.0,
+      "humidity": 0.0,
+      "sound": 0.25,
+      "gravity": 0.04
+    },
+    "skybox": {
+      "up": { "id": "astromine:textures/skybox/moon/moon_surface_up.png" },
+      "down": { "id": "astromine:textures/skybox/moon/moon_surface_down.png" },
+      "north": { "id": "astromine:textures/skybox/moon/moon_surface_north.png" },
+      "south": { "id": "astromine:textures/skybox/moon/moon_surface_south.png" },
+      "east": { "id": "astromine:textures/skybox/moon/moon_surface_east.png" },
+      "west": { "id": "astromine:textures/skybox/moon/moon_surface_west.png" }
+    },
+    "topLayer": {
+      "worldKey": "astromine:moon_orbit",
+      "worldY": 1024
+    }
   },
-  "worldSkybox": {
-    "up": { "id": "astromine:textures/skybox/moon/moon_up.png" },
-    "down": { "id": "astromine:textures/skybox/moon/moon_down.png" },
-    "north": { "id": "astromine:textures/skybox/moon/moon_north.png" },
-    "south": { "id": "astromine:textures/skybox/moon/moon_south.png" },
-    "east": { "id": "astromine:textures/skybox/moon/moon_east.png" },
-    "west": { "id": "astromine:textures/skybox/moon/moon_west.png" }
+  "orbitDimension": {
+    "worldKey": "astromine:moon_orbit",
+    "worldOptionsKey": "astromine:moon_orbit",
+    "worldDimensionTypeKey": "astromine:moon_orbit",
+    "atmosphere": {
+      "content": "minecraft:empty"
+    },
+    "environment": {
+      "temperature": 0.0,
+      "humidity": 0.0,
+      "sound": 0.2,
+      "gravity": 0.02
+    },
+    "skybox": {
+      "up": { "id": "astromine:textures/skybox/moon/moon_orbit_up.png" },
+      "down": { "id": "astromine:textures/skybox/moon/moon_orbit_down.png" },
+      "north": { "id": "astromine:textures/skybox/moon/moon_orbit_north.png" },
+      "south": { "id": "astromine:textures/skybox/moon/moon_orbit_south.png" },
+      "east": { "id": "astromine:textures/skybox/moon/moon_orbit_east.png" },
+      "west": { "id": "astromine:textures/skybox/moon/moon_orbit_west.png" }
+    },
+    "bottomLayer": {
+      "worldKey": "astromine:moon",
+      "worldY": -16
+    }
   },
   "texture": {
     "up": "astromine:textures/moon/moon_up.png",

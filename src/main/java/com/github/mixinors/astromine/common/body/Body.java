@@ -6,6 +6,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
+import dev.vini2003.hammer.gravity.api.common.manager.GravityManager;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -13,6 +15,7 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
+import org.jetbrains.annotations.ApiStatus;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -26,20 +29,16 @@ import java.util.Optional;
 public class Body {
 	public static final Codec<Body> CODEC = RecordCodecBuilder.create(
 			instance -> instance.group(
-					Identifier.CODEC.fieldOf("id").forGetter(Body::getId),
-					Identifier.CODEC.optionalFieldOf("worldId").forGetter(body -> Optional.ofNullable(body.getWorldId())),
-					Identifier.CODEC.optionalFieldOf("orbitWorldId").forGetter(body -> Optional.ofNullable(body.getOrbitWorldId())),
-					Position.CODEC.fieldOf("position").forGetter(Body::getPosition),
-					Size.CODEC.fieldOf("size").forGetter(Body::getSize),
-					Orbit.CODEC.optionalFieldOf("orbit").forGetter(body -> Optional.ofNullable(body.getOrbit())),
-					Environment.CODEC.optionalFieldOf("worldEnvironment").forGetter(body -> Optional.ofNullable(body.getWorldEnvironment())),
-					Environment.CODEC.optionalFieldOf("orbitWorldEnvironment").forGetter(body -> Optional.ofNullable(body.getOrbitWorldEnvironment())),
-					Skybox.CODEC.optionalFieldOf("worldSkybox").forGetter(body -> Optional.ofNullable(body.getWorldSkybox())),
-					Skybox.CODEC.optionalFieldOf("orbitWorldSkybox").forGetter(body -> Optional.ofNullable(body.getOrbitWorldSkybox())),
-					Texture.CODEC.fieldOf("texture").forGetter(Body::getTexture),
-					Codecs.LITERAL_TEXT.fieldOf("name").forGetter(Body::getName),
-					Codecs.TRANSLATABLE_TEXT.fieldOf("description").forGetter(Body::getDescription)
-			).apply(instance, (id, worldId, orbitWorldId, position, size, orbit, worldEnvironment, orbitWorldEnvironment, worldSkybox, orbitWorldSkybox, texture, name, description) -> new Body(id, worldId.orElse(null), orbitWorldId.orElse(null), position, size, orbit.orElse(null), worldEnvironment.orElse(null), orbitWorldEnvironment.orElse(null), worldSkybox.orElse(null), orbitWorldSkybox.orElse(null), texture, name, description))
+					Identifier.CODEC.fieldOf("id").forGetter(Body::id),
+					Position.CODEC.fieldOf("position").forGetter(Body::position),
+					Size.CODEC.fieldOf("size").forGetter(Body::size),
+					Orbit.CODEC.optionalFieldOf("orbit").forGetter(body -> Optional.ofNullable(body.orbit())),
+					Dimension.CODEC.optionalFieldOf("surfaceDimension").forGetter(body -> Optional.ofNullable(body.surfaceDimension())),
+					Dimension.CODEC.optionalFieldOf("orbitDimension").forGetter(body -> Optional.ofNullable(body.orbitDimension())),
+					Texture.CODEC.fieldOf("texture").forGetter(Body::texture),
+					Codecs.LITERAL_TEXT.fieldOf("name").forGetter(Body::name),
+					Codecs.TRANSLATABLE_TEXT.fieldOf("description").forGetter(Body::description)
+			).apply(instance, (id, position, size, orbit, surfaceDimension, orbitDimension, texture, name, description) -> new Body(id, position, size, orbit.orElse(null), surfaceDimension.orElse(null), orbitDimension.orElse(null), texture, name, description))
 	);
 	
 	public record Orbit(
@@ -60,14 +59,28 @@ public class Body {
 		);
 	}
 	
+	public record Atmosphere(
+			RegistryKey<Fluid> content
+	) {
+		public static final Codec<Atmosphere> CODEC = RecordCodecBuilder.create(
+				instance -> instance.group(
+						RegistryKey.createCodec(Registry.FLUID_KEY).fieldOf("content").forGetter(Atmosphere::content)
+				).apply(instance, Atmosphere::new)
+		);
+	}
+	
 	public record Environment(
 			double temperature,
-			double humidity
+			double humidity,
+			float sound,
+			float gravity
 	) {
 		public static final Codec<Environment> CODEC = RecordCodecBuilder.create(
 				instance -> instance.group(
 						Codec.DOUBLE.fieldOf("temperature").forGetter(Environment::temperature),
-						Codec.DOUBLE.optionalFieldOf("humidity", 0.0D).forGetter(Environment::humidity)
+						Codec.DOUBLE.optionalFieldOf("humidity", 0.0D).forGetter(Environment::humidity),
+						Codec.FLOAT.optionalFieldOf("sound", 1.0F).forGetter(Environment::sound),
+						Codec.FLOAT.optionalFieldOf("gravity", 0.08F).forGetter(Environment::gravity)
 				).apply(instance, Environment::new)
 		);
 	}
@@ -92,12 +105,43 @@ public class Body {
 		);
 	}
 	
-	private final Identifier id;
+	public record Dimension(
+			RegistryKey<World> worldKey,
+			RegistryKey<DimensionOptions> worldOptionsKey,
+			RegistryKey<DimensionType> worldDimensionTypeKey,
+			@Nullable Atmosphere atmosphere,
+			@Nullable Environment environment,
+			@Nullable Skybox skybox,
+			@Nullable Layer topLayer,
+			@Nullable Layer bottomLayer
+	) {
+		public record Layer(
+				RegistryKey<World> worldKey,
+				int worldY
+		) {
+			public static final Codec<Layer> CODEC = RecordCodecBuilder.create(
+					instance -> instance.group(
+							RegistryKey.createCodec(Registry.WORLD_KEY).fieldOf("worldKey").forGetter(Layer::worldKey),
+							Codec.INT.fieldOf("worldY").forGetter(Layer::worldY)
+					).apply(instance, Layer::new)
+			);
+		}
+		
+		public static final Codec<Dimension> CODEC = RecordCodecBuilder.create(
+				instance -> instance.group(
+						RegistryKey.createCodec(Registry.WORLD_KEY).fieldOf("worldKey").forGetter(Dimension::worldKey),
+						RegistryKey.createCodec(Registry.DIMENSION_KEY).fieldOf("worldOptionsKey").forGetter(Dimension::worldOptionsKey),
+						RegistryKey.createCodec(Registry.DIMENSION_TYPE_KEY).fieldOf("worldDimensionTypeKey").forGetter(Dimension::worldDimensionTypeKey),
+						Atmosphere.CODEC.optionalFieldOf("atmosphere").forGetter(dimension -> Optional.ofNullable(dimension.atmosphere)),
+						Environment.CODEC.optionalFieldOf("environment").forGetter(dimension -> Optional.ofNullable(dimension.environment)),
+						Skybox.CODEC.optionalFieldOf("skybox").forGetter(dimension -> Optional.ofNullable(dimension.skybox)),
+						Layer.CODEC.optionalFieldOf("topLayer").forGetter(dimension -> Optional.ofNullable(dimension.topLayer)),
+						Layer.CODEC.optionalFieldOf("bottomLayer").forGetter(dimension -> Optional.ofNullable(dimension.bottomLayer))
+				).apply(instance, (worldKey, worldOptionsKey, worldDimensionTypeKey, atmosphere, environment, skybox, topLayer, bottomLayer) -> new Dimension(worldKey, worldOptionsKey, worldDimensionTypeKey, atmosphere.orElse(null), environment.orElse(null), skybox.orElse(null), topLayer.orElse(null), bottomLayer.orElse(null)))
+		);
+	}
 	
-	@Nullable
-	private final Identifier worldId;
-	@Nullable
-	private final Identifier orbitWorldId;
+	private final Identifier id;
 	
 	private final Position position;
 	private final Size size;
@@ -106,27 +150,14 @@ public class Body {
 	private final Orbit orbit;
 	
 	@Nullable
-	private final Environment worldEnvironment;
+	Dimension surfaceDimension;
 	@Nullable
-	private final Environment orbitWorldEnvironment;
-	
-	@Nullable
-	private final Skybox worldSkybox;
-	@Nullable
-	private final Skybox orbitWorldSkybox;
+	Dimension orbitDimension;
 	
 	private final Texture texture;
 	
 	private final Text name;
 	private final Text description;
-	
-	private RegistryKey<World> worldKey = null;
-	private RegistryKey<DimensionOptions> worldOptionsKey = null;
-	private RegistryKey<DimensionType> worldDimensionTypeKey = null;
-	
-	private RegistryKey<World> orbitWorldKey = null;
-	private RegistryKey<DimensionOptions> orbitWorldOptionsKey = null;
-	private RegistryKey<DimensionType> orbitWorldDimensionTypeKey = null;
 	
 	private double angle = 0.0D;
 	
@@ -139,117 +170,106 @@ public class Body {
 	private double scale = 0.0D;
 	private double prevScale = 1.0D;
 	
-	public Body(Identifier id, @Nullable Identifier worldId, @Nullable Identifier orbitWorldId, Position position, Size size, @Nullable Orbit orbit, @Nullable Environment worldEnvironment, @Nullable Environment orbitWorldEnvironment, @Nullable Skybox worldSkybox, @Nullable Skybox orbitWorldSkybox, Texture texture, Text name, Text description) {
+	public Body(Identifier id, Position position, Size size, @Nullable Orbit orbit, @Nullable Dimension surfaceDimension, @Nullable Dimension orbitDimension, Texture texture, Text name, Text description) {
 		this.id = id;
-		this.worldId = worldId;
-		this.orbitWorldId = orbitWorldId;
 		this.position = position;
 		this.size = size;
 		this.orbit = orbit;
-		this.worldEnvironment = worldEnvironment;
-		this.orbitWorldEnvironment = orbitWorldEnvironment;
-		this.worldSkybox = worldSkybox;
-		this.orbitWorldSkybox = orbitWorldSkybox;
+		this.surfaceDimension = surfaceDimension;
+		this.orbitDimension = orbitDimension;
 		this.texture = texture;
 		this.name = name;
 		this.description = description;
+	}
+	
+	@ApiStatus.Internal
+	public void onLoad() {
+		var surface = surfaceDimension();
 		
-		if (worldId != null) {
-			this.worldKey = RegistryKey.of(Registry.WORLD_KEY, worldId);
-			this.worldOptionsKey = RegistryKey.of(Registry.DIMENSION_KEY, worldId);
-			this.worldDimensionTypeKey = RegistryKey.of(Registry.DIMENSION_TYPE_KEY, worldId);
+		if (surface != null) {
+			if (surface.environment() != null) {
+				var surfaceEnvironment = surface.environment();
+				
+				GravityManager.set(surface.worldKey(), surfaceEnvironment.gravity());
+			}
 		}
 		
-		if (orbitWorldId != null) {
-			this.orbitWorldKey = RegistryKey.of(Registry.WORLD_KEY, orbitWorldId);
-			this.orbitWorldOptionsKey = RegistryKey.of(Registry.DIMENSION_KEY, orbitWorldId);
-			this.orbitWorldDimensionTypeKey = RegistryKey.of(Registry.DIMENSION_TYPE_KEY, orbitWorldId);
+		var orbit = orbitDimension();
+		
+		if (orbit != null) {
+			var orbitDimension = orbitDimension();
+			
+			if (orbitDimension != null) {
+				var orbitEnvironment = orbitDimension.environment();
+				
+				GravityManager.set(orbitDimension.worldKey(), orbitEnvironment.gravity());
+			}
 		}
 	}
 	
-	public Identifier getId() {
+	@ApiStatus.Internal
+	public void onUnload() {
+		var surface = surfaceDimension();
+		
+		if (surface != null) {
+			if (surface.environment() != null) {
+				GravityManager.reset(surface.worldKey());
+			}
+		}
+		
+		var orbit = orbitDimension();
+		
+		if (orbit != null) {
+			var orbitDimension = orbitDimension();
+			
+			if (orbitDimension != null) {
+				GravityManager.reset(orbitDimension.worldKey());
+			}
+		}
+	}
+	
+	@ApiStatus.Internal
+	public void onReload() {
+		onLoad();
+	}
+	
+	public Identifier id() {
 		return id;
 	}
 	
-	@Nullable
-	public Identifier getWorldId() {
-		return worldId;
-	}
-	
-	@Nullable
-	public Identifier getOrbitWorldId() {
-		return orbitWorldId;
-	}
-	
-	public Position getPosition() {
+	public Position position() {
 		return position;
 	}
 	
-	public Size getSize() {
+	public Size size() {
 		return size;
 	}
 	
 	@Nullable
-	public Orbit getOrbit() {
+	public Orbit orbit() {
 		return orbit;
 	}
 	
 	@Nullable
-	public Environment getWorldEnvironment() {
-		return worldEnvironment;
+	public Dimension surfaceDimension() {
+		return surfaceDimension;
 	}
 	
 	@Nullable
-	public Environment getOrbitWorldEnvironment() {
-		return orbitWorldEnvironment;
+	public Dimension orbitDimension() {
+		return orbitDimension;
 	}
 	
-	@Nullable
-	public Skybox getWorldSkybox() {
-		return worldSkybox;
-	}
-	
-	@Nullable
-	public Skybox getOrbitWorldSkybox() {
-		return orbitWorldSkybox;
-	}
-	
-	public Texture getTexture() {
+	public Texture texture() {
 		return texture;
 	}
 	
-	@Nullable
-	public RegistryKey<World> getWorldKey() {
-		return worldKey;
-	}
-	
-	@Nullable
-	public RegistryKey<World> getOrbitWorldKey() {
-		return orbitWorldKey;
-	}
-	
-	public Text getName() {
+	public Text name() {
 		return name;
 	}
 	
-	public Text getDescription() {
+	public Text description() {
 		return description;
-	}
-	
-	public RegistryKey<DimensionOptions> getWorldOptionsKey() {
-		return worldOptionsKey;
-	}
-	
-	public RegistryKey<DimensionType> getWorldDimensionTypeKey() {
-		return worldDimensionTypeKey;
-	}
-	
-	public RegistryKey<DimensionOptions> getOrbitWorldOptionsKey() {
-		return orbitWorldOptionsKey;
-	}
-	
-	public RegistryKey<DimensionType> getOrbitWorldDimensionTypeKey() {
-		return orbitWorldDimensionTypeKey;
 	}
 	
 	public double getAngle() {

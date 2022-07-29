@@ -254,7 +254,7 @@ public abstract class RocketEntity extends ExtendedEntity implements ExtendedMen
 	
 	public void canTravel(Body source, Body target) {
 		var availableDistance = thruster.getAvailableTravelDistance(this);
-		var distance = (long) source.getPosition().distanceTo(target.getPosition());
+		var distance = (long) source.position().distanceTo(target.position());
 	}
 	
 	public void travel(Body source, Body target, PlayerEntity launcher) {

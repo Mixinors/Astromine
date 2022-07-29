@@ -24,6 +24,8 @@
 
 package com.github.mixinors.astromine.common.util;
 
+import com.github.mixinors.astromine.registry.common.AMBodies;
+import com.github.mixinors.astromine.registry.common.AMRegistries;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
 import net.minecraft.entity.player.PlayerEntity;
 
@@ -33,6 +35,29 @@ public class SoundUtils {
 			return 1.0F;
 		}
 		
-		return AMWorlds.isVacuum(player.world.method_40134()) ? 0.25F : 1.0F;
+		// TODO: Optimize!
+		for (var body : AMRegistries.BODY.getValues()) {
+			var surfaceDimension = body.surfaceDimension();
+			
+			if (surfaceDimension != null && surfaceDimension.worldKey().equals(player.getWorld().getRegistryKey())) {
+				var surfaceEnvironment = surfaceDimension.environment();
+				
+				if (surfaceEnvironment != null) {
+					return surfaceEnvironment.sound();
+				}
+			}
+			
+			var orbitDimension = body.orbitDimension();
+			
+			if (orbitDimension != null && orbitDimension.worldKey().equals(player.getWorld().getRegistryKey())) {
+				var orbitEnvironment = orbitDimension.environment();
+				
+				if (orbitEnvironment != null) {
+					return orbitEnvironment.sound();
+				}
+			}
+		}
+		
+		return 1.0F;
 	}
 }

@@ -25,7 +25,6 @@
 package com.github.mixinors.astromine.mixin.common;
 
 import com.github.mixinors.astromine.common.access.EntityAccessor;
-import com.github.mixinors.astromine.common.registry.DimensionLayerRegistry;
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.entity.Entity;
@@ -103,57 +102,59 @@ public abstract class EntityMixin implements EntityAccessor {
 		return !this.firstUpdate && this.fluidHeight.getDouble(AMTagKeys.FluidTags.INDUSTRIAL_FLUIDS) > 0.0D;
 	}
 	
-	@Inject(at = @At("HEAD"), method = "tickNetherPortal()V")
-	void astromine$tickNetherPortal(CallbackInfo callbackInformation) {
-		var entity = (Entity) (Object) this;
-		
-		if ((int) entity.getPos().getY() != astromine$lastY && !entity.world.isClient && entity.getVehicle() == null) {
-			astromine$lastY = (int) entity.getPos().getY();
-			
-			var bottomPortal = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.BOTTOM, entity.world.getRegistryKey());
-			var topPortal = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey());
-			
-			if (astromine$lastY <= bottomPortal && bottomPortal != Integer.MIN_VALUE) {
-				var worldKey = RegistryKey.of(Registry.WORLD_KEY, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.BOTTOM, entity.world.getRegistryKey()).getValue());
-				
-				astromine$teleport(entity, worldKey, DimensionLayerRegistry.Type.BOTTOM);
-			} else if (astromine$lastY >= topPortal && topPortal != Integer.MIN_VALUE) {
-				var worldKey = RegistryKey.of(Registry.WORLD_KEY, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey()).getValue());
-				
-				astromine$teleport(entity, worldKey, DimensionLayerRegistry.Type.TOP);
-			}
-		}
-		
-		if (entity.getVehicle() != null) {
-			astromine$lastVehicle = null;
-		}
-		if (astromine$lastVehicle != null) {
-			entity.startRiding(astromine$lastVehicle);
-			astromine$lastVehicle = null;
-		}
-	}
+	//@Inject(at = @At("HEAD"), method = "tickNetherPortal()V")
+	//void astromine$tickNetherPortal(CallbackInfo callbackInformation) {
+		// FIXME
+		//var entity = (Entity) (Object) this;
+		//
+		//if ((int) entity.getPos().getY() != astromine$lastY && !entity.world.isClient && entity.getVehicle() == null) {
+		//	astromine$lastY = (int) entity.getPos().getY();
+		//
+		//	var bottomPortal = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.BOTTOM, entity.world.getRegistryKey());
+		//	var topPortal = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey());
+		//
+		//	if (astromine$lastY <= bottomPortal && bottomPortal != Integer.MIN_VALUE) {
+		//		var worldKey = RegistryKey.of(Registry.WORLD_KEY, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.BOTTOM, entity.world.getRegistryKey()).getValue());
+		//
+		//		astromine$teleport(entity, worldKey, DimensionLayerRegistry.Type.BOTTOM);
+		//	} else if (astromine$lastY >= topPortal && topPortal != Integer.MIN_VALUE) {
+		//		var worldKey = RegistryKey.of(Registry.WORLD_KEY, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey()).getValue());
+		//
+		//		astromine$teleport(entity, worldKey, DimensionLayerRegistry.Type.TOP);
+		//	}
+		//}
+		//
+		//if (entity.getVehicle() != null) {
+		//	astromine$lastVehicle = null;
+		//}
+		//if (astromine$lastVehicle != null) {
+		//	entity.startRiding(astromine$lastVehicle);
+		//	astromine$lastVehicle = null;
+		//}
+	//}
 	
-	void astromine$teleport(Entity entity, RegistryKey<World> destinationKey, DimensionLayerRegistry.Type type) {
-		var serverWorld = entity.world.getServer().getWorld(destinationKey);
-		
-		var existingPassengers = new ArrayList<>(entity.getPassengerList());
-		
-		var entries = new ArrayList<DataTracker.Entry>();
-		for (var entry : entity.getDataTracker().getAllEntries()) {
-			entries.add(entry.copy());
-		}
-		
-		astromine$nextTeleportTarget = DimensionLayerRegistry.INSTANCE.getPlacer(type, entity.world.getRegistryKey()).placeEntity(entity);
-		var newEntity = entity.moveToWorld(serverWorld);
-		
-		for (var entry : entries) {
-			newEntity.getDataTracker().set(entry.getData(), entry.get());
-		}
-		
-		for (var existingEntity : existingPassengers) {
-			((EntityMixin) (Object) existingEntity).astromine$lastVehicle = newEntity;
-		}
-	}
+	//void astromine$teleport(Entity entity, RegistryKey<World> destinationKey, DimensionLayerRegistry.Type type) {
+		// FIXME
+		//var serverWorld = entity.world.getServer().getWorld(destinationKey);
+		//
+		//var existingPassengers = new ArrayList<>(entity.getPassengerList());
+		//
+		//var entries = new ArrayList<DataTracker.Entry>();
+		//for (var entry : entity.getDataTracker().getAllEntries()) {
+		//	entries.add(entry.copy());
+		//}
+		//
+		//astromine$nextTeleportTarget = DimensionLayerRegistry.INSTANCE.getPlacer(type, entity.world.getRegistryKey()).placeEntity(entity);
+		//var newEntity = entity.moveToWorld(serverWorld);
+		//
+		//for (var entry : entries) {
+		//	newEntity.getDataTracker().set(entry.getData(), entry.get());
+		//}
+		//
+		//for (var existingEntity : existingPassengers) {
+		//	((EntityMixin) (Object) existingEntity).astromine$lastVehicle = newEntity;
+		//}
+	//}
 	
 	@Inject(method = "getTeleportTarget", at = @At("HEAD"), cancellable = true)
 	protected void astromine$getTeleportTarget(ServerWorld destination, CallbackInfoReturnable<TeleportTarget> cir) {

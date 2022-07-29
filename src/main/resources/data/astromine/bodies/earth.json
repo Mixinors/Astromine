@@ -1,7 +1,6 @@
 {
   "id": "astromine:earth",
   "worldId": "minecraft:overworld",
-  "orbitWorldId": "astromine:earth_orbit",
   "position": {
     "x": 149600000.0, "y": 0.0, "z": 0.0
   },
@@ -17,25 +16,40 @@
     "speed": 2.0,
     "tidalLocked": false
   },
-  "environment": {
-    "temperature": 5778.0,
-    "humidity": 60.0
+  "surfaceDimension": {
+    "worldKey": "minecraft:overworld",
+    "worldOptionsKey": "minecraft:overworld",
+    "worldDimensionTypeKey": "minecraft:overworld",
+    "topLayer": {
+      "worldKey": "astromine:earth_orbit",
+      "worldY": 1024
+    }
   },
-  "worldSkybox": {
-    "up": { "id": "astromine:textures/skybox/planet/earth_up.png" },
-    "down": { "id": "astromine:textures/skybox/planet/earth_down.png" },
-    "north": { "id": "astromine:textures/skybox/planet/earth_north.png" },
-    "south": { "id": "astromine:textures/skybox/planet/earth_south.png" },
-    "east": { "id": "astromine:textures/skybox/planet/earth_east.png" },
-    "west": { "id": "astromine:textures/skybox/planet/earth_west.png" }
-  },
-  "orbitWorldSkybox": {
-    "up": { "id": "astromine:textures/skybox/orbit/earth_up.png" },
-    "down": { "id": "astromine:textures/skybox/orbit/earth_down.png" },
-    "north": { "id": "astromine:textures/skybox/orbit/earth_north.png" },
-    "south": { "id": "astromine:textures/skybox/orbit/earth_south.png" },
-    "east": { "id": "astromine:textures/skybox/orbit/earth_east.png" },
-    "west": { "id": "astromine:textures/skybox/orbit/earth_west.png" }
+  "orbitDimension": {
+    "worldKey": "astromine:earth_orbit",
+    "worldOptionsKey": "astromine:earth_orbit",
+    "worldDimensionTypeKey": "astromine:earth_orbit",
+    "atmosphere": {
+      "content": "minecraft:empty"
+    },
+    "environment": {
+      "temperature": 0.0,
+      "humidity": 0.0,
+      "sound": 0.2,
+      "gravity": 0.02
+    },
+    "skybox": {
+      "up": { "id": "astromine:textures/skybox/planet/earth_orbit_up.png" },
+      "down": { "id": "astromine:textures/skybox/planet/earth_orbit_down.png" },
+      "north": { "id": "astromine:textures/skybox/planet/earth_orbit_north.png" },
+      "south": { "id": "astromine:textures/skybox/planet/earth_orbit_south.png" },
+      "east": { "id": "astromine:textures/skybox/planet/earth_orbit_east.png" },
+      "west": { "id": "astromine:textures/skybox/planet/earth_orbit_west.png" }
+    },
+    "bottomLayer": {
+      "worldKey": "minecraft:overworld",
+      "worldY": -16
+    }
   },
   "texture": {
     "up": "astromine:textures/planet/earth_up.png",

@@ -3,20 +3,13 @@ package com.github.mixinors.astromine.common.manager;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.body.Body;
 import com.github.mixinors.astromine.common.registry.base.Registry;
+import com.github.mixinors.astromine.common.util.ResourceUtil;
 import com.github.mixinors.astromine.registry.common.AMNetworking;
 import com.github.mixinors.astromine.registry.common.AMRegistries;
-import com.google.gson.JsonObject;
-import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.JsonOps;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
-import dev.vini2003.hammer.gravity.api.common.manager.GravityManager;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.client.MinecraftClient;
@@ -24,61 +17,55 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
-import org.apache.commons.io.IOUtils;
-
-import java.io.InputStreamReader;
-import java.util.*;
 
 public class BodyManager {
-	public static final Codec<Registry<Identifier, Body>> REGISTRY_CODEC = Registry.createCodec(Identifier.CODEC, Body.CODEC);
+	public static final Codec<Registry<Body>> REGISTRY_CODEC = Registry.createCodec(AMRegistries.BODY, Body.CODEC);
 	
 	private static final String BODIES = "bodies";
 	
-	public static class JoinListener implements ServerPlayConnectionEvents.Join {
-		public static final JoinListener INSTANCE = new JoinListener();
-		
-		protected JoinListener() {}
-		
-		@Override
-		public void onPlayReady(ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) {
-			var result = REGISTRY_CODEC.encodeStart(NbtOps.INSTANCE, AMRegistries.BODY);
-			
-			var nbt = new NbtCompound();
-			nbt.put(BODIES, result.result().get());
-			
-			var buf = PacketByteBufs.create();
-			buf.writeNbt(nbt);
-			
-			for (var player : server.getPlayerManager().getPlayerList()) {
-				ServerPlayNetworking.send(player, AMNetworking.SYNC_BODIES, PacketByteBufs.duplicate(buf));
-			}
-		}
+	public static void onWorldLoad(MinecraftServer server, ServerWorld world) {
+		AMRegistries.BODY.getValues().forEach(Body::onLoad);
 	}
 	
-	public static class SyncListener implements ClientPlayNetworking.PlayChannelHandler {
-		public static final SyncListener INSTANCE = new SyncListener();
+	public static void onWorldUnload(MinecraftServer server, ServerWorld world) {
+		AMRegistries.BODY.getValues().forEach(Body::onUnload);
+	}
+	
+	public static void onPlayerJoin(ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) {
+		var buf = PacketByteBufs.create();
 		
-		private SyncListener() {}
+		AMRegistries.BODY.writeToBuf(REGISTRY_CODEC, buf);
 		
-		@Override
-		public void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-			var nbt = buf.readNbt();
-			var bodiesNbt = nbt.get(BODIES);
-			
-			var bodies = REGISTRY_CODEC.decode(NbtOps.INSTANCE, bodiesNbt);
-			var registry = bodies.result().map(Pair::getFirst).get();
-			
-			AMRegistries.BODY.setEntries(registry.getEntries());
+		ServerPlayNetworking.send(handler.player, AMNetworking.SYNC_BODIES, buf);
+	}
+	
+	public static void onSync(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
+		AMRegistries.BODY.readFromBuf(REGISTRY_CODEC, buf);
+	}
+	
+	public static void onRegistryReload(MinecraftServer server) {
+		var result = REGISTRY_CODEC.encodeStart(NbtOps.INSTANCE, AMRegistries.BODY);
+		
+		var nbt = new NbtCompound();
+		nbt.put(BODIES, result.result().get());
+		
+		var buf = PacketByteBufs.create();
+		buf.writeNbt(nbt);
+		
+		for (var player : server.getPlayerManager().getPlayerList()) {
+			ServerPlayNetworking.send(player, AMNetworking.SYNC_BODIES, PacketByteBufs.duplicate(buf));
 		}
+		
+		AMRegistries.BODY.getValues().forEach(Body::onReload);
 	}
 	
 	public static class ReloadListener implements SimpleSynchronousResourceReloadListener {
-		private static final Identifier ID = AMCommon.id("body_reload_listener");
+		private static final Identifier ID = AMCommon.id("body");
 		
 		@Override
 		public Identifier getFabricId() {
@@ -89,54 +76,14 @@ public class BodyManager {
 		public void reload(ResourceManager manager) {
 			AMRegistries.BODY.clear();
 			
-			manager.findResources("bodies", s -> s.endsWith(".json"))
-					.stream()
-					.map(id -> {
-						try {
-							return manager.getResource(id);
-						} catch (Exception e) {
-							return null;
-						}
-					})
-					.filter(Objects::nonNull)
-					.map(resource -> {
-						try {
-							var stream = resource.getInputStream();
-							var reader = new InputStreamReader(stream);
-							var json = AMCommon.GSON.fromJson(reader, JsonObject.class);
-							
-							reader.close();
-							
-							return json;
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						
-						return null;
-					})
-					.map(json -> Body.CODEC.decode(JsonOps.INSTANCE, json))
-					.map(DataResult::result)
-					.filter(Optional::isPresent)
-					.map(Optional::get)
-					.map(Pair::getFirst)
-					.forEach(body -> {
-						AMRegistries.BODY.register(body.getId(), body);
-					});
+			ResourceUtil.load(manager, "bodies", Body.CODEC).forEach(body -> {
+				AMRegistries.BODY.register(body.id(), body);
+			});
 			
 			var server = InstanceUtil.getServer();
 			
 			if (server != null) {
-				var result = REGISTRY_CODEC.encodeStart(NbtOps.INSTANCE, AMRegistries.BODY);
-				
-				var nbt = new NbtCompound();
-				nbt.put(BODIES, result.result().get());
-				
-				var buf = PacketByteBufs.create();
-				buf.writeNbt(nbt);
-				
-				for (var player : server.getPlayerManager().getPlayerList()) {
-					ServerPlayNetworking.send(player, AMNetworking.SYNC_BODIES, PacketByteBufs.duplicate(buf));
-				}
+				BodyManager.onRegistryReload(server);
 			}
 		}
 	}

@@ -26,14 +26,14 @@ package com.github.mixinors.astromine.common.component.world;
 
 import com.github.mixinors.astromine.common.network.Network;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
-import com.github.mixinors.astromine.common.registry.NetworkTypeRegistry;
 import com.github.mixinors.astromine.registry.common.AMComponents;
+import com.github.mixinors.astromine.registry.common.AMRegistries;
 import dev.onyxstudios.cca.api.v3.component.Component;
+import dev.vini2003.hammer.core.api.common.util.NbtUtil;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtLong;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
@@ -117,7 +117,7 @@ public final class NetworkComponent implements Component {
 			
 			var data = new NbtCompound();
 			
-			data.putString(TYPE_KEY, NetworkTypeRegistry.INSTANCE.getKey(type).toString());
+			NbtUtil.putIdentifier(data, TYPE_KEY, AMRegistries.NETWORK_TYPE.getKey(type));
 			
 			data.put(NODES_KEY, nodeList);
 			data.put(MEMBERS_KEY, memberList);
@@ -138,13 +138,13 @@ public final class NetworkComponent implements Component {
 			var nodeList = dataTag.getList(NODES_KEY, NbtElement.LONG_TYPE);
 			var memberList = dataTag.getList(MEMBERS_KEY, NbtElement.COMPOUND_TYPE);
 			
-			var type = NetworkTypeRegistry.INSTANCE.get(new Identifier(dataTag.getString(TYPE_KEY)));
+			var type = AMRegistries.NETWORK_TYPE.getEntry(NbtUtil.getIdentifier(dataTag, TYPE_KEY)).get();
 			
 			if (type == null) {
 				continue;
 			}
 			
-			var instance = new Network(world, type);
+			var instance = new Network<>(world, type);
 			
 			for (var nodeKey : nodeList) {
 				instance.getNodes().add(Network.Node.fromNbt((NbtLong) nodeKey));

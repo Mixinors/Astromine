@@ -25,17 +25,13 @@
 package com.github.mixinors.astromine;
 
 import com.github.mixinors.astromine.common.config.AMConfig;
-import com.github.mixinors.astromine.common.widget.BodyWidget;
 import com.github.mixinors.astromine.registry.common.*;
 import com.google.common.base.Suppliers;
 import com.google.gson.Gson;
 import dev.architectury.registry.registries.Registrar;
 import dev.architectury.registry.registries.Registries;
-import dev.vini2003.hammer.core.api.common.math.position.Position;
-import dev.vini2003.hammer.core.api.common.math.size.Size;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import org.apache.logging.log4j.LogManager;
@@ -81,12 +77,9 @@ public class AMCommon implements ModInitializer {
 		AMBiomes.init();
 		AMFluids.init();
 		AMChunkGenerators.init();
-		AMGravities.init();
-		AMDimensionLayers.init();
 		AMEvents.init();
 		AMRecipeSerializers.init();
 		AMCommands.init();
-		AMAtmospheres.init();
 		AMBlockEntityTypes.init();
 		AMSoundEvents.init();
 		AMCriteria.init();

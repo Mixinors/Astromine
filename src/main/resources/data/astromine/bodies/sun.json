@@ -18,5 +18,5 @@
     "west": "astromine:textures/star/sun_west.png"
   },
   "name": "Sun",
-  "description": "The Sun is the star at the center of the Solar System. It is a nearly perfect ball of hot plasma."
+  "description": "The Sun is the star at the center of the Solar System. It is a nearly perfect cube of hot plasma."
 }

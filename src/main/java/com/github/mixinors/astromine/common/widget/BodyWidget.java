@@ -13,12 +13,13 @@ import dev.vini2003.hammer.core.api.client.util.PositionUtil;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.Text;
+import net.minecraft.text.OrderedText;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.math.Vector4f;
 
-import java.util.Collection;
+import java.util.List;
 
 public class BodyWidget extends Widget {
 	private final Body body;
@@ -35,7 +36,7 @@ public class BodyWidget extends Widget {
 	
 	@Override
 	public float getX() {
-		if (body.getOrbit() == null) {
+		if (body.orbit() == null) {
 			var client = InstanceUtil.getClient();
 			var window = client.getWindow();
 			
@@ -49,7 +50,7 @@ public class BodyWidget extends Widget {
 	
 	@Override
 	public float getY() {
-		if (body.getOrbit() == null) {
+		if (body.orbit() == null) {
 			var client = InstanceUtil.getClient();
 			var window = client.getWindow();
 			
@@ -72,8 +73,13 @@ public class BodyWidget extends Widget {
 	}
 	
 	@Override
-	public Collection<Text> getTooltips() {
-		return ImmutableList.of(body.getName(), body.getDescription());
+	public List<OrderedText> getTooltip() {
+		var client = InstanceUtil.getClient();;
+		
+		var name = body.name();
+		var description = body.description().copy().formatted(Formatting.GRAY);
+		
+		return ImmutableList.<OrderedText>builder().add(name.asOrderedText()).addAll(client.textRenderer.wrapLines(description, 128)).build();
 	}
 	
 	@Override
@@ -81,8 +87,8 @@ public class BodyWidget extends Widget {
 		var orbitX = 0.0D;
 		var orbitY = 0.0D;
 		
-		if (body.getOrbit() != null) {
-			var orbit = body.getOrbit();
+		if (body.orbit() != null) {
+			var orbit = body.orbit();
 			
 			orbitX += orbit.width() * Math.cos(body.getAngle());
 			orbitY += orbit.height() * Math.sin(body.getAngle());
@@ -151,8 +157,8 @@ public class BodyWidget extends Widget {
 			
 			body.setScale(scale);
 			
-			if (body.getOrbit() != null) {
-				var orbit = body.getOrbit();
+			if (body.orbit() != null) {
+				var orbit = body.orbit();
 				
 				var angle = body.getAngle();
 				
@@ -168,7 +174,7 @@ public class BodyWidget extends Widget {
 				}
 			}
 			
-			var texture = body.getTexture();
+			var texture = body.texture();
 			
 			DrawingUtil.drawCube(
 					matrices,

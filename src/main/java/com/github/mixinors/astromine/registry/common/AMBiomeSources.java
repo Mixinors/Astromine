@@ -33,10 +33,7 @@ import net.minecraft.util.registry.Registry;
 
 public class AMBiomeSources {
 	public static void init() {
-		// FIXME
-		// AMCommon.registry(Registry.BIOME_SOURCE_KEY).register(AMWorlds.EARTH_ORBIT_ID, () -> EarthOrbitBiomeSource.CODEC);
-		
-		// FIXME
-		// AMCommon.registry(Registry.BIOME_SOURCE_KEY).register(AMWorlds.MOON_ID, () -> MoonBiomeSource.CODEC);
+		AMCommon.registry(Registry.BIOME_SOURCE_KEY).register(AMCommon.id("earth_orbit"), () -> EarthOrbitBiomeSource.CODEC);
+		AMCommon.registry(Registry.BIOME_SOURCE_KEY).register(AMCommon.id("moon"), () -> MoonBiomeSource.CODEC);
 	}
 }

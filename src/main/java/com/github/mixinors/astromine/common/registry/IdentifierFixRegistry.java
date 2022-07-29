@@ -30,40 +30,42 @@ import net.minecraft.util.Identifier;
 
 import java.util.Optional;
 
+// FIXME
+
 /**
  * An {@link Registry} for registration of {@link String}s mapped to {@link String}s.
  * <p>
  * The registered path will then be replaced by the new one, through {@link IdentifierMixin}.
  */
-public class IdentifierFixRegistry extends Registry<String, String> {
-	public static final IdentifierFixRegistry INSTANCE = new IdentifierFixRegistry();
-	
-	/** We only want one instance of this. */
-	private IdentifierFixRegistry() {}
-	
-	/**
-	 * Returns the fixed path for an {@link Identifier#getPath()}, or the value passed if no fixes are registered.
-	 */
-	@Override
-	public String get(String oldPath) {
-		var newPath = Optional.ofNullable(super.get(oldPath)).orElse(oldPath);
-		
-		return containsKey(newPath) ? get(newPath) : newPath;
-	}
-	
-	/** Register a fix for an {@link Identifier#getPath()}. */
-	@Override
-	public String register(String oldPath, String newPath) {
-		if (oldPath.equals(newPath)) {
-			throw new IllegalArgumentException(String.format("Invalid Identifier path fix attempted: '%s' and '%s' are the same!", newPath, oldPath));
-		} else if (containsKey(newPath)) {
-			if (get(newPath).equals(oldPath)) {
-				throw new IllegalArgumentException(String.format("Invalid Identifier path fix attempted: '%s' and '%s' would cause recursion!", oldPath, newPath));
-			} else {
-				return register(oldPath, get(newPath));
-			}
-		} else {
-			return super.register(oldPath, newPath);
-		}
-	}
+public class IdentifierFixRegistry extends Registry<String> {
+	//public static final IdentifierFixRegistry INSTANCE = new IdentifierFixRegistry();
+	//
+	///** We only want one instance of this. */
+	//private IdentifierFixRegistry() {}
+	//
+	///**
+	// * Returns the fixed path for an {@link Identifier#getPath()}, or the value passed if no fixes are registered.
+	// */
+	//@Override
+	//public String get(String oldPath) {
+	//	var newPath = Optional.ofNullable(super.getEntry(oldPath)).orElse(oldPath);
+	//
+	//	return containsKey(newPath) ? get(newPath) : newPath;
+	//}
+	//
+	///** Register a fix for an {@link Identifier#getPath()}. */
+	//@Override
+	//public String register(String oldPath, String newPath) {
+	//	if (oldPath.equals(newPath)) {
+	//		throw new IllegalArgumentException(String.format("Invalid Identifier path fix attempted: '%s' and '%s' are the same!", newPath, oldPath));
+	//	} else if (containsKey(newPath)) {
+	//		if (get(newPath).equals(oldPath)) {
+	//			throw new IllegalArgumentException(String.format("Invalid Identifier path fix attempted: '%s' and '%s' would cause recursion!", oldPath, newPath));
+	//		} else {
+	//			return register(oldPath, get(newPath));
+	//		}
+	//	} else {
+	//		return super.register(oldPath, newPath);
+	//	}
+	//}
 }
