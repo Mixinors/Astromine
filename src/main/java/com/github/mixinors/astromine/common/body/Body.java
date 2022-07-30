@@ -362,9 +362,7 @@ public class Body {
 		var orbit = orbitDimension();
 		
 		if (orbit != null) {
-			var orbitDimension = orbitDimension();
-			
-			if (orbitDimension != null) {
+			if (orbit.environment() != null) {
 				var orbitEnvironment = orbitDimension.environment();
 				
 				GravityManager.set(orbitDimension.worldKey(), orbitEnvironment.gravity());
