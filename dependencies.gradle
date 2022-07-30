@@ -5,13 +5,15 @@ project.ext.setDefaultApis = {
     useAsApi("dev.onyxstudios.cardinal-components-api:cardinal-components-chunk:${cardinalComponentsVersion}")
     useAsApi("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinalComponentsVersion}")
     useAsApi("dev.onyxstudios.cardinal-components-api:cardinal-components-item:${cardinalComponentsVersion}")
-    useAsApi("dev.onyxstudios.cardinal-components-api:cardinal-components-world:${cardinalComponentsVersion}")
+	useAsApi("dev.onyxstudios.cardinal-components-api:cardinal-components-world:${cardinalComponentsVersion}")
+	useAsApi("dev.onyxstudios.cardinal-components-api:cardinal-components-level:${cardinalComponentsVersion}")
 	include("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinalComponentsVersion}")
 	include("dev.onyxstudios.cardinal-components-api:cardinal-components-block:${cardinalComponentsVersion}")
 	include("dev.onyxstudios.cardinal-components-api:cardinal-components-chunk:${cardinalComponentsVersion}")
 	include("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinalComponentsVersion}")
 	include("dev.onyxstudios.cardinal-components-api:cardinal-components-item:${cardinalComponentsVersion}")
 	include("dev.onyxstudios.cardinal-components-api:cardinal-components-world:${cardinalComponentsVersion}")
+	include("dev.onyxstudios.cardinal-components-api:cardinal-components-level:${cardinalComponentsVersion}")
 
     // Shapes
 	useAsApi("com.terraformersmc.terraform-api:terraform-shapes-api-v1:${shapesVersion}")

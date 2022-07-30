@@ -1,7 +1,6 @@
-package com.github.mixinors.astromine.common.entity.rocket.part;
+package com.github.mixinors.astromine.common.rocket;
 
 import com.github.mixinors.astromine.common.config.AMConfig;
-import com.github.mixinors.astromine.common.entity.rocket.part.base.RocketPart;
 import com.github.mixinors.astromine.common.item.rocket.RocketThrusterItem;
 
 public class RocketThrusterPart extends RocketPart<RocketThrusterItem> {
@@ -27,5 +26,9 @@ public class RocketThrusterPart extends RocketPart<RocketThrusterItem> {
 		super(item);
 		
 		this.efficiency = efficiency;
+	}
+	
+	public Efficiency getEfficiency() {
+		return efficiency;
 	}
 }

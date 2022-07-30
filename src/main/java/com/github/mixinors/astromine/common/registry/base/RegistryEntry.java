@@ -1,5 +1,7 @@
 package com.github.mixinors.astromine.common.registry.base;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.Identifier;
 
 import javax.annotation.Nullable;
@@ -10,10 +12,23 @@ import java.util.function.Supplier;
  * during resource reloads.</p>
  */
 public class RegistryEntry<V> implements Supplier<V> {
+	public static <V> Codec<RegistryEntry<V>> createCodec(Registry<V> registry) {
+		return RecordCodecBuilder.create(
+				instance -> instance.group(
+					Identifier.CODEC.fieldOf("key").forGetter(RegistryEntry::getKey)
+				).apply(instance, key -> new RegistryEntry<>(key, registry))
+		);
+	}
+	
 	private final Supplier<V> supplier;
 	
 	private final Identifier key;
 	private V value;
+	
+	public RegistryEntry(Identifier key, Registry<V> registry) {
+		this.key = key;
+		this.supplier = () -> registry.get(key);
+	}
 	
 	public RegistryEntry(Identifier key, Supplier<V> supplier) {
 		this.key = key;

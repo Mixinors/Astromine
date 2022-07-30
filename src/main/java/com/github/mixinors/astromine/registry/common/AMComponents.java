@@ -26,21 +26,26 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.component.entity.OxygenComponent;
+import com.github.mixinors.astromine.common.component.level.RocketComponent;
 import com.github.mixinors.astromine.common.component.world.HoloBridgeComponent;
 import com.github.mixinors.astromine.common.component.world.NetworkComponent;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
+import dev.onyxstudios.cca.api.v3.level.LevelComponentFactoryRegistry;
+import dev.onyxstudios.cca.api.v3.level.LevelComponentInitializer;
 import dev.onyxstudios.cca.api.v3.world.WorldComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.world.WorldComponentInitializer;
 import net.minecraft.entity.LivingEntity;
 
-public class AMComponents implements WorldComponentInitializer, EntityComponentInitializer {
+public class AMComponents implements WorldComponentInitializer, EntityComponentInitializer, LevelComponentInitializer {
 	public static final ComponentKey<NetworkComponent> NETWORK_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("network_component"), NetworkComponent.class);
 	public static final ComponentKey<HoloBridgeComponent> HOLO_BRIDGE_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("holo_bridge_component"), HoloBridgeComponent.class);
 	
 	public static final ComponentKey<OxygenComponent> OXYGEN_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("oxygen_component"), OxygenComponent.class);
+	
+	public static final ComponentKey<RocketComponent> ROCKET_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("rocket_component"), RocketComponent.class);
 	
 	@Override
 	public void registerWorldComponentFactories(WorldComponentFactoryRegistry registry) {
@@ -51,5 +56,10 @@ public class AMComponents implements WorldComponentInitializer, EntityComponentI
 	@Override
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
 		registry.registerFor(LivingEntity.class, OXYGEN_COMPONENT, OxygenComponent::new);
+	}
+	
+	@Override
+	public void registerLevelComponentFactories(LevelComponentFactoryRegistry registry) {
+		registry.register(ROCKET_COMPONENT, RocketComponent::new);
 	}
 }

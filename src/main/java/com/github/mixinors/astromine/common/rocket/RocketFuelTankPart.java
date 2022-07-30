@@ -1,7 +1,6 @@
-package com.github.mixinors.astromine.common.entity.rocket.part;
+package com.github.mixinors.astromine.common.rocket;
 
 import com.github.mixinors.astromine.common.config.AMConfig;
-import com.github.mixinors.astromine.common.entity.rocket.part.base.RocketPart;
 import com.github.mixinors.astromine.common.item.rocket.RocketFuelTankItem;
 
 public class RocketFuelTankPart extends RocketPart<RocketFuelTankItem> {
@@ -21,7 +20,7 @@ public class RocketFuelTankPart extends RocketPart<RocketFuelTankItem> {
 		}
 	}
 	
-	private Capacity capacity;
+	private final Capacity capacity;
 	
 	public RocketFuelTankPart(RocketFuelTankItem item, Capacity capacity) {
 		super(item);

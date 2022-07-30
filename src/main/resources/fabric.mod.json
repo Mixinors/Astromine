@@ -66,7 +66,8 @@
       "astromine:network_component",
       "astromine:atmosphere_component",
       "astromine:holo_bridge_component",
-      "astromine:oxygen_component"
+      "astromine:oxygen_component",
+      "astromine:rocket_component"
     ]
   }
 }

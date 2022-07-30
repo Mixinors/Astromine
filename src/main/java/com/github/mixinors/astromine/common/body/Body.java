@@ -1,27 +1,16 @@
 package com.github.mixinors.astromine.common.body;
 
-import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.client.render.skybox.Skybox;
 import com.github.mixinors.astromine.common.util.extra.Codecs;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gravity.api.common.manager.GravityManager;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionOptions;
-import net.minecraft.world.dimension.DimensionType;
 import org.jetbrains.annotations.ApiStatus;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -34,291 +23,34 @@ public class Body {
 	public static final Codec<Body> CODEC = RecordCodecBuilder.create(
 			instance -> instance.group(
 					Identifier.CODEC.fieldOf("id").forGetter(Body::id),
-					Type.CODEC.fieldOf("type").forGetter(Body::type),
+					BodyType.CODEC.fieldOf("type").forGetter(Body::type),
 					Position.CODEC.fieldOf("position").forGetter(Body::position),
 					Size.CODEC.fieldOf("size").forGetter(Body::size),
-					Orbit.CODEC.optionalFieldOf("orbit").forGetter(body -> Optional.ofNullable(body.orbit())),
-					Dimension.CODEC.optionalFieldOf("surfaceDimension").forGetter(body -> Optional.ofNullable(body.surfaceDimension())),
-					Dimension.CODEC.optionalFieldOf("orbitDimension").forGetter(body -> Optional.ofNullable(body.orbitDimension())),
-					Texture.CODEC.fieldOf("texture").forGetter(Body::texture),
+					BodyOrbit.CODEC.optionalFieldOf("orbit").forGetter(body -> Optional.ofNullable(body.orbit())),
+					BodyDimension.CODEC.optionalFieldOf("surfaceDimension").forGetter(body -> Optional.ofNullable(body.surfaceDimension())),
+					BodyDimension.CODEC.optionalFieldOf("orbitDimension").forGetter(body -> Optional.ofNullable(body.orbitDimension())),
+					BodyTexture.CODEC.fieldOf("texture").forGetter(Body::texture),
 					Codecs.LITERAL_TEXT.fieldOf("name").forGetter(Body::name),
 					Codecs.TRANSLATABLE_TEXT.fieldOf("description").forGetter(Body::description)
 			).apply(instance, (id, type, position, size, orbit, surfaceDimension, orbitDimension, texture, name, description) -> new Body(id, type, position, size, orbit.orElse(null), surfaceDimension.orElse(null), orbitDimension.orElse(null), texture, name, description))
 	);
 	
-	public enum Type {
-		STAR(AMCommon.id("star")),
-		PLANET(AMCommon.id("planet")),
-		DWARF_PLANET(AMCommon.id("dwarf_planet")),
-		MOON(AMCommon.id("moon")),
-		ASTEROID(AMCommon.id("asteroid")),
-		COMET(AMCommon.id("comet")),
-		SATELLITE(AMCommon.id("satellite")),
-		STATION(AMCommon.id("station"));
-		
-		public static final Codec<Type> CODEC = Identifier.CODEC.xmap(Type::byId, Type::id);
-		
-		private static final Map<Identifier, Type> BY_ID = new HashMap<>();
-		
-		private final Identifier id;
-		
-		Type(Identifier id) {
-			this.id = id;
-		}
-		
-		public Identifier id() {
-			return id;
-		}
-		
-		public static Type byId(Identifier id) {
-			return BY_ID.get(id);
-		}
-		
-		 static {
-			for (var value : values()) {
-				BY_ID.put(value.id(), value);
-			}
-		 }
-	}
-	
-	public record Orbit(
-			@Nullable Identifier orbitedBodyId,
-			@Nullable Position orbitedBodyOffset,
-			double width, double height, double speed,
-			boolean tidalLocked
-	) {
-		public static final Codec<Orbit> CODEC = RecordCodecBuilder.create(
-				instance -> instance.group(
-						Identifier.CODEC.optionalFieldOf("orbitedBodyId").forGetter(orbit -> Optional.ofNullable(orbit.orbitedBodyId)),
-						Position.CODEC.optionalFieldOf("orbitedBodyOffset").forGetter(orbit -> Optional.ofNullable(orbit.orbitedBodyOffset)),
-						Codec.DOUBLE.fieldOf("width").forGetter(Orbit::width),
-						Codec.DOUBLE.fieldOf("height").forGetter(Orbit::height),
-						Codec.DOUBLE.fieldOf("speed").forGetter(Orbit::speed),
-						Codec.BOOL.fieldOf("tidalLocked").forGetter(Orbit::tidalLocked)
-				).apply(instance, ((orbitedBodyId, orbitedBodyOffset, width, height, speed, tidalLocked) -> new Orbit(orbitedBodyId.orElse(null), orbitedBodyOffset.orElse(null), width, height, speed, tidalLocked)))
-		);
-	}
-	
-	public record Atmosphere(
-			RegistryKey<Fluid> content
-	) {
-		public static final Codec<Atmosphere> CODEC = RecordCodecBuilder.create(
-				instance -> instance.group(
-						RegistryKey.createCodec(Registry.FLUID_KEY).fieldOf("content").forGetter(Atmosphere::content)
-				).apply(instance, Atmosphere::new)
-		);
-	}
-	
-	public enum Danger {
-		EXTREMELY_LOW(AMCommon.id("extremely_low"), new TranslatableText("text.astromine.body.danger.extremely_low")),
-		LOW(AMCommon.id("low"), new TranslatableText("text.astromine.body.danger.low")),
-		AVERAGE(AMCommon.id("average"), new TranslatableText("text.astromine.body.danger.average")),
-		HIGH(AMCommon.id("high"), new TranslatableText("text.astromine.body.danger.high")),
-		EXTREMELY_HIGH(AMCommon.id("extremely_high"), new TranslatableText("text.astromine.body.danger.extremely_high"));
-		
-		public static final Codec<Danger> CODEC = Identifier.CODEC.xmap(Danger::byId, Danger::id);
-		
-		private static final Map<Identifier, Danger> BY_ID = new HashMap<>();
-		
-		private final Identifier id;
-		
-		private final Text title;
-		
-		Danger(Identifier id, Text title) {
-			this.id = id;
-			
-			this.title = title;
-		}
-		
-		public Identifier id() {
-			return id;
-		}
-		
-		public Text title() {
-			return title;
-		}
-		
-		public static Danger byId(Identifier id) {
-			return BY_ID.get(id);
-		}
-		
-		static {
-			for (var value : values()) {
-				BY_ID.put(value.id(), value);
-			}
-		}
-	}
-	
-	public enum Temperature {
-		EXTREMELY_COLD(AMCommon.id("extremely_cold"), new TranslatableText("text.astromine.body.temperature.extremely_cold")),
-		COLD(AMCommon.id("cold"), new TranslatableText("text.astromine.body.temperature.cold")),
-		AVERAGE(AMCommon.id("average"), new TranslatableText("text.astromine.body.temperature.average")),
-		HOT(AMCommon.id("hot"), new TranslatableText("text.astromine.body.temperature.hot")),
-		EXTREMELY_HOT(AMCommon.id("extremely_hot"), new TranslatableText("text.astromine.body.temperature.extremely_hot"));
-		
-		public static final Codec<Temperature> CODEC = Identifier.CODEC.xmap(Temperature::byId, Temperature::id);
-		
-		private static final Map<Identifier, Temperature> BY_ID = new HashMap<>();
-		
-		private final Identifier id;
-		
-		private final Text title;
-		
-		Temperature(Identifier id, Text title) {
-			this.id = id;
-			
-			this.title = title;
-		}
-		
-		public Identifier id() {
-			return id;
-		}
-		
-		public Text title() {
-			return title;
-		}
-		
-		public static Temperature byId(Identifier id) {
-			return BY_ID.get(id);
-		}
-		
-		static {
-			for (var value : values()) {
-				BY_ID.put(value.id(), value);
-			}
-		}
-	}
-	
-	public enum Humidity {
-		EXTREMELY_LOW(AMCommon.id("extremely_low"), new TranslatableText("text.astromine.body.humidity.extremely_low")),
-		LOW(AMCommon.id("low"), new TranslatableText("text.astromine.body.humidity.low")),
-		AVERAGE(AMCommon.id("average"), new TranslatableText("text.astromine.body.humidity.average")),
-		HIGH(AMCommon.id("high"), new TranslatableText("text.astromine.body.humidity.high")),
-		EXTREMELY_HIGH(AMCommon.id("extremely_high"), new TranslatableText("text.astromine.body.humidity.extremely_high"));
-		
-		public static final Codec<Humidity> CODEC = Identifier.CODEC.xmap(Humidity::byId, Humidity::id);
-		
-		private static final Map<Identifier, Humidity> BY_ID = new HashMap<>();
-		
-		private final Identifier id;
-		
-		private final Text title;
-		
-		Humidity(Identifier id, Text title) {
-			this.id = id;
-			
-			this.title = title;
-		}
-		
-		public Identifier id() {
-			return id;
-		}
-		
-		public Text title() {
-			return title;
-		}
-		
-		public static Humidity byId(Identifier id) {
-			return BY_ID.get(id);
-		}
-		
-		static {
-			for (var value : values()) {
-				BY_ID.put(value.id(), value);
-			}
-		}
-	}
-	
-	public record Environment(
-			Danger danger,
-			Temperature temperature,
-			Humidity humidity,
-			float sound,
-			float gravity
-	) {
-		public static final Codec<Environment> CODEC = RecordCodecBuilder.create(
-				instance -> instance.group(
-						Danger.CODEC.fieldOf("danger").forGetter(Environment::danger),
-						Temperature.CODEC.fieldOf("temperature").forGetter(Environment::temperature),
-						Humidity.CODEC.fieldOf("humidity").forGetter(Environment::humidity),
-						Codec.FLOAT.optionalFieldOf("sound", 1.0F).forGetter(Environment::sound),
-						Codec.FLOAT.optionalFieldOf("gravity", 0.08F).forGetter(Environment::gravity)
-				).apply(instance, Environment::new)
-		);
-	}
-	
-	public record Texture(
-			Identifier up,
-			Identifier down,
-			Identifier north,
-			Identifier south,
-			Identifier east,
-			Identifier west
-	) {
-		public static final Codec<Texture> CODEC = RecordCodecBuilder.create(
-				instance -> instance.group(
-						Identifier.CODEC.fieldOf("up").forGetter(Texture::up),
-						Identifier.CODEC.fieldOf("down").forGetter(Texture::down),
-						Identifier.CODEC.fieldOf("north").forGetter(Texture::north),
-						Identifier.CODEC.fieldOf("south").forGetter(Texture::south),
-						Identifier.CODEC.fieldOf("east").forGetter(Texture::east),
-						Identifier.CODEC.fieldOf("west").forGetter(Texture::west)
-				).apply(instance, Texture::new)
-		);
-	}
-	
-	public record Dimension(
-			RegistryKey<World> worldKey,
-			RegistryKey<DimensionOptions> worldOptionsKey,
-			RegistryKey<DimensionType> worldDimensionTypeKey,
-			@Nullable Atmosphere atmosphere,
-			@Nullable Environment environment,
-			@Nullable Skybox skybox,
-			@Nullable Layer topLayer,
-			@Nullable Layer bottomLayer
-	) {
-		public record Layer(
-				RegistryKey<World> worldKey,
-				int worldY
-		) {
-			public static final Codec<Layer> CODEC = RecordCodecBuilder.create(
-					instance -> instance.group(
-							RegistryKey.createCodec(Registry.WORLD_KEY).fieldOf("worldKey").forGetter(Layer::worldKey),
-							Codec.INT.fieldOf("worldY").forGetter(Layer::worldY)
-					).apply(instance, Layer::new)
-			);
-		}
-		
-		public static final Codec<Dimension> CODEC = RecordCodecBuilder.create(
-				instance -> instance.group(
-						RegistryKey.createCodec(Registry.WORLD_KEY).fieldOf("worldKey").forGetter(Dimension::worldKey),
-						RegistryKey.createCodec(Registry.DIMENSION_KEY).fieldOf("worldOptionsKey").forGetter(Dimension::worldOptionsKey),
-						RegistryKey.createCodec(Registry.DIMENSION_TYPE_KEY).fieldOf("worldDimensionTypeKey").forGetter(Dimension::worldDimensionTypeKey),
-						Atmosphere.CODEC.optionalFieldOf("atmosphere").forGetter(dimension -> Optional.ofNullable(dimension.atmosphere)),
-						Environment.CODEC.optionalFieldOf("environment").forGetter(dimension -> Optional.ofNullable(dimension.environment)),
-						Skybox.CODEC.optionalFieldOf("skybox").forGetter(dimension -> Optional.ofNullable(dimension.skybox)),
-						Layer.CODEC.optionalFieldOf("topLayer").forGetter(dimension -> Optional.ofNullable(dimension.topLayer)),
-						Layer.CODEC.optionalFieldOf("bottomLayer").forGetter(dimension -> Optional.ofNullable(dimension.bottomLayer))
-				).apply(instance, (worldKey, worldOptionsKey, worldDimensionTypeKey, atmosphere, environment, skybox, topLayer, bottomLayer) -> new Dimension(worldKey, worldOptionsKey, worldDimensionTypeKey, atmosphere.orElse(null), environment.orElse(null), skybox.orElse(null), topLayer.orElse(null), bottomLayer.orElse(null)))
-		);
-	}
-	
 	private final Identifier id;
 	
-	private final Type type;
+	private final BodyType type;
 	
 	private final Position position;
 	private final Size size;
 	
 	@Nullable
-	private final Orbit orbit;
+	private final BodyOrbit orbit;
 	
 	@Nullable
-	Dimension surfaceDimension;
+	BodyDimension surfaceDimension;
 	@Nullable
-	Dimension orbitDimension;
+	BodyDimension orbitDimension;
 	
-	private final Texture texture;
+	private final BodyTexture texture;
 	
 	private final Text name;
 	private final Text description;
@@ -334,7 +66,7 @@ public class Body {
 	private double scale = 0.0D;
 	private double prevScale = 1.0D;
 	
-	public Body(Identifier id, Type type, Position position, Size size, @Nullable Orbit orbit, @Nullable Dimension surfaceDimension, @Nullable Dimension orbitDimension, Texture texture, Text name, Text description) {
+	public Body(Identifier id, BodyType type, Position position, Size size, @Nullable BodyOrbit orbit, @Nullable BodyDimension surfaceDimension, @Nullable BodyDimension orbitDimension, BodyTexture texture, Text name, Text description) {
 		this.id = id;
 		this.type = type;
 		this.position = position;
@@ -400,7 +132,7 @@ public class Body {
 		return id;
 	}
 	
-	public Type type() {
+	public BodyType type() {
 		return type;
 	}
 	
@@ -413,21 +145,21 @@ public class Body {
 	}
 	
 	@Nullable
-	public Orbit orbit() {
+	public BodyOrbit orbit() {
 		return orbit;
 	}
 	
 	@Nullable
-	public Dimension surfaceDimension() {
+	public BodyDimension surfaceDimension() {
 		return surfaceDimension;
 	}
 	
 	@Nullable
-	public Dimension orbitDimension() {
+	public BodyDimension orbitDimension() {
 		return orbitDimension;
 	}
 	
-	public Texture texture() {
+	public BodyTexture texture() {
 		return texture;
 	}
 	

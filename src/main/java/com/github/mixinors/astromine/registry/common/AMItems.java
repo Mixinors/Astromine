@@ -25,12 +25,12 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.body.Body;
+import com.github.mixinors.astromine.common.body.BodyTemperature;
 import com.github.mixinors.astromine.common.config.AMConfig;
-import com.github.mixinors.astromine.common.entity.rocket.part.RocketFuelTankPart;
-import com.github.mixinors.astromine.common.entity.rocket.part.RocketHullPart;
-import com.github.mixinors.astromine.common.entity.rocket.part.RocketLandingMechanismPart;
-import com.github.mixinors.astromine.common.entity.rocket.part.RocketThrusterPart;
+import com.github.mixinors.astromine.common.rocket.RocketFuelTankPart;
+import com.github.mixinors.astromine.common.rocket.RocketHullPart;
+import com.github.mixinors.astromine.common.rocket.RocketLandingMechanismPart;
+import com.github.mixinors.astromine.common.rocket.RocketThrusterPart;
 import com.github.mixinors.astromine.common.item.ManualItem;
 import com.github.mixinors.astromine.common.item.armor.AnimatedArmorItem;
 import com.github.mixinors.astromine.common.item.armor.SpaceSuitArmorItem;
@@ -100,8 +100,8 @@ public class AMItems {
 	
 	public static final RegistrySupplier<Item> ROCKET_LIFE_SUPPORT = register("rocket_life_support", () -> new RocketLifeSupportItem(AMItems.getSettings().maxCount(1)));
 	
-	public static final RegistrySupplier<Item> LOW_TEMPERATURE_ROCKET_SHIELDING = register("low_temperature_rocket_shielding", () -> new RocketShieldingItem(AMItems.getSettings().maxCount(1), Body.Temperature.EXTREMELY_COLD, Body.Temperature.COLD, Body.Temperature.AVERAGE));
-	public static final RegistrySupplier<Item> HIGH_TEMPERATURE_ROCKET_SHIELDING = register("high_temperature_rocket_shielding", () -> new RocketShieldingItem(AMItems.getSettings().maxCount(1), Body.Temperature.EXTREMELY_HOT, Body.Temperature.HOT, Body.Temperature.AVERAGE));
+	public static final RegistrySupplier<Item> LOW_TEMPERATURE_ROCKET_SHIELDING = register("low_temperature_rocket_shielding", () -> new RocketShieldingItem(AMItems.getSettings().maxCount(1), BodyTemperature.EXTREMELY_COLD, BodyTemperature.COLD, BodyTemperature.AVERAGE));
+	public static final RegistrySupplier<Item> HIGH_TEMPERATURE_ROCKET_SHIELDING = register("high_temperature_rocket_shielding", () -> new RocketShieldingItem(AMItems.getSettings().maxCount(1), BodyTemperature.EXTREMELY_HOT, BodyTemperature.HOT, BodyTemperature.AVERAGE));
 	
 	public static final RegistrySupplier<Item> LOW_EFFICIENCY_ROCKET_THRUSTER = register("low_temperature_rocket_thruster", () -> new RocketThrusterItem(AMItems.getSettings().maxCount(1), RocketThrusterPart.Efficiency.LOW));
 	public static final RegistrySupplier<Item> MEDIUM_EFFICIENCY_ROCKET_THRUSTER = register("medium_durability_rocket_thruster", () -> new RocketThrusterItem(AMItems.getSettings().maxCount(1), RocketThrusterPart.Efficiency.MEDIUM));

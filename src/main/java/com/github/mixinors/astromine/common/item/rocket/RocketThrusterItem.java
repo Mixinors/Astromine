@@ -1,7 +1,6 @@
 package com.github.mixinors.astromine.common.item.rocket;
 
-import com.github.mixinors.astromine.common.entity.rocket.part.RocketThrusterPart;
-import com.github.mixinors.astromine.common.item.rocket.base.RocketPartItem;
+import com.github.mixinors.astromine.common.rocket.RocketThrusterPart;
 import net.minecraft.item.Item;
 
 public class RocketThrusterItem extends RocketPartItem<RocketThrusterPart> {

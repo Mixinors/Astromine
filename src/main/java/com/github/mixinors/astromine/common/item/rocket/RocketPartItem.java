@@ -1,4 +1,4 @@
-package com.github.mixinors.astromine.common.item.rocket.base;
+package com.github.mixinors.astromine.common.item.rocket;
 
 import net.minecraft.item.Item;
 

@@ -1,7 +1,6 @@
-package com.github.mixinors.astromine.common.entity.rocket.part;
+package com.github.mixinors.astromine.common.rocket;
 
 import com.github.mixinors.astromine.common.config.AMConfig;
-import com.github.mixinors.astromine.common.entity.rocket.part.base.RocketPart;
 import com.github.mixinors.astromine.common.item.rocket.RocketHullItem;
 
 public class RocketHullPart extends RocketPart<RocketHullItem> {
