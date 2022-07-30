@@ -1,0 +1,81 @@
+{
+  "id": "astromine:meen",
+  "worldId": "astromine:meen",
+  "position": {
+    "x": 384000.0, "y": 0.0, "z": 0.0
+  },
+  "size": {
+    "width": 4.5, "height": 4.5, "length": 4.5
+  },
+  "orbit": {
+    "orbitedBodyId": "astromine:moon",
+    "orbitedBodyOffset": {
+      "x": 5.0, "y": 0.0, "z": 0.0
+    },
+    "width": 48.0, "height": 48.0,
+    "speed": 50.0,
+    "tidalLocked": true
+  },
+  "surfaceDimension": {
+    "worldKey": "astromine:meen",
+    "worldOptionsKey": "astromine:meen",
+    "worldDimensionTypeKey": "astromine:meen",
+    "atmosphere": {
+      "content": "minecraft:empty"
+    },
+    "environment": {
+      "temperature": 26.0,
+      "humidity": 0.0,
+      "sound": 0.25,
+      "gravity": 0.04
+    },
+    "skybox": {
+      "up": { "id": "astromine:textures/skybox/meen/meen_surface_up.png" },
+      "down": { "id": "astromine:textures/skybox/meen/meen_surface_down.png" },
+      "north": { "id": "astromine:textures/skybox/meen/meen_surface_north.png" },
+      "south": { "id": "astromine:textures/skybox/meen/meen_surface_south.png" },
+      "east": { "id": "astromine:textures/skybox/meen/meen_surface_east.png" },
+      "west": { "id": "astromine:textures/skybox/meen/meen_surface_west.png" }
+    },
+    "topLayer": {
+      "worldKey": "astromine:meen_orbit",
+      "worldY": 1024
+    }
+  },
+  "orbitDimension": {
+    "worldKey": "astromine:meen_orbit",
+    "worldOptionsKey": "astromine:meen_orbit",
+    "worldDimensionTypeKey": "astromine:meen_orbit",
+    "atmosphere": {
+      "content": "minecraft:empty"
+    },
+    "environment": {
+      "temperature": 0.0,
+      "humidity": 0.0,
+      "sound": 0.2,
+      "gravity": 0.02
+    },
+    "skybox": {
+      "up": { "id": "astromine:textures/skybox/meen/meen_orbit_up.png" },
+      "down": { "id": "astromine:textures/skybox/meen/meen_orbit_down.png" },
+      "north": { "id": "astromine:textures/skybox/meen/meen_orbit_north.png" },
+      "south": { "id": "astromine:textures/skybox/meen/meen_orbit_south.png" },
+      "east": { "id": "astromine:textures/skybox/meen/meen_orbit_east.png" },
+      "west": { "id": "astromine:textures/skybox/meen/meen_orbit_west.png" }
+    },
+    "bottomLayer": {
+      "worldKey": "astromine:meen",
+      "worldY": -16
+    }
+  },
+  "texture": {
+    "up": "astromine:textures/meen/meen_up.png",
+    "down": "astromine:textures/meen/meen_down.png",
+    "north": "astromine:textures/meen/meen_north.png",
+    "south": "astromine:textures/meen/meen_south.png",
+    "east": "astromine:textures/meen/meen_east.png",
+    "west": "astromine:textures/meen/meen_west.png"
+  },
+  "name": "meen",
+  "description": "The Meen is a real mean bean."
+}
