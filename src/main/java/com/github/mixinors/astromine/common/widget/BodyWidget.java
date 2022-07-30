@@ -103,9 +103,16 @@ public class BodyWidget extends Widget {
 			var focusedColor = new Color(1.0F, 1.0F, 1.0F, 1.0F);
 			var unfocusedColor = new Color(0.4F, 0.4F, 0.4F, 1.0F);
 			
+			var orbitOffset = orbit.orbitedBodyOffset();
+			
 			for (var angle = 0.0F; angle <= 360.0F; angle += 1.0F) {
 				var trailX = orbit.width() * Math.cos(Math.toRadians(angle));
 				var trailY = orbit.height() * Math.sin(Math.toRadians(angle));
+				
+				if (orbitOffset != null) {
+					trailX += orbitOffset.getX();
+					trailY += orbitOffset.getY();
+				}
 				
 				if (orbit.orbitedBodyId() != null) {
 					var orbitedBody = AMRegistries.BODY.get(orbit.orbitedBodyId());
@@ -154,6 +161,13 @@ public class BodyWidget extends Widget {
 			
 			orbitX += orbit.width() * Math.cos(body.getAngle());
 			orbitY += orbit.height() * Math.sin(body.getAngle());
+			
+			var orbitOffset = orbit.orbitedBodyOffset();
+			
+			if (orbitOffset != null) {
+				orbitX += orbitOffset.getX();
+				orbitY += orbitOffset.getY();
+			}
 			
 			if (orbit.orbitedBodyId() != null) {
 				var orbitedBody = AMRegistries.BODY.get(orbit.orbitedBodyId());
