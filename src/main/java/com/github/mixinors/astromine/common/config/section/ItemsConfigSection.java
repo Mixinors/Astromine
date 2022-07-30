@@ -78,86 +78,30 @@ public class ItemsConfigSection {
 	@Comment("Energy consumption for the Space Suit Chestplate")
 	public long spaceSuitChestplateEnergyConsumption = spaceSuitChestplateEnergy / (20L * 60L * 30L);
 	
+	@Comment("Fuel Tank capacity for the Small Rocket Fuel Tank")
+	public long smallRocketFuelTankCapacity = portableTanks.large * 4L;
 	
+	@Comment("Fuel Tank capacity for the Medium Rocket Fuel Tank")
+	public long mediumRocketFuelTankCapacity = portableTanks.large * 8L;
 	
+	@Comment("Fuel Tank capacity for the Large Rocket Fuel Tank")
+	public long largeRocketFuelTankCapacity = portableTanks.large * 16L;
 	
-	@Comment("Liquid Oxygen consumption modifier for the Primitive Rocket Thruster")
-	public double primitiveRocketThrusterLiquidOxygenConsumptionCoefficient = 0.66;
+	@Comment("Trips for the Low Durability Rocket Hull")
+	public long lowDurabilityRocketHullTrips = 6;
 	
-	@Comment("Liquid Fuel consumption modifier for the Primitive Rocket Thruster")
-	public double primitiveRocketThrusterLiquidFuelConsumptionCoefficient = 0.33;
+	@Comment("Trips for the Medium Durability Rocket Hull")
+	public long mediumDurabilityRocketHullTrips = 18;
+
+	@Comment("Trips for the High Durability Rocket Hull")
+	public long highDurabilityRocketHullTrips = 36;
 	
-	@Comment("Solid Fuel consumption modifier for the Primitive Rocket Thruster")
-	public double primitiveRocketThrusterSolidFuelConsumptionCoefficient = 0.66;
+	@Comment("Fuel Consumption multiplier for the Low-Efficiency Rocket Thruster")
+	public double lowEfficiencyRocketThrusterFuelConsumptionMultiplier = 1.0D;
 	
-	@Comment("Fuel Tank capacity for the Primitive Rocket Fuel Tank")
-	public long primitiveRocketFuelTankCapacity = portableTanks.large * 4L;
-	@Comment("Hull minimum temperature for the Primitive Rocket Hull")
-	public double primitiveRocketHullMinimumTemperature = 0.0D;
+	@Comment("Fuel Consumption multiplier for the Medium-Efficiency Rocket Thruster")
+	public double mediumEfficiencyRocketThrusterFuelConsumptionMultiplier = 0.8D;
 	
-	@Comment("Hull maximum temperature for the Primitive Rocket Hull")
-	public double primitiveRocketHullMaximumTemperature = 140.0D;
-	
-	
-	
-	
-	@Comment("Liquid Oxygen consumption modifier for the Basic Rocket Thruster")
-	public double basicRocketThrusterLiquidOxygenConsumptionCoefficient = 0.6;
-	
-	@Comment("Liquid Fuel consumption modifier for the Basic Rocket Thruster")
-	public double basicRocketThrusterLiquidFuelConsumptionCoefficient = 0.27;
-	
-	@Comment("Solid Fuel consumption modifier for the Basic Rocket Thruster")
-	public double basicRocketThrusterSolidFuelConsumptionCoefficient = 0.6;
-	
-	@Comment("Fuel Tank capacity for the Basic Rocket Fuel Tank")
-	public long basicRocketFuelTankCapacity = portableTanks.large * 8L;
-	
-	@Comment("Hull minimum temperature for the Basic Rocket Hull")
-	public double basicRocketHullMinimumTemperature = -30.0D;
-	
-	@Comment("Hull maximum temperature for the Basic Rocket Hull")
-	public double basicRocketHullMaximumTemperature = 210.0D;
-	
-	
-	
-	
-	@Comment("Liquid Oxygen consumption modifier for the Advanced Rocket Thruster")
-	public double advancedRocketThrusterLiquidOxygenConsumptionCoefficient = 0.53;
-	
-	@Comment("Liquid Fuel consumption modifier for the Advanced Rocket Thruster")
-	public double advancedRocketThrusterLiquidFuelConsumptionCoefficient = 0.21;
-	
-	@Comment("Solid Fuel consumption modifier for the Advanced Rocket Thruster")
-	public double advancedRocketThrusterSolidFuelConsumptionCoefficient = 0.53;
-	
-	@Comment("Fuel Tank capacity for the Advanced Rocket Fuel Tank")
-	public long advancedRocketFuelTankCapacity = portableTanks.large * 16L;
-	
-	@Comment("Hull minimum temperature for the Advanced Rocket Hull")
-	public double advancedRocketHullMinimumTemperature = -50.0D;
-	
-	@Comment("Hull maximum temperature for the Advanced Rocket Hull")
-	public double advancedRocketHullMaximumTemperature = 260.0D;
-	
-	
-	
-	
-	@Comment("Liquid Oxygen consumption modifier for the Elite Rocket Thruster")
-	public double eliteRocketThrusterLiquidOxygenConsumptionCoefficient = 0.47;
-	
-	@Comment("Liquid Fuel consumption modifier for the Elite Rocket Thruster")
-	public double eliteRocketThrusterLiquidFuelConsumptionCoefficient = 0.15;
-	
-	@Comment("Solid Fuel consumption modifier for the Elite Rocket Thruster")
-	public double eliteRocketThrusterSolidFuelConsumptionCoefficient = 0.47;
-	
-	@Comment("Fuel Tank capacity for the Elite Rocket Fuel Tank")
-	public long eliteRocketFuelTankCapacity = portableTanks.large * 32L;
-	
-	@Comment("Hull minimum temperature for the Elite Rocket Hull")
-	public double eliteRocketHullMinimumTemperature = -90.0D;
-	
-	@Comment("Hull maximum temperature for the Elite Rocket Hull")
-	public double eliteRocketHullMaximumTemperature = 380.0D;
+	@Comment("Fuel Consumption multiplier for the High-Efficiency Rocket Thruster")
+	public double highEfficiencyRocketThrusterFuelConsumptionMultiplier = 0.5D;
 }

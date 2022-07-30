@@ -24,41 +24,20 @@
 
 package com.github.mixinors.astromine.common.entity.rocket;
 
-import com.github.mixinors.astromine.common.screen.handler.entity.RocketScreenHandler;
-import com.github.mixinors.astromine.registry.common.AMWorlds;
-import com.google.common.collect.Lists;
-import dev.architectury.registry.menu.ExtendedMenuProvider;
-import dev.architectury.registry.menu.MenuRegistry;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.client.util.math.Vector3d;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.Packet;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
-
-import javax.annotation.Nullable;
-import java.util.Collection;
 
 public class RocketEntity extends com.github.mixinors.astromine.common.entity.rocket.base.RocketEntity {
 	public RocketEntity(EntityType<?> type, World world) {
 		super(type, world);
 		
-		fluidStorage.getStorage(LIQUID_FUEL_FLUID_INPUT_SLOT_1).setCapacity(FluidConstants.BUCKET * 16);
-		fluidStorage.getStorage(LIQUID_FUEL_FLUID_INPUT_SLOT_2).setCapacity(FluidConstants.BUCKET * 16);
+		fluidStorage.getStorage(FLUID_INPUT_SLOT_1).setCapacity(FluidConstants.BUCKET * 16);
+		fluidStorage.getStorage(FLUID_INPUT_SLOT_2).setCapacity(FluidConstants.BUCKET * 16);
 	}
 	
 	@Override
@@ -76,16 +55,16 @@ public class RocketEntity extends com.github.mixinors.astromine.common.entity.ro
 				var wildItemStorage = itemStorage.getWildProxy();
 				var wildFluidStorage = fluidStorage.getWildProxy();
 				
-				var itemInputStorage1 = wildItemStorage.getStorage(LIQUID_FUEL_ITEM_INPUT_SLOT_1);
-				var itemInputStorage2 = wildItemStorage.getStorage(LIQUID_FUEL_ITEM_INPUT_SLOT_2);
+				var itemInputStorage1 = wildItemStorage.getStorage(ITEM_INPUT_SLOT_1);
+				var itemInputStorage2 = wildItemStorage.getStorage(ITEM_INPUT_SLOT_2);
 				
-				var itemBufferStorage = wildItemStorage.getStorage(LIQUID_FUEL_ITEM_BUFFER_SLOT_1);
+				var itemBufferStorage = wildItemStorage.getStorage(ITEM_BUFFER_SLOT_1);
 				
-				var itemOutputStorage1 = wildItemStorage.getStorage(LIQUID_FUEL_ITEM_OUTPUT_SLOT_1);
-				var itemOutputStorage2 = wildItemStorage.getStorage(LIQUID_FUEL_ITEM_OUTPUT_SLOT_2);
+				var itemOutputStorage1 = wildItemStorage.getStorage(ITEM_OUTPUT_SLOT_1);
+				var itemOutputStorage2 = wildItemStorage.getStorage(ITEM_OUTPUT_SLOT_2);
 				
-				var fluidInputStorage1 = wildFluidStorage.getStorage(LIQUID_FUEL_FLUID_INPUT_SLOT_1);
-				var fluidInputStorage2 = wildFluidStorage.getStorage(LIQUID_FUEL_FLUID_INPUT_SLOT_2);
+				var fluidInputStorage1 = wildFluidStorage.getStorage(FLUID_INPUT_SLOT_1);
+				var fluidInputStorage2 = wildFluidStorage.getStorage(FLUID_INPUT_SLOT_2);
 				
 				var itemInputFluidStorage1 = FluidStorage.ITEM.find(itemInputStorage1.getStack(), ContainerItemContext.ofSingleSlot(itemInputStorage1));
 				var itemInputFluidStorage2 = FluidStorage.ITEM.find(itemInputStorage2.getStack(), ContainerItemContext.ofSingleSlot(itemInputStorage2));

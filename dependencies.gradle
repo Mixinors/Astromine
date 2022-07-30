@@ -60,6 +60,14 @@ project.ext.setDefaultApis = {
     // Hammer Gravity
     useAsApi("dev.vini2003:hammer-gravity:${hammerVersion}")
     include("dev.vini2003:hammer-gravity:${hammerVersion}")
+
+	// Hammer Chat
+	useAsApi("dev.vini2003:hammer-chat:${hammerVersion}")
+	include("dev.vini2003:hammer-chat:${hammerVersion}")
+
+	// Hammer Emoji
+	useAsApi("dev.vini2003:hammer-emoji:${hammerVersion}")
+	include("dev.vini2003:hammer-emoji:${hammerVersion}")
 }
 
 project.ext.setRuntimeTestMods = {

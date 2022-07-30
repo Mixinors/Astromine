@@ -27,14 +27,8 @@ package com.github.mixinors.astromine.common.entity.rocket.base;
 import com.github.mixinors.astromine.common.body.Body;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.entity.base.ExtendedEntity;
-import com.github.mixinors.astromine.common.entity.rocket.part.RocketElectronicsPart;
-import com.github.mixinors.astromine.common.entity.rocket.part.RocketFuelTankPart;
-import com.github.mixinors.astromine.common.entity.rocket.part.RocketHullPart;
-import com.github.mixinors.astromine.common.entity.rocket.part.RocketThrusterPart;
-import com.github.mixinors.astromine.common.item.rocket.RocketElectronicsItem;
-import com.github.mixinors.astromine.common.item.rocket.RocketFuelTankItem;
-import com.github.mixinors.astromine.common.item.rocket.RocketHullItem;
-import com.github.mixinors.astromine.common.item.rocket.RocketThrusterItem;
+import com.github.mixinors.astromine.common.entity.rocket.part.*;
+import com.github.mixinors.astromine.common.item.rocket.*;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.mixinors.astromine.common.screen.handler.entity.RocketScreenHandler;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
@@ -85,46 +79,39 @@ import static java.lang.Math.min;
 
 // TODO: Add Tracked Data Manager to Hammer!
 public abstract class RocketEntity extends ExtendedEntity implements ExtendedMenuProvider {
-	private static final String ELECTRONICS_ITEM_ID_KEY = "ElectronicsItemId";
-	private static final String HULL_ITEM_ID_KEY = "HullItemId";
-	private static final String THRUSTER_ITEM_ID_KEY = "ThrusterItemId";
 	private static final String FUEL_TANK_ITEM_ID_KEY = "FuelTankItemId";
+	private static final String HULL_ITEM_ID_KEY = "HullItemId";
+	private static final String LANDING_MECHANISM_ID_KEY = "LandingMechanismId";
+	private static final String LIFE_SUPPORT_ID_KEY = "LifeSupportId";
+	private static final String SHIELDING_ID_KEY = "ShieldingId";
+	private static final String THRUSTER_ID_KEY = "ThrusterId";
 	
-	private static final FluidIngredient LIQUID_FUEL_INGREDIENT = new FluidIngredient(FluidVariant.of(AMFluids.FUEL), FluidConstants.BUCKET / 9 / 20 / 2);
-	private static final FluidIngredient LIQUID_OXYGEN_INGREDIENT = new FluidIngredient(FluidVariant.of(AMFluids.OXYGEN), FluidConstants.BUCKET / 27 / 20 / 2);
+	public static final FluidIngredient LIQUID_FUEL_INGREDIENT = new FluidIngredient(FluidVariant.of(AMFluids.FUEL), FluidConstants.BUCKET / 9 / 20 / 2);
+	public static final FluidIngredient LIQUID_OXYGEN_INGREDIENT = new FluidIngredient(FluidVariant.of(AMFluids.OXYGEN), FluidConstants.BUCKET / 27 / 20 / 2);
 	
-	private static final FluidIngredient SOLID_FUEL_INGREDIENT = new FluidIngredient(FluidVariant.of(AMFluids.FUEL), FluidConstants.BUCKET / 9 / 20 / 2);
-
-	public static final int LIQUID_FUEL_FLUID_INPUT_SLOT_1 = 0;
-	public static final int LIQUID_FUEL_FLUID_INPUT_SLOT_2 = 1;
-	public static final int LIQUID_FUEL_FLUID_OUTPUT_SLOT_1 = 0;
-	public static final int LIQUID_FUEL_FLUID_OUTPUT_SLOT_2 = 1;
+	public static final int FLUID_INPUT_SLOT_1 = 0;
+	public static final int FLUID_INPUT_SLOT_2 = 1;
+	public static final int FLUID_OUTPUT_SLOT_1 = 0;
+	public static final int FLUID_OUTPUT_SLOT_2 = 1;
 	
-	public static final int LIQUID_FUEL_ITEM_INPUT_SLOT_1 = 0;
-	public static final int LIQUID_FUEL_ITEM_INPUT_SLOT_2 = 2;
-	public static final int LIQUID_FUEL_ITEM_BUFFER_SLOT_1 = 4;
-	public static final int LIQUID_FUEL_ITEM_OUTPUT_SLOT_1 = 1;
-	public static final int LIQUID_FUEL_ITEM_OUTPUT_SLOT_2 = 3;
+	public static final int ITEM_INPUT_SLOT_1 = 0;
+	public static final int ITEM_INPUT_SLOT_2 = 2;
+	public static final int ITEM_BUFFER_SLOT_1 = 4;
+	public static final int ITEM_OUTPUT_SLOT_1 = 1;
+	public static final int ITEM_OUTPUT_SLOT_2 = 3;
 	
-	public static final int[] LIQUID_FUEL_ITEM_INSERT_SLOTS = new int[] { LIQUID_FUEL_ITEM_INPUT_SLOT_1, LIQUID_FUEL_ITEM_INPUT_SLOT_2 };
-	public static final int[] LIQUID_FUEL_ITEM_EXTRACT_SLOTS = new int[] { LIQUID_FUEL_ITEM_BUFFER_SLOT_1, LIQUID_FUEL_ITEM_OUTPUT_SLOT_1, LIQUID_FUEL_ITEM_OUTPUT_SLOT_2 };
-	public static final int[] LIQUID_FUEL_FLUID_INSERT_SLOTS = new int[] { LIQUID_FUEL_FLUID_INPUT_SLOT_1, LIQUID_FUEL_FLUID_INPUT_SLOT_2 };
-	public static final int[] LIQUID_FUEL_FLUID_EXTRACT_SLOTS = new int[] { };
+	public static final int[] ITEM_INSERT_SLOTS = new int[] { ITEM_INPUT_SLOT_1, ITEM_INPUT_SLOT_2 };
+	public static final int[] ITEM_EXTRACT_SLOTS = new int[] { ITEM_BUFFER_SLOT_1, ITEM_OUTPUT_SLOT_1, ITEM_OUTPUT_SLOT_2 };
 	
-	public static final int SOLID_FUEL_FLUID_INPUT_SLOT_1 = 0;
-	public static final int SOLID_FUEL_FLUID_OUTPUT_SLOT_1 = 0;
-	public static final int SOLID_FUEL_ITEM_INPUT_SLOT_1 = 0;
-	public static final int SOLID_FUEL_ITEM_OUTPUT_SLOT_1 = 1;
+	public static final int[] FLUID_INSERT_SLOTS = new int[] { FLUID_INPUT_SLOT_1, FLUID_INPUT_SLOT_2 };
+	public static final int[] FLUID_EXTRACT_SLOTS = new int[] { };
 	
-	public static final int[] SOLID_FUEL_ITEM_INSERT_SLOTS = new int[] { SOLID_FUEL_ITEM_INPUT_SLOT_1 };
-	public static final int[] SOLID_FUEL_ITEM_EXTRACT_SLOTS = new int[] { SOLID_FUEL_ITEM_OUTPUT_SLOT_1 };
-	public static final int[] SOLID_FUEL_FLUID_INSERT_SLOTS = new int[] { SOLID_FUEL_FLUID_INPUT_SLOT_1 };
-	public static final int[] SOLID_FUEL_FLUID_EXTRACT_SLOTS = new int[] { SOLID_FUEL_FLUID_OUTPUT_SLOT_1 };
-	
-	private RocketHullPart hull;
 	private RocketFuelTankPart fuelTank;
+	private RocketHullPart hull;
+	private RocketLandingMechanismPart landingMechanism;
+	private RocketLifeSupportPart lifeSupport;
+	private RocketShieldingPart shielding;
 	private RocketThrusterPart thruster;
-	private RocketElectronicsPart electronics;
 	
 	private RegistryKey<World> source;
 	private RegistryKey<World> target;
@@ -144,75 +131,63 @@ public abstract class RocketEntity extends ExtendedEntity implements ExtendedMen
 	protected void writeCustomDataToNbt(NbtCompound nbt) {
 		super.writeCustomDataToNbt(nbt);
 		
-		NbtUtil.putIdentifier(nbt, HULL_ITEM_ID_KEY, Registry.ITEM.getId(hull.asItem()));
 		NbtUtil.putIdentifier(nbt, FUEL_TANK_ITEM_ID_KEY, Registry.ITEM.getId(fuelTank.asItem()));
-		NbtUtil.putIdentifier(nbt, THRUSTER_ITEM_ID_KEY, Registry.ITEM.getId(thruster.asItem()));
-		NbtUtil.putIdentifier(nbt, ELECTRONICS_ITEM_ID_KEY, Registry.ITEM.getId(electronics.asItem()));
+		NbtUtil.putIdentifier(nbt, HULL_ITEM_ID_KEY, Registry.ITEM.getId(hull.asItem()));
+		NbtUtil.putIdentifier(nbt, LANDING_MECHANISM_ID_KEY, Registry.ITEM.getId(landingMechanism.asItem()));
+		NbtUtil.putIdentifier(nbt, LIFE_SUPPORT_ID_KEY, Registry.ITEM.getId(lifeSupport.asItem()));
+		NbtUtil.putIdentifier(nbt, SHIELDING_ID_KEY, Registry.ITEM.getId(shielding.asItem()));
+		NbtUtil.putIdentifier(nbt, THRUSTER_ID_KEY, Registry.ITEM.getId(thruster.asItem()));
 	}
 	
 	@Override
 	protected void readCustomDataFromNbt(NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
 		
-		var hullItem = (RocketHullItem) Registry.ITEM.get(NbtUtil.getIdentifier(nbt, HULL_ITEM_ID_KEY));
-		
-		this.hull = hullItem.getPart();
-		
 		var fuelTankItem = (RocketFuelTankItem) Registry.ITEM.get(NbtUtil.getIdentifier(nbt, FUEL_TANK_ITEM_ID_KEY));
 		
 		this.fuelTank = fuelTankItem.getPart();
 		
-		var thrusterItem = (RocketThrusterItem) Registry.ITEM.get(NbtUtil.getIdentifier(nbt, THRUSTER_ITEM_ID_KEY));
+		var hullItem = (RocketHullItem) Registry.ITEM.get(NbtUtil.getIdentifier(nbt, HULL_ITEM_ID_KEY));
+		
+		this.hull = hullItem.getPart();
+		
+		var landingMechanismItem = (RocketLandingMechanismItem) Registry.ITEM.get(NbtUtil.getIdentifier(nbt, LANDING_MECHANISM_ID_KEY));
+		
+		this.landingMechanism = landingMechanismItem.getPart();
+		
+		var lifeSupportItem = (RocketLifeSupportItem) Registry.ITEM.get(NbtUtil.getIdentifier(nbt, LIFE_SUPPORT_ID_KEY));
+		
+		this.lifeSupport = lifeSupportItem.getPart();
+		
+		var shieldingItem = (RocketShieldingItem) Registry.ITEM.get(NbtUtil.getIdentifier(nbt, SHIELDING_ID_KEY));
+		
+		this.shielding = shieldingItem.getPart();
+		
+		var thrusterItem = (RocketThrusterItem) Registry.ITEM.get(NbtUtil.getIdentifier(nbt, THRUSTER_ID_KEY));
 		
 		this.thruster = thrusterItem.getPart();
-		
-		var electronicsItem = (RocketElectronicsItem) Registry.ITEM.get(NbtUtil.getIdentifier(nbt, ELECTRONICS_ITEM_ID_KEY));
-		
-		this.electronics = electronicsItem.getPart();
 	}
 	
 	protected void onPartChanged() {
-		if (thruster.usesLiquidFuel()) {
-			itemStorage = new SimpleItemStorage(5).extractPredicate((variant, slot) ->
-					slot == LIQUID_FUEL_ITEM_BUFFER_SLOT_1 || slot == LIQUID_FUEL_ITEM_OUTPUT_SLOT_1 || slot == LIQUID_FUEL_ITEM_OUTPUT_SLOT_2
-			).insertPredicate((variant, slot) ->
-					slot == LIQUID_FUEL_ITEM_INPUT_SLOT_1 || slot == LIQUID_FUEL_ITEM_INPUT_SLOT_2
-			).listener(() -> {
-				syncData();
-			}).insertSlots(LIQUID_FUEL_ITEM_INSERT_SLOTS).extractSlots(LIQUID_FUEL_ITEM_EXTRACT_SLOTS);
-			
-			fluidStorage = new SimpleFluidStorage(2, getFluidStorageSize()).extractPredicate((variant, slot) ->
-					false
-			).insertPredicate((variant, slot) ->
-					(slot == LIQUID_FUEL_FLUID_INPUT_SLOT_1 && LIQUID_OXYGEN_INGREDIENT.testVariant(variant)) || (slot == LIQUID_FUEL_FLUID_INPUT_SLOT_2 && LIQUID_FUEL_INGREDIENT.testVariant(variant))
-			).listener(() -> {
-				syncData();
-			}).insertSlots(LIQUID_FUEL_FLUID_INSERT_SLOTS).extractSlots(LIQUID_FUEL_FLUID_EXTRACT_SLOTS);
-		} else {
-			itemStorage = new SimpleItemStorage(5).extractPredicate((variant, slot) ->
-					slot == SOLID_FUEL_ITEM_OUTPUT_SLOT_1
-			).insertPredicate((variant, slot) ->
-					slot == SOLID_FUEL_ITEM_INPUT_SLOT_1
-			).listener(() -> {
-				syncData();
-			}).insertSlots(SOLID_FUEL_ITEM_INSERT_SLOTS).extractSlots(SOLID_FUEL_ITEM_EXTRACT_SLOTS);
-			
-			fluidStorage = new SimpleFluidStorage(2, getFluidStorageSize()).extractPredicate((variant, slot) ->
-					false
-			).insertPredicate((variant, slot) ->
-					(slot == SOLID_FUEL_FLUID_INPUT_SLOT_1 && SOLID_FUEL_INGREDIENT.testVariant(variant))
-			).listener(() -> {
-				syncData();
-			}).insertSlots(SOLID_FUEL_FLUID_INSERT_SLOTS).extractSlots(SOLID_FUEL_FLUID_EXTRACT_SLOTS);
-		}
+		itemStorage = new SimpleItemStorage(5).extractPredicate((variant, slot) ->
+				slot == ITEM_BUFFER_SLOT_1 || slot == ITEM_OUTPUT_SLOT_1 || slot == ITEM_OUTPUT_SLOT_2
+		).insertPredicate((variant, slot) ->
+				slot == ITEM_INPUT_SLOT_1 || slot == ITEM_INPUT_SLOT_2
+		).listener(() -> {
+			syncData();
+		}).insertSlots(ITEM_INSERT_SLOTS).extractSlots(ITEM_EXTRACT_SLOTS);
+		
+		fluidStorage = new SimpleFluidStorage(2, getFluidStorageSize()).extractPredicate((variant, slot) ->
+				false
+		).insertPredicate((variant, slot) ->
+				(slot == FLUID_INPUT_SLOT_1 && LIQUID_OXYGEN_INGREDIENT.testVariant(variant)) || (slot == FLUID_INPUT_SLOT_2 && LIQUID_FUEL_INGREDIENT.testVariant(variant))
+		).listener(() -> {
+			syncData();
+		}).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
 	}
 	
 	public boolean isFuelMatching() {
-		if (thruster.usesLiquidFuel()) {
-			return LIQUID_OXYGEN_INGREDIENT.test(fluidStorage.getStorage(LIQUID_FUEL_FLUID_INPUT_SLOT_1)) && LIQUID_FUEL_INGREDIENT.test(fluidStorage.getStorage(LIQUID_FUEL_FLUID_INPUT_SLOT_2));
-		} else {
-			return SOLID_FUEL_INGREDIENT.test(fluidStorage.getStorage(SOLID_FUEL_FLUID_INPUT_SLOT_1));
-		}
+		return LIQUID_OXYGEN_INGREDIENT.test(fluidStorage.getStorage(FLUID_INPUT_SLOT_1)) && LIQUID_FUEL_INGREDIENT.test(fluidStorage.getStorage(FLUID_INPUT_SLOT_2));
 	}
 	
 	public Vec3d getAcceleration() {
@@ -225,10 +200,12 @@ public abstract class RocketEntity extends ExtendedEntity implements ExtendedMen
 	
 	public Collection<ItemStack> getDroppedStacks() {
 		return ImmutableList.of(
-				hull.asItem().getDefaultStack(),
-				thruster.asItem().getDefaultStack(),
 				fuelTank.asItem().getDefaultStack(),
-				electronics.asItem().getDefaultStack()
+				hull.asItem().getDefaultStack(),
+				landingMechanism.asItem().getDefaultStack(),
+				lifeSupport.asItem().getDefaultStack(),
+				shielding.asItem().getDefaultStack(),
+				thruster.asItem().getDefaultStack()
 		);
 	}
 	
@@ -252,13 +229,10 @@ public abstract class RocketEntity extends ExtendedEntity implements ExtendedMen
 		MenuRegistry.openExtendedMenu((ServerPlayerEntity) player, this);
 	}
 	
-	public void canTravel(Body source, Body target) {
-		var availableDistance = thruster.getAvailableTravelDistance(this);
-		var distance = (long) source.position().distanceTo(target.position());
-	}
 	
 	public void travel(Body source, Body target, PlayerEntity launcher) {
-		if (fluidStorage.getStorage(LIQUID_FUEL_FLUID_INPUT_SLOT_1).getAmount() > 0 && fluidStorage.getStorage(LIQUID_FUEL_FLUID_INPUT_SLOT_2).getAmount() > 0) {
+		// TODO!
+		if (fluidStorage.getStorage(FLUID_INPUT_SLOT_1).getAmount() > 0 && fluidStorage.getStorage(FLUID_INPUT_SLOT_2).getAmount() > 0) {
 			this.getDataTracker().set(RocketEntity.RUNNING, true);
 			
 			if (launcher instanceof ServerPlayerEntity serverLauncher) {
@@ -402,6 +376,16 @@ public abstract class RocketEntity extends ExtendedEntity implements ExtendedMen
 		dataTracker.set(RUNNING, running);
 	}
 	
+	public RocketFuelTankPart getFuelTank() {
+		return fuelTank;
+	}
+	
+	public void setFuelTank(RocketFuelTankPart fuelTank) {
+		this.fuelTank = fuelTank;
+		
+		onPartChanged();
+	}
+	
 	public RocketHullPart getHull() {
 		return hull;
 	}
@@ -412,12 +396,32 @@ public abstract class RocketEntity extends ExtendedEntity implements ExtendedMen
 		onPartChanged();
 	}
 	
-	public RocketFuelTankPart getFuelTank() {
-		return fuelTank;
+	public RocketLandingMechanismPart getLandingMechanism() {
+		return landingMechanism;
 	}
 	
-	public void setFuelTank(RocketFuelTankPart fuelTank) {
-		this.fuelTank = fuelTank;
+	public void setLandingMechanism(RocketLandingMechanismPart landingMechanism) {
+		this.landingMechanism = landingMechanism;
+		
+		onPartChanged();
+	}
+	
+	public RocketLifeSupportPart getLifeSupport() {
+		return lifeSupport;
+	}
+	
+	public void setLifeSupport(RocketLifeSupportPart lifeSupport) {
+		this.lifeSupport = lifeSupport;
+		
+		onPartChanged();
+	}
+	
+	public RocketShieldingPart getShielding() {
+		return shielding;
+	}
+	
+	public void setShielding(RocketShieldingPart shielding) {
+		this.shielding = shielding;
 		
 		onPartChanged();
 	}
@@ -431,17 +435,6 @@ public abstract class RocketEntity extends ExtendedEntity implements ExtendedMen
 		
 		onPartChanged();
 	}
-	
-	public RocketElectronicsPart getElectronics() {
-		return electronics;
-	}
-	
-	public void setElectronics(RocketElectronicsPart electronics) {
-		this.electronics = electronics;
-		
-		onPartChanged();
-	}
-	
 	
 	public RegistryKey<World> getSource() {
 		return source;

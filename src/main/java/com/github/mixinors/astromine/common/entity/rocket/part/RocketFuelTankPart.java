@@ -1,20 +1,35 @@
 package com.github.mixinors.astromine.common.entity.rocket.part;
 
+import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.entity.rocket.part.base.RocketPart;
 import com.github.mixinors.astromine.common.item.rocket.RocketFuelTankItem;
-import com.github.mixinors.astromine.common.item.rocket.RocketHullItem;
-import com.github.mixinors.astromine.common.util.data.tier.Tier;
 
 public class RocketFuelTankPart extends RocketPart<RocketFuelTankItem> {
-	private final long capacity;
+	public enum Capacity {
+		LOW(AMConfig.get().items.smallRocketFuelTankCapacity),
+		MEDIUM(AMConfig.get().items.mediumRocketFuelTankCapacity),
+		HIGH(AMConfig.get().items.largeRocketFuelTankCapacity);
+		
+		private final long size;
+		
+		Capacity(long size) {
+			this.size = size;
+		}
+		
+		public long getSize() {
+			return size;
+		}
+	}
 	
-	public RocketFuelTankPart(RocketFuelTankItem item, Tier tier, long capacity) {
-		super(item, tier);
+	private Capacity capacity;
+	
+	public RocketFuelTankPart(RocketFuelTankItem item, Capacity capacity) {
+		super(item);
 		
 		this.capacity = capacity;
 	}
 	
-	public long getCapacity() {
+	public Capacity getCapacity() {
 		return capacity;
 	}
 }

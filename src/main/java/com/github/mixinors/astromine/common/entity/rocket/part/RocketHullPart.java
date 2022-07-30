@@ -1,25 +1,35 @@
 package com.github.mixinors.astromine.common.entity.rocket.part;
 
+import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.common.entity.rocket.part.base.RocketPart;
 import com.github.mixinors.astromine.common.item.rocket.RocketHullItem;
-import com.github.mixinors.astromine.common.util.data.tier.Tier;
 
 public class RocketHullPart extends RocketPart<RocketHullItem> {
-	private final double minimumTemperature;
-	private final double maximumTemperature;
-	
-	public RocketHullPart(RocketHullItem item, Tier tier, double minimumTemperature, double maximumTemperature) {
-		super(item, tier);
+	public enum Durability {
+		LOW(AMConfig.get().items.lowDurabilityRocketHullTrips),
+		MEDIUM(AMConfig.get().items.mediumDurabilityRocketHullTrips),
+		HIGH(AMConfig.get().items.highDurabilityRocketHullTrips);
 		
-		this.minimumTemperature = minimumTemperature;
-		this.maximumTemperature = maximumTemperature;
+		private final long trips;
+		
+		Durability(long trips) {
+			this.trips = trips;
+		}
+		
+		public long getTrips() {
+			return trips;
+		}
 	}
 	
-	public double getMinimumTemperature() {
-		return minimumTemperature;
+	private final Durability durability;
+
+	public RocketHullPart(RocketHullItem item, Durability durability) {
+		super(item);
+		
+		this.durability = durability;
 	}
 	
-	public double getMaximumTemperature() {
-		return maximumTemperature;
+	public Durability getDurability() {
+		return durability;
 	}
 }
