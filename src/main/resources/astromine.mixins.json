@@ -19,6 +19,7 @@
     "common.ServerChunkManagerMixin",
     "common.ServerPlayNetworkHandlerMixin",
     "common.StayAboveWaterTaskMixin",
+    "common.StructureAccessorAccessor",
     "common.SwimGoalAccessor",
     "common.SwimGoalMixin"
   ],
