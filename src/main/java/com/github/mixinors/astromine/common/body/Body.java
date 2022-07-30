@@ -10,6 +10,7 @@ import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gravity.api.common.manager.GravityManager;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
@@ -108,16 +109,138 @@ public class Body {
 		);
 	}
 	
+	public enum Danger {
+		EXTREMELY_LOW(AMCommon.id("extremely_low"), new TranslatableText("text.astromine.body.danger.extremely_low")),
+		LOW(AMCommon.id("low"), new TranslatableText("text.astromine.body.danger.low")),
+		AVERAGE(AMCommon.id("average"), new TranslatableText("text.astromine.body.danger.average")),
+		HIGH(AMCommon.id("high"), new TranslatableText("text.astromine.body.danger.high")),
+		EXTREMELY_HIGH(AMCommon.id("extremely_high"), new TranslatableText("text.astromine.body.danger.extremely_high"));
+		
+		public static final Codec<Danger> CODEC = Identifier.CODEC.xmap(Danger::byId, Danger::id);
+		
+		private static final Map<Identifier, Danger> BY_ID = new HashMap<>();
+		
+		private final Identifier id;
+		
+		private final Text title;
+		
+		Danger(Identifier id, Text title) {
+			this.id = id;
+			
+			this.title = title;
+		}
+		
+		public Identifier id() {
+			return id;
+		}
+		
+		public Text title() {
+			return title;
+		}
+		
+		public static Danger byId(Identifier id) {
+			return BY_ID.get(id);
+		}
+		
+		static {
+			for (var value : values()) {
+				BY_ID.put(value.id(), value);
+			}
+		}
+	}
+	
+	public enum Temperature {
+		EXTREMELY_COLD(AMCommon.id("extremely_cold"), new TranslatableText("text.astromine.body.temperature.extremely_cold")),
+		COLD(AMCommon.id("cold"), new TranslatableText("text.astromine.body.temperature.cold")),
+		AVERAGE(AMCommon.id("average"), new TranslatableText("text.astromine.body.temperature.average")),
+		HOT(AMCommon.id("hot"), new TranslatableText("text.astromine.body.temperature.hot")),
+		EXTREMELY_HOT(AMCommon.id("extremely_hot"), new TranslatableText("text.astromine.body.temperature.extremely_hot"));
+		
+		public static final Codec<Temperature> CODEC = Identifier.CODEC.xmap(Temperature::byId, Temperature::id);
+		
+		private static final Map<Identifier, Temperature> BY_ID = new HashMap<>();
+		
+		private final Identifier id;
+		
+		private final Text title;
+		
+		Temperature(Identifier id, Text title) {
+			this.id = id;
+			
+			this.title = title;
+		}
+		
+		public Identifier id() {
+			return id;
+		}
+		
+		public Text title() {
+			return title;
+		}
+		
+		public static Temperature byId(Identifier id) {
+			return BY_ID.get(id);
+		}
+		
+		static {
+			for (var value : values()) {
+				BY_ID.put(value.id(), value);
+			}
+		}
+	}
+	
+	public enum Humidity {
+		EXTREMELY_LOW(AMCommon.id("extremely_low"), new TranslatableText("text.astromine.body.humidity.extremely_low")),
+		LOW(AMCommon.id("low"), new TranslatableText("text.astromine.body.humidity.low")),
+		AVERAGE(AMCommon.id("average"), new TranslatableText("text.astromine.body.humidity.average")),
+		HIGH(AMCommon.id("high"), new TranslatableText("text.astromine.body.humidity.high")),
+		EXTREMELY_HIGH(AMCommon.id("extremely_high"), new TranslatableText("text.astromine.body.humidity.extremely_high"));
+		
+		public static final Codec<Humidity> CODEC = Identifier.CODEC.xmap(Humidity::byId, Humidity::id);
+		
+		private static final Map<Identifier, Humidity> BY_ID = new HashMap<>();
+		
+		private final Identifier id;
+		
+		private final Text title;
+		
+		Humidity(Identifier id, Text title) {
+			this.id = id;
+			
+			this.title = title;
+		}
+		
+		public Identifier id() {
+			return id;
+		}
+		
+		public Text title() {
+			return title;
+		}
+		
+		public static Humidity byId(Identifier id) {
+			return BY_ID.get(id);
+		}
+		
+		static {
+			for (var value : values()) {
+				BY_ID.put(value.id(), value);
+			}
+		}
+	}
+	
 	public record Environment(
-			double temperature,
-			double humidity,
+			Danger danger,
+			Temperature temperature,
+			Humidity humidity,
 			float sound,
 			float gravity
 	) {
 		public static final Codec<Environment> CODEC = RecordCodecBuilder.create(
 				instance -> instance.group(
-						Codec.DOUBLE.fieldOf("temperature").forGetter(Environment::temperature),
-						Codec.DOUBLE.optionalFieldOf("humidity", 0.0D).forGetter(Environment::humidity),
+						Danger.CODEC.fieldOf("danger").forGetter(Environment::danger),
+						Temperature.CODEC.fieldOf("temperature").forGetter(Environment::temperature),
+						Humidity.CODEC.fieldOf("humidity").forGetter(Environment::humidity),
 						Codec.FLOAT.optionalFieldOf("sound", 1.0F).forGetter(Environment::sound),
 						Codec.FLOAT.optionalFieldOf("gravity", 0.08F).forGetter(Environment::gravity)
 				).apply(instance, Environment::new)
