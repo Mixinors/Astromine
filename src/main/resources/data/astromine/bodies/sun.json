@@ -1,7 +1,8 @@
 {
   "id": "astromine:sun",
+  "type": "astromine:star",
   "position": {
-    "x": 0.0, "y": 0.0, "z": 0.0
+    "x": 0.0, "y": 0.0
   },
   "size": {
     "width": 24.0, "height": 24.0, "length": 24.0

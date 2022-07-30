@@ -1,5 +1,6 @@
 package com.github.mixinors.astromine.common.body;
 
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.render.skybox.Skybox;
 import com.github.mixinors.astromine.common.util.extra.Codecs;
 import com.mojang.serialization.Codec;
@@ -18,6 +19,8 @@ import net.minecraft.world.dimension.DimensionType;
 import org.jetbrains.annotations.ApiStatus;
 
 import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -30,6 +33,7 @@ public class Body {
 	public static final Codec<Body> CODEC = RecordCodecBuilder.create(
 			instance -> instance.group(
 					Identifier.CODEC.fieldOf("id").forGetter(Body::id),
+					Type.CODEC.fieldOf("type").forGetter(Body::type),
 					Position.CODEC.fieldOf("position").forGetter(Body::position),
 					Size.CODEC.fieldOf("size").forGetter(Body::size),
 					Orbit.CODEC.optionalFieldOf("orbit").forGetter(body -> Optional.ofNullable(body.orbit())),
@@ -38,8 +42,43 @@ public class Body {
 					Texture.CODEC.fieldOf("texture").forGetter(Body::texture),
 					Codecs.LITERAL_TEXT.fieldOf("name").forGetter(Body::name),
 					Codecs.TRANSLATABLE_TEXT.fieldOf("description").forGetter(Body::description)
-			).apply(instance, (id, position, size, orbit, surfaceDimension, orbitDimension, texture, name, description) -> new Body(id, position, size, orbit.orElse(null), surfaceDimension.orElse(null), orbitDimension.orElse(null), texture, name, description))
+			).apply(instance, (id, type, position, size, orbit, surfaceDimension, orbitDimension, texture, name, description) -> new Body(id, type, position, size, orbit.orElse(null), surfaceDimension.orElse(null), orbitDimension.orElse(null), texture, name, description))
 	);
+	
+	public enum Type {
+		STAR(AMCommon.id("star")),
+		PLANET(AMCommon.id("planet")),
+		DWARF_PLANET(AMCommon.id("dwarf_planet")),
+		MOON(AMCommon.id("moon")),
+		ASTEROID(AMCommon.id("asteroid")),
+		COMET(AMCommon.id("comet")),
+		SATELLITE(AMCommon.id("satellite")),
+		STATION(AMCommon.id("station"));
+		
+		public static final Codec<Type> CODEC = Identifier.CODEC.xmap(Type::byId, Type::id);
+		
+		private static final Map<Identifier, Type> BY_ID = new HashMap<>();
+		
+		private final Identifier id;
+		
+		Type(Identifier id) {
+			this.id = id;
+		}
+		
+		public Identifier id() {
+			return id;
+		}
+		
+		public static Type byId(Identifier id) {
+			return BY_ID.get(id);
+		}
+		
+		 static {
+			for (var value : values()) {
+				BY_ID.put(value.id(), value);
+			}
+		 }
+	}
 	
 	public record Orbit(
 			@Nullable Identifier orbitedBodyId,
@@ -143,6 +182,8 @@ public class Body {
 	
 	private final Identifier id;
 	
+	private final Type type;
+	
 	private final Position position;
 	private final Size size;
 	
@@ -170,8 +211,9 @@ public class Body {
 	private double scale = 0.0D;
 	private double prevScale = 1.0D;
 	
-	public Body(Identifier id, Position position, Size size, @Nullable Orbit orbit, @Nullable Dimension surfaceDimension, @Nullable Dimension orbitDimension, Texture texture, Text name, Text description) {
+	public Body(Identifier id, Type type, Position position, Size size, @Nullable Orbit orbit, @Nullable Dimension surfaceDimension, @Nullable Dimension orbitDimension, Texture texture, Text name, Text description) {
 		this.id = id;
+		this.type = type;
 		this.position = position;
 		this.size = size;
 		this.orbit = orbit;
@@ -235,6 +277,10 @@ public class Body {
 	
 	public Identifier id() {
 		return id;
+	}
+	
+	public Type type() {
+		return type;
 	}
 	
 	public Position position() {

@@ -117,10 +117,10 @@ public class BodySelectorHandledScreen extends BaseHandledScreen<BodySelectorScr
 			}
 		} else {
 			if (ZOOM > 1.0F) {
-				OFFSET_X = 0.0F;
-				OFFSET_Y = 0.0F;
+				OFFSET_X -= (mouseX * scale) - mouseX;
+				OFFSET_Y -= (mouseY * scale) - mouseY;
 				
-				ZOOM = 1.0F;
+				ZOOM += (scale - 1.0F);
 			}
 		}
 		

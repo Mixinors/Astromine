@@ -1,5 +1,6 @@
 {
   "id": "astromine:earth",
+  "type": "astromine:planet",
   "worldId": "minecraft:overworld",
   "position": {
     "x": 149600000.0, "y": 0.0, "z": 0.0
@@ -9,10 +10,7 @@
   },
   "orbit": {
     "orbitedBodyId": "astromine:sun",
-    "orbitedBodyOffset": {
-      "x": 149.0, "y": 0.0, "z": 0.0
-    },
-    "width": 64.0, "height": 64.0,
+    "width": 64.0, "height": 32.0,
     "speed": 2.0,
     "tidalLocked": false
   },
