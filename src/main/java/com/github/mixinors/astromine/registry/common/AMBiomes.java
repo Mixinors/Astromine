@@ -54,6 +54,9 @@ public class AMBiomes {
 	public static final Identifier MOON_CRATER_FIELD_ID = AMCommon.id("moon_crater_field");
 	public static final RegistryKey<Biome> MOON_CRATER_FIELD_KEY = register(Registry.BIOME_KEY, MOON_CRATER_FIELD_ID);
 	
+	public static final Identifier ROCKET_ID = AMCommon.id("rocket");
+	public static final RegistryKey<Biome> ROCKET_KEY = register(Registry.BIOME_KEY, ROCKET_ID);
+	
 	// We specify what entities spawn and what features generate in the biome.
 	// Aside from some structures, trees, rocks, plants and
 	// custom entities, these are mostly the same for each biome.
@@ -158,12 +161,36 @@ public class AMBiomes {
 				.build();
 	}
 	
+	private static Biome createRocket() {
+		var spawnSettings = new SpawnSettings.Builder().build();
+		
+		// TODO: Generate a rocket feature
+		var generationSettings = new GenerationSettings.Builder().build();
+		
+		return (new Biome.Builder())
+				.precipitation(Biome.Precipitation.NONE)
+				.category(Biome.Category.NONE)
+				.temperature(0.0F)
+				.downfall(0.0F)
+				.effects((new BiomeEffects.Builder())
+						.waterColor(0x3F76E4)
+						.waterFogColor(0x050533)
+						.fogColor(0xC0D8FF)
+						.skyColor(0x77ADFF)
+						.build())
+				.spawnSettings(spawnSettings)
+				.generationSettings(generationSettings)
+				.build();
+	}
+	
 	public static void init() {
 		Registry.register(BuiltinRegistries.BIOME, ASTEROID_BELT_KEY.getValue(), createAsteroidBelt());
 		
 		Registry.register(BuiltinRegistries.BIOME, MOON_LIGHT_SIDE_KEY.getValue(), createMoonLightSide());
 		Registry.register(BuiltinRegistries.BIOME, MOON_DARK_SIDE_KEY.getValue(), createMoonDarkSide());
 		Registry.register(BuiltinRegistries.BIOME, MOON_CRATER_FIELD_KEY.getValue(), createMoonCraterField());
+		
+		Registry.register(BuiltinRegistries.BIOME, ROCKET_KEY.getValue(), createRocket());
 	}
 	
 	public static <T> RegistryKey<T> register(RegistryKey<Registry<T>> registry, Identifier identifier) {
