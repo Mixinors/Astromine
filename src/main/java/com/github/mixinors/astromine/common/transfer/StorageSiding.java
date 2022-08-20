@@ -24,6 +24,9 @@
 
 package com.github.mixinors.astromine.common.transfer;
 
+import com.github.mixinors.astromine.common.util.extra.Codecs;
+import com.mojang.serialization.Codec;
+
 /**
  * A {@link StorageSiding} which dictates a machine's siding.
  */
@@ -44,6 +47,8 @@ public enum StorageSiding {
 	 * <b>Insertion</b> and <b>extraction</b> are both denied.
 	 */
 	NONE;
+	
+	public static final Codec<StorageSiding> CODEC = Codecs.createEnumCodec(StorageSiding.class);
 	
 	public StorageSiding next() {
 		return switch (this) {

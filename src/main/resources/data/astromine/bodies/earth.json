@@ -1,6 +1,6 @@
 {
   "id": "astromine:earth",
-  "type": "astromine:planet",
+  "type": "planet",
   "worldId": "minecraft:overworld",
   "position": {
     "x": 149600000.0, "y": 0.0, "z": 0.0

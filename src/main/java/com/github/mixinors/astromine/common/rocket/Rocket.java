@@ -6,12 +6,15 @@ import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import com.github.mixinors.astromine.registry.common.AMFluids;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.common.tick.Tickable;
 import dev.vini2003.hammer.core.api.common.util.NbtUtil;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 import java.util.UUID;
@@ -122,7 +125,7 @@ public class Rocket implements Tickable {
 		
 		// TODO: Check if this actually works.
 		if (server != null) {
-			AMComponents.ROCKET_COMPONENT.sync(this);
+			AMComponents.ROCKET_COMPONENT.sync(server);
 		}
 	}
 	
@@ -227,14 +230,6 @@ public class Rocket implements Tickable {
 		this.uuid = uuid;
 	}
 	
-	public UUID getOwnerUuid() {
-		return ownerUuid;
-	}
-	
-	public void setOwnerUuid(UUID ownerUuid) {
-		this.ownerUuid = ownerUuid;
-	}
-	
 	public RocketJourney getJourney() {
 		return journey;
 	}
@@ -281,6 +276,8 @@ public class Rocket implements Tickable {
 	
 	public void setFuelTank(RocketFuelTankPart fuelTank) {
 		this.fuelTank = fuelTank;
+		
+		onPartChanged();
 	}
 	
 	public RocketHullPart getHull() {
@@ -289,6 +286,8 @@ public class Rocket implements Tickable {
 	
 	public void setHull(RocketHullPart hull) {
 		this.hull = hull;
+		
+		onPartChanged();
 	}
 	
 	public RocketLandingMechanismPart getLandingMechanism() {
@@ -297,6 +296,8 @@ public class Rocket implements Tickable {
 	
 	public void setLandingMechanism(RocketLandingMechanismPart landingMechanism) {
 		this.landingMechanism = landingMechanism;
+		
+		onPartChanged();
 	}
 	
 	public RocketLifeSupportPart getLifeSupport() {
@@ -305,6 +306,8 @@ public class Rocket implements Tickable {
 	
 	public void setLifeSupport(RocketLifeSupportPart lifeSupport) {
 		this.lifeSupport = lifeSupport;
+		
+		onPartChanged();
 	}
 	
 	public RocketShieldingPart getShielding() {
@@ -313,6 +316,8 @@ public class Rocket implements Tickable {
 	
 	public void setShielding(RocketShieldingPart shielding) {
 		this.shielding = shielding;
+		
+		onPartChanged();
 	}
 	
 	public RocketThrusterPart getThruster() {
@@ -321,5 +326,7 @@ public class Rocket implements Tickable {
 	
 	public void setThruster(RocketThrusterPart thruster) {
 		this.thruster = thruster;
+		
+		onPartChanged();
 	}
 }

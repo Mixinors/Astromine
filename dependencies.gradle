@@ -70,6 +70,14 @@ project.ext.setDefaultApis = {
 	// Hammer Emoji
 	useAsApi("dev.vini2003:hammer-emoji:${hammerVersion}")
 	include("dev.vini2003:hammer-emoji:${hammerVersion}")
+
+	// Hammer Blueprint
+	useAsApi("dev.vini2003:hammer-blueprint:${blueprintVersion}")
+	include("dev.vini2003:hammer-blueprint:${blueprintVersion}")
+
+	// Hammer Blueprint NBT
+	useAsApi("dev.vini2003:hammer-blueprint-nbt:${hammerVersion}")
+	include("dev.vini2003:hammer-blueprint-nbt:${hammerVersion}")
 }
 
 project.ext.setRuntimeTestMods = {

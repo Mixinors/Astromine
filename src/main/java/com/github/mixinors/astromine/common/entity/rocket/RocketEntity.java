@@ -36,8 +36,8 @@ public class RocketEntity extends com.github.mixinors.astromine.common.entity.ro
 	public RocketEntity(EntityType<?> type, World world) {
 		super(type, world);
 		
-		fluidStorage.getStorage(FLUID_INPUT_SLOT_1).setCapacity(FluidConstants.BUCKET * 16);
-		fluidStorage.getStorage(FLUID_INPUT_SLOT_2).setCapacity(FluidConstants.BUCKET * 16);
+		//fluidStorage.getStorage(FLUID_INPUT_SLOT_1).setCapacity(FluidConstants.BUCKET * 16);
+		//fluidStorage.getStorage(FLUID_INPUT_SLOT_2).setCapacity(FluidConstants.BUCKET * 16);
 	}
 	
 	@Override
@@ -52,25 +52,25 @@ public class RocketEntity extends com.github.mixinors.astromine.common.entity.ro
 			//}
 			
 			try (var transaction = Transaction.openOuter()) {
-				var wildItemStorage = itemStorage.getWildProxy();
-				var wildFluidStorage = fluidStorage.getWildProxy();
-				
-				var itemInputStorage1 = wildItemStorage.getStorage(ITEM_INPUT_SLOT_1);
-				var itemInputStorage2 = wildItemStorage.getStorage(ITEM_INPUT_SLOT_2);
-				
-				var itemBufferStorage = wildItemStorage.getStorage(ITEM_BUFFER_SLOT_1);
-				
-				var itemOutputStorage1 = wildItemStorage.getStorage(ITEM_OUTPUT_SLOT_1);
-				var itemOutputStorage2 = wildItemStorage.getStorage(ITEM_OUTPUT_SLOT_2);
-				
-				var fluidInputStorage1 = wildFluidStorage.getStorage(FLUID_INPUT_SLOT_1);
-				var fluidInputStorage2 = wildFluidStorage.getStorage(FLUID_INPUT_SLOT_2);
-				
-				var itemInputFluidStorage1 = FluidStorage.ITEM.find(itemInputStorage1.getStack(), ContainerItemContext.ofSingleSlot(itemInputStorage1));
-				var itemInputFluidStorage2 = FluidStorage.ITEM.find(itemInputStorage2.getStack(), ContainerItemContext.ofSingleSlot(itemInputStorage2));
-				
-				var itemOutputFluidStorage1 = FluidStorage.ITEM.find(itemOutputStorage1.getStack(), ContainerItemContext.ofSingleSlot(itemOutputStorage1));
-				var itemOutputFluidStorage2 = FluidStorage.ITEM.find(itemOutputStorage2.getStack(), ContainerItemContext.ofSingleSlot(itemOutputStorage2));
+				//var wildItemStorage = itemStorage.getWildProxy();
+				//var wildFluidStorage = fluidStorage.getWildProxy();
+				//
+				//var itemInputStorage1 = wildItemStorage.getStorage(ITEM_INPUT_SLOT_1);
+				//var itemInputStorage2 = wildItemStorage.getStorage(ITEM_INPUT_SLOT_2);
+				//
+				//var itemBufferStorage = wildItemStorage.getStorage(ITEM_BUFFER_SLOT_1);
+				//
+				//var itemOutputStorage1 = wildItemStorage.getStorage(ITEM_OUTPUT_SLOT_1);
+				//var itemOutputStorage2 = wildItemStorage.getStorage(ITEM_OUTPUT_SLOT_2);
+				//
+				//var fluidInputStorage1 = wildFluidStorage.getStorage(FLUID_INPUT_SLOT_1);
+				//var fluidInputStorage2 = wildFluidStorage.getStorage(FLUID_INPUT_SLOT_2);
+				//
+				//var itemInputFluidStorage1 = FluidStorage.ITEM.find(itemInputStorage1.getStack(), ContainerItemContext.ofSingleSlot(itemInputStorage1));
+				//var itemInputFluidStorage2 = FluidStorage.ITEM.find(itemInputStorage2.getStack(), ContainerItemContext.ofSingleSlot(itemInputStorage2));
+				//
+				//var itemOutputFluidStorage1 = FluidStorage.ITEM.find(itemOutputStorage1.getStack(), ContainerItemContext.ofSingleSlot(itemOutputStorage1));
+				//var itemOutputFluidStorage2 = FluidStorage.ITEM.find(itemOutputStorage2.getStack(), ContainerItemContext.ofSingleSlot(itemOutputStorage2));
 				
 				//..StorageUtil.move(itemInputFluidStorage1, fluidInputStorage1, fluidVariant -> {
 				//	..	return getFirstFuel().testVariant(fluidVariant);
@@ -79,20 +79,20 @@ public class RocketEntity extends com.github.mixinors.astromine.common.entity.ro
 				//	..	return getSecondFuel().testVariant(fluidVariant);
 				//	..}, FluidConstants.BUCKET, transaction);
 				
-				StorageUtil.move(fluidInputStorage1, itemOutputFluidStorage1, fluidVariant -> true, FluidConstants.BUCKET, transaction);
-				StorageUtil.move(fluidInputStorage2, itemOutputFluidStorage2, fluidVariant -> true, FluidConstants.BUCKET, transaction);
-				
-				StorageUtil.move(itemInputStorage1, itemBufferStorage, (variant) -> {
-					var stored = StorageUtil.findStoredResource(itemInputFluidStorage1, transaction);
-					return stored == null || stored.isBlank();
-				}, 1, transaction);
-				
-				StorageUtil.move(itemInputStorage2, itemBufferStorage, (variant) -> {
-					var stored = StorageUtil.findStoredResource(itemInputFluidStorage2, transaction);
-					return stored == null || stored.isBlank();
-				}, 1, transaction);
-				
-				transaction.commit();
+				//StorageUtil.move(fluidInputStorage1, itemOutputFluidStorage1, fluidVariant -> true, FluidConstants.BUCKET, transaction);
+				//StorageUtil.move(fluidInputStorage2, itemOutputFluidStorage2, fluidVariant -> true, FluidConstants.BUCKET, transaction);
+				//
+				//StorageUtil.move(itemInputStorage1, itemBufferStorage, (variant) -> {
+				//	var stored = StorageUtil.findStoredResource(itemInputFluidStorage1, transaction);
+				//	return stored == null || stored.isBlank();
+				//}, 1, transaction);
+				//
+				//StorageUtil.move(itemInputStorage2, itemBufferStorage, (variant) -> {
+				//	var stored = StorageUtil.findStoredResource(itemInputFluidStorage2, transaction);
+				//	return stored == null || stored.isBlank();
+				//}, 1, transaction);
+				//
+				//transaction.commit();
 			}
 		}
 	}

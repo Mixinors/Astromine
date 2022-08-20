@@ -39,6 +39,8 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class AMWorlds {
+	public static final RegistryKey<World> ROCKET = RegistryKey.of(Registry.WORLD_KEY, AMCommon.id("rocket"));
+	
 	private static final Set<RegistryKey<?>> KEYS = new HashSet<>();
 	
 	private static final Map<RegistryKey<?>, Boolean> CACHE = new ConcurrentHashMap<>();

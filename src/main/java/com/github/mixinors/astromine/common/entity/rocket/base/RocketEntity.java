@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.entity.rocket.base;
 
 import com.github.mixinors.astromine.common.entity.base.ExtendedEntity;
+import com.github.mixinors.astromine.common.manager.RocketInteriorManager;
 import com.github.mixinors.astromine.common.manager.RocketManager;
 import com.github.mixinors.astromine.common.rocket.Rocket;
 import com.github.mixinors.astromine.registry.common.AMParticles;
@@ -43,8 +44,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-
-import java.util.UUID;
 
 // TODO: Add Tracked Data Manager to Hammer!
 public abstract class RocketEntity extends ExtendedEntity {
@@ -92,7 +91,7 @@ public abstract class RocketEntity extends ExtendedEntity {
 			return ActionResult.CONSUME;
 		}
 		
-		// TODO: Enter Rocket Dimension!
+		RocketInteriorManager.teleportToRocket(player, uuid);
 		
 		return super.interactAt(player, hitPos, hand);
 	}

@@ -25,6 +25,8 @@
 package com.github.mixinors.astromine.common.transfer;
 
 import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.common.util.extra.Codecs;
+import com.mojang.serialization.Codec;
 import net.minecraft.util.Identifier;
 
 /**
@@ -35,6 +37,8 @@ public enum TransferType {
 	INPUT(AMCommon.id("textures/widget/insert.png")),
 	OUTPUT(AMCommon.id("textures/widget/extract.png")),
 	INPUT_OUTPUT(AMCommon.id("textures/widget/insert_extract.png"));
+	
+	public static final Codec<TransferType> CODEC = Codecs.createEnumCodec(TransferType.class);
 	
 	private final Identifier texture;
 	

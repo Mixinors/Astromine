@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.common.body.Body;
+import com.github.mixinors.astromine.common.manager.RocketInteriorManager;
 import com.github.mixinors.astromine.common.screen.handler.RecipeCreatorScreenHandler;
 import com.github.mixinors.astromine.common.screen.handler.body.BodySelectorScreenHandler;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;

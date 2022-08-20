@@ -24,6 +24,9 @@
 
 package com.github.mixinors.astromine.common.transfer;
 
+import com.github.mixinors.astromine.common.util.extra.Codecs;
+import com.mojang.serialization.Codec;
+
 /**
  * A {@link RedstoneType} which dictates in which Redstone power states a machine should run.
  */
@@ -40,6 +43,8 @@ public enum RedstoneType {
 	 * The machine will run whether powered <b>or not</b> by Redstone.
 	 */
 	WORK_ALWAYS;
+	
+	public static final Codec<RedstoneType> CODEC = Codecs.createEnumCodec(RedstoneType.class);
 	
 	/**
 	 * Returns whether the given Redstone state allows for machines to run in this control.

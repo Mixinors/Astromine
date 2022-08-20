@@ -90,7 +90,7 @@ public class AMItems {
 	public static final RegistrySupplier<Item> MEDIUM_CAPACITY_ROCKET_FUEL_TANK = register("medium_capacity_rocket_fuel_tank", () -> new RocketFuelTankItem(AMItems.getSettings().maxCount(1), RocketFuelTankPart.Capacity.MEDIUM));
 	public static final RegistrySupplier<Item> HIGH_CAPACITY_ROCKET_FUEL_TANK = register("high_capacity_rocket_fuel_tank", () -> new RocketFuelTankItem(AMItems.getSettings().maxCount(1), RocketFuelTankPart.Capacity.HIGH));
 	
-	public static final RegistrySupplier<Item> LOW_DURABILITY_ROCKET_HULL = register("low_temperature_rocket_hull", () -> new RocketHullItem(AMItems.getSettings().maxCount(1), RocketHullPart.Durability.LOW));
+	public static final RegistrySupplier<Item> LOW_DURABILITY_ROCKET_HULL = register("low_durability_rocket_hull", () -> new RocketHullItem(AMItems.getSettings().maxCount(1), RocketHullPart.Durability.LOW));
 	public static final RegistrySupplier<Item> MEDIUM_DURABILITY_ROCKET_HULL = register("medium_durability_rocket_hull", () -> new RocketHullItem(AMItems.getSettings().maxCount(1), RocketHullPart.Durability.MEDIUM));
 	public static final RegistrySupplier<Item> HIGH_DURABILITY_ROCKET_HULL = register("high_durability_rocket_hull", () -> new RocketHullItem(AMItems.getSettings().maxCount(1), RocketHullPart.Durability.HIGH));
 	
@@ -103,9 +103,9 @@ public class AMItems {
 	public static final RegistrySupplier<Item> LOW_TEMPERATURE_ROCKET_SHIELDING = register("low_temperature_rocket_shielding", () -> new RocketShieldingItem(AMItems.getSettings().maxCount(1), BodyTemperature.EXTREMELY_COLD, BodyTemperature.COLD, BodyTemperature.AVERAGE));
 	public static final RegistrySupplier<Item> HIGH_TEMPERATURE_ROCKET_SHIELDING = register("high_temperature_rocket_shielding", () -> new RocketShieldingItem(AMItems.getSettings().maxCount(1), BodyTemperature.EXTREMELY_HOT, BodyTemperature.HOT, BodyTemperature.AVERAGE));
 	
-	public static final RegistrySupplier<Item> LOW_EFFICIENCY_ROCKET_THRUSTER = register("low_temperature_rocket_thruster", () -> new RocketThrusterItem(AMItems.getSettings().maxCount(1), RocketThrusterPart.Efficiency.LOW));
-	public static final RegistrySupplier<Item> MEDIUM_EFFICIENCY_ROCKET_THRUSTER = register("medium_durability_rocket_thruster", () -> new RocketThrusterItem(AMItems.getSettings().maxCount(1), RocketThrusterPart.Efficiency.MEDIUM));
-	public static final RegistrySupplier<Item> HIGH_EFFICIENCY_ROCKET_THRUSTER = register("high_durability_rocket_thruster", () -> new RocketThrusterItem(AMItems.getSettings().maxCount(1), RocketThrusterPart.Efficiency.HIGH));
+	public static final RegistrySupplier<Item> LOW_EFFICIENCY_ROCKET_THRUSTER = register("low_efficiency_rocket_thruster", () -> new RocketThrusterItem(AMItems.getSettings().maxCount(1), RocketThrusterPart.Efficiency.LOW));
+	public static final RegistrySupplier<Item> MEDIUM_EFFICIENCY_ROCKET_THRUSTER = register("medium_efficiency_rocket_thruster", () -> new RocketThrusterItem(AMItems.getSettings().maxCount(1), RocketThrusterPart.Efficiency.MEDIUM));
+	public static final RegistrySupplier<Item> HIGH_EFFICIENCY_ROCKET_THRUSTER = register("high_efficiency_rocket_thruster", () -> new RocketThrusterItem(AMItems.getSettings().maxCount(1), RocketThrusterPart.Efficiency.HIGH));
 	
 	public static final RegistrySupplier<Item> SPACE_SUIT_HELMET = register("space_suit_helmet", () -> new SpaceSuitArmorItem(AMArmorMaterials.SPACE_SUIT, EquipmentSlot.HEAD, AMItems.getSettings()));
 	public static final RegistrySupplier<Item> SPACE_SUIT_CHESTPLATE = register("space_suit_chestplate", () -> new SpaceSuitArmorItem.Chestplate(AMArmorMaterials.SPACE_SUIT, EquipmentSlot.CHEST, AMItems.getSettings(), AMConfig.get().items.spaceSuitChestplateFluid, AMConfig.get().items.spaceSuitChestplateEnergy));

@@ -44,7 +44,6 @@ public class AMScreens {
 		register(AMScreenHandlers.RECIPE_CREATOR, RecipeCreatorHandledScreen::new);
 		register(AMScreenHandlers.BODY_SELECTOR, BodySelectorHandledScreen::new);
 		
-		registerSimple(AMScreenHandlers.ROCKET);
 		registerSimple(AMScreenHandlers.FLUID_EXTRACTOR);
 		registerSimple(AMScreenHandlers.FLUID_INSERTER);
 		registerSimple(AMScreenHandlers.BLOCK_BREAKER);

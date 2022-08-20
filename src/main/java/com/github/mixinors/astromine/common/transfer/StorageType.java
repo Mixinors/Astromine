@@ -24,7 +24,9 @@
 
 package com.github.mixinors.astromine.common.transfer;
 
+import com.github.mixinors.astromine.common.util.extra.Codecs;
 import com.github.mixinors.astromine.registry.common.AMItems;
+import com.mojang.serialization.Codec;
 import net.minecraft.item.Item;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -36,6 +38,8 @@ public enum StorageType {
 	ITEM,
 	FLUID,
 	ENERGY;
+	
+	public static final Codec<StorageType> CODEC = Codecs.createEnumCodec(StorageType.class);
 	
 	public Item getItem() {
 		return switch (this) {

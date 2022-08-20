@@ -1,6 +1,6 @@
 {
   "id": "astromine:moon",
-  "type": "astromine:moon",
+  "type": "moon",
   "worldId": "astromine:moon",
   "position": {
     "x": 384000.0, "y": 0.0
