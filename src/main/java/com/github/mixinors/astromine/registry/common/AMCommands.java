@@ -24,8 +24,6 @@
 
 package com.github.mixinors.astromine.registry.common;
 
-import com.github.mixinors.astromine.common.body.Body;
-import com.github.mixinors.astromine.common.manager.RocketInteriorManager;
 import com.github.mixinors.astromine.common.screen.handler.RecipeCreatorScreenHandler;
 import com.github.mixinors.astromine.common.screen.handler.body.BodySelectorScreenHandler;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -39,8 +37,6 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 public class AMCommands {
