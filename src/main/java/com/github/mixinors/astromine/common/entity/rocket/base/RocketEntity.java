@@ -45,9 +45,11 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import java.util.UUID;
+
 // TODO: Add Tracked Data Manager to Hammer!
 public abstract class RocketEntity extends ExtendedEntity {
-	private static final String ROCKET_KEY = "rocket";
+	private static final String ROCKET_UUID = "rocket";
 	
 	private Rocket rocket;
 	
@@ -66,14 +68,19 @@ public abstract class RocketEntity extends ExtendedEntity {
 	protected void writeCustomDataToNbt(NbtCompound nbt) {
 		super.writeCustomDataToNbt(nbt);
 		
-		nbt.putUuid(ROCKET_KEY, rocket.getUuid());
+		// for new rockets which were never given a Rocket Object
+		if(rocket == null) {
+			RocketManager.getRocket(UUID.randomUUID());
+		}
+		
+		nbt.putUuid(ROCKET_UUID, rocket.getUuid());
 	}
 	
 	@Override
 	protected void readCustomDataFromNbt(NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
 		
-		rocket = RocketManager.getRocket(nbt.getUuid(ROCKET_KEY));
+		rocket = RocketManager.getRocket(nbt.getUuid(ROCKET_UUID));
 	}
 	
 	public Vec3d getAcceleration() {

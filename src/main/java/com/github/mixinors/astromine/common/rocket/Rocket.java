@@ -16,6 +16,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.World;
 
 import java.util.UUID;
 
@@ -125,7 +126,7 @@ public class Rocket implements Tickable {
 		
 		// TODO: Check if this actually works.
 		if (server != null) {
-			AMComponents.ROCKET_COMPONENT.sync(server);
+			AMComponents.ROCKET_COMPONENT.sync(server.getWorld(World.OVERWORLD));
 		}
 	}
 	
