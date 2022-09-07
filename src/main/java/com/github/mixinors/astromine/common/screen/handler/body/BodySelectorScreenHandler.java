@@ -14,6 +14,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import java.util.function.Consumer;
 
 public class BodySelectorScreenHandler extends BaseScreenHandler {
+	public static final float SELECT_BUTTON_WIDTH = 18.0F;
+	public static final float SELECT_BUTTON_HEIGHT = 18.0F;
+	
 	public BodySelectorScreenHandler(int syncId, PlayerEntity player) {
 		super(AMScreenHandlers.BODY_SELECTOR.get(), syncId, player);
 	}
@@ -28,8 +31,11 @@ public class BodySelectorScreenHandler extends BaseScreenHandler {
 			add(panel);
 			
 			var bodySelectionWidget = new BodySelectionWidget();
-			bodySelectionWidget.setPosition(64.0F, 64.0F);
-			bodySelectionWidget.setSize(256, 64);
+			bodySelectionWidget.setSize(256.0F, 64.0F);
+			
+			bodySelectionWidget.setSelectListener((body) -> {
+				// TODO: Launch the player's rocket to this body.
+			});
 			
 			add(bodySelectionWidget);
 			

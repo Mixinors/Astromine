@@ -8,9 +8,12 @@ import dev.vini2003.hammer.core.api.client.color.Color;
 import dev.vini2003.hammer.core.api.client.scissor.Scissors;
 import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
+import dev.vini2003.hammer.core.api.common.queue.ServerTaskQueue;
 import dev.vini2003.hammer.core.api.common.util.TextUtil;
 import dev.vini2003.hammer.gui.api.common.event.MouseClickedEvent;
+import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
+import dev.vini2003.hammer.gui.api.common.widget.WidgetCollection;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
@@ -19,13 +22,22 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.function.Consumer;
 
+import static com.github.mixinors.astromine.common.screen.handler.body.BodySelectorScreenHandler.SELECT_BUTTON_HEIGHT;
+import static com.github.mixinors.astromine.common.screen.handler.body.BodySelectorScreenHandler.SELECT_BUTTON_WIDTH;
+
 public class BodySelectionWidget extends Widget {
-	private static final ImageTexture GO_BUTTON_TEXTURE_UP = new ImageTexture(AMCommon.id("textures/widget/large_square_button_go_up_clear.png"));
-	private static final ImageTexture GO_BUTTON_TEXTURE_DOWN = new ImageTexture(AMCommon.id("textures/widget/large_square_button_go_down_clear.png"));
+	private static final ImageTexture GO_BUTTON_TEXTURE_UP = new ImageTexture(AMCommon.id("textures/widget/small_square_button_go_up_clear.png"));
+	private static final ImageTexture GO_BUTTON_TEXTURE_DOWN = new ImageTexture(AMCommon.id("textures/widget/small_square_button_go_down_clear.png"));
 	
 	private Body body;
 	
 	private boolean selected = false;
+	
+	private float prevButtonX = 0.0F;
+	private float prevButtonY = 0.0F;
+	
+	private float prevButtonWidth = 0.0F;
+	private float prevButtonHeight = 0.0F;
 	
 	private Consumer<Body> selectListener = ($) -> {};
 	
@@ -41,16 +53,34 @@ public class BodySelectionWidget extends Widget {
 		this.body = body;
 	}
 	
+	public Consumer<Body> getSelectListener() {
+		return selectListener;
+	}
+	
+	public void setSelectListener(Consumer<Body> selectListener) {
+		this.selectListener = selectListener;
+	}
+	
 	@Override
 	protected void onMouseClicked(MouseClickedEvent event) {
 		super.onMouseClicked(event);
 		
+		// Check if the mouse is inside the button, and if so,
+		// trigger the listener with a delay so the player can
+		// see the button being pressed.
 		if (isFocused()) {
 			if (event.button() == GLFW.GLFW_MOUSE_BUTTON_1) {
-				if (!selected) {
+				if (event.x() >= prevButtonX && event.x() <= prevButtonX + prevButtonWidth && event.y() >= prevButtonY && event.y() <= prevButtonY + prevButtonHeight) {
 					selected = true;
 					
 					selectListener.accept(body);
+					
+					if (getParent() instanceof WidgetCollection.Root root) {
+						ServerTaskQueue.enqueue(($) -> {
+							var handler = root.getScreenHandler();
+							handler.close(handler.getPlayer());
+						}, 5L);
+					}
 				}
 			}
 		}
@@ -61,10 +91,9 @@ public class BodySelectionWidget extends Widget {
 		if (body == null) return;
 		
 		var client = InstanceUtil.getClient();
+		var window = client.getWindow();
 		
 		var textRenderer = client.textRenderer;
-		
-		var window = client.getWindow();
 		
 		// setPosition to bottom center of window
 		setPosition(window.getScaledWidth() / 2.0F - getWidth() / 2.0F, window.getScaledHeight() - getHeight());
@@ -76,13 +105,12 @@ public class BodySelectionWidget extends Widget {
 		var bodyY = getY();
 		
 		var informationWidth = (getWidth() * 0.7F);
-		var informationHeight = getHeight();
 		
 		var informationX = bodyX + bodyWidth;
 		var informationY = getY();
 		
-		var buttonWidth = (getWidth() * 0.1F);
-		var buttonHeight = (getWidth() * 0.1F);
+		var buttonWidth = SELECT_BUTTON_WIDTH;
+		var buttonHeight = SELECT_BUTTON_HEIGHT;
 		
 		var buttonX = informationX + informationWidth;
 		var buttonY = getY();
@@ -91,15 +119,22 @@ public class BodySelectionWidget extends Widget {
 		var bodyDescription = body.description();
 		var bodyDescriptionLines = textRenderer.wrapLines(bodyDescription, (int) informationWidth);
 		
+		// Find height of body name, description, and required vertical spacing.
 		var textHeight = TextUtil.getHeight(bodyName) + 4.0F + (TextUtil.getHeight(LiteralText.EMPTY) * bodyDescriptionLines.size());
 		
+		// Offset bodyY to center body within itself.
 		bodyY += bodyHeight / 2.0F;
+		
+		// Offset bodyX to center body within itself.
 		bodyX += bodyWidth / 2.0F;
 		
+		// Offset bodyY to center body within the widget, vertically.
 		bodyY += (getHeight() - bodyHeight) / 2.0F;
 		
+		// Offset buttonY to center button within the widget, vertically.
 		buttonY += (getHeight() - buttonHeight) / 2.0F;
 		
+		// Offset informationY to center information within the widget, vertically.
 		informationY += (getHeight() - textHeight) / 2.0F - 6.0F;
 		
 		// Translate to widget's button position.
@@ -157,13 +192,12 @@ public class BodySelectionWidget extends Widget {
 		
 		// Scale the body down to 60% size and translate.
 		
-		matrices.push();
+		matrices.push(); // 6
 		
 		var texture = body.texture();
 		
 		DrawingUtil.drawBody(
 				provider,
-				// 0.1F border per side; 0.2F total border; 1.0F full size.
 				bodyX, bodyY, 100.0F,
 				bodyWidth * 0.5F, bodyHeight * 0.5F, (bodyWidth + bodyHeight) / 2.0F * 0.5F,
 				(float) body.getAngle(),
@@ -177,16 +211,14 @@ public class BodySelectionWidget extends Widget {
 				AMRenderLayers.getBody(texture.east())
 		);
 		
-		matrices.pop();
+		matrices.pop(); // 6
 		
 		matrices.pop(); // 4
-	}
-	
-	public Consumer<Body> getSelectListener() {
-		return selectListener;
-	}
-	
-	public void setSelectListener(Consumer<Body> selectListener) {
-		this.selectListener = selectListener;
+		
+		prevButtonX = buttonX;
+		prevButtonY = buttonY;
+		
+		prevButtonWidth = buttonWidth;
+		prevButtonHeight = buttonHeight;
 	}
 }
