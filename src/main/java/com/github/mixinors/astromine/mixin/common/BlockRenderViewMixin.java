@@ -6,7 +6,6 @@ import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockRenderView;
 import net.minecraft.world.LightType;
-import org.checkerframework.checker.units.qual.A;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

@@ -5,6 +5,7 @@ import com.github.mixinors.astromine.common.rocket.Rocket;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.World;
 
 import java.util.UUID;
 
@@ -15,7 +16,7 @@ public class RocketManager {
 		
 		var server = InstanceUtil.getServer();
 		
-		var component = AMComponents.ROCKET_COMPONENT.get(server);
+		var component = AMComponents.ROCKET_COMPONENT.get(server.getWorld(World.OVERWORLD));
 		component.addRocket(rocket);
 		
 		return rocket;
@@ -24,7 +25,7 @@ public class RocketManager {
 	public static Rocket getRocket(UUID uuid) {
 		var server = InstanceUtil.getServer();
 		
-		var component = AMComponents.ROCKET_COMPONENT.get(server);
+		var component = AMComponents.ROCKET_COMPONENT.get(server.getWorld(World.OVERWORLD));
 		
 		var rocket = component.getRocket(uuid);
 		
@@ -38,13 +39,12 @@ public class RocketManager {
 	public static ChunkPos getChunkPosition(UUID uuid) {
 		var server = InstanceUtil.getServer();
 		
-		var component = AMComponents.ROCKET_COMPONENT.get(server);
+		var component = AMComponents.ROCKET_COMPONENT.get(server.getWorld(World.OVERWORLD));
 		
 		var rocket = component.getRocket(uuid);
 		
 		if (rocket == null) {
-			// Do not remove!
-			rocket = createRocket(uuid);
+			createRocket(uuid);
 		}
 		
 		return component.getChunkPosition(uuid);

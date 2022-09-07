@@ -80,7 +80,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 	RegistrySupplier<Item> bucket;
 	
 	Map<Item, CauldronBehavior> cauldronBehaviorMap;
-	RegistrySupplier<Block> cauldron;
+	RegistrySupplier<CauldronBlock> cauldron;
 	
 	final DamageSource source;
 	
@@ -274,7 +274,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 			
 			var cauldronBehaviorMap = CauldronBehavior.createMap();
 			
-			var cauldron = AMBlocks.register(name + "_cauldron", () -> new FullCauldronBlock(BlockProperties.copy(Blocks.CAULDRON), cauldronBehaviorMap));
+			var cauldron = AMBlocks.register(name + "_cauldron", () -> new FullCauldronBlock(AbstractBlock.Settings.copy(Blocks.CAULDRON), cauldronBehaviorMap));
 			
 			flowing.cauldronBehaviorMap = cauldronBehaviorMap;
 			still.cauldronBehaviorMap = cauldronBehaviorMap;
