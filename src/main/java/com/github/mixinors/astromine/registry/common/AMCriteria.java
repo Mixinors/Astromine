@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.criterion.*;
-import dev.architectury.registry.level.advancement.CriteriaTriggersRegistry;
+import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.advancement.criterion.Criterion;
 
 public class AMCriteria {
@@ -43,6 +43,6 @@ public class AMCriteria {
 	}
 	
 	public static <T extends Criterion<?>> T register(T criterion) {
-		return CriteriaTriggersRegistry.register(criterion);
+		return Criteria.register(criterion);
 	}
 }
