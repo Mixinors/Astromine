@@ -10,7 +10,7 @@
   },
   "orbit": {
     "orbitedBodyId": "astromine:earth",
-    "width": 24.0, "height": 12.0,
+    "width": 24.0, "height": 24.0,
     "speed": 40.0,
     "tidalLocked": true
   },

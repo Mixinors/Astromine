@@ -7,11 +7,9 @@ import com.github.mixinors.astromine.common.screen.handler.body.BodySelectorScre
 import com.github.mixinors.astromine.registry.client.AMRenderLayers;
 import com.github.mixinors.astromine.registry.common.AMRegistries;
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.systems.RenderSystem;
 import dev.vini2003.hammer.core.api.client.color.Color;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.client.util.PositionUtil;
-import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
@@ -22,13 +20,13 @@ import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.math.Vector4f;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BodyWidget extends Widget {
 	private final Body body;
 	
-	private boolean focused = false;
+	private boolean drawing = false;
+	private boolean hovered = false;
 	
 	public BodyWidget(Body body) {
 		this.body = body;
@@ -66,14 +64,17 @@ public class BodyWidget extends Widget {
 		return (float) body.getOrbitY();
 	}
 	
-	@Override
-	public boolean isFocused() {
-		return focused;
+	public boolean isHovered() {
+		return hovered;
+	}
+	
+	public void setHovered(boolean hovered) {
+		this.hovered = hovered;
 	}
 	
 	@Override
-	public void setFocused(boolean focused) {
-		this.focused = focused;
+	public boolean isFocused() {
+		return hovered;
 	}
 	
 	@Override
@@ -98,10 +99,8 @@ public class BodyWidget extends Widget {
 			
 			Vec2f prevPos = null;
 			
-			var consumer = provider.getBuffer(RenderLayer.getLines());
-			
-			var focusedColor = new Color(1.0F, 1.0F, 1.0F, 1.0F);
-			var unfocusedColor = new Color(0.4F, 0.4F, 0.4F, 1.0F);
+			var focusedColor = new Color(1.0F, 1.0F, 1.0F, 0.1F);
+			var unfocusedColor = new Color(0.4F, 0.4F, 0.4F, 0.1F);
 			
 			var orbitOffset = orbit.orbitedBodyOffset();
 			
@@ -134,18 +133,10 @@ public class BodyWidget extends Widget {
 				if (prevPos == null) {
 					prevPos = pos;
 				} else {
-					if (isFocused()) {
-						consumer.vertex(pos.x, pos.y, 0.0F).color(focusedColor.getR(), focusedColor.getG(), focusedColor.getB(), focusedColor.getA()).normal(0.0F, 1.0F, 0.0F).next();
-						consumer.vertex(prevPos.x, prevPos.y, 0.0F).color(focusedColor.getR(), focusedColor.getG(), focusedColor.getB(), focusedColor.getA()).normal(0.0F, 1.0F, 0.0F).next();
-						
-						consumer.vertex(pos.x, pos.y, 0.0F).color(focusedColor.getR(), focusedColor.getG(), focusedColor.getB(), focusedColor.getA()).normal(1.0F, 0.0F, 0.0F).next();
-						consumer.vertex(prevPos.x, prevPos.y, 0.0F).color(focusedColor.getR(), focusedColor.getG(), focusedColor.getB(), focusedColor.getA()).normal(1.0F, 0.0F, 0.0F).next();
+					if (isHovered()) {
+						DrawingUtil.drawLine(matrices, provider, pos.x, pos.y, 0.0F, prevPos.x, prevPos.y, 0.0F, focusedColor, RenderLayer.getLines());
 					} else {
-						consumer.vertex(pos.x, pos.y, 0.0F).color(unfocusedColor.getR(), unfocusedColor.getG(), unfocusedColor.getB(), unfocusedColor.getA()).normal(0.0F, 1.0F, 0.0F).next();
-						consumer.vertex(prevPos.x, prevPos.y, 0.0F).color(unfocusedColor.getR(), unfocusedColor.getG(), unfocusedColor.getB(), unfocusedColor.getA()).normal(0.0F, 1.0F, 0.0F).next();
-						
-						consumer.vertex(pos.x, pos.y, 0.0F).color(unfocusedColor.getR(), unfocusedColor.getG(), unfocusedColor.getB(), unfocusedColor.getA()).normal(1.0F, 0.0F, 0.0F).next();
-						consumer.vertex(prevPos.x, prevPos.y, 0.0F).color(unfocusedColor.getR(), unfocusedColor.getG(), unfocusedColor.getB(), unfocusedColor.getA()).normal(1.0F, 0.0F, 0.0F).next();
+						DrawingUtil.drawLine(matrices, provider, pos.x, pos.y, 0.0F, prevPos.x, prevPos.y, 0.0F, unfocusedColor, RenderLayer.getLines());
 					}
 					
 					prevPos = pos;
@@ -195,7 +186,7 @@ public class BodyWidget extends Widget {
 		
 		if (rootCollection != null && rootCollection.getScreenHandler() instanceof BodySelectorScreenHandler screenHandler) {
 			for (var child : screenHandler.getAllChildren()) {
-				if (child instanceof BodyWidget && child.isFocused()) {
+				if (isHovered() || (child instanceof BodyWidget bodyChild && bodyChild.isHovered())) {
 					speed = 0.0D;
 				}
 			}
@@ -221,9 +212,11 @@ public class BodyWidget extends Widget {
 			if (mousePos.getX() > minPos.getX() && mousePos.getX() < maxPos.getX() && mousePos.getY() > minPos.getY() && mousePos.getY() < maxPos.getY()) {
 				scale = (float) MathHelper.lerp(tickDelta / 2.0D, body.getPrevScale(), 1.25D);
 				
-				setFocused(true);
+				setHovered(true);
 			} else {
 				scale = (float) MathHelper.lerp(tickDelta / 2.0D, body.getPrevScale(), 1.0D);
+				
+				setHovered(false);
 			}
 			
 			body.setScale(scale);
@@ -247,11 +240,12 @@ public class BodyWidget extends Widget {
 			
 			var texture = body.texture();
 			
-			DrawingUtil.drawCube(
-					matrices,
+			DrawingUtil.drawBody(
 					provider,
-					0.0F, 0.0F, 0.0F,
+					(float) orbitX, (float) orbitY, 100.0F,
 					getWidth() * zoom * scale, getHeight() * zoom * scale, getLength() * zoom * scale,
+					(float) body.getAngle(),
+					body.orbit() != null && body.orbit().tidalLocked(),
 					new Color(0xEFEFEFFFL),
 					AMRenderLayers.getBody(texture.up()),
 					AMRenderLayers.getBody(texture.down()),

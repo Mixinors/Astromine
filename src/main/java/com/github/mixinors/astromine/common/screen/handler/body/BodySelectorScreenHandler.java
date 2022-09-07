@@ -5,6 +5,8 @@ import com.github.mixinors.astromine.common.widget.BodySelectionWidget;
 import com.github.mixinors.astromine.common.widget.BodyWidget;
 import com.github.mixinors.astromine.registry.common.AMRegistries;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
+import dev.vini2003.hammer.gui.api.common.event.MouseClickedEvent;
+import dev.vini2003.hammer.gui.api.common.event.type.EventType;
 import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
 import dev.vini2003.hammer.gui.api.common.widget.panel.PanelWidget;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,14 +27,23 @@ public class BodySelectorScreenHandler extends BaseScreenHandler {
 			
 			add(panel);
 			
-			var bodySelectionWidget = new BodySelectionWidget(AMRegistries.BODY.get(AMCommon.id("earth")));
-			bodySelectionWidget.setPosition(0.0F, 0.0F);
-			bodySelectionWidget.setSize(128, 32);
+			var bodySelectionWidget = new BodySelectionWidget();
+			bodySelectionWidget.setPosition(64.0F, 64.0F);
+			bodySelectionWidget.setSize(256, 64);
 			
 			add(bodySelectionWidget);
 			
 			for (var body : AMRegistries.BODY.getValues()) {
 				var widget = new BodyWidget(body);
+				widget.onEvent(EventType.MOUSE_CLICKED, (MouseClickedEvent event) -> {
+					if (!widget.isHovered()) return;
+					
+					if (event.button() == 0) {
+						bodySelectionWidget.setBody(body);
+					} else if (event.button() == 1) {
+						bodySelectionWidget.setBody(null);
+					}
+				});
 				
 				if (body.orbit() != null) {
 					var orbit = body.orbit();
