@@ -46,15 +46,16 @@ public class Registry<V> {
 				instance -> instance.group(
 						Codec.unboundedMap(Identifier.CODEC, valueCodec).fieldOf("values").forGetter(r -> r.values)
 				).apply(instance, (values) -> {
-					registry.values = values;
-					
+					registry.values.clear();
+					registry.values.putAll(values);
+
 					return registry;
 				})
 		);
 	}
 	
-	private Map<Identifier, RegistryEntry<V>> entries = new HashMap<>();
-	private Map<Identifier, V> values = new HashMap<>();
+	private final Map<Identifier, RegistryEntry<V>> entries = new HashMap<>();
+	private final Map<Identifier, V> values = new HashMap<>();
 	
 	public Registry() {
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new ReloadListener());

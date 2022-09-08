@@ -30,6 +30,7 @@ import com.github.mixinors.astromine.common.block.entity.cable.CableBlockEntity;
 import com.github.mixinors.astromine.common.block.entity.machine.*;
 import com.github.mixinors.astromine.common.block.entity.machine.generator.FluidGeneratorBlockEntity;
 import com.github.mixinors.astromine.common.block.entity.machine.generator.SolidGeneratorBlockEntity;
+import com.github.mixinors.astromine.common.block.entity.rocket.RocketControllerBlockEntity;
 import com.github.mixinors.astromine.common.block.entity.storage.BufferBlockEntity;
 import com.github.mixinors.astromine.common.block.entity.storage.CapacitorBlockEntity;
 import com.github.mixinors.astromine.common.block.entity.storage.TankBlockEntity;
@@ -136,6 +137,8 @@ public class AMBlockEntityTypes {
 	
 	public static final RegistrySupplier<BlockEntityType<DrainBlockEntity>> DRAIN = register("drain", DrainBlockEntity::new, AMBlocks.DRAIN);
 	
+	public static final RegistrySupplier<BlockEntityType<RocketControllerBlockEntity>> ROCKET_CONTROLLER = register("rocket_controller", RocketControllerBlockEntity::new, AMBlocks.ROCKET_CONTROLLER);
+
 	public static void init() {
 	
 	}

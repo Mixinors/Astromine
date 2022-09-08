@@ -31,6 +31,7 @@ import com.github.mixinors.astromine.common.screen.handler.body.BodySelectorScre
 import com.github.mixinors.astromine.common.screen.handler.machine.*;
 import com.github.mixinors.astromine.common.screen.handler.machine.generator.FluidGeneratorScreenHandler;
 import com.github.mixinors.astromine.common.screen.handler.machine.generator.SolidGeneratorScreenHandler;
+import com.github.mixinors.astromine.common.screen.handler.rocket.RocketControllerScreenHandler;
 import com.github.mixinors.astromine.common.screen.handler.storage.BufferScreenHandler;
 import com.github.mixinors.astromine.common.screen.handler.storage.CapacitorScreenHandler;
 import com.github.mixinors.astromine.common.screen.handler.storage.TankScreenHandler;
@@ -133,6 +134,10 @@ public class AMScreenHandlers {
 	
 	public static final RegistrySupplier<ScreenHandlerType<MelterScreenHandler>> MELTER = registerExtended(AMCommon.id("melter"), ((syncId, inventory, buffer) -> {
 		return new MelterScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+	
+	public static final RegistrySupplier<ScreenHandlerType<RocketControllerScreenHandler>> ROCKET_CONTROLLER = registerExtended(AMCommon.id("rocket_controller"), ((syncId, inventory, buffer) -> {
+		return new RocketControllerScreenHandler(syncId, inventory.player, buffer.readBlockPos());
 	}));
 	
 	public static void init() {

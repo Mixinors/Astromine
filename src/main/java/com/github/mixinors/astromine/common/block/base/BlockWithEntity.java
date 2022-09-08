@@ -60,6 +60,7 @@ import org.jetbrains.annotations.Nullable;
 public abstract class BlockWithEntity extends Block implements BlockEntityProvider {
 	public static final BooleanProperty ACTIVE = BooleanProperty.of("active");
 	
+	public static final SavedData MACHINE = new SavedData(false, false, false, false);
 	public static final SavedData ITEM_MACHINE = new SavedData(true, true, true, false);
 	public static final SavedData FLUID_MACHINE = new SavedData(true, true, false, true);
 	public static final SavedData ITEM_AND_FLUID_MACHINE = new SavedData(true, true, true, true);

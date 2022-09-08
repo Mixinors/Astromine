@@ -43,6 +43,7 @@ import com.github.mixinors.astromine.common.block.ore.AsteroidOreBlock;
 import com.github.mixinors.astromine.common.block.ore.DarkMoonStoneOreBlock;
 import com.github.mixinors.astromine.common.block.ore.MoonStoneOreBlock;
 import com.github.mixinors.astromine.common.block.ore.base.ExtendedOreBlock;
+import com.github.mixinors.astromine.common.block.rocket.RocketControllerBlock;
 import com.github.mixinors.astromine.common.block.storage.BufferBlock;
 import com.github.mixinors.astromine.common.block.storage.CapacitorBlock;
 import com.github.mixinors.astromine.common.block.storage.TankBlock;
@@ -323,6 +324,8 @@ public class AMBlocks {
 	public static final RegistrySupplier<Block> BASIC_ENERGY_CABLE = register("basic_energy_cable", () -> new EnergyCableBlock.Basic(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
 	public static final RegistrySupplier<Block> ADVANCED_ENERGY_CABLE = register("advanced_energy_cable", () -> new EnergyCableBlock.Advanced(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
 	public static final RegistrySupplier<Block> ELITE_ENERGY_CABLE = register("elite_energy_cable", () -> new EnergyCableBlock.Elite(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
+	
+	public static final RegistrySupplier<Block> ROCKET_CONTROLLER = register("rocket_controller", () -> new RocketControllerBlock(getAdvancedSettings()), AMItems.getSettings());
 	
 	public static void init() {
 	}
