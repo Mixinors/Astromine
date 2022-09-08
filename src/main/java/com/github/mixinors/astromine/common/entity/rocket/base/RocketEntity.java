@@ -68,11 +68,6 @@ public abstract class RocketEntity extends ExtendedEntity {
 	protected void writeCustomDataToNbt(NbtCompound nbt) {
 		super.writeCustomDataToNbt(nbt);
 		
-		// for new rockets which were never given a Rocket Object
-		if(rocket == null) {
-			RocketManager.getRocket(UUID.randomUUID());
-		}
-		
 		nbt.putUuid(ROCKET_UUID, rocket.getUuid());
 	}
 	
