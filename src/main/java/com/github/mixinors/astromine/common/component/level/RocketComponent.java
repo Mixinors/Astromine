@@ -1,6 +1,5 @@
 package com.github.mixinors.astromine.common.component.level;
 
-import com.github.mixinors.astromine.common.manager.RocketManager;
 import com.github.mixinors.astromine.common.rocket.Rocket;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
 import com.mojang.datafixers.util.Pair;
@@ -56,7 +55,7 @@ public class RocketComponent implements AutoSyncedComponent {
 	private final Map<Pair<UUID, UUID>, Placer> placers = new ConcurrentHashMap<>();
 	
 	@SuppressWarnings("unused")
-	public RocketComponent(WorldProperties worldProperties) {
+	public RocketComponent(World worldProperties) {
 	
 	}
 	
@@ -112,6 +111,8 @@ public class RocketComponent implements AutoSyncedComponent {
 			var rocketNbt = new NbtCompound();
 			rocket.writeToNbt(rocketNbt);
 			
+			// This shouldn't be needed, But something god awful is wrong.
+			addRocket(rocket);
 			NbtUtil.putChunkPos(rocketsNbt, POSITION_KEY, chunkPositions.get(uuid));
 			
 			rocketsNbt.put(uuid.toString(), rocketNbt);
@@ -176,7 +177,7 @@ public class RocketComponent implements AutoSyncedComponent {
 	// TODO: Check if player has a Rocket-related ScreenHandler open, or is in the Rocket Dimension!
 	@Override
 	public boolean shouldSyncWith(ServerPlayerEntity player) {
-		if (player.getWorld().getRegistryKey().equals(AMWorlds.ROCKET)) {
+		if (player.getWorld().getRegistryKey().equals(AMWorlds.ROCKET_INTERIORS)) {
 			return true;
 		} else {
 			return false;

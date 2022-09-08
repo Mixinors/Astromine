@@ -6,17 +6,14 @@ import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import com.github.mixinors.astromine.registry.common.AMFluids;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.github.mixinors.astromine.registry.common.AMWorlds;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.common.tick.Tickable;
 import dev.vini2003.hammer.core.api.common.util.NbtUtil;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.World;
 
 import java.util.UUID;
 
@@ -108,17 +105,13 @@ public class Rocket implements Tickable {
 				slot == ITEM_BUFFER_SLOT_1 || slot == ITEM_OUTPUT_SLOT_1 || slot == ITEM_OUTPUT_SLOT_2
 		).insertPredicate((variant, slot) ->
 				slot == ITEM_INPUT_SLOT_1 || slot == ITEM_INPUT_SLOT_2
-		).listener(() -> {
-			syncData();
-		}).insertSlots(ITEM_INSERT_SLOTS).extractSlots(ITEM_EXTRACT_SLOTS);
+		).listener(this::syncData).insertSlots(ITEM_INSERT_SLOTS).extractSlots(ITEM_EXTRACT_SLOTS);
 		
 		fluidStorage = new SimpleFluidStorage(2, fuelTank.getCapacity().getSize()).extractPredicate((variant, slot) ->
 				false
 		).insertPredicate((variant, slot) ->
 				(slot == FLUID_INPUT_SLOT_1 && OXYGEN_INGREDIENT.testVariant(variant)) || (slot == FLUID_INPUT_SLOT_2 && FUEL_INGREDIENT.testVariant(variant))
-		).listener(() -> {
-			syncData();
-		}).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
+		).listener(this::syncData).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
 	}
 	
 	public void syncData() {
@@ -126,12 +119,13 @@ public class Rocket implements Tickable {
 		
 		// TODO: Check if this actually works.
 		if (server != null) {
-			AMComponents.ROCKET_COMPONENT.sync(server.getWorld(World.OVERWORLD));
+			AMComponents.ROCKET_COMPONENTS.sync(server.getWorld(AMWorlds.ROCKET_INTERIORS));
 		}
 	}
 	
 	public void writeToNbt(NbtCompound nbt) {
-		nbt.putUuid(UUID_KEY, uuid);
+		// FIXME: Hull is fucking null every time somehow even though it should never be. Kill me
+		/*nbt.putUuid(UUID_KEY, uuid);
 		
 		NbtUtil.putIdentifier(nbt, HULL_ITEM_ID_KEY, Registry.ITEM.getId(hull.asItem()));
 		NbtUtil.putIdentifier(nbt, LANDING_MECHANISM_ID_KEY, Registry.ITEM.getId(landingMechanism.asItem()));
@@ -181,7 +175,7 @@ public class Rocket implements Tickable {
 			syncFluidStorage = false;
 			
 			lastFluidStorageVersion = fluidStorage.getVersion();
-		}
+		}*/
 	}
 
 	public void readFromNbt(NbtCompound nbt) {

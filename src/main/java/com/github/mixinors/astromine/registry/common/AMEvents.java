@@ -25,24 +25,14 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.common.component.world.NetworkComponent;
-import com.github.mixinors.astromine.common.event.ServerChunkManagerEvents;
 import com.github.mixinors.astromine.common.manager.BodyManager;
 import com.github.mixinors.astromine.common.screen.handler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.screen.handler.base.entity.ExtendedEntityScreenHandler;
-import com.github.mixinors.astromine.common.screen.handler.body.BodySelectorScreenHandler;
-import com.github.mixinors.astromine.common.world.generation.space.EarthOrbitChunkGenerator;
-import com.github.mixinors.astromine.common.world.generation.space.MoonChunkGenerator;
-import com.github.mixinors.astromine.common.world.generation.space.MoonOrbitChunkGenerator;
 import dev.architectury.event.events.common.TickEvent;
-import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.resource.ResourceType;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
 
 public class AMEvents {
 	public static void init() {
@@ -78,19 +68,11 @@ public class AMEvents {
 			}
 		}));
 		
-		ServerChunkManagerEvents.INIT.register(manager -> {
-			// TODO: See if Mojang fixed this!
-			// if (manager.threadedAnvilChunkStorage.chunkGenerator instanceof ChunkGenerator) {
-			// 	manager.threadedAnvilChunkStorage.chunkGenerator = manager.threadedAnvilChunkStorage.chunkGenerator.withSeed(((ServerWorld) manager.getWorld()).getSeed());
-			// }
-			//
-			// if (manager.threadedAnvilChunkStorage.chunkGenerator instanceof MoonOrbitChunkGenerator) {
-			// 	manager.threadedAnvilChunkStorage.chunkGenerator = ((MoonOrbitChunkGenerator) manager.threadedAnvilChunkStorage.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
-			// }
-			//
-			// if (manager.threadedAnvilChunkStorage.chunkGenerator instanceof MoonChunkGenerator) {
-			// 	manager.threadedAnvilChunkStorage.chunkGenerator = ((MoonChunkGenerator) manager.threadedAnvilChunkStorage.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
-			// }
+		// Sync the rocket interiors so the game doesn't die when people interact with rockets.
+		ServerWorldEvents.LOAD.register((server, world) -> {
+			if (world.getRegistryKey().equals(AMWorlds.ROCKET_INTERIORS)) {
+				AMComponents.ROCKET_COMPONENTS.sync(world);
+			}
 		});
 	}
 }

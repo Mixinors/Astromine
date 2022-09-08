@@ -30,7 +30,6 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
 
 import java.util.HashSet;
@@ -39,7 +38,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class AMWorlds {
-	public static final RegistryKey<World> ROCKET = RegistryKey.of(Registry.WORLD_KEY, AMCommon.id("rocket"));
+	public static final RegistryKey<World> ROCKET_INTERIORS = RegistryKey.of(Registry.WORLD_KEY, AMCommon.id("rocket"));
 	
 	private static final Set<RegistryKey<?>> KEYS = new HashSet<>();
 	

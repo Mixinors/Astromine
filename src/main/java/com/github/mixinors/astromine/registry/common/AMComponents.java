@@ -45,12 +45,13 @@ public class AMComponents implements WorldComponentInitializer, EntityComponentI
 	
 	public static final ComponentKey<OxygenComponent> OXYGEN_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("oxygen_component"), OxygenComponent.class);
 	
-	public static final ComponentKey<RocketComponent> ROCKET_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("rocket_component"), RocketComponent.class);
+	public static final ComponentKey<RocketComponent> ROCKET_COMPONENTS = ComponentRegistry.getOrCreate(AMCommon.id("rocket_component"), RocketComponent.class);
 	
 	@Override
 	public void registerWorldComponentFactories(WorldComponentFactoryRegistry registry) {
 		registry.register(NETWORK_COMPONENT, NetworkComponent::new);
 		registry.register(HOLO_BRIDGE_COMPONENT, HoloBridgeComponent::new);
+		registry.register(ROCKET_COMPONENTS, RocketComponent::new);
 	}
 	
 	@Override
@@ -60,6 +61,5 @@ public class AMComponents implements WorldComponentInitializer, EntityComponentI
 	
 	@Override
 	public void registerLevelComponentFactories(LevelComponentFactoryRegistry registry) {
-		registry.register(ROCKET_COMPONENT, RocketComponent::new);
 	}
 }

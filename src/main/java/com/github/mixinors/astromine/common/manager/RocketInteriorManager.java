@@ -18,13 +18,10 @@ public class RocketInteriorManager {
 			RocketManager.setPlacer(uuid, player.getUuid(), placer);
 		}
 		
-		if (chunkPos.x % 32 == 0 && chunkPos.z % 32 == 0) {
-			if (player instanceof ServerPlayerEntity serverPlayer) {
-				var world = player.getServer().getWorld(AMWorlds.ROCKET);
-				
-				serverPlayer.teleport(world, chunkPos.x * 16 + 3.5, 1, chunkPos.z * 16 + 3.5, 270, 0);
-			}
+		if (player instanceof ServerPlayerEntity serverPlayer) {
+			var world = player.getServer().getWorld(AMWorlds.ROCKET_INTERIORS);
 			
+			serverPlayer.teleport(world, chunkPos.x * 16 + 3.5, 1, chunkPos.z * 16 + 3.5, 270, 0);
 		}
 	}
 	
@@ -33,7 +30,7 @@ public class RocketInteriorManager {
 		
 		if (placer != null) {
 			if (player instanceof ServerPlayerEntity serverPlayer) {
-				var world = player.getServer().getWorld(AMWorlds.ROCKET);
+				var world = player.getServer().getWorld(AMWorlds.ROCKET_INTERIORS);
 				
 				serverPlayer.teleport(world, placer.x(), placer.y(), placer.z(), placer.yaw(), placer.pitch());
 			}

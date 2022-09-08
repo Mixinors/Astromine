@@ -45,17 +45,15 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import java.util.UUID;
-
 // TODO: Add Tracked Data Manager to Hammer!
-public abstract class RocketEntity extends ExtendedEntity {
+public abstract class BaseRocketEntity extends ExtendedEntity {
 	private static final String ROCKET_UUID = "rocket";
 	
 	private Rocket rocket;
 	
-	public static final TrackedData<Boolean> RUNNING = DataTracker.registerData(RocketEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+	public static final TrackedData<Boolean> RUNNING = DataTracker.registerData(BaseRocketEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	
-	public RocketEntity(EntityType<?> type, World world) {
+	public BaseRocketEntity(EntityType<?> type, World world) {
 		super(type, world);
 	}
 	
