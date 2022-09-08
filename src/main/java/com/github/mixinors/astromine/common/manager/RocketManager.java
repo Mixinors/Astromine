@@ -1,80 +1,75 @@
 package com.github.mixinors.astromine.common.manager;
 
-import com.github.mixinors.astromine.common.component.level.RocketComponent;
 import com.github.mixinors.astromine.common.item.rocket.*;
 import com.github.mixinors.astromine.common.rocket.Rocket;
-import com.github.mixinors.astromine.common.rocket.RocketFuelTankPart;
-import com.github.mixinors.astromine.common.rocket.RocketHullPart;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
+import com.google.common.collect.ImmutableList;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.minecraft.util.math.ChunkPos;
 
+import java.util.Collection;
 import java.util.UUID;
 
 public class RocketManager {
-	public static Rocket createRocket(UUID uuid) {
-		var rocket = new Rocket(
-				uuid,
-				((RocketFuelTankItem) AMItems.HIGH_CAPACITY_ROCKET_FUEL_TANK.get()).getPart(),
-				((RocketHullItem) AMItems.HIGH_DURABILITY_ROCKET_HULL.get()).getPart(),
-				((RocketLandingMechanismItem) AMItems.STANDING_ROCKET_LANDING_MECHANISM.get()).getPart(),
-				((RocketLifeSupportItem) AMItems.ROCKET_LIFE_SUPPORT.get()).getPart(),
-				((RocketShieldingItem) AMItems.HIGH_TEMPERATURE_ROCKET_SHIELDING.get()).getPart(),
-				((RocketThrusterItem) AMItems.HIGH_EFFICIENCY_ROCKET_THRUSTER.get()).getPart()
-		);
+	/**
+	 * Creates a new {@link Rocket} with the given {@link UUID}.
+	 * @param uuid the rocket's {@link UUID}.
+	 * @return the created {@link Rocket}.
+	 */
+	public static Rocket create(UUID uuid) {
+		var rocket = new Rocket(uuid);
 		rocket.onPartChanged();
 		
 		var server = InstanceUtil.getServer();
+		var world = server.getWorld(AMWorlds.ROCKET_INTERIORS);
+		if (world == null) return null;
 		
-		var component = AMComponents.ROCKET_COMPONENTS.get(server.getWorld(AMWorlds.ROCKET_INTERIORS));
+		var component = AMComponents.ROCKET_COMPONENTS.get(world);
 		component.addRocket(rocket);
 		
 		return rocket;
 	}
 	
-	public static Rocket getRocket(UUID uuid) {
+	/**
+	 * Gets a {@link Rocket} with the given {@link UUID}, if present.
+	 * If not present, {@link #create(UUID)}s it.
+	 * @param uuid the rocket's {@link UUID}.
+	 * @return the {@link Rocket}.
+	 */
+	public static Rocket getOrCreate(UUID uuid) {
 		var server = InstanceUtil.getServer();
+		var world = server.getWorld(AMWorlds.ROCKET_INTERIORS);
+		if (world == null) return null;
 		
-		var component = AMComponents.ROCKET_COMPONENTS.get(server.getWorld(AMWorlds.ROCKET_INTERIORS));
-		
+		var component = AMComponents.ROCKET_COMPONENTS.get(world);
 		var rocket = component.getRocket(uuid);
 		
 		if (rocket == null) {
-			rocket = createRocket(uuid);
+			rocket = create(uuid);
 		}
 		
 		return rocket;
 	}
 	
-	public static ChunkPos getChunkPosition(UUID uuid) {
+	/**
+	 * Gets all {@link Rocket}s.
+	 */
+	public static Collection<Rocket> getRockets() {
 		var server = InstanceUtil.getServer();
+		var world = server.getWorld(AMWorlds.ROCKET_INTERIORS);
+		if (world == null) return ImmutableList.of();
 		
-		var component = AMComponents.ROCKET_COMPONENTS.get(server.getWorld(AMWorlds.ROCKET_INTERIORS));
-		
-		var rocket = component.getRocket(uuid);
-		
-		if (rocket == null) {
-			createRocket(uuid);
-		}
-		
-		return component.getChunkPosition(uuid);
+		var component = AMComponents.ROCKET_COMPONENTS.get(world);
+		return component.getRockets();
 	}
 	
-	public static RocketComponent.Placer getPlacer(UUID rocketUuid, UUID playerUuid) {
+	public static void sync() {
 		var server = InstanceUtil.getServer();
+		var world = server.getWorld(AMWorlds.ROCKET_INTERIORS);
+		if (world == null) return;
 		
-		var component = AMComponents.ROCKET_COMPONENTS.get(server.getWorld(AMWorlds.ROCKET_INTERIORS));
-		
-		return component.getPlacer(rocketUuid, playerUuid);
-	}
-	
-	public static void setPlacer(UUID rocketUuid, UUID playerUuid, RocketComponent.Placer placer) {
-		var server = InstanceUtil.getServer();
-		
-		var component = AMComponents.ROCKET_COMPONENTS.get(server.getWorld(AMWorlds.ROCKET_INTERIORS));
-		
-		component.setPlacer(rocketUuid, playerUuid, placer);
+		AMComponents.ROCKET_COMPONENTS.sync(world);
 	}
 }

@@ -26,9 +26,11 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.common.component.world.NetworkComponent;
 import com.github.mixinors.astromine.common.manager.BodyManager;
+import com.github.mixinors.astromine.common.rocket.Rocket;
 import com.github.mixinors.astromine.common.screen.handler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.screen.handler.base.entity.ExtendedEntityScreenHandler;
 import dev.architectury.event.events.common.TickEvent;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -69,10 +71,12 @@ public class AMEvents {
 		}));
 		
 		// Sync the rocket interiors so the game doesn't die when people interact with rockets.
-		ServerWorldEvents.LOAD.register((server, world) -> {
-			if (world.getRegistryKey().equals(AMWorlds.ROCKET_INTERIORS)) {
-				AMComponents.ROCKET_COMPONENTS.sync(world);
-			}
+		ServerTickEvents.END_SERVER_TICK.register((server) -> {
+			var world = server.getWorld(AMWorlds.ROCKET_INTERIORS);
+			if (world == null) return;
+			
+			AMComponents.ROCKET_COMPONENTS.get(world).getRockets().forEach(Rocket::tick);
+			AMComponents.ROCKET_COMPONENTS.sync(world);
 		});
 	}
 }

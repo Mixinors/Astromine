@@ -46,6 +46,12 @@ repositories {
 }
 
 dependencies {
+	fun modApiInclude(str: String) {
+		modApi(str)
+		include(str)
+	}
+	
+	
 	minecraft("com.mojang:minecraft:${minecraftVersion}")
 	mappings("net.fabricmc:yarn:${minecraftVersion}+build.4:v2")
 	
@@ -54,30 +60,30 @@ dependencies {
 	modImplementation("net.fabricmc.fabric-api:fabric-api:${project.properties["fabricApi"]}")
 	
 	// Cardinal-Components
-	modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.properties["cardinalComponents"]}")
-	modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-block:${project.properties["cardinalComponents"]}")
-	modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-chunk:${project.properties["cardinalComponents"]}")
-	modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.properties["cardinalComponents"]}")
-	modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-item:${project.properties["cardinalComponents"]}")
-	modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-world:${project.properties["cardinalComponents"]}")
-	modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-level:${project.properties["cardinalComponents"]}")
+	modApiInclude("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.properties["cardinalComponents"]}")
+	modApiInclude("dev.onyxstudios.cardinal-components-api:cardinal-components-block:${project.properties["cardinalComponents"]}")
+	modApiInclude("dev.onyxstudios.cardinal-components-api:cardinal-components-chunk:${project.properties["cardinalComponents"]}")
+	modApiInclude("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.properties["cardinalComponents"]}")
+	modApiInclude("dev.onyxstudios.cardinal-components-api:cardinal-components-item:${project.properties["cardinalComponents"]}")
+	modApiInclude("dev.onyxstudios.cardinal-components-api:cardinal-components-world:${project.properties["cardinalComponents"]}")
+	modApiInclude("dev.onyxstudios.cardinal-components-api:cardinal-components-level:${project.properties["cardinalComponents"]}")
 	
-	modImplementation("com.terraformersmc.terraform-api:terraform-shapes-api-v1:${project.properties["shapes"]}") // Shapes
-	modImplementation("vazkii.patchouli:Patchouli:${project.properties["patchouli"]}") // Patchouli
-	modImplementation("com.terraformersmc:modmenu:${project.properties["modMenu"]}") // ModMenu
-	modImplementation("teamreborn:energy:${project.properties["trEnergy"]}") // Tech Reborn Energy
-	modImplementation("me.shedaniel.cloth:cloth-config-fabric:${project.properties["clothConfig"]}") // Cloth Config
-	modImplementation("com.shnupbups:Piglib:${project.properties["pigLib"]}") // PigLib
-	modImplementation("me.shedaniel:RoughlyEnoughItems-fabric:${project.properties["rei"]}") // RoughlyEnoughItems
+	modApiInclude("com.terraformersmc.terraform-api:terraform-shapes-api-v1:${project.properties["shapes"]}") // Shapes
+	modApiInclude("vazkii.patchouli:Patchouli:${project.properties["patchouli"]}") // Patchouli
+	modApi("com.terraformersmc:modmenu:${project.properties["modMenu"]}") // ModMenu
+	modApiInclude("teamreborn:energy:${project.properties["trEnergy"]}") // Tech Reborn Energy
+	modApiInclude("me.shedaniel.cloth:cloth-config-fabric:${project.properties["clothConfig"]}") // Cloth Config
+	modApiInclude("com.shnupbups:Piglib:${project.properties["pigLib"]}") // PigLib
+	modApi("me.shedaniel:RoughlyEnoughItems-fabric:${project.properties["rei"]}") // RoughlyEnoughItems
 	modImplementation("dev.architectury:architectury-fabric:${project.properties["architectury"]}") // Arch API
 	
 	// Hammer
-	modImplementation("dev.vini2003:hammer-core:${project.properties["hammer"]}")
-	modImplementation("dev.vini2003:hammer-gui:${project.properties["hammer"]}")
-	modImplementation("dev.vini2003:hammer-gui-energy:${project.properties["hammer"]}")
-	modImplementation("dev.vini2003:hammer-gravity:${project.properties["hammer"]}")
+	modApiInclude("dev.vini2003:hammer-core:${project.properties["hammer"]}")
+	modApiInclude("dev.vini2003:hammer-gui:${project.properties["hammer"]}")
+	modApiInclude("dev.vini2003:hammer-gui-energy:${project.properties["hammer"]}")
+	modApiInclude("dev.vini2003:hammer-gravity:${project.properties["hammer"]}")
 	
-	modImplementation("com.shnupbups:CauldronLib:${project.properties["cauldronLib"]}") // Cauldron
+	modApiInclude("com.shnupbups:CauldronLib:${project.properties["cauldronLib"]}") // Cauldron
 }
 
 tasks.processResources {

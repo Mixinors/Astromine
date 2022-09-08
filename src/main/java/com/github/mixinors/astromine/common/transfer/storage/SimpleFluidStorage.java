@@ -377,7 +377,7 @@ public class SimpleFluidStorage extends SnapshotParticipant<SimpleFluidStorage.S
 	 * @param slot    the slot from which the variant is to be extracted.
 	 */
 	public boolean canInsert(FluidVariant variant, int slot) {
-		return insertPredicate.test(variant, slot) && allowsInsertion;
+		return (insertPredicate == null || insertPredicate.test(variant, slot)) && allowsInsertion;
 	}
 	
 	/**
@@ -387,7 +387,7 @@ public class SimpleFluidStorage extends SnapshotParticipant<SimpleFluidStorage.S
 	 * @param slot    the slot from which the variant is to be extracted.
 	 */
 	public boolean canExtract(FluidVariant variant, int slot) {
-		return extractPredicate.test(variant, slot) && allowsExtraction;
+		return (extractPredicate == null || extractPredicate.test(variant, slot)) && allowsExtraction;
 	}
 	
 	/**

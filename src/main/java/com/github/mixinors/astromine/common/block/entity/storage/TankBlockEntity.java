@@ -92,8 +92,6 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 		}).listener(() -> {
 			markDirty();
 		}).insertSlots(ITEM_INSERT_SLOTS).extractSlots(ITEM_EXTRACT_SLOTS);
-		
-		fluidStorage.getStorage(FLUID_INPUT_SLOT).setCapacity(getFluidStorageSize());
 	}
 	
 	public FluidVariant getFilter() {
