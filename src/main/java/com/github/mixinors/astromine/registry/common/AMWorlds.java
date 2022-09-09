@@ -38,7 +38,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class AMWorlds {
-	public static final RegistryKey<World> ROCKET_INTERIORS = RegistryKey.of(Registry.WORLD_KEY, AMCommon.id("rocket"));
+	public static final RegistryKey<World> ROCKET_INTERIORS = RegistryKey.of(Registry.WORLD_KEY, AMCommon.id("rocket_interiors"));
 	
 	private static final Set<RegistryKey<?>> KEYS = new HashSet<>();
 	
