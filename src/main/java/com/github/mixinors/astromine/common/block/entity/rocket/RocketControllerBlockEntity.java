@@ -13,7 +13,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 public class RocketControllerBlockEntity extends ExtendedBlockEntity {
-	private UUID rocketUuid;
+	// TODO: Fix! Should be updated on placement!
+	private UUID rocketUuid = UUID.randomUUID();
 	
 	public RocketControllerBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.ROCKET_CONTROLLER, blockPos, blockState);

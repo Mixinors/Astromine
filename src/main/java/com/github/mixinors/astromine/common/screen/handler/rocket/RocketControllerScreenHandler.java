@@ -1,6 +1,7 @@
 package com.github.mixinors.astromine.common.screen.handler.rocket;
 
 import com.github.mixinors.astromine.common.block.entity.rocket.RocketControllerBlockEntity;
+import com.github.mixinors.astromine.common.manager.RocketManager;
 import com.github.mixinors.astromine.common.rocket.Rocket;
 import com.github.mixinors.astromine.common.screen.handler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.slot.ExtractionSlot;
@@ -17,6 +18,8 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
+import java.util.UUID;
+
 public class RocketControllerScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final RocketControllerBlockEntity rocketController;
 	
@@ -24,6 +27,7 @@ public class RocketControllerScreenHandler extends ExtendedBlockEntityScreenHand
 		super(AMScreenHandlers.ROCKET_CONTROLLER, syncId, player, position);
 		
 		rocketController = (RocketControllerBlockEntity) blockEntity;
+		((RocketControllerBlockEntity) blockEntity).setRocket(RocketManager.getOrCreate(UUID.randomUUID()));
 		
 		if (!player.world.isClient) {
 			rocketController.getRocket().setSyncItemStorage(true);
@@ -55,7 +59,7 @@ public class RocketControllerScreenHandler extends ExtendedBlockEntityScreenHand
 		
 		tab.add(payloadSlot);
 		
-		var leftFluidBar = new FluidBarWidget();
+		var leftFluidBar = fluidBar;
 		leftFluidBar.setPosition(new Position(payloadSlot, -BAR_WIDTH - PAD_3, SLOT_HEIGHT + PAD_3));
 		leftFluidBar.setSize(new Size(BAR_WIDTH, BAR_HEIGHT));
 		leftFluidBar.setStorageView(() -> rocketController.getFluidStorage().getStorage(Rocket.FLUID_INPUT_SLOT_1));

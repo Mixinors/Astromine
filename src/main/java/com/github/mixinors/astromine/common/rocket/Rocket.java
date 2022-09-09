@@ -119,6 +119,59 @@ public class Rocket implements Tickable {
 		}
 		
 		this.chunkPos = chunkPos;
+		
+		itemStorage = new SimpleItemStorage(13).extractPredicate((variant, slot) -> {
+			if (slot == ITEM_BUFFER_SLOT_1 || slot == ITEM_BUFFER_SLOT_2) {
+				return true;
+			} else {
+				if (slot == ITEM_INPUT_SLOT_4) {
+					return fluidStorage.getStorage(FLUID_INPUT_SLOT_1).isResourceBlank() && fluidStorage.getStorage(FLUID_INPUT_SLOT_2).isResourceBlank();
+				} else {
+					return slot == ITEM_INPUT_SLOT_5 || slot == ITEM_INPUT_SLOT_6 || slot == ITEM_INPUT_SLOT_7 || slot == ITEM_INPUT_SLOT_8 || slot == ITEM_INPUT_SLOT_9;
+				}
+			}
+		}).insertPredicate((variant, slot) ->
+				slot == ITEM_INPUT_SLOT_1 || slot == ITEM_INPUT_SLOT_2 || slot == ITEM_INPUT_SLOT_3 || slot == ITEM_INPUT_SLOT_4 || slot == ITEM_INPUT_SLOT_5 || slot == ITEM_INPUT_SLOT_6 || slot == ITEM_INPUT_SLOT_7 || slot == ITEM_INPUT_SLOT_8 || slot == ITEM_INPUT_SLOT_9
+		).listener(() -> {
+			var fluidTankItem = (RocketFuelTankItem) itemStorage.getStorage(ITEM_INPUT_SLOT_4).getResource().toStack().getItem();
+			var hullItem = (RocketHullItem) itemStorage.getStorage(ITEM_INPUT_SLOT_5).getResource().toStack().getItem();
+			var landingMechanismItem = (RocketLandingMechanismItem) itemStorage.getStorage(ITEM_INPUT_SLOT_6).getResource().toStack().getItem();
+			var lifeSupportItem = (RocketLifeSupportItem) itemStorage.getStorage(ITEM_INPUT_SLOT_7).getResource().toStack().getItem();
+			var shieldingItem = (RocketShieldingItem) itemStorage.getStorage(ITEM_INPUT_SLOT_8).getResource().toStack().getItem();
+			var thrusterItem = (RocketThrusterItem) itemStorage.getStorage(ITEM_INPUT_SLOT_9).getResource().toStack().getItem();
+			
+			if (this.fuelTank != fluidTankItem.getPart()) {
+				this.fuelTank = fluidTankItem.getPart();
+				onPartChanged();
+			}
+			
+			if (this.hull != hullItem.getPart()) {
+				this.hull = hullItem.getPart();
+				onPartChanged();
+			}
+			
+			if (this.landingMechanism != landingMechanismItem.getPart()) {
+				this.landingMechanism = landingMechanismItem.getPart();
+				onPartChanged();
+			}
+			
+			if (this.lifeSupport != lifeSupportItem.getPart()) {
+				this.lifeSupport = lifeSupportItem.getPart();
+				onPartChanged();
+			}
+			
+			if (this.shielding != shieldingItem.getPart()) {
+				this.shielding = shieldingItem.getPart();
+				onPartChanged();
+			}
+			
+			if (this.thruster != thrusterItem.getPart()) {
+				this.thruster = thrusterItem.getPart();
+				onPartChanged();
+			}
+			
+			RocketManager.sync();
+		}).insertSlots(ITEM_INSERT_SLOTS).extractSlots(ITEM_EXTRACT_SLOTS);
 	}
 	
 	@Override
@@ -178,58 +231,17 @@ public class Rocket implements Tickable {
 	}
 	
 	public void onPartChanged() {
-		itemStorage = new SimpleItemStorage(5).extractPredicate((variant, slot) ->
-				slot == ITEM_BUFFER_SLOT_1 || slot == ITEM_BUFFER_SLOT_2 || slot == ITEM_OUTPUT_SLOT_1 || slot == ITEM_OUTPUT_SLOT_2
-		).insertPredicate((variant, slot) ->
-				slot == ITEM_INPUT_SLOT_1 || slot == ITEM_INPUT_SLOT_2 || slot == ITEM_INPUT_SLOT_3 || slot == ITEM_INPUT_SLOT_4 || slot == ITEM_INPUT_SLOT_5 || slot == ITEM_INPUT_SLOT_6 || slot == ITEM_INPUT_SLOT_7 || slot == ITEM_INPUT_SLOT_8 || slot == ITEM_INPUT_SLOT_9
-		).listener(() -> {
-			var fluidTankItem = (RocketFuelTankItem) itemStorage.getStorage(ITEM_INPUT_SLOT_4).getResource().toStack().getItem();
-			var hullItem = (RocketHullItem) itemStorage.getStorage(ITEM_INPUT_SLOT_5).getResource().toStack().getItem();
-			var landingMechanismItem = (RocketLandingMechanismItem) itemStorage.getStorage(ITEM_INPUT_SLOT_6).getResource().toStack().getItem();
-			var lifeSupportItem = (RocketLifeSupportItem) itemStorage.getStorage(ITEM_INPUT_SLOT_7).getResource().toStack().getItem();
-			var shieldingItem = (RocketShieldingItem) itemStorage.getStorage(ITEM_INPUT_SLOT_8).getResource().toStack().getItem();
-			var thrusterItem = (RocketThrusterItem) itemStorage.getStorage(ITEM_INPUT_SLOT_9).getResource().toStack().getItem();
-			
-			if (this.fuelTank != fluidTankItem.getPart()) {
-				this.fuelTank = fluidTankItem.getPart();
-				onPartChanged();
-			}
-			
-			if (this.hull != hullItem.getPart()) {
-				this.hull = hullItem.getPart();
-				onPartChanged();
-			}
-			
-			if (this.landingMechanism != landingMechanismItem.getPart()) {
-				this.landingMechanism = landingMechanismItem.getPart();
-				onPartChanged();
-			}
-			
-			if (this.lifeSupport != lifeSupportItem.getPart()) {
-				this.lifeSupport = lifeSupportItem.getPart();
-				onPartChanged();
-			}
-			
-			if (this.shielding != shieldingItem.getPart()) {
-				this.shielding = shieldingItem.getPart();
-				onPartChanged();
-			}
-			
-			if (this.thruster != thrusterItem.getPart()) {
-				this.thruster = thrusterItem.getPart();
-				onPartChanged();
-			}
-			
-			RocketManager.sync();
-		}).insertSlots(ITEM_INSERT_SLOTS).extractSlots(ITEM_EXTRACT_SLOTS);
-		
-		fluidStorage = new SimpleFluidStorage(2, fuelTank.getCapacity().getSize()).extractPredicate((variant, slot) ->
-				false
-		).extractPredicate((variant, slot) ->
-				slot == FLUID_OUTPUT_SLOT_1 || slot == FLUID_OUTPUT_SLOT_2
-		).insertPredicate((variant, slot) ->
-				(slot == FLUID_INPUT_SLOT_1 && OXYGEN_INGREDIENT.testVariant(variant)) || (slot == FLUID_INPUT_SLOT_2 && FUEL_INGREDIENT.testVariant(variant))
-		).listener(RocketManager::sync).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
+		if (fuelTank != null) {
+			fluidStorage = new SimpleFluidStorage(2, fuelTank.getCapacity().getSize()).extractPredicate((variant, slot) ->
+					false
+			).extractPredicate((variant, slot) ->
+					slot == FLUID_OUTPUT_SLOT_1 || slot == FLUID_OUTPUT_SLOT_2
+			).insertPredicate((variant, slot) ->
+					(slot == FLUID_INPUT_SLOT_1 && OXYGEN_INGREDIENT.testVariant(variant)) || (slot == FLUID_INPUT_SLOT_2 && FUEL_INGREDIENT.testVariant(variant))
+			).listener(RocketManager::sync).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
+		} else {
+			fluidStorage = new SimpleFluidStorage(2, 1_000L);
+		}
 	}
 	
 	public void writeToNbt(NbtCompound nbt) {
