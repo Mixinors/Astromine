@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.component.entity.OxygenComponent;
-import com.github.mixinors.astromine.common.component.level.RocketComponent;
+import com.github.mixinors.astromine.common.component.level.RocketsStorageComponent;
 import com.github.mixinors.astromine.common.component.world.HoloBridgeComponent;
 import com.github.mixinors.astromine.common.component.world.NetworkComponent;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
@@ -45,13 +45,13 @@ public class AMComponents implements WorldComponentInitializer, EntityComponentI
 	
 	public static final ComponentKey<OxygenComponent> OXYGEN_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("oxygen_component"), OxygenComponent.class);
 	
-	public static final ComponentKey<RocketComponent> ROCKET_COMPONENTS = ComponentRegistry.getOrCreate(AMCommon.id("rocket_component"), RocketComponent.class);
+	public static final ComponentKey<RocketsStorageComponent> ROCKET_COMPONENTS = ComponentRegistry.getOrCreate(AMCommon.id("rocket_component"), RocketsStorageComponent.class);
 	
 	@Override
 	public void registerWorldComponentFactories(WorldComponentFactoryRegistry registry) {
 		registry.register(NETWORK_COMPONENT, NetworkComponent::new);
 		registry.register(HOLO_BRIDGE_COMPONENT, HoloBridgeComponent::new);
-		registry.register(ROCKET_COMPONENTS, RocketComponent::new);
+		registry.register(ROCKET_COMPONENTS, RocketsStorageComponent::new);
 	}
 	
 	@Override

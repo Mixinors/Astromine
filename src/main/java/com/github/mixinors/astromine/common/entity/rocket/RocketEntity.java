@@ -25,28 +25,12 @@
 package com.github.mixinors.astromine.common.entity.rocket;
 
 import com.github.mixinors.astromine.common.entity.rocket.base.BaseRocketEntity;
-import com.github.mixinors.astromine.common.rocket.Rocket;
-import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
-import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.World;
 
 public class RocketEntity extends BaseRocketEntity {
+	
 	public RocketEntity(EntityType<?> type, World world) {
 		super(type, world);
-	}
-	
-	@Override
-	public void tick() {
-		super.tick();
-		
-		if (world == null || world.isClient) {
-			return;
-		}
-			
-
 	}
 }

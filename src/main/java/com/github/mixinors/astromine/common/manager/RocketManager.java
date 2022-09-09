@@ -1,13 +1,10 @@
 package com.github.mixinors.astromine.common.manager;
 
-import com.github.mixinors.astromine.common.item.rocket.*;
 import com.github.mixinors.astromine.common.rocket.Rocket;
 import com.github.mixinors.astromine.registry.common.AMComponents;
-import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
 import com.google.common.collect.ImmutableList;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
-import net.minecraft.util.math.ChunkPos;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -20,7 +17,7 @@ public class RocketManager {
 	 */
 	public static Rocket create(UUID uuid) {
 		var rocket = new Rocket(uuid);
-		rocket.onPartChanged();
+		rocket.initStorage();
 		
 		var server = InstanceUtil.getServer();
 		var world = server.getWorld(AMWorlds.ROCKET_INTERIORS);

@@ -142,32 +142,32 @@ public class Rocket implements Tickable {
 			
 			if (this.fuelTank != fluidTankItem.getPart()) {
 				this.fuelTank = fluidTankItem.getPart();
-				onPartChanged();
+				initStorage();
 			}
 			
 			if (this.hull != hullItem.getPart()) {
 				this.hull = hullItem.getPart();
-				onPartChanged();
+				initStorage();
 			}
 			
 			if (this.landingMechanism != landingMechanismItem.getPart()) {
 				this.landingMechanism = landingMechanismItem.getPart();
-				onPartChanged();
+				initStorage();
 			}
 			
 			if (this.lifeSupport != lifeSupportItem.getPart()) {
 				this.lifeSupport = lifeSupportItem.getPart();
-				onPartChanged();
+				initStorage();
 			}
 			
 			if (this.shielding != shieldingItem.getPart()) {
 				this.shielding = shieldingItem.getPart();
-				onPartChanged();
+				initStorage();
 			}
 			
 			if (this.thruster != thrusterItem.getPart()) {
 				this.thruster = thrusterItem.getPart();
-				onPartChanged();
+				initStorage();
 			}
 			
 			RocketManager.sync();
@@ -230,7 +230,7 @@ public class Rocket implements Tickable {
 		}
 	}
 	
-	public void onPartChanged() {
+	public void initStorage() {
 		if (fuelTank != null) {
 			fluidStorage = new SimpleFluidStorage(2, fuelTank.getCapacity().getSize()).extractPredicate((variant, slot) ->
 					false
@@ -429,7 +429,7 @@ public class Rocket implements Tickable {
 	public void setFuelTank(RocketFuelTankPart fuelTank) {
 		this.fuelTank = fuelTank;
 		
-		onPartChanged();
+		initStorage();
 	}
 	
 	public RocketHullPart getHull() {
@@ -439,7 +439,7 @@ public class Rocket implements Tickable {
 	public void setHull(RocketHullPart hull) {
 		this.hull = hull;
 		
-		onPartChanged();
+		initStorage();
 	}
 	
 	public RocketLandingMechanismPart getLandingMechanism() {
@@ -449,7 +449,7 @@ public class Rocket implements Tickable {
 	public void setLandingMechanism(RocketLandingMechanismPart landingMechanism) {
 		this.landingMechanism = landingMechanism;
 		
-		onPartChanged();
+		initStorage();
 	}
 	
 	public RocketLifeSupportPart getLifeSupport() {
@@ -459,7 +459,7 @@ public class Rocket implements Tickable {
 	public void setLifeSupport(RocketLifeSupportPart lifeSupport) {
 		this.lifeSupport = lifeSupport;
 		
-		onPartChanged();
+		initStorage();
 	}
 	
 	public RocketShieldingPart getShielding() {
@@ -469,7 +469,7 @@ public class Rocket implements Tickable {
 	public void setShielding(RocketShieldingPart shielding) {
 		this.shielding = shielding;
 		
-		onPartChanged();
+		initStorage();
 	}
 	
 	public RocketThrusterPart getThruster() {
@@ -479,7 +479,7 @@ public class Rocket implements Tickable {
 	public void setThruster(RocketThrusterPart thruster) {
 		this.thruster = thruster;
 		
-		onPartChanged();
+		initStorage();
 	}
 	
 	public ChunkPos getChunkPos() {

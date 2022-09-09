@@ -2,31 +2,22 @@ package com.github.mixinors.astromine.common.component.level;
 
 import com.github.mixinors.astromine.common.rocket.Rocket;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
-import com.mojang.datafixers.util.Pair;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import dev.vini2003.hammer.core.api.common.util.NbtUtil;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class RocketComponent implements AutoSyncedComponent {
+public class RocketsStorageComponent implements AutoSyncedComponent {
 	private static final String ROCKETS_KEY = "Rockets";
 
 	private final Map<UUID, Rocket> rockets = new ConcurrentHashMap<>();
 	
-	@SuppressWarnings("unused")
-	public RocketComponent(World worldProperties) {
-	
+	public RocketsStorageComponent(World world) {
 	}
 	
 	public void addRocket(Rocket rocket) {
