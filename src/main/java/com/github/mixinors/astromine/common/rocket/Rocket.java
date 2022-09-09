@@ -146,9 +146,7 @@ public final class Rocket implements Tickable {
 		var placersNbt = new NbtCompound();
 		
 		for (var entry : placers.entrySet()) {
-			var placerNbt = new NbtCompound();
-			placerNbt = (NbtCompound) Placer.CODEC.encode(entry.getValue(), NbtOps.INSTANCE, placerNbt).result().get();
-			
+			var placerNbt = Placer.CODEC.encode(entry.getValue(), NbtOps.INSTANCE, new NbtCompound()).result().get();
 			placersNbt.put(entry.getKey().toString(), placerNbt);
 		}
 		
@@ -221,10 +219,12 @@ public final class Rocket implements Tickable {
 	}
 	
 	private void updateFluidStorage() {
-		var capacity = parts.getPart(PartType.FUEL_TANK).isPresent() ? ((RocketFuelTankPart) parts.getPart(PartType.FUEL_TANK).get()).getCapacity().getSize() : 1_000L;
+		Optional<RocketFuelTankPart> fuelTank = parts.getPart(PartType.FUEL_TANK);
+		long capacity = fuelTank.map(rocketFuelTankPart -> rocketFuelTankPart.getCapacity().getSize()).orElse(1_000L);
+		
 		fluidStorage = new SimpleFluidStorage(2, capacity);
 		
-		if (parts.getPart(PartType.FUEL_TANK).isPresent()) {
+		if (fuelTank.isPresent()) {
 			fluidStorage.extractPredicate((variant, slot) -> false)
 						.extractPredicate((variant, slot) -> slot == OXYGEN_TANK_FLUID_OUT || slot == FUEL_TANK_FLUID_OUT)
 						.insertPredicate((variant, slot) -> (slot == OXYGEN_TANK_FLUID_IN && OXYGEN_INGREDIENT.testVariant(variant)) || (slot == FUEL_TANK_FLUID_IN && FUEL_INGREDIENT.testVariant(variant)))
@@ -291,16 +291,6 @@ public final class Rocket implements Tickable {
 	}
 	
 	/**
-	 * Returns the thruster attached to the rocket
-	 *
-	 * @return returns null if no thruster is attached
-	 */
-	@NotNull
-	public Optional<RocketThrusterPart> getThruster() {
-		return this.parts.getPart(PartType.THRUSTER, RocketThrusterPart.class);
-	}
-	
-	/**
 	 * Used in {@link RocketManager#findUnoccupiedSpace()}
 	 */
 	public ChunkPos getInteriorPos() {
@@ -315,7 +305,7 @@ public final class Rocket implements Tickable {
 		this.placers.put(uuid, placer);
 	}
 	
-	private static class Parts {
+	public static class Parts {
 		private final Map<PartType, Optional<RocketPart<?>>> parts = new HashMap<>();
 		
 		public Parts() {
@@ -330,13 +320,14 @@ public final class Rocket implements Tickable {
 			}
 		}
 		
-		public Optional<RocketPart<?>> getPart(PartType type) {
-			return parts.getOrDefault(type, Optional.empty());
+		@SuppressWarnings("unchecked")
+		public <T extends RocketPart<?>> Optional<T> getPart(PartType type) {
+			return (Optional<T>) parts.getOrDefault(type, Optional.empty());
 		}
 		
 		@SuppressWarnings("unchecked")
-		public <T extends RocketPart<?>> Optional<T> getPart(PartType type, Class<T> clazz) {
-			return (Optional<T>) parts.getOrDefault(type, Optional.empty());
+		public <T extends RocketPart<?>> T getPartOrThrow(PartType type) {
+			return (T) parts.getOrDefault(type, Optional.empty()).get();
 		}
 		
 		public void setPart(PartType type, RocketPart<?> part) {

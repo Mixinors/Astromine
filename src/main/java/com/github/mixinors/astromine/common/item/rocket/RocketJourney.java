@@ -3,6 +3,7 @@ package com.github.mixinors.astromine.common.item.rocket;
 import com.github.mixinors.astromine.common.body.Body;
 import com.github.mixinors.astromine.common.registry.base.RegistryEntry;
 import com.github.mixinors.astromine.common.rocket.Rocket;
+import com.github.mixinors.astromine.common.rocket.RocketThrusterPart;
 import com.github.mixinors.astromine.registry.common.AMRegistries;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -93,7 +94,7 @@ public class RocketJourney {
 		if (!hasFinished()) {
 			var oxygen = (double) rocket.getOxygen();
 			var fuel = (double) rocket.getFuel();
-			var thruster = rocket.getThruster().orElseThrow();
+			RocketThrusterPart thruster = rocket.parts.getPartOrThrow(Rocket.PartType.THRUSTER);
 			
 			oxygen -= 4 * thruster.getEfficiency().getFuelConsumptionMultiplier();
 			fuel -= 2 * thruster.getEfficiency().getFuelConsumptionMultiplier();
