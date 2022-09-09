@@ -1,5 +1,6 @@
 package com.github.mixinors.astromine.common.manager;
 
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.rocket.Rocket;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
@@ -34,7 +35,9 @@ public class RocketManager {
 	 * If not present, {@link #create(UUID)}s it.
 	 * @param uuid the rocket's {@link UUID}.
 	 * @return the {@link Rocket}.
+	 * @deprecated Deprecated as this method is hiding issues with Rocket storage as it just creates a new rocket when it fails.
 	 */
+	@Deprecated
 	public static Rocket getOrCreate(UUID uuid) {
 		var server = InstanceUtil.getServer();
 		var world = server.getWorld(AMWorlds.ROCKET_INTERIORS);
@@ -44,6 +47,7 @@ public class RocketManager {
 		var rocket = component.getRocket(uuid);
 		
 		if (rocket == null) {
+			AMCommon.LOGGER.error("RocketManager#getOrCreate created a new Rocket! This shouldn't be hit. Why did the rocket not already exist?");
 			rocket = create(uuid);
 		}
 		
