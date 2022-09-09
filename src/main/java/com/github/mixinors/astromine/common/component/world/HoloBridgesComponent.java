@@ -45,7 +45,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 
-public final class HoloBridgeComponent implements Component {
+public final class HoloBridgesComponent implements Component {
 	private static final String POSITION_KEY = "Positions";
 	private static final String VECTORS_KEY = "Vectors";
 	private static final String DATA_KEY = "Data";
@@ -57,15 +57,15 @@ public final class HoloBridgeComponent implements Component {
 	private final World world;
 
 	@Nullable
-	public static <V> HoloBridgeComponent get(V v) {
+	public static <V> HoloBridgesComponent get(V v) {
 		try {
-			return AMComponents.HOLO_BRIDGE.get(v);
+			return AMComponents.HOLO_BRIDGES.get(v);
 		} catch (Exception justShutUpAlready) {
 			return null;
 		}
 	}
 	
-	public HoloBridgeComponent(World world) {
+	public HoloBridgesComponent(World world) {
 		this.world = world;
 	}
 	

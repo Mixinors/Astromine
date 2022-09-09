@@ -63,11 +63,11 @@
   },
   "custom": {
     "cardinal-components": [
-      "astromine:network_component",
-      "astromine:atmosphere_component",
-      "astromine:holo_bridge_component",
-      "astromine:oxygen_component",
-      "astromine:rocket_component"
+      "astromine:networks",
+      "astromine:atmosphere",
+      "astromine:holo_bridges",
+      "astromine:oxygen",
+      "astromine:rocket_interiors"
     ]
   }
 }

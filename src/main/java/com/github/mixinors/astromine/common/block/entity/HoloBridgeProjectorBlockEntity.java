@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.block.entity;
 
-import com.github.mixinors.astromine.common.component.world.HoloBridgeComponent;
+import com.github.mixinors.astromine.common.component.world.HoloBridgesComponent;
 import com.github.mixinors.astromine.common.tick.Tickable;
 import com.github.mixinors.astromine.common.util.LineUtils;
 import com.github.mixinors.astromine.common.util.VectorUtils;
@@ -192,7 +192,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 		}
 		
 		this.segments = (ArrayList<Vec3f>) LineUtils.getBresenhamSegments(VectorUtils.toVector3f(pos.up()), VectorUtils.toVector3f(offsetChildPos.up()), 32);
-		var bridgeComponent = HoloBridgeComponent.get(world);
+		var bridgeComponent = HoloBridgesComponent.get(world);
 		
 		for (var segment : this.segments) {
 			var segmentPos = new BlockPos(segment.getX(), segment.getY(), segment.getZ());
@@ -261,7 +261,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	
 	public void destroyBridge() {
 		if (this.segments != null && this.world != null) {
-			var bridgeComponent = HoloBridgeComponent.get(world);
+			var bridgeComponent = HoloBridgesComponent.get(world);
 			
 			for (var vec : this.segments) {
 				var pos = new BlockPos(vec.getX(), vec.getY(), vec.getZ());

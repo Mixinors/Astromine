@@ -59,7 +59,7 @@ public class RocketManager {
 		
 		while (chunkPos == null || occupiedPositions.contains(chunkPos)) {
 			var bound = 16_000_000 / 16;
-			chunkPos = new ChunkPos(random.nextInt(bound), random.nextInt(bound));
+			chunkPos = new ChunkPos(random.nextInt(bound) % 32, random.nextInt(bound) % 32);
 		}
 		
 		return chunkPos;

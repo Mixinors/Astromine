@@ -27,8 +27,7 @@ package com.github.mixinors.astromine.registry.common;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.world.generation.space.EarthOrbitChunkGenerator;
 import com.github.mixinors.astromine.common.world.generation.space.MoonChunkGenerator;
-import com.github.mixinors.astromine.common.world.generation.space.MoonOrbitChunkGenerator;
-import com.github.mixinors.astromine.common.world.generation.space.RocketChunkGenerator;
+import com.github.mixinors.astromine.common.world.generation.space.RocketInteriorsChunkGenerator;
 import com.mojang.serialization.Codec;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -38,7 +37,7 @@ public class AMChunkGenerators {
 	public static void init() {
 		register(AMCommon.id("earth_orbit"), EarthOrbitChunkGenerator.CODEC);
 		register(AMCommon.id("moon"), MoonChunkGenerator.CODEC);
-		register(AMCommon.id("rocket"), RocketChunkGenerator.CODEC);
+		register(AMCommon.id("rocket_interiors"), RocketInteriorsChunkGenerator.CODEC);
 	}
 	
 	public static void register(Identifier id, Codec<? extends ChunkGenerator> codec) {
