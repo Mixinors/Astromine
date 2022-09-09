@@ -6,6 +6,7 @@ import com.github.mixinors.astromine.registry.common.AMComponents;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
 import com.google.common.collect.ImmutableList;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -18,7 +19,7 @@ public class RocketManager {
 	 */
 	public static Rocket create(UUID uuid) {
 		var rocket = new Rocket(uuid);
-		rocket.initStorage();
+		rocket.updateStorage();
 		
 		var server = InstanceUtil.getServer();
 		var world = server.getWorld(AMWorlds.ROCKET_INTERIORS);
@@ -35,10 +36,9 @@ public class RocketManager {
 	 * If not present, {@link #create(UUID)}s it.
 	 * @param uuid the rocket's {@link UUID}.
 	 * @return the {@link Rocket}.
-	 * @deprecated Deprecated as this method is hiding issues with Rocket storage as it just creates a new rocket when it fails.
 	 */
-	@Deprecated
-	public static Rocket getOrCreate(UUID uuid) {
+	@Nullable
+	public static Rocket get(UUID uuid) {
 		var server = InstanceUtil.getServer();
 		var world = server.getWorld(AMWorlds.ROCKET_INTERIORS);
 		if (world == null) return null;
@@ -48,7 +48,7 @@ public class RocketManager {
 		
 		if (rocket == null) {
 			AMCommon.LOGGER.error("RocketManager#getOrCreate created a new Rocket! This shouldn't be hit. Why did the rocket not already exist?");
-			rocket = create(uuid);
+			return null;
 		}
 		
 		return rocket;

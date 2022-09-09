@@ -27,7 +27,7 @@ public class RocketControllerScreenHandler extends ExtendedBlockEntityScreenHand
 		super(AMScreenHandlers.ROCKET_CONTROLLER, syncId, player, position);
 		
 		rocketController = (RocketControllerBlockEntity) blockEntity;
-		((RocketControllerBlockEntity) blockEntity).setRocket(RocketManager.getOrCreate(UUID.randomUUID()));
+		((RocketControllerBlockEntity) blockEntity).setRocket(RocketManager.get(UUID.randomUUID()));
 		
 		if (!player.world.isClient) {
 			rocketController.getRocket().setSyncItemStorage(true);

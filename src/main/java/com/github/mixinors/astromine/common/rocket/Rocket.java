@@ -115,10 +115,12 @@ public class Rocket implements Tickable {
 		ChunkPos chunkPos = null;
 		
 		while (chunkPos == null || chunkPositions.contains(chunkPos)) {
-			chunkPos = new ChunkPos(random.nextInt(Integer.MAX_VALUE / 2), random.nextInt(Integer.MAX_VALUE / 2));
+			chunkPos = new ChunkPos(random.nextInt(16_000_000) / 16, random.nextInt(16_000_000) / 16);
 		}
 		
 		this.chunkPos = chunkPos;
+		
+		updateStorage();
 		
 		itemStorage = new SimpleItemStorage(13).extractPredicate((variant, slot) -> {
 			if (slot == ITEM_BUFFER_SLOT_1 || slot == ITEM_BUFFER_SLOT_2) {
@@ -142,32 +144,32 @@ public class Rocket implements Tickable {
 			
 			if (this.fuelTank != fluidTankItem.getPart()) {
 				this.fuelTank = fluidTankItem.getPart();
-				initStorage();
+				updateStorage();
 			}
 			
 			if (this.hull != hullItem.getPart()) {
 				this.hull = hullItem.getPart();
-				initStorage();
+				updateStorage();
 			}
 			
 			if (this.landingMechanism != landingMechanismItem.getPart()) {
 				this.landingMechanism = landingMechanismItem.getPart();
-				initStorage();
+				updateStorage();
 			}
 			
 			if (this.lifeSupport != lifeSupportItem.getPart()) {
 				this.lifeSupport = lifeSupportItem.getPart();
-				initStorage();
+				updateStorage();
 			}
 			
 			if (this.shielding != shieldingItem.getPart()) {
 				this.shielding = shieldingItem.getPart();
-				initStorage();
+				updateStorage();
 			}
 			
 			if (this.thruster != thrusterItem.getPart()) {
 				this.thruster = thrusterItem.getPart();
-				initStorage();
+				updateStorage();
 			}
 			
 			RocketManager.sync();
@@ -230,7 +232,7 @@ public class Rocket implements Tickable {
 		}
 	}
 	
-	public void initStorage() {
+	public void updateStorage() {
 		if (fuelTank != null) {
 			fluidStorage = new SimpleFluidStorage(2, fuelTank.getCapacity().getSize()).extractPredicate((variant, slot) ->
 					false
@@ -253,7 +255,7 @@ public class Rocket implements Tickable {
 		
 		for (var entry : placers.entrySet()) {
 			var placerNbt = new NbtCompound();
-			Placer.CODEC.encode(entry.getValue(), NbtOps.INSTANCE, placerNbt);
+			placerNbt = (NbtCompound) Placer.CODEC.encode(entry.getValue(), NbtOps.INSTANCE, placerNbt).result().get();
 			
 			placersNbt.put(entry.getKey().toString(), placerNbt);
 		}
@@ -429,7 +431,7 @@ public class Rocket implements Tickable {
 	public void setFuelTank(RocketFuelTankPart fuelTank) {
 		this.fuelTank = fuelTank;
 		
-		initStorage();
+		updateStorage();
 	}
 	
 	public RocketHullPart getHull() {
@@ -439,7 +441,7 @@ public class Rocket implements Tickable {
 	public void setHull(RocketHullPart hull) {
 		this.hull = hull;
 		
-		initStorage();
+		updateStorage();
 	}
 	
 	public RocketLandingMechanismPart getLandingMechanism() {
@@ -449,7 +451,7 @@ public class Rocket implements Tickable {
 	public void setLandingMechanism(RocketLandingMechanismPart landingMechanism) {
 		this.landingMechanism = landingMechanism;
 		
-		initStorage();
+		updateStorage();
 	}
 	
 	public RocketLifeSupportPart getLifeSupport() {
@@ -459,7 +461,7 @@ public class Rocket implements Tickable {
 	public void setLifeSupport(RocketLifeSupportPart lifeSupport) {
 		this.lifeSupport = lifeSupport;
 		
-		initStorage();
+		updateStorage();
 	}
 	
 	public RocketShieldingPart getShielding() {
@@ -469,7 +471,7 @@ public class Rocket implements Tickable {
 	public void setShielding(RocketShieldingPart shielding) {
 		this.shielding = shielding;
 		
-		initStorage();
+		updateStorage();
 	}
 	
 	public RocketThrusterPart getThruster() {
@@ -479,7 +481,7 @@ public class Rocket implements Tickable {
 	public void setThruster(RocketThrusterPart thruster) {
 		this.thruster = thruster;
 		
-		initStorage();
+		updateStorage();
 	}
 	
 	public ChunkPos getChunkPos() {

@@ -36,6 +36,10 @@ public class RocketsStorageComponent implements AutoSyncedComponent {
 		this.rockets.remove(rocket.getUuid());
 	}
 	
+	public void tick() {
+		this.rockets.values().forEach(Rocket::tick);
+	}
+	
 	@Override
 	public void writeToNbt(NbtCompound nbt) {
 		var rocketsNbt = new NbtCompound();

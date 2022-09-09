@@ -73,7 +73,7 @@ public class RocketEntity extends ExtendedEntity {
 	protected void readCustomDataFromNbt(NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
 		
-		rocket = RocketManager.getOrCreate(nbt.getUuid(ROCKET_UUID));
+		rocket = RocketManager.get(nbt.getUuid(ROCKET_UUID));
 	}
 	
 	public Vec3d getAcceleration() {
