@@ -21,7 +21,7 @@ public class RocketControllerBlockEntity extends ExtendedBlockEntity {
 	}
 	
 	public Rocket getRocket() {
-		return RocketManager.getOrCreate(rocketUuid);
+		return RocketManager.get(rocketUuid);
 	}
 	
 	public void setRocket(Rocket rocket) {

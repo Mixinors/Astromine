@@ -6,34 +6,39 @@ import java.util.UUID;
 
 public class RocketInteriorManager {
 	public static void teleportToRocket(PlayerEntity player, UUID uuid) {
-		// TODO: Do.
-		// var chunkPos = RocketManager.getChunkPosition(uuid);
-		// var placer = RocketManager.getPlacer(uuid, player.getUuid());
-		//
-		// if (placer == null) {
-		// 	placer = new Rocket.Placer(player.getWorld().getRegistryKey(), player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch());
-		//
-		// 	RocketManager.setPlacer(uuid, player.getUuid(), placer);
-		// }
-		//
-		// if (player instanceof ServerPlayerEntity serverPlayer) {
-		// 	var world = player.getServer().getWorld(AMWorlds.ROCKET_INTERIORS);
-		//
-		// 	serverPlayer.teleport(world, chunkPos.x * 16 + 3.5, 1, chunkPos.z * 16 + 3.5, 270, 0);
-		// }
+		var rocket = RocketManager.get(uuid);
+		if (rocket == null) return;
+		
+		var chunkPos = rocket.getChunkPos();
+		var placer = rocket.getPlacer(player.getUuid());
+		
+		if (placer == null) {
+			placer = new Rocket.Placer(player.getWorld().getRegistryKey(), player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch());
+		
+			rocket.setPlacer(player.getUuid(), placer);
+		}
+		
+		if (player instanceof ServerPlayerEntity serverPlayer) {
+			var world = player.getServer().getWorld(AMWorlds.ROCKET_INTERIORS);
+		
+			serverPlayer.teleport(world, chunkPos.x * 16 + 3.5, 1, chunkPos.z * 16 + 3.5, 270, 0);
+		}
 	}
 	
 	public static void teleportToPlacer(PlayerEntity player, UUID uuid) {
-		// TODO: Do.
-		// var placer = RocketManager.getPlacer(uuid, player.getUuid());
-		//
-		// if (placer != null) {
-		// 	if (player instanceof ServerPlayerEntity serverPlayer) {
-		// 		var world = player.getServer().getWorld(AMWorlds.ROCKET_INTERIORS);
-		//
-		// 		serverPlayer.teleport(world, placer.x(), placer.y(), placer.z(), placer.yaw(), placer.pitch());
-		// 	}
-		// }
+		var rocket = RocketManager.get(uuid);
+		if (rocket == null) return;
+		
+		var placer = rocket.getPlacer(player.getUuid());
+		
+		if (placer != null) {
+			if (player instanceof ServerPlayerEntity serverPlayer) {
+				var world = player.getServer().getWorld(placer.worldKey());
+				if (world == null) return;
+		
+				serverPlayer.teleport(world, placer.x(), placer.y(), placer.z(), placer.yaw(), placer.pitch());
+			}
+		}
 	}
 	
 }

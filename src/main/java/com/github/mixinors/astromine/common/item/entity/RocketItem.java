@@ -96,7 +96,7 @@ public class RocketItem extends Item {
 		}
 		
 		if (result instanceof RocketEntity rocket) {
-			rocket.setRocket(RocketManager.create(UUID.randomUUID()));
+			rocket.setRocket(RocketManager.create(rocket.getUuid()));
 		}
 		
 		user.incrementStat(Stats.USED.getOrCreateStat(this));

@@ -67,8 +67,6 @@ public class AirlockBlock extends Block implements Waterloggable {
 	public static final VoxelShape BOTTOM_SHAPE = Block.createCuboidShape(0, 0, 5, 16, 1, 11);
 	public static final VoxelShape TOP_SHAPE = Block.createCuboidShape(0, 15, 6, 16, 16, 10);
 	
-	private static final VoxelShape[] SHAPE_CACHE = new VoxelShape[64];
-	
 	public AirlockBlock(Settings settings) {
 		super(settings);
 		
@@ -82,31 +80,24 @@ public class AirlockBlock extends Block implements Waterloggable {
 	
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		var facing = state.get(FACING);
+		Direction facing = state.get(FACING);
+		VoxelShape shape = VoxelShapes.union(VoxelShapes.empty(), VoxelShapeUtils.rotate(facing, DOOR_SHAPE));
 		
-		var id = facing.getId() + (state.get(HALF) == DoubleBlockHalf.LOWER ? 1 : 2) + (!state.get(LEFT) ? 4 : 8) + (!state.get(RIGHT) ? 16 : 32);
-		
-		if (SHAPE_CACHE[id] == null) {
-			var shape = VoxelShapes.union(VoxelShapes.empty(), VoxelShapeUtils.rotate(facing, DOOR_SHAPE));
-			
-			if (state.get(HALF) == DoubleBlockHalf.LOWER) {
-				shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, BOTTOM_SHAPE));
-			} else {
-				shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, TOP_SHAPE));
-			}
-			
-			if (!state.get(LEFT)) {
-				shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, LEFT_SHAPE));
-			}
-			
-			if (!state.get(RIGHT)) {
-				shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, RIGHT_SHAPE));
-			}
-			
-			SHAPE_CACHE[id] = shape;
+		if (state.get(HALF) == DoubleBlockHalf.LOWER) {
+			shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, BOTTOM_SHAPE));
+		} else {
+			shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, TOP_SHAPE));
 		}
 		
-		return SHAPE_CACHE[id];
+		if (!state.get(LEFT)) {
+			shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, LEFT_SHAPE));
+		}
+		
+		if (!state.get(RIGHT)) {
+			shape = VoxelShapes.union(shape, VoxelShapeUtils.rotate(facing, RIGHT_SHAPE));
+		}
+		
+		return shape;
 	}
 	
 	@Override
