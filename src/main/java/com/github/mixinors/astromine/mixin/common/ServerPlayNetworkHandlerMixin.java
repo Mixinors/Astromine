@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.mixin.common;
 
-import com.github.mixinors.astromine.common.entity.rocket.base.BaseRocketEntity;
+import com.github.mixinors.astromine.common.entity.rocket.RocketEntity;
 import net.minecraft.network.listener.ServerPlayPacketListener;
 import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -42,7 +42,7 @@ public abstract class ServerPlayNetworkHandlerMixin implements ServerPlayPacketL
 	
 	@Inject(method = "onClientCommand(Lnet/minecraft/network/packet/c2s/play/ClientCommandC2SPacket;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;updateLastActionTime()V"))
 	public void astromine$onClientCommand(ClientCommandC2SPacket packet, CallbackInfo ci) {
-		if (packet.getMode().equals(ClientCommandC2SPacket.Mode.OPEN_INVENTORY) && this.player.getVehicle() instanceof BaseRocketEntity rocketEntity) {
+		if (packet.getMode().equals(ClientCommandC2SPacket.Mode.OPEN_INVENTORY) && this.player.getVehicle() instanceof RocketEntity rocketEntity) {
 			// rocketEntity.openInventory(this.player);
 		}
 	}

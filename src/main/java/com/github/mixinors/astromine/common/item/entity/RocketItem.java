@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.item.entity;
 
-import com.github.mixinors.astromine.common.entity.rocket.base.BaseRocketEntity;
+import com.github.mixinors.astromine.common.entity.rocket.RocketEntity;
 import com.github.mixinors.astromine.common.manager.RocketManager;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.entity.Entity;
@@ -95,7 +95,7 @@ public class RocketItem extends Item {
 			itemStack.decrement(1);
 		}
 		
-		if (result instanceof BaseRocketEntity rocket) {
+		if (result instanceof RocketEntity rocket) {
 			rocket.setRocket(RocketManager.create(UUID.randomUUID()));
 		}
 		

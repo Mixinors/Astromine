@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.mixin.client;
 
-import com.github.mixinors.astromine.common.entity.rocket.base.BaseRocketEntity;
+import com.github.mixinors.astromine.common.entity.rocket.RocketEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import org.spongepowered.asm.mixin.Final;
@@ -42,7 +42,7 @@ public class ClientPlayerInteractionManagerMixin {
 	
 	@Inject(method = "hasRidingInventory()Z", at = @At("HEAD"), cancellable = true)
 	public void astromine$hasRidingInventory(CallbackInfoReturnable<Boolean> cir) {
-		if (client.player.hasVehicle() && client.player.getVehicle() instanceof BaseRocketEntity) {
+		if (client.player.hasVehicle() && client.player.getVehicle() instanceof RocketEntity) {
 			cir.setReturnValue(true);
 		}
 	}
