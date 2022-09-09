@@ -25,16 +25,16 @@ public class RocketControllerBlockEntity extends ExtendedBlockEntity {
 	}
 	
 	public void setRocket(Rocket rocket) {
-		this.rocketUuid = rocket.getUuid();
+		this.rocketUuid = rocket.uuid;
 	}
 	
 	@Override
 	public @Nullable SimpleItemStorage getItemStorage() {
-		return getRocket().getItemStorage();
+		return getRocket().itemStorage;
 	}
 	
 	@Override
 	public @Nullable SimpleFluidStorage getFluidStorage() {
-		return getRocket().getFluidStorage();
+		return getRocket().fluidStorage;
 	}
 }

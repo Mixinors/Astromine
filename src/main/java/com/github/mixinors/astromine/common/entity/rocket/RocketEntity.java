@@ -66,7 +66,7 @@ public class RocketEntity extends ExtendedEntity {
 	protected void writeCustomDataToNbt(NbtCompound nbt) {
 		super.writeCustomDataToNbt(nbt);
 		
-		nbt.putUuid(ROCKET_UUID, rocket.getUuid());
+		nbt.putUuid(ROCKET_UUID, rocket.uuid);
 	}
 	
 	@Override

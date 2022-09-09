@@ -6,28 +6,63 @@ import com.github.mixinors.astromine.registry.common.AMComponents;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
 import com.google.common.collect.ImmutableList;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.math.ChunkPos;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
+import java.util.Random;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class RocketManager {
-	/**
-	 * Creates a new {@link Rocket} with the given {@link UUID}.
-	 * @param uuid the rocket's {@link UUID}.
-	 * @return the created {@link Rocket}.
-	 */
-	public static Rocket create(UUID uuid) {
-		var rocket = new Rocket(uuid);
-		rocket.initStorage();
-		
+	
+	public static Rocket readFromNbt(NbtCompound rocketTag) {
+		var rocket = new Rocket(rocketTag);
 		var server = InstanceUtil.getServer();
 		var world = server.getWorld(AMWorlds.ROCKET_INTERIORS);
-		if (world == null) return null;
+		if (world == null) throw new RuntimeException("Failed to load the interior world.");
 		
 		var component = AMComponents.ROCKET_COMPONENTS.get(world);
 		component.addRocket(rocket);
 		
 		return rocket;
+	}
+	
+	/**
+	 * Creates a new {@link Rocket} with the given {@link UUID}.
+	 * @param uuid the rocket's {@link UUID}.
+	 * @return the created {@link Rocket}.
+	 */
+	@NotNull
+	public static Rocket create(UUID uuid) {
+		var rocket = new Rocket(uuid, findUnoccupiedSpace());
+		var server = InstanceUtil.getServer();
+		var world = server.getWorld(AMWorlds.ROCKET_INTERIORS);
+		if (world == null) throw new RuntimeException("Failed to load the interior world.");
+		
+		var component = AMComponents.ROCKET_COMPONENTS.get(world);
+		component.addRocket(rocket);
+		
+		return rocket;
+	}
+	
+	public static ChunkPos findUnoccupiedSpace() {
+		var occupiedPositions = RocketManager
+				.getRockets()
+				.stream()
+				.map(Rocket::getInteriorPos)
+				.collect(Collectors.toSet());
+		
+		var random = new Random();
+		ChunkPos chunkPos = null;
+		
+		while (chunkPos == null || occupiedPositions.contains(chunkPos)) {
+			int bound = 16_000_000 / 16;
+			chunkPos = new ChunkPos(random.nextInt(bound), random.nextInt(bound));
+		}
+		
+		return chunkPos;
 	}
 	
 	/**

@@ -1,5 +1,6 @@
 package com.github.mixinors.astromine.common.component.level;
 
+import com.github.mixinors.astromine.common.manager.RocketManager;
 import com.github.mixinors.astromine.common.rocket.Rocket;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
@@ -14,14 +15,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class RocketsStorageComponent implements AutoSyncedComponent {
 	private static final String ROCKETS_KEY = "Rockets";
-
+	
 	private final Map<UUID, Rocket> rockets = new ConcurrentHashMap<>();
 	
 	public RocketsStorageComponent(World world) {
 	}
 	
 	public void addRocket(Rocket rocket) {
-		this.rockets.put(rocket.getUuid(), rocket);
+		this.rockets.put(rocket.uuid, rocket);
 	}
 	
 	public Rocket getRocket(UUID rocketUuid) {
@@ -33,7 +34,7 @@ public class RocketsStorageComponent implements AutoSyncedComponent {
 	}
 	
 	public void removeRocket(Rocket rocket) {
-		this.rockets.remove(rocket.getUuid());
+		this.rockets.remove(rocket.uuid);
 	}
 	
 	@Override
@@ -59,11 +60,8 @@ public class RocketsStorageComponent implements AutoSyncedComponent {
 		
 		for (var key : rocketsNbt.getKeys()) {
 			var uuid = UUID.fromString(key);
-			var rocket = rockets.computeIfAbsent(uuid, Rocket::new);
-			
 			var rocketNbt = rocketsNbt.getCompound(key);
-			
-			rocket.readFromNbt(rocketNbt);
+			rockets.computeIfAbsent(uuid, uuid1 -> RocketManager.readFromNbt(rocketNbt));
 		}
 	}
 	

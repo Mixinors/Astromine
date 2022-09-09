@@ -6,8 +6,6 @@ import com.github.mixinors.astromine.common.rocket.Rocket;
 import com.github.mixinors.astromine.registry.common.AMRegistries;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.vini2003.hammer.core.api.common.util.NbtUtil;
-import net.minecraft.nbt.NbtCompound;
 
 public class RocketJourney {
 	public static final Codec<RocketJourney> CODEC = RecordCodecBuilder.create(
@@ -93,14 +91,15 @@ public class RocketJourney {
 	// TODO: Make Moon a bit closer so it only uses 16 buckets of Oxygen.
 	public void tick(Rocket rocket) {
 		if (!hasFinished()) {
-			var oxygen = (double) rocket.getOxygenRemaining();
-			var fuel = (double) rocket.getFuelRemaining();
+			var oxygen = (double) rocket.getOxygen();
+			var fuel = (double) rocket.getFuel();
+			var thruster = rocket.getThruster().orElseThrow();
 			
-			oxygen -= 4 * rocket.getThruster().getEfficiency().getFuelConsumptionMultiplier();
-			fuel -= 2 * rocket.getThruster().getEfficiency().getFuelConsumptionMultiplier();
+			oxygen -= 4 * thruster.getEfficiency().getFuelConsumptionMultiplier();
+			fuel -= 2 * thruster.getEfficiency().getFuelConsumptionMultiplier();
 			
-			rocket.setOxygenRemaining((long) oxygen);
-			rocket.setFuelRemaining((long) fuel);
+			rocket.setOxygen((long) oxygen);
+			rocket.setFuel((long) fuel);
 			
 			travelledDistance += 1280;
 			

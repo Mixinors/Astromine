@@ -75,7 +75,6 @@ public class AMEvents {
 			var world = server.getWorld(AMWorlds.ROCKET_INTERIORS);
 			if (world == null) return;
 			
-			AMComponents.ROCKET_COMPONENTS.get(world).getRockets().forEach(Rocket::initStorage);
 			AMComponents.ROCKET_COMPONENTS.get(world).getRockets().forEach(Rocket::tick);
 			AMComponents.ROCKET_COMPONENTS.sync(world);
 		});
