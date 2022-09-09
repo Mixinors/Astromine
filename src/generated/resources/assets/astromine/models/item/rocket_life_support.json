@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "astromine:item/primitive_rocket_solid_thruster"
+    "layer0": "astromine:item/rocket_life_support"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "astromine:item/elite_rocket_solid_thruster"
+    "layer0": "astromine:item/high_durability_rocket_hull"
   }
 }

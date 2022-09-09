@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "astromine:item/perching_rocket_landing_mechanism"
+  }
+}

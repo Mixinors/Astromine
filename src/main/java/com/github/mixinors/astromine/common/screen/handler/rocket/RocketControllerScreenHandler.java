@@ -7,15 +7,18 @@ import com.github.mixinors.astromine.common.screen.handler.base.block.entity.Ext
 import com.github.mixinors.astromine.common.slot.ExtractionSlot;
 import com.github.mixinors.astromine.common.slot.FilterSlot;
 import com.github.mixinors.astromine.common.util.StorageUtils;
+import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.bar.FluidBarWidget;
+import dev.vini2003.hammer.gui.api.common.widget.item.ItemWidget;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.UUID;
@@ -182,5 +185,80 @@ public class RocketControllerScreenHandler extends ExtendedBlockEntityScreenHand
 		tab.add(rightFluidInput);
 		tab.add(rightFluidBuffer);
 		tab.add(rightFluidOutput);
+
+		var fuelTankSlot = new SlotWidget(Rocket.FUEL_TANK_SLOT, rocketController.getItemStorage(), Slot::new);
+		var hullItemSlot = new SlotWidget(Rocket.HULL_SLOT, rocketController.getItemStorage(), Slot::new);
+		var landingMechanismSlot = new SlotWidget(Rocket.LANDING_MECHANISM_SLOT, rocketController.getItemStorage(), Slot::new);
+		var lifeSupportSlot = new SlotWidget(Rocket.LIFE_SUPPORT_SLOT, rocketController.getItemStorage(), Slot::new);
+		var shieldingSlot = new SlotWidget(Rocket.SHIELDING_SLOT, rocketController.getItemStorage(), Slot::new);
+		var thrusterSlot = new SlotWidget(Rocket.THRUSTER_SLOT, rocketController.getItemStorage(), Slot::new);
+		
+		fuelTankSlot.setPosition(new Position(leftFluidBar, 0.0F, BAR_HEIGHT + PAD_25));
+		fuelTankSlot.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
+		
+		hullItemSlot.setPosition(new Position(fuelTankSlot, -SLOT_WIDTH - PAD_3, 0.0F));
+		hullItemSlot.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
+		
+		landingMechanismSlot.setPosition(new Position(hullItemSlot, -SLOT_WIDTH - PAD_3, 0.0F));
+		landingMechanismSlot.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
+		
+		lifeSupportSlot.setPosition(new Position(rightFluidBar, 0.0F, BAR_HEIGHT + PAD_25));
+		lifeSupportSlot.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
+		
+		shieldingSlot.setPosition(new Position(lifeSupportSlot, SLOT_WIDTH + PAD_3, 0.0F));
+		shieldingSlot.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
+		
+		thrusterSlot.setPosition(new Position(shieldingSlot, SLOT_WIDTH + PAD_3, 0.0F));
+		thrusterSlot.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
+		
+		var fuelTankItem = new ItemWidget();
+		fuelTankItem.setItem(AMItems.LOW_CAPACITY_ROCKET_FUEL_TANK);
+		
+		var hullItem = new ItemWidget();
+		hullItem.setItem(AMItems.LOW_DURABILITY_ROCKET_HULL);
+		
+		var landingMechanismItem = new ItemWidget();
+		landingMechanismItem.setItem(AMItems.STANDING_ROCKET_LANDING_MECHANISM);
+		
+		var lifeSupportItem = new ItemWidget();
+		lifeSupportItem.setItem(AMItems.ROCKET_LIFE_SUPPORT);
+		
+		var shieldingItem = new ItemWidget();
+		shieldingItem.setItem(AMItems.LOW_TEMPERATURE_ROCKET_SHIELDING);
+		
+		var thrusterItem = new ItemWidget();
+		thrusterItem.setItem(AMItems.LOW_EFFICIENCY_ROCKET_THRUSTER);
+		
+		fuelTankItem.setPosition(new Position(fuelTankSlot, 0.0F, - SLOT_HEIGHT - PAD_3));
+		fuelTankItem.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
+		
+		hullItem.setPosition(new Position(hullItemSlot, 0.0F, - SLOT_HEIGHT - PAD_3));
+		hullItem.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
+		
+		landingMechanismItem.setPosition(new Position(landingMechanismSlot, 0.0F, - SLOT_HEIGHT - PAD_3));
+		landingMechanismItem.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
+		
+		lifeSupportItem.setPosition(new Position(lifeSupportSlot, 0.0F, - SLOT_HEIGHT - PAD_3));
+		lifeSupportItem.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
+		
+		shieldingItem.setPosition(new Position(shieldingSlot, 0.0F, - SLOT_HEIGHT - PAD_3));
+		shieldingItem.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
+		
+		thrusterItem.setPosition(new Position(thrusterSlot, 0.0F, - SLOT_HEIGHT - PAD_3));
+		thrusterItem.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
+		
+		tab.add(fuelTankSlot);
+		tab.add(hullItemSlot);
+		tab.add(landingMechanismSlot);
+		tab.add(lifeSupportSlot);
+		tab.add(shieldingSlot);
+		tab.add(thrusterSlot);
+		
+		tab.add(fuelTankItem);
+		tab.add(hullItem);
+		tab.add(landingMechanismItem);
+		tab.add(lifeSupportItem);
+		tab.add(shieldingItem);
+		tab.add(thrusterItem);
 	}
 }

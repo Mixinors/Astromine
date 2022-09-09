@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "astromine:item/advanced_rocket_fuel_tank"
+    "layer0": "astromine:item/high_capacity_rocket_fuel_tank"
   }
 }
