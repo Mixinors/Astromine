@@ -26,7 +26,7 @@ public class RocketControllerScreenHandler extends ExtendedBlockEntityScreenHand
 	public RocketControllerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AMScreenHandlers.ROCKET_CONTROLLER, syncId, player, position);
 		rocketController = (RocketControllerBlockEntity) blockEntity;
-		((RocketControllerBlockEntity) blockEntity).setRocket(RocketManager.getOrCreate(UUID.randomUUID()));
+		((RocketControllerBlockEntity) blockEntity).setRocket(RocketManager.get(UUID.randomUUID()));
 	}
 	
 	@Override
@@ -56,14 +56,14 @@ public class RocketControllerScreenHandler extends ExtendedBlockEntityScreenHand
 		var leftFluidBar = fluidBar;
 		leftFluidBar.setPosition(new Position(payloadSlot, -BAR_WIDTH - PAD_3, SLOT_HEIGHT + PAD_3));
 		leftFluidBar.setSize(new Size(BAR_WIDTH, BAR_HEIGHT));
-		leftFluidBar.setStorageView(() -> rocketController.getFluidStorage().getStorage(Rocket.OXYGEN_TANK_IN));
+		leftFluidBar.setStorageView(() -> rocketController.getFluidStorage().getStorage(Rocket.OXYGEN_TANK_FLUID_IN));
 		
-		var leftFluidInput = new SlotWidget(Rocket.ITEM_INPUT_SLOT_1, rocketController.getItemStorage(), (inventory, id, x, y) -> {
+		var leftFluidInput = new SlotWidget(Rocket.OXYGEN_TANK_UNLOAD_SLOT, rocketController.getItemStorage(), (inventory, id, x, y) -> {
 			var slot = new FilterSlot(inventory, id, x, y);
 			
 			slot.setInsertPredicate((stack) -> {
 				try (var transaction = Transaction.openOuter()) {
-					var tankFluidStorage = rocketController.getFluidStorage().getStorage(Rocket.OXYGEN_TANK_IN);
+					var tankFluidStorage = rocketController.getFluidStorage().getStorage(Rocket.OXYGEN_TANK_FLUID_IN);
 					
 					var itemFluidStorage = FluidStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
 					
@@ -83,16 +83,16 @@ public class RocketControllerScreenHandler extends ExtendedBlockEntityScreenHand
 		leftFluidInput.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		leftFluidInput.setPosition(new Position(leftFluidBar, -SLOT_WIDTH - PAD_3, 0.0F));
 		
-		var leftFluidBuffer = new SlotWidget(Rocket.ITEM_BUFFER_SLOT_1, rocketController.getItemStorage(), ExtractionSlot::new);
+		var leftFluidBuffer = new SlotWidget(Rocket.OXYGEN_TANK_BUFFER_SLOT, rocketController.getItemStorage(), ExtractionSlot::new);
 		leftFluidBuffer.setPosition(new Position(leftFluidInput, -SLOT_WIDTH - PAD_3, SLOT_HEIGHT - 4.0F)); // 4.0F centers the buffer slot against the two other slots.
 		leftFluidBuffer.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
-		var leftFluidOutput = new SlotWidget(Rocket.ITEM_OUTPUT_SLOT_1, rocketController.getItemStorage(), (inventory, id, x, y) -> {
+		var leftFluidOutput = new SlotWidget(Rocket.OXYGEN_TANK_OUTPUT_SLOT, rocketController.getItemStorage(), (inventory, id, x, y) -> {
 			var slot = new FilterSlot(inventory, id, x, y);
 			
 			slot.setInsertPredicate((stack) -> {
 				try (var transaction = Transaction.openOuter()) {
-					var tankFluidStorage = rocketController.getFluidStorage().getStorage(Rocket.OXYGEN_TANK_OUT);
+					var tankFluidStorage = rocketController.getFluidStorage().getStorage(Rocket.OXYGEN_TANK_FLUID_OUT);
 					
 					var itemFluidStorage = FluidStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
 					
@@ -124,12 +124,12 @@ public class RocketControllerScreenHandler extends ExtendedBlockEntityScreenHand
 		rightFluidBar.setSize(new Size(BAR_WIDTH, BAR_HEIGHT));
 		rightFluidBar.setStorageView(() -> rocketController.getFluidStorage().getStorage(0));
 		
-		var rightFluidInput = new SlotWidget(Rocket.ITEM_INPUT_SLOT_2, rocketController.getItemStorage(), (inventory, id, x, y) -> {
+		var rightFluidInput = new SlotWidget(Rocket.FUEL_TANK_UNLOAD_SLOT, rocketController.getItemStorage(), (inventory, id, x, y) -> {
 			var slot = new FilterSlot(inventory, id, x, y);
 			
 			slot.setInsertPredicate((stack) -> {
 				try (var transaction = Transaction.openOuter()) {
-					var tankFluidStorage = rocketController.getFluidStorage().getStorage(Rocket.FUEL_TANK_IN);
+					var tankFluidStorage = rocketController.getFluidStorage().getStorage(Rocket.FUEL_TANK_FLUID_IN);
 					
 					var itemFluidStorage = FluidStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
 					
@@ -149,16 +149,16 @@ public class RocketControllerScreenHandler extends ExtendedBlockEntityScreenHand
 		rightFluidInput.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		rightFluidInput.setPosition(new Position(rightFluidBar, BAR_WIDTH + PAD_3, 0.0F));
 		
-		var rightFluidBuffer = new SlotWidget(Rocket.ITEM_BUFFER_SLOT_2, rocketController.getItemStorage(), ExtractionSlot::new);
+		var rightFluidBuffer = new SlotWidget(Rocket.FUEL_TANK_BUFFER_SLOT, rocketController.getItemStorage(), ExtractionSlot::new);
 		rightFluidBuffer.setPosition(new Position(rightFluidInput, SLOT_WIDTH + PAD_3, SLOT_HEIGHT - 4.0F)); // 4.0F centers the buffer slot against the two other slots.
 		rightFluidBuffer.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
-		var rightFluidOutput = new SlotWidget(Rocket.ITEM_OUTPUT_SLOT_2, rocketController.getItemStorage(), (inventory, id, x, y) -> {
+		var rightFluidOutput = new SlotWidget(Rocket.FUEL_TANK_OUTPUT_SLOT, rocketController.getItemStorage(), (inventory, id, x, y) -> {
 			var slot = new FilterSlot(inventory, id, x, y);
 			
 			slot.setInsertPredicate((stack) -> {
 				try (var transaction = Transaction.openOuter()) {
-					var tankFluidStorage = rocketController.getFluidStorage().getStorage(Rocket.FUEL_TANK_OUT);
+					var tankFluidStorage = rocketController.getFluidStorage().getStorage(Rocket.FUEL_TANK_FLUID_OUT);
 					
 					var itemFluidStorage = FluidStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
 					

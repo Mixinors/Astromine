@@ -7,6 +7,8 @@ import com.github.mixinors.astromine.common.tick.Tickable;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMFluids;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.vini2003.hammer.core.api.common.util.NbtUtil;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
@@ -14,13 +16,13 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -28,113 +30,143 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * Rocket Object 2: Electric boogaloo
- */
 public final class Rocket implements Tickable {
+	private static final String UUID_KEY = "Uuid";
+	private static final String PARTS_KEY = "Parts";
+	private static final String PLACERS_KEY = "Placers";
+	private static final String INTERIOR_POS_KEY = "InteriorPos";
+	private static final String JOURNEY_KEY = "Journey";
+	
+	private static final String ITEM_STORAGE_KEY = "ItemStorage";
+	private static final String FLUID_STORAGE_KEY = "FluidStorage";
+	
 	public static final FluidIngredient FUEL_INGREDIENT = new FluidIngredient(FluidVariant.of(AMFluids.FUEL), 1L);
 	public static final FluidIngredient OXYGEN_INGREDIENT = new FluidIngredient(FluidVariant.of(AMFluids.OXYGEN), 2L);
 	
-	public static final int OXYGEN_TANK_IN = 0;
-	public static final int OXYGEN_TANK_OUT = 0;
-	public static final int FUEL_TANK_IN = 1;
-	public static final int FUEL_TANK_OUT = 1;
+	public static final int OXYGEN_TANK_FLUID_IN = 0;
+	public static final int OXYGEN_TANK_FLUID_OUT = 0;
+	public static final int FUEL_TANK_FLUID_IN = 1;
+	public static final int FUEL_TANK_FLUID_OUT = 1;
 	
-	public static final int ITEM_INPUT_SLOT_1 = 0; // Oxygen Tank In
-	public static final int ITEM_INPUT_SLOT_2 = 1; // Fuel Tank In
-	public static final int ITEM_INPUT_SLOT_3 = 2; // Payload In
-	public static final int FLUID_TANK_SLOT = 3; // Fuel Tank In
-	public static final int HULL_SLOT = 4;
-	public static final int LANDING_MECHANISM_SLOT = 5;
-	public static final int LIFE_SUPPORT_SLOT = 6;
-	public static final int SHIELDING_SLOT = 7;
-	public static final int THRUSTER_SLOT = 8;
-	public static final int ITEM_BUFFER_SLOT_1 = 9; // Oxygen Tank Buf
-	public static final int ITEM_BUFFER_SLOT_2 = 10; // Fuel Tank Buf
-	public static final int ITEM_OUTPUT_SLOT_1 = 11; // Oxygen Tank Out
-	public static final int ITEM_OUTPUT_SLOT_2 = 12; // Fuel Tank Out
+	public static final int PAYLOAD_SLOT = 0;
+	public static final int HULL_SLOT = 1;
+	public static final int LANDING_MECHANISM_SLOT = 2;
+	public static final int LIFE_SUPPORT_SLOT = 3;
+	public static final int SHIELDING_SLOT = 4;
+	public static final int THRUSTER_SLOT = 5;
+	public static final int FUEL_TANK_SLOT = 6;
 	
-	public static final int[] ITEM_INSERT_SLOTS = new int[] { ITEM_INPUT_SLOT_1, ITEM_INPUT_SLOT_2, ITEM_INPUT_SLOT_3, FLUID_TANK_SLOT, HULL_SLOT, LANDING_MECHANISM_SLOT, LIFE_SUPPORT_SLOT, SHIELDING_SLOT, THRUSTER_SLOT };
-	public static final int[] ITEM_EXTRACT_SLOTS = new int[] { ITEM_BUFFER_SLOT_1, ITEM_BUFFER_SLOT_2, ITEM_OUTPUT_SLOT_1, ITEM_OUTPUT_SLOT_2 };
+	public static final int OXYGEN_TANK_UNLOAD_SLOT = 7;
+	public static final int OXYGEN_TANK_BUFFER_SLOT = 8;
+	public static final int OXYGEN_TANK_OUTPUT_SLOT = 9;
 	
-	public static final int[] FLUID_INSERT_SLOTS = new int[] { OXYGEN_TANK_IN, FUEL_TANK_IN };
-	public static final int[] FLUID_EXTRACT_SLOTS = new int[] { OXYGEN_TANK_OUT, FUEL_TANK_OUT };
+	public static final int FUEL_TANK_UNLOAD_SLOT = 10;
+	public static final int FUEL_TANK_BUFFER_SLOT = 11;
+	public static final int FUEL_TANK_OUTPUT_SLOT = 12;
+	
+	public static final int[] ITEM_INSERT_SLOTS = new int[] { OXYGEN_TANK_UNLOAD_SLOT, FUEL_TANK_UNLOAD_SLOT, PAYLOAD_SLOT, HULL_SLOT, LANDING_MECHANISM_SLOT, LIFE_SUPPORT_SLOT, SHIELDING_SLOT, THRUSTER_SLOT, FUEL_TANK_SLOT };
+	public static final int[] ITEM_EXTRACT_SLOTS = new int[] { OXYGEN_TANK_BUFFER_SLOT, FUEL_TANK_BUFFER_SLOT, OXYGEN_TANK_OUTPUT_SLOT, FUEL_TANK_OUTPUT_SLOT };
+	
+	public static final int[] FLUID_INSERT_SLOTS = new int[] { OXYGEN_TANK_FLUID_IN, FUEL_TANK_FLUID_IN };
+	public static final int[] FLUID_EXTRACT_SLOTS = new int[] { OXYGEN_TANK_FLUID_OUT, FUEL_TANK_FLUID_OUT };
 	
 	public final UUID uuid;
-	public final ChunkPos interiorWorldPos;
+	public final ChunkPos interiorPos;
 	public final Parts parts;
-	public final SimpleItemStorage itemStorage;
-	public SimpleFluidStorage fluidStorage;
+	
 	private RocketJourney journey;
 	
-	public Rocket(UUID uuid, ChunkPos interiorWorldPos) {
+	public final SimpleItemStorage itemStorage;
+	public SimpleFluidStorage fluidStorage;
+	
+	private final Map<UUID, Placer> placers = new HashMap<>();
+	
+	public Rocket(UUID uuid, ChunkPos interiorPos) {
 		this.uuid = uuid;
-		this.interiorWorldPos = interiorWorldPos;
+		this.interiorPos = interiorPos;
 		this.parts = new Parts();
 		
 		this.itemStorage = new SimpleItemStorage(13).extractPredicate((variant, slot) -> {
-			if (slot == ITEM_BUFFER_SLOT_1 || slot == ITEM_BUFFER_SLOT_2) {
+			if (slot == OXYGEN_TANK_BUFFER_SLOT || slot == FUEL_TANK_BUFFER_SLOT) {
 				return true;
 			} else {
-				if (slot == FLUID_TANK_SLOT) {
-					return fluidStorage.getStorage(OXYGEN_TANK_IN).isResourceBlank() && fluidStorage.getStorage(FUEL_TANK_IN).isResourceBlank();
+				if (slot == FUEL_TANK_SLOT) {
+					return fluidStorage.getStorage(OXYGEN_TANK_FLUID_IN).isResourceBlank() && fluidStorage.getStorage(FUEL_TANK_FLUID_IN).isResourceBlank();
 				} else {
 					return slot == HULL_SLOT || slot == LANDING_MECHANISM_SLOT || slot == LIFE_SUPPORT_SLOT || slot == SHIELDING_SLOT || slot == THRUSTER_SLOT;
 				}
 			}
 		}).insertPredicate((variant, slot) ->
-				slot == ITEM_INPUT_SLOT_1 || slot == ITEM_INPUT_SLOT_2 || slot == ITEM_INPUT_SLOT_3 || slot == FLUID_TANK_SLOT || slot == HULL_SLOT || slot == LANDING_MECHANISM_SLOT || slot == LIFE_SUPPORT_SLOT || slot == SHIELDING_SLOT || slot == THRUSTER_SLOT
+				slot == OXYGEN_TANK_UNLOAD_SLOT || slot == FUEL_TANK_UNLOAD_SLOT || slot == PAYLOAD_SLOT || slot == FUEL_TANK_SLOT || slot == HULL_SLOT || slot == LANDING_MECHANISM_SLOT || slot == LIFE_SUPPORT_SLOT || slot == SHIELDING_SLOT || slot == THRUSTER_SLOT
 		).listener(this::onStorageUpdate).insertSlots(ITEM_INSERT_SLOTS).extractSlots(ITEM_EXTRACT_SLOTS);
 		
 		updateFluidStorage();
 	}
 	
-	public Rocket(NbtCompound tag) {
-		this.uuid = tag.getUuid("uuid");
-		this.interiorWorldPos = NbtUtil.getChunkPos(tag, "interior_world_pos");
-		this.parts = new Parts(tag.getCompound("parts"));
+	public Rocket(NbtCompound nbt) {
+		this.uuid = nbt.getUuid(UUID_KEY);
+		this.interiorPos = NbtUtil.getChunkPos(nbt, INTERIOR_POS_KEY);
+		this.parts = new Parts(nbt.getCompound(PARTS_KEY));
+		
+		var placersNbt = nbt.getCompound(PLACERS_KEY);
+		
+		for (var key : placersNbt.getKeys()) {
+			var placerNbt = placersNbt.getCompound(key);
+			var placer = Placer.CODEC.decode(NbtOps.INSTANCE, placerNbt).result().get().getFirst();
+			
+			placers.put(UUID.fromString(key), placer);
+		}
 		
 		this.itemStorage = new SimpleItemStorage(13).extractPredicate((variant, slot) -> {
-			if (slot == ITEM_BUFFER_SLOT_1 || slot == ITEM_BUFFER_SLOT_2) {
+			if (slot == OXYGEN_TANK_BUFFER_SLOT || slot == FUEL_TANK_BUFFER_SLOT) {
 				return true;
 			} else {
-				if (slot == FLUID_TANK_SLOT) {
-					return fluidStorage.getStorage(OXYGEN_TANK_IN).isResourceBlank() && fluidStorage.getStorage(FUEL_TANK_IN).isResourceBlank();
+				if (slot == FUEL_TANK_SLOT) {
+					return fluidStorage.getStorage(OXYGEN_TANK_FLUID_IN).isResourceBlank() && fluidStorage.getStorage(FUEL_TANK_FLUID_IN).isResourceBlank();
 				} else {
 					return slot == HULL_SLOT || slot == LANDING_MECHANISM_SLOT || slot == LIFE_SUPPORT_SLOT || slot == SHIELDING_SLOT || slot == THRUSTER_SLOT;
 				}
 			}
 		}).insertPredicate((variant, slot) ->
-				slot == ITEM_INPUT_SLOT_1 || slot == ITEM_INPUT_SLOT_2 || slot == ITEM_INPUT_SLOT_3 || slot == FLUID_TANK_SLOT || slot == HULL_SLOT || slot == LANDING_MECHANISM_SLOT || slot == LIFE_SUPPORT_SLOT || slot == SHIELDING_SLOT || slot == THRUSTER_SLOT
+				slot == OXYGEN_TANK_UNLOAD_SLOT || slot == FUEL_TANK_UNLOAD_SLOT || slot == PAYLOAD_SLOT || slot == FUEL_TANK_SLOT || slot == HULL_SLOT || slot == LANDING_MECHANISM_SLOT || slot == LIFE_SUPPORT_SLOT || slot == SHIELDING_SLOT || slot == THRUSTER_SLOT
 		).listener(this::onStorageUpdate).insertSlots(ITEM_INSERT_SLOTS).extractSlots(ITEM_EXTRACT_SLOTS);
-		var itemStorageNbt = tag.getCompound("item_storage");
+		var itemStorageNbt = nbt.getCompound(ITEM_STORAGE_KEY);
 		itemStorage.readFromNbt(itemStorageNbt);
 		
 		updateFluidStorage();
-		var fluidStorageNbt = tag.getCompound("fluid_storage");
+		var fluidStorageNbt = nbt.getCompound(FLUID_STORAGE_KEY);
 		fluidStorage.readFromNbt(fluidStorageNbt);
 	}
 	
-	public void writeToNbt(NbtCompound tag) {
-		tag.putUuid("uuid", uuid);
-		NbtUtil.putChunkPos(tag, "interior_world_pos", interiorWorldPos);
-		tag.put("parts", parts.writeToNbt(new NbtCompound()));
+	public void writeToNbt(NbtCompound nbt) {
+		nbt.putUuid(UUID_KEY, uuid);
+		NbtUtil.putChunkPos(nbt, INTERIOR_POS_KEY, interiorPos);
+		nbt.put(PARTS_KEY, parts.writeToNbt(new NbtCompound()));
+		
+		var placersNbt = new NbtCompound();
+		
+		for (var entry : placers.entrySet()) {
+			var placerNbt = new NbtCompound();
+			placerNbt = (NbtCompound) Placer.CODEC.encode(entry.getValue(), NbtOps.INSTANCE, placerNbt).result().get();
+			
+			placersNbt.put(entry.getKey().toString(), placerNbt);
+		}
+		
+		nbt.put(PLACERS_KEY, placersNbt);
 		
 		if (journey != null) {
 			var journeyNbt = new NbtCompound();
 			RocketJourney.CODEC.encode(journey, NbtOps.INSTANCE, journeyNbt);
-			tag.put("journey", journeyNbt);
+			nbt.put(JOURNEY_KEY, journeyNbt);
 		}
 		
 		var itemStorageNbt = new NbtCompound();
-		itemStorageNbt.putInt("size", itemStorage.getSize());
 		itemStorage.writeToNbt(itemStorageNbt);
-		tag.put("item_storage", itemStorageNbt);
+		nbt.put(ITEM_STORAGE_KEY, itemStorageNbt);
 		
 		var fluidStorageNbt = new NbtCompound();
-		fluidStorageNbt.putInt("size", fluidStorage.getSize());
 		fluidStorage.writeToNbt(fluidStorageNbt);
-		tag.put("fluid_storage", fluidStorageNbt);
+		nbt.put(FLUID_STORAGE_KEY, fluidStorageNbt);
 	}
 	
 	@SuppressWarnings("DuplicatedCode")
@@ -145,11 +177,11 @@ public final class Rocket implements Tickable {
 		var wildItemStorage = itemStorage.getWildProxy();
 		var wildFluidStorage = fluidStorage.getWildProxy();
 		
-		var itemInputStorage1 = wildItemStorage.getStorage(ITEM_INPUT_SLOT_1);
-		var itemBufferStorage1 = wildItemStorage.getStorage(ITEM_BUFFER_SLOT_1);
-		var itemOutputStorage1 = wildItemStorage.getStorage(ITEM_OUTPUT_SLOT_1);
-		var fluidInputStorage1 = wildFluidStorage.getStorage(OXYGEN_TANK_IN);
-		var fluidOutputStorage1 = wildFluidStorage.getStorage(OXYGEN_TANK_OUT);
+		var itemInputStorage1 = wildItemStorage.getStorage(OXYGEN_TANK_UNLOAD_SLOT);
+		var itemBufferStorage1 = wildItemStorage.getStorage(OXYGEN_TANK_BUFFER_SLOT);
+		var itemOutputStorage1 = wildItemStorage.getStorage(OXYGEN_TANK_OUTPUT_SLOT);
+		var fluidInputStorage1 = wildFluidStorage.getStorage(OXYGEN_TANK_FLUID_IN);
+		var fluidOutputStorage1 = wildFluidStorage.getStorage(OXYGEN_TANK_FLUID_OUT);
 		
 		var unloadFluidStorages1 = FluidStorage.ITEM.find(itemInputStorage1.getStack(), ContainerItemContext.ofSingleSlot(itemInputStorage1));
 		var loadFluidStorages1 = FluidStorage.ITEM.find(itemOutputStorage1.getStack(), ContainerItemContext.ofSingleSlot(itemOutputStorage1));
@@ -166,11 +198,11 @@ public final class Rocket implements Tickable {
 			transaction.commit();
 		}
 		
-		var itemInputStorage2 = wildItemStorage.getStorage(ITEM_INPUT_SLOT_2);
-		var itemBufferStorage2 = wildItemStorage.getStorage(ITEM_BUFFER_SLOT_2);
-		var itemOutputStorage2 = wildItemStorage.getStorage(ITEM_OUTPUT_SLOT_2);
-		var fluidInputStorage2 = wildFluidStorage.getStorage(FUEL_TANK_IN);
-		var fluidOutputStorage2 = wildFluidStorage.getStorage(FUEL_TANK_OUT);
+		var itemInputStorage2 = wildItemStorage.getStorage(FUEL_TANK_UNLOAD_SLOT);
+		var itemBufferStorage2 = wildItemStorage.getStorage(FUEL_TANK_BUFFER_SLOT);
+		var itemOutputStorage2 = wildItemStorage.getStorage(FUEL_TANK_OUTPUT_SLOT);
+		var fluidInputStorage2 = wildFluidStorage.getStorage(FUEL_TANK_FLUID_IN);
+		var fluidOutputStorage2 = wildFluidStorage.getStorage(FUEL_TANK_FLUID_OUT);
 		
 		var unloadFluidStorages2 = FluidStorage.ITEM.find(itemInputStorage2.getStack(), ContainerItemContext.ofSingleSlot(itemInputStorage2));
 		var loadFluidStorages2 = FluidStorage.ITEM.find(itemOutputStorage2.getStack(), ContainerItemContext.ofSingleSlot(itemOutputStorage2));
@@ -194,21 +226,21 @@ public final class Rocket implements Tickable {
 		
 		if (parts.getPart(PartType.FUEL_TANK).isPresent()) {
 			fluidStorage.extractPredicate((variant, slot) -> false)
-						.extractPredicate((variant, slot) -> slot == OXYGEN_TANK_OUT || slot == FUEL_TANK_OUT)
-						.insertPredicate((variant, slot) -> (slot == OXYGEN_TANK_IN && OXYGEN_INGREDIENT.testVariant(variant)) || (slot == FUEL_TANK_IN && FUEL_INGREDIENT.testVariant(variant)))
+						.extractPredicate((variant, slot) -> slot == OXYGEN_TANK_FLUID_OUT || slot == FUEL_TANK_FLUID_OUT)
+						.insertPredicate((variant, slot) -> (slot == OXYGEN_TANK_FLUID_IN && OXYGEN_INGREDIENT.testVariant(variant)) || (slot == FUEL_TANK_FLUID_IN && FUEL_INGREDIENT.testVariant(variant)))
 						.listener(RocketManager::sync).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
 		}
 	}
 	
 	private void onStorageUpdate() {
-		var fluidTankItem = (RocketFuelTankItem) itemStorage.getStorage(FLUID_TANK_SLOT).getResource().toStack().getItem();
+		var fuelTankItem = (RocketFuelTankItem) itemStorage.getStorage(FUEL_TANK_SLOT).getResource().toStack().getItem();
 		var hullItem = (RocketHullItem) itemStorage.getStorage(HULL_SLOT).getResource().toStack().getItem();
 		var landingMechanismItem = (RocketLandingMechanismItem) itemStorage.getStorage(LANDING_MECHANISM_SLOT).getResource().toStack().getItem();
 		var lifeSupportItem = (RocketLifeSupportItem) itemStorage.getStorage(LIFE_SUPPORT_SLOT).getResource().toStack().getItem();
 		var shieldingItem = (RocketShieldingItem) itemStorage.getStorage(SHIELDING_SLOT).getResource().toStack().getItem();
 		var thrusterItem = (RocketThrusterItem) itemStorage.getStorage(THRUSTER_SLOT).getResource().toStack().getItem();
 		
-		this.parts.setPart(PartType.FUEL_TANK, fluidTankItem.getPart());
+		this.parts.setPart(PartType.FUEL_TANK, fuelTankItem.getPart());
 		this.parts.setPart(PartType.ROCKET_HULL, hullItem.getPart());
 		this.parts.setPart(PartType.LANDING_MECHANISM, landingMechanismItem.getPart());
 		this.parts.setPart(PartType.LIFE_SUPPORT, lifeSupportItem.getPart());
@@ -216,6 +248,7 @@ public final class Rocket implements Tickable {
 		this.parts.setPart(PartType.THRUSTER, thrusterItem.getPart());
 		
 		updateFluidStorage();
+		
 		RocketManager.sync();
 	}
 	
@@ -242,19 +275,19 @@ public final class Rocket implements Tickable {
 	}
 	
 	public long getOxygen() {
-		return fluidStorage.getStorage(OXYGEN_TANK_IN).getAmount();
+		return fluidStorage.getStorage(OXYGEN_TANK_FLUID_IN).getAmount();
 	}
 	
 	public void setOxygen(long oxygenRemaining) {
-		fluidStorage.getStorage(OXYGEN_TANK_IN).setAmount(oxygenRemaining);
+		fluidStorage.getStorage(OXYGEN_TANK_FLUID_IN).setAmount(oxygenRemaining);
 	}
 	
 	public long getFuel() {
-		return fluidStorage.getStorage(FUEL_TANK_IN).getAmount();
+		return fluidStorage.getStorage(FUEL_TANK_FLUID_IN).getAmount();
 	}
 	
 	public void setFuel(long fuelRemaining) {
-		fluidStorage.getStorage(FUEL_TANK_IN).setAmount(fuelRemaining);
+		fluidStorage.getStorage(FUEL_TANK_FLUID_IN).setAmount(fuelRemaining);
 	}
 	
 	/**
@@ -271,11 +304,18 @@ public final class Rocket implements Tickable {
 	 * Used in {@link RocketManager#findUnoccupiedSpace()}
 	 */
 	public ChunkPos getInteriorPos() {
-		return this.interiorWorldPos;
+		return this.interiorPos;
+	}
+	
+	public Placer getPlacer(UUID uuid) {
+		return this.placers.get(uuid);
+	}
+	
+	public void setPlacer(UUID uuid, Placer placer) {
+		this.placers.put(uuid, placer);
 	}
 	
 	private static class Parts {
-		
 		private final Map<PartType, Optional<RocketPart<?>>> parts = new HashMap<>();
 		
 		public Parts() {
@@ -284,7 +324,7 @@ public final class Rocket implements Tickable {
 		public Parts(NbtCompound tag) {
 			for (PartType value : PartType.values()) {
 				if (tag.contains("part_type_" + value.name())) {
-					Identifier identifier = NbtUtil.getIdentifier(tag, "part_type_" + value.name());
+					var identifier = NbtUtil.getIdentifier(tag, "part_type_" + value.name());
 					parts.put(value, Optional.of(((RocketPartItem<RocketPart<?>>) Registry.ITEM.get(identifier)).getPart()));
 				}
 			}
@@ -304,7 +344,7 @@ public final class Rocket implements Tickable {
 		}
 		
 		public NbtElement writeToNbt(NbtCompound tag) {
-			for (Map.Entry<PartType, Optional<RocketPart<? extends Item>>> entry : parts.entrySet()) {
+			for (var entry : parts.entrySet()) {
 				if (entry.getValue().isPresent()) {
 					NbtUtil.putIdentifier(tag, "part_type_" + entry.getKey().name(), Registry.ITEM.getId(entry.getValue().get().asItem()));
 				}
@@ -312,6 +352,23 @@ public final class Rocket implements Tickable {
 			
 			return tag;
 		}
+	}
+	
+	public record Placer(
+			RegistryKey<World> worldKey,
+			double x, double y, double z,
+			float yaw, float pitch
+	) {
+		public static final Codec<Placer> CODEC = RecordCodecBuilder.create(
+				instance -> instance.group(
+						RegistryKey.createCodec(Registry.WORLD_KEY).fieldOf("world").forGetter(Placer::worldKey),
+						Codec.DOUBLE.fieldOf("x").forGetter(Placer::x),
+						Codec.DOUBLE.fieldOf("y").forGetter(Placer::y),
+						Codec.DOUBLE.fieldOf("z").forGetter(Placer::z),
+						Codec.FLOAT.fieldOf("yaw").forGetter(Placer::yaw),
+						Codec.FLOAT.fieldOf("pitch").forGetter(Placer::pitch)
+				).apply(instance, Placer::new)
+		);
 	}
 	
 	public enum PartType {

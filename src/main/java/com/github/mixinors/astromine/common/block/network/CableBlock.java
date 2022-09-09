@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.block.network;
 
 import com.github.mixinors.astromine.common.block.entity.cable.CableBlockEntity;
-import com.github.mixinors.astromine.common.component.world.NetworkComponent;
+import com.github.mixinors.astromine.common.component.world.NetworksComponent;
 import com.github.mixinors.astromine.common.network.Network;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
@@ -146,7 +146,7 @@ public abstract class CableBlock extends BlockWithEntity implements Waterloggabl
 				return;
 			}
 			
-			var networkComponent = NetworkComponent.get(world);
+			var networkComponent = NetworksComponent.get(world);
 			
 			if (networkComponent == null) {
 				return;
@@ -255,7 +255,7 @@ public abstract class CableBlock extends BlockWithEntity implements Waterloggabl
 				return;
 			}
 			
-			var networkComponent = NetworkComponent.get(world);
+			var networkComponent = NetworksComponent.get(world);
 			
 			var network = networkComponent.get(getNetworkType(), pos);
 			
@@ -289,7 +289,7 @@ public abstract class CableBlock extends BlockWithEntity implements Waterloggabl
 		super.neighborUpdate(state, world, pos, block, neighborPosition, moved);
 		
 		if (!world.isClient) {
-			var networkComponent = NetworkComponent.get(world);
+			var networkComponent = NetworksComponent.get(world);
 			
 			var network = networkComponent.get(getNetworkType(), pos);
 			

@@ -23,7 +23,7 @@ public class RocketManager {
 		var world = server.getWorld(AMWorlds.ROCKET_INTERIORS);
 		if (world == null) throw new RuntimeException("Failed to load the interior world.");
 		
-		var component = AMComponents.ROCKET_COMPONENTS.get(world);
+		var component = AMComponents.ROCKETS.get(world);
 		component.addRocket(rocket);
 		
 		return rocket;
@@ -41,7 +41,7 @@ public class RocketManager {
 		var world = server.getWorld(AMWorlds.ROCKET_INTERIORS);
 		if (world == null) throw new RuntimeException("Failed to load the interior world.");
 		
-		var component = AMComponents.ROCKET_COMPONENTS.get(world);
+		var component = AMComponents.ROCKETS.get(world);
 		component.addRocket(rocket);
 		
 		return rocket;
@@ -58,7 +58,7 @@ public class RocketManager {
 		ChunkPos chunkPos = null;
 		
 		while (chunkPos == null || occupiedPositions.contains(chunkPos)) {
-			int bound = 16_000_000 / 16;
+			var bound = 16_000_000 / 16;
 			chunkPos = new ChunkPos(random.nextInt(bound), random.nextInt(bound));
 		}
 		
@@ -70,20 +70,18 @@ public class RocketManager {
 	 * If not present, {@link #create(UUID)}s it.
 	 * @param uuid the rocket's {@link UUID}.
 	 * @return the {@link Rocket}.
-	 * @deprecated Deprecated as this method is hiding issues with Rocket storage as it just creates a new rocket when it fails.
 	 */
-	@Deprecated
-	public static Rocket getOrCreate(UUID uuid) {
+	public static Rocket get(UUID uuid) {
 		var server = InstanceUtil.getServer();
 		var world = server.getWorld(AMWorlds.ROCKET_INTERIORS);
 		if (world == null) return null;
 		
-		var component = AMComponents.ROCKET_COMPONENTS.get(world);
+		var component = AMComponents.ROCKETS.get(world);
 		var rocket = component.getRocket(uuid);
 		
 		if (rocket == null) {
 			AMCommon.LOGGER.error("RocketManager#getOrCreate created a new Rocket! This shouldn't be hit. Why did the rocket not already exist?");
-			rocket = create(uuid);
+			return null;
 		}
 		
 		return rocket;
@@ -97,7 +95,7 @@ public class RocketManager {
 		var world = server.getWorld(AMWorlds.ROCKET_INTERIORS);
 		if (world == null) return ImmutableList.of();
 		
-		var component = AMComponents.ROCKET_COMPONENTS.get(world);
+		var component = AMComponents.ROCKETS.get(world);
 		return component.getRockets();
 	}
 	
@@ -106,6 +104,6 @@ public class RocketManager {
 		var world = server.getWorld(AMWorlds.ROCKET_INTERIORS);
 		if (world == null) return;
 		
-		AMComponents.ROCKET_COMPONENTS.sync(world);
+		AMComponents.ROCKETS.sync(world);
 	}
 }

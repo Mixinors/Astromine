@@ -42,7 +42,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class NetworkComponent implements Component {
+public final class NetworksComponent implements Component {
 	private static final String TYPE_KEY = "Type";
 	private static final String NODES_KEY = "Nodes";
 	private static final String MEMBERS_KEY = "Members";
@@ -53,15 +53,15 @@ public final class NetworkComponent implements Component {
 	private final World world;
 	
 	@Nullable
-	public static <V> NetworkComponent get(V v) {
+	public static <V> NetworksComponent get(V v) {
 		try {
-			return AMComponents.NETWORK_COMPONENT.get(v);
+			return AMComponents.NETWORKS.get(v);
 		} catch (Exception justShutUpAlready) {
 			return null;
 		}
 	}
 	
-	public NetworkComponent(World world) {
+	public NetworksComponent(World world) {
 		this.world = world;
 	}
 	

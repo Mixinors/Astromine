@@ -1,6 +1,9 @@
 package com.github.mixinors.astromine.common.manager;
 
+import com.github.mixinors.astromine.common.rocket.Rocket;
+import com.github.mixinors.astromine.registry.common.AMWorlds;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.UUID;
 
@@ -9,7 +12,8 @@ public class RocketInteriorManager {
 		var rocket = RocketManager.get(uuid);
 		if (rocket == null) return;
 		
-		var chunkPos = rocket.getChunkPos();
+		var chunkPos = rocket.getInteriorPos();
+		
 		var placer = rocket.getPlacer(player.getUuid());
 		
 		if (placer == null) {

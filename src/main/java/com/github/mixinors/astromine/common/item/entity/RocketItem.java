@@ -86,7 +86,7 @@ public class RocketItem extends Item {
 		
 		var entityType = this.getEntityType(itemStack.getNbt());
 		
-		Entity result = entityType.spawnFromItemStack((ServerWorld) world, itemStack, user, blockPos.up(), SpawnReason.SPAWN_EGG, false, false);
+		var result = entityType.spawnFromItemStack((ServerWorld) world, itemStack, user, blockPos.up(), SpawnReason.SPAWN_EGG, false, false);
 		if (result == null) {
 			return TypedActionResult.pass(itemStack);
 		}

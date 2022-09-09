@@ -59,7 +59,7 @@ public final class HoloBridgeComponent implements Component {
 	@Nullable
 	public static <V> HoloBridgeComponent get(V v) {
 		try {
-			return AMComponents.HOLO_BRIDGE_COMPONENT.get(v);
+			return AMComponents.HOLO_BRIDGE.get(v);
 		} catch (Exception justShutUpAlready) {
 			return null;
 		}

@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.util;
 
 import com.github.mixinors.astromine.common.block.entity.cable.CableBlockEntity;
-import com.github.mixinors.astromine.common.component.world.NetworkComponent;
+import com.github.mixinors.astromine.common.component.world.NetworksComponent;
 import com.github.mixinors.astromine.common.network.Network;
 import com.github.mixinors.astromine.common.network.type.base.NetworkType;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
@@ -37,7 +37,7 @@ import java.util.ArrayDeque;
 
 public class NetworkUtils {
 	public static void trace(NetworkType<?> type, World world, BlockPos startPos) {
-		var network = NetworkComponent.get(world);
+		var network = NetworksComponent.get(world);
 		
 		// Starting position already exists.
 		if (network.contains(type, startPos)) {

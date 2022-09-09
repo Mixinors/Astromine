@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.registry.common;
 
-import com.github.mixinors.astromine.common.component.world.NetworkComponent;
+import com.github.mixinors.astromine.common.component.world.NetworksComponent;
 import com.github.mixinors.astromine.common.manager.BodyManager;
 import com.github.mixinors.astromine.common.rocket.Rocket;
 import com.github.mixinors.astromine.common.screen.handler.base.block.entity.ExtendedBlockEntityScreenHandler;
@@ -63,7 +63,7 @@ public class AMEvents {
 		});
 		
 		TickEvent.SERVER_LEVEL_PRE.register((world -> {
-			var component = NetworkComponent.get(world);
+			var component = NetworksComponent.get(world);
 			
 			if (component != null) {
 				component.tick();
@@ -75,8 +75,8 @@ public class AMEvents {
 			var world = server.getWorld(AMWorlds.ROCKET_INTERIORS);
 			if (world == null) return;
 			
-			AMComponents.ROCKET_COMPONENTS.get(world).getRockets().forEach(Rocket::tick);
-			AMComponents.ROCKET_COMPONENTS.sync(world);
+			AMComponents.ROCKETS.get(world).getRockets().forEach(Rocket::tick);
+			AMComponents.ROCKETS.sync(world);
 		});
 	}
 }

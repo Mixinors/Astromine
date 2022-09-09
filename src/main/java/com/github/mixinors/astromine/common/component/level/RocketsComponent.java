@@ -13,12 +13,12 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class RocketsStorageComponent implements AutoSyncedComponent {
+public class RocketsComponent implements AutoSyncedComponent {
 	private static final String ROCKETS_KEY = "Rockets";
 	
 	private final Map<UUID, Rocket> rockets = new ConcurrentHashMap<>();
 	
-	public RocketsStorageComponent(World world) {
+	public RocketsComponent(World world) {
 	}
 	
 	public void addRocket(Rocket rocket) {
