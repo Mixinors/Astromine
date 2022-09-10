@@ -70,14 +70,14 @@ public final class Rocket implements Tickable {
 	public static final int[] FLUID_INSERT_SLOTS = new int[] { OXYGEN_TANK_FLUID_IN, FUEL_TANK_FLUID_IN };
 	public static final int[] FLUID_EXTRACT_SLOTS = new int[] { OXYGEN_TANK_FLUID_OUT, FUEL_TANK_FLUID_OUT };
 	
-	public final UUID uuid;
-	public final ChunkPos interiorPos;
-	public final Parts parts;
+	private final UUID uuid;
+	private final ChunkPos interiorPos;
+	private final Parts parts;
 	
 	private RocketJourney journey;
 	
-	public final SimpleItemStorage itemStorage;
-	public SimpleFluidStorage fluidStorage;
+	private final SimpleItemStorage itemStorage;
+	private SimpleFluidStorage fluidStorage;
 	
 	private final Map<UUID, Placer> placers = new HashMap<>();
 	
@@ -290,9 +290,6 @@ public final class Rocket implements Tickable {
 		fluidStorage.getStorage(FUEL_TANK_FLUID_IN).setAmount(fuelRemaining);
 	}
 	
-	/**
-	 * Used in {@link RocketManager#findUnoccupiedSpace()}
-	 */
 	public ChunkPos getInteriorPos() {
 		return this.interiorPos;
 	}
@@ -303,6 +300,22 @@ public final class Rocket implements Tickable {
 	
 	public void setPlacer(UUID uuid, Placer placer) {
 		this.placers.put(uuid, placer);
+	}
+	
+	public UUID getUuid() {
+		return uuid;
+	}
+	
+	public Parts getParts() {
+		return parts;
+	}
+	
+	public SimpleItemStorage getItemStorage() {
+		return itemStorage;
+	}
+	
+	public SimpleFluidStorage getFluidStorage() {
+		return fluidStorage;
 	}
 	
 	public static class Parts {

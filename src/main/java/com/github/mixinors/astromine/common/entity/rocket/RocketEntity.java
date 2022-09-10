@@ -25,7 +25,6 @@
 package com.github.mixinors.astromine.common.entity.rocket;
 
 import com.github.mixinors.astromine.common.entity.base.ExtendedEntity;
-import com.github.mixinors.astromine.common.manager.RocketInteriorManager;
 import com.github.mixinors.astromine.common.manager.RocketManager;
 import com.github.mixinors.astromine.common.rocket.Rocket;
 import com.github.mixinors.astromine.registry.common.AMParticles;
@@ -66,7 +65,7 @@ public class RocketEntity extends ExtendedEntity {
 	protected void writeCustomDataToNbt(NbtCompound nbt) {
 		super.writeCustomDataToNbt(nbt);
 		
-		nbt.putUuid(ROCKET_UUID, rocket.uuid);
+		nbt.putUuid(ROCKET_UUID, rocket.getUuid());
 	}
 	
 	@Override
@@ -91,7 +90,7 @@ public class RocketEntity extends ExtendedEntity {
 			return ActionResult.CONSUME;
 		}
 		
-		RocketInteriorManager.teleportToRocket(player, uuid);
+		RocketManager.teleportToRocketInterior(player, uuid);
 		
 		return super.interactAt(player, hitPos, hand);
 	}

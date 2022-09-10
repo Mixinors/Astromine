@@ -94,7 +94,7 @@ public class RocketJourney {
 		if (!hasFinished()) {
 			var oxygen = (double) rocket.getOxygen();
 			var fuel = (double) rocket.getFuel();
-			RocketThrusterPart thruster = rocket.parts.getPartOrThrow(Rocket.PartType.THRUSTER);
+			RocketThrusterPart thruster = rocket.getParts().getPartOrThrow(Rocket.PartType.THRUSTER);
 			
 			oxygen -= 4 * thruster.getEfficiency().getFuelConsumptionMultiplier();
 			fuel -= 2 * thruster.getEfficiency().getFuelConsumptionMultiplier();

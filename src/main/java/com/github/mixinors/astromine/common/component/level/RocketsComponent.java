@@ -22,7 +22,7 @@ public class RocketsComponent implements AutoSyncedComponent {
 	}
 	
 	public void addRocket(Rocket rocket) {
-		this.rockets.put(rocket.uuid, rocket);
+		this.rockets.put(rocket.getUuid(), rocket);
 	}
 	
 	public Rocket getRocket(UUID rocketUuid) {
@@ -34,7 +34,7 @@ public class RocketsComponent implements AutoSyncedComponent {
 	}
 	
 	public void removeRocket(Rocket rocket) {
-		this.rockets.remove(rocket.uuid);
+		this.rockets.remove(rocket.getUuid());
 	}
 	
 	public void tick() {
