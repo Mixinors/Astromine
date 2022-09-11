@@ -233,22 +233,21 @@ public final class Rocket implements Tickable {
 	}
 	
 	private void onStorageUpdate() {
-		var fuelTankItem = (RocketFuelTankItem) itemStorage.getStorage(FUEL_TANK_SLOT).getResource().toStack().getItem();
-		var hullItem = (RocketHullItem) itemStorage.getStorage(HULL_SLOT).getResource().toStack().getItem();
-		var landingMechanismItem = (RocketLandingMechanismItem) itemStorage.getStorage(LANDING_MECHANISM_SLOT).getResource().toStack().getItem();
-		var lifeSupportItem = (RocketLifeSupportItem) itemStorage.getStorage(LIFE_SUPPORT_SLOT).getResource().toStack().getItem();
-		var shieldingItem = (RocketShieldingItem) itemStorage.getStorage(SHIELDING_SLOT).getResource().toStack().getItem();
-		var thrusterItem = (RocketThrusterItem) itemStorage.getStorage(THRUSTER_SLOT).getResource().toStack().getItem();
+		var fuelTankItem = itemStorage.getStorage(FUEL_TANK_SLOT).getResource().toStack().getItem();
+		var hullItem = itemStorage.getStorage(HULL_SLOT).getResource().toStack().getItem();
+		var landingMechanismItem = itemStorage.getStorage(LANDING_MECHANISM_SLOT).getResource().toStack().getItem();
+		var lifeSupportItem = itemStorage.getStorage(LIFE_SUPPORT_SLOT).getResource().toStack().getItem();
+		var shieldingItem =  itemStorage.getStorage(SHIELDING_SLOT).getResource().toStack().getItem();
+		var thrusterItem = itemStorage.getStorage(THRUSTER_SLOT).getResource().toStack().getItem();
 		
-		this.parts.setPart(PartType.FUEL_TANK, fuelTankItem.getPart());
-		this.parts.setPart(PartType.ROCKET_HULL, hullItem.getPart());
-		this.parts.setPart(PartType.LANDING_MECHANISM, landingMechanismItem.getPart());
-		this.parts.setPart(PartType.LIFE_SUPPORT, lifeSupportItem.getPart());
-		this.parts.setPart(PartType.SHIELDING, shieldingItem.getPart());
-		this.parts.setPart(PartType.THRUSTER, thrusterItem.getPart());
+		if(fuelTankItem instanceof RocketFuelTankItem rocketFuelTankItem) this.parts.setPart(PartType.FUEL_TANK, rocketFuelTankItem.getPart());
+		if(hullItem instanceof RocketHullItem rocketHullItem) this.parts.setPart(PartType.ROCKET_HULL, rocketHullItem.getPart());
+		if(landingMechanismItem instanceof RocketLandingMechanismItem rocketLandingMechanismItem) this.parts.setPart(PartType.LANDING_MECHANISM, rocketLandingMechanismItem.getPart());
+		if(lifeSupportItem instanceof RocketLifeSupportItem rocketLifeSupportItem) this.parts.setPart(PartType.LIFE_SUPPORT, rocketLifeSupportItem.getPart());
+		if(shieldingItem instanceof RocketShieldingItem rocketShieldingItem) this.parts.setPart(PartType.SHIELDING, rocketShieldingItem.getPart());
+		if(thrusterItem instanceof RocketThrusterItem rocketThrusterItem) this.parts.setPart(PartType.THRUSTER, rocketThrusterItem.getPart());
 		
 		updateFluidStorage();
-		
 		RocketManager.sync();
 	}
 	

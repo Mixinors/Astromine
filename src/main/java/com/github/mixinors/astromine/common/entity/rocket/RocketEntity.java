@@ -48,10 +48,9 @@ import net.minecraft.world.World;
 // TODO: Add Tracked Data Manager to Hammer!
 public class RocketEntity extends ExtendedEntity {
 	private static final String ROCKET_UUID = "rocket";
+	public static final TrackedData<Boolean> RUNNING = DataTracker.registerData(RocketEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	
 	private Rocket rocket;
-	
-	public static final TrackedData<Boolean> RUNNING = DataTracker.registerData(RocketEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	
 	public RocketEntity(EntityType<?> type, World world) {
 		super(type, world);
@@ -87,7 +86,7 @@ public class RocketEntity extends ExtendedEntity {
 	
 	@Override
 	public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
-		if (player.world.isClient) {
+		if (player.world.isClient()) {
 			return ActionResult.CONSUME;
 		}
 		

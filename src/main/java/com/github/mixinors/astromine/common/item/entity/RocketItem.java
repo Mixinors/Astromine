@@ -27,7 +27,6 @@ package com.github.mixinors.astromine.common.item.entity;
 import com.github.mixinors.astromine.common.entity.rocket.RocketEntity;
 import com.github.mixinors.astromine.common.manager.RocketManager;
 import net.minecraft.block.FluidBlock;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
@@ -45,8 +44,6 @@ import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.UUID;
 
 public class RocketItem extends Item {
 	public static final String ENTITY_TAG_KEY = "EntityTag";

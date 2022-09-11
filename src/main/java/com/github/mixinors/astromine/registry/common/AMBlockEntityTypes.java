@@ -137,7 +137,7 @@ public class AMBlockEntityTypes {
 	
 	public static final RegistrySupplier<BlockEntityType<DrainBlockEntity>> DRAIN = register("drain", DrainBlockEntity::new, AMBlocks.DRAIN);
 	
-	public static final RegistrySupplier<BlockEntityType<RocketControllerBlockEntity>> ROCKET_CONTROLLER = register("rocket_controller", RocketControllerBlockEntity::new, AMBlocks.ROCKET_CONTROLLER);
+	public static final RegistrySupplier<BlockEntityType<RocketControllerBlockEntity>> ROCKET_CONTROLLER = null; //register("rocket_controller", RocketControllerBlockEntity::new, AMBlocks.ROCKET_CONTROLLER);
 
 	public static void init() {
 	

@@ -325,7 +325,7 @@ public class AMBlocks {
 	public static final RegistrySupplier<Block> ADVANCED_ENERGY_CABLE = register("advanced_energy_cable", () -> new EnergyCableBlock.Advanced(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
 	public static final RegistrySupplier<Block> ELITE_ENERGY_CABLE = register("elite_energy_cable", () -> new EnergyCableBlock.Elite(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
 	
-	public static final RegistrySupplier<Block> ROCKET_CONTROLLER = register("rocket_controller", () -> new RocketControllerBlock(getAdvancedSettings()), AMItems.getSettings());
+	public static final RegistrySupplier<Block> ROCKET_CONTROLLER = null; //register("rocket_controller", () -> new RocketControllerBlock(getAdvancedSettings()), AMItems.getSettings());
 	
 	public static void init() {
 	}

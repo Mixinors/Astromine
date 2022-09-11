@@ -11,6 +11,7 @@
     "common.EntityNavigationMixin",
     "common.IdentifierMixin",
     "common.JsonDataLoaderMixin",
+    "common.LifecycleMixin",
     "common.LivingEntityMixin",
     "common.MobEntityMixin",
     "common.PiglinBrainMixin",

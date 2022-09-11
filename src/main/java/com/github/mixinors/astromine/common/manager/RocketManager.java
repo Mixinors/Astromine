@@ -1,6 +1,5 @@
 package com.github.mixinors.astromine.common.manager;
 
-import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.rocket.Rocket;
 import com.github.mixinors.astromine.registry.common.AMComponents;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
@@ -19,14 +18,7 @@ public class RocketManager {
 	
 	public static Rocket readFromNbt(NbtCompound rocketTag) {
 		var rocket = new Rocket(rocketTag);
-		var server = InstanceUtil.getServer();
-		var world = server.getWorld(AMWorlds.ROCKET_INTERIORS);
-		if (world == null) throw new RuntimeException("Failed to load the interior world.");
-		
-		var component = AMComponents.ROCKETS.get(world);
-		component.addRocket(rocket);
-		
-		return rocket;
+		return registerRocket(rocket);
 	}
 	
 	/**
@@ -37,6 +29,10 @@ public class RocketManager {
 	@NotNull
 	public static Rocket create(UUID uuid) {
 		var rocket = new Rocket(uuid, findUnoccupiedSpace());
+		return registerRocket(rocket);
+	}
+	
+	private static Rocket registerRocket(Rocket rocket) {
 		var server = InstanceUtil.getServer();
 		var world = server.getWorld(AMWorlds.ROCKET_INTERIORS);
 		if (world == null) throw new RuntimeException("Failed to load the interior world.");
@@ -79,9 +75,12 @@ public class RocketManager {
 		var component = AMComponents.ROCKETS.get(world);
 		var rocket = component.getRocket(uuid);
 		
+		if(component.getRockets().size() == 0) {
+			throw new RuntimeException("Rockets Component failed to load.");
+		}
+		
 		if (rocket == null) {
-			AMCommon.LOGGER.error("RocketManager#getOrCreate created a new Rocket! This shouldn't be hit. Why did the rocket not already exist?");
-			return null;
+			return create(uuid);
 		}
 		
 		return rocket;
