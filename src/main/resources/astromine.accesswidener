@@ -1,8 +1,6 @@
 accessWidener v2 named
 
-accessible field net/minecraft/client/render/WorldRenderer bufferBuilders Lnet/minecraft/client/render/BufferBuilderStorage;
-
-accessible field net/minecraft/client/render/DimensionEffects BY_IDENTIFIER Lit/unimi/dsi/fastutil/objects/Object2ObjectMap;
+accessible field net/minecraft/client/gui/CubeMapRenderer faces [Lnet/minecraft/util/Identifier;
 
 accessible method net/minecraft/block/WallBlock getShapeMap (FFFFFF)Ljava/util/Map;
 accessible method net/minecraft/block/WallBlock getVoxelShape (Lnet/minecraft/util/shape/VoxelShape;Lnet/minecraft/block/enums/WallShape;Lnet/minecraft/util/shape/VoxelShape;Lnet/minecraft/util/shape/VoxelShape;)Lnet/minecraft/util/shape/VoxelShape;

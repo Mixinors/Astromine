@@ -1,6 +1,6 @@
 package com.github.mixinors.astromine.common.body;
 
-import com.github.mixinors.astromine.client.render.skybox.Skybox;
+import com.github.mixinors.astromine.client.render.skybox.SkyboxTextures;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.registry.Registry;
@@ -18,10 +18,11 @@ public record BodyDimension(
 		RegistryKey<DimensionType> worldDimensionTypeKey,
 		@Nullable BodyAtmosphere atmosphere,
 		@Nullable BodyEnvironment environment,
-		@Nullable Skybox skybox,
+		@Nullable SkyboxTextures skybox,
 		@Nullable Layer topLayer,
 		@Nullable Layer bottomLayer
 ) {
+	
 	public record Layer(
 			RegistryKey<World> worldKey,
 			int worldY
@@ -41,7 +42,7 @@ public record BodyDimension(
 					RegistryKey.createCodec(Registry.DIMENSION_TYPE_KEY).fieldOf("worldDimensionTypeKey").forGetter(BodyDimension::worldDimensionTypeKey),
 					BodyAtmosphere.CODEC.optionalFieldOf("atmosphere").forGetter(dimension -> Optional.ofNullable(dimension.atmosphere)),
 					BodyEnvironment.CODEC.optionalFieldOf("environment").forGetter(dimension -> Optional.ofNullable(dimension.environment)),
-					Skybox.CODEC.optionalFieldOf("skybox").forGetter(dimension -> Optional.ofNullable(dimension.skybox)),
+					SkyboxTextures.CODEC.optionalFieldOf("skybox").forGetter(dimension -> Optional.ofNullable(dimension.skybox)),
 					Layer.CODEC.optionalFieldOf("topLayer").forGetter(dimension -> Optional.ofNullable(dimension.topLayer)),
 					Layer.CODEC.optionalFieldOf("bottomLayer").forGetter(dimension -> Optional.ofNullable(dimension.bottomLayer))
 			).apply(instance, (worldKey, worldOptionsKey, worldDimensionTypeKey, atmosphere, environment, skybox, topLayer, bottomLayer) -> new BodyDimension(worldKey, worldOptionsKey, worldDimensionTypeKey, atmosphere.orElse(null), environment.orElse(null), skybox.orElse(null), topLayer.orElse(null), bottomLayer.orElse(null)))

@@ -37,12 +37,12 @@
       "gravity": 0.02
     },
     "skybox": {
-      "up": { "id": "astromine:textures/skybox/planet/earth_orbit_up.png" },
-      "down": { "id": "astromine:textures/skybox/planet/earth_orbit_down.png" },
-      "north": { "id": "astromine:textures/skybox/planet/earth_orbit_north.png" },
-      "south": { "id": "astromine:textures/skybox/planet/earth_orbit_south.png" },
-      "east": { "id": "astromine:textures/skybox/planet/earth_orbit_east.png" },
-      "west": { "id": "astromine:textures/skybox/planet/earth_orbit_west.png" }
+      "up": { "id": "astromine:textures/skybox/earth_orbit_up.png" },
+      "down": { "id": "astromine:textures/skybox/space_down.png" },
+      "north": { "id": "astromine:textures/skybox/space_north.png" },
+      "south": { "id": "astromine:textures/skybox/space_south.png" },
+      "east": { "id": "astromine:textures/skybox/space_east.png" },
+      "west": { "id": "astromine:textures/skybox/space_west.png" }
     },
     "bottomLayer": {
       "worldKey": "minecraft:overworld",

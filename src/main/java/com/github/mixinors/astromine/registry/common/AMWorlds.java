@@ -33,23 +33,20 @@ import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class AMWorlds {
-	public static final RegistryKey<World> ROCKET_INTERIORS = RegistryKey.of(Registry.WORLD_KEY, AMCommon.id("rocket_interiors"));
-	
-	private static final Set<RegistryKey<?>> KEYS = new HashSet<>();
-	
-	private static final Map<RegistryKey<?>, Boolean> CACHE = new ConcurrentHashMap<>();
+	private static final Set<RegistryKey<World>> KEYS = new HashSet<>();
+	public static final RegistryKey<World> ROCKET_INTERIORS = register(AMCommon.id("rocket_interiors"));
+	public static final RegistryKey<World> MOON = register(AMCommon.id("moon"));
+	public static final RegistryKey<World> EARTH_ORBIT = register(AMCommon.id("earth_orbit"));
 	
 	public static void init() {
 	
 	}
 	
-	public static <T> RegistryKey<T> register(RegistryKey<Registry<T>> registry, Identifier identifier) {
-		var key = RegistryKey.of(registry, identifier);
+	public static RegistryKey<World> register(Identifier id) {
+		var key = RegistryKey.of(Registry.WORLD_KEY, id);
 		KEYS.add(key);
 		return key;
 	}
@@ -58,8 +55,7 @@ public class AMWorlds {
 		return dimensionType.isIn(AMTagKeys.DimensionTypeTags.IS_VACUUM);
 	}
 	
-	public static boolean isAstromine(RegistryKey<?> key) {
-		CACHE.computeIfAbsent(key, KEYS::contains);
-		return CACHE.get(key);
+	public static boolean isAstromine(RegistryKey<World> key) {
+		return KEYS.contains(key);
 	}
 }

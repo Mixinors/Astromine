@@ -2,6 +2,7 @@ package com.github.mixinors.astromine.common.manager;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.body.Body;
+import com.github.mixinors.astromine.common.body.BodyDimension;
 import com.github.mixinors.astromine.common.registry.base.Registry;
 import com.github.mixinors.astromine.common.util.ResourceUtil;
 import com.github.mixinors.astromine.registry.common.AMNetworking;
@@ -22,6 +23,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.World;
 
 public class BodyManager {
 	public static final Codec<Registry<Body>> REGISTRY_CODEC = Registry.createCodec(AMRegistries.BODY, Body.CODEC);
@@ -64,6 +67,20 @@ public class BodyManager {
 		AMRegistries.BODY.getValues().forEach(Body::onReload);
 	}
 	
+	public static BodyDimension getBodyDimensionOfWorld(RegistryKey<World> worldKey) {
+		for (Body body : AMRegistries.BODY.getValues()) {
+			if (body.surfaceDimension() != null && worldKey.getValue().equals(body.surfaceDimension().worldKey().getValue())) {
+				return body.surfaceDimension();
+			}
+			
+			if (body.orbitDimension() != null && worldKey.getValue().equals(body.orbitDimension().worldKey().getValue())) {
+				return body.orbitDimension();
+			}
+		}
+		
+		return null;
+	}
+	
 	public static class ReloadListener implements SimpleSynchronousResourceReloadListener {
 		private static final Identifier ID = AMCommon.id("body");
 		
@@ -76,9 +93,7 @@ public class BodyManager {
 		public void reload(ResourceManager manager) {
 			AMRegistries.BODY.clear();
 			
-			ResourceUtil.load(manager, "bodies", Body.CODEC).forEach(body -> {
-				AMRegistries.BODY.register(body.id(), body);
-			});
+			ResourceUtil.load(manager, "bodies", Body.CODEC).forEach(body -> AMRegistries.BODY.register(body.id(), body));
 			
 			var server = InstanceUtil.getServer();
 			

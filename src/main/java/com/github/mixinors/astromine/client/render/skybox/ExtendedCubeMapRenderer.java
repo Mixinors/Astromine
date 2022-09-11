@@ -21,15 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package com.github.mixinors.astromine.client.render.skybox;
 
-package com.github.mixinors.astromine.client.render.skybox.base;
-
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.CubeMapRenderer;
+import net.minecraft.util.Identifier;
 
 /**
- * Skybox rendering logic.
+ * {@link CubeMapRenderer} with some changes to make it work better internally
  */
-public abstract class AbstractSkybox {
-	/** Renders the {@link AbstractSkybox}. */
-	public abstract void render(MatrixStack matrices, float tickDelta);
+public class ExtendedCubeMapRenderer extends CubeMapRenderer {
+	
+	public ExtendedCubeMapRenderer() {
+		super(new Identifier("empty"));
+	}
+	
+	public void swapTextures(SkyboxTextures textures) {
+		this.faces[0] = textures.north();
+		this.faces[1] = textures.west();
+		this.faces[2] = textures.south();
+		this.faces[3] = textures.east();
+		this.faces[4] = textures.up();
+		this.faces[5] = textures.down();
+	}
+	
+	public void render() {
+		var client = MinecraftClient.getInstance();
+		var camera = client.gameRenderer.getCamera();
+		super.draw(client, camera.getPitch(), -camera.getYaw(), 1f);
+	}
 }
