@@ -5,7 +5,11 @@ import com.github.mixinors.astromine.registry.common.AMComponents;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
 import com.google.common.collect.ImmutableList;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
+import it.unimi.dsi.fastutil.PriorityQueue;
+import it.unimi.dsi.fastutil.objects.ObjectArrayFIFOQueue;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.ChunkPos;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,9 +20,12 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class RocketManager {
+	private static final PriorityQueue<Rocket> ROCKETS_TO_REGISTER = new ObjectArrayFIFOQueue<>();
+	
 	public static Rocket readFromNbt(NbtCompound rocketTag) {
 		var rocket = new Rocket(rocketTag);
-		return registerRocket(rocket);
+		ROCKETS_TO_REGISTER.enqueue(rocket);
+		return rocket;
 	}
 	
 	@NotNull
@@ -31,7 +38,7 @@ public class RocketManager {
 		var server = InstanceUtil.getServer();
 		if (server == null) throw new RuntimeException("Server is null.");
 		var world = server.getWorld(AMWorlds.ROCKET_INTERIORS);
-		if (world == null) throw new RuntimeException("Failed to load the interior world.");
+		if (world == null) throw new RuntimeException("Failed to load the interior world. Try queueing the rockets to be registered?");
 		
 		var component = AMComponents.ROCKETS.get(world);
 		component.addRocket(rocket);
@@ -150,6 +157,12 @@ public class RocketManager {
 				
 				serverPlayer.teleport(world.getSpawnPos().getX(), world.getSpawnPos().getY(), world.getSpawnPos().getZ());
 			}
+		}
+	}
+	
+	public static void registerQueuedRockets() {
+		while (!ROCKETS_TO_REGISTER.isEmpty()) {
+			registerRocket(ROCKETS_TO_REGISTER.dequeue());
 		}
 	}
 }
