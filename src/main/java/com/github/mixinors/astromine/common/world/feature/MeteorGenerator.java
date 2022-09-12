@@ -41,6 +41,7 @@ import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.World;
@@ -49,7 +50,6 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 public class MeteorGenerator extends ShiftableStructurePiece {
@@ -79,13 +79,9 @@ public class MeteorGenerator extends ShiftableStructurePiece {
 	}
 	
 	@Override
-	public void generate(StructureWorldAccess world, StructureAccessor structureAccessor, ChunkGenerator chunkGenerator, Random random, BlockBox boundingBox, ChunkPos chunkPos, BlockPos blockPos) {
-		generate(world, chunkPos, random, blockPos);
-	}
-	
-	public boolean generate(StructureWorldAccess world, ChunkPos chunkPos, Random random, BlockPos blockPos) {
+	public void generate(StructureWorldAccess world, StructureAccessor structureAccessor, ChunkGenerator chunkGenerator, net.minecraft.util.math.random.Random random, BlockBox chunkBox, ChunkPos chunkPos, BlockPos pivot) {
 		if (!world.toServerWorld().getRegistryKey().equals(World.OVERWORLD)) {
-			return false;
+			return;
 		}
 		
 		noise = new OpenSimplexNoise(world.getSeed());
@@ -109,8 +105,6 @@ public class MeteorGenerator extends ShiftableStructurePiece {
 				world.setBlockState(orePosition, AMBlocks.METEOR_METITE_ORE.get().getDefaultState(), 0b0110100);
 			}
 		}
-		
-		return true;
 	}
 	
 	private BlockPos emptySphere(StructureWorldAccess world, BlockPos originPos, int radius, GroundManipulator bottom, GroundManipulator underneath) {

@@ -29,7 +29,7 @@ import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
 import me.shedaniel.rei.api.client.gui.widgets.Widgets;
 import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public interface AMCategory<T extends AMDisplay> extends DisplayCategory<T> {
 		
 		addEnergyInputWidgets(widgets, display, startPoint, bounds);
 		
-		widgets.add(Widgets.createLabel(new Point(bounds.x + bounds.width - 5, bounds.y + 5), new TranslatableText("category.astromine.cooking.time", format.format(display.getTimeRequired() / 20.0D))).noShadow().rightAligned().color(0xFF404040, 0xFFBBBBBB));
+		widgets.add(Widgets.createLabel(new Point(bounds.x + bounds.width - 5, bounds.y + 5), Text.translatable("category.astromine.cooking.time", format.format(display.getTimeRequired() / 20.0D))).noShadow().rightAligned().color(0xFF404040, 0xFFBBBBBB));
 		widgets.add(Widgets.createArrow(new Point(startPoint.x + 27, startPoint.y + 18)).animationDurationTicks(display.getTimeRequired()));
 		
 		addInputWidgets(widgets, display, startPoint, bounds);

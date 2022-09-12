@@ -45,9 +45,11 @@ import dev.vini2003.hammer.gui.energy.api.common.widget.bar.EnergyBarWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.screen.slot.SlotActionType;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -144,13 +146,13 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 		
 		add(tabs);
 		
-		tab = tabs.addTab(() -> symbol, () -> ImmutableList.of(new TranslatableText(block.getTranslationKey())));
+		tab = tabs.addTab(() -> symbol, () -> ImmutableList.of(Text.translatable(block.getTranslationKey())));
 		tab.setPosition(new Position(tabs, 0.0F, PAD_25 + PAD_7));
 		tab.setSize(new Size(TABS_WIDTH, TABS_HEIGHT));
 		
 		var title = new TextWidget();
 		title.setPosition(new Position(tab, PAD_8, 0.0F));
-		title.setText(new TranslatableText(block.getTranslationKey()));
+		title.setText(Text.translatable(block.getTranslationKey()));
 		title.setColor(new Color(0x404040));
 		
 		tab.add(title);
@@ -238,5 +240,11 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 			
 			tab.add(fluidBar);
 		}
+	}
+	
+	@Override
+	public ItemStack transferSlot(PlayerEntity player, int index) {
+		onSlotClick(index, GLFW.GLFW_MOUSE_BUTTON_1, SlotActionType.QUICK_MOVE, player);
+		return ItemStack.EMPTY;
 	}
 }

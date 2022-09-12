@@ -85,7 +85,8 @@ public class AMModels {
 	
 	public static final Lazy<ModelTransformation> ITEM_HANDHELD_TRANSFORMATION = new Lazy<>(() -> {
 		try {
-			var resource = InstanceUtil.getClient().getResourceManager().getResource(new Identifier("minecraft:models/item/handheld.json"));
+			var resource = InstanceUtil.getClient().getResourceManager().getResource(new Identifier("minecraft:models/item/handheld.json")).orElse(null);
+			// TODO: Handle?
 			
 			var stream = resource.getInputStream();
 			
@@ -178,7 +179,7 @@ public class AMModels {
 		ModelLoadingRegistry.INSTANCE.registerModelProvider((resourceManager, out) -> out.accept(CABLE_INSERT_EXTRACT_CONNECTOR_ID));
 		
 		ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
-			for (var id : manager.findResources(MODELS_PREFIX, path -> path.contains(MOON))) {
+			for (var id : manager.findResources(MODELS_PREFIX, resource  -> resource.getPath().contains(MOON)).keySet()) {
 				out.accept(id);
 			}
 		});

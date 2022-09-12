@@ -37,14 +37,14 @@ import team.reborn.energy.api.EnergyStorage;
 public class ComparatorOutput {
 	public static int forItems(BlockEntity blockEntity) {
 		if (blockEntity instanceof ExtendedBlockEntity extendedBlockEntity) {
-			return StorageUtil.calculateComparatorOutput(extendedBlockEntity.getItemStorage(), null);
+			return StorageUtil.calculateComparatorOutput(extendedBlockEntity.getItemStorage());
 		}
 		return 0;
 	}
 	
 	public static int forFluids(BlockEntity blockEntity) {
 		if (blockEntity instanceof ExtendedBlockEntity extendedBlockEntity) {
-			return StorageUtil.calculateComparatorOutput(extendedBlockEntity.getFluidStorage(), null);
+			return StorageUtil.calculateComparatorOutput(extendedBlockEntity.getFluidStorage());
 		}
 		return 0;
 	}

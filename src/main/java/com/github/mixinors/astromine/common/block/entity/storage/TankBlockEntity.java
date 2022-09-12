@@ -132,7 +132,7 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 			StorageUtil.move(fluidOutputStorage, loadFluidStorages, fluidVariant -> !fluidVariant.isBlank(), FluidConstants.BUCKET, transaction);
 			
 			StorageUtil.move(itemInputStorage, itemBufferStorage, (variant) -> {
-				var stored = StorageUtil.findStoredResource(unloadFluidStorages, transaction);
+				var stored = StorageUtil.findStoredResource(unloadFluidStorages);
 				return stored == null || stored.isBlank();
 			}, 1, transaction);
 			

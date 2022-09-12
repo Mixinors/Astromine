@@ -60,7 +60,7 @@ public class RocketDoorBlock extends HorizontalFacingBlock {
 		
 		if (rocket == null) {
 			// TODO: Remove after debugging. Or leave, because it's useful if the Rocket is corrupted.
-			rocket = RocketManager.create(UUID.randomUUID());
+			rocket = RocketManager.create(player.getUuid(), UUID.randomUUID());
 		}
 		
 		RocketManager.teleportToPlacer(player, rocket.getUuid());

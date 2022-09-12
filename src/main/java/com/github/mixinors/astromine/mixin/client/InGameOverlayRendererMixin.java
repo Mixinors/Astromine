@@ -77,7 +77,7 @@ public abstract class InGameOverlayRendererMixin {
 		
 		bufferBuilder.end();
 		
-		BufferRenderer.draw(bufferBuilder);
+		BufferRenderer.drawWithShader(bufferBuilder.end());
 		
 		RenderSystem.disableBlend();
 	}

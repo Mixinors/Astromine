@@ -34,7 +34,7 @@ import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 
 public class RefiningCategory implements SingleFluidInputCategory<RefiningDisplay>, SingleFluidOutputCategory<RefiningDisplay> {
 	@Override
@@ -44,7 +44,7 @@ public class RefiningCategory implements SingleFluidInputCategory<RefiningDispla
 	
 	@Override
 	public Text getTitle() {
-		return new TranslatableText("category.astromine.refining");
+		return Text.translatable("category.astromine.refining");
 	}
 	
 	@Override

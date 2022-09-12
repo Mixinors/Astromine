@@ -34,7 +34,7 @@ import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 
 public class FluidMixingCategory implements DoubleFluidInputCategory<FluidMixingDisplay>, SingleFluidOutputCategory<FluidMixingDisplay> {
 	@Override
@@ -44,7 +44,7 @@ public class FluidMixingCategory implements DoubleFluidInputCategory<FluidMixing
 	
 	@Override
 	public Text getTitle() {
-		return new TranslatableText("category.astromine.fluid_mixing");
+		return Text.translatable("category.astromine.fluid_mixing");
 	}
 	
 	@Override

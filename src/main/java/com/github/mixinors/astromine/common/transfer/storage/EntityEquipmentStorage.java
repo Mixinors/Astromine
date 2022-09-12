@@ -14,7 +14,7 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,7 +125,7 @@ public class EntityEquipmentStorage extends CombinedStorage<ItemVariant, SingleS
 	static class SimpleStackWrapper extends SingleStackStorage {
 		private final EntityEquipmentStorage storage;
 		
-		@Nonnull
+		@NotNull
 		private ItemStack lastReleasedSnapshot = ItemStack.EMPTY;
 		
 		final EquipmentSlot slot;

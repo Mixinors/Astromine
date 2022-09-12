@@ -34,7 +34,7 @@ import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 
 public class SolidGeneratingCategory implements SingleItemInputCategory<SolidGeneratingDisplay>, EnergyOutputCategory<SolidGeneratingDisplay> {
 	@Override
@@ -44,7 +44,7 @@ public class SolidGeneratingCategory implements SingleItemInputCategory<SolidGen
 	
 	@Override
 	public Text getTitle() {
-		return new TranslatableText("category.astromine.solid_generating");
+		return Text.translatable("category.astromine.solid_generating");
 	}
 	
 	@Override

@@ -35,7 +35,7 @@ import me.shedaniel.rei.plugin.client.categories.cooking.DefaultCookingCategory;
 import me.shedaniel.rei.plugin.common.displays.cooking.DefaultCookingDisplay;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -63,7 +63,7 @@ public class ElectricSmeltingCategory extends DefaultCookingCategory {
 			widgets.addAll(AMRoughlyEnoughItemsPlugin.createEnergyDisplay(new Rectangle(bounds.getX() + 10, bounds.getCenterY() - 23, 12, 48), electricSmeltingDisplay.getEnergyRequired(), false, (int) (cookingTime / 10 * 500)));
 		}
 		
-		widgets.add(Widgets.createLabel(new Point(bounds.x + bounds.width - 5, bounds.y + 5), new TranslatableText("category.astromine.cooking.time", format.format(cookingTime / 40.0F))).noShadow().rightAligned().color(0xFF404040, 0xFFBBBBBB));
+		widgets.add(Widgets.createLabel(new Point(bounds.x + bounds.width - 5, bounds.y + 5), Text.translatable("category.astromine.cooking.time", format.format(cookingTime / 40.0F))).noShadow().rightAligned().color(0xFF404040, 0xFFBBBBBB));
 		widgets.add(Widgets.createArrow(new Point(startPoint.x + 27, startPoint.y + 18)).animationDurationTicks(cookingTime / 3));
 		widgets.add(Widgets.createSlot(new Point(startPoint.x + 4, startPoint.y + 19)).entries(display.getInputEntries().get(0)).markInput());
 		widgets.add(Widgets.createSlot(new Point(startPoint.x + 61, startPoint.y + 19)).entries(display.getOutputEntries().get(0)).disableBackground().markOutput());

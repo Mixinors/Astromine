@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.datagen.recipe;
 
 import com.github.mixinors.astromine.common.recipe.base.input.EnergyInputRecipe;
 import com.google.gson.JsonObject;
-import dev.architectury.core.AbstractRecipeSerializer;
+import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.recipe.RecipeSerializer;
@@ -42,7 +42,7 @@ public abstract class ItemOutputMachineRecipeJsonFactory<T extends EnergyInputRe
 	
 	protected final int outputCount;
 	
-	protected ItemOutputMachineRecipeJsonFactory(ItemConvertible output, int outputCount, int processingTime, int energy, AbstractRecipeSerializer<T> serializer) {
+	protected ItemOutputMachineRecipeJsonFactory(ItemConvertible output, int outputCount, int processingTime, int energy, RecipeSerializer<T> serializer) {
 		super(processingTime, energy, serializer);
 		
 		this.output = output.asItem();

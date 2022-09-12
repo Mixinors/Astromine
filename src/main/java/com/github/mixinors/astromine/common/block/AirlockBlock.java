@@ -51,7 +51,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.*;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class AirlockBlock extends Block implements Waterloggable {
 	public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;

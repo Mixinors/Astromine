@@ -37,7 +37,7 @@ import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
 public class BufferScreenHandler extends ExtendedBlockEntityScreenHandler {
@@ -71,7 +71,7 @@ public class BufferScreenHandler extends ExtendedBlockEntityScreenHandler {
 			
 			launchButton.setPosition(new Position(slot, -(32.0F - SLOT_WIDTH) / 2.0F, SLOT_HEIGHT + PAD_3));
 			launchButton.setSize(new Size(CLEAR_BUTTON_WIDTH, CLEAR_BUTTON_HEIGHT));
-			launchButton.setLabel(new TranslatableText("text.astromine.clear"));
+			launchButton.setLabel(Text.translatable("text.astromine.clear"));
 			
 			tab.add(launchButton);
 			tab.add(slot);

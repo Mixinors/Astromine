@@ -49,7 +49,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -105,7 +105,7 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 			
 			@Override
 			public Text getDisplayName() {
-				return new TranslatableText(getTranslationKey());
+				return Text.translatable(getTranslationKey());
 			}
 			
 			@Override

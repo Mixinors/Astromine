@@ -31,7 +31,6 @@ import com.github.mixinors.astromine.registry.common.AMItems;
 import com.shnupbups.cauldronlib.CauldronLib;
 import com.shnupbups.cauldronlib.block.FullCauldronBlock;
 import dev.architectury.platform.Platform;
-import dev.architectury.registry.block.BlockProperties;
 import dev.architectury.registry.registries.RegistrySupplier;
 import dev.vini2003.hammer.core.api.client.color.Color;
 import net.fabricmc.api.EnvType;

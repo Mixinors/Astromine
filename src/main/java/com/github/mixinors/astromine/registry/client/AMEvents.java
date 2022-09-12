@@ -56,7 +56,7 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.registry.Registry;
 import team.reborn.energy.api.EnergyStorage;
@@ -250,7 +250,7 @@ public class AMEvents {
 			bar.setShow(() -> {
 				var client = InstanceUtil.getClient();
 				
-				if (client != null && client.player != null && !client.player.isCreative() && !client.player.isSpectator() && AMWorlds.isVacuum(client.player.world.method_40134())) {
+				if (client != null && client.player != null && !client.player.isCreative() && !client.player.isSpectator() && AMWorlds.isVacuum(client.player.world.getDimensionEntry())) {
 					var component = OxygenComponent.get(client.player);
 					
 					if (component != null) {
@@ -276,7 +276,7 @@ public class AMEvents {
 			var id = Registry.ITEM.getId(item);
 			
 			if (id.getNamespace().equals(AMCommon.MOD_ID)) {
-				var empty = tooltips.stream().filter(text -> text.asString().isEmpty()).findFirst().orElse(null);
+				var empty = tooltips.stream().filter(text -> text.getString().isEmpty()).findFirst().orElse(null);
 				
 				var index = empty == null ? tooltips.size() : tooltips.indexOf(empty) + 1;
 				
@@ -286,10 +286,10 @@ public class AMEvents {
 					var emptyTooltip = new ArrayList<Text>();
 					
 					try (var transaction = Transaction.openOuter()) {
-						for (var storage : fluidStorages.iterable(transaction)) {
+						for (var storage : fluidStorages) {
 							if (storage.isResourceBlank()) {
-								emptyTooltip.add(new TranslatableText("text.astromine.fluid").formatted(Formatting.BLUE));
-								emptyTooltip.add(new TranslatableText("text.astromine.empty").formatted(Formatting.GRAY));
+								emptyTooltip.add(Text.translatable("text.astromine.fluid").formatted(Formatting.BLUE));
+								emptyTooltip.add(Text.translatable("text.astromine.empty").formatted(Formatting.GRAY));
 							} else {
 								if (context.isAdvanced()) {
 									tooltips.addAll(index, FluidTextUtil.getDetailedStorageTooltips(storage));
@@ -326,14 +326,14 @@ public class AMEvents {
 					var pos = pair.blockPos();
 					
 					tooltip.add(TextUtil.getEmpty());
-					tooltip.add(new TranslatableText("text.astromine.selected.dimension.blockPos", key, pos.getX(), pos.getY(), pos.getZ()).formatted(Formatting.GRAY));
+					tooltip.add(Text.translatable("text.astromine.selected.dimension.blockPos", key, pos.getX(), pos.getY(), pos.getZ()).formatted(Formatting.GRAY));
 				}
 			}
 		});
 		
 		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
 			if (stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof EnergyCableBlock cableBlock) {
-				tooltip.add(new TranslatableText("text.astromine.tooltip.cable.speed", cableBlock.getNetworkType().getTransferRate()).styled(style -> style.withColor(EnergyTextUtil.COLOR.toRgb())));
+				tooltip.add(Text.translatable("text.astromine.tooltip.cable.speed", cableBlock.getNetworkType().getTransferRate()).styled(style -> style.withColor(EnergyTextUtil.COLOR.toRgb())));
 			}
 		});
 	}

@@ -37,7 +37,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-import dev.architectury.core.AbstractRecipeSerializer;
+import net.minecraft.recipe.RecipeSerializer;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.minecraft.item.ItemStack;
@@ -138,7 +138,7 @@ public record PressingRecipe(
 		return output;
 	}
 	
-	public static final class Serializer extends AbstractRecipeSerializer<PressingRecipe> {
+	public static final class Serializer implements RecipeSerializer<PressingRecipe> {
 		public static final Identifier ID = AMCommon.id("pressing");
 		
 		public static final Serializer INSTANCE = new Serializer();

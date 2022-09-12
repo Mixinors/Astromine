@@ -31,8 +31,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.StateManager;
 import net.minecraft.util.math.MathHelper;
-
-import java.util.Random;
+import net.minecraft.util.math.random.Random;
 
 public class MoonStoneOreBlock extends ExtendedOreBlock {
 	public MoonStoneOreBlock(Settings settings) {

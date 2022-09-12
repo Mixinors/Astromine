@@ -38,18 +38,14 @@ import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 public class RocketInteriorsBiomeSource extends BiomeSource {
 	public static final Codec<RocketInteriorsBiomeSource> CODEC = RecordCodecBuilder.create((instance) ->
 			instance.group(
-					RegistryOps.createRegistryCodec(Registry.BIOME_KEY).forGetter((biomeSource) -> biomeSource.registry),
-					Codec.LONG.fieldOf("seed").stable().forGetter((biomeSource) -> biomeSource.seed)
+					RegistryOps.createRegistryCodec(Registry.BIOME_KEY).forGetter((biomeSource) -> biomeSource.registry)
 			).apply(instance, instance.stable(RocketInteriorsBiomeSource::new)));
-	
-	private final long seed;
 	
 	private final Registry<Biome> registry;
 	
-	public RocketInteriorsBiomeSource(Registry<Biome> registry, long seed) {
+	public RocketInteriorsBiomeSource(Registry<Biome> registry) {
 		super(ImmutableList.of(registry.getOrCreateEntry(AMBiomes.ROCKET_KEY)));
-		
-		this.seed = seed;
+
 		this.registry = registry;
 	}
 	
@@ -57,12 +53,6 @@ public class RocketInteriorsBiomeSource extends BiomeSource {
 	protected Codec<? extends BiomeSource> getCodec() {
 		return CODEC;
 	}
-	
-	@Override
-	public BiomeSource withSeed(long seed) {
-		return new RocketInteriorsBiomeSource(registry, seed);
-	}
-	
 	@Override
 	public RegistryEntry<Biome> getBiome(int x, int y, int z, MultiNoiseUtil.MultiNoiseSampler noise) {
 		return registry.getEntry(AMBiomes.ROCKET_KEY).orElseThrow();

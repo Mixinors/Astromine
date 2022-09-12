@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.registry.common;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.component.entity.OxygenComponent;
 import com.github.mixinors.astromine.common.component.level.RocketsComponent;
+import com.github.mixinors.astromine.common.component.level.StationsComponent;
 import com.github.mixinors.astromine.common.component.world.HoloBridgesComponent;
 import com.github.mixinors.astromine.common.component.world.NetworksComponent;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
@@ -44,7 +45,7 @@ public class AMComponents implements WorldComponentInitializer, EntityComponentI
 	public static final ComponentKey<HoloBridgesComponent> HOLO_BRIDGES = ComponentRegistry.getOrCreate(AMCommon.id("holo_bridges"), HoloBridgesComponent.class);
 	
 	public static final ComponentKey<OxygenComponent> OXYGEN_COMPONENT = ComponentRegistry.getOrCreate(AMCommon.id("oxygen"), OxygenComponent.class);
-	
+	public static final ComponentKey<StationsComponent> STATIONS = ComponentRegistry.getOrCreate(AMCommon.id("stations"), StationsComponent.class);
 	public static final ComponentKey<RocketsComponent> ROCKETS = ComponentRegistry.getOrCreate(AMCommon.id("rockets"), RocketsComponent.class);
 	
 	@Override
@@ -52,6 +53,7 @@ public class AMComponents implements WorldComponentInitializer, EntityComponentI
 		registry.register(NETWORKS, NetworksComponent::new);
 		registry.register(HOLO_BRIDGES, HoloBridgesComponent::new);
 		registry.register(ROCKETS, RocketsComponent::new);
+		registry.register(STATIONS, StationsComponent::new);
 	}
 	
 	@Override

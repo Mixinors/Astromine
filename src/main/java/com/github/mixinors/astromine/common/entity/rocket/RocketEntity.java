@@ -79,7 +79,7 @@ public class RocketEntity extends ExtendedEntity {
 	}
 	
 	@Override
-	public boolean collides() {
+	public boolean isCollidable() {
 		return !this.isRemoved();
 	}
 	
@@ -89,7 +89,7 @@ public class RocketEntity extends ExtendedEntity {
 			return ActionResult.CONSUME;
 		}
 		
-		RocketManager.teleportToRocketInterior(player, uuid);
+		RocketManager.teleportToRocketInterior(player, getUuid());
 		
 		return super.interactAt(player, hitPos, hand);
 	}

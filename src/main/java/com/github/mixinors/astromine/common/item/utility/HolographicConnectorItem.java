@@ -35,7 +35,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
@@ -83,7 +83,7 @@ public class HolographicConnectorItem extends Item {
 				if (!world.isClient) {
 					player.setStackInHand(hand, select(stack, world.getRegistryKey(), childPos));
 				} else {
-					player.sendMessage(new TranslatableText("text.astromine.message.holographic_connector_select", toShortString(child.getPos())).formatted(Formatting.BLUE), true);
+					player.sendMessage(Text.translatable("text.astromine.message.holographic_connector_select", toShortString(child.getPos())).formatted(Formatting.BLUE), true);
 					
 					world.playSound(player, pos, AMSoundEvents.HOLOGRAPHIC_CONNECTOR_CLICK.get(), SoundCategory.PLAYERS, 0.5F, 0.33F);
 				}
@@ -94,7 +94,7 @@ public class HolographicConnectorItem extends Item {
 					if (!world.isClient) {
 						player.setStackInHand(hand, select(stack, world.getRegistryKey(), childPos));
 					} else {
-						player.sendMessage(new TranslatableText("text.astromine.message.holographic_connector_select", toShortString(child.getPos())).formatted(Formatting.BLUE), true);
+						player.sendMessage(Text.translatable("text.astromine.message.holographic_connector_select", toShortString(child.getPos())).formatted(Formatting.BLUE), true);
 						
 						world.playSound(player, pos, AMSoundEvents.HOLOGRAPHIC_CONNECTOR_CLICK.get(), SoundCategory.PLAYERS, 0.5F, 0.33F);
 					}
@@ -115,7 +115,7 @@ public class HolographicConnectorItem extends Item {
 					if (!world.isClient) {
 						player.setStackInHand(hand, unselect(stack));
 					} else {
-						player.sendMessage(new TranslatableText("text.astromine.message.holographic_connection_failed", toShortString(parentPos), toShortString(childPos)).formatted(Formatting.RED), true);
+						player.sendMessage(Text.translatable("text.astromine.message.holographic_connection_failed", toShortString(parentPos), toShortString(childPos)).formatted(Formatting.RED), true);
 						
 						world.playSound(player, pos, AMSoundEvents.HOLOGRAPHIC_CONNECTOR_CLICK.get(), SoundCategory.PLAYERS, 0.5F, 0.33F);
 					}
@@ -125,7 +125,7 @@ public class HolographicConnectorItem extends Item {
 					if (!world.isClient) {
 						player.setStackInHand(hand, unselect(stack));
 					} else {
-						player.sendMessage(new TranslatableText("text.astromine.message.holographic_connection_failed", toShortString(parentPos), toShortString(childPos)).formatted(Formatting.RED), true);
+						player.sendMessage(Text.translatable("text.astromine.message.holographic_connection_failed", toShortString(parentPos), toShortString(childPos)).formatted(Formatting.RED), true);
 						
 						world.playSound(player, pos, AMSoundEvents.HOLOGRAPHIC_CONNECTOR_CLICK.get(), SoundCategory.PLAYERS, 0.5F, 0.33F);
 					}
@@ -137,7 +137,7 @@ public class HolographicConnectorItem extends Item {
 					if (!world.isClient) {
 						player.setStackInHand(hand, unselect(stack));
 					} else {
-						player.sendMessage(new TranslatableText("text.astromine.message.holographic_connection_failed", toShortString(parentPos), toShortString(childPos)).formatted(Formatting.RED), true);
+						player.sendMessage(Text.translatable("text.astromine.message.holographic_connection_failed", toShortString(parentPos), toShortString(childPos)).formatted(Formatting.RED), true);
 						
 						world.playSound(player, pos, AMSoundEvents.HOLOGRAPHIC_CONNECTOR_CLICK.get(), SoundCategory.PLAYERS, 0.5F, 0.33F);
 					}
@@ -146,7 +146,7 @@ public class HolographicConnectorItem extends Item {
 				}
 				
 				if (world.isClient) {
-					player.sendMessage(new TranslatableText("text.astromine.message.holographic_connection_successful", toShortString(parentPos), toShortString(childPos)).formatted(Formatting.GREEN), true);
+					player.sendMessage(Text.translatable("text.astromine.message.holographic_connection_successful", toShortString(parentPos), toShortString(childPos)).formatted(Formatting.GREEN), true);
 					
 					world.playSound(player, pos, AMSoundEvents.HOLOGRAPHIC_CONNECTOR_CLICK.get(), SoundCategory.PLAYERS, 0.5F, 0.33F);
 				} else {
@@ -166,7 +166,7 @@ public class HolographicConnectorItem extends Item {
 			}
 		} else {
 			if (world.isClient) {
-				player.sendMessage(new TranslatableText("text.astromine.message.holographic_connection_clear").formatted(Formatting.YELLOW), true);
+				player.sendMessage(Text.translatable("text.astromine.message.holographic_connection_clear").formatted(Formatting.YELLOW), true);
 				
 				world.playSound(player, pos, AMSoundEvents.HOLOGRAPHIC_CONNECTOR_CLICK.get(), SoundCategory.PLAYERS, 0.5F, 0.33F);
 			} else {

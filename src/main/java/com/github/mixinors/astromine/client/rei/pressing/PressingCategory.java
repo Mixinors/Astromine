@@ -34,7 +34,7 @@ import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 
 public class PressingCategory implements SingleItemInputCategory<PressingDisplay>, SingleItemOutputCategory<PressingDisplay> {
 	@Override
@@ -44,7 +44,7 @@ public class PressingCategory implements SingleItemInputCategory<PressingDisplay
 	
 	@Override
 	public Text getTitle() {
-		return new TranslatableText("category.astromine.pressing");
+		return Text.translatable("category.astromine.pressing");
 	}
 	
 	@Override

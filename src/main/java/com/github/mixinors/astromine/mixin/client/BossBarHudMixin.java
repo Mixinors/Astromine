@@ -33,7 +33,8 @@ import net.minecraft.client.gui.hud.BossBarHud;
 import net.minecraft.client.gui.hud.ClientBossBar;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.boss.BossBar;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -56,7 +57,7 @@ public abstract class BossBarHudMixin extends DrawableHelper {
 	
 	@Inject(method = "renderBossBar", at = @At("HEAD"), cancellable = true)
 	private void astromine$renderCustomBossBar(MatrixStack matrices, int i, int j, BossBar bossBar, CallbackInfo ci) {
-		if (bossBar instanceof ClientBossBar && bossBar.getName() instanceof TranslatableText && ((TranslatableText) bossBar.getName()).getKey().contains("super_space_slim")) {
+		if (bossBar instanceof ClientBossBar && bossBar.getName().getContent() instanceof TranslatableTextContent content && content.getKey().contains("super_space_slim")) {
 			this.client.getTextureManager().bindTexture(CUSTOM_BAR_TEX);
 			
 			// draw empty background bar

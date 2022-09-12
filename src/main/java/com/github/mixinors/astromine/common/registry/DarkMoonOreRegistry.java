@@ -3,8 +3,7 @@ package com.github.mixinors.astromine.common.registry;
 import com.github.mixinors.astromine.common.util.WeightedList;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import net.minecraft.block.Block;
-
-import java.util.Random;
+import net.minecraft.util.math.random.Random;
 
 public class DarkMoonOreRegistry {
 	public static final DarkMoonOreRegistry INSTANCE = new DarkMoonOreRegistry();

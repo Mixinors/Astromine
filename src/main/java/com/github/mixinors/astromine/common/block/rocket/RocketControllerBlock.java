@@ -6,8 +6,10 @@ import com.github.mixinors.astromine.common.block.entity.rocket.RocketController
 import com.github.mixinors.astromine.common.screen.handler.rocket.RocketControllerScreenHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -44,5 +46,16 @@ public class RocketControllerBlock extends HorizontalFacingBlockWithEntity {
 	@Override
 	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
 		buffer.writeBlockPos(pos);
+	}
+	
+	@Override
+	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		super.onPlaced(world, pos, state, placer, stack);
+		
+		var blockEntity = world.getBlockEntity(pos);
+		
+		if (blockEntity instanceof RocketControllerBlockEntity rocketController) {
+			rocketController.setOwnerUuid(placer.getUuid());
+		}
 	}
 }

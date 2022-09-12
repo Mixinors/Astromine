@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.datagen.recipe;
 
 import com.github.mixinors.astromine.common.recipe.base.input.EnergyInputRecipe;
 import com.google.gson.JsonObject;
-import dev.architectury.core.AbstractRecipeSerializer;
+import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
@@ -41,7 +41,7 @@ public abstract class FluidOutputMachineRecipeJsonFactory<T extends EnergyInputR
 	
 	protected final long outputAmount;
 	
-	protected FluidOutputMachineRecipeJsonFactory(Fluid output, long outputAmount, int processingTime, int energy, AbstractRecipeSerializer<T> serializer) {
+	protected FluidOutputMachineRecipeJsonFactory(Fluid output, long outputAmount, int processingTime, int energy, RecipeSerializer<T> serializer) {
 		super(processingTime, energy, serializer);
 		
 		this.output = output;

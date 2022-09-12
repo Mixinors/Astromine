@@ -4,16 +4,16 @@ import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.util.extra.Codecs;
 import com.mojang.serialization.Codec;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public enum BodyTerrain {
-	SMOOTH(new TranslatableText("text.astromine.body.terrain.smooth")),
-	RUGGED(new TranslatableText("text.astromine.body.terrain.rugged")),
-	MISTY(new TranslatableText("text.astromine.body.terrain.misty"));
+	SMOOTH(Text.translatable("text.astromine.body.terrain.smooth")),
+	RUGGED(Text.translatable("text.astromine.body.terrain.rugged")),
+	MISTY(Text.translatable("text.astromine.body.terrain.misty"));
 	
 	public static final Codec<BodyTerrain> CODEC = Codecs.createEnumCodec(BodyTerrain.class);
 

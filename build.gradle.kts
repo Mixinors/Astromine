@@ -53,7 +53,7 @@ dependencies {
 	
 	
 	minecraft("com.mojang:minecraft:${minecraftVersion}")
-	mappings("net.fabricmc:yarn:${minecraftVersion}+build.4:v2")
+	mappings("net.fabricmc:yarn:${minecraftVersion}+build.11:v2")
 	
 	// Fabric
 	modImplementation("net.fabricmc:fabric-loader:${project.properties["fabricLoader"]}")

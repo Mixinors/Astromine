@@ -32,10 +32,13 @@ import net.minecraft.item.Item;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.dimension.DimensionType;
 
 public class AMTagKeys {
 	public static final String COMMON_TAG_NAMESPACE = "c";
+	
+	public static final Identifier IS_MOON_ID = createCommonTagId("is_moon");
 	
 	public static final Identifier YELLOW_SANDSTONES_ID = createCommonTagId("yellow_sandstones");
 	public static final Identifier RED_SANDSTONES_ID = createCommonTagId("red_sandstones");
@@ -60,6 +63,10 @@ public class AMTagKeys {
 	
 	public static final Identifier MOON_STONE_ID = createCommonTagId("moon_stone");
 	public static final Identifier DARK_MOON_STONE_ID = createCommonTagId("dark_moon_stone");
+	
+	public static class BiomeTags {
+		public static final TagKey<Biome> IS_MOON = createBiomeTag(IS_MOON_ID);
+	}
 	
 	public static class BlockTags {
 		public static final TagKey<Block> YELLOW_SANDSTONES = createBlockTag(YELLOW_SANDSTONES_ID);
@@ -151,6 +158,10 @@ public class AMTagKeys {
 	
 	public static Identifier createCommonTagId(String path) {
 		return new Identifier(COMMON_TAG_NAMESPACE, path);
+	}
+	
+	public static TagKey<Biome> createBiomeTag(Identifier id) {
+		return TagKey.of(Registry.BIOME_KEY, id);
 	}
 	
 	public static TagKey<Block> createBlockTag(Identifier id) {

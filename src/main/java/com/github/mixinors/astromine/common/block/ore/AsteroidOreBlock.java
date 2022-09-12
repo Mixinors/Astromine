@@ -27,8 +27,7 @@ package com.github.mixinors.astromine.common.block.ore;
 import com.github.mixinors.astromine.common.block.ore.base.ExtendedOreBlock;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import net.minecraft.util.math.MathHelper;
-
-import java.util.Random;
+import net.minecraft.util.math.random.Random;
 
 public class AsteroidOreBlock extends ExtendedOreBlock {
 	public AsteroidOreBlock(Settings settings) {

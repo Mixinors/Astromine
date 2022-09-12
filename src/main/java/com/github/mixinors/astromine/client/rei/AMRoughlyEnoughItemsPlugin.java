@@ -66,6 +66,7 @@ import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.AbstractRenderer;
 import me.shedaniel.rei.api.client.gui.widgets.Tooltip;
+import me.shedaniel.rei.api.client.gui.widgets.TooltipContext;
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
@@ -90,7 +91,7 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.BucketItem;
 import net.minecraft.recipe.SmeltingRecipe;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
@@ -145,6 +146,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 		registry.addWorkstations(ALLOY_SMELTING, EntryStacks.of(AMBlocks.PRIMITIVE_ALLOY_SMELTER.get()), EntryStacks.of(AMBlocks.BASIC_ALLOY_SMELTER.get()), EntryStacks.of(AMBlocks.ADVANCED_ALLOY_SMELTER.get()), EntryStacks.of(AMBlocks.ELITE_ALLOY_SMELTER.get()));
 		registry.addWorkstations(SOLIDIFYING, EntryStacks.of(AMBlocks.PRIMITIVE_SOLIDIFIER.get()), EntryStacks.of(AMBlocks.BASIC_SOLIDIFIER.get()), EntryStacks.of(AMBlocks.ADVANCED_SOLIDIFIER.get()), EntryStacks.of(AMBlocks.ELITE_SOLIDIFIER.get()));
 		
+		// TODO: Remove!
 		registry.removePlusButton(FLUID_GENERATING);
 		registry.setPlusButtonArea(SOLID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55.0F + 110.0F - 16.0F, bounds.getMaxY() - 16.0F, 10.0F, 10.0F));
 		registry.removePlusButton(FLUID_MIXING);
@@ -187,8 +189,8 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 			public void render(MatrixStack matrices, Rectangle bounds, int mouseX, int mouseY, float delta) {}
 			
 			@Override
-			public @Nullable Tooltip getTooltip(Point mouse) {
-				return Tooltip.create(mouse, EnergyTextUtil.getEnergy().styled(style -> style.withColor(EnergyTextUtil.COLOR.toRgb())), new LiteralText("" + energy + "E").formatted(Formatting.GRAY));
+			public @Nullable Tooltip getTooltip(TooltipContext context) {
+				return Tooltip.create(context.getPoint(), EnergyTextUtil.getEnergy().styled(style -> style.withColor(EnergyTextUtil.COLOR.toRgb())), Text.literal("" + energy + "E").formatted(Formatting.GRAY));
 			}
 		})).notFavoritesInteractable());
 	}

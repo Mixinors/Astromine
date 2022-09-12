@@ -39,27 +39,19 @@ import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 public class MoonBiomeSource extends BiomeSource {
 	public static final Codec<MoonBiomeSource> CODEC = RecordCodecBuilder.create((instance) ->
 			instance.group(
-					RegistryOps.createRegistryCodec(Registry.BIOME_KEY).forGetter((biomeSource) -> biomeSource.registry),
-					Codec.LONG.fieldOf("seed").stable().forGetter((biomeSource) -> biomeSource.seed)
+					RegistryOps.createRegistryCodec(Registry.BIOME_KEY).forGetter((biomeSource) -> biomeSource.registry)
 			).apply(instance, instance.stable(MoonBiomeSource::new)));
-	
-	private final long seed;
 	
 	private final Registry<Biome> registry;
 	
-	private final OpenSimplexNoise noise;
-	
-	public MoonBiomeSource(Registry<Biome> registry, long seed) {
+	public MoonBiomeSource(Registry<Biome> registry) {
 		super(ImmutableList.of(
 				registry.getOrCreateEntry(AMBiomes.MOON_LIGHT_SIDE_KEY),
 				registry.getOrCreateEntry(AMBiomes.MOON_DARK_SIDE_KEY),
 				registry.getOrCreateEntry(AMBiomes.MOON_CRATER_FIELD_KEY)
 		));
 		
-		this.seed = seed;
 		this.registry = registry;
-		
-		this.noise = new OpenSimplexNoise(seed);
 	}
 	
 	@Override
@@ -67,28 +59,26 @@ public class MoonBiomeSource extends BiomeSource {
 		return CODEC;
 	}
 	
-	@Override
-	public BiomeSource withSeed(long seed) {
-		return new MoonBiomeSource(registry, seed);
-	}
-	
 	// TODO: Add 3D biomes and caves!
 	// TODO: Add caves to the moon, and clamp their top and bottoms to not hit bedrock!
 	@Override
 	public RegistryEntry<Biome> getBiome(int x, int y, int z, MultiNoiseUtil.MultiNoiseSampler noise) {
+		return registry.getIndexedEntries().get(0);
 		// Roughly 50% of the moon's surface should be light side,
 		// 30% crater fields, and 20% dark side.
 		
 		// The noise range is [0.0 .. 1.0], but I've seen it go negative.
 		
-		var sample = Math.abs(this.noise.sample(x / 128.0F, 0, z / 128.0F));
+		// TODO: Fix this. What the FUCK was Mojang thinking?
 		
-		if (sample > 0.5F) {
-			return registry.getEntry(AMBiomes.MOON_LIGHT_SIDE_KEY).orElseThrow();
-		} else if (sample > 0.2F) {
-			return registry.getEntry(AMBiomes.MOON_CRATER_FIELD_KEY).orElseThrow();
-		} else {
-			return registry.getEntry(AMBiomes.MOON_DARK_SIDE_KEY).orElseThrow();
-		}
+		//var sample = Math.abs(this.noise.sample(x / 128.0F, 0, z / 128.0F));
+		//
+		//if (sample > 0.5F) {
+		//	return registry.getEntry(AMBiomes.MOON_LIGHT_SIDE_KEY).orElseThrow();
+		//} else if (sample > 0.2F) {
+		//	return registry.getEntry(AMBiomes.MOON_CRATER_FIELD_KEY).orElseThrow();
+		//} else {
+		//	return registry.getEntry(AMBiomes.MOON_DARK_SIDE_KEY).orElseThrow();
+		//}
 	}
 }

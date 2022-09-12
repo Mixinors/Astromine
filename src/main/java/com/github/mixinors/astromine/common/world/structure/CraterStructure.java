@@ -22,8 +22,9 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.common.world.feature;
+package com.github.mixinors.astromine.common.world.structure;
 
+import com.github.mixinors.astromine.common.world.feature.CraterGenerator;
 import com.mojang.serialization.Codec;
 import net.minecraft.structure.StructureGeneratorFactory;
 import net.minecraft.structure.StructurePiecesCollector;
@@ -31,19 +32,36 @@ import net.minecraft.structure.StructurePiecesGenerator;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
-import net.minecraft.world.gen.feature.StructureFeature;
+import net.minecraft.world.gen.structure.Structure;
+import net.minecraft.world.gen.structure.StructureType;
 
-public class MeteorFeature extends StructureFeature<DefaultFeatureConfig> {
-	public MeteorFeature(Codec<DefaultFeatureConfig> codec) {
-		super(codec, StructureGeneratorFactory.simple(StructureGeneratorFactory.checkForBiomeOnTop(Heightmap.Type.WORLD_SURFACE_WG), MeteorFeature::addPieces));
+import java.util.Optional;
+
+public class CraterStructure extends Structure {
+	public static final Codec<CraterStructure> CODEC = createCodec(CraterStructure::new);
+	
+	public static final StructureType<CraterStructure> TYPE = () -> CODEC;
+	
+	public CraterStructure(Config config) {
+		super(config);
 	}
 	
-	private static void addPieces(StructurePiecesCollector collector, StructurePiecesGenerator.Context<DefaultFeatureConfig> context) {
-		collector.addPiece(new MeteorGenerator(context.random(), context.chunkPos().getStartX(), context.chunkPos().getStartZ()));
+	private static void addPieces(StructurePiecesCollector collector, Context context) {
+		collector.addPiece(new CraterGenerator(context.random(), context.chunkPos().getStartX(), context.chunkPos().getStartZ()));
 	}
 	
 	@Override
-	public GenerationStep.Feature getGenerationStep() {
+	public GenerationStep.Feature getFeatureGenerationStep() {
 		return GenerationStep.Feature.SURFACE_STRUCTURES;
+	}
+	
+	@Override
+	public Optional<StructurePosition> getStructurePosition(Context context) {
+		return getStructurePosition(context, Heightmap.Type.WORLD_SURFACE_WG, collector -> addPieces(collector, context));
+	}
+	
+	@Override
+	public StructureType<?> getType() {
+		return TYPE;
 	}
 }

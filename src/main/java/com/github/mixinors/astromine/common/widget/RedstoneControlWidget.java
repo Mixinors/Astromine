@@ -15,7 +15,7 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.lwjgl.glfw.GLFW;
 
@@ -41,15 +41,15 @@ public class RedstoneControlWidget extends ButtonWidget {
 				
 				switch (type) {
 					case WORK_WHEN_ON -> {
-						return ImmutableList.of(new TranslatableText("tooltip.astromine.work_when_on").formatted(Formatting.GREEN));
+						return ImmutableList.of(Text.translatable("tooltip.astromine.work_when_on").formatted(Formatting.GREEN));
 					}
 					
 					case WORK_WHEN_OFF -> {
-						return ImmutableList.of(new TranslatableText("tooltip.astromine.work_when_off").formatted(Formatting.RED));
+						return ImmutableList.of(Text.translatable("tooltip.astromine.work_when_off").formatted(Formatting.RED));
 					}
 					
 					case WORK_ALWAYS -> {
-						return ImmutableList.of(new TranslatableText("tooltip.astromine.work_always").formatted(Formatting.YELLOW));
+						return ImmutableList.of(Text.translatable("tooltip.astromine.work_always").formatted(Formatting.YELLOW));
 					}
 				}
 			}

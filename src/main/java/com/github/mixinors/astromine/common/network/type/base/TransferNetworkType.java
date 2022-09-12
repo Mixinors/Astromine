@@ -54,7 +54,7 @@ public abstract class TransferNetworkType<T> extends NetworkType<Storage<T>> {
 			for (var extractableStorage : extractableStorages.values()) {
 				var transacted = 0L;
 				
-				for (var extractableView : extractableStorage.iterable(transaction)) {
+				for (var extractableView : extractableStorage) {
 					var pairs = new ArrayList<TransactionPair<T>>();
 					
 					var offering = 0L;

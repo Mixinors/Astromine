@@ -45,6 +45,7 @@ import com.github.mixinors.astromine.common.block.ore.MoonStoneOreBlock;
 import com.github.mixinors.astromine.common.block.ore.base.ExtendedOreBlock;
 import com.github.mixinors.astromine.common.block.rocket.RocketControllerBlock;
 import com.github.mixinors.astromine.common.block.rocket.RocketDoorBlock;
+import com.github.mixinors.astromine.common.block.station.StationControllerBlock;
 import com.github.mixinors.astromine.common.block.storage.BufferBlock;
 import com.github.mixinors.astromine.common.block.storage.CapacitorBlock;
 import com.github.mixinors.astromine.common.block.storage.TankBlock;
@@ -326,7 +327,8 @@ public class AMBlocks {
 	public static final RegistrySupplier<Block> ADVANCED_ENERGY_CABLE = register("advanced_energy_cable", () -> new EnergyCableBlock.Advanced(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
 	public static final RegistrySupplier<Block> ELITE_ENERGY_CABLE = register("elite_energy_cable", () -> new EnergyCableBlock.Elite(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AMItems.getSettings());
 	
-	public static final RegistrySupplier<Block> ROCKET_CONTROLLER = null; //register("rocket_controller", () -> new RocketControllerBlock(getAdvancedSettings()), AMItems.getSettings());
+	public static final RegistrySupplier<Block> ROCKET_CONTROLLER = register("rocket_controller", () -> new RocketControllerBlock(getAdvancedSettings()), AMItems.getSettings());
+	public static final RegistrySupplier<Block> STATION_CONTROLLER = register("station_controller", () -> new StationControllerBlock(getAdvancedSettings()), AMItems.getSettings());
 	
 	public static final RegistrySupplier<Block> ROCKET_WALL = register("rocket_wall", () -> new Block(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1.0F, 4.0F).sounds(BlockSoundGroup.METAL).luminance(15)), AMItems.getSettings());
 	public static final RegistrySupplier<Block> ROCKET_WINDOW = register("rocket_window", () -> new Block(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1.0F, 4.0F).sounds(BlockSoundGroup.METAL).luminance(15)), AMItems.getSettings());

@@ -72,7 +72,7 @@ public class SpaceSuitArmorItem extends ArmorItem {
 			var totalCapacity = 0L;
 			
 			try (var transaction = Transaction.openOuter()) {
-				for (var fluidStorage : fluidStorages.iterable(transaction)) {
+				for (var fluidStorage : fluidStorages) {
 					totalAmount += fluidStorage.getAmount();
 					totalCapacity += fluidStorage.getCapacity();
 				}

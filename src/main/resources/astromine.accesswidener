@@ -14,11 +14,7 @@ accessible field net/minecraft/entity/Entity submergedFluidTag Ljava/util/Set;
 
 extendable method net/minecraft/entity/Entity getLerpedPos (F)Lnet/minecraft/util/math/Vec3d;
 
-accessible method net/minecraft/world/gen/feature/StructureFeature register (Ljava/lang/String;Lnet/minecraft/world/gen/feature/StructureFeature;Lnet/minecraft/world/gen/GenerationStep$Feature;)Lnet/minecraft/world/gen/feature/StructureFeature;
-
-accessible method net/minecraft/world/gen/feature/Feature register (Ljava/lang/String;Lnet/minecraft/world/gen/feature/Feature;)Lnet/minecraft/world/gen/feature/Feature;
-
-accessible field net/minecraft/world/gen/feature/StructureFeature STRUCTURE_TO_GENERATION_STEP Ljava/util/Map;
+accessible method net/minecraft/world/gen/structure/StructureType register (Ljava/lang/String;Lcom/mojang/serialization/Codec;)Lnet/minecraft/world/gen/structure/StructureType;
 
 accessible class net/minecraft/data/client/BlockStateModelGenerator$BlockTexturePool
 
@@ -58,8 +54,8 @@ mutable field net/minecraft/server/network/ServerPlayNetworkHandler floatingTick
 accessible field net/minecraft/server/world/ThreadedAnvilChunkStorage chunkGenerator Lnet/minecraft/world/gen/chunk/ChunkGenerator;
 mutable field net/minecraft/server/world/ThreadedAnvilChunkStorage chunkGenerator Lnet/minecraft/world/gen/chunk/ChunkGenerator;
 
-accessible field net/minecraft/world/gen/chunk/ChunkGenerator field_37261 J
-mutable field net/minecraft/world/gen/chunk/ChunkGenerator field_37261 J
+accessible method net/minecraft/world/gen/structure/Structures register (Lnet/minecraft/util/registry/RegistryKey;Lnet/minecraft/world/gen/structure/Structure;)Lnet/minecraft/util/registry/RegistryEntry;
+accessible method net/minecraft/world/gen/feature/Feature register (Ljava/lang/String;Lnet/minecraft/world/gen/feature/Feature;)Lnet/minecraft/world/gen/feature/Feature;
 
 accessible method net/minecraft/client/render/RenderLayer of (Ljava/lang/String;Lnet/minecraft/client/render/VertexFormat;Lnet/minecraft/client/render/VertexFormat$DrawMode;ILnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;)Lnet/minecraft/client/render/RenderLayer$MultiPhase;
 accessible method net/minecraft/client/render/RenderLayer of (Ljava/lang/String;Lnet/minecraft/client/render/VertexFormat;Lnet/minecraft/client/render/VertexFormat$DrawMode;IZZLnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;)Lnet/minecraft/client/render/RenderLayer$MultiPhase;

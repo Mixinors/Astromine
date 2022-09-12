@@ -15,9 +15,7 @@ import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.Direction;
 import org.lwjgl.glfw.GLFW;
 
@@ -70,16 +68,16 @@ public class StorageSidingWidget extends Widget {
 			Text name;
 			
 			if (sidings[direction.ordinal()] == StorageSiding.INSERT) {
-				name = new TranslatableText("text.astromine.siding.insert").styled((s) -> s.withColor(0x0078FF));
+				name = Text.translatable("text.astromine.siding.insert").styled((s) -> s.withColor(0x0078FF));
 			} else if (sidings[direction.ordinal()] == StorageSiding.EXTRACT) {
-				name = new TranslatableText("text.astromine.siding.extract").styled((s) -> s.withColor(0xFF6100));
+				name = Text.translatable("text.astromine.siding.extract").styled((s) -> s.withColor(0xFF6100));
 			} else if (sidings[direction.ordinal()] == StorageSiding.INSERT_EXTRACT) {
-				name = new TranslatableText("text.astromine.siding.insert").styled((s) -> s.withColor(0x9800FF)).append(new LiteralText(" / ").styled((s) -> s.withColor(0x9800FF)).append(new TranslatableText("text.astromine.siding.extract").styled((s) -> s.withColor(0x9800FF))));
+				name = Text.translatable("text.astromine.siding.insert").styled((s) -> s.withColor(0x9800FF)).append(Text.literal(" / ").styled((s) -> s.withColor(0x9800FF)).append(Text.translatable("text.astromine.siding.extract").styled((s) -> s.withColor(0x9800FF))));
 			} else {
-				name = new TranslatableText("text.astromine.siding.none").styled((s) -> s.withColor(0x909090));
+				name = Text.translatable("text.astromine.siding.none").styled((s) -> s.withColor(0x909090));
 			}
 			
-			return ImmutableList.of(new TranslatableText("text.astromine.siding." + offset.getName()), name);
+			return ImmutableList.of(Text.translatable("text.astromine.siding." + offset.getName()), name);
 		});
 	}
 	

@@ -67,7 +67,8 @@
       "astromine:atmosphere",
       "astromine:holo_bridges",
       "astromine:oxygen",
-      "astromine:rockets"
+      "astromine:rockets",
+      "astromine:stations"
     ]
   }
 }

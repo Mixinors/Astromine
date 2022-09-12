@@ -588,7 +588,7 @@ public class SimpleItemStorage implements Storage<ItemVariant>, Inventory {
 	}
 	
 	@Override
-	public Iterator<StorageView<ItemVariant>> iterator(TransactionContext transaction) {
+	public Iterator<StorageView<ItemVariant>> iterator() {
 		return (Iterator) storages.iterator();
 	}
 	

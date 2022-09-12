@@ -29,15 +29,19 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Dynamic;
 import com.mojang.serialization.DynamicOps;
+import net.minecraft.util.math.random.Random;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 public class WeightedList<U> {
 	private static final String DATA_KEY = "data";
 	private static final String WEIGHT_KEY = "weight";
 	
-	protected final List<WeightedList.Entry<U>> entries;
+	protected final List<Entry<U>> entries;
 	
 	public WeightedList() {
 		this.entries = new ArrayList<>();

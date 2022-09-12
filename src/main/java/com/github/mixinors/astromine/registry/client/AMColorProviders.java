@@ -50,7 +50,7 @@ public class AMColorProviders {
 			
 			var gameOptions = client.options;
 			
-			var radius = gameOptions.biomeBlendRadius * 2;
+			var radius = gameOptions.getBiomeBlendRadius().getValue() * 2;
 			
 			var blocks = (radius * 2 + 1) * (radius * 2 + 1);
 			

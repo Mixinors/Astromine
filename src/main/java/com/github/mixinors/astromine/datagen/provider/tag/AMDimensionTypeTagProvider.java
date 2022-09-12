@@ -9,7 +9,7 @@ import net.minecraft.world.dimension.DimensionType;
 
 public class AMDimensionTypeTagProvider extends FabricTagProvider.DynamicRegistryTagProvider<DimensionType> {
 	public AMDimensionTypeTagProvider(FabricDataGenerator dataGenerator) {
-		super(dataGenerator, Registry.DIMENSION_TYPE_KEY, "dimension_type", "Dimension Type Tags");
+		super(dataGenerator, Registry.DIMENSION_TYPE_KEY);
 	}
 	
 	@Override

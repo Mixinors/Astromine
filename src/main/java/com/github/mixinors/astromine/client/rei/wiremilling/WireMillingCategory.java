@@ -34,7 +34,7 @@ import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 
 public class WireMillingCategory implements SingleItemInputCategory<WireMillingDisplay>, SingleItemOutputCategory<WireMillingDisplay> {
 	@Override
@@ -44,7 +44,7 @@ public class WireMillingCategory implements SingleItemInputCategory<WireMillingD
 	
 	@Override
 	public Text getTitle() {
-		return new TranslatableText("category.astromine.wire_milling");
+		return Text.translatable("category.astromine.wire_milling");
 	}
 	
 	@Override

@@ -29,7 +29,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import vazkii.patchouli.client.book.gui.GuiBook;
 import vazkii.patchouli.client.book.page.abstr.PageDoubleRecipeRegistry;
 
@@ -49,7 +49,7 @@ public class AlloySmeltingPage extends PageDoubleRecipeRegistry<AlloySmeltingRec
 		parent.renderIngredient(ms, recipeX + 4, recipeY + 23, mouseX, mouseY, recipe.getSecondInput().asIngredient());
 		parent.renderItemStack(ms, recipeX + 40, recipeY + 13, mouseX, mouseY, recipe.createIcon());
 		parent.renderItemStack(ms, recipeX + 76, recipeY + 13, mouseX, mouseY, recipe.getOutput());
-		parent.drawCenteredStringNoShadow(ms, new TranslatableText("category.astromine.consuming.energy", String.valueOf(recipe.getEnergyInput())).asOrderedText(), GuiBook.PAGE_WIDTH / 2, recipeY + 45, BasicEnergyConsumingPage.ENERGY_CONSUMED_TEXT_COLOR);
+		parent.drawCenteredStringNoShadow(ms, Text.translatable("category.astromine.consuming.energy", String.valueOf(recipe.getEnergyInput())).asOrderedText(), GuiBook.PAGE_WIDTH / 2, recipeY + 45, BasicEnergyConsumingPage.ENERGY_CONSUMED_TEXT_COLOR);
 	}
 	
 	@Override

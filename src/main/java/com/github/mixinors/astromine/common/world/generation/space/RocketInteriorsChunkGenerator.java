@@ -33,49 +33,39 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.structure.Structure;
 import net.minecraft.structure.StructurePlacementData;
 import net.minecraft.structure.StructureSet;
 import net.minecraft.util.Unit;
-import net.minecraft.util.dynamic.RegistryOps;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.*;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.world.ChunkRegion;
+import net.minecraft.world.HeightLimitView;
+import net.minecraft.world.Heightmap;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.biome.source.BiomeAccess;
-import net.minecraft.world.biome.source.util.MultiNoiseUtil;
+import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.Blender;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
+import net.minecraft.world.gen.noise.NoiseConfig;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 
 public class RocketInteriorsChunkGenerator extends ChunkGenerator {
-	public static final Codec<RocketInteriorsChunkGenerator> CODEC = RecordCodecBuilder.create(instance ->
-			RocketInteriorsChunkGenerator.method_41042(instance).and(
-					instance.group(
-							Codec.LONG.fieldOf("seed").forGetter(gen -> gen.field_37261),
-							RegistryOps.createRegistryCodec(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry)
-					)).apply(instance, RocketInteriorsChunkGenerator::new));
+	public static final Codec<RocketInteriorsChunkGenerator> CODEC = RecordCodecBuilder.create((instance) -> {
+		return createStructureSetRegistryGetter(instance).and(
+			BiomeSource.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeSource)
+		).apply(instance, RocketInteriorsChunkGenerator::new);
+	});
 	
-	private final Registry<Biome> biomeRegistry;
-	
-	private final OctaveNoiseSampler<OpenSimplexNoise> noise;
-	
-	public RocketInteriorsChunkGenerator(Registry<StructureSet> structureFeatureRegistry, long seed, Registry<Biome> biomeRegistry) {
-		super(structureFeatureRegistry, Optional.empty(), new RocketInteriorsBiomeSource(biomeRegistry, seed));
-		
-		this.field_37261 = seed;
-		this.biomeRegistry = biomeRegistry;
-		this.noise = new OctaveNoiseSampler<>(OpenSimplexNoise.class, new Random(seed), 3, 200, 1.225, 1);
+	public RocketInteriorsChunkGenerator(Registry<StructureSet> structureFeatureRegistry, BiomeSource biomeSource) {
+		super(structureFeatureRegistry, Optional.empty(), biomeSource);
 	}
 	
 	@Override
@@ -84,32 +74,13 @@ public class RocketInteriorsChunkGenerator extends ChunkGenerator {
 	}
 	
 	@Override
-	public ChunkGenerator withSeed(long seed) {
-		return withSeedCommon(seed);
+	public void carve(ChunkRegion chunkRegion, long seed, NoiseConfig noiseConfig, BiomeAccess biomeAccess, StructureAccessor structureAccessor, Chunk chunk, GenerationStep.Carver carverStep) {
+	
 	}
 	
 	@Override
-	public MultiNoiseUtil.MultiNoiseSampler getMultiNoiseSampler() {
-		return MultiNoiseUtil.method_40443();
-	}
+	public void buildSurface(ChunkRegion region, StructureAccessor structures, NoiseConfig noiseConfig, Chunk chunk) {
 	
-	@Override
-	public void carve(ChunkRegion chunkRegion,
-			long seed,
-			BiomeAccess biomeAccess,
-			StructureAccessor structureAccessor,
-			Chunk chunk,
-			GenerationStep.Carver generationStep) {
-		// hm yes today I will carve space
-		// yes yes hyperspace lanes in astromine when
-	}
-	
-	public ChunkGenerator withSeedCommon(long seed) {
-		return new RocketInteriorsChunkGenerator(field_37053, seed, biomeRegistry);
-	}
-	
-	@Override
-	public void buildSurface(ChunkRegion region, StructureAccessor structures, Chunk chunk) {
 	}
 	
 	@Override
@@ -123,7 +94,7 @@ public class RocketInteriorsChunkGenerator extends ChunkGenerator {
 	}
 	
 	@Override
-	public CompletableFuture<Chunk> populateNoise(Executor executor, Blender blender, StructureAccessor structureAccessor, Chunk chunk) {
+	public CompletableFuture<Chunk> populateNoise(Executor executor, Blender blender, NoiseConfig noiseConfig, StructureAccessor structureAccessor, Chunk chunk) {
 		return CompletableFuture.supplyAsync(() -> {
 			populateNoise(structureAccessor, chunk);
 			return Unit.INSTANCE;
@@ -142,12 +113,15 @@ public class RocketInteriorsChunkGenerator extends ChunkGenerator {
 	
 	public void populateNoise(StructureAccessor accessor, Chunk chunk) {
 		if (chunk.getPos().x % 32 == 0 && chunk.getPos().z % 32 == 0) {
-			WorldAccess world = ((StructureAccessorAccessor) accessor).getWorld();
-			Optional<Structure> structure = world.getServer().getStructureManager().getStructure(AMCommon.id("rocket"));
+			var world = ((StructureAccessorAccessor) accessor).getWorld();
+			var server = world.getServer();
+			if (server == null) return;
+			var manager = server.getStructureTemplateManager();
+			var structure = manager.getTemplate(AMCommon.id("rocket"));
 			
-			if (structure.isPresent()) {
-				StructurePlacementData structurePlacementData = new StructurePlacementData();
-				structure.get().place((ServerWorldAccess) world, new BlockPos(chunk.getPos().x * 16, 0, chunk.getPos().z * 16), new BlockPos(chunk.getPos().x * 16, 0, chunk.getPos().z * 16), structurePlacementData, new Random(), Block.NOTIFY_LISTENERS);
+			if (structure.isPresent() && world instanceof ServerWorldAccess access) {
+				var structurePlacementData = new StructurePlacementData();
+				structure.get().place(access, new BlockPos(chunk.getPos().x * 16, 0, chunk.getPos().z * 16), new BlockPos(chunk.getPos().x * 16, 0, chunk.getPos().z * 16), structurePlacementData, access.getRandom(), Block.NOTIFY_LISTENERS);
 			}
 		}
 	}
@@ -159,18 +133,19 @@ public class RocketInteriorsChunkGenerator extends ChunkGenerator {
 	}
 	
 	@Override
-	public int getHeight(int x, int z, Heightmap.Type heightmap, HeightLimitView world) {
+	public int getHeight(int x, int z, Heightmap.Type heightmap, HeightLimitView world, NoiseConfig noiseConfig) {
 		return 96;
 	}
 	
 	@Override
-	public VerticalBlockSample getColumnSample(int x, int z, HeightLimitView world) {
+	public VerticalBlockSample getColumnSample(int x, int z, HeightLimitView world, NoiseConfig noiseConfig) {
 		var states = new BlockState[96];
 		Arrays.fill(states, Blocks.AIR.getDefaultState());
 		return new VerticalBlockSample(world.getBottomY(), states);
 	}
 	
 	@Override
-	public void getDebugHudText(List<String> text, BlockPos pos) {
+	public void getDebugHudText(List<String> text, NoiseConfig noiseConfig, BlockPos pos) {
+	
 	}
 }

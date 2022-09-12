@@ -142,9 +142,10 @@ public class AnimatedArmorItem extends ArmorItem {
 			public void load(ResourceManager manager) throws IOException {
 				close();
 				
-				try (var resource = manager.getResource(id)) {
-					image = NativeImage.read(resource.getInputStream());
-				}
+				var resource = manager.getResource(id).orElse(null);
+				if (resource == null) return;
+				
+				image = NativeImage.read(resource.getInputStream());
 				
 				this.placeholderTexture = new NativeImage(this.image.getFormat(), image.getWidth(), image.getHeight() / frames, false);
 				

@@ -29,15 +29,11 @@ import com.github.mixinors.astromine.registry.common.AMTagKeys;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.data.DataTracker;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.tag.Tag;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
@@ -48,7 +44,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 @Mixin(Entity.class)
@@ -58,7 +53,7 @@ public abstract class EntityMixin implements EntityAccessor {
 	@Shadow
 	protected boolean firstUpdate;
 	@Shadow
-	protected Object2DoubleMap<Tag<Fluid>> fluidHeight;
+	protected Object2DoubleMap<TagKey<Fluid>> fluidHeight;
 	
 	private int astromine$lastY = 0;
 	

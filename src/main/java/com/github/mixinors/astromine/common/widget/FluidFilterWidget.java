@@ -15,7 +15,7 @@ import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class FluidFilterWidget extends Widget {
 		
 		setTooltipSupplier(() -> {
 			var tooltips = new ArrayList<Text>();
-			tooltips.add(new TranslatableText("text.astromine.filter"));
+			tooltips.add(Text.translatable("text.astromine.filter"));
 			tooltips.addAll(FluidTextUtil.getVariantTooltips(fluidVariant.get()));
 			
 			return tooltips;

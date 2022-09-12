@@ -43,10 +43,10 @@ import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resource.Resource;
-import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockRenderView;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.Nullable;
@@ -93,9 +93,9 @@ public class DynamicModel extends JsonUnbakedModel {
 			
 			try {
 				if (modelId.getPath().contains(MODELS_PREFIX)) {
-					resource = manager.getResource(modelId);
+					resource = manager.getResource(modelId).orElse(null);
 				} else {
-					resource = manager.getResource(new Identifier(modelId.getNamespace(), MODELS_PREFIX + modelId.getPath() + JSON_SUFFIX));
+					resource = manager.getResource(new Identifier(modelId.getNamespace(), MODELS_PREFIX + modelId.getPath() + JSON_SUFFIX)).orElse(null);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -104,7 +104,7 @@ public class DynamicModel extends JsonUnbakedModel {
 			}
 			
 			if (resource == null) {
-				System.out.println("Resource null!");
+				System.out.println("Resource not found!");
 			}
 			
 			String string;
@@ -251,9 +251,8 @@ public class DynamicModel extends JsonUnbakedModel {
 			this.dynamicBakedModel = dynamicBakedModel;
 			this.staticBakedModel = staticBakedModel;
 			
-			var random = new Random();
-			random.setSeed(42L);
-			
+			var random = Random.create(42);
+
 			for (int i = 0; i <= ModelHelper.NULL_FACE_ID; i++) {
 				var cullFace = ModelHelper.faceFromIndex(i);
 				

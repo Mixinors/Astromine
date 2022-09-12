@@ -31,6 +31,7 @@ import java.util.UUID;
 
 public final class Rocket implements Tickable {
 	private static final String UUID_KEY = "Uuid";
+	private static final String OWNER_UUID_KEY = "OwnerUuid";
 	private static final String PARTS_KEY = "Parts";
 	private static final String PLACERS_KEY = "Placers";
 	private static final String INTERIOR_POS_KEY = "InteriorPos";
@@ -70,6 +71,7 @@ public final class Rocket implements Tickable {
 	public static final int[] FLUID_EXTRACT_SLOTS = new int[] { OXYGEN_TANK_FLUID_OUT, FUEL_TANK_FLUID_OUT };
 	
 	private final UUID uuid;
+	private final UUID ownerUuid;
 	private final ChunkPos interiorPos;
 	private final Parts parts;
 	
@@ -80,9 +82,12 @@ public final class Rocket implements Tickable {
 	
 	private final Map<UUID, Placer> placers = new HashMap<>();
 	
-	public Rocket(UUID uuid, ChunkPos interiorPos) {
+	public Rocket(UUID uuid, UUID ownerUuid, ChunkPos interiorPos) {
 		this.uuid = uuid;
+		this.ownerUuid = ownerUuid;
+		
 		this.interiorPos = interiorPos;
+		
 		this.parts = new Parts();
 		
 		this.itemStorage = new SimpleItemStorage(13).extractPredicate((variant, slot) -> {
@@ -104,7 +109,10 @@ public final class Rocket implements Tickable {
 	
 	public Rocket(NbtCompound nbt) {
 		this.uuid = nbt.getUuid(UUID_KEY);
+		this.ownerUuid = nbt.getUuid(OWNER_UUID_KEY);
+		
 		this.interiorPos = NbtUtil.getChunkPos(nbt, INTERIOR_POS_KEY);
+		
 		this.parts = new Parts(nbt.getCompound(PARTS_KEY));
 		
 		var placersNbt = nbt.getCompound(PLACERS_KEY);
@@ -139,7 +147,10 @@ public final class Rocket implements Tickable {
 	
 	public void writeToNbt(NbtCompound nbt) {
 		nbt.putUuid(UUID_KEY, uuid);
+		nbt.putUuid(OWNER_UUID_KEY, ownerUuid);
+		
 		NbtUtil.putChunkPos(nbt, INTERIOR_POS_KEY, interiorPos);
+		
 		nbt.put(PARTS_KEY, parts.writeToNbt(new NbtCompound()));
 		
 		var placersNbt = new NbtCompound();
@@ -188,7 +199,7 @@ public final class Rocket implements Tickable {
 			StorageUtil.move(fluidOutputStorage1, loadFluidStorages1, fluidVariant -> !fluidVariant.isBlank(), FluidConstants.BUCKET, transaction);
 			
 			StorageUtil.move(itemInputStorage1, itemBufferStorage1, (variant) -> {
-				var stored = StorageUtil.findStoredResource(unloadFluidStorages1, transaction);
+				var stored = StorageUtil.findStoredResource(unloadFluidStorages1);
 				return stored == null || stored.isBlank();
 			}, 1, transaction);
 			
@@ -209,7 +220,7 @@ public final class Rocket implements Tickable {
 			StorageUtil.move(fluidOutputStorage2, loadFluidStorages2, fluidVariant -> !fluidVariant.isBlank(), FluidConstants.BUCKET, transaction);
 			
 			StorageUtil.move(itemInputStorage2, itemBufferStorage2, (variant) -> {
-				var stored = StorageUtil.findStoredResource(unloadFluidStorages2, transaction);
+				var stored = StorageUtil.findStoredResource(unloadFluidStorages2);
 				return stored == null || stored.isBlank();
 			}, 2, transaction);
 			
@@ -239,14 +250,15 @@ public final class Rocket implements Tickable {
 		var shieldingItem =  itemStorage.getStorage(SHIELDING_SLOT).getResource().toStack().getItem();
 		var thrusterItem = itemStorage.getStorage(THRUSTER_SLOT).getResource().toStack().getItem();
 		
-		if(fuelTankItem instanceof RocketFuelTankItem rocketFuelTankItem) this.parts.setPart(PartType.FUEL_TANK, rocketFuelTankItem.getPart());
-		if(hullItem instanceof RocketHullItem rocketHullItem) this.parts.setPart(PartType.ROCKET_HULL, rocketHullItem.getPart());
-		if(landingMechanismItem instanceof RocketLandingMechanismItem rocketLandingMechanismItem) this.parts.setPart(PartType.LANDING_MECHANISM, rocketLandingMechanismItem.getPart());
-		if(lifeSupportItem instanceof RocketLifeSupportItem rocketLifeSupportItem) this.parts.setPart(PartType.LIFE_SUPPORT, rocketLifeSupportItem.getPart());
-		if(shieldingItem instanceof RocketShieldingItem rocketShieldingItem) this.parts.setPart(PartType.SHIELDING, rocketShieldingItem.getPart());
-		if(thrusterItem instanceof RocketThrusterItem rocketThrusterItem) this.parts.setPart(PartType.THRUSTER, rocketThrusterItem.getPart());
+		if (fuelTankItem instanceof RocketFuelTankItem rocketFuelTankItem) this.parts.setPart(PartType.FUEL_TANK, rocketFuelTankItem.getPart());
+		if (hullItem instanceof RocketHullItem rocketHullItem) this.parts.setPart(PartType.ROCKET_HULL, rocketHullItem.getPart());
+		if (landingMechanismItem instanceof RocketLandingMechanismItem rocketLandingMechanismItem) this.parts.setPart(PartType.LANDING_MECHANISM, rocketLandingMechanismItem.getPart());
+		if (lifeSupportItem instanceof RocketLifeSupportItem rocketLifeSupportItem) this.parts.setPart(PartType.LIFE_SUPPORT, rocketLifeSupportItem.getPart());
+		if (shieldingItem instanceof RocketShieldingItem rocketShieldingItem) this.parts.setPart(PartType.SHIELDING, rocketShieldingItem.getPart());
+		if (thrusterItem instanceof RocketThrusterItem rocketThrusterItem) this.parts.setPart(PartType.THRUSTER, rocketThrusterItem.getPart());
 		
 		updateFluidStorage();
+		
 		RocketManager.sync();
 	}
 	

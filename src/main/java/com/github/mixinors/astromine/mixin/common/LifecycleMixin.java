@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value = Lifecycle.class, priority = 1)
 public class LifecycleMixin {
 	
-	@Inject(method = "experimental", at = @At("RETURN"), cancellable = true)
+	@Inject(method = "experimental", at = @At("RETURN"), cancellable = true, remap = false)
 	private static void astromine$stableWorldgenSettings(CallbackInfoReturnable<Lifecycle> cir) {
 		cir.setReturnValue(Lifecycle.stable());
 	}

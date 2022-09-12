@@ -34,7 +34,7 @@ import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 
 public class FluidGeneratingCategory implements SingleFluidInputCategory<FluidGeneratingDisplay>, EnergyOutputCategory<FluidGeneratingDisplay> {
 	@Override
@@ -44,7 +44,7 @@ public class FluidGeneratingCategory implements SingleFluidInputCategory<FluidGe
 	
 	@Override
 	public Text getTitle() {
-		return new TranslatableText("category.astromine.fluid_generating");
+		return Text.translatable("category.astromine.fluid_generating");
 	}
 	
 	@Override

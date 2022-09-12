@@ -21,19 +21,19 @@ public class RocketsComponent implements AutoSyncedComponent {
 	public RocketsComponent(World world) {
 	}
 	
-	public void addRocket(Rocket rocket) {
+	public void add(Rocket rocket) {
 		this.rockets.put(rocket.getUuid(), rocket);
 	}
 	
-	public Rocket getRocket(UUID rocketUuid) {
+	public Rocket get(UUID rocketUuid) {
 		return this.rockets.get(rocketUuid);
 	}
 	
-	public Collection<Rocket> getRockets() {
+	public Collection<Rocket> getAll() {
 		return this.rockets.values();
 	}
 	
-	public void removeRocket(Rocket rocket) {
+	public void remove(Rocket rocket) {
 		this.rockets.remove(rocket.getUuid());
 	}
 	

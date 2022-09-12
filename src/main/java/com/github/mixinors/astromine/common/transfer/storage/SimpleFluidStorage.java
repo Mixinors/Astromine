@@ -659,7 +659,7 @@ public class SimpleFluidStorage extends SnapshotParticipant<SimpleFluidStorage.S
 	}
 	
 	@Override
-	public Iterator<StorageView<FluidVariant>> iterator(TransactionContext transaction) {
+	public Iterator<StorageView<FluidVariant>> iterator() {
 		return (Iterator) proxyStorages.iterator();
 	}
 	

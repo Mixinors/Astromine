@@ -43,12 +43,15 @@ import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.text.LiteralText;
+import net.minecraft.screen.slot.SlotActionType;
+import net.minecraft.text.Text;
 import net.minecraft.util.registry.Registry;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
+import org.lwjgl.glfw.GLFW;
 
 import java.io.File;
 import java.io.IOException;
@@ -148,7 +151,7 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 		var saveButton = new ButtonWidget();
 		saveButton.setPosition(new Position(panel.getX() + PAD_7, panel.getY() + PAD_7 + 14.0F + SLOT_WIDTH * 3.0F));
 		saveButton.setSize(new Size(SLOT_WIDTH * 3.0F, SLOT_WIDTH));
-		saveButton.setLabel(new LiteralText("Save"));
+		saveButton.setLabel(Text.literal("Save"));
 		saveButton.onEvent(EventType.MOUSE_CLICKED, (MouseClickedEvent event) -> {
 			var table = new HashMap<Integer, String>();
 			var inverseTable = new HashMap<String, Integer>();
@@ -236,5 +239,11 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 	@Override
 	public boolean canUse(PlayerEntity player) {
 		return true;
+	}
+	
+	@Override
+	public ItemStack transferSlot(PlayerEntity player, int index) {
+		onSlotClick(index, GLFW.GLFW_MOUSE_BUTTON_1, SlotActionType.QUICK_MOVE, player);
+		return ItemStack.EMPTY;
 	}
 }

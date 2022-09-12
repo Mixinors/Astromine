@@ -29,19 +29,19 @@ public class RocketManager {
 	}
 	
 	@NotNull
-	public static Rocket create(UUID uuid) {
-		var rocket = new Rocket(uuid, findUnoccupiedSpace());
-		return registerRocket(rocket);
+	public static Rocket create(UUID ownerUuid, UUID uuid) {
+		var rocket = new Rocket(uuid, ownerUuid, findUnoccupiedSpace());
+		return add(rocket);
 	}
 	
-	private static Rocket registerRocket(Rocket rocket) {
+	private static Rocket add(Rocket rocket) {
 		var server = InstanceUtil.getServer();
 		if (server == null) throw new RuntimeException("Server is null.");
 		var world = server.getWorld(AMWorlds.ROCKET_INTERIORS);
 		if (world == null) throw new RuntimeException("Failed to load the interior world. Try queueing the rockets to be registered?");
 		
 		var component = AMComponents.ROCKETS.get(world);
-		component.addRocket(rocket);
+		component.add(rocket);
 		
 		return rocket;
 	}
@@ -53,11 +53,11 @@ public class RocketManager {
 		if (world == null) return null;
 		var component = AMComponents.ROCKETS.get(world);
 		
-		if (component.getRockets().size() == 0) {
+		if (component.getAll().isEmpty()) {
 			throw new RuntimeException("Rockets Component failed to load.");
 		}
 		
-		return component.getRocket(uuid);
+		return component.get(uuid);
 	}
 	
 	@Nullable
@@ -79,7 +79,7 @@ public class RocketManager {
 		if (world == null) return ImmutableList.of();
 		
 		var component = AMComponents.ROCKETS.get(world);
-		return component.getRockets();
+		return component.getAll();
 	}
 	
 	public static void sync() {
@@ -162,7 +162,7 @@ public class RocketManager {
 	
 	public static void registerQueuedRockets() {
 		while (!ROCKETS_TO_REGISTER.isEmpty()) {
-			registerRocket(ROCKETS_TO_REGISTER.dequeue());
+			add(ROCKETS_TO_REGISTER.dequeue());
 		}
 	}
 }

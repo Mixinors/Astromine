@@ -35,6 +35,7 @@ import com.google.common.collect.ImmutableList;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.minecraft.block.Block;
+import net.minecraft.data.DataCache;
 import net.minecraft.data.server.BlockLootTableGenerator;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -46,6 +47,7 @@ import net.minecraft.loot.function.CopyNbtLootFunction;
 import net.minecraft.loot.provider.nbt.ContextLootNbtProvider;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 
+import java.io.IOException;
 import java.util.List;
 
 public class AMBlockLootTableProvider extends FabricBlockLootTableProvider {
@@ -157,7 +159,7 @@ public class AMBlockLootTableProvider extends FabricBlockLootTableProvider {
 			
 			family.getVariants().forEach((variant, block) -> {
 				switch (variant) {
-					case DOOR -> addDoorDrop(block);
+					case DOOR -> addDrop(block, BlockLootTableGenerator::doorDrops);
 					case SLAB -> addDrop(block, BlockLootTableGenerator::slabDrops);
 					
 					default -> addDrop(block);
@@ -167,7 +169,7 @@ public class AMBlockLootTableProvider extends FabricBlockLootTableProvider {
 		
 		DROPS_SELF.forEach(this::addDrop);
 		
-		addDoorDrop(AMBlocks.AIRLOCK.get());
+		addDrop(AMBlocks.AIRLOCK.get(), BlockLootTableGenerator::doorDrops);
 		
 		AMDatagenLists.BlockLists.MACHINES.forEach((block) -> this.addDrop(block, machineDrops(block)));
 	}

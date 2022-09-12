@@ -10,6 +10,9 @@ import dev.vini2003.hammer.gui.api.common.event.type.EventType;
 import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
 import dev.vini2003.hammer.gui.api.common.widget.panel.PanelWidget;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.screen.slot.SlotActionType;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.function.Consumer;
 
@@ -75,5 +78,11 @@ public class BodySelectorScreenHandler extends BaseScreenHandler {
 	@Override
 	public boolean canUse(PlayerEntity player) {
 		return player.isAlive();
+	}
+	
+	@Override
+	public ItemStack transferSlot(PlayerEntity player, int index) {
+		onSlotClick(index, GLFW.GLFW_MOUSE_BUTTON_1, SlotActionType.QUICK_MOVE, player);
+		return ItemStack.EMPTY;
 	}
 }

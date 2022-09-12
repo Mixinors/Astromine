@@ -34,7 +34,7 @@ import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 
 public class TrituratingCategory implements SingleItemInputCategory<TrituratingDisplay>, SingleItemOutputCategory<TrituratingDisplay> {
 	@Override
@@ -44,7 +44,7 @@ public class TrituratingCategory implements SingleItemInputCategory<TrituratingD
 	
 	@Override
 	public Text getTitle() {
-		return new TranslatableText("category.astromine.triturating");
+		return Text.translatable("category.astromine.triturating");
 	}
 	
 	@Override

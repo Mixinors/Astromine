@@ -67,7 +67,7 @@ public abstract class LivingEntityMixin extends EntityMixin {
 	void astromine$tick(CallbackInfo callbackInformation) {
 		var entityType = getType();
 		
-		if (AMWorlds.isVacuum(world.method_40134()) && !entityType.isIn(AMTagKeys.EntityTypeTags.DOES_NOT_BREATHE)) {
+		if (AMWorlds.isVacuum(world.getDimensionEntry()) && !entityType.isIn(AMTagKeys.EntityTypeTags.DOES_NOT_BREATHE)) {
 			
 			var headStack = getEquippedStack(EquipmentSlot.HEAD);
 			var chestStack = getEquippedStack(EquipmentSlot.CHEST);

@@ -39,7 +39,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class ExtendedEntity extends Entity implements FluidStorageSizeProvider, EnergyStorageSizeProvider {
 	public static final String AMOUNT_KEY = "Amount";

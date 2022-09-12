@@ -55,7 +55,7 @@ public class HoloBridgeBlockEntityRenderer implements BlockEntityRenderer<HoloBr
 			var offsetX = direction == Direction.NORTH ? 1 : 0;
 			var offsetZ = direction == Direction.WEST ? 1 : 0;
 			
-			if (entity.segments == null || entity.segments.size() == 0) {
+			if (entity.segments == null || entity.segments.isEmpty()) {
 				return;
 			}
 			

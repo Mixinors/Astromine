@@ -25,10 +25,10 @@
 package com.github.mixinors.astromine.common.util;
 
 import dev.vini2003.hammer.core.api.common.util.NumberUtil;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 @SuppressWarnings("unstable")
@@ -36,24 +36,24 @@ public class TextUtils {
 	public static final char ENERGY_UNIT = 'E';
 	public static final char FLUID_UNIT = 'd';
 	
-	public static Text getAstromine() {
-		return new LiteralText("Astromine").formatted(Formatting.BLUE, Formatting.ITALIC);
+	public static MutableText getAstromine() {
+		return Text.literal("Astromine").formatted(Formatting.BLUE, Formatting.ITALIC);
 	}
 	
-	public static Text getEnergy() {
-		return new TranslatableText("text.astromine.energy");
+	public static MutableText getEnergy() {
+		return Text.translatable("text.astromine.energy");
 	}
 	
-	public static Text getEnergy(long amount, long capacity) {
-		return getEnergyAmount(amount).append(new LiteralText(" / ").formatted(Formatting.GRAY)).append(getEnergyAmount(capacity));
+	public static MutableText getEnergy(long amount, long capacity) {
+		return getEnergyAmount(amount).append(Text.literal(" / ").formatted(Formatting.GRAY)).append(getEnergyAmount(capacity));
 	}
 	
-	public static Text getRatio(int progress, int limit) {
-		return new LiteralText((int) ((float) progress / (float) limit * 100) + "%");
+	public static MutableText getRatio(int progress, int limit) {
+		return Text.literal((int) ((float) progress / (float) limit * 100) + "%");
 	}
 	
-	public static LiteralText getAmount(long amount, char unit) {
-		return new LiteralText(NumberUtil.getPrettyShortenedString(amount, "" + unit));
+	public static MutableText getAmount(long amount, char unit) {
+		return Text.literal(NumberUtil.getPrettyShortenedString(amount, "" + unit));
 	}
 	
 	public static MutableText getEnergyAmount(long amount) {

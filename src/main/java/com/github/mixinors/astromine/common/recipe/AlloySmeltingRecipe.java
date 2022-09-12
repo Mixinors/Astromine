@@ -37,12 +37,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-import dev.architectury.core.AbstractRecipeSerializer;
+import net.minecraft.recipe.RecipeSerializer;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
@@ -148,7 +147,7 @@ public record AlloySmeltingRecipe(
 		return output;
 	}
 	
-	public static final class Serializer extends AbstractRecipeSerializer<AlloySmeltingRecipe> {
+	public static final class Serializer implements RecipeSerializer<AlloySmeltingRecipe> {
 		public static final Identifier ID = AMCommon.id("alloy_smelting");
 		
 		public static final Serializer INSTANCE = new Serializer();

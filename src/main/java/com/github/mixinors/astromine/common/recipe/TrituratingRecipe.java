@@ -37,7 +37,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-import dev.architectury.core.AbstractRecipeSerializer;
+import net.minecraft.recipe.RecipeSerializer;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.minecraft.item.ItemStack;
@@ -138,7 +138,7 @@ public record TrituratingRecipe(
 		return output;
 	}
 	
-	public static final class Serializer extends AbstractRecipeSerializer<TrituratingRecipe> {
+	public static final class Serializer implements RecipeSerializer<TrituratingRecipe> {
 		public static final Identifier ID = AMCommon.id("triturating");
 		
 		public static final Serializer INSTANCE = new Serializer();

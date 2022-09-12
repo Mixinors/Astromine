@@ -36,7 +36,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-import dev.architectury.core.AbstractRecipeSerializer;
+import net.minecraft.recipe.RecipeSerializer;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.minecraft.network.PacketByteBuf;
@@ -141,7 +141,7 @@ public record FluidMixingRecipe(
 		return output;
 	}
 	
-	public static final class Serializer extends AbstractRecipeSerializer<FluidMixingRecipe> {
+	public static final class Serializer implements RecipeSerializer<FluidMixingRecipe> {
 		public static final Identifier ID = AMCommon.id("fluid_mixing");
 		
 		public static final Serializer INSTANCE = new Serializer();

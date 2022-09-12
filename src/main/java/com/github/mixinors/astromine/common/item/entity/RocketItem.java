@@ -93,11 +93,11 @@ public class RocketItem extends Item {
 		}
 		
 		if (result instanceof RocketEntity rocket) {
-			rocket.setRocket(RocketManager.create(rocket.getUuid()));
+			rocket.setRocket(RocketManager.create(user.getUuid(), rocket.getUuid()));
 		}
 		
 		user.incrementStat(Stats.USED.getOrCreateStat(this));
-		world.emitGameEvent(GameEvent.ENTITY_PLACE, user);
+		world.emitGameEvent(user, GameEvent.ENTITY_PLACE, user.getPos());
 		
 		return TypedActionResult.consume(itemStack);
 	}

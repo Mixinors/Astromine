@@ -17,7 +17,7 @@ import dev.vini2003.hammer.gui.api.common.widget.WidgetCollection;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.function.Consumer;
@@ -120,7 +120,7 @@ public class BodySelectionWidget extends Widget {
 		var bodyDescriptionLines = textRenderer.wrapLines(bodyDescription, (int) informationWidth);
 		
 		// Find height of body name, description, and required vertical spacing.
-		var textHeight = TextUtil.getHeight(bodyName) + 4.0F + (TextUtil.getHeight(LiteralText.EMPTY) * bodyDescriptionLines.size());
+		var textHeight = TextUtil.getHeight(bodyName) + 4.0F + (TextUtil.getHeight("") * bodyDescriptionLines.size());
 		
 		// Offset bodyY to center body within itself.
 		bodyY += bodyHeight / 2.0F;
@@ -178,7 +178,8 @@ public class BodySelectionWidget extends Widget {
 			textRenderer.draw(matrices, line, 0.0F, 0.0F, Color.GRAY.toRgb());
 			
 			// Offset the line's size.
-			matrices.translate(0.0F, TextUtil.getHeight(LiteralText.EMPTY), 0.0F);
+			// TODO: Remove the ""!
+			matrices.translate(0.0F, TextUtil.getHeight(""), 0.0F);
 		}
 		
 		matrices.pop(); // 3

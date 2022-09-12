@@ -58,7 +58,7 @@ public class OilWellFeature extends Feature<DefaultFeatureConfig> {
 		
 		var oceanFloorPos = world.getTopPosition(Heightmap.Type.WORLD_SURFACE, pos);
 		
-		var offsetY = random.nextInt(BOTTOM_WELL_SIZE, BOTTOM_WELL_MAX_OFFSET);
+		var offsetY = (int) (random.nextFloat() * (BOTTOM_WELL_MAX_OFFSET - BOTTOM_WELL_SIZE) + BOTTOM_WELL_SIZE); // TODO: Check if this works!
 		
 		if (pos.getY() - offsetY > oceanFloorPos.getY() - BOTTOM_WELL_MAX_OFFSET - BOTTOM_WELL_SIZE) {
 			pos = new BlockPos(pos.getX(), oceanFloorPos.getY() - offsetY - BOTTOM_WELL_MAX_OFFSET - BOTTOM_WELL_SIZE, pos.getZ());
@@ -93,7 +93,7 @@ public class OilWellFeature extends Feature<DefaultFeatureConfig> {
 			}
 		}
 		
-		var geyserHeight = random.nextInt(GEYSER_MIN_HEIGHT, GEYSER_MAX_HEIGHT);
+		var geyserHeight = (int) (random.nextFloat() - (GEYSER_MAX_HEIGHT - GEYSER_MIN_HEIGHT) + GEYSER_MIN_HEIGHT);
 		
 		for (var mutablePos = new BlockPos.Mutable(pos.getX(), pos.getY() + offsetY + BOTTOM_WELL_SIZE, pos.getZ()); mutablePos.getY() < topPos.getY() + geyserHeight; mutablePos.move(Direction.UP)) {
 			world.setBlockState(mutablePos, oilState, 0);

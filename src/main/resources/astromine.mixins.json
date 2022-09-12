@@ -17,7 +17,6 @@
     "common.PiglinBrainMixin",
     "common.PistonHandlerMixin",
     "common.RecipeManagerAccessor",
-    "common.ServerChunkManagerMixin",
     "common.ServerPlayNetworkHandlerMixin",
     "common.StayAboveWaterTaskMixin",
     "common.StructureAccessorAccessor",

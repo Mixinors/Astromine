@@ -29,7 +29,7 @@ import com.github.mixinors.astromine.registry.common.AMItems;
 import com.mojang.serialization.Codec;
 import net.minecraft.item.Item;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 
 /**
  * A {@link StorageType} which dictates which of a machine's storages should be used.
@@ -51,9 +51,9 @@ public enum StorageType {
 	
 	public Text getName() {
 		return switch (this) {
-			case ITEM -> new TranslatableText("text.astromine.item");
-			case FLUID -> new TranslatableText("text.astromine.fluid");
-			case ENERGY -> new TranslatableText("text.astromine.energy");
+			case ITEM -> Text.translatable("text.astromine.item");
+			case FLUID -> Text.translatable("text.astromine.fluid");
+			case ENERGY -> Text.translatable("text.astromine.energy");
 		};
 	}
 }

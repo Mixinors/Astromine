@@ -32,6 +32,7 @@ import com.github.mixinors.astromine.common.screen.handler.machine.*;
 import com.github.mixinors.astromine.common.screen.handler.machine.generator.FluidGeneratorScreenHandler;
 import com.github.mixinors.astromine.common.screen.handler.machine.generator.SolidGeneratorScreenHandler;
 import com.github.mixinors.astromine.common.screen.handler.rocket.RocketControllerScreenHandler;
+import com.github.mixinors.astromine.common.screen.handler.station.StationControllerScreenHandler;
 import com.github.mixinors.astromine.common.screen.handler.storage.BufferScreenHandler;
 import com.github.mixinors.astromine.common.screen.handler.storage.CapacitorScreenHandler;
 import com.github.mixinors.astromine.common.screen.handler.storage.TankScreenHandler;
@@ -138,6 +139,10 @@ public class AMScreenHandlers {
 	
 	public static final RegistrySupplier<ScreenHandlerType<RocketControllerScreenHandler>> ROCKET_CONTROLLER = registerExtended(AMCommon.id("rocket_controller"), ((syncId, inventory, buffer) -> {
 		return new RocketControllerScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+	
+	public static final RegistrySupplier<ScreenHandlerType<StationControllerScreenHandler>> STATION_CONTROLLER = registerExtended(AMCommon.id("station_controller"), ((syncId, inventory, buffer) -> {
+		return new StationControllerScreenHandler(syncId, inventory.player, buffer.readBlockPos());
 	}));
 	
 	public static void init() {

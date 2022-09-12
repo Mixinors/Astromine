@@ -26,22 +26,33 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.world.feature.*;
+import com.github.mixinors.astromine.common.world.structure.CraterStructure;
+import com.github.mixinors.astromine.common.world.structure.MeteorStructure;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
+import net.minecraft.entity.SpawnGroup;
 import net.minecraft.structure.StructurePieceType;
+import net.minecraft.tag.BiomeTags;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryEntry;
+import net.minecraft.util.registry.*;
+import net.minecraft.world.StructureSpawns;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStep;
+import net.minecraft.world.gen.StructureTerrainAdaptation;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.placementmodifier.BiomePlacementModifier;
 import net.minecraft.world.gen.placementmodifier.PlacementModifier;
 import net.minecraft.world.gen.placementmodifier.RarityFilterPlacementModifier;
 import net.minecraft.world.gen.placementmodifier.SquarePlacementModifier;
+import net.minecraft.world.gen.structure.Structure;
+import net.minecraft.world.gen.structure.Structures;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 public class AMFeatures {
@@ -58,13 +69,13 @@ public class AMFeatures {
 	public static final RegistryEntry<PlacedFeature> OIL_WELL_PLACED_FEATURE = registerPlacedFeature(OIL_WELL_ID, OIL_WELL_CONFIGURED_FEATURE, RarityFilterPlacementModifier.of(100), SquarePlacementModifier.of(), PlacedFeatures.WORLD_SURFACE_WG_HEIGHTMAP, BiomePlacementModifier.of());
 	
 	public static final Identifier METEOR_ID = AMCommon.id("meteor");
-	
-	public static final StructureFeature<DefaultFeatureConfig> METEOR_STRUCTURE_FEATURE = registerStructureFeature(METEOR_ID, new MeteorFeature(DefaultFeatureConfig.CODEC), GenerationStep.Feature.SURFACE_STRUCTURES);
+
+	public static final RegistryEntry<Structure> METEOR_STRUCTURE_FEATURE = registerStructure(METEOR_ID, new MeteorStructure(createConfig(BiomeTags.IS_OVERWORLD, StructureTerrainAdaptation.NONE)));
 	public static final RegistrySupplier<StructurePieceType> METEOR_STRUCTURE_PIECE = registerStructurePiece(METEOR_ID, () -> (StructurePieceType.Simple) MeteorGenerator::new);
 	
 	public static final Identifier CRATER_ID = AMCommon.id("crater");
 	
-	public static final StructureFeature<DefaultFeatureConfig> CRATER_STRUCTURE_FEATURE = registerStructureFeature(CRATER_ID, new CraterFeature(DefaultFeatureConfig.CODEC), GenerationStep.Feature.SURFACE_STRUCTURES);
+	public static final RegistryEntry<Structure> CRATER_STRUCTURE_FEATURE = registerStructure(CRATER_ID, new CraterStructure(createConfig(AMTagKeys.BiomeTags.IS_MOON, StructureTerrainAdaptation.NONE)));
 	public static final RegistrySupplier<StructurePieceType> CRATER_STRUCTURE_PIECE = registerStructurePiece(CRATER_ID, () -> (StructurePieceType.Simple) CraterGenerator::new);
 	
 	public static void init() {
@@ -78,26 +89,46 @@ public class AMFeatures {
 	}
 	
 	public static <T extends FeatureConfig> Feature<T> registerFeature(Identifier id, Feature<T> feature) {
-		return Feature.register(id.toString(), feature);
+		return Registry.register(Registry.FEATURE, id, feature);
 	}
 	
 	public static <T extends FeatureConfig, F extends Feature<T>> RegistryEntry<ConfiguredFeature<T, ?>> registerConfiguredFeature(Identifier id, F feature, T config) {
-		return ConfiguredFeatures.register(id.toString(), feature, config);
+		return BuiltinRegistries.addCasted(BuiltinRegistries.CONFIGURED_FEATURE, id.toString(), new ConfiguredFeature<>(feature, config));
 	}
 	
 	public static <T extends FeatureConfig> RegistryEntry<PlacedFeature> registerPlacedFeature(Identifier id, RegistryEntry<ConfiguredFeature<T, ?>> feature, PlacementModifier... mods) {
-		return PlacedFeatures.register(id.toString(), feature, mods);
+		return BuiltinRegistries.add(BuiltinRegistries.PLACED_FEATURE, id, new PlacedFeature(RegistryEntry.upcast(feature), Arrays.asList(mods)));
 	}
 	
 	public static <T extends FeatureConfig> RegistryEntry<PlacedFeature> registerPlacedFeature(Identifier id, RegistryEntry<ConfiguredFeature<T, ?>> feature, List<PlacementModifier> mods) {
-		return PlacedFeatures.register(id.toString(), feature, mods);
+		return BuiltinRegistries.add(BuiltinRegistries.PLACED_FEATURE, id, new PlacedFeature(RegistryEntry.upcast(feature), List.copyOf(mods)));
 	}
 	
-	public static <T extends FeatureConfig> StructureFeature<T> registerStructureFeature(Identifier id, StructureFeature<T> feature, GenerationStep.Feature step) {
-		return StructureFeature.register(id.toString(), feature, step);
+	public static <T extends FeatureConfig> RegistryEntry<Structure> registerStructure(Identifier id, Structure structure) {
+		return BuiltinRegistries.add(BuiltinRegistries.STRUCTURE, RegistryKey.of(Registry.STRUCTURE_KEY, id), structure);
 	}
 	
 	public static <T extends StructurePieceType> RegistrySupplier<T> registerStructurePiece(Identifier id, Supplier<T> pieceType) {
 		return AMCommon.registry(Registry.STRUCTURE_PIECE_KEY).register(id, pieceType);
+	}
+	
+	private static Structure.Config createConfig(TagKey<Biome> biomeTag, Map<SpawnGroup, StructureSpawns> spawns, GenerationStep.Feature featureStep, StructureTerrainAdaptation terrainAdaptation) {
+		return new Structure.Config(getOrCreateBiomeTag(biomeTag), spawns, featureStep, terrainAdaptation);
+	}
+	
+	private static Structure.Config createConfig(TagKey<Biome> biomeTag, GenerationStep.Feature featureStep, StructureTerrainAdaptation terrainAdaptation) {
+		return createConfig(biomeTag, Map.of(), featureStep, terrainAdaptation);
+	}
+	
+	private static Structure.Config createConfig(TagKey<Biome> biomeTag, StructureTerrainAdaptation terrainAdaptation) {
+		return createConfig(biomeTag, Map.of(), GenerationStep.Feature.SURFACE_STRUCTURES, terrainAdaptation);
+	}
+	
+	private static RegistryEntry<Structure> register(RegistryKey<Structure> key, Structure structure) {
+		return BuiltinRegistries.add(BuiltinRegistries.STRUCTURE, key, structure);
+	}
+	
+	private static RegistryEntryList<Biome> getOrCreateBiomeTag(TagKey<Biome> key) {
+		return BuiltinRegistries.BIOME.getOrCreateEntryList(key);
 	}
 }

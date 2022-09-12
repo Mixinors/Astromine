@@ -36,12 +36,11 @@ import net.minecraft.structure.ShiftableStructurePiece;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
-
-import java.util.Random;
 
 public class CraterGenerator extends ShiftableStructurePiece {
 	public CraterGenerator(Random random, int x, int z) {
@@ -53,7 +52,7 @@ public class CraterGenerator extends ShiftableStructurePiece {
 	}
 	
 	@Override
-	public void generate(StructureWorldAccess world, StructureAccessor structureAccessor, ChunkGenerator chunkGenerator, Random random, BlockBox boundingBox, ChunkPos chunkPos, BlockPos blockPos) {
+	public void generate(StructureWorldAccess world, StructureAccessor structureAccessor, ChunkGenerator chunkGenerator, Random random, BlockBox chunkBox, ChunkPos chunkPos, BlockPos pivot) {
 		// Center surface position of the chunk.
 		var cP = world.getTopPosition(Heightmap.Type.OCEAN_FLOOR_WG, new BlockPos(chunkPos.getStartX() + 8, 0, chunkPos.getStartZ() + 8));
 		
@@ -77,11 +76,11 @@ public class CraterGenerator extends ShiftableStructurePiece {
 			}
 			
 			// Calculate base radius and base diameter.
-			var bD = random.nextInt(4, mD);
+			var bD = random.nextFloat() * (mD - 4) + 4; // TODO: Check if this works!
 			var bR = bD / 2.0F;
 			
 			var a = bR * 1.1F;
-			var b = bR * random.nextFloat(0.5F, 0.75F);
+			var b = bR * random.nextFloat() * (0.75F - 0.25F) + 0.5F;
 			var c = bR * 1.1F;
 			
 			var s = world.getBlockState(cP.down());
@@ -121,7 +120,7 @@ public class CraterGenerator extends ShiftableStructurePiece {
 					var dC = (Math.pow(x - cX, 2.0D) + Math.pow(z - cZ, 2.0D));
 					
 					// Get border height.
-					var bO = random.nextInt(1, 4);
+					var bO = random.nextFloat() * (4 - 1) + 1;
 					
 					// If distance is outside of radius and inside radius extended by border offset,
 					// we create the border.

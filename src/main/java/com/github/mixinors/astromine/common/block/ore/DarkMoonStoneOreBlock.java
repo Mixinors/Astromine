@@ -32,9 +32,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Random;
 
 public class DarkMoonStoneOreBlock extends ExtendedOreBlock {
 	public DarkMoonStoneOreBlock(Settings settings) {

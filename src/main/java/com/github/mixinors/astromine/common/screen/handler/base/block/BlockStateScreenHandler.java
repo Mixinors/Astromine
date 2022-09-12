@@ -28,11 +28,14 @@ import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.function.Supplier;
 
@@ -63,5 +66,11 @@ public abstract class BlockStateScreenHandler extends BaseScreenHandler {
 		}
 		
 		return canUse(ScreenHandlerContext.create(player.getWorld(), blockPos), player, block);
+	}
+	
+	@Override
+	public ItemStack transferSlot(PlayerEntity player, int index) {
+		onSlotClick(index, GLFW.GLFW_MOUSE_BUTTON_1, SlotActionType.QUICK_MOVE, player);
+		return ItemStack.EMPTY;
 	}
 }
