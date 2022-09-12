@@ -54,12 +54,12 @@
       "gravity": 0.02
     },
     "skybox": {
-      "up": { "id": "astromine:textures/skybox/moon/moon_orbit_up.png" },
-      "down": { "id": "astromine:textures/skybox/moon/moon_orbit_down.png" },
-      "north": { "id": "astromine:textures/skybox/moon/moon_orbit_north.png" },
-      "south": { "id": "astromine:textures/skybox/moon/moon_orbit_south.png" },
-      "east": { "id": "astromine:textures/skybox/moon/moon_orbit_east.png" },
-      "west": { "id": "astromine:textures/skybox/moon/moon_orbit_west.png" }
+      "up": "astromine:textures/skybox/moon/moon_orbit_up.png",
+      "down": "astromine:textures/skybox/moon/moon_orbit_down.png",
+      "north": "astromine:textures/skybox/moon/moon_orbit_north.png",
+      "south": "astromine:textures/skybox/moon/moon_orbit_south.png",
+      "east": "astromine:textures/skybox/moon/moon_orbit_east.png",
+      "west": "astromine:textures/skybox/moon/moon_orbit_west.png"
     },
     "bottomLayer": {
       "worldKey": "astromine:moon",
