@@ -22,11 +22,12 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.common.world.feature;
+package com.github.mixinors.astromine.common.world.structure;
 
 import com.github.mixinors.astromine.common.noise.OpenSimplexNoise;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMFeatures;
+import com.github.mixinors.astromine.registry.common.AMStructures;
 import com.terraformersmc.terraform.shapes.api.Position;
 import com.terraformersmc.terraform.shapes.api.Quaternion;
 import com.terraformersmc.terraform.shapes.impl.Shapes;
@@ -56,11 +57,11 @@ public class MeteorGenerator extends ShiftableStructurePiece {
 	private static OpenSimplexNoise noise;
 	
 	public MeteorGenerator(Random random, int x, int z) {
-		super(AMFeatures.METEOR_STRUCTURE_PIECE.get(), x, 64, z, 16, 16, 16, getRandomHorizontalDirection(random));
+		super(AMStructures.METEOR_STRUCTURE_PIECE.get(), x, 64, z, 16, 16, 16, getRandomHorizontalDirection(random));
 	}
 	
 	public MeteorGenerator(NbtCompound nbt) {
-		super(AMFeatures.METEOR_STRUCTURE_PIECE.get(), nbt);
+		super(AMStructures.METEOR_STRUCTURE_PIECE.get(), nbt);
 	}
 	
 	public static void buildSphere(StructureWorldAccess world, BlockPos originPos, int radius, BlockState state) {

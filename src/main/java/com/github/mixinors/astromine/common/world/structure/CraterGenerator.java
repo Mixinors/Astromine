@@ -22,13 +22,14 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.common.world.feature;
+package com.github.mixinors.astromine.common.world.structure;
 
 import com.github.mixinors.astromine.common.registry.DarkMoonOreRegistry;
 import com.github.mixinors.astromine.common.registry.MoonOreRegistry;
 import com.github.mixinors.astromine.registry.common.AMBiomes;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMFeatures;
+import com.github.mixinors.astromine.registry.common.AMStructures;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.NbtCompound;
@@ -44,11 +45,11 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 
 public class CraterGenerator extends ShiftableStructurePiece {
 	public CraterGenerator(Random random, int x, int z) {
-		super(AMFeatures.CRATER_STRUCTURE_PIECE.get(), x, 64, z, 16, 16, 16, getRandomHorizontalDirection(random));
+		super(AMStructures.CRATER_STRUCTURE_PIECE.get(), x, 64, z, 16, 16, 16, getRandomHorizontalDirection(random));
 	}
 	
 	public CraterGenerator(NbtCompound nbt) {
-		super(AMFeatures.CRATER_STRUCTURE_PIECE.get(), nbt);
+		super(AMStructures.CRATER_STRUCTURE_PIECE.get(), nbt);
 	}
 	
 	@Override

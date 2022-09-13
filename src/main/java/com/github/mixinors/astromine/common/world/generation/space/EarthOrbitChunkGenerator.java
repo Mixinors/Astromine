@@ -57,10 +57,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 public class EarthOrbitChunkGenerator extends ChunkGenerator {
-	public static final Codec<RocketInteriorsChunkGenerator> CODEC = RecordCodecBuilder.create((instance) -> {
+	public static final Codec<EarthOrbitChunkGenerator> CODEC = RecordCodecBuilder.create((instance) -> {
 		return createStructureSetRegistryGetter(instance).and(
 				BiomeSource.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeSource)
-		).apply(instance, RocketInteriorsChunkGenerator::new);
+		).apply(instance, EarthOrbitChunkGenerator::new);
 	});
 	
 	public EarthOrbitChunkGenerator(Registry<StructureSet> structureFeatureRegistry, BiomeSource biomeSource) {

@@ -24,7 +24,6 @@
 
 package com.github.mixinors.astromine.registry.common;
 
-
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.world.generation.space.EarthOrbitBiomeSource;
 import com.github.mixinors.astromine.common.world.generation.space.MoonBiomeSource;

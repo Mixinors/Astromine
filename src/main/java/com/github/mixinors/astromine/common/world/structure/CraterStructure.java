@@ -24,14 +24,10 @@
 
 package com.github.mixinors.astromine.common.world.structure;
 
-import com.github.mixinors.astromine.common.world.feature.CraterGenerator;
 import com.mojang.serialization.Codec;
-import net.minecraft.structure.StructureGeneratorFactory;
 import net.minecraft.structure.StructurePiecesCollector;
-import net.minecraft.structure.StructurePiecesGenerator;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.structure.Structure;
 import net.minecraft.world.gen.structure.StructureType;
 
@@ -39,7 +35,6 @@ import java.util.Optional;
 
 public class CraterStructure extends Structure {
 	public static final Codec<CraterStructure> CODEC = createCodec(CraterStructure::new);
-	
 	public static final StructureType<CraterStructure> TYPE = () -> CODEC;
 	
 	public CraterStructure(Config config) {

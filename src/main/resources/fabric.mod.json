@@ -42,11 +42,9 @@
     "cardinal-components-world": [
       "com.github.mixinors.astromine.registry.common.AMComponents"
     ],
-    "rei_plugins": [
+    "rei_common": [
+      "com.github.mixinors.astromine.registry.common.AMContainersInfoHandlers",
       "com.github.mixinors.astromine.client.rei.AMRoughlyEnoughItemsPlugin"
-    ],
-    "rei_containers": [
-      "com.github.mixinors.astromine.registry.common.AMContainersInfoHandlers"
     ],
     "fabric-datagen": [
       "com.github.mixinors.astromine.datagen.AMDatagen"

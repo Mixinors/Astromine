@@ -1,5 +1,8 @@
 accessWidener v2 named
 
+accessible field net/minecraft/world/gen/WorldPreset dimensions Ljava/util/Map;
+mutable field net/minecraft/world/gen/WorldPreset dimensions Ljava/util/Map;
+
 accessible field net/minecraft/client/gui/CubeMapRenderer faces [Lnet/minecraft/util/Identifier;
 
 accessible method net/minecraft/block/WallBlock getShapeMap (FFFFFF)Ljava/util/Map;

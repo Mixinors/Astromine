@@ -34,6 +34,7 @@ import net.minecraft.client.gui.hud.InGameOverlayRenderer;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -50,12 +51,10 @@ public abstract class InGameOverlayRendererMixin {
 	
 	private static void renderMoonDarkSideOverlay(MinecraftClient client, MatrixStack matrices) {
 		RenderSystem.setShader(GameRenderer::getPositionColorShader);
-
-		var bufferBuilder = Tessellator.getInstance().getBuffer();
-
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 		
+		var builder = Tessellator.getInstance().getBuffer();
 		float alpha;
 		
 		if (client.player != null && client.world != null && client.world.getBiome(client.player.getBlockPos()).getKey().orElseThrow().equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
@@ -66,18 +65,13 @@ public abstract class InGameOverlayRendererMixin {
 		
 		ASTROMINE$LAST_ALPHA = alpha;
 		
-		var peek = matrices.peek();
-		
-		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-		
-		bufferBuilder.vertex(peek.getPositionMatrix(), -1.0F, -1.0F, -0.5F).color(0.0F, 0.0F, 0.0F, alpha).next();
-		bufferBuilder.vertex(peek.getPositionMatrix(), 1.0F, -1.0F, -0.5F).color(0.0F, 0.0F, 0.0F, alpha).next();
-		bufferBuilder.vertex(peek.getPositionMatrix(), 1.0F, 1.0F, -0.5F).color(0.0F, 0.0F, 0.0F, alpha).next();
-		bufferBuilder.vertex(peek.getPositionMatrix(), -1.0F, 1.0F, -0.5F).color(0.0F, 0.0F, 0.0F, alpha).next();
-		
-		bufferBuilder.end();
-		
-		BufferRenderer.drawWithShader(bufferBuilder.end());
+		Matrix4f mat4f = matrices.peek().getPositionMatrix();
+		builder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+		builder.vertex(mat4f, -1.0F, -1.0F, -0.5F).color(0.0F, 0.0F, 0.0F, alpha).next();
+		builder.vertex(mat4f, 1.0F, -1.0F, -0.5F).color(0.0F, 0.0F, 0.0F, alpha).next();
+		builder.vertex(mat4f, 1.0F, 1.0F, -0.5F).color(0.0F, 0.0F, 0.0F, alpha).next();
+		builder.vertex(mat4f, -1.0F, 1.0F, -0.5F).color(0.0F, 0.0F, 0.0F, alpha).next();
+		BufferRenderer.drawWithShader(builder.end());
 		
 		RenderSystem.disableBlend();
 	}

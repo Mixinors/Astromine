@@ -24,7 +24,6 @@
 
 package com.github.mixinors.astromine.common.world.generation.space;
 
-import com.github.mixinors.astromine.common.noise.OpenSimplexNoise;
 import com.github.mixinors.astromine.registry.common.AMBiomes;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
@@ -63,7 +62,7 @@ public class MoonBiomeSource extends BiomeSource {
 	// TODO: Add caves to the moon, and clamp their top and bottoms to not hit bedrock!
 	@Override
 	public RegistryEntry<Biome> getBiome(int x, int y, int z, MultiNoiseUtil.MultiNoiseSampler noise) {
-		return registry.getIndexedEntries().get(0);
+		return registry.getEntry(AMBiomes.MOON_CRATER_FIELD_KEY).orElseThrow();
 		// Roughly 50% of the moon's surface should be light side,
 		// 30% crater fields, and 20% dark side.
 		

@@ -1,9 +1,9 @@
 {
-  "required": true,
-  "minVersion": "0.8",
-  "package": "com.github.mixinors.astromine.mixin",
-  "compatibilityLevel": "JAVA_17",
-  "mixins": [
+  "required" : true,
+  "minVersion" : "0.8",
+  "package" : "com.github.mixinors.astromine.mixin",
+  "compatibilityLevel" : "JAVA_17",
+  "mixins" : [
     "common.BlockRenderViewMixin",
     "common.DataPackContentsMixin",
     "common.EntityAccessor",
@@ -21,9 +21,10 @@
     "common.StayAboveWaterTaskMixin",
     "common.StructureAccessorAccessor",
     "common.SwimGoalAccessor",
-    "common.SwimGoalMixin"
+    "common.SwimGoalMixin",
+    "common.WorldPresetsMixin"
   ],
-  "client": [
+  "client" : [
     "client.AbstractSoundInstanceMixin",
     "client.ArmorFeatureRendererMixin",
     "client.BackgroundRendererMixin",
@@ -34,10 +35,9 @@
     "client.ClientPlayerInteractionManagerMixin",
     "client.ClientRecipeBookMixin",
     "client.InGameOverlayRendererMixin",
-    "client.JsonUnbakedModelAccessor",
-    "client.ModelLoaderAccessor"
+    "client.JsonUnbakedModelAccessor"
   ],
-  "injectors": {
-    "defaultRequire": 1
+  "injectors" : {
+    "defaultRequire" : 1
   }
 }

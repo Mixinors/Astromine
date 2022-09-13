@@ -24,7 +24,6 @@
 
 package com.github.mixinors.astromine.common.world.structure;
 
-import com.github.mixinors.astromine.common.world.feature.MeteorGenerator;
 import com.mojang.serialization.Codec;
 import net.minecraft.structure.StructurePiecesCollector;
 import net.minecraft.world.Heightmap;

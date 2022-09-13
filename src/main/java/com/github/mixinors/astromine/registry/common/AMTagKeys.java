@@ -40,6 +40,7 @@ public class AMTagKeys {
 	
 	public static final Identifier IS_MOON_ID = createCommonTagId("is_moon");
 	
+	public static final Identifier INFINIBURN_SPACE_ID = createCommonTagId("infiniburn_space");
 	public static final Identifier YELLOW_SANDSTONES_ID = createCommonTagId("yellow_sandstones");
 	public static final Identifier RED_SANDSTONES_ID = createCommonTagId("red_sandstones");
 	public static final Identifier SANDSTONES_ID = createCommonTagId("sandstones");
@@ -69,6 +70,7 @@ public class AMTagKeys {
 	}
 	
 	public static class BlockTags {
+		public static final TagKey<Block> INFINIBURN_SPACE = createBlockTag(INFINIBURN_SPACE_ID);
 		public static final TagKey<Block> YELLOW_SANDSTONES = createBlockTag(YELLOW_SANDSTONES_ID);
 		public static final TagKey<Block> RED_SANDSTONES = createBlockTag(RED_SANDSTONES_ID);
 		public static final TagKey<Block> SANDSTONES = createBlockTag(SANDSTONES_ID);

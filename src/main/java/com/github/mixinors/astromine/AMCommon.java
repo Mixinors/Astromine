@@ -68,6 +68,7 @@ public class AMCommon implements ModInitializer {
 		AMIdentifierFixes.init();
 		AMWorlds.init();
 		AMFeatures.init();
+		AMStructures.init();
 		AMItems.init();
 		AMBlocks.init();
 		AMScreenHandlers.init();
