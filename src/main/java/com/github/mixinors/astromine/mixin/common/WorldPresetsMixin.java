@@ -12,7 +12,6 @@ import java.util.HashMap;
 
 @Mixin(targets = "net.minecraft.world.gen.WorldPresets$Registrar")
 public class WorldPresetsMixin {
-	
 	@Inject(method = "createPreset", at = @At("RETURN"))
 	private void astromine$addAstromineDimensions(DimensionOptions dimensionOptions, CallbackInfoReturnable<WorldPreset> cir) {
 		var preset = cir.getReturnValue();
