@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.client.model.entity;
 
-import com.github.mixinors.astromine.client.render.entity.PrimitiveRocketEntityRenderer;
+import com.github.mixinors.astromine.client.render.entity.RocketEntityRenderer;
 import com.github.mixinors.astromine.common.entity.rocket.RocketEntity;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -35,10 +35,10 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3f;
 
-public class PrimitiveRocketEntityModel extends SinglePartEntityModel<RocketEntity> {
+public class RocketEntityModel extends SinglePartEntityModel<RocketEntity> {
 	private final ModelPart root;
 	
-	public PrimitiveRocketEntityModel(ModelPart root) {
+	public RocketEntityModel(ModelPart root) {
 		this.root = root;
 	}
 	
@@ -81,7 +81,7 @@ public class PrimitiveRocketEntityModel extends SinglePartEntityModel<RocketEnti
 		return this.root;
 	}
 	
-	public static void renderItem(PrimitiveRocketEntityModel primitiveRocketEntityModel, ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
+	public static void renderItem(RocketEntityModel rocketEntityModel, ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
 		matrices.push();
 		
 		if (mode == ModelTransformation.Mode.GUI) {
@@ -99,9 +99,9 @@ public class PrimitiveRocketEntityModel extends SinglePartEntityModel<RocketEnti
 		matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(45));
 		matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(45));
 		
-		var glintConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, primitiveRocketEntityModel.getLayer(PrimitiveRocketEntityRenderer.ID), false, stack.hasGlint());
+		var glintConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, rocketEntityModel.getLayer(RocketEntityRenderer.ID), false, stack.hasGlint());
 		
-		primitiveRocketEntityModel.render(matrices, glintConsumer, i, j, 1.0F, 1.0F, 1.0F, 1.0F);
+		rocketEntityModel.render(matrices, glintConsumer, i, j, 1.0F, 1.0F, 1.0F, 1.0F);
 		
 		matrices.pop();
 	}

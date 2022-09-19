@@ -31,6 +31,6 @@ public class EntitiesConfigSection {
 	@Comment("Chance for Piglins to realize if you try to trick them (1 in x)")
 	public int piglinAngerChance = 5;
 	
-	@Comment("The maximum fuel a Primitive Rocket can hold")
-	public long primitiveRocketFluid = FluidConstants.BUCKET * 16L;
+	@Comment("The maximum fuel a Rocket can hold")
+	public long rocketFluid = FluidConstants.BUCKET * 16L;
 }

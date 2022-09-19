@@ -136,6 +136,7 @@ public class AMWorlds {
 		));
 		
 		DIMENSIONS.put(dimOptionsKey, () -> new DimensionOptions(BuiltinRegistries.DIMENSION_TYPE.getOrCreateEntry(dimTypeKey), chunkGenerator.apply(BuiltinRegistries.STRUCTURE_SET, BuiltinRegistries.BIOME)));
+		
 		return dimWorldKey;
 	}
 	

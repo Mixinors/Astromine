@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.client.render.entity;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.client.model.entity.PrimitiveRocketEntityModel;
+import com.github.mixinors.astromine.client.model.entity.RocketEntityModel;
 import com.github.mixinors.astromine.common.entity.rocket.RocketEntity;
 import com.github.mixinors.astromine.registry.client.AMEntityModelLayers;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
@@ -37,48 +37,29 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3f;
 
-public class PrimitiveRocketEntityRenderer extends EntityRenderer<RocketEntity> {
-	public static final Identifier ID = AMCommon.id("textures/entity/rocket/primitive_rocket.png");
+public class RocketEntityRenderer extends EntityRenderer<RocketEntity> {
+	public static final Identifier ID = AMCommon.id("textures/entity/rocket/rocket.png");
 	
-	private final PrimitiveRocketEntityModel model;
+	private final RocketEntityModel model;
 	
-	public PrimitiveRocketEntityRenderer(Context context) {
+	public RocketEntityRenderer(Context context) {
 		super(context);
 		
-		this.model = new PrimitiveRocketEntityModel(context.getPart(AMEntityModelLayers.ROCKET));
+		this.model = new RocketEntityModel(context.getPart(AMEntityModelLayers.ROCKET));
 	}
 	
 	@Override
 	public void render(RocketEntity rocket, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider provider, int light) {
-		matrices.pop();
-		
 		matrices.push();
 		
-		var client = InstanceUtil.getClient();
-		
-		var gameRenderer = client.gameRenderer;
-		
-		var cameraPos = gameRenderer.getCamera().getPos();
-		
-		var lerpedPos = rocket.getLerpedPos(tickDelta);
-		
-		matrices.translate(lerpedPos.getX() - cameraPos.getX(), lerpedPos.getY() - cameraPos.getY(), lerpedPos.getZ() - cameraPos.getZ());
-		
 		matrices.scale(-1.0F, -1.0F, 1.0F);
-		
 		matrices.scale(2.0F, 2.0F, 2.0F);
-		
-		matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(90.0F));
-		
-		model.setAngles(rocket, 0, 0.0F, -0.1F, rocket.getYaw(tickDelta), rocket.getPitch(tickDelta));
-		
+
 		var vertexConsumer = provider.getBuffer(model.getLayer(getTexture(rocket)));
 		
 		model.render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
 		
 		matrices.pop();
-		
-		matrices.push();
 		
 		super.render(rocket, yaw, tickDelta, matrices, provider, light);
 	}

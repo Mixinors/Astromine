@@ -44,9 +44,9 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-// TODO: Add Tracked Data Manager to Hammer!
 public class RocketEntity extends ExtendedEntity {
-	private static final String ROCKET_UUID = "rocket";
+	private static final String ROCKET_UUID_KEY = "rocket";
+	
 	public static final TrackedData<Boolean> RUNNING = DataTracker.registerData(RocketEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	
 	private Rocket rocket;
@@ -64,14 +64,18 @@ public class RocketEntity extends ExtendedEntity {
 	protected void writeCustomDataToNbt(NbtCompound nbt) {
 		super.writeCustomDataToNbt(nbt);
 		
-		nbt.putUuid(ROCKET_UUID, rocket.getUuid());
+		if (rocket != null) {
+			nbt.putUuid(ROCKET_UUID_KEY, rocket.getUuid());
+		}
 	}
 	
 	@Override
 	protected void readCustomDataFromNbt(NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
 		
-		rocket = RocketManager.get(nbt.getUuid(ROCKET_UUID));
+		if (nbt.contains(ROCKET_UUID_KEY)) {
+			rocket = RocketManager.get(nbt.getUuid(ROCKET_UUID_KEY));
+		}
 	}
 	
 	public Vec3d getAcceleration() {
@@ -84,7 +88,21 @@ public class RocketEntity extends ExtendedEntity {
 	}
 	
 	@Override
+	public boolean canHit() {
+		return !this.isRemoved();
+	}
+	
+	@Override
+	public ActionResult interact(PlayerEntity player, Hand hand) {
+		System.out.println("UwU");
+		
+		return super.interact(player, hand);
+	}
+	
+	@Override
 	public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
+		System.out.println("OwO");
+		
 		if (player.world.isClient()) {
 			return ActionResult.CONSUME;
 		}

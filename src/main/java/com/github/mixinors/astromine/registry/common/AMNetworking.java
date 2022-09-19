@@ -38,12 +38,11 @@ public class AMNetworking {
 	
 	public static final Identifier REDSTONE_TYPE_UPDATE = AMCommon.id("redstone_type_update");
 	
-	public static final Identifier PRIMITIVE_ROCKET_SPAWN = AMCommon.id("primitive_rocket_spawn");
+	public static final Identifier ROCKET_SPAWN = AMCommon.id("rocket_spawn");
 	
 	public static final Identifier SYNC_ENTITY = AMCommon.id("sync_entity");
 	
 	public static final Identifier SYNC_BODIES = AMCommon.id("sync_bodies");
-	public static final Identifier SYNC_SKYBOXES = AMCommon.id("sync_bodies");
 	
 	public static void init() {
 		NetworkManager.registerReceiver(NetworkManager.c2s(), STORAGE_SIDING_UPDATE, ((buf, context) -> {

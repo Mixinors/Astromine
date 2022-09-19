@@ -34,6 +34,7 @@ import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil;
+import net.minecraft.world.gen.densityfunction.DensityFunction;
 
 public class MoonBiomeSource extends BiomeSource {
 	public static final Codec<MoonBiomeSource> CODEC = RecordCodecBuilder.create((instance) ->
@@ -62,7 +63,6 @@ public class MoonBiomeSource extends BiomeSource {
 	// TODO: Add caves to the moon, and clamp their top and bottoms to not hit bedrock!
 	@Override
 	public RegistryEntry<Biome> getBiome(int x, int y, int z, MultiNoiseUtil.MultiNoiseSampler noise) {
-		return registry.getEntry(AMBiomes.MOON_CRATER_FIELD_KEY).orElseThrow();
 		// Roughly 50% of the moon's surface should be light side,
 		// 30% crater fields, and 20% dark side.
 		
@@ -70,14 +70,14 @@ public class MoonBiomeSource extends BiomeSource {
 		
 		// TODO: Fix this. What the FUCK was Mojang thinking?
 		
-		//var sample = Math.abs(this.noise.sample(x / 128.0F, 0, z / 128.0F));
-		//
-		//if (sample > 0.5F) {
-		//	return registry.getEntry(AMBiomes.MOON_LIGHT_SIDE_KEY).orElseThrow();
-		//} else if (sample > 0.2F) {
-		//	return registry.getEntry(AMBiomes.MOON_CRATER_FIELD_KEY).orElseThrow();
-		//} else {
-		//	return registry.getEntry(AMBiomes.MOON_DARK_SIDE_KEY).orElseThrow();
-		//}
+		var sample = Math.abs(noise.humidity().sample(new DensityFunction.UnblendedNoisePos(x / 128, 0, z / 128)));
+		
+		if (sample > 0.5F) {
+			return registry.getEntry(AMBiomes.MOON_LIGHT_SIDE_KEY).orElseThrow();
+		} else if (sample > 0.2F) {
+			return registry.getEntry(AMBiomes.MOON_CRATER_FIELD_KEY).orElseThrow();
+		} else {
+			return registry.getEntry(AMBiomes.MOON_DARK_SIDE_KEY).orElseThrow();
+		}
 	}
 }

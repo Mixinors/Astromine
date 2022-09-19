@@ -25,12 +25,12 @@
 package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.client.model.entity.PrimitiveRocketEntityModel;
+import com.github.mixinors.astromine.client.model.entity.RocketEntityModel;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 
 public class AMEntityModelLayers {
-	public static final EntityModelLayer ROCKET = register("rocket", PrimitiveRocketEntityModel::getTexturedModelData);
+	public static final EntityModelLayer ROCKET = register("rocket", RocketEntityModel::getTexturedModelData);
 	
 	public static void init() {
 	}

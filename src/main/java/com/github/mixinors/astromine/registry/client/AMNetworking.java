@@ -37,7 +37,7 @@ public class AMNetworking {
 	public static void init() {
 		ClientPlayNetworking.registerGlobalReceiver(com.github.mixinors.astromine.registry.common.AMNetworking.SYNC_BODIES, BodyManager::onSync);
 		
-		NetworkManager.registerReceiver(NetworkManager.s2c(), PRIMITIVE_ROCKET_SPAWN, (buf, context) -> {
+		NetworkManager.registerReceiver(NetworkManager.s2c(), ROCKET_SPAWN, (buf, context) -> {
 			var x = buf.readDouble();
 			var y = buf.readDouble();
 			var z = buf.readDouble();
