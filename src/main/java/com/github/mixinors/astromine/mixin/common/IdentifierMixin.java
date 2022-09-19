@@ -24,9 +24,6 @@
 
 package com.github.mixinors.astromine.mixin.common;
 
-import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.config.AMConfig;
-import com.github.mixinors.astromine.common.registry.IdentifierFixRegistry;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;

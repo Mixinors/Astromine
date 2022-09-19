@@ -8,8 +8,8 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
-
 import org.jetbrains.annotations.Nullable;
+
 import java.util.Optional;
 
 public record BodyDimension(

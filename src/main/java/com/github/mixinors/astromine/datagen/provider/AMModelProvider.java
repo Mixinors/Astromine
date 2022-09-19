@@ -32,10 +32,8 @@ import com.github.mixinors.astromine.datagen.family.material.AMMaterialFamilies;
 import com.github.mixinors.astromine.datagen.family.material.family.MaterialFamily;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMItems;
-
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.client.*;

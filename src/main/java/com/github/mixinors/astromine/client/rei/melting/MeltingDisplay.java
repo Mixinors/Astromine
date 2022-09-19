@@ -30,8 +30,6 @@ import com.github.mixinors.astromine.common.recipe.MeltingRecipe;
 import com.google.common.collect.ImmutableList;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 import java.util.Arrays;
 

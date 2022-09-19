@@ -36,8 +36,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Supplier;
 
 public class BodySelectorHandledScreen extends BaseHandledScreen<BodySelectorScreenHandler> {

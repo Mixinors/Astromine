@@ -3,8 +3,8 @@ package com.github.mixinors.astromine.common.registry.base;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.Identifier;
-
 import org.jetbrains.annotations.Nullable;
+
 import java.util.function.Supplier;
 
 /**

@@ -36,7 +36,6 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
-import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
 public class AMCommands {

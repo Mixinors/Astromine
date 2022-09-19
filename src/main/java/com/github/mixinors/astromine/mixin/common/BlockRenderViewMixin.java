@@ -1,7 +1,6 @@
 package com.github.mixinors.astromine.mixin.common;
 
 import com.github.mixinors.astromine.registry.common.AMBiomes;
-import com.github.mixinors.astromine.registry.common.AMWorlds;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockRenderView;

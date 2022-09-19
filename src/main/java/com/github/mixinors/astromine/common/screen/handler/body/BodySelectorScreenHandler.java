@@ -1,6 +1,5 @@
 package com.github.mixinors.astromine.common.screen.handler.body;
 
-import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.widget.BodySelectionWidget;
 import com.github.mixinors.astromine.common.widget.BodyWidget;
 import com.github.mixinors.astromine.registry.common.AMRegistries;
@@ -13,8 +12,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.SlotActionType;
 import org.lwjgl.glfw.GLFW;
-
-import java.util.function.Consumer;
 
 public class BodySelectorScreenHandler extends BaseScreenHandler {
 	public static final float SELECT_BUTTON_WIDTH = 18.0F;

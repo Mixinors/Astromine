@@ -26,8 +26,8 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.world.structure.CraterGenerator;
-import com.github.mixinors.astromine.common.world.structure.MeteorGenerator;
 import com.github.mixinors.astromine.common.world.structure.CraterStructure;
+import com.github.mixinors.astromine.common.world.structure.MeteorGenerator;
 import com.github.mixinors.astromine.common.world.structure.MeteorStructure;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.entity.SpawnGroup;

@@ -6,7 +6,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.Properties;
 import org.jetbrains.annotations.Nullable;
 
 public class DynamicSlabBlock extends SlabBlock {

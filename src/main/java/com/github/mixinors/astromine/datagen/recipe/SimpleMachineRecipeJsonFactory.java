@@ -26,7 +26,6 @@ package com.github.mixinors.astromine.datagen.recipe;
 
 import com.github.mixinors.astromine.common.recipe.base.input.EnergyInputRecipe;
 import com.google.gson.JsonObject;
-import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;

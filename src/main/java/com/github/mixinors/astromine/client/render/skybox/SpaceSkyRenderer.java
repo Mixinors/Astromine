@@ -28,7 +28,6 @@ import com.github.mixinors.astromine.common.manager.BodyManager;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.world.World;
 
 public class SpaceSkyRenderer {
 	private static final ExtendedCubeMapRenderer cubeMapRenderer = new ExtendedCubeMapRenderer();

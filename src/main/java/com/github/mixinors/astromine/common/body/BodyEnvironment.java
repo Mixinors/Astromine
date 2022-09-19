@@ -2,8 +2,8 @@ package com.github.mixinors.astromine.common.body;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-
 import org.jetbrains.annotations.Nullable;
+
 import java.util.Optional;
 
 public record BodyEnvironment(

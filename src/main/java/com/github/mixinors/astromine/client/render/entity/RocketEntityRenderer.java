@@ -28,14 +28,12 @@ import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.model.entity.RocketEntityModel;
 import com.github.mixinors.astromine.common.entity.rocket.RocketEntity;
 import com.github.mixinors.astromine.registry.client.AMEntityModelLayers;
-import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory.Context;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Vec3f;
 
 public class RocketEntityRenderer extends EntityRenderer<RocketEntity> {
 	public static final Identifier ID = AMCommon.id("textures/entity/rocket/rocket.png");

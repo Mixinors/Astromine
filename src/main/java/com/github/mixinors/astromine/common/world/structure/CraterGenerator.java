@@ -28,7 +28,6 @@ import com.github.mixinors.astromine.common.registry.DarkMoonOreRegistry;
 import com.github.mixinors.astromine.common.registry.MoonOreRegistry;
 import com.github.mixinors.astromine.registry.common.AMBiomes;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-import com.github.mixinors.astromine.registry.common.AMFeatures;
 import com.github.mixinors.astromine.registry.common.AMStructures;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;

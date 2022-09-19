@@ -50,7 +50,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.*;
-
 import org.jetbrains.annotations.Nullable;
 
 public class AirlockBlock extends Block implements Waterloggable {

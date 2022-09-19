@@ -1,6 +1,5 @@
 package com.github.mixinors.astromine.common.block.rocket;
 
-import com.github.mixinors.astromine.common.block.base.BlockWithEntity;
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.mixinors.astromine.common.block.entity.rocket.RocketControllerBlockEntity;
 import com.github.mixinors.astromine.common.screen.handler.rocket.RocketControllerScreenHandler;

@@ -1,7 +1,6 @@
 package com.github.mixinors.astromine.common.widget;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.util.StorageUtils;
 import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
 import dev.vini2003.hammer.core.api.client.texture.TiledFluidTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
@@ -14,7 +13,6 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.Text;
 import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
 

@@ -24,9 +24,7 @@
 
 package com.github.mixinors.astromine.common.util;
 
-import com.github.mixinors.astromine.registry.common.AMBodies;
 import com.github.mixinors.astromine.registry.common.AMRegistries;
-import com.github.mixinors.astromine.registry.common.AMWorlds;
 import net.minecraft.entity.player.PlayerEntity;
 
 public class SoundUtils {

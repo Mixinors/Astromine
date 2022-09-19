@@ -1,7 +1,5 @@
 package com.github.mixinors.astromine.datagen.provider.tag;
 
-import com.github.mixinors.astromine.registry.common.AMTagKeys;
-import com.github.mixinors.astromine.registry.common.AMWorlds;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.util.registry.Registry;

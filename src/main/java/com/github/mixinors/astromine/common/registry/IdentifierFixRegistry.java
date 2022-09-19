@@ -26,9 +26,6 @@ package com.github.mixinors.astromine.common.registry;
 
 import com.github.mixinors.astromine.common.registry.base.Registry;
 import com.github.mixinors.astromine.mixin.common.IdentifierMixin;
-import net.minecraft.util.Identifier;
-
-import java.util.Optional;
 
 // FIXME
 

@@ -29,7 +29,6 @@ import com.github.mixinors.astromine.registry.common.AMItems;
 import com.mojang.serialization.Codec;
 import net.minecraft.item.Item;
 import net.minecraft.text.Text;
-import net.minecraft.text.Text;
 
 /**
  * A {@link StorageType} which dictates which of a machine's storages should be used.

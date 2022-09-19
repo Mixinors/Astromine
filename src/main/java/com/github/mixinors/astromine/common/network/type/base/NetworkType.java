@@ -28,7 +28,6 @@ import com.github.mixinors.astromine.common.network.Network;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-
 import org.jetbrains.annotations.Nullable;
 
 public abstract class NetworkType<T> {

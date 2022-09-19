@@ -2,7 +2,6 @@ package com.github.mixinors.astromine.common.block.station;
 
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.mixinors.astromine.common.block.entity.station.StationControllerBlockEntity;
-import com.github.mixinors.astromine.common.manager.StationManager;
 import com.github.mixinors.astromine.common.screen.handler.station.StationControllerScreenHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -15,7 +14,6 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 
 public class StationControllerBlock extends HorizontalFacingBlockWithEntity {

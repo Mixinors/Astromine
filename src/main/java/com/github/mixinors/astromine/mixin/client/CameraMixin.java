@@ -25,7 +25,6 @@
 package com.github.mixinors.astromine.mixin.client;
 
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
-
 import net.minecraft.client.render.Camera;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;

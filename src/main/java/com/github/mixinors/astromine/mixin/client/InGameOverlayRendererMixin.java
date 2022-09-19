@@ -27,7 +27,6 @@ package com.github.mixinors.astromine.mixin.client;
 import com.github.mixinors.astromine.registry.client.AMValues;
 import com.github.mixinors.astromine.registry.common.AMBiomes;
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameOverlayRenderer;

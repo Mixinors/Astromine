@@ -10,9 +10,7 @@ import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 
 import java.io.InputStreamReader;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class ResourceUtil {

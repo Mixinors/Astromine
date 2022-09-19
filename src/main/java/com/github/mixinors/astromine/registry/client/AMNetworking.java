@@ -31,7 +31,8 @@ import dev.architectury.networking.NetworkManager;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.world.ClientWorld;
 
-import static com.github.mixinors.astromine.registry.common.AMNetworking.*;
+import static com.github.mixinors.astromine.registry.common.AMNetworking.ROCKET_SPAWN;
+import static com.github.mixinors.astromine.registry.common.AMNetworking.SYNC_ENTITY;
 
 public class AMNetworking {
 	public static void init() {

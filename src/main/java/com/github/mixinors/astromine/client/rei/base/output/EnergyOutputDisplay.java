@@ -27,8 +27,6 @@ package com.github.mixinors.astromine.client.rei.base.output;
 import com.github.mixinors.astromine.client.rei.base.AMDisplay;
 import com.google.common.collect.ImmutableList;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;
 
 import java.util.List;

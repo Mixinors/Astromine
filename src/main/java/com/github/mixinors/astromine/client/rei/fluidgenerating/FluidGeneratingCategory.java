@@ -31,9 +31,6 @@ import com.github.mixinors.astromine.registry.common.AMBlocks;
 import me.shedaniel.rei.api.client.gui.Renderer;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.text.Text;
 import net.minecraft.text.Text;
 
 public class FluidGeneratingCategory implements SingleFluidInputCategory<FluidGeneratingDisplay>, EnergyOutputCategory<FluidGeneratingDisplay> {

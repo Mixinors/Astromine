@@ -9,8 +9,8 @@ import dev.vini2003.hammer.gravity.api.common.manager.GravityManager;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.ApiStatus;
-
 import org.jetbrains.annotations.Nullable;
+
 import java.util.Optional;
 
 /**

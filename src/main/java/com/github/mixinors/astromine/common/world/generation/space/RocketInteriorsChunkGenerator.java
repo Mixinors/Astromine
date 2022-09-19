@@ -25,8 +25,6 @@
 package com.github.mixinors.astromine.common.world.generation.space;
 
 import com.github.mixinors.astromine.AMCommon;
-import com.github.mixinors.astromine.common.noise.OctaveNoiseSampler;
-import com.github.mixinors.astromine.common.noise.OpenSimplexNoise;
 import com.github.mixinors.astromine.mixin.common.StructureAccessorAccessor;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -52,9 +50,10 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
 import net.minecraft.world.gen.noise.NoiseConfig;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 
 public class RocketInteriorsChunkGenerator extends ChunkGenerator {

@@ -4,8 +4,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import net.minecraft.util.Identifier;
-
 import org.jetbrains.annotations.Nullable;
+
 import java.util.Optional;
 
 public record BodyOrbit(

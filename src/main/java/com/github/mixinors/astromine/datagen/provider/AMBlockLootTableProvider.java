@@ -35,7 +35,6 @@ import com.google.common.collect.ImmutableList;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.minecraft.block.Block;
-import net.minecraft.data.DataCache;
 import net.minecraft.data.server.BlockLootTableGenerator;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -47,7 +46,6 @@ import net.minecraft.loot.function.CopyNbtLootFunction;
 import net.minecraft.loot.provider.nbt.ContextLootNbtProvider;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 
-import java.io.IOException;
 import java.util.List;
 
 public class AMBlockLootTableProvider extends FabricBlockLootTableProvider {

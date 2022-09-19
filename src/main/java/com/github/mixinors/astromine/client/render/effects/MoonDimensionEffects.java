@@ -25,13 +25,11 @@
 package com.github.mixinors.astromine.client.render.effects;
 
 import com.github.mixinors.astromine.registry.common.AMBiomes;
-import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.DimensionEffects;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.Heightmap;
 
 @Environment(EnvType.CLIENT)
 public class MoonDimensionEffects extends DimensionEffects {

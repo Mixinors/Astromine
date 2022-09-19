@@ -25,9 +25,7 @@
 package com.github.mixinors.astromine.common.util;
 
 import dev.vini2003.hammer.core.api.common.util.NumberUtil;
-import net.minecraft.text.Text;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 

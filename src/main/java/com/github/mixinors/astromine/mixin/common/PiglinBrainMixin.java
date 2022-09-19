@@ -27,7 +27,6 @@ package com.github.mixinors.astromine.mixin.common;
 import com.github.mixinors.astromine.common.config.AMConfig;
 import com.github.mixinors.astromine.registry.common.AMCriteria;
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
-
 import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.mob.PiglinBrain;
 import net.minecraft.entity.mob.PiglinEntity;
