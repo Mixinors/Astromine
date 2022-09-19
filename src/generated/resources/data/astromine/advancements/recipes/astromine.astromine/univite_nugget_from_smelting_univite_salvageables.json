@@ -1,26 +1,21 @@
 {
   "parent": "minecraft:recipes/root",
-  "rewards": {
-    "recipes": [
-      "minecraft:univite_nugget_from_smelting_univite_salvageables"
-    ]
-  },
   "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:univite_nugget_from_smelting_univite_salvageables"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
     "has_univite_salvageables": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "tag": "c:univite_salvageables"
           }
         ]
-      }
-    },
-    "has_the_recipe": {
-      "trigger": "minecraft:recipe_unlocked",
-      "conditions": {
-        "recipe": "minecraft:univite_nugget_from_smelting_univite_salvageables"
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
     }
   },
   "requirements": [
@@ -28,5 +23,10 @@
       "has_univite_salvageables",
       "has_the_recipe"
     ]
-  ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:univite_nugget_from_smelting_univite_salvageables"
+    ]
+  }
 }

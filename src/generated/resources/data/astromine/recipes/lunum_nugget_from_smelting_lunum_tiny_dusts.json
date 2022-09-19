@@ -1,9 +1,9 @@
 {
   "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.0,
   "ingredient": {
     "tag": "c:lunum_tiny_dusts"
   },
-  "result": "astromine:lunum_nugget",
-  "experience": 0.0,
-  "cookingtime": 200
+  "result": "astromine:lunum_nugget"
 }

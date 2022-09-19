@@ -1,12 +1,12 @@
 {
   "type": "astromine:wire_milling",
+  "energy_input": 340,
   "input": {
     "tag": "c:copper_ingots"
   },
   "output": {
-    "item": "astromine:copper_wire",
-    "count": 3
+    "count": 3,
+    "item": "astromine:copper_wire"
   },
-  "energy_input": 340,
   "time": 80
 }

@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 140,
   "input": {
     "tag": "c:copper_nuggets"
   },
   "output": {
-    "fluid": "astromine:molten_copper",
-    "amount": 1000
+    "amount": 1000,
+    "fluid": "astromine:molten_copper"
   },
-  "energy_input": 140,
   "time": 17
 }

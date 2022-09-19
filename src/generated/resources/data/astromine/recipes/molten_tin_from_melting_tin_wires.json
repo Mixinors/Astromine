@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 288,
   "input": {
     "tag": "c:tin_wires"
   },
   "output": {
-    "fluid": "astromine:molten_tin",
-    "amount": 3000
+    "amount": 3000,
+    "fluid": "astromine:molten_tin"
   },
-  "energy_input": 288,
   "time": 36
 }

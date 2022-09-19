@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 2728,
   "input": {
     "tag": "c:lead_asteroid_ore_clusters"
   },
   "output": {
-    "fluid": "astromine:molten_lead",
-    "amount": 15000
+    "amount": 15000,
+    "fluid": "astromine:molten_lead"
   },
-  "energy_input": 2728,
   "time": 341
 }

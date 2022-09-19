@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "X": {
+      "tag": "c:steel_ingots"
+    }
+  },
   "pattern": [
     "X",
     "S",
     "S"
   ],
-  "key": {
-    "X": {
-      "tag": "c:steel_ingots"
-    },
-    "S": {
-      "item": "minecraft:stick"
-    }
-  },
   "result": {
     "item": "astromine:steel_shovel"
   }

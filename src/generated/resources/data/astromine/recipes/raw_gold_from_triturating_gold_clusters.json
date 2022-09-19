@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 300,
   "input": {
     "tag": "c:gold_clusters"
   },
   "output": {
-    "item": "minecraft:raw_gold",
-    "count": 2
+    "count": 2,
+    "item": "minecraft:raw_gold"
   },
-  "energy_input": 300,
   "time": 90
 }

@@ -1,9 +1,9 @@
 {
   "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 1.0,
   "ingredient": {
     "tag": "c:emerald_dark_moon_ores"
   },
-  "result": "minecraft:emerald",
-  "experience": 1.0,
-  "cookingtime": 200
+  "result": "minecraft:emerald"
 }

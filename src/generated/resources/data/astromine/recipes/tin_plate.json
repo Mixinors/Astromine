@@ -1,14 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "X",
-    "X"
-  ],
   "key": {
     "X": {
       "tag": "c:tin_ingots"
     }
   },
+  "pattern": [
+    "X",
+    "X"
+  ],
   "result": {
     "item": "astromine:tin_plate"
   }

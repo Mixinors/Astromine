@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 340,
   "input": {
     "tag": "c:silver_ores"
   },
   "output": {
-    "item": "astromine:raw_silver",
-    "count": 2
+    "count": 2,
+    "item": "astromine:raw_silver"
   },
-  "energy_input": 340,
   "time": 180
 }

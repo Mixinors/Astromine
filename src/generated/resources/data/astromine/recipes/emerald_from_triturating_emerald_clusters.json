@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 300,
   "input": {
     "tag": "c:emerald_clusters"
   },
   "output": {
-    "item": "minecraft:emerald",
-    "count": 2
+    "count": 2,
+    "item": "minecraft:emerald"
   },
-  "energy_input": 300,
   "time": 90
 }

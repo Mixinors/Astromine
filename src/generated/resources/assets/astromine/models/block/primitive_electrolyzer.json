@@ -1,11 +1,11 @@
 {
   "parent": "astromine:block/machine",
   "textures": {
-    "top": "astromine:block/primitive_electrolyzer_top",
+    "back": "astromine:block/primitive_electrolyzer_back",
     "bottom": "astromine:block/primitive_electrolyzer_bottom",
+    "front": "astromine:block/primitive_electrolyzer_front",
     "left": "astromine:block/primitive_electrolyzer_left",
     "right": "astromine:block/primitive_electrolyzer_right",
-    "front": "astromine:block/primitive_electrolyzer_front",
-    "back": "astromine:block/primitive_electrolyzer_back"
+    "top": "astromine:block/primitive_electrolyzer_top"
   }
 }

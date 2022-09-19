@@ -1,14 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "X X",
-    "X X"
-  ],
   "key": {
     "X": {
       "tag": "c:steel_ingots"
     }
   },
+  "pattern": [
+    "X X",
+    "X X"
+  ],
   "result": {
     "item": "astromine:steel_boots"
   }

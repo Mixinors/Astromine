@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 200,
   "input": {
     "tag": "c:steel_salvageables"
   },
   "output": {
-    "item": "astromine:steel_tiny_dust",
-    "count": 2
+    "count": 2,
+    "item": "astromine:steel_tiny_dust"
   },
-  "energy_input": 200,
   "time": 30
 }

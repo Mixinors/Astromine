@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 1584,
   "input": {
     "tag": "c:steel_gears"
   },
   "output": {
-    "fluid": "astromine:molten_steel",
-    "amount": 9000
+    "amount": 9000,
+    "fluid": "astromine:molten_steel"
   },
-  "energy_input": 1584,
   "time": 198
 }

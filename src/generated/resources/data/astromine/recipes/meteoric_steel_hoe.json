@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "X": {
+      "tag": "c:meteoric_steel_ingots"
+    }
+  },
   "pattern": [
     "XX",
     " S",
     " S"
   ],
-  "key": {
-    "X": {
-      "tag": "c:meteoric_steel_ingots"
-    },
-    "S": {
-      "item": "minecraft:stick"
-    }
-  },
   "result": {
     "item": "astromine:meteoric_steel_hoe"
   }

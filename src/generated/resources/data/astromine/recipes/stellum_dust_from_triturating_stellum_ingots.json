@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 270,
   "input": {
     "tag": "c:stellum_ingots"
   },
   "output": {
-    "item": "astromine:stellum_dust",
-    "count": 1
+    "count": 1,
+    "item": "astromine:stellum_dust"
   },
-  "energy_input": 270,
   "time": 60
 }

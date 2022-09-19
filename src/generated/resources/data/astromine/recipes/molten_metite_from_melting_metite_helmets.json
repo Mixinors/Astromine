@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 5600,
   "input": {
     "tag": "c:metite_helmets"
   },
   "output": {
-    "fluid": "astromine:molten_metite",
-    "amount": 10000
+    "amount": 10000,
+    "fluid": "astromine:molten_metite"
   },
-  "energy_input": 5600,
   "time": 700
 }

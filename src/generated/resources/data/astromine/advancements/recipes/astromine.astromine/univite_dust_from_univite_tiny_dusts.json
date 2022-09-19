@@ -1,26 +1,21 @@
 {
   "parent": "minecraft:recipes/root",
-  "rewards": {
-    "recipes": [
-      "astromine:univite_dust_from_univite_tiny_dusts"
-    ]
-  },
   "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "astromine:univite_dust_from_univite_tiny_dusts"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
     "has_univite_tiny_dusts": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "tag": "c:univite_tiny_dusts"
           }
         ]
-      }
-    },
-    "has_the_recipe": {
-      "trigger": "minecraft:recipe_unlocked",
-      "conditions": {
-        "recipe": "astromine:univite_dust_from_univite_tiny_dusts"
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
     }
   },
   "requirements": [
@@ -28,5 +23,10 @@
       "has_univite_tiny_dusts",
       "has_the_recipe"
     ]
-  ]
+  ],
+  "rewards": {
+    "recipes": [
+      "astromine:univite_dust_from_univite_tiny_dusts"
+    ]
+  }
 }

@@ -1,10 +1,10 @@
 {
   "type": "minecraft:smithing",
-  "base": {
-    "item": "astromine:galaxium_chestplate"
-  },
   "addition": {
     "item": "astromine:univite_ingot"
+  },
+  "base": {
+    "item": "astromine:galaxium_chestplate"
   },
   "result": {
     "item": "astromine:univite_chestplate"

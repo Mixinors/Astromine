@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 540,
   "input": {
     "tag": "c:univite_blocks"
   },
   "output": {
-    "item": "astromine:univite_dust",
-    "count": 9
+    "count": 9,
+    "item": "astromine:univite_dust"
   },
-  "energy_input": 540,
   "time": 240
 }

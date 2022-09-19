@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 2550,
   "input": {
     "tag": "c:raw_silver_blocks"
   },
   "output": {
-    "item": "astromine:silver_dust",
-    "count": 18
+    "count": 18,
+    "item": "astromine:silver_dust"
   },
-  "energy_input": 2550,
   "time": 760
 }

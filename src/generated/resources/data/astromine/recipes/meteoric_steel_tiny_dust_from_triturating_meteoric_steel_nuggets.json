@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 200,
   "input": {
     "tag": "c:meteoric_steel_nuggets"
   },
   "output": {
-    "item": "astromine:meteoric_steel_tiny_dust",
-    "count": 1
+    "count": 1,
+    "item": "astromine:meteoric_steel_tiny_dust"
   },
-  "energy_input": 200,
   "time": 30
 }

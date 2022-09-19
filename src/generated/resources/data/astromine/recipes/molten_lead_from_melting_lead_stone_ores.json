@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 3100,
   "input": {
     "tag": "c:lead_stone_ores"
   },
   "output": {
-    "fluid": "astromine:molten_lead",
-    "amount": 12000
+    "amount": 12000,
+    "fluid": "astromine:molten_lead"
   },
-  "energy_input": 3100,
   "time": 387
 }

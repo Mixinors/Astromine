@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 3200,
   "input": {
     "tag": "c:amethysts"
   },
   "output": {
-    "fluid": "astromine:molten_amethyst",
-    "amount": 20250
+    "amount": 20250,
+    "fluid": "astromine:molten_amethyst"
   },
-  "energy_input": 3200,
   "time": 400
 }

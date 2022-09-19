@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 9856,
   "input": {
     "tag": "c:emerald_asteroid_ore_clusters"
   },
   "output": {
-    "fluid": "astromine:molten_emerald",
-    "amount": 15000
+    "amount": 15000,
+    "fluid": "astromine:molten_emerald"
   },
-  "energy_input": 9856,
   "time": 1232
 }

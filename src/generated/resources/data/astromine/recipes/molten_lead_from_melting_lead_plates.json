@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 1116,
   "input": {
     "tag": "c:lead_plates"
   },
   "output": {
-    "fluid": "astromine:molten_lead",
-    "amount": 9000
+    "amount": 9000,
+    "fluid": "astromine:molten_lead"
   },
-  "energy_input": 1116,
   "time": 139
 }

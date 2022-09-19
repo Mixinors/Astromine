@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 64000,
   "input": {
     "tag": "c:stellum_asteroid_ores"
   },
   "output": {
-    "fluid": "astromine:molten_stellum",
-    "amount": 12000
+    "amount": 12000,
+    "fluid": "astromine:molten_stellum"
   },
-  "energy_input": 64000,
   "time": 8000
 }

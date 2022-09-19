@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 300,
   "input": {
     "item": "astromine:smooth_dark_moon_stone_stairs"
   },
   "output": {
-    "item": "astromine:dark_moon_stone_stairs",
-    "count": 1
+    "count": 1,
+    "item": "astromine:dark_moon_stone_stairs"
   },
-  "energy_input": 300,
   "time": 80
 }

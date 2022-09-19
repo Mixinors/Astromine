@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 200,
   "input": {
     "tag": "c:asterite_salvageables"
   },
   "output": {
-    "item": "astromine:asterite_tiny_dust",
-    "count": 2
+    "count": 2,
+    "item": "astromine:asterite_tiny_dust"
   },
-  "energy_input": 200,
   "time": 30
 }

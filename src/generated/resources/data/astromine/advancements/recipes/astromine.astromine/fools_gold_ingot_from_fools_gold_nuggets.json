@@ -1,26 +1,21 @@
 {
   "parent": "minecraft:recipes/root",
-  "rewards": {
-    "recipes": [
-      "astromine:fools_gold_ingot_from_fools_gold_nuggets"
-    ]
-  },
   "criteria": {
     "has_fools_gold_nuggets": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "tag": "c:fools_gold_nuggets"
           }
         ]
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
     },
     "has_the_recipe": {
-      "trigger": "minecraft:recipe_unlocked",
       "conditions": {
         "recipe": "astromine:fools_gold_ingot_from_fools_gold_nuggets"
-      }
+      },
+      "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
@@ -28,5 +23,10 @@
       "has_fools_gold_nuggets",
       "has_the_recipe"
     ]
-  ]
+  ],
+  "rewards": {
+    "recipes": [
+      "astromine:fools_gold_ingot_from_fools_gold_nuggets"
+    ]
+  }
 }

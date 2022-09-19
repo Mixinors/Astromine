@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 2240,
   "input": {
     "tag": "c:lunum_helmets"
   },
   "output": {
-    "fluid": "astromine:molten_lunum",
-    "amount": 10000
+    "amount": 10000,
+    "fluid": "astromine:molten_lunum"
   },
-  "energy_input": 2240,
   "time": 280
 }

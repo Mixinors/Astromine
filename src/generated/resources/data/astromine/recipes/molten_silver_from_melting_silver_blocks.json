@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 12800,
   "input": {
     "tag": "c:silver_blocks"
   },
   "output": {
-    "fluid": "astromine:molten_silver",
-    "amount": 81000
+    "amount": 81000,
+    "fluid": "astromine:molten_silver"
   },
-  "energy_input": 12800,
   "time": 1600
 }

@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 5824,
   "input": {
     "tag": "c:meteoric_steel_chestplates"
   },
   "output": {
-    "fluid": "astromine:molten_meteoric_steel",
-    "amount": 16000
+    "amount": 16000,
+    "fluid": "astromine:molten_meteoric_steel"
   },
-  "energy_input": 5824,
   "time": 728
 }

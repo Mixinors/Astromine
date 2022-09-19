@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 24640,
   "input": {
     "tag": "c:asterite_pickaxes"
   },
   "output": {
-    "fluid": "astromine:molten_asterite",
-    "amount": 6000
+    "amount": 6000,
+    "fluid": "astromine:molten_asterite"
   },
-  "energy_input": 24640,
   "time": 3080
 }

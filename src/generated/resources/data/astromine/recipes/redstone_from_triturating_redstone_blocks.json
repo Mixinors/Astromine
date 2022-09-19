@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 540,
   "input": {
     "tag": "c:redstone_blocks"
   },
   "output": {
-    "item": "minecraft:redstone",
-    "count": 9
+    "count": 9,
+    "item": "minecraft:redstone"
   },
-  "energy_input": 540,
   "time": 240
 }

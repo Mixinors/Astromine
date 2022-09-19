@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 256,
   "input": {
     "tag": "c:netherite_tiny_dusts"
   },
   "output": {
-    "fluid": "astromine:molten_netherite",
-    "amount": 1000
+    "amount": 1000,
+    "fluid": "astromine:molten_netherite"
   },
-  "energy_input": 256,
   "time": 32
 }

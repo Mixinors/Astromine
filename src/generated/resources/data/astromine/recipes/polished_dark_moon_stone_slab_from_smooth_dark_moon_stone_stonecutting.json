@@ -1,8 +1,8 @@
 {
   "type": "minecraft:stonecutting",
+  "count": 2,
   "ingredient": {
     "item": "astromine:smooth_dark_moon_stone"
   },
-  "result": "astromine:polished_dark_moon_stone_slab",
-  "count": 2
+  "result": "astromine:polished_dark_moon_stone_slab"
 }

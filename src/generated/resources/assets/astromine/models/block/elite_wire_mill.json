@@ -1,11 +1,11 @@
 {
   "parent": "astromine:block/machine",
   "textures": {
-    "top": "astromine:block/elite_wire_mill_top",
+    "back": "astromine:block/elite_wire_mill_back",
     "bottom": "astromine:block/elite_wire_mill_bottom",
+    "front": "astromine:block/elite_wire_mill_front",
     "left": "astromine:block/elite_wire_mill_left",
     "right": "astromine:block/elite_wire_mill_right",
-    "front": "astromine:block/elite_wire_mill_front",
-    "back": "astromine:block/elite_wire_mill_back"
+    "top": "astromine:block/elite_wire_mill_top"
   }
 }

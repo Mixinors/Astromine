@@ -1,11 +1,11 @@
 {
   "parent": "astromine:block/machine",
   "textures": {
-    "top": "astromine:block/creative_tank_top",
+    "back": "astromine:block/creative_tank_back",
     "bottom": "astromine:block/creative_tank_bottom",
+    "front": "astromine:block/creative_tank_front",
     "left": "astromine:block/creative_tank_left",
     "right": "astromine:block/creative_tank_right",
-    "front": "astromine:block/creative_tank_front",
-    "back": "astromine:block/creative_tank_back"
+    "top": "astromine:block/creative_tank_top"
   }
 }

@@ -1,12 +1,12 @@
 {
   "type": "astromine:pressing",
+  "energy_input": 2900,
   "input": {
     "tag": "c:silver_blocks"
   },
   "output": {
-    "item": "astromine:silver_plate",
-    "count": 9
+    "count": 9,
+    "item": "astromine:silver_plate"
   },
-  "energy_input": 2900,
   "time": 680
 }

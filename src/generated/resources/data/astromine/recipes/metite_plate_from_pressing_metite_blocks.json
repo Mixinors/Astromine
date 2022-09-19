@@ -1,12 +1,12 @@
 {
   "type": "astromine:pressing",
+  "energy_input": 2900,
   "input": {
     "tag": "c:metite_blocks"
   },
   "output": {
-    "item": "astromine:metite_plate",
-    "count": 9
+    "count": 9,
+    "item": "astromine:metite_plate"
   },
-  "energy_input": 2900,
   "time": 680
 }

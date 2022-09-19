@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 11200,
   "input": {
     "tag": "c:emerald_stone_ores"
   },
   "output": {
-    "fluid": "astromine:molten_emerald",
-    "amount": 12000
+    "amount": 12000,
+    "fluid": "astromine:molten_emerald"
   },
-  "energy_input": 11200,
   "time": 1400
 }

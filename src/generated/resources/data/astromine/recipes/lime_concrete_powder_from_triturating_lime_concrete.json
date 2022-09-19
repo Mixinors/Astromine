@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 300,
   "input": {
     "item": "minecraft:lime_concrete"
   },
   "output": {
-    "item": "minecraft:lime_concrete_powder",
-    "count": 1
+    "count": 1,
+    "item": "minecraft:lime_concrete_powder"
   },
-  "energy_input": 300,
   "time": 80
 }

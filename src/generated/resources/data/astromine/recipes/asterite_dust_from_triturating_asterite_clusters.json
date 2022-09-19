@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 300,
   "input": {
     "tag": "c:asterite_clusters"
   },
   "output": {
-    "item": "astromine:asterite_dust",
-    "count": 2
+    "count": 2,
+    "item": "astromine:asterite_dust"
   },
-  "energy_input": 300,
   "time": 90
 }

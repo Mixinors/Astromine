@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 16000,
   "input": {
     "tag": "c:lunum_blocks"
   },
   "output": {
-    "fluid": "astromine:molten_lunum",
-    "amount": 81000
+    "amount": 81000,
+    "fluid": "astromine:molten_lunum"
   },
-  "energy_input": 16000,
   "time": 2000
 }

@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 300,
   "input": {
     "item": "minecraft:chiseled_deepslate"
   },
   "output": {
-    "item": "minecraft:cobbled_deepslate",
-    "count": 1
+    "count": 1,
+    "item": "minecraft:cobbled_deepslate"
   },
-  "energy_input": 300,
   "time": 80
 }

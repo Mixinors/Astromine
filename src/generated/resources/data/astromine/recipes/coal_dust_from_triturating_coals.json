@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 270,
   "input": {
     "tag": "c:coals"
   },
   "output": {
-    "item": "astromine:coal_dust",
-    "count": 1
+    "count": 1,
+    "item": "astromine:coal_dust"
   },
-  "energy_input": 270,
   "time": 60
 }

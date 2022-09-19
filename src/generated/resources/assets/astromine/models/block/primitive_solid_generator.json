@@ -1,11 +1,11 @@
 {
   "parent": "astromine:block/machine",
   "textures": {
-    "top": "astromine:block/primitive_solid_generator_top",
+    "back": "astromine:block/primitive_solid_generator_back",
     "bottom": "astromine:block/primitive_solid_generator_bottom",
+    "front": "astromine:block/primitive_solid_generator_front",
     "left": "astromine:block/primitive_solid_generator_left",
     "right": "astromine:block/primitive_solid_generator_right",
-    "front": "astromine:block/primitive_solid_generator_front",
-    "back": "astromine:block/primitive_solid_generator_back"
+    "top": "astromine:block/primitive_solid_generator_top"
   }
 }

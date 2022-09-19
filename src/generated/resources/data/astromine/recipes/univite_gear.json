@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " X ",
-    "X X",
-    " X "
-  ],
   "key": {
     "X": {
       "tag": "c:univite_ingots"
     }
   },
+  "pattern": [
+    " X ",
+    "X X",
+    " X "
+  ],
   "result": {
-    "item": "astromine:univite_gear",
-    "count": 2
+    "count": 2,
+    "item": "astromine:univite_gear"
   }
 }

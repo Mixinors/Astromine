@@ -1,11 +1,11 @@
 {
   "parent": "astromine:block/machine_active",
   "textures": {
-    "top": "astromine:block/fluid_placer_top_active",
+    "back": "astromine:block/fluid_placer_back_active",
     "bottom": "astromine:block/fluid_placer_bottom_active",
+    "front": "astromine:block/fluid_placer_front_active",
     "left": "astromine:block/fluid_placer_left_active",
     "right": "astromine:block/fluid_placer_right_active",
-    "front": "astromine:block/fluid_placer_front_active",
-    "back": "astromine:block/fluid_placer_back_active"
+    "top": "astromine:block/fluid_placer_top_active"
   }
 }

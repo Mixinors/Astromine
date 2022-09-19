@@ -1,22 +1,5 @@
 {
   "type": "minecraft:block",
-  "pools": [
-    {
-      "rolls": 1.0,
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "astromine:pump"
-        }
-      ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ]
-    }
-  ],
   "functions": [
     {
       "function": "minecraft:copy_name",
@@ -24,24 +7,41 @@
     },
     {
       "function": "minecraft:copy_nbt",
-      "source": "block_entity",
       "ops": [
         {
+          "op": "replace",
           "source": "RedstoneType",
-          "target": "BlockEntityTag.RedstoneType",
-          "op": "replace"
+          "target": "BlockEntityTag.RedstoneType"
         },
         {
+          "op": "replace",
           "source": "EnergyStorage",
-          "target": "BlockEntityTag.EnergyStorage",
-          "op": "replace"
+          "target": "BlockEntityTag.EnergyStorage"
         },
         {
+          "op": "replace",
           "source": "FluidStorage",
-          "target": "BlockEntityTag.FluidStorage",
-          "op": "replace"
+          "target": "BlockEntityTag.FluidStorage"
         }
-      ]
+      ],
+      "source": "block_entity"
+    }
+  ],
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "astromine:pump"
+        }
+      ],
+      "rolls": 1.0
     }
   ]
 }

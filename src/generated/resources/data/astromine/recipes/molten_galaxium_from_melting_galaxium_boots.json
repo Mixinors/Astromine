@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 40320,
   "input": {
     "tag": "c:galaxium_boots"
   },
   "output": {
-    "fluid": "astromine:molten_galaxium",
-    "amount": 8000
+    "amount": 8000,
+    "fluid": "astromine:molten_galaxium"
   },
-  "energy_input": 40320,
   "time": 5040
 }

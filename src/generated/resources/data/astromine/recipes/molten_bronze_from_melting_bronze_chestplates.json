@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 2016,
   "input": {
     "tag": "c:bronze_chestplates"
   },
   "output": {
-    "fluid": "astromine:molten_bronze",
-    "amount": 16000
+    "amount": 16000,
+    "fluid": "astromine:molten_bronze"
   },
-  "energy_input": 2016,
   "time": 252
 }

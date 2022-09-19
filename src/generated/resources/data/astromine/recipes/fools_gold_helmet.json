@@ -1,14 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "XXX",
-    "X X"
-  ],
   "key": {
     "X": {
       "tag": "c:fools_gold_ingots"
     }
   },
+  "pattern": [
+    "XXX",
+    "X X"
+  ],
   "result": {
     "item": "astromine:fools_gold_helmet"
   }

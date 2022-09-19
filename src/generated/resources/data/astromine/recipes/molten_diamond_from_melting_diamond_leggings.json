@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 8512,
   "input": {
     "tag": "c:diamond_leggings"
   },
   "output": {
-    "fluid": "astromine:molten_diamond",
-    "amount": 14000
+    "amount": 14000,
+    "fluid": "astromine:molten_diamond"
   },
-  "energy_input": 8512,
   "time": 1064
 }

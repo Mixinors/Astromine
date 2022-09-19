@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 2240,
   "input": {
     "tag": "c:iron_boots"
   },
   "output": {
-    "fluid": "astromine:molten_iron",
-    "amount": 8000
+    "amount": 8000,
+    "fluid": "astromine:molten_iron"
   },
-  "energy_input": 2240,
   "time": 280
 }

@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 2112,
   "input": {
     "tag": "c:tin_asteroid_ore_clusters"
   },
   "output": {
-    "fluid": "astromine:molten_tin",
-    "amount": 15000
+    "amount": 15000,
+    "fluid": "astromine:molten_tin"
   },
-  "energy_input": 2112,
   "time": 264
 }

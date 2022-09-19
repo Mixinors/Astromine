@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 408,
   "input": {
     "tag": "c:gold_wires"
   },
   "output": {
-    "fluid": "astromine:molten_gold",
-    "amount": 3000
+    "amount": 3000,
+    "fluid": "astromine:molten_gold"
   },
-  "energy_input": 408,
   "time": 51
 }

@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 300,
   "input": {
     "item": "minecraft:stone_slab"
   },
   "output": {
-    "item": "minecraft:cobblestone_slab",
-    "count": 1
+    "count": 1,
+    "item": "minecraft:cobblestone_slab"
   },
-  "energy_input": 300,
   "time": 80
 }

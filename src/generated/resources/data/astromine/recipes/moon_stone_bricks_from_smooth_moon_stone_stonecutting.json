@@ -1,8 +1,8 @@
 {
   "type": "minecraft:stonecutting",
+  "count": 1,
   "ingredient": {
     "item": "astromine:smooth_moon_stone"
   },
-  "result": "astromine:moon_stone_bricks",
-  "count": 1
+  "result": "astromine:moon_stone_bricks"
 }

@@ -1,9 +1,9 @@
 {
   "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.0,
   "ingredient": {
     "tag": "c:fools_gold_dusts"
   },
-  "result": "astromine:fools_gold_ingot",
-  "experience": 0.0,
-  "cookingtime": 200
+  "result": "astromine:fools_gold_ingot"
 }

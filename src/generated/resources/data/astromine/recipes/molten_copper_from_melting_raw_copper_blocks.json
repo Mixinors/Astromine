@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 16800,
   "input": {
     "tag": "c:raw_copper_blocks"
   },
   "output": {
-    "fluid": "astromine:molten_copper",
-    "amount": 108000
+    "amount": 108000,
+    "fluid": "astromine:molten_copper"
   },
-  "energy_input": 16800,
   "time": 2100
 }

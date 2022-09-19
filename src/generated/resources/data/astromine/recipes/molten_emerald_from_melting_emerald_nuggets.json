@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 448,
   "input": {
     "tag": "c:emerald_nuggets"
   },
   "output": {
-    "fluid": "astromine:molten_emerald",
-    "amount": 1000
+    "amount": 1000,
+    "fluid": "astromine:molten_emerald"
   },
-  "energy_input": 448,
   "time": 56
 }

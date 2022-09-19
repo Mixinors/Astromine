@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 14400,
   "input": {
     "tag": "c:bronze_blocks"
   },
   "output": {
-    "fluid": "astromine:molten_bronze",
-    "amount": 81000
+    "amount": 81000,
+    "fluid": "astromine:molten_bronze"
   },
-  "energy_input": 14400,
   "time": 1800
 }

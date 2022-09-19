@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 40320,
   "input": {
     "tag": "c:galaxium_helmets"
   },
   "output": {
-    "fluid": "astromine:molten_galaxium",
-    "amount": 10000
+    "amount": 10000,
+    "fluid": "astromine:molten_galaxium"
   },
-  "energy_input": 40320,
   "time": 5040
 }

@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 340,
   "input": {
     "tag": "c:diamond_ores"
   },
   "output": {
-    "item": "minecraft:diamond",
-    "count": 2
+    "count": 2,
+    "item": "minecraft:diamond"
   },
-  "energy_input": 340,
   "time": 180
 }

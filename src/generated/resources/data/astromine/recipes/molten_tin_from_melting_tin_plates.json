@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 864,
   "input": {
     "tag": "c:tin_plates"
   },
   "output": {
-    "fluid": "astromine:molten_tin",
-    "amount": 9000
+    "amount": 9000,
+    "fluid": "astromine:molten_tin"
   },
-  "energy_input": 864,
   "time": 108
 }

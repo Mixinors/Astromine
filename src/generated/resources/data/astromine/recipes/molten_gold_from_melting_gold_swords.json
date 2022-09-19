@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 1496,
   "input": {
     "tag": "c:gold_swords"
   },
   "output": {
-    "fluid": "astromine:molten_gold",
-    "amount": 4000
+    "amount": 4000,
+    "fluid": "astromine:molten_gold"
   },
-  "energy_input": 1496,
   "time": 187
 }

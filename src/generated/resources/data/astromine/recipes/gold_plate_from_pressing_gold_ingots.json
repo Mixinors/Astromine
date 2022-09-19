@@ -1,12 +1,12 @@
 {
   "type": "astromine:pressing",
+  "energy_input": 340,
   "input": {
     "tag": "c:gold_ingots"
   },
   "output": {
-    "item": "astromine:gold_plate",
-    "count": 1
+    "count": 1,
+    "item": "astromine:gold_plate"
   },
-  "energy_input": 340,
   "time": 80
 }

@@ -1,12 +1,12 @@
 {
   "type": "astromine:wire_milling",
+  "energy_input": 340,
   "input": {
     "tag": "c:electrum_ingots"
   },
   "output": {
-    "item": "astromine:electrum_wire",
-    "count": 3
+    "count": 3,
+    "item": "astromine:electrum_wire"
   },
-  "energy_input": 340,
   "time": 80
 }

@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 1760,
   "input": {
     "tag": "c:iron_shovels"
   },
   "output": {
-    "fluid": "astromine:molten_iron",
-    "amount": 2000
+    "amount": 2000,
+    "fluid": "astromine:molten_iron"
   },
-  "energy_input": 1760,
   "time": 220
 }

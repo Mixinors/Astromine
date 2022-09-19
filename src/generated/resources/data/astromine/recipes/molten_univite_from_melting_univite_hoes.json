@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 35200,
   "input": {
     "tag": "c:univite_hoes"
   },
   "output": {
-    "fluid": "astromine:molten_univite",
-    "amount": 4000
+    "amount": 4000,
+    "fluid": "astromine:molten_univite"
   },
-  "energy_input": 35200,
   "time": 4400
 }

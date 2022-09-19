@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 440,
   "input": {
     "tag": "c:yellow_sandstones"
   },
   "output": {
-    "item": "minecraft:sand",
-    "count": 4
+    "count": 4,
+    "item": "minecraft:sand"
   },
-  "energy_input": 440,
   "time": 240
 }

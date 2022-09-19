@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 1760,
   "input": {
     "tag": "c:lunum_pickaxes"
   },
   "output": {
-    "fluid": "astromine:molten_lunum",
-    "amount": 6000
+    "amount": 6000,
+    "fluid": "astromine:molten_lunum"
   },
-  "energy_input": 1760,
   "time": 220
 }

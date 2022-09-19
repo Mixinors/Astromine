@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 540,
   "input": {
     "tag": "c:stellum_blocks"
   },
   "output": {
-    "item": "astromine:stellum_dust",
-    "count": 9
+    "count": 9,
+    "item": "astromine:stellum_dust"
   },
-  "energy_input": 540,
   "time": 240
 }

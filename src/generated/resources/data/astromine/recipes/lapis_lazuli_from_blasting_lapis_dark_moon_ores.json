@@ -1,9 +1,9 @@
 {
   "type": "minecraft:blasting",
+  "cookingtime": 100,
+  "experience": 0.2,
   "ingredient": {
     "tag": "c:lapis_dark_moon_ores"
   },
-  "result": "minecraft:lapis_lazuli",
-  "experience": 0.2,
-  "cookingtime": 100
+  "result": "minecraft:lapis_lazuli"
 }

@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 40000,
   "input": {
     "tag": "c:metite_blocks"
   },
   "output": {
-    "fluid": "astromine:molten_metite",
-    "amount": 81000
+    "amount": 81000,
+    "fluid": "astromine:molten_metite"
   },
-  "energy_input": 40000,
   "time": 5000
 }

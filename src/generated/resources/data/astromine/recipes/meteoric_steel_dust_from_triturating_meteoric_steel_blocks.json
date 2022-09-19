@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 540,
   "input": {
     "tag": "c:meteoric_steel_blocks"
   },
   "output": {
-    "item": "astromine:meteoric_steel_dust",
-    "count": 9
+    "count": 9,
+    "item": "astromine:meteoric_steel_dust"
   },
-  "energy_input": 540,
   "time": 240
 }

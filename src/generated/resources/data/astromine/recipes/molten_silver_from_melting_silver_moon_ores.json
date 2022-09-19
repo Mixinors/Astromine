@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 4480,
   "input": {
     "tag": "c:silver_moon_ores"
   },
   "output": {
-    "fluid": "astromine:molten_silver",
-    "amount": 12000
+    "amount": 12000,
+    "fluid": "astromine:molten_silver"
   },
-  "energy_input": 4480,
   "time": 560
 }

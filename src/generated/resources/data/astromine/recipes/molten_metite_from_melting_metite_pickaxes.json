@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 4400,
   "input": {
     "tag": "c:metite_pickaxes"
   },
   "output": {
-    "fluid": "astromine:molten_metite",
-    "amount": 6000
+    "amount": 6000,
+    "fluid": "astromine:molten_metite"
   },
-  "energy_input": 4400,
   "time": 550
 }

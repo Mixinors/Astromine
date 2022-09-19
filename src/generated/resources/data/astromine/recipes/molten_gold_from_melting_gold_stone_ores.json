@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 3400,
   "input": {
     "tag": "c:gold_stone_ores"
   },
   "output": {
-    "fluid": "astromine:molten_gold",
-    "amount": 12000
+    "amount": 12000,
+    "fluid": "astromine:molten_gold"
   },
-  "energy_input": 3400,
   "time": 425
 }

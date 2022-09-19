@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 5824,
   "input": {
     "tag": "c:meteoric_steel_boots"
   },
   "output": {
-    "fluid": "astromine:molten_meteoric_steel",
-    "amount": 8000
+    "amount": 8000,
+    "fluid": "astromine:molten_meteoric_steel"
   },
-  "energy_input": 5824,
   "time": 728
 }

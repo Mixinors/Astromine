@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 128,
   "input": {
     "tag": "c:iron_tiny_dusts"
   },
   "output": {
-    "fluid": "astromine:molten_iron",
-    "amount": 1000
+    "amount": 1000,
+    "fluid": "astromine:molten_iron"
   },
-  "energy_input": 128,
   "time": 16
 }

@@ -1,9 +1,9 @@
 {
   "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.8,
   "ingredient": {
     "tag": "c:silver_ores"
   },
-  "result": "astromine:silver_ingot",
-  "experience": 0.8,
-  "cookingtime": 200
+  "result": "astromine:silver_ingot"
 }

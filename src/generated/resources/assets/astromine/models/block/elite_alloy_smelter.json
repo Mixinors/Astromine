@@ -1,11 +1,11 @@
 {
   "parent": "astromine:block/machine",
   "textures": {
-    "top": "astromine:block/elite_alloy_smelter_top",
+    "back": "astromine:block/elite_alloy_smelter_back",
     "bottom": "astromine:block/elite_alloy_smelter_bottom",
+    "front": "astromine:block/elite_alloy_smelter_front",
     "left": "astromine:block/elite_alloy_smelter_left",
     "right": "astromine:block/elite_alloy_smelter_right",
-    "front": "astromine:block/elite_alloy_smelter_front",
-    "back": "astromine:block/elite_alloy_smelter_back"
+    "top": "astromine:block/elite_alloy_smelter_top"
   }
 }

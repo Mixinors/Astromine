@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": {
+      "item": "minecraft:apple"
+    },
+    "X": {
+      "tag": "c:fools_gold_ingots"
+    }
+  },
   "pattern": [
     "XXX",
     "XAX",
     "XXX"
   ],
-  "key": {
-    "X": {
-      "tag": "c:fools_gold_ingots"
-    },
-    "A": {
-      "item": "minecraft:apple"
-    }
-  },
   "result": {
     "item": "astromine:fools_gold_apple"
   }

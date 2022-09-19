@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 1224,
   "input": {
     "tag": "c:gold_plates"
   },
   "output": {
-    "fluid": "astromine:molten_gold",
-    "amount": 9000
+    "amount": 9000,
+    "fluid": "astromine:molten_gold"
   },
-  "energy_input": 1224,
   "time": 153
 }

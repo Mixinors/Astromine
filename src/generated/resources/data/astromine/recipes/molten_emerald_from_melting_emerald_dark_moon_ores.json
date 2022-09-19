@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 17920,
   "input": {
     "tag": "c:emerald_dark_moon_ores"
   },
   "output": {
-    "fluid": "astromine:molten_emerald",
-    "amount": 12000
+    "amount": 12000,
+    "fluid": "astromine:molten_emerald"
   },
-  "energy_input": 17920,
   "time": 2240
 }

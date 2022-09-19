@@ -6,7 +6,7 @@
     }
   ],
   "result": {
-    "item": "astromine:silver_nugget",
-    "count": 9
+    "count": 9,
+    "item": "astromine:silver_nugget"
   }
 }

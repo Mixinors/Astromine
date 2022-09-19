@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 3200,
   "input": {
     "tag": "c:univite_nuggets"
   },
   "output": {
-    "fluid": "astromine:molten_univite",
-    "amount": 1000
+    "amount": 1000,
+    "fluid": "astromine:molten_univite"
   },
-  "energy_input": 3200,
   "time": 400
 }

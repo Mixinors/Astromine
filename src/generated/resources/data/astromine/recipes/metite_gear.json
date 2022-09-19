@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " X ",
-    "X X",
-    " X "
-  ],
   "key": {
     "X": {
       "tag": "c:metite_ingots"
     }
   },
+  "pattern": [
+    " X ",
+    "X X",
+    " X "
+  ],
   "result": {
-    "item": "astromine:metite_gear",
-    "count": 2
+    "count": 2,
+    "item": "astromine:metite_gear"
   }
 }

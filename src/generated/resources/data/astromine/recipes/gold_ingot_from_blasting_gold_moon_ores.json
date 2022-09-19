@@ -1,9 +1,9 @@
 {
   "type": "minecraft:blasting",
+  "cookingtime": 100,
+  "experience": 1.0,
   "ingredient": {
     "tag": "c:gold_moon_ores"
   },
-  "result": "minecraft:gold_ingot",
-  "experience": 1.0,
-  "cookingtime": 100
+  "result": "minecraft:gold_ingot"
 }

@@ -1,17 +1,17 @@
 {
   "type": "astromine:alloy_smelting",
+  "energy_input": 900,
   "first_input": {
-    "tag": "c:iron_ingots",
-    "count": 1
-  },
-  "second_input": {
-    "tag": "c:coals",
-    "count": 2
+    "count": 1,
+    "tag": "c:iron_ingots"
   },
   "output": {
-    "item": "astromine:steel_ingot",
-    "count": 1
+    "count": 1,
+    "item": "astromine:steel_ingot"
   },
-  "energy_input": 900,
+  "second_input": {
+    "count": 2,
+    "tag": "c:coals"
+  },
   "time": 250
 }

@@ -1,11 +1,11 @@
 {
   "parent": "astromine:block/machine",
   "textures": {
-    "top": "astromine:block/elite_melter_top",
+    "back": "astromine:block/elite_melter_back",
     "bottom": "astromine:block/elite_melter_bottom",
+    "front": "astromine:block/elite_melter_front",
     "left": "astromine:block/elite_melter_left",
     "right": "astromine:block/elite_melter_right",
-    "front": "astromine:block/elite_melter_front",
-    "back": "astromine:block/elite_melter_back"
+    "top": "astromine:block/elite_melter_top"
   }
 }

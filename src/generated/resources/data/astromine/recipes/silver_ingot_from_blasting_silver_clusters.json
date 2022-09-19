@@ -1,9 +1,9 @@
 {
   "type": "minecraft:blasting",
+  "cookingtime": 100,
+  "experience": 0.8,
   "ingredient": {
     "tag": "c:silver_clusters"
   },
-  "result": "astromine:silver_ingot",
-  "experience": 0.8,
-  "cookingtime": 100
+  "result": "astromine:silver_ingot"
 }

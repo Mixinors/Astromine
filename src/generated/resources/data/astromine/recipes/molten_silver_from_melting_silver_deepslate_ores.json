@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 3840,
   "input": {
     "tag": "c:silver_deepslate_ores"
   },
   "output": {
-    "fluid": "astromine:molten_silver",
-    "amount": 12000
+    "amount": 12000,
+    "fluid": "astromine:molten_silver"
   },
-  "energy_input": 3840,
   "time": 480
 }

@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 270,
   "input": {
     "tag": "c:charcoals"
   },
   "output": {
-    "item": "astromine:charcoal_dust",
-    "count": 1
+    "count": 1,
+    "item": "astromine:charcoal_dust"
   },
-  "energy_input": 270,
   "time": 60
 }

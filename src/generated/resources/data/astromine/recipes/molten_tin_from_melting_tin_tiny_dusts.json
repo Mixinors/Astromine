@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 76,
   "input": {
     "tag": "c:tin_tiny_dusts"
   },
   "output": {
-    "fluid": "astromine:molten_tin",
-    "amount": 1000
+    "amount": 1000,
+    "fluid": "astromine:molten_tin"
   },
-  "energy_input": 76,
   "time": 9
 }

@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 300,
   "input": {
     "item": "astromine:smooth_meteor_stone_wall"
   },
   "output": {
-    "item": "astromine:meteor_stone_wall",
-    "count": 1
+    "count": 1,
+    "item": "astromine:meteor_stone_wall"
   },
-  "energy_input": 300,
   "time": 80
 }

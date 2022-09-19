@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 3520,
   "input": {
     "tag": "c:iron_asteroid_ore_clusters"
   },
   "output": {
-    "fluid": "astromine:molten_iron",
-    "amount": 15000
+    "amount": 15000,
+    "fluid": "astromine:molten_iron"
   },
-  "energy_input": 3520,
   "time": 440
 }

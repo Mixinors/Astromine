@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 7680,
   "input": {
     "tag": "c:lapis_deepslate_ores"
   },
   "output": {
-    "fluid": "astromine:molten_lapis",
-    "amount": 12000
+    "amount": 12000,
+    "fluid": "astromine:molten_lapis"
   },
-  "energy_input": 7680,
   "time": 960
 }

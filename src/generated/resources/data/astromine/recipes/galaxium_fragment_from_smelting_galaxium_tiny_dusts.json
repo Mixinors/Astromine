@@ -1,9 +1,9 @@
 {
   "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.0,
   "ingredient": {
     "tag": "c:galaxium_tiny_dusts"
   },
-  "result": "astromine:galaxium_fragment",
-  "experience": 0.0,
-  "cookingtime": 200
+  "result": "astromine:galaxium_fragment"
 }

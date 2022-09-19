@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 4576,
   "input": {
     "tag": "c:meteoric_steel_pickaxes"
   },
   "output": {
-    "fluid": "astromine:molten_meteoric_steel",
-    "amount": 6000
+    "amount": 6000,
+    "fluid": "astromine:molten_meteoric_steel"
   },
-  "energy_input": 4576,
   "time": 572
 }

@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 300,
   "input": {
     "item": "minecraft:polished_blackstone_bricks"
   },
   "output": {
-    "item": "minecraft:polished_blackstone",
-    "count": 1
+    "count": 1,
+    "item": "minecraft:polished_blackstone"
   },
-  "energy_input": 300,
   "time": 80
 }

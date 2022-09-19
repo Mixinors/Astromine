@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 1584,
   "input": {
     "tag": "c:bronze_shovels"
   },
   "output": {
-    "fluid": "astromine:molten_bronze",
-    "amount": 2000
+    "amount": 2000,
+    "fluid": "astromine:molten_bronze"
   },
-  "energy_input": 1584,
   "time": 198
 }

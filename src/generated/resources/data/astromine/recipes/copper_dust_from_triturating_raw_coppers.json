@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 300,
   "input": {
     "tag": "c:raw_coppers"
   },
   "output": {
-    "item": "astromine:copper_dust",
-    "count": 2
+    "count": 2,
+    "item": "astromine:copper_dust"
   },
-  "energy_input": 300,
   "time": 90
 }

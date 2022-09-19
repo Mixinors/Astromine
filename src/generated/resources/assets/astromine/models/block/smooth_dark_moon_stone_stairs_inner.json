@@ -2,7 +2,7 @@
   "parent": "minecraft:block/inner_stairs",
   "textures": {
     "bottom": "astromine:block/smooth_dark_moon_stone",
-    "top": "astromine:block/smooth_dark_moon_stone",
-    "side": "astromine:block/smooth_dark_moon_stone"
+    "side": "astromine:block/smooth_dark_moon_stone",
+    "top": "astromine:block/smooth_dark_moon_stone"
   }
 }

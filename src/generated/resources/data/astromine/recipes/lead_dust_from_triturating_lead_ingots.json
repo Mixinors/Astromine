@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 270,
   "input": {
     "tag": "c:lead_ingots"
   },
   "output": {
-    "item": "astromine:lead_dust",
-    "count": 1
+    "count": 1,
+    "item": "astromine:lead_dust"
   },
-  "energy_input": 270,
   "time": 60
 }

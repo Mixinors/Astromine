@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 4080,
   "input": {
     "tag": "c:gold_deepslate_ores"
   },
   "output": {
-    "fluid": "astromine:molten_gold",
-    "amount": 12000
+    "amount": 12000,
+    "fluid": "astromine:molten_gold"
   },
-  "energy_input": 4080,
   "time": 510
 }

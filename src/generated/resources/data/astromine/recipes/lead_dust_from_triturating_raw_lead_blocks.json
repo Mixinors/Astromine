@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 2550,
   "input": {
     "tag": "c:raw_lead_blocks"
   },
   "output": {
-    "item": "astromine:lead_dust",
-    "count": 18
+    "count": 18,
+    "item": "astromine:lead_dust"
   },
-  "energy_input": 2550,
   "time": 760
 }

@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 4160,
   "input": {
     "tag": "c:meteoric_steel_ingots"
   },
   "output": {
-    "fluid": "astromine:molten_meteoric_steel",
-    "amount": 9000
+    "amount": 9000,
+    "fluid": "astromine:molten_meteoric_steel"
   },
-  "energy_input": 4160,
   "time": 520
 }

@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 2992,
   "input": {
     "tag": "c:gold_nether_ores"
   },
   "output": {
-    "fluid": "astromine:molten_gold",
-    "amount": 12000
+    "amount": 12000,
+    "fluid": "astromine:molten_gold"
   },
-  "energy_input": 2992,
   "time": 374
 }

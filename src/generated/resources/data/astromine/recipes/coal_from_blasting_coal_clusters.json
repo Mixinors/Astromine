@@ -1,9 +1,9 @@
 {
   "type": "minecraft:blasting",
+  "cookingtime": 100,
+  "experience": 0.1,
   "ingredient": {
     "tag": "c:coal_clusters"
   },
-  "result": "minecraft:coal",
-  "experience": 0.1,
-  "cookingtime": 100
+  "result": "minecraft:coal"
 }

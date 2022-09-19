@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 340,
   "input": {
     "tag": "c:lead_ores"
   },
   "output": {
-    "item": "astromine:raw_lead",
-    "count": 2
+    "count": 2,
+    "item": "astromine:raw_lead"
   },
-  "energy_input": 340,
   "time": 180
 }

@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 450,
   "input": {
     "tag": "astromine:makes_nine_biofuel"
   },
   "output": {
-    "item": "astromine:biofuel",
-    "count": 9
+    "count": 9,
+    "item": "astromine:biofuel"
   },
-  "energy_input": 450,
   "time": 420
 }

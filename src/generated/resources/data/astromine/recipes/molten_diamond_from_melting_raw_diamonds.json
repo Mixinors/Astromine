@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 10944,
   "input": {
     "tag": "c:raw_diamonds"
   },
   "output": {
-    "fluid": "astromine:molten_diamond",
-    "amount": 12000
+    "amount": 12000,
+    "fluid": "astromine:molten_diamond"
   },
-  "energy_input": 10944,
   "time": 1368
 }

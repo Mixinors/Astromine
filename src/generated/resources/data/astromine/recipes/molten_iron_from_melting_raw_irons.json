@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 2880,
   "input": {
     "tag": "c:raw_irons"
   },
   "output": {
-    "fluid": "astromine:molten_iron",
-    "amount": 12000
+    "amount": 12000,
+    "fluid": "astromine:molten_iron"
   },
-  "energy_input": 2880,
   "time": 360
 }

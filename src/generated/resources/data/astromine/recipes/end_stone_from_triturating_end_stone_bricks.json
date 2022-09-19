@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 300,
   "input": {
     "item": "minecraft:end_stone_bricks"
   },
   "output": {
-    "item": "minecraft:end_stone",
-    "count": 1
+    "count": 1,
+    "item": "minecraft:end_stone"
   },
-  "energy_input": 300,
   "time": 80
 }

@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "X": {
+      "tag": "c:bronze_ingots"
+    }
+  },
   "pattern": [
     "XXX",
     " S ",
     " S "
   ],
-  "key": {
-    "X": {
-      "tag": "c:bronze_ingots"
-    },
-    "S": {
-      "item": "minecraft:stick"
-    }
-  },
   "result": {
     "item": "astromine:bronze_pickaxe"
   }

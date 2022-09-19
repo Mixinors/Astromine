@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 128000,
   "input": {
     "tag": "c:stellum_blocks"
   },
   "output": {
-    "fluid": "astromine:molten_stellum",
-    "amount": 81000
+    "amount": 81000,
+    "fluid": "astromine:molten_stellum"
   },
-  "energy_input": 128000,
   "time": 16000
 }

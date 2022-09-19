@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 96,
   "input": {
     "tag": "c:tin_nuggets"
   },
   "output": {
-    "fluid": "astromine:molten_tin",
-    "amount": 1000
+    "amount": 1000,
+    "fluid": "astromine:molten_tin"
   },
-  "energy_input": 96,
   "time": 12
 }

@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "X": {
+      "tag": "c:stellum_ingots"
+    }
+  },
   "pattern": [
     "XX",
     "XS",
     " S"
   ],
-  "key": {
-    "X": {
-      "tag": "c:stellum_ingots"
-    },
-    "S": {
-      "item": "minecraft:stick"
-    }
-  },
   "result": {
     "item": "astromine:stellum_axe"
   }

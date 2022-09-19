@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 28000,
   "input": {
     "tag": "c:quartz_blocks"
   },
   "output": {
-    "fluid": "astromine:molten_quartz",
-    "amount": 81000
+    "amount": 81000,
+    "fluid": "astromine:molten_quartz"
   },
-  "energy_input": 28000,
   "time": 3500
 }

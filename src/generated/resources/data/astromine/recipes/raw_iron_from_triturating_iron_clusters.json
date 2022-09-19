@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 300,
   "input": {
     "tag": "c:iron_clusters"
   },
   "output": {
-    "item": "minecraft:raw_iron",
-    "count": 2
+    "count": 2,
+    "item": "minecraft:raw_iron"
   },
-  "energy_input": 300,
   "time": 90
 }

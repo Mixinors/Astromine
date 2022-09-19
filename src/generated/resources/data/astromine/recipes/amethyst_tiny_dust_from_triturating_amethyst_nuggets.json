@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 200,
   "input": {
     "tag": "c:amethyst_nuggets"
   },
   "output": {
-    "item": "astromine:amethyst_tiny_dust",
-    "count": 1
+    "count": 1,
+    "item": "astromine:amethyst_tiny_dust"
   },
-  "energy_input": 200,
   "time": 30
 }

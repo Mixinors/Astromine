@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 300,
   "input": {
     "item": "astromine:smooth_moon_stone_slab"
   },
   "output": {
-    "item": "astromine:moon_stone_slab",
-    "count": 1
+    "count": 1,
+    "item": "astromine:moon_stone_slab"
   },
-  "energy_input": 300,
   "time": 80
 }

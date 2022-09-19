@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 540,
   "input": {
     "tag": "c:quartz_blocks"
   },
   "output": {
-    "item": "astromine:quartz_dust",
-    "count": 4
+    "count": 4,
+    "item": "astromine:quartz_dust"
   },
-  "energy_input": 540,
   "time": 240
 }

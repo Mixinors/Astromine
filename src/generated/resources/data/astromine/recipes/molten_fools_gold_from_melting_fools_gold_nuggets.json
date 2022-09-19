@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 160,
   "input": {
     "tag": "c:fools_gold_nuggets"
   },
   "output": {
-    "fluid": "astromine:molten_fools_gold",
-    "amount": 1000
+    "amount": 1000,
+    "fluid": "astromine:molten_fools_gold"
   },
-  "energy_input": 160,
   "time": 20
 }

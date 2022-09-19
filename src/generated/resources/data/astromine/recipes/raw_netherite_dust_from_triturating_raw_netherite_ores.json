@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 340,
   "input": {
     "tag": "c:raw_netherite_ores"
   },
   "output": {
-    "item": "astromine:raw_netherite_dust",
-    "count": 2
+    "count": 2,
+    "item": "astromine:raw_netherite_dust"
   },
-  "energy_input": 340,
   "time": 180
 }

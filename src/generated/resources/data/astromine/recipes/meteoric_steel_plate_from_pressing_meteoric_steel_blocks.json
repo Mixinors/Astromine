@@ -1,12 +1,12 @@
 {
   "type": "astromine:pressing",
+  "energy_input": 2900,
   "input": {
     "tag": "c:meteoric_steel_blocks"
   },
   "output": {
-    "item": "astromine:meteoric_steel_plate",
-    "count": 9
+    "count": 9,
+    "item": "astromine:meteoric_steel_plate"
   },
-  "energy_input": 2900,
   "time": 680
 }

@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 6400,
   "input": {
     "tag": "c:silver_asteroid_ores"
   },
   "output": {
-    "fluid": "astromine:molten_silver",
-    "amount": 12000
+    "amount": 12000,
+    "fluid": "astromine:molten_silver"
   },
-  "energy_input": 6400,
   "time": 800
 }

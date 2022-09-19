@@ -1,17 +1,17 @@
 {
   "type": "astromine:alloy_smelting",
+  "energy_input": 112,
   "first_input": {
-    "tag": "c:iron_tiny_dusts",
-    "count": 1
-  },
-  "second_input": {
-    "tag": "c:charcoal_tiny_dusts",
-    "count": 2
+    "count": 1,
+    "tag": "c:iron_tiny_dusts"
   },
   "output": {
-    "item": "astromine:steel_tiny_dust",
-    "count": 1
+    "count": 1,
+    "item": "astromine:steel_tiny_dust"
   },
-  "energy_input": 112,
+  "second_input": {
+    "count": 2,
+    "tag": "c:charcoal_tiny_dusts"
+  },
   "time": 31
 }

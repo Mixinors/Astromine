@@ -70,6 +70,7 @@ public class AMEvents {
 		DimensionRenderingRegistry.registerSkyRenderer(AMWorlds.ROCKET_INTERIORS, SpaceSkyRenderer::render);
 		DimensionRenderingRegistry.registerSkyRenderer(AMWorlds.MOON, SpaceSkyRenderer::render);
 		DimensionRenderingRegistry.registerSkyRenderer(AMWorlds.EARTH_ORBIT, SpaceSkyRenderer::render);
+		
 		DimensionRenderingRegistry.registerDimensionEffects(AMCommon.id("space"), new SpaceDimensionEffects());
 		
 		WorldRenderEvents.END.register(context -> {

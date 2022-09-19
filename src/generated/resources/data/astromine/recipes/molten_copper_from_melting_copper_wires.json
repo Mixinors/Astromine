@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 420,
   "input": {
     "tag": "c:copper_wires"
   },
   "output": {
-    "fluid": "astromine:molten_copper",
-    "amount": 3000
+    "amount": 3000,
+    "fluid": "astromine:molten_copper"
   },
-  "energy_input": 420,
   "time": 52
 }

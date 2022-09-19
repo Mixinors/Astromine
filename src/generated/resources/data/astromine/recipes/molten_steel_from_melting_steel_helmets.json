@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 2464,
   "input": {
     "tag": "c:steel_helmets"
   },
   "output": {
-    "fluid": "astromine:molten_steel",
-    "amount": 10000
+    "amount": 10000,
+    "fluid": "astromine:molten_steel"
   },
-  "energy_input": 2464,
   "time": 308
 }

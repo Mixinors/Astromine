@@ -1,14 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "XXX",
-    "X X"
-  ],
   "key": {
     "X": {
       "tag": "c:lunum_ingots"
     }
   },
+  "pattern": [
+    "XXX",
+    "X X"
+  ],
   "result": {
     "item": "astromine:lunum_helmet"
   }

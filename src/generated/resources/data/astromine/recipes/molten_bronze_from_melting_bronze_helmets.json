@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 2016,
   "input": {
     "tag": "c:bronze_helmets"
   },
   "output": {
-    "fluid": "astromine:molten_bronze",
-    "amount": 10000
+    "amount": 10000,
+    "fluid": "astromine:molten_bronze"
   },
-  "energy_input": 2016,
   "time": 252
 }

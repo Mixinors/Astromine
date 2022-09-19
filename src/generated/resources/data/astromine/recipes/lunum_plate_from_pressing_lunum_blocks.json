@@ -1,12 +1,12 @@
 {
   "type": "astromine:pressing",
+  "energy_input": 2900,
   "input": {
     "tag": "c:lunum_blocks"
   },
   "output": {
-    "item": "astromine:lunum_plate",
-    "count": 9
+    "count": 9,
+    "item": "astromine:lunum_plate"
   },
-  "energy_input": 2900,
   "time": 680
 }

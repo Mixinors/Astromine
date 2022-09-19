@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 5600,
   "input": {
     "tag": "c:copper_dark_moon_ores"
   },
   "output": {
-    "fluid": "astromine:molten_copper",
-    "amount": 12000
+    "amount": 12000,
+    "fluid": "astromine:molten_copper"
   },
-  "energy_input": 5600,
   "time": 700
 }

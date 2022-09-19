@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 340,
   "input": {
     "tag": "c:lunum_ores"
   },
   "output": {
-    "item": "astromine:raw_lunum",
-    "count": 2
+    "count": 2,
+    "item": "astromine:raw_lunum"
   },
-  "energy_input": 340,
   "time": 180
 }

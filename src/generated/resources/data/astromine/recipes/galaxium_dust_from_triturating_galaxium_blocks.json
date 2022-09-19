@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 540,
   "input": {
     "tag": "c:galaxium_blocks"
   },
   "output": {
-    "item": "astromine:galaxium_dust",
-    "count": 9
+    "count": 9,
+    "item": "astromine:galaxium_dust"
   },
-  "energy_input": 540,
   "time": 240
 }

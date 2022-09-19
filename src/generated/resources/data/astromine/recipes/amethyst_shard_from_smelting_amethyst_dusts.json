@@ -1,9 +1,9 @@
 {
   "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.0,
   "ingredient": {
     "tag": "c:amethyst_dusts"
   },
-  "result": "minecraft:amethyst_shard",
-  "experience": 0.0,
-  "cookingtime": 200
+  "result": "minecraft:amethyst_shard"
 }

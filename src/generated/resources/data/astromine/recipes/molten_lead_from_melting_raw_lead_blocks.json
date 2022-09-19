@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 14880,
   "input": {
     "tag": "c:raw_lead_blocks"
   },
   "output": {
-    "fluid": "astromine:molten_lead",
-    "amount": 108000
+    "amount": 108000,
+    "fluid": "astromine:molten_lead"
   },
-  "energy_input": 14880,
   "time": 1860
 }

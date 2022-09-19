@@ -2,7 +2,7 @@
   "parent": "minecraft:block/stairs",
   "textures": {
     "bottom": "astromine:block/meteor_stone",
-    "top": "astromine:block/meteor_stone",
-    "side": "astromine:block/meteor_stone"
+    "side": "astromine:block/meteor_stone",
+    "top": "astromine:block/meteor_stone"
   }
 }

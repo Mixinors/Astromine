@@ -1,15 +1,15 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "X X",
-    "XXX",
-    "XXX"
-  ],
   "key": {
     "X": {
       "tag": "c:meteoric_steel_ingots"
     }
   },
+  "pattern": [
+    "X X",
+    "XXX",
+    "XXX"
+  ],
   "result": {
     "item": "astromine:meteoric_steel_chestplate"
   }

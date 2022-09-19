@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": {
+      "item": "minecraft:apple"
+    },
+    "X": {
+      "tag": "c:lead_ingots"
+    }
+  },
   "pattern": [
     "XXX",
     "XAX",
     "XXX"
   ],
-  "key": {
-    "X": {
-      "tag": "c:lead_ingots"
-    },
-    "A": {
-      "item": "minecraft:apple"
-    }
-  },
   "result": {
     "item": "astromine:lead_apple"
   }

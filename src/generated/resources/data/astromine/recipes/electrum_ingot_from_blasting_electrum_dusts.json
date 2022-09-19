@@ -1,9 +1,9 @@
 {
   "type": "minecraft:blasting",
+  "cookingtime": 100,
+  "experience": 0.0,
   "ingredient": {
     "tag": "c:electrum_dusts"
   },
-  "result": "astromine:electrum_ingot",
-  "experience": 0.0,
-  "cookingtime": 100
+  "result": "astromine:electrum_ingot"
 }

@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 300,
   "input": {
     "item": "minecraft:polished_granite_slab"
   },
   "output": {
-    "item": "minecraft:granite_slab",
-    "count": 1
+    "count": 1,
+    "item": "minecraft:granite_slab"
   },
-  "energy_input": 300,
   "time": 80
 }

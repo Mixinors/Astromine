@@ -6,7 +6,7 @@
     }
   ],
   "result": {
-    "item": "astromine:copper_nugget",
-    "count": 9
+    "count": 9,
+    "item": "astromine:copper_nugget"
   }
 }

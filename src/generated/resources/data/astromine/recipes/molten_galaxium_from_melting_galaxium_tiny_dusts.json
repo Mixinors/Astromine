@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 2304,
   "input": {
     "tag": "c:galaxium_tiny_dusts"
   },
   "output": {
-    "fluid": "astromine:molten_galaxium",
-    "amount": 1000
+    "amount": 1000,
+    "fluid": "astromine:molten_galaxium"
   },
-  "energy_input": 2304,
   "time": 288
 }

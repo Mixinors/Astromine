@@ -1,12 +1,12 @@
 {
   "type": "astromine:triturating",
+  "energy_input": 300,
   "input": {
     "tag": "c:coal_clusters"
   },
   "output": {
-    "item": "minecraft:coal",
-    "count": 2
+    "count": 2,
+    "item": "minecraft:coal"
   },
-  "energy_input": 300,
   "time": 90
 }

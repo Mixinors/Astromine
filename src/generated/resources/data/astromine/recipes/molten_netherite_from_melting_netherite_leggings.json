@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 4480,
   "input": {
     "tag": "c:netherite_leggings"
   },
   "output": {
-    "fluid": "astromine:molten_netherite",
-    "amount": 14000
+    "amount": 14000,
+    "fluid": "astromine:molten_netherite"
   },
-  "energy_input": 4480,
   "time": 560
 }

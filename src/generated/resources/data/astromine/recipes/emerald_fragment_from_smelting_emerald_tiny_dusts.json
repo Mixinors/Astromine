@@ -1,9 +1,9 @@
 {
   "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.0,
   "ingredient": {
     "tag": "c:emerald_tiny_dusts"
   },
-  "result": "astromine:emerald_fragment",
-  "experience": 0.0,
-  "cookingtime": 200
+  "result": "astromine:emerald_fragment"
 }

@@ -1,8 +1,8 @@
 {
   "type": "minecraft:stonecutting",
+  "count": 1,
   "ingredient": {
     "item": "astromine:smooth_dark_moon_stone"
   },
-  "result": "astromine:smooth_dark_moon_stone_wall",
-  "count": 1
+  "result": "astromine:smooth_dark_moon_stone_wall"
 }

@@ -1,12 +1,12 @@
 {
   "type": "astromine:melting",
+  "energy_input": 3520,
   "input": {
     "tag": "c:netherite_shovels"
   },
   "output": {
-    "fluid": "astromine:molten_netherite",
-    "amount": 2000
+    "amount": 2000,
+    "fluid": "astromine:molten_netherite"
   },
-  "energy_input": 3520,
   "time": 440
 }
