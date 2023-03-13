@@ -58,7 +58,6 @@ public class DataPackContentsMixin {
 	@Inject(at = @At("RETURN"), method = "getContents", cancellable = true)
 	void astromine$getContents(CallbackInfoReturnable<List<ResourceReloader>> cir) {
 		var reloaders = new ArrayList<>(cir.getReturnValue());
-		
 		reloaders.add(conditionalRecipeManager);
 		
 		cir.setReturnValue(reloaders);

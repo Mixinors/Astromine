@@ -66,7 +66,6 @@ public abstract class LivingEntityMixin extends EntityMixin {
 		var entityType = getType();
 		
 		if (AMWorlds.isVacuum(world.getDimensionEntry()) && !entityType.isIn(AMTagKeys.EntityTypeTags.DOES_NOT_BREATHE)) {
-			
 			var headStack = getEquippedStack(EquipmentSlot.HEAD);
 			var chestStack = getEquippedStack(EquipmentSlot.CHEST);
 			var legsStack = getEquippedStack(EquipmentSlot.LEGS);

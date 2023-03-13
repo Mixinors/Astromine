@@ -6,10 +6,8 @@
   "mixins": [
     "common.BlockRenderViewMixin",
     "common.DataPackContentsMixin",
-    "common.EntityAccessor",
     "common.EntityMixin",
     "common.EntityNavigationMixin",
-    "common.IdentifierMixin",
     "common.JsonDataLoaderMixin",
     "common.LifecycleMixin",
     "common.LivingEntityMixin",
