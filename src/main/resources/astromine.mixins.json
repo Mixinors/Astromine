@@ -1,17 +1,17 @@
 {
-  "required": true,
-  "minVersion": "0.8",
-  "package": "com.github.mixinors.astromine.mixin",
-  "compatibilityLevel": "JAVA_17",
-  "mixins": [
+  "required" : true,
+  "minVersion" : "0.8",
+  "package" : "com.github.mixinors.astromine.mixin",
+  "compatibilityLevel" : "JAVA_17",
+  "mixins" : [
     "common.BlockRenderViewMixin",
     "common.DataPackContentsMixin",
+    "common.DimensionTypeRegistrarMixin",
     "common.EntityMixin",
     "common.EntityNavigationMixin",
     "common.JsonDataLoaderMixin",
     "common.LifecycleMixin",
     "common.LivingEntityMixin",
-    "common.MinecraftServerMixin",
     "common.MobEntityMixin",
     "common.PiglinBrainMixin",
     "common.PistonHandlerMixin",
@@ -23,7 +23,7 @@
     "common.SwimGoalMixin",
     "common.WorldPresetsMixin"
   ],
-  "client": [
+  "client" : [
     "client.AbstractSoundInstanceMixin",
     "client.ArmorFeatureRendererMixin",
     "client.BackgroundRendererMixin",
@@ -36,7 +36,7 @@
     "client.InGameOverlayRendererMixin",
     "client.JsonUnbakedModelAccessor"
   ],
-  "injectors": {
-    "defaultRequire": 1
+  "injectors" : {
+    "defaultRequire" : 1
   }
 }

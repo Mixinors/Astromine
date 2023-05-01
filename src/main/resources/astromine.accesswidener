@@ -1,7 +1,7 @@
 accessWidener v2 named
 
 
-
+accessible class net/minecraft/world/gen/WorldPresets$Registrar
 accessible field net/minecraft/recipe/RecipeManager recipes Ljava/util/Map;
 
 accessible field net/minecraft/world/gen/WorldPreset dimensions Ljava/util/Map;
