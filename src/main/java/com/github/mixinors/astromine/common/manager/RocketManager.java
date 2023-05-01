@@ -112,6 +112,7 @@ public class RocketManager {
 	
 	public static void teleportToRocketInterior(PlayerEntity player, UUID uuid) {
 		var rocket = get(uuid);
+		if (rocket == null) rocket = create(player.getUuid(), uuid);
 		if (rocket == null) return;
 		
 		var chunkPos = rocket.getInteriorPos();
