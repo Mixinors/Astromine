@@ -4,6 +4,7 @@ import com.github.mixinors.astromine.registry.common.AMDimensionOptions;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
 import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.gen.WorldPreset;
+import net.minecraft.world.gen.WorldPresets;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -11,8 +12,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.HashMap;
 
-@Mixin(targets = "net.minecraft.world.gen.WorldPresets$Registrar")
-public class WorldPresetsMixin {
+@Mixin(WorldPresets.Registrar.class)
+public class WorldPresets$RegistrarMixin {
 	@Inject(method = "createPreset", at = @At("RETURN"))
 	private void astromine$addAstromineDimensions(DimensionOptions dimensionOptions, CallbackInfoReturnable<WorldPreset> cir) {
 		var preset = cir.getReturnValue();
