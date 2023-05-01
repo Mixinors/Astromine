@@ -42,6 +42,30 @@ public class BodySelectorScreenHandler extends BaseScreenHandler {
 			for (var body : AMRegistries.BODY.getValues()) {
 				var widget = new BodyWidget(body);
 				widget.onEvent(EventType.MOUSE_CLICKED, (MouseClickedEvent event) -> {
+					var anyFocused = false;
+					
+					for (var otherWidget : panel.getRootCollection().getAllChildren()) {
+						if (otherWidget instanceof BodyWidget) {
+							if (otherWidget.isFocused()) {
+								anyFocused = true;
+								break;
+							}
+						}
+						
+						if (otherWidget instanceof BodySelectionWidget) {
+							if (otherWidget.isFocused()) {
+								anyFocused = true;
+								break;
+							}
+						}
+					}
+					
+					if (!anyFocused) {
+						bodySelectionWidget.setBody(null);
+						
+						return;
+					}
+					
 					if (!widget.isHovered()) return;
 					
 					if (event.button() == 0) {
