@@ -37,21 +37,6 @@ import java.util.Map;
 
 public class AMRenderLayers {
 	private static final Map<Identifier, RenderLayer> CACHE = new HashMap<>();
-	
-	private static final RenderLayer BLURRED_INTERFACE = RenderLayer.of(
-			"blurred_interface",
-			VertexFormats.POSITION_COLOR,
-			VertexFormat.DrawMode.QUADS,
-			256,
-			false,
-			true,
-			RenderLayer.MultiPhaseParameters.builder()
-											.shader(new RenderPhase.Shader(GameRenderer::getPositionColorShader))
-											.transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)
-											.shader(new RenderPhase.Shader(AMShaders.BLUR::getProgram))
-											.build(true)
-	);
-	
 	private static final RenderLayer HOLOGRAPHIC_BRIDGE = RenderLayer.of(
 			"holographic_bridge",
 			VertexFormats.POSITION_COLOR_LIGHT,
@@ -130,10 +115,6 @@ public class AMRenderLayers {
 		));
 		
 		return CACHE.get(texture);
-	}
-	
-	public static RenderLayer getBlurredInterface() {
-		return BLURRED_INTERFACE;
 	}
 	
 	public static RenderLayer getHolographicBridge() {
