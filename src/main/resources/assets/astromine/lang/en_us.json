@@ -1,4 +1,11 @@
 {
+  "text.hammer.empty": "Empty",
+  "text.astromine.fuel_tank": "Fuel Tank",
+  "text.astromine.hull": "Hull",
+  "text.astromine.landing_mechanism": "Landing Mechanism",
+  "text.astromine.life_support": "Life Support",
+  "text.astromine.shielding": "Shielding",
+  "text.astromine.thruster": "Thruster",
   "text.astromine.body.temperature.extremely_cold": "§1❄❄ Extremely Cold",
   "text.astromine.body.temperature.cold": "§9❄ Cold",
   "text.astromine.body.temperature.average": "§a\uD83C\uDF43 Average",

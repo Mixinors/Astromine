@@ -18,7 +18,10 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
+
+import java.util.List;
 
 public class RocketControllerScreenHandler extends ExtendedBlockEntityScreenHandler {
 	private final RocketControllerBlockEntity rocketController;
@@ -48,7 +51,7 @@ public class RocketControllerScreenHandler extends ExtendedBlockEntityScreenHand
 			return slot;
 		});
 		
-		payloadSlot.setPosition(new Position(width / 2.0F - SLOT_WIDTH / 2.0F, 54.0F));
+		payloadSlot.setPosition(new Position(tabs, TABS_WIDTH / 2.0F - SLOT_WIDTH / 2.0F, 54.0F));
 		payloadSlot.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 		
 		tab.add(payloadSlot);
@@ -210,21 +213,27 @@ public class RocketControllerScreenHandler extends ExtendedBlockEntityScreenHand
 		
 		var fuelTankItem = new ItemWidget();
 		fuelTankItem.setItem(AMItems.LOW_CAPACITY_ROCKET_FUEL_TANK);
+		fuelTankItem.setTooltip(() -> List.of(Text.translatable("text.astromine.fuel_tank").asOrderedText()));
 		
 		var hullItem = new ItemWidget();
 		hullItem.setItem(AMItems.LOW_DURABILITY_ROCKET_HULL);
+		hullItem.setTooltip(() -> List.of(Text.translatable("text.astromine.hull").asOrderedText()));
 		
 		var landingMechanismItem = new ItemWidget();
 		landingMechanismItem.setItem(AMItems.STANDING_ROCKET_LANDING_MECHANISM);
+		landingMechanismItem.setTooltip(() -> List.of(Text.translatable("text.astromine.landing_mechanism").asOrderedText()));
 		
 		var lifeSupportItem = new ItemWidget();
 		lifeSupportItem.setItem(AMItems.ROCKET_LIFE_SUPPORT);
+		fuelTankItem.setTooltip(() -> List.of(Text.translatable("text.astromine.life_support").asOrderedText()));
 		
 		var shieldingItem = new ItemWidget();
 		shieldingItem.setItem(AMItems.LOW_TEMPERATURE_ROCKET_SHIELDING);
+		shieldingItem.setTooltip(() -> List.of(Text.translatable("text.astromine.shielding").asOrderedText()));
 		
 		var thrusterItem = new ItemWidget();
 		thrusterItem.setItem(AMItems.LOW_EFFICIENCY_ROCKET_THRUSTER);
+		thrusterItem.setTooltip(() -> List.of(Text.translatable("text.astromine.thruster").asOrderedText()));
 		
 		fuelTankItem.setPosition(new Position(fuelTankSlot, 0.0F, - SLOT_HEIGHT - PAD_3));
 		fuelTankItem.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));

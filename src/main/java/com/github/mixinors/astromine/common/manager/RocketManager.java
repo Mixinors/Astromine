@@ -53,10 +53,6 @@ public class RocketManager {
 		if (world == null) return null;
 		var component = AMComponents.ROCKETS.get(world);
 		
-		if (component.getAll().isEmpty()) {
-			throw new RuntimeException("Rockets Component failed to load.");
-		}
-		
 		return component.get(uuid);
 	}
 	

@@ -68,6 +68,9 @@ dependencies {
 	modApiInclude("dev.onyxstudios.cardinal-components-api:cardinal-components-world:${project.properties["cardinalComponents"]}")
 	modApiInclude("dev.onyxstudios.cardinal-components-api:cardinal-components-level:${project.properties["cardinalComponents"]}")
 	
+	// Satin
+	modApiInclude("io.github.ladysnake:satin:${project.properties["satin"]}")
+	
 	modApiInclude("com.terraformersmc.terraform-api:terraform-shapes-api-v1:${project.properties["shapes"]}") // Shapes
 	modApiInclude("vazkii.patchouli:Patchouli:${project.properties["patchouli"]}") // Patchouli
 	modApi("com.terraformersmc:modmenu:${project.properties["modMenu"]}") // ModMenu

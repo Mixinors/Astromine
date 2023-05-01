@@ -104,23 +104,22 @@ public class BodySelectorHandledScreen extends BaseHandledScreen<BodySelectorScr
 	
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
-		var scale = 1.0F + (amount / 4.0F);
+		var scale = 1.0F + (float) (amount / 4.0F);
 		
-		if (amount > 0.0D) {
-			if (ZOOM < 5.0F) {
-				OFFSET_X -= (mouseX * scale) - mouseX;
-				OFFSET_Y -= (mouseY * scale) - mouseY;
-				
-				ZOOM += (scale - 1.0F);
-			}
-		} else {
-			if (ZOOM > 1.0F) {
-				OFFSET_X = 0.0F;
-				OFFSET_Y = 0.0F;
-				
-				ZOOM = 1.0F;
-			}
+		var targetZoom = ZOOM * scale;
+		
+		if (targetZoom > 5.0F) {
+			targetZoom = 5.0F;
+		} else if (targetZoom < 1.0F) {
+			targetZoom = 1.0F;
 		}
+		
+		var zoomFactor = targetZoom / ZOOM;
+		
+		OFFSET_X = (float) (OFFSET_X * zoomFactor + mouseX * (1.0F - zoomFactor));
+		OFFSET_Y = (float) (OFFSET_Y * zoomFactor + mouseY * (1.0F - zoomFactor));
+		
+		ZOOM = targetZoom;
 		
 		return super.mouseScrolled(mouseX, mouseY, amount);
 	}

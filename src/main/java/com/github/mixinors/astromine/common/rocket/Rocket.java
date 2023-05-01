@@ -335,7 +335,7 @@ public final class Rocket implements Tickable {
 		}
 		
 		public Parts(NbtCompound tag) {
-			for (PartType value : PartType.values()) {
+			for (var value : PartType.values()) {
 				if (tag.contains("part_type_" + value.name())) {
 					var identifier = NbtUtil.getIdentifier(tag, "part_type_" + value.name());
 					parts.put(value, Optional.of(((RocketPartItem<RocketPart<?>>) Registry.ITEM.get(identifier)).getPart()));

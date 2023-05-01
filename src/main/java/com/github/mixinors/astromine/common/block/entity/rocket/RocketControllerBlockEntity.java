@@ -55,7 +55,13 @@ public class RocketControllerBlockEntity extends ExtendedBlockEntity {
 			return rocket;
 		} else {
 			// Cheap lookup.
-			return RocketManager.get(rocketUuid);
+			var rocket = RocketManager.get(rocketUuid);
+			
+			if (rocket == null) {
+				rocket = RocketManager.create(ownerUuid, rocketUuid);
+			}
+			
+			return rocket;
 		}
 	}
 	
