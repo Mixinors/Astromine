@@ -1,0 +1,30 @@
+pluginManagement {
+	repositories {
+		// Fabric
+		maven {
+			name = "FabricMC"
+			url = "https://maven.fabricmc.net"
+		}
+
+		// Architectury
+		maven {
+			name = "Architectury"
+			url = "https://maven.architectury.dev"
+		}
+
+		// Forge
+		maven {
+			name = "Forge"
+			url = "https://files.minecraftforge.net/maven/"
+		}
+
+		// Plugin Portal
+		gradlePluginPortal()
+	}
+
+	plugins {
+		id "fabric-loom" version loomVersion
+	}
+}
+
+rootProject.name = "astromine"
