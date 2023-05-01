@@ -38,6 +38,7 @@ public class AMClient implements ClientModInitializer {
 		AMEntityModelLayers.init();
 		AMEntityRenderers.init();
 		AMBlockEntityRenderers.init();
+		AMBlockRenderLayers.init();
 		AMModels.init();
 		AMEvents.init();
 		AMNetworking.init();
