@@ -21,7 +21,8 @@
     "common.StructureAccessorAccessor",
     "common.SwimGoalAccessor",
     "common.SwimGoalMixin",
-    "common.WorldPresetsMixin"
+    "common.WorldPresets$RegistrarMixin",
+    "common.WorldPresetMixin"
   ],
   "client" : [
     "client.AbstractSoundInstanceMixin",
