@@ -32,9 +32,6 @@ import net.minecraft.util.registry.Registry;
 public class AMSoundEvents {
 	public static final RegistrySupplier<SoundEvent> SPACE_SUIT_EQUIPPED = register("item.armor.equip_space_suit");
 	
-	public static final RegistrySupplier<SoundEvent> ALTAR_START = register("block.altar.start");
-	public static final RegistrySupplier<SoundEvent> ALTAR_FINISH = register("block.altar.finish");
-	
 	public static final RegistrySupplier<SoundEvent> FIRE_EXTINGUISHER_OPEN = register("fire_extinguisher_open");
 	
 	public static final RegistrySupplier<SoundEvent> BRONZE_ARMOR_EQUIPPED = register("item.armor.equip_bronze");
