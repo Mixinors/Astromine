@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 public class RocketDoorBlock extends HorizontalFacingBlock {
-	private static final BooleanProperty LOWER = BooleanProperty.of("lower");
+	private static final BooleanProperty TOP = BooleanProperty.of("top");
 	
 	public RocketDoorBlock(Settings settings) {
 		super(settings);
@@ -36,7 +36,7 @@ public class RocketDoorBlock extends HorizontalFacingBlock {
 		var world = ctx.getWorld();
 		
 		if (blockPos.getY() < world.getTopY() - 1 && world.getBlockState(blockPos.up()).canReplace(ctx)) {
-			return this.getDefaultState().with(FACING, ctx.getPlayerFacing()).with(LOWER, true);
+			return this.getDefaultState().with(FACING, ctx.getPlayerFacing()).with(TOP, false);
 		} else {
 			return null;
 		}
@@ -44,7 +44,7 @@ public class RocketDoorBlock extends HorizontalFacingBlock {
 	
 	@Override
 	public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-		world.setBlockState(pos.up(), state.with(LOWER, false));
+		world.setBlockState(pos.up(), state.with(TOP, true).with(FACING, state.get(FACING)), 3);
 	}
 	
 	@Override
@@ -73,13 +73,13 @@ public class RocketDoorBlock extends HorizontalFacingBlock {
 		var downPos = pos.down();
 		var downState = world.getBlockState(downPos);
 		
-		return state.get(LOWER) ? downState.isSideSolidFullSquare(world, downPos, Direction.UP) : downState.isOf(this);
+		return state.get(TOP) ? downState.isSideSolidFullSquare(world, downPos, Direction.UP) : downState.isOf(this);
 	}
 	
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
 		
-		builder.add(LOWER);
+		builder.add(FACING).add(TOP);
 	}
 }
