@@ -94,15 +94,11 @@ public class RocketEntity extends ExtendedEntity {
 	
 	@Override
 	public ActionResult interact(PlayerEntity player, Hand hand) {
-		System.out.println("UwU");
-		
 		return super.interact(player, hand);
 	}
 	
 	@Override
 	public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
-		System.out.println("OwO");
-		
 		if (player.world.isClient()) {
 			return ActionResult.CONSUME;
 		}
