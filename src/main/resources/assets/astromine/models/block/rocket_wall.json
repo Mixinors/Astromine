@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "astromine:block/rocket_wall",
+    "down": "astromine:block/rocket_wall",
+    "up": "astromine:block/rocket_wall",
+    "north": "astromine:block/rocket_wall",
+    "east": "astromine:block/rocket_wall",
+    "south": "astromine:block/rocket_wall",
+    "west": "astromine:block/rocket_wall"
+  }
+}

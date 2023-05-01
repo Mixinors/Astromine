@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "top=false,facing=east": {
+      "model": "astromine:block/rocket_door_bottom",
+      "y": 90
+    },
+    "top=false,facing=north": {
+      "model": "astromine:block/rocket_door_bottom"
+    },
+    "top=false,facing=south": {
+      "model": "astromine:block/rocket_door_bottom",
+      "y": 180
+    },
+    "top=false,facing=west": {
+      "model": "astromine:block/rocket_door_bottom",
+      "y": 270
+    },
+    "top=true,facing=east": {
+      "model": "astromine:block/rocket_door_top",
+      "y": 90
+    },
+    "top=true,facing=north": {
+      "model": "astromine:block/rocket_door_top"
+    },
+    "top=true,facing=south": {
+      "model": "astromine:block/rocket_door_top",
+      "y": 180
+    },
+    "top=true,facing=west": {
+      "model": "astromine:block/rocket_door_top",
+      "y": 270
+    }
+  }
+}

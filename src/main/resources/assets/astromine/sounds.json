@@ -1,16 +1,4 @@
 {
-  "block.altar.start": {
-    "sounds": [
-      "astromine:altar_start"
-    ],
-    "subtitle": "subtitles.astromine.altar.start"
-  },
-  "block.altar.finish": {
-    "sounds": [
-      "astromine:altar_finish"
-    ],
-    "subtitle": "subtitles.astromine.altar.finish"
-  },
   "item.armor.equip_space_suit": {
     "sounds": [
       "minecraft:item/armor/equip_generic1",

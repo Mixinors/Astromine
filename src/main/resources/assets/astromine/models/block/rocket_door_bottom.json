@@ -1,0 +1,11 @@
+{
+  "parent": "astromine:block/machine",
+  "textures": {
+    "back": "astromine:block/rocket_door_bottom",
+    "bottom": "astromine:block/rocket_wall",
+    "front": "astromine:block/rocket_door_bottom",
+    "left": "astromine:block/rocket_wall",
+    "right": "astromine:block/rocket_wall",
+    "top": "astromine:block/rocket_wall"
+  }
+}
