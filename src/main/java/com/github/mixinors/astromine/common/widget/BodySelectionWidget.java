@@ -7,7 +7,6 @@ import com.github.mixinors.astromine.registry.client.AMRenderLayers;
 import dev.vini2003.hammer.core.api.client.color.Color;
 import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
-import dev.vini2003.hammer.core.api.client.util.LayerUtil;
 import dev.vini2003.hammer.core.api.common.queue.ServerTaskQueue;
 import dev.vini2003.hammer.core.api.common.util.TextUtil;
 import dev.vini2003.hammer.gui.api.common.event.MouseClickedEvent;
@@ -93,20 +92,7 @@ public class BodySelectionWidget extends Widget {
 		var textRenderer = client.textRenderer;
 		
 		// setPosition to bottom center of window
-		setPosition(window.getScaledWidth() / 2.0F - getWidth() / 2.0F, window.getScaledHeight() - getHeight());
-		
-		// Draw a black rectangle behind the widget.
-		dev.vini2003.hammer.core.api.client.util.DrawingUtil.drawQuad(
-				matrices,
-				provider,
-				0,
-				getY(),
-				319.0F,
-				window.getScaledWidth(),
-				getHeight(),
-				Color.BLACK,
-				AMRenderLayers.getBlurredInterface()
-		);
+		setPosition(window.getScaledWidth() / 2.0F - getWidth() / 2.0F, window.getScaledHeight() - getHeight() + 10.0F);
 		
 		var bodyWidth = (getWidth() * 0.15F);
 		var bodyHeight = (getWidth() * 0.15F);
