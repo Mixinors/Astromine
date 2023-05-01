@@ -49,6 +49,7 @@ public class RocketManager {
 	@Nullable
 	public static Rocket get(UUID uuid) {
 		var server = InstanceUtil.getServer();
+		if (server == null) return null;
 		var world = server.getWorld(AMWorlds.ROCKET_INTERIORS);
 		if (world == null) return null;
 		var component = AMComponents.ROCKETS.get(world);
@@ -80,6 +81,7 @@ public class RocketManager {
 	
 	public static void sync() {
 		var server = InstanceUtil.getServer();
+		if (server == null) return;
 		var world = server.getWorld(AMWorlds.ROCKET_INTERIORS);
 		if (world == null) return;
 		
