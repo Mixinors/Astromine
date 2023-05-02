@@ -106,11 +106,15 @@ public class RocketControllerBlockEntity extends ExtendedBlockEntity {
 	
 	@Override
 	public @Nullable SimpleItemStorage getItemStorage() {
-		return getRocket().getItemStorage();
+		var rocket = getRocket();
+		if (rocket == null) return null;
+		return rocket.getItemStorage();
 	}
 	
 	@Override
 	public @Nullable SimpleFluidStorage getFluidStorage() {
-		return getRocket().getFluidStorage();
+		var rocket = getRocket();
+		if (rocket == null) return null;
+		return rocket.getFluidStorage();
 	}
 }
