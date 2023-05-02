@@ -11,6 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -151,7 +152,10 @@ public class RocketManager {
 			}
 		} else {
 			if (player instanceof ServerPlayerEntity serverPlayer) {
-				var world = serverPlayer.getWorld();
+				var server = serverPlayer.getServer();
+				if (server == null) return;
+				
+				var world = server.getWorld(World.OVERWORLD);
 				if (world == null) return;
 				
 				serverPlayer.teleport(world.getSpawnPos().getX(), world.getSpawnPos().getY(), world.getSpawnPos().getZ());
