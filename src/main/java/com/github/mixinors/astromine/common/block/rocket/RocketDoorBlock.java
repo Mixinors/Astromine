@@ -73,7 +73,7 @@ public class RocketDoorBlock extends HorizontalFacingBlock {
 		var downPos = pos.down();
 		var downState = world.getBlockState(downPos);
 		
-		return state.get(TOP) ? downState.isSideSolidFullSquare(world, downPos, Direction.UP) : downState.isOf(this);
+		return !state.get(TOP) ? downState.isSideSolidFullSquare(world, downPos, Direction.UP) : downState.isOf(this);
 	}
 	
 	@Override
