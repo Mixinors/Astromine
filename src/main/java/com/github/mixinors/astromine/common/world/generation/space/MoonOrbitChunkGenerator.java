@@ -57,10 +57,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 public class MoonOrbitChunkGenerator extends ChunkGenerator {
-	public static final Codec<MoonChunkGenerator> CODEC = RecordCodecBuilder.create((instance) -> {
+	public static final Codec<MoonOrbitChunkGenerator> CODEC = RecordCodecBuilder.create((instance) -> {
 		return createStructureSetRegistryGetter(instance).and(
 				BiomeSource.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeSource)
-		).apply(instance, MoonChunkGenerator::new);
+		).apply(instance, MoonOrbitChunkGenerator::new);
 	});
 	
 	public MoonOrbitChunkGenerator(Registry<StructureSet> structureFeatureRegistry, BiomeSource source) {

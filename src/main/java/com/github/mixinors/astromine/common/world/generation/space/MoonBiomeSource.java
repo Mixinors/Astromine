@@ -24,19 +24,24 @@
 
 package com.github.mixinors.astromine.common.world.generation.space;
 
+import com.github.mixinors.astromine.common.noise.OpenSimplexNoise;
 import com.github.mixinors.astromine.registry.common.AMBiomes;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.minecraft.util.dynamic.RegistryOps;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryEntry;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 import net.minecraft.world.gen.densityfunction.DensityFunction;
 
 public class MoonBiomeSource extends BiomeSource {
+	private static final ThreadLocal<OpenSimplexNoise> SIMPLEX = ThreadLocal.withInitial(() -> null);
+	
 	public static final Codec<MoonBiomeSource> CODEC = RecordCodecBuilder.create((instance) ->
 			instance.group(
 					RegistryOps.createRegistryCodec(Registry.BIOME_KEY).forGetter((biomeSource) -> biomeSource.registry)
@@ -70,7 +75,21 @@ public class MoonBiomeSource extends BiomeSource {
 		
 		// TODO: Fix this. What the FUCK was Mojang thinking?
 		
-		var sample = Math.abs(noise.humidity().sample(new DensityFunction.UnblendedNoisePos(x / 128, 0, z / 128)));
+		var simplex = SIMPLEX.get();
+		
+		if (simplex == null) {
+			var server = InstanceUtil.getServer();
+			if (server == null) return registry.getEntry(AMBiomes.MOON_DARK_SIDE_KEY).orElseThrow();
+			
+			var world = server.getWorld(World.OVERWORLD);
+			if (world == null) return registry.getEntry(AMBiomes.MOON_DARK_SIDE_KEY).orElseThrow();
+			
+			simplex = new OpenSimplexNoise(world.getSeed());
+			
+			SIMPLEX.set(simplex);
+		}
+		
+		var sample = simplex.sample(x / 512.0F, z / 512.0F);
 		
 		if (sample > 0.5F) {
 			return registry.getEntry(AMBiomes.MOON_LIGHT_SIDE_KEY).orElseThrow();
