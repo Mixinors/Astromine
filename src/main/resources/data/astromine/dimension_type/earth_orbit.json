@@ -1,0 +1,21 @@
+{
+  "name": "astromine:earth_orbit",
+  "ultrawarm": false,
+  "bed_works": false,
+  "has_skylight": true,
+  "has_ceiling": true,
+  "has_raids": false,
+  "respawn_anchor_works": false,
+  "natural": true,
+  "piglin_safe": true,
+  "coordinate_scale": 1,
+  "ambient_light": 0.4,
+  "fixed_time": 15000,
+  "logical_height": 382,
+  "effects": "astromine:space",
+  "infiniburn": "#astromine:infiniburn_space",
+  "min_y": -64,
+  "height": 384,
+  "monster_spawn_light_level": 7,
+  "monster_spawn_block_light_limit": 7
+}

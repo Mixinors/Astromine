@@ -6,7 +6,6 @@
   "mixins" : [
     "common.BlockRenderViewMixin",
     "common.DataPackContentsMixin",
-    "common.DimensionTypeRegistrarMixin",
     "common.EntityMixin",
     "common.EntityNavigationMixin",
     "common.JsonDataLoaderMixin",
@@ -20,9 +19,7 @@
     "common.StayAboveWaterTaskMixin",
     "common.StructureAccessorAccessor",
     "common.SwimGoalAccessor",
-    "common.SwimGoalMixin",
-    "common.WorldPresets$RegistrarMixin",
-    "common.WorldPresetMixin"
+    "common.SwimGoalMixin"
   ],
   "client" : [
     "client.AbstractSoundInstanceMixin",
