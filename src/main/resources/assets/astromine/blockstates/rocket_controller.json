@@ -1,6 +1,18 @@
 {
   "variants": {
-    "": {
+    "facing=east": {
+      "y": 90,
+      "model": "astromine:block/rocket_controller"
+    },
+    "facing=north": {
+      "model": "astromine:block/rocket_controller"
+    },
+    "facing=south": {
+      "y": 180,
+      "model": "astromine:block/rocket_controller"
+    },
+    "facing=west": {
+      "y": 270,
       "model": "astromine:block/rocket_controller"
     }
   }
