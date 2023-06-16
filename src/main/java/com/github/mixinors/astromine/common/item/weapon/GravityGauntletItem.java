@@ -139,7 +139,6 @@ public class GravityGauntletItem extends SimpleEnergyStorageItem {
 		return stack.getOrCreateNbt().getBoolean(CHARGED_KEY);
 	}
 	
-	@Override
 	public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(ItemStack stack, EquipmentSlot slot) {
 		if (slot == EquipmentSlot.MAINHAND) {
 			return ATTRIBUTE_MODIFIERS;
