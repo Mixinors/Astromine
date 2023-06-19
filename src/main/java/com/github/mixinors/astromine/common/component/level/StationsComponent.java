@@ -2,23 +2,19 @@ package com.github.mixinors.astromine.common.component.level;
 
 import com.github.mixinors.astromine.common.manager.StationManager;
 import com.github.mixinors.astromine.common.station.Station;
-import com.github.mixinors.astromine.registry.common.AMWorlds;
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.world.World;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class StationsComponent implements AutoSyncedComponent {
+public class StationsComponent {
 	private static final String STATIONS_KEY = "Stations";
 	
 	private final Map<UUID, Station> stations = new ConcurrentHashMap<>();
 	
-	public StationsComponent(World world) {
+	public StationsComponent() {
 	}
 	
 	public void add(Station rocket) {
@@ -41,36 +37,33 @@ public class StationsComponent implements AutoSyncedComponent {
 		this.stations.values().forEach(Station::tick);
 	}
 	
-	@Override
 	public void writeToNbt(NbtCompound nbt) {
 		var stationsNbt = new NbtCompound();
 		
 		for (var entry : stations.entrySet()) {
-			var uuid = entry.getKey();
+			var stationUuid = entry.getKey();
 			var station = entry.getValue();
 			
 			var stationNbt = new NbtCompound();
 			station.writeToNbt(stationNbt);
 			
-			stationsNbt.put(uuid.toString(), stationNbt);
+			stationsNbt.put(stationUuid.toString(), stationNbt);
 		}
 		
 		nbt.put(STATIONS_KEY, stationsNbt);
 	}
 	
-	@Override
 	public void readFromNbt(NbtCompound nbt) {
+		// This component persists between worlds, so we need to clear it.
+		stations.clear();
+		
 		var rocketsNbt = nbt.getCompound(STATIONS_KEY);
 		
 		for (var key : rocketsNbt.getKeys()) {
-			var uuid = UUID.fromString(key);
-			var rocketNbt = rocketsNbt.getCompound(key);
-			stations.computeIfAbsent(uuid, uuid1 -> StationManager.readFromNbt(rocketNbt));
+			var stationUuid = UUID.fromString(key);
+			var stationNbt = rocketsNbt.getCompound(key);
+			
+			stations.computeIfAbsent(stationUuid, uuid1 -> StationManager.readFromNbt(stationNbt));
 		}
-	}
-	
-	@Override
-	public boolean shouldSyncWith(ServerPlayerEntity player) {
-		return player.getWorld().getRegistryKey().equals(AMWorlds.ROCKET_INTERIORS);
 	}
 }

@@ -24,25 +24,28 @@
 
 package com.github.mixinors.astromine.registry.client;
 
+import com.github.mixinors.astromine.common.component.level.RocketsComponent;
 import com.github.mixinors.astromine.common.entity.base.ExtendedEntity;
 import com.github.mixinors.astromine.common.manager.BodyManager;
+import com.github.mixinors.astromine.common.manager.RocketManager;
+import com.github.mixinors.astromine.common.manager.StationManager;
 import com.github.mixinors.astromine.registry.common.AMEntityTypes;
+import com.github.mixinors.astromine.registry.common.AMStaticComponents;
 import dev.architectury.networking.NetworkManager;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.world.ClientWorld;
 
-import static com.github.mixinors.astromine.registry.common.AMNetworking.ROCKET_SPAWN;
-import static com.github.mixinors.astromine.registry.common.AMNetworking.SYNC_ENTITY;
+import static com.github.mixinors.astromine.registry.common.AMNetworking.*;
 
 public class AMNetworking {
 	public static void init() {
-		ClientPlayNetworking.registerGlobalReceiver(com.github.mixinors.astromine.registry.common.AMNetworking.SYNC_BODIES, BodyManager::onSync);
-		
 		NetworkManager.registerReceiver(NetworkManager.s2c(), ROCKET_SPAWN, (buf, context) -> {
 			var x = buf.readDouble();
 			var y = buf.readDouble();
 			var z = buf.readDouble();
+			
 			var uuid = buf.readUuid();
+			
 			var id = buf.readInt();
 			
 			context.queue(() -> {
@@ -78,12 +81,17 @@ public class AMNetworking {
 			});
 		});
 		
+		NetworkManager.registerReceiver(NetworkManager.s2c(), SYNC_BODIES, BodyManager::onSync);
+		NetworkManager.registerReceiver(NetworkManager.s2c(), SYNC_ROCKETS, RocketManager::onSync);
+		NetworkManager.registerReceiver(NetworkManager.s2c(), SYNC_STATIONS, StationManager::onSync);
+		
 		// TODO: 08/08/2020 - 11:00:51
 		// TODO: 27/08/2020 - 21:15:05
 		// TODO: 08/05/2021 - 09:47:18
 		// TODO: 06/05/2022 - 20:06:53
 		// TODO: 02/07/2022 - 01:23:00
 		// TODO: 18/09/2022 - 15:03:00
+		// TODO: 15/06/2023 - 21:12:00
 		// ClientSidePacketRegistry.INSTANCE.register(AstromineCommonPackets.PRESSURE_UPDATE, ((context, buffer) -> {
 		// Identifier identifier = buffer.readIdentifier();
 		//

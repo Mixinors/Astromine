@@ -31,7 +31,7 @@ import com.github.mixinors.astromine.common.manager.StationManager;
 import com.github.mixinors.astromine.common.screen.handler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import com.github.mixinors.astromine.common.screen.handler.base.entity.ExtendedEntityScreenHandler;
 import dev.architectury.event.events.common.TickEvent;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -40,11 +40,6 @@ import net.minecraft.resource.ResourceType;
 public class AMEvents {
 	public static void init() {
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new BodyManager.ReloadListener());
-		
-		ServerWorldEvents.LOAD.register(BodyManager::onWorldLoad);
-		ServerWorldEvents.UNLOAD.register(BodyManager::onWorldUnload);
-		
-		ServerPlayConnectionEvents.JOIN.register(BodyManager::onPlayerJoin);
 		
 		TickEvent.SERVER_PRE.register((server) -> {
 			for (var playerEntity : server.getPlayerManager().getPlayerList()) {
@@ -71,16 +66,18 @@ public class AMEvents {
 			}
 		}));
 		
-		// Sync the rocket interiors so the game doesn't die when people interact with rockets.
-		ServerTickEvents.END_SERVER_TICK.register((server) -> {
-			var world = server.getWorld(AMWorlds.ROCKET_INTERIORS);
-			if (world == null) return;
-			
-			RocketManager.registerQueuedRockets();
-			StationManager.registerQueuedStations();
-			
-			AMComponents.ROCKETS.sync(world);
-			AMComponents.STATIONS.sync(world);
-		});
+		ServerWorldEvents.LOAD.register(BodyManager::onWorldLoad);
+		ServerWorldEvents.UNLOAD.register(BodyManager::onWorldUnload);
+		
+		ServerLifecycleEvents.SERVER_STARTING.register(RocketManager::onServerStarting);
+		ServerLifecycleEvents.SERVER_STARTING.register(StationManager::onServerStarting);
+		
+		ServerLifecycleEvents.SERVER_STOPPING.register(RocketManager::onServerStopping);
+		ServerLifecycleEvents.SERVER_STOPPING.register(StationManager::onServerStopping);
+		
+		ServerPlayConnectionEvents.JOIN.register(RocketManager::onPlayerJoin);
+		ServerPlayConnectionEvents.JOIN.register(StationManager::onPlayerJoin);
+		
+		ServerPlayConnectionEvents.JOIN.register(BodyManager::onPlayerJoin);
 	}
 }

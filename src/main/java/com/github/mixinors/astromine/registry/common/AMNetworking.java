@@ -44,6 +44,10 @@ public class AMNetworking {
 	
 	public static final Identifier SYNC_BODIES = AMCommon.id("sync_bodies");
 	
+	public static final Identifier SYNC_ROCKETS = AMCommon.id("sync_rockets");
+	
+	public static final Identifier SYNC_STATIONS = AMCommon.id("sync_stations");
+	
 	public static void init() {
 		NetworkManager.registerReceiver(NetworkManager.c2s(), STORAGE_SIDING_UPDATE, ((buf, context) -> {
 			buf.retain();

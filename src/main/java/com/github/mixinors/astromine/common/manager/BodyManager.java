@@ -8,13 +8,12 @@ import com.github.mixinors.astromine.common.util.ResourceUtil;
 import com.github.mixinors.astromine.registry.common.AMNetworking;
 import com.github.mixinors.astromine.registry.common.AMRegistries;
 import com.mojang.serialization.Codec;
+import dev.architectury.networking.NetworkManager.PacketContext;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.PacketByteBuf;
@@ -47,7 +46,7 @@ public class BodyManager {
 		ServerPlayNetworking.send(handler.player, AMNetworking.SYNC_BODIES, buf);
 	}
 	
-	public static void onSync(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
+	public static void onSync(PacketByteBuf buf, PacketContext context) {
 		AMRegistries.BODY.readFromBuf(REGISTRY_CODEC, buf);
 	}
 	

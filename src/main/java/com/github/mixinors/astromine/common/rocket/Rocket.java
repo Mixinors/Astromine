@@ -9,6 +9,7 @@ import com.github.mixinors.astromine.common.transfer.storage.SimpleItemStorage;
 import com.github.mixinors.astromine.registry.common.AMFluids;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.common.util.NbtUtil;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
@@ -238,7 +239,12 @@ public final class Rocket implements Tickable {
 			fluidStorage.extractPredicate((variant, slot) -> false)
 						.extractPredicate((variant, slot) -> slot == OXYGEN_TANK_FLUID_OUT || slot == FUEL_TANK_FLUID_OUT)
 						.insertPredicate((variant, slot) -> (slot == OXYGEN_TANK_FLUID_IN && OXYGEN_INGREDIENT.testVariant(variant)) || (slot == FUEL_TANK_FLUID_IN && FUEL_INGREDIENT.testVariant(variant)))
-						.listener(RocketManager::sync).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
+						.listener(() -> {
+							var server = InstanceUtil.getServer();
+							if (server == null) return;
+							
+							RocketManager.sync(server);
+						}).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
 		}
 	}
 	
@@ -259,7 +265,10 @@ public final class Rocket implements Tickable {
 		
 		updateFluidStorage();
 		
-		RocketManager.sync();
+		var server = InstanceUtil.getServer();
+		if (server == null) return;
+		
+		RocketManager.sync(server);
 	}
 	
 	private void tickJourney() {

@@ -31,51 +31,7 @@ public class RocketControllerBlockEntity extends ExtendedBlockEntity {
 	
 	@Nullable
 	public Rocket getRocket() {
-		if (ownerUuid == null) return null;
-		
-		if (rocketUuid == null) {
-			// Expensive lookup.
-			var pos = getPos();
-			var x = pos.getX();
-			x = x - (x % 32);
-			var z = pos.getZ();
-			z = z - (z % 32);
-			
-			var chunkPos = new ChunkPos(x,z);
-			
-			var rocket = RocketManager.get(chunkPos);
-			
-			if (rocket == null) {
-				// TODO: Remove after debugging. Or leave, because it's useful if the Rocket is corrupted.
-				rocket = RocketManager.create(ownerUuid, UUID.randomUUID());
-			}
-			
-			rocketUuid = rocket.getUuid();
-			
-			return rocket;
-		} else {
-			// Cheap lookup.
-			var rocket = RocketManager.get(rocketUuid);
-			
-			if (rocket == null) {
-				rocket = RocketManager.create(ownerUuid, rocketUuid);
-			}
-			
-			return rocket;
-		}
-	}
-	
-	public void setRocket(Rocket rocket) {
-		this.rocketUuid = rocket.getUuid();
-	}
-	
-	@Nullable
-	public UUID getOwnerUuid() {
-		return ownerUuid;
-	}
-	
-	public void setOwnerUuid(@Nullable UUID ownerUuid) {
-		this.ownerUuid = ownerUuid;
+		return RocketManager.get(new ChunkPos(getPos()));
 	}
 	
 	@Override
