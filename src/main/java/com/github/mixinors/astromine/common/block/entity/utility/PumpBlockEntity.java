@@ -31,6 +31,8 @@ import com.github.mixinors.astromine.common.provider.config.FluidStorageUtilityC
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidStorage;
 import com.github.mixinors.astromine.common.util.DirectionUtils;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
+import it.unimi.dsi.fastutil.longs.LongSet;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
@@ -68,7 +70,19 @@ public class PumpBlockEntity extends ExtendedBlockEntity implements FluidStorage
 	
 	public long age = 0L;
 	
-	private Deque<BlockPos> posToPump = new ArrayDeque<>();
+	private Deque<BlockPos> posToPump = new ArrayDeque<>() {
+		private final LongSet poses = new LongOpenHashSet();
+		
+		@Override
+		public boolean add(@NotNull BlockPos blockPos) {
+			return poses.add(blockPos.asLong()) && super.add(blockPos);
+		}
+		
+		@Override
+		public boolean contains(Object o) {
+			return o instanceof BlockPos && poses.contains(((BlockPos) o).asLong());
+		}
+	};
 	
 	public PumpBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(AMBlockEntityTypes.PUMP, blockPos, blockState);
@@ -148,6 +162,7 @@ public class PumpBlockEntity extends ExtendedBlockEntity implements FluidStorage
 								active = true;
 							}
 						} else {
+							var posesChecked = new LongOpenHashSet();
 							var posToCheck = new ArrayDeque<BlockPos>();
 							
 							posToCheck.add(getPos().add(0, -Math.ceil(depth / 20.0D), 0));
@@ -162,6 +177,10 @@ public class PumpBlockEntity extends ExtendedBlockEntity implements FluidStorage
 									
 									if (mainCheckFluidState.isEmpty() && !checkFluidState.isEmpty()) {
 										mainCheckFluidState = checkFluidState;
+									}
+									
+									if (checkPos.getManhattanDistance(getPos()) > 10 + depth * 1.5) {
+										continue;
 									}
 									
 									if (!posToPump.contains(checkPos) && !posToCheck.contains(checkPos) && !checkFluidState.isEmpty() && checkFluidState.equals(mainCheckFluidState)) {
