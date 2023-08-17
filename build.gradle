@@ -36,7 +36,7 @@ repositories {
 	maven { url 'https://maven.terraformersmc.com/releases/' }
 	maven { url 'https://maven.architectury.dev' }
 	maven { url 'https://jitpack.io' }
-	maven { url 'https://ladysnake.jfrog.io/artifactory/mods' }
+	maven { url 'https://maven.ladysnake.org/releases' }
 	
 	maven {
 		url 'https://maven.blamejared.com'
