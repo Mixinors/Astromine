@@ -49,8 +49,6 @@ import java.util.Set;
 @Mixin(Entity.class)
 public abstract class EntityMixin implements EntityAccessor {
 	@Shadow
-	public World world;
-	@Shadow
 	protected boolean firstUpdate;
 	@Shadow
 	protected Object2DoubleMap<TagKey<Fluid>> fluidHeight;
@@ -91,6 +89,9 @@ public abstract class EntityMixin implements EntityAccessor {
 	
 	@Shadow
 	public abstract int getMaxAir();
+	
+	@Shadow
+	public abstract World getWorld();
 	
 	@Override
 	public boolean astromine$isInIndustrialFluid() {
