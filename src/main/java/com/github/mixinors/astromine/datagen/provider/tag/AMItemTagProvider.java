@@ -33,6 +33,7 @@ import com.github.mixinors.astromine.datagen.family.material.family.MaterialFami
 import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
+import com.shnupbups.piglib.Piglib;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.item.Items;
@@ -55,9 +56,9 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 		var beaconPaymentTagBuilder = getOrCreateTagBuilder(net.minecraft.registry.tag.ItemTags.BEACON_PAYMENT_ITEMS);
 		
 		var piglinLovedTagBuilder = getOrCreateTagBuilder(net.minecraft.registry.tag.ItemTags.PIGLIN_LOVED);
-		// var piglinLovedNuggetsTagBuilder = getOrCreateTagBuilder(Piglib.PIGLIN_LOVED_NUGGETS);
-		// var piglinBarteringItemsTagBuilder = getOrCreateTagBuilder(Piglib.PIGLIN_BARTERING_ITEMS);
-		// var piglinSafeArmorTagBuilder = getOrCreateTagBuilder(Piglib.PIGLIN_SAFE_ARMOR);
+		var piglinLovedNuggetsTagBuilder = getOrCreateTagBuilder(Piglib.PIGLIN_LOVED_NUGGETS);
+		var piglinBarteringItemsTagBuilder = getOrCreateTagBuilder(Piglib.PIGLIN_BARTERING_ITEMS);
+		var piglinSafeArmorTagBuilder = getOrCreateTagBuilder(Piglib.PIGLIN_SAFE_ARMOR);
 		
 		AMMaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateTags).forEachOrdered(family -> {
 			AMDatagen.toTreeMap(family.getItemTags()).forEach((variant, tag) -> {
@@ -69,10 +70,10 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 				
 				if (family.isPiglinLoved()) {
 					if (variant.equals(ItemVariant.NUGGET)) {
-						// piglinLovedNuggetsTagBuilder.addTag(tag);
+						piglinLovedNuggetsTagBuilder.addTag(tag);
 						
 						if (family.hasAlias()) {
-							// piglinLovedNuggetsTagBuilder.addTag(family.getAliasTag(variant));
+							piglinLovedNuggetsTagBuilder.addTag(family.getAliasTag(variant));
 						}
 					} else {
 						piglinLovedTagBuilder.addTag(tag);
@@ -156,10 +157,10 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 					});
 					
 					if (family.isPiglinLoved()) {
-						// piglinSafeArmorTagBuilder.addTag(armorTag);
+						piglinSafeArmorTagBuilder.addTag(armorTag);
 						
 						if (family.hasAlias()) {
-							// piglinSafeArmorTagBuilder.addTag(family.getAliasItemTag("armor"));
+							piglinSafeArmorTagBuilder.addTag(family.getAliasItemTag("armor"));
 						}
 					}
 					
@@ -204,10 +205,10 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 			}
 			
 			if (family.isPiglinLoved()) {
-				// piglinBarteringItemsTagBuilder.addTag(family.getBaseTag());
+				piglinBarteringItemsTagBuilder.addTag(family.getBaseTag());
 				
 				if (family.hasAlias()) {
-					// piglinBarteringItemsTagBuilder.addTag(family.getAliasBaseTag());
+					piglinBarteringItemsTagBuilder.addTag(family.getAliasBaseTag());
 				}
 			}
 		});

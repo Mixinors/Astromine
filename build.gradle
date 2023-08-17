@@ -119,7 +119,7 @@ dependencies {
 	modApiInclude("dev.vini2003:hammer-gravity:$hammerVersion")
 
 	// PigLib
-	// modApiInclude("com.shnupbups:Piglib:$pigLibVersion")
+	modApiInclude("com.shnupbups:Piglib:$pigLibVersion")
 
 	// CauldronLib
 	modApiInclude("com.shnupbups:CauldronLib:$cauldronLibVersion")
