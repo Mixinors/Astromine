@@ -42,6 +42,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKeys;
 
 import java.util.function.Supplier;
 
@@ -154,7 +155,7 @@ public class AMBlockEntityTypes {
 	 */
 	@SafeVarargs
 	public static <B extends BlockEntity> RegistrySupplier<BlockEntityType<B>> register(String name, FabricBlockEntityTypeBuilder.Factory<B> supplier, Supplier<Block>... supportedBlocks) {
-		return AMCommon.registry(Registry.BLOCK_ENTITY_TYPE_KEY).register(AMCommon.id(name), () -> FabricBlockEntityTypeBuilder.create(supplier, resolveBlocks(supportedBlocks)).build(null));
+		return AMCommon.registry(RegistryKeys.BLOCK_ENTITY_TYPE).register(AMCommon.id(name), () -> FabricBlockEntityTypeBuilder.create(supplier, resolveBlocks(supportedBlocks)).build(null));
 	}
 	
 	private static Block[] resolveBlocks(Supplier<Block>[] supportedBlocks) {

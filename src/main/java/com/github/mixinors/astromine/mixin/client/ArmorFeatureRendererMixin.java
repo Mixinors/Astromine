@@ -47,10 +47,10 @@ public abstract class ArmorFeatureRendererMixin {
 	protected abstract Identifier getArmorTexture(ArmorItem armorItem, boolean bl, @Nullable String string);
 	
 	@Inject(method = "renderArmorParts", at = @At("HEAD"), cancellable = true)
-	private void astromine$renderArmorParts(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, ArmorItem armorItem, boolean bl, BipedEntityModel<LivingEntity> bipedEntityModel, boolean bl2, float f, float g, float h, @Nullable String string, CallbackInfo ci) {
+	private void astromine$renderArmorParts(MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int light, ArmorItem armorItem, BipedEntityModel<LivingEntity> model, boolean secondTextureLayer, float red, float green, float blue, @Nullable String overlay, CallbackInfo ci) {
 		if (armorItem instanceof AnimatedArmorItem animatedArmorItem) {
-			var vertexConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider, getArmorCutoutNoCull(this.getArmorTexture(armorItem, bl2, string), animatedArmorItem.getFrames()), false, bl);
-			bipedEntityModel.render(matrixStack, vertexConsumer, i, OverlayTexture.DEFAULT_UV, f, g, h, 1.0F);
+			var vertexConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider, getArmorCutoutNoCull(this.getArmorTexture(armorItem, secondTextureLayer, overlay), animatedArmorItem.getFrames()), false, false);
+			model.render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV, red, green, blue, 1.0F);
 			ci.cancel();
 		}
 	}
@@ -59,7 +59,7 @@ public abstract class ArmorFeatureRendererMixin {
 	private static RenderLayer getArmorCutoutNoCull(Identifier texture, int frames) {
 		var multiPhaseParameters = RenderLayer.MultiPhaseParameters.builder()
 																   .texture(new AnimatedArmorItem.AnimatedTexturePhase(texture, frames))
-																   .shader(RenderPhase.ARMOR_CUTOUT_NO_CULL_SHADER)
+																   .program(RenderPhase.ARMOR_CUTOUT_NO_CULL_PROGRAM)
 																   .transparency(RenderLayer.NO_TRANSPARENCY)
 																   .cull(RenderLayer.DISABLE_CULLING)
 																   .lightmap(RenderLayer.ENABLE_LIGHTMAP)

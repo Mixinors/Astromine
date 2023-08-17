@@ -30,15 +30,13 @@ import com.github.mixinors.astromine.common.registry.AsteroidOreRegistry;
 import com.github.mixinors.astromine.common.registry.DarkMoonOreRegistry;
 import com.github.mixinors.astromine.common.registry.MoonOreRegistry;
 import com.github.mixinors.astromine.common.util.data.range.Range;
-import com.github.mixinors.astromine.common.world.ore.OreDistribution;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
-import net.minecraft.util.Identifier;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.PlacedFeature;
 
@@ -54,19 +52,12 @@ public class AMOres {
 	public static final Identifier LEAD_ORE_ID = AMCommon.id("lead_ore");
 	public static final Identifier LEAD_ORE_SMALL_ID = AMCommon.id("lead_ore_small");
 	
-	public static final RegistryEntry<PlacedFeature> TIN_ORE_PLACED_FEATURE = OreDistribution.TIN.registerPlacedFeature(TIN_ORE_ID, AMBlocks.TIN_ORE.get(), AMBlocks.DEEPSLATE_TIN_ORE.get());
-	public static final RegistryEntry<PlacedFeature> TIN_ORE_SMALL_PLACED_FEATURE = OreDistribution.TIN_SMALL.registerPlacedFeature(TIN_ORE_SMALL_ID, AMBlocks.TIN_ORE.get(), AMBlocks.DEEPSLATE_TIN_ORE.get());
-	public static final RegistryEntry<PlacedFeature> SILVER_ORE_PLACED_FEATURE = OreDistribution.SILVER.registerPlacedFeature(SILVER_ORE_ID, AMBlocks.SILVER_ORE.get(), AMBlocks.DEEPSLATE_SILVER_ORE.get());
-	public static final RegistryEntry<PlacedFeature> SILVER_ORE_LOWER_PLACED_FEATURE = OreDistribution.SILVER_LOWER.registerPlacedFeature(SILVER_ORE_LOWER_ID, AMBlocks.SILVER_ORE.get(), AMBlocks.DEEPSLATE_SILVER_ORE.get());
-	public static final RegistryEntry<PlacedFeature> LEAD_ORE_PLACED_FEATURE = OreDistribution.LEAD.registerPlacedFeature(LEAD_ORE_ID, AMBlocks.LEAD_ORE.get(), AMBlocks.DEEPSLATE_LEAD_ORE.get());
-	public static final RegistryEntry<PlacedFeature> LEAD_ORE_SMALL_PLACED_FEATURE = OreDistribution.LEAD_SMALL.registerPlacedFeature(LEAD_ORE_SMALL_ID, AMBlocks.LEAD_ORE.get(), AMBlocks.DEEPSLATE_LEAD_ORE.get());
-	
-	public static final RegistryKey<PlacedFeature> TIN_ORE_KEY = RegistryKey.of(Registry.PLACED_FEATURE_KEY, TIN_ORE_ID);
-	public static final RegistryKey<PlacedFeature> TIN_ORE_SMALL_KEY = RegistryKey.of(Registry.PLACED_FEATURE_KEY, TIN_ORE_SMALL_ID);
-	public static final RegistryKey<PlacedFeature> SILVER_ORE_KEY = RegistryKey.of(Registry.PLACED_FEATURE_KEY, SILVER_ORE_ID);
-	public static final RegistryKey<PlacedFeature> SILVER_ORE_LOWER_KEY = RegistryKey.of(Registry.PLACED_FEATURE_KEY, SILVER_ORE_LOWER_ID);
-	public static final RegistryKey<PlacedFeature> LEAD_ORE_KEY = RegistryKey.of(Registry.PLACED_FEATURE_KEY, LEAD_ORE_ID);
-	public static final RegistryKey<PlacedFeature> LEAD_ORE_SMALL_KEY = RegistryKey.of(Registry.PLACED_FEATURE_KEY, LEAD_ORE_SMALL_ID);
+	public static final RegistryKey<PlacedFeature> TIN_ORE_KEY = RegistryKey.of(RegistryKeys.PLACED_FEATURE, TIN_ORE_ID);
+	public static final RegistryKey<PlacedFeature> TIN_ORE_SMALL_KEY = RegistryKey.of(RegistryKeys.PLACED_FEATURE, TIN_ORE_SMALL_ID);
+	public static final RegistryKey<PlacedFeature> SILVER_ORE_KEY = RegistryKey.of(RegistryKeys.PLACED_FEATURE, SILVER_ORE_ID);
+	public static final RegistryKey<PlacedFeature> SILVER_ORE_LOWER_KEY = RegistryKey.of(RegistryKeys.PLACED_FEATURE, SILVER_ORE_LOWER_ID);
+	public static final RegistryKey<PlacedFeature> LEAD_ORE_KEY = RegistryKey.of(RegistryKeys.PLACED_FEATURE, LEAD_ORE_ID);
+	public static final RegistryKey<PlacedFeature> LEAD_ORE_SMALL_KEY = RegistryKey.of(RegistryKeys.PLACED_FEATURE, LEAD_ORE_SMALL_ID);
 	
 	public static void init() {
 		AsteroidOreRegistry.INSTANCE.register(new Range(AMConfig.get().world.ores.asteroidCoalOre.minRange, AMConfig.get().world.ores.asteroidCoalOre.maxRange), new Range(AMConfig.get().world.ores.asteroidCoalOre.minSize, AMConfig.get().world.ores.asteroidCoalOre.maxSize), AMBlocks.ASTEROID_COAL_ORE.get());

@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.common.world.structure;
 
 import com.github.mixinors.astromine.common.registry.DarkMoonOreRegistry;
 import com.github.mixinors.astromine.common.registry.MoonOreRegistry;
-import com.github.mixinors.astromine.registry.common.AMBiomes;
+import com.github.mixinors.astromine.datagen.provider.AMBiomeProvider;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMStructureTypes;
 import net.minecraft.block.Block;
@@ -69,7 +69,7 @@ public class CraterGenerator extends ShiftableStructurePiece {
 			int mD;
 			
 			// If in a Crater Field, maximum diameter is diameter * 1.1F.
-			if (!biome.equals(AMBiomes.MOON_CRATER_FIELD_KEY)) {
+			if (!biome.equals(AMBiomeProvider.MOON_CRATER_FIELD_KEY)) {
 				mD = 16;
 			} else {
 				mD = 38;

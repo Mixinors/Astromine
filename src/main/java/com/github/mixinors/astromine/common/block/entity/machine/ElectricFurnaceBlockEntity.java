@@ -110,10 +110,10 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 		}
 		
 		var storageOutput = outputStorage.getResource().toStack((int) outputStorage.getAmount());
-		var output = recipe.getOutput();
+		var output = recipe.getOutput(world.getRegistryManager());
 		
 		var isEmpty = outputStorage.isResourceBlank();
-		var isEqual = ItemStack.areItemsEqual(storageOutput, output) && ItemStack.areNbtEqual(storageOutput, output);
+		var isEqual = ItemStack.areItemsEqual(storageOutput, output) && ItemStack.canCombine(storageOutput, output);
 		var canFit = storageOutput.getCount() + output.getCount() <= storageOutput.getMaxCount();
 		
 		return (isEmpty || isEqual) && canFit;
@@ -137,10 +137,10 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 				
 				for (var recipe : RECIPE_CACHE.get(world)) {
 					if (recipe.matches(inputInventory, world)) {
-						var output = recipe.getOutput().copy();
+						var output = recipe.getOutput(world.getRegistryManager()).copy();
 						
 						var isEmpty = itemStorage.getStack(OUTPUT_SLOT).isEmpty();
-						var isEqual = ItemStack.areItemsEqual(itemStorage.getStack(OUTPUT_SLOT), output) && ItemStack.areNbtEqual(itemStorage.getStack(OUTPUT_SLOT), output);
+						var isEqual = ItemStack.areItemsEqual(itemStorage.getStack(OUTPUT_SLOT), output) && ItemStack.canCombine(itemStorage.getStack(OUTPUT_SLOT), output);
 						var canFit = itemStorage.getStack(OUTPUT_SLOT).getCount() + output.getCount() <= itemStorage.getStack(OUTPUT_SLOT).getMaxCount();
 						
 						if ((isEmpty || isEqual) && canFit) {
@@ -172,7 +172,8 @@ public abstract class ElectricFurnaceBlockEntity extends ExtendedBlockEntity imp
 								
 								var outputStorage = itemStorage.getStorage(OUTPUT_SLOT);
 								
-								outputStorage.insert(ItemVariant.of(recipe.getOutput()), recipe.getOutput().getCount(), transaction, true);
+								var output = recipe.getOutput(world.getRegistryManager());
+								outputStorage.insert(ItemVariant.of(output), output.getCount(), transaction, true);
 								
 								transaction.commit();
 								

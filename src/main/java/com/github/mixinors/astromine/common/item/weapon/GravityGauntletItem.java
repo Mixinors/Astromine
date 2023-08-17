@@ -111,7 +111,7 @@ public class GravityGauntletItem extends SimpleEnergyStorageItem {
 	
 	@Override
 	public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		if (attacker.world.isClient) {
+		if (attacker.getWorld().isClient) {
 			return super.postHit(stack, target, attacker);
 		}
 		

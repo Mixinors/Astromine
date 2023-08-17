@@ -24,15 +24,16 @@
 
 package com.github.mixinors.astromine.common.item.storage;
 
+import com.github.mixinors.astromine.common.item.AppendingGroupItem;
 import com.github.mixinors.astromine.common.transfer.storage.EnergyStorageItem;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.collection.DefaultedList;
 import team.reborn.energy.api.EnergyStorage;
 
-public class SimpleEnergyStorageItem extends Item implements EnergyStorageItem {
+import java.util.function.Consumer;
+
+public class SimpleEnergyStorageItem extends Item implements EnergyStorageItem, AppendingGroupItem {
 	private final long capacity;
 	
 	public SimpleEnergyStorageItem(Item.Settings settings, long capacity) {
@@ -68,15 +69,11 @@ public class SimpleEnergyStorageItem extends Item implements EnergyStorageItem {
 	}
 	
 	@Override
-	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
-		super.appendStacks(group, stacks);
+	public void appendStacks(Consumer<ItemStack> stacks) {
+		var stack = new ItemStack(this);
 		
-		if (this.isIn(group)) {
-			var stack = new ItemStack(this);
-			
-			setStoredEnergy(stack, getEnergyCapacity());
-			
-			stacks.add(stack);
-		}
+		setStoredEnergy(stack, getEnergyCapacity());
+		
+		stacks.accept(stack);
 	}
 }

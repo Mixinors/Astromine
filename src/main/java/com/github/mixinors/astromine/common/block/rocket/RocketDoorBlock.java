@@ -36,7 +36,7 @@ public class RocketDoorBlock extends HorizontalFacingBlock {
 		var world = ctx.getWorld();
 		
 		if (blockPos.getY() < world.getTopY() - 1 && world.getBlockState(blockPos.up()).canReplace(ctx)) {
-			return this.getDefaultState().with(FACING, ctx.getPlayerFacing()).with(TOP, false);
+			return this.getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing()).with(TOP, false);
 		} else {
 			return null;
 		}

@@ -221,13 +221,13 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 		
 		var weepingVinesTag = AMTagKeys.BlockTags.WEEPING_VINES;
 		getOrCreateTagBuilder(weepingVinesTag)
-				.add(Blocks.WEEPING_VINES)
-				.add(Blocks.WEEPING_VINES_PLANT);
+				.add(Blocks.WEEPING_VINES);
+				// .add(Blocks.WEEPING_VINES_PLANT);
 		
 		var twistingVinesTag = AMTagKeys.BlockTags.TWISTING_VINES;
 		getOrCreateTagBuilder(twistingVinesTag)
-				.add(Blocks.TWISTING_VINES)
-				.add(Blocks.TWISTING_VINES_PLANT);
+				.add(Blocks.TWISTING_VINES);
+				// .add(Blocks.TWISTING_VINES_PLANT);
 		
 		var netherVinesTag = AMTagKeys.BlockTags.NETHER_VINES;
 		getOrCreateTagBuilder(netherVinesTag)

@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.mixin.client;
 
 import com.github.mixinors.astromine.registry.client.AMValues;
-import com.github.mixinors.astromine.registry.common.AMBiomes;
+import com.github.mixinors.astromine.datagen.provider.AMBiomeProvider;
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
@@ -56,7 +56,7 @@ public abstract class InGameOverlayRendererMixin {
 		var builder = Tessellator.getInstance().getBuffer();
 		float alpha;
 		
-		if (client.player != null && client.world != null && client.world.getBiome(client.player.getBlockPos()).getKey().orElseThrow().equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
+		if (client.player != null && client.world != null && client.world.getBiome(client.player.getBlockPos()).getKey().orElseThrow().equals(AMBiomeProvider.MOON_DARK_SIDE_KEY)) {
 			alpha = MathHelper.lerp(AMValues.TICK_DELTA / 128.0F, ASTROMINE$LAST_ALPHA, 0.6F);
 		} else {
 			alpha = MathHelper.lerp(AMValues.TICK_DELTA / 128.0F, ASTROMINE$LAST_ALPHA, 0.0F);

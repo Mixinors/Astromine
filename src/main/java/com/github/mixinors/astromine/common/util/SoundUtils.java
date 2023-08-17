@@ -29,7 +29,7 @@ import net.minecraft.entity.player.PlayerEntity;
 
 public class SoundUtils {
 	public static float getSoundMufflingMultiplier(PlayerEntity player) {
-		if (player.world == null) {
+		if (player.getWorld() == null) {
 			return 1.0F;
 		}
 		

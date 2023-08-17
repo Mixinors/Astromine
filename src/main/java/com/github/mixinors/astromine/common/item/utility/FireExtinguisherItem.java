@@ -122,7 +122,7 @@ public class FireExtinguisherItem extends Item {
 	
 	@Override
 	public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
-		this.use(user.world, user, hand);
+		this.use(user.getWorld(), user, hand);
 		
 		return ActionResult.PASS;
 	}

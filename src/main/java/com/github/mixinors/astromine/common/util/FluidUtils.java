@@ -29,7 +29,6 @@ import com.github.mixinors.astromine.registry.common.AMFluids;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
-import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.client.texture.Sprite;
@@ -94,10 +93,10 @@ public class FluidUtils {
 		var fluidSprites = new Sprite[] { null, null };
 		
 		if (!customSprite) {
-			ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> {
-				registry.register(stillSpriteId);
-				registry.register(flowingSpriteId);
-			});
+			// ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> {
+			// 	registry.register(stillSpriteId);
+			// 	registry.register(flowingSpriteId);
+			// });
 			
 			ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
 				@Override
@@ -143,10 +142,10 @@ public class FluidUtils {
 		
 		var fluidSprites = new Sprite[] { null, null };
 		
-		ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> {
-			registry.register(stillSpriteId);
-			registry.register(flowingSpriteId);
-		});
+		// ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> {
+		// 	registry.register(stillSpriteId);
+		// 	registry.register(flowingSpriteId);
+		// });
 		
 		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
 			@Override

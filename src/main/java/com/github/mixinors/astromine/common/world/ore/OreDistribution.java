@@ -24,16 +24,25 @@
 
 package com.github.mixinors.astromine.common.world.ore;
 
-import com.github.mixinors.astromine.registry.common.AMFeatures;
+import com.github.mixinors.astromine.datagen.provider.AMFeatureProvider;
 import com.google.common.collect.ImmutableList;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.minecraft.block.Block;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.structure.rule.TagMatchRuleTest;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.intprovider.ConstantIntProvider;
 import net.minecraft.util.math.intprovider.IntProvider;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.world.gen.YOffset;
-import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.OreFeatureConfig;
+import net.minecraft.world.gen.feature.PlacedFeature;
 import net.minecraft.world.gen.placementmodifier.*;
 
 public record OreDistribution(
@@ -173,13 +182,13 @@ public record OreDistribution(
 		return trapezoid(veinSize, veinsPerChunk, min, max, 0.0f);
 	}
 	
-	private RegistryEntry<ConfiguredFeature<OreFeatureConfig, ?>> registerConfiguredFeature(Identifier id, Block stoneOre, Block deepslateOre) {
+	private RegistryEntry<ConfiguredFeature<?, ?>> registerConfiguredFeature(Identifier id, Block stoneOre, Block deepslateOre, FabricDynamicRegistryProvider.Entries entries) {
 		var targets = ImmutableList.of(
-				OreFeatureConfig.createTarget(OreConfiguredFeatures.STONE_ORE_REPLACEABLES, stoneOre.getDefaultState()),
-				OreFeatureConfig.createTarget(OreConfiguredFeatures.DEEPSLATE_ORE_REPLACEABLES, deepslateOre.getDefaultState())
+				OreFeatureConfig.createTarget(new TagMatchRuleTest(BlockTags.STONE_ORE_REPLACEABLES), stoneOre.getDefaultState()),
+				OreFeatureConfig.createTarget(new TagMatchRuleTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES), deepslateOre.getDefaultState())
 		);
 		
-		return AMFeatures.registerConfiguredFeature(id, Feature.ORE, new OreFeatureConfig(targets, veinSize, discardOnAirChance));
+		return AMFeatureProvider.registerConfiguredFeature(entries, id, Feature.ORE, new OreFeatureConfig(targets, veinSize, discardOnAirChance));
 	}
 	
 	/**
@@ -188,9 +197,11 @@ public record OreDistribution(
 	 * @param id           the id of the placed feature to register
 	 * @param stoneOre     the stone variant of the ore
 	 * @param deepslateOre the deepslate variant of the ore
+	 * @param entries	   the entries to register the placed feature to
 	 */
-	public RegistryEntry<PlacedFeature> registerPlacedFeature(Identifier id, Block stoneOre, Block deepslateOre) {
-		return AMFeatures.registerPlacedFeature(id, registerConfiguredFeature(id, stoneOre, deepslateOre), modifiers());
+	public RegistryEntry<PlacedFeature> configure(Identifier id, Block stoneOre, Block deepslateOre, FabricDynamicRegistryProvider.Entries entries) {
+		RegistryEntry<ConfiguredFeature<?, ?>> configuredFeature = registerConfiguredFeature(id, stoneOre, deepslateOre, entries);
+		return AMFeatureProvider.registerPlacedFeature(entries, id, configuredFeature, modifiers());
 	}
 	
 	private HeightRangePlacementModifier heightRangePlacementModifier() {

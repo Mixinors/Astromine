@@ -27,10 +27,11 @@ package com.github.mixinors.astromine.common.recipe.base.output;
 import com.github.mixinors.astromine.common.recipe.base.input.EnergyInputRecipe;
 import com.github.mixinors.astromine.common.recipe.result.ItemResult;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.DynamicRegistryManager;
 
 public interface ItemOutputRecipe extends EnergyInputRecipe {
 	@Override
-	default ItemStack getOutput() {
+	default ItemStack getOutput(DynamicRegistryManager registryManager) {
 		return getItemOutput().toStack();
 	}
 	

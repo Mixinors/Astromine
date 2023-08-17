@@ -46,7 +46,7 @@ import java.util.Optional;
 public class AnimatedArmorItem extends ArmorItem {
 	private final int frames;
 	
-	public AnimatedArmorItem(ArmorMaterial material, EquipmentSlot slot, Settings settings, int frames) {
+	public AnimatedArmorItem(ArmorMaterial material, ArmorItem.Type slot, Settings settings, int frames) {
 		super(material, slot, settings);
 		
 		this.frames = frames;
@@ -64,8 +64,6 @@ public class AnimatedArmorItem extends ArmorItem {
 			super(id, false, false);
 			
 			beginAction = () -> {
-				RenderSystem.enableTexture();
-				
 				var textureManager = DrawingUtil.getTextureManager();
 				
 				var texture = textureManager.getTexture(id);

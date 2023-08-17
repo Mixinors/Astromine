@@ -31,12 +31,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.structure.StructureSet;
 import net.minecraft.util.Unit;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.ChunkRandom;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.registry.Registry;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.Heightmap;
@@ -52,19 +50,18 @@ import net.minecraft.world.gen.noise.NoiseConfig;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 public class MoonOrbitChunkGenerator extends ChunkGenerator {
 	public static final Codec<MoonOrbitChunkGenerator> CODEC = RecordCodecBuilder.create((instance) -> {
-		return createStructureSetRegistryGetter(instance).and(
+		return instance.group(
 				BiomeSource.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeSource)
 		).apply(instance, MoonOrbitChunkGenerator::new);
 	});
 	
-	public MoonOrbitChunkGenerator(Registry<StructureSet> structureFeatureRegistry, BiomeSource source) {
-		super(structureFeatureRegistry, Optional.empty(), source);
+	public MoonOrbitChunkGenerator(BiomeSource source) {
+		super(source);
 	}
 	
 	@Override
@@ -84,7 +81,7 @@ public class MoonOrbitChunkGenerator extends ChunkGenerator {
 	
 	@Override
 	public void populateEntities(ChunkRegion region) {
-		
+	
 	}
 	
 	@Override
@@ -95,7 +92,7 @@ public class MoonOrbitChunkGenerator extends ChunkGenerator {
 	@Override
 	public CompletableFuture<Chunk> populateNoise(Executor executor, Blender blender, NoiseConfig noiseConfig, StructureAccessor structureAccessor, Chunk chunk) {
 		return CompletableFuture.supplyAsync(() -> {
-			var seed = noiseConfig.getLegacyWorldSeed();
+			var seed = 0L /*noiseConfig.getLegacyWorldSeed()*/;
 			var sampler = NoiseUtils.getSampler(seed, 3, 200, 1.225F, 1.0F);
 			
 			var mutable = new BlockPos.Mutable();
@@ -107,8 +104,8 @@ public class MoonOrbitChunkGenerator extends ChunkGenerator {
 			var z2 = chunk.getPos().getEndZ();
 			var y2 = 256;
 			
-			var random = new ChunkRandom(Random.create(noiseConfig.getLegacyWorldSeed()));
-			random.setPopulationSeed(noiseConfig.getLegacyWorldSeed(), x1, z1);
+			var random = new ChunkRandom(Random.create(seed));
+			random.setPopulationSeed(seed, x1, z1);
 			
 			for (var x = x1; x <= x2; ++x) {
 				for (var z = z1; z <= z2; ++z) {
@@ -159,6 +156,6 @@ public class MoonOrbitChunkGenerator extends ChunkGenerator {
 	
 	@Override
 	public void getDebugHudText(List<String> text, NoiseConfig noiseConfig, BlockPos pos) {
-		
+	
 	}
 }

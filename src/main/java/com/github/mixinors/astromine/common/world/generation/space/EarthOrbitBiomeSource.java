@@ -24,29 +24,27 @@
 
 package com.github.mixinors.astromine.common.world.generation.space;
 
-import com.github.mixinors.astromine.registry.common.AMBiomes;
-import com.google.common.collect.ImmutableList;
+import com.github.mixinors.astromine.datagen.provider.AMBiomeProvider;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.registry.RegistryOps;
-import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 
+import java.util.stream.Stream;
+
 public class EarthOrbitBiomeSource extends BiomeSource {
 	public static final Codec<EarthOrbitBiomeSource> CODEC = RecordCodecBuilder.create((instance) ->
 			instance.group(
-					RegistryOps.createRegistryCodec(Registry.BIOME_KEY).forGetter((biomeSource) -> biomeSource.registry)
+					RegistryOps.getEntryCodec(AMBiomeProvider.ASTEROID_BELT_KEY)
 			).apply(instance, instance.stable(EarthOrbitBiomeSource::new)));
 	
-	private final Registry<Biome> registry;
+	private final RegistryEntry<Biome> biome;
 	
-	public EarthOrbitBiomeSource(Registry<Biome> registry) {
-		super(ImmutableList.of(registry.getOrCreateEntry(AMBiomes.ASTEROID_BELT_KEY)));
-		
-		this.registry = registry;
+	public EarthOrbitBiomeSource(RegistryEntry<Biome> biome) {
+		this.biome = biome;
 	}
 	
 	@Override
@@ -55,7 +53,12 @@ public class EarthOrbitBiomeSource extends BiomeSource {
 	}
 	
 	@Override
+	protected Stream<RegistryEntry<Biome>> biomeStream() {
+		return Stream.of(biome);
+	}
+	
+	@Override
 	public RegistryEntry<Biome> getBiome(int x, int y, int z, MultiNoiseUtil.MultiNoiseSampler noise) {
-		return registry.getEntry(AMBiomes.ASTEROID_BELT_KEY).orElseThrow();
+		return biome;
 	}
 }

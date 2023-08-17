@@ -12,6 +12,8 @@ import dev.vini2003.hammer.core.api.common.util.TextUtil;
 import dev.vini2003.hammer.gui.api.common.event.MouseClickedEvent;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.api.common.widget.WidgetCollection;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import org.lwjgl.glfw.GLFW;
@@ -74,7 +76,7 @@ public class BodySelectionWidget extends Widget {
 					if (getParent() instanceof WidgetCollection.Root root) {
 						ServerTaskQueue.enqueue(($) -> {
 							var handler = root.getScreenHandler();
-							handler.close(handler.getPlayer());
+							handler.onClosed(handler.getPlayer());
 						}, 5L);
 					}
 				}
@@ -156,7 +158,8 @@ public class BodySelectionWidget extends Widget {
 		// Translate to the Title's position.
 		matrices.translate(informationWidth / 2.0F - TextUtil.getWidth(bodyName) / 2.0F, 0.0F, 0.0F);
 		
-		textRenderer.draw(matrices, bodyName, 0, 0, Color.WHITE.toRgb());
+		var context = new DrawContext(MinecraftClient.getInstance(), MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers());
+		context.drawText(textRenderer, bodyName, 0, 0, Color.WHITE.toRgb(), false);
 		
 		matrices.pop(); // 2
 		
@@ -171,7 +174,7 @@ public class BodySelectionWidget extends Widget {
 		matrices.translate(0.0F, 4.0F + TextUtil.getHeight(bodyName), 0.0F);
 		
 		for (var line : bodyDescriptionLines) {
-			textRenderer.draw(matrices, line, 0.0F, 0.0F, Color.GRAY.toRgb());
+			context.drawText(textRenderer, line, 0, 0, Color.GRAY.toRgb(), false);
 			
 			// Offset the line's size.
 			// TODO: Remove the ""!

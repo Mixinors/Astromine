@@ -24,15 +24,12 @@
 
 package com.github.mixinors.astromine.registry.client;
 
-import com.github.mixinors.astromine.common.component.level.RocketsComponent;
 import com.github.mixinors.astromine.common.entity.base.ExtendedEntity;
 import com.github.mixinors.astromine.common.manager.BodyManager;
 import com.github.mixinors.astromine.common.manager.RocketManager;
 import com.github.mixinors.astromine.common.manager.StationManager;
 import com.github.mixinors.astromine.registry.common.AMEntityTypes;
-import com.github.mixinors.astromine.registry.common.AMStaticComponents;
 import dev.architectury.networking.NetworkManager;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.world.ClientWorld;
 
 import static com.github.mixinors.astromine.registry.common.AMNetworking.*;
@@ -50,7 +47,7 @@ public class AMNetworking {
 			
 			context.queue(() -> {
 				var player = context.getPlayer();
-				var world = (ClientWorld) player.world;
+				var world = (ClientWorld) player.getWorld();
 				
 				var rocketEntity = AMEntityTypes.ROCKET.get().create(world);
 				

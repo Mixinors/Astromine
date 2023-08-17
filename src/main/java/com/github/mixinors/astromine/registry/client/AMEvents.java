@@ -52,6 +52,8 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
@@ -190,9 +192,10 @@ public class AMEvents {
 				
 				if (!hidden) {
 					var itemRenderer = DrawingUtil.getItemRenderer();
+					var drawContext = new DrawContext(MinecraftClient.getInstance(), MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers());
 					
-					itemRenderer.renderGuiItemIcon(new ItemStack(AMItems.ENERGY.get()), (int) spaceSuitEnergyBar.getX() - 4, (int) (spaceSuitEnergyBar.getY() + 81.0F + 1.0F));
-					itemRenderer.renderGuiItemIcon(new ItemStack(AMItems.FLUID.get()), (int) spaceSuitOxygenBar.getX() - 4, (int) (spaceSuitOxygenBar.getY() + 81.0F + 1.0F));
+					drawContext.drawItem(new ItemStack(AMItems.ENERGY.get()), (int) spaceSuitEnergyBar.getX() - 4, (int) (spaceSuitEnergyBar.getY() + 81.0F + 1.0F));
+					drawContext.drawItem(new ItemStack(AMItems.FLUID.get()), (int) spaceSuitOxygenBar.getX() - 4, (int) (spaceSuitOxygenBar.getY() + 81.0F + 1.0F));
 				}
 			}
 			
@@ -251,7 +254,7 @@ public class AMEvents {
 			bar.setShow(() -> {
 				var client = InstanceUtil.getClient();
 				
-				if (client != null && client.player != null && !client.player.isCreative() && !client.player.isSpectator() && AMWorlds.isVacuum(client.player.world.getDimensionEntry())) {
+				if (client != null && client.player != null && !client.player.isCreative() && !client.player.isSpectator() && AMWorlds.isVacuum(client.player.getWorld().getDimensionEntry())) {
 					var component = OxygenComponent.get(client.player);
 					
 					if (component != null) {

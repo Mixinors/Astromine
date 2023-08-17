@@ -201,7 +201,6 @@ public abstract class ExtendedFluid extends FlowableFluid {
 		
 		private DamageSource source;
 		
-		private ItemGroup group;
 		
 		private Builder() {
 		}
@@ -251,12 +250,6 @@ public abstract class ExtendedFluid extends FlowableFluid {
 			return this;
 		}
 		
-		public Builder group(ItemGroup group) {
-			this.group = group;
-			return this;
-		}
-		
-		
 		public ExtendedFluid build() {
 			var flowing = AMFluids.register(name + "_flowing", new Flowing(fogColor, tintColor, infinite, source));
 			var still = AMFluids.register(name, new Still(fogColor, tintColor, infinite, source));
@@ -269,7 +262,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 			
 			var block = AMBlocks.register(name, () -> new FluidBlock(still, INDUSTRIAL_FLUID_MATERIAL.get().noCollision().strength(100.0F).dropsNothing()));
 			
-			var bucket = AMItems.register(name + "_bucket", () -> new BucketItem(still, (new Item.Settings()).recipeRemainder(Items.BUCKET).maxCount(1).group(group)));
+			var bucket = AMItems.register(name + "_bucket", () -> new BucketItem(still, (new Item.Settings()).recipeRemainder(Items.BUCKET).maxCount(1)));
 			
 			flowing.block = (RegistrySupplier) block;
 			still.block = (RegistrySupplier) block;

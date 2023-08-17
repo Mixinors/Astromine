@@ -87,7 +87,7 @@ public class OilWellFeature extends Feature<DefaultFeatureConfig> {
 					if (!offsetTopState.getFluidState().isEmpty()) {
 						world.setBlockState(offsetTopPos, oilState, 0);
 						
-						world.createAndScheduleFluidTick(offsetTopPos, AMFluids.OIL, 0);
+						world.scheduleFluidTick(offsetTopPos, AMFluids.OIL, 0);
 					}
 				}
 			}
@@ -102,7 +102,7 @@ public class OilWellFeature extends Feature<DefaultFeatureConfig> {
 				world.setBlockState(mutablePos.offset(direction), Blocks.AIR.getDefaultState(), 0);
 			}
 			
-			world.createAndScheduleFluidTick(mutablePos, AMFluids.OIL, 0);
+			world.scheduleFluidTick(mutablePos, AMFluids.OIL, 0);
 		}
 		
 		return true;

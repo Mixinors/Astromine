@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.common.item.utility;
 
 import com.github.mixinors.astromine.common.config.AMConfig;
+import com.github.mixinors.astromine.common.item.AppendingGroupItem;
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -32,12 +33,13 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.MiningToolItem;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import team.reborn.energy.api.base.SimpleBatteryItem;
 
-public class DrillItem extends MiningToolItem implements SimpleBatteryItem {
+import java.util.function.Consumer;
+
+public class DrillItem extends MiningToolItem implements SimpleBatteryItem, AppendingGroupItem {
 	private final long capacity;
 	
 	private final ToolMaterial material;
@@ -56,7 +58,7 @@ public class DrillItem extends MiningToolItem implements SimpleBatteryItem {
 	
 	@Override
 	public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		if (!target.world.isClient) {
+		if (!target.getWorld().isClient) {
 			return tryUseEnergy(stack, getEnergyConsumedOnEntityHit());
 		}
 		
@@ -121,15 +123,11 @@ public class DrillItem extends MiningToolItem implements SimpleBatteryItem {
 	}
 	
 	@Override
-	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
-		super.appendStacks(group, stacks);
+	public void appendStacks(Consumer<ItemStack> stacks) {
+		var stack = new ItemStack(this);
 		
-		if (this.isIn(group)) {
-			var stack = new ItemStack(this);
-			
-			setStoredEnergy(stack, getEnergyCapacity());
-			
-			stacks.add(stack);
-		}
+		setStoredEnergy(stack, getEnergyCapacity());
+		
+		stacks.accept(stack);
 	}
 }

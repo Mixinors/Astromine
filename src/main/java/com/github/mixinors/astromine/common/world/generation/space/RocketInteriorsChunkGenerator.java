@@ -58,13 +58,13 @@ import java.util.concurrent.Executor;
 
 public class RocketInteriorsChunkGenerator extends ChunkGenerator {
 	public static final Codec<RocketInteriorsChunkGenerator> CODEC = RecordCodecBuilder.create((instance) -> {
-		return createStructureSetRegistryGetter(instance).and(
+		return instance.group(
 			BiomeSource.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeSource)
 		).apply(instance, RocketInteriorsChunkGenerator::new);
 	});
 	
-	public RocketInteriorsChunkGenerator(Registry<StructureSet> structureFeatureRegistry, BiomeSource biomeSource) {
-		super(structureFeatureRegistry, Optional.empty(), biomeSource);
+	public RocketInteriorsChunkGenerator(BiomeSource biomeSource) {
+		super(biomeSource);
 	}
 	
 	@Override
@@ -84,7 +84,7 @@ public class RocketInteriorsChunkGenerator extends ChunkGenerator {
 	
 	@Override
 	public void populateEntities(ChunkRegion region) {
-		
+	
 	}
 	
 	@Override

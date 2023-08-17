@@ -29,6 +29,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.ShapedRecipe;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.registry.Registry;
 
@@ -37,7 +38,7 @@ public class StackUtils {
 	private static final String COUNT_KEY = "count";
 	
 	public static boolean areItemsAndTagsEqual(ItemStack left, ItemStack right) {
-		return ItemStack.areItemsEqual(left, right) && ItemStack.areNbtEqual(left, right);
+		return ItemStack.areItemsEqual(left, right) && ItemStack.canCombine(left, right);
 	}
 	
 	public static ItemStack fromJson(JsonElement jsonElement) {
@@ -46,7 +47,7 @@ public class StackUtils {
 				var primitive = jsonElement.getAsJsonPrimitive();
 				
 				if (primitive.isString()) {
-					return new ItemStack(Registry.ITEM.get(new Identifier(primitive.getAsString())));
+					return new ItemStack(Registries.ITEM.get(new Identifier(primitive.getAsString())));
 				} else {
 					return ItemStack.EMPTY;
 				}
@@ -61,7 +62,7 @@ public class StackUtils {
 	public static JsonElement toJson(ItemStack stack) {
 		var object = new JsonObject();
 		
-		object.addProperty(ITEM_KEY, Registry.ITEM.getId(stack.getItem()).toString());
+		object.addProperty(ITEM_KEY, Registries.ITEM.getId(stack.getItem()).toString());
 		object.addProperty(COUNT_KEY, stack.getCount());
 		
 		return object;

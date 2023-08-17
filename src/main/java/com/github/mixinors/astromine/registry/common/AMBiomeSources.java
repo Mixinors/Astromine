@@ -29,11 +29,12 @@ import com.github.mixinors.astromine.common.world.generation.space.EarthOrbitBio
 import com.github.mixinors.astromine.common.world.generation.space.MoonBiomeSource;
 import com.github.mixinors.astromine.common.world.generation.space.RocketInteriorsBiomeSource;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKeys;
 
 public class AMBiomeSources {
 	public static void init() {
-		AMCommon.registry(Registry.BIOME_SOURCE_KEY).register(AMCommon.id("earth_orbit"), () -> EarthOrbitBiomeSource.CODEC);
-		AMCommon.registry(Registry.BIOME_SOURCE_KEY).register(AMCommon.id("moon"), () -> MoonBiomeSource.CODEC);
-		AMCommon.registry(Registry.BIOME_SOURCE_KEY).register(AMCommon.id("rocket_interiors"), () -> RocketInteriorsBiomeSource.CODEC);
+		AMCommon.registry(RegistryKeys.BIOME_SOURCE).register(AMCommon.id("earth_orbit"), () -> EarthOrbitBiomeSource.CODEC);
+		AMCommon.registry(RegistryKeys.BIOME_SOURCE).register(AMCommon.id("moon"), () -> MoonBiomeSource.CODEC);
+		AMCommon.registry(RegistryKeys.BIOME_SOURCE).register(AMCommon.id("rocket_interiors"), () -> RocketInteriorsBiomeSource.CODEC);
 	}
 }

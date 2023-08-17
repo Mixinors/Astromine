@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.common.world.generation.space;
 
-import com.github.mixinors.astromine.registry.common.AMBiomes;
+import com.github.mixinors.astromine.datagen.provider.AMBiomeProvider;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -35,26 +35,32 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 
+import java.util.stream.Stream;
+
 public class RocketInteriorsBiomeSource extends BiomeSource {
 	public static final Codec<RocketInteriorsBiomeSource> CODEC = RecordCodecBuilder.create((instance) ->
 			instance.group(
-					RegistryOps.createRegistryCodec(Registry.BIOME_KEY).forGetter((biomeSource) -> biomeSource.registry)
+					RegistryOps.getEntryCodec(AMBiomeProvider.ROCKET_KEY)
 			).apply(instance, instance.stable(RocketInteriorsBiomeSource::new)));
 	
-	private final Registry<Biome> registry;
+	private final RegistryEntry<Biome> biome;
 	
-	public RocketInteriorsBiomeSource(Registry<Biome> registry) {
-		super(ImmutableList.of(registry.getOrCreateEntry(AMBiomes.ROCKET_KEY)));
-
-		this.registry = registry;
+	public RocketInteriorsBiomeSource(RegistryEntry<Biome> biome) {
+		this.biome = biome;
 	}
 	
 	@Override
 	protected Codec<? extends BiomeSource> getCodec() {
 		return CODEC;
 	}
+	
+	@Override
+	protected Stream<RegistryEntry<Biome>> biomeStream() {
+		return Stream.of(biome);
+	}
+	
 	@Override
 	public RegistryEntry<Biome> getBiome(int x, int y, int z, MultiNoiseUtil.MultiNoiseSampler noise) {
-		return registry.getEntry(AMBiomes.ROCKET_KEY).orElseThrow();
+		return biome;
 	}
 }

@@ -45,12 +45,12 @@ public class SpaceSlimeJumpHoverGoal extends Goal {
 	@Override
 	public boolean canStart() {
 		// TODO: Ensure Slime has space to float in.
-		return slime.getFloatingCooldown() <= 0 && slime.world.random.nextInt(10) == 0;
+		return slime.getFloatingCooldown() <= 0 && slime.getWorld().random.nextInt(10) == 0;
 	}
 	
 	@Override
 	public boolean shouldContinue() {
-		return --ticksLeft > 0 && !slime.isOnGround() && slime.world.getBlockState(slime.getBlockPos().down()).isAir();
+		return --ticksLeft > 0 && !slime.isOnGround() && slime.getWorld().getBlockState(slime.getBlockPos().down()).isAir();
 	}
 	
 	@Override

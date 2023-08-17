@@ -54,7 +54,7 @@ public abstract class FacingBlockWithEntity extends BlockWithEntity {
 		var directionProperty = getDirectionProperty();
 		
 		if (directionProperty != null) {
-			return super.getPlacementState(context).with(getDirectionProperty(), context.getPlayerFacing().getOpposite());
+			return super.getPlacementState(context).with(getDirectionProperty(), context.getHorizontalPlayerFacing().getOpposite());
 		}
 		
 		return super.getPlacementState(context);

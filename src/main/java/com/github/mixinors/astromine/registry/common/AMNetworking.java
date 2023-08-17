@@ -58,7 +58,7 @@ public class AMNetworking {
 			var pos = buf.readBlockPos();
 			
 			context.queue(() -> {
-				var blockEntity = (ExtendedBlockEntity) context.getPlayer().world.getBlockEntity(pos);
+				var blockEntity = (ExtendedBlockEntity) context.getPlayer().getWorld().getBlockEntity(pos);
 				
 				var sidings = (StorageSiding[]) null;
 				
@@ -83,7 +83,7 @@ public class AMNetworking {
 			var pos = buf.readBlockPos();
 			
 			context.queue(() -> {
-				var blockEntity = (ExtendedBlockEntity) context.getPlayer().world.getBlockEntity(pos);
+				var blockEntity = (ExtendedBlockEntity) context.getPlayer().getWorld().getBlockEntity(pos);
 				
 				blockEntity.setRedstoneControl(control);
 				

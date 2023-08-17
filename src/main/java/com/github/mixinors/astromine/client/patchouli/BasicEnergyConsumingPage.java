@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.client.patchouli;
 
 import com.github.mixinors.astromine.common.recipe.base.input.EnergyInputRecipe;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.text.Text;
 import vazkii.patchouli.client.book.gui.GuiBook;
@@ -39,7 +39,7 @@ public abstract class BasicEnergyConsumingPage<T extends EnergyInputRecipe> exte
 	}
 	
 	@Override
-	public void drawRecipe(MatrixStack ms, T recipe, int recipeX, int recipeY, int mouseX, int mouseY, boolean second) {
+	public void drawRecipe(DrawContext ms, T recipe, int recipeX, int recipeY, int mouseX, int mouseY, boolean second) {
 		super.drawRecipe(ms, recipe, recipeX, recipeY, mouseX, mouseY, second);
 		parent.drawCenteredStringNoShadow(ms, Text.translatable("category.astromine.consuming.energy", String.valueOf(recipe.getEnergyInput())).asOrderedText(), GuiBook.PAGE_WIDTH / 2, recipeY + 25, ENERGY_CONSUMED_TEXT_COLOR);
 	}

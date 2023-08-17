@@ -210,21 +210,17 @@ public class DynamicModel extends JsonUnbakedModel {
 	}
 	
 	@Override
-	public Collection<SpriteIdentifier> getTextureDependencies(Function<Identifier, UnbakedModel> unbakedModelGetter, Set<Pair<String, String>> unresolvedTextureReferences) {
-		var dependencies = new ArrayList<SpriteIdentifier>();
-		
+	public void setParents(Function<Identifier, UnbakedModel> modelLoader) {
 		if (!item) {
-			dependencies.addAll(dynamicUnbakedModel.getTextureDependencies(unbakedModelGetter, unresolvedTextureReferences));
+			dynamicUnbakedModel.setParents(modelLoader);
 		}
 		
-		dependencies.addAll(staticUnbakedModel.getTextureDependencies(unbakedModelGetter, unresolvedTextureReferences));
-		
-		return dependencies;
+		staticUnbakedModel.setParents(modelLoader);
 	}
 	
 	@Nullable
 	@Override
-	public BakedModel bake(ModelLoader loader, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings rotationContainer, Identifier modelId) {
+	public BakedModel bake(Baker loader, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings rotationContainer, Identifier modelId) {
 		if (!item) {
 			var dynamicBakedModel = dynamicUnbakedModel.bake(loader, textureGetter, rotationContainer, modelId);
 			var staticBakedModel = staticUnbakedModel.bake(loader, textureGetter, rotationContainer, modelId);

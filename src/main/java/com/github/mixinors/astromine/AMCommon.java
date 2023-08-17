@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine;
 
 import com.github.mixinors.astromine.common.config.AMConfig;
+import com.github.mixinors.astromine.datagen.provider.AMBiomeProvider;
 import com.github.mixinors.astromine.registry.common.*;
 import com.google.common.base.Suppliers;
 import com.google.gson.Gson;
@@ -75,7 +76,6 @@ public class AMCommon implements ModInitializer {
 		AMEntityTypes.init();
 		AMNetworkTypes.init();
 		AMBiomeSources.init();
-		AMBiomes.init();
 		AMFluids.init();
 		AMChunkGenerators.init();
 		AMEvents.init();

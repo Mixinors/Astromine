@@ -37,6 +37,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryList;
+import net.minecraft.registry.entry.RegistryEntryOwner;
 import net.minecraft.registry.tag.BiomeTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
@@ -74,7 +75,7 @@ public class AMStructureProvider extends FabricDynamicRegistryProvider {
 	}
 	
 	private static RegistryEntryList<Biome> getOrCreateBiomeTag(RegistryEntryLookup<Biome> biomeLookup, TagKey<Biome> key) {
-		return biomeLookup.getOrThrow(key);
+		return RegistryEntryList.of((RegistryEntryOwner<Biome>) biomeLookup, key);
 	}
 	
 	@Override

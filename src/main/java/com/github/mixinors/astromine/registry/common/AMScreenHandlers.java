@@ -39,10 +39,10 @@ import com.github.mixinors.astromine.common.screen.handler.storage.TankScreenHan
 import com.github.mixinors.astromine.common.screen.handler.utility.*;
 import dev.architectury.registry.menu.MenuRegistry;
 import dev.architectury.registry.registries.RegistrySupplier;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
-import net.minecraft.registry.Registry;
 
 public class AMScreenHandlers {
 	public static final RegistrySupplier<ScreenHandlerType<RecipeCreatorScreenHandler>> RECIPE_CREATOR = registerExtended(AMCommon.id("recipe_creator"), ((syncId, inventory, buffer) -> {
@@ -149,6 +149,6 @@ public class AMScreenHandlers {
 	}
 	
 	public static <T extends ScreenHandler> RegistrySupplier<ScreenHandlerType<T>> registerExtended(Identifier id, MenuRegistry.ExtendedMenuTypeFactory<T> factory) {
-		return AMCommon.registry(Registry.MENU_KEY).register(id, () -> MenuRegistry.ofExtended(factory));
+		return AMCommon.registry(RegistryKeys.SCREEN_HANDLER).register(id, () -> MenuRegistry.ofExtended(factory));
 	}
 }

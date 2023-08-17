@@ -127,7 +127,7 @@ public abstract class LivingEntityMixin extends EntityMixin {
 	}
 	
 	// A redirect would be the most efficient, but ModifyArg is the only compatible option
-	@ModifyArg(method = "baseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isSubmergedIn(Lnet/minecraft/tag/TagKey;)Z"))
+	@ModifyArg(method = "baseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isSubmergedIn(Lnet/minecraft/registry/tag/TagKey;)Z"))
 	private TagKey<Fluid> astromine$tickAirInFluid(TagKey<Fluid> tag) {
 		if (this.isSubmergedIn(AMTagKeys.FluidTags.INDUSTRIAL_FLUIDS)) {
 			return AMTagKeys.FluidTags.INDUSTRIAL_FLUIDS;

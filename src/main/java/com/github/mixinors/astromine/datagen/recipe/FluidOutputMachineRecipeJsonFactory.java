@@ -28,6 +28,7 @@ import com.github.mixinors.astromine.common.recipe.base.input.EnergyInputRecipe;
 import com.google.gson.JsonObject;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.registry.Registry;
 
@@ -78,7 +79,7 @@ public abstract class FluidOutputMachineRecipeJsonFactory<T extends EnergyInputR
 		public void serialize(JsonObject json) {
 			var outputJson = new JsonObject();
 			
-			outputJson.addProperty(FLUID_KEY, Registry.FLUID.getId(this.output).toString());
+			outputJson.addProperty(FLUID_KEY, Registries.FLUID.getId(this.output).toString());
 			outputJson.addProperty(AMOUNT_KEY, outputAmount);
 			
 			json.add(OUTPUT_KEY, outputJson);

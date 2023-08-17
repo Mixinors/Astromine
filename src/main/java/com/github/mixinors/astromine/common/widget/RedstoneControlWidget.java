@@ -11,6 +11,8 @@ import dev.vini2003.hammer.gui.api.common.event.MouseClickedEvent;
 import dev.vini2003.hammer.gui.api.common.widget.button.ButtonWidget;
 import dev.vini2003.hammer.gui.api.common.widget.panel.PanelWidget;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
@@ -101,14 +103,14 @@ public class RedstoneControlWidget extends ButtonWidget {
 			return;
 		}
 		
-		var itemRenderer = DrawingUtil.getItemRenderer();
+		var drawContext = new DrawContext(MinecraftClient.getInstance(), MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers());
 		
 		texture.get().draw(matrices, provider, getX(), getY(), getWidth(), getHeight());
 		
 		switch (blockEntity.getRedstoneType()) {
-			case WORK_WHEN_ON -> itemRenderer.renderGuiItemIcon(REDSTONE, (int) Math.max(0.0D, getX() + ((getWidth() - 16.0F) / 2.0F)), (int) Math.max(0.0D, getY() + ((getHeight() - 16.0F) / 2.0F)));
-			case WORK_WHEN_OFF -> itemRenderer.renderGuiItemIcon(GUNPOWDER, (int) Math.max(0.0D, getX() + ((getWidth() - 16.0F) / 2.0F)), (int) Math.max(0.0D, getY() + ((getHeight() - 16.0F) / 2.0F)));
-			case WORK_ALWAYS -> itemRenderer.renderGuiItemIcon(GLOWSTONE, (int) Math.max(0.0D, getX() + ((getWidth() - 16.0F) / 2.0F)), (int) Math.max(0.0D, getY() + ((getHeight() - 16.0F) / 2.0F)));
+			case WORK_WHEN_ON -> drawContext.drawItem(REDSTONE, (int) Math.max(0.0D, getX() + ((getWidth() - 16.0F) / 2.0F)), (int) Math.max(0.0D, getY() + ((getHeight() - 16.0F) / 2.0F)));
+			case WORK_WHEN_OFF -> drawContext.drawItem(GUNPOWDER, (int) Math.max(0.0D, getX() + ((getWidth() - 16.0F) / 2.0F)), (int) Math.max(0.0D, getY() + ((getHeight() - 16.0F) / 2.0F)));
+			case WORK_ALWAYS -> drawContext.drawItem(GLOWSTONE, (int) Math.max(0.0D, getX() + ((getWidth() - 16.0F) / 2.0F)), (int) Math.max(0.0D, getY() + ((getHeight() - 16.0F) / 2.0F)));
 			
 		}
 	}

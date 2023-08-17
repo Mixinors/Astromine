@@ -50,7 +50,7 @@ public class SpaceSlimeEntityModel extends SlimeEntityModel<SpaceSlimeEntity> {
 		matrices.translate(0.0F, 1.25F, 0.0F);
 		matrices.scale(1.25F, 1.25F, 1.25F);
 		
-		DrawingUtil.getItemRenderer().renderItem(new ItemStack(Items.GLASS), ModelTransformationMode.FIXED, light, overlay, matrices, InstanceUtil.getClient().getBufferBuilders().getEffectVertexConsumers(), 0);
+		DrawingUtil.getItemRenderer().renderItem(new ItemStack(Items.GLASS), ModelTransformationMode.FIXED, light, overlay, matrices, InstanceUtil.getClient().getBufferBuilders().getEffectVertexConsumers(), null, 0);
 		
 		matrices.pop();
 	}

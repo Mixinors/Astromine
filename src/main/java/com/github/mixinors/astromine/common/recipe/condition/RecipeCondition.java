@@ -25,8 +25,8 @@
 package com.github.mixinors.astromine.common.recipe.condition;
 
 import dev.architectury.platform.Platform;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-import net.minecraft.registry.Registry;
 
 public record RecipeCondition(
 		String modId,
@@ -38,7 +38,7 @@ public record RecipeCondition(
 		}
 		
 		if (!itemId.isEmpty()) {
-			return Registry.ITEM.getIds().contains(new Identifier(itemId));
+			return Registries.ITEM.getIds().contains(new Identifier(itemId));
 		}
 		
 		return false;

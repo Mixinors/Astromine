@@ -466,6 +466,6 @@ public class AMItems {
 	}
 	
 	public static Item.Settings getSettings() {
-		return new Item.Settings().group(AMItemGroups.ASTROMINE);
+		return new Item.Settings();
 	}
 }

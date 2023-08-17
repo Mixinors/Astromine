@@ -141,14 +141,16 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 				var ourItemStorage = ItemStorage.SIDED.find(world, pos, direction);
 				
 				if (ourItemStorage != null && theirItemStorage != null) {
-					StorageUtil.move(ourItemStorage, theirItemStorage, (variant) -> theirItemStorage.exactView(transaction, variant) == null || ourItemStorage.exactView(transaction, variant).getAmount() > theirItemStorage.exactView(transaction, variant).getAmount(), 1, transaction);
+					StorageUtil.move(ourItemStorage, theirItemStorage,
+							(variant) -> theirItemStorage.exactView(variant) == null || ourItemStorage.exactView(variant).getAmount() > theirItemStorage.exactView(variant).getAmount(), 1, transaction);
 				}
 				
 				var theirFluidStorage = FluidStorage.SIDED.find(world, theirPos, direction.getOpposite());
 				var ourFluidStorage = FluidStorage.SIDED.find(world, pos, direction);
 				
 				if (ourFluidStorage != null && theirFluidStorage != null) {
-					StorageUtil.move(ourFluidStorage, theirFluidStorage, (variant) -> theirFluidStorage.exactView(transaction, variant) == null || ourFluidStorage.exactView(transaction, variant).getAmount() > theirFluidStorage.exactView(transaction, variant).getAmount(), FluidConstants.BUCKET, transaction);
+					StorageUtil.move(ourFluidStorage, theirFluidStorage,
+							(variant) -> theirFluidStorage.exactView(variant) == null || ourFluidStorage.exactView(variant).getAmount() > theirFluidStorage.exactView(variant).getAmount(), FluidConstants.BUCKET, transaction);
 				}
 			}
 			

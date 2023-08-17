@@ -48,7 +48,7 @@ public class SuperSpaceSlimeEntityModel extends SlimeEntityModel<SuperSpaceSlime
 		matrices.translate(0, 1.25, 0);
 		matrices.scale(1.25F, 1.25F, 1.25F);
 		
-		DrawingUtil.getItemRenderer().renderItem(new ItemStack(Items.GLASS), ModelTransformationMode.FIXED, light, overlay, matrices, InstanceUtil.getClient().getBufferBuilders().getEffectVertexConsumers(), 0);
+		DrawingUtil.getItemRenderer().renderItem(new ItemStack(Items.GLASS), ModelTransformationMode.FIXED, light, overlay, matrices, InstanceUtil.getClient().getBufferBuilders().getEffectVertexConsumers(), null, 0);
 		
 		matrices.pop();
 	}

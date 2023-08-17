@@ -34,6 +34,8 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRe
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.entity.*;
 import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.registry.Registry;
@@ -85,6 +87,6 @@ public class AMEntityTypes {
 	}
 	
 	public static <T extends Entity> RegistrySupplier<EntityType<T>> register(Identifier id, Supplier<EntityType<T>> type) {
-		return AMCommon.registry(Registry.ENTITY_TYPE_KEY).register(id, type);
+		return AMCommon.registry(RegistryKeys.ENTITY_TYPE).register(id, type);
 	}
 }

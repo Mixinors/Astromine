@@ -34,6 +34,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.Items;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 
 import java.util.HashMap;
@@ -460,7 +461,7 @@ public class AMMaterialFamilies {
 		var materialFamily = BASE_ITEMS_TO_FAMILIES.put(baseItem.asItem(), builder.build());
 		
 		if (materialFamily != null) {
-			throw new IllegalStateException("Duplicate family definition for " + Registry.ITEM.getId(baseItem.asItem()));
+			throw new IllegalStateException("Duplicate family definition for " + Registries.ITEM.getId(baseItem.asItem()));
 		}
 		
 		return builder;

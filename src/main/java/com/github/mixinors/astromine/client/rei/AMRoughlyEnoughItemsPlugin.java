@@ -75,6 +75,7 @@ import me.shedaniel.rei.api.client.registry.screen.DisplayBoundsProvider;
 import me.shedaniel.rei.api.client.registry.screen.ScreenRegistry;
 import me.shedaniel.rei.api.client.util.ClientEntryStacks;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.display.basic.BasicDisplay;
 import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
@@ -165,7 +166,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 		registry.registerFiller(SolidifyingRecipe.class, SolidifyingDisplay::new);
 		
 		registry.registerFiller(WireCuttingRecipe.class, recipe -> {
-			return new DefaultCustomDisplay(recipe, EntryIngredients.ofIngredients(ImmutableList.of(recipe.getInput(), recipe.getTool())), ImmutableList.of(EntryIngredients.of(recipe.getOutput())));
+			return new DefaultCustomDisplay(recipe, EntryIngredients.ofIngredients(ImmutableList.of(recipe.getInput(), recipe.getTool())), ImmutableList.of(EntryIngredients.of(recipe.getOutput(BasicDisplay.registryAccess()))));
 		});
 		
 		for (var entry : AbstractFurnaceBlockEntity.createFuelTimeMap().entrySet()) {

@@ -117,7 +117,7 @@ public class EntityEquipmentStorage extends CombinedStorage<ItemVariant, SingleS
 		
 		// Drop in the world on the server side (will be synced by the game with the client).
 		// Dropping items is server-side only because it involves randomness.
-		if (amount > 0 && !mobEntity.world.isClient) {
+		if (amount > 0 && !mobEntity.getWorld().isClient) {
 			droppedStacks.addDrop(variant, amount, transaction);
 		}
 	}
@@ -142,13 +142,7 @@ public class EntityEquipmentStorage extends CombinedStorage<ItemVariant, SingleS
 		
 		@Override
 		protected void setStack(ItemStack stack) {
-			TransferApiImpl.SUPPRESS_SPECIAL_LOGIC.set(Boolean.TRUE);
-			
-			try {
-				storage.mobEntity.equipStack(slot, stack);
-			} finally {
-				TransferApiImpl.SUPPRESS_SPECIAL_LOGIC.remove();
-			}
+			storage.mobEntity.equipStack(slot, stack);
 		}
 		
 		@Override

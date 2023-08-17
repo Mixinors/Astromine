@@ -37,6 +37,7 @@ import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.registry.Registry;
 import org.jetbrains.annotations.Nullable;
@@ -108,7 +109,7 @@ public abstract class MachineRecipeJsonFactory<T extends EnergyInputRecipe> impl
 	}
 	
 	static Identifier getFluidId(Fluid fluid) {
-		return Registry.FLUID.getId(fluid);
+		return Registries.FLUID.getId(fluid);
 	}
 	
 	public abstract OutputType getOutputType();

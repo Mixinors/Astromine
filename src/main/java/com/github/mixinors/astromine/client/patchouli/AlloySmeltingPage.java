@@ -26,6 +26,7 @@ package com.github.mixinors.astromine.client.patchouli;
 
 import com.github.mixinors.astromine.common.recipe.AlloySmeltingRecipe;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -47,7 +48,7 @@ public class AlloySmeltingPage extends PageDoubleRecipeRegistry<AlloySmeltingRec
 		parent.renderIngredient(ms, recipeX + 4, recipeY + 4, mouseX, mouseY, recipe.getFirstInput().asIngredient());
 		parent.renderIngredient(ms, recipeX + 4, recipeY + 23, mouseX, mouseY, recipe.getSecondInput().asIngredient());
 		parent.renderItemStack(ms, recipeX + 40, recipeY + 13, mouseX, mouseY, recipe.createIcon());
-		parent.renderItemStack(ms, recipeX + 76, recipeY + 13, mouseX, mouseY, recipe.getOutput());
+		parent.renderItemStack(ms, recipeX + 76, recipeY + 13, mouseX, mouseY, recipe.getOutput(MinecraftClient.getInstance().world.getRegistryManager()));
 		parent.drawCenteredStringNoShadow(ms, Text.translatable("category.astromine.consuming.energy", String.valueOf(recipe.getEnergyInput())).asOrderedText(), GuiBook.PAGE_WIDTH / 2, recipeY + 45, BasicEnergyConsumingPage.ENERGY_CONSUMED_TEXT_COLOR);
 	}
 	
@@ -57,7 +58,7 @@ public class AlloySmeltingPage extends PageDoubleRecipeRegistry<AlloySmeltingRec
 			return ItemStack.EMPTY;
 		}
 		
-		return recipe.getOutput();
+		return recipe.getOutput(MinecraftClient.getInstance().world.getRegistryManager());
 	}
 	
 	@Override

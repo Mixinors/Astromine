@@ -25,7 +25,7 @@
 package com.github.mixinors.astromine.common.world.generation.space;
 
 import com.github.mixinors.astromine.common.util.NoiseUtils;
-import com.github.mixinors.astromine.registry.common.AMBiomes;
+import com.github.mixinors.astromine.datagen.provider.AMBiomeProvider;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -60,7 +60,7 @@ import java.util.concurrent.Executor;
 
 public class MoonChunkGenerator extends ChunkGenerator {
 	public static final Codec<MoonChunkGenerator> CODEC = RecordCodecBuilder.create((instance) -> {
-		return createStructureSetRegistryGetter(instance).and(
+		return instance.group(
 				BiomeSource.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeSource)
 		).apply(instance, MoonChunkGenerator::new);
 	});
@@ -68,12 +68,8 @@ public class MoonChunkGenerator extends ChunkGenerator {
 	private static final int MIN_Y = -64;
 	private static final int MAX_Y = 64;
 	
-	public MoonChunkGenerator(Registry<StructureSet> structureSetRegistry, BiomeSource biomeSource) {
-		super(structureSetRegistry, Optional.empty(), biomeSource);
-	}
-	
-	public MoonChunkGenerator(Registry<StructureSet> structureFeatureRegistry, Registry<Biome> biomeRegistry) {
-		super(structureFeatureRegistry, Optional.empty(), new MoonBiomeSource(biomeRegistry));
+	public MoonChunkGenerator(BiomeSource biomeSource) {
+		super(biomeSource);
 	}
 	
 	@Override
@@ -93,7 +89,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 	
 	@Override
 	public void populateEntities(ChunkRegion region) {
-		
+	
 	}
 	
 	@Override
@@ -104,7 +100,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 	@Override
 	public CompletableFuture<Chunk> populateNoise(Executor executor, Blender blender, NoiseConfig noiseConfig, StructureAccessor structureAccessor, Chunk chunk) {
 		return CompletableFuture.supplyAsync(() -> {
-			var seed = noiseConfig.getLegacyWorldSeed();
+			var seed = 0L /*noiseConfig.getLegacyWorldSeed()*/;
 			var sampler = NoiseUtils.getSampler(seed, 3, 200, 1.225F, 1.0F);
 			
 			var mutable = new BlockPos.Mutable();
@@ -115,8 +111,8 @@ public class MoonChunkGenerator extends ChunkGenerator {
 			var x2 = chunk.getPos().getEndX();
 			var z2 = chunk.getPos().getEndZ();
 			
-			var random = new ChunkRandom(Random.create(noiseConfig.getLegacyWorldSeed()));
-			random.setPopulationSeed(noiseConfig.getLegacyWorldSeed(), x1, z1);
+			var random = new ChunkRandom(Random.create(seed));
+			random.setPopulationSeed(seed, x1, z1);
 			
 			// Populate with Moon Stone.
 			for (var x = x1; x <= x2; ++x) {
@@ -126,7 +122,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 					var biome = chunk.getBiomeForNoiseGen(BiomeCoords.fromBlock(x), 0, BiomeCoords.fromBlock(z)).getKey().orElseThrow();
 					
 					for (var y = MIN_Y; y < maxY; ++y) {
-						if (biome.equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
+						if (biome.equals(AMBiomeProvider.MOON_DARK_SIDE_KEY)) {
 							chunk.setBlockState(mutable.set(x, y, z), AMBlocks.DARK_MOON_STONE.get().getDefaultState(), false);
 						} else {
 							chunk.setBlockState(mutable.set(x, y, z), AMBlocks.MOON_STONE.get().getDefaultState(), false);
@@ -163,6 +159,6 @@ public class MoonChunkGenerator extends ChunkGenerator {
 	
 	@Override
 	public void getDebugHudText(List<String> text, NoiseConfig noiseConfig, BlockPos pos) {
-		
+	
 	}
 }

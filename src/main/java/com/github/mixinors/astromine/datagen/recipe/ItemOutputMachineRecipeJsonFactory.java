@@ -29,6 +29,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.registry.Registry;
 
@@ -74,7 +75,7 @@ public abstract class ItemOutputMachineRecipeJsonFactory<T extends EnergyInputRe
 		public void serialize(JsonObject json) {
 			var outputJson = new JsonObject();
 			
-			outputJson.addProperty(ITEM_KEY, Registry.ITEM.getId(this.output).toString());
+			outputJson.addProperty(ITEM_KEY, Registries.ITEM.getId(this.output).toString());
 			outputJson.addProperty(COUNT_KEY, outputCount);
 			
 			json.add(OUTPUT_KEY, outputJson);

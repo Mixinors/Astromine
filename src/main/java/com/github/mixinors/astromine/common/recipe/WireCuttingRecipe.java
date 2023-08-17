@@ -30,12 +30,14 @@ import com.github.mixinors.astromine.common.util.IngredientUtils;
 import com.github.mixinors.astromine.common.util.StackUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
+import net.minecraft.recipe.book.CraftingRecipeCategory;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.random.Random;
@@ -49,7 +51,7 @@ public class WireCuttingRecipe extends SpecialCraftingRecipe {
 	private final ItemStack output;
 	
 	public WireCuttingRecipe(Identifier id, Ingredient input, Ingredient tool, ItemStack output) {
-		super(id);
+		super(id, CraftingRecipeCategory.MISC);
 		
 		this.input = input;
 		this.tool = tool;
@@ -57,7 +59,7 @@ public class WireCuttingRecipe extends SpecialCraftingRecipe {
 	}
 	
 	@Override
-	public boolean matches(CraftingInventory inv, World world) {
+	public boolean matches(RecipeInputInventory inv, World world) {
 		var inputCount = 0;
 		var shearsCount = 0;
 		
@@ -85,7 +87,7 @@ public class WireCuttingRecipe extends SpecialCraftingRecipe {
 	}
 	
 	@Override
-	public ItemStack craft(CraftingInventory inv) {
+	public ItemStack craft(RecipeInputInventory inv, DynamicRegistryManager registryManager) {
 		return this.output.copy();
 	}
 	
@@ -98,7 +100,7 @@ public class WireCuttingRecipe extends SpecialCraftingRecipe {
 	}
 	
 	@Override
-	public ItemStack getOutput() {
+	public ItemStack getOutput(DynamicRegistryManager registryManager) {
 		return output;
 	}
 	
@@ -113,7 +115,7 @@ public class WireCuttingRecipe extends SpecialCraftingRecipe {
 	}
 	
 	@Override
-	public DefaultedList<ItemStack> getRemainder(CraftingInventory inv) {
+	public DefaultedList<ItemStack> getRemainder(RecipeInputInventory inv) {
 		var remainingStacks = DefaultedList.ofSize(inv.size(), ItemStack.EMPTY);
 		
 		for (var i = 0; i < remainingStacks.size(); ++i) {

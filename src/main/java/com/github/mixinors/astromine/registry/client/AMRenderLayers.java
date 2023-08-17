@@ -49,7 +49,7 @@ public class AMRenderLayers {
 											.lightmap(RenderPhase.ENABLE_LIGHTMAP)
 											.transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)
 											.layering(RenderPhase.VIEW_OFFSET_Z_LAYERING)
-											.shader(new RenderPhase.Shader(GameRenderer::getPositionColorLightmapShader))
+											.program(new RenderPhase.ShaderProgram(GameRenderer::getPositionColorLightmapProgram))
 											.build(false));
 	
 	private static final RenderLayer PUMP_TUBE = RenderLayer.of(
@@ -60,7 +60,7 @@ public class AMRenderLayers {
 			true,
 			false,
 			RenderLayer.MultiPhaseParameters.builder()
-											.shader(new RenderPhase.Shader(GameRenderer::getPositionColorTexLightmapShader))
+											.program(new RenderPhase.ShaderProgram(GameRenderer::getPositionColorTexLightmapProgram))
 											.texture(new RenderPhase.Texture(AMCommon.id("textures/block/pump_tube.png"), false, false))
 											.cull(RenderPhase.DISABLE_CULLING)
 											.build(true)
@@ -106,7 +106,7 @@ public class AMRenderLayers {
 				true,
 				true,
 				RenderLayer.MultiPhaseParameters.builder()
-												.shader(new RenderPhase.Shader(GameRenderer::getPositionColorTexLightmapShader))
+												.program(new RenderPhase.ShaderProgram(GameRenderer::getPositionColorTexLightmapProgram))
 												.texture(new RenderPhase.Texture(texture, false, false))
 												.cull(RenderPhase.DISABLE_CULLING)
 												.transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)

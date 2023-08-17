@@ -35,6 +35,7 @@ import com.google.common.collect.Maps;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.registry.Registry;
@@ -154,11 +155,11 @@ public class MaterialFamily implements Comparable<MaterialFamily> {
 	}
 	
 	public boolean isVariantOfNamespace(ItemVariant variant, String namespace) {
-		return hasVariant(variant) && Registry.ITEM.getId(getVariant(variant)).getNamespace().equals(namespace);
+		return hasVariant(variant) && Registries.ITEM.getId(getVariant(variant)).getNamespace().equals(namespace);
 	}
 	
 	public boolean isVariantOfNamespace(BlockVariant variant, String namespace) {
-		return hasVariant(variant) && Registry.BLOCK.getId(getVariant(variant)).getNamespace().equals(namespace);
+		return hasVariant(variant) && Registries.BLOCK.getId(getVariant(variant)).getNamespace().equals(namespace);
 	}
 	
 	public boolean areVariantsAstromine(ItemVariant... variants) {

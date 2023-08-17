@@ -49,7 +49,11 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.*;
+import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
+import net.minecraft.world.WorldView;
+import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
 public class AirlockBlock extends Block implements Waterloggable {
@@ -67,7 +71,7 @@ public class AirlockBlock extends Block implements Waterloggable {
 	public static final VoxelShape TOP_SHAPE = Block.createCuboidShape(0, 15, 6, 16, 16, 10);
 	
 	public AirlockBlock(Settings settings) {
-		super(settings);
+		super(settings.pistonBehavior(PistonBehavior.DESTROY));
 		
 		this.setDefaultState(this.getStateManager().getDefaultState().with(FACING, Direction.NORTH).with(POWERED, false).with(HALF, DoubleBlockHalf.LOWER).with(LEFT, false).with(RIGHT, false).with(Properties.WATERLOGGED, false));
 	}
@@ -169,21 +173,13 @@ public class AirlockBlock extends Block implements Waterloggable {
 		};
 	}
 	
-	private int getOpenSoundEventId() {
-		return WorldEvents.IRON_DOOR_OPENS;
-	}
-	
-	private int getCloseSoundEventId() {
-		return WorldEvents.IRON_DOOR_CLOSES;
-	}
-	
 	@Nullable
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
 		var blockPos = ctx.getBlockPos();
 		if (blockPos.getY() < 255 && ctx.getWorld().getBlockState(blockPos.up()).canReplace(ctx)) {
 			var world = ctx.getWorld();
 			var bl = world.isReceivingRedstonePower(blockPos) || world.isReceivingRedstonePower(blockPos.up());
-			return this.getDefaultState().with(FACING, ctx.getPlayerFacing()).with(POWERED, bl).with(HALF, DoubleBlockHalf.LOWER).with(Properties.WATERLOGGED, world.getFluidState(blockPos).isEqualAndStill(Fluids.WATER));
+			return this.getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing()).with(POWERED, bl).with(HALF, DoubleBlockHalf.LOWER).with(Properties.WATERLOGGED, world.getFluidState(blockPos).isEqualAndStill(Fluids.WATER));
 		} else {
 			return null;
 		}
@@ -225,12 +221,7 @@ public class AirlockBlock extends Block implements Waterloggable {
 	}
 	
 	private void playOpenCloseSound(World world, BlockPos pos, boolean open) {
-		world.syncWorldEvent(null, open ? this.getCloseSoundEventId() : this.getOpenSoundEventId(), pos, 0);
-	}
-	
-	@Override
-	public PistonBehavior getPistonBehavior(BlockState state) {
-		return PistonBehavior.DESTROY;
+		world.emitGameEvent(null, open ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
 	}
 	
 	@Override

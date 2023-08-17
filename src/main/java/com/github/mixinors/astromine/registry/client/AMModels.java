@@ -28,7 +28,6 @@ import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.model.block.CableModel;
 import com.github.mixinors.astromine.client.model.block.DynamicModel;
 import com.google.common.collect.ImmutableList;
-import com.mojang.datafixers.util.Pair;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.minecraft.client.render.model.*;
@@ -44,7 +43,6 @@ import net.minecraft.util.Lazy;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Collection;
-import java.util.Set;
 import java.util.function.Function;
 
 public class AMModels {
@@ -67,14 +65,14 @@ public class AMModels {
 	public static final Identifier CABLE_EXTRACT_CONNECTOR_ID = AMCommon.id("block/cable_connector_extract");
 	public static final Identifier CABLE_INSERT_EXTRACT_CONNECTOR_ID = AMCommon.id("block/cable_connector_insert_extract");
 	
-	public static final ModelIdentifier PRIMITIVE_ENERGY_CABLE_BLOCK_MODEL = new ModelIdentifier("astromine:block/primitive_energy_cable");
-	public static final ModelIdentifier BASIC_ENERGY_CABLE_BLOCK_MODEL = new ModelIdentifier("astromine:block/basic_energy_cable");
-	public static final ModelIdentifier ADVANCED_ENERGY_CABLE_BLOCK_MODEL = new ModelIdentifier("astromine:block/advanced_energy_cable");
-	public static final ModelIdentifier ELITE_ENERGY_CABLE_BLOCK_MODEL = new ModelIdentifier("astromine:block/elite_energy_cable");
+	public static final ModelIdentifier PRIMITIVE_ENERGY_CABLE_BLOCK_MODEL = new ModelIdentifier(new Identifier("astromine:block/primitive_energy_cable"), "");
+	public static final ModelIdentifier BASIC_ENERGY_CABLE_BLOCK_MODEL = new ModelIdentifier(new Identifier("astromine:block/basic_energy_cable"), "");
+	public static final ModelIdentifier ADVANCED_ENERGY_CABLE_BLOCK_MODEL = new ModelIdentifier(new Identifier("astromine:block/advanced_energy_cable"), "");
+	public static final ModelIdentifier ELITE_ENERGY_CABLE_BLOCK_MODEL = new ModelIdentifier(new Identifier("astromine:block/elite_energy_cable"), "");
 	
-	public static final ModelIdentifier FLUID_PIPE_BLOCK_MODEL = new ModelIdentifier("astromine:block/fluid_pipe");
+	public static final ModelIdentifier FLUID_PIPE_BLOCK_MODEL = new ModelIdentifier(new Identifier("astromine:block/fluid_pipe"), "");
 	
-	public static final ModelIdentifier ITEM_CONDUIT_BLOCK_MODEL = new ModelIdentifier("astromine:block/item_conduit");
+	public static final ModelIdentifier ITEM_CONDUIT_BLOCK_MODEL = new ModelIdentifier(new Identifier("astromine:block/item_conduit"), "");
 	
 	public static final ModelIdentifier ROCKET_INVENTORY = new ModelIdentifier(AMCommon.id("rocket"), "inventory");
 	
@@ -111,12 +109,11 @@ public class AMModels {
 					}
 					
 					@Override
-					public Collection<SpriteIdentifier> getTextureDependencies(Function<Identifier, UnbakedModel> unbakedModelGetter, Set<Pair<String, String>> unresolvedTextureReferences) {
-						return ImmutableList.of();
+					public void setParents(Function<Identifier, UnbakedModel> modelLoader) {
 					}
 					
 					@Override
-					public BakedModel bake(ModelLoader loader, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings rotationContainer, Identifier modelId) {
+					public BakedModel bake(Baker loader, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings rotationContainer, Identifier modelId) {
 						return new BuiltinBakedModel(ITEM_HANDHELD_TRANSFORMATION.get(), ModelOverrideList.EMPTY, null, true);
 					}
 				};

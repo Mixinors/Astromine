@@ -108,9 +108,7 @@ public class AMDatagenLists {
 				AMBlocks.BLOCK_BREAKER.get(),
 				AMBlocks.BLOCK_PLACER.get(),
 				
-				AMBlocks.PUMP.get(),
-				
-				AMBlocks.ROCKET_CONTROLLER.get()
+				AMBlocks.PUMP.get()
 		);
 		
 		public static final List<Block> MACHINES = ImmutableList.<Block>builder()

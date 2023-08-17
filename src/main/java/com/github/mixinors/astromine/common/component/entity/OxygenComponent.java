@@ -78,7 +78,7 @@ public final class OxygenComponent implements AutoSyncedComponent {
 			}
 			
 			if (!isAK9 || AMConfig.get().secret.asphyxiateAK9) {
-				entity.damage(DamageSource.DROWN, 1.0F);
+				entity.damage(entity.getWorld().getDamageSources().drown(), 1.0F);
 			}
 		}
 	}

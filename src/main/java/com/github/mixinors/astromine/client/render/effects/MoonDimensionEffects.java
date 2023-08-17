@@ -24,7 +24,7 @@
 
 package com.github.mixinors.astromine.client.render.effects;
 
-import com.github.mixinors.astromine.registry.common.AMBiomes;
+import com.github.mixinors.astromine.datagen.provider.AMBiomeProvider;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -43,7 +43,7 @@ public class MoonDimensionEffects extends DimensionEffects {
 		
 		if (client.player != null) {
 			if (client.world != null) {
-				if (client.world.getBiome(client.player.getBlockPos()).equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
+				if (client.world.getBiome(client.player.getBlockPos()).equals(AMBiomeProvider.MOON_DARK_SIDE_KEY)) {
 					return true;
 				}
 			}
@@ -63,7 +63,7 @@ public class MoonDimensionEffects extends DimensionEffects {
 		
 		if (client.player != null) {
 			if (client.world != null) {
-				if (client.world.getBiome(client.player.getBlockPos()).getKey().orElseThrow().equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
+				if (client.world.getBiome(client.player.getBlockPos()).getKey().orElseThrow().equals(AMBiomeProvider.MOON_DARK_SIDE_KEY)) {
 					return true;
 				}
 			}

@@ -59,6 +59,8 @@ public class AMDatagen implements DataGeneratorEntrypoint {
 		pack.addProvider(AMBlockLootTableProvider::new);
 		pack.addProvider(AMEntityLootTableProvider::new);
 		pack.addProvider(AMStructureProvider::new);
+		pack.addProvider(AMFeatureProvider::new);
+		pack.addProvider(AMBiomeProvider::new);
 	}
 	
 	public static <T extends Comparable<?>, U> TreeMap<T, U> toTreeMap(Map<T, U> map) {

@@ -1,6 +1,6 @@
 package com.github.mixinors.astromine.mixin.common;
 
-import com.github.mixinors.astromine.registry.common.AMBiomes;
+import com.github.mixinors.astromine.datagen.provider.AMBiomeProvider;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockRenderView;
@@ -17,7 +17,7 @@ public interface BlockRenderViewMixin {
 		var client = InstanceUtil.getClient();
 		
 		if (client.player != null && client.world != null) {
-			if (client.world.getBiome(client.player.getBlockPos()).getKey().orElseThrow().equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
+			if (client.world.getBiome(client.player.getBlockPos()).getKey().orElseThrow().equals(AMBiomeProvider.MOON_DARK_SIDE_KEY)) {
 				cir.setReturnValue(0);
 			}
 		}
@@ -28,7 +28,7 @@ public interface BlockRenderViewMixin {
 		var client = InstanceUtil.getClient();
 		
 		if (client.player != null && client.world != null) {
-			if (client.world.getBiome(client.player.getBlockPos()).getKey().orElseThrow().equals(AMBiomes.MOON_DARK_SIDE_KEY)) {
+			if (client.world.getBiome(client.player.getBlockPos()).getKey().orElseThrow().equals(AMBiomeProvider.MOON_DARK_SIDE_KEY)) {
 				cir.setReturnValue(0);
 			}
 		}
