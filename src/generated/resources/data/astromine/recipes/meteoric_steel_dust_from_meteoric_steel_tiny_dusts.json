@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "#": {
       "tag": "c:meteoric_steel_tiny_dusts"
@@ -12,5 +13,6 @@
   ],
   "result": {
     "item": "astromine:meteoric_steel_dust"
-  }
+  },
+  "show_notification": true
 }

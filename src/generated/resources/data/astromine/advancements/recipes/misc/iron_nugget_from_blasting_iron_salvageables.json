@@ -28,5 +28,6 @@
     "recipes": [
       "minecraft:iron_nugget_from_blasting_iron_salvageables"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

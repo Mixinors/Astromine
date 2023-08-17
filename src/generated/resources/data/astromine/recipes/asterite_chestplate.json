@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "X": {
       "tag": "c:asterites"
@@ -12,5 +13,6 @@
   ],
   "result": {
     "item": "astromine:asterite_chestplate"
-  }
+  },
+  "show_notification": true
 }

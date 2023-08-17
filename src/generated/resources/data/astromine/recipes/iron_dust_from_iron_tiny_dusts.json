@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "#": {
       "tag": "c:iron_tiny_dusts"
@@ -12,5 +13,6 @@
   ],
   "result": {
     "item": "astromine:iron_dust"
-  }
+  },
+  "show_notification": true
 }

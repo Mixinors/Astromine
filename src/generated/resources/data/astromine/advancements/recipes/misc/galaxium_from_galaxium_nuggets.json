@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_galaxium_nuggets": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:galaxium_nuggets"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "astromine:galaxium_from_galaxium_nuggets"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_galaxium_nuggets",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "astromine:galaxium_from_galaxium_nuggets"
+    ]
+  },
+  "sends_telemetry_event": false
+}

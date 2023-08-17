@@ -28,5 +28,6 @@
     "recipes": [
       "minecraft:iron_ingot_from_smelting_iron_asteroid_ores"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

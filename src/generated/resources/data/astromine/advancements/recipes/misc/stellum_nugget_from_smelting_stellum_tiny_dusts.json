@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_stellum_tiny_dusts": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:stellum_tiny_dusts"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:stellum_nugget_from_smelting_stellum_tiny_dusts"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_stellum_tiny_dusts",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:stellum_nugget_from_smelting_stellum_tiny_dusts"
+    ]
+  },
+  "sends_telemetry_event": false
+}

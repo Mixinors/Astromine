@@ -28,5 +28,6 @@
     "recipes": [
       "minecraft:lapis_lazuli_from_smelting_lapis_clusters"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

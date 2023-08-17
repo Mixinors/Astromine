@@ -28,5 +28,6 @@
     "recipes": [
       "minecraft:gold_nugget_from_smelting_gold_salvageables"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

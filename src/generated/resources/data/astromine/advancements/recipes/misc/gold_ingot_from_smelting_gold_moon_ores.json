@@ -28,5 +28,6 @@
     "recipes": [
       "minecraft:gold_ingot_from_smelting_gold_moon_ores"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

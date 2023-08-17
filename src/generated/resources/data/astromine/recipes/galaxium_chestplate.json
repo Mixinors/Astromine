@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "X": {
       "tag": "c:galaxiums"
@@ -12,5 +13,6 @@
   ],
   "result": {
     "item": "astromine:galaxium_chestplate"
-  }
+  },
+  "show_notification": true
 }

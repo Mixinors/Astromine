@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "X": {
       "tag": "c:steel_ingots"
@@ -12,5 +13,6 @@
   ],
   "result": {
     "item": "astromine:steel_leggings"
-  }
+  },
+  "show_notification": true
 }

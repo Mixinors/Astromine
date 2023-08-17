@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "#": {
       "tag": "c:electrum_ingots"
@@ -12,5 +13,6 @@
   ],
   "result": {
     "item": "astromine:electrum_block"
-  }
+  },
+  "show_notification": true
 }

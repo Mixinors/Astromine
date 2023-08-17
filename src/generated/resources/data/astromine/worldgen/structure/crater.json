@@ -1,0 +1,6 @@
+{
+  "type": "astromine:crater",
+  "biomes": "#c:is_moon",
+  "spawn_overrides": {},
+  "step": "surface_structures"
+}

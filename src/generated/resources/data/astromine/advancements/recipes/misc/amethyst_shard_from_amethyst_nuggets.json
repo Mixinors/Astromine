@@ -28,5 +28,6 @@
     "recipes": [
       "astromine:amethyst_shard_from_amethyst_nuggets"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

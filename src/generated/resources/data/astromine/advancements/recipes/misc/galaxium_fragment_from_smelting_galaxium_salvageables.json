@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_galaxium_salvageables": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:galaxium_salvageables"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:galaxium_fragment_from_smelting_galaxium_salvageables"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_galaxium_salvageables",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:galaxium_fragment_from_smelting_galaxium_salvageables"
+    ]
+  },
+  "sends_telemetry_event": false
+}

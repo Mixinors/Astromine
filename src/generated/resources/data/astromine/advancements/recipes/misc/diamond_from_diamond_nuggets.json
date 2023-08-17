@@ -28,5 +28,6 @@
     "recipes": [
       "astromine:diamond_from_diamond_nuggets"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "#": {
       "tag": "c:metite_nuggets"
@@ -12,5 +13,6 @@
   ],
   "result": {
     "item": "astromine:metite_ingot"
-  }
+  },
+  "show_notification": true
 }

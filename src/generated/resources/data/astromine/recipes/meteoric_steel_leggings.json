@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "X": {
       "tag": "c:meteoric_steel_ingots"
@@ -12,5 +13,6 @@
   ],
   "result": {
     "item": "astromine:meteoric_steel_leggings"
-  }
+  },
+  "show_notification": true
 }

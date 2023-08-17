@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "A": {
       "item": "minecraft:apple"
@@ -15,5 +16,6 @@
   ],
   "result": {
     "item": "astromine:fools_gold_apple"
-  }
+  },
+  "show_notification": true
 }

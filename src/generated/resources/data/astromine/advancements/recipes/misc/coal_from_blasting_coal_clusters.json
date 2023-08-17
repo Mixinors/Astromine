@@ -28,5 +28,6 @@
     "recipes": [
       "minecraft:coal_from_blasting_coal_clusters"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

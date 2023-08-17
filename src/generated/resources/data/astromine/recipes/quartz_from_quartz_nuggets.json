@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "#": {
       "tag": "c:quartz_nuggets"
@@ -12,5 +13,6 @@
   ],
   "result": {
     "item": "minecraft:quartz"
-  }
+  },
+  "show_notification": true
 }

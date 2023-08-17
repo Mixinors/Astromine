@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "X": {
       "tag": "c:univite_ingots"
@@ -11,5 +12,6 @@
   ],
   "result": {
     "item": "astromine:univite_plate"
-  }
+  },
+  "show_notification": true
 }

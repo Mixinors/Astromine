@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_asterite_clusters": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:asterite_clusters"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:asterite_from_blasting_asterite_clusters"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_asterite_clusters",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:asterite_from_blasting_asterite_clusters"
+    ]
+  },
+  "sends_telemetry_event": false
+}

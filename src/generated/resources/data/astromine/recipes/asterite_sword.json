@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "S": {
       "item": "minecraft:stick"
@@ -15,5 +16,6 @@
   ],
   "result": {
     "item": "astromine:asterite_sword"
-  }
+  },
+  "show_notification": true
 }

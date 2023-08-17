@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:tin_ingot_from_smelting_tin_clusters"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_tin_clusters": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:tin_clusters"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_tin_clusters",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:tin_ingot_from_smelting_tin_clusters"
+    ]
+  },
+  "sends_telemetry_event": false
+}

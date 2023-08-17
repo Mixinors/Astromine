@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_stellum_nuggets": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:stellum_nuggets"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "astromine:stellum_ingot_from_stellum_nuggets"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_stellum_nuggets",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "astromine:stellum_ingot_from_stellum_nuggets"
+    ]
+  },
+  "sends_telemetry_event": false
+}

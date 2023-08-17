@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "#": {
       "tag": "c:fools_gold_ingots"
@@ -12,5 +13,6 @@
   ],
   "result": {
     "item": "astromine:fools_gold_block"
-  }
+  },
+  "show_notification": true
 }

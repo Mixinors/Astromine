@@ -28,5 +28,6 @@
     "recipes": [
       "minecraft:diamond_from_blasting_diamond_dusts"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "#": {
       "tag": "c:space_slime_balls"
@@ -12,5 +13,6 @@
   ],
   "result": {
     "item": "astromine:space_slime_block"
-  }
+  },
+  "show_notification": true
 }

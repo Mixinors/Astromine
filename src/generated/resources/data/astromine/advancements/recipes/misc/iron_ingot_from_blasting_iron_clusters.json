@@ -28,5 +28,6 @@
     "recipes": [
       "minecraft:iron_ingot_from_blasting_iron_clusters"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

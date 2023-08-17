@@ -28,5 +28,6 @@
     "recipes": [
       "minecraft:diamond_from_blasting_diamond_asteroid_ores"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

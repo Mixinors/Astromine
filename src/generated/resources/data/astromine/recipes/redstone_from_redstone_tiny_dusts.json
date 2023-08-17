@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "#": {
       "tag": "c:redstone_tiny_dusts"
@@ -12,5 +13,6 @@
   ],
   "result": {
     "item": "minecraft:redstone"
-  }
+  },
+  "show_notification": true
 }

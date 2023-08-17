@@ -28,5 +28,6 @@
     "recipes": [
       "minecraft:coal_from_blasting_coal_dark_moon_ores"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

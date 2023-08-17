@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "X": {
       "tag": "c:metite_ingots"
@@ -11,5 +12,6 @@
   ],
   "result": {
     "item": "astromine:metite_plate"
-  }
+  },
+  "show_notification": true
 }

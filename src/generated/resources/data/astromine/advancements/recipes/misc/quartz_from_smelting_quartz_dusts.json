@@ -28,5 +28,6 @@
     "recipes": [
       "minecraft:quartz_from_smelting_quartz_dusts"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

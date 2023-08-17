@@ -28,5 +28,6 @@
     "recipes": [
       "minecraft:amethyst_shard_from_blasting_amethyst_dusts"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

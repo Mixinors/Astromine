@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_copper_tiny_dusts": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:copper_tiny_dusts"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:copper_nugget_from_blasting_copper_tiny_dusts"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_copper_tiny_dusts",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:copper_nugget_from_blasting_copper_tiny_dusts"
+    ]
+  },
+  "sends_telemetry_event": false
+}

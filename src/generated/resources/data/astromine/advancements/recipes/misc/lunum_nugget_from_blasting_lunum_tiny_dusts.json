@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_lunum_tiny_dusts": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:lunum_tiny_dusts"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:lunum_nugget_from_blasting_lunum_tiny_dusts"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_lunum_tiny_dusts",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:lunum_nugget_from_blasting_lunum_tiny_dusts"
+    ]
+  },
+  "sends_telemetry_event": false
+}

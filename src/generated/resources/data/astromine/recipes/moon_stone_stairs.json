@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "building",
   "key": {
     "#": {
       "item": "astromine:moon_stone"
@@ -13,5 +14,6 @@
   "result": {
     "count": 4,
     "item": "astromine:moon_stone_stairs"
-  }
+  },
+  "show_notification": true
 }

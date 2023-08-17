@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "#": {
       "tag": "c:stellum_nuggets"
@@ -12,5 +13,6 @@
   ],
   "result": {
     "item": "astromine:stellum_ingot"
-  }
+  },
+  "show_notification": true
 }

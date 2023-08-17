@@ -28,5 +28,6 @@
     "recipes": [
       "minecraft:netherite_ingot_from_blasting_netherite_dusts"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

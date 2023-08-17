@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "#": {
       "item": "astromine:asteroid_stone_bricks"
@@ -12,5 +13,6 @@
   "result": {
     "count": 6,
     "item": "astromine:asteroid_stone_brick_wall"
-  }
+  },
+  "show_notification": true
 }

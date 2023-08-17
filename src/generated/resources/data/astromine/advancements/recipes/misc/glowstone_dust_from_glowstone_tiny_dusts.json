@@ -28,5 +28,6 @@
     "recipes": [
       "astromine:glowstone_dust_from_glowstone_tiny_dusts"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

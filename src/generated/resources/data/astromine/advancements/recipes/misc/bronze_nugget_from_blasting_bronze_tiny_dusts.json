@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_bronze_tiny_dusts": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:bronze_tiny_dusts"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:bronze_nugget_from_blasting_bronze_tiny_dusts"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_bronze_tiny_dusts",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:bronze_nugget_from_blasting_bronze_tiny_dusts"
+    ]
+  },
+  "sends_telemetry_event": false
+}

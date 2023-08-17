@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "X": {
       "tag": "c:lead_ingots"
@@ -11,5 +12,6 @@
   ],
   "result": {
     "item": "astromine:lead_plate"
-  }
+  },
+  "show_notification": true
 }

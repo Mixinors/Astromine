@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "astromine:univite_gear"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_univite_ingots": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:univite_ingots"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_univite_ingots",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "astromine:univite_gear"
+    ]
+  },
+  "sends_telemetry_event": false
+}

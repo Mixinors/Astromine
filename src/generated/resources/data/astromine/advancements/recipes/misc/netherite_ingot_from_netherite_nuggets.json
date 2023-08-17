@@ -28,5 +28,6 @@
     "recipes": [
       "astromine:netherite_ingot_from_netherite_nuggets"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

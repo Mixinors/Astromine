@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "X": {
       "tag": "c:lunum_ingots"
@@ -12,5 +13,6 @@
   ],
   "result": {
     "item": "astromine:lunum_leggings"
-  }
+  },
+  "show_notification": true
 }

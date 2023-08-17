@@ -28,5 +28,6 @@
     "recipes": [
       "minecraft:gold_ingot_from_blasting_gold_asteroid_ores"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

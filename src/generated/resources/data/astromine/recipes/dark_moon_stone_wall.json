@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "#": {
       "item": "astromine:dark_moon_stone"
@@ -12,5 +13,6 @@
   "result": {
     "count": 6,
     "item": "astromine:dark_moon_stone_wall"
-  }
+  },
+  "show_notification": true
 }

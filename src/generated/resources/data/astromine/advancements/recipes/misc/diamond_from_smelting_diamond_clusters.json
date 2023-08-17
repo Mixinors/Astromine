@@ -28,5 +28,6 @@
     "recipes": [
       "minecraft:diamond_from_smelting_diamond_clusters"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

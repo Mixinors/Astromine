@@ -28,5 +28,6 @@
     "recipes": [
       "minecraft:copper_ingot_from_blasting_copper_dark_moon_ores"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

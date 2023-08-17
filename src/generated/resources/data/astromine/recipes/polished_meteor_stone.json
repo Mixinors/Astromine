@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "building",
   "key": {
     "S": {
       "item": "astromine:meteor_stone"
@@ -12,5 +13,6 @@
   "result": {
     "count": 4,
     "item": "astromine:polished_meteor_stone"
-  }
+  },
+  "show_notification": true
 }

@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "building",
   "key": {
     "#": {
       "item": "astromine:meteor_stone_bricks"
@@ -11,5 +12,6 @@
   "result": {
     "count": 6,
     "item": "astromine:meteor_stone_brick_slab"
-  }
+  },
+  "show_notification": true
 }

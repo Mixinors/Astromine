@@ -28,5 +28,6 @@
     "recipes": [
       "minecraft:emerald_from_smelting_emerald_moon_ores"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }
