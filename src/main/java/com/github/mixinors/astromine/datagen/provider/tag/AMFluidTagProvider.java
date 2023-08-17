@@ -27,27 +27,29 @@ package com.github.mixinors.astromine.datagen.provider.tag;
 import com.github.mixinors.astromine.common.fluid.base.ExtendedFluid;
 import com.github.mixinors.astromine.datagen.AMDatagenLists;
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.tag.TagKey;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.tag.TagKey;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 public class AMFluidTagProvider extends FabricTagProvider.FluidTagProvider {
 	
-	public AMFluidTagProvider(FabricDataGenerator dataGenerator) {
-		super(dataGenerator);
+	public AMFluidTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
+		super(output, completableFuture);
 	}
 	
 	public static final Map<ExtendedFluid, TagKey<Fluid>> FLUID_TAGS = new HashMap<>();
 	
 	@Override
-	protected void generateTags() {
+	protected void configure(RegistryWrapper.WrapperLookup lookup) {
 		AMDatagenLists.FluidLists.FLUIDS.forEach((fluid) -> {
-			var tag = AMTagKeys.createCommonFluidTag(Registry.FLUID.getId(fluid.getStill()).getPath());
+			var tag = AMTagKeys.createCommonFluidTag(Registries.FLUID.getId(fluid.getStill()).getPath());
 			
 			FLUID_TAGS.put(fluid, tag);
 			

@@ -42,7 +42,7 @@ import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registry;
 
 public class AMScreenHandlers {
 	public static final RegistrySupplier<ScreenHandlerType<RecipeCreatorScreenHandler>> RECIPE_CREATOR = registerExtended(AMCommon.id("recipe_creator"), ((syncId, inventory, buffer) -> {

@@ -31,8 +31,8 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 public record FluidResult(
 		FluidVariant variant,
@@ -54,7 +54,7 @@ public record FluidResult(
 	public static JsonObject toJson(FluidResult result) {
 		var jsonObject = new JsonObject();
 		
-		jsonObject.addProperty(FLUID_KEY, Registry.FLUID.getId(result.variant.getFluid()).toString());
+		jsonObject.addProperty(FLUID_KEY, Registries.FLUID.getId(result.variant.getFluid()).toString());
 		jsonObject.addProperty(AMOUNT_KEY, result.amount);
 		
 		return jsonObject;
@@ -63,7 +63,7 @@ public record FluidResult(
 	public static FluidResult fromJson(JsonElement jsonElement) {
 		if (!jsonElement.isJsonObject()) {
 			var variantId = new Identifier(jsonElement.getAsString());
-			var variantFluid = Registry.FLUID.get(variantId);
+			var variantFluid = Registries.FLUID.get(variantId);
 			
 			var variant = FluidVariant.of(variantFluid);
 			
@@ -72,7 +72,7 @@ public record FluidResult(
 			var jsonObject = jsonElement.getAsJsonObject();
 			
 			var variantId = new Identifier(jsonObject.get(FLUID_KEY).getAsString());
-			var variantFluid = Registry.FLUID.get(variantId);
+			var variantFluid = Registries.FLUID.get(variantId);
 			
 			var variant = FluidVariant.of(variantFluid);
 			
@@ -87,13 +87,13 @@ public record FluidResult(
 	}
 	
 	public static void toPacket(PacketByteBuf buf, FluidResult result) {
-		buf.writeString(Registry.FLUID.getId(result.variant.getFluid()).toString());
+		buf.writeString(Registries.FLUID.getId(result.variant.getFluid()).toString());
 		buf.writeLong(result.amount);
 	}
 	
 	public static FluidResult fromPacket(PacketByteBuf buf) {
 		var variantId = new Identifier(buf.readString());
-		var variantFluid = Registry.FLUID.get(variantId);
+		var variantFluid = Registries.FLUID.get(variantId);
 		
 		var variant = FluidVariant.of(variantFluid);
 		

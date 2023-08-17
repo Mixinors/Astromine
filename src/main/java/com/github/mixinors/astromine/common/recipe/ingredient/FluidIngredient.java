@@ -33,9 +33,9 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.tag.TagKey;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -95,7 +95,7 @@ public final class FluidIngredient {
 	public static FluidIngredient fromJson(JsonElement json) {
 		if (json.isJsonPrimitive()) {
 			var entryAsId = new Identifier(json.getAsString());
-			var entryAsFluid = Registry.FLUID.get(entryAsId);
+			var entryAsFluid = Registries.FLUID.get(entryAsId);
 			var entryAsFluidVariant = FluidVariant.of(entryAsFluid);
 			
 			return new FluidIngredient(new VariantEntry(entryAsFluidVariant));
@@ -107,7 +107,7 @@ public final class FluidIngredient {
 			if (jsonObject.has(FLUID_KEY)) {
 				if (jsonObject.has(AMOUNT_KEY)) {
 					var entryAsId = new Identifier(jsonObject.get(FLUID_KEY).getAsString());
-					var entryAsFluid = Registry.FLUID.get(entryAsId);
+					var entryAsFluid = Registries.FLUID.get(entryAsId);
 					var entryAsFluidVariant = FluidVariant.of(entryAsFluid);
 					
 					var entryAmount = jsonObject.get(AMOUNT_KEY).getAsLong();
@@ -115,7 +115,7 @@ public final class FluidIngredient {
 					return new FluidIngredient(new VariantEntry(entryAsFluidVariant, entryAmount));
 				} else {
 					var entryAsId = new Identifier(jsonObject.get(FLUID_KEY).getAsString());
-					var entryAsFluid = Registry.FLUID.get(entryAsId);
+					var entryAsFluid = Registries.FLUID.get(entryAsId);
 					var entryAsFluidVariant = FluidVariant.of(entryAsFluid);
 					
 					return new FluidIngredient(new VariantEntry(entryAsFluidVariant));
@@ -148,7 +148,7 @@ public final class FluidIngredient {
 		if (ingredient.entry instanceof VariantEntry variantEntry) {
 			var entryJsonObject = new JsonObject();
 			
-			entryJsonObject.addProperty(FLUID_KEY, Registry.FLUID.getId(variantEntry.requiredVariant.getFluid()).toString());
+			entryJsonObject.addProperty(FLUID_KEY, Registries.FLUID.getId(variantEntry.requiredVariant.getFluid()).toString());
 			entryJsonObject.addProperty(AMOUNT_KEY, variantEntry.requiredAmount);
 		}
 		
@@ -169,7 +169,7 @@ public final class FluidIngredient {
 		var entryAmount = buf.readLong();
 		
 		if (entryType.equals(FLUID_KEY)) {
-			var entryFluid = Registry.FLUID.get(entryTypeId);
+			var entryFluid = Registries.FLUID.get(entryTypeId);
 			var entryVariant = FluidVariant.of(entryFluid);
 			
 			return new FluidIngredient(new VariantEntry(entryVariant, entryAmount));
@@ -187,7 +187,7 @@ public final class FluidIngredient {
 	public static void toPacket(PacketByteBuf buf, FluidIngredient ingredient) {
 		if (ingredient.entry instanceof VariantEntry variantEntry) {
 			buf.writeString(FLUID_KEY);
-			buf.writeString(Registry.FLUID.getId(variantEntry.requiredVariant.getFluid()).toString());
+			buf.writeString(Registries.FLUID.getId(variantEntry.requiredVariant.getFluid()).toString());
 			buf.writeLong(variantEntry.requiredAmount);
 		}
 		
@@ -285,7 +285,7 @@ public final class FluidIngredient {
 			if (requiredVariants == null) {
 				var builder = ImmutableList.<FluidVariant>builder();
 				
-				for (var entry : Registry.FLUID.iterateEntries(requiredTag)) {
+				for (var entry : Registries.FLUID.iterateEntries(requiredTag)) {
 					var fluid = entry.value();
 					
 					if (fluid.isStill(fluid.getDefaultState())) {

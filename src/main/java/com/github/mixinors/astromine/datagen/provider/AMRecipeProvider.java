@@ -40,21 +40,23 @@ import com.github.mixinors.astromine.registry.common.AMTagKeys;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.family.BlockFamilies;
 import net.minecraft.data.family.BlockFamily;
-import net.minecraft.data.server.RecipeProvider;
 import net.minecraft.data.server.recipe.*;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.tag.TagKey;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.recipe.book.RecipeCategory;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.tag.TagKey;
+import net.minecraft.resource.featuretoggle.FeatureFlags;
+import net.minecraft.resource.featuretoggle.FeatureSet;
 import org.apache.logging.log4j.util.TriConsumer;
 
 import java.util.List;
@@ -82,10 +84,10 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 	);
 	
 	private static final Map<BlockFamily.Variant, BasicOfferer> STONECUTTING_OFFERERS = ImmutableMap.of(
-			BlockFamily.Variant.STAIRS, RecipeProvider::offerStonecuttingRecipe,
-			BlockFamily.Variant.SLAB, (exporter, output, input) -> offerStonecuttingRecipe(exporter, output, input, 2),
-			BlockFamily.Variant.WALL, RecipeProvider::offerStonecuttingRecipe,
-			BlockFamily.Variant.POLISHED, RecipeProvider::offerStonecuttingRecipe
+			BlockFamily.Variant.STAIRS, (exporter, output, input) -> offerStonecuttingRecipe(exporter, RecipeCategory.MISC, output, input),
+			BlockFamily.Variant.SLAB, (exporter, output, input) -> offerStonecuttingRecipe(exporter, RecipeCategory.MISC, output, input, 2),
+			BlockFamily.Variant.WALL, (exporter, output, input) -> offerStonecuttingRecipe(exporter, RecipeCategory.MISC, output, input),
+			BlockFamily.Variant.POLISHED, (exporter, output, input) -> offerStonecuttingRecipe(exporter, RecipeCategory.MISC, output, input)
 	);
 	
 	public static final Map<Block, Block> REGULAR_TO_SMOOTH = ImmutableMap.of(
@@ -217,8 +219,8 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 			AMTagKeys.ItemTags.MAKES_NINE_BIOFUEL, 9
 	);
 	
-	public AMRecipeProvider(FabricDataGenerator dataGenerator) {
-		super(dataGenerator);
+	public AMRecipeProvider(FabricDataOutput output) {
+		super(output);
 	}
 	
 	public static String convertBetween(ItemConvertible to, String from) {
@@ -254,11 +256,11 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 	}
 	
 	public static void offerReversibleCompactingRecipesWithInputItemGroup(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, ItemConvertible compacted, String from) {
-		offerReversibleCompactingRecipesWithCompactingRecipeGroup(exporter, input, compacted, convertBetween(input, from), getRecipeName(input));
+		offerReversibleCompactingRecipesWithCompactingRecipeGroup(exporter, RecipeCategory.MISC, input, RecipeCategory.MISC, compacted, convertBetween(input, from), getRecipeName(input));
 	}
 	
 	public static void offerReversibleCompactingRecipesWithCompactedItemGroup(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, ItemConvertible compacted, String from) {
-		offerReversibleCompactingRecipesWithCompactingRecipeGroup(exporter, input, compacted, convertBetween(compacted, from), getRecipeName(compacted));
+		offerReversibleCompactingRecipesWithCompactingRecipeGroup(exporter, RecipeCategory.MISC, input, RecipeCategory.MISC, compacted, convertBetween(compacted, from), getRecipeName(compacted));
 	}
 	
 	public static void offerSmeltingAndBlasting(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, ItemConvertible output, float experience) {
@@ -266,61 +268,61 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 	}
 	
 	public static void offerSmeltingAndBlasting(Consumer<RecipeJsonProvider> exporter, List<ItemConvertible> input, ItemConvertible output, float experience) {
-		offerSmelting(exporter, input, output, experience, 200, getRecipeName(output));
-		offerBlasting(exporter, input, output, experience, 100, getRecipeName(output));
+		offerSmelting(exporter, input, RecipeCategory.MISC, output, experience, 200, getRecipeName(output));
+		offerBlasting(exporter, input, RecipeCategory.MISC, output, experience, 100, getRecipeName(output));
 	}
 	
 	public static void offerSmeltingAndBlasting(Consumer<RecipeJsonProvider> exporter, TagKey<Item> input, ItemConvertible output, float experience) {
-		CookingRecipeJsonBuilder.createSmelting(Ingredient.fromTag(input), output, experience, 200).criterion("has_" + getRecipeName(input), RecipeProvider.conditionsFromTag(input)).offerTo(exporter, convertBetween(output, "smelting", input));
-		CookingRecipeJsonBuilder.createBlasting(Ingredient.fromTag(input), output, experience, 100).criterion("has_" + getRecipeName(input), RecipeProvider.conditionsFromTag(input)).offerTo(exporter, convertBetween(output, "blasting", input));
+		CookingRecipeJsonBuilder.createSmelting(Ingredient.fromTag(input), RecipeCategory.MISC, output, experience, 200).criterion("has_" + getRecipeName(input), RecipeProvider.conditionsFromTag(input)).offerTo(exporter, convertBetween(output, "smelting", input));
+		CookingRecipeJsonBuilder.createBlasting(Ingredient.fromTag(input), RecipeCategory.MISC, output, experience, 100).criterion("has_" + getRecipeName(input), RecipeProvider.conditionsFromTag(input)).offerTo(exporter, convertBetween(output, "blasting", input));
 	}
 	
 	public static void offerHelmetRecipe(Consumer<RecipeJsonProvider> exporter, TagKey<Item> input, ItemConvertible output) {
-		withCriterion(ShapedRecipeJsonBuilder.create(output).input('X', input).pattern("XXX").pattern("X X"), input).offerTo(exporter);
+		withCriterion(ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, output).input('X', input).pattern("XXX").pattern("X X"), input).offerTo(exporter);
 	}
 	
 	public static void offerChestplateRecipe(Consumer<RecipeJsonProvider> exporter, TagKey<Item> input, ItemConvertible output) {
-		withCriterion(ShapedRecipeJsonBuilder.create(output).input('X', input).pattern("X X").pattern("XXX").pattern("XXX"), input).offerTo(exporter);
+		withCriterion(ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, output).input('X', input).pattern("X X").pattern("XXX").pattern("XXX"), input).offerTo(exporter);
 	}
 	
 	public static void offerLeggingsRecipe(Consumer<RecipeJsonProvider> exporter, TagKey<Item> input, ItemConvertible output) {
-		withCriterion(ShapedRecipeJsonBuilder.create(output).input('X', input).pattern("XXX").pattern("X X").pattern("X X"), input).offerTo(exporter);
+		withCriterion(ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, output).input('X', input).pattern("XXX").pattern("X X").pattern("X X"), input).offerTo(exporter);
 	}
 	
 	public static void offerBootsRecipe(Consumer<RecipeJsonProvider> exporter, TagKey<Item> input, ItemConvertible output) {
-		withCriterion(ShapedRecipeJsonBuilder.create(output).input('X', input).pattern("X X").pattern("X X"), input).offerTo(exporter);
+		withCriterion(ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, output).input('X', input).pattern("X X").pattern("X X"), input).offerTo(exporter);
 	}
 	
 	public static void offerPickaxeRecipe(Consumer<RecipeJsonProvider> exporter, TagKey<Item> input, ItemConvertible output) {
-		withCriterion(ShapedRecipeJsonBuilder.create(output).input('X', input).input('S', Items.STICK).pattern("XXX").pattern(" S ").pattern(" S "), input).offerTo(exporter);
+		withCriterion(ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, output).input('X', input).input('S', Items.STICK).pattern("XXX").pattern(" S ").pattern(" S "), input).offerTo(exporter);
 	}
 	
 	public static void offerAxeRecipe(Consumer<RecipeJsonProvider> exporter, TagKey<Item> input, ItemConvertible output) {
-		withCriterion(ShapedRecipeJsonBuilder.create(output).input('X', input).input('S', Items.STICK).pattern("XX").pattern("XS").pattern(" S"), input).offerTo(exporter);
+		withCriterion(ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, output).input('X', input).input('S', Items.STICK).pattern("XX").pattern("XS").pattern(" S"), input).offerTo(exporter);
 	}
 	
 	public static void offerShovelRecipe(Consumer<RecipeJsonProvider> exporter, TagKey<Item> input, ItemConvertible output) {
-		withCriterion(ShapedRecipeJsonBuilder.create(output).input('X', input).input('S', Items.STICK).pattern("X").pattern("S").pattern("S"), input).offerTo(exporter);
+		withCriterion(ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, output).input('X', input).input('S', Items.STICK).pattern("X").pattern("S").pattern("S"), input).offerTo(exporter);
 	}
 	
 	public static void offerSwordRecipe(Consumer<RecipeJsonProvider> exporter, TagKey<Item> input, ItemConvertible output) {
-		withCriterion(ShapedRecipeJsonBuilder.create(output).input('X', input).input('S', Items.STICK).pattern("X").pattern("X").pattern("S"), input).offerTo(exporter);
+		withCriterion(ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, output).input('X', input).input('S', Items.STICK).pattern("X").pattern("X").pattern("S"), input).offerTo(exporter);
 	}
 	
 	public static void offerHoeRecipe(Consumer<RecipeJsonProvider> exporter, TagKey<Item> input, ItemConvertible output) {
-		withCriterion(ShapedRecipeJsonBuilder.create(output).input('X', input).input('S', Items.STICK).pattern("XX").pattern(" S").pattern(" S"), input).offerTo(exporter);
+		withCriterion(ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, output).input('X', input).input('S', Items.STICK).pattern("XX").pattern(" S").pattern(" S"), input).offerTo(exporter);
 	}
 	
 	public static void offerGearRecipe(Consumer<RecipeJsonProvider> exporter, TagKey<Item> input, ItemConvertible output) {
-		withCriterion(ShapedRecipeJsonBuilder.create(output, 2).input('X', input).pattern(" X ").pattern("X X").pattern(" X "), input).offerTo(exporter);
+		withCriterion(ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, output, 2).input('X', input).pattern(" X ").pattern("X X").pattern(" X "), input).offerTo(exporter);
 	}
 	
 	public static void offerPlateRecipe(Consumer<RecipeJsonProvider> exporter, TagKey<Item> input, ItemConvertible output) {
-		withCriterion(ShapedRecipeJsonBuilder.create(output).input('X', input).pattern("X").pattern("X"), input).offerTo(exporter);
+		withCriterion(ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, output).input('X', input).pattern("X").pattern("X"), input).offerTo(exporter);
 	}
 	
 	public static void offerMaterialAppleRecipe(Consumer<RecipeJsonProvider> exporter, TagKey<Item> input, ItemConvertible output) {
-		withCriterion(ShapedRecipeJsonBuilder.create(output).input('X', input).input('A', Items.APPLE).pattern("XXX").pattern("XAX").pattern("XXX"), input).offerTo(exporter);
+		withCriterion(ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, output).input('X', input).input('A', Items.APPLE).pattern("XXX").pattern("XAX").pattern("XXX"), input).offerTo(exporter);
 	}
 	
 	public static void offer2x2CompactingRecipe(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, ItemConvertible output) {
@@ -332,11 +334,11 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 	}
 	
 	public static ShapedRecipeJsonBuilder create2x2CompactingRecipe(ItemConvertible input, ItemConvertible output) {
-		return ShapedRecipeJsonBuilder.create(output).input('#', input).pattern("##").pattern("##");
+		return ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, output).input('#', input).pattern("##").pattern("##");
 	}
 	
 	public static ShapedRecipeJsonBuilder create2x2CompactingRecipe(TagKey<Item> input, ItemConvertible output) {
-		return ShapedRecipeJsonBuilder.create(output).input('#', input).pattern("##").pattern("##");
+		return ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, output).input('#', input).pattern("##").pattern("##");
 	}
 	
 	public static void offerBricksRecipe(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, ItemConvertible output) {
@@ -348,11 +350,11 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 	}
 	
 	public static ShapedRecipeJsonBuilder createBricksRecipe(ItemConvertible input, ItemConvertible output) {
-		return ShapedRecipeJsonBuilder.create(output, 4).input('#', input).pattern("##").pattern("##");
+		return ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, output, 4).input('#', input).pattern("##").pattern("##");
 	}
 	
 	public static ShapedRecipeJsonBuilder createBricksRecipe(TagKey<Item> input, ItemConvertible output) {
-		return ShapedRecipeJsonBuilder.create(output, 4).input('#', input).pattern("##").pattern("##");
+		return ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, output, 4).input('#', input).pattern("##").pattern("##");
 	}
 	
 	public static void offerCompactingRecipe(Consumer<RecipeJsonProvider> exporter, TagKey<Item> input, ItemConvertible output) {
@@ -360,31 +362,32 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 	}
 	
 	public static ShapedRecipeJsonBuilder createCompactingRecipe(ItemConvertible input, ItemConvertible output) {
-		return ShapedRecipeJsonBuilder.create(output).input('#', input).pattern("###").pattern("###").pattern("###");
+		return ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, output).input('#', input).pattern("###").pattern("###").pattern("###");
 	}
 	
 	public static ShapedRecipeJsonBuilder createCompactingRecipe(TagKey<Item> input, ItemConvertible output) {
-		return ShapedRecipeJsonBuilder.create(output).input('#', input).pattern("###").pattern("###").pattern("###");
+		return ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, output).input('#', input).pattern("###").pattern("###").pattern("###");
 	}
 	
 	public static void offerReverseCompactingRecipe(Consumer<RecipeJsonProvider> exporter, TagKey<Item> input, ItemConvertible output) {
-		withCriterion(ShapelessRecipeJsonBuilder.create(output, 9).input(input), input).offerTo(exporter);
+		withCriterion(ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, output, 9).input(input), input).offerTo(exporter);
 	}
 	
 	public static void offerCompactingRecipeWithFullName(Consumer<RecipeJsonProvider> exporter, TagKey<Item> input, ItemConvertible output) {
-		offerWithName(exporter, withCriterion(ShapedRecipeJsonBuilder.create(output).input('#', input).pattern("###").pattern("###").pattern("###"), input), convertBetween(output, input));
+		offerWithName(exporter, withCriterion(ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, output).input('#', input).pattern("###").pattern("###").pattern("###"), input), convertBetween(output, input));
 	}
 	
 	public static void offerReverseCompactingRecipeWithFullName(Consumer<RecipeJsonProvider> exporter, TagKey<Item> input, ItemConvertible output) {
-		offerWithName(exporter, withCriterion(ShapelessRecipeJsonBuilder.create(output, 9).input(input), input), convertBetween(output, input));
+		offerWithName(exporter, withCriterion(ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, output, 9).input(input), input), convertBetween(output, input));
 	}
 	
 	public static void offerSmoothingRecipe(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, ItemConvertible output) {
-		withCriterion(CookingRecipeJsonBuilder.createSmelting(Ingredient.ofItems(input), output, 0.1f, 200), input).offerTo(exporter);
+		withCriterion(CookingRecipeJsonBuilder.createSmelting(Ingredient.ofItems(input), RecipeCategory.MISC, output, 0.1f, 200), input).offerTo(exporter);
 	}
 	
 	public static void offerSmithingRecipe(Consumer<RecipeJsonProvider> exporter, Item input, Item addition, Item output) {
-		SmithingRecipeJsonBuilder.create(Ingredient.ofItems(input), Ingredient.ofItems(addition), output).criterion("has_" + getRecipeName(addition), RecipeProvider.conditionsFromItem(addition)).offerTo(exporter, convertBetween(output, "smithing", input));
+		// TODO: 1.20 Smithing
+		// SmithingRecipeJsonBuilder.create(Ingredient.ofItems(input), Ingredient.ofItems(addition), output).criterion("has_" + getRecipeName(addition), RecipeProvider.conditionsFromItem(addition)).offerTo(exporter, convertBetween(output, "smithing", input));
 	}
 	
 	public static TrituratingRecipeJsonFactory createTrituratingRecipe(TagKey<Item> input, ItemConvertible output, int outputCount, int processingTime, int energy) {
@@ -460,11 +463,11 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 	}
 	
 	public static void offerMeltingRecipe(Consumer<RecipeJsonProvider> exporter, TagKey<Item> input, Fluid output, long outputAmount, int processingTime, int energy) {
-		createMeltingRecipe(input, output, outputAmount, processingTime, energy).offerTo(exporter, Registry.FLUID.getId(output).getPath() + "_from_melting_" + getRecipeName(input));
+		createMeltingRecipe(input, output, outputAmount, processingTime, energy).offerTo(exporter, Registries.FLUID.getId(output).getPath() + "_from_melting_" + getRecipeName(input));
 	}
 	
 	public static void offerMeltingRecipe(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, Fluid output, long outputAmount, int processingTime, int energy) {
-		createMeltingRecipe(input, output, outputAmount, processingTime, energy).offerTo(exporter, Registry.FLUID.getId(output).getPath() + "_from_melting_" + getRecipeName(input));
+		createMeltingRecipe(input, output, outputAmount, processingTime, energy).offerTo(exporter, Registries.FLUID.getId(output).getPath() + "_from_melting_" + getRecipeName(input));
 	}
 	
 	public static CraftingRecipeJsonBuilder withCriterion(CraftingRecipeJsonBuilder factory, ItemConvertible input) {
@@ -489,11 +492,11 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 	}
 	
 	@Override
-	protected void generateRecipes(Consumer<RecipeJsonProvider> exporter) {
-		BlockFamilies.getFamilies().filter(AMBlockFamilies::isAstromineFamily).filter(BlockFamily::shouldGenerateRecipes).forEach(family -> generateFamily(exporter, family));
+	public void generate(Consumer<RecipeJsonProvider> exporter) {
+		BlockFamilies.getFamilies().filter(AMBlockFamilies::isAstromineFamily).filter(family -> family.shouldGenerateRecipes(FeatureSet.of(FeatureFlags.VANILLA))).forEach(family -> generateFamily(exporter, family));
 		
 		STONECUT_FAMILIES.forEach(map -> map.forEach((originalFamily, cutFamily) -> {
-			offerStonecuttingRecipe(exporter, cutFamily.getBaseBlock(), originalFamily.getBaseBlock());
+			offerStonecuttingRecipe(exporter, RecipeCategory.MISC, cutFamily.getBaseBlock(), originalFamily.getBaseBlock());
 			STONECUTTING_OFFERERS.forEach((variant, offerer) -> {
 				if (cutFamily.getVariants().containsKey(variant)) {
 					offerer.accept(exporter, cutFamily.getVariant(variant), originalFamily.getBaseBlock());
@@ -501,7 +504,7 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 			});
 			originalFamily.getVariants().forEach((variant, block) -> {
 				if (cutFamily.getVariants().containsKey(variant)) {
-					offerStonecuttingRecipe(exporter, cutFamily.getVariant(variant), block);
+					offerStonecuttingRecipe(exporter, RecipeCategory.MISC, cutFamily.getVariant(variant), block);
 				}
 			});
 		}));
@@ -699,7 +702,7 @@ public class AMRecipeProvider extends FabricRecipeProvider {
 		offerTrituratingRecipe(exporter, AMTagKeys.ItemTags.RED_SANDSTONES, Blocks.RED_SAND, 4, 240, 440);
 		offerTrituratingRecipe(exporter, AMTagKeys.ItemTags.CUT_COPPER, AMItems.COPPER_DUST.get(), 1, 240, 440);
 		offerTrituratingRecipe(exporter, AMTagKeys.ItemTags.PURPUR_BLOCKS, Items.POPPED_CHORUS_FRUIT, 4, 80, 300);
-		offerTrituratingRecipe(exporter, net.minecraft.tag.ItemTags.WOOL, Items.STRING, 4, 80, 300);
+		offerTrituratingRecipe(exporter, net.minecraft.registry.tag.ItemTags.WOOL, Items.STRING, 4, 80, 300);
 		
 		TRITURATED_BLOCK_FAMILIES.forEach((inputFamily, outputFamily) -> {
 			inputFamily.getVariants().forEach((variant, block) -> {

@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.common.recipe.condition;
 
 import dev.architectury.platform.Platform;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registry;
 
 public record RecipeCondition(
 		String modId,

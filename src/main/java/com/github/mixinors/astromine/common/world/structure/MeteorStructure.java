@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.world.structure;
 
+import com.github.mixinors.astromine.registry.common.AMStructureTypes;
 import com.mojang.serialization.Codec;
 import net.minecraft.structure.StructurePiecesCollector;
 import net.minecraft.world.Heightmap;
@@ -35,8 +36,6 @@ import java.util.Optional;
 
 public class MeteorStructure extends Structure {
 	public static final Codec<MeteorStructure> CODEC = createCodec(MeteorStructure::new);
-	
-	public static final StructureType<MeteorStructure> TYPE = () -> CODEC;
 	
 	public MeteorStructure(Config config) {
 		super(config);
@@ -58,6 +57,6 @@ public class MeteorStructure extends Structure {
 	
 	@Override
 	public StructureType<?> getType() {
-		return TYPE;
+		return AMStructureTypes.METEOR_STRUCTURE_TYPE.get();
 	}
 }

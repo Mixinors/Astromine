@@ -34,12 +34,13 @@ import dev.architectury.platform.Platform;
 import dev.architectury.registry.registries.RegistrySupplier;
 import dev.vini2003.hammer.core.api.client.color.Color;
 import net.fabricmc.api.EnvType;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricMaterialBuilder;
 import net.fabricmc.fabric.api.transfer.v1.fluid.CauldronFluidContent;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.minecraft.block.*;
 import net.minecraft.block.cauldron.CauldronBehavior;
+import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageSources;
 import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
@@ -47,24 +48,28 @@ import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Items;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.StateManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
 public abstract class ExtendedFluid extends FlowableFluid {
-	public static final Material INDUSTRIAL_FLUID_MATERIAL = new FabricMaterialBuilder(MapColor.WATER_BLUE).allowsMovement()
-																										   .lightPassesThrough()
-																										   .destroyedByPiston()
+	public static final Supplier<AbstractBlock.Settings> INDUSTRIAL_FLUID_MATERIAL = () -> AbstractBlock.Settings.create()
+																										   .mapColor(MapColor.WATER_BLUE)
+																										   .noCollision()
+																										   .pistonBehavior(PistonBehavior.DESTROY)
 																										   .replaceable()
 																										   .liquid()
 																										   .notSolid()
-																										   .build();
+																										   .sounds(BlockSoundGroup.INTENTIONALLY_EMPTY);
 	
 	final int fogColor;
 	final int tintColor;
@@ -81,21 +86,22 @@ public abstract class ExtendedFluid extends FlowableFluid {
 	Map<Item, CauldronBehavior> cauldronBehaviorMap;
 	RegistrySupplier<CauldronBlock> cauldron;
 	
+	@Nullable
 	final DamageSource source;
 	
 	public ExtendedFluid(int fogColor, int tintColor, boolean infinite, @Nullable DamageSource source) {
 		this.fogColor = fogColor;
 		this.tintColor = tintColor;
 		this.infinite = infinite;
-		this.source = source == null ? DamageSource.GENERIC : source;
+		this.source = source;
 	}
 	
 	public static Builder builder() {
 		return new Builder();
 	}
 	
-	public DamageSource getSource() {
-		return source;
+	public DamageSource getSource(DamageSources sources) {
+		return source == null ? sources.generic() : source;
 	}
 	
 	@Override
@@ -109,7 +115,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 	}
 	
 	@Override
-	protected boolean isInfinite() {
+	protected boolean isInfinite(World world) {
 		return infinite;
 	}
 	
@@ -261,7 +267,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 			flowing.still = still;
 			still.still = still;
 			
-			var block = AMBlocks.register(name, () -> new FluidBlock(still, AbstractBlock.Settings.of(INDUSTRIAL_FLUID_MATERIAL).noCollision().strength(100.0F).dropsNothing()));
+			var block = AMBlocks.register(name, () -> new FluidBlock(still, INDUSTRIAL_FLUID_MATERIAL.get().noCollision().strength(100.0F).dropsNothing()));
 			
 			var bucket = AMItems.register(name + "_bucket", () -> new BucketItem(still, (new Item.Settings()).recipeRemainder(Items.BUCKET).maxCount(1).group(group)));
 			

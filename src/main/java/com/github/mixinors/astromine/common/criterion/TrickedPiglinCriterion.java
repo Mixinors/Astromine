@@ -30,7 +30,7 @@ import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
 import net.minecraft.advancement.criterion.Criterion;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
-import net.minecraft.predicate.entity.EntityPredicate;
+import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
@@ -47,7 +47,7 @@ public class TrickedPiglinCriterion extends AbstractCriterion<TrickedPiglinCrite
 	
 	/** Reads {@link Conditions} from a {@link JsonObject}. */
 	@Override
-	protected TrickedPiglinCriterion.Conditions conditionsFromJson(JsonObject obj, EntityPredicate.Extended playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
+	protected TrickedPiglinCriterion.Conditions conditionsFromJson(JsonObject obj, LootContextPredicate playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
 		if (obj.has("successful")) {
 			return new Conditions(this.id, playerPredicate, obj.get("successful").getAsBoolean());
 		} else {
@@ -73,14 +73,14 @@ public class TrickedPiglinCriterion extends AbstractCriterion<TrickedPiglinCrite
 		private final Boolean successful;
 		
 		/** Instantiates {@link Conditions}. */
-		public Conditions(Identifier id, EntityPredicate.Extended playerPredicate, Boolean successful) {
+		public Conditions(Identifier id, LootContextPredicate playerPredicate, Boolean successful) {
 			super(id, playerPredicate);
 			
 			this.successful = successful;
 		}
 		
 		/** Instantiates {@link Conditions}. */
-		public Conditions(Identifier id, EntityPredicate.Extended playerPredicate) {
+		public Conditions(Identifier id, LootContextPredicate playerPredicate) {
 			super(id, playerPredicate);
 			
 			this.successful = null;
@@ -98,12 +98,12 @@ public class TrickedPiglinCriterion extends AbstractCriterion<TrickedPiglinCrite
 		
 		/** Instantiates {@link Conditions}. */
 		public static Conditions create(boolean successful) {
-			return new Conditions(AMCriteria.TRICKED_PIGLIN.getId(), EntityPredicate.Extended.EMPTY, successful);
+			return new Conditions(AMCriteria.TRICKED_PIGLIN.getId(), LootContextPredicate.EMPTY, successful);
 		}
 		
 		/** Instantiates {@link Conditions}. */
 		public static Conditions create() {
-			return new Conditions(AMCriteria.TRICKED_PIGLIN.getId(), EntityPredicate.Extended.EMPTY);
+			return new Conditions(AMCriteria.TRICKED_PIGLIN.getId(), LootContextPredicate.EMPTY);
 		}
 	}
 }

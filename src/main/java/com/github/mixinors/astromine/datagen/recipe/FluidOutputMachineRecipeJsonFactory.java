@@ -29,7 +29,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registry;
 
 public abstract class FluidOutputMachineRecipeJsonFactory<T extends EnergyInputRecipe> extends EnergyInputMachineRecipeJsonFactory<T> {
 	private static final String FLUID_KEY = "fluid";

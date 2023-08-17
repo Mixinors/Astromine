@@ -28,7 +28,7 @@ import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.world.generation.space.EarthOrbitBiomeSource;
 import com.github.mixinors.astromine.common.world.generation.space.MoonBiomeSource;
 import com.github.mixinors.astromine.common.world.generation.space.RocketInteriorsBiomeSource;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registry;
 
 public class AMBiomeSources {
 	public static void init() {

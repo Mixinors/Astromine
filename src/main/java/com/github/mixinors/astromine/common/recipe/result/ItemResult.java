@@ -30,8 +30,8 @@ import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 public record ItemResult(
 		ItemVariant variant,
@@ -57,7 +57,7 @@ public record ItemResult(
 	public static JsonObject toJson(ItemResult result) {
 		var jsonObject = new JsonObject();
 		
-		jsonObject.addProperty(ITEM_KEY, Registry.ITEM.getId(result.variant.getItem()).toString());
+		jsonObject.addProperty(ITEM_KEY, Registries.ITEM.getId(result.variant.getItem()).toString());
 		jsonObject.addProperty(COUNT_KEY, result.count);
 		
 		return jsonObject;
@@ -66,7 +66,7 @@ public record ItemResult(
 	public static ItemResult fromJson(JsonElement jsonElement) {
 		if (!jsonElement.isJsonObject()) {
 			var variantId = new Identifier(jsonElement.getAsString());
-			var variantItem = Registry.ITEM.get(variantId);
+			var variantItem = Registries.ITEM.get(variantId);
 			
 			var variant = ItemVariant.of(variantItem);
 			
@@ -75,7 +75,7 @@ public record ItemResult(
 			var jsonObject = jsonElement.getAsJsonObject();
 			
 			var variantId = new Identifier(jsonObject.get(ITEM_KEY).getAsString());
-			var variantItem = Registry.ITEM.get(variantId);
+			var variantItem = Registries.ITEM.get(variantId);
 			
 			var variant = ItemVariant.of(variantItem);
 			
@@ -90,13 +90,13 @@ public record ItemResult(
 	}
 	
 	public static void toPacket(PacketByteBuf buf, ItemResult result) {
-		buf.writeString(Registry.ITEM.getId(result.variant.getItem()).toString());
+		buf.writeString(Registries.ITEM.getId(result.variant.getItem()).toString());
 		buf.writeInt(result.count);
 	}
 	
 	public static ItemResult fromPacket(PacketByteBuf buf) {
 		var variantId = new Identifier(buf.readString());
-		var variantItem = Registry.ITEM.get(variantId);
+		var variantItem = Registries.ITEM.get(variantId);
 		
 		var variant = ItemVariant.of(variantItem);
 		

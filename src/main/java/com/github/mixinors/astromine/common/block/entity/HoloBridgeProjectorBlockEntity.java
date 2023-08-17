@@ -37,15 +37,15 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.math.Vec3i;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +73,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	
 	private boolean shouldInitialize = false;
 	
-	public List<Vec3f> segments = null;
+	public List<Vector3f> segments = null;
 	
 	public Color color = DEFAULT_COLOR;
 	
@@ -155,7 +155,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 		var segments = LineUtils.getBresenhamSegments(VectorUtils.toVector3f(pos.up()), VectorUtils.toVector3f(offsetChildPos.up()), 32);
 		
 		for (var segment : segments) {
-			var segmentPos = new BlockPos(segment.getX(), segment.getY(), segment.getZ());
+			var segmentPos = new BlockPos((int) segment.x(), (int) segment.y(), (int) segment.z());
 			
 			if ((segmentPos.getX() != childPos.getX() && segmentPos.getX() != pos.getX()) || (segmentPos.getZ() != childPos.getZ() && segmentPos.getZ() != pos.getZ())) {
 				if (!this.world.getBlockState(segmentPos).isAir()) {
@@ -191,11 +191,11 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			return;
 		}
 		
-		this.segments = (ArrayList<Vec3f>) LineUtils.getBresenhamSegments(VectorUtils.toVector3f(pos.up()), VectorUtils.toVector3f(offsetChildPos.up()), 32);
+		this.segments = (ArrayList<Vector3f>) LineUtils.getBresenhamSegments(VectorUtils.toVector3f(pos.up()), VectorUtils.toVector3f(offsetChildPos.up()), 32);
 		var bridgeComponent = HoloBridgesComponent.get(world);
 		
 		for (var segment : this.segments) {
-			var segmentPos = new BlockPos(segment.getX(), segment.getY(), segment.getZ());
+			var segmentPos = new BlockPos((int) segment.x(), (int) segment.y(), (int) segment.z());
 			
 			if ((segmentPos.getX() != childPos.getX() && segmentPos.getX() != pos.getX()) || (segmentPos.getZ() != childPos.getZ() && segmentPos.getZ() != pos.getZ())) {
 				if (this.world.getBlockState(segmentPos).isAir()) {
@@ -203,7 +203,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 				}
 			}
 			
-			bridgeComponent.add(segmentPos, new Vec3i((segment.getX() - (int) segment.getX()) * 16.0F, (segment.getY() - (int) segment.getY()) * 16.0F, (segment.getZ() - (int) segment.getZ()) * 16.0F));
+			bridgeComponent.add(segmentPos, new Vec3i((int) ((segment.x() - (int) segment.x()) * 16.0F), (int) ((segment.y() - (int) segment.y()) * 16.0F), (int) ((segment.z() - (int) segment.z()) * 16.0F)));
 		}
 	}
 	
@@ -264,7 +264,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			var bridgeComponent = HoloBridgesComponent.get(world);
 			
 			for (var vec : this.segments) {
-				var pos = new BlockPos(vec.getX(), vec.getY(), vec.getZ());
+				var pos = new BlockPos((int) vec.x(), (int) vec.y(), (int) vec.z());
 				
 				bridgeComponent.remove(pos);
 				

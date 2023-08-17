@@ -27,7 +27,6 @@ package com.github.mixinors.astromine.client.model.block;
 import com.github.mixinors.astromine.common.block.entity.cable.CableBlockEntity;
 import com.github.mixinors.astromine.common.util.DirectionUtils;
 import com.google.common.collect.ImmutableList;
-import com.mojang.datafixers.util.Pair;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.fabricmc.fabric.api.client.model.BakedModelManagerHelper;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
@@ -44,15 +43,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Quaternion;
-import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockRenderView;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -125,22 +123,22 @@ public class CableModel implements FabricBakedModel, BakedModel, UnbakedModel {
 	
 	private void pushTransform(Direction direction, RenderContext context) {
 		var angle = switch (direction) {
-			case SOUTH -> Vec3f.POSITIVE_Y.getDegreesQuaternion(180.0F);
-			case WEST -> Vec3f.POSITIVE_Y.getDegreesQuaternion(90.0F);
-			case EAST -> Vec3f.POSITIVE_Y.getDegreesQuaternion(270.0F);
-			case UP -> Vec3f.POSITIVE_X.getDegreesQuaternion(90.0F);
-			case DOWN -> Vec3f.POSITIVE_X.getDegreesQuaternion(270.0F);
+			case SOUTH -> new Quaternionf().rotateY(180.0F * ((float) Math.PI) / 180.0F);
+			case WEST -> new Quaternionf().rotateY(90.0F * ((float) Math.PI) / 180.0F);
+			case EAST -> new Quaternionf().rotateY(270.0F * ((float) Math.PI) / 180.0F);
+			case UP -> new Quaternionf().rotateX(90.0F * ((float) Math.PI) / 180.0F);
+			case DOWN -> new Quaternionf().rotateX(270.0F * ((float) Math.PI) / 180.0F);
 			
-			default -> Vec3f.ZERO.getDegreesQuaternion(0.0F);
+			default -> new Quaternionf();
 		};
 		
 		context.pushTransform(new RotationQuadTransform(angle));
 	}
 	
 	private static class RotationQuadTransform implements RenderContext.QuadTransform {
-		private final Quaternion rotation;
+		private final Quaternionf rotation;
 		
-		public RotationQuadTransform(Quaternion rotation) {
+		public RotationQuadTransform(Quaternionf rotation) {
 			this.rotation = rotation;
 		}
 		
@@ -148,9 +146,9 @@ public class CableModel implements FabricBakedModel, BakedModel, UnbakedModel {
 		public boolean transform(MutableQuadView quad) {
 			for (var i = 0; i < 4; ++i) {
 				var pos = quad.copyPos(i, null);
-				pos.subtract(new Vec3f(8.0F / 16.0F, 8.0F / 16.0F, 8.0F / 16.0F));
+				pos.sub(new Vector3f(8.0F / 16.0F, 8.0F / 16.0F, 8.0F / 16.0F));
 				pos.rotate(rotation);
-				pos.add(new Vec3f(8.0F / 16.0F, 8.0F / 16.0F, 8.0F / 16.0F));
+				pos.add(new Vector3f(8.0F / 16.0F, 8.0F / 16.0F, 8.0F / 16.0F));
 				
 				quad.pos(i, pos);
 			}
@@ -174,13 +172,12 @@ public class CableModel implements FabricBakedModel, BakedModel, UnbakedModel {
 	}
 	
 	@Override
-	public Collection<SpriteIdentifier> getTextureDependencies(Function<Identifier, UnbakedModel> unbakedModelGetter, Set<Pair<String, String>> unresolvedTextureReferences) {
-		return ImmutableList.of();
+	public void setParents(Function<Identifier, UnbakedModel> modelLoader) {
 	}
 	
 	@Nullable
 	@Override
-	public BakedModel bake(ModelLoader loader, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings rotationContainer, Identifier modelId) {
+	public BakedModel bake(Baker loader, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings rotationContainer, Identifier modelId) {
 		return this;
 	}
 	

@@ -28,9 +28,10 @@ import com.github.mixinors.astromine.registry.common.AMBiomes;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.dynamic.RegistryOps;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryEntry;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.RegistryOps;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil;
@@ -38,7 +39,7 @@ import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 public class MoonOrbitBiomeSource extends BiomeSource {
 	public static final Codec<MoonOrbitBiomeSource> CODEC = RecordCodecBuilder.create((instance) ->
 			instance.group(
-					RegistryOps.createRegistryCodec(Registry.BIOME_KEY).forGetter((biomeSource) -> biomeSource.registry)
+					RegistryOps.createRegistryCodec(RegistryKeys.BIOME).forGetter((biomeSource) -> biomeSource.registry)
 			).apply(instance, instance.stable(MoonOrbitBiomeSource::new)));
 	
 	private final Registry<Biome> registry;

@@ -33,7 +33,7 @@ import net.minecraft.client.gui.hud.InGameOverlayRenderer;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Matrix4f;
+import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -49,7 +49,7 @@ public abstract class InGameOverlayRendererMixin {
 	private static native void renderUnderwaterOverlay(MinecraftClient minecraftClient, MatrixStack matrixStack);
 	
 	private static void renderMoonDarkSideOverlay(MinecraftClient client, MatrixStack matrices) {
-		RenderSystem.setShader(GameRenderer::getPositionColorShader);
+		RenderSystem.setShader(GameRenderer::getPositionColorProgram);
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 		
@@ -70,12 +70,12 @@ public abstract class InGameOverlayRendererMixin {
 		builder.vertex(mat4f, 1.0F, -1.0F, -0.5F).color(0.0F, 0.0F, 0.0F, alpha).next();
 		builder.vertex(mat4f, 1.0F, 1.0F, -0.5F).color(0.0F, 0.0F, 0.0F, alpha).next();
 		builder.vertex(mat4f, -1.0F, 1.0F, -0.5F).color(0.0F, 0.0F, 0.0F, alpha).next();
-		BufferRenderer.drawWithShader(builder.end());
+		BufferRenderer.drawWithGlobalProgram(builder.end());
 		
 		RenderSystem.disableBlend();
 	}
 	
-	@Inject(method = "renderOverlays", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isSubmergedIn(Lnet/minecraft/tag/TagKey;)Z"))
+	@Inject(method = "renderOverlays", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isSubmergedIn(Lnet/minecraft/registry/tag/TagKey;)Z"))
 	private static void astromine$renderOverlays(MinecraftClient client, MatrixStack matrices, CallbackInfo ci) {
 		if (client.player != null) {
 			if (client.player.isSubmergedIn(AMTagKeys.FluidTags.INDUSTRIAL_FLUIDS)) {

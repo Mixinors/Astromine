@@ -34,26 +34,29 @@ import com.github.mixinors.astromine.datagen.family.material.family.MaterialFami
 import com.github.mixinors.astromine.datagen.family.material.variant.BlockVariant;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBlockTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.tag.TagKey;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.tag.TagKey;
 
 import java.util.Arrays;
+import java.util.concurrent.CompletableFuture;
 
 public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
-	public AMBlockTagProvider(FabricDataGenerator dataGenerator) {
-		super(dataGenerator);
+	public AMBlockTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
+		super(output, completableFuture);
 	}
 	
 	@Override
-	protected void generateTags() {
-		var beaconBaseTagBuilder = getOrCreateTagBuilder(net.minecraft.tag.BlockTags.BEACON_BASE_BLOCKS);
+	protected void configure(RegistryWrapper.WrapperLookup lookup) {
+		var beaconBaseTagBuilder = getOrCreateTagBuilder(net.minecraft.registry.tag.BlockTags.BEACON_BASE_BLOCKS);
 		
-		var guardedByPiglinsTagBuilder = getOrCreateTagBuilder(net.minecraft.tag.BlockTags.GUARDED_BY_PIGLINS);
+		var guardedByPiglinsTagBuilder = getOrCreateTagBuilder(net.minecraft.registry.tag.BlockTags.GUARDED_BY_PIGLINS);
 		
 		AMMaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateTags).forEachOrdered(family -> {
 			AMDatagen.toTreeMap(family.getBlockTags()).forEach((variant, tag) -> {
@@ -114,9 +117,9 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 			}
 		}));
 		
-		var cauldronsTagBuilder = getOrCreateTagBuilder(net.minecraft.tag.BlockTags.CAULDRONS);
+		var cauldronsTagBuilder = getOrCreateTagBuilder(net.minecraft.registry.tag.BlockTags.CAULDRONS);
 		AMDatagenLists.FluidLists.FLUIDS.forEach((fluid) -> {
-			var fluidName = Registry.FLUID.getId(fluid.getStill()).getPath();
+			var fluidName = Registries.FLUID.getId(fluid.getStill()).getPath();
 			
 			var tagBuilder = getOrCreateTagBuilder(AMTagKeys.createCommonBlockTag(fluidName));
 			
@@ -251,7 +254,7 @@ public class AMBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 				.addTag(pumpkinsTag)
 				.add(Blocks.MELON);
 		
-		var infiniburnTagBuilder = getOrCreateTagBuilder(net.minecraft.tag.BlockTags.INFINIBURN_OVERWORLD);
+		var infiniburnTagBuilder = getOrCreateTagBuilder(net.minecraft.registry.tag.BlockTags.INFINIBURN_OVERWORLD);
 		
 		AMDatagenLists.BlockLists.INFINIBURN_BLOCKS.forEach(infiniburnTagBuilder::add);
 		AMDatagenLists.BlockTagLists.INFINIBURN_TAGS.forEach(infiniburnTagBuilder::addTag);

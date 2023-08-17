@@ -28,7 +28,7 @@ import com.github.mixinors.astromine.AMCommon;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registry;
 
 import java.util.function.Supplier;
 

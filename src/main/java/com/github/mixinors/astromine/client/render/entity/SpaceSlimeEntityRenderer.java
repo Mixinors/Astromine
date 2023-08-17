@@ -35,7 +35,7 @@ import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3f;
+import org.joml.Quaternionf;
 
 public class SpaceSlimeEntityRenderer extends MobEntityRenderer<SpaceSlimeEntity, SpaceSlimeEntityModel> {
 	private static final Identifier TEXTURE = AMCommon.id("textures/entity/space_slime/space_slime.png");
@@ -56,7 +56,7 @@ public class SpaceSlimeEntityRenderer extends MobEntityRenderer<SpaceSlimeEntity
 			var floatingProgress = MathHelper.lerp(tickDelta, entity.prevFloatingProgress, entity.getFloatingProgress());
 			entity.prevFloatingProgress = floatingProgress;
 			
-			matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion((floatingProgress / 200.0F) * 360.0F));
+			matrices.multiply(new Quaternionf().rotateX((floatingProgress / 200.0F) * (float) (Math.PI / 180.0)));
 		}
 		
 		super.render(entity, tickDelta, tickDelta, matrices, provider, i);

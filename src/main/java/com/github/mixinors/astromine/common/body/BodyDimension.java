@@ -3,8 +3,8 @@ package com.github.mixinors.astromine.common.body;
 import com.github.mixinors.astromine.client.render.skybox.SkyboxTextures;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
@@ -29,7 +29,7 @@ public record BodyDimension(
 	) {
 		public static final Codec<Layer> CODEC = RecordCodecBuilder.create(
 				instance -> instance.group(
-						RegistryKey.createCodec(Registry.WORLD_KEY).fieldOf("worldKey").forGetter(Layer::worldKey),
+						RegistryKey.createCodec(RegistryKeys.WORLD).fieldOf("worldKey").forGetter(Layer::worldKey),
 						Codec.INT.fieldOf("worldY").forGetter(Layer::worldY)
 				).apply(instance, Layer::new)
 		);
@@ -37,9 +37,9 @@ public record BodyDimension(
 	
 	public static final Codec<BodyDimension> CODEC = RecordCodecBuilder.create(
 			instance -> instance.group(
-					RegistryKey.createCodec(Registry.WORLD_KEY).fieldOf("worldKey").forGetter(BodyDimension::worldKey),
-					RegistryKey.createCodec(Registry.DIMENSION_KEY).fieldOf("worldOptionsKey").forGetter(BodyDimension::worldOptionsKey),
-					RegistryKey.createCodec(Registry.DIMENSION_TYPE_KEY).fieldOf("worldDimensionTypeKey").forGetter(BodyDimension::worldDimensionTypeKey),
+					RegistryKey.createCodec(RegistryKeys.WORLD).fieldOf("worldKey").forGetter(BodyDimension::worldKey),
+					RegistryKey.createCodec(RegistryKeys.DIMENSION).fieldOf("worldOptionsKey").forGetter(BodyDimension::worldOptionsKey),
+					RegistryKey.createCodec(RegistryKeys.DIMENSION_TYPE).fieldOf("worldDimensionTypeKey").forGetter(BodyDimension::worldDimensionTypeKey),
 					BodyAtmosphere.CODEC.optionalFieldOf("atmosphere").forGetter(dimension -> Optional.ofNullable(dimension.atmosphere)),
 					BodyEnvironment.CODEC.optionalFieldOf("environment").forGetter(dimension -> Optional.ofNullable(dimension.environment)),
 					SkyboxTextures.CODEC.optionalFieldOf("skybox").forGetter(dimension -> Optional.ofNullable(dimension.skybox)),

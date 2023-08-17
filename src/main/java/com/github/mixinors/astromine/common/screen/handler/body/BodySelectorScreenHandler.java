@@ -102,7 +102,7 @@ public class BodySelectorScreenHandler extends BaseScreenHandler {
 	}
 	
 	@Override
-	public ItemStack transferSlot(PlayerEntity player, int index) {
+	public ItemStack quickMove(PlayerEntity player, int index) {
 		onSlotClick(index, GLFW.GLFW_MOUSE_BUTTON_1, SlotActionType.QUICK_MOVE, player);
 		return ItemStack.EMPTY;
 	}

@@ -26,10 +26,7 @@ package com.github.mixinors.astromine.datagen;
 
 import com.github.mixinors.astromine.datagen.family.block.AMBlockFamilies;
 import com.github.mixinors.astromine.datagen.family.material.AMMaterialFamilies;
-import com.github.mixinors.astromine.datagen.provider.AMBlockLootTableProvider;
-import com.github.mixinors.astromine.datagen.provider.AMEntityLootTableProvider;
-import com.github.mixinors.astromine.datagen.provider.AMModelProvider;
-import com.github.mixinors.astromine.datagen.provider.AMRecipeProvider;
+import com.github.mixinors.astromine.datagen.provider.*;
 import com.github.mixinors.astromine.datagen.provider.tag.*;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
@@ -40,23 +37,28 @@ import java.util.TreeMap;
 public class AMDatagen implements DataGeneratorEntrypoint {
 	@Override
 	public void onInitializeDataGenerator(FabricDataGenerator dataGenerator) {
+		var pack = dataGenerator.createPack();
+		
 		AMBlockFamilies.init();
 		AMMaterialFamilies.init();
 		
-		dataGenerator.addProvider(AMModelProvider::new);
-		dataGenerator.addProvider(AMRecipeProvider::new);
+		pack.addProvider(AMModelProvider::new);
+		pack.addProvider(AMRecipeProvider::new);
 		
-		var blockTagProvider = new AMBlockTagProvider(dataGenerator);
+		final var blockTagProvider = new AMBlockTagProvider[1];
 		
-		dataGenerator.addProvider(blockTagProvider);
+		pack.addProvider((output, registriesFuture) -> {
+			return blockTagProvider[0] = new AMBlockTagProvider(output, registriesFuture);
+		});
 		
-		dataGenerator.addProvider(new AMItemTagProvider(dataGenerator, blockTagProvider));
+		pack.addProvider((output, registriesFuture) -> new AMItemTagProvider(output, registriesFuture, blockTagProvider[0]));
 		
-		dataGenerator.addProvider(AMFluidTagProvider::new);
-		dataGenerator.addProvider(AMEntityTypeTagProvider::new);
-		dataGenerator.addProvider(AMDimensionTypeTagProvider::new);
-		dataGenerator.addProvider(AMBlockLootTableProvider::new);
-		dataGenerator.addProvider(AMEntityLootTableProvider::new);
+		pack.addProvider(AMFluidTagProvider::new);
+		pack.addProvider(AMEntityTypeTagProvider::new);
+		pack.addProvider(AMDimensionTypeTagProvider::new);
+		pack.addProvider(AMBlockLootTableProvider::new);
+		pack.addProvider(AMEntityLootTableProvider::new);
+		pack.addProvider(AMStructureProvider::new);
 	}
 	
 	public static <T extends Comparable<?>, U> TreeMap<T, U> toTreeMap(Map<T, U> map) {

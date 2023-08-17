@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.recipe.base;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Recipe;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.world.World;
 
 public interface AMRecipe extends Recipe<Inventory> {
@@ -36,8 +37,8 @@ public interface AMRecipe extends Recipe<Inventory> {
 	}
 	
 	@Override
-	default ItemStack craft(Inventory inventory) {
-		return getOutput().copy();
+	default ItemStack craft(Inventory inventory, DynamicRegistryManager registryManager) {
+		return getOutput(registryManager).copy();
 	}
 	
 	@Override
@@ -46,7 +47,7 @@ public interface AMRecipe extends Recipe<Inventory> {
 	}
 	
 	@Override
-	default ItemStack getOutput() {
+	default ItemStack getOutput(DynamicRegistryManager registryManager) {
 		return ItemStack.EMPTY;
 	}
 	

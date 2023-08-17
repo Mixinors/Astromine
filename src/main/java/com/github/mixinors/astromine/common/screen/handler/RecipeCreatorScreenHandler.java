@@ -44,10 +44,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
-import net.minecraft.util.registry.Registry;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
@@ -118,8 +118,8 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 		
 		var tags = new HashMap<String, String>() {
 			{
-				Registry.ITEM.forEach((item) -> {
-					var id = Registry.ITEM.getId(item);
+				Registries.ITEM.forEach((item) -> {
+					var id = Registries.ITEM.getId(item);
 					
 					types.forEach((type) -> {
 						if (id.getPath().contains(type)) {
@@ -163,7 +163,7 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 				var stack = widget.getSlot().getStack();
 				
 				if (!stack.isEmpty()) {
-					var name = Registry.ITEM.getId(stack.getItem()).toString();
+					var name = Registries.ITEM.getId(stack.getItem()).toString();
 					
 					if (inverseTable.containsKey(name)) {
 						grid.put(slot, Integer.toString(inverseTable.get(name)));
@@ -181,7 +181,7 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 			
 			var outputStack = outputSlot.getSlot().getStack();
 			
-			var outputName = Registry.ITEM.getId(outputStack.getItem()).toString();
+			var outputName = Registries.ITEM.getId(outputStack.getItem()).toString();
 			
 			var recipeJson = new JsonObject();
 			
@@ -242,7 +242,7 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 	}
 	
 	@Override
-	public ItemStack transferSlot(PlayerEntity player, int index) {
+	public ItemStack quickMove(PlayerEntity player, int index) {
 		onSlotClick(index, GLFW.GLFW_MOUSE_BUTTON_1, SlotActionType.QUICK_MOVE, player);
 		return ItemStack.EMPTY;
 	}

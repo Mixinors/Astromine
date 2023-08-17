@@ -58,7 +58,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.TallBlockItem;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registry;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -225,7 +225,7 @@ public class AMBlocks {
 	public static final RegistrySupplier<Block> DARK_MOON_STONE_BRICK_WALL = register("dark_moon_stone_brick_wall", () -> new DynamicWallBlock(FabricBlockSettings.copy(DARK_MOON_STONE_BRICKS.get())), AMItems.getSettings());
 	
 	public static final RegistrySupplier<Block> HOLOGRAPHIC_BRIDGE_PROJECTOR = register("holographic_bridge_projector", () -> new HoloBridgeProjectorBlock(getAdvancedSettings()), AMItems.getSettings());
-	public static final RegistrySupplier<Block> HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK = register("holographic_bridge_invisible", () -> new HoloBridgeInvisibleBlock(FabricBlockSettings.of(HoloBridgeInvisibleBlock.MATERIAL).dropsNothing().strength(-1.0F, 3600000.8F).nonOpaque().luminance($ -> 15).allowsSpawning((a, b, c, d) -> false)));
+	public static final RegistrySupplier<Block> HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK = register("holographic_bridge_invisible", () -> new HoloBridgeInvisibleBlock(FabricBlockSettings.create().mapColor(MapColor.CLEAR).dropsNothing().strength(-1.0F, 3600000.8F).nonOpaque().luminance($ -> 15).allowsSpawning((a, b, c, d) -> false)));
 	
 	public static final RegistrySupplier<Block> PRIMITIVE_TANK = register("primitive_tank", () -> new TankBlock.Primitive(getPrimitiveSettings()), AMItems.getSettings());
 	public static final RegistrySupplier<Block> BASIC_TANK = register("basic_tank", () -> new TankBlock.Basic(getBasicSettings()), AMItems.getSettings());

@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.registry.client;
 
 import com.github.mixinors.astromine.client.screen.BodySelectorHandledScreen;
 import com.github.mixinors.astromine.client.screen.RecipeCreatorHandledScreen;
-import com.github.mixinors.astromine.client.screen.base.Base.CustomForegroundBaseHandledScreen;
+import com.github.mixinors.astromine.client.screen.base.CustomForegroundBaseHandledScreen;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
 import dev.architectury.registry.menu.MenuRegistry;
 import dev.architectury.registry.registries.RegistrySupplier;

@@ -28,7 +28,7 @@ import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import net.minecraft.data.family.BlockFamilies;
 import net.minecraft.data.family.BlockFamily;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
 
 import java.util.Comparator;
 import java.util.stream.Stream;
@@ -135,12 +135,12 @@ public class AMBlockFamilies {
 	}
 	
 	public static boolean isAstromineFamily(BlockFamily family) {
-		return Registry.BLOCK.getId(family.getBaseBlock()).getNamespace().equals(AMCommon.MOD_ID);
+		return Registries.BLOCK.getId(family.getBaseBlock()).getNamespace().equals(AMCommon.MOD_ID);
 	}
 	
 	public static Stream<BlockFamily> getFamilies() {
 		return BlockFamilies.getFamilies()
 							.filter(AMBlockFamilies::isAstromineFamily)
-							.sorted(Comparator.comparing(family -> Registry.BLOCK.getId(family.getBaseBlock()).toString()));
+							.sorted(Comparator.comparing(family -> Registries.BLOCK.getId(family.getBaseBlock()).toString()));
 	}
 }

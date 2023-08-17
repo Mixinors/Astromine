@@ -64,7 +64,7 @@ import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
 import dev.vini2003.hammer.gui.energy.api.common.util.EnergyTextUtil;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
-import me.shedaniel.rei.api.client.gui.AbstractRenderer;
+import me.shedaniel.rei.api.client.gui.Renderer;
 import me.shedaniel.rei.api.client.gui.widgets.Tooltip;
 import me.shedaniel.rei.api.client.gui.widgets.TooltipContext;
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
@@ -86,9 +86,9 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.transfer.v1.client.fluid.FluidVariantRendering;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.BucketItem;
 import net.minecraft.recipe.SmeltingRecipe;
 import net.minecraft.text.Text;
@@ -147,11 +147,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 		registry.addWorkstations(SOLIDIFYING, EntryStacks.of(AMBlocks.PRIMITIVE_SOLIDIFIER.get()), EntryStacks.of(AMBlocks.BASIC_SOLIDIFIER.get()), EntryStacks.of(AMBlocks.ADVANCED_SOLIDIFIER.get()), EntryStacks.of(AMBlocks.ELITE_SOLIDIFIER.get()));
 		
 		// TODO: Remove!
-		registry.removePlusButton(FLUID_GENERATING);
 		registry.setPlusButtonArea(SOLID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55.0F + 110.0F - 16.0F, bounds.getMaxY() - 16.0F, 10.0F, 10.0F));
-		registry.removePlusButton(FLUID_MIXING);
-		registry.removePlusButton(ELECTROLYZING);
-		registry.removePlusButton(REFINING);
 	}
 	
 	@Override
@@ -184,9 +180,9 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 	}
 	
 	public static ImmutableList<Widget> createEnergyDisplay(Rectangle bounds, long energy, boolean generating, int speed) {
-		return ImmutableList.of(new EnergyEntryWidget(bounds, speed, generating).entry(ClientEntryStacks.of(new AbstractRenderer() {
+		return ImmutableList.of(new EnergyEntryWidget(bounds, speed, generating).entry(ClientEntryStacks.of(new Renderer() {
 			@Override
-			public void render(MatrixStack matrices, Rectangle bounds, int mouseX, int mouseY, float delta) {}
+			public void render(DrawContext context, Rectangle bounds, int mouseX, int mouseY, float delta) {}
 			
 			@Override
 			public @Nullable Tooltip getTooltip(TooltipContext context) {
@@ -242,7 +238,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 		}
 		
 		@Override
-		protected void drawBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+		protected void drawBackground(DrawContext context, int mouseX, int mouseY, float delta) {
 			if (background) {
 				var bounds = getBounds();
 				
@@ -255,7 +251,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 				}
 				
 				DrawingUtil.drawTexturedQuad(
-						matrices,
+						context.getMatrices(),
 						provider,
 						THIN_ENERGY_BACKGROUND_TEXTURE,
 						bounds.x, bounds.y, 0.0F,
@@ -272,7 +268,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 				var scissors = new Scissors((float) bounds.x, (float) bounds.y + ((float) bounds.height - height), (float) bounds.width, height, provider);
 				
 				DrawingUtil.drawTexturedQuad(
-						matrices,
+						context.getMatrices(),
 						provider,
 						THIN_ENERGY_FOREGROUND_TEXTURE,
 						bounds.x, bounds.y, 0.0F,
@@ -292,7 +288,7 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 		}
 		
 		@Override
-		protected void drawCurrentEntry(MatrixStack matrices, int mouseX, int mouseY, float delta) {}
+		protected void drawCurrentEntry(DrawContext context, int mouseX, int mouseY, float delta) {}
 	}
 	
 	private static class FluidEntryWidget extends EntryWidget {
@@ -309,18 +305,18 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 		}
 		
 		@Override
-		protected void drawBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+		protected void drawBackground(DrawContext context, int mouseX, int mouseY, float delta) {
 			if (background) {
 				var bounds = getBounds();
 				
 				RenderSystem.setShaderTexture(0, THIN_ENERGY_BACKGROUND_TEXTURE);
 				
-				drawTexture(matrices, bounds.x, bounds.y, 0, 0, bounds.width, bounds.height, bounds.width, bounds.height);
+				context.drawTexture(THIN_ENERGY_BACKGROUND_TEXTURE, bounds.x, bounds.y, 0, 0, bounds.width, bounds.height, bounds.width, bounds.height);
 			}
 		}
 		
 		@Override
-		protected void drawCurrentEntry(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+		protected void drawCurrentEntry(DrawContext context, int mouseX, int mouseY, float delta) {
 			var entry = getCurrentEntry();
 			
 			if (entry.getType() == VanillaEntryTypes.FLUID && !entry.isEmpty()) {
@@ -343,13 +339,13 @@ public class AMRoughlyEnoughItemsPlugin implements REIClientPlugin {
 				var spriteColor = FluidVariantRendering.getColor(fluidVariant);
 				
 				DrawingUtil.drawTiledTexturedQuad(
-						matrices,
+						context.getMatrices(),
 						provider,
-						sprite.getId(),
-						bounds.x + 1.0F, bounds.y + (bounds.height - height) + 1.0F, getZOffset() + 1.0F,
+						sprite.getContents().getId(),
+						bounds.x + 1.0F, bounds.y + (bounds.height - height) + 1.0F, 1.0F,
 						bounds.width - 2.0F, height - 2.0F,
-						sprite.getWidth(),
-						sprite.getHeight(),
+						sprite.getContents().getWidth(),
+						sprite.getContents().getHeight(),
 						Integer.MAX_VALUE, Integer.MAX_VALUE,
 						0.0F, 0.0F,
 						sprite.getMinU(),

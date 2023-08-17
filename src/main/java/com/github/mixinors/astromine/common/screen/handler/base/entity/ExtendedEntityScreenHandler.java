@@ -93,9 +93,9 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 	public ExtendedEntityScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, int entityId) {
 		super(type.get(), syncId, player);
 		
-		entity = (ExtendedEntity) player.world.getEntityById(entityId);
+		entity = (ExtendedEntity) player.getWorld().getEntityById(entityId);
 		
-		if (!player.world.isClient) {
+		if (!player.getWorld().isClient) {
 			entity.setSyncItemStorage(true);
 			entity.setSyncFluidStorage(true);
 		}

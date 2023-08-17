@@ -26,10 +26,13 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
 import net.minecraft.entity.SpawnGroup;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.GenerationSettings;
@@ -43,19 +46,19 @@ public class AMBiomes {
 	private static final Set<RegistryKey<?>> KEYS = new HashSet<>();
 	
 	public static final Identifier ASTEROID_BELT_ID = AMCommon.id("asteroid_belt");
-	public static final RegistryKey<Biome> ASTEROID_BELT_KEY = register(Registry.BIOME_KEY, ASTEROID_BELT_ID);
+	public static final RegistryKey<Biome> ASTEROID_BELT_KEY = register(RegistryKeys.BIOME, ASTEROID_BELT_ID);
 	
 	public static final Identifier MOON_LIGHT_SIDE_ID = AMCommon.id("moon_light_side");
-	public static final RegistryKey<Biome> MOON_LIGHT_SIDE_KEY = register(Registry.BIOME_KEY, MOON_LIGHT_SIDE_ID);
+	public static final RegistryKey<Biome> MOON_LIGHT_SIDE_KEY = register(RegistryKeys.BIOME, MOON_LIGHT_SIDE_ID);
 	
 	public static final Identifier MOON_DARK_SIDE_ID = AMCommon.id("moon_dark_side");
-	public static final RegistryKey<Biome> MOON_DARK_SIDE_KEY = register(Registry.BIOME_KEY, MOON_DARK_SIDE_ID);
+	public static final RegistryKey<Biome> MOON_DARK_SIDE_KEY = register(RegistryKeys.BIOME, MOON_DARK_SIDE_ID);
 	
 	public static final Identifier MOON_CRATER_FIELD_ID = AMCommon.id("moon_crater_field");
-	public static final RegistryKey<Biome> MOON_CRATER_FIELD_KEY = register(Registry.BIOME_KEY, MOON_CRATER_FIELD_ID);
+	public static final RegistryKey<Biome> MOON_CRATER_FIELD_KEY = register(RegistryKeys.BIOME, MOON_CRATER_FIELD_ID);
 	
 	public static final Identifier ROCKET_ID = AMCommon.id("rocket");
-	public static final RegistryKey<Biome> ROCKET_KEY = register(Registry.BIOME_KEY, ROCKET_ID);
+	public static final RegistryKey<Biome> ROCKET_KEY = register(RegistryKeys.BIOME, ROCKET_ID);
 	
 	// We specify what entities spawn and what features generate in the biome.
 	// Aside from some structures, trees, rocks, plants and
@@ -73,7 +76,7 @@ public class AMBiomes {
 				.build();
 		
 		return (new Biome.Builder())
-				.precipitation(Biome.Precipitation.NONE)
+				.precipitation(false)
 				.temperature(0.0F)
 				.downfall(0.0F)
 				.effects((new BiomeEffects.Builder())
@@ -96,7 +99,7 @@ public class AMBiomes {
 				.build();
 		
 		return (new Biome.Builder())
-				.precipitation(Biome.Precipitation.NONE)
+				.precipitation(false)
 				.temperature(0.0F)
 				.downfall(0.0F)
 				.effects((new BiomeEffects.Builder())
@@ -120,7 +123,7 @@ public class AMBiomes {
 				.build();
 		
 		return (new Biome.Builder())
-				.precipitation(Biome.Precipitation.NONE)
+				.precipitation(false)
 				.temperature(0.0F)
 				.downfall(0.0F)
 				.effects((new BiomeEffects.Builder())
@@ -143,7 +146,7 @@ public class AMBiomes {
 				.build();
 		
 		return (new Biome.Builder())
-				.precipitation(Biome.Precipitation.NONE)
+				.precipitation(false)
 				.temperature(0.0F)
 				.downfall(0.0F)
 				.effects((new BiomeEffects.Builder())
@@ -164,7 +167,7 @@ public class AMBiomes {
 		var generationSettings = new GenerationSettings.Builder().build();
 		
 		return (new Biome.Builder())
-				.precipitation(Biome.Precipitation.NONE)
+				.precipitation(false)
 				.temperature(0.0F)
 				.downfall(0.0F)
 				.effects((new BiomeEffects.Builder())

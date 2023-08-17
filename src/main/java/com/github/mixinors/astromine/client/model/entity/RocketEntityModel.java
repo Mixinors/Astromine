@@ -30,10 +30,10 @@ import net.minecraft.client.model.*;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.model.SinglePartEntityModel;
 import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.render.model.json.ModelTransformation;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.Vec3f;
+import org.joml.Quaternionf;
 
 public class RocketEntityModel extends SinglePartEntityModel<RocketEntity> {
 	private final ModelPart root;
@@ -81,23 +81,23 @@ public class RocketEntityModel extends SinglePartEntityModel<RocketEntity> {
 		return this.root;
 	}
 	
-	public static void renderItem(RocketEntityModel rocketEntityModel, ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
+	public static void renderItem(RocketEntityModel rocketEntityModel, ItemStack stack, ModelTransformationMode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
 		matrices.push();
 		
-		if (mode == ModelTransformation.Mode.GUI) {
+		if (mode == ModelTransformationMode.GUI) {
 			matrices.translate(0.66F, 0.22F, 0F);
 		}
 		
 		matrices.scale(1.0F, -1.0F, -1.0F);
 		
-		if (mode == ModelTransformation.Mode.GUI) {
+		if (mode == ModelTransformationMode.GUI) {
 			matrices.scale(0.09F, 0.09F, 0.09F);
 		} else {
 			matrices.scale(0.3F, 0.3F, 0.3F);
 		}
 		
-		matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(45));
-		matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(45));
+		matrices.multiply(new Quaternionf().rotateY(45 * (float) (Math.PI / 180.0)));
+		matrices.multiply(new Quaternionf().rotateX(45 * (float) (Math.PI / 180.0)));
 		
 		var glintConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, rocketEntityModel.getLayer(RocketEntityRenderer.ID), false, stack.hasGlint());
 		

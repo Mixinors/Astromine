@@ -36,14 +36,12 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 public class HoloBridgeInvisibleBlock extends Block {
-	public static final Material MATERIAL = new Material.Builder(MapColor.CLEAR).build();
-	
 	public HoloBridgeInvisibleBlock(AbstractBlock.Settings settings) {
 		super(settings);
 	}
 	
 	@Override
-	public boolean isTranslucent(BlockState state, BlockView world, BlockPos pos) {
+	public boolean isTransparent(BlockState state, BlockView world, BlockPos pos) {
 		return true;
 	}
 	

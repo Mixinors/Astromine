@@ -32,7 +32,7 @@ import com.github.mixinors.astromine.datagen.family.material.AMMaterialFamilies;
 import com.github.mixinors.astromine.datagen.family.material.family.MaterialFamily;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.github.mixinors.astromine.registry.common.AMItems;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -173,8 +173,8 @@ public class AMModelProvider extends FabricModelProvider {
 	public static final Model MACHINE = blockModel(AMCommon.id("machine"), TextureKey.TOP, TextureKey.BOTTOM, LEFT, RIGHT, TextureKey.FRONT, TextureKey.BACK);
 	public static final Model MACHINE_ACTIVE = blockModel(AMCommon.id("machine_active"), "_active", TextureKey.TOP, TextureKey.BOTTOM, LEFT, RIGHT, TextureKey.FRONT, TextureKey.BACK);
 	
-	public AMModelProvider(FabricDataGenerator dataGenerator) {
-		super(dataGenerator);
+	public AMModelProvider(FabricDataOutput output) {
+		super(output);
 	}
 	
 	public static void registerCubeColumn(BlockStateModelGenerator blockStateModelGenerator, Block cubeColumn, Block endTexture) {

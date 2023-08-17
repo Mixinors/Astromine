@@ -24,6 +24,7 @@
 
 package com.github.mixinors.astromine.common.world.structure;
 
+import com.github.mixinors.astromine.registry.common.AMStructureTypes;
 import com.mojang.serialization.Codec;
 import net.minecraft.structure.StructurePiecesCollector;
 import net.minecraft.world.Heightmap;
@@ -35,7 +36,6 @@ import java.util.Optional;
 
 public class CraterStructure extends Structure {
 	public static final Codec<CraterStructure> CODEC = createCodec(CraterStructure::new);
-	public static final StructureType<CraterStructure> TYPE = () -> CODEC;
 	
 	public CraterStructure(Config config) {
 		super(config);
@@ -57,6 +57,6 @@ public class CraterStructure extends Structure {
 	
 	@Override
 	public StructureType<?> getType() {
-		return TYPE;
+		return AMStructureTypes.CRATER_STRUCTURE_TYPE.get();
 	}
 }

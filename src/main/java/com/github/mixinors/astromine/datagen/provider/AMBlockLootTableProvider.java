@@ -32,10 +32,9 @@ import com.github.mixinors.astromine.datagen.family.material.family.MaterialFami
 import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import com.google.common.collect.ImmutableList;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.minecraft.block.Block;
-import net.minecraft.data.server.BlockLootTableGenerator;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.loot.LootPool;
@@ -77,11 +76,11 @@ public class AMBlockLootTableProvider extends FabricBlockLootTableProvider {
 			AMBlocks.DRAIN.get()
 	);
 	
-	public AMBlockLootTableProvider(FabricDataGenerator dataGenerator) {
-		super(dataGenerator);
+	public AMBlockLootTableProvider(FabricDataOutput output) {
+		super(output);
 	}
 	
-	public static LootTable.Builder machineDrops(Block drop) {
+	public LootTable.Builder machineDrops(Block drop) {
 		if (drop instanceof BlockWithEntity machine && machine.saveTagToDroppedItem()) {
 			var builder = LootTable.builder().pool(addSurvivesExplosionCondition(machine, LootPool.builder().rolls(ConstantLootNumberProvider.create(1.0F)).with(ItemEntry.builder(machine))));
 			
@@ -111,7 +110,7 @@ public class AMBlockLootTableProvider extends FabricBlockLootTableProvider {
 	}
 	
 	@Override
-	protected void generateBlockLootTables() {
+	public void generate() {
 		AMMaterialFamilies.getFamilies().filter(MaterialFamily::shouldGenerateLootTables).forEachOrdered((family) ->
 				family.getBlockVariants().forEach((variant, block) -> {
 					if (family.shouldGenerateLootTable(variant)) {
@@ -157,8 +156,8 @@ public class AMBlockLootTableProvider extends FabricBlockLootTableProvider {
 			
 			family.getVariants().forEach((variant, block) -> {
 				switch (variant) {
-					case DOOR -> addDrop(block, BlockLootTableGenerator::doorDrops);
-					case SLAB -> addDrop(block, BlockLootTableGenerator::slabDrops);
+					case DOOR -> addDrop(block, this::doorDrops);
+					case SLAB -> addDrop(block, this::slabDrops);
 					
 					default -> addDrop(block);
 				}
@@ -167,7 +166,7 @@ public class AMBlockLootTableProvider extends FabricBlockLootTableProvider {
 		
 		DROPS_SELF.forEach(this::addDrop);
 		
-		addDrop(AMBlocks.AIRLOCK.get(), BlockLootTableGenerator::doorDrops);
+		addDrop(AMBlocks.AIRLOCK.get(), this::doorDrops);
 		
 		AMDatagenLists.BlockLists.MACHINES.forEach((block) -> this.addDrop(block, machineDrops(block)));
 	}

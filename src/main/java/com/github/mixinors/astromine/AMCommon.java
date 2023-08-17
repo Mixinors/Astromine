@@ -29,11 +29,11 @@ import com.github.mixinors.astromine.registry.common.*;
 import com.google.common.base.Suppliers;
 import com.google.gson.Gson;
 import dev.architectury.registry.registries.Registrar;
-import dev.architectury.registry.registries.Registries;
+import dev.architectury.registry.registries.RegistrarManager;
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -47,7 +47,7 @@ public class AMCommon implements ModInitializer {
 	
 	public static final Logger LOGGER = LogManager.getLogger(LOG_ID);
 	
-	public static final Supplier<Registries> REGISTRIES = Suppliers.memoize(() -> Registries.get(MOD_ID));
+	public static final Supplier<RegistrarManager> REGISTRIES = Suppliers.memoize(() -> RegistrarManager.get(MOD_ID));
 	
 	public static Identifier id(String name) {
 		if (name.indexOf(':') >= 0) {
@@ -68,7 +68,7 @@ public class AMCommon implements ModInitializer {
 		AMIdentifierFixes.init();
 		AMWorlds.init();
 		AMFeatures.init();
-		AMStructures.init();
+		AMStructureTypes.init();
 		AMItems.init();
 		AMBlocks.init();
 		AMScreenHandlers.init();

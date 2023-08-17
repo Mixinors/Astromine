@@ -29,7 +29,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
-import net.minecraft.predicate.entity.EntityPredicate;
+import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
@@ -46,8 +46,8 @@ public class MetiteOreUnderestimationCriterion extends AbstractCriterion<MetiteO
 	}
 	
 	@Override
-	protected Conditions conditionsFromJson(JsonObject obj, EntityPredicate.Extended extended, AdvancementEntityPredicateDeserializer predicateDeserializer) {
-		return new Conditions(this.id, extended);
+	protected Conditions conditionsFromJson(JsonObject obj, LootContextPredicate playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
+		return new Conditions(this.id, playerPredicate);
 	}
 	
 	public void trigger(ServerPlayerEntity player) {
@@ -55,12 +55,12 @@ public class MetiteOreUnderestimationCriterion extends AbstractCriterion<MetiteO
 	}
 	
 	public static class Conditions extends AbstractCriterionConditions {
-		public Conditions(Identifier id, EntityPredicate.Extended playerPredicate) {
+		public Conditions(Identifier id, LootContextPredicate playerPredicate) {
 			super(id, playerPredicate);
 		}
 		
 		public static Conditions create() {
-			return new Conditions(AMCriteria.UNDERESTIMATE_METITE.id, EntityPredicate.Extended.EMPTY);
+			return new Conditions(AMCriteria.UNDERESTIMATE_METITE.id, LootContextPredicate.EMPTY);
 		}
 	}
 }

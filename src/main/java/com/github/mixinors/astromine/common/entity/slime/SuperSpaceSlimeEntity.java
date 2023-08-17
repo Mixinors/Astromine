@@ -113,7 +113,7 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 		
 		super.tick();
 		
-		if (this.onGround && !this.onGroundLastTick) {
+		if (this.isOnGround() && !this.onGroundLastTick) {
 			var size = 10;
 			
 			// spawn random landing particles around this entity's hitbox base
@@ -124,18 +124,18 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 				var particleX = MathHelper.sin(oX) * (float) size * 0.5F * oY;
 				var particleZ = MathHelper.cos(oX) * (float) size * 0.5F * oY;
 				
-				this.world.addParticle(this.getParticles(), this.getX() + (double) particleX, this.getY(), this.getZ() + (double) particleZ, 0.0D, 0.0D, 0.0D);
+				this.getWorld().addParticle(this.getParticles(), this.getX() + (double) particleX, this.getY(), this.getZ() + (double) particleZ, 0.0D, 0.0D, 0.0D);
 			}
 			
 			this.playSound(this.getSquishSound(), this.getSoundVolume(), ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) / 0.8F);
 			this.playSound(SoundEvents.BLOCK_GLASS_BREAK, this.getSoundVolume(), ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) / 0.8F);
 			
 			this.targetStretch = -0.5F;
-		} else if (!this.onGround && this.onGroundLastTick) {
+		} else if (!this.isOnGround() && this.onGroundLastTick) {
 			this.targetStretch = 1.0F;
 		}
 		
-		this.onGroundLastTick = this.onGround;
+		this.onGroundLastTick = this.isOnGround();
 		
 		this.updateStretch();
 	}
@@ -191,11 +191,11 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 	 */
 	public void explode() {
 		for (var i = 0; i < 50; i++) {
-			var spaceSlime = AMEntityTypes.SPACE_SLIME.get().create(world);
+			var spaceSlime = AMEntityTypes.SPACE_SLIME.get().create(getWorld());
 			
-			spaceSlime.initialize((ServerWorldAccess) world, world.getLocalDifficulty(this.getBlockPos()), SpawnReason.NATURAL, null, null);
+			spaceSlime.initialize((ServerWorldAccess) getWorld(), getWorld().getLocalDifficulty(this.getBlockPos()), SpawnReason.NATURAL, null, null);
 			
-			world.spawnEntity(spaceSlime);
+			getWorld().spawnEntity(spaceSlime);
 			
 			spaceSlime.requestTeleport(getX(), getY(), getZ());
 		}
@@ -248,7 +248,7 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 		if (this.isAlive()) {
 			var size = 10;
 			
-			if (this.squaredDistanceTo(target) < 0.6D * (double) size * 0.6D * (double) size && this.canSee(target) && target.damage(DamageSource.mob(this), this.getDamageAmount())) {
+			if (this.squaredDistanceTo(target) < 0.6D * (double) size * 0.6D * (double) size && this.canSee(target) && target.damage(getWorld().getDamageSources().mobAttack(this), this.getDamageAmount())) {
 				this.playSound(SoundEvents.ENTITY_SLIME_ATTACK, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
 				this.applyDamageEffects(this, target);
 			}

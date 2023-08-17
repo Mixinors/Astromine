@@ -45,13 +45,12 @@ import com.github.mixinors.astromine.common.rocket.RocketLandingMechanismPart;
 import com.github.mixinors.astromine.common.rocket.RocketThrusterPart;
 import com.github.mixinors.astromine.common.util.data.tier.Tier;
 import dev.architectury.registry.registries.RegistrySupplier;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.*;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
-import net.minecraft.util.registry.Registry;
 
 import java.util.function.Supplier;
 
@@ -107,10 +106,10 @@ public class AMItems {
 	public static final RegistrySupplier<Item> MEDIUM_EFFICIENCY_ROCKET_THRUSTER = register("medium_efficiency_rocket_thruster", () -> new RocketThrusterItem(AMItems.getSettings().maxCount(1), RocketThrusterPart.Efficiency.MEDIUM));
 	public static final RegistrySupplier<Item> HIGH_EFFICIENCY_ROCKET_THRUSTER = register("high_efficiency_rocket_thruster", () -> new RocketThrusterItem(AMItems.getSettings().maxCount(1), RocketThrusterPart.Efficiency.HIGH));
 	
-	public static final RegistrySupplier<Item> SPACE_SUIT_HELMET = register("space_suit_helmet", () -> new SpaceSuitArmorItem(AMArmorMaterials.SPACE_SUIT, EquipmentSlot.HEAD, AMItems.getSettings()));
-	public static final RegistrySupplier<Item> SPACE_SUIT_CHESTPLATE = register("space_suit_chestplate", () -> new SpaceSuitArmorItem.Chestplate(AMArmorMaterials.SPACE_SUIT, EquipmentSlot.CHEST, AMItems.getSettings(), AMConfig.get().items.spaceSuitChestplateFluid, AMConfig.get().items.spaceSuitChestplateEnergy));
-	public static final RegistrySupplier<Item> SPACE_SUIT_LEGGINGS = register("space_suit_leggings", () -> new SpaceSuitArmorItem(AMArmorMaterials.SPACE_SUIT, EquipmentSlot.LEGS, AMItems.getSettings()));
-	public static final RegistrySupplier<Item> SPACE_SUIT_BOOTS = register("space_suit_boots", () -> new SpaceSuitArmorItem(AMArmorMaterials.SPACE_SUIT, EquipmentSlot.FEET, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> SPACE_SUIT_HELMET = register("space_suit_helmet", () -> new SpaceSuitArmorItem(AMArmorMaterials.SPACE_SUIT, ArmorItem.Type.HELMET, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> SPACE_SUIT_CHESTPLATE = register("space_suit_chestplate", () -> new SpaceSuitArmorItem.Chestplate(AMArmorMaterials.SPACE_SUIT, ArmorItem.Type.CHESTPLATE, AMItems.getSettings(), AMConfig.get().items.spaceSuitChestplateFluid, AMConfig.get().items.spaceSuitChestplateEnergy));
+	public static final RegistrySupplier<Item> SPACE_SUIT_LEGGINGS = register("space_suit_leggings", () -> new SpaceSuitArmorItem(AMArmorMaterials.SPACE_SUIT, ArmorItem.Type.LEGGINGS, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> SPACE_SUIT_BOOTS = register("space_suit_boots", () -> new SpaceSuitArmorItem(AMArmorMaterials.SPACE_SUIT, ArmorItem.Type.BOOTS, AMItems.getSettings()));
 	
 	public static final RegistrySupplier<Item> ROCKET = register("rocket", () -> new RocketItem(AMEntityTypes.ROCKET.get(), AMItems.getSettings()));
 	
@@ -332,55 +331,55 @@ public class AMItems {
 	public static final RegistrySupplier<HoeItem> METEORIC_STEEL_HOE = register("meteoric_steel_hoe", () -> new HoeItem(AMToolMaterials.METEORIC_STEEL, -3, 0f, AMItems.getSettings()));
 	public static final RegistrySupplier<Item> METEORIC_STEEL_SWORD = register("meteoric_steel_sword", () -> new SwordItem(AMToolMaterials.METEORIC_STEEL, 3, -2.4f, AMItems.getSettings()));
 	
-	public static final RegistrySupplier<Item> BRONZE_HELMET = register("bronze_helmet", () -> new ArmorItem(AMArmorMaterials.BRONZE, EquipmentSlot.HEAD, AMItems.getSettings().fireproof()));
-	public static final RegistrySupplier<Item> BRONZE_CHESTPLATE = register("bronze_chestplate", () -> new ArmorItem(AMArmorMaterials.BRONZE, EquipmentSlot.CHEST, AMItems.getSettings().fireproof()));
-	public static final RegistrySupplier<Item> BRONZE_LEGGINGS = register("bronze_leggings", () -> new ArmorItem(AMArmorMaterials.BRONZE, EquipmentSlot.LEGS, AMItems.getSettings().fireproof()));
-	public static final RegistrySupplier<Item> BRONZE_BOOTS = register("bronze_boots", () -> new ArmorItem(AMArmorMaterials.BRONZE, EquipmentSlot.FEET, AMItems.getSettings().fireproof()));
+	public static final RegistrySupplier<Item> BRONZE_HELMET = register("bronze_helmet", () -> new ArmorItem(AMArmorMaterials.BRONZE, ArmorItem.Type.HELMET, AMItems.getSettings().fireproof()));
+	public static final RegistrySupplier<Item> BRONZE_CHESTPLATE = register("bronze_chestplate", () -> new ArmorItem(AMArmorMaterials.BRONZE, ArmorItem.Type.CHESTPLATE, AMItems.getSettings().fireproof()));
+	public static final RegistrySupplier<Item> BRONZE_LEGGINGS = register("bronze_leggings", () -> new ArmorItem(AMArmorMaterials.BRONZE, ArmorItem.Type.LEGGINGS, AMItems.getSettings().fireproof()));
+	public static final RegistrySupplier<Item> BRONZE_BOOTS = register("bronze_boots", () -> new ArmorItem(AMArmorMaterials.BRONZE, ArmorItem.Type.BOOTS, AMItems.getSettings().fireproof()));
 	
-	public static final RegistrySupplier<Item> STEEL_HELMET = register("steel_helmet", () -> new ArmorItem(AMArmorMaterials.STEEL, EquipmentSlot.HEAD, AMItems.getSettings()));
-	public static final RegistrySupplier<Item> STEEL_CHESTPLATE = register("steel_chestplate", () -> new ArmorItem(AMArmorMaterials.STEEL, EquipmentSlot.CHEST, AMItems.getSettings()));
-	public static final RegistrySupplier<Item> STEEL_LEGGINGS = register("steel_leggings", () -> new ArmorItem(AMArmorMaterials.STEEL, EquipmentSlot.LEGS, AMItems.getSettings()));
-	public static final RegistrySupplier<Item> STEEL_BOOTS = register("steel_boots", () -> new ArmorItem(AMArmorMaterials.STEEL, EquipmentSlot.FEET, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> STEEL_HELMET = register("steel_helmet", () -> new ArmorItem(AMArmorMaterials.STEEL, ArmorItem.Type.HELMET, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> STEEL_CHESTPLATE = register("steel_chestplate", () -> new ArmorItem(AMArmorMaterials.STEEL, ArmorItem.Type.CHESTPLATE, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> STEEL_LEGGINGS = register("steel_leggings", () -> new ArmorItem(AMArmorMaterials.STEEL, ArmorItem.Type.LEGGINGS, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> STEEL_BOOTS = register("steel_boots", () -> new ArmorItem(AMArmorMaterials.STEEL, ArmorItem.Type.BOOTS, AMItems.getSettings()));
 	
-	public static final RegistrySupplier<Item> FOOLS_GOLD_HELMET = register("fools_gold_helmet", () -> new ArmorItem(AMArmorMaterials.FOOLS_GOLD, EquipmentSlot.HEAD, AMItems.getSettings()));
-	public static final RegistrySupplier<Item> FOOLS_GOLD_CHESTPLATE = register("fools_gold_chestplate", () -> new ArmorItem(AMArmorMaterials.FOOLS_GOLD, EquipmentSlot.CHEST, AMItems.getSettings()));
-	public static final RegistrySupplier<Item> FOOLS_GOLD_LEGGINGS = register("fools_gold_leggings", () -> new ArmorItem(AMArmorMaterials.FOOLS_GOLD, EquipmentSlot.LEGS, AMItems.getSettings()));
-	public static final RegistrySupplier<Item> FOOLS_GOLD_BOOTS = register("fools_gold_boots", () -> new ArmorItem(AMArmorMaterials.FOOLS_GOLD, EquipmentSlot.FEET, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> FOOLS_GOLD_HELMET = register("fools_gold_helmet", () -> new ArmorItem(AMArmorMaterials.FOOLS_GOLD, ArmorItem.Type.HELMET, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> FOOLS_GOLD_CHESTPLATE = register("fools_gold_chestplate", () -> new ArmorItem(AMArmorMaterials.FOOLS_GOLD, ArmorItem.Type.CHESTPLATE, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> FOOLS_GOLD_LEGGINGS = register("fools_gold_leggings", () -> new ArmorItem(AMArmorMaterials.FOOLS_GOLD, ArmorItem.Type.LEGGINGS, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> FOOLS_GOLD_BOOTS = register("fools_gold_boots", () -> new ArmorItem(AMArmorMaterials.FOOLS_GOLD, ArmorItem.Type.BOOTS, AMItems.getSettings()));
 	
-	public static final RegistrySupplier<Item> METITE_HELMET = register("metite_helmet", () -> new ArmorItem(AMArmorMaterials.METITE, EquipmentSlot.HEAD, AMItems.getSettings()));
-	public static final RegistrySupplier<Item> METITE_CHESTPLATE = register("metite_chestplate", () -> new ArmorItem(AMArmorMaterials.METITE, EquipmentSlot.CHEST, AMItems.getSettings()));
-	public static final RegistrySupplier<Item> METITE_LEGGINGS = register("metite_leggings", () -> new ArmorItem(AMArmorMaterials.METITE, EquipmentSlot.LEGS, AMItems.getSettings()));
-	public static final RegistrySupplier<Item> METITE_BOOTS = register("metite_boots", () -> new ArmorItem(AMArmorMaterials.METITE, EquipmentSlot.FEET, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> METITE_HELMET = register("metite_helmet", () -> new ArmorItem(AMArmorMaterials.METITE, ArmorItem.Type.HELMET, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> METITE_CHESTPLATE = register("metite_chestplate", () -> new ArmorItem(AMArmorMaterials.METITE, ArmorItem.Type.CHESTPLATE, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> METITE_LEGGINGS = register("metite_leggings", () -> new ArmorItem(AMArmorMaterials.METITE, ArmorItem.Type.LEGGINGS, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> METITE_BOOTS = register("metite_boots", () -> new ArmorItem(AMArmorMaterials.METITE, ArmorItem.Type.BOOTS, AMItems.getSettings()));
 	
-	public static final RegistrySupplier<Item> ASTERITE_HELMET = register("asterite_helmet", () -> new ArmorItem(AMArmorMaterials.ASTERITE, EquipmentSlot.HEAD, AMItems.getSettings()));
-	public static final RegistrySupplier<Item> ASTERITE_CHESTPLATE = register("asterite_chestplate", () -> new ArmorItem(AMArmorMaterials.ASTERITE, EquipmentSlot.CHEST, AMItems.getSettings()));
-	public static final RegistrySupplier<Item> ASTERITE_LEGGINGS = register("asterite_leggings", () -> new ArmorItem(AMArmorMaterials.ASTERITE, EquipmentSlot.LEGS, AMItems.getSettings()));
-	public static final RegistrySupplier<Item> ASTERITE_BOOTS = register("asterite_boots", () -> new ArmorItem(AMArmorMaterials.ASTERITE, EquipmentSlot.FEET, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> ASTERITE_HELMET = register("asterite_helmet", () -> new ArmorItem(AMArmorMaterials.ASTERITE, ArmorItem.Type.HELMET, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> ASTERITE_CHESTPLATE = register("asterite_chestplate", () -> new ArmorItem(AMArmorMaterials.ASTERITE, ArmorItem.Type.CHESTPLATE, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> ASTERITE_LEGGINGS = register("asterite_leggings", () -> new ArmorItem(AMArmorMaterials.ASTERITE, ArmorItem.Type.LEGGINGS, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> ASTERITE_BOOTS = register("asterite_boots", () -> new ArmorItem(AMArmorMaterials.ASTERITE, ArmorItem.Type.BOOTS, AMItems.getSettings()));
 	
-	public static final RegistrySupplier<Item> STELLUM_HELMET = register("stellum_helmet", () -> new ArmorItem(AMArmorMaterials.STELLUM, EquipmentSlot.HEAD, AMItems.getSettings().fireproof()));
-	public static final RegistrySupplier<Item> STELLUM_CHESTPLATE = register("stellum_chestplate", () -> new ArmorItem(AMArmorMaterials.STELLUM, EquipmentSlot.CHEST, AMItems.getSettings().fireproof()));
-	public static final RegistrySupplier<Item> STELLUM_LEGGINGS = register("stellum_leggings", () -> new ArmorItem(AMArmorMaterials.STELLUM, EquipmentSlot.LEGS, AMItems.getSettings().fireproof()));
-	public static final RegistrySupplier<Item> STELLUM_BOOTS = register("stellum_boots", () -> new ArmorItem(AMArmorMaterials.STELLUM, EquipmentSlot.FEET, AMItems.getSettings().fireproof()));
+	public static final RegistrySupplier<Item> STELLUM_HELMET = register("stellum_helmet", () -> new ArmorItem(AMArmorMaterials.STELLUM, ArmorItem.Type.HELMET, AMItems.getSettings().fireproof()));
+	public static final RegistrySupplier<Item> STELLUM_CHESTPLATE = register("stellum_chestplate", () -> new ArmorItem(AMArmorMaterials.STELLUM, ArmorItem.Type.CHESTPLATE, AMItems.getSettings().fireproof()));
+	public static final RegistrySupplier<Item> STELLUM_LEGGINGS = register("stellum_leggings", () -> new ArmorItem(AMArmorMaterials.STELLUM, ArmorItem.Type.LEGGINGS, AMItems.getSettings().fireproof()));
+	public static final RegistrySupplier<Item> STELLUM_BOOTS = register("stellum_boots", () -> new ArmorItem(AMArmorMaterials.STELLUM, ArmorItem.Type.BOOTS, AMItems.getSettings().fireproof()));
 	
-	public static final RegistrySupplier<Item> GALAXIUM_HELMET = register("galaxium_helmet", () -> new ArmorItem(AMArmorMaterials.GALAXIUM, EquipmentSlot.HEAD, AMItems.getSettings()));
-	public static final RegistrySupplier<Item> GALAXIUM_CHESTPLATE = register("galaxium_chestplate", () -> new ArmorItem(AMArmorMaterials.GALAXIUM, EquipmentSlot.CHEST, AMItems.getSettings()));
-	public static final RegistrySupplier<Item> GALAXIUM_LEGGINGS = register("galaxium_leggings", () -> new ArmorItem(AMArmorMaterials.GALAXIUM, EquipmentSlot.LEGS, AMItems.getSettings()));
-	public static final RegistrySupplier<Item> GALAXIUM_BOOTS = register("galaxium_boots", () -> new ArmorItem(AMArmorMaterials.GALAXIUM, EquipmentSlot.FEET, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> GALAXIUM_HELMET = register("galaxium_helmet", () -> new ArmorItem(AMArmorMaterials.GALAXIUM, ArmorItem.Type.HELMET, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> GALAXIUM_CHESTPLATE = register("galaxium_chestplate", () -> new ArmorItem(AMArmorMaterials.GALAXIUM, ArmorItem.Type.CHESTPLATE, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> GALAXIUM_LEGGINGS = register("galaxium_leggings", () -> new ArmorItem(AMArmorMaterials.GALAXIUM, ArmorItem.Type.LEGGINGS, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> GALAXIUM_BOOTS = register("galaxium_boots", () -> new ArmorItem(AMArmorMaterials.GALAXIUM, ArmorItem.Type.BOOTS, AMItems.getSettings()));
 	
-	public static final RegistrySupplier<Item> UNIVITE_HELMET = register("univite_helmet", () -> new AnimatedArmorItem(AMArmorMaterials.UNIVITE, EquipmentSlot.HEAD, AMItems.getSettings().fireproof(), 18));
-	public static final RegistrySupplier<Item> UNIVITE_CHESTPLATE = register("univite_chestplate", () -> new AnimatedArmorItem(AMArmorMaterials.UNIVITE, EquipmentSlot.CHEST, AMItems.getSettings().fireproof(), 18));
-	public static final RegistrySupplier<Item> UNIVITE_LEGGINGS = register("univite_leggings", () -> new AnimatedArmorItem(AMArmorMaterials.UNIVITE, EquipmentSlot.LEGS, AMItems.getSettings().fireproof(), 18));
-	public static final RegistrySupplier<Item> UNIVITE_BOOTS = register("univite_boots", () -> new AnimatedArmorItem(AMArmorMaterials.UNIVITE, EquipmentSlot.FEET, AMItems.getSettings().fireproof(), 18));
+	public static final RegistrySupplier<Item> UNIVITE_HELMET = register("univite_helmet", () -> new AnimatedArmorItem(AMArmorMaterials.UNIVITE, ArmorItem.Type.HELMET, AMItems.getSettings().fireproof(), 18));
+	public static final RegistrySupplier<Item> UNIVITE_CHESTPLATE = register("univite_chestplate", () -> new AnimatedArmorItem(AMArmorMaterials.UNIVITE, ArmorItem.Type.CHESTPLATE, AMItems.getSettings().fireproof(), 18));
+	public static final RegistrySupplier<Item> UNIVITE_LEGGINGS = register("univite_leggings", () -> new AnimatedArmorItem(AMArmorMaterials.UNIVITE, ArmorItem.Type.LEGGINGS, AMItems.getSettings().fireproof(), 18));
+	public static final RegistrySupplier<Item> UNIVITE_BOOTS = register("univite_boots", () -> new AnimatedArmorItem(AMArmorMaterials.UNIVITE, ArmorItem.Type.BOOTS, AMItems.getSettings().fireproof(), 18));
 
-	public static final RegistrySupplier<Item> LUNUM_HELMET = register("lunum_helmet", () -> new ArmorItem(AMArmorMaterials.LUNUM, EquipmentSlot.HEAD, AMItems.getSettings()));
-	public static final RegistrySupplier<Item> LUNUM_CHESTPLATE = register("lunum_chestplate", () -> new ArmorItem(AMArmorMaterials.LUNUM, EquipmentSlot.CHEST, AMItems.getSettings()));
-	public static final RegistrySupplier<Item> LUNUM_LEGGINGS = register("lunum_leggings", () -> new ArmorItem(AMArmorMaterials.LUNUM, EquipmentSlot.LEGS, AMItems.getSettings()));
-	public static final RegistrySupplier<Item> LUNUM_BOOTS = register("lunum_boots", () -> new ArmorItem(AMArmorMaterials.LUNUM, EquipmentSlot.FEET, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> LUNUM_HELMET = register("lunum_helmet", () -> new ArmorItem(AMArmorMaterials.LUNUM, ArmorItem.Type.HELMET, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> LUNUM_CHESTPLATE = register("lunum_chestplate", () -> new ArmorItem(AMArmorMaterials.LUNUM, ArmorItem.Type.CHESTPLATE, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> LUNUM_LEGGINGS = register("lunum_leggings", () -> new ArmorItem(AMArmorMaterials.LUNUM, ArmorItem.Type.LEGGINGS, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> LUNUM_BOOTS = register("lunum_boots", () -> new ArmorItem(AMArmorMaterials.LUNUM, ArmorItem.Type.BOOTS, AMItems.getSettings()));
 	
-	public static final RegistrySupplier<Item> METEORIC_STEEL_HELMET = register("meteoric_steel_helmet", () -> new ArmorItem(AMArmorMaterials.METEORIC_STEEL, EquipmentSlot.HEAD, AMItems.getSettings()));
-	public static final RegistrySupplier<Item> METEORIC_STEEL_CHESTPLATE = register("meteoric_steel_chestplate", () -> new ArmorItem(AMArmorMaterials.METEORIC_STEEL, EquipmentSlot.CHEST, AMItems.getSettings()));
-	public static final RegistrySupplier<Item> METEORIC_STEEL_LEGGINGS = register("meteoric_steel_leggings", () -> new ArmorItem(AMArmorMaterials.METEORIC_STEEL, EquipmentSlot.LEGS, AMItems.getSettings()));
-	public static final RegistrySupplier<Item> METEORIC_STEEL_BOOTS = register("meteoric_steel_boots", () -> new ArmorItem(AMArmorMaterials.METEORIC_STEEL, EquipmentSlot.FEET, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> METEORIC_STEEL_HELMET = register("meteoric_steel_helmet", () -> new ArmorItem(AMArmorMaterials.METEORIC_STEEL, ArmorItem.Type.HELMET, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> METEORIC_STEEL_CHESTPLATE = register("meteoric_steel_chestplate", () -> new ArmorItem(AMArmorMaterials.METEORIC_STEEL, ArmorItem.Type.CHESTPLATE, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> METEORIC_STEEL_LEGGINGS = register("meteoric_steel_leggings", () -> new ArmorItem(AMArmorMaterials.METEORIC_STEEL, ArmorItem.Type.LEGGINGS, AMItems.getSettings()));
+	public static final RegistrySupplier<Item> METEORIC_STEEL_BOOTS = register("meteoric_steel_boots", () -> new ArmorItem(AMArmorMaterials.METEORIC_STEEL, ArmorItem.Type.BOOTS, AMItems.getSettings()));
 	
 	public static final RegistrySupplier<Item> METEOR_METITE_ORE_CLUSTER = register("meteor_metite_ore_cluster", () -> new Item(AMItems.getSettings()));
 	
@@ -463,7 +462,7 @@ public class AMItems {
 	 * @return Item instance registered
 	 */
 	public static <T extends Item> RegistrySupplier<T> register(Identifier name, Supplier<T> item) {
-		return AMCommon.registry(Registry.ITEM_KEY).register(name, item);
+		return AMCommon.registry(RegistryKeys.ITEM).register(name, item);
 	}
 	
 	public static Item.Settings getSettings() {

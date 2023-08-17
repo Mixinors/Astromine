@@ -29,13 +29,12 @@ import com.github.mixinors.astromine.common.transfer.storage.FluidStorageItem;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 
 public class SpaceSuitArmorItem extends ArmorItem {
-	public SpaceSuitArmorItem(ArmorMaterial material, EquipmentSlot slot, Settings settings) {
+	public SpaceSuitArmorItem(ArmorMaterial material, ArmorItem.Type slot, Settings settings) {
 		super(material, slot, settings);
 	}
 	
@@ -43,7 +42,7 @@ public class SpaceSuitArmorItem extends ArmorItem {
 		private final long fluidCapacity;
 		private final long energyCapacity;
 		
-		public Chestplate(ArmorMaterial material, EquipmentSlot slot, Settings settings, long fluidCapacity, long energyCapacity) {
+		public Chestplate(ArmorMaterial material, ArmorItem.Type slot, Settings settings, long fluidCapacity, long energyCapacity) {
 			super(material, slot, settings);
 			
 			this.fluidCapacity = fluidCapacity;

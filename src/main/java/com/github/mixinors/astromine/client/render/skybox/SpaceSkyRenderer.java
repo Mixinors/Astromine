@@ -42,7 +42,7 @@ public class SpaceSkyRenderer {
 	
 	public static void render(WorldRenderContext ctx) {
 		var client = MinecraftClient.getInstance();
-		var worldKey = client.player.world.getRegistryKey();
+		var worldKey = client.player.getWorld().getRegistryKey();
 		var body = BodyManager.getBodyDimensionOfWorld(worldKey);
 		
 		if (body != null && body.skybox() != null) {

@@ -27,7 +27,7 @@ package com.github.mixinors.astromine.registry.common;
 import com.github.mixinors.astromine.AMCommon;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registry;
 
 public class AMSoundEvents {
 	public static final RegistrySupplier<SoundEvent> SPACE_SUIT_EQUIPPED = register("item.armor.equip_space_suit");

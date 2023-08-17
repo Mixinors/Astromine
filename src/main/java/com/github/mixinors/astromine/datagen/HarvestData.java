@@ -3,8 +3,8 @@ package com.github.mixinors.astromine.datagen;
 import net.fabricmc.fabric.api.mininglevel.v1.MiningLevelManager;
 import net.fabricmc.yarn.constants.MiningLevels;
 import net.minecraft.block.Block;
-import net.minecraft.tag.BlockTags;
-import net.minecraft.tag.TagKey;
+import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.registry.tag.TagKey;
 
 public record HarvestData(
 		TagKey<Block> mineableTag,

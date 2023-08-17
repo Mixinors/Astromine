@@ -1,17 +1,20 @@
 package com.github.mixinors.astromine.datagen.provider.tag;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.world.dimension.DimensionType;
 
-public class AMDimensionTypeTagProvider extends FabricTagProvider.DynamicRegistryTagProvider<DimensionType> {
-	public AMDimensionTypeTagProvider(FabricDataGenerator dataGenerator) {
-		super(dataGenerator, Registry.DIMENSION_TYPE_KEY);
+import java.util.concurrent.CompletableFuture;
+
+public class AMDimensionTypeTagProvider extends FabricTagProvider<DimensionType> {
+	public AMDimensionTypeTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
+		super(output, RegistryKeys.DIMENSION_TYPE, completableFuture);
 	}
 	
 	@Override
-	protected void generateTags() {
+	protected void configure(RegistryWrapper.WrapperLookup lookup) {
 
 	}
 }

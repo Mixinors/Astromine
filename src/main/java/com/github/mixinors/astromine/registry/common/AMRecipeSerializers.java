@@ -30,7 +30,7 @@ import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registry;
 
 public class AMRecipeSerializers {
 	public static final RegistrySupplier<RecipeSerializer<WireCuttingRecipe>> WIRE_CUTTING = register(WireCuttingRecipe.Serializer.ID, WireCuttingRecipe.Serializer.INSTANCE);

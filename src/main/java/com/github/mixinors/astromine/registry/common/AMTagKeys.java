@@ -29,9 +29,10 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
-import net.minecraft.tag.TagKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.dimension.DimensionType;
 
@@ -163,11 +164,11 @@ public class AMTagKeys {
 	}
 	
 	public static TagKey<Biome> createBiomeTag(Identifier id) {
-		return TagKey.of(Registry.BIOME_KEY, id);
+		return TagKey.of(RegistryKeys.BIOME, id);
 	}
 	
 	public static TagKey<Block> createBlockTag(Identifier id) {
-		return TagKey.of(Registry.BLOCK_KEY, id);
+		return TagKey.of(RegistryKeys.BLOCK, id);
 	}
 	
 	public static TagKey<Block> createBlockTag(String path) {
@@ -179,7 +180,7 @@ public class AMTagKeys {
 	}
 	
 	public static TagKey<Item> createItemTag(Identifier id) {
-		return TagKey.of(Registry.ITEM_KEY, id);
+		return TagKey.of(RegistryKeys.ITEM, id);
 	}
 	
 	public static TagKey<Item> createItemTag(String path) {
@@ -191,7 +192,7 @@ public class AMTagKeys {
 	}
 	
 	public static TagKey<Fluid> createFluidTag(Identifier id) {
-		return TagKey.of(Registry.FLUID_KEY, id);
+		return TagKey.of(RegistryKeys.FLUID, id);
 	}
 	
 	public static TagKey<Fluid> createFluidTag(String path) {
@@ -203,7 +204,7 @@ public class AMTagKeys {
 	}
 	
 	public static TagKey<EntityType<?>> createEntityTypeTag(Identifier id) {
-		return TagKey.of(Registry.ENTITY_TYPE_KEY, id);
+		return TagKey.of(RegistryKeys.ENTITY_TYPE, id);
 	}
 	
 	public static TagKey<EntityType<?>> createEntityTypeTag(String path) {
@@ -215,7 +216,7 @@ public class AMTagKeys {
 	}
 	
 	public static TagKey<DimensionType> createDimensionTypeTag(Identifier id) {
-		return TagKey.of(Registry.DIMENSION_TYPE_KEY, id);
+		return TagKey.of(RegistryKeys.DIMENSION_TYPE, id);
 	}
 	
 	public static TagKey<DimensionType> createDimensionTypeTag(String path) {

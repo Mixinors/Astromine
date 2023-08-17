@@ -20,9 +20,11 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -347,7 +349,7 @@ public final class Rocket implements Tickable {
 			for (var value : PartType.values()) {
 				if (tag.contains("part_type_" + value.name())) {
 					var identifier = NbtUtil.getIdentifier(tag, "part_type_" + value.name());
-					parts.put(value, Optional.of(((RocketPartItem<RocketPart<?>>) Registry.ITEM.get(identifier)).getPart()));
+					parts.put(value, Optional.of(((RocketPartItem<RocketPart<?>>) Registries.ITEM.get(identifier)).getPart()));
 				}
 			}
 		}
@@ -369,7 +371,7 @@ public final class Rocket implements Tickable {
 		public NbtElement writeToNbt(NbtCompound tag) {
 			for (var entry : parts.entrySet()) {
 				if (entry.getValue().isPresent()) {
-					NbtUtil.putIdentifier(tag, "part_type_" + entry.getKey().name(), Registry.ITEM.getId(entry.getValue().get().asItem()));
+					NbtUtil.putIdentifier(tag, "part_type_" + entry.getKey().name(), Registries.ITEM.getId(entry.getValue().get().asItem()));
 				}
 			}
 			
@@ -384,7 +386,7 @@ public final class Rocket implements Tickable {
 	) {
 		public static final Codec<Placer> CODEC = RecordCodecBuilder.create(
 				instance -> instance.group(
-						RegistryKey.createCodec(Registry.WORLD_KEY).fieldOf("world").forGetter(Placer::worldKey),
+						RegistryKey.createCodec(RegistryKeys.WORLD).fieldOf("world").forGetter(Placer::worldKey),
 						Codec.DOUBLE.fieldOf("x").forGetter(Placer::x),
 						Codec.DOUBLE.fieldOf("y").forGetter(Placer::y),
 						Codec.DOUBLE.fieldOf("z").forGetter(Placer::z),

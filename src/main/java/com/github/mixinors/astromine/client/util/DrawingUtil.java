@@ -4,7 +4,7 @@ import dev.vini2003.hammer.core.api.client.color.Color;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.Vec3f;
+import org.joml.Quaternionf;
 
 import static dev.vini2003.hammer.core.api.client.util.DrawingUtil.DEFAULT_LIGHT;
 import static dev.vini2003.hammer.core.api.client.util.DrawingUtil.DEFAULT_OVERLAY;
@@ -61,12 +61,12 @@ public class DrawingUtil {
 		
 		stack.translate(x, y, z);
 		
-		stack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(45.0F));
+		stack.multiply(new Quaternionf().rotateX(45.0F * ((float) Math.PI / 180.0F)));
 		
 		if (tidalLocked) {
-			stack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(45.0F - 360.0F + (float) Math.toDegrees(angle)));
+			stack.multiply(new Quaternionf().rotateZ((45.0F - 360.0F + (float) Math.toDegrees(angle)) * ((float) Math.PI / 180.0F)));
 		} else {
-			stack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(45.0F - (float) Math.toDegrees(angle)));
+			stack.multiply(new Quaternionf().rotateZ((45.0F - (float) Math.toDegrees(angle)) * ((float) Math.PI / 180.0F)));
 		}
 		
 		var peek = stack.peek();

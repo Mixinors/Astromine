@@ -28,7 +28,7 @@ import com.github.mixinors.astromine.common.registry.DarkMoonOreRegistry;
 import com.github.mixinors.astromine.common.registry.MoonOreRegistry;
 import com.github.mixinors.astromine.registry.common.AMBiomes;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
-import com.github.mixinors.astromine.registry.common.AMStructures;
+import com.github.mixinors.astromine.registry.common.AMStructureTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.NbtCompound;
@@ -44,11 +44,11 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 
 public class CraterGenerator extends ShiftableStructurePiece {
 	public CraterGenerator(Random random, int x, int z) {
-		super(AMStructures.CRATER_STRUCTURE_PIECE.get(), x, 64, z, 16, 16, 16, getRandomHorizontalDirection(random));
+		super(AMStructureTypes.CRATER_STRUCTURE_PIECE.get(), x, 64, z, 16, 16, 16, getRandomHorizontalDirection(random));
 	}
 	
 	public CraterGenerator(NbtCompound nbt) {
-		super(AMStructures.CRATER_STRUCTURE_PIECE.get(), nbt);
+		super(AMStructureTypes.CRATER_STRUCTURE_PIECE.get(), nbt);
 	}
 	
 	@Override

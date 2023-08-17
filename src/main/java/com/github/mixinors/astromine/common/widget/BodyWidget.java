@@ -17,8 +17,8 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec2f;
-import net.minecraft.util.math.Vec3f;
-import net.minecraft.util.math.Vector4f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 import java.util.List;
 
@@ -217,14 +217,14 @@ public class BodyWidget extends Widget {
 			var maxPos = new Vector4f((float) orbitX + getWidth() * zoom, (float) orbitY + getWidth() * zoom, +getWidth() * zoom, 1.0F);
 			
 			// Get the mouse's position.
-			var mousePos = new Vec3f(PositionUtil.getMouseX(), PositionUtil.getMouseY(), 0.0F);
+			var mousePos = new Vector3f(PositionUtil.getMouseX(), PositionUtil.getMouseY(), 0.0F);
 			
 			body.setPrevScale(body.getScale());
 			
 			var scale = 1.0F;
 			
 			// Update hovered (focused) status based on top left/bottom right and mouse positions.
-			if (mousePos.getX() > minPos.getX() && mousePos.getX() < maxPos.getX() && mousePos.getY() > minPos.getY() && mousePos.getY() < maxPos.getY()) {
+			if (mousePos.x() > minPos.x() && mousePos.x() < maxPos.x() && mousePos.y() > minPos.y() && mousePos.y() < maxPos.y()) {
 				scale = (float) MathHelper.lerp(tickDelta / 2.0D, body.getPrevScale(), 1.25D);
 				
 				setHovered(true);

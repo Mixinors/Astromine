@@ -29,7 +29,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
-import net.minecraft.predicate.entity.EntityPredicate;
+import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
@@ -41,7 +41,7 @@ public class DestroyRocketCriterion extends AbstractCriterion<DestroyRocketCrite
 	}
 	
 	@Override
-	protected DestroyRocketCriterion.Conditions conditionsFromJson(JsonObject obj, EntityPredicate.Extended playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
+	protected DestroyRocketCriterion.Conditions conditionsFromJson(JsonObject obj, LootContextPredicate playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
 		if (obj.has("intentional")) {
 			return new Conditions(this.id, playerPredicate, obj.get("intentional").getAsBoolean());
 		} else {
@@ -61,13 +61,13 @@ public class DestroyRocketCriterion extends AbstractCriterion<DestroyRocketCrite
 	public static class Conditions extends AbstractCriterionConditions {
 		private final Boolean intentional;
 		
-		public Conditions(Identifier id, EntityPredicate.Extended playerPredicate, Boolean intentional) {
+		public Conditions(Identifier id, LootContextPredicate playerPredicate, Boolean intentional) {
 			super(id, playerPredicate);
 			
 			this.intentional = intentional;
 		}
 		
-		public Conditions(Identifier id, EntityPredicate.Extended playerPredicate) {
+		public Conditions(Identifier id, LootContextPredicate playerPredicate) {
 			super(id, playerPredicate);
 			
 			this.intentional = null;
@@ -82,11 +82,11 @@ public class DestroyRocketCriterion extends AbstractCriterion<DestroyRocketCrite
 		}
 		
 		public static Conditions create(boolean intentional) {
-			return new Conditions(AMCriteria.DESTROY_ROCKET.getId(), EntityPredicate.Extended.EMPTY, intentional);
+			return new Conditions(AMCriteria.DESTROY_ROCKET.getId(), LootContextPredicate.EMPTY, intentional);
 		}
 		
 		public static Conditions create() {
-			return new Conditions(AMCriteria.DESTROY_ROCKET.getId(), EntityPredicate.Extended.EMPTY);
+			return new Conditions(AMCriteria.DESTROY_ROCKET.getId(), LootContextPredicate.EMPTY);
 		}
 	}
 }

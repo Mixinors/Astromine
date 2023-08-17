@@ -29,7 +29,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
-import net.minecraft.predicate.entity.EntityPredicate;
+import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
@@ -41,7 +41,7 @@ public class LaunchRocketCriterion extends AbstractCriterion<LaunchRocketCriteri
 	}
 	
 	@Override
-	protected LaunchRocketCriterion.Conditions conditionsFromJson(JsonObject obj, EntityPredicate.Extended playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
+	protected LaunchRocketCriterion.Conditions conditionsFromJson(JsonObject obj, LootContextPredicate playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
 		return new Conditions(this.id, playerPredicate);
 	}
 	
@@ -55,12 +55,12 @@ public class LaunchRocketCriterion extends AbstractCriterion<LaunchRocketCriteri
 	}
 	
 	public static class Conditions extends AbstractCriterionConditions {
-		public Conditions(Identifier id, EntityPredicate.Extended playerPredicate) {
+		public Conditions(Identifier id, LootContextPredicate playerPredicate) {
 			super(id, playerPredicate);
 		}
 		
 		public static Conditions create() {
-			return new Conditions(AMCriteria.LAUNCH_ROCKET.getId(), EntityPredicate.Extended.EMPTY);
+			return new Conditions(AMCriteria.LAUNCH_ROCKET.getId(), LootContextPredicate.EMPTY);
 		}
 	}
 }

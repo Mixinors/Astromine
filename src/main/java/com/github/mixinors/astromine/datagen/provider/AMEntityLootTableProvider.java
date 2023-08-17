@@ -26,7 +26,7 @@ package com.github.mixinors.astromine.datagen.provider;
 
 import com.github.mixinors.astromine.registry.common.AMEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMItems;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableProvider;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
@@ -41,8 +41,8 @@ import net.minecraft.util.Identifier;
 import java.util.function.BiConsumer;
 
 public class AMEntityLootTableProvider extends SimpleFabricLootTableProvider {
-	public AMEntityLootTableProvider(FabricDataGenerator dataGenerator) {
-		super(dataGenerator, LootContextTypes.ENTITY);
+	public AMEntityLootTableProvider(FabricDataOutput output) {
+		super(output, LootContextTypes.ENTITY);
 	}
 	
 	@Override

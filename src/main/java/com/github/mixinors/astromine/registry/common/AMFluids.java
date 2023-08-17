@@ -30,7 +30,7 @@ import com.github.mixinors.astromine.common.util.FluidUtils;
 import dev.architectury.platform.Platform;
 import net.fabricmc.api.EnvType;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registry;
 
 // maybe we could add a way to melt gems and infuse
 // machine chassis with them? idk that just came up

@@ -34,25 +34,28 @@ import com.github.mixinors.astromine.datagen.family.material.variant.ItemVariant
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
 import com.shnupbups.piglib.Piglib;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.item.Items;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.concurrent.CompletableFuture;
 
 public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 	
 	
-	public AMItemTagProvider(FabricDataGenerator dataGenerator, @Nullable BlockTagProvider blockTagProvider) {
-		super(dataGenerator, blockTagProvider);
+	public AMItemTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture, @Nullable BlockTagProvider blockTagProvider) {
+		super(output, completableFuture, blockTagProvider);
 	}
 	
 	@Override
-	protected void generateTags() {
-		var beaconPaymentTagBuilder = getOrCreateTagBuilder(net.minecraft.tag.ItemTags.BEACON_PAYMENT_ITEMS);
+	protected void configure(RegistryWrapper.WrapperLookup lookup) {
+		var beaconPaymentTagBuilder = getOrCreateTagBuilder(net.minecraft.registry.tag.ItemTags.BEACON_PAYMENT_ITEMS);
 		
-		var piglinLovedTagBuilder = getOrCreateTagBuilder(net.minecraft.tag.ItemTags.PIGLIN_LOVED);
+		var piglinLovedTagBuilder = getOrCreateTagBuilder(net.minecraft.registry.tag.ItemTags.PIGLIN_LOVED);
 		var piglinLovedNuggetsTagBuilder = getOrCreateTagBuilder(Piglib.PIGLIN_LOVED_NUGGETS);
 		var piglinBarteringItemsTagBuilder = getOrCreateTagBuilder(Piglib.PIGLIN_BARTERING_ITEMS);
 		var piglinSafeArmorTagBuilder = getOrCreateTagBuilder(Piglib.PIGLIN_SAFE_ARMOR);
@@ -217,7 +220,7 @@ public class AMItemTagProvider extends FabricTagProvider.ItemTagProvider {
 		}));
 		
 		AMDatagenLists.FluidLists.FLUIDS.forEach((fluid) -> {
-			var bucketTagBuilder = getOrCreateTagBuilder(AMTagKeys.createCommonItemTag(Registry.FLUID.getId(fluid.getStill()).getPath() + "_buckets"));
+			var bucketTagBuilder = getOrCreateTagBuilder(AMTagKeys.createCommonItemTag(Registries.FLUID.getId(fluid.getStill()).getPath() + "_buckets"));
 			bucketTagBuilder.add(fluid.getBucketItem());
 		});
 		

@@ -2,16 +2,19 @@ package com.github.mixinors.astromine.datagen.provider.tag;
 
 import com.github.mixinors.astromine.datagen.AMDatagenLists;
 import com.github.mixinors.astromine.registry.common.AMTagKeys;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.minecraft.registry.RegistryWrapper;
+
+import java.util.concurrent.CompletableFuture;
 
 public class AMEntityTypeTagProvider extends FabricTagProvider.EntityTypeTagProvider {
-	public AMEntityTypeTagProvider(FabricDataGenerator dataGenerator) {
-		super(dataGenerator);
+	public AMEntityTypeTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
+		super(output, completableFuture);
 	}
 	
 	@Override
-	protected void generateTags() {
+	protected void configure(RegistryWrapper.WrapperLookup lookup) {
 		var fishTag = getOrCreateTagBuilder(AMTagKeys.EntityTypeTags.FISH);
 		for (var entityType : AMDatagenLists.EntityTypeLists.FISH) {
 			fishTag.add(entityType);

@@ -30,7 +30,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registry;
 
 public abstract class ItemOutputMachineRecipeJsonFactory<T extends EnergyInputRecipe> extends EnergyInputMachineRecipeJsonFactory<T> {
 	private static final String ITEM_KEY = "item";

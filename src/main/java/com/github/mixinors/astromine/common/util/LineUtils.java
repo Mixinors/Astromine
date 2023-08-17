@@ -24,25 +24,25 @@
 
 package com.github.mixinors.astromine.common.util;
 
-import net.minecraft.util.math.Vec3f;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 public class LineUtils {
-	public static Collection<Vec3f> getBezierSegments(Vec3f posA, Vec3f posB, Vec3f posC, float segments) {
-		var positions = new ArrayList<Vec3f>();
+	public static Collection<Vector3f> getBezierSegments(Vector3f posA, Vector3f posB, Vector3f posC, float segments) {
+		var positions = new ArrayList<Vector3f>();
 		
-		var x1 = posA.getX();
-		var y1 = posA.getY();
-		var z1 = posA.getZ();
+		var x1 = posA.x();
+		var y1 = posA.y();
+		var z1 = posA.z();
 		
-		var x3 = posB.getX();
-		var y3 = posB.getY();
-		var z3 = posB.getZ();
+		var x3 = posB.x();
+		var y3 = posB.y();
+		var z3 = posB.z();
 		
-		var x2 = posC.getX();
-		var y2 = posC.getY();
+		var x2 = posC.x();
+		var y2 = posC.y();
 		
 		var dZ = (z3 - z1) / segments;
 		var cZ = 0;
@@ -64,11 +64,11 @@ public class LineUtils {
 			var pY = p0Y + p1Y + p2Y;
 			
 			if (t == 0) {
-				positions.add(new Vec3f(x1, y1, z1));
+				positions.add(new Vector3f(x1, y1, z1));
 			} else if (t + (1f / segments) >= 1) {
-				positions.add(new Vec3f(x3, y3, z3));
+				positions.add(new Vector3f(x3, y3, z3));
 			} else {
-				positions.add(new Vec3f((float) pX, (float) pY, z1 + cZ));
+				positions.add(new Vector3f((float) pX, (float) pY, z1 + cZ));
 			}
 			
 			cZ += dZ;
@@ -77,16 +77,16 @@ public class LineUtils {
 		return positions;
 	}
 	
-	public static Collection<Vec3f> getBresenhamSegments(Vec3f posA, Vec3f posB, float segments) {
-		var x1 = posA.getX();
-		var y1 = posA.getY();
-		var z1 = posA.getZ();
+	public static Collection<Vector3f> getBresenhamSegments(Vector3f posA, Vector3f posB, float segments) {
+		var x1 = posA.x();
+		var y1 = posA.y();
+		var z1 = posA.z();
 		
-		var x2 = posB.getX();
-		var y2 = posB.getY();
-		var z2 = posB.getZ();
+		var x2 = posB.x();
+		var y2 = posB.y();
+		var z2 = posB.z();
 		
-		var points = new ArrayList<Vec3f>();
+		var points = new ArrayList<Vector3f>();
 		
 		points.add(posA);
 		
@@ -120,7 +120,7 @@ public class LineUtils {
 			var p1 = 2 * dy - dx;
 			var p2 = 2 * dz - dx;
 			
-			while (posA.getX() < posB.getX() ? x1 < x2 : x1 > x2) {
+			while (posA.x() < posB.x() ? x1 < x2 : x1 > x2) {
 				x1 += xs;
 				
 				if (p1 >= 0) {
@@ -136,13 +136,13 @@ public class LineUtils {
 				p1 += 2 * dy;
 				p2 += 2 * dz;
 				
-				points.add(new Vec3f(x1, y1, z1));
+				points.add(new Vector3f(x1, y1, z1));
 			}
 		} else if (dy >= dx && dy >= dz) {
 			var p1 = 2 * dx - dy;
 			var p2 = 2 * dz - dy;
 			
-			while (posA.getY() < posB.getY() ? y1 < y2 : y1 > y2) {
+			while (posA.y() < posB.y() ? y1 < y2 : y1 > y2) {
 				y1 += ys;
 				
 				if (p1 >= 0) {
@@ -158,13 +158,13 @@ public class LineUtils {
 				p1 += 2 * dx;
 				p2 += 2 * dz;
 				
-				points.add(new Vec3f(x1, y1, z1));
+				points.add(new Vector3f(x1, y1, z1));
 			}
 		} else {
 			var p1 = 2 * dy - dz;
 			var p2 = 2 * dx - dz;
 			
-			while (posA.getZ() < posB.getZ() ? z1 < z2 : z1 > z2) {
+			while (posA.z() < posB.z() ? z1 < z2 : z1 > z2) {
 				z1 += zs;
 				
 				if (p1 >= 0) {
@@ -180,7 +180,7 @@ public class LineUtils {
 				p1 += 2 * dy;
 				p2 += 2 * dx;
 				
-				points.add(new Vec3f(x1, y1, z1));
+				points.add(new Vector3f(x1, y1, z1));
 			}
 		}
 		

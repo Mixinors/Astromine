@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.client.screen.base.Base.block.entity;
+package com.github.mixinors.astromine.client.screen.base.block.entity;
 
-import com.github.mixinors.astromine.client.screen.base.Base.CustomForegroundBaseHandledScreen;
+import com.github.mixinors.astromine.client.screen.base.CustomForegroundBaseHandledScreen;
 import com.github.mixinors.astromine.common.screen.handler.base.block.entity.ExtendedBlockEntityScreenHandler;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;

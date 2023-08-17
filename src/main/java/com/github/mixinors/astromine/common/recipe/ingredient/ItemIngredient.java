@@ -33,9 +33,9 @@ import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.minecraft.item.Item;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.tag.TagKey;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -98,7 +98,7 @@ public final class ItemIngredient {
 	public static ItemIngredient fromJson(JsonElement json) {
 		if (json.isJsonPrimitive()) {
 			var entryAsId = new Identifier(json.getAsString());
-			var entryAsItem = Registry.ITEM.get(entryAsId);
+			var entryAsItem = Registries.ITEM.get(entryAsId);
 			var entryAsItemVariant = ItemVariant.of(entryAsItem);
 			
 			return new ItemIngredient(new VariantEntry(entryAsItemVariant));
@@ -110,7 +110,7 @@ public final class ItemIngredient {
 			if (jsonObject.has(ITEM_KEY)) {
 				if (jsonObject.has(COUNT_KEY)) {
 					var entryAsId = new Identifier(jsonObject.get(ITEM_KEY).getAsString());
-					var entryAsItem = Registry.ITEM.get(entryAsId);
+					var entryAsItem = Registries.ITEM.get(entryAsId);
 					var entryAsItemVariant = ItemVariant.of(entryAsItem);
 					
 					var entryAmount = jsonObject.get(COUNT_KEY).getAsInt();
@@ -118,7 +118,7 @@ public final class ItemIngredient {
 					return new ItemIngredient(new VariantEntry(entryAsItemVariant, entryAmount));
 				} else {
 					var entryAsId = new Identifier(jsonObject.get(ITEM_KEY).getAsString());
-					var entryAsItem = Registry.ITEM.get(entryAsId);
+					var entryAsItem = Registries.ITEM.get(entryAsId);
 					var entryAsItemVariant = ItemVariant.of(entryAsItem);
 					
 					return new ItemIngredient(new VariantEntry(entryAsItemVariant));
@@ -151,7 +151,7 @@ public final class ItemIngredient {
 		if (ingredient.entry instanceof VariantEntry variantEntry) {
 			var entryJsonObject = new JsonObject();
 			
-			entryJsonObject.addProperty(ITEM_KEY, Registry.ITEM.getId(variantEntry.requiredVariant.getItem()).toString());
+			entryJsonObject.addProperty(ITEM_KEY, Registries.ITEM.getId(variantEntry.requiredVariant.getItem()).toString());
 			entryJsonObject.addProperty(COUNT_KEY, variantEntry.requiredAmount);
 		}
 		
@@ -172,7 +172,7 @@ public final class ItemIngredient {
 		var entryAmount = buf.readInt();
 		
 		if (entryType.equals(ITEM_KEY)) {
-			var entryItem = Registry.ITEM.get(entryTypeId);
+			var entryItem = Registries.ITEM.get(entryTypeId);
 			var entryVariant = ItemVariant.of(entryItem);
 			
 			return new ItemIngredient(new VariantEntry(entryVariant, entryAmount));
@@ -190,7 +190,7 @@ public final class ItemIngredient {
 	public static void toPacket(PacketByteBuf buf, ItemIngredient ingredient) {
 		if (ingredient.entry instanceof VariantEntry variantEntry) {
 			buf.writeString(ITEM_KEY);
-			buf.writeString(Registry.ITEM.getId(variantEntry.requiredVariant.getItem()).toString());
+			buf.writeString(Registries.ITEM.getId(variantEntry.requiredVariant.getItem()).toString());
 			buf.writeInt(variantEntry.requiredAmount);
 		}
 		
@@ -276,7 +276,7 @@ public final class ItemIngredient {
 			if (requiredVariants == null) {
 				var builder = ImmutableList.<ItemVariant>builder();
 				
-				for (var item : Registry.ITEM.iterateEntries(requiredTag)) {
+				for (var item : Registries.ITEM.iterateEntries(requiredTag)) {
 					builder.add(ItemVariant.of(item.value()));
 				}
 				

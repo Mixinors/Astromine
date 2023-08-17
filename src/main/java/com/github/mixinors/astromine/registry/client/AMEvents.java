@@ -55,9 +55,10 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registry;
 import team.reborn.energy.api.EnergyStorage;
 
 import java.util.ArrayList;
@@ -273,7 +274,7 @@ public class AMEvents {
 		ClientTooltipEvent.ITEM.register(((stack, tooltips, context) -> {
 			var item = stack.getItem();
 			
-			var id = Registry.ITEM.getId(item);
+			var id = Registries.ITEM.getId(item);
 			
 			if (id.getNamespace().equals(AMCommon.MOD_ID)) {
 				var empty = tooltips.stream().filter(text -> text.getString().isEmpty()).findFirst().orElse(null);

@@ -22,15 +22,14 @@
  * SOFTWARE.
  */
 
-package com.github.mixinors.astromine.client.screen.base.Base;
+package com.github.mixinors.astromine.client.screen.base;
 
 import dev.vini2003.hammer.gui.api.client.screen.base.BaseHandledScreen;
 import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class CustomForegroundBaseHandledScreen<T extends BaseScreenHandler> extends BaseHandledScreen<T> {
 	public CustomForegroundBaseHandledScreen(@NotNull T handler, @NotNull PlayerInventory inventory, @NotNull Text title) {
@@ -38,5 +37,5 @@ public class CustomForegroundBaseHandledScreen<T extends BaseScreenHandler> exte
 	}
 	
 	@Override
-	protected void drawForeground(@Nullable MatrixStack matrices, int mouseX, int mouseY) {}
+	protected void drawForeground(DrawContext context, int mouseX, int mouseY) {}
 }

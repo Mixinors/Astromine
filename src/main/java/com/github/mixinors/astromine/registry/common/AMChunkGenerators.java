@@ -30,7 +30,7 @@ import com.github.mixinors.astromine.common.world.generation.space.MoonChunkGene
 import com.github.mixinors.astromine.common.world.generation.space.RocketInteriorsChunkGenerator;
 import com.mojang.serialization.Codec;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registry;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 
 public class AMChunkGenerators {

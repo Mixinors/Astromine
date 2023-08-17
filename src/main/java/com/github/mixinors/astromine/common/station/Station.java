@@ -4,7 +4,7 @@ import com.github.mixinors.astromine.common.tick.Tickable;
 import dev.vini2003.hammer.core.api.common.util.NbtUtil;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.world.World;
 
 import java.util.UUID;

@@ -24,11 +24,11 @@
 
 package com.github.mixinors.astromine.common.util;
 
-import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.math.Vec3i;
+import org.joml.Vector3f;
 
 public class VectorUtils {
-	public static Vec3f toVector3f(Vec3i vec3i) {
-		return new Vec3f(vec3i.getX(), vec3i.getY(), vec3i.getZ());
+	public static Vector3f toVector3f(Vec3i vec3i) {
+		return new Vector3f(vec3i.getX(), vec3i.getY(), vec3i.getZ());
 	}
 }

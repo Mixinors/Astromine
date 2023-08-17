@@ -121,7 +121,7 @@ public abstract class ExtendedEntity extends Entity implements FluidStorageSizeP
 	}
 	
 	public void syncData() {
-		if (!world.isClient) {
+		if (!getWorld().isClient) {
 			var id = getId();
 			
 			var nbt = new NbtCompound();

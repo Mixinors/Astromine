@@ -28,10 +28,9 @@ import com.github.mixinors.astromine.AMCommon;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.BossBarHud;
 import net.minecraft.client.gui.hud.ClientBossBar;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.boss.BossBar;
 import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Identifier;
@@ -44,7 +43,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Environment(EnvType.CLIENT)
 @Mixin(BossBarHud.class)
-public abstract class BossBarHudMixin extends DrawableHelper {
+public abstract class BossBarHudMixin {
 	
 	private static final Identifier CUSTOM_BAR_TEX = AMCommon.id("textures/gui/bars.png");
 	@Shadow
@@ -55,18 +54,18 @@ public abstract class BossBarHudMixin extends DrawableHelper {
 	private MinecraftClient client;
 	
 	@Inject(method = "renderBossBar", at = @At("HEAD"), cancellable = true)
-	private void astromine$renderCustomBossBar(MatrixStack matrices, int i, int j, BossBar bossBar, CallbackInfo ci) {
+	private void astromine$renderCustomBossBar(DrawContext context, int i, int j, BossBar bossBar, CallbackInfo ci) {
 		if (bossBar instanceof ClientBossBar && bossBar.getName().getContent() instanceof TranslatableTextContent content && content.getKey().contains("super_space_slim")) {
 			this.client.getTextureManager().bindTexture(CUSTOM_BAR_TEX);
 			
 			// draw empty background bar
-			this.drawTexture(matrices, i, j, 0, 0, 185, 12);
+			context.drawTexture(CUSTOM_BAR_TEX, i, j, 0, 0, 185, 12);
 			
 			// percentage -> texture width
 			var overlayBarWidth = (int) (bossBar.getPercent() * 185.0F);
 			
 			// draw overlay
-			this.drawTexture(matrices, i, j, 0, 12, overlayBarWidth, 12);
+			context.drawTexture(CUSTOM_BAR_TEX, i, j, 0, 12, overlayBarWidth, 12);
 			
 			ci.cancel();
 			

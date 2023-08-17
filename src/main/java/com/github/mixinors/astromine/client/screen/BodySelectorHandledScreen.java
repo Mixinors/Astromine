@@ -30,7 +30,7 @@ import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.gui.api.client.screen.base.BaseHandledScreen;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
@@ -77,14 +77,14 @@ public class BodySelectorHandledScreen extends BaseHandledScreen<BodySelectorScr
 	}
 	
 	@Override
-	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		super.render(matrices, mouseX, mouseY, delta);
+	public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+		super.render(context, mouseX, mouseY, delta);
 		
 		var client = InstanceUtil.getClient();
 		
 		var provider = client.getBufferBuilders().getEffectVertexConsumers();
 		
-		backgroundTexture.get().draw(matrices, provider, 0, 0, width, height);
+		backgroundTexture.get().draw(context.getMatrices(), provider, 0, 0, width, height);
 		
 		provider.draw();
 		
@@ -125,7 +125,6 @@ public class BodySelectorHandledScreen extends BaseHandledScreen<BodySelectorScr
 	}
 	
 	@Override
-	public void renderBackground(MatrixStack matrices) {
-	
+	protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
 	}
 }

@@ -26,10 +26,10 @@ package com.github.mixinors.astromine.client.patchouli;
 
 import com.github.mixinors.astromine.common.recipe.AlloySmeltingRecipe;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
+import net.minecraft.world.World;
 import vazkii.patchouli.client.book.gui.GuiBook;
 import vazkii.patchouli.client.book.page.abstr.PageDoubleRecipeRegistry;
 
@@ -39,10 +39,9 @@ public class AlloySmeltingPage extends PageDoubleRecipeRegistry<AlloySmeltingRec
 	}
 	
 	@Override
-	public void drawRecipe(MatrixStack ms, AlloySmeltingRecipe recipe, int recipeX, int recipeY, int mouseX, int mouseY, boolean second) {
-		mc.getTextureManager().bindTexture(book.craftingTexture);
+	public void drawRecipe(DrawContext ms, AlloySmeltingRecipe recipe, int recipeX, int recipeY, int mouseX, int mouseY, boolean second) {
 		RenderSystem.enableBlend();
-		DrawableHelper.drawTexture(ms, recipeX, recipeY, 11, 135, 96, 43, 128, 256);
+		ms.drawTexture(book.craftingTexture, recipeX, recipeY, 11, 135, 96, 43, 128, 256);
 		parent.drawCenteredStringNoShadow(ms, getTitle(second).asOrderedText(), GuiBook.PAGE_WIDTH / 2, recipeY - 10, book.headerColor);
 		
 		parent.renderIngredient(ms, recipeX + 4, recipeY + 4, mouseX, mouseY, recipe.getFirstInput().asIngredient());
@@ -53,7 +52,7 @@ public class AlloySmeltingPage extends PageDoubleRecipeRegistry<AlloySmeltingRec
 	}
 	
 	@Override
-	protected ItemStack getRecipeOutput(AlloySmeltingRecipe recipe) {
+	protected ItemStack getRecipeOutput(World world, AlloySmeltingRecipe recipe) {
 		if (recipe == null) {
 			return ItemStack.EMPTY;
 		}

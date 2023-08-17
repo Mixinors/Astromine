@@ -107,9 +107,9 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 	public ExtendedBlockEntityScreenHandler(Supplier<? extends ScreenHandlerType<?>> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
 		
-		this.blockEntity = (ExtendedBlockEntity) player.world.getBlockEntity(position);
+		this.blockEntity = (ExtendedBlockEntity) player.getWorld().getBlockEntity(position);
 		
-		if (!player.world.isClient) {
+		if (!player.getWorld().isClient) {
 			blockEntity.setSyncItemStorage(true);
 			blockEntity.setSyncFluidStorage(true);
 			
@@ -243,7 +243,7 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 	}
 	
 	@Override
-	public ItemStack transferSlot(PlayerEntity player, int index) {
+	public ItemStack quickMove(PlayerEntity player, int index) {
 		onSlotClick(index, GLFW.GLFW_MOUSE_BUTTON_1, SlotActionType.QUICK_MOVE, player);
 		return ItemStack.EMPTY;
 	}

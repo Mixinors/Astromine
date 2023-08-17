@@ -165,7 +165,7 @@ public class PumpBlockEntity extends ExtendedBlockEntity implements FluidStorage
 							var posesChecked = new LongOpenHashSet();
 							var posToCheck = new ArrayDeque<BlockPos>();
 							
-							posToCheck.add(getPos().add(0, -Math.ceil(depth / 20.0D), 0));
+							posToCheck.add(getPos().add(0, (int) -Math.ceil(depth / 20.0D), 0));
 							
 							var mainCheckFluidState = world.getFluidState(posToCheck.getLast());
 							

@@ -36,7 +36,8 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
@@ -99,7 +100,7 @@ public class RocketEntity extends ExtendedEntity {
 	
 	@Override
 	public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
-		if (player.world.isClient()) {
+		if (player.getWorld().isClient()) {
 			return ActionResult.CONSUME;
 		}
 		
@@ -109,7 +110,7 @@ public class RocketEntity extends ExtendedEntity {
 	}
 	
 	@Override
-	public Packet<?> createSpawnPacket() {
+	public Packet<ClientPlayPacketListener> createSpawnPacket() {
 		return new EntitySpawnS2CPacket(this);
 	}
 	
@@ -117,7 +118,7 @@ public class RocketEntity extends ExtendedEntity {
 	public void tick() {
 		super.tick();
 		
-		if (!world.isClient) {
+		if (!getWorld().isClient) {
 			if (isRunning()) {
 				var acceleration = getAcceleration();
 				
@@ -128,11 +129,11 @@ public class RocketEntity extends ExtendedEntity {
 				
 				for (var x = box.minX; x < box.maxX; x += 0.0625) {
 					for (var z = box.minZ; z < box.maxZ; z += 0.0625) {
-						((ServerWorld) world).spawnParticles(AMParticles.ROCKET_FLAME.get(), x, getY(), z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
+						((ServerWorld) getWorld()).spawnParticles(AMParticles.ROCKET_FLAME.get(), x, getY(), z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
 					}
 				}
 			} else {
-				this.addVelocity(0, -GravityManager.get(world.getRegistryKey()), 0);
+				this.addVelocity(0, -GravityManager.get(getWorld().getRegistryKey()), 0);
 				this.move(MovementType.SELF, this.getVelocity());
 				
 				velocityDirty = true;

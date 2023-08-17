@@ -31,7 +31,7 @@ import com.google.common.base.Suppliers;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
-import net.minecraft.client.render.model.json.ModelTransformation;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -48,7 +48,7 @@ public class BuiltinModelItemRendererMixin {
 	private final Supplier<RocketEntityModel> primitiveRocketEntityModel = Suppliers.memoize(() -> new RocketEntityModel(MinecraftClient.getInstance().getEntityModelLoader().getModelPart(AMEntityModelLayers.ROCKET)));
 	
 	@Inject(method = "render", at = @At("HEAD"), cancellable = true)
-	private void astromine$render(ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, CallbackInfo ci) {
+	private void astromine$render(ItemStack stack, ModelTransformationMode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, CallbackInfo ci) {
 		if (stack.getItem() == AMItems.ROCKET.get()) {
 			ci.cancel();
 			
