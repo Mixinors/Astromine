@@ -1,9 +1,11 @@
 package com.github.mixinors.astromine.common.block.rocket;
 
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.mixinors.astromine.common.block.entity.rocket.RocketControllerBlockEntity;
 import com.github.mixinors.astromine.common.manager.RocketManager;
 import com.github.mixinors.astromine.common.screen.handler.rocket.RocketControllerScreenHandler;
+import com.github.mixinors.astromine.registry.common.AMWorlds;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
@@ -42,7 +44,13 @@ public class RocketControllerBlock extends HorizontalFacingBlockWithEntity {
 	
 	@Override
 	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-		return new RocketControllerScreenHandler(syncId, playerInventory.player, pos);
+		var rocketController = (RocketControllerBlockEntity) world.getBlockEntity(pos);
+		if (rocketController != null) {
+			if (((RocketControllerBlockEntity) world.getBlockEntity(pos)).getRocket() != null) {
+				return new RocketControllerScreenHandler(syncId, playerInventory.player, pos);
+			}
+		}
+		return null;
 	}
 	
 	@Override
@@ -56,9 +64,14 @@ public class RocketControllerBlock extends HorizontalFacingBlockWithEntity {
 		
 		var blockEntity = world.getBlockEntity(pos);
 		
-		if (blockEntity instanceof RocketControllerBlockEntity) {
-			// TODO: Check if needed.
-			RocketManager.create(placer.getUuid(), UUID.randomUUID());
+		if (!placer.getWorld().isClient())
+			RocketManager.sync(placer.getServer());
+		
+		if (blockEntity instanceof RocketControllerBlockEntity && world.getDimensionKey().equals(AMWorlds.ROCKET_INTERIORS_DIMENSION_TYPE_KEY)) {
+			var controllerBlockEntity = ((RocketControllerBlockEntity) blockEntity);
+			if (controllerBlockEntity.getRocket() == null) {
+				//RocketManager.create(placer.getUuid(), UUID.randomUUID());
+			}
 		}
 	}
 }

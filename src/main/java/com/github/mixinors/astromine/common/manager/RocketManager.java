@@ -1,5 +1,6 @@
 package com.github.mixinors.astromine.common.manager;
 
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.rocket.Rocket;
 import com.github.mixinors.astromine.registry.common.AMStaticComponents;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
@@ -166,7 +167,7 @@ public class RocketManager {
 		
 		var worldDir = server.getSavePath(WorldSavePath.ROOT).toFile();
 		
-		var rocketsFile = worldDir.toPath().resolve("data").resolve("stations.dat").toFile();
+		var rocketsFile = worldDir.toPath().resolve("data").resolve("rockets.dat").toFile();
 		
 		if (rocketsFile.exists()) {
 			var rocketsNbt = new NbtCompound();
