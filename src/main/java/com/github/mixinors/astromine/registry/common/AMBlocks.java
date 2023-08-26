@@ -51,6 +51,7 @@ import com.github.mixinors.astromine.common.block.storage.CapacitorBlock;
 import com.github.mixinors.astromine.common.block.storage.TankBlock;
 import com.github.mixinors.astromine.common.block.utility.*;
 import dev.architectury.registry.registries.RegistrySupplier;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.item.BlockItem;
@@ -358,12 +359,13 @@ public class AMBlocks {
 	public static <T extends Block> RegistrySupplier<T> register(String name, Supplier<T> block, Function<T, BlockItem> item) {
 		var b = register(AMCommon.id(name), block);
 		if (item != null) {
-			AMCommon.registry(RegistryKeys.ITEM).register(b.getId(), () -> {
-				var t = b.get();
-				var blockItem = item.apply(t);
+			var t = b.get();
+			var blockItem = item.apply(t);
+			var newItem = AMCommon.registry(RegistryKeys.ITEM).register(b.getId(), () -> {
 				Item.BLOCK_ITEMS.put(t, blockItem);
 				return blockItem;
 			});
+			AMItemGroups.addToDefault(newItem.get());
 		}
 		return b;
 	}

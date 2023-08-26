@@ -24,21 +24,38 @@
 
 package com.github.mixinors.astromine.registry.common;
 
+import com.github.mixinors.astromine.AMCommon;
 import dev.architectury.registry.CreativeTabRegistry;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.text.Text;
 
 import java.util.function.Supplier;
 
 public class AMItemGroups {
-	public static final ItemGroup ASTROMINE = register("astromine", AMItems.ITEM);
+	public static final RegistryKey<ItemGroup> ASTROMINE_KEY = RegistryKey.of(RegistryKeys.ITEM_GROUP, AMCommon.id("astromine"));
+	public static final ItemGroup ASTROMINE = register(ASTROMINE_KEY, CreativeTabRegistry.create(Text.of("itemGroup.astromine.general"), () -> new ItemStack(AMItems.ITEM.get())));
 	
 	public static void init() {
 	}
 	
-	public static ItemGroup register(String id, Supplier<? extends ItemConvertible> icon) {
-		return CreativeTabRegistry.create(Text.of("itemGroup.astromine." + id), () -> new ItemStack(icon.get()));
+	public static void addToItemGroup(RegistryKey<ItemGroup> group, Item item) {
+		ItemGroupEvents.modifyEntriesEvent(group).register(entries -> entries.add(item));
+	}
+	
+	public static void addToDefault(Item item) {
+		ItemGroupEvents.modifyEntriesEvent(ASTROMINE_KEY).register(entries -> entries.add(item));
+	}
+	
+	public static ItemGroup register(RegistryKey<ItemGroup> key, ItemGroup itemGroup) {
+		return Registry.register(Registries.ITEM_GROUP, key, itemGroup);
 	}
 }

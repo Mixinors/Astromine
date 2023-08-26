@@ -70,6 +70,7 @@ public class AMCommon implements ModInitializer {
 		AMWorlds.init();
 		AMFeatures.init();
 		AMStructureTypes.init();
+		AMItemGroups.init();
 		AMItems.init();
 		AMBlocks.init();
 		AMScreenHandlers.init();
@@ -86,7 +87,6 @@ public class AMCommon implements ModInitializer {
 		AMCriteria.init();
 		AMToolMaterials.init();
 		AMOres.init();
-		AMItemGroups.init();
 		AMNetworking.init();
 		AMLookups.init();
 		AMBodies.init();

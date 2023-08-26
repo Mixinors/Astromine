@@ -45,6 +45,7 @@ import com.github.mixinors.astromine.common.rocket.RocketLandingMechanismPart;
 import com.github.mixinors.astromine.common.rocket.RocketThrusterPart;
 import com.github.mixinors.astromine.common.util.data.tier.Tier;
 import dev.architectury.registry.registries.RegistrySupplier;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.*;
@@ -55,9 +56,9 @@ import net.minecraft.util.Rarity;
 import java.util.function.Supplier;
 
 public class AMItems {
-	public static final RegistrySupplier<Item> ENERGY = register("energy", () -> new Item(new Item.Settings()));
-	public static final RegistrySupplier<Item> FLUID = register("fluid", () -> new Item(new Item.Settings()));
-	public static final RegistrySupplier<Item> ITEM = register("item", () -> new Item(new Item.Settings()));
+	public static final RegistrySupplier<Item> ENERGY = registerNoGroup("energy", () -> new Item(new Item.Settings()));
+	public static final RegistrySupplier<Item> FLUID = registerNoGroup("fluid", () -> new Item(new Item.Settings()));
+	public static final RegistrySupplier<Item> ITEM = registerNoGroup("item", () -> new Item(new Item.Settings()));
 	
 	public static final RegistrySupplier<Item> MANUAL = register("manual", () -> new ManualItem(getSettings().maxCount(1)));
 	
@@ -462,6 +463,29 @@ public class AMItems {
 	 * @return Item instance registered
 	 */
 	public static <T extends Item> RegistrySupplier<T> register(Identifier name, Supplier<T> item) {
+		RegistrySupplier<T> i = AMCommon.registry(RegistryKeys.ITEM).register(name, item);
+		AMItemGroups.addToDefault(i.get());
+		
+		return i;
+	}
+	
+	/**
+	 * @param name Name of item instance to be registered
+	 * @param item Item instance to be registered
+	 *
+	 * @return Item instance registered
+	 */
+	public static <T extends Item> RegistrySupplier<T> registerNoGroup(String name, Supplier<T> item) {
+		return registerNoGroup(AMCommon.id(name), item);
+	}
+	
+	/**
+	 * @param name Identifier of item instance to be registered
+	 * @param item Item instance to be registered
+	 *
+	 * @return Item instance registered
+	 */
+	public static <T extends Item> RegistrySupplier<T> registerNoGroup(Identifier name, Supplier<T> item) {
 		return AMCommon.registry(RegistryKeys.ITEM).register(name, item);
 	}
 	
