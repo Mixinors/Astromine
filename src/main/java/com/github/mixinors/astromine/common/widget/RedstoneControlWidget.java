@@ -98,7 +98,10 @@ public class RedstoneControlWidget extends ButtonWidget {
 	}
 	
 	@Override
-	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+	public void draw(DrawContext context, float tickDelta) {
+		var matrices = context.getMatrices();
+		var provider = context.getVertexConsumers();
+		
 		if (blockEntity == null) {
 			return;
 		}
