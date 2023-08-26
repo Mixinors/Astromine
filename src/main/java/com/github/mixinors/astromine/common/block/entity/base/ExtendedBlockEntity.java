@@ -286,17 +286,21 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 			energyStorage.amount = energyStorageNbt.getLong(AMOUNT_KEY);
 		}
 		
-		if (nbt.contains(ITEM_STORAGE_KEY)) {
-			var itemStorageNbt = nbt.getCompound(ITEM_STORAGE_KEY);
-			
-			itemStorage.readFromNbt(itemStorageNbt);
-		} else if (nbt.contains(ITEM_STORAGE_SIDINGS_KEY)) {
-			var sidings = getItemStorage().getSidings();
-			
-			var sidingsNbt = nbt.getCompound(ITEM_STORAGE_SIDINGS_KEY);
-			
-			for (var i = 0; i < sidings.length; ++i) {
-				sidings[i] = StorageSiding.values()[sidingsNbt.getInt(String.valueOf(i))];
+		if (itemStorage != null) {
+			if (nbt.contains(ITEM_STORAGE_KEY)) {
+				var itemStorageNbt = nbt.getCompound(ITEM_STORAGE_KEY);
+				
+				itemStorage.readFromNbt(itemStorageNbt);
+			} else if (nbt.contains(ITEM_STORAGE_SIDINGS_KEY)) {
+				if (getItemStorage() != null) {
+					var sidings = getItemStorage().getSidings();
+					
+					var sidingsNbt = nbt.getCompound(ITEM_STORAGE_SIDINGS_KEY);
+					
+					for (var i = 0; i < sidings.length; ++i) {
+						sidings[i] = StorageSiding.values()[sidingsNbt.getInt(String.valueOf(i))];
+					}
+				}
 			}
 		}
 		
@@ -305,12 +309,14 @@ public abstract class ExtendedBlockEntity extends BlockEntity implements Tickabl
 			
 			fluidStorage.readFromNbt(fluidStorageNbt);
 		} else if (nbt.contains(FLUID_STORAGE_SIDINGS_KEY)) {
-			var sidings = getFluidStorage().getSidings();
-			
-			var sidingsNbt = nbt.getCompound(FLUID_STORAGE_SIDINGS_KEY);
-			
-			for (var i = 0; i < sidings.length; ++i) {
-				sidings[i] = StorageSiding.values()[sidingsNbt.getInt(String.valueOf(i))];
+			if (getFluidStorage() != null) {
+				var sidings = getFluidStorage().getSidings();
+				
+				var sidingsNbt = nbt.getCompound(FLUID_STORAGE_SIDINGS_KEY);
+				
+				for (var i = 0; i < sidings.length; ++i) {
+					sidings[i] = StorageSiding.values()[sidingsNbt.getInt(String.valueOf(i))];
+				}
 			}
 		}
 		

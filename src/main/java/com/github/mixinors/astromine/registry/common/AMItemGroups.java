@@ -47,12 +47,12 @@ public class AMItemGroups {
 	public static void init() {
 	}
 	
-	public static void addToItemGroup(RegistryKey<ItemGroup> group, Item item) {
-		ItemGroupEvents.modifyEntriesEvent(group).register(entries -> entries.add(item));
+	public static void addToItemGroup(ItemGroup group, Item item) {
+		CreativeTabRegistry.appendBuiltin(group, item);
 	}
 	
 	public static void addToDefault(Item item) {
-		ItemGroupEvents.modifyEntriesEvent(ASTROMINE_KEY).register(entries -> entries.add(item));
+		CreativeTabRegistry.appendBuiltin(ASTROMINE, item);
 	}
 	
 	public static ItemGroup register(RegistryKey<ItemGroup> key, ItemGroup itemGroup) {

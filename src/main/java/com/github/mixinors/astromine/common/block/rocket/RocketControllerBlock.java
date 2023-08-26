@@ -44,6 +44,10 @@ public class RocketControllerBlock extends HorizontalFacingBlockWithEntity {
 	
 	@Override
 	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+		if (!world.isClient()) {
+			RocketManager.sync(world.getServer());
+		}
+		
 		var rocketController = (RocketControllerBlockEntity) world.getBlockEntity(pos);
 		if (rocketController != null) {
 			if (((RocketControllerBlockEntity) world.getBlockEntity(pos)).getRocket() != null) {
