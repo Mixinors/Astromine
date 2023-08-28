@@ -1,5 +1,6 @@
 package com.github.mixinors.astromine.common.rocket;
 
+import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.item.rocket.*;
 import com.github.mixinors.astromine.common.manager.RocketManager;
 import com.github.mixinors.astromine.common.recipe.ingredient.FluidIngredient;
@@ -245,7 +246,8 @@ public final class Rocket implements Tickable {
 							var server = InstanceUtil.getServer();
 							if (server == null) return;
 							
-							RocketManager.sync(server);
+							// TODO Find out why the heck updateFluidStorage gets called so often
+							//RocketManager.sync(server);
 						}).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
 		}
 	}
@@ -270,7 +272,8 @@ public final class Rocket implements Tickable {
 		var server = InstanceUtil.getServer();
 		if (server == null) return;
 		
-		RocketManager.sync(server);
+		// TODO Find out why the heck onStorageUpdate gets called so often
+		//RocketManager.sync(server);
 	}
 	
 	private void tickJourney() {

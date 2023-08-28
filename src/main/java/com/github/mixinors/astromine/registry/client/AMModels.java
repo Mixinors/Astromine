@@ -27,23 +27,20 @@ package com.github.mixinors.astromine.registry.client;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.model.block.CableModel;
 import com.github.mixinors.astromine.client.model.block.DynamicModel;
-import com.google.common.collect.ImmutableList;
+import com.google.common.base.Suppliers;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
-import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
-import net.minecraft.client.render.model.*;
+import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
+import net.minecraft.client.render.model.BuiltinBakedModel;
 import net.minecraft.client.render.model.json.JsonUnbakedModel;
 import net.minecraft.client.render.model.json.ModelOverrideList;
 import net.minecraft.client.render.model.json.ModelTransformation;
-import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.ModelIdentifier;
-import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Lazy;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Collection;
-import java.util.function.Function;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 public class AMModels {
 	public static final Identifier PRIMITIVE_ENERGY_CABLE_CENTER_MODEL_ID = AMCommon.id("block/primitive_energy_cable_center");
@@ -81,7 +78,7 @@ public class AMModels {
 	
 	private static final String MODELS_PREFIX = "models/";
 	
-	public static final Lazy<ModelTransformation> ITEM_HANDHELD_TRANSFORMATION = new Lazy<>(() -> {
+	public static final Supplier<ModelTransformation> ITEM_HANDHELD_TRANSFORMATION = Suppliers.memoize(() -> {
 		try {
 			var resource = InstanceUtil.getClient().getResourceManager().getResource(new Identifier("minecraft:models/item/handheld.json")).orElse(null);
 			// TODO: Handle?
@@ -100,85 +97,64 @@ public class AMModels {
 	
 	
 	public static void init() {
-		ModelLoadingRegistry.INSTANCE.registerVariantProvider(resourceManager -> (modelIdentifier, modelProviderContext) -> {
-			if (modelIdentifier.equals(ROCKET_INVENTORY)) {
-				return new UnbakedModel() {
-					@Override
-					public Collection<Identifier> getModelDependencies() {
-						return ImmutableList.of();
-					}
-					
-					@Override
-					public void setParents(Function<Identifier, UnbakedModel> modelLoader) {
-					}
-					
-					@Override
-					public BakedModel bake(Baker loader, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings rotationContainer, Identifier modelId) {
-						return new BuiltinBakedModel(ITEM_HANDHELD_TRANSFORMATION.get(), ModelOverrideList.EMPTY, null, true);
-					}
-				};
-			}
-			
-			return null;
-		});
-		
-		ModelLoadingRegistry.INSTANCE.registerResourceProvider(resourceManager -> (modelIdentifier, modelProviderContext) -> {
-			if (modelIdentifier.equals(PRIMITIVE_ENERGY_CABLE_BLOCK_MODEL)) {
-				return new CableModel(PRIMITIVE_ENERGY_CABLE_CENTER_MODEL_ID, CABLE_SIDE_ID, CABLE_CONNECTOR_ID, CABLE_INSERT_CONNECTOR_ID, CABLE_EXTRACT_CONNECTOR_ID, CABLE_INSERT_EXTRACT_CONNECTOR_ID);
-			}
-			
-			if (modelIdentifier.equals(BASIC_ENERGY_CABLE_BLOCK_MODEL)) {
-				return new CableModel(BASIC_ENERGY_CABLE_CENTER_MODEL_ID, CABLE_SIDE_ID, CABLE_CONNECTOR_ID, CABLE_INSERT_CONNECTOR_ID, CABLE_EXTRACT_CONNECTOR_ID, CABLE_INSERT_EXTRACT_CONNECTOR_ID);
-			}
-			
-			if (modelIdentifier.equals(ADVANCED_ENERGY_CABLE_BLOCK_MODEL)) {
-				return new CableModel(ADVANCED_ENERGY_CABLE_CENTER_MODEL_ID, CABLE_SIDE_ID, CABLE_CONNECTOR_ID, CABLE_INSERT_CONNECTOR_ID, CABLE_EXTRACT_CONNECTOR_ID, CABLE_INSERT_EXTRACT_CONNECTOR_ID);
-			}
-			
-			if (modelIdentifier.equals(ELITE_ENERGY_CABLE_BLOCK_MODEL)) {
-				return new CableModel(ELITE_ENERGY_CABLE_CENTER_MODEL_ID, CABLE_SIDE_ID, CABLE_CONNECTOR_ID, CABLE_INSERT_CONNECTOR_ID, CABLE_EXTRACT_CONNECTOR_ID, CABLE_INSERT_EXTRACT_CONNECTOR_ID);
-			}
-			
-			if (modelIdentifier.equals(FLUID_PIPE_BLOCK_MODEL)) {
-				return new CableModel(FLUID_PIPE_CENTER_MODEL_ID, CABLE_SIDE_ID, CABLE_CONNECTOR_ID, CABLE_INSERT_CONNECTOR_ID, CABLE_EXTRACT_CONNECTOR_ID, CABLE_INSERT_EXTRACT_CONNECTOR_ID);
-			}
-			
-			if (modelIdentifier.equals(ITEM_CONDUIT_BLOCK_MODEL)) {
-				return new CableModel(ITEM_CONDUIT_CENTER_MODEL_ID, CABLE_SIDE_ID, CABLE_CONNECTOR_ID, CABLE_INSERT_CONNECTOR_ID, CABLE_EXTRACT_CONNECTOR_ID, CABLE_INSERT_EXTRACT_CONNECTOR_ID);
-			}
-			
-			if (modelIdentifier.getNamespace().equals(AMCommon.MOD_ID)) {
-				if (modelIdentifier.getPath().contains(MOON)) {
-					return new DynamicModel(AMCommon.id(modelIdentifier.getPath()));
+		PreparableModelLoadingPlugin.register((resourceManager, executor) -> CompletableFuture.completedFuture(resourceManager), (manager, pluginContext) -> {
+			pluginContext.modifyModelAfterBake().register((model, context) -> {
+				if (context.id().equals(ROCKET_INVENTORY)) {
+					return new BuiltinBakedModel(ITEM_HANDHELD_TRANSFORMATION.get(), ModelOverrideList.EMPTY, null, true);
 				}
-			}
+				
+				return model;
+			});
 			
-			return null;
-		});
-		
-		ModelLoadingRegistry.INSTANCE.registerModelProvider((resourceManager, out) -> out.accept(PRIMITIVE_ENERGY_CABLE_CENTER_MODEL_ID));
-		
-		ModelLoadingRegistry.INSTANCE.registerModelProvider((resourceManager, out) -> out.accept(BASIC_ENERGY_CABLE_CENTER_MODEL_ID));
-		
-		ModelLoadingRegistry.INSTANCE.registerModelProvider((resourceManager, out) -> out.accept(ADVANCED_ENERGY_CABLE_CENTER_MODEL_ID));
-		
-		ModelLoadingRegistry.INSTANCE.registerModelProvider((resourceManager, out) -> out.accept(ELITE_ENERGY_CABLE_CENTER_MODEL_ID));
-		
-		ModelLoadingRegistry.INSTANCE.registerModelProvider((resourceManager, out) -> out.accept(FLUID_PIPE_CENTER_MODEL_ID));
-		
-		ModelLoadingRegistry.INSTANCE.registerModelProvider((resourceManager, out) -> out.accept(ITEM_CONDUIT_CENTER_MODEL_ID));
-		
-		ModelLoadingRegistry.INSTANCE.registerModelProvider((resourceManager, out) -> out.accept(CABLE_SIDE_ID));
-		
-		ModelLoadingRegistry.INSTANCE.registerModelProvider((resourceManager, out) -> out.accept(CABLE_CONNECTOR_ID));
-		ModelLoadingRegistry.INSTANCE.registerModelProvider((resourceManager, out) -> out.accept(CABLE_INSERT_CONNECTOR_ID));
-		ModelLoadingRegistry.INSTANCE.registerModelProvider((resourceManager, out) -> out.accept(CABLE_EXTRACT_CONNECTOR_ID));
-		ModelLoadingRegistry.INSTANCE.registerModelProvider((resourceManager, out) -> out.accept(CABLE_INSERT_EXTRACT_CONNECTOR_ID));
-		
-		ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
-			for (var id : manager.findResources(MODELS_PREFIX, resource  -> resource.getPath().contains(MOON)).keySet()) {
-				out.accept(id);
-			}
+			pluginContext.resolveModel().register(context -> {
+				if (context.id().equals(PRIMITIVE_ENERGY_CABLE_BLOCK_MODEL)) {
+					return new CableModel(PRIMITIVE_ENERGY_CABLE_CENTER_MODEL_ID, CABLE_SIDE_ID, CABLE_CONNECTOR_ID, CABLE_INSERT_CONNECTOR_ID, CABLE_EXTRACT_CONNECTOR_ID, CABLE_INSERT_EXTRACT_CONNECTOR_ID);
+				}
+				
+				if (context.id().equals(BASIC_ENERGY_CABLE_BLOCK_MODEL)) {
+					return new CableModel(BASIC_ENERGY_CABLE_CENTER_MODEL_ID, CABLE_SIDE_ID, CABLE_CONNECTOR_ID, CABLE_INSERT_CONNECTOR_ID, CABLE_EXTRACT_CONNECTOR_ID, CABLE_INSERT_EXTRACT_CONNECTOR_ID);
+				}
+				
+				if (context.id().equals(ADVANCED_ENERGY_CABLE_BLOCK_MODEL)) {
+					return new CableModel(ADVANCED_ENERGY_CABLE_CENTER_MODEL_ID, CABLE_SIDE_ID, CABLE_CONNECTOR_ID, CABLE_INSERT_CONNECTOR_ID, CABLE_EXTRACT_CONNECTOR_ID, CABLE_INSERT_EXTRACT_CONNECTOR_ID);
+				}
+				
+				if (context.id().equals(ELITE_ENERGY_CABLE_BLOCK_MODEL)) {
+					return new CableModel(ELITE_ENERGY_CABLE_CENTER_MODEL_ID, CABLE_SIDE_ID, CABLE_CONNECTOR_ID, CABLE_INSERT_CONNECTOR_ID, CABLE_EXTRACT_CONNECTOR_ID, CABLE_INSERT_EXTRACT_CONNECTOR_ID);
+				}
+				
+				if (context.id().equals(FLUID_PIPE_BLOCK_MODEL)) {
+					return new CableModel(FLUID_PIPE_CENTER_MODEL_ID, CABLE_SIDE_ID, CABLE_CONNECTOR_ID, CABLE_INSERT_CONNECTOR_ID, CABLE_EXTRACT_CONNECTOR_ID, CABLE_INSERT_EXTRACT_CONNECTOR_ID);
+				}
+				
+				if (context.id().equals(ITEM_CONDUIT_BLOCK_MODEL)) {
+					return new CableModel(ITEM_CONDUIT_CENTER_MODEL_ID, CABLE_SIDE_ID, CABLE_CONNECTOR_ID, CABLE_INSERT_CONNECTOR_ID, CABLE_EXTRACT_CONNECTOR_ID, CABLE_INSERT_EXTRACT_CONNECTOR_ID);
+				}
+				
+				if (context.id().getNamespace().equals(AMCommon.MOD_ID)) {
+					if (context.id().getPath().contains(MOON)) {
+						return new DynamicModel(AMCommon.id(context.id().getPath()));
+					}
+				}
+				
+				return null;
+			});
+			
+			pluginContext.addModels(
+					PRIMITIVE_ENERGY_CABLE_CENTER_MODEL_ID,
+					BASIC_ENERGY_CABLE_CENTER_MODEL_ID,
+					ADVANCED_ENERGY_CABLE_CENTER_MODEL_ID,
+					ELITE_ENERGY_CABLE_CENTER_MODEL_ID,
+					FLUID_PIPE_CENTER_MODEL_ID,
+					ITEM_CONDUIT_CENTER_MODEL_ID,
+					CABLE_SIDE_ID,
+					CABLE_CONNECTOR_ID,
+					CABLE_INSERT_CONNECTOR_ID,
+					CABLE_EXTRACT_CONNECTOR_ID,
+					CABLE_INSERT_EXTRACT_CONNECTOR_ID
+			);
+			
+			pluginContext.addModels(manager.findResources(MODELS_PREFIX, resource -> resource.getPath().contains(MOON)).keySet());
 		});
 	}
 }
