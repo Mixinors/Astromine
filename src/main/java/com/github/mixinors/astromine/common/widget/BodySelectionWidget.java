@@ -161,7 +161,6 @@ public class BodySelectionWidget extends Widget {
 		// Translate to the Title's position.
 		matrices.translate(informationWidth / 2.0F - TextUtil.getWidth(bodyName) / 2.0F, 0.0F, 0.0F);
 		
-		var context = new DrawContext(MinecraftClient.getInstance(), MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers());
 		context.drawText(textRenderer, bodyName, 0, 0, Color.WHITE.toRgb(), false);
 		
 		matrices.pop(); // 2
