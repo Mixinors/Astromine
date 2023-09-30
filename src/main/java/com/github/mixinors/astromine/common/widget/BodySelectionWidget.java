@@ -7,6 +7,7 @@ import com.github.mixinors.astromine.registry.client.AMRenderLayers;
 import dev.vini2003.hammer.core.api.client.color.Color;
 import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.core.api.common.queue.ServerTaskQueue;
 import dev.vini2003.hammer.core.api.common.util.TextUtil;
 import dev.vini2003.hammer.gui.api.common.event.MouseClickedEvent;
@@ -41,6 +42,11 @@ public class BodySelectionWidget extends Widget {
 	
 	public BodySelectionWidget() {
 		this.body = null;
+	}
+	
+	@Override
+	public Size getStandardSize() {
+		return new Size(0.0F, 0.0F);
 	}
 	
 	public Body getBody() {

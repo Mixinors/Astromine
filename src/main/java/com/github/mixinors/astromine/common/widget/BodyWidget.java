@@ -10,6 +10,7 @@ import com.google.common.collect.ImmutableList;
 import dev.vini2003.hammer.core.api.client.color.Color;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.client.util.PositionUtil;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderLayer;
@@ -32,6 +33,10 @@ public class BodyWidget extends Widget {
 	
 	public BodyWidget(Body body) {
 		this.body = body;
+	}
+	
+	public Size getStandardSize() {
+		return new Size(0.0F, 0.0F);
 	}
 	
 	public Body getBody() {

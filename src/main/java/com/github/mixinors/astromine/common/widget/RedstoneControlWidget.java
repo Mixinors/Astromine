@@ -7,6 +7,7 @@ import com.google.common.collect.ImmutableList;
 import dev.architectury.networking.NetworkManager;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.event.MouseClickedEvent;
 import dev.vini2003.hammer.gui.api.common.widget.button.ButtonWidget;
 import dev.vini2003.hammer.gui.api.common.widget.panel.PanelWidget;
@@ -58,6 +59,10 @@ public class RedstoneControlWidget extends ButtonWidget {
 			
 			return ImmutableList.of();
 		});
+	}
+	
+	public Size getStandardSize() {
+		return new Size(0.0F, 0.0F);
 	}
 	
 	@Override

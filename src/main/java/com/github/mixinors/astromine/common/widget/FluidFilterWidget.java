@@ -4,8 +4,10 @@ import com.github.mixinors.astromine.AMCommon;
 import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
 import dev.vini2003.hammer.core.api.client.texture.TiledFluidTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.core.api.common.util.FluidTextUtil;
 import dev.vini2003.hammer.gui.api.common.event.MouseClickedEvent;
+import dev.vini2003.hammer.gui.api.common.event.type.EventType;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
@@ -41,6 +43,15 @@ public class FluidFilterWidget extends Widget {
 			
 			return tooltips;
 		});
+	}
+	
+	public Size getStandardSize() {
+		return new Size(0.0F, 0.0F);
+	}
+	
+	@Override
+	public boolean shouldSync(EventType type) {
+		return type == EventType.MOUSE_CLICKED;
 	}
 	
 	@Override

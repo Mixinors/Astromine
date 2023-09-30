@@ -10,6 +10,7 @@ import com.google.common.collect.ImmutableList;
 import dev.architectury.networking.NetworkManager;
 import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.event.MouseClickedEvent;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -80,6 +81,10 @@ public class StorageSidingWidget extends Widget {
 			
 			return ImmutableList.of(Text.translatable("text.astromine.siding." + offset.getName()), name);
 		});
+	}
+	
+	public Size getStandardSize() {
+		return new Size(0.0F, 0.0F);
 	}
 	
 	@Override

@@ -217,9 +217,9 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 		public void tick() {
 			super.tick();
 			
-			if (fluidStorage.getStorage(FLUID_OUTPUT_SLOT).getResource().getFluid() != Fluids.EMPTY) {
+			if (fluidStorage.getStorage(FLUID_OUTPUT_SLOT).getResource().getFluid() == Fluids.EMPTY && !getFilter().isBlank()) {
 				try (var transaction = Transaction.openOuter()) {
-					fluidStorage.getStorage(FLUID_OUTPUT_SLOT).insert(fluidStorage.getStorage(FLUID_OUTPUT_SLOT).getResource(), getFluidStorageSize(), transaction);
+					fluidStorage.getStorage(FLUID_OUTPUT_SLOT).insert(getFilter(), getFluidStorageSize(), transaction);
 					
 					transaction.commit();
 				}
