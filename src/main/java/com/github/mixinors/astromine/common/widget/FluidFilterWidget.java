@@ -66,7 +66,7 @@ public class FluidFilterWidget extends Widget {
 				var fluidStorage = FluidStorage.ITEM.find(cursorStack, ContainerItemContext.ofPlayerCursor(screenHandler.getPlayer(), screenHandler));
 				
 				if (fluidStorage != null) {
-					var fluidVariant = StorageUtil.findStoredResource(fluidStorage, null);
+					var fluidVariant = StorageUtil.findStoredResource(fluidStorage);
 					
 					if (fluidVariant == null) {
 						this.fluidVariant = FluidVariant::blank;
