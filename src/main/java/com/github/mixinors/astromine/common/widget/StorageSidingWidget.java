@@ -43,6 +43,10 @@ public class StorageSidingWidget extends Widget {
 	
 	public StorageSidingWidget() {
 		setTooltipSupplier(() -> {
+			if (direction == null || rotation == null) {
+				return ImmutableList.of();
+			}
+			
 			var offset = MirrorUtils.rotate(direction, rotation);
 			
 			var sidings = new StorageSiding[6];
