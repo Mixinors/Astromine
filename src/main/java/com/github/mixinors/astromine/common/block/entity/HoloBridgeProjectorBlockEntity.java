@@ -182,7 +182,17 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			var shape = VoxelShapes.empty();
 			
 			for (var bridgePos : bridgePositions) {
-				for (var z = bridgePos.getZ() - 1.0F; z < bridgePos.getZ() + (1.0F / 16.0F) * 16.0F; z += (1.0F / 16.0F)) {
+				var a = 0.0F;
+				var b = 0.0F;
+				if (bridgePos.z < 0.0F) {
+					a = -1.0F;
+					b = 0.0F;
+				} else {
+					a = 0.0F;
+					b = 1.0F;
+				}
+				
+				for (var z = bridgePos.getZ() + a; z < bridgePos.getZ() + b; z += (1.0F / 16.0F)) {
 					var x = bridgePos.getX();
 					var y = bridgePos.getY();
 					
