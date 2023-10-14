@@ -46,10 +46,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import org.jetbrains.annotations.NotNull;
@@ -97,6 +94,18 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	
 	@Override
 	public void tick() {
+		for (var position : getBridgePositions()) {
+			world.addParticle(
+					ParticleTypes.FLAME,
+					position.getX() + 0.5F,
+					position.getY() + 0.5F,
+					position.getZ() + 0.5F,
+					0.0F,
+					0.0F,
+					0.0F
+			);
+		}
+		
 		if (world != null && world.isClient) {
 			if (shouldInitialize) {
 				this.destroyBridge();
@@ -168,163 +177,69 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 		var bridgePositions = getBridgePositions();
 		var bridgeVoxelShapes = new HashMap<BlockPos, VoxelShape>();
 		
-		// Span X.
-		if (facing == Direction.NORTH || facing == Direction.SOUTH) {
-			for (var bridgePosition : bridgePositions) {
-				if (world.getBlockState(new BlockPos(
-						(int) bridgePosition.x,
-						(int) bridgePosition.y,
-						(int) bridgePosition.z
-				)).isAir()) {
-					continue;
-				}
-				
-				// We need to find all the blocks that this section spans.
-				
-				// To do that, we subtract 0.5F on the X, then step through
-				// that until the point after adding 0.5F to it.
-				
-				// We step in increments of 1.0F / 16.0F; building the
-				// shape cube by cube.
-				
-				// When the X changes, we save the position and voxel shape,
-				// and restart it.
-				
-				var shape = VoxelShapes.empty();
-				
-				var prevX = bridgePosition.getX() - 0.5F;
-				
-				for (var x = bridgePosition.getX() - 0.5F; x < bridgePosition.getX() + 0.5F; x += (1.0F / 16.0F)) {
-					var y = bridgePosition.getY();
-					var z = bridgePosition.getZ();
-					
-					if ((int) x != (int) prevX) {
-						// X has changed. Save the VoxelShape; move to the next.
-						bridgeVoxelShapes.put(
-								new BlockPos(
-										(int) x,
-										(int) y,
-										(int) z
-								),
-								shape
-						);
-						
-						// Start by placing the first cube in the next voxel shape.
-						
-						// The added cube is 1.0F / 16.0F in the X, Y and Z axis.
-						// Its coordinates are local to the block; and as such we simply
-						// do n % (int) n.
-						shape = VoxelShapes.union(
-								shape,
-								VoxelShapes.cuboid(
-										x % ((int) x),
-										y % ((int) y),
-										z % ((int) z),
-										x % ((int) x) + (1.0F / 16.0F),
-										y % ((int) y) + (1.0F / 16.0F),
-										z % ((int) z) + (1.0F / 16.0F)
-								
-								)
-						);
-					} else {
-						shape = VoxelShapes.union(
-								shape,
-								VoxelShapes.cuboid(
-										x % ((int) x),
-										y % ((int) y),
-										z % ((int) z),
-										x % ((int) x) + (1.0F / 16.0F),
-										y % ((int) y) + (1.0F / 16.0F),
-										z % ((int) z) + (1.0F / 16.0F)
-								
-								)
-						);
-					}
-					
-					prevX = x;
-				}
-			}
-		}
-		
 		// Span Z.
 		if (facing == Direction.WEST || facing == Direction.EAST) {
 			var shape = VoxelShapes.empty();
-
-			var prevX = -1.0F;
-			var prevY = -1.0F;
-			var prevZ = -1.0F;
 			
-			for (var bridgePosition : bridgePositions) {
-				var bridgeBlockPos = new BlockPos(
-						(int) bridgePosition.getX(),
-						(int) bridgePosition.getY(),
-						(int) bridgePosition.getZ()
-				);
-				
-				if (
-						(int) bridgePosition.getZ() != (int) prevZ ||
-						(int) bridgePosition.getY() != (int) prevY ||
-						(int) bridgePosition.getX() != (int) prevX
-				
-				) {
-					if (bridgeVoxelShapes.containsKey(bridgeBlockPos)) {
-						shape = bridgeVoxelShapes.get(bridgeBlockPos);
-					} else {
-						shape = VoxelShapes.empty();
-					}
-				}
-				
-				prevX = (float) bridgePosition.getX();
-				prevY = (float) bridgePosition.getY();
-				prevZ = (float) bridgePosition.getZ();
-				
-				for (var z = bridgePosition.getZ(); z < bridgePosition.getZ() + 1.0F; z += (1.0F / 16.0F)) {
-					if (world instanceof ServerWorld serverWorld) {
-						serverWorld.spawnParticles(
-								ParticleTypes.FLAME,
-								bridgePosition.getX() + 0.5F,
-								bridgePosition.getY() + 0.5F,
-								z,
-								1,
-								0.0F,
-								0.0F,
-								0.0F,
-								0.0F
-						);
-					}
+			for (var bridgePos : bridgePositions) {
+				for (var z = bridgePos.getZ() - (1.0F / 16.0F) * 8.0F; z < bridgePos.getZ() + (1.0F / 16.0F) * 8.0F; z += (1.0F / 16.0F)) {
+					var x = bridgePos.getX();
+					var y = bridgePos.getY();
 					
-					var x = bridgePosition.getX();
-					var y = bridgePosition.getY();
+					var blockPos = new BlockPos((int) x, (int) y, (int) z);
+					
+					debug(new Vec3d(bridgePos.getX(), bridgePos.getY(), z), z);
 					
 					var cX = x % ((int) x);
 					var cY = y % ((int) y);
 					var cZ = z % ((int) z);
 					
-					shape = VoxelShapes.union(
-							shape,
-							VoxelShapes.cuboid(
-									cX,
-									cY,
-									cZ,
-									cX + (1.0F / 16.0F),
-									cY + (1.0F / 16.0F),
-									cZ + (1.0F / 16.0F)
-							)
-					);
+					if (cX <= 0) {
+						cX += 1.0;
+					}
 					
-					bridgeVoxelShapes.put(
-							new BlockPos(
-									(int) x,
-									(int) y,
-									(int) z
-							),
-							shape
-					);
+					if (cY <= 0) {
+						cY += 1.0;
+					}
+					
+					if (cZ <= 0) {
+						cZ += 1.0;
+					}
+					
+					cZ = MathHelper.clamp(cZ, 0, 1.0F - (1.0F / 16.0F));
+					cY = MathHelper.clamp(cY, 0, 1.0F - (1.0F / 16.0F));
+					cX = MathHelper.clamp(cX, 0, 1.0F - (1.0F / 16.0F));
+					
+					if (bridgeVoxelShapes.containsKey(blockPos)) {
+						shape = bridgeVoxelShapes.get(blockPos);
+					} else {
+						shape = VoxelShapes.empty();
+					}
+					
+					shape = VoxelShapes.union(shape, VoxelShapes.cuboid(cX - (1.0F / 16.0F), cY - (1.0F / 16.0F), cZ - (1.0F / 16.0F), cX + (1.0F / 16.0F), cY + (1.0F / 16.0F), cZ + (1.0F / 16.0F)));
+					
+					bridgeVoxelShapes.put(new BlockPos((int) x, (int) y, (int) z), shape);
 				}
 			}
 		}
 		
 		return bridgeVoxelShapes;
+	}
+	
+	private void debug(Vec3d bridgePosition, double z) {
+		if (world instanceof ServerWorld serverWorld) {
+			serverWorld.spawnParticles(
+					ParticleTypes.FLAME,
+					bridgePosition.getX() + 0.5F,
+					bridgePosition.getY() + 0.5F,
+					z,
+					1,
+					0.0F,
+					0.0F,
+					0.0F,
+					0.0F
+			);
+		}
 	}
 	
 	public Set<Vec3d> getBridgePositions() {
@@ -349,7 +264,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			positions.add(
 					new Vec3d(
 							thisPos.getX() + stepX * i,
-							thisPos.getY() + stepY * i + 1.0F,
+							thisPos.getY() + stepY * i,
 							thisPos.getZ() + stepZ * i
 					)
 			);

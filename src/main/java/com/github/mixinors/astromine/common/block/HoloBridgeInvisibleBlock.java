@@ -29,6 +29,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.*;
 import net.minecraft.item.Items;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
@@ -67,6 +68,8 @@ public class HoloBridgeInvisibleBlock extends Block {
 			return VoxelShapes.empty();
 		} else {
 			var bridgeComponent = HoloBridgesComponent.get(world);
+			
+			((World) world).addParticle(ParticleTypes.FLAME, position.getX() + 0.5, position.getY() + 0.5, position.getZ() + 0.5, 0, 0, 0);
 			
 			return bridgeComponent.getShape(position);
 		}
