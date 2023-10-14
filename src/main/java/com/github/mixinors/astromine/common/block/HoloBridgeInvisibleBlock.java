@@ -68,14 +68,7 @@ public class HoloBridgeInvisibleBlock extends Block {
 			return VoxelShapes.empty();
 		} else {
 			var bridgeComponent = HoloBridgesComponent.get(world);
-			
-			var shape =  bridgeComponent.getShape(position);
-			
-			if (!shape.isEmpty()) {
-				((World) world).addParticle(ParticleTypes.FLAME, position.getX() + 0.5, position.getY() + 0.5, position.getZ() + 0.5, 0, 0, 0);
-			}
-			
-			return shape;
+			return bridgeComponent.getShape(position);
 		}
 	}
 }

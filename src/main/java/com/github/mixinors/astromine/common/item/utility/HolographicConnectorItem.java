@@ -110,7 +110,7 @@ public class HolographicConnectorItem extends Item {
 					child = temporary;
 				}
 				
-				if ((parentPos.getX() != childPos.getX() && parentPos.getZ() != childPos.getZ()) || parentPos.getSquaredDistance(childPos) > 65536) {
+				if (parentPos.getSquaredDistance(childPos) > 65536) {
 					if (!world.isClient) {
 						player.setStackInHand(hand, unselect(stack));
 					} else {

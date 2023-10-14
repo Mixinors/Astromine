@@ -26,24 +26,18 @@ package com.github.mixinors.astromine.common.block.entity;
 
 import com.github.mixinors.astromine.common.component.world.HoloBridgesComponent;
 import com.github.mixinors.astromine.common.tick.Tickable;
-import com.github.mixinors.astromine.common.util.LineUtils;
-import com.github.mixinors.astromine.common.util.VectorUtils;
 import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.architectury.hooks.block.BlockEntityHooks;
 import dev.vini2003.hammer.core.api.client.color.Color;
-import net.fabricmc.loader.impl.lib.sat4j.core.Vec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.*;
@@ -94,30 +88,6 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	
 	@Override
 	public void tick() {
-		var pos = getBridgePositionInFront();
-		
-		world.addParticle(
-				ParticleTypes.END_ROD,
-				pos.x,
-				pos.y,
-				pos.z,
-				0.0F,
-				0.0F,
-				0.0F
-		);
-		
-		for (var bridgePos : getBridgePositions()) {
-			world.addParticle(
-					ParticleTypes.SOUL_FIRE_FLAME,
-					bridgePos.getX(),
-					bridgePos.getY(),
-					bridgePos.getZ(),
-					0.0F,
-					0.0F,
-					0.0F
-			);
-		}
-		
 		if (world != null && world.isClient) {
 			if (shouldInitialize) {
 				this.destroyBridge();
@@ -178,8 +148,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			component.setShape(pos, shape);
 			
 			if (world.getBlockState(pos).isAir()) {
-//				world.setBlockState(pos, Blocks.GOLD_BLOCK.getDefaultState());
-//				world.setBlockState(pos, AMBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.get().getDefaultState());
+				world.setBlockState(pos, AMBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.get().getDefaultState());
 			}
 		}
 	}
@@ -190,16 +159,82 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 		var bridgePositions = getBridgePositions();
 		var bridgeVoxelShapes = new HashMap<BlockPos, VoxelShape>();
 		
+		// Span X.
+		if (facing == Direction.NORTH || facing == Direction.SOUTH) {
+			var maxLoops = bridgePositions.size() * 16;
+			var totalLoops = 0;
+			
+			for (var bridgePos : bridgePositions) {
+				++totalLoops;
+				
+				if (totalLoops > maxLoops) {
+					for (var player : world.getPlayers()) {
+						player.sendMessage(Text.literal("Too many loops!").formatted(Formatting.RED), false);
+					}
+					
+					break;
+				}
+				
+				var y = bridgePos.y;
+				var z = bridgePos.z;
+				
+				for (var x = bridgePos.x - 0.5F; x < bridgePos.x + 0.5F; x += 1.0F / 16.0F) {
+					var bridgeBlockPos = new BlockPos((int) Math.floor(x), (int) Math.floor(y), (int) Math.floor(z));
+					
+					var shape = bridgeVoxelShapes.getOrDefault(bridgeBlockPos, VoxelShapes.empty());
+					
+					var cX = x % (int) x;
+					var cY = bridgePos.y % (int) bridgePos.y;
+					var cZ = bridgePos.z % (int) bridgePos.z;
+					
+					if (cX < 0.0F) {
+						cX += 1.0F;
+					}
+					if (cY < 0.0F) {
+						cY += 1.0F;
+					}
+					if (cZ < 0.0F) {
+						cZ += 1.0F;
+					}
+					
+					shape = VoxelShapes.union(
+							shape,
+							VoxelShapes.cuboid(
+									cX,
+									cY,
+									cZ,
+									cX + (1.0F / 16.0F),
+									cY + (1.0F / 16.0F),
+									cZ + (1.0F / 16.0F)
+							)
+					);
+					
+					bridgeVoxelShapes.put(bridgeBlockPos, shape);
+				}
+			}
+		}
+		
 		// Span Z.
 		if (facing == Direction.WEST || facing == Direction.EAST) {
+			var maxLoops = bridgePositions.size() * 16;
+			var totalLoops = 0;
+			
 			for (var bridgePos : bridgePositions) {
+				++totalLoops;
+				
+				if (totalLoops > maxLoops) {
+					for (var player : world.getPlayers()) {
+						player.sendMessage(Text.literal("Too many loops!").formatted(Formatting.RED), false);
+					}
+					
+					break;
+				}
+				
 				var x = bridgePos.x;
 				var y = bridgePos.y;
 				
 				for (var z = bridgePos.z - 0.5F; z < bridgePos.z + 0.5F; z += 1.0F / 16.0F) {
 					var bridgeBlockPos = new BlockPos((int) Math.floor(x), (int) Math.floor(y), (int) Math.floor(z));
-					
-					world.setBlockState(bridgeBlockPos, AMBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.get().getDefaultState());
 					
 					var shape = bridgeVoxelShapes.getOrDefault(bridgeBlockPos, VoxelShapes.empty());
 					
@@ -241,29 +276,13 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 		return bridgeVoxelShapes;
 	}
 	
-	private void debug(Vec3d bridgePosition, double z) {
-		if (world instanceof ServerWorld serverWorld) {
-			serverWorld.spawnParticles(
-					ParticleTypes.FLAME,
-					bridgePosition.getX(),
-					bridgePosition.getY(),
-					z,
-					1,
-					0.0F,
-					0.0F,
-					0.0F,
-					0.0F
-			);
-		}
-	}
-	
 	public Set<Vec3d> getBridgePositions() {
 		if (!hasChild()) {
 			return new HashSet<>();
 		}
 		
-		var thisPos = this.getBridgePositionInFront();
-		var childPos = child.getBridgePositionInFront();
+		var thisPos = this.getHookPosition();
+		var childPos = child.getHookPosition();
 		
 		var distance = thisPos.distanceTo(childPos);
 		
@@ -288,11 +307,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 		return positions;
 	}
 	
-	public BlockPos getPositionInFront() {
-		return getPos().offset(getCachedState().get(HORIZONTAL_FACING));
-	}
-	
-	public Vec3d getBridgePositionInFront() {
+	public Vec3d getHookPosition() {
 		return switch (getCachedState().get(HORIZONTAL_FACING)) {
 			case NORTH -> new Vec3d(getPos().getX() + 0.5F, getPos().getY() + 1.0F, getPos().getZ());
 			case SOUTH -> new Vec3d(getPos().getX() + 0.5F, getPos().getY() + 1.0F, getPos().getZ() + 1.0F);
