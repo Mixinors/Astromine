@@ -32,6 +32,7 @@ import com.github.mixinors.astromine.registry.common.AMBlockEntityTypes;
 import com.github.mixinors.astromine.registry.common.AMBlocks;
 import dev.architectury.hooks.block.BlockEntityHooks;
 import dev.vini2003.hammer.core.api.client.color.Color;
+import net.fabricmc.loader.impl.lib.sat4j.core.Vec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -40,15 +41,24 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.state.property.Properties;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
+import static net.minecraft.state.property.Properties.HORIZONTAL_FACING;
 
 public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Tickable {
 	public static final String CHILD_POSITION_KEY = "ChildPosition";
@@ -132,79 +142,235 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 		}
 	}
 	
-	public boolean attemptToBuildBridge(HoloBridgeProjectorBlockEntity child) {
-		var childPos = child.getPos();
-		var pos = this.getPos();
-		
-		var offsetChildPos = childPos;
-		
-		var childFacing = child.getCachedState().get(HorizontalFacingBlock.FACING);
-		
-		if (childFacing == Direction.EAST) {
-			offsetChildPos = offsetChildPos.add(1, 0, 0);
-		} else if (childFacing == Direction.SOUTH) {
-			offsetChildPos = offsetChildPos.add(0, 0, 1);
+	public void buildBridge() {
+		var component = HoloBridgesComponent.get(world);
+		if (component == null) {
+			return;
 		}
 		
-		var distance = (int) Math.sqrt(this.getPos().getSquaredDistance(child.getPos()));
+		var bridgeVoxelShapes = getBridgeVoxelShapes();
 		
-		if (distance == 0) {
-			return false;
-		}
-		
-		var segments = LineUtils.getBresenhamSegments(VectorUtils.toVector3f(pos.up()), VectorUtils.toVector3f(offsetChildPos.up()), 32);
-		
-		for (var segment : segments) {
-			var segmentPos = new BlockPos((int) segment.x(), (int) segment.y(), (int) segment.z());
+		for (var entry : bridgeVoxelShapes.entrySet()) {
+			var pos = entry.getKey();
+			var shape = entry.getValue();
 			
-			if ((segmentPos.getX() != childPos.getX() && segmentPos.getX() != pos.getX()) || (segmentPos.getZ() != childPos.getZ() && segmentPos.getZ() != pos.getZ())) {
-				if (!this.world.getBlockState(segmentPos).isAir()) {
-					return false;
-				}
+			component.setShape(pos, shape);
+			
+			if (world.getBlockState(pos).isAir()) {
+				world.setBlockState(pos, AMBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.get().getDefaultState());
 			}
 		}
-		
-		return true;
 	}
 	
-	public void buildBridge() {
-		if (this.child == null || this.world == null) {
-			return;
-		}
+	public Map<BlockPos, VoxelShape> getBridgeVoxelShapes() {
+		var facing = getCachedState().get(HORIZONTAL_FACING);
 		
-		var childPos = this.getChild().getPos();
-		var pos = this.getPos();
+		var bridgePositions = getBridgePositions();
+		var bridgeVoxelShapes = new HashMap<BlockPos, VoxelShape>();
 		
-		var offsetChildPos = childPos;
-		
-		var childFacing = this.getChild().getCachedState().get(HorizontalFacingBlock.FACING);
-		
-		if (childFacing == Direction.EAST) {
-			offsetChildPos = offsetChildPos.add(1, 0, 0);
-		} else if (childFacing == Direction.SOUTH) {
-			offsetChildPos = offsetChildPos.add(0, 0, 1);
-		}
-		
-		var distance = (int) Math.sqrt(this.getPos().getSquaredDistance(this.getChild().getPos()));
-		
-		if (distance == 0) {
-			return;
-		}
-		
-		this.segments = (ArrayList<Vector3f>) LineUtils.getBresenhamSegments(VectorUtils.toVector3f(pos.up()), VectorUtils.toVector3f(offsetChildPos.up()), 32);
-		var bridgeComponent = HoloBridgesComponent.get(world);
-		
-		for (var segment : this.segments) {
-			var segmentPos = new BlockPos((int) segment.x(), (int) segment.y(), (int) segment.z());
-			
-			if ((segmentPos.getX() != childPos.getX() && segmentPos.getX() != pos.getX()) || (segmentPos.getZ() != childPos.getZ() && segmentPos.getZ() != pos.getZ())) {
-				if (this.world.getBlockState(segmentPos).isAir()) {
-					this.world.setBlockState(segmentPos, AMBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.get().getDefaultState());
+		// Span X.
+		if (facing == Direction.NORTH || facing == Direction.SOUTH) {
+			for (var bridgePosition : bridgePositions) {
+				if (world.getBlockState(new BlockPos(
+						(int) bridgePosition.x,
+						(int) bridgePosition.y,
+						(int) bridgePosition.z
+				)).isAir()) {
+					continue;
+				}
+				
+				// We need to find all the blocks that this section spans.
+				
+				// To do that, we subtract 0.5F on the X, then step through
+				// that until the point after adding 0.5F to it.
+				
+				// We step in increments of 1.0F / 16.0F; building the
+				// shape cube by cube.
+				
+				// When the X changes, we save the position and voxel shape,
+				// and restart it.
+				
+				var shape = VoxelShapes.empty();
+				
+				var prevX = bridgePosition.getX() - 0.5F;
+				
+				for (var x = bridgePosition.getX() - 0.5F; x < bridgePosition.getX() + 0.5F; x += (1.0F / 16.0F)) {
+					var y = bridgePosition.getY();
+					var z = bridgePosition.getZ();
+					
+					if ((int) x != (int) prevX) {
+						// X has changed. Save the VoxelShape; move to the next.
+						bridgeVoxelShapes.put(
+								new BlockPos(
+										(int) x,
+										(int) y,
+										(int) z
+								),
+								shape
+						);
+						
+						// Start by placing the first cube in the next voxel shape.
+						
+						// The added cube is 1.0F / 16.0F in the X, Y and Z axis.
+						// Its coordinates are local to the block; and as such we simply
+						// do n % (int) n.
+						shape = VoxelShapes.union(
+								shape,
+								VoxelShapes.cuboid(
+										x % ((int) x),
+										y % ((int) y),
+										z % ((int) z),
+										x % ((int) x) + (1.0F / 16.0F),
+										y % ((int) y) + (1.0F / 16.0F),
+										z % ((int) z) + (1.0F / 16.0F)
+								
+								)
+						);
+					} else {
+						shape = VoxelShapes.union(
+								shape,
+								VoxelShapes.cuboid(
+										x % ((int) x),
+										y % ((int) y),
+										z % ((int) z),
+										x % ((int) x) + (1.0F / 16.0F),
+										y % ((int) y) + (1.0F / 16.0F),
+										z % ((int) z) + (1.0F / 16.0F)
+								
+								)
+						);
+					}
+					
+					prevX = x;
 				}
 			}
-			
-			bridgeComponent.add(segmentPos, new Vec3i((int) ((segment.x() - (int) segment.x()) * 16.0F), (int) ((segment.y() - (int) segment.y()) * 16.0F), (int) ((segment.z() - (int) segment.z()) * 16.0F)));
 		}
+		
+		// Span Z.
+		if (facing == Direction.WEST || facing == Direction.EAST) {
+			var shape = VoxelShapes.empty();
+
+			var prevX = -1.0F;
+			var prevY = -1.0F;
+			var prevZ = -1.0F;
+			
+			for (var bridgePosition : bridgePositions) {
+				var bridgeBlockPos = new BlockPos(
+						(int) bridgePosition.getX(),
+						(int) bridgePosition.getY(),
+						(int) bridgePosition.getZ()
+				);
+				
+				if (
+						(int) bridgePosition.getZ() != (int) prevZ ||
+						(int) bridgePosition.getY() != (int) prevY ||
+						(int) bridgePosition.getX() != (int) prevX
+				
+				) {
+					if (bridgeVoxelShapes.containsKey(bridgeBlockPos)) {
+						shape = bridgeVoxelShapes.get(bridgeBlockPos);
+					} else {
+						shape = VoxelShapes.empty();
+					}
+				}
+				
+				prevX = (float) bridgePosition.getX();
+				prevY = (float) bridgePosition.getY();
+				prevZ = (float) bridgePosition.getZ();
+				
+				for (var z = bridgePosition.getZ(); z < bridgePosition.getZ() + 1.0F; z += (1.0F / 16.0F)) {
+					if (world instanceof ServerWorld serverWorld) {
+						serverWorld.spawnParticles(
+								ParticleTypes.FLAME,
+								bridgePosition.getX() + 0.5F,
+								bridgePosition.getY() + 0.5F,
+								z,
+								1,
+								0.0F,
+								0.0F,
+								0.0F,
+								0.0F
+						);
+					}
+					
+					var x = bridgePosition.getX();
+					var y = bridgePosition.getY();
+					
+					var cX = x % ((int) x);
+					var cY = y % ((int) y);
+					var cZ = z % ((int) z);
+					
+					shape = VoxelShapes.union(
+							shape,
+							VoxelShapes.cuboid(
+									cX,
+									cY,
+									cZ,
+									cX + (1.0F / 16.0F),
+									cY + (1.0F / 16.0F),
+									cZ + (1.0F / 16.0F)
+							)
+					);
+					
+					bridgeVoxelShapes.put(
+							new BlockPos(
+									(int) x,
+									(int) y,
+									(int) z
+							),
+							shape
+					);
+				}
+			}
+		}
+		
+		return bridgeVoxelShapes;
+	}
+	
+	public Set<Vec3d> getBridgePositions() {
+		if (!hasChild()) {
+			return new HashSet<>();
+		}
+		
+		var thisPos = this.getPos();
+		var childPos = child.getPositionInFront();
+		
+		var distance = Math.sqrt(thisPos.getSquaredDistance(childPos));
+		
+		var precision = 16.0F;
+		
+		var stepX = (childPos.getX() - thisPos.getX()) / (distance * precision);
+		var stepY = (childPos.getY() - thisPos.getY()) / (distance * precision);
+		var stepZ = (childPos.getZ() - thisPos.getZ()) / (distance * precision);
+		
+		var positions = new HashSet<Vec3d>();
+		
+		for (var i = 0; i < distance * precision; ++i) {
+			positions.add(
+					new Vec3d(
+							thisPos.getX() + stepX * i,
+							thisPos.getY() + stepY * i + 1.0F,
+							thisPos.getZ() + stepZ * i
+					)
+			);
+		}
+		
+		return positions;
+	}
+	
+	public BlockPos getPositionInFront() {
+		return getPos().offset(getCachedState().get(HORIZONTAL_FACING));
+	}
+	
+	public Vec3d getBridgePositionInFront() {
+		return switch (getCachedState().get(HORIZONTAL_FACING)) {
+			case NORTH -> new Vec3d(getPos().getX() + 0.5F, getPos().getY() + 1.0F, getPos().getZ());
+			case SOUTH -> new Vec3d(getPos().getX() + 0.5F, getPos().getY() + 1.0F, getPos().getZ() + 1.0F);
+			case WEST -> new Vec3d(getPos().getX(), getPos().getY() + 1.0F, getPos().getZ() + 0.5F);
+			case EAST -> new Vec3d(getPos().getX() + 1.0F, getPos().getY() + 1.0F, getPos().getZ() + 0.5F);
+			
+			default -> new Vec3d(getPos().getX() + 0.5F, getPos().getY() + 1.0F, getPos().getZ() + 0.5F);
+		};
 	}
 	
 	public HoloBridgeProjectorBlockEntity getChild() {
@@ -219,7 +385,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			this.child.setChild(null);
 		}
 		
-		this.markDirty();
+		this.childPosition = child != null ? child.getPos() : null;
 	}
 	
 	public HoloBridgeProjectorBlockEntity getParent() {
@@ -228,6 +394,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	
 	public void setParent(HoloBridgeProjectorBlockEntity parent) {
 		this.parent = parent;
+		
 		this.setChild(null);
 		
 		this.markDirty();
@@ -266,7 +433,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			for (var vec : this.segments) {
 				var pos = new BlockPos((int) vec.x(), (int) vec.y(), (int) vec.z());
 				
-				bridgeComponent.remove(pos);
+				bridgeComponent.setShape(pos, null);
 				
 				this.world.setBlockState(pos, Blocks.AIR.getDefaultState());
 			}

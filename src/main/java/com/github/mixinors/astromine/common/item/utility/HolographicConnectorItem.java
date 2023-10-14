@@ -59,7 +59,6 @@ public class HolographicConnectorItem extends Item {
 	
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
-
 		if (context.shouldCancelInteraction()) {
 			return super.useOnBlock(context);
 		}
@@ -133,17 +132,18 @@ public class HolographicConnectorItem extends Item {
 					return ActionResult.SUCCESS;
 				}
 				
-				if (!parent.attemptToBuildBridge(child)) {
-					if (!world.isClient) {
-						player.setStackInHand(hand, unselect(stack));
-					} else {
-						player.sendMessage(Text.translatable("text.astromine.message.holographic_connection_failed", toShortString(parentPos), toShortString(childPos)).formatted(Formatting.RED), true);
-						
-						world.playSound(player, pos, AMSoundEvents.HOLOGRAPHIC_CONNECTOR_CLICK.get(), SoundCategory.PLAYERS, 0.5F, 0.33F);
-					}
-					
-					return ActionResult.SUCCESS;
-				}
+				// TODO: Reimplement. Might be a good idea having a safety check, y'know?
+//				if (!parent.attemptToBuildBridge(child)) {
+//					if (!world.isClient) {
+//						player.setStackInHand(hand, unselect(stack));
+//					} else {
+//						player.sendMessage(Text.translatable("text.astromine.message.holographic_connection_failed", toShortString(parentPos), toShortString(childPos)).formatted(Formatting.RED), true);
+//
+//						world.playSound(player, pos, AMSoundEvents.HOLOGRAPHIC_CONNECTOR_CLICK.get(), SoundCategory.PLAYERS, 0.5F, 0.33F);
+//					}
+//
+//					return ActionResult.SUCCESS;
+//				}
 				
 				if (world.isClient) {
 					player.sendMessage(Text.translatable("text.astromine.message.holographic_connection_successful", toShortString(parentPos), toShortString(childPos)).formatted(Formatting.GREEN), true);

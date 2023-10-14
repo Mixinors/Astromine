@@ -55,25 +55,31 @@ public class HoloBridgeBlockEntityRenderer implements BlockEntityRenderer<HoloBr
 			var offsetX = direction == Direction.NORTH ? 1 : 0;
 			var offsetZ = direction == Direction.WEST ? 1 : 0;
 			
-			if (entity.segments == null || entity.segments.isEmpty()) {
-				return;
+			var childFacing = entity.getChild().getCachedState().get(HorizontalFacingBlock.FACING);
+			
+			var childPos = entity.getChild().getPos();
+			
+			if (childFacing == Direction.EAST) {
+				childPos = childPos.add(1, 0, 0);
+			} else if (childFacing == Direction.SOUTH) {
+				childPos = childPos.add(0, 0, 1);
 			}
 			
-			var start = entity.segments.get(0);
-			var end = entity.segments.get(entity.segments.size() - 1);
+			var start = entity.getPos().add(0, 1, 0);
+			var end = childPos.add(0, 1, 0);
 			
 			matrices.push();
 			
 			var consumer = provider.getBuffer(AMRenderLayers.getHolographicBridge());
 			
-			var xA = end.x() - pA.getX();
-			var xB = start.x() - pA.getX();
+			var xA = end.getX() - pA.getX();
+			var xB = start.getX() - pA.getX();
 			
-			var yA = end.y() - pA.getY();
-			var yB = start.y() - pA.getY();
+			var yA = end.getY() - pA.getY();
+			var yB = start.getY() - pA.getY();
 			
-			var zA = end.z() - pA.getZ();
-			var zB = start.z() - pA.getZ();
+			var zA = end.getZ() - pA.getZ();
+			var zB = start.getZ() - pA.getZ();
 			
 			consumer.vertex(matrices.peek().getPositionMatrix(), xA, yA, zA).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).texture(0, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormalMatrix(), 0, 1, 0).next();
 			consumer.vertex(matrices.peek().getPositionMatrix(), xB, yB, zB).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).texture(0, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormalMatrix(), 0, 1, 0).next();

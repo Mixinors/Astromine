@@ -30,10 +30,7 @@ import com.github.mixinors.astromine.common.item.storage.SimpleFluidStorageItem;
 import com.github.mixinors.astromine.common.tick.Tickable;
 import dev.architectury.registry.menu.ExtendedMenuProvider;
 import dev.architectury.registry.menu.MenuRegistry;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
@@ -44,12 +41,14 @@ import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.registry.Registries;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -143,7 +142,7 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 	public boolean hasComparatorOutput(BlockState state) {
 		return getComparatorMode().hasOutput();
 	}
-
+	
 	@Override
 	public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
 		return getComparatorMode().getOutput(world.getBlockEntity(pos));
@@ -164,8 +163,26 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
 		return (world1, blockPos, blockState, blockEntity) -> {
-			if (blockEntity instanceof Tickable tickableBlockEntity) {
-				tickableBlockEntity.tick();
+			if (blockEntity instanceof Tickable tickableBlockEntity && !blockEntity.isRemoved()) {
+				try {
+					tickableBlockEntity.tick();
+				} catch (Exception e) {
+					e.printStackTrace();
+					
+					blockEntity.markRemoved();
+					
+					world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
+					
+					blockEntity.getWorld()
+							   .getPlayers()
+							   .forEach(player -> {
+								   player.sendMessage(Text.literal("A fatal error has occurred while ticking a block entity. The block has been removed to prevent further issues.").formatted(Formatting.RED), false);
+								   player.sendMessage(Text.literal("Please report this to the mod author.").formatted(Formatting.RED), false);
+								   
+								   player.sendMessage(Text.literal("Error: " + e.getMessage()).formatted(Formatting.RED), false);
+								   player.sendMessage(Text.literal("Type: " + Registries.BLOCK_ENTITY_TYPE.getId(blockEntity.getType())).formatted(Formatting.RED), false);
+							   });
+				}
 			}
 		};
 	}
