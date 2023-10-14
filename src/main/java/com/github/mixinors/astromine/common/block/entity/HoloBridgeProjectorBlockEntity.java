@@ -94,12 +94,24 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	
 	@Override
 	public void tick() {
-		for (var position : getBridgePositions()) {
+		var pos = getBridgePositionInFront();
+		
+		world.addParticle(
+				ParticleTypes.END_ROD,
+				pos.x,
+				pos.y,
+				pos.z,
+				0.0F,
+				0.0F,
+				0.0F
+		);
+		
+		for (var bridgePos : getBridgePositions()) {
 			world.addParticle(
-					ParticleTypes.FLAME,
-					position.getX() + 0.5F,
-					position.getY() + 0.5F,
-					position.getZ() + 0.5F,
+					ParticleTypes.SOUL_FIRE_FLAME,
+					bridgePos.getX(),
+					bridgePos.getY(),
+					bridgePos.getZ(),
 					0.0F,
 					0.0F,
 					0.0F
@@ -166,7 +178,8 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			component.setShape(pos, shape);
 			
 			if (world.getBlockState(pos).isAir()) {
-				world.setBlockState(pos, AMBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.get().getDefaultState());
+//				world.setBlockState(pos, Blocks.GOLD_BLOCK.getDefaultState());
+//				world.setBlockState(pos, AMBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.get().getDefaultState());
 			}
 		}
 	}
@@ -179,56 +192,48 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 		
 		// Span Z.
 		if (facing == Direction.WEST || facing == Direction.EAST) {
-			var shape = VoxelShapes.empty();
-			
 			for (var bridgePos : bridgePositions) {
-				var a = 0.0F;
-				var b = 0.0F;
-				if (bridgePos.z < 0.0F) {
-					a = -1.0F;
-					b = 0.0F;
-				} else {
-					a = 0.0F;
-					b = 1.0F;
-				}
+				var x = bridgePos.x;
+				var y = bridgePos.y;
 				
-				for (var z = bridgePos.getZ() + a; z < bridgePos.getZ() + b; z += (1.0F / 16.0F)) {
-					var x = bridgePos.getX();
-					var y = bridgePos.getY();
+				for (var z = bridgePos.z - 0.5F; z < bridgePos.z + 0.5F; z += 1.0F / 16.0F) {
+					var bridgeBlockPos = new BlockPos((int) Math.floor(x), (int) Math.floor(y), (int) Math.floor(z));
 					
-					var blockPos = new BlockPos((int) x, (int) y, (int) z);
+					world.setBlockState(bridgeBlockPos, AMBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.get().getDefaultState());
 					
-					debug(new Vec3d(bridgePos.getX(), bridgePos.getY(), z), z);
+					var shape = bridgeVoxelShapes.getOrDefault(bridgeBlockPos, VoxelShapes.empty());
 					
-					var cX = x % ((int) x);
-					var cY = y % ((int) y);
-					var cZ = z % ((int) z);
+					var cX = bridgePos.x % (int) bridgePos.x;
+					var cY = bridgePos.y % (int) bridgePos.y;
+					var cZ = z % (int) z;
 					
-					if (cX <= 0) {
-						cX += 1.0;
+					if (cX < 0.0F) {
+						cX += 1.0F;
+					}
+					if (cY < 0.0F) {
+						cY += 1.0F;
+					}
+					if (cZ < 0.0F) {
+						cZ += 1.0F;
 					}
 					
-					if (cY <= 0) {
-						cY += 1.0;
-					}
+					cX = MathHelper.clamp(cX, 0.0F, 1.0F - (1.0F / 16.0F));
+					cY = MathHelper.clamp(cY, 0.0F, 1.0F - (1.0F / 16.0F));
+					cZ = MathHelper.clamp(cZ, 0.0F, 1.0F - (1.0F / 16.0F));
 					
-					if (cZ <= 0) {
-						cZ += 1.0;
-					}
+					shape = VoxelShapes.union(
+							shape,
+							VoxelShapes.cuboid(
+									cX,
+									cY,
+									cZ,
+									cX + (1.0F / 16.0F),
+									cY + (1.0F / 16.0F),
+									cZ + (1.0F / 16.0F)
+							)
+					);
 					
-					cZ = MathHelper.clamp(cZ, 0, 1.0F - (1.0F / 16.0F));
-					cY = MathHelper.clamp(cY, 0, 1.0F - (1.0F / 16.0F));
-					cX = MathHelper.clamp(cX, 0, 1.0F - (1.0F / 16.0F));
-					
-					if (bridgeVoxelShapes.containsKey(blockPos)) {
-						shape = bridgeVoxelShapes.get(blockPos);
-					} else {
-						shape = VoxelShapes.empty();
-					}
-					
-					shape = VoxelShapes.union(shape, VoxelShapes.cuboid(cX - (1.0F / 16.0F), cY - (1.0F / 16.0F), cZ - (1.0F / 16.0F), cX + (1.0F / 16.0F), cY + (1.0F / 16.0F), cZ + (1.0F / 16.0F)));
-					
-					bridgeVoxelShapes.put(new BlockPos((int) x, (int) y, (int) z), shape);
+					bridgeVoxelShapes.put(bridgeBlockPos, shape);
 				}
 			}
 		}
@@ -240,8 +245,8 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 		if (world instanceof ServerWorld serverWorld) {
 			serverWorld.spawnParticles(
 					ParticleTypes.FLAME,
-					bridgePosition.getX() + 0.5F,
-					bridgePosition.getY() + 0.5F,
+					bridgePosition.getX(),
+					bridgePosition.getY(),
 					z,
 					1,
 					0.0F,
@@ -257,10 +262,10 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 			return new HashSet<>();
 		}
 		
-		var thisPos = this.getPos();
-		var childPos = child.getPositionInFront();
+		var thisPos = this.getBridgePositionInFront();
+		var childPos = child.getBridgePositionInFront();
 		
-		var distance = Math.sqrt(thisPos.getSquaredDistance(childPos));
+		var distance = thisPos.distanceTo(childPos);
 		
 		var precision = 16.0F;
 		
