@@ -32,7 +32,6 @@ import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
 public class AMClient implements ClientModInitializer {
-	
 	@Override
 	public void onInitializeClient() {
 		AMEntityModelLayers.init();
@@ -49,5 +48,6 @@ public class AMClient implements ClientModInitializer {
 		AMPatchouliPages.init();
 		AMKeyBinds.init();
 		AMColorProviders.init();
+		AMKeyBindings.init();
 	}
 }

@@ -31,8 +31,10 @@
     "client.CameraMixin",
     "client.ClientPlayerInteractionManagerMixin",
     "client.ClientRecipeBookMixin",
+    "client.GameRendererMixin",
     "client.InGameOverlayRendererMixin",
-    "client.JsonUnbakedModelAccessor"
+    "client.JsonUnbakedModelAccessor",
+    "client.WorldRendererMixin"
   ],
   "injectors" : {
     "defaultRequire" : 1

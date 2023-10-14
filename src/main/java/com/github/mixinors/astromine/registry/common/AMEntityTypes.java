@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.AMCommon;
+import com.github.mixinors.astromine.common.entity.IsometricCameraEntity;
 import com.github.mixinors.astromine.common.entity.rocket.RocketEntity;
 import com.github.mixinors.astromine.common.entity.slime.SpaceSlimeEntity;
 import com.github.mixinors.astromine.common.entity.slime.SuperSpaceSlimeEntity;
@@ -34,11 +35,9 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRe
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.entity.*;
 import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
-import net.minecraft.registry.Registry;
 import net.minecraft.world.Heightmap;
 
 import java.util.function.Supplier;
@@ -47,6 +46,7 @@ public class AMEntityTypes {
 	public static final RegistrySupplier<EntityType<RocketEntity>> ROCKET = register("rocket", () -> FabricEntityTypeBuilder.create(SpawnGroup.MISC, RocketEntity::new).dimensions(EntityDimensions.changing(1.5F, 22.5F)).trackable(128, 4).build());
 	public static final RegistrySupplier<EntityType<SpaceSlimeEntity>> SPACE_SLIME = register("space_slime", () -> FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, SpaceSlimeEntity::new).dimensions(EntityDimensions.changing(2.04F, 2.04F)).trackable(128, 4).build());
 	public static final RegistrySupplier<EntityType<SuperSpaceSlimeEntity>> SUPER_SPACE_SLIME = register("super_space_slime", () -> FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, SuperSpaceSlimeEntity::new).dimensions(EntityDimensions.changing(6.125F, 6.125F)).trackable(128, 4).build());
+	public static final RegistrySupplier<EntityType<IsometricCameraEntity>> CAMERA_ENTITY = register("camera_entity", () -> FabricEntityTypeBuilder.create().<IsometricCameraEntity>entityFactory(IsometricCameraEntity::new).dimensions(EntityDimensions.changing(1F, 1F)).build());
 	
 	public static void init() {
 		FabricDefaultAttributeRegistry.register(SPACE_SLIME.get(), HostileEntity.createHostileAttributes());

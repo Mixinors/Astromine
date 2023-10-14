@@ -24,9 +24,11 @@
 
 package com.github.mixinors.astromine.registry.client;
 
+import com.github.mixinors.astromine.AMClient;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.render.effects.SpaceDimensionEffects;
 import com.github.mixinors.astromine.client.render.skybox.SpaceSkyRenderer;
+import com.github.mixinors.astromine.client.util.IsometricCameraHandler;
 import com.github.mixinors.astromine.common.block.network.EnergyCableBlock;
 import com.github.mixinors.astromine.common.component.entity.OxygenComponent;
 import com.github.mixinors.astromine.common.item.armor.SpaceSuitArmorItem;
@@ -34,6 +36,7 @@ import com.github.mixinors.astromine.common.item.utility.HolographicConnectorIte
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidItemStorage;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
+import com.mojang.blaze3d.systems.RenderSystem;
 import dev.architectury.event.events.client.ClientTooltipEvent;
 import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
@@ -46,8 +49,10 @@ import dev.vini2003.hammer.gui.api.client.event.InGameHudEvents;
 import dev.vini2003.hammer.gui.api.common.widget.bar.HudBarWidget;
 import dev.vini2003.hammer.gui.api.common.widget.bar.ImageBarWidget;
 import dev.vini2003.hammer.gui.energy.api.common.util.EnergyTextUtil;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.DimensionRenderingRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
@@ -78,6 +83,8 @@ public class AMEvents {
 		WorldRenderEvents.END.register(context -> {
 			AMValues.TICK_DELTA = context.tickDelta();
 		});
+		
+		ClientTickEvents.END_WORLD_TICK.register(world -> IsometricCameraHandler.tick());
 
 		var spaceSuitEnergyBar = new ImageBarWidget();
 		spaceSuitEnergyBar.setMaximum(
@@ -88,7 +95,7 @@ public class AMEvents {
 						var chestStack = client.player.getEquippedStack(EquipmentSlot.CHEST);
 						
 						if (chestStack.getItem() instanceof SpaceSuitArmorItem.Chestplate) {
-							var energyStorage = EnergyStorage.ITEM.find(chestStack, ContainerItemContext.withInitial(chestStack));
+							var energyStorage = EnergyStorage.ITEM.find(chestStack, ContainerItemContext.withConstant(chestStack));
 							
 							if (energyStorage != null) {
 								return (float) energyStorage.getCapacity();
@@ -107,7 +114,7 @@ public class AMEvents {
 						var chestStack = client.player.getEquippedStack(EquipmentSlot.CHEST);
 						
 						if (chestStack.getItem() instanceof SpaceSuitArmorItem.Chestplate) {
-							var energyStorage = EnergyStorage.ITEM.find(chestStack, ContainerItemContext.withInitial(chestStack));
+							var energyStorage = EnergyStorage.ITEM.find(chestStack, ContainerItemContext.withConstant(chestStack));
 							
 							if (energyStorage != null) {
 								return (float) energyStorage.getAmount();
@@ -138,7 +145,7 @@ public class AMEvents {
 						var chestStack = client.player.getEquippedStack(EquipmentSlot.CHEST);
 						
 						if (chestStack.getItem() instanceof SpaceSuitArmorItem.Chestplate) {
-							var fluidStorages = FluidStorage.ITEM.find(chestStack, ContainerItemContext.withInitial(chestStack));
+							var fluidStorages = FluidStorage.ITEM.find(chestStack, ContainerItemContext.withConstant(chestStack));
 							
 							if (fluidStorages instanceof SimpleFluidItemStorage fluidStorage) {
 								return (float) fluidStorage.getCapacity();
@@ -157,7 +164,7 @@ public class AMEvents {
 						var chestStack = client.player.getEquippedStack(EquipmentSlot.CHEST);
 						
 						if (chestStack.getItem() instanceof SpaceSuitArmorItem.Chestplate) {
-							var fluidStorages = FluidStorage.ITEM.find(chestStack, ContainerItemContext.withInitial(chestStack));
+							var fluidStorages = FluidStorage.ITEM.find(chestStack, ContainerItemContext.withConstant(chestStack));
 							
 							if (fluidStorages instanceof SimpleFluidItemStorage fluidStorage) {
 								return (float) fluidStorage.getAmount();
@@ -179,7 +186,7 @@ public class AMEvents {
 		spaceSuitOxygenBar.setPosition(new Position(0.0F, 0.0F));
 		spaceSuitOxygenBar.setSize(new Size(9.0F, 81.0F));
 		
-		InGameHudEvents.RENDER.register(((matrices, provider, hud, collection) -> {
+		InGameHudEvents.RENDER.register((matrices, provider, hud, collection) -> {
 			var client = InstanceUtil.getClient();
 			
 			if (client != null && client.player != null) {
@@ -209,7 +216,7 @@ public class AMEvents {
 			
 			spaceSuitEnergyBar.setSize(new Size(9.0F, 81.0F));
 			spaceSuitOxygenBar.setSize(new Size(9.0F, 81.0F));
-		}));
+		});
 		
 		InGameHudEvents.INIT.register((hud, collection) -> {
 			collection.add(spaceSuitEnergyBar);
@@ -274,7 +281,7 @@ public class AMEvents {
 			collection.add(bar);
 		});
 		
-		ClientTooltipEvent.ITEM.register(((stack, tooltips, context) -> {
+		ClientTooltipEvent.ITEM.register((stack, tooltips, context) -> {
 			var item = stack.getItem();
 			
 			var id = Registries.ITEM.getId(item);
@@ -284,7 +291,7 @@ public class AMEvents {
 				
 				var index = empty == null ? tooltips.size() : tooltips.indexOf(empty) + 1;
 				
-				var fluidStorages = FluidStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
+				var fluidStorages = FluidStorage.ITEM.find(stack, ContainerItemContext.withConstant(stack));
 				
 				if (fluidStorages != null) {
 					var emptyTooltip = new ArrayList<Text>();
@@ -309,7 +316,7 @@ public class AMEvents {
 					tooltips.addAll(index, emptyTooltip);
 				}
 				
-				var energyStorages = EnergyStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
+				var energyStorages = EnergyStorage.ITEM.find(stack, ContainerItemContext.withConstant(stack));
 				
 				if (energyStorages != null) {
 					if (context.isAdvanced()) {
@@ -319,7 +326,7 @@ public class AMEvents {
 					}
 				}
 			}
-		}));
+		});
 		
 		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
 			if (stack.getItem() instanceof HolographicConnectorItem holographicConnectorItem) {
