@@ -156,6 +156,8 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 	public Map<BlockPos, VoxelShape> getBridgeVoxelShapes() {
 		var facing = getCachedState().get(HORIZONTAL_FACING);
 		
+		var component = HoloBridgesComponent.get(world);
+		
 		var bridgePositions = getBridgePositions();
 		var bridgeVoxelShapes = new HashMap<BlockPos, VoxelShape>();
 		
@@ -181,7 +183,7 @@ public class HoloBridgeProjectorBlockEntity extends BlockEntity implements Ticka
 				for (var x = bridgePos.x - 0.5F; x < bridgePos.x + 0.5F; x += 1.0F / 16.0F) {
 					var bridgeBlockPos = new BlockPos((int) Math.floor(x), (int) Math.floor(y), (int) Math.floor(z));
 					
-					var shape = bridgeVoxelShapes.getOrDefault(bridgeBlockPos, VoxelShapes.empty());
+					var shape = bridgeVoxelShapes.getOrDefault(bridgeBlockPos, component.getShape(bridgeBlockPos));
 					
 					var cX = x % (int) x;
 					var cY = bridgePos.y % (int) bridgePos.y;
