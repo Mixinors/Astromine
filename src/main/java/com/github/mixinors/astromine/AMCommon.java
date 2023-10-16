@@ -41,54 +41,54 @@ import org.apache.logging.log4j.Logger;
 import java.util.function.Supplier;
 
 public class AMCommon implements ModInitializer {
-	public static final String LOG_ID = "Astromine";
-	public static final String MOD_ID = "astromine";
-	
-	public static final Gson GSON = new Gson();
-	
-	public static final Logger LOGGER = LogManager.getLogger(LOG_ID);
-	
-	public static final Supplier<RegistrarManager> REGISTRIES = Suppliers.memoize(() -> RegistrarManager.get(MOD_ID));
-	
-	public static Identifier id(String name) {
-		if (name.indexOf(':') >= 0) {
-			return new Identifier(name);
-		}
-		
-		return new Identifier(MOD_ID, name);
-	}
-	
-	public static <T> Registrar<T> registry(RegistryKey<Registry<T>> key) {
-		return REGISTRIES.get().get(key);
-	}
-	
-	@Override
-	public void onInitialize() {
-		AMConfig.init();
-		AMAttributes.init();
-		AMIdentifierFixes.init();
-		AMWorlds.init();
-		AMFeatures.init();
-		AMStructureTypes.init();
-		AMItemGroups.init();
-		AMItems.init();
-		AMBlocks.init();
-		AMScreenHandlers.init();
-		AMEntityTypes.init();
-		AMNetworkTypes.init();
-		AMBiomeSources.init();
-		AMFluids.init();
-		AMChunkGenerators.init();
-		AMEvents.init();
-		AMRecipeSerializers.init();
-		AMCommands.init();
-		AMBlockEntityTypes.init();
-		AMSoundEvents.init();
-		AMCriteria.init();
-		AMToolMaterials.init();
-		AMOres.init();
-		AMNetworking.init();
-		AMLookups.init();
-		AMBodies.init();
-	}
+    public static final String LOG_ID = "Astromine";
+    public static final String MOD_ID = "astromine";
+
+    public static final Gson GSON = new Gson();
+
+    public static final Logger LOGGER = LogManager.getLogger(LOG_ID);
+
+    public static final Supplier<RegistrarManager> REGISTRIES = Suppliers.memoize(() -> RegistrarManager.get(MOD_ID));
+
+    public static Identifier id(String name) {
+        if (name.indexOf(':') >= 0) {
+            return new Identifier(name);
+        }
+
+        return new Identifier(MOD_ID, name);
+    }
+
+    public static <T> Registrar<T> registry(RegistryKey<Registry<T>> key) {
+        return REGISTRIES.get().get(key);
+    }
+
+    @Override
+    public void onInitialize() {
+        AMConfig.init();
+        AMAttributes.init();
+        AMIdentifierFixes.init();
+        AMWorlds.init();
+        AMFeatures.init();
+        AMStructureTypes.init();
+        AMItemGroups.init();
+        AMItems.init();
+        AMBlocks.init();
+        AMScreenHandlers.init();
+        AMEntityTypes.init();
+        AMNetworkTypes.init();
+        AMBiomeSources.init();
+        AMFluids.init();
+        AMChunkGenerators.init();
+        AMEvents.init();
+        AMRecipeSerializers.init();
+        AMCommands.init();
+        AMBlockEntityTypes.init();
+        AMSoundEvents.init();
+        AMCriteria.init();
+        AMToolMaterials.init();
+        AMOres.init();
+        AMNetworking.init();
+        AMLookups.init();
+        AMBodies.init();
+    }
 }
