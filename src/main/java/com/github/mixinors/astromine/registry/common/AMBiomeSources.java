@@ -28,13 +28,21 @@ import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.world.generation.space.EarthOrbitBiomeSource;
 import com.github.mixinors.astromine.common.world.generation.space.MoonBiomeSource;
 import com.github.mixinors.astromine.common.world.generation.space.RocketInteriorsBiomeSource;
+import com.mojang.serialization.Codec;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.world.biome.source.BiomeSource;
+
+import java.util.function.Supplier;
 
 public class AMBiomeSources {
 	public static void init() {
-		AMCommon.registry(RegistryKeys.BIOME_SOURCE).register(AMCommon.id("earth_orbit"), () -> EarthOrbitBiomeSource.CODEC);
-		AMCommon.registry(RegistryKeys.BIOME_SOURCE).register(AMCommon.id("moon"), () -> MoonBiomeSource.CODEC);
-		AMCommon.registry(RegistryKeys.BIOME_SOURCE).register(AMCommon.id("rocket_interiors"), () -> RocketInteriorsBiomeSource.CODEC);
+		register("earth_orbit", () -> EarthOrbitBiomeSource.CODEC);
+		register("moon", () -> MoonBiomeSource.CODEC);
+		register("rocket_interiors", () -> RocketInteriorsBiomeSource.CODEC);
+	}
+
+	public static void register(String name, Supplier<Codec<? extends BiomeSource>> codec) {
+		AMCommon.registry(RegistryKeys.BIOME_SOURCE).register(AMCommon.id(name), codec);
 	}
 }

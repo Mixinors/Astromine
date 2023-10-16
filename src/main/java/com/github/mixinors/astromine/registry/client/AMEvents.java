@@ -24,7 +24,6 @@
 
 package com.github.mixinors.astromine.registry.client;
 
-import com.github.mixinors.astromine.AMClient;
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.client.render.effects.SpaceDimensionEffects;
 import com.github.mixinors.astromine.client.render.skybox.SpaceSkyRenderer;
@@ -36,7 +35,6 @@ import com.github.mixinors.astromine.common.item.utility.HolographicConnectorIte
 import com.github.mixinors.astromine.common.transfer.storage.SimpleFluidItemStorage;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
-import com.mojang.blaze3d.systems.RenderSystem;
 import dev.architectury.event.events.client.ClientTooltipEvent;
 import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
@@ -46,306 +44,318 @@ import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.core.api.common.util.FluidTextUtil;
 import dev.vini2003.hammer.core.api.common.util.TextUtil;
 import dev.vini2003.hammer.gui.api.client.event.InGameHudEvents;
+import dev.vini2003.hammer.gui.api.common.widget.WidgetCollection;
 import dev.vini2003.hammer.gui.api.common.widget.bar.HudBarWidget;
 import dev.vini2003.hammer.gui.api.common.widget.bar.ImageBarWidget;
 import dev.vini2003.hammer.gui.energy.api.common.util.EnergyTextUtil;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.DimensionRenderingRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.registry.Registry;
 import team.reborn.energy.api.EnergyStorage;
 
 import java.util.ArrayList;
+import java.util.List;
 
 // TODO: Figure out why water's overlay is broken.
 // TODO: Fix Space Slime interpolation.
 public class AMEvents {
-	public static void init() {
-		DimensionRenderingRegistry.registerSkyRenderer(AMWorlds.ROCKET_INTERIORS, SpaceSkyRenderer::render);
-		DimensionRenderingRegistry.registerSkyRenderer(AMWorlds.MOON, SpaceSkyRenderer::render);
-		DimensionRenderingRegistry.registerSkyRenderer(AMWorlds.EARTH_ORBIT, SpaceSkyRenderer::render);
-		
-		DimensionRenderingRegistry.registerDimensionEffects(AMCommon.id("space"), new SpaceDimensionEffects());
-		
-		WorldRenderEvents.END.register(context -> {
-			AMValues.TICK_DELTA = context.tickDelta();
-		});
-		
-		ClientTickEvents.END_WORLD_TICK.register(world -> IsometricCameraHandler.tick());
+    private static ImageBarWidget spaceSuitEnergyBar;
+    private static ImageBarWidget spaceSuitOxygenBar;
 
-		var spaceSuitEnergyBar = new ImageBarWidget();
-		spaceSuitEnergyBar.setMaximum(
-				() -> {
-					var client = InstanceUtil.getClient();
-					
-					if (client != null && client.player != null) {
-						var chestStack = client.player.getEquippedStack(EquipmentSlot.CHEST);
-						
-						if (chestStack.getItem() instanceof SpaceSuitArmorItem.Chestplate) {
-							var energyStorage = EnergyStorage.ITEM.find(chestStack, ContainerItemContext.withConstant(chestStack));
-							
-							if (energyStorage != null) {
-								return (float) energyStorage.getCapacity();
-							}
-						}
-					}
-					
-					return 100.0F;
-				}
-		);
-		spaceSuitEnergyBar.setCurrent(
-				() -> {
-					var client = InstanceUtil.getClient();
-					
-					if (client != null && client.player != null) {
-						var chestStack = client.player.getEquippedStack(EquipmentSlot.CHEST);
-						
-						if (chestStack.getItem() instanceof SpaceSuitArmorItem.Chestplate) {
-							var energyStorage = EnergyStorage.ITEM.find(chestStack, ContainerItemContext.withConstant(chestStack));
-							
-							if (energyStorage != null) {
-								return (float) energyStorage.getAmount();
-							}
-						}
-					}
-					
-					return 0.0F;
-				}
-		);
-		
-		spaceSuitEnergyBar.setVertical(true);
-		
-		spaceSuitEnergyBar.setSmooth(false);
-		
-		spaceSuitEnergyBar.setForegroundTexture(new ImageTexture(AMCommon.id("textures/widget/vertical_energy_bar_foreground.png")));
-		spaceSuitEnergyBar.setBackgroundTexture(new ImageTexture(AMCommon.id("textures/widget/vertical_energy_bar_background.png")));
-		
-		spaceSuitEnergyBar.setPosition(new Position(0.0F, 0.0F));
-		spaceSuitEnergyBar.setSize(new Size(9.0F, 81.0F));
-		
-		var spaceSuitOxygenBar = new ImageBarWidget();
-		spaceSuitOxygenBar.setMaximum(
-				() -> {
-					var client = InstanceUtil.getClient();
-					
-					if (client != null && client.player != null) {
-						var chestStack = client.player.getEquippedStack(EquipmentSlot.CHEST);
-						
-						if (chestStack.getItem() instanceof SpaceSuitArmorItem.Chestplate) {
-							var fluidStorages = FluidStorage.ITEM.find(chestStack, ContainerItemContext.withConstant(chestStack));
-							
-							if (fluidStorages instanceof SimpleFluidItemStorage fluidStorage) {
-								return (float) fluidStorage.getCapacity();
-							}
-						}
-					}
-					
-					return 100.0F;
-				}
-		);
-		spaceSuitOxygenBar.setCurrent(
-				() -> {
-					var client = InstanceUtil.getClient();
-					
-					if (client != null && client.player != null) {
-						var chestStack = client.player.getEquippedStack(EquipmentSlot.CHEST);
-						
-						if (chestStack.getItem() instanceof SpaceSuitArmorItem.Chestplate) {
-							var fluidStorages = FluidStorage.ITEM.find(chestStack, ContainerItemContext.withConstant(chestStack));
-							
-							if (fluidStorages instanceof SimpleFluidItemStorage fluidStorage) {
-								return (float) fluidStorage.getAmount();
-							}
-						}
-					}
-					
-					return 0.0F;
-				}
-		);
-		
-		spaceSuitOxygenBar.setVertical(true);
-		
-		spaceSuitOxygenBar.setSmooth(false);
-		
-		spaceSuitOxygenBar.setForegroundTexture(new ImageTexture(AMCommon.id("textures/widget/vertical_oxygen_bar_foreground.png")));
-		spaceSuitOxygenBar.setBackgroundTexture(new ImageTexture(AMCommon.id("textures/widget/vertical_oxygen_bar_background.png")));
-		
-		spaceSuitOxygenBar.setPosition(new Position(0.0F, 0.0F));
-		spaceSuitOxygenBar.setSize(new Size(9.0F, 81.0F));
-		
-		InGameHudEvents.RENDER.register((matrices, provider, hud, collection) -> {
-			var client = InstanceUtil.getClient();
-			
-			if (client != null && client.player != null) {
-				var chestStack = client.player.getEquippedStack(EquipmentSlot.CHEST);
-				
-				var hidden = !(chestStack.getItem() instanceof SpaceSuitArmorItem.Chestplate);
-				
-				spaceSuitEnergyBar.setHidden(hidden);
-				spaceSuitOxygenBar.setHidden(hidden);
-				
-				if (!hidden) {
-					var itemRenderer = DrawingUtil.getItemRenderer();
-					var drawContext = new DrawContext(MinecraftClient.getInstance(), MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers());
-					
-					drawContext.drawItem(new ItemStack(AMItems.ENERGY.get()), (int) spaceSuitEnergyBar.getX() - 4, (int) (spaceSuitEnergyBar.getY() + 81.0F + 1.0F));
-					drawContext.drawItem(new ItemStack(AMItems.FLUID.get()), (int) spaceSuitOxygenBar.getX() - 4, (int) (spaceSuitOxygenBar.getY() + 81.0F + 1.0F));
-				}
-			}
-			
-			var scaledHeight = client.getWindow().getScaledHeight();
-			
-			var energyBarPos = new Position(1.0F + 4.0F, scaledHeight / 2.0F - 81.0F / 2.0F);
-			var oxygenBarPos = energyBarPos.plus(new Position(9.0F + 1.0F, 0.0F));
-			
-			spaceSuitEnergyBar.setPosition(energyBarPos);
-			spaceSuitOxygenBar.setPosition(oxygenBarPos);
-			
-			spaceSuitEnergyBar.setSize(new Size(9.0F, 81.0F));
-			spaceSuitOxygenBar.setSize(new Size(9.0F, 81.0F));
-		});
-		
-		InGameHudEvents.INIT.register((hud, collection) -> {
-			collection.add(spaceSuitEnergyBar);
-			collection.add(spaceSuitOxygenBar);
-			
-			var bar = new HudBarWidget();
-			bar.setSide(HudBarWidget.Side.RIGHT);
-			bar.setType(HudBarWidget.Type.CONTINUOS);
-			bar.setMaximum(
-					() -> {
-						var client = InstanceUtil.getClient();
-						
-						if (client != null && client.player != null) {
-							var component = OxygenComponent.get(client.player);
-							
-							if (component != null) {
-								return (float) component.getMaximumOxygen();
-							}
-						}
-						
-						return 100.0F;
-					}
-			);
-			bar.setCurrent(
-					() -> {
-						var client = InstanceUtil.getClient();
-						
-						if (client != null && client.player != null) {
-							var component = OxygenComponent.get(client.player);
-							
-							if (component != null) {
-								return (float) component.getOxygen();
-							}
-						}
-						
-						return 0.0F;
-					}
-			);
-			
-			bar.setHorizontal(true);
-			
-			bar.setShow(() -> {
-				var client = InstanceUtil.getClient();
-				
-				if (client != null && client.player != null && !client.player.isCreative() && !client.player.isSpectator() && AMWorlds.isVacuum(client.player.getWorld().getDimensionEntry())) {
-					var component = OxygenComponent.get(client.player);
-					
-					if (component != null) {
-						return component.getOxygen() != component.getMaximumOxygen();
-					}
-				}
-				
-				return false;
-			});
-			
-			bar.setSmooth(false);
-			bar.setInvert(true);
-			
-			bar.setForegroundTexture(new ImageTexture(AMCommon.id("textures/widget/horizontal_oxygen_bar_foreground.png")));
-			bar.setBackgroundTexture(new ImageTexture(AMCommon.id("textures/widget/horizontal_oxygen_bar_background.png")));
-			
-			collection.add(bar);
-		});
-		
-		ClientTooltipEvent.ITEM.register((stack, tooltips, context) -> {
-			var item = stack.getItem();
-			
-			var id = Registries.ITEM.getId(item);
-			
-			if (id.getNamespace().equals(AMCommon.MOD_ID)) {
-				var empty = tooltips.stream().filter(text -> text.getString().isEmpty()).findFirst().orElse(null);
-				
-				var index = empty == null ? tooltips.size() : tooltips.indexOf(empty) + 1;
-				
-				var fluidStorages = FluidStorage.ITEM.find(stack, ContainerItemContext.withConstant(stack));
-				
-				if (fluidStorages != null) {
-					var emptyTooltip = new ArrayList<Text>();
-					
-					try (var transaction = Transaction.openOuter()) {
-						for (var storage : fluidStorages) {
-							if (storage.isResourceBlank()) {
-								emptyTooltip.add(Text.translatable("text.astromine.fluid").formatted(Formatting.BLUE));
-								emptyTooltip.add(Text.translatable("text.astromine.empty").formatted(Formatting.GRAY));
-							} else {
-								if (context.isAdvanced()) {
-									tooltips.addAll(index, FluidTextUtil.getDetailedStorageTooltips(storage));
-								} else {
-									tooltips.addAll(index, FluidTextUtil.getShortenedStorageTooltips(storage));
-								}
-							}
-						}
-						
-						transaction.abort();
-					}
-					
-					tooltips.addAll(index, emptyTooltip);
-				}
-				
-				var energyStorages = EnergyStorage.ITEM.find(stack, ContainerItemContext.withConstant(stack));
-				
-				if (energyStorages != null) {
-					if (context.isAdvanced()) {
-						tooltips.addAll(index, EnergyTextUtil.getDetailedTooltips(energyStorages));
-					} else {
-						tooltips.addAll(index, EnergyTextUtil.getShortenedTooltips(energyStorages));
-					}
-				}
-			}
-		});
-		
-		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
-			if (stack.getItem() instanceof HolographicConnectorItem holographicConnectorItem) {
-				var pair = holographicConnectorItem.fromStack(stack);
-				
-				if (pair != null) {
-					var key = pair.registryKey();
-					var pos = pair.blockPos();
-					
-					tooltip.add(TextUtil.getEmpty());
-					tooltip.add(Text.translatable("text.astromine.selected.dimension.blockPos", key, pos.getX(), pos.getY(), pos.getZ()).formatted(Formatting.GRAY));
-				}
-			}
-		});
-		
-		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
-			if (stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof EnergyCableBlock cableBlock) {
-				tooltip.add(Text.translatable("text.astromine.tooltip.cable.speed", cableBlock.getNetworkType().getTransferRate()).styled(style -> style.withColor(EnergyTextUtil.COLOR.toRgb())));
-			}
-		});
-	}
+    public static void init() {
+        initSpaceSuitEnergyBar();
+        initSpaceSuitOxygenBar();
+
+        DimensionRenderingRegistry.registerDimensionEffects(AMCommon.id("space"), new SpaceDimensionEffects());
+
+        DimensionRenderingRegistry.registerSkyRenderer(AMWorlds.ROCKET_INTERIORS, SpaceSkyRenderer::render);
+        DimensionRenderingRegistry.registerSkyRenderer(AMWorlds.MOON, SpaceSkyRenderer::render);
+        DimensionRenderingRegistry.registerSkyRenderer(AMWorlds.EARTH_ORBIT, SpaceSkyRenderer::render);
+
+        WorldRenderEvents.END.register(AMValues::onEnd);
+
+        ClientTickEvents.END_WORLD_TICK.register(IsometricCameraHandler::onEndWorldTick);
+
+        InGameHudEvents.RENDER.register(AMEvents::onInGameHudRender);
+        InGameHudEvents.INIT.register(AMEvents::onInGameHudInit);
+
+        ClientTooltipEvent.ITEM.register(AMEvents::onClientTooltipItem);
+    }
+
+    private static void onInGameHudRender(MatrixStack matrices, VertexConsumerProvider.Immediate immediate, InGameHud inGameHud, WidgetCollection collection) {
+        var client = InstanceUtil.getClient();
+
+        if (client!=null && client.player!=null) {
+            var chestStack = client.player.getEquippedStack(EquipmentSlot.CHEST);
+
+            var hidden = !(chestStack.getItem() instanceof SpaceSuitArmorItem.Chestplate);
+
+            spaceSuitEnergyBar.setHidden(hidden);
+            spaceSuitOxygenBar.setHidden(hidden);
+
+            if (!hidden) {
+                var itemRenderer = DrawingUtil.getItemRenderer();
+                var drawContext = new DrawContext(MinecraftClient.getInstance(), MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers());
+
+                drawContext.drawItem(new ItemStack(AMItems.ENERGY.get()), (int) spaceSuitEnergyBar.getX() - 4, (int) (spaceSuitEnergyBar.getY() + 81.0F + 1.0F));
+                drawContext.drawItem(new ItemStack(AMItems.FLUID.get()), (int) spaceSuitOxygenBar.getX() - 4, (int) (spaceSuitOxygenBar.getY() + 81.0F + 1.0F));
+            }
+        }
+
+        var scaledHeight = client.getWindow().getScaledHeight();
+
+        var energyBarPos = new Position(1.0F + 4.0F, scaledHeight / 2.0F - 81.0F / 2.0F);
+        var oxygenBarPos = energyBarPos.plus(new Position(9.0F + 1.0F, 0.0F));
+
+        spaceSuitEnergyBar.setPosition(energyBarPos);
+        spaceSuitOxygenBar.setPosition(oxygenBarPos);
+
+        spaceSuitEnergyBar.setSize(new Size(9.0F, 81.0F));
+        spaceSuitOxygenBar.setSize(new Size(9.0F, 81.0F));
+    }
+
+    private static void onInGameHudInit(InGameHud inGameHud, WidgetCollection collection) {
+        collection.add(spaceSuitEnergyBar);
+        collection.add(spaceSuitOxygenBar);
+
+        var bar = new HudBarWidget();
+        bar.setSide(HudBarWidget.Side.RIGHT);
+        bar.setType(HudBarWidget.Type.CONTINUOS);
+        bar.setMaximum(
+                () -> {
+                    var client = InstanceUtil.getClient();
+
+                    if (client!=null && client.player!=null) {
+                        var component = OxygenComponent.get(client.player);
+
+                        if (component!=null) {
+                            return (float) component.getMaximumOxygen();
+                        }
+                    }
+
+                    return 100.0F;
+                }
+        );
+        bar.setCurrent(
+                () -> {
+                    var client = InstanceUtil.getClient();
+
+                    if (client!=null && client.player!=null) {
+                        var component = OxygenComponent.get(client.player);
+
+                        if (component!=null) {
+                            return (float) component.getOxygen();
+                        }
+                    }
+
+                    return 0.0F;
+                }
+        );
+
+        bar.setHorizontal(true);
+
+        bar.setShow(() -> {
+            var client = InstanceUtil.getClient();
+
+            if (client!=null && client.player!=null && !client.player.isCreative() && !client.player.isSpectator() && AMWorlds.isVacuum(client.player.getWorld().getDimensionEntry())) {
+                var component = OxygenComponent.get(client.player);
+
+                if (component!=null) {
+                    return component.getOxygen()!=component.getMaximumOxygen();
+                }
+            }
+
+            return false;
+        });
+
+        bar.setSmooth(false);
+        bar.setInvert(true);
+
+        bar.setForegroundTexture(new ImageTexture(AMCommon.id("textures/widget/horizontal_oxygen_bar_foreground.png")));
+        bar.setBackgroundTexture(new ImageTexture(AMCommon.id("textures/widget/horizontal_oxygen_bar_background.png")));
+
+        collection.add(bar);
+    }
+
+    private static void onClientTooltipItem(ItemStack stack, List<Text> tooltips, TooltipContext context) {
+        var item = stack.getItem();
+
+        var id = Registries.ITEM.getId(item);
+        if (id.getNamespace().equals(AMCommon.MOD_ID)) {
+            var empty = tooltips.stream().filter(text -> text.getString().isEmpty()).findFirst().orElse(null);
+            var index = empty==null ? tooltips.size():tooltips.indexOf(empty) + 1;
+            var fluidStorages = FluidStorage.ITEM.find(stack, ContainerItemContext.withConstant(stack));
+
+            if (fluidStorages!=null) {
+                var emptyTooltip = new ArrayList<Text>();
+
+                try (var transaction = Transaction.openOuter()) {
+                    for (var storage : fluidStorages) {
+                        if (storage.isResourceBlank()) {
+                            emptyTooltip.add(Text.translatable("text.astromine.fluid").formatted(Formatting.BLUE));
+                            emptyTooltip.add(Text.translatable("text.astromine.empty").formatted(Formatting.GRAY));
+                        } else {
+                            if (context.isAdvanced()) {
+                                tooltips.addAll(index, FluidTextUtil.getDetailedStorageTooltips(storage));
+                            } else {
+                                tooltips.addAll(index, FluidTextUtil.getShortenedStorageTooltips(storage));
+                            }
+                        }
+                    }
+
+                    transaction.abort();
+                }
+
+                tooltips.addAll(index, emptyTooltip);
+            }
+
+            var energyStorages = EnergyStorage.ITEM.find(stack, ContainerItemContext.withConstant(stack));
+
+            if (energyStorages!=null) {
+                if (context.isAdvanced()) {
+                    tooltips.addAll(index, EnergyTextUtil.getDetailedTooltips(energyStorages));
+                } else {
+                    tooltips.addAll(index, EnergyTextUtil.getShortenedTooltips(energyStorages));
+                }
+            }
+        }
+
+        if (item instanceof HolographicConnectorItem holographicConnectorItem) {
+            var pair = holographicConnectorItem.fromStack(stack);
+
+            if (pair!=null) {
+                var key = pair.registryKey();
+                var pos = pair.blockPos();
+
+                tooltips.add(TextUtil.getEmpty());
+                tooltips.add(Text.translatable("text.astromine.selected.dimension.blockPos", key, pos.getX(), pos.getY(), pos.getZ()).formatted(Formatting.GRAY));
+            }
+        }
+
+        if (item instanceof BlockItem blockItem && blockItem.getBlock() instanceof EnergyCableBlock cableBlock) {
+            tooltips.add(Text.translatable("text.astromine.tooltip.cable.speed", cableBlock.getNetworkType().getTransferRate()).styled(style -> style.withColor(EnergyTextUtil.COLOR.toRgb())));
+        }
+    }
+
+    private static void initSpaceSuitOxygenBar() {
+        spaceSuitOxygenBar = new ImageBarWidget();
+
+        spaceSuitOxygenBar.setMaximum(
+                () -> {
+                    var client = InstanceUtil.getClient();
+
+                    if (client!=null && client.player!=null) {
+                        var chestStack = client.player.getEquippedStack(EquipmentSlot.CHEST);
+
+                        if (chestStack.getItem() instanceof SpaceSuitArmorItem.Chestplate) {
+                            var fluidStorages = FluidStorage.ITEM.find(chestStack, ContainerItemContext.withConstant(chestStack));
+
+                            if (fluidStorages instanceof SimpleFluidItemStorage fluidStorage) {
+                                return (float) fluidStorage.getCapacity();
+                            }
+                        }
+                    }
+
+                    return 100.0F;
+                }
+        );
+        spaceSuitOxygenBar.setCurrent(
+                () -> {
+                    var client = InstanceUtil.getClient();
+
+                    if (client!=null && client.player!=null) {
+                        var chestStack = client.player.getEquippedStack(EquipmentSlot.CHEST);
+
+                        if (chestStack.getItem() instanceof SpaceSuitArmorItem.Chestplate) {
+                            var fluidStorages = FluidStorage.ITEM.find(chestStack, ContainerItemContext.withConstant(chestStack));
+
+                            if (fluidStorages instanceof SimpleFluidItemStorage fluidStorage) {
+                                return (float) fluidStorage.getAmount();
+                            }
+                        }
+                    }
+
+                    return 0.0F;
+                }
+        );
+
+        spaceSuitOxygenBar.setVertical(true);
+
+        spaceSuitOxygenBar.setSmooth(false);
+
+        spaceSuitOxygenBar.setForegroundTexture(new ImageTexture(AMCommon.id("textures/widget/vertical_oxygen_bar_foreground.png")));
+        spaceSuitOxygenBar.setBackgroundTexture(new ImageTexture(AMCommon.id("textures/widget/vertical_oxygen_bar_background.png")));
+
+        spaceSuitOxygenBar.setPosition(new Position(0.0F, 0.0F));
+        spaceSuitOxygenBar.setSize(new Size(9.0F, 81.0F));
+    }
+
+    private static void initSpaceSuitEnergyBar() {
+        spaceSuitEnergyBar = new ImageBarWidget();
+
+        spaceSuitEnergyBar.setMaximum(
+                () -> {
+                    var client = InstanceUtil.getClient();
+
+                    if (client!=null && client.player!=null) {
+                        var chestStack = client.player.getEquippedStack(EquipmentSlot.CHEST);
+
+                        if (chestStack.getItem() instanceof SpaceSuitArmorItem.Chestplate) {
+                            var energyStorage = EnergyStorage.ITEM.find(chestStack, ContainerItemContext.withConstant(chestStack));
+
+                            if (energyStorage!=null) {
+                                return (float) energyStorage.getCapacity();
+                            }
+                        }
+                    }
+
+                    return 100.0F;
+                }
+        );
+        spaceSuitEnergyBar.setCurrent(
+                () -> {
+                    var client = InstanceUtil.getClient();
+
+                    if (client!=null && client.player!=null) {
+                        var chestStack = client.player.getEquippedStack(EquipmentSlot.CHEST);
+
+                        if (chestStack.getItem() instanceof SpaceSuitArmorItem.Chestplate) {
+                            var energyStorage = EnergyStorage.ITEM.find(chestStack, ContainerItemContext.withConstant(chestStack));
+
+                            if (energyStorage!=null) {
+                                return (float) energyStorage.getAmount();
+                            }
+                        }
+                    }
+
+                    return 0.0F;
+                }
+        );
+
+        spaceSuitEnergyBar.setVertical(true);
+
+        spaceSuitEnergyBar.setSmooth(false);
+
+        spaceSuitEnergyBar.setForegroundTexture(new ImageTexture(AMCommon.id("textures/widget/vertical_energy_bar_foreground.png")));
+        spaceSuitEnergyBar.setBackgroundTexture(new ImageTexture(AMCommon.id("textures/widget/vertical_energy_bar_background.png")));
+
+        spaceSuitEnergyBar.setPosition(new Position(0.0F, 0.0F));
+        spaceSuitEnergyBar.setSize(new Size(9.0F, 81.0F));
+    }
 }

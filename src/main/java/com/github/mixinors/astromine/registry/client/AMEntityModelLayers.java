@@ -33,10 +33,11 @@ public class AMEntityModelLayers {
 	public static final EntityModelLayer ROCKET = register("rocket", RocketEntityModel::getTexturedModelData);
 	
 	public static void init() {
+		
 	}
 	
-	public static EntityModelLayer register(String id, EntityModelLayerRegistry.TexturedModelDataProvider texturedModelDataProvider) {
-		var entityModelLayer = new EntityModelLayer(AMCommon.id(id), "main");
+	public static EntityModelLayer register(String name, EntityModelLayerRegistry.TexturedModelDataProvider texturedModelDataProvider) {
+		var entityModelLayer = new EntityModelLayer(AMCommon.id(name), "main");
 		
 		EntityModelLayerRegistry.registerModelLayer(entityModelLayer, texturedModelDataProvider);
 		

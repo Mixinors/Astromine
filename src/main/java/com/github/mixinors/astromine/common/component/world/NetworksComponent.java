@@ -34,6 +34,8 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtLong;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
@@ -63,6 +65,14 @@ public final class NetworksComponent implements Component {
 	
 	public NetworksComponent(World world) {
 		this.world = world;
+	}
+
+	public static void onServerLevelPre(ServerWorld world) {
+		var component = get(world);
+
+		if (component != null) {
+			component.tick();
+		}
 	}
 	
 	public World getWorld() {

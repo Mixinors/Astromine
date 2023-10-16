@@ -31,53 +31,57 @@ import com.github.mixinors.astromine.common.manager.StationManager;
 import com.github.mixinors.astromine.registry.common.AMEntityTypes;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.network.PacketByteBuf;
 
 import static com.github.mixinors.astromine.registry.common.AMNetworking.*;
 
 public class AMNetworking {
-	public static void init() {
-		NetworkManager.registerReceiver(NetworkManager.s2c(), ROCKET_SPAWN, (buf, context) -> {
-			var x = buf.readDouble();
-			var y = buf.readDouble();
-			var z = buf.readDouble();
-			
-			var uuid = buf.readUuid();
-			
-			var id = buf.readInt();
-			
-			context.queue(() -> {
-				var player = context.getPlayer();
+	private static void onRocketSpawn(PacketByteBuf buf, NetworkManager.PacketContext context) {
+		var x = buf.readDouble();
+		var y = buf.readDouble();
+		var z = buf.readDouble();
+
+		var uuid = buf.readUuid();
+
+		var id = buf.readInt();
+
+		context.queue(() -> {
+			var player = context.getPlayer();
+			var world = (ClientWorld) player.getWorld();
+
+			var rocketEntity = AMEntityTypes.ROCKET.get().create(world);
+
+			rocketEntity.setUuid(uuid);
+			rocketEntity.setId(id);
+			rocketEntity.setPosition(x, y, z);
+			rocketEntity.updateTrackedPosition(x, y, z);
+
+			world.addEntity(id, rocketEntity);
+		});
+	}
+
+	private static void onSyncEntity(PacketByteBuf buf, NetworkManager.PacketContext context) {
+		var id = buf.readInt();
+
+		var nbt = buf.readNbt();
+
+		context.queue(() -> {
+			var player = context.getPlayer();
+
+			if (player != null) {
 				var world = (ClientWorld) player.getWorld();
-				
-				var rocketEntity = AMEntityTypes.ROCKET.get().create(world);
-				
-				rocketEntity.setUuid(uuid);
-				rocketEntity.setId(id);
-				rocketEntity.setPosition(x, y, z);
-				rocketEntity.updateTrackedPosition(x, y, z);
-				
-				world.addEntity(id, rocketEntity);
-			});
-		});
-		
-		NetworkManager.registerReceiver(NetworkManager.s2c(), SYNC_ENTITY, (buf, context) -> {
-			var id = buf.readInt();
-			
-			var nbt = buf.readNbt();
-			
-			context.queue(() -> {
-				var player = context.getPlayer();
-				
-				if (player != null) {
-					var world = (ClientWorld) player.getWorld();
-					
-					if (world.getEntityById(id) instanceof ExtendedEntity entity) {
-						entity.readFromNbt(nbt);
-					}
+
+				if (world.getEntityById(id) instanceof ExtendedEntity entity) {
+					entity.readFromNbt(nbt);
 				}
-			});
+			}
 		});
+	}
+
+	public static void init() {
+		NetworkManager.registerReceiver(NetworkManager.s2c(), ROCKET_SPAWN, AMNetworking::onRocketSpawn);
 		
+		NetworkManager.registerReceiver(NetworkManager.s2c(), SYNC_ENTITY, AMNetworking::onSyncEntity);
 		NetworkManager.registerReceiver(NetworkManager.s2c(), SYNC_BODIES, BodyManager::onSync);
 		NetworkManager.registerReceiver(NetworkManager.s2c(), SYNC_ROCKETS, RocketManager::onSync);
 		NetworkManager.registerReceiver(NetworkManager.s2c(), SYNC_STATIONS, StationManager::onSync);
@@ -89,6 +93,7 @@ public class AMNetworking {
 		// TODO: 02/07/2022 - 01:23:00
 		// TODO: 18/09/2022 - 15:03:00
 		// TODO: 15/06/2023 - 21:12:00
+		// TODO: 16/10/2023 - 01:51:09
 		// ClientSidePacketRegistry.INSTANCE.register(AstromineCommonPackets.PRESSURE_UPDATE, ((context, buffer) -> {
 		// Identifier identifier = buffer.readIdentifier();
 		//

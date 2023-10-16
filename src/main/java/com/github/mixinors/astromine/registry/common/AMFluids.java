@@ -65,13 +65,9 @@ public class AMFluids {
 	public static final ExtendedFluid MOLTEN_LUNUM = ExtendedFluid.builder().fogColor(0x7E9ECCD3).tintColor(0x7E9ECCD3).name("molten_lunum").build();
 
 	public static final ExtendedFluid OIL = ExtendedFluid.builder().fogColor(0x7e121212).tintColor(0x7e121212).damage(0).toxic(false).infinite(false).name("oil").build();
-	
 	public static final ExtendedFluid FUEL = ExtendedFluid.builder().fogColor(0x7e968048).tintColor(0x7e968048).damage(0).toxic(false).infinite(false).name("fuel").build();
-	
 	public static final ExtendedFluid BIOMASS = ExtendedFluid.builder().fogColor(0x7e6fda34).tintColor(0x7e6fda34).damage(0).toxic(false).infinite(false).name("biomass").build();
-	
 	public static final ExtendedFluid OXYGEN = ExtendedFluid.builder().fogColor(0x7e159ef9).tintColor(0xff159ef9).damage(0).toxic(false).infinite(false).name("oxygen").build();
-	
 	public static final ExtendedFluid HYDROGEN = ExtendedFluid.builder().fogColor(0x7eff0019).tintColor(0xffff0019).damage(0).toxic(false).infinite(false).name("hydrogen").build();
 	
 	public static void init() {

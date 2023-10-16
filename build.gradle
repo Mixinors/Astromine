@@ -113,7 +113,7 @@ dependencies {
 	modApiInclude("dev.vini2003:hammer-gui:$hammerVersion")
 
 	// Hammer GUI Energy
-	// modApiInclude("dev.vini2003:hammer-gui-energy:$hammerVersion")
+	 modApiInclude("dev.vini2003:hammer-gui-energy:$hammerVersion")
 
 	// Hammer Gravity
 	modApiInclude("dev.vini2003:hammer-gravity:$hammerVersion")

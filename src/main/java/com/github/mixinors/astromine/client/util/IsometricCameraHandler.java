@@ -6,6 +6,7 @@ import com.github.mixinors.astromine.registry.client.AMKeyBindings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.Perspective;
 import net.minecraft.text.Text;
+import net.minecraft.world.World;
 
 public class IsometricCameraHandler {
     public static float speed = 2;
@@ -41,8 +42,8 @@ public class IsometricCameraHandler {
         }
     }
 
-    public static void tick() {
-        while (AMKeyBindings.toggleCamera.wasPressed()) {
+    public static void onEndWorldTick(World world) {
+        while (AMKeyBindings.TOGGLE_CAMERA.wasPressed()) {
             client.player.sendMessage(Text.literal("Toggle Camera was pressed!"), false);
             client.setScreen(new IsometricCameraScreen());
         }

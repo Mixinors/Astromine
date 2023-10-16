@@ -145,14 +145,7 @@ public class AMBlockEntityTypes {
 	public static void init() {
 	
 	}
-	
-	/**
-	 * @param name            Name of BlockEntityType instance to be registered
-	 * @param supplier        Supplier of BlockEntity to use for BlockEntityType
-	 * @param supportedBlocks Blocks the BlockEntity can be attached to
-	 *
-	 * @return Registered BlockEntityType
-	 */
+
 	@SafeVarargs
 	public static <B extends BlockEntity> RegistrySupplier<BlockEntityType<B>> register(String name, FabricBlockEntityTypeBuilder.Factory<B> supplier, Supplier<Block>... supportedBlocks) {
 		return AMCommon.registry(RegistryKeys.BLOCK_ENTITY_TYPE).register(AMCommon.id(name), () -> FabricBlockEntityTypeBuilder.create(supplier, resolveBlocks(supportedBlocks)).build(null));

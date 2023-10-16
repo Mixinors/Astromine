@@ -39,116 +39,56 @@ import com.github.mixinors.astromine.common.screen.handler.storage.TankScreenHan
 import com.github.mixinors.astromine.common.screen.handler.utility.*;
 import dev.architectury.registry.menu.MenuRegistry;
 import dev.architectury.registry.registries.RegistrySupplier;
+import dev.vini2003.hammer.core.api.common.function.TriFunction;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+
+import java.util.function.BiFunction;
 
 public class AMScreenHandlers {
-	public static final RegistrySupplier<ScreenHandlerType<RecipeCreatorScreenHandler>> RECIPE_CREATOR = registerExtended(AMCommon.id("recipe_creator"), ((syncId, inventory, buffer) -> {
-		return new RecipeCreatorScreenHandler(syncId, inventory.player);
-	}));
-	
-	public static final RegistrySupplier<ScreenHandlerType<BodySelectorScreenHandler>> BODY_SELECTOR = registerExtended(AMCommon.id("body_selector"), ((syncId, inventory, buffer) -> {
-		return new BodySelectorScreenHandler(syncId, inventory.player);
-	}));
-	
-	public static final RegistrySupplier<ScreenHandlerType<FluidCollectorScreenHandler>> FLUID_EXTRACTOR = registerExtended(AMCommon.id("fluid_collector"), ((syncId, inventory, buffer) -> {
-		return new FluidCollectorScreenHandler(syncId, inventory.player, buffer.readBlockPos());
-	}));
-	
-	public static final RegistrySupplier<ScreenHandlerType<FluidPlacerScreenHandler>> FLUID_INSERTER = registerExtended(AMCommon.id("fluid_placer"), ((syncId, inventory, buffer) -> {
-		return new FluidPlacerScreenHandler(syncId, inventory.player, buffer.readBlockPos());
-	}));
-	
-	public static final RegistrySupplier<ScreenHandlerType<BlockBreakerScreenHandler>> BLOCK_BREAKER = registerExtended(AMCommon.id("block_breaker"), ((syncId, inventory, buffer) -> {
-		return new BlockBreakerScreenHandler(syncId, inventory.player, buffer.readBlockPos());
-	}));
-	
-	public static final RegistrySupplier<ScreenHandlerType<BlockPlacerScreenHandler>> BLOCK_PLACER = registerExtended(AMCommon.id("block_placer"), ((syncId, inventory, buffer) -> {
-		return new BlockPlacerScreenHandler(syncId, inventory.player, buffer.readBlockPos());
-	}));
-	
-	public static final RegistrySupplier<ScreenHandlerType<PumpScreenHandler>> PUMP = registerExtended(AMCommon.id("pump"), ((syncId, inventory, buffer) -> {
-		return new PumpScreenHandler(syncId, inventory.player, buffer.readBlockPos());
-	}));
-	
-	public static final RegistrySupplier<ScreenHandlerType<FluidGeneratorScreenHandler>> LIQUID_GENERATOR = registerExtended(AMCommon.id("fluid_generator"), ((syncId, inventory, buffer) -> {
-		return new FluidGeneratorScreenHandler(syncId, inventory.player, buffer.readBlockPos());
-	}));
-	
-	public static final RegistrySupplier<ScreenHandlerType<SolidGeneratorScreenHandler>> SOLID_GENERATOR = registerExtended(AMCommon.id("solid_generator"), ((syncId, inventory, buffer) -> {
-		return new SolidGeneratorScreenHandler(syncId, inventory.player, buffer.readBlockPos());
-	}));
-	
-	public static final RegistrySupplier<ScreenHandlerType<TankScreenHandler>> TANK = registerExtended(AMCommon.id("tank"), ((syncId, inventory, buffer) -> {
-		return new TankScreenHandler(syncId, inventory.player, buffer.readBlockPos());
-	}));
-	
-	public static final RegistrySupplier<ScreenHandlerType<NuclearWarheadScreenHandler>> NUCLEAR_WARHEAD = registerExtended(AMCommon.id("nuclear_warhead"), ((syncId, inventory, buffer) -> {
-		return new NuclearWarheadScreenHandler(syncId, inventory.player, buffer.readBlockPos());
-	}));
-	
-	public static final RegistrySupplier<ScreenHandlerType<CapacitorScreenHandler>> CAPACITOR = registerExtended(AMCommon.id("capacitor"), ((syncId, inventory, buffer) -> {
-		return new CapacitorScreenHandler(syncId, inventory.player, buffer.readBlockPos());
-	}));
-	
-	public static final RegistrySupplier<ScreenHandlerType<BufferScreenHandler>> BUFFER = registerExtended(AMCommon.id("buffer"), ((syncId, inventory, buffer) -> {
-		return new BufferScreenHandler(syncId, inventory.player, buffer.readBlockPos());
-	}));
-	
-	public static final RegistrySupplier<ScreenHandlerType<TrituratorScreenHandler>> TRITURATOR = registerExtended(AMCommon.id("triturator"), ((syncId, inventory, buffer) -> {
-		return new TrituratorScreenHandler(syncId, inventory.player, buffer.readBlockPos());
-	}));
-	
-	public static final RegistrySupplier<ScreenHandlerType<PresserScreenHandler>> PRESSER = registerExtended(AMCommon.id("press"), ((syncId, inventory, buffer) -> {
-		return new PresserScreenHandler(syncId, inventory.player, buffer.readBlockPos());
-	}));
-	
-	public static final RegistrySupplier<ScreenHandlerType<WireMillScreenHandler>> WIRE_MILL = registerExtended(AMCommon.id("wire_mill"), ((syncId, inventory, buffer) -> {
-		return new WireMillScreenHandler(syncId, inventory.player, buffer.readBlockPos());
-	}));
-	
-	public static final RegistrySupplier<ScreenHandlerType<ElectricFurnaceScreenHandler>> ELECTRIC_FURNACE = registerExtended(AMCommon.id("electric_furnace"), ((syncId, inventory, buffer) -> {
-		return new ElectricFurnaceScreenHandler(syncId, inventory.player, buffer.readBlockPos());
-	}));
-	
-	public static final RegistrySupplier<ScreenHandlerType<ElectrolyzerScreenHandler>> ELECTROLYZER = registerExtended(AMCommon.id("electrolyzer"), ((syncId, inventory, buffer) -> {
-		return new ElectrolyzerScreenHandler(syncId, inventory.player, buffer.readBlockPos());
-	}));
-	
-	public static final RegistrySupplier<ScreenHandlerType<RefineryScreenHandler>> REFINERY = registerExtended(AMCommon.id("refinery"), ((syncId, inventory, buffer) -> {
-		return new RefineryScreenHandler(syncId, inventory.player, buffer.readBlockPos());
-	}));
-	
-	public static final RegistrySupplier<ScreenHandlerType<FluidMixerScreenHandler>> FLUID_MIXER = registerExtended(AMCommon.id("fluid_mixer"), ((syncId, inventory, buffer) -> {
-		return new FluidMixerScreenHandler(syncId, inventory.player, buffer.readBlockPos());
-	}));
-	
-	public static final RegistrySupplier<ScreenHandlerType<AlloySmelterScreenHandler>> ALLOY_SMELTER = registerExtended(AMCommon.id("alloy_smelter"), ((syncId, inventory, buffer) -> {
-		return new AlloySmelterScreenHandler(syncId, inventory.player, buffer.readBlockPos());
-	}));
-	
-	public static final RegistrySupplier<ScreenHandlerType<SolidifierScreenHandler>> SOLIDIFIER = registerExtended(AMCommon.id("solidifier"), ((syncId, inventory, buffer) -> {
-		return new SolidifierScreenHandler(syncId, inventory.player, buffer.readBlockPos());
-	}));
-	
-	public static final RegistrySupplier<ScreenHandlerType<MelterScreenHandler>> MELTER = registerExtended(AMCommon.id("melter"), ((syncId, inventory, buffer) -> {
-		return new MelterScreenHandler(syncId, inventory.player, buffer.readBlockPos());
-	}));
-	
-	public static final RegistrySupplier<ScreenHandlerType<RocketControllerScreenHandler>> ROCKET_CONTROLLER = registerExtended(AMCommon.id("rocket_controller"), ((syncId, inventory, buffer) -> {
-		return new RocketControllerScreenHandler(syncId, inventory.player, buffer.readBlockPos());
-	}));
-	
-	public static final RegistrySupplier<ScreenHandlerType<StationControllerScreenHandler>> STATION_CONTROLLER = registerExtended(AMCommon.id("station_controller"), ((syncId, inventory, buffer) -> {
-		return new StationControllerScreenHandler(syncId, inventory.player, buffer.readBlockPos());
-	}));
-	
-	public static void init() {
-	}
-	
-	public static <T extends ScreenHandler> RegistrySupplier<ScreenHandlerType<T>> registerExtended(Identifier id, MenuRegistry.ExtendedMenuTypeFactory<T> factory) {
-		return AMCommon.registry(RegistryKeys.SCREEN_HANDLER).register(id, () -> MenuRegistry.ofExtended(factory));
-	}
+    public static final RegistrySupplier<ScreenHandlerType<RecipeCreatorScreenHandler>> RECIPE_CREATOR = register("recipe_creator", RecipeCreatorScreenHandler::new);
+    public static final RegistrySupplier<ScreenHandlerType<BodySelectorScreenHandler>> BODY_SELECTOR = register("body_selector", BodySelectorScreenHandler::new);
+    public static final RegistrySupplier<ScreenHandlerType<FluidCollectorScreenHandler>> FLUID_EXTRACTOR = register("fluid_collector", FluidCollectorScreenHandler::new);
+    public static final RegistrySupplier<ScreenHandlerType<FluidPlacerScreenHandler>> FLUID_INSERTER = register("fluid_placer", FluidPlacerScreenHandler::new);
+    public static final RegistrySupplier<ScreenHandlerType<BlockBreakerScreenHandler>> BLOCK_BREAKER = register("block_breaker", BlockBreakerScreenHandler::new);
+    public static final RegistrySupplier<ScreenHandlerType<BlockPlacerScreenHandler>> BLOCK_PLACER = register("block_placer", BlockPlacerScreenHandler::new);
+    public static final RegistrySupplier<ScreenHandlerType<PumpScreenHandler>> PUMP = register("pump", PumpScreenHandler::new);
+    public static final RegistrySupplier<ScreenHandlerType<FluidGeneratorScreenHandler>> LIQUID_GENERATOR = register("fluid_generator", FluidGeneratorScreenHandler::new);
+    public static final RegistrySupplier<ScreenHandlerType<SolidGeneratorScreenHandler>> SOLID_GENERATOR = register("solid_generator", SolidGeneratorScreenHandler::new);
+    public static final RegistrySupplier<ScreenHandlerType<TankScreenHandler>> TANK = register("tank", TankScreenHandler::new);
+    public static final RegistrySupplier<ScreenHandlerType<NuclearWarheadScreenHandler>> NUCLEAR_WARHEAD = register("nuclear_warhead", NuclearWarheadScreenHandler::new);
+    public static final RegistrySupplier<ScreenHandlerType<CapacitorScreenHandler>> CAPACITOR = register("capacitor", CapacitorScreenHandler::new);
+    public static final RegistrySupplier<ScreenHandlerType<BufferScreenHandler>> BUFFER = register("buffer", BufferScreenHandler::new);
+    public static final RegistrySupplier<ScreenHandlerType<TrituratorScreenHandler>> TRITURATOR = register("triturator", TrituratorScreenHandler::new);
+    public static final RegistrySupplier<ScreenHandlerType<PresserScreenHandler>> PRESSER = register("press", PresserScreenHandler::new);
+    public static final RegistrySupplier<ScreenHandlerType<WireMillScreenHandler>> WIRE_MILL = register("wire_mill", WireMillScreenHandler::new);
+    public static final RegistrySupplier<ScreenHandlerType<ElectricFurnaceScreenHandler>> ELECTRIC_FURNACE = register("electric_furnace", ElectricFurnaceScreenHandler::new);
+    public static final RegistrySupplier<ScreenHandlerType<ElectrolyzerScreenHandler>> ELECTROLYZER = register("electrolyzer", ElectrolyzerScreenHandler::new);
+    public static final RegistrySupplier<ScreenHandlerType<RefineryScreenHandler>> REFINERY = register("refinery", RefineryScreenHandler::new);
+    public static final RegistrySupplier<ScreenHandlerType<FluidMixerScreenHandler>> FLUID_MIXER = register("fluid_mixer", FluidMixerScreenHandler::new);
+    public static final RegistrySupplier<ScreenHandlerType<AlloySmelterScreenHandler>> ALLOY_SMELTER = register("alloy_smelter", AlloySmelterScreenHandler::new);
+    public static final RegistrySupplier<ScreenHandlerType<SolidifierScreenHandler>> SOLIDIFIER = register("solidifier", SolidifierScreenHandler::new);
+    public static final RegistrySupplier<ScreenHandlerType<MelterScreenHandler>> MELTER = register("melter", MelterScreenHandler::new);
+    public static final RegistrySupplier<ScreenHandlerType<RocketControllerScreenHandler>> ROCKET_CONTROLLER = register("rocket_controller", RocketControllerScreenHandler::new);
+    public static final RegistrySupplier<ScreenHandlerType<StationControllerScreenHandler>> STATION_CONTROLLER = register("station_controller", StationControllerScreenHandler::new);
+
+    public static void init() {
+        
+    }
+
+    public static <T extends ScreenHandler> RegistrySupplier<ScreenHandlerType<T>> register(String name, BiFunction<Integer, PlayerEntity, T> factory) {
+        return AMCommon.registry(RegistryKeys.SCREEN_HANDLER).register(AMCommon.id(name), () -> MenuRegistry.ofExtended((id, inventory, buf) -> {
+            return factory.apply(id, inventory.player);
+        }));
+    }
+
+    public static <T extends ScreenHandler> RegistrySupplier<ScreenHandlerType<T>> register(String name, TriFunction<Integer, PlayerEntity, BlockPos, T> factory) {
+        return AMCommon.registry(RegistryKeys.SCREEN_HANDLER).register(AMCommon.id(name), () -> MenuRegistry.ofExtended((id, inventory, buf) -> {
+            return factory.apply(id, inventory.player, buf.readBlockPos());
+        }));
+    }
 }

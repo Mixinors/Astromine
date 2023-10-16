@@ -26,64 +26,88 @@ package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.common.screen.handler.RecipeCreatorScreenHandler;
 import com.github.mixinors.astromine.common.screen.handler.body.BodySelectorScreenHandler;
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.context.CommandContext;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
 import dev.architectury.registry.menu.ExtendedMenuProvider;
 import dev.architectury.registry.menu.MenuRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.Recipe;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
+import static net.minecraft.server.command.CommandManager.literal;
+
 public class AMCommands {
 	public static void init() {
 		CommandRegistrationEvent.EVENT.register((dispatcher, environment, $) -> {
-			dispatcher.register(
-					LiteralArgumentBuilder.<ServerCommandSource>literal("body_selector").executes(context -> {
-						MenuRegistry.openExtendedMenu(context.getSource().getPlayer(), new ExtendedMenuProvider() {
-							@Override
-							public void saveExtraData(PacketByteBuf packetByteBuf) {
-							
-							}
-							
-							@Override
-							public Text getDisplayName() {
-								return Text.literal("Recipe Creator");
-							}
-							
-							@Override
-							public @NotNull ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-								return new BodySelectorScreenHandler(syncId, player);
-							}
-						});
-						
-						return 1;
-					})
-			);
-			
-			dispatcher.register(LiteralArgumentBuilder.<ServerCommandSource>literal("recipe").then(LiteralArgumentBuilder.<ServerCommandSource>literal("creator").executes((context) -> {
-				MenuRegistry.openExtendedMenu(context.getSource().getPlayer(), new ExtendedMenuProvider() {
-					@Override
-					public void saveExtraData(PacketByteBuf packetByteBuf) {
-						
-					}
-					
-					@Override
-					public Text getDisplayName() {
-						return Text.literal("Recipe Creator");
-					}
-					
-					@Override
-					public @NotNull ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-						return new RecipeCreatorScreenHandler(syncId, player);
-					}
-				});
-				
-				return 1;
-			})));
+			var astromineNode = literal("astromine");
+			var amNode = literal("am");
+
+			var bodySelectorNode = literal("body_selector")
+					.requires(AMCommands::requiresOp)
+					.executes(AMCommands::executeBodySelector);
+
+			var recipeCreatorNode = literal("recipe_creator")
+					.requires(AMCommands::requiresOp)
+					.executes(AMCommands::executeRecipeCreator);
+
+			astromineNode.then(bodySelectorNode);
+			astromineNode.then(recipeCreatorNode);
+
+			amNode.then(bodySelectorNode);
+			amNode.then(recipeCreatorNode);
+
+			dispatcher.register(astromineNode);
+			dispatcher.register(amNode);
 		});
+	}
+
+	private static boolean requiresOp(ServerCommandSource source) {
+		return source.hasPermissionLevel(source.getServer().getOpPermissionLevel());
+	}
+
+	private static int executeOpenScreenHandler(CommandContext<ServerCommandSource> context, String name, BiFunction<Integer, PlayerEntity, ScreenHandler> screenHandlerSupplier) {
+		var source = context.getSource();
+		if (source == null) return Command.SINGLE_SUCCESS;
+
+		var player = source.getPlayer();
+		if (player == null) return Command.SINGLE_SUCCESS;
+
+		MenuRegistry.openExtendedMenu(player, new ExtendedMenuProvider() {
+			@Override
+			public void saveExtraData(PacketByteBuf packetByteBuf) {
+
+			}
+
+			@Override
+			public Text getDisplayName() {
+				return Text.literal(name);
+			}
+
+			@Override
+			public @NotNull ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
+				return screenHandlerSupplier.apply(syncId, inv.player);
+			}
+		});
+
+		return Command.SINGLE_SUCCESS;
+	}
+
+	private static int executeRecipeCreator(CommandContext<ServerCommandSource> context) {
+		return executeOpenScreenHandler(context, "Recipe Creator", RecipeCreatorScreenHandler::new);
+	}
+
+	private static int executeBodySelector(CommandContext<ServerCommandSource> context) {
+		return executeOpenScreenHandler(context, "Body Selector", BodySelectorScreenHandler::new);
 	}
 }

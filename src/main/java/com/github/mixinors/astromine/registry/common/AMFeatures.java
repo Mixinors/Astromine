@@ -42,10 +42,10 @@ import net.minecraft.world.gen.feature.FeatureConfig;
 
 public class AMFeatures {
 	public static final Identifier ASTEROID_ORES_ID = AMCommon.id("asteroid_ores");
-	public static final Feature<DefaultFeatureConfig> ASTEROID_ORES_FEATURE = registerFeature(ASTEROID_ORES_ID, new AsteroidOreFeature(DefaultFeatureConfig.CODEC));
+	public static final Feature<DefaultFeatureConfig> ASTEROID_ORES_FEATURE = register(ASTEROID_ORES_ID, new AsteroidOreFeature(DefaultFeatureConfig.CODEC));
 	
 	public static final Identifier OIL_WELL_ID = AMCommon.id("oil_well");
-	public static final Feature<DefaultFeatureConfig> OIL_WELL_FEATURE = registerFeature(OIL_WELL_ID, new OilWellFeature(DefaultFeatureConfig.CODEC));
+	public static final Feature<DefaultFeatureConfig> OIL_WELL_FEATURE = register(OIL_WELL_ID, new OilWellFeature(DefaultFeatureConfig.CODEC));
 	
 	public static void init() {
 		BiomeModifications.create(OIL_WELL_ID).add(ModificationPhase.ADDITIONS, (biomeSelectionContext) -> {
@@ -57,7 +57,7 @@ public class AMFeatures {
 		}));
 	}
 	
-	public static <T extends FeatureConfig> Feature<T> registerFeature(Identifier id, Feature<T> feature) {
+	public static <T extends FeatureConfig> Feature<T> register(Identifier id, Feature<T> feature) {
 		return Registry.register(Registries.FEATURE, id, feature);
 	}
 }

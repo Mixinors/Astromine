@@ -65,8 +65,6 @@ public class AMCommon implements ModInitializer {
     @Override
     public void onInitialize() {
         AMConfig.init();
-        AMAttributes.init();
-        AMIdentifierFixes.init();
         AMWorlds.init();
         AMFeatures.init();
         AMStructureTypes.init();

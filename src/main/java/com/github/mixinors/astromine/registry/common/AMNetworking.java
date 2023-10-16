@@ -30,65 +30,65 @@ import com.github.mixinors.astromine.common.transfer.RedstoneType;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.StorageType;
 import dev.architectury.networking.NetworkManager;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
 public class AMNetworking {
 	public static final Identifier STORAGE_SIDING_UPDATE = AMCommon.id("storage_siding_update");
-	
 	public static final Identifier REDSTONE_TYPE_UPDATE = AMCommon.id("redstone_type_update");
 	
 	public static final Identifier ROCKET_SPAWN = AMCommon.id("rocket_spawn");
 	
 	public static final Identifier SYNC_ENTITY = AMCommon.id("sync_entity");
-	
 	public static final Identifier SYNC_BODIES = AMCommon.id("sync_bodies");
-	
 	public static final Identifier SYNC_ROCKETS = AMCommon.id("sync_rockets");
-	
 	public static final Identifier SYNC_STATIONS = AMCommon.id("sync_stations");
-	
+
+	private static void onStorageSidingUpdate(PacketByteBuf buf, NetworkManager.PacketContext context) {
+		buf.retain();
+
+		var siding = buf.readEnumConstant(StorageSiding.class);
+		var type = buf.readEnumConstant(StorageType.class);
+		var direction = buf.readEnumConstant(Direction.class);
+		var pos = buf.readBlockPos();
+
+		context.queue(() -> {
+			var blockEntity = (ExtendedBlockEntity) context.getPlayer().getWorld().getBlockEntity(pos);
+
+			var sidings = (StorageSiding[]) null;
+
+			if (type == StorageType.ITEM) {
+				sidings = blockEntity.getItemStorage().getSidings();
+			}
+
+			if (type == StorageType.FLUID) {
+				sidings = blockEntity.getFluidStorage().getSidings();
+			}
+
+			sidings[direction.ordinal()] = siding;
+
+			blockEntity.syncData();
+		});
+	}
+
+	private static void onRedstoneTypeUpdate(PacketByteBuf buf, NetworkManager.PacketContext context) {
+		buf.retain();
+
+		var control = buf.readEnumConstant(RedstoneType.class);
+		var pos = buf.readBlockPos();
+
+		context.queue(() -> {
+			var blockEntity = (ExtendedBlockEntity) context.getPlayer().getWorld().getBlockEntity(pos);
+
+			blockEntity.setRedstoneControl(control);
+
+			blockEntity.syncData();
+		});
+	}
+
 	public static void init() {
-		NetworkManager.registerReceiver(NetworkManager.c2s(), STORAGE_SIDING_UPDATE, ((buf, context) -> {
-			buf.retain();
-			
-			var siding = buf.readEnumConstant(StorageSiding.class);
-			var type = buf.readEnumConstant(StorageType.class);
-			var direction = buf.readEnumConstant(Direction.class);
-			var pos = buf.readBlockPos();
-			
-			context.queue(() -> {
-				var blockEntity = (ExtendedBlockEntity) context.getPlayer().getWorld().getBlockEntity(pos);
-				
-				var sidings = (StorageSiding[]) null;
-				
-				if (type == StorageType.ITEM) {
-					sidings = blockEntity.getItemStorage().getSidings();
-				}
-				
-				if (type == StorageType.FLUID) {
-					sidings = blockEntity.getFluidStorage().getSidings();
-				}
-				
-				sidings[direction.ordinal()] = siding;
-				
-				blockEntity.syncData();
-			});
-		}));
-		
-		NetworkManager.registerReceiver(NetworkManager.c2s(), REDSTONE_TYPE_UPDATE, ((buf, context) -> {
-			buf.retain();
-			
-			var control = buf.readEnumConstant(RedstoneType.class);
-			var pos = buf.readBlockPos();
-			
-			context.queue(() -> {
-				var blockEntity = (ExtendedBlockEntity) context.getPlayer().getWorld().getBlockEntity(pos);
-				
-				blockEntity.setRedstoneControl(control);
-				
-				blockEntity.syncData();
-			});
-		}));
+		NetworkManager.registerReceiver(NetworkManager.c2s(), STORAGE_SIDING_UPDATE, AMNetworking::onStorageSidingUpdate);
+		NetworkManager.registerReceiver(NetworkManager.c2s(), REDSTONE_TYPE_UPDATE, AMNetworking::onRedstoneTypeUpdate);
 	}
 }

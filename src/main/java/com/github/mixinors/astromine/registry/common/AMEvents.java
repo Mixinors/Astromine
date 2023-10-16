@@ -25,6 +25,7 @@
 package com.github.mixinors.astromine.registry.common;
 
 import com.github.mixinors.astromine.common.component.world.NetworksComponent;
+import com.github.mixinors.astromine.common.entity.slime.SuperSpaceSlimeEntity;
 import com.github.mixinors.astromine.common.manager.BodyManager;
 import com.github.mixinors.astromine.common.manager.RocketManager;
 import com.github.mixinors.astromine.common.manager.StationManager;
@@ -33,38 +34,22 @@ import com.github.mixinors.astromine.common.screen.handler.base.entity.ExtendedE
 import dev.architectury.event.events.common.TickEvent;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
+import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.resource.ResourceType;
+import net.minecraft.util.ActionResult;
 
 public class AMEvents {
 	public static void init() {
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new BodyManager.ReloadListener());
 		
-		TickEvent.SERVER_PRE.register((server) -> {
-			for (var playerEntity : server.getPlayerManager().getPlayerList()) {
-				if (playerEntity.currentScreenHandler instanceof ExtendedBlockEntityScreenHandler screenHandler) {
-					if (screenHandler.getBlockEntity() != null) {
-						screenHandler.getBlockEntity().syncData();
-						break;
-					}
-				}
-				
-				if (playerEntity.currentScreenHandler instanceof ExtendedEntityScreenHandler screenHandler) {
-					if (screenHandler.getEntity() != null) {
-						screenHandler.getEntity().syncData();
-					}
-				}
-			}
-		});
+		AttackEntityCallback.EVENT.register(SuperSpaceSlimeEntity::onAttackEntity);
+
+		TickEvent.SERVER_PRE.register(ExtendedBlockEntityScreenHandler::onServerPre);
+		TickEvent.SERVER_PRE.register(ExtendedEntityScreenHandler::onServerPre);
 		
-		TickEvent.SERVER_LEVEL_PRE.register((world -> {
-			var component = NetworksComponent.get(world);
-			
-			if (component != null) {
-				component.tick();
-			}
-		}));
+		TickEvent.SERVER_LEVEL_PRE.register(NetworksComponent::onServerLevelPre);
 		
 		ServerWorldEvents.LOAD.register(BodyManager::onWorldLoad);
 		ServerWorldEvents.UNLOAD.register(BodyManager::onWorldUnload);

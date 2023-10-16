@@ -1,6 +1,5 @@
 package com.github.mixinors.astromine.client.screen;
 
-import com.github.mixinors.astromine.AMClient;
 import com.github.mixinors.astromine.client.util.IsometricCameraHandler;
 import com.github.mixinors.astromine.common.entity.IsometricCameraEntity;
 import com.github.mixinors.astromine.registry.client.AMKeyBindings;
@@ -8,13 +7,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult.Type;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.RaycastContext;
-import net.minecraft.world.RaycastContext.FluidHandling;
-import net.minecraft.world.RaycastContext.ShapeType;
 
 public class IsometricCameraScreen extends Screen {private boolean sneakPressed;
     private boolean forwardPressed;
@@ -44,10 +37,10 @@ public class IsometricCameraScreen extends Screen {private boolean sneakPressed;
 
         if (super.keyPressed(keyCode, scanCode, modifiers)) {
             return true;
-        } else if (AMKeyBindings.toggleCamera.matchesKey(keyCode, scanCode)) {
+        } else if (AMKeyBindings.TOGGLE_CAMERA.matchesKey(keyCode, scanCode)) {
             this.close();
             return true;
-        } else if (AMKeyBindings.rotateCameraLeft.matchesKey(keyCode, scanCode)) {
+        } else if (AMKeyBindings.ROTATE_CAMERA_LEFT.matchesKey(keyCode, scanCode)) {
             if (cameraEntity.getYaw() > 45) {
                 cameraEntity.setYaw(cameraEntity.getYaw() - 90);
             } else {
@@ -55,7 +48,7 @@ public class IsometricCameraScreen extends Screen {private boolean sneakPressed;
             }
 
             return true;
-        } else if (AMKeyBindings.rotateCameraRight.matchesKey(keyCode, scanCode)) {
+        } else if (AMKeyBindings.ROTATE_CAMERA_RIGHT.matchesKey(keyCode, scanCode)) {
             if (cameraEntity.getYaw() < 315) {
                 cameraEntity.setYaw(cameraEntity.getYaw() + 90);
             } else {

@@ -446,45 +446,21 @@ public class AMItems {
 	
 	}
 	
-	/**
-	 * @param name Name of item instance to be registered
-	 * @param item Item instance to be registered
-	 *
-	 * @return Item instance registered
-	 */
 	public static <T extends Item> RegistrySupplier<T> register(String name, Supplier<T> item) {
 		return register(AMCommon.id(name), item);
 	}
 	
-	/**
-	 * @param name Identifier of item instance to be registered
-	 * @param item Item instance to be registered
-	 *
-	 * @return Item instance registered
-	 */
 	public static <T extends Item> RegistrySupplier<T> register(Identifier name, Supplier<T> item) {
-		RegistrySupplier<T> i = AMCommon.registry(RegistryKeys.ITEM).register(name, item);
+		var i = AMCommon.registry(RegistryKeys.ITEM).register(name, item);
 		AMItemGroups.addToDefault(i.get());
 		
 		return i;
 	}
 	
-	/**
-	 * @param name Name of item instance to be registered
-	 * @param item Item instance to be registered
-	 *
-	 * @return Item instance registered
-	 */
 	public static <T extends Item> RegistrySupplier<T> registerNoGroup(String name, Supplier<T> item) {
 		return registerNoGroup(AMCommon.id(name), item);
 	}
-	
-	/**
-	 * @param name Identifier of item instance to be registered
-	 * @param item Item instance to be registered
-	 *
-	 * @return Item instance registered
-	 */
+
 	public static <T extends Item> RegistrySupplier<T> registerNoGroup(Identifier name, Supplier<T> item) {
 		return AMCommon.registry(RegistryKeys.ITEM).register(name, item);
 	}

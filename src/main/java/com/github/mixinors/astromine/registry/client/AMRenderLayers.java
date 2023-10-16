@@ -37,6 +37,7 @@ import java.util.Map;
 
 public class AMRenderLayers {
 	private static final Map<Identifier, RenderLayer> CACHE = new HashMap<>();
+
 	private static final RenderLayer HOLOGRAPHIC_BRIDGE = RenderLayer.of(
 			"holographic_bridge",
 			VertexFormats.POSITION_COLOR_LIGHT,

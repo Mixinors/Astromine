@@ -52,41 +52,10 @@ public class AMEntityTypes {
 		FabricDefaultAttributeRegistry.register(SPACE_SLIME.get(), HostileEntity.createHostileAttributes());
 		FabricDefaultAttributeRegistry.register(SUPER_SPACE_SLIME.get(), SuperSpaceSlimeEntity.createAttributes());
 		
-		AttackEntityCallback.EVENT.register((playerEntity, world, hand, entity, entityHitResult) -> {
-			if (entity instanceof SuperSpaceSlimeEntity) {
-				if (world.random.nextInt(10) == 0) {
-					var spaceSlimeEntity = AMEntityTypes.SPACE_SLIME.get().create(world);
-					spaceSlimeEntity.setPos(entity.getX(), entity.getY(), entity.getZ());
-					
-					world.spawnEntity(spaceSlimeEntity);
-				}
-			}
-			
-			return ActionResult.PASS;
-		});
-		
 		SpawnRestriction.register(AMEntityTypes.SPACE_SLIME.get(), SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, SpaceSlimeEntity::canSpawnInDark);
 	}
-	
-	public static <T extends Entity> RegistrySupplier<EntityType<T>> registerBuilder(String id, Supplier<EntityType.Builder<T>> builder) {
-		return registerBuilder(AMCommon.id(id), builder);
-	}
-	
-	public static <T extends Entity> RegistrySupplier<EntityType<T>> registerBuilder(Identifier id, Supplier<EntityType.Builder<T>> builder) {
-		return register(id, () -> builder.get().build(id.getPath()));
-	}
-	
-	/**
-	 * @param id   Name of EntityType instance to be registered
-	 * @param type EntityType instance to register
-	 *
-	 * @return Registered EntityType
-	 */
-	public static <T extends Entity> RegistrySupplier<EntityType<T>> register(String id, Supplier<EntityType<T>> type) {
-		return register(AMCommon.id(id), type);
-	}
-	
-	public static <T extends Entity> RegistrySupplier<EntityType<T>> register(Identifier id, Supplier<EntityType<T>> type) {
-		return AMCommon.registry(RegistryKeys.ENTITY_TYPE).register(id, type);
+
+	public static <T extends Entity> RegistrySupplier<EntityType<T>> register(String name, Supplier<EntityType<T>> type) {
+		return AMCommon.registry(RegistryKeys.ENTITY_TYPE).register(AMCommon.id(name), type);
 	}
 }

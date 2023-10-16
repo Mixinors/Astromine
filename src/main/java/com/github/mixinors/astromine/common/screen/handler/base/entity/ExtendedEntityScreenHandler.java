@@ -40,6 +40,7 @@ import dev.vini2003.hammer.gui.energy.api.common.widget.bar.EnergyBarWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.server.MinecraftServer;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -98,6 +99,16 @@ public abstract class ExtendedEntityScreenHandler extends BaseScreenHandler {
 		if (!player.getWorld().isClient) {
 			entity.setSyncItemStorage(true);
 			entity.setSyncFluidStorage(true);
+		}
+	}
+
+	public static void onServerPre(MinecraftServer server) {
+		for (var playerEntity : server.getPlayerManager().getPlayerList()) {
+			if (playerEntity.currentScreenHandler instanceof ExtendedEntityScreenHandler screenHandler) {
+				if (screenHandler.getEntity() != null) {
+					screenHandler.getEntity().syncData();
+				}
+			}
 		}
 	}
 	

@@ -34,14 +34,6 @@ public class AMParticles {
 	public static final RegistrySupplier<DefaultParticleType> SPACE_SLIME = register("space_slime", false);
 	public static final RegistrySupplier<DefaultParticleType> ROCKET_FLAME = register("rocket_flame", true);
 	
-	/**
-	 * Registers a new {@link DefaultParticleType} instance under the given name.
-	 *
-	 * @param name       Name of {@link DefaultParticleType} to register
-	 * @param alwaysShow Whether the particle should always appear visible
-	 *
-	 * @return Registered {@link DefaultParticleType}
-	 */
 	public static RegistrySupplier<DefaultParticleType> register(String name, boolean alwaysShow) {
 		return AMCommon.registry(RegistryKeys.PARTICLE_TYPE).register(AMCommon.id(name), () -> new DefaultParticleType(alwaysShow));
 	}

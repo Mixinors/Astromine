@@ -45,6 +45,7 @@ public class AMItemGroups {
 	public static final ItemGroup ASTROMINE = register(ASTROMINE_KEY, CreativeTabRegistry.create(Text.translatable("itemGroup.astromine.general"), () -> new ItemStack(AMItems.ITEM.get())));
 	
 	public static void init() {
+
 	}
 	
 	public static void addToItemGroup(ItemGroup group, Item item) {

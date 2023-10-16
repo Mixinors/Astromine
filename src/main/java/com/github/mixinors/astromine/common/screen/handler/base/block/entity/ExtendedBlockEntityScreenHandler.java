@@ -27,6 +27,7 @@ package com.github.mixinors.astromine.common.screen.handler.base.block.entity;
 import com.github.mixinors.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.mixinors.astromine.common.block.entity.base.ExtendedBlockEntity;
 import com.github.mixinors.astromine.common.screen.handler.base.block.BlockStateScreenHandler;
+import com.github.mixinors.astromine.common.screen.handler.base.entity.ExtendedEntityScreenHandler;
 import com.github.mixinors.astromine.common.transfer.StorageSiding;
 import com.github.mixinors.astromine.common.transfer.StorageType;
 import com.github.mixinors.astromine.common.util.WidgetUtils;
@@ -46,6 +47,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.SlotActionType;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -114,6 +116,16 @@ public abstract class ExtendedBlockEntityScreenHandler extends BlockStateScreenH
 			blockEntity.setSyncFluidStorage(true);
 			
 			BlockEntityHooks.syncData(blockEntity);
+		}
+	}
+
+	public static void onServerPre(MinecraftServer server) {
+		for (var playerEntity : server.getPlayerManager().getPlayerList()) {
+			if (playerEntity.currentScreenHandler instanceof ExtendedBlockEntityScreenHandler screenHandler) {
+				if (screenHandler.getBlockEntity() != null) {
+					screenHandler.getBlockEntity().syncData();
+				}
+			}
 		}
 	}
 	

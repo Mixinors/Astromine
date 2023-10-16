@@ -40,6 +40,7 @@ public class AMCriteria {
 	public static final ProperlyUseFireExtinguisherCriterion PROPERLY_USE_FIRE_EXTINGUISHER = register(new ProperlyUseFireExtinguisherCriterion(AMCommon.id("properly_use_fire_extinguisher")));
 	
 	public static void init() {
+
 	}
 	
 	public static <T extends Criterion<?>> T register(T criterion) {

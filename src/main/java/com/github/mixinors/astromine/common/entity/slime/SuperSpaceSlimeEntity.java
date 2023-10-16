@@ -46,9 +46,13 @@ import net.minecraft.particle.ParticleEffect;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 	private static final String HAS_EXPLODED_KEY = "HasExploded";
@@ -84,7 +88,20 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 	public static DefaultAttributeContainer.Builder createAttributes() {
 		return MobEntity.createMobAttributes().add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 5).add(EntityAttributes.GENERIC_MAX_HEALTH, 300);
 	}
-	
+
+	public static ActionResult onAttackEntity(PlayerEntity player, World world, Hand hand, Entity entity, @Nullable EntityHitResult hitResult) {
+		if (entity instanceof SuperSpaceSlimeEntity) {
+			if (world.random.nextInt(10) == 0) {
+				var spaceSlimeEntity = AMEntityTypes.SPACE_SLIME.get().create(world);
+				spaceSlimeEntity.setPos(entity.getX(), entity.getY(), entity.getZ());
+
+				world.spawnEntity(spaceSlimeEntity);
+			}
+		}
+
+		return ActionResult.PASS;
+	}
+
 	@Override
 	public void initGoals() {
 		this.goalSelector.add(0, new SuperSpaceSlimeExplosionGoal(this));

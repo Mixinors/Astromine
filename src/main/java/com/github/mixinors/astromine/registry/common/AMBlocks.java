@@ -338,24 +338,10 @@ public class AMBlocks {
 	public static void init() {
 	}
 	
-	/**
-	 * @param name     Name of block instance to be registered
-	 * @param block    Block instance to be registered
-	 * @param settings Item.Settings of BlockItem of Block instance to be registered
-	 *
-	 * @return Block instance registered
-	 */
 	public static <T extends Block> RegistrySupplier<T> register(String name, Supplier<T> block, Item.Settings settings) {
 		return register(name, block, b -> new BlockItem(b, settings));
 	}
 	
-	/**
-	 * @param name  Name of block instance to be registered
-	 * @param block Block instance to be registered
-	 * @param item  BlockItem instance of Block to be registered
-	 *
-	 * @return Block instance registered
-	 */
 	public static <T extends Block> RegistrySupplier<T> register(String name, Supplier<T> block, Function<T, BlockItem> item) {
 		var b = register(AMCommon.id(name), block);
 		if (item != null) {
@@ -370,22 +356,10 @@ public class AMBlocks {
 		return b;
 	}
 	
-	/**
-	 * @param name  Name of block instance to be registered
-	 * @param block Block instance to be registered
-	 *
-	 * @return Block instance registered
-	 */
 	public static <T extends Block> RegistrySupplier<T> register(String name, Supplier<T> block) {
 		return register(AMCommon.id(name), block);
 	}
 	
-	/**
-	 * @param name  Identifier of block instance to be registered
-	 * @param block Block instance to be registered
-	 *
-	 * @return Block instance registered
-	 */
 	public static <T extends Block> RegistrySupplier<T> register(Identifier name, Supplier<T> block) {
 		return AMCommon.registry(RegistryKeys.BLOCK).register(name, block);
 	}

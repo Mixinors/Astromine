@@ -36,12 +36,12 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 
 public class AMChunkGenerators {
 	public static void init() {
-		register(AMCommon.id("earth_orbit"), EarthOrbitChunkGenerator.CODEC);
-		register(AMCommon.id("moon"), MoonChunkGenerator.CODEC);
-		register(AMCommon.id("rocket_interiors"), RocketInteriorsChunkGenerator.CODEC);
+		register("earth_orbit", EarthOrbitChunkGenerator.CODEC);
+		register("moon", MoonChunkGenerator.CODEC);
+		register("rocket_interiors", RocketInteriorsChunkGenerator.CODEC);
 	}
 	
-	public static void register(Identifier id, Codec<? extends ChunkGenerator> codec) {
-		Registry.register(Registries.CHUNK_GENERATOR, id, codec);
+	public static void register(String name, Codec<? extends ChunkGenerator> codec) {
+		Registry.register(Registries.CHUNK_GENERATOR, AMCommon.id(name), codec);
 	}
 }

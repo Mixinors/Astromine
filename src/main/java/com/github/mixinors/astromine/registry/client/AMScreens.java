@@ -44,32 +44,32 @@ public class AMScreens {
 		register(AMScreenHandlers.RECIPE_CREATOR, RecipeCreatorHandledScreen::new);
 		register(AMScreenHandlers.BODY_SELECTOR, BodySelectorHandledScreen::new);
 		
-		registerSimple(AMScreenHandlers.FLUID_EXTRACTOR);
-		registerSimple(AMScreenHandlers.FLUID_INSERTER);
-		registerSimple(AMScreenHandlers.BLOCK_BREAKER);
-		registerSimple(AMScreenHandlers.BLOCK_PLACER);
-		registerSimple(AMScreenHandlers.LIQUID_GENERATOR);
-		registerSimple(AMScreenHandlers.SOLID_GENERATOR);
-		registerSimple(AMScreenHandlers.TANK);
-		registerSimple(AMScreenHandlers.NUCLEAR_WARHEAD);
-		registerSimple(AMScreenHandlers.CAPACITOR);
-		registerSimple(AMScreenHandlers.BUFFER);
-		registerSimple(AMScreenHandlers.TRITURATOR);
-		registerSimple(AMScreenHandlers.PRESSER);
-		registerSimple(AMScreenHandlers.WIRE_MILL);
-		registerSimple(AMScreenHandlers.ELECTRIC_FURNACE);
-		registerSimple(AMScreenHandlers.ELECTROLYZER);
-		registerSimple(AMScreenHandlers.REFINERY);
-		registerSimple(AMScreenHandlers.FLUID_MIXER);
-		registerSimple(AMScreenHandlers.ALLOY_SMELTER);
-		registerSimple(AMScreenHandlers.SOLIDIFIER);
-		registerSimple(AMScreenHandlers.MELTER);
-		registerSimple(AMScreenHandlers.PUMP);
+		register(AMScreenHandlers.FLUID_EXTRACTOR);
+		register(AMScreenHandlers.FLUID_INSERTER);
+		register(AMScreenHandlers.BLOCK_BREAKER);
+		register(AMScreenHandlers.BLOCK_PLACER);
+		register(AMScreenHandlers.LIQUID_GENERATOR);
+		register(AMScreenHandlers.SOLID_GENERATOR);
+		register(AMScreenHandlers.TANK);
+		register(AMScreenHandlers.NUCLEAR_WARHEAD);
+		register(AMScreenHandlers.CAPACITOR);
+		register(AMScreenHandlers.BUFFER);
+		register(AMScreenHandlers.TRITURATOR);
+		register(AMScreenHandlers.PRESSER);
+		register(AMScreenHandlers.WIRE_MILL);
+		register(AMScreenHandlers.ELECTRIC_FURNACE);
+		register(AMScreenHandlers.ELECTROLYZER);
+		register(AMScreenHandlers.REFINERY);
+		register(AMScreenHandlers.FLUID_MIXER);
+		register(AMScreenHandlers.ALLOY_SMELTER);
+		register(AMScreenHandlers.SOLIDIFIER);
+		register(AMScreenHandlers.MELTER);
+		register(AMScreenHandlers.PUMP);
 		
-		registerSimple(AMScreenHandlers.ROCKET_CONTROLLER);
+		register(AMScreenHandlers.ROCKET_CONTROLLER);
 	}
 	
-	public static <H extends BaseScreenHandler> void registerSimple(RegistrySupplier<? extends ScreenHandlerType<? extends H>> type) {
+	public static <H extends BaseScreenHandler> void register(RegistrySupplier<? extends ScreenHandlerType<? extends H>> type) {
 		AMScreens.<H, CustomForegroundBaseHandledScreen<H>>register(type, CustomForegroundBaseHandledScreen::new);
 	}
 	
