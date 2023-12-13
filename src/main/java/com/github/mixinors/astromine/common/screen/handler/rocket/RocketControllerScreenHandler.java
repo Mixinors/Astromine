@@ -9,9 +9,11 @@ import com.github.mixinors.astromine.common.slot.FilterSlot;
 import com.github.mixinors.astromine.common.util.StorageUtils;
 import com.github.mixinors.astromine.registry.common.AMItems;
 import com.github.mixinors.astromine.registry.common.AMScreenHandlers;
+import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.bar.FluidBarWidget;
+import dev.vini2003.hammer.gui.api.common.widget.image.ImageWidget;
 import dev.vini2003.hammer.gui.api.common.widget.item.ItemWidget;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
@@ -35,32 +37,32 @@ public class RocketControllerScreenHandler extends ExtendedBlockEntityScreenHand
 	
 	@Override
 	public Size getTabsSizeExtension() {
-		return new Size(0.0F, 81.0F);
+		return new Size(0.0F, 44.0F);
 	}
 	
 	@Override
 	public void init(int width, int height) {
 		super.init(width, height);
-		
+
 		if (rocketController.getItemStorage() != null && rocketController.getFluidStorage() != null) {
 			var payloadSlot = new SlotWidget(0, rocketController.getItemStorage(), (inventory, id, x, y) -> {
 				var slot = new FilterSlot(inventory, id, x, y);
-				
+
 				slot.setInsertPredicate((stack) -> {
 					return false;
 				});
-				
+
 				return slot;
 			});
-			
-			payloadSlot.setPosition(new Position(tabs, TABS_WIDTH / 2.0F - SLOT_WIDTH / 2.0F, 54.0F));
+
+			payloadSlot.setPosition(new Position(tabs, TABS_WIDTH / 2.0F - SLOT_WIDTH / 2.0F, 24.0F));
 			payloadSlot.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
-			
+
 			tab.add(payloadSlot);
-			
+
 			var leftFluidBar = fluidBar;
-			leftFluidBar.setPosition(new Position(payloadSlot, -BAR_WIDTH - PAD_3, SLOT_HEIGHT + PAD_3));
-			leftFluidBar.setSize(new Size(BAR_WIDTH, BAR_HEIGHT));
+			leftFluidBar.setPosition(new Position(payloadSlot, -BAR_WIDTH  / 2.0F - PAD_3, SLOT_HEIGHT + PAD_3));
+			leftFluidBar.setSize(new Size(BAR_WIDTH  / 2.0F, BAR_HEIGHT));
 			leftFluidBar.setStorageView(() -> rocketController.getFluidStorage().getStorage(Rocket.OXYGEN_TANK_FLUID_IN));
 			
 			var leftFluidInput = new SlotWidget(Rocket.OXYGEN_TANK_UNLOAD_SLOT, rocketController.getItemStorage(), (inventory, id, x, y) -> {
@@ -114,7 +116,7 @@ public class RocketControllerScreenHandler extends ExtendedBlockEntityScreenHand
 				return slot;
 			});
 			
-			leftFluidOutput.setPosition(new Position(leftFluidInput, 0.0F, SLOT_HEIGHT + PAD_3 + FILTER_HEIGHT + PAD_3));
+			leftFluidOutput.setPosition(new Position(leftFluidInput, 0.0F, SLOT_HEIGHT + PAD_3 + FILTER_HEIGHT + 1.0F));
 			leftFluidOutput.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 			
 			tab.add(leftFluidBar);
@@ -126,7 +128,7 @@ public class RocketControllerScreenHandler extends ExtendedBlockEntityScreenHand
 			
 			var rightFluidBar = new FluidBarWidget();
 			rightFluidBar.setPosition(new Position(payloadSlot, SLOT_WIDTH + PAD_3, SLOT_HEIGHT + PAD_3));
-			rightFluidBar.setSize(new Size(BAR_WIDTH, BAR_HEIGHT));
+			rightFluidBar.setSize(new Size(BAR_WIDTH  / 2.0F, BAR_HEIGHT));
 			rightFluidBar.setStorageView(() -> rocketController.getFluidStorage().getStorage(0));
 			
 			var rightFluidInput = new SlotWidget(Rocket.FUEL_TANK_UNLOAD_SLOT, rocketController.getItemStorage(), (inventory, id, x, y) -> {
@@ -152,7 +154,7 @@ public class RocketControllerScreenHandler extends ExtendedBlockEntityScreenHand
 			});
 			
 			rightFluidInput.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
-			rightFluidInput.setPosition(new Position(rightFluidBar, BAR_WIDTH + PAD_3, 0.0F));
+			rightFluidInput.setPosition(new Position(rightFluidBar, BAR_WIDTH  / 2.0F + PAD_3, 0.0F));
 			
 			var rightFluidBuffer = new SlotWidget(Rocket.FUEL_TANK_BUFFER_SLOT, rocketController.getItemStorage(), ExtractionSlot::new);
 			rightFluidBuffer.setPosition(new Position(rightFluidInput, SLOT_WIDTH + PAD_3, SLOT_HEIGHT - 4.0F)); // 4.0F centers the buffer slot against the two other slots.
@@ -180,13 +182,41 @@ public class RocketControllerScreenHandler extends ExtendedBlockEntityScreenHand
 				return slot;
 			});
 			
-			rightFluidOutput.setPosition(new Position(rightFluidInput, 0.0F, SLOT_HEIGHT + PAD_3 + FILTER_HEIGHT + PAD_3));
+			rightFluidOutput.setPosition(new Position(rightFluidInput, 0.0F, SLOT_HEIGHT + PAD_3 + FILTER_HEIGHT + 1.0F));
 			rightFluidOutput.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 			
 			tab.add(rightFluidBar);
 			tab.add(rightFluidInput);
 			tab.add(rightFluidBuffer);
 			tab.add(rightFluidOutput);
+
+			var leftFluidInputArrow = new ImageWidget();
+			leftFluidInputArrow.setPosition(new Position(leftFluidInput, -18.0F, 1.0F));
+			leftFluidInputArrow.setSize(16.0F, 16.0F);
+			leftFluidInputArrow.setTexture(new ImageTexture(AMCommon.id("textures/widget/arrow_pointing_right_to_down.png")));
+
+			tab.add(leftFluidInputArrow);
+
+			var leftFluidOutputArrow = new ImageWidget();
+			leftFluidOutputArrow.setPosition(new Position(leftFluidOutput, -18.0F, 3.0F));
+			leftFluidOutputArrow.setSize(16.0F, 16.0F);
+			leftFluidOutputArrow.setTexture(new ImageTexture(AMCommon.id("textures/widget/arrow_pointing_up_to_right.png")));
+
+			tab.add(leftFluidOutputArrow);
+
+			var rightFluidInputArrow = new ImageWidget();
+			rightFluidInputArrow.setPosition(new Position(rightFluidInput, +18.0F + 1.0F, 1.0F));
+			rightFluidInputArrow.setSize(16.0F, 16.0F);
+			rightFluidInputArrow.setTexture(new ImageTexture(AMCommon.id("textures/widget/arrow_pointing_left_to_down.png")));
+
+			tab.add(rightFluidInputArrow);
+
+			var rightFluidOutputArrow = new ImageWidget();
+			rightFluidOutputArrow.setPosition(new Position(rightFluidOutput, +18.0F + 1.0F, 3.0F));
+			rightFluidOutputArrow.setSize(16.0F, 16.0F);
+			rightFluidOutputArrow.setTexture(new ImageTexture(AMCommon.id("textures/widget/arrow_pointing_up_to_left.png")));
+
+			tab.add(rightFluidOutputArrow);
 			
 			var fuelTankSlot = new SlotWidget(Rocket.FUEL_TANK_SLOT, rocketController.getItemStorage(), Slot::new);
 			var hullItemSlot = new SlotWidget(Rocket.HULL_SLOT, rocketController.getItemStorage(), Slot::new);
@@ -195,7 +225,7 @@ public class RocketControllerScreenHandler extends ExtendedBlockEntityScreenHand
 			var shieldingSlot = new SlotWidget(Rocket.SHIELDING_SLOT, rocketController.getItemStorage(), Slot::new);
 			var thrusterSlot = new SlotWidget(Rocket.THRUSTER_SLOT, rocketController.getItemStorage(), Slot::new);
 			
-			fuelTankSlot.setPosition(new Position(leftFluidBar, 0.0F, BAR_HEIGHT + PAD_25));
+			fuelTankSlot.setPosition(new Position(leftFluidBar, BAR_WIDTH  / 2.0F - SLOT_WIDTH, BAR_HEIGHT + PAD_25));
 			fuelTankSlot.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 			
 			hullItemSlot.setPosition(new Position(fuelTankSlot, -SLOT_WIDTH - PAD_3, 0.0F));
@@ -237,13 +267,13 @@ public class RocketControllerScreenHandler extends ExtendedBlockEntityScreenHand
 			thrusterItem.setItem(AMItems.LOW_EFFICIENCY_ROCKET_THRUSTER);
 			thrusterItem.setTooltip(() -> List.of(Text.translatable("text.astromine.thruster").asOrderedText()));
 			
-			fuelTankItem.setPosition(new Position(fuelTankSlot, 0.0F, -SLOT_HEIGHT - PAD_3));
+			fuelTankItem.setPosition(new Position(fuelTankSlot, SLOT_WIDTH - 16.0F, -SLOT_HEIGHT - PAD_3));
 			fuelTankItem.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 			
-			hullItem.setPosition(new Position(hullItemSlot, 0.0F, -SLOT_HEIGHT - PAD_3));
+			hullItem.setPosition(new Position(hullItemSlot, SLOT_WIDTH - 16.0F, -SLOT_HEIGHT - PAD_3));
 			hullItem.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 			
-			landingMechanismItem.setPosition(new Position(landingMechanismSlot, 0.0F, -SLOT_HEIGHT - PAD_3));
+			landingMechanismItem.setPosition(new Position(landingMechanismSlot, SLOT_WIDTH - 16.0F, -SLOT_HEIGHT - PAD_3));
 			landingMechanismItem.setSize(new Size(SLOT_WIDTH, SLOT_HEIGHT));
 			
 			lifeSupportItem.setPosition(new Position(lifeSupportSlot, 0.0F, -SLOT_HEIGHT - PAD_3));
@@ -268,6 +298,8 @@ public class RocketControllerScreenHandler extends ExtendedBlockEntityScreenHand
 			tab.add(lifeSupportItem);
 			tab.add(shieldingItem);
 			tab.add(thrusterItem);
+
+			payloadSlot.setPosition(new Position(fuelTankItem, 16.0F + PAD_3, -1.0F));
 		}
 	}
 }
