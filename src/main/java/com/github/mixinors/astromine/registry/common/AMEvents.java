@@ -48,7 +48,9 @@ public class AMEvents {
 
 		TickEvent.SERVER_PRE.register(ExtendedBlockEntityScreenHandler::onServerPre);
 		TickEvent.SERVER_PRE.register(ExtendedEntityScreenHandler::onServerPre);
-		
+
+		TickEvent.SERVER_PRE.register(RocketManager::onServerPre);
+
 		TickEvent.SERVER_LEVEL_PRE.register(NetworksComponent::onServerLevelPre);
 		
 		ServerWorldEvents.LOAD.register(BodyManager::onWorldLoad);

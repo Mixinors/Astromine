@@ -184,11 +184,11 @@ public final class Rocket implements Tickable {
 	@SuppressWarnings("DuplicatedCode")
 	@Override
 	public void tick() {
-		tickJourney();
+		// tickJourney();
 		
 		var wildItemStorage = itemStorage.getWildProxy();
 		var wildFluidStorage = fluidStorage.getWildProxy();
-		
+
 		var itemInputStorage1 = wildItemStorage.getStorage(OXYGEN_TANK_UNLOAD_SLOT);
 		var itemBufferStorage1 = wildItemStorage.getStorage(OXYGEN_TANK_BUFFER_SLOT);
 		var itemOutputStorage1 = wildItemStorage.getStorage(OXYGEN_TANK_OUTPUT_SLOT);
@@ -198,18 +198,32 @@ public final class Rocket implements Tickable {
 		var unloadFluidStorages1 = FluidStorage.ITEM.find(itemInputStorage1.getStack(), ContainerItemContext.ofSingleSlot(itemInputStorage1));
 		var loadFluidStorages1 = FluidStorage.ITEM.find(itemOutputStorage1.getStack(), ContainerItemContext.ofSingleSlot(itemOutputStorage1));
 		
-		try (var transaction = Transaction.openOuter()) {
-			StorageUtil.move(unloadFluidStorages1, fluidInputStorage1, fluidVariant -> !fluidVariant.isBlank(), FluidConstants.BUCKET, transaction);
-			StorageUtil.move(fluidOutputStorage1, loadFluidStorages1, fluidVariant -> !fluidVariant.isBlank(), FluidConstants.BUCKET, transaction);
-			
-			StorageUtil.move(itemInputStorage1, itemBufferStorage1, (variant) -> {
-				var stored = StorageUtil.findStoredResource(unloadFluidStorages1);
-				return stored == null || stored.isBlank();
-			}, 1, transaction);
-			
-			transaction.commit();
+		if (itemInputStorage1.getResource().getItem() == AMFluids.OXYGEN.getBucketItem()) {
+			try (var transaction = Transaction.openOuter()) {
+				StorageUtil.move(unloadFluidStorages1, fluidInputStorage1, fluidVariant -> !fluidVariant.isBlank(), FluidConstants.BUCKET, transaction);
+				StorageUtil.move(fluidOutputStorage1, loadFluidStorages1, fluidVariant -> !fluidVariant.isBlank(), FluidConstants.BUCKET, transaction);
+
+				StorageUtil.move(itemInputStorage1, itemBufferStorage1, (variant) -> {
+					var stored = StorageUtil.findStoredResource(unloadFluidStorages1);
+					return stored==null || stored.isBlank();
+				}, 1, transaction);
+
+				transaction.commit();
+			}
 		}
-		
+
+		if (itemOutputStorage1.supportsInsertion()) {
+			try (var transaction = Transaction.openOuter()) {
+				StorageUtil.move(fluidOutputStorage1, loadFluidStorages1, fluidVariant -> !fluidVariant.isBlank(), FluidConstants.BUCKET, transaction);
+				StorageUtil.move(itemOutputStorage1, itemBufferStorage1, (variant) -> {
+					var stored = StorageUtil.findStoredResource(unloadFluidStorages1);
+					return stored==null || stored.isBlank();
+				}, 1, transaction);
+
+				transaction.commit();
+			}
+		}
+
 		var itemInputStorage2 = wildItemStorage.getStorage(FUEL_TANK_UNLOAD_SLOT);
 		var itemBufferStorage2 = wildItemStorage.getStorage(FUEL_TANK_BUFFER_SLOT);
 		var itemOutputStorage2 = wildItemStorage.getStorage(FUEL_TANK_OUTPUT_SLOT);
@@ -227,18 +241,28 @@ public final class Rocket implements Tickable {
 				var stored = StorageUtil.findStoredResource(unloadFluidStorages2);
 				return stored == null || stored.isBlank();
 			}, 2, transaction);
-			
+
 			transaction.commit();
 		}
 	}
 	
 	private void updateFluidStorage() {
 		Optional<RocketFuelTankPart> fuelTank = parts.getPart(PartType.FUEL_TANK);
-		long capacity = fuelTank.map(rocketFuelTankPart -> rocketFuelTankPart.getCapacity().getSize()).orElse(1_000L);
-		
-		fluidStorage = new SimpleFluidStorage(2, capacity);
-		
-		if (fuelTank.isPresent()) {
+
+		var capacity = fuelTank.map(rocketFuelTankPart -> rocketFuelTankPart.getCapacity().getSize()).orElse(81_000L);
+
+		if (fluidStorage == null) {
+			fluidStorage = new SimpleFluidStorage(2, capacity);
+		} else {
+			for (var i = 0; i < 2; ++i) {
+				fluidStorage.getStorage(i).setCapacity(capacity);
+			}
+		}
+
+		// TODO: Investigate if we actually need the presence check,
+		// since the listener, at least, should always be triggered;
+		// and the filters should always be present.
+		if (fuelTank.isPresent() || true) {
 			fluidStorage.extractPredicate((variant, slot) -> false)
 						.extractPredicate((variant, slot) -> slot == OXYGEN_TANK_FLUID_OUT || slot == FUEL_TANK_FLUID_OUT)
 						.insertPredicate((variant, slot) -> (slot == OXYGEN_TANK_FLUID_IN && OXYGEN_INGREDIENT.testVariant(variant)) || (slot == FUEL_TANK_FLUID_IN && FUEL_INGREDIENT.testVariant(variant)))
@@ -247,8 +271,10 @@ public final class Rocket implements Tickable {
 							if (server == null) return;
 							
 							// TODO Find out why the heck updateFluidStorage gets called so often
-							//RocketManager.sync(server);
+							RocketManager.sync(server);
 						}).insertSlots(FLUID_INSERT_SLOTS).extractSlots(FLUID_EXTRACT_SLOTS);
+		} else {
+			// Disable extraction, insertion and listeners.
 		}
 	}
 	

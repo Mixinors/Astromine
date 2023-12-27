@@ -114,17 +114,12 @@ public abstract class TankBlockEntity extends ExtendedBlockEntity implements Tan
 		var wildFluidStorage = fluidStorage.getWildProxy();
 		
 		var itemInputStorage = wildItemStorage.getStorage(ITEM_INPUT_SLOT);
-		
 		var itemBufferStorage = wildItemStorage.getStorage(ITEM_BUFFER_SLOT);
-		
 		var itemOutputStorage2 = wildItemStorage.getStorage(ITEM_OUTPUT_SLOT);
-		
 		var fluidInputStorage = wildFluidStorage.getStorage(FLUID_INPUT_SLOT);
-		
 		var fluidOutputStorage = wildFluidStorage.getStorage(FLUID_OUTPUT_SLOT);
-		
+
 		var unloadFluidStorages = FluidStorage.ITEM.find(itemInputStorage.getStack(), ContainerItemContext.ofSingleSlot(itemInputStorage));
-		
 		var loadFluidStorages = FluidStorage.ITEM.find(itemOutputStorage2.getStack(), ContainerItemContext.ofSingleSlot(itemOutputStorage2));
 		
 		try (var transaction = Transaction.openOuter()) {

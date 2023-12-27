@@ -118,7 +118,7 @@ public class RocketEntity extends ExtendedEntity {
 	public void tick() {
 		super.tick();
 		
-		if (!getWorld().isClient) {
+		if (!getWorld().isClient()) {
 			if (isRunning()) {
 				var acceleration = getAcceleration();
 				

@@ -2,6 +2,7 @@ package com.github.mixinors.astromine.common.manager;
 
 import com.github.mixinors.astromine.AMCommon;
 import com.github.mixinors.astromine.common.rocket.Rocket;
+import com.github.mixinors.astromine.common.screen.handler.base.entity.ExtendedEntityScreenHandler;
 import com.github.mixinors.astromine.registry.common.AMStaticComponents;
 import com.github.mixinors.astromine.registry.common.AMWorlds;
 import dev.architectury.networking.NetworkManager;
@@ -156,7 +157,11 @@ public class RocketManager {
 			component.readFromNbt(nbt);
 		});
 	}
-	
+
+	public static void onServerPre(MinecraftServer server) {
+		getRockets().forEach(Rocket::tick);
+	}
+
 	public static void onPlayerJoin(ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) {
 		sync(server);
 	}
